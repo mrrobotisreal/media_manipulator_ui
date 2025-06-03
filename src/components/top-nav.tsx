@@ -3,7 +3,7 @@ import { MoonIcon as Moon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import winappsLogo from "@/assets/logo_transparent_shadow.svg";
-import formatterIcon from "@/assets/MediaManipulatorIcon.png";
+import formatterIcon from "@/assets/MediaManipulatorIcon.webp";
 import githubLogo from "@/assets/github.svg";
 
 const ThemeToggle = () => {
