@@ -45,7 +45,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
   // Don't render ads in development mode OR if using placeholder ad slots
   if (process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')) {
     return (
-      <div className={`bg-gray-200 border-2 border-dashed border-gray-400 p-4 text-center text-gray-600 ${className}`}>
+      <div className={`bg-gray-200 border-2 border-dashed border-gray-400 p-4 text-center text-gray-600 rounded-lg ${className}`}>
         <p className="text-sm">Ad Placeholder - {adPosition}</p>
         <p className="text-xs">AdSense ads will appear here in production</p>
       </div>
