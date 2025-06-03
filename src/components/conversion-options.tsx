@@ -102,6 +102,17 @@ const ConversionOptions: React.FC<{
                   <option value="sepia">Sepia</option>
                   <option value="blur">Blur</option>
                   <option value="sharpen">Sharpen</option>
+                  <option value="swirl">Swirl</option>
+                  <option value="barrel-distortion">Barrel Distortion</option>
+                  <option value="oil-painting">Oil Painting</option>
+                  <option value="vintage">Vintage</option>
+                  <option value="emboss">Emboss</option>
+                  <option value="charcoal">Charcoal</option>
+                  <option value="sketch">Sketch</option>
+                  <option value="rotate-45º">Rotate 45º</option>
+                  <option value="rotate-90º">Rotate 90º</option>
+                  <option value="rotate-180º">Rotate 180º</option>
+                  <option value="rotate-270º">Rotate 270º</option>
                 </select>
               )}
             />

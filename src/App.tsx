@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Upload, Download, Image, Video, Music, X, Settings } from 'lucide-react';
+import { Upload, Download, Image, Video, Music, X, Settings, Search } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
+import FileDetails from '@/components/file-details';
 import type { ConversionFormData } from '@/schemas/types';
 import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
@@ -11,6 +12,7 @@ import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
 import useDownloadFile from './lib/useDownloadFile';
+import useIdentifyFile from '@/lib/useIdentifyFile';
 
 const FileConverterApp: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -20,6 +22,7 @@ const FileConverterApp: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
+  const { data: fileDetails, mutate: identifyFile, isPending: isIdentifying, reset: resetIdentification } = useIdentifyFile();
 
   const { mutate, isPending } = useConvertFile((res: UploadFileResponse) => {
     setConversionJob({
@@ -109,8 +112,15 @@ const FileConverterApp: React.FC = () => {
     setSelectedFile(null);
     setConversionJob(null);
     setConversionOptions(null);
+    resetIdentification();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+  };
+
+  const handleIdentifyFile = () => {
+    if (selectedFile) {
+      identifyFile(selectedFile);
     }
   };
 
@@ -194,6 +204,24 @@ const FileConverterApp: React.FC = () => {
                   file={selectedFile}
                   resultUrl={conversionJob?.resultUrl}
                 />
+
+                {/* Identify File Button */}
+                <button
+                  onClick={handleIdentifyFile}
+                  disabled={isIdentifying}
+                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Search className="w-4 h-4" />
+                  {isIdentifying ? 'Analyzing...' : 'Identify File Details'}
+                </button>
+
+                {/* File Details */}
+                {fileDetails && (
+                  <FileDetails
+                    fileDetails={fileDetails}
+                    className="mt-4"
+                  />
+                )}
               </div>
             )}
           </div>
