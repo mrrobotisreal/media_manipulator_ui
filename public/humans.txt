@@ -1,0 +1,43 @@
+/* TEAM */
+Developer: Mitchell Wintrow
+Contact: mitchellwintrow@gmail.com
+Location: Seattle, WA, USA
+
+/* THANKS */
+Thanks to all the open source contributors who made this project possible.
+
+/* SITE */
+Last update: 2025-06-03
+Standards: HTML5, CSS3, ES2020+
+Components: React, TypeScript, Vite
+Doctype: HTML5
+IDE: Cursor, VS Code
+
+/* TECHNOLOGIES */
+Frontend Framework: React 18
+Build Tool: Vite
+Language: TypeScript
+Styling: Tailwind CSS
+State Management: TanStack Query
+Analytics: Firebase Analytics, Google Analytics
+Monetization: Google AdSense
+Icons: Lucide React
+UI Components: Radix UI
+Utilities: Class Variance Authority, clsx
+Development: ESLint, PostCSS
+
+/* INFRASTRUCTURE */
+Hosting: Vercel
+Domain: wintrow.io
+CDN: Modern web hosting with global distribution
+
+/* CONTACT ORGANIZATION */
+Organization: WinApps Solutions LLC
+Website: https://winapps.io
+Main Product: Media Manipulator Pro - File Converter
+
+          .-.
+         /   \
+        | @ @ |    Thank you for visiting!
+         \   /     We built this with ❤️
+          '-'      for the developer community.
