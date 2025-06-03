@@ -202,7 +202,7 @@ const FileConverterApp: React.FC = () => {
   const isLoading = isPending || conversionJob?.status === 'processing';
 
   return (
-    <div className="min-h-screen bg-[url('/images/background.png')] bg-center bg-no-repeat bg-cover">
+    <div className="min-h-screen bg-[url('/images/background.webp')] bg-center bg-no-repeat bg-cover">
       <TopNav />
 
       {/* Top Banner Ad */}
