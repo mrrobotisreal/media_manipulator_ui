@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Upload, Download, Image, Video, Music, X, Settings, Search } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
+import AdBanner from '@/components/ad-banner';
 import type { ConversionFormData } from '@/schemas/types';
 import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
@@ -13,18 +14,30 @@ import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
 import useDownloadFile from './lib/useDownloadFile';
 import useIdentifyFile from '@/lib/useIdentifyFile';
+import {
+  trackFileUpload,
+  trackFileConversion,
+  trackConversionSuccess,
+  trackConversionFailure,
+  trackFileDownload,
+  trackFileIdentification,
+  trackPageView,
+  trackUserSession,
+} from '@/lib/analytics';
 
 const FileConverterApp: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const [conversionOptions, setConversionOptions] = useState<ConversionFormData | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [conversionStartTime, setConversionStartTime] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
   const { data: fileDetails, mutate: identifyFile, isPending: isIdentifying, reset: resetIdentification } = useIdentifyFile();
 
   const { mutate, isPending } = useConvertFile((res: UploadFileResponse) => {
+    setConversionStartTime(Date.now());
     setConversionJob({
       id: res.jobId,
       status: 'processing',
@@ -37,11 +50,43 @@ const FileConverterApp: React.FC = () => {
 
   const fileType = selectedFile ? getFileType(selectedFile) : null;
 
+  // Initialize analytics on component mount
+  useEffect(() => {
+    trackPageView('File Converter Home');
+
+    // Set user session data
+    const isReturningUser = localStorage.getItem('hasVisited') === 'true';
+    trackUserSession({
+      user_type: isReturningUser ? 'returning' : 'new'
+    });
+
+    if (!isReturningUser) {
+      localStorage.setItem('hasVisited', 'true');
+    }
+  }, []);
+
   React.useEffect(() => {
     if (jobStatusData) {
+      const previousStatus = conversionJob?.status;
       setConversionJob(prev => prev ? { ...prev, ...jobStatusData } : null);
+
+      // Track conversion completion
+      if (previousStatus === 'processing' && jobStatusData.status === 'completed') {
+        const processingTime = conversionStartTime ? (Date.now() - conversionStartTime) / 1000 : 0;
+        trackConversionSuccess(
+          conversionOptions ? `${fileType}_to_${conversionOptions.format}` : 'unknown',
+          processingTime
+        );
+      }
+
+      // Track conversion failure
+      if (previousStatus === 'processing' && jobStatusData.status === 'failed') {
+        trackConversionFailure(
+          conversionOptions ? `${fileType}_to_${conversionOptions.format}` : 'unknown'
+        );
+      }
     }
-  }, [jobStatusData]);
+  }, [jobStatusData, conversionJob?.status, conversionStartTime, conversionOptions, fileType]);
 
   // File drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -60,23 +105,36 @@ const FileConverterApp: React.FC = () => {
 
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
-      setSelectedFile(files[0]);
+      const file = files[0];
+      setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
+
+      // Track file upload
+      trackFileUpload(getFileType(file), file.size, file.name);
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
+
+      // Track file upload
+      trackFileUpload(getFileType(file), file.size, file.name);
     }
   };
 
   const handleConvert = (data: ConversionFormData) => {
     if (!selectedFile) return;
     setConversionOptions(data); // Store the conversion options
+
+    // Track conversion start
+    const fromFormat = selectedFile.name.split('.').pop()?.toLowerCase() || 'unknown';
+    trackFileConversion(fromFormat, data.format, selectedFile.size);
+
     mutate({ file: selectedFile, options: data });
   };
 
@@ -97,11 +155,15 @@ const FileConverterApp: React.FC = () => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = getConvertedFilename();
+        const fileName = getConvertedFilename();
+        link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
+
+        // Track file download
+        trackFileDownload(fileName, fileType || 'unknown');
       } catch (error) {
         console.error('Download failed:', error);
       }
@@ -112,6 +174,7 @@ const FileConverterApp: React.FC = () => {
     setSelectedFile(null);
     setConversionJob(null);
     setConversionOptions(null);
+    setConversionStartTime(null);
     resetIdentification();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -121,6 +184,9 @@ const FileConverterApp: React.FC = () => {
   const handleIdentifyFile = () => {
     if (selectedFile) {
       identifyFile(selectedFile);
+
+      // Track file identification
+      trackFileIdentification(fileType || 'unknown', true);
     }
   };
 
@@ -138,6 +204,17 @@ const FileConverterApp: React.FC = () => {
   return (
     <div className="min-h-screen bg-[url('/images/background.png')] bg-center bg-no-repeat bg-cover">
       <TopNav />
+
+      {/* Top Banner Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdBanner
+          adSlot="1234567890"
+          adFormat="leaderboard"
+          adPosition="header"
+          className="mb-4"
+        />
+      </div>
+
       <div className="max-w-6xl mx-auto p-4 pt-8">
         <div className="grid lg:grid-cols-2 gap-6">
           {/* File Upload Section */}
@@ -224,6 +301,18 @@ const FileConverterApp: React.FC = () => {
                 )}
               </div>
             )}
+
+            {/* Sidebar Ad in File Upload Section */}
+            {selectedFile && (
+              <div className="mt-6">
+                <AdBanner
+                  adSlot="1234567891"
+                  adFormat="rectangle"
+                  adPosition="sidebar_upload"
+                  className="w-full"
+                />
+              </div>
+            )}
           </div>
 
           {/* Conversion Options */}
@@ -283,6 +372,14 @@ const FileConverterApp: React.FC = () => {
                     </p>
                   </div>
                 )}
+
+                {/* Sidebar Ad in Conversion Section */}
+                <AdBanner
+                  adSlot="1234567892"
+                  adFormat="rectangle"
+                  adPosition="sidebar_conversion"
+                  className="w-full"
+                />
               </div>
             ) : selectedFile ? (
               <div className="text-center py-8">
@@ -317,6 +414,16 @@ const FileConverterApp: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Bottom Banner Ad */}
+        <div className="mt-8">
+          <AdBanner
+            adSlot="1234567893"
+            adFormat="leaderboard"
+            adPosition="footer"
+            className="w-full"
+          />
+        </div>
       </div>
     </div>
   );
