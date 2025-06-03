@@ -6,6 +6,7 @@ interface AdBannerProps {
   adFormat?: 'auto' | 'rectangle' | 'leaderboard' | 'banner';
   className?: string;
   adPosition: string; // For analytics tracking
+  style?: React.CSSProperties;
 }
 
 declare global {
@@ -18,7 +19,8 @@ const AdBanner: React.FC<AdBannerProps> = ({
   adSlot,
   adFormat = 'auto',
   className = '',
-  adPosition
+  adPosition,
+  style = {}
 }) => {
   const adRef = useRef<HTMLModElement>(null);
 
@@ -26,7 +28,11 @@ const AdBanner: React.FC<AdBannerProps> = ({
     try {
       // Initialize AdSense ad
       if (typeof window !== 'undefined' && window.adsbygoogle) {
-        window.adsbygoogle.push({});
+        // Clear any existing ads in this slot
+        if (adRef.current) {
+          // Push the ad configuration
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
 
         // Track ad view
         trackAdInteraction('adsense_banner', adPosition, 'view');
@@ -34,7 +40,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
     } catch (error) {
       console.error('AdSense error:', error);
     }
-  }, [adPosition]);
+  }, [adPosition, adSlot]);
 
   // Don't render ads in development mode OR if using placeholder ad slots
   if (process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')) {
@@ -51,7 +57,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
       <ins
         ref={adRef}
         className="adsbygoogle"
-        style={{ display: 'block', minHeight: '50px', backgroundColor: 'transparent' }}
+        style={{ display: 'block', minHeight: '50px', backgroundColor: 'transparent', ...style }}
         data-ad-client="ca-pub-3413790368941825"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}

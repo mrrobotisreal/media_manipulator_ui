@@ -3,7 +3,7 @@ import { Upload, Download, Image, Video, Music, X, Settings, Search } from 'luci
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
-// import AdBanner from '@/components/ad-banner';
+import AdBanner from '@/components/ad-banner';
 import type { ConversionFormData } from '@/schemas/types';
 import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
@@ -206,14 +206,15 @@ const FileConverterApp: React.FC = () => {
       <TopNav />
 
       {/* Top Banner Ad */}
-      {/* <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="max-w-6xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="1234567890"
+          adSlot="6671038874"
           adFormat="leaderboard"
           adPosition="header"
           className="mb-4"
+          style={{ minHeight: '90px' }}
         />
-      </div> */}
+      </div>
 
       <div className="max-w-6xl mx-auto p-4 pt-8">
         <div className="grid lg:grid-cols-2 gap-6">
@@ -303,16 +304,17 @@ const FileConverterApp: React.FC = () => {
             )}
 
             {/* Sidebar Ad in File Upload Section */}
-            {/* {selectedFile && (
+            {selectedFile && (
               <div className="mt-6">
                 <AdBanner
-                  adSlot="1234567891"
+                  adSlot="7449783987"
                   adFormat="rectangle"
                   adPosition="sidebar_upload"
                   className="w-full"
+                  style={{ minHeight: '250px' }}
                 />
               </div>
-            )} */}
+            )}
           </div>
 
           {/* Conversion Options */}
@@ -374,12 +376,13 @@ const FileConverterApp: React.FC = () => {
                 )}
 
                 {/* Sidebar Ad in Conversion Section */}
-                {/* <AdBanner
-                  adSlot="1234567892"
+                <AdBanner
+                  adSlot="6568479981"
                   adFormat="rectangle"
                   adPosition="sidebar_conversion"
                   className="w-full"
-                /> */}
+                  style={{ minHeight: '250px' }}
+                />
               </div>
             ) : selectedFile ? (
               <div className="text-center py-8">
@@ -416,14 +419,15 @@ const FileConverterApp: React.FC = () => {
         )}
 
         {/* Bottom Banner Ad */}
-        {/* <div className="mt-8">
+        <div className="mt-8">
           <AdBanner
-            adSlot="1234567893"
+            adSlot="3633827902"
             adFormat="leaderboard"
             adPosition="footer"
             className="w-full"
+            style={{ minHeight: '90px' }}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
