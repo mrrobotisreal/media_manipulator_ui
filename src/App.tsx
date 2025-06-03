@@ -3,7 +3,7 @@ import { Upload, Download, Image, Video, Music, X, Settings, Search } from 'luci
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
-import AdBanner from '@/components/ad-banner';
+// import AdBanner from '@/components/ad-banner';
 import type { ConversionFormData } from '@/schemas/types';
 import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
@@ -206,14 +206,14 @@ const FileConverterApp: React.FC = () => {
       <TopNav />
 
       {/* Top Banner Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      {/* <div className="max-w-6xl mx-auto px-4 pt-4">
         <AdBanner
           adSlot="1234567890"
           adFormat="leaderboard"
           adPosition="header"
           className="mb-4"
         />
-      </div>
+      </div> */}
 
       <div className="max-w-6xl mx-auto p-4 pt-8">
         <div className="grid lg:grid-cols-2 gap-6">
@@ -303,7 +303,7 @@ const FileConverterApp: React.FC = () => {
             )}
 
             {/* Sidebar Ad in File Upload Section */}
-            {selectedFile && (
+            {/* {selectedFile && (
               <div className="mt-6">
                 <AdBanner
                   adSlot="1234567891"
@@ -312,7 +312,7 @@ const FileConverterApp: React.FC = () => {
                   className="w-full"
                 />
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Conversion Options */}
@@ -374,12 +374,12 @@ const FileConverterApp: React.FC = () => {
                 )}
 
                 {/* Sidebar Ad in Conversion Section */}
-                <AdBanner
+                {/* <AdBanner
                   adSlot="1234567892"
                   adFormat="rectangle"
                   adPosition="sidebar_conversion"
                   className="w-full"
-                />
+                /> */}
               </div>
             ) : selectedFile ? (
               <div className="text-center py-8">
@@ -416,14 +416,14 @@ const FileConverterApp: React.FC = () => {
         )}
 
         {/* Bottom Banner Ad */}
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <AdBanner
             adSlot="1234567893"
             adFormat="leaderboard"
             adPosition="footer"
             className="w-full"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

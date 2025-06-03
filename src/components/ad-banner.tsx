@@ -36,8 +36,8 @@ const AdBanner: React.FC<AdBannerProps> = ({
     }
   }, [adPosition]);
 
-  // Don't render ads in development mode
-  if (process.env.NODE_ENV === 'development') {
+  // Don't render ads in development mode OR if using placeholder ad slots
+  if (process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')) {
     return (
       <div className={`bg-gray-200 border-2 border-dashed border-gray-400 p-4 text-center text-gray-600 ${className}`}>
         <p className="text-sm">Ad Placeholder - {adPosition}</p>
@@ -51,7 +51,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
       <ins
         ref={adRef}
         className="adsbygoogle"
-        style={{ display: 'block' }}
+        style={{ display: 'block', minHeight: '50px', backgroundColor: 'transparent' }}
         data-ad-client="ca-pub-3413790368941825"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}
