@@ -145,6 +145,13 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
     }
   }, [currentTime, trimRange.endTime, isPlaying]);
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    // Only close if clicking the backdrop itself, not its children
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   if (!isOpen) return null;
 
   const trimDuration = trimRange.endTime - trimRange.startTime;
@@ -153,8 +160,14 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
   const currentPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-full overflow-auto">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
+      <div
+        className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Scissors className="w-5 h-5" />

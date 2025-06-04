@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { audioConversionSchema } from "@/schemas/audioSchema";
 import ConversionOptions from "@/components/conversion-options";
 import MediaTrimModal from "@/components/media-trim-modal";
+import AdvancedAudioEffects from "@/components/advanced-audio-effects";
 import type { ConversionFormData } from "@/schemas/types";
 import { useState } from "react";
 
@@ -28,6 +29,101 @@ const AudioConversionForm: React.FC<{
       bitrate: '192' as const,
       speed: 1,
       volume: 1,
+      // Basic Processing defaults
+      basicProcessing: {
+        normalize: false,
+        amplify: 0,
+        fadeIn: 0,
+        fadeOut: 0,
+        equalizer: {
+          enabled: false,
+          preset: 'none' as const,
+        },
+        stereo: {
+          pan: 0,
+          balance: 0,
+          width: 100,
+          monoConversion: false,
+          channelSwap: false,
+        },
+      },
+      // Time-Based Effects defaults
+      timeBasedEffects: {
+        reverb: {
+          enabled: false,
+          type: 'none' as const,
+          roomSize: 50,
+          damping: 50,
+          wetLevel: 30,
+          dryLevel: 70,
+        },
+        delay: {
+          enabled: false,
+          type: 'none' as const,
+          time: 500,
+          feedback: 30,
+          wetLevel: 25,
+        },
+        modulation: {
+          enabled: false,
+          type: 'none' as const,
+          rate: 2,
+          depth: 50,
+          feedback: 20,
+        },
+      },
+      // Restoration defaults
+      restoration: {
+        noiseReduction: {
+          enabled: false,
+          type: 'none' as const,
+          strength: 50,
+          sensitivity: 50,
+        },
+        deHum: {
+          enabled: false,
+          frequency: 'auto' as const,
+          harmonics: 3,
+        },
+        declip: {
+          enabled: false,
+          threshold: 95,
+          strength: 50,
+        },
+        silenceDetection: {
+          enabled: false,
+          threshold: -50,
+          minDuration: 1,
+          action: 'mark' as const,
+        },
+      },
+      // Advanced defaults
+      advanced: {
+        pitchShift: {
+          enabled: false,
+          semitones: 0,
+          preserveFormants: true,
+        },
+        timeStretch: {
+          enabled: false,
+          factor: 1,
+          algorithm: 'pitch' as const,
+        },
+        spatialAudio: {
+          enabled: false,
+          type: 'none' as const,
+          position: {
+            x: 0,
+            y: 0,
+            z: 0,
+          },
+        },
+        spectral: {
+          enabled: false,
+          type: 'none' as const,
+          fftSize: 2048,
+        },
+      },
     },
     mode: 'onChange',
   });
@@ -80,6 +176,10 @@ const AudioConversionForm: React.FC<{
           onTrimClick={audioUrl ? handleTrimClick : undefined}
           trimStatus={getTrimStatus()}
         />
+
+        {/* Advanced Audio Effects */}
+        <AdvancedAudioEffects control={control} />
+
         {Object.keys(errors).length > 0 && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
             <p className="text-destructive text-sm">Please fix the following errors:</p>

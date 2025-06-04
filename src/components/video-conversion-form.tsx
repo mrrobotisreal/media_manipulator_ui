@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { videoConversionSchema } from "@/schemas/videoSchema";
 import ConversionOptions from "@/components/conversion-options";
 import MediaTrimModal from "@/components/media-trim-modal";
+import AdvancedVideoEffects from "@/components/advanced-video-effects";
 import type { ConversionFormData } from "@/schemas/types";
 import { useState } from "react";
 
@@ -28,6 +29,70 @@ const VideoConversionForm: React.FC<{
       quality: 'medium' as const,
       speed: 1,
       preserveAspectRatio: true,
+      // Visual Effects defaults
+      visualEffects: {
+        brightness: 0,
+        contrast: 0,
+        saturation: 0,
+        hue: 0,
+        gamma: 1.0,
+        exposure: 0,
+        shadows: 0,
+        highlights: 0,
+        gaussianBlur: 0,
+        motionBlur: {
+          angle: 0,
+          distance: 0,
+        },
+        unsharpMask: {
+          radius: 1,
+          amount: 100,
+          threshold: 3,
+        },
+        artistic: 'none' as const,
+        noise: {
+          type: 'none' as const,
+          amount: 0,
+        },
+      },
+      // Transform defaults
+      transform: {
+        rotation: 0,
+        flipHorizontal: false,
+        flipVertical: false,
+        padding: {
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          color: '#000000',
+        },
+      },
+      // Temporal Effects defaults
+      temporal: {
+        reverse: false,
+        pingPong: false,
+        frameRate: {
+          interpolation: false,
+        },
+        stabilization: {
+          enabled: false,
+          shakiness: 5,
+          accuracy: 9,
+        },
+      },
+      // Advanced defaults
+      advanced: {
+        deinterlace: false,
+        hdr: {
+          enabled: false,
+          toneMapping: 'none' as const,
+        },
+        colorSpace: {
+          input: 'auto' as const,
+          output: 'rec709' as const,
+        },
+      },
     },
     mode: 'onChange',
   });
@@ -80,6 +145,10 @@ const VideoConversionForm: React.FC<{
           onTrimClick={videoUrl ? handleTrimClick : undefined}
           trimStatus={getTrimStatus()}
         />
+
+        {/* Advanced Video Effects */}
+        <AdvancedVideoEffects control={control} />
+
         {Object.keys(errors).length > 0 && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
             <p className="text-destructive text-sm">Please fix the following errors:</p>
