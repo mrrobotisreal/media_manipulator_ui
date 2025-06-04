@@ -9,6 +9,11 @@ interface AdvancedVideoEffectsProps {
 
 const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [brightness, setBrightness] = useState(0);
+  const [contrast, setContrast] = useState(0);
+  const [saturation, setSaturation] = useState(0);
+  const [hue, setHue] = useState(0);
+  const [gaussianBlur, setGaussianBlur] = useState(0);
 
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
@@ -78,11 +83,16 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                         max="100"
                         step="5"
                         value={value || 0}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 0 : Number(val));
+                          setBrightness(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{brightness}</span>
                   <div className="text-xs text-muted-foreground text-center">-100 to +100</div>
                 </div>
 
@@ -99,11 +109,16 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                         max="100"
                         step="5"
                         value={value || 0}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 0 : Number(val));
+                          setContrast(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{contrast}</span>
                   <div className="text-xs text-muted-foreground text-center">-100 to +100</div>
                 </div>
 
@@ -120,11 +135,16 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                         max="100"
                         step="5"
                         value={value || 0}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 0 : Number(val));
+                          setSaturation(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{saturation}</span>
                   <div className="text-xs text-muted-foreground text-center">-100 to +100</div>
                 </div>
 
@@ -141,11 +161,16 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                         max="180"
                         step="5"
                         value={value || 0}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 0 : Number(val));
+                          setHue(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{hue}°</span>
                   <div className="text-xs text-muted-foreground text-center">-180° to +180°</div>
                 </div>
               </div>
@@ -168,11 +193,16 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                         max="50"
                         step="1"
                         value={value || 0}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 0 : Number(val));
+                          setGaussianBlur(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{gaussianBlur}px</span>
                   <div className="text-xs text-muted-foreground text-center">0 to 50px</div>
                 </div>
 
