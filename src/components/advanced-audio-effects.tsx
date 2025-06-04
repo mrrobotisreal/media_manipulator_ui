@@ -9,6 +9,14 @@ interface AdvancedAudioEffectsProps {
 
 const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [amplify, setAmplify] = useState(0);
+  const [pan, setPan] = useState(0);
+  const [stereoWidth, setStereoWidth] = useState(100);
+  const [roomSize, setRoomSize] = useState(50);
+  const [wetLevel, setWetLevel] = useState(30);
+  const [feedback, setFeedback] = useState(30);
+  const [pitchShift, setPitchShift] = useState(0);
+  const [timeStretch, setTimeStretch] = useState(1);
 
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
@@ -78,11 +86,16 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                         max="60"
                         step="1"
                         value={value || 0}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 0 : Number(val));
+                          setAmplify(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{amplify}dB</span>
                   <div className="text-xs text-muted-foreground text-center">-60dB to +60dB</div>
                 </div>
 
@@ -214,11 +227,16 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                         max="100"
                         step="5"
                         value={value || 0}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 0 : Number(val));
+                          setPan(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{`${Math.abs(pan)}% ${pan > 0 ? 'Right' : 'Left'}`}</span>
                   <div className="text-xs text-muted-foreground text-center">Left ← → Right</div>
                 </div>
 
@@ -235,11 +253,16 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                         max="200"
                         step="10"
                         value={value || 100}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 100 : Number(val));
+                          setStereoWidth(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{stereoWidth}%</span>
                   <div className="text-xs text-muted-foreground text-center">0% to 200%</div>
                 </div>
               </div>
@@ -312,11 +335,16 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                         max="100"
                         step="5"
                         value={value || 50}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 50 : Number(val));
+                          setRoomSize(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{roomSize}%</span>
                   <div className="text-xs text-muted-foreground text-center">0% to 100%</div>
                 </div>
 
@@ -333,11 +361,16 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                         max="100"
                         step="5"
                         value={value || 30}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 30 : Number(val));
+                          setWetLevel(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{`${wetLevel}% ${wetLevel > 50 ? 'Wet' : 'Dry'}`}</span>
                   <div className="text-xs text-muted-foreground text-center">Dry ← → Wet</div>
                 </div>
               </div>
@@ -418,11 +451,16 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                         max="95"
                         step="5"
                         value={value || 30}
-                        onChange={(e) => onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          onChange(val === '' ? 30 : Number(val));
+                          setFeedback(Number(val));
+                        }}
                         className="w-full"
                       />
                     )}
                   />
+                  <span className='text-xs text-foreground text-center'>{`${feedback}%`}</span>
                   <div className="text-xs text-muted-foreground text-center">0% to 95%</div>
                 </div>
               </div>
@@ -551,11 +589,13 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                       onChange={(e) => {
                         const val = e.target.value;
                         onChange(val === '' ? 0 : Number(val));
+                        setPitchShift(Number(val));
                       }}
                       className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
                     />
                   )}
                 />
+                <span className='text-xs text-foreground text-center'>{`${pitchShift} semitones`}</span>
                 <div className="text-xs text-muted-foreground">-24 to +24 semitones</div>
               </div>
 
@@ -575,11 +615,13 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                       onChange={(e) => {
                         const val = e.target.value;
                         onChange(val === '' ? 1 : Number(val));
+                        setTimeStretch(Number(val));
                       }}
                       className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
                     />
                   )}
                 />
+                <span className='text-xs text-foreground text-center'>{`${timeStretch}x speed`}</span>
                 <div className="text-xs text-muted-foreground">0.25x to 4x speed</div>
               </div>
 
