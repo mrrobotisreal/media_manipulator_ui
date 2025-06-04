@@ -7,4 +7,8 @@ export const videoConversionSchema = z.object({
   preserveAspectRatio: z.boolean().default(true),
   speed: z.number().min(0.25).max(4).default(1),
   quality: z.enum(['low', 'medium', 'high']).default('medium'),
+  trim: z.object({
+    startTime: z.number().min(0),
+    endTime: z.number().min(0),
+  }).optional(),
 });

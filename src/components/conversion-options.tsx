@@ -1,12 +1,39 @@
 import { Controller } from 'react-hook-form';
+import { Crop, Scissors } from 'lucide-react';
 
 const ConversionOptions: React.FC<{
   fileType: 'image' | 'video' | 'audio';
   control: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-}> = ({ fileType, control }) => {
+  onCropClick?: () => void;
+  onTrimClick?: () => void;
+  cropStatus?: string;
+  trimStatus?: string;
+}> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus }) => {
   if (fileType === 'image') {
     return (
       <div className="space-y-4">
+        {/* Crop Button */}
+        {onCropClick && (
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-card-foreground">Image Cropping</h3>
+                <p className="text-sm text-muted-foreground">
+                  {cropStatus || "Select the portion of the image you want to keep"}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onCropClick}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              >
+                <Crop className="w-4 h-4" />
+                {cropStatus ? 'Edit Crop' : 'Crop Image'}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1 text-card-foreground">Format</label>
@@ -139,6 +166,28 @@ const ConversionOptions: React.FC<{
   if (fileType === 'video') {
     return (
       <div className="space-y-4">
+        {/* Trim Button */}
+        {onTrimClick && (
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-card-foreground">Video Trimming</h3>
+                <p className="text-sm text-muted-foreground">
+                  {trimStatus || "Select the portion of the video you want to keep"}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onTrimClick}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              >
+                <Scissors className="w-4 h-4" />
+                {trimStatus ? 'Edit Trim' : 'Trim Video'}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1 text-card-foreground">Format</label>
@@ -262,6 +311,28 @@ const ConversionOptions: React.FC<{
   if (fileType === 'audio') {
     return (
       <div className="space-y-4">
+        {/* Trim Button */}
+        {onTrimClick && (
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-card-foreground">Audio Trimming</h3>
+                <p className="text-sm text-muted-foreground">
+                  {trimStatus || "Select the portion of the audio you want to keep"}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onTrimClick}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              >
+                <Scissors className="w-4 h-4" />
+                {trimStatus ? 'Edit Trim' : 'Trim Audio'}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1 text-card-foreground">Format</label>

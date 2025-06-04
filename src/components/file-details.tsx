@@ -156,10 +156,10 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
     <div className={`bg-card rounded-lg border shadow-sm ${className}`}>
       <div className="p-4">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <Info className="w-5 h-5 text-primary" />
-            <h3 className="text-lg font-semibold text-card-foreground">File Details</h3>
+            <h3 className="text-lg font-semibold text-card-foreground">Details</h3>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getFileTypeColor(fileDetails.fileType)}`}>
               {fileDetails.fileType.toUpperCase()}
             </span>
@@ -174,7 +174,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
         </div>
 
         {/* Basic Info */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <div className="text-sm font-medium text-card-foreground">File Name</div>
             <div className="text-sm text-muted-foreground truncate" title={fileDetails.fileName}>

@@ -327,13 +327,25 @@ const FileConverterApp: React.FC = () => {
             {selectedFile && fileType && fileType !== 'unknown' ? (
               <div className="space-y-6">
                 {fileType === 'image' && (
-                  <ImageConversionForm onSubmit={handleConvert} isLoading={isLoading} />
+                  <ImageConversionForm
+                    onSubmit={handleConvert}
+                    isLoading={isLoading}
+                    imageUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                  />
                 )}
                 {fileType === 'video' && (
-                  <VideoConversionForm onSubmit={handleConvert} isLoading={isLoading} />
+                  <VideoConversionForm
+                    onSubmit={handleConvert}
+                    isLoading={isLoading}
+                    videoUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                  />
                 )}
                 {fileType === 'audio' && (
-                  <AudioConversionForm onSubmit={handleConvert} isLoading={isLoading} />
+                  <AudioConversionForm
+                    onSubmit={handleConvert}
+                    isLoading={isLoading}
+                    audioUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                  />
                 )}
 
                 {/* Download Button */}
