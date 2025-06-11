@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Important files
-Sitemap: https://wintrow.io/sitemap.xml
+Sitemap: https://www.media-manipulator.com/sitemap.xml
 
 # Allow crawling of main assets
 Allow: /images/
