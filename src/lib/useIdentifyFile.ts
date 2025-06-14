@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
+import { toast } from 'sonner';
 
 export interface FileIdentificationResponse {
   fileName: string;
@@ -39,8 +40,16 @@ interface UseIdentifyFileReturns {
 const useIdentifyFile = (): UseIdentifyFileReturns => {
   const identificationMutation = useMutation({
     mutationFn: identifyFile,
+    onSuccess: (data) => {
+      toast.success('File identified successfully', {
+        description: `File type: ${data.fileType} | Size: ${(data.fileSize / 1024 / 1024).toFixed(2)} MB`
+      });
+    },
     onError: (error) => {
       console.error('File identification failed:', error);
+      toast.error('Failed to identify file', {
+        description: error.message || 'An unexpected error occurred'
+      });
     }
   });
 

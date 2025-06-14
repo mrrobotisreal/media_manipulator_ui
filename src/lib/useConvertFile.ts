@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import type { ConversionFormData } from '@/schemas/types';
 import { getBaseURL } from '@/lib/utils';
 
@@ -34,9 +35,17 @@ const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConver
   const conversionMutation = useMutation({
     mutationFn: ({ file, options }: { file: File; options: ConversionFormData }) =>
       uploadFile(file, options),
-    onSuccess,
+    onSuccess: (data) => {
+      toast.success('Conversion started successfully', {
+        description: `Job ID: ${data.jobId} - Your file is being processed`
+      });
+      onSuccess(data);
+    },
     onError: (error) => {
       console.error('Conversion failed:', error);
+      toast.error('Failed to start conversion', {
+        description: error.message || 'An unexpected error occurred'
+      });
     }
   });
 
