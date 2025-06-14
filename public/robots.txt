@@ -7,8 +7,14 @@ Sitemap: https://www.media-manipulator.com/sitemap.xml
 # Allow crawling of main assets
 Allow: /images/
 Allow: /MediaManipulatorIcon.webp
+Allow: /MediaManipulatorProOpenGraph.jpg
 Allow: /*.css
 Allow: /*.js
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /blog
+Allow: /about
+Allow: /how-it-works
 
 # Disallow admin and private areas (if any exist in the future)
 Disallow: /admin/

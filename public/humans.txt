@@ -33,7 +33,7 @@ CDN: Modern web hosting with global distribution
 
 /* CONTACT ORGANIZATION */
 Organization: WinApps Solutions LLC
-Website: https://www.winapps.io
+Website: https://www.media-manipulator.com
 Main Product: Media Manipulator Pro - File Converter
 
           .-.
