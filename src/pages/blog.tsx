@@ -2,6 +2,30 @@ import React, { useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import mixpanel from 'mixpanel-browser';
 
+const articles = [
+  {
+    title: "Complete Guide to Video Compression: MP4 vs WebM vs AVI",
+    excerpt: "Learn the differences between video formats and when to use each one for optimal quality and file size.",
+    date: "2025-06-13",
+    readTime: "8 min read",
+    slug: "video/video-compression-guide"
+  },
+  {
+    title: "Image Optimization for Web: JPEG vs PNG vs WebP",
+    excerpt: "Discover how to choose the right image format for your website to improve loading speeds and user experience.",
+    date: "2025-06-15",
+    readTime: "6 min read",
+    slug: "image/image-optimization-guide"
+  },
+  {
+    title: "Audio Quality Explained: Bitrates, Sample Rates, and Formats",
+    excerpt: "Understanding audio quality settings to achieve the perfect balance between file size and sound quality.",
+    date: "2025-06-16",
+    readTime: "10 min read",
+    slug: "audio/audio-quality-guide"
+  }
+];
+
 const BlogPage: React.FC = () => {
   useEffect(() => {
     mixpanel.track('Page View', {
@@ -10,30 +34,6 @@ const BlogPage: React.FC = () => {
       user_tier: 'free'
     });
   }, []);
-
-  const articles = [
-    {
-      title: "Complete Guide to Video Compression: MP4 vs WebM vs AVI",
-      excerpt: "Learn the differences between video formats and when to use each one for optimal quality and file size.",
-      date: "2025-01-15",
-      readTime: "8 min read",
-      slug: "video-compression-guide"
-    },
-    {
-      title: "Image Optimization for Web: JPEG vs PNG vs WebP",
-      excerpt: "Discover how to choose the right image format for your website to improve loading speeds and user experience.",
-      date: "2025-01-12",
-      readTime: "6 min read",
-      slug: "image-optimization-guide"
-    },
-    {
-      title: "Audio Quality Explained: Bitrates, Sample Rates, and Formats",
-      excerpt: "Understanding audio quality settings to achieve the perfect balance between file size and sound quality.",
-      date: "2025-01-10",
-      readTime: "10 min read",
-      slug: "audio-quality-guide"
-    }
-  ];
 
   return (
     <Card className="max-w-4xl mx-auto my-2">

@@ -7,6 +7,9 @@ import HowItWorksPage from './pages/how-it-works';
 import PrivacyPolicyPage from './pages/privacy-policy';
 import TermsOfServicePage from './pages/terms-of-service';
 import TopNav from './components/top-nav';
+import VideoCompressionGuide from './pages/blog/video/video-compression-guide';
+import ImageOptimizationGuide from './pages/blog/image/image-optimization-guide';
+import AudioQualityGuide from './pages/blog/audio/audio-quality-guide';
 
 const Router: React.FC = () => {
   return (
@@ -16,6 +19,9 @@ const Router: React.FC = () => {
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/video/video-compression-guide" element={<VideoCompressionGuide />} />
+          <Route path="/blog/image/image-optimization-guide" element={<ImageOptimizationGuide />} />
+          <Route path="/blog/audio/audio-quality-guide" element={<AudioQualityGuide />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
