@@ -4,11 +4,11 @@ import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import AdBanner from '@/components/ad-banner';
+import AlternativeAdBanner from '@/components/alternative-ad-banner';
 import type { ConversionFormData } from '@/schemas/types';
 import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
 import AudioConversionForm from '@/components/audio-conversion-form';
-import TopNav from '@/components/top-nav';
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
@@ -202,9 +202,7 @@ const FileConverterApp: React.FC = () => {
   const isLoading = isPending || conversionJob?.status === 'processing';
 
   return (
-    <div className="min-h-screen">
-      <TopNav />
-
+    <>
       {/* Top Banner Ad */}
       <div className="max-w-6xl mx-auto px-4 pt-4">
         <AdBanner
@@ -313,6 +311,17 @@ const FileConverterApp: React.FC = () => {
                   className="w-full"
                   style={{ minHeight: '250px' }}
                 />
+                {/* Alternative ad network as fallback */}
+                <div className="mt-4">
+                  <AlternativeAdBanner
+                    network="infolinks"
+                    adSlot="728x90"
+                    adFormat="banner"
+                    adPosition="sidebar_upload_alt"
+                    className="w-full"
+                    style={{ minHeight: '90px' }}
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -395,6 +404,28 @@ const FileConverterApp: React.FC = () => {
                   className="w-full"
                   style={{ minHeight: '250px' }}
                 />
+                {/* PropellerAds as alternative network */}
+                <div className="mt-4">
+                  <AlternativeAdBanner
+                    network="propellerads"
+                    adSlot="your_propeller_zone_id"
+                    adFormat="banner"
+                    adPosition="sidebar_conversion_propeller"
+                    className="w-full"
+                    style={{ minHeight: '100px' }}
+                  />
+                </div>
+                {/* InfoLinks for in-text ads */}
+                <div className="mt-4">
+                  <AlternativeAdBanner
+                    network="infolinks"
+                    adSlot="infolinks_zone"
+                    adFormat="auto"
+                    adPosition="sidebar_conversion_infolinks"
+                    className="w-full"
+                    style={{ minHeight: '60px' }}
+                  />
+                </div>
               </div>
             ) : selectedFile ? (
               <div className="text-center py-8">
@@ -439,9 +470,20 @@ const FileConverterApp: React.FC = () => {
             className="w-full"
             style={{ minHeight: '90px' }}
           />
+          {/* Alternative footer ad */}
+          <div className="mt-4">
+            <AlternativeAdBanner
+              network="infolinks"
+              adSlot="728x90"
+              adFormat="leaderboard"
+              adPosition="footer_alternative"
+              className="w-full"
+              style={{ minHeight: '90px' }}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

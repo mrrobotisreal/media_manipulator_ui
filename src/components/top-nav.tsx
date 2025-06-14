@@ -1,10 +1,54 @@
 import { Sun } from "lucide-react";
 import { MoonIcon as Moon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu"
 import { useTheme } from "@/components/theme-provider";
 import winappsLogo from "@/assets/logo_transparent_shadow.svg";
 import formatterIcon from "@/assets/MediaManipulatorIcon.webp";
 import githubLogo from "@/assets/github.svg";
+
+const components: { title: string; href: string; description: string }[] = [
+  {
+    title: "Home",
+    href: "/",
+    description:
+      "Home page where you can convert your files",
+  },
+  {
+    title: "About",
+    href: "/about",
+    description:
+      "About page where you can learn more about the project and its creator",
+  },
+  {
+    title: "How it works",
+    href: "/how-it-works",
+    description:
+      "How it works page where you can learn more about the conversion process",
+  },
+  {
+    title: "Privacy Policy",
+    href: "/privacy-policy",
+    description: "Privacy policy page where you can learn more about the privacy policy of the project",
+  },
+  {
+    title: "Terms of Service",
+    href: "/terms-of-service",
+    description:
+      "Terms of service page where you can learn more about the terms of service of the project",
+  },
+  {
+    title: "Blog",
+    href: "/blog",
+    description:
+      "Blog page where you can read the latest news and updates about the project",
+  },
+]
 
 const ThemeToggle = () => {
   const { setTheme, theme } = useTheme();
@@ -27,20 +71,6 @@ const TopNav: React.FC = () => {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <a
-          href="https://winapps.io/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-        >
-          <img
-            src={winappsLogo}
-            alt="WinApps Logo"
-            className="h-12 w-12"
-          />
-          <span className="text-xl font-semibold text-white hidden md:block" style={{ fontFamily: "ubuntu" }}>WinApps</span>
-        </a>
-
         <div className="flex items-center space-x-3">
           <img
             src={formatterIcon}
@@ -52,6 +82,18 @@ const TopNav: React.FC = () => {
             <p className="text-xs md:text-sm text-gray-300 hidden sm:block">Convert images, videos, and audio files with ease</p>
           </div>
         </div>
+
+        <NavigationMenu viewport={false}>
+          <NavigationMenuList>
+            {components.map((component) => (
+              <NavigationMenuItem key={component.title}>
+                <NavigationMenuLink asChild>
+                  <a href={component.href}>{component.title}</a>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
 
         <div className="flex items-center space-x-2">
           <Button
@@ -67,6 +109,26 @@ const TopNav: React.FC = () => {
             >
               <img src={githubLogo} alt="GitHub" className="h-6 w-6 dark:invert" />
               <span className="sr-only">View on GitHub</span>
+            </a>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            asChild
+            className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
+          >
+            <a
+              href="https://winapps.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+            >
+              <img
+                src={winappsLogo}
+                alt="WinApps Logo"
+                className="h-12 w-12"
+              />
+              <span className="sr-only">WinApps</span>
             </a>
           </Button>
           <ThemeToggle />
