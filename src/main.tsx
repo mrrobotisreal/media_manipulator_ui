@@ -8,7 +8,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import mixpanel from "mixpanel-browser"
 
 mixpanel.init(import.meta.env.VITE_MP_TOKEN, {
-  debug: true,
+  debug: false,
   track_pageview: true,
   persistence: "localStorage",
 });
