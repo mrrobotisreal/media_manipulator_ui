@@ -4,7 +4,7 @@ import mixpanel from 'mixpanel-browser';
 
 const articles = [
   {
-    title: "Complete Guide to Video Compression: MP4 vs WebM vs AVI",
+    title: "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI",
     excerpt: "Learn the differences between video formats and when to use each one for optimal quality and file size.",
     date: "2025-06-13",
     readTime: "8 min read",
