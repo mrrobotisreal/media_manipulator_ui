@@ -1,6 +1,16 @@
+import React, { useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import mixpanel from 'mixpanel-browser';
 
 const BlogPage: React.FC = () => {
+  useEffect(() => {
+    mixpanel.track('Page View', {
+      page_name: 'Blog',
+      page_path: '/blog',
+      user_tier: 'free'
+    });
+  }, []);
+
   const articles = [
     {
       title: "Complete Guide to Video Compression: MP4 vs WebM vs AVI",

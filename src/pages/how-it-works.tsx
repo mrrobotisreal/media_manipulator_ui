@@ -1,6 +1,16 @@
+import React, { useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import mixpanel from 'mixpanel-browser';
 
 const HowItWorksPage: React.FC = () => {
+  useEffect(() => {
+    mixpanel.track('Page View', {
+      page_name: 'How It Works',
+      page_path: '/how-it-works',
+      user_tier: 'free'
+    });
+  }, []);
+
   return (
     <Card className="max-w-4xl mx-auto my-2">
       <CardContent className="p-6">
