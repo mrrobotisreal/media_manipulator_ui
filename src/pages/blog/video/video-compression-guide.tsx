@@ -16,6 +16,14 @@ const VideoCompressionGuide: React.FC = () => {
 
   return (
     <Card className="max-w-4xl mx-auto my-2">
+      <div className="p-6 pb-0">
+        <a
+          href="/blog"
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+        >
+          ← Blog
+        </a>
+      </div>
       <CardHeader>
         <CardTitle className="text-4xl font-bold text-card-foreground">
           The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV

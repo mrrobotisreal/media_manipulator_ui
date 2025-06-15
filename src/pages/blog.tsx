@@ -14,14 +14,18 @@ const articles = [
     title: "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
     excerpt: "Discover how to choose the right image format for your website to improve loading speeds and user experience.",
     date: "2025-06-14",
-    readTime: "6 min read",
+    readTime: "8 min read",
     slug: "image/image-optimization-guide"
   },
   {
-    title: "Audio Quality Explained: Bitrates, Sample Rates, and Formats",
+    title: (
+      <>
+        The Sound of <span className="line-through text-gray-400">Silence</span> Quality: Bitrates, Sample Rates, and Formats
+      </>
+    ),
     excerpt: "Understanding audio quality settings to achieve the perfect balance between file size and sound quality.",
-    date: "2025-06-16",
-    readTime: "10 min read",
+    date: "2025-06-14",
+    readTime: "8 min read",
     slug: "audio/audio-quality-guide"
   }
 ];
@@ -46,7 +50,7 @@ const BlogPage: React.FC = () => {
         <div className="grid gap-8">
           {articles.map((article, index) => (
             <article key={index} className="bg-card rounded-lg border p-6 hover:shadow-lg transition-shadow">
-              <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-blue-600">
+              <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-green-600">
                 <a href={`/blog/${article.slug}`}>{article.title}</a>
               </h2>
               <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
@@ -57,7 +61,7 @@ const BlogPage: React.FC = () => {
               <p className="text-muted-foreground mb-4">{article.excerpt}</p>
               <a
                 href={`/blog/${article.slug}`}
-                className="text-blue-600 hover:text-blue-800 font-medium"
+                className="text-green-600 hover:text-green-700 font-medium"
               >
                 Read more →
               </a>
