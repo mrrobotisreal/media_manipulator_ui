@@ -384,12 +384,6 @@ const VideoCompressionGuide: React.FC = () => {
         <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
           "In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!" ⚡
         </blockquote>
-
-        <hr className="my-8 border-border" />
-
-        <p className="text-lg text-muted-foreground">
-          P.S. Want more tips on media optimization and web performance? Check out more articles on Media Manipulator Pro, and don't forget to experiment with ffmpeg and gifsicle - they're game changers! 🎮
-        </p>
       </CardContent>
     </Card>
   );

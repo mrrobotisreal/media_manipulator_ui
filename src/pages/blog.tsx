@@ -11,9 +11,9 @@ const articles = [
     slug: "video/video-compression-guide"
   },
   {
-    title: "Image Optimization for Web: JPEG vs PNG vs WebP",
+    title: "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
     excerpt: "Discover how to choose the right image format for your website to improve loading speeds and user experience.",
-    date: "2025-06-15",
+    date: "2025-06-14",
     readTime: "6 min read",
     slug: "image/image-optimization-guide"
   },
