@@ -1,4 +1,4 @@
-import { Sun } from "lucide-react";
+import { Sun, Menu } from "lucide-react";
 import { MoonIcon as Moon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,10 +7,18 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useTheme } from "@/components/theme-provider";
 import winappsLogo from "@/assets/logo_transparent_shadow.svg";
 import formatterIcon from "@/assets/MediaManipulatorIcon.webp";
 import githubLogo from "@/assets/github.svg";
+import React from "react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -68,6 +76,8 @@ const ThemeToggle = () => {
 };
 
 const TopNav: React.FC = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
@@ -78,17 +88,20 @@ const TopNav: React.FC = () => {
             className="h-10 w-10 rounded-sm"
           />
           <div className="flex flex-col">
-            <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">Media Manipulator Pro</h1>
+            <h1 className="text-xl md:text-2xl font-bold text-white leading-tight hidden sm:block">Media Manipulator Pro</h1>
             <p className="text-xs md:text-sm text-gray-300 hidden sm:block">Convert images, videos, and audio files with ease</p>
           </div>
         </div>
 
-        <NavigationMenu viewport={false}>
+        {/* Desktop Navigation */}
+        <NavigationMenu viewport={false} className="hidden md:flex">
           <NavigationMenuList>
             {components.map((component) => (
               <NavigationMenuItem key={component.title}>
                 <NavigationMenuLink asChild>
-                  <a href={component.href}>{component.title}</a>
+                  <a href={component.href} className="text-white hover:text-gray-300 transition-colors px-3 py-2 text-sm font-medium">
+                    {component.title}
+                  </a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
@@ -96,6 +109,37 @@ const TopNav: React.FC = () => {
         </NavigationMenu>
 
         <div className="flex items-center space-x-2">
+          {/* Mobile Menu Button */}
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
+              >
+                <Menu className="h-6 w-6 text-white" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-auto max-h-[80vh]">
+              <SheetHeader>
+                <SheetTitle>Navigation</SheetTitle>
+              </SheetHeader>
+              <div className="grid gap-4 py-4 overflow-y-auto max-h-[60vh]">
+                {components.map((component) => (
+                  <a
+                    key={component.title}
+                    href={component.href}
+                    className="block px-4 py-2 text-lg text-center font-medium text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {component.title}
+                  </a>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+
           <Button
             variant="ghost"
             size="icon"
