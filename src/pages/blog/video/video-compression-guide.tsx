@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import mixpanel from 'mixpanel-browser';
 
 const VideoCompressionGuide: React.FC = () => {
@@ -385,6 +386,32 @@ const VideoCompressionGuide: React.FC = () => {
           "In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!" ⚡
         </blockquote>
       </CardContent>
+
+      <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">
+        <div className="text-center max-w-2xl">
+          <h3 className="text-2xl font-bold mb-3 text-card-foreground">
+            Ready to Optimize Your Videos? 🚀
+          </h3>
+          <p className="text-lg text-muted-foreground mb-6">
+            Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.
+          </p>
+          <Button
+            asChild
+            size="lg"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 text-lg"
+            onClick={() => {
+              mixpanel.track('Video Compression Guide - Try Video Converter Free', {
+                user_tier: 'free'
+              });
+            }}
+          >
+            <a href="/">Try Video Converter Free →</a>
+          </Button>
+          <p className="text-sm text-muted-foreground mt-3">
+            No signup required • Process files locally • Fast & secure
+          </p>
+        </div>
+      </CardFooter>
     </Card>
   );
 };

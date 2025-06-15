@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import mixpanel from 'mixpanel-browser';
 
 const ImageOptimizationGuide: React.FC = () => {
@@ -287,6 +288,32 @@ const ImageOptimizationGuide: React.FC = () => {
           "The journey of a thousand optimizations begins with a single compressed image." 🏔️
         </blockquote>
       </CardContent>
+
+      <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">
+        <div className="text-center max-w-2xl">
+          <h3 className="text-2xl font-bold mb-3 text-card-foreground">
+            Time to Become an Image Optimization Jedi! 🌟
+          </h3>
+          <p className="text-lg text-muted-foreground mb-6">
+            Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!
+          </p>
+          <Button
+            asChild
+            size="lg"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 text-lg"
+            onClick={() => {
+              mixpanel.track('Image Optimization Guide - Convert Images Free', {
+                user_tier: 'free'
+              });
+            }}
+          >
+            <a href="/">Convert Images Free →</a>
+          </Button>
+          <p className="text-sm text-muted-foreground mt-3">
+            No signup required • Process files locally • Fast & secure
+          </p>
+        </div>
+      </CardFooter>
     </Card>
   );
 };
