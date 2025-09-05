@@ -300,6 +300,9 @@ const FileConverterApp: React.FC = () => {
           adPosition="header"
           className="mb-4"
           style={{ minHeight: '90px' }}
+          isFlashMock={true}
+          utmMedium="homepage_leaderboard_banner"
+          utmCampaign="september_5th_signup"
         />
       </div>
 

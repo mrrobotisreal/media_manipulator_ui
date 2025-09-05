@@ -7,6 +7,9 @@ interface AdBannerProps {
   className?: string;
   adPosition: string; // For analytics tracking
   style?: React.CSSProperties;
+  isFlashMock?: boolean;
+  utmMedium?: string;
+  utmCampaign?: string;
 }
 
 declare global {
@@ -20,11 +23,16 @@ const AdBanner: React.FC<AdBannerProps> = ({
   adFormat = 'auto',
   className = '',
   adPosition,
-  style = {}
+  style = {},
+  isFlashMock = false,
+  utmMedium = "homepage_leaderboard_banner",
+  utmCampaign = "september_5th_signup",
 }) => {
   const adRef = useRef<HTMLModElement>(null);
 
   useEffect(() => {
+    if (isFlashMock) return;
+
     try {
       // Initialize AdSense ad
       if (typeof window !== 'undefined' && window.adsbygoogle) {
@@ -40,10 +48,36 @@ const AdBanner: React.FC<AdBannerProps> = ({
     } catch (error) {
       console.error('AdSense error:', error);
     }
-  }, [adPosition, adSlot]);
+  }, [adPosition, adSlot, isFlashMock]);
+
+  if (isFlashMock) {
+    return (
+      <div
+          className="flex justify-center items-center w-full max-w-full"
+          style={{
+            ...style,
+          }}
+          onClick={() => {
+            trackAdInteraction("flashmock_banner", adPosition, "click");
+            window.open(
+              `https://www.flashmock.com/auth?referral_code=MITCHELLWINTROW4331&utm_source=media-manipulator.com&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`,
+              "_blank"
+            );
+          }}
+        >
+          <img
+            src="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/FlashMock_LeaderboardAd_Video.gif"
+            alt="Join FlashMock by September 5th and get 5 FREE mock interviews!"
+            width={728}
+            height={90}
+            className="justify-center cursor-pointer"
+          />
+        </div>
+    );
+  }
 
   // Don't render ads in development mode OR if using placeholder ad slots
-  if (process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')) {
+  if (!isFlashMock || process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')) {
     return (
       <div className={`bg-gray-200 border-2 border-dashed border-gray-400 p-4 text-center text-gray-600 rounded-lg ${className}`}>
         <p className="text-sm">Ad Placeholder - {adPosition}</p>
