@@ -302,7 +302,7 @@ const FileConverterApp: React.FC = () => {
           style={{ minHeight: '90px' }}
           isFlashMock={true}
           utmMedium="homepage_leaderboard_banner"
-          utmCampaign="subscribe_to_the_dreamy_man_on_youtube"
+          utmCampaign="charlie_kirk_memorial_givesendgo"
         />
       </div>
 

@@ -26,7 +26,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
   style = {},
   isFlashMock = false,
   utmMedium = "homepage_leaderboard_banner",
-  utmCampaign = "subscribe_to_the_dreamy_man_on_youtube",
+  utmCampaign = "charlie_kirk_memorial_givesendgo",
 }) => {
   const adRef = useRef<HTMLModElement>(null);
 
@@ -58,16 +58,16 @@ const AdBanner: React.FC<AdBannerProps> = ({
             ...style,
           }}
           onClick={() => {
-            trackAdInteraction("flashmock_banner", adPosition, "click");
+            trackAdInteraction("charlie_kirk_memorial_banner", adPosition, "click");
             window.open(
-              `https://www.youtube.com/@TheDreamyManOfficial?utm_source=media-manipulator.com&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`,
+              `https://www.givesendgo.com/UVU-Charlie-Kirk?utm_source=media-manipulator.com&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`,
               "_blank"
             );
           }}
         >
           <img
-            src="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/DreamyManLeaderboardAd.gif"
-            alt="Come subscribe to the Dreamy Man on YouTube!"
+            src="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CharlieKirkMemorialAd.gif"
+            alt="Let's donate to the Charlie Kirk Memorial fund to forever remember his life and legacy!"
             width={728}
             height={90}
             className="justify-center cursor-pointer"
