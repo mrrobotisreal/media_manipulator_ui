@@ -303,6 +303,7 @@ const FileConverterApp: React.FC = () => {
           isFlashMock={true}
           utmMedium="homepage_leaderboard_banner"
           utmCampaign="charlie_kirk_memorial_givesendgo"
+          linkURL="https://www.givesendgo.com/UVU-Charlie-Kirk"
         />
       </div>
 
@@ -561,6 +562,10 @@ const FileConverterApp: React.FC = () => {
             adPosition="footer"
             className="w-full"
             style={{ minHeight: '90px' }}
+            isFlashMock={true}
+            utmMedium="homepage_leaderboard_banner"
+            utmCampaign="charlie_kirk_memorial_givesendgo"
+            linkURL="https://www.givesendgo.com/UVU-Charlie-Kirk"
           />
           {/* Alternative footer ad */}
           <div className="mt-4">
