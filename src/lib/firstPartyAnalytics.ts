@@ -91,15 +91,11 @@ export const trackFirstPartyEvent = (eventName: string, properties: EventPropert
 
   const body = JSON.stringify({ events: [event] });
 
-  if (navigator.sendBeacon) {
-    const blob = new Blob([body], { type: 'application/json' });
-    if (navigator.sendBeacon(`${analyticsBaseURL()}/capture`, blob)) return;
-  }
-
   void fetch(`${analyticsBaseURL()}/capture`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body,
+    credentials: 'omit',
     keepalive: true,
   }).catch(() => {
     // Analytics must never interrupt the editing flow.
