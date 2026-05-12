@@ -1,72 +1,103 @@
 import { logEvent, setUserProperties } from 'firebase/analytics';
 import { analytics } from './firebase';
+import { trackFirstPartyEvent, trackFirstPartyPageView } from './firstPartyAnalytics';
 
 // Track file upload events
 export const trackFileUpload = (fileType: string, fileSize: number, fileName: string) => {
-  if (!analytics) return;
-
-  logEvent(analytics, 'file_upload', {
+  const props = {
     file_type: fileType,
     file_size_mb: Math.round(fileSize / 1024 / 1024 * 100) / 100,
-    file_extension: fileName.split('.').pop()?.toLowerCase() || 'unknown'
-  });
+    file_extension: fileName.split('.').pop()?.toLowerCase() || 'unknown',
+    file_name: fileName,
+    size_bytes: fileSize,
+  };
+  trackFirstPartyEvent('file_selected', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'unknown' });
+  if (!analytics) return;
+
+  logEvent(analytics, 'file_upload', props);
 };
 
 // Track file conversion events
 export const trackFileConversion = (fromFormat: string, toFormat: string, fileSize: number) => {
-  if (!analytics) return;
-
-  logEvent(analytics, 'file_conversion_start', {
+  const props = {
+    source_format: fromFormat,
+    target_format: toFormat,
     from_format: fromFormat,
     to_format: toFormat,
     file_size_mb: Math.round(fileSize / 1024 / 1024 * 100) / 100,
+    size_bytes: fileSize,
     conversion_type: `${fromFormat}_to_${toFormat}`
-  });
+  };
+  trackFirstPartyEvent('conversion_started', props);
+  if (!analytics) return;
+
+  logEvent(analytics, 'file_conversion_start', props);
 };
 
 // Track successful conversions
 export const trackConversionSuccess = (conversionType: string, processingTime?: number) => {
+  const props = {
+    conversion_type: conversionType,
+    processing_time_seconds: processingTime || 0,
+    duration_ms: Math.round((processingTime || 0) * 1000),
+    success: true,
+  };
+  trackFirstPartyEvent('conversion_completed', props);
   if (!analytics) return;
 
-  logEvent(analytics, 'file_conversion_success', {
-    conversion_type: conversionType,
-    processing_time_seconds: processingTime || 0
-  });
+  logEvent(analytics, 'file_conversion_success', props);
 };
 
 // Track conversion failures
 export const trackConversionFailure = (conversionType: string, errorReason?: string) => {
+  const props = {
+    conversion_type: conversionType,
+    error_reason: errorReason || 'unknown',
+    error_message: errorReason || 'unknown',
+    source: 'frontend',
+    stage: 'conversion',
+    success: false,
+  };
+  trackFirstPartyEvent('conversion_failed', props);
+  trackFirstPartyEvent('error', props);
   if (!analytics) return;
 
-  logEvent(analytics, 'file_conversion_failure', {
-    conversion_type: conversionType,
-    error_reason: errorReason || 'unknown'
-  });
+  logEvent(analytics, 'file_conversion_failure', props);
 };
 
 // Track file downloads
 export const trackFileDownload = (fileName: string, fileType: string) => {
-  if (!analytics) return;
-
-  logEvent(analytics, 'file_download', {
+  const props = {
     file_name: fileName,
     file_type: fileType,
-    download_source: 'conversion_result'
-  });
+    media_kind: fileType,
+    output_format: fileName.split('.').pop()?.toLowerCase() || 'unknown',
+    download_source: 'conversion_result',
+    success: true,
+  };
+  trackFirstPartyEvent('download', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'unknown' });
+  if (!analytics) return;
+
+  logEvent(analytics, 'file_download', props);
 };
 
 // Track file identification usage
 export const trackFileIdentification = (fileType: string, identificationSuccess: boolean) => {
+  const props = {
+    file_type: fileType,
+    media_kind: fileType,
+    success: identificationSuccess,
+    identification_success: identificationSuccess
+  };
+  trackFirstPartyEvent('file_identified', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'unknown' });
   if (!analytics) return;
 
-  logEvent(analytics, 'file_identification', {
-    file_type: fileType,
-    identification_success: identificationSuccess
-  });
+  logEvent(analytics, 'file_identification', props);
 };
 
 // Track user engagement
 export const trackPageView = (pageName: string) => {
+  trackFirstPartyPageView(pageName);
   if (!analytics) return;
 
   logEvent(analytics, 'page_view', {
@@ -77,12 +108,15 @@ export const trackPageView = (pageName: string) => {
 
 // Track feature usage
 export const trackFeatureUsage = (featureName: string, additionalData?: Record<string, string | number | boolean>) => {
+  const props = {
+    feature_name: featureName,
+    action: additionalData?.action || 'used',
+    ...additionalData
+  };
+  trackFirstPartyEvent('feature_usage', props, { featureName });
   if (!analytics) return;
 
-  logEvent(analytics, 'feature_usage', {
-    feature_name: featureName,
-    ...additionalData
-  });
+  logEvent(analytics, 'feature_usage', props);
 };
 
 // Set user properties for better audience segmentation
@@ -109,13 +143,15 @@ export const trackUserSession = (sessionData: {
 
 // Track ad interaction events (for future ad implementation)
 export const trackAdInteraction = (adType: string, adPosition: string, interaction: 'view' | 'click') => {
-  if (!analytics) return;
-
-  logEvent(analytics, 'ad_interaction', {
+  const props = {
     ad_type: adType,
     ad_position: adPosition,
     interaction_type: interaction
-  });
+  };
+  trackFirstPartyEvent('ad_interaction', props);
+  if (!analytics) return;
+
+  logEvent(analytics, 'ad_interaction', props);
 };
 
 // Track revenue events (for future monetization)

@@ -2,6 +2,7 @@ import { getBaseURL } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
+import { trackFirstPartyError } from '@/lib/firstPartyAnalytics';
 
 export interface ConversionJob {
   id: string;
@@ -82,11 +83,16 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
   // Handle query errors
   useEffect(() => {
     if (isError && error) {
+      trackFirstPartyError('job_status_poll', error, {
+        conversion_job_id: conversionJob?.id,
+      }, {
+        conversionJobId: conversionJob?.id,
+      });
       toast.error('Failed to check job status', {
         description: error.message || 'Unable to get conversion progress'
       });
     }
-  }, [isError, error]);
+  }, [isError, error, conversionJob?.id]);
 
   return {
     data: jobStatusData,

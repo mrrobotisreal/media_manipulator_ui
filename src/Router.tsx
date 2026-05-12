@@ -1,8 +1,9 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import App from './App';
 import BlogPage from './pages/blog';
 import AboutPage from './pages/about';
+// import PricingPage from './pages/pricing';
 import HowItWorksPage from './pages/how-it-works';
 import PrivacyPolicyPage from './pages/privacy-policy';
 import TermsOfServicePage from './pages/terms-of-service';
@@ -10,11 +11,23 @@ import TopNav from './components/top-nav';
 import VideoCompressionGuide from './pages/blog/video/video-compression-guide';
 import ImageOptimizationGuide from './pages/blog/image/image-optimization-guide';
 import AudioQualityGuide from './pages/blog/audio/audio-quality-guide';
+import { trackFirstPartyPageView } from './lib/firstPartyAnalytics';
+
+const RouteAnalytics: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackFirstPartyPageView(document.title || location.pathname);
+  }, [location.pathname, location.search]);
+
+  return null;
+};
 
 const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="min-h-screen">
+        <RouteAnalytics />
         <TopNav />
         <Routes>
           <Route path="/" element={<App />} />
@@ -26,6 +39,7 @@ const Router: React.FC = () => {
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+          {/* <Route path="/pricing" element={<PricingPage />} /> */}
         </Routes>
       </div>
     </BrowserRouter>

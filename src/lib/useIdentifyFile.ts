@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
 import { toast } from 'sonner';
+import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 
 export interface FileIdentificationResponse {
   fileName: string;
@@ -40,13 +41,26 @@ interface UseIdentifyFileReturns {
 const useIdentifyFile = (): UseIdentifyFileReturns => {
   const identificationMutation = useMutation({
     mutationFn: identifyFile,
-    onSuccess: (data) => {
+    onSuccess: (data, file) => {
+      trackFirstPartyEvent('file_identified', {
+        file_name: file.name,
+        file_type: data.fileType,
+        media_kind: data.fileType,
+        mime_type: data.mimeType,
+        size_bytes: data.fileSize,
+        tool: data.tool,
+        success: true,
+      }, { mediaKind: data.fileType });
       toast.success('File identified successfully', {
         description: `File type: ${data.fileType} | Size: ${(data.fileSize / 1024 / 1024).toFixed(2)} MB`
       });
     },
-    onError: (error) => {
+    onError: (error, file) => {
       console.error('File identification failed:', error);
+      trackFirstPartyError('file_identification', error, {
+        file_name: file.name,
+        size_bytes: file.size,
+      });
       toast.error('Failed to identify file', {
         description: error.message || 'An unexpected error occurred'
       });

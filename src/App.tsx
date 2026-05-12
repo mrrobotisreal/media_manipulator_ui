@@ -20,10 +20,10 @@ import {
   trackConversionSuccess,
   trackConversionFailure,
   trackFileDownload,
-  trackFileIdentification,
   trackPageView,
   trackUserSession,
 } from '@/lib/analytics';
+import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 import mixpanel from 'mixpanel-browser';
 
 const FileConverterApp: React.FC = () => {
@@ -95,6 +95,17 @@ const FileConverterApp: React.FC = () => {
           success: true,
           file_type: fileType || 'unknown'
         });
+        trackFirstPartyEvent('conversion_completed', {
+          source_format: inputFormat,
+          target_format: outputFormat,
+          duration_ms: Math.round(processingTime * 1000),
+          processing_time_seconds: processingTime,
+          size_bytes: selectedFile?.size || 0,
+          success: true,
+        }, {
+          mediaKind: fileType || 'unknown',
+          conversionJobId: jobStatusData.id,
+        });
       }
 
       // Track conversion failure
@@ -116,6 +127,23 @@ const FileConverterApp: React.FC = () => {
           user_tier: 'free',
           file_size_mb: fileSizeMB,
           file_type: fileType || 'unknown'
+        });
+        trackFirstPartyEvent('conversion_failed', {
+          source_format: inputFormat,
+          target_format: outputFormat,
+          error_message: jobStatusData.error || 'Conversion failed',
+          error_type: jobStatusData.error || 'processing_error',
+          success: false,
+        }, {
+          mediaKind: fileType || 'unknown',
+          conversionJobId: jobStatusData.id,
+        });
+        trackFirstPartyError('conversion_processing', jobStatusData.error || 'Conversion failed', {
+          source_format: inputFormat,
+          target_format: outputFormat,
+        }, {
+          mediaKind: fileType || 'unknown',
+          conversionJobId: jobStatusData.id,
         });
       }
     }
@@ -182,6 +210,18 @@ const FileConverterApp: React.FC = () => {
     // Track conversion start
     const fromFormat = selectedFile.name.split('.').pop()?.toLowerCase() || 'unknown';
     trackFileConversion(fromFormat, data.format, selectedFile.size);
+    Object.entries(data)
+      .filter(([key, value]) => key !== 'format' && value !== null && value !== undefined && value !== '')
+      .forEach(([key, value]) => {
+        trackFirstPartyEvent('feature_usage', {
+          feature_name: key,
+          action: 'option_set',
+          value: typeof value === 'object' ? JSON.stringify(value) : String(value),
+        }, {
+          featureName: key,
+          mediaKind: fileType || 'unknown',
+        });
+      });
 
     mutate({ file: selectedFile, options: data });
     mixpanel.track('Conversion Started', {
@@ -237,8 +277,23 @@ const FileConverterApp: React.FC = () => {
           user_tier: 'free',
           conversion_id: conversionJob.id
         });
+        trackFirstPartyEvent('download', {
+          file_name: fileName,
+          output_format: conversionOptions?.format || 'unknown',
+          size_bytes: blob.size,
+          success: true,
+        }, {
+          mediaKind: fileType || 'unknown',
+          conversionJobId: conversionJob.id,
+        });
       } catch (error) {
         console.error('Download failed:', error);
+        trackFirstPartyError('download', error, {
+          file_type: fileType || 'unknown',
+        }, {
+          mediaKind: fileType || 'unknown',
+          conversionJobId: conversionJob.id,
+        });
 
         // Track download failure
         mixpanel.track('Download Failed', {
@@ -265,9 +320,15 @@ const FileConverterApp: React.FC = () => {
   const handleIdentifyFile = () => {
     if (selectedFile) {
       identifyFile(selectedFile);
-
-      // Track file identification
-      trackFileIdentification(fileType || 'unknown', true);
+      trackFirstPartyEvent('feature_usage', {
+        feature_name: 'file_identification',
+        action: 'started',
+        file_name: selectedFile.name,
+        size_bytes: selectedFile.size,
+      }, {
+        featureName: 'file_identification',
+        mediaKind: fileType || 'unknown',
+      });
 
       // Enhanced mixpanel tracking for file identification
       mixpanel.track('File Identification Started', {
@@ -302,8 +363,8 @@ const FileConverterApp: React.FC = () => {
           style={{ minHeight: '90px' }}
           isFlashMock={true}
           utmMedium="homepage_leaderboard_banner"
-          utmCampaign="charlie_kirk_memorial_givesendgo"
-          linkURL="https://www.givesendgo.com/UVU-Charlie-Kirk"
+          utmCampaign="creatv_launch_promo"
+          linkURL="https://www.creatv.io/auth"
         />
       </div>
 
@@ -564,8 +625,8 @@ const FileConverterApp: React.FC = () => {
             style={{ minHeight: '90px' }}
             isFlashMock={true}
             utmMedium="homepage_leaderboard_banner"
-            utmCampaign="charlie_kirk_memorial_givesendgo"
-            linkURL="https://www.givesendgo.com/UVU-Charlie-Kirk"
+            utmCampaign="creatv_launch_promo"
+            linkURL="https://www.creatv.io/auth"
           />
           {/* Alternative footer ad */}
           <div className="mt-4">

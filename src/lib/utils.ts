@@ -13,10 +13,7 @@ export const getFileType = (file: File): 'image' | 'video' | 'audio' | 'unknown'
   return 'unknown';
 };
 
-const API_BASE_URL = import.meta.env.VITE_NODE_ENV === 'production'
-  ? import.meta.env.VITE_API_BASE_URL
-  // : 'http://192.168.4.74:8080/api';
-  : 'http://localhost:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.media-manipulator.com/api';
 
 export const getBaseURL = () => {
   return API_BASE_URL;

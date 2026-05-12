@@ -7,11 +7,13 @@ import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import mixpanel from "mixpanel-browser"
 
-mixpanel.init(import.meta.env.VITE_MP_TOKEN, {
-  debug: false,
-  track_pageview: true,
-  persistence: "localStorage",
-});
+if (import.meta.env.VITE_MP_TOKEN) {
+  mixpanel.init(import.meta.env.VITE_MP_TOKEN, {
+    debug: false,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
+}
 
 const queryClient = new QueryClient()
 
