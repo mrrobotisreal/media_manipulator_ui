@@ -24,7 +24,32 @@ import {
   trackUserSession,
 } from '@/lib/analytics';
 import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
+import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
 import mixpanel from 'mixpanel-browser';
+
+interface ConversionHistoryItem {
+  jobId: string;
+  mediaKind: 'image' | 'video' | 'audio' | 'unknown';
+  fileName: string;
+  outputFileName: string;
+  format: string;
+  originalUrl: string;
+  startedAt: number;
+  completedAt?: number;
+  status: 'processing' | 'completed' | 'failed';
+  blob?: Blob;
+  objectUrl?: string;
+  error?: string;
+}
+
+interface PendingConversionDetails {
+  mediaKind: 'image' | 'video' | 'audio' | 'unknown';
+  fileName: string;
+  outputFileName: string;
+  format: string;
+  originalUrl: string;
+  startedAt: number;
+}
 
 const FileConverterApp: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -32,27 +57,87 @@ const FileConverterApp: React.FC = () => {
   const [conversionOptions, setConversionOptions] = useState<ConversionFormData | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [conversionStartTime, setConversionStartTime] = useState<number | null>(null);
+  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
+  const [resultImageUrl, setResultImageUrl] = useState<string | null>(null);
+  const [resultBlob, setResultBlob] = useState<Blob | null>(null);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [resultView, setResultView] = useState<'original' | 'final'>('final');
+  const [isLoadingResultPreview, setIsLoadingResultPreview] = useState(false);
+  const [resultPreviewError, setResultPreviewError] = useState<string | null>(null);
+  const [autoOpenedResultJobId, setAutoOpenedResultJobId] = useState<string | null>(null);
+  const resultImageUrlRef = useRef<string | null>(null);
+  const [conversionHistory, setConversionHistory] = useState<ConversionHistoryItem[]>([]);
+  const [activeResultJobId, setActiveResultJobId] = useState<string | null>(null);
+  const conversionHistoryRef = useRef<ConversionHistoryItem[]>([]);
+  const pendingConversionRef = useRef<PendingConversionDetails | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
   const { data: fileDetails, mutate: identifyFile, isPending: isIdentifying, reset: resetIdentification } = useIdentifyFile();
 
-  const { mutate, isPending } = useConvertFile((res: UploadFileResponse) => {
+  const { mutate, isPending, uploadProgress, uploadPhase } = useConvertFile((res: UploadFileResponse) => {
     setConversionStartTime(Date.now());
+    const pending = pendingConversionRef.current;
     setConversionJob({
       id: res.jobId,
       status: 'processing',
       originalFile: selectedFile!,
       progress: 0
     });
+    if (pending) {
+      setConversionHistory(prev => [
+        {
+          jobId: res.jobId,
+          mediaKind: pending.mediaKind,
+          fileName: pending.fileName,
+          outputFileName: pending.outputFileName,
+          format: pending.format,
+          originalUrl: pending.originalUrl,
+          startedAt: pending.startedAt,
+          status: 'processing',
+        },
+        ...prev,
+      ]);
+    }
   });
 
   const { downloadFile } = useDownloadFile();
 
   const fileType = selectedFile ? getFileType(selectedFile) : null;
 
+  useEffect(() => {
+    if (!selectedFile || getFileType(selectedFile) !== 'image') {
+      setOriginalImageUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(selectedFile);
+    setOriginalImageUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [selectedFile]);
+
+  useEffect(() => {
+    conversionHistoryRef.current = conversionHistory;
+  }, [conversionHistory]);
+
+  useEffect(() => {
+    return () => {
+      if (resultImageUrlRef.current) {
+        URL.revokeObjectURL(resultImageUrlRef.current);
+      }
+      conversionHistoryRef.current.forEach(item => {
+        URL.revokeObjectURL(item.originalUrl);
+        if (item.objectUrl) {
+          URL.revokeObjectURL(item.objectUrl);
+        }
+      });
+    };
+  }, []);
+
   // Initialize analytics on component mount
   useEffect(() => {
+    void initializeIndexedIdentity().catch(error => {
+      trackFirstPartyError('identity_init', error);
+    });
     trackPageView('File Converter Home');
 
     // Set user session data
@@ -106,6 +191,10 @@ const FileConverterApp: React.FC = () => {
           mediaKind: fileType || 'unknown',
           conversionJobId: jobStatusData.id,
         });
+        setConversionHistory(prev => prev.map(item => item.jobId === jobStatusData.id
+          ? { ...item, status: 'completed', completedAt: Date.now() }
+          : item
+        ));
       }
 
       // Track conversion failure
@@ -145,6 +234,10 @@ const FileConverterApp: React.FC = () => {
           mediaKind: fileType || 'unknown',
           conversionJobId: jobStatusData.id,
         });
+        setConversionHistory(prev => prev.map(item => item.jobId === jobStatusData.id
+          ? { ...item, status: 'failed', error: jobStatusData.error || 'Conversion failed' }
+          : item
+        ));
       }
     }
   }, [jobStatusData, conversionJob?.status, conversionStartTime, conversionOptions, fileType, selectedFile]);
@@ -185,6 +278,15 @@ const FileConverterApp: React.FC = () => {
       setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
+      setIsResultModalOpen(false);
+      setResultBlob(null);
+      setResultImageUrl(null);
+      setResultPreviewError(null);
+      setActiveResultJobId(null);
+      if (resultImageUrlRef.current) {
+        URL.revokeObjectURL(resultImageUrlRef.current);
+        resultImageUrlRef.current = null;
+      }
 
       // Track file upload
       trackFileUpload(getFileType(file), file.size, file.name);
@@ -197,6 +299,15 @@ const FileConverterApp: React.FC = () => {
       setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
+      setIsResultModalOpen(false);
+      setResultBlob(null);
+      setResultImageUrl(null);
+      setResultPreviewError(null);
+      setActiveResultJobId(null);
+      if (resultImageUrlRef.current) {
+        URL.revokeObjectURL(resultImageUrlRef.current);
+        resultImageUrlRef.current = null;
+      }
 
       // Track file upload
       trackFileUpload(getFileType(file), file.size, file.name);
@@ -205,7 +316,32 @@ const FileConverterApp: React.FC = () => {
 
   const handleConvert = (data: ConversionFormData) => {
     if (!selectedFile) return;
+    const originalName = selectedFile.name;
+    const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
+    const outputFileName = `${nameWithoutExt}.${data.format}`;
+    const mediaKind = getFileType(selectedFile);
+    pendingConversionRef.current = {
+      mediaKind,
+      fileName: selectedFile.name,
+      outputFileName,
+      format: data.format,
+      originalUrl: URL.createObjectURL(selectedFile),
+      startedAt: Date.now(),
+    };
     setConversionOptions(data); // Store the conversion options
+    setConversionJob(null);
+    setIsResultModalOpen(false);
+    setResultBlob(null);
+    setResultImageUrl(null);
+    setResultPreviewError(null);
+    setAutoOpenedResultJobId(null);
+    setActiveResultJobId(null);
+    setActiveResultJobId(null);
+    if (resultImageUrlRef.current) {
+      URL.revokeObjectURL(resultImageUrlRef.current);
+      resultImageUrlRef.current = null;
+      setResultImageUrl(null);
+    }
 
     // Track conversion start
     const fromFormat = selectedFile.name.split('.').pop()?.toLowerCase() || 'unknown';
@@ -246,22 +382,79 @@ const FileConverterApp: React.FC = () => {
     return `${nameWithoutExt}.${newExtension}`;
   };
 
-  const handleDownload = async () => {
-    if (conversionJob?.id) {
+  const saveBlobToDisk = (blob: Blob, fileName: string) => {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const loadResultPreview = useCallback(async (jobId = conversionJob?.id, openModal = true) => {
+    if (!jobId) return;
+    const historyItem = conversionHistory.find(item => item.jobId === jobId);
+    const isCompleted = historyItem?.status === 'completed' || (conversionJob?.id === jobId && conversionJob.status === 'completed');
+    if (!historyItem || !isCompleted) return;
+    if (activeResultJobId === jobId && resultImageUrl && resultBlob) {
+      setResultView('final');
+      if (openModal) setIsResultModalOpen(true);
+      return;
+    }
+
+    try {
+      setIsLoadingResultPreview(true);
+      setResultPreviewError(null);
+      const blob = historyItem?.blob || await downloadFile(jobId);
+      const url = historyItem.objectUrl || URL.createObjectURL(blob);
+      resultImageUrlRef.current = null;
+      setResultBlob(blob);
+      setResultImageUrl(url);
+      setActiveResultJobId(jobId);
+      setConversionHistory(prev => prev.map(item => item.jobId === jobId ? { ...item, blob, objectUrl: url } : item));
+      setResultView('final');
+      if (openModal) setIsResultModalOpen(true);
+    } catch (error) {
+      console.error('Failed to load result preview:', error);
+      const message = error instanceof Error ? error.message : 'Failed to load converted image preview';
+      setResultPreviewError(message);
+      trackFirstPartyError('result_preview', error, {
+        file_type: historyItem?.mediaKind || 'unknown',
+      }, {
+        mediaKind: historyItem?.mediaKind || 'unknown',
+        conversionJobId: jobId,
+      });
+    } finally {
+      setIsLoadingResultPreview(false);
+    }
+  }, [activeResultJobId, conversionHistory, conversionJob?.id, conversionJob?.status, downloadFile, resultBlob, resultImageUrl]);
+
+  useEffect(() => {
+    if (
+      conversionJob?.status === 'completed' &&
+      conversionJob.id !== autoOpenedResultJobId &&
+      conversionHistory.some(item => item.jobId === conversionJob.id)
+    ) {
+      setAutoOpenedResultJobId(conversionJob.id);
+      void loadResultPreview(conversionJob.id, true);
+    }
+  }, [autoOpenedResultJobId, conversionHistory, conversionJob?.id, conversionJob?.status, loadResultPreview]);
+
+  const handleDownload = async (jobId = conversionJob?.id, fileName = getConvertedFilename()) => {
+    if (jobId) {
       try {
-        const blob = await downloadFile(conversionJob.id);
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        const fileName = getConvertedFilename();
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        const historyItem = conversionHistory.find(item => item.jobId === jobId);
+        const blob = historyItem?.blob || (activeResultJobId === jobId ? resultBlob : null) || await downloadFile(jobId);
+        if (!historyItem?.blob) {
+          setConversionHistory(prev => prev.map(item => item.jobId === jobId ? { ...item, blob } : item));
+        }
+        saveBlobToDisk(blob, fileName);
+        const mediaKind = historyItem?.mediaKind || fileType || 'unknown';
 
         // Track file download
-        trackFileDownload(fileName, fileType || 'unknown');
+        trackFileDownload(fileName, mediaKind);
 
         // Enhanced mixpanel tracking for download
         const outputSizeMB = blob.size / 1024 / 1024;
@@ -270,12 +463,12 @@ const FileConverterApp: React.FC = () => {
 
         mixpanel.track('File Downloaded', {
           file_name: fileName,
-          file_type: fileType || 'unknown',
-          output_format: conversionOptions?.format || 'unknown',
+          file_type: mediaKind,
+          output_format: historyItem?.format || conversionOptions?.format || 'unknown',
           file_size_mb: outputSizeMB,
           compression_ratio: compressionRatio,
           user_tier: 'free',
-          conversion_id: conversionJob.id
+          conversion_id: jobId
         });
         trackFirstPartyEvent('download', {
           file_name: fileName,
@@ -283,23 +476,24 @@ const FileConverterApp: React.FC = () => {
           size_bytes: blob.size,
           success: true,
         }, {
-          mediaKind: fileType || 'unknown',
-          conversionJobId: conversionJob.id,
+          mediaKind,
+          conversionJobId: jobId,
         });
       } catch (error) {
         console.error('Download failed:', error);
+        const mediaKind = conversionHistory.find(item => item.jobId === jobId)?.mediaKind || fileType || 'unknown';
         trackFirstPartyError('download', error, {
-          file_type: fileType || 'unknown',
+          file_type: mediaKind,
         }, {
-          mediaKind: fileType || 'unknown',
-          conversionJobId: conversionJob.id,
+          mediaKind,
+          conversionJobId: jobId,
         });
 
         // Track download failure
         mixpanel.track('Download Failed', {
           error_message: error instanceof Error ? error.message : 'Unknown error',
-          file_type: fileType || 'unknown',
-          conversion_id: conversionJob.id,
+          file_type: mediaKind,
+          conversion_id: jobId,
           user_tier: 'free'
         });
       }
@@ -311,6 +505,15 @@ const FileConverterApp: React.FC = () => {
     setConversionJob(null);
     setConversionOptions(null);
     setConversionStartTime(null);
+    setIsResultModalOpen(false);
+    setResultBlob(null);
+    setResultPreviewError(null);
+    setAutoOpenedResultJobId(null);
+    if (resultImageUrlRef.current) {
+      URL.revokeObjectURL(resultImageUrlRef.current);
+      resultImageUrlRef.current = null;
+      setResultImageUrl(null);
+    }
     resetIdentification();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -350,9 +553,130 @@ const FileConverterApp: React.FC = () => {
   };
 
   const isLoading = isPending || conversionJob?.status === 'processing';
+  const uploadPhaseLabel = uploadPhase === 'requesting-url'
+    ? 'Preparing secure video upload...'
+    : uploadPhase === 'uploading-to-s3'
+      ? 'Uploading video directly to S3...'
+      : uploadPhase === 'finalizing'
+        ? 'Staging uploaded video on the server...'
+        : 'Starting conversion...';
+
+  const formatHistoryTime = (timestamp: number) =>
+    new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  const activeHistoryItem = activeResultJobId
+    ? conversionHistory.find(item => item.jobId === activeResultJobId)
+    : undefined;
 
   return (
     <>
+      {isResultModalOpen && activeHistoryItem && (
+        <div className="fixed inset-0 z-50 bg-black/80 p-4 flex items-center justify-center">
+          <div className="bg-card shadow-2xl w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden sci-fi-frame">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
+              <div>
+                <h2 className="text-xl font-semibold text-card-foreground">Converted File Preview</h2>
+                <p className="text-sm text-muted-foreground">
+                  Toggle between the original and finalized edited version of {activeHistoryItem.fileName}.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex rounded-lg border overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setResultView('original')}
+                    className={`px-4 py-2 text-sm transition-colors ${
+                      resultView === 'original'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-background text-card-foreground hover:bg-muted'
+                    }`}
+                  >
+                    Original
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setResultView('final')}
+                    className={`px-4 py-2 text-sm transition-colors ${
+                      resultView === 'final'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-background text-card-foreground hover:bg-muted'
+                    }`}
+                  >
+                    Final
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => void handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
+                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  Download
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsResultModalOpen(false)}
+                  className="text-muted-foreground hover:text-card-foreground transition-colors p-2"
+                  aria-label="Close image preview"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-4 bg-muted/30 flex-1 min-h-0 flex items-center justify-center">
+              {isLoadingResultPreview ? (
+                <p className="text-card-foreground">Loading converted image...</p>
+              ) : resultPreviewError ? (
+                <div className="text-center space-y-3">
+                  <p className="text-destructive">{resultPreviewError}</p>
+                  <button
+                    type="button"
+                    onClick={() => void loadResultPreview(activeResultJobId || conversionJob?.id, true)}
+                    className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Try Loading Preview Again
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {activeHistoryItem.mediaKind === 'image' && (
+                    <img
+                      src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
+                      alt={resultView === 'original' ? 'Original image' : 'Converted image'}
+                      className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
+                    />
+                  )}
+                  {activeHistoryItem.mediaKind === 'video' && (
+                    <video
+                      key={`${activeHistoryItem.jobId}-${resultView}`}
+                      src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
+                      controls
+                      className="max-w-full max-h-[calc(100vh-14rem)] rounded-lg bg-black"
+                    />
+                  )}
+                  {activeHistoryItem.mediaKind === 'audio' && (
+                    <div className="w-full max-w-3xl bg-background rounded-lg border p-8">
+                      <div className="flex flex-col items-center justify-center gap-4">
+                        <Music className="w-16 h-16 text-muted-foreground" />
+                        <p className="text-card-foreground font-medium">
+                          {resultView === 'original' ? activeHistoryItem.fileName : activeHistoryItem.outputFileName}
+                        </p>
+                        <audio
+                          key={`${activeHistoryItem.jobId}-${resultView}`}
+                          src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
+                          controls
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Top Banner Ad */}
       <div className="max-w-6xl mx-auto px-4 pt-4">
         <AdBanner
@@ -371,7 +695,7 @@ const FileConverterApp: React.FC = () => {
       <div className="max-w-6xl mx-auto p-4 pt-8">
         <div className="grid lg:grid-cols-2 gap-6">
           {/* File Upload Section */}
-          <div className="bg-card rounded-xl shadow-lg p-6 border">
+          <div className="bg-card shadow-lg p-6 sci-fi-frame">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Upload className="w-5 h-5" />
               Upload File
@@ -432,7 +756,8 @@ const FileConverterApp: React.FC = () => {
                 {/* Preview */}
                 <FilePreview
                   file={selectedFile}
-                  resultUrl={conversionJob?.resultUrl}
+                  resultAvailable={conversionJob?.status === 'completed'}
+                  onShowResult={() => void loadResultPreview(conversionJob?.id, true)}
                 />
 
                 {/* Identify File Button */}
@@ -452,6 +777,66 @@ const FileConverterApp: React.FC = () => {
                     className="mt-4"
                   />
                 )}
+
+              </div>
+            )}
+
+            {conversionHistory.length > 0 && (
+              <div className="bg-card rounded-lg border p-4 space-y-3 mt-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <h3 className="font-medium text-card-foreground">Conversion History</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Reopen or download any image, video, or audio result from this session.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={clearFile}
+                    className="text-sm bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    New Conversion
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {conversionHistory.map((item, index) => (
+                    <div key={item.jobId} className="border border-border rounded-lg p-3">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                        <div>
+                          <div className="text-sm font-medium text-card-foreground flex items-center gap-2">
+                            {getFileIcon(item.mediaKind)}
+                            <span>#{conversionHistory.length - index} {item.outputFileName}</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {item.status === 'processing'
+                              ? `Started ${formatHistoryTime(item.startedAt)} and still processing`
+                              : item.status === 'completed'
+                                ? `Completed ${formatHistoryTime(item.completedAt || item.startedAt)}`
+                                : item.error || 'Conversion failed'}
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={item.status !== 'completed'}
+                            onClick={() => void loadResultPreview(item.jobId, true)}
+                            className="text-sm bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                          >
+                            Preview
+                          </button>
+                          <button
+                            type="button"
+                            disabled={item.status !== 'completed'}
+                            onClick={() => void handleDownload(item.jobId, item.outputFileName)}
+                            className="text-sm bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                          >
+                            Download
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -481,7 +866,7 @@ const FileConverterApp: React.FC = () => {
           </div>
 
           {/* Conversion Options */}
-          <div className="bg-card rounded-xl shadow-lg p-6 border">
+          <div className="bg-card shadow-lg p-6 sci-fi-frame">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Settings className="w-5 h-5" />
               Conversion Options
@@ -493,7 +878,7 @@ const FileConverterApp: React.FC = () => {
                   <ImageConversionForm
                     onSubmit={handleConvert}
                     isLoading={isLoading}
-                    imageUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                    imageUrl={originalImageUrl || undefined}
                   />
                 )}
                 {fileType === 'video' && (
@@ -515,7 +900,7 @@ const FileConverterApp: React.FC = () => {
                 {conversionJob?.status === 'completed' && (
                   <div className="space-y-2">
                     <button
-                      onClick={handleDownload}
+                      onClick={() => void handleDownload()}
                       className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
@@ -528,6 +913,20 @@ const FileConverterApp: React.FC = () => {
                 )}
 
                 {/* Progress Display */}
+                {isPending && fileType === 'video' && (
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {uploadPhaseLabel} {uploadProgress > 0 ? `${uploadProgress}%` : ''}
+                    </p>
+                    <div className="w-full bg-muted rounded-full h-2">
+                      <div
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
                 {isLoading && conversionJob?.progress && (
                   <div className="text-center">
                     <p className="text-sm text-muted-foreground mb-2">
@@ -628,17 +1027,6 @@ const FileConverterApp: React.FC = () => {
             utmCampaign="creatv_launch_promo"
             linkURL="https://www.creatv.io/auth"
           />
-          {/* Alternative footer ad */}
-          <div className="mt-4">
-            <AlternativeAdBanner
-              network="infolinks"
-              adSlot="728x90"
-              adFormat="leaderboard"
-              adPosition="footer_alternative"
-              className="w-full"
-              style={{ minHeight: '90px' }}
-            />
-          </div>
         </div>
       </div>
     </>

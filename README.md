@@ -52,3 +52,9 @@ export default tseslint.config({
   },
 })
 ```
+
+# Rember that Infolinks is down here!
+```html
+    <!-- Infolinks -->
+    <!-- <script type="text/javascript"> var infolinks_pid = 3437302; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script> -->
+```

@@ -9,6 +9,12 @@ export interface FileIdentificationResponse {
   fileType: 'image' | 'video' | 'audio' | 'unknown';
   mimeType: string;
   details: Record<string, unknown>;
+  imageMetadata?: {
+    container?: Record<string, unknown>;
+    exifTiff?: Record<string, unknown>;
+    gpsLocation?: Record<string, unknown>;
+    advancedDeviceMetadata?: Record<string, Record<string, unknown>>;
+  };
   tool: string;
   rawOutput: string;
 }

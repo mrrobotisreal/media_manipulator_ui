@@ -152,6 +152,69 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
     );
   };
 
+  const renderMetadataSection = (title: string, values?: Record<string, unknown>) => {
+    const entries = Object.entries(values || {}).filter(([, value]) => value !== null && value !== undefined && value !== '');
+    if (entries.length === 0) {
+      return (
+        <div className="bg-muted/30 rounded p-3">
+          <h4 className="text-md font-medium text-card-foreground mb-2">{title}</h4>
+          <p className="text-sm text-muted-foreground italic">No metadata found</p>
+        </div>
+      );
+    }
+    return (
+      <div className="bg-muted/30 rounded p-3">
+        <h4 className="text-md font-medium text-card-foreground mb-3">{title}</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {entries.map(([key, value]) => (
+            <div key={key}>
+              <div className="text-xs font-medium text-card-foreground">{key}</div>
+              <div className="text-sm text-muted-foreground break-words">{formatValue(value)}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderAdvancedMetadataSection = () => {
+    const advanced = fileDetails.imageMetadata?.advancedDeviceMetadata || {};
+    const groupEntries = Object.entries(advanced).filter(([, values]) => Object.keys(values || {}).length > 0);
+    if (groupEntries.length === 0) {
+      return renderMetadataSection('Advanced / Device Metadata', {});
+    }
+    const sectionKey = 'advancedDeviceMetadata';
+    const isExpanded = expandedSections[sectionKey];
+    return (
+      <div className="bg-muted/30 rounded p-3">
+        <div className="flex items-center justify-between">
+          <h4 className="text-md font-medium text-card-foreground">Advanced / Device Metadata</h4>
+          <button
+            onClick={() => toggleSection(sectionKey)}
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-card-foreground transition-colors"
+          >
+            {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+            {isExpanded ? 'Collapse' : 'Expand'}
+          </button>
+        </div>
+        {isExpanded ? (
+          <div className="mt-3 space-y-3 max-h-96 overflow-y-auto">
+            {groupEntries.map(([group, values]) => (
+              <div key={group} className="border border-border rounded p-3">
+                <div className="text-sm font-medium text-card-foreground mb-2">{group}</div>
+                {renderNestedValue(values)}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground mt-2">
+            {groupEntries.length} metadata group{groupEntries.length === 1 ? '' : 's'} available
+          </p>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className={`bg-card rounded-lg border shadow-sm ${className}`}>
       <div className="p-4">
@@ -206,6 +269,15 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
         {/* Expanded Details */}
         {isExpanded && (
           <div className="space-y-4 border-t pt-4">
+            {fileDetails.imageMetadata && (
+              <div className="space-y-4">
+                {renderMetadataSection('Container', fileDetails.imageMetadata.container)}
+                {renderMetadataSection('EXIF/TIFF', fileDetails.imageMetadata.exifTiff)}
+                {renderMetadataSection('GPS / Location', fileDetails.imageMetadata.gpsLocation)}
+                {renderAdvancedMetadataSection()}
+              </div>
+            )}
+
             <div>
               <h4 className="text-md font-medium text-card-foreground mb-3">Technical Details</h4>
               {renderDetailsSection()}

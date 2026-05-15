@@ -1,3 +1,5 @@
+import { getSessionIdSync, getUserIdSync, initializeIndexedIdentity } from '@/lib/indexedIdentity';
+
 type EventProperties = Record<string, string | number | boolean | null | undefined | Record<string, unknown> | unknown[]>;
 
 interface TrackOptions {
@@ -5,9 +7,6 @@ interface TrackOptions {
   featureName?: string;
   conversionJobId?: string;
 }
-
-const VISITOR_KEY = 'mm_visitor_id';
-const SESSION_KEY = 'mm_session_id';
 
 const analyticsBaseURL = () => (import.meta.env.VITE_ANALYTICS_BASE_URL || 'https://analytics.media-manipulator.com').replace(/\/$/, '');
 
@@ -19,19 +18,13 @@ const uuid = () => {
 };
 
 export const getVisitorId = () => {
-  const existing = localStorage.getItem(VISITOR_KEY);
-  if (existing) return existing;
-  const id = uuid();
-  localStorage.setItem(VISITOR_KEY, id);
-  return id;
+  void initializeIndexedIdentity().catch(() => undefined);
+  return getUserIdSync();
 };
 
 export const getSessionId = () => {
-  const existing = sessionStorage.getItem(SESSION_KEY);
-  if (existing) return existing;
-  const id = uuid();
-  sessionStorage.setItem(SESSION_KEY, id);
-  return id;
+  void initializeIndexedIdentity().catch(() => undefined);
+  return getSessionIdSync();
 };
 
 const referringDomain = () => {
@@ -66,6 +59,7 @@ export const trackFirstPartyEvent = (eventName: string, properties: EventPropert
     insert_id: uuid(),
     event_name: eventName,
     visitor_id: getVisitorId(),
+    user_id: getVisitorId(),
     session_id: getSessionId(),
     event_ts: new Date().toISOString(),
     sent_at: new Date().toISOString(),

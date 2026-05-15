@@ -116,11 +116,65 @@
   }
   body {
     @apply text-foreground;
-    background-image: url('/images/background.webp');
+    background-image: url('https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/stars.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh;
+  }
+}
+
+@layer components {
+  .sci-fi-frame {
+    border-style: solid;
+    border-width: 32px;
+    border-color: transparent;
+    border-image-source: url('/images/div_border.webp');
+    border-image-slice: 280;
+    border-image-width: 32px;
+    border-image-repeat: stretch;
+    border-image-outset: 0;
+    border-radius: 0;
+    background-clip: padding-box;
+  }
+
+  .sci-fi-frame-bottom {
+    border-style: solid;
+    border-color: transparent;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 28px;
+    border-image-source: url('/images/div_border_wide_green.webp');
+    border-image-slice: 280;
+    border-image-repeat: stretch;
+    border-image-outset: 0;
+  }
+
+  .sci-fi-frame-top {
+    border-style: solid;
+    border-color: transparent;
+    border-top-width: 28px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-image-source: url('/images/div_border_wide_green.webp');
+    border-image-slice: 280;
+    border-image-repeat: stretch;
+    border-image-outset: 0;
+  }
+
+  @media (max-width: 640px) {
+    .sci-fi-frame {
+      border-width: 22px;
+      border-image-width: 22px;
+    }
+    .sci-fi-frame-bottom {
+      border-bottom-width: 18px;
+    }
+    .sci-fi-frame-top {
+      border-top-width: 18px;
+    }
   }
 }
