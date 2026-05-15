@@ -1,5 +1,5 @@
 import React from 'react';
-import formatterIcon from '@/assets/MediaManipulatorIcon.webp';
+import formatterIcon from '/MediaManipulatorIcon.webp';
 
 const navLinks: { title: string; href: string }[] = [
   { title: 'Home', href: '/' },
