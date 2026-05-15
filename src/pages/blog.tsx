@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import AdBanner from '@/components/ad-banner';
 import mixpanel from 'mixpanel-browser';
 
 const articles = [
@@ -40,16 +41,29 @@ const BlogPage: React.FC = () => {
   }, []);
 
   return (
-    <Card className="max-w-4xl mx-auto my-2">
-      <CardContent className="p-6">
-        <h1 className="text-4xl font-bold mb-8 text-card-foreground">Media Conversion Blog</h1>
+    <>
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdBanner
+          adSlot="6671038874"
+          adFormat="leaderboard"
+          adPosition="blog_header"
+          className="mb-4"
+          isFlashMock={true}
+          utmMedium="blog_leaderboard_banner"
+          utmCampaign="creatv_launch_promo"
+          linkURL="https://www.creatv.io/auth"
+        />
+      </div>
+      <Card className="max-w-4xl mx-auto my-2 sci-fi-frame">
+        <CardContent className="p-12">
+          <h1 className="text-4xl font-bold mb-8 text-card-foreground">Media Conversion Blog</h1>
         <p className="text-lg text-muted-foreground mb-8">
           Expert guides, tips, and insights on media conversion, optimization, and file formats.
         </p>
 
         <div className="grid gap-8">
           {articles.map((article, index) => (
-            <article key={index} className="bg-card rounded-lg border p-6 hover:shadow-lg transition-shadow">
+            <article key={index} className="bg-card p-6 hover:shadow-lg transition-shadow sci-fi-frame-inner">
               <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-green-600">
                 <a href={`/blog/${article.slug}`}>{article.title}</a>
               </h2>
@@ -68,8 +82,21 @@ const BlogPage: React.FC = () => {
             </article>
           ))}
         </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      <div className="max-w-6xl mx-auto px-4 pb-8">
+        <AdBanner
+          adSlot="3633827902"
+          adFormat="leaderboard"
+          adPosition="blog_footer"
+          className="mt-8"
+          isFlashMock={true}
+          utmMedium="blog_footer_leaderboard"
+          utmCampaign="creatv_launch_promo"
+          linkURL="https://www.creatv.io/auth"
+        />
+      </div>
+    </>
   );
 };
 

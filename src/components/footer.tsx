@@ -1,5 +1,5 @@
 import React from 'react';
-import formatterIcon from '/MediaManipulatorIcon.webp';
+import formatterIcon from '/MMIcon.webp';
 
 const navLinks: { title: string; href: string }[] = [
   { title: 'Home', href: '/' },
@@ -23,9 +23,9 @@ const Footer: React.FC = () => {
               <img
                 src={formatterIcon}
                 alt="Media Manipulator Icon"
-                className="h-10 w-10 rounded-sm"
+                className="h-20 w-20 rounded-sm"
               />
-              <span className="text-xl font-bold text-white">Media Manipulator</span>
+              <span className="font-glitch text-xl text-white">Media Manipulator</span>
             </div>
             <p className="text-sm text-gray-400 max-w-md">
               Browser-based and server-assisted tools for editing, converting, compressing, analyzing,
@@ -34,10 +34,10 @@ const Footer: React.FC = () => {
             <p className="text-sm text-gray-400 mt-4">
               Contact:{' '}
               <a
-                href="mailto:privacy@media-manipulator.com"
+                href="mailto:support@media-manipulator.com"
                 className="text-gray-300 hover:text-white transition-colors"
               >
-                privacy@media-manipulator.com
+                support@media-manipulator.com
               </a>
             </p>
           </div>

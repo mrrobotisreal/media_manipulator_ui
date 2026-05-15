@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import AdBanner from '@/components/ad-banner';
 import mixpanel from 'mixpanel-browser';
 
 const HowItWorksPage: React.FC = () => {
@@ -12,12 +13,25 @@ const HowItWorksPage: React.FC = () => {
   }, []);
 
   return (
-    <Card className="max-w-4xl mx-auto my-2">
-      <CardContent className="p-6">
-        <h1 className="text-4xl font-bold mb-8 text-card-foreground">How Media Conversion Works</h1>
+    <>
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdBanner
+          adSlot="6671038874"
+          adFormat="leaderboard"
+          adPosition="how_it_works_header"
+          className="mb-4"
+          isFlashMock={true}
+          utmMedium="how_it_works_leaderboard"
+          utmCampaign="creatv_launch_promo"
+          linkURL="https://www.creatv.io/auth"
+        />
+      </div>
+      <Card className="max-w-4xl mx-auto my-2 sci-fi-frame">
+        <CardContent className="p-12">
+          <h1 className="text-4xl font-bold mb-8 text-card-foreground">How Media Conversion Works</h1>
 
         <div className="grid gap-8">
-          <section>
+          <section className="bg-card p-6 sci-fi-frame-inner">
             <h2 className="text-2xl font-semibold mb-4">The Conversion Process</h2>
             <div className="grid md:grid-cols-4 gap-6">
               <div className="text-center">
@@ -51,7 +65,7 @@ const HowItWorksPage: React.FC = () => {
             </div>
           </section>
 
-          <section className="bg-card border rounded-lg p-6">
+          <section className="bg-card p-6 sci-fi-frame-inner">
             <h2 className="text-2xl font-semibold mb-4">Technical Details</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
@@ -75,8 +89,21 @@ const HowItWorksPage: React.FC = () => {
             </div>
           </section>
         </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      <div className="max-w-6xl mx-auto px-4 pb-8">
+        <AdBanner
+          adSlot="3633827902"
+          adFormat="leaderboard"
+          adPosition="how_it_works_footer"
+          className="mt-8"
+          isFlashMock={true}
+          utmMedium="how_it_works_footer_leaderboard"
+          utmCampaign="creatv_launch_promo"
+          linkURL="https://www.creatv.io/auth"
+        />
+      </div>
+    </>
   );
 };
 

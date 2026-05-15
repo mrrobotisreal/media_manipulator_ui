@@ -12,8 +12,8 @@ const TermsOfServicePage: React.FC = () => {
   }, []);
 
   return (
-    <Card className="max-w-4xl mx-auto my-2">
-      <CardContent className="p-6">
+    <Card className="max-w-4xl mx-auto my-2 sci-fi-frame">
+      <CardContent className="p-12">
         <h1 className="text-4xl font-bold mb-8 text-card-foreground">
           Terms of Service and Acceptable Use Policy
         </h1>

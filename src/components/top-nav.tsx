@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { useTheme } from "@/components/theme-provider";
 import winappsLogo from "@/assets/logo_transparent_shadow.svg";
-import formatterIcon from "/MediaManipulatorIcon.webp";
+import formatterIcon from "/MMIcon.webp";
 import githubLogo from "@/assets/github.svg";
 import React from "react";
 
@@ -85,10 +85,10 @@ const TopNav: React.FC = () => {
           <img
             src={formatterIcon}
             alt="Media Manipulator Icon"
-            className="h-10 w-10 rounded-sm"
+            className="h-20 w-20 rounded-sm"
           />
           <div className="flex flex-col">
-            <h1 className="text-xl md:text-2xl font-bold text-white leading-tight hidden sm:block">Media Manipulator</h1>
+            <h1 className="font-glitch text-xl md:text-2xl text-white leading-tight hidden sm:block">Media Manipulator</h1>
             <p className="text-xs md:text-sm text-gray-300 hidden sm:block">Convert images, videos, and audio files with ease</p>
           </div>
         </div>

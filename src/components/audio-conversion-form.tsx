@@ -5,6 +5,7 @@ import { audioConversionSchema } from "@/schemas/audioSchema";
 import ConversionOptions from "@/components/conversion-options";
 import MediaTrimModal from "@/components/media-trim-modal";
 import AdvancedAudioEffects from "@/components/advanced-audio-effects";
+import AdBanner from "@/components/ad-banner";
 import type { ConversionFormData } from "@/schemas/types";
 import { useState } from "react";
 
@@ -169,6 +170,16 @@ const AudioConversionForm: React.FC<{
 
   return (
     <>
+      <AdBanner
+        adSlot="6671038874"
+        adFormat="leaderboard"
+        adPosition="audio_form_top"
+        className="mb-4"
+        isFlashMock={true}
+        utmMedium="audio_form_leaderboard"
+        utmCampaign="creatv_launch_promo"
+        linkURL="https://www.creatv.io/auth"
+      />
       <form onSubmit={handleSubmit(onSubmitHandler, onErrorHandler)} className="space-y-6">
         <ConversionOptions
           fileType="audio"

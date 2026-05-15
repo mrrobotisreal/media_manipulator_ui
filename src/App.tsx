@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, Download, Image, Video, Music, X, Settings, Search } from 'lucide-react';
+import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
@@ -9,7 +9,11 @@ import type { ConversionFormData } from '@/schemas/types';
 import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
 import AudioConversionForm from '@/components/audio-conversion-form';
+import TranscribeForm from '@/components/transcribe-form';
+import TranscribeResultView from '@/components/transcribe-result-view';
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
+import useTranscribeFile, { type TranscribeFormData, type TranscribeUploadResponse } from '@/lib/useTranscribeFile';
+import { useTranscribeResult, useAnalysisResult } from '@/lib/useTranscribeResult';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
 import useDownloadFile from './lib/useDownloadFile';
@@ -27,9 +31,12 @@ import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnal
 import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
 import mixpanel from 'mixpanel-browser';
 
+type WorkflowMode = 'convert' | 'transcribe';
+
 interface ConversionHistoryItem {
   jobId: string;
   mediaKind: 'image' | 'video' | 'audio' | 'unknown';
+  mode: WorkflowMode;
   fileName: string;
   outputFileName: string;
   format: string;
@@ -44,6 +51,7 @@ interface ConversionHistoryItem {
 
 interface PendingConversionDetails {
   mediaKind: 'image' | 'video' | 'audio' | 'unknown';
+  mode: WorkflowMode;
   fileName: string;
   outputFileName: string;
   format: string;
@@ -72,23 +80,26 @@ const FileConverterApp: React.FC = () => {
   const pendingConversionRef = useRef<PendingConversionDetails | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [workflowMode, setWorkflowMode] = useState<WorkflowMode>('convert');
+
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
   const { data: fileDetails, mutate: identifyFile, isPending: isIdentifying, reset: resetIdentification } = useIdentifyFile();
 
-  const { mutate, isPending, uploadProgress, uploadPhase } = useConvertFile((res: UploadFileResponse) => {
+  const handleUploadStart = useCallback((jobId: string) => {
     setConversionStartTime(Date.now());
     const pending = pendingConversionRef.current;
     setConversionJob({
-      id: res.jobId,
+      id: jobId,
       status: 'processing',
       originalFile: selectedFile!,
-      progress: 0
+      progress: 0,
     });
     if (pending) {
       setConversionHistory(prev => [
         {
-          jobId: res.jobId,
+          jobId,
           mediaKind: pending.mediaKind,
+          mode: pending.mode,
           fileName: pending.fileName,
           outputFileName: pending.outputFileName,
           format: pending.format,
@@ -99,6 +110,19 @@ const FileConverterApp: React.FC = () => {
         ...prev,
       ]);
     }
+  }, [selectedFile]);
+
+  const { mutate, isPending, uploadProgress, uploadPhase } = useConvertFile((res: UploadFileResponse) => {
+    handleUploadStart(res.jobId);
+  });
+
+  const {
+    mutate: transcribeMutate,
+    isPending: isTranscribePending,
+    uploadProgress: transcribeUploadProgress,
+    uploadPhase: transcribeUploadPhase,
+  } = useTranscribeFile((res: TranscribeUploadResponse) => {
+    handleUploadStart(res.jobId);
   });
 
   const { downloadFile } = useDownloadFile();
@@ -283,6 +307,7 @@ const FileConverterApp: React.FC = () => {
       setResultImageUrl(null);
       setResultPreviewError(null);
       setActiveResultJobId(null);
+      setWorkflowMode('convert');
       if (resultImageUrlRef.current) {
         URL.revokeObjectURL(resultImageUrlRef.current);
         resultImageUrlRef.current = null;
@@ -304,6 +329,7 @@ const FileConverterApp: React.FC = () => {
       setResultImageUrl(null);
       setResultPreviewError(null);
       setActiveResultJobId(null);
+      setWorkflowMode('convert');
       if (resultImageUrlRef.current) {
         URL.revokeObjectURL(resultImageUrlRef.current);
         resultImageUrlRef.current = null;
@@ -322,6 +348,7 @@ const FileConverterApp: React.FC = () => {
     const mediaKind = getFileType(selectedFile);
     pendingConversionRef.current = {
       mediaKind,
+      mode: 'convert',
       fileName: selectedFile.name,
       outputFileName,
       format: data.format,
@@ -372,12 +399,56 @@ const FileConverterApp: React.FC = () => {
     });
   };
 
+  const handleTranscribe = (data: TranscribeFormData) => {
+    if (!selectedFile) return;
+    const mediaKind = getFileType(selectedFile);
+    if (mediaKind !== 'video' && mediaKind !== 'audio') return;
+    const originalName = selectedFile.name;
+    const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
+    const outputFileName = `${nameWithoutExt}_transcript.${data.format}`;
+    pendingConversionRef.current = {
+      mediaKind,
+      mode: 'transcribe',
+      fileName: selectedFile.name,
+      outputFileName,
+      format: data.format,
+      originalUrl: URL.createObjectURL(selectedFile),
+      startedAt: Date.now(),
+    };
+    setConversionOptions({ format: data.format } as unknown as ConversionFormData);
+    setConversionJob(null);
+    setIsResultModalOpen(false);
+    setResultBlob(null);
+    setResultImageUrl(null);
+    setResultPreviewError(null);
+    setAutoOpenedResultJobId(null);
+    setActiveResultJobId(null);
+    if (resultImageUrlRef.current) {
+      URL.revokeObjectURL(resultImageUrlRef.current);
+      resultImageUrlRef.current = null;
+    }
+    transcribeMutate({ file: selectedFile, options: data });
+    trackFirstPartyEvent('feature_usage', {
+      feature_name: 'transcribe',
+      action: 'submitted',
+      target_format: data.format,
+      language_hint: data.language || '',
+      size_bytes: selectedFile.size,
+    }, {
+      featureName: 'transcribe',
+      mediaKind,
+    });
+  };
+
   const getConvertedFilename = () => {
     if (!selectedFile || !conversionOptions) return selectedFile?.name || 'converted_file';
 
     const originalName = selectedFile.name;
     const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
     const newExtension = conversionOptions.format;
+    if (workflowMode === 'transcribe') {
+      return `${nameWithoutExt}_transcript.${newExtension}`;
+    }
 
     return `${nameWithoutExt}.${newExtension}`;
   };
@@ -398,6 +469,13 @@ const FileConverterApp: React.FC = () => {
     const historyItem = conversionHistory.find(item => item.jobId === jobId);
     const isCompleted = historyItem?.status === 'completed' || (conversionJob?.id === jobId && conversionJob.status === 'completed');
     if (!historyItem || !isCompleted) return;
+    if (historyItem.mode === 'transcribe') {
+      setActiveResultJobId(jobId);
+      setResultView('final');
+      setResultPreviewError(null);
+      if (openModal) setIsResultModalOpen(true);
+      return;
+    }
     if (activeResultJobId === jobId && resultImageUrl && resultBlob) {
       setResultView('final');
       if (openModal) setIsResultModalOpen(true);
@@ -509,6 +587,7 @@ const FileConverterApp: React.FC = () => {
     setResultBlob(null);
     setResultPreviewError(null);
     setAutoOpenedResultJobId(null);
+    setWorkflowMode('convert');
     if (resultImageUrlRef.current) {
       URL.revokeObjectURL(resultImageUrlRef.current);
       resultImageUrlRef.current = null;
@@ -552,20 +631,33 @@ const FileConverterApp: React.FC = () => {
     }
   };
 
-  const isLoading = isPending || conversionJob?.status === 'processing';
-  const uploadPhaseLabel = uploadPhase === 'requesting-url'
-    ? 'Preparing secure video upload...'
-    : uploadPhase === 'uploading-to-s3'
-      ? 'Uploading video directly to S3...'
-      : uploadPhase === 'finalizing'
-        ? 'Staging uploaded video on the server...'
-        : 'Starting conversion...';
+  const isLoading = isPending || isTranscribePending || conversionJob?.status === 'processing';
+  const activePhase = isTranscribePending ? transcribeUploadPhase : uploadPhase;
+  const activeProgress = isTranscribePending ? transcribeUploadProgress : uploadProgress;
+  const uploadPhaseLabel = activePhase === 'requesting-url'
+    ? 'Preparing secure upload...'
+    : activePhase === 'uploading-to-s3'
+      ? 'Uploading file directly to S3...'
+      : activePhase === 'finalizing'
+        ? 'Staging uploaded file on the server...'
+        : workflowMode === 'transcribe'
+          ? 'Starting transcription...'
+          : 'Starting conversion...';
 
   const formatHistoryTime = (timestamp: number) =>
     new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
   const activeHistoryItem = activeResultJobId
     ? conversionHistory.find(item => item.jobId === activeResultJobId)
     : undefined;
+  const isTranscribeResultActive = !!activeHistoryItem && activeHistoryItem.mode === 'transcribe' && activeHistoryItem.status === 'completed';
+  const { data: transcribeResult, isLoading: isTranscribeResultLoading } = useTranscribeResult(
+    isTranscribeResultActive ? activeHistoryItem!.jobId : null,
+    isTranscribeResultActive,
+  );
+  const { data: transcribeAnalysis, isLoading: isTranscribeAnalysisLoading } = useAnalysisResult(
+    isTranscribeResultActive ? activeHistoryItem!.jobId : null,
+    isTranscribeResultActive,
+  );
 
   return (
     <>
@@ -574,36 +666,42 @@ const FileConverterApp: React.FC = () => {
           <div className="bg-card shadow-2xl w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden sci-fi-frame">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
               <div>
-                <h2 className="text-xl font-semibold text-card-foreground">Converted File Preview</h2>
+                <h2 className="text-xl font-semibold text-card-foreground">
+                  {activeHistoryItem.mode === 'transcribe' ? 'Transcript Result' : 'Converted File Preview'}
+                </h2>
                 <p className="text-sm text-muted-foreground">
-                  Toggle between the original and finalized edited version of {activeHistoryItem.fileName}.
+                  {activeHistoryItem.mode === 'transcribe'
+                    ? `Transcript and AI review for ${activeHistoryItem.fileName}.`
+                    : `Toggle between the original and finalized edited version of ${activeHistoryItem.fileName}.`}
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <div className="flex rounded-lg border overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setResultView('original')}
-                    className={`px-4 py-2 text-sm transition-colors ${
-                      resultView === 'original'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-background text-card-foreground hover:bg-muted'
-                    }`}
-                  >
-                    Original
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setResultView('final')}
-                    className={`px-4 py-2 text-sm transition-colors ${
-                      resultView === 'final'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-background text-card-foreground hover:bg-muted'
-                    }`}
-                  >
-                    Final
-                  </button>
-                </div>
+                {activeHistoryItem.mode !== 'transcribe' && (
+                  <div className="flex rounded-lg border overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => setResultView('original')}
+                      className={`px-4 py-2 text-sm transition-colors ${
+                        resultView === 'original'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-background text-card-foreground hover:bg-muted'
+                      }`}
+                    >
+                      Original
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setResultView('final')}
+                      className={`px-4 py-2 text-sm transition-colors ${
+                        resultView === 'final'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-background text-card-foreground hover:bg-muted'
+                      }`}
+                    >
+                      Final
+                    </button>
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={() => void handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
@@ -616,7 +714,7 @@ const FileConverterApp: React.FC = () => {
                   type="button"
                   onClick={() => setIsResultModalOpen(false)}
                   className="text-muted-foreground hover:text-card-foreground transition-colors p-2"
-                  aria-label="Close image preview"
+                  aria-label="Close preview"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -624,7 +722,14 @@ const FileConverterApp: React.FC = () => {
             </div>
 
             <div className="p-4 bg-muted/30 flex-1 min-h-0 flex items-center justify-center">
-              {isLoadingResultPreview ? (
+              {activeHistoryItem.mode === 'transcribe' ? (
+                <TranscribeResultView
+                  result={transcribeResult ?? null}
+                  analysis={transcribeAnalysis ?? null}
+                  isLoading={isTranscribeResultLoading}
+                  isAnalysisLoading={isTranscribeAnalysisLoading}
+                />
+              ) : isLoadingResultPreview ? (
                 <p className="text-card-foreground">Loading converted image...</p>
               ) : resultPreviewError ? (
                 <div className="text-center space-y-3">
@@ -804,15 +909,22 @@ const FileConverterApp: React.FC = () => {
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                         <div>
                           <div className="text-sm font-medium text-card-foreground flex items-center gap-2">
-                            {getFileIcon(item.mediaKind)}
-                            <span>#{conversionHistory.length - index} {item.outputFileName}</span>
+                            {item.mode === 'transcribe' ? <FileText className="w-6 h-6" /> : getFileIcon(item.mediaKind)}
+                            <span>
+                              #{conversionHistory.length - index} {item.outputFileName}
+                              {item.mode === 'transcribe' && (
+                                <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
+                                  Transcript
+                                </span>
+                              )}
+                            </span>
                           </div>
                           <div className="text-xs text-muted-foreground">
                             {item.status === 'processing'
                               ? `Started ${formatHistoryTime(item.startedAt)} and still processing`
                               : item.status === 'completed'
                                 ? `Completed ${formatHistoryTime(item.completedAt || item.startedAt)}`
-                                : item.error || 'Conversion failed'}
+                                : item.error || (item.mode === 'transcribe' ? 'Transcription failed' : 'Conversion failed')}
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2">
@@ -869,31 +981,70 @@ const FileConverterApp: React.FC = () => {
           <div className="bg-card shadow-lg p-6 sci-fi-frame">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Settings className="w-5 h-5" />
-              Conversion Options
+              {workflowMode === 'transcribe' ? 'Transcription Options' : 'Conversion Options'}
             </h2>
+
+            {selectedFile && (fileType === 'video' || fileType === 'audio') && (
+              <div className="flex rounded-lg border overflow-hidden mb-4">
+                <button
+                  type="button"
+                  onClick={() => setWorkflowMode('convert')}
+                  className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
+                    workflowMode === 'convert'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-background text-card-foreground hover:bg-muted'
+                  }`}
+                >
+                  <Settings className="w-4 h-4" />
+                  Convert
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWorkflowMode('transcribe')}
+                  className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
+                    workflowMode === 'transcribe'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-background text-card-foreground hover:bg-muted'
+                  }`}
+                >
+                  <FileText className="w-4 h-4" />
+                  Transcribe
+                </button>
+              </div>
+            )}
 
             {selectedFile && fileType && fileType !== 'unknown' ? (
               <div className="space-y-6">
-                {fileType === 'image' && (
-                  <ImageConversionForm
-                    onSubmit={handleConvert}
+                {workflowMode === 'transcribe' && (fileType === 'video' || fileType === 'audio') ? (
+                  <TranscribeForm
+                    mediaKind={fileType}
                     isLoading={isLoading}
-                    imageUrl={originalImageUrl || undefined}
+                    onSubmit={handleTranscribe}
                   />
-                )}
-                {fileType === 'video' && (
-                  <VideoConversionForm
-                    onSubmit={handleConvert}
-                    isLoading={isLoading}
-                    videoUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
-                  />
-                )}
-                {fileType === 'audio' && (
-                  <AudioConversionForm
-                    onSubmit={handleConvert}
-                    isLoading={isLoading}
-                    audioUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
-                  />
+                ) : (
+                  <>
+                    {fileType === 'image' && (
+                      <ImageConversionForm
+                        onSubmit={handleConvert}
+                        isLoading={isLoading}
+                        imageUrl={originalImageUrl || undefined}
+                      />
+                    )}
+                    {fileType === 'video' && (
+                      <VideoConversionForm
+                        onSubmit={handleConvert}
+                        isLoading={isLoading}
+                        videoUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                      />
+                    )}
+                    {fileType === 'audio' && (
+                      <AudioConversionForm
+                        onSubmit={handleConvert}
+                        isLoading={isLoading}
+                        audioUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                      />
+                    )}
+                  </>
                 )}
 
                 {/* Download Button */}
@@ -913,15 +1064,15 @@ const FileConverterApp: React.FC = () => {
                 )}
 
                 {/* Progress Display */}
-                {isPending && fileType === 'video' && (
+                {(isPending || isTranscribePending) && (fileType === 'video' || workflowMode === 'transcribe') && (
                   <div className="text-center">
                     <p className="text-sm text-muted-foreground mb-2">
-                      {uploadPhaseLabel} {uploadProgress > 0 ? `${uploadProgress}%` : ''}
+                      {uploadPhaseLabel} {activeProgress > 0 ? `${activeProgress}%` : ''}
                     </p>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div
                         className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${uploadProgress}%` }}
+                        style={{ width: `${activeProgress}%` }}
                       />
                     </div>
                   </div>

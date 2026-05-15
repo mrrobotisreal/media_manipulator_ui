@@ -3,7 +3,35 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("./assets/Rubik/Rubik-VariableFont_wght.ttf") format("truetype-variations"),
+       url("./assets/Rubik/Rubik-VariableFont_wght.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("./assets/Rubik/Rubik-Italic-VariableFont_wght.ttf") format("truetype-variations"),
+       url("./assets/Rubik/Rubik-Italic-VariableFont_wght.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik Glitch";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/Rubik_Glitch/RubikGlitch-Regular.ttf") format("truetype");
+}
+
 @theme inline {
+  --font-sans: "Rubik", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-glitch: "Rubik Glitch", "Rubik", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -115,7 +143,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply text-foreground;
+    @apply text-foreground font-sans;
     background-image: url('https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/stars.jpg');
     background-position: center;
     background-repeat: no-repeat;
@@ -133,6 +161,19 @@
     border-image-source: url('/images/div_border.webp');
     border-image-slice: 280;
     border-image-width: 32px;
+    border-image-repeat: stretch;
+    border-image-outset: 0;
+    border-radius: 0;
+    background-clip: padding-box;
+  }
+
+  .sci-fi-frame-inner {
+    border-style: solid;
+    border-width: 24px;
+    border-color: transparent;
+    border-image-source: url('/images/div_border_red.webp');
+    border-image-slice: 280;
+    border-image-width: 24px;
     border-image-repeat: stretch;
     border-image-outset: 0;
     border-radius: 0;
@@ -169,6 +210,10 @@
     .sci-fi-frame {
       border-width: 22px;
       border-image-width: 22px;
+    }
+    .sci-fi-frame-inner {
+      border-width: 16px;
+      border-image-width: 16px;
     }
     .sci-fi-frame-bottom {
       border-bottom-width: 18px;

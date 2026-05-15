@@ -1,17 +1,17 @@
 /* TEAM */
 Developer: Mitchell Wintrow
-Contact: mitchellwintrow@gmail.com
-Location: Seattle, WA, USA
+Contact: founder@creatv.io
+Location: Delta, CO, USA
 
 /* THANKS */
-Thanks to all the open source contributors who made this project possible.
+Thanks to all the devs who came before me that taught me what I know and developed the powerful languages and tools, which made this project possible.
 
 /* SITE */
-Last update: 2025-06-03
+Last update: 2026-05-15
 Standards: HTML5, CSS3, ES2020+
 Components: React, TypeScript, Vite
 Doctype: HTML5
-IDE: Cursor, VS Code
+IDE: Cursor
 
 /* TECHNOLOGIES */
 Frontend Framework: React 18
@@ -19,10 +19,10 @@ Build Tool: Vite
 Language: TypeScript
 Styling: Tailwind CSS
 State Management: TanStack Query
-Analytics: Firebase Analytics, Google Analytics
+Analytics: Firebase Analytics, Google Analytics, Mixpanel Analytics,& a custom made "in-house" analytics package
 Monetization: Google AdSense
 Icons: Lucide React
-UI Components: Radix UI
+UI Components: Shadcn UI/Radix UI
 Utilities: Class Variance Authority, clsx
 Development: ESLint, PostCSS
 
@@ -32,12 +32,13 @@ Domain: media-manipulator.com
 CDN: Modern web hosting with global distribution
 
 /* CONTACT ORGANIZATION */
-Organization: WinApps Solutions LLC
+Organization: CreaTV Ltd.
 Website: https://www.media-manipulator.com
-Main Product: Media Manipulator Pro - File Converter
+Main Product: Media Manipulator - File Converter
 
           .-.
          /   \
         | @ @ |    Thank you for visiting!
-         \   /     We built this with ❤️
-          '-'      for the developer community.
+         \   /     I built this with ❤️
+          '-'      for the developer community, content creator community,
+                   & general public.

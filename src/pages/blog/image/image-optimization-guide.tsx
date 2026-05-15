@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import AdBanner from '@/components/ad-banner';
 import mixpanel from 'mixpanel-browser';
 
 const ImageOptimizationGuide: React.FC = () => {
@@ -15,8 +16,21 @@ const ImageOptimizationGuide: React.FC = () => {
   }, []);
 
   return (
-    <Card className="max-w-4xl mx-auto my-2">
-      <div className="p-6 pb-0">
+    <>
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdBanner
+          adSlot="6671038874"
+          adFormat="leaderboard"
+          adPosition="blog_image_guide_header"
+          className="mb-4"
+          isFlashMock={true}
+          utmMedium="blog_image_guide_leaderboard"
+          utmCampaign="creatv_launch_promo"
+          linkURL="https://www.creatv.io/auth"
+        />
+      </div>
+      <Card className="max-w-4xl mx-auto my-2 sci-fi-frame p-12">
+        <div className="p-6 pb-0">
         <a
           href="/blog"
           className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
@@ -321,8 +335,21 @@ const ImageOptimizationGuide: React.FC = () => {
             No signup required • Process files locally • Fast & secure
           </p>
         </div>
-      </CardFooter>
-    </Card>
+        </CardFooter>
+      </Card>
+      <div className="max-w-6xl mx-auto px-4 pb-8">
+        <AdBanner
+          adSlot="3633827902"
+          adFormat="leaderboard"
+          adPosition="blog_image_guide_footer"
+          className="mt-8"
+          isFlashMock={true}
+          utmMedium="blog_image_guide_footer_leaderboard"
+          utmCampaign="creatv_launch_promo"
+          linkURL="https://www.creatv.io/auth"
+        />
+      </div>
+    </>
   );
 };
 

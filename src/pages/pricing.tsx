@@ -234,7 +234,7 @@ const PricingPage: React.FC = () => {
 
       {/* Current Usage (if signed in) */}
       {userProfile && (
-        <Card className="max-w-md mx-auto mb-8 border-blue-200 bg-blue-50 dark:bg-blue-950/20">
+        <Card className="max-w-md mx-auto mb-8 border-blue-200 bg-blue-50 dark:bg-blue-950/20 sci-fi-frame">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">Your Current Usage</CardTitle>
           </CardHeader>
@@ -269,7 +269,7 @@ const PricingPage: React.FC = () => {
         {pricingTiers.map((tier) => (
           <Card
             key={tier.id}
-            className={`relative ${
+            className={`relative sci-fi-frame ${
               tier.popular
                 ? 'border-blue-500 shadow-lg scale-105 lg:scale-110'
                 : 'border-border'
@@ -340,7 +340,7 @@ const PricingPage: React.FC = () => {
         <h2 className="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
 
         <div className="space-y-6">
-          <Card>
+          <Card className="sci-fi-frame">
             <CardHeader>
               <CardTitle className="text-lg">Can I change plans anytime?</CardTitle>
             </CardHeader>
@@ -352,7 +352,7 @@ const PricingPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="sci-fi-frame">
             <CardHeader>
               <CardTitle className="text-lg">What file formats do you support?</CardTitle>
             </CardHeader>
@@ -364,7 +364,7 @@ const PricingPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="sci-fi-frame">
             <CardHeader>
               <CardTitle className="text-lg">Is my data secure?</CardTitle>
             </CardHeader>
@@ -376,7 +376,7 @@ const PricingPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="sci-fi-frame">
             <CardHeader>
               <CardTitle className="text-lg">Do you offer refunds?</CardTitle>
             </CardHeader>
