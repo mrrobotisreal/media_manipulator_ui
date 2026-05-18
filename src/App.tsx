@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import AdBanner from '@/components/ad-banner';
-import AlternativeAdBanner from '@/components/alternative-ad-banner';
 import type { ConversionFormData } from '@/schemas/types';
 import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
@@ -794,13 +794,15 @@ const FileConverterApp: React.FC = () => {
           utmMedium="homepage_leaderboard_banner"
           utmCampaign="creatv_launch_promo"
           linkURL="https://www.creatv.io/auth"
+          creativeAssetSrc="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif"
+          creativeAssetAlt="Come check out CreaTV! Where ideas are brought to life."
         />
       </div>
 
-      <div className="max-w-6xl mx-auto p-4 pt-8">
-        <div className="grid lg:grid-cols-2 gap-6">
+      <div className="max-w-8xl mx-auto p-4 pt-8 flex justify-center items-center flex-col">
+        <div className="grid lg:grid-cols-2 gap-6 max-w-8xl">
           {/* File Upload Section */}
-          <div className="bg-card shadow-lg p-6 sci-fi-frame">
+          <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Upload className="w-5 h-5" />
               Upload File
@@ -961,24 +963,19 @@ const FileConverterApp: React.FC = () => {
                   adPosition="sidebar_upload"
                   className="w-full"
                   style={{ minHeight: '250px' }}
+                  isFlashMock={true}
+                  utmMedium="homepage_sidebar_upload_LREC_banner"
+                  utmCampaign="creatv_launch_promo"
+                  linkURL="https://www.creatv.io/auth"
+                  creativeAssetSrc='https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_Video_LaunchPromo_LREC.gif'
+                  creativeAssetAlt='Come check out CreaTV! Where ideas are brought to life.'
                 />
-                {/* Alternative ad network as fallback */}
-                <div className="mt-4">
-                  <AlternativeAdBanner
-                    network="infolinks"
-                    adSlot="728x90"
-                    adFormat="banner"
-                    adPosition="sidebar_upload_alt"
-                    className="w-full"
-                    style={{ minHeight: '90px' }}
-                  />
-                </div>
               </div>
             )}
           </div>
 
           {/* Conversion Options */}
-          <div className="bg-card shadow-lg p-6 sci-fi-frame">
+          <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Settings className="w-5 h-5" />
               {workflowMode === 'transcribe' ? 'Transcription Options' : 'Conversion Options'}
@@ -1107,29 +1104,13 @@ const FileConverterApp: React.FC = () => {
                   adPosition="sidebar_conversion"
                   className="w-full"
                   style={{ minHeight: '250px' }}
+                  isFlashMock={true}
+                  utmMedium="homepage_sidebar_conversion_LREC_banner"
+                  utmCampaign="creatv_launch_promo"
+                  linkURL="https://www.creatv.io/auth"
+                  creativeAssetSrc='https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_Video_LaunchPromo_LREC.gif'
+                  creativeAssetAlt='Come check out CreaTV! Where ideas are brought to life.'
                 />
-                {/* PropellerAds as alternative network */}
-                <div className="mt-4">
-                  <AlternativeAdBanner
-                    network="propellerads"
-                    adSlot="your_propeller_zone_id"
-                    adFormat="banner"
-                    adPosition="sidebar_conversion_propeller"
-                    className="w-full"
-                    style={{ minHeight: '100px' }}
-                  />
-                </div>
-                {/* InfoLinks for in-text ads */}
-                <div className="mt-4">
-                  <AlternativeAdBanner
-                    network="infolinks"
-                    adSlot="infolinks_zone"
-                    adFormat="auto"
-                    adPosition="sidebar_conversion_infolinks"
-                    className="w-full"
-                    style={{ minHeight: '60px' }}
-                  />
-                </div>
               </div>
             ) : selectedFile ? (
               <div className="text-center py-8">
@@ -1138,10 +1119,98 @@ const FileConverterApp: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">
-                  Select a file to see conversion options
-                </p>
+              <div className="space-y-5">
+                <div>
+                  <h3 className="font-semibold text-card-foreground mb-2">Get started in 4 steps</h3>
+                  <ol className="space-y-3">
+                    <li className="flex gap-3">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 font-semibold flex items-center justify-center text-sm">1</span>
+                      <div>
+                        <p className="font-medium text-card-foreground">Upload a file</p>
+                        <p className="text-sm text-muted-foreground">
+                          Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files stay on our servers for at most 24 hours and are then deleted.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-300 font-semibold flex items-center justify-center text-sm">2</span>
+                      <div>
+                        <p className="font-medium text-card-foreground">Pick your settings here</p>
+                        <p className="text-sm text-muted-foreground">
+                          The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 font-semibold flex items-center justify-center text-sm">3</span>
+                      <div>
+                        <p className="font-medium text-card-foreground">Convert</p>
+                        <p className="text-sm text-muted-foreground">
+                          Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time.
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-300 font-semibold flex items-center justify-center text-sm">4</span>
+                      <div>
+                        <p className="font-medium text-card-foreground">Preview and download</p>
+                        <p className="text-sm text-muted-foreground">
+                          The result auto-previews when it's ready. Toggle between Original and Final, then click Download.
+                        </p>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+
+                <div className="border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Sparkles className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-medium text-card-foreground">Includes local AI tools</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-border rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <BookOpen className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-medium text-card-foreground">Not sure where to begin?</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.
+                      </p>
+                      <Link
+                        to="/tutorials"
+                        className="inline-flex items-center gap-2 mt-3 bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        Browse Tutorials
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-border rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <HelpCircle className="w-5 h-5 text-purple-600 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-medium text-card-foreground">How it works</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.
+                      </p>
+                      <Link
+                        to="/how-it-works"
+                        className="inline-flex items-center gap-2 mt-3 bg-card border border-border text-card-foreground px-3 py-2 rounded-lg hover:bg-muted transition-colors text-sm"
+                      >
+                        <HelpCircle className="w-4 h-4" />
+                        Read How it Works
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -1177,6 +1246,8 @@ const FileConverterApp: React.FC = () => {
             utmMedium="homepage_leaderboard_banner"
             utmCampaign="creatv_launch_promo"
             linkURL="https://www.creatv.io/auth"
+            creativeAssetSrc="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif"
+            creativeAssetAlt="Come check out CreaTV! Where ideas are brought to life."
           />
         </div>
       </div>

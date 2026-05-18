@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import { ChevronDown, ChevronRight, Volume2, Clock, Wrench, Zap } from 'lucide-react';
+import InfoTooltip from '@/components/info-tooltip';
 
 interface AdvancedAudioEffectsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -56,7 +57,24 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-card-foreground">Advanced Audio Effects</h3>
+      <h3 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
+        Advanced Audio Effects
+        <InfoTooltip
+          ariaLabel="About Advanced Audio Effects"
+          width="lg"
+          content={
+            <div className="space-y-1">
+              <p>Manual audio processing chains, grouped into four expandable sections:</p>
+              <ul className="list-disc pl-4 space-y-1 mt-1">
+                <li><strong>Basic Audio Processing</strong> — normalize, amplify, fade in/out, EQ presets, stereo width/pan/balance.</li>
+                <li><strong>Time-Based Effects</strong> — reverb, delay, and modulation (chorus, flanger, tremolo, vibrato).</li>
+                <li><strong>Restoration &amp; Cleanup</strong> — noise reduction, de-hum, declip, silence removal.</li>
+                <li><strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.</li>
+              </ul>
+            </div>
+          }
+        />
+      </h3>
 
       {/* Basic Processing Section */}
       <div className="space-y-2">
@@ -71,7 +89,13 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
           <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-6">
             {/* Volume Controls */}
             <div>
-              <h4 className="font-medium text-card-foreground mb-3">Volume & Dynamics</h4>
+              <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
+                Volume &amp; Dynamics
+                <InfoTooltip
+                  ariaLabel="About Volume & Dynamics"
+                  content="Amplify in decibels (-60 to +60), apply fade-in/out durations, and toggle loudness normalization. Use Amplify for level matching and Normalize when you want a consistent perceived loudness."
+                />
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">Amplify (dB)</label>
@@ -168,7 +192,13 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
 
             {/* EQ */}
             <div>
-              <h4 className="font-medium text-card-foreground mb-3">Equalizer</h4>
+              <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
+                Equalizer
+                <InfoTooltip
+                  ariaLabel="About Equalizer"
+                  content="Pick a preset that maps to a multi-band FFmpeg equalizer filter chain: bass-boost, treble-boost, vocal, classical, rock, or jazz. Choose 'none' to leave the EQ untouched."
+                />
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Controller
@@ -212,7 +242,13 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
 
             {/* Stereo Processing */}
             <div>
-              <h4 className="font-medium text-card-foreground mb-3">Stereo Processing</h4>
+              <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
+                Stereo Processing
+                <InfoTooltip
+                  ariaLabel="About Stereo Processing"
+                  content="Adjust pan (-100 left to +100 right), stereo width (0 = mono, 100 = original, up to 200 = wider), toggle mono conversion, and optionally swap left/right channels."
+                />
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">Pan</label>
@@ -284,7 +320,13 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
           <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-6">
             {/* Reverb */}
             <div>
-              <h4 className="font-medium text-card-foreground mb-3">Reverb</h4>
+              <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
+                Reverb
+                <InfoTooltip
+                  ariaLabel="About Reverb"
+                  content="Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect."
+                />
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Controller
@@ -378,7 +420,13 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
 
             {/* Delay */}
             <div>
-              <h4 className="font-medium text-card-foreground mb-3">Delay & Echo</h4>
+              <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
+                Delay &amp; Echo
+                <InfoTooltip
+                  ariaLabel="About Delay & Echo"
+                  content="Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats."
+                />
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Controller

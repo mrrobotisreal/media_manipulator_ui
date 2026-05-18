@@ -12,6 +12,10 @@ import Footer from './components/footer';
 import VideoCompressionGuide from './pages/blog/video/video-compression-guide';
 import ImageOptimizationGuide from './pages/blog/image/image-optimization-guide';
 import AudioQualityGuide from './pages/blog/audio/audio-quality-guide';
+import TutorialsPage from './pages/tutorials';
+import AudioGettingStartedTutorial from './pages/tutorials/audio/getting-started';
+import VideoGettingStartedTutorial from './pages/tutorials/video/getting-started';
+import ImageGettingStartedTutorial from './pages/tutorials/image/getting-started';
 import { trackFirstPartyPageView } from './lib/firstPartyAnalytics';
 
 const RouteAnalytics: React.FC = () => {
@@ -39,6 +43,10 @@ const Router: React.FC = () => {
             <Route path="/blog/audio/audio-quality-guide" element={<AudioQualityGuide />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-it-works" element={<HowItWorksPage />} />
+            <Route path="/tutorials" element={<TutorialsPage />} />
+            <Route path="/tutorials/audio/getting-started" element={<AudioGettingStartedTutorial />} />
+            <Route path="/tutorials/video/getting-started" element={<VideoGettingStartedTutorial />} />
+            <Route path="/tutorials/image/getting-started" element={<ImageGettingStartedTutorial />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms-of-service" element={<TermsOfServicePage />} />
             {/* <Route path="/pricing" element={<PricingPage />} /> */}

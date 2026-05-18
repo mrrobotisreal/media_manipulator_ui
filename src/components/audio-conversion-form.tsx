@@ -1,13 +1,14 @@
 import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { audioConversionSchema } from "@/schemas/audioSchema";
 import ConversionOptions from "@/components/conversion-options";
 import MediaTrimModal from "@/components/media-trim-modal";
 import AdvancedAudioEffects from "@/components/advanced-audio-effects";
 import AdBanner from "@/components/ad-banner";
+import InfoTooltip from "@/components/info-tooltip";
 import type { ConversionFormData } from "@/schemas/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TrimRange {
   startTime: number;
@@ -125,9 +126,25 @@ const AudioConversionForm: React.FC<{
           fftSize: 2048,
         },
       },
+      ai: {
+        enabled: false,
+        operation: 'none' as const,
+      },
     },
     mode: 'onChange',
   });
+
+  const aiOperation = useWatch({ control, name: 'ai.operation' });
+
+  useEffect(() => {
+    const active = aiOperation && aiOperation !== 'none';
+    setValue('ai.enabled', !!active);
+    // Stems should be lossless by default. Other AI audio ops keep the
+    // user-selected format.
+    if (active && (aiOperation === 'isolate_vocals' || aiOperation === 'remove_vocals')) {
+      setValue('format', 'wav');
+    }
+  }, [aiOperation, setValue]);
 
   const onSubmitHandler = (data: unknown) => {
     const formData = data as ConversionFormData;
@@ -172,13 +189,16 @@ const AudioConversionForm: React.FC<{
     <>
       <AdBanner
         adSlot="6671038874"
-        adFormat="leaderboard"
+        adFormat="banner"
         adPosition="audio_form_top"
         className="mb-4"
+        style={{ minHeight: '60px' }}
         isFlashMock={true}
-        utmMedium="audio_form_leaderboard"
+        utmMedium="audio_form_banner"
         utmCampaign="creatv_launch_promo"
         linkURL="https://www.creatv.io/auth"
+        creativeAssetSrc="https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_VideoAd_FullBanner.gif"
+        creativeAssetAlt="Come check out CreaTV! Where ideas are brought to life."
       />
       <form onSubmit={handleSubmit(onSubmitHandler, onErrorHandler)} className="space-y-6">
         <ConversionOptions
@@ -187,6 +207,53 @@ const AudioConversionForm: React.FC<{
           onTrimClick={audioUrl ? handleTrimClick : undefined}
           trimStatus={getTrimStatus()}
         />
+
+        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+          <div>
+            <h3 className="font-medium text-card-foreground flex items-center gap-2">
+              AI Audio Tools
+              <InfoTooltip
+                ariaLabel="About AI Audio Tools"
+                width="lg"
+                content={
+                  <div className="space-y-1">
+                    <p>One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.</p>
+                    <ul className="list-disc pl-4 space-y-1 mt-1">
+                      <li><strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).</li>
+                      <li><strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.</li>
+                      <li><strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).</li>
+                      <li><strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.</li>
+                    </ul>
+                  </div>
+                }
+              />
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              AI audio tools run as GPU jobs and may take longer than basic conversion.
+            </p>
+          </div>
+          <Controller
+            name="ai.operation"
+            control={control}
+            render={({ field }) => (
+              <label className="block">
+                <span className="block text-sm font-medium mb-1 text-card-foreground">Operation</span>
+                <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
+                  <option value="none">None (standard conversion)</option>
+                  <option value="clean_voice">Clean Voice</option>
+                  <option value="remove_background_noise">Remove Background Noise</option>
+                  <option value="isolate_vocals">Isolate Vocals</option>
+                  <option value="remove_vocals">Remove Vocals / Karaoke</option>
+                </select>
+              </label>
+            )}
+          />
+          {aiOperation && aiOperation !== 'none' && (
+            <p className="text-xs text-muted-foreground">
+              Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.
+            </p>
+          )}
+        </div>
 
         {/* Advanced Audio Effects */}
         <AdvancedAudioEffects control={control} />

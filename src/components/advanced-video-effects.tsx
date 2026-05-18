@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import { ChevronDown, ChevronRight, Palette, Move, Clock, Settings } from 'lucide-react';
+import InfoTooltip from '@/components/info-tooltip';
 
 interface AdvancedVideoEffectsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -53,7 +54,24 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-card-foreground">Advanced Video Effects</h3>
+      <h3 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
+        Advanced Video Effects
+        <InfoTooltip
+          ariaLabel="About Advanced Video Effects"
+          width="lg"
+          content={
+            <div className="space-y-1">
+              <p>Manual video filter chains, grouped into four expandable sections:</p>
+              <ul className="list-disc pl-4 space-y-1 mt-1">
+                <li><strong>Visual Effects</strong> — color correction, blur/sharpen, noise, and artistic filters.</li>
+                <li><strong>Transform</strong> — rotation, flip, custom crop, padding/letterboxing.</li>
+                <li><strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.</li>
+                <li><strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.</li>
+              </ul>
+            </div>
+          }
+        />
+      </h3>
 
       {/* Visual Effects Section */}
       <div className="space-y-2">
@@ -68,7 +86,13 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
           <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-6">
             {/* Color/Exposure */}
             <div>
-              <h4 className="font-medium text-card-foreground mb-3">Color & Exposure</h4>
+              <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
+                Color &amp; Exposure
+                <InfoTooltip
+                  ariaLabel="About Color & Exposure"
+                  content="Adjust brightness, contrast, saturation, hue, gamma, exposure, and shadow/highlight recovery. These map to FFmpeg's eq and curves filters and stack into a single color-correction pass."
+                />
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">Brightness</label>
@@ -178,7 +202,13 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
 
             {/* Blur/Sharpen */}
             <div>
-              <h4 className="font-medium text-card-foreground mb-3">Blur & Sharpen</h4>
+              <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
+                Blur &amp; Sharpen
+                <InfoTooltip
+                  ariaLabel="About Blur & Sharpen"
+                  content="Add Gaussian blur (0–50 sigma), motion blur with angle and distance, or unsharp-mask sharpening with adjustable radius, amount, and threshold."
+                />
+              </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">Gaussian Blur</label>

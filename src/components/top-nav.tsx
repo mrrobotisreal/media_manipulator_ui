@@ -40,6 +40,12 @@ const components: { title: string; href: string; description: string }[] = [
       "How it works page where you can learn more about the conversion process",
   },
   {
+    title: "Tutorials",
+    href: "/tutorials",
+    description:
+      "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
+  },
+  {
     title: "Privacy Policy",
     href: "/privacy-policy",
     description: "Privacy policy page where you can learn more about the privacy policy of the project",
@@ -88,7 +94,7 @@ const TopNav: React.FC = () => {
             className="h-20 w-20 rounded-sm"
           />
           <div className="flex flex-col">
-            <h1 className="font-glitch text-xl md:text-2xl text-white leading-tight hidden sm:block">Media Manipulator</h1>
+            <h1 className="font-glitch text-lg md:text-2xl text-white leading-tight hidden sm:block">Media Manipulator</h1>
             <p className="text-xs md:text-sm text-gray-300 hidden sm:block">Convert images, videos, and audio files with ease</p>
           </div>
         </div>

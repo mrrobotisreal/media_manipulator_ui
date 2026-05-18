@@ -54,7 +54,7 @@ const BlogPage: React.FC = () => {
           linkURL="https://www.creatv.io/auth"
         />
       </div>
-      <Card className="max-w-4xl mx-auto my-2 sci-fi-frame">
+      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
         <CardContent className="p-12">
           <h1 className="text-4xl font-bold mb-8 text-card-foreground">Media Conversion Blog</h1>
         <p className="text-lg text-muted-foreground mb-8">

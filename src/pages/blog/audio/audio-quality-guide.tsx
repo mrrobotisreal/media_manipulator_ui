@@ -29,7 +29,7 @@ const AudioQualityGuide: React.FC = () => {
           linkURL="https://www.creatv.io/auth"
         />
       </div>
-      <Card className="max-w-4xl mx-auto my-2 sci-fi-frame p-12">
+      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame p-12">
         <div className="p-6 pb-0">
         <a
           href="/blog"

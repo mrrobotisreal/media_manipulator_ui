@@ -13,6 +13,8 @@ interface AdBannerProps {
   utmMedium?: string;
   utmCampaign?: string;
   linkURL?: string;
+  creativeAssetSrc?: string;
+  creativeAssetAlt?: string;
 }
 
 declare global {
@@ -58,6 +60,8 @@ const AdBanner: React.FC<AdBannerProps> = ({
   utmMedium = "homepage_leaderboard_banner",
   utmCampaign = "creatv_launch_promo",
   linkURL,
+  creativeAssetSrc,
+  creativeAssetAlt,
 }) => {
   const adRef = useRef<HTMLModElement>(null);
   const dims = AD_FORMAT_DIMENSIONS[adFormat] ?? AD_FORMAT_DIMENSIONS.auto;
@@ -93,11 +97,12 @@ const AdBanner: React.FC<AdBannerProps> = ({
           }}
         >
           <img
-            src="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif"
-            alt="Come check out CreaTV! Where ideas are brought to life."
-            width={728}
-            height={90}
+            src={creativeAssetSrc || "https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif"}
+            alt={creativeAssetAlt || "Come check out CreaTV! Where ideas are brought to life."}
+            width={dims.maxWidth}
+            height={dims.minHeight}
             className="block w-full max-w-full h-auto"
+            style={{ maxWidth: dims.maxWidth, minHeight: dims.minHeight }}
           />
         </div>
       );

@@ -148,4 +148,11 @@ export const audioConversionSchema = z.object({
       fftSize: z.number().min(256).max(8192).default(2048),
     }).optional(),
   }).optional(),
+
+  // AI audio tools (Phase 1). When ai.enabled is true and ai.operation is not
+  // 'none', the API runs the AI op and bypasses the normal FFmpeg chain.
+  ai: z.object({
+    enabled: z.boolean().default(false).optional(),
+    operation: z.enum(['none', 'clean_voice', 'remove_background_noise', 'isolate_vocals', 'remove_vocals']).default('none'),
+  }).optional(),
 });

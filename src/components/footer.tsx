@@ -25,7 +25,10 @@ const Footer: React.FC = () => {
                 alt="Media Manipulator Icon"
                 className="h-20 w-20 rounded-sm"
               />
-              <span className="font-glitch text-xl text-white">Media Manipulator</span>
+              <div className="flex flex-col">
+                <h1 className="font-glitch text-4xl text-white">Media Manipulator</h1>
+                <p className="text-sm text-gray-400">Convert images, videos, and audio files with ease</p>
+              </div>
             </div>
             <p className="text-sm text-gray-400 max-w-md">
               Browser-based and server-assisted tools for editing, converting, compressing, analyzing,

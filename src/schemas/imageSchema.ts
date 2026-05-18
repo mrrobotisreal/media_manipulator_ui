@@ -52,4 +52,25 @@ export const imageConversionSchema = z.object({
     removeDestinationFields: z.boolean().optional(),
   }).optional(),
   advancedTags: z.record(z.string()).optional(),
+
+  // AI image tools (Phase 1). When ai.enabled is true and ai.operation is not
+  // 'none', the API runs the AI op and bypasses the normal ImageMagick chain.
+  ai: z.object({
+    enabled: z.boolean().default(false).optional(),
+    operation: z.enum(['none', 'face_privacy', 'remove_background', 'ai_upscale', 'redact_text']).default('none'),
+    faceMode: z.enum(['blur', 'pixelate', 'blackbox']).optional(),
+    backgroundModel: z.enum([
+      'birefnet-general',
+      'birefnet-general-lite',
+      'isnet-general-use',
+      'u2net',
+      'u2netp',
+      'u2net_human_seg',
+      'birefnet-portrait',
+    ]).optional(),
+    upscaleScale: z.union([z.literal(2), z.literal(4)]).optional(),
+    upscaleModel: z.enum(['realesrgan-x4plus', 'realesrgan-x4plus-anime', 'realesr-animevideov3']).optional(),
+    textDetect: z.enum(['pii', 'all-text']).optional(),
+    textRedaction: z.enum(['blackbox', 'blur', 'pixelate']).optional(),
+  }).optional(),
 });
