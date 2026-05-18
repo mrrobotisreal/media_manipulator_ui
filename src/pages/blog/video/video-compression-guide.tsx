@@ -4,6 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import AdBanner from '@/components/ad-banner';
+import RelatedLinks from '@/components/related-links';
 import mixpanel from 'mixpanel-browser';
 
 const VideoCompressionGuide: React.FC = () => {
@@ -407,6 +408,32 @@ const VideoCompressionGuide: React.FC = () => {
         <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
           "In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!" ⚡
         </blockquote>
+
+        <RelatedLinks
+          intro="Apply what you just read with the free Media Manipulator tools."
+          links={[
+            {
+              label: 'Open the video converter',
+              to: '/',
+              description: 'Convert and compress MP4, WebM, MOV, MKV, and more.',
+            },
+            {
+              label: 'Video converter tutorial',
+              to: '/tutorials/video/getting-started',
+              description: 'Step-by-step walkthrough of every video conversion setting.',
+            },
+            {
+              label: 'Image optimization guide',
+              to: '/blog/image/image-optimization-guide',
+              description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
+            },
+            {
+              label: 'Audio quality guide',
+              to: '/blog/audio/audio-quality-guide',
+              description: 'Bitrate, sample rate, and codec choices for clean audio.',
+            },
+          ]}
+        />
       </CardContent>
 
       <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">

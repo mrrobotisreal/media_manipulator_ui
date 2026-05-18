@@ -26,6 +26,7 @@ import {
   trackFileDownload,
   trackPageView,
   trackUserSession,
+  getSafeFileExtension,
 } from '@/lib/analytics';
 import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
@@ -270,7 +271,7 @@ const FileConverterApp: React.FC = () => {
   useEffect(() => {
     if (fileDetails && selectedFile) {
       mixpanel.track('File Identification Completed', {
-        file_name: selectedFile.name,
+        file_extension: getSafeFileExtension(selectedFile.name),
         file_type: fileDetails.fileType,
         detected_mime_type: fileDetails.mimeType,
         file_size_mb: fileDetails.fileSize / 1024 / 1024,
@@ -540,17 +541,17 @@ const FileConverterApp: React.FC = () => {
         const compressionRatio = inputSizeMB > 0 ? inputSizeMB / outputSizeMB : 1;
 
         mixpanel.track('File Downloaded', {
-          file_name: fileName,
           file_type: mediaKind,
           output_format: historyItem?.format || conversionOptions?.format || 'unknown',
+          file_extension: getSafeFileExtension(fileName),
           file_size_mb: outputSizeMB,
           compression_ratio: compressionRatio,
           user_tier: 'free',
           conversion_id: jobId
         });
         trackFirstPartyEvent('download', {
-          file_name: fileName,
           output_format: conversionOptions?.format || 'unknown',
+          file_extension: getSafeFileExtension(fileName),
           size_bytes: blob.size,
           success: true,
         }, {
@@ -605,7 +606,7 @@ const FileConverterApp: React.FC = () => {
       trackFirstPartyEvent('feature_usage', {
         feature_name: 'file_identification',
         action: 'started',
-        file_name: selectedFile.name,
+        file_extension: getSafeFileExtension(selectedFile.name),
         size_bytes: selectedFile.size,
       }, {
         featureName: 'file_identification',
@@ -614,7 +615,7 @@ const FileConverterApp: React.FC = () => {
 
       // Enhanced mixpanel tracking for file identification
       mixpanel.track('File Identification Started', {
-        file_name: selectedFile.name,
+        file_extension: getSafeFileExtension(selectedFile.name),
         file_type: fileType || 'unknown',
         file_size_mb: selectedFile.size / 1024 / 1024,
         user_tier: 'free'
@@ -1025,6 +1026,7 @@ const FileConverterApp: React.FC = () => {
                         onSubmit={handleConvert}
                         isLoading={isLoading}
                         imageUrl={originalImageUrl || undefined}
+                        file={selectedFile || undefined}
                       />
                     )}
                     {fileType === 'video' && (

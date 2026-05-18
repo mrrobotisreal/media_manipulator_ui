@@ -11,7 +11,6 @@ const HowItWorksPage: React.FC = () => {
       page_path: '/how-it-works',
       user_tier: 'free'
     });
-    document.title = 'How Media Manipulator Works — Convert, Edit, Transcribe, and AI-Process Audio, Video, and Images';
   }, []);
 
   return (

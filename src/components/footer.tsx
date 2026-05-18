@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import formatterIcon from '/MMIcon.webp';
 
 const navLinks: { title: string; href: string }[] = [
   { title: 'Home', href: '/' },
-  { title: 'About', href: '/about' },
-  { title: 'How it works', href: '/how-it-works' },
   { title: 'Blog', href: '/blog' },
+  { title: 'Tutorials', href: '/tutorials' },
+  { title: 'How it works', href: '/how-it-works' },
+  { title: 'About', href: '/about' },
 ];
 
 const legalLinks: { title: string; href: string }[] = [
@@ -52,12 +54,12 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               {navLinks.map(link => (
                 <li key={link.title}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     {link.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -70,12 +72,12 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               {legalLinks.map(link => (
                 <li key={link.title}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     {link.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

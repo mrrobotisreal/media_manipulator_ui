@@ -5,8 +5,12 @@ import { imageConversionSchema } from "@/schemas/imageSchema";
 import ConversionOptions from "@/components/conversion-options";
 import ImageCropModal from "@/components/image-crop-modal";
 import InfoTooltip from "@/components/info-tooltip";
+import FaceSelectionOverlay from "@/components/face-selection-overlay";
+import useDetectFaces, { type FaceDetectionResponse } from "@/lib/useDetectFaces";
 import type { ConversionFormData } from "@/schemas/types";
 import { useEffect, useState } from "react";
+
+type FaceSelectionMode = 'all' | 'only_selected' | 'all_except_selected';
 
 interface CropArea {
   x: number;
@@ -60,10 +64,23 @@ const ImageConversionForm: React.FC<{
   onSubmit: (data: ConversionFormData) => void;
   isLoading: boolean;
   imageUrl?: string;
-}> = ({ onSubmit, isLoading, imageUrl }) => {
+  file?: File;
+}> = ({ onSubmit, isLoading, imageUrl, file }) => {
   const [showCropModal, setShowCropModal] = useState(false);
   const [cropArea, setCropArea] = useState<CropArea | null>(null);
   const [showAdvancedMetadata, setShowAdvancedMetadata] = useState(false);
+  const [faceDetection, setFaceDetection] = useState<FaceDetectionResponse | null>(null);
+  const [selectedFaceIds, setSelectedFaceIds] = useState<string[]>([]);
+  const [faceSelectionMode, setFaceSelectionMode] = useState<FaceSelectionMode>('all');
+  const [faceDetectError, setFaceDetectError] = useState<string | null>(null);
+  // React Query returns a new mutation-result object every render; only the
+  // method references are stable. Destructure them so useEffect deps don't
+  // churn and trigger an infinite re-render loop.
+  const {
+    mutateAsync: detectFacesAsync,
+    reset: resetDetectFaces,
+    isPending: isDetectingFaces,
+  } = useDetectFaces();
 
   const { control, handleSubmit, setValue, clearErrors, unregister, formState: { errors } } = useForm({
     resolver: zodResolver(imageConversionSchema),
@@ -117,6 +134,11 @@ const ImageConversionForm: React.FC<{
         upscaleModel: 'realesrgan-x4plus' as const,
         textDetect: 'pii' as const,
         textRedaction: 'blackbox' as const,
+        faceSelection: {
+          sessionId: undefined,
+          selectionMode: 'all' as const,
+          selectedFaceIds: [] as string[],
+        },
       },
     },
     mode: 'onChange',
@@ -135,7 +157,29 @@ const ImageConversionForm: React.FC<{
       // These ops require/prefer PNG output.
       setValue('format', 'png');
     }
-  }, [aiOperation, setValue]);
+    if (aiOperation !== 'face_privacy') {
+      // Drop any in-flight face selection if the user switches to another op
+      // so we don't accidentally send a stale session to /upload. Use
+      // functional / conditional setters so a no-op (already cleared) does
+      // NOT create a fresh array/object reference and trigger a re-render
+      // loop.
+      setFaceDetection((prev) => (prev === null ? prev : null));
+      setSelectedFaceIds((prev) => (prev.length === 0 ? prev : []));
+      setFaceSelectionMode((prev) => (prev === 'all' ? prev : 'all'));
+      setFaceDetectError((prev) => (prev === null ? prev : null));
+      resetDetectFaces();
+    }
+  }, [aiOperation, setValue, resetDetectFaces]);
+
+  useEffect(() => {
+    // The detect session is bound to the exact bytes of the chosen file. If
+    // the user picks a different file, force them to re-detect. Conditional
+    // setters avoid spurious re-renders when the state is already clean.
+    setFaceDetection((prev) => (prev === null ? prev : null));
+    setSelectedFaceIds((prev) => (prev.length === 0 ? prev : []));
+    setFaceDetectError((prev) => (prev === null ? prev : null));
+    resetDetectFaces();
+  }, [file, resetDetectFaces]);
 
   useEffect(() => {
     if (metadataMode !== 'custom') {
@@ -144,6 +188,23 @@ const ImageConversionForm: React.FC<{
       setShowAdvancedMetadata(false);
     }
   }, [clearErrors, metadataMode, unregister]);
+
+  const handleDetectFaces = async () => {
+    if (!file) {
+      setFaceDetectError('Choose an image first.');
+      return;
+    }
+    setFaceDetectError(null);
+    try {
+      const result = await detectFacesAsync(file);
+      setFaceDetection(result);
+      setSelectedFaceIds([]);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Face detection failed';
+      setFaceDetectError(message);
+      setFaceDetection(null);
+    }
+  };
 
   const onSubmitHandler = (data: unknown) => {
     const formData = { ...(data as Record<string, unknown>) };
@@ -161,6 +222,25 @@ const ImageConversionForm: React.FC<{
       formData.metadata = pruneEmptyValues(formData.metadata);
       formData.gpsOptions = pruneEmptyValues(formData.gpsOptions);
       formData.advancedTags = pruneEmptyValues(formData.advancedTags);
+    }
+
+    // Only attach faceSelection for face_privacy. For non-"all" selection
+    // modes we require a session ID so the backend can reuse the same boxes
+    // the user just confirmed in the overlay.
+    const ai = formData.ai as Record<string, unknown> | undefined;
+    if (ai && ai.operation === 'face_privacy') {
+      const selection = {
+        sessionId: faceDetection?.faceDetectionSessionId,
+        selectionMode: faceSelectionMode,
+        selectedFaceIds,
+      };
+      if (faceSelectionMode !== 'all' && !selection.sessionId) {
+        setFaceDetectError('Detect faces first to use selected-face mode.');
+        return;
+      }
+      ai.faceSelection = selection;
+    } else if (ai) {
+      delete ai.faceSelection;
     }
 
     console.log('Image form submitted with data:', formData);
@@ -297,20 +377,125 @@ const ImageConversionForm: React.FC<{
           />
 
           {aiOperation === 'face_privacy' && (
-            <Controller
-              name="ai.faceMode"
-              control={control}
-              render={({ field }) => (
+            <div className="space-y-4">
+              <Controller
+                name="ai.faceMode"
+                control={control}
+                render={({ field }) => (
+                  <label className="block">
+                    <span className="block text-sm font-medium mb-1 text-card-foreground">Face Mode</span>
+                    <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
+                      <option value="blur">Blur</option>
+                      <option value="pixelate">Pixelate</option>
+                      <option value="blackbox">Black Box</option>
+                    </select>
+                  </label>
+                )}
+              />
+
+              <div className="border border-border rounded-lg p-3 space-y-3 bg-card/50">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="font-medium text-card-foreground flex items-center gap-2">
+                    Selective Faces
+                    <InfoTooltip
+                      ariaLabel="About selective face privacy"
+                      width="lg"
+                      content={
+                        <div className="space-y-1">
+                          <p>Default applies the chosen effect to every detected face.</p>
+                          <p>Use <strong>Detect faces</strong> to preview boxes and pick which faces to obscure or skip.</p>
+                          <p className="text-xs">Face boxes are stored temporarily for selection and expire automatically.</p>
+                        </div>
+                      }
+                    />
+                  </h4>
+                </div>
+
                 <label className="block">
-                  <span className="block text-sm font-medium mb-1 text-card-foreground">Face Mode</span>
-                  <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                    <option value="blur">Blur</option>
-                    <option value="pixelate">Pixelate</option>
-                    <option value="blackbox">Black Box</option>
+                  <span className="block text-sm font-medium mb-1 text-card-foreground">Selection mode</span>
+                  <select
+                    value={faceSelectionMode}
+                    onChange={(event) => setFaceSelectionMode(event.target.value as FaceSelectionMode)}
+                    className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring"
+                  >
+                    <option value="all">All detected faces</option>
+                    <option value="only_selected">Only selected faces</option>
+                    <option value="all_except_selected">All except selected faces</option>
                   </select>
                 </label>
-              )}
-            />
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleDetectFaces}
+                    disabled={!file || isDetectingFaces}
+                    className="px-3 py-1.5 text-sm rounded-md bg-emerald-600 text-white hover:bg-emerald-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    {isDetectingFaces ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        Detecting…
+                      </>
+                    ) : (
+                      faceDetection ? 'Re-detect faces' : 'Detect faces'
+                    )}
+                  </button>
+                  {faceDetection && faceDetection.faces.length > 0 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedFaceIds(faceDetection.faces.map((f) => f.id))}
+                        className="px-2 py-1 text-xs rounded-md border border-input bg-input text-card-foreground hover:bg-muted"
+                      >
+                        Select all
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedFaceIds([])}
+                        className="px-2 py-1 text-xs rounded-md border border-input bg-input text-card-foreground hover:bg-muted"
+                      >
+                        Clear selection
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {!file && (
+                  <p className="text-xs text-muted-foreground">Choose an image first to detect faces.</p>
+                )}
+                {faceDetectError && (
+                  <p className="text-xs text-destructive">{faceDetectError}</p>
+                )}
+                {faceDetection && faceDetection.faces.length === 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    No faces detected. You can still run default face privacy on conversion, or try another image.
+                  </p>
+                )}
+                {faceDetection && faceDetection.faces.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-xs text-muted-foreground">
+                      Detected {faceDetection.faces.length} {faceDetection.faces.length === 1 ? 'face' : 'faces'}.
+                      Selected: {selectedFaceIds.length}.
+                    </p>
+                    {imageUrl && (
+                      <FaceSelectionOverlay
+                        imageUrl={imageUrl}
+                        faces={faceDetection.faces}
+                        selectedFaceIds={selectedFaceIds}
+                        onToggleFace={(id) =>
+                          setSelectedFaceIds((prev) =>
+                            prev.includes(id) ? prev.filter((existing) => existing !== id) : [...prev, id],
+                          )
+                        }
+                      />
+                    )}
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  Default: applies to every detected face. Use Detect faces to choose specific faces.
+                </p>
+              </div>
+            </div>
           )}
 
           {aiOperation === 'remove_background' && (

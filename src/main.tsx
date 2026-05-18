@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import mixpanel from "mixpanel-browser"
+import { initWebVitals } from '@/lib/webVitals'
 
 if (import.meta.env.VITE_MP_TOKEN) {
   mixpanel.init(import.meta.env.VITE_MP_TOKEN, {
@@ -14,6 +15,8 @@ if (import.meta.env.VITE_MP_TOKEN) {
     persistence: "localStorage",
   });
 }
+
+initWebVitals();
 
 const queryClient = new QueryClient()
 

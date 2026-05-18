@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
+import EmbeddedToolPanel from '@/components/embedded-tool-panel';
+import RelatedLinks from '@/components/related-links';
 import mixpanel from 'mixpanel-browser';
 
 const VideoGettingStartedTutorial: React.FC = () => {
@@ -11,7 +13,6 @@ const VideoGettingStartedTutorial: React.FC = () => {
       page_path: '/tutorials/video/getting-started',
       user_tier: 'free',
     });
-    document.title = 'Getting Started: Converting Video Files — Media Manipulator Tutorial';
   }, []);
 
   return (
@@ -43,6 +44,12 @@ const VideoGettingStartedTutorial: React.FC = () => {
           <p className="mb-4">
             After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below.
           </p>
+
+          <EmbeddedToolPanel
+            defaultMediaKind="video"
+            title="Try the video converter without leaving this page"
+            description="Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+          />
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">2. Pick the output format and quality</h2>
           <p className="mb-4">
@@ -128,6 +135,32 @@ const VideoGettingStartedTutorial: React.FC = () => {
               How it Works
             </Link>
           </div>
+
+          <RelatedLinks
+            intro="Keep learning — guides and sibling tutorials that pair with the video converter."
+            links={[
+              {
+                label: 'Video compression guide',
+                to: '/blog/video/video-compression-guide',
+                description: 'MP4 vs WebM vs AVI and how codecs and bitrate affect quality.',
+              },
+              {
+                label: 'Audio converter tutorial',
+                to: '/tutorials/audio/getting-started',
+                description: 'Clean up the audio track before re-encoding your video.',
+              },
+              {
+                label: 'Image converter tutorial',
+                to: '/tutorials/image/getting-started',
+                description: 'Optimize thumbnails and poster images that go with your video.',
+              },
+              {
+                label: 'How Media Manipulator works',
+                to: '/how-it-works',
+                description: 'Learn how transcription and AI summaries run on a local GPU.',
+              },
+            ]}
+          />
         </CardContent>
       </Card>
       <div className="max-w-6xl mx-auto px-4 pb-8">

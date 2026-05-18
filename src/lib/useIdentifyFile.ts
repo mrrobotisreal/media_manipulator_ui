@@ -47,9 +47,8 @@ interface UseIdentifyFileReturns {
 const useIdentifyFile = (): UseIdentifyFileReturns => {
   const identificationMutation = useMutation({
     mutationFn: identifyFile,
-    onSuccess: (data, file) => {
+    onSuccess: (data) => {
       trackFirstPartyEvent('file_identified', {
-        file_name: file.name,
         file_type: data.fileType,
         media_kind: data.fileType,
         mime_type: data.mimeType,
@@ -64,7 +63,6 @@ const useIdentifyFile = (): UseIdentifyFileReturns => {
     onError: (error, file) => {
       console.error('File identification failed:', error);
       trackFirstPartyError('file_identification', error, {
-        file_name: file.name,
         size_bytes: file.size,
       });
       toast.error('Failed to identify file', {

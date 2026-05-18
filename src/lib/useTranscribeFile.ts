@@ -142,7 +142,6 @@ const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): 
         description: `Job ID: ${data.jobId} - Generating transcript`,
       });
       trackFirstPartyEvent('transcription_started', {
-        file_name: variables.file.name,
         target_format: variables.options.format,
         size_bytes: variables.file.size,
       }, {
@@ -155,7 +154,6 @@ const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): 
       setUploadPhase('idle');
       console.error('Transcription upload failed:', error);
       trackFirstPartyError('transcription_upload', error, {
-        file_name: variables.file.name,
         target_format: variables.options.format,
       }, {
         mediaKind: getFileType(variables.file),

@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
+import EmbeddedToolPanel from '@/components/embedded-tool-panel';
+import RelatedLinks from '@/components/related-links';
 import mixpanel from 'mixpanel-browser';
 
 const AudioGettingStartedTutorial: React.FC = () => {
@@ -11,7 +13,6 @@ const AudioGettingStartedTutorial: React.FC = () => {
       page_path: '/tutorials/audio/getting-started',
       user_tier: 'free',
     });
-    document.title = 'Getting Started: Converting Audio Files — Media Manipulator Tutorial';
   }, []);
 
   return (
@@ -43,6 +44,12 @@ const AudioGettingStartedTutorial: React.FC = () => {
           <p className="mb-4">
             Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial.
           </p>
+
+          <EmbeddedToolPanel
+            defaultMediaKind="audio"
+            title="Try the audio converter without leaving this page"
+            description="Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+          />
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">2. Pick the output format</h2>
           <p className="mb-4">
@@ -137,6 +144,32 @@ const AudioGettingStartedTutorial: React.FC = () => {
               How it Works
             </Link>
           </div>
+
+          <RelatedLinks
+            intro="Keep learning — these guides and sibling tutorials pair well with the audio converter."
+            links={[
+              {
+                label: 'Audio quality guide',
+                to: '/blog/audio/audio-quality-guide',
+                description: 'How bitrate, sample rate, and codec choice affect quality.',
+              },
+              {
+                label: 'Video converter tutorial',
+                to: '/tutorials/video/getting-started',
+                description: 'Convert, compress, trim, and transcribe video files.',
+              },
+              {
+                label: 'Image converter tutorial',
+                to: '/tutorials/image/getting-started',
+                description: 'Resize, crop, and strip EXIF metadata from images.',
+              },
+              {
+                label: 'How Media Manipulator works',
+                to: '/how-it-works',
+                description: 'See how AI audio jobs run on a local GPU server.',
+              },
+            ]}
+          />
         </CardContent>
       </Card>
       <div className="max-w-6xl mx-auto px-4 pb-8">

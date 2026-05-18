@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
+import EmbeddedToolPanel from '@/components/embedded-tool-panel';
+import RelatedLinks from '@/components/related-links';
 import mixpanel from 'mixpanel-browser';
 
 const ImageGettingStartedTutorial: React.FC = () => {
@@ -11,7 +13,6 @@ const ImageGettingStartedTutorial: React.FC = () => {
       page_path: '/tutorials/image/getting-started',
       user_tier: 'free',
     });
-    document.title = 'Getting Started: Converting Image Files — Media Manipulator Tutorial';
   }, []);
 
   return (
@@ -40,6 +41,12 @@ const ImageGettingStartedTutorial: React.FC = () => {
           <p className="mb-4">
             Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are deleted within 24 hours.
           </p>
+
+          <EmbeddedToolPanel
+            defaultMediaKind="image"
+            title="Try the image converter without leaving this page"
+            description="Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+          />
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">2. Pick the output format and quality</h2>
           <ul className="list-disc pl-6 space-y-1 mb-4">
@@ -133,6 +140,32 @@ const ImageGettingStartedTutorial: React.FC = () => {
               How it Works
             </Link>
           </div>
+
+          <RelatedLinks
+            intro="Keep learning — guides and sibling tutorials that pair with the image converter."
+            links={[
+              {
+                label: 'Image optimization guide',
+                to: '/blog/image/image-optimization-guide',
+                description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
+              },
+              {
+                label: 'Video converter tutorial',
+                to: '/tutorials/video/getting-started',
+                description: 'Convert, trim, and apply visual effects to video files.',
+              },
+              {
+                label: 'Audio converter tutorial',
+                to: '/tutorials/audio/getting-started',
+                description: 'Clean up voiceover or background audio for media projects.',
+              },
+              {
+                label: 'How Media Manipulator works',
+                to: '/how-it-works',
+                description: 'See how AI image tools run on a local GPU server.',
+              },
+            ]}
+          />
         </CardContent>
       </Card>
       <div className="max-w-6xl mx-auto px-4 pb-8">

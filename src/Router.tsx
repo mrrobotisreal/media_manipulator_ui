@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import App from './App';
 import BlogPage from './pages/blog';
@@ -17,12 +17,33 @@ import AudioGettingStartedTutorial from './pages/tutorials/audio/getting-started
 import VideoGettingStartedTutorial from './pages/tutorials/video/getting-started';
 import ImageGettingStartedTutorial from './pages/tutorials/image/getting-started';
 import { trackFirstPartyPageView } from './lib/firstPartyAnalytics';
+import { trackGooglePageView } from './lib/gtag';
+import { applySeoMeta, getSeoForPath } from './lib/seo';
 
 const RouteAnalytics: React.FC = () => {
   const location = useLocation();
+  const isInitialPageviewSentRef = useRef(false);
 
   useEffect(() => {
-    trackFirstPartyPageView(document.title || location.pathname);
+    const seo = getSeoForPath(location.pathname);
+    applySeoMeta(seo);
+
+    // Wait a frame so document.title reflects the new route before sending.
+    const sendPageview = () => {
+      const path = `${location.pathname}${location.search}`;
+      const title = document.title || seo.title;
+      trackFirstPartyPageView(title);
+      trackGooglePageView(title, path);
+    };
+
+    if (!isInitialPageviewSentRef.current) {
+      isInitialPageviewSentRef.current = true;
+      sendPageview();
+      return;
+    }
+
+    const raf = requestAnimationFrame(sendPageview);
+    return () => cancelAnimationFrame(raf);
   }, [location.pathname, location.search]);
 
   return null;

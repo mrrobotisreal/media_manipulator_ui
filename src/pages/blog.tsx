@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
+import RelatedLinks from '@/components/related-links';
 import mixpanel from 'mixpanel-browser';
 
 const articles = [
@@ -65,7 +67,7 @@ const BlogPage: React.FC = () => {
           {articles.map((article, index) => (
             <article key={index} className="bg-card p-6 hover:shadow-lg transition-shadow sci-fi-frame-inner">
               <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-green-600">
-                <a href={`/blog/${article.slug}`}>{article.title}</a>
+                <Link to={`/blog/${article.slug}`}>{article.title}</Link>
               </h2>
               <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                 <span>{article.date}</span>
@@ -73,15 +75,37 @@ const BlogPage: React.FC = () => {
                 <span>{article.readTime}</span>
               </div>
               <p className="text-muted-foreground mb-4">{article.excerpt}</p>
-              <a
-                href={`/blog/${article.slug}`}
+              <Link
+                to={`/blog/${article.slug}`}
                 className="text-green-600 hover:text-green-700 font-medium"
               >
                 Read more →
-              </a>
+              </Link>
             </article>
           ))}
         </div>
+
+        <RelatedLinks
+          title="Want to try the tools?"
+          intro="The Media Manipulator tools that pair with these articles are all free."
+          links={[
+            {
+              label: 'Open the media converter',
+              to: '/',
+              description: 'Convert, edit, compress, and transcribe images, videos, and audio.',
+            },
+            {
+              label: 'Browse the tutorials',
+              to: '/tutorials',
+              description: 'Step-by-step walkthroughs of every conversion option and AI tool.',
+            },
+            {
+              label: 'How Media Manipulator works',
+              to: '/how-it-works',
+              description: 'See how files are processed, scanned, and temporarily stored.',
+            },
+          ]}
+        />
         </CardContent>
       </Card>
       <div className="max-w-6xl mx-auto px-4 pb-8">

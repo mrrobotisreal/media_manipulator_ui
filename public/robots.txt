@@ -1,35 +1,29 @@
+# Default policy — allow all crawlers, expose every public route.
 User-agent: *
 Allow: /
 
-# Important files
+# Sitemap
 Sitemap: https://www.media-manipulator.com/sitemap.xml
 
-# Allow crawling of main assets
-Allow: /images/
-Allow: /MMIcon.webp
-Allow: /MMOpenGraph.jpg
-Allow: /*.css
-Allow: /*.js
-
-# Allow main routes
-Allow: /about
-Allow: /how-it-works
-Allow: /privacy-policy
-Allow: /terms-of-service
-Allow: /blog
-Allow: /blog/video/video-compression-guide
-Allow: /blog/image/image-optimization-guide
-Allow: /blog/audio/audio-quality-guide
-
-# Disallow admin and private areas (if any exist in the future)
+# Keep admin and private prefixes off-limits (in case they ever exist).
+User-agent: *
 Disallow: /admin/
 Disallow: /private/
-Disallow: /.well-known/
 
-# Crawl delay (optional - be respectful to servers)
-Crawl-delay: 1
+# Google AdSense crawlers - explicit allow so ads can be served on every page.
+User-agent: Mediapartners-Google
+Allow: /
 
-# Block specific bots that might be problematic (optional)
+User-agent: Google-Display-Ads-Bot
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+# Crawl delay only for third-party bots known to be aggressive.
 User-agent: AhrefsBot
 Crawl-delay: 10
 

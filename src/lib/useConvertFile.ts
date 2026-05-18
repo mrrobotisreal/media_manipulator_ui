@@ -138,7 +138,6 @@ const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConver
         description: `Job ID: ${data.jobId} - Your file is being processed`
       });
       trackFirstPartyEvent('conversion_started', {
-        file_name: variables.file.name,
         source_format: variables.file.name.split('.').pop()?.toLowerCase() || 'unknown',
         target_format: variables.options.format,
         size_bytes: variables.file.size,
@@ -153,7 +152,6 @@ const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConver
       setUploadPhase('idle');
       console.error('Conversion failed:', error);
       trackFirstPartyError('conversion_upload', error, {
-        file_name: variables.file.name,
         target_format: variables.options.format,
       }, {
         mediaKind: getFileType(variables.file),

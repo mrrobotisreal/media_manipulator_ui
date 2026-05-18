@@ -78,7 +78,6 @@ const TutorialsPage: React.FC = () => {
       page_path: '/tutorials',
       user_tier: 'free',
     });
-    document.title = 'Media Manipulator Tutorials — Learn the Audio, Video, and Image Converters';
   }, []);
 
   return (

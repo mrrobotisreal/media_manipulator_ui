@@ -4,6 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import AdBanner from '@/components/ad-banner';
+import RelatedLinks from '@/components/related-links';
 import mixpanel from 'mixpanel-browser';
 
 const ImageOptimizationGuide: React.FC = () => {
@@ -309,6 +310,32 @@ const ImageOptimizationGuide: React.FC = () => {
         <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
           "The journey of a thousand optimizations begins with a single compressed image." 🏔️
         </blockquote>
+
+        <RelatedLinks
+          intro="Try the techniques from this guide in the free Media Manipulator image tools."
+          links={[
+            {
+              label: 'Open the image converter',
+              to: '/',
+              description: 'Resize, crop, compress, and strip EXIF metadata from images.',
+            },
+            {
+              label: 'Image converter tutorial',
+              to: '/tutorials/image/getting-started',
+              description: 'Full walkthrough of every setting in the image converter.',
+            },
+            {
+              label: 'Video compression guide',
+              to: '/blog/video/video-compression-guide',
+              description: 'Apply the same optimization mindset to video files.',
+            },
+            {
+              label: 'Audio quality guide',
+              to: '/blog/audio/audio-quality-guide',
+              description: 'Pick the right audio bitrate, sample rate, and codec.',
+            },
+          ]}
+        />
       </CardContent>
 
       <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">

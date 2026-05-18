@@ -72,5 +72,13 @@ export const imageConversionSchema = z.object({
     upscaleModel: z.enum(['realesrgan-x4plus', 'realesrgan-x4plus-anime', 'realesr-animevideov3']).optional(),
     textDetect: z.enum(['pii', 'all-text']).optional(),
     textRedaction: z.enum(['blackbox', 'blur', 'pixelate']).optional(),
+    // Optional face selection driven by /api/ai/faces/detect. When sessionId
+    // is absent or selectionMode is 'all', the backend keeps the legacy
+    // behavior of obscuring every detected face.
+    faceSelection: z.object({
+      sessionId: z.string().optional(),
+      selectionMode: z.enum(['all', 'only_selected', 'all_except_selected']).default('all').optional(),
+      selectedFaceIds: z.array(z.string()).default([]).optional(),
+    }).optional(),
   }).optional(),
 });

@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Media Manipulator - Convert & Identify Files</title>
 
-    <!-- Google Analytics -->
+    <!-- Google Analytics (GA4) - SPA-aware: pageviews are sent from the router -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6J910CMHRY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
       gtag('js', new Date());
-      gtag('config', 'G-6J910CMHRY');
+      gtag('config', 'G-6J910CMHRY', { send_page_view: false });
     </script>
 
     <!-- Google AdSense -->
