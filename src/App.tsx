@@ -752,7 +752,14 @@ const FileConverterApp: React.FC = () => {
                       className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
                     />
                   )}
-                  {activeHistoryItem.mediaKind === 'video' && (
+                  {activeHistoryItem.mediaKind === 'video' && activeHistoryItem.format === 'gif' && resultView === 'final' && (
+                    <img
+                      src={resultImageUrl || undefined}
+                      alt="Converted animated GIF"
+                      className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
+                    />
+                  )}
+                  {activeHistoryItem.mediaKind === 'video' && !(activeHistoryItem.format === 'gif' && resultView === 'final') && (
                     <video
                       key={`${activeHistoryItem.jobId}-${resultView}`}
                       src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}

@@ -93,6 +93,14 @@ const VideoConversionForm: React.FC<{
           output: 'rec709' as const,
         },
       },
+      // Animated GIF defaults — only applied when format === 'gif'.
+      gif: {
+        width: 900,
+        fps: 12,
+        colors: 128,
+        delay: 3,
+        optimize: 3,
+      },
     },
     mode: 'onChange',
   });

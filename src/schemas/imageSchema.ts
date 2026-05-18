@@ -57,7 +57,7 @@ export const imageConversionSchema = z.object({
   // 'none', the API runs the AI op and bypasses the normal ImageMagick chain.
   ai: z.object({
     enabled: z.boolean().default(false).optional(),
-    operation: z.enum(['none', 'face_privacy', 'remove_background', 'ai_upscale', 'redact_text']).default('none'),
+    operation: z.enum(['none', 'face_privacy', 'remove_background', 'ai_upscale', 'redact_text', 'remove_object']).default('none'),
     faceMode: z.enum(['blur', 'pixelate', 'blackbox']).optional(),
     backgroundModel: z.enum([
       'birefnet-general',
@@ -79,6 +79,17 @@ export const imageConversionSchema = z.object({
       sessionId: z.string().optional(),
       selectionMode: z.enum(['all', 'only_selected', 'all_except_selected']).default('all').optional(),
       selectedFaceIds: z.array(z.string()).default([]).optional(),
+    }).optional(),
+    // remove_object: user-drawn rectangles covering the object(s) to inpaint.
+    // Coordinates are normalized to [0,1] relative to the original image so
+    // the backend can rasterize a same-sized PNG mask for LaMa.
+    removeObjectMask: z.object({
+      rectangles: z.array(z.object({
+        x: z.number().min(0).max(1),
+        y: z.number().min(0).max(1),
+        width: z.number().min(0).max(1),
+        height: z.number().min(0).max(1),
+      })).min(1).optional(),
     }).optional(),
   }).optional(),
 });

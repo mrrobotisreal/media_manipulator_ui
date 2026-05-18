@@ -60,9 +60,25 @@ const VideoGettingStartedTutorial: React.FC = () => {
             <li><strong>WebM</strong> — VP9 + Opus, optimal for the open web.</li>
             <li><strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).</li>
             <li><strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.</li>
+            <li><strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below.</li>
           </ul>
           <p className="mb-4">
-            <strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage).
+            <strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over.
+          </p>
+
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">2a. Converting video to an animated GIF</h2>
+          <p className="mb-4">
+            Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.
+          </p>
+          <ul className="list-disc pl-6 space-y-1 mb-4">
+            <li><strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.</li>
+            <li><strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.</li>
+            <li><strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.</li>
+            <li><strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.</li>
+            <li><strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft.</li>
+          </ul>
+          <p className="mb-4">
+            Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video.
           </p>
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">3. Resize, speed, and aspect ratio</h2>
@@ -122,6 +138,7 @@ const VideoGettingStartedTutorial: React.FC = () => {
             <li>Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.</li>
             <li>Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.</li>
             <li>Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.</li>
+            <li>For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors.</li>
           </ul>
 
           <div className="mt-10 flex flex-wrap gap-3">

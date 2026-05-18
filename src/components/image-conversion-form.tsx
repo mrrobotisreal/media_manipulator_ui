@@ -6,6 +6,7 @@ import ConversionOptions from "@/components/conversion-options";
 import ImageCropModal from "@/components/image-crop-modal";
 import InfoTooltip from "@/components/info-tooltip";
 import FaceSelectionOverlay from "@/components/face-selection-overlay";
+import RemoveObjectOverlay, { type RemoveObjectRectangle } from "@/components/remove-object-overlay";
 import useDetectFaces, { type FaceDetectionResponse } from "@/lib/useDetectFaces";
 import type { ConversionFormData } from "@/schemas/types";
 import { useEffect, useState } from "react";
@@ -73,6 +74,8 @@ const ImageConversionForm: React.FC<{
   const [selectedFaceIds, setSelectedFaceIds] = useState<string[]>([]);
   const [faceSelectionMode, setFaceSelectionMode] = useState<FaceSelectionMode>('all');
   const [faceDetectError, setFaceDetectError] = useState<string | null>(null);
+  const [removeObjectRects, setRemoveObjectRects] = useState<RemoveObjectRectangle[]>([]);
+  const [removeObjectError, setRemoveObjectError] = useState<string | null>(null);
   // React Query returns a new mutation-result object every render; only the
   // method references are stable. Destructure them so useEffect deps don't
   // churn and trigger an infinite re-render loop.
@@ -169,6 +172,13 @@ const ImageConversionForm: React.FC<{
       setFaceDetectError((prev) => (prev === null ? prev : null));
       resetDetectFaces();
     }
+    if (aiOperation !== 'remove_object') {
+      // Clear any in-progress rectangles when switching away so a different
+      // op doesn't accidentally inherit them, and use the conditional-setter
+      // trick to avoid a re-render loop.
+      setRemoveObjectRects((prev) => (prev.length === 0 ? prev : []));
+      setRemoveObjectError((prev) => (prev === null ? prev : null));
+    }
   }, [aiOperation, setValue, resetDetectFaces]);
 
   useEffect(() => {
@@ -179,6 +189,10 @@ const ImageConversionForm: React.FC<{
     setSelectedFaceIds((prev) => (prev.length === 0 ? prev : []));
     setFaceDetectError((prev) => (prev === null ? prev : null));
     resetDetectFaces();
+    // Rectangles target a specific image, so reset them when the file changes
+    // too.
+    setRemoveObjectRects((prev) => (prev.length === 0 ? prev : []));
+    setRemoveObjectError((prev) => (prev === null ? prev : null));
   }, [file, resetDetectFaces]);
 
   useEffect(() => {
@@ -241,6 +255,22 @@ const ImageConversionForm: React.FC<{
       ai.faceSelection = selection;
     } else if (ai) {
       delete ai.faceSelection;
+    }
+
+    // remove_object: require at least one rectangle and ship the normalized
+    // coordinates only (drop the UI-only id field so the backend payload is
+    // clean).
+    if (ai && ai.operation === 'remove_object') {
+      if (removeObjectRects.length === 0) {
+        setRemoveObjectError('Draw at least one rectangle over the object you want to remove.');
+        return;
+      }
+      setRemoveObjectError(null);
+      ai.removeObjectMask = {
+        rectangles: removeObjectRects.map(({ x, y, width, height }) => ({ x, y, width, height })),
+      };
+    } else if (ai) {
+      delete ai.removeObjectMask;
     }
 
     console.log('Image form submitted with data:', formData);
@@ -350,6 +380,7 @@ const ImageConversionForm: React.FC<{
                       <li><strong>Remove Background</strong> — outputs a transparent PNG via rembg + BiRefNet/ISNet/U2Net.</li>
                       <li><strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan 2x or 4x.</li>
                       <li><strong>Redact Text / PII</strong> — OCR-based redaction.</li>
+                      <li><strong>Remove Object</strong> — draw rectangles over unwanted objects; LaMa inpainting reconstructs the area behind them.</li>
                     </ul>
                   </div>
                 }
@@ -371,6 +402,7 @@ const ImageConversionForm: React.FC<{
                   <option value="remove_background">Remove Background</option>
                   <option value="ai_upscale">AI Upscale</option>
                   <option value="redact_text">Redact Text / PII</option>
+                  <option value="remove_object">Remove Object (LaMa Inpainting)</option>
                 </select>
               </label>
             )}
@@ -602,6 +634,56 @@ const ImageConversionForm: React.FC<{
                 OCR redaction is best effort. Please review output before sharing.
               </p>
             </>
+          )}
+
+          {aiOperation === 'remove_object' && (
+            <div className="border border-border rounded-lg p-3 space-y-3 bg-card/50">
+              <div className="flex items-center justify-between gap-2">
+                <h4 className="font-medium text-card-foreground flex items-center gap-2">
+                  Mark objects to remove
+                  <InfoTooltip
+                    ariaLabel="About remove object"
+                    width="lg"
+                    content={
+                      <div className="space-y-1">
+                        <p>Click and drag on the image to add a rectangle over each object you want to erase. Drag the rectangle body to move it, or the handles to resize.</p>
+                        <p>LaMa inpainting reconstructs the area behind each rectangle. For best results, draw the box snugly around the object — large rectangles ask the model to hallucinate more background.</p>
+                        <p className="text-xs">Tip: multiple smaller rectangles often look cleaner than one huge one.</p>
+                      </div>
+                    }
+                  />
+                </h4>
+                {removeObjectRects.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setRemoveObjectRects([])}
+                    className="px-2 py-1 text-xs rounded-md border border-input bg-input text-card-foreground hover:bg-muted"
+                  >
+                    Clear all
+                  </button>
+                )}
+              </div>
+              {imageUrl ? (
+                <RemoveObjectOverlay
+                  imageUrl={imageUrl}
+                  rectangles={removeObjectRects}
+                  onChange={setRemoveObjectRects}
+                />
+              ) : (
+                <p className="text-xs text-muted-foreground">Choose an image first to start marking objects.</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {removeObjectRects.length === 0
+                  ? 'Add at least one rectangle covering the object you want to remove.'
+                  : `${removeObjectRects.length} rectangle${removeObjectRects.length === 1 ? '' : 's'} ready to inpaint.`}
+              </p>
+              {removeObjectError && (
+                <p className="text-xs text-destructive">{removeObjectError}</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                LaMa output preserves your chosen output format (JPG, PNG, WebP, GIF). Filters, text overlay, and tint are skipped for this op.
+              </p>
+            </div>
           )}
 
           {aiOperation && aiOperation !== 'none' && (

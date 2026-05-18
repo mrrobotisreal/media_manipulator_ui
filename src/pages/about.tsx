@@ -88,12 +88,14 @@ const AboutPage: React.FC = () => {
                       <strong>Remove GPS metadata from photos</strong> before sharing online
                     </li>
                     <li>AI face blur, background removal, upscaling, and OCR text redaction</li>
+                    <li><strong>Remove unwanted objects</strong> with LaMa inpainting — draw a box, the model reconstructs the background</li>
                   </ul>
                 </div>
                 <div className="bg-card p-6 sci-fi-frame-inner">
                   <h3 className="font-semibold mb-3 text-green-600">Free Video Converter &amp; Editor</h3>
                   <ul className="space-y-1 text-sm">
                     <li>Convert MP4, WebM, MOV, MKV, AVI, WMV, FLV, ProRes</li>
+                    <li><strong>Convert video to animated GIF</strong> with tunable width, fps, palette, and frame delay</li>
                     <li>Compress video online without ruining quality</li>
                     <li>Trim and cut video clips</li>
                     <li>Resize, change frame rate, and adjust playback speed</li>
@@ -164,10 +166,11 @@ const AboutPage: React.FC = () => {
                 <div className="bg-card p-6 sci-fi-frame-inner">
                   <h3 className="font-semibold mb-2 text-card-foreground">Real Tools, Not Toy Converters</h3>
                   <p>
-                    Under the hood we run FFmpeg and ImageMagick for standard pipelines and
-                    purpose-built models (Real-ESRGAN, BiRefNet, Demucs, DeepFilterNet,
-                    whisper-ctranslate2, exiftool, rembg) for everything else. Bitrate, codec,
-                    quality, channel layout, color space — every setting that matters to power
+                    Under the hood we run FFmpeg, ImageMagick, and gifsicle for standard
+                    pipelines and purpose-built models (Real-ESRGAN, BiRefNet, Demucs,
+                    DeepFilterNet, whisper-ctranslate2, exiftool, rembg, simple-lama-inpainting)
+                    for everything else. Bitrate, codec, quality, channel layout, color space,
+                    GIF palette size and frame delay — every setting that matters to power
                     users is exposed in the UI.
                   </p>
                 </div>
@@ -221,12 +224,14 @@ const AboutPage: React.FC = () => {
                     <li>Remove the background of a product photo</li>
                     <li>Upscale a low-resolution image with AI</li>
                     <li>Redact PII (emails, phone numbers, SSNs) from screenshots</li>
+                    <li>Remove an unwanted object (person, sign, watermark) from a photo with LaMa inpainting</li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2 text-card-foreground">Video &amp; audio tasks</h3>
                   <ul className="space-y-1 text-sm">
                     <li>Convert MP4 to WebM, MOV to MP4, MKV to MP4, AVI to MP4</li>
+                    <li>Convert MP4 / MOV / WebM to an optimized animated GIF for chats and docs</li>
                     <li>Compress a video file for email or messaging size limits</li>
                     <li>Trim or cut a video clip without re-encoding the rest</li>
                     <li>Change a video's frame rate or resolution</li>

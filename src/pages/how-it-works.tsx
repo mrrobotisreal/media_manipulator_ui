@@ -97,6 +97,7 @@ const HowItWorksPage: React.FC = () => {
                   <h3 className="font-semibold mb-2 text-card-foreground">Video Tools</h3>
                   <ul className="text-muted-foreground space-y-1">
                     <li>• Convert to MP4, WebM, AVI, MOV, MKV, ProRes, and more</li>
+                    <li>• Convert video to an optimized animated GIF (ffmpeg + gifsicle)</li>
                     <li>• Trim, resize, and adjust playback speed</li>
                     <li>• Color correction: brightness, contrast, saturation, hue, gamma</li>
                     <li>• Motion blur, unsharp mask, noise, artistic filters</li>
@@ -131,6 +132,7 @@ const HowItWorksPage: React.FC = () => {
                     <li>• <strong>Remove Background</strong> — outputs a transparent PNG using BiRefNet, ISNet, or U2Net models.</li>
                     <li>• <strong>AI Upscale</strong> — Real-ESRGAN 2x or 4x using photo or anime-tuned models.</li>
                     <li>• <strong>Redact Text / PII</strong> — OCR-based redaction with blackbox, blur, or pixelate styles.</li>
+                    <li>• <strong>Remove Object</strong> — draw rectangles over unwanted objects and LaMa inpainting (simple-lama-inpainting) reconstructs the background.</li>
                   </ul>
                 </div>
                 <div>
@@ -180,6 +182,7 @@ const HowItWorksPage: React.FC = () => {
                   <h3 className="font-semibold mb-2 text-card-foreground">Quality & Performance</h3>
                   <ul className="text-muted-foreground space-y-1">
                     <li>• FFmpeg and ImageMagick power the standard pipelines</li>
+                    <li>• Animated GIF export chains FFmpeg with gifsicle for small, palette-optimized files</li>
                     <li>• AI jobs run on a dedicated NVIDIA GPU</li>
                     <li>• Real-time progress streamed back to your browser</li>
                     <li>• Session conversion history so you can revisit recent results</li>

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const videoConversionSchema = z.object({
-  format: z.enum(['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'prores', 'dnxhd']),
+  format: z.enum(['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'prores', 'dnxhd', 'gif']),
   width: z.number().min(1).max(4096).optional(),
   height: z.number().min(1).max(4096).optional(),
   preserveAspectRatio: z.boolean().default(true),
@@ -12,6 +12,17 @@ export const videoConversionSchema = z.object({
   trim: z.object({
     startTime: z.number().min(0),
     endTime: z.number().min(0),
+  }).optional(),
+
+  // Animated GIF tuning (only applied when format === 'gif').
+  // Mirrors quick-gif2.sh: ffmpeg downscales to `width` at `fps`, then gifsicle
+  // re-quantizes to `colors`, sets frame `delay`, and applies `optimize` level.
+  gif: z.object({
+    width: z.number().int().min(16).max(2000).default(900),
+    fps: z.number().int().min(1).max(50).default(12),
+    colors: z.number().int().min(2).max(256).default(128),
+    delay: z.number().int().min(1).max(100).default(3),
+    optimize: z.number().int().min(1).max(3).default(3),
   }).optional(),
 
   // Visual Effects

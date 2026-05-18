@@ -34,7 +34,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
           <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Image Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Image Files</h1>
           <p className="text-lg mb-8">
-            Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text).
+            Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).
           </p>
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">1. Upload your image</h2>
@@ -113,6 +113,14 @@ const ImageGettingStartedTutorial: React.FC = () => {
             <li>
               <strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.
             </li>
+            <li>
+              <strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:
+              <ul className="list-disc pl-6 mt-1 space-y-1">
+                <li>Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.</li>
+                <li>Several small rectangles usually beat one huge one, especially for thin objects.</li>
+                <li>LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces).</li>
+              </ul>
+            </li>
           </ul>
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">7. Convert and download</h2>
@@ -127,6 +135,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
             <li><strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.</li>
             <li>For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.</li>
             <li>Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.</li>
+            <li>Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result.</li>
           </ul>
 
           <div className="mt-10 flex flex-wrap gap-3">
