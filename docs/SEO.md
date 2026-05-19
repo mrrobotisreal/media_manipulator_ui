@@ -3,6 +3,8 @@
 This doc explains how SEO metadata, GA4, and prerendering are wired up in the
 UI repo, and how to add a new public page without breaking those systems.
 
+For performance/lazy-loading/font work, see `docs/PERFORMANCE.md`.
+
 ## At a glance
 
 | Concern | Source of truth |
@@ -16,7 +18,10 @@ UI repo, and how to add a new public page without breaking those systems.
 | Robots | `public/robots.txt` |
 | Prerender (post-build) | `scripts/prerender.ts` (run by `npm run build`) |
 | Keyword & content cluster map | `src/content/keywordMap.ts` |
-| Tutorial embedded tool | `src/components/embedded-tool-panel.tsx` |
+| Tool landing-page content | `src/content/toolPages.ts` |
+| Reusable tool landing component | `src/pages/tools/tool-landing-page.tsx` |
+| Embedded tool panel | `src/components/embedded-tool-panel.tsx` |
+| Tool flow diagram | `src/components/tool-flow-diagram.tsx` |
 | Reusable internal-link cards | `src/components/related-links.tsx` |
 
 ## GA4 setup
@@ -41,10 +46,11 @@ UI repo, and how to add a new public page without breaking those systems.
 - Use the URL Inspection tool to confirm prerendered pages show the correct
   title/description after deploy.
 
-## Add a new route (blog / tutorial / tool page)
+## Add a new route (blog / tutorial / general page)
 
 1. Build the page component under `src/pages/...`.
-2. Register it in `src/Router.tsx` with a `<Route>`.
+2. Register it in `src/Router.tsx` with a `<Route>` — use `React.lazy()`
+   so the chunk loads on demand. See `docs/PERFORMANCE.md`.
 3. Add a `RouteSeo` entry to `src/lib/seo.ts`:
    - Pick title (≤ 60 chars where possible), description (~155 chars).
    - Set `canonicalUrl` via the `buildCanonical` helper.
@@ -57,6 +63,48 @@ UI repo, and how to add a new public page without breaking those systems.
    internal-link components can surface the new page automatically.
 6. Re-build with `npm run build` — the prerender step picks up the new
    route and emits a static `dist/<path>/index.html`.
+
+## Add a new /tools landing page
+
+Tool landing pages are data-driven from `src/content/toolPages.ts` so a
+single component (`src/pages/tools/tool-landing-page.tsx`) renders them
+all. Adding a new tool is content-only:
+
+1. Add a new entry to `TOOL_PAGES` in `src/content/toolPages.ts`. Fill in
+   `slug`, `h1`, `metaTitle`, `metaDescription`, `embed`, `flowSteps`,
+   `useCases`, `faq`, `related`, `primaryKeyword`, `secondaryKeywords`,
+   and the rest of the `ToolPageContent` shape.
+2. The route is already wired (`<Route path="/tools/:slug" element={<ToolPage />} />`
+   in `src/Router.tsx`). It looks the slug up via `getToolBySlug`.
+3. `src/lib/seo.ts` builds the `RouteSeo` for `/tools/<slug>` from the
+   `ToolPageContent` automatically — including `WebApplication`,
+   `BreadcrumbList`, and `FAQPage` JSON-LD. No manual SEO entry needed.
+4. Add a `<url>` entry to `public/sitemap.xml` for `/tools/<slug>`.
+5. (Optional) Add or update a `KeywordCluster` in
+   `src/content/keywordMap.ts` so the new tool surfaces in internal-link
+   sections automatically.
+6. Cross-link from related blog posts, tutorials, and sibling tools'
+   `related` arrays.
+7. Re-build with `npm run build`.
+
+### Embedded tool panel knobs
+
+The embed config supports these props (all optional except
+`defaultMediaKind` and `defaultTask`):
+
+- `defaultMediaKind` — `image | video | audio`
+- `defaultTask` — keyed string consumed by the panel for hint copy
+- `defaultOutputFormat` — recommended output, shown as a hint banner
+- `lockedInputFormat`, `lockedOutputFormat` — informational hints
+- `allowedInputFormats` — informational hint
+- `acceptOverride` — overrides the file input's `accept` attribute
+- `transcribeMode` — switches the embed to the transcribe flow
+  (only meaningful for video/audio kinds)
+
+The underlying forms (`ImageConversionForm`, `VideoConversionForm`,
+`AudioConversionForm`, `TranscribeForm`) are reused unchanged from the
+homepage — settings the user picks in the embedded form are the same
+ones the full app exposes.
 
 ## JSON-LD authoring rules
 

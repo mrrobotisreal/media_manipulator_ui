@@ -3,6 +3,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Font loading.
+ *
+ * `font-display: swap` lets text render in a system fallback while the
+ * custom font streams, so first paint is never blocked by font I/O.
+ *
+ * The italic and Rubik Glitch faces live in separate @font-face blocks so
+ * browsers only fetch them when an element actually uses italic or the
+ * `.font-glitch` class — they are not preloaded.
+ *
+ * To switch to WOFF2 (smaller, faster), generate .woff2 files (see
+ * docs/PERFORMANCE.md) and reorder the src list to put WOFF2 first.
+ */
 @font-face {
   font-family: "Rubik";
   font-style: normal;
@@ -27,6 +40,31 @@
   font-weight: 400;
   font-display: swap;
   src: url("./assets/Rubik_Glitch/RubikGlitch-Regular.ttf") format("truetype");
+}
+
+/*
+ * Hover-targeted sci-fi frame for in-card link decorations.
+ *
+ * Declared as a Tailwind 4 @utility (not inside @layer components) so
+ * Tailwind generates variants for it — i.e. `hover:sci-fi-frame-inner-hover`,
+ * `focus-visible:sci-fi-frame-inner-hover`, etc. The static
+ * `.sci-fi-frame-inner` class for always-on decoration lives in
+ * @layer components below and is intentionally heavier.
+ *
+ * Tweak border-width / border-image-width / border-image-slice here to
+ * tune the hover look — the static version is unaffected.
+ */
+@utility sci-fi-frame-inner-hover {
+  border-style: solid;
+  border-width: 10px;
+  border-color: transparent;
+  border-image-source: url('https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/div_border_red_new2.webp');
+  border-image-slice: 280;
+  border-image-width: 10px;
+  border-image-repeat: stretch;
+  border-image-outset: 0;
+  border-radius: 0;
+  background-clip: padding-box;
 }
 
 @theme inline {
@@ -171,7 +209,7 @@
     border-style: solid;
     border-width: 24px;
     border-color: transparent;
-    border-image-source: url('https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/div_border_red_new.webp');
+    border-image-source: url('https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/div_border_red_new2.webp');
     border-image-slice: 280;
     border-image-width: 24px;
     border-image-repeat: stretch;

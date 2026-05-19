@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useCallback, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
@@ -6,11 +6,19 @@ import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import AdBanner from '@/components/ad-banner';
 import type { ConversionFormData } from '@/schemas/types';
-import ImageConversionForm from '@/components/image-conversion-form';
-import VideoConversionForm from '@/components/video-conversion-form';
-import AudioConversionForm from '@/components/audio-conversion-form';
-import TranscribeForm from '@/components/transcribe-form';
-import TranscribeResultView from '@/components/transcribe-result-view';
+
+// Each conversion form pulls in its own schema, form fields, and helpers.
+// Lazy-loading keeps the homepage chunk light — we only fetch the form
+// matching the kind of file the user actually drops in.
+const ImageConversionForm = lazy(() => import('@/components/image-conversion-form'));
+const VideoConversionForm = lazy(() => import('@/components/video-conversion-form'));
+const AudioConversionForm = lazy(() => import('@/components/audio-conversion-form'));
+const TranscribeForm = lazy(() => import('@/components/transcribe-form'));
+const TranscribeResultView = lazy(() => import('@/components/transcribe-result-view'));
+
+const FormFallback: React.FC = () => (
+  <div className="text-sm text-muted-foreground py-4">Loading converter…</div>
+);
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, { type TranscribeFormData, type TranscribeUploadResponse } from '@/lib/useTranscribeFile';
 import { useTranscribeResult, useAnalysisResult } from '@/lib/useTranscribeResult';
@@ -724,12 +732,14 @@ const FileConverterApp: React.FC = () => {
 
             <div className="p-4 bg-muted/30 flex-1 min-h-0 flex items-center justify-center">
               {activeHistoryItem.mode === 'transcribe' ? (
-                <TranscribeResultView
-                  result={transcribeResult ?? null}
-                  analysis={transcribeAnalysis ?? null}
-                  isLoading={isTranscribeResultLoading}
-                  isAnalysisLoading={isTranscribeAnalysisLoading}
-                />
+                <Suspense fallback={<FormFallback />}>
+                  <TranscribeResultView
+                    result={transcribeResult ?? null}
+                    analysis={transcribeAnalysis ?? null}
+                    isLoading={isTranscribeResultLoading}
+                    isAnalysisLoading={isTranscribeAnalysisLoading}
+                  />
+                </Suspense>
               ) : isLoadingResultPreview ? (
                 <p className="text-card-foreground">Loading converted image...</p>
               ) : resultPreviewError ? (
@@ -808,6 +818,22 @@ const FileConverterApp: React.FC = () => {
       </div>
 
       <div className="max-w-8xl mx-auto p-4 pt-8 flex justify-center items-center flex-col">
+        <header className="w-full max-w-5xl text-center mb-8">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-card-foreground tracking-tight">
+            Free Online Media Converter, Editor, Transcriber &amp; Metadata Tool
+          </h1>
+          <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+            Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.
+          </p>
+          <nav aria-label="Popular tools" className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
+            <Link to="/tools" className="px-3 py-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">All tools</Link>
+            <Link to="/tools/remove-exif-metadata" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Remove EXIF</Link>
+            <Link to="/tools/compress-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Compress video</Link>
+            <Link to="/tools/transcribe-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Transcribe video</Link>
+            <Link to="/tools/convert-webp-to-jpg" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">WebP → JPG</Link>
+            <Link to="/tools/convert-wav-to-mp3" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">WAV → MP3</Link>
+          </nav>
+        </header>
         <div className="grid lg:grid-cols-2 gap-6 max-w-8xl">
           {/* File Upload Section */}
           <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">
@@ -1020,38 +1046,40 @@ const FileConverterApp: React.FC = () => {
 
             {selectedFile && fileType && fileType !== 'unknown' ? (
               <div className="space-y-6">
-                {workflowMode === 'transcribe' && (fileType === 'video' || fileType === 'audio') ? (
-                  <TranscribeForm
-                    mediaKind={fileType}
-                    isLoading={isLoading}
-                    onSubmit={handleTranscribe}
-                  />
-                ) : (
-                  <>
-                    {fileType === 'image' && (
-                      <ImageConversionForm
-                        onSubmit={handleConvert}
-                        isLoading={isLoading}
-                        imageUrl={originalImageUrl || undefined}
-                        file={selectedFile || undefined}
-                      />
-                    )}
-                    {fileType === 'video' && (
-                      <VideoConversionForm
-                        onSubmit={handleConvert}
-                        isLoading={isLoading}
-                        videoUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
-                      />
-                    )}
-                    {fileType === 'audio' && (
-                      <AudioConversionForm
-                        onSubmit={handleConvert}
-                        isLoading={isLoading}
-                        audioUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
-                      />
-                    )}
-                  </>
-                )}
+                <Suspense fallback={<FormFallback />}>
+                  {workflowMode === 'transcribe' && (fileType === 'video' || fileType === 'audio') ? (
+                    <TranscribeForm
+                      mediaKind={fileType}
+                      isLoading={isLoading}
+                      onSubmit={handleTranscribe}
+                    />
+                  ) : (
+                    <>
+                      {fileType === 'image' && (
+                        <ImageConversionForm
+                          onSubmit={handleConvert}
+                          isLoading={isLoading}
+                          imageUrl={originalImageUrl || undefined}
+                          file={selectedFile || undefined}
+                        />
+                      )}
+                      {fileType === 'video' && (
+                        <VideoConversionForm
+                          onSubmit={handleConvert}
+                          isLoading={isLoading}
+                          videoUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                        />
+                      )}
+                      {fileType === 'audio' && (
+                        <AudioConversionForm
+                          onSubmit={handleConvert}
+                          isLoading={isLoading}
+                          audioUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                        />
+                      )}
+                    </>
+                  )}
+                </Suspense>
 
                 {/* Download Button */}
                 {conversionJob?.status === 'completed' && (

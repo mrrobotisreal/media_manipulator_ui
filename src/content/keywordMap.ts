@@ -51,20 +51,23 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       'online image converter',
     ],
     intent: 'transactional',
-    targetRoute: '/',
+    targetRoute: '/tools/image-converter',
     relatedRoutes: [
+      '/tools/convert-webp-to-jpg',
+      '/tools/remove-exif-metadata',
       '/tutorials/image/getting-started',
       '/blog/image/image-optimization-guide',
       '/how-it-works',
     ],
     suggestedFutureRoutes: [
-      '/tools/image-converter',
-      '/tools/convert-webp-to-jpg',
       '/tools/convert-png-to-webp',
       '/tools/convert-heic-to-jpg',
       '/guides/jpg-vs-png-vs-webp',
     ],
     recommendedInternalLinks: [
+      { label: 'Image converter', route: '/tools/image-converter' },
+      { label: 'Convert WebP to JPG', route: '/tools/convert-webp-to-jpg' },
+      { label: 'Remove EXIF metadata', route: '/tools/remove-exif-metadata' },
       {
         label: 'Image converter tutorial',
         route: '/tutorials/image/getting-started',
@@ -73,7 +76,6 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Image optimization guide',
         route: '/blog/image/image-optimization-guide',
       },
-      { label: 'Open the converter', route: '/' },
     ],
   },
   {
@@ -119,18 +121,20 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       'privacy-safe photo sharing',
     ],
     intent: 'transactional',
-    targetRoute: '/',
+    targetRoute: '/tools/remove-exif-metadata',
     relatedRoutes: [
+      '/tools/image-converter',
       '/blog/image/image-optimization-guide',
       '/tutorials/image/getting-started',
       '/privacy-policy',
     ],
     suggestedFutureRoutes: [
-      '/tools/remove-exif-metadata',
       '/guides/remove-gps-metadata-from-photos',
       '/guides/what-is-exif-metadata',
     ],
     recommendedInternalLinks: [
+      { label: 'Remove EXIF metadata', route: '/tools/remove-exif-metadata' },
+      { label: 'Image converter', route: '/tools/image-converter' },
       {
         label: 'Image converter tutorial',
         route: '/tutorials/image/getting-started',
@@ -154,19 +158,23 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       'online video converter',
     ],
     intent: 'transactional',
-    targetRoute: '/',
+    targetRoute: '/tools/video-converter',
     relatedRoutes: [
+      '/tools/compress-video',
+      '/tools/convert-video-to-animated-gif',
       '/tutorials/video/getting-started',
       '/blog/video/video-compression-guide',
     ],
     suggestedFutureRoutes: [
-      '/tools/video-converter',
       '/tools/convert-mp4-to-webm',
       '/tools/convert-mov-to-mp4',
       '/guides/best-video-format-for-websites',
       '/guides/mp4-vs-webm',
     ],
     recommendedInternalLinks: [
+      { label: 'Video converter', route: '/tools/video-converter' },
+      { label: 'Compress video', route: '/tools/compress-video' },
+      { label: 'Convert video to GIF', route: '/tools/convert-video-to-animated-gif' },
       {
         label: 'Video converter tutorial',
         route: '/tutorials/video/getting-started',
@@ -175,7 +183,6 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Video compression guide',
         route: '/blog/video/video-compression-guide',
       },
-      { label: 'Open the converter', route: '/' },
     ],
   },
   {
@@ -190,14 +197,19 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       'compress video for email',
     ],
     intent: 'transactional',
-    targetRoute: '/blog/video/video-compression-guide',
-    relatedRoutes: ['/', '/tutorials/video/getting-started'],
+    targetRoute: '/tools/compress-video',
+    relatedRoutes: [
+      '/tools/video-converter',
+      '/blog/video/video-compression-guide',
+      '/tutorials/video/getting-started',
+    ],
     suggestedFutureRoutes: [
-      '/tools/compress-video',
       '/guides/h264-vs-h265',
       '/guides/what-bitrate-should-i-use',
     ],
     recommendedInternalLinks: [
+      { label: 'Compress video', route: '/tools/compress-video' },
+      { label: 'Video converter', route: '/tools/video-converter' },
       {
         label: 'Video compression guide',
         route: '/blog/video/video-compression-guide',
@@ -245,18 +257,21 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       'online audio converter',
     ],
     intent: 'transactional',
-    targetRoute: '/',
+    targetRoute: '/tools/audio-converter',
     relatedRoutes: [
+      '/tools/convert-wav-to-mp3',
+      '/tools/isolate-vocals-from-song',
       '/tutorials/audio/getting-started',
       '/blog/audio/audio-quality-guide',
     ],
     suggestedFutureRoutes: [
-      '/tools/audio-converter',
-      '/tools/convert-wav-to-mp3',
       '/tools/convert-flac-to-mp3',
       '/guides/wav-vs-mp3-vs-flac',
     ],
     recommendedInternalLinks: [
+      { label: 'Audio converter', route: '/tools/audio-converter' },
+      { label: 'Convert WAV to MP3', route: '/tools/convert-wav-to-mp3' },
+      { label: 'Isolate vocals from a song', route: '/tools/isolate-vocals-from-song' },
       {
         label: 'Audio converter tutorial',
         route: '/tutorials/audio/getting-started',
@@ -265,7 +280,6 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Audio quality guide',
         route: '/blog/audio/audio-quality-guide',
       },
-      { label: 'Open the converter', route: '/' },
     ],
   },
   {
@@ -280,15 +294,21 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       'karaoke maker',
     ],
     intent: 'transactional',
-    targetRoute: '/tutorials/audio/getting-started',
-    relatedRoutes: ['/', '/blog/audio/audio-quality-guide'],
+    targetRoute: '/tools/isolate-vocals-from-song',
+    relatedRoutes: [
+      '/tools/audio-converter',
+      '/tools/convert-wav-to-mp3',
+      '/tutorials/audio/getting-started',
+      '/blog/audio/audio-quality-guide',
+    ],
     suggestedFutureRoutes: [
       '/tools/remove-background-noise',
-      '/tools/isolate-vocals',
       '/tools/remove-vocals',
       '/guides/how-to-clean-podcast-audio',
     ],
     recommendedInternalLinks: [
+      { label: 'Isolate vocals from a song', route: '/tools/isolate-vocals-from-song' },
+      { label: 'Audio converter', route: '/tools/audio-converter' },
       {
         label: 'Audio converter tutorial',
         route: '/tutorials/audio/getting-started',
@@ -311,18 +331,21 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       'free transcription',
     ],
     intent: 'transactional',
-    targetRoute: '/',
+    targetRoute: '/tools/transcribe-video',
     relatedRoutes: [
+      '/tools/video-converter',
+      '/tools/audio-converter',
       '/tutorials/video/getting-started',
       '/tutorials/audio/getting-started',
       '/how-it-works',
     ],
     suggestedFutureRoutes: [
-      '/tools/transcribe-video',
       '/tools/transcribe-audio',
       '/guides/how-to-add-captions-to-video',
     ],
     recommendedInternalLinks: [
+      { label: 'Transcribe video', route: '/tools/transcribe-video' },
+      { label: 'Video converter', route: '/tools/video-converter' },
       {
         label: 'Video converter tutorial',
         route: '/tutorials/video/getting-started',
@@ -384,6 +407,138 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       { label: 'Privacy Policy', route: '/privacy-policy' },
       { label: 'How it works', route: '/how-it-works' },
       { label: 'About', route: '/about' },
+    ],
+  },
+  {
+    slug: 'video-to-gif',
+    title: 'Video to GIF conversion',
+    primaryKeyword: 'convert video to GIF',
+    secondaryKeywords: [
+      'video to animated GIF',
+      'MP4 to GIF',
+      'WebM to GIF',
+      'make a GIF from a video',
+      'free video to GIF converter',
+    ],
+    intent: 'transactional',
+    targetRoute: '/tools/convert-video-to-animated-gif',
+    relatedRoutes: [
+      '/tools/compress-video',
+      '/tools/video-converter',
+      '/tutorials/video/getting-started',
+    ],
+    suggestedFutureRoutes: [
+      '/guides/best-gif-settings',
+      '/tools/convert-video-to-webp',
+    ],
+    recommendedInternalLinks: [
+      { label: 'Convert video to GIF', route: '/tools/convert-video-to-animated-gif' },
+      { label: 'Compress video', route: '/tools/compress-video' },
+      { label: 'Video converter', route: '/tools/video-converter' },
+      {
+        label: 'Video converter tutorial',
+        route: '/tutorials/video/getting-started',
+      },
+    ],
+  },
+  {
+    slug: 'webp-to-jpg',
+    title: 'WebP to JPG conversion',
+    primaryKeyword: 'convert WebP to JPG',
+    secondaryKeywords: [
+      'WebP to JPEG',
+      'change WebP to JPG',
+      'open WebP file',
+      '.webp to .jpg',
+      'free WebP converter',
+    ],
+    intent: 'transactional',
+    targetRoute: '/tools/convert-webp-to-jpg',
+    relatedRoutes: [
+      '/tools/image-converter',
+      '/tools/remove-exif-metadata',
+      '/blog/image/image-optimization-guide',
+      '/tutorials/image/getting-started',
+    ],
+    suggestedFutureRoutes: [
+      '/tools/convert-jpg-to-webp',
+      '/tools/convert-png-to-jpg',
+      '/guides/why-webp',
+    ],
+    recommendedInternalLinks: [
+      { label: 'Convert WebP to JPG', route: '/tools/convert-webp-to-jpg' },
+      { label: 'Image converter', route: '/tools/image-converter' },
+      { label: 'Remove EXIF metadata', route: '/tools/remove-exif-metadata' },
+      {
+        label: 'Image optimization guide',
+        route: '/blog/image/image-optimization-guide',
+      },
+    ],
+  },
+  {
+    slug: 'wav-to-mp3',
+    title: 'WAV to MP3 conversion',
+    primaryKeyword: 'convert WAV to MP3',
+    secondaryKeywords: [
+      'WAV to MP3 converter',
+      'change WAV to MP3',
+      'compress WAV',
+      '.wav to .mp3',
+      'WAV file to MP3 online',
+    ],
+    intent: 'transactional',
+    targetRoute: '/tools/convert-wav-to-mp3',
+    relatedRoutes: [
+      '/tools/audio-converter',
+      '/tools/isolate-vocals-from-song',
+      '/tutorials/audio/getting-started',
+      '/blog/audio/audio-quality-guide',
+    ],
+    suggestedFutureRoutes: [
+      '/tools/convert-flac-to-mp3',
+      '/tools/convert-m4a-to-mp3',
+    ],
+    recommendedInternalLinks: [
+      { label: 'Convert WAV to MP3', route: '/tools/convert-wav-to-mp3' },
+      { label: 'Audio converter', route: '/tools/audio-converter' },
+      {
+        label: 'Audio quality guide',
+        route: '/blog/audio/audio-quality-guide',
+      },
+    ],
+  },
+  {
+    slug: 'isolate-vocals',
+    title: 'Vocal isolation',
+    primaryKeyword: 'isolate vocals from a song',
+    secondaryKeywords: [
+      'extract vocals from song',
+      'vocal isolator online',
+      'AI vocal extractor',
+      'separate vocals from music',
+      'acapella maker',
+    ],
+    intent: 'transactional',
+    targetRoute: '/tools/isolate-vocals-from-song',
+    relatedRoutes: [
+      '/tools/audio-converter',
+      '/tools/convert-wav-to-mp3',
+      '/tutorials/audio/getting-started',
+      '/blog/audio/audio-quality-guide',
+    ],
+    suggestedFutureRoutes: [
+      '/tools/remove-vocals',
+      '/tools/remove-background-noise',
+      '/guides/how-source-separation-works',
+    ],
+    recommendedInternalLinks: [
+      { label: 'Isolate vocals from a song', route: '/tools/isolate-vocals-from-song' },
+      { label: 'Audio converter', route: '/tools/audio-converter' },
+      { label: 'Convert WAV to MP3', route: '/tools/convert-wav-to-mp3' },
+      {
+        label: 'Audio quality guide',
+        route: '/blog/audio/audio-quality-guide',
+      },
     ],
   },
   {

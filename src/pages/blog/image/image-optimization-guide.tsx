@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -31,36 +32,39 @@ const ImageOptimizationGuide: React.FC = () => {
         />
       </div>
       <Card className="max-w-7xl mx-auto my-2 sci-fi-frame p-12">
+        <article>
         <div className="p-6 pb-0">
-        <a
-          href="/blog"
+        <Link
+          to="/blog"
           className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
         >
           ← Blog
-        </a>
+        </Link>
       </div>
       <CardHeader>
-        <CardTitle className="text-4xl font-bold text-card-foreground">
-          Image Optimization for Web Jedis: JPG vs PNG vs WebP
-        </CardTitle>
+        <header>
+          <h1 className="text-4xl font-bold text-card-foreground leading-tight">
+            Image Optimization for Web Jedis: JPG vs PNG vs WebP
+          </h1>
 
-        <div className="flex items-center gap-4 mt-6">
-          <Avatar className="w-12 h-12">
-            <AvatarImage src="/ProfilePic.webp" alt="Mitchell Wintrow" />
-            <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-              MW
-            </AvatarFallback>
-          </Avatar>
+          <div className="flex items-center gap-4 mt-6">
+            <Avatar className="w-12 h-12">
+              <AvatarImage src="/ProfilePic.webp" alt="Mitchell Wintrow" />
+              <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                MW
+              </AvatarFallback>
+            </Avatar>
 
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-card-foreground">
-              Written by: Mitchell Wintrow
-            </p>
-            <p className="text-sm text-muted-foreground">
-              June 14th, 2025 • 5:32 PM
-            </p>
+            <div className="flex flex-col">
+              <p className="text-sm font-medium text-card-foreground">
+                Written by: Mitchell Wintrow
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <time dateTime="2025-06-14">June 14th, 2025</time> • 5:32 PM
+              </p>
+            </div>
           </div>
-        </div>
+        </header>
 
         <Separator className="mt-6" />
       </CardHeader>
@@ -312,12 +316,23 @@ const ImageOptimizationGuide: React.FC = () => {
         </blockquote>
 
         <RelatedLinks
+          title="Related tools"
           intro="Try the techniques from this guide in the free Media Manipulator image tools."
           links={[
             {
-              label: 'Open the image converter',
-              to: '/',
-              description: 'Resize, crop, compress, and strip EXIF metadata from images.',
+              label: 'Image converter',
+              to: '/tools/image-converter',
+              description: 'Convert between JPG, PNG, WebP, AVIF, GIF, and more.',
+            },
+            {
+              label: 'Convert WebP to JPG',
+              to: '/tools/convert-webp-to-jpg',
+              description: 'Get a broadly compatible JPG from a WebP source.',
+            },
+            {
+              label: 'Remove EXIF metadata',
+              to: '/tools/remove-exif-metadata',
+              description: 'Strip GPS, device, and timestamp metadata before sharing photos.',
             },
             {
               label: 'Image converter tutorial',
@@ -340,9 +355,9 @@ const ImageOptimizationGuide: React.FC = () => {
 
       <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">
         <div className="text-center max-w-2xl">
-          <h3 className="text-2xl font-bold mb-3 text-card-foreground">
+          <h2 className="text-2xl font-bold mb-3 text-card-foreground">
             Time to Become an Image Optimization Jedi! 🌟
-          </h3>
+          </h2>
           <p className="text-lg text-muted-foreground mb-6">
             Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!
           </p>
@@ -356,13 +371,14 @@ const ImageOptimizationGuide: React.FC = () => {
               });
             }}
           >
-            <a href="/">Convert Images Free →</a>
+            <Link to="/tools/image-converter">Open the image converter →</Link>
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
             No signup required • Process files locally • Fast & secure
           </p>
         </div>
         </CardFooter>
+        </article>
       </Card>
       <div className="max-w-6xl mx-auto px-4 pb-8">
         <AdBanner

@@ -10,6 +10,8 @@
  *   that prerendered HTML contains per-route metadata at build time.
  */
 
+import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
+
 export const SITE_ORIGIN = 'https://www.media-manipulator.com';
 export const SITE_NAME = 'Media Manipulator';
 export const ORG_NAME = 'CreaTV Ltd.';
@@ -130,6 +132,64 @@ const articleLd = (params: {
     },
   },
 });
+
+const webApplicationToolLd = (tool: ToolPageContent): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `${SITE_NAME} — ${tool.name}`,
+  url: buildCanonical(`/tools/${tool.slug}`),
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Web',
+  description: tool.metaDescription,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: ORG_NAME,
+    url: SITE_ORIGIN,
+  },
+});
+
+const faqPageLd = (tool: ToolPageContent): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: tool.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+});
+
+const buildToolRouteSeo = (tool: ToolPageContent): RouteSeo => {
+  const path = `/tools/${tool.slug}`;
+  return {
+    path,
+    title: tool.metaTitle,
+    description: tool.metaDescription,
+    canonicalUrl: buildCanonical(path),
+    ogTitle: tool.ogTitle,
+    ogDescription: tool.ogDescription,
+    ogType: 'website',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: [tool.primaryKeyword, ...tool.secondaryKeywords],
+    jsonLd: [
+      webApplicationToolLd(tool),
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Tools', path: '/tools' },
+        { name: tool.name, path },
+      ]),
+      faqPageLd(tool),
+    ],
+  };
+};
 
 const techArticleLd = (params: {
   path: string;
@@ -634,6 +694,43 @@ const ROUTES: RouteSeo[] = [
     ],
   },
   {
+    path: '/tools',
+    title: 'Free Online Media Tools | Media Manipulator',
+    description:
+      'Free online image, video, audio, AI, and metadata tools — convert, compress, transcribe, remove EXIF, isolate vocals, and more.',
+    canonicalUrl: buildCanonical('/tools'),
+    ogTitle: 'Free Online Media Tools | Media Manipulator',
+    ogDescription:
+      'Image, video, audio, AI, and metadata tools — convert, compress, transcribe, and remove metadata.',
+    ogType: 'website',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: [
+      'free media tools',
+      'image converter',
+      'video converter',
+      'audio converter',
+      'transcribe video',
+      'remove EXIF metadata',
+      'compress video',
+      'isolate vocals',
+    ],
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Media Manipulator Tools',
+        url: buildCanonical('/tools'),
+        description:
+          'Single-purpose image, video, audio, AI, and metadata tools from Media Manipulator.',
+      },
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Tools', path: '/tools' },
+      ]),
+    ],
+  },
+  {
     path: '/privacy-policy',
     title: 'Privacy Policy | Media Manipulator',
     description:
@@ -693,7 +790,12 @@ const ROUTES: RouteSeo[] = [
   },
 ];
 
-export const ROUTE_SEO_MAP: Record<string, RouteSeo> = ROUTES.reduce(
+// Append data-driven tool landing pages so toolPages.ts stays the single
+// source of truth for tool content + metadata.
+const TOOL_ROUTES: RouteSeo[] = TOOL_PAGES.map(buildToolRouteSeo);
+const ALL_ROUTES: RouteSeo[] = [...ROUTES, ...TOOL_ROUTES];
+
+export const ROUTE_SEO_MAP: Record<string, RouteSeo> = ALL_ROUTES.reduce(
   (acc, route) => {
     acc[route.path] = route;
     return acc;
@@ -701,7 +803,7 @@ export const ROUTE_SEO_MAP: Record<string, RouteSeo> = ROUTES.reduce(
   {} as Record<string, RouteSeo>,
 );
 
-export const PUBLIC_ROUTES: string[] = ROUTES.map((r) => r.path);
+export const PUBLIC_ROUTES: string[] = ALL_ROUTES.map((r) => r.path);
 
 const FALLBACK_SEO: RouteSeo = ROUTE_SEO_MAP['/'];
 
@@ -715,7 +817,7 @@ export const getSeoForPath = (pathname: string): RouteSeo => {
   return ROUTE_SEO_MAP[normalized] || FALLBACK_SEO;
 };
 
-export const getAllRouteSeo = (): RouteSeo[] => ROUTES;
+export const getAllRouteSeo = (): RouteSeo[] => ALL_ROUTES;
 
 // ---------------------------------------------------------------------------
 // Runtime head updater + hook.

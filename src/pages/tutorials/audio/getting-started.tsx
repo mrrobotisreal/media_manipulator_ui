@@ -146,8 +146,24 @@ const AudioGettingStartedTutorial: React.FC = () => {
           </div>
 
           <RelatedLinks
-            intro="Keep learning — these guides and sibling tutorials pair well with the audio converter."
+            title="Try related tools"
+            intro="Jump straight into the audio tool you need, or keep learning with related guides."
             links={[
+              {
+                label: 'Audio converter',
+                to: '/tools/audio-converter',
+                description: 'Convert WAV, MP3, FLAC, M4A, OGG, and more.',
+              },
+              {
+                label: 'Convert WAV to MP3',
+                to: '/tools/convert-wav-to-mp3',
+                description: 'Shrink large WAV recordings into widely playable MP3s.',
+              },
+              {
+                label: 'Isolate vocals from a song',
+                to: '/tools/isolate-vocals-from-song',
+                description: 'Extract vocals from music for remixes or analysis.',
+              },
               {
                 label: 'Audio quality guide',
                 to: '/blog/audio/audio-quality-guide',
@@ -157,11 +173,6 @@ const AudioGettingStartedTutorial: React.FC = () => {
                 label: 'Video converter tutorial',
                 to: '/tutorials/video/getting-started',
                 description: 'Convert, compress, trim, and transcribe video files.',
-              },
-              {
-                label: 'Image converter tutorial',
-                to: '/tutorials/image/getting-started',
-                description: 'Resize, crop, and strip EXIF metadata from images.',
               },
               {
                 label: 'How Media Manipulator works',

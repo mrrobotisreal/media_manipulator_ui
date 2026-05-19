@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -31,36 +32,39 @@ const VideoCompressionGuide: React.FC = () => {
         />
       </div>
       <Card className="max-w-7xl mx-auto my-2 sci-fi-frame p-12">
+        <article>
         <div className="p-6 pb-0">
-        <a
-          href="/blog"
+        <Link
+          to="/blog"
           className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
         >
           ← Blog
-        </a>
+        </Link>
       </div>
       <CardHeader>
-        <CardTitle className="text-4xl font-bold text-card-foreground">
-          The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV
-        </CardTitle>
+        <header>
+          <h1 className="text-4xl font-bold text-card-foreground leading-tight">
+            The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV
+          </h1>
 
-        <div className="flex items-center gap-4 mt-6">
-          <Avatar className="w-12 h-12">
-            <AvatarImage src="/ProfilePic.webp" alt="Mitchell Wintrow" />
-            <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-              MW
-            </AvatarFallback>
-          </Avatar>
+          <div className="flex items-center gap-4 mt-6">
+            <Avatar className="w-12 h-12">
+              <AvatarImage src="/ProfilePic.webp" alt="Mitchell Wintrow" />
+              <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                MW
+              </AvatarFallback>
+            </Avatar>
 
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-card-foreground">
-              Written by: Mitchell Wintrow
-            </p>
-            <p className="text-sm text-muted-foreground">
-              June 13th, 2025 • 10:33 PM
-            </p>
+            <div className="flex flex-col">
+              <p className="text-sm font-medium text-card-foreground">
+                Written by: Mitchell Wintrow
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <time dateTime="2025-06-13">June 13th, 2025</time> • 10:33 PM
+              </p>
+            </div>
           </div>
-        </div>
+        </header>
 
         <Separator className="mt-6" />
       </CardHeader>
@@ -410,12 +414,28 @@ const VideoCompressionGuide: React.FC = () => {
         </blockquote>
 
         <RelatedLinks
+          title="Related tools"
           intro="Apply what you just read with the free Media Manipulator tools."
           links={[
             {
-              label: 'Open the video converter',
-              to: '/',
-              description: 'Convert and compress MP4, WebM, MOV, MKV, and more.',
+              label: 'Compress video',
+              to: '/tools/compress-video',
+              description: 'Shrink MP4, WebM, MOV, and MKV files for the web.',
+            },
+            {
+              label: 'Video converter',
+              to: '/tools/video-converter',
+              description: 'Convert between MP4, WebM, MOV, AVI, and more.',
+            },
+            {
+              label: 'Convert video to GIF',
+              to: '/tools/convert-video-to-animated-gif',
+              description: 'Turn short video clips into shareable animated GIFs.',
+            },
+            {
+              label: 'Transcribe video',
+              to: '/tools/transcribe-video',
+              description: 'Pull spoken words out of video into searchable text or captions.',
             },
             {
               label: 'Video converter tutorial',
@@ -427,20 +447,15 @@ const VideoCompressionGuide: React.FC = () => {
               to: '/blog/image/image-optimization-guide',
               description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
             },
-            {
-              label: 'Audio quality guide',
-              to: '/blog/audio/audio-quality-guide',
-              description: 'Bitrate, sample rate, and codec choices for clean audio.',
-            },
           ]}
         />
       </CardContent>
 
       <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">
         <div className="text-center max-w-2xl">
-          <h3 className="text-2xl font-bold mb-3 text-card-foreground">
+          <h2 className="text-2xl font-bold mb-3 text-card-foreground">
             Ready to Optimize Your Videos? 🚀
-          </h3>
+          </h2>
           <p className="text-lg text-muted-foreground mb-6">
             Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.
           </p>
@@ -454,13 +469,14 @@ const VideoCompressionGuide: React.FC = () => {
               });
             }}
           >
-            <a href="/">Try Video Converter Free →</a>
+            <Link to="/tools/compress-video">Try the video compressor →</Link>
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
             No signup required • Process files locally • Fast & secure
           </p>
         </div>
         </CardFooter>
+        </article>
       </Card>
       <div className="max-w-6xl mx-auto px-4 pb-8">
         <AdBanner

@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, type Analytics } from 'firebase/analytics';
-import { getPerformance } from 'firebase/performance';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -268,7 +267,26 @@ let analytics: Analytics | null = null;
 if (typeof window !== 'undefined') {
   analytics = getAnalytics(app);
 
-  getPerformance(app);
+  // Defer Firebase Performance to idle time so it never blocks the main
+  // thread on first load. Imported dynamically so the firebase/performance
+  // bundle stays out of the initial chunk.
+  const initPerformance = () => {
+    void import('firebase/performance')
+      .then((mod) => mod.getPerformance(app))
+      .catch(() => {
+        // Performance monitoring is best-effort; ignore failures.
+      });
+  };
+  const ric = (
+    window as typeof window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+    }
+  ).requestIdleCallback;
+  if (typeof ric === 'function') {
+    ric(initPerformance, { timeout: 4000 });
+  } else {
+    window.setTimeout(initPerformance, 2500);
+  }
 }
 
 export {

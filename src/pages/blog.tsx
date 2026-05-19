@@ -90,7 +90,22 @@ const BlogPage: React.FC = () => {
           intro="The Media Manipulator tools that pair with these articles are all free."
           links={[
             {
-              label: 'Open the media converter',
+              label: 'Browse all tools',
+              to: '/tools',
+              description: 'Image, video, audio, AI, and metadata tools in one place.',
+            },
+            {
+              label: 'Compress video',
+              to: '/tools/compress-video',
+              description: 'Shrink video file size without ruining quality.',
+            },
+            {
+              label: 'Remove EXIF metadata',
+              to: '/tools/remove-exif-metadata',
+              description: 'Strip GPS and device data before sharing photos.',
+            },
+            {
+              label: 'Open the homepage converter',
               to: '/',
               description: 'Convert, edit, compress, and transcribe images, videos, and audio.',
             },

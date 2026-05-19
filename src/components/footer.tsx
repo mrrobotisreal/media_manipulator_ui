@@ -4,6 +4,7 @@ import formatterIcon from '/MMIcon.webp';
 
 const navLinks: { title: string; href: string }[] = [
   { title: 'Home', href: '/' },
+  { title: 'Tools', href: '/tools' },
   { title: 'Blog', href: '/blog' },
   { title: 'Tutorials', href: '/tutorials' },
   { title: 'How it works', href: '/how-it-works' },
@@ -21,17 +22,17 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="flex items-center space-x-3 mb-3">
+            <Link to="/" className="flex items-center space-x-3 mb-3 hover:opacity-90 transition-opacity" aria-label="Media Manipulator home">
               <img
                 src={formatterIcon}
                 alt="Media Manipulator Icon"
                 className="h-20 w-20 rounded-sm"
               />
               <div className="flex flex-col">
-                <h1 className="font-glitch text-4xl text-white">Media Manipulator</h1>
-                <p className="text-sm text-gray-400">Convert images, videos, and audio files with ease</p>
+                <span className="font-glitch text-4xl text-white">Media Manipulator</span>
+                <span className="text-sm text-gray-400">Convert images, videos, and audio files with ease</span>
               </div>
-            </div>
+            </Link>
             <p className="text-sm text-gray-400 max-w-md">
               Browser-based and server-assisted tools for editing, converting, compressing, analyzing,
               transcribing, summarizing, and otherwise processing image, video, and audio files.

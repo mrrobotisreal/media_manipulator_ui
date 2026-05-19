@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -31,36 +32,39 @@ const AudioQualityGuide: React.FC = () => {
         />
       </div>
       <Card className="max-w-7xl mx-auto my-2 sci-fi-frame p-12">
+        <article>
         <div className="p-6 pb-0">
-        <a
-          href="/blog"
+        <Link
+          to="/blog"
           className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
         >
           ← Blog
-        </a>
+        </Link>
       </div>
       <CardHeader>
-        <CardTitle className="text-4xl font-bold text-card-foreground">
-          The Sound of <span className="line-through text-gray-400">Silence</span> Quality: Bitrates, Sample Rates, and Formats
-        </CardTitle>
+        <header>
+          <h1 className="text-4xl font-bold text-card-foreground leading-tight">
+            The Sound of <span className="line-through text-gray-400">Silence</span> Quality: Bitrates, Sample Rates, and Formats
+          </h1>
 
-        <div className="flex items-center gap-4 mt-6">
-          <Avatar className="w-12 h-12">
-            <AvatarImage src="/ProfilePic.webp" alt="Mitchell Wintrow" />
-            <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-              MW
-            </AvatarFallback>
-          </Avatar>
+          <div className="flex items-center gap-4 mt-6">
+            <Avatar className="w-12 h-12">
+              <AvatarImage src="/ProfilePic.webp" alt="Mitchell Wintrow" />
+              <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                MW
+              </AvatarFallback>
+            </Avatar>
 
-          <div className="flex flex-col">
-            <p className="text-sm font-medium text-card-foreground">
-              Written by: Mitchell Wintrow
-            </p>
-            <p className="text-sm text-muted-foreground">
-              June 14th, 2025 • 10:08 PM
-            </p>
+            <div className="flex flex-col">
+              <p className="text-sm font-medium text-card-foreground">
+                Written by: Mitchell Wintrow
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <time dateTime="2025-06-14">June 14th, 2025</time> • 10:08 PM
+              </p>
+            </div>
           </div>
-        </div>
+        </header>
 
         <Separator className="mt-6" />
       </CardHeader>
@@ -336,12 +340,23 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
         </blockquote>
 
         <RelatedLinks
+          title="Related tools"
           intro="Try the Media Manipulator audio tools and explore related guides."
           links={[
             {
-              label: 'Open the audio converter',
-              to: '/',
-              description: 'Convert WAV, MP3, FLAC, OGG, and more with custom bitrate and channels.',
+              label: 'Audio converter',
+              to: '/tools/audio-converter',
+              description: 'Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate.',
+            },
+            {
+              label: 'Convert WAV to MP3',
+              to: '/tools/convert-wav-to-mp3',
+              description: 'Shrink large WAV files into widely playable MP3s.',
+            },
+            {
+              label: 'Isolate vocals from a song',
+              to: '/tools/isolate-vocals-from-song',
+              description: 'Pull vocals out of music tracks for remixes or analysis.',
             },
             {
               label: 'Audio converter tutorial',
@@ -364,9 +379,9 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
 
       <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">
         <div className="text-center max-w-2xl">
-          <h3 className="text-2xl font-bold mb-3 text-card-foreground">
+          <h2 className="text-2xl font-bold mb-3 text-card-foreground">
             Ready to Master Audio Optimization? 🎧
-          </h3>
+          </h2>
           <p className="text-lg text-muted-foreground mb-6">
             Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!
           </p>
@@ -380,13 +395,14 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
               });
             }}
           >
-            <a href="/">Convert Audio Free →</a>
+            <Link to="/tools/audio-converter">Open the audio converter →</Link>
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
             No signup required • Process files locally • Fast & secure
           </p>
         </div>
         </CardFooter>
+        </article>
       </Card>
       <div className="max-w-6xl mx-auto px-4 pb-8">
         <AdBanner

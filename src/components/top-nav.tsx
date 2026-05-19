@@ -1,5 +1,6 @@
 import { Sun, Menu } from "lucide-react";
 import { MoonIcon as Moon } from "@radix-ui/react-icons";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -26,6 +27,12 @@ const components: { title: string; href: string; description: string }[] = [
     href: "/",
     description:
       "Home page where you can convert your files",
+  },
+  {
+    title: "Tools",
+    href: "/tools",
+    description:
+      "Free online tools for converting, compressing, transcribing, and cleaning up media files",
   },
   {
     title: "About",
@@ -87,17 +94,17 @@ const TopNav: React.FC = () => {
   return (
     <nav className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 sci-fi-frame-bottom">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label="Media Manipulator home">
           <img
             src={formatterIcon}
             alt="Media Manipulator Icon"
             className="h-20 w-20 rounded-sm"
           />
           <div className="flex flex-col">
-            <h1 className="font-glitch text-lg md:text-2xl text-white leading-tight hidden sm:block">Media Manipulator</h1>
-            <p className="text-xs md:text-sm text-gray-300 hidden sm:block">Convert images, videos, and audio files with ease</p>
+            <span className="font-glitch text-lg md:text-2xl text-white leading-tight hidden sm:block">Media Manipulator</span>
+            <span className="text-xs md:text-sm text-gray-300 hidden sm:block">Convert images, videos, and audio files with ease</span>
           </div>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <NavigationMenu viewport={false} className="hidden md:flex">
@@ -105,9 +112,9 @@ const TopNav: React.FC = () => {
             {components.map((component) => (
               <NavigationMenuItem key={component.title}>
                 <NavigationMenuLink asChild>
-                  <a href={component.href} className="text-white hover:text-gray-300 transition-colors px-3 py-2 text-sm font-medium">
+                  <Link to={component.href} className="text-white hover:text-gray-300 transition-colors px-3 py-2 text-sm font-medium">
                     {component.title}
-                  </a>
+                  </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
@@ -133,14 +140,14 @@ const TopNav: React.FC = () => {
               </SheetHeader>
               <div className="grid gap-4 py-4 overflow-y-auto max-h-[60vh]">
                 {components.map((component) => (
-                  <a
+                  <Link
                     key={component.title}
-                    href={component.href}
+                    to={component.href}
                     className="block px-4 py-2 text-lg text-center font-medium text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
                     {component.title}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </SheetContent>

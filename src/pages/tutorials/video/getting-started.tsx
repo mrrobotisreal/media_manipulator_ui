@@ -154,22 +154,33 @@ const VideoGettingStartedTutorial: React.FC = () => {
           </div>
 
           <RelatedLinks
-            intro="Keep learning — guides and sibling tutorials that pair with the video converter."
+            title="Try related tools"
+            intro="Jump straight into a focused video tool or keep exploring related guides."
             links={[
+              {
+                label: 'Video converter',
+                to: '/tools/video-converter',
+                description: 'Convert MP4, WebM, MOV, AVI, MKV, and more.',
+              },
+              {
+                label: 'Compress video',
+                to: '/tools/compress-video',
+                description: 'Shrink video file size for the web without ruining quality.',
+              },
+              {
+                label: 'Transcribe video',
+                to: '/tools/transcribe-video',
+                description: 'Pull spoken words out of video as searchable text or captions.',
+              },
+              {
+                label: 'Convert video to GIF',
+                to: '/tools/convert-video-to-animated-gif',
+                description: 'Turn short video clips into shareable animated GIFs.',
+              },
               {
                 label: 'Video compression guide',
                 to: '/blog/video/video-compression-guide',
                 description: 'MP4 vs WebM vs AVI and how codecs and bitrate affect quality.',
-              },
-              {
-                label: 'Audio converter tutorial',
-                to: '/tutorials/audio/getting-started',
-                description: 'Clean up the audio track before re-encoding your video.',
-              },
-              {
-                label: 'Image converter tutorial',
-                to: '/tutorials/image/getting-started',
-                description: 'Optimize thumbnails and poster images that go with your video.',
               },
               {
                 label: 'How Media Manipulator works',

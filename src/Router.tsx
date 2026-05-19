@@ -1,24 +1,40 @@
-import React, { useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import App from './App';
-import BlogPage from './pages/blog';
-import AboutPage from './pages/about';
-// import PricingPage from './pages/pricing';
-import HowItWorksPage from './pages/how-it-works';
-import PrivacyPolicyPage from './pages/privacy-policy';
-import TermsOfServicePage from './pages/terms-of-service';
 import TopNav from './components/top-nav';
 import Footer from './components/footer';
-import VideoCompressionGuide from './pages/blog/video/video-compression-guide';
-import ImageOptimizationGuide from './pages/blog/image/image-optimization-guide';
-import AudioQualityGuide from './pages/blog/audio/audio-quality-guide';
-import TutorialsPage from './pages/tutorials';
-import AudioGettingStartedTutorial from './pages/tutorials/audio/getting-started';
-import VideoGettingStartedTutorial from './pages/tutorials/video/getting-started';
-import ImageGettingStartedTutorial from './pages/tutorials/image/getting-started';
 import { trackFirstPartyPageView } from './lib/firstPartyAnalytics';
 import { trackGooglePageView } from './lib/gtag';
 import { applySeoMeta, getSeoForPath } from './lib/seo';
+
+// Lazy-loaded page components — each becomes its own JS chunk so the
+// initial bundle ships only enough code for the homepage and shell.
+const App = lazy(() => import('./App'));
+const BlogPage = lazy(() => import('./pages/blog'));
+const VideoCompressionGuide = lazy(
+  () => import('./pages/blog/video/video-compression-guide'),
+);
+const ImageOptimizationGuide = lazy(
+  () => import('./pages/blog/image/image-optimization-guide'),
+);
+const AudioQualityGuide = lazy(
+  () => import('./pages/blog/audio/audio-quality-guide'),
+);
+const AboutPage = lazy(() => import('./pages/about'));
+const HowItWorksPage = lazy(() => import('./pages/how-it-works'));
+const PrivacyPolicyPage = lazy(() => import('./pages/privacy-policy'));
+const TermsOfServicePage = lazy(() => import('./pages/terms-of-service'));
+const TutorialsPage = lazy(() => import('./pages/tutorials'));
+const AudioGettingStartedTutorial = lazy(
+  () => import('./pages/tutorials/audio/getting-started'),
+);
+const VideoGettingStartedTutorial = lazy(
+  () => import('./pages/tutorials/video/getting-started'),
+);
+const ImageGettingStartedTutorial = lazy(
+  () => import('./pages/tutorials/image/getting-started'),
+);
+const ToolsIndexPage = lazy(() => import('./pages/tools/index'));
+const ToolPage = lazy(() => import('./pages/tools/tool-page'));
 
 const RouteAnalytics: React.FC = () => {
   const location = useLocation();
@@ -49,6 +65,30 @@ const RouteAnalytics: React.FC = () => {
   return null;
 };
 
+const RouteFallback: React.FC = () => (
+  <div
+    role="status"
+    aria-live="polite"
+    className="min-h-[40vh] flex items-center justify-center px-4"
+  >
+    <div className="flex items-center gap-3 text-card-foreground">
+      <span
+        aria-hidden="true"
+        className="w-3 h-3 rounded-full bg-blue-500 animate-pulse"
+      />
+      <span
+        aria-hidden="true"
+        className="w-3 h-3 rounded-full bg-blue-500 animate-pulse [animation-delay:120ms]"
+      />
+      <span
+        aria-hidden="true"
+        className="w-3 h-3 rounded-full bg-blue-500 animate-pulse [animation-delay:240ms]"
+      />
+      <span className="sr-only">Loading…</span>
+    </div>
+  </div>
+);
+
 const Router: React.FC = () => {
   return (
     <BrowserRouter>
@@ -56,22 +96,44 @@ const Router: React.FC = () => {
         <RouteAnalytics />
         <TopNav />
         <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/video/video-compression-guide" element={<VideoCompressionGuide />} />
-            <Route path="/blog/image/image-optimization-guide" element={<ImageOptimizationGuide />} />
-            <Route path="/blog/audio/audio-quality-guide" element={<AudioQualityGuide />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/how-it-works" element={<HowItWorksPage />} />
-            <Route path="/tutorials" element={<TutorialsPage />} />
-            <Route path="/tutorials/audio/getting-started" element={<AudioGettingStartedTutorial />} />
-            <Route path="/tutorials/video/getting-started" element={<VideoGettingStartedTutorial />} />
-            <Route path="/tutorials/image/getting-started" element={<ImageGettingStartedTutorial />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            {/* <Route path="/pricing" element={<PricingPage />} /> */}
-          </Routes>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route path="/" element={<App />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route
+                path="/blog/video/video-compression-guide"
+                element={<VideoCompressionGuide />}
+              />
+              <Route
+                path="/blog/image/image-optimization-guide"
+                element={<ImageOptimizationGuide />}
+              />
+              <Route
+                path="/blog/audio/audio-quality-guide"
+                element={<AudioQualityGuide />}
+              />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/how-it-works" element={<HowItWorksPage />} />
+              <Route path="/tutorials" element={<TutorialsPage />} />
+              <Route
+                path="/tutorials/audio/getting-started"
+                element={<AudioGettingStartedTutorial />}
+              />
+              <Route
+                path="/tutorials/video/getting-started"
+                element={<VideoGettingStartedTutorial />}
+              />
+              <Route
+                path="/tutorials/image/getting-started"
+                element={<ImageGettingStartedTutorial />}
+              />
+              <Route path="/tools" element={<ToolsIndexPage />} />
+              <Route path="/tools/:slug" element={<ToolPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+              {/* <Route path="/pricing" element={<PricingPage />} /> */}
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
       </div>

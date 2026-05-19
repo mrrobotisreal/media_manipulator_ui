@@ -151,8 +151,24 @@ const ImageGettingStartedTutorial: React.FC = () => {
           </div>
 
           <RelatedLinks
-            intro="Keep learning — guides and sibling tutorials that pair with the image converter."
+            title="Try related tools"
+            intro="Jump straight into a focused image tool or keep exploring related guides."
             links={[
+              {
+                label: 'Image converter',
+                to: '/tools/image-converter',
+                description: 'Convert between JPG, PNG, WebP, AVIF, GIF, and more.',
+              },
+              {
+                label: 'Convert WebP to JPG',
+                to: '/tools/convert-webp-to-jpg',
+                description: 'Get a broadly compatible JPG from a WebP source.',
+              },
+              {
+                label: 'Remove EXIF metadata',
+                to: '/tools/remove-exif-metadata',
+                description: 'Strip GPS, device, and timestamp metadata before sharing photos.',
+              },
               {
                 label: 'Image optimization guide',
                 to: '/blog/image/image-optimization-guide',
@@ -162,11 +178,6 @@ const ImageGettingStartedTutorial: React.FC = () => {
                 label: 'Video converter tutorial',
                 to: '/tutorials/video/getting-started',
                 description: 'Convert, trim, and apply visual effects to video files.',
-              },
-              {
-                label: 'Audio converter tutorial',
-                to: '/tutorials/audio/getting-started',
-                description: 'Clean up voiceover or background audio for media projects.',
               },
               {
                 label: 'How Media Manipulator works',
