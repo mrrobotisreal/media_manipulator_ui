@@ -1,16 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Loader2, Film, Sparkles, Captions, Image as ImageIcon, Info, Download, AlertTriangle } from 'lucide-react';
+import { Loader2, Film, Sparkles, Captions, Image as ImageIcon, Info, Download, AlertTriangle, Languages, X, Radio, Package } from 'lucide-react';
 import useVideoTranscodeProbe, { type ProbeMutationResult } from '@/lib/useVideoTranscodeProbe';
 import useStartVideoTranscode from '@/lib/useStartVideoTranscode';
 import useTranscodeJobStatus from '@/lib/useTranscodeJobStatus';
-import type {
-  DashCodec,
-  TranscodeProbeResponse,
-  TranscodeProtocol,
-  TranscodeQualityRung,
-  TranscodeJobStage,
+import {
+  CAPTION_LANGUAGE_FALLBACK,
+  type BundleFormat,
+  type DashCodec,
+  type SupportedCaptionLanguage,
+  type TranscodeProbeResponse,
+  type TranscodeProtocol,
+  type TranscodeQualityRung,
+  type TranscodeJobStage,
 } from '@/lib/transcodeTypes';
 import InfoTooltip from '@/components/info-tooltip';
+
+const MAX_EXTRA_LANGUAGES = 3;
 
 export interface VideoTranscodeFormProps {
   file: File | null;
@@ -117,6 +122,34 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
   const [generateCaptions, setGenerateCaptions] = useState(false);
   const [generateStoryboards, setGenerateStoryboards] = useState(false);
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
+  const [captionLanguages, setCaptionLanguages] = useState<string[]>([]);
+  const [languageCatalog, setLanguageCatalog] = useState<SupportedCaptionLanguage[]>(CAPTION_LANGUAGE_FALLBACK);
+  const [translationAvailable, setTranslationAvailable] = useState<boolean | null>(null);
+  const [bundleFormat, setBundleFormat] = useState<BundleFormat>('targz');
+
+  // Fetch the live capabilities so we use the canonical language list and can
+  // grey out the picker if Ollama isn't reachable.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const baseURL = (await import('@/lib/utils')).getBaseURL();
+        const response = await fetch(`${baseURL}/video-transcode/capabilities`);
+        if (!response.ok) return;
+        const json = await response.json();
+        if (cancelled) return;
+        if (Array.isArray(json.captionLanguages) && json.captionLanguages.length > 0) {
+          setLanguageCatalog(json.captionLanguages);
+        }
+        if (typeof json.captionTranslation === 'boolean') {
+          setTranslationAvailable(json.captionTranslation);
+        }
+      } catch {
+        // Fallback list is fine; we just can't tell whether translation is up.
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     setProtocol(defaultProtocol);
@@ -175,9 +208,29 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
       dashCodec: protocol === 'dash' ? dashCodec : undefined,
       qualityRungs: selectedLabels,
       generateCaptions,
+      captionLanguages: generateCaptions ? captionLanguages : undefined,
       generateStoryboards,
+      bundleFormat,
       sessionId: probeContext.sessionId,
     });
+  };
+
+  const updateExtraLanguage = (index: number, code: string) => {
+    setCaptionLanguages((prev) => {
+      const next = [...prev];
+      next[index] = code;
+      return next.filter((c) => c !== '');
+    });
+  };
+  const removeExtraLanguage = (index: number) => {
+    setCaptionLanguages((prev) => prev.filter((_, i) => i !== index));
+  };
+  const addExtraLanguage = () => {
+    if (captionLanguages.length >= MAX_EXTRA_LANGUAGES) return;
+    // Pick the first language not already chosen as the default value.
+    const used = new Set(captionLanguages);
+    const next = languageCatalog.find((l) => !used.has(l.code));
+    if (next) setCaptionLanguages([...captionLanguages, next.code]);
   };
 
   const captionsDisabled = !probe?.hasAudio;
@@ -383,6 +436,126 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
         </div>
       )}
 
+      {/* Caption translations — only meaningful when captions are enabled. */}
+      {probe && !probe.sourceTooSmall && generateCaptions && !captionsDisabled && (
+        <div className="rounded-lg border border-input p-4 bg-muted/10">
+          <div className="flex items-start gap-2 mb-3">
+            <Languages className="w-4 h-4 text-blue-600 mt-0.5" />
+            <div>
+              <h4 className="font-semibold text-card-foreground text-sm flex items-center gap-2">
+                Additional caption translations
+                <InfoTooltip
+                  ariaLabel="About additional caption translations"
+                  width="lg"
+                  content={
+                    <div className="space-y-1">
+                      <p>The primary caption track is whisper&apos;s transcription in the auto-detected source language. Add up to {MAX_EXTRA_LANGUAGES} more languages and we&apos;ll translate the segments via your Ollama text model.</p>
+                      <p>Each translation becomes its own VTT plus an HLS subtitle rendition (EXT-X-MEDIA) and DASH text AdaptationSet, so players show a track selector.</p>
+                    </div>
+                  }
+                />
+              </h4>
+              <p className="text-xs text-muted-foreground">
+                Primary track: auto-detected source language. Add up to {MAX_EXTRA_LANGUAGES} translation tracks.
+              </p>
+              {translationAvailable === false && (
+                <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" />
+                  Translation backend (Ollama) is not reachable. Picked languages will be skipped at job time.
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="space-y-2">
+            {captionLanguages.map((code, idx) => {
+              const used = new Set(captionLanguages.filter((_, i) => i !== idx));
+              return (
+                <div key={`lang-${idx}`} className="flex items-center gap-2">
+                  <Radio className="w-3 h-3 text-blue-600 shrink-0" />
+                  <select
+                    value={code}
+                    onChange={(e) => updateExtraLanguage(idx, e.target.value)}
+                    className="flex-1 px-2 py-1.5 border border-input rounded-md bg-input text-card-foreground text-sm focus:ring-2 focus:ring-ring"
+                  >
+                    {languageCatalog.map((lang) => (
+                      <option
+                        key={lang.code}
+                        value={lang.code}
+                        disabled={used.has(lang.code)}
+                      >
+                        {lang.displayName} · {lang.localDisplayName}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => removeExtraLanguage(idx)}
+                    className="text-muted-foreground hover:text-card-foreground p-1"
+                    aria-label="Remove language"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              );
+            })}
+            {captionLanguages.length < MAX_EXTRA_LANGUAGES && (
+              <button
+                type="button"
+                onClick={addExtraLanguage}
+                className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+              >
+                + Add translation language ({captionLanguages.length}/{MAX_EXTRA_LANGUAGES})
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Bundle format toggle */}
+      {probe && !probe.sourceTooSmall && (
+        <div>
+          <h3 className="font-semibold text-card-foreground mb-2 flex items-center gap-2">
+            <Package className="w-4 h-4 text-blue-600" /> Download format
+            <InfoTooltip
+              ariaLabel="About download format"
+              width="lg"
+              content={
+                <div className="space-y-1">
+                  <p><strong>.tar.gz</strong> — smaller for text-heavy playlists, universal on macOS/Linux, and Windows 10+ unpacks it natively via the built-in <code>tar</code> command.</p>
+                  <p><strong>.zip</strong> — the safe default if you&apos;re on older Windows or just want a double-click extract experience without thinking about it. Slightly larger; everything else is identical inside.</p>
+                </div>
+              }
+            />
+          </h3>
+          <div className="grid grid-cols-2 gap-2">
+            {(['targz', 'zip'] as BundleFormat[]).map((fmt) => (
+              <button
+                key={fmt}
+                type="button"
+                onClick={() => setBundleFormat(fmt)}
+                className={`px-4 py-3 rounded-lg border text-sm transition-colors ${
+                  bundleFormat === fmt
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 text-card-foreground'
+                    : 'border-input hover:bg-muted/40 text-card-foreground'
+                }`}
+              >
+                <div className="font-semibold">
+                  {fmt === 'targz' ? '.tar.gz' : '.zip'}
+                  {fmt === 'targz' && (
+                    <span className="ml-2 text-[10px] uppercase tracking-wide text-blue-600">Default</span>
+                  )}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {fmt === 'targz'
+                    ? 'Smaller · macOS/Linux/Win 10+ native'
+                    : 'Friendlier on Windows · double-click extract'}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Start button */}
       {probe && !probe.sourceTooSmall && !activeJobId && (
         <button
@@ -397,7 +570,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
               Starting transcode...
             </>
           ) : (
-            <>Start {protocol.toUpperCase()} transcode</>
+            <>Start {protocol.toUpperCase()} transcode (output: {bundleFormat === 'zip' ? '.zip' : '.tar.gz'})</>
           )}
         </button>
       )}
