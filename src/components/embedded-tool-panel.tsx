@@ -16,6 +16,8 @@ import ImageConversionForm from '@/components/image-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
 import AudioConversionForm from '@/components/audio-conversion-form';
 import TranscribeForm from '@/components/transcribe-form';
+import VideoTranscodeForm from '@/components/video-transcode-form';
+import type { TranscodeProtocol, DashCodec } from '@/lib/transcodeTypes';
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, {
   type TranscribeFormData,
@@ -43,7 +45,9 @@ export type EmbeddedTask =
   | 'isolate_vocals'
   | 'image_converter'
   | 'video_converter'
-  | 'audio_converter';
+  | 'audio_converter'
+  | 'transcode_to_hls'
+  | 'transcode_to_dash';
 
 interface EmbeddedToolPanelProps {
   /** Default media kind to bias the panel toward when no file is selected yet. */
@@ -71,6 +75,17 @@ interface EmbeddedToolPanelProps {
    * Only meaningful for video/audio defaultMediaKind.
    */
   transcribeMode?: boolean;
+  /**
+   * When true, render the HLS/DASH transcode form instead of the regular
+   * conversion form. Only meaningful for video defaultMediaKind.
+   */
+  transcodeMode?: boolean;
+  /** Default protocol when transcodeMode is on. */
+  transcodeProtocol?: TranscodeProtocol;
+  /** Default DASH codec when transcodeMode is on AND protocol is "dash". */
+  transcodeDashCodec?: DashCodec;
+  /** Lock the protocol so the user can't switch between HLS and DASH. */
+  transcodeLockProtocol?: boolean;
 }
 
 const ACCEPT_MAP: Record<EmbeddedMediaKind, string> = {
@@ -136,6 +151,12 @@ const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: st
   transcribe_video: {
     note: 'Choose the transcript format that fits your use case — VTT for captions, plain text for an article, JSON for downstream tooling.',
   },
+  transcode_to_hls: {
+    note: 'Free tier covers 360p/480p/720p. We package master.m3u8 + variant playlists + .ts segments into a downloadable .tar.gz.',
+  },
+  transcode_to_dash: {
+    note: 'Pick AV1 (smaller files) or VP9 (broader playback). The .tar.gz contains manifest.mpd + per-rendition init/segment files.',
+  },
 };
 
 /**
@@ -158,6 +179,10 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   lockedInputFormat,
   lockedOutputFormat,
   transcribeMode = false,
+  transcodeMode = false,
+  transcodeProtocol = 'hls',
+  transcodeDashCodec = 'av1',
+  transcodeLockProtocol = false,
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
@@ -316,6 +341,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
 
   const isTranscribeAllowed =
     transcribeMode && (defaultMediaKind === 'video' || defaultMediaKind === 'audio');
+  const isTranscodeAllowed = transcodeMode && defaultMediaKind === 'video';
 
   return (
     <section
@@ -436,7 +462,14 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             </button>
           </div>
 
-          {isTranscribeAllowed && (effectiveKind === 'video' || effectiveKind === 'audio') ? (
+          {isTranscodeAllowed && effectiveKind === 'video' ? (
+            <VideoTranscodeForm
+              file={selectedFile}
+              defaultProtocol={transcodeProtocol}
+              defaultDashCodec={transcodeDashCodec}
+              lockProtocol={transcodeLockProtocol}
+            />
+          ) : isTranscribeAllowed && (effectiveKind === 'video' || effectiveKind === 'audio') ? (
             <TranscribeForm
               mediaKind={effectiveKind}
               isLoading={isProcessing}
@@ -468,7 +501,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             </>
           )}
 
-          {isProcessing && (
+          {!isTranscodeAllowed && isProcessing && (
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-2">
                 {activeProgress > 0
@@ -487,7 +520,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             </div>
           )}
 
-          {isCompleted && (
+          {!isTranscodeAllowed && isCompleted && (
             <button
               type="button"
               onClick={() => void handleDownload()}
@@ -498,7 +531,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             </button>
           )}
 
-          {conversionJob?.status === 'failed' && (
+          {!isTranscodeAllowed && conversionJob?.status === 'failed' && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
               {transcribeMode ? 'Transcription failed.' : 'Conversion failed.'} Try again or open the full converter.
             </div>

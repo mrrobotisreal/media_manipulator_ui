@@ -108,6 +108,10 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
             allowedInputFormats={tool.embed.allowedInputFormats}
             acceptOverride={tool.embed.acceptOverride}
             transcribeMode={tool.embed.transcribeMode}
+            transcodeMode={tool.embed.transcodeMode}
+            transcodeProtocol={tool.embed.transcodeProtocol}
+            transcodeDashCodec={tool.embed.transcodeDashCodec}
+            transcodeLockProtocol={tool.embed.transcodeLockProtocol}
             title={tool.embed.title}
             description={tool.embed.description}
           />

@@ -7,6 +7,7 @@
  */
 
 import type { EmbeddedMediaKind, EmbeddedTask } from '@/components/embedded-tool-panel';
+import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 
 export interface ToolFaq {
   question: string;
@@ -58,6 +59,10 @@ export interface ToolPageContent {
     allowedInputFormats?: string[];
     acceptOverride?: string;
     transcribeMode?: boolean;
+    transcodeMode?: boolean;
+    transcodeProtocol?: TranscodeProtocol;
+    transcodeDashCodec?: DashCodec;
+    transcodeLockProtocol?: boolean;
     title: string;
     description: string;
   };
@@ -365,6 +370,263 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'video compressor',
       'compress video for email',
       'compress video without quality loss',
+    ],
+  },
+  {
+    slug: 'transcode-to-hls',
+    name: 'Transcode Video to HLS',
+    h1: 'Transcode Video to HLS Online',
+    tagline:
+      'Package any video into an Apple HLS VOD bundle: master.m3u8, per-rendition .ts segments, ready for the web.',
+    metaTitle: 'Transcode Video to HLS Online | Free Adaptive Streaming Tool',
+    metaDescription:
+      'Free online HLS transcoder. Convert MP4, MOV, WebM, MKV into an HLS VOD package with 360p/480p/720p renditions, optional captions and storyboards.',
+    ogTitle: 'Transcode Video to HLS Online',
+    ogDescription:
+      'Generate an adaptive HLS package (master.m3u8 + variant playlists + .ts segments) from any video — free, in your browser.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'transcode_to_hls',
+      transcodeMode: true,
+      transcodeProtocol: 'hls',
+      transcodeLockProtocol: true,
+      title: 'Transcode a video to HLS',
+      description:
+        'Upload an MP4/MOV/WebM/MKV. We ffprobe the source, let you pick free quality rungs (360p/480p/720p), then run H.264 + AAC ffmpeg encoding and bundle a downloadable tar.gz of the HLS package.',
+    },
+    intro:
+      'HTTP Live Streaming (HLS) is Apple’s adaptive streaming format and the closest thing the web has to a universally supported VOD container. Media Manipulator transcodes your source video into an HLS package — master.m3u8 plus per-rendition variant playlists and .ts segments — so you can drop the unzipped folder onto any CDN or origin and serve it with built-in adaptive bitrate switching. Free tier covers 360p, 480p, and 720p; premium rungs are coming soon.',
+    whatItDoes: [
+      'Probes your source with ffprobe and shows resolution, FPS, duration, codec, and audio status.',
+      'Lets you tick which quality rungs to encode (only ones your source can actually support are enabled).',
+      'Runs an H.264 + AAC FFmpeg pipeline with HLS VOD output and independent_segments.',
+      'Writes a master.m3u8 that references each variant, plus a variant index.m3u8 + .ts segments per rung.',
+      'Optionally generates WebVTT captions and storyboard scrubber thumbnails.',
+      'Bundles the result into media-manipulator-hls-<jobID>.tar.gz with a report.json and README.',
+      'Uploads the tarball to S3 and hands you back a short-lived presigned GET URL for download.',
+    ],
+    flowSteps: [
+      {
+        title: 'Upload',
+        description: 'Direct S3 presigned PUT — your file never goes through the API server.',
+      },
+      {
+        title: 'Probe',
+        description: 'ffprobe reads resolution, FPS, audio presence, and codec metadata.',
+      },
+      {
+        title: 'Pick rungs',
+        description: 'Choose 360p, 480p, 720p, or any combination you need.',
+      },
+      {
+        title: 'Encode',
+        description: 'libx264 + AAC at 2-second segments with forced keyframes on segment boundaries.',
+      },
+      {
+        title: 'Package',
+        description: 'master.m3u8 + variants + segments tar.gz’d with report.json and README.',
+      },
+      {
+        title: 'Download',
+        description: 'Presigned S3 GET URL valid for 30 minutes.',
+      },
+    ],
+    advancedDetails: [
+      'HLS variants are encoded with -hls_time 2 -hls_playlist_type vod -hls_flags independent_segments.',
+      'Force keyframes are emitted every 2 seconds so segments align cleanly across renditions.',
+      'CODECS attribute is "avc1.640028" with "mp4a.40.2" appended when audio is present.',
+      'No upscaling: rungs taller than the source resolution are disabled with a tooltip.',
+      'When the source has no audio track, the audio mapping is omitted so video-only HLS still works.',
+    ],
+    whyItMatters: [
+      'HLS is the de-facto streaming format on iOS, Safari, and every modern CDN.',
+      'A master playlist enables adaptive bitrate so viewers on slow connections get a watchable stream.',
+      'Pre-segmented VOD is far cheaper to serve than re-encoding on every request.',
+    ],
+    useCases: [
+      { title: 'Course platforms', description: 'Serve lessons with adaptive bitrate on iOS/Android without a video service.' },
+      { title: 'Marketing sites', description: 'Drop a polished hero video that doesn’t buffer on mobile data.' },
+      { title: 'Internal portals', description: 'Host onboarding videos on your own CDN, no third-party SaaS.' },
+      { title: 'Archival', description: 'Convert a back catalog into a streamable format you control.' },
+    ],
+    whyMediaManipulator: [
+      'Runs on our own servers — no third-party transcoding provider sees your video.',
+      'Free tier already covers the three rungs most products need (360p/480p/720p).',
+      'Open package format: just unzip the .tar.gz and host the master.m3u8.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    faq: [
+      {
+        question: 'What codec is used?',
+        answer: 'H.264 (libx264 High profile, level 4.1) for video and AAC LC for audio. The standard combo every HLS player supports.',
+      },
+      {
+        question: 'Why are 144p, 240p, 1080p, and 2160p disabled?',
+        answer: 'They’re part of a premium ladder we’ll unlock when Premium sign-up launches. For now the free tool encodes 360p, 480p, and 720p only.',
+      },
+      {
+        question: 'What if my video has no audio?',
+        answer: 'The variant playlists are encoded video-only. The master.m3u8 omits the AAC codec hint so players don’t expect an audio track.',
+      },
+      {
+        question: 'Can I get captions in the master playlist?',
+        answer: 'Captions are generated as a WebVTT file inside the tar.gz. Linking them as an EXT-X-MEDIA subtitle rendition in the master.m3u8 is on the roadmap.',
+      },
+      {
+        question: 'How long does the download URL last?',
+        answer: 'Presigned GET URLs are valid for 30 minutes by default. Re-run the transcode if you need a fresh link.',
+      },
+    ],
+    related: [
+      {
+        label: 'Transcode video to DASH',
+        to: '/tools/transcode-to-dash',
+        description: 'Same upload, but emits a MPEG-DASH (.mpd) package with AV1 or VP9.',
+      },
+      {
+        label: 'Compress video',
+        to: '/tools/compress-video',
+        description: 'Shrink an MP4 with the regular FFmpeg pipeline.',
+      },
+      {
+        label: 'Transcribe video',
+        to: '/tools/transcribe-video',
+        description: 'Pull speech out of video into searchable text.',
+      },
+      {
+        label: 'Video compression guide',
+        to: '/blog/video/video-compression-guide',
+        description: 'Codecs, bitrate, and container deep dive.',
+      },
+    ],
+    primaryKeyword: 'transcode video to HLS',
+    secondaryKeywords: [
+      'HLS transcoder',
+      'convert MP4 to HLS',
+      'master.m3u8 generator',
+      'adaptive bitrate streaming',
+      'HLS VOD packaging',
+    ],
+  },
+  {
+    slug: 'transcode-to-dash',
+    name: 'Transcode Video to DASH (AV1 / VP9)',
+    h1: 'Transcode Video to DASH AV1 or VP9 Online',
+    tagline:
+      'Package any video into a MPEG-DASH bundle with manifest.mpd + per-rendition init/media segments.',
+    metaTitle: 'Transcode Video to DASH AV1/VP9 Online | Free MPEG-DASH Tool',
+    metaDescription:
+      'Free online MPEG-DASH transcoder. Convert MP4, MOV, WebM, MKV into a DASH package with AV1 or VP9 video, optional captions and storyboards.',
+    ogTitle: 'Transcode Video to DASH AV1/VP9 Online',
+    ogDescription:
+      'Generate an adaptive DASH package (manifest.mpd + per-rendition init/media segments) from any video — free, in your browser.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'transcode_to_dash',
+      transcodeMode: true,
+      transcodeProtocol: 'dash',
+      transcodeDashCodec: 'av1',
+      transcodeLockProtocol: true,
+      title: 'Transcode a video to DASH (AV1 / VP9)',
+      description:
+        'Upload an MP4/MOV/WebM/MKV. We ffprobe the source, let you pick free quality rungs (360p/480p/720p), then run an AV1 (default) or VP9 ffmpeg encode and bundle a downloadable tar.gz with manifest.mpd.',
+    },
+    intro:
+      'MPEG-DASH is the open adaptive-streaming standard supported by every modern browser. Media Manipulator transcodes your source video into a DASH VOD bundle — manifest.mpd plus per-rendition init.mp4 and .m4s segments — using AV1 (smaller files, best for new web players) or VP9 (broader playback support). Drop the unzipped folder onto any CDN or origin and serve manifest.mpd to clients. Free tier covers 360p, 480p, and 720p.',
+    whatItDoes: [
+      'Probes your source with ffprobe and shows resolution, FPS, duration, codec, and audio status.',
+      'Lets you pick which quality rungs to encode and whether to emit AV1 or VP9.',
+      'Auto-detects the best AV1 encoder available (av1_nvenc → libsvtav1 → libaom-av1).',
+      'Generates an MPEG-DASH manifest.mpd referencing each video Representation plus an AAC audio Representation when present.',
+      'Optionally generates WebVTT captions and storyboard scrubber thumbnails.',
+      'Bundles the result into media-manipulator-dash-<codec>-<jobID>.tar.gz with a report.json and README.',
+      'Uploads the tarball to S3 and hands you back a short-lived presigned GET URL.',
+    ],
+    flowSteps: [
+      { title: 'Upload', description: 'Direct S3 presigned PUT — your file never goes through the API server.' },
+      { title: 'Probe', description: 'ffprobe reads resolution, FPS, audio presence, and codec metadata.' },
+      { title: 'Pick rungs + codec', description: 'Choose AV1 or VP9 and any combination of 360p/480p/720p.' },
+      { title: 'Encode', description: 'AV1 (svtav1/libaom/nvenc) or libvpx-vp9 at 2-second segments.' },
+      { title: 'Package', description: 'manifest.mpd + per-rendition init/segments tar.gz’d with report.json and README.' },
+      { title: 'Download', description: 'Presigned S3 GET URL valid for 30 minutes.' },
+    ],
+    advancedDetails: [
+      'AV1 encoder selection prefers av1_nvenc (GPU) when available, falling back to libsvtav1, then libaom-av1.',
+      'VP9 uses libvpx-vp9 with row-mt, frame-parallel decoding, and CRF + bitrate guidance.',
+      'DASH variants are emitted with -seg_duration 2 -use_template 1 -use_timeline 0 -single_file 0.',
+      'manifest.mpd declares one AdaptationSet per content type (video + audio when present) with codecs attributes "av01.0.08M.08" / "vp09.00.51.08" / "mp4a.40.2".',
+      'No upscaling: rungs taller than the source resolution are disabled with a tooltip.',
+    ],
+    whyItMatters: [
+      'AV1 typically halves the bitrate at equivalent quality versus H.264.',
+      'DASH is the dominant adaptive-streaming format outside the Apple ecosystem.',
+      'Pre-packaged VOD avoids per-request transcoding bills on streaming platforms.',
+    ],
+    useCases: [
+      { title: 'Modern web players', description: 'Shaka Player and dash.js consume manifest.mpd natively.' },
+      { title: 'Bandwidth-sensitive distribution', description: 'AV1 gives near-half the bytes of an H.264 HLS package.' },
+      { title: 'Internal media library', description: 'Self-host adaptive video without paying a SaaS streaming platform.' },
+      { title: 'Quality testing', description: 'A/B AV1 vs VP9 encodes side-by-side from the same source.' },
+    ],
+    whyMediaManipulator: [
+      'Runs on our own servers — no third-party transcoding provider sees your video.',
+      'AV1 selected by default since AV1 is the future for high-quality adaptive streaming.',
+      'Open package format: just unzip the .tar.gz and host the manifest.mpd.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    faq: [
+      {
+        question: 'AV1 or VP9 — which should I pick?',
+        answer: 'AV1 produces smaller files at equivalent quality, but encoding is slower on CPU-only hosts. VP9 has broader playback support and faster encoding. AV1 is the default.',
+      },
+      {
+        question: 'My server says AV1 is unavailable?',
+        answer: 'AV1 needs one of av1_nvenc (NVIDIA GPU), libsvtav1, or libaom-av1 in FFmpeg. Check /api/video-transcode/capabilities for what your install has.',
+      },
+      {
+        question: 'Is audio always AAC?',
+        answer: 'Yes — the DASH audio AdaptationSet currently emits AAC LC at 128 kbps for maximum compatibility regardless of source codec.',
+      },
+      {
+        question: 'Can I serve this manifest cross-origin?',
+        answer: 'Yes, but your CDN/origin needs the right CORS headers on .mpd, init.mp4, and .m4s files. The tarball does not bundle those headers.',
+      },
+      {
+        question: 'How long does the download URL last?',
+        answer: 'Presigned GET URLs are valid for 30 minutes by default. Re-run the transcode if you need a fresh link.',
+      },
+    ],
+    related: [
+      {
+        label: 'Transcode video to HLS',
+        to: '/tools/transcode-to-hls',
+        description: 'Same upload, but emits an Apple HLS package with H.264 + AAC.',
+      },
+      {
+        label: 'Compress video',
+        to: '/tools/compress-video',
+        description: 'Shrink an MP4 with the regular FFmpeg pipeline.',
+      },
+      {
+        label: 'Transcribe video',
+        to: '/tools/transcribe-video',
+        description: 'Pull speech out of video into searchable text.',
+      },
+      {
+        label: 'Video compression guide',
+        to: '/blog/video/video-compression-guide',
+        description: 'Codecs, bitrate, and container deep dive.',
+      },
+    ],
+    primaryKeyword: 'transcode video to DASH',
+    secondaryKeywords: [
+      'MPEG-DASH transcoder',
+      'AV1 DASH packager',
+      'VP9 DASH packager',
+      'manifest.mpd generator',
+      'adaptive bitrate streaming',
     ],
   },
   {
@@ -1188,6 +1450,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress video', to: '/tools/compress-video', description: 'Focused compressor for shrinking video files.' },
       { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Turn short clips into animated GIFs.' },
       { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Pull speech out of video as text or VTT captions.' },
+      { label: 'Transcode video to HLS', to: '/tools/transcode-to-hls', description: 'Generate an adaptive HLS package from any video.' },
+      { label: 'Transcode video to DASH', to: '/tools/transcode-to-dash', description: 'Generate a MPEG-DASH AV1/VP9 package from any video.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Full walkthrough of every option.' },
       { label: 'Video compression guide', to: '/blog/video/video-compression-guide', description: 'Codec, bitrate, and container deep dive.' },
     ],

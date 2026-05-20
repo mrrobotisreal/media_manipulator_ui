@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useState, useCallback, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles } from 'lucide-react';
+import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles, Film } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
@@ -15,6 +15,7 @@ const VideoConversionForm = lazy(() => import('@/components/video-conversion-for
 const AudioConversionForm = lazy(() => import('@/components/audio-conversion-form'));
 const TranscribeForm = lazy(() => import('@/components/transcribe-form'));
 const TranscribeResultView = lazy(() => import('@/components/transcribe-result-view'));
+const VideoTranscodeForm = lazy(() => import('@/components/video-transcode-form'));
 
 const FormFallback: React.FC = () => (
   <div className="text-sm text-muted-foreground py-4">Loading converter…</div>
@@ -40,7 +41,7 @@ import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnal
 import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
 import mixpanel from 'mixpanel-browser';
 
-type WorkflowMode = 'convert' | 'transcribe';
+type WorkflowMode = 'convert' | 'transcribe' | 'transcode';
 
 interface ConversionHistoryItem {
   jobId: string;
@@ -830,6 +831,8 @@ const FileConverterApp: React.FC = () => {
             <Link to="/tools/remove-exif-metadata" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Remove EXIF</Link>
             <Link to="/tools/compress-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Compress video</Link>
             <Link to="/tools/transcribe-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Transcribe video</Link>
+            <Link to="/tools/transcode-to-hls" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Transcode → HLS</Link>
+            <Link to="/tools/transcode-to-dash" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Transcode → DASH</Link>
             <Link to="/tools/convert-webp-to-jpg" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">WebP → JPG</Link>
             <Link to="/tools/convert-wav-to-mp3" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">WAV → MP3</Link>
           </nav>
@@ -1012,7 +1015,11 @@ const FileConverterApp: React.FC = () => {
           <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Settings className="w-5 h-5" />
-              {workflowMode === 'transcribe' ? 'Transcription Options' : 'Conversion Options'}
+              {workflowMode === 'transcribe'
+                ? 'Transcription Options'
+                : workflowMode === 'transcode'
+                  ? 'Transcode Options'
+                  : 'Conversion Options'}
             </h2>
 
             {selectedFile && (fileType === 'video' || fileType === 'audio') && (
@@ -1041,13 +1048,29 @@ const FileConverterApp: React.FC = () => {
                   <FileText className="w-4 h-4" />
                   Transcribe
                 </button>
+                {fileType === 'video' && (
+                  <button
+                    type="button"
+                    onClick={() => setWorkflowMode('transcode')}
+                    className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
+                      workflowMode === 'transcode'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-background text-card-foreground hover:bg-muted'
+                    }`}
+                  >
+                    <Film className="w-4 h-4" />
+                    Transcode
+                  </button>
+                )}
               </div>
             )}
 
             {selectedFile && fileType && fileType !== 'unknown' ? (
               <div className="space-y-6">
                 <Suspense fallback={<FormFallback />}>
-                  {workflowMode === 'transcribe' && (fileType === 'video' || fileType === 'audio') ? (
+                  {workflowMode === 'transcode' && fileType === 'video' ? (
+                    <VideoTranscodeForm file={selectedFile} />
+                  ) : workflowMode === 'transcribe' && (fileType === 'video' || fileType === 'audio') ? (
                     <TranscribeForm
                       mediaKind={fileType}
                       isLoading={isLoading}
