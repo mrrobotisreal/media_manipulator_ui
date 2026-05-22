@@ -166,6 +166,26 @@ const faqPageLd = (tool: ToolPageContent): JsonLd => ({
   })),
 });
 
+// howToLd surfaces the tool's flow-step copy as a Google-eligible HowTo
+// snippet. Only tools whose `flowSteps` are actually a step-by-step recipe
+// should emit this; we gate it on a tool-by-tool basis below by always
+// including it when there are 3+ steps (single-step "flows" do not benefit
+// from the snippet).
+const howToLd = (tool: ToolPageContent): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: `How to use ${tool.name}`,
+  description: tool.tagline,
+  totalTime: 'PT2M',
+  step: tool.flowSteps.map((step, idx) => ({
+    '@type': 'HowToStep',
+    position: idx + 1,
+    name: step.title,
+    text: step.description || step.title,
+    url: `${buildCanonical(`/tools/${tool.slug}`)}#step-${idx + 1}`,
+  })),
+});
+
 const buildToolRouteSeo = (tool: ToolPageContent): RouteSeo => {
   const path = `/tools/${tool.slug}`;
   return {
@@ -187,6 +207,10 @@ const buildToolRouteSeo = (tool: ToolPageContent): RouteSeo => {
         { name: tool.name, path },
       ]),
       faqPageLd(tool),
+      // Only emit HowTo for tools that have a real 3+ step walkthrough — a
+      // single-step "flow" doesn't qualify for the HowTo rich result and Google
+      // can penalize boilerplate HowTo markup that doesn't match the page.
+      ...(tool.flowSteps.length >= 3 ? [howToLd(tool)] : []),
     ],
   };
 };

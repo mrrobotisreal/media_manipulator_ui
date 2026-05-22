@@ -300,16 +300,48 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   name="transform.flipHorizontal"
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
-                    <label className="flex items-center space-x-2">
-                      <input
-                        {...field}
-                        type="checkbox"
-                        checked={value || false}
-                        onChange={(e) => onChange(e.target.checked)}
-                        className="rounded border-input bg-input"
-                      />
+                    <div className="flex flex-row justify-start items-center space-x-2">
+                      <label className="neon-checkbox">
+                        <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
+                        <div className="neon-checkbox__frame">
+                          <div className="neon-checkbox__box">
+                            <div className="neon-checkbox__check-container">
+                              <svg viewBox="0 0 24 24" className="neon-checkbox__check">
+                                <path d="M3,12.5l7,7L21,5"></path>
+                              </svg>
+                            </div>
+                            <div className="neon-checkbox__glow"></div>
+                            <div className="neon-checkbox__borders">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                          <div className="neon-checkbox__effects">
+                            <div className="neon-checkbox__particles">
+                              <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                            </div>
+                            <div className="neon-checkbox__rings">
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                            </div>
+                            <div className="neon-checkbox__sparks">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </label>
                       <span className="text-sm text-card-foreground">Flip Horizontal</span>
-                    </label>
+                    </div>
+                    // <label className="flex items-center space-x-2">
+                    //   <input
+                    //     {...field}
+                    //     type="checkbox"
+                    //     checked={value || false}
+                    //     onChange={(e) => onChange(e.target.checked)}
+                    //     className="rounded border-input bg-input"
+                    //   />
+                    //   <span className="text-sm text-card-foreground">Flip Horizontal</span>
+                    // </label>
                   )}
                 />
 
@@ -317,16 +349,48 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   name="transform.flipVertical"
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
-                    <label className="flex items-center space-x-2">
-                      <input
-                        {...field}
-                        type="checkbox"
-                        checked={value || false}
-                        onChange={(e) => onChange(e.target.checked)}
-                        className="rounded border-input bg-input"
-                      />
+                    <div className="flex flex-row justify-start items-center space-x-2">
+                      <label className="neon-checkbox">
+                        <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
+                        <div className="neon-checkbox__frame">
+                          <div className="neon-checkbox__box">
+                            <div className="neon-checkbox__check-container">
+                              <svg viewBox="0 0 24 24" className="neon-checkbox__check">
+                                <path d="M3,12.5l7,7L21,5"></path>
+                              </svg>
+                            </div>
+                            <div className="neon-checkbox__glow"></div>
+                            <div className="neon-checkbox__borders">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                          <div className="neon-checkbox__effects">
+                            <div className="neon-checkbox__particles">
+                              <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                            </div>
+                            <div className="neon-checkbox__rings">
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                            </div>
+                            <div className="neon-checkbox__sparks">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </label>
                       <span className="text-sm text-card-foreground">Flip Vertical</span>
-                    </label>
+                    </div>
+                    // <label className="flex items-center space-x-2">
+                    //   <input
+                    //     {...field}
+                    //     type="checkbox"
+                    //     checked={value || false}
+                    //     onChange={(e) => onChange(e.target.checked)}
+                    //     className="rounded border-input bg-input"
+                    //   />
+                    //   <span className="text-sm text-card-foreground">Flip Vertical</span>
+                    // </label>
                   )}
                 />
               </div>
@@ -352,16 +416,48 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   name="temporal.reverse"
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
-                    <label className="flex items-center space-x-2">
-                      <input
-                        {...field}
-                        type="checkbox"
-                        checked={value || false}
-                        onChange={(e) => onChange(e.target.checked)}
-                        className="rounded border-input bg-input"
-                      />
+                    <div className="flex flex-row justify-start items-center space-x-2">
+                      <label className="neon-checkbox">
+                        <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
+                        <div className="neon-checkbox__frame">
+                          <div className="neon-checkbox__box">
+                            <div className="neon-checkbox__check-container">
+                              <svg viewBox="0 0 24 24" className="neon-checkbox__check">
+                                <path d="M3,12.5l7,7L21,5"></path>
+                              </svg>
+                            </div>
+                            <div className="neon-checkbox__glow"></div>
+                            <div className="neon-checkbox__borders">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                          <div className="neon-checkbox__effects">
+                            <div className="neon-checkbox__particles">
+                              <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                            </div>
+                            <div className="neon-checkbox__rings">
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                            </div>
+                            <div className="neon-checkbox__sparks">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </label>
                       <span className="text-sm text-card-foreground">Reverse Video</span>
-                    </label>
+                    </div>
+                    // <label className="flex items-center space-x-2">
+                    //   <input
+                    //     {...field}
+                    //     type="checkbox"
+                    //     checked={value || false}
+                    //     onChange={(e) => onChange(e.target.checked)}
+                    //     className="rounded border-input bg-input"
+                    //   />
+                    //   <span className="text-sm text-card-foreground">Reverse Video</span>
+                    // </label>
                   )}
                 />
               </div>
@@ -371,16 +467,48 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   name="temporal.pingPong"
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
-                    <label className="flex items-center space-x-2">
-                      <input
-                        {...field}
-                        type="checkbox"
-                        checked={value || false}
-                        onChange={(e) => onChange(e.target.checked)}
-                        className="rounded border-input bg-input"
-                      />
+                    <div className="flex flex-row justify-start items-center space-x-2">
+                      <label className="neon-checkbox">
+                        <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
+                        <div className="neon-checkbox__frame">
+                          <div className="neon-checkbox__box">
+                            <div className="neon-checkbox__check-container">
+                              <svg viewBox="0 0 24 24" className="neon-checkbox__check">
+                                <path d="M3,12.5l7,7L21,5"></path>
+                              </svg>
+                            </div>
+                            <div className="neon-checkbox__glow"></div>
+                            <div className="neon-checkbox__borders">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                          <div className="neon-checkbox__effects">
+                            <div className="neon-checkbox__particles">
+                              <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                            </div>
+                            <div className="neon-checkbox__rings">
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                            </div>
+                            <div className="neon-checkbox__sparks">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </label>
                       <span className="text-sm text-card-foreground">Ping-Pong Loop</span>
-                    </label>
+                    </div>
+                    // <label className="flex items-center space-x-2">
+                    //   <input
+                    //     {...field}
+                    //     type="checkbox"
+                    //     checked={value || false}
+                    //     onChange={(e) => onChange(e.target.checked)}
+                    //     className="rounded border-input bg-input"
+                    //   />
+                    //   <span className="text-sm text-card-foreground">Ping-Pong Loop</span>
+                    // </label>
                   )}
                 />
               </div>
@@ -414,16 +542,48 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   name="temporal.stabilization.enabled"
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
-                    <label className="flex items-center space-x-2">
-                      <input
-                        {...field}
-                        type="checkbox"
-                        checked={value || false}
-                        onChange={(e) => onChange(e.target.checked)}
-                        className="rounded border-input bg-input"
-                      />
+                    <div className="flex flex-row justify-start items-center space-x-2">
+                      <label className="neon-checkbox">
+                        <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
+                        <div className="neon-checkbox__frame">
+                          <div className="neon-checkbox__box">
+                            <div className="neon-checkbox__check-container">
+                              <svg viewBox="0 0 24 24" className="neon-checkbox__check">
+                                <path d="M3,12.5l7,7L21,5"></path>
+                              </svg>
+                            </div>
+                            <div className="neon-checkbox__glow"></div>
+                            <div className="neon-checkbox__borders">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                          <div className="neon-checkbox__effects">
+                            <div className="neon-checkbox__particles">
+                              <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                            </div>
+                            <div className="neon-checkbox__rings">
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                            </div>
+                            <div className="neon-checkbox__sparks">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </label>
                       <span className="text-sm text-card-foreground">Video Stabilization</span>
-                    </label>
+                    </div>
+                    // <label className="flex items-center space-x-2">
+                    //   <input
+                    //     {...field}
+                    //     type="checkbox"
+                    //     checked={value || false}
+                    //     onChange={(e) => onChange(e.target.checked)}
+                    //     className="rounded border-input bg-input"
+                    //   />
+                    //   <span className="text-sm text-card-foreground">Video Stabilization</span>
+                    // </label>
                   )}
                 />
               </div>
@@ -449,16 +609,48 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   name="advanced.deinterlace"
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
-                    <label className="flex items-center space-x-2">
-                      <input
-                        {...field}
-                        type="checkbox"
-                        checked={value || false}
-                        onChange={(e) => onChange(e.target.checked)}
-                        className="rounded border-input bg-input"
-                      />
+                    <div className="flex flex-row justify-start items-center space-x-2">
+                      <label className="neon-checkbox">
+                        <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
+                        <div className="neon-checkbox__frame">
+                          <div className="neon-checkbox__box">
+                            <div className="neon-checkbox__check-container">
+                              <svg viewBox="0 0 24 24" className="neon-checkbox__check">
+                                <path d="M3,12.5l7,7L21,5"></path>
+                              </svg>
+                            </div>
+                            <div className="neon-checkbox__glow"></div>
+                            <div className="neon-checkbox__borders">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                          <div className="neon-checkbox__effects">
+                            <div className="neon-checkbox__particles">
+                              <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                            </div>
+                            <div className="neon-checkbox__rings">
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                              <div className="ring"></div>
+                            </div>
+                            <div className="neon-checkbox__sparks">
+                              <span></span><span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </label>
                       <span className="text-sm text-card-foreground">Deinterlace Video</span>
-                    </label>
+                    </div>
+                    // <label className="flex items-center space-x-2">
+                    //   <input
+                    //     {...field}
+                    //     type="checkbox"
+                    //     checked={value || false}
+                    //     onChange={(e) => onChange(e.target.checked)}
+                    //     className="rounded border-input bg-input"
+                    //   />
+                    //   <span className="text-sm text-card-foreground">Deinterlace Video</span>
+                    // </label>
                   )}
                 />
               </div>

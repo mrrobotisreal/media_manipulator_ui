@@ -1136,7 +1136,16 @@ const FileConverterApp: React.FC = () => {
                 )}
 
                 {isLoading && conversionJob?.progress && (
-                  <div className="text-center">
+                  <div className="text-center flex flex-col items-center justify-center">
+                    <div className="blob-sphere-loader mb-12 mt-8">
+                      <div className="blob-sphere-loader-inner">
+                        <div className="blob-sphere b1"></div>
+                        <div className="blob-sphere b2"></div>
+                        <div className="blob-sphere b3"></div>
+                        <div className="blob-sphere b4"></div>
+                        <div className="blob-sphere b5"></div>
+                      </div>
+                    </div>
                     <p className="text-sm text-muted-foreground mb-2">
                       {conversionJob.progress}% Complete
                     </p>

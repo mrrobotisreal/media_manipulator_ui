@@ -4,15 +4,30 @@ import { toast } from 'sonner';
 import { getBaseURL, getFileType } from '@/lib/utils';
 import { getSessionId, trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 
-export type TranscribeOutputFormat = 'vtt' | 'srt' | 'txt' | 'json';
+/**
+ * useSpecializedMediaTool wraps the standard /api/upload (audio/image) and
+ * /api/video-upload/presign + /complete (video) flows for the specialized
+ * tools that take exactly one media file plus a structured options object —
+ * audio waveform, extract audio, extract video-only, extract frames.
+ *
+ * It mirrors useConvertFile / useTranscribeFile shape so the existing
+ * useGetJobStatus + useDownloadFile machinery continues to work unchanged.
+ */
 
-export interface TranscribeFormData {
-  mode: 'transcribe';
-  format: TranscribeOutputFormat;
-  language?: string;
+export type SpecializedToolMode =
+  | 'audio_waveform'
+  | 'extract_audio'
+  | 'extract_video_only'
+  | 'extract_frames';
+
+export interface SpecializedToolOptions {
+  /** The mode the backend dispatches on. */
+  mode: SpecializedToolMode;
+  /** Free-form options blob, validated server-side. */
+  [key: string]: unknown;
 }
 
-export interface TranscribeUploadResponse {
+export interface SpecializedToolResponse {
   jobId: string;
 }
 
@@ -24,20 +39,6 @@ interface VideoUploadTarget {
   bucket: string;
   expiresAt: string;
 }
-
-const uploadAudioForTranscribe = async (file: File, options: TranscribeFormData): Promise<TranscribeUploadResponse> => {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('options', JSON.stringify(options));
-  const response = await fetch(`${getBaseURL()}/upload`, {
-    method: 'POST',
-    body: formData,
-  });
-  if (!response.ok) {
-    throw new Error(`Transcription upload failed: ${response.statusText}`);
-  }
-  return response.json();
-};
 
 const putFileToS3 = (target: VideoUploadTarget, file: File, contentType: string, onProgress: (progress: number) => void) =>
   new Promise<void>((resolve, reject) => {
@@ -62,18 +63,32 @@ const putFileToS3 = (target: VideoUploadTarget, file: File, contentType: string,
     xhr.send(file);
   });
 
-const uploadVideoForTranscribe = async (
+const uploadDirect = async (file: File, options: SpecializedToolOptions): Promise<SpecializedToolResponse> => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('options', JSON.stringify(options));
+  const response = await fetch(`${getBaseURL()}/upload`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!response.ok) {
+    throw new Error(`Upload failed: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+const uploadVideoViaS3 = async (
   file: File,
-  options: TranscribeFormData,
+  options: SpecializedToolOptions,
   setPhase: (phase: UploadPhase) => void,
   setProgress: (progress: number) => void,
-): Promise<TranscribeUploadResponse> => {
+): Promise<SpecializedToolResponse> => {
   const sessionId = getSessionId();
   const contentType = file.type || 'video/mp4';
   setPhase('requesting-url');
   setProgress(0);
 
-  const presignResponse = await fetch(`${getBaseURL()}/video-upload/presign`, {
+  const presign = await fetch(`${getBaseURL()}/video-upload/presign`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -86,16 +101,16 @@ const uploadVideoForTranscribe = async (
       sessionId,
     }),
   });
-  if (!presignResponse.ok) {
-    throw new Error(`Failed to create video upload URL: ${presignResponse.statusText}`);
+  if (!presign.ok) {
+    throw new Error(`Failed to create video upload URL: ${presign.statusText}`);
   }
-  const target = await presignResponse.json() as VideoUploadTarget;
+  const target = (await presign.json()) as VideoUploadTarget;
 
   setPhase('uploading-to-s3');
   await putFileToS3(target, file, contentType, setProgress);
 
   setPhase('finalizing');
-  const completeResponse = await fetch(`${getBaseURL()}/video-upload/complete`, {
+  const complete = await fetch(`${getBaseURL()}/video-upload/complete`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -106,15 +121,15 @@ const uploadVideoForTranscribe = async (
       options,
     }),
   });
-  if (!completeResponse.ok) {
-    throw new Error(`Failed to finalize video upload: ${completeResponse.statusText}`);
+  if (!complete.ok) {
+    throw new Error(`Failed to finalize video upload: ${complete.statusText}`);
   }
   setPhase('processing');
-  return completeResponse.json();
+  return complete.json();
 };
 
-interface UseTranscribeFileReturns {
-  mutate: (input: { file: File; options: TranscribeFormData }) => void;
+interface UseSpecializedMediaToolReturns {
+  mutate: (input: { file: File; options: SpecializedToolOptions }) => void;
   isPending: boolean;
   isError: boolean;
   error: Error | null;
@@ -122,43 +137,47 @@ interface UseTranscribeFileReturns {
   uploadPhase: UploadPhase;
 }
 
-const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): UseTranscribeFileReturns => {
+const useSpecializedMediaTool = (
+  onSuccess: (res: SpecializedToolResponse) => void,
+): UseSpecializedMediaToolReturns => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<UploadPhase>('idle');
 
   const mutation = useMutation({
-    mutationFn: ({ file, options }: { file: File; options: TranscribeFormData }) => {
+    mutationFn: ({ file, options }: { file: File; options: SpecializedToolOptions }) => {
       if (getFileType(file) === 'video') {
-        return uploadVideoForTranscribe(file, options, setUploadPhase, setUploadProgress);
+        return uploadVideoViaS3(file, options, setUploadPhase, setUploadProgress);
       }
       setUploadPhase('uploading-to-s3');
       setUploadProgress(0);
-      return uploadAudioForTranscribe(file, options);
+      return uploadDirect(file, options);
     },
     onSuccess: (data, variables) => {
       setUploadProgress(100);
       setUploadPhase('processing');
-      toast.success('Transcription started', {
-        description: `Job ID: ${data.jobId} - Generating transcript`,
+      toast.success('Job started', {
+        description: `Job ID: ${data.jobId}`,
       });
-      trackFirstPartyEvent('transcription_started', {
-        target_format: variables.options.format,
+      trackFirstPartyEvent('specialized_tool_started', {
+        tool_mode: variables.options.mode,
         size_bytes: variables.file.size,
       }, {
         mediaKind: getFileType(variables.file),
         conversionJobId: data.jobId,
+        featureName: variables.options.mode,
       });
       onSuccess(data);
     },
     onError: (error, variables) => {
       setUploadPhase('idle');
-      console.error('Transcription upload failed:', error);
-      trackFirstPartyError('transcription_upload', error, {
-        target_format: variables.options.format,
+      console.error('Specialized tool upload failed:', error);
+      trackFirstPartyError('specialized_tool_upload', error, {
+        tool_mode: variables.options.mode,
       }, {
         mediaKind: getFileType(variables.file),
+        featureName: variables.options.mode,
       });
-      toast.error('Failed to start transcription', {
+      toast.error('Failed to start job', {
         description: error.message || 'An unexpected error occurred',
       });
     },
@@ -174,4 +193,4 @@ const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): 
   };
 };
 
-export default useTranscribeFile;
+export default useSpecializedMediaTool;

@@ -536,16 +536,48 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
           <Controller
             name="preserveAspectRatio"
             control={control}
-            render={({ field }) => (
-              <label className="flex items-center space-x-2">
-                <input
-                  {...field}
-                  type="checkbox"
-                  checked={field.value}
-                  className="rounded border-input bg-input focus:ring-2 focus:ring-ring"
-                />
+            render={({ field: { onChange, value, ...field } }) => (
+              <div className="flex flex-row justify-start items-center space-x-2">
+                <label className="neon-checkbox">
+                  <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
+                  <div className="neon-checkbox__frame">
+                    <div className="neon-checkbox__box">
+                      <div className="neon-checkbox__check-container">
+                        <svg viewBox="0 0 24 24" className="neon-checkbox__check">
+                          <path d="M3,12.5l7,7L21,5"></path>
+                        </svg>
+                      </div>
+                      <div className="neon-checkbox__glow"></div>
+                      <div className="neon-checkbox__borders">
+                        <span></span><span></span><span></span><span></span>
+                      </div>
+                    </div>
+                    <div className="neon-checkbox__effects">
+                      <div className="neon-checkbox__particles">
+                        <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+                      </div>
+                      <div className="neon-checkbox__rings">
+                        <div className="ring"></div>
+                        <div className="ring"></div>
+                        <div className="ring"></div>
+                      </div>
+                      <div className="neon-checkbox__sparks">
+                        <span></span><span></span><span></span><span></span>
+                      </div>
+                    </div>
+                  </div>
+                </label>
                 <span className="text-sm text-card-foreground">Preserve aspect ratio</span>
-              </label>
+              </div>
+              // <label className="flex items-center space-x-2">
+              //   <input
+              //     {...field}
+              //     type="checkbox"
+              //     checked={field.value}
+              //     className="rounded border-input bg-input focus:ring-2 focus:ring-ring"
+              //   />
+              //   <span className="text-sm text-card-foreground">Preserve aspect ratio</span>
+              // </label>
             )}
           />
           <InfoTooltip

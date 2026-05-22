@@ -196,6 +196,62 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Tool: SRT generator -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/srt-generator</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Caption translator -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/caption-translator</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Audio waveform generator -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/audio-waveform-generator</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Tool: Extract audio from video -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/extract-audio-from-video</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Remove audio from video -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/extract-video-only-from-video</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Tool: Extract frames from video -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/extract-frames-from-video</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Tool: Stitch audio to video -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/stitch-audio-to-video</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Privacy Policy -->
   <url>
     <loc>https://www.media-manipulator.com/privacy-policy</loc>

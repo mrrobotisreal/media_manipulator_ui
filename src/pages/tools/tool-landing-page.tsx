@@ -116,6 +116,59 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
             description={tool.embed.description}
           />
 
+          {tool.supportedFormats && (
+            tool.supportedFormats.supportedInputFormats?.length ||
+            tool.supportedFormats.supportedOutputFormats?.length ||
+            tool.supportedFormats.maxFileNotes?.length ||
+            tool.supportedFormats.processingNotes?.length
+          ) ? (
+            <section className="my-8" aria-label="Supported formats">
+              <h2 className="text-2xl font-semibold text-card-foreground mb-3">Supported formats</h2>
+              <div className="grid gap-4 md:grid-cols-2">
+                {tool.supportedFormats.supportedInputFormats?.length ? (
+                  <div className="rounded-lg border border-border bg-background/40 p-4">
+                    <h3 className="font-medium text-card-foreground mb-2">Accepted inputs</h3>
+                    <ul className="flex flex-wrap gap-2">
+                      {tool.supportedFormats.supportedInputFormats.map((fmt) => (
+                        <li
+                          key={fmt}
+                          className="text-xs px-2 py-1 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-900/60"
+                        >
+                          {fmt.toUpperCase()}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {tool.supportedFormats.supportedOutputFormats?.length ? (
+                  <div className="rounded-lg border border-border bg-background/40 p-4">
+                    <h3 className="font-medium text-card-foreground mb-2">Output formats</h3>
+                    <ul className="flex flex-wrap gap-2">
+                      {tool.supportedFormats.supportedOutputFormats.map((fmt) => (
+                        <li
+                          key={fmt}
+                          className="text-xs px-2 py-1 rounded bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-200/60 dark:border-green-900/60"
+                        >
+                          {fmt.toUpperCase()}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
+              {(tool.supportedFormats.maxFileNotes?.length || tool.supportedFormats.processingNotes?.length) && (
+                <ul className="mt-4 space-y-1 text-sm text-muted-foreground list-disc pl-6">
+                  {tool.supportedFormats.maxFileNotes?.map((note) => (
+                    <li key={`max-${note}`}>{note}</li>
+                  ))}
+                  {tool.supportedFormats.processingNotes?.map((note) => (
+                    <li key={`proc-${note}`}>{note}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ) : null}
+
           <section className="my-8" aria-label="What this tool does">
             <h2 className="text-2xl font-semibold text-card-foreground mb-3">What this tool does</h2>
             <ul className="space-y-2 list-disc pl-6 text-card-foreground">

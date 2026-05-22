@@ -17,6 +17,12 @@ import VideoConversionForm from '@/components/video-conversion-form';
 import AudioConversionForm from '@/components/audio-conversion-form';
 import TranscribeForm from '@/components/transcribe-form';
 import VideoTranscodeForm from '@/components/video-transcode-form';
+import AudioWaveformPanel from '@/components/audio-waveform-panel';
+import ExtractAudioPanel from '@/components/extract-audio-panel';
+import ExtractVideoOnlyPanel from '@/components/extract-video-only-panel';
+import ExtractFramesPanel from '@/components/extract-frames-panel';
+import CaptionTranslatorPanel from '@/components/caption-translator-panel';
+import StitchAudioToVideoPanel from '@/components/stitch-audio-to-video-panel';
 import type { TranscodeProtocol, DashCodec } from '@/lib/transcodeTypes';
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, {
@@ -47,7 +53,14 @@ export type EmbeddedTask =
   | 'video_converter'
   | 'audio_converter'
   | 'transcode_to_hls'
-  | 'transcode_to_dash';
+  | 'transcode_to_dash'
+  | 'srt_generator'
+  | 'caption_translator'
+  | 'audio_waveform'
+  | 'extract_audio'
+  | 'extract_video_only'
+  | 'extract_frames'
+  | 'stitch_audio_to_video';
 
 interface EmbeddedToolPanelProps {
   /** Default media kind to bias the panel toward when no file is selected yet. */
@@ -157,6 +170,39 @@ const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: st
   transcode_to_dash: {
     note: 'Pick AV1 (smaller files) or VP9 (broader playback). The .tar.gz contains manifest.mpd + per-rendition init/segment files.',
   },
+  srt_generator: {
+    recommended: 'srt',
+    note: 'SRT is selected by default — the file works on YouTube, in DaVinci Resolve / Premiere, and in most video editors.',
+  },
+  caption_translator: {
+    note: 'Upload an existing .srt or .vtt file. Cue timings are preserved exactly — only the text is translated, on our local AI server.',
+  },
+  audio_waveform: {
+    note: 'Defaults to a wide 10:1 waveform video — perfect for podcasts, music previews, and editing timelines. Switch to image-only or both via the Output selector.',
+  },
+  extract_audio: {
+    recommended: 'mp3',
+    note: 'Extracts the first audio track of the video. Videos with no audio return a clear error.',
+  },
+  extract_video_only: {
+    recommended: 'mp4',
+    note: 'Strips all audio tracks. We stream-copy the video stream where possible — no re-encode, no quality loss.',
+  },
+  extract_frames: {
+    note: 'Bundles the extracted frames into a single .zip you can download in one click. The max-frame cap keeps runs short.',
+  },
+  stitch_audio_to_video: {
+    note: 'Add up to three audio tracks (music, voiceover, narration) and pick "mix" or "replace" to control whether the original audio stays.',
+  },
+};
+
+const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
+  audio_waveform: true,
+  extract_audio: true,
+  extract_video_only: true,
+  extract_frames: true,
+  caption_translator: true,
+  stitch_audio_to_video: true,
 };
 
 /**
@@ -342,6 +388,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   const isTranscribeAllowed =
     transcribeMode && (defaultMediaKind === 'video' || defaultMediaKind === 'audio');
   const isTranscodeAllowed = transcodeMode && defaultMediaKind === 'video';
+  const specializedPanel = defaultTask && SPECIALIZED_PANEL_TASKS[defaultTask] ? defaultTask : null;
 
   return (
     <section
@@ -401,7 +448,19 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
         </div>
       )}
 
-      {!selectedFile ? (
+      {specializedPanel === 'audio_waveform' ? (
+        <AudioWaveformPanel />
+      ) : specializedPanel === 'extract_audio' ? (
+        <ExtractAudioPanel />
+      ) : specializedPanel === 'extract_video_only' ? (
+        <ExtractVideoOnlyPanel />
+      ) : specializedPanel === 'extract_frames' ? (
+        <ExtractFramesPanel />
+      ) : specializedPanel === 'caption_translator' ? (
+        <CaptionTranslatorPanel />
+      ) : specializedPanel === 'stitch_audio_to_video' ? (
+        <StitchAudioToVideoPanel />
+      ) : !selectedFile ? (
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -474,6 +533,12 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
               mediaKind={effectiveKind}
               isLoading={isProcessing}
               onSubmit={handleTranscribe}
+              defaultFormat={
+                defaultOutputFormat === 'srt' || defaultOutputFormat === 'vtt' ||
+                defaultOutputFormat === 'txt' || defaultOutputFormat === 'json'
+                  ? (defaultOutputFormat as 'srt' | 'vtt' | 'txt' | 'json')
+                  : undefined
+              }
             />
           ) : (
             <>

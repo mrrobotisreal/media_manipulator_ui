@@ -30,6 +30,23 @@ export interface ToolRelatedLink {
   description?: string;
 }
 
+/**
+ * Tool-page supported-format entries. Rendered as labelled badge groups in
+ * the "Supported formats" section of ToolLandingPage. Both fields are
+ * optional — tools that don't accept/produce discrete formats (e.g. the
+ * transcoder, which always bundles multiple renditions) can omit them.
+ */
+export interface ToolSupportedFormats {
+  /** Input file containers/extensions the tool accepts. */
+  supportedInputFormats?: string[];
+  /** Output file containers/extensions the tool produces. */
+  supportedOutputFormats?: string[];
+  /** Free-text notes about file-size limits, retention, or batch limits. */
+  maxFileNotes?: string[];
+  /** Free-text notes about processing time, GPU usage, or edge cases. */
+  processingNotes?: string[];
+}
+
 export interface ToolPageContent {
   /** Path slug under /tools, e.g. "remove-exif-metadata" -> /tools/remove-exif-metadata */
   slug: string;
@@ -90,6 +107,8 @@ export interface ToolPageContent {
   primaryKeyword: string;
   /** Secondary keywords. */
   secondaryKeywords: string[];
+  /** Optional supported-format section content. */
+  supportedFormats?: ToolSupportedFormats;
 }
 
 const sharedPrivacyNote =
@@ -1539,6 +1558,636 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'convert FLAC to MP3',
       'convert audio online',
       'free audio converter',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- SRT GENERATOR
+  {
+    slug: 'srt-generator',
+    name: 'SRT Generator',
+    h1: 'Free SRT Generator',
+    tagline:
+      'Upload a video or audio file and generate a downloadable .srt subtitle file ready for YouTube, editors, and accessibility tools.',
+    metaTitle: 'Free SRT Generator Online — Video & Audio to SRT | Media Manipulator',
+    metaDescription:
+      'Generate SRT subtitle files from MP4, MOV, MP3, WAV, and more. Free, no signup, files deleted within 24 hours. Works with YouTube, Premiere, DaVinci Resolve.',
+    ogTitle: 'Free SRT Generator — Video & Audio to SRT',
+    ogDescription:
+      'Generate accurate SRT subtitle files from any video or audio. Local AI transcription, no third-party providers.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'srt_generator',
+      defaultOutputFormat: 'srt',
+      transcribeMode: true,
+      title: 'Generate an SRT subtitle file',
+      description:
+        'Upload a video or audio file. We transcribe it on our own GPU server with whisper-ctranslate2 and return a .srt subtitle file you can drop into any video editor.',
+    },
+    intro:
+      'SRT (SubRip) is the most widely-supported subtitle format on the internet — YouTube, Vimeo, Premiere, DaVinci Resolve, Final Cut, and almost every social platform accept it. Media Manipulator lets you generate an SRT file from any video or audio in one upload. The transcript runs on our own GPU server with whisper-ctranslate2, so the audio never leaves our infrastructure and never sees a third-party AI provider.',
+    whatItDoes: [
+      'Transcribes any video or audio file into a time-coded .srt subtitle file.',
+      'Uses whisper-ctranslate2 on our local GPU server — no third-party AI providers see your media.',
+      'Produces SubRip-format files (HH:MM:SS,mmm timestamps, sequential cue numbers) compatible with every major video editor and player.',
+      'Supports automatic language detection or an optional BCP-47 language hint for better accuracy on short clips.',
+    ],
+    flowSteps: [
+      { title: 'Upload your media', description: 'Drop any MP4, MOV, MP3, WAV, or other supported file.' },
+      { title: 'We extract audio', description: 'FFmpeg pulls the audio track and converts it to the format whisper expects.' },
+      { title: 'Whisper transcribes', description: 'Our GPU server runs whisper-ctranslate2 to produce timed segments.' },
+      { title: 'Download .srt', description: 'A clean SubRip file is generated with sequential cues and accurate timing.' },
+    ],
+    advancedDetails: [
+      'Whisper runs on our own NVIDIA GPU server using ctranslate2 — there is no external API in the loop.',
+      'SRT output uses comma-millisecond timestamps (00:00:01,234) and sequential 1-indexed cue numbers, the format that maximizes editor compatibility.',
+      'The transcription pipeline supports auto language detection or an optional WHISPER_CT2_LANGUAGE-style BCP-47 hint via the language field.',
+      'Outputs go through the same job system as the rest of the app — you can also pick VTT, plain text, or structured JSON from the transcribe form.',
+    ],
+    whyItMatters: [
+      'YouTube, Vimeo, Premiere, DaVinci Resolve, Final Cut, and most social platforms accept SRT as their default subtitle format.',
+      'Captions make videos accessible to deaf and hard-of-hearing viewers and bump engagement on social platforms where most video plays silently.',
+      'Search engines can index transcript content from your videos when you publish a matching .srt alongside them.',
+    ],
+    useCases: [
+      { title: 'YouTube creators', description: 'Generate accurate captions and upload them as the SRT track on every video.' },
+      { title: 'Course producers', description: 'Add transcripts to lecture videos so students can search, review, and translate them later.' },
+      { title: 'Podcasters reposting to video', description: 'Turn podcast episodes into captioned video clips for social platforms.' },
+      { title: 'Marketing / social teams', description: 'Caption every clip so silent-autoplay viewers still get the message.' },
+    ],
+    whyMediaManipulator: [
+      'Whisper runs on our own GPU infrastructure — your media never touches a third-party AI provider.',
+      'No signup, no watermarks, files deleted within 24 hours.',
+      'Same transcription engine the rest of the app uses, so accuracy is consistent across SRT, VTT, plain text, and JSON outputs.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v', 'mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
+      supportedOutputFormats: ['srt'],
+      processingNotes: [
+        'Transcription runs on our local GPU server — your file is never sent to an external AI provider.',
+        'For long videos, the job runs asynchronously and you can keep the tab open to watch progress.',
+      ],
+    },
+    faq: [
+      { question: 'What is an SRT file?', answer: 'SRT (SubRip) is a plain-text subtitle file with timestamps and cue numbers. It is the default subtitle format accepted by YouTube, most video editors, and most video players.' },
+      { question: 'Can I generate subtitles from an MP4?', answer: 'Yes. Upload any MP4 (or MOV, MKV, WebM, AVI, M4V) and we will produce a downloadable .srt subtitle file.' },
+      { question: 'Can I use the SRT file on YouTube?', answer: 'Yes — YouTube accepts SRT directly. Upload your video, then add the subtitle file under Subtitles → Add language → Upload file.' },
+      { question: 'Are my uploaded files private?', answer: 'Yes. Uploaded media stays on our own server and is deleted within 24 hours. Transcription runs on a GPU we operate — no third-party AI provider sees your file.' },
+      { question: 'What languages are supported?', answer: 'Whisper supports dozens of languages and can auto-detect the spoken language. You can also pass a BCP-47 hint (e.g. en, es, ja) for better accuracy on very short clips.' },
+    ],
+    related: [
+      { label: 'Caption Translator', to: '/tools/caption-translator', description: 'Translate your generated SRT into other languages.' },
+      { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull the audio out before transcribing manually.' },
+      { label: 'Extract Frames from Video', to: '/tools/extract-frames-from-video', description: 'Grab stills for thumbnails and reference.' },
+      { label: 'Transcode video to HLS', to: '/tools/transcode-to-hls', description: 'Prepare your video for streaming.' },
+      { label: 'Transcode video to DASH', to: '/tools/transcode-to-dash', description: 'AV1 / VP9 DASH packaging.' },
+    ],
+    primaryKeyword: 'SRT generator',
+    secondaryKeywords: [
+      'generate SRT from video',
+      'video to SRT',
+      'audio to SRT',
+      'free SRT generator',
+      'create SRT file from video',
+      'subtitle generator online',
+      'MP4 to SRT',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- CAPTION TRANSLATOR
+  {
+    slug: 'caption-translator',
+    name: 'Caption Translator',
+    h1: 'Free Caption Translator',
+    tagline:
+      'Translate SRT and VTT subtitle files while preserving cue timings, cue order, and structure — no third-party AI provider.',
+    metaTitle: 'Free Caption Translator (SRT & VTT) — Preserves Timestamps | Media Manipulator',
+    metaDescription:
+      'Translate SRT and VTT captions online with cue timings preserved exactly. Runs on our own local AI server — your captions are never sent to third-party providers.',
+    ogTitle: 'Free Caption Translator — SRT & VTT',
+    ogDescription:
+      'Translate SRT or VTT captions while preserving timestamps and cue order. Local AI, no third-party providers.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'caption_translator',
+      title: 'Translate an SRT or VTT caption file',
+      description:
+        'Upload an existing .srt or .vtt file, pick a target language, and get back a translated subtitle file with the original cue timings preserved exactly.',
+    },
+    intro:
+      'Translate existing subtitle files between languages without ever touching the cue timing. Media Manipulator parses the cues from your .srt or .vtt file, translates only the text using our locally-hosted caption translation model, and re-emits the original timestamps verbatim. No third-party translation API sees your captions — the model runs on our own GPU server.',
+    whatItDoes: [
+      'Accepts .srt or .vtt caption files and produces a translated copy in the same format (or the opposite, if you choose).',
+      'Preserves cue numbers, cue order, and timestamps exactly — only the cue text is translated.',
+      'Runs translation on our local Ollama model server using a custom captions-tuned model — your captions never leave our infrastructure.',
+      'Supports 30+ target languages including major European, Asian, and Middle-Eastern languages.',
+    ],
+    flowSteps: [
+      { title: 'Upload .srt or .vtt', description: 'Drop your existing subtitle file into the uploader.' },
+      { title: 'Pick languages', description: 'Auto-detect or pick a source language, then choose a target language.' },
+      { title: 'We translate cue text', description: 'Our local AI translates only the caption text — timestamps and ordering stay frozen.' },
+      { title: 'Download translated captions', description: 'Get back a clean .srt or .vtt with identical timing and a translated copy of every cue.' },
+    ],
+    advancedDetails: [
+      'Translation runs on our own Ollama server using a captions-tuned derivative of Translate-Gemma (mm-captions-translategemma-12b).',
+      'We send only the cue text + a strict JSON schema header to the model and pin the timing back from the original file when reading the response — so even a misbehaving model cannot corrupt your cue timing.',
+      'NOTE and STYLE blocks in VTT files are preserved and never sent to the translator.',
+      'For long subtitle tracks we batch cues so the model never approaches its context limit.',
+    ],
+    whyItMatters: [
+      'Translating captions manually is error-prone — it is very easy to break timestamp formatting or accidentally reorder cues.',
+      'A purpose-built captions translator preserves the file structure that editors and players expect.',
+      'Doing translation in-house on a local model keeps creator workflows independent of third-party translation pricing and policies.',
+    ],
+    useCases: [
+      { title: 'Multilingual YouTube channels', description: 'Translate one master English SRT into 5+ languages for the same upload.' },
+      { title: 'Online courses', description: 'Reach international students with subtitles in their native language.' },
+      { title: 'Documentary / film festivals', description: 'Prepare translation tracks without touching cue timing.' },
+      { title: 'News and journalism', description: 'Translate breaking-news caption tracks while keeping precise sync.' },
+    ],
+    whyMediaManipulator: [
+      'Local AI translation — your captions never go to a third-party AI provider.',
+      'Timing-safe parsing that pins original cue start/end times back even if the model misbehaves.',
+      'Free, no signup, files deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['srt', 'vtt'],
+      supportedOutputFormats: ['srt', 'vtt'],
+      maxFileNotes: ['Maximum caption file size: 2 MB (real subtitle tracks are usually well under this).'],
+      processingNotes: [
+        'Translation runs on a locally-hosted Ollama model — no third-party translation API is contacted.',
+        'NOTE and STYLE blocks in WebVTT files are preserved as-is.',
+      ],
+    },
+    faq: [
+      { question: 'Can I translate an SRT file without breaking timestamps?', answer: 'Yes — that is the whole point of this tool. We parse the cues, translate only the text, and then pin the original timestamps back exactly before writing the output.' },
+      { question: 'What subtitle formats are supported?', answer: 'Both SubRip (.srt) and WebVTT (.vtt) are supported. You can keep the output format the same as the input or convert between them.' },
+      { question: 'Can I translate captions for YouTube videos?', answer: 'Yes. Generate (or export) an SRT from your video, translate it here, and upload the new SRT as an additional language track on YouTube.' },
+      { question: 'Are captions translated with a third-party AI provider?', answer: 'No. The translation runs on our own Ollama-hosted model — your captions never leave our infrastructure.' },
+      { question: 'What happens to cue timing?', answer: 'Cue start and end times are preserved exactly — we pin them back from the original file after translation so even a misbehaving model cannot corrupt your timing.' },
+    ],
+    related: [
+      { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Generate a fresh SRT from a video or audio file.' },
+      { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull the audio out for review or re-transcription.' },
+      { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Add a translated voiceover after translating the captions.' },
+      { label: 'Transcode video to HLS', to: '/tools/transcode-to-hls', description: 'Bundle your video for streaming.' },
+      { label: 'Transcode video to DASH', to: '/tools/transcode-to-dash', description: 'AV1 / VP9 DASH packaging.' },
+    ],
+    primaryKeyword: 'caption translator',
+    secondaryKeywords: [
+      'translate SRT file',
+      'translate VTT file',
+      'subtitle translator',
+      'translate subtitles online',
+      'SRT translator',
+      'VTT translator',
+      'caption translator online',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- AUDIO WAVEFORM GENERATOR
+  {
+    slug: 'audio-waveform-generator',
+    name: 'Audio Waveform Generator',
+    h1: 'Free Audio Waveform Generator',
+    tagline:
+      'Turn any audio file into a configurable waveform video, waveform image, or both — perfect for podcasts, music previews, and social clips.',
+    metaTitle: 'Free Audio Waveform Generator — Video & Image Waveforms | Media Manipulator',
+    metaDescription:
+      'Generate waveform videos and images from any audio file. Wide 10:1 podcast strips, square social previews, split stereo channels, custom colors, and more.',
+    ogTitle: 'Free Audio Waveform Generator',
+    ogDescription:
+      'Generate waveform videos and images from MP3, WAV, M4A, FLAC, and more. Highly configurable, no signup required.',
+    category: 'audio',
+    embed: {
+      defaultMediaKind: 'audio',
+      defaultTask: 'audio_waveform',
+      title: 'Generate a waveform from an audio file',
+      description:
+        'Upload an audio file and pick whether you want a waveform video, a waveform image, or both. Advanced controls let you tune size, colors, render mode, and stereo behavior.',
+    },
+    intro:
+      'A waveform makes audio visible — a critical asset for podcasts, music previews, social-clip thumbnails, and editing timelines. Media Manipulator renders waveforms using FFmpeg’s showwaves / showwavespic filters, with sensible defaults (a wide 10:1 strip at 1600×160) and a full advanced panel for tuning render mode, color, scale, and stereo splitting.',
+    whatItDoes: [
+      'Renders animated waveform videos using FFmpeg’s showwaves filter, with point / line / p2p / cline modes.',
+      'Renders still waveform images using FFmpeg’s showwavespic filter, perfect for thumbnails and album art.',
+      'Supports recommended aspect ratio presets (10:1 wide, 8:1, 6:1, 16:9, 1:1) plus custom width and height.',
+      'Optional split-channel rendering so left and right channels are drawn in separate colors.',
+    ],
+    flowSteps: [
+      { title: 'Upload audio', description: 'Drop in any MP3, WAV, M4A, AAC, FLAC, or OGG file.' },
+      { title: 'Pick output and size', description: 'Choose waveform video, image, or both — and pick an aspect ratio preset or custom size.' },
+      { title: 'Tune the look (optional)', description: 'Adjust render mode, frame rate, colors, scale, and draw mode in the advanced panel.' },
+      { title: 'Download', description: 'Save your waveform video, image, or .zip with both.' },
+    ],
+    advancedDetails: [
+      'Render modes correspond directly to FFmpeg’s showwaves modes: point, line, p2p, cline. Each is previewed in the form so you can pick by sight.',
+      'You can choose either the output frame rate (rate=) or samples-per-column (n=) — never both, matching FFmpeg’s mutually-exclusive parameter.',
+      'Scale options (lin, log, sqrt, cbrt) let you decide how visible quiet sections should be.',
+      'When both video and image are requested, we package them into a single .zip — same job system as every other Media Manipulator download.',
+    ],
+    whyItMatters: [
+      'Waveform visuals make audio content shareable — a clip with a moving waveform performs far better on silent-autoplay social feeds than a static thumbnail.',
+      'Editors and producers use waveforms as reference assets when arranging timelines or designing album covers.',
+      'A well-tuned waveform doubles as a thumbnail, an audiogram, and an audio teaser all at once.',
+    ],
+    useCases: [
+      { title: 'Podcasts', description: 'Make audiograms for social — clip + waveform + captions = best-performing podcast promo format.' },
+      { title: 'Music previews', description: 'Generate a square waveform card for Instagram or a wide one for YouTube descriptions.' },
+      { title: 'Editing timelines', description: 'Use the still-image waveform as a reference frame inside Premiere or DaVinci Resolve.' },
+      { title: 'Voiceover delivery', description: 'Send clients a waveform card alongside the WAV so they can preview at a glance.' },
+    ],
+    whyMediaManipulator: [
+      'Defaults bias toward the most useful shape (wide 10:1) instead of FFmpeg’s 600×240 default.',
+      'Advanced FFmpeg controls exposed safely — every setting is validated server-side before being passed to the filter graph.',
+      'Output as MP4, PNG, or a ZIP of both — no need to run a second job.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
+      supportedOutputFormats: ['mp4 (video)', 'webm (video)', 'png (image)', 'webp (image)', 'zip (both)'],
+      processingNotes: [
+        'Recommended default: 10:1 wide waveform (1600×160) — great for podcasts, music previews, and editing timelines.',
+        'When you select "Both", the result is packaged into a single ZIP containing the video and the image.',
+      ],
+    },
+    faq: [
+      { question: 'What is an audio waveform?', answer: 'A waveform is a visual representation of an audio signal’s amplitude over time. It is the moving line you see in video editors and on platforms like SoundCloud.' },
+      { question: 'Can I create a waveform video from an MP3?', answer: 'Yes. Upload the MP3 (or WAV/M4A/FLAC/OGG/AAC) and the tool renders a waveform video using FFmpeg’s showwaves filter.' },
+      { question: 'Can I create a waveform image too?', answer: 'Yes. Set output to "Image" for a still PNG/WebP, or "Both" to receive a ZIP containing the video and the image.' },
+      { question: 'What size should I use for a waveform?', answer: 'For most podcast and music workflows the 10:1 wide preset (1600×160) looks best. Use 16:9 or 1:1 if you need a social-friendly shape.' },
+      { question: 'What do point, line, p2p, and cline modes mean?', answer: 'These are the FFmpeg showwaves render modes. Point draws a dot per sample, line draws a vertical bar, p2p connects each dot with a line, and cline draws a centered vertical bar. The form previews each one.' },
+      { question: 'Can I split left and right audio channels?', answer: 'Yes — enable "Split stereo channels" in advanced settings and pick a different color for each channel.' },
+    ],
+    related: [
+      { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull audio out of a video before generating a waveform.' },
+      { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Pair the waveform with captions for social audiograms.' },
+      { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Combine your waveform render with another video.' },
+    ],
+    primaryKeyword: 'audio waveform generator',
+    secondaryKeywords: [
+      'create waveform from audio',
+      'MP3 waveform generator',
+      'podcast waveform video',
+      'podcast waveform image',
+      'sound wave video generator',
+      'audio visualizer generator',
+      'waveform video maker',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- EXTRACT AUDIO FROM VIDEO
+  {
+    slug: 'extract-audio-from-video',
+    name: 'Extract Audio from Video',
+    h1: 'Extract Audio from Video',
+    tagline:
+      'Save the audio track from any video as a clean MP3, WAV, M4A, AAC, FLAC, or OGG file.',
+    metaTitle: 'Extract Audio from Video — MP3, WAV, M4A & More | Media Manipulator',
+    metaDescription:
+      'Free online tool to extract the audio from any video file (MP4, MOV, MKV, WebM, AVI). Output MP3, WAV, M4A, AAC, FLAC, or OGG. No signup, files deleted within 24 hours.',
+    ogTitle: 'Extract Audio from Video',
+    ogDescription:
+      'Save MP4/MOV/MKV/WebM/AVI audio tracks as MP3, WAV, M4A, AAC, FLAC, or OGG. Free, no signup, files deleted within 24 hours.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'extract_audio',
+      title: 'Extract the audio track from a video',
+      description:
+        'Upload any common video container. Pick MP3 for broad compatibility, WAV for lossless, or M4A/AAC for a compact compressed file.',
+    },
+    intro:
+      'Pulling the audio out of a video is one of the most common editing tasks — for podcasting, voiceover review, transcript preparation, or simply saving a song from a music video. Media Manipulator extracts the first audio track from any common video container and re-encodes it into the format you choose, with no quality loss when the source already matches.',
+    whatItDoes: [
+      'Extracts the first audio stream from MP4, MOV, MKV, WebM, AVI, and M4V containers.',
+      'Encodes output as MP3 (libmp3lame), WAV (pcm_s16le), M4A/AAC, FLAC, or OGG (libvorbis).',
+      'Detects videos with no audio stream and returns a clear error instead of producing an empty file.',
+      'Preserves the original duration and sample rate.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop any MP4, MOV, MKV, WebM, AVI, or M4V file.' },
+      { title: 'Pick an output format', description: 'MP3 plays everywhere; WAV is lossless; M4A/AAC is a compact default.' },
+      { title: 'We extract', description: 'FFmpeg pulls the first audio stream and encodes it cleanly.' },
+      { title: 'Download', description: 'Save the extracted audio in your chosen format.' },
+    ],
+    advancedDetails: [
+      'We pre-check the source with ffprobe so videos without an audio stream return a useful error instead of an empty file.',
+      'MP3 is rendered with libmp3lame at quality preset 2 (≈190 kbps VBR) — the typical sweet spot for speech and music.',
+      'M4A/AAC uses the native AAC encoder at 192 kbps, suitable for both speech and music.',
+    ],
+    whyItMatters: [
+      'Audio extraction is the first step for podcast repurposing, transcription, music sampling, and voiceover review.',
+      'Having a clean, format-specific audio file decouples the audio from the original video container.',
+    ],
+    useCases: [
+      { title: 'Podcasters', description: 'Pull audio out of a video interview before publishing the audio-only episode.' },
+      { title: 'Editors', description: 'Reuse a film or music clip’s soundtrack in a different edit.' },
+      { title: 'Voiceover review', description: 'Send clients a clean audio file from a screen recording.' },
+      { title: 'Transcript prep', description: 'Provide audio-only files to transcription tools that prefer them over video.' },
+    ],
+    whyMediaManipulator: [
+      'Server-side FFmpeg means no codec headaches in the browser.',
+      'Clear errors when the source video has no audio.',
+      'Free, no signup, files deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
+      processingNotes: [
+        'We extract the first audio stream. Videos without any audio stream return a clear error instead of an empty file.',
+      ],
+    },
+    faq: [
+      { question: 'Can I extract audio from an MP4?', answer: 'Yes — MP4 is the most common case. We also support MOV, MKV, WebM, AVI, and M4V.' },
+      { question: 'What audio formats can I export?', answer: 'MP3, WAV, M4A, AAC, FLAC, and OGG.' },
+      { question: 'Does extracting audio reduce quality?', answer: 'Output quality is determined by the format you pick. WAV is lossless. MP3 / AAC / OGG are lossy but at our defaults they sound essentially identical to the source for most listeners.' },
+      { question: 'Can I extract audio from a video with multiple audio tracks?', answer: 'We always pull the first audio stream. If you need a specific alternate language track, please reach out and we will look at adding multi-stream selection.' },
+      { question: 'What if my video has no audio?', answer: 'We detect that up front and return a clear error message instead of producing an empty file.' },
+    ],
+    related: [
+      { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Transcribe the extracted audio into subtitles.' },
+      { label: 'Audio Waveform Generator', to: '/tools/audio-waveform-generator', description: 'Turn the extracted audio into a waveform visual.' },
+      { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Reuse extracted audio inside a new video.' },
+    ],
+    primaryKeyword: 'extract audio from video',
+    secondaryKeywords: [
+      'video to MP3',
+      'convert video to audio',
+      'save audio from video',
+      'MP4 to MP3',
+      'MOV to WAV',
+      'extract audio MP4 online',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- EXTRACT VIDEO ONLY FROM VIDEO
+  {
+    slug: 'extract-video-only-from-video',
+    name: 'Remove Audio from Video',
+    h1: 'Remove Audio from Video',
+    tagline:
+      'Export a silent / video-only copy with every audio track removed — perfect for silent previews, edits, and re-scoring.',
+    metaTitle: 'Remove Audio from Video — Free Mute Video Online | Media Manipulator',
+    metaDescription:
+      'Free online tool to mute a video by removing all audio tracks. Stream-copies the video where possible — no re-encoding, no quality loss.',
+    ogTitle: 'Remove Audio from Video',
+    ogDescription:
+      'Export a silent / video-only copy of your video with every audio track removed. Free, no signup, files deleted within 24 hours.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'extract_video_only',
+      title: 'Remove audio from a video',
+      description:
+        'Upload your video and we produce a silent/video-only copy. The video stream is stream-copied wherever possible so there is no re-encode and no quality loss.',
+    },
+    intro:
+      'Sometimes you want the video without the audio — for a silent social-feed preview, a B-roll asset to drop into a new edit, or a re-scoring workflow where you will add fresh music. Media Manipulator strips every audio track and emits a clean video-only file. The video stream is stream-copied wherever possible, so there is no re-encode and no quality loss.',
+    whatItDoes: [
+      'Removes every audio stream from your video.',
+      'Stream-copies the video stream wherever possible — no re-encoding, no quality loss.',
+      'Re-encodes to a compatible H.264 baseline only if the destination container requires it.',
+      'Returns a silent MP4 (or WebM) you can drop straight into a new edit.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop any MP4, MOV, MKV, WebM, AVI, or M4V file.' },
+      { title: 'Pick the output container', description: 'MP4 is the safe default. WebM is offered for VP9/AV1 sources.' },
+      { title: 'We strip audio', description: 'FFmpeg drops the audio stream and copies the video stream when possible.' },
+      { title: 'Download silent video', description: 'Save a clean, audio-free copy of your video.' },
+    ],
+    advancedDetails: [
+      'The default attempt uses `-c:v copy` so no re-encode happens — quality is preserved bit-for-bit on the video stream.',
+      'If the destination container rejects the source codec, we fall back to a libx264 + yuv420p re-encode at CRF 20.',
+      'No watermarks, no overlay, no scaling — the visual output is identical to the source by default.',
+    ],
+    whyItMatters: [
+      'Silent video is the de-facto autoplay format on most social platforms.',
+      'Removing audio is a privacy step too — it strips embedded voice/conversation content from screen recordings before you share them.',
+      'Editors often want a clean video-only file for re-scoring or for syncing to a different audio recording.',
+    ],
+    useCases: [
+      { title: 'Silent social previews', description: 'Make a clean autoplay clip for Instagram, X, LinkedIn, or TikTok.' },
+      { title: 'Re-scoring projects', description: 'Strip the original audio before adding music or voiceover.' },
+      { title: 'Privacy-sensitive shares', description: 'Remove background conversation captured during a screen recording.' },
+      { title: 'B-roll prep', description: 'Drop an audio-free clip into a multi-camera or B-roll-driven edit.' },
+    ],
+    whyMediaManipulator: [
+      'Stream copy where possible — preserves the original video quality.',
+      'Clear, fast, no signup, no watermarks.',
+      'Free; files deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'webm'],
+      processingNotes: [
+        'Video stream is copied without re-encoding wherever the destination container supports it.',
+        'Input videos that have no audio stream succeed normally and return a re-packaged copy.',
+      ],
+    },
+    faq: [
+      { question: 'How do I remove audio from a video?', answer: 'Upload your video and click "Remove audio from video". The tool emits a video-only copy in your chosen container.' },
+      { question: 'Will the video quality change?', answer: 'No, in the default case. We stream-copy the video stream so the output is bit-for-bit identical on the video side. We only re-encode if the destination container needs it.' },
+      { question: 'Can I make an MP4 silent?', answer: 'Yes — MP4 is the default output container and the most common use case.' },
+      { question: 'Is the original video modified?', answer: 'No. The original upload stays untouched. We produce a new file and delete the upload within 24 hours.' },
+      { question: 'What if my video has no audio?', answer: 'No problem — the tool succeeds normally and returns a clean re-packaged copy.' },
+    ],
+    related: [
+      { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull the audio track out as MP3, WAV, etc.' },
+      { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Add a new soundtrack to your silent video.' },
+      { label: 'Extract Frames from Video', to: '/tools/extract-frames-from-video', description: 'Pull still images out of the silent video.' },
+    ],
+    primaryKeyword: 'remove audio from video',
+    secondaryKeywords: [
+      'mute video online',
+      'extract video without audio',
+      'video only extractor',
+      'delete audio track from video',
+      'silent video maker',
+      'strip audio from MP4',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- EXTRACT FRAMES FROM VIDEO
+  {
+    slug: 'extract-frames-from-video',
+    name: 'Extract Frames from Video',
+    h1: 'Extract Frames from Video',
+    tagline:
+      'Pull still image frames out of any video — every N seconds, at a target frame rate, or at specific timestamps — and download them as a ZIP.',
+    metaTitle: 'Extract Frames from Video — Free Frame Extractor | Media Manipulator',
+    metaDescription:
+      'Free online tool to extract still images from any video. Choose every N seconds, frames per second, or specific timestamps. Output as a ZIP of JPG, PNG, or WebP frames.',
+    ogTitle: 'Extract Frames from Video',
+    ogDescription:
+      'Pull still image frames out of MP4, MOV, MKV, WebM, AVI, and M4V. Download as a ZIP of JPG, PNG, or WebP frames.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'extract_frames',
+      title: 'Extract frames from a video',
+      description:
+        'Upload a video, pick a sampling mode (every N seconds, at a frame rate, or at specific timestamps), and download a ZIP of still frames.',
+    },
+    intro:
+      'Frame extraction turns a video back into a sequence of still images — useful for thumbnails, reference shots, design mockups, ML datasets, and animation/storyboard previews. Media Manipulator lets you sample frames every N seconds, at a target frame rate, or at specific timestamps, and packages the resulting images into a single ZIP for download.',
+    whatItDoes: [
+      'Extracts still frames as JPG, PNG, or WebP images.',
+      'Supports three sampling modes: every N seconds, target frames per second, or specific timestamps.',
+      'Packages the frames into a single ZIP for one-click download.',
+      'Enforces a max-frame guardrail so runs stay fast and predictable.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop any MP4, MOV, MKV, WebM, AVI, or M4V file.' },
+      { title: 'Pick a sampling mode', description: 'Every N seconds, a target FPS, or a comma-separated list of timestamps.' },
+      { title: 'Choose image format', description: 'JPG for compact thumbnails, PNG for lossless stills, WebP for smaller modern files.' },
+      { title: 'Download ZIP', description: 'All extracted frames are packaged into a single .zip you can extract anywhere.' },
+    ],
+    advancedDetails: [
+      'Every-N-seconds and FPS modes use FFmpeg’s fps filter to sample evenly across the timeline.',
+      'Timestamp mode runs one FFmpeg invocation per requested timestamp so per-frame failures (out-of-bounds requests, etc.) surface clearly.',
+      'The max-frame guardrail defaults to 300 and caps at 1000 — keeps jobs fast and avoids runaway extractions.',
+    ],
+    whyItMatters: [
+      'Frame extraction is the simplest way to grab thumbnails or reference frames from existing video assets.',
+      'Designers and animators use sampled frames as drawing reference and as B-roll for storyboards.',
+      'ML practitioners use them to build classification or detection datasets without needing a custom pipeline.',
+    ],
+    useCases: [
+      { title: 'Thumbnails and previews', description: 'Pick a single frame to use as a YouTube/Vimeo thumbnail.' },
+      { title: 'Design references', description: 'Sample a sequence of frames from gameplay or animation as drawing reference.' },
+      { title: 'Storyboards', description: 'Generate a sequence of key frames for a storyboard pitch.' },
+      { title: 'ML datasets', description: 'Build small image datasets from a small number of videos quickly.' },
+    ],
+    whyMediaManipulator: [
+      'Three sampling modes cover almost every real-world need — interval, FPS, or specific timestamps.',
+      'ZIP output keeps the download to one click no matter how many frames you grabbed.',
+      'Server-side FFmpeg means consistent output regardless of browser or codec support.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
+      supportedOutputFormats: ['zip (containing jpg/png/webp frames)'],
+      processingNotes: [
+        'Default max-frame cap is 300 — raise it up to 1000 in the form if you really need more.',
+        'Timestamp mode accepts a comma-separated list of seconds (e.g. "1, 5.5, 12.25, 30").',
+      ],
+    },
+    faq: [
+      { question: 'How do I extract frames from a video?', answer: 'Upload your video, pick a sampling mode (every N seconds is the default), choose an image format, and click "Extract frames". The result is a ZIP of still images.' },
+      { question: 'Can I export one frame every few seconds?', answer: 'Yes — that is the default mode. Set "Seconds between frames" to whatever interval you want.' },
+      { question: 'What image formats are supported?', answer: 'JPG (compact, ideal for thumbnails), PNG (lossless), and WebP (smaller modern files).' },
+      { question: 'Why does the tool return a ZIP file?', answer: 'Even short videos can produce dozens of frames. Returning a single ZIP keeps the download to one click and avoids fighting the browser over multiple file downloads.' },
+      { question: 'Why is there a max-frame limit?', answer: 'The limit prevents accidental runaway jobs (e.g. extracting tens of thousands of frames from a long video). The default is 300 and the absolute cap is 1000.' },
+    ],
+    related: [
+      { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull the audio out of the same video.' },
+      { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Transcribe the same video to .srt subtitles.' },
+      { label: 'Remove Audio from Video', to: '/tools/extract-video-only-from-video', description: 'Strip audio to keep a silent copy of the video.' },
+    ],
+    primaryKeyword: 'extract frames from video',
+    secondaryKeywords: [
+      'video to images',
+      'video frame extractor',
+      'capture still images from video',
+      'export frames from video',
+      'video to JPG online',
+      'extract every Nth frame',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- STITCH AUDIO TO VIDEO
+  {
+    slug: 'stitch-audio-to-video',
+    name: 'Add Audio to Video',
+    h1: 'Add Audio to Video',
+    tagline:
+      'Combine a base video with up to three additional audio files — voiceovers, music, narration — and download a new MP4.',
+    metaTitle: 'Add Audio to Video — Voiceover, Music, Replace, Mix | Media Manipulator',
+    metaDescription:
+      'Free online tool to add voiceovers, music, or narration to a video, or replace the original audio entirely. Per-track volume and offset controls, MP4 output.',
+    ogTitle: 'Add Audio to Video',
+    ogDescription:
+      'Add voiceover, music, narration, or replace original audio. Per-track volume and offset controls, MP4 output, no signup required.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'stitch_audio_to_video',
+      title: 'Add or replace the audio track of a video',
+      description:
+        'Upload a base video, add one to three audio files, set per-track volume and offset, and pick "mix" or "replace". We return an MP4 with everything combined.',
+    },
+    intro:
+      'Combining a base video with one or more additional audio files is one of the most common editing tasks — adding a voiceover, dropping in a backing track, narrating a screen recording, or replacing the original audio entirely. Media Manipulator gives you per-track volume and offset controls, a mix-vs-replace toggle, and an MP4 output that drops cleanly into any player.',
+    whatItDoes: [
+      'Combines a base video with up to three additional audio tracks.',
+      'Per-track controls: volume (0–4×), start offset in seconds, optional loop-to-video-length.',
+      'Top-level mode toggle: "mix" keeps the original audio, "replace" drops it.',
+      'Output is always MP4 with AAC audio at 192 kbps — the safe everywhere default.',
+    ],
+    flowSteps: [
+      { title: 'Upload the base video', description: 'Drop any MP4, MOV, MKV, WebM, AVI, or M4V file.' },
+      { title: 'Add audio tracks', description: 'Add up to three audio files (voiceover, music, narration) with per-track settings.' },
+      { title: 'Pick mix or replace', description: 'Keep the original audio and mix in the new tracks, or drop the original and use only the new audio.' },
+      { title: 'Download the new MP4', description: 'We stitch on our server and return a clean MP4.' },
+    ],
+    advancedDetails: [
+      'The filter graph is built programmatically: per-track adelay + volume nodes, then a single amix to combine them.',
+      'The video stream is stream-copied wherever possible — only the audio is re-encoded (to AAC at 192 kbps).',
+      'Looping is implemented with `-stream_loop -1` on the audio input so short backing tracks extend to the video duration cleanly.',
+      'Output duration is "trim to video duration" by default — uncheck if you want the output to extend to the longest input.',
+    ],
+    whyItMatters: [
+      'Voiceover, music, and narration are the most common audio additions to short-form video.',
+      'Per-track volume and offset controls let you craft a real mix instead of a single drop-in track.',
+      'Doing this in-browser would be slow and unreliable — server-side FFmpeg is fast and correct.',
+    ],
+    useCases: [
+      { title: 'Creator videos', description: 'Add a music bed under a talking-head segment, or replace the room audio with a clean voiceover.' },
+      { title: 'Tutorials', description: 'Drop a narration track on top of a screen recording.' },
+      { title: 'Social clips', description: 'Add a trending track at a specific offset to a 15-second cut.' },
+      { title: 'Family / personal videos', description: 'Add background music to a vacation montage.' },
+    ],
+    whyMediaManipulator: [
+      'Per-track volume and offset controls — not just a single drop-in audio file.',
+      'Stream-copies video where possible — preserves the original video quality.',
+      'Free, no signup, server-side FFmpeg, files deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v (video)', 'mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg (audio)'],
+      supportedOutputFormats: ['mp4'],
+      maxFileNotes: ['Maximum 3 added audio tracks per job.'],
+      processingNotes: [
+        'Video stream is stream-copied where possible — only audio is re-encoded (to AAC 192 kbps).',
+        'Loop checkbox extends short backing tracks to the video length.',
+      ],
+    },
+    faq: [
+      { question: 'Can I add music to a video?', answer: 'Yes — add the music file as an audio track, set its volume, and leave the mode on "mix" to keep the original audio underneath.' },
+      { question: 'Can I add a voiceover and keep the original audio?', answer: 'Yes — keep mode on "mix", add the voiceover, and lower the original audio by setting a low volume on additional tracks if you want the voiceover to sit on top.' },
+      { question: 'Can I replace the original audio track?', answer: 'Yes — set mode to "replace" and the original audio is dropped. Only the added tracks are mixed into the output.' },
+      { question: 'What happens if the audio is longer than the video?', answer: 'By default we trim to the video duration. Uncheck "Trim to video duration" if you want the output to extend to the longest input.' },
+      { question: 'Can I adjust the volume of added audio?', answer: 'Yes — each added track has its own volume scalar (0–4×) and a start offset in seconds.' },
+    ],
+    related: [
+      { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull audio out of one video to reuse in another.' },
+      { label: 'Remove Audio from Video', to: '/tools/extract-video-only-from-video', description: 'Strip audio to prepare a clean re-scoring base.' },
+      { label: 'Audio Waveform Generator', to: '/tools/audio-waveform-generator', description: 'Make a visual companion for your audio track.' },
+    ],
+    primaryKeyword: 'add audio to video',
+    secondaryKeywords: [
+      'add music to video',
+      'add voiceover to video',
+      'combine audio and video',
+      'replace audio in video',
+      'mix audio with video',
+      'add narration to video',
     ],
   },
 ];
