@@ -422,7 +422,16 @@ const AudioWaveformPanel: React.FC = () => {
             disabled={isProcessing}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
-            <Sparkles className="w-4 h-4" />
+            {isProcessing && (
+              <div className="atom-loader mr-4">
+                <div className="atom-loader-orbits">
+                  <div className="atom-loader-orbits__electron"></div>
+                  <div className="atom-loader-orbits__electron"></div>
+                  <div className="atom-loader-orbits__electron"></div>
+                </div>
+              </div>
+            )}
+            {!isProcessing ? <Sparkles className="w-4 h-4" /> : null}
             {isProcessing ? 'Generating waveform…' : 'Generate waveform'}
           </button>
         </form>
