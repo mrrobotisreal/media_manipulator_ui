@@ -1,35 +1,34 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
 import EmbeddedToolPanel from '@/components/embedded-tool-panel';
 import RelatedLinks from '@/components/related-links';
-import mixpanel from 'mixpanel-browser';
+import { AD_SLOTS } from '@/lib/adSlots';
 
 const ImageGettingStartedTutorial: React.FC = () => {
-  useEffect(() => {
-    mixpanel.track('Page View', {
-      page_name: 'Tutorial - Image Getting Started',
-      page_path: '/tutorials/image/getting-started',
-      user_tier: 'free',
-    });
-  }, []);
-
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="6671038874"
+          adSlot={AD_SLOTS.tutorial_image_header}
           adFormat="leaderboard"
           adPosition="tutorial_image_header"
-          className="mb-4"
-          isFlashMock={true}
-          utmMedium="tutorials_image_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="tutorial_image_header_leaderboard"
         />
       </div>
-      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
+      <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
+      <aside className="hidden lg:block w-[300px] shrink-0">
+        <AdBanner
+          adSlot={AD_SLOTS.tutorial_image_sidebar_left}
+          adFormat="halfpage"
+          adPosition="tutorial_image_sidebar_left"
+          sticky
+          utmMedium="tutorial_image_sidebar_left_halfpage"
+        />
+      </aside>
+      <div className="flex-1 min-w-0">
+      <Card className="sci-fi-frame">
         <CardContent className="p-12 prose prose-invert max-w-none text-muted-foreground">
           <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Image Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Image Files</h1>
@@ -58,6 +57,15 @@ const ImageGettingStartedTutorial: React.FC = () => {
           <p className="mb-4">
             <strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images. Need help picking? See our <Link to="/blog/image/image-optimization-guide" className="text-blue-600 hover:text-blue-800">image optimization guide</Link>.
           </p>
+
+          <div className="my-12 not-prose flex justify-center">
+            <AdBanner
+              adSlot={AD_SLOTS.tutorial_image_incontent}
+              adFormat="rectangle"
+              adPosition="tutorial_image_incontent"
+              utmMedium="tutorial_image_incontent_rectangle"
+            />
+          </div>
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">3. Resize, crop, filter, tint</h2>
           <p className="mb-4">
@@ -188,16 +196,24 @@ const ImageGettingStartedTutorial: React.FC = () => {
           />
         </CardContent>
       </Card>
-      <div className="max-w-6xl mx-auto px-4 pb-8">
+      </div>
+      <aside className="hidden lg:block w-[300px] shrink-0">
         <AdBanner
-          adSlot="3633827902"
+          adSlot={AD_SLOTS.tutorial_image_sidebar_right}
+          adFormat="halfpage"
+          adPosition="tutorial_image_sidebar_right"
+          sticky
+          utmMedium="tutorial_image_sidebar_right_halfpage"
+        />
+      </aside>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <AdBanner
+          adSlot={AD_SLOTS.tutorial_image_footer}
           adFormat="leaderboard"
           adPosition="tutorial_image_footer"
           className="mt-8"
-          isFlashMock={true}
-          utmMedium="tutorials_image_footer_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="tutorial_image_footer_leaderboard"
         />
       </div>
     </>

@@ -1,35 +1,34 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
 import EmbeddedToolPanel from '@/components/embedded-tool-panel';
 import RelatedLinks from '@/components/related-links';
-import mixpanel from 'mixpanel-browser';
+import { AD_SLOTS } from '@/lib/adSlots';
 
 const AudioGettingStartedTutorial: React.FC = () => {
-  useEffect(() => {
-    mixpanel.track('Page View', {
-      page_name: 'Tutorial - Audio Getting Started',
-      page_path: '/tutorials/audio/getting-started',
-      user_tier: 'free',
-    });
-  }, []);
-
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="6671038874"
+          adSlot={AD_SLOTS.tutorial_audio_header}
           adFormat="leaderboard"
           adPosition="tutorial_audio_header"
-          className="mb-4"
-          isFlashMock={true}
-          utmMedium="tutorials_audio_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="tutorial_audio_header_leaderboard"
         />
       </div>
-      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
+      <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
+      <aside className="hidden lg:block w-[300px] shrink-0">
+        <AdBanner
+          adSlot={AD_SLOTS.tutorial_audio_sidebar_left}
+          adFormat="halfpage"
+          adPosition="tutorial_audio_sidebar_left"
+          sticky
+          utmMedium="tutorial_audio_sidebar_left_halfpage"
+        />
+      </aside>
+      <div className="flex-1 min-w-0">
+      <Card className="sci-fi-frame">
         <CardContent className="p-12 prose prose-invert max-w-none text-muted-foreground">
           <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Audio Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Audio Files</h1>
@@ -78,6 +77,15 @@ const AudioGettingStartedTutorial: React.FC = () => {
           <p className="mb-4">
             <strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks.
           </p>
+
+          <div className="my-12 not-prose flex justify-center">
+            <AdBanner
+              adSlot={AD_SLOTS.tutorial_audio_incontent}
+              adFormat="rectangle"
+              adPosition="tutorial_audio_incontent"
+              utmMedium="tutorial_audio_incontent_rectangle"
+            />
+          </div>
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">4. Adjust speed, volume, and trim</h2>
           <p className="mb-4">
@@ -183,16 +191,24 @@ const AudioGettingStartedTutorial: React.FC = () => {
           />
         </CardContent>
       </Card>
-      <div className="max-w-6xl mx-auto px-4 pb-8">
+      </div>
+      <aside className="hidden lg:block w-[300px] shrink-0">
         <AdBanner
-          adSlot="3633827902"
+          adSlot={AD_SLOTS.tutorial_audio_sidebar_right}
+          adFormat="halfpage"
+          adPosition="tutorial_audio_sidebar_right"
+          sticky
+          utmMedium="tutorial_audio_sidebar_right_halfpage"
+        />
+      </aside>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <AdBanner
+          adSlot={AD_SLOTS.tutorial_audio_footer}
           adFormat="leaderboard"
           adPosition="tutorial_audio_footer"
           className="mt-8"
-          isFlashMock={true}
-          utmMedium="tutorials_audio_footer_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="tutorial_audio_footer_leaderboard"
         />
       </div>
     </>

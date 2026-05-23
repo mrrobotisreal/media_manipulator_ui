@@ -1,5 +1,5 @@
 import { Menu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -19,6 +19,25 @@ import winappsLogo from "@/assets/logo_transparent_shadow.svg";
 import formatterIcon from "/MMIcon.webp";
 import githubLogo from "@/assets/github.svg";
 import React from "react";
+import { cn } from "@/lib/utils";
+
+// Glow style used on the currently-active nav link. Inlined so we don't have
+// to register a global text-shadow utility — Tailwind v4 arbitrary values trip
+// over the comma syntax that text-shadow's layered form requires.
+const NAV_ACTIVE_GLOW: React.CSSProperties = {
+  textShadow: '0 0 8px rgb(96, 165, 250), 0 0 16px rgb(96, 165, 250)',
+};
+
+/**
+ * A nav link is active when the URL exactly matches its href, or — for any
+ * non-root link — when the URL is a sub-path (e.g. `/blog/video/...` keeps
+ * "Blog" highlighted). Home is intentionally only active on `/` so it does
+ * not match every page.
+ */
+const isNavActive = (currentPath: string, linkHref: string): boolean => {
+  if (linkHref === "/") return currentPath === "/";
+  return currentPath === linkHref || currentPath.startsWith(`${linkHref}/`);
+};
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -75,64 +94,70 @@ const ThemeToggle = () => {
 
   return (
     <label className="switch">
-      <input id="input" type="checkbox" onChange={() => setTheme(theme === "light" ? "dark" : "light")} checked={theme === "dark"} />
+      <input
+        className="theme-toggle-input"
+        type="checkbox"
+        aria-label="Toggle theme"
+        onChange={() => setTheme(theme === "light" ? "dark" : "light")}
+        checked={theme === "dark"}
+      />
       <div className="slider round">
         <div className="sun-moon">
-          <svg id="moon-dot-1" className="moon-dot" viewBox="0 0 100 100">
+          <svg className="moon-dot moon-dot-1" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="moon-dot-2" className="moon-dot" viewBox="0 0 100 100">
+          <svg className="moon-dot moon-dot-2" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="moon-dot-3" className="moon-dot" viewBox="0 0 100 100">
+          <svg className="moon-dot moon-dot-3" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="light-ray-1" className="light-ray" viewBox="0 0 100 100">
+          <svg className="light-ray light-ray-1" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="light-ray-2" className="light-ray" viewBox="0 0 100 100">
+          <svg className="light-ray light-ray-2" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="light-ray-3" className="light-ray" viewBox="0 0 100 100">
+          <svg className="light-ray light-ray-3" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
 
-          <svg id="cloud-1" className="cloud-dark" viewBox="0 0 100 100">
+          <svg className="cloud-dark cloud-1" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="cloud-2" className="cloud-dark" viewBox="0 0 100 100">
+          <svg className="cloud-dark cloud-2" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="cloud-3" className="cloud-dark" viewBox="0 0 100 100">
+          <svg className="cloud-dark cloud-3" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="cloud-4" className="cloud-light" viewBox="0 0 100 100">
+          <svg className="cloud-light cloud-4" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="cloud-5" className="cloud-light" viewBox="0 0 100 100">
+          <svg className="cloud-light cloud-5" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
-          <svg id="cloud-6" className="cloud-light" viewBox="0 0 100 100">
+          <svg className="cloud-light cloud-6" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="50"></circle>
           </svg>
         </div>
         <div className="stars">
-          <svg id="star-1" className="star" viewBox="0 0 20 20">
+          <svg className="star star-1" viewBox="0 0 20 20">
             <path
               d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
             ></path>
           </svg>
-          <svg id="star-2" className="star" viewBox="0 0 20 20">
+          <svg className="star star-2" viewBox="0 0 20 20">
             <path
               d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
             ></path>
           </svg>
-          <svg id="star-3" className="star" viewBox="0 0 20 20">
+          <svg className="star star-3" viewBox="0 0 20 20">
             <path
               d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
             ></path>
           </svg>
-          <svg id="star-4" className="star" viewBox="0 0 20 20">
+          <svg className="star star-4" viewBox="0 0 20 20">
             <path
               d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
             ></path>
@@ -158,6 +183,7 @@ const ThemeToggle = () => {
 
 const TopNav: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const { pathname } = useLocation();
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 sci-fi-frame-bottom">
@@ -177,15 +203,23 @@ const TopNav: React.FC = () => {
         {/* Desktop Navigation */}
         <NavigationMenu viewport={false} className="hidden md:flex">
           <NavigationMenuList>
-            {components.map((component) => (
-              <NavigationMenuItem key={component.title}>
-                <NavigationMenuLink asChild>
-                  <Link to={component.href} className="text-white hover:text-gray-300 transition-colors px-3 py-2 text-sm font-medium">
-                    {component.title}
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
+            {components.map((component) => {
+              const active = isNavActive(pathname, component.href);
+              return (
+                <NavigationMenuItem key={component.title}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to={component.href}
+                      aria-current={active ? "page" : undefined}
+                      style={active ? NAV_ACTIVE_GLOW : undefined}
+                      className={cn("transition-colors px-3 py-2 text-sm", active ? "font-black text-blue-300" : "font-medium text-white hover:text-gray-300")}
+                    >
+                      {component.title}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              );
+            })}
           </NavigationMenuList>
         </NavigationMenu>
 
@@ -207,16 +241,25 @@ const TopNav: React.FC = () => {
                 <SheetTitle>Navigation</SheetTitle>
               </SheetHeader>
               <div className="grid gap-4 py-4 overflow-y-auto max-h-[60vh]">
-                {components.map((component) => (
-                  <Link
-                    key={component.title}
-                    to={component.href}
-                    className="block px-4 py-2 text-lg text-center font-medium text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {component.title}
-                  </Link>
-                ))}
+                {components.map((component) => {
+                  const active = isNavActive(pathname, component.href);
+                  return (
+                    <Link
+                      key={component.title}
+                      to={component.href}
+                      aria-current={active ? "page" : undefined}
+                      style={active ? NAV_ACTIVE_GLOW : undefined}
+                      onClick={() => setIsOpen(false)}
+                      className={`block px-4 py-2 text-lg text-center rounded-md transition-colors ${
+                        active
+                          ? "font-bold text-blue-400"
+                          : "font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
+                      }`}
+                    >
+                      {component.title}
+                    </Link>
+                  );
+                })}
               </div>
             </SheetContent>
           </Sheet>

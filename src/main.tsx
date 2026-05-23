@@ -7,18 +7,30 @@ import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import mixpanel from "mixpanel-browser"
 import { initWebVitals } from '@/lib/webVitals'
+import { hasAnalyticsConsent, initConsentListener, onConsentChange } from '@/lib/consent'
 
-// Mixpanel is initialized lazily after first paint so it never blocks LCP.
-// Events fired before init are buffered by mixpanel-browser internally.
-const initMixpanel = () => {
-  if (!import.meta.env.VITE_MP_TOKEN) return;
+// Hook into gtag's consent updates before any tracker is set up so Mixpanel
+// / GA event helpers can early-return when consent is denied.
+initConsentListener();
+
+// Mixpanel is initialized lazily after first paint so it never blocks LCP,
+// and only after the user has granted analytics consent. Mixpanel SDK calls
+// fired before init are buffered internally.
+let mixpanelInitialized = false;
+const tryInitMixpanel = () => {
+  if (mixpanelInitialized) return;
   if (typeof window === 'undefined') return;
+  if (!import.meta.env.VITE_MP_TOKEN) return;
+  if (!hasAnalyticsConsent()) return;
   try {
     mixpanel.init(import.meta.env.VITE_MP_TOKEN, {
       debug: false,
-      track_pageview: true,
+      // Page-view tracking is owned by RouteAnalytics (Router.tsx). Letting
+      // the SDK auto-track here would double-fire.
+      track_pageview: false,
       persistence: "localStorage",
     });
+    mixpanelInitialized = true;
   } catch {
     // Mixpanel must never block the editing flow.
   }
@@ -31,10 +43,12 @@ if (typeof window !== 'undefined') {
     }
   ).requestIdleCallback;
   if (typeof ric === 'function') {
-    ric(initMixpanel, { timeout: 3000 });
+    ric(tryInitMixpanel, { timeout: 3000 });
   } else {
-    window.setTimeout(initMixpanel, 1500);
+    window.setTimeout(tryInitMixpanel, 1500);
   }
+  // Re-attempt init when the user grants consent later in the session.
+  onConsentChange(tryInitMixpanel);
 }
 
 initWebVitals();

@@ -2,8 +2,10 @@ import React, { lazy, Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import TopNav from './components/top-nav';
 import Footer from './components/footer';
+import MobileAnchorAd from './components/mobile-anchor-ad';
 import { trackFirstPartyPageView } from './lib/firstPartyAnalytics';
 import { trackGooglePageView } from './lib/gtag';
+import { trackMixpanelPageView } from './lib/analytics';
 import { applySeoMeta, getSeoForPath } from './lib/seo';
 
 // Lazy-loaded page components — each becomes its own JS chunk so the
@@ -35,6 +37,7 @@ const ImageGettingStartedTutorial = lazy(
 );
 const ToolsIndexPage = lazy(() => import('./pages/tools/index'));
 const ToolPage = lazy(() => import('./pages/tools/tool-page'));
+const NotFoundPage = lazy(() => import('./pages/not-found'));
 
 const RouteAnalytics: React.FC = () => {
   const location = useLocation();
@@ -50,6 +53,7 @@ const RouteAnalytics: React.FC = () => {
       const title = document.title || seo.title;
       trackFirstPartyPageView(title);
       trackGooglePageView(title, path);
+      trackMixpanelPageView(title, path);
     };
 
     if (!isInitialPageviewSentRef.current) {
@@ -132,10 +136,12 @@ const Router: React.FC = () => {
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/terms-of-service" element={<TermsOfServicePage />} />
               {/* <Route path="/pricing" element={<PricingPage />} /> */}
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
         </main>
         <Footer />
+        <MobileAnchorAd />
       </div>
     </BrowserRouter>
   );

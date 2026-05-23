@@ -56,17 +56,11 @@ const TranscribeForm: React.FC<TranscribeFormProps> = ({ mediaKind, isLoading, o
   return (
     <>
       <AdBanner
-        adSlot="6671038874"
+        adSlot="mm_transcribe_form_banner"
         adFormat="banner"
         adPosition="transcribe_form_top"
         className="mb-4"
-        style={{ minHeight: '60px' }}
-        isFlashMock={true}
         utmMedium="transcribe_form_banner"
-        utmCampaign="creatv_launch_promo"
-        linkURL="https://www.creatv.io/auth"
-        creativeAssetSrc="https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_VideoAd_FullBanner.gif"
-        creativeAssetAlt="Come check out CreaTV! Where ideas are brought to life."
       />
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -6,32 +6,32 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import AdBanner from '@/components/ad-banner';
 import RelatedLinks from '@/components/related-links';
+import { AD_SLOTS } from '@/lib/adSlots';
 import mixpanel from 'mixpanel-browser';
 
 const AudioQualityGuide: React.FC = () => {
-  useEffect(() => {
-    mixpanel.track('Page View', {
-      page_name: 'Audio Quality Guide',
-      page_path: '/blog/audio/audio-quality-guide',
-      user_tier: 'free'
-    });
-  }, []);
-
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="6671038874"
+          adSlot={AD_SLOTS.blog_audio_header}
           adFormat="leaderboard"
-          adPosition="blog_audio_guide_header"
-          className="mb-4"
-          isFlashMock={true}
-          utmMedium="blog_audio_guide_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          adPosition="blog_article_audio_header"
+          utmMedium="blog_audio_header_leaderboard"
         />
       </div>
-      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame p-12">
+      <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
+      <aside className="hidden lg:block w-[300px] shrink-0">
+        <AdBanner
+          adSlot={AD_SLOTS.blog_audio_sidebar_left}
+          adFormat="halfpage"
+          adPosition="blog_article_audio_sidebar_left"
+          sticky
+          utmMedium="blog_audio_sidebar_left_halfpage"
+        />
+      </aside>
+      <div className="flex-1 min-w-0">
+      <Card className="sci-fi-frame p-12">
         <article>
         <div className="p-6 pb-0">
         <Link
@@ -146,6 +146,15 @@ const AudioQualityGuide: React.FC = () => {
           "To understand the whole, you must first understand the parts." – Aristotle
         </blockquote>
 
+        <div className="my-12 not-prose flex justify-center">
+          <AdBanner
+            adSlot={AD_SLOTS.blog_audio_incontent_1}
+            adFormat="rectangle"
+            adPosition="blog_article_audio_incontent_1"
+            utmMedium="blog_audio_incontent_1_rectangle"
+          />
+        </div>
+
         <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?</h2>
 
         <p className="text-lg text-muted-foreground mb-6">
@@ -208,6 +217,15 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
         <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
           "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away." – Antoine de Saint-Exupéry
         </blockquote>
+
+        <div className="my-12 not-prose flex justify-center">
+          <AdBanner
+            adSlot={AD_SLOTS.blog_audio_incontent_2}
+            adFormat="rectangle"
+            adPosition="blog_article_audio_incontent_2"
+            utmMedium="blog_audio_incontent_2_rectangle"
+          />
+        </div>
 
         <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">Why Is This Even Important for My Website?</h2>
 
@@ -404,16 +422,24 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
         </CardFooter>
         </article>
       </Card>
-      <div className="max-w-6xl mx-auto px-4 pb-8">
+      </div>
+      <aside className="hidden lg:block w-[300px] shrink-0">
         <AdBanner
-          adSlot="3633827902"
+          adSlot={AD_SLOTS.blog_audio_sidebar_right}
+          adFormat="halfpage"
+          adPosition="blog_article_audio_sidebar_right"
+          sticky
+          utmMedium="blog_audio_sidebar_right_halfpage"
+        />
+      </aside>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <AdBanner
+          adSlot={AD_SLOTS.blog_audio_footer}
           adFormat="leaderboard"
-          adPosition="blog_audio_guide_footer"
+          adPosition="blog_article_audio_footer"
           className="mt-8"
-          isFlashMock={true}
-          utmMedium="blog_audio_guide_footer_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="blog_audio_footer_leaderboard"
         />
       </div>
     </>

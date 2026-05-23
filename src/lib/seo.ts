@@ -32,6 +32,8 @@ export interface RouteSeo {
   twitterCard: 'summary' | 'summary_large_image';
   keywords: string[];
   jsonLd: JsonLd[];
+  /** When true, applySeoMeta will emit <meta name="robots" content="noindex">. */
+  noindex?: boolean;
 }
 
 const buildCanonical = (path: string): string => {
@@ -784,6 +786,20 @@ const ROUTES: RouteSeo[] = [
     ],
   },
   {
+    path: '/404',
+    title: 'Page not found | Media Manipulator',
+    description: 'The page you were looking for does not exist on Media Manipulator.',
+    canonicalUrl: buildCanonical('/404'),
+    ogTitle: 'Page not found | Media Manipulator',
+    ogDescription: 'The page you were looking for does not exist on Media Manipulator.',
+    ogType: 'website',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary',
+    keywords: [],
+    jsonLd: [],
+    noindex: true,
+  },
+  {
     path: '/terms-of-service',
     title: 'Terms of Service & Acceptable Use Policy | Media Manipulator',
     description:
@@ -829,7 +845,7 @@ export const ROUTE_SEO_MAP: Record<string, RouteSeo> = ALL_ROUTES.reduce(
 
 export const PUBLIC_ROUTES: string[] = ALL_ROUTES.map((r) => r.path);
 
-const FALLBACK_SEO: RouteSeo = ROUTE_SEO_MAP['/'];
+const NOT_FOUND_SEO: RouteSeo = ROUTE_SEO_MAP['/404'] || ROUTE_SEO_MAP['/'];
 
 const stripTrailingSlash = (path: string): string => {
   if (path.length > 1 && path.endsWith('/')) return path.slice(0, -1);
@@ -838,7 +854,7 @@ const stripTrailingSlash = (path: string): string => {
 
 export const getSeoForPath = (pathname: string): RouteSeo => {
   const normalized = stripTrailingSlash(pathname) || '/';
-  return ROUTE_SEO_MAP[normalized] || FALLBACK_SEO;
+  return ROUTE_SEO_MAP[normalized] || NOT_FOUND_SEO;
 };
 
 export const getAllRouteSeo = (): RouteSeo[] => ALL_ROUTES;
@@ -925,6 +941,7 @@ export const applySeoMeta = (seo: RouteSeo): void => {
   document.title = seo.title;
   setMetaByName('description', seo.description);
   setMetaByName('keywords', seo.keywords.join(', '));
+  setMetaByName('robots', seo.noindex ? 'noindex,follow' : 'index,follow');
   setCanonical(seo.canonicalUrl);
 
   setMetaByProperty('og:title', seo.ogTitle);

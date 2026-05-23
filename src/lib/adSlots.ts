@@ -1,0 +1,262 @@
+/**
+ * Central map of every AdSense slot ID used in the app, keyed by call-site
+ * identifier. The actual numeric slot IDs come from the AdSense dashboard —
+ * see ADS.md at the repo root for the source-of-truth list.
+ *
+ * Sidebar halfpage ads come in left + right variants so the content sits
+ * centered between two sticky rails on wide screens.
+ */
+
+export const AD_SLOTS = {
+  // ---------------------------------------------------------- Homepage
+  home_header: '2367514744',
+  home_footer: '6193559201',
+  home_sidebar_right: '5171287420',
+  home_sidebar_left: '5948649649',
+  home_result_postconvert: '2149005439',
+
+  // ---------------------------------------------------------- Blog index
+  blog_index_header: '2254314194',
+  blog_index_footer: '6656593639',
+  blog_index_sidebar_right: '5866256149',
+  blog_index_sidebar_left: '3298435577',
+
+  // ---------------------------------------------------------- Blog: Video Compression
+  blog_video_header: '4610534703',
+  blog_video_sidebar_right: '9873406619',
+  blog_video_sidebar_left: '1689840430',
+  blog_video_incontent_1: '4346125061',
+  blog_video_incontent_2: '3033043396',
+  blog_video_footer: '6347122351',
+
+  // ---------------------------------------------------------- Blog: Image Optimization
+  blog_image_header: '7327511625',
+  blog_image_sidebar_right: '7067657171',
+  blog_image_sidebar_left: '2695423048',
+  blog_image_incontent_1: '8624281423',
+  blog_image_incontent_2: '7682734842',
+  blog_image_footer: '3108230869',
+
+  // ---------------------------------------------------------- Blog: Audio Quality
+  blog_audio_header: '8037958065',
+  blog_audio_sidebar_right: '5411794728',
+  blog_audio_sidebar_left: '8215720335',
+  blog_audio_incontent_1: '5754575506',
+  blog_audio_incontent_2: '1170817294',
+  blog_audio_footer: '3088506411',
+
+  // ---------------------------------------------------------- Tools index
+  tools_index_header: '4737007305',
+  tools_index_sidebar_right: '6780716713',
+  tools_index_sidebar_left: '5704729767',
+  tools_index_image_banner: '5998118080',
+  tools_index_video_banner: '9817566291',
+  tools_index_audio_banner: '6836179738',
+  tools_index_ai_banner: '9466212501',
+  tools_index_privacy_banner: '3128412166',
+  tools_index_footer: '9745791400',
+
+  // ---------------------------------------------------------- Tutorials index
+  tutorials_index_header: '8027869685',
+  tutorials_index_audio_banner: '9807855211',
+  tutorials_index_video_banner: '5189953353',
+  tutorials_index_image_banner: '2775543009',
+  tutorials_index_footer: '4369798498',
+
+  // ---------------------------------------------------------- Tutorial articles
+  tutorial_audio_header: '6523216322',
+  tutorial_audio_sidebar_right: '7754887039',
+  tutorial_audio_sidebar_left: '7259381799',
+  tutorial_audio_incontent: '3815642026',
+  tutorial_audio_footer: '1189478681',
+
+  tutorial_video_header: '8316782369',
+  tutorial_video_sidebar_right: '3624070331',
+  tutorial_video_sidebar_left: '8714413789',
+  tutorial_video_incontent: '5491308476',
+  tutorial_video_footer: '9400661105',
+
+  tutorial_image_header: '4178226805',
+  tutorial_image_sidebar_right: '3432498644',
+  tutorial_image_sidebar_left: '7401332118',
+  tutorial_image_incontent: '3685299995',
+  tutorial_image_footer: '9806335303',
+
+  // ---------------------------------------------------------- Static pages
+  about_header: '5299736787',
+  about_footer: '2673573443',
+  how_it_works_header: '3240926956',
+  how_it_works_footer: '5461416092',
+
+  // ---------------------------------------------------------- 404 + mobile anchor
+  not_found_footer: '9121607896',
+  mobile_anchor: '2007055116',
+} as const;
+
+export type AdSlotKey = keyof typeof AD_SLOTS;
+
+interface ToolAdSlotSet {
+  header: string;
+  sidebar_right: string;
+  sidebar_left: string;
+  incontent: string;
+  footer: string;
+}
+
+/**
+ * Per-tool slot IDs, keyed by the slug under /tools/:slug. Every tool that has
+ * a dedicated `/tools/<slug>` page should have an entry here so the landing
+ * page can read its own slot IDs without baking placeholders into the shared
+ * component.
+ */
+export const TOOL_AD_SLOTS: Record<string, ToolAdSlotSet> = {
+  // Image
+  'convert-webp-to-jpg': {
+    header: '8227180238',
+    sidebar_right: '6265334092',
+    sidebar_left: '5541455531',
+    incontent: '3224237781',
+    footer: '1911156115',
+  },
+  'image-converter': {
+    header: '6453036356',
+    sidebar_right: '9598074442',
+    sidebar_left: '1382341373',
+    incontent: '8284992777',
+    footer: '2513791346',
+  },
+
+  // Video
+  'compress-video': {
+    header: '6971911109',
+    sidebar_right: '8887628006',
+    sidebar_left: '9069259701',
+    incontent: '6261464667',
+    footer: '2326089088',
+  },
+  'transcode-to-hls': {
+    header: '9404530532',
+    sidebar_right: '9406502758',
+    sidebar_left: '5559287316',
+    incontent: '2974853558',
+    footer: '6778367197',
+  },
+  'transcode-to-dash': {
+    header: '5465285526',
+    sidebar_right: '5371432124',
+    sidebar_left: '4798842202',
+    incontent: '4096363537',
+    footer: '9212958840',
+  },
+  'convert-video-to-animated-gif': {
+    header: '9157118526',
+    sidebar_right: '8839903841',
+    sidebar_left: '2933123975',
+    incontent: '6530955187',
+    footer: '5217873513',
+  },
+  'video-converter': {
+    header: '5273713833',
+    sidebar_right: '2647550493',
+    sidebar_left: '9306960634',
+    incontent: '2745268785',
+    footer: '1278628505',
+  },
+  'extract-audio-from-video': {
+    header: '6022168818',
+    sidebar_right: '6780339419',
+    sidebar_left: '5349883844',
+    incontent: '5082142140',
+    footer: '3769060475',
+  },
+  // ADS.md "Remove Audio from Video" maps to the existing slug
+  // `extract-video-only-from-video` (display name "Remove Audio from Video").
+  'extract-video-only-from-video': {
+    header: '1528012737',
+    sidebar_right: '9119105442',
+    sidebar_left: '9472961683',
+    incontent: '5830597129',
+    footer: '6588767722',
+  },
+  'extract-frames-from-video': {
+    header: '3962604382',
+    sidebar_right: '9023359379',
+    sidebar_left: '7993878966',
+    incontent: '7325162103',
+    footer: '5179860435',
+  },
+  // ADS.md "Add Audio to Video" maps to slug `stitch-audio-to-video`.
+  'stitch-audio-to-video': {
+    header: '5639025439',
+    sidebar_right: '4038169153',
+    sidebar_left: '1077116822',
+    incontent: '4834730133',
+    footer: '3246316291',
+  },
+
+  // Audio
+  'convert-wav-to-mp3': {
+    header: '2457951028',
+    sidebar_right: '1933234621',
+    sidebar_left: '2907553333',
+    incontent: '9620152953',
+    footer: '4325943762',
+  },
+  'isolate-vocals-from-song': {
+    header: '8735962067',
+    sidebar_right: '1699780421',
+    sidebar_left: '2549980599',
+    incontent: '6109798726',
+    footer: '8640215994',
+  },
+  'audio-converter': {
+    header: '3387889318',
+    sidebar_right: '8582403451',
+    sidebar_left: '5397985302',
+    incontent: '9761725978',
+    footer: '7269321785',
+  },
+  'audio-waveform-generator': {
+    header: '6760535411',
+    sidebar_right: '9759753757',
+    sidebar_left: '7592903805',
+    incontent: '8446672084',
+    footer: '5822480968',
+  },
+
+  // AI
+  'transcribe-video': {
+    header: '2170553718',
+    sidebar_right: '9857472045',
+    sidebar_left: '3511708479',
+    incontent: '2863172919',
+    footer: '3190475979',
+  },
+  'srt-generator': {
+    header: '7923927909',
+    sidebar_right: '5297764566',
+    sidebar_left: '6251524678',
+    incontent: '2671601221',
+    footer: '8251230961',
+  },
+  'caption-translator': {
+    header: '4643158449',
+    sidebar_right: '1508208736',
+    sidebar_left: '6554777002',
+    incontent: '3330076774',
+    footer: '9703913435',
+  },
+
+  // Privacy / metadata
+  'remove-exif-metadata': {
+    header: '4311985957',
+    sidebar_right: '1685822610',
+    sidebar_left: '5373934576',
+    incontent: '6634896969',
+    footer: '7379105216',
+  },
+};
+
+/** Get the slot set for a tool slug, or undefined if none configured. */
+export const getToolAdSlots = (slug: string): ToolAdSlotSet | undefined =>
+  TOOL_AD_SLOTS[slug];

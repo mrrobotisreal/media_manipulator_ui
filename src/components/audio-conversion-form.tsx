@@ -188,17 +188,11 @@ const AudioConversionForm: React.FC<{
   return (
     <>
       <AdBanner
-        adSlot="6671038874"
+        adSlot="mm_audio_form_banner"
         adFormat="banner"
         adPosition="audio_form_top"
         className="mb-4"
-        style={{ minHeight: '60px' }}
-        isFlashMock={true}
         utmMedium="audio_form_banner"
-        utmCampaign="creatv_launch_promo"
-        linkURL="https://www.creatv.io/auth"
-        creativeAssetSrc="https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_VideoAd_FullBanner.gif"
-        creativeAssetAlt="Come check out CreaTV! Where ideas are brought to life."
       />
       <form onSubmit={handleSubmit(onSubmitHandler, onErrorHandler)} className="space-y-6">
         <ConversionOptions

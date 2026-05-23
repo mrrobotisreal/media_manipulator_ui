@@ -4,19 +4,36 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/webp" href="/MMIcon.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0e1a" />
+    <link rel="apple-touch-icon" href="/MMIcon.webp" />
     <title>Media Manipulator - Convert & Identify Files</title>
 
-    <!-- Google Analytics (GA4) - SPA-aware: pageviews are sent from the router -->
+    <!-- Google Tag Manager / GA4 — Consent Mode v2 defaults set to denied.
+         Funding Choices (loaded via the AdSense script below) prompts the
+         user and upgrades these signals via gtag('consent', 'update', ...).
+         EEA/UK/CH visitors see the banner; everyone else has consent inferred
+         per region defaults. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6J910CMHRY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
+
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        wait_for_update: 500
+      });
+
       gtag('js', new Date());
       gtag('config', 'G-6J910CMHRY', { send_page_view: false });
     </script>
 
-    <!-- Google AdSense -->
+    <!-- Google AdSense — loads Funding Choices banner when enabled in dashboard. -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3413790368941825"
       crossorigin="anonymous"></script>
 

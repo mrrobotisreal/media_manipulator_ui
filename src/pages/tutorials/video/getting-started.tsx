@@ -1,35 +1,34 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
 import EmbeddedToolPanel from '@/components/embedded-tool-panel';
 import RelatedLinks from '@/components/related-links';
-import mixpanel from 'mixpanel-browser';
+import { AD_SLOTS } from '@/lib/adSlots';
 
 const VideoGettingStartedTutorial: React.FC = () => {
-  useEffect(() => {
-    mixpanel.track('Page View', {
-      page_name: 'Tutorial - Video Getting Started',
-      page_path: '/tutorials/video/getting-started',
-      user_tier: 'free',
-    });
-  }, []);
-
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="6671038874"
+          adSlot={AD_SLOTS.tutorial_video_header}
           adFormat="leaderboard"
           adPosition="tutorial_video_header"
-          className="mb-4"
-          isFlashMock={true}
-          utmMedium="tutorials_video_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="tutorial_video_header_leaderboard"
         />
       </div>
-      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
+      <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
+      <aside className="hidden lg:block w-[300px] shrink-0">
+        <AdBanner
+          adSlot={AD_SLOTS.tutorial_video_sidebar_left}
+          adFormat="halfpage"
+          adPosition="tutorial_video_sidebar_left"
+          sticky
+          utmMedium="tutorial_video_sidebar_left_halfpage"
+        />
+      </aside>
+      <div className="flex-1 min-w-0">
+      <Card className="sci-fi-frame">
         <CardContent className="p-12 prose prose-invert max-w-none text-muted-foreground">
           <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Video Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Video Files</h1>
@@ -80,6 +79,15 @@ const VideoGettingStartedTutorial: React.FC = () => {
           <p className="mb-4">
             Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video.
           </p>
+
+          <div className="my-12 not-prose flex justify-center">
+            <AdBanner
+              adSlot={AD_SLOTS.tutorial_video_incontent}
+              adFormat="rectangle"
+              adPosition="tutorial_video_incontent"
+              utmMedium="tutorial_video_incontent_rectangle"
+            />
+          </div>
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">3. Resize, speed, and aspect ratio</h2>
           <p className="mb-4">
@@ -191,16 +199,24 @@ const VideoGettingStartedTutorial: React.FC = () => {
           />
         </CardContent>
       </Card>
-      <div className="max-w-6xl mx-auto px-4 pb-8">
+      </div>
+      <aside className="hidden lg:block w-[300px] shrink-0">
         <AdBanner
-          adSlot="3633827902"
+          adSlot={AD_SLOTS.tutorial_video_sidebar_right}
+          adFormat="halfpage"
+          adPosition="tutorial_video_sidebar_right"
+          sticky
+          utmMedium="tutorial_video_sidebar_right_halfpage"
+        />
+      </aside>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <AdBanner
+          adSlot={AD_SLOTS.tutorial_video_footer}
           adFormat="leaderboard"
           adPosition="tutorial_video_footer"
           className="mt-8"
-          isFlashMock={true}
-          utmMedium="tutorials_video_footer_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="tutorial_video_footer_leaderboard"
         />
       </div>
     </>

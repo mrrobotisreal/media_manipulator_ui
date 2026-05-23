@@ -1,16 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import mixpanel from 'mixpanel-browser';
 
 const PrivacyPolicyPage: React.FC = () => {
-  useEffect(() => {
-    mixpanel.track('Page View', {
-      page_name: 'Privacy Policy',
-      page_path: '/privacy-policy',
-      user_tier: 'free'
-    });
-  }, []);
-
   return (
     <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
       <CardContent className="p-12">

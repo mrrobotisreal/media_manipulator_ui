@@ -5,6 +5,7 @@ import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import AdBanner from '@/components/ad-banner';
+import { AD_SLOTS } from '@/lib/adSlots';
 import type { ConversionFormData } from '@/schemas/types';
 
 // Each conversion form pulls in its own schema, form fields, and helpers.
@@ -33,7 +34,6 @@ import {
   trackConversionSuccess,
   trackConversionFailure,
   trackFileDownload,
-  trackPageView,
   trackUserSession,
   getSafeFileExtension,
 } from '@/lib/analytics';
@@ -167,14 +167,14 @@ const FileConverterApp: React.FC = () => {
     };
   }, []);
 
-  // Initialize analytics on component mount
+  // Initialize analytics on component mount. RouteAnalytics in Router.tsx
+  // owns the page-view fire (firstParty + GA + Mixpanel), so we only handle
+  // user-session/identity bootstrap here.
   useEffect(() => {
     void initializeIndexedIdentity().catch(error => {
       trackFirstPartyError('identity_init', error);
     });
-    trackPageView('File Converter Home');
 
-    // Set user session data
     const isReturningUser = localStorage.getItem('hasVisited') === 'true';
     trackUserSession({
       user_type: isReturningUser ? 'returning' : 'new'
@@ -804,17 +804,11 @@ const FileConverterApp: React.FC = () => {
       {/* Top Banner Ad */}
       <div className="max-w-6xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="6671038874"
+          adSlot={AD_SLOTS.home_header}
           adFormat="leaderboard"
-          adPosition="header"
+          adPosition="home_header"
           className="mb-4"
-          style={{ minHeight: '90px' }}
-          isFlashMock={true}
           utmMedium="homepage_leaderboard_banner"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
-          creativeAssetSrc="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif"
-          creativeAssetAlt="Come check out CreaTV! Where ideas are brought to life."
         />
       </div>
 
@@ -991,21 +985,16 @@ const FileConverterApp: React.FC = () => {
               </div>
             )}
 
-            {/* Sidebar Ad in File Upload Section */}
+            {/* Sidebar Ad in File Upload Section (shown once a file is selected).
+                Uses the left-side slot so the two homepage halfpage units —
+                upload-panel + conversion-panel — never share an ID on screen. */}
             {selectedFile && (
               <div className="mt-6">
                 <AdBanner
-                  adSlot="7449783987"
-                  adFormat="rectangle"
-                  adPosition="sidebar_upload"
-                  className="w-full"
-                  style={{ minHeight: '250px' }}
-                  isFlashMock={true}
-                  utmMedium="homepage_sidebar_upload_LREC_banner"
-                  utmCampaign="creatv_launch_promo"
-                  linkURL="https://www.creatv.io/auth"
-                  creativeAssetSrc='https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_Video_LaunchPromo_LREC.gif'
-                  creativeAssetAlt='Come check out CreaTV! Where ideas are brought to life.'
+                  adSlot={AD_SLOTS.home_sidebar_left}
+                  adFormat="halfpage"
+                  adPosition="home_sidebar_upload"
+                  utmMedium="homepage_sidebar_upload"
                 />
               </div>
             )}
@@ -1166,20 +1155,25 @@ const FileConverterApp: React.FC = () => {
                   </div>
                 )}
 
-                {/* Sidebar Ad in Conversion Section */}
-                <AdBanner
-                  adSlot="6568479981"
-                  adFormat="rectangle"
-                  adPosition="sidebar_conversion"
-                  className="w-full"
-                  style={{ minHeight: '250px' }}
-                  isFlashMock={true}
-                  utmMedium="homepage_sidebar_conversion_LREC_banner"
-                  utmCampaign="creatv_launch_promo"
-                  linkURL="https://www.creatv.io/auth"
-                  creativeAssetSrc='https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_Video_LaunchPromo_LREC.gif'
-                  creativeAssetAlt='Come check out CreaTV! Where ideas are brought to life.'
-                />
+                {/* Conversion-side ad: shows the post-conversion rectangle slot
+                    once a job is completed, otherwise the regular conversion
+                    in-content rectangle. Placeholder slot until AdSense unit
+                    is created. */}
+                {conversionJob?.status === 'completed' ? (
+                  <AdBanner
+                    adSlot={AD_SLOTS.home_result_postconvert}
+                    adFormat="rectangle"
+                    adPosition="home_postconvert"
+                    utmMedium="homepage_postconvert_rectangle"
+                  />
+                ) : (
+                  <AdBanner
+                    adSlot={AD_SLOTS.home_sidebar_right}
+                    adFormat="halfpage"
+                    adPosition="home_sidebar_conversion"
+                    utmMedium="homepage_sidebar_conversion"
+                  />
+                )}
               </div>
             ) : selectedFile ? (
               <div className="text-center py-8">
@@ -1306,17 +1300,10 @@ const FileConverterApp: React.FC = () => {
         {/* Bottom Banner Ad */}
         <div className="mt-8">
           <AdBanner
-            adSlot="3633827902"
+            adSlot={AD_SLOTS.home_footer}
             adFormat="leaderboard"
-            adPosition="footer"
-            className="w-full"
-            style={{ minHeight: '90px' }}
-            isFlashMock={true}
-            utmMedium="homepage_leaderboard_banner"
-            utmCampaign="creatv_launch_promo"
-            linkURL="https://www.creatv.io/auth"
-            creativeAssetSrc="https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif"
-            creativeAssetAlt="Come check out CreaTV! Where ideas are brought to life."
+            adPosition="home_footer"
+            utmMedium="homepage_footer_leaderboard"
           />
         </div>
       </div>

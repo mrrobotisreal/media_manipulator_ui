@@ -123,6 +123,10 @@ const AudioWaveformPanel: React.FC = () => {
   const [colorSecondary, setColorSecondary] = useState('#A855F7');
   const [scale, setScale] = useState<'lin' | 'log' | 'sqrt' | 'cbrt'>('lin');
   const [draw, setDraw] = useState<'scale' | 'full'>('scale');
+  // Default to true so the waveform video plays in sync with the source audio
+  // out of the box — that's the most useful artifact for creators (audiograms,
+  // music previews, podcast clips). Toggling off produces a silent waveform.
+  const [includeAudio, setIncludeAudio] = useState<boolean>(true);
 
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const { mutate, isPending, uploadProgress } = useSpecializedMediaTool((res) => {
@@ -156,6 +160,9 @@ const AudioWaveformPanel: React.FC = () => {
       colorSecondary,
       scale,
       draw,
+      // Only relevant when a video is in the output set; the backend ignores
+      // the field for image-only runs.
+      includeAudio: outputSelection !== 'image' ? includeAudio : false,
     };
     if (rateMode === 'rate') {
       waveform.rate = rate;
@@ -169,6 +176,12 @@ const AudioWaveformPanel: React.FC = () => {
   };
 
   const ext = outputSelection === 'both' ? 'zip' : outputSelection === 'image' ? imageFormat : videoFormat;
+  // Map the user's output selection to the kind the preview modal should
+  // render: a playable video (video, or "both" when previewing the video
+  // half doesn't apply — we fall back to the ZIP message), a still image,
+  // or a zip-no-preview placeholder.
+  const finalMediaKind: 'video' | 'image' | 'zip' =
+    outputSelection === 'video' ? 'video' : outputSelection === 'image' ? 'image' : 'zip';
 
   return (
     <SpecializedToolShell
@@ -179,6 +192,11 @@ const AudioWaveformPanel: React.FC = () => {
       isUploading={isPending}
       uploadProgress={uploadProgress}
       outputExtensionHint={ext}
+      previewConfig={{
+        originalMediaKind: 'audio',
+        finalMediaKind,
+        title: 'Waveform preview',
+      }}
       renderForm={({ file, isProcessing }) => (
         <form
           onSubmit={(e) => {
@@ -211,6 +229,23 @@ const AudioWaveformPanel: React.FC = () => {
               </p>
             )}
           </div>
+
+          {(outputSelection === 'video' || outputSelection === 'both') && (
+            <label className="flex items-start gap-3 rounded-lg border border-border bg-background/40 p-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={includeAudio}
+                onChange={(e) => setIncludeAudio(e.target.checked)}
+                className="mt-1"
+              />
+              <span className="text-sm">
+                <span className="font-medium text-card-foreground">Include original audio with generated waveform video</span>
+                <span className="block text-xs text-muted-foreground mt-0.5">
+                  The waveform video will play in sync with the source audio — perfect for audiograms, music previews, and podcast clips. Turn off for a silent waveform.
+                </span>
+              </span>
+            </label>
+          )}
 
           <div className="grid sm:grid-cols-2 gap-3">
             {(outputSelection === 'video' || outputSelection === 'both') && (
@@ -419,10 +454,11 @@ const AudioWaveformPanel: React.FC = () => {
 
           <button
             type="submit"
-            disabled={isProcessing}
+            // disabled={isProcessing}
+            disabled={true}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
-            {isProcessing && (
+            {!isProcessing && (
               <div className="atom-loader mr-4">
                 <div className="atom-loader-orbits">
                   <div className="atom-loader-orbits__electron"></div>
@@ -431,8 +467,8 @@ const AudioWaveformPanel: React.FC = () => {
                 </div>
               </div>
             )}
-            {!isProcessing ? <Sparkles className="w-4 h-4" /> : null}
-            {isProcessing ? 'Generating waveform…' : 'Generate waveform'}
+            {isProcessing ? <Sparkles className="w-4 h-4" /> : null}
+            {!isProcessing ? 'Generating waveform…' : 'Generate waveform'}
           </button>
         </form>
       )}

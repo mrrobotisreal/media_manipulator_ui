@@ -1,5 +1,7 @@
 import { logEvent, setUserProperties } from 'firebase/analytics';
+import mixpanel from 'mixpanel-browser';
 import { analytics } from './firebase';
+import { hasAnalyticsConsent } from './consent';
 import { trackFirstPartyEvent, trackFirstPartyPageView } from './firstPartyAnalytics';
 import { trackGoogleEvent, trackGooglePageView } from './gtag';
 
@@ -121,6 +123,24 @@ export const trackPageView = (pageName: string) => {
     page_title: pageName,
     page_location: window.location.href,
   });
+};
+
+/**
+ * Mixpanel page-view helper, gated behind analytics consent. Called once per
+ * route change from RouteAnalytics so we have a single source of truth for
+ * page-view fires across firstParty + GA + Mixpanel.
+ */
+export const trackMixpanelPageView = (title: string, path: string) => {
+  if (!hasAnalyticsConsent()) return;
+  try {
+    mixpanel.track('Page View', {
+      page_name: title,
+      page_path: path,
+      user_tier: 'free',
+    });
+  } catch {
+    // Never block the UI.
+  }
 };
 
 // Track feature usage

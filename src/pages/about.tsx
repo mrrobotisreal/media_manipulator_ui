@@ -1,34 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
 import RelatedLinks from '@/components/related-links';
-import { LaserProgressBar } from '@/components/laser-progress';
-import mixpanel from 'mixpanel-browser';
+import { AD_SLOTS } from '@/lib/adSlots';
 
 const AboutPage: React.FC = () => {
-  useEffect(() => {
-    mixpanel.track('Page View', {
-      page_name: 'About',
-      page_path: '/about',
-      user_tier: 'free'
-    });
-    const ring = document.getElementById('progressRing');
-    ring?.setAttribute('stroke-dashoffset', '17');
-  }, []);
+  // useEffect(() => {
+  //   const ring = document.getElementById('progressRing');
+  //   ring?.setAttribute('stroke-dashoffset', '17');
+  // }, []);
 
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="6671038874"
+          adSlot={AD_SLOTS.about_header}
           adFormat="leaderboard"
           adPosition="about_header"
-          className="mb-4"
-          isFlashMock={true}
-          utmMedium="about_leaderboard_banner"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="about_header_leaderboard"
         />
       </div>
       <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
@@ -347,10 +337,6 @@ const AboutPage: React.FC = () => {
                 ·{' '}
                 <Link to="/terms-of-service" className="text-blue-600 hover:text-blue-800">Terms</Link>
               </p>
-            </section>
-
-            <section className="mb-10 w-full h-full p-12 bg-black flex items-center justify-center">
-              <LaserProgressBar progress={50} />
             </section>
 
             {/* <section className="mb-10 w-full h-full p-12 bg-black flex items-center justify-center">
@@ -988,7 +974,7 @@ const AboutPage: React.FC = () => {
               </div>
             </section>
 
-            <section className="mb-10 w-full h-full p-12 bg-black flex items-center justify-center">
+            {/* <section className="mb-10 w-full h-full p-12 bg-black flex items-center justify-center">
               <div className="wobbling-element" style={{ position: 'relative', margin: '10px' }}>
 
                 <div id="percentageCounter">0%</div>
@@ -996,7 +982,7 @@ const AboutPage: React.FC = () => {
                 <svg width="300" height="300" viewBox="-100 -100 200 200">
                   <mask id="progress-mask">
                     <rect width="300" height="300" />
-                    <circle id="progressRing" r="96" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="100 100" stroke-dashoffset="100" pathLength="100" />
+                    <circle id="progressRing" r="96" fill="none" stroke="#fff" strokeWidth="7" strokeDasharray="100 100" strokeDashoffset="100" pathLength="100" />
                   </mask>
                   <circle className="outer_circle" cx="0" cy="0" r="99" pathLength="64" />
                   <circle className="outer_circle_bars_l" cx="0" cy="0" r="96" pathLength="64" />
@@ -1034,7 +1020,7 @@ const AboutPage: React.FC = () => {
                 </svg>
 
               </div>
-            </section>
+            </section> */}
 
             <RelatedLinks
               title="Start somewhere"
@@ -1065,16 +1051,13 @@ const AboutPage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-      <div className="max-w-6xl mx-auto px-4 pb-8">
+      <div className="max-w-7xl mx-auto px-4 pb-8">
         <AdBanner
-          adSlot="3633827902"
+          adSlot={AD_SLOTS.about_footer}
           adFormat="leaderboard"
           adPosition="about_footer"
           className="mt-8"
-          isFlashMock={true}
           utmMedium="about_footer_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
         />
       </div>
     </>

@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import formatterIcon from '/MMIcon.webp';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 const navLinks: { title: string; href: string }[] = [
   { title: 'Home', href: '/' },
@@ -17,6 +24,30 @@ const legalLinks: { title: string; href: string }[] = [
 ];
 
 const Footer: React.FC = () => {
+  const [cookiePromptOpen, setCookiePromptOpen] = useState(false);
+
+  const handleCookieSettings = () => {
+    // Funding Choices exposes window.googlefc once the AdSense script has
+    // loaded and Privacy & messaging is enabled in the dashboard. Calling
+    // showRevocationMessage re-opens the consent banner.
+    try {
+      const fc = typeof window !== 'undefined' ? window.googlefc : undefined;
+      if (fc?.callbackQueue && typeof fc.showRevocationMessage === 'function') {
+        fc.callbackQueue.push(() => {
+          try {
+            fc.showRevocationMessage?.();
+          } catch {
+            setCookiePromptOpen(true);
+          }
+        });
+        return;
+      }
+    } catch {
+      // Fall through to dialog fallback.
+    }
+    setCookiePromptOpen(true);
+  };
+
   return (
     <footer className="w-full bg-black text-gray-300 sci-fi-frame-top">
       <div className="container mx-auto px-4 py-10">
@@ -81,6 +112,15 @@ const Footer: React.FC = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={handleCookieSettings}
+                  className="text-sm text-gray-400 hover:text-white transition-colors text-left"
+                >
+                  Cookie settings
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -94,6 +134,17 @@ const Footer: React.FC = () => {
           </p>
         </div>
       </div>
+
+      <Dialog open={cookiePromptOpen} onOpenChange={setCookiePromptOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cookie preferences</DialogTitle>
+            <DialogDescription>
+              Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </footer>
   );
 };

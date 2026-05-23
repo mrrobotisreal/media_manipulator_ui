@@ -28,3 +28,6 @@ dist-ssr
 ._*
 **/._*
 **/.DS_Store
+
+# Unnecessary Ads Related Markdown Files
+ADS.md

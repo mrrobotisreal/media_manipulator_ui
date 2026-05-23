@@ -1,44 +1,88 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { trackAdInteraction } from '@/lib/analytics';
 
-type AdFormat = 'auto' | 'rectangle' | 'leaderboard' | 'banner';
+export type AdFormat =
+  | 'leaderboard'
+  | 'rectangle'
+  | 'banner'
+  | 'halfpage'
+  | 'mobile_rectangle';
 
 interface AdBannerProps {
+  /** AdSense slot ID, e.g. "6671038874". */
   adSlot: string;
-  adFormat?: AdFormat;
-  className?: string;
-  adPosition: string; // For analytics tracking
-  style?: React.CSSProperties;
-  isFlashMock?: boolean;
-  utmMedium?: string;
-  utmCampaign?: string;
-  linkURL?: string;
+  /** IAB format. Drives reserved size and the matching CreaTV fallback. */
+  adFormat: AdFormat;
+  /** Context label for analytics. */
+  adPosition: string;
+  /** Sticky behaviour at lg+ for sidebar units. */
+  sticky?: boolean;
+  /** Override CreaTV creative URL. */
   creativeAssetSrc?: string;
+  /** Override CreaTV creative alt text. */
   creativeAssetAlt?: string;
+  /** Override CreaTV destination URL. Defaults to https://www.creatv.io/auth. */
+  linkURL?: string;
+  /** UTM medium for CreaTV link tracking. */
+  utmMedium?: string;
+  /** UTM campaign for CreaTV link tracking. */
+  utmCampaign?: string;
+  className?: string;
 }
 
-declare global {
-  interface Window {
-    adsbygoogle: Record<string, unknown>[];
-  }
+interface CreaTvCreative {
+  src: string;
+  width: number;
+  height: number;
+  minHeight: number;
+  label: string;
 }
 
-// IAB-standard sizes. Keeping these as the canonical dimensions for each
-// supported format so the container reserves the correct space (no CLS) and
-// the "Advertisement" label sits directly above the rendered ad, not at the
-// edge of the full-width page wrapper.
-const AD_FORMAT_DIMENSIONS: Record<AdFormat, { maxWidth: number; minHeight: number; label: string }> = {
-  leaderboard: { maxWidth: 728, minHeight: 90, label: '728x90' },     // IAB Leaderboard
-  rectangle:   { maxWidth: 336, minHeight: 280, label: '336x280' },   // Large Rectangle (MPU upper bound)
-  banner:      { maxWidth: 468, minHeight: 60, label: '468x60' },     // IAB Full Banner
-  auto:        { maxWidth: 970, minHeight: 90, label: 'auto' },       // Responsive, capped near Billboard width
+// CreaTV in-house creatives, hosted on the R2 bucket. These render as a
+// visually-layered fallback behind the AdSense unit until AdSense actually
+// fills the slot (or in lieu of a fill that never comes). There is no gray
+// placeholder anywhere.
+const CREATV_CREATIVES: Record<AdFormat, CreaTvCreative> = {
+  leaderboard: {
+    src: 'https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif',
+    width: 728,
+    height: 90,
+    minHeight: 90,
+    label: '728x90',
+  },
+  rectangle: {
+    src: 'https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_VideoAd_Rectangle.gif',
+    width: 336,
+    height: 280,
+    minHeight: 280,
+    label: '336x280',
+  },
+  banner: {
+    src: 'https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_VideoAd_Banner.gif',
+    width: 468,
+    height: 60,
+    minHeight: 60,
+    label: '468x60',
+  },
+  halfpage: {
+    src: 'https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev/CreaTV_VideoAd_HalfPage.gif',
+    width: 300,
+    height: 600,
+    minHeight: 600,
+    label: '300x600',
+  },
+  mobile_rectangle: {
+    src: 'https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_MobileRectangle.gif',
+    width: 300,
+    height: 250,
+    minHeight: 250,
+    label: '300x250',
+  },
 };
 
-// AdSense policy requires ad units to be labeled with either "Advertisement" or
-// "Sponsored Links" — no other wording is permitted. The label must sit outside
-// the ad iframe, be clearly distinguishable from content, and must not imply
-// user benefit or hide the ad's nature. See:
-// https://support.google.com/adsense/answer/9335564
+// AdSense policy requires ad units to be labeled "Advertisement" or
+// "Sponsored Links" — no other wording. The label must sit outside the ad
+// iframe. See: https://support.google.com/adsense/answer/9335564
 const AdLabel: React.FC = () => (
   <div
     className="flex items-center justify-end mb-1 select-none"
@@ -50,113 +94,139 @@ const AdLabel: React.FC = () => (
   </div>
 );
 
+const buildCreaTvUrl = (
+  linkURL: string | undefined,
+  utmMedium: string | undefined,
+  utmCampaign: string | undefined,
+): string => {
+  const base = linkURL || 'https://www.creatv.io/auth';
+  const params = new URLSearchParams({
+    referral_code: 'mwintrow33',
+    utm_source: 'media-manipulator.com',
+    utm_medium: utmMedium || 'media_manipulator_house_ad',
+    utm_campaign: utmCampaign || 'creatv_launch_promo',
+  });
+  return `${base}?${params.toString()}`;
+};
+
 const AdBanner: React.FC<AdBannerProps> = ({
   adSlot,
-  adFormat = 'auto',
-  className = '',
+  adFormat,
   adPosition,
-  style = {},
-  isFlashMock = false,
-  utmMedium = "homepage_leaderboard_banner",
-  utmCampaign = "creatv_launch_promo",
-  linkURL,
+  sticky = false,
   creativeAssetSrc,
   creativeAssetAlt,
+  linkURL,
+  utmMedium,
+  utmCampaign,
+  className = '',
 }) => {
   const adRef = useRef<HTMLModElement>(null);
-  const dims = AD_FORMAT_DIMENSIONS[adFormat] ?? AD_FORMAT_DIMENSIONS.auto;
+  const hasPushedRef = useRef(false);
+  const [showFallback, setShowFallback] = useState(true);
+  const creative = CREATV_CREATIVES[adFormat];
 
   useEffect(() => {
-    if (isFlashMock) return;
+    if (hasPushedRef.current) return;
+    hasPushedRef.current = true;
+
+    trackAdInteraction('adsense_banner', adPosition, 'view');
 
     try {
-      // Initialize AdSense ad
-      if (typeof window !== 'undefined' && window.adsbygoogle) {
-        if (adRef.current) {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        }
-        trackAdInteraction('adsense_banner', adPosition, 'view');
+      if (typeof window !== 'undefined' && adRef.current) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
     } catch (error) {
-      console.error('AdSense error:', error);
+      // AdSense errors must never block the page.
+      if (typeof console !== 'undefined') {
+        console.error('AdSense push error:', error);
+      }
     }
-  }, [adPosition, adSlot, isFlashMock]);
 
-  const renderAdContent = () => {
-    if (isFlashMock) {
-      return (
+    // Per Google's unfilled-ad detection guidance, give the SDK ~2s to settle
+    // and then read data-ad-status. If "filled", hide the CreaTV fallback so
+    // the AdSense unit shows alone. If "unfilled", keep the fallback visible.
+    // https://support.google.com/adsense/answer/10762946
+    const timeoutId = window.setTimeout(() => {
+      const status = adRef.current?.getAttribute('data-ad-status');
+      if (status === 'filled') {
+        setShowFallback(false);
+      } else if (status === 'unfilled') {
+        trackAdInteraction('adsense_unfilled', adPosition, 'view');
+      }
+    }, 2000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [adPosition]);
+
+  const creatvUrl = buildCreaTvUrl(linkURL, utmMedium, utmCampaign);
+  const dataAdFormat = adFormat === 'halfpage' ? 'vertical' : 'horizontal';
+
+  const inner = (
+    <div className={`w-full flex justify-center ${className}`}>
+      <div className="mx-auto" style={{ width: creative.width, maxWidth: '100%' }}>
+        <AdLabel />
         <div
-          className="w-full flex justify-center items-center overflow-hidden cursor-pointer"
-          style={{ minHeight: dims.minHeight, ...style }}
-          onClick={() => {
-            trackAdInteraction("creatv_launch_promo_banner", adPosition, "click");
-            window.open(
-              `${linkURL ? linkURL : "https://www.creatv.io/auth"}?referral_code=mwintrow33&utm_source=media-manipulator.com&utm_medium=${utmMedium}&utm_campaign=${utmCampaign}`,
-              "_blank"
-            );
+          className="relative mx-auto"
+          style={{
+            width: creative.width,
+            height: creative.minHeight,
+            maxWidth: '100%',
           }}
         >
-          <img
-            src={creativeAssetSrc || "https://pub-5e3f5f69f6bd4f2fb6bc741e03f34851.r2.dev/CreaTV_VideoAd_Leaderboard.gif"}
-            alt={creativeAssetAlt || "Come check out CreaTV! Where ideas are brought to life."}
-            width={dims.maxWidth}
-            height={dims.minHeight}
-            className="block w-full max-w-full h-auto"
-            style={{ maxWidth: dims.maxWidth, minHeight: dims.minHeight }}
+          {/* CreaTV fallback layered underneath the AdSense unit. Stays
+              visible until AdSense reports `data-ad-status="filled"`. */}
+          {showFallback && (
+            <a
+              href={creatvUrl}
+              target="_blank"
+              rel="noopener sponsored"
+              onClick={() =>
+                trackAdInteraction('creatv_fallback', adPosition, 'click')
+              }
+              className="absolute inset-0 flex items-center justify-center overflow-hidden"
+              aria-label="CreaTV — bring ideas to life"
+            >
+              <img
+                src={creativeAssetSrc || creative.src}
+                alt={
+                  creativeAssetAlt ||
+                  'Come check out CreaTV! Where ideas are brought to life.'
+                }
+                width={creative.width}
+                height={creative.height}
+                loading="lazy"
+                decoding="async"
+                className="block max-w-full h-auto"
+                style={{ width: creative.width, height: creative.height }}
+              />
+            </a>
+          )}
+
+          {/* AdSense unit layered above the CreaTV creative. */}
+          <ins
+            ref={adRef}
+            className="adsbygoogle absolute inset-0"
+            style={{
+              display: 'block',
+              width: creative.width,
+              height: creative.minHeight,
+              backgroundColor: 'transparent',
+            }}
+            data-ad-client="ca-pub-3413790368941825"
+            data-ad-slot={adSlot}
+            data-ad-format={dataAdFormat}
+            data-full-width-responsive="false"
           />
         </div>
-      );
-    }
-
-    // Don't render real ads in development or when using placeholder ad slots.
-    // NOTE: The placeholder is currently used as the fallback for every
-    // non-flash-mock unit while we test layouts. When AdSense is live, flip
-    // this condition to `process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')`.
-    if (!isFlashMock || process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')) {
-      return (
-        <div
-          className="w-full bg-gray-200 border-2 border-dashed border-gray-400 p-4 text-center text-gray-600 rounded-lg flex flex-col items-center justify-center"
-          style={{ minHeight: dims.minHeight }}
-        >
-          <p className="text-sm">Ad Placeholder - {adPosition}</p>
-          <p className="text-xs">AdSense {dims.label} ad slot — live in production</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="ad-container w-full">
-        <ins
-          ref={adRef}
-          className="adsbygoogle"
-          style={{
-            display: 'block',
-            width: '100%',
-            minHeight: dims.minHeight,
-            backgroundColor: 'transparent',
-            ...style,
-          }}
-          data-ad-client="ca-pub-3413790368941825"
-          data-ad-slot={adSlot}
-          data-ad-format={adFormat}
-          data-full-width-responsive="true"
-          onClick={() => trackAdInteraction('adsense_banner', adPosition, 'click')}
-        />
-      </div>
-    );
-  };
-
-  return (
-    <div className={`w-full flex justify-center ${className}`}>
-      <div
-        className="w-full mx-auto"
-        style={{ maxWidth: dims.maxWidth }}
-      >
-        <AdLabel />
-        {renderAdContent()}
       </div>
     </div>
   );
+
+  if (sticky) {
+    return <div className="lg:sticky lg:top-24">{inner}</div>;
+  }
+  return inner;
 };
 
 export default AdBanner;

@@ -1,30 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import AdBanner from '@/components/ad-banner';
-import mixpanel from 'mixpanel-browser';
+import { AD_SLOTS } from '@/lib/adSlots';
 
 const HowItWorksPage: React.FC = () => {
-  useEffect(() => {
-    mixpanel.track('Page View', {
-      page_name: 'How It Works',
-      page_path: '/how-it-works',
-      user_tier: 'free'
-    });
-  }, []);
-
   return (
     <>
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
         <AdBanner
-          adSlot="6671038874"
+          adSlot={AD_SLOTS.how_it_works_header}
           adFormat="leaderboard"
           adPosition="how_it_works_header"
-          className="mb-4"
-          isFlashMock={true}
-          utmMedium="how_it_works_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
+          utmMedium="how_it_works_header_leaderboard"
         />
       </div>
       <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
@@ -220,16 +208,13 @@ const HowItWorksPage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-      <div className="max-w-6xl mx-auto px-4 pb-8">
+      <div className="max-w-7xl mx-auto px-4 pb-8">
         <AdBanner
-          adSlot="3633827902"
+          adSlot={AD_SLOTS.how_it_works_footer}
           adFormat="leaderboard"
           adPosition="how_it_works_footer"
           className="mt-8"
-          isFlashMock={true}
           utmMedium="how_it_works_footer_leaderboard"
-          utmCampaign="creatv_launch_promo"
-          linkURL="https://www.creatv.io/auth"
         />
       </div>
     </>
