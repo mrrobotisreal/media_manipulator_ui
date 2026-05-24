@@ -110,6 +110,23 @@ export const videoConversionSchema = z.object({
     }).optional(),
   }).optional(),
 
+  // AI Video Tools
+  //
+  // Mirrors the backend AIVideoOptions struct. v1 only exposes frame
+  // interpolation, but the enum is open so we can add more video AI ops
+  // without breaking schema consumers.
+  ai: z.object({
+    enabled: z.boolean().default(false).optional(),
+    operation: z.enum(['none', 'frame_interpolation']).default('none').optional(),
+    frameInterpolation: z.object({
+      targetFps: z.union([z.literal(48), z.literal(60), z.literal(120)]).default(60).optional(),
+      model: z.enum(['rife-v4.6', 'rife-v4', 'rife-v2.3']).default('rife-v4.6').optional(),
+      quality: z.enum(['low', 'medium', 'high']).default('medium').optional(),
+      maxHeight: z.number().int().min(144).max(1080).default(720).optional(),
+      preserveAudio: z.boolean().default(true).optional(),
+    }).optional(),
+  }).optional(),
+
   // Advanced Processing
   advanced: z.object({
     // Deinterlacing

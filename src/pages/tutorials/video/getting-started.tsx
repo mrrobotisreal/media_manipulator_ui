@@ -186,6 +186,16 @@ const VideoGettingStartedTutorial: React.FC = () => {
                 description: 'Turn short video clips into shareable animated GIFs.',
               },
               {
+                label: 'AI Frame Interpolation tool',
+                to: '/tools/ai-frame-interpolation',
+                description: 'Smooth motion by lifting video FPS with RIFE.',
+              },
+              {
+                label: 'AI Frame Interpolation tutorial',
+                to: '/tutorials/ai-frame-interpolation',
+                description: 'Learn how AI frame interpolation works and when to use it.',
+              },
+              {
                 label: 'Video compression guide',
                 to: '/blog/video/video-compression-guide',
                 description: 'MP4 vs WebM vs AVI and how codecs and bitrate affect quality.',

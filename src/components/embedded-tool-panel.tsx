@@ -60,7 +60,8 @@ export type EmbeddedTask =
   | 'extract_audio'
   | 'extract_video_only'
   | 'extract_frames'
-  | 'stitch_audio_to_video';
+  | 'stitch_audio_to_video'
+  | 'ai_frame_interpolation';
 
 interface EmbeddedToolPanelProps {
   /** Default media kind to bias the panel toward when no file is selected yet. */
@@ -193,6 +194,10 @@ const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: st
   },
   stitch_audio_to_video: {
     note: 'Add up to three audio tracks (music, voiceover, narration) and pick "mix" or "replace" to control whether the original audio stays.',
+  },
+  ai_frame_interpolation: {
+    recommended: 'mp4',
+    note: 'After uploading, scroll to the "AI Video Tools" panel and pick AI Frame Interpolation. Choose a target FPS (48, 60, or 120). Output is MP4 in v1.',
   },
 };
 

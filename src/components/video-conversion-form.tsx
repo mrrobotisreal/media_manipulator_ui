@@ -5,6 +5,7 @@ import { videoConversionSchema } from "@/schemas/videoSchema";
 import ConversionOptions from "@/components/conversion-options";
 import MediaTrimModal from "@/components/media-trim-modal";
 import AdvancedVideoEffects from "@/components/advanced-video-effects";
+import AIVideoTools from "@/components/ai-video-tools";
 import type { ConversionFormData } from "@/schemas/types";
 import { useState } from "react";
 
@@ -101,6 +102,18 @@ const VideoConversionForm: React.FC<{
         delay: 3,
         optimize: 3,
       },
+      // AI Video Tools defaults — inactive until user picks an operation.
+      ai: {
+        enabled: false,
+        operation: 'none' as const,
+        frameInterpolation: {
+          targetFps: 60 as const,
+          model: 'rife-v4.6' as const,
+          quality: 'medium' as const,
+          maxHeight: 720,
+          preserveAudio: true,
+        },
+      },
     },
     mode: 'onChange',
   });
@@ -153,6 +166,9 @@ const VideoConversionForm: React.FC<{
           onTrimClick={videoUrl ? handleTrimClick : undefined}
           trimStatus={getTrimStatus()}
         />
+
+        {/* AI Video Tools — currently AI Frame Interpolation */}
+        <AIVideoTools control={control} setValue={setValue} />
 
         {/* Advanced Video Effects */}
         <AdvancedVideoEffects control={control} />

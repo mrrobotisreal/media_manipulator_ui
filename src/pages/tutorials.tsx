@@ -54,6 +54,13 @@ const categories: Category[] = [
         readTime: '12 min read',
         slug: 'video/getting-started',
       },
+      {
+        title: 'What Is AI Frame Interpolation? How Video FPS Smoothing Works',
+        excerpt:
+          'How AI frame interpolation generates new in-between frames for smoother motion, when to pick 48/60/120fps, common artifacts, and how to run the AI Frame Interpolation tool.',
+        readTime: '9 min read',
+        slug: 'ai-frame-interpolation',
+      },
     ],
   },
   {

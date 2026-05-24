@@ -9,6 +9,7 @@ import AdBanner from '@/components/ad-banner';
 import { getToolAdSlots } from '@/lib/adSlots';
 import type { ToolPageContent } from '@/content/toolPages';
 import mixpanel from 'mixpanel-browser';
+import { hasAnalyticsConsent } from '@/lib/consent';
 
 interface ToolLandingPageProps {
   tool: ToolPageContent;
@@ -66,12 +67,24 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
   useEffect(() => {
     // Per-tool view event — distinct from the generic Page View fired by
     // RouteAnalytics, so it stays. Never includes uploaded content.
-    mixpanel.track('Tool Page View', {
-      tool_slug: tool.slug,
-      tool_category: tool.category,
-      page_path: `/tools/${tool.slug}`,
-      user_tier: 'free',
-    });
+    //
+    // Mixpanel is initialized lazily after the first idle callback (see
+    // main.tsx). If this effect fires before init — direct navigation to a
+    // tool page is the easy way to hit that window — `mixpanel.track` reads
+    // an undefined config and throws "Cannot read properties of undefined
+    // (reading 'before_track')", crashing the page. Gate on consent + wrap
+    // in try/catch so analytics can never take the UI down.
+    if (!hasAnalyticsConsent()) return;
+    try {
+      mixpanel.track('Tool Page View', {
+        tool_slug: tool.slug,
+        tool_category: tool.category,
+        page_path: `/tools/${tool.slug}`,
+        user_tier: 'free',
+      });
+    } catch {
+      // Never block the UI on analytics failures.
+    }
   }, [tool.slug, tool.category]);
 
   const slots = getToolAdSlots(tool.slug);

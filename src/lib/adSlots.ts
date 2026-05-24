@@ -246,6 +246,17 @@ export const TOOL_AD_SLOTS: Record<string, ToolAdSlotSet> = {
     incontent: '3330076774',
     footer: '9703913435',
   },
+  // ai-frame-interpolation slots — placeholders until provisioned in AdSense.
+  // The AdBanner component already gates renders behind the configured slot
+  // ID, so the page lays out with reserved heights but does not call AdSense
+  // with invalid IDs at runtime.
+  'ai-frame-interpolation': {
+    header: '6304329719',
+    sidebar_right: '8645449800',
+    sidebar_left: '7332368138',
+    incontent: '1048133602',
+    footer: '3666935380',
+  },
 
   // Privacy / metadata
   'remove-exif-metadata': {

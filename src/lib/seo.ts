@@ -720,6 +720,145 @@ const ROUTES: RouteSeo[] = [
     ],
   },
   {
+    path: '/tutorials/ai-frame-interpolation',
+    title:
+      'What Is AI Frame Interpolation? How Video FPS Smoothing Works | Media Manipulator',
+    description:
+      'Learn how AI frame interpolation works, how it compares to basic FPS conversion, when to pick 48/60/120fps, common artifacts, and how to use the Media Manipulator AI Frame Interpolation tool.',
+    canonicalUrl: buildCanonical('/tutorials/ai-frame-interpolation'),
+    ogTitle:
+      'What Is AI Frame Interpolation? How Video FPS Smoothing Works',
+    ogDescription:
+      'Smooth video motion with AI frame interpolation. Compare AI interpolation vs basic FPS conversion, learn about RIFE, and see when to pick 48/60/120fps.',
+    ogType: 'article',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: [
+      'AI frame interpolation',
+      'video frame interpolation',
+      'convert video to 60fps',
+      'convert video to 120fps',
+      'smooth video motion',
+      'RIFE frame interpolation',
+      'AI FPS converter',
+      'video motion smoothing',
+    ],
+    jsonLd: [
+      techArticleLd({
+        path: '/tutorials/ai-frame-interpolation',
+        title:
+          'What Is AI Frame Interpolation? How Video FPS Smoothing Works',
+        description:
+          'Learn how AI frame interpolation works, how it compares to basic FPS conversion, and when to use 48/60/120fps.',
+        section: 'Video Tutorials',
+        keywords: [
+          'AI frame interpolation',
+          'video frame interpolation',
+          'increase video FPS',
+          'convert video to 60fps',
+          'convert video to 120fps',
+          'RIFE',
+        ],
+        dependencies: 'Modern web browser',
+      }),
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Tutorials', path: '/tutorials' },
+        {
+          name: 'AI Frame Interpolation',
+          path: '/tutorials/ai-frame-interpolation',
+        },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'Does AI frame interpolation improve video quality?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'It improves motion smoothness, not resolution or sharpness. The eye sees more frames per second, which makes motion feel less stuttery.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Is AI frame interpolation the same as just increasing FPS?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No. Basic FPS conversion duplicates, drops, or blends frames; AI interpolation synthesizes new in-between frames using a neural network.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Can I convert 30fps to 60fps?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes — 30fps to 60fps is one of the most common targets and a good first test.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Can I convert 60fps to 120fps?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes. 120fps roughly doubles the GPU work versus 60fps and produces a larger file.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Why can frame interpolation create artifacts?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'The model has to guess what happens between two real frames, so fast motion, occlusions, scene cuts, hair, hands, and wheels can warp or smear in the synthesized frame.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What output format does the tool create?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'MP4 with H.264 video and AAC audio. v1 only emits MP4.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Is 60fps always better than 30fps?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Not always — cinematic content is often intended at 24 or 30fps. Pick the FPS that matches how you want the result to feel.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Is AI frame interpolation better than FFmpeg FPS conversion?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'For most clips, AI interpolation produces cleaner motion than FFmpeg minterpolate, though minterpolate is faster.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Why do scene cuts sometimes look strange after interpolation?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'The model assumes adjacent frames belong to the same motion sequence; a hard scene cut breaks that assumption and can show a brief warp.',
+            },
+          },
+        ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'Media Manipulator AI Frame Interpolation',
+        url: buildCanonical('/tools/ai-frame-interpolation'),
+        applicationCategory: 'MultimediaApplication',
+        operatingSystem: 'Web',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      },
+    ],
+  },
+  {
     path: '/tools',
     title: 'Free Online Media Tools | Media Manipulator',
     description:

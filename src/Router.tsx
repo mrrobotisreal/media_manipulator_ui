@@ -35,6 +35,9 @@ const VideoGettingStartedTutorial = lazy(
 const ImageGettingStartedTutorial = lazy(
   () => import('./pages/tutorials/image/getting-started'),
 );
+const AIFrameInterpolationTutorial = lazy(
+  () => import('./pages/tutorials/ai-frame-interpolation'),
+);
 const ToolsIndexPage = lazy(() => import('./pages/tools/index'));
 const ToolPage = lazy(() => import('./pages/tools/tool-page'));
 const NotFoundPage = lazy(() => import('./pages/not-found'));
@@ -130,6 +133,10 @@ const Router: React.FC = () => {
               <Route
                 path="/tutorials/image/getting-started"
                 element={<ImageGettingStartedTutorial />}
+              />
+              <Route
+                path="/tutorials/ai-frame-interpolation"
+                element={<AIFrameInterpolationTutorial />}
               />
               <Route path="/tools" element={<ToolsIndexPage />} />
               <Route path="/tools/:slug" element={<ToolPage />} />

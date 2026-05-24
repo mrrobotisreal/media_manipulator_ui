@@ -372,6 +372,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         description: 'Pull speech out of video into searchable text.',
       },
       {
+        label: 'AI Frame Interpolation',
+        to: '/tools/ai-frame-interpolation',
+        description: 'Smooth video motion by lifting FPS to 48, 60, or 120 with RIFE.',
+      },
+      {
         label: 'Video compression guide',
         to: '/blog/video/video-compression-guide',
         description: 'Codecs, bitrate, and container deep dive.',
@@ -1469,6 +1474,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress video', to: '/tools/compress-video', description: 'Focused compressor for shrinking video files.' },
       { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Turn short clips into animated GIFs.' },
       { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Pull speech out of video as text or VTT captions.' },
+      { label: 'AI Frame Interpolation', to: '/tools/ai-frame-interpolation', description: 'Boost video FPS to 48, 60, or 120 with AI-generated frames.' },
       { label: 'Transcode video to HLS', to: '/tools/transcode-to-hls', description: 'Generate an adaptive HLS package from any video.' },
       { label: 'Transcode video to DASH', to: '/tools/transcode-to-dash', description: 'Generate a MPEG-DASH AV1/VP9 package from any video.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Full walkthrough of every option.' },
@@ -2188,6 +2194,208 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'replace audio in video',
       'mix audio with video',
       'add narration to video',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- AI FRAME INTERPOLATION
+  {
+    slug: 'ai-frame-interpolation',
+    name: 'AI Frame Interpolation',
+    h1: 'AI Frame Interpolation Tool',
+    tagline:
+      'Increase a video’s frame rate to 48, 60, or 120 FPS with AI-generated in-between frames for smoother motion.',
+    metaTitle:
+      'AI Frame Interpolation Tool — Convert Video to 60 or 120 FPS | Media Manipulator',
+    metaDescription:
+      'Free online AI frame interpolation tool. Use RIFE to turn 24/30fps video into smoother 48, 60, or 120 FPS MP4. No third-party API — runs on our own GPU.',
+    ogTitle: 'AI Frame Interpolation Tool — Smooth Video to 60 or 120 FPS',
+    ogDescription:
+      'Upload a video, pick a target FPS, and download an MP4 with AI-generated in-between frames for smoother motion.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'ai_frame_interpolation',
+      defaultOutputFormat: 'mp4',
+      title: 'AI frame interpolation',
+      description:
+        'Upload a short video. Then open the "AI Video Tools" panel below, pick "AI Frame Interpolation", and choose a target FPS (48, 60, or 120). The tool synthesizes new in-between frames and returns an MP4.',
+    },
+    intro:
+      'AI Frame Interpolation increases a video’s frame rate by generating new in-between frames with a neural network (RIFE) instead of simply duplicating or blending existing frames. The result is noticeably smoother motion — 24/30fps footage starts to feel like 60fps, and 60fps clips can be lifted to a high-refresh-friendly 120fps. The processing runs on our own GPU server, not a third-party API, and the output is an MP4 you can drop straight into any player.',
+    whatItDoes: [
+      'Synthesizes new in-between frames with RIFE (rife-ncnn-vulkan) rather than duplicating or blending existing frames.',
+      'Targets 48, 60, or 120 FPS with quality and max-processing-height presets you control.',
+      'Runs on our own GPU server — no third-party AI provider sees your file.',
+      'Returns an MP4 with H.264 + AAC (the audio track from the source is preserved by default).',
+      'Limits long or very tall sources up front so a single job can’t hog the GPU.',
+    ],
+    flowSteps: [
+      {
+        title: 'Upload a video',
+        description: 'Drop in a short MP4, MOV, WebM, MKV, or AVI clip.',
+      },
+      {
+        title: 'Open AI Video Tools',
+        description: 'In the video form, scroll to "AI Video Tools" and select AI Frame Interpolation.',
+      },
+      {
+        title: 'Pick target FPS and quality',
+        description: 'Choose 48, 60, or 120 FPS and an encode quality / max processing height.',
+      },
+      {
+        title: 'Run interpolation',
+        description: 'We extract frames, run RIFE on our GPU, and re-encode an MP4 at the new FPS.',
+      },
+      {
+        title: 'Download MP4',
+        description: 'Save the interpolated clip and preview it next to the original.',
+      },
+    ],
+    advancedDetails: [
+      'Frame extraction uses ffmpeg with vsync=0 so the input frame count matches the source FPS exactly.',
+      'RIFE runs through rife-ncnn-vulkan with the chosen model directory (rife-v4.6 is the recommended default; rife-v4 and rife-v2.3 are also available for compatibility).',
+      'After interpolation, ffmpeg re-encodes to H.264 (libx264) + AAC at the chosen quality (CRF 26/20/17 for low/medium/high).',
+      'Source audio is remapped onto the new encode and the output uses +faststart so the file streams cleanly over HTTP.',
+      'A max processing height (default 720p) caps GPU memory pressure on tall sources; the original aspect ratio is preserved with -2:min(ih,N) scaling.',
+    ],
+    whyItMatters: [
+      'Motion smoothness is one of the biggest perceptual differences between consumer and broadcast-quality video.',
+      'Modern displays and many social platforms favor 60fps and 120fps content for smoother playback.',
+      'Older or low-frame-rate footage can be brought up a notch without re-shooting the source material.',
+    ],
+    useCases: [
+      {
+        title: '30fps → 60fps for the web',
+        description: 'Lift talking-head, screencast, or vlog footage into the smoother 60fps range typical for modern social and video sites.',
+      },
+      {
+        title: '60fps → 120fps for high-refresh playback',
+        description: 'Prepare footage for 120Hz/144Hz displays or downstream slow-motion editing.',
+      },
+      {
+        title: 'Smoother short clips',
+        description: 'Make a 5–10 second cut look noticeably smoother before sharing.',
+      },
+      {
+        title: 'Restoring older clips',
+        description: 'Pull legacy 24/30fps clips into 48 or 60fps for a more modern playback feel.',
+      },
+      {
+        title: 'Editing prep',
+        description: 'Generate a denser frame timeline before applying slow motion or motion graphics in a downstream editor.',
+      },
+    ],
+    whyMediaManipulator: [
+      'Runs on our own GPU infrastructure — no third-party AI provider receives the file.',
+      'Uses rife-ncnn-vulkan, a portable Vulkan binary, instead of a heavy PyTorch stack — fewer dependencies, faster cold starts.',
+      'Free, no signup, automatic cleanup of uploads within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4'],
+      maxFileNotes: [
+        'Maximum source duration and processing height are bounded by AI_FRAME_INTERPOLATION_MAX_DURATION_SECONDS and AI_FRAME_INTERPOLATION_MAX_HEIGHT on the server.',
+      ],
+      processingNotes: [
+        'AI interpolation is GPU-heavy. Lower the max processing height for faster turnaround on tall sources.',
+        'Output is MP4 (H.264 + AAC) in v1. Audio is preserved from the source by default.',
+      ],
+    },
+    faq: [
+      {
+        question: 'Does AI frame interpolation actually improve video quality?',
+        answer:
+          'It improves motion smoothness, not resolution or sharpness. If your source is already 60fps it will feel smoother at 120fps. If your source is 24/30fps it will feel closer to 60fps. It does not magically recover real motion that the camera never captured.',
+      },
+      {
+        question: 'Is AI frame interpolation the same as just increasing FPS?',
+        answer:
+          'No. Basic FPS conversion typically duplicates, drops, or blends existing frames. AI interpolation synthesizes brand-new in-between frames based on estimated motion, which usually looks much more natural than duplication.',
+      },
+      {
+        question: 'Can I convert 30fps to 60fps?',
+        answer:
+          'Yes — 30fps to 60fps is one of the most common targets and a good first test.',
+      },
+      {
+        question: 'Can I convert 60fps to 120fps?',
+        answer:
+          'Yes. 120fps doubles the GPU work versus 60fps and produces a larger file, so try a short clip first.',
+      },
+      {
+        question: 'Why can frame interpolation create artifacts?',
+        answer:
+          'Motion estimation has to guess what happens between two real frames. Fast motion, hands, hair, wheels, occlusions, and scene cuts are inherently harder — the synthesized frame can warp, ghost, or smear in those regions.',
+      },
+      {
+        question: 'What output format does the tool create?',
+        answer:
+          'MP4 with H.264 video and AAC audio. v1 only emits MP4 because that container plays back everywhere and supports the higher frame rates this tool produces.',
+      },
+      {
+        question: 'Is 60fps always better than 30fps?',
+        answer:
+          'For UI screencasts, sports, gameplay, and motion-heavy clips, 60fps usually feels more fluid. For cinematic content, 24/30fps is often the intended look. Pick the FPS that matches how you want the result to feel.',
+      },
+      {
+        question: 'Is AI frame interpolation better than FFmpeg minterpolate?',
+        answer:
+          'AI interpolation (RIFE) generally produces cleaner motion than FFmpeg’s built-in minterpolate filter, especially for non-rigid motion. minterpolate is faster, simpler, and still useful for quick fallback conversions.',
+      },
+      {
+        question: 'Why do scene cuts sometimes look strange after interpolation?',
+        answer:
+          'The model assumes adjacent frames belong to the same motion sequence. A hard scene cut breaks that assumption, so the synthesized frame at the boundary can show a brief warp. Clean cuts and short clips help.',
+      },
+    ],
+    related: [
+      {
+        label: 'Video converter',
+        to: '/tools/video-converter',
+        description: 'Convert MP4, WebM, MOV, AVI, MKV, and more.',
+      },
+      {
+        label: 'Compress video',
+        to: '/tools/compress-video',
+        description: 'Shrink video file size after interpolation.',
+      },
+      {
+        label: 'Convert video to animated GIF',
+        to: '/tools/convert-video-to-animated-gif',
+        description: 'Turn short clips into shareable animated GIFs.',
+      },
+      {
+        label: 'Extract frames from video',
+        to: '/tools/extract-frames-from-video',
+        description: 'Pull individual frames out as PNGs.',
+      },
+      {
+        label: 'AI Frame Interpolation tutorial',
+        to: '/tutorials/ai-frame-interpolation',
+        description: 'Learn how AI interpolation works and when to use it.',
+      },
+      {
+        label: 'Video compression guide',
+        to: '/blog/video/video-compression-guide',
+        description: 'Codec and bitrate deep dive for after interpolation.',
+      },
+    ],
+    primaryKeyword: 'AI frame interpolation',
+    secondaryKeywords: [
+      'video frame interpolation',
+      'increase video FPS',
+      'convert video to 60fps',
+      'convert video to 120fps',
+      'smooth video motion',
+      'AI video enhancer',
+      'FPS converter',
+      'RIFE frame interpolation',
+      'smoother video online',
+      'video motion smoothing',
+      'online frame interpolation tool',
+      'AI FPS converter',
+      'video FPS enhancer',
     ],
   },
 ];
