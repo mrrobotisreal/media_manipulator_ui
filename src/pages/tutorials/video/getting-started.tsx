@@ -195,11 +195,12 @@ const VideoGettingStartedTutorial: React.FC = () => {
                 to: '/tutorials/ai-frame-interpolation',
                 description: 'Learn how AI frame interpolation works and when to use it.',
               },
-              {
-                label: 'Video compression guide',
-                to: '/blog/video/video-compression-guide',
-                description: 'MP4 vs WebM vs AVI and how codecs and bitrate affect quality.',
-              },
+              // Hidden during AdSense review — re-enable when the blog returns.
+              // {
+              //   label: 'Video compression guide',
+              //   to: '/blog/video/video-compression-guide',
+              //   description: 'MP4 vs WebM vs AVI and how codecs and bitrate affect quality.',
+              // },
               {
                 label: 'How Media Manipulator works',
                 to: '/how-it-works',

@@ -81,12 +81,12 @@ const components: { title: string; href: string; description: string }[] = [
     description:
       "Terms of service page where you can learn more about the terms of service of the project",
   },
-  {
-    title: "Blog",
-    href: "/blog",
-    description:
-      "Blog page where you can read the latest news and updates about the project",
-  },
+  // {
+  //   title: "Blog",
+  //   href: "/blog",
+  //   description:
+  //     "Blog page where you can read the latest news and updates about the project",
+  // },
 ]
 
 const ThemeToggle = () => {

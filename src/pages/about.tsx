@@ -48,9 +48,12 @@ const AboutPage: React.FC = () => {
               <p className="mb-4">
                 We treat conversion, editing, compression, transcription, summarization, and
                 metadata management as one connected workflow rather than ten separate websites.
-                If you want to{' '}
+                If you want to compress an MP4 for the web,
+                {/* Blog hidden during AdSense review — restore the inline link
+                    when the blog returns:
                 <Link to="/blog/video/video-compression-guide" className="text-blue-600 hover:text-blue-800">compress an MP4 for the web</Link>
-                , then trim it, generate VTT captions, and finally strip EXIF metadata from the
+                */}
+                then trim it, generate VTT captions, and finally strip EXIF metadata from the
                 thumbnail you'll publish alongside it — that's three different sites for most
                 people and a single tab for Media Manipulator users.
               </p>
@@ -330,8 +333,10 @@ const AboutPage: React.FC = () => {
                 <Link to="/how-it-works" className="text-blue-600 hover:text-blue-800">How it works</Link>{' '}
                 ·{' '}
                 <Link to="/tutorials" className="text-blue-600 hover:text-blue-800">Tutorials</Link>{' '}
+                {/* Blog hidden during AdSense review — restore when the blog returns.
                 ·{' '}
                 <Link to="/blog" className="text-blue-600 hover:text-blue-800">Blog</Link>{' '}
+                */}
                 ·{' '}
                 <Link to="/privacy-policy" className="text-blue-600 hover:text-blue-800">Privacy</Link>{' '}
                 ·{' '}
@@ -962,7 +967,7 @@ const AboutPage: React.FC = () => {
               </svg>
             </section> */}
 
-            <section className="mb-10 w-full h-full p-12 bg-black flex items-center justify-center">
+            {/* <section className="mb-10 w-full h-full p-12 bg-black flex items-center justify-center">
               <div className="blob-sphere-loader">
                 <div className="blob-sphere-loader-inner">
                   <div className="blob-sphere b1"></div>
@@ -972,7 +977,7 @@ const AboutPage: React.FC = () => {
                   <div className="blob-sphere b5"></div>
                 </div>
               </div>
-            </section>
+            </section> */}
 
             {/* <section className="mb-10 w-full h-full p-12 bg-black flex items-center justify-center">
               <div className="wobbling-element" style={{ position: 'relative', margin: '10px' }}>
@@ -1041,11 +1046,12 @@ const AboutPage: React.FC = () => {
                   to: '/how-it-works',
                   description: 'FFmpeg, ImageMagick, GPU-backed AI, 24-hour auto-delete, and content-safety scanning.',
                 },
-                {
-                  label: 'Read the media blog',
-                  to: '/blog',
-                  description: 'Video compression, image optimization, audio quality, and metadata guides.',
-                },
+                // Hidden during AdSense review — re-enable when the blog returns.
+                // {
+                //   label: 'Read the media blog',
+                //   to: '/blog',
+                //   description: 'Video compression, image optimization, audio quality, and metadata guides.',
+                // },
               ]}
             />
           </div>

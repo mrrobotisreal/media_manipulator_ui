@@ -55,7 +55,11 @@ const ImageGettingStartedTutorial: React.FC = () => {
             <li><strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases.</li>
           </ul>
           <p className="mb-4">
-            <strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images. Need help picking? See our <Link to="/blog/image/image-optimization-guide" className="text-blue-600 hover:text-blue-800">image optimization guide</Link>.
+            <strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images.
+            {/* Blog hidden during AdSense review — restore the inline link
+                when the blog returns:
+            Need help picking? See our <Link to="/blog/image/image-optimization-guide" className="text-blue-600 hover:text-blue-800">image optimization guide</Link>.
+            */}
           </p>
 
           <div className="my-12 not-prose flex justify-center">
@@ -177,11 +181,12 @@ const ImageGettingStartedTutorial: React.FC = () => {
                 to: '/tools/remove-exif-metadata',
                 description: 'Strip GPS, device, and timestamp metadata before sharing photos.',
               },
-              {
-                label: 'Image optimization guide',
-                to: '/blog/image/image-optimization-guide',
-                description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
-              },
+              // Hidden during AdSense review — re-enable when the blog returns.
+              // {
+              //   label: 'Image optimization guide',
+              //   to: '/blog/image/image-optimization-guide',
+              //   description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
+              // },
               {
                 label: 'Video converter tutorial',
                 to: '/tutorials/video/getting-started',

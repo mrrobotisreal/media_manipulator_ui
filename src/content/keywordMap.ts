@@ -56,7 +56,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       '/tools/convert-webp-to-jpg',
       '/tools/remove-exif-metadata',
       '/tutorials/image/getting-started',
-      '/blog/image/image-optimization-guide',
+      // '/blog/image/image-optimization-guide', // hidden during AdSense review
       '/how-it-works',
     ],
     suggestedFutureRoutes: [
@@ -72,10 +72,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Image converter tutorial',
         route: '/tutorials/image/getting-started',
       },
-      {
-        label: 'Image optimization guide',
-        route: '/blog/image/image-optimization-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Image optimization guide',
+      //   route: '/blog/image/image-optimization-guide',
+      // },
     ],
   },
   {
@@ -92,7 +93,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
     intent: 'transactional',
     targetRoute: '/',
     relatedRoutes: [
-      '/blog/image/image-optimization-guide',
+      // '/blog/image/image-optimization-guide', // hidden during AdSense review
       '/tutorials/image/getting-started',
     ],
     suggestedFutureRoutes: [
@@ -100,10 +101,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       '/guides/best-image-compression-format',
     ],
     recommendedInternalLinks: [
-      {
-        label: 'Image optimization guide',
-        route: '/blog/image/image-optimization-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Image optimization guide',
+      //   route: '/blog/image/image-optimization-guide',
+      // },
       {
         label: 'Image converter tutorial',
         route: '/tutorials/image/getting-started',
@@ -124,7 +126,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
     targetRoute: '/tools/remove-exif-metadata',
     relatedRoutes: [
       '/tools/image-converter',
-      '/blog/image/image-optimization-guide',
+      // '/blog/image/image-optimization-guide', // hidden during AdSense review
       '/tutorials/image/getting-started',
       '/privacy-policy',
     ],
@@ -139,10 +141,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Image converter tutorial',
         route: '/tutorials/image/getting-started',
       },
-      {
-        label: 'Image optimization guide',
-        route: '/blog/image/image-optimization-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Image optimization guide',
+      //   route: '/blog/image/image-optimization-guide',
+      // },
       { label: 'How it works', route: '/how-it-works' },
     ],
   },
@@ -163,7 +166,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       '/tools/compress-video',
       '/tools/convert-video-to-animated-gif',
       '/tutorials/video/getting-started',
-      '/blog/video/video-compression-guide',
+      // '/blog/video/video-compression-guide', // hidden during AdSense review
     ],
     suggestedFutureRoutes: [
       '/tools/convert-mp4-to-webm',
@@ -179,10 +182,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Video converter tutorial',
         route: '/tutorials/video/getting-started',
       },
-      {
-        label: 'Video compression guide',
-        route: '/blog/video/video-compression-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Video compression guide',
+      //   route: '/blog/video/video-compression-guide',
+      // },
     ],
   },
   {
@@ -200,7 +204,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
     targetRoute: '/tools/compress-video',
     relatedRoutes: [
       '/tools/video-converter',
-      '/blog/video/video-compression-guide',
+      // '/blog/video/video-compression-guide', // hidden during AdSense review
       '/tutorials/video/getting-started',
     ],
     suggestedFutureRoutes: [
@@ -210,10 +214,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
     recommendedInternalLinks: [
       { label: 'Compress video', route: '/tools/compress-video' },
       { label: 'Video converter', route: '/tools/video-converter' },
-      {
-        label: 'Video compression guide',
-        route: '/blog/video/video-compression-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Video compression guide',
+      //   route: '/blog/video/video-compression-guide',
+      // },
       {
         label: 'Video converter tutorial',
         route: '/tutorials/video/getting-started',
@@ -262,7 +267,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       '/tools/convert-wav-to-mp3',
       '/tools/isolate-vocals-from-song',
       '/tutorials/audio/getting-started',
-      '/blog/audio/audio-quality-guide',
+      // '/blog/audio/audio-quality-guide', // hidden during AdSense review
     ],
     suggestedFutureRoutes: [
       '/tools/convert-flac-to-mp3',
@@ -276,10 +281,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Audio converter tutorial',
         route: '/tutorials/audio/getting-started',
       },
-      {
-        label: 'Audio quality guide',
-        route: '/blog/audio/audio-quality-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Audio quality guide',
+      //   route: '/blog/audio/audio-quality-guide',
+      // },
     ],
   },
   {
@@ -299,7 +305,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       '/tools/audio-converter',
       '/tools/convert-wav-to-mp3',
       '/tutorials/audio/getting-started',
-      '/blog/audio/audio-quality-guide',
+      // '/blog/audio/audio-quality-guide', // hidden during AdSense review
     ],
     suggestedFutureRoutes: [
       '/tools/remove-background-noise',
@@ -313,10 +319,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
         label: 'Audio converter tutorial',
         route: '/tutorials/audio/getting-started',
       },
-      {
-        label: 'Audio quality guide',
-        route: '/blog/audio/audio-quality-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Audio quality guide',
+      //   route: '/blog/audio/audio-quality-guide',
+      // },
     ],
   },
   {
@@ -457,7 +464,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
     relatedRoutes: [
       '/tools/image-converter',
       '/tools/remove-exif-metadata',
-      '/blog/image/image-optimization-guide',
+      // '/blog/image/image-optimization-guide', // hidden during AdSense review
       '/tutorials/image/getting-started',
     ],
     suggestedFutureRoutes: [
@@ -469,10 +476,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       { label: 'Convert WebP to JPG', route: '/tools/convert-webp-to-jpg' },
       { label: 'Image converter', route: '/tools/image-converter' },
       { label: 'Remove EXIF metadata', route: '/tools/remove-exif-metadata' },
-      {
-        label: 'Image optimization guide',
-        route: '/blog/image/image-optimization-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Image optimization guide',
+      //   route: '/blog/image/image-optimization-guide',
+      // },
     ],
   },
   {
@@ -492,7 +500,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       '/tools/audio-converter',
       '/tools/isolate-vocals-from-song',
       '/tutorials/audio/getting-started',
-      '/blog/audio/audio-quality-guide',
+      // '/blog/audio/audio-quality-guide', // hidden during AdSense review
     ],
     suggestedFutureRoutes: [
       '/tools/convert-flac-to-mp3',
@@ -501,10 +509,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
     recommendedInternalLinks: [
       { label: 'Convert WAV to MP3', route: '/tools/convert-wav-to-mp3' },
       { label: 'Audio converter', route: '/tools/audio-converter' },
-      {
-        label: 'Audio quality guide',
-        route: '/blog/audio/audio-quality-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Audio quality guide',
+      //   route: '/blog/audio/audio-quality-guide',
+      // },
     ],
   },
   {
@@ -524,7 +533,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       '/tools/audio-converter',
       '/tools/convert-wav-to-mp3',
       '/tutorials/audio/getting-started',
-      '/blog/audio/audio-quality-guide',
+      // '/blog/audio/audio-quality-guide', // hidden during AdSense review
     ],
     suggestedFutureRoutes: [
       '/tools/remove-vocals',
@@ -535,10 +544,11 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       { label: 'Isolate vocals from a song', route: '/tools/isolate-vocals-from-song' },
       { label: 'Audio converter', route: '/tools/audio-converter' },
       { label: 'Convert WAV to MP3', route: '/tools/convert-wav-to-mp3' },
-      {
-        label: 'Audio quality guide',
-        route: '/blog/audio/audio-quality-guide',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Audio quality guide',
+      //   route: '/blog/audio/audio-quality-guide',
+      // },
     ],
   },
   {
@@ -734,6 +744,9 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       { label: 'Remove audio from video', route: '/tools/extract-video-only-from-video' },
     ],
   },
+  /* FFmpeg-education cluster hidden during AdSense review because every
+     destination it pointed at lives under /blog. Re-enable alongside the
+     blog when new posts are ready.
   {
     slug: 'ffmpeg-education',
     title: 'FFmpeg and media format education',
@@ -767,6 +780,7 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       },
     ],
   },
+  */
 ];
 
 export const KEYWORD_CLUSTER_MAP: Record<string, KeywordCluster> =

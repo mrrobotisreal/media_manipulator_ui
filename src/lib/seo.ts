@@ -266,6 +266,9 @@ const ROUTES: RouteSeo[] = [
     ],
     jsonLd: [webApplicationLd, websiteLd, organizationLd],
   },
+  /* Blog SEO entries hidden during AdSense review — re-enable when the
+     blog section is reactivated. Leaving the code here so titles, JSON-LD,
+     and breadcrumbs stay easy to re-enable.
   {
     path: '/blog',
     title:
@@ -452,6 +455,7 @@ const ROUTES: RouteSeo[] = [
       ]),
     ],
   },
+  */
   {
     path: '/about',
     title: 'About Media Manipulator | Free Online Media Tools by CreaTV Ltd.',

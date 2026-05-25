@@ -28,7 +28,8 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Blog index -->
+  <!-- Blog section hidden during AdSense review. Re-enable these URLs once
+       new posts are published.
   <url>
     <loc>https://www.media-manipulator.com/blog</loc>
     <lastmod>2026-05-17</lastmod>
@@ -36,7 +37,6 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Blog: Video Compression Guide -->
   <url>
     <loc>https://www.media-manipulator.com/blog/video/video-compression-guide</loc>
     <lastmod>2026-05-17</lastmod>
@@ -44,7 +44,6 @@
     <priority>0.6</priority>
   </url>
 
-  <!-- Blog: Image Optimization Guide -->
   <url>
     <loc>https://www.media-manipulator.com/blog/image/image-optimization-guide</loc>
     <lastmod>2026-05-17</lastmod>
@@ -52,13 +51,14 @@
     <priority>0.6</priority>
   </url>
 
-  <!-- Blog: Audio Quality Guide -->
   <url>
     <loc>https://www.media-manipulator.com/blog/audio/audio-quality-guide</loc>
     <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  -->
+
 
   <!-- Tutorials index -->
   <url>

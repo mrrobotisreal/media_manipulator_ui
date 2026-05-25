@@ -225,11 +225,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tools/image-converter',
         description: 'Convert between JPG, PNG, WebP, AVIF, GIF, and more.',
       },
-      {
-        label: 'Image optimization guide',
-        to: '/blog/image/image-optimization-guide',
-        description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Image optimization guide',
+      //   to: '/blog/image/image-optimization-guide',
+      //   description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
+      // },
       {
         label: 'Image converter tutorial',
         to: '/tutorials/image/getting-started',
@@ -376,11 +377,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tools/ai-frame-interpolation',
         description: 'Smooth video motion by lifting FPS to 48, 60, or 120 with RIFE.',
       },
-      {
-        label: 'Video compression guide',
-        to: '/blog/video/video-compression-guide',
-        description: 'Codecs, bitrate, and container deep dive.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Video compression guide',
+      //   to: '/blog/video/video-compression-guide',
+      //   description: 'Codecs, bitrate, and container deep dive.',
+      // },
       {
         label: 'Video converter tutorial',
         to: '/tutorials/video/getting-started',
@@ -518,11 +520,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tools/transcribe-video',
         description: 'Pull speech out of video into searchable text.',
       },
-      {
-        label: 'Video compression guide',
-        to: '/blog/video/video-compression-guide',
-        description: 'Codecs, bitrate, and container deep dive.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Video compression guide',
+      //   to: '/blog/video/video-compression-guide',
+      //   description: 'Codecs, bitrate, and container deep dive.',
+      // },
     ],
     primaryKeyword: 'transcode video to HLS',
     secondaryKeywords: [
@@ -638,11 +641,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tools/transcribe-video',
         description: 'Pull speech out of video into searchable text.',
       },
-      {
-        label: 'Video compression guide',
-        to: '/blog/video/video-compression-guide',
-        description: 'Codecs, bitrate, and container deep dive.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Video compression guide',
+      //   to: '/blog/video/video-compression-guide',
+      //   description: 'Codecs, bitrate, and container deep dive.',
+      // },
     ],
     primaryKeyword: 'transcode video to DASH',
     secondaryKeywords: [
@@ -772,11 +776,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tutorials/video/getting-started',
         description: 'Walk through trim, resize, and filter settings.',
       },
-      {
-        label: 'Video compression guide',
-        to: '/blog/video/video-compression-guide',
-        description: 'How codec and bitrate affect output size.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Video compression guide',
+      //   to: '/blog/video/video-compression-guide',
+      //   description: 'How codec and bitrate affect output size.',
+      // },
     ],
     primaryKeyword: 'convert video to GIF',
     secondaryKeywords: [
@@ -1039,11 +1044,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tools/remove-exif-metadata',
         description: 'Strip private metadata before sharing the JPG.',
       },
-      {
-        label: 'Image optimization guide',
-        to: '/blog/image/image-optimization-guide',
-        description: 'JPG vs PNG vs WebP and when to use each.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Image optimization guide',
+      //   to: '/blog/image/image-optimization-guide',
+      //   description: 'JPG vs PNG vs WebP and when to use each.',
+      // },
       {
         label: 'Image converter tutorial',
         to: '/tutorials/image/getting-started',
@@ -1181,11 +1187,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tutorials/audio/getting-started',
         description: 'Walk through every audio option, including AI tools.',
       },
-      {
-        label: 'Audio quality guide',
-        to: '/blog/audio/audio-quality-guide',
-        description: 'Bitrate, sample rate, and codec deep dive.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Audio quality guide',
+      //   to: '/blog/audio/audio-quality-guide',
+      //   description: 'Bitrate, sample rate, and codec deep dive.',
+      // },
     ],
     primaryKeyword: 'convert WAV to MP3',
     secondaryKeywords: [
@@ -1314,11 +1321,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tutorials/audio/getting-started',
         description: 'Walk through every audio option, including AI tools.',
       },
-      {
-        label: 'Audio quality guide',
-        to: '/blog/audio/audio-quality-guide',
-        description: 'Bitrate, sample rate, and codec choices for clean audio.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Audio quality guide',
+      //   to: '/blog/audio/audio-quality-guide',
+      //   description: 'Bitrate, sample rate, and codec choices for clean audio.',
+      // },
     ],
     primaryKeyword: 'isolate vocals from a song',
     secondaryKeywords: [
@@ -1397,7 +1405,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Focused WebP → JPG converter.' },
       { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip private metadata before sharing.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Full walkthrough of every option.' },
-      { label: 'Image optimization guide', to: '/blog/image/image-optimization-guide', description: 'JPG vs PNG vs WebP vs AVIF.' },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // { label: 'Image optimization guide', to: '/blog/image/image-optimization-guide', description: 'JPG vs PNG vs WebP vs AVIF.' },
     ],
     primaryKeyword: 'image converter',
     secondaryKeywords: [
@@ -1478,7 +1487,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Transcode video to HLS', to: '/tools/transcode-to-hls', description: 'Generate an adaptive HLS package from any video.' },
       { label: 'Transcode video to DASH', to: '/tools/transcode-to-dash', description: 'Generate a MPEG-DASH AV1/VP9 package from any video.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Full walkthrough of every option.' },
-      { label: 'Video compression guide', to: '/blog/video/video-compression-guide', description: 'Codec, bitrate, and container deep dive.' },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // { label: 'Video compression guide', to: '/blog/video/video-compression-guide', description: 'Codec, bitrate, and container deep dive.' },
     ],
     primaryKeyword: 'video converter',
     secondaryKeywords: [
@@ -1555,7 +1565,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Convert WAV to MP3', to: '/tools/convert-wav-to-mp3', description: 'Focused WAV → MP3 converter.' },
       { label: 'Isolate vocals from a song', to: '/tools/isolate-vocals-from-song', description: 'Pull vocals out of music tracks.' },
       { label: 'Audio converter tutorial', to: '/tutorials/audio/getting-started', description: 'Full walkthrough of every option.' },
-      { label: 'Audio quality guide', to: '/blog/audio/audio-quality-guide', description: 'Bitrate, sample rate, and codec deep dive.' },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // { label: 'Audio quality guide', to: '/blog/audio/audio-quality-guide', description: 'Bitrate, sample rate, and codec deep dive.' },
     ],
     primaryKeyword: 'audio converter',
     secondaryKeywords: [
@@ -2375,11 +2386,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         to: '/tutorials/ai-frame-interpolation',
         description: 'Learn how AI interpolation works and when to use it.',
       },
-      {
-        label: 'Video compression guide',
-        to: '/blog/video/video-compression-guide',
-        description: 'Codec and bitrate deep dive for after interpolation.',
-      },
+      // Hidden during AdSense review — re-enable when the blog returns.
+      // {
+      //   label: 'Video compression guide',
+      //   to: '/blog/video/video-compression-guide',
+      //   description: 'Codec and bitrate deep dive for after interpolation.',
+      // },
     ],
     primaryKeyword: 'AI frame interpolation',
     secondaryKeywords: [

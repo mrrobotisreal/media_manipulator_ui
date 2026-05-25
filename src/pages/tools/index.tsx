@@ -135,12 +135,15 @@ const ToolsIndexPage: React.FC = () => {
                   >
                     Browse tutorials
                   </Link>
+                  {/* Blog hidden during AdSense review — re-enable when the
+                      blog section is reactivated.
                   <Link
                     to="/blog"
                     className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"
                   >
                     Read the blog
                   </Link>
+                  */}
                 </div>
               </div>
 
@@ -148,21 +151,23 @@ const ToolsIndexPage: React.FC = () => {
                 title="Learn more"
                 intro="Guides and reference pages that pair with these tools."
                 links={[
-                  {
-                    label: 'Video compression guide',
-                    to: '/blog/video/video-compression-guide',
-                    description: 'Codecs, bitrate, and container formats explained.',
-                  },
-                  {
-                    label: 'Image optimization guide',
-                    to: '/blog/image/image-optimization-guide',
-                    description: 'JPG vs PNG vs WebP vs AVIF.',
-                  },
-                  {
-                    label: 'Audio quality guide',
-                    to: '/blog/audio/audio-quality-guide',
-                    description: 'Bitrate, sample rate, and codec deep dive.',
-                  },
+                  // Blog guides hidden during AdSense review — re-enable when
+                  // the blog returns.
+                  // {
+                  //   label: 'Video compression guide',
+                  //   to: '/blog/video/video-compression-guide',
+                  //   description: 'Codecs, bitrate, and container formats explained.',
+                  // },
+                  // {
+                  //   label: 'Image optimization guide',
+                  //   to: '/blog/image/image-optimization-guide',
+                  //   description: 'JPG vs PNG vs WebP vs AVIF.',
+                  // },
+                  // {
+                  //   label: 'Audio quality guide',
+                  //   to: '/blog/audio/audio-quality-guide',
+                  //   description: 'Bitrate, sample rate, and codec deep dive.',
+                  // },
                   {
                     label: 'How Media Manipulator works',
                     to: '/how-it-works',

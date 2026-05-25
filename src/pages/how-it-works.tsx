@@ -191,12 +191,15 @@ const HowItWorksPage: React.FC = () => {
                 >
                   Browse Tutorials
                 </Link>
+                {/* Blog hidden during AdSense review — re-enable when the
+                    blog section is reactivated.
                 <Link
                   to="/blog"
                   className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"
                 >
                   Read the Blog
                 </Link>
+                */}
                 <Link
                   to="/"
                   className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"

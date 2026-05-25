@@ -7,7 +7,8 @@ import { AD_SLOTS } from '@/lib/adSlots';
 const quickLinks = [
   { label: 'Return to base', to: '/' },
   { label: 'Tools array', to: '/tools' },
-  { label: 'Field guides (blog)', to: '/blog' },
+  // Hidden during AdSense review — re-enable when the blog returns.
+  // { label: 'Field guides (blog)', to: '/blog' },
   { label: 'Tutorials', to: '/tutorials' },
 ];
 

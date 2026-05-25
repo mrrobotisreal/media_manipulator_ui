@@ -63,9 +63,12 @@ const AudioGettingStartedTutorial: React.FC = () => {
             <li><strong>Opus</strong> — modern lossy codec great for voice and low bitrates.</li>
             <li><strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks.</li>
           </ul>
+          {/* Blog hidden during AdSense review — restore the "need help
+              choosing" paragraph below when the blog returns.
           <p className="mb-4">
             Need help choosing? Our <Link to="/blog/audio/audio-quality-guide" className="text-blue-600 hover:text-blue-800">audio quality guide</Link> covers when to use each codec.
           </p>
+          */}
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">3. Set bitrate, sample rate, and channels</h2>
           <p className="mb-4">
@@ -172,11 +175,12 @@ const AudioGettingStartedTutorial: React.FC = () => {
                 to: '/tools/isolate-vocals-from-song',
                 description: 'Extract vocals from music for remixes or analysis.',
               },
-              {
-                label: 'Audio quality guide',
-                to: '/blog/audio/audio-quality-guide',
-                description: 'How bitrate, sample rate, and codec choice affect quality.',
-              },
+              // Hidden during AdSense review — re-enable when the blog returns.
+              // {
+              //   label: 'Audio quality guide',
+              //   to: '/blog/audio/audio-quality-guide',
+              //   description: 'How bitrate, sample rate, and codec choice affect quality.',
+              // },
               {
                 label: 'Video converter tutorial',
                 to: '/tutorials/video/getting-started',

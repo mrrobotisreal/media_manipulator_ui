@@ -274,11 +274,12 @@ const AIFrameInterpolationTutorial: React.FC = () => {
                     to: '/tools/convert-video-to-animated-gif',
                     description: 'Turn a short clip into an animated GIF.',
                   },
-                  {
-                    label: 'Video compression guide',
-                    to: '/blog/video/video-compression-guide',
-                    description: 'Codecs, bitrate, and containers explained.',
-                  },
+                  // Hidden during AdSense review — re-enable when the blog returns.
+                  // {
+                  //   label: 'Video compression guide',
+                  //   to: '/blog/video/video-compression-guide',
+                  //   description: 'Codecs, bitrate, and containers explained.',
+                  // },
                 ]}
               />
             </CardContent>

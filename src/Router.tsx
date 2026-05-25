@@ -11,16 +11,18 @@ import { applySeoMeta, getSeoForPath } from './lib/seo';
 // Lazy-loaded page components — each becomes its own JS chunk so the
 // initial bundle ships only enough code for the homepage and shell.
 const App = lazy(() => import('./App'));
-const BlogPage = lazy(() => import('./pages/blog'));
-const VideoCompressionGuide = lazy(
-  () => import('./pages/blog/video/video-compression-guide'),
-);
-const ImageOptimizationGuide = lazy(
-  () => import('./pages/blog/image/image-optimization-guide'),
-);
-const AudioQualityGuide = lazy(
-  () => import('./pages/blog/audio/audio-quality-guide'),
-);
+// Blog hidden for now while the section is being refreshed. Re-enable when
+// new posts are ready — the article components remain in src/pages/blog.
+// const BlogPage = lazy(() => import('./pages/blog'));
+// const VideoCompressionGuide = lazy(
+//   () => import('./pages/blog/video/video-compression-guide'),
+// );
+// const ImageOptimizationGuide = lazy(
+//   () => import('./pages/blog/image/image-optimization-guide'),
+// );
+// const AudioQualityGuide = lazy(
+//   () => import('./pages/blog/audio/audio-quality-guide'),
+// );
 const AboutPage = lazy(() => import('./pages/about'));
 const HowItWorksPage = lazy(() => import('./pages/how-it-works'));
 const PrivacyPolicyPage = lazy(() => import('./pages/privacy-policy'));
@@ -106,19 +108,21 @@ const Router: React.FC = () => {
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<App />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route
+              {/* Blog routes hidden during AdSense review — re-enable
+                  alongside the lazy imports above when new posts ship. */}
+              {/* <Route path="/blog" element={<BlogPage />} /> */}
+              {/* <Route
                 path="/blog/video/video-compression-guide"
                 element={<VideoCompressionGuide />}
-              />
-              <Route
+              /> */}
+              {/* <Route
                 path="/blog/image/image-optimization-guide"
                 element={<ImageOptimizationGuide />}
-              />
-              <Route
+              /> */}
+              {/* <Route
                 path="/blog/audio/audio-quality-guide"
                 element={<AudioQualityGuide />}
-              />
+              /> */}
               <Route path="/about" element={<AboutPage />} />
               <Route path="/how-it-works" element={<HowItWorksPage />} />
               <Route path="/tutorials" element={<TutorialsPage />} />
