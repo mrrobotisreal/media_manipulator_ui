@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useTheme } from "@/components/theme-provider";
-import winappsLogo from "@/assets/logo_transparent_shadow.svg";
+import winappsLogo from "@/assets/WinApps_Logo_Medium.png";
 import formatterIcon from "/MMIcon.webp";
 import githubLogo from "@/assets/github.svg";
 import React from "react";
@@ -286,7 +286,7 @@ const TopNav: React.FC = () => {
             className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
           >
             <a
-              href="https://winapps.io/"
+              href="https://www.winapps.io/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
