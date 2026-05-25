@@ -203,7 +203,15 @@ const AdBanner: React.FC<AdBannerProps> = ({
             </a>
           )}
 
-          {/* AdSense unit layered above the CreaTV creative. */}
+          {/* AdSense unit layered above the CreaTV creative.
+              While the fallback is still rendering — i.e. AdSense hasn't
+              reported `data-ad-status="filled"` yet — this <ins> is an empty
+              absolute-positioned sibling sitting on top of the <a> in DOM
+              order, so without pointer-events:none it would swallow every
+              click and leave the CreaTV link visible-but-dead. Once an ad
+              actually fills, `showFallback` flips to false (the <a>
+              unmounts) and we restore pointer-events so the AdSense iframe
+              handles its own clicks normally. */}
           <ins
             ref={adRef}
             className="adsbygoogle absolute inset-0"
@@ -212,6 +220,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
               width: creative.width,
               height: creative.minHeight,
               backgroundColor: 'transparent',
+              pointerEvents: showFallback ? 'none' : undefined,
             }}
             data-ad-client="ca-pub-3413790368941825"
             data-ad-slot={adSlot}

@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/sheet";
 import { useTheme } from "@/components/theme-provider";
 import winappsLogo from "@/assets/WinApps_Logo_Medium.png";
-import formatterIcon from "/MMIcon.webp";
+import mmIcon from "/MMIcon.webp";
 import githubLogo from "@/assets/github.svg";
+import creatvLogo from "@/assets/CreaTV_Logo_240x240.png";
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -190,7 +191,7 @@ const TopNav: React.FC = () => {
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label="Media Manipulator home">
           <img
-            src={formatterIcon}
+            src={mmIcon}
             alt="Media Manipulator Icon"
             className="h-20 w-20 rounded-sm"
           />
@@ -271,7 +272,7 @@ const TopNav: React.FC = () => {
             className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
           >
             <a
-              href="https://github.com/mrrobotisreal/text_formatter"
+              href="https://github.com/mrrobotisreal"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -297,6 +298,26 @@ const TopNav: React.FC = () => {
                 className="h-12 w-12"
               />
               <span className="sr-only">WinApps</span>
+            </a>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            asChild
+            className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
+          >
+            <a
+              href="https://www.creatv.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+            >
+              <img
+                src={creatvLogo}
+                alt="CreaTV Logo"
+                className="h-12 w-12"
+              />
+              <span className="sr-only">CreaTV</span>
             </a>
           </Button>
           <ThemeToggle />
