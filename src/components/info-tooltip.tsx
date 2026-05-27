@@ -1,5 +1,6 @@
 import { Info } from 'lucide-react';
 import { useId, useState, type ReactNode, type KeyboardEvent, type MouseEvent } from 'react';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface InfoTooltipProps {
   content: ReactNode;
@@ -28,6 +29,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
   align = 'center',
   width = 'md',
 }) => {
+  const { t } = useLocalization('accessibility');
   const [open, setOpen] = useState(false);
   const tooltipId = useId();
 
@@ -47,7 +49,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({
     <span className={`relative inline-flex align-middle ${className ?? ''}`}>
       <button
         type="button"
-        aria-label={ariaLabel ?? 'More information'}
+        aria-label={ariaLabel ?? t('common.moreOptions')}
         aria-describedby={open ? tooltipId : undefined}
         aria-expanded={open}
         onMouseEnter={() => setOpen(true)}

@@ -15,10 +15,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useTheme } from "@/components/theme-provider";
-import winappsLogo from "@/assets/WinApps_Logo_Medium.png";
+import LanguageSelector from "@/components/language-selector";
+import { useLocalization } from "@/i18n/useLocalization";
+// import winappsLogo from "@/assets/WinApps_Logo_Medium.png";
 import mmIcon from "/MMIcon.webp";
-import githubLogo from "@/assets/github.svg";
-import creatvLogo from "@/assets/CreaTV_Logo_240x240.png";
+// import githubLogo from "@/assets/github.svg";
+// import creatvLogo from "@/assets/CreaTV_Logo_240x240.png";
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -40,65 +42,29 @@ const isNavActive = (currentPath: string, linkHref: string): boolean => {
   return currentPath === linkHref || currentPath.startsWith(`${linkHref}/`);
 };
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Home",
-    href: "/",
-    description:
-      "Home page where you can convert your files",
-  },
-  {
-    title: "Tools",
-    href: "/tools",
-    description:
-      "Free online tools for converting, compressing, transcribing, and cleaning up media files",
-  },
-  {
-    title: "About",
-    href: "/about",
-    description:
-      "About page where you can learn more about the project and its creator",
-  },
-  {
-    title: "How it works",
-    href: "/how-it-works",
-    description:
-      "How it works page where you can learn more about the conversion process",
-  },
-  {
-    title: "Tutorials",
-    href: "/tutorials",
-    description:
-      "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
-  },
-  {
-    title: "Privacy Policy",
-    href: "/privacy-policy",
-    description: "Privacy policy page where you can learn more about the privacy policy of the project",
-  },
-  {
-    title: "Terms of Service",
-    href: "/terms-of-service",
-    description:
-      "Terms of service page where you can learn more about the terms of service of the project",
-  },
-  // {
-  //   title: "Blog",
-  //   href: "/blog",
-  //   description:
-  //     "Blog page where you can read the latest news and updates about the project",
-  // },
-]
+// Link metadata: titles + descriptions are translated at render time so the
+// nav stays in sync with whatever language is currently active.
+const NAV_LINKS: { key: string; href: string }[] = [
+  { key: "home", href: "/" },
+  { key: "tools", href: "/tools" },
+  { key: "about", href: "/about" },
+  { key: "howItWorks", href: "/how-it-works" },
+  { key: "tutorials", href: "/tutorials" },
+  { key: "privacyPolicy", href: "/privacy-policy" },
+  { key: "termsOfService", href: "/terms-of-service" },
+  // { key: "blog", href: "/blog" },
+];
 
 const ThemeToggle = () => {
   const { setTheme, theme } = useTheme();
+  const { t } = useLocalization("accessibility");
 
   return (
     <label className="switch">
       <input
         className="theme-toggle-input"
         type="checkbox"
-        aria-label="Toggle theme"
+        aria-label={t("topNav.toggleTheme")}
         onChange={() => setTheme(theme === "light" ? "dark" : "light")}
         checked={theme === "dark"}
       />
@@ -167,37 +133,30 @@ const ThemeToggle = () => {
       </div>
     </label>
   );
-
-  // return (
-  //   <Button
-  //     variant="ghost"
-  //     size="icon"
-  //     onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-  //     className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
-  //   >
-  //     <Sun className="h-10 w-10 rotate-0 scale-100 transition-all text-gray-700 dark:text-gray-200 dark:-rotate-90 dark:scale-0" />
-  //     <Moon className="absolute h-10 w-10 rotate-90 scale-0 transition-all text-gray-700 dark:text-gray-200 dark:rotate-0 dark:scale-100" />
-  //     <span className="sr-only">Toggle theme</span>
-  //   </Button>
-  // );
 };
 
 const TopNav: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { pathname } = useLocation();
+  const { t } = useLocalization(["interface", "accessibility"]);
+  const components = NAV_LINKS.map((link) => ({
+    key: link.key,
+    href: link.href,
+    title: t(`interface:topNav.${link.key}`),
+  }));
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 sci-fi-frame-bottom">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label="Media Manipulator home">
+        <Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
           <img
             src={mmIcon}
-            alt="Media Manipulator Icon"
+            alt={t("accessibility:topNav.navIcon")}
             className="h-20 w-20 rounded-sm"
           />
           <div className="flex flex-col">
-            <span className="font-glitch text-lg md:text-2xl text-white leading-tight hidden sm:block">Media Manipulator</span>
-            <span className="text-xs md:text-sm text-gray-300 hidden sm:block">Convert images, videos, and audio files with ease</span>
+            <span className="font-glitch text-lg md:text-2xl text-white leading-tight hidden sm:block">{t("interface:common.brand")}</span>
+            <span className="text-xs md:text-sm text-gray-300 hidden sm:block">{t("interface:common.brandTagline")}</span>
           </div>
         </Link>
 
@@ -207,7 +166,7 @@ const TopNav: React.FC = () => {
             {components.map((component) => {
               const active = isNavActive(pathname, component.href);
               return (
-                <NavigationMenuItem key={component.title}>
+                <NavigationMenuItem key={component.key}>
                   <NavigationMenuLink asChild>
                     <Link
                       to={component.href}
@@ -234,19 +193,19 @@ const TopNav: React.FC = () => {
                 className="md:hidden rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
               >
                 <Menu className="h-6 w-6 text-white" />
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">{t("accessibility:topNav.openMenu")}</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="bottom" className="h-auto max-h-[80vh]">
               <SheetHeader>
-                <SheetTitle>Navigation</SheetTitle>
+                <SheetTitle>{t("interface:topNav.navigationLabel")}</SheetTitle>
               </SheetHeader>
               <div className="grid gap-4 py-4 overflow-y-auto max-h-[60vh]">
                 {components.map((component) => {
                   const active = isNavActive(pathname, component.href);
                   return (
                     <Link
-                      key={component.title}
+                      key={component.key}
                       to={component.href}
                       aria-current={active ? "page" : undefined}
                       style={active ? NAV_ACTIVE_GLOW : undefined}
@@ -265,7 +224,7 @@ const TopNav: React.FC = () => {
             </SheetContent>
           </Sheet>
 
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             asChild
@@ -276,8 +235,8 @@ const TopNav: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={githubLogo} alt="GitHub" className="h-6 w-6 dark:invert" />
-              <span className="sr-only">View on GitHub</span>
+              <img src={githubLogo} alt={t("accessibility:topNav.githubLogo")} className="h-6 w-6 dark:invert" />
+              <span className="sr-only">{t("accessibility:topNav.github")}</span>
             </a>
           </Button>
           <Button
@@ -294,13 +253,13 @@ const TopNav: React.FC = () => {
             >
               <img
                 src={winappsLogo}
-                alt="WinApps Logo"
+                alt={t("accessibility:topNav.winappsLogo")}
                 className="h-12 w-12"
               />
-              <span className="sr-only">WinApps</span>
+              <span className="sr-only">{t("accessibility:topNav.winapps")}</span>
             </a>
-          </Button>
-          <Button
+          </Button> */}
+          {/* <Button
             variant="ghost"
             size="icon"
             asChild
@@ -314,13 +273,14 @@ const TopNav: React.FC = () => {
             >
               <img
                 src={creatvLogo}
-                alt="CreaTV Logo"
+                alt={t("accessibility:topNav.creatvLogo")}
                 className="h-12 w-12"
               />
-              <span className="sr-only">CreaTV</span>
+              <span className="sr-only">{t("accessibility:topNav.creatv")}</span>
             </a>
-          </Button>
+          </Button> */}
           <ThemeToggle />
+          <LanguageSelector />
         </div>
       </div>
     </nav>

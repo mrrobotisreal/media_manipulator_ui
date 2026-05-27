@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { trackAdInteraction } from '@/lib/analytics';
+import { useLocalization } from '@/i18n/useLocalization';
 
 export type AdFormat =
   | 'leaderboard'
@@ -83,16 +84,19 @@ const CREATV_CREATIVES: Record<AdFormat, CreaTvCreative> = {
 // AdSense policy requires ad units to be labeled "Advertisement" or
 // "Sponsored Links" — no other wording. The label must sit outside the ad
 // iframe. See: https://support.google.com/adsense/answer/9335564
-const AdLabel: React.FC = () => (
-  <div
-    className="flex items-center justify-end mb-1 select-none"
-    aria-label="Advertisement"
-  >
-    <span className="text-[10px] leading-none uppercase tracking-[0.12em] font-medium text-muted-foreground/80 bg-background/60 backdrop-blur-sm rounded px-1.5 py-0.5 border border-border/40">
-      Advertisement
-    </span>
-  </div>
-);
+const AdLabel: React.FC = () => {
+  const { t } = useLocalization('accessibility');
+  return (
+    <div
+      className="flex items-center justify-end mb-1 select-none"
+      aria-label={t('ad.label')}
+    >
+      <span className="text-[10px] leading-none uppercase tracking-[0.12em] font-medium text-muted-foreground/80 bg-background/60 backdrop-blur-sm rounded px-1.5 py-0.5 border border-border/40">
+        {t('ad.label')}
+      </span>
+    </div>
+  );
+};
 
 const buildCreaTvUrl = (
   linkURL: string | undefined,
@@ -121,6 +125,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
   utmCampaign,
   className = '',
 }) => {
+  const { t } = useLocalization('interface');
   const adRef = useRef<HTMLModElement>(null);
   const hasPushedRef = useRef(false);
   const [showFallback, setShowFallback] = useState(true);
@@ -185,14 +190,11 @@ const AdBanner: React.FC<AdBannerProps> = ({
                 trackAdInteraction('creatv_fallback', adPosition, 'click')
               }
               className="absolute inset-0 flex items-center justify-center overflow-hidden"
-              aria-label="CreaTV — bring ideas to life"
+              aria-label={t('adBanner.creatvAriaLabel')}
             >
               <img
                 src={creativeAssetSrc || creative.src}
-                alt={
-                  creativeAssetAlt ||
-                  'Come check out CreaTV! Where ideas are brought to life.'
-                }
+                alt={creativeAssetAlt || t('adBanner.creatvCreativeAlt')}
                 width={creative.width}
                 height={creative.height}
                 loading="lazy"

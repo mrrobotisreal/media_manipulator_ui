@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, Sparkles, Waves } from 'lucide-react';
+import { Trans } from 'react-i18next';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
+import { useLocalization } from '@/i18n/useLocalization';
 
 /**
  * AudioWaveformPanel renders the audio-waveform generator. Defaults bias
@@ -14,97 +16,75 @@ import SpecializedToolShell from '@/components/specialized-tool-shell';
 
 type OutputSelection = 'video' | 'image' | 'both';
 
+// Size qualifier keys map to localized words ("small", "medium", …). The
+// dimensions themselves are universal and rendered numerically, so only the
+// qualifier is translated at render time.
+type SizeQualifier = 'small' | 'medium' | 'large' | 'xl';
+
 interface AspectRatioPreset {
   id: string;
-  label: string;
-  description?: string;
-  sizes: { id: string; label: string; width: number; height: number }[];
+  sizes: { id: string; width: number; height: number; qualifier: SizeQualifier }[];
 }
 
 const PRESETS: AspectRatioPreset[] = [
   {
     id: '10x1',
-    label: '10:1 — Wide waveform (recommended)',
-    description: 'Classic wide-strip look — great for podcasts, music previews, and editing timelines.',
     sizes: [
-      { id: 'small-10x1', label: '1000×100 (small)', width: 1000, height: 100 },
-      { id: 'medium-10x1', label: '1600×160 (medium)', width: 1600, height: 160 },
-      { id: 'large-10x1', label: '2400×240 (large)', width: 2400, height: 240 },
-      { id: 'xl-10x1', label: '3840×384 (extra large)', width: 3840, height: 384 },
+      { id: 'small-10x1', width: 1000, height: 100, qualifier: 'small' },
+      { id: 'medium-10x1', width: 1600, height: 160, qualifier: 'medium' },
+      { id: 'large-10x1', width: 2400, height: 240, qualifier: 'large' },
+      { id: 'xl-10x1', width: 3840, height: 384, qualifier: 'xl' },
     ],
   },
   {
     id: '8x1',
-    label: '8:1 — Wide waveform',
     sizes: [
-      { id: 'small-8x1', label: '1024×128 (small)', width: 1024, height: 128 },
-      { id: 'medium-8x1', label: '1600×200 (medium)', width: 1600, height: 200 },
-      { id: 'large-8x1', label: '2400×300 (large)', width: 2400, height: 300 },
-      { id: 'xl-8x1', label: '3200×400 (extra large)', width: 3200, height: 400 },
+      { id: 'small-8x1', width: 1024, height: 128, qualifier: 'small' },
+      { id: 'medium-8x1', width: 1600, height: 200, qualifier: 'medium' },
+      { id: 'large-8x1', width: 2400, height: 300, qualifier: 'large' },
+      { id: 'xl-8x1', width: 3200, height: 400, qualifier: 'xl' },
     ],
   },
   {
     id: '6x1',
-    label: '6:1 — Balanced wide waveform',
     sizes: [
-      { id: 'small-6x1', label: '960×160 (small)', width: 960, height: 160 },
-      { id: 'medium-6x1', label: '1440×240 (medium)', width: 1440, height: 240 },
-      { id: 'large-6x1', label: '2160×360 (large)', width: 2160, height: 360 },
-      { id: 'xl-6x1', label: '2880×480 (extra large)', width: 2880, height: 480 },
+      { id: 'small-6x1', width: 960, height: 160, qualifier: 'small' },
+      { id: 'medium-6x1', width: 1440, height: 240, qualifier: 'medium' },
+      { id: 'large-6x1', width: 2160, height: 360, qualifier: 'large' },
+      { id: 'xl-6x1', width: 2880, height: 480, qualifier: 'xl' },
     ],
   },
   {
     id: '16x9',
-    label: '16:9 — Standard video / social preview',
     sizes: [
-      { id: 'small-16x9', label: '1280×720 (small)', width: 1280, height: 720 },
-      { id: 'medium-16x9', label: '1920×1080 (medium)', width: 1920, height: 1080 },
-      { id: 'large-16x9', label: '2560×1440 (large)', width: 2560, height: 1440 },
-      { id: 'xl-16x9', label: '3840×2160 (extra large)', width: 3840, height: 2160 },
+      { id: 'small-16x9', width: 1280, height: 720, qualifier: 'small' },
+      { id: 'medium-16x9', width: 1920, height: 1080, qualifier: 'medium' },
+      { id: 'large-16x9', width: 2560, height: 1440, qualifier: 'large' },
+      { id: 'xl-16x9', width: 3840, height: 2160, qualifier: 'xl' },
     ],
   },
   {
     id: '1x1',
-    label: '1:1 — Square social preview',
     sizes: [
-      { id: 'small-1x1', label: '720×720 (small)', width: 720, height: 720 },
-      { id: 'medium-1x1', label: '1080×1080 (medium)', width: 1080, height: 1080 },
-      { id: 'large-1x1', label: '1440×1440 (large)', width: 1440, height: 1440 },
-      { id: 'xl-1x1', label: '2160×2160 (extra large)', width: 2160, height: 2160 },
+      { id: 'small-1x1', width: 720, height: 720, qualifier: 'small' },
+      { id: 'medium-1x1', width: 1080, height: 1080, qualifier: 'medium' },
+      { id: 'large-1x1', width: 1440, height: 1440, qualifier: 'large' },
+      { id: 'xl-1x1', width: 2160, height: 2160, qualifier: 'xl' },
     ],
   },
 ];
 
-const MODE_OPTIONS: { value: 'point' | 'line' | 'p2p' | 'cline'; label: string; description: string; preview: string }[] = [
-  {
-    value: 'point',
-    label: 'Point',
-    description: 'A single dot per sample — clean and minimal.',
-    preview: '· · · · · · · ·',
-  },
-  {
-    value: 'line',
-    label: 'Line',
-    description: 'A vertical bar per sample — bolder presence.',
-    preview: '| | | | | | | |',
-  },
-  {
-    value: 'p2p',
-    label: 'Point to point',
-    description: 'A dot per sample plus connecting lines — flowing look.',
-    preview: '·—·—·—·—·—·—·—·',
-  },
-  {
-    value: 'cline',
-    label: 'Centered line',
-    description: 'Vertical line centered on the axis — symmetrical look.',
-    preview: '╎╎╎╎╎╎╎╎',
-  },
+const MODE_OPTIONS: { value: 'point' | 'line' | 'p2p' | 'cline'; preview: string }[] = [
+  { value: 'point', preview: '· · · · · · · ·' },
+  { value: 'line', preview: '| | | | | | | |' },
+  { value: 'p2p', preview: '·—·—·—·—·—·—·—·' },
+  { value: 'cline', preview: '╎╎╎╎╎╎╎╎' },
 ];
 
 const FPS_PRESETS = [15, 24, 25, 30, 60];
 
 const AudioWaveformPanel: React.FC = () => {
+  const { t } = useLocalization('interface');
   const [outputSelection, setOutputSelection] = useState<OutputSelection>('video');
   const [videoFormat, setVideoFormat] = useState<'mp4' | 'webm'>('mp4');
   const [imageFormat, setImageFormat] = useState<'png' | 'webp'>('png');
@@ -186,7 +166,7 @@ const AudioWaveformPanel: React.FC = () => {
   return (
     <SpecializedToolShell
       accept="audio/*"
-      uploadHint="audio file"
+      uploadHint={t('audioWaveformPanel.uploadHint')}
       conversionJob={conversionJob}
       setConversionJob={setConversionJob}
       isUploading={isPending}
@@ -195,7 +175,7 @@ const AudioWaveformPanel: React.FC = () => {
       previewConfig={{
         originalMediaKind: 'audio',
         finalMediaKind,
-        title: 'Waveform preview',
+        title: t('audioWaveformPanel.previewTitle'),
       }}
       renderForm={({ file, isProcessing }) => (
         <form
@@ -206,7 +186,7 @@ const AudioWaveformPanel: React.FC = () => {
           className="space-y-5"
         >
           <div>
-            <label className="block text-sm font-medium text-card-foreground mb-2">Output</label>
+            <label className="block text-sm font-medium text-card-foreground mb-2">{t('audioWaveformPanel.output')}</label>
             <div className="grid sm:grid-cols-3 gap-2">
               {(['video', 'image', 'both'] as const).map((opt) => (
                 <button
@@ -219,13 +199,13 @@ const AudioWaveformPanel: React.FC = () => {
                       : 'bg-background text-card-foreground border-input hover:bg-muted'
                   }`}
                 >
-                  {opt === 'video' ? 'Waveform video' : opt === 'image' ? 'Waveform image' : 'Both (ZIP)'}
+                  {t(`audioWaveformPanel.outputOptions.${opt}`)}
                 </button>
               ))}
             </div>
             {outputSelection === 'both' && (
               <p className="text-xs text-muted-foreground mt-1">
-                Both outputs will be packaged into a single .zip you can download in one click.
+                {t('audioWaveformPanel.bothNote')}
               </p>
             )}
           </div>
@@ -239,9 +219,9 @@ const AudioWaveformPanel: React.FC = () => {
                 className="mt-1"
               />
               <span className="text-sm">
-                <span className="font-medium text-card-foreground">Include original audio with generated waveform video</span>
+                <span className="font-medium text-card-foreground">{t('audioWaveformPanel.includeAudio')}</span>
                 <span className="block text-xs text-muted-foreground mt-0.5">
-                  The waveform video will play in sync with the source audio — perfect for audiograms, music previews, and podcast clips. Turn off for a silent waveform.
+                  {t('audioWaveformPanel.includeAudioNote')}
                 </span>
               </span>
             </label>
@@ -250,34 +230,34 @@ const AudioWaveformPanel: React.FC = () => {
           <div className="grid sm:grid-cols-2 gap-3">
             {(outputSelection === 'video' || outputSelection === 'both') && (
               <div>
-                <label className="block text-sm font-medium text-card-foreground mb-1">Video format</label>
+                <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.videoFormat')}</label>
                 <select
                   value={videoFormat}
                   onChange={(e) => setVideoFormat(e.target.value as 'mp4' | 'webm')}
                   className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
                 >
-                  <option value="mp4">MP4 (recommended)</option>
-                  <option value="webm">WebM</option>
+                  <option value="mp4">{t('audioWaveformPanel.videoFormats.mp4')}</option>
+                  <option value="webm">{t('audioWaveformPanel.videoFormats.webm')}</option>
                 </select>
               </div>
             )}
             {(outputSelection === 'image' || outputSelection === 'both') && (
               <div>
-                <label className="block text-sm font-medium text-card-foreground mb-1">Image format</label>
+                <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.imageFormat')}</label>
                 <select
                   value={imageFormat}
                   onChange={(e) => setImageFormat(e.target.value as 'png' | 'webp')}
                   className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
                 >
-                  <option value="png">PNG (recommended)</option>
-                  <option value="webp">WebP</option>
+                  <option value="png">{t('audioWaveformPanel.imageFormats.png')}</option>
+                  <option value="webp">{t('audioWaveformPanel.imageFormats.webp')}</option>
                 </select>
               </div>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">Aspect ratio &amp; size</label>
+            <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.aspectRatioSize')}</label>
             <select
               value={presetId}
               disabled={customSize}
@@ -285,16 +265,18 @@ const AudioWaveformPanel: React.FC = () => {
               className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground disabled:opacity-60"
             >
               {PRESETS.map((preset) => (
-                <optgroup key={preset.id} label={preset.label}>
+                <optgroup key={preset.id} label={t(`audioWaveformPanel.presets.${preset.id}`)}>
                   {preset.sizes.map((s) => (
-                    <option key={s.id} value={s.id}>{s.label}</option>
+                    <option key={s.id} value={s.id}>
+                      {t('audioWaveformPanel.sizeLabel', { width: s.width, height: s.height, qualifier: t(`audioWaveformPanel.sizeQualifiers.${s.qualifier}`) })}
+                    </option>
                   ))}
                 </optgroup>
               ))}
             </select>
             <label className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
               <input type="checkbox" checked={customSize} onChange={(e) => setCustomSize(e.target.checked)} />
-              Use custom width / height
+              {t('audioWaveformPanel.useCustomSize')}
             </label>
             {customSize && (
               <div className="grid grid-cols-2 gap-2 mt-2">
@@ -305,7 +287,7 @@ const AudioWaveformPanel: React.FC = () => {
                   value={width}
                   onChange={(e) => setWidth(Math.max(64, Math.min(7680, Number(e.target.value) || 0)))}
                   className="p-2 border border-input rounded-lg bg-input text-card-foreground"
-                  placeholder="Width"
+                  placeholder={t('audioWaveformPanel.widthPlaceholder')}
                 />
                 <input
                   type="number"
@@ -314,7 +296,7 @@ const AudioWaveformPanel: React.FC = () => {
                   value={height}
                   onChange={(e) => setHeight(Math.max(64, Math.min(7680, Number(e.target.value) || 0)))}
                   className="p-2 border border-input rounded-lg bg-input text-card-foreground"
-                  placeholder="Height"
+                  placeholder={t('audioWaveformPanel.heightPlaceholder')}
                 />
               </div>
             )}
@@ -326,13 +308,13 @@ const AudioWaveformPanel: React.FC = () => {
             className="flex items-center gap-2 text-sm font-medium text-card-foreground"
           >
             {advancedOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-            Advanced waveform settings
+            {t('audioWaveformPanel.advancedSettings')}
           </button>
 
           {advancedOpen && (
             <div className="space-y-4 border border-border rounded-lg p-4 bg-background/40">
               <div>
-                <label className="block text-sm font-medium text-card-foreground mb-2">Render mode</label>
+                <label className="block text-sm font-medium text-card-foreground mb-2">{t('audioWaveformPanel.renderMode')}</label>
                 <div className="grid sm:grid-cols-2 gap-2">
                   {MODE_OPTIONS.map((opt) => (
                     <button
@@ -347,28 +329,28 @@ const AudioWaveformPanel: React.FC = () => {
                     >
                       <div className="flex items-center gap-2 font-medium text-card-foreground">
                         <Waves className="w-4 h-4 text-blue-600" />
-                        {opt.label}
+                        {t(`audioWaveformPanel.modes.${opt.value}.label`)}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">{opt.description}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t(`audioWaveformPanel.modes.${opt.value}.description`)}</p>
                       <pre className="mt-2 text-xs font-mono text-card-foreground/80 select-none">{opt.preview}</pre>
                     </button>
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Render mode applies to the waveform video. Image output uses a still-frame renderer that ignores the mode setting.
+                  {t('audioWaveformPanel.renderModeNote')}
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-card-foreground mb-1">Frame rate</label>
+                <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.frameRate')}</label>
                 <div className="flex items-center gap-2">
                   <select
                     value={rateMode}
                     onChange={(e) => setRateMode(e.target.value as 'rate' | 'n')}
                     className="p-2 border border-input rounded-lg bg-input text-card-foreground"
                   >
-                    <option value="rate">Use frame rate</option>
-                    <option value="n">Use samples per column (n)</option>
+                    <option value="rate">{t('audioWaveformPanel.useFrameRate')}</option>
+                    <option value="n">{t('audioWaveformPanel.useSamples')}</option>
                   </select>
                   {rateMode === 'rate' ? (
                     <select
@@ -377,7 +359,7 @@ const AudioWaveformPanel: React.FC = () => {
                       className="p-2 border border-input rounded-lg bg-input text-card-foreground"
                     >
                       {FPS_PRESETS.map((f) => (
-                        <option key={f} value={String(f)}>{f} fps{f === 25 ? ' (default)' : ''}</option>
+                        <option key={f} value={String(f)}>{f === 25 ? t('audioWaveformPanel.fpsDefaultOption', { fps: f }) : t('audioWaveformPanel.fpsOption', { fps: f })}</option>
                       ))}
                     </select>
                   ) : (
@@ -387,24 +369,24 @@ const AudioWaveformPanel: React.FC = () => {
                       max={1024}
                       value={n}
                       onChange={(e) => setN(Math.max(0, Math.min(1024, Number(e.target.value) || 0)))}
-                      placeholder="e.g. 64"
+                      placeholder={t('audioWaveformPanel.samplesPlaceholder')}
                       className="p-2 border border-input rounded-lg bg-input text-card-foreground w-32"
                     />
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Choose either the output frame rate <em>or</em> the number of audio samples drawn per column. Not both.
+                  <Trans i18nKey="interface:audioWaveformPanel.frameRateNote" components={{ em: <em /> }} />
                 </p>
               </div>
 
               <label className="flex items-center gap-2 text-sm text-card-foreground">
                 <input type="checkbox" checked={splitChannels} onChange={(e) => setSplitChannels(e.target.checked)} />
-                Split stereo channels (draw left and right separately)
+                {t('audioWaveformPanel.splitChannels')}
               </label>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-1">Primary color</label>
+                  <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.primaryColor')}</label>
                   <input
                     type="color"
                     value={colorPrimary}
@@ -413,7 +395,7 @@ const AudioWaveformPanel: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-1">Secondary color (split mode)</label>
+                  <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.secondaryColor')}</label>
                   <input
                     type="color"
                     value={colorSecondary}
@@ -425,27 +407,27 @@ const AudioWaveformPanel: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-1">Scale</label>
+                  <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.scale')}</label>
                   <select
                     value={scale}
                     onChange={(e) => setScale(e.target.value as typeof scale)}
                     className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
                   >
-                    <option value="lin">lin — most direct/accurate</option>
-                    <option value="log">log — makes quiet parts more visible</option>
-                    <option value="sqrt">sqrt — gentle boost to quiet parts</option>
-                    <option value="cbrt">cbrt — stronger boost to quiet parts</option>
+                    <option value="lin">{t('audioWaveformPanel.scaleOptions.lin')}</option>
+                    <option value="log">{t('audioWaveformPanel.scaleOptions.log')}</option>
+                    <option value="sqrt">{t('audioWaveformPanel.scaleOptions.sqrt')}</option>
+                    <option value="cbrt">{t('audioWaveformPanel.scaleOptions.cbrt')}</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-1">Draw</label>
+                  <label className="block text-sm font-medium text-card-foreground mb-1">{t('audioWaveformPanel.draw')}</label>
                   <select
                     value={draw}
                     onChange={(e) => setDraw(e.target.value as typeof draw)}
                     className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
                   >
-                    <option value="scale">scale (default)</option>
-                    <option value="full">full</option>
+                    <option value="scale">{t('audioWaveformPanel.drawOptions.scale')}</option>
+                    <option value="full">{t('audioWaveformPanel.drawOptions.full')}</option>
                   </select>
                 </div>
               </div>
@@ -468,7 +450,7 @@ const AudioWaveformPanel: React.FC = () => {
               </div>
             )}
             {isProcessing ? <Sparkles className="w-4 h-4" /> : null}
-            {!isProcessing ? 'Generating waveform…' : 'Generate waveform'}
+            {!isProcessing ? t('audioWaveformPanel.generating') : t('audioWaveformPanel.generate')}
           </button>
         </form>
       )}

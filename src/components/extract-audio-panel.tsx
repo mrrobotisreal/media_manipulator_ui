@@ -3,18 +3,13 @@ import { Music } from 'lucide-react';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
+import { useLocalization } from '@/i18n/useLocalization';
 
-const FORMAT_OPTIONS = [
-  { value: 'mp3', label: 'MP3 (compact, plays everywhere)' },
-  { value: 'wav', label: 'WAV (lossless, large)' },
-  { value: 'm4a', label: 'M4A (AAC — good quality, compact)' },
-  { value: 'aac', label: 'AAC (raw)' },
-  { value: 'flac', label: 'FLAC (lossless)' },
-  { value: 'ogg', label: 'OGG (Vorbis)' },
-] as const;
+const FORMAT_VALUES = ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'] as const;
 
 const ExtractAudioPanel: React.FC = () => {
-  const [format, setFormat] = useState<typeof FORMAT_OPTIONS[number]['value']>('mp3');
+  const { t } = useLocalization('interface');
+  const [format, setFormat] = useState<typeof FORMAT_VALUES[number]>('mp3');
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const { mutate, isPending, uploadProgress } = useSpecializedMediaTool((res) => {
     setConversionJob({
@@ -28,7 +23,7 @@ const ExtractAudioPanel: React.FC = () => {
   return (
     <SpecializedToolShell
       accept="video/*"
-      uploadHint="video file"
+      uploadHint={t('extractAudio.uploadHint')}
       conversionJob={conversionJob}
       setConversionJob={setConversionJob}
       isUploading={isPending}
@@ -46,18 +41,18 @@ const ExtractAudioPanel: React.FC = () => {
           className="space-y-4"
         >
           <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">Output audio format</label>
+            <label className="block text-sm font-medium text-card-foreground mb-1">{t('extractAudio.formatLabel')}</label>
             <select
               value={format}
               onChange={(e) => setFormat(e.target.value as typeof format)}
               className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
             >
-              {FORMAT_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
+              {FORMAT_VALUES.map((value) => (
+                <option key={value} value={value}>{t(`extractAudio.formats.${value}`)}</option>
               ))}
             </select>
             <p className="text-xs text-muted-foreground mt-1">
-              The extracted track keeps the source's full duration and quality. Videos with no audio will return a clear error.
+              {t('extractAudio.note')}
             </p>
           </div>
           <button
@@ -66,7 +61,7 @@ const ExtractAudioPanel: React.FC = () => {
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             <Music className="w-4 h-4" />
-            {isProcessing ? 'Extracting…' : 'Extract audio'}
+            {isProcessing ? t('extractAudio.running') : t('extractAudio.submit')}
           </button>
         </form>
       )}

@@ -1,0 +1,283 @@
+{
+  "transcribeResultView": {
+    "loading": "Loading transcript result...",
+    "noResult": "No transcript result is available for this job.",
+    "complete": "Transcription complete",
+    "outputFormat": "Output format:",
+    "language": "Language: {{language}}",
+    "duration": "Duration: {{duration}}",
+    "noAudioStream": "No audio stream",
+    "noSpeech": "No recognizable speech",
+    "nothingToTranscribe": "Nothing to transcribe",
+    "noTranscriptGenerated": "No transcript could be generated for this file.",
+    "transcriptHeader_one": "Transcript ({{count}} segment)",
+    "transcriptHeader_other": "Transcript ({{count}} segments)",
+    "aiSummaryTitle": "AI summary & safety review",
+    "analysisRunning": "Running summary and safety review in the background...",
+    "analysisError": "Analysis error: {{error}}",
+    "summary": "Summary",
+    "extendedSummary": "Extended summary",
+    "safetyBadge": "Safety: {{rating}}",
+    "harmfulFlagged": "Potentially harmful content detected",
+    "harmfulNone": "No harmful content flagged",
+    "sentimentBadge": "Sentiment: {{label}}",
+    "notesLabel": "Notes: {{notes}}",
+    "summaryPending": "Summary and safety review will appear here once the analysis job finishes.",
+    "unknown": "unknown"
+  },
+  "specializedToolShell": {
+    "dropHere": "Drop your {{hint}} here",
+    "selectHint": "or click to select from your computer. Files stay on our servers for at most 24 hours and are then deleted.",
+    "selectFile": "Select file",
+    "removeFile": "Remove file",
+    "uploadingPercent": "Uploading {{percent}}%",
+    "workingOnFile": "Working on your file…",
+    "previewResult": "Preview result",
+    "downloadResult": "Download result",
+    "jobFailed": "Job failed. Try a different file or refresh.",
+    "resultPreview": "Result preview",
+    "toggleHint": "Toggle between the original input and the finalized result.",
+    "closePreview": "Close preview",
+    "loadingPreview": "Loading preview…",
+    "zipPreviewTitle": "Preview not available for ZIP downloads",
+    "zipPreviewBody": "This result is packaged as a ZIP archive. Download it and extract locally to view the contents."
+  },
+  "embeddedToolPanel": {
+    "sectionAria": "Embedded media converter",
+    "tryItNow": "Try it now",
+    "recommendedOutput": "Recommended output:",
+    "outputFormat": "Output format:",
+    "expectedInput": "Expected input:",
+    "accepts": "Accepts:",
+    "dragDrop": "Drag and drop a {{kind}} file here",
+    "mediaKinds": {
+      "image": "image",
+      "video": "video",
+      "audio": "audio",
+      "pdf": "PDF"
+    },
+    "selectHint": "or click to select from your computer. Files stay on our servers for at most 24 hours and are then deleted.",
+    "selectFile": "Select file",
+    "removeFile": "Remove file",
+    "uploadingPercent": "Uploading {{percent}}%",
+    "workingOnFile": "Working on your file…",
+    "downloadFilename": "Download {{filename}}",
+    "transcribeFailed": "Transcription failed.",
+    "conversionFailed": "Conversion failed.",
+    "tryAgainOrOpen": "Try again or open the full converter.",
+    "needFullPrefix": "Need the full feature set?",
+    "openFullConverter": "Open the full converter",
+    "needFullSuffix": "— it includes the conversion history, transcript flow, and AI tools."
+  },
+  "extractAudio": {
+    "title": "Extract audio",
+    "subtitle": "Pull the audio track out of a video file and save it as MP3, WAV, AAC, OGG, or FLAC.",
+    "formatLabel": "Output audio format",
+    "submit": "Extract audio",
+    "running": "Extracting…",
+    "success": "Audio extracted. Use the download button to save it.",
+    "uploadHint": "video file",
+    "note": "The extracted track keeps the source's full duration and quality. Videos with no audio will return a clear error.",
+    "formats": {
+      "mp3": "MP3 (compact, plays everywhere)",
+      "wav": "WAV (lossless, large)",
+      "m4a": "M4A (AAC — good quality, compact)",
+      "aac": "AAC (raw)",
+      "flac": "FLAC (lossless)",
+      "ogg": "OGG (Vorbis)"
+    }
+  },
+  "extractVideoOnly": {
+    "title": "Extract video (no audio)",
+    "subtitle": "Strip the audio track from a video file, keeping only the video stream.",
+    "uploadHint": "video file",
+    "formatLabel": "Output container",
+    "formats": {
+      "mp4": "MP4 (recommended)",
+      "webm": "WebM"
+    },
+    "note": "The video stream is stream-copied wherever possible — no quality loss. We re-encode only if the destination container needs it.",
+    "submit": "Remove audio from video",
+    "running": "Stripping audio…",
+    "success": "Video stream extracted."
+  },
+  "extractFrames": {
+    "title": "Extract frames",
+    "subtitle": "Save individual frames from a video as PNG, JPG, or WebP images.",
+    "uploadHint": "video file",
+    "modeLabel": "Extraction mode",
+    "modes": {
+      "every_n_seconds": "Every N seconds",
+      "fps": "Specific frames per second",
+      "timestamp": "Specific timestamps"
+    },
+    "secondsBetween": "Seconds between frames",
+    "fpsLabel": "Frames per second",
+    "timestampsLabel": "Timestamps in seconds (comma-separated)",
+    "timestampsPlaceholder": "e.g. 1, 5.5, 12, 30",
+    "imageFormatLabel": "Image format",
+    "formats": {
+      "jpg": "JPG",
+      "png": "PNG (lossless)",
+      "webp": "WebP"
+    },
+    "maxFramesLabel": "Max frames",
+    "zipNote": "Frames are bundled into a single ZIP for download. We cap the count to keep jobs fast and predictable; raise the limit if you really need more.",
+    "submit": "Extract frames",
+    "running": "Extracting frames…",
+    "success": "Frames extracted. Download the ZIP below."
+  },
+  "captionTranslator": {
+    "title": "Translate captions",
+    "subtitle": "Upload a VTT, SRT, or TXT caption file and translate it to another language.",
+    "dropHere": "Drop your .srt or .vtt file here",
+    "privacyNote": "Files are processed on our own server and deleted within 24 hours. We do not send your captions to third-party AI providers.",
+    "selectCaptionFile": "Select caption file",
+    "removeFile": "Remove file",
+    "sourceLanguage": "Source language",
+    "targetLanguage": "Target language",
+    "autoDetect": "Auto-detect (recommended)",
+    "outputFormat": "Output format",
+    "sameAsInput": "Same as input ({{format}})",
+    "formats": {
+      "srt": "SRT (SubRip)",
+      "vtt": "VTT (WebVTT)"
+    },
+    "timingNote": "Cue timing and ordering are preserved exactly — only the cue text is translated.",
+    "translating": "Translating…",
+    "translateCaptions": "Translate captions",
+    "uploadingPercent": "Uploading {{percent}}%",
+    "translatingWithModel": "Translating with local AI model…",
+    "downloadTranslated": "Download translated captions",
+    "translationFailed": "Translation failed. Try a smaller file or a different target language."
+  },
+  "stitchAudioToVideo": {
+    "title": "Stitch audio onto a video",
+    "subtitle": "Add or replace audio tracks on a video file.",
+    "dropBaseVideo": "Drop your base video here",
+    "intro": "Pick the video first — you'll add audio tracks (voiceover, music, narration) next.",
+    "selectVideo": "Select video",
+    "removeBaseVideo": "Remove base video",
+    "audioTracks": "Audio tracks",
+    "removeTrack": "Remove track",
+    "volume": "Volume",
+    "startOffset": "Start offset (seconds)",
+    "loopTrack": "Loop this track to match the video length",
+    "addAudioTrack": "Add audio track ({{count}}/{{max}})",
+    "audioModeLabel": "Audio mode",
+    "audioModes": {
+      "mix": "Mix with existing audio",
+      "replace": "Replace original audio"
+    },
+    "outputLengthLabel": "Output length",
+    "outputLength": {
+      "video": "Trim to video duration",
+      "longest": "Match longest input"
+    },
+    "stitching": "Stitching audio + video…",
+    "addAudioToVideo": "Add audio to video",
+    "uploadingPercent": "Uploading {{percent}}%",
+    "mixingOnServer": "Mixing on the server…",
+    "downloadStitched": "Download stitched video",
+    "stitchFailed": "Stitch failed. Check that your audio files are valid and try again."
+  },
+  "aiVideoTools": {
+    "title": "AI Video Tools",
+    "tooltipIntro": "AI Video Tools currently includes <strong>AI Frame Interpolation</strong>, which generates new in-between frames so motion plays back more smoothly.",
+    "tooltipBestFor": "Best for taking 24/30fps footage up to 60fps or 60fps up to 120fps. This is GPU-heavy and currently always outputs MP4.",
+    "intro": "AI frame interpolation creates in-between frames for smoother motion. Best for 24/30fps → 60fps or 60fps → 120fps clips.",
+    "gpuNote": "This is GPU-heavy and currently outputs MP4. For long or 4K videos, use a lower max processing height first. This is different from basic FPS conversion — AI interpolation synthesizes new frames rather than duplicating them, and bypasses most other visual / temporal filters in v1.",
+    "operationLabel": "Operation",
+    "operations": {
+      "none_short": "None",
+      "frame_interpolation": "AI Frame Interpolation"
+    },
+    "frameInterpolation": {
+      "targetFpsLabel": "Target frame rate",
+      "modelLabel": "RIFE model",
+      "models": {
+        "rife-v4.6": "RIFE v4.6 — recommended",
+        "rife-v4": "RIFE v4",
+        "rife-v2.3": "RIFE v2.3 — compatibility"
+      },
+      "qualityLabel": "Quality",
+      "qualityOptions": {
+        "low": "Low — faster encode",
+        "medium": "Medium — balanced",
+        "high": "High — slower encode"
+      },
+      "maxHeightLabel": "Max processing height",
+      "preserveAudio": "Preserve audio track from the source"
+    },
+    "notes": {
+      "mp4": "Output is always MP4 (H.264 + AAC) in v1.",
+      "trim": "Trim is disabled with AI frame interpolation in v1 — trim the clip separately first if needed.",
+      "artifacts": "Fast motion, scene cuts, hair, hands, wheels, and occlusions can show interpolation artifacts. Preview before publishing."
+    }
+  },
+  "audioWaveformPanel": {
+    "uploadHint": "audio file",
+    "previewTitle": "Waveform preview",
+    "sizeQualifiers": {
+      "small": "small",
+      "medium": "medium",
+      "large": "large",
+      "xl": "extra large"
+    },
+    "presets": {
+      "10x1": "10:1 — Wide waveform (recommended)",
+      "8x1": "8:1 — Wide waveform",
+      "6x1": "6:1 — Balanced wide waveform",
+      "16x9": "16:9 — Standard video / social preview",
+      "1x1": "1:1 — Square social preview"
+    },
+    "sizeLabel": "{{width}}×{{height}} ({{qualifier}})",
+    "modes": {
+      "point": { "label": "Point", "description": "A single dot per sample — clean and minimal." },
+      "line": { "label": "Line", "description": "A vertical bar per sample — bolder presence." },
+      "p2p": { "label": "Point to point", "description": "A dot per sample plus connecting lines — flowing look." },
+      "cline": { "label": "Centered line", "description": "Vertical line centered on the axis — symmetrical look." }
+    },
+    "output": "Output",
+    "outputOptions": {
+      "video": "Waveform video",
+      "image": "Waveform image",
+      "both": "Both (ZIP)"
+    },
+    "bothNote": "Both outputs will be packaged into a single .zip you can download in one click.",
+    "includeAudio": "Include original audio with generated waveform video",
+    "includeAudioNote": "The waveform video will play in sync with the source audio — perfect for audiograms, music previews, and podcast clips. Turn off for a silent waveform.",
+    "videoFormat": "Video format",
+    "videoFormats": { "mp4": "MP4 (recommended)", "webm": "WebM" },
+    "imageFormat": "Image format",
+    "imageFormats": { "png": "PNG (recommended)", "webp": "WebP" },
+    "aspectRatioSize": "Aspect ratio & size",
+    "useCustomSize": "Use custom width / height",
+    "widthPlaceholder": "Width",
+    "heightPlaceholder": "Height",
+    "advancedSettings": "Advanced waveform settings",
+    "renderMode": "Render mode",
+    "renderModeNote": "Render mode applies to the waveform video. Image output uses a still-frame renderer that ignores the mode setting.",
+    "frameRate": "Frame rate",
+    "useFrameRate": "Use frame rate",
+    "useSamples": "Use samples per column (n)",
+    "fpsOption": "{{fps}} fps",
+    "fpsDefaultOption": "{{fps}} fps (default)",
+    "samplesPlaceholder": "e.g. 64",
+    "frameRateNote": "Choose either the output frame rate <em>or</em> the number of audio samples drawn per column. Not both.",
+    "splitChannels": "Split stereo channels (draw left and right separately)",
+    "primaryColor": "Primary color",
+    "secondaryColor": "Secondary color (split mode)",
+    "scale": "Scale",
+    "scaleOptions": {
+      "lin": "lin — most direct/accurate",
+      "log": "log — makes quiet parts more visible",
+      "sqrt": "sqrt — gentle boost to quiet parts",
+      "cbrt": "cbrt — stronger boost to quiet parts"
+    },
+    "draw": "Draw",
+    "drawOptions": { "scale": "scale (default)", "full": "full" },
+    "generating": "Generating waveform…",
+    "generate": "Generate waveform"
+  }
+}

@@ -1,11 +1,13 @@
 import React, { lazy, Suspense, useState, useCallback, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Trans } from 'react-i18next';
 import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles, Film } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import AdBanner from '@/components/ad-banner';
 import { AD_SLOTS } from '@/lib/adSlots';
+import { useLocalization } from '@/i18n/useLocalization';
 import type { ConversionFormData } from '@/schemas/types';
 
 // Each conversion form pulls in its own schema, form fields, and helpers.
@@ -18,9 +20,12 @@ const TranscribeForm = lazy(() => import('@/components/transcribe-form'));
 const TranscribeResultView = lazy(() => import('@/components/transcribe-result-view'));
 const VideoTranscodeForm = lazy(() => import('@/components/video-transcode-form'));
 
-const FormFallback: React.FC = () => (
-  <div className="text-sm text-muted-foreground py-4">Loading converter…</div>
-);
+const FormFallback: React.FC = () => {
+  const { t } = useLocalization('interface');
+  return (
+    <div className="text-sm text-muted-foreground py-4">{t('home.fileLoadingConverter')}</div>
+  );
+};
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, { type TranscribeFormData, type TranscribeUploadResponse } from '@/lib/useTranscribeFile';
 import { useTranscribeResult, useAnalysisResult } from '@/lib/useTranscribeResult';
@@ -45,7 +50,7 @@ type WorkflowMode = 'convert' | 'transcribe' | 'transcode';
 
 interface ConversionHistoryItem {
   jobId: string;
-  mediaKind: 'image' | 'video' | 'audio' | 'unknown';
+  mediaKind: 'image' | 'video' | 'audio' | 'pdf' | 'unknown';
   mode: WorkflowMode;
   fileName: string;
   outputFileName: string;
@@ -60,7 +65,7 @@ interface ConversionHistoryItem {
 }
 
 interface PendingConversionDetails {
-  mediaKind: 'image' | 'video' | 'audio' | 'unknown';
+  mediaKind: 'image' | 'video' | 'audio' | 'pdf' | 'unknown';
   mode: WorkflowMode;
   fileName: string;
   outputFileName: string;
@@ -70,6 +75,7 @@ interface PendingConversionDetails {
 }
 
 const FileConverterApp: React.FC = () => {
+  const { t, formatFileSize, formatTime } = useLocalization(['interface', 'accessibility', 'error']);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const [conversionOptions, setConversionOptions] = useState<ConversionFormData | null>(null);
@@ -506,7 +512,7 @@ const FileConverterApp: React.FC = () => {
       if (openModal) setIsResultModalOpen(true);
     } catch (error) {
       console.error('Failed to load result preview:', error);
-      const message = error instanceof Error ? error.message : 'Failed to load converted image preview';
+      const message = error instanceof Error ? error.message : t('error:conversion.previewFailed');
       setResultPreviewError(message);
       trackFirstPartyError('result_preview', error, {
         file_type: historyItem?.mediaKind || 'unknown',
@@ -645,17 +651,16 @@ const FileConverterApp: React.FC = () => {
   const activePhase = isTranscribePending ? transcribeUploadPhase : uploadPhase;
   const activeProgress = isTranscribePending ? transcribeUploadProgress : uploadProgress;
   const uploadPhaseLabel = activePhase === 'requesting-url'
-    ? 'Preparing secure upload...'
+    ? t('interface:home.progress.preparingUpload')
     : activePhase === 'uploading-to-s3'
-      ? 'Uploading file directly to S3...'
+      ? t('interface:home.progress.uploadingToS3')
       : activePhase === 'finalizing'
-        ? 'Staging uploaded file on the server...'
+        ? t('interface:home.progress.finalizing')
         : workflowMode === 'transcribe'
-          ? 'Starting transcription...'
-          : 'Starting conversion...';
+          ? t('interface:home.progress.startingTranscription')
+          : t('interface:home.progress.startingConversion');
 
-  const formatHistoryTime = (timestamp: number) =>
-    new Date(timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  const formatHistoryTime = (timestamp: number) => formatTime(timestamp);
   const activeHistoryItem = activeResultJobId
     ? conversionHistory.find(item => item.jobId === activeResultJobId)
     : undefined;
@@ -677,12 +682,12 @@ const FileConverterApp: React.FC = () => {
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
               <div>
                 <h2 className="text-xl font-semibold text-card-foreground">
-                  {activeHistoryItem.mode === 'transcribe' ? 'Transcript Result' : 'Converted File Preview'}
+                  {activeHistoryItem.mode === 'transcribe' ? t('interface:home.result.transcriptResult') : t('interface:home.result.convertedPreview')}
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   {activeHistoryItem.mode === 'transcribe'
-                    ? `Transcript and AI review for ${activeHistoryItem.fileName}.`
-                    : `Toggle between the original and finalized edited version of ${activeHistoryItem.fileName}.`}
+                    ? t('interface:home.result.transcriptSubtitle', { filename: activeHistoryItem.fileName })
+                    : t('interface:home.result.convertedSubtitle', { filename: activeHistoryItem.fileName })}
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
@@ -697,7 +702,7 @@ const FileConverterApp: React.FC = () => {
                           : 'bg-background text-card-foreground hover:bg-muted'
                       }`}
                     >
-                      Original
+                      {t('interface:home.result.original')}
                     </button>
                     <button
                       type="button"
@@ -708,7 +713,7 @@ const FileConverterApp: React.FC = () => {
                           : 'bg-background text-card-foreground hover:bg-muted'
                       }`}
                     >
-                      Final
+                      {t('interface:home.result.final')}
                     </button>
                   </div>
                 )}
@@ -718,13 +723,13 @@ const FileConverterApp: React.FC = () => {
                   className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  Download
+                  {t('interface:common.download')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsResultModalOpen(false)}
                   className="text-muted-foreground hover:text-card-foreground transition-colors p-2"
-                  aria-label="Close preview"
+                  aria-label={t('accessibility:home.closePreview')}
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -742,7 +747,7 @@ const FileConverterApp: React.FC = () => {
                   />
                 </Suspense>
               ) : isLoadingResultPreview ? (
-                <p className="text-card-foreground">Loading converted image...</p>
+                <p className="text-card-foreground">{t('interface:home.result.loadingPreview')}</p>
               ) : resultPreviewError ? (
                 <div className="text-center space-y-3">
                   <p className="text-destructive">{resultPreviewError}</p>
@@ -751,7 +756,7 @@ const FileConverterApp: React.FC = () => {
                     onClick={() => void loadResultPreview(activeResultJobId || conversionJob?.id, true)}
                     className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
                   >
-                    Try Loading Preview Again
+                    {t('interface:home.result.tryLoadingAgain')}
                   </button>
                 </div>
               ) : (
@@ -759,14 +764,14 @@ const FileConverterApp: React.FC = () => {
                   {activeHistoryItem.mediaKind === 'image' && (
                     <img
                       src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
-                      alt={resultView === 'original' ? 'Original image' : 'Converted image'}
+                      alt={resultView === 'original' ? t('interface:home.result.originalImageAlt') : t('interface:home.result.convertedImageAlt')}
                       className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
                     />
                   )}
                   {activeHistoryItem.mediaKind === 'video' && activeHistoryItem.format === 'gif' && resultView === 'final' && (
                     <img
                       src={resultImageUrl || undefined}
-                      alt="Converted animated GIF"
+                      alt={t('interface:home.result.convertedGifAlt')}
                       className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
                     />
                   )}
@@ -815,20 +820,20 @@ const FileConverterApp: React.FC = () => {
       <div className="max-w-8xl mx-auto p-4 pt-8 flex justify-center items-center flex-col">
         <header className="w-full max-w-5xl text-center mb-8">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-card-foreground tracking-tight">
-            Free Online Media Converter, Editor, Transcriber &amp; Metadata Tool
+            {t('interface:home.hero.title')}
           </h1>
           <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
-            Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.
+            {t('interface:home.hero.subtitle')}
           </p>
-          <nav aria-label="Popular tools" className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-            <Link to="/tools" className="px-3 py-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">All tools</Link>
-            <Link to="/tools/remove-exif-metadata" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Remove EXIF</Link>
-            <Link to="/tools/compress-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Compress video</Link>
-            <Link to="/tools/transcribe-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Transcribe video</Link>
-            <Link to="/tools/transcode-to-hls" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Transcode → HLS</Link>
-            <Link to="/tools/transcode-to-dash" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Transcode → DASH</Link>
-            <Link to="/tools/convert-webp-to-jpg" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">WebP → JPG</Link>
-            <Link to="/tools/convert-wav-to-mp3" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">WAV → MP3</Link>
+          <nav aria-label={t('accessibility:home.popularTools')} className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
+            <Link to="/tools" className="px-3 py-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">{t('interface:home.hero.allTools')}</Link>
+            <Link to="/tools/remove-exif-metadata" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
+            <Link to="/tools/compress-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
+            <Link to="/tools/transcribe-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
+            <Link to="/tools/transcode-to-hls" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeHls')}</Link>
+            <Link to="/tools/transcode-to-dash" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeDash')}</Link>
+            <Link to="/tools/convert-webp-to-jpg" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.webpToJpg')}</Link>
+            <Link to="/tools/convert-wav-to-mp3" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.wavToMp3')}</Link>
           </nav>
         </header>
         <div className="grid lg:grid-cols-2 gap-6 max-w-8xl">
@@ -836,7 +841,7 @@ const FileConverterApp: React.FC = () => {
           <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Upload className="w-5 h-5" />
-              Upload File
+              {t('interface:home.upload.title')}
             </h2>
 
             {!selectedFile ? (
@@ -852,16 +857,16 @@ const FileConverterApp: React.FC = () => {
               >
                 <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-lg font-medium text-card-foreground mb-2">
-                  Drag and drop your file here
+                  {t('interface:home.upload.dragDrop')}
                 </p>
                 <p className="text-muted-foreground mb-4">
-                  or click to select from your computer
+                  {t('interface:home.upload.orClickSelect')}
                 </p>
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  Choose File
+                  {t('interface:home.upload.chooseFile')}
                 </button>
                 <input
                   ref={fileInputRef}
@@ -879,7 +884,7 @@ const FileConverterApp: React.FC = () => {
                     <div>
                       <p className="font-medium text-card-foreground">{selectedFile.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                        {formatFileSize(selectedFile.size)}
                       </p>
                     </div>
                   </div>
@@ -905,7 +910,7 @@ const FileConverterApp: React.FC = () => {
                   className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 transition-colors flex items-center justify-center gap-2"
                 >
                   <Search className="w-4 h-4" />
-                  {isIdentifying ? 'Analyzing...' : 'Identify File Details'}
+                  {isIdentifying ? t('interface:home.upload.analyzing') : t('interface:home.upload.identifyDetails')}
                 </button>
 
                 {/* File Details */}
@@ -923,9 +928,9 @@ const FileConverterApp: React.FC = () => {
               <div className="bg-card rounded-lg border p-4 space-y-3 mt-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="font-medium text-card-foreground">Conversion History</h3>
+                    <h3 className="font-medium text-card-foreground">{t('interface:home.history.title')}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Reopen or download any image, video, or audio result from this session.
+                      {t('interface:home.history.subtitle')}
                     </p>
                   </div>
                   <button
@@ -933,7 +938,7 @@ const FileConverterApp: React.FC = () => {
                     onClick={clearFile}
                     className="text-sm bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                   >
-                    New Conversion
+                    {t('interface:home.history.newConversion')}
                   </button>
                 </div>
                 <div className="space-y-2">
@@ -944,20 +949,20 @@ const FileConverterApp: React.FC = () => {
                           <div className="text-sm font-medium text-card-foreground flex items-center gap-2">
                             {item.mode === 'transcribe' ? <FileText className="w-6 h-6" /> : getFileIcon(item.mediaKind)}
                             <span>
-                              #{conversionHistory.length - index} {item.outputFileName}
+                              {t('interface:home.history.itemLabel', { number: conversionHistory.length - index, filename: item.outputFileName })}
                               {item.mode === 'transcribe' && (
                                 <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
-                                  Transcript
+                                  {t('interface:home.history.transcriptBadge')}
                                 </span>
                               )}
                             </span>
                           </div>
                           <div className="text-xs text-muted-foreground">
                             {item.status === 'processing'
-                              ? `Started ${formatHistoryTime(item.startedAt)} and still processing`
+                              ? t('interface:home.history.startedProcessing', { time: formatHistoryTime(item.startedAt) })
                               : item.status === 'completed'
-                                ? `Completed ${formatHistoryTime(item.completedAt || item.startedAt)}`
-                                : item.error || (item.mode === 'transcribe' ? 'Transcription failed' : 'Conversion failed')}
+                                ? t('interface:home.history.completedAt', { time: formatHistoryTime(item.completedAt || item.startedAt) })
+                                : item.error || (item.mode === 'transcribe' ? t('interface:home.history.transcriptionFailed') : t('interface:home.history.conversionFailed'))}
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2">
@@ -967,7 +972,7 @@ const FileConverterApp: React.FC = () => {
                             onClick={() => void loadResultPreview(item.jobId, true)}
                             className="text-sm bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                           >
-                            Preview
+                            {t('interface:home.history.preview')}
                           </button>
                           <button
                             type="button"
@@ -975,7 +980,7 @@ const FileConverterApp: React.FC = () => {
                             onClick={() => void handleDownload(item.jobId, item.outputFileName)}
                             className="text-sm bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                           >
-                            Download
+                            {t('interface:home.history.download')}
                           </button>
                         </div>
                       </div>
@@ -1005,10 +1010,10 @@ const FileConverterApp: React.FC = () => {
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Settings className="w-5 h-5" />
               {workflowMode === 'transcribe'
-                ? 'Transcription Options'
+                ? t('interface:home.options.transcriptionOptions')
                 : workflowMode === 'transcode'
-                  ? 'Transcode Options'
-                  : 'Conversion Options'}
+                  ? t('interface:home.options.transcodeOptions')
+                  : t('interface:home.options.conversionOptions')}
             </h2>
 
             {selectedFile && (fileType === 'video' || fileType === 'audio') && (
@@ -1023,7 +1028,7 @@ const FileConverterApp: React.FC = () => {
                   }`}
                 >
                   <Settings className="w-4 h-4" />
-                  Convert
+                  {t('interface:home.options.convert')}
                 </button>
                 <button
                   type="button"
@@ -1035,7 +1040,7 @@ const FileConverterApp: React.FC = () => {
                   }`}
                 >
                   <FileText className="w-4 h-4" />
-                  Transcribe
+                  {t('interface:home.options.transcribe')}
                 </button>
                 {fileType === 'video' && (
                   <button
@@ -1048,7 +1053,7 @@ const FileConverterApp: React.FC = () => {
                     }`}
                   >
                     <Film className="w-4 h-4" />
-                    Transcode
+                    {t('interface:home.options.transcode')}
                   </button>
                 )}
               </div>
@@ -1101,10 +1106,10 @@ const FileConverterApp: React.FC = () => {
                       className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
-                      Download {getConvertedFilename()}
+                      {t('interface:home.download.downloadAs', { filename: getConvertedFilename() })}
                     </button>
                     <p className="text-xs text-muted-foreground text-center">
-                      File will be downloaded as: {getConvertedFilename()}
+                      {t('interface:home.download.fileWillBeDownloaded', { filename: getConvertedFilename() })}
                     </p>
                   </div>
                 )}
@@ -1136,7 +1141,7 @@ const FileConverterApp: React.FC = () => {
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">
-                      {conversionJob.progress}% Complete
+                      {t('interface:home.progress.percentComplete', { percent: conversionJob.progress })}
                     </p>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div
@@ -1150,7 +1155,7 @@ const FileConverterApp: React.FC = () => {
                 {conversionJob?.status === 'failed' && (
                   <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
                     <p className="text-destructive">
-                      Conversion failed. Please try again.
+                      {t('interface:home.progress.conversionFailed')}
                     </p>
                   </div>
                 )}
@@ -1178,47 +1183,47 @@ const FileConverterApp: React.FC = () => {
             ) : selectedFile ? (
               <div className="text-center py-8">
                 <p className="text-muted-foreground">
-                  Unsupported file type. Please select an image, video, or audio file.
+                  {t('interface:home.upload.unsupportedFile')}
                 </p>
               </div>
             ) : (
               <div className="space-y-5">
                 <div>
-                  <h3 className="font-semibold text-card-foreground mb-2">Get started in 4 steps</h3>
+                  <h3 className="font-semibold text-card-foreground mb-2">{t('interface:home.gettingStarted.title')}</h3>
                   <ol className="space-y-3">
                     <li className="flex gap-3">
                       <span className="shrink-0 w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 font-semibold flex items-center justify-center text-sm">1</span>
                       <div>
-                        <p className="font-medium text-card-foreground">Upload a file</p>
+                        <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step1.title')}</p>
                         <p className="text-sm text-muted-foreground">
-                          Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files stay on our servers for at most 24 hours and are then deleted.
+                          <Trans i18nKey="interface:home.gettingStarted.step1.body" components={{ em: <em /> }} />
                         </p>
                       </div>
                     </li>
                     <li className="flex gap-3">
                       <span className="shrink-0 w-7 h-7 rounded-full bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-300 font-semibold flex items-center justify-center text-sm">2</span>
                       <div>
-                        <p className="font-medium text-card-foreground">Pick your settings here</p>
+                        <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step2.title')}</p>
                         <p className="text-sm text-muted-foreground">
-                          The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation.
+                          <Trans i18nKey="interface:home.gettingStarted.step2.body" components={{ em: <em /> }} />
                         </p>
                       </div>
                     </li>
                     <li className="flex gap-3">
                       <span className="shrink-0 w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 font-semibold flex items-center justify-center text-sm">3</span>
                       <div>
-                        <p className="font-medium text-card-foreground">Convert</p>
+                        <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step3.title')}</p>
                         <p className="text-sm text-muted-foreground">
-                          Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time.
+                          <Trans i18nKey="interface:home.gettingStarted.step3.body" components={{ em: <em /> }} />
                         </p>
                       </div>
                     </li>
                     <li className="flex gap-3">
                       <span className="shrink-0 w-7 h-7 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-300 font-semibold flex items-center justify-center text-sm">4</span>
                       <div>
-                        <p className="font-medium text-card-foreground">Preview and download</p>
+                        <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step4.title')}</p>
                         <p className="text-sm text-muted-foreground">
-                          The result auto-previews when it's ready. Toggle between Original and Final, then click Download.
+                          <Trans i18nKey="interface:home.gettingStarted.step4.body" components={{ em: <em /> }} />
                         </p>
                       </div>
                     </li>
@@ -1229,9 +1234,9 @@ const FileConverterApp: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <Sparkles className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-card-foreground">Includes local AI tools</p>
+                      <p className="font-medium text-card-foreground">{t('interface:home.localAi.title')}</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files.
+                        {t('interface:home.localAi.body')}
                       </p>
                     </div>
                   </div>
@@ -1241,16 +1246,16 @@ const FileConverterApp: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <BookOpen className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-card-foreground">Not sure where to begin?</p>
+                      <p className="font-medium text-card-foreground">{t('interface:home.notSure.title')}</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.
+                        {t('interface:home.notSure.body')}
                       </p>
                       <Link
                         to="/tutorials"
                         className="inline-flex items-center gap-2 mt-3 bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
                       >
                         <BookOpen className="w-4 h-4" />
-                        Browse Tutorials
+                        {t('interface:home.notSure.cta')}
                       </Link>
                     </div>
                   </div>
@@ -1260,16 +1265,16 @@ const FileConverterApp: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <HelpCircle className="w-5 h-5 text-purple-600 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-card-foreground">How it works</p>
+                      <p className="font-medium text-card-foreground">{t('interface:home.howItWorks.title')}</p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.
+                        {t('interface:home.howItWorks.body')}
                       </p>
                       <Link
                         to="/how-it-works"
                         className="inline-flex items-center gap-2 mt-3 bg-card border border-border text-card-foreground px-3 py-2 rounded-lg hover:bg-muted transition-colors text-sm"
                       >
                         <HelpCircle className="w-4 h-4" />
-                        Read How it Works
+                        {t('interface:home.howItWorks.cta')}
                       </Link>
                     </div>
                   </div>
@@ -1283,7 +1288,7 @@ const FileConverterApp: React.FC = () => {
         {conversionJob?.status === 'processing' && (
           <div className="mt-6 bg-card rounded-xl shadow-lg p-6 border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-card-foreground">Converting...</span>
+              <span className="text-sm font-medium text-card-foreground">{t('interface:home.progress.converting')}</span>
               <span className="text-sm text-muted-foreground">
                 {conversionJob.progress || 0}%
               </span>

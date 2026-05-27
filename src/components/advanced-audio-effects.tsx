@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import { ChevronDown, ChevronRight, Volume2, Clock, Wrench, Zap } from 'lucide-react';
+import { Trans } from 'react-i18next';
 import InfoTooltip from '@/components/info-tooltip';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface AdvancedAudioEffectsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) => {
+  const { t } = useLocalization('interface');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [amplify, setAmplify] = useState(0);
   const [pan, setPan] = useState(0);
@@ -58,18 +61,18 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
-        Advanced Audio Effects
+        {t('advancedAudioEffects.title')}
         <InfoTooltip
-          ariaLabel="About Advanced Audio Effects"
+          ariaLabel={t('advancedAudioEffects.tooltipAria')}
           width="lg"
           content={
             <div className="space-y-1">
-              <p>Manual audio processing chains, grouped into four expandable sections:</p>
+              <p>{t('advancedAudioEffects.tooltipIntro')}</p>
               <ul className="list-disc pl-4 space-y-1 mt-1">
-                <li><strong>Basic Audio Processing</strong> — normalize, amplify, fade in/out, EQ presets, stereo width/pan/balance.</li>
-                <li><strong>Time-Based Effects</strong> — reverb, delay, and modulation (chorus, flanger, tremolo, vibrato).</li>
-                <li><strong>Restoration &amp; Cleanup</strong> — noise reduction, de-hum, declip, silence removal.</li>
-                <li><strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.</li>
+                <li><Trans i18nKey="interface:advancedAudioEffects.tooltipBasic" components={{ strong: <strong /> }} /></li>
+                <li><Trans i18nKey="interface:advancedAudioEffects.tooltipTime" components={{ strong: <strong /> }} /></li>
+                <li><Trans i18nKey="interface:advancedAudioEffects.tooltipRestoration" components={{ strong: <strong /> }} /></li>
+                <li><Trans i18nKey="interface:advancedAudioEffects.tooltipAdvanced" components={{ strong: <strong /> }} /></li>
               </ul>
             </div>
           }
@@ -80,9 +83,9 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="basic"
-          title="Basic Audio Processing"
+          title={t('advancedAudioEffects.sections.basic.title')}
           icon={<Volume2 className="w-5 h-5 text-blue-600" />}
-          description="Volume control, EQ, dynamics, and stereo processing"
+          description={t('advancedAudioEffects.sections.basic.description')}
         />
 
         {expandedSections.has('basic') && (
@@ -90,15 +93,15 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
             {/* Volume Controls */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
-                Volume &amp; Dynamics
+                {t('advancedAudioEffects.volumeDynamics.title')}
                 <InfoTooltip
-                  ariaLabel="About Volume & Dynamics"
-                  content="Amplify in decibels (-60 to +60), apply fade-in/out durations, and toggle loudness normalization. Use Amplify for level matching and Normalize when you want a consistent perceived loudness."
+                  ariaLabel={t('advancedAudioEffects.volumeDynamics.title')}
+                  content={t('advancedAudioEffects.volumeDynamics.tooltip')}
                 />
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Amplify (dB)</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.labels.amplify')}</label>
                   <Controller
                     name="basicProcessing.amplify"
                     control={control}
@@ -120,7 +123,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{amplify}dB</span>
-                  <div className="text-xs text-muted-foreground text-center">-60dB to +60dB</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedAudioEffects.labels.amplifyRange')}</div>
                 </div>
 
                 <div>
@@ -158,7 +161,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">Normalize Audio</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.labels.normalize')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
                       //   <input
@@ -168,14 +171,14 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                       //     onChange={(e) => onChange(e.target.checked)}
                       //     className="rounded border-input bg-input"
                       //   />
-                      //   <span className="text-sm text-card-foreground">Normalize Audio</span>
+                      //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.labels.normalize')}</span>
                       // </label>
                     )}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Fade In (seconds)</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.labels.fadeIn')}</label>
                   <Controller
                     name="basicProcessing.fadeIn"
                     control={control}
@@ -198,7 +201,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Fade Out (seconds)</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.labels.fadeOut')}</label>
                   <Controller
                     name="basicProcessing.fadeOut"
                     control={control}
@@ -225,10 +228,10 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
             {/* EQ */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
-                Equalizer
+                {t('advancedAudioEffects.equalizer.title')}
                 <InfoTooltip
-                  ariaLabel="About Equalizer"
-                  content="Pick a preset that maps to a multi-band FFmpeg equalizer filter chain: bass-boost, treble-boost, vocal, classical, rock, or jazz. Choose 'none' to leave the EQ untouched."
+                  ariaLabel={t('advancedAudioEffects.equalizer.title')}
+                  content={t('advancedAudioEffects.equalizer.tooltip')}
                 />
               </h4>
               <div className="grid grid-cols-2 gap-4">
@@ -267,7 +270,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">Enable EQ</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.equalizer.enable')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
                       //   <input
@@ -277,26 +280,26 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                       //     onChange={(e) => onChange(e.target.checked)}
                       //     className="rounded border-input bg-input"
                       //   />
-                      //   <span className="text-sm text-card-foreground">Enable EQ</span>
+                      //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.equalizer.enable')}</span>
                       // </label>
                     )}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">EQ Preset</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.equalizer.presetLabel')}</label>
                   <Controller
                     name="basicProcessing.equalizer.preset"
                     control={control}
                     render={({ field }) => (
                       <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground">
-                        <option value="none">None</option>
-                        <option value="bass-boost">Bass Boost</option>
-                        <option value="treble-boost">Treble Boost</option>
-                        <option value="vocal">Vocal Enhance</option>
-                        <option value="classical">Classical</option>
-                        <option value="rock">Rock</option>
-                        <option value="jazz">Jazz</option>
+                        <option value="none">{t('advancedAudioEffects.equalizer.presets.none')}</option>
+                        <option value="bass-boost">{t('advancedAudioEffects.equalizer.presets.bass-boost')}</option>
+                        <option value="treble-boost">{t('advancedAudioEffects.equalizer.presets.treble-boost')}</option>
+                        <option value="vocal">{t('advancedAudioEffects.equalizer.presets.vocal')}</option>
+                        <option value="classical">{t('advancedAudioEffects.equalizer.presets.classical')}</option>
+                        <option value="rock">{t('advancedAudioEffects.equalizer.presets.rock')}</option>
+                        <option value="jazz">{t('advancedAudioEffects.equalizer.presets.jazz')}</option>
                       </select>
                     )}
                   />
@@ -307,15 +310,15 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
             {/* Stereo Processing */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
-                Stereo Processing
+                {t('advancedAudioEffects.stereo.title')}
                 <InfoTooltip
-                  ariaLabel="About Stereo Processing"
-                  content="Adjust pan (-100 left to +100 right), stereo width (0 = mono, 100 = original, up to 200 = wider), toggle mono conversion, and optionally swap left/right channels."
+                  ariaLabel={t('advancedAudioEffects.stereo.title')}
+                  content={t('advancedAudioEffects.stereo.tooltip')}
                 />
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Pan</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.stereo.pan')}</label>
                   <Controller
                     name="basicProcessing.stereo.pan"
                     control={control}
@@ -337,11 +340,11 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{`${Math.abs(pan)}% ${pan > 0 ? 'Right' : 'Left'}`}</span>
-                  <div className="text-xs text-muted-foreground text-center">Left ← → Right</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedAudioEffects.stereo.leftRight')}</div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Stereo Width</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.stereo.stereoWidth')}</label>
                   <Controller
                     name="basicProcessing.stereo.width"
                     control={control}
@@ -363,7 +366,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{stereoWidth}%</span>
-                  <div className="text-xs text-muted-foreground text-center">0% to 200%</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedAudioEffects.stereo.widthRange')}</div>
                 </div>
               </div>
             </div>
@@ -375,9 +378,9 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="timebased"
-          title="Time-Based Effects"
+          title={t('advancedAudioEffects.sections.time.title')}
           icon={<Clock className="w-5 h-5 text-green-600" />}
-          description="Reverb, delay, echo, and modulation effects"
+          description={t('advancedAudioEffects.sections.time.description')}
         />
 
         {expandedSections.has('timebased') && (
@@ -385,10 +388,10 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
             {/* Reverb */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
-                Reverb
+                {t('advancedAudioEffects.reverb.title')}
                 <InfoTooltip
-                  ariaLabel="About Reverb"
-                  content="Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect."
+                  ariaLabel={t('advancedAudioEffects.reverb.title')}
+                  content={t('advancedAudioEffects.reverb.tooltip')}
                 />
               </h4>
               <div className="grid grid-cols-2 gap-4">
@@ -427,7 +430,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">Enable Reverb</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.reverb.enable')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
                       //   <input
@@ -437,31 +440,31 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                       //     onChange={(e) => onChange(e.target.checked)}
                       //     className="rounded border-input bg-input"
                       //   />
-                      //   <span className="text-sm text-card-foreground">Enable Reverb</span>
+                      //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.reverb.enable')}</span>
                       // </label>
                     )}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Reverb Type</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.reverb.typeLabel')}</label>
                   <Controller
                     name="timeBasedEffects.reverb.type"
                     control={control}
                     render={({ field }) => (
                       <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground">
-                        <option value="none">None</option>
-                        <option value="room">Room</option>
-                        <option value="hall">Hall</option>
-                        <option value="plate">Plate</option>
-                        <option value="spring">Spring</option>
+                        <option value="none">{t('advancedAudioEffects.reverb.types.none')}</option>
+                        <option value="room">{t('advancedAudioEffects.reverb.types.room')}</option>
+                        <option value="hall">{t('advancedAudioEffects.reverb.types.hall')}</option>
+                        <option value="plate">{t('advancedAudioEffects.reverb.types.plate')}</option>
+                        <option value="spring">{t('advancedAudioEffects.reverb.types.spring')}</option>
                       </select>
                     )}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Room Size</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.reverb.roomSize')}</label>
                   <Controller
                     name="timeBasedEffects.reverb.roomSize"
                     control={control}
@@ -483,11 +486,11 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{roomSize}%</span>
-                  <div className="text-xs text-muted-foreground text-center">0% to 100%</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedAudioEffects.reverb.roomRange')}</div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Wet/Dry Mix</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.reverb.wetDry')}</label>
                   <Controller
                     name="timeBasedEffects.reverb.wetLevel"
                     control={control}
@@ -508,8 +511,8 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                       />
                     )}
                   />
-                  <span className='text-xs text-foreground text-center'>{`${wetLevel}% ${wetLevel > 50 ? 'Wet' : 'Dry'}`}</span>
-                  <div className="text-xs text-muted-foreground text-center">Dry ← → Wet</div>
+                  <span className='text-xs text-foreground text-center'>{`${wetLevel}%`}</span>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedAudioEffects.reverb.dryWet')}</div>
                 </div>
               </div>
             </div>
@@ -517,10 +520,10 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
             {/* Delay */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
-                Delay &amp; Echo
+                {t('advancedAudioEffects.delay.title')}
                 <InfoTooltip
-                  ariaLabel="About Delay & Echo"
-                  content="Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats."
+                  ariaLabel={t('advancedAudioEffects.delay.title')}
+                  content={t('advancedAudioEffects.delay.tooltip')}
                 />
               </h4>
               <div className="grid grid-cols-2 gap-4">
@@ -559,7 +562,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">Enable Delay</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.delay.enable')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
                       //   <input
@@ -569,30 +572,30 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                       //     onChange={(e) => onChange(e.target.checked)}
                       //     className="rounded border-input bg-input"
                       //   />
-                      //   <span className="text-sm text-card-foreground">Enable Delay</span>
+                      //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.delay.enable')}</span>
                       // </label>
                     )}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Delay Type</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.delay.typeLabel')}</label>
                   <Controller
                     name="timeBasedEffects.delay.type"
                     control={control}
                     render={({ field }) => (
                       <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground">
-                        <option value="none">None</option>
-                        <option value="echo">Simple Echo</option>
-                        <option value="multi-tap">Multi-tap</option>
-                        <option value="ping-pong">Ping-Pong</option>
+                        <option value="none">{t('advancedAudioEffects.delay.types.none')}</option>
+                        <option value="echo">{t('advancedAudioEffects.delay.types.echo')}</option>
+                        <option value="multi-tap">{t('advancedAudioEffects.delay.types.multi-tap')}</option>
+                        <option value="ping-pong">{t('advancedAudioEffects.delay.types.ping-pong')}</option>
                       </select>
                     )}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Delay Time (ms)</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.delay.delayTime')}</label>
                   <Controller
                     name="timeBasedEffects.delay.time"
                     control={control}
@@ -615,7 +618,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Feedback (%)</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.delay.feedback')}</label>
                   <Controller
                     name="timeBasedEffects.delay.feedback"
                     control={control}
@@ -637,7 +640,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{`${feedback}%`}</span>
-                  <div className="text-xs text-muted-foreground text-center">0% to 95%</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedAudioEffects.delay.feedbackRange')}</div>
                 </div>
               </div>
             </div>
@@ -649,9 +652,9 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="restoration"
-          title="Restoration & Cleanup"
+          title={t('advancedAudioEffects.sections.restoration.title')}
           icon={<Wrench className="w-5 h-5 text-orange-600" />}
-          description="Noise reduction, de-hum, declip, and silence detection"
+          description={t('advancedAudioEffects.sections.restoration.description')}
         />
 
         {expandedSections.has('restoration') && (
@@ -692,7 +695,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">Noise Reduction</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.noiseReduction')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -702,7 +705,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     //     onChange={(e) => onChange(e.target.checked)}
                     //     className="rounded border-input bg-input"
                     //   />
-                    //   <span className="text-sm text-card-foreground">Noise Reduction</span>
+                    //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.noiseReduction')}</span>
                     // </label>
                   )}
                 />
@@ -743,7 +746,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">De-hum (50/60Hz)</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.deHum')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -753,7 +756,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     //     onChange={(e) => onChange(e.target.checked)}
                     //     className="rounded border-input bg-input"
                     //   />
-                    //   <span className="text-sm text-card-foreground">De-hum (50/60Hz)</span>
+                    //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.deHum')}</span>
                     // </label>
                   )}
                 />
@@ -794,7 +797,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">Declip Audio</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.declip')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -804,7 +807,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     //     onChange={(e) => onChange(e.target.checked)}
                     //     className="rounded border-input bg-input"
                     //   />
-                    //   <span className="text-sm text-card-foreground">Declip Audio</span>
+                    //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.declip')}</span>
                     // </label>
                   )}
                 />
@@ -845,7 +848,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                             </div>
                           </div>
                         </label>
-                        <span className="text-sm text-card-foreground">Silence Detection</span>
+                        <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.silenceDetection')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -855,7 +858,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     //     onChange={(e) => onChange(e.target.checked)}
                     //     className="rounded border-input bg-input"
                     //   />
-                    //   <span className="text-sm text-card-foreground">Silence Detection</span>
+                    //   <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.silenceDetection')}</span>
                     // </label>
                   )}
                 />
@@ -869,16 +872,16 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="advanced"
-          title="Advanced Processing"
+          title={t('advancedAudioEffects.sections.advanced.title')}
           icon={<Zap className="w-5 h-5 text-purple-600" />}
-          description="Pitch shifting, time stretching, spatial audio, and spectral processing"
+          description={t('advancedAudioEffects.sections.advanced.description')}
         />
 
         {expandedSections.has('advanced') && (
           <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1 text-card-foreground">Pitch Shift (semitones)</label>
+                <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.advanced.pitchShift')}</label>
                 <Controller
                   name="advanced.pitchShift.semitones"
                   control={control}
@@ -899,12 +902,12 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     />
                   )}
                 />
-                <span className='text-xs text-foreground text-center'>{`${pitchShift} semitones`}</span>
-                <div className="text-xs text-muted-foreground">-24 to +24 semitones</div>
+                <span className='text-xs text-foreground text-center'>{t('advancedAudioEffects.advanced.pitchValue', { value: pitchShift })}</span>
+                <div className="text-xs text-muted-foreground">{t('advancedAudioEffects.advanced.pitchRange')}</div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1 text-card-foreground">Time Stretch Factor</label>
+                <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.advanced.timeStretch')}</label>
                 <Controller
                   name="advanced.timeStretch.factor"
                   control={control}
@@ -925,37 +928,37 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     />
                   )}
                 />
-                <span className='text-xs text-foreground text-center'>{`${timeStretch}x speed`}</span>
-                <div className="text-xs text-muted-foreground">0.25x to 4x speed</div>
+                <span className='text-xs text-foreground text-center'>{t('advancedAudioEffects.advanced.timeStretchValue', { value: timeStretch })}</span>
+                <div className="text-xs text-muted-foreground">{t('advancedAudioEffects.advanced.timeStretchRange')}</div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1 text-card-foreground">Spatial Audio</label>
+                <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.advanced.spatialAudio')}</label>
                 <Controller
                   name="advanced.spatialAudio.type"
                   control={control}
                   render={({ field }) => (
                     <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground">
-                      <option value="none">None</option>
-                      <option value="binaural">Binaural</option>
-                      <option value="surround">Surround</option>
-                      <option value="3d">3D Audio</option>
+                      <option value="none">{t('advancedAudioEffects.advanced.spatial.none')}</option>
+                      <option value="binaural">{t('advancedAudioEffects.advanced.spatial.binaural')}</option>
+                      <option value="surround">{t('advancedAudioEffects.advanced.spatial.surround')}</option>
+                      <option value="3d">{t('advancedAudioEffects.advanced.spatial.3d')}</option>
                     </select>
                   )}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1 text-card-foreground">Spectral Processing</label>
+                <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.advanced.spectral')}</label>
                 <Controller
                   name="advanced.spectral.type"
                   control={control}
                   render={({ field }) => (
                     <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground">
-                      <option value="none">None</option>
-                      <option value="vocoder">Vocoder</option>
-                      <option value="formant">Formant Filter</option>
-                      <option value="convolution">Convolution</option>
+                      <option value="none">{t('advancedAudioEffects.advanced.spectralOptions.none')}</option>
+                      <option value="vocoder">{t('advancedAudioEffects.advanced.spectralOptions.vocoder')}</option>
+                      <option value="formant">{t('advancedAudioEffects.advanced.spectralOptions.formant')}</option>
+                      <option value="convolution">{t('advancedAudioEffects.advanced.spectralOptions.convolution')}</option>
                     </select>
                   )}
                 />

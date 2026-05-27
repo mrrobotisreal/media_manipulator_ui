@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import type { FaceBox } from '@/lib/useDetectFaces';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface FaceSelectionOverlayProps {
   imageUrl: string;
@@ -20,13 +21,14 @@ const FaceSelectionOverlay: React.FC<FaceSelectionOverlayProps> = ({
   onToggleFace,
   disabled = false,
 }) => {
+  const { t } = useLocalization('interface');
   const selected = new Set(selectedFaceIds);
 
   return (
     <div className="relative inline-block w-full overflow-hidden rounded-lg border border-border bg-black/40">
       <img
         src={imageUrl}
-        alt="Detected faces preview"
+        alt={t('faceSelectionOverlay.previewAlt')}
         className="block w-full h-auto select-none"
         draggable={false}
       />
@@ -39,7 +41,7 @@ const FaceSelectionOverlay: React.FC<FaceSelectionOverlayProps> = ({
             key={face.id}
             disabled={disabled}
             aria-pressed={isSelected}
-            aria-label={`Face ${label}${isSelected ? ' (selected)' : ''}`}
+            aria-label={isSelected ? t('faceSelectionOverlay.faceSelectedAria', { label }) : t('faceSelectionOverlay.faceAria', { label })}
             onClick={() => onToggleFace(face.id)}
             style={{
               left: `${face.x * 100}%`,

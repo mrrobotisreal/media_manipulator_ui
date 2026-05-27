@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useLocalization } from '@/i18n/useLocalization';
 
 export interface RelatedLink {
   label: string;
@@ -23,19 +24,21 @@ interface RelatedLinksProps {
  * page reload.
  */
 const RelatedLinks: React.FC<RelatedLinksProps> = ({
-  title = 'Related tools and tutorials',
+  title,
   intro,
   links,
   className,
 }) => {
+  const { t } = useLocalization('interface');
+  const resolvedTitle = title ?? t('relatedLinks.defaultTitle');
   if (links.length === 0) return null;
   return (
     <aside
       className={`bg-card border border-border rounded-lg p-6 my-8 ${className ?? ''}`}
-      aria-label={title}
+      aria-label={resolvedTitle}
     >
       <h2 className="text-xl font-semibold text-card-foreground mb-2">
-        {title}
+        {resolvedTitle}
       </h2>
       {intro && <p className="text-sm text-muted-foreground mb-4">{intro}</p>}
       <ul className="grid gap-2 md:grid-cols-2">

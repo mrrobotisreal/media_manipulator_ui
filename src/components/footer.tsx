@@ -8,23 +8,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useLocalization } from '@/i18n/useLocalization';
 
-const navLinks: { title: string; href: string }[] = [
-  { title: 'Home', href: '/' },
-  { title: 'Tools', href: '/tools' },
-  { title: 'Blog', href: '/blog' },
-  { title: 'Tutorials', href: '/tutorials' },
-  { title: 'How it works', href: '/how-it-works' },
-  { title: 'About', href: '/about' },
+const NAV_LINK_KEYS: { key: string; href: string }[] = [
+  { key: 'home', href: '/' },
+  { key: 'tools', href: '/tools' },
+  { key: 'blog', href: '/blog' },
+  { key: 'tutorials', href: '/tutorials' },
+  { key: 'howItWorks', href: '/how-it-works' },
+  { key: 'about', href: '/about' },
 ];
 
-const legalLinks: { title: string; href: string }[] = [
-  { title: 'Privacy Policy', href: '/privacy-policy' },
-  { title: 'Terms of Service', href: '/terms-of-service' },
+const LEGAL_LINK_KEYS: { key: string; href: string }[] = [
+  { key: 'privacyPolicy', href: '/privacy-policy' },
+  { key: 'termsOfService', href: '/terms-of-service' },
 ];
 
 const Footer: React.FC = () => {
   const [cookiePromptOpen, setCookiePromptOpen] = useState(false);
+  const { t } = useLocalization(['interface', 'accessibility']);
 
   const handleCookieSettings = () => {
     // Funding Choices exposes window.googlefc once the AdSense script has
@@ -53,23 +55,22 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link to="/" className="flex items-center space-x-3 mb-3 hover:opacity-90 transition-opacity" aria-label="Media Manipulator home">
+            <Link to="/" className="flex items-center space-x-3 mb-3 hover:opacity-90 transition-opacity" aria-label={t('accessibility:footer.homeLink')}>
               <img
                 src={formatterIcon}
-                alt="Media Manipulator Icon"
+                alt={t('accessibility:footer.navIcon')}
                 className="h-20 w-20 rounded-sm"
               />
               <div className="flex flex-col">
-                <span className="font-glitch text-4xl text-white">Media Manipulator</span>
-                <span className="text-sm text-gray-400">Convert images, videos, and audio files with ease</span>
+                <span className="font-glitch text-4xl text-white">{t('interface:common.brand')}</span>
+                <span className="text-sm text-gray-400">{t('interface:common.brandTagline')}</span>
               </div>
             </Link>
             <p className="text-sm text-gray-400 max-w-md">
-              Browser-based and server-assisted tools for editing, converting, compressing, analyzing,
-              transcribing, summarizing, and otherwise processing image, video, and audio files.
+              {t('interface:footer.tagline')}
             </p>
             <p className="text-sm text-gray-400 mt-4">
-              Contact:{' '}
+              {t('interface:footer.contact')}{' '}
               <a
                 href="mailto:support@media-manipulator.com"
                 className="text-gray-300 hover:text-white transition-colors"
@@ -81,16 +82,16 @@ const Footer: React.FC = () => {
 
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-3">
-              Explore
+              {t('interface:footer.explore')}
             </h3>
             <ul className="space-y-2">
-              {navLinks.map(link => (
-                <li key={link.title}>
+              {NAV_LINK_KEYS.map(link => (
+                <li key={link.key}>
                   <Link
                     to={link.href}
                     className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
-                    {link.title}
+                    {t(`interface:topNav.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -99,16 +100,16 @@ const Footer: React.FC = () => {
 
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-3">
-              Legal
+              {t('interface:footer.legal')}
             </h3>
             <ul className="space-y-2">
-              {legalLinks.map(link => (
-                <li key={link.title}>
+              {LEGAL_LINK_KEYS.map(link => (
+                <li key={link.key}>
                   <Link
                     to={link.href}
                     className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
-                    {link.title}
+                    {t(`interface:topNav.${link.key}`)}
                   </Link>
                 </li>
               ))}
@@ -118,7 +119,7 @@ const Footer: React.FC = () => {
                   onClick={handleCookieSettings}
                   className="text-sm text-gray-400 hover:text-white transition-colors text-left"
                 >
-                  Cookie settings
+                  {t('interface:footer.cookieSettings')}
                 </button>
               </li>
             </ul>
@@ -127,10 +128,10 @@ const Footer: React.FC = () => {
 
         <div className="mt-10 pt-6 border-t border-gray-800 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <p className="text-xs text-gray-400">
-            &copy; 2026 Media Manipulator, a CreaTV Ltd. product. All rights reserved.
+            {t('interface:footer.copyright', { year: new Date().getFullYear() })}
           </p>
           <p className="text-xs text-gray-500">
-            Operated by CreaTV Ltd. &middot; Colorado, USA
+            {t('interface:footer.operatedBy')}
           </p>
         </div>
       </div>
@@ -138,9 +139,9 @@ const Footer: React.FC = () => {
       <Dialog open={cookiePromptOpen} onOpenChange={setCookiePromptOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Cookie preferences</DialogTitle>
+            <DialogTitle>{t('interface:footer.cookieDialog.title')}</DialogTitle>
             <DialogDescription>
-              Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data.
+              {t('interface:footer.cookieDialog.description')}
             </DialogDescription>
           </DialogHeader>
         </DialogContent>

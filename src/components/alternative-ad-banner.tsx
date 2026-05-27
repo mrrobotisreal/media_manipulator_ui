@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useCallback } from 'react';
 import { trackAdInteraction } from '@/lib/analytics';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface AlternativeAdBannerProps {
   network: 'propellerads' | 'adsense' | 'infolinks' | 'carbon';
@@ -29,6 +30,7 @@ const AlternativeAdBanner: React.FC<AlternativeAdBannerProps> = ({
   adPosition,
   style = {}
 }) => {
+  const { t } = useLocalization('interface');
   const adRef = useRef<HTMLDivElement>(null);
   const insRef = useRef<HTMLModElement>(null);
 
@@ -143,9 +145,9 @@ const AlternativeAdBanner: React.FC<AlternativeAdBannerProps> = ({
   if (process.env.NODE_ENV === 'development' || adSlot.startsWith('123456')) {
     return (
       <div className={`bg-gray-200 border-2 border-dashed border-gray-400 p-4 text-center text-gray-600 rounded-lg ${className}`}>
-        <p className="text-sm">{network.toUpperCase()} Ad Placeholder - {adPosition}</p>
-        <p className="text-xs">Format: {adFormat} | Slot: {adSlot}</p>
-        <p className="text-xs">{network} ads will appear here in production</p>
+        <p className="text-sm">{t('alternativeAdBanner.placeholder', { network: network.toUpperCase(), position: adPosition })}</p>
+        <p className="text-xs">{t('alternativeAdBanner.placeholderFormat', { format: adFormat, slot: adSlot })}</p>
+        <p className="text-xs">{t('alternativeAdBanner.placeholderProduction', { network })}</p>
       </div>
     );
   }

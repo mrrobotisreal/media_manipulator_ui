@@ -6,10 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // File type detection
-export const getFileType = (file: File): 'image' | 'video' | 'audio' | 'unknown' => {
+export const getFileType = (file: File): 'image' | 'video' | 'audio' | 'pdf' | 'unknown' => {
   if (file.type.startsWith('image/')) return 'image';
   if (file.type.startsWith('video/')) return 'video';
   if (file.type.startsWith('audio/')) return 'audio';
+  if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) return 'pdf';
   return 'unknown';
 };
 

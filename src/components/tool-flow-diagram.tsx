@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { useLocalization } from '@/i18n/useLocalization';
 
 export interface ToolFlowStep {
   title: string;
@@ -19,18 +20,20 @@ interface ToolFlowDiagramProps {
  * lays out horizontally with arrows on larger viewports.
  */
 const ToolFlowDiagram: React.FC<ToolFlowDiagramProps> = ({
-  title = 'How it works',
+  title,
   steps,
   className,
 }) => {
+  const { t } = useLocalization('interface');
   if (steps.length === 0) return null;
+  const resolvedTitle = title ?? t('toolFlowDiagram.defaultTitle');
 
   return (
     <section
       className={`bg-card border border-border rounded-lg p-6 my-8 ${className ?? ''}`}
-      aria-label={title}
+      aria-label={resolvedTitle}
     >
-      <h2 className="text-xl font-semibold text-card-foreground mb-4">{title}</h2>
+      <h2 className="text-xl font-semibold text-card-foreground mb-4">{resolvedTitle}</h2>
       <ol className="flex flex-col md:flex-row md:flex-wrap md:items-stretch gap-3 list-none">
         {steps.map((step, index) => (
           <React.Fragment key={`${index}-${step.title}`}>

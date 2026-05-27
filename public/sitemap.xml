@@ -268,6 +268,138 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- ===== Image SEO batch 1 (exact-match converters + hubs) ===== -->
+
+  <!-- Tool: Convert PNG to JPG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-png-to-jpg</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert JPG to PNG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-jpg-to-png</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert WebP to PNG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-webp-to-png</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert PNG to WebP -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-png-to-webp</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert JPG to WebP -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-jpg-to-webp</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: JPG converter -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/jpg-converter</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: PNG converter -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/png-converter</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Image resizer -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/image-resizer</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Compress image -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/compress-image</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Remove background from image -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/remove-background-from-image</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ===== PDF SEO batch 2 (image <-> PDF) ===== -->
+
+  <!-- Tool: Image to PDF -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/image-to-pdf</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert JPG to PDF -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-jpg-to-pdf</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert PNG to PDF -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-png-to-pdf</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: PDF to JPG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/pdf-to-jpg</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: PDF to PNG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/pdf-to-png</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: PDF converter -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/pdf-converter</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Privacy Policy -->
   <url>
     <loc>https://www.media-manipulator.com/privacy-policy</loc>

@@ -3,10 +3,12 @@ import { Film } from 'lucide-react';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
+import { useLocalization } from '@/i18n/useLocalization';
 
 type FramesMode = 'every_n_seconds' | 'fps' | 'timestamp';
 
 const ExtractFramesPanel: React.FC = () => {
+  const { t } = useLocalization('interface');
   const [mode, setMode] = useState<FramesMode>('every_n_seconds');
   const [intervalSeconds, setIntervalSeconds] = useState<number>(5);
   const [fps, setFps] = useState<number>(1);
@@ -27,7 +29,7 @@ const ExtractFramesPanel: React.FC = () => {
   return (
     <SpecializedToolShell
       accept="video/*"
-      uploadHint="video file"
+      uploadHint={t('extractFrames.uploadHint')}
       conversionJob={conversionJob}
       setConversionJob={setConversionJob}
       isUploading={isPending}
@@ -39,8 +41,6 @@ const ExtractFramesPanel: React.FC = () => {
             e.preventDefault();
             const options: Record<string, unknown> = {
               mode: 'extract_frames',
-              // The backend reads the per-tool sub-mode from `frameMode` to
-              // avoid colliding with the outer dispatcher's `mode` key.
               frameMode: mode,
               format,
               maxFrames,
@@ -64,21 +64,21 @@ const ExtractFramesPanel: React.FC = () => {
           className="space-y-4"
         >
           <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">Extraction mode</label>
+            <label className="block text-sm font-medium text-card-foreground mb-1">{t('extractFrames.modeLabel')}</label>
             <select
               value={mode}
               onChange={(e) => setMode(e.target.value as FramesMode)}
               className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
             >
-              <option value="every_n_seconds">Every N seconds</option>
-              <option value="fps">Specific frames per second</option>
-              <option value="timestamp">Specific timestamps</option>
+              <option value="every_n_seconds">{t('extractFrames.modes.every_n_seconds')}</option>
+              <option value="fps">{t('extractFrames.modes.fps')}</option>
+              <option value="timestamp">{t('extractFrames.modes.timestamp')}</option>
             </select>
           </div>
 
           {mode === 'every_n_seconds' && (
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Seconds between frames</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('extractFrames.secondsBetween')}</label>
               <input
                 type="number"
                 step={0.1}
@@ -93,7 +93,7 @@ const ExtractFramesPanel: React.FC = () => {
 
           {mode === 'fps' && (
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Frames per second</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('extractFrames.fpsLabel')}</label>
               <input
                 type="number"
                 step={0.1}
@@ -108,12 +108,12 @@ const ExtractFramesPanel: React.FC = () => {
 
           {mode === 'timestamp' && (
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Timestamps in seconds (comma-separated)</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('extractFrames.timestampsLabel')}</label>
               <input
                 type="text"
                 value={timestamps}
                 onChange={(e) => setTimestamps(e.target.value)}
-                placeholder="e.g. 1, 5.5, 12, 30"
+                placeholder={t('extractFrames.timestampsPlaceholder')}
                 className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
               />
             </div>
@@ -121,19 +121,19 @@ const ExtractFramesPanel: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Image format</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('extractFrames.imageFormatLabel')}</label>
               <select
                 value={format}
                 onChange={(e) => setFormat(e.target.value as 'jpg' | 'png' | 'webp')}
                 className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
               >
-                <option value="jpg">JPG</option>
-                <option value="png">PNG (lossless)</option>
-                <option value="webp">WebP</option>
+                <option value="jpg">{t('extractFrames.formats.jpg')}</option>
+                <option value="png">{t('extractFrames.formats.png')}</option>
+                <option value="webp">{t('extractFrames.formats.webp')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Max frames</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('extractFrames.maxFramesLabel')}</label>
               <input
                 type="number"
                 min={1}
@@ -146,7 +146,7 @@ const ExtractFramesPanel: React.FC = () => {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            Frames are bundled into a single ZIP for download. We cap the count to keep jobs fast and predictable; raise the limit if you really need more.
+            {t('extractFrames.zipNote')}
           </p>
 
           <button
@@ -155,7 +155,7 @@ const ExtractFramesPanel: React.FC = () => {
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             <Film className="w-4 h-4" />
-            {isProcessing ? 'Extracting frames…' : 'Extract frames'}
+            {isProcessing ? t('extractFrames.running') : t('extractFrames.submit')}
           </button>
         </form>
       )}

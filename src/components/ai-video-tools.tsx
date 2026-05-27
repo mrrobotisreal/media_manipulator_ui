@@ -2,29 +2,17 @@ import React from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import type { Control, UseFormSetValue } from 'react-hook-form';
 import { Sparkles } from 'lucide-react';
+import { Trans } from 'react-i18next';
 import InfoTooltip from '@/components/info-tooltip';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface AIVideoToolsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
   setValue: UseFormSetValue<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-/**
- * AI Video Tools panel.
- *
- * v1 ships a single operation — AI Frame Interpolation — wired up to the
- * rife-ncnn-vulkan helper script on the GPU server. Selecting the operation
- * flips a few related form fields so the submitted payload is consistent:
- *
- * - format is forced to MP4 (the only output the script produces today).
- * - any user-set temporal.frameRate.target is cleared — AI interpolation owns
- *   the output FPS.
- *
- * The UI keeps the rest of the Advanced Video Effects panel visible because
- * those controls still affect non-AI conversions, but a note explains that
- * AI frame interpolation bypasses most of the visual/temporal filter chain.
- */
 const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
+  const { t } = useLocalization(['interface', 'accessibility']);
   const operation = useWatch({ control, name: 'ai.operation' }) as
     | 'none'
     | 'frame_interpolation'
@@ -36,9 +24,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
       setValue('ai.enabled', true, { shouldDirty: true });
       setValue('ai.operation', 'frame_interpolation', { shouldDirty: true });
       setValue('format', 'mp4', { shouldDirty: true });
-      // AI interpolation owns the output FPS — clear any manually-set target.
       setValue('temporal.frameRate.target', undefined, { shouldDirty: true });
-      // Apply sensible defaults if the user hasn't touched them yet.
       setValue('ai.frameInterpolation.targetFps', 60, { shouldDirty: true });
       setValue('ai.frameInterpolation.model', 'rife-v4.6', { shouldDirty: true });
       setValue('ai.frameInterpolation.quality', 'medium', { shouldDirty: true });
@@ -54,20 +40,17 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
         <Sparkles className="w-5 h-5 text-pink-600" />
-        AI Video Tools
+        {t('interface:aiVideoTools.title')}
         <InfoTooltip
-          ariaLabel="About AI Video Tools"
+          ariaLabel={t('accessibility:videoForm.aiTooltip')}
           width="lg"
           content={
             <div className="space-y-1">
               <p>
-                AI Video Tools currently includes <strong>AI Frame Interpolation</strong>,
-                which generates new in-between frames so motion plays back more
-                smoothly.
+                <Trans i18nKey="interface:aiVideoTools.tooltipIntro" components={{ strong: <strong /> }} />
               </p>
               <p className="mt-1">
-                Best for taking 24/30fps footage up to 60fps or 60fps up to 120fps.
-                This is GPU-heavy and currently always outputs MP4.
+                {t('interface:aiVideoTools.tooltipBestFor')}
               </p>
             </div>
           }
@@ -80,7 +63,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
             htmlFor="ai-operation-select"
             className="block text-sm font-medium mb-1 text-card-foreground"
           >
-            Operation
+            {t('interface:aiVideoTools.operationLabel')}
           </label>
           <Controller
             name="ai.operation"
@@ -97,8 +80,8 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                 }
                 className="w-full p-2 border border-input rounded-md text-card-foreground bg-card"
               >
-                <option value="none">None</option>
-                <option value="frame_interpolation">AI Frame Interpolation</option>
+                <option value="none">{t('interface:aiVideoTools.operations.none_short')}</option>
+                <option value="frame_interpolation">{t('interface:aiVideoTools.operations.frame_interpolation')}</option>
               </select>
             )}
           />
@@ -108,15 +91,10 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
           <div className="space-y-4">
             <div className="rounded-md border border-pink-200 dark:border-pink-900/60 bg-pink-50/50 dark:bg-pink-950/30 p-3 text-sm text-card-foreground space-y-1">
               <p>
-                AI frame interpolation creates in-between frames for smoother motion.
-                Best for 24/30fps → 60fps or 60fps → 120fps clips.
+                {t('interface:aiVideoTools.intro')}
               </p>
               <p className="text-muted-foreground">
-                This is GPU-heavy and currently outputs MP4. For long or 4K videos,
-                use a lower max processing height first. This is different from
-                basic FPS conversion — AI interpolation synthesizes new frames
-                rather than duplicating them, and bypasses most other visual /
-                temporal filters in v1.
+                {t('interface:aiVideoTools.gpuNote')}
               </p>
             </div>
 
@@ -126,7 +104,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                   htmlFor="ai-target-fps"
                   className="block text-sm font-medium mb-1 text-card-foreground"
                 >
-                  Target frame rate
+                  {t('interface:aiVideoTools.frameInterpolation.targetFpsLabel')}
                 </label>
                 <Controller
                   name="ai.frameInterpolation.targetFps"
@@ -152,7 +130,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                   htmlFor="ai-rife-model"
                   className="block text-sm font-medium mb-1 text-card-foreground"
                 >
-                  RIFE model
+                  {t('interface:aiVideoTools.frameInterpolation.modelLabel')}
                 </label>
                 <Controller
                   name="ai.frameInterpolation.model"
@@ -165,9 +143,9 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                       onChange={field.onChange}
                       className="w-full p-2 border border-input rounded-md text-card-foreground bg-card"
                     >
-                      <option value="rife-v4.6">RIFE v4.6 — recommended</option>
-                      <option value="rife-v4">RIFE v4</option>
-                      <option value="rife-v2.3">RIFE v2.3 — compatibility</option>
+                      <option value="rife-v4.6">{t('interface:aiVideoTools.frameInterpolation.models.rife-v4.6')}</option>
+                      <option value="rife-v4">{t('interface:aiVideoTools.frameInterpolation.models.rife-v4')}</option>
+                      <option value="rife-v2.3">{t('interface:aiVideoTools.frameInterpolation.models.rife-v2.3')}</option>
                     </select>
                   )}
                 />
@@ -178,7 +156,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                   htmlFor="ai-quality"
                   className="block text-sm font-medium mb-1 text-card-foreground"
                 >
-                  Quality
+                  {t('interface:aiVideoTools.frameInterpolation.qualityLabel')}
                 </label>
                 <Controller
                   name="ai.frameInterpolation.quality"
@@ -191,9 +169,9 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                       onChange={field.onChange}
                       className="w-full p-2 border border-input rounded-md text-card-foreground bg-card"
                     >
-                      <option value="low">Low — faster encode</option>
-                      <option value="medium">Medium — balanced</option>
-                      <option value="high">High — slower encode</option>
+                      <option value="low">{t('interface:aiVideoTools.frameInterpolation.qualityOptions.low')}</option>
+                      <option value="medium">{t('interface:aiVideoTools.frameInterpolation.qualityOptions.medium')}</option>
+                      <option value="high">{t('interface:aiVideoTools.frameInterpolation.qualityOptions.high')}</option>
                     </select>
                   )}
                 />
@@ -204,7 +182,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                   htmlFor="ai-max-height"
                   className="block text-sm font-medium mb-1 text-card-foreground"
                 >
-                  Max processing height
+                  {t('interface:aiVideoTools.frameInterpolation.maxHeightLabel')}
                 </label>
                 <Controller
                   name="ai.frameInterpolation.maxHeight"
@@ -246,20 +224,14 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
                 htmlFor="ai-preserve-audio"
                 className="text-sm text-card-foreground"
               >
-                Preserve audio track from the source
+                {t('interface:aiVideoTools.frameInterpolation.preserveAudio')}
               </label>
             </div>
 
             <ul className="text-xs text-muted-foreground list-disc pl-5 space-y-1">
-              <li>Output is always MP4 (H.264 + AAC) in v1.</li>
-              <li>
-                Trim is disabled with AI frame interpolation in v1 — trim the
-                clip separately first if needed.
-              </li>
-              <li>
-                Fast motion, scene cuts, hair, hands, wheels, and occlusions
-                can show interpolation artifacts. Preview before publishing.
-              </li>
+              <li>{t('interface:aiVideoTools.notes.mp4')}</li>
+              <li>{t('interface:aiVideoTools.notes.trim')}</li>
+              <li>{t('interface:aiVideoTools.notes.artifacts')}</li>
             </ul>
           </div>
         )}

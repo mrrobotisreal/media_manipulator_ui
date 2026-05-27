@@ -4,6 +4,7 @@ import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
 import { getFileType } from '@/lib/utils';
 import { getSafeFileExtension, trackFileDownload, trackFileUpload } from '@/lib/analytics';
+import { useLocalization } from '@/i18n/useLocalization';
 
 /**
  * SpecializedToolShell renders the common upload → progress → download UX
@@ -77,6 +78,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
   outputExtensionHint,
   previewConfig,
 }) => {
+  const { t, formatFileSize } = useLocalization('interface');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -275,16 +277,16 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
           }`}
         >
           <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-          <p className="font-medium text-card-foreground mb-1">Drop your {uploadHint} here</p>
+          <p className="font-medium text-card-foreground mb-1">{t('specializedToolShell.dropHere', { hint: uploadHint })}</p>
           <p className="text-sm text-muted-foreground mb-4">
-            or click to select from your computer. Files stay on our servers for at most 24 hours and are then deleted.
+            {t('specializedToolShell.selectHint')}
           </p>
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Select file
+            {t('specializedToolShell.selectFile')}
           </button>
           <input
             ref={fileInputRef}
@@ -300,14 +302,14 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
             <div className="min-w-0">
               <p className="font-medium text-card-foreground truncate">{selectedFile.name}</p>
               <p className="text-xs text-muted-foreground">
-                {(selectedFile.size / 1024 / 1024).toFixed(2)} MB · {getSafeFileExtension(selectedFile.name)}
+                {formatFileSize(selectedFile.size)} · {getSafeFileExtension(selectedFile.name)}
               </p>
             </div>
             <button
               type="button"
               onClick={clearFile}
               className="text-muted-foreground hover:text-card-foreground transition-colors"
-              aria-label="Remove file"
+              aria-label={t('specializedToolShell.removeFile')}
             >
               <X className="w-5 h-5" />
             </button>
@@ -327,8 +329,8 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-2">
                 {uploadProgress && uploadProgress > 0 && uploadProgress < 100
-                  ? `Uploading ${uploadProgress}%`
-                  : 'Working on your file…'}{' '}
+                  ? t('specializedToolShell.uploadingPercent', { percent: uploadProgress })
+                  : t('specializedToolShell.workingOnFile')}{' '}
                 {conversionJob?.progress ? `· ${conversionJob.progress}%` : ''}
               </p>
               <div className="w-full bg-muted rounded-full h-2">
@@ -349,7 +351,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                   className="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                 >
                   <Play className="w-4 h-4" />
-                  Preview result
+                  {t('specializedToolShell.previewResult')}
                 </button>
                 <button
                   type="button"
@@ -357,7 +359,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                   className="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  Download result
+                  {t('specializedToolShell.downloadResult')}
                 </button>
               </div>
             ) : (
@@ -367,13 +369,13 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                 className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4" />
-                Download result
+                {t('specializedToolShell.downloadResult')}
               </button>
             )
           )}
           {isFailed && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
-              {conversionJob?.error || 'Job failed. Try a different file or refresh.'}
+              {conversionJob?.error || t('specializedToolShell.jobFailed')}
             </div>
           )}
         </>
@@ -387,10 +389,10 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
               <div>
                 <h2 className="text-xl font-semibold text-card-foreground">
-                  {previewConfig.title || 'Result preview'}
+                  {previewConfig.title || t('specializedToolShell.resultPreview')}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Toggle between the original input and the finalized result.
+                  {t('specializedToolShell.toggleHint')}
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
@@ -404,7 +406,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                         : 'bg-background text-card-foreground hover:bg-muted'
                     }`}
                   >
-                    Original
+                    {t('home.result.original')}
                   </button>
                   <button
                     type="button"
@@ -415,7 +417,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                         : 'bg-background text-card-foreground hover:bg-muted'
                     }`}
                   >
-                    Final
+                    {t('home.result.final')}
                   </button>
                 </div>
                 <button
@@ -424,13 +426,13 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                   className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  Download
+                  {t('common.download')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsResultModalOpen(false)}
                   className="text-muted-foreground hover:text-card-foreground transition-colors p-2"
-                  aria-label="Close preview"
+                  aria-label={t('specializedToolShell.closePreview')}
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -445,7 +447,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                   filename={selectedFile.name}
                 />
               ) : isLoadingResultPreview ? (
-                <p className="text-card-foreground">Loading preview…</p>
+                <p className="text-card-foreground">{t('specializedToolShell.loadingPreview')}</p>
               ) : resultPreviewError ? (
                 <div className="text-center space-y-3">
                   <p className="text-destructive">{resultPreviewError}</p>
@@ -454,14 +456,14 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                     onClick={() => void openPreview()}
                     className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
                   >
-                    Try again
+                    {t('common.tryAgain')}
                   </button>
                 </div>
               ) : previewConfig.finalMediaKind === 'zip' ? (
                 <div className="text-center max-w-md space-y-3">
-                  <p className="text-card-foreground font-medium">Preview not available for ZIP downloads</p>
+                  <p className="text-card-foreground font-medium">{t('specializedToolShell.zipPreviewTitle')}</p>
                   <p className="text-sm text-muted-foreground">
-                    This result is packaged as a ZIP archive. Download it and extract locally to view the contents.
+                    {t('specializedToolShell.zipPreviewBody')}
                   </p>
                 </div>
               ) : (
@@ -496,8 +498,9 @@ const SpecializedToolMediaPreview: React.FC<SpecializedToolMediaPreviewProps> = 
   src,
   filename,
 }) => {
+  const { t } = useLocalization('interface');
   if (!src) {
-    return <p className="text-card-foreground">Loading preview…</p>;
+    return <p className="text-card-foreground">{t('specializedToolShell.loadingPreview')}</p>;
   }
   if (kind === 'image') {
     return (

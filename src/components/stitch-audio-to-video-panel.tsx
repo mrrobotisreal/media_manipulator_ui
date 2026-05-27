@@ -6,6 +6,7 @@ import useStitchAudioToVideoTool, {
   type StitchAudioTrackInput,
   type StitchMode,
 } from '@/lib/useStitchAudioToVideoTool';
+import { useLocalization } from '@/i18n/useLocalization';
 
 /**
  * StitchAudioToVideoPanel orchestrates the multi-file workflow: one base
@@ -18,6 +19,7 @@ import useStitchAudioToVideoTool, {
 const MAX_TRACKS = 3;
 
 const StitchAudioToVideoPanel: React.FC = () => {
+  const { t, formatFileSize } = useLocalization('interface');
   const [video, setVideo] = useState<File | null>(null);
   const [tracks, setTracks] = useState<StitchAudioTrackInput[]>([]);
   const [mode, setMode] = useState<StitchMode>('mix');
@@ -111,16 +113,16 @@ const StitchAudioToVideoPanel: React.FC = () => {
           }`}
         >
           <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-          <p className="font-medium text-card-foreground mb-1">Drop your base video here</p>
+          <p className="font-medium text-card-foreground mb-1">{t('stitchAudioToVideo.dropBaseVideo')}</p>
           <p className="text-sm text-muted-foreground mb-4">
-            Pick the video first — you'll add audio tracks (voiceover, music, narration) next.
+            {t('stitchAudioToVideo.intro')}
           </p>
           <button
             type="button"
             onClick={() => videoInputRef.current?.click()}
             className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Select video
+            {t('stitchAudioToVideo.selectVideo')}
           </button>
           <input
             ref={videoInputRef}
@@ -140,7 +142,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
               <Video className="w-5 h-5 text-blue-600 shrink-0" />
               <div className="min-w-0">
                 <p className="font-medium text-card-foreground truncate">{video.name}</p>
-                <p className="text-xs text-muted-foreground">{(video.size / 1024 / 1024).toFixed(2)} MB</p>
+                <p className="text-xs text-muted-foreground">{formatFileSize(video.size)}</p>
               </div>
             </div>
             <button
@@ -151,14 +153,14 @@ const StitchAudioToVideoPanel: React.FC = () => {
                 setConversionJob(null);
               }}
               className="text-muted-foreground hover:text-card-foreground transition-colors"
-              aria-label="Remove base video"
+              aria-label={t('stitchAudioToVideo.removeBaseVideo')}
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           <div>
-            <h3 className="text-sm font-medium text-card-foreground mb-2">Audio tracks</h3>
+            <h3 className="text-sm font-medium text-card-foreground mb-2">{t('stitchAudioToVideo.audioTracks')}</h3>
             <div className="space-y-3">
               {tracks.map((track, i) => (
                 <div key={i} className="border border-border rounded-lg p-3 bg-background/40 space-y-2">
@@ -171,14 +173,14 @@ const StitchAudioToVideoPanel: React.FC = () => {
                       type="button"
                       onClick={() => setTracks((prev) => prev.filter((_, idx) => idx !== i))}
                       className="text-muted-foreground hover:text-destructive transition-colors"
-                      aria-label="Remove track"
+                      aria-label={t('stitchAudioToVideo.removeTrack')}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="text-xs text-muted-foreground">Volume</label>
+                      <label className="text-xs text-muted-foreground">{t('stitchAudioToVideo.volume')}</label>
                       <input
                         type="number"
                         step={0.1}
@@ -193,7 +195,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-muted-foreground">Start offset (seconds)</label>
+                      <label className="text-xs text-muted-foreground">{t('stitchAudioToVideo.startOffset')}</label>
                       <input
                         type="number"
                         step={0.1}
@@ -217,7 +219,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
                         setTracks((prev) => prev.map((t, idx) => (idx === i ? { ...t, loop: checked } : t)));
                       }}
                     />
-                    Loop this track to match the video length
+                    {t('stitchAudioToVideo.loopTrack')}
                   </label>
                 </div>
               ))}
@@ -227,7 +229,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
                   onClick={() => audioInputRef.current?.click()}
                   className="w-full border-2 border-dashed border-muted-foreground/25 hover:border-muted-foreground/50 rounded-lg p-3 text-sm text-card-foreground flex items-center justify-center gap-2 transition-colors"
                 >
-                  <Plus className="w-4 h-4" /> Add audio track ({tracks.length}/{MAX_TRACKS})
+                  <Plus className="w-4 h-4" /> {t('stitchAudioToVideo.addAudioTrack', { count: tracks.length, max: MAX_TRACKS })}
                 </button>
               )}
               <input
@@ -246,25 +248,25 @@ const StitchAudioToVideoPanel: React.FC = () => {
 
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Audio mode</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('stitchAudioToVideo.audioModeLabel')}</label>
               <select
                 value={mode}
                 onChange={(e) => setMode(e.target.value as StitchMode)}
                 className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
               >
-                <option value="mix">Mix with existing audio</option>
-                <option value="replace">Replace original audio</option>
+                <option value="mix">{t('stitchAudioToVideo.audioModes.mix')}</option>
+                <option value="replace">{t('stitchAudioToVideo.audioModes.replace')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Output length</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('stitchAudioToVideo.outputLengthLabel')}</label>
               <select
                 value={trimToVideoDuration ? 'video' : 'longest'}
                 onChange={(e) => setTrimToVideoDuration(e.target.value === 'video')}
                 className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
               >
-                <option value="video">Trim to video duration</option>
-                <option value="longest">Match longest input</option>
+                <option value="video">{t('stitchAudioToVideo.outputLength.video')}</option>
+                <option value="longest">{t('stitchAudioToVideo.outputLength.longest')}</option>
               </select>
             </div>
           </div>
@@ -275,13 +277,13 @@ const StitchAudioToVideoPanel: React.FC = () => {
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             <Music className="w-4 h-4" />
-            {isProcessing ? 'Stitching audio + video…' : 'Add audio to video'}
+            {isProcessing ? t('stitchAudioToVideo.stitching') : t('stitchAudioToVideo.addAudioToVideo')}
           </button>
 
           {isProcessing && (
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-2">
-                {uploadProgress > 0 && uploadProgress < 100 ? `Uploading ${uploadProgress}%` : 'Mixing on the server…'}{' '}
+                {uploadProgress > 0 && uploadProgress < 100 ? t('stitchAudioToVideo.uploadingPercent', { percent: uploadProgress }) : t('stitchAudioToVideo.mixingOnServer')}{' '}
                 {conversionJob?.progress ? `· ${conversionJob.progress}%` : ''}
               </p>
               <div className="w-full bg-muted rounded-full h-2">
@@ -300,12 +302,12 @@ const StitchAudioToVideoPanel: React.FC = () => {
               className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
-              Download stitched video
+              {t('stitchAudioToVideo.downloadStitched')}
             </button>
           )}
           {conversionJob?.status === 'failed' && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
-              {conversionJob.error || 'Stitch failed. Check that your audio files are valid and try again.'}
+              {conversionJob.error || t('stitchAudioToVideo.stitchFailed')}
             </div>
           )}
         </form>

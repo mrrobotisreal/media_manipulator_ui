@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Scissors, Play, Pause } from 'lucide-react';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface TrimRange {
   startTime: number;
@@ -23,6 +24,7 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
   onTrimSave,
   initialTrim,
 }) => {
+  const { t, formatDuration } = useLocalization(['interface', 'accessibility']);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -67,11 +69,7 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
     }
   }, [isOpen, initialTrim]);
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+  const formatTime = (seconds: number) => formatDuration(seconds);
 
   const handleTimelineClick = (e: React.MouseEvent) => {
     if (!timelineRef.current || duration === 0) return;
@@ -171,10 +169,11 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Scissors className="w-5 h-5" />
-            Trim {mediaType === 'video' ? 'Video' : 'Audio'}
+            {mediaType === 'video' ? t('interface:mediaTrimModal.titleVideo') : t('interface:mediaTrimModal.titleAudio')}
           </h2>
           <button
             onClick={onClose}
+            aria-label={t('accessibility:modals.close')}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <X className="w-6 h-6" />
@@ -183,8 +182,7 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
 
         <div className="p-6">
           <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Drag the handles on the timeline to select the portion you want to keep.
-            The grayed areas will be removed.
+            {t('interface:mediaTrimModal.instructions')}
           </div>
 
           {/* Media Element */}
@@ -209,7 +207,7 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
                       <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.816L4.136 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.136l4.247-3.816a1 1 0 011 .892zM16 8a1 1 0 00-1.414-1.414l-.707.707a1 1 0 000 1.414L15.586 10l-.707.707a1 1 0 000 1.414l.707.707A1 1 0 0016 12l-.414-.414.707-.707A1 1 0 0016 8z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300">Audio File</p>
+                  <p className="text-gray-600 dark:text-gray-300">{t('interface:mediaTrimModal.audioFile')}</p>
                 </div>
               </div>
             )}
@@ -222,7 +220,7 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-              {isPlaying ? 'Pause' : 'Play Preview'}
+              {isPlaying ? t('interface:mediaTrimModal.pausePreview') : t('interface:mediaTrimModal.playPreview')}
             </button>
 
             <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -289,22 +287,22 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
           {/* Trim info */}
           <div className="mb-6 grid grid-cols-3 gap-4 text-sm">
             <div className="text-center">
-              <div className="text-gray-600 dark:text-gray-400">Start Time</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('interface:mediaTrimModal.startLabel')}</div>
               <div className="font-medium">{formatTime(trimRange.startTime)}</div>
             </div>
             <div className="text-center">
-              <div className="text-gray-600 dark:text-gray-400">Duration</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('interface:mediaTrimModal.durationLabel')}</div>
               <div className="font-medium">{formatTime(trimDuration)}</div>
             </div>
             <div className="text-center">
-              <div className="text-gray-600 dark:text-gray-400">End Time</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('interface:mediaTrimModal.endLabel')}</div>
               <div className="font-medium">{formatTime(trimRange.endTime)}</div>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-600 dark:text-gray-400">
-              Final duration: {formatTime(trimDuration)}
+              {t('interface:mediaTrimModal.finalDuration', { duration: formatTime(trimDuration) })}
             </div>
 
             <div className="flex gap-3">
@@ -312,14 +310,14 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
                 onClick={onClose}
                 className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
               >
-                Cancel
+                {t('interface:common.cancel')}
               </button>
               <button
                 onClick={handleSaveTrim}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
               >
                 <Scissors className="w-4 h-4" />
-                Apply Trim
+                {t('interface:mediaTrimModal.apply')}
               </button>
             </div>
           </div>

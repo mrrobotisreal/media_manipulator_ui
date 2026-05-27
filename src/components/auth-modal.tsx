@@ -9,9 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Zap, Shield, CheckCircle, X } from 'lucide-react';
+import { Trans } from 'react-i18next';
 import { signInWithGoogle, signInWithEmail, signUpWithEmail } from '@/lib/firebase';
 import { toast } from 'sonner';
 import mixpanel from 'mixpanel-browser';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -25,9 +27,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
-  title = "Sign in to convert your file",
-  description = "Create a free account to start converting files instantly"
+  title,
+  description,
 }) => {
+  const { t } = useLocalization(['interface', 'error']);
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signup');
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -43,16 +46,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         modal_trigger: 'conversion_attempt'
       });
 
-      toast.success("Welcome!", {
-        description: "Successfully signed in with Google."
+      toast.success(t('interface:authModal.toast.welcome'), {
+        description: t('interface:authModal.toast.googleSuccess'),
       });
 
       onSuccess();
       onClose();
     } catch (error) {
       console.error('Google auth error:', error);
-      toast.error("Authentication failed", {
-        description: "Please try again."
+      toast.error(t('interface:authModal.toast.authFailed'), {
+        description: t('error:auth.tryAgain'),
       });
 
       mixpanel.track('Auth Modal - Google Auth Failed', {
@@ -72,8 +75,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
       if (activeTab === 'signup') {
         if (!displayName) {
-          toast.error("Name required", {
-            description: "Please enter your name."
+          toast.error(t('interface:authModal.toast.nameRequired'), {
+            description: t('interface:authModal.toast.nameRequiredDesc'),
           });
           return;
         }
@@ -83,8 +86,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           modal_trigger: 'conversion_attempt'
         });
 
-        toast.success("Account created!", {
-          description: "Welcome to Media Manipulator!"
+        toast.success(t('interface:authModal.toast.accountCreated'), {
+          description: t('interface:authModal.toast.welcomeMM'),
         });
       } else {
         await signInWithEmail(email, password);
@@ -93,8 +96,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           modal_trigger: 'conversion_attempt'
         });
 
-        toast.success("Welcome back!", {
-          description: "Successfully signed in."
+        toast.success(t('interface:authModal.toast.welcomeBack'), {
+          description: t('interface:authModal.toast.signedIn'),
         });
       }
 
@@ -103,18 +106,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } catch (error: any) {
       console.error('Email auth error:', error);
 
-      let errorMessage = "Please try again.";
+      let errorMessage = t('error:auth.tryAgain');
       if (error.code === 'auth/user-not-found') {
-        errorMessage = "No account found with this email.";
+        errorMessage = t('error:auth.userNotFound');
       } else if (error.code === 'auth/wrong-password') {
-        errorMessage = "Incorrect password.";
+        errorMessage = t('error:auth.wrongPassword');
       } else if (error.code === 'auth/email-already-in-use') {
-        errorMessage = "An account with this email already exists.";
+        errorMessage = t('error:auth.emailAlreadyInUse');
       } else if (error.code === 'auth/weak-password') {
-        errorMessage = "Password should be at least 6 characters.";
+        errorMessage = t('error:auth.weakPassword');
       }
 
-      toast.error("Authentication failed", {
+      toast.error(t('interface:authModal.toast.authFailed'), {
         description: errorMessage
       });
 
@@ -163,12 +166,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   }, [isOpen]);
 
+  const resolvedTitle = title ?? t('interface:authModal.defaultTitle');
+  const resolvedDescription = description ?? t('interface:authModal.defaultDescription');
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader className="space-y-3">
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
+            <DialogTitle className="text-xl font-semibold">{resolvedTitle}</DialogTitle>
             <Button
               variant="ghost"
               size="sm"
@@ -178,7 +184,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <X className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-muted-foreground">{description}</p>
+          <p className="text-muted-foreground">{resolvedDescription}</p>
         </DialogHeader>
 
         {/* Free Tier Benefits */}
@@ -186,26 +192,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
               <Zap className="w-5 h-5 text-green-600" />
-              Free Account Includes
+              {t('interface:authModal.freeTier.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="grid grid-cols-1 gap-2">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm">5 free conversions per month</span>
+                <span className="text-sm">{t('interface:authModal.freeTier.benefit1')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm">Files up to 50MB</span>
+                <span className="text-sm">{t('interface:authModal.freeTier.benefit2')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm">All popular formats supported</span>
+                <span className="text-sm">{t('interface:authModal.freeTier.benefit3')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm">Fast, secure processing</span>
+                <span className="text-sm">{t('interface:authModal.freeTier.benefit4')}</span>
               </div>
             </div>
           </CardContent>
@@ -213,18 +219,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signup">Create Account</TabsTrigger>
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
+            <TabsTrigger value="signup">{t('interface:authModal.tabs.signup')}</TabsTrigger>
+            <TabsTrigger value="signin">{t('interface:authModal.tabs.signin')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="signup" className="space-y-4">
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="signup-name">Full Name</Label>
+                <Label htmlFor="signup-name">{t('interface:authModal.fields.fullName')}</Label>
                 <Input
                   id="signup-name"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder={t('interface:authModal.fields.fullNamePlaceholder')}
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   disabled={isLoading}
@@ -232,11 +238,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signup-email">Email</Label>
+                <Label htmlFor="signup-email">{t('interface:authModal.fields.email')}</Label>
                 <Input
                   id="signup-email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder={t('interface:authModal.fields.emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
@@ -244,11 +250,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signup-password">Password</Label>
+                <Label htmlFor="signup-password">{t('interface:authModal.fields.password')}</Label>
                 <Input
                   id="signup-password"
                   type="password"
-                  placeholder="At least 6 characters"
+                  placeholder={t('interface:authModal.fields.passwordPlaceholderSignup')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
@@ -261,7 +267,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className="w-full"
                 disabled={isLoading || !email || !password || !displayName}
               >
-                {isLoading ? 'Creating Account...' : 'Create Free Account'}
+                {isLoading ? t('interface:authModal.actions.creatingAccount') : t('interface:authModal.actions.createAccount')}
               </Button>
             </form>
           </TabsContent>
@@ -269,11 +275,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <TabsContent value="signin" className="space-y-4">
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="signin-email">Email</Label>
+                <Label htmlFor="signin-email">{t('interface:authModal.fields.email')}</Label>
                 <Input
                   id="signin-email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder={t('interface:authModal.fields.emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
@@ -281,11 +287,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signin-password">Password</Label>
+                <Label htmlFor="signin-password">{t('interface:authModal.fields.password')}</Label>
                 <Input
                   id="signin-password"
                   type="password"
-                  placeholder="Your password"
+                  placeholder={t('interface:authModal.fields.passwordPlaceholderSignin')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
@@ -297,7 +303,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className="w-full"
                 disabled={isLoading || !email || !password}
               >
-                {isLoading ? 'Signing In...' : 'Sign In'}
+                {isLoading ? t('interface:authModal.actions.signingIn') : t('interface:authModal.actions.signIn')}
               </Button>
             </form>
           </TabsContent>
@@ -306,7 +312,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <div className="relative">
           <Separator />
           <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
-            OR
+            {t('interface:authModal.orDivider')}
           </span>
         </div>
 
@@ -316,8 +322,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           className="w-full"
           disabled={isLoading}
         >
-          {/* <Google className="w-4 h-4 mr-2" /> */}
-          Continue with Google
+          {t('interface:authModal.googleSignIn')}
         </Button>
 
         {/* Upgrade Preview */}
@@ -325,31 +330,32 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
               <Shield className="w-4 h-4 text-blue-600" />
-              Need More? Upgrade Anytime
+              {t('interface:authModal.upgrade.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between text-sm">
               <div>
-                <div className="font-medium">Starter Plan</div>
-                <div className="text-muted-foreground">100 conversions/month</div>
+                <div className="font-medium">{t('interface:authModal.upgrade.plan')}</div>
+                <div className="text-muted-foreground">{t('interface:authModal.upgrade.planDetail')}</div>
               </div>
-              <Badge variant="secondary">$9/month</Badge>
+              <Badge variant="secondary">{t('interface:authModal.upgrade.price')}</Badge>
             </div>
           </CardContent>
         </Card>
 
         <p className="text-xs text-muted-foreground text-center">
-          By signing up, you agree to our{' '}
-          <a href="/terms-of-service" className="underline hover:text-foreground">
-            Terms of Service
-          </a>{' '}
-          and{' '}
-          <a href="/privacy-policy" className="underline hover:text-foreground">
-            Privacy Policy
-          </a>
+          <Trans
+            i18nKey="interface:authModal.terms"
+            components={{
+              tos: <a href="/terms-of-service" className="underline hover:text-foreground" />,
+              privacy: <a href="/privacy-policy" className="underline hover:text-foreground" />,
+            }}
+          />
         </p>
       </DialogContent>
     </Dialog>
   );
 };
+
+export default AuthModal;

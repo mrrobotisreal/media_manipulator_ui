@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import ImageConversionForm from '@/components/image-conversion-form';
+import PdfConversionForm, { type PdfFormPresets } from '@/components/pdf-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
 import AudioConversionForm from '@/components/audio-conversion-form';
 import TranscribeForm from '@/components/transcribe-form';
@@ -38,8 +39,9 @@ import {
   trackFileUpload,
   getSafeFileExtension,
 } from '@/lib/analytics';
+import { useLocalization } from '@/i18n/useLocalization';
 
-export type EmbeddedMediaKind = 'image' | 'video' | 'audio';
+export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
 export type EmbeddedTask =
   | 'remove_metadata'
@@ -61,7 +63,53 @@ export type EmbeddedTask =
   | 'extract_video_only'
   | 'extract_frames'
   | 'stitch_audio_to_video'
-  | 'ai_frame_interpolation';
+  | 'ai_frame_interpolation'
+  | 'png_to_jpg'
+  | 'jpg_to_png'
+  | 'webp_to_png'
+  | 'png_to_webp'
+  | 'jpg_to_webp'
+  | 'jpg_converter'
+  | 'png_converter'
+  | 'image_resizer'
+  | 'compress_image'
+  | 'remove_background'
+  | 'image_to_pdf'
+  | 'jpg_to_pdf'
+  | 'png_to_pdf'
+  | 'pdf_to_jpg'
+  | 'pdf_to_png'
+  | 'pdf_converter';
+
+/** Output formats the embedded image converter understands. "pdf" routes the
+ *  image through the document pathway (image -> single-page PDF). */
+export type EmbeddedImageFormat = 'jpg' | 'png' | 'webp' | 'gif' | 'pdf';
+
+/** AI image operations the embedded image converter understands. */
+export type EmbeddedAIImageOperation =
+  | 'none'
+  | 'remove_background'
+  | 'face_privacy'
+  | 'ai_upscale'
+  | 'redact_text'
+  | 'remove_object';
+
+/**
+ * Concrete preset/lock configuration for the embedded image converter.
+ * Threaded from a tool page's `embed` config into ImageConversionForm so SEO
+ * pages can genuinely preselect/lock a conversion instead of only hinting.
+ */
+export interface ImageFormPresets {
+  defaultOutputFormat?: EmbeddedImageFormat;
+  lockedOutputFormat?: EmbeddedImageFormat;
+  defaultAIImageOperation?: EmbeddedAIImageOperation;
+  lockedAIImageOperation?: boolean;
+  defaultQuality?: number;
+  defaultWidth?: number;
+  defaultHeight?: number;
+  /** Visually emphasize the width/height controls (image resizer). */
+  emphasizeResize?: boolean;
+}
 
 interface EmbeddedToolPanelProps {
   /** Default media kind to bias the panel toward when no file is selected yet. */
@@ -78,12 +126,35 @@ interface EmbeddedToolPanelProps {
   acceptOverride?: string;
   /** Restrict the visible input formats (informational hint only). */
   allowedInputFormats?: string[];
-  /** Recommended output format (informational hint). */
+  /** Recommended output format. For image tasks this preselects the format. */
   defaultOutputFormat?: string;
   /** Locked input format (informational hint). */
   lockedInputFormat?: string;
-  /** Locked output format (informational hint). */
+  /**
+   * Locked output format. For image tasks the converter genuinely locks the
+   * format select to this value and still submits it.
+   */
   lockedOutputFormat?: string;
+  /** Default AI image operation to preselect (image tasks only). */
+  defaultAIImageOperation?: EmbeddedAIImageOperation;
+  /** Lock the AI image operation select so it can't be changed (image tasks). */
+  lockedAIImageOperation?: boolean;
+  /** Default JPG/WebP quality (1–100) to preselect (image tasks only). */
+  defaultQuality?: number;
+  /** Default target width in px (image tasks only). */
+  defaultWidth?: number;
+  /** Default target height in px (image tasks only). */
+  defaultHeight?: number;
+  /** Visually emphasize the resize controls (image resizer). */
+  emphasizeResize?: boolean;
+  /** Default output format for the PDF -> image form (jpg | png). */
+  pdfDefaultOutputFormat?: 'jpg' | 'png';
+  /** Lock the PDF -> image output format select. */
+  pdfLockOutputFormat?: boolean;
+  /** Default page selection for the PDF -> image form (all | first). */
+  pdfDefaultPageSelection?: 'all' | 'first';
+  /** Default render DPI for the PDF -> image form. */
+  pdfDefaultDpi?: number;
   /**
    * When true, render in transcribe mode instead of conversion mode.
    * Only meaningful for video/audio defaultMediaKind.
@@ -106,18 +177,23 @@ const ACCEPT_MAP: Record<EmbeddedMediaKind, string> = {
   image: 'image/*',
   video: 'video/*',
   audio: 'audio/*',
+  // PDF kind also accepts images so the pdf-converter hub can take either
+  // direction (PDF -> image or image -> PDF).
+  pdf: 'application/pdf,image/*',
 };
 
 const ICON_MAP: Record<EmbeddedMediaKind, React.ReactNode> = {
   image: <ImageIcon className="w-5 h-5" />,
   video: <VideoIcon className="w-5 h-5" />,
   audio: <Music className="w-5 h-5" />,
+  pdf: <FileText className="w-5 h-5" />,
 };
 
 const DEFAULT_TITLES: Record<EmbeddedMediaKind, string> = {
   image: 'Try the image converter',
   video: 'Try the video converter',
   audio: 'Try the audio converter',
+  pdf: 'Try the PDF converter',
 };
 
 const DEFAULT_DESCRIPTIONS: Record<EmbeddedMediaKind, string> = {
@@ -127,6 +203,8 @@ const DEFAULT_DESCRIPTIONS: Record<EmbeddedMediaKind, string> = {
     'Upload a video to convert, compress, or trim. The same converter as the homepage — no signup required.',
   audio:
     'Upload an audio file to convert or compress. The same converter as the homepage — no signup required.',
+  pdf:
+    'Upload a PDF to convert to images, or an image to turn into a PDF. No signup required.',
 };
 
 const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: string }>> = {
@@ -199,6 +277,26 @@ const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: st
     recommended: 'mp4',
     note: 'After uploading, scroll to the "AI Video Tools" panel and pick AI Frame Interpolation. Choose a target FPS (48, 60, or 120). Output is MP4 in v1.',
   },
+  // Image SEO tasks. User-facing guidance prose lives in each tool's
+  // canonical `embed.description` (toolPages.ts) rather than being hardcoded
+  // here, so these only carry the data-shaped `recommended` format chip.
+  png_to_jpg: { recommended: 'jpg' },
+  jpg_to_png: { recommended: 'png' },
+  webp_to_png: { recommended: 'png' },
+  png_to_webp: { recommended: 'webp' },
+  jpg_to_webp: { recommended: 'webp' },
+  jpg_converter: { recommended: 'jpg' },
+  png_converter: { recommended: 'png' },
+  image_resizer: {},
+  compress_image: {},
+  remove_background: { recommended: 'png' },
+  // PDF tasks. Guidance prose lives in each tool's canonical embed.description.
+  image_to_pdf: { recommended: 'pdf' },
+  jpg_to_pdf: { recommended: 'pdf' },
+  png_to_pdf: { recommended: 'pdf' },
+  pdf_to_jpg: { recommended: 'jpg' },
+  pdf_to_png: { recommended: 'png' },
+  pdf_converter: {},
 };
 
 const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
@@ -229,6 +327,16 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   defaultOutputFormat,
   lockedInputFormat,
   lockedOutputFormat,
+  defaultAIImageOperation,
+  lockedAIImageOperation = false,
+  defaultQuality,
+  defaultWidth,
+  defaultHeight,
+  emphasizeResize = false,
+  pdfDefaultOutputFormat,
+  pdfLockOutputFormat = false,
+  pdfDefaultPageSelection,
+  pdfDefaultDpi,
   transcribeMode = false,
   transcodeMode = false,
   transcodeProtocol = 'hls',
@@ -346,6 +454,15 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
     if (transcribeMode) {
       return `${nameWithoutExt}_transcript.${conversionOptions.format}`;
     }
+    // PDF -> image: an "all pages" job returns a ZIP of per-page images; a
+    // "first page" job returns a single image. Mirror the server's naming.
+    if (effectiveKind === 'pdf') {
+      const opts = conversionOptions as { format?: string; pageSelection?: string };
+      if (!opts.pageSelection || opts.pageSelection === 'all') {
+        return `${nameWithoutExt}_pages.zip`;
+      }
+      return `${nameWithoutExt}_converted.${opts.format || 'jpg'}`;
+    }
     return `${nameWithoutExt}.${conversionOptions.format}`;
   };
 
@@ -387,8 +504,32 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
 
   const heading = title || DEFAULT_TITLES[defaultMediaKind];
   const subheading = description || DEFAULT_DESCRIPTIONS[defaultMediaKind];
+  const { t, formatFileSize } = useLocalization('interface');
   const hint = defaultTask ? TASK_HINTS[defaultTask] : undefined;
   const recommendedFormat = defaultOutputFormat || hint?.recommended;
+
+  const isImageFormat = (v: string | undefined): v is EmbeddedImageFormat =>
+    v === 'jpg' || v === 'png' || v === 'webp' || v === 'gif';
+
+  // Concrete preset/lock config handed to the image form. Only meaningful for
+  // image conversions; the form ignores it for other media kinds.
+  const imagePresets: ImageFormPresets = {
+    defaultOutputFormat: isImageFormat(defaultOutputFormat) ? defaultOutputFormat : undefined,
+    lockedOutputFormat: isImageFormat(lockedOutputFormat) ? lockedOutputFormat : undefined,
+    defaultAIImageOperation,
+    lockedAIImageOperation,
+    defaultQuality,
+    defaultWidth,
+    defaultHeight,
+    emphasizeResize,
+  };
+
+  const pdfPresets: PdfFormPresets = {
+    defaultOutputFormat: pdfDefaultOutputFormat,
+    lockOutputFormat: pdfLockOutputFormat,
+    defaultPageSelection: pdfDefaultPageSelection,
+    defaultDpi: pdfDefaultDpi,
+  };
 
   const isTranscribeAllowed =
     transcribeMode && (defaultMediaKind === 'video' || defaultMediaKind === 'audio');
@@ -398,7 +539,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   return (
     <section
       className={`bg-card border border-border rounded-lg ${compact ? 'p-10' : 'p-12'} my-8 sci-fi-frame-inner`}
-      aria-label="Embedded media converter"
+      aria-label={t('embeddedToolPanel.sectionAria')}
     >
       <div className="flex items-start gap-3 mb-4">
         <span className="mt-1 text-blue-600">
@@ -406,7 +547,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
         </span>
         <div>
           <h2 className="text-xl font-semibold text-card-foreground flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-blue-600" /> Try it now
+            <Sparkles className="w-4 h-4 text-blue-600" /> {t('embeddedToolPanel.tryItNow')}
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
             <span className="font-medium">{heading}.</span> {subheading}
@@ -420,7 +561,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
           <div className="text-sm text-card-foreground">
             {recommendedFormat && (
               <p>
-                <span className="font-medium">Recommended output:</span>{' '}
+                <span className="font-medium">{t('embeddedToolPanel.recommendedOutput')}</span>{' '}
                 <code className="px-1.5 py-0.5 bg-card border border-border rounded text-xs">
                   {recommendedFormat.toUpperCase()}
                 </code>
@@ -428,7 +569,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             )}
             {lockedOutputFormat && (
               <p>
-                <span className="font-medium">Output format:</span>{' '}
+                <span className="font-medium">{t('embeddedToolPanel.outputFormat')}</span>{' '}
                 <code className="px-1.5 py-0.5 bg-card border border-border rounded text-xs">
                   {lockedOutputFormat.toUpperCase()}
                 </code>
@@ -436,7 +577,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             )}
             {lockedInputFormat && (
               <p>
-                <span className="font-medium">Expected input:</span>{' '}
+                <span className="font-medium">{t('embeddedToolPanel.expectedInput')}</span>{' '}
                 <code className="px-1.5 py-0.5 bg-card border border-border rounded text-xs">
                   {lockedInputFormat.toUpperCase()}
                 </code>
@@ -444,7 +585,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             )}
             {allowedInputFormats && allowedInputFormats.length > 0 && (
               <p>
-                <span className="font-medium">Accepts:</span>{' '}
+                <span className="font-medium">{t('embeddedToolPanel.accepts')}</span>{' '}
                 {allowedInputFormats.map((f) => f.toUpperCase()).join(', ')}
               </p>
             )}
@@ -478,18 +619,17 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
         >
           <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
           <p className="font-medium text-card-foreground mb-1">
-            Drag and drop a {defaultMediaKind} file here
+            {t('embeddedToolPanel.dragDrop', { kind: t(`embeddedToolPanel.mediaKinds.${defaultMediaKind}`) })}
           </p>
           <p className="text-sm text-muted-foreground mb-4">
-            or click to select from your computer. Files stay on our servers
-            for at most 24 hours and are then deleted.
+            {t('embeddedToolPanel.selectHint')}
           </p>
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Select file
+            {t('embeddedToolPanel.selectFile')}
           </button>
           <input
             ref={fileInputRef}
@@ -511,7 +651,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
                   {selectedFile.name}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB ·{' '}
+                  {formatFileSize(selectedFile.size)} ·{' '}
                   {getSafeFileExtension(selectedFile.name)}
                 </p>
               </div>
@@ -520,7 +660,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
               type="button"
               onClick={clearFile}
               className="text-muted-foreground hover:text-card-foreground transition-colors"
-              aria-label="Remove file"
+              aria-label={t('embeddedToolPanel.removeFile')}
             >
               <X className="w-5 h-5" />
             </button>
@@ -552,6 +692,8 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
                   onSubmit={handleConvert}
                   isLoading={isProcessing}
                   imageUrl={originalMediaUrl || undefined}
+                  file={selectedFile}
+                  presets={imagePresets}
                 />
               )}
               {effectiveKind === 'video' && (
@@ -568,6 +710,13 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
                   audioUrl={originalMediaUrl || undefined}
                 />
               )}
+              {effectiveKind === 'pdf' && (
+                <PdfConversionForm
+                  onSubmit={handleConvert}
+                  isLoading={isProcessing}
+                  presets={pdfPresets}
+                />
+              )}
             </>
           )}
 
@@ -575,8 +724,8 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-2">
                 {activeProgress > 0
-                  ? `Uploading ${activeProgress}%`
-                  : 'Working on your file…'}{' '}
+                  ? t('embeddedToolPanel.uploadingPercent', { percent: activeProgress })
+                  : t('embeddedToolPanel.workingOnFile')}{' '}
                 {conversionJob?.progress ? `· ${conversionJob.progress}%` : ''}
               </p>
               <div className="w-full bg-muted rounded-full h-2">
@@ -597,24 +746,24 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
               className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
-              Download {getConvertedFilename()}
+              {t('embeddedToolPanel.downloadFilename', { filename: getConvertedFilename() })}
             </button>
           )}
 
           {!isTranscodeAllowed && conversionJob?.status === 'failed' && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
-              {transcribeMode ? 'Transcription failed.' : 'Conversion failed.'} Try again or open the full converter.
+              {transcribeMode ? t('embeddedToolPanel.transcribeFailed') : t('embeddedToolPanel.conversionFailed')} {t('embeddedToolPanel.tryAgainOrOpen')}
             </div>
           )}
         </div>
       )}
 
       <p className="text-xs text-muted-foreground mt-4">
-        Need the full feature set?{' '}
+        {t('embeddedToolPanel.needFullPrefix')}{' '}
         <Link to="/" className="text-blue-600 hover:underline">
-          Open the full converter
+          {t('embeddedToolPanel.openFullConverter')}
         </Link>{' '}
-        — it includes the conversion history, transcript flow, and AI tools.
+        {t('embeddedToolPanel.needFullSuffix')}
       </p>
     </section>
   );

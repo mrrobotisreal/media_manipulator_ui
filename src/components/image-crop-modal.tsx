@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Crop } from 'lucide-react';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface CropArea {
   x: number;
@@ -23,6 +24,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
   onCropSave,
   initialCrop,
 }) => {
+  const { t } = useLocalization(['interface', 'accessibility']);
   const [cropArea, setCropArea] = useState<CropArea>(
     initialCrop || { x: 0, y: 0, width: 200, height: 200 }
   );
@@ -149,10 +151,11 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Crop className="w-5 h-5" />
-            Crop Image
+            {t('interface:imageCropModal.title')}
           </h2>
           <button
             onClick={onClose}
+            aria-label={t('accessibility:modals.close')}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <X className="w-6 h-6" />
@@ -161,8 +164,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
         <div className="p-6">
           <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Drag the crop area to position it, or drag the bottom-right corner to resize.
-            The darker area will be removed.
+            {t('interface:imageCropModal.instructions')}
           </div>
 
           <div
@@ -175,7 +177,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
             <img
               ref={imageRef}
               src={imageUrl}
-              alt="Crop preview"
+              alt={t('interface:imageCropModal.previewAlt')}
               className="max-w-full max-h-96 block"
               draggable={false}
             />
@@ -226,7 +228,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
           <div className="mt-6 flex justify-between items-center">
             <div className="text-sm text-gray-600 dark:text-gray-400">
-              Crop area: {cropArea.width} × {cropArea.height} pixels
+              {t('interface:imageCropModal.cropArea', { width: cropArea.width, height: cropArea.height })}
             </div>
 
             <div className="flex gap-3">
@@ -234,14 +236,14 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 onClick={onClose}
                 className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
               >
-                Cancel
+                {t('interface:common.cancel')}
               </button>
               <button
                 onClick={handleSaveCrop}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
               >
                 <Crop className="w-4 h-4" />
-                Apply Crop
+                {t('interface:imageCropModal.apply')}
               </button>
             </div>
           </div>

@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import { ChevronDown, ChevronRight, Palette, Move, Clock, Settings } from 'lucide-react';
+import { Trans } from 'react-i18next';
 import InfoTooltip from '@/components/info-tooltip';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface AdvancedVideoEffectsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) => {
+  const { t } = useLocalization('interface');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [brightness, setBrightness] = useState(0);
   const [contrast, setContrast] = useState(0);
@@ -55,18 +58,18 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
-        Advanced Video Effects
+        {t('advancedVideoEffects.title')}
         <InfoTooltip
-          ariaLabel="About Advanced Video Effects"
+          ariaLabel={t('advancedVideoEffects.tooltipAria')}
           width="lg"
           content={
             <div className="space-y-1">
-              <p>Manual video filter chains, grouped into four expandable sections:</p>
+              <p>{t('advancedVideoEffects.tooltipIntro')}</p>
               <ul className="list-disc pl-4 space-y-1 mt-1">
-                <li><strong>Visual Effects</strong> — color correction, blur/sharpen, noise, and artistic filters.</li>
-                <li><strong>Transform</strong> — rotation, flip, custom crop, padding/letterboxing.</li>
-                <li><strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.</li>
-                <li><strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.</li>
+                <li><Trans i18nKey="interface:advancedVideoEffects.tooltipVisual" components={{ strong: <strong /> }} /></li>
+                <li><Trans i18nKey="interface:advancedVideoEffects.tooltipTransform" components={{ strong: <strong /> }} /></li>
+                <li><Trans i18nKey="interface:advancedVideoEffects.tooltipTemporal" components={{ strong: <strong /> }} /></li>
+                <li><Trans i18nKey="interface:advancedVideoEffects.tooltipAdvanced" components={{ strong: <strong /> }} /></li>
               </ul>
             </div>
           }
@@ -77,9 +80,9 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="visual"
-          title="Visual Effects"
+          title={t('advancedVideoEffects.sections.visual.title')}
           icon={<Palette className="w-5 h-5 text-blue-600" />}
-          description="Color correction, blur/sharpen, artistic effects, and noise control"
+          description={t('advancedVideoEffects.sections.visual.description')}
         />
 
         {expandedSections.has('visual') && (
@@ -87,15 +90,15 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
             {/* Color/Exposure */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
-                Color &amp; Exposure
+                {t('advancedVideoEffects.colorExposure.title')}
                 <InfoTooltip
-                  ariaLabel="About Color & Exposure"
-                  content="Adjust brightness, contrast, saturation, hue, gamma, exposure, and shadow/highlight recovery. These map to FFmpeg's eq and curves filters and stack into a single color-correction pass."
+                  ariaLabel={t('advancedVideoEffects.colorExposure.title')}
+                  content={t('advancedVideoEffects.colorExposure.tooltip')}
                 />
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Brightness</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.brightness')}</label>
                   <Controller
                     name="visualEffects.brightness"
                     control={control}
@@ -117,11 +120,11 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{brightness}</span>
-                  <div className="text-xs text-muted-foreground text-center">-100 to +100</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedVideoEffects.ranges.hundred')}</div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Contrast</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.contrast')}</label>
                   <Controller
                     name="visualEffects.contrast"
                     control={control}
@@ -143,11 +146,11 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{contrast}</span>
-                  <div className="text-xs text-muted-foreground text-center">-100 to +100</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedVideoEffects.ranges.hundred')}</div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Saturation</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.saturation')}</label>
                   <Controller
                     name="visualEffects.saturation"
                     control={control}
@@ -169,11 +172,11 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{saturation}</span>
-                  <div className="text-xs text-muted-foreground text-center">-100 to +100</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedVideoEffects.ranges.hundred')}</div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Hue</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.hue')}</label>
                   <Controller
                     name="visualEffects.hue"
                     control={control}
@@ -195,7 +198,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{hue}°</span>
-                  <div className="text-xs text-muted-foreground text-center">-180° to +180°</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedVideoEffects.ranges.hue')}</div>
                 </div>
               </div>
             </div>
@@ -203,15 +206,15 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
             {/* Blur/Sharpen */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
-                Blur &amp; Sharpen
+                {t('advancedVideoEffects.blurSharpen.title')}
                 <InfoTooltip
-                  ariaLabel="About Blur & Sharpen"
-                  content="Add Gaussian blur (0–50 sigma), motion blur with angle and distance, or unsharp-mask sharpening with adjustable radius, amount, and threshold."
+                  ariaLabel={t('advancedVideoEffects.blurSharpen.title')}
+                  content={t('advancedVideoEffects.blurSharpen.tooltip')}
                 />
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Gaussian Blur</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.gaussianBlur')}</label>
                   <Controller
                     name="visualEffects.gaussianBlur"
                     control={control}
@@ -233,23 +236,23 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                     )}
                   />
                   <span className='text-xs text-foreground text-center'>{gaussianBlur}px</span>
-                  <div className="text-xs text-muted-foreground text-center">0 to 50px</div>
+                  <div className="text-xs text-muted-foreground text-center">{t('advancedVideoEffects.ranges.blur')}</div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-card-foreground">Artistic Effect</label>
+                  <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.artisticEffect')}</label>
                   <Controller
                     name="visualEffects.artistic"
                     control={control}
                     render={({ field }) => (
                       <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground">
-                        <option value="none">None</option>
-                        <option value="oil-painting">Oil Painting</option>
-                        <option value="watercolor">Watercolor</option>
-                        <option value="sketch">Sketch</option>
-                        <option value="emboss">Emboss</option>
-                        <option value="edge-detection">Edge Detection</option>
-                        <option value="posterize">Posterize</option>
+                        <option value="none">{t('advancedVideoEffects.artistic.none')}</option>
+                        <option value="oil-painting">{t('advancedVideoEffects.artistic.oil-painting')}</option>
+                        <option value="watercolor">{t('advancedVideoEffects.artistic.watercolor')}</option>
+                        <option value="sketch">{t('advancedVideoEffects.artistic.sketch')}</option>
+                        <option value="emboss">{t('advancedVideoEffects.artistic.emboss')}</option>
+                        <option value="edge-detection">{t('advancedVideoEffects.artistic.edge-detection')}</option>
+                        <option value="posterize">{t('advancedVideoEffects.artistic.posterize')}</option>
                       </select>
                     )}
                   />
@@ -264,16 +267,16 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="transform"
-          title="Geometric Transform"
+          title={t('advancedVideoEffects.sections.transform.title')}
           icon={<Move className="w-5 h-5 text-green-600" />}
-          description="Rotation, flipping, cropping, and padding"
+          description={t('advancedVideoEffects.sections.transform.description')}
         />
 
         {expandedSections.has('transform') && (
           <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1 text-card-foreground">Rotation (degrees)</label>
+                <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.rotation')}</label>
                 <Controller
                   name="transform.rotation"
                   control={control}
@@ -330,7 +333,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                           </div>
                         </div>
                       </label>
-                      <span className="text-sm text-card-foreground">Flip Horizontal</span>
+                      <span className="text-sm text-card-foreground">{t('advancedVideoEffects.labels.flipHorizontal')}</span>
                     </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -379,7 +382,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                           </div>
                         </div>
                       </label>
-                      <span className="text-sm text-card-foreground">Flip Vertical</span>
+                      <span className="text-sm text-card-foreground">{t('advancedVideoEffects.labels.flipVertical')}</span>
                     </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -403,9 +406,9 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="temporal"
-          title="Temporal Effects"
+          title={t('advancedVideoEffects.sections.temporal.title')}
           icon={<Clock className="w-5 h-5 text-purple-600" />}
-          description="Speed control, reverse, frame rate, and stabilization"
+          description={t('advancedVideoEffects.sections.temporal.description')}
         />
 
         {expandedSections.has('temporal') && (
@@ -446,7 +449,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                           </div>
                         </div>
                       </label>
-                      <span className="text-sm text-card-foreground">Reverse Video</span>
+                      <span className="text-sm text-card-foreground">{t('advancedVideoEffects.labels.reverseVideo')}</span>
                     </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -497,7 +500,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                           </div>
                         </div>
                       </label>
-                      <span className="text-sm text-card-foreground">Ping-Pong Loop</span>
+                      <span className="text-sm text-card-foreground">{t('advancedVideoEffects.labels.pingPong')}</span>
                     </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -514,7 +517,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1 text-card-foreground">Target Frame Rate</label>
+                <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.targetFrameRate')}</label>
                 <Controller
                   name="temporal.frameRate.target"
                   control={control}
@@ -525,7 +528,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                       min="1"
                       max="120"
                       step="1"
-                      placeholder="Auto"
+                      placeholder={t('advancedVideoEffects.autoPlaceholder')}
                       value={value || ''}
                       onChange={(e) => {
                         const val = e.target.value;
@@ -572,7 +575,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                           </div>
                         </div>
                       </label>
-                      <span className="text-sm text-card-foreground">Video Stabilization</span>
+                      <span className="text-sm text-card-foreground">{t('advancedVideoEffects.labels.stabilization')}</span>
                     </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -596,9 +599,9 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
       <div className="space-y-2">
         <SectionHeader
           id="advanced"
-          title="Advanced Processing"
+          title={t('advancedVideoEffects.sections.advanced.title')}
           icon={<Settings className="w-5 h-5 text-red-600" />}
-          description="Deinterlacing, HDR processing, and color space conversion"
+          description={t('advancedVideoEffects.sections.advanced.description')}
         />
 
         {expandedSections.has('advanced') && (
@@ -639,7 +642,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                           </div>
                         </div>
                       </label>
-                      <span className="text-sm text-card-foreground">Deinterlace Video</span>
+                      <span className="text-sm text-card-foreground">{t('advancedVideoEffects.labels.deinterlace')}</span>
                     </div>
                     // <label className="flex items-center space-x-2">
                     //   <input
@@ -656,16 +659,16 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1 text-card-foreground">Output Color Space</label>
+                <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.outputColorSpace')}</label>
                 <Controller
                   name="advanced.colorSpace.output"
                   control={control}
                   render={({ field }) => (
                     <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground">
-                      <option value="rec709">Rec.709 (Standard)</option>
-                      <option value="rec2020">Rec.2020 (HDR)</option>
-                      <option value="srgb">sRGB</option>
-                      <option value="p3">Display P3</option>
+                      <option value="rec709">{t('advancedVideoEffects.colorSpace.rec709')}</option>
+                      <option value="rec2020">{t('advancedVideoEffects.colorSpace.rec2020')}</option>
+                      <option value="srgb">{t('advancedVideoEffects.colorSpace.srgb')}</option>
+                      <option value="p3">{t('advancedVideoEffects.colorSpace.p3')}</option>
                     </select>
                   )}
                 />

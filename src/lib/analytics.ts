@@ -31,7 +31,7 @@ export const trackFileUpload = (fileType: string, fileSize: number, fileName: st
     file_extension: getSafeFileExtension(fileName),
     size_bytes: fileSize,
   };
-  trackFirstPartyEvent('file_selected', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'unknown' });
+  trackFirstPartyEvent('file_selected', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'pdf' | 'unknown' });
   trackGoogleEvent('file_selected', props);
   if (!analytics) return;
   logEvent(analytics, 'file_upload', props);
@@ -94,7 +94,7 @@ export const trackFileDownload = (outputFileName: string, fileType: string) => {
     download_source: 'conversion_result',
     success: true,
   };
-  trackFirstPartyEvent('download', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'unknown' });
+  trackFirstPartyEvent('download', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'pdf' | 'unknown' });
   trackGoogleEvent('file_download', props);
   if (!analytics) return;
   logEvent(analytics, 'file_download', props);
@@ -108,7 +108,7 @@ export const trackFileIdentification = (fileType: string, identificationSuccess:
     success: identificationSuccess,
     identification_success: identificationSuccess,
   };
-  trackFirstPartyEvent('file_identified', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'unknown' });
+  trackFirstPartyEvent('file_identified', props, { mediaKind: fileType as 'image' | 'video' | 'audio' | 'pdf' | 'unknown' });
   trackGoogleEvent('file_identified', props);
   if (!analytics) return;
   logEvent(analytics, 'file_identification', props);

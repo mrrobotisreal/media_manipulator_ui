@@ -1,6 +1,7 @@
 import { Controller, useWatch } from 'react-hook-form';
 import { Crop, Scissors, Sparkles } from 'lucide-react';
 import InfoTooltip from '@/components/info-tooltip';
+import { useLocalization } from '@/i18n/useLocalization';
 
 const ConversionOptions: React.FC<{
   fileType: 'image' | 'video' | 'audio';
@@ -9,7 +10,13 @@ const ConversionOptions: React.FC<{
   onTrimClick?: () => void;
   cropStatus?: string;
   trimStatus?: string;
-}> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus }) => {
+  /** When set (image), the output-format select is locked to this value. */
+  lockedFormat?: 'jpg' | 'png' | 'webp' | 'gif' | 'pdf';
+  /** When true (image), visually highlight the width/height controls. */
+  emphasizeResize?: boolean;
+}> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus, lockedFormat, emphasizeResize }) => {
+  const { t } = useLocalization('interface');
+
   if (fileType === 'image') {
     return (
       <div className="space-y-4">
@@ -19,14 +26,14 @@ const ConversionOptions: React.FC<{
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium text-card-foreground flex items-center gap-2">
-                  Image Cropping
+                  {t('conversionOptions.image.cropping.title')}
                   <InfoTooltip
-                    ariaLabel="About image cropping"
-                    content="Open a visual crop selector to keep only part of the image. Cropping runs before resize and filters, so dimensions you set below apply to the cropped region. Skip this if you want the whole image."
+                    ariaLabel={t('conversionOptions.image.cropping.tooltipAria')}
+                    content={t('conversionOptions.image.cropping.tooltip')}
                   />
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  {cropStatus || "Select the portion of the image you want to keep"}
+                  {cropStatus || t('conversionOptions.image.cropping.selectPortion')}
                 </p>
               </div>
               <button
@@ -35,7 +42,7 @@ const ConversionOptions: React.FC<{
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
               >
                 <Crop className="w-4 h-4" />
-                {cropStatus ? 'Edit Crop' : 'Crop Image'}
+                {cropStatus ? t('conversionOptions.image.cropping.editCrop') : t('conversionOptions.image.cropping.cropImage')}
               </button>
             </div>
           </div>
@@ -44,31 +51,42 @@ const ConversionOptions: React.FC<{
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Format
+              {t('conversionOptions.image.format.label')}
               <InfoTooltip
-                ariaLabel="About image format"
-                content="The output file type. JPG is best for photos, PNG keeps transparency and is great for graphics, WebP is a modern smaller format, and GIF is for legacy or animated use cases."
+                ariaLabel={t('conversionOptions.image.format.tooltipAria')}
+                content={t('conversionOptions.image.format.tooltip')}
               />
             </label>
             <Controller
               name="format"
               control={control}
               render={({ field }) => (
-                <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
+                <select
+                  {...field}
+                  disabled={Boolean(lockedFormat)}
+                  aria-disabled={Boolean(lockedFormat)}
+                  className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring disabled:opacity-60 disabled:cursor-not-allowed"
+                >
                   <option value="jpg">JPG</option>
                   <option value="png">PNG</option>
                   <option value="webp">WebP</option>
                   <option value="gif">GIF</option>
+                  <option value="pdf">PDF</option>
                 </select>
               )}
             />
+            {lockedFormat && (
+              <span className="mt-1 inline-flex items-center gap-1 rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+                {t('conversionOptions.image.format.locked', { format: lockedFormat.toUpperCase() })}
+              </span>
+            )}
           </div>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Quality (%)
+              {t('conversionOptions.image.quality.label')}
               <InfoTooltip
-                ariaLabel="About image quality"
-                content="Compression quality for JPG and WebP outputs (1–100). 85 is a balanced default. Lower values shrink file size at the cost of artifacts; values above 95 rarely show a visible difference. Ignored for PNG and GIF."
+                ariaLabel={t('conversionOptions.image.quality.tooltipAria')}
+                content={t('conversionOptions.image.quality.tooltip')}
               />
             </label>
             <Controller
@@ -92,13 +110,19 @@ const ConversionOptions: React.FC<{
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        {emphasizeResize && (
+          <div className="rounded-md border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 px-3 py-2 text-sm text-card-foreground">
+            {t('conversionOptions.image.resizeEmphasis')}
+          </div>
+        )}
+
+        <div className={`grid grid-cols-2 gap-4${emphasizeResize ? ' rounded-lg ring-2 ring-blue-300 dark:ring-blue-800 p-2' : ''}`}>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Width (px)
+              {t('conversionOptions.image.width.label')}
               <InfoTooltip
-                ariaLabel="About image width"
-                content="Target width in pixels. Leave blank to keep the original width or scale proportionally based on the Height field. The image is auto-oriented from EXIF before resize so the dimensions match what you see in the preview."
+                ariaLabel={t('conversionOptions.image.width.tooltipAria')}
+                content={t('conversionOptions.image.width.tooltip')}
               />
             </label>
             <Controller
@@ -108,7 +132,7 @@ const ConversionOptions: React.FC<{
                 <input
                   {...field}
                   type="number"
-                  placeholder="Auto"
+                  placeholder={t('conversionOptions.image.width.placeholder')}
                   value={value || ''}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -121,10 +145,10 @@ const ConversionOptions: React.FC<{
           </div>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Height (px)
+              {t('conversionOptions.image.height.label')}
               <InfoTooltip
-                ariaLabel="About image height"
-                content="Target height in pixels. Leave blank to keep the original height or scale proportionally based on the Width field. Setting both Width and Height forces an exact size and may stretch the image."
+                ariaLabel={t('conversionOptions.image.height.tooltipAria')}
+                content={t('conversionOptions.image.height.tooltip')}
               />
             </label>
             <Controller
@@ -134,7 +158,7 @@ const ConversionOptions: React.FC<{
                 <input
                   {...field}
                   type="number"
-                  placeholder="Auto"
+                  placeholder={t('conversionOptions.image.height.placeholder')}
                   value={value || ''}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -150,10 +174,10 @@ const ConversionOptions: React.FC<{
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Filter
+              {t('conversionOptions.image.filter.label')}
               <InfoTooltip
-                ariaLabel="About image filters"
-                content="Apply a single ImageMagick effect to the output: grayscale, sepia, blur/sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation. Choose None to skip filters."
+                ariaLabel={t('conversionOptions.image.filter.tooltipAria')}
+                content={t('conversionOptions.image.filter.tooltip')}
               />
             </label>
             <Controller
@@ -161,32 +185,32 @@ const ConversionOptions: React.FC<{
               control={control}
               render={({ field }) => (
                 <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                  <option value="none">None</option>
-                  <option value="grayscale">Grayscale</option>
-                  <option value="sepia">Sepia</option>
-                  <option value="blur">Blur</option>
-                  <option value="sharpen">Sharpen</option>
-                  <option value="swirl">Swirl</option>
-                  <option value="barrel-distortion">Barrel Distortion</option>
-                  <option value="oil-painting">Oil Painting</option>
-                  <option value="vintage">Vintage</option>
-                  <option value="emboss">Emboss</option>
-                  <option value="charcoal">Charcoal</option>
-                  <option value="sketch">Sketch</option>
-                  <option value="rotate-45º">Rotate 45º</option>
-                  <option value="rotate-90º">Rotate 90º</option>
-                  <option value="rotate-180º">Rotate 180º</option>
-                  <option value="rotate-270º">Rotate 270º</option>
+                  <option value="none">{t('conversionOptions.image.filter.options.none')}</option>
+                  <option value="grayscale">{t('conversionOptions.image.filter.options.grayscale')}</option>
+                  <option value="sepia">{t('conversionOptions.image.filter.options.sepia')}</option>
+                  <option value="blur">{t('conversionOptions.image.filter.options.blur')}</option>
+                  <option value="sharpen">{t('conversionOptions.image.filter.options.sharpen')}</option>
+                  <option value="swirl">{t('conversionOptions.image.filter.options.swirl')}</option>
+                  <option value="barrel-distortion">{t('conversionOptions.image.filter.options.barrel-distortion')}</option>
+                  <option value="oil-painting">{t('conversionOptions.image.filter.options.oil-painting')}</option>
+                  <option value="vintage">{t('conversionOptions.image.filter.options.vintage')}</option>
+                  <option value="emboss">{t('conversionOptions.image.filter.options.emboss')}</option>
+                  <option value="charcoal">{t('conversionOptions.image.filter.options.charcoal')}</option>
+                  <option value="sketch">{t('conversionOptions.image.filter.options.sketch')}</option>
+                  <option value="rotate-45º">{t('conversionOptions.image.filter.options.rotate-45º')}</option>
+                  <option value="rotate-90º">{t('conversionOptions.image.filter.options.rotate-90º')}</option>
+                  <option value="rotate-180º">{t('conversionOptions.image.filter.options.rotate-180º')}</option>
+                  <option value="rotate-270º">{t('conversionOptions.image.filter.options.rotate-270º')}</option>
                 </select>
               )}
             />
           </div>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Tint Color
+              {t('conversionOptions.image.tint.label')}
               <InfoTooltip
-                ariaLabel="About tint color"
-                content="Lay a 30% colored tint over the image. Useful for branded thumbnails or duotones. Leave the color picker at black (#000000) to skip the tint."
+                ariaLabel={t('conversionOptions.image.tint.tooltipAria')}
+                content={t('conversionOptions.image.tint.tooltip')}
               />
             </label>
             <Controller
@@ -225,14 +249,14 @@ const ConversionOptions: React.FC<{
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium text-card-foreground flex items-center gap-2">
-                  Audio Trimming
+                  {t('conversionOptions.audio.trimming.title')}
                   <InfoTooltip
-                    ariaLabel="About audio trimming"
-                    content="Open a waveform player to pick a start and end time. Only the selected segment is encoded into the output file."
+                    ariaLabel={t('conversionOptions.audio.trimming.tooltipAria')}
+                    content={t('conversionOptions.audio.trimming.tooltip')}
                   />
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  {trimStatus || "Select the portion of the audio you want to keep"}
+                  {trimStatus || t('conversionOptions.audio.trimming.selectPortion')}
                 </p>
               </div>
               <button
@@ -241,7 +265,7 @@ const ConversionOptions: React.FC<{
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
               >
                 <Scissors className="w-4 h-4" />
-                {trimStatus ? 'Edit Trim' : 'Trim Audio'}
+                {trimStatus ? t('conversionOptions.audio.trimming.editTrim') : t('conversionOptions.audio.trimming.trimAudio')}
               </button>
             </div>
           </div>
@@ -250,10 +274,10 @@ const ConversionOptions: React.FC<{
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Format
+              {t('conversionOptions.audio.format.label')}
               <InfoTooltip
-                ariaLabel="About audio format"
-                content="The output codec/container. MP3 has universal support; WAV/FLAC/ALAC are lossless; AAC is efficient for streaming; OGG, Opus, AC3 and DTS target specific workflows."
+                ariaLabel={t('conversionOptions.audio.format.tooltipAria')}
+                content={t('conversionOptions.audio.format.tooltip')}
               />
             </label>
             <Controller
@@ -271,10 +295,10 @@ const ConversionOptions: React.FC<{
           </div>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Bitrate (kbps)
+              {t('conversionOptions.audio.bitrate.label')}
               <InfoTooltip
-                ariaLabel="About audio bitrate"
-                content="Controls compression quality vs. file size for lossy formats. 128 kbps is fine for podcasts, 192–256 kbps is a strong default for music, and 320 kbps is the maximum MP3 quality. Ignored for WAV, FLAC, and ALAC (lossless)."
+                ariaLabel={t('conversionOptions.audio.bitrate.tooltipAria')}
+                content={t('conversionOptions.audio.bitrate.tooltip')}
               />
             </label>
             <Controller
@@ -295,10 +319,10 @@ const ConversionOptions: React.FC<{
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Speed Multiplier
+              {t('conversionOptions.audio.speed.label')}
               <InfoTooltip
-                ariaLabel="About audio speed multiplier"
-                content="Playback tempo from 0.25x (slow) to 4x (fast). Pitch is preserved using FFmpeg's atempo filter, chained automatically for extreme values."
+                ariaLabel={t('conversionOptions.audio.speed.tooltipAria')}
+                content={t('conversionOptions.audio.speed.tooltip')}
               />
             </label>
             <Controller
@@ -323,10 +347,10 @@ const ConversionOptions: React.FC<{
           </div>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-              Volume Multiplier
+              {t('conversionOptions.audio.volume.label')}
               <InfoTooltip
-                ariaLabel="About volume multiplier"
-                content="Linear gain factor from 0.1x to 2x. 1.0 leaves the level unchanged. For finer dB control, use the Amplify slider in Advanced Audio Effects."
+                ariaLabel={t('conversionOptions.audio.volume.tooltipAria')}
+                content={t('conversionOptions.audio.volume.tooltip')}
               />
             </label>
             <Controller
@@ -368,6 +392,7 @@ interface VideoConversionOptionsProps {
 // fileType branch. It also keeps the GIF-only fields close to the format
 // dropdown that gates them.
 const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control, onTrimClick, trimStatus }) => {
+  const { t } = useLocalization('interface');
   const format = useWatch({ control, name: 'format' });
   const isGIF = format === 'gif';
 
@@ -379,14 +404,14 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium text-card-foreground flex items-center gap-2">
-                Video Trimming
+                {t('conversionOptions.video.trimming.title')}
                 <InfoTooltip
-                  ariaLabel="About video trimming"
-                  content="Open a player to scrub through the video and pick a start/end time. Only that segment is encoded into the output. Trimming works regardless of the output codec — including animated GIF."
+                  ariaLabel={t('conversionOptions.video.trimming.tooltipAria')}
+                  content={t('conversionOptions.video.trimming.tooltip')}
                 />
               </h3>
               <p className="text-sm text-muted-foreground">
-                {trimStatus || 'Select the portion of the video you want to keep'}
+                {trimStatus || t('conversionOptions.video.trimming.selectPortion')}
               </p>
             </div>
             <button
@@ -395,7 +420,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
             >
               <Scissors className="w-4 h-4" />
-              {trimStatus ? 'Edit Trim' : 'Trim Video'}
+              {trimStatus ? t('conversionOptions.video.trimming.editTrim') : t('conversionOptions.video.trimming.trimVideo')}
             </button>
           </div>
         </div>
@@ -404,10 +429,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-            Format
+            {t('conversionOptions.video.format.label')}
             <InfoTooltip
-              ariaLabel="About video format"
-              content="The output container and codec. MP4 (H.264+AAC) is the safest default for the web. WebM uses VP9+Opus and is great for open-web embeds. MOV/MKV/AVI/WMV/FLV target specific workflows; ProRes/DNxHD are high-bitrate editing codecs. GIF (Animated) downscales and palettizes the clip via ffmpeg + gifsicle — perfect for short, silent loops."
+              ariaLabel={t('conversionOptions.video.format.tooltipAria')}
+              content={t('conversionOptions.video.format.tooltip')}
             />
           </label>
           <Controller
@@ -415,21 +440,21 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             control={control}
             render={({ field }) => (
               <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                <option value="mp4">MP4</option>
-                <option value="webm">WebM</option>
-                <option value="avi">AVI</option>
-                <option value="mov">MOV</option>
-                <option value="gif">GIF (Animated)</option>
+                <option value="mp4">{t('conversionOptions.video.format.options.mp4')}</option>
+                <option value="webm">{t('conversionOptions.video.format.options.webm')}</option>
+                <option value="avi">{t('conversionOptions.video.format.options.avi')}</option>
+                <option value="mov">{t('conversionOptions.video.format.options.mov')}</option>
+                <option value="gif">{t('conversionOptions.video.format.options.gif')}</option>
               </select>
             )}
           />
         </div>
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-            Quality
+            {t('conversionOptions.video.quality.label')}
             <InfoTooltip
-              ariaLabel="About video quality"
-              content="Picks an x264 CRF preset under the hood. Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced default), High ≈ CRF 18 (visually transparent on most footage). Ignored for GIF output — use the GIF panel below to tune palette size and frame rate instead."
+              ariaLabel={t('conversionOptions.video.quality.tooltipAria')}
+              content={t('conversionOptions.video.quality.tooltip')}
             />
           </label>
           <Controller
@@ -437,9 +462,9 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             control={control}
             render={({ field }) => (
               <select {...field} disabled={isGIF} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring disabled:opacity-50">
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="low">{t('conversionOptions.video.quality.options.low')}</option>
+                <option value="medium">{t('conversionOptions.video.quality.options.medium')}</option>
+                <option value="high">{t('conversionOptions.video.quality.options.high')}</option>
               </select>
             )}
           />
@@ -449,10 +474,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-            Width (px)
+            {t('conversionOptions.video.width.label')}
             <InfoTooltip
-              ariaLabel="About video width"
-              content="Target output width in pixels. Leave blank to keep the original or scale proportionally from the height. Combine with Preserve aspect ratio to avoid stretching. When the format is GIF, leaving this blank uses the width from the Animated GIF panel below."
+              ariaLabel={t('conversionOptions.video.width.tooltipAria')}
+              content={t('conversionOptions.video.width.tooltip')}
             />
           </label>
           <Controller
@@ -462,7 +487,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
               <input
                 {...field}
                 type="number"
-                placeholder="Auto"
+                placeholder={t('conversionOptions.video.width.placeholder')}
                 value={value || ''}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -475,10 +500,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
         </div>
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-            Height (px)
+            {t('conversionOptions.video.height.label')}
             <InfoTooltip
-              ariaLabel="About video height"
-              content="Target output height in pixels. Leave blank to keep the original or scale proportionally from the width. Ignored for GIF output — height is computed from width to keep the aspect ratio (and rounded to a multiple of 4)."
+              ariaLabel={t('conversionOptions.video.height.tooltipAria')}
+              content={t('conversionOptions.video.height.tooltip')}
             />
           </label>
           <Controller
@@ -488,7 +513,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
               <input
                 {...field}
                 type="number"
-                placeholder={isGIF ? 'Auto (from width)' : 'Auto'}
+                placeholder={isGIF ? t('conversionOptions.video.height.placeholderGif') : t('conversionOptions.video.height.placeholder')}
                 disabled={isGIF}
                 value={value || ''}
                 onChange={(e) => {
@@ -505,10 +530,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-            Speed Multiplier
+            {t('conversionOptions.video.speed.label')}
             <InfoTooltip
-              ariaLabel="About speed multiplier"
-              content="Playback speed from 0.25x (slow motion) to 4x (fast). Video PTS and audio tempo are adjusted together so the result stays in sync. For GIF output, control playback feel using the Frame rate and Frame delay knobs in the Animated GIF panel."
+              ariaLabel={t('conversionOptions.video.speed.tooltipAria')}
+              content={t('conversionOptions.video.speed.tooltip')}
             />
           </label>
           <Controller
@@ -567,22 +592,13 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
                     </div>
                   </div>
                 </label>
-                <span className="text-sm text-card-foreground">Preserve aspect ratio</span>
+                <span className="text-sm text-card-foreground">{t('conversionOptions.video.preserveAspectRatio.label')}</span>
               </div>
-              // <label className="flex items-center space-x-2">
-              //   <input
-              //     {...field}
-              //     type="checkbox"
-              //     checked={field.value}
-              //     className="rounded border-input bg-input focus:ring-2 focus:ring-ring"
-              //   />
-              //   <span className="text-sm text-card-foreground">Preserve aspect ratio</span>
-              // </label>
             )}
           />
           <InfoTooltip
-            ariaLabel="About preserve aspect ratio"
-            content="When both Width and Height are set, this uses an FFmpeg force_original_aspect_ratio=decrease scale so the video fits within the box without stretching. Turn it off to force an exact (potentially stretched) size. GIF output always preserves aspect ratio."
+            ariaLabel={t('conversionOptions.video.preserveAspectRatio.tooltipAria')}
+            content={t('conversionOptions.video.preserveAspectRatio.tooltip')}
           />
         </div>
       </div>
@@ -593,15 +609,14 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             <Sparkles className="w-4 h-4 text-purple-600 mt-0.5 shrink-0" />
             <div>
               <h3 className="font-medium text-card-foreground flex items-center gap-2">
-                Animated GIF Settings
+                {t('conversionOptions.video.gif.title')}
                 <InfoTooltip
-                  ariaLabel="About animated GIF settings"
-                  content="GIF conversion runs in two stages: ffmpeg downscales the video and samples it at the chosen frame rate, then gifsicle quantizes the palette and optimizes the output. The Convert/Transcribe controls above for Quality, Height, and Speed are skipped for GIF since this panel takes over."
+                  ariaLabel={t('conversionOptions.video.gif.tooltipAria')}
+                  content={t('conversionOptions.video.gif.tooltip')}
                 />
               </h3>
               <p className="text-sm text-muted-foreground">
-                Tune the ffmpeg → gifsicle pipeline. Defaults match a good
-                screencast preset (900px wide, 12 fps, 128 colors).
+                {t('conversionOptions.video.gif.subtitle')}
               </p>
             </div>
           </div>
@@ -609,10 +624,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-                Width (px)
+                {t('conversionOptions.video.gif.width.label')}
                 <InfoTooltip
-                  ariaLabel="About GIF width"
-                  content="Output width in pixels. Height is computed automatically to preserve the aspect ratio (rounded to a multiple of 4 to keep ffmpeg happy). 480–900 is a good range for screencasts; smaller values shrink the file fast."
+                  ariaLabel={t('conversionOptions.video.gif.width.tooltipAria')}
+                  content={t('conversionOptions.video.gif.width.tooltip')}
                 />
               </label>
               <Controller
@@ -636,10 +651,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             </div>
             <div>
               <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-                Frame rate (fps)
+                {t('conversionOptions.video.gif.fps.label')}
                 <InfoTooltip
-                  ariaLabel="About GIF frame rate"
-                  content="How many frames per second ffmpeg samples from the source video before handing it to gifsicle. 12 fps looks smooth for screen recordings; raise to 18–24 for motion-heavy clips, drop to 8–10 to shrink the file."
+                  ariaLabel={t('conversionOptions.video.gif.fps.tooltipAria')}
+                  content={t('conversionOptions.video.gif.fps.tooltip')}
                 />
               </label>
               <Controller
@@ -666,10 +681,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-                Colors
+                {t('conversionOptions.video.gif.colors.label')}
                 <InfoTooltip
-                  ariaLabel="About GIF colors"
-                  content="Maximum palette size gifsicle quantizes to (2–256). 128 is a strong default; drop to 64 to shrink the file on flat UI footage, raise to 256 for photographic clips with smooth gradients."
+                  ariaLabel={t('conversionOptions.video.gif.colors.tooltipAria')}
+                  content={t('conversionOptions.video.gif.colors.tooltip')}
                 />
               </label>
               <Controller
@@ -693,10 +708,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             </div>
             <div>
               <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-                Frame delay
+                {t('conversionOptions.video.gif.delay.label')}
                 <InfoTooltip
-                  ariaLabel="About GIF frame delay"
-                  content="gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (= 30ms) is a snappy screencast feel; 6–10 produces a slower, more deliberate loop. Independent of the ffmpeg sampling rate above."
+                  ariaLabel={t('conversionOptions.video.gif.delay.tooltipAria')}
+                  content={t('conversionOptions.video.gif.delay.tooltip')}
                 />
               </label>
               <Controller
@@ -720,10 +735,10 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             </div>
             <div>
               <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
-                Optimize level
+                {t('conversionOptions.video.gif.optimize.label')}
                 <InfoTooltip
-                  ariaLabel="About GIF optimize level"
-                  content="gifsicle --optimize level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+                  ariaLabel={t('conversionOptions.video.gif.optimize.tooltipAria')}
+                  content={t('conversionOptions.video.gif.optimize.tooltip')}
                 />
               </label>
               <Controller
@@ -736,9 +751,9 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
                     onChange={(e) => onChange(Number(e.target.value))}
                     className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring"
                   >
-                    <option value={1}>1 — fast, larger file</option>
-                    <option value={2}>2 — balanced</option>
-                    <option value={3}>3 — smallest, slower</option>
+                    <option value={1}>{t('conversionOptions.video.gif.optimize.options.1')}</option>
+                    <option value={2}>{t('conversionOptions.video.gif.optimize.options.2')}</option>
+                    <option value={3}>{t('conversionOptions.video.gif.optimize.options.3')}</option>
                   </select>
                 )}
               />

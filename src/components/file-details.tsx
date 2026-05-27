@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, Info, Eye, EyeOff } from 'lucide-react';
 import type { FileIdentificationResponse } from '@/lib/useIdentifyFile';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface FileDetailsProps {
   fileDetails: FileIdentificationResponse;
@@ -8,17 +9,10 @@ interface FileDetailsProps {
 }
 
 const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }) => {
+  const { t, formatFileSize } = useLocalization('interface');
   const [isExpanded, setIsExpanded] = useState(false);
   const [showRawOutput, setShowRawOutput] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
 
   const toggleSection = (key: string) => {
     setExpandedSections(prev => ({
@@ -28,8 +22,8 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
   };
 
   const formatValue = (value: unknown): React.ReactNode => {
-    if (value === null || value === undefined) return <span className="text-muted-foreground italic">N/A</span>;
-    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+    if (value === null || value === undefined) return <span className="text-muted-foreground italic">{t('fileDetails.notAvailable')}</span>;
+    if (typeof value === 'boolean') return value ? t('common.yes') : t('common.no');
     if (typeof value === 'number') return value.toLocaleString();
     if (typeof value === 'string') return value;
 
@@ -37,7 +31,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
     if (Array.isArray(value)) {
       return (
         <div className="text-muted-foreground italic">
-          Array ({value.length} items) - expand to view
+          {t('fileDetails.arraySummary', { count: value.length })}
         </div>
       );
     }
@@ -47,7 +41,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
       const keys = Object.keys(value as Record<string, unknown>);
       return (
         <div className="text-muted-foreground italic">
-          Object ({keys.length} properties) - expand to view
+          {t('fileDetails.objectSummary', { count: keys.length })}
         </div>
       );
     }
@@ -65,7 +59,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
     if (Array.isArray(value)) {
       return (
         <div className="ml-4 border-l-2 border-gray-200 pl-3">
-          <div className="text-sm text-muted-foreground mb-2">[Array with {value.length} items]</div>
+          <div className="text-sm text-muted-foreground mb-2">{t('fileDetails.arrayLabel', { count: value.length })}</div>
           {value.map((item, index) => (
             <div key={index} className="mb-2">
               <span className="text-xs text-muted-foreground mr-2">{index}:</span>
@@ -81,7 +75,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
       const entries = Object.entries(value as Record<string, unknown>);
       return (
         <div className="ml-4 border-l-2 border-gray-200 pl-3">
-          <div className="text-sm text-muted-foreground mb-2">{`{Object with ${entries.length} properties}`}</div>
+          <div className="text-sm text-muted-foreground mb-2">{t('fileDetails.objectLabel', { count: entries.length })}</div>
           {entries.map(([key, val]) => (
             <div key={key} className="mb-2">
               <span className="text-sm font-medium text-purple-600 mr-2">{key}:</span>
@@ -108,7 +102,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
     const detailEntries = Object.entries(fileDetails.details);
 
     if (detailEntries.length === 0) {
-      return <p className="text-muted-foreground italic">No additional details available</p>;
+      return <p className="text-muted-foreground italic">{t('fileDetails.noAdditional')}</p>;
     }
 
     return (
@@ -129,7 +123,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
                     className="flex items-center gap-1 text-xs text-muted-foreground hover:text-card-foreground transition-colors"
                   >
                     {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-                    {isExpanded ? 'Collapse' : 'Expand'}
+                    {isExpanded ? t('fileDetails.collapse') : t('fileDetails.expand')}
                   </button>
                 )}
               </div>
@@ -158,7 +152,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
       return (
         <div className="bg-muted/30 rounded p-3">
           <h4 className="text-md font-medium text-card-foreground mb-2">{title}</h4>
-          <p className="text-sm text-muted-foreground italic">No metadata found</p>
+          <p className="text-sm text-muted-foreground italic">{t('fileDetails.noMetadataFound')}</p>
         </div>
       );
     }
@@ -181,14 +175,14 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
     const advanced = fileDetails.imageMetadata?.advancedDeviceMetadata || {};
     const groupEntries = Object.entries(advanced).filter(([, values]) => Object.keys(values || {}).length > 0);
     if (groupEntries.length === 0) {
-      return renderMetadataSection('Advanced / Device Metadata', {});
+      return renderMetadataSection(t('fileDetails.advancedDeviceMetadata'), {});
     }
     const sectionKey = 'advancedDeviceMetadata';
     const isExpanded = expandedSections[sectionKey];
     return (
       <div className="bg-muted/30 rounded p-3">
         <div className="flex items-center justify-between">
-          <h4 className="text-md font-medium text-card-foreground">Advanced / Device Metadata</h4>
+          <h4 className="text-md font-medium text-card-foreground">{t('fileDetails.advancedDeviceMetadata')}</h4>
           <button
             onClick={() => toggleSection(sectionKey)}
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-card-foreground transition-colors"
@@ -208,7 +202,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
           </div>
         ) : (
           <p className="text-sm text-muted-foreground mt-2">
-            {groupEntries.length} metadata group{groupEntries.length === 1 ? '' : 's'} available
+            {t('fileDetails.metadataGroupsAvailable', { count: groupEntries.length })}
           </p>
         )}
       </div>
@@ -222,7 +216,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
         <div className="flex flex-col items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <Info className="w-5 h-5 text-primary" />
-            <h3 className="text-lg font-semibold text-card-foreground">Details</h3>
+            <h3 className="text-lg font-semibold text-card-foreground">{t('fileDetails.title')}</h3>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getFileTypeColor(fileDetails.fileType)}`}>
               {fileDetails.fileType.toUpperCase()}
             </span>
@@ -232,26 +226,26 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
             className="flex items-center gap-1 text-sm text-muted-foreground hover:text-card-foreground transition-colors"
           >
             {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-            {isExpanded ? 'Collapse' : 'Expand'}
+            {isExpanded ? t('fileDetails.collapse') : t('fileDetails.expand')}
           </button>
         </div>
 
         {/* Basic Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <div className="text-sm font-medium text-card-foreground">File Name</div>
+            <div className="text-sm font-medium text-card-foreground">{t('fileDetails.fileName')}</div>
             <div className="text-sm text-muted-foreground truncate" title={fileDetails.fileName}>
               {fileDetails.fileName}
             </div>
           </div>
           <div>
-            <div className="text-sm font-medium text-card-foreground">File Size</div>
+            <div className="text-sm font-medium text-card-foreground">{t('fileDetails.fileSize')}</div>
             <div className="text-sm text-muted-foreground">
               {formatFileSize(fileDetails.fileSize)}
             </div>
           </div>
           <div>
-            <div className="text-sm font-medium text-card-foreground">MIME Type</div>
+            <div className="text-sm font-medium text-card-foreground">{t('fileDetails.mimeType')}</div>
             <div className="text-sm text-muted-foreground">
               {fileDetails.mimeType}
             </div>
@@ -260,7 +254,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
 
         {/* Tool Info */}
         <div className="mb-4">
-          <div className="text-sm font-medium text-card-foreground">Analysis Tool</div>
+          <div className="text-sm font-medium text-card-foreground">{t('fileDetails.analysisTool')}</div>
           <div className="text-sm text-muted-foreground">
             {fileDetails.tool}
           </div>
@@ -271,15 +265,15 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
           <div className="space-y-4 border-t pt-4">
             {fileDetails.imageMetadata && (
               <div className="space-y-4">
-                {renderMetadataSection('Container', fileDetails.imageMetadata.container)}
-                {renderMetadataSection('EXIF/TIFF', fileDetails.imageMetadata.exifTiff)}
-                {renderMetadataSection('GPS / Location', fileDetails.imageMetadata.gpsLocation)}
+                {renderMetadataSection(t('fileDetails.container'), fileDetails.imageMetadata.container)}
+                {renderMetadataSection(t('fileDetails.exifTiff'), fileDetails.imageMetadata.exifTiff)}
+                {renderMetadataSection(t('fileDetails.gpsLocation'), fileDetails.imageMetadata.gpsLocation)}
                 {renderAdvancedMetadataSection()}
               </div>
             )}
 
             <div>
-              <h4 className="text-md font-medium text-card-foreground mb-3">Technical Details</h4>
+              <h4 className="text-md font-medium text-card-foreground mb-3">{t('fileDetails.technicalDetails')}</h4>
               {renderDetailsSection()}
             </div>
 
@@ -290,7 +284,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-card-foreground transition-colors mb-3"
               >
                 {showRawOutput ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                {showRawOutput ? 'Hide' : 'Show'} Raw Command Output
+                {showRawOutput ? t('fileDetails.hideRawOutput') : t('fileDetails.showRawOutput')}
               </button>
 
               {showRawOutput && (

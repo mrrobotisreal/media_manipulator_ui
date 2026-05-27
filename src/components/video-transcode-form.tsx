@@ -14,6 +14,8 @@ import {
   type TranscodeJobStage,
 } from '@/lib/transcodeTypes';
 import InfoTooltip from '@/components/info-tooltip';
+import { Trans } from 'react-i18next';
+import { useLocalization } from '@/i18n/useLocalization';
 
 const MAX_EXTRA_LANGUAGES = 3;
 
@@ -49,9 +51,10 @@ const RungChip: React.FC<{
   checked: boolean;
   onToggle: () => void;
 }> = ({ rung, checked, onToggle }) => {
+  const { t } = useLocalization('interface');
   const disabled = !rung.enabled;
   const tooltipText = rung.disabledReason || (rung.premiumOnly
-    ? 'Sign up for a Premium account to get full transcode access! (Premium sign-up Coming Soon!)'
+    ? t('videoTranscodeForm.premiumTooltip')
     : '');
   return (
     <label
@@ -73,8 +76,8 @@ const RungChip: React.FC<{
       />
       <span className="font-medium">{rung.label}</span>
       <span className="text-xs text-muted-foreground">{rung.bitrateKbps} kbps</span>
-      {rung.premiumOnly && <span className="ml-auto text-[10px] uppercase tracking-wide text-blue-600">Premium</span>}
-      {rung.sourceTooSmall && <span className="ml-auto text-[10px] uppercase tracking-wide text-orange-600">Too small</span>}
+      {rung.premiumOnly && <span className="ml-auto text-[10px] uppercase tracking-wide text-blue-600">{t('videoTranscodeForm.premiumBadge')}</span>}
+      {rung.sourceTooSmall && <span className="ml-auto text-[10px] uppercase tracking-wide text-orange-600">{t('videoTranscodeForm.tooSmallBadge')}</span>}
     </label>
   );
 };
@@ -114,6 +117,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
   lockProtocol = false,
   onJobStarted,
 }) => {
+  const { t } = useLocalization('interface');
   const [protocol, setProtocol] = useState<TranscodeProtocol>(defaultProtocol);
   const [dashCodec, setDashCodec] = useState<DashCodec>(defaultDashCodec);
   const [probe, setProbe] = useState<TranscodeProbeResponse | null>(null);
@@ -235,8 +239,8 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
 
   const captionsDisabled = !probe?.hasAudio;
   const captionsTooltip = captionsDisabled
-    ? 'Captions require an audio track. This video does not appear to have audio.'
-    : 'Generate VTT captions from the audio track using whisper-ctranslate2. Off by default.';
+    ? t('videoTranscodeForm.captions.disabledTooltip')
+    : t('videoTranscodeForm.captions.enabledTooltip');
 
   const downloadUrl = job.data?.resultUrl && job.data?.status === 'completed' ? job.data.resultUrl : null;
 
@@ -245,14 +249,14 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
       {/* Protocol + codec selector */}
       <div>
         <h3 className="font-semibold text-card-foreground mb-2 flex items-center gap-2">
-          <Film className="w-4 h-4 text-blue-600" /> Protocol
+          <Film className="w-4 h-4 text-blue-600" /> {t('videoTranscodeForm.protocol.title')}
           <InfoTooltip
-            ariaLabel="About transcode protocol"
+            ariaLabel={t('videoTranscodeForm.protocol.tooltipAria')}
             width="lg"
             content={
               <div className="space-y-1">
-                <p><strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + per-rendition variants + .ts segments. Plays everywhere.</p>
-                <p><strong>DASH</strong> — MPEG-DASH adaptive streaming. AV1 (smallest, modern) or VP9 (broader support); manifest.mpd + .m4s segments.</p>
+                <p><Trans i18nKey="interface:videoTranscodeForm.protocol.tooltipHls" components={{ strong: <strong /> }} /></p>
+                <p><Trans i18nKey="interface:videoTranscodeForm.protocol.tooltipDash" components={{ strong: <strong /> }} /></p>
               </div>
             }
           />
@@ -272,7 +276,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
             >
               <div className="font-semibold uppercase">{p}</div>
               <div className="text-xs text-muted-foreground mt-1">
-                {p === 'hls' ? 'H.264 / AAC · .m3u8 · everywhere' : 'AV1 or VP9 · .mpd · modern web'}
+                {p === 'hls' ? t('videoTranscodeForm.protocol.hlsSub') : t('videoTranscodeForm.protocol.dashSub')}
               </div>
             </button>
           ))}
@@ -296,7 +300,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
                   onChange={() => setDashCodec(c)}
                 />
                 <span className="font-medium uppercase">{c}</span>
-                <span className="text-xs text-muted-foreground">{c === 'av1' ? 'Recommended · smaller files' : 'Wider playback support'}</span>
+                <span className="text-xs text-muted-foreground">{c === 'av1' ? t('videoTranscodeForm.protocol.av1Sub') : t('videoTranscodeForm.protocol.vp9Sub')}</span>
               </label>
             ))}
           </div>
@@ -307,7 +311,10 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
       {!probe && (
         <div className="rounded-lg border border-input p-4 bg-muted/20">
           <p className="text-sm text-card-foreground mb-3">
-            We&apos;ll upload your video and run <code className="text-xs px-1 py-0.5 bg-card border border-border rounded">ffprobe</code> to detect resolution, codec, audio, and the quality rungs your source supports.
+            <Trans
+              i18nKey="interface:videoTranscodeForm.analyze.intro"
+              components={{ code: <code className="text-xs px-1 py-0.5 bg-card border border-border rounded" /> }}
+            />
           </p>
           <button
             type="button"
@@ -319,15 +326,15 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 {probeMutation.uploadPhase === 'uploading-to-s3'
-                  ? `Uploading ${probeMutation.uploadProgress}%`
+                  ? t('videoTranscodeForm.analyze.uploadingPercent', { percent: probeMutation.uploadProgress })
                   : probeMutation.uploadPhase === 'probing'
-                    ? 'Analyzing source...'
-                    : 'Preparing upload...'}
+                    ? t('videoTranscodeForm.analyze.analyzingSource')
+                    : t('videoTranscodeForm.analyze.preparingUpload')}
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                Analyze video
+                {t('videoTranscodeForm.analyze.analyzeVideo')}
               </>
             )}
           </button>
@@ -345,17 +352,17 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
       {/* Probe report */}
       {probe && (
         <div className="rounded-lg border border-border p-4 bg-muted/20">
-          <h3 className="font-semibold text-card-foreground mb-2">Source video report</h3>
+          <h3 className="font-semibold text-card-foreground mb-2">{t('videoTranscodeForm.report.title')}</h3>
           <dl className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm">
-            <div><dt className="text-muted-foreground">Resolution</dt><dd className="text-card-foreground">{probe.width}×{probe.height}</dd></div>
-            <div><dt className="text-muted-foreground">Max quality</dt><dd className="text-card-foreground uppercase">{probe.maxQualityLabel}</dd></div>
-            <div><dt className="text-muted-foreground">FPS</dt><dd className="text-card-foreground">{probe.fps ? probe.fps.toFixed(2) : '—'}</dd></div>
-            <div><dt className="text-muted-foreground">Duration</dt><dd className="text-card-foreground">{formatSeconds(probe.durationSeconds)}</dd></div>
-            <div><dt className="text-muted-foreground">Audio</dt><dd className="text-card-foreground">{probe.hasAudio ? 'Yes' : 'No'}</dd></div>
-            <div><dt className="text-muted-foreground">Video codec</dt><dd className="text-card-foreground">{probe.videoCodec || '—'}</dd></div>
-            <div><dt className="text-muted-foreground">Audio codec</dt><dd className="text-card-foreground">{probe.audioCodec || '—'}</dd></div>
-            <div><dt className="text-muted-foreground">Container</dt><dd className="text-card-foreground">{probe.containerFormat || '—'}</dd></div>
-            <div><dt className="text-muted-foreground">File size</dt><dd className="text-card-foreground">{formatBytes(probe.fileSizeBytes)}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.resolution')}</dt><dd className="text-card-foreground">{probe.width}×{probe.height}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.maxQuality')}</dt><dd className="text-card-foreground uppercase">{probe.maxQualityLabel}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.fps')}</dt><dd className="text-card-foreground">{probe.fps ? probe.fps.toFixed(2) : '—'}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.duration')}</dt><dd className="text-card-foreground">{formatSeconds(probe.durationSeconds)}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.audio')}</dt><dd className="text-card-foreground">{probe.hasAudio ? t('videoTranscodeForm.report.yes') : t('videoTranscodeForm.report.no')}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.videoCodec')}</dt><dd className="text-card-foreground">{probe.videoCodec || '—'}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.audioCodec')}</dt><dd className="text-card-foreground">{probe.audioCodec || '—'}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.container')}</dt><dd className="text-card-foreground">{probe.containerFormat || '—'}</dd></div>
+            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.fileSize')}</dt><dd className="text-card-foreground">{formatBytes(probe.fileSizeBytes)}</dd></div>
           </dl>
           {probe.warnings && probe.warnings.length > 0 && (
             <div className="mt-3 rounded border border-amber-200 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/30 p-3 text-sm flex items-start gap-2">
@@ -374,10 +381,10 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
       {probe && !probe.sourceTooSmall && (
         <div>
           <h3 className="font-semibold text-card-foreground mb-2 flex items-center gap-2">
-            Quality rungs
+            {t('videoTranscodeForm.rungs.title')}
             <InfoTooltip
-              ariaLabel="About quality rungs"
-              content="Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are coming soon."
+              ariaLabel={t('videoTranscodeForm.rungs.tooltipAria')}
+              content={t('videoTranscodeForm.rungs.tooltip')}
             />
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -391,7 +398,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            Defaults: 360p + 480p + 720p when the source video supports them.
+            {t('videoTranscodeForm.rungs.defaultsNote')}
           </p>
         </div>
       )}
@@ -414,9 +421,9 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
             />
             <div>
               <div className="flex items-center gap-2 font-medium text-card-foreground">
-                <Captions className="w-4 h-4" /> Generate captions
+                <Captions className="w-4 h-4" /> {t('videoTranscodeForm.captions.generateCaptions')}
               </div>
-              <p className="text-xs text-muted-foreground">VTT subtitles auto-generated from the audio track. Off by default.</p>
+              <p className="text-xs text-muted-foreground">{t('videoTranscodeForm.captions.captionsSub')}</p>
             </div>
           </label>
           <label className="flex items-start gap-3 rounded-lg border p-3 cursor-pointer">
@@ -428,9 +435,9 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
             />
             <div>
               <div className="flex items-center gap-2 font-medium text-card-foreground">
-                <ImageIcon className="w-4 h-4" /> Generate storyboards
+                <ImageIcon className="w-4 h-4" /> {t('videoTranscodeForm.captions.generateStoryboards')}
               </div>
-              <p className="text-xs text-muted-foreground">Sprite-sheet scrubber thumbnails + WebVTT index. Off by default.</p>
+              <p className="text-xs text-muted-foreground">{t('videoTranscodeForm.captions.storyboardsSub')}</p>
             </div>
           </label>
         </div>
@@ -443,25 +450,25 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
             <Languages className="w-4 h-4 text-blue-600 mt-0.5" />
             <div>
               <h4 className="font-semibold text-card-foreground text-sm flex items-center gap-2">
-                Additional caption translations
+                {t('videoTranscodeForm.translations.title')}
                 <InfoTooltip
-                  ariaLabel="About additional caption translations"
+                  ariaLabel={t('videoTranscodeForm.translations.tooltipAria')}
                   width="lg"
                   content={
                     <div className="space-y-1">
-                      <p>The primary caption track is whisper&apos;s transcription in the auto-detected source language. Add up to {MAX_EXTRA_LANGUAGES} more languages and we&apos;ll translate the segments via your Ollama text model.</p>
-                      <p>Each translation becomes its own VTT plus an HLS subtitle rendition (EXT-X-MEDIA) and DASH text AdaptationSet, so players show a track selector.</p>
+                      <p>{t('videoTranscodeForm.translations.tooltip1', { max: MAX_EXTRA_LANGUAGES })}</p>
+                      <p>{t('videoTranscodeForm.translations.tooltip2')}</p>
                     </div>
                   }
                 />
               </h4>
               <p className="text-xs text-muted-foreground">
-                Primary track: auto-detected source language. Add up to {MAX_EXTRA_LANGUAGES} translation tracks.
+                {t('videoTranscodeForm.translations.primaryNote', { max: MAX_EXTRA_LANGUAGES })}
               </p>
               {translationAvailable === false && (
                 <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1">
                   <AlertTriangle className="w-3 h-3" />
-                  Translation backend (Ollama) is not reachable. Picked languages will be skipped at job time.
+                  {t('videoTranscodeForm.translations.backendUnreachable')}
                 </p>
               )}
             </div>
@@ -491,7 +498,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
                     type="button"
                     onClick={() => removeExtraLanguage(idx)}
                     className="text-muted-foreground hover:text-card-foreground p-1"
-                    aria-label="Remove language"
+                    aria-label={t('videoTranscodeForm.translations.removeLanguage')}
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -504,7 +511,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
                 onClick={addExtraLanguage}
                 className="text-sm text-blue-600 hover:underline flex items-center gap-1"
               >
-                + Add translation language ({captionLanguages.length}/{MAX_EXTRA_LANGUAGES})
+                {t('videoTranscodeForm.translations.addLanguage', { count: captionLanguages.length, max: MAX_EXTRA_LANGUAGES })}
               </button>
             )}
           </div>
@@ -515,14 +522,14 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
       {probe && !probe.sourceTooSmall && (
         <div>
           <h3 className="font-semibold text-card-foreground mb-2 flex items-center gap-2">
-            <Package className="w-4 h-4 text-blue-600" /> Download format
+            <Package className="w-4 h-4 text-blue-600" /> {t('videoTranscodeForm.bundle.title')}
             <InfoTooltip
-              ariaLabel="About download format"
+              ariaLabel={t('videoTranscodeForm.bundle.tooltipAria')}
               width="lg"
               content={
                 <div className="space-y-1">
-                  <p><strong>.tar.gz</strong> — smaller for text-heavy playlists, universal on macOS/Linux, and Windows 10+ unpacks it natively via the built-in <code>tar</code> command.</p>
-                  <p><strong>.zip</strong> — the safe default if you&apos;re on older Windows or just want a double-click extract experience without thinking about it. Slightly larger; everything else is identical inside.</p>
+                  <p><Trans i18nKey="interface:videoTranscodeForm.bundle.tooltipTargz" components={{ strong: <strong />, code: <code /> }} /></p>
+                  <p><Trans i18nKey="interface:videoTranscodeForm.bundle.tooltipZip" components={{ strong: <strong /> }} /></p>
                 </div>
               }
             />
@@ -542,13 +549,13 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
                 <div className="font-semibold">
                   {fmt === 'targz' ? '.tar.gz' : '.zip'}
                   {fmt === 'targz' && (
-                    <span className="ml-2 text-[10px] uppercase tracking-wide text-blue-600">Default</span>
+                    <span className="ml-2 text-[10px] uppercase tracking-wide text-blue-600">{t('videoTranscodeForm.bundle.defaultBadge')}</span>
                   )}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
                   {fmt === 'targz'
-                    ? 'Smaller · macOS/Linux/Win 10+ native'
-                    : 'Friendlier on Windows · double-click extract'}
+                    ? t('videoTranscodeForm.bundle.targzSub')
+                    : t('videoTranscodeForm.bundle.zipSub')}
                 </div>
               </button>
             ))}
@@ -567,10 +574,10 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
           {startMutation.isPending ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Starting transcode...
+              {t('videoTranscodeForm.start.starting')}
             </>
           ) : (
-            <>Start {protocol.toUpperCase()} transcode (output: {bundleFormat === 'zip' ? '.zip' : '.tar.gz'})</>
+            <>{t('videoTranscodeForm.start.startButton', { protocol: protocol.toUpperCase(), format: bundleFormat === 'zip' ? '.zip' : '.tar.gz' })}</>
           )}
         </button>
       )}
@@ -579,7 +586,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
         <div className="rounded border border-amber-200 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/30 p-3 text-sm flex items-start gap-2">
           <Info className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
           <span>
-            This video is below the free transcode minimum of 360p. Premium support for ultra-low-quality sources is coming soon. Please load a video that is 360p or higher.
+            {t('videoTranscodeForm.tooSmall')}
           </span>
         </div>
       )}
@@ -588,7 +595,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
       {activeJobId && job.data && (
         <div className="rounded-lg border border-border p-4 bg-muted/20">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-card-foreground">Pipeline progress</h3>
+            <h3 className="font-semibold text-card-foreground">{t('videoTranscodeForm.progress.title')}</h3>
             <span className="text-sm text-muted-foreground">{job.data.progress ?? 0}%</span>
           </div>
           <div className="w-full bg-muted rounded-full h-2 mb-3">
@@ -606,7 +613,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
           )}
           {job.data.status === 'failed' && (
             <div className="mt-3 rounded border border-destructive/30 bg-destructive/10 text-destructive p-3 text-sm">
-              {job.data.error || 'Transcode failed.'}
+              {job.data.error || t('videoTranscodeForm.progress.failed')}
             </div>
           )}
         </div>
@@ -621,7 +628,7 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
           className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
         >
           <Download className="w-4 h-4" />
-          Download {job.data?.resultFileName || `${protocol}-package.tar.gz`}
+          {t('videoTranscodeForm.downloadPackage', { filename: job.data?.resultFileName || `${protocol}-package.tar.gz` })}
         </a>
       )}
     </div>

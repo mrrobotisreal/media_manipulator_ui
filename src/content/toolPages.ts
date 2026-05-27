@@ -6,7 +6,11 @@
  * content, and the embedded panel config stay in sync.
  */
 
-import type { EmbeddedMediaKind, EmbeddedTask } from '@/components/embedded-tool-panel';
+import type {
+  EmbeddedMediaKind,
+  EmbeddedTask,
+  EmbeddedAIImageOperation,
+} from '@/components/embedded-tool-panel';
 import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 
 export interface ToolFaq {
@@ -75,6 +79,26 @@ export interface ToolPageContent {
     lockedOutputFormat?: string;
     allowedInputFormats?: string[];
     acceptOverride?: string;
+    /** Preselect an AI image operation (image tools only). */
+    defaultAIImageOperation?: EmbeddedAIImageOperation;
+    /** Lock the AI image operation select (image tools only). */
+    lockedAIImageOperation?: boolean;
+    /** Preselect JPG/WebP quality 1–100 (image tools only). */
+    defaultQuality?: number;
+    /** Preselect target width in px (image tools only). */
+    defaultWidth?: number;
+    /** Preselect target height in px (image tools only). */
+    defaultHeight?: number;
+    /** Visually emphasize the resize controls (image resizer). */
+    emphasizeResize?: boolean;
+    /** PDF -> image: default output image format (jpg | png). */
+    pdfDefaultOutputFormat?: 'jpg' | 'png';
+    /** PDF -> image: lock the output format select. */
+    pdfLockOutputFormat?: boolean;
+    /** PDF -> image: default page selection (all | first). */
+    pdfDefaultPageSelection?: 'all' | 'first';
+    /** PDF -> image: default render DPI. */
+    pdfDefaultDpi?: number;
     transcribeMode?: boolean;
     transcodeMode?: boolean;
     transcodeProtocol?: TranscodeProtocol;
@@ -1035,9 +1059,19 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       {
+        label: 'Convert WebP to PNG',
+        to: '/tools/convert-webp-to-png',
+        description: 'Keep transparency with a lossless PNG instead.',
+      },
+      {
         label: 'Image converter',
         to: '/tools/image-converter',
         description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.',
+      },
+      {
+        label: 'Compress image',
+        to: '/tools/compress-image',
+        description: 'Shrink the JPG file size even further.',
       },
       {
         label: 'Remove EXIF metadata',
@@ -1063,6 +1097,1780 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'WebP converter',
       '.webp to .jpg',
       'open WebP file',
+    ],
+  },
+
+  // ------------------------------------------------------------- IMAGE: EXACT CONVERSIONS
+  {
+    slug: 'convert-png-to-jpg',
+    name: 'Convert PNG to JPG',
+    h1: 'Convert PNG to JPG Online Free',
+    tagline:
+      'Turn large PNG screenshots and graphics into small, universally compatible JPG photos in seconds.',
+    metaTitle: 'Convert PNG to JPG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online PNG to JPG converter. Turn .png files into smaller, universally compatible JPG images at the quality you choose. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert PNG to JPG Online Free',
+    ogDescription:
+      'Turn PNG images into smaller, universally compatible JPG files. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'png_to_jpg',
+      defaultOutputFormat: 'jpg',
+      lockedOutputFormat: 'jpg',
+      lockedInputFormat: 'png',
+      acceptOverride: 'image/png,image/*',
+      title: 'Convert PNG to JPG',
+      description:
+        'Upload a PNG image. The output is locked to JPG for this tool — just pick a quality and convert. Transparent areas are flattened onto a solid background because JPG has no alpha channel.',
+    },
+    intro:
+      'PNG is a lossless format, which makes it perfect for screenshots and graphics but often far larger than it needs to be for photos. Converting PNG to JPG can shrink a file by 5–10× with no visible difference for photographic content. Media Manipulator converts your PNG to a clean JPG at the quality you choose — free, online, and with no signup.',
+    whatItDoes: [
+      'Converts any .png image to a standard .jpg (JPEG) file.',
+      'Lets you pick JPG quality so you can balance file size against fidelity.',
+      'Flattens transparency onto a solid background, since JPG has no alpha channel.',
+      'Keeps the visible content identical — only the encoding changes.',
+    ],
+    flowSteps: [
+      { title: 'Upload PNG', description: 'Drop in a .png screenshot, graphic, or photo.' },
+      { title: 'Pick JPG quality', description: '85 is a balanced default; lower it for smaller files.' },
+      { title: 'Encode JPG', description: 'ImageMagick re-encodes your image as a JPEG.' },
+      { title: 'Download JPG', description: 'Save a smaller, universally compatible .jpg file.' },
+    ],
+    advancedDetails: [
+      'Quality 85 is the long-standing sweet spot — above ~92 you mostly add file size with little visible gain.',
+      'A photographic PNG often drops from several megabytes to a few hundred kilobytes as a JPG.',
+      'For graphics with sharp edges or text, PNG or WebP usually look cleaner than JPG at the same size.',
+      'If your PNG has transparency you want to keep, convert to WebP instead — JPG cannot store an alpha channel.',
+    ],
+    whyItMatters: [
+      'JPG is the most universally accepted photo format — every device, editor, and upload form takes it.',
+      'Smaller JPGs load faster on the web and stay under email and form upload limits.',
+      'Many print labs, marketplaces, and stock sites accept JPG only.',
+    ],
+    useCases: [
+      { title: 'Shrinking screenshots', description: 'Turn a heavy PNG screenshot into a lightweight JPG for email or chat.' },
+      { title: 'Uploading photos', description: 'Convert a photographic PNG to JPG to meet a site’s format requirement.' },
+      { title: 'Print and photo labs', description: 'Most labs require JPG — convert before you order.' },
+      { title: 'Faster web pages', description: 'Replace large PNG photos with compact JPGs to cut page weight.' },
+    ],
+    whyMediaManipulator: [
+      'Output is genuinely locked to JPG, so there’s nothing to misconfigure.',
+      'Precise quality control instead of a one-size-fits-all preset.',
+      'Free, no signup, no watermarks, and uploads are deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png'],
+      supportedOutputFormats: ['jpg'],
+      processingNotes: [
+        'Transparent PNG areas are flattened onto a solid background because JPG has no transparency.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a PNG to JPG for free?',
+        answer:
+          'Upload your .png above, choose a JPG quality, and click convert. The download is a standard .jpg file. It is completely free with no signup.',
+      },
+      {
+        question: 'Will converting PNG to JPG reduce quality?',
+        answer:
+          'JPG is lossy, so there is a small quality trade-off. At quality 85–90 the difference is invisible for photos. For graphics with sharp text, keep PNG or use WebP.',
+      },
+      {
+        question: 'What happens to transparency when I convert PNG to JPG?',
+        answer:
+          'JPG does not support transparency, so transparent areas are flattened onto a solid background. If you need to keep transparency, convert PNG to WebP instead.',
+      },
+      {
+        question: 'Why is my PNG so much bigger than the JPG?',
+        answer:
+          'PNG is lossless and stores every pixel exactly, which is large for photos. JPG uses perceptual compression, so photographic images shrink dramatically with little visible change.',
+      },
+      {
+        question: 'Are my uploaded files kept?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No login is required and we never share your files with third parties.',
+      },
+    ],
+    related: [
+      { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Go the other way and add a transparent-capable PNG.' },
+      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image format to JPG.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG further without changing format.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
+    ],
+    primaryKeyword: 'convert PNG to JPG',
+    secondaryKeywords: [
+      'PNG to JPG',
+      'PNG to JPEG',
+      'change PNG to JPG',
+      '.png to .jpg',
+      'PNG to JPG converter free',
+    ],
+  },
+  {
+    slug: 'convert-jpg-to-png',
+    name: 'Convert JPG to PNG',
+    h1: 'Convert JPG to PNG Online Free',
+    tagline:
+      'Turn JPG photos into lossless PNG files ready for editing, transparency, and high-quality graphics work.',
+    metaTitle: 'Convert JPG to PNG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online JPG to PNG converter. Turn .jpg photos into lossless PNG files for editing, transparency, and graphics. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert JPG to PNG Online Free',
+    ogDescription:
+      'Turn JPG photos into lossless PNG files for editing and graphics. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'jpg_to_png',
+      defaultOutputFormat: 'png',
+      lockedOutputFormat: 'png',
+      lockedInputFormat: 'jpg',
+      acceptOverride: 'image/jpeg,image/*',
+      title: 'Convert JPG to PNG',
+      description:
+        'Upload a JPG image. The output is locked to PNG for this tool, so you get a lossless file ready for editing or layering on a transparent canvas.',
+    },
+    intro:
+      'PNG is a lossless format that never adds compression artifacts, which makes it ideal once you start editing an image, adding transparency, or layering graphics. Converting a JPG to PNG locks in the current pixels so further edits don’t degrade quality. Media Manipulator converts your JPG to a clean PNG online, free, with no signup.',
+    whatItDoes: [
+      'Converts any .jpg/.jpeg image to a lossless .png file.',
+      'Preserves the exact current pixels so repeated editing won’t add artifacts.',
+      'Produces a PNG you can later layer, mask, or make transparent in an editor.',
+      'Keeps the visible content identical — only the encoding changes.',
+    ],
+    flowSteps: [
+      { title: 'Upload JPG', description: 'Drop in a .jpg or .jpeg photo.' },
+      { title: 'Convert to PNG', description: 'We re-encode the image losslessly as PNG.' },
+      { title: 'Encode PNG', description: 'ImageMagick writes a standard 24/32-bit PNG.' },
+      { title: 'Download PNG', description: 'Save a lossless .png ready for editing.' },
+    ],
+    advancedDetails: [
+      'PNG is lossless, so the converted file will usually be larger than the source JPG — that is expected.',
+      'Converting JPG to PNG does not recover detail the JPG already discarded; it freezes the current pixels losslessly.',
+      'PNG supports an alpha channel, so the result is ready for you to add transparency in an editor.',
+      'For the smallest lossless web files, WebP (lossless) is often smaller than PNG.',
+    ],
+    whyItMatters: [
+      'Lossless PNG is the right working format once an image will be edited repeatedly.',
+      'Design tools, app assets, and UI work expect PNG for crisp edges and transparency support.',
+      'PNG avoids the generation-loss that happens when you re-save a JPG over and over.',
+    ],
+    useCases: [
+      { title: 'Editing prep', description: 'Convert a JPG to PNG before retouching so edits stay lossless.' },
+      { title: 'Adding transparency', description: 'Get a PNG canvas ready to cut out a background.' },
+      { title: 'UI and app assets', description: 'Most design systems expect PNG for icons and graphics.' },
+      { title: 'Document embedding', description: 'Use PNG where crisp text and lines matter more than file size.' },
+    ],
+    whyMediaManipulator: [
+      'Output is genuinely locked to PNG, so the result is always lossless.',
+      'Runs on our own servers — no third-party processing of your image.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg'],
+      supportedOutputFormats: ['png'],
+      processingNotes: [
+        'PNG is lossless, so the output is usually larger than the source JPG.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a JPG to PNG for free?',
+        answer:
+          'Upload your .jpg above and click convert — the output is a lossless .png. It is free, requires no signup, and works in your browser.',
+      },
+      {
+        question: 'Does converting JPG to PNG improve quality?',
+        answer:
+          'No. The conversion is lossless but it cannot recover detail the JPG already discarded. It freezes the current pixels so future edits stay artifact-free.',
+      },
+      {
+        question: 'Will the PNG be bigger than my JPG?',
+        answer:
+          'Usually yes. PNG stores every pixel exactly with no lossy compression, so a photographic PNG is typically larger than the equivalent JPG.',
+      },
+      {
+        question: 'Can I add transparency after converting to PNG?',
+        answer:
+          'Yes. PNG supports an alpha channel, so once you have the PNG you can erase or cut out a background in any image editor.',
+      },
+      {
+        question: 'Are my uploaded files private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert PNG to JPG', to: '/tools/convert-png-to-jpg', description: 'Go the other way and shrink a PNG into a JPG.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image format to PNG.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
+    ],
+    primaryKeyword: 'convert JPG to PNG',
+    secondaryKeywords: [
+      'JPG to PNG',
+      'JPEG to PNG',
+      'change JPG to PNG',
+      '.jpg to .png',
+      'JPG to PNG converter free',
+    ],
+  },
+  {
+    slug: 'convert-webp-to-png',
+    name: 'Convert WebP to PNG',
+    h1: 'Convert WebP to PNG Online Free',
+    tagline:
+      'Turn WebP images into lossless PNG files that open everywhere and keep full transparency.',
+    metaTitle: 'Convert WebP to PNG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online WebP to PNG converter. Turn .webp images into lossless PNG files that keep transparency and open in any editor. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert WebP to PNG Online Free',
+    ogDescription:
+      'Turn WebP images into lossless, transparency-preserving PNG files. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'webp_to_png',
+      defaultOutputFormat: 'png',
+      lockedOutputFormat: 'png',
+      lockedInputFormat: 'webp',
+      acceptOverride: 'image/webp,image/*',
+      title: 'Convert WebP to PNG',
+      description:
+        'Upload a WebP image. The output is locked to PNG for this tool, so transparency is preserved and the file opens in any image editor or viewer.',
+    },
+    intro:
+      'WebP is great for the web, but plenty of editors, older software, and design tools still expect PNG — and unlike JPG, PNG keeps full transparency. Media Manipulator converts your WebP to a clean, lossless PNG so it opens everywhere and your alpha channel survives. Free, online, no signup.',
+    whatItDoes: [
+      'Converts any .webp image to a lossless .png file.',
+      'Preserves the alpha channel so transparent WebPs stay transparent.',
+      'Produces a PNG that opens in any editor, viewer, or design tool.',
+      'Keeps the visible content identical — only the encoding changes.',
+    ],
+    flowSteps: [
+      { title: 'Upload WebP', description: 'Drop in a .webp file, transparent or solid.' },
+      { title: 'Convert to PNG', description: 'We decode the WebP and re-encode it as PNG.' },
+      { title: 'Encode PNG', description: 'ImageMagick writes a lossless 24/32-bit PNG.' },
+      { title: 'Download PNG', description: 'Save a transparency-preserving .png file.' },
+    ],
+    advancedDetails: [
+      'Transparency in the source WebP is preserved as a PNG alpha channel.',
+      'Only the first frame of an animated WebP becomes a still PNG — for animation, convert to GIF instead.',
+      'PNG is lossless, so the output is usually larger than the source WebP; that is the cost of universal compatibility and lossless storage.',
+    ],
+    whyItMatters: [
+      'Some editors, presentation tools, and older software still cannot open WebP.',
+      'PNG keeps transparency, which JPG cannot — important for logos and cutouts.',
+      'PNG is a safe, lossless interchange format for graphics work.',
+    ],
+    useCases: [
+      { title: 'Opening WebP in editors', description: 'Convert to PNG so an editor that lacks WebP support can open it.' },
+      { title: 'Keeping transparency', description: 'Preserve a transparent WebP logo as a transparent PNG.' },
+      { title: 'Design handoffs', description: 'Hand a PNG to tools or teammates that expect PNG assets.' },
+      { title: 'Presentations', description: 'Drop a PNG into slide software that won’t accept WebP.' },
+    ],
+    whyMediaManipulator: [
+      'Output is locked to PNG with transparency preserved automatically.',
+      'Runs on our own servers — no third-party processing of your image.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['webp'],
+      supportedOutputFormats: ['png'],
+      processingNotes: [
+        'Transparency is preserved. Only the first frame of an animated WebP is converted.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert WebP to PNG for free?',
+        answer:
+          'Upload your .webp above and click convert. The download is a lossless .png with transparency preserved. It is free and needs no signup.',
+      },
+      {
+        question: 'Does WebP to PNG keep transparency?',
+        answer:
+          'Yes. If your WebP has a transparent background, the resulting PNG keeps that alpha channel intact.',
+      },
+      {
+        question: 'Why convert WebP to PNG instead of JPG?',
+        answer:
+          'PNG is lossless and preserves transparency, while JPG flattens transparency and adds compression. Choose PNG when you need transparency or lossless graphics; choose JPG for the smallest photo files.',
+      },
+      {
+        question: 'Can I convert an animated WebP?',
+        answer:
+          'Only the first frame becomes a PNG. For animation, convert the WebP to an animated GIF instead.',
+      },
+      {
+        question: 'Are my uploads stored?',
+        answer:
+          'No. Uploads are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert PNG to WebP', to: '/tools/convert-png-to-webp', description: 'Go the other way and shrink a PNG into a WebP.' },
+      { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Convert WebP to a compact JPG instead.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image format to PNG.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink an image without re-format hassle.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+    ],
+    primaryKeyword: 'convert WebP to PNG',
+    secondaryKeywords: [
+      'WebP to PNG',
+      'change WebP to PNG',
+      '.webp to .png',
+      'WebP to PNG transparent',
+      'WebP to PNG converter free',
+    ],
+  },
+  {
+    slug: 'convert-png-to-webp',
+    name: 'Convert PNG to WebP',
+    h1: 'Convert PNG to WebP Online Free',
+    tagline:
+      'Shrink PNG graphics into modern WebP files that load faster on the web and keep full transparency.',
+    metaTitle: 'Convert PNG to WebP Online Free | Media Manipulator',
+    metaDescription:
+      'Free online PNG to WebP converter. Shrink .png files into smaller WebP images for faster websites while keeping transparency. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert PNG to WebP Online Free',
+    ogDescription:
+      'Shrink PNG graphics into smaller, transparency-preserving WebP files for faster websites. Free, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'png_to_webp',
+      defaultOutputFormat: 'webp',
+      lockedOutputFormat: 'webp',
+      lockedInputFormat: 'png',
+      acceptOverride: 'image/png,image/*',
+      title: 'Convert PNG to WebP',
+      description:
+        'Upload a PNG image. The output is locked to WebP for this tool — pick a quality and convert. Transparency is preserved, and WebP files are typically much smaller than PNG.',
+    },
+    intro:
+      'WebP is the modern web image format: it produces dramatically smaller files than PNG while preserving transparency, which means faster pages and better Core Web Vitals. Media Manipulator converts your PNG to WebP at the quality you choose — free, online, with transparency kept intact and no signup required.',
+    whatItDoes: [
+      'Converts any .png image to a modern .webp file.',
+      'Preserves the alpha channel so transparent PNGs stay transparent.',
+      'Lets you pick quality to balance file size against fidelity.',
+      'Typically produces files 25–80% smaller than the source PNG.',
+    ],
+    flowSteps: [
+      { title: 'Upload PNG', description: 'Drop in a .png graphic, icon, or screenshot.' },
+      { title: 'Pick WebP quality', description: '80–85 is a great default for web use.' },
+      { title: 'Encode WebP', description: 'ImageMagick re-encodes your image as WebP.' },
+      { title: 'Download WebP', description: 'Save a smaller, transparency-preserving .webp file.' },
+    ],
+    advancedDetails: [
+      'WebP supports both lossy and lossless modes; at quality ~80 it usually beats PNG file size by a wide margin while staying visually clean.',
+      'Transparency is preserved, so logos and UI assets keep their alpha channel.',
+      'WebP is supported by every modern browser — serve it directly for faster page loads.',
+      'For maximum compatibility with very old software, keep a PNG fallback.',
+    ],
+    whyItMatters: [
+      'Smaller images are the single biggest lever for faster page loads and better SEO.',
+      'WebP keeps transparency, so you don’t have to trade alpha for size like you would with JPG.',
+      'Google’s Core Web Vitals reward lighter pages — WebP helps directly.',
+    ],
+    useCases: [
+      { title: 'Faster websites', description: 'Replace heavy PNG assets with WebP to cut page weight.' },
+      { title: 'Transparent logos', description: 'Shrink a transparent PNG logo while keeping its alpha channel.' },
+      { title: 'App and UI assets', description: 'Ship lighter graphics without losing crispness.' },
+      { title: 'Image-heavy galleries', description: 'Convert a batch of PNGs to WebP for a snappier gallery.' },
+    ],
+    whyMediaManipulator: [
+      'Output is locked to WebP with transparency preserved.',
+      'Precise quality control so you decide the size/fidelity trade-off.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png'],
+      supportedOutputFormats: ['webp'],
+      processingNotes: [
+        'Transparency is preserved in the WebP output.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert PNG to WebP for free?',
+        answer:
+          'Upload your .png above, pick a quality, and click convert. The download is a .webp file. It is free and requires no signup.',
+      },
+      {
+        question: 'Does PNG to WebP keep transparency?',
+        answer:
+          'Yes. WebP supports an alpha channel, so transparent PNGs stay transparent after conversion.',
+      },
+      {
+        question: 'How much smaller will the WebP be?',
+        answer:
+          'It depends on the image, but WebP is commonly 25–80% smaller than the source PNG at a visually similar quality.',
+      },
+      {
+        question: 'Is WebP supported everywhere?',
+        answer:
+          'Every modern browser supports WebP. A few older or niche programs do not — keep a PNG fallback if you need to support them.',
+      },
+      {
+        question: 'Are my uploads kept?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert WebP to PNG', to: '/tools/convert-webp-to-png', description: 'Go the other way back to a lossless PNG.' },
+      { label: 'Convert JPG to WebP', to: '/tools/convert-jpg-to-webp', description: 'Shrink JPG photos into WebP for the web.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink images further without changing format.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
+    ],
+    primaryKeyword: 'convert PNG to WebP',
+    secondaryKeywords: [
+      'PNG to WebP',
+      'change PNG to WebP',
+      '.png to .webp',
+      'PNG to WebP transparent',
+      'PNG to WebP converter free',
+    ],
+  },
+  {
+    slug: 'convert-jpg-to-webp',
+    name: 'Convert JPG to WebP',
+    h1: 'Convert JPG to WebP Online Free',
+    tagline:
+      'Shrink JPG photos into modern WebP files that load faster on the web at the same visual quality.',
+    metaTitle: 'Convert JPG to WebP Online Free | Media Manipulator',
+    metaDescription:
+      'Free online JPG to WebP converter. Shrink .jpg photos into smaller WebP images for faster websites at the quality you choose. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert JPG to WebP Online Free',
+    ogDescription:
+      'Shrink JPG photos into smaller WebP files for faster websites at the same visual quality. Free, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'jpg_to_webp',
+      defaultOutputFormat: 'webp',
+      lockedOutputFormat: 'webp',
+      lockedInputFormat: 'jpg',
+      acceptOverride: 'image/jpeg,image/*',
+      title: 'Convert JPG to WebP',
+      description:
+        'Upload a JPG image. The output is locked to WebP for this tool — pick a quality and convert. WebP usually produces a smaller file than JPG at the same visual quality.',
+    },
+    intro:
+      'WebP delivers the same visual quality as JPG in a noticeably smaller file, which is why it has become the default image format for fast websites. Media Manipulator converts your JPG to WebP at the quality you choose, so your photos look the same but load faster — free, online, no signup.',
+    whatItDoes: [
+      'Converts any .jpg/.jpeg photo to a modern .webp file.',
+      'Lets you choose WebP quality to balance file size against fidelity.',
+      'Typically produces files 25–35% smaller than the source JPG at equal quality.',
+      'Keeps the visible content identical — only the encoding changes.',
+    ],
+    flowSteps: [
+      { title: 'Upload JPG', description: 'Drop in a .jpg or .jpeg photo.' },
+      { title: 'Pick WebP quality', description: '80–85 closely matches typical JPG quality.' },
+      { title: 'Encode WebP', description: 'ImageMagick re-encodes your photo as WebP.' },
+      { title: 'Download WebP', description: 'Save a smaller .webp ready for the web.' },
+    ],
+    advancedDetails: [
+      'At equivalent visual quality, WebP is commonly 25–35% smaller than JPG thanks to more modern compression.',
+      'Avoid stacking heavy compression: re-encoding an already-lossy JPG at very low WebP quality can compound artifacts.',
+      'WebP is supported by every modern browser — serve it directly to speed up page loads.',
+      'For maximum compatibility with very old software, keep a JPG fallback.',
+    ],
+    whyItMatters: [
+      'Lighter images directly improve page-load time, bounce rate, and SEO.',
+      'WebP gets you JPG-like quality at a smaller size with one conversion.',
+      'Core Web Vitals reward smaller images — WebP is a quick win.',
+    ],
+    useCases: [
+      { title: 'Faster websites', description: 'Convert hero and gallery JPGs to WebP to cut page weight.' },
+      { title: 'E-commerce catalogs', description: 'Shrink product photos so listings load instantly.' },
+      { title: 'Blogs and articles', description: 'Serve lighter inline images without visible quality loss.' },
+      { title: 'Email-friendly photos', description: 'Get smaller files that stay under attachment limits.' },
+    ],
+    whyMediaManipulator: [
+      'Output is locked to WebP, so there’s nothing to misconfigure.',
+      'Precise quality control instead of a fixed preset.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg'],
+      supportedOutputFormats: ['webp'],
+      processingNotes: [
+        'JPG has no transparency, so the WebP output is fully opaque.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert JPG to WebP for free?',
+        answer:
+          'Upload your .jpg above, pick a quality, and click convert. The download is a .webp file. It is free and requires no signup.',
+      },
+      {
+        question: 'Is WebP better than JPG?',
+        answer:
+          'For the web, usually yes — WebP delivers similar quality at a smaller size. JPG still wins on universal compatibility with very old software.',
+      },
+      {
+        question: 'How much smaller is WebP than JPG?',
+        answer:
+          'At equivalent visual quality, WebP is commonly 25–35% smaller than JPG, though the exact savings depend on the image.',
+      },
+      {
+        question: 'Will converting JPG to WebP lose quality?',
+        answer:
+          'Both formats are lossy. At quality 80–85 the result looks the same as the JPG. Avoid setting WebP quality very low to prevent compounding artifacts.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Go the other way back to a universal JPG.' },
+      { label: 'Convert PNG to WebP', to: '/tools/convert-png-to-webp', description: 'Shrink PNG graphics into WebP for the web.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink images further without changing format.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
+    ],
+    primaryKeyword: 'convert JPG to WebP',
+    secondaryKeywords: [
+      'JPG to WebP',
+      'JPEG to WebP',
+      'change JPG to WebP',
+      '.jpg to .webp',
+      'JPG to WebP converter free',
+    ],
+  },
+
+  // ------------------------------------------------------------- IMAGE: HUB CONVERTERS
+  {
+    slug: 'jpg-converter',
+    name: 'JPG Converter',
+    h1: 'Free JPG Converter Online',
+    tagline:
+      'Convert PNG, WebP, GIF, and more into universally compatible JPG photos at the quality you choose.',
+    metaTitle: 'Free JPG Converter Online | Media Manipulator',
+    metaDescription:
+      'Free online JPG converter. Convert PNG, WebP, and GIF images into universally compatible JPG files at the quality you choose. No signup, files deleted within 24 hours.',
+    ogTitle: 'Free JPG Converter Online',
+    ogDescription:
+      'Convert PNG, WebP, GIF, and more into universally compatible JPG photos. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'jpg_converter',
+      defaultOutputFormat: 'jpg',
+      title: 'Convert an image to JPG',
+      description:
+        'Upload any image — PNG, WebP, GIF, and more — and JPG is preselected as the output. Pick a quality and convert. Transparency is flattened because JPG has no alpha channel.',
+    },
+    intro:
+      'JPG (JPEG) is the most universally accepted image format on the planet — every device, editor, printer, and upload form takes it. Media Manipulator’s JPG converter turns PNG, WebP, GIF, and other images into a clean JPG at the quality you choose. JPG is preselected, but you can switch the output if you change your mind. Free, online, no signup.',
+    whatItDoes: [
+      'Converts PNG, WebP, GIF, and other images to standard JPG.',
+      'Preselects JPG as the output while still letting you change it.',
+      'Lets you pick JPG quality to balance file size against fidelity.',
+      'Flattens transparency onto a solid background, since JPG has no alpha channel.',
+    ],
+    flowSteps: [
+      { title: 'Upload an image', description: 'Drop in any PNG, WebP, GIF, or other supported image.' },
+      { title: 'Confirm JPG output', description: 'JPG is preselected; pick a quality you like.' },
+      { title: 'Encode JPG', description: 'ImageMagick re-encodes your image as a JPEG.' },
+      { title: 'Download JPG', description: 'Save a universally compatible .jpg file.' },
+    ],
+    advancedDetails: [
+      'Quality 85 is a balanced default — push to 90+ for photos where fidelity matters most.',
+      'JPG is ideal for photographs; for sharp text, line art, or transparency, PNG or WebP usually look better.',
+      'Transparent areas are flattened to a solid background because JPG cannot store an alpha channel.',
+    ],
+    whyItMatters: [
+      'JPG is the safest format when you don’t control what software the recipient uses.',
+      'Smaller JPGs load faster and stay under email and upload limits.',
+      'Print labs, marketplaces, and stock sites frequently require JPG.',
+    ],
+    useCases: [
+      { title: 'Universal sharing', description: 'Convert any image to JPG so it opens on every device.' },
+      { title: 'Meeting upload rules', description: 'Satisfy forms and sites that accept JPG only.' },
+      { title: 'Printing', description: 'Produce a JPG that photo labs and print shops accept.' },
+      { title: 'Web photos', description: 'Get compact JPGs for fast-loading photographic content.' },
+    ],
+    whyMediaManipulator: [
+      'JPG preselected for one-click conversion, with full quality control.',
+      'Handles PNG, WebP, GIF, and more in one place.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png', 'webp', 'gif', 'jpg'],
+      supportedOutputFormats: ['jpg'],
+      processingNotes: [
+        'Transparent areas are flattened because JPG has no transparency channel.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert an image to JPG for free?',
+        answer:
+          'Upload your image above — JPG is already selected as the output. Pick a quality and click convert. It is free with no signup.',
+      },
+      {
+        question: 'What formats can I convert to JPG?',
+        answer:
+          'PNG, WebP, GIF, and other common image formats all convert cleanly to JPG.',
+      },
+      {
+        question: 'What JPG quality should I use?',
+        answer:
+          '85 is a balanced default. Use 90+ for important photos and around 70 for thumbnails or previews.',
+      },
+      {
+        question: 'Will transparency be kept?',
+        answer:
+          'No — JPG cannot store transparency, so transparent areas are flattened onto a solid background. Use the PNG converter or WebP if you need transparency.',
+      },
+      {
+        question: 'Are my uploads stored?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert PNG to JPG', to: '/tools/convert-png-to-jpg', description: 'Focused PNG → JPG converter.' },
+      { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Focused WebP → JPG converter.' },
+      { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Wrap a JPG into a PDF document.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG instead.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink your JPG even further.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+    ],
+    primaryKeyword: 'JPG converter',
+    secondaryKeywords: [
+      'convert to JPG',
+      'image to JPG',
+      'JPEG converter',
+      'free JPG converter online',
+      'PNG to JPG converter',
+    ],
+  },
+  {
+    slug: 'png-converter',
+    name: 'PNG Converter',
+    h1: 'Free PNG Converter Online',
+    tagline:
+      'Convert JPG, WebP, GIF, and more into lossless PNG files with full transparency support.',
+    metaTitle: 'Free PNG Converter Online | Media Manipulator',
+    metaDescription:
+      'Free online PNG converter. Convert JPG, WebP, and GIF images into lossless PNG files with transparency support. No signup, files deleted within 24 hours.',
+    ogTitle: 'Free PNG Converter Online',
+    ogDescription:
+      'Convert JPG, WebP, GIF, and more into lossless, transparency-capable PNG files. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'png_converter',
+      defaultOutputFormat: 'png',
+      title: 'Convert an image to PNG',
+      description:
+        'Upload any image — JPG, WebP, GIF, and more — and PNG is preselected as the output. PNG is lossless and keeps transparency where the source has it.',
+    },
+    intro:
+      'PNG is the go-to lossless format for graphics, screenshots, logos, and anything that needs transparency. Media Manipulator’s PNG converter turns JPG, WebP, GIF, and other images into a clean, lossless PNG. PNG is preselected, but you can switch the output if you prefer. Free, online, no signup.',
+    whatItDoes: [
+      'Converts JPG, WebP, GIF, and other images to lossless PNG.',
+      'Preselects PNG as the output while still letting you change it.',
+      'Preserves transparency when the source image has an alpha channel.',
+      'Produces a PNG that opens in any editor, viewer, or design tool.',
+    ],
+    flowSteps: [
+      { title: 'Upload an image', description: 'Drop in any JPG, WebP, GIF, or other supported image.' },
+      { title: 'Confirm PNG output', description: 'PNG is preselected — no quality setting needed.' },
+      { title: 'Encode PNG', description: 'ImageMagick writes a lossless 24/32-bit PNG.' },
+      { title: 'Download PNG', description: 'Save a lossless, transparency-capable .png file.' },
+    ],
+    advancedDetails: [
+      'PNG is lossless, so the output is usually larger than a JPG or WebP source — that is the trade-off for lossless storage and transparency.',
+      'Converting a JPG to PNG cannot recover detail the JPG already discarded; it freezes the current pixels losslessly.',
+      'WebP with transparency converts to PNG with its alpha channel preserved.',
+    ],
+    whyItMatters: [
+      'Lossless PNG is the right format for editing, graphics, and transparency.',
+      'Design tools and app pipelines expect PNG for crisp edges and alpha support.',
+      'PNG avoids the generation loss that comes from repeatedly re-saving JPGs.',
+    ],
+    useCases: [
+      { title: 'Graphics and logos', description: 'Convert to PNG to keep crisp edges and transparency.' },
+      { title: 'Editing prep', description: 'Move to a lossless PNG before retouching.' },
+      { title: 'App and UI assets', description: 'Produce PNGs that design systems expect.' },
+      { title: 'Screenshots', description: 'Keep text and lines sharp with lossless PNG.' },
+    ],
+    whyMediaManipulator: [
+      'PNG preselected for one-click, always-lossless conversion.',
+      'Handles JPG, WebP, GIF, and more in one place, with transparency preserved.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'webp', 'gif'],
+      supportedOutputFormats: ['png'],
+      processingNotes: [
+        'PNG is lossless, so output is usually larger than the source. Transparency is preserved when present.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert an image to PNG for free?',
+        answer:
+          'Upload your image above — PNG is already selected as the output. Click convert and download a lossless .png. It is free with no signup.',
+      },
+      {
+        question: 'What formats can I convert to PNG?',
+        answer:
+          'JPG, WebP, GIF, and other common image formats all convert cleanly to lossless PNG.',
+      },
+      {
+        question: 'Does the PNG keep transparency?',
+        answer:
+          'Yes, when the source has transparency (such as a transparent WebP or GIF), the PNG preserves the alpha channel. A JPG source has no transparency to keep.',
+      },
+      {
+        question: 'Why is my PNG larger than the original?',
+        answer:
+          'PNG is lossless and stores every pixel exactly, so it is typically larger than a lossy JPG or WebP source. That is expected.',
+      },
+      {
+        question: 'Are my uploads kept?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Focused JPG → PNG converter.' },
+      { label: 'Convert WebP to PNG', to: '/tools/convert-webp-to-png', description: 'Focused WebP → PNG converter.' },
+      { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Wrap a PNG into a PDF document.' },
+      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG instead.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+    ],
+    primaryKeyword: 'PNG converter',
+    secondaryKeywords: [
+      'convert to PNG',
+      'image to PNG',
+      'free PNG converter online',
+      'JPG to PNG converter',
+      'WebP to PNG converter',
+    ],
+  },
+
+  // ------------------------------------------------------------- IMAGE: RESIZE / COMPRESS / AI
+  {
+    slug: 'image-resizer',
+    name: 'Image Resizer',
+    h1: 'Resize Image Online Free',
+    tagline:
+      'Resize JPG, PNG, WebP, and GIF images to exact pixel dimensions while keeping the aspect ratio.',
+    metaTitle: 'Resize Image Online Free | Media Manipulator',
+    metaDescription:
+      'Free online image resizer. Resize JPG, PNG, WebP, and GIF images to exact pixel dimensions while keeping the aspect ratio. No signup, files deleted within 24 hours.',
+    ogTitle: 'Resize Image Online Free',
+    ogDescription:
+      'Resize JPG, PNG, WebP, and GIF images to exact pixel dimensions. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_resizer',
+      emphasizeResize: true,
+      title: 'Resize an image',
+      description:
+        'Upload an image and set a target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio. The output format stays the same unless you change it.',
+    },
+    intro:
+      'Resizing an image to exact pixel dimensions is one of the most common tasks on the web — fitting an avatar, a banner, a thumbnail, or an upload limit. Media Manipulator resizes your image to the width and height you set while keeping the aspect ratio, so nothing looks stretched. Free, online, no signup.',
+    whatItDoes: [
+      'Resizes JPG, PNG, WebP, and GIF images to exact pixel dimensions.',
+      'Keeps the aspect ratio when you set only a width or only a height.',
+      'Lets you keep the original format or switch it during the resize.',
+      'Combines resize with quality control in a single pass.',
+    ],
+    flowSteps: [
+      { title: 'Upload an image', description: 'Drop in any JPG, PNG, WebP, or GIF.' },
+      { title: 'Set width / height', description: 'Enter a target width, height, or both.' },
+      { title: 'Resize', description: 'ImageMagick scales the image to your dimensions.' },
+      { title: 'Download', description: 'Save the resized image.' },
+    ],
+    advancedDetails: [
+      'Set only width or only height and the other dimension scales proportionally to preserve aspect ratio.',
+      'Set both width and height to force exact dimensions — useful when a platform requires a specific size.',
+      'The image is auto-oriented from EXIF before resizing so the result matches the preview.',
+      'Pair resizing with a lower quality on JPG/WebP output to shrink the file even more.',
+    ],
+    whyItMatters: [
+      'Platforms enforce specific dimensions for avatars, banners, and thumbnails.',
+      'Smaller dimensions mean smaller files and faster page loads.',
+      'Resizing before upload avoids the platform’s own lower-quality auto-resize.',
+    ],
+    useCases: [
+      { title: 'Profile pictures', description: 'Resize to the exact avatar dimensions a platform requires.' },
+      { title: 'Social banners', description: 'Hit the precise header/cover size for each network.' },
+      { title: 'Thumbnails', description: 'Generate small, fast-loading preview images.' },
+      { title: 'Upload limits', description: 'Shrink dimensions to get under a size cap.' },
+    ],
+    whyMediaManipulator: [
+      'Exact pixel control with aspect-ratio preservation built in.',
+      'Resize and re-encode in one upload, with no watermarks.',
+      'Free, no signup, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+      supportedOutputFormats: ['jpg', 'png', 'webp', 'gif'],
+      processingNotes: [
+        'Leave one dimension blank to scale proportionally and keep the aspect ratio.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I resize an image online for free?',
+        answer:
+          'Upload your image, enter a target width and/or height in the resize fields, and click convert. The resized image downloads instantly. It is free with no signup.',
+      },
+      {
+        question: 'How do I keep the aspect ratio when resizing?',
+        answer:
+          'Set only the width or only the height and leave the other field blank — the image scales proportionally so it never looks stretched.',
+      },
+      {
+        question: 'Can I resize to exact dimensions?',
+        answer:
+          'Yes. Enter both a width and a height to force exact pixel dimensions, which is handy when a platform requires a specific size.',
+      },
+      {
+        question: 'Will resizing change the file format?',
+        answer:
+          'No, the output keeps the original format by default. You can also pick a different format in the form if you want to convert at the same time.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink an image’s file size without changing dimensions.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through resize, crop, and quality settings.' },
+    ],
+    primaryKeyword: 'resize image online',
+    secondaryKeywords: [
+      'image resizer',
+      'resize photo',
+      'change image dimensions',
+      'resize JPG',
+      'resize PNG online free',
+    ],
+  },
+  {
+    slug: 'compress-image',
+    name: 'Compress Image',
+    h1: 'Compress Image Online Free',
+    tagline:
+      'Shrink JPG, PNG, and WebP file sizes for faster websites, smaller uploads, and easier sharing.',
+    metaTitle: 'Compress Image Online Free | Media Manipulator',
+    metaDescription:
+      'Free online image compressor. Shrink JPG, PNG, and WebP file sizes while keeping good quality. No signup, files deleted within 24 hours.',
+    ogTitle: 'Compress Image Online Free',
+    ogDescription:
+      'Shrink JPG, PNG, and WebP file sizes while keeping good quality. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'compress_image',
+      defaultQuality: 80,
+      title: 'Compress an image',
+      description:
+        'Upload an image and lower the quality slider to shrink the file. The output format stays the same by default, or switch to WebP for the smallest size. A quality around 75–85 is a good balance.',
+    },
+    intro:
+      'Large images are the number-one cause of slow web pages and rejected uploads. Compressing an image lowers its file size — often by more than half — while keeping it looking great. Media Manipulator compresses your JPG, PNG, or WebP at the quality you choose, defaulting to a balanced 80. Free, online, no signup.',
+    whatItDoes: [
+      'Reduces image file size by re-encoding at a lower quality you control.',
+      'Defaults to a balanced quality around 80 so files shrink with little visible change.',
+      'Keeps the original format by default, or switch to WebP for the smallest result.',
+      'Lets you also resize dimensions in the same pass for even smaller files.',
+    ],
+    flowSteps: [
+      { title: 'Upload an image', description: 'Drop in any JPG, PNG, or WebP file.' },
+      { title: 'Pick a quality', description: '75–85 balances size and fidelity; lower it for smaller files.' },
+      { title: 'Compress', description: 'ImageMagick re-encodes at your chosen quality.' },
+      { title: 'Download', description: 'Save a much smaller image.' },
+    ],
+    advancedDetails: [
+      'Quality 75–85 is the sweet spot for JPG and WebP — most viewers can’t tell the difference from the original.',
+      'For photographic content, switching the output to WebP usually beats JPG file size at the same quality.',
+      'PNG is lossless: to shrink a PNG photo substantially, convert it to JPG or WebP rather than just lowering quality.',
+      'Reducing the pixel dimensions as well as the quality compounds the savings.',
+    ],
+    whyItMatters: [
+      'Page-load speed directly affects bounce rate, conversions, and SEO ranking.',
+      'Smaller images stay under email, form, and platform upload limits.',
+      'Lower bandwidth saves hosting costs at scale.',
+    ],
+    useCases: [
+      { title: 'Faster websites', description: 'Compress images so pages load in under a few seconds.' },
+      { title: 'Email attachments', description: 'Get photos under attachment size limits.' },
+      { title: 'Form uploads', description: 'Meet a site’s maximum file-size requirement.' },
+      { title: 'Storage savings', description: 'Archive smaller copies of large image libraries.' },
+    ],
+    whyMediaManipulator: [
+      'Sensible default quality with precise manual control.',
+      'Compress, resize, and convert in a single upload.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
+      supportedOutputFormats: ['jpg', 'png', 'webp'],
+      processingNotes: [
+        'Lowering quality affects JPG and WebP output. To shrink a PNG photo a lot, convert it to JPG or WebP.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I compress an image for free?',
+        answer:
+          'Upload your image, lower the quality value (75–85 is a good start), and click convert. The compressed image downloads instantly. It is free with no signup.',
+      },
+      {
+        question: 'Does compressing an image reduce quality?',
+        answer:
+          'Slightly — compression is a trade-off. At quality 75–85 the change is usually invisible. Lower the quality further only when you need the smallest possible file.',
+      },
+      {
+        question: 'How do I compress a PNG?',
+        answer:
+          'PNG is lossless, so the biggest savings come from converting a photographic PNG to JPG or WebP. For graphics, WebP lossless can also help.',
+      },
+      {
+        question: 'What is the best format for small image files?',
+        answer:
+          'WebP usually gives the smallest files at a given visual quality. JPG is a close second for photos and is more universally compatible.',
+      },
+      {
+        question: 'Are my uploads stored?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize dimensions to shrink the file even more.' },
+      { label: 'Convert JPG to WebP', to: '/tools/convert-jpg-to-webp', description: 'Switch to WebP for the smallest photo files.' },
+      { label: 'Convert PNG to WebP', to: '/tools/convert-png-to-webp', description: 'Shrink PNG graphics by moving to WebP.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through quality, resize, and format settings.' },
+    ],
+    primaryKeyword: 'compress image online',
+    secondaryKeywords: [
+      'image compressor',
+      'reduce image file size',
+      'shrink image',
+      'compress JPG',
+      'compress photo online free',
+    ],
+  },
+  {
+    slug: 'remove-background-from-image',
+    name: 'Remove Background from Image',
+    h1: 'Remove Background from Image Online Free',
+    tagline:
+      'Automatically erase the background from any photo and download a clean, transparent PNG cutout.',
+    metaTitle: 'Remove Background from Image Online Free | Media Manipulator',
+    metaDescription:
+      'Free online background remover. Automatically erase the background from any photo and download a transparent PNG. Runs on our own GPU — no third-party AI. Files deleted within 24 hours.',
+    ogTitle: 'Remove Background from Image Online Free',
+    ogDescription:
+      'Automatically erase the background from any photo and download a transparent PNG cutout. Free, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'remove_background',
+      defaultAIImageOperation: 'remove_background',
+      lockedAIImageOperation: true,
+      defaultOutputFormat: 'png',
+      lockedOutputFormat: 'png',
+      title: 'Remove the background from an image',
+      description:
+        'Upload a photo. This tool is preset to the AI background remover and outputs a transparent PNG. Just upload and convert — the subject is kept and the background is erased.',
+    },
+    intro:
+      'Removing the background from a product shot, portrait, or logo used to require a manual selection in Photoshop. Media Manipulator does it automatically with an AI segmentation model running on our own GPU server — no third-party AI provider ever sees your image. The result is a clean, transparent PNG cutout, free, online, with no signup.',
+    whatItDoes: [
+      'Automatically detects the main subject and erases everything behind it.',
+      'Outputs a transparent PNG so the cutout drops onto any background.',
+      'Runs the segmentation model on our own GPU server — not a third-party API.',
+      'Works on product photos, portraits, objects, and logos.',
+    ],
+    flowSteps: [
+      { title: 'Upload a photo', description: 'Drop in any JPG, PNG, or WebP image with a clear subject.' },
+      { title: 'AI finds the subject', description: 'A segmentation model separates subject from background on our GPU.' },
+      { title: 'Background erased', description: 'Everything behind the subject becomes transparent.' },
+      { title: 'Download transparent PNG', description: 'Save the cutout as a PNG with a transparent background.' },
+    ],
+    advancedDetails: [
+      'Output is always PNG because transparency requires an alpha channel that JPG cannot store.',
+      'Several segmentation models are available in the full image tool (general, portrait, lite) — this page is preset to the recommended general model.',
+      'Clean separation works best when the subject is in clear focus and reasonably distinct from the background.',
+      'For tricky edges like fine hair, results vary; the full image converter lets you switch models for a better cut.',
+    ],
+    whyItMatters: [
+      'Transparent cutouts are essential for product listings, thumbnails, and design composites.',
+      'Running locally on our GPU keeps your images away from third-party AI providers.',
+      'Automatic removal saves the manual masking work that used to take minutes per image.',
+    ],
+    useCases: [
+      { title: 'E-commerce products', description: 'Put products on a clean white or transparent background.' },
+      { title: 'Profile and team photos', description: 'Cut out a person to drop onto a branded background.' },
+      { title: 'Logos and graphics', description: 'Extract a logo from a solid background into a transparent PNG.' },
+      { title: 'Design composites', description: 'Build collages and thumbnails from clean cutouts.' },
+    ],
+    whyMediaManipulator: [
+      'AI background removal runs on our own GPU — no third-party AI provider sees your image.',
+      'Output is preset to a transparent PNG, so there’s nothing to configure.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
+      supportedOutputFormats: ['png'],
+      processingNotes: [
+        'Output is always a transparent PNG. Background removal runs on our local GPU server, not a third-party API.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I remove the background from an image for free?',
+        answer:
+          'Upload your photo above and click convert — the tool is preset to the AI background remover. You get a transparent PNG cutout back. It is free with no signup.',
+      },
+      {
+        question: 'What format is the result?',
+        answer:
+          'A PNG with a transparent background, because transparency needs an alpha channel that only formats like PNG support.',
+      },
+      {
+        question: 'Does my image get sent to a third-party AI service?',
+        answer:
+          'No. Background removal runs on a GPU server we operate. Your image is never sent to OpenAI, Google, or any other third-party AI provider, and it is deleted within 24 hours.',
+      },
+      {
+        question: 'What kinds of images work best?',
+        answer:
+          'Photos with a clear, in-focus subject that stands out from the background give the cleanest cutouts. Busy or low-contrast backgrounds can be harder.',
+      },
+      {
+        question: 'Can I put the cutout on a new background?',
+        answer:
+          'Yes. Because the result is a transparent PNG, you can drop it onto any color or image in your editor or design tool.',
+      },
+    ],
+    related: [
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert other images to transparency-capable PNG.' },
+      { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Turn a JPG into a PNG ready for transparency.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert, resize, crop, and run AI tools in one upload.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize the cutout to exact dimensions.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every AI and image option.' },
+    ],
+    primaryKeyword: 'remove background from image',
+    secondaryKeywords: [
+      'background remover',
+      'remove image background',
+      'transparent background maker',
+      'erase background from photo',
+      'free background remover online',
+    ],
+  },
+
+  // ------------------------------------------------------------- IMAGE <-> PDF
+  {
+    slug: 'image-to-pdf',
+    name: 'Image to PDF',
+    h1: 'Convert Image to PDF Online Free',
+    tagline:
+      'Turn JPG, PNG, and other images into a clean, shareable PDF document in one click.',
+    metaTitle: 'Convert Image to PDF Online Free | Media Manipulator',
+    metaDescription:
+      'Free online image to PDF converter. Turn JPG, PNG, and other images into a clean PDF document. No signup, no watermarks, files deleted within 24 hours.',
+    ogTitle: 'Convert Image to PDF Online Free',
+    ogDescription:
+      'Turn JPG, PNG, and other images into a clean, shareable PDF. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_to_pdf',
+      defaultOutputFormat: 'pdf',
+      lockedOutputFormat: 'pdf',
+      acceptOverride: 'image/*',
+      title: 'Convert an image to PDF',
+      description:
+        'Upload any image — JPG, PNG, and more. The output is locked to PDF for this tool, so you get a single-page PDF wrapping your image at its native resolution.',
+    },
+    intro:
+      'A PDF is the universal document format — it opens identically on every device, prints cleanly, and is the format most forms, schools, and offices ask for. Media Manipulator wraps your image in a single-page PDF at its native resolution so it looks exactly like the original. Free, online, no signup.',
+    whatItDoes: [
+      'Wraps a JPG, PNG, or other image into a single-page PDF document.',
+      'Embeds JPG images losslessly and renders other formats crisply onto the page.',
+      'Sizes the page to the image so nothing is cropped or stretched.',
+      'Produces a standard PDF that opens in any reader, browser, or office suite.',
+    ],
+    flowSteps: [
+      { title: 'Upload an image', description: 'Drop in any JPG, PNG, or other common image.' },
+      { title: 'We build the page', description: 'The image is placed on a page sized to match it.' },
+      { title: 'Generate PDF', description: 'A standard single-page PDF is assembled on our server.' },
+      { title: 'Download PDF', description: 'Save a clean .pdf ready to share, print, or upload.' },
+    ],
+    advancedDetails: [
+      'JPG inputs are embedded directly (no re-compression), so a photo keeps its exact original quality inside the PDF.',
+      'PNG and other formats are flattened onto a white background and embedded losslessly — transparency becomes solid white, as PDF pages are opaque.',
+      'The page is sized from the image dimensions at 96 DPI, a sensible default that avoids enlarging or shrinking the picture.',
+      'To combine several images into one multi-page PDF, convert each and merge them in a PDF tool — single-image PDFs are the focus here.',
+    ],
+    whyItMatters: [
+      'Many upload forms, job applications, and school portals accept PDF only.',
+      'PDF prints predictably, while raw images can scale or tile unexpectedly.',
+      'A PDF is easier to email and archive than a loose image file.',
+    ],
+    useCases: [
+      { title: 'Document uploads', description: 'Turn a photo of a receipt or form into a PDF a portal will accept.' },
+      { title: 'Printing', description: 'Get predictable print output from a single image.' },
+      { title: 'Sharing scans', description: 'Convert a scanned page photo into a tidy PDF.' },
+      { title: 'Archiving', description: 'Store images as PDFs alongside other documents.' },
+    ],
+    whyMediaManipulator: [
+      'JPG embedding is lossless — your photo quality is preserved exactly.',
+      'Runs on our own servers with no third-party processing of your file.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+      supportedOutputFormats: ['pdf'],
+      processingNotes: [
+        'Output is a single-page PDF. Transparency is flattened onto white because PDF pages are opaque.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert an image to PDF for free?',
+        answer:
+          'Upload your image above and click convert — the output is locked to PDF. You get a single-page PDF back. It is free with no signup.',
+      },
+      {
+        question: 'Does converting to PDF reduce my image quality?',
+        answer:
+          'No. JPG images are embedded without re-compression, and other formats are embedded losslessly, so the picture inside the PDF matches your original.',
+      },
+      {
+        question: 'Can I put multiple images into one PDF?',
+        answer:
+          'This tool creates a one-image-per-PDF document. To combine pages, convert each image and merge the PDFs in a dedicated merge tool.',
+      },
+      {
+        question: 'What image formats can I convert to PDF?',
+        answer:
+          'JPG/JPEG and PNG are the most common; GIF and WebP are also supported. Each becomes a single-page PDF.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Focused JPG → PDF converter.' },
+      { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Focused PNG → PDF converter.' },
+      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and back.' },
+      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Go the other way: render a PDF to JPG images.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+    ],
+    primaryKeyword: 'image to pdf',
+    secondaryKeywords: [
+      'image to pdf converter',
+      'jpg png to pdf',
+      'photo to pdf',
+      'convert image to pdf',
+      'picture to pdf',
+    ],
+  },
+  {
+    slug: 'convert-jpg-to-pdf',
+    name: 'Convert JPG to PDF',
+    h1: 'Convert JPG to PDF Online Free',
+    tagline:
+      'Turn JPG photos and scans into clean PDF documents ready to share, print, or upload.',
+    metaTitle: 'Convert JPG to PDF Online Free | Media Manipulator',
+    metaDescription:
+      'Free online JPG to PDF converter. Turn .jpg photos and scans into clean PDF documents with no quality loss. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert JPG to PDF Online Free',
+    ogDescription:
+      'Turn JPG photos and scans into clean PDF documents. Lossless, free, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'jpg_to_pdf',
+      defaultOutputFormat: 'pdf',
+      lockedOutputFormat: 'pdf',
+      lockedInputFormat: 'jpg',
+      acceptOverride: 'image/jpeg,image/*',
+      title: 'Convert JPG to PDF',
+      description:
+        'Upload a JPG image. The output is locked to PDF, and your JPG is embedded losslessly — the photo inside the PDF is bit-for-bit identical to your original.',
+    },
+    intro:
+      'JPG is the format your phone and camera shoot in, but a PDF is what most forms, applications, and offices want. Media Manipulator embeds your JPG directly into a PDF with no re-compression, so the document looks exactly like your photo and stays small. Free, online, no signup.',
+    whatItDoes: [
+      'Wraps a JPG/JPEG photo into a single-page PDF document.',
+      'Embeds the original JPG bytes losslessly — zero added compression.',
+      'Sizes the page to the photo so nothing is cropped or stretched.',
+      'Produces a standard PDF that opens and prints anywhere.',
+    ],
+    flowSteps: [
+      { title: 'Upload JPG', description: 'Drop in a .jpg or .jpeg photo or scan.' },
+      { title: 'We embed it', description: 'The JPG is placed on a matching-size page, uncompressed.' },
+      { title: 'Generate PDF', description: 'A standard single-page PDF is assembled.' },
+      { title: 'Download PDF', description: 'Save a clean .pdf ready to share or upload.' },
+    ],
+    advancedDetails: [
+      'The JPG stream is embedded with the PDF /DCTDecode filter, meaning the photo is stored as-is — no second round of lossy compression.',
+      'Because there is no re-encode, a JPG-to-PDF document is typically about the same size as the original photo.',
+      'The page is sized from the image at 96 DPI, so a typical phone photo produces a comfortably sized page.',
+    ],
+    whyItMatters: [
+      'Forms, portals, and applications frequently require PDF, not JPG.',
+      'A PDF prints predictably where a raw JPG might tile or rescale.',
+      'Lossless embedding keeps text in a scanned document readable.',
+    ],
+    useCases: [
+      { title: 'Job applications', description: 'Turn a photo of a signed form into a PDF a portal accepts.' },
+      { title: 'Receipts and expenses', description: 'Convert receipt photos to PDFs for expense reports.' },
+      { title: 'Scanned documents', description: 'Wrap a phone scan of a page into a tidy PDF.' },
+      { title: 'Printing', description: 'Get predictable print output from a JPG.' },
+    ],
+    whyMediaManipulator: [
+      'Truly lossless — the JPG inside the PDF is identical to your original.',
+      'Output is locked to PDF, so there is nothing to misconfigure.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg'],
+      supportedOutputFormats: ['pdf'],
+      processingNotes: [
+        'The JPG is embedded losslessly (no re-compression) into a single-page PDF.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a JPG to PDF for free?',
+        answer:
+          'Upload your .jpg above and click convert — the output is a single-page PDF. It is free and requires no signup.',
+      },
+      {
+        question: 'Will converting JPG to PDF lower the quality?',
+        answer:
+          'No. The JPG is embedded directly into the PDF without re-compression, so the image quality is identical to your original file.',
+      },
+      {
+        question: 'Will the PDF be much bigger than my JPG?',
+        answer:
+          'No — because there is no re-encoding, the PDF is roughly the same size as the source JPG plus a tiny document wrapper.',
+      },
+      {
+        question: 'Can I combine multiple JPGs into one PDF?',
+        answer:
+          'This tool makes one PDF per image. Convert each JPG and merge the PDFs in a merge tool if you need multiple pages.',
+      },
+      {
+        question: 'Are my uploads stored?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Focused PNG → PDF converter.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Convert any image format to PDF.' },
+      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert other formats to JPG first.' },
+      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Go the other way: render a PDF to JPG.' },
+      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'The full PDF conversion hub.' },
+    ],
+    primaryKeyword: 'jpg to pdf',
+    secondaryKeywords: [
+      'jpg to pdf converter',
+      'convert jpg to pdf',
+      'jpeg to pdf',
+      '.jpg to .pdf',
+      'photo to pdf',
+    ],
+  },
+  {
+    slug: 'convert-png-to-pdf',
+    name: 'Convert PNG to PDF',
+    h1: 'Convert PNG to PDF Online Free',
+    tagline:
+      'Turn PNG screenshots, graphics, and scans into clean, crisp PDF documents.',
+    metaTitle: 'Convert PNG to PDF Online Free | Media Manipulator',
+    metaDescription:
+      'Free online PNG to PDF converter. Turn .png screenshots and graphics into crisp, lossless PDF documents. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert PNG to PDF Online Free',
+    ogDescription:
+      'Turn PNG screenshots and graphics into crisp, lossless PDF documents. Free, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'png_to_pdf',
+      defaultOutputFormat: 'pdf',
+      lockedOutputFormat: 'pdf',
+      lockedInputFormat: 'png',
+      acceptOverride: 'image/png,image/*',
+      title: 'Convert PNG to PDF',
+      description:
+        'Upload a PNG image. The output is locked to PDF, and your PNG is embedded losslessly so text and sharp edges stay crisp on the page.',
+    },
+    intro:
+      'PNG is the format for screenshots, diagrams, and graphics with crisp text and sharp edges. When you need to send or print one as a document, a PDF is the right wrapper. Media Manipulator embeds your PNG losslessly into a PDF so every edge stays sharp. Free, online, no signup.',
+    whatItDoes: [
+      'Wraps a PNG image into a single-page PDF document.',
+      'Embeds the image losslessly so text and line art stay crisp.',
+      'Flattens transparency onto white, since PDF pages are opaque.',
+      'Produces a standard PDF that opens and prints anywhere.',
+    ],
+    flowSteps: [
+      { title: 'Upload PNG', description: 'Drop in a .png screenshot, diagram, or graphic.' },
+      { title: 'We embed it', description: 'The PNG is composited onto a white page and embedded losslessly.' },
+      { title: 'Generate PDF', description: 'A standard single-page PDF is assembled.' },
+      { title: 'Download PDF', description: 'Save a crisp .pdf ready to share or print.' },
+    ],
+    advancedDetails: [
+      'PNGs are decoded and embedded with lossless zlib (Flate) compression, so sharp text and edges are preserved exactly — no JPEG artifacts.',
+      'Transparent areas become white because PDF pages do not have an alpha channel.',
+      'The page is sized from the image at 96 DPI for a sensible default physical size.',
+    ],
+    whyItMatters: [
+      'Screenshots and diagrams are often submitted as PDFs in tickets and reports.',
+      'Lossless embedding keeps small text and thin lines readable.',
+      'PDF prints predictably where a raw PNG can rescale unexpectedly.',
+    ],
+    useCases: [
+      { title: 'Bug reports', description: 'Turn a screenshot into a PDF to attach to a ticket.' },
+      { title: 'Diagrams and charts', description: 'Wrap an exported graphic into a shareable PDF.' },
+      { title: 'Scanned forms', description: 'Convert a PNG scan into a tidy PDF document.' },
+      { title: 'Printing', description: 'Get crisp, predictable prints from a PNG.' },
+    ],
+    whyMediaManipulator: [
+      'Lossless embedding keeps text and edges razor-sharp.',
+      'Output is locked to PDF, so there is nothing to misconfigure.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png'],
+      supportedOutputFormats: ['pdf'],
+      processingNotes: [
+        'The PNG is embedded losslessly. Transparency is flattened onto white because PDF pages are opaque.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a PNG to PDF for free?',
+        answer:
+          'Upload your .png above and click convert — the output is a single-page PDF. It is free and requires no signup.',
+      },
+      {
+        question: 'Does PNG to PDF keep text sharp?',
+        answer:
+          'Yes. The PNG is embedded losslessly, so sharp text and line art stay crisp with no JPEG-style artifacts.',
+      },
+      {
+        question: 'What happens to a transparent PNG?',
+        answer:
+          'Transparent areas are flattened onto a white background because PDF pages are opaque. The visible content is unchanged.',
+      },
+      {
+        question: 'Can I merge several PNGs into one PDF?',
+        answer:
+          'This tool creates one PDF per image. Convert each PNG and merge the PDFs in a merge tool for multi-page documents.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Focused JPG → PDF converter.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Convert any image format to PDF.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert other formats to PNG first.' },
+      { label: 'PDF to PNG', to: '/tools/pdf-to-png', description: 'Go the other way: render a PDF to PNG.' },
+      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'The full PDF conversion hub.' },
+    ],
+    primaryKeyword: 'png to pdf',
+    secondaryKeywords: [
+      'png to pdf converter',
+      'convert png to pdf',
+      '.png to .pdf',
+      'screenshot to pdf',
+      'image to pdf',
+    ],
+  },
+  {
+    slug: 'pdf-to-jpg',
+    name: 'PDF to JPG',
+    h1: 'Convert PDF to JPG Online Free',
+    tagline:
+      'Render every page of a PDF to high-quality JPG images you can share, edit, or post.',
+    metaTitle: 'Convert PDF to JPG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online PDF to JPG converter. Render every page of a PDF to high-quality JPG images, downloaded as a ZIP. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert PDF to JPG Online Free',
+    ogDescription:
+      'Render every page of a PDF to high-quality JPG images. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'pdf',
+      defaultTask: 'pdf_to_jpg',
+      acceptOverride: 'application/pdf',
+      pdfDefaultOutputFormat: 'jpg',
+      pdfLockOutputFormat: true,
+      pdfDefaultPageSelection: 'all',
+      pdfDefaultDpi: 150,
+      title: 'Convert PDF to JPG',
+      description:
+        'Upload a PDF. Each page is rendered to a JPG image. Choose "all pages" for a ZIP of images, or "first page only" for a single JPG. Pick a render DPI for sharper output.',
+    },
+    intro:
+      'Sometimes you need a PDF as images — to post a page to social media, drop it into a slide, or edit it in an image editor. Media Manipulator renders each PDF page to a high-quality JPG using the same engine professional tools use. Choose every page or just the first, and pick the resolution. Free, online, no signup.',
+    whatItDoes: [
+      'Renders each PDF page to a JPG image at the DPI you choose.',
+      'Converts all pages (downloaded as a ZIP) or just the first page (a single JPG).',
+      'Names multi-page output clearly: page-001.jpg, page-002.jpg, and so on.',
+      'Produces standard JPGs that open and edit anywhere.',
+    ],
+    flowSteps: [
+      { title: 'Upload PDF', description: 'Drop in any .pdf document.' },
+      { title: 'Pick pages and DPI', description: 'All pages or first only; 150 DPI is a good default.' },
+      { title: 'Render to JPG', description: 'Poppler rasterizes each page to a JPG on our server.' },
+      { title: 'Download', description: 'Get a single JPG, or a ZIP of one JPG per page.' },
+    ],
+    advancedDetails: [
+      'Rendering uses Poppler (pdftoppm), the same engine behind many desktop PDF viewers, for accurate page output.',
+      'Higher DPI yields sharper, larger images — 150 DPI suits screen use, 300 DPI suits printing.',
+      'Multi-page PDFs are packaged into a single .zip so you get one tidy download instead of many files.',
+      'There is a page-count limit so very large PDFs fail fast with a clear message rather than running indefinitely.',
+    ],
+    whyItMatters: [
+      'JPG pages are easy to post, embed in slides, or drop into an editor.',
+      'Images are accepted by tools and platforms that cannot take a PDF.',
+      'A rendered page captures the exact visual layout of the document.',
+    ],
+    useCases: [
+      { title: 'Social posts', description: 'Share a PDF page as an image on social platforms.' },
+      { title: 'Presentations', description: 'Drop a document page into a slide as an image.' },
+      { title: 'Editing', description: 'Open a PDF page in an image editor for markup.' },
+      { title: 'Thumbnails', description: 'Generate a JPG preview of the first page.' },
+    ],
+    whyMediaManipulator: [
+      'Poppler-based rendering for accurate, high-quality page images.',
+      'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['pdf'],
+      supportedOutputFormats: ['jpg', 'zip (one jpg per page)'],
+      processingNotes: [
+        'All-pages output is delivered as a .zip; first-page output is a single .jpg.',
+        'Default render resolution is 150 DPI; raise it for print-quality output.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a PDF to JPG for free?',
+        answer:
+          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert. It is free with no signup.',
+      },
+      {
+        question: 'Will I get one image or many?',
+        answer:
+          'Choose "all pages" to get a ZIP containing one JPG per page (page-001.jpg, page-002.jpg, …), or "first page only" to get a single JPG.',
+      },
+      {
+        question: 'What DPI should I pick?',
+        answer:
+          '150 DPI is great for on-screen use and sharing. Use 300 DPI when you need print-quality images. Higher DPI means larger files.',
+      },
+      {
+        question: 'Is there a limit on PDF size?',
+        answer:
+          'Very large PDFs (beyond a generous page limit) are rejected with a clear message so the conversion stays fast and reliable.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. PDFs are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'PDF to PNG', to: '/tools/pdf-to-png', description: 'Render PDF pages to lossless PNG instead.' },
+      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and images to PDF.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert the rendered images between formats.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: turn images into a PDF.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the rendered JPGs for the web.' },
+    ],
+    primaryKeyword: 'pdf to jpg',
+    secondaryKeywords: [
+      'pdf to image',
+      'pdf page to jpg',
+      'convert pdf to jpg',
+      'pdf to jpeg',
+      'pdf to jpg converter',
+    ],
+  },
+  {
+    slug: 'pdf-to-png',
+    name: 'PDF to PNG',
+    h1: 'Convert PDF to PNG Online Free',
+    tagline:
+      'Render every page of a PDF to crisp, lossless PNG images — ideal for text, diagrams, and editing.',
+    metaTitle: 'Convert PDF to PNG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online PDF to PNG converter. Render every page of a PDF to crisp, lossless PNG images, downloaded as a ZIP. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert PDF to PNG Online Free',
+    ogDescription:
+      'Render every page of a PDF to crisp, lossless PNG images. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'pdf',
+      defaultTask: 'pdf_to_png',
+      acceptOverride: 'application/pdf',
+      pdfDefaultOutputFormat: 'png',
+      pdfLockOutputFormat: true,
+      pdfDefaultPageSelection: 'all',
+      pdfDefaultDpi: 150,
+      title: 'Convert PDF to PNG',
+      description:
+        'Upload a PDF. Each page is rendered to a lossless PNG image. Choose "all pages" for a ZIP, or "first page only" for a single PNG. Pick a render DPI for sharper output.',
+    },
+    intro:
+      'PNG is the best choice when a PDF page has crisp text, thin lines, or diagrams you want to keep razor-sharp. Media Manipulator renders each page to a lossless PNG with Poppler, so there are no JPEG artifacts around text. Choose every page or just the first, and pick the resolution. Free, online, no signup.',
+    whatItDoes: [
+      'Renders each PDF page to a lossless PNG image at the DPI you choose.',
+      'Converts all pages (downloaded as a ZIP) or just the first page (a single PNG).',
+      'Names multi-page output clearly: page-001.png, page-002.png, and so on.',
+      'Keeps text and line art crisp with lossless PNG encoding.',
+    ],
+    flowSteps: [
+      { title: 'Upload PDF', description: 'Drop in any .pdf document.' },
+      { title: 'Pick pages and DPI', description: 'All pages or first only; 150 DPI is a good default.' },
+      { title: 'Render to PNG', description: 'Poppler rasterizes each page to a lossless PNG.' },
+      { title: 'Download', description: 'Get a single PNG, or a ZIP of one PNG per page.' },
+    ],
+    advancedDetails: [
+      'Rendering uses Poppler (pdftoppm) for accurate, faithful page output.',
+      'PNG is lossless, so it is the better choice than JPG when the page is mostly text, diagrams, or sharp graphics.',
+      'Higher DPI yields sharper, larger images — 150 DPI suits screens, 300 DPI suits print.',
+      'Rendered PNGs have a white background; PDF pages are opaque, so there is no transparency to preserve.',
+    ],
+    whyItMatters: [
+      'Lossless PNG keeps small text and thin lines readable with no artifacts.',
+      'PNG pages drop cleanly into editors, docs, and design tools.',
+      'A rendered page captures the exact visual layout of the document.',
+    ],
+    useCases: [
+      { title: 'Diagrams and schematics', description: 'Render technical pages without artifacts.' },
+      { title: 'Markup and review', description: 'Open a crisp page in an editor to annotate.' },
+      { title: 'Design assets', description: 'Pull a clean page graphic into a design tool.' },
+      { title: 'Thumbnails', description: 'Generate a sharp PNG preview of the first page.' },
+    ],
+    whyMediaManipulator: [
+      'Lossless PNG rendering keeps text and edges sharp.',
+      'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['pdf'],
+      supportedOutputFormats: ['png', 'zip (one png per page)'],
+      processingNotes: [
+        'All-pages output is delivered as a .zip; first-page output is a single .png.',
+        'Rendered pages have a white background — PDF pages are opaque, so there is no transparency.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a PDF to PNG for free?',
+        answer:
+          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert. It is free with no signup.',
+      },
+      {
+        question: 'Why choose PNG over JPG for a PDF?',
+        answer:
+          'PNG is lossless, so it keeps text, thin lines, and diagrams crisp with no compression artifacts. JPG is better when you want smaller files for photo-heavy pages.',
+      },
+      {
+        question: 'Will I get one image or many?',
+        answer:
+          'Choose "all pages" to get a ZIP with one PNG per page (page-001.png, …), or "first page only" for a single PNG.',
+      },
+      {
+        question: 'Do the PNGs have a transparent background?',
+        answer:
+          'No — PDF pages are opaque, so rendered pages have a white background. There is no transparency to preserve.',
+      },
+      {
+        question: 'Are my uploads stored?',
+        answer:
+          'No. PDFs are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Render PDF pages to compact JPG instead.' },
+      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and images to PDF.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert the rendered images between formats.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: turn images into a PDF.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert the rendered pages to other formats.' },
+    ],
+    primaryKeyword: 'pdf to png',
+    secondaryKeywords: [
+      'pdf page to png',
+      'convert pdf to png',
+      'pdf to image',
+      'pdf to png converter',
+      'pdf to transparent png',
+    ],
+  },
+  {
+    slug: 'pdf-converter',
+    name: 'PDF Converter',
+    h1: 'Free PDF Converter Online',
+    tagline:
+      'Convert PDFs to JPG or PNG images, and turn images into PDFs — all in one place.',
+    metaTitle: 'Free PDF Converter Online | Media Manipulator',
+    metaDescription:
+      'Free online PDF converter. Convert PDF to JPG or PNG images, and convert images to PDF. No signup, no watermarks, files deleted within 24 hours.',
+    ogTitle: 'Free PDF Converter Online',
+    ogDescription:
+      'Convert PDF to JPG/PNG images and images to PDF — all in one free tool. No signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'pdf',
+      defaultTask: 'pdf_converter',
+      acceptOverride: 'application/pdf,image/*',
+      pdfDefaultOutputFormat: 'jpg',
+      pdfDefaultPageSelection: 'all',
+      pdfDefaultDpi: 150,
+      title: 'Convert a PDF or an image',
+      description:
+        'Upload a PDF to render its pages to JPG or PNG images, or upload an image to turn it into a PDF. The form adapts to whichever file you choose.',
+    },
+    intro:
+      'The PDF converter handles both directions in one place: render a PDF’s pages to JPG or PNG images, or wrap an image into a PDF document. Upload a PDF and you get image-export controls; upload an image and you get image-to-PDF. Everything runs on our own servers — free, online, no signup.',
+    whatItDoes: [
+      'Converts PDF pages to JPG or PNG at the resolution you choose.',
+      'Converts JPG, PNG, and other images into single-page PDFs.',
+      'Packages multi-page PDF exports into a tidy ZIP of numbered images.',
+      'Adapts the form automatically to the file you upload.',
+    ],
+    flowSteps: [
+      { title: 'Upload a file', description: 'Drop in a PDF, or an image like JPG or PNG.' },
+      { title: 'Pick your output', description: 'For a PDF, choose JPG/PNG, pages, and DPI; for an image, the output is PDF.' },
+      { title: 'Convert', description: 'We render or wrap your file on our server.' },
+      { title: 'Download', description: 'Save a PDF, a single image, or a ZIP of page images.' },
+    ],
+    advancedDetails: [
+      'PDF → image rendering uses Poppler (pdftoppm); image → PDF embeds JPGs losslessly and other formats with lossless Flate compression.',
+      'Multi-page PDF exports are delivered as a .zip with sortable page-001/page-002 filenames.',
+      'Image-to-PDF sizes the page to the image at 96 DPI; PDF-to-image defaults to 150 DPI and supports up to 300+ for print.',
+      'A page-count limit protects against oversized PDFs.',
+    ],
+    whyItMatters: [
+      'One tool covers both common PDF conversion directions.',
+      'No need to hunt for a separate tool depending on which way you are converting.',
+      'Consistent, server-side quality regardless of your browser or device.',
+    ],
+    useCases: [
+      { title: 'Mixed workflows', description: 'Switch between PDF→image and image→PDF without changing tools.' },
+      { title: 'Document prep', description: 'Turn images into PDFs for upload forms.' },
+      { title: 'Repurposing', description: 'Render PDF pages to images for slides or social.' },
+      { title: 'Quick previews', description: 'Generate a first-page image from any PDF.' },
+    ],
+    whyMediaManipulator: [
+      'Both conversion directions in a single, adaptive tool.',
+      'Lossless image→PDF and accurate Poppler PDF→image rendering.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp'],
+      supportedOutputFormats: ['jpg', 'png', 'pdf', 'zip (multi-page export)'],
+      processingNotes: [
+        'Upload a PDF for PDF→image; upload an image for image→PDF. The form adapts automatically.',
+        'All-pages PDF export is delivered as a .zip of numbered images.',
+      ],
+    },
+    faq: [
+      {
+        question: 'What can the PDF converter do?',
+        answer:
+          'It converts PDF pages to JPG or PNG images, and converts images (JPG, PNG, and more) into PDF documents — all in one free tool.',
+      },
+      {
+        question: 'How does it know which way to convert?',
+        answer:
+          'It adapts to your upload: a PDF shows image-export controls (format, pages, DPI), while an image is converted to a PDF.',
+      },
+      {
+        question: 'Can I convert a multi-page PDF to images?',
+        answer:
+          'Yes. Choose "all pages" and you get a ZIP containing one image per page, named page-001, page-002, and so on.',
+      },
+      {
+        question: 'Is it really free?',
+        answer:
+          'Yes — no signup, no watermarks, and your files are deleted within 24 hours.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Everything is processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Render PDF pages to JPG images.' },
+      { label: 'PDF to PNG', to: '/tools/pdf-to-png', description: 'Render PDF pages to lossless PNG images.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Turn any image into a PDF.' },
+      { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Focused JPG → PDF converter.' },
+      { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Focused PNG → PDF converter.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
+    ],
+    primaryKeyword: 'pdf converter',
+    secondaryKeywords: [
+      'online pdf converter',
+      'convert pdf to image',
+      'convert image to pdf',
+      'pdf to jpg',
+      'free pdf converter',
     ],
   },
 
@@ -1402,8 +3210,14 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does it work on HEIC?', answer: 'Yes — iPhone HEIC photos convert cleanly to JPG, PNG, or WebP.' },
     ],
     related: [
+      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to a universal JPG.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to a lossless PNG.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize to exact pixel dimensions.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink image file size for the web.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap an image into a PDF document.' },
+      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and back.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Auto-erase a background into a transparent PNG.' },
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Focused WebP → JPG converter.' },
-      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip private metadata before sharing.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Full walkthrough of every option.' },
       // Hidden during AdSense review — re-enable when the blog returns.
       // { label: 'Image optimization guide', to: '/blog/image/image-optimization-guide', description: 'JPG vs PNG vs WebP vs AVIF.' },

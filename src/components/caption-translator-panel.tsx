@@ -5,6 +5,7 @@ import useDownloadFile from '@/lib/useDownloadFile';
 import useCaptionTranslatorTool, {
   type CaptionFormat,
 } from '@/lib/useCaptionTranslatorTool';
+import { useLocalization } from '@/i18n/useLocalization';
 
 /**
  * CaptionTranslatorPanel handles the bespoke "upload a .srt or .vtt file
@@ -56,6 +57,7 @@ const LANGUAGE_OPTIONS: LanguageOption[] = [
 ];
 
 const CaptionTranslatorPanel: React.FC = () => {
+  const { t, formatFileSize } = useLocalization('interface');
   const [file, setFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [inputFormat, setInputFormat] = useState<CaptionFormat>('srt');
@@ -161,16 +163,16 @@ const CaptionTranslatorPanel: React.FC = () => {
           }`}
         >
           <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-          <p className="font-medium text-card-foreground mb-1">Drop your .srt or .vtt file here</p>
+          <p className="font-medium text-card-foreground mb-1">{t('captionTranslator.dropHere')}</p>
           <p className="text-sm text-muted-foreground mb-4">
-            Files are processed on our own server and deleted within 24 hours. We do not send your captions to third-party AI providers.
+            {t('captionTranslator.privacyNote')}
           </p>
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Select caption file
+            {t('captionTranslator.selectCaptionFile')}
           </button>
           <input
             ref={fileInputRef}
@@ -188,7 +190,7 @@ const CaptionTranslatorPanel: React.FC = () => {
           <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
             <div className="min-w-0">
               <p className="font-medium text-card-foreground truncate">{file.name}</p>
-              <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(2)} KB · {inputFormat.toUpperCase()}</p>
+              <p className="text-xs text-muted-foreground">{formatFileSize(file.size)} · {inputFormat.toUpperCase()}</p>
             </div>
             <button
               type="button"
@@ -198,7 +200,7 @@ const CaptionTranslatorPanel: React.FC = () => {
                 if (fileInputRef.current) fileInputRef.current.value = '';
               }}
               className="text-muted-foreground hover:text-card-foreground transition-colors"
-              aria-label="Remove file"
+              aria-label={t('captionTranslator.removeFile')}
             >
               <X className="w-5 h-5" />
             </button>
@@ -206,20 +208,20 @@ const CaptionTranslatorPanel: React.FC = () => {
 
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Source language</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('captionTranslator.sourceLanguage')}</label>
               <select
                 value={sourceLanguage}
                 onChange={(e) => setSourceLanguage(e.target.value)}
                 className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
               >
-                <option value="auto">Auto-detect (recommended)</option>
+                <option value="auto">{t('captionTranslator.autoDetect')}</option>
                 {LANGUAGE_OPTIONS.map((l) => (
                   <option key={l.code} value={l.code}>{l.label}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-card-foreground mb-1">Target language</label>
+              <label className="block text-sm font-medium text-card-foreground mb-1">{t('captionTranslator.targetLanguage')}</label>
               <select
                 value={targetLanguage}
                 onChange={(e) => setTargetLanguage(e.target.value)}
@@ -233,18 +235,18 @@ const CaptionTranslatorPanel: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">Output format</label>
+            <label className="block text-sm font-medium text-card-foreground mb-1">{t('captionTranslator.outputFormat')}</label>
             <select
               value={outputFormat}
               onChange={(e) => setOutputFormat(e.target.value as CaptionFormat | 'same')}
               className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
             >
-              <option value="same">Same as input ({inputFormat.toUpperCase()})</option>
-              <option value="srt">SRT (SubRip)</option>
-              <option value="vtt">VTT (WebVTT)</option>
+              <option value="same">{t('captionTranslator.sameAsInput', { format: inputFormat.toUpperCase() })}</option>
+              <option value="srt">{t('captionTranslator.formats.srt')}</option>
+              <option value="vtt">{t('captionTranslator.formats.vtt')}</option>
             </select>
             <p className="text-xs text-muted-foreground mt-1">
-              Cue timing and ordering are preserved exactly — only the cue text is translated.
+              {t('captionTranslator.timingNote')}
             </p>
           </div>
 
@@ -254,15 +256,15 @@ const CaptionTranslatorPanel: React.FC = () => {
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             <Languages className="w-4 h-4" />
-            {isProcessing ? 'Translating…' : 'Translate captions'}
+            {isProcessing ? t('captionTranslator.translating') : t('captionTranslator.translateCaptions')}
           </button>
 
           {isProcessing && (
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-2">
                 {uploadProgress > 0 && uploadProgress < 100
-                  ? `Uploading ${uploadProgress}%`
-                  : 'Translating with local AI model…'}{' '}
+                  ? t('captionTranslator.uploadingPercent', { percent: uploadProgress })
+                  : t('captionTranslator.translatingWithModel')}{' '}
                 {conversionJob?.progress ? `· ${conversionJob.progress}%` : ''}
               </p>
               <div className="w-full bg-muted rounded-full h-2">
@@ -281,12 +283,12 @@ const CaptionTranslatorPanel: React.FC = () => {
               className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
-              Download translated captions
+              {t('captionTranslator.downloadTranslated')}
             </button>
           )}
           {conversionJob?.status === 'failed' && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
-              {conversionJob.error || 'Translation failed. Try a smaller file or a different target language.'}
+              {conversionJob.error || t('captionTranslator.translationFailed')}
             </div>
           )}
         </form>

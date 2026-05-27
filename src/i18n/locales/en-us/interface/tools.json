@@ -1,0 +1,70 @@
+{
+  "toolsIndex": {
+    "title": "Free Online Media Tools",
+    "subtitle": "Focused, single-purpose tools for converting, compressing, transcribing, and cleaning up image, video, and audio files. No signup. Files deleted within 24 hours.",
+    "needMore": {
+      "title": "Need more than a single-purpose tool?",
+      "body": "The homepage converter bundles every option — format, AI tools, metadata, trim, transcription — into one upload. Tutorials walk through every setting.",
+      "ctaConverter": "Open the full converter",
+      "ctaTutorials": "Browse tutorials"
+    },
+    "learnMore": {
+      "title": "Learn more",
+      "intro": "Guides and reference pages that pair with these tools.",
+      "howItWorks": {
+        "label": "How Media Manipulator works",
+        "description": "See how files are processed and temporarily stored."
+      }
+    }
+  },
+  "toolPage": {
+    "notFoundTitle": "Tool not found",
+    "notFoundBody": "We could not find the tool you were looking for. Browse all available tools below.",
+    "browseAll": "Browse all tools"
+  },
+  "toolLanding": {
+    "breadcrumbs": {
+      "tools": "Tools"
+    },
+    "breadcrumbAria": "Breadcrumb",
+    "useCasesTitle": "Common use cases",
+    "whyMediaManipulatorTitle": "Why Media Manipulator's version stands out",
+    "privacyTitle": "Privacy & temporary storage",
+    "faqTitle": "Frequently asked questions",
+    "faqShortTitle": "FAQ",
+    "advancedDetailsTitle": "Advanced technical details",
+    "advancedToggle": "Show details",
+    "advancedToggleHide": "Hide details",
+    "supportedFormatsTitle": "Supported formats",
+    "inputFormats": "Accepted inputs",
+    "outputFormats": "Output formats",
+    "fileLimits": "File limits & retention",
+    "processingNotes": "Processing notes",
+    "whatItDoesTitle": "What this tool does",
+    "whyItMattersTitle": "Why it matters",
+    "tryItNow": "Try it now",
+    "relatedTitle": "Related tools, tutorials & guides",
+    "relatedIntro": "Keep going with related Media Manipulator pages."
+  },
+  "tutorialAiFrameInterpolation": {
+    "_placeholder": "AI frame interpolation tutorial content will live here. The article still renders English text directly in the .tsx file until that file is migrated to use t()."
+  },
+  "tutorialAudioGettingStarted": {
+    "_placeholder": "Audio getting-started tutorial content lives in the .tsx file."
+  },
+  "tutorialVideoGettingStarted": {
+    "_placeholder": "Video getting-started tutorial content lives in the .tsx file."
+  },
+  "tutorialImageGettingStarted": {
+    "_placeholder": "Image getting-started tutorial content lives in the .tsx file."
+  },
+  "blogVideoCompression": {
+    "_placeholder": "Video compression blog post lives in the .tsx file."
+  },
+  "blogImageOptimization": {
+    "_placeholder": "Image optimization blog post lives in the .tsx file."
+  },
+  "blogAudioQuality": {
+    "_placeholder": "Audio quality blog post lives in the .tsx file."
+  }
+}

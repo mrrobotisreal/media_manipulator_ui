@@ -10,32 +10,36 @@ import { getToolAdSlots } from '@/lib/adSlots';
 import type { ToolPageContent } from '@/content/toolPages';
 import mixpanel from 'mixpanel-browser';
 import { hasAnalyticsConsent } from '@/lib/consent';
+import { useLocalization } from '@/i18n/useLocalization';
 
 interface ToolLandingPageProps {
   tool: ToolPageContent;
 }
 
-const Breadcrumbs: React.FC<{ tool: ToolPageContent }> = ({ tool }) => (
-  <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground mb-4">
-    <ol className="flex flex-wrap items-center gap-1">
-      <li>
-        <Link to="/" className="hover:text-card-foreground transition-colors">
-          Home
-        </Link>
-      </li>
-      <li aria-hidden="true">/</li>
-      <li>
-        <Link to="/tools" className="hover:text-card-foreground transition-colors">
-          Tools
-        </Link>
-      </li>
-      <li aria-hidden="true">/</li>
-      <li aria-current="page" className="text-card-foreground">
-        {tool.name}
-      </li>
-    </ol>
-  </nav>
-);
+const Breadcrumbs: React.FC<{ tool: ToolPageContent }> = ({ tool }) => {
+  const { t } = useLocalization('interface');
+  return (
+    <nav aria-label={t('toolLanding.breadcrumbAria')} className="text-sm text-muted-foreground mb-4">
+      <ol className="flex flex-wrap items-center gap-1">
+        <li>
+          <Link to="/" className="hover:text-card-foreground transition-colors">
+            {t('topNav.home')}
+          </Link>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <Link to="/tools" className="hover:text-card-foreground transition-colors">
+            {t('toolLanding.breadcrumbs.tools')}
+          </Link>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li aria-current="page" className="text-card-foreground">
+          {tool.name}
+        </li>
+      </ol>
+    </nav>
+  );
+};
 
 const FaqItem: React.FC<{ question: string; answer: string }> = ({ question, answer }) => {
   const [open, setOpen] = useState(false);
@@ -64,6 +68,7 @@ const FaqItem: React.FC<{ question: string; answer: string }> = ({ question, ans
 };
 
 const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
+  const { t } = useLocalization('interface');
   useEffect(() => {
     // Per-tool view event — distinct from the generic Page View fired by
     // RouteAnalytics, so it stays. Never includes uploaded content.
@@ -135,6 +140,16 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                 lockedOutputFormat={tool.embed.lockedOutputFormat}
                 allowedInputFormats={tool.embed.allowedInputFormats}
                 acceptOverride={tool.embed.acceptOverride}
+                defaultAIImageOperation={tool.embed.defaultAIImageOperation}
+                lockedAIImageOperation={tool.embed.lockedAIImageOperation}
+                defaultQuality={tool.embed.defaultQuality}
+                defaultWidth={tool.embed.defaultWidth}
+                defaultHeight={tool.embed.defaultHeight}
+                emphasizeResize={tool.embed.emphasizeResize}
+                pdfDefaultOutputFormat={tool.embed.pdfDefaultOutputFormat}
+                pdfLockOutputFormat={tool.embed.pdfLockOutputFormat}
+                pdfDefaultPageSelection={tool.embed.pdfDefaultPageSelection}
+                pdfDefaultDpi={tool.embed.pdfDefaultDpi}
                 transcribeMode={tool.embed.transcribeMode}
                 transcodeMode={tool.embed.transcodeMode}
                 transcodeProtocol={tool.embed.transcodeProtocol}
@@ -150,12 +165,12 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                 tool.supportedFormats.maxFileNotes?.length ||
                 tool.supportedFormats.processingNotes?.length
               ) ? (
-                <section className="my-8" aria-label="Supported formats">
-                  <h2 className="text-2xl font-semibold text-card-foreground mb-3">Supported formats</h2>
+                <section className="my-8" aria-label={t('toolLanding.supportedFormatsTitle')}>
+                  <h2 className="text-2xl font-semibold text-card-foreground mb-3">{t('toolLanding.supportedFormatsTitle')}</h2>
                   <div className="grid gap-4 md:grid-cols-2">
                     {tool.supportedFormats.supportedInputFormats?.length ? (
                       <div className="rounded-lg border border-border bg-background/40 p-4">
-                        <h3 className="font-medium text-card-foreground mb-2">Accepted inputs</h3>
+                        <h3 className="font-medium text-card-foreground mb-2">{t('toolLanding.inputFormats')}</h3>
                         <ul className="flex flex-wrap gap-2">
                           {tool.supportedFormats.supportedInputFormats.map((fmt) => (
                             <li
@@ -170,7 +185,7 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                     ) : null}
                     {tool.supportedFormats.supportedOutputFormats?.length ? (
                       <div className="rounded-lg border border-border bg-background/40 p-4">
-                        <h3 className="font-medium text-card-foreground mb-2">Output formats</h3>
+                        <h3 className="font-medium text-card-foreground mb-2">{t('toolLanding.outputFormats')}</h3>
                         <ul className="flex flex-wrap gap-2">
                           {tool.supportedFormats.supportedOutputFormats.map((fmt) => (
                             <li
@@ -197,8 +212,8 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                 </section>
               ) : null}
 
-              <section className="my-8" aria-label="What this tool does">
-                <h2 className="text-2xl font-semibold text-card-foreground mb-3">What this tool does</h2>
+              <section className="my-8" aria-label={t('toolLanding.whatItDoesTitle')}>
+                <h2 className="text-2xl font-semibold text-card-foreground mb-3">{t('toolLanding.whatItDoesTitle')}</h2>
                 <ul className="space-y-2 list-disc pl-6 text-card-foreground">
                   {tool.whatItDoes.map((item) => (
                     <li key={item}>{item}</li>
@@ -207,7 +222,7 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
               </section>
 
               <ToolFlowDiagram
-                title="How it works"
+                title={t('toolFlowDiagram.defaultTitle')}
                 steps={tool.flowSteps}
               />
 
@@ -225,7 +240,7 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
               {tool.advancedDetails && tool.advancedDetails.length > 0 && (
                 <details className="my-8 rounded-lg border border-border bg-card p-4">
                   <summary className="cursor-pointer font-semibold text-card-foreground">
-                    Advanced technical details
+                    {t('toolLanding.advancedDetailsTitle')}
                   </summary>
                   <ul className="mt-3 list-disc pl-6 space-y-2 text-sm text-muted-foreground">
                     {tool.advancedDetails.map((item) => (
@@ -235,8 +250,8 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                 </details>
               )}
 
-              <section className="my-8" aria-label="Why this matters">
-                <h2 className="text-2xl font-semibold text-card-foreground mb-3">Why it matters</h2>
+              <section className="my-8" aria-label={t('toolLanding.whyItMattersTitle')}>
+                <h2 className="text-2xl font-semibold text-card-foreground mb-3">{t('toolLanding.whyItMattersTitle')}</h2>
                 <ul className="space-y-2 list-disc pl-6 text-card-foreground">
                   {tool.whyItMatters.map((item) => (
                     <li key={item}>{item}</li>
@@ -244,8 +259,8 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                 </ul>
               </section>
 
-              <section className="my-8" aria-label="Common use cases">
-                <h2 className="text-2xl font-semibold text-card-foreground mb-3">Common use cases</h2>
+              <section className="my-8" aria-label={t('toolLanding.useCasesTitle')}>
+                <h2 className="text-2xl font-semibold text-card-foreground mb-3">{t('toolLanding.useCasesTitle')}</h2>
                 <div className="grid gap-3 md:grid-cols-2">
                   {tool.useCases.map((useCase) => (
                     <div
@@ -259,9 +274,9 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                 </div>
               </section>
 
-              <section className="my-8" aria-label="Why Media Manipulator">
+              <section className="my-8" aria-label={t('toolLanding.whyMediaManipulatorTitle')}>
                 <h2 className="text-2xl font-semibold text-card-foreground mb-3">
-                  Why Media Manipulator's version stands out
+                  {t('toolLanding.whyMediaManipulatorTitle')}
                 </h2>
                 <ul className="space-y-2 list-disc pl-6 text-card-foreground">
                   {tool.whyMediaManipulator.map((item) => (
@@ -272,17 +287,17 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
 
               <section
                 className="my-8 rounded-lg border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 p-4 flex items-start gap-3"
-                aria-label="Privacy"
+                aria-label={t('toolLanding.privacyTitle')}
               >
                 <Shield className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 <div>
-                  <h2 className="text-base font-semibold text-card-foreground">Privacy & temporary storage</h2>
+                  <h2 className="text-base font-semibold text-card-foreground">{t('toolLanding.privacyTitle')}</h2>
                   <p className="text-sm text-muted-foreground mt-1">{tool.privacyNote}</p>
                 </div>
               </section>
 
-              <section className="my-8" aria-label="Frequently asked questions">
-                <h2 className="text-2xl font-semibold text-card-foreground mb-3">FAQ</h2>
+              <section className="my-8" aria-label={t('toolLanding.faqTitle')}>
+                <h2 className="text-2xl font-semibold text-card-foreground mb-3">{t('toolLanding.faqShortTitle')}</h2>
                 <ul className="space-y-2 list-none">
                   {tool.faq.map((item) => (
                     <FaqItem key={item.question} question={item.question} answer={item.answer} />
@@ -291,8 +306,8 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
               </section>
 
               <RelatedLinks
-                title="Related tools, tutorials & guides"
-                intro="Keep going with related Media Manipulator pages."
+                title={t('toolLanding.relatedTitle')}
+                intro={t('toolLanding.relatedIntro')}
                 links={tool.related}
               />
             </CardContent>

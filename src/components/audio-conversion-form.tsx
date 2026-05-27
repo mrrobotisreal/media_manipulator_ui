@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
+import { Trans } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { audioConversionSchema } from "@/schemas/audioSchema";
 import ConversionOptions from "@/components/conversion-options";
@@ -9,6 +10,7 @@ import AdBanner from "@/components/ad-banner";
 import InfoTooltip from "@/components/info-tooltip";
 import type { ConversionFormData } from "@/schemas/types";
 import { useEffect, useState } from "react";
+import { useLocalization } from "@/i18n/useLocalization";
 
 interface TrimRange {
   startTime: number;
@@ -21,6 +23,7 @@ const AudioConversionForm: React.FC<{
   isLoading: boolean;
   audioUrl?: string;
 }> = ({ onSubmit, isLoading, audioUrl }) => {
+  const { t, formatDuration } = useLocalization(['interface', 'error', 'accessibility']);
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [trimRange, setTrimRange] = useState<TrimRange | null>(null);
 
@@ -173,16 +176,14 @@ const AudioConversionForm: React.FC<{
     }
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
   const getTrimStatus = (): string | undefined => {
     if (!trimRange) return undefined;
     const duration = trimRange.endTime - trimRange.startTime;
-    return `Trim: ${formatTime(trimRange.startTime)} - ${formatTime(trimRange.endTime)} (${formatTime(duration)})`;
+    return t('interface:audioForm.trimStatus', {
+      start: formatDuration(trimRange.startTime),
+      end: formatDuration(trimRange.endTime),
+      duration: formatDuration(duration),
+    });
   };
 
   return (
@@ -205,25 +206,25 @@ const AudioConversionForm: React.FC<{
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
           <div>
             <h3 className="font-medium text-card-foreground flex items-center gap-2">
-              AI Audio Tools
+              {t('interface:audioForm.ai.title')}
               <InfoTooltip
-                ariaLabel="About AI Audio Tools"
+                ariaLabel={t('accessibility:audioForm.aiTooltip')}
                 width="lg"
                 content={
                   <div className="space-y-1">
-                    <p>One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.</p>
+                    <p>{t('interface:audioForm.ai.tooltipIntro')}</p>
                     <ul className="list-disc pl-4 space-y-1 mt-1">
-                      <li><strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).</li>
-                      <li><strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.</li>
-                      <li><strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).</li>
-                      <li><strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.</li>
+                      <li><Trans i18nKey="interface:audioForm.ai.tooltipCleanVoice" components={{ strong: <strong /> }} /></li>
+                      <li><Trans i18nKey="interface:audioForm.ai.tooltipRemoveNoise" components={{ strong: <strong /> }} /></li>
+                      <li><Trans i18nKey="interface:audioForm.ai.tooltipIsolateVocals" components={{ strong: <strong /> }} /></li>
+                      <li><Trans i18nKey="interface:audioForm.ai.tooltipRemoveVocals" components={{ strong: <strong /> }} /></li>
                     </ul>
                   </div>
                 }
               />
             </h3>
             <p className="text-sm text-muted-foreground">
-              AI audio tools run as GPU jobs and may take longer than basic conversion.
+              {t('interface:audioForm.ai.intro')}
             </p>
           </div>
           <Controller
@@ -231,20 +232,20 @@ const AudioConversionForm: React.FC<{
             control={control}
             render={({ field }) => (
               <label className="block">
-                <span className="block text-sm font-medium mb-1 text-card-foreground">Operation</span>
+                <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:audioForm.ai.operationLabel')}</span>
                 <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                  <option value="none">None (standard conversion)</option>
-                  <option value="clean_voice">Clean Voice</option>
-                  <option value="remove_background_noise">Remove Background Noise</option>
-                  <option value="isolate_vocals">Isolate Vocals</option>
-                  <option value="remove_vocals">Remove Vocals / Karaoke</option>
+                  <option value="none">{t('interface:audioForm.ai.operations.none')}</option>
+                  <option value="clean_voice">{t('interface:audioForm.ai.operations.clean_voice')}</option>
+                  <option value="remove_background_noise">{t('interface:audioForm.ai.operations.remove_background_noise')}</option>
+                  <option value="isolate_vocals">{t('interface:audioForm.ai.operations.isolate_vocals')}</option>
+                  <option value="remove_vocals">{t('interface:audioForm.ai.operations.remove_vocals')}</option>
                 </select>
               </label>
             )}
           />
           {aiOperation && aiOperation !== 'none' && (
             <p className="text-xs text-muted-foreground">
-              Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.
+              {t('interface:audioForm.ai.aiActiveNote')}
             </p>
           )}
         </div>
@@ -254,10 +255,10 @@ const AudioConversionForm: React.FC<{
 
         {Object.keys(errors).length > 0 && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-            <p className="text-destructive text-sm">Please fix the following errors:</p>
+            <p className="text-destructive text-sm">{t('error:forms.fixErrors')}</p>
             <ul className="text-destructive text-sm mt-1">
               {Object.entries(errors).map(([field, error]) => (
-                <li key={field}>• {field}: {error?.message || 'Invalid value'}</li>
+                <li key={field}>• {field}: {error?.message || t('error:forms.invalidValue')}</li>
               ))}
             </ul>
           </div>
@@ -270,10 +271,10 @@ const AudioConversionForm: React.FC<{
           {isLoading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Converting...
+              {t('interface:audioForm.converting')}
             </>
           ) : (
-            'Convert File'
+            t('interface:audioForm.submit')
           )}
         </button>
       </form>

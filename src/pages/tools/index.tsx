@@ -5,7 +5,9 @@ import { Image as ImageIcon, Video as VideoIcon, Music, Sparkles, Shield, ArrowR
 import AdBanner from '@/components/ad-banner';
 import RelatedLinks from '@/components/related-links';
 import { AD_SLOTS } from '@/lib/adSlots';
-import { TOOL_CATEGORIES, TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
+import { type ToolPageContent } from '@/content/toolPages';
+import { useLocalization } from '@/i18n/useLocalization';
+import { useToolPages } from '@/i18n/useToolPages';
 
 const categoryIcon = (category: ToolPageContent['category']): React.ReactNode => {
   switch (category) {
@@ -32,6 +34,8 @@ const CATEGORY_BANNER_SLOTS: Record<ToolPageContent['category'], string> = {
 };
 
 const ToolsIndexPage: React.FC = () => {
+  const { t } = useLocalization('interface');
+  const { toolPages, toolCategories } = useToolPages();
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 pt-4">
@@ -57,17 +61,16 @@ const ToolsIndexPage: React.FC = () => {
             <CardContent className="p-6 md:p-10">
               <header className="mb-8">
                 <h1 className="text-3xl md:text-4xl font-bold text-card-foreground leading-tight">
-                  Free Online Media Tools
+                  {t('toolsIndex.title')}
                 </h1>
                 <p className="text-lg text-muted-foreground mt-3 max-w-3xl">
-                  Focused, single-purpose tools for converting, compressing, transcribing, and
-                  cleaning up image, video, and audio files. No signup. Files deleted within 24 hours.
+                  {t('toolsIndex.subtitle')}
                 </p>
               </header>
 
               <div className="grid gap-10">
-                {TOOL_CATEGORIES.map((category) => {
-                  const tools = TOOL_PAGES.filter((t) => t.category === category.id);
+                {toolCategories.map((category) => {
+                  const tools = toolPages.filter((t) => t.category === category.id);
                   if (tools.length === 0) return null;
                   return (
                     <React.Fragment key={category.id}>
@@ -116,24 +119,23 @@ const ToolsIndexPage: React.FC = () => {
 
               <div className="mt-10 bg-card p-6 sci-fi-frame-green">
                 <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                  Need more than a single-purpose tool?
+                  {t('toolsIndex.needMore.title')}
                 </h2>
                 <p className="text-muted-foreground mb-4">
-                  The homepage converter bundles every option — format, AI tools, metadata, trim,
-                  transcription — into one upload. Tutorials walk through every setting.
+                  {t('toolsIndex.needMore.body')}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link
                     to="/"
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                   >
-                    Open the full converter
+                    {t('toolsIndex.needMore.ctaConverter')}
                   </Link>
                   <Link
                     to="/tutorials"
                     className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"
                   >
-                    Browse tutorials
+                    {t('toolsIndex.needMore.ctaTutorials')}
                   </Link>
                   {/* Blog hidden during AdSense review — re-enable when the
                       blog section is reactivated.
@@ -148,30 +150,13 @@ const ToolsIndexPage: React.FC = () => {
               </div>
 
               <RelatedLinks
-                title="Learn more"
-                intro="Guides and reference pages that pair with these tools."
+                title={t('toolsIndex.learnMore.title')}
+                intro={t('toolsIndex.learnMore.intro')}
                 links={[
-                  // Blog guides hidden during AdSense review — re-enable when
-                  // the blog returns.
-                  // {
-                  //   label: 'Video compression guide',
-                  //   to: '/blog/video/video-compression-guide',
-                  //   description: 'Codecs, bitrate, and container formats explained.',
-                  // },
-                  // {
-                  //   label: 'Image optimization guide',
-                  //   to: '/blog/image/image-optimization-guide',
-                  //   description: 'JPG vs PNG vs WebP vs AVIF.',
-                  // },
-                  // {
-                  //   label: 'Audio quality guide',
-                  //   to: '/blog/audio/audio-quality-guide',
-                  //   description: 'Bitrate, sample rate, and codec deep dive.',
-                  // },
                   {
-                    label: 'How Media Manipulator works',
+                    label: t('toolsIndex.learnMore.howItWorks.label'),
                     to: '/how-it-works',
-                    description: 'See how files are processed and temporarily stored.',
+                    description: t('toolsIndex.learnMore.howItWorks.description'),
                   },
                 ]}
               />

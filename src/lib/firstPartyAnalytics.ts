@@ -3,7 +3,7 @@ import { getSessionIdSync, getUserIdSync, initializeIndexedIdentity } from '@/li
 type EventProperties = Record<string, string | number | boolean | null | undefined | Record<string, unknown> | unknown[]>;
 
 interface TrackOptions {
-  mediaKind?: 'image' | 'video' | 'audio' | 'unknown';
+  mediaKind?: 'image' | 'video' | 'audio' | 'pdf' | 'unknown';
   featureName?: string;
   conversionJobId?: string;
 }

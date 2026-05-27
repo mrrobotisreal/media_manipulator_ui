@@ -266,6 +266,132 @@ export const TOOL_AD_SLOTS: Record<string, ToolAdSlotSet> = {
     incontent: '6634896969',
     footer: '7379105216',
   },
+
+  // ---------------------------------------------------------- Image SEO batch 1
+  // PLACEHOLDER slot IDs — these tool pages were added before their AdSense
+  // units were provisioned in the dashboard. An unprovisioned slot simply goes
+  // "unfilled" and the CreaTV in-house creative (the existing fallback in
+  // AdBanner) renders in its place, so layout/heights are reserved correctly
+  // and no invalid live ad request is served. Replace each value with the real
+  // numeric slot ID from ADS.md once the units are created.
+  'convert-png-to-jpg': {
+    header: 'PLACEHOLDER-convert-png-to-jpg-header',
+    sidebar_right: 'PLACEHOLDER-convert-png-to-jpg-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-png-to-jpg-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-png-to-jpg-incontent',
+    footer: 'PLACEHOLDER-convert-png-to-jpg-footer',
+  },
+  'convert-jpg-to-png': {
+    header: 'PLACEHOLDER-convert-jpg-to-png-header',
+    sidebar_right: 'PLACEHOLDER-convert-jpg-to-png-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-jpg-to-png-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-jpg-to-png-incontent',
+    footer: 'PLACEHOLDER-convert-jpg-to-png-footer',
+  },
+  'convert-webp-to-png': {
+    header: 'PLACEHOLDER-convert-webp-to-png-header',
+    sidebar_right: 'PLACEHOLDER-convert-webp-to-png-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-webp-to-png-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-webp-to-png-incontent',
+    footer: 'PLACEHOLDER-convert-webp-to-png-footer',
+  },
+  'convert-png-to-webp': {
+    header: 'PLACEHOLDER-convert-png-to-webp-header',
+    sidebar_right: 'PLACEHOLDER-convert-png-to-webp-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-png-to-webp-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-png-to-webp-incontent',
+    footer: 'PLACEHOLDER-convert-png-to-webp-footer',
+  },
+  'convert-jpg-to-webp': {
+    header: 'PLACEHOLDER-convert-jpg-to-webp-header',
+    sidebar_right: 'PLACEHOLDER-convert-jpg-to-webp-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-jpg-to-webp-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-jpg-to-webp-incontent',
+    footer: 'PLACEHOLDER-convert-jpg-to-webp-footer',
+  },
+  'jpg-converter': {
+    header: 'PLACEHOLDER-jpg-converter-header',
+    sidebar_right: 'PLACEHOLDER-jpg-converter-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-jpg-converter-sidebar-left',
+    incontent: 'PLACEHOLDER-jpg-converter-incontent',
+    footer: 'PLACEHOLDER-jpg-converter-footer',
+  },
+  'png-converter': {
+    header: 'PLACEHOLDER-png-converter-header',
+    sidebar_right: 'PLACEHOLDER-png-converter-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-png-converter-sidebar-left',
+    incontent: 'PLACEHOLDER-png-converter-incontent',
+    footer: 'PLACEHOLDER-png-converter-footer',
+  },
+  'image-resizer': {
+    header: 'PLACEHOLDER-image-resizer-header',
+    sidebar_right: 'PLACEHOLDER-image-resizer-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-image-resizer-sidebar-left',
+    incontent: 'PLACEHOLDER-image-resizer-incontent',
+    footer: 'PLACEHOLDER-image-resizer-footer',
+  },
+  'compress-image': {
+    header: 'PLACEHOLDER-compress-image-header',
+    sidebar_right: 'PLACEHOLDER-compress-image-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-compress-image-sidebar-left',
+    incontent: 'PLACEHOLDER-compress-image-incontent',
+    footer: 'PLACEHOLDER-compress-image-footer',
+  },
+  'remove-background-from-image': {
+    header: 'PLACEHOLDER-remove-background-from-image-header',
+    sidebar_right: 'PLACEHOLDER-remove-background-from-image-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-remove-background-from-image-sidebar-left',
+    incontent: 'PLACEHOLDER-remove-background-from-image-incontent',
+    footer: 'PLACEHOLDER-remove-background-from-image-footer',
+  },
+
+  // ---------------------------------------------------------- PDF SEO batch 2
+  // PLACEHOLDER slot IDs — same pattern as the image batch above. Unprovisioned
+  // slots fall back to the CreaTV in-house creative, so layout heights are
+  // reserved and no invalid live ad request is served. Replace with real
+  // numeric slot IDs from ADS.md once the AdSense units are created.
+  'image-to-pdf': {
+    header: 'PLACEHOLDER-image-to-pdf-header',
+    sidebar_right: 'PLACEHOLDER-image-to-pdf-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-image-to-pdf-sidebar-left',
+    incontent: 'PLACEHOLDER-image-to-pdf-incontent',
+    footer: 'PLACEHOLDER-image-to-pdf-footer',
+  },
+  'convert-jpg-to-pdf': {
+    header: 'PLACEHOLDER-convert-jpg-to-pdf-header',
+    sidebar_right: 'PLACEHOLDER-convert-jpg-to-pdf-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-jpg-to-pdf-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-jpg-to-pdf-incontent',
+    footer: 'PLACEHOLDER-convert-jpg-to-pdf-footer',
+  },
+  'convert-png-to-pdf': {
+    header: 'PLACEHOLDER-convert-png-to-pdf-header',
+    sidebar_right: 'PLACEHOLDER-convert-png-to-pdf-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-png-to-pdf-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-png-to-pdf-incontent',
+    footer: 'PLACEHOLDER-convert-png-to-pdf-footer',
+  },
+  'pdf-to-jpg': {
+    header: 'PLACEHOLDER-pdf-to-jpg-header',
+    sidebar_right: 'PLACEHOLDER-pdf-to-jpg-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-pdf-to-jpg-sidebar-left',
+    incontent: 'PLACEHOLDER-pdf-to-jpg-incontent',
+    footer: 'PLACEHOLDER-pdf-to-jpg-footer',
+  },
+  'pdf-to-png': {
+    header: 'PLACEHOLDER-pdf-to-png-header',
+    sidebar_right: 'PLACEHOLDER-pdf-to-png-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-pdf-to-png-sidebar-left',
+    incontent: 'PLACEHOLDER-pdf-to-png-incontent',
+    footer: 'PLACEHOLDER-pdf-to-png-footer',
+  },
+  'pdf-converter': {
+    header: 'PLACEHOLDER-pdf-converter-header',
+    sidebar_right: 'PLACEHOLDER-pdf-converter-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-pdf-converter-sidebar-left',
+    incontent: 'PLACEHOLDER-pdf-converter-incontent',
+    footer: 'PLACEHOLDER-pdf-converter-footer',
+  },
 };
 
 /** Get the slot set for a tool slug, or undefined if none configured. */

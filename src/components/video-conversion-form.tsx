@@ -8,6 +8,7 @@ import AdvancedVideoEffects from "@/components/advanced-video-effects";
 import AIVideoTools from "@/components/ai-video-tools";
 import type { ConversionFormData } from "@/schemas/types";
 import { useState } from "react";
+import { useLocalization } from "@/i18n/useLocalization";
 
 interface TrimRange {
   startTime: number;
@@ -20,6 +21,7 @@ const VideoConversionForm: React.FC<{
   isLoading: boolean;
   videoUrl?: string;
 }> = ({ onSubmit, isLoading, videoUrl }) => {
+  const { t, formatDuration } = useLocalization(['interface', 'error']);
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [trimRange, setTrimRange] = useState<TrimRange | null>(null);
 
@@ -145,16 +147,14 @@ const VideoConversionForm: React.FC<{
     }
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
   const getTrimStatus = (): string | undefined => {
     if (!trimRange) return undefined;
     const duration = trimRange.endTime - trimRange.startTime;
-    return `Trim: ${formatTime(trimRange.startTime)} - ${formatTime(trimRange.endTime)} (${formatTime(duration)})`;
+    return t('interface:videoForm.trimStatus', {
+      start: formatDuration(trimRange.startTime),
+      end: formatDuration(trimRange.endTime),
+      duration: formatDuration(duration),
+    });
   };
 
   return (
@@ -175,10 +175,10 @@ const VideoConversionForm: React.FC<{
 
         {Object.keys(errors).length > 0 && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-            <p className="text-destructive text-sm">Please fix the following errors:</p>
+            <p className="text-destructive text-sm">{t('error:forms.fixErrors')}</p>
             <ul className="text-destructive text-sm mt-1">
               {Object.entries(errors).map(([field, error]) => (
-                <li key={field}>• {field}: {error?.message || 'Invalid value'}</li>
+                <li key={field}>• {field}: {error?.message || t('error:forms.invalidValue')}</li>
               ))}
             </ul>
           </div>
@@ -191,10 +191,10 @@ const VideoConversionForm: React.FC<{
           {isLoading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Converting...
+              {t('interface:videoForm.converting')}
             </>
           ) : (
-            'Convert File'
+            t('interface:videoForm.submit')
           )}
         </button>
       </form>

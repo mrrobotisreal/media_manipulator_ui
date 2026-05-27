@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLocalization } from '@/i18n/useLocalization';
 
 export interface RemoveObjectRectangle {
   id: string;
@@ -49,6 +50,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
   onChange,
   disabled = false,
 }) => {
+  const { t } = useLocalization('interface');
   const containerRef = useRef<HTMLDivElement | null>(null);
   const interactionRef = useRef<ActiveInteraction | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -217,7 +219,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
       containerWidth: bounds.width,
       containerHeight: bounds.height,
     };
-    setHint('Drag to size, then release. Use handles to fine-tune.');
+    setHint(t('removeObjectOverlay.dragHint'));
   };
 
   const removeRectangle = (id: string) => {
@@ -239,7 +241,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
       >
         <img
           src={imageUrl}
-          alt="Mark areas to remove"
+          alt={t('removeObjectOverlay.previewAlt')}
           className="block w-full h-auto select-none pointer-events-none"
           draggable={false}
         />
@@ -278,7 +280,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
                   removeRectangle(rect.id);
                 }}
                 disabled={disabled}
-                aria-label={`Remove rectangle ${index + 1}`}
+                aria-label={t('removeObjectOverlay.removeRectangle', { number: index + 1 })}
                 className="bg-black/70 text-white rounded p-0.5 hover:bg-black/90 disabled:opacity-50"
               >
                 <Trash2 className="w-3 h-3" />

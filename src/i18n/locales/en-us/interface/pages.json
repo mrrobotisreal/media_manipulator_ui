@@ -1,0 +1,1106 @@
+{
+  "about": {
+    "title": "About Media Manipulator — A Free Online Media Converter, Editor & AI Toolkit",
+    "intro": "Media Manipulator is a free online media converter, editor, transcriber, and metadata inspector for images, videos, and audio files. It is built and operated by <strong>CreaTV Ltd.</strong> and runs entirely on infrastructure we own — including a dedicated GPU server for AI features — so your files never leave systems we control.",
+    "mission": {
+      "title": "Our Mission",
+      "p1": "We started Media Manipulator because most \"free media converter\" sites are slow, upsell aggressively, paywall basic features behind sign-ups, send your files to third-party AI providers, or quietly retain uploads indefinitely. We wanted a free file converter online that you can trust: open in a browser, drop in a file, pick a setting, get a usable result. No account required, no software to install, no permanent storage of your media.",
+      "p2": "We treat conversion, editing, compression, transcription, summarization, and metadata management as one connected workflow rather than ten separate websites. If you want to compress an MP4 for the web, then trim it, generate VTT captions, and finally strip EXIF metadata from the thumbnail you'll publish alongside it — that's three different sites for most people and a single tab for Media Manipulator users."
+    },
+    "whatItDoes": {
+      "title": "What Media Manipulator Does",
+      "intro": "Media Manipulator covers the full range of \"I need to do something with this file\" tasks across three media types. Everything runs on our servers — there is no desktop app to download, no Chrome extension to install, and no plug-in to update. Open the site, drop in a file, pick a tool, and download the result.",
+      "image": {
+        "title": "Free Image Converter & Editor",
+        "items": [
+          "Convert JPG, PNG, WebP, GIF, BMP, and TIFF",
+          "Compress images for the web (JPG, WebP quality presets)",
+          "Resize, crop, and rotate online",
+          "Apply filters: grayscale, sepia, blur, sharpen, vintage, sketch",
+          "Add watermark / text overlay with stroke and gravity",
+          "Inspect, keep, strip, or rewrite EXIF / IPTC / XMP metadata",
+          "<strong>Remove GPS metadata from photos</strong> before sharing online",
+          "AI face blur, background removal, upscaling, and OCR text redaction",
+          "<strong>Remove unwanted objects</strong> with LaMa inpainting — draw a box, the model reconstructs the background"
+        ]
+      },
+      "video": {
+        "title": "Free Video Converter & Editor",
+        "items": [
+          "Convert MP4, WebM, MOV, MKV, AVI, WMV, FLV, ProRes",
+          "<strong>Convert video to animated GIF</strong> with tunable width, fps, palette, and frame delay",
+          "Compress video online without ruining quality",
+          "Trim and cut video clips",
+          "Resize, change frame rate, and adjust playback speed",
+          "Color correction, stabilization, and artistic filters",
+          "HDR tone mapping and colorspace conversion",
+          "<strong>Transcribe video to text</strong> with VTT, plain text, or JSON output",
+          "Auto-generate summaries from long videos"
+        ]
+      },
+      "audio": {
+        "title": "Free Audio Converter & Cleanup",
+        "items": [
+          "Convert MP3, WAV, AAC, OGG, FLAC, ALAC, M4A, Opus, AC3",
+          "Convert WAV to MP3, FLAC to MP3, OGG to MP3, and more",
+          "Trim, normalize, amplify, and EQ audio",
+          "Reverb, delay, chorus, flanger, pitch shift, time stretch",
+          "<strong>Audio cleanup online</strong> — remove background noise from voice recordings",
+          "AI voice cleanup for podcasts and voiceovers",
+          "Isolate vocals or remove vocals (karaoke maker)",
+          "Transcribe audio to text and summarize transcripts"
+        ]
+      },
+      "outro": "Step-by-step walkthroughs for every tool live in our <linkTutorials>tutorials</linkTutorials> section. If you'd rather read the technical breakdown first, see <linkHow>how Media Manipulator works</linkHow>."
+    },
+    "whyChoose": {
+      "title": "Why Choose Media Manipulator",
+      "noSignup": {
+        "title": "No Sign-Up, No Paywall",
+        "body": "Every feature on the site — image conversion, video compression, audio cleanup, transcription, AI tools — is free and usable without an account. We never require you to log in, hand over an email, or pay before downloading a converted file."
+      },
+      "privacy": {
+        "title": "Privacy-Focused (24-Hour Auto Delete)",
+        "body": "Uploaded files and generated outputs are stored only as long as your session needs them, with a hard maximum of <strong>24 hours</strong>, after which they are deleted from our active storage. We do not keep your media files past that window and we don't sell or share uploads with anyone. See our <linkPrivacy>privacy policy</linkPrivacy> for full details."
+      },
+      "localAi": {
+        "title": "Local AI on Our Own GPU",
+        "body": "AI features — face blur, background removal, AI upscale, OCR-based PII redaction, voice cleanup, vocal isolation, transcription, and AI summaries — run on a dedicated NVIDIA GPU server that <strong>CreaTV Ltd.</strong> owns and operates. We do not send your files to OpenAI, Anthropic, Google, AWS Bedrock, or any other third-party AI provider."
+      },
+      "realTools": {
+        "title": "Real Tools, Not Toy Converters",
+        "body": "Under the hood we run FFmpeg, ImageMagick, and gifsicle for standard pipelines and purpose-built models (Real-ESRGAN, BiRefNet, Demucs, DeepFilterNet, whisper-ctranslate2, exiftool, rembg, simple-lama-inpainting) for everything else. Bitrate, codec, quality, channel layout, color space, GIF palette size and frame delay — every setting that matters to power users is exposed in the UI."
+      },
+      "web": {
+        "title": "Built for the Web",
+        "body": "Nothing to download, nothing to install, nothing to update. Media Manipulator runs in any modern browser on desktop, laptop, tablet, or phone, and large video uploads use direct-to-S3 presigned URLs so the upload step doesn't choke on slower connections."
+      },
+      "open": {
+        "title": "Open, Honest, Free",
+        "body": "The site is supported by unobtrusive advertising and CreaTV's own product promotions — never by selling your data or your files. If something on the site is misleading, broken, or feels slimy, we want to hear about it at <emailLink>support@media-manipulator.com</emailLink>."
+      }
+    },
+    "commonTasks": {
+      "title": "Common Tasks Media Manipulator Handles",
+      "intro": "If you've Googled any of the following and ended up here, you're in the right place. Open the <linkHome>converter homepage</linkHome>, upload a file, and the right-hand panel switches to whichever toolset matches.",
+      "image": {
+        "title": "Image tasks",
+        "items": [
+          "Convert HEIC to JPG / iPhone photos to JPG",
+          "Convert PNG to WebP for faster web pages",
+          "Convert WebP to JPG for legacy compatibility",
+          "Compress JPG / compress PNG / compress WebP",
+          "Resize an image for a profile picture or thumbnail",
+          "Crop an image to a specific aspect ratio",
+          "Add a watermark or copyright text overlay",
+          "Remove EXIF metadata from photos before sharing",
+          "Strip GPS coordinates from a photo",
+          "Blur faces in event photos automatically",
+          "Remove the background of a product photo",
+          "Upscale a low-resolution image with AI",
+          "Redact PII (emails, phone numbers, SSNs) from screenshots",
+          "Remove an unwanted object (person, sign, watermark) from a photo with LaMa inpainting"
+        ]
+      },
+      "videoAudio": {
+        "title": "Video & audio tasks",
+        "items": [
+          "Convert MP4 to WebM, MOV to MP4, MKV to MP4, AVI to MP4",
+          "Convert MP4 / MOV / WebM to an optimized animated GIF for chats and docs",
+          "Compress a video file for email or messaging size limits",
+          "Trim or cut a video clip without re-encoding the rest",
+          "Change a video's frame rate or resolution",
+          "Stabilize shaky footage",
+          "Generate captions / subtitles (VTT) from a video",
+          "Transcribe a video to plain text or structured JSON",
+          "Summarize a long video or audio recording",
+          "Convert WAV to MP3, FLAC to MP3, OGG to MP3, M4A to MP3",
+          "Clean up podcast audio / remove background noise",
+          "Isolate vocals from a song",
+          "Remove vocals from a song (karaoke maker)",
+          "Pitch shift or time stretch an audio clip"
+        ]
+      }
+    },
+    "whoBuilds": {
+      "title": "Who Builds Media Manipulator",
+      "p1": "Media Manipulator is built and operated by <strong>CreaTV Ltd.</strong>, a small independent media-tech company based in Colorado, USA. CreaTV's broader product line is focused on tools that help creators bring ideas to life — Media Manipulator is the free, no-account utility that anchors that ecosystem.",
+      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place files live for at most 24 hours, one GPU server doing the heavy lifting."
+    },
+    "supportedFormats": {
+      "title": "Supported File Formats (Quick Reference)",
+      "images": {
+        "title": "Images",
+        "items": ["JPEG / JPG", "PNG", "WebP (lossy and lossless)", "GIF (incl. animation passthrough)", "BMP", "TIFF", "HEIC / HEIF (input)"]
+      },
+      "videos": {
+        "title": "Videos",
+        "items": ["MP4 (H.264 / H.265)", "WebM (VP9 + Opus)", "MOV", "MKV", "AVI", "WMV, FLV", "ProRes, DNxHD"]
+      },
+      "audio": {
+        "title": "Audio",
+        "items": ["MP3", "WAV (PCM)", "AAC, M4A", "OGG (Vorbis)", "FLAC, ALAC", "Opus", "AC3, DTS"]
+      },
+      "footnote": "Need a format we don't list? Drop us a line — most additions are a small FFmpeg or ImageMagick configuration change away."
+    },
+    "contact": {
+      "title": "Contact & Support",
+      "operator": "<strong>Media Manipulator</strong> is a product of <strong>CreaTV Ltd.</strong>",
+      "location": "CreaTV Ltd. — Colorado, USA",
+      "generalSupport": "General support:",
+      "privacyRequests": "Privacy requests:",
+      "helpfulStartingPoints": "Helpful starting points:"
+    },
+    "relatedLinks": {
+      "title": "Start somewhere",
+      "intro": "Three good ways to dive into the toolkit.",
+      "converter": {
+        "label": "Open the free media converter",
+        "description": "Convert, compress, transcribe, and edit images, videos, and audio in one place."
+      },
+      "tutorials": {
+        "label": "Browse step-by-step tutorials",
+        "description": "Walkthroughs for the image, video, and audio converters and their AI tools."
+      },
+      "howItWorks": {
+        "label": "See how it works under the hood",
+        "description": "FFmpeg, ImageMagick, GPU-backed AI, 24-hour auto-delete, and content-safety scanning."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "How Media Manipulator Works",
+    "intro": "Media Manipulator is a browser-based studio for converting, editing, transcribing, and AI-processing audio, video, and image files. Every job runs on our own GPU-backed servers — no third-party AI providers, no permanent storage, just fast file processing with optional local AI tools.",
+    "process": {
+      "title": "The Conversion Process",
+      "step1": {
+        "title": "Upload",
+        "body": "Drag a file into the upload zone or click to browse. We support common image, video, and audio formats up to your plan's size limit."
+      },
+      "step2": {
+        "title": "Configure",
+        "body": "Pick the output format, quality, dimensions, filters, metadata behavior, or an AI operation such as face blur, background removal, or vocal isolation."
+      },
+      "step3": {
+        "title": "Convert",
+        "body": "Our servers process the file with FFmpeg, ImageMagick, or local AI tooling on a dedicated GPU. Job progress streams back to your browser in real time."
+      },
+      "step4": {
+        "title": "Download",
+        "body": "Preview the result, then download it. Files are kept on our servers for at most 24 hours and then deleted automatically."
+      }
+    },
+    "capabilities": {
+      "title": "What you can do with Media Manipulator",
+      "image": {
+        "title": "Image Tools",
+        "items": [
+          "Convert between JPG, PNG, WebP, and GIF",
+          "Resize, crop, and rotate",
+          "Apply filters (grayscale, sepia, blur, sharpen, vintage, sketch, and more)",
+          "Add custom text overlays with positioning and stroke",
+          "Inspect, keep, strip, or rewrite EXIF / IPTC / XMP metadata",
+          "Remove or replace GPS location and capture-direction fields"
+        ]
+      },
+      "video": {
+        "title": "Video Tools",
+        "items": [
+          "Convert to MP4, WebM, AVI, MOV, MKV, ProRes, and more",
+          "Convert video to an optimized animated GIF (ffmpeg + gifsicle)",
+          "Trim, resize, and adjust playback speed",
+          "Color correction: brightness, contrast, saturation, hue, gamma",
+          "Motion blur, unsharp mask, noise, artistic filters",
+          "Rotation, flips, padding, and stabilization",
+          "Frame rate conversion and HDR/colorspace controls"
+        ]
+      },
+      "audio": {
+        "title": "Audio Tools",
+        "items": [
+          "Convert between MP3, WAV, AAC, OGG, FLAC, ALAC, Opus, AC3",
+          "Trim, fade in/out, normalize, and amplify",
+          "EQ presets, stereo width, pan, balance, mono conversion",
+          "Reverb, delay, chorus, flanger, tremolo, vibrato",
+          "Noise reduction, de-hum, declip, silence removal",
+          "Pitch shifting, time stretching, spatial audio"
+        ]
+      }
+    },
+    "ai": {
+      "title": "AI-Assisted Tools (Local, GPU-Accelerated)",
+      "intro": "Media Manipulator runs every AI operation locally on our own GPU server. Your files are never sent to a third-party AI provider. Each conversion job runs one AI operation; standard editing options are skipped for that job so the AI tool can focus on a clean output.",
+      "image": {
+        "title": "AI Image Tools",
+        "items": [
+          "<strong>Face Blur / Pixelate / Black Box</strong> — automatic face detection with three privacy styles.",
+          "<strong>Remove Background</strong> — outputs a transparent PNG using BiRefNet, ISNet, or U2Net models.",
+          "<strong>AI Upscale</strong> — Real-ESRGAN 2x or 4x using photo or anime-tuned models.",
+          "<strong>Redact Text / PII</strong> — OCR-based redaction with blackbox, blur, or pixelate styles.",
+          "<strong>Remove Object</strong> — draw rectangles over unwanted objects and LaMa inpainting (simple-lama-inpainting) reconstructs the background."
+        ]
+      },
+      "audio": {
+        "title": "AI Audio Tools",
+        "items": [
+          "<strong>Clean Voice</strong> — DeepFilterNet denoise + presence/loudness/limiter polish for spoken voice.",
+          "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the broadcast polish chain.",
+          "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem, exported as a lossless WAV by default.",
+          "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem, also lossless WAV by default."
+        ]
+      }
+    },
+    "transcription": {
+      "title": "Transcription",
+      "intro": "Upload a video or audio file and switch the right-hand panel to <em>Transcribe</em>. Our GPU server runs whisper-ctranslate2 to produce a transcript in your chosen format:",
+      "items": [
+        "<strong>VTT</strong> — time-coded captions for video players and accessibility tools.",
+        "<strong>Plain text</strong> — continuous transcript suitable for reading or further editing.",
+        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+      ],
+      "outro": "A summary and content-safety review run automatically once the transcript is ready, so you can scan long recordings quickly."
+    },
+    "privacy": {
+      "title": "Privacy & Performance",
+      "security": {
+        "title": "Security & Privacy",
+        "items": [
+          "All uploads use HTTPS encryption",
+          "Files are automatically deleted within 24 hours",
+          "AI processing runs on our own servers — no third-party AI provider sees your media",
+          "Automatic content-safety scanning for abusive or illegal material"
+        ],
+        "linkPrefix": "See our",
+        "linkText": "Privacy Policy",
+        "linkSuffix": "for full details"
+      },
+      "quality": {
+        "title": "Quality & Performance",
+        "items": [
+          "FFmpeg and ImageMagick power the standard pipelines",
+          "Animated GIF export chains FFmpeg with gifsicle for small, palette-optimized files",
+          "AI jobs run on a dedicated NVIDIA GPU",
+          "Real-time progress streamed back to your browser",
+          "Session conversion history so you can revisit recent results"
+        ]
+      }
+    },
+    "next": {
+      "title": "Where to next?",
+      "body": "Ready to try a specific tool? Step-by-step walkthroughs for each conversion type live in our tutorials.",
+      "ctaTutorials": "Browse Tutorials",
+      "ctaConvert": "Start Converting"
+    }
+  },
+  "tutorials": {
+    "title": "Media Manipulator Tutorials",
+    "intro": "Step-by-step guides for every Media Manipulator tool. Whether you're converting a single MP3, batch-resizing PNGs, redacting faces from a photo, or pulling vocals out of a music track, the tutorials below walk you through every option in the right-hand conversion panel.",
+    "readTutorial": "Read tutorial →",
+    "categories": {
+      "audio": {
+        "title": "How to use the Audio Converter",
+        "description": "Convert audio files between MP3, WAV, FLAC, OGG, and more. Apply EQ, reverb, denoise, vocal isolation, and other audio AI tools."
+      },
+      "video": {
+        "title": "How to use the Video Converter",
+        "description": "Convert and edit video files between MP4, WebM, MOV, MKV, ProRes, and more. Trim, resize, apply filters and transforms, and transcribe with subtitles."
+      },
+      "image": {
+        "title": "How to use the Image Converter",
+        "description": "Convert images between JPG, PNG, WebP, and GIF. Resize, crop, apply filters, add text overlays, manage metadata, and run AI tools like Face Blur, Remove Background, AI Upscale, and Redact Text."
+      }
+    },
+    "tutorials": {
+      "audioGettingStarted": {
+        "title": "Getting Started: Converting Audio Files",
+        "excerpt": "A complete walkthrough of the audio converter — file format selection, bitrate, sample rate, channel layout, trimming, EQ presets, restoration effects, and the Clean Voice / Isolate Vocals / Remove Vocals / Remove Background Noise AI tools.",
+        "readTime": "10 min read"
+      },
+      "videoGettingStarted": {
+        "title": "Getting Started: Converting Video Files",
+        "excerpt": "Step-by-step guide to the video converter — output format, codecs, quality presets, dimensions, trim, color correction, motion blur, artistic filters, stabilization, frame-rate conversion, and video transcription with VTT/TXT/JSON output.",
+        "readTime": "12 min read"
+      },
+      "aiFrameInterpolation": {
+        "title": "What Is AI Frame Interpolation? How Video FPS Smoothing Works",
+        "excerpt": "How AI frame interpolation generates new in-between frames for smoother motion, when to pick 48/60/120fps, common artifacts, and how to run the AI Frame Interpolation tool.",
+        "readTime": "9 min read"
+      },
+      "imageGettingStarted": {
+        "title": "Getting Started: Converting Image Files",
+        "excerpt": "Complete tutorial on the image converter — picking a format, quality, dimensions, cropping, filters, tint, text overlays, EXIF / IPTC / GPS metadata, and the Face Privacy, Remove Background, AI Upscale, and Redact Text AI tools.",
+        "readTime": "10 min read"
+      }
+    },
+    "newToHere": {
+      "title": "New to Media Manipulator?",
+      "body": "Start with our high-level overview to see everything the platform can do, then jump into a tutorial that matches the kind of file you're working with.",
+      "ctaHow": "How it Works",
+      "ctaConvert": "Start Converting"
+    }
+  },
+  "blog": {
+    "title": "Media Conversion Blog",
+    "intro": "Expert guides, tips, and insights on media conversion, optimization, and file formats.",
+    "readMore": "Read more →",
+    "articles": {
+      "videoCompression": {
+        "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI",
+        "excerpt": "Learn the differences between video formats and when to use each one for optimal quality and file size.",
+        "readTime": "8 min read"
+      },
+      "imageOptimization": {
+        "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+        "excerpt": "Discover how to choose the right image format for your website to improve loading speeds and user experience.",
+        "readTime": "8 min read"
+      },
+      "audioQualityPrefix": "The Sound of",
+      "audioQualityStrike": "Silence",
+      "audioQualitySuffix": "Quality: Bitrates, Sample Rates, and Formats",
+      "audioQuality": {
+        "excerpt": "Understanding audio quality settings to achieve the perfect balance between file size and sound quality.",
+        "readTime": "8 min read"
+      }
+    },
+    "relatedLinks": {
+      "title": "Want to try the tools?",
+      "intro": "The Media Manipulator tools that pair with these articles are all free.",
+      "allTools": { "label": "Browse all tools", "description": "Image, video, audio, AI, and metadata tools in one place." },
+      "compressVideo": { "label": "Compress video", "description": "Shrink video file size without ruining quality." },
+      "removeExif": { "label": "Remove EXIF metadata", "description": "Strip GPS and device data before sharing photos." },
+      "homepage": { "label": "Open the homepage converter", "description": "Convert, edit, compress, and transcribe images, videos, and audio." },
+      "tutorials": { "label": "Browse the tutorials", "description": "Step-by-step walkthroughs of every conversion option and AI tool." },
+      "howItWorks": { "label": "How Media Manipulator works", "description": "See how files are processed, scanned, and temporarily stored." }
+    }
+  },
+  "legalCommon": {
+    "effectiveDate": "Effective Date: 2026-05-14",
+    "lastUpdated": "Last Updated: 2026-05-14",
+    "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
+    "operatorEntity": "CreaTV Ltd.",
+    "operatingAs": "Operating as Media Manipulator",
+    "location": "Colorado, USA",
+    "emailLabel": "Email:",
+    "websiteLabel": "Website:"
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "intro": "Media Manipulator is owned and operated by CreaTV Ltd. (“CreaTV,” “Media Manipulator,” “we,” “us,” or “our”). Media Manipulator provides browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
+    "blockquote": "Where Media Manipulator uses AI-assisted features, those AI systems run locally on our own servers or infrastructure that we control and are not outsourced to third-party AI providers.",
+    "explanation": "This Privacy Policy explains how we collect, use, store, protect, and delete information when you use our website, tools, and related services.",
+    "acceptance": "By using Media Manipulator, you agree to the practices described in this Privacy Policy.",
+    "sections": [
+      {
+        "title": "1. Information We Collect",
+        "paragraphs": ["We collect information in several ways depending on how you use the website."],
+        "subsections": [
+          {
+            "title": "1.1 Files You Upload",
+            "paragraphs": [
+              "When you upload an image, video, audio file, or other supported media file to Media Manipulator, we may temporarily process that file to provide the requested tool functionality, such as:"
+            ],
+            "bullets": [
+              "converting a file to another format;",
+              "cropping, trimming, resizing, compressing, filtering, or editing media;",
+              "extracting or displaying metadata;",
+              "removing metadata;",
+              "generating transcripts, captions, summaries, descriptions, or other AI-assisted outputs;",
+              "creating downloadable processed files;",
+              "maintaining temporary session conversion history so you can download recent conversions during your session."
+            ],
+            "afterBullets": [
+              "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours, unless deleted sooner. After that period, they are deleted from our active systems."
+            ]
+          },
+          {
+            "title": "1.2 File and Conversion Metadata",
+            "paragraphs": ["We may collect technical information about uploaded files and conversion jobs, including:"],
+            "bullets": [
+              "file name;",
+              "file type or MIME type;",
+              "file size;",
+              "file duration, dimensions, bitrate, codec, or other technical properties;",
+              "conversion settings selected by the user;",
+              "generated output format;",
+              "job status, processing errors, and timestamps;",
+              "temporary file identifiers or session identifiers."
+            ],
+            "afterBullets": [
+              "We use this information to operate the service, troubleshoot failed conversions, maintain temporary session history, improve performance, detect abuse, and protect the website."
+            ]
+          },
+          {
+            "title": "1.3 Content Scanning and Safety Review",
+            "paragraphs": [
+              "All uploads may be subject to automated scanning and classification for security, abuse prevention, brand safety, advertiser protection, and detection or blocking of suspected illegal or prohibited content.",
+              "These scans may be used to identify or help prevent content involving, for example:"
+            ],
+            "bullets": [
+              "suspected child sexual abuse material or exploitation;",
+              "malware, malicious files, or harmful code;",
+              "content that appears to violate applicable law;",
+              "content that violates our Terms of Service or Acceptable Use rules;",
+              "adult, sexually explicit, graphic, violent, or otherwise advertiser-sensitive content."
+            ],
+            "afterBullets": [
+              "If content is determined or suspected to be illegal, prohibited, abusive, or unsafe, we may block processing, delete the file, prevent display of previews, restrict access to generated outputs, preserve limited records where legally required, or report the content to appropriate authorities if required by law.",
+              "If content is lawful but classified as adult, graphic, violent, or otherwise advertiser-sensitive, we may prevent that content from being displayed or previewed on the website in order to protect users, our brand, and advertisers. In some cases, where lawful and technically available, the user may still be able to download the processed file.",
+              "Users are solely responsible for the files they upload and for ensuring they have all rights, permissions, and legal authority necessary to process those files using Media Manipulator."
+            ]
+          },
+          {
+            "title": "1.4 Usage Data",
+            "paragraphs": ["When you visit or use Media Manipulator, we may automatically collect usage and device information, such as:"],
+            "bullets": [
+              "pages visited;",
+              "tools used;",
+              "buttons clicked;",
+              "approximate location based on IP address;",
+              "browser type and version;",
+              "operating system;",
+              "device type;",
+              "referral source;",
+              "timestamps;",
+              "diagnostic logs;",
+              "error logs;",
+              "performance data;",
+              "analytics events."
+            ],
+            "afterBullets": [
+              "We use this information to understand how users use the website, improve features, diagnose issues, prevent abuse, and measure website performance."
+            ]
+          },
+          {
+            "title": "1.5 Cookies and Similar Technologies",
+            "paragraphs": ["We and our service providers may use cookies, local storage, pixels, tags, and similar technologies to:"],
+            "bullets": [
+              "operate the website;",
+              "remember user preferences;",
+              "maintain session functionality;",
+              "analyze traffic and usage;",
+              "detect abuse or security risks;",
+              "serve and measure advertisements."
+            ],
+            "afterBullets": [
+              "You can control cookies through your browser settings. Some features may not work properly if cookies or local storage are disabled."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. How We Use Information",
+        "paragraphs": ["We use the information we collect to:"],
+        "bullets": [
+          "provide media conversion, editing, transcription, metadata, AI analysis, and related tools;",
+          "temporarily store conversion history for up to 24 hours;",
+          "allow users to download recent converted files during a session;",
+          "scan uploads for suspected illegal, prohibited, abusive, or advertiser-sensitive content;",
+          "protect users, advertisers, our website, and our brand;",
+          "prevent fraud, abuse, spam, malware, and security incidents;",
+          "debug errors and improve service reliability;",
+          "analyze traffic and usage trends;",
+          "improve our website, tools, user experience, and performance;",
+          "comply with legal obligations;",
+          "enforce our Terms of Service and Acceptable Use rules."
+        ]
+      },
+      {
+        "title": "3. File Storage and Deletion",
+        "paragraphs": [
+          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions.",
+          "After the temporary retention period expires, uploaded files and generated outputs are deleted from active storage.",
+          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary to operate the service, protect against abuse, enforce our policies, comply with law, resolve disputes, or maintain security. These records are not intended to preserve full uploaded media files after the 24-hour temporary storage period."
+        ]
+      },
+      {
+        "title": "4. AI Processing",
+        "paragraphs": [
+          "Some Media Manipulator features may use automated systems or AI-assisted tools to process uploaded media, metadata, audio, video, text, transcripts, captions, descriptions, summaries, or other content.",
+          "AI-assisted features may be used to:"
+        ],
+        "bullets": [
+          "transcribe audio or video;",
+          "generate captions;",
+          "summarize content;",
+          "describe images, videos, or audio;",
+          "classify content for safety or brand-suitability;",
+          "detect suspected illegal, prohibited, abusive, adult, violent, graphic, or otherwise advertiser-sensitive content;",
+          "help prevent misuse of the service."
+        ],
+        "afterBullets": [
+          "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
+          "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
+          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions. After that period, they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
+          "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
+          "We do not use uploaded files to publicly identify users. We do not claim ownership of uploaded files. We do not sell uploaded files or generated outputs. We do not provide uploaded files or generated outputs to third-party AI providers for model training or AI processing."
+        ]
+      },
+      {
+        "title": "5. Advertising",
+        "paragraphs": [
+          "Media Manipulator may display advertisements, including advertisements served by Google AdSense or other advertising partners.",
+          "Third-party vendors, including Google, may use cookies to serve ads based on a user’s prior visits to Media Manipulator or other websites. Google’s use of advertising cookies enables it and its partners to serve ads to users based on their visit to Media Manipulator and/or other sites on the Internet.",
+          "Users may opt out of personalized advertising by visiting Google’s Ads Settings. Users may also opt out of some third-party vendors’ use of cookies for personalized advertising by visiting industry opt-out pages where available.",
+          "Advertising partners may collect or receive information from our website and other websites and use that information to provide measurement services and targeted ads.",
+          "We do not control third-party advertising cookies or tracking technologies. Their use is governed by the privacy policies of the third parties that provide them."
+        ]
+      },
+      {
+        "title": "6. Analytics",
+        "paragraphs": [
+          "We may use analytics services to understand how visitors use Media Manipulator, measure traffic, improve features, and diagnose performance issues.",
+          "Analytics data may include pages visited, tools used, approximate location, browser and device information, referral sources, session activity, and other usage information.",
+          "We use analytics to improve Media Manipulator and to understand which tools and content are most useful to visitors."
+        ]
+      },
+      {
+        "title": "7. Legal Basis for Processing",
+        "paragraphs": ["Depending on where you are located, we may process personal information based on one or more legal bases, including:"],
+        "bullets": [
+          "providing the service requested by the user;",
+          "our legitimate interests in operating, securing, improving, and monetizing the website;",
+          "compliance with legal obligations;",
+          "user consent where required, including for certain cookies, analytics, personalized advertising, or AI-related processing."
+        ],
+        "afterBullets": [
+          "Where required by law, we will request consent before using certain cookies or personalized advertising technologies."
+        ]
+      },
+      {
+        "title": "8. Sharing Information",
+        "paragraphs": ["We may share information with:"],
+        "bullets": [
+          "hosting and cloud infrastructure providers;",
+          "file storage and processing providers;",
+          "analytics providers;",
+          "advertising partners;",
+          "security, abuse-detection, and content-safety providers;",
+          "AI processing is performed locally on our own servers or infrastructure that we control, and we do not share uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans with third-party AI providers for AI processing;",
+          "payment processors, if paid accounts are introduced;",
+          "law enforcement, regulators, or authorities when required by law or when necessary to report suspected illegal content;",
+          "professional advisors, such as attorneys, accountants, or security consultants;",
+          "business successors in the event of a merger, acquisition, financing, reorganization, or sale of assets."
+        ],
+        "afterBullets": ["We do not sell uploaded files."]
+      },
+      {
+        "title": "9. User Responsibilities",
+        "paragraphs": [
+          "Users are responsible for the content they upload, process, convert, edit, transcribe, summarize, or download through Media Manipulator.",
+          "Users must not upload content that:"
+        ],
+        "bullets": [
+          "they do not own or have permission to process;",
+          "infringes copyrights, trademarks, privacy rights, publicity rights, or other legal rights;",
+          "contains child sexual abuse material or exploitation;",
+          "contains malware, viruses, or harmful code;",
+          "is illegal to possess, process, upload, distribute, or transmit;",
+          "violates our Terms of Service or Acceptable Use rules."
+        ],
+        "afterBullets": ["Use of Media Manipulator does not transfer ownership of uploaded content to us."]
+      },
+      {
+        "title": "10. Security",
+        "paragraphs": [
+          "We use reasonable technical and organizational measures designed to protect uploaded files, generated outputs, logs, and other information from unauthorized access, misuse, loss, or disclosure.",
+          "However, no online service, storage system, or transmission method is completely secure. Users should avoid uploading highly sensitive, confidential, or legally restricted content unless they understand and accept the risks."
+        ]
+      },
+      {
+        "title": "11. Children’s Privacy",
+        "paragraphs": [
+          "Media Manipulator is not intended for children under the age of 13, or the minimum age required by applicable law in the user’s jurisdiction.",
+          "We do not knowingly collect personal information from children. If we learn that we have collected personal information from a child without appropriate consent, we will take steps to delete it."
+        ]
+      },
+      {
+        "title": "12. International Users",
+        "paragraphs": [
+          "Media Manipulator may be operated from the United States or other locations. If you access the website from outside the United States, your information may be processed in countries that may have different data protection laws than your country of residence.",
+          "By using Media Manipulator, you understand that your information may be transferred to and processed in the United States or other jurisdictions."
+        ]
+      },
+      {
+        "title": "13. Your Choices and Rights",
+        "paragraphs": ["Depending on your location, you may have rights regarding your personal information, such as the right to:"],
+        "bullets": [
+          "request access to personal information we maintain about you;",
+          "request correction or deletion;",
+          "object to or restrict certain processing;",
+          "withdraw consent where processing is based on consent;",
+          "opt out of certain advertising or analytics technologies;",
+          "request a copy of your information."
+        ],
+        "afterBullets": [
+          "Because uploaded files and generated outputs are temporary and are deleted after a maximum of 24 hours, we may not be able to retrieve or provide access to files after deletion.",
+          "To make a privacy request, contact us using the information below."
+        ]
+      },
+      {
+        "title": "14. Do Not Track",
+        "paragraphs": [
+          "Some browsers offer “Do Not Track” signals. There is no universally accepted standard for how websites should respond to these signals. Media Manipulator does not currently respond to Do Not Track signals."
+        ]
+      },
+      {
+        "title": "15. Changes to This Privacy Policy",
+        "paragraphs": [
+          "We may update this Privacy Policy from time to time. When we make changes, we will update the “Last Updated” date at the top of this page.",
+          "If we make material changes, we may provide additional notice, such as by posting a notice on the website.",
+          "Your continued use of Media Manipulator after changes are posted means you accept the updated Privacy Policy."
+        ]
+      },
+      {
+        "title": "16. Contact Us",
+        "paragraphs": [
+          "If you have questions about this Privacy Policy or how Media Manipulator handles information, contact us at:"
+        ],
+        "contactBlock": true,
+        "contactEmail": "privacy@media-manipulator.com"
+      }
+    ]
+  },
+  "termsOfService": {
+    "title": "Terms of Service and Acceptable Use Policy",
+    "intro": "Media Manipulator is owned and operated by CreaTV Ltd. (“CreaTV,” “Media Manipulator,” “we,” “us,” or “our”).",
+    "scope": "These Terms of Service and Acceptable Use Policy (“Terms”) govern your access to and use of Media Manipulator, including our website, browser-based tools, server-assisted processing tools, media conversion tools, image tools, video tools, audio tools, metadata tools, AI-assisted features, downloadable outputs, and related services.",
+    "agreement": "By accessing or using Media Manipulator, you agree to these Terms. If you do not agree to these Terms, do not use Media Manipulator.",
+    "sections": [
+      {
+        "title": "1. The Service",
+        "paragraphs": [
+          "Media Manipulator provides tools for editing, converting, compressing, cropping, trimming, filtering, analyzing, transcribing, summarizing, describing, and otherwise processing image, video, audio, and related media files.",
+          "Features may include, but are not limited to:"
+        ],
+        "bullets": [
+          "image conversion, cropping, resizing, compression, and filtering;",
+          "video trimming, cutting, splicing, conversion, compression, and formatting;",
+          "audio cleanup, conversion, compression, and processing;",
+          "metadata and EXIF inspection;",
+          "metadata and EXIF removal;",
+          "AI-assisted transcription, caption generation, summaries, and descriptions;",
+          "content-safety classification and abuse-prevention scanning;",
+          "temporary conversion history and downloadable processed outputs."
+        ],
+        "afterBullets": [
+          "Some features may be browser-based, while others may require temporary upload and processing on our servers."
+        ]
+      },
+      {
+        "title": "2. Ownership and Operator",
+        "contactBlock": true,
+        "contactEmail": "support@media-manipulator.com"
+      },
+      {
+        "title": "3. Eligibility",
+        "paragraphs": [
+          "You may use Media Manipulator only if you are legally able to enter into a binding agreement and only in compliance with these Terms and all applicable laws.",
+          "Media Manipulator is not intended for children under the age of 13, or the minimum age required by applicable law in your jurisdiction. By using the service, you represent that you are old enough to use Media Manipulator under applicable law.",
+          "If you use Media Manipulator on behalf of a company, organization, or other entity, you represent that you have authority to bind that entity to these Terms."
+        ]
+      },
+      {
+        "title": "4. Your Responsibility for Uploaded Content",
+        "paragraphs": [
+          "You are solely responsible for all files, media, metadata, text, prompts, instructions, inputs, outputs, and other content that you upload, submit, process, convert, edit, transcribe, summarize, generate, download, or otherwise use through Media Manipulator (“User Content”).",
+          "You represent and warrant that:"
+        ],
+        "bullets": [
+          "you own your User Content or have all rights, licenses, permissions, and authority necessary to upload, process, convert, edit, analyze, transcribe, summarize, download, and otherwise use it through Media Manipulator;",
+          "your use of Media Manipulator will not violate any copyright, trademark, privacy right, publicity right, contractual right, or other legal right of any person or entity;",
+          "your User Content and use of Media Manipulator will comply with these Terms and all applicable laws;",
+          "you will not use Media Manipulator to create, process, store, transform, conceal, distribute, or facilitate illegal, abusive, infringing, harmful, or prohibited content."
+        ],
+        "afterBullets": [
+          "We do not claim ownership of your uploaded files or generated outputs. However, you grant us a limited, temporary, non-exclusive license to host, process, analyze, scan, transform, convert, store, display, and make your User Content available as necessary to provide Media Manipulator, protect the service, enforce these Terms, comply with law, and operate related security and abuse-prevention systems."
+        ]
+      },
+      {
+        "title": "5. Temporary Storage and Deletion",
+        "paragraphs": [
+          "Uploaded files and generated outputs may be stored temporarily for a maximum of 24 hours to support session conversion history and allow you to download recent conversions during your session.",
+          "After the temporary retention period expires, uploaded files and generated outputs are deleted from our active systems, unless earlier deletion occurs or limited retention is legally required or reasonably necessary for security, abuse prevention, legal compliance, dispute resolution, or enforcement of these Terms.",
+          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer than 24 hours where reasonably necessary. These records are not intended to preserve full uploaded media files after the temporary retention period.",
+          "You are responsible for downloading and backing up any processed files you wish to keep. Media Manipulator is not a permanent storage, backup, archive, or hosting service."
+        ]
+      },
+      {
+        "title": "6. Local AI Processing",
+        "paragraphs": [
+          "Media Manipulator may use AI-assisted systems to provide features such as transcription, caption generation, summaries, descriptions, metadata analysis, media classification, and content-safety scanning.",
+          "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for AI processing.",
+          "AI-assisted features may be used to:"
+        ],
+        "bullets": [
+          "transcribe audio or video;",
+          "generate captions;",
+          "summarize content;",
+          "describe images, videos, or audio;",
+          "classify content for safety or brand suitability;",
+          "detect suspected illegal, prohibited, abusive, adult, violent, graphic, or otherwise advertiser-sensitive content;",
+          "help prevent misuse of the service."
+        ],
+        "afterBullets": [
+          "AI-generated outputs may be inaccurate, incomplete, misleading, or otherwise imperfect. You are responsible for reviewing any AI-generated output before relying on it.",
+          "You must not use AI-assisted features to create, alter, enhance, conceal, distribute, or facilitate illegal, abusive, infringing, deceptive, sexually exploitative, violent, hateful, or otherwise prohibited content."
+        ]
+      },
+      {
+        "title": "7. Content Scanning and Safety Enforcement",
+        "paragraphs": [
+          "All uploads may be subject to automated scanning, classification, and review for security, abuse prevention, legal compliance, brand safety, advertiser protection, and detection or blocking of suspected illegal or prohibited content.",
+          "These scans may be used to identify or help prevent content involving, for example:"
+        ],
+        "bullets": [
+          "suspected child sexual abuse material, child exploitation, or sexualization of minors;",
+          "malware, malicious files, viruses, or harmful code;",
+          "illegal content or activity;",
+          "non-consensual intimate imagery;",
+          "threats, harassment, abuse, or violent intimidation;",
+          "terrorist or extremist content;",
+          "hateful or discriminatory content;",
+          "graphic violence, gore, or shocking content;",
+          "adult, sexually explicit, or pornographic content;",
+          "content that appears to violate intellectual property rights;",
+          "content that violates these Terms or our Acceptable Use Policy."
+        ],
+        "afterBullets": [
+          "If content is determined or suspected to be illegal, prohibited, abusive, unsafe, or in violation of these Terms, we may take any action we consider appropriate, including:"
+        ],
+        "secondBullets": [
+          "blocking upload, processing, conversion, preview, display, or download;",
+          "deleting the uploaded file or generated output;",
+          "disabling access to the service;",
+          "preserving limited records where legally required or reasonably necessary;",
+          "reporting suspected illegal content to appropriate authorities where required or permitted by law;",
+          "cooperating with legal process, law enforcement, regulators, or safety organizations where appropriate."
+        ],
+        "afterSecondBullets": [
+          "If content is lawful but classified as adult, graphic, violent, shocking, or otherwise advertiser-sensitive, we may prevent that content from being displayed or previewed on the website in order to protect users, our brand, and advertisers. In some cases, where lawful and technically available, you may still be able to download the processed file.",
+          "We are not obligated to monitor all content, but we reserve the right to do so."
+        ]
+      },
+      {
+        "title": "8. Acceptable Use Policy",
+        "paragraphs": ["You agree not to use Media Manipulator for any unlawful, harmful, abusive, deceptive, infringing, exploitative, or prohibited purpose."],
+        "subsections": [
+          {
+            "title": "8.1 Illegal Content and Activity",
+            "paragraphs": [
+              "You must not upload, process, convert, edit, generate, download, or otherwise use Media Manipulator in connection with content or activity that is illegal under applicable law.",
+              "This includes, but is not limited to:"
+            ],
+            "bullets": [
+              "child sexual abuse material, child exploitation, or sexualization of minors;",
+              "non-consensual intimate imagery;",
+              "human trafficking, sexual exploitation, or coercive sexual content;",
+              "credible threats of violence;",
+              "instructions or facilitation for violent wrongdoing;",
+              "terrorist, extremist, or organized criminal activity;",
+              "illegal weapons activity;",
+              "illegal drug trafficking;",
+              "fraud, scams, phishing, or impersonation;",
+              "malware, viruses, credential theft, or harmful code;",
+              "attempts to conceal, launder, transform, or distribute illegal material."
+            ]
+          },
+          {
+            "title": "8.2 Child Safety",
+            "paragraphs": [
+              "You must not upload, process, convert, edit, generate, download, or otherwise use Media Manipulator in connection with any content that exploits, abuses, sexualizes, endangers, or harms minors.",
+              "We have zero tolerance for child sexual abuse material or child exploitation. Suspected violations may be reported to appropriate authorities where required or permitted by law."
+            ]
+          },
+          {
+            "title": "8.3 Adult and Sexually Explicit Content",
+            "paragraphs": [
+              "You must not use Media Manipulator to create, alter, enhance, process, distribute, or facilitate sexually explicit, pornographic, exploitative, or non-consensual sexual content in violation of applicable law or these Terms.",
+              "You must not use Media Manipulator to create or facilitate:"
+            ],
+            "bullets": [
+              "non-consensual intimate imagery;",
+              "sexual deepfakes;",
+              "synthetic sexual content involving real people without consent;",
+              "sexualized content involving minors;",
+              "content promoting sexual exploitation or coercion;",
+              "tools, edits, or transformations intended to undress, sexualize, or exploit a person."
+            ],
+            "afterBullets": [
+              "Media Manipulator is not an adult-content service and may block, suppress previews of, delete, or restrict content classified as adult, sexually explicit, or advertiser-sensitive."
+            ]
+          },
+          {
+            "title": "8.4 Violence, Gore, and Graphic Content",
+            "paragraphs": [
+              "You must not use Media Manipulator to create, process, enhance, distribute, or facilitate content that promotes, glorifies, instructs, or encourages violence, self-harm, torture, abuse, or graphic injury.",
+              "We may restrict, suppress previews of, block, or delete graphic, violent, shocking, or gore-related content, even if the underlying content may be lawful, in order to protect users, our brand, and advertisers."
+            ]
+          },
+          {
+            "title": "8.5 Hate, Harassment, and Abuse",
+            "paragraphs": [
+              "You must not use Media Manipulator to create, process, distribute, or facilitate content that promotes hatred, harassment, abuse, discrimination, dehumanization, or violence against individuals or groups based on protected characteristics or other sensitive attributes.",
+              "You must not use Media Manipulator to threaten, stalk, harass, intimidate, dox, impersonate, or abuse another person."
+            ]
+          },
+          {
+            "title": "8.6 Copyright, Trademark, and Intellectual Property",
+            "paragraphs": [
+              "You must not upload, process, convert, edit, transcribe, summarize, distribute, or download content unless you own the content or have the necessary rights and permissions.",
+              "You must not use Media Manipulator to:"
+            ],
+            "bullets": [
+              "infringe copyrights, trademarks, trade secrets, privacy rights, publicity rights, or other legal rights;",
+              "bypass digital rights management, copy protection, access controls, or paywalls;",
+              "rip, download, transform, or redistribute movies, TV shows, music, software, courses, livestreams, or other protected works without permission;",
+              "remove, obscure, or alter watermarks, copyright notices, attribution, or rights-management information for infringing purposes;",
+              "facilitate piracy or unauthorized distribution of protected works."
+            ],
+            "afterBullets": [
+              "Media Manipulator is intended for processing files you own, files you created, files you are authorized to edit, or files that are lawfully available for your intended use."
+            ]
+          },
+          {
+            "title": "8.7 Privacy and Personal Data",
+            "paragraphs": [
+              "You must not use Media Manipulator to violate another person’s privacy or data protection rights.",
+              "You must not upload or process highly sensitive personal data, confidential information, private images, private videos, biometric identifiers, government identification documents, medical records, financial records, or other sensitive information unless you have the legal right and authority to do so.",
+              "You must not use Media Manipulator to expose, extract, publish, exploit, or misuse private information about another person."
+            ]
+          },
+          {
+            "title": "8.8 Security and Abuse",
+            "paragraphs": [
+              "You must not interfere with, disrupt, attack, overload, scrape, reverse engineer, bypass, or misuse Media Manipulator or its infrastructure.",
+              "You must not:"
+            ],
+            "bullets": [
+              "attempt unauthorized access to our systems;",
+              "probe, scan, or test vulnerabilities without written permission;",
+              "bypass rate limits, authentication, usage limits, paywalls, or technical restrictions;",
+              "automate abusive traffic;",
+              "use bots, scrapers, or automated tools in a way that harms the service;",
+              "upload malware, viruses, malicious scripts, or harmful payloads;",
+              "interfere with other users’ access to the service;",
+              "abuse temporary file storage or conversion history;",
+              "use the service as a file-hosting, file-sharing, CDN, malware analysis, or permanent storage system."
+            ]
+          },
+          {
+            "title": "8.9 Advertising and Invalid Traffic",
+            "paragraphs": [
+              "Media Manipulator may display advertisements. You must not interact with ads in a fraudulent, artificial, deceptive, or abusive way.",
+              "You must not:"
+            ],
+            "bullets": [
+              "click advertisements for the purpose of generating revenue for us;",
+              "encourage others to click advertisements;",
+              "use bots, scripts, automated tools, click farms, paid traffic schemes, or deceptive methods to generate ad impressions or ad clicks;",
+              "attempt to manipulate advertising systems, measurement, attribution, or reporting;",
+              "interfere with ad display, ad measurement, or advertiser safety systems."
+            ],
+            "afterBullets": [
+              "If you believe an ad is misleading, harmful, or inappropriate, you should report it through the available ad controls or contact us."
+            ]
+          },
+          {
+            "title": "8.10 No Deceptive Download or Conversion Behavior",
+            "paragraphs": [
+              "You must not use Media Manipulator to create or facilitate deceptive download buttons, fake update prompts, fake virus warnings, misleading conversion flows, fake system dialogs, or content designed to trick users into clicking ads, downloading unwanted software, or visiting unwanted websites.",
+              "Media Manipulator’s real download buttons, conversion buttons, and user interface controls are intended to be clearly distinguishable from advertisements."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "9. Account Registration and Future Paid Features",
+        "paragraphs": [
+          "Media Manipulator may currently be available without an account for some features. In the future, we may offer accounts, paid subscriptions, premium features, higher usage limits, unlimited access, ad-free experiences, or other paid services.",
+          "If accounts or paid services are introduced, additional terms may apply, including payment terms, cancellation terms, refund terms, account security requirements, and subscription terms.",
+          "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account.",
+          "We reserve the right to suspend, restrict, or terminate accounts that violate these Terms, create legal risk, cause service abuse, or harm users, advertisers, our brand, or our infrastructure."
+        ]
+      },
+      {
+        "title": "10. Service Availability and Changes",
+        "paragraphs": [
+          "Media Manipulator is provided as a dynamic online service. We may modify, suspend, discontinue, limit, or change any feature, tool, format, storage period, usage limit, AI feature, processing capability, pricing model, or availability at any time.",
+          "We may impose usage limits, file size limits, file type restrictions, conversion limits, rate limits, account limits, or geographic restrictions.",
+          "We do not guarantee that Media Manipulator will always be available, uninterrupted, secure, error-free, or compatible with every file, format, codec, browser, device, or operating system."
+        ]
+      },
+      {
+        "title": "11. File Processing Limitations",
+        "paragraphs": [
+          "Media processing can fail for many reasons, including unsupported formats, corrupted files, incompatible codecs, excessive file size, browser limitations, server limitations, timeout errors, network errors, or safety restrictions.",
+          "We do not guarantee that:"
+        ],
+        "bullets": [
+          "every file can be processed;",
+          "every conversion will be successful;",
+          "output quality will meet your expectations;",
+          "metadata will always be completely removed;",
+          "AI transcripts, summaries, descriptions, or classifications will be accurate;",
+          "generated files will be suitable for any particular purpose;",
+          "temporary conversion history will always be available."
+        ],
+        "afterBullets": ["You should review all outputs before using, publishing, distributing, or relying on them."]
+      },
+      {
+        "title": "12. Intellectual Property Rights",
+        "paragraphs": [
+          "Media Manipulator, including its website, design, software, code, interface, branding, logos, text, graphics, features, workflows, and related materials, is owned by CreaTV Ltd. or its licensors and is protected by applicable intellectual property laws.",
+          "These Terms do not grant you ownership of Media Manipulator or any CreaTV Ltd. intellectual property.",
+          "You may not copy, modify, distribute, sell, lease, reverse engineer, or create derivative works from Media Manipulator except as permitted by law or with our written permission.",
+          "You retain ownership of your own uploaded files and generated outputs, subject to the rights and licenses granted in these Terms."
+        ]
+      },
+      {
+        "title": "13. Feedback",
+        "paragraphs": [
+          "If you provide comments, suggestions, ideas, bug reports, feature requests, or other feedback, you grant us a non-exclusive, worldwide, royalty-free, perpetual, irrevocable right to use that feedback without restriction or compensation to you."
+        ]
+      },
+      {
+        "title": "14. Copyright Complaints",
+        "paragraphs": [
+          "If you believe content processed, displayed, linked, or made available through Media Manipulator infringes your copyright or other intellectual property rights, you may contact us at:",
+          "Email: legal@media-manipulator.com",
+          "Your notice should include:"
+        ],
+        "bullets": [
+          "your name and contact information;",
+          "identification of the copyrighted work or protected material;",
+          "identification of the allegedly infringing material;",
+          "a statement that you have a good-faith belief that the use is not authorized;",
+          "a statement that the information in your notice is accurate;",
+          "your physical or electronic signature."
+        ],
+        "afterBullets": [
+          "We may remove or restrict access to allegedly infringing material and may terminate or restrict users who repeatedly violate intellectual property rights."
+        ]
+      },
+      {
+        "title": "15. Third-Party Services and Advertising",
+        "paragraphs": [
+          "Media Manipulator may include links to third-party websites, advertisements, analytics providers, hosting providers, payment processors, or other third-party services.",
+          "We are not responsible for third-party websites, services, advertisements, products, policies, or practices.",
+          "Your interactions with third parties are solely between you and the third party. Third-party services may have their own terms and privacy policies."
+        ]
+      },
+      {
+        "title": "16. Privacy",
+        "paragraphs": [
+          "Your use of Media Manipulator is also governed by our Privacy Policy.",
+          "The Privacy Policy explains how we collect, use, store, scan, process, protect, and delete information, including uploaded files, generated outputs, analytics data, advertising data, AI-assisted processing data, and temporary conversion history.",
+          "By using Media Manipulator, you acknowledge that you have read and understood our Privacy Policy."
+        ]
+      },
+      {
+        "title": "17. Termination and Suspension",
+        "paragraphs": ["We may suspend, restrict, or terminate your access to Media Manipulator at any time if we believe that:"],
+        "bullets": [
+          "you violated these Terms;",
+          "your content or activity is illegal, abusive, unsafe, infringing, or prohibited;",
+          "your use creates risk for users, advertisers, our brand, our service, or our infrastructure;",
+          "we are required or permitted to do so by law;",
+          "continued access may expose us or others to legal, security, operational, or reputational harm."
+        ],
+        "afterBullets": [
+          "We may also delete uploaded files, generated outputs, temporary conversion history, logs, or account data as permitted by these Terms and our Privacy Policy.",
+          "You may stop using Media Manipulator at any time."
+        ]
+      },
+      {
+        "title": "18. Disclaimers",
+        "paragraphs": [
+          "Media Manipulator is provided on an “as is” and “as available” basis.",
+          "To the maximum extent permitted by law, we disclaim all warranties, express or implied, including warranties of merchantability, fitness for a particular purpose, title, non-infringement, availability, security, accuracy, reliability, and error-free operation.",
+          "We do not warrant that:"
+        ],
+        "bullets": [
+          "the service will be uninterrupted, secure, or error-free;",
+          "files will always be processed successfully;",
+          "outputs will be accurate, complete, or suitable for your needs;",
+          "metadata removal will always remove every possible metadata field;",
+          "AI-generated content will be accurate, safe, complete, or appropriate;",
+          "content-safety scans will detect every violation;",
+          "temporary files or conversion history will always be available;",
+          "the service will meet your expectations."
+        ],
+        "afterBullets": ["You use Media Manipulator at your own risk."]
+      },
+      {
+        "title": "19. Limitation of Liability",
+        "paragraphs": [
+          "To the maximum extent permitted by law, CreaTV Ltd., Media Manipulator, and their owners, officers, employees, contractors, affiliates, agents, licensors, and service providers will not be liable for any indirect, incidental, consequential, special, exemplary, punitive, or lost-profit damages arising out of or related to your use of Media Manipulator.",
+          "This includes damages related to:"
+        ],
+        "bullets": [
+          "failed conversions;",
+          "lost files;",
+          "deleted files;",
+          "unavailable downloads;",
+          "inaccurate outputs;",
+          "metadata not being fully removed;",
+          "AI inaccuracies;",
+          "content blocking or preview suppression;",
+          "account suspension or termination;",
+          "service downtime;",
+          "security incidents;",
+          "third-party advertisements or services;",
+          "legal consequences from your uploaded content or use of the service."
+        ],
+        "afterBullets": [
+          "To the maximum extent permitted by law, our total liability for any claim arising out of or related to Media Manipulator will not exceed the greater of:"
+        ],
+        "secondBullets": [
+          "the amount you paid to us for Media Manipulator in the 3 months before the claim arose; or",
+          "$100."
+        ],
+        "afterSecondBullets": [
+          "Some jurisdictions do not allow certain limitations of liability, so some of these limitations may not apply to you."
+        ]
+      },
+      {
+        "title": "20. Indemnification",
+        "paragraphs": [
+          "You agree to defend, indemnify, and hold harmless CreaTV Ltd., Media Manipulator, and their owners, officers, employees, contractors, affiliates, agents, licensors, and service providers from and against any claims, damages, losses, liabilities, costs, and expenses, including reasonable attorneys’ fees, arising out of or related to:"
+        ],
+        "bullets": [
+          "your use of Media Manipulator;",
+          "your User Content;",
+          "your uploaded files or generated outputs;",
+          "your violation of these Terms;",
+          "your violation of applicable law;",
+          "your infringement or alleged infringement of intellectual property, privacy, publicity, or other rights;",
+          "your misuse of AI-assisted features;",
+          "your misuse of advertising systems;",
+          "your illegal, abusive, unsafe, or prohibited activity."
+        ]
+      },
+      {
+        "title": "21. Governing Law",
+        "paragraphs": [
+          "These Terms are governed by the laws of the State of Colorado, United States, without regard to conflict-of-law principles.",
+          "Subject to any rights you may have under applicable consumer protection laws, you agree that any dispute arising out of or related to these Terms or Media Manipulator will be brought in the state or federal courts located in Colorado."
+        ]
+      },
+      {
+        "title": "22. Changes to These Terms",
+        "paragraphs": [
+          "We may update these Terms from time to time.",
+          "When we make changes, we will update the “Last Updated” date at the top of this page. If we make material changes, we may provide additional notice, such as by posting a notice on the website.",
+          "Your continued use of Media Manipulator after updated Terms are posted means you accept the updated Terms.",
+          "If you do not agree to the updated Terms, you must stop using Media Manipulator."
+        ]
+      },
+      {
+        "title": "23. Contact",
+        "paragraphs": ["If you have questions about these Terms, contact us at:"],
+        "contactBlock": true,
+        "contactEmail": "support@media-manipulator.com"
+      }
+    ]
+  }
+}

@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Eye, Music } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
+import { useLocalization } from '@/i18n/useLocalization';
 
 const FilePreview: React.FC<{
   file: File;
   resultAvailable?: boolean;
   onShowResult?: () => void;
 }> = ({ file, resultAvailable = false, onShowResult }) => {
+  const { t } = useLocalization(['interface', 'accessibility']);
   const [showResult, setShowResult] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const fileType = getFileType(file);
@@ -34,7 +36,7 @@ const FilePreview: React.FC<{
           className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors"
         >
           <Eye size={16} />
-          {showResult ? 'Show Result' : 'Show Result'}
+          {showResult ? t('interface:filePreview.showResult') : t('interface:filePreview.showResult')}
         </button>
       </div>
 
@@ -42,7 +44,7 @@ const FilePreview: React.FC<{
         {fileType === 'image' && previewUrl && (
           <img
             src={previewUrl}
-            alt="Preview"
+            alt={t('accessibility:filePreview.previewAlt')}
             className="w-full h-48 object-contain bg-background"
           />
         )}

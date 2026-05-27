@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
+import { Trans } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { imageConversionSchema } from "@/schemas/imageSchema";
 import ConversionOptions from "@/components/conversion-options";
@@ -9,7 +10,9 @@ import FaceSelectionOverlay from "@/components/face-selection-overlay";
 import RemoveObjectOverlay, { type RemoveObjectRectangle } from "@/components/remove-object-overlay";
 import useDetectFaces, { type FaceDetectionResponse } from "@/lib/useDetectFaces";
 import type { ConversionFormData } from "@/schemas/types";
+import type { ImageFormPresets } from "@/components/embedded-tool-panel";
 import { useEffect, useState } from "react";
+import { useLocalization } from "@/i18n/useLocalization";
 
 type FaceSelectionMode = 'all' | 'only_selected' | 'all_except_selected';
 
@@ -66,7 +69,14 @@ const ImageConversionForm: React.FC<{
   isLoading: boolean;
   imageUrl?: string;
   file?: File;
-}> = ({ onSubmit, isLoading, imageUrl, file }) => {
+  /** Tool-page preset/lock configuration (embedded SEO landing pages). */
+  presets?: ImageFormPresets;
+}> = ({ onSubmit, isLoading, imageUrl, file, presets }) => {
+  const { t } = useLocalization(['interface', 'error', 'accessibility']);
+  const lockedFormat = presets?.lockedOutputFormat;
+  const lockedAIOperation = Boolean(presets?.lockedAIImageOperation);
+  const initialFormat = lockedFormat ?? presets?.defaultOutputFormat ?? 'jpg';
+  const initialAIOperation = presets?.defaultAIImageOperation ?? 'none';
   const [showCropModal, setShowCropModal] = useState(false);
   const [cropArea, setCropArea] = useState<CropArea | null>(null);
   const [showAdvancedMetadata, setShowAdvancedMetadata] = useState(false);
@@ -89,8 +99,10 @@ const ImageConversionForm: React.FC<{
     resolver: zodResolver(imageConversionSchema),
     shouldUnregister: true,
     defaultValues: {
-      format: 'jpg' as const,
-      quality: 85,
+      format: initialFormat,
+      quality: presets?.defaultQuality ?? 85,
+      width: presets?.defaultWidth,
+      height: presets?.defaultHeight,
       filter: 'none' as const,
       tint: '#000000',
       textOverlay: {
@@ -129,8 +141,8 @@ const ImageConversionForm: React.FC<{
       },
       advancedTags: {},
       ai: {
-        enabled: false,
-        operation: 'none' as const,
+        enabled: initialAIOperation !== 'none',
+        operation: initialAIOperation,
         faceMode: 'blur' as const,
         backgroundModel: 'birefnet-general' as const,
         upscaleScale: 4 as const,
@@ -150,6 +162,10 @@ const ImageConversionForm: React.FC<{
   const replaceLocationData = useWatch({ control, name: 'gpsOptions.replaceLocationData' });
   const aiOperation = useWatch({ control, name: 'ai.operation' });
   const aiUpscaleScale = useWatch({ control, name: 'ai.upscaleScale' });
+  const selectedFormat = useWatch({ control, name: 'format' });
+  // Image -> PDF ignores AI, text overlay, and metadata editing, so hide those
+  // sections when the output is a PDF to keep the form focused.
+  const showImageEditing = selectedFormat !== 'pdf';
 
   useEffect(() => {
     // Keep ai.enabled in sync with the operation selection so the API can rely
@@ -294,7 +310,12 @@ const ImageConversionForm: React.FC<{
 
   const getCropStatus = (): string | undefined => {
     if (!cropArea) return undefined;
-    return `Crop area: ${cropArea.width}×${cropArea.height} pixels at (${cropArea.x}, ${cropArea.y})`;
+    return t('interface:imageForm.cropStatus', {
+      width: cropArea.width,
+      height: cropArea.height,
+      x: cropArea.x,
+      y: cropArea.y,
+    });
   };
 
   const renderTextInput = (name: string, label: string, placeholder?: string) => (
@@ -363,31 +384,35 @@ const ImageConversionForm: React.FC<{
           control={control}
           onCropClick={imageUrl ? handleCropClick : undefined}
           cropStatus={getCropStatus()}
+          lockedFormat={lockedFormat}
+          emphasizeResize={presets?.emphasizeResize}
         />
 
+        {showImageEditing && (
+        <>
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
           <div>
             <h3 className="font-medium text-card-foreground flex items-center gap-2">
-              AI Image Tools
+              {t('interface:imageForm.ai.title')}
               <InfoTooltip
-                ariaLabel="About AI Image Tools"
+                ariaLabel={t('accessibility:imageForm.aiTooltip')}
                 width="lg"
                 content={
                   <div className="space-y-1">
-                    <p>One AI operation runs per job, on our local GPU server. The standard ImageMagick pipeline is skipped for that job.</p>
+                    <p>{t('interface:imageForm.ai.tooltipIntro')}</p>
                     <ul className="list-disc pl-4 space-y-1 mt-1">
-                      <li><strong>Face Privacy</strong> — detect and obscure faces (blur, pixelate, or black box).</li>
-                      <li><strong>Remove Background</strong> — outputs a transparent PNG via rembg + BiRefNet/ISNet/U2Net.</li>
-                      <li><strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan 2x or 4x.</li>
-                      <li><strong>Redact Text / PII</strong> — OCR-based redaction.</li>
-                      <li><strong>Remove Object</strong> — draw rectangles over unwanted objects; LaMa inpainting reconstructs the area behind them.</li>
+                      <li><Trans i18nKey="interface:imageForm.ai.tooltipFacePrivacy" components={{ strong: <strong /> }} /></li>
+                      <li><Trans i18nKey="interface:imageForm.ai.tooltipRemoveBackground" components={{ strong: <strong /> }} /></li>
+                      <li><Trans i18nKey="interface:imageForm.ai.tooltipAiUpscale" components={{ strong: <strong /> }} /></li>
+                      <li><Trans i18nKey="interface:imageForm.ai.tooltipRedactText" components={{ strong: <strong /> }} /></li>
+                      <li><Trans i18nKey="interface:imageForm.ai.tooltipRemoveObject" components={{ strong: <strong /> }} /></li>
                     </ul>
                   </div>
                 }
               />
             </h3>
             <p className="text-sm text-muted-foreground">
-              AI tools run one operation per conversion. For best results, preview the output before posting sensitive media.
+              {t('interface:imageForm.ai.intro')}
             </p>
           </div>
           <Controller
@@ -395,15 +420,25 @@ const ImageConversionForm: React.FC<{
             control={control}
             render={({ field }) => (
               <label className="block">
-                <span className="block text-sm font-medium mb-1 text-card-foreground">Operation</span>
-                <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                  <option value="none">None (standard conversion)</option>
-                  <option value="face_privacy">Face Blur / Pixelate</option>
-                  <option value="remove_background">Remove Background</option>
-                  <option value="ai_upscale">AI Upscale</option>
-                  <option value="redact_text">Redact Text / PII</option>
-                  <option value="remove_object">Remove Object (LaMa Inpainting)</option>
+                <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.operationLabel')}</span>
+                <select
+                  {...field}
+                  disabled={lockedAIOperation}
+                  aria-disabled={lockedAIOperation}
+                  className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <option value="none">{t('interface:imageForm.ai.operations.none')}</option>
+                  <option value="face_privacy">{t('interface:imageForm.ai.operations.face_privacy')}</option>
+                  <option value="remove_background">{t('interface:imageForm.ai.operations.remove_background')}</option>
+                  <option value="ai_upscale">{t('interface:imageForm.ai.operations.ai_upscale')}</option>
+                  <option value="redact_text">{t('interface:imageForm.ai.operations.redact_text')}</option>
+                  <option value="remove_object">{t('interface:imageForm.ai.operations.remove_object')}</option>
                 </select>
+                {lockedAIOperation && (
+                  <span className="mt-1 inline-flex items-center gap-1 rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+                    {t('interface:imageForm.ai.operationLocked')}
+                  </span>
+                )}
               </label>
             )}
           />
@@ -415,11 +450,11 @@ const ImageConversionForm: React.FC<{
                 control={control}
                 render={({ field }) => (
                   <label className="block">
-                    <span className="block text-sm font-medium mb-1 text-card-foreground">Face Mode</span>
+                    <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.faceMode.label')}</span>
                     <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                      <option value="blur">Blur</option>
-                      <option value="pixelate">Pixelate</option>
-                      <option value="blackbox">Black Box</option>
+                      <option value="blur">{t('interface:imageForm.ai.faceMode.blur')}</option>
+                      <option value="pixelate">{t('interface:imageForm.ai.faceMode.pixelate')}</option>
+                      <option value="blackbox">{t('interface:imageForm.ai.faceMode.blackbox')}</option>
                     </select>
                   </label>
                 )}
@@ -428,15 +463,15 @@ const ImageConversionForm: React.FC<{
               <div className="border border-border rounded-lg p-3 space-y-3 bg-card/50">
                 <div className="flex items-center justify-between gap-2">
                   <h4 className="font-medium text-card-foreground flex items-center gap-2">
-                    Selective Faces
+                    {t('interface:imageForm.ai.selectiveFaces.title')}
                     <InfoTooltip
-                      ariaLabel="About selective face privacy"
+                      ariaLabel={t('accessibility:imageForm.selectiveFacesTooltip')}
                       width="lg"
                       content={
                         <div className="space-y-1">
-                          <p>Default applies the chosen effect to every detected face.</p>
-                          <p>Use <strong>Detect faces</strong> to preview boxes and pick which faces to obscure or skip.</p>
-                          <p className="text-xs">Face boxes are stored temporarily for selection and expire automatically.</p>
+                          <p>{t('interface:imageForm.ai.selectiveFaces.tooltipDefault')}</p>
+                          <p><Trans i18nKey="interface:imageForm.ai.selectiveFaces.tooltipDetect" components={{ strong: <strong /> }} /></p>
+                          <p className="text-xs">{t('interface:imageForm.ai.selectiveFaces.tooltipExpire')}</p>
                         </div>
                       }
                     />
@@ -444,15 +479,15 @@ const ImageConversionForm: React.FC<{
                 </div>
 
                 <label className="block">
-                  <span className="block text-sm font-medium mb-1 text-card-foreground">Selection mode</span>
+                  <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.selectiveFaces.selectionModeLabel')}</span>
                   <select
                     value={faceSelectionMode}
                     onChange={(event) => setFaceSelectionMode(event.target.value as FaceSelectionMode)}
                     className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring"
                   >
-                    <option value="all">All detected faces</option>
-                    <option value="only_selected">Only selected faces</option>
-                    <option value="all_except_selected">All except selected faces</option>
+                    <option value="all">{t('interface:imageForm.ai.selectiveFaces.selectionMode.all')}</option>
+                    <option value="only_selected">{t('interface:imageForm.ai.selectiveFaces.selectionMode.only_selected')}</option>
+                    <option value="all_except_selected">{t('interface:imageForm.ai.selectiveFaces.selectionMode.all_except_selected')}</option>
                   </select>
                 </label>
 
@@ -466,10 +501,10 @@ const ImageConversionForm: React.FC<{
                     {isDetectingFaces ? (
                       <>
                         <Loader2 className="w-3 h-3 animate-spin" />
-                        Detecting…
+                        {t('interface:imageForm.ai.selectiveFaces.detecting')}
                       </>
                     ) : (
-                      faceDetection ? 'Re-detect faces' : 'Detect faces'
+                      faceDetection ? t('interface:imageForm.ai.selectiveFaces.reDetect') : t('interface:imageForm.ai.selectiveFaces.detect')
                     )}
                   </button>
                   {faceDetection && faceDetection.faces.length > 0 && (
@@ -479,35 +514,34 @@ const ImageConversionForm: React.FC<{
                         onClick={() => setSelectedFaceIds(faceDetection.faces.map((f) => f.id))}
                         className="px-2 py-1 text-xs rounded-md border border-input bg-input text-card-foreground hover:bg-muted"
                       >
-                        Select all
+                        {t('interface:imageForm.ai.selectiveFaces.selectAll')}
                       </button>
                       <button
                         type="button"
                         onClick={() => setSelectedFaceIds([])}
                         className="px-2 py-1 text-xs rounded-md border border-input bg-input text-card-foreground hover:bg-muted"
                       >
-                        Clear selection
+                        {t('interface:imageForm.ai.selectiveFaces.clearSelection')}
                       </button>
                     </>
                   )}
                 </div>
 
                 {!file && (
-                  <p className="text-xs text-muted-foreground">Choose an image first to detect faces.</p>
+                  <p className="text-xs text-muted-foreground">{t('interface:imageForm.ai.selectiveFaces.chooseFile')}</p>
                 )}
                 {faceDetectError && (
                   <p className="text-xs text-destructive">{faceDetectError}</p>
                 )}
                 {faceDetection && faceDetection.faces.length === 0 && (
                   <p className="text-xs text-muted-foreground">
-                    No faces detected. You can still run default face privacy on conversion, or try another image.
+                    {t('interface:imageForm.ai.selectiveFaces.noFaces')}
                   </p>
                 )}
                 {faceDetection && faceDetection.faces.length > 0 && (
                   <div className="space-y-2">
                     <p className="text-xs text-muted-foreground">
-                      Detected {faceDetection.faces.length} {faceDetection.faces.length === 1 ? 'face' : 'faces'}.
-                      Selected: {selectedFaceIds.length}.
+                      {t('interface:imageForm.ai.selectiveFaces.detected', { count: faceDetection.faces.length, selected: selectedFaceIds.length })}
                     </p>
                     {imageUrl && (
                       <FaceSelectionOverlay
@@ -524,7 +558,7 @@ const ImageConversionForm: React.FC<{
                   </div>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Default: applies to every detected face. Use Detect faces to choose specific faces.
+                  {t('interface:imageForm.ai.selectiveFaces.defaultNote')}
                 </p>
               </div>
             </div>
@@ -537,20 +571,20 @@ const ImageConversionForm: React.FC<{
                 control={control}
                 render={({ field }) => (
                   <label className="block">
-                    <span className="block text-sm font-medium mb-1 text-card-foreground">Background Model</span>
+                    <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.background.modelLabel')}</span>
                     <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                      <option value="birefnet-general">BiRefNet General (recommended)</option>
-                      <option value="birefnet-general-lite">BiRefNet General Lite</option>
-                      <option value="birefnet-portrait">BiRefNet Portrait</option>
-                      <option value="isnet-general-use">ISNet General Use</option>
-                      <option value="u2net">U2Net</option>
-                      <option value="u2netp">U2Net Lite</option>
-                      <option value="u2net_human_seg">U2Net Human Segmentation</option>
+                      <option value="birefnet-general">{t('interface:imageForm.ai.background.models.birefnet-general')}</option>
+                      <option value="birefnet-general-lite">{t('interface:imageForm.ai.background.models.birefnet-general-lite')}</option>
+                      <option value="birefnet-portrait">{t('interface:imageForm.ai.background.models.birefnet-portrait')}</option>
+                      <option value="isnet-general-use">{t('interface:imageForm.ai.background.models.isnet-general-use')}</option>
+                      <option value="u2net">{t('interface:imageForm.ai.background.models.u2net')}</option>
+                      <option value="u2netp">{t('interface:imageForm.ai.background.models.u2netp')}</option>
+                      <option value="u2net_human_seg">{t('interface:imageForm.ai.background.models.u2net_human_seg')}</option>
                     </select>
                   </label>
                 )}
               />
-              <p className="text-xs text-muted-foreground">Output is always PNG so transparency is preserved.</p>
+              <p className="text-xs text-muted-foreground">{t('interface:imageForm.ai.background.pngNote')}</p>
             </>
           )}
 
@@ -562,15 +596,15 @@ const ImageConversionForm: React.FC<{
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
                     <label className="block">
-                      <span className="block text-sm font-medium mb-1 text-card-foreground">Scale</span>
+                      <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.upscale.scaleLabel')}</span>
                       <select
                         {...field}
                         value={String(value ?? 4)}
                         onChange={(event) => onChange(Number(event.target.value))}
                         className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring"
                       >
-                        <option value="4">4x</option>
-                        <option value="2">2x (experimental on some images)</option>
+                        <option value="4">{t('interface:imageForm.ai.upscale.scale4x')}</option>
+                        <option value="2">{t('interface:imageForm.ai.upscale.scale2x')}</option>
                       </select>
                     </label>
                   )}
@@ -580,11 +614,11 @@ const ImageConversionForm: React.FC<{
                   control={control}
                   render={({ field }) => (
                     <label className="block">
-                      <span className="block text-sm font-medium mb-1 text-card-foreground">Model</span>
+                      <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.upscale.modelLabel')}</span>
                       <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                        <option value="realesrgan-x4plus">realesrgan-x4plus (photos)</option>
-                        <option value="realesrgan-x4plus-anime">realesrgan-x4plus-anime</option>
-                        <option value="realesr-animevideov3">realesr-animevideov3</option>
+                        <option value="realesrgan-x4plus">{t('interface:imageForm.ai.upscale.models.realesrgan-x4plus')}</option>
+                        <option value="realesrgan-x4plus-anime">{t('interface:imageForm.ai.upscale.models.realesrgan-x4plus-anime')}</option>
+                        <option value="realesr-animevideov3">{t('interface:imageForm.ai.upscale.models.realesr-animevideov3')}</option>
                       </select>
                     </label>
                   )}
@@ -592,10 +626,10 @@ const ImageConversionForm: React.FC<{
               </div>
               {aiUpscaleScale === 2 && (
                 <p className="text-xs text-muted-foreground">
-                  2x AI upscale is available, but 4x is the safest/default model path on this server.
+                  {t('interface:imageForm.ai.upscale.experimentalNote')}
                 </p>
               )}
-              <p className="text-xs text-muted-foreground">Output is PNG by default.</p>
+              <p className="text-xs text-muted-foreground">{t('interface:imageForm.ai.upscale.pngNote')}</p>
             </>
           )}
 
@@ -607,10 +641,10 @@ const ImageConversionForm: React.FC<{
                   control={control}
                   render={({ field }) => (
                     <label className="block">
-                      <span className="block text-sm font-medium mb-1 text-card-foreground">Detect</span>
+                      <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.redact.detectLabel')}</span>
                       <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                        <option value="pii">PII only</option>
-                        <option value="all-text">All Text</option>
+                        <option value="pii">{t('interface:imageForm.ai.redact.detect.pii')}</option>
+                        <option value="all-text">{t('interface:imageForm.ai.redact.detect.all-text')}</option>
                       </select>
                     </label>
                   )}
@@ -620,18 +654,18 @@ const ImageConversionForm: React.FC<{
                   control={control}
                   render={({ field }) => (
                     <label className="block">
-                      <span className="block text-sm font-medium mb-1 text-card-foreground">Redaction Style</span>
+                      <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.ai.redact.redactionLabel')}</span>
                       <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                        <option value="blackbox">Black Box</option>
-                        <option value="blur">Blur</option>
-                        <option value="pixelate">Pixelate</option>
+                        <option value="blackbox">{t('interface:imageForm.ai.redact.redaction.blackbox')}</option>
+                        <option value="blur">{t('interface:imageForm.ai.redact.redaction.blur')}</option>
+                        <option value="pixelate">{t('interface:imageForm.ai.redact.redaction.pixelate')}</option>
                       </select>
                     </label>
                   )}
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                OCR redaction is best effort. Please review output before sharing.
+                {t('interface:imageForm.ai.redact.ocrNote')}
               </p>
             </>
           )}
@@ -640,15 +674,15 @@ const ImageConversionForm: React.FC<{
             <div className="border border-border rounded-lg p-3 space-y-3 bg-card/50">
               <div className="flex items-center justify-between gap-2">
                 <h4 className="font-medium text-card-foreground flex items-center gap-2">
-                  Mark objects to remove
+                  {t('interface:imageForm.ai.removeObject.title')}
                   <InfoTooltip
-                    ariaLabel="About remove object"
+                    ariaLabel={t('accessibility:imageForm.removeObjectTooltip')}
                     width="lg"
                     content={
                       <div className="space-y-1">
-                        <p>Click and drag on the image to add a rectangle over each object you want to erase. Drag the rectangle body to move it, or the handles to resize.</p>
-                        <p>LaMa inpainting reconstructs the area behind each rectangle. For best results, draw the box snugly around the object — large rectangles ask the model to hallucinate more background.</p>
-                        <p className="text-xs">Tip: multiple smaller rectangles often look cleaner than one huge one.</p>
+                        <p>{t('interface:imageForm.ai.removeObject.tooltipDraw')}</p>
+                        <p>{t('interface:imageForm.ai.removeObject.tooltipResult')}</p>
+                        <p className="text-xs">{t('interface:imageForm.ai.removeObject.tooltipTip')}</p>
                       </div>
                     }
                   />
@@ -659,7 +693,7 @@ const ImageConversionForm: React.FC<{
                     onClick={() => setRemoveObjectRects([])}
                     className="px-2 py-1 text-xs rounded-md border border-input bg-input text-card-foreground hover:bg-muted"
                   >
-                    Clear all
+                    {t('interface:imageForm.ai.removeObject.clearAll')}
                   </button>
                 )}
               </div>
@@ -670,57 +704,57 @@ const ImageConversionForm: React.FC<{
                   onChange={setRemoveObjectRects}
                 />
               ) : (
-                <p className="text-xs text-muted-foreground">Choose an image first to start marking objects.</p>
+                <p className="text-xs text-muted-foreground">{t('interface:imageForm.ai.removeObject.chooseFile')}</p>
               )}
               <p className="text-xs text-muted-foreground">
                 {removeObjectRects.length === 0
-                  ? 'Add at least one rectangle covering the object you want to remove.'
-                  : `${removeObjectRects.length} rectangle${removeObjectRects.length === 1 ? '' : 's'} ready to inpaint.`}
+                  ? t('interface:imageForm.ai.removeObject.atLeastOne')
+                  : t('interface:imageForm.ai.removeObject.readyToInpaint', { count: removeObjectRects.length })}
               </p>
               {removeObjectError && (
                 <p className="text-xs text-destructive">{removeObjectError}</p>
               )}
               <p className="text-xs text-muted-foreground">
-                LaMa output preserves your chosen output format (JPG, PNG, WebP, GIF). Filters, text overlay, and tint are skipped for this op.
+                {t('interface:imageForm.ai.removeObject.formatNote')}
               </p>
             </div>
           )}
 
           {aiOperation && aiOperation !== 'none' && (
             <p className="text-xs text-muted-foreground">
-              Format, filters, and other standard image options are skipped when an AI operation is selected.
+              {t('interface:imageForm.ai.aiActiveNote')}
             </p>
           )}
         </div>
 
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
           <h3 className="font-medium text-card-foreground flex items-center gap-2">
-            Text Overlay
+            {t('interface:imageForm.textOverlay.title')}
             <InfoTooltip
-              ariaLabel="About text overlay"
+              ariaLabel={t('interface:imageForm.textOverlay.tooltipAria')}
               width="lg"
-              content="Burn a watermark or caption onto the output image. Type the text, then pick size (8–512 px), gravity (corner/edge/center anchor), text and stroke colors, stroke width, and pixel offsets from the anchor. Leave the text empty to skip the overlay."
+              content={t('interface:imageForm.textOverlay.tooltip')}
             />
           </h3>
-          {renderTextInput('textOverlay.text', 'Overlay Text', 'Optional text to draw on the image')}
+          {renderTextInput('textOverlay.text', t('interface:imageForm.textOverlay.overlayText'), t('interface:imageForm.textOverlay.overlayPlaceholder'))}
           <div className="grid grid-cols-2 gap-4">
-            {renderNumberInput('textOverlay.size', 'Text Size', 8, 512)}
+            {renderNumberInput('textOverlay.size', t('interface:imageForm.textOverlay.size'), 8, 512)}
             <Controller
               name="textOverlay.gravity"
               control={control}
               render={({ field }) => (
                 <label className="block">
-                  <span className="block text-sm font-medium mb-1 text-card-foreground">Position</span>
+                  <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.textOverlay.position')}</span>
                   <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                    <option value="NorthWest">Top Left</option>
-                    <option value="North">Top</option>
-                    <option value="NorthEast">Top Right</option>
-                    <option value="West">Left</option>
-                    <option value="Center">Center</option>
-                    <option value="East">Right</option>
-                    <option value="SouthWest">Bottom Left</option>
-                    <option value="South">Bottom</option>
-                    <option value="SouthEast">Bottom Right</option>
+                    <option value="NorthWest">{t('interface:imageForm.textOverlay.gravity.NorthWest')}</option>
+                    <option value="North">{t('interface:imageForm.textOverlay.gravity.North')}</option>
+                    <option value="NorthEast">{t('interface:imageForm.textOverlay.gravity.NorthEast')}</option>
+                    <option value="West">{t('interface:imageForm.textOverlay.gravity.West')}</option>
+                    <option value="Center">{t('interface:imageForm.textOverlay.gravity.Center')}</option>
+                    <option value="East">{t('interface:imageForm.textOverlay.gravity.East')}</option>
+                    <option value="SouthWest">{t('interface:imageForm.textOverlay.gravity.SouthWest')}</option>
+                    <option value="South">{t('interface:imageForm.textOverlay.gravity.South')}</option>
+                    <option value="SouthEast">{t('interface:imageForm.textOverlay.gravity.SouthEast')}</option>
                   </select>
                 </label>
               )}
@@ -730,7 +764,7 @@ const ImageConversionForm: React.FC<{
               control={control}
               render={({ field }) => (
                 <label className="block">
-                  <span className="block text-sm font-medium mb-1 text-card-foreground">Text Color</span>
+                  <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.textOverlay.textColor')}</span>
                   <input {...field} type="color" className="w-full p-1 border border-input rounded-lg h-10 bg-input focus:ring-2 focus:ring-ring" />
                 </label>
               )}
@@ -740,43 +774,43 @@ const ImageConversionForm: React.FC<{
               control={control}
               render={({ field }) => (
                 <label className="block">
-                  <span className="block text-sm font-medium mb-1 text-card-foreground">Stroke Color</span>
+                  <span className="block text-sm font-medium mb-1 text-card-foreground">{t('interface:imageForm.textOverlay.strokeColor')}</span>
                   <input {...field} type="color" className="w-full p-1 border border-input rounded-lg h-10 bg-input focus:ring-2 focus:ring-ring" />
                 </label>
               )}
             />
-            {renderNumberInput('textOverlay.strokeWidth', 'Stroke Width', 0, 32)}
-            {renderNumberInput('textOverlay.x', 'X Offset', 0)}
-            {renderNumberInput('textOverlay.y', 'Y Offset', 0)}
+            {renderNumberInput('textOverlay.strokeWidth', t('interface:imageForm.textOverlay.strokeWidth'), 0, 32)}
+            {renderNumberInput('textOverlay.x', t('interface:imageForm.textOverlay.xOffset'), 0)}
+            {renderNumberInput('textOverlay.y', t('interface:imageForm.textOverlay.yOffset'), 0)}
           </div>
         </div>
 
         <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
           <div>
             <h3 className="font-medium text-card-foreground flex items-center gap-2">
-              Metadata
+              {t('interface:imageForm.metadata.title')}
               <InfoTooltip
-                ariaLabel="About image metadata"
+                ariaLabel={t('accessibility:imageForm.metadataTooltip')}
                 width="lg"
                 content={
                   <div className="space-y-1">
-                    <p><strong>Keep all metadata</strong> — preserve every EXIF/IPTC/XMP/GPS field from the original.</p>
-                    <p><strong>Strip all metadata</strong> — remove camera, GPS, software, and timestamp fields. Recommended before sharing photos online.</p>
-                    <p><strong>Custom metadata</strong> — strip first, then rewrite only the fields you supply (title, author, copyright, IPTC keywords, GPS fields, etc.).</p>
+                    <p><Trans i18nKey="interface:imageForm.metadata.tooltipKeep" components={{ strong: <strong /> }} /></p>
+                    <p><Trans i18nKey="interface:imageForm.metadata.tooltipStrip" components={{ strong: <strong /> }} /></p>
+                    <p><Trans i18nKey="interface:imageForm.metadata.tooltipCustom" components={{ strong: <strong /> }} /></p>
                   </div>
                 }
               />
             </h3>
-            <p className="text-sm text-muted-foreground">Choose whether to keep, strip, or rewrite image metadata.</p>
+            <p className="text-sm text-muted-foreground">{t('interface:imageForm.metadata.intro')}</p>
           </div>
           <Controller
             name="metadataMode"
             control={control}
             render={({ field }) => (
               <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
-                <option value="keep">Keep all metadata</option>
-                <option value="strip">Strip all metadata</option>
-                <option value="custom">Custom metadata</option>
+                <option value="keep">{t('interface:imageForm.metadata.modes.keep')}</option>
+                <option value="strip">{t('interface:imageForm.metadata.modes.strip')}</option>
+                <option value="custom">{t('interface:imageForm.metadata.modes.custom')}</option>
               </select>
             )}
           />
@@ -784,51 +818,51 @@ const ImageConversionForm: React.FC<{
           {metadataMode === 'custom' && (
             <div className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {renderTextInput('metadata.title', 'Title')}
-                {renderTextInput('metadata.author', 'Artist / Author')}
-                {renderTextInput('metadata.description', 'Description')}
-                {renderTextInput('metadata.copyright', 'Copyright')}
-                {renderTextInput('metadata.comment', 'User Comment')}
-                {renderTextInput('metadata.keywords', 'Keywords')}
+                {renderTextInput('metadata.title', t('interface:imageForm.metadata.fields.title'))}
+                {renderTextInput('metadata.author', t('interface:imageForm.metadata.fields.author'))}
+                {renderTextInput('metadata.description', t('interface:imageForm.metadata.fields.description'))}
+                {renderTextInput('metadata.copyright', t('interface:imageForm.metadata.fields.copyright'))}
+                {renderTextInput('metadata.comment', t('interface:imageForm.metadata.fields.comment'))}
+                {renderTextInput('metadata.keywords', t('interface:imageForm.metadata.fields.keywords'))}
               </div>
 
               <div className="space-y-3">
                 <h4 className="font-medium text-card-foreground flex items-center gap-2">
-                  GPS / Location Options
+                  {t('interface:imageForm.metadata.gps.title')}
                   <InfoTooltip
-                    ariaLabel="About GPS / location options"
+                    ariaLabel={t('interface:imageForm.metadata.gps.tooltipAria')}
                     width="lg"
-                    content="Remove or replace GPS metadata stored by your camera or phone. You can also strip just the capture direction, GPS timestamp, altitude, or destination fields. Replace mode lets you pin a different latitude/longitude/altitude and optionally round precision for privacy."
+                    content={t('interface:imageForm.metadata.gps.tooltip')}
                   />
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {renderCheckbox('gpsOptions.removeLocationData', 'Remove location data')}
-                  {renderCheckbox('gpsOptions.replaceLocationData', 'Replace location data')}
-                  {renderCheckbox('gpsOptions.roundLocationPrecision', 'Round location precision')}
-                  {renderCheckbox('gpsOptions.removeCaptureDirection', 'Remove capture direction / heading')}
-                  {renderCheckbox('gpsOptions.removeGpsTimestamp', 'Remove GPS timestamp')}
-                  {renderCheckbox('gpsOptions.removeAltitude', 'Remove altitude')}
-                  {renderCheckbox('gpsOptions.removeDestinationFields', 'Remove destination fields')}
+                  {renderCheckbox('gpsOptions.removeLocationData', t('interface:imageForm.metadata.gps.removeLocationData'))}
+                  {renderCheckbox('gpsOptions.replaceLocationData', t('interface:imageForm.metadata.gps.replaceLocationData'))}
+                  {renderCheckbox('gpsOptions.roundLocationPrecision', t('interface:imageForm.metadata.gps.roundPrecision'))}
+                  {renderCheckbox('gpsOptions.removeCaptureDirection', t('interface:imageForm.metadata.gps.removeCaptureDirection'))}
+                  {renderCheckbox('gpsOptions.removeGpsTimestamp', t('interface:imageForm.metadata.gps.removeTimestamp'))}
+                  {renderCheckbox('gpsOptions.removeAltitude', t('interface:imageForm.metadata.gps.removeAltitude'))}
+                  {renderCheckbox('gpsOptions.removeDestinationFields', t('interface:imageForm.metadata.gps.removeDestination'))}
                 </div>
                 {replaceLocationData && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {renderNumberInput('gpsOptions.latitude', 'Latitude', -90, 90, '0.000001')}
-                    {renderNumberInput('gpsOptions.longitude', 'Longitude', -180, 180, '0.000001')}
-                    {renderNumberInput('gpsOptions.altitude', 'Altitude', undefined, undefined, '0.1')}
-                    {renderNumberInput('gpsOptions.precisionDecimals', 'Precision Decimals', 0, 8)}
+                    {renderNumberInput('gpsOptions.latitude', t('interface:imageForm.metadata.gps.latitude'), -90, 90, '0.000001')}
+                    {renderNumberInput('gpsOptions.longitude', t('interface:imageForm.metadata.gps.longitude'), -180, 180, '0.000001')}
+                    {renderNumberInput('gpsOptions.altitude', t('interface:imageForm.metadata.gps.altitude'), undefined, undefined, '0.1')}
+                    {renderNumberInput('gpsOptions.precisionDecimals', t('interface:imageForm.metadata.gps.precisionDecimals'), 0, 8)}
                   </div>
                 )}
               </div>
 
               <details className="border border-border rounded-lg p-3">
-                <summary className="cursor-pointer font-medium text-card-foreground">EXIF / TIFF Fields</summary>
+                <summary className="cursor-pointer font-medium text-card-foreground">{t('interface:imageForm.metadata.exifFields')}</summary>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 max-h-96 overflow-y-auto pr-1">
                   {EXIF_TIFF_FIELDS.map(field => renderTextInput(`metadata.exifTiff.${field}`, field))}
                 </div>
               </details>
 
               <details className="border border-border rounded-lg p-3">
-                <summary className="cursor-pointer font-medium text-card-foreground">GPS / Location Fields</summary>
+                <summary className="cursor-pointer font-medium text-card-foreground">{t('interface:imageForm.metadata.gpsFields')}</summary>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 max-h-96 overflow-y-auto pr-1">
                   {GPS_FIELDS.map(field => renderTextInput(`metadata.gpsLocation.${field}`, field))}
                 </div>
@@ -840,7 +874,7 @@ const ImageConversionForm: React.FC<{
                   onClick={() => setShowAdvancedMetadata(!showAdvancedMetadata)}
                   className="text-sm font-medium text-card-foreground hover:text-primary"
                 >
-                  {showAdvancedMetadata ? 'Hide' : 'Show'} Advanced / Device Metadata
+                  {showAdvancedMetadata ? t('interface:imageForm.metadata.hideAdvanced') : t('interface:imageForm.metadata.showAdvanced')}
                 </button>
                 {showAdvancedMetadata && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
@@ -851,13 +885,15 @@ const ImageConversionForm: React.FC<{
             </div>
           )}
         </div>
+        </>
+        )}
 
         {Object.keys(errors).length > 0 && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-            <p className="text-destructive text-sm">Please fix the following errors:</p>
+            <p className="text-destructive text-sm">{t('error:forms.fixErrors')}</p>
             <ul className="text-destructive text-sm mt-1">
               {Object.entries(errors).map(([field, error]) => (
-                <li key={field}>• {field}: {typeof error?.message === 'string' ? error.message : 'Invalid value'}</li>
+                <li key={field}>• {field}: {typeof error?.message === 'string' ? error.message : t('error:forms.invalidValue')}</li>
               ))}
             </ul>
           </div>
@@ -870,10 +906,10 @@ const ImageConversionForm: React.FC<{
           {isLoading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Converting...
+              {t('interface:imageForm.converting')}
             </>
           ) : (
-            'Convert File'
+            t('interface:imageForm.submit')
           )}
         </button>
       </form>

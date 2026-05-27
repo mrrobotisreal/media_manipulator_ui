@@ -1,0 +1,157 @@
+{
+  "relatedLinks": {
+    "defaultTitle": "Related tools and tutorials"
+  },
+  "filePreview": {
+    "showResult": "Show Result"
+  },
+  "fileDetails": {
+    "title": "Details",
+    "fileName": "File Name",
+    "fileSize": "File Size",
+    "mimeType": "MIME Type",
+    "analysisTool": "Analysis Tool",
+    "container": "Container",
+    "exifTiff": "EXIF/TIFF",
+    "gpsLocation": "GPS / Location",
+    "advancedDeviceMetadata": "Advanced / Device Metadata",
+    "technicalDetails": "Technical Details",
+    "showRawOutput": "Show Raw Command Output",
+    "hideRawOutput": "Hide Raw Command Output",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "noAdditional": "No additional details available",
+    "noMetadataFound": "No metadata found",
+    "notAvailable": "N/A",
+    "arraySummary": "Array ({{count}} items) - expand to view",
+    "objectSummary": "Object ({{count}} properties) - expand to view",
+    "arrayLabel": "[Array with {{count}} items]",
+    "objectLabel": "{Object with {{count}} properties}",
+    "metadataGroupsAvailable_one": "{{count}} metadata group available",
+    "metadataGroupsAvailable_other": "{{count}} metadata groups available"
+  },
+  "authModal": {
+    "defaultTitle": "Sign in to convert your file",
+    "defaultDescription": "Create a free account to start converting files instantly",
+    "tabs": {
+      "signup": "Create Account",
+      "signin": "Sign In"
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email",
+      "emailPlaceholder": "john@example.com",
+      "password": "Password",
+      "passwordPlaceholderSignup": "At least 6 characters",
+      "passwordPlaceholderSignin": "Your password"
+    },
+    "actions": {
+      "createAccount": "Create Free Account",
+      "creatingAccount": "Creating Account...",
+      "signIn": "Sign In",
+      "signingIn": "Signing In..."
+    },
+    "googleSignIn": "Continue with Google",
+    "orDivider": "OR",
+    "freeTier": {
+      "title": "Free Account Includes",
+      "benefit1": "5 free conversions per month",
+      "benefit2": "Files up to 50MB",
+      "benefit3": "All popular formats supported",
+      "benefit4": "Fast, secure processing"
+    },
+    "upgrade": {
+      "title": "Need More? Upgrade Anytime",
+      "plan": "Starter Plan",
+      "planDetail": "100 conversions/month",
+      "price": "$9/month"
+    },
+    "terms": "By signing up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>",
+    "toast": {
+      "welcome": "Welcome!",
+      "welcomeBack": "Welcome back!",
+      "welcomeMM": "Welcome to Media Manipulator!",
+      "accountCreated": "Account created!",
+      "signedIn": "Successfully signed in.",
+      "googleSuccess": "Successfully signed in with Google.",
+      "authFailed": "Authentication failed",
+      "nameRequired": "Name required",
+      "nameRequiredDesc": "Please enter your name."
+    }
+  },
+  "imageCropModal": {
+    "title": "Crop Image",
+    "subtitle": "Drag to adjust the crop area, then click Apply.",
+    "instructions": "Drag the crop area to position it, or drag the bottom-right corner to resize. The darker area will be removed.",
+    "previewAlt": "Crop preview",
+    "cropArea": "Crop area: {{width}} × {{height}} pixels",
+    "apply": "Apply Crop",
+    "cancel": "Cancel",
+    "reset": "Reset"
+  },
+  "mediaTrimModal": {
+    "titleVideo": "Trim Video",
+    "titleAudio": "Trim Audio",
+    "instructions": "Drag the handles on the timeline to select the portion you want to keep. The grayed areas will be removed.",
+    "audioFile": "Audio File",
+    "startLabel": "Start Time",
+    "endLabel": "End Time",
+    "durationLabel": "Duration",
+    "finalDuration": "Final duration: {{duration}}",
+    "apply": "Apply Trim",
+    "cancel": "Cancel",
+    "reset": "Reset",
+    "playPreview": "Play Preview",
+    "pausePreview": "Pause"
+  },
+  "removeObjectOverlay": {
+    "title": "Remove object",
+    "instructions": "Draw rectangles over the objects you want removed. LaMa inpainting will reconstruct the background.",
+    "rectangleCount_one": "{{count}} region selected",
+    "rectangleCount_other": "{{count}} regions selected",
+    "addRegion": "Add region",
+    "clearRegions": "Clear all",
+    "apply": "Remove objects",
+    "cancel": "Cancel",
+    "undo": "Undo",
+    "previewAlt": "Mark areas to remove",
+    "dragHint": "Drag to size, then release. Use handles to fine-tune.",
+    "removeRectangle": "Remove rectangle {{number}}"
+  },
+  "faceSelectionOverlay": {
+    "title": "Select faces to blur",
+    "instructions": "Tap each face you want to apply the privacy effect to. Tap again to deselect.",
+    "selectAll": "Select all",
+    "clearSelection": "Clear selection",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "selectedCount_one": "{{count}} face selected",
+    "selectedCount_other": "{{count}} faces selected",
+    "noFacesDetected": "No faces detected in this image.",
+    "previewAlt": "Detected faces preview",
+    "faceAria": "Face {{label}}",
+    "faceSelectedAria": "Face {{label}} (selected)"
+  },
+  "mobileAnchorAd": {
+    "label": "Advertisement"
+  },
+  "adBanner": {
+    "creatvAriaLabel": "CreaTV — bring ideas to life",
+    "creatvCreativeAlt": "Come check out CreaTV! Where ideas are brought to life."
+  },
+  "alternativeAdBanner": {
+    "placeholder": "{{network}} Ad Placeholder - {{position}}",
+    "placeholderFormat": "Format: {{format}} | Slot: {{slot}}",
+    "placeholderProduction": "{{network}} ads will appear here in production"
+  },
+  "toolFlowDiagram": {
+    "stepLabel": "Step {{number}}",
+    "defaultTitle": "How it works"
+  },
+  "privacyPolicyComponent": {
+    "title": "Privacy at a glance",
+    "summary": "Files are processed on our servers, automatically deleted within 24 hours, and never sent to third-party AI providers.",
+    "learnMore": "Read the full Privacy Policy"
+  }
+}
