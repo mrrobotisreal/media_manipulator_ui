@@ -140,6 +140,10 @@ const ImageConversionForm: React.FC<{
         removeDestinationFields: false,
       },
       advancedTags: {},
+      vectorize: {
+        threshold: 50,
+        turdSize: 2,
+      },
       ai: {
         enabled: initialAIOperation !== 'none',
         operation: initialAIOperation,
@@ -163,9 +167,10 @@ const ImageConversionForm: React.FC<{
   const aiOperation = useWatch({ control, name: 'ai.operation' });
   const aiUpscaleScale = useWatch({ control, name: 'ai.upscaleScale' });
   const selectedFormat = useWatch({ control, name: 'format' });
-  // Image -> PDF ignores AI, text overlay, and metadata editing, so hide those
-  // sections when the output is a PDF to keep the form focused.
-  const showImageEditing = selectedFormat !== 'pdf';
+  // PDF, SVG (vectorize), and ICO outputs ignore AI, text overlay, and metadata
+  // editing, so hide those sections when one is selected to keep the form focused.
+  const showImageEditing =
+    selectedFormat !== 'pdf' && selectedFormat !== 'svg' && selectedFormat !== 'ico';
 
   useEffect(() => {
     // Keep ai.enabled in sync with the operation selection so the API can rely
@@ -387,6 +392,46 @@ const ImageConversionForm: React.FC<{
           lockedFormat={lockedFormat}
           emphasizeResize={presets?.emphasizeResize}
         />
+
+        {selectedFormat === 'svg' && (
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+            <div>
+              <h3 className="font-medium text-card-foreground">{t('interface:imageForm.vectorize.title')}</h3>
+              <p className="text-sm text-muted-foreground mt-1">{t('interface:imageForm.vectorize.note')}</p>
+            </div>
+            <Controller
+              name="vectorize.threshold"
+              control={control}
+              render={({ field: { onChange, value, ...field } }) => (
+                <label className="block">
+                  <span className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
+                    {t('interface:imageForm.vectorize.thresholdLabel')}
+                    <InfoTooltip
+                      ariaLabel={t('accessibility:imageForm.vectorizeThresholdTooltip')}
+                      content={t('interface:imageForm.vectorize.thresholdTooltip')}
+                    />
+                  </span>
+                  <input
+                    {...field}
+                    type="range"
+                    min="1"
+                    max="99"
+                    value={typeof value === 'number' ? value : 50}
+                    onChange={(e) => onChange(Number(e.target.value))}
+                    className="w-full"
+                  />
+                  <span className="text-xs text-muted-foreground">{typeof value === 'number' ? value : 50}%</span>
+                </label>
+              )}
+            />
+          </div>
+        )}
+
+        {selectedFormat === 'ico' && (
+          <div className="rounded-md border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 px-3 py-2 text-sm text-card-foreground">
+            {t('interface:imageForm.ico.note')}
+          </div>
+        )}
 
         {showImageEditing && (
         <>

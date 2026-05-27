@@ -11,7 +11,7 @@ const ConversionOptions: React.FC<{
   cropStatus?: string;
   trimStatus?: string;
   /** When set (image), the output-format select is locked to this value. */
-  lockedFormat?: 'jpg' | 'png' | 'webp' | 'gif' | 'pdf';
+  lockedFormat?: 'jpg' | 'png' | 'webp' | 'gif' | 'avif' | 'pdf' | 'svg' | 'ico';
   /** When true (image), visually highlight the width/height controls. */
   emphasizeResize?: boolean;
 }> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus, lockedFormat, emphasizeResize }) => {
@@ -71,7 +71,10 @@ const ConversionOptions: React.FC<{
                   <option value="png">PNG</option>
                   <option value="webp">WebP</option>
                   <option value="gif">GIF</option>
+                  <option value="avif">AVIF</option>
                   <option value="pdf">PDF</option>
+                  <option value="svg">SVG</option>
+                  <option value="ico">ICO</option>
                 </select>
               )}
             />

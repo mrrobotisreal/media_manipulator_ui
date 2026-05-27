@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const imageConversionSchema = z.object({
-  format: z.enum(['jpg', 'png', 'webp', 'gif', 'pdf']),
+  format: z.enum(['jpg', 'png', 'webp', 'gif', 'avif', 'pdf', 'svg', 'ico']),
   width: z.number().min(1).max(4096).optional(),
   height: z.number().min(1).max(4096).optional(),
   quality: z.number().min(1).max(100).default(85),
@@ -52,6 +52,17 @@ export const imageConversionSchema = z.object({
     removeDestinationFields: z.boolean().optional(),
   }).optional(),
   advancedTags: z.record(z.string()).optional(),
+
+  // Raster -> SVG vectorization (potrace). Only used when format === 'svg'.
+  vectorize: z.object({
+    threshold: z.number().min(1).max(99).optional(),
+    turdSize: z.number().min(0).max(1000).optional(),
+    mode: z.string().optional(),
+  }).optional(),
+  // Multi-size .ico generation. Only used when format === 'ico'.
+  ico: z.object({
+    sizes: z.array(z.number().min(1).max(256)).optional(),
+  }).optional(),
 
   // AI image tools (Phase 1). When ai.enabled is true and ai.operation is not
   // 'none', the API runs the AI op and bypasses the normal ImageMagick chain.

@@ -68,6 +68,15 @@
     "converting": "Converting...",
     "submit": "Convert File",
     "cropStatus": "Crop area: {{width}}×{{height}} pixels at ({{x}}, {{y}})",
+    "vectorize": {
+      "title": "Vectorization (PNG → SVG)",
+      "note": "Vectorization traces your image into real vector paths. It works best for logos, icons, signatures, and black-and-white line art — not photographs.",
+      "thresholdLabel": "Black/white threshold",
+      "thresholdTooltip": "Pixels darker than this cutoff are traced as filled shapes. Raise it to capture more detail, lower it to keep only the boldest shapes."
+    },
+    "ico": {
+      "note": "A multi-size .ico is generated containing 16, 32, 48, 64, 128, and 256 px icons — ideal for favicons and Windows app icons."
+    },
     "ai": {
       "title": "AI Image Tools",
       "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard ImageMagick pipeline is skipped for that job.",

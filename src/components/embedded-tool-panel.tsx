@@ -79,11 +79,19 @@ export type EmbeddedTask =
   | 'png_to_pdf'
   | 'pdf_to_jpg'
   | 'pdf_to_png'
-  | 'pdf_converter';
+  | 'pdf_converter'
+  | 'heic_to_jpg'
+  | 'avif_to_jpg'
+  | 'avif_to_png'
+  | 'svg_to_png'
+  | 'png_to_svg'
+  | 'png_to_ico'
+  | 'svg_converter';
 
 /** Output formats the embedded image converter understands. "pdf" routes the
- *  image through the document pathway (image -> single-page PDF). */
-export type EmbeddedImageFormat = 'jpg' | 'png' | 'webp' | 'gif' | 'pdf';
+ *  image through the document pathway (image -> single-page PDF); "svg" routes
+ *  to potrace vectorization; "ico" routes to multi-size icon generation. */
+export type EmbeddedImageFormat = 'jpg' | 'png' | 'webp' | 'gif' | 'avif' | 'pdf' | 'svg' | 'ico';
 
 /** AI image operations the embedded image converter understands. */
 export type EmbeddedAIImageOperation =
@@ -297,6 +305,15 @@ const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: st
   pdf_to_jpg: { recommended: 'jpg' },
   pdf_to_png: { recommended: 'png' },
   pdf_converter: {},
+  // Modern image / vector / favicon tasks. Guidance prose lives in each tool's
+  // canonical embed.description.
+  heic_to_jpg: { recommended: 'jpg' },
+  avif_to_jpg: { recommended: 'jpg' },
+  avif_to_png: { recommended: 'png' },
+  svg_to_png: { recommended: 'png' },
+  png_to_svg: { recommended: 'svg' },
+  png_to_ico: { recommended: 'ico' },
+  svg_converter: { recommended: 'png' },
 };
 
 const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {

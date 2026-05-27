@@ -1751,6 +1751,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     related: [
       { label: 'Convert PNG to JPG', to: '/tools/convert-png-to-jpg', description: 'Focused PNG → JPG converter.' },
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Focused WebP → JPG converter.' },
+      { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
+      { label: 'Convert AVIF to JPG', to: '/tools/convert-avif-to-jpg', description: 'Convert modern AVIF images to JPG.' },
       { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Wrap a JPG into a PDF document.' },
       { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG instead.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink your JPG even further.' },
@@ -1859,6 +1861,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
     related: [
       { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Focused JPG → PNG converter.' },
       { label: 'Convert WebP to PNG', to: '/tools/convert-webp-to-png', description: 'Focused WebP → PNG converter.' },
+      { label: 'Convert AVIF to PNG', to: '/tools/convert-avif-to-png', description: 'Convert AVIF images to lossless PNG.' },
+      { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn a PNG into a multi-size favicon.' },
+      { label: 'Convert PNG to SVG', to: '/tools/convert-png-to-svg', description: 'Vectorize a PNG logo into SVG.' },
       { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Wrap a PNG into a PDF document.' },
       { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG instead.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
@@ -2874,6 +2879,777 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
   },
 
+  // ------------------------------------------------------------- IMAGE: MODERN / VECTOR / FAVICON
+  {
+    slug: 'convert-heic-to-jpg',
+    name: 'Convert HEIC to JPG',
+    h1: 'Convert HEIC to JPG Online Free',
+    tagline:
+      'Turn iPhone HEIC photos into universally compatible JPG files that open and upload anywhere.',
+    metaTitle: 'Convert HEIC to JPG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online HEIC to JPG converter. Turn iPhone .heic/.heif photos into universally compatible JPG files. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert HEIC to JPG Online Free',
+    ogDescription:
+      'Turn iPhone HEIC photos into universally compatible JPG files. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'heic_to_jpg',
+      defaultOutputFormat: 'jpg',
+      lockedOutputFormat: 'jpg',
+      lockedInputFormat: 'heic',
+      acceptOverride: 'image/heic,image/heif,.heic,.heif,image/*',
+      title: 'Convert HEIC to JPG',
+      description:
+        'Upload a HEIC or HEIF photo from your iPhone. The output is locked to JPG, auto-oriented so it appears the right way up, at the quality you choose.',
+    },
+    intro:
+      'HEIC is the high-efficiency format iPhones use to save space, but it won’t open on many Windows PCs, websites, or older apps. Media Manipulator converts your HEIC photos to JPG — the format that works everywhere — with correct orientation and the quality you choose. Free, online, no signup.',
+    whatItDoes: [
+      'Converts Apple HEIC/HEIF photos to standard JPG.',
+      'Auto-orients the image using EXIF so portraits aren’t sideways.',
+      'Lets you pick JPG quality to balance file size and fidelity.',
+      'Produces a JPG that opens on any device, site, or app.',
+    ],
+    flowSteps: [
+      { title: 'Upload HEIC', description: 'Drop in a .heic or .heif photo from your iPhone.' },
+      { title: 'Auto-orient', description: 'We read the EXIF orientation so the photo is upright.' },
+      { title: 'Encode JPG', description: 'ImageMagick decodes HEIC (libheif) and writes a JPG.' },
+      { title: 'Download JPG', description: 'Save a universally compatible .jpg file.' },
+    ],
+    advancedDetails: [
+      'HEIC decoding relies on ImageMagick built with a libheif delegate. If the server lacks HEIC support, the tool returns a clear error rather than a broken file.',
+      'Quality 85–90 is a great default — HEIC is already efficient, so a high-quality JPG keeps the photo looking identical.',
+      'EXIF orientation is applied before encoding, which fixes the common “rotated 90°” problem when HEIC is converted naively.',
+    ],
+    whyItMatters: [
+      'Windows, many web upload forms, and older software still cannot open HEIC.',
+      'Sharing a JPG guarantees the recipient can view it on any device.',
+      'Most print labs and marketplaces require JPG.',
+    ],
+    useCases: [
+      { title: 'Sharing iPhone photos', description: 'Send photos that open on any phone or PC.' },
+      { title: 'Web uploads', description: 'Satisfy forms and sites that reject HEIC.' },
+      { title: 'Printing', description: 'Convert to JPG before ordering prints.' },
+      { title: 'Editing in older apps', description: 'Open your photo in software without HEIC support.' },
+    ],
+    whyMediaManipulator: [
+      'Correct auto-orientation — no sideways photos.',
+      'Quality control instead of a fixed preset.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['heic', 'heif'],
+      supportedOutputFormats: ['jpg'],
+      processingNotes: [
+        'HEIC decoding requires ImageMagick with a libheif delegate on the server.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert HEIC to JPG for free?',
+        answer:
+          'Upload your .heic photo above, pick a quality, and click convert. You get a standard .jpg back. It is free with no signup.',
+      },
+      {
+        question: 'Why won’t my HEIC photo open on Windows?',
+        answer:
+          'HEIC is an Apple-favored format that older Windows versions and many apps can’t read. Converting to JPG makes the photo open everywhere.',
+      },
+      {
+        question: 'Will the photo lose quality?',
+        answer:
+          'JPG is lossy, but at quality 85–90 the result looks identical to the HEIC original for virtually all photos.',
+      },
+      {
+        question: 'Why was my converted photo rotated before?',
+        answer:
+          'Naive converters ignore EXIF orientation. We auto-orient the image, so your photo comes out the right way up.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Convert AVIF to JPG', to: '/tools/convert-avif-to-jpg', description: 'Convert modern AVIF photos to JPG.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG for the web.' },
+      { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option.' },
+    ],
+    primaryKeyword: 'heic to jpg',
+    secondaryKeywords: [
+      'convert heic to jpg',
+      'heic to jpeg',
+      'iphone photo to jpg',
+      '.heic to .jpg',
+      'heic converter',
+    ],
+  },
+  {
+    slug: 'convert-avif-to-jpg',
+    name: 'Convert AVIF to JPG',
+    h1: 'Convert AVIF to JPG Online Free',
+    tagline:
+      'Turn modern AVIF images into universally compatible JPG files for apps and sites that don’t accept AVIF.',
+    metaTitle: 'Convert AVIF to JPG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online AVIF to JPG converter. Turn .avif images into universally compatible JPG files at the quality you choose. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert AVIF to JPG Online Free',
+    ogDescription:
+      'Turn modern AVIF images into universally compatible JPG files. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'avif_to_jpg',
+      defaultOutputFormat: 'jpg',
+      lockedOutputFormat: 'jpg',
+      lockedInputFormat: 'avif',
+      acceptOverride: 'image/avif,.avif,image/*',
+      title: 'Convert AVIF to JPG',
+      description:
+        'Upload an AVIF image. The output is locked to JPG, so you get a file every app, editor, and upload form accepts, at the quality you choose.',
+    },
+    intro:
+      'AVIF is a cutting-edge image format that produces tiny files, but plenty of apps, editors, and upload forms still can’t open it. Media Manipulator converts AVIF to JPG so your image works everywhere. Pick a quality and download. Free, online, no signup.',
+    whatItDoes: [
+      'Converts AVIF images to standard JPG.',
+      'Flattens any transparency onto a background, since JPG has no alpha.',
+      'Lets you choose JPG quality for the size/fidelity balance you want.',
+      'Produces a JPG that opens on any device or app.',
+    ],
+    flowSteps: [
+      { title: 'Upload AVIF', description: 'Drop in a .avif image.' },
+      { title: 'Pick JPG quality', description: '85 is a balanced default.' },
+      { title: 'Encode JPG', description: 'ImageMagick decodes AVIF (libaom/libheif) and writes a JPG.' },
+      { title: 'Download JPG', description: 'Save a universally compatible .jpg.' },
+    ],
+    advancedDetails: [
+      'AVIF decoding relies on ImageMagick built with an AVIF delegate (libaom or libheif). If the server lacks AVIF support, the tool returns a clear error.',
+      'AVIF supports transparency; when converting to JPG, transparent areas are flattened because JPG has no alpha channel. Use AVIF → PNG to keep transparency.',
+      'Quality 85–90 keeps the JPG visually identical to the AVIF for most images.',
+    ],
+    whyItMatters: [
+      'Many apps and upload forms still don’t support AVIF.',
+      'JPG guarantees the recipient can open the image.',
+      'Converting lets you use an AVIF download anywhere you need a JPG.',
+    ],
+    useCases: [
+      { title: 'Saving web images', description: 'Convert an AVIF you downloaded into a usable JPG.' },
+      { title: 'App compatibility', description: 'Open an AVIF in software that lacks AVIF support.' },
+      { title: 'Uploads', description: 'Meet a form that only accepts JPG.' },
+      { title: 'Printing', description: 'Produce a JPG for a photo lab.' },
+    ],
+    whyMediaManipulator: [
+      'Quality control instead of a one-size-fits-all preset.',
+      'Runs on our own servers — no third-party processing.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['avif'],
+      supportedOutputFormats: ['jpg'],
+      processingNotes: [
+        'AVIF decoding requires ImageMagick with an AVIF delegate on the server. Transparency is flattened in JPG output.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert AVIF to JPG for free?',
+        answer:
+          'Upload your .avif image above, pick a quality, and click convert. You get a standard .jpg back. It is free with no signup.',
+      },
+      {
+        question: 'Why can’t I open AVIF files?',
+        answer:
+          'AVIF is a newer format; many apps, editors, and websites haven’t added support yet. Converting to JPG makes the image open everywhere.',
+      },
+      {
+        question: 'What about transparency?',
+        answer:
+          'JPG has no transparency, so transparent AVIF areas are flattened onto a background. If you need to keep transparency, use the AVIF → PNG tool.',
+      },
+      {
+        question: 'Will I lose quality?',
+        answer:
+          'At quality 85–90 the JPG looks essentially identical to the AVIF for most images.',
+      },
+      {
+        question: 'Are my uploads stored?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert AVIF to PNG', to: '/tools/convert-avif-to-png', description: 'Keep transparency with a PNG instead.' },
+      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG for the web.' },
+    ],
+    primaryKeyword: 'avif to jpg',
+    secondaryKeywords: [
+      'convert avif to jpg',
+      'avif to jpeg',
+      '.avif to .jpg',
+      'avif converter',
+      'open avif file',
+    ],
+  },
+  {
+    slug: 'convert-avif-to-png',
+    name: 'Convert AVIF to PNG',
+    h1: 'Convert AVIF to PNG Online Free',
+    tagline:
+      'Turn AVIF images into lossless PNG files that open everywhere and keep full transparency.',
+    metaTitle: 'Convert AVIF to PNG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online AVIF to PNG converter. Turn .avif images into lossless PNG files that preserve transparency and open in any editor. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert AVIF to PNG Online Free',
+    ogDescription:
+      'Turn AVIF images into lossless, transparency-preserving PNG files. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'avif_to_png',
+      defaultOutputFormat: 'png',
+      lockedOutputFormat: 'png',
+      lockedInputFormat: 'avif',
+      acceptOverride: 'image/avif,.avif,image/*',
+      title: 'Convert AVIF to PNG',
+      description:
+        'Upload an AVIF image. The output is locked to PNG, so transparency is preserved and the file opens losslessly in any editor or viewer.',
+    },
+    intro:
+      'When an AVIF image has transparency — like a logo or a cutout — converting to JPG would flatten it. PNG keeps the alpha channel and is lossless, so it’s the right target for graphics. Media Manipulator converts AVIF to PNG with transparency intact. Free, online, no signup.',
+    whatItDoes: [
+      'Converts AVIF images to lossless PNG.',
+      'Preserves the alpha channel so transparent AVIFs stay transparent.',
+      'Produces a PNG that opens in any editor, viewer, or design tool.',
+      'Keeps the visible content identical — only the encoding changes.',
+    ],
+    flowSteps: [
+      { title: 'Upload AVIF', description: 'Drop in a .avif image, transparent or solid.' },
+      { title: 'Decode AVIF', description: 'ImageMagick decodes the AVIF with its AVIF delegate.' },
+      { title: 'Encode PNG', description: 'A lossless PNG is written with transparency preserved.' },
+      { title: 'Download PNG', description: 'Save a transparency-preserving .png file.' },
+    ],
+    advancedDetails: [
+      'AVIF decoding relies on ImageMagick built with an AVIF delegate (libaom or libheif). If the server lacks AVIF support, the tool returns a clear error.',
+      'Transparency in the AVIF is preserved as a PNG alpha channel.',
+      'PNG is lossless, so the output is usually larger than the source AVIF — the trade-off for universal compatibility and transparency.',
+    ],
+    whyItMatters: [
+      'PNG keeps transparency that JPG would destroy — essential for logos and cutouts.',
+      'Some editors and apps can’t open AVIF; PNG opens everywhere.',
+      'PNG is a safe, lossless interchange format for graphics.',
+    ],
+    useCases: [
+      { title: 'Transparent logos', description: 'Convert a transparent AVIF logo to a usable PNG.' },
+      { title: 'Design handoffs', description: 'Provide a PNG to tools that don’t read AVIF.' },
+      { title: 'Editing', description: 'Open the image losslessly in your editor.' },
+      { title: 'Web assets', description: 'Keep a PNG fallback for older browsers.' },
+    ],
+    whyMediaManipulator: [
+      'Transparency preserved automatically.',
+      'Lossless PNG output for graphics work.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['avif'],
+      supportedOutputFormats: ['png'],
+      processingNotes: [
+        'AVIF decoding requires ImageMagick with an AVIF delegate. Transparency is preserved in the PNG output.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert AVIF to PNG for free?',
+        answer:
+          'Upload your .avif image above and click convert — the output is a lossless .png with transparency preserved. It is free with no signup.',
+      },
+      {
+        question: 'Does AVIF to PNG keep transparency?',
+        answer:
+          'Yes. PNG supports an alpha channel, so a transparent AVIF stays transparent after conversion.',
+      },
+      {
+        question: 'Should I pick PNG or JPG for my AVIF?',
+        answer:
+          'Choose PNG when you need transparency or lossless quality (logos, graphics). Choose JPG for the smallest file when the image is a photo with no transparency.',
+      },
+      {
+        question: 'Why is the PNG larger than the AVIF?',
+        answer:
+          'AVIF is a highly efficient compressed format, while PNG is lossless, so the PNG is typically larger. That’s expected.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert AVIF to JPG', to: '/tools/convert-avif-to-jpg', description: 'Convert AVIF to a compact JPG instead.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
+    ],
+    primaryKeyword: 'avif to png',
+    secondaryKeywords: [
+      'convert avif to png',
+      '.avif to .png',
+      'avif to transparent png',
+      'avif converter',
+      'avif to png online',
+    ],
+  },
+  {
+    slug: 'convert-svg-to-png',
+    name: 'Convert SVG to PNG',
+    h1: 'Convert SVG to PNG Online Free',
+    tagline:
+      'Rasterize SVG icons and logos into PNG images at any size for uploads, slides, and apps.',
+    metaTitle: 'Convert SVG to PNG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online SVG to PNG converter. Rasterize SVG icons and logos into PNG images at the size you choose. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert SVG to PNG Online Free',
+    ogDescription:
+      'Rasterize SVG icons and logos into PNG images at any size. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'svg_to_png',
+      defaultOutputFormat: 'png',
+      lockedOutputFormat: 'png',
+      lockedInputFormat: 'svg',
+      acceptOverride: 'image/svg+xml,.svg',
+      title: 'Convert SVG to PNG',
+      description:
+        'Upload an SVG. The output is locked to PNG. Optionally set a width or height to control the rendered resolution — leave them blank to use the SVG’s natural size.',
+    },
+    intro:
+      'SVGs are perfect vectors, but many platforms — social networks, marketplaces, slide tools, and apps — only accept raster images like PNG. Media Manipulator rasterizes your SVG into a crisp, transparency-preserving PNG at the size you choose. SVGs are processed as untrusted input with a safe renderer. Free, online, no signup.',
+    whatItDoes: [
+      'Rasterizes SVG vector files into PNG images.',
+      'Lets you set a target width and/or height for the output resolution.',
+      'Preserves transparency from the SVG in the PNG.',
+      'Renders with a safe rasterizer that does not fetch external network resources.',
+    ],
+    flowSteps: [
+      { title: 'Upload SVG', description: 'Drop in a .svg icon, logo, or illustration.' },
+      { title: 'Set the size (optional)', description: 'Pick a width/height, or use the SVG’s natural size.' },
+      { title: 'Rasterize', description: 'The SVG is rendered to a pixel image on our server.' },
+      { title: 'Download PNG', description: 'Save a crisp, transparency-preserving .png.' },
+    ],
+    advancedDetails: [
+      'Rendering uses rsvg-convert (librsvg) when available — it does not load remote resources by default — with ImageMagick as a hardened fallback.',
+      'Because SVG is a vector, you can render at any resolution without quality loss; pick a larger width for sharper output.',
+      'Uploaded SVGs are treated as untrusted input and processed with network access disabled to avoid SSRF/external-fetch risks.',
+    ],
+    whyItMatters: [
+      'Most upload forms and social platforms reject SVG but accept PNG.',
+      'Rasterizing at a chosen size guarantees crisp output for that use.',
+      'PNG keeps the transparency that icons and logos rely on.',
+    ],
+    useCases: [
+      { title: 'Social and uploads', description: 'Turn an SVG logo into a PNG a platform accepts.' },
+      { title: 'Presentations', description: 'Drop a crisp PNG of an icon into a slide.' },
+      { title: 'App assets', description: 'Export a PNG at the exact size your app needs.' },
+      { title: 'Email', description: 'Use a PNG where SVG isn’t supported.' },
+    ],
+    whyMediaManipulator: [
+      'Render at any size with no quality loss — vectors scale perfectly.',
+      'Safe SVG handling with external fetches disabled.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['svg'],
+      supportedOutputFormats: ['png'],
+      processingNotes: [
+        'Rendered with rsvg-convert (preferred) or a hardened ImageMagick fallback. External network fetches from the SVG are disabled.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert SVG to PNG for free?',
+        answer:
+          'Upload your .svg above, optionally set a width or height, and click convert. You get a crisp .png back. It is free with no signup.',
+      },
+      {
+        question: 'What size will the PNG be?',
+        answer:
+          'By default it uses the SVG’s natural size. Set a width and/or height to render larger or smaller — vectors scale without quality loss.',
+      },
+      {
+        question: 'Does the PNG keep transparency?',
+        answer:
+          'Yes. Transparent areas of the SVG are preserved as transparency in the PNG.',
+      },
+      {
+        question: 'Is it safe to upload an SVG?',
+        answer:
+          'Yes. We treat SVGs as untrusted input and render them with external network fetches disabled, so embedded remote references can’t be loaded.',
+      },
+      {
+        question: 'Are my uploads stored?',
+        answer:
+          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert PNG to SVG', to: '/tools/convert-png-to-svg', description: 'Go the other way: vectorize a PNG into SVG.' },
+      { label: 'SVG converter', to: '/tools/svg-converter', description: 'The full SVG conversion hub.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert the rendered PNG to other formats.' },
+      { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn the PNG into a favicon.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
+    ],
+    primaryKeyword: 'svg to png',
+    secondaryKeywords: [
+      'convert svg to png',
+      'svg to png converter',
+      'rasterize svg',
+      '.svg to .png',
+      'svg to image',
+    ],
+  },
+  {
+    slug: 'convert-png-to-svg',
+    name: 'Convert PNG to SVG',
+    h1: 'Convert PNG to SVG Online Free',
+    tagline:
+      'Vectorize logos, icons, and line art from PNG into real, scalable SVG paths with potrace.',
+    metaTitle: 'Convert PNG to SVG Online Free | Media Manipulator',
+    metaDescription:
+      'Free online PNG to SVG vectorizer. Trace logos, icons, and line art into real scalable SVG paths. Best for simple graphics, not photos. No signup, deleted within 24 hours.',
+    ogTitle: 'Convert PNG to SVG Online Free',
+    ogDescription:
+      'Vectorize logos, icons, and line art from PNG into real, scalable SVG paths. Free, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'png_to_svg',
+      defaultOutputFormat: 'svg',
+      lockedOutputFormat: 'svg',
+      lockedInputFormat: 'png',
+      acceptOverride: 'image/png,.png,image/*',
+      title: 'Vectorize PNG to SVG',
+      description:
+        'Upload a PNG. The output is locked to SVG and produced by real vectorization (potrace), not a raster wrapped in SVG. Adjust the black/white threshold to capture more or less detail. Best for logos, icons, signatures, and line art.',
+    },
+    intro:
+      'True PNG-to-SVG conversion means tracing your image into real vector paths that scale to any size without pixelation. Media Manipulator uses potrace to vectorize your PNG — ideal for logos, icons, signatures, and black-and-white line art. This is genuine vectorization, not a PNG hidden inside an SVG. It is not designed to turn photographs into clean vector art. Free, online, no signup.',
+    whatItDoes: [
+      'Traces a PNG into real, scalable SVG vector paths using potrace.',
+      'Reduces the image to a clean black/white bitmap, then vectorizes the shapes.',
+      'Lets you tune the black/white threshold to capture more or less detail.',
+      'Outputs a true .svg — not a raster image wrapped in an <image> tag.',
+    ],
+    flowSteps: [
+      { title: 'Upload PNG', description: 'Drop in a logo, icon, signature, or line-art PNG.' },
+      { title: 'Set the threshold', description: 'Pick the black/white cutoff to control detail.' },
+      { title: 'Trace to vectors', description: 'ImageMagick prepares a bitmap; potrace traces the paths.' },
+      { title: 'Download SVG', description: 'Save a real, scalable .svg file.' },
+    ],
+    advancedDetails: [
+      'The pipeline flattens the PNG to a bilevel bitmap (ImageMagick threshold) and then runs potrace to produce smooth Bézier vector paths.',
+      'Vectorization works best on high-contrast, simple graphics: logos, icons, monograms, signatures, and black-and-white line art.',
+      'It will not faithfully reproduce photographs or complex gradients — tracing a photo produces large, messy paths, not clean vector art.',
+      'Raise the threshold to capture finer/lighter detail; lower it to keep only the boldest shapes.',
+    ],
+    whyItMatters: [
+      'Vector logos scale to any size — from a favicon to a billboard — without pixelation.',
+      'SVGs are tiny for simple graphics and editable in vector tools like Illustrator or Inkscape.',
+      'Recovering a vector from a PNG logo saves recreating it from scratch.',
+    ],
+    useCases: [
+      { title: 'Logo recovery', description: 'Vectorize a PNG logo you no longer have the source for.' },
+      { title: 'Icons and monograms', description: 'Turn a simple icon into a scalable SVG.' },
+      { title: 'Signatures', description: 'Vectorize a scanned signature for clean reuse.' },
+      { title: 'Line art', description: 'Trace black-and-white artwork into editable paths.' },
+    ],
+    whyMediaManipulator: [
+      'Real potrace vectorization — honest about what it’s good at (and not).',
+      'Threshold control so you can dial in the trace.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png', 'jpg', 'gif'],
+      supportedOutputFormats: ['svg'],
+      processingNotes: [
+        'Vectorization requires potrace on the server. Best for logos/icons/line art — not photographs.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a PNG to SVG for free?',
+        answer:
+          'Upload your .png above, adjust the threshold if needed, and click convert. You get a real vector .svg back. It is free with no signup.',
+      },
+      {
+        question: 'Is this real vectorization or just a wrapped PNG?',
+        answer:
+          'It is real vectorization. We trace the image into actual SVG paths with potrace — we do not embed the PNG inside an SVG and call it a day.',
+      },
+      {
+        question: 'Will it vectorize my photo?',
+        answer:
+          'Not well. Vectorization is designed for logos, icons, signatures, and line art. Photographs and complex gradients produce large, messy paths rather than clean vectors.',
+      },
+      {
+        question: 'What does the threshold control do?',
+        answer:
+          'It sets the black/white cutoff before tracing. Raise it to capture more (lighter) detail; lower it to keep only the boldest shapes.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert SVG to PNG', to: '/tools/convert-svg-to-png', description: 'Go the other way: rasterize an SVG to PNG.' },
+      { label: 'SVG converter', to: '/tools/svg-converter', description: 'The full SVG conversion hub.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert a PNG to other raster formats.' },
+      { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn a PNG into a favicon.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
+    ],
+    primaryKeyword: 'png to svg',
+    secondaryKeywords: [
+      'convert png to svg',
+      'vectorize png',
+      'png to svg converter',
+      'image to vector',
+      'png to vector',
+    ],
+  },
+  {
+    slug: 'png-to-ico',
+    name: 'PNG to ICO',
+    h1: 'Convert PNG to ICO Online Free',
+    tagline:
+      'Turn a PNG into a real multi-size .ico favicon for websites and Windows app icons.',
+    metaTitle: 'Convert PNG to ICO Online Free | Media Manipulator',
+    metaDescription:
+      'Free online PNG to ICO converter. Generate a real multi-size .ico favicon (16–256px) for websites and Windows icons. No signup, files deleted within 24 hours.',
+    ogTitle: 'Convert PNG to ICO Online Free',
+    ogDescription:
+      'Generate a real multi-size .ico favicon from a PNG. Free, fast, no signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'png_to_ico',
+      defaultOutputFormat: 'ico',
+      lockedOutputFormat: 'ico',
+      lockedInputFormat: 'png',
+      acceptOverride: 'image/png,.png,image/*',
+      title: 'Convert PNG to ICO',
+      description:
+        'Upload a PNG (a square image works best). The output is locked to ICO, and a real multi-size icon is generated containing 16, 32, 48, 64, 128, and 256 px versions.',
+    },
+    intro:
+      'A favicon needs to be a real .ico file containing several sizes so browsers and Windows can pick the right one. Media Manipulator generates a genuine multi-size ICO from your PNG — not a renamed file — packing the standard 16–256 px icon ladder. Free, online, no signup.',
+    whatItDoes: [
+      'Generates a real .ico container from a PNG image.',
+      'Packs multiple sizes (16, 32, 48, 64, 128, 256 px) into one file.',
+      'Preserves transparency so the icon sits cleanly on any background.',
+      'Produces a file browsers and Windows accept as a favicon/app icon.',
+    ],
+    flowSteps: [
+      { title: 'Upload PNG', description: 'Drop in a PNG — a square image gives the best icon.' },
+      { title: 'Generate sizes', description: 'We render each standard icon size from your image.' },
+      { title: 'Pack ICO', description: 'The sizes are packed into one real .ico container.' },
+      { title: 'Download ICO', description: 'Save favicon.ico for your site or app.' },
+    ],
+    advancedDetails: [
+      'The ICO is built with ImageMagick’s icon auto-resize, producing a true multi-image container — not a renamed PNG.',
+      'Including several sizes lets browsers and Windows pick the sharpest icon for each context (tab, taskbar, desktop).',
+      'For the cleanest result, start from a square PNG at 256×256 or larger so every size downsamples crisply.',
+    ],
+    whyItMatters: [
+      'Browsers expect a real .ico favicon; a renamed PNG can fail or look blurry.',
+      'A multi-size icon stays sharp from a 16px tab to a 256px desktop shortcut.',
+      'Windows app icons require the .ico format.',
+    ],
+    useCases: [
+      { title: 'Website favicons', description: 'Generate favicon.ico for your site’s tab icon.' },
+      { title: 'Windows app icons', description: 'Create an .ico for a desktop application.' },
+      { title: 'Shortcuts', description: 'Make a crisp icon for a desktop shortcut.' },
+      { title: 'Branding', description: 'Turn a logo PNG into a proper icon file.' },
+    ],
+    whyMediaManipulator: [
+      'A genuine multi-size ICO, not a renamed PNG.',
+      'Transparency preserved for clean icons.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png', 'jpg', 'webp'],
+      supportedOutputFormats: ['ico'],
+      processingNotes: [
+        'A multi-size ICO (16/32/48/64/128/256 px) is generated. Start from a square image for the best result.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How do I convert a PNG to ICO for free?',
+        answer:
+          'Upload your .png above and click convert — you get a real multi-size .ico back. It is free with no signup.',
+      },
+      {
+        question: 'Is this a real ICO or a renamed PNG?',
+        answer:
+          'A real ICO. We generate several icon sizes and pack them into a true .ico container, which is what browsers and Windows expect.',
+      },
+      {
+        question: 'What sizes are included?',
+        answer:
+          'The standard favicon ladder: 16, 32, 48, 64, 128, and 256 px. Browsers and Windows pick the best size for each context.',
+      },
+      {
+        question: 'What image works best?',
+        answer:
+          'A square PNG at 256×256 or larger gives the crispest result, since every smaller size downsamples cleanly from it.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to PNG first.' },
+      { label: 'Convert SVG to PNG', to: '/tools/convert-svg-to-png', description: 'Rasterize an SVG logo before making an icon.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Make a square image before generating the icon.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent icon source.' },
+    ],
+    primaryKeyword: 'png to ico',
+    secondaryKeywords: [
+      'convert png to ico',
+      'png to favicon',
+      'favicon generator',
+      '.png to .ico',
+      'create ico file',
+    ],
+  },
+  {
+    slug: 'svg-converter',
+    name: 'SVG Converter',
+    h1: 'Free SVG Converter Online',
+    tagline:
+      'Convert SVG to PNG and vectorize PNG to SVG — the complete SVG conversion hub.',
+    metaTitle: 'Free SVG Converter Online | Media Manipulator',
+    metaDescription:
+      'Free online SVG converter. Rasterize SVG to PNG, or vectorize PNG to a real SVG. No signup, no watermarks, files deleted within 24 hours.',
+    ogTitle: 'Free SVG Converter Online',
+    ogDescription:
+      'Rasterize SVG to PNG and vectorize PNG to SVG — all in one free tool. No signup.',
+    category: 'image',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'svg_converter',
+      defaultOutputFormat: 'png',
+      acceptOverride: 'image/svg+xml,.svg,image/*',
+      title: 'Convert an SVG (or to SVG)',
+      description:
+        'Upload an SVG to rasterize it to PNG, or upload a PNG and choose SVG output to vectorize it. The form adapts to your file and chosen output.',
+    },
+    intro:
+      'The SVG converter handles both directions: rasterize an SVG into a PNG for platforms that don’t accept vectors, or vectorize a PNG logo into a real, scalable SVG. Upload an SVG to get a PNG, or upload a raster and pick SVG output for true potrace vectorization. Free, online, no signup.',
+    whatItDoes: [
+      'Rasterizes SVG files into PNG images at the size you choose.',
+      'Vectorizes PNG/raster logos and line art into real SVG paths (potrace).',
+      'Preserves transparency when rasterizing SVG to PNG.',
+      'Renders SVGs safely with external network fetches disabled.',
+    ],
+    flowSteps: [
+      { title: 'Upload your file', description: 'Drop in an SVG (to rasterize) or a PNG (to vectorize).' },
+      { title: 'Pick the output', description: 'SVG → PNG, or choose SVG output to vectorize a raster.' },
+      { title: 'Convert', description: 'We render or trace your file on our server.' },
+      { title: 'Download', description: 'Save your PNG or real vector SVG.' },
+    ],
+    advancedDetails: [
+      'SVG → PNG uses rsvg-convert (librsvg) when available, with a hardened ImageMagick fallback, and disables external resource loading.',
+      'PNG → SVG uses potrace to trace a bilevel bitmap into smooth vector paths — best for logos, icons, and line art, not photos.',
+      'Vector output scales to any size without quality loss; raster output is rendered at the resolution you request.',
+    ],
+    whyItMatters: [
+      'One tool covers both common SVG conversion directions.',
+      'Vectors and rasters each have their place — switch freely without hunting for a second tool.',
+      'Safe SVG handling protects against external-fetch risks.',
+    ],
+    useCases: [
+      { title: 'Platform uploads', description: 'Rasterize an SVG to PNG where vectors aren’t accepted.' },
+      { title: 'Logo recovery', description: 'Vectorize a PNG logo back into editable SVG paths.' },
+      { title: 'Design prep', description: 'Move between vector and raster as a project needs.' },
+      { title: 'Icon work', description: 'Render or trace icons at the exact fidelity you need.' },
+    ],
+    whyMediaManipulator: [
+      'Both SVG conversion directions in one adaptive tool.',
+      'Real potrace vectorization and safe SVG rasterization.',
+      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['svg', 'png', 'jpg', 'gif'],
+      supportedOutputFormats: ['png', 'svg'],
+      processingNotes: [
+        'SVG → PNG uses a safe rasterizer with external fetches disabled. PNG → SVG uses potrace and is best for simple graphics.',
+      ],
+    },
+    faq: [
+      {
+        question: 'What can the SVG converter do?',
+        answer:
+          'It rasterizes SVG files into PNG images, and vectorizes PNG/raster logos and line art into real SVG paths — all in one free tool.',
+      },
+      {
+        question: 'How do I rasterize an SVG to PNG?',
+        answer:
+          'Upload your .svg, keep the output on PNG, optionally set a size, and convert. You get a crisp, transparency-preserving PNG.',
+      },
+      {
+        question: 'How do I vectorize a PNG to SVG?',
+        answer:
+          'Upload a PNG and choose SVG output. We trace it with potrace into real vector paths. It works best for logos, icons, and line art.',
+      },
+      {
+        question: 'Is vectorization good for photos?',
+        answer:
+          'No — vectorization is for simple, high-contrast graphics. Photos produce large, messy paths rather than clean vectors.',
+      },
+      {
+        question: 'Are my uploads private?',
+        answer:
+          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+      },
+    ],
+    related: [
+      { label: 'Convert SVG to PNG', to: '/tools/convert-svg-to-png', description: 'Focused SVG → PNG rasterizer.' },
+      { label: 'Convert PNG to SVG', to: '/tools/convert-png-to-svg', description: 'Focused PNG → SVG vectorizer.' },
+      { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn a rasterized logo into a favicon.' },
+      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert images to PNG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
+    ],
+    primaryKeyword: 'svg converter',
+    secondaryKeywords: [
+      'online svg converter',
+      'svg to png',
+      'png to svg',
+      'convert svg',
+      'free svg converter',
+    ],
+  },
+
   // ----------------------------------------------------------------------- AUDIO
   {
     slug: 'convert-wav-to-mp3',
@@ -3216,6 +3992,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink image file size for the web.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap an image into a PDF document.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and back.' },
+      { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
+      { label: 'SVG converter', to: '/tools/svg-converter', description: 'Rasterize SVG to PNG or vectorize PNG to SVG.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Auto-erase a background into a transparent PNG.' },
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Focused WebP → JPG converter.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Full walkthrough of every option.' },

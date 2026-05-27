@@ -400,6 +400,64 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- ===== Modern image / vector / favicon SEO batch 3 ===== -->
+
+  <!-- Tool: Convert HEIC to JPG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-heic-to-jpg</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert AVIF to JPG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-avif-to-jpg</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert AVIF to PNG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-avif-to-png</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert SVG to PNG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-svg-to-png</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: Convert PNG to SVG -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/convert-png-to-svg</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: PNG to ICO -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/png-to-ico</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tool: SVG converter -->
+  <url>
+    <loc>https://www.media-manipulator.com/tools/svg-converter</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Privacy Policy -->
   <url>
     <loc>https://www.media-manipulator.com/privacy-policy</loc>

@@ -392,6 +392,60 @@ export const TOOL_AD_SLOTS: Record<string, ToolAdSlotSet> = {
     incontent: 'PLACEHOLDER-pdf-converter-incontent',
     footer: 'PLACEHOLDER-pdf-converter-footer',
   },
+
+  // ---------------------------------------------------------- Modern/vector/favicon SEO batch 3
+  // PLACEHOLDER slot IDs — same pattern as earlier batches. Unprovisioned slots
+  // fall back to the CreaTV in-house creative. Replace with real numeric slot
+  // IDs from ADS.md once the AdSense units are created.
+  'convert-heic-to-jpg': {
+    header: 'PLACEHOLDER-convert-heic-to-jpg-header',
+    sidebar_right: 'PLACEHOLDER-convert-heic-to-jpg-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-heic-to-jpg-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-heic-to-jpg-incontent',
+    footer: 'PLACEHOLDER-convert-heic-to-jpg-footer',
+  },
+  'convert-avif-to-jpg': {
+    header: 'PLACEHOLDER-convert-avif-to-jpg-header',
+    sidebar_right: 'PLACEHOLDER-convert-avif-to-jpg-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-avif-to-jpg-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-avif-to-jpg-incontent',
+    footer: 'PLACEHOLDER-convert-avif-to-jpg-footer',
+  },
+  'convert-avif-to-png': {
+    header: 'PLACEHOLDER-convert-avif-to-png-header',
+    sidebar_right: 'PLACEHOLDER-convert-avif-to-png-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-avif-to-png-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-avif-to-png-incontent',
+    footer: 'PLACEHOLDER-convert-avif-to-png-footer',
+  },
+  'convert-svg-to-png': {
+    header: 'PLACEHOLDER-convert-svg-to-png-header',
+    sidebar_right: 'PLACEHOLDER-convert-svg-to-png-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-svg-to-png-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-svg-to-png-incontent',
+    footer: 'PLACEHOLDER-convert-svg-to-png-footer',
+  },
+  'convert-png-to-svg': {
+    header: 'PLACEHOLDER-convert-png-to-svg-header',
+    sidebar_right: 'PLACEHOLDER-convert-png-to-svg-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-png-to-svg-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-png-to-svg-incontent',
+    footer: 'PLACEHOLDER-convert-png-to-svg-footer',
+  },
+  'png-to-ico': {
+    header: 'PLACEHOLDER-png-to-ico-header',
+    sidebar_right: 'PLACEHOLDER-png-to-ico-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-png-to-ico-sidebar-left',
+    incontent: 'PLACEHOLDER-png-to-ico-incontent',
+    footer: 'PLACEHOLDER-png-to-ico-footer',
+  },
+  'svg-converter': {
+    header: 'PLACEHOLDER-svg-converter-header',
+    sidebar_right: 'PLACEHOLDER-svg-converter-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-svg-converter-sidebar-left',
+    incontent: 'PLACEHOLDER-svg-converter-incontent',
+    footer: 'PLACEHOLDER-svg-converter-footer',
+  },
 };
 
 /** Get the slot set for a tool slug, or undefined if none configured. */

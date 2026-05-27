@@ -53,6 +53,7 @@
     "aiTooltip": "About AI Image Tools",
     "selectiveFacesTooltip": "About selective face privacy",
     "removeObjectTooltip": "About object removal",
-    "metadataTooltip": "About metadata handling"
+    "metadataTooltip": "About metadata handling",
+    "vectorizeThresholdTooltip": "About the vectorization threshold"
   }
 }
