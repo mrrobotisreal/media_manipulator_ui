@@ -2,6 +2,15 @@
   "toolsIndex": {
     "title": "Free Online Media Tools",
     "subtitle": "Focused, single-purpose tools for converting, compressing, transcribing, and cleaning up image, video, and audio files. No signup. Files deleted within 24 hours.",
+    "featured": {
+      "title": "Featured",
+      "cta": "Open Content Studio",
+      "contentStudio": {
+        "name": "Content Studio",
+        "badge": "New",
+        "tagline": "Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser."
+      }
+    },
     "needMore": {
       "title": "Need more than a single-purpose tool?",
       "body": "The homepage converter bundles every option — format, AI tools, metadata, trim, transcription — into one upload. Tutorials walk through every setting.",
@@ -15,6 +24,105 @@
         "label": "How Media Manipulator works",
         "description": "See how files are processed and temporarily stored."
       }
+    }
+  },
+  "contentStudio": {
+    "title": "Content Studio",
+    "badge": "New",
+    "tagline": "Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser.",
+    "backToTools": "Back to tools",
+    "slots": {
+      "mediaBin": { "title": "Media" },
+      "timeline": { "title": "Timeline" }
+    },
+    "newProject": {
+      "title": "New project",
+      "name": "Project name",
+      "namePlaceholder": "My first edit",
+      "resolution": "Resolution",
+      "fps": "Frame rate",
+      "create": "Create project"
+    },
+    "recents": {
+      "title": "Recent projects",
+      "empty": "No projects yet. Create one to get started — your recent projects will show up here.",
+      "loading": "Loading your projects…",
+      "error": "Couldn't load your recent projects. Refresh to try again."
+    },
+    "mediaBin": {
+      "dropHint": "Drop video or audio here",
+      "choose": "Choose files",
+      "empty": "No media yet. Add a clip to get started.",
+      "building": "building preview…",
+      "failed": "failed",
+      "addToTimeline": "Add to timeline",
+      "dragHint": "Drag onto a track, or click + to add"
+    },
+    "preview": {
+      "empty": "Add a clip to preview your edit",
+      "building": "Building preview proxy…"
+    },
+    "transport": {
+      "start": "Jump to start",
+      "prevFrame": "Previous frame",
+      "playPause": "Play / Pause",
+      "nextFrame": "Next frame",
+      "end": "Jump to end"
+    },
+    "timeline": {
+      "rippleDelete": "Ripple delete",
+      "rippleHint": "Delete clip and close the gap",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "addVideoTrack": "Add video track",
+      "addAudioTrack": "Add audio track",
+      "mute": "Mute track",
+      "unmute": "Unmute track"
+    },
+    "editor": {
+      "back": "Projects",
+      "loading": "Loading editor…",
+      "loadError": "We couldn't load this project.",
+      "saving": "Saving…",
+      "unsaved": "Unsaved changes",
+      "saved": "Saved",
+      "mobileHint": "Content Studio works best on a larger screen with a mouse or trackpad.",
+      "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom"
+    },
+    "inspector": {
+      "title": "Clip effects",
+      "none": "Select a single clip to edit its effects.",
+      "transition": "Cross-dissolve",
+      "transitionNoPrev": "Add a clip before this one to cross-dissolve.",
+      "color": "Color",
+      "addColor": "Adjust",
+      "removeColor": "Reset",
+      "brightness": "Brightness",
+      "contrast": "Contrast",
+      "saturation": "Saturation",
+      "text": "Text overlays",
+      "addText": "Add text",
+      "textPlaceholder": "Label text",
+      "posX": "X",
+      "posY": "Y",
+      "size": "Size",
+      "remove": "Remove"
+    },
+    "export": {
+      "button": "Export MP4",
+      "title": "Export to MP4",
+      "description": "Render your timeline to an MP4 on the server, then download it.",
+      "fileName": "File name",
+      "quality": "Quality",
+      "qualityHigh": "High",
+      "qualityMedium": "Medium",
+      "qualityLow": "Low",
+      "start": "Start export",
+      "rendering": "Rendering…",
+      "failed": "Export failed.",
+      "ready": "Your export is ready.",
+      "download": "Download MP4",
+      "again": "Export again"
     }
   },
   "toolPage": {

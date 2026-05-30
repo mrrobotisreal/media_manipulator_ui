@@ -7,6 +7,7 @@ import MediaTrimModal from "@/components/media-trim-modal";
 import AdvancedVideoEffects from "@/components/advanced-video-effects";
 import AIVideoTools from "@/components/ai-video-tools";
 import type { ConversionFormData } from "@/schemas/types";
+import type { VideoFormPresets } from "@/components/embedded-tool-panel";
 import { useState } from "react";
 import { useLocalization } from "@/i18n/useLocalization";
 
@@ -20,17 +21,27 @@ const VideoConversionForm: React.FC<{
   onSubmit: (data: ConversionFormData) => void;
   isLoading: boolean;
   videoUrl?: string;
-}> = ({ onSubmit, isLoading, videoUrl }) => {
+  /** Tool-page preset/lock configuration (embedded SEO landing pages). */
+  presets?: VideoFormPresets;
+}> = ({ onSubmit, isLoading, videoUrl, presets }) => {
   const { t, formatDuration } = useLocalization(['interface', 'error']);
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [trimRange, setTrimRange] = useState<TrimRange | null>(null);
 
+  // A locked output format must win over a default, and is still submitted even
+  // though the select is disabled (react-hook-form reads its own state, not the
+  // disabled DOM node). Falls back to the everywhere-safe MP4 default.
+  const lockedFormat = presets?.lockedOutputFormat;
+  const initialFormat = lockedFormat ?? presets?.defaultOutputFormat ?? 'mp4';
+
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(videoConversionSchema),
     defaultValues: {
-      format: 'mp4' as const,
-      quality: 'medium' as const,
-      speed: 1,
+      format: initialFormat,
+      quality: presets?.defaultQuality ?? 'medium',
+      speed: presets?.defaultSpeed ?? 1,
+      width: presets?.defaultWidth,
+      height: presets?.defaultHeight,
       preserveAspectRatio: true,
       // Visual Effects defaults
       visualEffects: {
@@ -165,6 +176,7 @@ const VideoConversionForm: React.FC<{
           control={control}
           onTrimClick={videoUrl ? handleTrimClick : undefined}
           trimStatus={getTrimStatus()}
+          lockedVideoFormat={lockedFormat}
         />
 
         {/* AI Video Tools — currently AI Frame Interpolation */}

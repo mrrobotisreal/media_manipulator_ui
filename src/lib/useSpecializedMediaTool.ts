@@ -18,7 +18,8 @@ export type SpecializedToolMode =
   | 'audio_waveform'
   | 'extract_audio'
   | 'extract_video_only'
-  | 'extract_frames';
+  | 'extract_frames'
+  | 'trim_video';
 
 export interface SpecializedToolOptions {
   /** The mode the backend dispatches on. */

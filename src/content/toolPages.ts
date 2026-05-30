@@ -10,6 +10,10 @@ import type {
   EmbeddedMediaKind,
   EmbeddedTask,
   EmbeddedAIImageOperation,
+  EmbeddedVideoFormat,
+  EmbeddedExtractAudioFormat,
+  EmbeddedVideoCompressionPreset,
+  EmbeddedVideoCodec,
 } from '@/components/embedded-tool-panel';
 import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 
@@ -69,7 +73,7 @@ export interface ToolPageContent {
   /** Open Graph description (often same as metaDescription). */
   ogDescription: string;
   /** Top-level category for the /tools index grouping. */
-  category: 'image' | 'video' | 'audio' | 'ai' | 'metadata';
+  category: 'image' | 'video' | 'audio' | 'ai' | 'metadata' | 'contentStudio';
   /** Embedded panel configuration. */
   embed: {
     defaultMediaKind: EmbeddedMediaKind;
@@ -91,6 +95,28 @@ export interface ToolPageContent {
     defaultHeight?: number;
     /** Visually emphasize the resize controls (image resizer). */
     emphasizeResize?: boolean;
+    /** Video: preselect the output container/codec (video tools only). */
+    defaultVideoOutputFormat?: EmbeddedVideoFormat;
+    /** Video: lock the output container/codec select (e.g. MOV -> MP4 pages). */
+    lockedVideoOutputFormat?: EmbeddedVideoFormat;
+    /** Video: preselect the quality preset (video tools only). */
+    defaultVideoQuality?: 'low' | 'medium' | 'high';
+    /** Video: preselect target width in px (video tools only). */
+    defaultVideoWidth?: number;
+    /** Video: preselect target height in px (video tools only). */
+    defaultVideoHeight?: number;
+    /** Video: preselect playback speed multiplier (video tools only). */
+    defaultVideoSpeed?: number;
+    /** Extract-audio: preselect the output audio format (video-to-audio pages). */
+    defaultExtractAudioFormat?: EmbeddedExtractAudioFormat;
+    /** Extract-audio: lock the output audio format (mp4-to-mp3 page). */
+    lockedExtractAudioFormat?: EmbeddedExtractAudioFormat;
+    /** Video compressor: default compression level. */
+    defaultVideoCompressionPreset?: EmbeddedVideoCompressionPreset;
+    /** Video compressor: default codec. */
+    defaultVideoCodec?: EmbeddedVideoCodec;
+    /** Crop/resize/rotate: seed transform values (rotate-video / crop-video). */
+    defaultTransform?: { rotation?: number; crop?: { x: number; y: number; width: number; height: number } };
     /** PDF -> image: default output image format (jpg | png). */
     pdfDefaultOutputFormat?: 'jpg' | 'png';
     /** PDF -> image: lock the output format select. */
@@ -139,6 +165,69 @@ const sharedPrivacyNote =
   'Your uploads are processed on our own servers and automatically deleted within 24 hours. We do not share your files with third-party AI providers, and AI features run on a local GPU server we operate. No login or account is required.';
 
 export const TOOL_PAGES: ToolPageContent[] = [
+  // ----------------------------------------------------------------------- CONTENT STUDIO
+  {
+    slug: 'content-studio',
+    name: 'Content Studio',
+    h1: 'Content Studio',
+    tagline:
+      'Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser.',
+    metaTitle: 'Content Studio — Free Online Multi-Track Video Editor | Media Manipulator',
+    metaDescription:
+      'Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a free, Premiere Pro–style video editor that runs right in your browser. No signup, no install.',
+    ogTitle: '🎬 Content Studio — Free Multi-Track Video Editor in Your Browser',
+    ogDescription:
+      'Edit, layer & mix video and audio on a multi-track timeline, add titles, transitions & color, then export MP4. A Premiere Pro–style editor — right in your browser, no signup, totally free. Come try it! 🎬',
+    category: 'contentStudio',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'edit_video',
+      title: 'Edit video',
+      description:
+        '',
+    },
+    intro:
+      '',
+    whatItDoes: [
+      '',
+    ],
+    flowSteps: [
+      {
+        title: '',
+        description: '',
+      },
+
+    ],
+    advancedDetails: [
+      '',
+    ],
+    whyItMatters: [
+      '',
+    ],
+    useCases: [
+      {
+        title: '',
+        description: '',
+      },
+    ],
+    whyMediaManipulator: [
+      '',
+    ],
+    privacyNote: sharedPrivacyNote,
+    faq: [
+      {
+        question: '',
+        answer: '',
+      },
+    ],
+    related: [
+    ],
+    primaryKeyword: '',
+    secondaryKeywords: [
+      '',
+    ],
+  },
+
   // ----------------------------------------------------------------------- METADATA / PRIVACY
   {
     slug: 'remove-exif-metadata',
@@ -382,9 +471,29 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       {
+        label: 'Video compressor',
+        to: '/tools/video-compressor',
+        description: 'Compress any video with one-click presets.',
+      },
+      {
+        label: 'Compress MP4',
+        to: '/tools/compress-mp4',
+        description: 'MP4-specific compressor with H.264 output.',
+      },
+      {
         label: 'Video converter',
         to: '/tools/video-converter',
         description: 'Convert between MP4, WebM, MOV, AVI, and more.',
+      },
+      {
+        label: 'MP4 converter',
+        to: '/tools/mp4-converter',
+        description: 'Convert almost any video into a universal MP4.',
+      },
+      {
+        label: 'Convert MP4 to WebM',
+        to: '/tools/convert-mp4-to-webm',
+        description: 'Re-encode MP4 into a smaller VP9 WebM for the web.',
       },
       {
         label: 'Convert video to animated GIF',
@@ -785,6 +894,21 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
     ],
     related: [
+      {
+        label: 'MP4 to GIF',
+        to: '/tools/mp4-to-gif',
+        description: 'Output locked to GIF for MP4 input.',
+      },
+      {
+        label: 'Video to GIF',
+        to: '/tools/video-to-gif',
+        description: 'Make a GIF from any video format.',
+      },
+      {
+        label: 'GIF converter',
+        to: '/tools/gif-converter',
+        description: 'The GIF hub — make and tune animated GIFs.',
+      },
       {
         label: 'Compress video',
         to: '/tools/compress-video',
@@ -4072,8 +4196,16 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is there a file-size limit?', answer: 'Very large files may be rejected on the free tier. Try lowering the resolution first.' },
     ],
     related: [
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert almost any video into a universal MP4.' },
+      { label: 'Convert MOV to MP4', to: '/tools/convert-mov-to-mp4', description: 'Make QuickTime/iPhone footage play everywhere.' },
+      { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'Turn web video into an editable MP4.' },
+      { label: 'Convert MP4 to WebM', to: '/tools/convert-mp4-to-webm', description: 'Shrink MP4 into VP9 WebM for the web.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Focused compressor for shrinking video files.' },
       { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Turn short clips into animated GIFs.' },
+      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'Extract the audio track from an MP4 as MP3.' },
+      { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Cut a clip to the part you want, losslessly.' },
+      { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution to 1080p, 720p, or custom.' },
+      { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix sideways or upside-down footage.' },
       { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Pull speech out of video as text or VTT captions.' },
       { label: 'AI Frame Interpolation', to: '/tools/ai-frame-interpolation', description: 'Boost video FPS to 48, 60, or 120 with AI-generated frames.' },
       { label: 'Transcode video to HLS', to: '/tools/transcode-to-hls', description: 'Generate an adaptive HLS package from any video.' },
@@ -4089,6 +4221,1783 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'convert MOV to MP4',
       'convert AVI to MP4',
       'free video converter',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- VIDEO SEO BATCH 1 (MP4 / format converters, video-to-audio, video-to-GIF)
+  {
+    slug: 'mp4-converter',
+    name: 'MP4 Converter',
+    h1: 'Free MP4 Converter Online',
+    tagline:
+      'Convert almost any video — MOV, WebM, AVI, MKV, FLV, or WMV — into a universally compatible MP4 (H.264 + AAC).',
+    metaTitle: 'Free MP4 Converter Online | Media Manipulator',
+    metaDescription:
+      'Free online MP4 converter. Convert MOV, WebM, AVI, MKV, FLV, and WMV to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Free MP4 Converter Online',
+    ogDescription:
+      'Convert MOV, WebM, AVI, MKV, FLV, and WMV to a universal MP4 that plays on every device and platform.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'mp4_converter',
+      defaultVideoOutputFormat: 'mp4',
+      title: 'Convert a video to MP4',
+      description:
+        'Upload any video and convert it to MP4. MP4 is preselected and uses H.264 + AAC by default, but you can switch the output to WebM, MOV, MKV, and more.',
+    },
+    intro:
+      'MP4 is the format that plays everywhere — phones, browsers, TVs, editors, and social platforms all accept it. If you have a clip in MOV, WebM, AVI, MKV, FLV, or WMV that will not open or upload, converting it to MP4 (H.264 video + AAC audio) is almost always the fix. Media Manipulator re-encodes your video to a clean, broadly compatible MP4 with no watermark.',
+    whatItDoes: [
+      'Converts MOV, WebM, AVI, MKV, FLV, WMV, and more into MP4.',
+      'Encodes MP4 with H.264 + AAC, the safe-everywhere default, plus -pix_fmt yuv420p and a faststart flag for instant playback.',
+      'Lets you resize, trim, change frame rate, and adjust quality before exporting.',
+      'Keeps the output unlocked so you can target WebM, MOV, MKV, or GIF from the same upload.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video container.' },
+      { title: 'Keep MP4 selected', description: 'MP4 (H.264 + AAC) is preselected; pick a quality preset.' },
+      { title: 'Convert', description: 'We re-encode to a clean, compatible MP4.' },
+      { title: 'Download', description: 'Save your MP4, ready to upload or play anywhere.' },
+    ],
+    advancedDetails: [
+      'MP4 output uses libx264 with a CRF that maps to your quality preset (Low ≈ 30, Medium ≈ 23, High ≈ 18) and AAC audio.',
+      'We add -pix_fmt yuv420p so the file plays in Safari, QuickTime, and on social platforms, and -movflags +faststart so playback can begin before the file finishes downloading.',
+      'For the smallest web files you can switch the output to WebM (VP9); for editing handoffs, MOV with ProRes preserves more quality.',
+    ],
+    whyItMatters: [
+      'A wrong or exotic container is the most common reason a video will not play or upload.',
+      'MP4/H.264 is the single most widely supported video format in the world.',
+      'Re-encoding to MP4 fixes unplayable files without you needing a desktop editor.',
+    ],
+    useCases: [
+      { title: 'Make footage uploadable', description: 'Convert a MOV or MKV that a site rejects into an accepted MP4.' },
+      { title: 'Play on any device', description: 'Turn AVI/WMV archives into MP4 that modern phones and TVs play.' },
+      { title: 'Prep for social', description: 'Export an MP4 that Instagram, TikTok, and YouTube accept without re-processing issues.' },
+      { title: 'Standardize a library', description: 'Bring a mix of containers into one consistent MP4 format.' },
+    ],
+    whyMediaManipulator: [
+      'Server-side FFmpeg with the correct pixel format and faststart flag baked in.',
+      'Output is not locked — convert to MP4 today, WebM or GIF tomorrow from the same tool.',
+      'Free, no watermark, no signup, and files are deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mov', 'webm', 'avi', 'mkv', 'flv', 'wmv', 'm4v', 'mpeg', 'mp4'],
+      supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv', 'avi', 'gif'],
+      processingNotes: ['MP4 output uses H.264 + AAC with yuv420p and +faststart for universal playback.'],
+    },
+    faq: [
+      { question: 'What is the best MP4 setting for compatibility?', answer: 'The default — H.264 video and AAC audio with yuv420p — plays on virtually every device, browser, and platform.' },
+      { question: 'Can I convert MOV or WebM to MP4 here?', answer: 'Yes. Upload a MOV, WebM, AVI, MKV, FLV, or WMV and the converter outputs MP4. There are also dedicated MOV-to-MP4 and WebM-to-MP4 pages.' },
+      { question: 'Will converting to MP4 reduce quality?', answer: 'Re-encoding is lossy, but at the Medium or High quality preset the difference is hard to notice. Pick High to stay closest to the source.' },
+      { question: 'Is there a watermark?', answer: 'No. The output MP4 is clean, with no watermark or branding.' },
+      { question: 'Is there a file-size limit?', answer: 'Very large files may be rejected on the free tier. Lowering the resolution or trimming the clip first usually helps.' },
+    ],
+    related: [
+      { label: 'Convert MOV to MP4', to: '/tools/convert-mov-to-mp4', description: 'QuickTime/iPhone MOV to MP4.' },
+      { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'Web video to MP4.' },
+      { label: 'Convert AVI to MP4', to: '/tools/convert-avi-to-mp4', description: 'Old AVI archives to MP4.' },
+      { label: 'Convert MKV to MP4', to: '/tools/convert-mkv-to-mp4', description: 'Matroska to MP4.' },
+      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'Extract MP3 audio from an MP4.' },
+      { label: 'MP4 to GIF', to: '/tools/mp4-to-gif', description: 'Turn an MP4 clip into an animated GIF.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 after converting.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container, codec, and audio.' },
+    ],
+    primaryKeyword: 'mp4 converter',
+    secondaryKeywords: [
+      'mp4 converter online',
+      'free mp4 converter',
+      'video to mp4',
+      'convert to mp4',
+      'online mp4 converter',
+    ],
+  },
+  {
+    slug: 'convert-mov-to-mp4',
+    name: 'Convert MOV to MP4',
+    h1: 'Convert MOV to MP4 Online Free',
+    tagline:
+      'Turn QuickTime and iPhone .mov files into a universal MP4 that plays and uploads everywhere.',
+    metaTitle: 'Convert MOV to MP4 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online MOV to MP4 converter. Convert QuickTime and iPhone .mov videos to MP4 that plays everywhere. No watermark, no signup, deleted within 24 hours.',
+    ogTitle: 'Convert MOV to MP4 Online Free',
+    ogDescription:
+      'Convert QuickTime / iPhone MOV files to a universal MP4 that uploads and plays on any device.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'mov_to_mp4',
+      lockedVideoOutputFormat: 'mp4',
+      lockedInputFormat: 'mov',
+      acceptOverride: 'video/quicktime,video/mp4,video/*,.mov',
+      title: 'Convert MOV to MP4',
+      description:
+        'Upload your .mov file. The output is locked to MP4 (H.264 + AAC) for this tool, so just upload and convert.',
+    },
+    intro:
+      'MOV is Apple’s QuickTime container — it is what iPhones, Macs, and many cameras record by default. It is great inside the Apple ecosystem, but it can refuse to play on Windows, Android, or some upload forms. Converting MOV to MP4 keeps the same H.264 video and AAC audio in a container the whole world accepts, usually with no visible quality change.',
+    whatItDoes: [
+      'Converts QuickTime / iPhone .mov files to MP4.',
+      'Locks the output to MP4 (H.264 + AAC) so the result plays everywhere.',
+      'Adds -pix_fmt yuv420p and +faststart so the MP4 plays in browsers and starts instantly.',
+      'Lets you trim, resize, and pick a quality preset before exporting.',
+    ],
+    flowSteps: [
+      { title: 'Upload your MOV', description: 'Drop in a .mov file from your iPhone, Mac, or camera.' },
+      { title: 'Output is locked to MP4', description: 'No format picking needed — MP4 is set for this tool.' },
+      { title: 'Convert', description: 'We re-wrap/re-encode the video into a clean MP4.' },
+      { title: 'Download', description: 'Save your MP4, ready for any device or platform.' },
+    ],
+    advancedDetails: [
+      'Most MOV files already contain H.264 video, so the conversion is fast and near-lossless at High quality.',
+      'We force yuv420p chroma so the MP4 plays in Safari and on social platforms that reject 4:2:2/4:4:4 video.',
+      'If your MOV holds ProRes, the converter transcodes it down to H.264 — pick High quality to keep the most detail.',
+    ],
+    whyItMatters: [
+      'MOV often will not play on Windows or Android without extra codecs.',
+      'Many upload forms and editors accept MP4 but reject MOV.',
+      'MP4 is the safest format to share an iPhone video with anyone.',
+    ],
+    useCases: [
+      { title: 'iPhone videos', description: 'Convert a .mov recorded on an iPhone so it plays on a Windows PC.' },
+      { title: 'Upload to the web', description: 'Turn a QuickTime export into an MP4 a website will accept.' },
+      { title: 'Send to non-Apple users', description: 'Share footage with Android and Windows users without playback issues.' },
+      { title: 'Editor compatibility', description: 'Feed an MP4 into editors that struggle with raw MOV.' },
+    ],
+    whyMediaManipulator: [
+      'Output locked to a known-good MP4 profile — no guessing at settings.',
+      'Server-side FFmpeg handles ProRes-in-MOV and HEVC-in-MOV sources too.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mov', 'qt'],
+      supportedOutputFormats: ['mp4'],
+      processingNotes: ['Output is locked to MP4 (H.264 + AAC, yuv420p, +faststart).'],
+    },
+    faq: [
+      { question: 'How do I convert MOV to MP4?', answer: 'Upload your .mov file and click convert — the output is already set to MP4, so there is nothing else to choose.' },
+      { question: 'Does converting MOV to MP4 lose quality?', answer: 'Most MOV files use H.264, so at High quality the re-encode is visually near-lossless. Lower presets trade some quality for a smaller file.' },
+      { question: 'Why will my iPhone MOV not play on Windows?', answer: 'Windows may lack the QuickTime/HEVC codecs. MP4 with H.264 + AAC plays without extra software.' },
+      { question: 'Is QuickTime to MP4 the same thing?', answer: 'Yes — QuickTime files use the .mov container, so converting QuickTime to MP4 is exactly this tool.' },
+      { question: 'Is there a watermark or signup?', answer: 'No watermark and no account required. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for email or the web.' },
+      { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Trim a clip and export an animated GIF.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container, codec, and audio.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and quality options.' },
+    ],
+    primaryKeyword: 'mov to mp4',
+    secondaryKeywords: [
+      'mov to mp4 converter',
+      'convert mov to mp4',
+      'quicktime to mp4',
+      'iphone mov to mp4',
+      'mov to mp4 online',
+    ],
+  },
+  {
+    slug: 'convert-webm-to-mp4',
+    name: 'Convert WebM to MP4',
+    h1: 'Convert WebM to MP4 Online Free',
+    tagline:
+      'Turn web-optimized .webm video into an MP4 you can edit, share, and play on any device.',
+    metaTitle: 'Convert WebM to MP4 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online WebM to MP4 converter. Convert .webm (VP8/VP9) video to MP4 (H.264 + AAC) for editors and devices that cannot open WebM. No watermark, no signup.',
+    ogTitle: 'Convert WebM to MP4 Online Free',
+    ogDescription:
+      'Convert .webm video to a universal MP4 that editors, phones, and TVs can play.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'webm_to_mp4',
+      lockedVideoOutputFormat: 'mp4',
+      lockedInputFormat: 'webm',
+      acceptOverride: 'video/webm,video/mp4,video/*,.webm',
+      title: 'Convert WebM to MP4',
+      description:
+        'Upload your .webm file. The output is locked to MP4 (H.264 + AAC) for this tool, so just upload and convert.',
+    },
+    intro:
+      'WebM is a modern, open container built for the web — small files, great for browser video. But many video editors, older devices, and messaging apps cannot open WebM. Converting WebM to MP4 re-encodes the VP8/VP9 video to H.264 and the audio to AAC, giving you a file that works in Premiere, Resolve, phones, and TVs.',
+    whatItDoes: [
+      'Converts .webm (VP8/VP9 + Vorbis/Opus) video to MP4.',
+      'Locks the output to MP4 (H.264 + AAC) for maximum compatibility.',
+      'Adds yuv420p and +faststart so the MP4 plays in every browser and starts instantly.',
+      'Lets you trim, resize, and pick a quality preset before exporting.',
+    ],
+    flowSteps: [
+      { title: 'Upload your WebM', description: 'Drop in a .webm file downloaded from the web or a screen recorder.' },
+      { title: 'Output is locked to MP4', description: 'MP4 is preset for this tool — nothing to configure.' },
+      { title: 'Convert', description: 'We transcode VP8/VP9 to H.264 + AAC.' },
+      { title: 'Download', description: 'Save your MP4 for editing or playback anywhere.' },
+    ],
+    advancedDetails: [
+      'WebM uses VP8/VP9 video, which most editors cannot import; MP4/H.264 imports cleanly into every NLE.',
+      'We force yuv420p so the MP4 plays in Safari and on social platforms.',
+      'If you actually want a smaller web file, the reverse MP4-to-WebM tool produces VP9 WebM instead.',
+    ],
+    whyItMatters: [
+      'Most desktop editors cannot import WebM but handle MP4 natively.',
+      'Some phones, TVs, and chat apps refuse to play WebM.',
+      'MP4 is the safe handoff format for video you downloaded as WebM.',
+    ],
+    useCases: [
+      { title: 'Edit downloaded video', description: 'Bring a .webm clip into Premiere or Resolve as an MP4.' },
+      { title: 'Screen recordings', description: 'Convert a WebM screen capture into a shareable MP4.' },
+      { title: 'Play on older devices', description: 'Make a WebM file play on a TV or phone that does not support it.' },
+      { title: 'Messaging apps', description: 'Send video to apps that accept MP4 but not WebM.' },
+    ],
+    whyMediaManipulator: [
+      'Server-side FFmpeg decodes VP8 and VP9 reliably.',
+      'Output locked to a known-good MP4 profile.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['webm'],
+      supportedOutputFormats: ['mp4'],
+      processingNotes: ['Output is locked to MP4 (H.264 + AAC, yuv420p, +faststart).'],
+    },
+    faq: [
+      { question: 'How do I convert WebM to MP4?', answer: 'Upload your .webm file and click convert — the output is already set to MP4.' },
+      { question: 'Why can my editor not open WebM?', answer: 'Most editors do not include VP8/VP9 import. Converting to MP4 (H.264) fixes the import.' },
+      { question: 'Will the file get bigger?', answer: 'MP4/H.264 can be slightly larger than VP9 WebM at the same quality. Pick a lower quality preset if size matters.' },
+      { question: 'Does it keep the audio?', answer: 'Yes — Vorbis/Opus audio is re-encoded to AAC and stays in sync.' },
+      { question: 'Is it free?', answer: 'Yes, free with no watermark and no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Convert MP4 to WebM', to: '/tools/convert-mp4-to-webm', description: 'The reverse — make a small VP9 WebM.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for sharing.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
+    ],
+    primaryKeyword: 'webm to mp4',
+    secondaryKeywords: [
+      'webm to mp4 converter',
+      'convert webm to mp4',
+      'webm to mp4 online',
+      'free webm to mp4',
+    ],
+  },
+  {
+    slug: 'convert-avi-to-mp4',
+    name: 'Convert AVI to MP4',
+    h1: 'Convert AVI to MP4 Online Free',
+    tagline:
+      'Modernize old .avi videos into a compact MP4 that plays on every phone, browser, and TV.',
+    metaTitle: 'Convert AVI to MP4 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online AVI to MP4 converter. Convert old .avi (Xvid/DivX) videos to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Convert AVI to MP4 Online Free',
+    ogDescription:
+      'Convert legacy .avi video to a modern, compact MP4 that plays on any device.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'avi_to_mp4',
+      lockedVideoOutputFormat: 'mp4',
+      lockedInputFormat: 'avi',
+      acceptOverride: 'video/x-msvideo,video/avi,video/mp4,video/*,.avi',
+      title: 'Convert AVI to MP4',
+      description:
+        'Upload your .avi file. The output is locked to MP4 (H.264 + AAC) for this tool, so just upload and convert.',
+    },
+    intro:
+      'AVI is a classic Windows container from the DivX/Xvid era. The files are often large and use codecs that modern phones, browsers, and TVs no longer play. Converting AVI to MP4 re-encodes the video to efficient H.264 and the audio to AAC, producing a smaller file that plays on anything you own today.',
+    whatItDoes: [
+      'Converts legacy .avi (Xvid, DivX, MJPEG, and more) to MP4.',
+      'Locks the output to MP4 (H.264 + AAC) for modern playback.',
+      'Usually produces a noticeably smaller file than the AVI source.',
+      'Lets you trim, resize, and pick a quality preset before exporting.',
+    ],
+    flowSteps: [
+      { title: 'Upload your AVI', description: 'Drop in an old .avi file from an archive or camera.' },
+      { title: 'Output is locked to MP4', description: 'MP4 is preset — nothing to configure.' },
+      { title: 'Convert', description: 'We re-encode to H.264 + AAC.' },
+      { title: 'Download', description: 'Save a smaller, modern MP4.' },
+    ],
+    advancedDetails: [
+      'AVI commonly uses Xvid/DivX (MPEG-4 Part 2); H.264 is roughly twice as efficient, so the MP4 is usually much smaller.',
+      'We force yuv420p so the result plays in browsers and on social platforms.',
+      'Interlaced AVI captures may benefit from the deinterlace option in the full video converter.',
+    ],
+    whyItMatters: [
+      'AVI files are big and increasingly unplayable on modern devices.',
+      'MP4/H.264 is smaller and plays everywhere.',
+      'Converting old archives to MP4 future-proofs them.',
+    ],
+    useCases: [
+      { title: 'Old video archives', description: 'Modernize camcorder or DVD-rip AVIs into MP4.' },
+      { title: 'Free up space', description: 'Shrink a large AVI into a smaller MP4.' },
+      { title: 'Phone & TV playback', description: 'Make an AVI play on devices that dropped AVI support.' },
+      { title: 'Upload to the web', description: 'Turn an AVI into an MP4 a site will accept.' },
+    ],
+    whyMediaManipulator: [
+      'Server-side FFmpeg decodes old AVI codecs other tools choke on.',
+      'Output locked to a known-good MP4 profile.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['avi'],
+      supportedOutputFormats: ['mp4'],
+      processingNotes: ['Output is locked to MP4 (H.264 + AAC, yuv420p, +faststart).'],
+    },
+    faq: [
+      { question: 'How do I convert AVI to MP4?', answer: 'Upload your .avi file and click convert — the output is already set to MP4.' },
+      { question: 'Will the MP4 be smaller than the AVI?', answer: 'Usually yes. H.264 is far more efficient than the Xvid/DivX codecs most AVIs use.' },
+      { question: 'Does it support old DivX/Xvid AVIs?', answer: 'Yes — FFmpeg decodes the common AVI codecs and re-encodes them to H.264.' },
+      { question: 'Will I lose quality?', answer: 'Re-encoding is lossy, but at High quality the difference is minimal and the file is still smaller.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 further.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and deinterlace.' },
+    ],
+    primaryKeyword: 'avi to mp4',
+    secondaryKeywords: [
+      'avi to mp4 converter',
+      'convert avi to mp4',
+      'avi to mp4 online',
+      'free avi to mp4',
+    ],
+  },
+  {
+    slug: 'convert-mkv-to-mp4',
+    name: 'Convert MKV to MP4',
+    h1: 'Convert MKV to MP4 Online Free',
+    tagline:
+      'Turn Matroska .mkv files into an MP4 that streams, uploads, and plays on devices that reject MKV.',
+    metaTitle: 'Convert MKV to MP4 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online MKV to MP4 converter. Convert Matroska .mkv video to MP4 (H.264 + AAC) for devices and sites that cannot play MKV. No watermark, no signup.',
+    ogTitle: 'Convert MKV to MP4 Online Free',
+    ogDescription:
+      'Convert Matroska .mkv video to a universal MP4 that plays and uploads everywhere.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'mkv_to_mp4',
+      lockedVideoOutputFormat: 'mp4',
+      lockedInputFormat: 'mkv',
+      acceptOverride: 'video/x-matroska,video/mp4,video/*,.mkv',
+      title: 'Convert MKV to MP4',
+      description:
+        'Upload your .mkv file. The output is locked to MP4 (H.264 + AAC) for this tool, so just upload and convert.',
+    },
+    intro:
+      'MKV (Matroska) is a flexible container popular for high-quality video, but a lot of phones, browsers, smart TVs, and upload forms will not play it. Converting MKV to MP4 puts the video into a container those devices understand. Media Manipulator re-encodes to H.264 + AAC so the result plays and uploads cleanly.',
+    whatItDoes: [
+      'Converts Matroska .mkv files to MP4.',
+      'Locks the output to MP4 (H.264 + AAC) for broad device support.',
+      'Adds yuv420p and +faststart so the MP4 streams and starts instantly.',
+      'Lets you trim, resize, and pick a quality preset before exporting.',
+    ],
+    flowSteps: [
+      { title: 'Upload your MKV', description: 'Drop in a .mkv file.' },
+      { title: 'Output is locked to MP4', description: 'MP4 is preset for this tool.' },
+      { title: 'Convert', description: 'We move/transcode the video into an MP4.' },
+      { title: 'Download', description: 'Save an MP4 that plays everywhere.' },
+    ],
+    advancedDetails: [
+      'If the MKV already holds H.264 + AAC, the conversion is fast and visually lossless.',
+      'We force yuv420p so the MP4 plays in Safari and on social platforms.',
+      'MKV can carry many subtitle/audio tracks; the converter keeps the primary video and first audio track.',
+    ],
+    whyItMatters: [
+      'Many devices and websites simply do not support MKV.',
+      'MP4 is the safe container for sharing and uploading.',
+      'Converting keeps your high-quality video usable everywhere.',
+    ],
+    useCases: [
+      { title: 'Phone & TV playback', description: 'Make an MKV play on a device that rejects it.' },
+      { title: 'Upload to the web', description: 'Turn an MKV into an MP4 a site will accept.' },
+      { title: 'Editor handoff', description: 'Import an MP4 into editors that struggle with MKV.' },
+      { title: 'Standardize a library', description: 'Bring MKV downloads in line with your MP4 collection.' },
+    ],
+    whyMediaManipulator: [
+      'Server-side FFmpeg handles MKV with multiple tracks.',
+      'Output locked to a known-good MP4 profile.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mkv'],
+      supportedOutputFormats: ['mp4'],
+      processingNotes: ['Output is locked to MP4 (H.264 + AAC, yuv420p, +faststart). The primary video and first audio track are kept.'],
+    },
+    faq: [
+      { question: 'How do I convert MKV to MP4?', answer: 'Upload your .mkv file and click convert — the output is already set to MP4.' },
+      { question: 'Does converting MKV to MP4 lose quality?', answer: 'If the MKV already uses H.264, the result is visually lossless at High quality. Otherwise it is a normal lossy re-encode.' },
+      { question: 'What happens to extra audio or subtitle tracks?', answer: 'The converter keeps the main video and the first audio track. For multi-track needs, reach out and we can look at track selection.' },
+      { question: 'Why will my MKV not play?', answer: 'Many phones, TVs, browsers, and sites do not support the MKV container even when the codecs inside are common.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for sharing.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through every option.' },
+    ],
+    primaryKeyword: 'mkv to mp4',
+    secondaryKeywords: [
+      'mkv to mp4 converter',
+      'convert mkv to mp4',
+      'matroska to mp4',
+      'mkv to mp4 online',
+    ],
+  },
+  {
+    slug: 'convert-mp4-to-webm',
+    name: 'Convert MP4 to WebM',
+    h1: 'Convert MP4 to WebM Online Free',
+    tagline:
+      'Re-encode MP4 into a smaller, open VP9 WebM that is perfect for fast-loading web video.',
+    metaTitle: 'Convert MP4 to WebM Online Free | Media Manipulator',
+    metaDescription:
+      'Free online MP4 to WebM converter. Re-encode MP4 to VP9 + Opus WebM for smaller, faster web video. No watermark, no signup, files deleted within 24 hours.',
+    ogTitle: 'Convert MP4 to WebM Online Free',
+    ogDescription:
+      'Convert MP4 to a smaller, open VP9 WebM that is ideal for embedding on the modern web.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'mp4_to_webm',
+      lockedVideoOutputFormat: 'webm',
+      lockedInputFormat: 'mp4',
+      acceptOverride: 'video/mp4,video/*,.mp4',
+      title: 'Convert MP4 to WebM',
+      description:
+        'Upload your .mp4 file. The output is locked to WebM (VP9 + Opus) for this tool, so just upload and convert.',
+    },
+    intro:
+      'WebM is the open video format built for the web. With VP9 video and Opus audio it delivers smaller files than MP4 at the same quality, which means faster page loads for embedded video. Converting your MP4 to WebM is the right move when you control the player — modern browsers all support it natively.',
+    whatItDoes: [
+      'Converts MP4 (H.264) to WebM (VP9 + Opus).',
+      'Locks the output to WebM for consistent open-web embeds.',
+      'Typically produces a smaller file than the MP4 at the same visual quality.',
+      'Lets you trim, resize, and pick a quality preset before exporting.',
+    ],
+    flowSteps: [
+      { title: 'Upload your MP4', description: 'Drop in an .mp4 file.' },
+      { title: 'Output is locked to WebM', description: 'WebM (VP9 + Opus) is preset for this tool.' },
+      { title: 'Convert', description: 'We re-encode H.264 to VP9 and AAC to Opus.' },
+      { title: 'Download', description: 'Save a smaller .webm for the web.' },
+    ],
+    advancedDetails: [
+      'WebM output uses VP9 video with Opus audio where available, falling back to VP8 + Vorbis on FFmpeg builds without VP9/Opus.',
+      'VP9 encoding is slower than H.264 but yields ~25-50% smaller files at comparable quality.',
+      'Use the <video> tag with both a WebM and an MP4 source so browsers pick the best one they support.',
+    ],
+    whyItMatters: [
+      'Smaller web video means faster pages and lower bandwidth bills.',
+      'WebM is royalty-free and supported by all modern browsers.',
+      'A WebM + MP4 pair covers virtually every browser with the smallest possible files.',
+    ],
+    useCases: [
+      { title: 'Website hero video', description: 'Serve a small, fast-loading background or hero clip.' },
+      { title: 'Open-web embeds', description: 'Embed video without proprietary codec concerns.' },
+      { title: 'Bandwidth savings', description: 'Cut delivery size for high-traffic pages.' },
+      { title: 'HTML5 <video>', description: 'Provide a WebM source alongside an MP4 fallback.' },
+    ],
+    whyMediaManipulator: [
+      'VP9 + Opus encoding with an automatic VP8 + Vorbis fallback.',
+      'Output locked to WebM so the result is predictable.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'm4v'],
+      supportedOutputFormats: ['webm'],
+      processingNotes: ['Output is locked to WebM (VP9 + Opus, or VP8 + Vorbis if VP9/Opus is unavailable).'],
+    },
+    faq: [
+      { question: 'How do I convert MP4 to WebM?', answer: 'Upload your .mp4 file and click convert — the output is already set to WebM.' },
+      { question: 'Is WebM smaller than MP4?', answer: 'At the same visual quality, VP9 WebM is usually 25-50% smaller than H.264 MP4.' },
+      { question: 'Do all browsers support WebM?', answer: 'All modern browsers do. For older browsers, provide an MP4 fallback in your <video> tag.' },
+      { question: 'Why is WebM encoding slower?', answer: 'VP9 is more computationally intensive than H.264. The payoff is a smaller file.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'The reverse direction.' },
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink video without changing the container.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
+    ],
+    primaryKeyword: 'mp4 to webm',
+    secondaryKeywords: [
+      'mp4 to webm converter',
+      'convert mp4 to webm',
+      'mp4 to webm online',
+      'free mp4 to webm',
+    ],
+  },
+  {
+    slug: 'mp4-to-mp3',
+    name: 'Convert MP4 to MP3',
+    h1: 'Convert MP4 to MP3 Online Free',
+    tagline:
+      'Extract the audio track from an MP4 video and save it as a clean MP3 file.',
+    metaTitle: 'Convert MP4 to MP3 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online MP4 to MP3 converter. Extract the audio from an MP4 video and save it as MP3. No watermark, no signup, files deleted within 24 hours.',
+    ogTitle: 'Convert MP4 to MP3 Online Free',
+    ogDescription:
+      'Extract the audio from an MP4 video and download it as a clean MP3 file. Free, no signup.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'mp4_to_mp3',
+      lockedExtractAudioFormat: 'mp3',
+      lockedInputFormat: 'mp4',
+      acceptOverride: 'video/mp4,video/*,.mp4',
+      title: 'Convert MP4 to MP3',
+      description:
+        'Upload your .mp4 video. We pull out the audio track and the output is locked to MP3 for this tool.',
+    },
+    intro:
+      'MP4 to MP3 is really an audio-extraction job: an MP4 is a video container, and you just want the sound. Media Manipulator pulls the first audio track out of your MP4 and re-encodes it to MP3, so you get music, a podcast, a lecture, or a voice memo as a small audio file that plays in any music app.',
+    whatItDoes: [
+      'Extracts the audio stream from an MP4 video.',
+      'Encodes the output as MP3 (libmp3lame) at a quality suited to speech and music.',
+      'Detects MP4s with no audio and returns a clear error instead of an empty file.',
+      'Keeps the full duration and original sample rate.',
+    ],
+    flowSteps: [
+      { title: 'Upload your MP4', description: 'Drop in the .mp4 you want the audio from.' },
+      { title: 'Output is locked to MP3', description: 'MP3 is preset for this tool — nothing to choose.' },
+      { title: 'Extract audio', description: 'FFmpeg pulls the first audio track and encodes MP3.' },
+      { title: 'Download', description: 'Save your MP3, ready for any music player.' },
+    ],
+    advancedDetails: [
+      'This page uses the specialized extract-audio flow, not the video converter, because the output is audio rather than video.',
+      'MP3 is rendered with libmp3lame at quality preset 2 (≈190 kbps VBR) — the sweet spot for speech and music.',
+      'We pre-check the source with ffprobe so MP4s without an audio stream return a useful error.',
+    ],
+    whyItMatters: [
+      'You often want only the sound of a video — a song, a talk, an interview.',
+      'MP3 is tiny compared to the original MP4 and plays in every audio app.',
+      'Audio-only files are ideal for podcasts, transcription, and offline listening.',
+    ],
+    useCases: [
+      { title: 'Save a song', description: 'Pull the audio from a music video as an MP3.' },
+      { title: 'Podcast repurposing', description: 'Turn a video interview into an audio-only episode.' },
+      { title: 'Lectures & talks', description: 'Keep a recorded talk as a small MP3 for offline listening.' },
+      { title: 'Transcription prep', description: 'Provide an MP3 to a transcription tool that prefers audio.' },
+    ],
+    whyMediaManipulator: [
+      'Server-side FFmpeg means no browser codec headaches.',
+      'Clear errors when the MP4 has no audio track.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'm4v'],
+      supportedOutputFormats: ['mp3'],
+      processingNotes: ['Output is locked to MP3. We extract the first audio stream; MP4s with no audio return a clear error.'],
+    },
+    faq: [
+      { question: 'How do I convert MP4 to MP3?', answer: 'Upload your .mp4 video and click extract — the output is already set to MP3, so there is nothing else to choose.' },
+      { question: 'Is this really converting, or extracting audio?', answer: 'It extracts the audio track from the MP4 and encodes it as MP3. That is exactly what people mean by MP4 to MP3.' },
+      { question: 'What MP3 quality do I get?', answer: 'About 190 kbps VBR (libmp3lame -q:a 2), which sounds great for both speech and music.' },
+      { question: 'What if my MP4 has no sound?', answer: 'We detect that up front and return a clear error instead of giving you an empty file.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Video to MP3', to: '/tools/video-to-mp3', description: 'Same thing for any video format.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Choose MP3, WAV, M4A, AAC, FLAC, or OGG.' },
+      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the MP3 to other audio formats.' },
+    ],
+    primaryKeyword: 'mp4 to mp3',
+    secondaryKeywords: [
+      'mp4 to mp3 converter',
+      'extract mp3 from mp4',
+      'convert mp4 to mp3',
+      'mp4 to mp3 online',
+    ],
+  },
+  {
+    slug: 'video-to-mp3',
+    name: 'Convert Video to MP3',
+    h1: 'Convert Video to MP3 Online Free',
+    tagline:
+      'Extract the audio from any video — MP4, MOV, MKV, WebM, AVI — and save it as MP3.',
+    metaTitle: 'Convert Video to MP3 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video to MP3 converter. Extract the audio from MP4, MOV, MKV, WebM, and AVI videos and save it as MP3. No watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Convert Video to MP3 Online Free',
+    ogDescription:
+      'Extract the audio from any video file and download it as MP3. Free, no signup.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'video_to_mp3',
+      defaultExtractAudioFormat: 'mp3',
+      acceptOverride: 'video/*',
+      title: 'Convert video to MP3',
+      description:
+        'Upload any video. We pull out the audio track; MP3 is preselected, and you can switch to WAV, M4A, AAC, FLAC, or OGG.',
+    },
+    intro:
+      'Sometimes you just want the audio out of a video — and not always from an MP4. Media Manipulator extracts the first audio track from any common video container (MP4, MOV, MKV, WebM, AVI, M4V) and encodes it to MP3 by default, with other audio formats available if you need them.',
+    whatItDoes: [
+      'Extracts the audio stream from MP4, MOV, MKV, WebM, AVI, and M4V videos.',
+      'Preselects MP3 output and lets you switch to WAV, M4A, AAC, FLAC, or OGG.',
+      'Detects videos with no audio and returns a clear error instead of an empty file.',
+      'Keeps the full duration and original sample rate.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'MP3 is preselected', description: 'Keep MP3, or pick WAV/M4A/AAC/FLAC/OGG.' },
+      { title: 'Extract audio', description: 'FFmpeg pulls the first audio track and encodes it.' },
+      { title: 'Download', description: 'Save your audio file.' },
+    ],
+    advancedDetails: [
+      'This page uses the specialized extract-audio flow, not the video converter, because the output is audio.',
+      'MP3 is rendered with libmp3lame at quality preset 2 (≈190 kbps VBR); WAV is lossless PCM if you need an editable master.',
+      'We pre-check the source with ffprobe so videos without an audio stream return a useful error.',
+    ],
+    whyItMatters: [
+      'Audio extraction works on far more than just MP4 — MOV, MKV, WebM, and AVI all carry audio.',
+      'MP3 is small and plays in every audio app; WAV is the lossless choice for editing.',
+      'Decoupling audio from video is the first step for podcasts, transcripts, and sampling.',
+    ],
+    useCases: [
+      { title: 'Any source format', description: 'Pull audio from a MOV or MKV, not just an MP4.' },
+      { title: 'Podcast repurposing', description: 'Turn a recorded video call into an audio episode.' },
+      { title: 'Music & samples', description: 'Save a track from a music video as MP3 or lossless WAV.' },
+      { title: 'Transcription prep', description: 'Hand a clean audio file to a transcription tool.' },
+    ],
+    whyMediaManipulator: [
+      'Handles every common video container server-side with FFmpeg.',
+      'MP3 by default, with WAV/M4A/AAC/FLAC/OGG one click away.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
+      processingNotes: ['MP3 is the default. We extract the first audio stream; videos with no audio return a clear error.'],
+    },
+    faq: [
+      { question: 'How do I convert a video to MP3?', answer: 'Upload your video and click extract. MP3 is preselected, so you can just download — or pick another audio format first.' },
+      { question: 'Which video formats are supported?', answer: 'MP4, MOV, MKV, WebM, AVI, and M4V are all supported.' },
+      { question: 'Can I get lossless audio instead of MP3?', answer: 'Yes — switch the output to WAV (lossless PCM) or FLAC before extracting.' },
+      { question: 'What if the video has no sound?', answer: 'We detect that up front and return a clear error rather than an empty file.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'The MP4-specific version.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Full extract-audio tool with every format.' },
+      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the extracted audio to other formats.' },
+    ],
+    primaryKeyword: 'video to mp3',
+    secondaryKeywords: [
+      'video to mp3 converter',
+      'extract audio from video',
+      'convert video to mp3',
+      'video to mp3 online',
+    ],
+  },
+  {
+    slug: 'mp4-to-gif',
+    name: 'Convert MP4 to GIF',
+    h1: 'Convert MP4 to GIF Online Free',
+    tagline:
+      'Turn a short MP4 clip into a clean, looping animated GIF for chat, forums, and the web.',
+    metaTitle: 'Convert MP4 to GIF Online Free | Media Manipulator',
+    metaDescription:
+      'Free online MP4 to GIF converter. Turn short MP4 clips into looping animated GIFs with control over size and frame rate. No watermark, no signup.',
+    ogTitle: 'Convert MP4 to GIF Online Free',
+    ogDescription:
+      'Turn a short MP4 clip into a clean, looping animated GIF. Control size and frame rate.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'mp4_to_gif',
+      lockedVideoOutputFormat: 'gif',
+      lockedInputFormat: 'mp4',
+      acceptOverride: 'video/mp4,video/*,.mp4',
+      title: 'Convert MP4 to GIF',
+      description:
+        'Upload a short .mp4 clip. The output is locked to GIF for this tool — trim to under ~10 seconds and tune width/frame rate in the GIF panel for a small file.',
+    },
+    intro:
+      'Animated GIFs autoplay and loop inline almost everywhere — chat apps, forums, READMEs, and email. Media Manipulator turns a short MP4 into a clean GIF using a palette-aware FFmpeg pipeline plus gifsicle optimization. For the smallest, sharpest result, trim the clip to a few seconds before converting.',
+    whatItDoes: [
+      'Converts a short MP4 clip into a looping animated GIF.',
+      'Locks the output to GIF and exposes width, frame rate, colors, and optimization controls.',
+      'Uses FFmpeg + gifsicle for clean colors and a small file.',
+      'Lets you trim the clip before exporting.',
+    ],
+    flowSteps: [
+      { title: 'Upload your MP4', description: 'Drop in a short .mp4 — under ~10 seconds works best.' },
+      { title: 'Output is locked to GIF', description: 'Trim and tune width/frame rate in the GIF panel.' },
+      { title: 'Generate frames', description: 'FFmpeg samples frames and palettizes a clean GIF.' },
+      { title: 'Download', description: 'Save a looping .gif ready to share.' },
+    ],
+    advancedDetails: [
+      'GIF runs a two-stage pipeline: FFmpeg downscales and samples at your chosen frame rate, then gifsicle quantizes the palette and optimizes the file.',
+      'A 480-900px wide GIF at 12 fps balances smoothness and size for chat and the web.',
+      'GIF is uncompressed compared to MP4 — for clips longer than ~10 seconds, a short MP4 or WebM is usually a better choice.',
+    ],
+    whyItMatters: [
+      'GIFs autoplay and loop where embedded video does not.',
+      'They are the most reliable format for reaction clips, demos, and bug repros.',
+      'A trimmed, well-sized GIF beats attaching a multi-megabyte video.',
+    ],
+    useCases: [
+      { title: 'Reaction clips', description: 'Turn a moment from an MP4 into a looping reaction GIF.' },
+      { title: 'Product demos', description: 'Show a feature in motion in a README or blog post.' },
+      { title: 'Bug reproductions', description: 'Attach a short looping GIF to a ticket.' },
+      { title: 'Social previews', description: 'Use a tiny GIF to preview a longer video.' },
+    ],
+    whyMediaManipulator: [
+      'Palette-aware FFmpeg + gifsicle pipeline for clean colors and small files.',
+      'Trim and tune size/frame rate in one upload.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'm4v'],
+      supportedOutputFormats: ['gif'],
+      processingNotes: ['Output is locked to GIF. Trim to under ~10 seconds for the smallest, sharpest result.'],
+    },
+    faq: [
+      { question: 'How do I convert MP4 to GIF?', answer: 'Upload a short .mp4, trim it if needed, and convert — the output is already set to GIF.' },
+      { question: 'How do I make the GIF smaller?', answer: 'Trim aggressively, lower the width (e.g. 480px), drop the frame rate to 10-12 fps, and reduce the color count.' },
+      { question: 'Will the GIF loop?', answer: 'Yes — exported GIFs loop by default and autoplay inline on most platforms.' },
+      { question: 'How long can the clip be?', answer: 'There is no hard limit, but GIFs over ~10 seconds get large fast. Consider a short MP4 or WebM instead.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Video to GIF', to: '/tools/video-to-gif', description: 'Same thing for any video format.' },
+      { label: 'GIF converter', to: '/tools/gif-converter', description: 'The GIF hub — make and tune GIFs.' },
+      { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'Full video-to-GIF tool.' },
+    ],
+    primaryKeyword: 'mp4 to gif',
+    secondaryKeywords: [
+      'mp4 to gif converter',
+      'convert mp4 to gif',
+      'mp4 to gif online',
+      'free mp4 to gif',
+    ],
+  },
+  {
+    slug: 'video-to-gif',
+    name: 'Convert Video to GIF',
+    h1: 'Convert Video to GIF Online Free',
+    tagline:
+      'Make a looping animated GIF from any short video clip — MP4, MOV, WebM, MKV, or AVI.',
+    metaTitle: 'Convert Video to GIF Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video to GIF converter. Make a looping animated GIF from MP4, MOV, WebM, MKV, or AVI clips. Control size and frame rate. No watermark, no signup.',
+    ogTitle: 'Convert Video to GIF Online Free',
+    ogDescription:
+      'Make a looping animated GIF from any short video clip. Control size and frame rate.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'video_to_gif',
+      lockedVideoOutputFormat: 'gif',
+      acceptOverride: 'video/*',
+      title: 'Convert a video to GIF',
+      description:
+        'Upload a short video in any format. The output is locked to GIF — trim to under ~10 seconds and tune width/frame rate in the GIF panel.',
+    },
+    intro:
+      'Turn any short video clip into a looping animated GIF — not just MP4. Media Manipulator accepts MP4, MOV, WebM, MKV, and AVI and produces a clean GIF using a palette-aware FFmpeg pipeline plus gifsicle. Trim to a few seconds before converting for the smallest, sharpest loop.',
+    whatItDoes: [
+      'Converts MP4, MOV, WebM, MKV, AVI, and more into looping animated GIFs.',
+      'Locks the output to GIF and exposes width, frame rate, colors, and optimization controls.',
+      'Uses FFmpeg + gifsicle for clean colors and small files.',
+      'Lets you trim the clip before exporting.',
+    ],
+    flowSteps: [
+      { title: 'Upload your clip', description: 'Drop in a short video in any common format.' },
+      { title: 'Output is locked to GIF', description: 'Trim and tune width/frame rate in the GIF panel.' },
+      { title: 'Generate frames', description: 'FFmpeg samples frames and palettizes a clean GIF.' },
+      { title: 'Download', description: 'Save a looping .gif ready to share.' },
+    ],
+    advancedDetails: [
+      'GIF runs a two-stage pipeline: FFmpeg downscales and samples at your chosen frame rate, then gifsicle quantizes the palette and optimizes the file.',
+      'A 480-900px wide GIF at 12 fps balances smoothness and size for chat and the web.',
+      'GIF is uncompressed compared to modern video codecs — for clips longer than ~10 seconds, a short MP4 or WebM is usually a better choice.',
+    ],
+    whyItMatters: [
+      'GIFs autoplay and loop where embedded video does not.',
+      'They work from any source clip, regardless of the original container.',
+      'A trimmed, well-sized GIF is the most shareable short-clip format.',
+    ],
+    useCases: [
+      { title: 'Reaction clips', description: 'Turn a moment from any video into a looping GIF.' },
+      { title: 'Product demos', description: 'Show a feature in motion in a README or blog post.' },
+      { title: 'Bug reproductions', description: 'Attach a short looping GIF to a ticket.' },
+      { title: 'Social previews', description: 'Use a tiny GIF to preview a longer video.' },
+    ],
+    whyMediaManipulator: [
+      'Accepts any common video container, not just MP4.',
+      'Palette-aware FFmpeg + gifsicle pipeline for clean colors and small files.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
+      supportedOutputFormats: ['gif'],
+      processingNotes: ['Output is locked to GIF. Trim to under ~10 seconds for the smallest, sharpest result.'],
+    },
+    faq: [
+      { question: 'How do I make a GIF from a video?', answer: 'Upload a short clip in any format, trim it if needed, and convert — the output is already set to GIF.' },
+      { question: 'Which video formats can I use?', answer: 'MP4, MOV, WebM, MKV, AVI, and M4V are all supported.' },
+      { question: 'How do I keep the GIF small?', answer: 'Trim aggressively, lower the width, drop the frame rate to 10-12 fps, and reduce the color count.' },
+      { question: 'Will the GIF loop?', answer: 'Yes — exported GIFs loop by default and autoplay inline on most platforms.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 to GIF', to: '/tools/mp4-to-gif', description: 'The MP4-specific version.' },
+      { label: 'GIF converter', to: '/tools/gif-converter', description: 'The GIF hub — make and tune GIFs.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
+    ],
+    primaryKeyword: 'video to gif',
+    secondaryKeywords: [
+      'video to gif converter',
+      'make gif from video',
+      'convert video to gif',
+      'video to gif online',
+    ],
+  },
+  {
+    slug: 'gif-converter',
+    name: 'GIF Converter',
+    h1: 'Free GIF Converter Online',
+    tagline:
+      'Make animated GIFs from video clips and tune them — width, frame rate, colors, and optimization — in one place.',
+    metaTitle: 'Free GIF Converter Online | Media Manipulator',
+    metaDescription:
+      'Free online GIF converter. Make animated GIFs from MP4, MOV, WebM, and more and tune width and frame rate. No watermark, no signup, deleted within 24 hours.',
+    ogTitle: 'Free GIF Converter Online',
+    ogDescription:
+      'Make and tune animated GIFs from any short video clip. Control width, frame rate, and colors.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'gif_converter',
+      defaultVideoOutputFormat: 'gif',
+      acceptOverride: 'video/*',
+      title: 'Make a GIF',
+      description:
+        'Upload a short video clip. GIF is preselected, so you can trim and tune width, frame rate, colors, and optimization — or switch the output to MP4/WebM.',
+    },
+    intro:
+      'The GIF converter is your hub for turning short video clips into clean, looping animated GIFs. GIF is preselected so you can jump straight into tuning width, frame rate, color count, and optimization — but the output stays unlocked, so you can also export MP4 or WebM from the same clip when a GIF is not the right fit.',
+    whatItDoes: [
+      'Makes looping animated GIFs from MP4, MOV, WebM, MKV, AVI, and more.',
+      'Exposes the full GIF panel: width, frame rate, colors, frame delay, and optimization level.',
+      'Uses a palette-aware FFmpeg + gifsicle pipeline for clean colors.',
+      'Keeps the output unlocked so you can switch to MP4 or WebM when needed.',
+    ],
+    flowSteps: [
+      { title: 'Upload a clip', description: 'Drop in a short video in any common format.' },
+      { title: 'GIF is preselected', description: 'Trim and tune width, frame rate, colors, and optimization.' },
+      { title: 'Generate', description: 'FFmpeg + gifsicle build a clean, optimized GIF.' },
+      { title: 'Download', description: 'Save your looping GIF — or switch the output to MP4/WebM.' },
+    ],
+    advancedDetails: [
+      'GIF runs a two-stage pipeline: FFmpeg downscales and samples at your chosen frame rate, then gifsicle quantizes the palette and optimizes the output.',
+      'Lower the color count to 64 on flat UI footage to shrink the file; raise it to 256 for photographic clips with gradients.',
+      'Optimization level 3 produces the smallest file; drop to 1 for a fast draft while iterating.',
+    ],
+    whyItMatters: [
+      'GIFs autoplay and loop inline almost everywhere.',
+      'Fine control over palette and frame rate is the difference between a clean GIF and a muddy, oversized one.',
+      'Having MP4/WebM as a fallback keeps you covered when a clip is too long for GIF.',
+    ],
+    useCases: [
+      { title: 'Tune a GIF', description: 'Dial in width, frame rate, and colors for the perfect loop.' },
+      { title: 'Reaction clips & demos', description: 'Make shareable looping clips for chat and docs.' },
+      { title: 'Compare formats', description: 'Export GIF, then try MP4/WebM to see which is smaller.' },
+      { title: 'Bug repros', description: 'Produce a tight, optimized GIF for a ticket.' },
+    ],
+    whyMediaManipulator: [
+      'The full GIF tuning panel, not a one-button converter.',
+      'Palette-aware FFmpeg + gifsicle for clean colors and small files.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
+      supportedOutputFormats: ['gif', 'mp4', 'webm'],
+      processingNotes: ['GIF is preselected but not locked — you can switch the output to MP4 or WebM.'],
+    },
+    faq: [
+      { question: 'What does the GIF converter do?', answer: 'It turns short video clips into animated GIFs and gives you full control over width, frame rate, colors, frame delay, and optimization.' },
+      { question: 'Can I convert MP4 to GIF here?', answer: 'Yes. There is also a dedicated MP4-to-GIF page if you want the output pre-locked to GIF.' },
+      { question: 'How do I get the smallest GIF?', answer: 'Trim the clip, lower the width and frame rate, reduce the color count, and use optimization level 3.' },
+      { question: 'Can I export something other than GIF?', answer: 'Yes — the output is not locked, so you can switch to MP4 or WebM for longer clips.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 to GIF', to: '/tools/mp4-to-gif', description: 'Output locked to GIF for MP4 input.' },
+      { label: 'Video to GIF', to: '/tools/video-to-gif', description: 'GIF from any video format.' },
+      { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'The classic video-to-GIF tool.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert still images between JPG, PNG, WebP, and GIF.' },
+    ],
+    primaryKeyword: 'gif converter',
+    secondaryKeywords: [
+      'video to gif',
+      'mp4 to gif',
+      'gif maker',
+      'animated gif converter',
+      'online gif converter',
+    ],
+  },
+
+  // ----------------------------------------------------------------------- VIDEO SEO BATCH 2 (compress / trim / cut / transform / remove audio)
+  {
+    slug: 'video-compressor',
+    name: 'Video Compressor',
+    h1: 'Compress Video Online Free',
+    tagline:
+      'Shrink any video for email, social, and the web with simple presets — no watermark, no signup.',
+    metaTitle: 'Compress Video Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video compressor. Reduce video file size with simple presets while keeping good quality. MP4 output, no watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Compress Video Online Free',
+    ogDescription:
+      'Shrink video files with one-click presets while keeping watchable quality. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'video_compressor',
+      defaultVideoOutputFormat: 'mp4',
+      defaultVideoCompressionPreset: 'balanced',
+      defaultVideoCodec: 'h264',
+      title: 'Compress a video',
+      description:
+        'Upload a video and pick a compression level. Balanced is a great default; choose Smallest for email or High quality to keep more detail. Optionally downscale or drop audio.',
+    },
+    intro:
+      'Big video files are hard to email, slow to upload, and expensive to host. The Media Manipulator video compressor re-encodes your clip with an efficient codec at the level you choose, so you get a much smaller file that still looks good. Pick a preset, optionally downscale the resolution or strip the audio, and download — no watermark and no account.',
+    whatItDoes: [
+      'Compresses any common video (MP4, MOV, MKV, WebM, AVI) into a smaller MP4 or WebM.',
+      'Offers Smallest / Balanced / High quality presets that map to proven CRF settings.',
+      'Optionally downscales to 1080p, 720p, or 480p and can remove the audio track.',
+      'Lets you switch codec to H.265/HEVC for an even smaller file on modern devices.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Pick a compression level', description: 'Smallest, Balanced, or High quality.' },
+      { title: 'Compress', description: 'We re-encode efficiently with faststart for instant playback.' },
+      { title: 'Download', description: 'Save the smaller video.' },
+    ],
+    advancedDetails: [
+      'Presets map to CRF: Smallest ≈ 31, Balanced ≈ 26, High quality ≈ 22 (lower CRF = higher quality, bigger file).',
+      'MP4 output uses H.264 + AAC with -pix_fmt yuv420p and -movflags +faststart so it plays everywhere and starts before it finishes downloading.',
+      'H.265/HEVC produces ~25-50% smaller files than H.264 at the same quality, but needs a modern player; WebM (VP9) is the open-web alternative.',
+    ],
+    whyItMatters: [
+      'Email and chat apps reject videos over a size cap — compression gets you under it.',
+      'Smaller videos upload faster and cost less to host and stream.',
+      'A good preset shrinks the file a lot while staying watchable.',
+    ],
+    useCases: [
+      { title: 'Email a video', description: 'Get under a 25 MB attachment limit with the Smallest preset.' },
+      { title: 'Social uploads', description: 'Speed up posting to Instagram, TikTok, and YouTube.' },
+      { title: 'Website video', description: 'Cut delivery size for hero clips and embeds.' },
+      { title: 'Save storage', description: 'Archive footage at a fraction of the size.' },
+    ],
+    whyMediaManipulator: [
+      'Simple presets instead of a wall of codec settings.',
+      'H.265 and resolution downscale available when you want them.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'webm'],
+      processingNotes: ['MP4 output uses H.264 (or H.265) + AAC with yuv420p and +faststart.'],
+    },
+    faq: [
+      { question: 'How do I compress a video?', answer: 'Upload it, pick a compression level (Balanced is a good default), and download the smaller file.' },
+      { question: 'Will compression ruin the quality?', answer: 'At Balanced or High quality the difference is small. Smallest trades more quality for the lowest size.' },
+      { question: 'How do I make the file as small as possible?', answer: 'Use the Smallest preset, downscale to 720p or 480p, switch to H.265, and remove the audio if you do not need it.' },
+      { question: 'Is there a watermark?', answer: 'No. The compressed video is clean, with no watermark or branding.' },
+      { question: 'Is there a file-size limit?', answer: 'Very large files may be rejected on the free tier. Downscaling the resolution first usually helps.' },
+    ],
+    related: [
+      { label: 'Compress MP4', to: '/tools/compress-mp4', description: 'MP4-specific compressor.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
+      { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution to shrink the file.' },
+      { label: 'Remove audio from video', to: '/tools/remove-audio-from-video', description: 'Drop the audio track for a smaller file.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through every option.' },
+    ],
+    primaryKeyword: 'video compressor',
+    secondaryKeywords: [
+      'compress video',
+      'compress video online',
+      'reduce video size',
+      'video size reducer',
+      'free video compressor',
+    ],
+  },
+  {
+    slug: 'compress-mp4',
+    name: 'Compress MP4',
+    h1: 'Compress MP4 Online Free',
+    tagline:
+      'Reduce MP4 file size while keeping H.264 compatibility — perfect for email, social, and the web.',
+    metaTitle: 'Compress MP4 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online MP4 compressor. Reduce MP4 file size with simple presets and H.264 + AAC output that plays everywhere. No watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Compress MP4 Online Free',
+    ogDescription:
+      'Shrink MP4 files with one-click presets. H.264 + AAC output, no watermark, no signup.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'compress_mp4',
+      lockedVideoOutputFormat: 'mp4',
+      lockedInputFormat: 'mp4',
+      defaultVideoCompressionPreset: 'balanced',
+      defaultVideoCodec: 'h264',
+      title: 'Compress an MP4',
+      description:
+        'Upload an MP4 and pick a compression level. Output is locked to MP4 (H.264 + AAC) so the result plays everywhere. Optionally downscale or remove audio for an even smaller file.',
+    },
+    intro:
+      'MP4 is the format everyone uses, but the files can be large. This MP4 compressor re-encodes your video with efficient H.264 (or H.265) at the level you choose and keeps the output in a universally compatible MP4 container, so the smaller file still plays on every device and platform.',
+    whatItDoes: [
+      'Compresses MP4 videos into a smaller MP4 with H.264 + AAC.',
+      'Offers Smallest / Balanced / High quality presets mapped to CRF values.',
+      'Optionally downscales to 1080p/720p/480p and can strip the audio track.',
+      'Can switch to H.265/HEVC for a smaller file on modern devices.',
+    ],
+    flowSteps: [
+      { title: 'Upload your MP4', description: 'Drop in any .mp4 file.' },
+      { title: 'Pick a compression level', description: 'Balanced is a solid default.' },
+      { title: 'Compress', description: 'We re-encode to a compatible H.264 MP4 with faststart.' },
+      { title: 'Download', description: 'Save the smaller MP4.' },
+    ],
+    advancedDetails: [
+      'Output stays MP4 with H.264 + AAC, -pix_fmt yuv420p, and -movflags +faststart for universal playback.',
+      'Compression presets map to CRF: Smallest ≈ 31, Balanced ≈ 26, High quality ≈ 22.',
+      'H.265/HEVC can roughly halve the size at the same quality but needs a modern player.',
+    ],
+    whyItMatters: [
+      'MP4 attachments often exceed email and chat size limits.',
+      'A smaller MP4 uploads faster and streams more cheaply.',
+      'Keeping the MP4/H.264 container means the smaller file still plays everywhere.',
+    ],
+    useCases: [
+      { title: 'Email an MP4', description: 'Drop below a 25 MB cap with the Smallest preset.' },
+      { title: 'Faster uploads', description: 'Shrink an MP4 before posting to social platforms.' },
+      { title: 'Web embeds', description: 'Reduce MP4 delivery size for your site.' },
+      { title: 'Phone storage', description: 'Re-compress phone recordings to save space.' },
+    ],
+    whyMediaManipulator: [
+      'Output locked to a known-good MP4 profile.',
+      'Simple presets, with H.265 and downscale available.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'm4v'],
+      supportedOutputFormats: ['mp4'],
+      processingNotes: ['Output is locked to MP4 (H.264 + AAC, yuv420p, +faststart).'],
+    },
+    faq: [
+      { question: 'How do I compress an MP4?', answer: 'Upload your .mp4, pick a compression level, and download — the output stays MP4.' },
+      { question: 'Will the MP4 still play everywhere?', answer: 'Yes — we keep H.264 + AAC with yuv420p, the most compatible MP4 profile.' },
+      { question: 'How much smaller will it be?', answer: 'It depends on the source, but Balanced often halves the size; Smallest or H.265 can shrink it much more.' },
+      { question: 'Can I keep the resolution?', answer: 'Yes — leave the resolution on "Keep original" to compress without resizing.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Compress any video format.' },
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert other formats into MP4.' },
+      { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut an MP4 down before compressing.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
+    ],
+    primaryKeyword: 'compress mp4',
+    secondaryKeywords: [
+      'mp4 compressor',
+      'reduce mp4 file size',
+      'compress mp4 online',
+      'shrink mp4',
+    ],
+  },
+  {
+    slug: 'video-trimmer',
+    name: 'Video Trimmer',
+    h1: 'Trim Video Online Free',
+    tagline:
+      'Cut a clip to the part you want with a fast, quality-preserving trim — no re-encode when possible.',
+    metaTitle: 'Trim Video Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video trimmer. Set a start and end time and cut your clip with a fast, lossless trim. MP4 output, no watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Trim Video Online Free',
+    ogDescription:
+      'Trim videos to the part you want with a fast, quality-preserving cut. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'video_trimmer',
+      defaultVideoOutputFormat: 'mp4',
+      title: 'Trim a video',
+      description:
+        'Upload a video, then set a start and end time (or pick the range visually). We keep the original quality with a fast, lossless cut whenever possible.',
+    },
+    intro:
+      'Trimming is the most common video edit — keep the good part, drop the rest. The Media Manipulator video trimmer lets you set a start and end time numerically or drag a visual range, then performs a fast stream-copy cut that preserves the original quality with no re-encode when possible. Output defaults to MP4.',
+    whatItDoes: [
+      'Cuts a video to a single start-to-end range.',
+      'Prefers a lossless stream-copy (no re-encode, no quality loss, very fast).',
+      'Falls back to a re-encode automatically when the container/codec needs it.',
+      'Lets you pick the range numerically or with a visual scrubber.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Set start and end', description: 'Type the times or drag the visual range.' },
+      { title: 'Trim', description: 'We cut losslessly when possible, or re-encode for accuracy.' },
+      { title: 'Download', description: 'Save your trimmed clip.' },
+    ],
+    advancedDetails: [
+      'The fast path is a stream-copy: ffmpeg seeks to the start and copies the segment without re-encoding, so there is zero quality loss.',
+      'Stream-copy cuts at the nearest keyframe; tick "Re-encode for a frame-accurate cut" when you need the exact frame.',
+      'MP4 re-encode fallback uses H.264 + AAC + yuv420p + faststart.',
+    ],
+    whyItMatters: [
+      'Removing dead air at the start/end makes any clip better.',
+      'A lossless trim keeps the original quality and is nearly instant.',
+      'Trimming first makes converting, compressing, or GIF-ing faster.',
+    ],
+    useCases: [
+      { title: 'Cut the intro/outro', description: 'Drop the boring beginning or end of a recording.' },
+      { title: 'Clip a highlight', description: 'Keep just the moment you want to share.' },
+      { title: 'Prep for upload', description: 'Trim before posting to social platforms.' },
+      { title: 'Shorten for GIF', description: 'Cut to a few seconds before making a GIF.' },
+    ],
+    whyMediaManipulator: [
+      'Quality-preserving stream-copy by default.',
+      'Numeric and visual range selection in one panel.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'mov', 'webm'],
+      processingNotes: ['Stream-copy when possible (no quality loss); re-encode fallback uses H.264 + AAC for MP4.'],
+    },
+    faq: [
+      { question: 'How do I trim a video online?', answer: 'Upload it, set a start and end time (or drag the visual range), and download the trimmed clip.' },
+      { question: 'Does trimming reduce quality?', answer: 'No — the default lossless stream-copy keeps the original quality. Only the frame-accurate re-encode option re-compresses.' },
+      { question: 'Why does my cut start slightly early?', answer: 'Lossless cuts snap to the nearest keyframe. Enable the frame-accurate re-encode option to cut at the exact time.' },
+      { question: 'What output format do I get?', answer: 'MP4 by default; you can also choose MOV or WebM.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Trim MP4 files specifically.' },
+      { label: 'Video cutter', to: '/tools/video-cutter', description: 'Cut a clip out of a video.' },
+      { label: 'Cut video online', to: '/tools/cut-video-online', description: 'Quick browser-based cutting.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the clip after trimming.' },
+    ],
+    primaryKeyword: 'video trimmer',
+    secondaryKeywords: [
+      'trim video online',
+      'online video trimmer',
+      'cut video',
+      'free video trimmer',
+    ],
+  },
+  {
+    slug: 'mp4-trimmer',
+    name: 'MP4 Trimmer',
+    h1: 'Trim MP4 Online Free',
+    tagline:
+      'Cut an MP4 to the part you want with a fast, lossless trim and an MP4 output.',
+    metaTitle: 'Trim MP4 Online Free | Media Manipulator',
+    metaDescription:
+      'Free online MP4 trimmer and cutter. Set a start and end time and cut your MP4 losslessly. MP4 output, no watermark, no signup, deleted within 24 hours.',
+    ogTitle: 'Trim MP4 Online Free',
+    ogDescription:
+      'Trim and cut MP4 files with a fast, quality-preserving cut. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'mp4_trimmer',
+      lockedVideoOutputFormat: 'mp4',
+      lockedInputFormat: 'mp4',
+      title: 'Trim an MP4',
+      description:
+        'Upload an MP4 and set a start and end time. Output is locked to MP4 and we keep the original quality with a fast, lossless cut whenever possible.',
+    },
+    intro:
+      'The MP4 trimmer is a focused tool for cutting MP4 videos down to the part you want. Set the start and end, and Media Manipulator performs a fast stream-copy that keeps the original H.264 quality with no re-encode, then hands you a clean MP4.',
+    whatItDoes: [
+      'Cuts an MP4 to a single start-to-end range.',
+      'Keeps the output as MP4 (H.264 + AAC).',
+      'Prefers a lossless stream-copy; re-encodes only when needed or requested.',
+      'Supports numeric and visual range selection.',
+    ],
+    flowSteps: [
+      { title: 'Upload your MP4', description: 'Drop in any .mp4 file.' },
+      { title: 'Set start and end', description: 'Type the times or drag the visual range.' },
+      { title: 'Trim', description: 'We stream-copy losslessly when possible.' },
+      { title: 'Download', description: 'Save your trimmed MP4.' },
+    ],
+    advancedDetails: [
+      'Most MP4s use H.264, which stream-copies cleanly into a trimmed MP4 — zero quality loss and near-instant.',
+      'Stream-copy snaps to keyframes; the re-encode option gives a frame-exact cut.',
+      'The MP4 re-encode fallback uses H.264 + AAC + yuv420p + faststart.',
+    ],
+    whyItMatters: [
+      'MP4 is the most common video format, so a focused MP4 trimmer covers most needs.',
+      'A lossless cut keeps the source quality intact.',
+      'Output stays MP4, so the clip plays everywhere.',
+    ],
+    useCases: [
+      { title: 'Trim a recording', description: 'Cut an MP4 screen or phone recording down.' },
+      { title: 'Clip a moment', description: 'Keep a highlight from a longer MP4.' },
+      { title: 'Remove dead air', description: 'Drop the silent start/end of a clip.' },
+      { title: 'Prep for sharing', description: 'Shorten an MP4 before uploading.' },
+    ],
+    whyMediaManipulator: [
+      'Lossless MP4-to-MP4 trim by default.',
+      'Visual scrubber plus precise numeric inputs.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'm4v'],
+      supportedOutputFormats: ['mp4'],
+      processingNotes: ['Output is locked to MP4. Stream-copy when possible; H.264 + AAC re-encode fallback.'],
+    },
+    faq: [
+      { question: 'How do I trim an MP4?', answer: 'Upload your .mp4, set a start and end time, and download — the output stays MP4.' },
+      { question: 'Is the MP4 trim lossless?', answer: 'Yes by default. We stream-copy the segment without re-encoding, so there is no quality loss.' },
+      { question: 'Can I cut at an exact frame?', answer: 'Enable the frame-accurate re-encode option; otherwise the cut snaps to the nearest keyframe.' },
+      { question: 'Is this also an MP4 cutter?', answer: 'Yes — trimming and cutting an MP4 are the same operation here.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Trim any video format.' },
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert other formats into MP4.' },
+      { label: 'Compress MP4', to: '/tools/compress-mp4', description: 'Shrink the MP4 after trimming.' },
+      { label: 'Video cutter', to: '/tools/video-cutter', description: 'Cut a clip out of a video.' },
+    ],
+    primaryKeyword: 'mp4 trimmer',
+    secondaryKeywords: [
+      'trim mp4',
+      'mp4 cutter',
+      'cut mp4 online',
+      'mp4 trimmer online',
+    ],
+  },
+  {
+    slug: 'video-cutter',
+    name: 'Video Cutter',
+    h1: 'Cut Video Online Free',
+    tagline:
+      'Cut a section out of any video with a fast, quality-preserving trim — straight in your browser.',
+    metaTitle: 'Cut Video Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video cutter. Cut a clip from any video by start and end time with a fast, lossless cut. MP4 output, no watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Cut Video Online Free',
+    ogDescription:
+      'Cut a section out of any video with a fast, quality-preserving trim. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'video_cutter',
+      defaultVideoOutputFormat: 'mp4',
+      title: 'Cut a video',
+      description:
+        'Upload a video, set the start and end of the part you want to keep, and we cut it out — losslessly when possible. Output defaults to MP4.',
+    },
+    intro:
+      'Cutting a video means keeping a single section and dropping the rest. The Media Manipulator video cutter takes a start and end time and produces just that segment, using a fast stream-copy that preserves the original quality whenever possible. Everything runs server-side and your file is deleted within 24 hours.',
+    whatItDoes: [
+      'Cuts the selected start-to-end section out of a video.',
+      'Prefers a lossless stream-copy (no re-encode).',
+      'Falls back to a re-encode when the container/codec requires it.',
+      'Outputs MP4 by default; MOV and WebM are available.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Mark start and end', description: 'Type the times or drag the visual range.' },
+      { title: 'Cut', description: 'We extract just that segment, losslessly when possible.' },
+      { title: 'Download', description: 'Save the cut clip.' },
+    ],
+    advancedDetails: [
+      'The cut uses an ffmpeg stream-copy (seek + copy), so there is no re-encode and no quality loss on the fast path.',
+      'Stream-copy aligns to keyframes; use the frame-accurate re-encode option for an exact cut point.',
+      'MP4 re-encode fallback uses H.264 + AAC + yuv420p + faststart.',
+    ],
+    whyItMatters: [
+      'You often need just one section of a long recording.',
+      'A lossless cut is instant and keeps the source quality.',
+      'Cutting first reduces the work for any later conversion or compression.',
+    ],
+    useCases: [
+      { title: 'Grab a segment', description: 'Cut one scene out of a long video.' },
+      { title: 'Remove a section', description: 'Keep the part before or after a moment.' },
+      { title: 'Make a clip', description: 'Extract a shareable highlight.' },
+      { title: 'Trim a recording', description: 'Cut a meeting or stream down to the useful part.' },
+    ],
+    whyMediaManipulator: [
+      'Quality-preserving stream-copy cut.',
+      'Visual + numeric range selection.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'mov', 'webm'],
+      processingNotes: ['Stream-copy when possible (no quality loss); H.264 + AAC re-encode fallback for MP4.'],
+    },
+    faq: [
+      { question: 'How do I cut a video online?', answer: 'Upload it, mark the start and end of the part to keep, and download the cut clip.' },
+      { question: 'Is cutting the same as trimming?', answer: 'Yes — here cutting and trimming both keep a single start-to-end section.' },
+      { question: 'Does cutting lose quality?', answer: 'No — the default lossless stream-copy preserves the source. Only the frame-accurate option re-encodes.' },
+      { question: 'What output do I get?', answer: 'MP4 by default; MOV and WebM are also available.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Trim a clip to a range.' },
+      { label: 'Cut video online', to: '/tools/cut-video-online', description: 'Quick browser-based cutting.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the cut clip.' },
+      { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut MP4 files specifically.' },
+    ],
+    primaryKeyword: 'video cutter',
+    secondaryKeywords: [
+      'cut video online',
+      'online video cutter',
+      'video cutter free',
+      'cut video',
+    ],
+  },
+  {
+    slug: 'cut-video-online',
+    name: 'Cut Video Online',
+    h1: 'Cut Video Online Free',
+    tagline:
+      'A quick, no-install way to cut a clip out of any video right in your browser.',
+    metaTitle: 'Cut Video Online Free — No Install | Media Manipulator',
+    metaDescription:
+      'Cut video online free, no install. Set a start and end and cut any clip in your browser with a fast, lossless cut. No watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Cut Video Online Free — No Install',
+    ogDescription:
+      'Cut a clip out of any video right in your browser. Fast, lossless, no install, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'cut_video_online',
+      defaultVideoOutputFormat: 'mp4',
+      title: 'Cut a video in your browser',
+      description:
+        'Upload, mark the part to keep, and download — no app to install. We cut losslessly when possible. Output defaults to MP4.',
+    },
+    intro:
+      'Sometimes you just need to cut a quick clip without downloading software. This page is the fast, browser-based way to do it: upload a video, mark the part you want, and get a cut clip back in seconds. The actual cut runs on our servers with a quality-preserving stream-copy, so there is nothing to install and nothing to learn.',
+    whatItDoes: [
+      'Cuts a clip out of any common video, entirely in the browser flow.',
+      'Uses a fast, lossless stream-copy whenever possible.',
+      'No app, plugin, or signup required.',
+      'Outputs MP4 by default; MOV and WebM available.',
+    ],
+    flowSteps: [
+      { title: 'Upload', description: 'Drop a video into the page — no install.' },
+      { title: 'Mark the range', description: 'Set start/end or drag the visual scrubber.' },
+      { title: 'Cut', description: 'We extract that segment server-side, losslessly when possible.' },
+      { title: 'Download', description: 'Save the clip immediately.' },
+    ],
+    advancedDetails: [
+      'The browser uploads your file and the cut runs server-side with ffmpeg stream-copy — fast and lossless on the happy path.',
+      'For a frame-exact cut, enable the re-encode option; otherwise the cut snaps to keyframes.',
+      'Files are processed on our infrastructure and deleted within 24 hours.',
+    ],
+    whyItMatters: [
+      'No-install tools win when you just need a quick cut.',
+      'Browser-based means it works on any OS, including locked-down work laptops.',
+      'A lossless cut keeps the quality and is nearly instant.',
+    ],
+    useCases: [
+      { title: 'Quick clip', description: 'Cut a moment without opening an editor.' },
+      { title: 'On a work laptop', description: 'No admin rights needed — it is all in the browser.' },
+      { title: 'On the go', description: 'Cut a clip from any computer.' },
+      { title: 'One-off edits', description: 'Skip installing software for a single cut.' },
+    ],
+    whyMediaManipulator: [
+      'Truly no-install — just a web page.',
+      'Quality-preserving stream-copy cut.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'mov', 'webm'],
+      processingNotes: ['Stream-copy when possible; H.264 + AAC re-encode fallback for MP4.'],
+    },
+    faq: [
+      { question: 'Do I need to install anything?', answer: 'No. Cutting happens through this web page — there is no app or plugin to install.' },
+      { question: 'How do I cut a video online for free?', answer: 'Upload your video, mark the start and end of the part to keep, and download the clip.' },
+      { question: 'Is the cut lossless?', answer: 'Yes on the fast path — we stream-copy without re-encoding. The frame-accurate option re-encodes.' },
+      { question: 'Which tool should I use for repeated edits?', answer: 'For focused trimming use the video trimmer or video cutter; this page is tuned for quick, one-off cuts.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Focused trimming with a visual range.' },
+      { label: 'Video cutter', to: '/tools/video-cutter', description: 'Cut a section out of a video.' },
+      { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut MP4 files specifically.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the clip after cutting.' },
+    ],
+    primaryKeyword: 'cut video online',
+    secondaryKeywords: [
+      'cut video free',
+      'online video cutter',
+      'cut video no install',
+      'browser video cutter',
+    ],
+  },
+  {
+    slug: 'crop-video',
+    name: 'Crop Video',
+    h1: 'Crop Video Online Free',
+    tagline:
+      'Cut away the edges of a video — change the framing or aspect ratio without an editor.',
+    metaTitle: 'Crop Video Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video cropper. Crop the edges of a video to reframe it or change the aspect ratio. MP4 output, no watermark, no signup, deleted within 24 hours.',
+    ogTitle: 'Crop Video Online Free',
+    ogDescription:
+      'Crop the edges of a video to reframe it or change the aspect ratio. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'crop_video',
+      defaultVideoOutputFormat: 'mp4',
+      title: 'Crop a video',
+      description:
+        'Upload a video and enter the rectangle to keep (offset + width/height in pixels). We crop to exactly that area and export MP4.',
+    },
+    intro:
+      'Cropping removes the outer edges of a video — useful for reframing a shot, cutting out black bars or a watermark, or changing the aspect ratio for a platform. The Media Manipulator video cropper takes a pixel rectangle (where to start and how big) and exports just that area as a clean MP4.',
+    whatItDoes: [
+      'Crops a video to a rectangle you specify in pixels.',
+      'Removes black bars, edges, watermarks, or unwanted regions.',
+      'Helps reframe to square or vertical for social platforms.',
+      'Exports MP4 (H.264 + AAC) by default.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Enter the crop rectangle', description: 'Set the X/Y offset and the width/height to keep.' },
+      { title: 'Crop', description: 'FFmpeg crops to exactly that region and re-encodes.' },
+      { title: 'Download', description: 'Save the cropped video.' },
+    ],
+    advancedDetails: [
+      'Crop coordinates are in pixels from the top-left corner: X/Y is where the kept area starts, width/height is its size.',
+      'Cropping re-encodes the video; MP4 output uses H.264 + AAC + yuv420p + faststart.',
+      'For pixel-perfect framing on a preview, the full converter on the homepage offers a visual crop overlay.',
+    ],
+    whyItMatters: [
+      'Cropping reframes a shot without re-shooting.',
+      'It removes black bars (letterboxing/pillarboxing) and unwanted edges.',
+      'Changing aspect ratio (e.g. to 9:16) helps video fit a platform.',
+    ],
+    useCases: [
+      { title: 'Make it vertical', description: 'Crop a landscape clip to 9:16 for Reels/Shorts/TikTok.' },
+      { title: 'Remove black bars', description: 'Crop away letterboxing.' },
+      { title: 'Hide a watermark', description: 'Crop out a corner logo or timestamp.' },
+      { title: 'Reframe a subject', description: 'Tighten the shot on what matters.' },
+    ],
+    whyMediaManipulator: [
+      'Precise pixel cropping server-side with FFmpeg.',
+      'Clean MP4 output, no watermark.',
+      'Free, no signup, files deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
+      processingNotes: ['Cropping re-encodes; MP4 output uses H.264 + AAC + yuv420p + faststart.'],
+    },
+    faq: [
+      { question: 'How do I crop a video?', answer: 'Upload it, enter the rectangle to keep (X/Y offset and width/height in pixels), and download the cropped video.' },
+      { question: 'Can I crop to a square or vertical aspect ratio?', answer: 'Yes — set the width and height to the ratio you want (e.g. equal values for square, taller than wide for 9:16).' },
+      { question: 'Will cropping lower the quality?', answer: 'Cropping re-encodes, but at our default quality the loss is minimal.' },
+      { question: 'Can I crop out a watermark?', answer: 'Yes, if the watermark is near an edge — crop the frame to exclude it.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution instead of cropping.' },
+      { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix sideways or upside-down video.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the cropped video.' },
+    ],
+    primaryKeyword: 'crop video',
+    secondaryKeywords: [
+      'video cropper',
+      'crop video online',
+      'crop mp4',
+      'crop video free',
+    ],
+  },
+  {
+    slug: 'resize-video',
+    name: 'Resize Video',
+    h1: 'Resize Video Online Free',
+    tagline:
+      'Change a video resolution — scale to 1080p, 720p, 480p, or any custom width and height.',
+    metaTitle: 'Resize Video Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video resizer. Change video resolution to 1080p, 720p, 480p, or a custom size. MP4 output, no watermark, no signup, deleted within 24 hours.',
+    ogTitle: 'Resize Video Online Free',
+    ogDescription:
+      'Change a video resolution to 1080p, 720p, 480p, or a custom size. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'resize_video',
+      defaultVideoOutputFormat: 'mp4',
+      title: 'Resize a video',
+      description:
+        'Upload a video and set a target width and/or height. Leave one blank to scale proportionally. Output is MP4 by default.',
+    },
+    intro:
+      'Resizing changes a video resolution — make a 4K clip 1080p, shrink to 720p for the web, or hit an exact pixel size a platform requires. The Media Manipulator video resizer scales your video to the dimensions you choose, preserving the aspect ratio by default, and exports a clean MP4.',
+    whatItDoes: [
+      'Scales a video to a target width and/or height.',
+      'Preserves aspect ratio by default (leave one dimension blank to auto-scale).',
+      'Downscales to shrink the file or upscales to fit a target size.',
+      'Exports MP4 (H.264 + AAC) by default.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Set the size', description: 'Enter a width and/or height in pixels.' },
+      { title: 'Resize', description: 'FFmpeg scales the video and re-encodes it.' },
+      { title: 'Download', description: 'Save the resized video.' },
+    ],
+    advancedDetails: [
+      'Leave one dimension blank to scale proportionally and keep the original aspect ratio.',
+      'Keep "Preserve aspect ratio" on to fit within the box without stretching when both dimensions are set.',
+      'Resizing re-encodes; MP4 output uses H.264 + AAC + yuv420p + faststart. Max 4096 px per side.',
+    ],
+    whyItMatters: [
+      'Lower resolution means smaller files and faster uploads.',
+      'Some platforms require an exact resolution.',
+      'Resizing standardizes a mixed-resolution library.',
+    ],
+    useCases: [
+      { title: 'Shrink for the web', description: 'Drop 4K to 1080p or 720p for faster pages.' },
+      { title: 'Hit a target size', description: 'Match a platform spec exactly.' },
+      { title: 'Reduce file size', description: 'Lower resolution to cut the bytes.' },
+      { title: 'Standardize footage', description: 'Bring clips to one resolution.' },
+    ],
+    whyMediaManipulator: [
+      'Aspect-ratio-aware scaling server-side with FFmpeg.',
+      'Clean MP4 output, no watermark.',
+      'Free, no signup, files deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
+      processingNotes: ['Resizing re-encodes; MP4 output uses H.264 + AAC + yuv420p + faststart. Max 4096 px per side.'],
+    },
+    faq: [
+      { question: 'How do I resize a video?', answer: 'Upload it, set a target width and/or height, and download the resized video.' },
+      { question: 'How do I change the resolution to 720p?', answer: 'Set the height to 720 and leave the width blank to scale proportionally.' },
+      { question: 'Will resizing keep the aspect ratio?', answer: 'Yes — leave one dimension blank, or keep "Preserve aspect ratio" on so the video is not stretched.' },
+      { question: 'Can I upscale a video?', answer: 'You can scale up to a larger size, but upscaling cannot add detail that was not captured.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away edges instead of scaling.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the file with presets.' },
+      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert to MP4.' },
+      { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix orientation.' },
+    ],
+    primaryKeyword: 'resize video',
+    secondaryKeywords: [
+      'video resizer',
+      'change video resolution',
+      'resize video online',
+      'scale video',
+    ],
+  },
+  {
+    slug: 'rotate-video',
+    name: 'Rotate Video',
+    h1: 'Rotate Video Online Free',
+    tagline:
+      'Fix sideways or upside-down video — rotate 90°, 180°, or 270° and flip in one click.',
+    metaTitle: 'Rotate Video Online Free | Media Manipulator',
+    metaDescription:
+      'Free online video rotator. Rotate a video 90°, 180°, or 270° and fix sideways or upside-down clips. MP4 output, no watermark, no signup, deleted in 24 hours.',
+    ogTitle: 'Rotate Video Online Free',
+    ogDescription:
+      'Rotate a video 90°, 180°, or 270° to fix sideways or upside-down footage. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'rotate_video',
+      defaultVideoOutputFormat: 'mp4',
+      defaultTransform: { rotation: 90 },
+      title: 'Rotate a video',
+      description:
+        'Upload a video and pick a rotation (90°, 180°, or 270°). You can also flip it. We rotate the actual frames and export MP4.',
+    },
+    intro:
+      'Phone videos often record sideways, and some clips end up upside down. The Media Manipulator video rotator fixes orientation for good — pick 90°, 180°, or 270° and we rotate the actual frames (swapping width and height for 90°/270°), so the video plays the right way up on every player, not just ones that read a rotation flag.',
+    whatItDoes: [
+      'Rotates a video 90° clockwise, 180°, or 270° (90° counter-clockwise).',
+      'Optionally flips the video horizontally or vertically (mirror).',
+      'Re-encodes so the rotation is baked into the frames, not just a metadata flag.',
+      'Exports MP4 (H.264 + AAC) by default.',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Pick a rotation', description: '90°, 180°, or 270° — and flip if needed.' },
+      { title: 'Rotate', description: 'FFmpeg rotates the frames (transpose) and re-encodes.' },
+      { title: 'Download', description: 'Save the correctly-oriented video.' },
+    ],
+    advancedDetails: [
+      'We use FFmpeg transpose for 90°/270° (which correctly swaps width and height) and a double transpose for 180°.',
+      'Baking the rotation into the pixels fixes players that ignore the container rotation flag.',
+      'Rotation re-encodes; MP4 output uses H.264 + AAC + yuv420p + faststart.',
+    ],
+    whyItMatters: [
+      'Sideways phone videos are one of the most common video annoyances.',
+      'A baked-in rotation plays correctly everywhere, unlike a rotation flag.',
+      'Flipping fixes mirrored selfie/webcam footage.',
+    ],
+    useCases: [
+      { title: 'Fix a sideways clip', description: 'Rotate a portrait phone video to play upright.' },
+      { title: 'Flip a selfie video', description: 'Un-mirror webcam or front-camera footage.' },
+      { title: 'Turn it 180°', description: 'Fix an upside-down recording.' },
+      { title: 'Reorient for editing', description: 'Get the orientation right before importing.' },
+    ],
+    whyMediaManipulator: [
+      'Real frame rotation (transpose), not just a metadata flag.',
+      'Rotate and flip in one focused panel.',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
+      processingNotes: ['Rotation re-encodes via FFmpeg transpose; MP4 output uses H.264 + AAC + yuv420p + faststart.'],
+    },
+    faq: [
+      { question: 'How do I rotate a video?', answer: 'Upload it, pick 90°, 180°, or 270°, and download the rotated video.' },
+      { question: 'How do I fix a sideways phone video?', answer: 'Rotate 90° clockwise or counter-clockwise until it plays upright; the rotation is baked into the frames.' },
+      { question: 'Does it really rotate the frames, or just set a flag?', answer: 'It rotates the actual frames (FFmpeg transpose), so the video is upright in every player.' },
+      { question: 'Can I flip / mirror the video too?', answer: 'Yes — horizontal and vertical flip options are included.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away the edges.' },
+      { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the rotated video.' },
+    ],
+    primaryKeyword: 'rotate video',
+    secondaryKeywords: [
+      'rotate mp4',
+      'rotate video online',
+      'fix sideways video',
+      'flip video',
+    ],
+  },
+  {
+    slug: 'remove-audio-from-video',
+    name: 'Remove Audio from Video',
+    h1: 'Remove Audio from Video Online Free',
+    tagline:
+      'Mute a video for good — strip the audio track and download a silent, video-only file.',
+    metaTitle: 'Remove Audio from Video Online Free | Media Manipulator',
+    metaDescription:
+      'Free online tool to remove audio from a video. Strip the sound and download a silent, video-only MP4. No watermark, no signup, files deleted within 24 hours.',
+    ogTitle: 'Remove Audio from Video Online Free',
+    ogDescription:
+      'Strip the audio track from a video and download a silent, video-only file. Free, no watermark.',
+    category: 'video',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'remove_audio_from_video',
+      defaultVideoOutputFormat: 'mp4',
+      title: 'Remove audio from a video',
+      description:
+        'Upload a video and we strip the audio track, returning a silent, video-only file. Output defaults to MP4. We stream-copy the video where possible (no quality loss).',
+    },
+    intro:
+      'Removing the audio from a video gives you a silent, video-only file — handy for muting background noise, dropping copyrighted music before re-uploading, or preparing a clip you will add new audio to. Media Manipulator strips the audio track and returns the video, stream-copying the picture where possible so there is no quality loss.',
+    whatItDoes: [
+      'Removes (mutes) the audio track and returns a video-only file.',
+      'Stream-copies the video stream where possible — no re-encode, no quality loss.',
+      'Falls back to a re-encode when the container/codec requires it.',
+      'Outputs MP4 by default (WebM also available).',
+    ],
+    flowSteps: [
+      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Pick the output format', description: 'MP4 (default) or WebM.' },
+      { title: 'Remove audio', description: 'FFmpeg drops the audio and keeps the video.' },
+      { title: 'Download', description: 'Save the silent, video-only file.' },
+    ],
+    advancedDetails: [
+      'We stream-copy the video stream (`-c:v copy -an`) so the picture is untouched; if the container does not accept the source codec we re-encode to H.264.',
+      'The output has no audio track at all — it is silent, not just muted to zero volume.',
+      'The downloaded filename is suffixed `_silent` so you can tell it apart from the original.',
+    ],
+    whyItMatters: [
+      'Muting removes background noise, chatter, or wind for good.',
+      'Dropping copyrighted music avoids takedowns on re-upload.',
+      'A silent base clip is the starting point for adding new audio or a voiceover.',
+    ],
+    useCases: [
+      { title: 'Mute background noise', description: 'Remove unwanted sound from a clip.' },
+      { title: 'Drop copyrighted audio', description: 'Strip music before re-posting.' },
+      { title: 'Prep for new audio', description: 'Get a silent base to add a voiceover to.' },
+      { title: 'Privacy', description: 'Remove a conversation captured in the background.' },
+    ],
+    whyMediaManipulator: [
+      'Quality-preserving stream-copy of the video stream.',
+      'Truly silent output (audio track removed, not just lowered).',
+      'Free, no watermark, no signup, deleted within 24 hours.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'webm'],
+      processingNotes: ['Video is stream-copied where possible; the audio track is removed entirely. Download suffix: _silent.'],
+    },
+    faq: [
+      { question: 'How do I remove audio from a video?', answer: 'Upload the video, pick an output format, and download the silent, video-only file.' },
+      { question: 'Does this mute the video or remove the track?', answer: 'It removes the audio track entirely, so the result is truly silent rather than muted to zero.' },
+      { question: 'Will the video quality change?', answer: 'No — we stream-copy the video stream where possible, so the picture is untouched.' },
+      { question: 'Why is the file named "_silent"?', answer: 'We add a _silent suffix so you can tell the audio-free copy apart from the original.' },
+      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+    ],
+    related: [
+      { label: 'Remove audio (video-only)', to: '/tools/extract-video-only-from-video', description: 'The same silent-video tool.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Save the audio instead of removing it.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the silent video.' },
+      { label: 'Stitch audio to video', to: '/tools/stitch-audio-to-video', description: 'Add a new soundtrack to the silent clip.' },
+    ],
+    primaryKeyword: 'remove audio from video',
+    secondaryKeywords: [
+      'mute video',
+      'remove sound from video',
+      'silence video',
+      'strip audio from video',
     ],
   },
   {
@@ -4519,6 +6428,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'What if my video has no audio?', answer: 'We detect that up front and return a clear error message instead of producing an empty file.' },
     ],
     related: [
+      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'Output locked to MP3 for MP4 input.' },
+      { label: 'Video to MP3', to: '/tools/video-to-mp3', description: 'Extract MP3 from any video format.' },
+      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the extracted audio to other formats.' },
       { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Transcribe the extracted audio into subtitles.' },
       { label: 'Audio Waveform Generator', to: '/tools/audio-waveform-generator', description: 'Turn the extracted audio into a waveform visual.' },
       { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Reuse extracted audio inside a new video.' },
@@ -4537,16 +6449,16 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- EXTRACT VIDEO ONLY FROM VIDEO
   {
     slug: 'extract-video-only-from-video',
-    name: 'Remove Audio from Video',
-    h1: 'Remove Audio from Video',
+    name: 'Extract Video Without Audio',
+    h1: 'Extract Video Without Audio (Video-Only)',
     tagline:
-      'Export a silent / video-only copy with every audio track removed — perfect for silent previews, edits, and re-scoring.',
-    metaTitle: 'Remove Audio from Video — Free Mute Video Online | Media Manipulator',
+      'Export a silent / video-only copy with every audio track removed — perfect for silent previews, B-roll, edits, and re-scoring.',
+    metaTitle: 'Extract Video Without Audio — Video-Only Export | Media Manipulator',
     metaDescription:
-      'Free online tool to mute a video by removing all audio tracks. Stream-copies the video where possible — no re-encoding, no quality loss.',
-    ogTitle: 'Remove Audio from Video',
+      'Free online tool to export a video-only (silent) copy with every audio track removed. Stream-copies the video where possible — no re-encoding, no quality loss.',
+    ogTitle: 'Extract Video Without Audio (Video-Only)',
     ogDescription:
-      'Export a silent / video-only copy of your video with every audio track removed. Free, no signup, files deleted within 24 hours.',
+      'Export a video-only (silent) copy of your video with every audio track removed. Free, no signup, files deleted within 24 hours.',
     category: 'video',
     embed: {
       defaultMediaKind: 'video',
@@ -4607,17 +6519,18 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'What if my video has no audio?', answer: 'No problem — the tool succeeds normally and returns a clean re-packaged copy.' },
     ],
     related: [
+      { label: 'Remove audio from video', to: '/tools/remove-audio-from-video', description: 'The consumer-friendly mute / remove-sound page.' },
       { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull the audio track out as MP3, WAV, etc.' },
       { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Add a new soundtrack to your silent video.' },
+      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the silent video.' },
       { label: 'Extract Frames from Video', to: '/tools/extract-frames-from-video', description: 'Pull still images out of the silent video.' },
     ],
-    primaryKeyword: 'remove audio from video',
+    primaryKeyword: 'extract video without audio',
     secondaryKeywords: [
-      'mute video online',
-      'extract video without audio',
       'video only extractor',
-      'delete audio track from video',
       'silent video maker',
+      'B-roll without sound',
+      'delete audio track from video',
       'strip audio from MP4',
     ],
   },

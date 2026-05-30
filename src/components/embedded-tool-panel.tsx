@@ -24,6 +24,9 @@ import ExtractVideoOnlyPanel from '@/components/extract-video-only-panel';
 import ExtractFramesPanel from '@/components/extract-frames-panel';
 import CaptionTranslatorPanel from '@/components/caption-translator-panel';
 import StitchAudioToVideoPanel from '@/components/stitch-audio-to-video-panel';
+import VideoCompressorPanel from '@/components/video-compressor-panel';
+import VideoTrimmerPanel from '@/components/video-trimmer-panel';
+import VideoTransformPanel from '@/components/video-transform-panel';
 import type { TranscodeProtocol, DashCodec } from '@/lib/transcodeTypes';
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, {
@@ -44,6 +47,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
 export type EmbeddedTask =
+  | 'edit_video'
   | 'remove_metadata'
   | 'compress_video'
   | 'video_to_gif'
@@ -86,7 +90,29 @@ export type EmbeddedTask =
   | 'svg_to_png'
   | 'png_to_svg'
   | 'png_to_ico'
-  | 'svg_converter';
+  | 'svg_converter'
+  // Video SEO batch 1 — exact-match converter pages over the same engine.
+  | 'mp4_converter'
+  | 'mov_to_mp4'
+  | 'webm_to_mp4'
+  | 'avi_to_mp4'
+  | 'mkv_to_mp4'
+  | 'mp4_to_webm'
+  | 'mp4_to_mp3'
+  | 'video_to_mp3'
+  | 'mp4_to_gif'
+  | 'gif_converter'
+  // Video SEO batch 2 — creator utility pages (compress, trim/cut, transform).
+  | 'video_compressor'
+  | 'compress_mp4'
+  | 'video_trimmer'
+  | 'mp4_trimmer'
+  | 'video_cutter'
+  | 'cut_video_online'
+  | 'crop_video'
+  | 'resize_video'
+  | 'rotate_video'
+  | 'remove_audio_from_video';
 
 /** Output formats the embedded image converter understands. "pdf" routes the
  *  image through the document pathway (image -> single-page PDF); "svg" routes
@@ -117,6 +143,92 @@ export interface ImageFormPresets {
   defaultHeight?: number;
   /** Visually emphasize the width/height controls (image resizer). */
   emphasizeResize?: boolean;
+}
+
+/** Output containers/codecs the embedded video converter understands. Mirrors
+ *  the `format` enum in src/schemas/videoSchema.ts and the backend
+ *  models.VideoConversionOptions. */
+export type EmbeddedVideoFormat =
+  | 'mp4'
+  | 'webm'
+  | 'avi'
+  | 'mov'
+  | 'mkv'
+  | 'flv'
+  | 'wmv'
+  | 'prores'
+  | 'dnxhd'
+  | 'gif';
+
+/** Audio formats the specialized extract-audio flow can produce. */
+export type EmbeddedExtractAudioFormat = 'mp3' | 'wav' | 'm4a' | 'aac' | 'flac' | 'ogg';
+
+/**
+ * Concrete preset/lock configuration for the embedded video converter.
+ * Threaded from a tool page's `embed` config into VideoConversionForm so video
+ * SEO pages can genuinely preselect/lock a conversion (e.g. MOV -> MP4) instead
+ * of only hinting at it.
+ */
+export interface VideoFormPresets {
+  defaultOutputFormat?: EmbeddedVideoFormat;
+  lockedOutputFormat?: EmbeddedVideoFormat;
+  defaultQuality?: 'low' | 'medium' | 'high';
+  defaultWidth?: number;
+  defaultHeight?: number;
+  defaultSpeed?: number;
+}
+
+/**
+ * Concrete preset/lock configuration for the specialized extract-audio panel
+ * (mp4-to-mp3 / video-to-mp3 pages). Output is audio, so these pages reuse the
+ * extract-audio flow rather than the video converter.
+ */
+export interface ExtractAudioPresets {
+  defaultFormat?: EmbeddedExtractAudioFormat;
+  lockedFormat?: EmbeddedExtractAudioFormat;
+  /** Override the file-input accept attribute (e.g. lock to MP4). */
+  accept?: string;
+  /** Expected input format hint, shown above the panel. */
+  expectedInput?: string;
+}
+
+/** Friendly compression level (mapped to a CRF value client-side). */
+export type EmbeddedVideoCompressionPreset = 'smallest' | 'balanced' | 'high_quality';
+
+/** Video codec choices the compressor exposes. */
+export type EmbeddedVideoCodec = 'h264' | 'h265' | 'vp9' | 'av1';
+
+/** Preset/lock config for the focused video-compressor panel. */
+export interface VideoCompressorPresets {
+  defaultOutputFormat?: EmbeddedVideoFormat;
+  lockedOutputFormat?: EmbeddedVideoFormat;
+  defaultPreset?: EmbeddedVideoCompressionPreset;
+  defaultCodec?: EmbeddedVideoCodec;
+  expectedInput?: string;
+}
+
+/** Preset/lock config for the focused trim/cut panel. */
+export interface VideoTrimmerPresets {
+  defaultOutputFormat?: EmbeddedVideoFormat;
+  lockedOutputFormat?: EmbeddedVideoFormat;
+  /** 'trim' keeps the middle; 'cut' is the same operation, different framing/copy. */
+  intent?: 'trim' | 'cut';
+  expectedInput?: string;
+}
+
+/** Which transform control the transform panel emphasizes. */
+export type VideoTransformEmphasis = 'crop' | 'resize' | 'rotate';
+
+/** Preset/lock config for the focused crop/resize/rotate panel. */
+export interface VideoTransformPresets {
+  emphasis: VideoTransformEmphasis;
+  defaultOutputFormat?: EmbeddedVideoFormat;
+  lockedOutputFormat?: EmbeddedVideoFormat;
+  defaultWidth?: number;
+  defaultHeight?: number;
+  defaultRotation?: number;
+  defaultCrop?: { x: number; y: number; width: number; height: number };
+  expectedInput?: string;
 }
 
 interface EmbeddedToolPanelProps {
@@ -155,6 +267,34 @@ interface EmbeddedToolPanelProps {
   defaultHeight?: number;
   /** Visually emphasize the resize controls (image resizer). */
   emphasizeResize?: boolean;
+  /** Default output container/codec the video converter preselects. */
+  defaultVideoOutputFormat?: EmbeddedVideoFormat;
+  /**
+   * Locked output container/codec for the video converter. The form locks the
+   * format select to this value and still submits it (e.g. MOV -> MP4 pages).
+   */
+  lockedVideoOutputFormat?: EmbeddedVideoFormat;
+  /** Default quality preset for the video converter. */
+  defaultVideoQuality?: 'low' | 'medium' | 'high';
+  /** Default target width in px (video tasks only). */
+  defaultVideoWidth?: number;
+  /** Default target height in px (video tasks only). */
+  defaultVideoHeight?: number;
+  /** Default playback speed multiplier (video tasks only). */
+  defaultVideoSpeed?: number;
+  /** Default output audio format for the extract-audio flow (video-to-audio pages). */
+  defaultExtractAudioFormat?: EmbeddedExtractAudioFormat;
+  /** Locked output audio format for the extract-audio flow (mp4-to-mp3 page). */
+  lockedExtractAudioFormat?: EmbeddedExtractAudioFormat;
+  /** Default compression level for the video-compressor panel. */
+  defaultVideoCompressionPreset?: EmbeddedVideoCompressionPreset;
+  /** Default codec for the video-compressor panel. */
+  defaultVideoCodec?: EmbeddedVideoCodec;
+  /**
+   * Default transform for crop/resize/rotate pages. `rotation` seeds the
+   * rotate-video control; `crop` seeds the crop-video control.
+   */
+  defaultTransform?: { rotation?: number; crop?: { x: number; y: number; width: number; height: number } };
   /** Default output format for the PDF -> image form (jpg | png). */
   pdfDefaultOutputFormat?: 'jpg' | 'png';
   /** Lock the PDF -> image output format select. */
@@ -314,6 +454,33 @@ const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: st
   png_to_svg: { recommended: 'svg' },
   png_to_ico: { recommended: 'ico' },
   svg_converter: { recommended: 'png' },
+  // Video SEO tasks. Like the image batch, guidance prose lives in each tool's
+  // canonical `embed.description` (toolPages.ts); these only carry the
+  // data-shaped `recommended` format chip. The actual default/lock behavior is
+  // driven by the embed's defaultVideoOutputFormat / lockedVideoOutputFormat
+  // (and defaultExtractAudioFormat / lockedExtractAudioFormat for audio output).
+  mp4_converter: { recommended: 'mp4' },
+  mov_to_mp4: { recommended: 'mp4' },
+  webm_to_mp4: { recommended: 'mp4' },
+  avi_to_mp4: { recommended: 'mp4' },
+  mkv_to_mp4: { recommended: 'mp4' },
+  mp4_to_webm: { recommended: 'webm' },
+  mp4_to_mp3: { recommended: 'mp3' },
+  video_to_mp3: { recommended: 'mp3' },
+  mp4_to_gif: { recommended: 'gif' },
+  gif_converter: { recommended: 'gif' },
+  // Video utility tasks (batch 2). These render focused specialized panels, so
+  // they carry no recommended-format chip — the panel UI states the task.
+  video_compressor: {},
+  compress_mp4: {},
+  video_trimmer: {},
+  mp4_trimmer: {},
+  video_cutter: {},
+  cut_video_online: {},
+  crop_video: {},
+  resize_video: {},
+  rotate_video: {},
+  remove_audio_from_video: {},
 };
 
 const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
@@ -323,6 +490,22 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
   extract_frames: true,
   caption_translator: true,
   stitch_audio_to_video: true,
+  // Video-to-audio pages output audio, not video, so they reuse the
+  // specialized extract-audio flow rather than the video converter.
+  mp4_to_mp3: true,
+  video_to_mp3: true,
+  // Video utility pages (batch 2) each render a focused panel instead of the
+  // full advanced video form.
+  video_compressor: true,
+  compress_mp4: true,
+  video_trimmer: true,
+  mp4_trimmer: true,
+  video_cutter: true,
+  cut_video_online: true,
+  crop_video: true,
+  resize_video: true,
+  rotate_video: true,
+  remove_audio_from_video: true,
 };
 
 /**
@@ -350,6 +533,17 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   defaultWidth,
   defaultHeight,
   emphasizeResize = false,
+  defaultVideoOutputFormat,
+  lockedVideoOutputFormat,
+  defaultVideoQuality,
+  defaultVideoWidth,
+  defaultVideoHeight,
+  defaultVideoSpeed,
+  defaultExtractAudioFormat,
+  lockedExtractAudioFormat,
+  defaultVideoCompressionPreset,
+  defaultVideoCodec,
+  defaultTransform,
   pdfDefaultOutputFormat,
   pdfLockOutputFormat = false,
   pdfDefaultPageSelection,
@@ -523,7 +717,18 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   const subheading = description || DEFAULT_DESCRIPTIONS[defaultMediaKind];
   const { t, formatFileSize } = useLocalization('interface');
   const hint = defaultTask ? TASK_HINTS[defaultTask] : undefined;
-  const recommendedFormat = defaultOutputFormat || hint?.recommended;
+  // A single "output is locked" value, regardless of media kind, so the info
+  // banner shows the right chip for image / video / extract-audio pages alike.
+  const lockedOutputDisplay =
+    lockedOutputFormat || lockedVideoOutputFormat || lockedExtractAudioFormat;
+  // When the output is locked we show the "Output format" chip instead of the
+  // "Recommended output" chip, so they never both appear for the same format.
+  const recommendedFormat = lockedOutputDisplay
+    ? undefined
+    : defaultOutputFormat ||
+      defaultVideoOutputFormat ||
+      defaultExtractAudioFormat ||
+      hint?.recommended;
 
   const isImageFormat = (v: string | undefined): v is EmbeddedImageFormat =>
     v === 'jpg' || v === 'png' || v === 'webp' || v === 'gif';
@@ -546,6 +751,60 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
     lockOutputFormat: pdfLockOutputFormat,
     defaultPageSelection: pdfDefaultPageSelection,
     defaultDpi: pdfDefaultDpi,
+  };
+
+  // Concrete preset/lock config for the video converter. Ignored for non-video
+  // media kinds. lockedOutputFormat makes MOV->MP4 style pages submit MP4 even
+  // though the select is disabled.
+  const videoPresets: VideoFormPresets = {
+    defaultOutputFormat: defaultVideoOutputFormat,
+    lockedOutputFormat: lockedVideoOutputFormat,
+    defaultQuality: defaultVideoQuality,
+    defaultWidth: defaultVideoWidth,
+    defaultHeight: defaultVideoHeight,
+    defaultSpeed: defaultVideoSpeed,
+  };
+
+  // Concrete preset/lock config for the specialized extract-audio panel
+  // (mp4-to-mp3 / video-to-mp3 pages).
+  const extractAudioPresets: ExtractAudioPresets = {
+    defaultFormat: defaultExtractAudioFormat,
+    lockedFormat: lockedExtractAudioFormat,
+    accept: acceptOverride,
+    expectedInput: lockedInputFormat,
+  };
+
+  // Preset/lock config for the focused video utility panels (batch 2).
+  const videoCompressorPresets: VideoCompressorPresets = {
+    defaultOutputFormat: defaultVideoOutputFormat,
+    lockedOutputFormat: lockedVideoOutputFormat,
+    defaultPreset: defaultVideoCompressionPreset,
+    defaultCodec: defaultVideoCodec,
+    expectedInput: lockedInputFormat,
+  };
+  const videoTrimmerPresets: VideoTrimmerPresets = {
+    defaultOutputFormat: defaultVideoOutputFormat,
+    lockedOutputFormat: lockedVideoOutputFormat,
+    intent:
+      defaultTask === 'video_cutter' || defaultTask === 'cut_video_online' ? 'cut' : 'trim',
+    expectedInput: lockedInputFormat,
+  };
+  // The crop/resize/rotate panel emphasizes one control, derived from the task.
+  const transformEmphasis: VideoTransformEmphasis =
+    defaultTask === 'crop_video'
+      ? 'crop'
+      : defaultTask === 'rotate_video'
+        ? 'rotate'
+        : 'resize';
+  const videoTransformPresets: VideoTransformPresets = {
+    emphasis: transformEmphasis,
+    defaultOutputFormat: defaultVideoOutputFormat,
+    lockedOutputFormat: lockedVideoOutputFormat,
+    defaultWidth: defaultVideoWidth,
+    defaultHeight: defaultVideoHeight,
+    defaultRotation: defaultTransform?.rotation,
+    defaultCrop: defaultTransform?.crop,
+    expectedInput: lockedInputFormat,
   };
 
   const isTranscribeAllowed =
@@ -572,7 +831,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
         </div>
       </div>
 
-      {(hint?.note || recommendedFormat || lockedOutputFormat || lockedInputFormat || allowedInputFormats?.length) && (
+      {(hint?.note || recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
         <div className="mb-4 flex items-start gap-2 rounded-md border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 p-3">
           <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
           <div className="text-sm text-card-foreground">
@@ -584,11 +843,11 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
                 </code>
               </p>
             )}
-            {lockedOutputFormat && (
+            {lockedOutputDisplay && (
               <p>
-                <span className="font-medium">{t('embeddedToolPanel.outputFormat')}</span>{' '}
+                <span className="font-medium">{t('embeddedToolPanel.outputLocked')}</span>{' '}
                 <code className="px-1.5 py-0.5 bg-card border border-border rounded text-xs">
-                  {lockedOutputFormat.toUpperCase()}
+                  {lockedOutputDisplay.toUpperCase()}
                 </code>
               </p>
             )}
@@ -613,9 +872,11 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
 
       {specializedPanel === 'audio_waveform' ? (
         <AudioWaveformPanel />
-      ) : specializedPanel === 'extract_audio' ? (
-        <ExtractAudioPanel />
-      ) : specializedPanel === 'extract_video_only' ? (
+      ) : specializedPanel === 'extract_audio' ||
+        specializedPanel === 'mp4_to_mp3' ||
+        specializedPanel === 'video_to_mp3' ? (
+        <ExtractAudioPanel presets={extractAudioPresets} />
+      ) : specializedPanel === 'extract_video_only' || specializedPanel === 'remove_audio_from_video' ? (
         <ExtractVideoOnlyPanel />
       ) : specializedPanel === 'extract_frames' ? (
         <ExtractFramesPanel />
@@ -623,6 +884,17 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
         <CaptionTranslatorPanel />
       ) : specializedPanel === 'stitch_audio_to_video' ? (
         <StitchAudioToVideoPanel />
+      ) : specializedPanel === 'video_compressor' || specializedPanel === 'compress_mp4' ? (
+        <VideoCompressorPanel presets={videoCompressorPresets} />
+      ) : specializedPanel === 'video_trimmer' ||
+        specializedPanel === 'mp4_trimmer' ||
+        specializedPanel === 'video_cutter' ||
+        specializedPanel === 'cut_video_online' ? (
+        <VideoTrimmerPanel presets={videoTrimmerPresets} />
+      ) : specializedPanel === 'crop_video' ||
+        specializedPanel === 'resize_video' ||
+        specializedPanel === 'rotate_video' ? (
+        <VideoTransformPanel presets={videoTransformPresets} />
       ) : !selectedFile ? (
         <div
           onDragOver={handleDragOver}
@@ -718,6 +990,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
                   onSubmit={handleConvert}
                   isLoading={isProcessing}
                   videoUrl={originalMediaUrl || undefined}
+                  presets={videoPresets}
                 />
               )}
               {effectiveKind === 'audio' && (

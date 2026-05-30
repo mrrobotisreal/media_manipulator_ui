@@ -1,13 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
-import { Image as ImageIcon, Video as VideoIcon, Music, Sparkles, Shield, ArrowRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Image as ImageIcon, Video as VideoIcon, Music, Sparkles, Shield, ArrowRight, Clapperboard } from 'lucide-react';
 import AdBanner from '@/components/ad-banner';
 import RelatedLinks from '@/components/related-links';
 import { AD_SLOTS } from '@/lib/adSlots';
 import { type ToolPageContent } from '@/content/toolPages';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useToolPages } from '@/i18n/useToolPages';
+import { cn } from '@/lib/utils';
+
+// Featured tools rendered in a prominent band above the category grid. Driven
+// by this array so additional spotlights can be added later — each entry's
+// copy (name/tagline/badge) is resolved from the `toolsIndex.featured.<key>`
+// i18n block at render time.
+const FEATURED_TOOLS: { key: string; to: string; icon: React.ReactNode }[] = [
+  {
+    key: 'contentStudio',
+    to: '/tools/content-studio',
+    icon: <Clapperboard className="w-7 h-7 text-green-500" />,
+  },
+];
 
 const categoryIcon = (category: ToolPageContent['category']): React.ReactNode => {
   switch (category) {
@@ -26,6 +40,7 @@ const categoryIcon = (category: ToolPageContent['category']): React.ReactNode =>
 
 // Map each TOOL_CATEGORIES entry to its 468x60 banner slot from ADS.md.
 const CATEGORY_BANNER_SLOTS: Record<ToolPageContent['category'], string> = {
+  contentStudio: AD_SLOTS.tools_index_content_studio_banner,
   image: AD_SLOTS.tools_index_image_banner,
   video: AD_SLOTS.tools_index_video_banner,
   audio: AD_SLOTS.tools_index_audio_banner,
@@ -67,6 +82,51 @@ const ToolsIndexPage: React.FC = () => {
                   {t('toolsIndex.subtitle')}
                 </p>
               </header>
+
+              {/* Featured tools — spotlighted above the category grid. */}
+              <section className="mb-10">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-5 h-5 text-green-500" />
+                  <h2 className="text-2xl font-semibold text-card-foreground">
+                    {t('toolsIndex.featured.title')}
+                  </h2>
+                </div>
+                <div
+                  className={cn(
+                    'grid gap-4',
+                    FEATURED_TOOLS.length > 1 && 'md:grid-cols-2',
+                  )}
+                >
+                  {FEATURED_TOOLS.map((tool) => (
+                    <Link
+                      key={tool.key}
+                      to={tool.to}
+                      className="group block bg-card p-6 sci-fi-frame-green transition-transform hover:-translate-y-0.5"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-1">{tool.icon}</div>
+                        <div className="min-w-0">
+                          <span className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xl font-semibold text-card-foreground">
+                              {t(`toolsIndex.featured.${tool.key}.name`)}
+                            </span>
+                            <Badge className="bg-green-600 text-white hover:bg-green-600">
+                              {t(`toolsIndex.featured.${tool.key}.badge`)}
+                            </Badge>
+                          </span>
+                          <p className="text-muted-foreground mt-1">
+                            {t(`toolsIndex.featured.${tool.key}.tagline`)}
+                          </p>
+                          <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-green-500 group-hover:translate-x-0.5 transition-transform">
+                            {t('toolsIndex.featured.cta')}
+                            <ArrowRight className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
 
               <div className="grid gap-10">
                 {toolCategories.map((category) => {

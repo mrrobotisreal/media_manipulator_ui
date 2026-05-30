@@ -8,6 +8,16 @@ export const videoConversionSchema = z.object({
   speed: z.number().min(0.25).max(4).default(1),
   quality: z.enum(['low', 'medium', 'high']).default('medium'),
 
+  // Optional compression controls (video-compressor / compress-mp4 pages).
+  // Mirror the backend models.VideoConversionOptions fields. All optional and
+  // backward compatible — omitting them keeps the legacy quality behavior.
+  videoCodec: z.enum(['h264', 'h265', 'vp9', 'av1']).optional(),
+  crf: z.number().int().min(0).max(51).optional(),
+  videoBitrateKbps: z.number().int().min(50).max(200000).optional(),
+  audioBitrateKbps: z.number().int().min(8).max(1024).optional(),
+  preset: z.enum(['ultrafast', 'superfast', 'veryfast', 'faster', 'fast', 'medium', 'slow', 'slower', 'veryslow']).optional(),
+  stripAudio: z.boolean().optional(),
+
   // Trimming parameters (in seconds)
   trim: z.object({
     startTime: z.number().min(0),

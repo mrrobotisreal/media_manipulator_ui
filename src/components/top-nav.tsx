@@ -273,7 +273,7 @@ const TopNav: React.FC = () => {
             >
               <img
                 src={creatvLogo}
-                alt={t("accessibility:topNav.creatvLogo")}
+                alt={t("accessibility:topNav.creatvLogo")}\
                 className="h-12 w-12"
               />
               <span className="sr-only">{t("accessibility:topNav.creatv")}</span>

@@ -8,6 +8,14 @@
  */
 
 export const AD_SLOTS = {
+  // ---------------------------------------------------------- Content Studio
+  content_studio_header: '5299736787',
+  content_studio_footer: '2673573443',
+  content_studio_sidebar_right: '3240926956',
+  content_studio_sidebar_left: '5461416092',
+  content_studio_incontent: '9121607896',
+  content_studio_mobile_anchor: '2007055116',
+
   // ---------------------------------------------------------- Homepage
   home_header: '2367514744',
   home_footer: '6193559201',
@@ -47,6 +55,7 @@ export const AD_SLOTS = {
 
   // ---------------------------------------------------------- Tools index
   tools_index_header: '4737007305',
+  tools_index_content_studio_banner: 'PLACEHOLDER-tools_index_content_studio_banner',
   tools_index_sidebar_right: '6780716713',
   tools_index_sidebar_left: '5704729767',
   tools_index_image_banner: '5998118080',
@@ -445,6 +454,164 @@ export const TOOL_AD_SLOTS: Record<string, ToolAdSlotSet> = {
     sidebar_left: 'PLACEHOLDER-svg-converter-sidebar-left',
     incontent: 'PLACEHOLDER-svg-converter-incontent',
     footer: 'PLACEHOLDER-svg-converter-footer',
+  },
+
+  // ---------------------------------------------------------- Video SEO batch 1
+  // PLACEHOLDER slot IDs — same pattern as earlier batches. Unprovisioned slots
+  // fall back to the CreaTV in-house creative, so layout heights are reserved
+  // and no invalid live ad request is served. Replace with real numeric slot
+  // IDs from ADS.md once the AdSense units are created.
+  'mp4-converter': {
+    header: 'PLACEHOLDER-mp4-converter-header',
+    sidebar_right: 'PLACEHOLDER-mp4-converter-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-mp4-converter-sidebar-left',
+    incontent: 'PLACEHOLDER-mp4-converter-incontent',
+    footer: 'PLACEHOLDER-mp4-converter-footer',
+  },
+  'convert-mov-to-mp4': {
+    header: 'PLACEHOLDER-convert-mov-to-mp4-header',
+    sidebar_right: 'PLACEHOLDER-convert-mov-to-mp4-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-mov-to-mp4-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-mov-to-mp4-incontent',
+    footer: 'PLACEHOLDER-convert-mov-to-mp4-footer',
+  },
+  'convert-webm-to-mp4': {
+    header: 'PLACEHOLDER-convert-webm-to-mp4-header',
+    sidebar_right: 'PLACEHOLDER-convert-webm-to-mp4-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-webm-to-mp4-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-webm-to-mp4-incontent',
+    footer: 'PLACEHOLDER-convert-webm-to-mp4-footer',
+  },
+  'convert-avi-to-mp4': {
+    header: 'PLACEHOLDER-convert-avi-to-mp4-header',
+    sidebar_right: 'PLACEHOLDER-convert-avi-to-mp4-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-avi-to-mp4-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-avi-to-mp4-incontent',
+    footer: 'PLACEHOLDER-convert-avi-to-mp4-footer',
+  },
+  'convert-mkv-to-mp4': {
+    header: 'PLACEHOLDER-convert-mkv-to-mp4-header',
+    sidebar_right: 'PLACEHOLDER-convert-mkv-to-mp4-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-mkv-to-mp4-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-mkv-to-mp4-incontent',
+    footer: 'PLACEHOLDER-convert-mkv-to-mp4-footer',
+  },
+  'convert-mp4-to-webm': {
+    header: 'PLACEHOLDER-convert-mp4-to-webm-header',
+    sidebar_right: 'PLACEHOLDER-convert-mp4-to-webm-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-convert-mp4-to-webm-sidebar-left',
+    incontent: 'PLACEHOLDER-convert-mp4-to-webm-incontent',
+    footer: 'PLACEHOLDER-convert-mp4-to-webm-footer',
+  },
+  'mp4-to-mp3': {
+    header: 'PLACEHOLDER-mp4-to-mp3-header',
+    sidebar_right: 'PLACEHOLDER-mp4-to-mp3-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-mp4-to-mp3-sidebar-left',
+    incontent: 'PLACEHOLDER-mp4-to-mp3-incontent',
+    footer: 'PLACEHOLDER-mp4-to-mp3-footer',
+  },
+  'video-to-mp3': {
+    header: 'PLACEHOLDER-video-to-mp3-header',
+    sidebar_right: 'PLACEHOLDER-video-to-mp3-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-video-to-mp3-sidebar-left',
+    incontent: 'PLACEHOLDER-video-to-mp3-incontent',
+    footer: 'PLACEHOLDER-video-to-mp3-footer',
+  },
+  'mp4-to-gif': {
+    header: 'PLACEHOLDER-mp4-to-gif-header',
+    sidebar_right: 'PLACEHOLDER-mp4-to-gif-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-mp4-to-gif-sidebar-left',
+    incontent: 'PLACEHOLDER-mp4-to-gif-incontent',
+    footer: 'PLACEHOLDER-mp4-to-gif-footer',
+  },
+  'video-to-gif': {
+    header: 'PLACEHOLDER-video-to-gif-header',
+    sidebar_right: 'PLACEHOLDER-video-to-gif-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-video-to-gif-sidebar-left',
+    incontent: 'PLACEHOLDER-video-to-gif-incontent',
+    footer: 'PLACEHOLDER-video-to-gif-footer',
+  },
+  'gif-converter': {
+    header: 'PLACEHOLDER-gif-converter-header',
+    sidebar_right: 'PLACEHOLDER-gif-converter-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-gif-converter-sidebar-left',
+    incontent: 'PLACEHOLDER-gif-converter-incontent',
+    footer: 'PLACEHOLDER-gif-converter-footer',
+  },
+
+  // ---------------------------------------------------------- Video SEO batch 2
+  // PLACEHOLDER slot IDs — same pattern as earlier batches. Unprovisioned slots
+  // fall back to the CreaTV in-house creative. Replace with real numeric slot
+  // IDs from ADS.md once the AdSense units are created.
+  'video-compressor': {
+    header: 'PLACEHOLDER-video-compressor-header',
+    sidebar_right: 'PLACEHOLDER-video-compressor-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-video-compressor-sidebar-left',
+    incontent: 'PLACEHOLDER-video-compressor-incontent',
+    footer: 'PLACEHOLDER-video-compressor-footer',
+  },
+  'compress-mp4': {
+    header: 'PLACEHOLDER-compress-mp4-header',
+    sidebar_right: 'PLACEHOLDER-compress-mp4-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-compress-mp4-sidebar-left',
+    incontent: 'PLACEHOLDER-compress-mp4-incontent',
+    footer: 'PLACEHOLDER-compress-mp4-footer',
+  },
+  'video-trimmer': {
+    header: 'PLACEHOLDER-video-trimmer-header',
+    sidebar_right: 'PLACEHOLDER-video-trimmer-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-video-trimmer-sidebar-left',
+    incontent: 'PLACEHOLDER-video-trimmer-incontent',
+    footer: 'PLACEHOLDER-video-trimmer-footer',
+  },
+  'mp4-trimmer': {
+    header: 'PLACEHOLDER-mp4-trimmer-header',
+    sidebar_right: 'PLACEHOLDER-mp4-trimmer-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-mp4-trimmer-sidebar-left',
+    incontent: 'PLACEHOLDER-mp4-trimmer-incontent',
+    footer: 'PLACEHOLDER-mp4-trimmer-footer',
+  },
+  'video-cutter': {
+    header: 'PLACEHOLDER-video-cutter-header',
+    sidebar_right: 'PLACEHOLDER-video-cutter-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-video-cutter-sidebar-left',
+    incontent: 'PLACEHOLDER-video-cutter-incontent',
+    footer: 'PLACEHOLDER-video-cutter-footer',
+  },
+  'cut-video-online': {
+    header: 'PLACEHOLDER-cut-video-online-header',
+    sidebar_right: 'PLACEHOLDER-cut-video-online-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-cut-video-online-sidebar-left',
+    incontent: 'PLACEHOLDER-cut-video-online-incontent',
+    footer: 'PLACEHOLDER-cut-video-online-footer',
+  },
+  'crop-video': {
+    header: 'PLACEHOLDER-crop-video-header',
+    sidebar_right: 'PLACEHOLDER-crop-video-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-crop-video-sidebar-left',
+    incontent: 'PLACEHOLDER-crop-video-incontent',
+    footer: 'PLACEHOLDER-crop-video-footer',
+  },
+  'resize-video': {
+    header: 'PLACEHOLDER-resize-video-header',
+    sidebar_right: 'PLACEHOLDER-resize-video-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-resize-video-sidebar-left',
+    incontent: 'PLACEHOLDER-resize-video-incontent',
+    footer: 'PLACEHOLDER-resize-video-footer',
+  },
+  'rotate-video': {
+    header: 'PLACEHOLDER-rotate-video-header',
+    sidebar_right: 'PLACEHOLDER-rotate-video-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-rotate-video-sidebar-left',
+    incontent: 'PLACEHOLDER-rotate-video-incontent',
+    footer: 'PLACEHOLDER-rotate-video-footer',
+  },
+  'remove-audio-from-video': {
+    header: 'PLACEHOLDER-remove-audio-from-video-header',
+    sidebar_right: 'PLACEHOLDER-remove-audio-from-video-sidebar-right',
+    sidebar_left: 'PLACEHOLDER-remove-audio-from-video-sidebar-left',
+    incontent: 'PLACEHOLDER-remove-audio-from-video-incontent',
+    footer: 'PLACEHOLDER-remove-audio-from-video-footer',
   },
 };
 

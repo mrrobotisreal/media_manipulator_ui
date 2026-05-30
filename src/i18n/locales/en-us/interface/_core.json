@@ -122,6 +122,12 @@
     "select": "Select a language"
   },
   "home": {
+    "contentStudioCta": {
+      "title": "Content Studio",
+      "badge": "New",
+      "body": "Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style editor, right in your browser.",
+      "cta": "Try Content Studio"
+    },
     "hero": {
       "title": "Free Online Media Converter, Editor, Transcriber & Metadata Tool",
       "subtitle": "Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.",

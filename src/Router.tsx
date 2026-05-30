@@ -40,7 +40,11 @@ const ImageGettingStartedTutorial = lazy(
 const AIFrameInterpolationTutorial = lazy(
   () => import('./pages/tutorials/ai-frame-interpolation'),
 );
+const ContentStudioTutorial = lazy(
+  () => import('./pages/tutorials/content-studio'),
+);
 const ToolsIndexPage = lazy(() => import('./pages/tools/index'));
+const ContentStudioPage = lazy(() => import('./pages/tools/content-studio'));
 const ToolPage = lazy(() => import('./pages/tools/tool-page'));
 const NotFoundPage = lazy(() => import('./pages/not-found'));
 
@@ -142,7 +146,19 @@ const Router: React.FC = () => {
                 path="/tutorials/ai-frame-interpolation"
                 element={<AIFrameInterpolationTutorial />}
               />
+              <Route
+                path="/tutorials/content-studio"
+                element={<ContentStudioTutorial />}
+              />
               <Route path="/tools" element={<ToolsIndexPage />} />
+              {/* Static editor route must be declared alongside the dynamic
+                  slug route; react-router ranks the static segment higher so
+                  /tools/content-studio never falls through to the data-driven
+                  tool landing page. */}
+              <Route
+                path="/tools/content-studio"
+                element={<ContentStudioPage />}
+              />
               <Route path="/tools/:slug" element={<ToolPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/terms-of-service" element={<TermsOfServicePage />} />

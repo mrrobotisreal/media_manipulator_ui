@@ -863,6 +863,54 @@ const ROUTES: RouteSeo[] = [
     ],
   },
   {
+    path: '/tutorials/content-studio',
+    title:
+      'How to Use Content Studio: Multi-Track Video Editing in Your Browser | Media Manipulator',
+    description:
+      'Step-by-step Content Studio tutorial: import media, build a multi-track timeline, trim, split and ripple-delete, add cross-dissolves, color adjustments and text overlays, and export MP4 — all in your browser.',
+    canonicalUrl: buildCanonical('/tutorials/content-studio'),
+    ogTitle: 'How to Use Content Studio — Multi-Track Video Editing in Your Browser',
+    ogDescription:
+      'Import media, build a multi-track timeline, add transitions, color and text overlays, and export MP4 with Content Studio.',
+    ogType: 'article',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: [
+      'content studio tutorial',
+      'online video editor tutorial',
+      'multi-track timeline',
+      'how to edit video in browser',
+      'cross dissolve',
+      'text overlay video',
+      'export mp4',
+    ],
+    jsonLd: [
+      techArticleLd({
+        path: '/tutorials/content-studio',
+        title: 'How to Use Content Studio: Multi-Track Video Editing in Your Browser',
+        description:
+          'Import media, build a multi-track timeline, trim/split/ripple, add cross-dissolves, color and text overlays, and export MP4.',
+        section: 'Video Tutorials',
+        keywords: ['content studio tutorial', 'online video editor', 'multi-track timeline', 'export mp4'],
+        dependencies: 'Modern web browser',
+      }),
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Tutorials', path: '/tutorials' },
+        { name: 'Content Studio', path: '/tutorials/content-studio' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'Media Manipulator Content Studio',
+        url: buildCanonical('/tools/content-studio'),
+        applicationCategory: 'MultimediaApplication',
+        operatingSystem: 'Web',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      },
+    ],
+  },
+  {
     path: '/tools',
     title: 'Free Online Media Tools | Media Manipulator',
     description:
@@ -896,6 +944,53 @@ const ROUTES: RouteSeo[] = [
       breadcrumbList([
         { name: 'Home', path: '/' },
         { name: 'Tools', path: '/tools' },
+      ]),
+    ],
+  },
+  {
+    path: '/tools/content-studio',
+    title:
+      'Content Studio — Free Online Multi-Track Video Editor | Media Manipulator',
+    description:
+      'Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style video editor that runs right in your browser. No signup, free to use.',
+    canonicalUrl: buildCanonical('/tools/content-studio'),
+    ogTitle: 'Content Studio — Free Online Multi-Track Video Editor',
+    ogDescription:
+      'A Premiere Pro–style multi-track video editor in your browser. Trim, layer, and mix video & audio, then export MP4.',
+    ogType: 'website',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: [
+      'online video editor',
+      'multi-track video editor',
+      'free video editor',
+      'browser video editor',
+      'timeline video editor',
+      'edit video online',
+      'mix audio and video',
+      'export MP4',
+    ],
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: `${SITE_NAME} — Content Studio`,
+        url: buildCanonical('/tools/content-studio'),
+        applicationCategory: 'MultimediaApplication',
+        operatingSystem: 'Web',
+        description:
+          'A Premiere Pro–style multi-track video editor in your browser. Trim, layer, and mix video & audio on a timeline, then export MP4.',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        publisher: {
+          '@type': 'Organization',
+          name: ORG_NAME,
+          url: SITE_ORIGIN,
+        },
+      },
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Tools', path: '/tools' },
+        { name: 'Content Studio', path: '/tools/content-studio' },
       ]),
     ],
   },

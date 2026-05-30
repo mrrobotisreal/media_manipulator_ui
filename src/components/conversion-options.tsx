@@ -1,6 +1,7 @@
 import { Controller, useWatch } from 'react-hook-form';
 import { Crop, Scissors, Sparkles } from 'lucide-react';
 import InfoTooltip from '@/components/info-tooltip';
+import type { EmbeddedVideoFormat } from '@/components/embedded-tool-panel';
 import { useLocalization } from '@/i18n/useLocalization';
 
 const ConversionOptions: React.FC<{
@@ -12,9 +13,11 @@ const ConversionOptions: React.FC<{
   trimStatus?: string;
   /** When set (image), the output-format select is locked to this value. */
   lockedFormat?: 'jpg' | 'png' | 'webp' | 'gif' | 'avif' | 'pdf' | 'svg' | 'ico';
+  /** When set (video), the output-format select is locked to this value. */
+  lockedVideoFormat?: EmbeddedVideoFormat;
   /** When true (image), visually highlight the width/height controls. */
   emphasizeResize?: boolean;
-}> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus, lockedFormat, emphasizeResize }) => {
+}> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus, lockedFormat, lockedVideoFormat, emphasizeResize }) => {
   const { t } = useLocalization('interface');
 
   if (fileType === 'image') {
@@ -239,6 +242,7 @@ const ConversionOptions: React.FC<{
         control={control}
         onTrimClick={onTrimClick}
         trimStatus={trimStatus}
+        lockedFormat={lockedVideoFormat}
       />
     );
   }
@@ -388,13 +392,15 @@ interface VideoConversionOptionsProps {
   control: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onTrimClick?: () => void;
   trimStatus?: string;
+  /** When set, the output-format select is locked to this value. */
+  lockedFormat?: EmbeddedVideoFormat;
 }
 
 // VideoConversionOptions lives in its own component so we can call useWatch
 // without breaking the rules of hooks when the parent renders a different
 // fileType branch. It also keeps the GIF-only fields close to the format
 // dropdown that gates them.
-const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control, onTrimClick, trimStatus }) => {
+const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control, onTrimClick, trimStatus, lockedFormat }) => {
   const { t } = useLocalization('interface');
   const format = useWatch({ control, name: 'format' });
   const isGIF = format === 'gif';
@@ -442,15 +448,30 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             name="format"
             control={control}
             render={({ field }) => (
-              <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
+              <select
+                {...field}
+                disabled={Boolean(lockedFormat)}
+                aria-disabled={Boolean(lockedFormat)}
+                className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring disabled:opacity-60 disabled:cursor-not-allowed"
+              >
                 <option value="mp4">{t('conversionOptions.video.format.options.mp4')}</option>
                 <option value="webm">{t('conversionOptions.video.format.options.webm')}</option>
                 <option value="avi">{t('conversionOptions.video.format.options.avi')}</option>
                 <option value="mov">{t('conversionOptions.video.format.options.mov')}</option>
+                <option value="mkv">{t('conversionOptions.video.format.options.mkv')}</option>
+                <option value="flv">{t('conversionOptions.video.format.options.flv')}</option>
+                <option value="wmv">{t('conversionOptions.video.format.options.wmv')}</option>
+                <option value="prores">{t('conversionOptions.video.format.options.prores')}</option>
+                <option value="dnxhd">{t('conversionOptions.video.format.options.dnxhd')}</option>
                 <option value="gif">{t('conversionOptions.video.format.options.gif')}</option>
               </select>
             )}
           />
+          {lockedFormat && (
+            <span className="mt-1 inline-flex items-center gap-1 rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+              {t('conversionOptions.video.format.locked', { format: lockedFormat.toUpperCase() })}
+            </span>
+          )}
         </div>
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">

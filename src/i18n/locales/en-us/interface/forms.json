@@ -456,11 +456,17 @@
         "label": "Format",
         "tooltipAria": "About video format",
         "tooltip": "The output container and codec. MP4 (H.264+AAC) is the safest default for the web. WebM uses VP9+Opus and is great for open-web embeds. MOV/MKV/AVI/WMV/FLV target specific workflows; ProRes/DNxHD are high-bitrate editing codecs. GIF (Animated) downscales and palettizes the clip via ffmpeg + gifsicle — perfect for short, silent loops.",
+        "locked": "Locked to {{format}} for this tool",
         "options": {
           "mp4": "MP4",
           "webm": "WebM",
           "avi": "AVI",
           "mov": "MOV",
+          "mkv": "MKV",
+          "flv": "FLV",
+          "wmv": "WMV",
+          "prores": "ProRes (MOV)",
+          "dnxhd": "DNxHR (MOV)",
           "gif": "GIF (Animated)"
         }
       },

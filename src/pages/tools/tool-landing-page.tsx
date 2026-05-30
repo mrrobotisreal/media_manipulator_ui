@@ -146,6 +146,17 @@ const ToolLandingPage: React.FC<ToolLandingPageProps> = ({ tool }) => {
                 defaultWidth={tool.embed.defaultWidth}
                 defaultHeight={tool.embed.defaultHeight}
                 emphasizeResize={tool.embed.emphasizeResize}
+                defaultVideoOutputFormat={tool.embed.defaultVideoOutputFormat}
+                lockedVideoOutputFormat={tool.embed.lockedVideoOutputFormat}
+                defaultVideoQuality={tool.embed.defaultVideoQuality}
+                defaultVideoWidth={tool.embed.defaultVideoWidth}
+                defaultVideoHeight={tool.embed.defaultVideoHeight}
+                defaultVideoSpeed={tool.embed.defaultVideoSpeed}
+                defaultExtractAudioFormat={tool.embed.defaultExtractAudioFormat}
+                lockedExtractAudioFormat={tool.embed.lockedExtractAudioFormat}
+                defaultVideoCompressionPreset={tool.embed.defaultVideoCompressionPreset}
+                defaultVideoCodec={tool.embed.defaultVideoCodec}
+                defaultTransform={tool.embed.defaultTransform}
                 pdfDefaultOutputFormat={tool.embed.pdfDefaultOutputFormat}
                 pdfLockOutputFormat={tool.embed.pdfLockOutputFormat}
                 pdfDefaultPageSelection={tool.embed.pdfDefaultPageSelection}

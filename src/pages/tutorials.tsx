@@ -46,6 +46,12 @@ const CATEGORIES: CategoryDef[] = [
     bannerSlot: AD_SLOTS.tutorials_index_video_banner,
     tutorials: [
       {
+        titleKey: 'tutorials.tutorials.contentStudio.title',
+        excerptKey: 'tutorials.tutorials.contentStudio.excerpt',
+        readTimeKey: 'tutorials.tutorials.contentStudio.readTime',
+        slug: 'content-studio',
+      },
+      {
         titleKey: 'tutorials.tutorials.videoGettingStarted.title',
         excerptKey: 'tutorials.tutorials.videoGettingStarted.excerpt',
         readTimeKey: 'tutorials.tutorials.videoGettingStarted.readTime',

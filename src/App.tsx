@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useState, useCallback, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Trans } from 'react-i18next';
-import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles, Film } from 'lucide-react';
+import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
 import { getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
@@ -836,6 +836,36 @@ const FileConverterApp: React.FC = () => {
             <Link to="/tools/convert-wav-to-mp3" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.wavToMp3')}</Link>
           </nav>
         </header>
+
+        {/* Content Studio call-to-action */}
+        <Link
+          to="/tools/content-studio"
+          className="w-full max-w-5xl mb-8 group block sci-fi-frame-green bg-card p-5"
+          aria-label={t('interface:home.contentStudioCta.title')}
+        >
+          <div className="flex items-center gap-4">
+            <div className="shrink-0 rounded-lg bg-green-600/10 p-3">
+              <Clapperboard className="w-7 h-7 text-green-500" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="flex items-center gap-2 flex-wrap">
+                <span className="text-lg font-semibold text-card-foreground">
+                  {t('interface:home.contentStudioCta.title')}
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-md bg-green-600 px-2 py-0.5 text-xs font-medium text-white">
+                  <Sparkles className="w-3 h-3" />
+                  {t('interface:home.contentStudioCta.badge')}
+                </span>
+              </span>
+              <p className="text-sm text-muted-foreground mt-1">{t('interface:home.contentStudioCta.body')}</p>
+            </div>
+            <span className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-green-500 group-hover:translate-x-0.5 transition-transform shrink-0">
+              {t('interface:home.contentStudioCta.cta')}
+              <ArrowRight className="w-4 h-4" />
+            </span>
+          </div>
+        </Link>
+
         <div className="grid lg:grid-cols-2 gap-6 max-w-8xl">
           {/* File Upload Section */}
           <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">

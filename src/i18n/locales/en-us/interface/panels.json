@@ -47,6 +47,7 @@
     "tryItNow": "Try it now",
     "recommendedOutput": "Recommended output:",
     "outputFormat": "Output format:",
+    "outputLocked": "Output locked for this tool:",
     "expectedInput": "Expected input:",
     "accepts": "Accepts:",
     "dragDrop": "Drag and drop a {{kind}} file here",
@@ -73,6 +74,8 @@
     "title": "Extract audio",
     "subtitle": "Pull the audio track out of a video file and save it as MP3, WAV, AAC, OGG, or FLAC.",
     "formatLabel": "Output audio format",
+    "outputLocked": "Locked to {{format}} for this tool",
+    "expectedInput": "Expected input: {{format}}",
     "submit": "Extract audio",
     "running": "Extracting…",
     "success": "Audio extracted. Use the download button to save it.",
@@ -85,6 +88,87 @@
       "aac": "AAC (raw)",
       "flac": "FLAC (lossless)",
       "ogg": "OGG (Vorbis)"
+    }
+  },
+  "videoCompressor": {
+    "uploadHint": "video file",
+    "expectedInput": "Expected input: {{format}}",
+    "levelLabel": "Compression level",
+    "levels": {
+      "smallest": "Smallest file",
+      "balanced": "Balanced (recommended)",
+      "high_quality": "High quality"
+    },
+    "levelHints": {
+      "smallest": "Maximum shrink for email and chat. Some visible quality loss on detailed footage.",
+      "balanced": "A good size-to-quality trade-off for most videos and social uploads.",
+      "high_quality": "Keeps the most detail. Smaller than the source, but not by as much."
+    },
+    "formatLabel": "Output format",
+    "outputLocked": "Locked to {{format}} for this tool",
+    "resolutionLabel": "Resolution",
+    "resolutions": {
+      "keep": "Keep original",
+      "1080": "1080p (Full HD)",
+      "720": "720p (HD)",
+      "480": "480p (SD)"
+    },
+    "codecLabel": "Codec",
+    "codecs": {
+      "h264": "H.264 (most compatible)",
+      "h265": "H.265 / HEVC (smaller, modern devices)"
+    },
+    "stripAudio": "Remove the audio track for an even smaller file",
+    "note": "We re-encode the video at the chosen level. MP4 output uses H.264 + AAC with faststart for instant playback.",
+    "running": "Compressing…",
+    "submit": "Compress video"
+  },
+  "videoTrimmer": {
+    "uploadHint": "video file",
+    "expectedInput": "Expected input: {{format}}",
+    "startLabel": "Start (seconds)",
+    "endLabel": "End (seconds)",
+    "durationLabel": "Clip length: {{duration}}",
+    "invalidRange": "Set an end time later than the start time.",
+    "pickRange": "Pick range visually",
+    "formatLabel": "Output format",
+    "outputLocked": "Locked to {{format}} for this tool",
+    "reencodeLabel": "Re-encode for a frame-accurate cut",
+    "reencodeHint": "Re-encoding cuts exactly at your times but is slower and may change the file size slightly.",
+    "note": "We keep the original quality with a fast, lossless cut whenever possible (no re-encode).",
+    "running": "Trimming…",
+    "submit": "Trim video",
+    "submitCut": "Cut video"
+  },
+  "videoTransform": {
+    "uploadHint": "video file",
+    "expectedInput": "Expected input: {{format}}",
+    "autoPlaceholder": "Auto",
+    "widthLabel": "Width (px)",
+    "heightLabel": "Height (px)",
+    "preserveAspect": "Preserve aspect ratio (fit within the box)",
+    "resizeNote": "Leave one field blank to scale the other proportionally. Max 4096 px per side.",
+    "rotationLabel": "Rotation",
+    "rotations": {
+      "90": "90° clockwise",
+      "180": "180° (upside down)",
+      "270": "90° counter-clockwise"
+    },
+    "flipH": "Flip horizontally",
+    "flipV": "Flip vertically",
+    "rotateNote": "Fixes sideways or upside-down videos. 90° and 270° swap width and height.",
+    "cropX": "Left offset (X, px)",
+    "cropY": "Top offset (Y, px)",
+    "cropW": "Crop width (px)",
+    "cropH": "Crop height (px)",
+    "cropNote": "Enter the rectangle to keep, in pixels from the top-left corner. Width and height are required.",
+    "formatLabel": "Output format",
+    "outputLocked": "Locked to {{format}} for this tool",
+    "running": "Processing…",
+    "submit": {
+      "crop": "Crop video",
+      "resize": "Resize video",
+      "rotate": "Rotate video"
     }
   },
   "extractVideoOnly": {
