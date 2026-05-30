@@ -77,6 +77,7 @@ interface StudioState {
 
   // --- tracks ---
   addTrack: (kind: StudioTrackKind) => void;
+  removeTrack: (trackId: string) => void;
   toggleTrackMute: (trackId: string) => void;
   setClipVolume: (clipId: string, volume: number) => void;
 
@@ -166,6 +167,56 @@ function fitInGaps(
     }
   }
   return Math.max(0, best);
+}
+
+// placeInTrack positions the dragged clip within its track, reorder-aware.
+// If the drop keeps the existing left-to-right order, the clip is placed at the
+// nearest non-overlapping slot (gaps preserved). If the drop crosses a
+// neighbour (the user wants a new order), the track is re-packed contiguously
+// in the new order from the block's earliest start — so two clips can be freely
+// swapped. Returns the new clips array for the track.
+function placeInTrack(clips: StudioClip[], draggedId: string, desiredStart: number): StudioClip[] {
+  const dragged = clips.find((c) => c.id === draggedId);
+  if (!dragged) return clips;
+  const dur = clipDuration(dragged);
+  const others = clips.filter((c) => c.id !== draggedId).sort((a, b) => a.timelineStart - b.timelineStart);
+
+  const currentOrder = [...clips].sort((a, b) => a.timelineStart - b.timelineStart).map((c) => c.id);
+
+  // Insertion index among the other clips, by the dragged clip's center.
+  const center = Math.max(0, desiredStart) + dur / 2;
+  let insertIdx = 0;
+  for (const o of others) {
+    if (o.timelineStart + clipDuration(o) / 2 < center) insertIdx += 1;
+    else break;
+  }
+  const newOrder = [
+    ...others.slice(0, insertIdx).map((c) => c.id),
+    draggedId,
+    ...others.slice(insertIdx).map((c) => c.id),
+  ];
+
+  if (newOrder.join() === currentOrder.join()) {
+    // No reorder — reposition the dragged clip, preserving gaps.
+    const placed = fitInGaps(
+      others.map((c) => ({ start: c.timelineStart, end: clipEnd(c) })),
+      dur,
+      Math.max(0, desiredStart),
+    );
+    return clips.map((c) => (c.id === draggedId ? { ...c, timelineStart: placed, transitionInSeconds: undefined } : c));
+  }
+
+  // Reorder — re-pack contiguously from the block's earliest start. Positions
+  // change, so any cross-dissolves (which depend on overlap) are cleared.
+  const base = Math.max(0, Math.min(...clips.map((c) => c.timelineStart)));
+  const byId = new Map(clips.map((c) => [c.id, c]));
+  let cursor = base;
+  return newOrder.map((id) => {
+    const c = byId.get(id)!;
+    const next = { ...c, timelineStart: cursor, transitionInSeconds: undefined };
+    cursor += clipDuration(c);
+    return next;
+  });
 }
 
 export const useStudioStore = create<StudioState>((set, get) => ({
@@ -318,19 +369,11 @@ export const useStudioStore = create<StudioState>((set, get) => ({
   moveClip: (clipId, desiredStart) =>
     set((s) => {
       if (!s.project) return {};
-      const next = mapTracks(s.project.tracks, (track) => {
-        const clip = track.clips.find((c) => c.id === clipId);
-        if (!clip) return track;
-        const others = track.clips
-          .filter((c) => c.id !== clipId)
-          .map((c) => ({ start: c.timelineStart, end: clipEnd(c) }));
-        const placed = fitInGaps(others, clipDuration(clip), Math.max(0, desiredStart));
-        return {
-          ...track,
-          // Repositioning removes any cross-dissolve (the overlap that defined it is gone).
-          clips: track.clips.map((c) => (c.id === clipId ? { ...c, timelineStart: placed, transitionInSeconds: undefined } : c)),
-        };
-      });
+      const next = mapTracks(s.project.tracks, (track) =>
+        track.clips.some((c) => c.id === clipId)
+          ? { ...track, clips: placeInTrack(track.clips, clipId, desiredStart) }
+          : track,
+      );
       return { project: { ...s.project, tracks: next }, dirty: true };
     }),
 
@@ -349,7 +392,6 @@ export const useStudioStore = create<StudioState>((set, get) => ({
         }
       }
       if (!moving) return {};
-      const dur = clipDuration(moving);
       const tracks = s.project.tracks.map((track) => {
         // Strip the clip from its current track.
         if (track.id !== targetTrackId) {
@@ -357,12 +399,12 @@ export const useStudioStore = create<StudioState>((set, get) => ({
             ? { ...track, clips: track.clips.filter((c) => c.id !== clipId) }
             : track;
         }
-        // Drop it onto the target track (clip may already be on this track if a
-        // same-track move routed here — filter then re-add).
-        const others = track.clips.filter((c) => c.id !== clipId).map((c) => ({ start: c.timelineStart, end: clipEnd(c) }));
-        const placed = fitInGaps(others, dur, Math.max(0, desiredStart));
-        const moved: StudioClip = { ...moving!, timelineStart: placed, transitionInSeconds: undefined };
-        return { ...track, clips: [...track.clips.filter((c) => c.id !== clipId), moved] };
+        // Drop onto the target track at the desired position (reorder-aware).
+        const withDragged = [
+          ...track.clips.filter((c) => c.id !== clipId),
+          { ...moving!, timelineStart: Math.max(0, desiredStart) },
+        ];
+        return { ...track, clips: placeInTrack(withDragged, clipId, desiredStart) };
       });
       return { project: { ...s.project, tracks }, selectedClipIds: [clipId], dirty: true };
     }),
@@ -444,6 +486,21 @@ export const useStudioStore = create<StudioState>((set, get) => ({
         .reduce((m, t) => Math.max(m, t.index), -1);
       const track: StudioTrack = { id: uid(), kind, index: maxIndex + 1, muted: false, clips: [] };
       return { project: { ...s.project, tracks: [...s.project.tracks, track] }, dirty: true };
+    }),
+
+  // removeTrack deletes an empty track and renumbers the remaining tracks of
+  // each kind so labels stay contiguous (V1, V2, … / A1, A2, …).
+  removeTrack: (trackId) =>
+    set((s) => {
+      if (!s.project) return {};
+      const target = s.project.tracks.find((t) => t.id === trackId);
+      if (!target || target.clips.length > 0) return {}; // only empty tracks
+      const counter = { video: 0, audio: 0 };
+      const reindexed = s.project.tracks
+        .filter((t) => t.id !== trackId)
+        .sort((a, b) => (a.kind === b.kind ? a.index - b.index : a.kind === 'video' ? -1 : 1))
+        .map((t) => ({ ...t, index: t.kind === 'video' ? counter.video++ : counter.audio++ }));
+      return { project: { ...s.project, tracks: reindexed }, dirty: true };
     }),
 
   toggleTrackMute: (trackId) =>

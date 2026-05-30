@@ -77,7 +77,8 @@
       "addVideoTrack": "Add video track",
       "addAudioTrack": "Add audio track",
       "mute": "Mute track",
-      "unmute": "Unmute track"
+      "unmute": "Unmute track",
+      "deleteTrack": "Delete empty track"
     },
     "editor": {
       "back": "Projects",

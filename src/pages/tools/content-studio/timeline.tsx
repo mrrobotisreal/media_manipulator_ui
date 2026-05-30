@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus } from 'lucide-react';
+import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -44,6 +44,7 @@ const Timeline: React.FC = () => {
   const updateClip = useStudioStore((s) => s.updateClip);
   const deleteSelected = useStudioStore((s) => s.deleteSelected);
   const addTrack = useStudioStore((s) => s.addTrack);
+  const removeTrack = useStudioStore((s) => s.removeTrack);
   const toggleTrackMute = useStudioStore((s) => s.toggleTrackMute);
   const setClipVolume = useStudioStore((s) => s.setClipVolume);
 
@@ -256,14 +257,26 @@ const Timeline: React.FC = () => {
                 {track.kind === 'video' ? 'V' : 'A'}
                 {track.index + 1}
               </span>
-              <button
-                type="button"
-                onClick={() => toggleTrackMute(track.id)}
-                className={`p-0.5 rounded hover:bg-muted ${track.muted ? 'text-destructive' : 'text-muted-foreground'}`}
-                title={track.muted ? t('contentStudio.timeline.unmute') : t('contentStudio.timeline.mute')}
-              >
-                {track.muted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => toggleTrackMute(track.id)}
+                  className={`p-0.5 rounded hover:bg-muted ${track.muted ? 'text-destructive' : 'text-muted-foreground'}`}
+                  title={track.muted ? t('contentStudio.timeline.unmute') : t('contentStudio.timeline.mute')}
+                >
+                  {track.muted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                </button>
+                {track.clips.length === 0 && (
+                  <button
+                    type="button"
+                    onClick={() => removeTrack(track.id)}
+                    className="p-0.5 rounded hover:bg-muted text-muted-foreground hover:text-destructive"
+                    title={t('contentStudio.timeline.deleteTrack')}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>
