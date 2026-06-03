@@ -12,7 +12,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['MMIcon.webp', 'MMOpenGraph.jpg', 'robots.txt', 'sitemap.xml'],
+      includeAssets: ['MMIcon.webp', 'MMOpenGraph.jpg', 'ads.txt', 'robots.txt', 'sitemap.xml'],
       manifest: {
         name: 'Media Manipulator',
         short_name: 'Media Manipulator',
@@ -37,7 +37,12 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,webp,jpg,png,svg,woff,woff2,ttf}', 'index.html'],
         globIgnores: ['**/*/index.html'],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api/, /^\/admin/],
+        navigateFallbackDenylist: [
+          /^\/api/,
+          /^\/admin/,
+          /^\/(?:ads|robots|humans)\.txt$/,
+          /^\/sitemap\.xml$/,
+        ],
         runtimeCaching: [
           {
             // Conversion API — never cache. If offline, the conversion just fails fast.
