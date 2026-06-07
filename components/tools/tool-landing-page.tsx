@@ -45,7 +45,7 @@ export default function ToolLandingPage({
     );
 
   return (
-    <div className="max-w-[1100px] mx-auto my-2 px-4">
+    <div className="max-w-[2160px] mx-auto my-2 px-4">
       <Card className="sci-fi-frame">
         <CardContent className="p-8 md:p-12">
           {/* Breadcrumbs */}
