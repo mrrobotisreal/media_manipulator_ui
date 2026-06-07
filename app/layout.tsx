@@ -43,10 +43,13 @@ export const metadata: Metadata = {
     'Free Online Media Converter, Editor, Transcriber & Metadata Tool | Media Manipulator',
   description:
     'Convert, edit, compress, transcribe, summarize, and inspect image, video, and audio files online with Media Manipulator.',
-  icons: {
-    icon: { url: '/MMIcon.webp', type: 'image/webp' },
-    apple: '/MMIcon.webp',
-  },
+  // Icons are driven entirely by the App Router file conventions in app/:
+  //   favicon.ico   → browser tab icon (multi-size .ico)
+  //   icon.png      → modern high-res <link rel="icon">
+  //   apple-icon.png→ iOS home-screen <link rel="apple-touch-icon">
+  // Next content-hashes each one for automatic cache-busting. We intentionally
+  // do NOT declare `metadata.icons` here, to avoid emitting a second competing
+  // rel="icon" (and a .webp apple-touch-icon that iOS Safari can't render).
   other: {
     'google-adsense-account': 'ca-pub-3413790368941825',
   },
