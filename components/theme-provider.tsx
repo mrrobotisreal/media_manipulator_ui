@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
+type ResolvedTheme = "dark" | "light";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -11,12 +12,16 @@ type ThemeProviderProps = {
 };
 
 type ThemeProviderState = {
+  /** The chosen preference: "dark" | "light" | "system". */
   theme: Theme;
+  /** The actual applied theme after resolving "system". Drives the UI toggle. */
+  resolvedTheme: ResolvedTheme;
   setTheme: (theme: Theme) => void;
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: "dark",
+  resolvedTheme: "dark",
   setTheme: () => null,
 };
 
@@ -24,7 +29,9 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  // Dark mode is the product default. A returning visitor's stored choice
+  // still wins over this.
+  defaultTheme = "dark",
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
@@ -34,30 +41,33 @@ export function ThemeProvider({
         ? (localStorage.getItem(storageKey) as Theme)
         : null) || defaultTheme
   );
+  // Initialized to the default's resolution so server + first client render
+  // agree (deterministic), then corrected in the effect below.
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(
+    defaultTheme === "light" ? "light" : "dark"
+  );
 
   useEffect(() => {
     const root = window.document.documentElement;
-
     root.classList.remove("light", "dark");
 
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+    const applied: ResolvedTheme =
+      theme === "system"
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+        : theme;
 
-      root.classList.add(systemTheme);
-      return;
-    }
-
-    root.classList.add(theme);
+    root.classList.add(applied);
+    setResolvedTheme(applied);
   }, [theme]);
 
-  const value = {
+  const value: ThemeProviderState = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    resolvedTheme,
+    setTheme: (next: Theme) => {
+      localStorage.setItem(storageKey, next);
+      setTheme(next);
     },
   };
 

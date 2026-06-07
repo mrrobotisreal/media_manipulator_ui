@@ -60,8 +60,9 @@ const NAV_LINKS: { key: string; href: string }[] = [
 ];
 
 const ThemeToggle = () => {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const { t } = useLocalization("accessibility");
+  const isDark = resolvedTheme === "dark";
 
   return (
     <label className="switch">
@@ -69,8 +70,10 @@ const ThemeToggle = () => {
         className="theme-toggle-input"
         type="checkbox"
         aria-label={t("topNav.toggleTheme")}
-        onChange={() => setTheme(theme === "light" ? "dark" : "light")}
-        checked={theme === "dark"}
+        // Drive off the *resolved* theme so the moon/stars vs sun/clouds state
+        // always matches what's actually on screen (incl. a "system" value).
+        onChange={() => setTheme(isDark ? "light" : "dark")}
+        checked={isDark}
       />
       <div className="slider round">
         <div className="sun-moon">

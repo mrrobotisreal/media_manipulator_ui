@@ -4,6 +4,18 @@ import './globals.css';
 import Providers from './providers';
 import { SITE_ORIGIN } from '@/lib/seo';
 
+// No-flash theme bootstrap. Runs before first paint so <html> already carries
+// the correct `dark`/`light` class — dark is the default, a stored preference
+// wins, and "system" is resolved against the OS. Keep the storage key in sync
+// with components/theme-provider.tsx ("vite-ui-theme").
+const THEME_INIT = `
+(function(){try{
+  var t = localStorage.getItem('vite-ui-theme') || 'dark';
+  var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.classList.add(dark ? 'dark' : 'light');
+}catch(e){document.documentElement.classList.add('dark');}})();
+`;
+
 // Consent Mode v2 defaults — all signals denied until Google Funding Choices
 // (loaded via the AdSense script below) prompts the user and upgrades them via
 // gtag('consent', 'update', ...). Ported verbatim from the Vite index.html so
@@ -54,6 +66,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
+        {/* Apply the theme class before first paint to avoid a light flash. */}
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: THEME_INIT }}
+        />
         {/* Consent defaults must run before GA processes any events. */}
         <Script
           id="gtag-consent"
