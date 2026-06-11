@@ -7016,6 +7016,207 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'video FPS enhancer',
     ],
   },
+  {
+    slug: 'ai-video-restoration',
+    name: 'AI Video Restoration',
+    h1: 'AI Video Restoration Tool',
+    tagline:
+      'Upscale and restore a short video snippet with up to six AI models — Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT — and compare every result side by side.',
+    metaTitle:
+      'AI Video Restoration Tool — Compare 6 Upscaling Models Online | Media Manipulator',
+    metaDescription:
+      'Free AI video restoration tool. Run a short clip through Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT super-resolution models on our own GPU and download every result in one package.',
+    ogTitle: 'AI Video Restoration — Compare Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT & VRT',
+    ogDescription:
+      'Pick a snippet from your video, select restoration models, and download one package with every enhanced version plus the original for A/B comparison.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'video',
+      defaultTask: 'ai_video_restoration',
+      defaultOutputFormat: 'mp4',
+      title: 'AI video restoration',
+      description:
+        'Upload a video, drag-select a short snippet (10 seconds or less works best), pick the restoration models you want to compare, and download one package with every enhanced result.',
+    },
+    intro:
+      'AI Video Restoration runs a short snippet of your video through up to six state-of-the-art restoration and super-resolution models — Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT — and packages every result into a single download so you can compare them frame by frame. Different models make very different trade-offs between sharpness, temporal stability, and artifacts; the only reliable way to pick the right one for your footage is to run the same clip through all of them. Everything processes on our own GPU server, never a third-party API.',
+    whatItDoes: [
+      'Trims the exact snippet you select (up to 15 seconds / 450 frames) with frame accuracy, keeping the audio.',
+      'Runs the snippet through your choice of six models: Real-ESRGAN, SwinIR, and HAT enhance frame by frame, while BasicVSR++, RVRT, and VRT restore the sequence as a whole for better temporal consistency.',
+      'Upscales 2x or 4x automatically based on the source resolution (sources at or below 540p get 4x).',
+      'Stitches every result back into an MP4 at the exact source frame rate, with the original audio re-attached.',
+      'Packages everything — the original snippet, every enhanced MP4, optional enhanced frames, and a machine-readable manifest — into one results archive.',
+      'Keeps going when a single model fails: the package records the failure and still includes every successful result.',
+    ],
+    flowSteps: [
+      {
+        title: 'Upload a video',
+        description: 'Drop in any common video file — long sources are fine because only the snippet is processed.',
+      },
+      {
+        title: 'Select a snippet',
+        description: 'Drag the start and end handles (or the whole window) to pick up to 15 seconds; 10 seconds or less is recommended.',
+      },
+      {
+        title: 'Choose restoration models',
+        description: 'Pick any combination of Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT, and whether to include enhanced frames.',
+      },
+      {
+        title: 'Watch the pipeline run',
+        description: 'A live checklist tracks every stage — extraction, each model, packaging — with time estimates per model.',
+      },
+      {
+        title: 'Download and compare',
+        description: 'The results archive downloads automatically: one folder per model plus the original snippet for A/B playback.',
+      },
+    ],
+    advancedDetails: [
+      'Real-ESRGAN runs the realesrgan-x4plus GAN through a Vulkan binary — the fastest model and a good baseline for every comparison.',
+      'SwinIR uses the large real-world SR GAN (003_realSR_BSRGAN SwinIR-L x4) with tiled inference so high resolutions fit in GPU memory.',
+      'HAT runs Real_HAT_GAN_SRx4, a hybrid attention transformer that often produces the sharpest individual frames.',
+      'BasicVSR++ propagates information between frames recurrently, which keeps textures stable where per-frame models shimmer.',
+      'RVRT and VRT are video restoration transformers that process the sequence with temporal attention — typically the highest quality and by far the slowest.',
+      'Frame extraction uses ffmpeg with vsync 0; stitching re-encodes with libx264 CRF 16 at the exact source frame-rate fraction (e.g. 30000/1001) so audio stays in sync.',
+      'A 2x request still runs each model’s native 4x network and downscales with Lanczos during stitching — quality is identical and the pipeline stays uniform.',
+      'Every model runs under a GPU scheduler lease with per-model VRAM budgets, and one restoration job runs at a time so jobs never starve each other.',
+    ],
+    whyItMatters: [
+      'No single restoration model wins on all footage: GAN upscalers excel on stills but can flicker, while video transformers stay stable but soften fine detail.',
+      'Running one short snippet through every model costs minutes, not hours, and tells you exactly which model deserves the full-length run.',
+      'Old family footage, low-resolution archives, and compressed social exports all degrade differently — side-by-side comparison beats guessing.',
+    ],
+    useCases: [
+      {
+        title: 'Restoring old family videos',
+        description: 'Digitized tapes and early digital camera clips are low-resolution and noisy — compare which model best recovers faces and detail.',
+      },
+      {
+        title: 'Upscaling archive footage',
+        description: 'Evaluate 480p/720p archive material at 4x before committing to a full restoration pass.',
+      },
+      {
+        title: 'Choosing a model before a long render',
+        description: 'Run a representative 10-second snippet through all six models to pick the right one for an hours-long GPU job.',
+      },
+      {
+        title: 'Improving compressed downloads',
+        description: 'Heavily compressed social media exports respond very differently to GAN vs transformer restoration — test both families.',
+      },
+      {
+        title: 'Comparing temporal stability',
+        description: 'Play the per-model MP4s side by side to spot shimmer and flicker that still frames hide.',
+      },
+    ],
+    whyMediaManipulator: [
+      'Six research-grade models behind one upload — no notebooks, CUDA setup, or model weights to manage.',
+      'Runs entirely on our own GPU server: your video never goes to a third-party AI provider.',
+      'One tidy package with a manifest, the original snippet, and every result — built for honest A/B comparison.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
+      supportedOutputFormats: ['mp4', 'png'],
+      maxFileNotes: [
+        'Snippets are capped at 15 seconds or 450 frames (whichever is smaller at your video’s frame rate); 10 seconds or less is recommended.',
+        'Source resolution is capped at 1920×1080 — restoration targets low-resolution footage, and 4x output of 1080p is already 4K+.',
+      ],
+      processingNotes: [
+        'Models run from fastest to slowest (Real-ESRGAN first, VRT last) so partial results exist early.',
+        'A failed model never sinks the job — its folder contains FAILED.txt and the other results still download.',
+        'Download links stay valid for 6 hours; the archive can be large when enhanced frames are included.',
+      ],
+    },
+    faq: [
+      {
+        question: 'Which AI video upscaling model is best?',
+        answer:
+          'It genuinely depends on the footage — that is the reason this tool exists. GAN upscalers like Real-ESRGAN and HAT produce crisp individual frames but can shimmer in motion; video models like BasicVSR++, RVRT, and VRT use neighboring frames for stability but can look softer. Run your own snippet through all of them and judge with your eyes.',
+      },
+      {
+        question: 'Why is the clip limited to 15 seconds?',
+        answer:
+          'Restoration models are extremely GPU-intensive — VRT can take several seconds per frame at 4x. A short snippet keeps the multi-model comparison fast and is all you need to evaluate quality before committing to a longer restoration elsewhere.',
+      },
+      {
+        question: 'What is the difference between the two model groups?',
+        answer:
+          'Frame-by-frame enhancers (Real-ESRGAN, SwinIR, HAT) upscale each frame independently, so their results include both the enhanced frames and a stitched video. Video restoration models (BasicVSR++, RVRT, VRT) process the sequence as a whole using temporal information, and produce only an enhanced video.',
+      },
+      {
+        question: 'Does the restored video keep my audio?',
+        answer:
+          'Yes. The selected snippet is trimmed with its audio, and every model’s output is stitched back together with that audio at the exact source frame rate, so all results stay in sync for A/B playback.',
+      },
+      {
+        question: 'What does the results package contain?',
+        answer:
+          'One folder per model with its enhanced MP4 (frame-by-frame models can also include every enhanced frame as PNGs), the original trimmed snippet for reference, a README, and a manifest.json with per-model timings, output dimensions, and any failures.',
+      },
+      {
+        question: 'What happens if one model fails?',
+        answer:
+          'The job keeps going. The failed model’s folder contains a FAILED.txt with the reason, the manifest records it, and every other selected model’s result is still packaged and downloadable.',
+      },
+      {
+        question: 'Is 4x always better than 2x upscaling?',
+        answer:
+          'No. 4x shines on genuinely low-resolution sources (540p and below). On 720p–1080p sources, 4x produces enormous files for little visible gain, which is why auto mode picks 2x there.',
+      },
+      {
+        question: 'Can AI restoration fix any video?',
+        answer:
+          'It can sharpen detail, reduce noise, and upscale resolution, but it cannot reconstruct information that was never captured. Severely blurred motion, extreme compression blocking, or very dark footage will improve — not become pristine.',
+      },
+      {
+        question: 'How long does a restoration run take?',
+        answer:
+          'It scales with snippet length and model choice. Real-ESRGAN handles a 10-second clip in a few minutes; VRT can take an hour for the same clip. The picker shows a live estimate per model, and the models run fastest-first so early results are never blocked by slow ones.',
+      },
+    ],
+    related: [
+      {
+        label: 'Video trimmer',
+        to: '/tools/video-trimmer',
+        description: 'Cut the perfect snippet before restoring it.',
+      },
+      {
+        label: 'Compress video',
+        to: '/tools/compress-video',
+        description: 'Shrink the restored output for sharing.',
+      },
+      {
+        label: 'Transcode to HLS',
+        to: '/tools/transcode-to-hls',
+        description: 'Package the restored video for adaptive streaming.',
+      },
+      {
+        label: 'Transcribe video',
+        to: '/tools/transcribe-video',
+        description: 'Generate captions for the restored clip.',
+      },
+      {
+        label: 'Content Studio',
+        to: '/tools/content-studio',
+        description: 'Edit the restored snippet into a full piece.',
+      },
+    ],
+    primaryKeyword: 'AI video restoration',
+    secondaryKeywords: [
+      'AI video upscaler',
+      'video super resolution online',
+      'restore old videos with AI',
+      'Real-ESRGAN video upscaling',
+      'SwinIR video restoration',
+      'HAT super resolution',
+      'BasicVSR++ online',
+      'RVRT video restoration',
+      'VRT video super resolution',
+      'compare AI upscaling models',
+      'enhance low resolution video',
+      'AI video enhancement tool',
+      '4x video upscaling online',
+    ],
+  },
 ];
 
 export const TOOL_PAGE_MAP: Record<string, ToolPageContent> = TOOL_PAGES.reduce(

@@ -47,6 +47,7 @@ This repository is the **frontend** for [media-manipulator.com](https://www.medi
 | **Video** | Convert (MP4/MOV/WebM/MKV/AVI…), compress, trim/cut, crop, rotate, →GIF, extract/remove audio, transcode to **HLS/DASH** | FFmpeg pipeline; large files use presigned S3 uploads |
 | **Audio** | Convert (MP3/WAV/AAC…), waveform generator, isolate vocals | AI stem separation on a GPU server |
 | **AI** | Transcribe video/audio, SRT generator, caption translator, AI frame interpolation | Models run on a local GPU server we operate |
+| **AI Video Restoration** | Restore/upscale a ≤15s snippet with up to six models (Real‑ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, VRT) and download one comparison package | `/tools/ai-video-restoration`; snippet selector + multi‑model pipeline on our GPU server |
 | **Privacy** | Remove EXIF/GPS/IPTC/XMP metadata | Strips location & device data before sharing |
 | **Content Studio** | Multi‑track editor → MP4 | See [Content Studio](#content-studio) |
 

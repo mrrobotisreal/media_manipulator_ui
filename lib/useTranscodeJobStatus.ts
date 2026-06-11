@@ -18,6 +18,8 @@ export interface TranscodeJob {
   stages?: TranscodeJobStage[];
   resultS3Key?: string;
   resultFileName?: string;
+  /** Size of the packaged result artifact (set by e.g. video restoration). */
+  resultSizeBytes?: number;
   expiresAt?: string;
   transcodeReport?: TranscodeProbeResponse;
 }

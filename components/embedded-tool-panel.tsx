@@ -70,6 +70,10 @@ export type EmbeddedTask =
   | 'extract_frames'
   | 'stitch_audio_to_video'
   | 'ai_frame_interpolation'
+  // AI Video Restoration renders its own custom panel (components/video-restore)
+  // via the static /tools/ai-video-restoration route — the literal exists so
+  // its toolPages entry typechecks; the generic embedded panel never sees it.
+  | 'ai_video_restoration'
   | 'png_to_jpg'
   | 'jpg_to_png'
   | 'webp_to_png'

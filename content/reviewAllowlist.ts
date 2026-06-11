@@ -17,6 +17,7 @@ export const REVIEW_INDEXED_TOOL_SLUGS = [
   'convert-video-to-animated-gif',
   'transcribe-video',
   'transcode-to-hls',
+  'ai-video-restoration',
 ] as const;
 
 export type ReviewIndexedToolSlug = (typeof REVIEW_INDEXED_TOOL_SLUGS)[number];

@@ -9,11 +9,16 @@ import {
   isReviewIndexedToolSlug,
 } from '@/content/reviewAllowlist';
 
-// Statically generate the review-allowed tool pages (content-studio has its own
-// dedicated route). dynamicParams stays true so any other valid tool slug still
-// renders on demand — but as noindex (see generateMetadata).
+// Slugs served by dedicated static routes (custom interactive panels) instead
+// of this dynamic one. Exclude them here AND in generateMetadata AND in the
+// page body so the static sibling owns the URL.
+const STATIC_ROUTE_SLUGS = new Set(['content-studio', 'ai-video-restoration']);
+
+// Statically generate the review-allowed tool pages (static-route slugs have
+// their own dedicated routes). dynamicParams stays true so any other valid
+// tool slug still renders on demand — but as noindex (see generateMetadata).
 export function generateStaticParams() {
-  return REVIEW_INDEXED_TOOL_SLUGS.filter((s) => s !== 'content-studio').map(
+  return REVIEW_INDEXED_TOOL_SLUGS.filter((s) => !STATIC_ROUTE_SLUGS.has(s)).map(
     (slug) => ({ slug }),
   );
 }
@@ -25,7 +30,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const tool = TOOL_PAGES.find((t) => t.slug === slug);
-  if (!tool || slug === 'content-studio') return {};
+  if (!tool || STATIC_ROUTE_SLUGS.has(slug)) return {};
 
   const meta = buildMetadata(`/tools/${slug}`);
   // Non-allowlisted tools remain usable but are kept out of the index/serp
@@ -42,8 +47,8 @@ export default async function ToolSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  // content-studio is served by app/tools/content-studio/page.tsx.
-  if (slug === 'content-studio') notFound();
+  // Static-route slugs are served by their dedicated page.tsx siblings.
+  if (STATIC_ROUTE_SLUGS.has(slug)) notFound();
 
   const tool = TOOL_PAGES.find((t) => t.slug === slug);
   if (!tool) notFound();

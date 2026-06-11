@@ -50,6 +50,24 @@ export async function getFirebaseAuth(): Promise<Auth | null> {
   return getAuth(app);
 }
 
+/**
+ * Returns the current user's Firebase ID token, or null when nobody is
+ * signed in (or Firebase isn't configured). Used to attach Authorization
+ * headers to API calls that MAY be auth-gated server-side (e.g. the
+ * video-restore endpoints behind RESTORE_REQUIRE_FIREBASE_AUTH) — harmless
+ * when the server flag is off.
+ */
+export async function getCurrentIdToken(): Promise<string | null> {
+  try {
+    const auth = await getFirebaseAuth();
+    const user = auth?.currentUser;
+    if (!user) return null;
+    return await user.getIdToken();
+  } catch {
+    return null;
+  }
+}
+
 export async function getFirebaseDb(): Promise<Firestore | null> {
   const app = getFirebaseApp();
   if (!app) return null;
