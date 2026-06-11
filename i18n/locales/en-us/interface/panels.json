@@ -361,6 +361,8 @@
       "modelFailed": "failed (see FAILED.txt in the package)",
       "download": "Download results",
       "downloadAgain": "Download again",
+      "downloadSize": "Package size: {{size}}",
+      "downloadSizeHint": "This archive is large — make sure you have at least {{size}} of free disk space before downloading.",
       "linkExpiresIn": "link expires in {{countdown}}",
       "linkExpired": "download link expired — run the restoration again",
       "restoreAnother": "Restore another snippet"

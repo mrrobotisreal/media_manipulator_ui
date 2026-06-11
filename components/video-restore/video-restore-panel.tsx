@@ -54,7 +54,6 @@ const VideoRestorePanel: React.FC = () => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [downloadedOnce, setDownloadedOnce] = useState(false);
   const [nowTick, setNowTick] = useState(() => Date.now());
-  const autoDownloadedRef = useRef(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const restore = useVideoRestore((result) => setJobId(result.jobId));
@@ -87,20 +86,9 @@ const VideoRestorePanel: React.FC = () => {
     setFile(candidate);
   };
 
-  // Auto-download exactly once on completion. The ref guard means re-renders
-  // and replayed SSE snapshots can never refire it.
-  useEffect(() => {
-    if (job?.status === 'completed' && job.resultUrl && !autoDownloadedRef.current) {
-      autoDownloadedRef.current = true;
-      const a = document.createElement('a');
-      a.href = job.resultUrl;
-      a.download = job.resultFileName || 'restoration_results.tar.gz';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setDownloadedOnce(true);
-    }
-  }, [job?.status, job?.resultUrl, job?.resultFileName]);
+  // No auto-download: these archives are routinely multi-GB, so we surface the
+  // exact size and let the user free up disk space and click Download when
+  // they're ready, rather than kicking off a huge transfer unprompted.
 
   // Expiry countdown tick.
   useEffect(() => {
@@ -126,7 +114,6 @@ const VideoRestorePanel: React.FC = () => {
     setFileError('');
     setSelection({ start: 0, end: 5 });
     setDownloadedOnce(false);
-    autoDownloadedRef.current = false;
     restore.reset();
   };
 
@@ -325,6 +312,16 @@ const VideoRestorePanel: React.FC = () => {
                   ))}
                 </ul>
               )}
+              {job.resultSizeBytes ? (
+                <div className="space-y-0.5">
+                  <p className="text-sm font-medium">
+                    {t('videoRestore.panel.downloadSize', { size: formatFileSize(job.resultSizeBytes) })}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t('videoRestore.panel.downloadSizeHint', { size: formatFileSize(job.resultSizeBytes) })}
+                  </p>
+                </div>
+              ) : null}
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
@@ -335,7 +332,6 @@ const VideoRestorePanel: React.FC = () => {
                   {downloadedOnce ? t('videoRestore.panel.downloadAgain') : t('videoRestore.panel.download')}
                 </button>
                 <span className="text-xs text-muted-foreground">
-                  {job.resultSizeBytes ? <>{formatFileSize(job.resultSizeBytes)} · </> : null}
                   {countdown
                     ? t('videoRestore.panel.linkExpiresIn', { countdown })
                     : t('videoRestore.panel.linkExpired')}
