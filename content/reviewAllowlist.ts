@@ -18,6 +18,7 @@ export const REVIEW_INDEXED_TOOL_SLUGS = [
   'transcribe-video',
   'transcode-to-hls',
   'ai-video-restoration',
+  'ai-image-restoration',
 ] as const;
 
 export type ReviewIndexedToolSlug = (typeof REVIEW_INDEXED_TOOL_SLUGS)[number];

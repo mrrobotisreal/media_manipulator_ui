@@ -1858,6 +1858,39 @@ export const KEYWORD_CLUSTERS: KeywordCluster[] = [
       { label: 'Extract video without audio', route: '/tools/extract-video-only-from-video' },
     ],
   },
+  {
+    slug: 'ai-image-restoration',
+    title: 'AI Image Restoration & Upscaling',
+    primaryKeyword: 'AI image restoration',
+    secondaryKeywords: [
+      'AI image upscaler',
+      'restore old photo AI',
+      'enhance low resolution image',
+      'upscale image to 4k',
+      'upscale image to 8k',
+      'AI photo restoration online',
+      'fix blurry photo AI',
+      'enhance face in photo',
+      'CCTV image enhancement',
+      'remove jpeg artifacts AI',
+      'denoise image AI',
+      'deblur image AI',
+    ],
+    intent: 'transactional',
+    targetRoute: '/tools/ai-image-restoration',
+    relatedRoutes: [
+      '/tools/ai-video-restoration',
+      '/tools/remove-background-from-image',
+      '/tools/compress-image',
+      '/tools/image-resizer',
+    ],
+    suggestedFutureRoutes: [],
+    recommendedInternalLinks: [
+      { label: 'AI Video Restoration', route: '/tools/ai-video-restoration', description: 'Restore and upscale a video snippet.' },
+      { label: 'Remove background', route: '/tools/remove-background-from-image' },
+      { label: 'Compress image', route: '/tools/compress-image' },
+    ],
+  },
   /* FFmpeg-education cluster hidden during AdSense review because every
      destination it pointed at lives under /blog. Re-enable alongside the
      blog when new posts are ready.

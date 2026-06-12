@@ -7217,6 +7217,204 @@ export const TOOL_PAGES: ToolPageContent[] = [
       '4x video upscaling online',
     ],
   },
+  {
+    slug: 'ai-image-restoration',
+    name: 'AI Image Restoration & Upscaling',
+    h1: 'AI Image Restoration & Upscaling Tool',
+    tagline:
+      'Clean up, upscale, and restore a photo with up to eight AI models — fidelity-preserving pre-clean (FBCNN, SCUNet, NAFNet), general upscalers (Real-ESRGAN, SwinIR, HAT), and face enhancement (GFPGAN, CodeFormer) — and compare every result against the original.',
+    metaTitle:
+      'AI Image Restoration & Upscaler — Compare 8 Models Online | Media Manipulator',
+    metaDescription:
+      'Free AI photo restoration and upscaling. Remove JPEG artifacts, denoise, and deblur, then upscale to 4K/8K with Real-ESRGAN, SwinIR, or HAT and enhance faces with GFPGAN/CodeFormer — all on our own GPU, compared side by side.',
+    ogTitle: 'AI Image Restoration & Upscaling — Pre-clean, Upscale & Enhance Faces',
+    ogDescription:
+      'Upload one image, optionally crop, optionally pre-clean, then run multiple upscaling and face models and compare every result inline against the original.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_converter',
+      title: 'AI image restoration & upscaling',
+      description:
+        'Upload an image, optionally crop to a region, optionally pre-clean it, pick the upscaling and face-enhancement models you want to compare, and download one package with every result.',
+    },
+    intro:
+      'AI Image Restoration & Upscaling runs one photo through a configurable pipeline of up to eight models and shows every result next to the original. A fidelity-preserving pre-clean stage (FBCNN for JPEG artifacts, SCUNet for noise, NAFNet for motion blur) removes degradation without inventing detail; general upscalers (Real-ESRGAN, SwinIR, HAT) then enlarge 2x or 4x; and optional face enhancement (GFPGAN, CodeFormer) reconstructs faces. Pre-clean is non-generative — it filters the existing signal. Face enhancement is generative — it synthesizes plausible detail and must not be treated as a faithful recovery of the source. Everything runs on our own GPU server, never a third-party API.',
+    whatItDoes: [
+      'Lets you focus restoration on a drag-selected crop region (applied server-side on the original bytes for no quality loss) or keep the whole image.',
+      'Optionally pre-cleans the image first: FBCNN removes JPEG/compression artifacts (with an optional manual quality factor), SCUNet denoises (PSNR-trained, no hallucinated texture), and NAFNet deblurs — always in that fixed order, each on the previous result.',
+      'Runs your choice of general upscalers — Real-ESRGAN, SwinIR, HAT — at 2x or 4x (native x4 networks; 2x is a Lanczos downscale of the x4 output).',
+      'Optionally adds face enhancement (GFPGAN and/or CodeFormer, with a fidelity dial), and can chain the face models onto each upscaler’s output as well as the source.',
+      'Packages everything — the prepared original, every output, and a manifest — into one results archive, and shows an inline comparison grid so you can A/B each result against the original.',
+      'Keeps going when a single model fails: the package records the failure and still includes every successful result.',
+    ],
+    flowSteps: [
+      {
+        title: 'Upload an image',
+        description: 'Drop in a PNG, JPEG, WebP, TIFF, or BMP. Old, low-resolution, and compressed photos are exactly the target.',
+      },
+      {
+        title: 'Crop or keep the whole image',
+        description: 'Optionally drag-select a region to focus on (great for a face or a license plate), or restore the entire image.',
+      },
+      {
+        title: 'Optionally pre-clean',
+        description: 'Turn on pre-clean to strip artifacts, noise, and blur before enhancement — the cleaned image becomes the base every model runs on.',
+      },
+      {
+        title: 'Pick models / face enhancement / chain',
+        description: 'Choose any combination of upscalers and face models, set the scale, and optionally chain face restoration onto each upscaled result.',
+      },
+      {
+        title: 'Watch the pipeline run',
+        description: 'A live checklist tracks every stage — pre-clean, each model, packaging — with per-unit failure badges.',
+      },
+      {
+        title: 'Compare & download',
+        description: 'Every result appears in an inline grid next to the original; download the full results archive when you’re ready.',
+      },
+    ],
+    advancedDetails: [
+      'FBCNN predicts the JPEG quality factor blindly, or you can override it manually (lower assumes heavier compression) — useful for stubborn blocking artifacts.',
+      'SCUNet uses the PSNR-trained real-denoise weights, not the GAN variant: the GAN model hallucinates texture, while the PSNR model is a pure filter — the right forensic default.',
+      'NAFNet uses the GoPro motion-deblur weights; it targets motion blur specifically, not defocus or compression softness.',
+      'The fixed pre-clean order (artifact removal → denoise → deblur) is deliberate: compression artifacts must come off before denoising, and deblurring runs last on the cleanest signal.',
+      'General models run their native x4 networks; a 2x request downscales the x4 output with Lanczos, mirroring the video pipeline for uniform quality. Large inputs are tiled to stay within GPU memory.',
+      'GFPGAN uses the clean v1.4 architecture; CodeFormer exposes a fidelity weight (w) where lower is prettier and higher stays closer to the input. Background up-sampling is disabled on face models so the comparison stays honest.',
+      'Chaining runs each face model on every upscaler’s output (a pure face pass at 1x) in addition to running it on the source, so you can see face enhancement layered on top of each upscaler.',
+      'Pre-clean output is a filtered version of the source signal (non-generative). Face-enhancement output is generative reconstruction — synthesized detail suitable for clarity and leads, not identification evidence.',
+    ],
+    whyItMatters: [
+      'No single model wins on every photo: artifact removal, denoising, upscaling, and face reconstruction each fix different damage, and the right combination depends on how the image was degraded.',
+      'Restoring one image through several models takes a minute or two and shows exactly which pipeline recovers the most usable detail.',
+      'The non-generative vs generative distinction matters: pre-clean gives you a faithful, filtered image, while face enhancement gives you a plausible reconstruction — knowing which is which is essential for investigative and archival work.',
+    ],
+    useCases: [
+      {
+        title: 'Restoring old or scanned photos',
+        description: 'Pre-clean compression and scanner noise, then upscale — and optionally reconstruct faces — to bring a low-resolution photo back to life.',
+      },
+      {
+        title: 'Enhancing low-resolution or CCTV stills',
+        description: 'Crop to the region of interest, remove artifacts, and upscale; chain face enhancement for visual clarity (as a lead, never as identification evidence).',
+      },
+      {
+        title: 'Fixing blurry or compressed downloads',
+        description: 'Heavily compressed social exports respond well to FBCNN + SCUNet followed by a GAN upscaler.',
+      },
+      {
+        title: 'Comparing upscalers before a batch',
+        description: 'Run one representative image through Real-ESRGAN, SwinIR, and HAT to pick the best model for a larger set.',
+      },
+      {
+        title: 'Recovering detail in a specific region',
+        description: 'Drag-select just a face or sign so the full pixel budget and GPU time go to the part you care about.',
+      },
+    ],
+    whyMediaManipulator: [
+      'Eight research-grade models behind one upload — no notebooks, CUDA setup, or model weights to manage.',
+      'Runs entirely on our own GPU server: your image never goes to a third-party AI provider.',
+      'Honest by design: pre-clean is labeled non-generative, face enhancement is labeled generative reconstruction, and the original is always shown for side-by-side comparison.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp'],
+      supportedOutputFormats: ['png'],
+      maxFileNotes: [
+        'Output is capped by a pixel budget (~64 megapixels), comfortably past 8K — if a crop and scale would exceed it, choose 2x or a smaller crop.',
+        'Pre-clean models never change dimensions (1x); only the general upscalers change resolution.',
+      ],
+      processingNotes: [
+        'Pre-clean always runs first in a fixed order (FBCNN → SCUNet → NAFNet); the cleaned image becomes the base for every other model.',
+        'A failed model never sinks the job — its entry shows the reason and the other results still download.',
+        'Face enhancement is generative reconstruction — use it for clarity and leads, not identification evidence.',
+      ],
+    },
+    faq: [
+      {
+        question: 'What is the difference between pre-clean and the upscaling/face models?',
+        answer:
+          'Pre-clean models (FBCNN, SCUNet, NAFNet) are non-generative: they remove compression artifacts, noise, and motion blur by filtering the existing signal, without inventing new detail. Upscalers add resolution, and the face models (GFPGAN, CodeFormer) are generative — they synthesize plausible facial detail. That is why pre-clean output is a faithful filtered image while face output is a reconstruction.',
+      },
+      {
+        question: 'Can AI face enhancement be used as identification evidence?',
+        answer:
+          'No. GFPGAN and CodeFormer synthesize plausible facial detail from a learned prior; they do not recover the true face. The output is useful for visual clarity and investigative leads, but it must never be treated as a faithful recovery of the source for identification.',
+      },
+      {
+        question: 'Why do the pre-clean models always run in the same order?',
+        answer:
+          'Compression artifacts must be removed before denoising (otherwise the denoiser treats blocking as signal), and deblurring works best on the cleanest input, so the pipeline always runs FBCNN → SCUNet → NAFNet regardless of the order you select them.',
+      },
+      {
+        question: 'What does the Chain option do?',
+        answer:
+          'With chaining on, each selected face model runs on every upscaler’s output in addition to running on the source. For example, two upscalers and two face models with chaining produce the two upscaled images, each face model on the source, and each face model on each upscaler’s result.',
+      },
+      {
+        question: 'Should I use 2x or 4x?',
+        answer:
+          'The models run native 4x networks; a 2x request downscales the 4x output with Lanczos for identical quality at half the dimensions. Auto picks 4x for small crops and 2x for larger ones, and an output pixel budget prevents accidentally enormous results.',
+      },
+      {
+        question: 'What happens if a model fails?',
+        answer:
+          'The job keeps going. The failed model’s entry records a user-safe reason, the manifest notes it, and every other result is still packaged and shown in the comparison grid.',
+      },
+      {
+        question: 'Why is CodeFormer sometimes unavailable?',
+        answer:
+          'CodeFormer is under a non-commercial license, so it is gated behind a server flag and may be disabled on this deployment. GFPGAN (Apache-2.0) and the pre-clean models (Apache-2.0/MIT) are always available when installed.',
+      },
+      {
+        question: 'Does it keep my original image?',
+        answer:
+          'The prepared (cropped) original is included in the results package and shown alongside every output so you can A/B each result honestly.',
+      },
+    ],
+    related: [
+      {
+        label: 'AI Video Restoration',
+        to: '/tools/ai-video-restoration',
+        description: 'The moving-image sibling — restore and upscale a video snippet.',
+      },
+      {
+        label: 'Remove background',
+        to: '/tools/remove-background-from-image',
+        description: 'Cut out the subject after restoring it.',
+      },
+      {
+        label: 'Compress image',
+        to: '/tools/compress-image',
+        description: 'Shrink the restored image for sharing.',
+      },
+      {
+        label: 'Image resizer',
+        to: '/tools/image-resizer',
+        description: 'Resize the restored image to exact dimensions.',
+      },
+      {
+        label: 'Remove EXIF metadata',
+        to: '/tools/remove-exif-metadata',
+        description: 'Strip metadata from the restored image before sharing.',
+      },
+    ],
+    primaryKeyword: 'AI image restoration',
+    secondaryKeywords: [
+      'AI image upscaler',
+      'restore old photo AI',
+      'enhance low resolution image',
+      'upscale image to 4k',
+      'upscale image to 8k',
+      'AI photo restoration online',
+      'fix blurry photo AI',
+      'enhance face in photo',
+      'CCTV image enhancement',
+      'remove jpeg artifacts AI',
+      'denoise image AI',
+      'deblur image AI',
+    ],
+  },
 ];
 
 export const TOOL_PAGE_MAP: Record<string, ToolPageContent> = TOOL_PAGES.reduce(
