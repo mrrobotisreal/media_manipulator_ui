@@ -21,6 +21,8 @@ import PreviewSurface from './preview-surface';
 import Timeline from './timeline';
 import ExportDialog from './export-dialog';
 import ClipInspector from './clip-inspector';
+import CaptionEditor from './caption-editor';
+import AudioDuckingPopover from './audio-ducking';
 
 const AUTOSAVE_DEBOUNCE_MS = 1200;
 const SNAP_PX = 8;
@@ -57,6 +59,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectI
   const toSaveRequest = useStudioStore((s) => s.toSaveRequest);
   const project = useStudioStore((s) => s.project);
   const dirty = useStudioStore((s) => s.dirty);
+  const selectedCaptionId = useStudioStore((s) => s.selectedCaptionId);
   // The id of the project currently hydrated in the store. We gate hydration on
   // this (not a ref) so it stays correct under React StrictMode's
   // mount→unmount→remount cycle, where the simulated unmount runs the
@@ -254,7 +257,10 @@ const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectI
           <span className="font-semibold text-card-foreground truncate">{project.name}</span>
           <SaveStatus saving={saveMutation.isPending} dirty={dirty} />
         </div>
-        <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
+        <div className="flex items-center gap-2">
+          <AudioDuckingPopover />
+          <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
+        </div>
       </div>
 
       {/* Timeline editing is pointer-heavy; nudge small screens toward desktop. */}
@@ -272,7 +278,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectI
             <PreviewSurface />
           </div>
           <div className="lg:col-span-2 xl:col-span-1 xl:h-[360px]">
-            <ClipInspector />
+            {selectedCaptionId ? <CaptionEditor /> : <ClipInspector />}
           </div>
         </div>
 

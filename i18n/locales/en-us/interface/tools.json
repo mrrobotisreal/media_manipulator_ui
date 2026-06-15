@@ -50,13 +50,20 @@
       "error": "Couldn't load your recent projects. Refresh to try again."
     },
     "mediaBin": {
-      "dropHint": "Drop video or audio here",
+      "dropHint": "Drop video, audio, or .cube LUTs here",
       "choose": "Choose files",
       "empty": "No media yet. Add a clip to get started.",
       "building": "building preview…",
       "failed": "failed",
       "addToTimeline": "Add to timeline",
-      "dragHint": "Drag onto a track, or click + to add"
+      "dragHint": "Drag onto a track, or click + to add",
+      "luts": "LUTs",
+      "lutHint": "Apply in a clip's LUT effect",
+      "lutReady": "Ready",
+      "aiActions": "AI audio",
+      "aiCleanVoice": "Clean voice (AI)",
+      "aiIsolateVocals": "Isolate vocals (AI)",
+      "aiIsolateMusic": "Isolate music (AI)"
     },
     "preview": {
       "empty": "Add a clip to preview your edit",
@@ -67,7 +74,8 @@
       "prevFrame": "Previous frame",
       "playPause": "Play / Pause",
       "nextFrame": "Next frame",
-      "end": "Jump to end"
+      "end": "Jump to end",
+      "levels": "Audio levels"
     },
     "timeline": {
       "rippleDelete": "Ripple delete",
@@ -107,7 +115,79 @@
       "posX": "X",
       "posY": "Y",
       "size": "Size",
-      "remove": "Remove"
+      "remove": "Remove",
+      "sectionMotion": "Motion",
+      "sectionCrop": "Crop",
+      "sectionOpacityBlend": "Opacity & Blend",
+      "sectionColor": "Color",
+      "sectionEffects": "Effects",
+      "sectionAudio": "Audio",
+      "sectionTransition": "Transition",
+      "sectionText": "Text",
+      "reset": "Reset",
+      "opacity": "Opacity",
+      "blendMode": "Blend mode",
+      "motion": {
+        "x": "Position X",
+        "y": "Position Y",
+        "scale": "Scale",
+        "rotation": "Rotation"
+      },
+      "crop": {
+        "left": "Left",
+        "top": "Top",
+        "right": "Right",
+        "bottom": "Bottom"
+      },
+      "lumetri": {
+        "exposure": "Exposure",
+        "contrast": "Contrast",
+        "saturation": "Saturation",
+        "temperature": "Temperature",
+        "tint": "Tint",
+        "vibrance": "Vibrance"
+      },
+      "lut": {
+        "intensity": "Intensity",
+        "select": "LUT file",
+        "none": "Select a LUT…",
+        "noLuts": "Upload a .cube LUT in the media bin to use this effect."
+      },
+      "chromakey": {
+        "similarity": "Similarity",
+        "blend": "Blend",
+        "despill": "Despill",
+        "keyColor": "Key color",
+        "eyedropper": "Pick from preview"
+      },
+      "effects": {
+        "add": "Add effect",
+        "lumetri": "Lumetri color",
+        "lut": "LUT",
+        "chromakey": "Chroma key",
+        "empty": "No effects. Add Lumetri, a LUT, or a chroma key.",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "enable": "Enabled"
+      },
+      "audio": {
+        "volume": "Volume",
+        "pan": "Pan",
+        "useKeyframes": "Use volume keyframes",
+        "keyframeNote": "Alt-click the clip's volume line to add a point; drag to adjust, double-click to remove.",
+        "panLeft": "L",
+        "panRight": "R"
+      },
+      "blendModes": {
+        "normal": "Normal",
+        "multiply": "Multiply",
+        "screen": "Screen",
+        "overlay": "Overlay",
+        "lighten": "Lighten",
+        "darken": "Darken",
+        "addition": "Addition",
+        "difference": "Difference"
+      }
     },
     "export": {
       "button": "Export MP4",
@@ -118,12 +198,59 @@
       "qualityHigh": "High",
       "qualityMedium": "Medium",
       "qualityLow": "Low",
+      "loudness": "Loudness",
+      "loudnessNone": "None (no normalization)",
+      "loudnessStreaming": "Streaming (−14 LUFS)",
+      "loudnessPodcast": "Podcast (−16 LUFS)",
+      "loudnessBroadcast": "Broadcast (−23 LUFS)",
       "start": "Start export",
       "rendering": "Rendering…",
       "failed": "Export failed.",
       "ready": "Your export is ready.",
       "download": "Download MP4",
       "again": "Export again"
+    },
+    "audioPanel": {
+      "button": "Audio",
+      "title": "Auto-ducking",
+      "description": "Lower other tracks while a voice-over plays.",
+      "enable": "Enable ducking",
+      "voiceTrack": "Voice track",
+      "selectTrack": "Select a track…",
+      "amount": "Duck amount",
+      "attack": "Attack",
+      "release": "Release",
+      "noAudioTracks": "Add an audio track with a voice-over to use ducking."
+    },
+    "captions": {
+      "lane": "Captions",
+      "generate": "Generate",
+      "generating": "Transcribing…",
+      "language": "Language",
+      "languageAuto": "Auto-detect",
+      "overwriteConfirm": "Replace the existing captions with a fresh transcription?",
+      "exportSrt": ".srt",
+      "exportVtt": ".vtt",
+      "empty": "No captions yet. Generate them from your audio.",
+      "show": "Show captions",
+      "failed": "Caption generation failed.",
+      "editorTitle": "Caption",
+      "text": "Text",
+      "start": "Start",
+      "end": "End",
+      "split": "Split",
+      "merge": "Merge next",
+      "delete": "Delete",
+      "style": "Style",
+      "fontSize": "Font size",
+      "color": "Text color",
+      "background": "Background",
+      "bgOpacity": "Background opacity",
+      "position": "Position",
+      "positionBottom": "Bottom",
+      "positionTop": "Top",
+      "maxWidth": "Max width",
+      "add": "Add caption"
     }
   },
   "toolPage": {

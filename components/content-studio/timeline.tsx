@@ -8,6 +8,8 @@ import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, clipDuration, timelineDuration } from '@/lib/studioStore';
 import { studioSpriteUrl } from '@/lib/studio/previewEngine';
+import ClipWaveform from './clip-waveform';
+import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
 import type { StudioClip, StudioTrack } from '@/lib/studioTypes';
 
 const RULER_HEIGHT = 28;
@@ -209,6 +211,7 @@ const Timeline: React.FC = () => {
           <Button size="sm" variant="ghost" className="h-7" onClick={() => addTrack('audio')} title={t('contentStudio.timeline.addAudioTrack')}>
             <Plus className="w-3.5 h-3.5 mr-1" />A
           </Button>
+          <CaptionControls projectId={project.id} />
         </div>
         <div className="flex items-center gap-2">
           {selected && selectedAudible && (
@@ -249,6 +252,12 @@ const Timeline: React.FC = () => {
         {/* fixed track labels + mute */}
         <div className="shrink-0 border-r border-border" style={{ width: LABEL_WIDTH }}>
           <div style={{ height: RULER_HEIGHT }} className="border-b border-border" />
+          <div
+            style={{ height: CAPTION_LANE_HEIGHT }}
+            className="border-b border-border flex items-center justify-center text-[10px] font-medium text-purple-300"
+          >
+            CC
+          </div>
           {tracks.map((track) => (
             <div
               key={track.id}
@@ -297,6 +306,9 @@ const Timeline: React.FC = () => {
               <RulerTicks duration={duration} zoom={zoom} />
             </div>
 
+            {/* caption lane (pinned between ruler and tracks) */}
+            <CaptionLaneContent zoom={zoom} />
+
             {/* tracks */}
             {tracks.map((track) => (
               <TrackRow
@@ -315,7 +327,7 @@ const Timeline: React.FC = () => {
             {/* playhead */}
             <div
               className="absolute top-0 bottom-0 w-px bg-blue-500 pointer-events-none"
-              style={{ left: playhead * zoom, height: RULER_HEIGHT + tracks.length * TRACK_HEIGHT }}
+              style={{ left: playhead * zoom, height: RULER_HEIGHT + CAPTION_LANE_HEIGHT + tracks.length * TRACK_HEIGHT }}
             >
               <div className="w-2 h-2 -ml-1 rounded-full bg-blue-500" />
             </div>
@@ -401,10 +413,18 @@ const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
     data: { type: 'clip', kind: track.kind, label },
   });
   const assetDur = entry?.asset.durationSeconds ?? 0;
-  const spriteReady = entry?.status === 'ready' && !!entry.asset.thumbnailSpriteUrl && track.kind === 'video';
+  const ready = entry?.status === 'ready';
+  const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video';
   const left = clip.timelineStart * zoom;
   const width = Math.max(8, clipDuration(clip) * zoom);
   const selected = selectedClipIds.includes(clip.id);
+  // Waveform: full block on audio tracks, a bottom strip (~35%) under the
+  // filmstrip on video-track clips that carry audio. Rubber-band editing only on
+  // audio tracks (video strips are too thin); the inspector handles the rest.
+  const isAudioTrack = track.kind === 'audio';
+  const contentH = TRACK_HEIGHT - 8; // matches the top-1/bottom-1 insets
+  const showWaveform = ready && !!entry?.asset.hasAudio;
+  const waveH = isAudioTrack ? contentH : Math.round(contentH * 0.35);
 
   return (
     <div
@@ -430,6 +450,21 @@ const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
             backgroundPositionX: `${-clip.sourceIn * zoom}px`,
           }}
         />
+      )}
+      {showWaveform && (
+        <div
+          className="absolute inset-x-0"
+          style={isAudioTrack ? { top: 0, height: contentH } : { bottom: 0, height: waveH }}
+        >
+          <ClipWaveform
+            clip={clip}
+            assetId={clip.assetId}
+            width={width}
+            height={waveH}
+            selected={selected}
+            editable={selected && isAudioTrack}
+          />
+        </div>
       )}
       <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-white/90 truncate bg-black/30 pointer-events-none">
         {entry?.asset.originalFileName ?? clip.assetId}

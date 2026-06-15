@@ -20,10 +20,12 @@ import { useStudioStore } from '@/lib/studioStore';
 import { useSaveProject } from '@/lib/useStudioProject';
 import { useStartStudioExport, studioDownloadUrl } from '@/lib/useStudioExport';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
+import { trackStudioExport } from '@/lib/studio/telemetry';
 
 const exportFormSchema = z.object({
   fileName: z.string().min(1, 'Enter a file name').max(120),
   quality: z.enum(['low', 'medium', 'high']),
+  loudness: z.enum(['none', 'streaming', 'podcast', 'broadcast']),
 });
 type ExportFormValues = z.infer<typeof exportFormSchema>;
 
@@ -38,6 +40,7 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
   const [jobId, setJobId] = React.useState<string | null>(null);
 
   const projectName = useStudioStore((s) => s.project?.name ?? 'export');
+  const project = useStudioStore((s) => s.project);
   const toSaveRequest = useStudioStore((s) => s.toSaveRequest);
   const markSaved = useStudioStore((s) => s.markSaved);
   const saveMutation = useSaveProject();
@@ -49,12 +52,12 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
 
   const form = useForm<ExportFormValues>({
     resolver: zodResolver(exportFormSchema),
-    defaultValues: { fileName: projectName.replace(/\s+/g, '-').toLowerCase(), quality: 'high' },
+    defaultValues: { fileName: projectName.replace(/\s+/g, '-').toLowerCase(), quality: 'high', loudness: 'none' },
   });
 
   const reset = () => {
     setJobId(null);
-    form.reset({ fileName: projectName.replace(/\s+/g, '-').toLowerCase(), quality: 'high' });
+    form.reset({ fileName: projectName.replace(/\s+/g, '-').toLowerCase(), quality: 'high', loudness: 'none' });
   };
 
   const onSubmit = async (values: ExportFormValues) => {
@@ -68,7 +71,18 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
       return;
     }
     try {
-      const res = await startExport({ fileName: values.fileName, preset: values.quality });
+      const res = await startExport({
+        fileName: values.fileName,
+        preset: values.quality,
+        loudness: values.loudness === 'none' ? '' : values.loudness,
+      });
+      // Derived-metadata telemetry only (no text/filenames).
+      const effects = (project?.tracks ?? []).flatMap((tr) => tr.clips).flatMap((c) => c.effects ?? []);
+      trackStudioExport({
+        hasLut: effects.some((e) => e.type === 'lut'),
+        hasChromaKey: effects.some((e) => e.type === 'chromakey'),
+        loudness: values.loudness === 'none' ? '' : values.loudness,
+      });
       setJobId(res.jobId);
     } catch (err) {
       toast.error('Failed to start export', { description: (err as Error).message });
@@ -131,6 +145,29 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
                         <SelectItem value="high">{t('contentStudio.export.qualityHigh')}</SelectItem>
                         <SelectItem value="medium">{t('contentStudio.export.qualityMedium')}</SelectItem>
                         <SelectItem value="low">{t('contentStudio.export.qualityLow')}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="loudness"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('contentStudio.export.loudness')}</FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">{t('contentStudio.export.loudnessNone')}</SelectItem>
+                        <SelectItem value="streaming">{t('contentStudio.export.loudnessStreaming')}</SelectItem>
+                        <SelectItem value="podcast">{t('contentStudio.export.loudnessPodcast')}</SelectItem>
+                        <SelectItem value="broadcast">{t('contentStudio.export.loudnessBroadcast')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

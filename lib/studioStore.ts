@@ -10,7 +10,22 @@ import type {
   StudioAdjustments,
   StudioTextOverlay,
   StudioSaveProjectRequest,
+  StudioTransform,
+  StudioCrop,
+  StudioBlendMode,
+  StudioEffect,
+  StudioEffectType,
+  StudioVolumeKeyframe,
+  StudioCaptionCue,
+  StudioCaptionStyle,
+  StudioAudioConfig,
 } from '@/lib/studioTypes';
+import {
+  STUDIO_SCHEMA_VERSION,
+  DEFAULT_CAPTION_STYLE,
+  normalizeProject,
+} from '@/lib/studioTypes';
+import { makeDefaultEffect } from '@/lib/studio/effectRegistry';
 import { clipDuration, clipEnd, timelineDuration } from '@/lib/studio/previewEngine';
 
 /**
@@ -45,11 +60,23 @@ const MIN_ZOOM = 10;
 const MAX_ZOOM = 400;
 const MIN_CLIP_SECONDS = 0.1;
 const MAX_TRANSITION_SECONDS = 4;
+const MAX_VOLUME = 2; // +6dB ceiling (Premiere-style boost), matches Zod + Go clamp
+const MIN_CAPTION_SECONDS = 0.3;
+
+const clampRange = (v: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, v));
+
+const DEFAULT_AUDIO_CONFIG: StudioAudioConfig = {
+  duckingEnabled: false,
+  duckAmountDb: 9,
+  duckAttackMs: 120,
+  duckReleaseMs: 400,
+};
 
 interface StudioState {
   project: StudioProject | null;
   assets: Record<string, StudioAssetEntry>;
   selectedClipIds: string[];
+  selectedCaptionId: string | null;
   playhead: number;
   isPlaying: boolean;
   zoom: number;
@@ -76,6 +103,7 @@ interface StudioState {
   splitAtPlayhead: () => void;
   deleteSelected: () => void;
   selectClip: (clipId: string | null, additive?: boolean) => void;
+  selectCaption: (id: string | null) => void;
 
   // --- tracks ---
   addTrack: (kind: StudioTrackKind) => void;
@@ -89,6 +117,35 @@ interface StudioState {
   addTextOverlay: (clipId: string) => void;
   updateTextOverlay: (clipId: string, overlayId: string, patch: Partial<StudioTextOverlay>) => void;
   removeTextOverlay: (clipId: string, overlayId: string) => void;
+
+  // --- EDL v2: motion / crop / blend / effect stack ---
+  setClipTransform: (clipId: string, transform: StudioTransform | undefined) => void;
+  setClipCrop: (clipId: string, crop: StudioCrop | undefined) => void;
+  setClipBlendMode: (clipId: string, mode: StudioBlendMode | undefined) => void;
+  addEffect: (clipId: string, type: StudioEffectType) => void;
+  // patch is a loose record (the inspector sends one field at a time, often via
+  // a computed key) merged onto the discriminated-union effect.
+  updateEffect: (clipId: string, effectId: string, patch: Record<string, number | string | boolean>) => void;
+  removeEffect: (clipId: string, effectId: string) => void;
+  reorderEffect: (clipId: string, fromIndex: number, toIndex: number) => void;
+  toggleEffect: (clipId: string, effectId: string) => void;
+
+  // --- EDL v2: audio (keyframes / pan / ducking) ---
+  setClipPan: (clipId: string, pan: number) => void;
+  setVolumeKeyframes: (clipId: string, kfs: StudioVolumeKeyframe[]) => void;
+  addVolumeKeyframe: (clipId: string, t: number, gain: number) => void;
+  removeVolumeKeyframe: (clipId: string, index: number) => void;
+  setAudioDucking: (patch: Partial<StudioAudioConfig>) => void;
+
+  // --- EDL v2: captions ---
+  setCaptions: (cues: StudioCaptionCue[]) => void;
+  addCaption: (startSeconds: number, endSeconds: number, text?: string) => void;
+  updateCaption: (id: string, patch: Partial<StudioCaptionCue>) => void;
+  removeCaption: (id: string) => void;
+  splitCaption: (id: string, atSeconds: number) => void;
+  mergeCaptionWithNext: (id: string) => void;
+  setCaptionStyle: (patch: Partial<StudioCaptionStyle>) => void;
+  setCaptionsEnabled: (enabled: boolean) => void;
 
   // --- transport ---
   setPlayhead: (t: number) => void;
@@ -135,6 +192,33 @@ function updateClipInTracks(
       ? { ...track, clips: track.clips.map((c) => (c.id === clipId ? fn(c) : c)) }
       : track,
   );
+}
+
+// normalizeKeyframes sorts volume automation by time, clamps gain to 0..2 and
+// t to >= 0, and dedupes points at the same time (last wins). The export
+// compiler relies on a sorted, sane list.
+function normalizeKeyframes(kfs: StudioVolumeKeyframe[]): StudioVolumeKeyframe[] {
+  const sorted = [...kfs]
+    .map((k) => ({ t: Math.max(0, k.t), gain: clampRange(k.gain, 0, MAX_VOLUME) }))
+    .sort((a, b) => a.t - b.t);
+  const out: StudioVolumeKeyframe[] = [];
+  for (const k of sorted) {
+    if (out.length > 0 && Math.abs(out[out.length - 1].t - k.t) < 1e-4) {
+      out[out.length - 1] = k; // same time → last wins
+    } else {
+      out.push(k);
+    }
+  }
+  return out;
+}
+
+// splitTextProportional splits caption text at the nearest word boundary to
+// `ratio` (0..1) of the word count, keeping at least one word on each side.
+function splitTextProportional(text: string, ratio: number): { left: string; right: string } {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length <= 1) return { left: text, right: '' };
+  const n = Math.max(1, Math.min(words.length - 1, Math.round(ratio * words.length)));
+  return { left: words.slice(0, n).join(' '), right: words.slice(n).join(' ') };
 }
 
 // fitInGaps returns the start position nearest `desired` where a clip of length
@@ -225,19 +309,24 @@ export const useStudioStore = create<StudioState>((set, get) => ({
   project: null,
   assets: {},
   selectedClipIds: [],
+  selectedCaptionId: null,
   playhead: 0,
   isPlaying: false,
   zoom: DEFAULT_ZOOM,
   dirty: false,
 
-  loadProject: (project) =>
+  loadProject: (project) => {
+    // Upgrade v1 → v2 in memory (additive defaults) before hydrating the store.
+    const normalized = normalizeProject(project);
     set({
-      project: { ...project, tracks: ensureBaseTracks(project.tracks ?? []) },
+      project: { ...normalized, tracks: ensureBaseTracks(normalized.tracks ?? []) },
       selectedClipIds: [],
+      selectedCaptionId: null,
       playhead: 0,
       isPlaying: false,
       dirty: false,
-    }),
+    });
+  },
 
   markSaved: (project) =>
     set((s) => ({
@@ -249,7 +338,7 @@ export const useStudioStore = create<StudioState>((set, get) => ({
       dirty: false,
     })),
 
-  closeProject: () => set({ project: null, assets: {}, selectedClipIds: [], playhead: 0, isPlaying: false, dirty: false }),
+  closeProject: () => set({ project: null, assets: {}, selectedClipIds: [], selectedCaptionId: null, playhead: 0, isPlaying: false, dirty: false }),
 
   setAssets: (assets) =>
     set(() => {
@@ -288,7 +377,7 @@ export const useStudioStore = create<StudioState>((set, get) => ({
     set((s) => {
       if (!s.project) return {};
       const entry = s.assets[assetId];
-      if (!entry) return {};
+      if (!entry || entry.asset.mediaKind === 'lut') return {}; // LUTs are graded, not placed
       const kind: StudioTrackKind = entry.asset.mediaKind === 'audio' ? 'audio' : 'video';
       const duration = entry.asset.durationSeconds > 0 ? entry.asset.durationSeconds : 5;
       const tracks = ensureBaseTracks(s.project.tracks);
@@ -319,7 +408,7 @@ export const useStudioStore = create<StudioState>((set, get) => ({
     set((s) => {
       if (!s.project) return {};
       const entry = s.assets[assetId];
-      if (!entry) return {};
+      if (!entry || entry.asset.mediaKind === 'lut') return {};
       const duration = entry.asset.durationSeconds > 0 ? entry.asset.durationSeconds : 5;
       const newClipId = uid();
       let placed = false;
@@ -470,15 +559,17 @@ export const useStudioStore = create<StudioState>((set, get) => ({
 
   selectClip: (clipId, additive = false) =>
     set((s) => {
-      if (clipId === null) return { selectedClipIds: [] };
+      if (clipId === null) return { selectedClipIds: [], selectedCaptionId: null };
       if (additive) {
         const next = new Set(s.selectedClipIds);
         if (next.has(clipId)) next.delete(clipId);
         else next.add(clipId);
-        return { selectedClipIds: Array.from(next) };
+        return { selectedClipIds: Array.from(next), selectedCaptionId: null };
       }
-      return { selectedClipIds: [clipId] };
+      return { selectedClipIds: [clipId], selectedCaptionId: null };
     }),
+
+  selectCaption: (id) => set({ selectedCaptionId: id, selectedClipIds: [] }),
 
   addTrack: (kind) =>
     set((s) => {
@@ -518,7 +609,7 @@ export const useStudioStore = create<StudioState>((set, get) => ({
     }),
 
   setClipVolume: (clipId, volume) => {
-    get().updateClip(clipId, { volume: Math.max(0, Math.min(1, volume)) });
+    get().updateClip(clipId, { volume: clampRange(volume, 0, MAX_VOLUME) });
   },
 
   // setClipTransition adds/updates a cross-dissolve from the nearest preceding
@@ -590,6 +681,235 @@ export const useStudioStore = create<StudioState>((set, get) => ({
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 
+  // --- EDL v2: motion / crop / blend / effect stack -----------------------
+
+  setClipTransform: (clipId, transform) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({ ...c, transform }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  setClipCrop: (clipId, crop) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({ ...c, crop }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  setClipBlendMode: (clipId, mode) =>
+    set((s) => {
+      if (!s.project) return {};
+      // 'normal' (and undefined) both mean the default source-over; store undefined
+      // so v1 clips stay byte-identical.
+      const value = mode && mode !== 'normal' ? mode : undefined;
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({ ...c, blendMode: value }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  addEffect: (clipId, type) =>
+    set((s) => {
+      if (!s.project) return {};
+      const effect = makeDefaultEffect(type, uid());
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
+        ...c,
+        effects: [...(c.effects ?? []), effect],
+      }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  updateEffect: (clipId, effectId, patch) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
+        ...c,
+        effects: (c.effects ?? []).map((e) =>
+          e.id === effectId ? ({ ...e, ...patch } as StudioEffect) : e,
+        ),
+      }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  removeEffect: (clipId, effectId) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
+        ...c,
+        effects: (c.effects ?? []).filter((e) => e.id !== effectId),
+      }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  reorderEffect: (clipId, fromIndex, toIndex) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const effects = [...(c.effects ?? [])];
+        if (fromIndex < 0 || fromIndex >= effects.length || toIndex < 0 || toIndex >= effects.length) {
+          return c;
+        }
+        const [moved] = effects.splice(fromIndex, 1);
+        effects.splice(toIndex, 0, moved);
+        return { ...c, effects };
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  toggleEffect: (clipId, effectId) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
+        ...c,
+        effects: (c.effects ?? []).map((e) =>
+          e.id === effectId ? ({ ...e, enabled: !e.enabled } as StudioEffect) : e,
+        ),
+      }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  // --- EDL v2: audio (keyframes / pan / ducking) --------------------------
+
+  setClipPan: (clipId, pan) =>
+    set((s) => {
+      if (!s.project) return {};
+      const value = clampRange(pan, -1, 1);
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
+        ...c,
+        pan: value === 0 ? undefined : value,
+      }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  setVolumeKeyframes: (clipId, kfs) =>
+    set((s) => {
+      if (!s.project) return {};
+      const normalized = normalizeKeyframes(kfs);
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
+        ...c,
+        volumeKeyframes: normalized.length > 0 ? normalized : undefined,
+      }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  addVolumeKeyframe: (clipId, t, gain) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const next = normalizeKeyframes([...(c.volumeKeyframes ?? []), { t, gain }]);
+        return { ...c, volumeKeyframes: next };
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  removeVolumeKeyframe: (clipId, index) =>
+    set((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const kfs = (c.volumeKeyframes ?? []).filter((_, i) => i !== index);
+        return { ...c, volumeKeyframes: kfs.length > 0 ? kfs : undefined };
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  setAudioDucking: (patch) =>
+    set((s) => {
+      if (!s.project) return {};
+      const audio: StudioAudioConfig = { ...DEFAULT_AUDIO_CONFIG, ...s.project.audio, ...patch };
+      return { project: { ...s.project, audio }, dirty: true };
+    }),
+
+  // --- EDL v2: captions ---------------------------------------------------
+
+  setCaptions: (cues) =>
+    set((s) => {
+      if (!s.project) return {};
+      const sorted = [...cues].sort((a, b) => a.startSeconds - b.startSeconds);
+      return { project: { ...s.project, captions: sorted }, dirty: true };
+    }),
+
+  addCaption: (startSeconds, endSeconds, text = '') =>
+    set((s) => {
+      if (!s.project) return {};
+      const start = Math.max(0, startSeconds);
+      const end = Math.max(start + MIN_CAPTION_SECONDS, endSeconds);
+      const cue: StudioCaptionCue = { id: uid(), startSeconds: start, endSeconds: end, text };
+      const captions = [...s.project.captions, cue].sort((a, b) => a.startSeconds - b.startSeconds);
+      return { project: { ...s.project, captions }, dirty: true };
+    }),
+
+  updateCaption: (id, patch) =>
+    set((s) => {
+      if (!s.project) return {};
+      const captions = s.project.captions
+        .map((c) => {
+          if (c.id !== id) return c;
+          const merged = { ...c, ...patch };
+          if (merged.startSeconds < 0) merged.startSeconds = 0;
+          if (merged.endSeconds < merged.startSeconds + MIN_CAPTION_SECONDS) {
+            merged.endSeconds = merged.startSeconds + MIN_CAPTION_SECONDS;
+          }
+          if (merged.text.length > 500) merged.text = merged.text.slice(0, 500);
+          return merged;
+        })
+        .sort((a, b) => a.startSeconds - b.startSeconds);
+      return { project: { ...s.project, captions }, dirty: true };
+    }),
+
+  removeCaption: (id) =>
+    set((s) => {
+      if (!s.project) return {};
+      return { project: { ...s.project, captions: s.project.captions.filter((c) => c.id !== id) }, dirty: true };
+    }),
+
+  splitCaption: (id, atSeconds) =>
+    set((s) => {
+      if (!s.project) return {};
+      const cue = s.project.captions.find((c) => c.id === id);
+      if (!cue) return {};
+      if (atSeconds <= cue.startSeconds + MIN_CAPTION_SECONDS || atSeconds >= cue.endSeconds - MIN_CAPTION_SECONDS) {
+        return {};
+      }
+      // Split the text on the nearest word boundary proportional to the time split.
+      const ratio = (atSeconds - cue.startSeconds) / (cue.endSeconds - cue.startSeconds);
+      const cut = splitTextProportional(cue.text, ratio);
+      const left: StudioCaptionCue = { ...cue, endSeconds: atSeconds, text: cut.left };
+      const right: StudioCaptionCue = { id: uid(), startSeconds: atSeconds, endSeconds: cue.endSeconds, text: cut.right };
+      const captions = s.project.captions
+        .flatMap((c) => (c.id === id ? [left, right] : [c]))
+        .sort((a, b) => a.startSeconds - b.startSeconds);
+      return { project: { ...s.project, captions }, dirty: true };
+    }),
+
+  mergeCaptionWithNext: (id) =>
+    set((s) => {
+      if (!s.project) return {};
+      const sorted = [...s.project.captions].sort((a, b) => a.startSeconds - b.startSeconds);
+      const idx = sorted.findIndex((c) => c.id === id);
+      if (idx < 0 || idx + 1 >= sorted.length) return {};
+      const a = sorted[idx];
+      const b = sorted[idx + 1];
+      const merged: StudioCaptionCue = {
+        ...a,
+        endSeconds: Math.max(a.endSeconds, b.endSeconds),
+        text: `${a.text} ${b.text}`.trim().slice(0, 500),
+      };
+      const captions = sorted.filter((c) => c.id !== a.id && c.id !== b.id).concat(merged).sort((x, y) => x.startSeconds - y.startSeconds);
+      return { project: { ...s.project, captions }, dirty: true };
+    }),
+
+  setCaptionStyle: (patch) =>
+    set((s) => {
+      if (!s.project) return {};
+      const captionStyle: StudioCaptionStyle = { ...DEFAULT_CAPTION_STYLE, ...s.project.captionStyle, ...patch };
+      return { project: { ...s.project, captionStyle }, dirty: true };
+    }),
+
+  setCaptionsEnabled: (enabled) =>
+    set((s) => {
+      if (!s.project) return {};
+      return { project: { ...s.project, captionsEnabled: enabled }, dirty: true };
+    }),
+
   setPlayhead: (t) => set((s) => ({ playhead: Math.max(0, Math.min(t, timelineDuration(s.project?.tracks ?? []) || t)) })),
   play: () => set({ isPlaying: true }),
   pause: () => set({ isPlaying: false }),
@@ -601,7 +921,18 @@ export const useStudioStore = create<StudioState>((set, get) => ({
   toSaveRequest: () => {
     const p = get().project;
     if (!p) return null;
-    return { name: p.name, fps: p.fps, width: p.width, height: p.height, tracks: p.tracks };
+    return {
+      name: p.name,
+      schemaVersion: STUDIO_SCHEMA_VERSION,
+      fps: p.fps,
+      width: p.width,
+      height: p.height,
+      tracks: p.tracks,
+      captions: p.captions,
+      captionStyle: p.captionStyle,
+      captionsEnabled: p.captionsEnabled,
+      audio: p.audio,
+    };
   },
 
   findClip: (clipId) => {

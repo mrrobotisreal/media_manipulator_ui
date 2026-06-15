@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import { Film, Music, Plus, UploadCloud, Loader2, AlertCircle } from 'lucide-react';
+import { Film, Music, Plus, UploadCloud, Loader2, AlertCircle, Palette, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, type StudioAssetEntry } from '@/lib/studioStore';
-import { useUploadStudioAsset } from '@/lib/useStudioAsset';
+import { useUploadStudioAsset, useDeriveStudioAsset } from '@/lib/useStudioAsset';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
 
 /**
@@ -28,6 +29,8 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
   };
 
   const entries = Object.values(assets);
+  const mediaEntries = entries.filter((e) => e.asset.mediaKind !== 'lut');
+  const lutEntries = entries.filter((e) => e.asset.mediaKind === 'lut');
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -65,7 +68,7 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
         <input
           ref={inputRef}
           type="file"
-          accept="video/*,audio/*"
+          accept="video/*,audio/*,.cube"
           multiple
           className="hidden"
           onChange={(e) => {
@@ -79,9 +82,20 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
         {entries.length === 0 ? (
           <p className="text-xs text-muted-foreground px-1">{t('contentStudio.mediaBin.empty')}</p>
         ) : (
-          entries.map((entry) => (
+          mediaEntries.map((entry) => (
             <MediaTile key={entry.asset.id} entry={entry} onAdd={() => addClipFromAsset(entry.asset.id)} />
           ))
+        )}
+        {lutEntries.length > 0 && (
+          <>
+            <p className="text-[11px] font-semibold text-muted-foreground px-1 pt-2 flex items-center gap-1">
+              <Palette className="w-3 h-3 text-blue-500" />
+              {t('contentStudio.mediaBin.luts')}
+            </p>
+            {lutEntries.map((entry) => (
+              <LutTile key={entry.asset.id} entry={entry} />
+            ))}
+          </>
         )}
       </div>
     </div>
@@ -93,6 +107,7 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
   const { asset, status } = entry;
   const isAudio = asset.mediaKind === 'audio';
   const ready = status === 'ready';
+  const { derive, isDeriving } = useDeriveStudioAsset();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `asset:${asset.id}`,
     data: { type: 'asset', assetId: asset.id, kind: asset.mediaKind, label: asset.originalFileName },
@@ -132,6 +147,33 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
           )}
         </p>
       </div>
+      {ready && asset.hasAudio && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="shrink-0 h-7 px-2"
+              disabled={isDeriving}
+              onPointerDown={(e) => e.stopPropagation()}
+              title={t('contentStudio.mediaBin.aiActions')}
+            >
+              {isDeriving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => derive(asset.id, 'voice_clean')}>
+              {t('contentStudio.mediaBin.aiCleanVoice')}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => derive(asset.id, 'split_vocals')}>
+              {t('contentStudio.mediaBin.aiIsolateVocals')}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => derive(asset.id, 'split_instrumental')}>
+              {t('contentStudio.mediaBin.aiIsolateMusic')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
       <Button
         size="sm"
         variant="ghost"
@@ -144,6 +186,25 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
         <Plus className="w-4 h-4" />
       </Button>
       {status === 'processing' && entry.jobId ? <IngestWatcher assetId={asset.id} jobId={entry.jobId} /> : null}
+    </div>
+  );
+};
+
+// LutTile renders a .cube LUT asset — no timeline placement; it's selected from
+// a clip's LUT effect in the inspector.
+const LutTile: React.FC<{ entry: StudioAssetEntry }> = ({ entry }) => {
+  const { t } = useLocalization('interface');
+  return (
+    <div className="rounded-md border border-border bg-background/60 p-2 flex items-center gap-2" title={t('contentStudio.mediaBin.lutHint')}>
+      <div className="shrink-0 w-12 h-9 rounded bg-muted flex items-center justify-center">
+        <Palette className="w-4 h-4 text-blue-500" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-medium text-card-foreground truncate" title={entry.asset.originalFileName}>
+          {entry.asset.originalFileName}
+        </p>
+        <p className="text-[11px] text-muted-foreground truncate">{t('contentStudio.mediaBin.lutHint')}</p>
+      </div>
     </div>
   );
 };

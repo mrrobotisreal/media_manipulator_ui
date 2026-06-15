@@ -99,12 +99,48 @@ export function useUploadStudioAsset(projectId: string | null) {
       }
     },
     onSuccess: (result) => {
-      upsertAsset({ asset: result.asset, status: 'processing', jobId: result.jobId, uploadProgress: 100 });
+      // LUT assets need no ingest (no proxy/peaks watcher) — mark ready directly.
+      const status = result.asset.mediaKind === 'lut' ? 'ready' : 'processing';
+      upsertAsset({ asset: result.asset, status, jobId: result.jobId, uploadProgress: 100 });
     },
   });
 
   return {
     upload: (file: File) => mutation.mutate(file),
     isUploading: mutation.isPending,
+  };
+}
+
+export type StudioDeriveOperation = 'voice_clean' | 'split_vocals' | 'split_instrumental';
+
+/**
+ * useDeriveStudioAsset runs an AI transform (DeepFilterNet voice cleanup or
+ * Demucs stem split) on an existing audio asset and registers the resulting new
+ * asset in the store with status 'processing'; the media bin then watches its
+ * ingest job to readiness.
+ */
+export function useDeriveStudioAsset() {
+  const upsertAsset = useStudioStore((s) => s.upsertAsset);
+
+  const mutation = useMutation({
+    mutationFn: async ({ assetId, operation }: { assetId: string; operation: StudioDeriveOperation }): Promise<StudioAssetCompleteResponse> => {
+      const toastId = toast.loading('Processing audio…');
+      try {
+        const result = await postJson(`/studio/assets/${assetId}/derive`, { operation }, studioAssetCompleteResponseSchema);
+        toast.success('Audio added', { id: toastId, description: 'Building preview…' });
+        return result;
+      } catch (err) {
+        toast.error('Audio processing failed', { id: toastId, description: (err as Error).message });
+        throw err;
+      }
+    },
+    onSuccess: (result) => {
+      upsertAsset({ asset: result.asset, status: 'processing', jobId: result.jobId, uploadProgress: 100 });
+    },
+  });
+
+  return {
+    derive: (assetId: string, operation: StudioDeriveOperation) => mutation.mutate({ assetId, operation }),
+    isDeriving: mutation.isPending,
   };
 }
