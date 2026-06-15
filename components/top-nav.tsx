@@ -153,7 +153,7 @@ const TopNav: React.FC = () => {
   }));
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 sci-fi-frame-bottom">
+    <nav data-site-header className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 sci-fi-frame-bottom">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
           <img

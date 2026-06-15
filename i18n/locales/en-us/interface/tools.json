@@ -98,6 +98,13 @@
       "mobileHint": "Content Studio works best on a larger screen with a mouse or trackpad.",
       "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom"
     },
+    "focus": {
+      "enter": "Focus mode (Esc to exit)",
+      "exit": "Exit focus mode",
+      "fullscreen": "Fullscreen",
+      "exitFullscreen": "Exit fullscreen",
+      "hint": "Press Esc to exit"
+    },
     "inspector": {
       "title": "Clip effects",
       "none": "Select a single clip to edit its effects.",

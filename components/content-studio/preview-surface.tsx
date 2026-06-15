@@ -3,6 +3,7 @@
 import React from 'react';
 import { Play, Pause, SkipBack, SkipForward, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import {
@@ -124,7 +125,7 @@ interface AudioGraph {
  * clock (sample-accurate), and to use WebCodecs/canvas for video. That is a
  * deliberate future migration of this module — NOT built here.
  */
-const PreviewSurface: React.FC = () => {
+const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) => {
   const { t, formatDuration } = useLocalization('interface');
   const containerRef = React.useRef<HTMLDivElement>(null);
   const poolEls = React.useRef<(HTMLVideoElement | null)[]>(Array(POOL_SIZE).fill(null));
@@ -672,8 +673,18 @@ const PreviewSurface: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div ref={containerRef} className="relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-border">
+    <div className={cn('flex flex-col gap-2', focused && 'h-full min-h-0')}>
+      {/* In focus mode the box fills the available height (flex-1) instead of a
+          fixed 16:9 ratio; the composite canvas is object-contain so it
+          letterboxes correctly at any size, and the ResizeObserver below keeps
+          caption/text font scaling in step with the larger surface. */}
+      <div
+        ref={containerRef}
+        className={cn(
+          'relative w-full bg-black rounded-lg overflow-hidden border border-border',
+          focused ? 'flex-1 min-h-0' : 'aspect-video',
+        )}
+      >
         {Array.from({ length: POOL_SIZE }).map((_, i) => (
           <video
             key={i}

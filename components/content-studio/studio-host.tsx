@@ -14,6 +14,8 @@ import {
 import { useLocalization } from '@/i18n/useLocalization';
 import { useCreateProject, useRecentProjects } from '@/lib/useStudioProject';
 import Editor from './editor';
+import FocusableEditorShell from './focusable-editor-shell';
+import { useFocusMode } from './useFocusMode';
 // import Breadcrumbs from '../tool-landing-page';
 // import { useToolPages } from '@/i18n/useToolPages';
 // import type { ToolPageContent } from '@/content/toolPages';
@@ -34,6 +36,10 @@ const ContentStudioPage: React.FC = () => {
   const { t } = useLocalization('interface');
   // const { toolPages } = useToolPages();
   const [openProjectId, setOpenProjectId] = React.useState<string | null>(null);
+  // Focus/fullscreen state lives at the host level: the host owns the portal
+  // decision (relocating the editor to a full-viewport overlay) while keeping
+  // the Editor instance mounted, so editing state survives the toggle.
+  const focusMode = useFocusMode();
 
   return (
     <div className="max-w-[1800px] mx-auto my-4 px-4">
@@ -68,7 +74,9 @@ const ContentStudioPage: React.FC = () => {
           </header>
 
           {openProjectId ? (
-            <Editor projectId={openProjectId} onClose={() => setOpenProjectId(null)} />
+            <FocusableEditorShell focused={focusMode.focused} containerRef={focusMode.containerRef}>
+              <Editor projectId={openProjectId} onClose={() => setOpenProjectId(null)} focusMode={focusMode} />
+            </FocusableEditorShell>
           ) : (
             <EntryScreen onOpen={setOpenProjectId} />
           )}

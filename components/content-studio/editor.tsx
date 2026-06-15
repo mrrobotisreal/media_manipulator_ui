@@ -11,8 +11,9 @@ import {
   type DragStartEvent,
   type DragEndEvent,
 } from '@dnd-kit/core';
-import { ArrowLeft, Loader2, Check } from 'lucide-react';
+import { ArrowLeft, Loader2, Check, Maximize2, Minimize2, Expand, Shrink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, clipDuration, clipEnd } from '@/lib/studioStore';
 import { useProjectQuery, useProjectAssetsQuery, useSaveProject } from '@/lib/useStudioProject';
@@ -23,6 +24,7 @@ import ExportDialog from './export-dialog';
 import ClipInspector from './clip-inspector';
 import CaptionEditor from './caption-editor';
 import AudioDuckingPopover from './audio-ducking';
+import type { FocusModeApi } from './useFocusMode';
 
 const AUTOSAVE_DEBOUNCE_MS = 1200;
 const SNAP_PX = 8;
@@ -46,8 +48,13 @@ function snapValue(desired: number, dur: number, points: number[], thresholdSec:
  * preview / timeline. Server I/O stays in the query hooks; the store is the
  * single source of editing truth.
  */
-const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectId, onClose }) => {
+const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: FocusModeApi }> = ({
+  projectId,
+  onClose,
+  focusMode,
+}) => {
   const { t } = useLocalization('interface');
+  const focused = !!focusMode?.focused;
   const projectQuery = useProjectQuery(projectId);
   const assetsQuery = useProjectAssetsQuery(projectId);
   const saveMutation = useSaveProject();
@@ -246,7 +253,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectI
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className={cn('flex flex-col gap-4', focused && 'relative min-h-full p-3')}>
       {/* toolbar */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
@@ -260,6 +267,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectI
         <div className="flex items-center gap-2">
           <AudioDuckingPopover />
           <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
+          {focusMode ? <FocusControls api={focusMode} /> : null}
         </div>
       </div>
 
@@ -269,21 +277,33 @@ const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectI
       {/* Media bin + timeline share one DndContext so assets can be dragged from
           the bin onto a track and clips can be moved between tracks. */}
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-        {/* media bin + preview + inspector */}
-        <div className="grid gap-4 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_320px]">
-          <div className="bg-card sci-fi-frame-inner p-4 h-[360px]">
+        {/* media bin + preview + inspector. In focus mode this row flexes to
+            fill the viewport (the timeline keeps a fixed-ish height below). */}
+        <div
+          className={cn(
+            'grid gap-4 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_320px]',
+            focused && 'flex-1 min-h-0',
+          )}
+        >
+          <div className={cn('bg-card sci-fi-frame-inner p-4', focused ? 'h-full min-h-0 overflow-auto' : 'h-[360px]')}>
             <MediaBin projectId={projectId} />
           </div>
-          <div className="bg-card p-4 rounded-lg border border-border">
-            <PreviewSurface />
+          <div className={cn('bg-card p-4 rounded-lg border border-border', focused && 'h-full min-h-0')}>
+            <PreviewSurface focused={focused} />
           </div>
-          <div className="lg:col-span-2 xl:col-span-1 xl:h-[360px]">
+          <div
+            className={cn(
+              'lg:col-span-2 xl:col-span-1',
+              focused ? 'h-full min-h-0 overflow-auto' : 'xl:h-[360px]',
+            )}
+          >
             {selectedCaptionId ? <CaptionEditor /> : <ClipInspector />}
           </div>
         </div>
 
-        {/* timeline */}
-        <div className="mt-4">
+        {/* timeline — does not flex-grow in focus mode so the preview row gets
+            the extra space; keeps a comfortable minimum height. */}
+        <div className={cn('mt-4', focused && 'shrink-0 min-h-[220px]')}>
           <Timeline />
         </div>
 
@@ -297,6 +317,53 @@ const Editor: React.FC<{ projectId: string; onClose: () => void }> = ({ projectI
       </DndContext>
 
       <p className="hidden md:block text-[11px] text-muted-foreground/70">{t('contentStudio.editor.shortcuts')}</p>
+
+      {/* Escape hint while focused. Auto-fades via CSS (cs-focus-hint) so users
+          aren't trapped. Rendered inside the editor subtree so it also shows in
+          true browser fullscreen; re-mounts (and replays) each time focus is
+          re-entered. */}
+      {focused ? (
+        <div className="cs-focus-hint pointer-events-none fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-black/80 px-4 py-2 text-xs font-medium text-white shadow-lg">
+          {t('contentStudio.focus.hint')}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+/**
+ * Focus / fullscreen toolbar controls. Focus mode is the always-available
+ * in-page overlay; the Fullscreen button is shown only where the Fullscreen API
+ * is usable (hidden on iOS Safari etc., where Focus mode already covers the
+ * need). Native `title`/`aria-label` tooltips match the transport buttons and
+ * avoid a portal layer that would fight the overlay's stacking.
+ */
+const FocusControls: React.FC<{ api: FocusModeApi }> = ({ api }) => {
+  const { t } = useLocalization('interface');
+  return (
+    <div className="flex items-center gap-1">
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={api.toggleFocus}
+        title={api.focused ? t('contentStudio.focus.exit') : t('contentStudio.focus.enter')}
+        aria-label={api.focused ? t('contentStudio.focus.exit') : t('contentStudio.focus.enter')}
+        aria-pressed={api.focused}
+      >
+        {api.focused ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+      </Button>
+      {api.fullscreenSupported ? (
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={api.isBrowserFullscreen ? api.exitBrowserFullscreen : api.enterBrowserFullscreen}
+          title={api.isBrowserFullscreen ? t('contentStudio.focus.exitFullscreen') : t('contentStudio.focus.fullscreen')}
+          aria-label={api.isBrowserFullscreen ? t('contentStudio.focus.exitFullscreen') : t('contentStudio.focus.fullscreen')}
+          aria-pressed={api.isBrowserFullscreen}
+        >
+          {api.isBrowserFullscreen ? <Shrink className="w-4 h-4" /> : <Expand className="w-4 h-4" />}
+        </Button>
+      ) : null}
     </div>
   );
 };

@@ -3349,3 +3349,67 @@
     }
   }
 }
+
+/*
+ * Content Studio — Focused / Fullscreen mode.
+ *
+ * The live editor is portaled into this host at <body> (see
+ * components/content-studio/focusable-editor-shell.tsx) so position:fixed
+ * escapes any transformed/filtered ancestor and the opaque background paints
+ * over the page behind it. var(--background) is fully opaque, so the nav,
+ * footer, breadcrumbs, guide and marketing copy are visually covered (they stay
+ * in the server-rendered DOM for SEO — we never unmount them).
+ *
+ * z-index 50 (not higher) is deliberate: every Radix layer in this app — Dialog,
+ * Popover, Select, Tooltip, Dropdown — and the top-nav all sit at z-50. A higher
+ * overlay would trap the export dialog / popovers behind it. At z-50 the overlay
+ * (portaled to body, last in DOM) paints over the earlier-in-DOM nav, while the
+ * transient floating layers, which mount on open *after* the overlay, still
+ * paint above it. Left unlayered so it wins over Tailwind's utility layer.
+ */
+.cs-focus-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--background);
+  overflow: auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cs-focus-overlay:fullscreen,
+:fullscreen .cs-focus-overlay {
+  background: var(--background);
+}
+
+/*
+ * Belt-and-suspenders: hide the global chrome while focused so nothing can bleed
+ * through even if it establishes its own stacking context. Tagged via stable
+ * data attributes rather than class names (see top-nav.tsx / footer.tsx).
+ */
+body.cs-focused [data-site-header],
+body.cs-focused [data-site-footer] {
+  visibility: hidden;
+}
+
+/* "Press Esc to exit" badge: visible on entering focus, then fades out after
+ * ~2.5s and stays hidden (it re-mounts and replays whenever focus is
+ * re-entered). Pure CSS so no render-time state churn. */
+@keyframes cs-focus-hint {
+  0%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.cs-focus-hint {
+  animation: cs-focus-hint 2.5s ease forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the hint readable (don't fade) when motion is reduced. */
+  .cs-focus-hint {
+    animation: none;
+  }
+}

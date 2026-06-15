@@ -54,7 +54,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="w-full bg-black text-gray-300 sci-fi-frame-top">
+    <footer data-site-footer className="w-full bg-black text-gray-300 sci-fi-frame-top">
       <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
