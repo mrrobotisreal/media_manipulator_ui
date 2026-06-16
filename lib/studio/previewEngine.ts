@@ -166,39 +166,3 @@ export function volumeAtClipTime(clip: StudioClip, clipLocalSeconds: number): nu
   }
   return last.gain;
 }
-
-export function studioPeaksUrl(assetId: string): string {
-  return `${getBaseURL()}/studio/assets/${assetId}/peaks`;
-}
-
-/** Raw original-file passthrough (used to fetch .cube LUT assets for the compositor). */
-export function studioAssetFileUrl(assetId: string): string {
-  return `${getBaseURL()}/studio/assets/${assetId}/file`;
-}
-
-/**
- * volumeAtClipTime evaluates a clip's effective gain at `clipLocalSeconds`
- * (seconds from the clip's timeline start). With no keyframes it returns the
- * flat volume (default 1). With keyframes it does piecewise-linear interpolation,
- * holding the first/last value beyond the ends — matching the export's
- * `volume='…':eval=frame` expression and the timeline rubber band. Keyframes are
- * assumed sorted (the store normalizes on write).
- */
-export function volumeAtClipTime(clip: StudioClip, clipLocalSeconds: number): number {
-  const kfs = clip.volumeKeyframes;
-  if (!kfs || kfs.length === 0) return clip.volume ?? 1;
-  if (clipLocalSeconds <= kfs[0].t) return kfs[0].gain;
-  const last = kfs[kfs.length - 1];
-  if (clipLocalSeconds >= last.t) return last.gain;
-  for (let i = 1; i < kfs.length; i += 1) {
-    const b = kfs[i];
-    if (clipLocalSeconds <= b.t) {
-      const a = kfs[i - 1];
-      const span = b.t - a.t;
-      if (span <= 0) return b.gain;
-      const f = (clipLocalSeconds - a.t) / span;
-      return a.gain + (b.gain - a.gain) * f;
-    }
-  }
-  return last.gain;
-}
