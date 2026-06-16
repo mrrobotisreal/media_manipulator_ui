@@ -1,16 +1,11 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod';
 import { toast } from 'sonner';
-import { getBaseURL } from '@/lib/utils';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
-import {
-  studioAssetPresignResponseSchema,
-  studioAssetCompleteResponseSchema,
-  type StudioAssetCompleteResponse,
-} from '@/lib/studioTypes';
+import type { StudioAssetCompleteResponse } from '@/lib/studioTypes';
 import { useStudioStore } from '@/lib/studioStore';
+import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
+import type { StudioBackend } from '@/lib/studio/studioBackend';
 
 const EXT_MIME: Record<string, string> = {
   mp4: 'video/mp4', mov: 'video/quicktime', m4v: 'video/x-m4v', webm: 'video/webm',
@@ -48,17 +43,22 @@ function putToS3(uploadUrl: string, file: File, contentType: string, onProgress:
   });
 }
 
-async function postJson<T>(path: string, body: unknown, schema: z.ZodType<T>): Promise<T> {
-  const res = await fetch(`${getBaseURL()}${path}`, {
+async function postJson<T>(
+  backend: StudioBackend,
+  url: string,
+  body: unknown,
+  parse: (json: unknown) => T,
+): Promise<T> {
+  const res = await backend.fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-MM-Session-ID': getSessionId() },
+    headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
     body: JSON.stringify(body),
   });
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     throw new Error(text || res.statusText);
   }
-  return schema.parse(await res.json());
+  return parse(await res.json());
 }
 
 /**
@@ -70,6 +70,7 @@ async function postJson<T>(path: string, body: unknown, schema: z.ZodType<T>): P
  */
 export function useUploadStudioAsset(projectId: string | null) {
   const upsertAsset = useStudioStore((s) => s.upsertAsset);
+  const backend = useStudioBackend();
 
   const mutation = useMutation({
     mutationFn: async (file: File): Promise<StudioAssetCompleteResponse> => {
@@ -78,18 +79,27 @@ export function useUploadStudioAsset(projectId: string | null) {
       const toastId = toast.loading(`Uploading ${file.name}…`);
       try {
         const presign = await postJson(
-          '/studio/assets/presign',
-          { projectId, fileName: file.name, contentType, fileSizeBytes: file.size, sessionId: getSessionId() },
-          studioAssetPresignResponseSchema,
+          backend,
+          backend.path('/assets/presign'),
+          backend.adaptPresign({ projectId, fileName: file.name, contentType, fileSizeBytes: file.size }),
+          backend.parsePresign,
         );
         await putToS3(presign.uploadUrl, file, contentType, (p) => {
           toast.loading(`Uploading ${file.name}… ${p}%`, { id: toastId });
         });
         toast.loading(`Processing ${file.name}…`, { id: toastId });
         const result = await postJson(
-          '/studio/assets/complete',
-          { projectId, s3Key: presign.s3Key, fileName: file.name, contentType, fileSizeBytes: file.size },
-          studioAssetCompleteResponseSchema,
+          backend,
+          backend.path('/assets/complete'),
+          backend.adaptComplete({
+            projectId,
+            s3Key: presign.s3Key,
+            fileName: file.name,
+            contentType,
+            fileSizeBytes: file.size,
+            assetId: presign.assetId,
+          }),
+          backend.parseComplete,
         );
         toast.success(`${file.name} added`, { id: toastId, description: 'Building preview…' });
         return result;
@@ -117,16 +127,22 @@ export type StudioDeriveOperation = 'voice_clean' | 'split_vocals' | 'split_inst
  * useDeriveStudioAsset runs an AI transform (DeepFilterNet voice cleanup or
  * Demucs stem split) on an existing audio asset and registers the resulting new
  * asset in the store with status 'processing'; the media bin then watches its
- * ingest job to readiness.
+ * ingest job to readiness. (MM-only; the Darkroom backend has no derive route.)
  */
 export function useDeriveStudioAsset() {
   const upsertAsset = useStudioStore((s) => s.upsertAsset);
+  const backend = useStudioBackend();
 
   const mutation = useMutation({
     mutationFn: async ({ assetId, operation }: { assetId: string; operation: StudioDeriveOperation }): Promise<StudioAssetCompleteResponse> => {
       const toastId = toast.loading('Processing audio…');
       try {
-        const result = await postJson(`/studio/assets/${assetId}/derive`, { operation }, studioAssetCompleteResponseSchema);
+        const result = await postJson(
+          backend,
+          backend.path(`/assets/${assetId}/derive`),
+          { operation },
+          backend.parseComplete,
+        );
         toast.success('Audio added', { id: toastId, description: 'Building preview…' });
         return result;
       } catch (err) {

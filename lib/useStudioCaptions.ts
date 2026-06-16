@@ -1,32 +1,30 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod';
-import { getBaseURL } from '@/lib/utils';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
 import type { StudioCaptionCue } from '@/lib/studioTypes';
-
-const generateResponseSchema = z.object({ jobId: z.string() });
+import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 
 /**
  * useGenerateCaptions kicks off whisper transcription of the project's
  * timeline-aligned audio mix. Returns a jobId; the caller watches it and
- * refetches the project on completion (the server writes the cues).
+ * refetches the project on completion (the server writes the cues). Gated by
+ * backend.capabilities.captions — the Darkroom backend has no captions route.
  */
 export function useGenerateCaptions(projectId: string | null) {
+  const backend = useStudioBackend();
   const mutation = useMutation({
     mutationFn: async (language?: string): Promise<{ jobId: string }> => {
       if (!projectId) throw new Error('No active project');
-      const res = await fetch(`${getBaseURL()}/studio/projects/${projectId}/captions/generate`, {
+      const res = await backend.fetch(backend.path(`/projects/${projectId}/captions/generate`), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-MM-Session-ID': getSessionId() },
-        body: JSON.stringify({ language: language || undefined }),
+        headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
+        body: JSON.stringify(backend.adaptCaptionsGenerate(language)),
       });
       if (!res.ok) {
         const text = await res.text().catch(() => '');
         throw new Error(text || res.statusText);
       }
-      return generateResponseSchema.parse(await res.json());
+      return backend.parseExport(await res.json());
     },
   });
   return { generate: mutation.mutateAsync, isGenerating: mutation.isPending };

@@ -32,8 +32,12 @@
     "tagline": "Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser.",
     "backToTools": "Back to tools",
     "slots": {
-      "mediaBin": { "title": "Media" },
-      "timeline": { "title": "Timeline" }
+      "mediaBin": {
+        "title": "Media"
+      },
+      "timeline": {
+        "title": "Timeline"
+      }
     },
     "newProject": {
       "title": "New project",
@@ -215,7 +219,16 @@
       "failed": "Export failed.",
       "ready": "Your export is ready.",
       "download": "Download MP4",
-      "again": "Export again"
+      "again": "Export again",
+      "exportAndDownload": "Export & Download",
+      "exportAndDownloadHint": "Render the MP4 and download it. Your draft stays a draft you can return to.",
+      "publish": "Publish",
+      "publishHint": "Send the rendered video to CreaTV's upload flow to add a title, description, category, topics, tags, and visibility, then publish.",
+      "chooseAction": "Choose what to do with your edit:",
+      "preparingPublish": "Sending to the publish flow…",
+      "publishHandedOff": "Opening CreaTV's upload flow… you can finish publishing there.",
+      "downloadReady": "Your render is attached to the draft and ready to download.",
+      "publishInstead": "Publish instead"
     },
     "audioPanel": {
       "button": "Audio",

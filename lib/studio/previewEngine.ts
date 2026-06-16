@@ -1,4 +1,4 @@
-import { getBaseURL } from '@/lib/utils';
+import { getActiveStudioBackend } from '@/lib/studio/studioBackend';
 import type { StudioClip, StudioTrack, StudioTrackKind } from '@/lib/studioTypes';
 
 /**
@@ -118,14 +118,53 @@ export function topVideoClip(active: ActiveClip[]): ActiveClip | undefined {
 
 // --- Browser-facing URLs for ingested derivatives -------------------------
 // These are stable per-asset passthrough routes (not presigned), so they don't
-// expire mid-session and play back through the API's CORS headers.
+// expire mid-session and play back through the API's CORS headers. They resolve
+// against the active StudioBackend so the decoder pool, waveforms, and LUT
+// loads hit the correct origin (MM api vs CreaTV transcoding api).
 
 export function studioProxyUrl(assetId: string): string {
-  return `${getBaseURL()}/studio/assets/${assetId}/proxy`;
+  return getActiveStudioBackend().proxyUrl(assetId);
 }
 
 export function studioSpriteUrl(assetId: string): string {
-  return `${getBaseURL()}/studio/assets/${assetId}/sprite`;
+  return getActiveStudioBackend().spriteUrl(assetId);
+}
+
+/** Waveform peaks URL, or '' when the active backend doesn't serve /peaks. */
+export function studioPeaksUrl(assetId: string): string {
+  return getActiveStudioBackend().peaksUrl?.(assetId) ?? '';
+}
+
+/** Raw original-file passthrough (.cube LUT assets), or '' when unsupported. */
+export function studioAssetFileUrl(assetId: string): string {
+  return getActiveStudioBackend().assetFileUrl?.(assetId) ?? '';
+}
+
+/**
+ * volumeAtClipTime evaluates a clip's effective gain at `clipLocalSeconds`
+ * (seconds from the clip's timeline start). With no keyframes it returns the
+ * flat volume (default 1). With keyframes it does piecewise-linear interpolation,
+ * holding the first/last value beyond the ends — matching the export's
+ * `volume='…':eval=frame` expression and the timeline rubber band. Keyframes are
+ * assumed sorted (the store normalizes on write).
+ */
+export function volumeAtClipTime(clip: StudioClip, clipLocalSeconds: number): number {
+  const kfs = clip.volumeKeyframes;
+  if (!kfs || kfs.length === 0) return clip.volume ?? 1;
+  if (clipLocalSeconds <= kfs[0].t) return kfs[0].gain;
+  const last = kfs[kfs.length - 1];
+  if (clipLocalSeconds >= last.t) return last.gain;
+  for (let i = 1; i < kfs.length; i += 1) {
+    const b = kfs[i];
+    if (clipLocalSeconds <= b.t) {
+      const a = kfs[i - 1];
+      const span = b.t - a.t;
+      if (span <= 0) return b.gain;
+      const f = (clipLocalSeconds - a.t) / span;
+      return a.gain + (b.gain - a.gain) * f;
+    }
+  }
+  return last.gain;
 }
 
 export function studioPeaksUrl(assetId: string): string {
