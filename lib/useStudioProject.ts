@@ -1,31 +1,20 @@
 'use client';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { z } from 'zod';
 import { toast } from 'sonner';
-import { getBaseURL } from '@/lib/utils';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
-import {
-  studioProjectSchema,
-  studioAssetSchema,
-  type StudioProject,
-  type StudioAsset,
-  type StudioCreateProjectRequest,
-  type StudioSaveProjectRequest,
+import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
+import type {
+  StudioProject,
+  StudioAsset,
+  StudioCreateProjectRequest,
+  StudioSaveProjectRequest,
 } from '@/lib/studioTypes';
 
-// TanStack Query hooks for Content Studio projects + assets. Mirrors the
-// useConvertFile/useStartVideoTranscode shape: getBaseURL() + the X-MM-Session-ID
-// header, Zod-validated responses, sonner errors. No store mutation here — the
-// caller feeds results into the Zustand store.
-
-const jsonHeaders = (): Record<string, string> => ({
-  'Content-Type': 'application/json',
-  'X-MM-Session-ID': getSessionId(),
-});
-
-const recentsSchema = z.object({ projects: z.array(studioProjectSchema).default([]) });
-const assetsSchema = z.object({ assets: z.array(studioAssetSchema).default([]) });
+// TanStack Query hooks for Content Studio projects + assets. Transport is the
+// pluggable StudioBackend (createMmBackend by default): on the standalone site
+// this is byte-identical to the old getBaseURL() + X-MM-Session-ID behavior;
+// inside CreaTV's Darkroom embed it targets /darkroom/studio/* with a bearer.
+// No store mutation here — the caller feeds results into the Zustand store.
 
 async function readError(res: Response): Promise<string> {
   const body = await res.text().catch(() => '');
@@ -33,26 +22,30 @@ async function readError(res: Response): Promise<string> {
 }
 
 export function useRecentProjects() {
+  const backend = useStudioBackend();
   return useQuery({
     queryKey: ['studio', 'recents'],
     queryFn: async (): Promise<StudioProject[]> => {
-      const res = await fetch(`${getBaseURL()}/studio/projects`, { headers: jsonHeaders() });
+      const res = await backend.fetch(`${backend.path('/projects')}${backend.scopeQuery()}`, {
+        headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
+      });
       if (!res.ok) throw new Error(await readError(res));
-      return recentsSchema.parse(await res.json()).projects;
+      return backend.parseProjects(await res.json());
     },
   });
 }
 
 export function useCreateProject(onSuccess?: (project: StudioProject) => void) {
+  const backend = useStudioBackend();
   return useMutation({
     mutationFn: async (req: StudioCreateProjectRequest): Promise<StudioProject> => {
-      const res = await fetch(`${getBaseURL()}/studio/projects`, {
+      const res = await backend.fetch(backend.path('/projects'), {
         method: 'POST',
-        headers: jsonHeaders(),
-        body: JSON.stringify(req),
+        headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
+        body: JSON.stringify(backend.adaptCreateProject(req)),
       });
       if (!res.ok) throw new Error(await readError(res));
-      return studioProjectSchema.parse(await res.json());
+      return backend.parseProject(await res.json());
     },
     onSuccess,
     onError: (error: Error) => {
@@ -62,6 +55,7 @@ export function useCreateProject(onSuccess?: (project: StudioProject) => void) {
 }
 
 export function useProjectQuery(id: string | null) {
+  const backend = useStudioBackend();
   return useQuery({
     queryKey: ['studio', 'project', id],
     enabled: !!id,
@@ -69,37 +63,44 @@ export function useProjectQuery(id: string | null) {
     // hydrated into the store).
     refetchOnWindowFocus: false,
     queryFn: async (): Promise<StudioProject> => {
-      const res = await fetch(`${getBaseURL()}/studio/projects/${id}`, { headers: jsonHeaders() });
+      const res = await backend.fetch(`${backend.path(`/projects/${id}`)}${backend.scopeQuery()}`, {
+        headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
+      });
       if (!res.ok) throw new Error(await readError(res));
-      return studioProjectSchema.parse(await res.json());
+      return backend.parseProject(await res.json());
     },
   });
 }
 
 export function useProjectAssetsQuery(id: string | null) {
+  const backend = useStudioBackend();
   return useQuery({
     queryKey: ['studio', 'project-assets', id],
     enabled: !!id,
     // Don't refetch on focus — a re-seed would reset in-flight upload state.
     refetchOnWindowFocus: false,
     queryFn: async (): Promise<StudioAsset[]> => {
-      const res = await fetch(`${getBaseURL()}/studio/projects/${id}/assets`, { headers: jsonHeaders() });
+      const res = await backend.fetch(
+        `${backend.path(`/projects/${id}/assets`)}${backend.scopeQuery()}`,
+        { headers: { 'Content-Type': 'application/json', ...backend.authHeaders() } },
+      );
       if (!res.ok) throw new Error(await readError(res));
-      return assetsSchema.parse(await res.json()).assets;
+      return backend.parseAssets(await res.json());
     },
   });
 }
 
 export function useSaveProject() {
+  const backend = useStudioBackend();
   return useMutation({
     mutationFn: async ({ id, req }: { id: string; req: StudioSaveProjectRequest }): Promise<StudioProject> => {
-      const res = await fetch(`${getBaseURL()}/studio/projects/${id}`, {
+      const res = await backend.fetch(backend.path(`/projects/${id}`), {
         method: 'PUT',
-        headers: jsonHeaders(),
-        body: JSON.stringify(req),
+        headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
+        body: JSON.stringify(backend.adaptSaveProject(req)),
       });
       if (!res.ok) throw new Error(await readError(res));
-      return studioProjectSchema.parse(await res.json());
+      return backend.parseProject(await res.json());
     },
   });
 }

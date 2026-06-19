@@ -1,20 +1,18 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { getBaseURL } from '@/lib/utils';
+import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
+import type { StudioJobProgress } from '@/lib/studio/studioBackend';
+
+export type { StudioJobProgress } from '@/lib/studio/studioBackend';
 
 /**
- * Live progress for a JobManager job (ingest or export). Prefers SSE
- * (EventSource on /job/:id/events) and falls back to 2s polling if the stream
- * errors — matching the brief and the existing useGetJobStatus poll cadence.
+ * Live progress for a render/ingest job. On MM it prefers SSE (EventSource on
+ * /job/:id/events) and falls back to 2s polling if the stream errors. On CreaTV
+ * the backend exposes no SSE (backend.jobEventsUrl is undefined) so it polls
+ * /darkroom/studio/jobs/:id only. Response shapes are normalized by
+ * backend.parseJob.
  */
-export interface StudioJobProgress {
-  status: 'pending' | 'processing' | 'completed' | 'failed';
-  progress: number;
-  resultUrl?: string;
-  error?: string;
-}
-
 interface UseStudioJobOptions {
   onComplete?: (job: StudioJobProgress) => void;
   onError?: (message: string) => void;
@@ -27,12 +25,16 @@ export function useStudioJobProgress(
   const [state, setState] = useState<StudioJobProgress | null>(null);
   const optsRef = useRef(opts);
   optsRef.current = opts;
+  const backend = useStudioBackend();
+  const backendRef = useRef(backend);
+  backendRef.current = backend;
 
   useEffect(() => {
     if (!jobId) {
       setState(null);
       return;
     }
+    const backend = backendRef.current;
     let done = false;
     let es: EventSource | null = null;
     let pollTimer: ReturnType<typeof setInterval> | null = null;
@@ -47,13 +49,7 @@ export function useStudioJobProgress(
     };
 
     const apply = (raw: unknown) => {
-      const data = raw as Partial<StudioJobProgress> & { status?: string };
-      const next: StudioJobProgress = {
-        status: (data.status as StudioJobProgress['status']) || 'processing',
-        progress: typeof data.progress === 'number' ? data.progress : 0,
-        resultUrl: data.resultUrl,
-        error: data.error,
-      };
+      const next = backendRef.current.parseJob(raw);
       setState(next);
       if (next.status === 'completed' || next.status === 'failed') finish(next);
     };
@@ -62,7 +58,10 @@ export function useStudioJobProgress(
       if (done || pollTimer) return;
       const tick = async () => {
         try {
-          const res = await fetch(`${getBaseURL()}/job/${jobId}`);
+          // No explicit headers: on MM this is the same header-free GET as
+          // before the abstraction; the CreaTV backend.fetch wrapper attaches
+          // the bearer itself (and carries user_id/channel_id in the URL).
+          const res = await backendRef.current.fetch(backendRef.current.jobUrl(jobId));
           if (!res.ok) return;
           apply(await res.json());
         } catch {
@@ -73,21 +72,27 @@ export function useStudioJobProgress(
       pollTimer = setInterval(tick, 2000);
     };
 
-    try {
-      es = new EventSource(`${getBaseURL()}/job/${jobId}/events`);
-      es.addEventListener('update', (ev) => {
-        try {
-          apply(JSON.parse((ev as MessageEvent).data));
-        } catch {
-          // ignore malformed frame
-        }
-      });
-      es.onerror = () => {
-        // Stream dropped before completion — fall back to polling.
-        if (es) es.close();
-        if (!done) startPolling();
-      };
-    } catch {
+    const eventsUrl = backend.capabilities.supportsSSE ? backend.jobEventsUrl?.(jobId) : undefined;
+    if (eventsUrl) {
+      try {
+        es = new EventSource(eventsUrl);
+        es.addEventListener('update', (ev) => {
+          try {
+            apply(JSON.parse((ev as MessageEvent).data));
+          } catch {
+            // ignore malformed frame
+          }
+        });
+        es.onerror = () => {
+          // Stream dropped before completion — fall back to polling.
+          if (es) es.close();
+          if (!done) startPolling();
+        };
+      } catch {
+        startPolling();
+      }
+    } else {
+      // No SSE for this backend — poll only.
       startPolling();
     }
 

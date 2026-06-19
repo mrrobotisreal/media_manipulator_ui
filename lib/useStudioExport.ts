@@ -1,34 +1,36 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod';
-import { getBaseURL } from '@/lib/utils';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
 import type { StudioExportRequest } from '@/lib/studioTypes';
+import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
+import { getActiveStudioBackend } from '@/lib/studio/studioBackend';
 
-const exportResponseSchema = z.object({ jobId: z.string() });
-export type StudioExportResponse = z.infer<typeof exportResponseSchema>;
+export interface StudioExportResponse {
+  jobId: string;
+}
 
 /**
  * useStartStudioExport kicks off the server-side EDL render for a project. The
  * caller is expected to have saved the project first (the server renders from
- * the persisted EDL), then subscribe to the returned jobId for progress and
- * download via /api/download/:jobId.
+ * the persisted EDL), then subscribe to the returned jobId for progress. On MM
+ * the result is downloaded via /download/:jobId; on CreaTV the render attaches
+ * to the draft and download is host-driven (useExportDraft).
  */
 export function useStartStudioExport(projectId: string | null) {
+  const backend = useStudioBackend();
   const mutation = useMutation({
     mutationFn: async (req: StudioExportRequest): Promise<StudioExportResponse> => {
       if (!projectId) throw new Error('No active project');
-      const res = await fetch(`${getBaseURL()}/studio/projects/${projectId}/export`, {
+      const res = await backend.fetch(backend.path(`/projects/${projectId}/export`), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-MM-Session-ID': getSessionId() },
-        body: JSON.stringify(req),
+        headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
+        body: JSON.stringify(backend.adaptExport(req)),
       });
       if (!res.ok) {
         const text = await res.text().catch(() => '');
         throw new Error(text || res.statusText);
       }
-      return exportResponseSchema.parse(await res.json());
+      return backend.parseExport(await res.json());
     },
   });
 
@@ -38,7 +40,12 @@ export function useStartStudioExport(projectId: string | null) {
   };
 }
 
-/** Build the /api/download/:jobId URL the export job result is served from. */
+/**
+ * Build the download URL the export job result is served from (MM:
+ * /download/:jobId). CreaTV renders attach to a draft and are downloaded by the
+ * host, so the CreaTV backend returns '' here. Reads the active backend ref so
+ * non-hook call sites keep working.
+ */
 export function studioDownloadUrl(jobId: string): string {
-  return `${getBaseURL()}/download/${jobId}`;
+  return getActiveStudioBackend().downloadUrl(jobId);
 }

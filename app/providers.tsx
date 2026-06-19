@@ -88,8 +88,14 @@ const RouteAnalytics: React.FC = () => {
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(getQueryClient);
+  const pathname = usePathname();
+  // The /embed/* routes are chromeless app surfaces meant to be iframed by
+  // CreaTV — no site nav/footer and no first-party/GA analytics. They still need
+  // react-query + theme for the embedded editor.
+  const isEmbed = pathname?.startsWith('/embed') ?? false;
 
   useEffect(() => {
+    if (isEmbed) return;
     // Observe Consent Mode v2 updates before any tracker is set up so the
     // Mixpanel / GA helpers can early-return when consent is denied.
     initConsentListener();
@@ -111,7 +117,18 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     // Re-attempt init when the user grants consent later in the session.
     const off = onConsentChange(tryInitMixpanel);
     return off;
-  }, []);
+  }, [isEmbed]);
+
+  if (isEmbed) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

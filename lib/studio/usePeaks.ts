@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { studioPeaksUrl } from '@/lib/studio/previewEngine';
+import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 
 /**
  * Audio waveform peaks for a Content Studio asset. The API returns
@@ -36,9 +37,12 @@ async function fetchPeaks(assetId: string): Promise<DecodedPeaks> {
 }
 
 export function usePeaks(assetId: string | null, enabled = true) {
+  // Skip entirely when the active backend doesn't serve /peaks (e.g. CreaTV
+  // Darkroom today) — the waveform UI degrades gracefully to no peaks.
+  const peaksSupported = useStudioBackend().capabilities.peaks;
   return useQuery({
     queryKey: ['studio', 'peaks', assetId],
-    enabled: !!assetId && enabled,
+    enabled: !!assetId && enabled && peaksSupported,
     staleTime: Infinity,
     gcTime: Infinity,
     retry: 1,
