@@ -40,11 +40,11 @@ import {
   trackConversionFailure,
   trackFileDownload,
   trackUserSession,
+  trackMixpanelEvent,
   getSafeFileExtension,
 } from '@/lib/analytics';
 import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
-import mixpanel from 'mixpanel-browser';
 
 type WorkflowMode = 'convert' | 'transcribe' | 'transcode';
 
@@ -210,7 +210,7 @@ const FileConverterApp: React.FC = () => {
         );
 
         // Enhanced mixpanel tracking for conversion success
-        mixpanel.track('Conversion Completed', {
+        trackMixpanelEvent('Conversion Completed', {
           input_format: inputFormat,
           output_format: outputFormat,
           conversion_type: conversionType,
@@ -248,7 +248,7 @@ const FileConverterApp: React.FC = () => {
         );
 
         // Enhanced mixpanel tracking for conversion failure
-        mixpanel.track('Conversion Failed', {
+        trackMixpanelEvent('Conversion Failed', {
           input_format: inputFormat,
           output_format: outputFormat,
           error_type: jobStatusData.error || 'processing_error',
@@ -285,7 +285,7 @@ const FileConverterApp: React.FC = () => {
   // Track file identification results
   useEffect(() => {
     if (fileDetails && selectedFile) {
-      mixpanel.track('File Identification Completed', {
+      trackMixpanelEvent('File Identification Completed', {
         file_extension: getSafeFileExtension(selectedFile.name),
         file_type: fileDetails.fileType,
         detected_mime_type: fileDetails.mimeType,
@@ -403,7 +403,7 @@ const FileConverterApp: React.FC = () => {
       });
 
     mutate({ file: selectedFile, options: data });
-    mixpanel.track('Conversion Started', {
+    trackMixpanelEvent('Conversion Started', {
       input_format: fromFormat,
       output_format: data.format,
       conversion_type: `${fromFormat}_to_${data.format}`,
@@ -555,7 +555,7 @@ const FileConverterApp: React.FC = () => {
         const inputSizeMB = selectedFile ? selectedFile.size / 1024 / 1024 : 0;
         const compressionRatio = inputSizeMB > 0 ? inputSizeMB / outputSizeMB : 1;
 
-        mixpanel.track('File Downloaded', {
+        trackMixpanelEvent('File Downloaded', {
           file_type: mediaKind,
           output_format: historyItem?.format || conversionOptions?.format || 'unknown',
           file_extension: getSafeFileExtension(fileName),
@@ -584,7 +584,7 @@ const FileConverterApp: React.FC = () => {
         });
 
         // Track download failure
-        mixpanel.track('Download Failed', {
+        trackMixpanelEvent('Download Failed', {
           error_message: error instanceof Error ? error.message : 'Unknown error',
           file_type: mediaKind,
           conversion_id: jobId,
@@ -629,7 +629,7 @@ const FileConverterApp: React.FC = () => {
       });
 
       // Enhanced mixpanel tracking for file identification
-      mixpanel.track('File Identification Started', {
+      trackMixpanelEvent('File Identification Started', {
         file_extension: getSafeFileExtension(selectedFile.name),
         file_type: fileType || 'unknown',
         file_size_mb: selectedFile.size / 1024 / 1024,

@@ -163,6 +163,26 @@ export const trackMixpanelPageView = (title: string, path: string) => {
   }
 };
 
+/**
+ * Safe Mixpanel event helper. Gated behind analytics consent and wrapped in a
+ * try/catch so a missing or uninitialized Mixpanel SDK can never throw.
+ *
+ * This matters because Mixpanel is only initialized after the user grants
+ * analytics consent (see providers.tsx). Calling `mixpanel.track()` before
+ * init throws `Cannot read properties of undefined (reading 'before_track')`.
+ * When that throw happens inside a React effect — e.g. the conversion-complete
+ * handler — it propagates past the (absent) error boundary and unmounts the
+ * whole app, blanking the page. Always route Mixpanel events through here.
+ */
+export const trackMixpanelEvent = (eventName: string, props?: Record<string, unknown>) => {
+  if (!hasAnalyticsConsent()) return;
+  try {
+    mixpanel.track(eventName, props);
+  } catch {
+    // Never block the UI.
+  }
+};
+
 // Track feature usage
 export const trackFeatureUsage = (featureName: string, additionalData?: Record<string, string | number | boolean>) => {
   const props = {
