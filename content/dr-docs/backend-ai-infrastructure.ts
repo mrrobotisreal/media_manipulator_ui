@@ -35,17 +35,20 @@ export const BACKEND_AI_INFRA_DOC: DrDocContent = {
     {
       type: 'list',
       ordered: true,
+      // Each entry links to its section heading's `id` (defined on the heading
+      // blocks below). The renderer treats '#'-prefixed links as in-page anchors
+      // that smooth-scroll rather than open a new tab.
       items: [
-        [{ text: 'Executive Summary' }],
-        [{ text: 'Why Consumer Hardware Is Insufficient' }],
-        [{ text: 'The Case for Dedicated GPU Infrastructure' }],
-        [{ text: 'AI Pipeline Breakdown by Workload' }],
-        [{ text: 'Recommended On-Premises Hardware Specification' }],
-        [{ text: 'Total Cost of Ownership — On-Premises Build' }],
-        [{ text: 'Cloud Infrastructure Alternative (AWS + Anthropic APIs)' }],
-        [{ text: 'On-Premises vs. Cloud — Head-to-Head Comparison' }],
-        [{ text: 'Hybrid Architecture Strategy' }],
-        [{ text: 'Final Recommendation' }],
+        [{ text: 'Executive Summary', link: '#1-executive-summary' }],
+        [{ text: 'Why Consumer Hardware Is Insufficient', link: '#2-why-consumer-hardware-is-insufficient' }],
+        [{ text: 'The Case for Dedicated GPU Infrastructure', link: '#3-the-case-for-dedicated-gpu-infrastructure' }],
+        [{ text: 'AI Pipeline Breakdown by Workload', link: '#4-ai-pipeline-breakdown-by-workload' }],
+        [{ text: 'Recommended On-Premises Hardware Specification', link: '#5-recommended-on-premises-hardware-specification' }],
+        [{ text: 'Total Cost of Ownership — On-Premises Build', link: '#6-total-cost-of-ownership-on-premises-build' }],
+        [{ text: 'Cloud Infrastructure Alternative (AWS + Anthropic APIs)', link: '#7-cloud-infrastructure-alternative' }],
+        [{ text: 'On-Premises vs. Cloud — Head-to-Head Comparison', link: '#8-on-premises-vs-cloud-head-to-head-comparison' }],
+        [{ text: 'Hybrid Architecture Strategy', link: '#9-hybrid-architecture-strategy' }],
+        [{ text: 'Final Recommendation', link: '#10-final-recommendation' }],
       ],
     },
     { type: 'divider' },

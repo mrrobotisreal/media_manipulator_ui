@@ -1,92 +1,196 @@
 'use client';
 
-import { AlertTriangle, Info } from 'lucide-react';
+import { Fragment, useEffect } from 'react';
+import { AlertTriangle, Info, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import type { DrBlock, DrDocContent, DrSpan } from '@/schemas/drDocs';
+import {
+  blockUnitTexts,
+  isTextAnchorLive,
+  unitStartOffset,
+  type DrComment,
+  type DrCommentAnchor,
+} from '@/schemas/drComments';
+import { highlightUnitSpans, type HighlightPiece, type HighlightRange } from '@/lib/dr/highlights';
 
-// Pure presentational mapping of DrBlock[] → themed React. No
-// dangerouslySetInnerHTML anywhere — every piece of content flows through typed
-// blocks and spans. The block switch is exhaustive with a `never` check so
-// adding a block type to the schema fails typecheck here until it is handled.
+// The id used for the in-progress draft's temporary highlight.
+export const PENDING_HIGHLIGHT_ID = '__pending__';
 
-function Span({ span }: { span: DrSpan }) {
-  let node: React.ReactNode = span.text;
-  if (span.code) {
-    node = <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.85em]">{node}</code>;
-  }
-  if (span.bold) node = <strong className="font-semibold text-foreground">{node}</strong>;
-  if (span.italic) node = <em>{node}</em>;
-  if (span.link) {
-    node = (
-      <a
-        href={span.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary underline underline-offset-2 hover:no-underline"
-      >
-        {node}
-      </a>
-    );
-  }
-  return <>{node}</>;
+interface DrDocRendererProps {
+  content: DrDocContent;
+  // Comment overlays (optional so the renderer still works without comments).
+  comments?: DrComment[];
+  pendingAnchor?: DrCommentAnchor | null;
+  activeCommentId?: string | null;
+  onActivateComment?: (id: string) => void;
+  // Right-click on a media block → block-anchor comment target.
+  onBlockContextMenu?: (blockIndex: number, rect: DOMRect) => void;
 }
 
-function Spans({ spans }: { spans: DrSpan[] }) {
-  return (
-    <>
-      {spans.map((span, i) => (
-        <Span key={i} span={span} />
-      ))}
-    </>
+// Smooth-scroll to an in-page section and reflect it in the URL without a jump.
+function scrollToAnchor(id: string, updateHash: boolean) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (updateHash) history.replaceState(null, '', `#${id}`);
+}
+
+interface RenderCtx {
+  activeCommentId: string | null;
+  onActivateComment?: (id: string) => void;
+}
+
+function markClass(idCount: number, active: boolean, pending: boolean): string {
+  if (pending) return 'rounded-sm bg-yellow-200/80 dark:bg-yellow-500/40';
+  const layered = idCount > 1 ? 'bg-yellow-300/80 dark:bg-yellow-500/45' : 'bg-yellow-200/70 dark:bg-yellow-500/30';
+  return cn(
+    'rounded-sm cursor-pointer transition-colors',
+    layered,
+    active && 'bg-yellow-400/90 dark:bg-yellow-400/50 ring-1 ring-yellow-500',
   );
 }
 
-function Block({ block }: { block: DrBlock }) {
+function nextActiveId(ids: string[], active: string | null): string {
+  if (!active) return ids[0];
+  const idx = ids.indexOf(active);
+  return idx === -1 ? ids[0] : ids[(idx + 1) % ids.length];
+}
+
+// Apply a span's inline emphasis + link to a node.
+function decorate(node: React.ReactNode, span: Pick<DrSpan, 'bold' | 'italic' | 'code' | 'link'>): React.ReactNode {
+  let out = node;
+  if (span.code) out = <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.85em]">{out}</code>;
+  if (span.bold) out = <strong className="font-semibold text-foreground">{out}</strong>;
+  if (span.italic) out = <em>{out}</em>;
+  if (span.link) {
+    const linkClass = 'text-primary underline underline-offset-2 hover:no-underline';
+    if (span.link.startsWith('#')) {
+      const id = span.link.slice(1);
+      out = (
+        <a
+          href={span.link}
+          className={linkClass}
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToAnchor(id, true);
+          }}
+        >
+          {out}
+        </a>
+      );
+    } else {
+      out = (
+        <a href={span.link} target="_blank" rel="noopener noreferrer" className={linkClass}>
+          {out}
+        </a>
+      );
+    }
+  }
+  return out;
+}
+
+// Render one unit's highlight pieces (no surrounding whitespace — the unit
+// container's textContent must equal its plain text for offset agreement).
+function renderPieces(pieces: HighlightPiece[], ctx: RenderCtx): React.ReactNode {
+  return pieces.map((piece, i) => {
+    let node: React.ReactNode = decorate(piece.text, piece);
+    if (piece.ids.length > 0) {
+      const pending = piece.ids.includes(PENDING_HIGHLIGHT_ID);
+      const realIds = piece.ids.filter((id) => id !== PENDING_HIGHLIGHT_ID);
+      const active = !!ctx.activeCommentId && realIds.includes(ctx.activeCommentId);
+      node = (
+        <mark
+          data-comment-ids={piece.ids.join(' ')}
+          className={markClass(realIds.length, active, pending && realIds.length === 0)}
+          onClick={
+            realIds.length
+              ? (e) => {
+                  e.stopPropagation();
+                  ctx.onActivateComment?.(nextActiveId(realIds, ctx.activeCommentId));
+                }
+              : undefined
+          }
+        >
+          {node}
+        </mark>
+      );
+    }
+    return <Fragment key={i}>{node}</Fragment>;
+  });
+}
+
+// Collect the highlight ranges (in block-plain-text coords) for one block from
+// live text-anchored comments plus the pending draft.
+function rangesForBlock(
+  block: DrBlock,
+  blockIndex: number,
+  comments: DrComment[],
+  pendingAnchor: DrCommentAnchor | null,
+): HighlightRange[] {
+  const ranges: HighlightRange[] = [];
+  for (const c of comments) {
+    if (c.anchor.type === 'text' && c.anchor.blockIndex === blockIndex && isTextAnchorLive(block, c.anchor)) {
+      ranges.push({ start: c.anchor.start, end: c.anchor.end, id: c.id });
+    }
+  }
+  if (pendingAnchor && pendingAnchor.type === 'text' && pendingAnchor.blockIndex === blockIndex) {
+    ranges.push({ start: pendingAnchor.start, end: pendingAnchor.end, id: PENDING_HIGHLIGHT_ID });
+  }
+  return ranges;
+}
+
+// Render one text unit's content given its spans and base offset.
+function unitContent(spans: DrSpan[], unitBase: number, ranges: HighlightRange[], ctx: RenderCtx): React.ReactNode {
+  return renderPieces(highlightUnitSpans(spans, unitBase, ranges), ctx);
+}
+
+function BlockView({
+  block,
+  index,
+  comments,
+  pendingAnchor,
+  ctx,
+  onBlockContextMenu,
+}: {
+  block: DrBlock;
+  index: number;
+  comments: DrComment[];
+  pendingAnchor: DrCommentAnchor | null;
+  ctx: RenderCtx;
+  onBlockContextMenu?: (blockIndex: number, rect: DOMRect) => void;
+}): React.ReactNode {
+  const ranges = rangesForBlock(block, index, comments, pendingAnchor);
+  const units = blockUnitTexts(block);
+
   switch (block.type) {
     case 'heading': {
       const base = 'scroll-mt-24 font-semibold tracking-tight text-foreground';
-      if (block.level === 1) {
+      const inner = unitContent([{ text: block.text }], 0, ranges, ctx);
+      if (block.level === 1)
         return (
-          <h2 id={block.id} className={cn(base, 'mt-10 mb-4 border-b border-border pb-2 text-2xl')}>
-            {block.text}
+          <h2 id={block.id} data-unit-index={0} className={cn(base, 'mt-10 mb-4 border-b border-border pb-2 text-2xl')}>
+            {inner}
           </h2>
         );
-      }
-      if (block.level === 2) {
+      if (block.level === 2)
         return (
-          <h3 id={block.id} className={cn(base, 'mt-8 mb-3 text-xl')}>
-            {block.text}
+          <h3 id={block.id} data-unit-index={0} className={cn(base, 'mt-8 mb-3 text-xl')}>
+            {inner}
           </h3>
         );
-      }
       return (
-        <h4 id={block.id} className={cn(base, 'mt-6 mb-2 text-lg')}>
-          {block.text}
+        <h4 id={block.id} data-unit-index={0} className={cn(base, 'mt-6 mb-2 text-lg')}>
+          {inner}
         </h4>
       );
     }
 
     case 'paragraph':
       return (
-        <p className="my-4 leading-7 text-foreground/90">
-          <Spans spans={block.spans} />
+        <p data-unit-index={0} className="my-4 leading-7 text-foreground/90">
+          {unitContent(block.spans, 0, ranges, ctx)}
         </p>
-      );
-
-    case 'blockquote':
-      return (
-        <blockquote className="my-5 border-l-2 border-primary/40 pl-4 text-foreground/80">
-          {block.lines.map((line, i) =>
-            line.length === 0 ? (
-              <div key={i} className="h-3" aria-hidden />
-            ) : (
-              <p key={i} className="leading-7">
-                <Spans spans={line} />
-              </p>
-            ),
-          )}
-        </blockquote>
       );
 
     case 'callout': {
@@ -100,17 +204,32 @@ function Block({ block }: { block: DrBlock }) {
           )}
         >
           <Icon className={cn('mt-0.5 size-5 shrink-0', isWarning ? 'text-amber-500' : 'text-primary')} />
-          <div className="leading-7 text-foreground/90">
-            <Spans spans={block.spans} />
+          <div data-unit-index={0} className="leading-7 text-foreground/90">
+            {unitContent(block.spans, 0, ranges, ctx)}
           </div>
         </div>
       );
     }
 
+    case 'blockquote':
+      return (
+        <blockquote className="my-5 border-l-2 border-primary/40 pl-4 text-foreground/80">
+          {block.lines.map((line, i) =>
+            line.length === 0 ? (
+              <div key={i} data-unit-index={i} className="h-3" aria-hidden />
+            ) : (
+              <p key={i} data-unit-index={i} className="leading-7">
+                {unitContent(line, unitStartOffset(units, i), ranges, ctx)}
+              </p>
+            ),
+          )}
+        </blockquote>
+      );
+
     case 'list': {
       const items = block.items.map((item, i) => (
-        <li key={i} className="leading-7">
-          <Spans spans={item} />
+        <li key={i} data-unit-index={i} className="leading-7">
+          {unitContent(item, unitStartOffset(units, i), ranges, ctx)}
         </li>
       ));
       return block.ordered ? (
@@ -121,19 +240,28 @@ function Block({ block }: { block: DrBlock }) {
     }
 
     case 'table': {
+      const headerCells = block.headerRow && block.rows[0] ? block.rows[0] : null;
       const bodyRows = block.headerRow ? block.rows.slice(1) : block.rows;
+      // Flat row-major index of each row's first cell (matches blockUnitTexts,
+      // header row first). Computed without mutating a render variable.
+      const rowStart = block.rows.reduce<number[]>(
+        (acc, _row, i) => [...acc, i === 0 ? 0 : acc[i - 1] + block.rows[i - 1].length],
+        [],
+      );
+      const bodyRowStart = block.headerRow ? rowStart.slice(1) : rowStart;
       return (
         <div className="my-5 overflow-x-auto rounded-lg border border-border">
           <table className="w-full border-collapse text-sm">
-            {block.headerRow && block.rows[0] && (
+            {headerCells && (
               <thead className="bg-muted/50">
                 <tr>
-                  {block.rows[0].map((cell, ci) => (
+                  {headerCells.map((cell, ci) => (
                     <th
                       key={ci}
+                      data-unit-index={ci}
                       className="border-b border-border px-3 py-2 text-left font-semibold text-foreground"
                     >
-                      <Spans spans={cell} />
+                      {unitContent(cell, unitStartOffset(units, ci), ranges, ctx)}
                     </th>
                   ))}
                 </tr>
@@ -142,14 +270,18 @@ function Block({ block }: { block: DrBlock }) {
             <tbody>
               {bodyRows.map((row, ri) => (
                 <tr key={ri} className="odd:bg-muted/20">
-                  {row.map((cell, ci) => (
-                    <td
-                      key={ci}
-                      className="border-b border-border/60 px-3 py-2 align-top text-foreground/90"
-                    >
-                      <Spans spans={cell} />
-                    </td>
-                  ))}
+                  {row.map((cell, ci) => {
+                    const idxForCell = bodyRowStart[ri] + ci;
+                    return (
+                      <td
+                        key={ci}
+                        data-unit-index={idxForCell}
+                        className="border-b border-border/60 px-3 py-2 align-top text-foreground/90"
+                      >
+                        {unitContent(cell, unitStartOffset(units, idxForCell), ranges, ctx)}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -159,31 +291,100 @@ function Block({ block }: { block: DrBlock }) {
     }
 
     case 'code':
-      // whitespace-pre + overflow-x-auto so the §9.3 ASCII architecture diagram
-      // renders un-wrapped and un-mangled.
       return (
         <pre className="my-5 overflow-x-auto rounded-lg border border-border bg-muted/40 p-4">
-          <code className="font-mono text-xs leading-tight whitespace-pre">{block.code}</code>
+          <code data-unit-index={0} className="font-mono text-xs leading-tight whitespace-pre">
+            {unitContent([{ text: block.code }], 0, ranges, ctx)}
+          </code>
         </pre>
       );
 
     case 'divider':
       return <Separator className="my-8" />;
 
+    case 'image':
+    case 'video': {
+      const blockComments = comments.filter((c) => c.anchor.type === 'block' && c.anchor.blockIndex === index);
+      const hasComments = blockComments.length > 0;
+      const active = !!ctx.activeCommentId && blockComments.some((c) => c.id === ctx.activeCommentId);
+      const mediaClass = cn(
+        'max-w-full rounded-lg border',
+        hasComments ? 'ring-2 ring-yellow-400' : 'border-border',
+        active && 'ring-yellow-500',
+      );
+      return (
+        <figure
+          className="relative my-6 w-fit"
+          onContextMenu={(e) => {
+            if (!onBlockContextMenu) return;
+            e.preventDefault();
+            onBlockContextMenu(index, (e.currentTarget as HTMLElement).getBoundingClientRect());
+          }}
+        >
+          {block.type === 'image' ? (
+            <img src={block.src} alt={block.alt} className={mediaClass} />
+          ) : (
+            <video src={block.src} controls className={mediaClass} />
+          )}
+          {hasComments && (
+            <button
+              type="button"
+              onClick={() => ctx.onActivateComment?.(blockComments[0].id)}
+              className="absolute -right-2 -top-2 flex items-center gap-1 rounded-full bg-yellow-400 px-2 py-0.5 text-xs font-medium text-yellow-950 shadow"
+              aria-label={`${blockComments.length} comments`}
+            >
+              <MessageSquare className="size-3" />
+              {blockComments.length}
+            </button>
+          )}
+          {block.caption && (
+            <figcaption data-unit-index={0} className="mt-2 text-center text-sm text-muted-foreground">
+              {unitContent([{ text: block.caption }], 0, ranges, ctx)}
+            </figcaption>
+          )}
+        </figure>
+      );
+    }
+
     default: {
-      // Exhaustiveness guard: if a new DrBlock variant is added to the schema
-      // without a case here, this assignment fails to compile.
       const _exhaustive: never = block;
       return _exhaustive;
     }
   }
 }
 
-export default function DrDocRenderer({ content }: { content: DrDocContent }) {
+export default function DrDocRenderer({
+  content,
+  comments = [],
+  pendingAnchor = null,
+  activeCommentId = null,
+  onActivateComment,
+  onBlockContextMenu,
+}: DrDocRendererProps) {
+  // Honour a #hash in the URL on initial load (shared deep link to a section).
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.length <= 1) return;
+    const id = decodeURIComponent(hash.slice(1));
+    const raf = requestAnimationFrame(() => scrollToAnchor(id, false));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const ctx: RenderCtx = { activeCommentId, onActivateComment };
+
   return (
     <div className="dr-doc">
       {content.blocks.map((block, i) => (
-        <Block key={i} block={block} />
+        <div key={i} data-block-index={i}>
+          <BlockView
+            block={block}
+            index={i}
+            comments={comments}
+            pendingAnchor={pendingAnchor}
+            ctx={ctx}
+            onBlockContextMenu={onBlockContextMenu}
+          />
+        </div>
       ))}
     </div>
   );

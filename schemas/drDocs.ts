@@ -11,14 +11,23 @@ import { z } from 'zod';
 // serialize the identical JSON into the migration seed. Zod parses every API
 // response so malformed content fails fast instead of rendering garbage.
 
-// A DrSpan is an inline run of text with optional emphasis. `link` is an
-// absolute URL (rendered as an external anchor).
+// A span link is EITHER an in-page anchor ('#heading-id', smooth-scrolled by the
+// renderer) OR an absolute http(s) URL (opened in a new tab). Kept permissive
+// enough for both while still rejecting junk. Relaxed from a strict .url() in v2
+// so the Table of Contents entries can link to section anchors.
+const drSpanLink = z
+  .string()
+  .refine((v) => v.startsWith('#') || /^https?:\/\/.+/i.test(v), {
+    message: 'link must be an in-page #anchor or an absolute http(s) URL',
+  });
+
+// A DrSpan is an inline run of text with optional emphasis and an optional link.
 export const DrSpanSchema = z.object({
   text: z.string(),
   bold: z.boolean().optional(),
   italic: z.boolean().optional(),
   code: z.boolean().optional(),
-  link: z.string().url().optional(),
+  link: drSpanLink.optional(),
 });
 export type DrSpan = z.infer<typeof DrSpanSchema>;
 
@@ -75,6 +84,23 @@ export const DrDividerBlockSchema = z.object({
   type: z.literal('divider'),
 });
 
+// Media blocks (v2). These are the right-click ("block" anchor) comment targets;
+// the seeded document has none yet — they are forward support so the
+// media-comment path is real and testable via a fixture. `src` is a URL (or
+// same-origin path); it is rendered directly, never via innerHTML.
+export const DrImageBlockSchema = z.object({
+  type: z.literal('image'),
+  src: z.string(),
+  alt: z.string(),
+  caption: z.string().optional(),
+});
+
+export const DrVideoBlockSchema = z.object({
+  type: z.literal('video'),
+  src: z.string(),
+  caption: z.string().optional(),
+});
+
 // Discriminated union on `type` so the renderer can exhaustively switch and a
 // new block type fails typecheck loudly (see doc-renderer's `never` check).
 export const DrBlockSchema = z.discriminatedUnion('type', [
@@ -86,6 +112,8 @@ export const DrBlockSchema = z.discriminatedUnion('type', [
   DrTableBlockSchema,
   DrCodeBlockSchema,
   DrDividerBlockSchema,
+  DrImageBlockSchema,
+  DrVideoBlockSchema,
 ]);
 export type DrBlock = z.infer<typeof DrBlockSchema>;
 
