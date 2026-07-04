@@ -154,9 +154,11 @@
       "transcriptionOptions": "Transcription Options",
       "transcodeOptions": "Transcode Options",
       "conversionOptions": "Conversion Options",
+      "documentScanOptions": "Document Scan Options",
       "convert": "Convert",
       "transcribe": "Transcribe",
-      "transcode": "Transcode"
+      "transcode": "Transcode",
+      "scanDocument": "Scan to PDF / Word (AI)"
     },
     "history": {
       "title": "Conversion History",

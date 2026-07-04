@@ -7,7 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/private/'],
+        // /dr is the private Double Raven partner portal — keep it out of search
+        // indexes entirely (also noindex'd via metadata; excluded from sitemap).
+        disallow: ['/admin/', '/private/', '/dr'],
       },
       { userAgent: 'Mediapartners-Google', allow: '/' },
       { userAgent: 'Google-Display-Ads-Bot', allow: '/' },

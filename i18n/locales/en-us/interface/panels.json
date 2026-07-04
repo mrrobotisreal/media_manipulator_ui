@@ -511,5 +511,72 @@
     "drawOptions": { "scale": "scale (default)", "full": "full" },
     "generating": "Generating waveform…",
     "generate": "Generate waveform"
+  },
+  "documentScan": {
+    "panel": {
+      "loading": "Loading AI Document Scan…",
+      "disabled": "Document scanning is currently unavailable.",
+      "notAnImage": "Please add image files (PNG, JPEG, WebP, TIFF, BMP, or HEIC).",
+      "tooLarge": "Each image must be under {{max}}.",
+      "tooManyPages": "You can add at most {{max}} pages.",
+      "dropTitle": "Add scanned pages",
+      "dropHint": "Printed documents or handwritten notes — drop one or more images, or click to choose.",
+      "uploading": "Uploading… {{percent}}%",
+      "startingJob": "Starting the scan…",
+      "preparingUpload": "Preparing…",
+      "submit": "Scan {{count}} page(s)",
+      "genericFailure": "Something went wrong while scanning. Please try again.",
+      "startOver": "Start over",
+      "completedTitle": "Your document is ready.",
+      "viewResult": "View result",
+      "scanAnother": "Scan another"
+    },
+    "options": {
+      "contentMode": "Content type",
+      "modeAuto": "Auto (detect per page)",
+      "modePrinted": "Printed document",
+      "modeHandwriting": "Handwriting",
+      "printedUnavailable": "Printed OCR is unavailable on this server.",
+      "handwritingUnavailable": "Handwriting transcription is offline right now.",
+      "outputs": "Outputs",
+      "pdfAlways": "Searchable PDF (always)",
+      "docx": "Editable Word (.docx)",
+      "unavailable": "unavailable",
+      "language": "Language (printed OCR)",
+      "printedCleanup": "Printed page cleanup",
+      "deskew": "Deskew",
+      "rotate": "Auto-rotate",
+      "clean": "Clean (remove speckle)",
+      "structureEngine": "DOCX structure engine",
+      "enginePaddle": "PaddleOCR-VL (preferred)",
+      "engineDocling": "Docling (fallback)",
+      "engineTrocr": "TrOCR (fallback)",
+      "preclean": "Enhance low-resolution scans before reading",
+      "precleanHint": "Upscales blurry phone scans of notes — helps handwriting recognition. On by default for handwriting/auto.",
+      "handwritingTitle": "Handwriting options",
+      "verify": "Verify with AI",
+      "verifyHint": "A second pass re-reads only the tokens marked uncertain; it never alters confident text or invents content.",
+      "secondOpinion": "Second opinion",
+      "secondOpinionHint": "An independent recognizer re-reads handwriting; disagreements are flagged, never silently merged.",
+      "summary": "AI summary (separate file)",
+      "summaryHint": "Optional. Writes a separate, clearly-labeled summary — it never replaces the verbatim transcription."
+    },
+    "pageOrder": {
+      "title": "Pages ({{count}})",
+      "hint": "Drag pages to reorder them before scanning.",
+      "pageLabel": "Page {{n}}",
+      "remove": "Remove page",
+      "drag": "Drag to reorder"
+    },
+    "viewer": {
+      "title": "Your scanned document",
+      "description": "Printed pages carry a faithful searchable text layer; handwriting pages are machine transcriptions — verify against the original.",
+      "confidenceTitle": "Handwriting transcription — verify against the original",
+      "confidenceNote": "{{pages}} handwriting page(s) transcribed · {{tokens}} token(s) marked uncertain ([illegible] / [?]).",
+      "noPdf": "No PDF was produced for this job.",
+      "downloadPdf": "Download PDF",
+      "downloadDocx": "Download Word (.docx)",
+      "downloadSummary": "Download AI summary"
+    }
   }
 }

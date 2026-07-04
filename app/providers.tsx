@@ -93,9 +93,15 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   // CreaTV — no site nav/footer and no first-party/GA analytics. They still need
   // react-query + theme for the embedded editor.
   const isEmbed = pathname?.startsWith('/embed') ?? false;
+  // The /dr Double Raven partner portal is private: no public top-nav/footer,
+  // no ad components, and no site analytics. It gets its own chrome (DrShell)
+  // and still needs react-query + theme, so it takes the same chromeless branch
+  // as /embed.
+  const isDoubleRaven = pathname?.startsWith('/dr') ?? false;
+  const isChromeless = isEmbed || isDoubleRaven;
 
   useEffect(() => {
-    if (isEmbed) return;
+    if (isChromeless) return;
     // Observe Consent Mode v2 updates before any tracker is set up so the
     // Mixpanel / GA helpers can early-return when consent is denied.
     initConsentListener();
@@ -117,9 +123,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     // Re-attempt init when the user grants consent later in the session.
     const off = onConsentChange(tryInitMixpanel);
     return off;
-  }, [isEmbed]);
+  }, [isChromeless]);
 
-  if (isEmbed) {
+  if (isChromeless) {
     return (
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>

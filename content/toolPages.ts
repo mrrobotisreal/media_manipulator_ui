@@ -7415,6 +7415,186 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'deblur image AI',
     ],
   },
+  {
+    slug: 'ai-document-scan',
+    name: 'AI Document Scan',
+    h1: 'AI Document Scan — Scanned Pages & Handwriting to Searchable PDF / Word',
+    tagline:
+      'Turn scanned documents and handwritten field notes into a searchable, multi-page PDF and an editable Word document — printed pages get a faithful Tesseract text layer, handwriting is transcribed by a vision AI with uncertainty marked, never fabricated.',
+    metaTitle: 'AI Document Scan — Scanned Pages & Handwriting to PDF/Word | Media Manipulator',
+    metaDescription:
+      'Free AI document scanning: convert scanned images to a searchable PDF and image-to-Word OCR, plus transcribe handwritten notes to text. Reorder pages, mix printed and handwriting, all on our own GPU — verbatim, with uncertainty marked.',
+    ogTitle: 'AI Document Scan — Searchable PDF + Word from Scans & Handwriting',
+    ogDescription:
+      'Upload one or more scanned pages — printed or handwritten — reorder them, and get a searchable PDF and an editable DOCX. Printed pages stay faithful; handwriting is transcribed verbatim with [illegible]/[?] markers preserved.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_converter',
+      title: 'AI document scan',
+      description:
+        'Add one or more scanned page images (printed documents or handwritten notes), reorder them if needed, choose a content mode and outputs, and get a searchable PDF plus an optional Word document.',
+    },
+    intro:
+      'AI Document Scan turns one or more scanned pages into a searchable, multi-page PDF and, optionally, an editable Word (DOCX) document. It handles two very different kinds of page and is honest about the difference. Printed/typed pages go through deterministic OCR (OCRmyPDF + Tesseract): the PDF is the original scan with an invisible, searchable text layer grafted underneath — the resolution is untouched and nothing is rewritten. Handwritten pages (detective field notes, a notebook, scratch paper, a napkin) are read by a vision-language AI that transcribes the writing verbatim, marking anything it cannot read as [illegible] and uncertain words as [?: best guess] — it never invents or "cleans up" what you wrote. A single job can mix both, page by page, and assemble one ordered output. Everything runs on our own GPU server, never a third-party API.',
+    whatItDoes: [
+      'Converts a scanned image (or many) into a searchable, multi-page PDF — selectable, copy-pasteable text over the original scan.',
+      'Transcribes handwritten notes to text: the PDF keeps the original scan as the visible page and overlays an invisible machine-transcription layer so it is searchable, clearly labeled as a machine transcription.',
+      'Optionally produces an editable Word (DOCX) document — printed pages reconstructed with structure (headings, lists, tables), handwriting as the verbatim transcription, each labeled a reconstruction.',
+      'Auto mode classifies each page as printed or handwritten and routes it to the right engine, so mixed documents come out as one ordered file.',
+      'Lets you drag-reorder pages before processing and pick output language(s) for printed OCR.',
+      'Preserves uncertainty: [illegible] and [?: guess] markers survive end to end, and a per-page confidence note is shown — nothing is fabricated.',
+    ],
+    flowSteps: [
+      {
+        title: 'Add your pages',
+        description: 'Drop in one or more scanned images (PNG, JPEG, WebP, TIFF, BMP, HEIC) — printed pages, handwritten notes, or a mix.',
+      },
+      {
+        title: 'Reorder if needed',
+        description: 'Drag pages into the right reading order before anything is processed.',
+      },
+      {
+        title: 'Choose mode & outputs',
+        description: 'Pick Auto, Printed, or Handwriting; choose a searchable PDF and optionally a Word document, plus language(s) for printed OCR.',
+      },
+      {
+        title: 'Watch the pipeline run',
+        description: 'A live checklist tracks classification, reading, verification, and packaging with rising progress.',
+      },
+      {
+        title: 'Review & download',
+        description: 'A built-in PDF viewer opens on completion; download the searchable PDF and, if requested, the Word document and a separate AI summary.',
+      },
+    ],
+    advancedDetails: [
+      'Printed PDF is faithful: OCRmyPDF grafts an invisible Tesseract text layer under the original scan and outputs PDF/A — the scanned pixels are never altered, only made searchable.',
+      'Handwriting PDF is the original scan plus an invisible machine-transcription layer positioned per line from the vision model’s grounding boxes (a full-page invisible block when boxes are unavailable), with a visible "machine transcription — verify against original" stamp.',
+      'Handwriting is read by a general vision-language model (qwen3-vl) tuned for verbatim transcription; an optional second-opinion engine (PaddleOCR-VL, or TrOCR as a lighter fallback) independently re-reads the page and disagreements are flagged [?: vlm | other], never silently merged.',
+      'An optional verification pass re-reads only the tokens you flagged as uncertain and may resolve them from the image — but it is instructed to leave confident text untouched and never add content that is not visibly written.',
+      'DOCX is a reconstruction: printed pages are parsed to structured Markdown (PaddleOCR-VL preferred, Docling fallback) preserving tables and headings; handwriting sections carry the verbatim transcription with a bold "verify against the original scan" note; Pandoc renders the final .docx.',
+      'The optional AI summary is written to a separate, clearly-labeled file ("AI-generated summary — not a verbatim transcription") and never modifies the verbatim outputs.',
+      'Capabilities degrade gracefully: if the handwriting engine is offline, printed OCR still works; if no structure engine is reachable, DOCX is disabled but the PDF still ships.',
+    ],
+    whyItMatters: [
+      'A photo of a document is not a document: without an OCR text layer you cannot search, select, or quote it. This adds that layer while keeping the original scan as the authoritative page.',
+      'Handwritten notes are some of the hardest pages to digitize; a verbatim, uncertainty-marked transcription is far more useful — and more honest — than a confident guess.',
+      'The faithful-vs-reconstructed distinction matters for investigative and archival work: the printed PDF is faithful, the DOCX and any summary are reconstructions you should verify against the scan.',
+    ],
+    useCases: [
+      {
+        title: 'Make scanned paperwork searchable',
+        description: 'Turn a stack of scanned contracts, forms, or receipts into one searchable PDF you can grep and quote.',
+      },
+      {
+        title: 'Transcribe handwritten field notes',
+        description: 'Convert detective notes, lab notebooks, or interview scribbles into editable text with uncertainty preserved, not fabricated.',
+      },
+      {
+        title: 'Image to Word (OCR)',
+        description: 'Get an editable .docx from a scanned printed page, with headings, lists, and tables reconstructed.',
+      },
+      {
+        title: 'OCR notebook pages',
+        description: 'Digitize mixed notebook pages — a printed form with handwritten answers — into one ordered, searchable document.',
+      },
+      {
+        title: 'Archive and quote old documents',
+        description: 'Add a searchable text layer to scanned archival pages without touching the original scanned image.',
+      },
+    ],
+    whyMediaManipulator: [
+      'Honest by design: the printed PDF is faithful (original scan + searchable layer), while the Word document and any AI summary are labeled reconstructions you should verify against the scan.',
+      'Verbatim, never fabricated: handwriting is transcribed exactly, with [illegible] and [?: guess] markers preserved and surfaced as a per-page confidence note — and an optional independent second opinion flags disagreements instead of hiding them.',
+      'Runs entirely on our own GPU server: your scans and notes never go to a third-party AI provider, and no login is required.',
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp', 'heic'],
+      supportedOutputFormats: ['pdf', 'docx'],
+      maxFileNotes: [
+        'Add up to many pages per job; each page image has an individual size cap (~25 MB).',
+        'A searchable PDF is always produced; the editable Word document is optional.',
+      ],
+      processingNotes: [
+        'Printed pages use deterministic OCR (OCRmyPDF + Tesseract) for a faithful, searchable text layer.',
+        'Handwriting is transcribed verbatim by a vision AI with [illegible]/[?] markers preserved — it is a machine transcription, not the authoritative page.',
+        'The Word document and any AI summary are reconstructions — verify them against the original scan.',
+      ],
+    },
+    faq: [
+      {
+        question: 'What is the difference between the PDF and the Word document?',
+        answer:
+          'The PDF is the original scan with a searchable text layer. For printed pages that layer is a faithful Tesseract OCR layer; for handwriting it is a machine transcription overlaid invisibly, and the scan stays the visible, authoritative page. The Word document is a separate, editable reconstruction — printed pages with structure (headings/lists/tables) and handwriting as the verbatim transcription — which you should verify against the scan.',
+      },
+      {
+        question: 'Does it transcribe handwriting, and can I trust it?',
+        answer:
+          'Yes — handwritten pages are transcribed verbatim by a vision-language AI. It marks anything it cannot read as [illegible] and uncertain words as [?: best guess], and it does not invent or correct text. A per-page confidence note shows how many tokens are uncertain. Treat the transcription as a careful machine reading to verify against the original, not as ground truth.',
+      },
+      {
+        question: 'Can I scan a document that mixes printed text and handwriting?',
+        answer:
+          'Yes. In Auto mode each page is classified as printed or handwritten and routed to the right engine, then everything is assembled into one ordered PDF (and Word document). A notebook with a printed form and handwritten answers is exactly the target.',
+      },
+      {
+        question: 'Can I reorder the pages?',
+        answer:
+          'Yes. On the dedicated tool page you can drag pages into the correct reading order before processing; the final PDF and Word document follow that order.',
+      },
+      {
+        question: 'What languages are supported for printed OCR?',
+        answer:
+          'Printed OCR uses Tesseract, which supports many languages. The available language packs depend on the server; you can select one or combine several (e.g. English + French) for the printed pages.',
+      },
+      {
+        question: 'Is the searchable PDF a faithful copy of my scan?',
+        answer:
+          'Yes for printed pages: OCRmyPDF adds an invisible text layer under the untouched scan and outputs PDF/A. For handwriting pages the original scan is still the visible page; the transcription is an invisible, clearly-labeled machine layer.',
+      },
+      {
+        question: 'Do my files go to a third-party AI service?',
+        answer:
+          'No. All processing — OCR and the handwriting AI — runs on our own GPU server. Your uploads are designed to be deleted automatically within 24 hours and no account is required.',
+      },
+    ],
+    related: [
+      {
+        label: 'Image to PDF',
+        to: '/tools/image-to-pdf',
+        description: 'Combine images into a PDF without an OCR text layer.',
+      },
+      {
+        label: 'PDF to JPG',
+        to: '/tools/pdf-to-jpg',
+        description: 'Go the other way — render PDF pages to images.',
+      },
+      {
+        label: 'AI Image Restoration',
+        to: '/tools/ai-image-restoration',
+        description: 'Clean up and upscale a low-resolution scan before transcribing it.',
+      },
+      {
+        label: 'Remove EXIF metadata',
+        to: '/tools/remove-exif-metadata',
+        description: 'Strip metadata from a scanned image before sharing.',
+      },
+    ],
+    primaryKeyword: 'scanned image to searchable PDF',
+    secondaryKeywords: [
+      'convert scanned document to PDF',
+      'image to Word OCR',
+      'handwriting to text',
+      'transcribe handwritten notes to Word',
+      'handwritten notes to PDF',
+      'OCR notebook pages',
+      'convert handwriting to editable document',
+      'searchable PDF from scan',
+      'scan to Word online',
+      'handwriting OCR online',
+    ],
+  },
 ];
 
 export const TOOL_PAGE_MAP: Record<string, ToolPageContent> = TOOL_PAGES.reduce(

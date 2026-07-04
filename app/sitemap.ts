@@ -4,7 +4,9 @@ import { SITE_ORIGIN } from '@/lib/seo';
 
 // Review-safe sitemap: only the core pages + the review-allowed tool pages.
 // Deliberately excludes the full 65-tool catalog, thin/placeholder pages, and
-// (for now) blog/tutorial detail pages.
+// (for now) blog/tutorial detail pages. The private /dr Double Raven partner
+// portal is intentionally excluded too (this is an allowlist, so /dr is never
+// emitted; it is also disallowed in robots.ts and noindex'd via metadata).
 const CORE_ROUTES = [
   '/',
   '/tools/content-studio',

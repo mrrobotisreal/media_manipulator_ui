@@ -19,6 +19,9 @@ const AudioConversionForm = lazy(() => import('@/components/audio-conversion-for
 const TranscribeForm = lazy(() => import('@/components/transcribe-form'));
 const TranscribeResultView = lazy(() => import('@/components/transcribe-result-view'));
 const VideoTranscodeForm = lazy(() => import('@/components/video-transcode-form'));
+// AI Document Scan island — the panel owns its own upload/SSE/result-modal flow,
+// so the home page needs no extra job plumbing for it.
+const DocumentScanPanel = lazy(() => import('@/components/document-scan/document-scan-panel'));
 
 const FormFallback: React.FC = () => {
   const { t } = useLocalization('interface');
@@ -46,7 +49,7 @@ import {
 import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
 
-type WorkflowMode = 'convert' | 'transcribe' | 'transcode';
+type WorkflowMode = 'convert' | 'transcribe' | 'transcode' | 'document';
 
 interface ConversionHistoryItem {
   jobId: string;
@@ -1020,7 +1023,9 @@ const FileConverterApp: React.FC = () => {
                 ? t('interface:home.options.transcriptionOptions')
                 : workflowMode === 'transcode'
                   ? t('interface:home.options.transcodeOptions')
-                  : t('interface:home.options.conversionOptions')}
+                  : workflowMode === 'document'
+                    ? t('interface:home.options.documentScanOptions')
+                    : t('interface:home.options.conversionOptions')}
             </h2>
 
             {selectedFile && (fileType === 'video' || fileType === 'audio') && (
@@ -1066,10 +1071,47 @@ const FileConverterApp: React.FC = () => {
               </div>
             )}
 
+            {/* Image: convert vs. AI document scan (scanned page / handwriting
+                → searchable PDF / Word). The document panel owns its own
+                upload/SSE/result-modal flow. */}
+            {selectedFile && fileType === 'image' && (
+              <div className="flex rounded-lg border overflow-hidden mb-4">
+                <button
+                  type="button"
+                  onClick={() => setWorkflowMode('convert')}
+                  className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
+                    workflowMode === 'convert'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-background text-card-foreground hover:bg-muted'
+                  }`}
+                >
+                  <Settings className="w-4 h-4" />
+                  {t('interface:home.options.convert')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWorkflowMode('document')}
+                  className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
+                    workflowMode === 'document'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-background text-card-foreground hover:bg-muted'
+                  }`}
+                >
+                  <FileText className="w-4 h-4" />
+                  {t('interface:home.options.scanDocument')}
+                </button>
+              </div>
+            )}
+
             {selectedFile && fileType && fileType !== 'unknown' ? (
               <div className="space-y-6">
                 <Suspense fallback={<FormFallback />}>
-                  {workflowMode === 'transcode' && fileType === 'video' ? (
+                  {workflowMode === 'document' && fileType === 'image' ? (
+                    <DocumentScanPanel
+                      enableReorder={false}
+                      initialFiles={selectedFile ? [selectedFile] : []}
+                    />
+                  ) : workflowMode === 'transcode' && fileType === 'video' ? (
                     <VideoTranscodeForm file={selectedFile} />
                   ) : workflowMode === 'transcribe' && (fileType === 'video' || fileType === 'audio') ? (
                     <TranscribeForm
