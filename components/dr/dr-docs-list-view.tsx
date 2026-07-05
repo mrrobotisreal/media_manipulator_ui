@@ -1,11 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { AlertTriangle, ChevronRight, FileText, Loader2, Plus } from 'lucide-react';
+import { AlertTriangle, ChevronRight, FileText, Loader2, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useDrDocs } from '@/lib/dr/useDrDocs';
 import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
+import DrDeleteDocDialog from './dr-delete-doc-dialog';
 import type { DrDocSummary } from '@/schemas/drDocs';
 
 // Render the ISO timestamp in the viewer's local timezone, medium date + short
@@ -69,6 +71,7 @@ export default function DrDocsListView() {
 }
 
 function DocRow({ doc }: { doc: DrDocSummary }) {
+  const [deleteOpen, setDeleteOpen] = useState(false);
   return (
     <li>
       <Link href={`/dr/docs/${doc.slug}`} className="group block">
@@ -87,9 +90,36 @@ function DocRow({ doc }: { doc: DrDocSummary }) {
               </p>
             </div>
           </div>
-          <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+          <div className="flex shrink-0 items-center gap-1">
+            {doc.canDelete && (
+              <button
+                type="button"
+                aria-label={`Delete ${doc.title}`}
+                // Never trigger the row's navigation Link.
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setDeleteOpen(true);
+                }}
+                className="rounded-md p-1.5 text-muted-foreground opacity-0 transition-opacity hover:bg-destructive/10 hover:text-destructive focus-visible:opacity-100 group-hover:opacity-100 max-sm:opacity-100"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            )}
+            <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+          </div>
         </Card>
       </Link>
+      {doc.canDelete && (
+        <DrDeleteDocDialog
+          docId={doc.id}
+          slug={doc.slug}
+          title={doc.title}
+          open={deleteOpen}
+          onOpenChange={setDeleteOpen}
+          onDeleted={() => {}}
+        />
+      )}
     </li>
   );
 }

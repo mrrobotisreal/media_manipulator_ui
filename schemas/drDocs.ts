@@ -161,6 +161,9 @@ export const DrDocSummarySchema = z.object({
   title: z.string(),
   summary: z.string().nullable(),
   status: DrDocStatusSchema,
+  createdBy: z.string(), // author email (or "seed:migration" for the seed)
+  canDelete: z.boolean(), // SERVER-computed: caller is the creator (creator-only delete)
+  hasEditSession: z.boolean(), // an edit session exists → "Resume editing" + restore confirm
   createdAt: z.string(), // ISO 8601 UTC
   updatedAt: z.string(), // ISO 8601 UTC
 });
@@ -199,6 +202,50 @@ export type DrPresignAssetResponse = z.infer<typeof DrPresignAssetResponseSchema
 // POST /dr/docs/:id/publish → the published document's summary (client redirects
 // using `slug`). Reuses DrDocSummarySchema.
 export const DrPublishDocResponseSchema = DrDocSummarySchema;
+
+// ---------------------------------------------------------------------------
+// Edit sessions, version history, soft delete DTOs (mirror the Go models +
+// internal/handlers/dr_docs_editing.go).
+// ---------------------------------------------------------------------------
+
+// The staged edit session for a published document (content hydrated read-time).
+export const DrEditSessionSchema = z.object({
+  documentId: z.string(),
+  title: z.string(),
+  summary: z.string().nullable(),
+  content: DrDocContentSchema,
+  createdBy: z.string(),
+  updatedBy: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type DrEditSession = z.infer<typeof DrEditSessionSchema>;
+
+// One version-history row (metadata only, never content).
+export const DrRevisionSummarySchema = z.object({
+  revisionNumber: z.number().int(),
+  title: z.string(),
+  createdBy: z.string().nullable(),
+  createdAt: z.string(),
+  isCurrent: z.boolean(),
+});
+export type DrRevisionSummary = z.infer<typeof DrRevisionSummarySchema>;
+
+// A full version snapshot (summary + hydrated content).
+export const DrRevisionSchema = DrRevisionSummarySchema.extend({
+  contentFormat: z.string(),
+  content: DrDocContentSchema,
+});
+export type DrRevision = z.infer<typeof DrRevisionSchema>;
+
+export const DrRevisionsListResponseSchema = z.object({
+  revisions: z.array(DrRevisionSummarySchema),
+});
+export type DrRevisionsListResponse = z.infer<typeof DrRevisionsListResponseSchema>;
+
+// Shared ok-ack for edit-session mutations (autosave / discard / publish-changes
+// reuses DrPublishDocResponseSchema for its summary).
+export const DrOkResponseSchema = z.object({ ok: z.boolean() });
 
 // Asset kinds + client-side allowlist / caps (mirror docAssetExt + the size caps
 // in internal/handlers/dr_docs_editor.go so the editor can fail fast before

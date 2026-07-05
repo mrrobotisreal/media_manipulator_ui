@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useDrDoc } from '@/lib/dr/useDrDoc';
 import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
 import { DrApiError } from '@/lib/dr/apiClient';
-import { createDrDoc } from '@/lib/dr/docEditorApi';
-import DrDocEditor from './dr-doc-editor';
+import { createDrDoc, publishDrDoc, updateDrDoc } from '@/lib/dr/docEditorApi';
+import DrDocEditor, { type DrEditorFlow } from './dr-doc-editor';
 
 // Client flow for /dr/docs/new:
 //  - no ?draft param  → create a draft once, seed the cache, replace the URL
@@ -80,7 +81,23 @@ export default function NewDocFlow() {
   }
 
   if (query.data) {
-    return <DrDocEditor draft={query.data} />;
+    const doc = query.data;
+    // Create flow: autosave/publish target the draft id; on publish, invalidate
+    // the list, toast, and redirect to the freshly-derived slug (unchanged
+    // behavior from before the editor refactor).
+    const flow: DrEditorFlow = {
+      docId: doc.id,
+      initial: { title: doc.title, summary: doc.summary, content: doc.content },
+      publishLabel: 'Publish',
+      save: (update) => updateDrDoc(doc.id, update),
+      publish: () => publishDrDoc(doc.id),
+      onPublished: (published) => {
+        void queryClient.invalidateQueries({ queryKey: ['dr', 'docs'] });
+        toast.success('Document published');
+        router.push(`/dr/docs/${published.slug}`);
+      },
+    };
+    return <DrDocEditor flow={flow} />;
   }
 
   return <FlowSkeleton />;

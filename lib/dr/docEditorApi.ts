@@ -5,8 +5,12 @@
 
 import {
   DrCreateDocResponseSchema,
+  DrEditSessionSchema,
+  DrOkResponseSchema,
   DrPresignAssetResponseSchema,
   DrPublishDocResponseSchema,
+  DrRevisionSchema,
+  DrRevisionsListResponseSchema,
   DrUpdateDocResponseSchema,
   DR_DOC_ASSET_EXT,
   DR_DOC_ASSET_MAX_BYTES,
@@ -14,9 +18,12 @@ import {
   type DrDoc,
   type DrDocContent,
   type DrDocSummary,
+  type DrEditSession,
   type DrPresignAssetResponse,
+  type DrRevision,
+  type DrRevisionSummary,
 } from '@/schemas/drDocs';
-import { drSend } from './apiClient';
+import { drGet, drSend } from './apiClient';
 import { putToS3 } from './s3Upload';
 
 const enc = encodeURIComponent;
@@ -41,6 +48,57 @@ export const updateDrDoc = async (id: string, body: DrDocUpdate): Promise<void> 
 /** Publish a draft; returns the published summary (client redirects via slug). */
 export const publishDrDoc = async (id: string): Promise<DrDocSummary> =>
   DrPublishDocResponseSchema.parse(await drSend('POST', `/dr/docs/${enc(id)}/publish`));
+
+// ---- Edit sessions (published docs) ----------------------------------------
+
+export interface StartEditOptions {
+  fromRevision?: number;
+  replace?: boolean;
+}
+
+/**
+ * Start/resume/replace the edit session for a published document (param = id).
+ * Surfaces the "session already exists" case distinctly: on 409 the promise
+ * rejects with a DrApiError whose `.status === 409`, so callers can confirm and
+ * retry with `{ replace: true }`.
+ */
+export const startDrDocEdit = async (id: string, opts: StartEditOptions = {}): Promise<DrEditSession> => {
+  const body: Record<string, unknown> = {};
+  if (opts.fromRevision != null) body.fromRevision = opts.fromRevision;
+  if (opts.replace) body.replace = true;
+  return DrEditSessionSchema.parse(await drSend('POST', `/dr/docs/${enc(id)}/edit`, body));
+};
+
+/** Autosave the edit session's title/summary/content. */
+export const updateDrDocEdit = async (id: string, body: DrDocUpdate): Promise<void> => {
+  DrOkResponseSchema.parse(await drSend('PUT', `/dr/docs/${enc(id)}/edit`, body));
+};
+
+/** Publish staged edit changes; returns the updated summary (slug unchanged). */
+export const publishDrDocEdit = async (id: string): Promise<DrDocSummary> =>
+  DrPublishDocResponseSchema.parse(await drSend('POST', `/dr/docs/${enc(id)}/edit/publish`));
+
+/** Discard the edit session (the published document is untouched). */
+export const discardDrDocEdit = async (id: string): Promise<void> => {
+  DrOkResponseSchema.parse(await drSend('DELETE', `/dr/docs/${enc(id)}/edit`));
+};
+
+// ---- Soft delete -----------------------------------------------------------
+
+/** Creator-only soft delete (param = id). */
+export const deleteDrDoc = async (id: string): Promise<void> => {
+  DrOkResponseSchema.parse(await drSend('DELETE', `/dr/docs/${enc(id)}`));
+};
+
+// ---- Version history -------------------------------------------------------
+
+/** List a document's revisions, newest first (param = slug). */
+export const fetchDrDocRevisions = async (slug: string): Promise<DrRevisionSummary[]> =>
+  DrRevisionsListResponseSchema.parse(await drGet(`/dr/docs/${enc(slug)}/revisions`)).revisions;
+
+/** Fetch one revision (hydrated content) (param = slug + positive int). */
+export const fetchDrDocRevision = async (slug: string, rev: number): Promise<DrRevision> =>
+  DrRevisionSchema.parse(await drGet(`/dr/docs/${enc(slug)}/revisions/${rev}`));
 
 // ---- Assets ----------------------------------------------------------------
 

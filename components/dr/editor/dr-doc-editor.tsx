@@ -1,9 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
-import { useQueryClient } from '@tanstack/react-query';
 import { AlertCircle, ArrowLeft, Check, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -13,11 +11,11 @@ import { Table, TableCell, TableHeader, TableRow } from '@tiptap/extension-table
 import { Placeholder } from '@tiptap/extension-placeholder';
 
 import { Button } from '@/components/ui/button';
-import { DrDocContentSchema, type DrAssetKind, type DrDoc } from '@/schemas/drDocs';
+import { DrDocContentSchema, type DrAssetKind, type DrDocContent, type DrDocSummary } from '@/schemas/drDocs';
 import { blocksToTiptap } from '@/lib/dr/editor/blocksToTiptap';
 import { tiptapToBlocks } from '@/lib/dr/editor/tiptapToBlocks';
 import type { TiptapDoc } from '@/lib/dr/editor/tiptapDoc';
-import { publishDrDoc, updateDrDoc } from '@/lib/dr/docEditorApi';
+import type { DrDocUpdate } from '@/lib/dr/docEditorApi';
 import { CalloutNode, DrFileNode, DrImageNode, DrVideoNode, NoListNesting } from './extensions/nodes';
 import { createSlashCommand } from './slash-menu';
 import BubbleToolbar from './bubble-toolbar';
@@ -32,15 +30,27 @@ interface MediaRequest {
   position: { top: number; left: number };
 }
 
-// Authoring surface for a DR document draft. Renders the title/summary inputs
-// and a Tiptap editor (slash commands, bubble toolbar, media nodes) whose JSON
-// is serialized back to dr-blocks/v1 on a debounced autosave and on publish.
-export default function DrDocEditor({ draft }: { draft: DrDoc }) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
+// Strategy that adapts the shared editor to a specific flow (create draft vs
+// edit published). The editor owns ALL Tiptap knowledge + UX (slash menu,
+// uploads, autosave debounce, save chip, pending-upload gating); the flow only
+// decides where saves/publishes go and what happens after publish. Flows never
+// import Tiptap.
+export interface DrEditorFlow {
+  docId: string; // target of the asset endpoints
+  initial: { title: string; summary: string | null; content: DrDocContent }; // hydrated
+  publishLabel: string; // "Publish" | "Publish changes"
+  save(update: DrDocUpdate): Promise<void>; // PUT /docs/:id  vs  PUT /docs/:id/edit
+  publish(): Promise<DrDocSummary>; // POST …/publish vs …/edit/publish
+  onPublished(published: DrDocSummary): void; // redirect + cache invalidation per flow
+  headerExtras?: ReactNode; // edit flow injects "Discard changes" + resume note
+}
 
-  const [title, setTitle] = useState(draft.title === 'Untitled' ? '' : draft.title);
-  const [summary, setSummary] = useState(draft.summary ?? '');
+// Authoring surface for a DR document. Renders the title/summary inputs and a
+// Tiptap editor whose JSON is serialized back to dr-blocks/v1 on a debounced
+// autosave and on publish. Flow-agnostic: see DrEditorFlow.
+export default function DrDocEditor({ flow }: { flow: DrEditorFlow }) {
+  const [title, setTitle] = useState(flow.initial.title === 'Untitled' ? '' : flow.initial.title);
+  const [summary, setSummary] = useState(flow.initial.summary ?? '');
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
   const [pendingUploads, setPendingUploads] = useState(0);
   const [publishing, setPublishing] = useState(false);
@@ -54,6 +64,12 @@ export default function DrDocEditor({ draft }: { draft: DrDoc }) {
   const editorRef = useRef<Editor | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scheduleSaveRef = useRef<() => void>(() => {});
+  // The flow object is reconstructed each render; a ref keeps the stable save
+  // closure pointed at the current one without re-subscribing on every render.
+  const flowRef = useRef(flow);
+  useEffect(() => {
+    flowRef.current = flow;
+  });
 
   const onPendingChange = useCallback((delta: number) => {
     setPendingUploads((n) => Math.max(0, n + delta));
@@ -86,12 +102,12 @@ export default function DrDocEditor({ draft }: { draft: DrDoc }) {
         Placeholder.configure({ placeholder: "Type '/' for commands…" }),
         NoListNesting,
         CalloutNode,
-        DrImageNode.configure({ docId: draft.id, onPendingChange }),
-        DrVideoNode.configure({ docId: draft.id, onPendingChange }),
-        DrFileNode.configure({ docId: draft.id, onPendingChange }),
+        DrImageNode.configure({ docId: flow.docId, onPendingChange }),
+        DrVideoNode.configure({ docId: flow.docId, onPendingChange }),
+        DrFileNode.configure({ docId: flow.docId, onPendingChange }),
         createSlashCommand(onInsertMedia),
       ],
-      content: blocksToTiptap(draft.content),
+      content: blocksToTiptap(flow.initial.content),
       editorProps: {
         attributes: { class: 'dr-editor-content focus:outline-none' },
         handleKeyDown: (_view, event) => {
@@ -104,7 +120,7 @@ export default function DrDocEditor({ draft }: { draft: DrDoc }) {
         },
       },
     },
-    [draft.id],
+    [flow.docId],
   );
 
   useEffect(() => {
@@ -141,7 +157,7 @@ export default function DrDocEditor({ draft }: { draft: DrDoc }) {
     }
     try {
       setSaveStatus('saving');
-      await updateDrDoc(draft.id, {
+      await flowRef.current.save({
         title: titleRef.current.trim() || 'Untitled',
         summary: summaryRef.current.trim() || null,
         content: parsed.data,
@@ -151,7 +167,7 @@ export default function DrDocEditor({ draft }: { draft: DrDoc }) {
       console.error('dr editor: autosave failed', err);
       setSaveStatus('error');
     }
-  }, [draft.id]);
+  }, []);
 
   const scheduleSave = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -213,10 +229,9 @@ export default function DrDocEditor({ draft }: { draft: DrDoc }) {
     setPublishing(true);
     try {
       await performSave(); // flush a final save first
-      const published = await publishDrDoc(draft.id);
-      await queryClient.invalidateQueries({ queryKey: ['dr', 'docs'] });
-      toast.success('Document published');
-      router.push(`/dr/docs/${published.slug}`);
+      const published = await flow.publish();
+      // Redirect + cache invalidation + success toast are flow-specific.
+      flow.onPublished(published);
     } catch (err) {
       setPublishing(false);
       toast.error('Could not publish', { description: err instanceof Error ? err.message : undefined });
@@ -230,17 +245,18 @@ export default function DrDocEditor({ draft }: { draft: DrDoc }) {
       <div className="mb-6 flex items-center justify-between gap-4">
         <Link
           href="/dr/docs"
-          title="Your draft is autosaved"
+          title="Your work is autosaved"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
           Back to Documentation
         </Link>
         <div className="flex items-center gap-3">
+          {flow.headerExtras}
           <SaveChip status={saveStatus} onRetry={() => void performSave()} pendingUploads={pendingUploads} />
           <Button onClick={onPublish} disabled={!canPublish}>
             {publishing && <Loader2 className="size-4 animate-spin" />}
-            Publish
+            {flow.publishLabel}
           </Button>
         </div>
       </div>

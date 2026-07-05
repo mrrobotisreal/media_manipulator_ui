@@ -2,13 +2,16 @@
 
 import { useCallback, useRef, useState } from 'react';
 import Link from 'next/link';
-import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { AlertTriangle, ArrowLeft, History, Loader2, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import DrDocRenderer from './doc-renderer';
 import CommentsSidebar, { type CommentDraft } from './comments/comments-sidebar';
 import CommentPopover from './comments/comment-popover';
+import DrDocHistorySheet from './dr-doc-history-sheet';
+import DrDeleteDocDialog from './dr-delete-doc-dialog';
 import { useDrDoc } from '@/lib/dr/useDrDoc';
 import { useDrComments, useDrCommentActions } from '@/lib/dr/useDrComments';
 import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
@@ -29,6 +32,7 @@ interface Popover {
 }
 
 export default function DrDocViewer({ slug }: { slug: string }) {
+  const router = useRouter();
   const { data, isLoading, isError, error, refetch, isRefetching } = useDrDoc(slug);
   useDrQueryErrorRedirect(error);
 
@@ -42,6 +46,8 @@ export default function DrDocViewer({ slug }: { slug: string }) {
   const [draft, setDraft] = useState<CommentDraft | null>(null);
   const [pendingAnchor, setPendingAnchor] = useState<DrCommentAnchor | null>(null);
   const [popover, setPopover] = useState<Popover | null>(null);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const comments = commentsQuery.data ?? [];
   const content = data?.content ?? null;
@@ -142,7 +148,32 @@ export default function DrDocViewer({ slug }: { slug: string }) {
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-8">
           <article ref={articleRef} onMouseUp={handleMouseUp} className="min-w-0">
             <header className="mb-8 border-b border-border pb-4">
-              <h1 className="text-3xl font-bold tracking-tight">{data.title}</h1>
+              <div className="flex items-start justify-between gap-4">
+                <h1 className="text-3xl font-bold tracking-tight">{data.title}</h1>
+                <div className="flex shrink-0 items-center gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setHistoryOpen(true)}>
+                    <History className="size-4" />
+                    History
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/dr/docs/${slug}/edit`}>
+                      <Pencil className="size-4" />
+                      {data.hasEditSession ? 'Resume editing' : 'Edit'}
+                    </Link>
+                  </Button>
+                  {data.canDelete && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setDeleteOpen(true)}
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      aria-label="Delete document"
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  )}
+                </div>
+              </div>
               {data.summary && <p className="mt-2 text-muted-foreground">{data.summary}</p>}
               <p className="mt-2 text-sm text-muted-foreground">Last updated: {formatUpdated(data.updatedAt)}</p>
             </header>
@@ -174,6 +205,22 @@ export default function DrDocViewer({ slug }: { slug: string }) {
       )}
 
       <CommentPopover rect={popover?.rect ?? null} onAdd={handleAdd} onDismiss={dismissPopover} />
+
+      {data && (
+        <>
+          <DrDocHistorySheet slug={slug} open={historyOpen} onOpenChange={setHistoryOpen} />
+          {data.canDelete && (
+            <DrDeleteDocDialog
+              docId={data.id}
+              slug={slug}
+              title={data.title}
+              open={deleteOpen}
+              onOpenChange={setDeleteOpen}
+              onDeleted={() => router.replace('/dr/docs')}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 }
