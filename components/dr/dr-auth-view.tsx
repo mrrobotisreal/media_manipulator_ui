@@ -60,7 +60,7 @@ export default function DrAuthView() {
           <img
             src="/DoubleRaven_Icon.png"
             alt="Double Raven"
-            className="mx-auto mb-2 size-14 object-contain"
+            className="mx-auto mb-2 size-20 object-contain"
           />
           <CardTitle className="text-lg">
             Double Raven <span className="text-muted-foreground">× Media Manipulator</span>
