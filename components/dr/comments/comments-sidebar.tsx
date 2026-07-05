@@ -74,6 +74,11 @@ export default function CommentsSidebar({
   const scrolledActiveRef = useRef<string | null>(null);
   const [positions, setPositions] = useState<Record<string, number>>({});
   const [containerHeight, setContainerHeight] = useState(0);
+  // Keys whose card has already painted at a real position at least once. ONLY
+  // these carry the `top` transition, so a card's FIRST placement is instant —
+  // there is no top:0 → realY animation for scrollIntoView to chase (see the
+  // INVARIANT note by the wrapper markup below).
+  const [positionedKeys, setPositionedKeys] = useState<Set<string>>(new Set());
 
   const anchored = comments.filter((c) => !isOrphan(content, c));
   const orphaned = comments.filter((c) => isOrphan(content, c));
@@ -143,37 +148,84 @@ export default function CommentsSidebar({
     };
   }, [desktop, recompute, alignedKeysStr]);
 
+  // Post-paint: after a commit in which a key gained a real position, mark that
+  // key "positioned" so subsequent renders give it the `top` transition. Because
+  // this runs a commit LATER than the one that set `top`, the first visible frame
+  // is transition-free (instant placement); later re-alignments animate. Keys
+  // that leave `positions` (draft resolved, comment removed) drop out, so a
+  // future card of the same key starts fresh (instant again).
+  useEffect(() => {
+    setPositionedKeys((prev) => {
+      const keys = Object.keys(positions);
+      const next = new Set(keys);
+      if (next.size === prev.size && keys.every((k) => prev.has(k))) return prev;
+      return next;
+    });
+  }, [positions]);
+
+  // Bring a card minimally into view — but ONLY once its live rect matches its
+  // computed top (i.e. it is NOT mid-transition). Polls via rAF for a bounded
+  // number of frames; if it never settles, skip the scroll entirely (skipping is
+  // strictly better than scrolling toward a moving target and hijacking the
+  // viewport). block:'nearest' is a no-op when already fully visible.
+  const settleAndReveal = useCallback(
+    (key: string, expectedTop: number) => {
+      let frames = 0;
+      const tick = () => {
+        const wrapper = wrapperRefs.current.get(key);
+        const column = columnRef.current;
+        if (!wrapper || !column) return;
+        const actual = wrapper.getBoundingClientRect().top - column.getBoundingClientRect().top;
+        if (Math.abs(actual - expectedTop) <= 2) {
+          wrapper.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          return;
+        }
+        if (frames++ < 10) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    },
+    [],
+  );
+
   // Focus the draft composer's textarea once its card has a committed position
   // (on desktop) — imperatively, with preventScroll, so opening the composer
-  // never moves the viewport. Then bring the card just barely into view if it's
-  // clipped; block:'nearest' is a no-op when it's already fully visible and
-  // scrolls the minimum otherwise (never a jump to the top).
+  // never moves the viewport. Then bring the card just barely into view (only
+  // after it has settled at its real position).
   useEffect(() => {
     if (!draft) {
       focusedDraftRef.current = null;
       return;
     }
-    const positionKnown = !desktop || positions[DRAFT_KEY] !== undefined;
-    if (!positionKnown) return;
+    const draftTop = positions[DRAFT_KEY];
+    if (desktop && draftTop === undefined) return; // wait for the position
     if (focusedDraftRef.current === draft.commentId) return;
     focusedDraftRef.current = draft.commentId;
     draftTextareaRef.current?.focus({ preventScroll: true });
-    wrapperRefs.current.get(DRAFT_KEY)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  }, [draft, desktop, positions]);
+    if (desktop && draftTop !== undefined) {
+      settleAndReveal(DRAFT_KEY, draftTop);
+    } else {
+      wrapperRefs.current.get(DRAFT_KEY)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [draft, desktop, positions, settleAndReveal]);
 
   // Scroll the active card into view when activation changes — but NOT while its
-  // position is still unknown on desktop (it would be at top:0 and yank the
-  // viewport). Scroll once per activation, not on every recompute.
+  // position is still unknown on desktop, and only once it has settled. Scroll
+  // once per activation, not on every recompute.
   useEffect(() => {
     if (!activeCommentId) {
       scrolledActiveRef.current = null;
       return;
     }
-    if (desktop && positions[activeCommentId] === undefined) return;
+    const activeTop = positions[activeCommentId];
+    if (desktop && activeTop === undefined) return;
     if (scrolledActiveRef.current === activeCommentId) return;
     scrolledActiveRef.current = activeCommentId;
-    wrapperRefs.current.get(activeCommentId)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [activeCommentId, desktop, positions]);
+    if (desktop && activeTop !== undefined) {
+      settleAndReveal(activeCommentId, activeTop);
+    } else {
+      wrapperRefs.current.get(activeCommentId)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [activeCommentId, desktop, positions, settleAndReveal]);
 
   const setWrapperRef = (key: string) => (el: HTMLDivElement | null) => {
     if (el) wrapperRefs.current.set(key, el);
@@ -230,14 +282,20 @@ export default function CommentsSidebar({
   return (
     <div>
       <div ref={columnRef} className="relative" style={{ height: containerHeight }}>
-        {/* Cards render `invisible` (still measurable for the alignment pass)
-            until their computed top is committed, so nothing ever paints at
-            top:0 and then jumps down. */}
+        {/* INVARIANT: a card's first visible painted frame must be at its final
+            computed `top`. Cards must never carry a top-transition on first
+            placement — a visible card animating from top:0 is what scrollIntoView
+            chases, hijacking the viewport to the top of the page (bug fixed in
+            v4; see also the no-autofocus note in comment-composer.tsx). Hence:
+            transition ONLY once the key is in `positionedKeys` (added a commit
+            after its position lands), and `invisible` until the position is
+            known so nothing ever paints at top:0. */}
         {draft && (
           <div
             ref={setWrapperRef(DRAFT_KEY)}
             className={cn(
-              'absolute w-full transition-[top] duration-150',
+              'absolute w-full',
+              positionedKeys.has(DRAFT_KEY) && 'transition-[top] duration-150',
               positions[DRAFT_KEY] === undefined && 'invisible',
             )}
             style={{ top: positions[DRAFT_KEY] ?? 0 }}
@@ -250,7 +308,8 @@ export default function CommentsSidebar({
             key={c.id}
             ref={setWrapperRef(c.id)}
             className={cn(
-              'absolute w-full transition-[top] duration-150',
+              'absolute w-full',
+              positionedKeys.has(c.id) && 'transition-[top] duration-150',
               positions[c.id] === undefined && 'invisible',
             )}
             style={{ top: positions[c.id] ?? 0 }}
