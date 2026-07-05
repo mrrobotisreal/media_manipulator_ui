@@ -44,6 +44,10 @@ export function blockUnitTexts(block: DrBlock): string[] {
     case 'image':
     case 'video':
       return [block.caption ?? ''];
+    case 'file':
+      // File blocks are block-anchor (right-click) comment targets only; the
+      // display name is their single unit for completeness.
+      return [block.name];
     case 'divider':
       return [];
     default: {

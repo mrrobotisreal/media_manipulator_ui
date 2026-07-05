@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useEffect } from 'react';
-import { AlertTriangle, Info, MessageSquare } from 'lucide-react';
+import { AlertTriangle, Download, File as FileIcon, Info, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import type { DrBlock, DrDocContent, DrSpan } from '@/schemas/drDocs';
@@ -26,6 +26,15 @@ interface DrDocRendererProps {
   onActivateComment?: (id: string) => void;
   // Right-click on a media block → block-anchor comment target.
   onBlockContextMenu?: (blockIndex: number, rect: DOMRect) => void;
+}
+
+// Human-readable byte size for file blocks (e.g. "3.2 MB", "812 KB").
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${kb < 10 ? kb.toFixed(1) : Math.round(kb)} KB`;
+  const mb = kb / 1024;
+  return `${mb < 10 ? mb.toFixed(1) : Math.round(mb)} MB`;
 }
 
 // Smooth-scroll to an in-page section and reflect it in the URL without a jump.
@@ -317,7 +326,8 @@ function BlockView({
       return <Separator className="my-8" />;
 
     case 'image':
-    case 'video': {
+    case 'video':
+    case 'file': {
       const blockComments = comments.filter((c) => c.anchor.type === 'block' && c.anchor.blockIndex === index);
       const hasComments = blockComments.length > 0;
       const active = !!ctx.activeCommentId && blockComments.some((c) => c.id === ctx.activeCommentId);
@@ -328,17 +338,41 @@ function BlockView({
       );
       return (
         <figure
-          className="relative my-6 w-fit"
+          className={cn('relative my-6', block.type === 'file' ? 'max-w-md' : 'w-fit')}
           onContextMenu={(e) => {
             if (!onBlockContextMenu) return;
             e.preventDefault();
             onBlockContextMenu(index, (e.currentTarget as HTMLElement).getBoundingClientRect());
           }}
         >
-          {block.type === 'image' ? (
-            <img src={block.src} alt={block.alt} className={mediaClass} />
-          ) : (
-            <video src={block.src} controls className={mediaClass} />
+          {block.type === 'image' && <img src={block.src} alt={block.alt} className={mediaClass} />}
+          {block.type === 'video' && <video src={block.src} controls className={mediaClass} />}
+          {block.type === 'file' && (
+            // File blocks are downloadable attachments. The API sets
+            // Content-Disposition: attachment on the presigned src so the
+            // original filename is preserved regardless of the `download` attr.
+            <a
+              href={block.src}
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+              className={cn(
+                'flex items-center gap-3 rounded-lg border p-3 no-underline transition-colors hover:bg-accent/40',
+                hasComments ? 'ring-2 ring-yellow-400' : 'border-border',
+                active && 'ring-yellow-500',
+              )}
+            >
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary/10">
+                <FileIcon className="size-5 text-primary" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium text-foreground">{block.name}</p>
+                {block.sizeBytes != null && (
+                  <p className="text-xs text-muted-foreground">{formatBytes(block.sizeBytes)}</p>
+                )}
+              </div>
+              <Download className="size-4 shrink-0 text-muted-foreground" />
+            </a>
           )}
           {hasComments && (
             <button
@@ -351,7 +385,7 @@ function BlockView({
               {blockComments.length}
             </button>
           )}
-          {block.caption && (
+          {block.type !== 'file' && block.caption && (
             <figcaption data-unit-index={0} className="mt-2 text-center text-sm text-muted-foreground">
               {unitContent([{ text: block.caption }], 0, ranges, ctx)}
             </figcaption>

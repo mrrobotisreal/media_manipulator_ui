@@ -1,16 +1,21 @@
-import { Hammer } from 'lucide-react';
-import DrComingSoon from '@/components/dr/dr-coming-soon';
+import { Suspense } from 'react';
+import { Loader2 } from 'lucide-react';
+import NewDocFlow from '@/components/dr/editor/new-doc-flow';
 
-// /dr/docs/new — placeholder for the future in-portal document editor. The "Go
-// Back" button returns to wherever the user came from (falling back to the docs
-// list when there is no history).
+// /dr/docs/new — the in-portal "Create Doc" editor. NewDocFlow reads the
+// `?draft=` search param, so it must sit under a Suspense boundary (Next 16
+// requires useSearchParams consumers to be Suspense-wrapped for prerendering).
 export default function DrNewDocPage() {
   return (
-    <DrComingSoon
-      icon={<Hammer className="size-6 text-primary" />}
-      title="DR+MM Doc Editor IDE is coming soon!"
-      description="You'll be able to author and edit partner documents right here. For now, documents are seeded and managed on the backend."
-      goBackFallbackHref="/dr/docs"
-    />
+    <Suspense
+      fallback={
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="size-4 animate-spin" />
+          Preparing editor…
+        </div>
+      }
+    >
+      <NewDocFlow />
+    </Suspense>
   );
 }

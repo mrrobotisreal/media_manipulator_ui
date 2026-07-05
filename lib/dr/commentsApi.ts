@@ -1,6 +1,6 @@
-// Double Raven comments API. Reuses the shared transport (apiClient.ts) and
-// mirrors the presign → PUT-to-S3 (XHR w/ progress) → complete handshake from
-// lib/useStudioAsset.ts. Responses are zod-parsed against schemas/drComments.ts.
+// Double Raven comments API. Reuses the shared transport (apiClient.ts) and the
+// shared presign → PUT-to-S3 (XHR w/ progress) → complete handshake from
+// lib/dr/s3Upload.ts. Responses are zod-parsed against schemas/drComments.ts.
 
 import {
   DrCommentsListResponseSchema,
@@ -13,6 +13,7 @@ import {
   type DrPresignAttachmentResponse,
 } from '@/schemas/drComments';
 import { drGet, drSend } from './apiClient';
+import { putToS3 } from './s3Upload';
 
 const enc = encodeURIComponent;
 
@@ -92,28 +93,6 @@ async function readImageDimensions(file: File): Promise<{ width: number | null; 
   } catch {
     return { width: null, height: null };
   }
-}
-
-function putToS3(uploadUrl: string, file: File, contentType: string, onProgress: (p: number) => void): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', uploadUrl);
-    xhr.setRequestHeader('Content-Type', contentType);
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable && e.total > 0) onProgress(Math.round((e.loaded / e.total) * 100));
-    };
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        onProgress(100);
-        resolve();
-      } else {
-        reject(new Error(`Image upload failed: ${xhr.status} ${xhr.statusText}`));
-      }
-    };
-    xhr.onerror = () => reject(new Error('Image upload failed'));
-    xhr.onabort = () => reject(new Error('Image upload was cancelled'));
-    xhr.send(file);
-  });
 }
 
 // Full upload handshake for one image; returns the attachment id once completed.

@@ -84,21 +84,45 @@ export const DrDividerBlockSchema = z.object({
   type: z.literal('divider'),
 });
 
-// Media blocks (v2). These are the right-click ("block" anchor) comment targets;
-// the seeded document has none yet — they are forward support so the
-// media-comment path is real and testable via a fixture. `src` is a URL (or
-// same-origin path); it is rendered directly, never via innerHTML.
+// Media blocks (v2). These are the right-click ("block" anchor) comment targets.
+// `src` is the CANONICAL reference stored in the document: either a stable
+// 'dr-asset://<uuid>' asset reference (uploaded via the Create Doc editor) or a
+// plain external http(s) URL the author pasted. It is rendered directly, never
+// via innerHTML.
+//
+// `assetRef` (v1 additive extension, backward compatible) is emitted by the API
+// on READ alongside a hydrated presigned `src`: GetDoc replaces a
+// 'dr-asset://<uuid>' src with a short-lived presigned URL and puts the original
+// canonical reference here so the editor's draft-reload path never loses it.
+// tiptapToBlocks writes the canonical reference back into `src` and omits
+// `assetRef` when serializing, so the stored format is unchanged.
 export const DrImageBlockSchema = z.object({
   type: z.literal('image'),
   src: z.string(),
   alt: z.string(),
   caption: z.string().optional(),
+  assetRef: z.string().optional(),
 });
 
 export const DrVideoBlockSchema = z.object({
   type: z.literal('video'),
   src: z.string(),
   caption: z.string().optional(),
+  assetRef: z.string().optional(),
+});
+
+// File block (v1 additive extension). A downloadable attachment (PDF, zip, doc,
+// …). Like image/video, `src` is the canonical 'dr-asset://<uuid>' reference the
+// API hydrates to a presigned download URL (Content-Disposition: attachment) on
+// read; `name` is the display filename, `sizeBytes`/`contentType` optional
+// metadata. File blocks are also block-anchor comment targets.
+export const DrFileBlockSchema = z.object({
+  type: z.literal('file'),
+  src: z.string(), // dr-asset://{uuid} canonical; hydrated to a URL by the API
+  name: z.string(), // display file name
+  sizeBytes: z.number().int().nonnegative().optional(),
+  contentType: z.string().optional(),
+  assetRef: z.string().optional(),
 });
 
 // Discriminated union on `type` so the renderer can exhaustively switch and a
@@ -114,6 +138,7 @@ export const DrBlockSchema = z.discriminatedUnion('type', [
   DrDividerBlockSchema,
   DrImageBlockSchema,
   DrVideoBlockSchema,
+  DrFileBlockSchema,
 ]);
 export type DrBlock = z.infer<typeof DrBlockSchema>;
 
@@ -151,3 +176,66 @@ export const DrDocsListResponseSchema = z.object({
   docs: z.array(DrDocSummarySchema),
 });
 export type DrDocsListResponse = z.infer<typeof DrDocsListResponseSchema>;
+
+// ---------------------------------------------------------------------------
+// "Create Doc" editor DTOs (mirror internal/models/dr_docs.go + the endpoints
+// in internal/handlers/dr_docs_editor.go). Every editor API response is parsed
+// against these so malformed responses fail fast.
+// ---------------------------------------------------------------------------
+
+// POST /dr/docs (create) and GET a draft both return the full document.
+export const DrCreateDocResponseSchema = DrDocSchema;
+
+// PUT /dr/docs/:id (autosave) ack.
+export const DrUpdateDocResponseSchema = z.object({ ok: z.boolean() });
+
+// POST /dr/docs/:id/assets (presign) → asset id + presigned PUT URL.
+export const DrPresignAssetResponseSchema = z.object({
+  assetId: z.string(),
+  uploadUrl: z.string(),
+});
+export type DrPresignAssetResponse = z.infer<typeof DrPresignAssetResponseSchema>;
+
+// POST /dr/docs/:id/publish → the published document's summary (client redirects
+// using `slug`). Reuses DrDocSummarySchema.
+export const DrPublishDocResponseSchema = DrDocSummarySchema;
+
+// Asset kinds + client-side allowlist / caps (mirror docAssetExt + the size caps
+// in internal/handlers/dr_docs_editor.go so the editor can fail fast before
+// presigning). Keyed content-type → extension, per kind.
+export type DrAssetKind = 'image' | 'video' | 'file';
+
+export const DR_DOC_ASSET_EXT: Record<DrAssetKind, Record<string, string>> = {
+  image: {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'image/webp': 'webp',
+    'image/gif': 'gif',
+  },
+  video: {
+    'video/mp4': 'mp4',
+    'video/webm': 'webm',
+    'video/quicktime': 'mov',
+  },
+  file: {
+    'application/pdf': 'pdf',
+    'application/zip': 'zip',
+    'text/plain': 'txt',
+    'text/csv': 'csv',
+    'application/json': 'json',
+    'text/markdown': 'md',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+  },
+};
+
+export const DR_DOC_ASSET_MAX_BYTES: Record<DrAssetKind, number> = {
+  image: 10 * 1024 * 1024,
+  video: 200 * 1024 * 1024,
+  file: 25 * 1024 * 1024,
+};
+
+export const DR_DOC_MAX_ASSETS = 50;
+
+/** Comma-separated accept string for a file picker of the given kind. */
+export const drAssetAccept = (kind: DrAssetKind): string => Object.keys(DR_DOC_ASSET_EXT[kind]).join(',');
