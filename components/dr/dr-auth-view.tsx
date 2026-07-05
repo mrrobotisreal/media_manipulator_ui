@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Loader2, Lock } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -57,9 +57,11 @@ export default function DrAuthView() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex size-11 items-center justify-center rounded-full bg-primary/10">
-            <Lock className="size-5 text-primary" />
-          </div>
+          <img
+            src="/DoubleRaven_Icon.png"
+            alt="Double Raven"
+            className="mx-auto mb-2 size-14 object-contain"
+          />
           <CardTitle className="text-lg">
             Double Raven <span className="text-muted-foreground">× Media Manipulator</span>
           </CardTitle>
