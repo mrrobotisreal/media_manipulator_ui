@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 import type { DrDocContent } from '@/schemas/drDocs';
 import { isTextAnchorLive, type DrComment, type DrCommentAnchor } from '@/schemas/drComments';
 import type { useDrCommentActions } from '@/lib/dr/useDrComments';
@@ -68,6 +69,9 @@ export default function CommentsSidebar({
   const desktop = useIsDesktop();
   const columnRef = useRef<HTMLDivElement>(null);
   const wrapperRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const draftTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const focusedDraftRef = useRef<string | null>(null);
+  const scrolledActiveRef = useRef<string | null>(null);
   const [positions, setPositions] = useState<Record<string, number>>({});
   const [containerHeight, setContainerHeight] = useState(0);
 
@@ -139,11 +143,37 @@ export default function CommentsSidebar({
     };
   }, [desktop, recompute, alignedKeysStr]);
 
-  // Scroll the active card into view when activation changes.
+  // Focus the draft composer's textarea once its card has a committed position
+  // (on desktop) — imperatively, with preventScroll, so opening the composer
+  // never moves the viewport. Then bring the card just barely into view if it's
+  // clipped; block:'nearest' is a no-op when it's already fully visible and
+  // scrolls the minimum otherwise (never a jump to the top).
   useEffect(() => {
-    if (!activeCommentId) return;
+    if (!draft) {
+      focusedDraftRef.current = null;
+      return;
+    }
+    const positionKnown = !desktop || positions[DRAFT_KEY] !== undefined;
+    if (!positionKnown) return;
+    if (focusedDraftRef.current === draft.commentId) return;
+    focusedDraftRef.current = draft.commentId;
+    draftTextareaRef.current?.focus({ preventScroll: true });
+    wrapperRefs.current.get(DRAFT_KEY)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [draft, desktop, positions]);
+
+  // Scroll the active card into view when activation changes — but NOT while its
+  // position is still unknown on desktop (it would be at top:0 and yank the
+  // viewport). Scroll once per activation, not on every recompute.
+  useEffect(() => {
+    if (!activeCommentId) {
+      scrolledActiveRef.current = null;
+      return;
+    }
+    if (desktop && positions[activeCommentId] === undefined) return;
+    if (scrolledActiveRef.current === activeCommentId) return;
+    scrolledActiveRef.current = activeCommentId;
     wrapperRefs.current.get(activeCommentId)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [activeCommentId]);
+  }, [activeCommentId, desktop, positions]);
 
   const setWrapperRef = (key: string) => (el: HTMLDivElement | null) => {
     if (el) wrapperRefs.current.set(key, el);
@@ -153,6 +183,7 @@ export default function CommentsSidebar({
   const draftComposer = draft ? (
     <CommentComposer
       authorEmail={currentUserEmail}
+      textareaRef={draftTextareaRef}
       upload={(file, onProgress) => actions.uploadCommentAttachment(draft.commentId, file, onProgress)}
       deleteAttachment={actions.deleteAttachment}
       onPublish={async (body) => {
@@ -199,10 +230,16 @@ export default function CommentsSidebar({
   return (
     <div>
       <div ref={columnRef} className="relative" style={{ height: containerHeight }}>
+        {/* Cards render `invisible` (still measurable for the alignment pass)
+            until their computed top is committed, so nothing ever paints at
+            top:0 and then jumps down. */}
         {draft && (
           <div
             ref={setWrapperRef(DRAFT_KEY)}
-            className="absolute w-full transition-[top] duration-150"
+            className={cn(
+              'absolute w-full transition-[top] duration-150',
+              positions[DRAFT_KEY] === undefined && 'invisible',
+            )}
             style={{ top: positions[DRAFT_KEY] ?? 0 }}
           >
             {draftComposer}
@@ -212,7 +249,10 @@ export default function CommentsSidebar({
           <div
             key={c.id}
             ref={setWrapperRef(c.id)}
-            className="absolute w-full transition-[top] duration-150"
+            className={cn(
+              'absolute w-full transition-[top] duration-150',
+              positions[c.id] === undefined && 'invisible',
+            )}
             style={{ top: positions[c.id] ?? 0 }}
           >
             {renderCard(c)}

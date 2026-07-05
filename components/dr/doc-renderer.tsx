@@ -64,13 +64,22 @@ function decorate(node: React.ReactNode, span: Pick<DrSpan, 'bold' | 'italic' | 
   if (span.bold) out = <strong className="font-semibold text-foreground">{out}</strong>;
   if (span.italic) out = <em>{out}</em>;
   if (span.link) {
-    const linkClass = 'text-primary underline underline-offset-2 hover:no-underline';
     if (span.link.startsWith('#')) {
+      // In-page anchor (e.g. a Table of Contents entry): smooth-scroll, no new
+      // tab, and a distinct accent from body/external links — blue at rest,
+      // purple on hover with a gentle scale + soft purple glow. The transition
+      // sits on the BASE class (not only hover:) so scale-down and glow-fade are
+      // equally smooth in both directions; the rest-state transparent text-shadow
+      // gives the browser a start value so the glow animates rather than popping.
+      // scale() requires inline-block; origin-left keeps the left edge planted in
+      // the ordered list (text grows rightward). A dark drop-shadow was rejected —
+      // it's invisible on the dark theme, so the purple glow is the accent.
+      // Reduced-motion users get the colour change without the scale.
       const id = span.link.slice(1);
       out = (
         <a
           href={span.link}
-          className={linkClass}
+          className="inline-block origin-left text-blue-400 underline underline-offset-2 transition-[color,transform,text-shadow] duration-200 ease-out [text-shadow:0_0_12px_transparent] hover:scale-[1.08] hover:text-violet-400 hover:[text-shadow:0_0_12px_rgba(167,139,250,0.55)] motion-reduce:transform-none motion-reduce:transition-none"
           onClick={(e) => {
             e.preventDefault();
             scrollToAnchor(id, true);
@@ -81,7 +90,12 @@ function decorate(node: React.ReactNode, span: Pick<DrSpan, 'bold' | 'italic' | 
       );
     } else {
       out = (
-        <a href={span.link} target="_blank" rel="noopener noreferrer" className={linkClass}>
+        <a
+          href={span.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline underline-offset-2 hover:no-underline"
+        >
           {out}
         </a>
       );

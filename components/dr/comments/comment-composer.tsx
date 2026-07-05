@@ -28,8 +28,15 @@ interface CommentComposerProps {
   onCancel: () => Promise<void>;
   placeholder?: string;
   submitLabel?: string;
-  autoFocus?: boolean;
   compact?: boolean;
+  // Optional: the parent supplies this to focus the textarea imperatively (with
+  // preventScroll) once the composer is positioned. There is deliberately NO
+  // autoFocus-on-mount: this composer is rendered inside an absolutely-positioned
+  // sidebar card that mounts at top:0 before the alignment pass moves it down.
+  // The browser scrolls a focused-on-commit textarea into view — which would be
+  // at the top of the page — hijacking the viewport. Focus must therefore happen
+  // imperatively AFTER positioning, with { preventScroll: true }.
+  textareaRef?: React.RefObject<HTMLTextAreaElement | null>;
 }
 
 export default function CommentComposer({
@@ -40,8 +47,8 @@ export default function CommentComposer({
   onCancel,
   placeholder = 'Add a comment…',
   submitLabel = 'Submit',
-  autoFocus = true,
   compact = false,
+  textareaRef: externalTextareaRef,
 }: CommentComposerProps) {
   const [body, setBody] = useState('');
   const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
@@ -49,7 +56,8 @@ export default function CommentComposer({
   const [cancelling, setCancelling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const internalTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = externalTextareaRef ?? internalTextareaRef;
   const removedRef = useRef<Set<string>>(new Set());
 
   const trimmedName = authorEmail.split('@')[0] || authorEmail;
@@ -165,7 +173,6 @@ export default function CommentComposer({
       <textarea
         ref={textareaRef}
         value={body}
-        autoFocus={autoFocus}
         placeholder={placeholder}
         onChange={(e) => {
           setBody(e.target.value);

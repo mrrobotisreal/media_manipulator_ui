@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, ChevronUp, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { DrComment, DrReply } from '@/schemas/drComments';
 import type { useDrCommentActions } from '@/lib/dr/useDrComments';
+import { relativeTime } from '@/lib/dr/relativeTime';
 import AttachmentCarousel from './attachment-carousel';
 import CommentComposer from './comment-composer';
 
@@ -14,20 +15,6 @@ type Actions = ReturnType<typeof useDrCommentActions>;
 
 function trimEmail(email: string): string {
   return email.split('@')[0] || email;
-}
-
-const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
-
-function relativeTime(iso: string): string {
-  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return '';
-  const diffSec = Math.round((then - Date.now()) / 1000);
-  const abs = Math.abs(diffSec);
-  if (abs < 60) return rtf.format(Math.round(diffSec), 'second');
-  if (abs < 3600) return rtf.format(Math.round(diffSec / 60), 'minute');
-  if (abs < 86400) return rtf.format(Math.round(diffSec / 3600), 'hour');
-  if (abs < 2592000) return rtf.format(Math.round(diffSec / 86400), 'day');
-  return new Date(iso).toLocaleDateString(undefined, { dateStyle: 'medium' } as Intl.DateTimeFormatOptions);
 }
 
 function AuthorLine({ email, iso }: { email: string; iso: string }) {
@@ -79,6 +66,14 @@ export default function CommentCard({
   const [expanded, setExpanded] = useState(false);
   const [replyDraftId, setReplyDraftId] = useState<string | null>(null);
   const [startingReply, setStartingReply] = useState(false);
+  const replyTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Focus the reply box when it opens — imperatively with preventScroll (no
+  // autofocus-on-mount, which would scroll the textarea into view / hijack the
+  // viewport; see comment-composer).
+  useEffect(() => {
+    if (replyDraftId) replyTextareaRef.current?.focus({ preventScroll: true });
+  }, [replyDraftId]);
 
   const textAnchor = comment.anchor.type === 'text' ? comment.anchor : null;
   const quote = textAnchor?.quote ?? '';
@@ -172,6 +167,7 @@ export default function CommentCard({
           <CommentComposer
             compact
             authorEmail={currentUserEmail}
+            textareaRef={replyTextareaRef}
             placeholder="Reply…"
             submitLabel="Reply"
             upload={(file, onProgress) => actions.uploadReplyAttachment(replyDraftId, file, onProgress)}
