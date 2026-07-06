@@ -21,7 +21,7 @@ const NAV = [
   {
     href: '/dr/feedback',
     title: 'Communication / Feedback',
-    description: 'Share notes, questions, and feedback with the team.',
+    description: 'Chat in channels and direct messages — notes, questions, and feedback with the team.',
     icon: MessageSquare,
   },
 ] as const;
