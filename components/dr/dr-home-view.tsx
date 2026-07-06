@@ -29,11 +29,18 @@ const NAV = [
 export default function DrHomeView() {
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Double Raven <span className="text-muted-foreground">× Media Manipulator</span>
-        </h1>
-        <p className="mt-1 text-muted-foreground">Partner portal — pick where you want to go.</p>
+      <div className="mb-8 flex flex-row items-center gap-2">
+        <img
+          src="/DoubleRaven_Icon.png"
+          alt="Double Raven"
+          className="mx-auto mb-2 size-20 object-contain"
+        />
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Double Raven <span className="text-muted-foreground">× Media Manipulator</span>
+          </h1>
+          <p className="mt-1 text-muted-foreground">Partner portal — pick where you want to go.</p>
+        </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         {NAV.map(({ href, title, description, icon: Icon }) => (
