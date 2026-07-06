@@ -43,7 +43,7 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
               <img
                 src="/DoubleRaven_Icon.png"
                 alt="Double Raven"
-                className="mx-auto mb-2 size-20 object-contain"
+                className="mx-auto mb-2 size-12 object-contain"
               />
               <span>Double Raven <span className="text-muted-foreground">× Media Manipulator</span></span>
             </div>
