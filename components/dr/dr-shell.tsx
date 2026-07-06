@@ -39,7 +39,14 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <Link href="/dr" className="font-semibold tracking-tight">
-            Double Raven <span className="text-muted-foreground">× Media Manipulator</span>
+            <div className="flex flex-row items-center justify-center gap-2">
+              <img
+                src="/DoubleRaven_Icon.png"
+                alt="Double Raven"
+                className="mx-auto mb-2 size-20 object-contain"
+              />
+              <span>Double Raven <span className="text-muted-foreground">× Media Manipulator</span></span>
+            </div>
           </Link>
           <div className="flex items-center gap-3">
             {user?.email && (
