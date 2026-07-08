@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
 import { getCurrentIdToken } from '@/lib/firebase';
+import { extractSSERecords, parseSSERecordData } from './sse';
 import { feedbackKeys } from './useDrFeedback';
 
 // Live-update accelerant for the feedback workspace. The browser's EventSource
@@ -53,17 +54,14 @@ export function useFeedbackEvents(openThreadParentId?: string | null): void {
       }
     };
 
-    // One SSE record (frames separated by a blank line). Collect its `data:`
-    // lines, ignore `event:` and `:` comments/keepalives, then JSON-parse.
+    // One SSE record (frames separated by a blank line): the shared parser in
+    // sse.ts collects the `data:` lines and drops comments/keepalives, then we
+    // JSON-parse here.
     const parseRecord = (record: string) => {
-      const dataLines: string[] = [];
-      for (const line of record.split('\n')) {
-        if (line.startsWith(':')) continue; // comment / keepalive
-        if (line.startsWith('data:')) dataLines.push(line.slice(5).replace(/^ /, ''));
-      }
-      if (dataLines.length === 0) return;
+      const data = parseSSERecordData(record);
+      if (data === null) return;
       try {
-        const parsed = JSON.parse(dataLines.join('\n')) as FeedbackNudge;
+        const parsed = JSON.parse(data) as FeedbackNudge;
         if (parsed && parsed.type && parsed.type !== 'hello') handleNudge(parsed);
       } catch {
         // Ignore a malformed frame — the next poll reconciles.
@@ -107,11 +105,9 @@ export function useFeedbackEvents(openThreadParentId?: string | null): void {
           const { value, done } = await reader.read();
           if (done || cancelled) break;
           buffer += decoder.decode(value, { stream: true });
-          let sep: number;
-          while ((sep = buffer.indexOf('\n\n')) !== -1) {
-            parseRecord(buffer.slice(0, sep));
-            buffer = buffer.slice(sep + 2);
-          }
+          const { records, rest } = extractSSERecords(buffer);
+          buffer = rest;
+          for (const record of records) parseRecord(record);
         }
       } catch (err) {
         if (!cancelled && (err as { name?: string })?.name !== 'AbortError' && process.env.NODE_ENV !== 'production') {

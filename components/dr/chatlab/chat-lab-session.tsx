@@ -1,0 +1,125 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FlaskConical, Loader2 } from 'lucide-react';
+import { DrApiError } from '@/lib/dr/apiClient';
+import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
+import { useChatLabModels, useChatLabSession, useChatLabSessions } from '@/lib/dr/useDrChatLab';
+import { useChatStream } from '@/lib/dr/useChatStream';
+import type { ChatLabEffortOrOff } from '@/schemas/drChatLab';
+import MessageList from './message-list';
+import Composer from './composer';
+
+// The active session screen: message history + live stream + composer. Model /
+// effort selection is per MESSAGE (kept as local state); the initial values
+// come from the session's lastModel/lastReasoningEffort and, for a brand-new
+// session, from the most recent session's lastModel.
+export default function ChatLabSession({ sessionId }: { sessionId: string }) {
+  const router = useRouter();
+  const modelsQuery = useChatLabModels();
+  const sessionQuery = useChatLabSession(sessionId);
+  const { data: sessions } = useChatLabSessions();
+  const stream = useChatStream(sessionId);
+
+  useDrQueryErrorRedirect(sessionQuery.error);
+  useDrQueryErrorRedirect(modelsQuery.error);
+
+  const models = useMemo(() => modelsQuery.data ?? [], [modelsQuery.data]);
+  const [model, setModel] = useState<string | null>(null);
+  const [effort, setEffort] = useState<ChatLabEffortOrOff>('');
+  const [seededFor, setSeededFor] = useState<string | null>(null);
+
+  // Seed the pickers once the session + catalog have loaded: this session's
+  // last selection, else the most recent other session's, else the first
+  // catalog model. Render-time state adjustment (React's "derived state"
+  // pattern) so navigating between sessions re-seeds without effect cascades.
+  if (seededFor !== sessionId && models.length > 0 && sessionQuery.data?.session.id === sessionId) {
+    const valid = (id: string | null | undefined) => (id && models.some((m) => m.id === id) ? id : null);
+    const session = sessionQuery.data.session;
+    const fallback = sessions?.find((s) => s.id !== sessionId && valid(s.lastModel))?.lastModel ?? null;
+    const chosen = valid(session.lastModel) ?? valid(fallback) ?? models[0].id;
+    const chosenModel = models.find((m) => m.id === chosen);
+    const lastEffort = session.lastReasoningEffort ?? '';
+    setModel(chosen);
+    setEffort(
+      chosenModel?.supportsReasoning && ['minimal', 'low', 'medium', 'high', 'xhigh'].includes(lastEffort)
+        ? (lastEffort as ChatLabEffortOrOff)
+        : '',
+    );
+    setSeededFor(sessionId);
+  }
+
+  if (sessionQuery.error instanceof DrApiError && sessionQuery.error.status === 404) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
+        <p className="font-medium text-foreground">This chat no longer exists.</p>
+        <button
+          type="button"
+          onClick={() => router.push('/dr/demos/chat-lab')}
+          className="text-sm text-primary underline underline-offset-2"
+        >
+          Back to the chat lab
+        </button>
+      </div>
+    );
+  }
+
+  const emptyState = (
+    <div className="flex h-full flex-col items-center justify-center gap-3 p-8 text-center">
+      <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10">
+        <FlaskConical className="size-6 text-primary" />
+      </div>
+      <div>
+        <p className="font-medium text-foreground">{sessionQuery.data?.session.title ?? 'New Chat'}</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Pick a model below and send a message — attach an image or file to test OCR and extraction.
+        </p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col">
+      <MessageList
+        messages={sessionQuery.data?.messages ?? []}
+        stream={stream}
+        emptyState={emptyState}
+        isLoading={sessionQuery.isLoading}
+      />
+      <div className="border-t border-border bg-background p-3">
+        <div className="mx-auto w-full max-w-3xl">
+          {modelsQuery.isLoading ? (
+            <div className="flex items-center justify-center gap-2 rounded-xl border border-border p-4 text-sm text-muted-foreground">
+              <Loader2 className="size-4 animate-spin" /> Loading models…
+            </div>
+          ) : modelsQuery.isError ? (
+            <div className="rounded-xl border border-border p-4 text-center text-sm text-muted-foreground">
+              {modelsQuery.error instanceof DrApiError && modelsQuery.error.status === 503
+                ? 'AI chat is not configured on the server.'
+                : 'Could not load the model catalog.'}{' '}
+              <button type="button" className="text-primary underline underline-offset-2" onClick={() => void modelsQuery.refetch()}>
+                Retry
+              </button>
+            </div>
+          ) : (
+            <Composer
+              sessionId={sessionId}
+              models={models}
+              model={model}
+              onModelChange={setModel}
+              reasoningEffort={effort}
+              onReasoningEffortChange={setEffort}
+              isStreaming={stream.isStreaming}
+              onSend={(content, attachmentIds) => {
+                if (!model) return;
+                void stream.sendMessage({ sessionId, content, model, reasoningEffort: effort, attachmentIds });
+              }}
+              onStop={stream.stop}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

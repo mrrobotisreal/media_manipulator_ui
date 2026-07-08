@@ -18,12 +18,12 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [signingOut, setSigningOut] = useState(false);
 
-  // The Communication/Feedback workspace is a full-bleed, three-pane app that
-  // owns its own internal scrolling — it escapes the centered max-w-5xl reading
-  // column every other portal route uses. This is the ONLY route where the shell
-  // layout differs; all other routes keep the exact classes below (zero visual
-  // change elsewhere).
-  const isFeedback = pathname?.startsWith('/dr/feedback') ?? false;
+  // The Communication/Feedback workspace and the AI Chat Test Lab are
+  // full-bleed, multi-pane apps that own their own internal scrolling — they
+  // escape the centered max-w-5xl reading column every other portal route
+  // uses. These are the ONLY routes where the shell layout differs; all other
+  // routes keep the exact classes below (zero visual change elsewhere).
+  const isFullBleed = ['/dr/feedback', '/dr/demos/chat-lab'].some((p) => pathname?.startsWith(p));
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -35,7 +35,7 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className={cn('flex flex-col bg-background', isFeedback ? 'h-screen' : 'min-h-screen')}>
+    <div className={cn('flex flex-col bg-background', isFullBleed ? 'h-screen' : 'min-h-screen')}>
       <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <Link href="/dr" className="font-semibold tracking-tight">
@@ -59,7 +59,7 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
-      {isFeedback ? (
+      {isFullBleed ? (
         <main className="flex min-h-0 w-full flex-1 flex-col">{children}</main>
       ) : (
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">{children}</main>

@@ -1,14 +1,6 @@
-import { Presentation } from 'lucide-react';
-import DrComingSoon from '@/components/dr/dr-coming-soon';
+import DrDemosView from '@/components/dr/dr-demos-view';
 
-// /dr/demos — coming-soon placeholder.
+// /dr/demos — the demos list (whole-card-clickable grid, one item for now).
 export default function DrDemosPage() {
-  return (
-    <DrComingSoon
-      icon={<Presentation className="size-6 text-primary" />}
-      title="The Demos feature is coming soon!"
-      description="Product walkthroughs and prototype demonstrations will live here."
-      homeHref="/dr"
-    />
-  );
+  return <DrDemosView />;
 }
