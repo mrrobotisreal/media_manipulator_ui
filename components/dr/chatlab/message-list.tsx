@@ -1,15 +1,24 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Brain, ChevronDown, Download, File as FileIcon, Loader2 } from 'lucide-react';
+import {
+  AlertTriangle,
+  Brain,
+  Check,
+  ChevronDown,
+  Download,
+  File as FileIcon,
+  FileSearch,
+  Loader2,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import ImageViewerModal from '../comments/image-viewer-modal';
 import { formatBytes } from '../feedback/display';
 import { relativeTime } from '@/lib/dr/relativeTime';
-import type { ChatLabAttachment, ChatLabMessage } from '@/schemas/drChatLab';
-import type { ChatStreamState } from '@/lib/dr/useChatStream';
+import type { ChatLabAttachment, ChatLabMessage, ChatLabToolActivity } from '@/schemas/drChatLab';
+import type { ChatStreamState, ChatStreamToolEvent } from '@/lib/dr/useChatStream';
 import ChatLabMarkdown, { CopyButton } from './markdown';
 
 // The conversation pane: persisted messages + the optimistic pending user
@@ -119,6 +128,40 @@ function ReasoningBlock({
   );
 }
 
+// Tool-activity chips: live (streaming, may show a spinner while "running")
+// and persisted (from toolActivity — always ok/error).
+function ToolChips({ items }: { items: Array<ChatStreamToolEvent | ChatLabToolActivity> }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="mb-1.5 flex flex-wrap gap-1.5">
+      {items.map((t, i) => {
+        const status = t.status as 'running' | 'ok' | 'error';
+        return (
+          <span
+            key={`${t.assetId}-${i}`}
+            className={cn(
+              'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px]',
+              status === 'error'
+                ? 'border-destructive/50 text-destructive'
+                : 'border-border text-muted-foreground',
+            )}
+          >
+            {status === 'running' ? (
+              <Loader2 className="size-3 animate-spin" />
+            ) : status === 'ok' ? (
+              <Check className="size-3 text-primary" />
+            ) : (
+              <AlertTriangle className="size-3" />
+            )}
+            <FileSearch className="size-3" />
+            Reading asset: {t.assetName}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 function UserBubble({ content, attachments }: { content: string; attachments?: ChatLabAttachment[] }) {
   return (
     <div className="flex flex-col items-end px-4 py-2">
@@ -159,6 +202,7 @@ function AssistantMessage({ message }: { message: ChatLabMessage }) {
         )}
       </div>
 
+      {message.toolActivity && <ToolChips items={message.toolActivity} />}
       {message.reasoning && <ReasoningBlock text={message.reasoning} />}
 
       {message.content ? (
@@ -214,6 +258,7 @@ function StreamingAssistant({ stream }: { stream: ChatStreamState }) {
         ) : null}
       </div>
 
+      <ToolChips items={stream.toolEvents} />
       {stream.reasoningText && (
         <ReasoningBlock text={stream.reasoningText} open={reasoningOpen} onOpenChange={setReasoningOpen} live />
       )}
@@ -226,7 +271,8 @@ function StreamingAssistant({ stream }: { stream: ChatStreamState }) {
           )}
         </div>
       ) : (
-        !stream.reasoningText && (
+        !stream.reasoningText &&
+        stream.toolEvents.length === 0 && (
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
             <Loader2 className="size-3.5 animate-spin" />
             Waiting for the model…

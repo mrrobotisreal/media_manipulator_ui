@@ -30,6 +30,8 @@ export const ChatLabModelSchema = z.object({
   contextLength: z.number(),
   supportsImages: z.boolean(),
   supportsReasoning: z.boolean(),
+  supportsTools: z.boolean(), // can read project assets on demand (read_asset)
+  supportsAudio: z.boolean(), // input_audio content parts
   supportedEfforts: z.array(ChatLabEffortSchema).nullable(),
   pricing: ChatLabModelPricingSchema,
   created: z.number(),
@@ -50,6 +52,7 @@ export const ChatLabSessionSchema = z.object({
   titleSource: z.enum(['default', 'derived', 'generated', 'manual']),
   createdByEmail: z.string(),
   isMine: z.boolean(), // SERVER-computed; rename/delete are creator-only
+  projectId: z.string().nullable(), // null = a general chat
   lastModel: z.string().nullable(),
   lastReasoningEffort: z.string().nullable(),
   createdAt: z.string(), // ISO 8601 UTC
@@ -81,6 +84,15 @@ export const ChatLabAttachmentSchema = z.object({
 });
 export type ChatLabAttachment = z.infer<typeof ChatLabAttachmentSchema>;
 
+// One recorded read_asset execution on an assistant message.
+export const ChatLabToolActivitySchema = z.object({
+  name: z.string(),
+  assetId: z.string(),
+  assetName: z.string(),
+  status: z.enum(['ok', 'error']),
+});
+export type ChatLabToolActivity = z.infer<typeof ChatLabToolActivitySchema>;
+
 export const ChatLabMessageSchema = z.object({
   id: z.string(),
   role: z.enum(['user', 'assistant']),
@@ -97,14 +109,86 @@ export const ChatLabMessageSchema = z.object({
   totalCostUsd: z.number().nullable(),
   createdAt: z.string(),
   attachments: z.array(ChatLabAttachmentSchema),
+  toolActivity: z.array(ChatLabToolActivitySchema).nullable(), // null when no tools ran
 });
 export type ChatLabMessage = z.infer<typeof ChatLabMessageSchema>;
 
+export const ChatLabSessionProjectRefSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+});
+export type ChatLabSessionProjectRef = z.infer<typeof ChatLabSessionProjectRefSchema>;
+
 export const ChatLabSessionDetailResponseSchema = z.object({
   session: ChatLabSessionSchema,
+  project: ChatLabSessionProjectRefSchema.nullable(), // breadcrumb, project chats only
   messages: z.array(ChatLabMessageSchema), // ordered (created_at, seq)
 });
 export type ChatLabSessionDetailResponse = z.infer<typeof ChatLabSessionDetailResponseSchema>;
+
+// ---------------------------------------------------------------------------
+// Projects.
+// ---------------------------------------------------------------------------
+
+export const ChatLabMemoryStatusSchema = z.enum(['idle', 'updating', 'error', 'disabled']);
+export type ChatLabMemoryStatus = z.infer<typeof ChatLabMemoryStatusSchema>;
+
+export const ChatLabProjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  isMine: z.boolean(), // gates the whole-project DELETE only — everything else is collaborative
+  createdByEmail: z.string(),
+  chatCount: z.number(),
+  assetCount: z.number(),
+  memoryUpdatedAt: z.string().nullable(),
+  memoryStatus: ChatLabMemoryStatusSchema,
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type ChatLabProject = z.infer<typeof ChatLabProjectSchema>;
+
+export const ChatLabProjectsResponseSchema = z.object({
+  projects: z.array(ChatLabProjectSchema),
+});
+
+export const ChatLabProjectAssetKindSchema = z.enum(['text', 'code', 'image', 'audio', 'pdf']);
+export type ChatLabProjectAssetKind = z.infer<typeof ChatLabProjectAssetKindSchema>;
+
+export const ChatLabProjectAssetSchema = z.object({
+  id: z.string(),
+  kind: ChatLabProjectAssetKindSchema,
+  fileName: z.string(),
+  contentType: z.string(),
+  sizeBytes: z.number(),
+  width: z.number().nullable(),
+  height: z.number().nullable(),
+  uploadedByEmail: z.string(),
+  createdAt: z.string(),
+  viewUrl: z.string(),
+  downloadUrl: z.string(),
+});
+export type ChatLabProjectAsset = z.infer<typeof ChatLabProjectAssetSchema>;
+
+export const ChatLabProjectDetailSchema = ChatLabProjectSchema.extend({
+  instructions: z.string(),
+  memory: z.string(),
+  assets: z.array(ChatLabProjectAssetSchema),
+  sessions: z.array(ChatLabSessionSchema),
+});
+export type ChatLabProjectDetail = z.infer<typeof ChatLabProjectDetailSchema>;
+
+export const ChatLabProjectPresignResponseSchema = z.object({
+  assetId: z.string(),
+  uploadUrl: z.string(),
+  key: z.string(),
+});
+export type ChatLabProjectPresignResponse = z.infer<typeof ChatLabProjectPresignResponseSchema>;
+
+export const ChatLabMemoryRefreshResponseSchema = z.object({
+  status: z.enum(['updating', 'disabled']),
+});
+export type ChatLabMemoryRefreshResponse = z.infer<typeof ChatLabMemoryRefreshResponseSchema>;
 
 // ---------------------------------------------------------------------------
 // Mutation responses.
@@ -132,6 +216,13 @@ export const ChatLabStreamEventSchema = z.discriminatedUnion('type', [
   }),
   z.object({ type: z.literal('reasoning'), text: z.string() }),
   z.object({ type: z.literal('delta'), text: z.string() }),
+  z.object({
+    type: z.literal('tool'),
+    name: z.string(),
+    assetId: z.string(),
+    assetName: z.string(),
+    status: z.enum(['running', 'ok', 'error']),
+  }),
   z.object({
     type: z.literal('usage'),
     promptTokens: z.number(),
@@ -183,4 +274,51 @@ export const CHATLAB_MAX_ATTACHMENTS = 5;
 /** The composer's file-input accept attribute. */
 export function chatLabAccept(): string {
   return [...Object.keys(CHATLAB_ATTACHMENT_EXT.image), '.pdf', '.txt', '.csv', '.md', '.json'].join(',');
+}
+
+// ---------------------------------------------------------------------------
+// Project asset allowlist (mirrors the server's projectAssetKind — extension-
+// first classification; text/code/image/audio/pdf, NO video).
+// ---------------------------------------------------------------------------
+
+export const CHATLAB_PROJECT_ASSET_EXTS: Record<ChatLabProjectAssetKind, string[]> = {
+  text: ['md', 'txt', 'csv', 'json', 'yaml', 'yml', 'toml', 'xml'],
+  code: [
+    'go', 'ts', 'tsx', 'js', 'jsx', 'py', 'rb', 'rs', 'java', 'kt', 'swift',
+    'c', 'h', 'cpp', 'hpp', 'cs', 'sh', 'sql', 'css', 'html', 'php',
+  ],
+  image: ['png', 'jpg', 'jpeg', 'webp', 'gif'],
+  audio: ['mp3', 'wav'],
+  pdf: ['pdf'],
+};
+
+export const CHATLAB_MAX_PROJECT_ASSETS = 50;
+
+/** Per-kind byte caps (mirrors the server). */
+export function chatLabProjectAssetMaxBytes(kind: ChatLabProjectAssetKind): number {
+  switch (kind) {
+    case 'image':
+      return 10 * MiB;
+    case 'audio':
+    case 'pdf':
+      return 25 * MiB;
+    default:
+      return 2 * MiB; // text + code
+  }
+}
+
+/** Classify a file by extension (mirrors projectAssetKind). null = unsupported. */
+export function chatLabProjectAssetKind(fileName: string): ChatLabProjectAssetKind | null {
+  const ext = fileName.split('.').pop()?.toLowerCase() ?? '';
+  for (const kind of Object.keys(CHATLAB_PROJECT_ASSET_EXTS) as ChatLabProjectAssetKind[]) {
+    if (CHATLAB_PROJECT_ASSET_EXTS[kind].includes(ext)) return kind;
+  }
+  return null;
+}
+
+/** The project asset upload input's accept attribute. */
+export function chatLabProjectAssetAccept(): string {
+  return (Object.keys(CHATLAB_PROJECT_ASSET_EXTS) as ChatLabProjectAssetKind[])
+    .flatMap((kind) => CHATLAB_PROJECT_ASSET_EXTS[kind].map((ext) => `.${ext}`))
+    .join(',');
 }

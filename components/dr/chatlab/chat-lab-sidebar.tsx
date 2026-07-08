@@ -3,19 +3,21 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Loader2, MessageSquare, MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  Folder,
+  FolderKanban,
+  Loader2,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+  Trash2,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,31 +35,22 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
+  useChatLabProjects,
   useChatLabSessions,
   useCreateChatLabSession,
-  useDeleteChatLabSession,
-  useRenameChatLabSession,
+  useDeleteChatLabProject,
 } from '@/lib/dr/useDrChatLab';
-import type { ChatLabSession } from '@/schemas/drChatLab';
+import type { ChatLabProject, ChatLabSession } from '@/schemas/drChatLab';
+import { groupByRecency } from './recency';
+import SessionRows from './session-rows';
+import NewProjectDialog from './projects/new-project-dialog';
+import ProjectEditDialog from './projects/project-edit-dialog';
 
-// The chat-lab sidebar: New Chat on top, a divider, then previous chats grouped
-// by recency (Today / Yesterday / Previous 7 days / Older). Rename + delete via
-// a per-item menu, enabled only for the creator (isMine) — the server
-// re-enforces either way.
-
-type RecencyGroup = 'Today' | 'Yesterday' | 'Previous 7 days' | 'Older';
-
-function recencyGroup(iso: string, now = new Date()): RecencyGroup {
-  const then = new Date(iso);
-  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-  const dayDiff = Math.round((startOfDay(now) - startOfDay(then)) / 86_400_000);
-  if (dayDiff <= 0) return 'Today';
-  if (dayDiff === 1) return 'Yesterday';
-  if (dayDiff <= 7) return 'Previous 7 days';
-  return 'Older';
-}
-
-const GROUP_ORDER: RecencyGroup[] = ['Today', 'Yesterday', 'Previous 7 days', 'Older'];
+// The chat-lab sidebar, top → bottom: New Chat (general) · divider · Projects
+// (header row with a New Project action, then the project list — the ACTIVE
+// project expands to show its chats; navigation IS expansion, no independent
+// toggle state) · divider · the general chats grouped by recency (naturally
+// project-free thanks to the API default).
 
 interface ChatLabSidebarProps {
   /** Called after any navigation (mobile sheet closes itself). */
@@ -68,62 +61,26 @@ export default function ChatLabSidebar({ onNavigate }: ChatLabSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { data: sessions, isLoading } = useChatLabSessions();
+  const { data: projects, isLoading: projectsLoading } = useChatLabProjects();
   const createSession = useCreateChatLabSession();
-  const renameSession = useRenameChatLabSession();
-  const deleteSession = useDeleteChatLabSession();
 
-  const activeId = useMemo(() => pathname?.match(/^\/dr\/demos\/chat-lab\/c\/([^/?]+)/)?.[1] ?? null, [pathname]);
+  const activeSessionId = useMemo(() => pathname?.match(/\/c\/([^/?]+)/)?.[1] ?? null, [pathname]);
+  const activeProjectId = useMemo(
+    () => pathname?.match(/^\/dr\/demos\/chat-lab\/p\/([^/?]+)/)?.[1] ?? null,
+    [pathname],
+  );
 
-  const [renaming, setRenaming] = useState<ChatLabSession | null>(null);
-  const [renameValue, setRenameValue] = useState('');
-  const [deleting, setDeleting] = useState<ChatLabSession | null>(null);
+  const [newProjectOpen, setNewProjectOpen] = useState(false);
 
-  const groups = useMemo(() => {
-    const map = new Map<RecencyGroup, ChatLabSession[]>();
-    for (const s of sessions ?? []) {
-      const g = recencyGroup(s.updatedAt);
-      map.set(g, [...(map.get(g) ?? []), s]);
-    }
-    return GROUP_ORDER.filter((g) => map.has(g)).map((g) => [g, map.get(g) as ChatLabSession[]] as const);
-  }, [sessions]);
+  const generalGroups = useMemo(() => groupByRecency(sessions ?? []), [sessions]);
 
   const handleNewChat = async () => {
     try {
-      const session = await createSession.mutateAsync();
+      const session = await createSession.mutateAsync(undefined);
       router.push(`/dr/demos/chat-lab/c/${session.id}`);
       onNavigate?.();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to create chat');
-    }
-  };
-
-  const handleRename = async () => {
-    if (!renaming) return;
-    const title = renameValue.trim();
-    if (!title || title.length > 120) {
-      toast.error('Title must be 1–120 characters');
-      return;
-    }
-    try {
-      await renameSession.mutateAsync({ sessionId: renaming.id, title });
-      setRenaming(null);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to rename chat');
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!deleting) return;
-    const wasActive = deleting.id === activeId;
-    try {
-      await deleteSession.mutateAsync(deleting.id);
-      setDeleting(null);
-      if (wasActive) {
-        router.push('/dr/demos/chat-lab');
-        onNavigate?.();
-      }
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to delete chat');
     }
   };
 
@@ -135,7 +92,48 @@ export default function ChatLabSidebar({ onNavigate }: ChatLabSidebarProps) {
       </Button>
       <Separator className="my-2" />
 
-      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto">
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {/* ---- Projects ---- */}
+        <div className="flex items-center justify-between px-2 py-1">
+          <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+            <FolderKanban className="size-3.5" />
+            Projects
+          </span>
+          <button
+            type="button"
+            onClick={() => setNewProjectOpen(true)}
+            aria-label="New project"
+            title="New project"
+            className="rounded p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          >
+            <Plus className="size-3.5" />
+          </button>
+        </div>
+        <div className="space-y-0.5">
+          {projectsLoading && (
+            <div className="space-y-2 px-1 pt-1">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="h-7 animate-pulse rounded-md bg-muted/60" />
+              ))}
+            </div>
+          )}
+          {!projectsLoading && (projects?.length ?? 0) === 0 && (
+            <p className="px-2 py-1 text-xs text-muted-foreground">No projects yet.</p>
+          )}
+          {(projects ?? []).map((p) => (
+            <ProjectRow
+              key={p.id}
+              project={p}
+              active={activeProjectId === p.id}
+              activeSessionId={activeSessionId}
+              onNavigate={onNavigate}
+            />
+          ))}
+        </div>
+
+        <Separator className="my-2" />
+
+        {/* ---- General chats ---- */}
         {isLoading && (
           <div className="space-y-2 px-1 pt-1">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -143,104 +141,155 @@ export default function ChatLabSidebar({ onNavigate }: ChatLabSidebarProps) {
             ))}
           </div>
         )}
-
         {!isLoading && (sessions?.length ?? 0) === 0 && (
           <p className="px-2 py-3 text-xs text-muted-foreground">No chats yet — start one!</p>
         )}
-
-        {groups.map(([group, list]) => (
-          <div key={group}>
-            <div className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              {group}
+        <div className="space-y-3">
+          {generalGroups.map(([group, list]) => (
+            <div key={group}>
+              <div className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                {group}
+              </div>
+              <SessionRows
+                sessions={list}
+                hrefFor={(s) => `/dr/demos/chat-lab/c/${s.id}`}
+                activeId={activeSessionId}
+                onNavigate={onNavigate}
+              />
             </div>
-            <div className="space-y-0.5">
-              {list.map((s) => (
-                <div
-                  key={s.id}
-                  className={cn(
-                    'group flex items-center gap-1 rounded-md text-sm text-foreground/80 transition-colors hover:bg-accent/50',
-                    activeId === s.id && 'bg-accent font-medium text-foreground',
-                  )}
-                >
-                  <Link
-                    href={`/dr/demos/chat-lab/c/${s.id}`}
-                    onClick={onNavigate}
-                    className="flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5"
-                    title={s.title}
-                  >
-                    <MessageSquare className="size-4 shrink-0 text-muted-foreground" />
-                    <span className="min-w-0 flex-1 truncate">{s.title}</span>
-                  </Link>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        type="button"
-                        aria-label={`Options for ${s.title}`}
-                        className="mr-1 rounded p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground focus:opacity-100 group-hover:opacity-100 data-[state=open]:opacity-100"
-                      >
-                        <MoreHorizontal className="size-4" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start">
-                      <DropdownMenuItem
-                        disabled={!s.isMine}
-                        onSelect={() => {
-                          setRenaming(s);
-                          setRenameValue(s.title);
-                        }}
-                      >
-                        <Pencil className="size-4" /> Rename
-                      </DropdownMenuItem>
-                      <DropdownMenuItem variant="destructive" disabled={!s.isMine} onSelect={() => setDeleting(s)}>
-                        <Trash2 className="size-4" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      {/* Rename dialog */}
-      <Dialog open={!!renaming} onOpenChange={(o) => !o && setRenaming(null)}>
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>Rename chat</DialogTitle>
-          </DialogHeader>
-          <Input
-            value={renameValue}
-            onChange={(e) => setRenameValue(e.target.value)}
-            maxLength={120}
-            autoFocus
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                void handleRename();
-              }
-            }}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setRenaming(null)}>
-              Cancel
-            </Button>
-            <Button onClick={() => void handleRename()} disabled={renameSession.isPending}>
-              {renameSession.isPending && <Loader2 className="size-4 animate-spin" />}
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <NewProjectDialog open={newProjectOpen} onOpenChange={setNewProjectOpen} onCreated={onNavigate} />
+    </nav>
+  );
+}
 
-      {/* Delete confirm */}
-      <AlertDialog open={!!deleting} onOpenChange={(o) => !o && setDeleting(null)}>
+// One project row. The active project expands to list its chats plus a "New
+// chat in project" action; others render collapsed (clicking navigates, which
+// expands).
+function ProjectRow({
+  project,
+  active,
+  activeSessionId,
+  onNavigate,
+}: {
+  project: ChatLabProject;
+  active: boolean;
+  activeSessionId: string | null;
+  onNavigate?: () => void;
+}) {
+  const router = useRouter();
+  const createSession = useCreateChatLabSession();
+  const deleteProject = useDeleteChatLabProject();
+  const { data: projectSessions } = useChatLabSessions(active ? { projectId: project.id } : {});
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const Chevron = active ? ChevronDown : ChevronRight;
+
+  const handleNewChatInProject = async () => {
+    try {
+      const session = await createSession.mutateAsync(project.id);
+      router.push(`/dr/demos/chat-lab/p/${project.id}/c/${session.id}`);
+      onNavigate?.();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to create chat');
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteProject.mutateAsync(project.id);
+      setDeleteOpen(false);
+      if (active) {
+        router.push('/dr/demos/chat-lab');
+        onNavigate?.();
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to delete project');
+    }
+  };
+
+  return (
+    <div>
+      <div
+        className={cn(
+          'group flex items-center gap-1 rounded-md text-sm text-foreground/80 transition-colors hover:bg-accent/50',
+          active && 'bg-accent font-medium text-foreground',
+        )}
+      >
+        <Link
+          href={`/dr/demos/chat-lab/p/${project.id}`}
+          onClick={onNavigate}
+          className="flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5"
+          title={project.name}
+        >
+          <Chevron className="size-3.5 shrink-0 text-muted-foreground" />
+          <Folder className="size-4 shrink-0 text-muted-foreground" />
+          <span className="min-w-0 flex-1 truncate">{project.name}</span>
+        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              aria-label={`Options for ${project.name}`}
+              className="mr-1 rounded p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground focus:opacity-100 group-hover:opacity-100 data-[state=open]:opacity-100"
+            >
+              <MoreHorizontal className="size-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {/* Projects are collaboratively editable — rename for everyone. */}
+            <DropdownMenuItem onSelect={() => setRenameOpen(true)}>
+              <Pencil className="size-4" /> Rename
+            </DropdownMenuItem>
+            {/* Whole-project delete stays with the creator. */}
+            <DropdownMenuItem variant="destructive" disabled={!project.isMine} onSelect={() => setDeleteOpen(true)}>
+              <Trash2 className="size-4" /> Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {active && (
+        <div className="mt-0.5">
+          <SessionRows
+            sessions={projectSessions ?? []}
+            hrefFor={(s: ChatLabSession) => `/dr/demos/chat-lab/p/${project.id}/c/${s.id}`}
+            activeId={activeSessionId}
+            onNavigate={onNavigate}
+            deleteRedirect={`/dr/demos/chat-lab/p/${project.id}`}
+            indent
+          />
+          <button
+            type="button"
+            onClick={() => void handleNewChatInProject()}
+            disabled={createSession.isPending}
+            className="ml-4 flex w-[calc(100%-1rem)] items-center gap-2 rounded-md border-l border-border py-1.5 pl-3.5 pr-2 text-xs text-muted-foreground transition-colors hover:bg-accent/50 hover:text-foreground"
+          >
+            {createSession.isPending ? <Loader2 className="size-3.5 animate-spin" /> : <Plus className="size-3.5" />}
+            New chat in project
+          </button>
+        </div>
+      )}
+
+      <ProjectEditDialog
+        open={renameOpen}
+        onOpenChange={setRenameOpen}
+        projectId={project.id}
+        scope="name"
+        initialName={project.name}
+      />
+
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete this chat?</AlertDialogTitle>
+            <AlertDialogTitle>Delete this project?</AlertDialogTitle>
             <AlertDialogDescription>
-              “{deleting?.title}” and all of its messages and attachments will be permanently deleted. This can&apos;t
-              be undone.
+              “{project.name}” will be permanently deleted, including ALL of its chats and assets. This can&apos;t be
+              undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -252,12 +301,12 @@ export default function ChatLabSidebar({ onNavigate }: ChatLabSidebarProps) {
               }}
               className="bg-destructive text-white hover:bg-destructive/90"
             >
-              {deleteSession.isPending && <Loader2 className="size-4 animate-spin" />}
-              Delete
+              {deleteProject.isPending && <Loader2 className="size-4 animate-spin" />}
+              Delete project
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </nav>
+    </div>
   );
 }

@@ -7,15 +7,26 @@
 import {
   CHATLAB_ATTACHMENT_EXT,
   ChatLabDeletedResponseSchema,
+  ChatLabMemoryRefreshResponseSchema,
   ChatLabModelsResponseSchema,
   ChatLabPresignResponseSchema,
+  ChatLabProjectDetailSchema,
+  ChatLabProjectPresignResponseSchema,
+  ChatLabProjectSchema,
+  ChatLabProjectsResponseSchema,
   ChatLabSessionDetailResponseSchema,
   ChatLabSessionSchema,
   ChatLabSessionsResponseSchema,
   chatLabMaxBytes,
+  chatLabProjectAssetKind,
+  chatLabProjectAssetMaxBytes,
   type ChatLabAttachmentKind,
+  type ChatLabMemoryRefreshResponse,
   type ChatLabModel,
   type ChatLabPresignResponse,
+  type ChatLabProject,
+  type ChatLabProjectDetail,
+  type ChatLabProjectPresignResponse,
   type ChatLabSession,
   type ChatLabSessionDetailResponse,
 } from '@/schemas/drChatLab';
@@ -31,11 +42,15 @@ export const fetchChatLabModels = async (): Promise<ChatLabModel[]> =>
 
 // ---- Sessions ----------------------------------------------------------------
 
-export const fetchChatLabSessions = async (): Promise<ChatLabSession[]> =>
-  ChatLabSessionsResponseSchema.parse(await drGet('/dr/chatlab/sessions')).sessions;
+/** Without projectId: GENERAL sessions only (the API default). With it: that
+ *  project's sessions. */
+export const fetchChatLabSessions = async (projectId?: string): Promise<ChatLabSession[]> => {
+  const query = projectId ? `?projectId=${enc(projectId)}` : '';
+  return ChatLabSessionsResponseSchema.parse(await drGet(`/dr/chatlab/sessions${query}`)).sessions;
+};
 
-export const createChatLabSession = async (): Promise<ChatLabSession> =>
-  ChatLabSessionSchema.parse(await drSend('POST', '/dr/chatlab/sessions', {}));
+export const createChatLabSession = async (projectId?: string): Promise<ChatLabSession> =>
+  ChatLabSessionSchema.parse(await drSend('POST', '/dr/chatlab/sessions', projectId ? { projectId } : {}));
 
 export const fetchChatLabSession = async (sessionId: string): Promise<ChatLabSessionDetailResponse> =>
   ChatLabSessionDetailResponseSchema.parse(await drGet(`/dr/chatlab/sessions/${enc(sessionId)}`));
@@ -132,3 +147,127 @@ export async function uploadChatLabAttachment(params: UploadChatLabAttachmentPar
 
 // Reuse the generic image-dimension helper unchanged (same trick as feedback).
 export { readImageDimensions } from './docEditorApi';
+
+// ---- Projects ------------------------------------------------------------------
+
+export const fetchChatLabProjects = async (): Promise<ChatLabProject[]> =>
+  ChatLabProjectsResponseSchema.parse(await drGet('/dr/chatlab/projects')).projects;
+
+export interface CreateChatLabProjectBody {
+  name: string;
+  description?: string;
+  instructions?: string;
+}
+
+export const createChatLabProject = async (body: CreateChatLabProjectBody): Promise<ChatLabProject> =>
+  ChatLabProjectSchema.parse(await drSend('POST', '/dr/chatlab/projects', body));
+
+export const fetchChatLabProject = async (projectId: string): Promise<ChatLabProjectDetail> =>
+  ChatLabProjectDetailSchema.parse(await drGet(`/dr/chatlab/projects/${enc(projectId)}`));
+
+export interface UpdateChatLabProjectBody {
+  name?: string;
+  description?: string;
+  instructions?: string;
+}
+
+/** Partial update — collaborative: any allowlisted user may edit. */
+export const updateChatLabProject = async (projectId: string, body: UpdateChatLabProjectBody): Promise<ChatLabProject> =>
+  ChatLabProjectSchema.parse(await drSend('PUT', `/dr/chatlab/projects/${enc(projectId)}`, body));
+
+/** Creator-only. Destroys ALL the project's chats and assets. */
+export const deleteChatLabProject = async (projectId: string): Promise<void> => {
+  ChatLabDeletedResponseSchema.parse(await drSend('DELETE', `/dr/chatlab/projects/${enc(projectId)}`));
+};
+
+export const refreshChatLabProjectMemory = async (projectId: string): Promise<ChatLabMemoryRefreshResponse> =>
+  ChatLabMemoryRefreshResponseSchema.parse(await drSend('POST', `/dr/chatlab/projects/${enc(projectId)}/memory/refresh`));
+
+// ---- Project assets ---------------------------------------------------------------
+
+export interface PresignChatLabProjectAssetBody {
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
+  width: number | null;
+  height: number | null;
+}
+
+export const presignChatLabProjectAsset = async (
+  projectId: string,
+  body: PresignChatLabProjectAssetBody,
+): Promise<ChatLabProjectPresignResponse> =>
+  ChatLabProjectPresignResponseSchema.parse(await drSend('POST', `/dr/chatlab/projects/${enc(projectId)}/assets`, body));
+
+export const completeChatLabProjectAsset = async (projectId: string, assetId: string): Promise<void> => {
+  await drSend('POST', `/dr/chatlab/projects/${enc(projectId)}/assets/${enc(assetId)}/complete`);
+};
+
+export const deleteChatLabProjectAsset = async (projectId: string, assetId: string): Promise<void> => {
+  await drSend('DELETE', `/dr/chatlab/projects/${enc(projectId)}/assets/${enc(assetId)}`);
+};
+
+/** Client-side pre-check mirroring the server's extension-first policy.
+ *  Returns null when the file type is unsupported (video, archives, …). */
+export function checkProjectAssetFile(file: File): { kind: NonNullable<ReturnType<typeof chatLabProjectAssetKind>>; oversize: boolean } | null {
+  const kind = chatLabProjectAssetKind(file.name);
+  if (!kind) return null;
+  return { kind, oversize: file.size > chatLabProjectAssetMaxBytes(kind) };
+}
+
+export interface UploadChatLabProjectAssetParams {
+  projectId: string;
+  file: File;
+  width?: number | null;
+  height?: number | null;
+  onAssetId?: (assetId: string) => void;
+  onProgress: (percent: number) => void;
+  signal?: AbortSignal;
+}
+
+// Full handshake for one project asset: presign → PUT → complete. The server
+// derives the kind from the extension; we just forward name/type/size. On any
+// failure/cancel, best-effort deletes the pending asset row + object.
+export async function uploadChatLabProjectAsset(params: UploadChatLabProjectAssetParams): Promise<string> {
+  const contentType = params.file.type || 'application/octet-stream';
+  const { assetId, uploadUrl } = await presignChatLabProjectAsset(params.projectId, {
+    fileName: params.file.name,
+    contentType,
+    sizeBytes: params.file.size,
+    width: params.width ?? null,
+    height: params.height ?? null,
+  });
+  params.onAssetId?.(assetId);
+  try {
+    // PUT with the SAME content type the server stored/presigned (it may have
+    // normalized exotic code-file types to text/plain) — mismatches fail the
+    // signature. The server echoes nothing, so re-derive it the same way:
+    // just use what we sent; the presigned URL enforces the normalized type.
+    await putToS3(uploadUrl, params.file, normalizedProjectAssetPutType(params.file.name, contentType), params.onProgress, params.signal);
+    await completeChatLabProjectAsset(params.projectId, assetId);
+    return assetId;
+  } catch (err) {
+    void deleteChatLabProjectAsset(params.projectId, assetId).catch(() => {});
+    throw err;
+  }
+}
+
+// Mirror of the server's normalizeProjectAssetContentType so the S3 PUT's
+// Content-Type matches the presigned signature for text/code assets.
+export function normalizedProjectAssetPutType(fileName: string, contentType: string): string {
+  const kind = chatLabProjectAssetKind(fileName);
+  if (kind !== 'text' && kind !== 'code') return contentType.toLowerCase();
+  const ct = contentType.toLowerCase();
+  if (
+    ct === '' ||
+    ct === 'application/octet-stream' ||
+    ct.startsWith('text/x-') ||
+    ct.startsWith('application/x-')
+  ) {
+    return 'text/plain; charset=utf-8';
+  }
+  if (ct === 'application/json' || ct === 'application/xml' || ct === 'application/yaml' || ct === 'application/toml' || ct.startsWith('text/')) {
+    return ct;
+  }
+  return 'text/plain; charset=utf-8';
+}

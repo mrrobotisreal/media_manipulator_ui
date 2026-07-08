@@ -1,11 +1,12 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FlaskConical, Loader2 } from 'lucide-react';
+import { FlaskConical, FolderKanban, Loader2 } from 'lucide-react';
 import { DrApiError } from '@/lib/dr/apiClient';
 import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
-import { useChatLabModels, useChatLabSession, useChatLabSessions } from '@/lib/dr/useDrChatLab';
+import { useChatLabModels, useChatLabProject, useChatLabSession, useChatLabSessions } from '@/lib/dr/useDrChatLab';
 import { useChatStream } from '@/lib/dr/useChatStream';
 import type { ChatLabEffortOrOff } from '@/schemas/drChatLab';
 import MessageList from './message-list';
@@ -14,13 +15,19 @@ import Composer from './composer';
 // The active session screen: message history + live stream + composer. Model /
 // effort selection is per MESSAGE (kept as local state); the initial values
 // come from the session's lastModel/lastReasoningEffort and, for a brand-new
-// session, from the most recent session's lastModel.
+// session, from the most recent session's lastModel. Project chats add a
+// breadcrumb chip and the "assets need a tool-capable model" composer hint.
 export default function ChatLabSession({ sessionId }: { sessionId: string }) {
   const router = useRouter();
   const modelsQuery = useChatLabModels();
   const sessionQuery = useChatLabSession(sessionId);
   const { data: sessions } = useChatLabSessions();
   const stream = useChatStream(sessionId);
+
+  const projectRef = sessionQuery.data?.project ?? null;
+  // Project detail (asset count for the composer hint) — cached; only fetched
+  // for project chats.
+  const projectQuery = useChatLabProject(projectRef?.id ?? null);
 
   useDrQueryErrorRedirect(sessionQuery.error);
   useDrQueryErrorRedirect(modelsQuery.error);
@@ -79,8 +86,26 @@ export default function ChatLabSession({ sessionId }: { sessionId: string }) {
     </div>
   );
 
+  const selectedModel = models.find((m) => m.id === model) ?? null;
+  const assetHint =
+    !!projectRef &&
+    (projectQuery.data?.assets.length ?? 0) > 0 &&
+    !!selectedModel &&
+    !selectedModel.supportsTools;
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
+      {projectRef && (
+        <div className="border-b border-border px-4 py-1.5">
+          <Link
+            href={`/dr/demos/chat-lab/p/${projectRef.id}`}
+            className="inline-flex max-w-full items-center gap-1.5 rounded-md px-1.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent/50 hover:text-foreground"
+          >
+            <FolderKanban className="size-3.5 shrink-0" />
+            <span className="truncate">{projectRef.name}</span>
+          </Link>
+        </div>
+      )}
       <MessageList
         messages={sessionQuery.data?.messages ?? []}
         stream={stream}
@@ -111,6 +136,7 @@ export default function ChatLabSession({ sessionId }: { sessionId: string }) {
               reasoningEffort={effort}
               onReasoningEffortChange={setEffort}
               isStreaming={stream.isStreaming}
+              assetHint={assetHint}
               onSend={(content, attachmentIds) => {
                 if (!model) return;
                 void stream.sendMessage({ sessionId, content, model, reasoningEffort: effort, attachmentIds });

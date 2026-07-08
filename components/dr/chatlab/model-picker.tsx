@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Brain, Check, ChevronsUpDown, ImageIcon, Search } from 'lucide-react';
+import { Brain, Check, ChevronsUpDown, ImageIcon, Search, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { ChatLabModel } from '@/schemas/drChatLab';
@@ -129,6 +129,14 @@ export default function ModelPicker({ models, value, onChange, disabled }: Model
                   )}
                   {m.supportsReasoning && (
                     <Brain className="size-3.5 shrink-0 text-muted-foreground" aria-label="Supports reasoning" />
+                  )}
+                  {m.supportsTools && (
+                    <Wrench
+                      className="size-3.5 shrink-0 text-muted-foreground"
+                      aria-label="Can read project assets on demand"
+                    >
+                      <title>Can read project assets on demand</title>
+                    </Wrench>
                   )}
                   <span className="w-24 shrink-0 text-right text-[11px] tabular-nums text-muted-foreground">
                     {formatPerMTok(m.pricing.promptUsdPerMTok)} / {formatPerMTok(m.pricing.completionUsdPerMTok)}

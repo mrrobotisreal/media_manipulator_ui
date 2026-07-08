@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
 import { getCurrentIdToken } from '@/lib/firebase';
 import { extractSSERecords, parseSSERecordData } from './sse';
-import { chatLabKeys } from './useDrChatLab';
+import { chatLabKeys, projectKeys } from './useDrChatLab';
 import {
   ChatLabStreamEventSchema,
   type ChatLabEffortOrOff,
@@ -34,11 +34,20 @@ export interface PendingUserMessage {
   attachmentCount: number;
 }
 
+/** One in-stream read_asset execution, for the live activity chips. */
+export interface ChatStreamToolEvent {
+  name: string;
+  assetId: string;
+  assetName: string;
+  status: 'running' | 'ok' | 'error';
+}
+
 export interface ChatStreamState {
   status: ChatStreamStatus;
   pendingUser: PendingUserMessage | null;
   assistantText: string;
   reasoningText: string;
+  toolEvents: ChatStreamToolEvent[];
   usage: ChatLabUsage | null;
   error: string | null;
   model: string | null;
@@ -50,6 +59,7 @@ const IDLE: ChatStreamState = {
   pendingUser: null,
   assistantText: '',
   reasoningText: '',
+  toolEvents: [],
   usage: null,
   error: null,
   model: null,
@@ -72,7 +82,11 @@ export function useChatStream(sessionId: string) {
   const invalidate = useCallback(async () => {
     await Promise.all([
       qc.invalidateQueries({ queryKey: chatLabKeys.session(sessionId) }),
-      qc.invalidateQueries({ queryKey: chatLabKeys.sessions() }), // recency + auto-title
+      // sessionsRoot prefix hits BOTH the general list and any project lists
+      // (recency + auto-title); the projects list refreshes chat counts and
+      // memory status for project chats.
+      qc.invalidateQueries({ queryKey: chatLabKeys.sessionsRoot }),
+      qc.invalidateQueries({ queryKey: projectKeys.projects() }),
     ]);
   }, [qc, sessionId]);
 
@@ -169,6 +183,23 @@ export function useChatStream(sessionId: string) {
                 break;
               case 'delta':
                 setState((s) => ({ ...s, assistantText: s.assistantText + parsed.text }));
+                break;
+              case 'tool':
+                // "running" appends a chip; the matching "ok"/"error" upgrades
+                // the most recent still-running chip for that asset.
+                setState((s) => {
+                  if (parsed.status === 'running') {
+                    return { ...s, toolEvents: [...s.toolEvents, parsed] };
+                  }
+                  const events = [...s.toolEvents];
+                  for (let i = events.length - 1; i >= 0; i--) {
+                    if (events[i].assetId === parsed.assetId && events[i].status === 'running') {
+                      events[i] = parsed;
+                      return { ...s, toolEvents: events };
+                    }
+                  }
+                  return { ...s, toolEvents: [...events, parsed] };
+                });
                 break;
               case 'usage':
                 setState((s) => ({ ...s, usage: parsed }));

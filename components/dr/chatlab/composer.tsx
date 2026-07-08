@@ -42,6 +42,8 @@ interface ComposerProps {
   reasoningEffort: ChatLabEffortOrOff;
   onReasoningEffortChange: (effort: ChatLabEffortOrOff) => void;
   isStreaming: boolean;
+  /** Project chat + assets present + selected model can't call tools. */
+  assetHint?: boolean;
   onSend: (content: string, attachmentIds: string[]) => void;
   onStop: () => void;
 }
@@ -58,6 +60,7 @@ export default function Composer({
   reasoningEffort,
   onReasoningEffortChange,
   isStreaming,
+  assetHint,
   onSend,
   onStop,
 }: ComposerProps) {
@@ -298,6 +301,12 @@ export default function Composer({
           </button>
         )}
       </div>
+
+      {assetHint && (
+        <p className="px-3 pb-2 text-[11px] text-muted-foreground">
+          This model can&apos;t read project assets on demand — text assets are inlined, other assets unavailable.
+        </p>
+      )}
 
       <input
         ref={fileInputRef}
