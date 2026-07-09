@@ -11,6 +11,7 @@ import { useDrDoc } from '@/lib/dr/useDrDoc';
 import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
 import { DrApiError } from '@/lib/dr/apiClient';
 import { createDrDoc, publishDrDoc, updateDrDoc } from '@/lib/dr/docEditorApi';
+import { moveDrDoc } from '@/lib/dr/docsApi';
 import DrDocEditor, { type DrEditorFlow } from './dr-doc-editor';
 
 // Client flow for /dr/docs/new:
@@ -19,11 +20,16 @@ import DrDocEditor, { type DrEditorFlow } from './dr-doc-editor';
 //  - ?draft={slug}    → load that draft (GetDoc serves drafts) and mount the
 //                       editor. 401/403 redirect to sign-in; 404 shows an error
 //                       card with a "Start a new doc" action.
+//  - ?folder={id}     → (docs-explorer "New Document here") the fresh draft is
+//                       moved into that folder right after creation, so it
+//                       lands in the intended spot when published. Best-effort:
+//                       a failed move never blocks the editor.
 export default function NewDocFlow() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const draftSlug = searchParams.get('draft');
+  const targetFolder = searchParams.get('folder');
 
   const creatingRef = useRef(false);
   const [createError, setCreateError] = useState<string | null>(null);
@@ -33,7 +39,14 @@ export default function NewDocFlow() {
     creatingRef.current = true;
     setCreateError(null);
     void createDrDoc()
-      .then((doc) => {
+      .then(async (doc) => {
+        if (targetFolder) {
+          try {
+            await moveDrDoc(doc.id, targetFolder);
+          } catch {
+            toast.error('Could not place the new document in that folder — it will start at the top level.');
+          }
+        }
         // Seed the query cache so the reload path doesn't re-fetch immediately.
         queryClient.setQueryData(['dr', 'docs', doc.slug], doc);
         router.replace(`/dr/docs/new?draft=${encodeURIComponent(doc.slug)}`);
@@ -46,7 +59,7 @@ export default function NewDocFlow() {
         }
         setCreateError(err instanceof Error ? err.message : 'Failed to start a new document');
       });
-  }, [draftSlug, router, queryClient]);
+  }, [draftSlug, targetFolder, router, queryClient]);
 
   const query = useDrDoc(draftSlug ?? '');
   useDrQueryErrorRedirect(query.error);

@@ -164,10 +164,30 @@ export const DrDocSummarySchema = z.object({
   createdBy: z.string(), // author email (or "seed:migration" for the seed)
   canDelete: z.boolean(), // SERVER-computed: caller is the creator (creator-only delete)
   hasEditSession: z.boolean(), // an edit session exists → "Resume editing" + restore confirm
+  folderId: z.string().nullish(), // docs-explorer placement; null/absent = root
   createdAt: z.string(), // ISO 8601 UTC
   updatedAt: z.string(), // ISO 8601 UTC
 });
 export type DrDocSummary = z.infer<typeof DrDocSummarySchema>;
+
+// ---------------------------------------------------------------------------
+// Documentation filesystem (folders). GET /dr/doc-folders returns the FLAT
+// list; the client assembles the tree (lib/dr/docTree.ts).
+// ---------------------------------------------------------------------------
+
+export const DrDocFolderSchema = z.object({
+  id: z.string(),
+  parentId: z.string().nullable(), // null = root-level folder
+  name: z.string(),
+  createdByEmail: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type DrDocFolder = z.infer<typeof DrDocFolderSchema>;
+
+export const DrDocFoldersResponseSchema = z.object({
+  folders: z.array(DrDocFolderSchema),
+});
 
 export const DrDocSchema = DrDocSummarySchema.extend({
   contentFormat: z.string(),

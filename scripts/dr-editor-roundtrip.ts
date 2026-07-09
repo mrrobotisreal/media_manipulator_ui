@@ -1,19 +1,26 @@
 // Checkpoint 2 — DR editor converter round-trip.
 //
-// Loads the seeded "Backend & AI Infrastructure" document, runs it through
-// blocksToTiptap → tiptapToBlocks, and asserts the result deep-equals the
-// original (including regenerated heading ids). This is pure computation — no
-// server, no network — and must pass before the editor is trusted to serialize
-// documents. Run with: npm run dr:roundtrip
+// Loads every seeded canonical document, runs each through blocksToTiptap →
+// tiptapToBlocks, and asserts the result deep-equals the original (including
+// regenerated heading ids). This is pure computation — no server, no network —
+// and must pass before the editor is trusted to serialize documents. Run with:
+// npm run dr:roundtrip
 //
-// It also parses the round-tripped content with the authoritative Zod schema so
-// a converter bug that produces structurally-invalid content fails loudly.
+// It also parses each round-tripped content with the authoritative Zod schema
+// so a converter bug that produces structurally-invalid content fails loudly.
 
 import assert from 'node:assert';
 import { blocksToTiptap } from '@/lib/dr/editor/blocksToTiptap';
 import { tiptapToBlocks } from '@/lib/dr/editor/tiptapToBlocks';
-import { BACKEND_AI_INFRA_DOC } from '@/content/dr-docs/backend-ai-infrastructure';
+import { BACKEND_AI_INFRA_DOC, BACKEND_AI_INFRA_SLUG } from '@/content/dr-docs/backend-ai-infrastructure';
+import { CLOUD_AI_MODEL_ACCESS_DOC, CLOUD_AI_MODEL_ACCESS_SLUG } from '@/content/dr-docs/cloud-ai-model-access';
 import { DrDocContentSchema, type DrDocContent } from '@/schemas/drDocs';
+
+// Every canonical seeded document must round-trip exactly.
+const CANONICAL_DOCS: Array<{ slug: string; doc: DrDocContent }> = [
+  { slug: BACKEND_AI_INFRA_SLUG, doc: BACKEND_AI_INFRA_DOC },
+  { slug: CLOUD_AI_MODEL_ACCESS_SLUG, doc: CLOUD_AI_MODEL_ACCESS_DOC },
+];
 
 function isPlainObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -43,21 +50,20 @@ function findFirstDiff(a: unknown, b: unknown, path = '$'): string | null {
   return null;
 }
 
-function main(): void {
-  const original: DrDocContent = BACKEND_AI_INFRA_DOC;
+function roundTripOne(slug: string, original: DrDocContent): void {
   const roundTripped = tiptapToBlocks(blocksToTiptap(original));
 
   // The round-tripped content must itself be schema-valid.
   const parsed = DrDocContentSchema.safeParse(roundTripped);
   if (!parsed.success) {
-    console.error('✗ dr-editor round-trip: result failed schema validation:');
+    console.error(`✗ dr-editor round-trip [${slug}]: result failed schema validation:`);
     console.error(JSON.stringify(parsed.error.issues, null, 2));
     process.exit(1);
   }
 
   const diff = findFirstDiff(original, roundTripped);
   if (diff) {
-    console.error('✗ dr-editor round-trip: first mismatch —');
+    console.error(`✗ dr-editor round-trip [${slug}]: first mismatch —`);
     console.error('  ' + diff);
     process.exit(1);
   }
@@ -66,16 +72,22 @@ function main(): void {
   try {
     assert.deepStrictEqual(roundTripped, original);
   } catch (err) {
-    console.error('✗ dr-editor round-trip: deepStrictEqual failed —');
+    console.error(`✗ dr-editor round-trip [${slug}]: deepStrictEqual failed —`);
     console.error(err instanceof Error ? err.message : String(err));
     process.exit(1);
   }
 
   const headings = original.blocks.filter((b) => b.type === 'heading').length;
   console.log(
-    `✓ dr-editor round-trip: seeded document round-trips exactly ` +
+    `✓ dr-editor round-trip [${slug}]: document round-trips exactly ` +
       `(${original.blocks.length} blocks, ${headings} headings, ids regenerated).`,
   );
+}
+
+function main(): void {
+  for (const { slug, doc } of CANONICAL_DOCS) {
+    roundTripOne(slug, doc);
+  }
 }
 
 main();
