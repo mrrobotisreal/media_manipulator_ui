@@ -37,6 +37,7 @@ import {
   type ChatLabProject,
   type ChatLabProjectDetail,
   type ChatLabProjectPresignResponse,
+  type ChatLabRequestType,
   type ChatLabSession,
   type ChatLabSessionDetailResponse,
   type ChatLabStatsBreakdownRow,
@@ -305,19 +306,33 @@ export const fetchChatLabStatsSummary = async (range: StatsRange): Promise<ChatL
 export const fetchChatLabStatsBreakdown = async (
   dimension: ChatLabStatsDimension,
   range: StatsRange,
+  requestType?: ChatLabRequestType,
   limit = 50,
 ): Promise<ChatLabStatsBreakdownRow[]> =>
   ChatLabStatsBreakdownResponseSchema.parse(
-    await drGet(`/dr/chatlab/stats/breakdown${rangeParams(range, { dimension, limit: String(limit) })}`),
+    await drGet(
+      `/dr/chatlab/stats/breakdown${rangeParams(range, {
+        dimension,
+        limit: String(limit),
+        ...(requestType ? { type: requestType } : {}),
+      })}`,
+    ),
   ).rows;
 
 export const fetchChatLabStatsTimeseries = async (
   bucket: ChatLabStatsBucket,
   dimension: 'none' | 'model' | 'kind',
   range: StatsRange,
+  requestType?: ChatLabRequestType,
 ): Promise<ChatLabStatsTimeseriesPoint[]> =>
   ChatLabStatsTimeseriesResponseSchema.parse(
-    await drGet(`/dr/chatlab/stats/timeseries${rangeParams(range, { bucket, dimension })}`),
+    await drGet(
+      `/dr/chatlab/stats/timeseries${rangeParams(range, {
+        bucket,
+        dimension,
+        ...(requestType ? { type: requestType } : {}),
+      })}`,
+    ),
   ).points;
 
 export const fetchChatLabCredits = async (): Promise<ChatLabCreditsResponse> =>

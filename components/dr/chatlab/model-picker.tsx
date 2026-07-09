@@ -32,6 +32,8 @@ function providerLabel(provider: string): string {
       return 'Z.AI';
     case 'moonshotai':
       return 'Moonshot AI';
+    case 'xai':
+      return 'xAI';
     default:
       return provider.charAt(0).toUpperCase() + provider.slice(1);
   }

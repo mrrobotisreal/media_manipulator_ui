@@ -52,6 +52,9 @@ export interface ChatStreamState {
   error: string | null;
   model: string | null;
   reasoningEffort: ChatLabEffortOrOff | null;
+  /** Date.now() when the send started — drives the live Thinking…/Responding…
+   *  ticker (display-only; the server measures the persisted metrics). */
+  startedAt: number | null;
 }
 
 const IDLE: ChatStreamState = {
@@ -64,6 +67,7 @@ const IDLE: ChatStreamState = {
   error: null,
   model: null,
   reasoningEffort: null,
+  startedAt: null,
 };
 
 export interface SendMessageParams {
@@ -107,6 +111,7 @@ export function useChatStream(sessionId: string) {
         },
         model: params.model,
         reasoningEffort: params.reasoningEffort,
+        startedAt: Date.now(),
       });
 
       // Surface the error via toast, reconcile with the persisted rows (which

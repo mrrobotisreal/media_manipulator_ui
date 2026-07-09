@@ -140,6 +140,12 @@ export const ChatLabMessageSchema = z.object({
   completionTokens: z.number().nullable(),
   reasoningTokens: z.number().nullable(),
   totalCostUsd: z.number().nullable(),
+  // Per-response performance metrics — null on historical (pre-metrics) rows;
+  // nullish (not just nullable) so a not-yet-redeployed API parses too.
+  durationMs: z.number().nullish(), // request start → terminal, incl. tool rounds
+  reasoningMs: z.number().nullish(), // summed thinking time; null when no reasoning
+  firstTokenMs: z.number().nullish(),
+  requestType: z.string().nullish(), // 'text'|'file'|'image'|'pdf'|'audio'|'mixed'
   createdAt: z.string(),
   attachments: z.array(ChatLabAttachmentSchema),
   toolActivity: z.array(ChatLabToolActivitySchema).nullable(), // null when no tools ran
@@ -263,6 +269,11 @@ export const ChatLabStreamEventSchema = z.discriminatedUnion('type', [
     completionTokens: z.number(),
     reasoningTokens: z.number(),
     costUsd: z.number(),
+    // Timing for instant footer display on the just-streamed message (the
+    // refetched row carries the persisted values). Nullish for compatibility
+    // with a not-yet-redeployed API.
+    durationMs: z.number().nullish(),
+    reasoningMs: z.number().nullish(),
   }),
   z.object({ type: z.literal('done'), status: z.string() }),
   z.object({ type: z.literal('error'), message: z.string() }),
@@ -302,8 +313,12 @@ export const ChatLabStatsSummarySchema = z.object({
 });
 export type ChatLabStatsSummary = z.infer<typeof ChatLabStatsSummarySchema>;
 
-export const ChatLabStatsDimensionSchema = z.enum(['model', 'user', 'project', 'session', 'kind']);
+export const ChatLabStatsDimensionSchema = z.enum(['model', 'user', 'project', 'session', 'kind', 'type']);
 export type ChatLabStatsDimension = z.infer<typeof ChatLabStatsDimensionSchema>;
+
+/** The request-type filter values (?type= on breakdown/timeseries). */
+export const ChatLabRequestTypeSchema = z.enum(['text', 'file', 'image', 'pdf', 'audio', 'mixed']);
+export type ChatLabRequestType = z.infer<typeof ChatLabRequestTypeSchema>;
 
 export const ChatLabStatsBreakdownRowSchema = z.object({
   key: z.string(),
@@ -313,6 +328,14 @@ export const ChatLabStatsBreakdownRowSchema = z.object({
   completionTokens: z.number(),
   reasoningTokens: z.number(),
   events: z.number(),
+  // Latency aggregates: kind='chat' events with metrics only; null when the
+  // group has none (historical rows → the UI shows "—").
+  chatEvents: z.number().nullish(),
+  avgDurationMs: z.number().nullish(),
+  p50DurationMs: z.number().nullish(),
+  p95DurationMs: z.number().nullish(),
+  avgFirstTokenMs: z.number().nullish(),
+  avgReasoningMs: z.number().nullish(),
   thumbsUp: z.number().optional(), // dimension=model only
   thumbsDown: z.number().optional(),
 });
@@ -331,6 +354,9 @@ export const ChatLabStatsTimeseriesPointSchema = z.object({
   costUsd: z.number(),
   totalTokens: z.number(),
   events: z.number(),
+  // Chat-only latency; null when the bucket has no measured chat events.
+  avgDurationMs: z.number().nullish(),
+  p95DurationMs: z.number().nullish(),
 });
 export type ChatLabStatsTimeseriesPoint = z.infer<typeof ChatLabStatsTimeseriesPointSchema>;
 

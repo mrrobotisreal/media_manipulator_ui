@@ -17,6 +17,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import ImageViewerModal from '../comments/image-viewer-modal';
 import { formatBytes } from '../feedback/display';
 import { relativeTime } from '@/lib/dr/relativeTime';
+import { formatDurationMs } from '@/lib/dr/formatDuration';
 import type { ChatLabAttachment, ChatLabMessage, ChatLabToolActivity } from '@/schemas/drChatLab';
 import type { ChatStreamState, ChatStreamToolEvent } from '@/lib/dr/useChatStream';
 import ChatLabMarkdown, { CopyButton } from './markdown';
@@ -43,6 +44,36 @@ function formatCost(usd: number): string {
   if (usd === 0) return '$0';
   if (usd < 0.01) return `$${usd.toFixed(4)}`;
   return `$${usd.toFixed(2)}`;
+}
+
+// "Thought for 3m 14s · Responded in 3m 51s" — reasoning part only when the
+// turn actually thought; "—" cases (historical rows) render nothing.
+function TimingLine({ durationMs, reasoningMs }: { durationMs?: number | null; reasoningMs?: number | null }) {
+  if (durationMs == null) return null;
+  return (
+    <span className="tabular-nums">
+      {reasoningMs != null ? `Thought for ${formatDurationMs(reasoningMs)} · ` : ''}
+      Responded in {formatDurationMs(durationMs)}
+    </span>
+  );
+}
+
+// Live 1s ticker shown while streaming: "Thinking… 45s" while reasoning
+// deltas arrive with no content yet, "Responding… 12s" otherwise. Cleared on
+// unmount (the block swaps to the persisted row when the stream settles).
+function LiveTicker({ startedAt, thinking }: { startedAt: number; thinking: boolean }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const elapsed = Math.max(0, now - startedAt);
+  return (
+    <p className="mt-1.5 flex items-center gap-1.5 text-[11px] tabular-nums text-muted-foreground">
+      <Loader2 className="size-3 animate-spin" />
+      {thinking ? 'Thinking…' : 'Responding…'} {formatDurationMs(elapsed)}
+    </p>
+  );
 }
 
 function AttachmentChips({ attachments }: { attachments: ChatLabAttachment[] }) {
@@ -225,6 +256,7 @@ function AssistantMessage({ message, sessionId }: { message: ChatLabMessage; ses
           </span>
         )}
         {message.totalCostUsd != null && <span className="tabular-nums">{formatCost(message.totalCostUsd)}</span>}
+        <TimingLine durationMs={message.durationMs} reasoningMs={message.reasoningMs} />
         <span>{relativeTime(message.createdAt)}</span>
         {message.content && <CopyButton text={message.content} label="Copy markdown" />}
         <MessageFeedback sessionId={sessionId} messageId={message.id} feedback={message.feedback} />
@@ -281,6 +313,18 @@ function StreamingAssistant({ stream }: { stream: ChatStreamState }) {
             Waiting for the model…
           </p>
         )
+      )}
+
+      {/* Live elapsed ticker while streaming; once the usage event lands
+          (done, pre-refetch) show the final server-measured timing so the
+          footer appears without waiting for the reconciling refetch. */}
+      {stream.status === 'streaming' && stream.startedAt != null && (
+        <LiveTicker startedAt={stream.startedAt} thinking={!!stream.reasoningText && !stream.assistantText} />
+      )}
+      {stream.status === 'done' && stream.usage?.durationMs != null && (
+        <div className="mt-1.5 text-[11px] text-muted-foreground">
+          <TimingLine durationMs={stream.usage.durationMs} reasoningMs={stream.usage.reasoningMs} />
+        </div>
       )}
     </div>
   );

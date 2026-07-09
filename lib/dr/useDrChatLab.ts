@@ -7,6 +7,7 @@ import type {
   ChatLabMessageFeedback,
   ChatLabProject,
   ChatLabProjectDetail,
+  ChatLabRequestType,
   ChatLabSession,
   ChatLabSessionDetailResponse,
   ChatLabStatsBucket,
@@ -33,10 +34,10 @@ export const projectKeys = {
 export const statsKeys = {
   all: ['dr', 'chatlab', 'stats'] as const,
   summary: (from?: string, to?: string) => ['dr', 'chatlab', 'stats', 'summary', from ?? '', to ?? ''] as const,
-  breakdown: (dimension: string, from?: string, to?: string) =>
-    ['dr', 'chatlab', 'stats', 'breakdown', dimension, from ?? '', to ?? ''] as const,
-  timeseries: (bucket: string, dimension: string, from?: string, to?: string) =>
-    ['dr', 'chatlab', 'stats', 'timeseries', bucket, dimension, from ?? '', to ?? ''] as const,
+  breakdown: (dimension: string, from?: string, to?: string, type?: string) =>
+    ['dr', 'chatlab', 'stats', 'breakdown', dimension, from ?? '', to ?? '', type ?? ''] as const,
+  timeseries: (bucket: string, dimension: string, from?: string, to?: string, type?: string) =>
+    ['dr', 'chatlab', 'stats', 'timeseries', bucket, dimension, from ?? '', to ?? '', type ?? ''] as const,
   credits: () => ['dr', 'chatlab', 'stats', 'credits'] as const,
 };
 
@@ -293,10 +294,16 @@ export function useChatLabStatsSummary(range: api.StatsRange) {
   });
 }
 
-export function useChatLabStatsBreakdown(dimension: ChatLabStatsDimension, range: api.StatsRange) {
+/** Optional `type` filters rows by request_type (performance section only —
+ *  spend queries stay unfiltered). */
+export function useChatLabStatsBreakdown(
+  dimension: ChatLabStatsDimension,
+  range: api.StatsRange,
+  type?: ChatLabRequestType,
+) {
   return useQuery({
-    queryKey: statsKeys.breakdown(dimension, range.from, range.to),
-    queryFn: () => api.fetchChatLabStatsBreakdown(dimension, range),
+    queryKey: statsKeys.breakdown(dimension, range.from, range.to, type),
+    queryFn: () => api.fetchChatLabStatsBreakdown(dimension, range, type),
     staleTime: 15_000,
     retry: drQueryRetry,
   });
@@ -306,10 +313,11 @@ export function useChatLabStatsTimeseries(
   bucket: ChatLabStatsBucket,
   dimension: 'none' | 'model' | 'kind',
   range: api.StatsRange,
+  type?: ChatLabRequestType,
 ) {
   return useQuery({
-    queryKey: statsKeys.timeseries(bucket, dimension, range.from, range.to),
-    queryFn: () => api.fetchChatLabStatsTimeseries(bucket, dimension, range),
+    queryKey: statsKeys.timeseries(bucket, dimension, range.from, range.to, type),
+    queryFn: () => api.fetchChatLabStatsTimeseries(bucket, dimension, range, type),
     staleTime: 15_000,
     retry: drQueryRetry,
   });

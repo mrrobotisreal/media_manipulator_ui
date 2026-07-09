@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 import { Card } from '@/components/ui/card';
 import { formatUsd, formatTokens } from './stats-table';
+import { formatDurationMs } from '@/lib/dr/formatDuration';
 import type { ChatLabStatsBreakdownRow, ChatLabStatsTimeseriesPoint } from '@/schemas/drChatLab';
 
 // The three stats charts (recharts, DR dark-theme palette): spend over time
@@ -113,6 +114,40 @@ export function TokensOverTimeChart({ points }: { points: ChatLabStatsTimeseries
             <YAxis {...AXIS} tickFormatter={(v: number) => formatTokens(v)} width={60} />
             <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v) => formatTokens(Number(v))} />
             <Line type="monotone" dataKey="tokens" stroke={PALETTE[0]} strokeWidth={2} dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
+    </ChartCard>
+  );
+}
+
+/** Response time over time (avg + p95, chat turns with metrics only). Buckets
+ *  without measured chat events carry null latency and leave a gap. */
+export function ResponseTimeChart({ points }: { points: ChatLabStatsTimeseriesPoint[] }) {
+  const rows = useMemo(
+    () =>
+      points.map((p) => ({
+        bucket: bucketLabel(p.bucket),
+        avg: p.avgDurationMs ?? null,
+        p95: p.p95DurationMs ?? null,
+      })),
+    [points],
+  );
+  const hasData = rows.some((r) => r.avg != null || r.p95 != null);
+  return (
+    <ChartCard title="Response time over time (avg / p95)">
+      {!hasData ? (
+        <EmptyChart />
+      ) : (
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={rows}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+            <XAxis dataKey="bucket" {...AXIS} />
+            <YAxis {...AXIS} tickFormatter={(v: number) => formatDurationMs(v)} width={70} />
+            <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(v) => formatDurationMs(Number(v))} />
+            <Legend wrapperStyle={{ fontSize: 11 }} />
+            <Line type="monotone" dataKey="avg" name="avg" stroke={PALETTE[0]} strokeWidth={2} dot={false} connectNulls />
+            <Line type="monotone" dataKey="p95" name="p95" stroke={PALETTE[2]} strokeWidth={2} dot={false} connectNulls />
           </LineChart>
         </ResponsiveContainer>
       )}

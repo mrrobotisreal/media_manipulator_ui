@@ -387,8 +387,9 @@ export default function ProjectView({ projectId }: { projectId: string }) {
                         <Info className="size-3.5 text-muted-foreground" />
                       </TooltipTrigger>
                       <TooltipContent className="max-w-64">
-                        Updated automatically after chats and when the description changes. Each update replaces the
-                        previous memory.
+                        Updates automatically every night (4 AM MT) when anything in the project changed — chats,
+                        description, instructions, assets, or feedback. Each update replaces the previous memory. Use
+                        Refresh to update now.
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

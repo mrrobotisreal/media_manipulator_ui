@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
 import {
@@ -12,10 +13,11 @@ import {
   useChatLabStatsSummary,
   useChatLabStatsTimeseries,
 } from '@/lib/dr/useDrChatLab';
+import { formatDurationMs } from '@/lib/dr/formatDuration';
 import type { StatsRange } from '@/lib/dr/chatLabApi';
-import type { ChatLabStatsBreakdownRow, ChatLabStatsBucket } from '@/schemas/drChatLab';
+import type { ChatLabRequestType, ChatLabStatsBreakdownRow, ChatLabStatsBucket } from '@/schemas/drChatLab';
 import BalanceCard from './balance-card';
-import { SpendByModelChart, SpendOverTimeChart, TokensOverTimeChart } from './stats-charts';
+import { ResponseTimeChart, SpendByModelChart, SpendOverTimeChart, TokensOverTimeChart } from './stats-charts';
 import StatsTable, { formatTokens, formatUsd, type StatsColumn } from './stats-table';
 
 // The Usage & Stats page: balance card, date-range presets, charts, and the
@@ -36,6 +38,25 @@ const KIND_LABELS: Record<string, string> = {
   title: 'Auto-titling',
   memory: 'Project memory',
 };
+
+// Request-type filter for the Performance section ('all' = no type= param).
+type TypeFilter = 'all' | ChatLabRequestType;
+
+const TYPE_FILTERS: Array<{ id: TypeFilter; label: string }> = [
+  { id: 'all', label: 'All' },
+  { id: 'text', label: 'Text' },
+  { id: 'file', label: 'File' },
+  { id: 'image', label: 'Image' },
+  { id: 'pdf', label: 'PDF' },
+  { id: 'audio', label: 'Audio' },
+  { id: 'mixed', label: 'Mixed' },
+];
+
+/** "—" for missing latency values (historical pre-metrics rows). */
+function formatMs(v: number | null | undefined): React.ReactNode {
+  if (v == null) return <span className="text-muted-foreground">—</span>;
+  return formatDurationMs(v);
+}
 
 function baseColumns(): StatsColumn<ChatLabStatsBreakdownRow>[] {
   return [
@@ -64,6 +85,11 @@ export default function StatsView() {
     setRange(presetRange(p.days));
   };
 
+  // Performance-section type filter: applies ONLY to the performance queries
+  // below — the spend charts/tables stay unfiltered.
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>('all');
+  const perfType = typeFilter === 'all' ? undefined : typeFilter;
+
   const summaryQuery = useChatLabStatsSummary(range);
   const spendSeries = useChatLabStatsTimeseries(active.bucket, 'model', range);
   const tokenSeries = useChatLabStatsTimeseries(active.bucket, 'none', range);
@@ -72,6 +98,9 @@ export default function StatsView() {
   const userRows = useChatLabStatsBreakdown('user', range);
   const sessionRows = useChatLabStatsBreakdown('session', range);
   const kindRows = useChatLabStatsBreakdown('kind', range);
+  const perfSeries = useChatLabStatsTimeseries(active.bucket, 'none', range, perfType);
+  const perfModelRows = useChatLabStatsBreakdown('model', range, perfType);
+  const typeMixRows = useChatLabStatsBreakdown('type', range);
 
   useDrQueryErrorRedirect(summaryQuery.error);
 
@@ -120,6 +149,26 @@ export default function StatsView() {
     ...baseColumns(),
   ];
 
+  // Performance tables: latency aggregates come from chat events with metrics
+  // only ("Responses"); nulls (historical rows) render as "—".
+  const perfModelColumns: StatsColumn<ChatLabStatsBreakdownRow>[] = [
+    { header: 'Model', render: (r) => <span className="font-medium">{r.label}</span> },
+    { header: 'Responses', align: 'right', render: (r) => r.chatEvents ?? 0 },
+    { header: 'Avg TTFT', align: 'right', render: (r) => formatMs(r.avgFirstTokenMs) },
+    { header: 'Avg thinking', align: 'right', render: (r) => formatMs(r.avgReasoningMs) },
+    { header: 'Avg total', align: 'right', render: (r) => formatMs(r.avgDurationMs) },
+    { header: 'p50', align: 'right', render: (r) => formatMs(r.p50DurationMs) },
+    { header: 'p95', align: 'right', render: (r) => formatMs(r.p95DurationMs) },
+  ];
+
+  // The "why was this slow? oh, it was analyzing an image" view.
+  const typeMixColumns: StatsColumn<ChatLabStatsBreakdownRow>[] = [
+    { header: 'Type', render: (r) => <span className="font-medium">{r.label}</span> },
+    { header: 'Events', align: 'right', render: (r) => r.events },
+    { header: 'Cost', align: 'right', render: (r) => formatUsd(r.costUsd) },
+    { header: 'Avg total', align: 'right', render: (r) => formatMs(r.avgDurationMs) },
+  ];
+
   if (summaryQuery.isLoading || !summaryQuery.data) {
     return (
       <div className="flex flex-1 items-center justify-center">
@@ -166,6 +215,48 @@ export default function StatsView() {
           <TokensOverTimeChart points={tokenSeries.data ?? []} />
         </div>
         <SpendByModelChart rows={modelRows.data ?? []} />
+
+        {/* Performance — latency of chat turns (title/memory calls excluded).
+            The type filter narrows ONLY this section; spend stays unfiltered. */}
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+          <h2 className="text-base font-semibold tracking-tight">Performance</h2>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground">Request type:</span>
+            <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as TypeFilter)}>
+              <SelectTrigger size="sm" className="w-28">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {TYPE_FILTERS.map((t) => (
+                  <SelectItem key={t.id} value={t.id}>
+                    {t.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <ResponseTimeChart points={perfSeries.data ?? []} />
+        <div className="grid gap-4 lg:grid-cols-2">
+          <Card className="gap-0 p-0">
+            <h3 className="p-3 text-sm font-semibold">Per-model performance</h3>
+            <StatsTable
+              rows={perfModelRows.data ?? []}
+              columns={perfModelColumns}
+              keyFor={(r) => r.key}
+              emptyText="No measured responses in range."
+            />
+          </Card>
+          <Card className="gap-0 p-0">
+            <h3 className="p-3 text-sm font-semibold">By request type</h3>
+            <StatsTable
+              rows={typeMixRows.data ?? []}
+              columns={typeMixColumns}
+              keyFor={(r) => r.key}
+              emptyText="No usage in range."
+            />
+          </Card>
+        </div>
 
         {/* Tables */}
         <Card className="gap-0 p-0">
