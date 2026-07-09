@@ -42,9 +42,12 @@ interface ModelPickerProps {
   value: string | null;
   onChange: (modelId: string) => void;
   disabled?: boolean;
+  /** Image attachments are pending: gray out non-vision models (still
+   *  selectable — the composer's disabled Send is the enforcement). */
+  dimNonVision?: boolean;
 }
 
-export default function ModelPicker({ models, value, onChange, disabled }: ModelPickerProps) {
+export default function ModelPicker({ models, value, onChange, disabled, dimNonVision }: ModelPickerProps) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('');
 
@@ -115,7 +118,9 @@ export default function ModelPicker({ models, value, onChange, disabled }: Model
                   className={cn(
                     'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-accent/60',
                     m.id === value && 'bg-accent',
+                    dimNonVision && !m.supportsImages && 'opacity-40',
                   )}
+                  title={dimNonVision && !m.supportsImages ? `${m.name} can't see images` : undefined}
                 >
                   <Check className={cn('size-3.5 shrink-0', m.id === value ? 'text-primary' : 'invisible')} />
                   <span className="min-w-0 flex-1 truncate" title={m.id}>

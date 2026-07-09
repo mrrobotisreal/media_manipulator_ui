@@ -20,6 +20,7 @@ import { relativeTime } from '@/lib/dr/relativeTime';
 import type { ChatLabAttachment, ChatLabMessage, ChatLabToolActivity } from '@/schemas/drChatLab';
 import type { ChatStreamState, ChatStreamToolEvent } from '@/lib/dr/useChatStream';
 import ChatLabMarkdown, { CopyButton } from './markdown';
+import MessageFeedback from './message-feedback';
 
 // The conversation pane: persisted messages + the optimistic pending user
 // message + the live streaming assistant block.
@@ -31,6 +32,7 @@ import ChatLabMarkdown, { CopyButton } from './markdown';
 // (see the positioned-cards fix).
 
 interface MessageListProps {
+  sessionId: string;
   messages: ChatLabMessage[];
   stream: ChatStreamState;
   emptyState: React.ReactNode;
@@ -175,7 +177,7 @@ function UserBubble({ content, attachments }: { content: string; attachments?: C
   );
 }
 
-function AssistantMessage({ message }: { message: ChatLabMessage }) {
+function AssistantMessage({ message, sessionId }: { message: ChatLabMessage; sessionId: string }) {
   return (
     <div className="px-4 py-2">
       <div className="mb-1 flex flex-wrap items-center gap-1.5">
@@ -225,6 +227,7 @@ function AssistantMessage({ message }: { message: ChatLabMessage }) {
         {message.totalCostUsd != null && <span className="tabular-nums">{formatCost(message.totalCostUsd)}</span>}
         <span>{relativeTime(message.createdAt)}</span>
         {message.content && <CopyButton text={message.content} label="Copy markdown" />}
+        <MessageFeedback sessionId={sessionId} messageId={message.id} feedback={message.feedback} />
       </div>
     </div>
   );
@@ -283,7 +286,7 @@ function StreamingAssistant({ stream }: { stream: ChatStreamState }) {
   );
 }
 
-export default function MessageList({ messages, stream, emptyState, isLoading }: MessageListProps) {
+export default function MessageList({ sessionId, messages, stream, emptyState, isLoading }: MessageListProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const atBottomRef = useRef(true);
   const rafRef = useRef<number | null>(null);
@@ -343,7 +346,7 @@ export default function MessageList({ messages, stream, emptyState, isLoading }:
             m.role === 'user' ? (
               <UserBubble key={m.id} content={m.content} attachments={m.attachments} />
             ) : (
-              <AssistantMessage key={m.id} message={m} />
+              <AssistantMessage key={m.id} message={m} sessionId={sessionId} />
             ),
           )}
           {stream.pendingUser && <UserBubble content={stream.pendingUser.content} />}

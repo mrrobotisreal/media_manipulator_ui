@@ -6,8 +6,11 @@
 
 import {
   CHATLAB_ATTACHMENT_EXT,
+  ChatLabCreditEntrySchema,
+  ChatLabCreditsResponseSchema,
   ChatLabDeletedResponseSchema,
   ChatLabMemoryRefreshResponseSchema,
+  ChatLabMessageFeedbackSchema,
   ChatLabModelsResponseSchema,
   ChatLabPresignResponseSchema,
   ChatLabProjectDetailSchema,
@@ -17,28 +20,42 @@ import {
   ChatLabSessionDetailResponseSchema,
   ChatLabSessionSchema,
   ChatLabSessionsResponseSchema,
+  ChatLabStatsBreakdownResponseSchema,
+  ChatLabStatsSummarySchema,
+  ChatLabStatsTimeseriesResponseSchema,
   chatLabMaxBytes,
   chatLabProjectAssetKind,
   chatLabProjectAssetMaxBytes,
   type ChatLabAttachmentKind,
+  type ChatLabCreditEntry,
+  type ChatLabCreditsResponse,
+  type ChatLabFeedbackRating,
   type ChatLabMemoryRefreshResponse,
-  type ChatLabModel,
+  type ChatLabMessageFeedback,
+  type ChatLabModelsResponse,
   type ChatLabPresignResponse,
   type ChatLabProject,
   type ChatLabProjectDetail,
   type ChatLabProjectPresignResponse,
   type ChatLabSession,
   type ChatLabSessionDetailResponse,
+  type ChatLabStatsBreakdownRow,
+  type ChatLabStatsBucket,
+  type ChatLabStatsDimension,
+  type ChatLabStatsSummary,
+  type ChatLabStatsTimeseriesPoint,
 } from '@/schemas/drChatLab';
 import { drGet, drSend } from './apiClient';
 import { putToS3 } from './s3Upload';
 
 const enc = encodeURIComponent;
 
-// ---- Models ------------------------------------------------------------------
+// ---- Models / lab config ---------------------------------------------------------
 
-export const fetchChatLabModels = async (): Promise<ChatLabModel[]> =>
-  ChatLabModelsResponseSchema.parse(await drGet('/dr/chatlab/models')).models;
+/** The models fetch doubles as the lab-config fetch (feedback categories ride
+ *  along). Hooks select the slice they need off one shared query. */
+export const fetchChatLabConfig = async (): Promise<ChatLabModelsResponse> =>
+  ChatLabModelsResponseSchema.parse(await drGet('/dr/chatlab/models'));
 
 // ---- Sessions ----------------------------------------------------------------
 
@@ -251,6 +268,77 @@ export async function uploadChatLabProjectAsset(params: UploadChatLabProjectAsse
     throw err;
   }
 }
+
+// ---- Response feedback --------------------------------------------------------
+
+export interface PutFeedbackBody {
+  rating: ChatLabFeedbackRating;
+  categories: string[];
+  comment?: string;
+}
+
+export const putMessageFeedback = async (messageId: string, body: PutFeedbackBody): Promise<ChatLabMessageFeedback> =>
+  ChatLabMessageFeedbackSchema.parse(await drSend('PUT', `/dr/chatlab/messages/${enc(messageId)}/feedback`, body));
+
+export const deleteMessageFeedback = async (messageId: string): Promise<void> => {
+  await drSend('DELETE', `/dr/chatlab/messages/${enc(messageId)}/feedback`);
+};
+
+// ---- Usage & spend analytics + credits ------------------------------------------
+
+export interface StatsRange {
+  from?: string; // RFC3339
+  to?: string;
+}
+
+function rangeParams(range: StatsRange, extra?: Record<string, string>): string {
+  const params = new URLSearchParams(extra ?? {});
+  if (range.from) params.set('from', range.from);
+  if (range.to) params.set('to', range.to);
+  const s = params.toString();
+  return s ? `?${s}` : '';
+}
+
+export const fetchChatLabStatsSummary = async (range: StatsRange): Promise<ChatLabStatsSummary> =>
+  ChatLabStatsSummarySchema.parse(await drGet(`/dr/chatlab/stats/summary${rangeParams(range)}`));
+
+export const fetchChatLabStatsBreakdown = async (
+  dimension: ChatLabStatsDimension,
+  range: StatsRange,
+  limit = 50,
+): Promise<ChatLabStatsBreakdownRow[]> =>
+  ChatLabStatsBreakdownResponseSchema.parse(
+    await drGet(`/dr/chatlab/stats/breakdown${rangeParams(range, { dimension, limit: String(limit) })}`),
+  ).rows;
+
+export const fetchChatLabStatsTimeseries = async (
+  bucket: ChatLabStatsBucket,
+  dimension: 'none' | 'model' | 'kind',
+  range: StatsRange,
+): Promise<ChatLabStatsTimeseriesPoint[]> =>
+  ChatLabStatsTimeseriesResponseSchema.parse(
+    await drGet(`/dr/chatlab/stats/timeseries${rangeParams(range, { bucket, dimension })}`),
+  ).points;
+
+export const fetchChatLabCredits = async (): Promise<ChatLabCreditsResponse> =>
+  ChatLabCreditsResponseSchema.parse(await drGet('/dr/chatlab/credits'));
+
+export interface CreditEntryBody {
+  entryType: 'deposit' | 'adjustment';
+  amountUsd: number;
+  effectiveAt: string; // RFC3339
+  note?: string;
+}
+
+export const createChatLabCreditEntry = async (body: CreditEntryBody): Promise<ChatLabCreditEntry> =>
+  ChatLabCreditEntrySchema.parse(await drSend('POST', '/dr/chatlab/credits', body));
+
+export const updateChatLabCreditEntry = async (entryId: string, body: CreditEntryBody): Promise<ChatLabCreditEntry> =>
+  ChatLabCreditEntrySchema.parse(await drSend('PUT', `/dr/chatlab/credits/${enc(entryId)}`, body));
+
+export const deleteChatLabCreditEntry = async (entryId: string): Promise<void> => {
+  await drSend('DELETE', `/dr/chatlab/credits/${enc(entryId)}`);
+};
 
 // Mirror of the server's normalizeProjectAssetContentType so the S3 PUT's
 // Content-Type matches the presigned signature for text/code assets.

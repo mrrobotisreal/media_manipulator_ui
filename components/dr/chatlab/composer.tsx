@@ -105,6 +105,10 @@ export default function Composer({
 
   const uploading = attachments.some((a) => a.status === 'uploading');
   const readyAttachments = attachments.filter((a) => a.status === 'done' && a.attachmentId);
+  // Vision guard (client half — the server 400s as belt-and-suspenders):
+  // pending image attachments + a text-only model → send is blocked.
+  const imagesPending = attachments.some((a) => a.kind === 'image');
+  const visionBlocked = imagesPending && !!selectedModel && !selectedModel.supportsImages;
 
   const startUpload = useCallback(
     async (file: File) => {
@@ -188,7 +192,11 @@ export default function Composer({
   };
 
   const canSend =
-    !isStreaming && !uploading && !!model && (text.trim().length > 0 || readyAttachments.length > 0);
+    !isStreaming &&
+    !uploading &&
+    !visionBlocked &&
+    !!model &&
+    (text.trim().length > 0 || readyAttachments.length > 0);
 
   const handleSend = () => {
     if (!canSend || !model) return;
@@ -268,7 +276,13 @@ export default function Composer({
         >
           <Paperclip className="size-4" />
         </button>
-        <ModelPicker models={models} value={model} onChange={onModelChange} disabled={isStreaming} />
+        <ModelPicker
+          models={models}
+          value={model}
+          onChange={onModelChange}
+          disabled={isStreaming}
+          dimNonVision={imagesPending}
+        />
         <ReasoningPicker
           model={selectedModel}
           value={reasoningEffort}
@@ -292,6 +306,11 @@ export default function Composer({
             onClick={handleSend}
             disabled={!canSend}
             aria-label="Send message"
+            title={
+              visionBlocked && selectedModel
+                ? `${selectedModel.name} can't see images — pick a vision-capable model or remove the image.`
+                : undefined
+            }
             className={cn(
               'flex size-9 shrink-0 items-center justify-center rounded-lg transition-colors',
               canSend ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'bg-muted text-muted-foreground',
@@ -302,6 +321,11 @@ export default function Composer({
         )}
       </div>
 
+      {visionBlocked && selectedModel && (
+        <p className="px-3 pb-2 text-[11px] text-destructive">
+          {selectedModel.name} can&apos;t see images — pick a vision-capable model or remove the image.
+        </p>
+      )}
       {assetHint && (
         <p className="px-3 pb-2 text-[11px] text-muted-foreground">
           This model can&apos;t read project assets on demand — text assets are inlined, other assets unavailable.

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
+  BarChart3,
   ChevronDown,
   ChevronRight,
   Folder,
@@ -160,6 +161,20 @@ export default function ChatLabSidebar({ onNavigate }: ChatLabSidebarProps) {
           ))}
         </div>
       </div>
+
+      {/* Pinned footer: usage & spend analytics. */}
+      <Separator className="my-2" />
+      <Link
+        href="/dr/demos/chat-lab/stats"
+        onClick={onNavigate}
+        className={cn(
+          'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-foreground/80 transition-colors hover:bg-accent/50',
+          pathname === '/dr/demos/chat-lab/stats' && 'bg-accent font-medium text-foreground',
+        )}
+      >
+        <BarChart3 className="size-4 shrink-0 text-muted-foreground" />
+        Usage &amp; Stats
+      </Link>
 
       <NewProjectDialog open={newProjectOpen} onOpenChange={setNewProjectOpen} onCreated={onNavigate} />
     </nav>

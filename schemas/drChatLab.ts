@@ -38,9 +38,42 @@ export const ChatLabModelSchema = z.object({
 });
 export type ChatLabModel = z.infer<typeof ChatLabModelSchema>;
 
+// ---------------------------------------------------------------------------
+// Response feedback (👍/👎 on assistant messages).
+// ---------------------------------------------------------------------------
+
+export const ChatLabFeedbackRatingSchema = z.enum(['up', 'down']);
+export type ChatLabFeedbackRating = z.infer<typeof ChatLabFeedbackRatingSchema>;
+
+export const ChatLabFeedbackCategorySchema = z.object({
+  id: z.string(),
+  label: z.string(),
+});
+export type ChatLabFeedbackCategory = z.infer<typeof ChatLabFeedbackCategorySchema>;
+
+/** Server-defined category catalog — the UI never hardcodes option ids. */
+export const ChatLabFeedbackCategoriesSchema = z.object({
+  up: z.array(ChatLabFeedbackCategorySchema),
+  down: z.array(ChatLabFeedbackCategorySchema),
+});
+export type ChatLabFeedbackCategories = z.infer<typeof ChatLabFeedbackCategoriesSchema>;
+
+export const ChatLabMessageFeedbackSchema = z.object({
+  rating: ChatLabFeedbackRatingSchema,
+  categories: z.array(z.string()),
+  comment: z.string(),
+  raterEmail: z.string(),
+  isMine: z.boolean(),
+  updatedAt: z.string(),
+});
+export type ChatLabMessageFeedback = z.infer<typeof ChatLabMessageFeedbackSchema>;
+
+/** The models fetch doubles as the "lab config" fetch. */
 export const ChatLabModelsResponseSchema = z.object({
   models: z.array(ChatLabModelSchema),
+  feedbackCategories: ChatLabFeedbackCategoriesSchema,
 });
+export type ChatLabModelsResponse = z.infer<typeof ChatLabModelsResponseSchema>;
 
 // ---------------------------------------------------------------------------
 // Sessions.
@@ -110,6 +143,7 @@ export const ChatLabMessageSchema = z.object({
   createdAt: z.string(),
   attachments: z.array(ChatLabAttachmentSchema),
   toolActivity: z.array(ChatLabToolActivitySchema).nullable(), // null when no tools ran
+  feedback: z.array(ChatLabMessageFeedbackSchema).nullable(), // both users' rows; null when none
 });
 export type ChatLabMessage = z.infer<typeof ChatLabMessageSchema>;
 
@@ -236,6 +270,91 @@ export const ChatLabStreamEventSchema = z.discriminatedUnion('type', [
 export type ChatLabStreamEvent = z.infer<typeof ChatLabStreamEventSchema>;
 
 export type ChatLabUsage = Extract<ChatLabStreamEvent, { type: 'usage' }>;
+
+// ---------------------------------------------------------------------------
+// Usage & spend analytics + credit ledger. All times/buckets are UTC.
+// ---------------------------------------------------------------------------
+
+export const ChatLabStatsTotalsSchema = z.object({
+  costUsd: z.number(),
+  promptTokens: z.number(),
+  completionTokens: z.number(),
+  reasoningTokens: z.number(),
+  events: z.number(),
+  chatEvents: z.number(),
+  unknownCostEvents: z.number(), // NULL-cost events under-count spend → UI shows "≈"
+  estimatedCostEvents: z.number(),
+});
+export type ChatLabStatsTotals = z.infer<typeof ChatLabStatsTotalsSchema>;
+
+export const ChatLabCreditBalanceSchema = z.object({
+  currentUsd: z.number(),
+  totalCreditedUsd: z.number(),
+  totalSpentUsd: z.number(),
+  trackingSince: z.string().nullable(),
+  hasLedger: z.boolean(),
+});
+export type ChatLabCreditBalance = z.infer<typeof ChatLabCreditBalanceSchema>;
+
+export const ChatLabStatsSummarySchema = z.object({
+  totals: ChatLabStatsTotalsSchema,
+  balance: ChatLabCreditBalanceSchema,
+});
+export type ChatLabStatsSummary = z.infer<typeof ChatLabStatsSummarySchema>;
+
+export const ChatLabStatsDimensionSchema = z.enum(['model', 'user', 'project', 'session', 'kind']);
+export type ChatLabStatsDimension = z.infer<typeof ChatLabStatsDimensionSchema>;
+
+export const ChatLabStatsBreakdownRowSchema = z.object({
+  key: z.string(),
+  label: z.string(),
+  costUsd: z.number(),
+  promptTokens: z.number(),
+  completionTokens: z.number(),
+  reasoningTokens: z.number(),
+  events: z.number(),
+  thumbsUp: z.number().optional(), // dimension=model only
+  thumbsDown: z.number().optional(),
+});
+export type ChatLabStatsBreakdownRow = z.infer<typeof ChatLabStatsBreakdownRowSchema>;
+
+export const ChatLabStatsBreakdownResponseSchema = z.object({
+  rows: z.array(ChatLabStatsBreakdownRowSchema),
+});
+
+export const ChatLabStatsBucketSchema = z.enum(['day', 'week', 'month']);
+export type ChatLabStatsBucket = z.infer<typeof ChatLabStatsBucketSchema>;
+
+export const ChatLabStatsTimeseriesPointSchema = z.object({
+  bucket: z.string(), // RFC3339, UTC bucket start
+  key: z.string().optional(), // absent for dimension=none; "other" = top-8 rollup
+  costUsd: z.number(),
+  totalTokens: z.number(),
+  events: z.number(),
+});
+export type ChatLabStatsTimeseriesPoint = z.infer<typeof ChatLabStatsTimeseriesPointSchema>;
+
+export const ChatLabStatsTimeseriesResponseSchema = z.object({
+  points: z.array(ChatLabStatsTimeseriesPointSchema),
+});
+
+export const ChatLabCreditEntrySchema = z.object({
+  id: z.string(),
+  entryType: z.enum(['deposit', 'adjustment']),
+  amountUsd: z.number(),
+  effectiveAt: z.string(),
+  note: z.string(),
+  createdByEmail: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+export type ChatLabCreditEntry = z.infer<typeof ChatLabCreditEntrySchema>;
+
+export const ChatLabCreditsResponseSchema = z.object({
+  balance: ChatLabCreditBalanceSchema,
+  entries: z.array(ChatLabCreditEntrySchema),
+});
+export type ChatLabCreditsResponse = z.infer<typeof ChatLabCreditsResponseSchema>;
 
 // ---------------------------------------------------------------------------
 // Attachment allowlist / caps — the chat-lab-specific rules (mirrors the

@@ -4,10 +4,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { drQueryRetry } from './apiClient';
 import * as api from './chatLabApi';
 import type {
+  ChatLabMessageFeedback,
   ChatLabProject,
   ChatLabProjectDetail,
   ChatLabSession,
   ChatLabSessionDetailResponse,
+  ChatLabStatsBucket,
+  ChatLabStatsDimension,
 } from '@/schemas/drChatLab';
 
 // Query keys, namespaced ['dr','chatlab',…] so a single invalidate can target
@@ -27,13 +30,37 @@ export const projectKeys = {
   project: (projectId: string) => ['dr', 'chatlab', 'project', projectId] as const,
 };
 
+export const statsKeys = {
+  all: ['dr', 'chatlab', 'stats'] as const,
+  summary: (from?: string, to?: string) => ['dr', 'chatlab', 'stats', 'summary', from ?? '', to ?? ''] as const,
+  breakdown: (dimension: string, from?: string, to?: string) =>
+    ['dr', 'chatlab', 'stats', 'breakdown', dimension, from ?? '', to ?? ''] as const,
+  timeseries: (bucket: string, dimension: string, from?: string, to?: string) =>
+    ['dr', 'chatlab', 'stats', 'timeseries', bucket, dimension, from ?? '', to ?? ''] as const,
+  credits: () => ['dr', 'chatlab', 'stats', 'credits'] as const,
+};
+
 // ---- Queries ---------------------------------------------------------------
 
-/** The filtered model catalog (server caches for 1h — mirror that here). */
+/** The filtered model catalog (server caches for 1h — mirror that here). The
+ *  same fetch carries the lab config (feedback categories) — one shared query,
+ *  two selecting hooks. */
 export function useChatLabModels() {
   return useQuery({
     queryKey: chatLabKeys.models(),
-    queryFn: api.fetchChatLabModels,
+    queryFn: api.fetchChatLabConfig,
+    select: (data) => data.models,
+    staleTime: 60 * 60_000,
+    retry: drQueryRetry,
+  });
+}
+
+/** The server-defined feedback category catalog (never hardcoded client-side). */
+export function useChatLabFeedbackCategories() {
+  return useQuery({
+    queryKey: chatLabKeys.models(),
+    queryFn: api.fetchChatLabConfig,
+    select: (data) => data.feedbackCategories,
     staleTime: 60 * 60_000,
     retry: drQueryRetry,
   });
@@ -209,4 +236,113 @@ export function useRefreshChatLabMemory() {
       void qc.invalidateQueries({ queryKey: projectKeys.project(projectId) });
     },
   });
+}
+
+// ---- Response feedback ---------------------------------------------------------
+
+/** Upsert or remove the CALLER's feedback on an assistant message, updating
+ *  the session detail cache in place (optimistic-ish: server responds fast and
+ *  we reconcile on settle). */
+export function useMessageFeedback(sessionId: string) {
+  const qc = useQueryClient();
+
+  const updateCache = (messageId: string, mutate: (fb: ChatLabMessageFeedback[]) => ChatLabMessageFeedback[]) => {
+    qc.setQueryData<ChatLabSessionDetailResponse | undefined>(chatLabKeys.session(sessionId), (old) => {
+      if (!old) return old;
+      return {
+        ...old,
+        messages: old.messages.map((m) =>
+          m.id === messageId ? { ...m, feedback: mutate(m.feedback ?? []) } : m,
+        ),
+      };
+    });
+  };
+
+  const put = useMutation({
+    mutationFn: ({ messageId, body }: { messageId: string; body: api.PutFeedbackBody }) =>
+      api.putMessageFeedback(messageId, body),
+    onSuccess: (feedback, { messageId }) => {
+      updateCache(messageId, (fb) => [...fb.filter((f) => !f.isMine), feedback]);
+    },
+    onSettled: () => {
+      void qc.invalidateQueries({ queryKey: chatLabKeys.session(sessionId) });
+    },
+  });
+
+  const remove = useMutation({
+    mutationFn: (messageId: string) => api.deleteMessageFeedback(messageId),
+    onSuccess: (_res, messageId) => {
+      updateCache(messageId, (fb) => fb.filter((f) => !f.isMine));
+    },
+    onSettled: () => {
+      void qc.invalidateQueries({ queryKey: chatLabKeys.session(sessionId) });
+    },
+  });
+
+  return { put, remove };
+}
+
+// ---- Usage & spend analytics + credits -------------------------------------------
+
+export function useChatLabStatsSummary(range: api.StatsRange) {
+  return useQuery({
+    queryKey: statsKeys.summary(range.from, range.to),
+    queryFn: () => api.fetchChatLabStatsSummary(range),
+    staleTime: 15_000,
+    retry: drQueryRetry,
+  });
+}
+
+export function useChatLabStatsBreakdown(dimension: ChatLabStatsDimension, range: api.StatsRange) {
+  return useQuery({
+    queryKey: statsKeys.breakdown(dimension, range.from, range.to),
+    queryFn: () => api.fetchChatLabStatsBreakdown(dimension, range),
+    staleTime: 15_000,
+    retry: drQueryRetry,
+  });
+}
+
+export function useChatLabStatsTimeseries(
+  bucket: ChatLabStatsBucket,
+  dimension: 'none' | 'model' | 'kind',
+  range: api.StatsRange,
+) {
+  return useQuery({
+    queryKey: statsKeys.timeseries(bucket, dimension, range.from, range.to),
+    queryFn: () => api.fetchChatLabStatsTimeseries(bucket, dimension, range),
+    staleTime: 15_000,
+    retry: drQueryRetry,
+  });
+}
+
+export function useChatLabCredits() {
+  return useQuery({
+    queryKey: statsKeys.credits(),
+    queryFn: api.fetchChatLabCredits,
+    staleTime: 15_000,
+    retry: drQueryRetry,
+  });
+}
+
+/** Create/update/delete ledger entries. Every change reshapes the balance, so
+ *  ALL stats queries are invalidated. */
+export function useChatLabCreditMutations() {
+  const qc = useQueryClient();
+  const invalidate = () => {
+    void qc.invalidateQueries({ queryKey: statsKeys.all });
+  };
+  const create = useMutation({
+    mutationFn: (body: api.CreditEntryBody) => api.createChatLabCreditEntry(body),
+    onSuccess: invalidate,
+  });
+  const update = useMutation({
+    mutationFn: ({ entryId, body }: { entryId: string; body: api.CreditEntryBody }) =>
+      api.updateChatLabCreditEntry(entryId, body),
+    onSuccess: invalidate,
+  });
+  const remove = useMutation({
+    mutationFn: (entryId: string) => api.deleteChatLabCreditEntry(entryId),
+    onSuccess: invalidate,
+  });
+  return { create, update, remove };
 }

@@ -107,6 +107,7 @@ export default function ChatLabSession({ sessionId }: { sessionId: string }) {
         </div>
       )}
       <MessageList
+        sessionId={sessionId}
         messages={sessionQuery.data?.messages ?? []}
         stream={stream}
         emptyState={emptyState}
