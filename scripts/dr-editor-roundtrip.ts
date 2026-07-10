@@ -14,12 +14,14 @@ import { blocksToTiptap } from '@/lib/dr/editor/blocksToTiptap';
 import { tiptapToBlocks } from '@/lib/dr/editor/tiptapToBlocks';
 import { BACKEND_AI_INFRA_DOC, BACKEND_AI_INFRA_SLUG } from '@/content/dr-docs/backend-ai-infrastructure';
 import { CLOUD_AI_MODEL_ACCESS_DOC, CLOUD_AI_MODEL_ACCESS_SLUG } from '@/content/dr-docs/cloud-ai-model-access';
+import { MEETING_2026_07_10_DOC, MEETING_2026_07_10_SLUG } from '@/content/dr-docs/meeting-2026-07-10';
 import { DrDocContentSchema, type DrDocContent } from '@/schemas/drDocs';
 
 // Every canonical seeded document must round-trip exactly.
 const CANONICAL_DOCS: Array<{ slug: string; doc: DrDocContent }> = [
   { slug: BACKEND_AI_INFRA_SLUG, doc: BACKEND_AI_INFRA_DOC },
   { slug: CLOUD_AI_MODEL_ACCESS_SLUG, doc: CLOUD_AI_MODEL_ACCESS_DOC },
+  { slug: MEETING_2026_07_10_SLUG, doc: MEETING_2026_07_10_DOC },
 ];
 
 function isPlainObject(v: unknown): v is Record<string, unknown> {

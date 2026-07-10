@@ -184,12 +184,23 @@ function DocRow({ doc, depth }: { doc: DrDocSummary; depth: number }) {
   const ex = useExplorer();
   const router = useRouter();
 
+  // Edit + Rename follow the per-document edit-sharing gate; Open, Move (pure
+  // organization), and Delete (already canDelete-gated) are unchanged.
+  const editLabel = doc.canEdit ? 'Edit' : 'Edit (creator-only)';
+  const renameLabel = doc.canEdit ? 'Rename' : 'Rename (creator-only)';
+
   const contextItems = (
     <>
       <MenuItem asContext label="Open" icon={<FileText className="size-4" />} onSelect={() => router.push(`/dr/docs/${doc.slug}`)} />
-      <MenuItem asContext label="Edit" icon={<SquarePen className="size-4" />} onSelect={() => router.push(`/dr/docs/${doc.slug}/edit`)} />
+      <MenuItem
+        asContext
+        label={editLabel}
+        icon={<SquarePen className="size-4" />}
+        disabled={!doc.canEdit}
+        onSelect={() => router.push(`/dr/docs/${doc.slug}/edit`)}
+      />
       <ContextMenuSeparator />
-      <MenuItem asContext label="Rename" icon={<Pencil className="size-4" />} onSelect={() => ex.renameDoc(doc)} />
+      <MenuItem asContext label={renameLabel} icon={<Pencil className="size-4" />} disabled={!doc.canEdit} onSelect={() => ex.renameDoc(doc)} />
       <MenuItem asContext label="Move to…" icon={<FolderInput className="size-4" />} onSelect={() => ex.moveDocTo(doc)} />
       {doc.canDelete && (
         <>
@@ -227,9 +238,14 @@ function DocRow({ doc, depth }: { doc: DrDocSummary; depth: number }) {
               <span className="hidden text-[11px] text-muted-foreground sm:inline">{formatUpdated(doc.updatedAt)}</span>
               <RowMenu>
                 <MenuItem label="Open" icon={<FileText className="size-4" />} onSelect={() => router.push(`/dr/docs/${doc.slug}`)} />
-                <MenuItem label="Edit" icon={<SquarePen className="size-4" />} onSelect={() => router.push(`/dr/docs/${doc.slug}/edit`)} />
+                <MenuItem
+                  label={editLabel}
+                  icon={<SquarePen className="size-4" />}
+                  disabled={!doc.canEdit}
+                  onSelect={() => router.push(`/dr/docs/${doc.slug}/edit`)}
+                />
                 <DropdownMenuSeparator />
-                <MenuItem label="Rename" icon={<Pencil className="size-4" />} onSelect={() => ex.renameDoc(doc)} />
+                <MenuItem label={renameLabel} icon={<Pencil className="size-4" />} disabled={!doc.canEdit} onSelect={() => ex.renameDoc(doc)} />
                 <MenuItem label="Move to…" icon={<FolderInput className="size-4" />} onSelect={() => ex.moveDocTo(doc)} />
                 {doc.canDelete && (
                   <>

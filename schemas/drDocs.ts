@@ -164,6 +164,10 @@ export const DrDocSummarySchema = z.object({
   createdBy: z.string(), // author email (or "seed:migration" for the seed)
   canDelete: z.boolean(), // SERVER-computed: caller is the creator (creator-only delete)
   hasEditSession: z.boolean(), // an edit session exists → "Resume editing" + restore confirm
+  // Per-document edit sharing. Defaults keep a not-yet-redeployed API parsing
+  // with the grandfathered (everyone-can-edit) semantics.
+  allowPartnerEdits: z.boolean().optional().default(true), // creator-controlled flag
+  canEdit: z.boolean().optional().default(true), // SERVER-computed for the caller (drCanEdit)
   folderId: z.string().nullish(), // docs-explorer placement; null/absent = root
   createdAt: z.string(), // ISO 8601 UTC
   updatedAt: z.string(), // ISO 8601 UTC
@@ -236,6 +240,9 @@ export const DrEditSessionSchema = z.object({
   content: DrDocContentSchema,
   createdBy: z.string(),
   updatedBy: z.string(),
+  // Additive edit-sharing state (same defaults rationale as DrDocSummary).
+  allowPartnerEdits: z.boolean().optional().default(true),
+  canEdit: z.boolean().optional().default(true),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

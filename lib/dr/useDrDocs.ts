@@ -11,8 +11,9 @@ import {
   moveDrDoc,
   renameDrDoc,
   updateDrDocFolder,
+  updateDrDocSharing,
 } from './docsApi';
-import type { DrDocFolder, DrDocSummary } from '@/schemas/drDocs';
+import type { DrDoc, DrDocFolder, DrDocSummary } from '@/schemas/drDocs';
 
 // List of published DR documents (metadata only — the API omits content here).
 // Short staleTime: the portal has two users, so refetching occasionally is fine
@@ -138,4 +139,33 @@ export function useDrDocFolderMutations() {
   });
 
   return { create, update, remove, moveDoc, renameDoc };
+}
+
+// ---------------------------------------------------------------------------
+// Per-document edit sharing: the creator's "Partner can edit" toggle.
+// Optimistic on both the single-doc cache (the viewer's switch flips
+// instantly) and the list; reconciled by invalidation.
+// ---------------------------------------------------------------------------
+
+export function useUpdateDocSharing(slug: string) {
+  const qc = useQueryClient();
+  const docKey = ['dr', 'docs', slug] as const;
+  return useMutation({
+    mutationFn: ({ docId, allowPartnerEdits }: { docId: string; allowPartnerEdits: boolean }) =>
+      updateDrDocSharing(docId, allowPartnerEdits),
+    onMutate: async ({ allowPartnerEdits }) => {
+      await qc.cancelQueries({ queryKey: docKey });
+      const prev = qc.getQueryData<DrDoc>(docKey);
+      qc.setQueryData<DrDoc | undefined>(docKey, (old) => (old ? { ...old, allowPartnerEdits } : old));
+      return { prev };
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(docKey, ctx.prev);
+      toast.error(errMessage(err, 'Failed to update sharing'));
+    },
+    onSettled: () => {
+      void qc.invalidateQueries({ queryKey: docKey });
+      void qc.invalidateQueries({ queryKey: docsKey });
+    },
+  });
 }

@@ -75,10 +75,17 @@ export default function EditDocFlow({ slug }: { slug: string }) {
             router.replace('/dr/auth');
             return;
           }
+          if (err instanceof DrApiError && err.status === 403) {
+            // Per-document edit sharing: the creator hasn't opened this
+            // document up. Back to the viewer with a toast.
+            toast.error('Editing this document is restricted to its creator');
+            router.replace(`/dr/docs/${slug}`);
+            return;
+          }
           setStartError(err instanceof Error ? err.message : 'Failed to start editing');
         });
     },
-    [docId, fromRevision, router],
+    [docId, fromRevision, router, slug],
   );
 
   useEffect(() => {

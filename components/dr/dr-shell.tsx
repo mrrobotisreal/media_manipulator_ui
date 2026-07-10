@@ -3,10 +3,19 @@
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { LogOut } from 'lucide-react';
+import { KeyRound, LogOut, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { useDrAuthState, drSignOut } from '@/lib/dr/auth';
+import ChangePasswordDialog from './change-password-dialog';
 
 // Minimal private chrome for the authenticated portal. Deliberately NOT the
 // public top-nav/footer (those are stripped for /dr in app/providers.tsx) and
@@ -17,6 +26,7 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [signingOut, setSigningOut] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   // The Communication/Feedback workspace and the AI Chat Test Lab are
   // full-bleed, multi-pane apps that own their own internal scrolling — they
@@ -48,15 +58,34 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
               <span>Double Raven <span className="text-muted-foreground">× Media Manipulator</span></span>
             </div>
           </Link>
-          <div className="flex items-center gap-3">
-            {user?.email && (
-              <span className="hidden text-sm text-muted-foreground sm:inline">{user.email}</span>
-            )}
-            <Button variant="outline" size="sm" onClick={handleSignOut} disabled={signingOut}>
-              <LogOut className="size-4" />
-              Sign out
-            </Button>
-          </div>
+          {/* Account menu: email + Change password… + Sign out (the sign-out
+              behavior/disabled state is identical to the old standalone button). */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" aria-label="Account">
+                <UserCircle className="size-4" />
+                {user?.email && (
+                  <span className="hidden text-sm text-muted-foreground sm:inline">{user.email}</span>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel className="max-w-64 truncate font-normal text-muted-foreground">
+                {user?.email ?? 'Signed in'}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => setChangePasswordOpen(true)}>
+                <KeyRound className="size-4" />
+                Change password…
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem disabled={signingOut} onSelect={() => void handleSignOut()}>
+                <LogOut className="size-4" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <ChangePasswordDialog open={changePasswordOpen} onOpenChange={setChangePasswordOpen} />
         </div>
       </header>
       {isFullBleed ? (

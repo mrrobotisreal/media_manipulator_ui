@@ -47,6 +47,46 @@ export async function drSignOut(): Promise<void> {
   trackMixpanelEvent('DR Signed Out');
 }
 
+/** drChangePassword reauthenticates with the CURRENT password and then updates
+ *  to the new one — entirely client-side Firebase, the DR API is untouched.
+ *  Reauthenticating first satisfies Firebase's recent-login requirement
+ *  deterministically, so `auth/requires-recent-login` should never surface.
+ *  Throws the raw Firebase error — callers map it with drAuthErrorMessage. */
+export async function drChangePassword(currentPassword: string, newPassword: string): Promise<void> {
+  const auth = await getFirebaseAuth();
+  const user = auth?.currentUser;
+  if (!auth || !user?.email) {
+    throw new Error('Your session has expired — sign in again to change your password.');
+  }
+  const { EmailAuthProvider, reauthenticateWithCredential, updatePassword } = await import('firebase/auth');
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
+  await reauthenticateWithCredential(user, credential);
+  await updatePassword(user, newPassword);
+  trackMixpanelEvent('DR Password Changed');
+}
+
+/** drAuthErrorMessage maps a Firebase auth error to a friendly message for the
+ *  change-password dialog. Raw Firebase error codes are never surfaced. Pure. */
+export function drAuthErrorMessage(err: unknown): string {
+  const code =
+    typeof err === 'object' && err !== null && 'code' in err && typeof (err as { code: unknown }).code === 'string'
+      ? (err as { code: string }).code
+      : '';
+  switch (code) {
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential':
+      return 'Current password is incorrect.';
+    case 'auth/weak-password':
+      return 'New password is too weak — use at least 10 characters.';
+    case 'auth/too-many-requests':
+      return 'Too many attempts — wait a few minutes and try again.';
+    case 'auth/network-request-failed':
+      return 'Network error — check your connection.';
+    default:
+      return "Couldn't update the password. Please try again.";
+  }
+}
+
 export type DrAuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 
 export interface DrAuthState {

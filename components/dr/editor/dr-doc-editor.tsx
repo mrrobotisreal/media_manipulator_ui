@@ -16,6 +16,7 @@ import { blocksToTiptap } from '@/lib/dr/editor/blocksToTiptap';
 import { tiptapToBlocks } from '@/lib/dr/editor/tiptapToBlocks';
 import type { TiptapDoc } from '@/lib/dr/editor/tiptapDoc';
 import type { DrDocUpdate } from '@/lib/dr/docEditorApi';
+import { DrApiError } from '@/lib/dr/apiClient';
 import { CalloutNode, DrFileNode, DrImageNode, DrVideoNode, NoListNesting } from './extensions/nodes';
 import { createSlashCommand } from './slash-menu';
 import BubbleToolbar from './bubble-toolbar';
@@ -133,6 +134,10 @@ export default function DrDocEditor({ flow }: { flow: DrEditorFlow }) {
     pendingRef.current = pendingUploads;
   }, [pendingUploads]);
 
+  // One-shot flag so a mid-session sharing revocation (403 on autosave) toasts
+  // once rather than on every retry.
+  const restricted403Ref = useRef(false);
+
   const performSave = useCallback(async () => {
     const activeEditor = editorRef.current;
     if (!activeEditor) return;
@@ -165,6 +170,13 @@ export default function DrDocEditor({ flow }: { flow: DrEditorFlow }) {
       setSaveStatus('saved');
     } catch (err) {
       console.error('dr editor: autosave failed', err);
+      // Mid-session revocation (the creator flipped "Partner can edit" off):
+      // saves 403 but Discard remains available — tell the user once instead
+      // of toasting on every autosave retry.
+      if (err instanceof DrApiError && err.status === 403 && !restricted403Ref.current) {
+        restricted403Ref.current = true;
+        toast.error('Editing was restricted by the creator — you can discard your changes.');
+      }
       setSaveStatus('error');
     }
   }, []);
@@ -234,6 +246,10 @@ export default function DrDocEditor({ flow }: { flow: DrEditorFlow }) {
       flow.onPublished(published);
     } catch (err) {
       setPublishing(false);
+      if (err instanceof DrApiError && err.status === 403) {
+        toast.error('Editing was restricted by the creator — you can discard your changes.');
+        return;
+      }
       toast.error('Could not publish', { description: err instanceof Error ? err.message : undefined });
     }
   };

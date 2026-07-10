@@ -8,6 +8,7 @@ import {
   DrDocFoldersResponseSchema,
   DrDocSchema,
   DrDocsListResponseSchema,
+  DrDocSummarySchema,
   type DrDoc,
   type DrDocFolder,
   type DrDocSummary,
@@ -58,3 +59,10 @@ export const moveDrDoc = async (docId: string, folderId: string | null): Promise
 export const renameDrDoc = async (docId: string, title: string): Promise<void> => {
   await drSend('PUT', `/dr/docs/${enc(docId)}/rename`, { title });
 };
+
+// ---- Per-document edit sharing ----------------------------------------------
+
+/** Flip the creator's "Partner can edit" toggle (creator-only server-side).
+ *  Addressed by document UUID; returns the updated summary DTO. */
+export const updateDrDocSharing = async (docId: string, allowPartnerEdits: boolean) =>
+  DrDocSummarySchema.parse(await drSend('PUT', `/dr/docs/${enc(docId)}/sharing`, { allowPartnerEdits }));

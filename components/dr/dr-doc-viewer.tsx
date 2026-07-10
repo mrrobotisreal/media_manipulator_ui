@@ -7,12 +7,14 @@ import { AlertTriangle, ArrowLeft, History, Loader2, Pencil, Trash2 } from 'luci
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
 import DrDocRenderer from './doc-renderer';
 import CommentsSidebar, { type CommentDraft } from './comments/comments-sidebar';
 import CommentPopover from './comments/comment-popover';
 import DrDocHistorySheet from './dr-doc-history-sheet';
 import DrDeleteDocDialog from './dr-delete-doc-dialog';
 import { useDrDoc } from '@/lib/dr/useDrDoc';
+import { useUpdateDocSharing } from '@/lib/dr/useDrDocs';
 import { useDrComments, useDrCommentActions } from '@/lib/dr/useDrComments';
 import { useDrQueryErrorRedirect } from '@/lib/dr/useDrQueryErrorRedirect';
 import { DrApiError } from '@/lib/dr/docsApi';
@@ -48,6 +50,7 @@ export default function DrDocViewer({ slug }: { slug: string }) {
   const [popover, setPopover] = useState<Popover | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const sharing = useUpdateDocSharing(slug);
 
   const comments = commentsQuery.data ?? [];
   const content = data?.content ?? null;
@@ -151,16 +154,31 @@ export default function DrDocViewer({ slug }: { slug: string }) {
               <div className="flex items-start justify-between gap-4">
                 <h1 className="text-3xl font-bold tracking-tight">{data.title}</h1>
                 <div className="flex shrink-0 items-center gap-2">
+                  {/* Creator-only sharing control; non-creators see nothing new
+                      (if they can't edit, the Edit button simply isn't there). */}
+                  {data.canDelete && (
+                    <label className="mr-1 flex cursor-pointer items-center gap-1.5 text-xs text-muted-foreground">
+                      <Switch
+                        checked={data.allowPartnerEdits}
+                        disabled={sharing.isPending}
+                        onCheckedChange={(next) => sharing.mutate({ docId: data.id, allowPartnerEdits: next })}
+                        aria-label="Partner can edit"
+                      />
+                      Partner can edit
+                    </label>
+                  )}
                   <Button variant="outline" size="sm" onClick={() => setHistoryOpen(true)}>
                     <History className="size-4" />
                     History
                   </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/dr/docs/${slug}/edit`}>
-                      <Pencil className="size-4" />
-                      {data.hasEditSession ? 'Resume editing' : 'Edit'}
-                    </Link>
-                  </Button>
+                  {data.canEdit && (
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={`/dr/docs/${slug}/edit`}>
+                        <Pencil className="size-4" />
+                        {data.hasEditSession ? 'Resume editing' : 'Edit'}
+                      </Link>
+                    </Button>
+                  )}
                   {data.canDelete && (
                     <Button
                       variant="ghost"
