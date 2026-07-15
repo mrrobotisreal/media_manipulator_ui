@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { BookOpen, ChevronRight, MessageSquare, Presentation } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import DrDesktopDownloads from '@/components/dr/dr-desktop-downloads';
 
 // Portal home: three equal, whole-card-clickable nav options.
 const NAV = [
@@ -58,6 +59,7 @@ export default function DrHomeView() {
           </Link>
         ))}
       </div>
+      <DrDesktopDownloads />
     </div>
   );
 }
