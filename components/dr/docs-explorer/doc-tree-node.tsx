@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   ChevronRight,
+  ExternalLink,
   FilePlus2,
   FileText,
   Folder,
@@ -238,6 +239,15 @@ function DocRow({ doc, depth }: { doc: DrDocSummary; depth: number }) {
               <span className="hidden text-[11px] text-muted-foreground sm:inline">{formatUpdated(doc.updatedAt)}</span>
               <RowMenu>
                 <MenuItem label="Open" icon={<FileText className="size-4" />} onSelect={() => router.push(`/dr/docs/${doc.slug}`)} />
+                {doc.notionLink && (
+                  <MenuItem
+                      asContext
+                      label="View in Notion"
+                      icon={<ExternalLink className="size-4" />}
+                      onSelect={() => window.open(doc.notionLink!, '_blank', 'noopener,noreferrer')}
+                    />
+                  )
+                }
                 <MenuItem
                   label={editLabel}
                   icon={<SquarePen className="size-4" />}
