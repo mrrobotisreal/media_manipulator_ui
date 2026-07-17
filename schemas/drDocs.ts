@@ -169,6 +169,7 @@ export const DrDocSummarySchema = z.object({
   allowPartnerEdits: z.boolean().optional().default(true), // creator-controlled flag
   canEdit: z.boolean().optional().default(true), // SERVER-computed for the caller (drCanEdit)
   folderId: z.string().nullish(), // docs-explorer placement; null/absent = root
+  notionLink: z.string().nullish(), // originating Notion page; null/absent = no Notion twin
   createdAt: z.string(), // ISO 8601 UTC
   updatedAt: z.string(), // ISO 8601 UTC
 });
