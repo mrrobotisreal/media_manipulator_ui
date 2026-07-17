@@ -241,7 +241,6 @@ function DocRow({ doc, depth }: { doc: DrDocSummary; depth: number }) {
                 <MenuItem label="Open" icon={<FileText className="size-4" />} onSelect={() => router.push(`/dr/docs/${doc.slug}`)} />
                 {doc.notionLink && (
                   <MenuItem
-                      asContext
                       label="View in Notion"
                       icon={<ExternalLink className="size-4" />}
                       onSelect={() => window.open(doc.notionLink!, '_blank', 'noopener,noreferrer')}
