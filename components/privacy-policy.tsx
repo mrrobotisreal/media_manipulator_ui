@@ -67,8 +67,8 @@ const PrivacyPolicy: React.FC = () => {
               These services have their own privacy policies. Please review:
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-1">
-              <li><a href="https://policies.google.com/privacy" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
-              <li><a href="https://firebase.google.com/policies/analytics" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Firebase Privacy Policy</a></li>
+              <li><a href="https://policies.google.com/privacy" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+              <li><a href="https://firebase.google.com/policies/analytics" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Firebase Privacy Policy</a></li>
             </ul>
           </div>
         </section>
@@ -76,7 +76,7 @@ const PrivacyPolicy: React.FC = () => {
         <section>
           <h2 className="text-2xl font-semibold mb-3">4. Advertising</h2>
           <p className="text-muted-foreground">
-            We display advertisements through Google AdSense. Google may use cookies to display ads based on your visits to this site and other sites. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Google's Ad Settings</a>.
+            We display advertisements through Google AdSense. Google may use cookies to display ads based on your visits to this site and other sites. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">Google's Ad Settings</a>.
           </p>
         </section>
 

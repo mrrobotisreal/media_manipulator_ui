@@ -16,9 +16,9 @@ export const metadata: Metadata = buildMetadata('/tools/content-studio');
  */
 function StudioGuide() {
   return (
-    <details className="my-4 rounded-lg border border-blue-200 dark:border-blue-900/60 bg-blue-50/40 dark:bg-blue-950/20" open>
+    <details className="my-4 rounded-lg border border-primary/30 bg-primary/8" open>
       <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 font-semibold text-card-foreground">
-        <Info className="h-4 w-4 text-blue-600" aria-hidden="true" />
+        <Info className="h-4 w-4 text-primary" aria-hidden="true" />
         <span aria-label="Open the Content Studio guide">How Content Studio works — quick guide</span>
       </summary>
       <div className="space-y-4 px-4 pb-4 text-sm text-muted-foreground">

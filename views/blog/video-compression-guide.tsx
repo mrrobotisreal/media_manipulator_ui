@@ -23,7 +23,7 @@ const VideoCompressionGuide: React.FC = () => {
         <div className="mb-4">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+          className="inline-flex items-center gap-2 text-primary hover:text-[var(--accent-primary-hover)] font-medium text-sm transition-colors"
         >
           ← Blog
         </Link>
@@ -80,7 +80,7 @@ const VideoCompressionGuide: React.FC = () => {
           The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch." 💪
         </blockquote>
 
@@ -177,7 +177,7 @@ const VideoCompressionGuide: React.FC = () => {
           </table>
         </div>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose." ⚔️
         </blockquote>
 
@@ -232,8 +232,8 @@ const VideoCompressionGuide: React.FC = () => {
           <li><strong>Screen recordings for tutorials</strong>: Before you compress them for distribution</li>
         </ul>
 
-        <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-          <p className="text-red-700">
+        <div className="bg-destructive/10 border-l-4 border-destructive p-4 mb-6">
+          <p className="text-destructive">
             <strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4).
           </p>
         </div>
@@ -254,8 +254,8 @@ const VideoCompressionGuide: React.FC = () => {
         </p>
 
         <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Quick Decision Tree 🌳</h3>
-        <div className="bg-gray-50 p-6 rounded-lg mb-8 font-mono text-sm">
-          <pre className="whitespace-pre-wrap text-gray-700">
+        <div className="bg-surface-2 p-6 rounded-lg mb-8 font-mono text-sm">
+          <pre className="whitespace-pre-wrap text-muted-foreground">
 {`Is it for the web?
 ├─ Yes → Is Safari support critical?
 │   ├─ Yes → MP4
@@ -268,7 +268,7 @@ const VideoCompressionGuide: React.FC = () => {
           </pre>
         </div>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer." 🧘‍♂️
         </blockquote>
 
@@ -357,7 +357,7 @@ const VideoCompressionGuide: React.FC = () => {
           <li><strong>Content monetization</strong>: Readers won't wait for your brilliant article to load</li>
         </ul>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'" 💨
         </blockquote>
 
@@ -396,7 +396,7 @@ const VideoCompressionGuide: React.FC = () => {
           Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!" ⚡
         </blockquote>
 
@@ -449,7 +449,7 @@ const VideoCompressionGuide: React.FC = () => {
           <Button
             asChild
             size="lg"
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 text-lg"
+            className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
             onClick={() => {
               mixpanel.track('Video Compression Guide - Try Video Converter Free', {
                 user_tier: 'free'

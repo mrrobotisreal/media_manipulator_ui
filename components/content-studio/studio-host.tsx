@@ -47,15 +47,15 @@ const ContentStudioPage: React.FC = () => {
           <header className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-6">
             {/* <Breadcrumbs tool={toolPages.find((t) => t.slug === 'content-studio')! as ToolPageContent} /> */}
             <div className="flex items-start gap-4">
-              <div className="shrink-0 mt-1 rounded-lg bg-blue-600/10 p-3">
-                <Clapperboard className="w-8 h-8 text-blue-500" />
+              <div className="shrink-0 mt-1 rounded-lg bg-primary/10 p-3">
+                <Clapperboard className="w-8 h-8 text-primary" />
               </div>
               <div>
                 <div className="flex items-center gap-3">
                   <h1 className="text-2xl md:text-3xl font-bold text-card-foreground leading-tight">
                     {t('contentStudio.title')}
                   </h1>
-                  <Badge className="bg-green-600 text-white hover:bg-green-600">
+                  <Badge className="bg-data text-data-foreground hover:bg-data">
                     <Sparkles className="w-3 h-3" />
                     {t('contentStudio.badge')}
                   </Badge>
@@ -110,7 +110,7 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
       {/* new project */}
       <form onSubmit={submit} className="space-y-4 rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] sm:p-6">
         <div className="flex items-center gap-2">
-          <Plus className="w-5 h-5 text-green-500" />
+          <Plus className="w-5 h-5 text-data" />
           <h2 className="text-lg font-semibold text-card-foreground">{t('contentStudio.newProject.title')}</h2>
         </div>
 
@@ -160,7 +160,7 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
       {/* recents */}
       <Panel level="2" as="section" className="lg:col-span-2">
         <h2 className="text-lg font-semibold text-card-foreground mb-3 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-blue-500" />
+          <Clock className="w-4 h-4 text-primary" />
           {t('contentStudio.recents.title')}
         </h2>
         {recents.isLoading ? (

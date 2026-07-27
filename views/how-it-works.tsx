@@ -46,8 +46,8 @@ const HowItWorksPage: React.FC = () => {
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.process.title')}</h2>
               <div className="grid md:grid-cols-4 gap-6">
                 {(['step1', 'step2', 'step3', 'step4'] as const).map((step, idx) => {
-                  const ringColor = ['bg-blue-100', 'bg-green-100', 'bg-purple-100', 'bg-orange-100'][idx];
-                  const textColor = ['text-blue-600', 'text-green-600', 'text-purple-600', 'text-orange-600'][idx];
+                  const ringColor = ['bg-primary/10', 'bg-data/10', 'bg-premium/10', 'bg-premium/10'][idx];
+                  const textColor = ['text-primary', 'text-data', 'text-premium', 'text-premium'][idx];
                   return (
                     <div key={step} className="text-center">
                       <div className={`w-16 h-16 ${ringColor} rounded-full flex items-center justify-center mx-auto mb-4`}>
@@ -129,7 +129,7 @@ const HowItWorksPage: React.FC = () => {
                   <ul className="text-muted-foreground space-y-1">
                     <RichList items={securityItems} />
                     <li>• {t('howItWorks.privacy.security.linkPrefix')}{' '}
-                      <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-800">
+                      <Link href="/privacy-policy" className="text-primary hover:text-[var(--accent-primary-hover)]">
                         {t('howItWorks.privacy.security.linkText')}
                       </Link>
                       {' '}{t('howItWorks.privacy.security.linkSuffix')}
@@ -151,7 +151,7 @@ const HowItWorksPage: React.FC = () => {
               <div className="flex flex-wrap gap-3">
                 <Link
                   href="/tutorials"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
                 >
                   {t('howItWorks.next.ctaTutorials')}
                 </Link>

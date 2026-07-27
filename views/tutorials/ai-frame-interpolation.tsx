@@ -25,7 +25,7 @@ const AIFrameInterpolationTutorial: React.FC = () => {
         </aside>
         <div className="flex-1 min-w-0">
           <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
-              <p className="text-sm uppercase tracking-wide text-green-600 font-medium">
+              <p className="text-sm uppercase tracking-wide text-data font-medium">
                 Video Tutorial
               </p>
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">
@@ -147,7 +147,7 @@ const AIFrameInterpolationTutorial: React.FC = () => {
                 9. How to use the Media Manipulator AI Frame Interpolation Tool
               </h2>
               <ol className="list-decimal pl-6 space-y-1 mb-4">
-                <li>Open the <Link href="/tools/ai-frame-interpolation" className="text-blue-600 hover:underline">AI Frame Interpolation tool</Link>.</li>
+                <li>Open the <Link href="/tools/ai-frame-interpolation" className="text-primary hover:underline">AI Frame Interpolation tool</Link>.</li>
                 <li>Upload a video.</li>
                 <li>Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.</li>
                 <li>Choose a target FPS — 48, 60, or 120.</li>
@@ -209,7 +209,7 @@ const AIFrameInterpolationTutorial: React.FC = () => {
               </ul>
 
               <div className="mt-10 flex flex-wrap gap-3">
-                <Link href="/tools/ai-frame-interpolation" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <Link href="/tools/ai-frame-interpolation" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
                   Try the AI Frame Interpolation Tool
                 </Link>
                 <Link href="/tutorials" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">

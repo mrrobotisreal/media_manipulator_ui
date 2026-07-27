@@ -50,7 +50,7 @@ const RelatedLinks: React.FC<RelatedLinksProps> = ({
               href={link.to}
               className="group flex items-start gap-3 rounded-md border border-transparent hover:border-border hover:bg-muted/50 p-3 transition-colors"
             >
-              <ArrowRight className="w-4 h-4 mt-1 text-blue-600 shrink-0 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 mt-1 text-primary shrink-0 group-hover:translate-x-0.5 transition-transform" />
               <span>
                 <span className="block font-medium text-card-foreground">
                   {link.label}

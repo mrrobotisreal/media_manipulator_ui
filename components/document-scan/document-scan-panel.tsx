@@ -17,9 +17,9 @@ const FIXED_STAGE_KEYS = new Set(['queued', 'prepare', 'package', 'completed']);
 const stageIcon = (status: TranscodeJobStage['status']) => {
   switch (status) {
     case 'completed':
-      return <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" aria-hidden="true" />;
+      return <CheckCircle2 className="w-4 h-4 text-data shrink-0" aria-hidden="true" />;
     case 'processing':
-      return <Loader2 className="w-4 h-4 text-blue-500 animate-spin motion-reduce:animate-none shrink-0" aria-hidden="true" />;
+      return <Loader2 className="w-4 h-4 text-primary animate-spin motion-reduce:animate-none shrink-0" aria-hidden="true" />;
     case 'failed':
       return <XCircle className="w-4 h-4 text-destructive shrink-0" aria-hidden="true" />;
     case 'skipped':
@@ -197,7 +197,7 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
       {!jobId && (
         <div
           className={`rounded-lg border-2 border-dashed p-8 text-center transition-colors motion-reduce:transition-none cursor-pointer ${
-            isDragOver ? 'border-blue-500 bg-blue-500/10' : 'border-border bg-background/40 hover:border-blue-400/60'
+            isDragOver ? 'border-primary bg-primary/10' : 'border-border bg-background/40 hover:border-primary/60'
           }`}
           onDragOver={(e) => {
             e.preventDefault();
@@ -253,7 +253,7 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
                   title={m.disabled ? m.reason : undefined}
                   onClick={() => setContentMode(m.value)}
                   className={`rounded-md border px-4 py-1.5 text-sm transition-colors motion-reduce:transition-none disabled:opacity-50 disabled:cursor-not-allowed ${
-                    contentMode === m.value ? 'border-blue-500 bg-blue-500/10 font-medium' : 'border-input hover:bg-muted'
+                    contentMode === m.value ? 'border-primary bg-primary/10 font-medium' : 'border-input hover:bg-muted'
                   }`}
                 >
                   {m.label}
@@ -267,7 +267,7 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
             <legend className="text-sm font-semibold">{t('documentScan.options.outputs')}</legend>
             <div className="flex flex-wrap items-center gap-4 text-sm">
               <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-                <CheckCircle2 className="h-4 w-4 text-green-500" aria-hidden="true" />
+                <CheckCircle2 className="h-4 w-4 text-data" aria-hidden="true" />
                 {t('documentScan.options.pdfAlways')}
               </span>
               <label className={`inline-flex items-center gap-2 ${!caps.docxAvailable ? 'opacity-50' : ''}`}>
@@ -429,7 +429,7 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
               </p>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
+                  className="bg-primary h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
                   style={{ width: `${scan.uploadProgress}%` }}
                 />
               </div>
@@ -439,7 +439,7 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
               type="button"
               disabled={!canSubmit}
               onClick={submit}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-white font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors motion-reduce:transition-none"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-primary-foreground font-medium hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors motion-reduce:transition-none"
             >
               <FileSearch className="h-4 w-4" aria-hidden="true" />
               {t('documentScan.panel.submit', { count: files.length })}
@@ -469,7 +469,7 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
           {job.status === 'processing' || job.status === 'pending' ? (
             <div className="w-full bg-muted rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
+                className="bg-primary h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
                 style={{ width: `${job.progress ?? 0}%` }}
               />
             </div>
@@ -490,15 +490,15 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
           )}
 
           {completed && (
-            <div className="rounded-md border border-green-500/40 bg-green-500/10 p-4 space-y-3">
-              <p className="text-sm font-medium text-green-600 dark:text-green-400">
+            <div className="rounded-md border border-data/40 bg-data/10 p-4 space-y-3">
+              <p className="text-sm font-medium text-data">
                 {t('documentScan.panel.completedTitle')}
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setViewerOpen(true)}
-                  className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-700 transition-colors motion-reduce:transition-none"
+                  className="inline-flex items-center gap-1.5 rounded-md bg-success px-4 py-2 text-success-foreground font-medium hover:bg-success/90 transition-colors motion-reduce:transition-none"
                 >
                   <FileSearch className="w-4 h-4" aria-hidden="true" />
                   {t('documentScan.panel.viewResult')}

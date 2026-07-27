@@ -25,7 +25,9 @@ export function MockAd({
       data-mock-ad="true"
       data-placement={placement}
     >
-      <div className="rounded-xl border border-dashed border-muted-foreground/30 bg-muted/30 p-6 text-center text-sm text-muted-foreground">
+      {/* Height matches the real slot's reserved 280px (§3.7) so the CLS fix is
+          verifiable in dev, where no real ad ever fills. */}
+      <div className="flex min-h-[280px] flex-col items-center justify-center rounded-lg border border-dashed border-edge-strong bg-surface-2/40 p-6 text-center text-sm text-muted-foreground">
         <div className="font-medium">Mock ad preview</div>
         <div className="mt-1 text-xs">
           Local preview only. No Google ad request is sent.

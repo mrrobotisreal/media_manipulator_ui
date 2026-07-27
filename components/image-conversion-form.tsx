@@ -396,7 +396,7 @@ const ImageConversionForm: React.FC<{
         />
 
         {selectedFormat === 'svg' && (
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+          <div className="border border-edge rounded-lg p-4 space-y-4">
             <div>
               <h3 className="font-medium text-card-foreground">{t('interface:imageForm.vectorize.title')}</h3>
               <p className="text-sm text-muted-foreground mt-1">{t('interface:imageForm.vectorize.note')}</p>
@@ -430,14 +430,14 @@ const ImageConversionForm: React.FC<{
         )}
 
         {selectedFormat === 'ico' && (
-          <div className="rounded-md border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 px-3 py-2 text-sm text-card-foreground">
+          <div className="rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-card-foreground">
             {t('interface:imageForm.ico.note')}
           </div>
         )}
 
         {showImageEditing && (
         <>
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+        <div className="border border-edge rounded-lg p-4 space-y-4">
           <div>
             <h3 className="font-medium text-card-foreground flex items-center gap-2">
               {t('interface:imageForm.ai.title')}
@@ -482,7 +482,7 @@ const ImageConversionForm: React.FC<{
                   <option value="remove_object">{t('interface:imageForm.ai.operations.remove_object')}</option>
                 </select>
                 {lockedAIOperation && (
-                  <span className="mt-1 inline-flex items-center gap-1 rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+                  <span className="mt-1 inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                     {t('interface:imageForm.ai.operationLocked')}
                   </span>
                 )}
@@ -543,7 +543,7 @@ const ImageConversionForm: React.FC<{
                     type="button"
                     onClick={handleDetectFaces}
                     disabled={!file || isDetectingFaces}
-                    className="px-3 py-1.5 text-sm rounded-md bg-emerald-600 text-white hover:bg-emerald-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="px-3 py-1.5 text-sm rounded-md bg-success text-success-foreground hover:bg-success/90 disabled:bg-surface-3 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     {isDetectingFaces ? (
                       <>
@@ -774,7 +774,7 @@ const ImageConversionForm: React.FC<{
           )}
         </div>
 
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+        <div className="border border-edge rounded-lg p-4 space-y-4">
           <h3 className="font-medium text-card-foreground flex items-center gap-2">
             {t('interface:imageForm.textOverlay.title')}
             <InfoTooltip
@@ -832,7 +832,7 @@ const ImageConversionForm: React.FC<{
           </div>
         </div>
 
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4">
+        <div className="border border-edge rounded-lg p-4 space-y-4">
           <div>
             <h3 className="font-medium text-card-foreground flex items-center gap-2">
               {t('interface:imageForm.metadata.title')}
@@ -948,7 +948,7 @@ const ImageConversionForm: React.FC<{
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-primary text-primary-foreground py-3 px-6 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
         >
           {isLoading ? (
             <>

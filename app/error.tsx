@@ -61,7 +61,7 @@ export default function Error({
         <button
           type="button"
           onClick={handleRetry}
-          className="bg-blue-600 text-white py-2.5 px-5 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+          className="bg-primary text-primary-foreground py-2.5 px-5 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors flex items-center gap-2"
         >
           <RotateCcw className="w-4 h-4" />
           Try again

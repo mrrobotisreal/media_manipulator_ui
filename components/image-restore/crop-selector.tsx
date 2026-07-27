@@ -211,7 +211,7 @@ const CropSelector: React.FC<CropSelectorProps> = ({
           type="button"
           disabled={disabled || !crop}
           onClick={() => onCropChange(null)}
-          className="text-xs text-blue-600 hover:underline disabled:opacity-50 disabled:no-underline"
+          className="text-xs text-primary hover:underline disabled:opacity-50 disabled:no-underline"
         >
           {t('imageRestore.selector.useEntireImage')}
         </button>
@@ -221,7 +221,7 @@ const CropSelector: React.FC<CropSelectorProps> = ({
         ref={containerRef}
         onPointerDown={handleContainerPointerDown}
         className={cn(
-          'relative inline-block w-full overflow-hidden rounded-lg border border-border bg-black/40 select-none touch-none',
+          'relative inline-block w-full overflow-hidden rounded-lg border border-border bg-surface-0/40 select-none touch-none',
           disabled ? 'cursor-not-allowed opacity-70' : 'cursor-crosshair',
         )}
       >
@@ -256,20 +256,20 @@ const CropSelector: React.FC<CropSelectorProps> = ({
               width: `${crop.width * 100}%`,
               height: `${crop.height * 100}%`,
             }}
-            className="absolute border-2 border-blue-500 bg-blue-500/15 rounded-md cursor-move shadow-[0_0_10px_rgba(59,130,246,0.45)]"
+            className="absolute border-2 border-primary bg-primary/15 rounded-md cursor-move shadow-[0_0_10px_rgba(59,130,246,0.45)]"
           >
             {HANDLES.map((handle) => (
               <span
                 key={handle}
                 onPointerDown={(event) => begin(event, handle, crop)}
-                className={cn('absolute w-2.5 h-2.5 bg-white border border-blue-500 rounded-sm', handleCursor(handle), handlePosition(handle))}
+                className={cn('absolute w-2.5 h-2.5 bg-surface-1 border border-primary rounded-sm', handleCursor(handle), handlePosition(handle))}
               />
             ))}
           </div>
         )}
         {!crop && !disabled && (
           <div className="absolute inset-x-0 bottom-2 text-center pointer-events-none">
-            <span className="inline-flex items-center gap-1 bg-black/70 text-white text-xs px-2 py-1 rounded-md">
+            <span className="inline-flex items-center gap-1 bg-surface-0/70 text-foreground text-xs px-2 py-1 rounded-md">
               {t('imageRestore.selector.dragHint')}
             </span>
           </div>
@@ -284,7 +284,7 @@ const CropSelector: React.FC<CropSelectorProps> = ({
         </p>
       )}
       {overBudget && (
-        <p className="text-sm rounded-md border border-amber-400/50 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-3 py-2">
+        <p className="text-sm rounded-md border border-premium/50 bg-premium/10 text-premium dark:text-premium px-3 py-2">
           {t('imageRestore.selector.overBudget')}
         </p>
       )}

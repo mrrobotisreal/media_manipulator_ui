@@ -43,7 +43,7 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
       <img
         src={previewUrl(entry.id)}
         alt={entry.label}
-        className={large ? 'block max-h-[70vh] w-auto mx-auto' : 'block w-full h-auto'}
+        className={large ? 'block max-h-[70dvh] w-auto mx-auto' : 'block w-full h-auto'}
         loading="lazy"
         onError={() => markFailed(entry.id)}
       />
@@ -53,7 +53,7 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
   const Badge = ({ entry }: { entry: ImageRestoreResultEntry }) => {
     if (entry.fidelityNote || entry.kind === 'preclean') {
       return (
-        <span className="inline-flex items-center gap-1 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 text-[10px] font-medium">
+        <span className="inline-flex items-center gap-1 rounded bg-success/15 text-success  px-1.5 py-0.5 text-[10px] font-medium">
           <ShieldCheck className="h-3 w-3" aria-hidden="true" />
           {t('imageRestore.results.fidelityBadge')}
         </span>
@@ -61,7 +61,7 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
     }
     if (entry.generativeNote || entry.kind === 'face') {
       return (
-        <span className="inline-flex items-center gap-1 rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 text-[10px] font-medium">
+        <span className="inline-flex items-center gap-1 rounded bg-premium/15 text-premium dark:text-premium px-1.5 py-0.5 text-[10px] font-medium">
           <AlertTriangle className="h-3 w-3" aria-hidden="true" />
           {t('imageRestore.results.generativeBadge')}
         </span>
@@ -75,7 +75,7 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         {/* Original */}
         <figure className="space-y-1">
-          <div className="overflow-hidden rounded-lg border border-border bg-black/40">{renderThumb(data.original)}</div>
+          <div className="overflow-hidden rounded-lg border border-border bg-surface-0/40">{renderThumb(data.original)}</div>
           <figcaption className="text-xs text-muted-foreground">
             {t('imageRestore.results.originalCaption', { w: data.original.width, h: data.original.height })}
           </figcaption>
@@ -89,7 +89,7 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
                 type="button"
                 disabled={entry.status !== 'completed'}
                 onClick={() => entry.status === 'completed' && setActive(entry)}
-                className="block w-full overflow-hidden rounded-lg border border-border bg-black/40 disabled:cursor-default focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="block w-full overflow-hidden rounded-lg border border-border bg-surface-0/40 disabled:cursor-default focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 {entry.status === 'completed' ? (
                   renderThumb(entry)
@@ -124,13 +124,13 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
           {active && (
             <div className="grid gap-3 md:grid-cols-2">
               <figure className="space-y-1">
-                <div className="overflow-hidden rounded-lg border border-border bg-black/40">{renderThumb(data.original, true)}</div>
+                <div className="overflow-hidden rounded-lg border border-border bg-surface-0/40">{renderThumb(data.original, true)}</div>
                 <figcaption className="text-center text-xs text-muted-foreground">
                   {t('imageRestore.results.compareOriginal')}
                 </figcaption>
               </figure>
               <figure className="space-y-1">
-                <div className="overflow-hidden rounded-lg border border-border bg-black/40">{renderThumb(active, true)}</div>
+                <div className="overflow-hidden rounded-lg border border-border bg-surface-0/40">{renderThumb(active, true)}</div>
                 <figcaption className="text-center text-xs text-muted-foreground">{active.label}</figcaption>
               </figure>
               {(active.generativeNote || active.fidelityNote) && (

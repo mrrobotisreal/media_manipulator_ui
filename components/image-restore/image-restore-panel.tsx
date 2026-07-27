@@ -18,9 +18,9 @@ const FIXED_STAGE_KEYS = new Set(['queued', 'prepare', 'package', 'completed']);
 const stageIcon = (status: TranscodeJobStage['status']) => {
   switch (status) {
     case 'completed':
-      return <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" aria-hidden="true" />;
+      return <CheckCircle2 className="w-4 h-4 text-data shrink-0" aria-hidden="true" />;
     case 'processing':
-      return <Loader2 className="w-4 h-4 text-blue-500 animate-spin motion-reduce:animate-none shrink-0" aria-hidden="true" />;
+      return <Loader2 className="w-4 h-4 text-primary animate-spin motion-reduce:animate-none shrink-0" aria-hidden="true" />;
     case 'failed':
       return <XCircle className="w-4 h-4 text-destructive shrink-0" aria-hidden="true" />;
     case 'skipped':
@@ -129,7 +129,7 @@ const ImageRestorePanel: React.FC = () => {
       {!file && (
         <div
           className={`rounded-lg border-2 border-dashed p-10 text-center transition-colors motion-reduce:transition-none cursor-pointer ${
-            isDragOver ? 'border-blue-500 bg-blue-500/10' : 'border-border bg-background/40 hover:border-blue-400/60'
+            isDragOver ? 'border-primary bg-primary/10' : 'border-border bg-background/40 hover:border-primary/60'
           }`}
           onDragOver={(e) => {
             e.preventDefault();
@@ -171,7 +171,7 @@ const ImageRestorePanel: React.FC = () => {
               <span className="font-medium">{file.name}</span>{' '}
               <span className="text-muted-foreground">({formatFileSize(file.size)})</span>
             </p>
-            <button type="button" onClick={handleReset} className="text-xs text-blue-600 hover:underline whitespace-nowrap">
+            <button type="button" onClick={handleReset} className="text-xs text-primary hover:underline whitespace-nowrap">
               {t('imageRestore.panel.changeFile')}
             </button>
           </div>
@@ -223,7 +223,7 @@ const ImageRestorePanel: React.FC = () => {
                   disabled={restore.isPending}
                   onClick={() => setScale(opt.value)}
                   className={`rounded-md border px-4 py-1.5 text-sm transition-colors motion-reduce:transition-none ${
-                    scale === opt.value ? 'border-blue-500 bg-blue-500/10 font-medium' : 'border-input hover:bg-muted'
+                    scale === opt.value ? 'border-primary bg-primary/10 font-medium' : 'border-input hover:bg-muted'
                   }`}
                 >
                   {opt.label}
@@ -244,7 +244,7 @@ const ImageRestorePanel: React.FC = () => {
               </p>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
+                  className="bg-primary h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
                   style={{ width: `${restore.uploadProgress}%` }}
                 />
               </div>
@@ -268,7 +268,7 @@ const ImageRestorePanel: React.FC = () => {
                   },
                 })
               }
-              className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-white font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors motion-reduce:transition-none"
+              className="w-full rounded-md bg-primary px-4 py-2.5 text-primary-foreground font-medium hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors motion-reduce:transition-none"
             >
               {t('imageRestore.panel.submit', { count: totalSelected })}
             </button>
@@ -299,7 +299,7 @@ const ImageRestorePanel: React.FC = () => {
           {job.status === 'processing' || job.status === 'pending' ? (
             <div className="w-full bg-muted rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
+                className="bg-primary h-2 rounded-full transition-all duration-300 motion-reduce:transition-none"
                 style={{ width: `${job.progress ?? 0}%` }}
               />
             </div>
@@ -321,15 +321,15 @@ const ImageRestorePanel: React.FC = () => {
 
           {completed && (
             <div className="space-y-4">
-              <div className="rounded-md border border-green-500/40 bg-green-500/10 p-4 space-y-3">
-                <p className="text-sm font-medium text-green-600 dark:text-green-400">
+              <div className="rounded-md border border-data/40 bg-data/10 p-4 space-y-3">
+                <p className="text-sm font-medium text-data">
                   {t('imageRestore.panel.completedTitle')}
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   <button
                     type="button"
                     onClick={handleDownload}
-                    className="inline-flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-700 transition-colors motion-reduce:transition-none"
+                    className="inline-flex items-center gap-1.5 rounded-md bg-success px-4 py-2 text-success-foreground font-medium hover:bg-success/90 transition-colors motion-reduce:transition-none"
                   >
                     <Download className="w-4 h-4" aria-hidden="true" />
                     {downloadedOnce ? t('imageRestore.panel.downloadAgain') : t('imageRestore.panel.download')}

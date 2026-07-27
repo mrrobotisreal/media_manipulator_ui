@@ -275,7 +275,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
           onDrop={handleDrop}
           className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
             isDragOver
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/50'
+              ? 'border-primary bg-primary/10'
               : 'border-muted-foreground/25 hover:border-muted-foreground/50'
           }`}
         >
@@ -287,7 +287,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
           >
             {t('specializedToolShell.selectFile')}
           </button>
@@ -338,7 +338,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
               </p>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{ width: `${conversionJob?.progress || uploadProgress || 0}%` }}
                 />
               </div>
@@ -351,7 +351,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                 <button
                   type="button"
                   onClick={() => void openPreview()}
-                  className="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  className="bg-primary text-primary-foreground py-3 px-6 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors flex items-center justify-center gap-2"
                 >
                   <Play className="w-4 h-4" />
                   {t('specializedToolShell.previewResult')}
@@ -359,7 +359,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                 <button
                   type="button"
                   onClick={() => void handleDownload()}
-                  className="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                  className="bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
                   {t('specializedToolShell.downloadResult')}
@@ -369,7 +369,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
               <button
                 type="button"
                 onClick={() => void handleDownload()}
-                className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4" />
                 {t('specializedToolShell.downloadResult')}
@@ -387,8 +387,8 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
       {/* Result preview modal — opt-in via previewConfig. Mirrors the home-
           page result viewer so the experience is consistent across the app. */}
       {previewConfig && isResultModalOpen && selectedFile && (
-        <div className="fixed inset-0 z-50 bg-black/80 p-4 flex items-center justify-center">
-          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-surface-0/80 p-4 flex items-center justify-center">
+          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100dvh-2rem)] flex flex-col overflow-hidden shadow-2xl">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
               <div>
                 <h2 className="text-xl font-semibold text-card-foreground">
@@ -405,7 +405,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                     onClick={() => setResultView('original')}
                     className={`px-4 py-2 text-sm transition-colors ${
                       resultView === 'original'
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-primary text-primary-foreground'
                         : 'bg-background text-card-foreground hover:bg-muted'
                     }`}
                   >
@@ -416,7 +416,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                     onClick={() => setResultView('final')}
                     className={`px-4 py-2 text-sm transition-colors ${
                       resultView === 'final'
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-primary text-primary-foreground'
                         : 'bg-background text-card-foreground hover:bg-muted'
                     }`}
                   >
@@ -426,7 +426,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                 <button
                   type="button"
                   onClick={() => void handleDownload()}
-                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                  className="bg-success text-success-foreground py-2 px-4 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
                   {t('common.download')}
@@ -457,7 +457,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                   <button
                     type="button"
                     onClick={() => void openPreview()}
-                    className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
                   >
                     {t('common.tryAgain')}
                   </button>
@@ -510,7 +510,7 @@ const SpecializedToolMediaPreview: React.FC<SpecializedToolMediaPreviewProps> = 
       <img
         src={src}
         alt={filename}
-        className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
+        className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
       />
     );
   }
@@ -519,7 +519,7 @@ const SpecializedToolMediaPreview: React.FC<SpecializedToolMediaPreviewProps> = 
       <video
         src={src}
         controls
-        className="max-w-full max-h-[calc(100vh-14rem)] rounded-lg bg-black"
+        className="max-w-full max-h-[calc(100dvh-14rem)] rounded-lg bg-surface-0"
       />
     );
   }

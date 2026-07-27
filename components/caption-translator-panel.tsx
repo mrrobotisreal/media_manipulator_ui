@@ -160,7 +160,7 @@ const CaptionTranslatorPanel: React.FC = () => {
           onDrop={handleDrop}
           className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
             isDragOver
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/50'
+              ? 'border-primary bg-primary/10'
               : 'border-muted-foreground/25 hover:border-muted-foreground/50'
           }`}
         >
@@ -172,7 +172,7 @@ const CaptionTranslatorPanel: React.FC = () => {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
           >
             {t('captionTranslator.selectCaptionFile')}
           </button>
@@ -255,7 +255,7 @@ const CaptionTranslatorPanel: React.FC = () => {
           <button
             type="submit"
             disabled={isProcessing || !targetLanguage}
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-primary text-primary-foreground py-3 px-6 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             <Languages className="w-4 h-4" />
             {isProcessing ? t('captionTranslator.translating') : t('captionTranslator.translateCaptions')}
@@ -271,7 +271,7 @@ const CaptionTranslatorPanel: React.FC = () => {
               </p>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{ width: `${conversionJob?.progress || uploadProgress || 0}%` }}
                 />
               </div>
@@ -282,7 +282,7 @@ const CaptionTranslatorPanel: React.FC = () => {
             <button
               type="button"
               onClick={() => void handleDownload()}
-              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
               {t('captionTranslator.downloadTranslated')}

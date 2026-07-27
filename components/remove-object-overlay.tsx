@@ -237,7 +237,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
         ref={containerRef}
         onPointerDown={handleContainerPointerDown}
         className={cn(
-          'relative inline-block w-full overflow-hidden rounded-lg border border-border bg-black/40 select-none',
+          'relative inline-block w-full overflow-hidden rounded-lg border border-border bg-surface-0/40 select-none',
           disabled ? 'cursor-not-allowed opacity-70' : 'cursor-crosshair',
         )}
       >
@@ -262,14 +262,14 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
               className={cn(
                 'absolute border-2 rounded-md flex items-start justify-between p-1',
                 isActive
-                  ? 'border-rose-400 bg-rose-400/15 shadow-[0_0_10px_rgba(244,114,182,0.55)] cursor-move'
-                  : 'border-amber-400/90 bg-amber-400/10 hover:bg-amber-400/20 cursor-move',
+                  ? 'border-destructive bg-destructive/15 shadow-[0_0_10px_rgba(244,114,182,0.55)] cursor-move'
+                  : 'border-premium/90 bg-premium/10 hover:bg-premium/20 cursor-move',
               )}
             >
               <span
                 className={cn(
                   'inline-block px-1 text-[10px] font-semibold leading-tight rounded pointer-events-none',
-                  isActive ? 'bg-rose-400 text-black' : 'bg-amber-400/90 text-black',
+                  isActive ? 'bg-destructive/20 text-foreground' : 'bg-premium/90 text-foreground',
                 )}
               >
                 {index + 1}
@@ -283,7 +283,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
                 }}
                 disabled={disabled}
                 aria-label={t('removeObjectOverlay.removeRectangle', { number: index + 1 })}
-                className="bg-black/70 text-white rounded p-0.5 hover:bg-black/90 disabled:opacity-50"
+                className="bg-surface-0/70 text-foreground rounded p-0.5 hover:bg-surface-0/90 disabled:opacity-50"
               >
                 <Trash2 className="w-3 h-3" />
               </button>
@@ -292,7 +292,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
                   key={handle}
                   onPointerDown={(event) => beginInteraction(event, rect.id, handle, rect)}
                   className={cn(
-                    'absolute w-2.5 h-2.5 bg-white border border-rose-500 rounded-sm',
+                    'absolute w-2.5 h-2.5 bg-surface-1 border border-destructive rounded-sm',
                     handleCursor(handle),
                     handlePosition(handle),
                   )}
@@ -303,7 +303,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
         })}
         {rectangles.length === 0 && !disabled && (
           <div className="absolute inset-x-0 bottom-2 text-center pointer-events-none">
-            <span className="inline-flex items-center gap-1 bg-black/70 text-white text-xs px-2 py-1 rounded-md">
+            <span className="inline-flex items-center gap-1 bg-surface-0/70 text-foreground text-xs px-2 py-1 rounded-md">
               <Plus className="w-3 h-3" />
               Click and drag on the image to mark an area to remove
             </span>

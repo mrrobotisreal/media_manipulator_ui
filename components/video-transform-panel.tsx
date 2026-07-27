@@ -208,7 +208,7 @@ const VideoTransformPanel: React.FC<{ presets: VideoTransformPresets }> = ({ pre
               ))}
             </select>
             {lockedFormat && (
-              <span className="mt-1 inline-flex items-center gap-1 rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+              <span className="mt-1 inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                 {t('videoTransform.outputLocked', { format: lockedFormat.toUpperCase() })}
               </span>
             )}
@@ -217,7 +217,7 @@ const VideoTransformPanel: React.FC<{ presets: VideoTransformPresets }> = ({ pre
           <button
             type="submit"
             disabled={isProcessing || !valid}
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-primary text-primary-foreground py-3 px-6 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {icon}
             {isProcessing ? t('videoTransform.running') : t(`videoTransform.submit.${emphasis}`)}

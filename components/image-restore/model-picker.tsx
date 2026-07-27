@@ -99,13 +99,13 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
           cardDisabled
             ? 'border-border bg-muted/40 opacity-60 cursor-not-allowed'
             : checked
-              ? 'border-blue-500 bg-blue-500/10 cursor-pointer'
-              : 'border-border bg-background/40 hover:border-blue-400/60 cursor-pointer'
+              ? 'border-primary bg-primary/10 cursor-pointer'
+              : 'border-border bg-background/40 hover:border-primary/60 cursor-pointer'
         }`}
       >
         <input
           type="checkbox"
-          className="mt-1 h-4 w-4 accent-blue-600"
+          className="mt-1 h-4 w-4 accent-primary"
           checked={checked}
           disabled={cardDisabled}
           onChange={() => toggleIn(list, onChange, model.id)}
@@ -133,7 +133,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
-            className="h-4 w-4 accent-blue-600"
+            className="h-4 w-4 accent-primary"
             checked={precleanEnabled}
             disabled={disabled}
             onChange={(e) => {
@@ -149,7 +149,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
             <p className="text-xs text-muted-foreground italic">{t('imageRestore.picker.precleanOrderNote')}</p>
             <div className="grid gap-2 sm:grid-cols-3">{precleanModels.map((m) => renderCard(m, preclean, onPrecleanChange))}</div>
             {preclean.length > 0 && (
-              <p className="text-xs text-blue-600 dark:text-blue-400">{t('imageRestore.picker.precleanBaseHint')}</p>
+              <p className="text-xs text-primary">{t('imageRestore.picker.precleanBaseHint')}</p>
             )}
             {fbcnnSelected && (
               <label className="flex items-center gap-2 text-xs">
@@ -186,7 +186,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
-            className="h-4 w-4 accent-blue-600"
+            className="h-4 w-4 accent-primary"
             checked={faceEnabled}
             disabled={disabled}
             onChange={(e) => {
@@ -231,7 +231,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
                       {detect.data.faces.map((f) => (
                         <span
                           key={f.id}
-                          className="absolute border-2 border-emerald-400 bg-emerald-400/10 pointer-events-none"
+                          className="absolute border-2 border-success bg-success/10 pointer-events-none"
                           style={{ left: `${f.x * 100}%`, top: `${f.y * 100}%`, width: `${f.width * 100}%`, height: `${f.height * 100}%` }}
                         />
                       ))}
@@ -257,7 +257,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
                   value={codeformerFidelity}
                   disabled={disabled}
                   onChange={(e) => onCodeformerFidelityChange(parseFloat(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="w-full accent-primary"
                   aria-label={t('imageRestore.picker.fidelityLabel')}
                 />
                 <p className="text-xs text-muted-foreground">{t('imageRestore.picker.fidelityHint')}</p>
@@ -268,7 +268,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="mt-0.5 h-4 w-4 accent-blue-600"
+                  className="mt-0.5 h-4 w-4 accent-primary"
                   checked={chain}
                   disabled={disabled}
                   onChange={(e) => onChainChange(e.target.checked)}
@@ -280,7 +280,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
               </label>
             )}
 
-            <p className="text-xs rounded-md border border-amber-400/50 bg-amber-500/10 text-amber-700 dark:text-amber-300 px-3 py-2">
+            <p className="text-xs rounded-md border border-premium/50 bg-premium/10 text-premium dark:text-premium px-3 py-2">
               {t('imageRestore.picker.generativeWarning')}
             </p>
           </div>
@@ -294,7 +294,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
           : t('imageRestore.picker.totalOutputs', { count: totalOutputs })}
       </p>
       {overBudget && (
-        <p className="text-sm rounded-md border border-amber-400/50 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-3 py-2">
+        <p className="text-sm rounded-md border border-premium/50 bg-premium/10 text-premium dark:text-premium px-3 py-2">
           {t('imageRestore.picker.overBudget', { max: maxOutputs })}
         </p>
       )}

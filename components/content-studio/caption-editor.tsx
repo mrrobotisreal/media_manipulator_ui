@@ -37,7 +37,7 @@ const CaptionEditor: React.FC = () => {
   return (
     <Panel level="2" padding={false} className="p-4 h-full overflow-y-auto">
       <h2 className="text-sm font-semibold text-card-foreground mb-3 flex items-center gap-2">
-        <Captions className="w-4 h-4 text-purple-400" />
+        <Captions className="w-4 h-4 text-premium" />
         {t('contentStudio.captions.editorTitle')}
       </h2>
 

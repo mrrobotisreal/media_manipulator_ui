@@ -161,14 +161,14 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-surface-0/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
       <div
-        className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto shadow-2xl"
+        className="bg-surface-1 rounded-lg max-w-4xl w-full max-h-[90dvh] overflow-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-edge">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Scissors className="w-5 h-5" />
             {mediaType === 'video' ? t('interface:mediaTrimModal.titleVideo') : t('interface:mediaTrimModal.titleAudio')}
@@ -176,14 +176,14 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
           <button
             onClick={onClose}
             aria-label={t('accessibility:modals.close')}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         <div className="p-6">
-          <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="mb-4 text-sm text-muted-foreground">
             {t('interface:mediaTrimModal.instructions')}
           </div>
 
@@ -197,19 +197,19 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
                 controls={false}
               />
             ) : (
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-8 w-full max-w-md">
+              <div className="bg-surface-2 rounded-lg p-8 w-full max-w-md">
                 <audio
                   ref={mediaRef as React.RefObject<HTMLAudioElement>}
                   src={mediaUrl}
                   className="hidden"
                 />
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.816L4.136 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.136l4.247-3.816a1 1 0 011 .892zM16 8a1 1 0 00-1.414-1.414l-.707.707a1 1 0 000 1.414L15.586 10l-.707.707a1 1 0 000 1.414l.707.707A1 1 0 0016 12l-.414-.414.707-.707A1 1 0 0016 8z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300">{t('interface:mediaTrimModal.audioFile')}</p>
+                  <p className="text-muted-foreground">{t('interface:mediaTrimModal.audioFile')}</p>
                 </div>
               </div>
             )}
@@ -219,13 +219,13 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
           <div className="mb-6 flex items-center justify-center gap-4">
             <button
               onClick={handlePlayPause}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] flex items-center gap-2"
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               {isPlaying ? t('interface:mediaTrimModal.pausePreview') : t('interface:mediaTrimModal.playPreview')}
             </button>
 
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-muted-foreground">
               {formatTime(currentTime)} / {formatTime(duration)}
             </div>
           </div>
@@ -234,7 +234,7 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
           <div className="mb-6">
             <div
               ref={timelineRef}
-              className="relative h-12 bg-gray-200 dark:bg-gray-600 rounded-lg cursor-pointer"
+              className="relative h-12 bg-surface-2 rounded-lg cursor-pointer"
               onClick={handleTimelineClick}
               onMouseMove={handleDragMove}
               onMouseUp={handleDragEnd}
@@ -242,17 +242,17 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
             >
               {/* Dimmed areas (will be trimmed) */}
               <div
-                className="absolute top-0 left-0 h-full bg-gray-400 dark:bg-gray-700 opacity-75 rounded-l-lg"
+                className="absolute top-0 left-0 h-full bg-surface-3 opacity-75 rounded-l-lg"
                 style={{ width: `${startPercent}%` }}
               />
               <div
-                className="absolute top-0 right-0 h-full bg-gray-400 dark:bg-gray-700 opacity-75 rounded-r-lg"
+                className="absolute top-0 right-0 h-full bg-surface-3 opacity-75 rounded-r-lg"
                 style={{ width: `${100 - endPercent}%` }}
               />
 
               {/* Active (kept) area */}
               <div
-                className="absolute top-0 h-full bg-blue-200 dark:bg-blue-800"
+                className="absolute top-0 h-full bg-data/30"
                 style={{
                   left: `${startPercent}%`,
                   width: `${endPercent - startPercent}%`,
@@ -261,26 +261,26 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
 
               {/* Start handle */}
               <div
-                className="absolute top-0 w-3 h-full bg-blue-600 cursor-ew-resize rounded-l"
+                className="absolute top-0 w-3 h-full bg-primary cursor-ew-resize rounded-l"
                 style={{ left: `${startPercent}%` }}
                 onMouseDown={(e) => handleDragStart(e, 'start')}
               />
 
               {/* End handle */}
               <div
-                className="absolute top-0 w-3 h-full bg-blue-600 cursor-ew-resize rounded-r"
+                className="absolute top-0 w-3 h-full bg-primary cursor-ew-resize rounded-r"
                 style={{ left: `${endPercent - 0.5}%` }}
                 onMouseDown={(e) => handleDragStart(e, 'end')}
               />
 
               {/* Current time indicator */}
               <div
-                className="absolute top-0 w-0.5 h-full bg-red-500"
+                className="absolute top-0 w-0.5 h-full bg-destructive"
                 style={{ left: `${currentPercent}%` }}
               />
             </div>
 
-            <div className="mt-2 flex justify-between text-xs text-gray-500">
+            <div className="mt-2 flex justify-between text-xs text-muted-foreground">
               <span>0:00</span>
               <span>{formatTime(duration)}</span>
             </div>
@@ -289,34 +289,34 @@ const MediaTrimModal: React.FC<MediaTrimModalProps> = ({
           {/* Trim info */}
           <div className="mb-6 grid grid-cols-3 gap-4 text-sm">
             <div className="text-center">
-              <div className="text-gray-600 dark:text-gray-400">{t('interface:mediaTrimModal.startLabel')}</div>
+              <div className="text-muted-foreground">{t('interface:mediaTrimModal.startLabel')}</div>
               <div className="font-medium">{formatTime(trimRange.startTime)}</div>
             </div>
             <div className="text-center">
-              <div className="text-gray-600 dark:text-gray-400">{t('interface:mediaTrimModal.durationLabel')}</div>
+              <div className="text-muted-foreground">{t('interface:mediaTrimModal.durationLabel')}</div>
               <div className="font-medium">{formatTime(trimDuration)}</div>
             </div>
             <div className="text-center">
-              <div className="text-gray-600 dark:text-gray-400">{t('interface:mediaTrimModal.endLabel')}</div>
+              <div className="text-muted-foreground">{t('interface:mediaTrimModal.endLabel')}</div>
               <div className="font-medium">{formatTime(trimRange.endTime)}</div>
             </div>
           </div>
 
           <div className="flex justify-between items-center">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-muted-foreground">
               {t('interface:mediaTrimModal.finalDuration', { duration: formatTime(trimDuration) })}
             </div>
 
             <div className="flex gap-3">
               <button
                 onClick={onClose}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
+                className="px-4 py-2 border border-edge rounded-lg hover:bg-surface-2"
               >
                 {t('interface:common.cancel')}
               </button>
               <button
                 onClick={handleSaveTrim}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-[var(--accent-primary-hover)] flex items-center gap-2"
               >
                 <Scissors className="w-4 h-4" />
                 {t('interface:mediaTrimModal.apply')}

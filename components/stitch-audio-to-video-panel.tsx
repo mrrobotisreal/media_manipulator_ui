@@ -110,7 +110,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
           onDrop={handleVideoDrop}
           className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
             isDragOver
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/50'
+              ? 'border-primary bg-primary/10'
               : 'border-muted-foreground/25 hover:border-muted-foreground/50'
           }`}
         >
@@ -122,7 +122,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
           <button
             type="button"
             onClick={() => videoInputRef.current?.click()}
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
           >
             {t('stitchAudioToVideo.selectVideo')}
           </button>
@@ -141,7 +141,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
             <div className="flex items-center gap-3 min-w-0">
-              <Video className="w-5 h-5 text-blue-600 shrink-0" />
+              <Video className="w-5 h-5 text-primary shrink-0" />
               <div className="min-w-0">
                 <p className="font-medium text-card-foreground truncate">{video.name}</p>
                 <p className="text-xs text-muted-foreground">{formatFileSize(video.size)}</p>
@@ -168,7 +168,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
                 <div key={i} className="border border-border rounded-lg p-3 bg-background/40 space-y-2">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0">
-                      <Music className="w-4 h-4 text-blue-600 shrink-0" />
+                      <Music className="w-4 h-4 text-primary shrink-0" />
                       <span className="text-sm font-medium text-card-foreground truncate">{track.file.name}</span>
                     </div>
                     <button
@@ -276,7 +276,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
           <button
             type="submit"
             disabled={isProcessing || tracks.length === 0}
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-primary text-primary-foreground py-3 px-6 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             <Music className="w-4 h-4" />
             {isProcessing ? t('stitchAudioToVideo.stitching') : t('stitchAudioToVideo.addAudioToVideo')}
@@ -290,7 +290,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
               </p>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{ width: `${conversionJob?.progress || uploadProgress || 0}%` }}
                 />
               </div>
@@ -301,7 +301,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
             <button
               type="button"
               onClick={() => void handleDownload()}
-              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
               {t('stitchAudioToVideo.downloadStitched')}

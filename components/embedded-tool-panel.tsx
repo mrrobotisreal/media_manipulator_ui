@@ -839,12 +839,12 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
       aria-label={t('embeddedToolPanel.sectionAria')}
     >
       <div className="flex items-start gap-3 mb-4">
-        <span className="mt-1 text-blue-600">
+        <span className="mt-1 text-primary">
           {transcribeMode ? <FileText className="w-5 h-5" /> : ICON_MAP[defaultMediaKind]}
         </span>
         <div>
           <h2 className="text-xl font-semibold text-card-foreground flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-blue-600" /> {t('embeddedToolPanel.tryItNow')}
+            <Sparkles className="w-4 h-4 text-primary" /> {t('embeddedToolPanel.tryItNow')}
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
             <span className="font-medium">{heading}.</span> {subheading}
@@ -853,8 +853,8 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
       </div>
 
       {(hint?.note || recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
-        <div className="mb-4 flex items-start gap-2 rounded-md border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 p-3">
-          <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+        <div className="mb-4 flex items-start gap-2 rounded-md border border-primary/30 bg-primary/10 p-3">
+          <Info className="w-4 h-4 text-primary mt-0.5 shrink-0" />
           <div className="text-sm text-card-foreground">
             {recommendedFormat && (
               <p>
@@ -923,7 +923,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
           onDrop={handleDrop}
           className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
             isDragOver
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/50'
+              ? 'border-primary bg-primary/10'
               : 'border-muted-foreground/25 hover:border-muted-foreground/50'
           }`}
         >
@@ -937,7 +937,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
           >
             {t('embeddedToolPanel.selectFile')}
           </button>
@@ -953,7 +953,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
         <div className="space-y-4">
           <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
             <div className="flex items-center gap-3 min-w-0">
-              <span className="shrink-0 text-blue-600">
+              <span className="shrink-0 text-primary">
                 {ICON_MAP[effectiveKind]}
               </span>
               <div className="min-w-0">
@@ -1041,7 +1041,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
               </p>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{
                     width: `${conversionJob?.progress || activeProgress || 0}%`,
                   }}
@@ -1054,7 +1054,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             <button
               type="button"
               onClick={() => void handleDownload()}
-              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
               {t('embeddedToolPanel.downloadFilename', { filename: getConvertedFilename() })}
@@ -1071,7 +1071,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
 
       <p className="text-xs text-muted-foreground mt-4">
         {t('embeddedToolPanel.needFullPrefix')}{' '}
-        <Link href="/" className="text-blue-600 hover:underline">
+        <Link href="/" className="text-primary hover:underline">
           {t('embeddedToolPanel.openFullConverter')}
         </Link>{' '}
         {t('embeddedToolPanel.needFullSuffix')}

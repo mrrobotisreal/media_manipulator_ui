@@ -28,7 +28,7 @@ const ConversionOptions: React.FC<{
       <div className="space-y-4">
         {/* Crop Button */}
         {onCropClick && (
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+          <div className="border border-edge rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium text-card-foreground flex items-center gap-2">
@@ -45,7 +45,7 @@ const ConversionOptions: React.FC<{
               <button
                 type="button"
                 onClick={onCropClick}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] flex items-center gap-2"
               >
                 <Crop className="w-4 h-4" />
                 {cropStatus ? t('conversionOptions.image.cropping.editCrop') : t('conversionOptions.image.cropping.cropImage')}
@@ -85,7 +85,7 @@ const ConversionOptions: React.FC<{
               )}
             />
             {lockedFormat && (
-              <span className="mt-1 inline-flex items-center gap-1 rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+              <span className="mt-1 inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                 {t('conversionOptions.image.format.locked', { format: lockedFormat.toUpperCase() })}
               </span>
             )}
@@ -120,12 +120,12 @@ const ConversionOptions: React.FC<{
         </div>
 
         {emphasizeResize && (
-          <div className="rounded-md border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 px-3 py-2 text-sm text-card-foreground">
+          <div className="rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-card-foreground">
             {t('conversionOptions.image.resizeEmphasis')}
           </div>
         )}
 
-        <div className={`grid grid-cols-2 gap-4${emphasizeResize ? ' rounded-lg ring-2 ring-blue-300 dark:ring-blue-800 p-2' : ''}`}>
+        <div className={`grid grid-cols-2 gap-4${emphasizeResize ? ' rounded-lg ring-2 ring-primary  p-2' : ''}`}>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.image.width.label')}
@@ -255,7 +255,7 @@ const ConversionOptions: React.FC<{
       <div className="space-y-4">
         {/* Trim Button */}
         {onTrimClick && (
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+          <div className="border border-edge rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium text-card-foreground flex items-center gap-2">
@@ -272,7 +272,7 @@ const ConversionOptions: React.FC<{
               <button
                 type="button"
                 onClick={onTrimClick}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] flex items-center gap-2"
               >
                 <Scissors className="w-4 h-4" />
                 {trimStatus ? t('conversionOptions.audio.trimming.editTrim') : t('conversionOptions.audio.trimming.trimAudio')}
@@ -412,7 +412,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
     <div className="space-y-4">
       {/* Trim Button */}
       {onTrimClick && (
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+        <div className="border border-edge rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-medium text-card-foreground flex items-center gap-2">
@@ -429,7 +429,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             <button
               type="button"
               onClick={onTrimClick}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] flex items-center gap-2"
             >
               <Scissors className="w-4 h-4" />
               {trimStatus ? t('conversionOptions.video.trimming.editTrim') : t('conversionOptions.video.trimming.trimVideo')}
@@ -471,7 +471,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             )}
           />
           {lockedFormat && (
-            <span className="mt-1 inline-flex items-center gap-1 rounded bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+            <span className="mt-1 inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
               {t('conversionOptions.video.format.locked', { format: lockedFormat.toUpperCase() })}
             </span>
           )}
@@ -603,9 +603,9 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
       </div>
 
       {isGIF && (
-        <div className="border border-purple-200 dark:border-purple-900/60 bg-purple-50/40 dark:bg-purple-950/20 rounded-lg p-4 space-y-4">
+        <div className="border border-premium/30 bg-premium/8 rounded-lg p-4 space-y-4">
           <div className="flex items-start gap-2">
-            <Sparkles className="w-4 h-4 text-purple-600 mt-0.5 shrink-0" />
+            <Sparkles className="w-4 h-4 text-premium mt-0.5 shrink-0" />
             <div>
               <h3 className="font-medium text-card-foreground flex items-center gap-2">
                 {t('conversionOptions.video.gif.title')}

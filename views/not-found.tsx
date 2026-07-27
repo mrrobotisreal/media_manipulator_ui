@@ -42,7 +42,7 @@ const NotFoundPage: React.FC = () => {
               <Link
                 key={link.to}
                 href={link.to}
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors text-sm"
+                className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors text-sm"
               >
                 {t(`interface:notFound.links.${link.key}`)}
               </Link>

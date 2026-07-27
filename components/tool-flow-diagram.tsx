@@ -42,7 +42,7 @@ const ToolFlowDiagram: React.FC<ToolFlowDiagramProps> = ({
             <li className="flex md:flex-col md:flex-1 md:min-w-[180px] gap-3 md:items-start md:gap-2 rounded-md border border-border bg-background/40 p-3">
               <span
                 aria-hidden="true"
-                className="shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 font-semibold flex items-center justify-center text-sm"
+                className="shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold flex items-center justify-center text-sm"
               >
                 {index + 1}
               </span>

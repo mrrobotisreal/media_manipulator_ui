@@ -38,7 +38,7 @@ const BlogPage: React.FC = () => {
       titleNode: (
         <>
           {t('blog.articles.audioQualityPrefix')}{' '}
-          <span className="line-through text-gray-400">{t('blog.articles.audioQualityStrike')}</span>{' '}
+          <span className="line-through text-muted-foreground">{t('blog.articles.audioQualityStrike')}</span>{' '}
           {t('blog.articles.audioQualitySuffix')}
         </>
       ),
@@ -63,7 +63,7 @@ const BlogPage: React.FC = () => {
               <div className="grid gap-8">
                 {articles.map((article, index) => (
                   <Panel key={index} level="2" as="article" className="lg:p-6 transition-shadow">
-                    <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-green-600">
+                    <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-data">
                       <Link href={`/blog/${article.slug}`}>
                         {article.titleNode ?? t(article.titleKey!)}
                       </Link>
@@ -76,7 +76,7 @@ const BlogPage: React.FC = () => {
                     <p className="text-muted-foreground mb-4">{t(article.excerptKey)}</p>
                     <Link
                       href={`/blog/${article.slug}`}
-                      className="text-green-600 hover:text-green-700 font-medium"
+                      className="text-data hover:text-data font-medium"
                     >
                       {t('blog.readMore')}
                     </Link>

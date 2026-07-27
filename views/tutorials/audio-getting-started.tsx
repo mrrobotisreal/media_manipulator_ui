@@ -14,7 +14,7 @@ const AudioGettingStartedTutorial: React.FC = () => {
       </aside>
       <div className="flex-1 min-w-0">
       <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
-          <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Audio Tutorial</p>
+          <p className="text-sm uppercase tracking-wide text-data font-medium">Audio Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Audio Files</h1>
           <p className="text-lg mb-8">
             Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).
@@ -50,7 +50,7 @@ const AudioGettingStartedTutorial: React.FC = () => {
           {/* Blog hidden during AdSense review — restore the "need help
               choosing" paragraph below when the blog returns.
           <p className="mb-4">
-            Need help choosing? Our <Link href="/blog/audio/audio-quality-guide" className="text-blue-600 hover:text-blue-800">audio quality guide</Link> covers when to use each codec.
+            Need help choosing? Our <Link href="/blog/audio/audio-quality-guide" className="text-primary hover:text-[var(--accent-primary-hover)]">audio quality guide</Link> covers when to use each codec.
           </p>
           */}
 
@@ -120,7 +120,7 @@ const AudioGettingStartedTutorial: React.FC = () => {
           </ul>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <Link href="/" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
               Try the Audio Converter
             </Link>
             <Link href="/tutorials" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">

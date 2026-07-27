@@ -20,6 +20,7 @@ const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'tutorials', href: '/tutorials' },
   { key: 'howItWorks', href: '/how-it-works' },
   { key: 'about', href: '/about' },
+  { key: 'pricing', href: '/pricing', label: 'Pricing' },
 ];
 
 const LEGAL_LINK_KEYS: { key: string; href: string }[] = [
@@ -54,8 +55,8 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer data-site-footer className="w-full bg-black text-gray-300 border-t border-edge">
-      <div className="container mx-auto px-4 py-10">
+    <footer data-site-footer className="w-full border-t border-edge bg-surface-0 text-muted-foreground">
+      <div className="container mx-auto px-4 py-8 sm:py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center space-x-3 mb-3 hover:opacity-90 transition-opacity" aria-label={t('accessibility:footer.homeLink')}>
@@ -68,14 +69,14 @@ const Footer: React.FC = () => {
                 </span>
               </div>
             </Link>
-            <p className="text-sm text-gray-400 max-w-md">
+            <p className="text-sm text-muted-foreground max-w-md">
               {t('interface:footer.tagline')}
             </p>
-            <p className="text-sm text-gray-400 mt-4">
+            <p className="text-sm text-muted-foreground mt-4">
               {t('interface:footer.contact')}{' '}
               <a
                 href="mailto:support@media-manipulator.com"
-                className="text-gray-300 hover:text-white transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 support@media-manipulator.com
               </a>
@@ -83,7 +84,7 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">
               {t('interface:footer.explore')}
             </h3>
             <ul className="space-y-2">
@@ -91,7 +92,7 @@ const Footer: React.FC = () => {
                 <li key={link.key}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label ?? t(`interface:topNav.${link.key}`)}
                   </Link>
@@ -101,7 +102,7 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">
               {t('interface:footer.legal')}
             </h3>
             <ul className="space-y-2">
@@ -109,7 +110,7 @@ const Footer: React.FC = () => {
                 <li key={link.key}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {t(`interface:topNav.${link.key}`)}
                   </Link>
@@ -119,7 +120,7 @@ const Footer: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleCookieSettings}
-                  className="text-sm text-gray-400 hover:text-white transition-colors text-left"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left"
                 >
                   {t('interface:footer.cookieSettings')}
                 </button>
@@ -128,11 +129,11 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-gray-800 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <p className="text-xs text-gray-400">
+        <div className="mt-10 pt-6 border-t border-edge flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <p className="text-xs text-muted-foreground">
             {t('interface:footer.copyright', { year: new Date().getFullYear() })}
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             {t('interface:footer.operatedBy')}
           </p>
         </div>

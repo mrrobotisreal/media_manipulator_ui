@@ -254,7 +254,7 @@ const Timeline: React.FC = () => {
           <div style={{ height: RULER_HEIGHT }} className="border-b border-border" />
           <div
             style={{ height: CAPTION_LANE_HEIGHT }}
-            className="border-b border-border flex items-center justify-center text-[10px] font-medium text-purple-300"
+            className="border-b border-border flex items-center justify-center text-[10px] font-medium text-premium"
           >
             CC
           </div>
@@ -326,10 +326,10 @@ const Timeline: React.FC = () => {
 
             {/* playhead */}
             <div
-              className="absolute top-0 bottom-0 w-px bg-blue-500 pointer-events-none"
+              className="absolute top-0 bottom-0 w-px bg-primary pointer-events-none"
               style={{ left: playhead * zoom, height: RULER_HEIGHT + CAPTION_LANE_HEIGHT + tracks.length * TRACK_HEIGHT }}
             >
-              <div className="w-2 h-2 -ml-1 rounded-full bg-blue-500" />
+              <div className="w-2 h-2 -ml-1 rounded-full bg-primary" />
             </div>
           </div>
         </div>
@@ -380,7 +380,7 @@ const TrackRow: React.FC<TrackRowProps> = (props) => {
     <div
       ref={setNodeRef}
       className={`relative border-b border-border ${props.track.muted ? 'opacity-60' : ''} ${
-        isOver && compatible ? 'bg-blue-500/10 ring-1 ring-inset ring-blue-500/60' : ''
+        isOver && compatible ? 'bg-primary/10 ring-1 ring-inset ring-primary/60' : ''
       } ${isOver && incompatible ? 'bg-destructive/10 ring-1 ring-inset ring-destructive/50' : ''}`}
       style={{ height: TRACK_HEIGHT }}
       onClick={(e) => {
@@ -436,8 +436,8 @@ const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
         onSelect(clip.id, e.metaKey || e.ctrlKey || e.shiftKey);
       }}
       className={`absolute top-1 bottom-1 rounded-md overflow-hidden border touch-none cursor-grab active:cursor-grabbing ${
-        selected ? 'border-blue-500 ring-1 ring-blue-500' : 'border-border'
-      } ${track.kind === 'video' ? 'bg-blue-900/40' : 'bg-emerald-900/40'} ${isDragging ? 'opacity-40' : ''}`}
+        selected ? 'border-primary ring-1 ring-primary' : 'border-border'
+      } ${track.kind === 'video' ? 'bg-data/20' : 'bg-data/10'} ${isDragging ? 'opacity-40' : ''}`}
       style={{ left, width }}
       title={label}
     >
@@ -466,7 +466,7 @@ const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
           />
         </div>
       )}
-      <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-white/90 truncate bg-black/30 pointer-events-none">
+      <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none">
         {entry?.asset.originalFileName ?? clip.assetId}
       </div>
       <div

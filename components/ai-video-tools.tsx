@@ -41,7 +41,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-card-foreground flex items-center gap-2">
-        <Sparkles className="w-5 h-5 text-pink-600" />
+        <Sparkles className="w-5 h-5 text-premium" />
         {t('interface:aiVideoTools.title')}
         <InfoTooltip
           ariaLabel={t('accessibility:videoForm.aiTooltip')}
@@ -59,7 +59,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
         />
       </h3>
 
-      <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border space-y-4">
+      <div className="p-4 bg-surface-1 rounded-lg border space-y-4">
         <div>
           <label
             htmlFor="ai-operation-select"
@@ -91,7 +91,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
 
         {isFrameInterpolation && (
           <div className="space-y-4">
-            <div className="rounded-md border border-pink-200 dark:border-pink-900/60 bg-pink-50/50 dark:bg-pink-950/30 p-3 text-sm text-card-foreground space-y-1">
+            <div className="rounded-md border border-premium dark:border-premium/60 bg-premium/50 dark:bg-premium/30 p-3 text-sm text-card-foreground space-y-1">
               <p>
                 {t('interface:aiVideoTools.intro')}
               </p>

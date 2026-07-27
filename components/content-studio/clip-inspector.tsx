@@ -50,7 +50,7 @@ const ClipInspector: React.FC = () => {
     return (
       <Panel level="2" padding={false} className="p-4 h-full">
         <h2 className="text-sm font-semibold text-card-foreground mb-2 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-blue-500" />
+          <Sparkles className="w-4 h-4 text-primary" />
           {t('contentStudio.inspector.title')}
         </h2>
         <p className="text-xs text-muted-foreground">{t('contentStudio.inspector.none')}</p>
@@ -66,7 +66,7 @@ const ClipInspector: React.FC = () => {
   return (
     <Panel level="2" padding={false} className="p-4 h-full overflow-y-auto">
       <h2 className="text-sm font-semibold text-card-foreground mb-3 flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-blue-500" />
+        <Sparkles className="w-4 h-4 text-primary" />
         {t('contentStudio.inspector.title')}
       </h2>
 
@@ -102,7 +102,7 @@ const Section: React.FC<{
   return (
     <Collapsible open={open} onOpenChange={setOpen} className="border-b border-border py-2">
       <div className="flex items-center justify-between">
-        <CollapsibleTrigger className="flex items-center gap-1.5 text-xs font-semibold text-card-foreground hover:text-blue-400">
+        <CollapsibleTrigger className="flex items-center gap-1.5 text-xs font-semibold text-card-foreground hover:text-primary">
           <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? '' : '-rotate-90'}`} />
           {icon}
           {title}

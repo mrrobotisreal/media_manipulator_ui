@@ -66,22 +66,22 @@ export default function ToolsIndexPage() {
                 aria-label={contentStudio.name}
               >
                 <div className="flex items-center gap-4">
-                  <div className="shrink-0 rounded-lg bg-green-600/10 p-3">
-                    <Clapperboard className="w-7 h-7 text-green-500" />
+                  <div className="shrink-0 rounded-lg bg-data/10 p-3">
+                    <Clapperboard className="w-7 h-7 text-data" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <span className="flex flex-wrap items-center gap-2">
                       <span className="text-lg font-semibold text-card-foreground">
                         {contentStudio.name}
                       </span>
-                      <span className="inline-flex items-center gap-1 rounded-md bg-green-600 px-2 py-0.5 text-xs font-medium text-white">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-data px-2 py-0.5 text-xs font-medium text-foreground">
                         <Sparkles className="w-3 h-3" />
                         Multi-track editor
                       </span>
                     </span>
                     <p className="mt-1 text-sm text-muted-foreground">{contentStudio.tagline}</p>
                   </div>
-                  <span className="hidden shrink-0 items-center gap-1 text-sm font-medium text-green-500 group-hover:translate-x-0.5 transition-transform sm:inline-flex">
+                  <span className="hidden shrink-0 items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform sm:inline-flex">
                     Open <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
@@ -117,10 +117,10 @@ export default function ToolsIndexPage() {
 
             {/* Privacy / file-handling */}
             <section
-              className="my-8 flex items-start gap-3 rounded-lg border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 p-4"
+              className="my-8 flex items-start gap-3 rounded-lg border border-primary/30 bg-primary/10 p-4"
               aria-label="Privacy & file handling"
             >
-              <Shield className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
+              <Shield className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <h2 className="text-base font-semibold text-card-foreground">
                   Your files stay private
@@ -142,7 +142,7 @@ export default function ToolsIndexPage() {
                 tools and the Content Studio editor.
               </p>
               <div className="flex flex-wrap gap-2 text-sm">
-                <Link href="/tutorials" className="rounded-lg bg-blue-600 px-3 py-2 text-white transition-colors hover:bg-blue-700">
+                <Link href="/tutorials" className="rounded-lg bg-primary px-3 py-2 text-primary-foreground transition-colors hover:bg-[var(--accent-primary-hover)]">
                   Browse all tutorials
                 </Link>
                 <Link href="/tutorials/content-studio" className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">

@@ -47,7 +47,7 @@ const ContentStudioTutorial: React.FC = () => {
         </aside>
         <div className="flex-1 min-w-0">
           <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
-              <p className="text-sm uppercase tracking-wide text-green-600 font-medium">{t(`${K}.eyebrow`)}</p>
+              <p className="text-sm uppercase tracking-wide text-data font-medium">{t(`${K}.eyebrow`)}</p>
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">{t(`${K}.title`)}</h1>
               <p className="text-lg mb-6">{t(`${K}.intro`)}</p>
 
@@ -95,7 +95,7 @@ const ContentStudioTutorial: React.FC = () => {
                 <p className="text-muted-foreground mb-4">{t(`${K}.cta.body`)}</p>
                 <Link
                   href="/tools/content-studio"
-                  className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                  className="inline-flex items-center gap-2 bg-success text-success-foreground px-4 py-2 rounded-lg hover:bg-success/90 transition-colors"
                 >
                   <Clapperboard className="w-4 h-4" />
                   {t(`${K}.cta.button`)}

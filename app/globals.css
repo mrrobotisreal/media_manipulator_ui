@@ -33,9 +33,6 @@
   --radius-lg: 8px;
   --radius-xl: 12px;
 
-  /* Container scale — adds the 8xl that two call sites already assume (B2) */
-  --container-8xl: 90rem;
-
   /* shadcn semantic aliases → Tailwind color utilities */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -69,6 +66,7 @@
   --color-premium: var(--accent-premium);
   --color-premium-foreground: var(--accent-premium-foreground);
   --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-danger: var(--danger);
   --color-text-subtle: var(--text-subtle);
 
@@ -101,6 +99,7 @@
   --accent-premium: #FFC857;
   --accent-premium-foreground: #1F1503;
   --success: #4ADE80;
+  --success-foreground: #04220F;  /* white on #4ADE80 is 1.8:1 — unusable */
   --danger: #F4525C;
 
   /* shadcn semantics mapped onto the ramp */
@@ -166,6 +165,7 @@
   --accent-premium: #A16207;
   --accent-premium-foreground: #FFFFFF;
   --success: #15803D;
+  --success-foreground: #FFFFFF;
   --danger: #DA2626;
 
   --background: var(--surface-0);

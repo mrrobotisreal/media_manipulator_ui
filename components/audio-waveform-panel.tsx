@@ -198,7 +198,7 @@ const AudioWaveformPanel: React.FC = () => {
                   onClick={() => setOutputSelection(opt)}
                   className={`px-3 py-2 rounded-lg border text-sm transition-colors ${
                     outputSelection === opt
-                      ? 'bg-blue-600 text-white border-blue-600'
+                      ? 'bg-primary text-primary-foreground border-primary'
                       : 'bg-background text-card-foreground border-input hover:bg-muted'
                   }`}
                 >
@@ -326,12 +326,12 @@ const AudioWaveformPanel: React.FC = () => {
                       onClick={() => setMode(opt.value)}
                       className={`text-left rounded-lg border p-3 transition-colors ${
                         mode === opt.value
-                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/40'
+                          ? 'border-primary bg-primary/10'
                           : 'border-input hover:bg-muted'
                       }`}
                     >
                       <div className="flex items-center gap-2 font-medium text-card-foreground">
-                        <Waves className="w-4 h-4 text-blue-600" />
+                        <Waves className="w-4 h-4 text-primary" />
                         {t(`audioWaveformPanel.modes.${opt.value}.label`)}
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">{t(`audioWaveformPanel.modes.${opt.value}.description`)}</p>
@@ -441,7 +441,7 @@ const AudioWaveformPanel: React.FC = () => {
             type="submit"
             // disabled={isProcessing}
             disabled={true}
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-primary text-primary-foreground py-3 px-6 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {!isProcessing && <ProcessingIndicator compact className="mr-4" />}
             {isProcessing ? <Sparkles className="w-4 h-4" /> : null}

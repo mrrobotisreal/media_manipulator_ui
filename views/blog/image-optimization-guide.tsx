@@ -23,7 +23,7 @@ const ImageOptimizationGuide: React.FC = () => {
         <div className="mb-4">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+          className="inline-flex items-center gap-2 text-primary hover:text-[var(--accent-primary-hover)] font-medium text-sm transition-colors"
         >
           ← Blog
         </Link>
@@ -75,7 +75,7 @@ const ImageOptimizationGuide: React.FC = () => {
           The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "The wise developer knows that the heaviest burden on a website is not code, but unoptimized images." - Ancient Web Proverb 😉
         </blockquote>
 
@@ -122,7 +122,7 @@ const ImageOptimizationGuide: React.FC = () => {
           Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses." ⚔️
         </blockquote>
 
@@ -174,7 +174,7 @@ const ImageOptimizationGuide: React.FC = () => {
           <li>When in doubt, test both formats and see which looks better at a reasonable file size</li>
         </ul>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves." 🧘‍♂️
         </blockquote>
 
@@ -254,7 +254,7 @@ const ImageOptimizationGuide: React.FC = () => {
           Your image choices are literally affecting how trustworthy people think you are. Wild, right?
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "A website's speed is like a first impression - you never get a second chance to load quickly." ⚡
         </blockquote>
 
@@ -298,7 +298,7 @@ const ImageOptimizationGuide: React.FC = () => {
           Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "The journey of a thousand optimizations begins with a single compressed image." 🏔️
         </blockquote>
 
@@ -351,7 +351,7 @@ const ImageOptimizationGuide: React.FC = () => {
           <Button
             asChild
             size="lg"
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 text-lg"
+            className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
             onClick={() => {
               mixpanel.track('Image Optimization Guide - Convert Images Free', {
                 user_tier: 'free'

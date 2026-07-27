@@ -273,7 +273,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
       </div>
 
       {/* Timeline editing is pointer-heavy; nudge small screens toward desktop. */}
-      <p className="lg:hidden text-xs text-amber-500/90 -mt-1">{t('contentStudio.editor.mobileHint')}</p>
+      <p className="lg:hidden text-xs text-premium/90 -mt-1">{t('contentStudio.editor.mobileHint')}</p>
 
       {/* Media bin + timeline share one DndContext so assets can be dragged from
           the bin onto a track and clips can be moved between tracks. */}
@@ -310,7 +310,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 
         <DragOverlay dropAnimation={null}>
           {activeDragLabel ? (
-            <div className="rounded-md border border-blue-500 bg-blue-900/80 px-2 py-1 text-[11px] text-white shadow-lg max-w-[200px] truncate">
+            <div className="rounded-md border border-primary bg-surface-2 px-2 py-1 text-[11px] text-foreground shadow-lg max-w-[200px] truncate">
               {activeDragLabel}
             </div>
           ) : null}
@@ -324,7 +324,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           true browser fullscreen; re-mounts (and replays) each time focus is
           re-entered. */}
       {focused ? (
-        <div className="cs-focus-hint pointer-events-none fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-black/80 px-4 py-2 text-xs font-medium text-white shadow-lg">
+        <div className="cs-focus-hint pointer-events-none fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-surface-0/80 px-4 py-2 text-xs font-medium text-foreground shadow-lg">
           {t('contentStudio.focus.hint')}
         </div>
       ) : null}
@@ -380,11 +380,11 @@ const SaveStatus: React.FC<{ saving: boolean; dirty: boolean }> = ({ saving, dir
     );
   }
   if (dirty) {
-    return <span className="text-xs text-amber-500">{t('contentStudio.editor.unsaved')}</span>;
+    return <span className="text-xs text-premium">{t('contentStudio.editor.unsaved')}</span>;
   }
   return (
     <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
-      <Check className="w-3 h-3 text-emerald-500" />
+      <Check className="w-3 h-3 text-success" />
       {t('contentStudio.editor.saved')}
     </span>
   );

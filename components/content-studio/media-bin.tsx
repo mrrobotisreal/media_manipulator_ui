@@ -35,7 +35,7 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
   return (
     <div className="flex flex-col h-full min-h-0">
       <h2 className="text-sm font-semibold text-card-foreground mb-2 flex items-center gap-2">
-        <Film className="w-4 h-4 text-blue-500" />
+        <Film className="w-4 h-4 text-primary" />
         {t('contentStudio.slots.mediaBin.title')}
       </h2>
 
@@ -51,7 +51,7 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
           handleFiles(e.dataTransfer.files);
         }}
         className={`rounded-lg border border-dashed p-4 text-center transition-colors ${
-          dragOver ? 'border-blue-500 bg-blue-500/10' : 'border-border bg-background/40'
+          dragOver ? 'border-primary bg-primary/10' : 'border-border bg-background/40'
         }`}
       >
         <UploadCloud className="w-6 h-6 mx-auto text-muted-foreground" />
@@ -89,7 +89,7 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
         {lutEntries.length > 0 && (
           <>
             <p className="text-[11px] font-semibold text-muted-foreground px-1 pt-2 flex items-center gap-1">
-              <Palette className="w-3 h-3 text-blue-500" />
+              <Palette className="w-3 h-3 text-primary" />
               {t('contentStudio.mediaBin.luts')}
             </p>
             {lutEntries.map((entry) => (
@@ -125,7 +125,7 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
       title={ready ? t('contentStudio.mediaBin.dragHint') : undefined}
     >
       <div className="shrink-0 w-12 h-9 rounded bg-muted flex items-center justify-center">
-        {isAudio ? <Music className="w-4 h-4 text-blue-500" /> : <Film className="w-4 h-4 text-blue-500" />}
+        {isAudio ? <Music className="w-4 h-4 text-primary" /> : <Film className="w-4 h-4 text-primary" />}
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-medium text-card-foreground truncate" title={asset.originalFileName}>
@@ -134,7 +134,7 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
         <p className="text-[11px] text-muted-foreground">
           {asset.durationSeconds > 0 ? formatReadableDuration(asset.durationSeconds) : '—'}
           {status === 'processing' && (
-            <span className="ml-1 inline-flex items-center gap-1 text-amber-500">
+            <span className="ml-1 inline-flex items-center gap-1 text-premium">
               <Loader2 className="w-3 h-3 animate-spin" />
               {t('contentStudio.mediaBin.building')}
             </span>
@@ -197,7 +197,7 @@ const LutTile: React.FC<{ entry: StudioAssetEntry }> = ({ entry }) => {
   return (
     <div className="rounded-md border border-border bg-background/60 p-2 flex items-center gap-2" title={t('contentStudio.mediaBin.lutHint')}>
       <div className="shrink-0 w-12 h-9 rounded bg-muted flex items-center justify-center">
-        <Palette className="w-4 h-4 text-blue-500" />
+        <Palette className="w-4 h-4 text-primary" />
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-medium text-card-foreground truncate" title={entry.asset.originalFileName}>

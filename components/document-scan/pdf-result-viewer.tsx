@@ -49,8 +49,8 @@ const PdfResultViewer: React.FC<PdfResultViewerProps> = ({ jobId, open, onOpenCh
         </DialogHeader>
 
         {showConfidence && (
-          <div className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm">
-            <p className="font-medium text-amber-700 dark:text-amber-400">
+          <div className="rounded-md border border-premium/40 bg-premium/10 p-3 text-sm">
+            <p className="font-medium text-premium dark:text-premium">
               {t('documentScan.viewer.confidenceTitle')}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -67,7 +67,7 @@ const PdfResultViewer: React.FC<PdfResultViewerProps> = ({ jobId, open, onOpenCh
             src={resultUrl('pdf')}
             title={t('documentScan.viewer.title')}
             className="w-full rounded-md border border-border"
-            style={{ minHeight: '60vh' }}
+            style={{ minHeight: '60dvh' }}
           />
         ) : (
           <div className="rounded-md border border-border bg-background/40 p-8 text-center text-sm text-muted-foreground">
@@ -81,7 +81,7 @@ const PdfResultViewer: React.FC<PdfResultViewerProps> = ({ jobId, open, onOpenCh
               href={resultUrl('pdf')}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors motion-reduce:transition-none"
+              className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors motion-reduce:transition-none"
             >
               <Download className="h-4 w-4" aria-hidden="true" />
               {t('documentScan.viewer.downloadPdf')}

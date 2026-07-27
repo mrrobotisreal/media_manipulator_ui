@@ -53,14 +53,14 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
 
   const renderNestedValue = (value: unknown, depth: number = 0): React.ReactNode => {
     if (value === null || value === undefined) return <span className="text-muted-foreground italic">null</span>;
-    if (typeof value === 'boolean') return <span className={value ? 'text-green-600' : 'text-red-600'}>{value ? 'true' : 'false'}</span>;
-    if (typeof value === 'number') return <span className="text-blue-600">{value.toLocaleString()}</span>;
-    if (typeof value === 'string') return <span className="text-gray-800 dark:text-gray-200">"{value}"</span>;
+    if (typeof value === 'boolean') return <span className={value ? 'text-data' : 'text-destructive'}>{value ? 'true' : 'false'}</span>;
+    if (typeof value === 'number') return <span className="text-primary">{value.toLocaleString()}</span>;
+    if (typeof value === 'string') return <span className="text-foreground">"{value}"</span>;
 
     // Handle arrays
     if (Array.isArray(value)) {
       return (
-        <div className="ml-4 border-l-2 border-gray-200 pl-3">
+        <div className="ml-4 border-l-2 border-edge pl-3">
           <div className="text-sm text-muted-foreground mb-2">{t('fileDetails.arrayLabel', { count: value.length })}</div>
           {value.map((item, index) => (
             <div key={index} className="mb-2">
@@ -76,11 +76,11 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
     if (typeof value === 'object') {
       const entries = Object.entries(value as Record<string, unknown>);
       return (
-        <div className="ml-4 border-l-2 border-gray-200 pl-3">
+        <div className="ml-4 border-l-2 border-edge pl-3">
           <div className="text-sm text-muted-foreground mb-2">{t('fileDetails.objectLabel', { count: entries.length })}</div>
           {entries.map(([key, val]) => (
             <div key={key} className="mb-2">
-              <span className="text-sm font-medium text-purple-600 mr-2">{key}:</span>
+              <span className="text-sm font-medium text-premium mr-2">{key}:</span>
               {renderNestedValue(val, depth + 1)}
             </div>
           ))}
@@ -93,10 +93,10 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
 
   const getFileTypeColor = (type: string) => {
     switch (type) {
-      case 'image': return 'bg-blue-100 text-blue-800';
-      case 'video': return 'bg-green-100 text-green-800';
-      case 'audio': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'image': return 'bg-primary/10 text-primary';
+      case 'video': return 'bg-data/10 text-data';
+      case 'audio': return 'bg-premium/10 text-premium';
+      default: return 'bg-surface-2 text-foreground';
     }
   };
 

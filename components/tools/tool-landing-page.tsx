@@ -45,7 +45,7 @@ export default function ToolLandingPage({
     );
 
   return (
-    <div className="max-w-[2160px] mx-auto my-2 px-4">
+    <div className="max-w-[1400px] mx-auto my-2 px-4">
       <Panel level="1">
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground mb-4">
@@ -133,7 +133,7 @@ export default function ToolLandingPage({
                       {sf.supportedInputFormats.map((fmt) => (
                         <li
                           key={fmt}
-                          className="text-xs px-2 py-1 rounded bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-900/60"
+                          className="text-xs px-2 py-1 rounded bg-primary/10 text-primary border border-primary/30"
                         >
                           {fmt.toUpperCase()}
                         </li>
@@ -148,7 +148,7 @@ export default function ToolLandingPage({
                       {sf.supportedOutputFormats.map((fmt) => (
                         <li
                           key={fmt}
-                          className="text-xs px-2 py-1 rounded bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-200/60 dark:border-green-900/60"
+                          className="text-xs px-2 py-1 rounded bg-data/10 text-data border border-data/30"
                         >
                           {fmt.toUpperCase()}
                         </li>
@@ -173,7 +173,7 @@ export default function ToolLandingPage({
               <ol className="space-y-3">
                 {tool.flowSteps.map((step, idx) => (
                   <li key={step.title || idx} className="flex gap-3">
-                    <span className="shrink-0 w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 font-semibold flex items-center justify-center text-sm">
+                    <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-semibold flex items-center justify-center text-sm">
                       {idx + 1}
                     </span>
                     <div>
@@ -224,7 +224,7 @@ export default function ToolLandingPage({
           {/* Single guarded in-content ad — after substantial body copy, far
               from the tool panel/action buttons. Disabled by default via env. */}
           {inContentSlot ? (
-            <div className="my-12 flex justify-center">
+            <div className="my-12 flex justify-center min-h-[280px] md:min-h-[300px]">
               <AdBanner
                 adSlot={inContentSlot}
                 placement="incontent"
@@ -259,10 +259,10 @@ export default function ToolLandingPage({
 
           {/* Privacy note */}
           <section
-            className="my-8 rounded-lg border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 p-4 flex items-start gap-3"
+            className="my-8 rounded-lg border border-primary/30 bg-primary/10 p-4 flex items-start gap-3"
             aria-label="Privacy & file handling"
           >
-            <Shield className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+            <Shield className="w-5 h-5 text-primary shrink-0 mt-0.5" />
             <div>
               <h2 className="text-base font-semibold text-card-foreground">Privacy &amp; file handling</h2>
               <p className="text-sm text-muted-foreground mt-1">{tool.privacyNote}</p>

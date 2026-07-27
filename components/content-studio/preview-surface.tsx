@@ -681,7 +681,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       <div
         ref={containerRef}
         className={cn(
-          'relative w-full bg-black rounded-lg overflow-hidden border border-border',
+          'relative w-full bg-surface-0 rounded-lg overflow-hidden border border-border',
           focused ? 'flex-1 min-h-0' : 'aspect-video',
         )}
       >
@@ -761,7 +761,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           </div>
         )}
         {building && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center text-sm text-amber-400 bg-black/60">
+          <div className="absolute inset-0 z-10 flex items-center justify-center text-sm text-premium bg-surface-0/60">
             {t('contentStudio.preview.building')}
           </div>
         )}
@@ -790,7 +790,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             ref={meterCanvasRef}
             width={18}
             height={28}
-            className="rounded-sm bg-black/40"
+            className="rounded-sm bg-surface-0/40"
             aria-hidden="true"
             title={t('contentStudio.transport.levels')}
           />

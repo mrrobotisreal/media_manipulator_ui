@@ -166,7 +166,7 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
   };
 
   return (
-    <div className="relative border-b border-border bg-purple-950/20" style={{ height: CAPTION_LANE_HEIGHT }}>
+    <div className="relative border-b border-border bg-premium/8" style={{ height: CAPTION_LANE_HEIGHT }}>
       {cues.map((cue) => {
         const left = cue.startSeconds * zoom;
         const width = Math.max(10, (cue.endSeconds - cue.startSeconds) * zoom);
@@ -175,7 +175,7 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
           <div
             key={cue.id}
             className={`absolute top-0.5 bottom-0.5 rounded overflow-hidden border touch-none cursor-grab active:cursor-grabbing text-[10px] text-white/90 px-1 leading-[22px] whitespace-nowrap ${
-              selected ? 'border-purple-400 ring-1 ring-purple-400 bg-purple-700/60' : 'border-purple-500/50 bg-purple-800/40'
+              selected ? 'border-premium/60 ring-1 ring-premium bg-premium/25' : 'border-premium/50 bg-premium/15'
             }`}
             style={{ left, width }}
             title={cue.text}

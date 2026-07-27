@@ -33,11 +33,11 @@ const ContactBlock: React.FC<{ email: string }> = ({ email }) => {
       <p className="mb-1">{t('legalCommon.location')}</p>
       <p className="mb-1">
         {t('legalCommon.emailLabel')}{' '}
-        <a href={`mailto:${email}`} className="text-blue-600 hover:text-blue-800">{email}</a>
+        <a href={`mailto:${email}`} className="text-primary hover:text-[var(--accent-primary-hover)]">{email}</a>
       </p>
       <p className="mb-1">
         {t('legalCommon.websiteLabel')}{' '}
-        <a href="https://www.media-manipulator.com" className="text-blue-600 hover:text-blue-800">
+        <a href="https://www.media-manipulator.com" className="text-primary hover:text-[var(--accent-primary-hover)]">
           https://www.media-manipulator.com
         </a>
       </p>

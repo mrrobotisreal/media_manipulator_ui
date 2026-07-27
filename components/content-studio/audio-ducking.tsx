@@ -43,7 +43,7 @@ const AudioDuckingPopover: React.FC = () => {
         <p className="text-xs text-muted-foreground mb-3">{t('contentStudio.audioPanel.description')}</p>
 
         {audioTracks.length === 0 ? (
-          <p className="text-xs text-amber-500">{t('contentStudio.audioPanel.noAudioTracks')}</p>
+          <p className="text-xs text-premium">{t('contentStudio.audioPanel.noAudioTracks')}</p>
         ) : (
           <div className="space-y-3">
             <div className="flex items-center justify-between">

@@ -14,7 +14,7 @@ const VideoGettingStartedTutorial: React.FC = () => {
       </aside>
       <div className="flex-1 min-w-0">
       <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
-          <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Video Tutorial</p>
+          <p className="text-sm uppercase tracking-wide text-data font-medium">Video Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Video Files</h1>
           <p className="text-lg mb-8">
             Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.
@@ -125,7 +125,7 @@ const VideoGettingStartedTutorial: React.FC = () => {
           </ul>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <Link href="/" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
               Try the Video Converter
             </Link>
             <Link href="/tutorials" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">

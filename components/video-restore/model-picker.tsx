@@ -65,13 +65,13 @@ const ModelPicker: React.FC<ModelPickerProps> = ({
           cardDisabled
             ? 'border-border bg-muted/40 opacity-60 cursor-not-allowed'
             : checked
-              ? 'border-blue-500 bg-blue-500/10 cursor-pointer'
-              : 'border-border bg-background/40 hover:border-blue-400/60 cursor-pointer'
+              ? 'border-primary bg-primary/10 cursor-pointer'
+              : 'border-border bg-background/40 hover:border-primary/60 cursor-pointer'
         }`}
       >
         <input
           type="checkbox"
-          className="mt-1 h-4 w-4 accent-blue-600"
+          className="mt-1 h-4 w-4 accent-primary"
           checked={checked}
           disabled={cardDisabled}
           onChange={() => toggle(model.id)}
@@ -104,7 +104,7 @@ const ModelPicker: React.FC<ModelPickerProps> = ({
         <div className="flex gap-2 text-xs">
           <button
             type="button"
-            className="text-blue-600 hover:underline disabled:opacity-50 disabled:no-underline"
+            className="text-primary hover:underline disabled:opacity-50 disabled:no-underline"
             disabled={disabled || available.length === 0}
             onClick={() => onSelectedChange(available.map((m) => m.id))}
           >
@@ -113,7 +113,7 @@ const ModelPicker: React.FC<ModelPickerProps> = ({
           <span className="text-muted-foreground">·</span>
           <button
             type="button"
-            className="text-blue-600 hover:underline disabled:opacity-50 disabled:no-underline"
+            className="text-primary hover:underline disabled:opacity-50 disabled:no-underline"
             disabled={disabled || selected.length === 0}
             onClick={() => onSelectedChange([])}
           >
@@ -139,7 +139,7 @@ const ModelPicker: React.FC<ModelPickerProps> = ({
       <label className={`flex items-start gap-3 rounded-lg border border-border p-3 ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}>
         <input
           type="checkbox"
-          className="mt-1 h-4 w-4 accent-blue-600"
+          className="mt-1 h-4 w-4 accent-primary"
           checked={includeFrames}
           disabled={disabled}
           onChange={(e) => onIncludeFramesChange(e.target.checked)}
@@ -150,7 +150,7 @@ const ModelPicker: React.FC<ModelPickerProps> = ({
             {t('videoRestore.picker.includeFramesHint')}
           </span>
           {includeFrames && (
-            <span className="block text-xs text-amber-600 dark:text-amber-400 mt-1">
+            <span className="block text-xs text-premium dark:text-premium mt-1">
               {t('videoRestore.picker.includeFramesWarning')}
             </span>
           )}

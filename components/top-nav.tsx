@@ -25,13 +25,6 @@ import { useLocalization } from "@/i18n/useLocalization";
 import React from "react";
 import { cn } from "@/lib/utils";
 
-// Glow style used on the currently-active nav link. Inlined so we don't have
-// to register a global text-shadow utility — Tailwind v4 arbitrary values trip
-// over the comma syntax that text-shadow's layered form requires.
-const NAV_ACTIVE_GLOW: React.CSSProperties = {
-  textShadow: '0 0 8px rgb(96, 165, 250), 0 0 16px rgb(96, 165, 250)',
-};
-
 /**
  * A nav link is active when the URL exactly matches its href, or — for any
  * non-root link — when the URL is a sub-path (e.g. `/blog/video/...` keeps
@@ -110,8 +103,8 @@ const TopNav: React.FC = () => {
   }));
 
   return (
-    <nav data-site-header className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 border-b border-edge shadow-[0_1px_0_var(--edge-highlight)]">
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+    <nav data-site-header className="sticky top-0 z-50 w-full border-b border-edge bg-surface-0/92 shadow-[0_1px_0_var(--edge-highlight)]">
+      <div className="container mx-auto flex h-14 items-center justify-between px-4 md:h-16">
         <Link href="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
           {/* Was an unsized 80x80 image tag (22% of a 360px viewport, and a CLS
               source) plus Rubik Glitch type. Now a CSS-only lockup. */}
@@ -132,8 +125,14 @@ const TopNav: React.FC = () => {
                     <Link
                       href={component.href}
                       aria-current={active ? "page" : undefined}
-                      style={active ? NAV_ACTIVE_GLOW : undefined}
-                      className={cn("transition-colors px-3 py-2 text-sm", active ? "font-black text-blue-300" : "font-medium text-white hover:text-gray-300")}
+                      className={cn(
+                        "relative px-3 py-2 text-sm transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)]",
+                        "after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 after:origin-left after:bg-primary",
+                        "after:transition-transform after:duration-[var(--dur-base)] after:ease-[var(--ease-instrument)]",
+                        active
+                          ? "font-semibold text-foreground after:scale-x-100"
+                          : "font-medium text-muted-foreground hover:text-foreground after:scale-x-0"
+                      )}
                     >
                       {component.title}
                     </Link>
@@ -151,17 +150,17 @@ const TopNav: React.FC = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
+                className="md:hidden rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
               >
-                <Menu className="h-6 w-6 text-white" />
+                <Menu className="h-6 w-6 text-foreground" />
                 <span className="sr-only">{t("accessibility:topNav.openMenu")}</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="bottom" className="h-auto max-h-[80vh]">
+            <SheetContent side="bottom" className="h-auto max-h-[80dvh]">
               <SheetHeader>
                 <SheetTitle>{t("interface:topNav.navigationLabel")}</SheetTitle>
               </SheetHeader>
-              <div className="grid gap-4 py-4 overflow-y-auto max-h-[60vh]">
+              <div className="grid gap-4 py-4 overflow-y-auto max-h-[60dvh]">
                 {components.map((component) => {
                   const active = isNavActive(pathname, component.href);
                   return (
@@ -169,13 +168,13 @@ const TopNav: React.FC = () => {
                       key={component.key}
                       href={component.href}
                       aria-current={active ? "page" : undefined}
-                      style={active ? NAV_ACTIVE_GLOW : undefined}
                       onClick={() => setIsOpen(false)}
-                      className={`block px-4 py-2 text-lg text-center rounded-md transition-colors ${
+                      className={cn(
+                        "flex min-h-[44px] items-center justify-center rounded-md px-4 py-2 text-lg transition-colors",
                         active
-                          ? "font-bold text-blue-400"
-                          : "font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
-                      }`}
+                          ? "border-l-2 border-l-primary bg-surface-2 font-semibold text-foreground"
+                          : "font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+                      )}
                     >
                       {component.title}
                     </Link>
@@ -185,63 +184,11 @@ const TopNav: React.FC = () => {
             </SheetContent>
           </Sheet>
 
-          {/* <Button
-            variant="ghost"
-            size="icon"
-            asChild
-            className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
-          >
-            <a
-              href="https://github.com/mrrobotisreal"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={githubLogo} alt={t("accessibility:topNav.githubLogo")} className="h-6 w-6 dark:invert" />
-              <span className="sr-only">{t("accessibility:topNav.github")}</span>
-            </a>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            asChild
-            className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
-          >
-            <a
-              href="https://www.winapps.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-            >
-              <img
-                src={winappsLogo}
-                alt={t("accessibility:topNav.winappsLogo")}
-                className="h-12 w-12"
-              />
-              <span className="sr-only">{t("accessibility:topNav.winapps")}</span>
-            </a>
-          </Button> */}
-          {/* <Button
-            variant="ghost"
-            size="icon"
-            asChild
-            className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
-          >
-            <a
-              href="https://www.creatv.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-            >
-              <img
-                src={creatvLogo}
-                alt={t("accessibility:topNav.creatvLogo")}\
-                className="h-12 w-12"
-              />
-              <span className="sr-only">{t("accessibility:topNav.creatv")}</span>
-            </a>
-          </Button> */}
           <ThemeToggle />
           <LanguageSelector />
+          {/* Auth slot — filled in Phase 4 (quota meter + sign-in). The width is
+              reserved now so mounting it later shifts nothing. */}
+          <div data-auth-slot className="min-w-[88px]" />
         </div>
       </div>
     </nav>

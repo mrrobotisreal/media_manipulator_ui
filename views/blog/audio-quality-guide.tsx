@@ -23,7 +23,7 @@ const AudioQualityGuide: React.FC = () => {
         <div className="mb-4">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+          className="inline-flex items-center gap-2 text-primary hover:text-[var(--accent-primary-hover)] font-medium text-sm transition-colors"
         >
           ← Blog
         </Link>
@@ -31,7 +31,7 @@ const AudioQualityGuide: React.FC = () => {
       <CardHeader className="px-0">
         <header>
           <h1 className="text-4xl font-bold text-card-foreground leading-tight">
-            The Sound of <span className="line-through text-gray-400">Silence</span> Quality: Bitrates, Sample Rates, and Formats
+            The Sound of <span className="line-through text-muted-foreground">Silence</span> Quality: Bitrates, Sample Rates, and Formats
           </h1>
 
           <div className="flex items-center gap-4 mt-6">
@@ -83,7 +83,7 @@ const AudioQualityGuide: React.FC = () => {
           In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "The ear is the avenue to the heart." – Voltaire
         </blockquote>
 
@@ -129,7 +129,7 @@ const AudioQualityGuide: React.FC = () => {
           Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "To understand the whole, you must first understand the parts." – Aristotle
         </blockquote>
 
@@ -175,8 +175,8 @@ const AudioQualityGuide: React.FC = () => {
         </ul>
 
         <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Quick Decision Tree:</h3>
-        <div className="bg-gray-50 p-6 rounded-lg mb-8 font-mono text-sm">
-          <pre className="whitespace-pre-wrap text-gray-700">
+        <div className="bg-surface-2 p-6 rounded-lg mb-8 font-mono text-sm">
+          <pre className="whitespace-pre-wrap text-muted-foreground">
 {`Is it voice only? → MP3 at 64-96 kbps
 Is loading speed critical? → MP3/AAC at 128 kbps max
 Need perfect quality? → FLAC/WAV
@@ -192,7 +192,7 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
           <strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away." – Antoine de Saint-Exupéry
         </blockquote>
 
@@ -283,7 +283,7 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
           I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "Time is money, and loading time is lost money." – Every Web Developer Ever
         </blockquote>
 
@@ -322,7 +322,7 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
           Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀
         </p>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic text-lg text-muted-foreground mb-8">
+        <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
           "In the realm of digital content, the lightest footprint often leaves the deepest impression." – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)
         </blockquote>
 
@@ -375,7 +375,7 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
           <Button
             asChild
             size="lg"
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 text-lg"
+            className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
             onClick={() => {
               mixpanel.track('Audio Quality Guide - Convert Audio Free', {
                 user_tier: 'free'

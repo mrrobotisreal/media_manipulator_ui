@@ -316,7 +316,7 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
                   {t('contentStudio.export.rendering')} {job?.progress ?? 0}%
                 </div>
                 <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-                  <div className="h-full bg-blue-500 transition-all" style={{ width: `${job?.progress ?? 0}%` }} />
+                  <div className="h-full bg-primary transition-all" style={{ width: `${job?.progress ?? 0}%` }} />
                 </div>
               </div>
             )}
@@ -324,11 +324,11 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
               <p className="text-sm text-destructive">{job.error || t('contentStudio.export.failed')}</p>
             )}
             {done && isCreatv && intent === 'publish' && (
-              <p className="text-sm text-emerald-500">{t('contentStudio.export.publishHandedOff')}</p>
+              <p className="text-sm text-success">{t('contentStudio.export.publishHandedOff')}</p>
             )}
             {done && isCreatv && intent === 'download' && (
               <div className="space-y-3">
-                <p className="text-sm text-emerald-500">{t('contentStudio.export.downloadReady')}</p>
+                <p className="text-sm text-success">{t('contentStudio.export.downloadReady')}</p>
                 <div className="flex flex-wrap gap-2">
                   <Button type="button" onClick={() => void fetchDraftDownload()}>
                     <Download className="w-4 h-4 mr-2" />
@@ -343,7 +343,7 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
             )}
             {done && !isCreatv && (
               <div className="space-y-3">
-                <p className="text-sm text-emerald-500">{t('contentStudio.export.ready')}</p>
+                <p className="text-sm text-success">{t('contentStudio.export.ready')}</p>
                 <Button asChild>
                   <a href={studioDownloadUrl(jobId)} download>
                     <Download className="w-4 h-4 mr-2" />

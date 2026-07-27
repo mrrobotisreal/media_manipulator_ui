@@ -143,14 +143,14 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-surface-0/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
       <div
-        className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl max-h-[90vh] overflow-auto shadow-2xl"
+        className="bg-surface-1 rounded-lg max-w-4xl max-h-[90dvh] overflow-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-edge">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <Crop className="w-5 h-5" />
             {t('interface:imageCropModal.title')}
@@ -158,14 +158,14 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           <button
             onClick={onClose}
             aria-label={t('accessibility:modals.close')}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         <div className="p-6">
-          <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="mb-4 text-sm text-muted-foreground">
             {t('interface:imageCropModal.instructions')}
           </div>
 
@@ -188,7 +188,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
             <div className="absolute inset-0 pointer-events-none">
               {/* Dark overlay for non-cropped areas */}
               <div
-                className="absolute inset-0 bg-black bg-opacity-50"
+                className="absolute inset-0 bg-surface-0 bg-opacity-50"
                 style={{
                   clipPath: `polygon(
                     0% 0%,
@@ -218,7 +218,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               >
                 {/* Resize handle */}
                 <div
-                  className="absolute bottom-0 right-0 w-4 h-4 bg-white border border-gray-300 cursor-se-resize"
+                  className="absolute bottom-0 right-0 w-4 h-4 bg-surface-1 border border-edge cursor-se-resize"
                   onMouseDown={(e) => {
                     e.stopPropagation();
                     handleMouseDown(e, 'resize');
@@ -229,20 +229,20 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           </div>
 
           <div className="mt-6 flex justify-between items-center">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-muted-foreground">
               {t('interface:imageCropModal.cropArea', { width: cropArea.width, height: cropArea.height })}
             </div>
 
             <div className="flex gap-3">
               <button
                 onClick={onClose}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
+                className="px-4 py-2 border border-edge rounded-lg hover:bg-surface-2"
               >
                 {t('interface:common.cancel')}
               </button>
               <button
                 onClick={handleSaveCrop}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-[var(--accent-primary-hover)] flex items-center gap-2"
               >
                 <Crop className="w-4 h-4" />
                 {t('interface:imageCropModal.apply')}

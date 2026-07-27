@@ -173,7 +173,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[500px] max-h-[90dvh] overflow-y-auto">
         <DialogHeader className="space-y-3">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold">{resolvedTitle}</DialogTitle>
@@ -190,29 +190,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </DialogHeader>
 
         {/* Free Tier Benefits */}
-        <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+        <Card className="border-data/30 bg-data/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Zap className="w-5 h-5 text-green-600" />
+              <Zap className="w-5 h-5 text-data" />
               {t('interface:authModal.freeTier.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="grid grid-cols-1 gap-2">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+                <CheckCircle className="w-4 h-4 text-data" />
                 <span className="text-sm">{t('interface:authModal.freeTier.benefit1')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+                <CheckCircle className="w-4 h-4 text-data" />
                 <span className="text-sm">{t('interface:authModal.freeTier.benefit2')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+                <CheckCircle className="w-4 h-4 text-data" />
                 <span className="text-sm">{t('interface:authModal.freeTier.benefit3')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+                <CheckCircle className="w-4 h-4 text-data" />
                 <span className="text-sm">{t('interface:authModal.freeTier.benefit4')}</span>
               </div>
             </div>
@@ -328,10 +328,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </Button>
 
         {/* Upgrade Preview */}
-        <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950/20">
+        <Card className="border-primary/30 bg-primary/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Shield className="w-4 h-4 text-blue-600" />
+              <Shield className="w-4 h-4 text-primary" />
               {t('interface:authModal.upgrade.title')}
             </CardTitle>
           </CardHeader>

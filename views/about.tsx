@@ -48,7 +48,7 @@ const AboutPage: React.FC = () => {
 
               <div className="grid md:grid-cols-3 gap-6 mt-6">
                 <Panel level="2" className="lg:p-6">
-                  <h3 className="font-semibold mb-3 text-blue-600">{t('about.whatItDoes.image.title')}</h3>
+                  <h3 className="font-semibold mb-3 text-primary">{t('about.whatItDoes.image.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {imageItems.map((item, idx) => (
                       <li key={idx}>
@@ -58,7 +58,7 @@ const AboutPage: React.FC = () => {
                   </ul>
                 </Panel>
                 <Panel level="2" className="lg:p-6">
-                  <h3 className="font-semibold mb-3 text-green-600">{t('about.whatItDoes.video.title')}</h3>
+                  <h3 className="font-semibold mb-3 text-data">{t('about.whatItDoes.video.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {videoItems.map((item, idx) => (
                       <li key={idx}>
@@ -68,7 +68,7 @@ const AboutPage: React.FC = () => {
                   </ul>
                 </Panel>
                 <Panel level="2" className="lg:p-6">
-                  <h3 className="font-semibold mb-3 text-purple-600">{t('about.whatItDoes.audio.title')}</h3>
+                  <h3 className="font-semibold mb-3 text-premium">{t('about.whatItDoes.audio.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {audioItems.map((item, idx) => (
                       <li key={idx}>
@@ -83,8 +83,8 @@ const AboutPage: React.FC = () => {
                 <Trans
                   i18nKey="interface:about.whatItDoes.outro"
                   components={{
-                    linkTutorials: <Link href="/tutorials" className="text-blue-600 hover:text-blue-800" />,
-                    linkHow: <Link href="/how-it-works" className="text-blue-600 hover:text-blue-800" />,
+                    linkTutorials: <Link href="/tutorials" className="text-primary hover:text-[var(--accent-primary-hover)]" />,
+                    linkHow: <Link href="/how-it-works" className="text-primary hover:text-[var(--accent-primary-hover)]" />,
                   }}
                 />
               </p>
@@ -104,7 +104,7 @@ const AboutPage: React.FC = () => {
                       i18nKey="interface:about.whyChoose.privacy.body"
                       components={{
                         strong: <strong />,
-                        linkPrivacy: <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-800" />,
+                        linkPrivacy: <Link href="/privacy-policy" className="text-primary hover:text-[var(--accent-primary-hover)]" />,
                       }}
                     />
                   </p>
@@ -132,7 +132,7 @@ const AboutPage: React.FC = () => {
                         emailLink: (
                           <a
                             href="mailto:support@media-manipulator.com"
-                            className="text-blue-600 hover:text-blue-800"
+                            className="text-primary hover:text-[var(--accent-primary-hover)]"
                           />
                         ),
                       }}
@@ -147,7 +147,7 @@ const AboutPage: React.FC = () => {
               <p className="mb-4">
                 <Trans
                   i18nKey="interface:about.commonTasks.intro"
-                  components={{ linkHome: <Link href="/" className="text-blue-600 hover:text-blue-800" /> }}
+                  components={{ linkHome: <Link href="/" className="text-primary hover:text-[var(--accent-primary-hover)]" /> }}
                 />
               </p>
               <div className="grid md:grid-cols-2 gap-6">
@@ -178,19 +178,19 @@ const AboutPage: React.FC = () => {
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.supportedFormats.title')}</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 <Panel level="2" className="lg:p-6">
-                  <h3 className="font-semibold mb-2 text-blue-600">{t('about.supportedFormats.images.title')}</h3>
+                  <h3 className="font-semibold mb-2 text-primary">{t('about.supportedFormats.images.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {imagesFormats.map((item, idx) => <li key={idx}>{item}</li>)}
                   </ul>
                 </Panel>
                 <Panel level="2" className="lg:p-6">
-                  <h3 className="font-semibold mb-2 text-green-600">{t('about.supportedFormats.videos.title')}</h3>
+                  <h3 className="font-semibold mb-2 text-data">{t('about.supportedFormats.videos.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {videoFormats.map((item, idx) => <li key={idx}>{item}</li>)}
                   </ul>
                 </Panel>
                 <Panel level="2" className="lg:p-6">
-                  <h3 className="font-semibold mb-2 text-purple-600">{t('about.supportedFormats.audio.title')}</h3>
+                  <h3 className="font-semibold mb-2 text-premium">{t('about.supportedFormats.audio.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {audioFormats.map((item, idx) => <li key={idx}>{item}</li>)}
                   </ul>
@@ -207,22 +207,22 @@ const AboutPage: React.FC = () => {
               <p className="mb-1">{t('about.contact.location')}</p>
               <p className="mb-1">
                 {t('about.contact.generalSupport')}{' '}
-                <a href="mailto:support@media-manipulator.com" className="text-blue-600 hover:text-blue-800">
+                <a href="mailto:support@media-manipulator.com" className="text-primary hover:text-[var(--accent-primary-hover)]">
                   support@media-manipulator.com
                 </a>
               </p>
               <p className="mb-1">
                 {t('about.contact.privacyRequests')}{' '}
-                <a href="mailto:privacy@media-manipulator.com" className="text-blue-600 hover:text-blue-800">
+                <a href="mailto:privacy@media-manipulator.com" className="text-primary hover:text-[var(--accent-primary-hover)]">
                   privacy@media-manipulator.com
                 </a>
               </p>
               <p className="mb-4">
                 {t('about.contact.helpfulStartingPoints')}{' '}
-                <Link href="/how-it-works" className="text-blue-600 hover:text-blue-800">{t('topNav.howItWorks')}</Link>{' · '}
-                <Link href="/tutorials" className="text-blue-600 hover:text-blue-800">{t('topNav.tutorials')}</Link>{' · '}
-                <Link href="/privacy-policy" className="text-blue-600 hover:text-blue-800">{t('topNav.privacyPolicy')}</Link>{' · '}
-                <Link href="/terms-of-service" className="text-blue-600 hover:text-blue-800">{t('topNav.termsOfService')}</Link>
+                <Link href="/how-it-works" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.howItWorks')}</Link>{' · '}
+                <Link href="/tutorials" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.tutorials')}</Link>{' · '}
+                <Link href="/privacy-policy" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.privacyPolicy')}</Link>{' · '}
+                <Link href="/terms-of-service" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.termsOfService')}</Link>
               </p>
             </section>
 

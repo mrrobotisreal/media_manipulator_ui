@@ -61,9 +61,9 @@ const LanguageSelector: React.FC = () => {
         aria-label={triggerLabel}
         title={triggerLabel}
         onClick={() => setOpen((prev) => !prev)}
-        className="rounded-full !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-800 [&]:bg-transparent"
+        className="rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
       >
-        <Languages className="h-6 w-6 text-white" aria-hidden="true" />
+        <Languages className="h-6 w-6 text-foreground" aria-hidden="true" />
         <span className="sr-only">{triggerLabel}</span>
       </Button>
       {open && (

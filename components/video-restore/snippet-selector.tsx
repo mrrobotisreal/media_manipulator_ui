@@ -250,7 +250,7 @@ const SnippetSelector: React.FC<SnippetSelectorProps> = ({
       <video
         ref={videoRef}
         src={mediaUrl}
-        className="w-full max-h-72 rounded-lg bg-black"
+        className="w-full max-h-72 rounded-lg bg-surface-0"
         preload="metadata"
         playsInline
         onLoadedMetadata={handleLoadedMetadata}
@@ -271,18 +271,18 @@ const SnippetSelector: React.FC<SnippetSelectorProps> = ({
         aria-label={t('videoRestore.selector.timelineLabel')}
       >
         {/* Dimmed regions outside the selection */}
-        <div className="absolute top-0 left-0 h-full bg-black/30 rounded-l-lg" style={{ width: `${startPercent}%` }} />
-        <div className="absolute top-0 right-0 h-full bg-black/30 rounded-r-lg" style={{ width: `${Math.max(0, 100 - endPercent)}%` }} />
+        <div className="absolute top-0 left-0 h-full bg-surface-0/30 rounded-l-lg" style={{ width: `${startPercent}%` }} />
+        <div className="absolute top-0 right-0 h-full bg-surface-0/30 rounded-r-lg" style={{ width: `${Math.max(0, 100 - endPercent)}%` }} />
         {/* Selected window — grab the middle to drag the whole window */}
         <div
-          className="absolute top-0 h-full bg-blue-500/30 border-y-2 border-blue-500 cursor-grab active:cursor-grabbing"
+          className="absolute top-0 h-full bg-primary/25 border-y-2 border-primary cursor-grab active:cursor-grabbing"
           style={{ left: `${startPercent}%`, width: `${Math.max(0, endPercent - startPercent)}%` }}
           onPointerDown={(e) => beginDrag(e, 'window')}
           aria-hidden="true"
         />
         {/* Handles */}
         <div
-          className="absolute top-0 h-full w-3 -ml-1.5 bg-blue-600 rounded-sm cursor-ew-resize z-10"
+          className="absolute top-0 h-full w-3 -ml-1.5 bg-primary rounded-sm cursor-ew-resize z-10"
           style={{ left: `${startPercent}%` }}
           onPointerDown={(e) => beginDrag(e, 'start')}
           role="slider"
@@ -293,7 +293,7 @@ const SnippetSelector: React.FC<SnippetSelectorProps> = ({
           tabIndex={0}
         />
         <div
-          className="absolute top-0 h-full w-3 -ml-1.5 bg-blue-600 rounded-sm cursor-ew-resize z-10"
+          className="absolute top-0 h-full w-3 -ml-1.5 bg-primary rounded-sm cursor-ew-resize z-10"
           style={{ left: `${endPercent}%` }}
           onPointerDown={(e) => beginDrag(e, 'end')}
           role="slider"
@@ -304,7 +304,7 @@ const SnippetSelector: React.FC<SnippetSelectorProps> = ({
           tabIndex={0}
         />
         {/* Playhead */}
-        <div className="absolute top-0 w-0.5 h-full bg-red-500 pointer-events-none" style={{ left: `${currentPercent}%` }} />
+        <div className="absolute top-0 w-0.5 h-full bg-destructive pointer-events-none" style={{ left: `${currentPercent}%` }} />
       </div>
 
       {/* Controls */}
@@ -313,7 +313,7 @@ const SnippetSelector: React.FC<SnippetSelectorProps> = ({
           type="button"
           onClick={handlePlayPause}
           disabled={disabled || duration <= 0}
-          className="inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors motion-reduce:transition-none"
+          className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-primary-foreground hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors motion-reduce:transition-none"
           aria-label={isPlaying ? t('videoRestore.selector.pause') : t('videoRestore.selector.playSelection')}
         >
           {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -368,12 +368,12 @@ const SnippetSelector: React.FC<SnippetSelectorProps> = ({
       </p>
 
       {overRecommended && (
-        <p className="text-sm rounded-md border border-amber-400/50 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-3 py-2">
+        <p className="text-sm rounded-md border border-premium/50 bg-premium/10 text-premium dark:text-premium px-3 py-2">
           {t('videoRestore.selector.overRecommended', { seconds: recommendedClipSeconds })}
         </p>
       )}
       {overFrameBudget && (
-        <p className="text-sm rounded-md border border-amber-400/50 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-3 py-2">
+        <p className="text-sm rounded-md border border-premium/50 bg-premium/10 text-premium dark:text-premium px-3 py-2">
           {t('videoRestore.selector.overFrameBudget', { maxFrames })}
         </p>
       )}

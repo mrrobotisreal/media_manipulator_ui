@@ -4,7 +4,7 @@ import React, { lazy, Suspense, useState, useCallback, useRef, useEffect } from 
 import Link from 'next/link';
 import { Trans } from 'react-i18next';
 import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
-import { getFileType } from '@/lib/utils';
+import { cn, getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -682,8 +682,8 @@ const FileConverterApp: React.FC = () => {
   return (
     <>
       {isResultModalOpen && activeHistoryItem && (
-        <div className="fixed inset-0 z-50 bg-black/80 p-4 flex items-center justify-center">
-          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-surface-0/80 p-4 flex items-center justify-center">
+          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100dvh-2rem)] flex flex-col overflow-hidden shadow-2xl">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
               <div>
                 <h2 className="text-xl font-semibold text-card-foreground">
@@ -703,7 +703,7 @@ const FileConverterApp: React.FC = () => {
                       onClick={() => setResultView('original')}
                       className={`px-4 py-2 text-sm transition-colors ${
                         resultView === 'original'
-                          ? 'bg-blue-600 text-white'
+                          ? 'bg-primary text-primary-foreground'
                           : 'bg-background text-card-foreground hover:bg-muted'
                       }`}
                     >
@@ -714,7 +714,7 @@ const FileConverterApp: React.FC = () => {
                       onClick={() => setResultView('final')}
                       className={`px-4 py-2 text-sm transition-colors ${
                         resultView === 'final'
-                          ? 'bg-blue-600 text-white'
+                          ? 'bg-primary text-primary-foreground'
                           : 'bg-background text-card-foreground hover:bg-muted'
                       }`}
                     >
@@ -725,7 +725,7 @@ const FileConverterApp: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => void handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
-                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                  className="bg-success text-success-foreground py-2 px-4 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
                   {t('interface:common.download')}
@@ -759,7 +759,7 @@ const FileConverterApp: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => void loadResultPreview(activeResultJobId || conversionJob?.id, true)}
-                    className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
                   >
                     {t('interface:home.result.tryLoadingAgain')}
                   </button>
@@ -770,14 +770,14 @@ const FileConverterApp: React.FC = () => {
                     <img
                       src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
                       alt={resultView === 'original' ? t('interface:home.result.originalImageAlt') : t('interface:home.result.convertedImageAlt')}
-                      className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
+                      className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
                     />
                   )}
                   {activeHistoryItem.mediaKind === 'video' && activeHistoryItem.format === 'gif' && resultView === 'final' && (
                     <img
                       src={resultImageUrl || undefined}
                       alt={t('interface:home.result.convertedGifAlt')}
-                      className="max-w-full max-h-[calc(100vh-14rem)] object-contain rounded-lg bg-background"
+                      className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
                     />
                   )}
                   {activeHistoryItem.mediaKind === 'video' && !(activeHistoryItem.format === 'gif' && resultView === 'final') && (
@@ -785,7 +785,7 @@ const FileConverterApp: React.FC = () => {
                       key={`${activeHistoryItem.jobId}-${resultView}`}
                       src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
                       controls
-                      className="max-w-full max-h-[calc(100vh-14rem)] rounded-lg bg-black"
+                      className="max-w-full max-h-[calc(100dvh-14rem)] rounded-lg bg-surface-0"
                     />
                   )}
                   {activeHistoryItem.mediaKind === 'audio' && (
@@ -811,7 +811,7 @@ const FileConverterApp: React.FC = () => {
         </div>
       )}
 
-      <div className="max-w-8xl mx-auto p-4 pt-8 flex justify-center items-center flex-col">
+      <div className="mx-auto flex max-w-[1600px] flex-col items-center justify-center p-4 pt-8">
         <header className="w-full max-w-5xl text-center mb-8">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-card-foreground tracking-tight">
             {t('interface:home.hero.title')}
@@ -820,7 +820,7 @@ const FileConverterApp: React.FC = () => {
             {t('interface:home.hero.subtitle')}
           </p>
           <nav aria-label={t('accessibility:home.popularTools')} className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-            <Link href="/tools" className="px-3 py-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">{t('interface:home.hero.allTools')}</Link>
+            <Link href="/tools" className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors">{t('interface:home.hero.allTools')}</Link>
             <Link href="/tools/remove-exif-metadata" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
             <Link href="/tools/compress-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
             <Link href="/tools/transcribe-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
@@ -839,31 +839,31 @@ const FileConverterApp: React.FC = () => {
           aria-label={t('interface:home.contentStudioCta.title')}
         >
           <div className="flex items-center gap-4">
-            <div className="shrink-0 rounded-lg bg-green-600/10 p-3">
-              <Clapperboard className="w-7 h-7 text-green-500" />
+            <div className="shrink-0 rounded-lg bg-data/10 p-3">
+              <Clapperboard className="w-7 h-7 text-data" />
             </div>
             <div className="min-w-0 flex-1">
               <span className="flex items-center gap-2 flex-wrap">
                 <span className="text-lg font-semibold text-card-foreground">
                   {t('interface:home.contentStudioCta.title')}
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-md bg-green-600 px-2 py-0.5 text-xs font-medium text-white">
+                <span className="inline-flex items-center gap-1 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-foreground">
                   <Sparkles className="w-3 h-3" />
                   {t('interface:home.contentStudioCta.badge')}
                 </span>
               </span>
               <p className="text-sm text-muted-foreground mt-1">{t('interface:home.contentStudioCta.body')}</p>
             </div>
-            <span className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-green-500 group-hover:translate-x-0.5 transition-transform shrink-0">
+            <span className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform shrink-0">
               {t('interface:home.contentStudioCta.cta')}
               <ArrowRight className="w-4 h-4" />
             </span>
           </div>
         </Link>
 
-        <div className="grid 2xl:grid-cols-2 gap-6 max-w-8xl">
+        <div className="mx-auto grid w-full max-w-[1600px] gap-6 lg:grid-cols-2">
           {/* File Upload Section */}
-          <Panel level="1" className="w-full max-w-4xl shadow-lg">
+          <Panel level="1" className="w-full shadow-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Upload className="w-5 h-5" />
               {t('interface:home.upload.title')}
@@ -874,25 +874,34 @@ const FileConverterApp: React.FC = () => {
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                className={cn(
+                  'flex min-h-[200px] flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 text-center sm:p-8',
+                  'transition-[background-color,border-color,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-instrument)]',
                   isDragOver
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/50'
-                    : 'border-muted-foreground/25 hover:border-muted-foreground/50'
-                }`}
+                    ? 'border-primary bg-primary/10 shadow-[var(--glow-primary)]'
+                    : 'border-edge-strong hover:border-primary/60 hover:bg-surface-2/40'
+                )}
               >
-                <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-lg font-medium text-card-foreground mb-2">
+                <Upload
+                  aria-hidden="true"
+                  className={cn(
+                    'mb-4 size-10 transition-colors duration-[var(--dur-base)] sm:size-12',
+                    isDragOver ? 'text-primary' : 'text-muted-foreground'
+                  )}
+                />
+                <p className="mb-2 text-lg font-medium text-card-foreground">
                   {t('interface:home.upload.dragDrop')}
                 </p>
-                <p className="text-muted-foreground mb-4">
+                <p className="mb-4 text-muted-foreground">
                   {t('interface:home.upload.orClickSelect')}
                 </p>
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="min-h-[44px] rounded-md bg-primary px-6 py-2 font-medium text-primary-foreground transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:bg-[var(--accent-primary-hover)]"
                 >
                   {t('interface:home.upload.chooseFile')}
                 </button>
+                <p className="num mt-4 text-xs text-muted-foreground">image · video · audio</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -932,7 +941,7 @@ const FileConverterApp: React.FC = () => {
                 <button
                   onClick={handleIdentifyFile}
                   disabled={isIdentifying}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 transition-colors flex items-center justify-center gap-2"
                 >
                   <Search className="w-4 h-4" />
                   {isIdentifying ? t('interface:home.upload.analyzing') : t('interface:home.upload.identifyDetails')}
@@ -961,7 +970,7 @@ const FileConverterApp: React.FC = () => {
                   <button
                     type="button"
                     onClick={clearFile}
-                    className="text-sm bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="text-sm bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
                   >
                     {t('interface:home.history.newConversion')}
                   </button>
@@ -976,7 +985,7 @@ const FileConverterApp: React.FC = () => {
                             <span>
                               {t('interface:home.history.itemLabel', { number: conversionHistory.length - index, filename: item.outputFileName })}
                               {item.mode === 'transcribe' && (
-                                <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
+                                <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                                   {t('interface:home.history.transcriptBadge')}
                                 </span>
                               )}
@@ -995,7 +1004,7 @@ const FileConverterApp: React.FC = () => {
                             type="button"
                             disabled={item.status !== 'completed'}
                             onClick={() => void loadResultPreview(item.jobId, true)}
-                            className="text-sm bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                            className="text-sm bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors"
                           >
                             {t('interface:home.history.preview')}
                           </button>
@@ -1003,7 +1012,7 @@ const FileConverterApp: React.FC = () => {
                             type="button"
                             disabled={item.status !== 'completed'}
                             onClick={() => void handleDownload(item.jobId, item.outputFileName)}
-                            className="text-sm bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                            className="text-sm bg-success text-success-foreground px-3 py-2 rounded-lg hover:bg-success/90 disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors"
                           >
                             {t('interface:home.history.download')}
                           </button>
@@ -1037,7 +1046,7 @@ const FileConverterApp: React.FC = () => {
                   onClick={() => setWorkflowMode('convert')}
                   className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
                     workflowMode === 'convert'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-primary text-primary-foreground'
                       : 'bg-background text-card-foreground hover:bg-muted'
                   }`}
                 >
@@ -1049,7 +1058,7 @@ const FileConverterApp: React.FC = () => {
                   onClick={() => setWorkflowMode('transcribe')}
                   className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
                     workflowMode === 'transcribe'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-primary text-primary-foreground'
                       : 'bg-background text-card-foreground hover:bg-muted'
                   }`}
                 >
@@ -1062,7 +1071,7 @@ const FileConverterApp: React.FC = () => {
                     onClick={() => setWorkflowMode('transcode')}
                     className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
                       workflowMode === 'transcode'
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-primary text-primary-foreground'
                         : 'bg-background text-card-foreground hover:bg-muted'
                     }`}
                   >
@@ -1083,7 +1092,7 @@ const FileConverterApp: React.FC = () => {
                   onClick={() => setWorkflowMode('convert')}
                   className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
                     workflowMode === 'convert'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-primary text-primary-foreground'
                       : 'bg-background text-card-foreground hover:bg-muted'
                   }`}
                 >
@@ -1095,7 +1104,7 @@ const FileConverterApp: React.FC = () => {
                   onClick={() => setWorkflowMode('document')}
                   className={`flex-1 px-4 py-2 text-sm transition-colors flex items-center justify-center gap-2 ${
                     workflowMode === 'document'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-primary text-primary-foreground'
                       : 'bg-background text-card-foreground hover:bg-muted'
                   }`}
                 >
@@ -1154,7 +1163,7 @@ const FileConverterApp: React.FC = () => {
                   <div className="space-y-2">
                     <button
                       onClick={() => void handleDownload()}
-                      className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                      className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
                       {t('interface:home.download.downloadAs', { filename: getConvertedFilename() })}
@@ -1201,7 +1210,7 @@ const FileConverterApp: React.FC = () => {
                   <h3 className="font-semibold text-card-foreground mb-2">{t('interface:home.gettingStarted.title')}</h3>
                   <ol className="space-y-3">
                     <li className="flex gap-3">
-                      <span className="shrink-0 w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 font-semibold flex items-center justify-center text-sm">1</span>
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-semibold flex items-center justify-center text-sm">1</span>
                       <div>
                         <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step1.title')}</p>
                         <p className="text-sm text-muted-foreground">
@@ -1210,7 +1219,7 @@ const FileConverterApp: React.FC = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <span className="shrink-0 w-7 h-7 rounded-full bg-green-100 dark:bg-green-950/60 text-green-600 dark:text-green-300 font-semibold flex items-center justify-center text-sm">2</span>
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-data/10 text-data font-semibold flex items-center justify-center text-sm">2</span>
                       <div>
                         <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step2.title')}</p>
                         <p className="text-sm text-muted-foreground">
@@ -1219,7 +1228,7 @@ const FileConverterApp: React.FC = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <span className="shrink-0 w-7 h-7 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300 font-semibold flex items-center justify-center text-sm">3</span>
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-premium/10 text-premium font-semibold flex items-center justify-center text-sm">3</span>
                       <div>
                         <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step3.title')}</p>
                         <p className="text-sm text-muted-foreground">
@@ -1228,7 +1237,7 @@ const FileConverterApp: React.FC = () => {
                       </div>
                     </li>
                     <li className="flex gap-3">
-                      <span className="shrink-0 w-7 h-7 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-300 font-semibold flex items-center justify-center text-sm">4</span>
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-premium/10 dark:bg-premium/60 text-premium dark:text-premium font-semibold flex items-center justify-center text-sm">4</span>
                       <div>
                         <p className="font-medium text-card-foreground">{t('interface:home.gettingStarted.step4.title')}</p>
                         <p className="text-sm text-muted-foreground">
@@ -1239,9 +1248,9 @@ const FileConverterApp: React.FC = () => {
                   </ol>
                 </div>
 
-                <div className="border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/30 rounded-lg p-4">
+                <div className="border border-primary/30 bg-primary/10 rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <Sparkles className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
+                    <Sparkles className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                     <div>
                       <p className="font-medium text-card-foreground">{t('interface:home.localAi.title')}</p>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -1253,7 +1262,7 @@ const FileConverterApp: React.FC = () => {
 
                 <div className="border border-border rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <BookOpen className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                    <BookOpen className="w-5 h-5 text-data mt-0.5 shrink-0" />
                     <div>
                       <p className="font-medium text-card-foreground">{t('interface:home.notSure.title')}</p>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -1261,7 +1270,7 @@ const FileConverterApp: React.FC = () => {
                       </p>
                       <Link
                         href="/tutorials"
-                        className="inline-flex items-center gap-2 mt-3 bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                        className="inline-flex items-center gap-2 mt-3 bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors text-sm"
                       >
                         <BookOpen className="w-4 h-4" />
                         {t('interface:home.notSure.cta')}
@@ -1272,7 +1281,7 @@ const FileConverterApp: React.FC = () => {
 
                 <div className="border border-border rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <HelpCircle className="w-5 h-5 text-purple-600 mt-0.5 shrink-0" />
+                    <HelpCircle className="w-5 h-5 text-premium mt-0.5 shrink-0" />
                     <div>
                       <p className="font-medium text-card-foreground">{t('interface:home.howItWorks.title')}</p>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -1304,7 +1313,7 @@ const FileConverterApp: React.FC = () => {
             </div>
             <div className="w-full bg-muted rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-primary h-2 rounded-full transition-all duration-300"
                 style={{ width: `${conversionJob.progress || 0}%` }}
               />
             </div>

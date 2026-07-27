@@ -14,7 +14,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
       </aside>
       <div className="flex-1 min-w-0">
       <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
-          <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Image Tutorial</p>
+          <p className="text-sm uppercase tracking-wide text-data font-medium">Image Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Image Files</h1>
           <p className="text-lg mb-8">
             Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).
@@ -42,7 +42,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
             <strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images.
             {/* Blog hidden during AdSense review — restore the inline link
                 when the blog returns:
-            Need help picking? See our <Link href="/blog/image/image-optimization-guide" className="text-blue-600 hover:text-blue-800">image optimization guide</Link>.
+            Need help picking? See our <Link href="/blog/image/image-optimization-guide" className="text-primary hover:text-[var(--accent-primary-hover)]">image optimization guide</Link>.
             */}
           </p>
 
@@ -126,7 +126,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
           </ul>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <Link href="/" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
               Try the Image Converter
             </Link>
             <Link href="/tutorials" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">

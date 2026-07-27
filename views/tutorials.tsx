@@ -26,7 +26,7 @@ const CATEGORIES: CategoryDef[] = [
     id: 'audio',
     titleKey: 'tutorials.categories.audio.title',
     descriptionKey: 'tutorials.categories.audio.description',
-    icon: <Music className="w-7 h-7 text-blue-600" />,
+    icon: <Music className="w-7 h-7 text-primary" />,
     tutorials: [
       {
         titleKey: 'tutorials.tutorials.audioGettingStarted.title',
@@ -40,7 +40,7 @@ const CATEGORIES: CategoryDef[] = [
     id: 'video',
     titleKey: 'tutorials.categories.video.title',
     descriptionKey: 'tutorials.categories.video.description',
-    icon: <VideoIcon className="w-7 h-7 text-green-600" />,
+    icon: <VideoIcon className="w-7 h-7 text-data" />,
     tutorials: [
       {
         titleKey: 'tutorials.tutorials.contentStudio.title',
@@ -66,7 +66,7 @@ const CATEGORIES: CategoryDef[] = [
     id: 'image',
     titleKey: 'tutorials.categories.image.title',
     descriptionKey: 'tutorials.categories.image.description',
-    icon: <ImageIcon className="w-7 h-7 text-purple-600" />,
+    icon: <ImageIcon className="w-7 h-7 text-premium" />,
     tutorials: [
       {
         titleKey: 'tutorials.tutorials.imageGettingStarted.title',
@@ -107,7 +107,7 @@ const TutorialsPage: React.FC = () => {
                         key={tutorial.slug}
                         className="lg:p-6 transition-shadow"
                       >
-                        <h3 className="text-xl font-semibold mb-2 text-card-foreground hover:text-green-600">
+                        <h3 className="text-xl font-semibold mb-2 text-card-foreground hover:text-data">
                           <Link href={`/tutorials/${tutorial.slug}`}>{t(tutorial.titleKey)}</Link>
                         </h3>
                         <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
@@ -116,7 +116,7 @@ const TutorialsPage: React.FC = () => {
                         <p className="text-muted-foreground mb-4">{t(tutorial.excerptKey)}</p>
                         <Link
                           href={`/tutorials/${tutorial.slug}`}
-                          className="text-green-600 hover:text-green-700 font-medium"
+                          className="text-data hover:text-data font-medium"
                         >
                           {t('tutorials.readTutorial')}
                         </Link>
@@ -134,7 +134,7 @@ const TutorialsPage: React.FC = () => {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/how-it-works"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
               >
                 {t('tutorials.newToHere.ctaHow')}
               </Link>
