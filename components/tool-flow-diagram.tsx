@@ -32,17 +32,17 @@ const ToolFlowDiagram: React.FC<ToolFlowDiagramProps> = ({
 
   return (
     <section
-      className={`bg-card border border-border rounded-lg p-6 my-8 ${className ?? ''}`}
+      className={`my-8 rounded-lg border border-edge bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] sm:p-6 ${className ?? ''}`}
       aria-label={resolvedTitle}
     >
       <h2 className="text-xl font-semibold text-card-foreground mb-4">{resolvedTitle}</h2>
       <ol className="flex flex-col md:flex-row md:flex-wrap md:items-stretch gap-3 list-none">
         {steps.map((step, index) => (
           <React.Fragment key={`${index}-${step.title}`}>
-            <li className="flex md:flex-col md:flex-1 md:min-w-[180px] gap-3 md:items-start md:gap-2 rounded-md border border-border bg-background/40 p-3">
+            <li className="flex md:flex-col md:flex-1 md:min-w-[180px] gap-3 md:items-start md:gap-2 rounded-md border border-edge bg-surface-2/40 p-3">
               <span
                 aria-hidden="true"
-                className="shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold flex items-center justify-center text-sm"
+                className="num grid size-8 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary/10 text-xs text-primary"
               >
                 {index + 1}
               </span>

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, Info, Eye, EyeOff } from 'lucide-react';
 import type { FileIdentificationResponse } from '@/lib/useIdentifyFile';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Stat } from '@/components/darkroom/stat';
 
 interface FileDetailsProps {
   fileDetails: FileIdentificationResponse;
@@ -163,10 +164,7 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
         <h4 className="text-md font-medium text-card-foreground mb-3">{title}</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {entries.map(([key, value]) => (
-            <div key={key}>
-              <div className="text-xs font-medium text-card-foreground">{key}</div>
-              <div className="text-sm text-muted-foreground break-words">{formatValue(value)}</div>
-            </div>
+            <Stat key={key} label={key} value={formatValue(value)} wrap />
           ))}
         </div>
       </div>
@@ -233,33 +231,19 @@ const FileDetails: React.FC<FileDetailsProps> = ({ fileDetails, className = '' }
         </div>
 
         {/* Basic Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <div className="text-sm font-medium text-card-foreground">{t('fileDetails.fileName')}</div>
-            <div className="text-sm text-muted-foreground truncate" title={fileDetails.fileName}>
-              {fileDetails.fileName}
-            </div>
-          </div>
-          <div>
-            <div className="text-sm font-medium text-card-foreground">{t('fileDetails.fileSize')}</div>
-            <div className="text-sm text-muted-foreground">
-              {formatFileSize(fileDetails.fileSize)}
-            </div>
-          </div>
-          <div>
-            <div className="text-sm font-medium text-card-foreground">{t('fileDetails.mimeType')}</div>
-            <div className="text-sm text-muted-foreground">
-              {fileDetails.mimeType}
-            </div>
-          </div>
-        </div>
-
-        {/* Tool Info */}
-        <div className="mb-4">
-          <div className="text-sm font-medium text-card-foreground">{t('fileDetails.analysisTool')}</div>
-          <div className="text-sm text-muted-foreground">
-            {fileDetails.tool}
-          </div>
+        <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Stat
+            label={t('fileDetails.fileName')}
+            value={fileDetails.fileName}
+            title={fileDetails.fileName}
+          />
+          <Stat
+            label={t('fileDetails.fileSize')}
+            value={formatFileSize(fileDetails.fileSize)}
+            accent="data"
+          />
+          <Stat label={t('fileDetails.mimeType')} value={fileDetails.mimeType} wrap />
+          <Stat label={t('fileDetails.analysisTool')} value={fileDetails.tool} />
         </div>
 
         {/* Expanded Details */}

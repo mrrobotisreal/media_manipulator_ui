@@ -246,7 +246,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 
   if (!project) {
     return (
-      <div className="p-12 flex items-center justify-center text-muted-foreground">
+      <div className="flex items-center justify-center p-8 text-muted-foreground sm:p-12">
         <Loader2 className="w-5 h-5 animate-spin mr-2" />
         {t('contentStudio.editor.loading')}
       </div>

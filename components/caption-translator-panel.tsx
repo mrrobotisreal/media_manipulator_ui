@@ -192,7 +192,7 @@ const CaptionTranslatorPanel: React.FC = () => {
           <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
             <div className="min-w-0">
               <p className="font-medium text-card-foreground truncate">{file.name}</p>
-              <p className="text-xs text-muted-foreground">{formatFileSize(file.size)} · {inputFormat.toUpperCase()}</p>
+              <p className="num text-xs text-muted-foreground">{formatFileSize(file.size)} · {inputFormat.toUpperCase()}</p>
             </div>
             <button
               type="button"

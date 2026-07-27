@@ -169,7 +169,7 @@ const ImageRestorePanel: React.FC = () => {
             <p className="text-sm truncate">
               <span className="text-muted-foreground">{t('imageRestore.panel.fileLabel')}</span>{' '}
               <span className="font-medium">{file.name}</span>{' '}
-              <span className="text-muted-foreground">({formatFileSize(file.size)})</span>
+              <span className="num text-muted-foreground">({formatFileSize(file.size)})</span>
             </p>
             <button type="button" onClick={handleReset} className="text-xs text-primary hover:underline whitespace-nowrap">
               {t('imageRestore.panel.changeFile')}

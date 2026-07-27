@@ -960,7 +960,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
                 <p className="font-medium text-card-foreground truncate">
                   {selectedFile.name}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="num text-xs text-muted-foreground">
                   {formatFileSize(selectedFile.size)} ·{' '}
                   {getSafeFileExtension(selectedFile.name)}
                 </p>

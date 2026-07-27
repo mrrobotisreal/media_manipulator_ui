@@ -10,7 +10,13 @@ function Switch({ className, ...props }: React.ComponentProps<typeof SwitchPrimi
     <SwitchPrimitive.Root
       data-slot="switch"
       className={cn(
-        'peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-data data-[state=unchecked]:bg-muted',
+        'peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50',
+        // Checked is green on purpose — the Darkroom green is --success. The
+        // palette sweep briefly made this teal; green is the deliberate choice.
+        'data-[state=checked]:border-success data-[state=checked]:bg-success',
+        // When off, the track outline is the only affordance, so it needs a
+        // perceivable boundary (3:1, WCAG 1.4.11) rather than surface-on-surface.
+        'data-[state=unchecked]:border-control data-[state=unchecked]:bg-surface-2',
         className,
       )}
       {...props}

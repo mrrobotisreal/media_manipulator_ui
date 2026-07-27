@@ -917,7 +917,7 @@ const FileConverterApp: React.FC = () => {
                     {getFileIcon(fileType!)}
                     <div>
                       <p className="font-medium text-card-foreground">{selectedFile.name}</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="num text-sm text-muted-foreground">
                         {formatFileSize(selectedFile.size)}
                       </p>
                     </div>

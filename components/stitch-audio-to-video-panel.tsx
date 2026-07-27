@@ -144,7 +144,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
               <Video className="w-5 h-5 text-primary shrink-0" />
               <div className="min-w-0">
                 <p className="font-medium text-card-foreground truncate">{video.name}</p>
-                <p className="text-xs text-muted-foreground">{formatFileSize(video.size)}</p>
+                <p className="num text-xs text-muted-foreground">{formatFileSize(video.size)}</p>
               </div>
             </div>
             <button

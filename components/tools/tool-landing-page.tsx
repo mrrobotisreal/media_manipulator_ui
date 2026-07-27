@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { Shield } from 'lucide-react';
+import { ChevronDown, Shield } from 'lucide-react';
 import EmbeddedToolPanelClient from '@/components/tools/embedded-tool-panel-client';
 import AdBanner from '@/components/ad-banner';
 import { getReviewToolInContentAdSlot } from '@/lib/adSlots';
@@ -15,6 +15,20 @@ import { Panel } from '@/components/darkroom/panel';
  * which is client-only. A single guarded in-content ad sits after substantial
  * body copy — never near the tool/action buttons, and disabled by default.
  */
+/**
+ * One heading treatment for all nine content sections: `h2` plus a hairline
+ * rule. Section rhythm is `mt-12`, so the rule does the separating rather than
+ * a stack of tracked uppercase eyebrows — nine identical eyebrows read as
+ * grammar rather than as a system.
+ */
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mb-4 border-b border-edge pb-2 text-xl font-semibold tracking-tight text-card-foreground">
+      {children}
+    </h2>
+  );
+}
+
 export default function ToolLandingPage({
   tool,
   panel,
@@ -123,17 +137,17 @@ export default function ToolLandingPage({
 
           {/* Supported formats */}
           {hasFormats && sf ? (
-            <section className="my-8" aria-label="Supported formats">
-              <h2 className="text-2xl font-semibold text-card-foreground mb-3">Supported formats</h2>
+            <section className="mt-12" aria-label="Supported formats">
+              <SectionHeading>Supported formats</SectionHeading>
               <div className="grid gap-4 md:grid-cols-2">
                 {sf.supportedInputFormats?.length ? (
-                  <div className="rounded-lg border border-border bg-background/40 p-4">
+                  <div className="rounded-md border border-edge bg-surface-2/40 p-4">
                     <h3 className="font-medium text-card-foreground mb-2">Input formats</h3>
                     <ul className="flex flex-wrap gap-2">
                       {sf.supportedInputFormats.map((fmt) => (
                         <li
                           key={fmt}
-                          className="text-xs px-2 py-1 rounded bg-primary/10 text-primary border border-primary/30"
+                          className="num rounded border border-edge bg-surface-2 px-2 py-1 text-xs text-foreground"
                         >
                           {fmt.toUpperCase()}
                         </li>
@@ -142,13 +156,13 @@ export default function ToolLandingPage({
                   </div>
                 ) : null}
                 {sf.supportedOutputFormats?.length ? (
-                  <div className="rounded-lg border border-border bg-background/40 p-4">
+                  <div className="rounded-md border border-edge bg-surface-2/40 p-4">
                     <h3 className="font-medium text-card-foreground mb-2">Output formats</h3>
                     <ul className="flex flex-wrap gap-2">
                       {sf.supportedOutputFormats.map((fmt) => (
                         <li
                           key={fmt}
-                          className="text-xs px-2 py-1 rounded bg-data/10 text-data border border-data/30"
+                          className="num rounded border border-edge bg-surface-2 px-2 py-1 text-xs text-foreground"
                         >
                           {fmt.toUpperCase()}
                         </li>
@@ -168,18 +182,26 @@ export default function ToolLandingPage({
 
           {/* How to use */}
           {tool.flowSteps.length > 0 && (
-            <section className="my-8" aria-label="How to use">
-              <h2 className="text-2xl font-semibold text-card-foreground mb-3">How to use it</h2>
-              <ol className="space-y-3">
+            <section className="mt-12" aria-label="How to use">
+              <SectionHeading>How to use it</SectionHeading>
+              <ol className="space-y-5">
                 {tool.flowSteps.map((step, idx) => (
-                  <li key={step.title || idx} className="flex gap-3">
-                    <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary font-semibold flex items-center justify-center text-sm">
-                      {idx + 1}
+                  <li key={step.title || idx} className="flex gap-4">
+                    <span
+                      aria-hidden="true"
+                      className="relative flex shrink-0 flex-col items-center"
+                    >
+                      <span className="num grid size-7 place-items-center rounded-full border border-primary/40 bg-primary/10 text-xs text-primary">
+                        {idx + 1}
+                      </span>
+                      {idx < tool.flowSteps.length - 1 && (
+                        <span className="mt-1 w-px flex-1 bg-edge" />
+                      )}
                     </span>
-                    <div>
+                    <div className="min-w-0 pb-1">
                       <p className="font-medium text-card-foreground">{step.title}</p>
                       {step.description ? (
-                        <p className="text-sm text-muted-foreground">{step.description}</p>
+                        <p className="mt-1 text-sm text-muted-foreground">{step.description}</p>
                       ) : null}
                     </div>
                   </li>
@@ -189,8 +211,8 @@ export default function ToolLandingPage({
           )}
 
           {/* What this tool does */}
-          <section className="my-8" aria-label="What this tool does">
-            <h2 className="text-2xl font-semibold text-card-foreground mb-3">What this tool does</h2>
+          <section className="mt-12" aria-label="What this tool does">
+            <SectionHeading>What this tool does</SectionHeading>
             <ul className="space-y-2 list-disc pl-6 text-card-foreground">
               {tool.whatItDoes.map((item) => (
                 <li key={item}>{item}</li>
@@ -199,8 +221,8 @@ export default function ToolLandingPage({
           </section>
 
           {/* Why it matters */}
-          <section className="my-8" aria-label="Why it matters">
-            <h2 className="text-2xl font-semibold text-card-foreground mb-3">Why it matters</h2>
+          <section className="mt-12" aria-label="Why it matters">
+            <SectionHeading>Why it matters</SectionHeading>
             <ul className="space-y-2 list-disc pl-6 text-card-foreground">
               {tool.whyItMatters.map((item) => (
                 <li key={item}>{item}</li>
@@ -209,11 +231,11 @@ export default function ToolLandingPage({
           </section>
 
           {/* Common use cases */}
-          <section className="my-8" aria-label="Common use cases">
-            <h2 className="text-2xl font-semibold text-card-foreground mb-3">Common use cases</h2>
+          <section className="mt-12" aria-label="Common use cases">
+            <SectionHeading>Common use cases</SectionHeading>
             <div className="grid gap-3 md:grid-cols-2">
               {tool.useCases.map((useCase) => (
-                <div key={useCase.title} className="rounded-lg border border-border bg-background/40 p-4">
+                <div key={useCase.title} className="rounded-md border border-edge bg-surface-2/40 p-4">
                   <h3 className="font-medium text-card-foreground">{useCase.title}</h3>
                   <p className="text-sm text-muted-foreground mt-1">{useCase.description}</p>
                 </div>
@@ -235,9 +257,13 @@ export default function ToolLandingPage({
 
           {/* Advanced details */}
           {tool.advancedDetails && tool.advancedDetails.length > 0 && (
-            <details className="my-8 rounded-lg border border-border bg-card p-4">
-              <summary className="cursor-pointer font-semibold text-card-foreground">
-                Advanced details
+            <details className="group mt-12 rounded-md border border-edge bg-surface-2/40 p-4">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-card-foreground [&::-webkit-details-marker]:hidden">
+                <span>Advanced details</span>
+                <ChevronDown
+                  aria-hidden="true"
+                  className="size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--dur-base)] ease-[var(--ease-instrument)] group-open:rotate-180"
+                />
               </summary>
               <ul className="mt-3 list-disc pl-6 space-y-2 text-sm text-muted-foreground">
                 {tool.advancedDetails.map((item) => (
@@ -248,8 +274,8 @@ export default function ToolLandingPage({
           )}
 
           {/* Why Media Manipulator */}
-          <section className="my-8" aria-label="Why Media Manipulator">
-            <h2 className="text-2xl font-semibold text-card-foreground mb-3">Why Media Manipulator</h2>
+          <section className="mt-12" aria-label="Why Media Manipulator">
+            <SectionHeading>Why Media Manipulator</SectionHeading>
             <ul className="space-y-2 list-disc pl-6 text-card-foreground">
               {tool.whyMediaManipulator.map((item) => (
                 <li key={item}>{item}</li>
@@ -259,10 +285,10 @@ export default function ToolLandingPage({
 
           {/* Privacy note */}
           <section
-            className="my-8 rounded-lg border border-primary/30 bg-primary/10 p-4 flex items-start gap-3"
+            className="mt-12 flex items-start gap-3 rounded-lg border border-edge border-l-2 border-l-data bg-data/8 p-4"
             aria-label="Privacy & file handling"
           >
-            <Shield className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+            <Shield className="mt-0.5 h-5 w-5 shrink-0 text-data" />
             <div>
               <h2 className="text-base font-semibold text-card-foreground">Privacy &amp; file handling</h2>
               <p className="text-sm text-muted-foreground mt-1">{tool.privacyNote}</p>
@@ -271,21 +297,23 @@ export default function ToolLandingPage({
 
           {/* FAQ — <details> keeps every Q/A in the server HTML (crawlable) */}
           {tool.faq.length > 0 && (
-            <section className="my-8" aria-label="Frequently asked questions">
-              <h2 className="text-2xl font-semibold text-card-foreground mb-3">
-                Frequently asked questions
-              </h2>
+            <section className="mt-12" aria-label="Frequently asked questions">
+              <SectionHeading>Frequently asked questions</SectionHeading>
               <ul className="space-y-2 list-none">
                 {tool.faq.map((item) => (
                   <li
                     key={item.question}
-                    className="border border-border rounded-lg overflow-hidden bg-card"
+                    className="overflow-hidden rounded-md border border-edge bg-surface-2/40"
                   >
-                    <details>
-                      <summary className="cursor-pointer px-4 py-3 font-medium text-card-foreground hover:bg-muted/40 transition-colors">
-                        {item.question}
+                    <details className="group">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 font-medium text-card-foreground transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
+                        <span className="min-w-0">{item.question}</span>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className="size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--dur-base)] ease-[var(--ease-instrument)] group-open:rotate-180"
+                        />
                       </summary>
-                      <div className="px-4 pb-4 text-sm text-muted-foreground">
+                      <div className="border-t border-edge px-4 py-3 text-sm text-muted-foreground">
                         <p>{item.answer}</p>
                       </div>
                     </details>
@@ -297,14 +325,14 @@ export default function ToolLandingPage({
 
           {/* Related links (filtered to review-safe destinations) */}
           {relatedLinks.length > 0 && (
-            <section className="my-8" aria-label="Related tools">
-              <h2 className="text-2xl font-semibold text-card-foreground mb-3">Related tools</h2>
+            <section className="mt-12" aria-label="Related tools">
+              <SectionHeading>Related tools</SectionHeading>
               <div className="grid gap-3 md:grid-cols-2">
                 {relatedLinks.map((link) => (
                   <Link
                     key={link.to}
                     href={link.to}
-                    className="block rounded-lg border border-border bg-background/40 p-4 hover:bg-muted/40 transition-colors"
+                    className="block rounded-md border border-edge bg-surface-2/40 p-4 transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:border-edge-strong hover:bg-surface-2"
                   >
                     <span className="font-medium text-card-foreground">{link.label}</span>
                     {link.description ? (

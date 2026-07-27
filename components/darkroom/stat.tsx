@@ -29,6 +29,12 @@ export interface StatProps extends React.ComponentProps<'div'> {
   accent?: StatAccent;
   /** Label above value (default) or side by side. */
   orientation?: 'stacked' | 'inline';
+  /**
+   * Wrap the value instead of truncating it. Use for values whose length is
+   * unbounded (raw metadata, MIME strings, file paths) where clipping would
+   * hide information rather than tidy it.
+   */
+  wrap?: boolean;
 }
 
 export function Stat({
@@ -36,6 +42,7 @@ export function Stat({
   value,
   accent = 'default',
   orientation = 'stacked',
+  wrap = false,
   className,
   ...props
 }: StatProps) {
@@ -54,7 +61,13 @@ export function Stat({
       <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
         {label}
       </span>
-      <span className={cn('num truncate text-sm', VALUE_TONE[accent])}>
+      <span
+        className={cn(
+          'num text-sm',
+          wrap ? 'break-words' : 'truncate',
+          VALUE_TONE[accent]
+        )}
+      >
         {value}
       </span>
     </div>
