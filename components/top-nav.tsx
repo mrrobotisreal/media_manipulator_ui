@@ -63,8 +63,8 @@ const ThemeToggle = () => {
     <Toggle
       size="sm"
       pressed={isDark}
-      // Drive off the *resolved* theme so the icon state always matches what is
-      // actually on screen (including a stored "system" value).
+      // Theme is binary and dark-first; only an explicit choice of light
+      // switches away from the darkroom.
       onPressedChange={(next) => setTheme(next ? "dark" : "light")}
       aria-label={t("topNav.toggleTheme")}
       className={cn(

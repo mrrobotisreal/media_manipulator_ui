@@ -23,14 +23,20 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 // No-flash theme bootstrap. Runs before first paint so <html> already carries
-// the correct `dark`/`light` class — dark is the default, a stored preference
-// wins, and "system" is resolved against the OS. Keep the storage key in sync
-// with components/theme-provider.tsx ("vite-ui-theme").
+// the correct class.
+//
+// Dark is the product default and the assumption in the absence of explicit
+// user input. ONLY a stored value of exactly "light" produces light mode —
+// the OS `prefers-color-scheme` is deliberately NOT consulted, so a visitor on
+// a light desktop still gets the darkroom. A legacy "system" value from the old
+// Vite app resolves to dark rather than following the OS.
+//
+// Keep the storage key in sync with components/theme-provider.tsx
+// ("vite-ui-theme") — changing it would reset every returning user's choice.
 const THEME_INIT = `
 (function(){try{
-  var t = localStorage.getItem('vite-ui-theme') || 'dark';
-  var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  document.documentElement.classList.add(dark ? 'dark' : 'light');
+  var t = localStorage.getItem('vite-ui-theme');
+  document.documentElement.classList.add(t === 'light' ? 'light' : 'dark');
 }catch(e){document.documentElement.classList.add('dark');}})();
 `;
 
