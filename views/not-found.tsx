@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 const QUICK_LINKS: { key: string; to: string }[] = [
   { key: 'home', to: '/' },
@@ -17,13 +17,12 @@ const NotFoundPage: React.FC = () => {
   const { t } = useLocalization(['interface', 'accessibility']);
   return (
     <>
-      <Card className="max-w-3xl mx-auto my-12 sci-fi-frame">
-        <CardContent className="p-10 md:p-12 text-center">
+      <div className="px-4 sm:px-6"><Panel level="1" className="max-w-3xl mx-auto my-12"><div className="text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-3">
             {t('interface:notFound.preTitle')}
           </p>
           <h1
-            className="font-glitch text-[5rem] md:text-[8rem] leading-none text-card-foreground"
+            className="num text-[5rem] md:text-[8rem] leading-none text-card-foreground"
             aria-label="404"
           >
             404
@@ -49,8 +48,8 @@ const NotFoundPage: React.FC = () => {
               </Link>
             ))}
           </nav>
-        </CardContent>
-      </Card>
+        </div>
+      </Panel></div>
     </>
   );
 };

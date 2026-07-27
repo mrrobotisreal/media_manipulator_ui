@@ -13,7 +13,7 @@ import {
   Info,
   FileText,
 } from 'lucide-react';
-import { getFileType } from '@/lib/utils';
+import { cn, getFileType } from '@/lib/utils';
 import ImageConversionForm from '@/components/image-conversion-form';
 import PdfConversionForm, { type PdfFormPresets } from '@/components/pdf-conversion-form';
 import VideoConversionForm from '@/components/video-conversion-form';
@@ -45,6 +45,7 @@ import {
   getSafeFileExtension,
 } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
@@ -829,8 +830,12 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   const specializedPanel = defaultTask && SPECIALIZED_PANEL_TASKS[defaultTask] ? defaultTask : null;
 
   return (
-    <section
-      className={`bg-card border border-border rounded-lg ${compact ? 'p-10' : 'p-12'} my-8 sci-fi-frame-inner`}
+    <Panel
+      level="2"
+      as="section"
+      // Panel owns responsive padding; `compact` now only tightens the large
+      // breakpoint rather than setting the old fixed p-10 / p-12.
+      className={cn('my-8', compact && 'lg:p-6')}
       aria-label={t('embeddedToolPanel.sectionAria')}
     >
       <div className="flex items-start gap-3 mb-4">
@@ -1071,7 +1076,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
         </Link>{' '}
         {t('embeddedToolPanel.needFullSuffix')}
       </p>
-    </section>
+    </Panel>
   );
 };
 

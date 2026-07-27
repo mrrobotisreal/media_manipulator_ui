@@ -7,6 +7,7 @@ import useDownloadFile from '@/lib/useDownloadFile';
 import { getFileType } from '@/lib/utils';
 import { getSafeFileExtension, trackFileDownload, trackFileUpload } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 /**
  * SpecializedToolShell renders the common upload → progress → download UX
@@ -387,7 +388,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
           page result viewer so the experience is consistent across the app. */}
       {previewConfig && isResultModalOpen && selectedFile && (
         <div className="fixed inset-0 z-50 bg-black/80 p-4 flex items-center justify-center">
-          <div className="bg-card shadow-2xl w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden sci-fi-frame">
+          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden shadow-2xl">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
               <div>
                 <h2 className="text-xl font-semibold text-card-foreground">
@@ -476,7 +477,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
                 />
               )}
             </div>
-          </div>
+          </Panel>
         </div>
       )}
     </div>

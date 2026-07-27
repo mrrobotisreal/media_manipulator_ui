@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
+import { CardContent, CardHeader, CardFooter } from '@/components/ui/card';
+import { Panel } from '@/components/darkroom/panel';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -17,9 +18,9 @@ const AudioQualityGuide: React.FC = () => {
         
       </aside>
       <div className="flex-1 min-w-0">
-      <Card className="sci-fi-frame p-12">
+      <Panel level="1">
         <article>
-        <div className="p-6 pb-0">
+        <div className="mb-4">
         <Link
           href="/blog"
           className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
@@ -27,7 +28,7 @@ const AudioQualityGuide: React.FC = () => {
           ← Blog
         </Link>
       </div>
-      <CardHeader>
+      <CardHeader className="px-0">
         <header>
           <h1 className="text-4xl font-bold text-card-foreground leading-tight">
             The Sound of <span className="line-through text-gray-400">Silence</span> Quality: Bitrates, Sample Rates, and Formats
@@ -55,7 +56,7 @@ const AudioQualityGuide: React.FC = () => {
         <Separator className="mt-6" />
       </CardHeader>
 
-      <CardContent className="prose prose-lg max-w-none">
+      <CardContent className="px-0 prose prose-lg max-w-none">
         <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">A Brief Intro to Audio Formats, Bitrates, and Sample Rates</h2>
 
         <p className="text-lg text-muted-foreground mb-6">
@@ -363,7 +364,7 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
         />
       </CardContent>
 
-      <CardFooter className="flex flex-col items-center gap-4 pt-8 border-t">
+      <CardFooter className="px-0 flex flex-col items-center gap-4 pt-8 border-t">
         <div className="text-center max-w-2xl">
           <h2 className="text-2xl font-bold mb-3 text-card-foreground">
             Ready to Master Audio Optimization? 🎧
@@ -389,7 +390,7 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
         </div>
         </CardFooter>
         </article>
-      </Card>
+      </Panel>
       </div>
       <aside className="hidden lg:block w-[300px] shrink-0">
         

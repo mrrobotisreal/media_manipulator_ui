@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-const formatterIcon = '/MMIcon.webp';
 import {
   Dialog,
   DialogContent,
@@ -11,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Wordmark } from '@/components/darkroom/wordmark';
 
 const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'home', href: '/' },
@@ -54,19 +54,18 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer data-site-footer className="w-full bg-black text-gray-300 sci-fi-frame-top">
+    <footer data-site-footer className="w-full bg-black text-gray-300 border-t border-edge">
       <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center space-x-3 mb-3 hover:opacity-90 transition-opacity" aria-label={t('accessibility:footer.homeLink')}>
-              <img
-                src={formatterIcon}
-                alt={t('accessibility:footer.navIcon')}
-                className="h-20 w-20 rounded-sm"
-              />
-              <div className="flex flex-col">
-                <span className="font-glitch text-4xl text-white">{t('interface:common.brand')}</span>
-                <span className="text-sm text-gray-400">{t('interface:common.brandTagline')}</span>
+              {/* min-w-0 matters: without it flex's `min-width: auto` stops the
+                  lockup shrinking and it overflows below ~400px. */}
+              <div className="flex min-w-0 flex-col">
+                <Wordmark size="lg" text={t('interface:common.brand')} />
+                <span className="mt-1 truncate text-sm text-muted-foreground">
+                  {t('interface:common.brandTagline')}
+                </span>
               </div>
             </Link>
             <p className="text-sm text-gray-400 max-w-md">

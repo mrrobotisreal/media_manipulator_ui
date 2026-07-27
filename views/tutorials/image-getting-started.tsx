@@ -2,9 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
 import EmbeddedToolPanel from '@/components/embedded-tool-panel';
 import RelatedLinks from '@/components/related-links';
+import { Panel } from '@/components/darkroom/panel';
 const ImageGettingStartedTutorial: React.FC = () => {
   return (
     <>
@@ -13,8 +13,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
         
       </aside>
       <div className="flex-1 min-w-0">
-      <Card className="sci-fi-frame">
-        <CardContent className="p-12 prose prose-invert max-w-none text-muted-foreground">
+      <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
           <p className="text-sm uppercase tracking-wide text-green-600 font-medium">Image Tutorial</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Image Files</h1>
           <p className="text-lg mb-8">
@@ -175,8 +174,8 @@ const ImageGettingStartedTutorial: React.FC = () => {
               },
             ]}
           />
-        </CardContent>
-      </Card>
+        </div>
+      </Panel>
       </div>
       <aside className="hidden lg:block w-[300px] shrink-0">
         

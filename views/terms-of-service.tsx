@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 interface Subsection {
   title: string;
@@ -78,8 +78,7 @@ const TermsOfServicePage: React.FC = () => {
   const sections = t('termsOfService.sections', { returnObjects: true }) as Section[];
 
   return (
-    <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
-      <CardContent className="p-12">
+    <div className="px-4 sm:px-6"><Panel level="1" className="max-w-7xl mx-auto my-2">
         <h1 className="text-4xl font-bold mb-8 text-card-foreground">{t('termsOfService.title')}</h1>
 
         <div className="prose max-w-none text-muted-foreground">
@@ -92,8 +91,8 @@ const TermsOfServicePage: React.FC = () => {
 
           {sections.map((section, idx) => <SectionView key={idx} data={section} />)}
         </div>
-      </CardContent>
-    </Card>
+      
+    </Panel></div>
   );
 };
 

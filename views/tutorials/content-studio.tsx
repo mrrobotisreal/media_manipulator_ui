@@ -3,9 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { Clapperboard } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import RelatedLinks from '@/components/related-links';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 const SHOT_BASE = 'https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev';
 const SCREENSHOTS = {
@@ -46,8 +46,7 @@ const ContentStudioTutorial: React.FC = () => {
           
         </aside>
         <div className="flex-1 min-w-0">
-          <Card className="sci-fi-frame">
-            <CardContent className="p-8 md:p-12 prose prose-invert max-w-none text-muted-foreground">
+          <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
               <p className="text-sm uppercase tracking-wide text-green-600 font-medium">{t(`${K}.eyebrow`)}</p>
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">{t(`${K}.title`)}</h1>
               <p className="text-lg mb-6">{t(`${K}.intro`)}</p>
@@ -91,7 +90,7 @@ const ContentStudioTutorial: React.FC = () => {
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.shortcuts.title`)}</h2>
               <p className="mb-4">{t(`${K}.shortcuts.body`)}</p>
 
-              <div className="not-prose mt-8 bg-card p-6 sci-fi-frame-green">
+              <Panel level="1" accent="data" className="not-prose mt-8">
                 <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.cta.title`)}</h2>
                 <p className="text-muted-foreground mb-4">{t(`${K}.cta.body`)}</p>
                 <Link
@@ -101,7 +100,7 @@ const ContentStudioTutorial: React.FC = () => {
                   <Clapperboard className="w-4 h-4" />
                   {t(`${K}.cta.button`)}
                 </Link>
-              </div>
+              </Panel>
 
               <div className="not-prose">
                 <RelatedLinks
@@ -113,8 +112,8 @@ const ContentStudioTutorial: React.FC = () => {
                   ]}
                 />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </Panel>
         </div>
         <aside className="hidden lg:block w-[300px] shrink-0">
           

@@ -1,6 +1,6 @@
 'use client';
 
-import { Menu } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -17,13 +17,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Toggle } from "@/components/ui/toggle";
 import { useTheme } from "@/components/theme-provider";
+import { Wordmark } from "@/components/darkroom/wordmark";
 import LanguageSelector from "@/components/language-selector";
 import { useLocalization } from "@/i18n/useLocalization";
-// import winappsLogo from "@/assets/WinApps_Logo_Medium.png";
-const mmIcon = "/MMIcon.webp";
-// import githubLogo from "@/assets/github.svg";
-// import creatvLogo from "@/assets/CreaTV_Logo_240x240.png";
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -64,83 +62,42 @@ const ThemeToggle = () => {
   const { t } = useLocalization("accessibility");
   const isDark = resolvedTheme === "dark";
 
+  // Was a 16-inline-SVG day/night scene (3 moon dots, 3 light rays, 6 clouds,
+  // 4 stars) animating on an infinite loop in the sticky header of every page.
+  // Now two icons crossfading on transform + opacity only. The 32px visual box
+  // keeps the chrome tight; the ::after inset extends the hit area to 44px.
   return (
-    <label className="switch">
-      <input
-        className="theme-toggle-input"
-        type="checkbox"
-        aria-label={t("topNav.toggleTheme")}
-        // Drive off the *resolved* theme so the moon/stars vs sun/clouds state
-        // always matches what's actually on screen (incl. a "system" value).
-        onChange={() => setTheme(isDark ? "light" : "dark")}
-        checked={isDark}
+    <Toggle
+      size="sm"
+      pressed={isDark}
+      // Drive off the *resolved* theme so the icon state always matches what is
+      // actually on screen (including a stored "system" value).
+      onPressedChange={(next) => setTheme(next ? "dark" : "light")}
+      aria-label={t("topNav.toggleTheme")}
+      className={cn(
+        "relative size-8 shrink-0 px-0 text-muted-foreground hover:bg-surface-2 hover:text-foreground",
+        "data-[state=on]:bg-transparent data-[state=on]:text-foreground",
+        "after:absolute after:-inset-1.5 after:content-['']"
+      )}
+    >
+      <Sun
+        aria-hidden="true"
+        className={cn(
+          "absolute size-4 transition-all duration-[var(--dur-base)] ease-[var(--ease-instrument)]",
+          isDark ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
+        )}
       />
-      <div className="slider round">
-        <div className="sun-moon">
-          <svg className="moon-dot moon-dot-1" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="moon-dot moon-dot-2" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="moon-dot moon-dot-3" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="light-ray light-ray-1" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="light-ray light-ray-2" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="light-ray light-ray-3" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-
-          <svg className="cloud-dark cloud-1" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="cloud-dark cloud-2" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="cloud-dark cloud-3" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="cloud-light cloud-4" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="cloud-light cloud-5" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-          <svg className="cloud-light cloud-6" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="50"></circle>
-          </svg>
-        </div>
-        <div className="stars">
-          <svg className="star star-1" viewBox="0 0 20 20">
-            <path
-              d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-            ></path>
-          </svg>
-          <svg className="star star-2" viewBox="0 0 20 20">
-            <path
-              d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-            ></path>
-          </svg>
-          <svg className="star star-3" viewBox="0 0 20 20">
-            <path
-              d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-            ></path>
-          </svg>
-          <svg className="star star-4" viewBox="0 0 20 20">
-            <path
-              d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-            ></path>
-          </svg>
-        </div>
-      </div>
-    </label>
+      <Moon
+        aria-hidden="true"
+        className={cn(
+          "absolute size-4 transition-all duration-[var(--dur-base)] ease-[var(--ease-instrument)]",
+          isDark ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
+        )}
+      />
+    </Toggle>
   );
 };
+
 
 const TopNav: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -153,18 +110,15 @@ const TopNav: React.FC = () => {
   }));
 
   return (
-    <nav data-site-header className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 sci-fi-frame-bottom">
+    <nav data-site-header className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60 border-b border-edge shadow-[0_1px_0_var(--edge-highlight)]">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
-          <img
-            src={mmIcon}
-            alt={t("accessibility:topNav.navIcon")}
-            className="h-20 w-20 rounded-sm"
-          />
-          <div className="flex flex-col">
-            <span className="font-glitch text-lg md:text-2xl text-white leading-tight hidden sm:block">{t("interface:common.brand")}</span>
-            <span className="text-xs md:text-sm text-gray-300 hidden sm:block">{t("interface:common.brandTagline")}</span>
-          </div>
+          {/* Was an unsized 80x80 image tag (22% of a 360px viewport, and a CLS
+              source) plus Rubik Glitch type. Now a CSS-only lockup. */}
+          <Wordmark size="sm" text={t("interface:common.brand")} />
+          <span className="hidden border-l border-edge pl-3 text-xs text-muted-foreground lg:block">
+            {t("interface:common.brandTagline")}
+          </span>
         </Link>
 
         {/* Desktop Navigation */}

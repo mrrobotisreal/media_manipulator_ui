@@ -6,6 +6,8 @@ import { Trans } from 'react-i18next';
 import type { TranscribeFormData, TranscribeOutputFormat } from '@/lib/useTranscribeFile';
 import InfoTooltip from '@/components/info-tooltip';
 import { useLocalization } from '@/i18n/useLocalization';
+import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
+import { Segmented } from '@/components/darkroom/segmented';
 
 interface TranscribeFormProps {
   mediaKind: 'video' | 'audio';
@@ -62,32 +64,19 @@ const TranscribeForm: React.FC<TranscribeFormProps> = ({ mediaKind, isLoading, o
           <p className="text-sm text-muted-foreground mb-3">
             {t('interface:transcribeForm.intro', { mediaKind: mediaKindLabel })}
           </p>
-          <div className="grid gap-2 gl-radio-group" role="radiogroup">
-            {FORMAT_VALUES.map((value) => (
-              <label key={value} className="gl-radio">
-                <input
-                  className="gl-radio__input mt-1"
-                  type="radio"
-                  name="transcribe-format"
-                  value={value}
-                  checked={format === value}
-                  onChange={() => setFormat(value)}
-                />
-                <span className="gl-radio__circle"></span>
-                <div>
-                  <span className="gl-radio__content">
-                    <div className="flex items-center gap-2 font-medium text-card-foreground">
-                      {FORMAT_ICONS[value]}
-                      <span className="gl-radio__title">{t(`interface:transcribeForm.format.${value}.label`)}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground gl-radio__desc">
-                      {t(`interface:transcribeForm.format.${value}.description`)}
-                    </p>
-                  </span>
-                </div>
-              </label>
-            ))}
-          </div>
+          <Segmented
+            name="transcribe-format"
+            orientation="vertical"
+            value={format}
+            onValueChange={setFormat}
+            label={t('interface:transcribeForm.outputFormatTitle')}
+            options={FORMAT_VALUES.map((value) => ({
+              value,
+              icon: FORMAT_ICONS[value],
+              label: t(`interface:transcribeForm.format.${value}.label`),
+              description: t(`interface:transcribeForm.format.${value}.description`),
+            }))}
+          />
         </div>
 
         <div>
@@ -118,7 +107,7 @@ const TranscribeForm: React.FC<TranscribeFormProps> = ({ mediaKind, isLoading, o
         >
           {isLoading ? (
             <>
-              <span className="loader"></span>
+              <ProcessingIndicator compact />
               {t('interface:transcribeForm.transcribing')}
             </>
           ) : (

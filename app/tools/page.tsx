@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Clapperboard, Shield, Sparkles, ArrowRight } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
+import { Panel } from '@/components/darkroom/panel';
 
 export const metadata: Metadata = buildMetadata('/tools');
 
@@ -44,8 +44,7 @@ export default function ToolsIndexPage() {
     <>
       <JsonLd path="/tools" />
       <div className="max-w-6xl mx-auto my-2 px-4">
-        <Card className="sci-fi-frame">
-          <CardContent className="p-8 md:p-12">
+        <Panel level="1">
             <header className="mb-6">
               <h1 className="text-3xl md:text-4xl font-bold text-card-foreground">
                 Free Online Media Tools
@@ -63,7 +62,7 @@ export default function ToolsIndexPage() {
             {contentStudio && (
               <Link
                 href="/tools/content-studio"
-                className="group mb-8 block sci-fi-frame-green bg-card p-5"
+                className="group mb-8 block rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
                 aria-label={contentStudio.name}
               >
                 <div className="flex items-center gap-4">
@@ -154,8 +153,8 @@ export default function ToolsIndexPage() {
                 </Link>
               </div>
             </section>
-          </CardContent>
-        </Card>
+          
+        </Panel>
       </div>
     </>
   );

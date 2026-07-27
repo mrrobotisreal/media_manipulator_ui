@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Trans } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
+import { Panel } from '@/components/darkroom/panel';
 import RelatedLinks from '@/components/related-links';
 import { useLocalization } from '@/i18n/useLocalization';
 
@@ -28,8 +28,8 @@ const AboutPage: React.FC = () => {
 
   return (
     <>
-      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
-        <CardContent className="p-12">
+      <div className="px-4 sm:px-6">
+        <Panel level="1" as="section" className="max-w-7xl mx-auto my-2">
           <h1 className="text-4xl font-bold mb-4 text-card-foreground">{t('about.title')}</h1>
           <p className="text-lg text-muted-foreground mb-8">
             <Trans i18nKey="interface:about.intro" components={{ strong: <strong /> }} />
@@ -47,7 +47,7 @@ const AboutPage: React.FC = () => {
               <p className="mb-4">{t('about.whatItDoes.intro')}</p>
 
               <div className="grid md:grid-cols-3 gap-6 mt-6">
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-3 text-blue-600">{t('about.whatItDoes.image.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {imageItems.map((item, idx) => (
@@ -56,8 +56,8 @@ const AboutPage: React.FC = () => {
                       </li>
                     ))}
                   </ul>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-3 text-green-600">{t('about.whatItDoes.video.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {videoItems.map((item, idx) => (
@@ -66,8 +66,8 @@ const AboutPage: React.FC = () => {
                       </li>
                     ))}
                   </ul>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-3 text-purple-600">{t('about.whatItDoes.audio.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {audioItems.map((item, idx) => (
@@ -76,7 +76,7 @@ const AboutPage: React.FC = () => {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </Panel>
               </div>
 
               <p className="mt-6">
@@ -93,11 +93,11 @@ const AboutPage: React.FC = () => {
             <section className="mb-10">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.whyChoose.title')}</h2>
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.noSignup.title')}</h3>
                   <p>{t('about.whyChoose.noSignup.body')}</p>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.privacy.title')}</h3>
                   <p>
                     <Trans
@@ -108,22 +108,22 @@ const AboutPage: React.FC = () => {
                       }}
                     />
                   </p>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.localAi.title')}</h3>
                   <p>
                     <Trans i18nKey="interface:about.whyChoose.localAi.body" components={{ strong: <strong /> }} />
                   </p>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.realTools.title')}</h3>
                   <p>{t('about.whyChoose.realTools.body')}</p>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.web.title')}</h3>
                   <p>{t('about.whyChoose.web.body')}</p>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.open.title')}</h3>
                   <p>
                     <Trans
@@ -138,7 +138,7 @@ const AboutPage: React.FC = () => {
                       }}
                     />
                   </p>
-                </div>
+                </Panel>
               </div>
             </section>
 
@@ -177,24 +177,24 @@ const AboutPage: React.FC = () => {
             <section className="mb-10">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.supportedFormats.title')}</h2>
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-blue-600">{t('about.supportedFormats.images.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {imagesFormats.map((item, idx) => <li key={idx}>{item}</li>)}
                   </ul>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-green-600">{t('about.supportedFormats.videos.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {videoFormats.map((item, idx) => <li key={idx}>{item}</li>)}
                   </ul>
-                </div>
-                <div className="bg-card p-6 sci-fi-frame-inner">
+                </Panel>
+                <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-purple-600">{t('about.supportedFormats.audio.title')}</h3>
                   <ul className="space-y-1 text-sm">
                     {audioFormats.map((item, idx) => <li key={idx}>{item}</li>)}
                   </ul>
-                </div>
+                </Panel>
               </div>
               <p className="mt-4 text-sm">{t('about.supportedFormats.footnote')}</p>
             </section>
@@ -236,8 +236,8 @@ const AboutPage: React.FC = () => {
               }))}
             />
           </div>
-        </CardContent>
-      </Card>
+        </Panel>
+      </div>
     </>
   );
 };

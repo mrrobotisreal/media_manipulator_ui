@@ -3,8 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Trans } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 /**
  * Render a localised list whose source values may contain inline <strong> /
@@ -35,15 +35,14 @@ const HowItWorksPage: React.FC = () => {
 
   return (
     <>
-      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
-        <CardContent className="p-12">
+      <div className="px-4 sm:px-6"><Panel level="1" className="max-w-7xl mx-auto my-2">
           <h1 className="text-4xl font-bold mb-4 text-card-foreground">
             {t('howItWorks.title')}
           </h1>
           <p className="text-lg text-muted-foreground mb-8">{t('howItWorks.intro')}</p>
 
           <div className="grid gap-8">
-            <section className="bg-card p-6 sci-fi-frame-inner">
+            <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.process.title')}</h2>
               <div className="grid md:grid-cols-4 gap-6">
                 {(['step1', 'step2', 'step3', 'step4'] as const).map((step, idx) => {
@@ -60,9 +59,9 @@ const HowItWorksPage: React.FC = () => {
                   );
                 })}
               </div>
-            </section>
+            </Panel>
 
-            <section className="bg-card p-6 sci-fi-frame-inner">
+            <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.capabilities.title')}</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
@@ -84,9 +83,9 @@ const HowItWorksPage: React.FC = () => {
                   </ul>
                 </div>
               </div>
-            </section>
+            </Panel>
 
-            <section className="bg-card p-6 sci-fi-frame-inner">
+            <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.ai.title')}</h2>
               <p className="text-muted-foreground mb-4">{t('howItWorks.ai.intro')}</p>
               <div className="grid md:grid-cols-2 gap-6">
@@ -107,9 +106,9 @@ const HowItWorksPage: React.FC = () => {
                   </ul>
                 </div>
               </div>
-            </section>
+            </Panel>
 
-            <section className="bg-card p-6 sci-fi-frame-inner">
+            <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.transcription.title')}</h2>
               <p className="text-muted-foreground mb-4">
                 <Trans i18nKey="interface:howItWorks.transcription.intro" components={{ em: <em /> }} />
@@ -120,9 +119,9 @@ const HowItWorksPage: React.FC = () => {
                 ))}
               </ul>
               <p className="text-muted-foreground mt-4">{t('howItWorks.transcription.outro')}</p>
-            </section>
+            </Panel>
 
-            <section className="bg-card p-6 sci-fi-frame-inner">
+            <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.privacy.title')}</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -144,9 +143,9 @@ const HowItWorksPage: React.FC = () => {
                   </ul>
                 </div>
               </div>
-            </section>
+            </Panel>
 
-            <section className="bg-card p-6 sci-fi-frame-green">
+            <Panel level="1" as="section" accent="data">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.next.title')}</h2>
               <p className="text-muted-foreground mb-4">{t('howItWorks.next.body')}</p>
               <div className="flex flex-wrap gap-3">
@@ -163,10 +162,10 @@ const HowItWorksPage: React.FC = () => {
                   {t('howItWorks.next.ctaConvert')}
                 </Link>
               </div>
-            </section>
+            </Panel>
           </div>
-        </CardContent>
-      </Card>
+        
+      </Panel></div>
     </>
   );
 };

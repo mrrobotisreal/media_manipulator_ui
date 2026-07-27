@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { Clapperboard, Sparkles, Plus, ArrowLeft, Clock, Loader2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -16,6 +15,7 @@ import { useCreateProject, useRecentProjects } from '@/lib/useStudioProject';
 import Editor from './editor';
 import FocusableEditorShell from './focusable-editor-shell';
 import { useFocusMode } from './useFocusMode';
+import { Panel } from '@/components/darkroom/panel';
 // import Breadcrumbs from '../tool-landing-page';
 // import { useToolPages } from '@/i18n/useToolPages';
 // import type { ToolPageContent } from '@/content/toolPages';
@@ -43,8 +43,7 @@ const ContentStudioPage: React.FC = () => {
 
   return (
     <div className="max-w-[1800px] mx-auto my-4 px-4">
-      <Card className="sci-fi-frame">
-        <CardContent className="p-12 md:p-14">
+      <Panel level="1">
           <header className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-6">
             {/* <Breadcrumbs tool={toolPages.find((t) => t.slug === 'content-studio')! as ToolPageContent} /> */}
             <div className="flex items-start gap-4">
@@ -80,8 +79,8 @@ const ContentStudioPage: React.FC = () => {
           ) : (
             <EntryScreen onOpen={setOpenProjectId} />
           )}
-        </CardContent>
-      </Card>
+        
+      </Panel>
     </div>
   );
 };
@@ -109,7 +108,7 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       {/* new project */}
-      <form onSubmit={submit} className="sci-fi-frame-green bg-card p-6 space-y-4">
+      <form onSubmit={submit} className="space-y-4 rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] sm:p-6">
         <div className="flex items-center gap-2">
           <Plus className="w-5 h-5 text-green-500" />
           <h2 className="text-lg font-semibold text-card-foreground">{t('contentStudio.newProject.title')}</h2>
@@ -159,7 +158,7 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
       </form>
 
       {/* recents */}
-      <section className="bg-card p-6 sci-fi-frame-inner lg:col-span-2">
+      <Panel level="2" as="section" className="lg:col-span-2">
         <h2 className="text-lg font-semibold text-card-foreground mb-3 flex items-center gap-2">
           <Clock className="w-4 h-4 text-blue-500" />
           {t('contentStudio.recents.title')}
@@ -191,7 +190,7 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
         ) : (
           <p className="text-sm text-muted-foreground">{t('contentStudio.recents.empty')}</p>
         )}
-      </section>
+      </Panel>
     </div>
   );
 };

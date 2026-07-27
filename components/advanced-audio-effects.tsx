@@ -7,6 +7,7 @@ import { ChevronDown, ChevronRight, Volume2, Clock, Wrench, Zap } from 'lucide-r
 import { Trans } from 'react-i18next';
 import InfoTooltip from '@/components/info-tooltip';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Switch } from '@/components/ui/switch';
 
 interface AdvancedAudioEffectsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -134,35 +135,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     control={control}
                     render={({ field: { onChange, value, ...field } }) => (
                       <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.labels.normalize')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
@@ -243,35 +216,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     control={control}
                     render={({ field: { onChange, value, ...field } }) => (
                       <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.equalizer.enable')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
@@ -403,35 +348,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     control={control}
                     render={({ field: { onChange, value, ...field } }) => (
                       <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.reverb.enable')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
@@ -535,35 +452,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                     control={control}
                     render={({ field: { onChange, value, ...field } }) => (
                       <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.delay.enable')}</span>
                       </div>
                       // <label className="flex items-center space-x-2">
@@ -668,35 +557,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
                     <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.noiseReduction')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">
@@ -719,35 +580,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
                     <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.deHum')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">
@@ -770,35 +603,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
                     <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.declip')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">
@@ -821,35 +626,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   control={control}
                   render={({ field: { onChange, value, ...field } }) => (
                     <div className="flex flex-row justify-start items-center space-x-2">
-                        <label className="neon-checkbox">
-                          <input type="checkbox" {...field} checked={value || false} onChange={(e) => onChange(e.target.checked)} />
-                          <div className="neon-checkbox__frame">
-                            <div className="neon-checkbox__box">
-                              <div className="neon-checkbox__check-container">
-                                <svg viewBox="0 0 24 24" className="neon-checkbox__check">
-                                  <path d="M3,12.5l7,7L21,5"></path>
-                                </svg>
-                              </div>
-                              <div className="neon-checkbox__glow"></div>
-                              <div className="neon-checkbox__borders">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                            <div className="neon-checkbox__effects">
-                              <div className="neon-checkbox__particles">
-                                <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
-                              </div>
-                              <div className="neon-checkbox__rings">
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                                <div className="ring"></div>
-                              </div>
-                              <div className="neon-checkbox__sparks">
-                                <span></span><span></span><span></span><span></span>
-                              </div>
-                            </div>
-                          </div>
-                        </label>
+                        <Switch {...field} checked={value || false} onCheckedChange={onChange} />
                         <span className="text-sm text-card-foreground">{t('advancedAudioEffects.restoration.silenceDetection')}</span>
                       </div>
                     // <label className="flex items-center space-x-2">

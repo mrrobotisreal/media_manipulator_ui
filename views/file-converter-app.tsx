@@ -48,6 +48,8 @@ import {
 } from '@/lib/analytics';
 import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
+import { Panel } from '@/components/darkroom/panel';
+import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
 
 type WorkflowMode = 'convert' | 'transcribe' | 'transcode' | 'document';
 
@@ -681,7 +683,7 @@ const FileConverterApp: React.FC = () => {
     <>
       {isResultModalOpen && activeHistoryItem && (
         <div className="fixed inset-0 z-50 bg-black/80 p-4 flex items-center justify-center">
-          <div className="bg-card shadow-2xl w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden sci-fi-frame">
+          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100vh-2rem)] flex flex-col overflow-hidden shadow-2xl">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
               <div>
                 <h2 className="text-xl font-semibold text-card-foreground">
@@ -805,7 +807,7 @@ const FileConverterApp: React.FC = () => {
                 </>
               )}
             </div>
-          </div>
+          </Panel>
         </div>
       )}
 
@@ -833,7 +835,7 @@ const FileConverterApp: React.FC = () => {
         {/* Content Studio call-to-action */}
         <Link
           href="/tools/content-studio"
-          className="w-full max-w-5xl mb-8 group block sci-fi-frame-green bg-card p-5"
+          className="group mb-8 block w-full max-w-5xl rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
           aria-label={t('interface:home.contentStudioCta.title')}
         >
           <div className="flex items-center gap-4">
@@ -861,7 +863,7 @@ const FileConverterApp: React.FC = () => {
 
         <div className="grid 2xl:grid-cols-2 gap-6 max-w-8xl">
           {/* File Upload Section */}
-          <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">
+          <Panel level="1" className="w-full max-w-4xl shadow-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Upload className="w-5 h-5" />
               {t('interface:home.upload.title')}
@@ -1013,10 +1015,10 @@ const FileConverterApp: React.FC = () => {
               </div>
             )}
 
-          </div>
+          </Panel>
 
           {/* Conversion Options */}
-          <div className="bg-card shadow-lg p-6 sci-fi-frame max-w-4xl min-w-3xl">
+          <Panel level="1" className="w-full max-w-4xl shadow-lg">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-card-foreground">
               <Settings className="w-5 h-5" />
               {workflowMode === 'transcribe'
@@ -1165,40 +1167,18 @@ const FileConverterApp: React.FC = () => {
 
                 {/* Progress Display */}
                 {(isPending || isTranscribePending) && (fileType === 'video' || workflowMode === 'transcribe') && (
-                  <div className="text-center">
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {uploadPhaseLabel} {activeProgress > 0 ? `${activeProgress}%` : ''}
-                    </p>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${activeProgress}%` }}
-                      />
-                    </div>
-                  </div>
+                  <ProcessingIndicator
+                    value={activeProgress > 0 ? activeProgress : undefined}
+                    label={uploadPhaseLabel}
+                  />
                 )}
 
                 {isLoading && conversionJob?.progress && (
-                  <div className="text-center flex flex-col items-center justify-center">
-                    <div className="blob-sphere-loader mb-12 mt-8">
-                      <div className="blob-sphere-loader-inner">
-                        <div className="blob-sphere b1"></div>
-                        <div className="blob-sphere b2"></div>
-                        <div className="blob-sphere b3"></div>
-                        <div className="blob-sphere b4"></div>
-                        <div className="blob-sphere b5"></div>
-                      </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {t('interface:home.progress.percentComplete', { percent: conversionJob.progress })}
-                    </p>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${conversionJob.progress}%` }}
-                      />
-                    </div>
-                  </div>
+                  <ProcessingIndicator
+                    value={conversionJob.progress}
+                    showValue={false}
+                    label={t('interface:home.progress.percentComplete', { percent: conversionJob.progress })}
+                  />
                 )}
 
                 {conversionJob?.status === 'failed' && (
@@ -1310,7 +1290,7 @@ const FileConverterApp: React.FC = () => {
                 </div>
               </div>
             )}
-          </div>
+          </Panel>
         </div>
 
         {/* Progress Bar */}

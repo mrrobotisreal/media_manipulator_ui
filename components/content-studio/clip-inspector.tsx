@@ -20,6 +20,7 @@ import {
 } from '@/lib/studio/effectRegistry';
 import { requestEyedrop } from '@/lib/studio/eyedropper';
 import { trackStudioEffectAdded } from '@/lib/studio/telemetry';
+import { Panel } from '@/components/darkroom/panel';
 import type {
   StudioClip, StudioTrack, StudioEffect, StudioBlendMode, StudioTransform, StudioCrop,
 } from '@/lib/studioTypes';
@@ -47,13 +48,13 @@ const ClipInspector: React.FC = () => {
 
   if (!found) {
     return (
-      <div className="bg-card sci-fi-frame-inner p-4 h-full">
+      <Panel level="2" padding={false} className="p-4 h-full">
         <h2 className="text-sm font-semibold text-card-foreground mb-2 flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-blue-500" />
           {t('contentStudio.inspector.title')}
         </h2>
         <p className="text-xs text-muted-foreground">{t('contentStudio.inspector.none')}</p>
-      </div>
+      </Panel>
     );
   }
 
@@ -63,7 +64,7 @@ const ClipInspector: React.FC = () => {
   const lutAssets = Object.values(assets).filter((a) => a.asset.mediaKind === 'lut');
 
   return (
-    <div className="bg-card sci-fi-frame-inner p-4 h-full overflow-y-auto">
+    <Panel level="2" padding={false} className="p-4 h-full overflow-y-auto">
       <h2 className="text-sm font-semibold text-card-foreground mb-3 flex items-center gap-2">
         <Sparkles className="w-4 h-4 text-blue-500" />
         {t('contentStudio.inspector.title')}
@@ -84,7 +85,7 @@ const ClipInspector: React.FC = () => {
       <TransitionSection clip={clip} track={track} />
 
       {isVideo && <TextSection clip={clip} />}
-    </div>
+    </Panel>
   );
 };
 

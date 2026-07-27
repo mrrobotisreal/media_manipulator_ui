@@ -2,9 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
 import EmbeddedToolPanel from '@/components/embedded-tool-panel';
 import RelatedLinks from '@/components/related-links';
+import { Panel } from '@/components/darkroom/panel';
 /**
  * Long-form tutorial covering what AI frame interpolation is, how it differs
  * from basic FPS conversion, when to use it, and how to use the Media
@@ -24,8 +24,7 @@ const AIFrameInterpolationTutorial: React.FC = () => {
           
         </aside>
         <div className="flex-1 min-w-0">
-          <Card className="sci-fi-frame">
-            <CardContent className="p-12 prose prose-invert max-w-none text-muted-foreground">
+          <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
               <p className="text-sm uppercase tracking-wide text-green-600 font-medium">
                 Video Tutorial
               </p>
@@ -258,8 +257,8 @@ const AIFrameInterpolationTutorial: React.FC = () => {
                   // },
                 ]}
               />
-            </CardContent>
-          </Card>
+            </div>
+          </Panel>
         </div>
         <aside className="hidden lg:block w-[300px] shrink-0">
           

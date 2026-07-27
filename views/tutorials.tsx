@@ -2,9 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
 import { Music, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 interface TutorialDef {
   titleKey: string;
@@ -82,15 +82,14 @@ const TutorialsPage: React.FC = () => {
   const { t } = useLocalization('interface');
   return (
     <>
-      <Card className="max-w-7xl mx-auto my-2 sci-fi-frame">
-        <CardContent className="p-12">
+      <div className="px-4 sm:px-6"><Panel level="1" className="max-w-7xl mx-auto my-2">
           <h1 className="text-4xl font-bold mb-4 text-card-foreground">{t('tutorials.title')}</h1>
           <p className="text-lg text-muted-foreground mb-8">{t('tutorials.intro')}</p>
 
           <div className="grid gap-10">
             {CATEGORIES.map((category) => (
               <React.Fragment key={category.id}>
-                <section className="bg-card p-6 sci-fi-frame-inner">
+                <Panel level="2" as="section">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="shrink-0 mt-1">{category.icon}</div>
                     <div>
@@ -101,9 +100,12 @@ const TutorialsPage: React.FC = () => {
 
                   <div className="grid gap-4 mt-4">
                     {category.tutorials.map((tutorial) => (
-                      <article
+                      <Panel
+                        level="2"
+                        muted
+                        as="article"
                         key={tutorial.slug}
-                        className="bg-card p-5 hover:shadow-lg transition-shadow sci-fi-frame-inner-inner"
+                        className="lg:p-6 transition-shadow"
                       >
                         <h3 className="text-xl font-semibold mb-2 text-card-foreground hover:text-green-600">
                           <Link href={`/tutorials/${tutorial.slug}`}>{t(tutorial.titleKey)}</Link>
@@ -118,15 +120,15 @@ const TutorialsPage: React.FC = () => {
                         >
                           {t('tutorials.readTutorial')}
                         </Link>
-                      </article>
+                      </Panel>
                     ))}
                   </div>
-                </section>
+                </Panel>
               </React.Fragment>
             ))}
           </div>
 
-          <div className="mt-10 bg-card p-6 sci-fi-frame-green">
+          <Panel level="1" accent="data" className="mt-10">
             <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t('tutorials.newToHere.title')}</h2>
             <p className="text-muted-foreground mb-4">{t('tutorials.newToHere.body')}</p>
             <div className="flex flex-wrap gap-3">
@@ -143,9 +145,9 @@ const TutorialsPage: React.FC = () => {
                 {t('tutorials.newToHere.ctaConvert')}
               </Link>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </Panel>
+        
+      </Panel></div>
     </>
   );
 };

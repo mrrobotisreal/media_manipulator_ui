@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { Shield } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import EmbeddedToolPanelClient from '@/components/tools/embedded-tool-panel-client';
 import AdBanner from '@/components/ad-banner';
 import { getReviewToolInContentAdSlot } from '@/lib/adSlots';
 import { isReviewSafeInternalHref } from '@/content/reviewAllowlist';
 import type { ToolPageContent } from '@/content/toolPages';
+import { Panel } from '@/components/darkroom/panel';
 
 /**
  * Server-rendered tool landing page. All marketing/SEO copy (intro, formats,
@@ -46,8 +46,7 @@ export default function ToolLandingPage({
 
   return (
     <div className="max-w-[2160px] mx-auto my-2 px-4">
-      <Card className="sci-fi-frame">
-        <CardContent className="p-8 md:p-12">
+      <Panel level="1">
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground mb-4">
             <ol className="flex flex-wrap items-center gap-1">
@@ -318,8 +317,8 @@ export default function ToolLandingPage({
               </div>
             </section>
           )}
-        </CardContent>
-      </Card>
+        
+      </Panel>
     </div>
   );
 }

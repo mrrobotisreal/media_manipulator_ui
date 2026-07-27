@@ -2,9 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
 import RelatedLinks from '@/components/related-links';
 import { useLocalization } from '@/i18n/useLocalization';
+import { Panel } from '@/components/darkroom/panel';
 
 const RELATED_LINK_KEYS = ['allTools', 'compressVideo', 'removeExif', 'homepage', 'tutorials', 'howItWorks'] as const;
 const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
@@ -56,14 +56,13 @@ const BlogPage: React.FC = () => {
           
         </aside>
         <div className="flex-1 min-w-0">
-          <Card className="sci-fi-frame">
-            <CardContent className="p-12">
+          <Panel level="1">
               <h1 className="text-4xl font-bold mb-8 text-card-foreground">{t('blog.title')}</h1>
               <p className="text-lg text-muted-foreground mb-8">{t('blog.intro')}</p>
 
               <div className="grid gap-8">
                 {articles.map((article, index) => (
-                  <article key={index} className="bg-card p-6 hover:shadow-lg transition-shadow sci-fi-frame-inner">
+                  <Panel key={index} level="2" as="article" className="lg:p-6 transition-shadow">
                     <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-green-600">
                       <Link href={`/blog/${article.slug}`}>
                         {article.titleNode ?? t(article.titleKey!)}
@@ -81,7 +80,7 @@ const BlogPage: React.FC = () => {
                     >
                       {t('blog.readMore')}
                     </Link>
-                  </article>
+                  </Panel>
                 ))}
               </div>
 
@@ -94,8 +93,8 @@ const BlogPage: React.FC = () => {
                   description: t(`blog.relatedLinks.${key}.description`),
                 }))}
               />
-            </CardContent>
-          </Card>
+            
+          </Panel>
         </div>
         <aside className="hidden lg:block w-[300px] shrink-0">
           

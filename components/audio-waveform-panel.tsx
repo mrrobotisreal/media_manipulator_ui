@@ -7,6 +7,7 @@ import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
+import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
 
 /**
  * AudioWaveformPanel renders the audio-waveform generator. Defaults bias
@@ -442,15 +443,7 @@ const AudioWaveformPanel: React.FC = () => {
             disabled={true}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
-            {!isProcessing && (
-              <div className="atom-loader mr-4">
-                <div className="atom-loader-orbits">
-                  <div className="atom-loader-orbits__electron"></div>
-                  <div className="atom-loader-orbits__electron"></div>
-                  <div className="atom-loader-orbits__electron"></div>
-                </div>
-              </div>
-            )}
+            {!isProcessing && <ProcessingIndicator compact className="mr-4" />}
             {isProcessing ? <Sparkles className="w-4 h-4" /> : null}
             {!isProcessing ? t('audioWaveformPanel.generating') : t('audioWaveformPanel.generate')}
           </button>

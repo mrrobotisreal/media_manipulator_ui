@@ -1,8 +1,26 @@
 import type { Metadata, Viewport } from 'next';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Providers from './providers';
 import { SITE_ORIGIN } from '@/lib/seo';
+
+// Self-hosted and preloaded by next/font, with size-adjust fallback metrics that
+// remove the FOUT-driven CLS the old 1.1 MB of unpreloaded .ttf caused.
+// The CSS variables are consumed by --font-sans / --font-mono in globals.css.
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+// Every number in the product renders in this face (see `.num` in globals.css).
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
+});
 
 // No-flash theme bootstrap. Runs before first paint so <html> already carries
 // the correct `dark`/`light` class — dark is the default, a stored preference
@@ -56,7 +74,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0e1a',
+  themeColor: '#0A0B0D',
   width: 'device-width',
   initialScale: 1,
 };
@@ -67,7 +85,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
       <body className="min-h-screen flex flex-col">
         {/* Apply the theme class before first paint to avoid a light flash. */}
         <Script

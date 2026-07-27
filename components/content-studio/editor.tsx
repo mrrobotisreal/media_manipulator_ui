@@ -25,6 +25,7 @@ import ClipInspector from './clip-inspector';
 import CaptionEditor from './caption-editor';
 import AudioDuckingPopover from './audio-ducking';
 import type { FocusModeApi } from './useFocusMode';
+import { Panel } from '@/components/darkroom/panel';
 
 const AUTOSAVE_DEBOUNCE_MS = 1200;
 const SNAP_PX = 8;
@@ -285,9 +286,9 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
             focused && 'flex-1 min-h-0',
           )}
         >
-          <div className={cn('bg-card sci-fi-frame-inner p-4', focused ? 'h-full min-h-0 overflow-auto' : 'h-[360px]')}>
+          <Panel level="2" padding={false} className={cn('p-4', focused ? 'h-full min-h-0 overflow-auto' : 'h-[360px]')}>
             <MediaBin projectId={projectId} />
-          </div>
+          </Panel>
           <div className={cn('bg-card p-4 rounded-lg border border-border', focused && 'h-full min-h-0')}>
             <PreviewSurface focused={focused} />
           </div>

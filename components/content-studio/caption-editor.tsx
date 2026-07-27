@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import { DEFAULT_CAPTION_STYLE, type StudioCaptionStyle } from '@/lib/studioTypes';
+import { Panel } from '@/components/darkroom/panel';
 
 /**
  * Caption editor — replaces the clip inspector when a caption cue is selected.
@@ -34,7 +35,7 @@ const CaptionEditor: React.FC = () => {
   if (!cue) return null;
 
   return (
-    <div className="bg-card sci-fi-frame-inner p-4 h-full overflow-y-auto">
+    <Panel level="2" padding={false} className="p-4 h-full overflow-y-auto">
       <h2 className="text-sm font-semibold text-card-foreground mb-3 flex items-center gap-2">
         <Captions className="w-4 h-4 text-purple-400" />
         {t('contentStudio.captions.editorTitle')}
@@ -153,7 +154,7 @@ const CaptionEditor: React.FC = () => {
           onChange={(maxWidthPct) => setCaptionStyle({ maxWidthPct })}
         />
       </section>
-    </div>
+    </Panel>
   );
 };
 
