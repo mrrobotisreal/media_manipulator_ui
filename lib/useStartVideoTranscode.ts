@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { trackFirstPartyError, trackFirstPartyEvent, getSessionId } from '@/lib/firstPartyAnalytics';
 import type {
@@ -25,12 +26,9 @@ const useStartVideoTranscode = (
   const mutation = useMutation({
     mutationFn: async (req: TranscodeStartRequest): Promise<TranscodeStartResponse> => {
       const sessionId = req.sessionId || getSessionId();
-      const response = await fetch(`${getBaseURL()}/video-transcode/start`, {
+      const response = await authedFetch(`${getBaseURL()}/video-transcode/start`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-MM-Session-ID': sessionId,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...req, sessionId }),
       });
       if (!response.ok) {

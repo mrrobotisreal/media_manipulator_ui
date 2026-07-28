@@ -16,6 +16,7 @@ import { trackFirstPartyPageView } from '@/lib/firstPartyAnalytics';
 import { trackGooglePageView } from '@/lib/gtag';
 import { trackMixpanelPageView } from '@/lib/analytics';
 import { initMixpanel } from '@/lib/mixpanel';
+import { AuthProvider } from '@/lib/auth/AuthProvider';
 
 // One QueryClient for the app lifetime. Created lazily inside the component so
 // each browser tab gets its own instance and it is never shared across requests
@@ -115,11 +116,17 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <RouteAnalytics />
-        <TopNav />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <Toaster />
+        {/* AuthProvider is deliberately inside the non-chromeless branch only:
+            /embed/* is an iframed app surface with no site chrome, and /dr/* is
+            the Double Raven portal with its own auth. Neither should mount an
+            account listener or poll the quota endpoint. */}
+        <AuthProvider>
+          <RouteAnalytics />
+          <TopNav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <Toaster />
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { getSessionId, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
 import type {
@@ -75,12 +76,9 @@ const useVideoTranscodeProbe = (
       const contentType = file.type || 'video/mp4';
       setUploadPhase('requesting-url');
       setUploadProgress(0);
-      const presignResponse = await fetch(`${getBaseURL()}/video-upload/presign`, {
+      const presignResponse = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-MM-Session-ID': sessionId,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fileName: file.name,
           contentType,
@@ -95,7 +93,7 @@ const useVideoTranscodeProbe = (
       setUploadPhase('uploading-to-s3');
       await putFileToS3(target, file, contentType, setUploadProgress);
       setUploadPhase('probing');
-      const probeResponse = await fetch(`${getBaseURL()}/video-transcode/probe`, {
+      const probeResponse = await authedFetch(`${getBaseURL()}/video-transcode/probe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

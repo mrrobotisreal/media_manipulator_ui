@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 
@@ -53,7 +54,7 @@ const submitStitchJob = async (
     formData.append(`loop_${i}`, track.loop ? 'true' : 'false');
   });
   setProgress(10);
-  const response = await fetch(`${getBaseURL()}/tools/stitch-audio-to-video`, {
+  const response = await authedFetch(`${getBaseURL()}/tools/stitch-audio-to-video`, {
     method: 'POST',
     body: formData,
   });

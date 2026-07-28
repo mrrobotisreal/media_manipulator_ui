@@ -80,23 +80,3 @@ export function trackMixpanel(event: string, properties?: Record<string, unknown
     // Never block the UI.
   }
 }
-
-export function mixpanelPeopleSet(properties: Record<string, unknown>): void {
-  if (!initialized || !sdk) return;
-  if (!hasAnalyticsConsent()) return;
-  try {
-    sdk.people.set(properties);
-  } catch {
-    // Never block the UI.
-  }
-}
-
-export function mixpanelPeopleIncrement(properties: Record<string, number>): void {
-  if (!initialized || !sdk) return;
-  if (!hasAnalyticsConsent()) return;
-  try {
-    sdk.people.increment(properties);
-  } catch {
-    // Never block the UI.
-  }
-}

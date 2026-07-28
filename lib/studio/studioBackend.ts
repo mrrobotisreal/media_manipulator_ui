@@ -10,6 +10,7 @@ import {
   type StudioAssetCompleteResponse,
   type StudioExportRequest,
 } from '@/lib/studioTypes';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { getSessionId } from '@/lib/firstPartyAnalytics';
 
@@ -151,10 +152,15 @@ export function createMmBackend(): StudioBackend {
       peaks: true,
       lut: true,
     },
+    // Sync, so it can only carry the session id; the Firebase token needs an
+    // await. Everything that actually goes over the wire uses fetch() below,
+    // which attaches both — this is the best-effort parity shim.
     authHeaders: () => ({ 'X-MM-Session-ID': getSessionId() }),
     path: (suffix) => `${base()}/studio${suffix}`,
     scopeQuery: () => '',
-    fetch: (url, init) => fetch(url, init),
+    // authedFetch adds the Firebase token when signed in, so Studio projects
+    // are scoped to the account rather than to a guessable session id.
+    fetch: (url, init) => authedFetch(url, init),
 
     proxyUrl: (assetId) => `${base()}/studio/assets/${assetId}/proxy`,
     spriteUrl: (assetId) => `${base()}/studio/assets/${assetId}/sprite`,

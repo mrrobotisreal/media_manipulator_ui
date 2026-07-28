@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authHeaders } from '@/lib/auth/authedFetch';
 import { getSessionId, trackFirstPartyEvent, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
 import type {
   DocumentScanOptions,
@@ -96,9 +96,9 @@ const useDocumentScan = (
       });
       form.append('options', JSON.stringify({ ...options, order, sessionId }));
 
-      const idToken = await getCurrentIdToken();
-      const headers: Record<string, string> = { 'X-MM-Session-ID': sessionId };
-      if (idToken) headers.Authorization = `Bearer ${idToken}`;
+      // postMultipart uses XMLHttpRequest for upload progress, so it cannot go
+      // through authedFetch; authHeaders builds the same identity set.
+      const headers = await authHeaders();
 
       const result = await postMultipart(
         `${getBaseURL()}/document-scan/start`,

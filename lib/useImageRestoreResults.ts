@@ -2,14 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import type { ImageRestoreResultsResponse } from './imageRestoreTypes';
 
 const fetchImageRestoreResults = async (jobId: string): Promise<ImageRestoreResultsResponse> => {
-  const idToken = await getCurrentIdToken();
-  const response = await fetch(`${getBaseURL()}/image-restore/${jobId}/results`, {
-    headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
-  });
+  const response = await authedFetch(`${getBaseURL()}/image-restore/${jobId}/results`);
   if (!response.ok) {
     const body = await response.text().catch(() => '');
     throw new Error(body || `Failed to load results: ${response.statusText}`);

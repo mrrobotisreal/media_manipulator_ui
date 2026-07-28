@@ -2,66 +2,115 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { Trans } from 'react-i18next';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Zap, Shield, CheckCircle, X } from 'lucide-react';
-import { Trans } from 'react-i18next';
-import { signInWithGoogle, signInWithEmail, signUpWithEmail } from '@/lib/firebase';
-import { toast } from 'sonner';
+import { PlanSummary } from '@/components/account/plan-summary';
+import { fetchTiers, type TierDescriptor } from '@/lib/auth/accountApi';
+import { useAuth } from '@/lib/auth/AuthProvider';
 import { trackMixpanel } from '@/lib/mixpanel';
 import { useLocalization } from '@/i18n/useLocalization';
 
-interface AuthModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-  title?: string;
-  description?: string;
-}
-
-export const AuthModal: React.FC<AuthModalProps> = ({
-  isOpen,
-  onClose,
-  onSuccess,
-  title,
-  description,
-}) => {
+/**
+ * The account panel.
+ *
+ * Opened from the quota meter, from the nav, and — the moment that matters —
+ * from a 429, where it arrives already explaining what just happened and what
+ * a free account would have allowed. §4.9's tone target is Linear, not a mobile
+ * game: no countdown, no interstitial, dismissible always, and every number in
+ * it comes from GET /api/tiers rather than from copy that can go stale.
+ *
+ * Mounted only while open (AuthProvider renders it behind next/dynamic), so
+ * none of this is in anyone's first load.
+ */
+export const AuthModal: React.FC = () => {
+  const auth = useAuth();
   const { t } = useLocalization(['interface', 'error']);
-  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signup');
+  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(
+    auth?.prompt.intent ?? 'signup',
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
 
+  const source = auth?.prompt.source ?? 'unknown';
+
+  // The tier matrix is cacheable configuration, identical for every caller, so
+  // one fetch per session is plenty.
+  const tiersQuery = useQuery({
+    queryKey: ['tiers'],
+    queryFn: ({ signal }) => fetchTiers(signal),
+    staleTime: 5 * 60_000,
+    retry: 1,
+  });
+  const byTier = React.useMemo(() => {
+    const map = new Map<string, TierDescriptor>();
+    tiersQuery.data?.tiers.forEach((entry) => map.set(entry.tier, entry));
+    return map;
+  }, [tiersQuery.data]);
+
+  React.useEffect(() => {
+    trackMixpanel('Auth Modal - Opened', {
+      default_tab: auth?.prompt.intent ?? 'signup',
+      trigger: source,
+    });
+    // Deliberately fires once per mount: AuthProvider mounts this only while
+    // open, so mount and open are the same event.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!auth) return null;
+
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+    setDisplayName('');
+  };
+
+  const handleClose = () => {
+    trackMixpanel('Auth Modal - Closed', {
+      tab: activeTab,
+      had_interaction: email.length > 0 || password.length > 0,
+    });
+    resetForm();
+    auth.closeAuth();
+  };
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab as 'signin' | 'signup');
+    resetForm();
+    trackMixpanel('Auth Modal - Tab Changed', { tab, previous_tab: activeTab });
+  };
+
   const handleGoogleAuth = async () => {
     try {
       setIsLoading(true);
-      await signInWithGoogle();
-
-      trackMixpanel('Auth Modal - Google Auth Success', {
-        modal_trigger: 'conversion_attempt'
-      });
-
+      await auth.signInWithGoogle();
+      trackMixpanel('Auth Modal - Google Auth Success', { modal_trigger: source });
       toast.success(t('interface:authModal.toast.welcome'), {
         description: t('interface:authModal.toast.googleSuccess'),
       });
-
-      onSuccess();
-      onClose();
     } catch (error) {
       console.error('Google auth error:', error);
       toast.error(t('interface:authModal.toast.authFailed'), {
         description: t('error:auth.tryAgain'),
       });
-
       trackMixpanel('Auth Modal - Google Auth Failed', {
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
     } finally {
       setIsLoading(false);
@@ -82,29 +131,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           });
           return;
         }
-        await signUpWithEmail(email, password, displayName);
-
-        trackMixpanel('Auth Modal - Email Signup Success', {
-          modal_trigger: 'conversion_attempt'
-        });
-
+        await auth.signUp(email, password, displayName);
+        trackMixpanel('Auth Modal - Email Signup Success', { modal_trigger: source });
         toast.success(t('interface:authModal.toast.accountCreated'), {
           description: t('interface:authModal.toast.welcomeMM'),
         });
       } else {
-        await signInWithEmail(email, password);
-
-        trackMixpanel('Auth Modal - Email Signin Success', {
-          modal_trigger: 'conversion_attempt'
-        });
-
+        await auth.signIn(email, password);
+        trackMixpanel('Auth Modal - Email Signin Success', { modal_trigger: source });
         toast.success(t('interface:authModal.toast.welcomeBack'), {
           description: t('interface:authModal.toast.signedIn'),
         });
       }
-
-      onSuccess();
-      onClose();
     } catch (error: any) {
       console.error('Email auth error:', error);
 
@@ -119,105 +157,31 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         errorMessage = t('error:auth.weakPassword');
       }
 
-      toast.error(t('interface:authModal.toast.authFailed'), {
-        description: errorMessage
-      });
-
+      toast.error(t('interface:authModal.toast.authFailed'), { description: errorMessage });
       trackMixpanel('Auth Modal - Email Auth Failed', {
         tab: activeTab,
         error_code: error.code,
-        error_message: error.message
+        error_message: error.message,
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const resetForm = () => {
-    setEmail('');
-    setPassword('');
-    setDisplayName('');
-  };
-
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab as 'signin' | 'signup');
-    resetForm();
-
-    trackMixpanel('Auth Modal - Tab Changed', {
-      tab: tab,
-      previous_tab: activeTab
-    });
-  };
-
-  const handleClose = () => {
-    trackMixpanel('Auth Modal - Closed', {
-      tab: activeTab,
-      had_interaction: email.length > 0 || password.length > 0
-    });
-
-    resetForm();
-    onClose();
-  };
-
-  React.useEffect(() => {
-    if (isOpen) {
-      trackMixpanel('Auth Modal - Opened', {
-        default_tab: 'signup',
-        trigger: 'conversion_attempt'
-      });
-    }
-  }, [isOpen]);
-
-  const resolvedTitle = title ?? t('interface:authModal.defaultTitle');
-  const resolvedDescription = description ?? t('interface:authModal.defaultDescription');
+  const headline = auth.prompt.headline ?? t('interface:authModal.defaultTitle');
+  const body = auth.prompt.body ?? t('interface:authModal.defaultDescription');
+  const premium = byTier.get('premium');
+  const premiumPrice = tiersQuery.data?.premiumPriceUSD;
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="sm:max-w-[500px] max-h-[90dvh] overflow-y-auto">
-        <DialogHeader className="space-y-3">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-semibold">{resolvedTitle}</DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClose}
-              className="h-6 w-6 p-0"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-          <p className="text-muted-foreground">{resolvedDescription}</p>
+    <Dialog open={auth.prompt.open} onOpenChange={(open) => !open && handleClose()}>
+      <DialogContent className="max-h-[90dvh] gap-5 overflow-y-auto sm:max-w-[520px]">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-semibold tracking-[-0.02em]">
+            {headline}
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground">{body}</DialogDescription>
         </DialogHeader>
-
-        {/* Free Tier Benefits */}
-        <Card className="border-data/30 bg-data/10">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Zap className="w-5 h-5 text-data" />
-              {t('interface:authModal.freeTier.title')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="grid grid-cols-1 gap-2">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-data" />
-                <span className="text-sm">{t('interface:authModal.freeTier.benefit1')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-data" />
-                <span className="text-sm">{t('interface:authModal.freeTier.benefit2')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-data" />
-                <span className="text-sm">{t('interface:authModal.freeTier.benefit3')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-data" />
-                <span className="text-sm">{t('interface:authModal.freeTier.benefit4')}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
@@ -225,13 +189,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <TabsTrigger value="signin">{t('interface:authModal.tabs.signin')}</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="signup" className="space-y-4">
+          <TabsContent value="signup" className="mt-4 space-y-4">
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="signup-name">{t('interface:authModal.fields.fullName')}</Label>
                 <Input
                   id="signup-name"
                   type="text"
+                  autoComplete="name"
                   placeholder={t('interface:authModal.fields.fullNamePlaceholder')}
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
@@ -244,6 +209,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <Input
                   id="signup-email"
                   type="email"
+                  autoComplete="email"
                   placeholder={t('interface:authModal.fields.emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -256,6 +222,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <Input
                   id="signup-password"
                   type="password"
+                  autoComplete="new-password"
                   placeholder={t('interface:authModal.fields.passwordPlaceholderSignup')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -269,18 +236,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 className="w-full"
                 disabled={isLoading || !email || !password || !displayName}
               >
-                {isLoading ? t('interface:authModal.actions.creatingAccount') : t('interface:authModal.actions.createAccount')}
+                {isLoading
+                  ? t('interface:authModal.actions.creatingAccount')
+                  : t('interface:authModal.actions.createAccount')}
               </Button>
             </form>
           </TabsContent>
 
-          <TabsContent value="signin" className="space-y-4">
+          <TabsContent value="signin" className="mt-4 space-y-4">
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="signin-email">{t('interface:authModal.fields.email')}</Label>
                 <Input
                   id="signin-email"
                   type="email"
+                  autoComplete="email"
                   placeholder={t('interface:authModal.fields.emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -293,6 +263,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <Input
                   id="signin-password"
                   type="password"
+                  autoComplete="current-password"
                   placeholder={t('interface:authModal.fields.passwordPlaceholderSignin')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -300,61 +271,85 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   required
                 />
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading || !email || !password}
-              >
-                {isLoading ? t('interface:authModal.actions.signingIn') : t('interface:authModal.actions.signIn')}
+              <Button type="submit" className="w-full" disabled={isLoading || !email || !password}>
+                {isLoading
+                  ? t('interface:authModal.actions.signingIn')
+                  : t('interface:authModal.actions.signIn')}
               </Button>
             </form>
           </TabsContent>
         </Tabs>
 
-        <div className="relative">
-          <Separator />
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-px flex-1 bg-edge" />
+          <span className="text-xs uppercase tracking-wide text-muted-foreground">
             {t('interface:authModal.orDivider')}
           </span>
+          <span aria-hidden="true" className="h-px flex-1 bg-edge" />
         </div>
 
-        <Button
-          onClick={handleGoogleAuth}
-          variant="outline"
-          className="w-full"
-          disabled={isLoading}
-        >
+        <Button onClick={handleGoogleAuth} variant="outline" className="w-full" disabled={isLoading}>
           {t('interface:authModal.googleSignIn')}
         </Button>
 
-        {/* Upgrade Preview */}
-        <Card className="border-primary/30 bg-primary/10">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Shield className="w-4 h-4 text-primary" />
-              {t('interface:authModal.upgrade.title')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between text-sm">
-              <div>
-                <div className="font-medium">{t('interface:authModal.upgrade.plan')}</div>
-                <div className="text-muted-foreground">{t('interface:authModal.upgrade.planDetail')}</div>
-              </div>
-              <Badge variant="secondary">{t('interface:authModal.upgrade.price')}</Badge>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Every number below is served by the API, so the panel cannot promise
+            something the server will not honour. */}
+        <PlanSummary
+          descriptor={byTier.get('free')}
+          title={t('interface:authModal.plans.freeTitle')}
+          tone="data"
+        />
 
-        <p className="text-xs text-muted-foreground text-center">
-          <Trans
-            i18nKey="interface:authModal.terms"
-            components={{
-              tos: <a href="/terms-of-service" className="underline hover:text-foreground" />,
-              privacy: <a href="/privacy-policy" className="underline hover:text-foreground" />,
-            }}
+        {premium ? (
+          <PlanSummary
+            descriptor={premium}
+            tone="premium"
+            title={t('interface:authModal.plans.premiumTitle')}
+            aside={
+              <span className="flex items-baseline gap-2">
+                {premiumPrice !== undefined ? (
+                  <span className="num text-sm text-premium">
+                    {t('interface:authModal.plans.premiumPrice', { price: premiumPrice })}
+                  </span>
+                ) : null}
+                {!tiersQuery.data?.premiumPurchasable ? (
+                  <span className="text-xs text-muted-foreground">
+                    {t('interface:authModal.plans.premiumComingSoon')}
+                  </span>
+                ) : null}
+              </span>
+            }
           />
-        </p>
+        ) : null}
+
+        <div className="flex flex-col gap-3 text-center">
+          <Link
+            href="/pricing"
+            onClick={handleClose}
+            className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+          >
+            {t('interface:authModal.plans.comparePlans')}
+          </Link>
+          <p className="text-xs text-muted-foreground">
+            <Trans
+              i18nKey="interface:authModal.terms"
+              components={{
+                tos: (
+                  <Link
+                    href="/terms-of-service"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  />
+                ),
+                privacy: (
+                  <Link
+                    href="/privacy-policy"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  />
+                ),
+              }}
+            />
+          </p>
+        </div>
       </DialogContent>
     </Dialog>
   );

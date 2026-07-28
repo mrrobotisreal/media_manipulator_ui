@@ -2,16 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import type { DocumentScanCapabilities } from './documentScanTypes';
 
 const fetchDocumentScanCapabilities = async (): Promise<DocumentScanCapabilities> => {
-  // Attach the Firebase ID token when a user is signed in — harmless on this
-  // public tool, kept for parity with the other AI tools.
-  const idToken = await getCurrentIdToken();
-  const response = await fetch(`${getBaseURL()}/document-scan/capabilities`, {
-    headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
-  });
+  // authedFetch attaches the Firebase ID token when a user is signed in —
+  // harmless on this public tool, kept for parity with the other AI tools.
+  const response = await authedFetch(`${getBaseURL()}/document-scan/capabilities`);
   if (!response.ok) {
     const body = await response.text().catch(() => '');
     throw new Error(body || `Failed to load capabilities: ${response.statusText}`);

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authHeaders } from '@/lib/auth/authedFetch';
 import { getSessionId, trackFirstPartyEvent, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
 import type {
   ImageRestoreOptions,
@@ -98,11 +98,9 @@ const useImageRestore = (
       form.append('image', file);
       form.append('options', JSON.stringify({ ...options, sessionId }));
 
-      // Firebase ID token when signed in — required by the auth-gated
-      // deployment (RESTORE_REQUIRE_FIREBASE_AUTH), harmless otherwise.
-      const idToken = await getCurrentIdToken();
-      const headers: Record<string, string> = { 'X-MM-Session-ID': sessionId };
-      if (idToken) headers.Authorization = `Bearer ${idToken}`;
+      // postMultipart uses XMLHttpRequest for upload progress, so it cannot go
+      // through authedFetch; authHeaders builds the same identity set.
+      const headers = await authHeaders();
 
       const result = await postMultipart(
         `${getBaseURL()}/image-restore/start`,

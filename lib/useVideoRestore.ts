@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getSessionId, trackFirstPartyEvent, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
 import type { TranscodeUploadTarget } from './transcodeTypes';
 import type { RestoreModelId, RestoreStartResponse, RestoreUploadPhase } from './restoreTypes';
@@ -82,12 +82,9 @@ const useVideoRestore = (onSuccess: (result: RestoreStartResponse) => void): Use
 
       setUploadPhase('requesting-url');
       setUploadProgress(0);
-      const presignResponse = await fetch(`${getBaseURL()}/video-upload/presign`, {
+      const presignResponse = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-MM-Session-ID': sessionId,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fileName: file.name,
           contentType,
@@ -104,16 +101,9 @@ const useVideoRestore = (onSuccess: (result: RestoreStartResponse) => void): Use
       await putFileToS3(target, file, contentType, setUploadProgress);
 
       setUploadPhase('starting');
-      // Firebase ID token when signed in — required by the auth-gated
-      // deployment (RESTORE_REQUIRE_FIREBASE_AUTH), harmless otherwise.
-      const idToken = await getCurrentIdToken();
-      const startResponse = await fetch(`${getBaseURL()}/video-restore/start`, {
+      const startResponse = await authedFetch(`${getBaseURL()}/video-restore/start`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-MM-Session-ID': sessionId,
-          ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           s3Key: target.s3Key,
           fileName: file.name,

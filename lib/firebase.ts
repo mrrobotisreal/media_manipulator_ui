@@ -10,9 +10,9 @@
 
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import type { Auth, User } from 'firebase/auth';
-import type { Firestore } from 'firebase/firestore';
 import type { Analytics } from 'firebase/analytics';
-import { trackMixpanel, mixpanelPeopleSet, mixpanelPeopleIncrement } from './mixpanel';
+import { trackMixpanel } from './mixpanel';
+import { syncAccount } from './auth/accountApi';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
@@ -68,13 +68,6 @@ export async function getCurrentIdToken(): Promise<string | null> {
   }
 }
 
-export async function getFirebaseDb(): Promise<Firestore | null> {
-  const app = getFirebaseApp();
-  if (!app) return null;
-  const { getFirestore } = await import('firebase/firestore');
-  return getFirestore(app);
-}
-
 export async function getFirebaseAnalytics(): Promise<Analytics | null> {
   if (typeof window === 'undefined') return null;
   const app = getFirebaseApp();
@@ -103,33 +96,28 @@ export async function getFirebaseAnalytics(): Promise<Analytics | null> {
   return analytics;
 }
 
-export interface UserProfile {
-  uid: string;
-  email: string;
-  displayName: string;
-  photoURL?: string;
-  tier: 'free' | 'starter' | 'pro' | 'business';
-  subscriptionId?: string;
-  subscriptionStatus?: 'active' | 'cancelled' | 'trial';
-  monthlyUsage: {
-    conversions: number;
-    lastResetDate: string;
-  };
-  totalUsage: {
-    conversions: number;
-    filesProcessed: number;
-  };
-  createdAt: string;
-  lastLoginAt: string;
-  signupSource?: string;
+/**
+ * Registers a verified sign-in with the API.
+ *
+ * Tiers, quotas and usage live in Postgres behind the Go API — never in
+ * Firestore. This call is idempotent and never changes a tier: it upserts the
+ * mm_users row so the account exists, and the server decides everything else.
+ *
+ * Failures are swallowed on purpose. A sync that cannot reach the API must not
+ * turn a successful sign-in into an error the user sees; the AuthProvider
+ * retries on its next load, and every tier check is server-side anyway.
+ */
+async function registerSignIn(user: User, signupSource: string, displayName?: string) {
+  try {
+    const idToken = await user.getIdToken();
+    await syncAccount(idToken, {
+      displayName: displayName || user.displayName || undefined,
+      signupSource,
+    });
+  } catch (error) {
+    console.warn('Account sync failed; continuing signed in.', error);
+  }
 }
-
-export const TIER_LIMITS = {
-  free: { conversions: 5, maxFileSizeMB: 50 },
-  starter: { conversions: 100, maxFileSizeMB: 500 },
-  pro: { conversions: -1, maxFileSizeMB: 2000 }, // -1 = unlimited
-  business: { conversions: -1, maxFileSizeMB: 5000 },
-};
 
 /** Throw a clear error when an auth action is attempted without Firebase config. */
 function firebaseUnavailable(): never {
@@ -147,7 +135,7 @@ export const signInWithGoogle = async () => {
   try {
     const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth');
     const result = await signInWithPopup(auth, new GoogleAuthProvider());
-    await createOrUpdateUserProfile(result.user, 'google');
+    await registerSignIn(result.user, 'google');
     trackMixpanel('User Signed In', { method: 'google', user_id: result.user.uid });
     return result.user;
   } catch (error) {
@@ -162,7 +150,7 @@ export const signInWithEmail = async (email: string, password: string) => {
   try {
     const { signInWithEmailAndPassword } = await import('firebase/auth');
     const result = await signInWithEmailAndPassword(auth, email, password);
-    await updateUserProfile(result.user.uid, { lastLoginAt: new Date().toISOString() });
+    await registerSignIn(result.user, 'email');
     trackMixpanel('User Signed In', { method: 'email', user_id: result.user.uid });
     return result.user;
   } catch (error) {
@@ -181,7 +169,7 @@ export const signUpWithEmail = async (
   try {
     const { createUserWithEmailAndPassword } = await import('firebase/auth');
     const result = await createUserWithEmailAndPassword(auth, email, password);
-    await createOrUpdateUserProfile(result.user, 'email', displayName);
+    await registerSignIn(result.user, 'email', displayName);
     trackMixpanel('User Signed Up', { method: 'email', user_id: result.user.uid });
     return result.user;
   } catch (error) {
@@ -201,149 +189,6 @@ export const signOut = async () => {
     console.error('Sign-out error:', error);
     throw error;
   }
-};
-
-const createOrUpdateUserProfile = async (
-  user: User,
-  signupMethod: string,
-  displayName?: string,
-) => {
-  const db = await getFirebaseDb();
-  if (!db) return firebaseUnavailable();
-  const { doc, setDoc, getDoc, updateDoc } = await import('firebase/firestore');
-  const userRef = doc(db, 'users', user.uid);
-  const userDoc = await getDoc(userRef);
-
-  const now = new Date().toISOString();
-  const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
-
-  if (!userDoc.exists()) {
-    const userProfile: UserProfile = {
-      uid: user.uid,
-      email: user.email!,
-      displayName: displayName || user.displayName || 'User',
-      photoURL: user.photoURL || undefined,
-      tier: 'free',
-      monthlyUsage: { conversions: 0, lastResetDate: currentMonth },
-      totalUsage: { conversions: 0, filesProcessed: 0 },
-      createdAt: now,
-      lastLoginAt: now,
-      signupSource: signupMethod,
-    };
-
-    await setDoc(userRef, userProfile);
-
-    mixpanelPeopleSet({
-      $email: user.email,
-      $name: userProfile.displayName,
-      'User Tier': 'free',
-      'Signup Date': now,
-      'Signup Method': signupMethod,
-      'Total Conversions': 0,
-    });
-
-    return userProfile;
-  } else {
-    const updates = {
-      lastLoginAt: now,
-      ...(displayName && { displayName }),
-    };
-    await updateDoc(userRef, updates);
-    return { ...userDoc.data(), ...updates } as UserProfile;
-  }
-};
-
-export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
-  try {
-    const db = await getFirebaseDb();
-    if (!db) return null;
-    const { doc, getDoc } = await import('firebase/firestore');
-    const userRef = doc(db, 'users', uid);
-    const userDoc = await getDoc(userRef);
-    return userDoc.exists() ? (userDoc.data() as UserProfile) : null;
-  } catch (error) {
-    console.error('Error getting user profile:', error);
-    return null;
-  }
-};
-
-export const updateUserProfile = async (
-  uid: string,
-  updates: Partial<UserProfile>,
-) => {
-  try {
-    const db = await getFirebaseDb();
-    if (!db) return;
-    const { doc, updateDoc } = await import('firebase/firestore');
-    const userRef = doc(db, 'users', uid);
-    await updateDoc(userRef, updates);
-  } catch (error) {
-    console.error('Error updating user profile:', error);
-    throw error;
-  }
-};
-
-export const incrementUsage = async (
-  uid: string,
-  type: 'conversions' | 'filesProcessed',
-) => {
-  try {
-    const db = await getFirebaseDb();
-    if (!db) return;
-    const { doc, updateDoc, increment } = await import('firebase/firestore');
-    const userRef = doc(db, 'users', uid);
-    const currentMonth = new Date().toISOString().slice(0, 7);
-
-    await updateDoc(userRef, {
-      [`monthlyUsage.${type}`]: increment(1),
-      [`totalUsage.${type}`]: increment(1),
-      'monthlyUsage.lastResetDate': currentMonth,
-    });
-
-    mixpanelPeopleIncrement({
-      'Total Conversions': type === 'conversions' ? 1 : 0,
-      'Files Processed': type === 'filesProcessed' ? 1 : 0,
-    });
-  } catch (error) {
-    console.error('Error incrementing usage:', error);
-    throw error;
-  }
-};
-
-export const checkUsageLimits = (
-  userProfile: UserProfile,
-  fileSize: number,
-): {
-  canConvert: boolean;
-  reason?: string;
-  conversionsRemaining?: number;
-} => {
-  const limits = TIER_LIMITS[userProfile.tier];
-  const fileSizeMB = fileSize / 1024 / 1024;
-
-  if (fileSizeMB > limits.maxFileSizeMB) {
-    return {
-      canConvert: false,
-      reason: `File size (${fileSizeMB.toFixed(1)}MB) exceeds limit of ${limits.maxFileSizeMB}MB for ${userProfile.tier} tier`,
-    };
-  }
-
-  if (
-    limits.conversions !== -1 &&
-    userProfile.monthlyUsage.conversions >= limits.conversions
-  ) {
-    return {
-      canConvert: false,
-      reason: `Monthly conversion limit reached (${limits.conversions} conversions)`,
-    };
-  }
-
-  const conversionsRemaining =
-    limits.conversions === -1
-      ? -1
-      : limits.conversions - userProfile.monthlyUsage.conversions;
-
-  return { canConvert: true, conversionsRemaining };
 };
 
 // Auth state observer. Returns an unsubscribe function synchronously; the real

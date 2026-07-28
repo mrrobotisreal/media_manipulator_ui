@@ -10,8 +10,8 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import { useGenerateCaptions, serializeSRT, serializeVTT, downloadText } from '@/lib/useStudioCaptions';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
 import { studioProjectSchema } from '@/lib/studioTypes';
 import { trackStudioCaptionsGenerated } from '@/lib/studio/telemetry';
 
@@ -40,9 +40,7 @@ export const CaptionControls: React.FC<{ projectId: string }> = ({ projectId }) 
       // The server wrote the cues; pull the fresh project and push them into the store.
       void (async () => {
         try {
-          const res = await fetch(`${getBaseURL()}/studio/projects/${projectId}`, {
-            headers: { 'X-MM-Session-ID': getSessionId() },
-          });
+          const res = await authedFetch(`${getBaseURL()}/studio/projects/${projectId}`);
           if (!res.ok) return;
           const fresh = studioProjectSchema.parse(await res.json());
           setCaptions(fresh.captions);

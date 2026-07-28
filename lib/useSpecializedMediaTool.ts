@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
 import { getSessionId, trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 
@@ -70,7 +71,7 @@ const uploadDirect = async (file: File, options: SpecializedToolOptions): Promis
   const formData = new FormData();
   formData.append('file', file);
   formData.append('options', JSON.stringify(options));
-  const response = await fetch(`${getBaseURL()}/upload`, {
+  const response = await authedFetch(`${getBaseURL()}/upload`, {
     method: 'POST',
     body: formData,
   });
@@ -91,12 +92,9 @@ const uploadVideoViaS3 = async (
   setPhase('requesting-url');
   setProgress(0);
 
-  const presign = await fetch(`${getBaseURL()}/video-upload/presign`, {
+  const presign = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-MM-Session-ID': sessionId,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       fileName: file.name,
       contentType,
@@ -113,7 +111,7 @@ const uploadVideoViaS3 = async (
   await putFileToS3(target, file, contentType, setProgress);
 
   setPhase('finalizing');
-  const complete = await fetch(`${getBaseURL()}/video-upload/complete`, {
+  const complete = await authedFetch(`${getBaseURL()}/video-upload/complete`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

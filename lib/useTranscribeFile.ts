@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
 import { getSessionId, trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 
@@ -31,7 +32,7 @@ const uploadAudioForTranscribe = async (file: File, options: TranscribeFormData)
   const formData = new FormData();
   formData.append('file', file);
   formData.append('options', JSON.stringify(options));
-  const response = await fetch(`${getBaseURL()}/upload`, {
+  const response = await authedFetch(`${getBaseURL()}/upload`, {
     method: 'POST',
     body: formData,
   });
@@ -75,12 +76,9 @@ const uploadVideoForTranscribe = async (
   setPhase('requesting-url');
   setProgress(0);
 
-  const presignResponse = await fetch(`${getBaseURL()}/video-upload/presign`, {
+  const presignResponse = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-MM-Session-ID': sessionId,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       fileName: file.name,
       contentType,
@@ -97,7 +95,7 @@ const uploadVideoForTranscribe = async (
   await putFileToS3(target, file, contentType, setProgress);
 
   setPhase('finalizing');
-  const completeResponse = await fetch(`${getBaseURL()}/video-upload/complete`, {
+  const completeResponse = await authedFetch(`${getBaseURL()}/video-upload/complete`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

@@ -2,14 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import type { DocumentScanResultsResponse } from './documentScanTypes';
 
 const fetchDocumentScanResult = async (jobId: string): Promise<DocumentScanResultsResponse> => {
-  const idToken = await getCurrentIdToken();
-  const response = await fetch(`${getBaseURL()}/document-scan/${jobId}/results`, {
-    headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
-  });
+  const response = await authedFetch(`${getBaseURL()}/document-scan/${jobId}/results`);
   if (!response.ok) {
     const body = await response.text().catch(() => '');
     throw new Error(body || `Failed to load results: ${response.statusText}`);

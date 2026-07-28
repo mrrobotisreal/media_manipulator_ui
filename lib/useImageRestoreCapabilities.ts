@@ -2,16 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import type { ImageRestoreCapabilities } from './imageRestoreTypes';
 
 const fetchImageRestoreCapabilities = async (): Promise<ImageRestoreCapabilities> => {
-  // Attach the Firebase ID token when a user is signed in — required by the
-  // auth-gated deployment, harmless on the public one.
-  const idToken = await getCurrentIdToken();
-  const response = await fetch(`${getBaseURL()}/image-restore/capabilities`, {
-    headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
-  });
+  // authedFetch attaches the Firebase ID token when a user is signed in —
+  // required by the auth-gated deployment, harmless on the public one — plus
+  // the session id the quota ledger counts anonymous callers against.
+  const response = await authedFetch(`${getBaseURL()}/image-restore/capabilities`);
   if (!response.ok) {
     const body = await response.text().catch(() => '');
     throw new Error(body || `Failed to load capabilities: ${response.statusText}`);

@@ -2,16 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
-import { getCurrentIdToken } from '@/lib/firebase';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import type { RestoreCapabilities } from './restoreTypes';
 
 const fetchRestoreCapabilities = async (): Promise<RestoreCapabilities> => {
-  // Attach the Firebase ID token when a user is signed in — required by the
-  // auth-gated deployment, harmless on the public one.
-  const idToken = await getCurrentIdToken();
-  const response = await fetch(`${getBaseURL()}/video-restore/capabilities`, {
-    headers: idToken ? { Authorization: `Bearer ${idToken}` } : undefined,
-  });
+  // authedFetch attaches the Firebase ID token when a user is signed in —
+  // required by the auth-gated deployment, harmless on the public one.
+  const response = await authedFetch(`${getBaseURL()}/video-restore/capabilities`);
   if (!response.ok) {
     const body = await response.text().catch(() => '');
     throw new Error(body || `Failed to load capabilities: ${response.statusText}`);

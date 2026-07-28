@@ -31,8 +31,8 @@
     "metadataGroupsAvailable_other": "{{count}} metadata groups available"
   },
   "authModal": {
-    "defaultTitle": "Sign in to convert your file",
-    "defaultDescription": "Create a free account to start converting files instantly",
+    "defaultTitle": "Create a free account",
+    "defaultDescription": "Keep your history, save Content Studio projects, and get a bigger daily allowance.",
     "tabs": {
       "signup": "Create Account",
       "signin": "Sign In"
@@ -54,19 +54,6 @@
     },
     "googleSignIn": "Continue with Google",
     "orDivider": "OR",
-    "freeTier": {
-      "title": "Free Account Includes",
-      "benefit1": "5 free conversions per month",
-      "benefit2": "Files up to 50MB",
-      "benefit3": "All popular formats supported",
-      "benefit4": "Fast, secure processing"
-    },
-    "upgrade": {
-      "title": "Need More? Upgrade Anytime",
-      "plan": "Starter Plan",
-      "planDetail": "100 conversions/month",
-      "price": "$9/month"
-    },
     "terms": "By signing up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>",
     "toast": {
       "welcome": "Welcome!",
@@ -78,7 +65,32 @@
       "authFailed": "Authentication failed",
       "nameRequired": "Name required",
       "nameRequiredDesc": "Please enter your name."
-    }
+    },
+    "contextual": {
+      "signupTitle": "You've used your {{limit}} free conversions today",
+      "signupBody": "A free account raises your daily allowance, keeps your conversion history, and saves Content Studio projects.",
+      "premiumTitle": "You've hit today's limit of {{limit}}",
+      "premiumBody": "Premium raises your daily allowance, unlocks 4K exports and priority processing, and removes ads.",
+      "resets": "Your current allowance resets {{when}}."
+    },
+    "plans": {
+      "freeTitle": "What a free account gives you",
+      "premiumTitle": "Premium",
+      "premiumPrice": "${{price}}/mo",
+      "premiumComingSoon": "Coming soon",
+      "comparePlans": "Compare all plans",
+      "opsPerDay": "{{count}} operations a day",
+      "maxFileSize": "Files up to {{size}}",
+      "maxVideoLength": "Videos up to {{duration}}",
+      "maxOutput": "Output up to {{height}}p",
+      "studioProjects": "{{count}} saved Studio projects",
+      "studioProjectsUnlimited": "Unlimited saved Studio projects",
+      "retention": "Results kept for {{duration}}",
+      "priorityGpu": "Priority processing",
+      "noAds": "No ads",
+      "batch": "Batch processing"
+    },
+    "loadingPlans": "Loading plans…"
   },
   "imageCropModal": {
     "title": "Crop Image",
@@ -153,5 +165,25 @@
     "title": "Privacy at a glance",
     "summary": "Files are processed on our servers, automatically deleted within 24 hours, and never sent to third-party AI providers.",
     "learnMore": "Read the full Privacy Policy"
+  },
+  "quotaMeter": {
+    "label": "Today",
+    "readout": "{{used}} / {{limit}}",
+    "empty": "—",
+    "remaining": "{{remaining}} of {{limit}} left today",
+    "atLimit": "Daily limit reached",
+    "resets": "Resets {{when}}",
+    "moreCta": "Get more"
+  },
+  "accountMenu": {
+    "signIn": "Sign in",
+    "account": "Account",
+    "signOut": "Sign out",
+    "signOutFailed": "Could not sign you out",
+    "tier": {
+      "anonymous": "Guest",
+      "free": "Free",
+      "premium": "Premium"
+    }
   }
 }

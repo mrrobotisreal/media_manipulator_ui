@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
 
@@ -41,7 +42,7 @@ const submitCaptionTranslation = async (
   formData.append('sourceLanguage', data.sourceLanguage || 'auto');
   formData.append('targetLanguage', data.targetLanguage);
   setProgress(10);
-  const response = await fetch(`${getBaseURL()}/tools/caption-translator`, {
+  const response = await authedFetch(`${getBaseURL()}/tools/caption-translator`, {
     method: 'POST',
     body: formData,
   });

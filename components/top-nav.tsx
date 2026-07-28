@@ -21,6 +21,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { useTheme } from "@/components/theme-provider";
 import { Wordmark } from "@/components/darkroom/wordmark";
 import LanguageSelector from "@/components/language-selector";
+import { AccountMenu } from "@/components/account/account-menu";
 import { useLocalization } from "@/i18n/useLocalization";
 import React from "react";
 import { cn } from "@/lib/utils";
@@ -186,9 +187,12 @@ const TopNav: React.FC = () => {
 
           <ThemeToggle />
           <LanguageSelector />
-          {/* Auth slot — filled in Phase 4 (quota meter + sign-in). The width is
-              reserved now so mounting it later shifts nothing. */}
-          <div data-auth-slot className="min-w-[88px]" />
+          {/* Auth slot. Phase 2 reserved 88px here so filling it in Phase 4
+              would cost no layout shift; AccountMenu holds that width in every
+              state, including while the tier is still resolving. */}
+          <div data-auth-slot className="flex min-w-[88px] justify-end">
+            <AccountMenu />
+          </div>
         </div>
       </div>
     </nav>
