@@ -80,14 +80,14 @@ export function HomeContent() {
           More detail in{' '}
           <Link
             href="/how-it-works"
-            className="text-primary underline-offset-2 hover:underline"
+            className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
           >
             how it works
           </Link>
           , or browse{' '}
           <Link
             href="/tools"
-            className="text-primary underline-offset-2 hover:underline"
+            className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
           >
             all tools
           </Link>

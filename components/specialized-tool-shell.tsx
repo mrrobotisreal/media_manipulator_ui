@@ -511,6 +511,7 @@ const SpecializedToolMediaPreview: React.FC<SpecializedToolMediaPreviewProps> = 
         src={src}
         alt={filename}
         className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
+        decoding="async"
       />
     );
   }

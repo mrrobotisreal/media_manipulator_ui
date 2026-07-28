@@ -6,7 +6,7 @@ import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2 } from 'lucid
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
-import { useStudioStore, clipDuration, timelineDuration } from '@/lib/studioStore';
+import { useStudioStore, clipDuration } from '@/lib/studioStore';
 import { studioSpriteUrl } from '@/lib/studio/previewEngine';
 import ClipWaveform from './clip-waveform';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
@@ -37,7 +37,12 @@ const Timeline: React.FC = () => {
   const { t } = useLocalization('interface');
   const project = useStudioStore((s) => s.project);
   const assets = useStudioStore((s) => s.assets);
-  const playhead = useStudioStore((s) => s.playhead);
+  // Deliberately NOT subscribed to `playhead`. During playback it changes 60
+  // times a second, and reading it here re-rendered the whole timeline subtree
+  // — every track, every clip, every waveform — on each frame (B9). The marker
+  // and the follow-scroll read it through transient store subscriptions
+  // instead, writing straight to the DOM.
+  const duration = useStudioStore((s) => s.duration);
   const isPlaying = useStudioStore((s) => s.isPlaying);
   const zoom = useStudioStore((s) => s.zoom);
   const zoomBy = useStudioStore((s) => s.zoomBy);
@@ -60,33 +65,180 @@ const Timeline: React.FC = () => {
   const scrubRef = React.useRef(false);
   const scrubClientXRef = React.useRef(0);
   const autoScrollRaf = React.useRef<number | null>(null);
+  const rulerRaf = React.useRef<number | null>(null);
 
   // Follow the playhead during playback: keep the marker on-screen by paging the
-  // scroll container when it nears either edge.
+  // scroll container when it nears either edge. A transient subscription, not a
+  // render dependency — this only ever touches scrollLeft.
   React.useEffect(() => {
     if (!isPlaying) return;
-    const sc = scrollRef.current;
-    if (!sc) return;
-    const x = playhead * zoom;
-    const margin = 48;
-    const viewLeft = sc.scrollLeft;
-    const viewRight = viewLeft + sc.clientWidth;
-    if (x > viewRight - margin || x < viewLeft + margin) {
-      sc.scrollLeft = Math.max(0, x - margin);
-    }
-  }, [playhead, isPlaying, zoom]);
+    return useStudioStore.subscribe((s, prev) => {
+      if (s.playhead === prev.playhead) return;
+      const sc = scrollRef.current;
+      if (!sc) return;
+      const x = s.playhead * zoom;
+      const margin = 48;
+      const viewLeft = sc.scrollLeft;
+      const viewRight = viewLeft + sc.clientWidth;
+      if (x > viewRight - margin || x < viewLeft + margin) {
+        sc.scrollLeft = Math.max(0, x - margin);
+      }
+    });
+  }, [isPlaying, zoom]);
 
   // Stop any edge auto-scroll loop on unmount.
   React.useEffect(
     () => () => {
       if (autoScrollRaf.current) cancelAnimationFrame(autoScrollRaf.current);
+      if (rulerRaf.current) cancelAnimationFrame(rulerRaf.current);
     },
     [],
   );
 
+  const tracks = React.useMemo(() => orderTracks(project?.tracks ?? []), [project?.tracks]);
+
+  const timeFromClientX = React.useCallback(
+    (clientX: number): number => {
+      const rect = contentRef.current?.getBoundingClientRect();
+      if (!rect) return 0;
+      return Math.max(0, (clientX - rect.left) / zoom);
+    },
+    [zoom],
+  );
+
+  // --- ruler scrubbing (with edge auto-scroll) ---
+  const stopAutoScroll = React.useCallback(() => {
+    if (autoScrollRaf.current) cancelAnimationFrame(autoScrollRaf.current);
+    autoScrollRaf.current = null;
+  }, []);
+
+  // While scrubbing near a viewport edge, keep scrolling that way and re-derive
+  // the playhead from the held pointer position so the marker can be dragged
+  // past the visible window all the way to the start/end. The loop body is a
+  // local so it can schedule itself without the callback referencing its own
+  // binding.
+  const startAutoScroll = React.useCallback(() => {
+    const step = () => {
+      const sc = scrollRef.current;
+      if (!sc || !scrubRef.current) {
+        stopAutoScroll();
+        return;
+      }
+      const rect = sc.getBoundingClientRect();
+      const edge = 48;
+      const x = scrubClientXRef.current;
+      let dir = 0;
+      if (x < rect.left + edge) dir = -1;
+      else if (x > rect.right - edge) dir = 1;
+      if (dir === 0) {
+        stopAutoScroll();
+        return;
+      }
+      sc.scrollLeft = Math.max(0, sc.scrollLeft + dir * 14);
+      setPlayhead(timeFromClientX(x));
+      autoScrollRaf.current = requestAnimationFrame(step);
+    };
+    autoScrollRaf.current = requestAnimationFrame(step);
+  }, [setPlayhead, stopAutoScroll, timeFromClientX]);
+
+  const maybeAutoScroll = React.useCallback(() => {
+    const sc = scrollRef.current;
+    if (!sc) return;
+    const rect = sc.getBoundingClientRect();
+    const edge = 48;
+    const x = scrubClientXRef.current;
+    const nearEdge = x < rect.left + edge || x > rect.right - edge;
+    if (nearEdge && autoScrollRaf.current == null) {
+      startAutoScroll();
+    } else if (!nearEdge) {
+      stopAutoScroll();
+    }
+  }, [startAutoScroll, stopAutoScroll]);
+
+  const onRulerDown = React.useCallback(
+    (e: React.PointerEvent) => {
+      (e.currentTarget as Element).setPointerCapture(e.pointerId);
+      scrubRef.current = true;
+      scrubClientXRef.current = e.clientX;
+      pause();
+      setPlayhead(timeFromClientX(e.clientX));
+    },
+    [pause, setPlayhead, timeFromClientX],
+  );
+
+  // Pointer events fire faster than the display refreshes. Coalescing to one
+  // rAF means a fast scrub commits one playhead update per frame instead of
+  // three or four, each of which is a store write plus a preview repaint.
+  const onRulerMove = React.useCallback(
+    (e: React.PointerEvent) => {
+      if (!scrubRef.current) return;
+      scrubClientXRef.current = e.clientX;
+      if (rulerRaf.current != null) return;
+      rulerRaf.current = requestAnimationFrame(() => {
+        rulerRaf.current = null;
+        if (!scrubRef.current) return;
+        setPlayhead(timeFromClientX(scrubClientXRef.current));
+        maybeAutoScroll();
+      });
+    },
+    [maybeAutoScroll, setPlayhead, timeFromClientX],
+  );
+
+  const onRulerUp = React.useCallback(
+    (e: React.PointerEvent) => {
+      scrubRef.current = false;
+      if (rulerRaf.current != null) {
+        cancelAnimationFrame(rulerRaf.current);
+        rulerRaf.current = null;
+      }
+      // Commit the exact pointer position; the pending frame may have been
+      // dropped, and the playhead must land where the user let go.
+      setPlayhead(timeFromClientX(scrubClientXRef.current));
+      stopAutoScroll();
+      (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    },
+    [setPlayhead, stopAutoScroll, timeFromClientX],
+  );
+
+  // --- clip trim ---
+  const onTrimDown = React.useCallback(
+    (e: React.PointerEvent, side: 'l' | 'r', clip: StudioClip, assetDur: number) => {
+      e.stopPropagation();
+      e.preventDefault();
+      (e.currentTarget as Element).setPointerCapture(e.pointerId);
+      trimRef.current = { side, clipId: clip.id, startX: e.clientX, orig: { ...clip }, assetDur };
+      selectClip(clip.id);
+    },
+    [selectClip],
+  );
+
+  const onTrimMove = React.useCallback(
+    (e: React.PointerEvent) => {
+      const d = trimRef.current;
+      if (!d) return;
+      const deltaSec = (e.clientX - d.startX) / zoom;
+      if (d.side === 'l') {
+        const maxDelta = d.orig.sourceOut - MIN_CLIP - d.orig.sourceIn;
+        const minDelta = Math.max(-d.orig.sourceIn, -d.orig.timelineStart);
+        const delta = clamp(deltaSec, minDelta, maxDelta);
+        updateClip(d.clipId, { sourceIn: d.orig.sourceIn + delta, timelineStart: d.orig.timelineStart + delta });
+      } else {
+        const minDelta = d.orig.sourceIn + MIN_CLIP - d.orig.sourceOut;
+        const maxDelta = (d.assetDur > 0 ? d.assetDur : d.orig.sourceOut) - d.orig.sourceOut;
+        const delta = clamp(deltaSec, minDelta, maxDelta);
+        updateClip(d.clipId, { sourceOut: d.orig.sourceOut + delta });
+      }
+    },
+    [updateClip, zoom],
+  );
+
+  const onTrimUp = React.useCallback((e: React.PointerEvent) => {
+    if (!trimRef.current) return;
+    trimRef.current = null;
+    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+  }, []);
+
   if (!project) return null;
-  const tracks = orderTracks(project.tracks);
-  const duration = timelineDuration(tracks);
   const contentWidth = Math.max(800, (duration + 4) * zoom);
 
   // The per-clip volume control targets a single selected clip that carries audio.
@@ -102,102 +254,6 @@ const Timeline: React.FC = () => {
     }
   }
   const selectedAudible = !!selected && !!assets[selected.clip.assetId]?.asset.hasAudio;
-
-  const timeFromClientX = (clientX: number): number => {
-    const rect = contentRef.current?.getBoundingClientRect();
-    if (!rect) return 0;
-    return Math.max(0, (clientX - rect.left) / zoom);
-  };
-
-  // --- ruler scrubbing (with edge auto-scroll) ---
-  const stopAutoScroll = () => {
-    if (autoScrollRaf.current) cancelAnimationFrame(autoScrollRaf.current);
-    autoScrollRaf.current = null;
-  };
-  // While scrubbing near a viewport edge, keep scrolling that way and re-derive
-  // the playhead from the held pointer position so the marker can be dragged
-  // past the visible window all the way to the start/end.
-  const autoScrollStep = () => {
-    const sc = scrollRef.current;
-    if (!sc || !scrubRef.current) {
-      stopAutoScroll();
-      return;
-    }
-    const rect = sc.getBoundingClientRect();
-    const edge = 48;
-    const x = scrubClientXRef.current;
-    let dir = 0;
-    if (x < rect.left + edge) dir = -1;
-    else if (x > rect.right - edge) dir = 1;
-    if (dir === 0) {
-      stopAutoScroll();
-      return;
-    }
-    sc.scrollLeft = Math.max(0, sc.scrollLeft + dir * 14);
-    setPlayhead(timeFromClientX(x));
-    autoScrollRaf.current = requestAnimationFrame(autoScrollStep);
-  };
-  const maybeAutoScroll = () => {
-    const sc = scrollRef.current;
-    if (!sc) return;
-    const rect = sc.getBoundingClientRect();
-    const edge = 48;
-    const x = scrubClientXRef.current;
-    const nearEdge = x < rect.left + edge || x > rect.right - edge;
-    if (nearEdge && autoScrollRaf.current == null) {
-      autoScrollRaf.current = requestAnimationFrame(autoScrollStep);
-    } else if (!nearEdge) {
-      stopAutoScroll();
-    }
-  };
-  const onRulerDown = (e: React.PointerEvent) => {
-    (e.currentTarget as Element).setPointerCapture(e.pointerId);
-    scrubRef.current = true;
-    scrubClientXRef.current = e.clientX;
-    pause();
-    setPlayhead(timeFromClientX(e.clientX));
-  };
-  const onRulerMove = (e: React.PointerEvent) => {
-    if (!scrubRef.current) return;
-    scrubClientXRef.current = e.clientX;
-    setPlayhead(timeFromClientX(e.clientX));
-    maybeAutoScroll();
-  };
-  const onRulerUp = (e: React.PointerEvent) => {
-    scrubRef.current = false;
-    stopAutoScroll();
-    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
-  };
-
-  // --- clip trim ---
-  const onTrimDown = (e: React.PointerEvent, side: 'l' | 'r', clip: StudioClip, assetDur: number) => {
-    e.stopPropagation();
-    e.preventDefault();
-    (e.currentTarget as Element).setPointerCapture(e.pointerId);
-    trimRef.current = { side, clipId: clip.id, startX: e.clientX, orig: { ...clip }, assetDur };
-    selectClip(clip.id);
-  };
-  const onTrimMove = (e: React.PointerEvent) => {
-    const d = trimRef.current;
-    if (!d) return;
-    const deltaSec = (e.clientX - d.startX) / zoom;
-    if (d.side === 'l') {
-      const maxDelta = d.orig.sourceOut - MIN_CLIP - d.orig.sourceIn;
-      const minDelta = Math.max(-d.orig.sourceIn, -d.orig.timelineStart);
-      const delta = clamp(deltaSec, minDelta, maxDelta);
-      updateClip(d.clipId, { sourceIn: d.orig.sourceIn + delta, timelineStart: d.orig.timelineStart + delta });
-    } else {
-      const minDelta = d.orig.sourceIn + MIN_CLIP - d.orig.sourceOut;
-      const maxDelta = (d.assetDur > 0 ? d.assetDur : d.orig.sourceOut) - d.orig.sourceOut;
-      const delta = clamp(deltaSec, minDelta, maxDelta);
-      updateClip(d.clipId, { sourceOut: d.orig.sourceOut + delta });
-    }
-  };
-  const onTrimUp = (e: React.PointerEvent) => {
-    if (!trimRef.current) return;
-    trimRef.current = null;
-    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
-  };
 
   return (
     <div className="border border-border rounded-lg bg-background/40">
@@ -324,13 +380,10 @@ const Timeline: React.FC = () => {
               />
             ))}
 
-            {/* playhead */}
-            <div
-              className="absolute top-0 bottom-0 w-px bg-primary pointer-events-none"
-              style={{ left: playhead * zoom, height: RULER_HEIGHT + CAPTION_LANE_HEIGHT + tracks.length * TRACK_HEIGHT }}
-            >
-              <div className="w-2 h-2 -ml-1 rounded-full bg-primary" />
-            </div>
+            <PlayheadMarker
+              zoom={zoom}
+              height={RULER_HEIGHT + CAPTION_LANE_HEIGHT + tracks.length * TRACK_HEIGHT}
+            />
           </div>
         </div>
       </div>
@@ -338,7 +391,38 @@ const Timeline: React.FC = () => {
   );
 };
 
-const RulerTicks: React.FC<{ duration: number; zoom: number }> = ({ duration, zoom }) => {
+/**
+ * The playhead line. It is the one thing on screen that genuinely has to move
+ * at 60fps, so it reads the store through a transient subscription and writes
+ * `transform` straight to the DOM — no React render per frame, and the movement
+ * stays on the compositor (the old version animated `left`, which lays out).
+ */
+const PlayheadMarker: React.FC<{ zoom: number; height: number }> = ({ zoom, height }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const apply = (seconds: number) => {
+      const el = ref.current;
+      if (el) el.style.transform = `translate3d(${seconds * zoom}px, 0, 0)`;
+    };
+    apply(useStudioStore.getState().playhead);
+    return useStudioStore.subscribe((s, prev) => {
+      if (s.playhead !== prev.playhead) apply(s.playhead);
+    });
+  }, [zoom]);
+
+  return (
+    <div
+      ref={ref}
+      className="absolute top-0 bottom-0 left-0 w-px bg-primary pointer-events-none will-change-transform"
+      style={{ height }}
+    >
+      <div className="w-2 h-2 -ml-1 rounded-full bg-primary" />
+    </div>
+  );
+};
+
+const RulerTicksImpl: React.FC<{ duration: number; zoom: number }> = ({ duration, zoom }) => {
   const targetPx = 64;
   const rawStep = targetPx / zoom;
   const steps = [0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300];
@@ -360,6 +444,11 @@ const RulerTicks: React.FC<{ duration: number; zoom: number }> = ({ duration, zo
   return <>{ticks}</>;
 };
 
+// Tick labels only change with the zoom level or the timeline length, never
+// with the playhead or the selection.
+const RulerTicks = React.memo(RulerTicksImpl);
+RulerTicks.displayName = 'RulerTicks';
+
 interface TrackRowProps {
   track: StudioTrack;
   zoom: number;
@@ -371,7 +460,7 @@ interface TrackRowProps {
   onTrimUp: (e: React.PointerEvent) => void;
 }
 
-const TrackRow: React.FC<TrackRowProps> = (props) => {
+const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
   const { setNodeRef, isOver, active } = useDroppable({ id: props.track.id, data: { kind: props.track.kind } });
   const activeKind = (active?.data.current as { kind?: string } | undefined)?.kind;
   const compatible = !!active && activeKind === props.track.kind;
@@ -389,17 +478,42 @@ const TrackRow: React.FC<TrackRowProps> = (props) => {
       }}
     >
       {props.track.clips.map((clip) => (
-        <ClipBlock key={clip.id} clip={clip} {...props} />
+        // `selected` is passed as a boolean rather than the whole selection
+        // array: spreading the array made every clip on every track re-render
+        // each time the selection changed.
+        <ClipBlock
+          key={clip.id}
+          clip={clip}
+          track={props.track}
+          zoom={props.zoom}
+          selected={props.selectedClipIds.includes(clip.id)}
+          assets={props.assets}
+          onSelect={props.onSelect}
+          onTrimDown={props.onTrimDown}
+          onTrimMove={props.onTrimMove}
+          onTrimUp={props.onTrimUp}
+        />
       ))}
     </div>
   );
 };
 
-const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
+// Memoized because the timeline re-renders on selection, zoom, asset ingest and
+// every edit; a track whose own clips did not change has nothing new to draw.
+// All the callbacks it receives are `useCallback`-stable in Timeline.
+const TrackRow = React.memo(TrackRowImpl);
+TrackRow.displayName = 'TrackRow';
+
+type ClipBlockProps = Omit<TrackRowProps, 'selectedClipIds'> & {
+  clip: StudioClip;
+  selected: boolean;
+};
+
+const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   clip,
   track,
   zoom,
-  selectedClipIds,
+  selected,
   assets,
   onSelect,
   onTrimDown,
@@ -417,7 +531,6 @@ const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
   const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video';
   const left = clip.timelineStart * zoom;
   const width = Math.max(8, clipDuration(clip) * zoom);
-  const selected = selectedClipIds.includes(clip.id);
   // Waveform: full block on audio tracks, a bottom strip (~35%) under the
   // filmstrip on video-track clips that carry audio. Rubber-band editing only on
   // audio tracks (video strips are too thin); the inspector handles the rest.
@@ -469,14 +582,19 @@ const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
       <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none">
         {entry?.asset.originalFileName ?? clip.assetId}
       </div>
+      {/* Trim handles. The visual bar stays 8px so the timeline reads
+          precisely, but below `lg` a transparent ::before widens the hit area
+          inward to 24px — 8px is well under a fingertip. Extending inward
+          rather than outward keeps it from stealing the neighbouring clip's
+          handle. */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-2 cursor-ew-resize bg-white/20 hover:bg-white/50 touch-none"
+        className="absolute left-0 top-0 bottom-0 w-2 cursor-ew-resize bg-white/20 hover:bg-white/50 touch-none before:absolute before:inset-y-0 before:left-0 before:w-6 before:content-[''] lg:before:hidden"
         onPointerDown={(e) => onTrimDown(e, 'l', clip, assetDur)}
         onPointerMove={onTrimMove}
         onPointerUp={onTrimUp}
       />
       <div
-        className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize bg-white/20 hover:bg-white/50 touch-none"
+        className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize bg-white/20 hover:bg-white/50 touch-none before:absolute before:inset-y-0 before:right-0 before:w-6 before:content-[''] lg:before:hidden"
         onPointerDown={(e) => onTrimDown(e, 'r', clip, assetDur)}
         onPointerMove={onTrimMove}
         onPointerUp={onTrimUp}
@@ -484,5 +602,11 @@ const ClipBlock: React.FC<{ clip: StudioClip } & TrackRowProps> = ({
     </div>
   );
 };
+
+// Memoized: with `selected` reduced to a boolean, a clip only re-renders when
+// its own geometry, selection, or asset actually changes — not on every
+// timeline render.
+const ClipBlock = React.memo(ClipBlockImpl);
+ClipBlock.displayName = 'ClipBlock';
 
 export default Timeline;

@@ -63,7 +63,6 @@ export default function ToolsIndexPage() {
               <Link
                 href="/tools/content-studio"
                 className="group mb-8 block rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
-                aria-label={contentStudio.name}
               >
                 <div className="flex items-center gap-4">
                   <div className="shrink-0 rounded-lg bg-data/10 p-3">
@@ -74,7 +73,7 @@ export default function ToolsIndexPage() {
                       <span className="text-lg font-semibold text-card-foreground">
                         {contentStudio.name}
                       </span>
-                      <span className="inline-flex items-center gap-1 rounded-md bg-data px-2 py-0.5 text-xs font-medium text-foreground">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-data px-2 py-0.5 text-xs font-medium text-data-foreground">
                         <Sparkles className="w-3 h-3" />
                         Multi-track editor
                       </span>

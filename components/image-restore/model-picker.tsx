@@ -227,7 +227,7 @@ const ImageModelPicker: React.FC<ModelPickerProps> = ({
                   {detect.data.faces.length > 0 && (
                     <div className="relative inline-block max-w-xs overflow-hidden rounded-md border border-border">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={thumbUrl} alt="" className="block w-full h-auto" draggable={false} />
+                      <img src={thumbUrl} alt="" className="block w-full h-auto" draggable={false} decoding="async" />
                       {detect.data.faces.map((f) => (
                         <span
                           key={f.id}

@@ -59,16 +59,26 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 py-8 sm:py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center space-x-3 mb-3 hover:opacity-90 transition-opacity" aria-label={t('accessibility:footer.homeLink')}>
-              {/* min-w-0 matters: without it flex's `min-width: auto` stops the
-                  lockup shrinking and it overflows below ~400px. */}
-              <div className="flex min-w-0 flex-col">
+            {/* min-w-0 matters: without it flex's `min-width: auto` stops the
+                lockup shrinking and it overflows below ~400px.
+
+                The tagline sits outside the anchor. It is not part of the
+                link's purpose, and while it was inside, the `aria-label`
+                replaced it in the accessible name — which fails WCAG 2.5.3
+                Label in Name. With only the wordmark inside, "Media Manipulator
+                home" properly contains the visible text. */}
+            <div className="mb-3 flex min-w-0 flex-col">
+              <Link
+                href="/"
+                className="flex items-center space-x-3 hover:opacity-90 transition-opacity"
+                aria-label={t('accessibility:footer.homeLink')}
+              >
                 <Wordmark size="lg" text={t('interface:common.brand')} />
-                <span className="mt-1 truncate text-sm text-muted-foreground">
-                  {t('interface:common.brandTagline')}
-                </span>
-              </div>
-            </Link>
+              </Link>
+              <span className="mt-1 truncate text-sm text-muted-foreground">
+                {t('interface:common.brandTagline')}
+              </span>
+            </div>
             <p className="text-sm text-muted-foreground max-w-md">
               {t('interface:footer.tagline')}
             </p>

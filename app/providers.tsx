@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
-import mixpanel from 'mixpanel-browser';
 import '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
 import TopNav from '@/components/top-nav';
@@ -12,14 +11,11 @@ import Footer from '@/components/footer';
 // MobileAnchorAd is intentionally NOT rendered — the sticky mobile anchor ad
 // is disabled for the AdSense review build.
 import { initWebVitals } from '@/lib/webVitals';
-import {
-  hasAnalyticsConsent,
-  initConsentListener,
-  onConsentChange,
-} from '@/lib/consent';
+import { initConsentListener, onConsentChange } from '@/lib/consent';
 import { trackFirstPartyPageView } from '@/lib/firstPartyAnalytics';
 import { trackGooglePageView } from '@/lib/gtag';
 import { trackMixpanelPageView } from '@/lib/analytics';
+import { initMixpanel } from '@/lib/mixpanel';
 
 // One QueryClient for the app lifetime. Created lazily inside the component so
 // each browser tab gets its own instance and it is never shared across requests
@@ -28,29 +24,6 @@ let browserQueryClient: QueryClient | undefined;
 function getQueryClient(): QueryClient {
   if (!browserQueryClient) browserQueryClient = new QueryClient();
   return browserQueryClient;
-}
-
-// Mixpanel is initialized lazily after first paint so it never blocks LCP, and
-// only after the user has granted analytics consent. SDK calls fired before
-// init are buffered internally. Ported from the Vite entry (main.tsx).
-let mixpanelInitialized = false;
-function tryInitMixpanel() {
-  if (mixpanelInitialized) return;
-  if (typeof window === 'undefined') return;
-  if (!process.env.NEXT_PUBLIC_MP_TOKEN) return;
-  if (!hasAnalyticsConsent()) return;
-  try {
-    mixpanel.init(process.env.NEXT_PUBLIC_MP_TOKEN, {
-      debug: false,
-      // Page-view tracking is owned by RouteAnalytics below. Letting the SDK
-      // auto-track here would double-fire.
-      track_pageview: false,
-      persistence: 'localStorage',
-    });
-    mixpanelInitialized = true;
-  } catch {
-    // Mixpanel must never block the editing flow.
-  }
 }
 
 /**
@@ -115,13 +88,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         ) => number;
       }
     ).requestIdleCallback;
+    // Mixpanel loads and initializes on idle so it never blocks LCP, and only
+    // after analytics consent. `initMixpanel` owns the dynamic import of the
+    // SDK, keeping ~60 KB out of the root chunk (lib/mixpanel.ts).
     if (typeof ric === 'function') {
-      ric(tryInitMixpanel, { timeout: 3000 });
+      ric(initMixpanel, { timeout: 3000 });
     } else {
-      window.setTimeout(tryInitMixpanel, 1500);
+      window.setTimeout(initMixpanel, 1500);
     }
     // Re-attempt init when the user grants consent later in the session.
-    const off = onConsentChange(tryInitMixpanel);
+    const off = onConsentChange(initMixpanel);
     return off;
   }, [isChromeless]);
 

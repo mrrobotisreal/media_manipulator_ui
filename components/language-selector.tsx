@@ -13,6 +13,12 @@ import { cn } from "@/lib/utils";
  *
  * The trigger mirrors the styling of the GitHub / WinApps / CreaTV icon
  * buttons in TopNav so it sits naturally next to ThemeToggle.
+ *
+ * Renders nothing while only one language is registered — a picker with a
+ * single option is a control that cannot do anything, and it occupies a 44px
+ * slot in the sticky nav on every route. The component and its i18n wiring
+ * stay intact, so adding a second entry to `supportedLanguages` brings it back
+ * with no other change.
  */
 const LanguageSelector: React.FC = () => {
   const { t } = useLocalization(["interface", "accessibility"]);
@@ -49,6 +55,9 @@ const LanguageSelector: React.FC = () => {
     },
     [changeLanguage],
   );
+
+  // Declared after every hook so the hook order stays stable.
+  if (languages.length < 2) return null;
 
   return (
     <div ref={wrapperRef} className="relative">

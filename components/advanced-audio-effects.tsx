@@ -102,7 +102,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   content={t('advancedAudioEffects.volumeDynamics.tooltip')}
                 />
               </h4>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.labels.amplify')}</label>
                   <Controller
@@ -209,7 +209,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   content={t('advancedAudioEffects.equalizer.tooltip')}
                 />
               </h4>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <Controller
                     name="basicProcessing.equalizer.enabled"
@@ -263,7 +263,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   content={t('advancedAudioEffects.stereo.tooltip')}
                 />
               </h4>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.stereo.pan')}</label>
                   <Controller
@@ -341,7 +341,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   content={t('advancedAudioEffects.reverb.tooltip')}
                 />
               </h4>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <Controller
                     name="timeBasedEffects.reverb.enabled"
@@ -445,7 +445,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
                   content={t('advancedAudioEffects.delay.tooltip')}
                 />
               </h4>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <Controller
                     name="timeBasedEffects.delay.enabled"
@@ -550,7 +550,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
 
         {expandedSections.has('restoration') && (
           <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <Controller
                   name="restoration.noiseReduction.enabled"
@@ -658,7 +658,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
 
         {expandedSections.has('advanced') && (
           <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.advanced.pitchShift')}</label>
                 <Controller

@@ -28,11 +28,27 @@ const RESOLUTIONS = [
 ];
 const FPS_OPTIONS = [24, 30, 60];
 
+interface ContentStudioPageProps {
+  /**
+   * Render only the editor, with no page shell of its own.
+   *
+   * The host is slotted into `ToolLandingPage` as its `panel`, which already
+   * supplies the width cap, the horizontal gutter, the `Panel` surface, and an
+   * `<h1>` + tagline + breadcrumbs. Repeating all of that here nested a second
+   * `max-w` / `px-4` / `Panel` inside the first — at 360px that left the editor
+   * roughly 48px of usable width (B10) — and put a second `<h1>` on the page.
+   *
+   * `studio-host-client.tsx` is the only mount point, so this is effectively
+   * always on; the standalone path is kept for a future non-embedded route.
+   */
+  embedded?: boolean;
+}
+
 /**
  * Content Studio host page. Switches between the entry screen (new project +
  * recents) and the live editor. The header chrome is shared across both.
  */
-const ContentStudioPage: React.FC = () => {
+const ContentStudioPage: React.FC<ContentStudioPageProps> = ({ embedded = false }) => {
   const { t } = useLocalization('interface');
   // const { toolPages } = useToolPages();
   const [openProjectId, setOpenProjectId] = React.useState<string | null>(null);
@@ -40,6 +56,16 @@ const ContentStudioPage: React.FC = () => {
   // decision (relocating the editor to a full-viewport overlay) while keeping
   // the Editor instance mounted, so editing state survives the toggle.
   const focusMode = useFocusMode();
+
+  const body = openProjectId ? (
+    <FocusableEditorShell focused={focusMode.focused} containerRef={focusMode.containerRef}>
+      <Editor projectId={openProjectId} onClose={() => setOpenProjectId(null)} focusMode={focusMode} />
+    </FocusableEditorShell>
+  ) : (
+    <EntryScreen onOpen={setOpenProjectId} />
+  );
+
+  if (embedded) return body;
 
   return (
     <div className="max-w-[1800px] mx-auto my-4 px-4">
@@ -72,14 +98,7 @@ const ContentStudioPage: React.FC = () => {
             </Link>
           </header>
 
-          {openProjectId ? (
-            <FocusableEditorShell focused={focusMode.focused} containerRef={focusMode.containerRef}>
-              <Editor projectId={openProjectId} onClose={() => setOpenProjectId(null)} focusMode={focusMode} />
-            </FocusableEditorShell>
-          ) : (
-            <EntryScreen onOpen={setOpenProjectId} />
-          )}
-        
+          {body}
       </Panel>
     </div>
   );
@@ -120,9 +139,11 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
         </div>
 
         <div className="space-y-2">
-          <Label>{t('contentStudio.newProject.resolution')}</Label>
+          <Label htmlFor="cs-resolution">{t('contentStudio.newProject.resolution')}</Label>
           <Select value={resKey} onValueChange={setResKey}>
-            <SelectTrigger>
+            {/* Radix renders the trigger as a <button role="combobox">, which a
+                sibling <Label> cannot name. It needs its own. */}
+            <SelectTrigger id="cs-resolution" aria-label={t('contentStudio.newProject.resolution')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -136,9 +157,9 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
         </div>
 
         <div className="space-y-2">
-          <Label>{t('contentStudio.newProject.fps')}</Label>
+          <Label htmlFor="cs-fps">{t('contentStudio.newProject.fps')}</Label>
           <Select value={fps} onValueChange={setFps}>
-            <SelectTrigger>
+            <SelectTrigger id="cs-fps" aria-label={t('contentStudio.newProject.fps')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

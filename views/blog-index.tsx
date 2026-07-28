@@ -1,9 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import RelatedLinks from '@/components/related-links';
-import { useLocalization } from '@/i18n/useLocalization';
+import { getServerT } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
 
 const RELATED_LINK_KEYS = ['allTools', 'compressVideo', 'removeExif', 'homepage', 'tutorials', 'howItWorks'] as const;
@@ -17,7 +15,7 @@ const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
 };
 
 const BlogPage: React.FC = () => {
-  const { t } = useLocalization('interface');
+  const t = getServerT();
 
   const articles = [
     {

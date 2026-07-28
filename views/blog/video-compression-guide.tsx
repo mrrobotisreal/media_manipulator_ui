@@ -1,14 +1,11 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Panel } from '@/components/darkroom/panel';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
 import RelatedLinks from '@/components/related-links';
-import mixpanel from 'mixpanel-browser';
+import TrackedCtaButton from '@/components/analytics/tracked-cta-button';
 
 const VideoCompressionGuide: React.FC = () => {
   return (
@@ -23,7 +20,7 @@ const VideoCompressionGuide: React.FC = () => {
         <div className="mb-4">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-primary hover:text-[var(--accent-primary-hover)] font-medium text-sm transition-colors"
+          className="inline-flex items-center gap-2 text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary font-medium text-sm transition-colors"
         >
           ← Blog
         </Link>
@@ -446,18 +443,13 @@ const VideoCompressionGuide: React.FC = () => {
           <p className="text-lg text-muted-foreground mb-6">
             Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.
           </p>
-          <Button
-            asChild
-            size="lg"
+          <TrackedCtaButton
+            event="Video Compression Guide - Try Video Converter Free"
+            href="/tools/compress-video"
             className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
-            onClick={() => {
-              mixpanel.track('Video Compression Guide - Try Video Converter Free', {
-                user_tier: 'free'
-              });
-            }}
           >
-            <Link href="/tools/compress-video">Try the video compressor →</Link>
-          </Button>
+            Try the video compressor →
+          </TrackedCtaButton>
           <p className="text-sm text-muted-foreground mt-3">
             No signup required • Process files locally • Fast & secure
           </p>

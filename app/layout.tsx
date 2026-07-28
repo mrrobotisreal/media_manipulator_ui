@@ -3,6 +3,8 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Providers from './providers';
+import { ResourceHints } from '@/components/seo/resource-hints';
+import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
 import { SITE_ORIGIN } from '@/lib/seo';
 
 // Self-hosted and preloaded by next/font, with size-adjust fallback metrics that
@@ -97,6 +99,29 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col">
+        {/*
+          Third-party origins worth warming.
+
+          The AdSense preconnect is conditional on ADSENSE_ENABLED, the same
+          top-level flag lib/adsenseConfig.ts gates every ad request on. On the
+          review build no adsbygoogle.js ever loads, and an unconditional hint
+          there holds a socket open for an origin the page never contacts —
+          Lighthouse reports it as an unused preconnect and it competes with the
+          requests the page does make. When ads are on, the slot is above the
+          fold and the DNS+TLS handshake is on the critical path to filling the
+          reserved height, so the full preconnect is right.
+
+          googletagmanager gets a DNS prefetch only: GA4 loads lazily, so
+          resolving the name early is enough.
+        */}
+        <ResourceHints
+          preconnect={
+            ADSENSE_ENABLED
+              ? [{ href: 'https://pagead2.googlesyndication.com', crossOrigin: 'anonymous' }]
+              : []
+          }
+          dnsPrefetch={['https://www.googletagmanager.com']}
+        />
         {/* Apply the theme class before first paint to avoid a light flash. */}
         <Script
           id="theme-init"
@@ -109,10 +134,19 @@ export default function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: GTAG_CONSENT_BOOTSTRAP }}
         />
+        {/*
+          gtag/js is 149 KB of third-party JavaScript and nothing on the page
+          waits for it — the consent defaults and the dataLayer stub above are
+          what matter early, and both are inline. `lazyOnload` moves it past the
+          load event instead of competing with the app's own hydration during
+          the interactive window. Page views are dispatched from RouteAnalytics
+          through the dataLayer, which buffers until the tag arrives, so no
+          event is lost.
+        */}
         <Script
           id="ga4"
           src="https://www.googletagmanager.com/gtag/js?id=G-6J910CMHRY"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         {/*
           The global AdSense (pagead2) script was intentionally REMOVED for the

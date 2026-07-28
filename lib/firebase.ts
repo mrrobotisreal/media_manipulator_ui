@@ -12,7 +12,7 @@ import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import type { Auth, User } from 'firebase/auth';
 import type { Firestore } from 'firebase/firestore';
 import type { Analytics } from 'firebase/analytics';
-import mixpanel from 'mixpanel-browser';
+import { trackMixpanel, mixpanelPeopleSet, mixpanelPeopleIncrement } from './mixpanel';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
@@ -148,7 +148,7 @@ export const signInWithGoogle = async () => {
     const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth');
     const result = await signInWithPopup(auth, new GoogleAuthProvider());
     await createOrUpdateUserProfile(result.user, 'google');
-    mixpanel.track('User Signed In', { method: 'google', user_id: result.user.uid });
+    trackMixpanel('User Signed In', { method: 'google', user_id: result.user.uid });
     return result.user;
   } catch (error) {
     console.error('Google sign-in error:', error);
@@ -163,7 +163,7 @@ export const signInWithEmail = async (email: string, password: string) => {
     const { signInWithEmailAndPassword } = await import('firebase/auth');
     const result = await signInWithEmailAndPassword(auth, email, password);
     await updateUserProfile(result.user.uid, { lastLoginAt: new Date().toISOString() });
-    mixpanel.track('User Signed In', { method: 'email', user_id: result.user.uid });
+    trackMixpanel('User Signed In', { method: 'email', user_id: result.user.uid });
     return result.user;
   } catch (error) {
     console.error('Email sign-in error:', error);
@@ -182,7 +182,7 @@ export const signUpWithEmail = async (
     const { createUserWithEmailAndPassword } = await import('firebase/auth');
     const result = await createUserWithEmailAndPassword(auth, email, password);
     await createOrUpdateUserProfile(result.user, 'email', displayName);
-    mixpanel.track('User Signed Up', { method: 'email', user_id: result.user.uid });
+    trackMixpanel('User Signed Up', { method: 'email', user_id: result.user.uid });
     return result.user;
   } catch (error) {
     console.error('Email sign-up error:', error);
@@ -196,7 +196,7 @@ export const signOut = async () => {
   try {
     const { signOut: firebaseSignOut } = await import('firebase/auth');
     await firebaseSignOut(auth);
-    mixpanel.track('User Signed Out');
+    trackMixpanel('User Signed Out');
   } catch (error) {
     console.error('Sign-out error:', error);
     throw error;
@@ -233,7 +233,7 @@ const createOrUpdateUserProfile = async (
 
     await setDoc(userRef, userProfile);
 
-    mixpanel.people.set({
+    mixpanelPeopleSet({
       $email: user.email,
       $name: userProfile.displayName,
       'User Tier': 'free',
@@ -300,7 +300,7 @@ export const incrementUsage = async (
       'monthlyUsage.lastResetDate': currentMonth,
     });
 
-    mixpanel.people.increment({
+    mixpanelPeopleIncrement({
       'Total Conversions': type === 'conversions' ? 1 : 0,
       'Files Processed': type === 'filesProcessed' ? 1 : 0,
     });

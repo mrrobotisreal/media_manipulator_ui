@@ -14,7 +14,7 @@ import { Zap, Shield, CheckCircle, X } from 'lucide-react';
 import { Trans } from 'react-i18next';
 import { signInWithGoogle, signInWithEmail, signUpWithEmail } from '@/lib/firebase';
 import { toast } from 'sonner';
-import mixpanel from 'mixpanel-browser';
+import { trackMixpanel } from '@/lib/mixpanel';
 import { useLocalization } from '@/i18n/useLocalization';
 
 interface AuthModalProps {
@@ -44,7 +44,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setIsLoading(true);
       await signInWithGoogle();
 
-      mixpanel.track('Auth Modal - Google Auth Success', {
+      trackMixpanel('Auth Modal - Google Auth Success', {
         modal_trigger: 'conversion_attempt'
       });
 
@@ -60,7 +60,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         description: t('error:auth.tryAgain'),
       });
 
-      mixpanel.track('Auth Modal - Google Auth Failed', {
+      trackMixpanel('Auth Modal - Google Auth Failed', {
         error: error instanceof Error ? error.message : 'Unknown error'
       });
     } finally {
@@ -84,7 +84,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         }
         await signUpWithEmail(email, password, displayName);
 
-        mixpanel.track('Auth Modal - Email Signup Success', {
+        trackMixpanel('Auth Modal - Email Signup Success', {
           modal_trigger: 'conversion_attempt'
         });
 
@@ -94,7 +94,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       } else {
         await signInWithEmail(email, password);
 
-        mixpanel.track('Auth Modal - Email Signin Success', {
+        trackMixpanel('Auth Modal - Email Signin Success', {
           modal_trigger: 'conversion_attempt'
         });
 
@@ -123,7 +123,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         description: errorMessage
       });
 
-      mixpanel.track('Auth Modal - Email Auth Failed', {
+      trackMixpanel('Auth Modal - Email Auth Failed', {
         tab: activeTab,
         error_code: error.code,
         error_message: error.message
@@ -143,14 +143,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setActiveTab(tab as 'signin' | 'signup');
     resetForm();
 
-    mixpanel.track('Auth Modal - Tab Changed', {
+    trackMixpanel('Auth Modal - Tab Changed', {
       tab: tab,
       previous_tab: activeTab
     });
   };
 
   const handleClose = () => {
-    mixpanel.track('Auth Modal - Closed', {
+    trackMixpanel('Auth Modal - Closed', {
       tab: activeTab,
       had_interaction: email.length > 0 || password.length > 0
     });
@@ -161,7 +161,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   React.useEffect(() => {
     if (isOpen) {
-      mixpanel.track('Auth Modal - Opened', {
+      trackMixpanel('Auth Modal - Opened', {
         default_tab: 'signup',
         trigger: 'conversion_attempt'
       });

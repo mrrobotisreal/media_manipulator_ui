@@ -13,11 +13,21 @@
 // shards, mirror the import pattern below, and append a record to
 // `supportedLanguages` plus an entry in `resources`.
 
+// Three shards are deliberately NOT imported here, because everything that
+// reads them is either a server component or behind a lazy boundary. Importing
+// them would put ~144 KB of JSON into the first-load bundle of every route:
+//
+//   interface/pages.json   (79 KB) — read only by the static views in `views/`,
+//                                    which are React Server Components. They go
+//                                    through `lib/i18n/server.tsx` instead.
+//   interface/forms.json   (36 KB) — conversion forms
+//   interface/panels.json  (29 KB) — tool panels
+//
+// The last two are merged in at runtime by `lib/i18n/ensureShard.ts`, awaited
+// inside the dynamic import that loads the panel that needs them.
+//
 // --- interface namespace shards ---
 import enUsInterfaceCore from "./locales/en-us/interface/_core.json";
-import enUsInterfacePages from "./locales/en-us/interface/pages.json";
-import enUsInterfaceForms from "./locales/en-us/interface/forms.json";
-import enUsInterfacePanels from "./locales/en-us/interface/panels.json";
 import enUsInterfaceComponents from "./locales/en-us/interface/components.json";
 import enUsInterfaceTools from "./locales/en-us/interface/tools.json";
 
@@ -52,9 +62,6 @@ export const defaultLanguage = "en-US";
 
 const enUsInterface = {
   ...enUsInterfaceCore,
-  ...enUsInterfacePages,
-  ...enUsInterfaceForms,
-  ...enUsInterfacePanels,
   ...enUsInterfaceComponents,
   ...enUsInterfaceTools,
 };

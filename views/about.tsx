@@ -1,11 +1,8 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { Trans } from 'react-i18next';
 import { Panel } from '@/components/darkroom/panel';
 import RelatedLinks from '@/components/related-links';
-import { useLocalization } from '@/i18n/useLocalization';
+import { getServerT, ServerTrans } from '@/lib/i18n/server';
 
 const RELATED_LINK_KEYS = ['converter', 'tutorials', 'howItWorks'] as const;
 const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
@@ -15,7 +12,7 @@ const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
 };
 
 const AboutPage: React.FC = () => {
-  const { t } = useLocalization('interface');
+  const t = getServerT();
 
   const imageItems = t('about.whatItDoes.image.items', { returnObjects: true }) as string[];
   const videoItems = t('about.whatItDoes.video.items', { returnObjects: true }) as string[];
@@ -32,7 +29,7 @@ const AboutPage: React.FC = () => {
         <Panel level="1" as="section" className="max-w-7xl mx-auto my-2">
           <h1 className="text-4xl font-bold mb-4 text-card-foreground">{t('about.title')}</h1>
           <p className="text-lg text-muted-foreground mb-8">
-            <Trans i18nKey="interface:about.intro" components={{ strong: <strong /> }} />
+            <ServerTrans i18nKey="interface:about.intro" components={{ strong: <strong /> }} />
           </p>
 
           <div className="prose max-w-none text-muted-foreground">
@@ -52,7 +49,7 @@ const AboutPage: React.FC = () => {
                   <ul className="space-y-1 text-sm">
                     {imageItems.map((item, idx) => (
                       <li key={idx}>
-                        <Trans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} />
+                        <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} />
                       </li>
                     ))}
                   </ul>
@@ -62,7 +59,7 @@ const AboutPage: React.FC = () => {
                   <ul className="space-y-1 text-sm">
                     {videoItems.map((item, idx) => (
                       <li key={idx}>
-                        <Trans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} />
+                        <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} />
                       </li>
                     ))}
                   </ul>
@@ -72,7 +69,7 @@ const AboutPage: React.FC = () => {
                   <ul className="space-y-1 text-sm">
                     {audioItems.map((item, idx) => (
                       <li key={idx}>
-                        <Trans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} />
+                        <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} />
                       </li>
                     ))}
                   </ul>
@@ -80,11 +77,11 @@ const AboutPage: React.FC = () => {
               </div>
 
               <p className="mt-6">
-                <Trans
+                <ServerTrans
                   i18nKey="interface:about.whatItDoes.outro"
                   components={{
-                    linkTutorials: <Link href="/tutorials" className="text-primary hover:text-[var(--accent-primary-hover)]" />,
-                    linkHow: <Link href="/how-it-works" className="text-primary hover:text-[var(--accent-primary-hover)]" />,
+                    linkTutorials: <Link href="/tutorials" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
+                    linkHow: <Link href="/how-it-works" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
                   }}
                 />
               </p>
@@ -100,11 +97,11 @@ const AboutPage: React.FC = () => {
                 <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.privacy.title')}</h3>
                   <p>
-                    <Trans
+                    <ServerTrans
                       i18nKey="interface:about.whyChoose.privacy.body"
                       components={{
                         strong: <strong />,
-                        linkPrivacy: <Link href="/privacy-policy" className="text-primary hover:text-[var(--accent-primary-hover)]" />,
+                        linkPrivacy: <Link href="/privacy-policy" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
                       }}
                     />
                   </p>
@@ -112,7 +109,7 @@ const AboutPage: React.FC = () => {
                 <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.localAi.title')}</h3>
                   <p>
-                    <Trans i18nKey="interface:about.whyChoose.localAi.body" components={{ strong: <strong /> }} />
+                    <ServerTrans i18nKey="interface:about.whyChoose.localAi.body" components={{ strong: <strong /> }} />
                   </p>
                 </Panel>
                 <Panel level="2" className="lg:p-6">
@@ -126,13 +123,13 @@ const AboutPage: React.FC = () => {
                 <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.open.title')}</h3>
                   <p>
-                    <Trans
+                    <ServerTrans
                       i18nKey="interface:about.whyChoose.open.body"
                       components={{
                         emailLink: (
                           <a
                             href="mailto:support@media-manipulator.com"
-                            className="text-primary hover:text-[var(--accent-primary-hover)]"
+                            className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary"
                           />
                         ),
                       }}
@@ -145,9 +142,9 @@ const AboutPage: React.FC = () => {
             <section className="mb-10">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.commonTasks.title')}</h2>
               <p className="mb-4">
-                <Trans
+                <ServerTrans
                   i18nKey="interface:about.commonTasks.intro"
-                  components={{ linkHome: <Link href="/" className="text-primary hover:text-[var(--accent-primary-hover)]" /> }}
+                  components={{ linkHome: <Link href="/" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" /> }}
                 />
               </p>
               <div className="grid md:grid-cols-2 gap-6">
@@ -169,7 +166,7 @@ const AboutPage: React.FC = () => {
             <section className="mb-10">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.whoBuilds.title')}</h2>
               <p className="mb-4">
-                <Trans i18nKey="interface:about.whoBuilds.p1" components={{ strong: <strong /> }} />
+                <ServerTrans i18nKey="interface:about.whoBuilds.p1" components={{ strong: <strong /> }} />
               </p>
               <p className="mb-4">{t('about.whoBuilds.p2')}</p>
             </section>
@@ -202,27 +199,27 @@ const AboutPage: React.FC = () => {
             <section className="mb-10">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.contact.title')}</h2>
               <p className="mb-2">
-                <Trans i18nKey="interface:about.contact.operator" components={{ strong: <strong /> }} />
+                <ServerTrans i18nKey="interface:about.contact.operator" components={{ strong: <strong /> }} />
               </p>
               <p className="mb-1">{t('about.contact.location')}</p>
               <p className="mb-1">
                 {t('about.contact.generalSupport')}{' '}
-                <a href="mailto:support@media-manipulator.com" className="text-primary hover:text-[var(--accent-primary-hover)]">
+                <a href="mailto:support@media-manipulator.com" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">
                   support@media-manipulator.com
                 </a>
               </p>
               <p className="mb-1">
                 {t('about.contact.privacyRequests')}{' '}
-                <a href="mailto:privacy@media-manipulator.com" className="text-primary hover:text-[var(--accent-primary-hover)]">
+                <a href="mailto:privacy@media-manipulator.com" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">
                   privacy@media-manipulator.com
                 </a>
               </p>
               <p className="mb-4">
                 {t('about.contact.helpfulStartingPoints')}{' '}
-                <Link href="/how-it-works" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.howItWorks')}</Link>{' · '}
-                <Link href="/tutorials" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.tutorials')}</Link>{' · '}
-                <Link href="/privacy-policy" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.privacyPolicy')}</Link>{' · '}
-                <Link href="/terms-of-service" className="text-primary hover:text-[var(--accent-primary-hover)]">{t('topNav.termsOfService')}</Link>
+                <Link href="/how-it-works" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.howItWorks')}</Link>{' · '}
+                <Link href="/tutorials" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.tutorials')}</Link>{' · '}
+                <Link href="/privacy-policy" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.privacyPolicy')}</Link>{' · '}
+                <Link href="/terms-of-service" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.termsOfService')}</Link>
               </p>
             </section>
 

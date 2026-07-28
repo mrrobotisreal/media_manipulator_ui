@@ -100,7 +100,12 @@
       "unsaved": "Unsaved changes",
       "saved": "Saved",
       "mobileHint": "Content Studio works best on a larger screen with a mouse or trackpad.",
-      "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom"
+      "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom",
+      "tabs": {
+        "media": "Media",
+        "preview": "Preview",
+        "inspector": "Inspector"
+      }
     },
     "focus": {
       "enter": "Focus mode (Esc to exit)",

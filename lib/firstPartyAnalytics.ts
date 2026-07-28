@@ -1,4 +1,5 @@
 import { getSessionIdSync, getUserIdSync, initializeIndexedIdentity } from '@/lib/indexedIdentity';
+import { hasAnalyticsConsent } from '@/lib/consent';
 
 type EventProperties = Record<string, string | number | boolean | null | undefined | Record<string, unknown> | unknown[]>;
 
@@ -52,8 +53,59 @@ const getUTM = () => {
   };
 };
 
+const post = (body: string) => {
+  void fetch(`${analyticsBaseURL()}/capture`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+    credentials: 'omit',
+    keepalive: true,
+  }).catch(() => {
+    // Analytics must never interrupt the editing flow.
+  });
+};
+
+/**
+ * Consent-denied fallback: an anonymous page count and nothing else.
+ *
+ * No visitor id, no session id, no query string, no referrer, no user agent,
+ * no screen size, no timezone, no UTM, no event properties — just "someone
+ * loaded this path". Nothing here identifies or can re-identify a visitor, so
+ * it stands on legitimate interest where the full event below does not.
+ */
+const sendAnonymousPageCount = (eventName: string) => {
+  if (eventName !== 'page_view') return;
+  post(
+    JSON.stringify({
+      events: [
+        {
+          insert_id: uuid(),
+          event_name: 'page_view_anonymous',
+          event_ts: new Date().toISOString(),
+          pathname: window.location.pathname,
+        },
+      ],
+    }),
+  );
+};
+
 export const trackFirstPartyEvent = (eventName: string, properties: EventProperties = {}, options: TrackOptions = {}) => {
   if (typeof window === 'undefined') return;
+
+  // B12. The full event below carries a persistent visitor id, a session id,
+  // the complete URL, the referrer, the user agent, screen dimensions, the
+  // timezone and any UTM parameters. That is personal data by any reading,
+  // whatever the legitimate-interest argument for the endpoint being
+  // first-party — and sending it before the Consent Mode banner has been
+  // answered is precisely what an AdSense reviewer checks for. It used to fire
+  // unconditionally while GA4 and Mixpanel were already gated.
+  //
+  // Denied consent degrades to an anonymous path count rather than silence, so
+  // basic traffic shape survives without any identifier attached to it.
+  if (!hasAnalyticsConsent()) {
+    sendAnonymousPageCount(eventName);
+    return;
+  }
 
   const event = {
     insert_id: uuid(),
@@ -83,17 +135,7 @@ export const trackFirstPartyEvent = (eventName: string, properties: EventPropert
     },
   };
 
-  const body = JSON.stringify({ events: [event] });
-
-  void fetch(`${analyticsBaseURL()}/capture`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body,
-    credentials: 'omit',
-    keepalive: true,
-  }).catch(() => {
-    // Analytics must never interrupt the editing flow.
-  });
+  post(JSON.stringify({ events: [event] }));
 };
 
 export const trackFirstPartyPageView = (pageTitle: string) => {

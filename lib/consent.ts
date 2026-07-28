@@ -8,11 +8,17 @@
  * update calls and notify analytics modules — Mixpanel, GA event helpers,
  * etc. — whether they're allowed to fire.
  *
- * First-party analytics (firstPartyAnalytics.ts) is intentionally NOT gated
- * here. It posts to our own analytics endpoint and is "strictly necessary"
- * for product operation (abuse prevention, conversion job correlation).
- * Strictly-necessary first-party telemetry doesn't require consent under
- * GDPR's legitimate-interest basis; the privacy policy documents this.
+ * Every analytics sink in the app now checks `hasAnalyticsConsent()`: GA4,
+ * Mixpanel (lib/mixpanel.ts), Firebase Analytics (lib/analytics.ts) and the
+ * first-party endpoint (lib/firstPartyAnalytics.ts).
+ *
+ * The first-party sink used to be exempt on a legitimate-interest argument —
+ * it posts to our own host, so the reasoning went, it counts as strictly
+ * necessary. That argument does not survive looking at the payload: a
+ * persistent visitor id, a session id, the full URL, the referrer, the user
+ * agent, screen dimensions, the timezone and UTM parameters. It is gated now.
+ * A consent-free baseline, if one is ever wanted, should be a separate
+ * pathname-only, id-free page count rather than an exemption for that event.
  */
 
 type ConsentSignal = 'granted' | 'denied';

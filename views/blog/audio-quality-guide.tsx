@@ -1,14 +1,11 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Panel } from '@/components/darkroom/panel';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
 import RelatedLinks from '@/components/related-links';
-import mixpanel from 'mixpanel-browser';
+import TrackedCtaButton from '@/components/analytics/tracked-cta-button';
 
 const AudioQualityGuide: React.FC = () => {
   return (
@@ -23,7 +20,7 @@ const AudioQualityGuide: React.FC = () => {
         <div className="mb-4">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-primary hover:text-[var(--accent-primary-hover)] font-medium text-sm transition-colors"
+          className="inline-flex items-center gap-2 text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary font-medium text-sm transition-colors"
         >
           ← Blog
         </Link>
@@ -372,18 +369,13 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
           <p className="text-lg text-muted-foreground mb-6">
             Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!
           </p>
-          <Button
-            asChild
-            size="lg"
+          <TrackedCtaButton
+            event="Audio Quality Guide - Convert Audio Free"
+            href="/tools/audio-converter"
             className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
-            onClick={() => {
-              mixpanel.track('Audio Quality Guide - Convert Audio Free', {
-                user_tier: 'free'
-              });
-            }}
           >
-            <Link href="/tools/audio-converter">Open the audio converter →</Link>
-          </Button>
+            Open the audio converter →
+          </TrackedCtaButton>
           <p className="text-sm text-muted-foreground mt-3">
             No signup required • Process files locally • Fast & secure
           </p>

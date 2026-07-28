@@ -8,20 +8,25 @@ import { cn, getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import { useLocalization } from '@/i18n/useLocalization';
+import { withToolShards } from '@/lib/i18n/ensureShard';
 import type { ConversionFormData } from '@/schemas/types';
 
 // Each conversion form pulls in its own schema, form fields, and helpers.
 // Lazy-loading keeps the homepage chunk light — we only fetch the form
 // matching the kind of file the user actually drops in.
-const ImageConversionForm = lazy(() => import('@/components/image-conversion-form'));
-const VideoConversionForm = lazy(() => import('@/components/video-conversion-form'));
-const AudioConversionForm = lazy(() => import('@/components/audio-conversion-form'));
-const TranscribeForm = lazy(() => import('@/components/transcribe-form'));
-const TranscribeResultView = lazy(() => import('@/components/transcribe-result-view'));
-const VideoTranscodeForm = lazy(() => import('@/components/video-transcode-form'));
+//
+// `withToolShards` chains the forms/panels translation bundles onto the same
+// Suspense boundary, so the homepage never ships those 65 KB of JSON and no
+// form can render before its strings have arrived.
+const ImageConversionForm = lazy(() => withToolShards(() => import('@/components/image-conversion-form')));
+const VideoConversionForm = lazy(() => withToolShards(() => import('@/components/video-conversion-form')));
+const AudioConversionForm = lazy(() => withToolShards(() => import('@/components/audio-conversion-form')));
+const TranscribeForm = lazy(() => withToolShards(() => import('@/components/transcribe-form')));
+const TranscribeResultView = lazy(() => withToolShards(() => import('@/components/transcribe-result-view')));
+const VideoTranscodeForm = lazy(() => withToolShards(() => import('@/components/video-transcode-form')));
 // AI Document Scan island — the panel owns its own upload/SSE/result-modal flow,
 // so the home page needs no extra job plumbing for it.
-const DocumentScanPanel = lazy(() => import('@/components/document-scan/document-scan-panel'));
+const DocumentScanPanel = lazy(() => withToolShards(() => import('@/components/document-scan/document-scan-panel')));
 
 const FormFallback: React.FC = () => {
   const { t } = useLocalization('interface');
@@ -771,6 +776,7 @@ const FileConverterApp: React.FC = () => {
                       src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
                       alt={resultView === 'original' ? t('interface:home.result.originalImageAlt') : t('interface:home.result.convertedImageAlt')}
                       className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
+                      decoding="async"
                     />
                   )}
                   {activeHistoryItem.mediaKind === 'video' && activeHistoryItem.format === 'gif' && resultView === 'final' && (
@@ -778,6 +784,7 @@ const FileConverterApp: React.FC = () => {
                       src={resultImageUrl || undefined}
                       alt={t('interface:home.result.convertedGifAlt')}
                       className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
+                      decoding="async"
                     />
                   )}
                   {activeHistoryItem.mediaKind === 'video' && !(activeHistoryItem.format === 'gif' && resultView === 'final') && (
@@ -836,7 +843,10 @@ const FileConverterApp: React.FC = () => {
         <Link
           href="/tools/content-studio"
           className="group mb-8 block w-full max-w-5xl rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
-          aria-label={t('interface:home.contentStudioCta.title')}
+          // No aria-label. The card's own text — title, badge, description,
+          // CTA — is a better accessible name than a two-word override, and an
+          // aria-label that omits the visible text fails WCAG 2.5.3 Label in
+          // Name (the visible label must appear in the accessible name).
         >
           <div className="flex items-center gap-4">
             <div className="shrink-0 rounded-lg bg-data/10 p-3">
@@ -847,7 +857,10 @@ const FileConverterApp: React.FC = () => {
                 <span className="text-lg font-semibold text-card-foreground">
                   {t('interface:home.contentStudioCta.title')}
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-foreground">
+                {/* text-success-foreground, not text-foreground: #ECEFF4 on
+                    #4ADE80 measures 1.51:1. Every bg-success fill takes the
+                    paired foreground token (globals.css). */}
+                <span className="inline-flex items-center gap-1 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-success-foreground">
                   <Sparkles className="w-3 h-3" />
                   {t('interface:home.contentStudioCta.badge')}
                 </span>
@@ -902,12 +915,15 @@ const FileConverterApp: React.FC = () => {
                   {t('interface:home.upload.chooseFile')}
                 </button>
                 <p className="num mt-4 text-xs text-muted-foreground">image · video · audio</p>
+                {/* Visually hidden but still in the a11y tree, so it needs
+                    its own name — the visible button is a sibling, not a label. */}
                 <input
                   ref={fileInputRef}
                   type="file"
                   onChange={handleFileSelect}
                   accept="image/*,video/*,audio/*"
                   className="hidden"
+                  aria-label={t('interface:home.upload.chooseFile')}
                 />
               </div>
             ) : (

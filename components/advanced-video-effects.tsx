@@ -99,7 +99,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   content={t('advancedVideoEffects.colorExposure.tooltip')}
                 />
               </h4>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.brightness')}</label>
                   <Controller
@@ -215,7 +215,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
                   content={t('advancedVideoEffects.blurSharpen.tooltip')}
                 />
               </h4>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.gaussianBlur')}</label>
                   <Controller
@@ -277,7 +277,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
 
         {expandedSections.has('transform') && (
           <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.rotation')}</label>
                 <Controller
@@ -360,7 +360,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
 
         {expandedSections.has('temporal') && (
           <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <Controller
                   name="temporal.reverse"
@@ -469,7 +469,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
 
         {expandedSections.has('advanced') && (
           <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <Controller
                   name="advanced.deinterlace"

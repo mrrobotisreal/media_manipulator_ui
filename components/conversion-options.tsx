@@ -54,7 +54,7 @@ const ConversionOptions: React.FC<{
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.image.format.label')}
@@ -125,7 +125,7 @@ const ConversionOptions: React.FC<{
           </div>
         )}
 
-        <div className={`grid grid-cols-2 gap-4${emphasizeResize ? ' rounded-lg ring-2 ring-primary  p-2' : ''}`}>
+        <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2${emphasizeResize ? ' rounded-lg ring-2 ring-primary  p-2' : ''}`}>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.image.width.label')}
@@ -180,7 +180,7 @@ const ConversionOptions: React.FC<{
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.image.filter.label')}
@@ -281,7 +281,7 @@ const ConversionOptions: React.FC<{
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.audio.format.label')}
@@ -326,7 +326,7 @@ const ConversionOptions: React.FC<{
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.audio.speed.label')}
@@ -438,7 +438,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
             {t('conversionOptions.video.format.label')}
@@ -498,7 +498,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
             {t('conversionOptions.video.width.label')}
@@ -554,7 +554,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
             {t('conversionOptions.video.speed.label')}
@@ -620,7 +620,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
                 {t('conversionOptions.video.gif.width.label')}
@@ -677,7 +677,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
                 {t('conversionOptions.video.gif.colors.label')}

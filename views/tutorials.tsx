@@ -1,9 +1,7 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { Music, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
-import { useLocalization } from '@/i18n/useLocalization';
+import { getServerT } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
 
 interface TutorialDef {
@@ -79,7 +77,7 @@ const CATEGORIES: CategoryDef[] = [
 ];
 
 const TutorialsPage: React.FC = () => {
-  const { t } = useLocalization('interface');
+  const t = getServerT();
   return (
     <>
       <div className="px-4 sm:px-6"><Panel level="1" className="max-w-7xl mx-auto my-2">

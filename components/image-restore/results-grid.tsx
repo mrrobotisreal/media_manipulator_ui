@@ -45,6 +45,7 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
         alt={entry.label}
         className={large ? 'block max-h-[70dvh] w-auto mx-auto' : 'block w-full h-auto'}
         loading="lazy"
+        decoding="async"
         onError={() => markFailed(entry.id)}
       />
     );

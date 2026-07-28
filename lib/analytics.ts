@@ -1,4 +1,4 @@
-import mixpanel from 'mixpanel-browser';
+import { trackMixpanel } from './mixpanel';
 import { getFirebaseAnalytics } from './firebase';
 import { hasAnalyticsConsent } from './consent';
 import { trackFirstPartyEvent, trackFirstPartyPageView } from './firstPartyAnalytics';
@@ -8,7 +8,12 @@ import { trackGoogleEvent, trackGooglePageView } from './gtag';
 // instance (browser-only, configured-only) and dynamically import the SDK, so
 // nothing Firebase-related runs during server prerender. They no-op silently
 // when analytics is unavailable.
+//
+// Both are consent-gated. Firebase Analytics sets its own `_ga`-style
+// identifiers and reports to Google, so it belongs behind `analytics_storage`
+// exactly like GA4 and Mixpanel; it used to fire unconditionally (B12).
 function logAnalyticsEvent(name: string, params: Record<string, unknown>) {
+  if (!hasAnalyticsConsent()) return;
   void getFirebaseAnalytics()
     .then(async (analytics) => {
       if (!analytics) return;
@@ -21,6 +26,7 @@ function logAnalyticsEvent(name: string, params: Record<string, unknown>) {
 }
 
 function setAnalyticsUserProperties(props: Record<string, string>) {
+  if (!hasAnalyticsConsent()) return;
   void getFirebaseAnalytics()
     .then(async (analytics) => {
       if (!analytics) return;
@@ -152,15 +158,11 @@ export const trackPageView = (pageName: string) => {
  */
 export const trackMixpanelPageView = (title: string, path: string) => {
   if (!hasAnalyticsConsent()) return;
-  try {
-    mixpanel.track('Page View', {
-      page_name: title,
-      page_path: path,
-      user_tier: 'free',
-    });
-  } catch {
-    // Never block the UI.
-  }
+  trackMixpanel('Page View', {
+    page_name: title,
+    page_path: path,
+    user_tier: 'free',
+  });
 };
 
 /**
@@ -176,11 +178,7 @@ export const trackMixpanelPageView = (title: string, path: string) => {
  */
 export const trackMixpanelEvent = (eventName: string, props?: Record<string, unknown>) => {
   if (!hasAnalyticsConsent()) return;
-  try {
-    mixpanel.track(eventName, props);
-  } catch {
-    // Never block the UI.
-  }
+  trackMixpanel(eventName, props);
 };
 
 // Track feature usage

@@ -1,10 +1,9 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { Clapperboard } from 'lucide-react';
 import RelatedLinks from '@/components/related-links';
-import { useLocalization } from '@/i18n/useLocalization';
+import { ResourceHints } from '@/components/seo/resource-hints';
+import { getServerT } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
 
 const SHOT_BASE = 'https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev';
@@ -23,7 +22,7 @@ const K = 'tutorials.tutorials.contentStudio.page';
  * tutorial-page + AdSense convention. Screenshots are served from R2.
  */
 const ContentStudioTutorial: React.FC = () => {
-  const { t } = useLocalization('interface');
+  const t = getServerT();
 
   const Shot: React.FC<{ src: string; altKey: string; capKey: string }> = ({ src, altKey, capKey }) => (
     <figure className="my-6">
@@ -31,6 +30,7 @@ const ContentStudioTutorial: React.FC = () => {
         src={src}
         alt={t(`${K}.${altKey}`)}
         loading="lazy"
+        decoding="async"
         className="w-full rounded-lg border border-border"
         width={1024}
         height={539}
@@ -41,6 +41,10 @@ const ContentStudioTutorial: React.FC = () => {
 
   return (
     <>
+      {/* This is the only route left that loads anything from R2 — the four
+          tutorial screenshots. Scoped here rather than in the root layout so no
+          other page pays for a connection it will never use. */}
+      <ResourceHints dnsPrefetch={[SHOT_BASE]} />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
         <aside className="hidden lg:block w-[300px] shrink-0">
           

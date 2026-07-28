@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import EmbeddedToolPanel from '@/components/embedded-tool-panel';
+import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
 /**
@@ -147,7 +145,7 @@ const AIFrameInterpolationTutorial: React.FC = () => {
                 9. How to use the Media Manipulator AI Frame Interpolation Tool
               </h2>
               <ol className="list-decimal pl-6 space-y-1 mb-4">
-                <li>Open the <Link href="/tools/ai-frame-interpolation" className="text-primary hover:underline">AI Frame Interpolation tool</Link>.</li>
+                <li>Open the <Link href="/tools/ai-frame-interpolation" className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary">AI Frame Interpolation tool</Link>.</li>
                 <li>Upload a video.</li>
                 <li>Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.</li>
                 <li>Choose a target FPS — 48, 60, or 120.</li>

@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { useLocalization } from '@/i18n/useLocalization';
+import { getServerT } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
 
 const QUICK_LINKS: { key: string; to: string }[] = [
@@ -14,7 +12,9 @@ const QUICK_LINKS: { key: string; to: string }[] = [
 ];
 
 const NotFoundPage: React.FC = () => {
-  const { t } = useLocalization(['interface', 'accessibility']);
+  // Keys here are namespace-qualified (`interface:` / `accessibility:`), which
+  // the server resolver handles directly.
+  const t = getServerT();
   return (
     <>
       <div className="px-4 sm:px-6"><Panel level="1" className="max-w-3xl mx-auto my-12"><div className="text-center">

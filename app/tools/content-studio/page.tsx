@@ -17,9 +17,12 @@ export const metadata: Metadata = buildMetadata('/tools/content-studio');
 function StudioGuide() {
   return (
     <details className="my-4 rounded-lg border border-primary/30 bg-primary/8" open>
+      {/* The summary label is a real <h2>: the guide's own sub-sections are
+          <h3>, and the page <h1> is ToolLandingPage's title, so without this
+          the outline jumps h1 → h3. Styled to render exactly as before. */}
       <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 font-semibold text-card-foreground">
         <Info className="h-4 w-4 text-primary" aria-hidden="true" />
-        <span aria-label="Open the Content Studio guide">How Content Studio works — quick guide</span>
+        <h2 className="text-base font-semibold">How Content Studio works — quick guide</h2>
       </summary>
       <div className="space-y-4 px-4 pb-4 text-sm text-muted-foreground">
         <div>

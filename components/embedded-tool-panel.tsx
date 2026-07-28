@@ -13,22 +13,10 @@ import {
   Info,
   FileText,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { cn, getFileType } from '@/lib/utils';
-import ImageConversionForm from '@/components/image-conversion-form';
-import PdfConversionForm, { type PdfFormPresets } from '@/components/pdf-conversion-form';
-import VideoConversionForm from '@/components/video-conversion-form';
-import AudioConversionForm from '@/components/audio-conversion-form';
-import TranscribeForm from '@/components/transcribe-form';
-import VideoTranscodeForm from '@/components/video-transcode-form';
-import AudioWaveformPanel from '@/components/audio-waveform-panel';
-import ExtractAudioPanel from '@/components/extract-audio-panel';
-import ExtractVideoOnlyPanel from '@/components/extract-video-only-panel';
-import ExtractFramesPanel from '@/components/extract-frames-panel';
-import CaptionTranslatorPanel from '@/components/caption-translator-panel';
-import StitchAudioToVideoPanel from '@/components/stitch-audio-to-video-panel';
-import VideoCompressorPanel from '@/components/video-compressor-panel';
-import VideoTrimmerPanel from '@/components/video-trimmer-panel';
-import VideoTransformPanel from '@/components/video-transform-panel';
+import { PanelLoading } from '@/components/darkroom/panel-loading';
+import type { PdfFormPresets } from '@/components/pdf-conversion-form';
 import type { TranscodeProtocol, DashCodec } from '@/lib/transcodeTypes';
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, {
@@ -46,6 +34,41 @@ import {
 } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
 import { Panel } from '@/components/darkroom/panel';
+
+/**
+ * Shared loading state for the code-split forms below. Module scope, not
+ * defined during render, so each `dynamic()` gets a stable component identity.
+ */
+const FormLoading = () => {
+  const { t } = useLocalization('interface');
+  return <PanelLoading variant="inline" label={t('common.loading')} />;
+};
+
+// Every conversion form and specialized panel is code-split.
+//
+// A tool page renders exactly one of these, but importing them statically put
+// all fifteen — with their schemas, react-hook-form wiring, and effect UIs — in
+// the first-load chunk of every `/tools/*` route. `ssr: false` costs nothing
+// here: this whole module already loads behind an ssr:false island.
+//
+// Per the Next 16 lazy-loading guide, each `import()` is written out literally
+// inside its own `dynamic()` call — a helper or template string would break
+// chunk matching and preloading.
+const ImageConversionForm = dynamic(() => import('@/components/image-conversion-form'), { ssr: false, loading: FormLoading });
+const PdfConversionForm = dynamic(() => import('@/components/pdf-conversion-form'), { ssr: false, loading: FormLoading });
+const VideoConversionForm = dynamic(() => import('@/components/video-conversion-form'), { ssr: false, loading: FormLoading });
+const AudioConversionForm = dynamic(() => import('@/components/audio-conversion-form'), { ssr: false, loading: FormLoading });
+const TranscribeForm = dynamic(() => import('@/components/transcribe-form'), { ssr: false, loading: FormLoading });
+const VideoTranscodeForm = dynamic(() => import('@/components/video-transcode-form'), { ssr: false, loading: FormLoading });
+const AudioWaveformPanel = dynamic(() => import('@/components/audio-waveform-panel'), { ssr: false, loading: FormLoading });
+const ExtractAudioPanel = dynamic(() => import('@/components/extract-audio-panel'), { ssr: false, loading: FormLoading });
+const ExtractVideoOnlyPanel = dynamic(() => import('@/components/extract-video-only-panel'), { ssr: false, loading: FormLoading });
+const ExtractFramesPanel = dynamic(() => import('@/components/extract-frames-panel'), { ssr: false, loading: FormLoading });
+const CaptionTranslatorPanel = dynamic(() => import('@/components/caption-translator-panel'), { ssr: false, loading: FormLoading });
+const StitchAudioToVideoPanel = dynamic(() => import('@/components/stitch-audio-to-video-panel'), { ssr: false, loading: FormLoading });
+const VideoCompressorPanel = dynamic(() => import('@/components/video-compressor-panel'), { ssr: false, loading: FormLoading });
+const VideoTrimmerPanel = dynamic(() => import('@/components/video-trimmer-panel'), { ssr: false, loading: FormLoading });
+const VideoTransformPanel = dynamic(() => import('@/components/video-transform-panel'), { ssr: false, loading: FormLoading });
 
 export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
@@ -941,12 +964,14 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
           >
             {t('embeddedToolPanel.selectFile')}
           </button>
+          {/* Named explicitly: the trigger button is a sibling, not a label. */}
           <input
             ref={fileInputRef}
             type="file"
             accept={accept}
             onChange={handleFileSelect}
             className="hidden"
+            aria-label={t('embeddedToolPanel.selectFile')}
           />
         </div>
       ) : (
@@ -1071,7 +1096,10 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
 
       <p className="text-xs text-muted-foreground mt-4">
         {t('embeddedToolPanel.needFullPrefix')}{' '}
-        <Link href="/" className="text-primary hover:underline">
+        <Link
+          href="/"
+          className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+        >
           {t('embeddedToolPanel.openFullConverter')}
         </Link>{' '}
         {t('embeddedToolPanel.needFullSuffix')}

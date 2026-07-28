@@ -1,9 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { Trans } from 'react-i18next';
-import { useLocalization } from '@/i18n/useLocalization';
+import { getServerT, ServerTrans } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
 
 /**
@@ -15,14 +12,14 @@ const RichList: React.FC<{ items: string[] }> = ({ items }) => (
   <>
     {items.map((item, idx) => (
       <li key={idx}>
-        <Trans i18nKey="_inline" defaults={item} components={{ strong: <strong />, em: <em /> }} />
+        <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong />, em: <em /> }} />
       </li>
     ))}
   </>
 );
 
 const HowItWorksPage: React.FC = () => {
-  const { t } = useLocalization('interface');
+  const t = getServerT();
 
   const imageItems = t('howItWorks.capabilities.image.items', { returnObjects: true }) as string[];
   const videoItems = t('howItWorks.capabilities.video.items', { returnObjects: true }) as string[];
@@ -93,7 +90,7 @@ const HowItWorksPage: React.FC = () => {
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('howItWorks.ai.image.title')}</h3>
                   <ul className="text-muted-foreground space-y-1">
                     {aiImageItems.map((item, idx) => (
-                      <li key={idx}>• <Trans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+                      <li key={idx}>• <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
                     ))}
                   </ul>
                 </div>
@@ -101,7 +98,7 @@ const HowItWorksPage: React.FC = () => {
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('howItWorks.ai.audio.title')}</h3>
                   <ul className="text-muted-foreground space-y-1">
                     {aiAudioItems.map((item, idx) => (
-                      <li key={idx}>• <Trans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+                      <li key={idx}>• <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
                     ))}
                   </ul>
                 </div>
@@ -111,11 +108,11 @@ const HowItWorksPage: React.FC = () => {
             <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.transcription.title')}</h2>
               <p className="text-muted-foreground mb-4">
-                <Trans i18nKey="interface:howItWorks.transcription.intro" components={{ em: <em /> }} />
+                <ServerTrans i18nKey="interface:howItWorks.transcription.intro" components={{ em: <em /> }} />
               </p>
               <ul className="text-muted-foreground space-y-1">
                 {transcriptionItems.map((item, idx) => (
-                  <li key={idx}>• <Trans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+                  <li key={idx}>• <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
                 ))}
               </ul>
               <p className="text-muted-foreground mt-4">{t('howItWorks.transcription.outro')}</p>
@@ -129,7 +126,7 @@ const HowItWorksPage: React.FC = () => {
                   <ul className="text-muted-foreground space-y-1">
                     <RichList items={securityItems} />
                     <li>• {t('howItWorks.privacy.security.linkPrefix')}{' '}
-                      <Link href="/privacy-policy" className="text-primary hover:text-[var(--accent-primary-hover)]">
+                      <Link href="/privacy-policy" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">
                         {t('howItWorks.privacy.security.linkText')}
                       </Link>
                       {' '}{t('howItWorks.privacy.security.linkSuffix')}

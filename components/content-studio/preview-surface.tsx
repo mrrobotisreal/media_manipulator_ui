@@ -9,7 +9,6 @@ import { useStudioStore } from '@/lib/studioStore';
 import {
   resolveActiveClips,
   topVideoClip,
-  timelineDuration,
   studioProxyUrl,
   transitionRamp,
   cssFilterForAdjustments,
@@ -126,7 +125,7 @@ interface AudioGraph {
  * deliberate future migration of this module — NOT built here.
  */
 const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) => {
-  const { t, formatDuration } = useLocalization('interface');
+  const { t } = useLocalization('interface');
   const containerRef = React.useRef<HTMLDivElement>(null);
   const poolEls = React.useRef<(HTMLVideoElement | null)[]>(Array(POOL_SIZE).fill(null));
   const slots = React.useRef<Slot[]>(Array.from({ length: POOL_SIZE }, () => ({ clipId: null, srcAssetId: null })));
@@ -144,6 +143,12 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const lastTsRef = React.useRef(0);
   const meterCanvasRef = React.useRef<HTMLCanvasElement>(null);
   const meterHold = React.useRef({ l: -60, r: -60 });
+  // Scratch buffers for the level meter, sized to the analyser's fftSize on
+  // first use and reused every frame thereafter.
+  const meterBuffers = React.useRef<{
+    l: Float32Array<ArrayBuffer> | null;
+    r: Float32Array<ArrayBuffer> | null;
+  }>({ l: null, r: null });
   const [boxH, setBoxH] = React.useState(0);
 
   // WebGL2 compositor (the accurate visual layer). When unavailable or after a
@@ -166,33 +171,46 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const pause = useStudioStore((s) => s.pause);
   const play = useStudioStore((s) => s.play);
 
-  const tracks = project?.tracks ?? [];
+  // These five derivations ran unmemoized on every render, i.e. 60 times a
+  // second during playback: two full timeline scans plus three array walks.
+  // Memoizing on [tracks, playhead] keeps them to once per frame at worst, and
+  // free on the renders playback did not cause (selection, zoom, asset ingest).
+  const tracks = React.useMemo(() => project?.tracks ?? [], [project?.tracks]);
   const fps = project?.fps ?? 30;
-  const duration = timelineDuration(tracks);
-  const activeNow = resolveActiveClips(tracks, playhead);
-  const topNow = topVideoClip(activeNow);
+  const duration = useStudioStore((s) => s.duration);
+  const activeNow = React.useMemo(() => resolveActiveClips(tracks, playhead), [tracks, playhead]);
+  const topNow = React.useMemo(() => topVideoClip(activeNow), [activeNow]);
   const building = !!topNow && assets[topNow.clip.assetId]?.status !== 'ready';
-  const hasClips = tracks.some((tr) => tr.clips.length > 0);
+  const hasClips = React.useMemo(() => tracks.some((tr) => tr.clips.length > 0), [tracks]);
 
   // Text/location overlays for the active video clips (faked over the surface;
   // the export draws them in with drawtext).
   const projectHeight = project?.height ?? 1080;
-  const textItems = activeNow
-    .filter((a) => a.trackKind === 'video')
-    .flatMap((a) =>
-      (a.clip.textOverlays ?? []).map((ov) => ({
-        key: a.clip.id + ov.id,
-        ov,
-        opacity: (a.clip.opacity ?? 1) * transitionRamp(a.clip, playhead),
-      })),
-    );
+  const textItems = React.useMemo(
+    () =>
+      activeNow
+        .filter((a) => a.trackKind === 'video')
+        .flatMap((a) =>
+          (a.clip.textOverlays ?? []).map((ov) => ({
+            key: a.clip.id + ov.id,
+            ov,
+            opacity: (a.clip.opacity ?? 1) * transitionRamp(a.clip, playhead),
+          })),
+        ),
+    [activeNow, playhead],
+  );
 
   // Active caption cue (DOM overlay above the canvas), gated by captionsEnabled.
   const captionStyle = project?.captionStyle ?? DEFAULT_CAPTION_STYLE;
   const captionsEnabled = project?.captionsEnabled ?? true;
-  const activeCue = captionsEnabled
-    ? (project?.captions ?? []).find((c) => playhead >= c.startSeconds && playhead < c.endSeconds)
-    : undefined;
+  const captions = project?.captions;
+  const activeCue = React.useMemo(
+    () =>
+      captionsEnabled
+        ? (captions ?? []).find((c) => playhead >= c.startSeconds && playhead < c.endSeconds)
+        : undefined,
+    [captions, captionsEnabled, playhead],
+  );
 
   // --- Web Audio wiring (created lazily within a user gesture) ---
   const ensureAudioGraph = React.useCallback(() => {
@@ -258,22 +276,32 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     return g;
   }, []);
 
+  // Which track each slot's gain node is currently wired to. Re-wiring the
+  // graph is only correct — and only cheap — when that actually changes;
+  // `routeSlotAudio` runs once per active clip per animation frame, and
+  // disconnect/connect on every one of those was audible churn in the graph as
+  // well as wasted work.
+  const slotRouting = React.useRef<Array<string | null>>([]);
+
   const routeSlotAudio = React.useCallback(
     (i: number, trackId: string, clipVolume: number, trackMuted: boolean) => {
       const a = audio.current;
       const g = a.slotGains[i];
       const el = poolEls.current[i];
       if (a.ctx && g) {
-        const tg = trackGain(trackId);
-        try {
-          g.disconnect();
-        } catch {
-          /* not connected yet */
-        }
-        if (tg) {
-          g.connect(tg);
-          // Track gain (mute + ducking) is owned by applyTrackGains below so it
-          // can ramp smoothly; here we only ensure the slot is connected.
+        if (slotRouting.current[i] !== trackId) {
+          const tg = trackGain(trackId);
+          try {
+            g.disconnect();
+          } catch {
+            /* not connected yet */
+          }
+          if (tg) {
+            g.connect(tg);
+            // Track gain (mute + ducking) is owned by applyTrackGains below so
+            // it can ramp smoothly; here we only ensure the slot is connected.
+          }
+          slotRouting.current[i] = tg ? trackId : null;
         }
         g.gain.value = clipVolume;
         if (el) {
@@ -295,6 +323,9 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     if (g) g.gain.value = 0;
     const el = poolEls.current[i];
     if (el) el.muted = true;
+    // The slot is free; the next clip to claim it must be re-routed even if it
+    // happens to live on the same track.
+    slotRouting.current[i] = null;
   }, []);
 
   // drawMeters paints a compact stereo dBFS level meter (−60..0) with peak-hold
@@ -315,7 +346,14 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     channels.forEach(([an, side], idx) => {
       let db = -60;
       if (an) {
-        const buf = new Float32Array(an.fftSize);
+        // Reuse one buffer per channel. Allocating two Float32Array(1024)s here
+        // meant ~480 KB/s of garbage during playback, all of it identical in
+        // size and lifetime — the textbook case for hoisting.
+        let buf = meterBuffers.current[side];
+        if (!buf || buf.length !== an.fftSize) {
+          buf = new Float32Array(an.fftSize);
+          meterBuffers.current[side] = buf;
+        }
         an.getFloatTimeDomainData(buf);
         let peak = 0;
         for (let i = 0; i < buf.length; i += 1) {
@@ -484,7 +522,9 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       const dt = (ts - lastTsRef.current) / 1000;
       lastTsRef.current = ts;
       const st = useStudioStore.getState();
-      const total = timelineDuration(st.project?.tracks ?? []);
+      // `duration` is cached on the store; this used to rescan every clip on
+      // every track, every frame (B9).
+      const total = st.duration;
       const head = st.playhead + dt;
       if (total > 0 && head >= total) {
         st.setPlayhead(total);
@@ -557,6 +597,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       if (a.ctx) void a.ctx.close().catch(() => {});
       a.ctx = null;
       a.trackGains.clear();
+      a.slotGains.fill(null);
+      slotRouting.current = [];
     },
     [],
   );
@@ -794,11 +836,39 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             aria-hidden="true"
             title={t('contentStudio.transport.levels')}
           />
-          <div className="font-mono text-xs text-muted-foreground tabular-nums">
-            {formatDuration(playhead)} / {formatDuration(duration)}
-          </div>
+          <TimecodeReadout duration={duration} />
         </div>
       </div>
+    </div>
+  );
+};
+
+/**
+ * `MM:SS / MM:SS` transport readout.
+ *
+ * Its own component with a transient store subscription and a direct
+ * `textContent` write: the playhead half changes every frame, and routing that
+ * through React would re-render the entire preview surface — canvas, overlays,
+ * transport bar — 60 times a second just to repaint eleven characters.
+ */
+const TimecodeReadout: React.FC<{ duration: number }> = ({ duration }) => {
+  const { formatDuration } = useLocalization('interface');
+  const ref = React.useRef<HTMLSpanElement>(null);
+
+  React.useEffect(() => {
+    const apply = (seconds: number) => {
+      const el = ref.current;
+      if (el) el.textContent = formatDuration(seconds);
+    };
+    apply(useStudioStore.getState().playhead);
+    return useStudioStore.subscribe((s, prev) => {
+      if (s.playhead !== prev.playhead) apply(s.playhead);
+    });
+  }, [formatDuration]);
+
+  return (
+    <div className="num text-xs text-muted-foreground">
+      <span ref={ref}>{formatDuration(0)}</span> / {formatDuration(duration)}
     </div>
   );
 };

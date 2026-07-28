@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import EmbeddedToolPanel from '@/components/embedded-tool-panel';
+import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
 const ImageGettingStartedTutorial: React.FC = () => {
@@ -42,7 +40,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
             <strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images.
             {/* Blog hidden during AdSense review — restore the inline link
                 when the blog returns:
-            Need help picking? See our <Link href="/blog/image/image-optimization-guide" className="text-primary hover:text-[var(--accent-primary-hover)]">image optimization guide</Link>.
+            Need help picking? See our <Link href="/blog/image/image-optimization-guide" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">image optimization guide</Link>.
             */}
           </p>
 

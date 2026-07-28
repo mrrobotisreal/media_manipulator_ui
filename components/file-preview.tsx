@@ -35,7 +35,7 @@ const FilePreview: React.FC<{
         <button
           onClick={togglePreview}
           disabled={!resultAvailable}
-          className="flex items-center gap-1 text-sm text-primary hover:text-[var(--accent-primary-hover)] disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors"
+          className="flex items-center gap-1 text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary disabled:text-muted-foreground disabled:cursor-not-allowed transition-colors"
         >
           <Eye size={16} />
           {showResult ? t('interface:filePreview.showResult') : t('interface:filePreview.showResult')}
@@ -48,6 +48,7 @@ const FilePreview: React.FC<{
             src={previewUrl}
             alt={t('accessibility:filePreview.previewAlt')}
             className="w-full h-48 object-contain bg-background"
+            decoding="async"
           />
         )}
         {fileType === 'video' && previewUrl && (

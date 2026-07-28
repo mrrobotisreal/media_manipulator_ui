@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import EmbeddedToolPanel from '@/components/embedded-tool-panel';
+import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
 const VideoGettingStartedTutorial: React.FC = () => {

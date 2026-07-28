@@ -80,6 +80,16 @@ interface StudioState {
   playhead: number;
   isPlaying: boolean;
   zoom: number;
+  /**
+   * Cached `timelineDuration(project.tracks)`.
+   *
+   * Derived, never set by an action: the `set` wrapper in the store factory
+   * recomputes it whenever the tracks array identity changes. Read this instead
+   * of calling `timelineDuration()` in a hot path — it used to be recomputed on
+   * every `setPlayhead`, i.e. an O(tracks × clips) scan 60 times a second
+   * during playback.
+   */
+  duration: number;
   /** true when the EDL changed since the last successful save */
   dirty: boolean;
 
@@ -305,7 +315,29 @@ function placeInTrack(clips: StudioClip[], draggedId: string, desiredStart: numb
   });
 }
 
-export const useStudioStore = create<StudioState>((set, get) => ({
+type StudioPatch = Partial<StudioState> | ((s: StudioState) => Partial<StudioState>);
+
+export const useStudioStore = create<StudioState>((rawSet, get) => {
+  /**
+   * Every action writes through here rather than through zustand's `set`.
+   *
+   * The only extra work is keeping the derived `duration` in sync: it is
+   * recomputed exactly when `project.tracks` gets a new identity, which is
+   * precisely when an editing action produced new tracks. That replaces the old
+   * arrangement where `setPlayhead` recomputed the whole timeline duration
+   * inside the setter on every animation frame (B9).
+   *
+   * No action uses `replace: true`, so the wrapper does not need that overload.
+   */
+  const set = (partial: StudioPatch) =>
+    rawSet((state) => {
+      const patch = typeof partial === 'function' ? partial(state) : partial;
+      const nextTracks = ('project' in patch ? patch.project : state.project)?.tracks;
+      if (nextTracks === state.project?.tracks) return patch;
+      return { ...patch, duration: timelineDuration(nextTracks ?? []) };
+    });
+
+  return {
   project: null,
   assets: {},
   selectedClipIds: [],
@@ -313,6 +345,7 @@ export const useStudioStore = create<StudioState>((set, get) => ({
   playhead: 0,
   isPlaying: false,
   zoom: DEFAULT_ZOOM,
+  duration: 0,
   dirty: false,
 
   loadProject: (project) => {
@@ -910,7 +943,9 @@ export const useStudioStore = create<StudioState>((set, get) => ({
       return { project: { ...s.project, captionsEnabled: enabled }, dirty: true };
     }),
 
-  setPlayhead: (t) => set((s) => ({ playhead: Math.max(0, Math.min(t, timelineDuration(s.project?.tracks ?? []) || t)) })),
+  // Hot path: called once per animation frame during playback. Reads the cached
+  // `duration` instead of rescanning every clip on every track.
+  setPlayhead: (t) => set((s) => ({ playhead: Math.max(0, Math.min(t, s.duration || t)) })),
   play: () => set({ isPlaying: true }),
   pause: () => set({ isPlaying: false }),
   togglePlay: () => set((s) => ({ isPlaying: !s.isPlaying })),
@@ -944,7 +979,8 @@ export const useStudioStore = create<StudioState>((set, get) => ({
     }
     return null;
   },
-}));
+  };
+});
 
 // Re-export geometry helpers used by the UI so components import from one place.
 export { clipDuration, clipEnd, timelineDuration };

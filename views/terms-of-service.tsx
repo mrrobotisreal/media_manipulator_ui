@@ -1,7 +1,5 @@
-'use client';
-
 import React from 'react';
-import { useLocalization } from '@/i18n/useLocalization';
+import { getServerT } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
 
 interface Subsection {
@@ -24,7 +22,7 @@ interface Section {
 }
 
 const ContactBlock: React.FC<{ email: string }> = ({ email }) => {
-  const { t } = useLocalization('interface');
+  const t = getServerT();
   return (
     <>
       <p className="mb-2">{t('legalCommon.operator')}</p>
@@ -33,11 +31,11 @@ const ContactBlock: React.FC<{ email: string }> = ({ email }) => {
       <p className="mb-1">{t('legalCommon.location')}</p>
       <p className="mb-1">
         {t('legalCommon.emailLabel')}{' '}
-        <a href={`mailto:${email}`} className="text-primary hover:text-[var(--accent-primary-hover)]">{email}</a>
+        <a href={`mailto:${email}`} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{email}</a>
       </p>
       <p className="mb-1">
         {t('legalCommon.websiteLabel')}{' '}
-        <a href="https://www.media-manipulator.com" className="text-primary hover:text-[var(--accent-primary-hover)]">
+        <a href="https://www.media-manipulator.com" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">
           https://www.media-manipulator.com
         </a>
       </p>
@@ -74,7 +72,7 @@ const SectionView: React.FC<{ data: Section }> = ({ data }) => (
 );
 
 const TermsOfServicePage: React.FC = () => {
-  const { t } = useLocalization('interface');
+  const t = getServerT();
   const sections = t('termsOfService.sections', { returnObjects: true }) as Section[];
 
   return (

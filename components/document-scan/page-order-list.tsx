@@ -180,7 +180,7 @@ const PageThumb: React.FC<PageThumbProps> = ({
       <div className="aspect-[3/4] w-full bg-muted flex items-center justify-center overflow-hidden">
         {url ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={url} alt={name} className="h-full w-full object-contain" />
+          <img src={url} alt={name} className="h-full w-full object-contain" loading="lazy" decoding="async" />
         ) : (
           <span className="text-xs text-muted-foreground">…</span>
         )}

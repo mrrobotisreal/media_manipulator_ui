@@ -246,6 +246,7 @@ const RemoveObjectOverlay: React.FC<RemoveObjectOverlayProps> = ({
           alt={t('removeObjectOverlay.previewAlt')}
           className="block w-full h-auto select-none pointer-events-none"
           draggable={false}
+          decoding="async"
         />
         {rectangles.map((rect, index) => {
           const isActive = rect.id === activeId;

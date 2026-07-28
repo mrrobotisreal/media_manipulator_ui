@@ -33,6 +33,7 @@ const FaceSelectionOverlay: React.FC<FaceSelectionOverlayProps> = ({
         alt={t('faceSelectionOverlay.previewAlt')}
         className="block w-full h-auto select-none"
         draggable={false}
+        decoding="async"
       />
       {faces.map((face) => {
         const isSelected = selected.has(face.id);

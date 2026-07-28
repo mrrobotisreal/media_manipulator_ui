@@ -182,6 +182,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               alt={t('interface:imageCropModal.previewAlt')}
               className="max-w-full max-h-96 block"
               draggable={false}
+              decoding="async"
             />
 
             {/* Overlay with crop area */}

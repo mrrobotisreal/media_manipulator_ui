@@ -13,7 +13,9 @@ import {
 } from '@dnd-kit/core';
 import { ArrowLeft, Loader2, Check, Maximize2, Minimize2, Expand, Shrink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/lib/useMediaQuery';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, clipDuration, clipEnd } from '@/lib/studioStore';
 import { useProjectQuery, useProjectAssetsQuery, useSaveProject } from '@/lib/useStudioProject';
@@ -29,6 +31,13 @@ import { Panel } from '@/components/darkroom/panel';
 
 const AUTOSAVE_DEBOUNCE_MS = 1200;
 const SNAP_PX = 8;
+
+// Sub-lg tab trigger. The active segment recesses onto surface-0 and takes the
+// same 2px coral rule the top nav uses for its active route, so "where am I"
+// reads the same way everywhere in the product. 40px tall inside a 44px strip.
+const MOBILE_TAB =
+  'rounded-[4px] text-sm data-[state=active]:bg-surface-0 data-[state=active]:text-foreground ' +
+  "data-[state=active]:shadow-[inset_0_-2px_0_var(--accent-primary)]";
 
 // snapValue nudges a dragged clip's start so its leading/trailing edge clicks
 // onto a nearby snap point (neighbour edges on the destination track, the
@@ -56,6 +65,13 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 }) => {
   const { t } = useLocalization('interface');
   const focused = !!focusMode?.focused;
+  // Below `lg` the three panels become tab panels instead of grid cells. This
+  // has to be a JS breakpoint rather than a CSS one: the two layouts need
+  // different trees, and rendering both would mount two preview surfaces —
+  // two canvases and two Web Audio graphs playing at once. Safe here because
+  // the whole editor is inside an `ssr:false` island, so there is no
+  // server/client hydration to disagree about.
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
   const projectQuery = useProjectQuery(projectId);
   const assetsQuery = useProjectAssetsQuery(projectId);
   const saveMutation = useSaveProject();
@@ -278,33 +294,66 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
       {/* Media bin + timeline share one DndContext so assets can be dragged from
           the bin onto a track and clips can be moved between tracks. */}
       <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={onDragStart} onDragEnd={onDragEnd}>
-        {/* media bin + preview + inspector. In focus mode this row flexes to
-            fill the viewport (the timeline keeps a fixed-ish height below). */}
-        <div
-          className={cn(
-            'grid gap-4 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_320px]',
-            focused && 'flex-1 min-h-0',
-          )}
-        >
-          <Panel level="2" padding={false} className={cn('p-4', focused ? 'h-full min-h-0 overflow-auto' : 'h-[360px]')}>
-            <MediaBin projectId={projectId} />
-          </Panel>
-          <div className={cn('bg-card p-4 rounded-lg border border-border', focused && 'h-full min-h-0')}>
-            <PreviewSurface focused={focused} />
-          </div>
+        {isDesktop ? (
+          /* media bin + preview + inspector. In focus mode this row flexes to
+             fill the viewport (the timeline keeps a fixed-ish height below). */
           <div
             className={cn(
-              'lg:col-span-2 xl:col-span-1',
-              focused ? 'h-full min-h-0 overflow-auto' : 'xl:h-[360px]',
+              'grid gap-4 lg:grid-cols-[280px_1fr] xl:grid-cols-[280px_1fr_320px]',
+              focused && 'flex-1 min-h-0',
             )}
           >
-            {selectedCaptionId ? <CaptionEditor /> : <ClipInspector />}
+            <Panel level="2" padding={false} className={cn('p-4', focused ? 'h-full min-h-0 overflow-auto' : 'h-[360px]')}>
+              <MediaBin projectId={projectId} />
+            </Panel>
+            <div className={cn('bg-card p-4 rounded-lg border border-border', focused && 'h-full min-h-0')}>
+              <PreviewSurface focused={focused} />
+            </div>
+            <div
+              className={cn(
+                'lg:col-span-2 xl:col-span-1',
+                focused ? 'h-full min-h-0 overflow-auto' : 'xl:h-[360px]',
+              )}
+            >
+              {selectedCaptionId ? <CaptionEditor /> : <ClipInspector />}
+            </div>
           </div>
-        </div>
+        ) : (
+          /* Below lg the same three surfaces stack into one column each, so a
+             phone shows one full-width panel at a time instead of a ~1,200px
+             scroll with nothing to navigate by. The timeline stays pinned
+             below, outside the tabs — it is the spine of the edit. */
+          <Tabs defaultValue="media" className={cn('gap-3', focused && 'flex-1 min-h-0')}>
+            <TabsList className="grid h-10 w-full grid-cols-3 rounded-md border border-edge bg-surface-2 p-1">
+              <TabsTrigger value="media" className={MOBILE_TAB}>
+                {t('contentStudio.editor.tabs.media')}
+              </TabsTrigger>
+              <TabsTrigger value="preview" className={MOBILE_TAB}>
+                {t('contentStudio.editor.tabs.preview')}
+              </TabsTrigger>
+              <TabsTrigger value="inspector" className={MOBILE_TAB}>
+                {t('contentStudio.editor.tabs.inspector')}
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="media">
+              <Panel level="2" padding={false} className="h-[360px] p-4">
+                <MediaBin projectId={projectId} />
+              </Panel>
+            </TabsContent>
+            <TabsContent value="preview">
+              <div className="rounded-lg border border-border bg-card p-4">
+                <PreviewSurface focused={focused} />
+              </div>
+            </TabsContent>
+            <TabsContent value="inspector">
+              {selectedCaptionId ? <CaptionEditor /> : <ClipInspector />}
+            </TabsContent>
+          </Tabs>
+        )}
 
         {/* timeline — does not flex-grow in focus mode so the preview row gets
             the extra space; keeps a comfortable minimum height. */}
-        <div className={cn('mt-4', focused && 'shrink-0 min-h-[220px]')}>
+        <div className={cn('mt-4', !isDesktop && 'min-h-[180px]', focused && 'shrink-0 min-h-[220px]')}>
           <Timeline />
         </div>
 

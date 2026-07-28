@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import EmbeddedToolPanel from '@/components/embedded-tool-panel';
+import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
 const AudioGettingStartedTutorial: React.FC = () => {
@@ -50,7 +48,7 @@ const AudioGettingStartedTutorial: React.FC = () => {
           {/* Blog hidden during AdSense review — restore the "need help
               choosing" paragraph below when the blog returns.
           <p className="mb-4">
-            Need help choosing? Our <Link href="/blog/audio/audio-quality-guide" className="text-primary hover:text-[var(--accent-primary-hover)]">audio quality guide</Link> covers when to use each codec.
+            Need help choosing? Our <Link href="/blog/audio/audio-quality-guide" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">audio quality guide</Link> covers when to use each codec.
           </p>
           */}
 

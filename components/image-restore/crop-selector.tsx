@@ -231,6 +231,7 @@ const CropSelector: React.FC<CropSelectorProps> = ({
           alt={t('imageRestore.selector.previewAlt')}
           className="block w-full h-auto select-none pointer-events-none"
           draggable={false}
+          decoding="async"
           onLoad={(e) => {
             setNatW(e.currentTarget.naturalWidth);
             setNatH(e.currentTarget.naturalHeight);
