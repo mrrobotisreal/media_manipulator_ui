@@ -33,6 +33,8 @@
   "authModal": {
     "defaultTitle": "Create a free account",
     "defaultDescription": "Keep your history, save Content Studio projects, and get a bigger daily allowance.",
+    "signInTitle": "Welcome back",
+    "signInDescription": "Your history, saved Studio projects and daily allowance are where you left them.",
     "tabs": {
       "signup": "Create Account",
       "signin": "Sign In"

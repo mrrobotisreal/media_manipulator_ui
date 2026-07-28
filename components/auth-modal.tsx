@@ -170,8 +170,26 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  const headline = auth.prompt.headline ?? t('interface:authModal.defaultTitle');
-  const body = auth.prompt.body ?? t('interface:authModal.defaultDescription');
+  // The panel's framing follows the intent it was OPENED with, not the tab that
+  // happens to be active. Someone who clicked "Sign in" is told the panel is for
+  // signing in; someone who hit an upgrade surface is told what an account buys.
+  //
+  // Opening intent rather than `activeTab` on purpose: the headline answers "why
+  // am I looking at this", which does not change when you toggle a tab, and
+  // rewriting it under the cursor mid-glance is twitchy. Both tabs stay present
+  // and equally reachable either way — a panel that only ever says "Create
+  // account" leaves a returning user hunting for the way in, and reads as though
+  // the point were sign-up count rather than the person.
+  //
+  // A caller-supplied headline still wins outright: that is the 429 path, and
+  // what just happened outranks both framings.
+  const returning = auth.prompt.intent === 'signin';
+  const headline =
+    auth.prompt.headline ??
+    t(returning ? 'interface:authModal.signInTitle' : 'interface:authModal.defaultTitle');
+  const body =
+    auth.prompt.body ??
+    t(returning ? 'interface:authModal.signInDescription' : 'interface:authModal.defaultDescription');
   const premium = byTier.get('premium');
   const premiumPrice = tiersQuery.data?.premiumPriceUSD;
 
