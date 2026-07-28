@@ -34,7 +34,7 @@
     "nextPage": "Next page"
   },
   "quotaMeter": {
-    "gauge": "Daily usage: {{used}} of {{limit}} operations used",
+    "gauge": "{{used}} / {{limit}} daily operations used",
     "openUpgrade": "See how to get a bigger daily allowance",
     "openAccount": "Open your account"
   },

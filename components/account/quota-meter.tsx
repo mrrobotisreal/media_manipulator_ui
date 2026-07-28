@@ -46,6 +46,12 @@ const Gauge: React.FC<GaugeProps> = ({ used, limit, tone, pending }) => {
   const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
   return (
     <span className={cn('flex w-full flex-col items-stretch gap-1', tone)}>
+      {/* This readout is what WCAG 2.5.3 Label in Name calls the visible label
+          of the control that wraps it, so the accessible name has to contain it
+          verbatim — which is why `accessibility:quotaMeter.gauge` is phrased
+          "{{used}} / {{limit}} daily operations used" rather than "… 0 of 5 …".
+          Hiding this text instead does NOT satisfy the rule: axe compares the
+          accessible name against text visible on screen, aria-hidden or not. */}
       <span className="num text-[11px] leading-none">
         {pending ? '— / —' : `${used} / ${limit}`}
       </span>
