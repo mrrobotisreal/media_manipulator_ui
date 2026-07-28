@@ -194,5 +194,12 @@
     "nudgeBodyFree": "A free account gives you a bigger daily allowance and keeps your history.",
     "nudgeBodyPremium": "Premium adds 4K exports, priority processing and no ads.",
     "nudgeAction": "See what you get"
+  },
+  "consentBanner": {
+    "label": "Cookie and analytics choices",
+    "body": "We use cookies to measure how the tools are used and, in future, to show ads. Your files are never part of that.",
+    "privacyLink": "Read the privacy policy",
+    "accept": "Accept",
+    "decline": "Decline"
   }
 }

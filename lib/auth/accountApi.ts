@@ -175,6 +175,84 @@ export async function fetchUsage(
   return response.json() as Promise<AccountSnapshot>;
 }
 
+/** The lifecycle states a job row can be in, mirroring models.JobStatus. */
+export type HistoryStatus =
+  | 'pending'
+  | 'queued'
+  | 'processing'
+  | 'completed'
+  | 'failed'
+  | 'cancelled';
+
+/** One row of GET /api/account/history. Mirrors the handler's historyEntry. */
+export interface HistoryEntry {
+  jobId: string;
+  /** Stable tool id, e.g. `convert`, `extract_audio`, `video_transcode`. */
+  tool?: string;
+  mode?: string;
+  mediaKind?: string;
+  /** Extensions only — the API never stores a source filename. */
+  sourceFormat?: string;
+  targetFormat?: string;
+  status: HistoryStatus;
+  createdAt: string;
+  completedAt?: string;
+  durationMs?: number;
+  resultFileName?: string;
+  resultExpiresAt?: string;
+  /** Computed server-side, so the UI never needs to know the retention matrix. */
+  expired: boolean;
+  /** Absolute, short-lived presigned GET for a result stored in S3. */
+  downloadUrl?: string;
+  /** API-relative path for a result still served off the box's local disk. */
+  downloadPath?: string;
+}
+
+export interface HistoryResponse {
+  entries: HistoryEntry[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+/**
+ * One page of the signed-in caller's own conversions, newest first.
+ *
+ * Signed-in only by design: the server keys history on the account, not on a
+ * session id, so it follows the person rather than the browser.
+ */
+export async function fetchHistory(
+  idToken: string,
+  page: { limit?: number; offset?: number } = {},
+  signal?: AbortSignal,
+): Promise<HistoryResponse> {
+  const params = new URLSearchParams();
+  if (page.limit !== undefined) params.set('limit', String(page.limit));
+  if (page.offset !== undefined) params.set('offset', String(page.offset));
+  const query = params.toString();
+
+  const response = await fetch(`${getBaseURL()}/account/history${query ? `?${query}` : ''}`, {
+    headers: authHeaders(idToken),
+    signal,
+  });
+  if (!response.ok) {
+    throw new Error(`Could not load your history (${response.status})`);
+  }
+  return response.json() as Promise<HistoryResponse>;
+}
+
+/**
+ * The URL that actually serves a history row's result, or null when there is
+ * none to offer. Local results arrive as an API-relative path so the server
+ * never has to guess its own public origin.
+ */
+export function historyDownloadHref(entry: HistoryEntry): string | null {
+  if (entry.expired) return null;
+  if (entry.downloadUrl) return entry.downloadUrl;
+  if (entry.downloadPath) return `${getBaseURL()}${entry.downloadPath}`;
+  return null;
+}
+
 /** The public tier matrix. Cacheable configuration, identical for everyone. */
 export async function fetchTiers(signal?: AbortSignal): Promise<TiersResponse> {
   const response = await fetch(`${getBaseURL()}/tiers`, { signal });

@@ -7,6 +7,7 @@ import { Panel } from '@/components/darkroom/panel';
 import { Button } from '@/components/ui/button';
 import { Stat } from '@/components/darkroom/stat';
 import { PanelLoading } from '@/components/darkroom/panel-loading';
+import { ConversionHistory, type HistoryLabels } from '@/components/account/conversion-history';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import type { UsageMetric } from '@/lib/auth/accountApi';
 import {
@@ -43,6 +44,7 @@ export interface AccountLabels {
   planRows: { label: string; value: 'ops' | 'file' | 'video' | 'output' | 'projects' | 'retention' }[];
   tierNames: Record<string, string>;
   unlimited: string;
+  history: HistoryLabels;
 }
 
 const METRICS: UsageMetric[] = ['ops', 'ai_ops', 'export'];
@@ -141,23 +143,29 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <Panel title={labels.usageTitle} titleAs="h2">
-        <div className="grid gap-5">
-          {METRICS.map((metric) => (
-            <UsageBar
-              key={metric}
-              label={labels.metric[metric]}
-              used={auth.usage[metric] ?? 0}
-              limit={auth.allowanceOf(metric)}
-            />
-          ))}
-        </div>
-        {resets ? (
-          <p className="mt-5 text-xs text-muted-foreground">
-            {labels.resets.replace('{{when}}', resets)}
-          </p>
-        ) : null}
-      </Panel>
+      {/* The wide column carries the two things that change: today's counts and
+          the log of what produced them. */}
+      <div className="grid gap-6">
+        <Panel title={labels.usageTitle} titleAs="h2">
+          <div className="grid gap-5">
+            {METRICS.map((metric) => (
+              <UsageBar
+                key={metric}
+                label={labels.metric[metric]}
+                used={auth.usage[metric] ?? 0}
+                limit={auth.allowanceOf(metric)}
+              />
+            ))}
+          </div>
+          {resets ? (
+            <p className="mt-5 text-xs text-muted-foreground">
+              {labels.resets.replace('{{when}}', resets)}
+            </p>
+          ) : null}
+        </Panel>
+
+        <ConversionHistory labels={labels.history} uid={auth.user.uid} />
+      </div>
 
       <div className="grid gap-6">
         <Panel title={labels.planTitle} titleAs="h2">

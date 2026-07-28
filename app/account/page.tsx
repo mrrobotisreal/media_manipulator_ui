@@ -19,12 +19,9 @@ export const metadata: Metadata = {
 /**
  * The page shell is a server component so every label is prerendered and
  * `pages.json` (79 KB) stays out of the client bundle. The dashboard island
- * receives the strings it needs as props and fetches only the numbers.
- *
- * Deliberately not here: a conversion-history list. The API has no endpoint
- * that can serve one — mm_conversion_jobs has no writer at all today, and the
- * in-memory JobManager is addressable only by job id. An empty panel that can
- * never fill would be worse than its absence.
+ * receives the strings it needs as props and fetches only the numbers — which is
+ * why the history panel's tool and status maps are read here, with
+ * `returnObjects`, rather than in the island.
  */
 export default function Account() {
   const t = getServerT();
@@ -52,6 +49,22 @@ export default function Account() {
       anonymous: t('interface:pricing.tier.anonymous'),
       free: t('interface:pricing.tier.free'),
       premium: t('interface:pricing.tier.premium'),
+    },
+    history: {
+      title: t('interface:account.historyTitle'),
+      loading: t('interface:account.history.loading'),
+      empty: t('interface:account.emptyHistory'),
+      emptyCta: t('interface:account.history.emptyCta'),
+      loadFailed: t('interface:account.history.loadFailed'),
+      download: t('interface:account.history.download'),
+      expired: t('interface:account.history.expired'),
+      loadMore: t('interface:account.history.loadMore'),
+      showing: t('interface:account.history.showing'),
+      tool: t('interface:account.history.tool', { returnObjects: true }) as Record<string, string>,
+      status: t('interface:account.history.status', { returnObjects: true }) as Record<
+        string,
+        string
+      >,
     },
     planRows: [
       { label: t('interface:pricing.rows.opsPerDay'), value: 'ops' },

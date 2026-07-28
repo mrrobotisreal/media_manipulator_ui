@@ -53,6 +53,22 @@ export function formatResetsIn(iso: string | null | undefined): string {
   return `in about ${hours} hours`;
 }
 
+/**
+ * How long one job took: "0.4 s", "12.8 s", "3 m 20 s".
+ *
+ * Sub-minute durations keep one decimal because that is the range most
+ * conversions land in, and "1 sec" for anything between 0.5 and 1.5 seconds
+ * would flatten the difference between a fast tool and a slow one.
+ */
+export function formatJobDuration(ms: number | undefined): string {
+  if (ms === undefined || !Number.isFinite(ms) || ms < 0) return '';
+  const seconds = ms / 1000;
+  if (seconds < 60) return `${seconds < 10 ? seconds.toFixed(1) : Math.round(seconds)} s`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = Math.round(seconds % 60);
+  return `${minutes} m ${String(rest).padStart(2, '0')} s`;
+}
+
 /** The ladder's top rung as a label: 1080p / 1440p / 2160p. */
 export function formatOutputHeight(limits: TierLimits): string {
   return `${limits.maxOutputHeight}`;

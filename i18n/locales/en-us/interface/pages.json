@@ -1331,11 +1331,55 @@
       "ai_ops": "AI operations",
       "export": "Exports"
     },
-    "emptyHistory": "Nothing converted yet today. Your history appears here once you run a tool.",
+    "emptyHistory": "Nothing here yet. Your conversions appear in this list once you run a tool.",
     "emptyProjects": "No saved projects yet. Content Studio saves your timeline automatically once you name a project.",
     "openStudio": "Open Content Studio",
     "comparePlans": "Compare plans",
     "signOut": "Sign out",
-    "loadFailed": "Could not load your account. Reload to try again."
+    "loadFailed": "Could not load your account. Reload to try again.",
+    "history": {
+      "loading": "Loading your conversions…",
+      "emptyCta": "Browse the tools",
+      "loadFailed": "Could not load your history. Reload to try again.",
+      "download": "Download",
+      "expired": "Result expired",
+      "loadMore": "Load more",
+      "showing": "Showing {{count}} of {{total}}",
+      "status": {
+        "pending": "Queued",
+        "queued": "Queued",
+        "processing": "In progress",
+        "completed": "Done",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "tool": {
+        "convert": "Conversion",
+        "transcribe": "Transcription",
+        "audio_waveform": "Audio waveform",
+        "extract_audio": "Audio extraction",
+        "extract_video_only": "Silent video",
+        "extract_frames": "Frame extraction",
+        "trim_video": "Video trim",
+        "caption_translator": "Caption translation",
+        "stitch_audio_to_video": "Audio stitch",
+        "video_transcode": "HLS / DASH package",
+        "document_scan": "Document scan",
+        "image_restore": "Image restoration",
+        "video_restore": "Video restoration",
+        "studio_derive": "Studio audio cleanup",
+        "studio_captions": "Studio captions",
+        "studio_export": "Studio export",
+        "ai_upscale": "AI upscale",
+        "ai_background_removal": "Background removal",
+        "ai_face_privacy": "Face privacy",
+        "ai_object_removal": "Object removal",
+        "ai_text_redaction": "Text redaction",
+        "ai_frame_interpolation": "Frame interpolation",
+        "ai_voice_cleanup": "Voice cleanup",
+        "ai_isolate_vocals": "Vocal isolation",
+        "ai_remove_vocals": "Vocal removal"
+      }
+    }
   }
 }

@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/dialog';
 import { useLocalization } from '@/i18n/useLocalization';
 import { Wordmark } from '@/components/darkroom/wordmark';
+import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
+import { requestConsentReview } from '@/lib/consent';
 
 const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'home', href: '/' },
@@ -32,10 +34,19 @@ const Footer: React.FC = () => {
   const [cookiePromptOpen, setCookiePromptOpen] = useState(false);
   const { t } = useLocalization(['interface', 'accessibility']);
 
+  // Withdrawing consent has to be as easy as giving it, so this button tries
+  // the three routes in order of authority:
+  //
+  //   1. Funding Choices, which exposes window.googlefc once the AdSense script
+  //      has loaded and Privacy & messaging is on. When it is present it owns
+  //      TCF state and is the only correct place to revoke — a GDPR and AdSense
+  //      requirement, and why it stays first.
+  //   2. Otherwise the first-party bar, which is what actually asked while the
+  //      review build ships no AdSense script.
+  //   3. Otherwise the explainer, for the narrow case where ads are enabled but
+  //      Funding Choices never arrived (blocked script, dashboard misconfigured).
+  //      Doing nothing at all would be the wrong failure for this control.
   const handleCookieSettings = () => {
-    // Funding Choices exposes window.googlefc once the AdSense script has
-    // loaded and Privacy & messaging is enabled in the dashboard. Calling
-    // showRevocationMessage re-opens the consent banner.
     try {
       const fc = typeof window !== 'undefined' ? window.googlefc : undefined;
       if (fc?.callbackQueue && typeof fc.showRevocationMessage === 'function') {
@@ -49,7 +60,11 @@ const Footer: React.FC = () => {
         return;
       }
     } catch {
-      // Fall through to dialog fallback.
+      // Fall through.
+    }
+    if (!ADSENSE_ENABLED) {
+      requestConsentReview();
+      return;
     }
     setCookiePromptOpen(true);
   };

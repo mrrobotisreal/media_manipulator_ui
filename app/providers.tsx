@@ -11,7 +11,9 @@ import Footer from '@/components/footer';
 // MobileAnchorAd is intentionally NOT rendered — the sticky mobile anchor ad
 // is disabled for the AdSense review build.
 import { initWebVitals } from '@/lib/webVitals';
-import { initConsentListener, onConsentChange } from '@/lib/consent';
+import { initConsentListener, onConsentChange, replayStoredConsent } from '@/lib/consent';
+import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
+import { ConsentGate } from '@/components/consent/consent-gate';
 import { trackFirstPartyPageView } from '@/lib/firstPartyAnalytics';
 import { trackGooglePageView } from '@/lib/gtag';
 import { trackMixpanelPageView } from '@/lib/analytics';
@@ -79,6 +81,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     // Observe Consent Mode v2 updates before any tracker is set up so the
     // Mixpanel / GA helpers can early-return when consent is denied.
     initConsentListener();
+    // Then re-apply whatever this visitor already decided. Consent Mode state
+    // lives in the page, so without this replay an accepted choice silently
+    // reverts to denied on every load. Skipped once AdSense is enabled, because
+    // Funding Choices owns consent from that point and must not be written over.
+    if (!ADSENSE_ENABLED) replayStoredConsent();
     initWebVitals();
 
     const ric = (
@@ -123,6 +130,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <RouteAnalytics />
           <TopNav />
+          {/* Non-chromeless only, like AuthProvider: an iframed /embed surface
+              and the /dr portal must never render a site-wide consent prompt.
+
+              Mounted here rather than after the footer on purpose. The bar is
+              fixed-positioned, so DOM order costs it nothing visually, but it
+              deliberately is not a modal — nothing traps focus — and a consent
+              choice placed last in the tab order is one a keyboard or
+              screen-reader user only finds after traversing the entire page.
+              Consent has to be offered, not discoverable. */}
+          <ConsentGate />
           <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />
