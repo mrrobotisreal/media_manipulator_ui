@@ -33,6 +33,7 @@ import {
   getSafeFileExtension,
 } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
+import { UploadLimitHint, useUpgradeNudge } from '@/components/account/upgrade-surfaces';
 import { Panel } from '@/components/darkroom/panel';
 
 /**
@@ -718,6 +719,8 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
     URL.revokeObjectURL(url);
   };
 
+  const upgradeNudge = useUpgradeNudge();
+
   const handleDownload = async () => {
     if (!conversionJob?.id) return;
     try {
@@ -725,6 +728,9 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
       const fileName = getConvertedFilename();
       saveBlobToDisk(blob, fileName);
       trackFileDownload(fileName, effectiveKind);
+      // The single post-conversion prompt, at most once per session, and only
+      // after a download that actually succeeded.
+      upgradeNudge();
     } catch (err) {
       console.error('Embedded tool download failed', err);
     }
@@ -973,6 +979,9 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
             className="hidden"
             aria-label={t('embeddedToolPanel.selectFile')}
           />
+          {/* §4.9: the caller's real upload cap, stated before they pick a file
+              rather than after the upload fails. */}
+          <UploadLimitHint className="mt-3" />
         </div>
       ) : (
         <div className="space-y-4">

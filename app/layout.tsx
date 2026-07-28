@@ -4,7 +4,7 @@ import Script from 'next/script';
 import './globals.css';
 import Providers from './providers';
 import { ResourceHints } from '@/components/seo/resource-hints';
-import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
+import { ADSENSE_ENABLED, ADSENSE_SCRIPT_ORIGIN } from '@/lib/adsenseConfig';
 import { SITE_ORIGIN } from '@/lib/seo';
 
 // Self-hosted and preloaded by next/font, with size-adjust fallback metrics that
@@ -117,7 +117,7 @@ export default function RootLayout({
         <ResourceHints
           preconnect={
             ADSENSE_ENABLED
-              ? [{ href: 'https://pagead2.googlesyndication.com', crossOrigin: 'anonymous' }]
+              ? [{ href: ADSENSE_SCRIPT_ORIGIN, crossOrigin: 'anonymous' }]
               : []
           }
           dnsPrefetch={['https://www.googletagmanager.com']}

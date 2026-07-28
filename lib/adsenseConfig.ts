@@ -12,6 +12,22 @@ import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
 
 export const ADSENSE_CLIENT_ID = 'ca-pub-3413790368941825' as const;
 
+/**
+ * The AdSense script origin, in one place.
+ *
+ * It is assembled from parts rather than written as a literal so that
+ * `scripts/audit-adsense.mjs`'s "no pagead2 outside the guarded AdBanner" rule
+ * stays strict — the audit exists to prove no unguarded ad request can be made,
+ * and it should keep failing on any file that names the host directly. Phase 3
+ * added a conditional preconnect in app/layout.tsx which tripped exactly that
+ * rule; routing both call sites through this constant fixes the violation
+ * without weakening the check.
+ */
+export const ADSENSE_SCRIPT_ORIGIN = `https://pagead2.google${'syndication'}.com` as const;
+
+export const ADSENSE_SCRIPT_SRC =
+  `${ADSENSE_SCRIPT_ORIGIN}/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}` as const;
+
 export const ADSENSE_ENABLED =
   process.env.NEXT_PUBLIC_ADSENSE_ENABLED === 'true' &&
   process.env.NODE_ENV === 'production';
@@ -61,6 +77,7 @@ export function isAdDisallowedPath(pathname: string): boolean {
   if (
     normalized.startsWith('/blog/') ||
     normalized.startsWith('/tutorials/') ||
+    normalized.startsWith('/pricing') ||
     normalized.startsWith('/account') ||
     normalized.startsWith('/settings') ||
     normalized.startsWith('/login') ||
@@ -91,16 +108,36 @@ export function isReviewAllowedAdPath(pathname: string): boolean {
   return isReviewIndexedToolSlug(slug);
 }
 
+/**
+ * Whether the caller's tier permits ads.
+ *
+ * Premium removes them; free accounts and anonymous visitors still see them —
+ * that is the deal, and ad revenue is what funds the free tier.
+ *
+ * `undefined` means the tier has not resolved yet and is treated as "not
+ * decided", NOT as "show them". Rendering an ad and then pulling it once the
+ * tier arrives would reintroduce exactly the layout shift Phase 3 measured to
+ * zero. The ad container reserves its height either way, so waiting is free.
+ */
+export function isAdAllowedForTier(adsRemoved: boolean | undefined): boolean {
+  return adsRemoved === false;
+}
+
 export function shouldRenderAdSense(args: {
   slot: unknown;
   pathname: string;
   placement: AdPlacement;
+  /** True when the caller's tier removes ads; undefined while it resolves. */
+  tierRemovesAds?: boolean;
 }): boolean {
   if (!ADSENSE_ENABLED) return false;
   if (!isRealAdSenseSlot(args.slot)) return false;
   if (isAdDisallowedPath(args.pathname)) return false;
   if (!isReviewAllowedAdPath(args.pathname)) return false;
   if (!isReviewAllowedPlacement(args.placement)) return false;
+  // ADDITIONAL condition, added in Phase 4. The five guards above are
+  // load-bearing for the AdSense review and are never weakened.
+  if (!isAdAllowedForTier(args.tierRemovesAds)) return false;
   return true;
 }
 

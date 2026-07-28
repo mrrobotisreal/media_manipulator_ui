@@ -22,6 +22,7 @@ import { useTheme } from "@/components/theme-provider";
 import { Wordmark } from "@/components/darkroom/wordmark";
 import LanguageSelector from "@/components/language-selector";
 import { AccountMenu } from "@/components/account/account-menu";
+import { AccountSheetLinks } from "@/components/account/account-sheet-links";
 import { useLocalization } from "@/i18n/useLocalization";
 import React from "react";
 import { cn } from "@/lib/utils";
@@ -116,7 +117,10 @@ const TopNav: React.FC = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <NavigationMenu viewport={false} className="hidden md:flex">
+        {/* Eight links do not fit at 768px next to the account slot — at that
+            width the row squeezed the nav past the viewport edge. The desktop
+            row starts at lg; 768-1023 uses the same sheet as a phone. */}
+        <NavigationMenu viewport={false} className="hidden lg:flex">
           <NavigationMenuList>
             {components.map((component) => {
               const active = isNavActive(pathname, component.href);
@@ -151,7 +155,7 @@ const TopNav: React.FC = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
+                className="lg:hidden rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
               >
                 <Menu className="h-6 w-6 text-foreground" />
                 <span className="sr-only">{t("accessibility:topNav.openMenu")}</span>
@@ -181,6 +185,7 @@ const TopNav: React.FC = () => {
                     </Link>
                   );
                 })}
+                <AccountSheetLinks onNavigate={() => setIsOpen(false)} />
               </div>
             </SheetContent>
           </Sheet>

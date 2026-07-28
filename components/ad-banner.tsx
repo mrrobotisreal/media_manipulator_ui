@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { MockAd } from '@/components/mock-ad';
+import { useAuth } from '@/lib/auth/AuthProvider';
 import {
   ADSENSE_CLIENT_ID,
+  ADSENSE_SCRIPT_SRC,
   type AdPlacement,
   shouldRenderAdSense,
   shouldRenderMockAd,
@@ -86,16 +88,26 @@ export default function AdBanner({
     sticky,
   });
 
+  // Premium removes ads. `undefined` while the tier resolves means "not
+  // decided yet", so nothing renders into the reserved container until the
+  // answer is known — deciding early and correcting later is a layout shift.
+  // Outside the provider (/embed, /dr) there is no tier and no ad either.
+  const auth = useAuth();
+  const tierRemovesAds = auth && !auth.loading ? Boolean(auth.limits?.adsRemoved) : undefined;
+
   const canRenderAdSense = shouldRenderAdSense({
     slot: resolvedSlot,
     pathname,
     placement: resolvedPlacement,
+    tierRemovesAds,
   });
 
-  const canRenderMockAd = shouldRenderMockAd({
-    pathname,
-    placement: resolvedPlacement,
-  });
+  const canRenderMockAd =
+    tierRemovesAds === false &&
+    shouldRenderMockAd({
+      pathname,
+      placement: resolvedPlacement,
+    });
 
   useEffect(() => {
     if (!canRenderAdSense) return;
@@ -120,10 +132,7 @@ export default function AdBanner({
       <div className={className} aria-label={label}>
         <Script
           id="adsense-script"
-          src={
-            'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
-            ADSENSE_CLIENT_ID
-          }
+          src={ADSENSE_SCRIPT_SRC}
           strategy="afterInteractive"
           crossOrigin="anonymous"
         />

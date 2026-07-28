@@ -185,5 +185,14 @@
       "free": "Free",
       "premium": "Premium"
     }
+  },
+  "upgradeSurfaces": {
+    "fileLimit": "Files up to {{size}}",
+    "fileLimitMoreFree": "Larger files need a free account",
+    "fileLimitMorePremium": "Larger files need Premium",
+    "nudgeTitle": "That one's done",
+    "nudgeBodyFree": "A free account gives you a bigger daily allowance and keeps your history.",
+    "nudgeBodyPremium": "Premium adds 4K exports, priority processing and no ads.",
+    "nudgeAction": "See what you get"
   }
 }

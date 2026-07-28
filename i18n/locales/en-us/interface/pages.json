@@ -131,15 +131,39 @@
       "title": "Supported File Formats (Quick Reference)",
       "images": {
         "title": "Images",
-        "items": ["JPEG / JPG", "PNG", "WebP (lossy and lossless)", "GIF (incl. animation passthrough)", "BMP", "TIFF", "HEIC / HEIF (input)"]
+        "items": [
+          "JPEG / JPG",
+          "PNG",
+          "WebP (lossy and lossless)",
+          "GIF (incl. animation passthrough)",
+          "BMP",
+          "TIFF",
+          "HEIC / HEIF (input)"
+        ]
       },
       "videos": {
         "title": "Videos",
-        "items": ["MP4 (H.264 / H.265)", "WebM (VP9 + Opus)", "MOV", "MKV", "AVI", "WMV, FLV", "ProRes, DNxHD"]
+        "items": [
+          "MP4 (H.264 / H.265)",
+          "WebM (VP9 + Opus)",
+          "MOV",
+          "MKV",
+          "AVI",
+          "WMV, FLV",
+          "ProRes, DNxHD"
+        ]
       },
       "audio": {
         "title": "Audio",
-        "items": ["MP3", "WAV (PCM)", "AAC, M4A", "OGG (Vorbis)", "FLAC, ALAC", "Opus", "AC3, DTS"]
+        "items": [
+          "MP3",
+          "WAV (PCM)",
+          "AAC, M4A",
+          "OGG (Vorbis)",
+          "FLAC, ALAC",
+          "Opus",
+          "AC3, DTS"
+        ]
       },
       "footnote": "Need a format we don't list? Drop us a line — most additions are a small FFmpeg or ImageMagick configuration change away."
     },
@@ -443,12 +467,30 @@
     "relatedLinks": {
       "title": "Want to try the tools?",
       "intro": "The Media Manipulator tools that pair with these articles are all free.",
-      "allTools": { "label": "Browse all tools", "description": "Image, video, audio, AI, and metadata tools in one place." },
-      "compressVideo": { "label": "Compress video", "description": "Shrink video file size without ruining quality." },
-      "removeExif": { "label": "Remove EXIF metadata", "description": "Strip GPS and device data before sharing photos." },
-      "homepage": { "label": "Open the homepage converter", "description": "Convert, edit, compress, and transcribe images, videos, and audio." },
-      "tutorials": { "label": "Browse the tutorials", "description": "Step-by-step walkthroughs of every conversion option and AI tool." },
-      "howItWorks": { "label": "How Media Manipulator works", "description": "See how files are processed, scanned, and temporarily stored." }
+      "allTools": {
+        "label": "Browse all tools",
+        "description": "Image, video, audio, AI, and metadata tools in one place."
+      },
+      "compressVideo": {
+        "label": "Compress video",
+        "description": "Shrink video file size without ruining quality."
+      },
+      "removeExif": {
+        "label": "Remove EXIF metadata",
+        "description": "Strip GPS and device data before sharing photos."
+      },
+      "homepage": {
+        "label": "Open the homepage converter",
+        "description": "Convert, edit, compress, and transcribe images, videos, and audio."
+      },
+      "tutorials": {
+        "label": "Browse the tutorials",
+        "description": "Step-by-step walkthroughs of every conversion option and AI tool."
+      },
+      "howItWorks": {
+        "label": "How Media Manipulator works",
+        "description": "See how files are processed, scanned, and temporarily stored."
+      }
     }
   },
   "legalCommon": {
@@ -470,7 +512,9 @@
     "sections": [
       {
         "title": "1. Information We Collect",
-        "paragraphs": ["We collect information in several ways depending on how you use the website."],
+        "paragraphs": [
+          "We collect information in several ways depending on how you use the website."
+        ],
         "subsections": [
           {
             "title": "1.1 Files You Upload",
@@ -492,7 +536,9 @@
           },
           {
             "title": "1.2 File and Conversion Metadata",
-            "paragraphs": ["We may collect technical information about uploaded files and conversion jobs, including:"],
+            "paragraphs": [
+              "We may collect technical information about uploaded files and conversion jobs, including:"
+            ],
             "bullets": [
               "file name;",
               "file type or MIME type;",
@@ -528,7 +574,9 @@
           },
           {
             "title": "1.4 Usage Data",
-            "paragraphs": ["When you visit or use Media Manipulator, we may automatically collect usage and device information, such as:"],
+            "paragraphs": [
+              "When you visit or use Media Manipulator, we may automatically collect usage and device information, such as:"
+            ],
             "bullets": [
               "pages visited;",
               "tools used;",
@@ -550,7 +598,9 @@
           },
           {
             "title": "1.5 Cookies and Similar Technologies",
-            "paragraphs": ["We and our service providers may use cookies, local storage, pixels, tags, and similar technologies to:"],
+            "paragraphs": [
+              "We and our service providers may use cookies, local storage, pixels, tags, and similar technologies to:"
+            ],
             "bullets": [
               "operate the website;",
               "remember user preferences;",
@@ -567,7 +617,9 @@
       },
       {
         "title": "2. How We Use Information",
-        "paragraphs": ["We use the information we collect to:"],
+        "paragraphs": [
+          "We use the information we collect to:"
+        ],
         "bullets": [
           "provide media conversion, editing, transcription, metadata, AI analysis, and related tools;",
           "temporarily store conversion history for up to 24 hours;",
@@ -633,7 +685,9 @@
       },
       {
         "title": "7. Legal Basis for Processing",
-        "paragraphs": ["Depending on where you are located, we may process personal information based on one or more legal bases, including:"],
+        "paragraphs": [
+          "Depending on where you are located, we may process personal information based on one or more legal bases, including:"
+        ],
         "bullets": [
           "providing the service requested by the user;",
           "our legitimate interests in operating, securing, improving, and monetizing the website;",
@@ -646,7 +700,9 @@
       },
       {
         "title": "8. Sharing Information",
-        "paragraphs": ["We may share information with:"],
+        "paragraphs": [
+          "We may share information with:"
+        ],
         "bullets": [
           "hosting and cloud infrastructure providers;",
           "file storage and processing providers;",
@@ -659,7 +715,9 @@
           "professional advisors, such as attorneys, accountants, or security consultants;",
           "business successors in the event of a merger, acquisition, financing, reorganization, or sale of assets."
         ],
-        "afterBullets": ["We do not sell uploaded files."]
+        "afterBullets": [
+          "We do not sell uploaded files."
+        ]
       },
       {
         "title": "9. User Responsibilities",
@@ -675,7 +733,9 @@
           "is illegal to possess, process, upload, distribute, or transmit;",
           "violates our Terms of Service or Acceptable Use rules."
         ],
-        "afterBullets": ["Use of Media Manipulator does not transfer ownership of uploaded content to us."]
+        "afterBullets": [
+          "Use of Media Manipulator does not transfer ownership of uploaded content to us."
+        ]
       },
       {
         "title": "10. Security",
@@ -700,7 +760,9 @@
       },
       {
         "title": "13. Your Choices and Rights",
-        "paragraphs": ["Depending on your location, you may have rights regarding your personal information, such as the right to:"],
+        "paragraphs": [
+          "Depending on your location, you may have rights regarding your personal information, such as the right to:"
+        ],
         "bullets": [
           "request access to personal information we maintain about you;",
           "request correction or deletion;",
@@ -860,7 +922,9 @@
       },
       {
         "title": "8. Acceptable Use Policy",
-        "paragraphs": ["You agree not to use Media Manipulator for any unlawful, harmful, abusive, deceptive, infringing, exploitative, or prohibited purpose."],
+        "paragraphs": [
+          "You agree not to use Media Manipulator for any unlawful, harmful, abusive, deceptive, infringing, exploitative, or prohibited purpose."
+        ],
         "subsections": [
           {
             "title": "8.1 Illegal Content and Activity",
@@ -1022,7 +1086,9 @@
           "generated files will be suitable for any particular purpose;",
           "temporary conversion history will always be available."
         ],
-        "afterBullets": ["You should review all outputs before using, publishing, distributing, or relying on them."]
+        "afterBullets": [
+          "You should review all outputs before using, publishing, distributing, or relying on them."
+        ]
       },
       {
         "title": "12. Intellectual Property Rights",
@@ -1076,7 +1142,9 @@
       },
       {
         "title": "17. Termination and Suspension",
-        "paragraphs": ["We may suspend, restrict, or terminate your access to Media Manipulator at any time if we believe that:"],
+        "paragraphs": [
+          "We may suspend, restrict, or terminate your access to Media Manipulator at any time if we believe that:"
+        ],
         "bullets": [
           "you violated these Terms;",
           "your content or activity is illegal, abusive, unsafe, infringing, or prohibited;",
@@ -1106,7 +1174,9 @@
           "temporary files or conversion history will always be available;",
           "the service will meet your expectations."
         ],
-        "afterBullets": ["You use Media Manipulator at your own risk."]
+        "afterBullets": [
+          "You use Media Manipulator at your own risk."
+        ]
       },
       {
         "title": "19. Limitation of Liability",
@@ -1175,10 +1245,97 @@
       },
       {
         "title": "23. Contact",
-        "paragraphs": ["If you have questions about these Terms, contact us at:"],
+        "paragraphs": [
+          "If you have questions about these Terms, contact us at:"
+        ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
       }
     ]
+  },
+  "pricing": {
+    "eyebrow": "Plans",
+    "title": "Straightforward limits, no surprises",
+    "subtitle": "Every plan runs the same tools on the same hardware. What changes is how much you can put through them in a day, and how long the results stick around.",
+    "currentPlan": "Your plan",
+    "mostPopular": "Most people start here",
+    "free_price": "Free",
+    "perMonth": "/mo",
+    "cta": {
+      "anonymous": "Start converting",
+      "free": "Create a free account",
+      "premiumSoon": "Coming soon — get notified",
+      "premiumBuy": "Upgrade to Premium"
+    },
+    "tier": {
+      "anonymous": "No account",
+      "free": "Free account",
+      "premium": "Premium"
+    },
+    "tierBlurb": {
+      "anonymous": "Open a tool and go. Nothing to sign up for, nothing stored beyond the day.",
+      "free": "Six times the daily volume, saved history, and Content Studio projects that survive a refresh.",
+      "premium": "4K output, long files, priority on the GPU queue, batch processing, and no ads."
+    },
+    "rows": {
+      "opsPerDay": "Operations per day",
+      "aiOpsPerDay": "AI operations per day",
+      "maxFileBytes": "Maximum file size",
+      "maxVideoSeconds": "Maximum video length",
+      "maxOutputHeight": "Maximum output resolution",
+      "studioProjects": "Saved Studio projects",
+      "resultRetentionHours": "Results kept for",
+      "batchEnabled": "Batch processing",
+      "priorityGpu": "GPU queue",
+      "adsRemoved": "Ads"
+    },
+    "values": {
+      "yes": "Included",
+      "no": "Not included",
+      "unlimited": "Unlimited",
+      "localOnly": "{{count}}, local only",
+      "gpuStandard": "Standard",
+      "gpuPriority": "Priority",
+      "adsShown": "Shown",
+      "adsRemoved": "Removed",
+      "heightSuffix": "{{height}}p"
+    },
+    "unavailableTitle": "Plan details are temporarily unavailable",
+    "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
+    "faqTitle": "Questions people actually ask",
+    "faq": {
+      "q1": "What counts as an operation?",
+      "a1": "One conversion, transcode, export, or AI job. Previews, probes and downloads are free — you are only charged for work the server actually does.",
+      "q2": "What happens when I run out?",
+      "a2": "Nothing breaks. The tool tells you the allowance is spent and offers the next tier up. Your allowance resets at midnight UTC.",
+      "q3": "Do free accounts see ads?",
+      "a3": "Yes. Ads pay for the free tier, so only Premium removes them. There are no interstitials, countdowns or forced waits on any plan.",
+      "q4": "Can I use it without an account at all?",
+      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history."
+    }
+  },
+  "account": {
+    "title": "Your account",
+    "subtitle": "What you have used today, and what your plan allows.",
+    "signedOutTitle": "You are not signed in",
+    "signedOutBody": "Sign in to see your usage, conversion history and saved Content Studio projects.",
+    "signInCta": "Sign in",
+    "usageTitle": "Today",
+    "planTitle": "Your plan",
+    "historyTitle": "Recent conversions",
+    "projectsTitle": "Saved Studio projects",
+    "resets": "Resets {{when}}",
+    "usedOf": "{{used}} of {{limit}}",
+    "metric": {
+      "ops": "Conversions",
+      "ai_ops": "AI operations",
+      "export": "Exports"
+    },
+    "emptyHistory": "Nothing converted yet today. Your history appears here once you run a tool.",
+    "emptyProjects": "No saved projects yet. Content Studio saves your timeline automatically once you name a project.",
+    "openStudio": "Open Content Studio",
+    "comparePlans": "Compare plans",
+    "signOut": "Sign out",
+    "loadFailed": "Could not load your account. Reload to try again."
   }
 }
