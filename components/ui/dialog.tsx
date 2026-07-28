@@ -81,27 +81,32 @@ function DialogContent({
 }
 
 /**
- * Width ladder for dialogs that carry a real amount of content — a form plus
- * supporting material — rather than a sentence and a button.
+ * Width ladder for a two-column dialog: a form beside its supporting material.
  *
  * shadcn's default stops at `sm:max-w-lg` (512px), which on a 1440 or 1920
- * desktop is a letterbox: everything gets crammed into one narrow column with
- * empty screen either side. This scales the container with the viewport instead,
- * roughly doubling it by laptop width and reaching ~2.7x on a large desktop.
+ * desktop is a letterbox — everything crammed into one narrow column with empty
+ * screen either side. This scales with the viewport instead, roughly doubling by
+ * laptop width.
  *
- * Each step leaves visible breathing room inside its own breakpoint rather than
- * merely fitting: at 1024 the dialog is 940 wide, at 1280 it is 1240, at 1536 it
- * is 1440. Sized to the millimetre it would touch both viewport edges on the
- * narrowest screen the step applies to, which reads like an overflow bug even
- * when it is not. Below `sm` nothing changes: the base
+ * It deliberately STOPS at 1040. The ceiling comes from the layout, not from the
+ * screen: with a form column capped near 26rem, the second column passes ~540px
+ * at this width, and a capability list or a paragraph set wider than that starts
+ * looking stretched rather than generous. Going further would only be honest if
+ * the content split into a third column, which is a different, busier panel than
+ * the one we want. A dialog that wants more width than this needs more content,
+ * not a bigger number here.
+ *
+ * Each step also leaves visible gutters inside its own breakpoint rather than
+ * merely fitting: 940 at lg, 1040 at xl. Sized to the millimetre it would touch
+ * both viewport edges on the narrowest screen the step applies to, which reads
+ * like an overflow bug even when it is not. Below `sm` nothing changes — the base
  * `max-w-[calc(100%-2rem)]` still governs, which is what phones should get.
  *
- * Width alone is not the point. A dialog using this MUST lay its content out in
- * columns at the wider steps — a 1440px box with one 400px column of inputs in
- * the middle of it is worse than the letterbox it replaced.
+ * Width alone is not the point: a dialog using this MUST lay its content into two
+ * columns at `lg`, or it is just a wider letterbox.
  */
 export const dialogWidthWide =
-  "sm:max-w-[560px] md:max-w-[720px] lg:max-w-[940px] xl:max-w-[1240px] 2xl:max-w-[1440px]"
+  "sm:max-w-[560px] md:max-w-[720px] lg:max-w-[940px] xl:max-w-[1040px]"
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (

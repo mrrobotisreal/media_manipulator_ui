@@ -309,11 +309,15 @@ export const AuthModal: React.FC = () => {
             </Button>
           </div>
 
-          {/* The plans column: side by side from `xl`, where there is room to
-              compare two capability lists at a glance rather than scroll through
-              them. Every number in them is served by /api/tiers, so the panel
-              cannot promise something the server will not honour. */}
-          <div className="grid content-start gap-4 xl:grid-cols-2 xl:items-start">
+          {/* The plans column. Two columns is the ceiling for this panel, so the
+              plans always stack here rather than splitting into a third column on
+              a wide screen: signing in and reading what an account is worth are
+              two things, not three, and the widths in `dialogWidthWide` stop
+              where a two-column layout stops improving.
+
+              Every number in them is served by /api/tiers, so the panel cannot
+              promise something the server will not honour. */}
+          <div className="grid content-start gap-4">
             <PlanSummary
               descriptor={byTier.get('free')}
               title={t('interface:authModal.plans.freeTitle')}
@@ -342,11 +346,11 @@ export const AuthModal: React.FC = () => {
               />
             ) : null}
 
-            <div className="flex flex-col gap-3 text-center xl:col-span-2 xl:text-left">
+            <div className="flex flex-col gap-3 text-center lg:text-left">
               <Link
                 href="/pricing"
                 onClick={handleClose}
-                className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary xl:w-fit"
+                className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary lg:w-fit"
               >
                 {t('interface:authModal.plans.comparePlans')}
               </Link>
