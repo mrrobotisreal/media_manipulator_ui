@@ -13,6 +13,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  dialogWidthWide,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +24,7 @@ import { fetchTiers, type TierDescriptor } from '@/lib/auth/accountApi';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { trackMixpanel } from '@/lib/mixpanel';
 import { useLocalization } from '@/i18n/useLocalization';
+import { cn } from '@/lib/utils';
 
 /**
  * The account panel.
@@ -175,180 +177,200 @@ export const AuthModal: React.FC = () => {
 
   return (
     <Dialog open={auth.prompt.open} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="max-h-[90dvh] gap-5 overflow-y-auto sm:max-w-[520px]">
-        <DialogHeader>
+      <DialogContent className={cn('max-h-[90dvh] gap-6 overflow-y-auto', dialogWidthWide)}>
+        {/* The header keeps a readable measure of its own. Letting a headline and
+            a sentence of body copy run the full 1440px would be the opposite
+            problem from the narrow modal this replaced. */}
+        <DialogHeader className="lg:max-w-[46rem]">
           <DialogTitle className="text-xl font-semibold tracking-[-0.02em]">
             {headline}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">{body}</DialogDescription>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signup">{t('interface:authModal.tabs.signup')}</TabsTrigger>
-            <TabsTrigger value="signin">{t('interface:authModal.tabs.signin')}</TabsTrigger>
-          </TabsList>
+        {/* Two jobs, two columns once there is room: signing in on the left,
+            what an account is worth on the right. Below `lg` they stack in this
+            same order — form first, then the plans — which is the layout phones
+            already had, so nothing about the mobile experience changes.
 
-          <TabsContent value="signup" className="mt-4 space-y-4">
-            <form onSubmit={handleEmailAuth} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="signup-name">{t('interface:authModal.fields.fullName')}</Label>
-                <Input
-                  id="signup-name"
-                  type="text"
-                  autoComplete="name"
-                  placeholder={t('interface:authModal.fields.fullNamePlaceholder')}
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  disabled={isLoading}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signup-email">{t('interface:authModal.fields.email')}</Label>
-                <Input
-                  id="signup-email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder={t('interface:authModal.fields.emailPlaceholder')}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signup-password">{t('interface:authModal.fields.password')}</Label>
-                <Input
-                  id="signup-password"
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder={t('interface:authModal.fields.passwordPlaceholderSignup')}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  required
-                  minLength={6}
-                />
-              </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading || !email || !password || !displayName}
-              >
-                {isLoading
-                  ? t('interface:authModal.actions.creatingAccount')
-                  : t('interface:authModal.actions.createAccount')}
-              </Button>
-            </form>
-          </TabsContent>
+            The form column is capped rather than fluid: an email field 600px
+            wide is harder to use, not easier, and inputs that grow with the
+            viewport are how a wide dialog ends up looking stretched instead of
+            composed. */}
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-start lg:gap-10">
+          <div className="grid content-start gap-5">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signup">{t('interface:authModal.tabs.signup')}</TabsTrigger>
+                <TabsTrigger value="signin">{t('interface:authModal.tabs.signin')}</TabsTrigger>
+              </TabsList>
 
-          <TabsContent value="signin" className="mt-4 space-y-4">
-            <form onSubmit={handleEmailAuth} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="signin-email">{t('interface:authModal.fields.email')}</Label>
-                <Input
-                  id="signin-email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder={t('interface:authModal.fields.emailPlaceholder')}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signin-password">{t('interface:authModal.fields.password')}</Label>
-                <Input
-                  id="signin-password"
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder={t('interface:authModal.fields.passwordPlaceholderSignin')}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading || !email || !password}>
-                {isLoading
-                  ? t('interface:authModal.actions.signingIn')
-                  : t('interface:authModal.actions.signIn')}
-              </Button>
-            </form>
-          </TabsContent>
-        </Tabs>
+              <TabsContent value="signup" className="mt-4 space-y-4">
+                <form onSubmit={handleEmailAuth} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-name">{t('interface:authModal.fields.fullName')}</Label>
+                    <Input
+                      id="signup-name"
+                      type="text"
+                      autoComplete="name"
+                      placeholder={t('interface:authModal.fields.fullNamePlaceholder')}
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      disabled={isLoading}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-email">{t('interface:authModal.fields.email')}</Label>
+                    <Input
+                      id="signup-email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder={t('interface:authModal.fields.emailPlaceholder')}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={isLoading}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-password">{t('interface:authModal.fields.password')}</Label>
+                    <Input
+                      id="signup-password"
+                      type="password"
+                      autoComplete="new-password"
+                      placeholder={t('interface:authModal.fields.passwordPlaceholderSignup')}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
+                      required
+                      minLength={6}
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={isLoading || !email || !password || !displayName}
+                  >
+                    {isLoading
+                      ? t('interface:authModal.actions.creatingAccount')
+                      : t('interface:authModal.actions.createAccount')}
+                  </Button>
+                </form>
+              </TabsContent>
 
-        <div className="flex items-center gap-3">
-          <span aria-hidden="true" className="h-px flex-1 bg-edge" />
-          <span className="text-xs uppercase tracking-wide text-muted-foreground">
-            {t('interface:authModal.orDivider')}
-          </span>
-          <span aria-hidden="true" className="h-px flex-1 bg-edge" />
-        </div>
+              <TabsContent value="signin" className="mt-4 space-y-4">
+                <form onSubmit={handleEmailAuth} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-email">{t('interface:authModal.fields.email')}</Label>
+                    <Input
+                      id="signin-email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder={t('interface:authModal.fields.emailPlaceholder')}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={isLoading}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-password">{t('interface:authModal.fields.password')}</Label>
+                    <Input
+                      id="signin-password"
+                      type="password"
+                      autoComplete="current-password"
+                      placeholder={t('interface:authModal.fields.passwordPlaceholderSignin')}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" disabled={isLoading || !email || !password}>
+                    {isLoading
+                      ? t('interface:authModal.actions.signingIn')
+                      : t('interface:authModal.actions.signIn')}
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
 
-        <Button onClick={handleGoogleAuth} variant="outline" className="w-full" disabled={isLoading}>
-          {t('interface:authModal.googleSignIn')}
-        </Button>
-
-        {/* Every number below is served by the API, so the panel cannot promise
-            something the server will not honour. */}
-        <PlanSummary
-          descriptor={byTier.get('free')}
-          title={t('interface:authModal.plans.freeTitle')}
-          tone="data"
-        />
-
-        {premium ? (
-          <PlanSummary
-            descriptor={premium}
-            tone="premium"
-            title={t('interface:authModal.plans.premiumTitle')}
-            aside={
-              <span className="flex items-baseline gap-2">
-                {premiumPrice !== undefined ? (
-                  <span className="num text-sm text-premium">
-                    {t('interface:authModal.plans.premiumPrice', { price: premiumPrice })}
-                  </span>
-                ) : null}
-                {!tiersQuery.data?.premiumPurchasable ? (
-                  <span className="text-xs text-muted-foreground">
-                    {t('interface:authModal.plans.premiumComingSoon')}
-                  </span>
-                ) : null}
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px flex-1 bg-edge" />
+              <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                {t('interface:authModal.orDivider')}
               </span>
-            }
-          />
-        ) : null}
+              <span aria-hidden="true" className="h-px flex-1 bg-edge" />
+            </div>
 
-        <div className="flex flex-col gap-3 text-center">
-          <Link
-            href="/pricing"
-            onClick={handleClose}
-            className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
-          >
-            {t('interface:authModal.plans.comparePlans')}
-          </Link>
-          <p className="text-xs text-muted-foreground">
-            <Trans
-              i18nKey="interface:authModal.terms"
-              components={{
-                tos: (
-                  <Link
-                    href="/terms-of-service"
-                    className="underline underline-offset-2 hover:text-foreground"
-                  />
-                ),
-                privacy: (
-                  <Link
-                    href="/privacy-policy"
-                    className="underline underline-offset-2 hover:text-foreground"
-                  />
-                ),
-              }}
+            <Button onClick={handleGoogleAuth} variant="outline" className="w-full" disabled={isLoading}>
+              {t('interface:authModal.googleSignIn')}
+            </Button>
+          </div>
+
+          {/* The plans column: side by side from `xl`, where there is room to
+              compare two capability lists at a glance rather than scroll through
+              them. Every number in them is served by /api/tiers, so the panel
+              cannot promise something the server will not honour. */}
+          <div className="grid content-start gap-4 xl:grid-cols-2 xl:items-start">
+            <PlanSummary
+              descriptor={byTier.get('free')}
+              title={t('interface:authModal.plans.freeTitle')}
+              tone="data"
             />
-          </p>
+
+            {premium ? (
+              <PlanSummary
+                descriptor={premium}
+                tone="premium"
+                title={t('interface:authModal.plans.premiumTitle')}
+                aside={
+                  <span className="flex items-baseline gap-2">
+                    {premiumPrice !== undefined ? (
+                      <span className="num text-sm text-premium">
+                        {t('interface:authModal.plans.premiumPrice', { price: premiumPrice })}
+                      </span>
+                    ) : null}
+                    {!tiersQuery.data?.premiumPurchasable ? (
+                      <span className="text-xs text-muted-foreground">
+                        {t('interface:authModal.plans.premiumComingSoon')}
+                      </span>
+                    ) : null}
+                  </span>
+                }
+              />
+            ) : null}
+
+            <div className="flex flex-col gap-3 text-center xl:col-span-2 xl:text-left">
+              <Link
+                href="/pricing"
+                onClick={handleClose}
+                className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary xl:w-fit"
+              >
+                {t('interface:authModal.plans.comparePlans')}
+              </Link>
+              <p className="max-w-prose text-xs text-muted-foreground">
+                <Trans
+                  i18nKey="interface:authModal.terms"
+                  components={{
+                    tos: (
+                      <Link
+                        href="/terms-of-service"
+                        className="underline underline-offset-2 hover:text-foreground"
+                      />
+                    ),
+                    privacy: (
+                      <Link
+                        href="/privacy-policy"
+                        className="underline underline-offset-2 hover:text-foreground"
+                      />
+                    ),
+                  }}
+                />
+              </p>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

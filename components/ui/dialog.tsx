@@ -80,6 +80,29 @@ function DialogContent({
   )
 }
 
+/**
+ * Width ladder for dialogs that carry a real amount of content — a form plus
+ * supporting material — rather than a sentence and a button.
+ *
+ * shadcn's default stops at `sm:max-w-lg` (512px), which on a 1440 or 1920
+ * desktop is a letterbox: everything gets crammed into one narrow column with
+ * empty screen either side. This scales the container with the viewport instead,
+ * roughly doubling it by laptop width and reaching ~2.7x on a large desktop.
+ *
+ * Each step leaves visible breathing room inside its own breakpoint rather than
+ * merely fitting: at 1024 the dialog is 940 wide, at 1280 it is 1240, at 1536 it
+ * is 1440. Sized to the millimetre it would touch both viewport edges on the
+ * narrowest screen the step applies to, which reads like an overflow bug even
+ * when it is not. Below `sm` nothing changes: the base
+ * `max-w-[calc(100%-2rem)]` still governs, which is what phones should get.
+ *
+ * Width alone is not the point. A dialog using this MUST lay its content out in
+ * columns at the wider steps — a 1440px box with one 400px column of inputs in
+ * the middle of it is worse than the letterbox it replaced.
+ */
+export const dialogWidthWide =
+  "sm:max-w-[560px] md:max-w-[720px] lg:max-w-[940px] xl:max-w-[1240px] 2xl:max-w-[1440px]"
+
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

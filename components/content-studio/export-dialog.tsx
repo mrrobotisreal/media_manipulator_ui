@@ -204,7 +204,12 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
           {t('contentStudio.export.button')}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      {/* Wider than the 512px default, and the two settings sit side by side
+          from `sm` so the extra width is actually used. Not taken to the account
+          panel's width on purpose: this is three fields opened from inside the
+          editor, and a dialog that covers the timeline it is exporting is worse
+          than a compact one. */}
+      <DialogContent className="sm:max-w-xl md:max-w-2xl">
         <DialogHeader>
           <DialogTitle>{t('contentStudio.export.title')}</DialogTitle>
           <DialogDescription>
@@ -228,51 +233,53 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="quality"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('contentStudio.export.quality')}</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="high">{t('contentStudio.export.qualityHigh')}</SelectItem>
-                        <SelectItem value="medium">{t('contentStudio.export.qualityMedium')}</SelectItem>
-                        <SelectItem value="low">{t('contentStudio.export.qualityLow')}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="loudness"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('contentStudio.export.loudness')}</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="none">{t('contentStudio.export.loudnessNone')}</SelectItem>
-                        <SelectItem value="streaming">{t('contentStudio.export.loudnessStreaming')}</SelectItem>
-                        <SelectItem value="podcast">{t('contentStudio.export.loudnessPodcast')}</SelectItem>
-                        <SelectItem value="broadcast">{t('contentStudio.export.loudnessBroadcast')}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="quality"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('contentStudio.export.quality')}</FormLabel>
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="high">{t('contentStudio.export.qualityHigh')}</SelectItem>
+                          <SelectItem value="medium">{t('contentStudio.export.qualityMedium')}</SelectItem>
+                          <SelectItem value="low">{t('contentStudio.export.qualityLow')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="loudness"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('contentStudio.export.loudness')}</FormLabel>
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="none">{t('contentStudio.export.loudnessNone')}</SelectItem>
+                          <SelectItem value="streaming">{t('contentStudio.export.loudnessStreaming')}</SelectItem>
+                          <SelectItem value="podcast">{t('contentStudio.export.loudnessPodcast')}</SelectItem>
+                          <SelectItem value="broadcast">{t('contentStudio.export.loudnessBroadcast')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               {isCreatv ? (
                 <DialogFooter className="flex-col gap-2 sm:flex-col sm:space-x-0">

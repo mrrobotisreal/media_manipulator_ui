@@ -165,7 +165,11 @@ const Footer: React.FC = () => {
       </div>
 
       <Dialog open={cookiePromptOpen} onOpenChange={setCookiePromptOpen}>
-        <DialogContent>
+        {/* Wider than the 512px default, but deliberately not as wide as the
+            account panel: this is a title and two sentences. Body copy reads
+            best at 65–75 characters, and stretching a short explainer to 1400px
+            would trade one legibility problem for another. */}
+        <DialogContent className="sm:max-w-xl md:max-w-2xl">
           <DialogHeader>
             <DialogTitle>{t('interface:footer.cookieDialog.title')}</DialogTitle>
             <DialogDescription>
