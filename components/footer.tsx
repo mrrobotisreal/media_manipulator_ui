@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
                 className="flex items-center space-x-3 hover:opacity-90 transition-opacity"
                 aria-label={t('accessibility:footer.homeLink')}
               >
-                <Wordmark size="lg" text={t('interface:common.brand')} />
+                <Wordmark size="lg" animated text={t('interface:common.brand')} />
               </Link>
               <span className="mt-1 truncate text-sm text-muted-foreground">
                 {t('interface:common.brandTagline')}

@@ -110,7 +110,7 @@ const TopNav: React.FC = () => {
         <Link href="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
           {/* Was an unsized 80x80 image tag (22% of a 360px viewport, and a CLS
               source) plus Rubik Glitch type. Now a CSS-only lockup. */}
-          <Wordmark size="sm" text={t("interface:common.brand")} />
+          <Wordmark size="sm" animated text={t("interface:common.brand")} />
           <span className="hidden border-l border-edge pl-3 text-xs text-muted-foreground lg:block">
             {t("interface:common.brandTagline")}
           </span>

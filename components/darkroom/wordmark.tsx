@@ -2,6 +2,9 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+import { AnimatedApertureMark } from './aperture-motion';
+import { BLADE_SEAMS, OPENING_BLADES, OPENING_IRIS } from './aperture-paths';
+
 /**
  * Wordmark — replaces the glitch-face brand type (Rubik Glitch, 407 KB for two
  * words) and the unsized 80×80 image tag that was 22% of a 360px viewport.
@@ -22,15 +25,34 @@ import { cn } from '@/lib/utils';
 type WordmarkSize = 'sm' | 'lg';
 
 /**
- * The nav mark is 28px rather than 24px. At 24 the blade seams are legible but
- * cramped, and the whole point of drawing blades is that a first-time visitor
- * recognises a camera aperture without being told. The nav is a fixed h-14/h-16,
- * so the extra 4px changes no layout and costs no CLS.
+ * Mark sizes are set by the finest detail the mark has to resolve, not by the
+ * adjacent type.
+ *
+ * The original constraint was the blade seams: at 24px they were legible but
+ * cramped, and a first-time visitor has to read "camera aperture" without being
+ * told, so the nav went to 28px. The animated mark raised the bar. Its tightest
+ * stage is the chartreuse resonance disc, a 24-tick corona around the rim, and
+ * ticks need roughly 4.5px of arc each before they stop reading as ticks and
+ * start reading as a fuzzy edge:
+ *
+ *   28px → π·28 = 88px of circumference  → 3.7px per tick   (muddy)
+ *   36px → π·36 = 113px                  → 4.7px per tick   (clean)
+ *   44px → π·44 = 138px                  → 5.8px per tick   (clean, and the
+ *                                                            mark carries the
+ *                                                            footer on its own)
+ *
+ * Neither bump can shift layout: the nav is a fixed h-14/h-16, so a 36px mark
+ * has 10px of slack at the tightest, and the footer lockup sits in normal flow
+ * above a tagline with no height constraint to violate. Zero CLS either way.
+ *
+ * The type is deliberately left where it was. Growing the mark past the cap
+ * height of its label is the point — the aperture is the brand, the words are
+ * the caption.
  */
 const SIZES: Record<WordmarkSize, { mark: string; text: string; gap: string }> =
   {
-    sm: { mark: 'size-7', text: 'text-base', gap: 'gap-2' },
-    lg: { mark: 'size-9', text: 'text-2xl', gap: 'gap-2.5' },
+    sm: { mark: 'size-9', text: 'text-base', gap: 'gap-2.5' },
+    lg: { mark: 'size-11', text: 'text-2xl', gap: 'gap-3' },
   };
 
 /* ---------------------------------------------------------------------------
@@ -55,47 +77,11 @@ type ApertureStyle = 'blades' | 'iris';
 const APERTURE: ApertureStyle = 'blades';
 
 /**
- * Path data for both drawings, on a 24×24 viewBox centred at (12, 12).
- *
- * Hard-coded rather than computed at render time for two reasons: the mark is
- * rendered inside client components (the nav), so trigonometry would run in the
- * browser on every mount for a shape that never changes; and identical output on
- * server and client is guaranteed rather than assumed.
- *
- * Reproduce with polar(r, θ) = (12 + r·cos θ, 12 + r·sin θ), rounded to 2dp:
- *
- *   BARREL         circle r = 10, stroke 1.5 (so its stroke spans 9.25 … 10.75)
- *   OPENING_BLADES flat-top hexagon, r = 3.9,  vertices at θ = 0°, 60° … 300°
- *   BLADE_SEAMS    six lines, polar(3.9, θ) → polar(9.5, θ + 28°)
- *   OPENING_IRIS   flat-top hexagon, r = 4.6   (the original, larger opening)
- *
- * Three numbers carry the whole drawing, and each was chosen against a render:
- *
- *   28°  is what separates "aperture" from "gear". Seams drawn straight out
- *        along the radius read as sun rays; the tangential offset is the entire
- *        cue that these are overlapping leaves.
- *   9.5  lands inside the barrel's stroke band, so each seam MERGES into the
- *        barrel instead of stopping near it. Ending short (8.6 was tried) leaves
- *        six floating slivers that read as spokes, not blades.
- *   3.9  is a smaller opening than the plain iris uses. The blades need annulus
- *        to live in; at 4.6 they are stubs.
- *
- * Butt caps, not round: round caps put a visible bead on the end of every seam,
- * which at 6x magnification reads as a spider rather than a mechanism.
+ * The path data itself lives in `./aperture-paths`, shared with the animated
+ * mark — see that file for how each number was derived. Re-exported below so
+ * `wordmark` stays the one place to import the mark's geometry from.
  */
-const OPENING_BLADES =
-  'M15.9 12 L13.95 15.38 L10.05 15.38 L8.1 12 L10.05 8.62 L13.95 8.62 Z';
-
-const BLADE_SEAMS = [
-  'M15.9 12 L20.39 16.46',
-  'M13.95 15.38 L12.33 21.49',
-  'M10.05 15.38 L3.94 17.03',
-  'M8.1 12 L3.61 7.54',
-  'M10.05 8.62 L11.67 2.51',
-  'M13.95 8.62 L20.06 6.97',
-].join(' ');
-
-const OPENING_IRIS = 'M16.6 12 L14.3 15.98 L9.7 15.98 L7.4 12 L9.7 8.02 L14.3 8.02 Z';
+export { BLADE_SEAMS, OPENING_BLADES, OPENING_IRIS };
 
 function ApertureMark({ className }: { className?: string }) {
   const blades = APERTURE === 'blades';
@@ -128,16 +114,30 @@ export interface WordmarkProps extends React.ComponentProps<'span'> {
    * stays in the accessibility tree either way.
    */
   showText?: boolean;
+  /**
+   * Use the cymatic morphing mark instead of the static one: it renders as the
+   * identical coral aperture and then cycles through six resonance figures every
+   * 21s. First paint is byte-identical to the static mark, so this is free of
+   * hydration mismatch and CLS; `prefers-reduced-motion` and offscreen instances
+   * never animate. See `aperture-motion.tsx`.
+   */
+  animated?: boolean;
 }
 
 export function Wordmark({
   size = 'sm',
   text = 'Media Manipulator',
   showText = true,
+  animated = false,
   className,
   ...props
 }: WordmarkProps) {
   const s = SIZES[size];
+  // The animated mark's stage 0 is the six-blade drawing specifically. If
+  // APERTURE is flipped back to 'iris', animation silently stands down rather
+  // than morphing out of a shape the site isn't showing — the one-word revert
+  // above still reverts everything.
+  const morphing = animated && APERTURE === 'blades';
   const split = text.lastIndexOf(' ');
   const lead = split > 0 ? text.slice(0, split) : text;
   const trail = split > 0 ? text.slice(split + 1) : '';
@@ -147,7 +147,11 @@ export function Wordmark({
       className={cn('inline-flex items-center', s.gap, className)}
       {...props}
     >
-      <ApertureMark className={s.mark} />
+      {morphing ? (
+        <AnimatedApertureMark className={s.mark} />
+      ) : (
+        <ApertureMark className={s.mark} />
+      )}
 
       {showText ? (
         <span
