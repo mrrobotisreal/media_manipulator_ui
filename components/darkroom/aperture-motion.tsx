@@ -465,7 +465,16 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
         lastHeldIdx = -1; // force a repaint in the new theme's colours
       }
 
-      const cycle = (now - t0) % TOTAL_MS;
+      // rAF hands a callback the timestamp of the frame it belongs to, and that
+      // can PREDATE the performance.now() captured in start() — start() runs from
+      // the IntersectionObserver callback, which is delivered during a frame's
+      // rendering steps, i.e. after that frame's timestamp was taken. The first
+      // tick therefore saw a negative delta, and JS's `%` is signed, so `cycle`
+      // went negative, `idx` came out -1, and GEOM[-1] is undefined. Clamping the
+      // elapsed time is enough: a tick that arrives "before" t0 is just t = 0,
+      // the aperture, which is where the cycle starts anyway.
+      const elapsed = now - t0;
+      const cycle = elapsed > 0 ? elapsed % TOTAL_MS : 0;
       const idx = Math.floor(cycle / STAGE_MS);
       const u = (cycle % STAGE_MS) / STAGE_MS;
       const holding = u < HOLD_FRAC;

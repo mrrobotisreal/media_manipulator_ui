@@ -45,13 +45,15 @@ type WordmarkSize = 'sm' | 'lg';
  * has 10px of slack at the tightest, and the footer lockup sits in normal flow
  * above a tagline with no height constraint to violate. Zero CLS either way.
  *
- * The type is deliberately left where it was. Growing the mark past the cap
- * height of its label is the point — the aperture is the brand, the words are
- * the caption.
+ * The nav type went 16px → 18px with it. Not to keep pace — the mark is meant to
+ * lead its label, the aperture is the brand and the words are the caption — but
+ * because at 16px against a 36px mark the lockup tipped from "mark-led" to
+ * "mark-heavy". 2:1 reads as hierarchy; 2.25:1 read as a mismatch. The footer is
+ * already at 44/24 ≈ 1.8 and needs nothing.
  */
 const SIZES: Record<WordmarkSize, { mark: string; text: string; gap: string }> =
   {
-    sm: { mark: 'size-9', text: 'text-base', gap: 'gap-2.5' },
+    sm: { mark: 'size-9', text: 'text-lg', gap: 'gap-2.5' },
     lg: { mark: 'size-11', text: 'text-2xl', gap: 'gap-3' },
   };
 
