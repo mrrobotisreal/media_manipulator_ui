@@ -322,7 +322,23 @@ export const AuthModal: React.FC = () => {
               <span aria-hidden="true" className="h-px flex-1 bg-edge" />
             </div>
 
+            {/* This button sits outside <Tabs>, so the one instance serves both
+                Sign in and Create account.
+
+                Google's own mark, served as a file rather than inlined. The
+                official asset builds the G from nine gradient meshes behind a
+                clip path, and names them with single letters — id="a" through
+                id="s". Inlined, those land in the document's global id namespace,
+                where any other element or SVG claiming `a` or `i` silently
+                repaints the logo. In its own document they cannot collide.
+
+                Decorative: `alt=""`, because the button already says "Continue
+                with Google" and the icon would otherwise be announced twice. The
+                18px box and 8px gap (the Button's own `gap-2`) are what Google's
+                branding guidelines ask for, and the file is rendered untouched —
+                not recoloured, not redrawn, aspect ratio preserved. */}
             <Button onClick={handleGoogleAuth} variant="outline" className="w-full" disabled={isLoading}>
+              <img src="/Google.svg" alt="" width={18} height={18} className="shrink-0" />
               {t('interface:authModal.googleSignIn')}
             </Button>
           </div>
