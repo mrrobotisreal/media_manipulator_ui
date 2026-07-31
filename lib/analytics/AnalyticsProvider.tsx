@@ -31,6 +31,27 @@ import { initWebVitals } from './webVitals';
  *   - wire web vitals, global error handlers, and the GA4 bridge
  */
 
+/**
+ * Dev QA harness (Phase 7E): the event inspector panel, lazy-loaded.
+ *
+ * The literal NODE_ENV check is the ENTIRE production story: bundlers evaluate
+ * it at build time, the ternary collapses to `null`, and the `import()` —
+ * along with devTools, devValidation, and zod's runtime — is dead-code
+ * -eliminated. If the inspector chunk ever appears in `next build` output,
+ * this guard is what broke.
+ *
+ * A conditionally-rendered lazy component next to {children} rather than a
+ * portal: same visual result (the panel is position:fixed anyway), no portal
+ * container management, and nothing for the React Compiler lint to object to.
+ * AnalyticsProvider only mounts in the non-chromeless branch of
+ * app/providers.tsx, so /embed/* and /dr/* never load any of this — the same
+ * structural guarantee the rest of the SDK relies on.
+ */
+const DevEventInspector =
+  process.env.NODE_ENV !== 'production'
+    ? React.lazy(() => import('@/components/analytics/dev-event-inspector'))
+    : null;
+
 /** Run non-critical setup when the browser is idle, with a timeout fallback. */
 function onIdle(callback: () => void, timeout = 2000): () => void {
   if (typeof window === 'undefined') return () => undefined;
@@ -63,6 +84,10 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const trackerRef = React.useRef<EngagementTracker | null>(null);
   const initialViewSentRef = React.useRef(false);
   const identifiedUidRef = React.useRef<string | null>(null);
+  // Gates the lazy inspector so its chunk loads on IDLE rather than at
+  // hydration — the harness must never compete with the page for first paint,
+  // even in dev.
+  const [devToolsReady, setDevToolsReady] = React.useState(false);
 
   /* --- Start the client + resolve consent ------------------------------- */
   React.useEffect(() => {
@@ -77,7 +102,27 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     // nothing depends on them being attached in the first frame.
     const cancelIdle = onIdle(() => initWebVitals(analytics));
 
+    // Dev-only + idle + dynamic import: the QA harness (validation warner +
+    // inspector controller). The literal guard is what dead-code-eliminates
+    // all of it — including zod — from the production bundle.
+    let detachDevTools: (() => void) | undefined;
+    let cancelDevIdle: (() => void) | undefined;
+    if (process.env.NODE_ENV !== 'production') {
+      cancelDevIdle = onIdle(() => {
+        import('./devTools')
+          .then((mod) => {
+            detachDevTools = mod.initDevTools(analytics);
+            setDevToolsReady(true);
+          })
+          .catch(() => {
+            // House rule: analytics (and its tooling) never throws.
+          });
+      });
+    }
+
     return () => {
+      cancelDevIdle?.();
+      detachDevTools?.();
       cancelIdle();
       detachGA4();
       detachErrors();
@@ -187,7 +232,16 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {DevEventInspector && devToolsReady ? (
+        <React.Suspense fallback={null}>
+          <DevEventInspector />
+        </React.Suspense>
+      ) : null}
+    </>
+  );
 }
 
 export default AnalyticsProvider;
