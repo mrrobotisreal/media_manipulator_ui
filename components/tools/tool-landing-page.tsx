@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Shield } from 'lucide-react';
 import EmbeddedToolPanelClient from '@/components/tools/embedded-tool-panel-client';
+import ToolAnalyticsBoundary from '@/components/tools/tool-analytics-boundary';
 import AdBanner from '@/components/ad-banner';
 import { getReviewToolInContentAdSlot } from '@/lib/adSlots';
 import { isReviewSafeInternalHref } from '@/content/reviewAllowlist';
@@ -94,9 +95,21 @@ export default function ToolLandingPage({
           {beforeIntroExtra}
 
           {/* Interactive tool panel (client island, ssr:false). A custom panel
-              (e.g. the Content Studio editor) overrides the generic converter. */}
+              (e.g. the Content Studio editor) overrides the generic converter.
+
+              ToolAnalyticsBoundary wraps BOTH branches, and that is the point: a custom
+              panel bypasses EmbeddedToolPanel's own provider entirely, so before this
+              boundary existed the four `panel={}` pages emitted no `tool_viewed` and every
+              event they did emit arrived with tool_slug NULL. The generic branch is now
+              nested inside two providers, which the provider handles explicitly rather
+              than double-firing (see ToolAnalyticsContext). */}
+          <ToolAnalyticsBoundary slug={tool.slug} mediaKind={tool.embed.defaultMediaKind}>
           {panel ?? (
           <EmbeddedToolPanelClient
+            // THE tool funnel dimension. Passed explicitly from the same toolPages.ts
+            // record that renders this page — never derived from the URL, which breaks for
+            // the CreaTV /embed iframe and for the homepage converter.
+            toolSlug={tool.slug}
             defaultMediaKind={tool.embed.defaultMediaKind}
             defaultTask={tool.embed.defaultTask}
             defaultOutputFormat={tool.embed.defaultOutputFormat}
@@ -134,6 +147,7 @@ export default function ToolLandingPage({
             description={tool.embed.description}
           />
           )}
+          </ToolAnalyticsBoundary>
 
           {/* Supported formats */}
           {hasFormats && sf ? (

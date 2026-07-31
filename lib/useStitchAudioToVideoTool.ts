@@ -5,7 +5,13 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
-import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  markJobStarted,
+  reportError,
+  trackUploadStarted,
+} from '@/lib/analytics';
 
 /**
  * useStitchAudioToVideoTool POSTs a base video together with up to a small
@@ -81,31 +87,48 @@ const useStitchAudioToVideoTool = (
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const mutation = useMutation({
-    mutationFn: ({ video, options }: { video: File; options: StitchAudioFormData }) =>
-      submitStitchJob(video, options, setUploadProgress),
+    mutationFn: ({ video, options }: { video: File; options: StitchAudioFormData }) => {
+      // Video PLUS every audio track go up in the same multipart POST, so size_bytes is
+      // their combined size — the thing that actually determines the wait.
+      const totalBytes = video.size + options.tracks.reduce((sum, track) => sum + track.file.size, 0);
+      const upload = trackUploadStarted(totalBytes, 'post', {
+        media_kind: 'video',
+        feature: 'stitch_audio_to_video',
+      });
+      return submitStitchJob(video, options, setUploadProgress).then((res) => {
+        upload.completed();
+        return res;
+      });
+    },
     onSuccess: (data, variables) => {
       toast.success('Stitch job started', {
         description: `Job ID: ${data.jobId}`,
       });
-      trackFirstPartyEvent('stitch_audio_to_video_started', {
-        track_count: variables.options.tracks.length,
-        stitch_mode: variables.options.mode,
-        size_bytes: variables.video.size,
-      }, {
-        mediaKind: 'video',
-        conversionJobId: data.jobId,
-        featureName: 'stitch_audio_to_video',
-      });
+      markJobStarted(data.jobId, 'stitch-audio-to-video', 'video');
+      analytics.track(
+        EVENTS.JOB_STARTED,
+        {
+          job_id: data.jobId,
+          options_hash: `${variables.options.mode}-${variables.options.tracks.length}tracks`,
+        },
+        { job_id: data.jobId, media_kind: 'video', feature: 'stitch_audio_to_video' },
+      );
       onSuccess(data);
     },
     onError: (error, variables) => {
       console.error('Stitch audio submission failed:', error);
-      trackFirstPartyError('stitch_audio_upload', error, {
-        track_count: variables.options.tracks.length,
-      }, {
-        mediaKind: 'video',
-        featureName: 'stitch_audio_to_video',
-      });
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        {
+          reason: error.message || 'unknown',
+          size_bytes:
+            variables.video.size +
+            variables.options.tracks.reduce((sum, track) => sum + track.file.size, 0),
+          transport: 'post',
+        },
+        { media_kind: 'video', feature: 'stitch_audio_to_video' },
+      );
+      reportError(analytics, error, { stage: 'stitch_audio_upload', toolSlug: 'stitch-audio-to-video' });
       toast.error('Failed to start stitch job', {
         description: error.message || 'An unexpected error occurred',
       });

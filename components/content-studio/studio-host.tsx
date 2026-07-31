@@ -11,6 +11,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 import { useLocalization } from '@/i18n/useLocalization';
+import { analytics, EVENTS } from '@/lib/analytics';
 import { useCreateProject, useRecentProjects } from '@/lib/useStudioProject';
 import Editor from './editor';
 import FocusableEditorShell from './focusable-editor-shell';
@@ -107,7 +108,22 @@ const ContentStudioPage: React.FC<ContentStudioPageProps> = ({ embedded = false 
 const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => {
   const { t, formatDate } = useLocalization('interface');
   const recents = useRecentProjects();
-  const createProject = useCreateProject((project) => onOpen(project.id));
+  /**
+   * Content Studio's funnel is not the tool funnel.
+   *
+   * There is no file_selected → job_started shape here: a visitor creates a project, edits
+   * for twenty minutes, and may never export. `feature_used {feature:'studio'}` is the
+   * catalog's designated escape hatch for exactly this — surfaces that do not fit the tool
+   * funnel — and project_created vs project_opened is the one distinction that matters most:
+   * new projects measure acquisition into the editor, opened ones measure whether anybody
+   * comes back to work they started. Both now carry tool_slug='content-studio', which they
+   * did not before Part 2 (this page passes a custom `panel`, so it bypassed the panel's
+   * own provider entirely — see components/tools/tool-analytics-boundary.tsx).
+   */
+  const createProject = useCreateProject((project) => {
+    analytics.track(EVENTS.FEATURE_USED, { feature: 'studio', action: 'project_created' });
+    onOpen(project.id);
+  });
 
   const [name, setName] = React.useState('');
   const [resKey, setResKey] = React.useState(RESOLUTIONS[0].key);
@@ -197,7 +213,13 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
               <li key={project.id}>
                 <button
                   type="button"
-                  onClick={() => onOpen(project.id)}
+                  onClick={() => {
+                    analytics.track(EVENTS.FEATURE_USED, {
+                      feature: 'studio',
+                      action: 'project_opened',
+                    });
+                    onOpen(project.id);
+                  }}
                   className="w-full text-left rounded-lg border border-border bg-background/40 p-3 hover:bg-muted/40 transition-colors"
                 >
                   <span className="block font-medium text-card-foreground truncate">{project.name}</span>

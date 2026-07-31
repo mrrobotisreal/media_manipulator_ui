@@ -5,7 +5,14 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
 import { authHeaders } from '@/lib/auth/authedFetch';
-import { getSessionId, trackFirstPartyEvent, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  getSessionId,
+  markJobStarted,
+  reportError,
+  trackUploadStarted,
+} from '@/lib/analytics';
 import type {
   DocumentScanOptions,
   DocumentScanStartResponse,
@@ -86,6 +93,11 @@ const useDocumentScan = (
 
       setUploadPhase('uploading');
       setUploadProgress(0);
+      // The one tool that uploads MANY files in one request. size_bytes is their total,
+      // which is what determines how long the visitor waits — a per-file breakdown would
+      // need one event per page and would tell us less.
+      const totalBytes = files.reduce((sum, file) => sum + file.size, 0);
+      const upload = trackUploadStarted(totalBytes, 'post', { media_kind: 'document' });
 
       const form = new FormData();
       const order: string[] = [];
@@ -106,7 +118,11 @@ const useDocumentScan = (
         headers,
         (pct) => {
           setUploadProgress(pct);
-          if (pct >= 100) setUploadPhase('starting');
+          if (pct >= 100) {
+            setUploadPhase('starting');
+            // All bytes sent. Repeat 100% callbacks are absorbed by the tracker.
+            upload.completed();
+          }
         },
       );
       setUploadPhase('processing');
@@ -115,36 +131,42 @@ const useDocumentScan = (
     onSuccess: (data, variables) => {
       setUploadProgress(100);
       const { options, files } = variables;
-      trackFirstPartyEvent(
-        'document_scan_started',
+      markJobStarted(data.jobId, 'document-scan', 'document');
+      analytics.track(
+        EVENTS.JOB_STARTED,
         {
-          page_count: files.length,
-          content_mode: options.contentMode,
-          outputs: options.outputs.join('+'),
-          preclean: options.preclean,
-          verify: options.verify,
-          second_opinion: options.secondOpinion,
-          summarize: options.summarize,
+          job_id: data.jobId,
+          target_format: options.outputs.join('+'),
+          // Which engine options people actually turn on. No filenames, no page content —
+          // counts and flags only.
+          options_hash: [
+            options.contentMode,
+            `${files.length}p`,
+            options.preclean ? 'preclean' : '',
+            options.verify ? 'verify' : '',
+            options.secondOpinion ? 'second' : '',
+            options.summarize ? 'summary' : '',
+          ]
+            .filter(Boolean)
+            .join('-'),
         },
-        {
-          mediaKind: 'image',
-          conversionJobId: data.jobId,
-        },
+        { job_id: data.jobId, media_kind: 'document' },
       );
       onSuccess(data);
     },
     onError: (error, variables) => {
       setUploadPhase('idle');
       console.error('Document scan start failed:', error);
-      trackFirstPartyError(
-        'document_scan_start',
-        error,
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
         {
-          page_count: variables.files.length,
-          content_mode: variables.options.contentMode,
+          reason: error.message || 'unknown',
+          size_bytes: variables.files.reduce((sum, file) => sum + file.size, 0),
+          transport: 'post',
         },
-        { mediaKind: 'image' },
+        { media_kind: 'document' },
       );
+      reportError(analytics, error, { stage: 'document_scan_start', toolSlug: 'document-scan' });
       toast.error('Failed to start scan', {
         description: error.message || 'An unexpected error occurred',
       });

@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 
+import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { formatResetsIn } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -75,9 +76,65 @@ const Gauge: React.FC<GaugeProps> = ({ used, limit, tone, pending }) => {
  */
 const SHELL = 'flex h-9 w-[68px] shrink-0 flex-col justify-center rounded-md px-2 py-1';
 
+/**
+ * `quota_warning_shown`, at most once per session per metric.
+ *
+ * WHY SESSIONSTORAGE AND NOT A REF. The meter mounts on every route in the app, so a
+ * per-component guard would emit the warning again on every client-side navigation while the
+ * visitor is near their limit — turning one meaningful event into dozens and making "how
+ * many people got warned today?" unanswerable. sessionStorage is the right scope because the
+ * warning is a per-visit experience, and it matches the once-per-session budget the upgrade
+ * nudge already uses.
+ *
+ * Failures are swallowed: private mode and blocked storage are normal, and the correct
+ * behaviour there is to stay silent rather than to warn repeatedly.
+ */
+const WARNED_PREFIX = 'mm.quotaWarned.';
+
+function warnOnce(metric: string, emit: () => void): void {
+  const key = WARNED_PREFIX + metric;
+  try {
+    if (window.sessionStorage.getItem(key) === '1') return;
+    window.sessionStorage.setItem(key, '1');
+  } catch {
+    // Erring toward silence: a prompt we cannot deduplicate is worse than no prompt.
+    return;
+  }
+  emit();
+}
+
 export const QuotaMeter: React.FC = () => {
   const auth = useAuth();
   const { t } = useLocalization(['interface', 'accessibility']);
+
+  // THE WARNING EFFECT LIVES ABOVE EVERY EARLY RETURN. This component returns early three
+  // times (no provider, still loading, signed in), so an effect declared further down would
+  // run in some renders and not others — a hooks-order violation that React would eventually
+  // punish with a mismatched-hook error rather than a missing event.
+  //
+  // Two thresholds, not one: 20% covers generous allowances, and "1 left" covers small ones
+  // where 20% of 5 never trips before zero. At-limit is deliberately NOT warned here — that
+  // is `quota_exceeded_shown`, emitted from the 429 subscriber in AuthProvider, where the
+  // block actually happens.
+  const warnLimit = auth?.allowanceOf('ops') ?? 0;
+  const warnUsed = auth?.usage.ops ?? 0;
+  const warnRemaining = Math.max(0, warnLimit - warnUsed);
+  const nearLimit =
+    !!auth &&
+    !auth.loading &&
+    warnLimit > 0 &&
+    warnRemaining > 0 &&
+    (warnRemaining / warnLimit <= 0.2 || warnRemaining <= 1);
+  React.useEffect(() => {
+    if (!nearLimit) return;
+    warnOnce('ops', () =>
+      analytics.track(EVENTS.QUOTA_WARNING_SHOWN, {
+        limit: warnLimit,
+        remaining: warnRemaining,
+        scope: 'ops',
+      }),
+    );
+  }, [nearLimit, warnLimit, warnRemaining]);
 
   // Outside the provider (the chromeless /embed and /dr trees) there is no
   // allowance to show and nothing to reserve space for.
@@ -136,7 +193,13 @@ export const QuotaMeter: React.FC = () => {
   return (
     <button
       type="button"
-      onClick={() => auth.openAuth({ intent: 'signup', source: 'quota_meter' })}
+      onClick={() => {
+        analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
+          placement: 'quota_meter',
+          from_tier: auth.tier,
+        });
+        auth.openAuth({ intent: 'signup', source: 'quota_meter' });
+      }}
       title={description}
       aria-label={`${t('accessibility:quotaMeter.gauge', { used, limit })}. ${t('accessibility:quotaMeter.openUpgrade')}`}
       className={shellClass}

@@ -199,9 +199,41 @@
   },
   "consentBanner": {
     "label": "Cookie and analytics choices",
-    "body": "We use cookies to measure how the tools are used and, in future, to show ads. Your files are never part of that.",
+    "body": "We use privacy-respecting, first-party analytics to see which tools get used and where they break. Your files are never part of it, and you can change this any time.",
+    "bodyGdpr": "Before we measure anything, we need your say-so. We use first-party analytics to see which tools get used and where they break — nothing is collected until you choose, and your files are never part of it.",
     "privacyLink": "Read the privacy policy",
+    "customize": "Customize",
     "accept": "Accept",
     "decline": "Decline"
+  },
+  "consentPrefs": {
+    "title": "Privacy preferences",
+    "subtitle": "Choose what Media Manipulator may measure. Changes apply immediately after you save.",
+    "necessary": {
+      "title": "Strictly necessary",
+      "body": "Your theme choice, and an anonymous device and visit ID that lets us enforce free-tier limits and block abuse. No cookies, no advertising use, and it cannot be turned off without breaking the tools.",
+      "always": "Always on"
+    },
+    "analytics": {
+      "title": "Analytics",
+      "body": "Which tools you use, whether a conversion succeeded, how fast pages load, and errors we should fix. First-party, kept 13 months, never sold. No filenames and no file contents."
+    },
+    "advertising": {
+      "title": "Advertising",
+      "body": "For personalised advertising. We do not currently show ads, so this does nothing yet — it is listed here so you can see it before it ever becomes active.",
+      "bodyGpc": "For personalised advertising. Your browser is sending a Global Privacy Control signal, so this stays off — we honour that signal and a click here cannot override it.",
+      "notActive": "Not yet active"
+    },
+    "gpcDetected": "Global Privacy Control detected. We have automatically opted you out of any sale or sharing of your personal information, and recorded that we did.",
+    "doNotSell": {
+      "title": "Do Not Sell or Share My Personal Information",
+      "body": "We do not sell your personal information. This opts you out of any sharing for advertising purposes, now and in future. First-party analytics is a separate choice above.",
+      "action": "Opt out",
+      "done": "You are opted out"
+    },
+    "policyPrefix": "Full detail on what we collect, why, and how long we keep it:",
+    "policyLink": "privacy policy",
+    "cancel": "Cancel",
+    "save": "Save preferences"
   }
 }

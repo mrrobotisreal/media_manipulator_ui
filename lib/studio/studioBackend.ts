@@ -12,7 +12,7 @@ import {
 } from '@/lib/studioTypes';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
+import { getSessionId } from '@/lib/analytics';
 
 /**
  * StudioBackend — the pluggable transport the Content Studio editor talks to.

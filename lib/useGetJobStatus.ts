@@ -4,7 +4,7 @@ import { getBaseURL } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
-import { trackFirstPartyError } from '@/lib/firstPartyAnalytics';
+import { analytics, EVENTS, reportError, takeJobDuration } from '@/lib/analytics';
 
 export interface ConversionJob {
   id: string;
@@ -13,7 +13,31 @@ export interface ConversionJob {
   progress?: number;
   resultUrl?: string;
   error?: string;
+  /**
+   * Result metadata, when the pipeline that ran the job knows it.
+   *
+   * Both are OPTIONAL because only some pipelines set them (the API's
+   * `ResultSizeBytes` / `ResultFileName` are populated by the ones that package an
+   * artifact). They exist here purely so `job_completed` can carry `output_bytes` and
+   * `output_format` — the two numbers that turn "the job finished" into "the job
+   * produced 4 MB of mp4", which is what makes compression and format reports possible
+   * without joining to the download event.
+   */
+  resultSizeBytes?: number;
+  resultFileName?: string;
 }
+
+/**
+ * Extension of a result filename, lowercased, without the dot.
+ *
+ * THE EXTENSION IS THE ONLY PART THAT MAY BE EMITTED. `resultFileName` is derived from the
+ * visitor's own filename, so "mp4" is a format and "wedding video final.mp4" is PII.
+ * Anything that does not look like a plain short extension is dropped rather than guessed.
+ */
+const resultFormatOf = (fileName: string | undefined): string | undefined => {
+  const ext = (fileName || '').split('.').pop()?.toLowerCase() ?? '';
+  return /^[a-z0-9]{1,12}$/.test(ext) && ext !== (fileName || '').toLowerCase() ? ext : undefined;
+};
 
 const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
   const response = await fetch(`${getBaseURL()}/job/${jobId}`);
@@ -30,6 +54,10 @@ const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
     originalFile: new File([], 'temp'), // This would need to be handled differently in a real app
     resultUrl: data.status === 'completed' ? `${getBaseURL()}/download/${jobId}` : undefined,
     error: data.error,
+    // Passed through only when the API actually sent them; `undefined` stays undefined so
+    // the properties below are omitted rather than reported as zero.
+    resultSizeBytes: typeof data.resultSizeBytes === 'number' ? data.resultSizeBytes : undefined,
+    resultFileName: typeof data.resultFileName === 'string' ? data.resultFileName : undefined,
   };
 };
 
@@ -66,17 +94,41 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
     refetchInterval: 2000,
   });
 
-  // Handle toast notifications when status changes
+  // Toasts AND the terminal analytics events, on the status TRANSITION.
+  //
+  // Emitting from the transition rather than from the polled value is what keeps this to
+  // one event per job: the query refetches every 2s and would otherwise re-fire
+  // job_completed on every poll after the job finished.
   useEffect(() => {
     if (jobStatusData && previousStatusRef.current !== jobStatusData.status) {
       if (jobStatusData.status === 'completed') {
         toast.success('Conversion completed successfully!', {
           description: 'Your file is ready for download'
         });
+        analytics.track(
+          EVENTS.JOB_COMPLETED,
+          {
+            job_id: jobStatusData.id,
+            duration_ms: takeJobDuration(jobStatusData.id),
+            output_bytes: jobStatusData.resultSizeBytes,
+            output_format: resultFormatOf(jobStatusData.resultFileName),
+          },
+          { job_id: jobStatusData.id },
+        );
       } else if (jobStatusData.status === 'failed') {
         toast.error('Conversion failed', {
           description: jobStatusData.error || 'The conversion process encountered an error'
         });
+        analytics.track(
+          EVENTS.JOB_FAILED,
+          {
+            job_id: jobStatusData.id,
+            duration_ms: takeJobDuration(jobStatusData.id),
+            reason: jobStatusData.error || 'unknown',
+            stage: 'processing',
+          },
+          { job_id: jobStatusData.id },
+        );
       }
       previousStatusRef.current = jobStatusData.status;
     }
@@ -85,11 +137,10 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
   // Handle query errors
   useEffect(() => {
     if (isError && error) {
-      trackFirstPartyError('job_status_poll', error, {
-        conversion_job_id: conversionJob?.id,
-      }, {
-        conversionJobId: conversionJob?.id,
-      });
+      // A poll failure is an engineering signal, not a funnel stage — the job itself may
+      // still be fine. client_error only, and the dedupe stops a persistently failing
+      // poll (one every 2s) from flooding the pipeline.
+      reportError(analytics, error, { stage: 'job_status_poll' });
       toast.error('Failed to check job status', {
         description: error.message || 'Unable to get conversion progress'
       });

@@ -5,7 +5,14 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
 import { authedFetch } from '@/lib/auth/authedFetch';
-import { getSessionId, trackFirstPartyEvent, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  getSessionId,
+  markJobStarted,
+  reportError,
+  trackUploadStarted,
+} from '@/lib/analytics';
 import type { TranscodeUploadTarget } from './transcodeTypes';
 import type { RestoreModelId, RestoreStartResponse, RestoreUploadPhase } from './restoreTypes';
 
@@ -82,6 +89,8 @@ const useVideoRestore = (onSuccess: (result: RestoreStartResponse) => void): Use
 
       setUploadPhase('requesting-url');
       setUploadProgress(0);
+      // From the presign, because the visitor's wait starts there.
+      const upload = trackUploadStarted(file.size, 'presigned_put', { media_kind: 'video' });
       const presignResponse = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -99,6 +108,8 @@ const useVideoRestore = (onSuccess: (result: RestoreStartResponse) => void): Use
 
       setUploadPhase('uploading-to-s3');
       await putFileToS3(target, file, contentType, setUploadProgress);
+      // Bytes on S3. `starting` below is the API accepting the restoration job.
+      upload.completed();
 
       setUploadPhase('starting');
       const startResponse = await authedFetch(`${getBaseURL()}/video-restore/start`, {
@@ -126,32 +137,40 @@ const useVideoRestore = (onSuccess: (result: RestoreStartResponse) => void): Use
     },
     onSuccess: (data, variables) => {
       setUploadProgress(100);
-      trackFirstPartyEvent(
-        'restore_started',
+      markJobStarted(data.jobId, 'video-restore', 'video');
+      analytics.track(
+        EVENTS.JOB_STARTED,
         {
-          clip_seconds: Math.round((variables.clipEndSeconds - variables.clipStartSeconds) * 10) / 10,
-          model_count: variables.models.length,
-          models: variables.models.join(','),
-          scale: variables.scale,
-          include_frames: variables.includeFrames,
-          size_bucket: sizeBucket(variables.file.size),
+          job_id: data.jobId,
+          options_hash: [
+            `x${variables.scale}`,
+            `${variables.models.length}m`,
+            variables.includeFrames ? 'frames' : '',
+            sizeBucket(variables.file.size),
+          ]
+            .filter(Boolean)
+            .join('-'),
+          // Clip length is a genuinely useful GPU-cost dimension, rounded to a tenth of a
+          // second so it cannot act as a fingerprint.
+          source_format: `${Math.round((variables.clipEndSeconds - variables.clipStartSeconds) * 10) / 10}s`,
         },
-        {
-          mediaKind: 'video',
-          conversionJobId: data.jobId,
-        },
+        { job_id: data.jobId, media_kind: 'video' },
       );
       onSuccess(data);
     },
     onError: (error, variables) => {
       setUploadPhase('idle');
       console.error('Video restore start failed:', error);
-      trackFirstPartyError(
-        'restore_start',
-        error,
-        { size_bucket: sizeBucket(variables.file.size), model_count: variables.models.length },
-        { mediaKind: 'video' },
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        {
+          reason: error.message || 'unknown',
+          size_bytes: variables.file.size,
+          transport: 'presigned_put',
+        },
+        { media_kind: 'video' },
       );
+      reportError(analytics, error, { stage: 'restore_start', toolSlug: 'video-restore' });
       toast.error('Failed to start restoration', {
         description: error.message || 'An unexpected error occurred',
       });

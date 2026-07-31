@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
-import { getSessionId, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
+import { analytics, EVENTS, getSessionId, reportError, trackUploadStarted } from '@/lib/analytics';
 import type {
   TranscodeProbeResponse,
   TranscodeUploadTarget,
@@ -76,6 +76,12 @@ const useVideoTranscodeProbe = (
       const contentType = file.type || 'video/mp4';
       setUploadPhase('requesting-url');
       setUploadProgress(0);
+      // THE PROBE IS THIS TOOL'S UPLOAD. Transcoding is a two-request flow — probe first
+      // (presign → PUT → ffprobe), then /video-transcode/start reusing the same s3Key — so
+      // the upload lifecycle belongs here and useStartVideoTranscode deliberately has none.
+      // Emitting a second upload_started there would double every upload count for the one
+      // tool that uploads exactly once.
+      const upload = trackUploadStarted(file.size, 'presigned_put', { media_kind: 'video' });
       const presignResponse = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -92,6 +98,8 @@ const useVideoTranscodeProbe = (
       const target = (await presignResponse.json()) as TranscodeUploadTarget;
       setUploadPhase('uploading-to-s3');
       await putFileToS3(target, file, contentType, setUploadProgress);
+      // The bytes have landed. The probe that follows is server-side analysis, not upload.
+      upload.completed();
       setUploadPhase('probing');
       const probeResponse = await authedFetch(`${getBaseURL()}/video-transcode/probe`, {
         method: 'POST',
@@ -125,11 +133,18 @@ const useVideoTranscodeProbe = (
     onError: (error, file) => {
       setUploadPhase('idle');
       console.error('Transcode probe failed:', error);
-      trackFirstPartyError('transcode_probe', error, {
-        size_bytes: file.size,
-      }, {
-        mediaKind: 'video',
-      });
+      // The probe IS the upload for this tool (presign → PUT → probe), so a failure here
+      // is an upload failure in funnel terms, not merely a client error.
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        {
+          reason: error.message || 'unknown',
+          size_bytes: file.size,
+          transport: 'presigned_put',
+        },
+        { media_kind: 'video' },
+      );
+      reportError(analytics, error, { stage: 'transcode_probe', toolSlug: 'transcode-video' });
       toast.error('Failed to analyze video', {
         description: error.message || 'An unexpected error occurred',
       });

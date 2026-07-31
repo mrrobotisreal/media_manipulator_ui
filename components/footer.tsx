@@ -39,10 +39,14 @@ const Footer: React.FC = () => {
   //
   //   1. Funding Choices, which exposes window.googlefc once the AdSense script
   //      has loaded and Privacy & messaging is on. When it is present it owns
-  //      TCF state and is the only correct place to revoke — a GDPR and AdSense
-  //      requirement, and why it stays first.
-  //   2. Otherwise the first-party bar, which is what actually asked while the
-  //      review build ships no AdSense script.
+  //      TCF state for ADS and is the only correct place to revoke those — a GDPR
+  //      and AdSense requirement, and why it stays first. Kept for the Phase 12
+  //      handover; it is unreachable while the review build ships no ad script.
+  //   2. Otherwise the first-party preferences centre, which is what actually
+  //      asked. `requestConsentReview()` now opens the PREFERENCES DIALOG rather
+  //      than re-showing the banner: someone clicking a settings link wants to
+  //      see and adjust their current state, not answer the first-visit question
+  //      again with no indication of what they chose last time.
   //   3. Otherwise the explainer, for the narrow case where ads are enabled but
   //      Funding Choices never arrived (blocked script, dashboard misconfigured).
   //      Doing nothing at all would be the wrong failure for this control.
@@ -141,6 +145,24 @@ const Footer: React.FC = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                {/*
+                  A SEPARATE link from "Cookie settings", by the literal name CPRA
+                  §1798.135 requires: "Do Not Sell or Share My Personal Information".
+                  The statute names the link, so paraphrasing it or folding it into a
+                  generic settings entry does not satisfy it — even though, here, both
+                  open the same dialog. Rendered unconditionally rather than only for
+                  US visitors: region detection is best-effort, and a missing link is a
+                  compliance failure while an extra one costs a line of text.
+                */}
+                <button
+                  type="button"
+                  onClick={requestConsentReview}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left"
+                >
+                  {t('interface:footer.doNotSell')}
+                </button>
+              </li>
               <li>
                 <button
                   type="button"

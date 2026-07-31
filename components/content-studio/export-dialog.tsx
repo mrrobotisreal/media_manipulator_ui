@@ -20,7 +20,7 @@ import { useStudioStore } from '@/lib/studioStore';
 import { useSaveProject } from '@/lib/useStudioProject';
 import { useStartStudioExport, studioDownloadUrl } from '@/lib/useStudioExport';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
-import { trackStudioExport } from '@/lib/studio/telemetry';
+import { analytics, EVENTS, markJobStarted, takeJobDuration } from '@/lib/analytics';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import { useEmbedBridgeOptional } from './embed-bridge';
 
@@ -88,10 +88,43 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
 
   const job = useStudioJobProgress(jobId, {
     onError: (msg) => {
+      // TERMINAL TRUTH FOR A STUDIO EXPORT LIVES HERE, not in useGetJobStatus.
+      //
+      // Content Studio does not use useGetJobStatus at all — it has its own watcher
+      // (useStudioJobProgress: SSE on MM, polling on CreaTV, shapes normalized by
+      // backend.parseJob). So the terminal events every other tool gets for free had no
+      // producer for the single most expensive surface on the site: markJobStarted was
+      // called on export, and nothing ever closed the pair. takeJobDuration is what turns
+      // that recorded start into a real duration instead of a component's local state.
+      //
+      // Emitted BEFORE the CreaTV bridge work below, and outside its guards, because the
+      // analytics event is wanted on both ecosystems while the bridge messages are
+      // CreaTV-only.
+      if (jobId) {
+        analytics.track(
+          EVENTS.JOB_FAILED,
+          {
+            job_id: jobId,
+            duration_ms: takeJobDuration(jobId),
+            // The watcher's message, which comes from our own API's job error field — it
+            // can name a path, so it is not passed through. `stage` says where instead.
+            reason: 'export_failed',
+            stage: 'export',
+          },
+          { job_id: jobId, media_kind: 'video' },
+        );
+      }
       toast.error('Export failed', { description: msg });
       if (isCreatv && jobId) bridge?.emit({ type: 'cs:export-failed', jobId, error: msg });
     },
     onComplete: () => {
+      if (jobId) {
+        analytics.track(
+          EVENTS.JOB_COMPLETED,
+          { job_id: jobId, duration_ms: takeJobDuration(jobId) },
+          { job_id: jobId, media_kind: 'video' },
+        );
+      }
       if (!isCreatv || !jobId || handedOffRef.current) return;
       handedOffRef.current = true;
       const draftId = backend.scope?.draftId;
@@ -152,13 +185,29 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
         preset: values.quality,
         loudness: values.loudness === 'none' ? '' : values.loudness,
       });
-      // Derived-metadata telemetry only (no text/filenames).
+      // DERIVED METADATA ONLY — booleans and preset keys. Never `values.fileName`, which the
+      // visitor typed and which routinely contains a client name or a project codename.
       const effects = (project?.tracks ?? []).flatMap((tr) => tr.clips).flatMap((c) => c.effects ?? []);
-      trackStudioExport({
-        hasLut: effects.some((e) => e.type === 'lut'),
-        hasChromaKey: effects.some((e) => e.type === 'chromakey'),
-        loudness: values.loudness === 'none' ? '' : values.loudness,
-      });
+      // A studio export IS a real job: it transcodes and produces a downloadable artifact,
+      // so unlike the rest of the studio's interactions it belongs in the funnel. The
+      // duration then comes from jobTimings on the terminal event, like every other job.
+      markJobStarted(res.jobId, 'content-studio', 'video');
+      analytics.track(
+        EVENTS.JOB_STARTED,
+        {
+          job_id: res.jobId,
+          target_format: values.quality,
+          options_hash: [
+            values.quality,
+            effects.some((e) => e.type === 'lut') ? 'lut' : '',
+            effects.some((e) => e.type === 'chromakey') ? 'chromakey' : '',
+            values.loudness === 'none' ? '' : `loudness-${values.loudness}`,
+          ]
+            .filter(Boolean)
+            .join('-'),
+        },
+        { job_id: res.jobId, media_kind: 'video', feature: 'studio' },
+      );
       setJobId(res.jobId);
       if (isCreatv) bridge?.emit({ type: 'cs:export-started', jobId: res.jobId });
     } catch (err) {

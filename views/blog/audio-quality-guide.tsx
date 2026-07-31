@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentReadTracker from '@/components/analytics/content-read-tracker';
 import Link from 'next/link';
 import { CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Panel } from '@/components/darkroom/panel';
@@ -10,6 +11,9 @@ import TrackedCtaButton from '@/components/analytics/tracked-cta-button';
 const AudioQualityGuide: React.FC = () => {
   return (
     <>
+      {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
+          at >=90% scroll AND >=15s active. Renders nothing. */}
+      <ContentReadTracker slug="audio-quality-guide" contentType="blog" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
       <aside className="hidden lg:block w-[300px] shrink-0">
         
@@ -370,7 +374,8 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
             Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!
           </p>
           <TrackedCtaButton
-            event="Audio Quality Guide - Convert Audio Free"
+            ctaId="blog_audio_quality_try_converter"
+            placement="blog_guide_audio_quality"
             href="/tools/audio-converter"
             className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
           >

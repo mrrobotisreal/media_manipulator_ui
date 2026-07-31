@@ -5,9 +5,26 @@ import { Upload, Download, X, Play, Music } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
 import { getFileType } from '@/lib/utils';
-import { getSafeFileExtension, trackFileDownload, trackFileUpload } from '@/lib/analytics';
+import {
+  analytics,
+  EVENTS,
+  normalizeMediaKind,
+  safeFileExtension,
+  trackFileChoice,
+  useToolAnalytics,
+} from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useAuth } from '@/lib/auth/AuthProvider';
 import { Panel } from '@/components/darkroom/panel';
+
+/**
+ * Map a preview surface's media kind onto the catalog's `preview_kind` vocabulary.
+ * A zip is 'other': the modal shows a "preview not available" message for it, which is a
+ * genuinely different experience from playing a video and should not be counted as one.
+ */
+const previewKindFor = (
+  kind: 'audio' | 'video' | 'image' | 'zip',
+): 'image' | 'video' | 'audio' | 'text' | 'other' => (kind === 'zip' ? 'other' : kind);
 
 /**
  * SpecializedToolShell renders the common upload → progress → download UX
@@ -82,9 +99,19 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
   previewConfig,
 }) => {
   const { t, formatFileSize } = useLocalization('interface');
+  // tool_slug and media_kind arrive from the ToolAnalyticsProvider that tool-landing-page
+  // wraps around the panel — this shell is shared by ten different tools and must not
+  // guess which one it is rendering inside.
+  const { track: trackTool, setMediaKind } = useToolAnalytics();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Which job's result has already been counted as previewed. A ref, not state: it must
+  // not trigger a render, and it has to survive the modal opening and closing.
+  const previewedJobRef = useRef<string | null>(null);
+  // Nullable outside the AuthProvider (the chromeless trees). Read only for the tier's
+  // file-size ceiling on `file_rejected`.
+  const auth = useAuth();
   const submitRef = useRef<() => void>(() => {});
 
   // Preview-modal state. We lazy-create blob URLs only when the user opens
@@ -153,7 +180,18 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
     setIsResultModalOpen(false);
     setSelectedFile(file);
     setConversionJob(null);
-    trackFileUpload(getFileType(file), file.size, file.name);
+
+    // The chosen file decides the media kind for every subsequent event in this tool.
+    const fileKind = getFileType(file);
+    setMediaKind(normalizeMediaKind(fileKind));
+    // `unsupported` is only the unrecognised-type case here. This shell is shared by ten
+    // tools with ten different `accept` strings, and a stricter per-tool check would have
+    // to duplicate that vocabulary — the picker already enforces `accept`, and the API
+    // enforces the rest. See lib/analytics/fileChoice.ts for the event semantics.
+    trackFileChoice(trackTool, file, fileKind, {
+      unsupported: fileKind === 'unknown',
+      limitBytes: auth?.limits?.maxFileBytes,
+    });
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,6 +219,16 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
   }, []);
 
   const clearFile = () => {
+    // Read the outcome before the job state is discarded — a retry after a failure and a
+    // fresh start after a download are the two things this event exists to separate.
+    trackTool(EVENTS.TOOL_RESET, {
+      after:
+        conversionJob?.status === 'completed'
+          ? 'success'
+          : conversionJob?.status === 'failed'
+            ? 'failure'
+            : 'idle',
+    });
     revokeOriginalUrl();
     revokeResultUrl();
     setResultPreviewError(null);
@@ -216,13 +264,36 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
     try {
       // Reuse the cached preview blob when present — no need to re-fetch
       // the same artifact when the user already opened the preview modal.
+      // useDownloadFile emits download_started/completed/failed around the FETCH. When the
+      // preview modal already fetched the blob there is no fetch, so nothing would be
+      // recorded for what is, to the visitor, a download — hence the explicit event on
+      // that path only. Emitting on both paths would double-count.
+      const servedFromCache = !!resultBlob;
       const blob = resultBlob || (await downloadFile(conversionJob.id));
       if (!resultBlob) setResultBlob(blob);
       const fileName = resultFilename();
       saveBlobToDisk(blob, fileName);
-      trackFileDownload(fileName, getFileType(selectedFile));
+      if (servedFromCache) {
+        trackTool(
+          EVENTS.DOWNLOAD_COMPLETED,
+          {
+            job_id: conversionJob.id,
+            output_format: safeFileExtension(fileName),
+            size_bytes: blob.size,
+          },
+          { job_id: conversionJob.id },
+        );
+      }
     } catch (err) {
       console.error('Specialized tool download failed', err);
+      analytics.track(
+        EVENTS.DOWNLOAD_FAILED,
+        {
+          job_id: conversionJob.id,
+          reason: err instanceof Error ? err.message : 'unknown',
+        },
+        { job_id: conversionJob.id },
+      );
     }
   };
 
@@ -235,6 +306,19 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
     if (!previewConfig || !conversionJob?.id || !selectedFile) return;
     setIsResultModalOpen(true);
     setResultView('final');
+    // `result_previewed` separates "looked at it" from "kept it", which is the difference
+    // between a tool that produces something people want and one that produces something
+    // people inspect and discard. Once per job, not once per modal open: reopening the same
+    // result is the same preview, and counting reopens would make a confusing result look
+    // like an engaging one.
+    if (previewedJobRef.current !== conversionJob.id) {
+      previewedJobRef.current = conversionJob.id;
+      trackTool(
+        EVENTS.RESULT_PREVIEWED,
+        { job_id: conversionJob.id, preview_kind: previewKindFor(previewConfig.finalMediaKind) },
+        { job_id: conversionJob.id },
+      );
+    }
     if (!originalUrl) {
       const url = URL.createObjectURL(selectedFile);
       originalUrlRef.current = url;
@@ -305,7 +389,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
             <div className="min-w-0">
               <p className="font-medium text-card-foreground truncate">{selectedFile.name}</p>
               <p className="num text-xs text-muted-foreground">
-                {formatFileSize(selectedFile.size)} · {getSafeFileExtension(selectedFile.name)}
+                {formatFileSize(selectedFile.size)} · {safeFileExtension(selectedFile.name)}
               </p>
             </div>
             <button

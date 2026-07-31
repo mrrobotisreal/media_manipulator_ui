@@ -1,17 +1,29 @@
-// Firebase client integration — LAZILY initialized.
+// Firebase client integration — LAZILY initialized. AUTH ONLY.
 //
-// Nothing initializes Firebase at module-evaluation time, so importing this
-// module (directly or transitively) during Next static generation never throws
-// `auth/invalid-api-key`, even with blank NEXT_PUBLIC_FB_* env values. The app,
-// auth, firestore, and analytics SDKs are created on demand inside async
-// getters, and only in the browser where relevant. When the config is missing,
-// the getters return null and auth actions fail with a clear message rather
-// than crashing public pages.
+// Nothing initializes Firebase at module-evaluation time, so importing this module
+// (directly or transitively) during Next static generation never throws
+// `auth/invalid-api-key`, even with blank NEXT_PUBLIC_FB_* env values. The app and auth
+// SDKs are created on demand inside async getters, and only in the browser. When the
+// config is missing, the getters return null and auth actions fail with a clear message
+// rather than crashing public pages.
+//
+// FIREBASE ANALYTICS AND PERFORMANCE ARE REMOVED, and so are the Mixpanel calls that used
+// to live in the sign-in/sign-up/sign-out helpers. Firebase is for authentication and
+// nothing else now.
+//
+// Three reasons, in order of weight:
+//   1. Product events belong to the SDK. Emitting "User Signed In" from a Firebase helper
+//      meant the auth funnel was split across two systems with two vocabularies, and the
+//      first-party pipeline never saw it. `signin_completed` / `signup_completed` /
+//      `signout` are emitted by AuthProvider and auth-modal, which are the components that
+//      actually know the method and the entry point.
+//   2. Firebase Analytics sets its own `_ga`-style identifiers and reports to Google — a
+//      second processor to disclose and defend, for data we already collect ourselves.
+//   3. Firebase Performance duplicated Core Web Vitals, which lib/analytics/webVitals.ts
+//      collects with full attribution.
 
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import type { Auth, User } from 'firebase/auth';
-import type { Analytics } from 'firebase/analytics';
-import { trackMixpanel } from './mixpanel';
 import { syncAccount } from './auth/accountApi';
 
 const firebaseConfig = {
@@ -68,34 +80,6 @@ export async function getCurrentIdToken(): Promise<string | null> {
   }
 }
 
-export async function getFirebaseAnalytics(): Promise<Analytics | null> {
-  if (typeof window === 'undefined') return null;
-  const app = getFirebaseApp();
-  if (!app) return null;
-  const { isSupported, getAnalytics } = await import('firebase/analytics');
-  const supported = await isSupported().catch(() => false);
-  if (!supported) return null;
-  const analytics = getAnalytics(app);
-
-  // Defer Firebase Performance to idle time so it never blocks the main thread.
-  const initPerformance = () => {
-    void import('firebase/performance')
-      .then((mod) => mod.getPerformance(app))
-      .catch(() => {
-        // Performance monitoring is best-effort.
-      });
-  };
-  const ric = (
-    window as typeof window & {
-      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-    }
-  ).requestIdleCallback;
-  if (typeof ric === 'function') ric(initPerformance, { timeout: 4000 });
-  else window.setTimeout(initPerformance, 2500);
-
-  return analytics;
-}
-
 /**
  * Registers a verified sign-in with the API.
  *
@@ -136,7 +120,8 @@ export const signInWithGoogle = async () => {
     const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth');
     const result = await signInWithPopup(auth, new GoogleAuthProvider());
     await registerSignIn(result.user, 'google');
-    trackMixpanel('User Signed In', { method: 'google', user_id: result.user.uid });
+    // No analytics here. `signin_completed` is emitted by the caller (auth-modal), which
+    // knows the entry point that produced the attempt.
     return result.user;
   } catch (error) {
     console.error('Google sign-in error:', error);
@@ -151,7 +136,6 @@ export const signInWithEmail = async (email: string, password: string) => {
     const { signInWithEmailAndPassword } = await import('firebase/auth');
     const result = await signInWithEmailAndPassword(auth, email, password);
     await registerSignIn(result.user, 'email');
-    trackMixpanel('User Signed In', { method: 'email', user_id: result.user.uid });
     return result.user;
   } catch (error) {
     console.error('Email sign-in error:', error);
@@ -170,7 +154,6 @@ export const signUpWithEmail = async (
     const { createUserWithEmailAndPassword } = await import('firebase/auth');
     const result = await createUserWithEmailAndPassword(auth, email, password);
     await registerSignIn(result.user, 'email', displayName);
-    trackMixpanel('User Signed Up', { method: 'email', user_id: result.user.uid });
     return result.user;
   } catch (error) {
     console.error('Email sign-up error:', error);
@@ -184,7 +167,6 @@ export const signOut = async () => {
   try {
     const { signOut: firebaseSignOut } = await import('firebase/auth');
     await firebaseSignOut(auth);
-    trackMixpanel('User Signed Out');
   } catch (error) {
     console.error('Sign-out error:', error);
     throw error;

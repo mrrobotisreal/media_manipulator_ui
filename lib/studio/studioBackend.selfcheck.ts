@@ -15,7 +15,7 @@ import { isOriginAllowed, parseAllowedOrigins } from '@/lib/studio/embedProtocol
  *     assetId echo) correctly.
  *
  * Call runStudioBackendSelfCheck() from a dev console / future test to verify.
- * Asserts here avoid env-dependent calls (getSessionId reads IndexedDB) so it
+ * Asserts here avoid env-dependent calls (getSessionId reads localStorage) so it
  * can run anywhere.
  */
 function assert(cond: boolean, msg: string): void {

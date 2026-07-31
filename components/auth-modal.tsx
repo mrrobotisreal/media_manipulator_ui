@@ -22,7 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlanSummary } from '@/components/account/plan-summary';
 import { fetchTiers, type TierDescriptor } from '@/lib/auth/accountApi';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { trackMixpanel } from '@/lib/mixpanel';
+import { EVENTS, useAnalytics } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
 
@@ -40,6 +40,7 @@ import { cn } from '@/lib/utils';
  */
 export const AuthModal: React.FC = () => {
   const auth = useAuth();
+  const { track } = useAnalytics();
   const { t } = useLocalization(['interface', 'error']);
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(
     auth?.prompt.intent ?? 'signup',
@@ -65,10 +66,21 @@ export const AuthModal: React.FC = () => {
     return map;
   }, [tiersQuery.data]);
 
+  // Whether auth actually succeeded, so the close event can distinguish an abandoned
+  // modal from a completed one. A ref rather than state: it is read in a callback that
+  // must not re-render when it changes.
+  const completedRef = React.useRef(false);
+
   React.useEffect(() => {
-    trackMixpanel('Auth Modal - Opened', {
-      default_tab: auth?.prompt.intent ?? 'signup',
-      trigger: source,
+    // TWO events, not one. `auth_prompt_shown` answers "which surfaces drive people to
+    // sign in" (its `source` is the attribution passed to openAuth) and is priority 1;
+    // `auth_modal_opened` is the funnel step itself. Collapsing them would make the
+    // attribution question unanswerable, because a visitor can be prompted from several
+    // places before they ever open the modal.
+    track(EVENTS.AUTH_PROMPT_SHOWN, { source });
+    track(EVENTS.AUTH_MODAL_OPENED, {
+      source,
+      mode: (auth?.prompt.intent ?? 'signup') as 'signin' | 'signup',
     });
     // Deliberately fires once per mount: AuthProvider mounts this only while
     // open, so mount and open are the same event.
@@ -84,10 +96,9 @@ export const AuthModal: React.FC = () => {
   };
 
   const handleClose = () => {
-    trackMixpanel('Auth Modal - Closed', {
-      tab: activeTab,
-      had_interaction: email.length > 0 || password.length > 0,
-    });
+    // `completed` is the whole value of this event: an abandoned modal is a funnel drop-off
+    // and a completed one is a conversion, and they look identical without it.
+    track(EVENTS.AUTH_MODAL_CLOSED, { completed: completedRef.current, mode: activeTab });
     resetForm();
     auth.closeAuth();
   };
@@ -95,14 +106,26 @@ export const AuthModal: React.FC = () => {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab as 'signin' | 'signup');
     resetForm();
-    trackMixpanel('Auth Modal - Tab Changed', { tab, previous_tab: activeTab });
+    // A tab toggle is not a funnel step and does not deserve a dedicated catalog event —
+    // it is an interaction inside one. `feature_used` is where interactions like this
+    // belong, which keeps the auth funnel's event set to the states that actually matter.
+    track(EVENTS.FEATURE_USED, { feature: 'auth_modal', action: 'tab_changed', value: tab });
   };
 
   const handleGoogleAuth = async () => {
     try {
       setIsLoading(true);
+      // signup_started before the attempt: without it, a Google popup that the visitor
+      // dismisses is invisible, and "how many people start and abandon Google auth" is one
+      // of the few questions with an obvious product fix attached.
+      track(EVENTS.SIGNUP_STARTED, { method: 'google' });
       await auth.signInWithGoogle();
-      trackMixpanel('Auth Modal - Google Auth Success', { modal_trigger: source });
+      completedRef.current = true;
+      // Google's popup does not tell us whether the account already existed, so this is
+      // recorded as a sign-in. `signup_completed` — the event that sets persons.signup_at —
+      // is only emitted where we KNOW a new account was created, which is the email path.
+      // Over-reporting signups would corrupt the single most important growth number here.
+      track(EVENTS.SIGNIN_COMPLETED, { method: 'google' });
       toast.success(t('interface:authModal.toast.welcome'), {
         description: t('interface:authModal.toast.googleSuccess'),
       });
@@ -111,8 +134,10 @@ export const AuthModal: React.FC = () => {
       toast.error(t('interface:authModal.toast.authFailed'), {
         description: t('error:auth.tryAgain'),
       });
-      trackMixpanel('Auth Modal - Google Auth Failed', {
-        error: error instanceof Error ? error.message : 'Unknown error',
+      track(EVENTS.AUTH_FAILED, {
+        method: 'google',
+        stage: 'popup',
+        reason: error instanceof Error ? error.message : 'Unknown error',
       });
     } finally {
       setIsLoading(false);
@@ -133,14 +158,17 @@ export const AuthModal: React.FC = () => {
           });
           return;
         }
+        track(EVENTS.SIGNUP_STARTED, { method: 'email' });
         await auth.signUp(email, password, displayName);
-        trackMixpanel('Auth Modal - Email Signup Success', { modal_trigger: source });
+        completedRef.current = true;
+        track(EVENTS.SIGNUP_COMPLETED, { method: 'email' });
         toast.success(t('interface:authModal.toast.accountCreated'), {
           description: t('interface:authModal.toast.welcomeMM'),
         });
       } else {
         await auth.signIn(email, password);
-        trackMixpanel('Auth Modal - Email Signin Success', { modal_trigger: source });
+        completedRef.current = true;
+        track(EVENTS.SIGNIN_COMPLETED, { method: 'email' });
         toast.success(t('interface:authModal.toast.welcomeBack'), {
           description: t('interface:authModal.toast.signedIn'),
         });
@@ -160,10 +188,14 @@ export const AuthModal: React.FC = () => {
       }
 
       toast.error(t('interface:authModal.toast.authFailed'), { description: errorMessage });
-      trackMixpanel('Auth Modal - Email Auth Failed', {
-        tab: activeTab,
-        error_code: error.code,
-        error_message: error.message,
+      // `stage` is the Firebase error code, which is exactly the diagnostic dimension
+       // wanted here: auth/wrong-password and auth/email-already-in-use are completely
+       // different product problems. The MESSAGE goes in `reason` and is sanitized
+       // server-side; the code is a closed vocabulary and safe as a dimension.
+      track(EVENTS.AUTH_FAILED, {
+        method: 'email',
+        stage: error.code || activeTab,
+        reason: error.message,
       });
     } finally {
       setIsLoading(false);

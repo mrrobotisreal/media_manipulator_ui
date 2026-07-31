@@ -5,7 +5,13 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
-import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  markJobStarted,
+  reportError,
+  trackUploadStarted,
+} from '@/lib/analytics';
 
 /**
  * useCaptionTranslatorTool POSTs an .srt or .vtt caption file together with
@@ -69,32 +75,46 @@ const useCaptionTranslatorTool = (
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const mutation = useMutation({
-    mutationFn: ({ file, options }: { file: File; options: CaptionTranslatorFormData }) =>
-      submitCaptionTranslation(file, options, setUploadProgress),
+    mutationFn: ({ file, options }: { file: File; options: CaptionTranslatorFormData }) => {
+      // A caption file is kilobytes, so this upload is effectively instantaneous — but the
+      // funnel is only usable if every tool reports the same stages, and a tool that skips
+      // upload_started looks like a tool nobody uploads to.
+      const upload = trackUploadStarted(file.size, 'post', {
+        media_kind: 'document',
+        feature: 'caption_translator',
+      });
+      return submitCaptionTranslation(file, options, setUploadProgress).then((res) => {
+        upload.completed();
+        return res;
+      });
+    },
     onSuccess: (data, variables) => {
       toast.success('Caption translation started', {
         description: `Job ID: ${data.jobId}`,
       });
-      trackFirstPartyEvent('caption_translator_started', {
-        source_format: variables.options.inputFormat,
-        target_format: variables.options.outputFormat,
-        target_language: variables.options.targetLanguage,
-        size_bytes: variables.file.size,
-      }, {
-        mediaKind: 'unknown',
-        conversionJobId: data.jobId,
-        featureName: 'caption_translator',
-      });
+      markJobStarted(data.jobId, 'caption-translator', 'document');
+      analytics.track(
+        EVENTS.JOB_STARTED,
+        {
+          job_id: data.jobId,
+          source_format: variables.options.inputFormat,
+          target_format: variables.options.outputFormat,
+          // The target language is the interesting dimension here — which languages
+          // people actually want is a roadmap input.
+          options_hash: variables.options.targetLanguage,
+        },
+        { job_id: data.jobId, media_kind: 'document', feature: 'caption_translator' },
+      );
       onSuccess(data);
     },
     onError: (error, variables) => {
       console.error('Caption translation failed:', error);
-      trackFirstPartyError('caption_translator_upload', error, {
-        target_language: variables.options.targetLanguage,
-      }, {
-        mediaKind: 'unknown',
-        featureName: 'caption_translator',
-      });
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        { reason: error.message || 'unknown', size_bytes: variables.file.size, transport: 'post' },
+        { media_kind: 'document', feature: 'caption_translator' },
+      );
+      reportError(analytics, error, { stage: 'caption_translator_upload', toolSlug: 'caption-translator' });
       toast.error('Failed to start translation', {
         description: error.message || 'An unexpected error occurred',
       });

@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 
+import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
@@ -52,6 +53,11 @@ export const AccountSheetLinks: React.FC<{ onNavigate: () => void }> = ({ onNavi
           type="button"
           className={cn(ROW, 'w-full')}
           onClick={() => {
+            // The mobile sheet's sign-in row. Only rendered when signed out.
+            analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
+              placement: 'nav_sheet',
+              from_tier: auth.tier,
+            });
             onNavigate();
             auth.openAuth({ intent: 'signin', source: 'nav_sheet' });
           }}

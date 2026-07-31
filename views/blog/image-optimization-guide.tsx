@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentReadTracker from '@/components/analytics/content-read-tracker';
 import Link from 'next/link';
 import { CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Panel } from '@/components/darkroom/panel';
@@ -10,6 +11,9 @@ import TrackedCtaButton from '@/components/analytics/tracked-cta-button';
 const ImageOptimizationGuide: React.FC = () => {
   return (
     <>
+      {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
+          at >=90% scroll AND >=15s active. Renders nothing. */}
+      <ContentReadTracker slug="image-optimization-guide" contentType="blog" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
       <aside className="hidden lg:block w-[300px] shrink-0">
         
@@ -346,7 +350,8 @@ const ImageOptimizationGuide: React.FC = () => {
             Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!
           </p>
           <TrackedCtaButton
-            event="Image Optimization Guide - Convert Images Free"
+            ctaId="blog_image_optimization_try_converter"
+            placement="blog_guide_image_optimization"
             href="/tools/image-converter"
             className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
           >

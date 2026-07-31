@@ -27,12 +27,16 @@ import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
 import type { ConversionFormData } from '@/schemas/types';
 import {
-  trackFileConversion,
-  trackFileDownload,
-  trackFileUpload,
-  getSafeFileExtension,
+  analytics,
+  EVENTS,
+  normalizeMediaKind,
+  safeFileExtension,
+  ToolAnalyticsProvider,
+  trackFileChoice,
+  useToolAnalytics,
 } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useAuth } from '@/lib/auth/AuthProvider';
 import { UploadLimitHint, useUpgradeNudge } from '@/components/account/upgrade-surfaces';
 import { Panel } from '@/components/darkroom/panel';
 
@@ -263,6 +267,20 @@ export interface VideoTransformPresets {
 }
 
 interface EmbeddedToolPanelProps {
+  /**
+   * The canonical tool slug from content/toolPages.ts.
+   *
+   * PREVIOUSLY MISSING ENTIRELY, and that was the single biggest gap in the old
+   * instrumentation: this panel is the interactive island on all ~70 SEO tool pages, and
+   * without the slug every conversion started from a tool page was indistinguishable from
+   * every other. The slug cannot be derived here — the panel is rendered by
+   * EmbeddedToolPanelClient inside an arbitrary page, and in the CreaTV /embed iframe the
+   * URL is not even ours — so it is threaded down from tool-landing-page as a prop.
+   *
+   * Optional so the handful of ad-hoc embeds that render the panel directly keep working;
+   * those show up in the data as unattributed, which is visible rather than silent.
+   */
+  toolSlug?: string | null;
   /** Default media kind to bias the panel toward when no file is selected yet. */
   defaultMediaKind: EmbeddedMediaKind;
   /** Optional high-intent task. Drives recommended settings + banner copy. */
@@ -547,7 +565,27 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
  * result modal — landing pages only need the core "upload → convert →
  * download" loop.
  */
-const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
+const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = (props) => (
+  // This provider stays even though tool-landing-page now wraps its own
+  // ToolAnalyticsBoundary, because this panel is ALSO rendered standalone in four tutorial
+  // views (views/tutorials/*), where no boundary exists and nothing else would supply a
+  // slug or announce the view. On a /tools/* page the two providers nest, and the inner one
+  // suppresses its view event because the parent already announced the same slug — see the
+  // nesting comment in lib/analytics/ToolAnalyticsContext.tsx.
+  //
+  // `viewEntryPoint` reproduces exactly what the panel's own explicit TOOL_VIEWED call used
+  // to compute: a panel with a slug is on a tool page, one without is embedded elsewhere.
+  <ToolAnalyticsProvider
+    slug={props.toolSlug ?? null}
+    mediaKind={props.defaultMediaKind}
+    viewEntryPoint={props.toolSlug ? 'tool_page' : 'embedded'}
+  >
+    <EmbeddedToolPanelInner {...props} />
+  </ToolAnalyticsProvider>
+);
+
+const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
+  toolSlug,
   defaultMediaKind,
   defaultTask,
   title,
@@ -585,6 +623,8 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   transcodeDashCodec = 'av1',
   transcodeLockProtocol = false,
 }) => {
+  // tool_slug and media_kind ride along automatically on everything trackTool emits.
+  const { track: trackTool, setMediaKind: setToolMediaKind } = useToolAnalytics();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const [conversionOptions, setConversionOptions] =
@@ -595,6 +635,11 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
 
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
   const { downloadFile } = useDownloadFile();
+  // Nullable: this panel also renders in the chromeless /embed tree, where there is no
+  // AuthProvider. Read only for the tier's file-size ceiling on `file_rejected`. Declared
+  // up here with the other hooks because onFileChosen below closes over it, and a reference
+  // that appears before the declaration would not see later updates.
+  const auth = useAuth();
 
   const fileType = selectedFile ? getFileType(selectedFile) : null;
   const effectiveKind: EmbeddedMediaKind =
@@ -639,11 +684,32 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
     }
   }, [jobStatusData]);
 
+  // `tool_viewed` is emitted by the ToolAnalyticsProvider above (via its viewEntryPoint),
+  // not here. It moved so that the four /tools pages passing a CUSTOM panel — which never
+  // render this component — also announce the top of their funnel.
+
+  // Keep the funnel's media_kind in step with what the panel is actually showing — it
+  // starts from defaultMediaKind and narrows once a file is chosen.
+  useEffect(() => {
+    setToolMediaKind(effectiveKind);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [effectiveKind]);
+
   const onFileChosen = (file: File) => {
     setSelectedFile(file);
     setConversionJob(null);
     setConversionOptions(null);
-    trackFileUpload(getFileType(file), file.size, file.name);
+    const fileKind = getFileType(file);
+    setToolMediaKind(normalizeMediaKind(fileKind));
+    // `unsupported` mirrors what effectiveKind above already decides: with an unrecognised
+    // type the panel falls back to its default kind and renders a form the file cannot
+    // satisfy, so the choice is a rejection rather than a funnel entry. See
+    // lib/analytics/fileChoice.ts for why unsupported-type replaces file_selected while
+    // over-the-limit accompanies it.
+    trackFileChoice(trackTool, file, fileKind, {
+      unsupported: fileKind === 'unknown',
+      limitBytes: auth?.limits?.maxFileBytes,
+    });
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -675,9 +741,11 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
     if (!selectedFile) return;
     setConversionOptions(data);
     setConversionJob(null);
-    const fromFormat =
-      selectedFile.name.split('.').pop()?.toLowerCase() || 'unknown';
-    trackFileConversion(fromFormat, data.format, selectedFile.size);
+    // No event here. `job_started` is emitted by useConvertFile once the API has actually
+    // ACCEPTED the job and returned a jobId — which is also where markJobStarted records
+    // the clock that produces a real duration. Emitting a "conversion started" event at the
+    // click, as the old code did, counted submissions that the server rejected as
+    // conversions and made the funnel's success rate look worse than it was.
     convertMutate({ file: selectedFile, options: data });
   };
 
@@ -724,10 +792,10 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
   const handleDownload = async () => {
     if (!conversionJob?.id) return;
     try {
+      // download_started/completed/failed come from useDownloadFile, which wraps the fetch.
       const blob = await downloadFile(conversionJob.id);
       const fileName = getConvertedFilename();
       saveBlobToDisk(blob, fileName);
-      trackFileDownload(fileName, effectiveKind);
       // The single post-conversion prompt, at most once per session, and only
       // after a download that actually succeeded.
       upgradeNudge();
@@ -736,7 +804,20 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
     }
   };
 
+  /** What preceded a reset, from the job state that is about to be discarded. */
+  const resetOutcome = (): 'success' | 'failure' | 'idle' => {
+    if (conversionJob?.status === 'completed') return 'success';
+    if (conversionJob?.status === 'failed') return 'failure';
+    return 'idle';
+  };
+
   const clearFile = () => {
+    // `after` is read BEFORE the state is cleared, and it is the whole value of the event:
+    // a reset following a download is someone starting a second job, a reset following a
+    // failure is someone retrying, and an idle reset is someone changing their mind. The
+    // homepage has emitted this since Part 1; this panel and the specialized shell did not,
+    // which meant the retry-after-failure signal existed on one surface out of three.
+    trackTool(EVENTS.TOOL_RESET, { after: resetOutcome() });
     setSelectedFile(null);
     setConversionJob(null);
     setConversionOptions(null);
@@ -996,7 +1077,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = ({
                 </p>
                 <p className="num text-xs text-muted-foreground">
                   {formatFileSize(selectedFile.size)} ·{' '}
-                  {getSafeFileExtension(selectedFile.name)}
+                  {safeFileExtension(selectedFile.name)}
                 </p>
               </div>
             </div>

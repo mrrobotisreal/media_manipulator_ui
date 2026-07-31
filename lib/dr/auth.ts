@@ -11,7 +11,6 @@
 import { useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
 import { getFirebaseAuth, onAuthStateChange } from '@/lib/firebase';
-import { trackMixpanelEvent } from '@/lib/analytics';
 
 // One generic message for every failed sign-in, so we never reveal whether an
 // account exists (auth/invalid-credential, auth/user-not-found,
@@ -30,7 +29,6 @@ export async function drSignIn(email: string, password: string): Promise<User> {
   try {
     const { signInWithEmailAndPassword } = await import('firebase/auth');
     const { user } = await signInWithEmailAndPassword(auth, email.trim(), password);
-    trackMixpanelEvent('DR Signed In');
     return user;
   } catch {
     // Swallow the Firebase error code — always return the same generic message.
@@ -44,7 +42,6 @@ export async function drSignOut(): Promise<void> {
   if (!auth) return;
   const { signOut } = await import('firebase/auth');
   await signOut(auth);
-  trackMixpanelEvent('DR Signed Out');
 }
 
 /** drChangePassword reauthenticates with the CURRENT password and then updates
@@ -62,7 +59,6 @@ export async function drChangePassword(currentPassword: string, newPassword: str
   const credential = EmailAuthProvider.credential(user.email, currentPassword);
   await reauthenticateWithCredential(user, credential);
   await updatePassword(user, newPassword);
-  trackMixpanelEvent('DR Password Changed');
 }
 
 /** drAuthErrorMessage maps a Firebase auth error to a friendly message for the

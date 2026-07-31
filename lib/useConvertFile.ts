@@ -6,7 +6,18 @@ import { toast } from 'sonner';
 import type { ConversionFormData } from '@/schemas/types';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
-import { getSessionId, trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  getSessionId,
+  getToolSlug,
+  markJobStarted,
+  normalizeMediaKind,
+  reportError,
+  safeFileExtension,
+  trackUploadStarted,
+  type MediaKind,
+} from '@/lib/analytics';
 
 export interface UploadFileResponse {
   jobId: string;
@@ -66,11 +77,16 @@ const uploadVideoViaS3 = async (
   options: ConversionFormData,
   setPhase: (phase: UploadPhase) => void,
   setProgress: (progress: number) => void,
+  mediaKind: MediaKind | undefined,
 ): Promise<{ jobId: string }> => {
   const sessionId = getSessionId();
   const contentType = file.type || 'video/mp4';
   setPhase('requesting-url');
   setProgress(0);
+
+  // Measured from the presign request, not from the PUT: from the visitor's point of view
+  // the upload starts when they hit the button, and a slow presign is a slow upload.
+  const upload = trackUploadStarted(file.size, 'presigned_put', { media_kind: mediaKind });
 
   const presignResponse = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
     method: 'POST',
@@ -89,6 +105,10 @@ const uploadVideoViaS3 = async (
 
   setPhase('uploading-to-s3');
   await putFileToS3(target, file, contentType, setProgress);
+
+  // The bytes are on S3 — that is the upload. `finalizing` below is our own API accepting
+  // the job, which the job funnel already covers with job_started.
+  upload.completed();
 
   setPhase('finalizing');
   const completeResponse = await authedFetch(`${getBaseURL()}/video-upload/complete`, {
@@ -124,12 +144,21 @@ const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConver
 
   const conversionMutation = useMutation({
     mutationFn: ({ file, options }: { file: File; options: ConversionFormData }) => {
+      const mediaKind = normalizeMediaKind(getFileType(file));
       if (getFileType(file) === 'video') {
-        return uploadVideoViaS3(file, options, setUploadPhase, setUploadProgress);
+        return uploadVideoViaS3(file, options, setUploadPhase, setUploadProgress, mediaKind);
       }
       setUploadPhase('uploading-to-s3');
       setUploadProgress(0);
-      return uploadFile(file, options);
+      // The multipart path has no separate "upload finished" moment — the same request
+      // uploads the bytes and creates the job — so the tracker closes when the POST
+      // resolves. A local, not state: it must not survive a re-render into the next
+      // upload's measurement.
+      const upload = trackUploadStarted(file.size, 'post', { media_kind: mediaKind });
+      return uploadFile(file, options).then((res) => {
+        upload.completed();
+        return res;
+      });
     },
     onSuccess: (data, variables) => {
       setUploadProgress(100);
@@ -137,25 +166,40 @@ const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConver
       toast.success('Conversion started successfully', {
         description: `Job ID: ${data.jobId} - Your file is being processed`
       });
-      trackFirstPartyEvent('conversion_started', {
-        source_format: variables.file.name.split('.').pop()?.toLowerCase() || 'unknown',
-        target_format: variables.options.format,
-        size_bytes: variables.file.size,
-        options: variables.options as unknown as Record<string, unknown>,
-      }, {
-        mediaKind: getFileType(variables.file),
-        conversionJobId: data.jobId,
-      });
+      // job_started, not "conversion_started": the catalog name is the contract, and
+      // the API has accepted the job by this point. markJobStarted is what makes the
+      // duration on the eventual job_completed real rather than component state.
+      const mediaKind = normalizeMediaKind(getFileType(variables.file));
+      // getToolSlug(), not null. This hook serves the homepage converter AND every /tools
+      // page that uses the generic panel, so a hardcoded slug would be wrong somewhere;
+      // passing null made peekJobToolSlug useless for the highest-volume tool on the site.
+      markJobStarted(data.jobId, getToolSlug(), mediaKind);
+      analytics.track(
+        EVENTS.JOB_STARTED,
+        {
+          job_id: data.jobId,
+          source_format: safeFileExtension(variables.file.name),
+          target_format: variables.options.format,
+        },
+        { job_id: data.jobId, media_kind: mediaKind },
+      );
       onSuccess(data);
     },
     onError: (error, variables) => {
       setUploadPhase('idle');
       console.error('Conversion failed:', error);
-      trackFirstPartyError('conversion_upload', error, {
-        target_format: variables.options.format,
-      }, {
-        mediaKind: getFileType(variables.file),
-      });
+      // Two events, deliberately. upload_failed is the funnel-stage signal (priority 0 —
+      // a lost conversion); client_error is the engineering signal, deduped and capped.
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        {
+          reason: error.message || 'unknown',
+          size_bytes: variables.file.size,
+          transport: getFileType(variables.file) === 'video' ? 'presigned_put' : 'post',
+        },
+        { media_kind: normalizeMediaKind(getFileType(variables.file)) },
+      );
+      reportError(analytics, error, { stage: 'conversion_upload' });
       toast.error('Failed to start conversion', {
         description: error.message || 'An unexpected error occurred'
       });

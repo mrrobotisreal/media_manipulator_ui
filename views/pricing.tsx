@@ -12,6 +12,7 @@ import { Check, Minus } from 'lucide-react';
 
 import { getServerT } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
+import { PricingTracker, PricingUpgradeLink } from '@/components/pricing/pricing-tracker';
 import type { TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
 import {
   formatBytes,
@@ -134,6 +135,9 @@ const TierHeader: React.FC<{
         {t(`interface:pricing.tierBlurb.${tier}`)}
       </p>
       {isPremium ? (
+        // NOT a button, and not instrumented: there is no checkout to send anyone to yet,
+        // so this is a status badge. It becomes a real CTA (and gets its own
+        // upgrade_cta_clicked) when billing lands.
         <span
           className={cn(
             'mt-1 inline-flex w-fit items-center rounded-full border px-2.5 py-1 text-xs',
@@ -146,12 +150,23 @@ const TierHeader: React.FC<{
             ? t('interface:pricing.cta.premiumBuy')
             : t('interface:pricing.cta.premiumSoon')}
         </span>
+      ) : tier === 'free' ? (
+        // The one genuine upgrade CTA on this page: /account's signed-out state IS the
+        // sign-up panel, so clicking this is a visitor deciding to create an account after
+        // reading the comparison. Worth the client island (see pricing-tracker.tsx).
+        <PricingUpgradeLink
+          href="/account"
+          ctaId="pricing_free_tier"
+          className="mt-1 inline-flex w-fit items-center text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+        >
+          {t('interface:pricing.cta.free')}
+        </PricingUpgradeLink>
       ) : (
         <Link
-          // Anonymous: straight into the tools, which is the whole promise of
-          // the tier. Free: /account, whose signed-out state is the sign-in
-          // panel — this page stays a server component with no client JS.
-          href={tier === 'free' ? '/account' : '/tools'}
+          // Anonymous: straight into the tools, which is the whole promise of the tier —
+          // navigation, not an upgrade, so it stays a plain server-rendered link with no
+          // client JS and no upgrade event.
+          href="/tools"
           className="mt-1 inline-flex w-fit items-center text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
         >
           {t(`interface:pricing.cta.${tier}`)}
@@ -192,6 +207,8 @@ export const PricingView: React.FC<{ data: TiersResponse }> = ({ data }) => {
 
   return (
     <div className="container mx-auto max-w-[1100px] px-4 py-12 md:py-16">
+      {/* Renders nothing; emits pricing_viewed once. */}
+      <PricingTracker />
       <header className="mb-10 max-w-2xl">
         <p className="text-xs font-medium uppercase tracking-[0.12em] text-data">
           {t('interface:pricing.eyebrow')}

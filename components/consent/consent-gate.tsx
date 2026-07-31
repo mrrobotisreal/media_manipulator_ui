@@ -4,73 +4,97 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 
 import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
-import { getStoredConsentChoice, onConsentReviewRequest } from '@/lib/consent';
+import {
+  getConsentDetails,
+  initConsent,
+  needsPrompt,
+  onConsentReviewRequest,
+} from '@/lib/consent';
 
 /**
- * Decides whether the consent bar is needed, and only then pays for it.
+ * Decides what consent surface — if any — is needed, and only then pays for it.
  *
- * This component is always mounted in the non-chromeless tree but costs
- * essentially nothing: the bar itself is a separate chunk that is fetched only
- * when there is a question to ask. A returning visitor who already answered
- * downloads zero banner bytes.
+ * Always mounted in the non-chromeless tree but costs essentially nothing: both surfaces are
+ * separate chunks fetched only when there is something to show. A returning visitor with a
+ * decision on file downloads zero consent bytes.
  *
- * It also owns the reopen path. The footer's "Cookie settings" fallback publishes
- * a review request (lib/consent), which has to reach a component that is mounted
- * even when the bar is not — which is exactly this one.
+ * TWO SURFACES, and the distinction is the whole reason this component grew:
  *
- * ADSENSE_ENABLED is the handover switch. While it is false the review build
- * loads no AdSense script, so Funding Choices never appears and nothing else
- * would ever ask. Once it is true, Funding Choices IS the CMP: it owns TCF state,
- * and a second banner writing Consent Mode underneath it would be both a
- * duplicate prompt and a source of disagreement. So this renders nothing at all
- * in that world, and app/providers.tsx likewise stops replaying the stored
- * first-party choice.
+ *   THE BANNER asks the question. Shown only when `analytics` is `unset`, which after region
+ *   resolution means an opt-in region (EEA/UK/CH, or anywhere we could not identify). In the
+ *   US the region default is notice-and-opt-out, so `unset` never persists and the banner
+ *   never appears — the footer's permanent opt-out path is the compliant surface there.
+ *
+ *   THE PREFERENCES CENTRE lets someone change their mind. It is opened on demand from the
+ *   footer's "Cookie settings" and "Do Not Sell or Share My Personal Information" links,
+ *   which is why this component — mounted whether or not the banner is — owns the reopen
+ *   subscription.
+ *
+ * ADSENSE_ENABLED is the Phase 12 handover switch. While it is false the review build loads
+ * no AdSense script, so Google's certified CMP (Privacy & Messaging / TCF v2.2) never
+ * appears and our banner is the only thing asking. Once it is true, that CMP owns TCF state
+ * for EEA/UK ADS consent, and a second banner writing ad signals underneath it would be both
+ * a duplicate prompt and a source of disagreement. Analytics consent remains ours either
+ * way, which is why the preferences centre stays available and only the BANNER is
+ * suppressed.
  */
 
 const ConsentBanner = dynamic(() => import('@/components/consent/consent-banner'), {
   ssr: false,
 });
 
+const ConsentPreferences = dynamic(() => import('@/components/consent/consent-preferences'), {
+  ssr: false,
+});
+
 export function ConsentGate() {
-  const [visible, setVisible] = React.useState(false);
+  const [showBanner, setShowBanner] = React.useState(false);
+  const [showPreferences, setShowPreferences] = React.useState(false);
 
   React.useEffect(() => {
-    if (ADSENSE_ENABLED) return;
+    let cancelled = false;
 
-    // Deferred to idle: the bar is fixed-position and shifts nothing, but its
-    // chunk should never compete with LCP for bandwidth.
-    let idleHandle: number | undefined;
-    let timeoutHandle: number | undefined;
-    const ask = () => {
-      if (!getStoredConsentChoice()) setVisible(true);
-    };
+    // Resolve consent first. Until it settles we do not know whether this visitor is in an
+    // opt-in region, and guessing in either direction is wrong: guess opt-in and a US
+    // visitor gets a needless banner, guess opt-out and an EEA visitor is processed without
+    // consent.
+    void initConsent()
+      .then(() => {
+        if (cancelled) return;
+        if (ADSENSE_ENABLED) return;
+        if (needsPrompt(getConsentDetails())) setShowBanner(true);
+      })
+      .catch(() => {
+        // initConsent never rejects; this is belt and braces.
+      });
 
-    const ric = (
-      window as typeof window & {
-        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-      }
-    ).requestIdleCallback;
-    if (typeof ric === 'function') {
-      idleHandle = ric(ask, { timeout: 2000 });
-    } else {
-      timeoutHandle = window.setTimeout(ask, 1200);
-    }
+    // A review request is an explicit ask, so it opens the preferences centre even when a
+    // choice is already stored — changing your mind is the entire point of the link.
+    const off = onConsentReviewRequest(() => {
+      setShowBanner(false);
+      setShowPreferences(true);
+    });
 
-    // A review request is an explicit ask, so it shows the bar even when a
-    // choice is already stored — changing your mind is the point.
-    const off = onConsentReviewRequest(() => setVisible(true));
     return () => {
+      cancelled = true;
       off();
-      if (timeoutHandle !== undefined) window.clearTimeout(timeoutHandle);
-      const cancel = (
-        window as typeof window & { cancelIdleCallback?: (handle: number) => void }
-      ).cancelIdleCallback;
-      if (idleHandle !== undefined && typeof cancel === 'function') cancel(idleHandle);
     };
   }, []);
 
-  if (!visible) return null;
-  return <ConsentBanner onDecided={() => setVisible(false)} />;
+  return (
+    <>
+      {showBanner ? (
+        <ConsentBanner
+          onDecided={() => setShowBanner(false)}
+          onCustomize={() => {
+            setShowBanner(false);
+            setShowPreferences(true);
+          }}
+        />
+      ) : null}
+      {showPreferences ? <ConsentPreferences onClose={() => setShowPreferences(false)} /> : null}
+    </>
+  );
 }
 
 export default ConsentGate;

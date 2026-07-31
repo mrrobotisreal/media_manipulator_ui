@@ -678,9 +678,72 @@
       {
         "title": "6. Analytics",
         "paragraphs": [
-          "We may use analytics services to understand how visitors use Media Manipulator, measure traffic, improve features, and diagnose performance issues.",
-          "Analytics data may include pages visited, tools used, approximate location, browser and device information, referral sources, session activity, and other usage information.",
-          "We use analytics to improve Media Manipulator and to understand which tools and content are most useful to visitors."
+          "Media Manipulator uses its own first-party analytics, built and operated by us and hosted on our own infrastructure at analytics.media-manipulator.com. It is the primary way we understand which tools are used, where they fail, and what to build next.",
+          "We previously used Mixpanel and Firebase Analytics. Both have been removed, as has Firebase Performance monitoring. Firebase is now used only for account sign-in."
+        ],
+        "subsections": [
+          {
+            "title": "6.1 What our analytics collects",
+            "paragraphs": [
+              "When you have consented to analytics, we record events such as:"
+            ],
+            "bullets": [
+              "pages viewed and how long you were actively engaged with them;",
+              "which tool you used, and the outcome — file selected, upload started or failed, job started, completed or failed, result previewed, download started or completed;",
+              "the file extension, file size, and media kind of the file you processed;",
+              "the tool settings you chose;",
+              "account events: an account was created, signed in to, or signed out of;",
+              "page performance measurements (Core Web Vitals) and client-side errors;",
+              "your device type, browser and version, operating system, viewport size, language, and time zone;",
+              "the referring website and any campaign parameters in the link you arrived through;",
+              "your country, region, and city, derived from your IP address;",
+              "your account tier at the time of each event."
+            ],
+            "afterBullets": [
+              "Each event carries an anonymous device identifier and a visit identifier so that a sequence of actions can be understood as one visit. If you are signed in, events are also associated with your account."
+            ]
+          },
+          {
+            "title": "6.2 What our analytics never collects",
+            "paragraphs": [
+              "These are technical guarantees enforced in our code, not just policy:"
+            ],
+            "bullets": [
+              "We do not store your IP address on analytics events. Your IP is used in memory to derive an approximate location and network operator, and is then discarded before the event is recorded.",
+              "We do not collect file names. Only the file extension is recorded.",
+              "We do not collect the contents of your files, transcripts, captions, summaries, or any AI-generated output.",
+              "We do not collect email addresses in event data. Anything resembling an email address is automatically removed, both in your browser and again on our server.",
+              "We do not use cookies for analytics. The identifiers described above are stored in your browser’s local storage, and our analytics endpoint is configured so that your browser cannot send cookies to it at all.",
+              "We do not sell or share your analytics data with anyone."
+            ]
+          },
+          {
+            "title": "6.3 How long we keep it",
+            "bullets": [
+              "Individual events and visit records: 13 months, after which they are deleted automatically.",
+              "Device and account records: deleted after 25 months without activity.",
+              "Records of your consent choices: 5 years, because we are required to be able to demonstrate what you agreed to and when.",
+              "Aggregated daily statistics, which contain no identifiers and describe no individual: kept indefinitely."
+            ]
+          },
+          {
+            "title": "6.4 Google Analytics 4",
+            "paragraphs": [
+              "We keep a deliberately minimal Google Analytics 4 configuration as an independent cross-check on our own numbers. Exactly three events are sent to Google: a page view, an account sign-up, and a completed job. Nothing else is forwarded, and it is subject to the same consent choice as our first-party analytics."
+            ]
+          },
+          {
+            "title": "6.5 If you decline analytics",
+            "paragraphs": [
+              "If you decline, we record no events about you at all. We keep a single count of how many times each page was viewed, broken down by country and date, with no identifier of any kind attached — individually or in combination, a row in that count cannot be traced to a person, a device, or a visit. It exists so that a change in how many people decline cannot be mistaken for a change in how many people visit."
+            ]
+          },
+          {
+            "title": "6.6 Identifiers we use regardless of your choice",
+            "paragraphs": [
+              "The anonymous device and visit identifiers described above are created whether or not you consent to analytics, because our API needs them to enforce free-tier limits and to block abuse. That is a strictly necessary purpose and is not analytics: without them we could not offer the tools without an account. What your consent controls is whether we record behavioural events against those identifiers."
+            ]
+          }
         ]
       },
       {
@@ -695,7 +758,8 @@
           "user consent where required, including for certain cookies, analytics, personalized advertising, or AI-related processing."
         ],
         "afterBullets": [
-          "Where required by law, we will request consent before using certain cookies or personalized advertising technologies."
+          "For first-party analytics specifically: in the EEA, the UK and Switzerland we rely on your consent and collect nothing until you have given it. In the United States we rely on notice and your right to opt out, which is available at any time from the footer. Where we cannot determine your location, we treat you as requiring consent.",
+          "The anonymous device and visit identifiers used to enforce free-tier limits and prevent abuse rely on our legitimate interest in operating and securing the service, and on providing the service you requested. Records of your consent choices are kept to comply with a legal obligation to be able to demonstrate them."
         ]
       },
       {
@@ -772,14 +836,17 @@
           "request a copy of your information."
         ],
         "afterBullets": [
-          "Because uploaded files and generated outputs are temporary and are deleted after a maximum of 24 hours, we may not be able to retrieve or provide access to files after deletion.",
-          "To make a privacy request, contact us using the information below."
+          "You can change your analytics choice at any time from “Cookie settings” in the footer. If you are in the United States, “Do Not Sell or Share My Personal Information” in the footer opts you out of any sharing for advertising purposes.",
+          "To request a copy of your analytics data or its deletion, contact us using the details below. These requests are handled manually today; we respond within the period the applicable law requires (30 days under CPRA, one month under the GDPR). An automated self-service export and deletion tool is planned but is not available yet, and we would rather say so than imply otherwise.",
+          "Because uploaded files and generated outputs are temporary and are deleted after a maximum of 24 hours, we may not be able to retrieve or provide access to files after deletion."
         ]
       },
       {
-        "title": "14. Do Not Track",
+        "title": "14. Do Not Track and Global Privacy Control",
         "paragraphs": [
-          "Some browsers offer “Do Not Track” signals. There is no universally accepted standard for how websites should respond to these signals. Media Manipulator does not currently respond to Do Not Track signals."
+          "Media Manipulator honours Global Privacy Control (GPC). If your browser or an extension sends a GPC signal, we automatically treat it as an opt-out of any sale or sharing of your personal information for advertising purposes, we apply it on every visit — including overriding an advertising opt-in you may have given previously — and we record that we did so.",
+          "GPC is an opt-out of sale and sharing. It does not switch off our first-party analytics, because analytics we run on our own domain for our own product decisions is neither a sale nor a share. Analytics is a separate choice, available at any time from “Cookie settings” in the footer.",
+          "We do not respond to the older “Do Not Track” browser signal. No standard was ever agreed for how sites should interpret it and no regulator gave it legal effect; GPC is the signal that carries weight, and it is the one we honour."
         ]
       },
       {

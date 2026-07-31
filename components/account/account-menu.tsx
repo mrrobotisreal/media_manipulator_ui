@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 
 import { Button } from '@/components/ui/button';
 import { QuotaMeter } from '@/components/account/quota-meter';
+import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useLocalization } from '@/i18n/useLocalization';
 
@@ -47,7 +48,17 @@ export const AccountMenu: React.FC = () => {
           // viewport edge. The meter still opens this same panel, and the sheet
           // menu carries an explicit "Sign in" entry, so nothing is unreachable.
           className="hidden h-9 shrink-0 px-2.5 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground sm:inline-flex"
-          onClick={() => auth.openAuth({ intent: 'signin', source: 'top_nav' })}
+          onClick={() => {
+            // Only rendered when signed out, so from_tier is always 'anonymous' — which is
+            // what separates "create an account" intent from "buy Premium" intent in any
+            // report over upgrade_cta_clicked. `placement` mirrors the `source` passed to
+            // openAuth so the two attributions cannot drift apart.
+            analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
+              placement: 'top_nav',
+              from_tier: auth.tier,
+            });
+            auth.openAuth({ intent: 'signin', source: 'top_nav' });
+          }}
         >
           {t('interface:accountMenu.signIn')}
         </Button>

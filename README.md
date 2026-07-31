@@ -68,7 +68,7 @@ flowchart LR
     API --> S3
     API -->|"FFmpeg / ImageMagick"| WORK["Processing workers"]
     API -->|"transcribe, interpolate,<br/>bg-removal, vocal isolation"| GPU["Local GPU server"]
-    FE -. "consent-gated" .-> AN["Analytics<br/>GA4 · Mixpanel · first-party"]
+    FE -. "consent-gated" .-> AN["Analytics<br/>first-party (MM Analytics) · slim GA4 cross-check"]
 ```
 
 **Rendering model**
@@ -237,9 +237,9 @@ All browser‑exposed variables use the `NEXT_PUBLIC_` prefix. See `.env.example
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_BASE_URL` | Media API base URL | `https://api.media-manipulator.com/api` |
 | `NEXT_PUBLIC_ANALYTICS_BASE_URL` | First‑party analytics endpoint | `https://analytics.media-manipulator.com` |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 measurement ID | `G-6J910CMHRY` |
-| `NEXT_PUBLIC_MP_TOKEN` | Mixpanel token (consent‑gated) | — |
-| `NEXT_PUBLIC_FB_*` | Firebase web config (auth/analytics) | — (auth disabled if blank) |
+| `NEXT_PUBLIC_ANALYTICS_WRITE_KEY` | **Required.** Public site key for `/v1/capture`; must match a `WRITE_KEYS` entry on the analytics service. Not a secret — it ships in the bundle. | — (capture returns 401) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 measurement ID. Slim cross‑check only (3 events). | `G-6J910CMHRY` |
+| `NEXT_PUBLIC_FB_*` | Firebase web config (**auth only**) | — (auth disabled if blank) |
 | `NEXT_PUBLIC_ADSENSE_ENABLED` | Enable real AdSense (prod only) | `false` |
 | `NEXT_PUBLIC_MOCK_ADS_ENABLED` | Show first‑party mock ads (dev only) | `false` |
 
@@ -275,7 +275,7 @@ Translations live in `i18n/locales/<locale>/<namespace>/*.json`, sharded by feat
 
 ## Privacy & file handling
 
-Uploads are processed on our own servers and are designed to be automatically deleted within 24 hours. AI features run on a GPU server we operate; files are not shared with third‑party AI providers. No account is required to use the tools. Analytics (GA4 / Mixpanel) are **consent‑gated** via Google Consent Mode v2.
+Uploads are processed on our own servers and are designed to be automatically deleted within 24 hours. AI features run on a GPU server we operate; files are not shared with third‑party AI providers. No account is required to use the tools. Analytics are first-party (our own MM Analytics service) with a slim GA4 cross-check, and are **consent‑gated** — Google Consent Mode v2 mirrors our own consent state rather than the other way round. Mixpanel and Firebase Analytics were removed in Part 1.
 
 ---
 
@@ -292,7 +292,7 @@ Uploads are processed on our own servers and are designed to be automatically de
 ![Zod](https://img.shields.io/badge/Zod-schemas-3E67B1?logo=zod&logoColor=white)
 ![i18next](https://img.shields.io/badge/i18next-localization-26A69A?logo=i18next&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-auth-FFCA28?logo=firebase&logoColor=black)
-![Mixpanel](https://img.shields.io/badge/Mixpanel-analytics-7856FF?logo=mixpanel&logoColor=white)
+![First-party analytics](https://img.shields.io/badge/MM_Analytics-first--party-1F6FEB)
 ![Google AdSense](https://img.shields.io/badge/AdSense-monetization-4285F4?logo=googleadsense&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-9-4B32C3?logo=eslint&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-deploy-000000?logo=vercel&logoColor=white)

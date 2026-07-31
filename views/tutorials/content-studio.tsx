@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentReadTracker from '@/components/analytics/content-read-tracker';
 import Link from 'next/link';
 import { Clapperboard } from 'lucide-react';
 import RelatedLinks from '@/components/related-links';
@@ -41,6 +42,9 @@ const ContentStudioTutorial: React.FC = () => {
 
   return (
     <>
+      {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
+          at >=90% scroll AND >=15s active. Renders nothing. */}
+      <ContentReadTracker slug="content-studio" contentType="tutorial" />
       {/* This is the only route left that loads anything from R2 — the four
           tutorial screenshots. Scoped here rather than in the root layout so no
           other page pays for a connection it will never use. */}

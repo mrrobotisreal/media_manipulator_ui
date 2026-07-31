@@ -5,7 +5,17 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
-import { getSessionId, trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  getSessionId,
+  getToolSlug,
+  markJobStarted,
+  normalizeMediaKind,
+  reportError,
+  trackUploadStarted,
+  type MediaKind,
+} from '@/lib/analytics';
 
 /**
  * useSpecializedMediaTool wraps the standard /api/upload (audio/image) and
@@ -86,11 +96,17 @@ const uploadVideoViaS3 = async (
   options: SpecializedToolOptions,
   setPhase: (phase: UploadPhase) => void,
   setProgress: (progress: number) => void,
+  mediaKind: MediaKind | undefined,
 ): Promise<SpecializedToolResponse> => {
   const sessionId = getSessionId();
   const contentType = file.type || 'video/mp4';
   setPhase('requesting-url');
   setProgress(0);
+
+  const upload = trackUploadStarted(file.size, 'presigned_put', {
+    media_kind: mediaKind,
+    feature: options.mode,
+  });
 
   const presign = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
     method: 'POST',
@@ -109,6 +125,8 @@ const uploadVideoViaS3 = async (
 
   setPhase('uploading-to-s3');
   await putFileToS3(target, file, contentType, setProgress);
+
+  upload.completed();
 
   setPhase('finalizing');
   const complete = await authedFetch(`${getBaseURL()}/video-upload/complete`, {
@@ -146,12 +164,20 @@ const useSpecializedMediaTool = (
 
   const mutation = useMutation({
     mutationFn: ({ file, options }: { file: File; options: SpecializedToolOptions }) => {
+      const mediaKind = normalizeMediaKind(getFileType(file));
       if (getFileType(file) === 'video') {
-        return uploadVideoViaS3(file, options, setUploadPhase, setUploadProgress);
+        return uploadVideoViaS3(file, options, setUploadPhase, setUploadProgress, mediaKind);
       }
       setUploadPhase('uploading-to-s3');
       setUploadProgress(0);
-      return uploadDirect(file, options);
+      const upload = trackUploadStarted(file.size, 'post', {
+        media_kind: mediaKind,
+        feature: options.mode,
+      });
+      return uploadDirect(file, options).then((res) => {
+        upload.completed();
+        return res;
+      });
     },
     onSuccess: (data, variables) => {
       setUploadProgress(100);
@@ -159,25 +185,34 @@ const useSpecializedMediaTool = (
       toast.success('Job started', {
         description: `Job ID: ${data.jobId}`,
       });
-      trackFirstPartyEvent('specialized_tool_started', {
-        tool_mode: variables.options.mode,
-        size_bytes: variables.file.size,
-      }, {
-        mediaKind: getFileType(variables.file),
-        conversionJobId: data.jobId,
-        featureName: variables.options.mode,
-      });
+      const mediaKind = normalizeMediaKind(getFileType(variables.file));
+      // The mode IS the tool here — these hooks back several distinct tool pages — so it
+      // becomes the feature dimension. The tool_slug still arrives from
+      // ToolAnalyticsContext at the component level.
+      // getToolSlug(), not null: this hook backs several distinct /tools pages, so the
+      // slug can only come from the context the page's provider already set. Passing null
+      // left peekJobToolSlug unable to attribute any of their job durations.
+      markJobStarted(data.jobId, getToolSlug(), mediaKind);
+      analytics.track(
+        EVENTS.JOB_STARTED,
+        { job_id: data.jobId, options_hash: variables.options.mode },
+        { job_id: data.jobId, media_kind: mediaKind, feature: variables.options.mode },
+      );
       onSuccess(data);
     },
     onError: (error, variables) => {
       setUploadPhase('idle');
       console.error('Specialized tool upload failed:', error);
-      trackFirstPartyError('specialized_tool_upload', error, {
-        tool_mode: variables.options.mode,
-      }, {
-        mediaKind: getFileType(variables.file),
-        featureName: variables.options.mode,
-      });
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        {
+          reason: error.message || 'unknown',
+          size_bytes: variables.file.size,
+          transport: getFileType(variables.file) === 'video' ? 'presigned_put' : 'post',
+        },
+        { media_kind: normalizeMediaKind(getFileType(variables.file)), feature: variables.options.mode },
+      );
+      reportError(analytics, error, { stage: 'specialized_tool_upload' });
       toast.error('Failed to start job', {
         description: error.message || 'An unexpected error occurred',
       });

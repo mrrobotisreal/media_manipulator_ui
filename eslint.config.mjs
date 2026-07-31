@@ -32,6 +32,46 @@ const eslintConfig = defineConfig([
       "react-hooks/exhaustive-deps": "warn",
     },
   },
+  {
+    // NO INLINE EVENT NAMES. An ERROR, not a warning.
+    //
+    // This is the rule sketched in the header comment of `lib/analytics/events.ts`, now
+    // actually enforced. The history it prevents is specific: before Part 1 the app passed
+    // event names as inline literals at roughly sixty call sites in at least four naming
+    // styles ('Conversion Completed', 'conversion_completed', 'file_upload',
+    // 'web_vitals'). Nothing caught a typo and nothing caught a rename.
+    //
+    // And a typo here is not an error anywhere at runtime. The analytics service accepts
+    // unknown-but-well-formed names ON PURPOSE — a browser can be running a bundle newer
+    // than the deployed server, and rejecting a name it does not recognise would destroy
+    // data from exactly the most up-to-date clients. So a misspelled name is stored,
+    // flagged `is_unknown=true`, and silently becomes a second event that no query groups
+    // with the first. The compiler cannot catch it either: `EVENTS.PAGE_VIEW` is a string,
+    // and so is `'page_veiw'`. A lint rule is the only thing that can.
+    //
+    // Scoped to `.track(...)` and `.trackTool(...)`-style calls whose FIRST argument is a
+    // string literal or template literal. `EVENTS.X` is a MemberExpression and passes.
+    // The catalog file itself is exempt: it is where the literals are supposed to live.
+    files: ["**/*.ts", "**/*.tsx"],
+    ignores: ["lib/analytics/events.ts"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "CallExpression[callee.property.name='track'] > Literal:first-child",
+          message:
+            "Use EVENTS.* from lib/analytics/events.ts, never an inline event name. An inline name is not a compile error and not a runtime error — the analytics service stores unknown names with is_unknown=true, so a typo becomes a second event nobody queries.",
+        },
+        {
+          selector:
+            "CallExpression[callee.property.name='track'] > TemplateLiteral:first-child",
+          message:
+            "Event names must be constants from EVENTS, never built at runtime. A computed name is unbounded cardinality on an indexed column (events.event_name is indexed on every partition).",
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

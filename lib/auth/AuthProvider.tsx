@@ -29,7 +29,7 @@ import {
   signUpWithEmail,
   getCurrentIdToken,
 } from '@/lib/firebase';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
+import { analytics, EVENTS, getSessionId } from '@/lib/analytics';
 import {
   allowanceFor,
   fetchAccount,
@@ -161,6 +161,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       subscribeQuotaExceeded((detail) => {
         const key = detail.upgradePath === 'signup' ? 'signup' : 'premium';
         const resets = formatResetsIn(detail.resetsAt);
+        // THE exact instant of monetization friction, and priority 0 for that reason: the
+        // visitor wanted to do something and was told no. This is the one subscriber that
+        // sees every 429 in the app regardless of which tool produced it, which is why the
+        // event lives here rather than in each hook's error path.
+        //
+        // The API emits `server_quota_rejected` for the same moment. Both are wanted: this
+        // one says the visitor SAW the block, that one says it HAPPENED, and the gap between
+        // the counts is how often a 429 lands somewhere the UI never surfaced.
+        analytics.track(EVENTS.QUOTA_EXCEEDED_SHOWN, {
+          limit: detail.limit,
+          scope: detail.metric,
+        });
         setPrompt({
           open: true,
           intent: 'signup',
@@ -273,6 +285,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = useCallback(async () => {
     await firebaseSignOut();
+    // `signout` is emitted HERE rather than in lib/firebase.ts, because this is the layer
+    // that owns the product meaning of signing out (quota state, the observed snapshot).
+    // The visitor id deliberately persists — rotating it would make every sign-out look
+    // like a brand-new device and destroy the return-visitor signal.
+    analytics.track(EVENTS.SIGNOUT);
+    analytics.reset();
     resetQuotaState();
     setObserved(null);
     refresh();

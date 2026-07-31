@@ -12,7 +12,7 @@
 //      from the request the visitor just made rather than from a poll.
 
 import { getCurrentIdToken } from '@/lib/firebase';
-import { getSessionId } from '@/lib/firstPartyAnalytics';
+import { getSessionId } from '@/lib/analytics';
 import { isQuotaExceeded, readQuotaHeaders, type QuotaExceeded } from './accountApi';
 import { publishQuotaExceeded, publishQuotaState } from './quotaBus';
 

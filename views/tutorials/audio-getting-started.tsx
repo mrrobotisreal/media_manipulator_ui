@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentReadTracker from '@/components/analytics/content-read-tracker';
 import Link from 'next/link';
 import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
@@ -6,6 +7,9 @@ import { Panel } from '@/components/darkroom/panel';
 const AudioGettingStartedTutorial: React.FC = () => {
   return (
     <>
+      {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
+          at >=90% scroll AND >=15s active. Renders nothing. */}
+      <ContentReadTracker slug="audio-getting-started" contentType="tutorial" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
       <aside className="hidden lg:block w-[300px] shrink-0">
         

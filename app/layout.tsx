@@ -42,10 +42,20 @@ const THEME_INIT = `
 }catch(e){document.documentElement.classList.add('dark');}})();
 `;
 
-// Consent Mode v2 defaults — all signals denied until Google Funding Choices
-// (loaded via the AdSense script below) prompts the user and upgrades them via
-// gtag('consent', 'update', ...). Ported verbatim from the Vite index.html so
-// EEA/UK/CH visitors keep seeing the banner and analytics stays consent-gated.
+// Consent Mode v2 defaults — every signal denied before any tag runs.
+//
+// `lib/consent/consentModeBridge.ts` upgrades them via gtag('consent','update')
+// once our own first-party state resolves. Note the direction: our state is the
+// SOURCE OF TRUTH and Consent Mode is the mirror. The previous implementation had
+// this inverted — it wrapped window.gtag and inferred consent from whoever called
+// it — which meant consent state depended on a Google API we do not control and
+// which never fires at all on the review build (no AdSense script → no Funding
+// Choices → no update → everything stayed denied forever).
+//
+// `wait_for_update: 500` gives our resolution a window before GA4 acts on the
+// defaults. functionality_storage and security_storage stay granted: they cover
+// the strictly-necessary storage (theme, quota/abuse identifiers) that consent
+// does not gate.
 const GTAG_CONSENT_BOOTSTRAP = `
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -139,9 +149,14 @@ export default function RootLayout({
           waits for it — the consent defaults and the dataLayer stub above are
           what matter early, and both are inline. `lazyOnload` moves it past the
           load event instead of competing with the app's own hydration during
-          the interactive window. Page views are dispatched from RouteAnalytics
-          through the dataLayer, which buffers until the tag arrives, so no
-          event is lost.
+          the interactive window.
+
+          GA4 now receives exactly three events (page_view, sign_up,
+          job_completed), forwarded by lib/analytics/ga4.ts from the first-party
+          SDK. It is a CROSS-CHECK, not a second analytics system: if our own
+          numbers and GA4's diverge beyond a sampling-and-blocking band, one of
+          them is broken. Events are dispatched through the dataLayer, which
+          buffers until the tag arrives, so nothing is lost to the lazy load.
         */}
         <Script
           id="ga4"

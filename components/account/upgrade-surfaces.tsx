@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 
+import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { formatBytes } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -58,7 +59,17 @@ export const UploadLimitHint: React.FC<{ className?: string }> = ({ className })
           {' · '}
           <button
             type="button"
-            onClick={() => auth.openAuth({ intent: 'signup', source: 'file_limit_hint' })}
+            onClick={() => {
+              // `upgrade_cta_clicked` is priority 0 — the strongest purchase-intent signal
+              // available until a checkout flow exists. `placement` matches the `source`
+              // already passed to openAuth, so the analytics dimension and the auth
+              // attribution cannot drift apart.
+              analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
+                placement: 'file_limit_hint',
+                from_tier: auth.tier,
+              });
+              auth.openAuth({ intent: 'signup', source: 'file_limit_hint' });
+            }}
             className="underline decoration-muted-foreground/40 underline-offset-2 hover:text-foreground"
           >
             {upsell}
@@ -111,11 +122,23 @@ export function useUpgradeNudge(): () => void {
         ? t('interface:upgradeSurfaces.nudgeBodyFree')
         : t('interface:upgradeSurfaces.nudgeBodyPremium');
 
+    // The nudge SHOWN is tracked separately from the nudge clicked, and both matter: the
+    // pair is the click-through rate of the one upsell prompt this product shows
+    // unprompted. Without the `shown` event the click count has no denominator, and a
+    // once-per-session prompt cannot be inferred from page views.
+    analytics.track(EVENTS.FEATURE_USED, { feature: 'upgrade_nudge', action: 'shown' });
+
     toast(t('interface:upgradeSurfaces.nudgeTitle'), {
       description: body,
       action: {
         label: t('interface:upgradeSurfaces.nudgeAction'),
-        onClick: () => auth.openAuth({ intent: 'signup', source: 'post_download' }),
+        onClick: () => {
+          analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
+            placement: 'post_download',
+            from_tier: auth.tier,
+          });
+          auth.openAuth({ intent: 'signup', source: 'post_download' });
+        },
       },
     });
   }, [auth, t]);

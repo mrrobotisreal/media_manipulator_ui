@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
 import { toast } from 'sonner';
-import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
+import { analytics, EVENTS, normalizeMediaKind, reportError } from '@/lib/analytics';
 
 export interface FileIdentificationResponse {
   fileName: string;
@@ -50,23 +50,25 @@ const useIdentifyFile = (): UseIdentifyFileReturns => {
   const identificationMutation = useMutation({
     mutationFn: identifyFile,
     onSuccess: (data) => {
-      trackFirstPartyEvent('file_identified', {
-        file_type: data.fileType,
-        media_kind: data.fileType,
-        mime_type: data.mimeType,
-        size_bytes: data.fileSize,
-        tool: data.tool,
-        success: true,
-      }, { mediaKind: data.fileType });
+      // Identification is not a job in the funnel sense (nothing is produced and there is
+      // nothing to download), so it maps to feature_used rather than job_completed.
+      analytics.track(
+        EVENTS.FEATURE_USED,
+        {
+          feature: 'file_identification',
+          action: 'completed',
+          value: data.fileType,
+        },
+        { media_kind: normalizeMediaKind(data.fileType), feature: 'file_identification' },
+      );
       toast.success('File identified successfully', {
         description: `File type: ${data.fileType} | Size: ${(data.fileSize / 1024 / 1024).toFixed(2)} MB`
       });
     },
     onError: (error, file) => {
       console.error('File identification failed:', error);
-      trackFirstPartyError('file_identification', error, {
-        size_bytes: file.size,
-      });
+      void file;
+      reportError(analytics, error, { stage: 'file_identification' });
       toast.error('Failed to identify file', {
         description: error.message || 'An unexpected error occurred'
       });

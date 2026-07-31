@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Stat } from '@/components/darkroom/stat';
 import { PanelLoading } from '@/components/darkroom/panel-loading';
 import { ConversionHistory, type HistoryLabels } from '@/components/account/conversion-history';
+import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import type { UsageMetric } from '@/lib/auth/accountApi';
 import {
@@ -110,7 +111,14 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
         </p>
         <Button
           className="mt-4"
-          onClick={() => auth.openAuth({ intent: 'signin', source: 'account_page' })}
+          onClick={() => {
+            // The signed-out account page: from_tier is always 'anonymous' here.
+            analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
+              placement: 'account_page',
+              from_tier: auth.tier,
+            });
+            auth.openAuth({ intent: 'signin', source: 'account_page' });
+          }}
         >
           {labels.signInCta}
         </Button>

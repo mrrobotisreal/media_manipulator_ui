@@ -42,21 +42,40 @@ import useGetJobStatus from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
 import useIdentifyFile from '@/lib/useIdentifyFile';
 import {
-  trackFileUpload,
-  trackFileConversion,
-  trackConversionSuccess,
-  trackConversionFailure,
-  trackFileDownload,
-  trackUserSession,
-  trackMixpanelEvent,
-  getSafeFileExtension,
+  EVENTS,
+  getVisitorId,
+  normalizeMediaKind,
+  reportError,
+  safeFileExtension,
+  takeJobDuration,
+  trackFileChoice,
+  ToolAnalyticsProvider,
+  useAnalytics,
+  useToolAnalytics,
 } from '@/lib/analytics';
-import { trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
-import { initializeIndexedIdentity } from '@/lib/indexedIdentity';
+import { useAuth } from '@/lib/auth/AuthProvider';
 import { Panel } from '@/components/darkroom/panel';
 import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
 
 type WorkflowMode = 'convert' | 'transcribe' | 'transcode' | 'document';
+
+/**
+ * The catalog's `preview_kind` for a history entry.
+ *
+ * A transcript is 'text' regardless of what went in — the visitor is reading, not watching,
+ * and lumping it with the source video would hide that the transcription tools have a
+ * completely different preview experience from the converters.
+ */
+const previewKindFor = (
+  item: { mode: WorkflowMode; mediaKind: string } | undefined,
+): 'image' | 'video' | 'audio' | 'text' | 'other' => {
+  if (!item) return 'other';
+  if (item.mode === 'transcribe') return 'text';
+  if (item.mediaKind === 'image' || item.mediaKind === 'video' || item.mediaKind === 'audio') {
+    return item.mediaKind;
+  }
+  return 'other';
+};
 
 interface ConversionHistoryItem {
   jobId: string;
@@ -84,7 +103,22 @@ interface PendingConversionDetails {
   startedAt: number;
 }
 
-const FileConverterApp: React.FC = () => {
+/**
+ * The homepage converter.
+ *
+ * Wrapped in a ToolAnalyticsProvider with slug `null`. That is deliberate and not an
+ * oversight: this surface is a tool, but it has no `content/toolPages.ts` record, and giving
+ * it a made-up slug would merge its numbers with /tools/image-converter in every per-tool
+ * report. `null` means "the homepage converter", the media kind comes from the selected
+ * file, and the events are still fully attributed by page_type and pathname.
+ */
+const FileConverterApp: React.FC = () => (
+  <ToolAnalyticsProvider slug={null} viewEntryPoint="homepage">
+    <FileConverterAppInner />
+  </ToolAnalyticsProvider>
+);
+
+const FileConverterAppInner: React.FC = () => {
   const { t, formatFileSize, formatTime } = useLocalization(['interface', 'accessibility', 'error']);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
@@ -105,11 +139,44 @@ const FileConverterApp: React.FC = () => {
   const conversionHistoryRef = useRef<ConversionHistoryItem[]>([]);
   const pendingConversionRef = useRef<PendingConversionDetails | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewedJobsRef = useRef<Set<string>>(new Set());
 
   const [workflowMode, setWorkflowMode] = useState<WorkflowMode>('convert');
 
+  // slug (null) + media_kind ride along on everything trackTool emits.
+  const { track: trackTool, setMediaKind: setToolMediaKind } = useToolAnalytics();
+  // Nullable: this view also renders inside the chromeless trees where there is no
+  // AuthProvider. Only used to read the tier's file-size ceiling for `file_rejected`.
+  const auth = useAuth();
+  const { reportError } = useAnalytics();
+
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
   const { data: fileDetails, mutate: identifyFile, isPending: isIdentifying, reset: resetIdentification } = useIdentifyFile();
+
+  /**
+   * One place for `file_selected`, shared by the picker and the drop handler.
+   *
+   * The two paths used to duplicate the call, which is how they came to disagree about what
+   * they sent. `source` distinguishes them, because drag-and-drop versus click is a real UX
+   * signal on a file-conversion site.
+   */
+  const trackFileChosen = useCallback(
+    (file: File, source: 'picker' | 'drop') => {
+      const fileKind = getFileType(file);
+      setToolMediaKind(normalizeMediaKind(fileKind));
+      // `unsupported` is what this converter's own render decides: with no recognised
+      // media kind it shows "unsupported file" and offers no form, so the file never
+      // enters the funnel. trackFileChoice turns that into `file_rejected` instead of
+      // `file_selected` — see its comment for why the two are mutually exclusive here and
+      // additive for the size ceiling.
+      trackFileChoice(trackTool, file, fileKind, {
+        source,
+        unsupported: fileKind === 'unknown',
+        limitBytes: auth?.limits?.maxFileBytes,
+      });
+    },
+    [auth?.limits?.maxFileBytes, setToolMediaKind, trackTool],
+  );
 
   const handleUploadStart = useCallback((jobId: string) => {
     setConversionStartTime(Date.now());
@@ -183,22 +250,22 @@ const FileConverterApp: React.FC = () => {
     };
   }, []);
 
-  // Initialize analytics on component mount. RouteAnalytics in Router.tsx
-  // owns the page-view fire (firstParty + GA + Mixpanel), so we only handle
-  // user-session/identity bootstrap here.
+  // The homepage converter IS a tool, so it announces itself at the top of the funnel with
+  // slug `null` — it has no toolPages.ts record, and inventing one would make it collide
+  // with /tools/image-converter in every per-tool report.
+  //
+  // Identity bootstrap is gone: lib/analytics/identity.ts mints the visitor id
+  // synchronously on first read, so there is nothing to await and nothing to fail. The old
+  // `trackUserSession({ user_type })` call is gone too — new-vs-returning is now derived
+  // server-side from `visitors.visit_count`, which is correct across devices and does not
+  // depend on a `hasVisited` localStorage flag that a cleared browser resets.
+  //
+  // `tool_viewed` itself is emitted by the ToolAnalyticsProvider above (viewEntryPoint
+  // 'homepage'), so the same one component owns the top of the funnel on every tool
+  // surface — including the four /tools pages with custom panels, which is why it moved.
   useEffect(() => {
-    void initializeIndexedIdentity().catch(error => {
-      trackFirstPartyError('identity_init', error);
-    });
-
-    const isReturningUser = localStorage.getItem('hasVisited') === 'true';
-    trackUserSession({
-      user_type: isReturningUser ? 'returning' : 'new'
-    });
-
-    if (!isReturningUser) {
-      localStorage.setItem('hasVisited', 'true');
-    }
+    // Touch the visitor id so it exists before the first tool event needs it.
+    getVisitorId();
   }, []);
 
   React.useEffect(() => {
@@ -206,84 +273,22 @@ const FileConverterApp: React.FC = () => {
       const previousStatus = conversionJob?.status;
       setConversionJob(prev => prev ? { ...prev, ...jobStatusData } : null);
 
-      // Track conversion completion
+      // The terminal funnel events, on the status TRANSITION.
+      //
+      // NOTE: useGetJobStatus also emits job_completed / job_failed on the same transition,
+      // and takeJobDuration consumes the timing entry — so whichever runs first gets the
+      // duration and the other is a duplicate. That duplication is REMOVED here: this view
+      // now only maintains its own history state, and the events come from the hook, which
+      // is the one place every tool's polling goes through.
       if (previousStatus === 'processing' && jobStatusData.status === 'completed') {
-        const processingTime = conversionStartTime ? (Date.now() - conversionStartTime) / 1000 : 0;
-        const inputFormat = selectedFile?.name.split('.').pop()?.toLowerCase() || 'unknown';
-        const outputFormat = conversionOptions?.format || 'unknown';
-        const conversionType = `${inputFormat}_to_${outputFormat}`;
-        const inputSizeMB = selectedFile ? selectedFile.size / 1024 / 1024 : 0;
-
-        trackConversionSuccess(
-          conversionOptions ? `${fileType}_to_${conversionOptions.format}` : 'unknown',
-          processingTime
-        );
-
-        // Enhanced mixpanel tracking for conversion success
-        trackMixpanelEvent('Conversion Completed', {
-          input_format: inputFormat,
-          output_format: outputFormat,
-          conversion_type: conversionType,
-          processing_duration_seconds: processingTime,
-          input_file_size_mb: inputSizeMB,
-          user_tier: 'free',
-          success: true,
-          file_type: fileType || 'unknown'
-        });
-        trackFirstPartyEvent('conversion_completed', {
-          source_format: inputFormat,
-          target_format: outputFormat,
-          duration_ms: Math.round(processingTime * 1000),
-          processing_time_seconds: processingTime,
-          size_bytes: selectedFile?.size || 0,
-          success: true,
-        }, {
-          mediaKind: fileType || 'unknown',
-          conversionJobId: jobStatusData.id,
-        });
         setConversionHistory(prev => prev.map(item => item.jobId === jobStatusData.id
           ? { ...item, status: 'completed', completedAt: Date.now() }
           : item
         ));
       }
 
-      // Track conversion failure
+      // Same reasoning as the completed branch: job_failed comes from useGetJobStatus.
       if (previousStatus === 'processing' && jobStatusData.status === 'failed') {
-        const inputFormat = selectedFile?.name.split('.').pop()?.toLowerCase() || 'unknown';
-        const outputFormat = conversionOptions?.format || 'unknown';
-        const fileSizeMB = selectedFile ? selectedFile.size / 1024 / 1024 : 0;
-
-        trackConversionFailure(
-          conversionOptions ? `${fileType}_to_${conversionOptions.format}` : 'unknown'
-        );
-
-        // Enhanced mixpanel tracking for conversion failure
-        trackMixpanelEvent('Conversion Failed', {
-          input_format: inputFormat,
-          output_format: outputFormat,
-          error_type: jobStatusData.error || 'processing_error',
-          error_message: jobStatusData.error || 'Conversion failed',
-          user_tier: 'free',
-          file_size_mb: fileSizeMB,
-          file_type: fileType || 'unknown'
-        });
-        trackFirstPartyEvent('conversion_failed', {
-          source_format: inputFormat,
-          target_format: outputFormat,
-          error_message: jobStatusData.error || 'Conversion failed',
-          error_type: jobStatusData.error || 'processing_error',
-          success: false,
-        }, {
-          mediaKind: fileType || 'unknown',
-          conversionJobId: jobStatusData.id,
-        });
-        trackFirstPartyError('conversion_processing', jobStatusData.error || 'Conversion failed', {
-          source_format: inputFormat,
-          target_format: outputFormat,
-        }, {
-          mediaKind: fileType || 'unknown',
-          conversionJobId: jobStatusData.id,
-        });
         setConversionHistory(prev => prev.map(item => item.jobId === jobStatusData.id
           ? { ...item, status: 'failed', error: jobStatusData.error || 'Conversion failed' }
           : item
@@ -292,20 +297,8 @@ const FileConverterApp: React.FC = () => {
     }
   }, [jobStatusData, conversionJob?.status, conversionStartTime, conversionOptions, fileType, selectedFile]);
 
-  // Track file identification results
-  useEffect(() => {
-    if (fileDetails && selectedFile) {
-      trackMixpanelEvent('File Identification Completed', {
-        file_extension: getSafeFileExtension(selectedFile.name),
-        file_type: fileDetails.fileType,
-        detected_mime_type: fileDetails.mimeType,
-        file_size_mb: fileDetails.fileSize / 1024 / 1024,
-        identification_tool: fileDetails.tool,
-        user_tier: 'free',
-        success: true
-      });
-    }
-  }, [fileDetails, selectedFile]);
+  // Identification COMPLETION is emitted by useIdentifyFile (which owns the mutation and
+  // therefore knows success from failure). Nothing to do here.
 
   // File drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -339,9 +332,11 @@ const FileConverterApp: React.FC = () => {
         resultImageUrlRef.current = null;
       }
 
-      // Track file upload
-      trackFileUpload(getFileType(file), file.size, file.name);
+      trackFileChosen(file, 'drop');
     }
+    // trackFileChosen is a stable useCallback; listing it would churn this handler's
+    // identity on every render for no benefit.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -361,8 +356,7 @@ const FileConverterApp: React.FC = () => {
         resultImageUrlRef.current = null;
       }
 
-      // Track file upload
-      trackFileUpload(getFileType(file), file.size, file.name);
+      trackFileChosen(file, 'picker');
     }
   };
 
@@ -396,33 +390,22 @@ const FileConverterApp: React.FC = () => {
       setResultImageUrl(null);
     }
 
-    // Track conversion start
-    const fromFormat = selectedFile.name.split('.').pop()?.toLowerCase() || 'unknown';
-    trackFileConversion(fromFormat, data.format, selectedFile.size);
+    // Which options people actually touch, one priority-3 event per non-default option.
+    // These are the lowest-value events in the catalog and the first evicted under
+    // pressure, which is exactly right for a slider.
     Object.entries(data)
       .filter(([key, value]) => key !== 'format' && value !== null && value !== undefined && value !== '')
       .forEach(([key, value]) => {
-        trackFirstPartyEvent('feature_usage', {
-          feature_name: key,
-          action: 'option_set',
+        trackTool(EVENTS.OPTIONS_CHANGED, {
+          option: key,
           value: typeof value === 'object' ? JSON.stringify(value) : String(value),
-        }, {
-          featureName: key,
-          mediaKind: fileType || 'unknown',
         });
       });
 
+    // No "conversion started" event here. `job_started` is emitted by useConvertFile once
+    // the API has ACCEPTED the job and returned a jobId — counting clicks the server later
+    // rejected as conversions made the funnel's success rate look worse than it was.
     mutate({ file: selectedFile, options: data });
-    trackMixpanelEvent('Conversion Started', {
-      input_format: fromFormat,
-      output_format: data.format,
-      conversion_type: `${fromFormat}_to_${data.format}`,
-      user_tier: 'free',
-      is_batch_conversion: false,
-      settings_used: Object.keys(data)
-        .filter(key => key !== 'format' && data[key as keyof ConversionFormData] !== null && data[key as keyof ConversionFormData] !== undefined)
-        .map(key => `${key} | ${data[key as keyof ConversionFormData]}`)
-    });
   };
 
   const handleTranscribe = (data: TranscribeFormData) => {
@@ -454,16 +437,14 @@ const FileConverterApp: React.FC = () => {
       resultImageUrlRef.current = null;
     }
     transcribeMutate({ file: selectedFile, options: data });
-    trackFirstPartyEvent('feature_usage', {
-      feature_name: 'transcribe',
-      action: 'submitted',
-      target_format: data.format,
-      language_hint: data.language || '',
-      size_bytes: selectedFile.size,
-    }, {
-      featureName: 'transcribe',
-      mediaKind,
-    });
+    // The transcribe workflow's own job_started comes from useTranscribeFile. This records
+    // the workflow CHOICE, which is a different question: how many homepage visitors reach
+    // for transcription rather than conversion.
+    trackTool(
+      EVENTS.FEATURE_USED,
+      { feature: 'transcribe', action: 'submitted', value: data.format },
+      { media_kind: normalizeMediaKind(mediaKind), feature: 'transcribe' },
+    );
   };
 
   const getConvertedFilename = () => {
@@ -490,11 +471,40 @@ const FileConverterApp: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
+  /**
+   * `result_previewed` — once per job, whichever of the four entry points opened it.
+   *
+   * Four buttons reach loadResultPreview (the inline Show result, the history list, the
+   * transcribe view, and the auto-open effect after a conversion completes), so the guard
+   * lives here rather than at the call sites. Once per JOB, not once per open: reopening the
+   * same result is the same preview, and counting reopens would make a confusing result look
+   * like an engaging one.
+   *
+   * A ref rather than state — it must not cause a render, and it has to survive the modal
+   * being closed and reopened.
+   */
+  const trackResultPreviewed = useCallback(
+    (jobId: string, item: ConversionHistoryItem | undefined) => {
+      if (previewedJobsRef.current.has(jobId)) return;
+      previewedJobsRef.current.add(jobId);
+      trackTool(
+        EVENTS.RESULT_PREVIEWED,
+        { job_id: jobId, preview_kind: previewKindFor(item) },
+        { job_id: jobId, media_kind: normalizeMediaKind(item?.mediaKind) },
+      );
+    },
+    [trackTool],
+  );
+
   const loadResultPreview = useCallback(async (jobId = conversionJob?.id, openModal = true) => {
     if (!jobId) return;
     const historyItem = conversionHistory.find(item => item.jobId === jobId);
     const isCompleted = historyItem?.status === 'completed' || (conversionJob?.id === jobId && conversionJob.status === 'completed');
     if (!historyItem || !isCompleted) return;
+    // Emitted on the OPEN, not after the blob loads: the visitor asked to look at the
+    // result, and a preview that then fails to render is a `client_error`, not an absent
+    // preview. Guarded on openModal so a silent prefetch is not counted as a look.
+    if (openModal) trackResultPreviewed(jobId, historyItem);
     if (historyItem.mode === 'transcribe') {
       setActiveResultJobId(jobId);
       setResultView('final');
@@ -524,16 +534,11 @@ const FileConverterApp: React.FC = () => {
       console.error('Failed to load result preview:', error);
       const message = error instanceof Error ? error.message : t('error:conversion.previewFailed');
       setResultPreviewError(message);
-      trackFirstPartyError('result_preview', error, {
-        file_type: historyItem?.mediaKind || 'unknown',
-      }, {
-        mediaKind: historyItem?.mediaKind || 'unknown',
-        conversionJobId: jobId,
-      });
+      reportError(error, { stage: 'result_preview' });
     } finally {
       setIsLoadingResultPreview(false);
     }
-  }, [activeResultJobId, conversionHistory, conversionJob?.id, conversionJob?.status, downloadFile, resultBlob, resultImageUrl]);
+  }, [activeResultJobId, conversionHistory, conversionJob?.id, conversionJob?.status, downloadFile, resultBlob, resultImageUrl, trackResultPreviewed]);
 
   useEffect(() => {
     if (
@@ -550,61 +555,60 @@ const FileConverterApp: React.FC = () => {
     if (jobId) {
       try {
         const historyItem = conversionHistory.find(item => item.jobId === jobId);
-        const blob = historyItem?.blob || (activeResultJobId === jobId ? resultBlob : null) || await downloadFile(jobId);
+        const cached = historyItem?.blob || (activeResultJobId === jobId ? resultBlob : null);
+        const servedFromCache = !!cached;
+        const blob = cached || (await downloadFile(jobId));
         if (!historyItem?.blob) {
           setConversionHistory(prev => prev.map(item => item.jobId === jobId ? { ...item, blob } : item));
         }
         saveBlobToDisk(blob, fileName);
-        const mediaKind = historyItem?.mediaKind || fileType || 'unknown';
+        const mediaKind = normalizeMediaKind(historyItem?.mediaKind || fileType || undefined);
 
-        // Track file download
-        trackFileDownload(fileName, mediaKind);
-
-        // Enhanced mixpanel tracking for download
-        const outputSizeMB = blob.size / 1024 / 1024;
-        const inputSizeMB = selectedFile ? selectedFile.size / 1024 / 1024 : 0;
-        const compressionRatio = inputSizeMB > 0 ? inputSizeMB / outputSizeMB : 1;
-
-        trackMixpanelEvent('File Downloaded', {
-          file_type: mediaKind,
-          output_format: historyItem?.format || conversionOptions?.format || 'unknown',
-          file_extension: getSafeFileExtension(fileName),
-          file_size_mb: outputSizeMB,
-          compression_ratio: compressionRatio,
-          user_tier: 'free',
-          conversion_id: jobId
-        });
-        trackFirstPartyEvent('download', {
-          output_format: conversionOptions?.format || 'unknown',
-          file_extension: getSafeFileExtension(fileName),
-          size_bytes: blob.size,
-          success: true,
-        }, {
-          mediaKind,
-          conversionJobId: jobId,
-        });
+        // useDownloadFile emits download_started/completed around the FETCH. This view
+        // frequently serves from a cached blob (the result modal already fetched it), and on
+        // that path no fetch happens — so the visitor's download would go unrecorded. Emit
+        // only for the cached path; emitting on both would double-count the site's most
+        // important conversion event.
+        if (servedFromCache) {
+          trackTool(
+            EVENTS.DOWNLOAD_COMPLETED,
+            {
+              job_id: jobId,
+              output_format: historyItem?.format || conversionOptions?.format || safeFileExtension(fileName),
+              size_bytes: blob.size,
+              duration_ms: takeJobDuration(jobId),
+            },
+            { job_id: jobId, media_kind: mediaKind },
+          );
+        }
       } catch (error) {
         console.error('Download failed:', error);
-        const mediaKind = conversionHistory.find(item => item.jobId === jobId)?.mediaKind || fileType || 'unknown';
-        trackFirstPartyError('download', error, {
-          file_type: mediaKind,
-        }, {
-          mediaKind,
-          conversionJobId: jobId,
-        });
-
-        // Track download failure
-        trackMixpanelEvent('Download Failed', {
-          error_message: error instanceof Error ? error.message : 'Unknown error',
-          file_type: mediaKind,
-          conversion_id: jobId,
-          user_tier: 'free'
-        });
+        const mediaKind = normalizeMediaKind(
+          conversionHistory.find(item => item.jobId === jobId)?.mediaKind || fileType || undefined,
+        );
+        // download_failed is priority 0: the work succeeded and the user still got nothing.
+        trackTool(
+          EVENTS.DOWNLOAD_FAILED,
+          { job_id: jobId, reason: error instanceof Error ? error.message : 'unknown' },
+          { job_id: jobId, media_kind: mediaKind },
+        );
+        reportError(error, { stage: 'download' });
       }
     }
   };
 
   const clearFile = () => {
+    // `after` is what makes this event worth having: a reset following a failure is a RETRY
+    // (the visitor is still trying), and one following a completed job is a fresh start
+    // (they succeeded and came back for more). Those are opposite signals.
+    trackTool(EVENTS.TOOL_RESET, {
+      after:
+        conversionJob?.status === 'failed'
+          ? 'failure'
+          : conversionJob?.status === 'completed'
+            ? 'success'
+            : 'idle',
+    });
     setSelectedFile(null);
     setConversionJob(null);
     setConversionOptions(null);
@@ -628,22 +632,10 @@ const FileConverterApp: React.FC = () => {
   const handleIdentifyFile = () => {
     if (selectedFile) {
       identifyFile(selectedFile);
-      trackFirstPartyEvent('feature_usage', {
-        feature_name: 'file_identification',
+      trackTool(EVENTS.FEATURE_USED, {
+        feature: 'file_identification',
         action: 'started',
-        file_extension: getSafeFileExtension(selectedFile.name),
-        size_bytes: selectedFile.size,
-      }, {
-        featureName: 'file_identification',
-        mediaKind: fileType || 'unknown',
-      });
-
-      // Enhanced mixpanel tracking for file identification
-      trackMixpanelEvent('File Identification Started', {
-        file_extension: getSafeFileExtension(selectedFile.name),
-        file_type: fileType || 'unknown',
-        file_size_mb: selectedFile.size / 1024 / 1024,
-        user_tier: 'free'
+        value: safeFileExtension(selectedFile.name),
       });
     }
   };

@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
-import { trackFirstPartyError, trackFirstPartyEvent, getSessionId } from '@/lib/firstPartyAnalytics';
+import { analytics, EVENTS, getSessionId, markJobStarted, reportError } from '@/lib/analytics';
 import type {
   TranscodeStartRequest,
   TranscodeStartResponse,
@@ -20,6 +20,17 @@ interface UseStartVideoTranscodeReturns {
 // useStartVideoTranscode calls POST /api/video-transcode/start with the s3Key
 // returned by a prior probe. The backend enqueues the job and returns a jobId
 // so the parent can poll /api/job/:jobId for status.
+//
+// NO UPLOAD LIFECYCLE HERE, DELIBERATELY. This hook uploads nothing: the file already
+// went to S3 during the probe, and this request only references its s3Key. The
+// upload_started/upload_completed pair lives in useVideoTranscodeProbe, which is the
+// request that actually moves the bytes. Adding a second pair here would double every
+// upload count for the one tool that uploads exactly once.
+//
+// It does still emit UPLOAD_FAILED on error, which reads oddly but is right: from the
+// funnel's point of view a start failure is the visitor's upload attempt not producing a
+// job, and the alternative — a failure with no funnel event — would silently shrink the
+// denominator of the tool's conversion rate.
 const useStartVideoTranscode = (
   onSuccess: (res: TranscodeStartResponse) => void,
 ): UseStartVideoTranscodeReturns => {
@@ -41,26 +52,36 @@ const useStartVideoTranscode = (
       toast.success('Transcode started', {
         description: `Job ID: ${data.jobId}`,
       });
-      trackFirstPartyEvent('transcode_started', {
-        protocol: variables.protocol,
-        dash_codec: variables.dashCodec || '',
-        rung_count: variables.qualityRungs.length,
-        generate_captions: variables.generateCaptions,
-        generate_storyboards: variables.generateStoryboards,
-        size_bytes: variables.fileSizeBytes,
-      }, {
-        mediaKind: 'video',
-        conversionJobId: data.jobId,
-      });
+      markJobStarted(data.jobId, 'transcode-video', 'video');
+      analytics.track(
+        EVENTS.JOB_STARTED,
+        {
+          job_id: data.jobId,
+          target_format: variables.protocol,
+          // A compact digest of the ladder configuration, so popular setups are
+          // countable without exploding the property space.
+          options_hash: [
+            variables.protocol,
+            variables.dashCodec || 'none',
+            `${variables.qualityRungs.length}rungs`,
+            variables.generateCaptions ? 'captions' : '',
+            variables.generateStoryboards ? 'storyboards' : '',
+          ]
+            .filter(Boolean)
+            .join('-'),
+        },
+        { job_id: data.jobId, media_kind: 'video' },
+      );
       onSuccess(data);
     },
     onError: (error, variables) => {
       console.error('Failed to start transcode:', error);
-      trackFirstPartyError('transcode_start', error, {
-        protocol: variables.protocol,
-      }, {
-        mediaKind: 'video',
-      });
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        { reason: error.message || 'unknown', size_bytes: variables.fileSizeBytes },
+        { media_kind: 'video' },
+      );
+      reportError(analytics, error, { stage: 'transcode_start', toolSlug: 'transcode-video' });
       toast.error('Failed to start transcode', {
         description: error.message,
       });

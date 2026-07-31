@@ -5,7 +5,14 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
 import { authHeaders } from '@/lib/auth/authedFetch';
-import { getSessionId, trackFirstPartyEvent, trackFirstPartyError } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  getSessionId,
+  markJobStarted,
+  reportError,
+  trackUploadStarted,
+} from '@/lib/analytics';
 import type {
   ImageRestoreOptions,
   ImageRestoreStartResponse,
@@ -93,6 +100,10 @@ const useImageRestore = (
 
       setUploadPhase('uploading');
       setUploadProgress(0);
+      // One multipart POST both uploads the image and starts the restoration, so the
+      // upload's end is the point where the bytes are all sent — which the progress
+      // callback below reports as 100% — rather than when the response arrives.
+      const upload = trackUploadStarted(file.size, 'post', { media_kind: 'image' });
 
       const form = new FormData();
       form.append('image', file);
@@ -108,7 +119,13 @@ const useImageRestore = (
         headers,
         (pct) => {
           setUploadProgress(pct);
-          if (pct >= 100) setUploadPhase('starting');
+          if (pct >= 100) {
+            setUploadPhase('starting');
+            // 100% of bytes sent IS the completed upload here; everything after is the
+            // server starting the job. The tracker ignores repeat calls, so a progress
+            // callback that reports 100 more than once cannot double-count.
+            upload.completed();
+          }
         },
       );
       setUploadPhase('processing');
@@ -117,39 +134,39 @@ const useImageRestore = (
     onSuccess: (data, variables) => {
       setUploadProgress(100);
       const { options, file } = variables;
-      trackFirstPartyEvent(
-        'image_restore_started',
+      markJobStarted(data.jobId, 'image-restore', 'image');
+      analytics.track(
+        EVENTS.JOB_STARTED,
         {
-          size_bucket: sizeBucket(file.size),
-          preclean_count: options.preclean.length,
-          model_count: options.models.length,
-          face_model_count: options.faceModels.length,
-          chain: options.chain,
-          scale: options.scale,
-          // boolean only — never the crop coordinates
-          crop_used: !!options.crop,
+          job_id: data.jobId,
+          // Which model chains people run, as a bucketed digest. `crop_used` stays a
+          // BOOLEAN — the crop coordinates describe the content of someone's photo and
+          // have no place in an analytics store.
+          options_hash: [
+            options.chain,
+            `x${options.scale}`,
+            `${options.models.length}m`,
+            `${options.faceModels.length}f`,
+            `${options.preclean.length}pre`,
+            options.crop ? 'crop' : '',
+            sizeBucket(file.size),
+          ]
+            .filter(Boolean)
+            .join('-'),
         },
-        {
-          mediaKind: 'image',
-          conversionJobId: data.jobId,
-        },
+        { job_id: data.jobId, media_kind: 'image' },
       );
       onSuccess(data);
     },
     onError: (error, variables) => {
       setUploadPhase('idle');
       console.error('Image restore start failed:', error);
-      trackFirstPartyError(
-        'image_restore_start',
-        error,
-        {
-          size_bucket: sizeBucket(variables.file.size),
-          model_count: variables.options.models.length,
-          face_model_count: variables.options.faceModels.length,
-          preclean_count: variables.options.preclean.length,
-        },
-        { mediaKind: 'image' },
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        { reason: error.message || 'unknown', size_bytes: variables.file.size, transport: 'post' },
+        { media_kind: 'image' },
       );
+      reportError(analytics, error, { stage: 'image_restore_start', toolSlug: 'image-restore' });
       toast.error('Failed to start restoration', {
         description: error.message || 'An unexpected error occurred',
       });

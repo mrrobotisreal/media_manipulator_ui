@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentReadTracker from '@/components/analytics/content-read-tracker';
 import Link from 'next/link';
 import { CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Panel } from '@/components/darkroom/panel';
@@ -10,6 +11,9 @@ import TrackedCtaButton from '@/components/analytics/tracked-cta-button';
 const VideoCompressionGuide: React.FC = () => {
   return (
     <>
+      {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
+          at >=90% scroll AND >=15s active. Renders nothing. */}
+      <ContentReadTracker slug="video-compression-guide" contentType="blog" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
       <aside className="hidden lg:block w-[300px] shrink-0">
         
@@ -444,7 +448,8 @@ const VideoCompressionGuide: React.FC = () => {
             Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.
           </p>
           <TrackedCtaButton
-            event="Video Compression Guide - Try Video Converter Free"
+            ctaId="blog_video_compression_try_converter"
+            placement="blog_guide_video_compression"
             href="/tools/compress-video"
             className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
           >

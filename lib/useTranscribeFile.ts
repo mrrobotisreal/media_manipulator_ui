@@ -5,7 +5,16 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
-import { getSessionId, trackFirstPartyError, trackFirstPartyEvent } from '@/lib/firstPartyAnalytics';
+import {
+  analytics,
+  EVENTS,
+  getSessionId,
+  markJobStarted,
+  normalizeMediaKind,
+  reportError,
+  trackUploadStarted,
+  type MediaKind,
+} from '@/lib/analytics';
 
 export type TranscribeOutputFormat = 'vtt' | 'srt' | 'txt' | 'json';
 
@@ -70,11 +79,15 @@ const uploadVideoForTranscribe = async (
   options: TranscribeFormData,
   setPhase: (phase: UploadPhase) => void,
   setProgress: (progress: number) => void,
+  mediaKind: MediaKind | undefined,
 ): Promise<TranscribeUploadResponse> => {
   const sessionId = getSessionId();
   const contentType = file.type || 'video/mp4';
   setPhase('requesting-url');
   setProgress(0);
+
+  // From the presign request, because that is when the visitor's wait begins.
+  const upload = trackUploadStarted(file.size, 'presigned_put', { media_kind: mediaKind });
 
   const presignResponse = await authedFetch(`${getBaseURL()}/video-upload/presign`, {
     method: 'POST',
@@ -93,6 +106,9 @@ const uploadVideoForTranscribe = async (
 
   setPhase('uploading-to-s3');
   await putFileToS3(target, file, contentType, setProgress);
+
+  // Bytes are on S3; `finalizing` below is job creation, which job_started covers.
+  upload.completed();
 
   setPhase('finalizing');
   const completeResponse = await authedFetch(`${getBaseURL()}/video-upload/complete`, {
@@ -128,12 +144,19 @@ const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): 
 
   const mutation = useMutation({
     mutationFn: ({ file, options }: { file: File; options: TranscribeFormData }) => {
+      const mediaKind = normalizeMediaKind(getFileType(file));
       if (getFileType(file) === 'video') {
-        return uploadVideoForTranscribe(file, options, setUploadPhase, setUploadProgress);
+        return uploadVideoForTranscribe(file, options, setUploadPhase, setUploadProgress, mediaKind);
       }
       setUploadPhase('uploading-to-s3');
       setUploadProgress(0);
-      return uploadAudioForTranscribe(file, options);
+      // Audio goes straight to our API in one multipart POST, so the request that uploads
+      // the bytes is also the request that creates the job: the tracker closes on resolve.
+      const upload = trackUploadStarted(file.size, 'post', { media_kind: mediaKind });
+      return uploadAudioForTranscribe(file, options).then((res) => {
+        upload.completed();
+        return res;
+      });
     },
     onSuccess: (data, variables) => {
       setUploadProgress(100);
@@ -141,23 +164,28 @@ const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): 
       toast.success('Transcription started', {
         description: `Job ID: ${data.jobId} - Generating transcript`,
       });
-      trackFirstPartyEvent('transcription_started', {
-        target_format: variables.options.format,
-        size_bytes: variables.file.size,
-      }, {
-        mediaKind: getFileType(variables.file),
-        conversionJobId: data.jobId,
-      });
+      const mediaKind = normalizeMediaKind(getFileType(variables.file));
+      markJobStarted(data.jobId, 'transcribe-audio', mediaKind);
+      analytics.track(
+        EVENTS.JOB_STARTED,
+        { job_id: data.jobId, target_format: variables.options.format },
+        { job_id: data.jobId, media_kind: mediaKind },
+      );
       onSuccess(data);
     },
     onError: (error, variables) => {
       setUploadPhase('idle');
       console.error('Transcription upload failed:', error);
-      trackFirstPartyError('transcription_upload', error, {
-        target_format: variables.options.format,
-      }, {
-        mediaKind: getFileType(variables.file),
-      });
+      analytics.track(
+        EVENTS.UPLOAD_FAILED,
+        {
+          reason: error.message || 'unknown',
+          size_bytes: variables.file.size,
+          transport: getFileType(variables.file) === 'video' ? 'presigned_put' : 'post',
+        },
+        { media_kind: normalizeMediaKind(getFileType(variables.file)) },
+      );
+      reportError(analytics, error, { stage: 'transcription_upload' });
       toast.error('Failed to start transcription', {
         description: error.message || 'An unexpected error occurred',
       });

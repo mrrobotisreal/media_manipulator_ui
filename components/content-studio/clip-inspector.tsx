@@ -19,7 +19,7 @@ import {
   IDENTITY_TRANSFORM, ZERO_CROP, type EffectParam,
 } from '@/lib/studio/effectRegistry';
 import { requestEyedrop } from '@/lib/studio/eyedropper';
-import { trackStudioEffectAdded } from '@/lib/studio/telemetry';
+import { analytics, EVENTS } from '@/lib/analytics';
 import { Panel } from '@/components/darkroom/panel';
 import type {
   StudioClip, StudioTrack, StudioEffect, StudioBlendMode, StudioTransform, StudioCrop,
@@ -286,7 +286,13 @@ const EffectsSection: React.FC<{ clip: StudioClip; lutAssets: StudioAssetEntry[]
           value=""
           onValueChange={(v) => {
             addEffect(clip.id, v as 'lumetri' | 'lut' | 'chromakey');
-            trackStudioEffectAdded(v);
+            // The effect TYPE only — a closed vocabulary of three values, so it is a clean
+            // low-cardinality dimension and carries nothing about the media.
+            analytics.track(
+              EVENTS.FEATURE_USED,
+              { feature: 'studio', action: 'effect_added', value: v },
+              { feature: 'studio' },
+            );
           }}
         >
           <SelectTrigger className="h-6 w-auto text-[11px] gap-1 px-2">
