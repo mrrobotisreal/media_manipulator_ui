@@ -415,6 +415,22 @@ export class AnalyticsClient {
     return this.queue.size();
   }
 
+  /**
+   * Drop everything queued, in memory and in this tab's persisted outbox.
+   *
+   * Exists for exactly one caller: `forgetIdentity()` (lib/analytics/forget.ts),
+   * after a successful DSR deletion. Events queued under the old visitor id must
+   * not be delivered afterwards — the server would re-create the visitor row the
+   * user just erased.
+   */
+  discardQueuedEvents(): void {
+    try {
+      this.queue.discardAll();
+    } catch {
+      // Never throw into React.
+    }
+  }
+
   /** Whether this visitor has excluded themselves from aggregates. */
   isSelfExcluded(): boolean {
     try {

@@ -87,6 +87,7 @@ export type {
  */
 export { getVisitorId, getTabId, isSelfExcluded } from './identity';
 export { getSessionId, getSessionRecord, touchSession, SESSION_IDLE_MS } from './session';
+export { forgetIdentity } from './forget';
 
 export { analyticsBaseUrl, analyticsWriteKey } from './baseUrl';
 export { setContext, getTier, getToolSlug } from './context';

@@ -231,6 +231,20 @@
       "action": "Opt out",
       "done": "You are opted out"
     },
+    "yourData": {
+      "title": "Your data",
+      "body": "Download a copy of everything our analytics holds about this browser, or delete it permanently. If you are signed in, both cover every device linked to your account; otherwise they cover this browser only.",
+      "export": "Export my data",
+      "exporting": "Preparing your export…",
+      "delete": "Delete my data",
+      "deleting": "Deleting…",
+      "deleteConfirmBody": "This permanently deletes your analytics history — events, visits, and your visitor profile — and cannot be undone. Records of your consent choices are kept, as the law requires us to be able to prove them. Type DELETE to confirm.",
+      "deleteConfirmPlaceholder": "Type DELETE to confirm",
+      "deleteConfirmAction": "Permanently delete",
+      "deletedSummary": "Done. We deleted {{events}} events across {{sessions}} visits, and this browser has been given a brand-new anonymous ID.",
+      "deletedNote": "Records of your consent choices are retained as legally required proof. Your consent setting itself is unchanged — if analytics is on, new activity is collected under the new ID; you can turn it off above at any time.",
+      "error": "That didn't work. Please try again in a moment — nothing was changed if you saw no confirmation."
+    },
     "policyPrefix": "Full detail on what we collect, why, and how long we keep it:",
     "policyLink": "privacy policy",
     "cancel": "Cancel",
