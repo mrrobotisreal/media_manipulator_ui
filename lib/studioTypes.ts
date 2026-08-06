@@ -604,6 +604,36 @@ export const studioExportRequestSchema = z.object({
 export type StudioExportRequest = z.infer<typeof studioExportRequestSchema>;
 
 // ---------------------------------------------------------------------------
+// Version history (part 09) — server-side checkpoints (ADR ws/0001 item 3).
+// ---------------------------------------------------------------------------
+
+export const studioVersionKindSchema = z.enum(['auto', 'manual']);
+export type StudioVersionKind = z.infer<typeof studioVersionKindSchema>;
+
+/**
+ * Version metadata (one list row). Snapshot bodies never travel to the client:
+ * restore happens server-side and answers with the full updated project.
+ * `revision` is the project revision the snapshot was captured at (optional so
+ * a CreaTV backend that doesn't track revisions can still list).
+ */
+export const studioProjectVersionSchema = z.object({
+  id: z.string(),
+  projectId: z.string().optional(),
+  kind: studioVersionKindSchema,
+  name: z.string().optional(),
+  revision: z.number().int().optional(),
+  createdAt: z.string(),
+});
+export type StudioProjectVersion = z.infer<typeof studioProjectVersionSchema>;
+
+/** Body for POST /projects/:id/versions. name is required for kind 'manual'. */
+export const studioCreateVersionRequestSchema = z.object({
+  kind: studioVersionKindSchema,
+  name: z.string().max(80).optional(),
+});
+export type StudioCreateVersionRequest = z.infer<typeof studioCreateVersionRequestSchema>;
+
+// ---------------------------------------------------------------------------
 // v1 → v2 → v3 normalizer chain. Called from loadProject; each step is
 // idempotent and purely additive (no field relocations), so untouched clips
 // and tracks keep their object identity.

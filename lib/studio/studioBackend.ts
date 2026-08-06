@@ -3,12 +3,15 @@ import {
   studioAssetSchema,
   studioAssetPresignResponseSchema,
   studioAssetCompleteResponseSchema,
+  studioProjectVersionSchema,
   type StudioProject,
   type StudioAsset,
   type StudioCreateProjectRequest,
   type StudioSaveProjectRequest,
   type StudioAssetCompleteResponse,
   type StudioExportRequest,
+  type StudioCreateVersionRequest,
+  type StudioProjectVersion,
 } from '@/lib/studioTypes';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
@@ -121,6 +124,10 @@ export interface StudioBackend {
   adaptComplete: (input: CompleteInput) => unknown;
   adaptExport: (req: StudioExportRequest) => unknown;
   adaptCaptionsGenerate: (language?: string) => unknown;
+  // Version history (part 09). Additive: a CreaTV backend that hasn't shipped
+  // the endpoints yet just 404s and the hooks surface "not available".
+  adaptCreateVersion: (req: StudioCreateVersionRequest) => unknown;
+  adaptRestoreVersion: () => unknown;
 
   // Response parsers (wire JSON → shared EDL types). Validate with the zod schemas.
   parseProject: (json: unknown) => StudioProject;
@@ -130,6 +137,8 @@ export interface StudioBackend {
   parseComplete: (json: unknown) => StudioAssetCompleteResponse;
   parseExport: (json: unknown) => { jobId: string };
   parseJob: (json: unknown) => StudioJobProgress;
+  parseVersion: (json: unknown) => StudioProjectVersion;
+  parseVersions: (json: unknown) => StudioProjectVersion[];
 }
 
 // ---------------------------------------------------------------------------
@@ -189,6 +198,8 @@ export function createMmBackend(): StudioBackend {
     }),
     adaptExport: (req) => req,
     adaptCaptionsGenerate: (language) => ({ language: language || undefined }),
+    adaptCreateVersion: (req) => req,
+    adaptRestoreVersion: () => ({}),
 
     parseProject: (json) => studioProjectSchema.parse(json),
     parseProjects: (json) => {
@@ -216,6 +227,12 @@ export function createMmBackend(): StudioBackend {
         resultUrl: d.resultUrl,
         error: d.error,
       };
+    },
+    parseVersion: (json) => studioProjectVersionSchema.parse(json),
+    parseVersions: (json) => {
+      const parsed = (json ?? {}) as { versions?: unknown };
+      const arr = Array.isArray(parsed.versions) ? parsed.versions : [];
+      return arr.map((v) => studioProjectVersionSchema.parse(v));
     },
   };
 }
@@ -352,6 +369,18 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
       channel_id: scope.channelId,
       language: language || undefined,
     }),
+    // Part 09 (additive): the CreaTV backend may not serve these routes yet —
+    // the hooks map its 404 to a graceful "not available" panel state.
+    adaptCreateVersion: (req) => ({
+      user_id: scope.userId,
+      channel_id: scope.channelId,
+      kind: req.kind,
+      name: req.name,
+    }),
+    adaptRestoreVersion: () => ({
+      user_id: scope.userId,
+      channel_id: scope.channelId,
+    }),
 
     parseProject: (json) => parseCreatvProject(json),
     parseProjects: (json) => {
@@ -386,6 +415,11 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
       return { jobId };
     },
     parseJob: (json) => parseCreatvJob(json),
+    parseVersion: (json) => parseCreatvVersion(json),
+    parseVersions: (json) => {
+      const arr = ((json ?? {}) as { versions?: unknown[] }).versions ?? [];
+      return arr.map(parseCreatvVersion);
+    },
   };
 }
 
@@ -441,6 +475,19 @@ function parseCreatvAsset(json: unknown): StudioAsset {
     createdAt: typeof j.createdAt === 'string' ? j.createdAt : new Date(0).toISOString(),
   };
   return studioAssetSchema.parse(mapped);
+}
+
+function parseCreatvVersion(json: unknown): StudioProjectVersion {
+  const j = (json ?? {}) as Record<string, unknown>;
+  const mapped = {
+    id: String(j.id ?? ''),
+    projectId: j.projectId != null ? String(j.projectId) : j.draftId != null ? String(j.draftId) : undefined,
+    kind: j.kind === 'manual' ? ('manual' as const) : ('auto' as const),
+    name: typeof j.name === 'string' && j.name ? j.name : undefined,
+    revision: typeof j.revision === 'number' && j.revision > 0 ? j.revision : undefined,
+    createdAt: typeof j.createdAt === 'string' ? j.createdAt : new Date(0).toISOString(),
+  };
+  return studioProjectVersionSchema.parse(mapped);
 }
 
 function parseCreatvJob(json: unknown): StudioJobProgress {

@@ -113,6 +113,30 @@
         "inspector": "Inspector"
       }
     },
+    "versions": {
+      "open": "Version history",
+      "title": "Version history",
+      "description": "Restore your project to an earlier state. Restoring checkpoints your current state first, so it never loses work.",
+      "manual": "Saved versions",
+      "auto": "Automatic checkpoints",
+      "loading": "Loading versions…",
+      "empty": "No versions yet. Checkpoints appear automatically as you edit.",
+      "unavailable": "Version history isn't available here.",
+      "loadError": "We couldn't load versions.",
+      "namePlaceholder": "Version name",
+      "save": "Save version",
+      "saved": "Version saved",
+      "saveFailed": "Couldn't save version",
+      "checkpoint": "Checkpoint",
+      "revision": "rev {{revision}}",
+      "restore": "Restore",
+      "restoreTitle": "Restore this version?",
+      "restoreDescription": "Your current state is checkpointed first, so you can always come back to it. The editor will switch to the restored version.",
+      "restoreCancel": "Cancel",
+      "restoreConfirm": "Restore",
+      "restored": "Version restored",
+      "restoreFailed": "Couldn't restore version"
+    },
     "saveConflict": {
       "title": "Project changed elsewhere",
       "description": "This project was changed in another tab or device. Reload the latest version, or take over to overwrite it with this tab's copy.",

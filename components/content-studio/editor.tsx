@@ -57,8 +57,11 @@ import {
   summarizeDraftChanges,
   type DraftChangeSummary,
 } from '@/lib/studio/draftRecovery';
+import { useCreateVersion } from '@/lib/useStudioVersions';
+import { createCheckpointScheduler } from '@/lib/studio/versionCheckpoint';
 import SaveConflictDialog from './save-conflict-dialog';
 import DraftRecoveryDialog from './draft-recovery-dialog';
+import VersionsPanel from './versions-panel';
 import MediaBin from './media-bin';
 import PreviewSurface from './preview-surface';
 import Timeline from './timeline';
@@ -308,6 +311,38 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   React.useEffect(() => {
     void pruneDrafts();
   }, []);
+
+  // --- Version history (part 09): client-driven auto-checkpoints -----------
+  // One checkpoint when the project hydrates (the "on editor open" trigger),
+  // then one per ~5-minute tick, gated on "document changed since the last
+  // landed checkpoint" (lib/studio/versionCheckpoint.ts). Fire-and-forget with
+  // a single silent retry — checkpoints are a safety net and must never block
+  // or nag while editing. The server prunes autos to the newest N, so a
+  // misbehaving client can't grow the table.
+  // mutateAsync is referentially stable in TanStack Query v5, so it can sit in
+  // the effect deps without re-creating the scheduler every render.
+  const { mutateAsync: createVersionAsync } = useCreateVersion(projectId);
+  React.useEffect(() => {
+    // Gate on hydration so the open-checkpoint snapshots this project, not a
+    // 404 or a previous document still in the store.
+    if (storeProjectId !== projectId) return;
+    const scheduler = createCheckpointScheduler({
+      getDocument: () => {
+        const st = useStudioStore.getState();
+        return st.project && st.project.id === projectId ? st.project : null;
+      },
+      checkpoint: async () => {
+        try {
+          await createVersionAsync({ kind: 'auto' });
+          return true;
+        } catch {
+          return false;
+        }
+      },
+    });
+    scheduler.start();
+    return () => scheduler.dispose();
+  }, [projectId, storeProjectId, createVersionAsync]);
 
   // Recovery path (part 08): after the server project loads, look for a local
   // draft. Newer than the server copy and actually different → offer recovery;
@@ -607,6 +642,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         </div>
         <div className="flex items-center gap-2">
           <UndoRedoButtons />
+          <VersionsPanel projectId={projectId} />
           <AudioDuckingPopover />
           <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
           {focusMode ? <FocusControls api={focusMode} /> : null}
