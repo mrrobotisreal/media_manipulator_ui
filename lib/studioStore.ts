@@ -967,6 +967,8 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       captionStyle: p.captionStyle,
       captionsEnabled: p.captionsEnabled,
       audio: p.audio,
+      // v3: no marker UI yet — echo loaded markers so a save never drops them.
+      markers: p.markers,
     };
   },
 

@@ -317,6 +317,7 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
       captionStyle: req.captionStyle,
       captionsEnabled: req.captionsEnabled,
       audio: req.audio,
+      markers: req.markers,
     }),
     adaptPresign: (input) => ({
       draftId: scope.draftId,
@@ -403,6 +404,7 @@ function parseCreatvProject(json: unknown): StudioProject {
     captionStyle: j.captionStyle != null ? j.captionStyle : undefined,
     captionsEnabled: typeof j.captionsEnabled === 'boolean' ? j.captionsEnabled : true,
     audio: j.audio != null ? j.audio : undefined,
+    markers: Array.isArray(j.markers) ? j.markers : undefined,
     createdAt: typeof j.createdAt === 'string' ? j.createdAt : new Date(0).toISOString(),
     updatedAt: typeof j.updatedAt === 'string' ? j.updatedAt : new Date(0).toISOString(),
   };

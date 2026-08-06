@@ -149,3 +149,60 @@ export function makeDefaultEffect(type: StudioEffectType, id: string): StudioEff
 export const IDENTITY_TRANSFORM = { x: 0, y: 0, scale: 1, rotationDeg: 0 } as const;
 /** Zero crop (matches studioCropSchema defaults). */
 export const ZERO_CROP = { left: 0, top: 0, right: 0, bottom: 0 } as const;
+
+// ---------------------------------------------------------------------------
+// EDL v3 ranges — MIRRORED BY GO. Every number below is duplicated in the Go
+// sanitizer (internal/models/studio_sanitize.go); change both or neither. The
+// Zod schema in lib/studioTypes.ts also repeats the hard bounds, matching how
+// the v2 params above are kept in lockstep. Parts 14–21 read these for their
+// inspector sliders; in part 05 the fields exist but drive no UI or export.
+// ---------------------------------------------------------------------------
+export const STUDIO_V3_RANGES = {
+  /** Clip-edge transition (all 15 types share one duration range). */
+  transitionDurationSeconds: { min: 0.1, max: 5, step: 0.05, default: 1 },
+  /** Hard cap per keyframe property array (mirrors the volumeKeyframes cap). */
+  keyframesPerProperty: 64,
+  /** Keyframe value bounds reuse each property's own range. */
+  keyframeValue: {
+    positionX: { min: -1, max: 1, default: 0 },
+    positionY: { min: -1, max: 1, default: 0 },
+    scale: { min: 0.01, max: 10, default: 1 },
+    rotation: { min: -360, max: 360, default: 0 },
+    opacity: { min: 0, max: 1, default: 1 },
+    volume: { min: 0, max: 2, default: 1 },
+    pan: { min: -1, max: 1, default: 0 },
+  },
+  /** Clip speed (rate). freeze is mutually exclusive with speed/reverse. */
+  speed: { min: 0.1, max: 10, step: 0.05, default: 1 },
+  /** Track mixer. */
+  trackGain: { min: 0, max: 2, step: 0.01, default: 1 },
+  trackPan: { min: -1, max: 1, step: 0.01, default: 0 },
+  trackNameMaxLength: 80,
+  /** Track 3-band EQ (shared range for low/mid/high shelf gains). */
+  eqGainDb: { min: -12, max: 12, step: 0.5, default: 0 },
+  /** Track compressor. */
+  compressor: {
+    thresholdDb: { min: -60, max: 0, step: 1, default: -24 },
+    ratio: { min: 1, max: 20, step: 0.5, default: 4 },
+    attackMs: { min: 1, max: 200, step: 1, default: 10 },
+    releaseMs: { min: 20, max: 1000, step: 10, default: 250 },
+    makeupDb: { min: 0, max: 12, step: 0.5, default: 0 },
+  },
+  /** Title clips (assetless). Pixel fields are project-resolution px. */
+  title: {
+    maxLayers: 8,
+    maxTextLength: 500,
+    defaultFontFamily: 'Inter',
+    fontSizePx: { min: 8, max: 500, step: 1, default: 64 },
+    strokeWidthPx: { min: 0, max: 50, step: 1, default: 0 },
+    shadowOffsetPx: { min: -100, max: 100, step: 1, default: 0 },
+    shadowBlurPx: { min: 0, max: 100, step: 1, default: 8 },
+    backgroundPaddingPx: { min: 0, max: 200, step: 1, default: 12 },
+    cornerRadiusPx: { min: 0, max: 200, step: 1, default: 0 },
+    letterSpacingPx: { min: -20, max: 100, step: 0.5, default: 0 },
+    lineHeight: { min: 0.5, max: 3, step: 0.05, default: 1.2 },
+    lineThicknessPx: { min: 1, max: 100, step: 1, default: 4 },
+  },
+  /** Project markers. */
+  markers: { max: 500, maxNameLength: 80, maxCommentLength: 500, defaultColor: '#22C55E' },
+} as const;

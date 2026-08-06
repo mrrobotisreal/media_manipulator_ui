@@ -142,10 +142,200 @@ export const studioVolumeKeyframeSchema = z.object({
 });
 export type StudioVolumeKeyframe = z.infer<typeof studioVolumeKeyframeSchema>;
 
+// ---------------------------------------------------------------------------
+// EDL v3 — typed transitions, per-property keyframes, title clips, speed, track
+// mixer/effects, project markers (ADR ws/0004). All additive and inert until
+// parts 14–21 light them up. Ranges mirror STUDIO_V3_RANGES in
+// lib/studio/effectRegistry.ts and the Go sanitizer.
+// ---------------------------------------------------------------------------
+
+/** How a clip enters over its predecessor's overlap region (supersedes `transitionInSeconds`). */
+export const studioTransitionTypeSchema = z.enum([
+  'crossDissolve',
+  'dipToBlack',
+  'dipToWhite',
+  'wipeLeft',
+  'wipeRight',
+  'wipeUp',
+  'wipeDown',
+  'pushLeft',
+  'pushRight',
+  'pushUp',
+  'pushDown',
+  'slideLeft',
+  'slideRight',
+  'slideUp',
+  'slideDown',
+]);
+export type StudioTransitionType = z.infer<typeof studioTransitionTypeSchema>;
+
+export const studioTransitionSchema = z.object({
+  type: studioTransitionTypeSchema,
+  durationSeconds: z.number().min(0.1).max(5),
+  /** per-type tuning params (defined by part 14; pass-through until then). */
+  params: z.record(z.string(), z.number()).optional(),
+});
+export type StudioTransition = z.infer<typeof studioTransitionSchema>;
+
+export const studioKeyframeEaseSchema = z.enum(['linear', 'hold', 'easeIn', 'easeOut', 'easeBoth']);
+export type StudioKeyframeEase = z.infer<typeof studioKeyframeEaseSchema>;
+
+/** One automation point. `t` is clip-local seconds; arrays are sorted by t. */
+export const studioKeyframeSchema = z.object({
+  t: z.number().min(0),
+  value: z.number(),
+  ease: studioKeyframeEaseSchema,
+});
+export type StudioKeyframe = z.infer<typeof studioKeyframeSchema>;
+
+/** ≤64 points per property (mirrors the legacy volumeKeyframes cap). */
+const studioKeyframeArraySchema = z.array(studioKeyframeSchema).max(64);
+
+/**
+ * Per-property keyframe lanes. `effects` keys are `<effectId>.<param>` (e.g.
+ * `lumetri1.exposure`), sanitized server-side against the effect registry's
+ * ranges. `volume` supersedes legacy `volumeKeyframes` (normalizeProject
+ * upgrades; `keyframes.volume` wins when both exist).
+ */
+export const studioClipKeyframesSchema = z.object({
+  positionX: studioKeyframeArraySchema.optional(),
+  positionY: studioKeyframeArraySchema.optional(),
+  scale: studioKeyframeArraySchema.optional(),
+  rotation: studioKeyframeArraySchema.optional(),
+  opacity: studioKeyframeArraySchema.optional(),
+  volume: studioKeyframeArraySchema.optional(),
+  pan: studioKeyframeArraySchema.optional(),
+  effects: z.record(z.string(), studioKeyframeArraySchema).optional(),
+});
+export type StudioClipKeyframes = z.infer<typeof studioClipKeyframesSchema>;
+
+export const studioTitleShadowSchema = z.object({
+  xPx: z.number(),
+  yPx: z.number(),
+  blurPx: z.number(),
+  color: z.string(),
+});
+export type StudioTitleShadow = z.infer<typeof studioTitleShadowSchema>;
+
+export const studioTitleBackgroundSchema = z.object({
+  color: z.string(),
+  opacity: z.number().min(0).max(1),
+  paddingXPx: z.number(),
+  paddingYPx: z.number(),
+  radiusPx: z.number(),
+});
+export type StudioTitleBackground = z.infer<typeof studioTitleBackgroundSchema>;
+
+/** Text block. x/y are normalized 0–1 (center of the block), like textOverlays. */
+export const studioTitleTextLayerSchema = z.object({
+  type: z.literal('text'),
+  text: z.string().max(500),
+  fontFamily: z.string(),
+  fontSizePx: z.number().positive(),
+  fontWeight: z.union([z.literal(400), z.literal(700)]),
+  fillColor: z.string(),
+  strokeColor: z.string().optional(),
+  strokeWidthPx: z.number().optional(),
+  shadow: studioTitleShadowSchema.optional(),
+  background: studioTitleBackgroundSchema.optional(),
+  letterSpacingPx: z.number().optional(),
+  lineHeight: z.number().optional(),
+  align: z.enum(['left', 'center', 'right']),
+  x: z.number().min(0).max(1),
+  y: z.number().min(0).max(1),
+});
+export type StudioTitleTextLayer = z.infer<typeof studioTitleTextLayerSchema>;
+
+/** Solid rectangle. Coordinates and sizes are normalized 0–1. */
+export const studioTitleRectLayerSchema = z.object({
+  type: z.literal('rect'),
+  x: z.number().min(0).max(1),
+  y: z.number().min(0).max(1),
+  w: z.number().min(0).max(1),
+  h: z.number().min(0).max(1),
+  color: z.string(),
+  opacity: z.number().min(0).max(1).optional(),
+  radiusPx: z.number().optional(),
+});
+export type StudioTitleRectLayer = z.infer<typeof studioTitleRectLayerSchema>;
+
+/** Straight line segment. Endpoints normalized 0–1. */
+export const studioTitleLineLayerSchema = z.object({
+  type: z.literal('line'),
+  x1: z.number().min(0).max(1),
+  y1: z.number().min(0).max(1),
+  x2: z.number().min(0).max(1),
+  y2: z.number().min(0).max(1),
+  color: z.string(),
+  thicknessPx: z.number().positive(),
+});
+export type StudioTitleLineLayer = z.infer<typeof studioTitleLineLayerSchema>;
+
+export const studioTitleLayerSchema = z.discriminatedUnion('type', [
+  studioTitleTextLayerSchema,
+  studioTitleRectLayerSchema,
+  studioTitleLineLayerSchema,
+]);
+export type StudioTitleLayer = z.infer<typeof studioTitleLayerSchema>;
+
+/**
+ * Presence makes the clip a TITLE CLIP: assetless (empty `assetId`), rendered
+ * from the layer stack. The sanitizer enforces assetId XOR title.
+ */
+export const studioTitleSchema = z.object({
+  layers: z.array(studioTitleLayerSchema).max(8),
+});
+export type StudioTitle = z.infer<typeof studioTitleSchema>;
+
+/** Held-frame clip. Mutually exclusive with speed/reverse (sanitizer enforces). */
+export const studioFreezeSchema = z.object({
+  sourceTime: z.number().min(0), // seconds within the source media
+});
+export type StudioFreeze = z.infer<typeof studioFreezeSchema>;
+
+/** Track 3-band EQ (shelf gains, dB). */
+export const studioTrackEqSchema = z.object({
+  lowGainDb: z.number().min(-12).max(12),
+  midGainDb: z.number().min(-12).max(12),
+  highGainDb: z.number().min(-12).max(12),
+});
+export type StudioTrackEq = z.infer<typeof studioTrackEqSchema>;
+
+export const studioTrackCompressorSchema = z.object({
+  thresholdDb: z.number().min(-60).max(0),
+  ratio: z.number().min(1).max(20),
+  attackMs: z.number().min(1).max(200),
+  releaseMs: z.number().min(20).max(1000),
+  makeupDb: z.number().min(0).max(12),
+});
+export type StudioTrackCompressor = z.infer<typeof studioTrackCompressorSchema>;
+
+export const studioTrackEffectsSchema = z.object({
+  eq: studioTrackEqSchema.optional(),
+  compressor: studioTrackCompressorSchema.optional(),
+});
+export type StudioTrackEffects = z.infer<typeof studioTrackEffectsSchema>;
+
+/** A named point of interest on the project timeline (`t` in seconds). */
+export const studioMarkerSchema = z.object({
+  id: z.string(),
+  t: z.number().min(0),
+  name: z.string().max(80),
+  color: z.string(), // #RRGGBB
+  comment: z.string().max(500).optional(),
+});
+export type StudioMarker = z.infer<typeof studioMarkerSchema>;
+
 /** A placement of a source asset's stream on the timeline. */
 export const studioClipSchema = z.object({
   id: z.string(),
-  assetId: z.string(),
+  /**
+   * v3: optional on the wire — a title clip has no asset. Absence is
+   * represented as '' (Go's string zero value) so the inferred TS type stays
+   * `string` and asset lookups keep working; the sanitizer enforces
+   * assetId XOR title.
+   */
+  assetId: z.string().default(''),
   /** which source stream (usually 0 video / 0 audio) */
   streamIndex: z.number().int().min(0).default(0),
   /** seconds on the timeline */
@@ -176,6 +366,24 @@ export const studioClipSchema = z.object({
   volumeKeyframes: z.array(studioVolumeKeyframeSchema).optional(),
   /** Stereo balance −1 (L) .. 1 (R). */
   pan: z.number().min(-1).max(1).optional(),
+
+  // --- EDL v3 (all optional; absent = no effect) ---
+  /** Typed clip-edge transition; reading prefers this over `transitionInSeconds`. */
+  transition: studioTransitionSchema.optional(),
+  /** Per-property automation lanes. `keyframes.volume` supersedes `volumeKeyframes`. */
+  keyframes: studioClipKeyframesSchema.optional(),
+  /** Presence makes this a title clip (assetless). */
+  title: studioTitleSchema.optional(),
+  /** Playback rate 0.1–10 (default 1). */
+  speed: z.number().min(0.1).max(10).optional(),
+  /** Play the source segment backwards. */
+  reverse: z.boolean().optional(),
+  /** Preserve audio pitch under speed change (default true when absent). */
+  maintainPitch: z.boolean().optional(),
+  /** Held-frame clip; mutually exclusive with speed/reverse. */
+  freeze: studioFreezeSchema.optional(),
+  /** Clip grouping (part 18). */
+  groupId: z.string().optional(),
 });
 export type StudioClip = z.infer<typeof studioClipSchema>;
 
@@ -187,6 +395,22 @@ export const studioTrackSchema = z.object({
   index: z.number().int().min(0),
   muted: z.boolean().default(false),
   clips: z.array(studioClipSchema).default([]),
+
+  // --- EDL v3 (all optional; absent = default behavior) ---
+  /** User-visible lane name. */
+  name: z.string().max(80).optional(),
+  /** Locked tracks reject edits (part 18). */
+  locked: z.boolean().optional(),
+  /** Hide a video track from the composite. */
+  hidden: z.boolean().optional(),
+  /** Solo an audio track in the mix. */
+  solo: z.boolean().optional(),
+  /** Track gain 0–2 (default 1). */
+  gain: z.number().min(0).max(2).optional(),
+  /** Track stereo balance −1 (L) .. 1 (R) (default 0). */
+  pan: z.number().min(-1).max(1).optional(),
+  /** Track insert effects (3-band EQ, compressor). */
+  effects: studioTrackEffectsSchema.optional(),
 });
 export type StudioTrack = z.infer<typeof studioTrackSchema>;
 
@@ -236,14 +460,14 @@ export const studioAudioConfigSchema = z.object({
 });
 export type StudioAudioConfig = z.infer<typeof studioAudioConfigSchema>;
 
-/** Current EDL schema version. v1 projects are upgraded by normalizeProject. */
-export const STUDIO_SCHEMA_VERSION = 2;
+/** Current EDL schema version. Older projects are upgraded by normalizeProject. */
+export const STUDIO_SCHEMA_VERSION = 3;
 
 /** The persisted editor document. */
 export const studioProjectSchema = z.object({
   id: z.string(),
   name: z.string(),
-  /** EDL schema version; written as 2 on save, normalized from v1 on load. */
+  /** EDL schema version; written as STUDIO_SCHEMA_VERSION on save, upgraded on load. */
   schemaVersion: z.number().int().default(1),
   /** timeline framerate (e.g. 30) */
   fps: z.number().positive(),
@@ -259,6 +483,8 @@ export const studioProjectSchema = z.object({
   captionsEnabled: z.boolean().default(true),
   /** auto-ducking config. */
   audio: studioAudioConfigSchema.optional(),
+  /** v3: timeline markers (≤500, sorted by t). */
+  markers: z.array(studioMarkerSchema).max(500).optional(),
   /** RFC3339 */
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -316,6 +542,8 @@ export const studioSaveProjectRequestSchema = z.object({
   captionStyle: studioCaptionStyleSchema.optional(),
   captionsEnabled: z.boolean().optional(),
   audio: studioAudioConfigSchema.optional(),
+  // EDL v3 project-level fields.
+  markers: z.array(studioMarkerSchema).max(500).optional(),
 });
 export type StudioSaveProjectRequest = z.infer<typeof studioSaveProjectRequestSchema>;
 
@@ -363,17 +591,77 @@ export const studioExportRequestSchema = z.object({
 export type StudioExportRequest = z.infer<typeof studioExportRequestSchema>;
 
 // ---------------------------------------------------------------------------
-// v1 → v2 normalizer. Called from loadProject. The EDL changes are purely
-// additive (no field relocations), so this mostly stamps the version and fills
-// the project-level caption/audio defaults the UI relies on. Idempotent.
+// v1 → v2 → v3 normalizer chain. Called from loadProject; each step is
+// idempotent and purely additive (no field relocations), so untouched clips
+// and tracks keep their object identity.
 // ---------------------------------------------------------------------------
-export function normalizeProject(project: StudioProject): StudioProject {
+
+/** v1 → v2: stamp nothing but fill the project-level caption/audio defaults. */
+function normalizeToV2(project: StudioProject): StudioProject {
   return {
     ...project,
-    schemaVersion: STUDIO_SCHEMA_VERSION,
     captions: project.captions ?? [],
     captionStyle: project.captionStyle ?? { ...DEFAULT_CAPTION_STYLE },
     captionsEnabled: project.captionsEnabled ?? true,
     audio: project.audio,
+  };
+}
+
+/**
+ * v2 → v3 clip upgrades:
+ *  - `transitionInSeconds > 0` → `transition: {type: 'crossDissolve', …}`
+ *    (legacy field kept — still written for now, dropped in a future contract;
+ *    reading prefers `transition`).
+ *  - `volumeKeyframes` → `keyframes.volume` with ease 'linear' when
+ *    `keyframes.volume` is absent; `keyframes.volume` wins when both exist.
+ * Returns the SAME clip object when nothing needs upgrading.
+ */
+function upgradeClipToV3(clip: StudioClip): StudioClip {
+  let out = clip;
+  const legacySeconds = clip.transitionInSeconds ?? 0;
+  if (!clip.transition && legacySeconds > 0) {
+    out = {
+      ...out,
+      transition: {
+        type: 'crossDissolve',
+        durationSeconds: Math.min(Math.max(legacySeconds, 0.1), 5),
+      },
+    };
+  }
+  if (!clip.keyframes?.volume && clip.volumeKeyframes && clip.volumeKeyframes.length > 0) {
+    out = {
+      ...out,
+      keyframes: {
+        ...out.keyframes,
+        volume: clip.volumeKeyframes.map((k) => ({ t: k.t, value: k.gain, ease: 'linear' as const })),
+      },
+    };
+  }
+  return out;
+}
+
+/** v2 → v3 across the track tree, preserving identity when nothing changes. */
+function normalizeTracksToV3(tracks: StudioTrack[]): StudioTrack[] {
+  let anyChanged = false;
+  const next = tracks.map((track) => {
+    let clipsChanged = false;
+    const clips = track.clips.map((clip) => {
+      const upgraded = upgradeClipToV3(clip);
+      if (upgraded !== clip) clipsChanged = true;
+      return upgraded;
+    });
+    if (!clipsChanged) return track;
+    anyChanged = true;
+    return { ...track, clips };
+  });
+  return anyChanged ? next : tracks;
+}
+
+export function normalizeProject(project: StudioProject): StudioProject {
+  const v2 = normalizeToV2(project);
+  return {
+    ...v2,
+    schemaVersion: STUDIO_SCHEMA_VERSION,
+    tracks: normalizeTracksToV3(v2.tracks),
   };
 }
