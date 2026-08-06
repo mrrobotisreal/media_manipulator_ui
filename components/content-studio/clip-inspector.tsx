@@ -19,6 +19,7 @@ import {
   IDENTITY_TRANSFORM, ZERO_CROP, type EffectParam,
 } from '@/lib/studio/effectRegistry';
 import { requestEyedrop } from '@/lib/studio/eyedropper';
+import { useUndoGesture } from './useUndoGesture';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { Panel } from '@/components/darkroom/panel';
 import type {
@@ -122,6 +123,8 @@ const ParamSlider: React.FC<{
   onChange: (v: number) => void;
 }> = ({ param, value, onChange }) => {
   const { t } = useLocalization('interface');
+  // One undo entry per scrub (slider) or focus session (number field).
+  const gesture = useUndoGesture();
   return (
     <div className="mb-2">
       <div className="flex items-center justify-between gap-2">
@@ -133,6 +136,8 @@ const ParamSlider: React.FC<{
           max={param.max}
           step={param.step}
           value={Number.isFinite(value) ? value : param.default}
+          onFocus={gesture.begin}
+          onBlur={gesture.end}
           onChange={(e) => {
             const v = parseFloat(e.target.value);
             if (Number.isFinite(v)) onChange(Math.max(param.min, Math.min(param.max, v)));
@@ -145,7 +150,11 @@ const ParamSlider: React.FC<{
         max={param.max}
         step={param.step}
         value={[value]}
-        onValueChange={(v) => onChange(v[0] ?? value)}
+        onValueChange={(v) => {
+          gesture.begin();
+          onChange(v[0] ?? value);
+        }}
+        onValueCommit={gesture.end}
       />
     </div>
   );
@@ -204,6 +213,7 @@ const OpacityBlendSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   const { t } = useLocalization('interface');
   const updateClip = useStudioStore((s) => s.updateClip);
   const setClipBlendMode = useStudioStore((s) => s.setClipBlendMode);
+  const gesture = useUndoGesture();
   const opacity = clip.opacity ?? 1;
   return (
     <Section title={t('contentStudio.inspector.sectionOpacityBlend')} icon={<Blend className="w-3.5 h-3.5" />} defaultOpen={false}>
@@ -212,7 +222,18 @@ const OpacityBlendSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
           <span>{t('contentStudio.inspector.opacity')}</span>
           <span className="tabular-nums">{Math.round(opacity * 100)}%</span>
         </Label>
-        <Slider className="mt-1" min={0} max={1} step={0.01} value={[opacity]} onValueChange={(v) => updateClip(clip.id, { opacity: v[0] ?? 1 })} />
+        <Slider
+          className="mt-1"
+          min={0}
+          max={1}
+          step={0.01}
+          value={[opacity]}
+          onValueChange={(v) => {
+            gesture.begin();
+            updateClip(clip.id, { opacity: v[0] ?? 1 });
+          }}
+          onValueCommit={gesture.end}
+        />
       </div>
       <Label className="text-[11px] text-muted-foreground">{t('contentStudio.inspector.blendMode')}</Label>
       <Select value={clip.blendMode ?? 'normal'} onValueChange={(v) => setClipBlendMode(clip.id, v as StudioBlendMode)}>
@@ -433,6 +454,7 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   const setClipVolume = useStudioStore((s) => s.setClipVolume);
   const setClipPan = useStudioStore((s) => s.setClipPan);
   const setVolumeKeyframes = useStudioStore((s) => s.setVolumeKeyframes);
+  const gesture = useUndoGesture();
   const volume = clip.volume ?? 1;
   const pan = clip.pan ?? 0;
   const usingKeyframes = (clip.volumeKeyframes?.length ?? 0) > 0;
@@ -446,7 +468,19 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
           <span>{t('contentStudio.inspector.audio.volume')}</span>
           <span className="tabular-nums">{db} dB</span>
         </Label>
-        <Slider className="mt-1" min={0} max={2} step={0.01} value={[volume]} onValueChange={(v) => setClipVolume(clip.id, v[0] ?? 1)} disabled={usingKeyframes} />
+        <Slider
+          className="mt-1"
+          min={0}
+          max={2}
+          step={0.01}
+          value={[volume]}
+          onValueChange={(v) => {
+            gesture.begin();
+            setClipVolume(clip.id, v[0] ?? 1);
+          }}
+          onValueCommit={gesture.end}
+          disabled={usingKeyframes}
+        />
       </div>
       <div className="mb-3">
         <Label className="text-[11px] text-muted-foreground flex justify-between">
@@ -455,7 +489,18 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
             {pan === 0 ? 'C' : `${pan < 0 ? t('contentStudio.inspector.audio.panLeft') : t('contentStudio.inspector.audio.panRight')} ${Math.round(Math.abs(pan) * 100)}`}
           </span>
         </Label>
-        <Slider className="mt-1" min={-1} max={1} step={0.01} value={[pan]} onValueChange={(v) => setClipPan(clip.id, v[0] ?? 0)} />
+        <Slider
+          className="mt-1"
+          min={-1}
+          max={1}
+          step={0.01}
+          value={[pan]}
+          onValueChange={(v) => {
+            gesture.begin();
+            setClipPan(clip.id, v[0] ?? 0);
+          }}
+          onValueCommit={gesture.end}
+        />
       </div>
       <div className="flex items-center justify-between gap-2">
         <Label className="text-[11px] text-muted-foreground">{t('contentStudio.inspector.audio.useKeyframes')}</Label>
@@ -483,13 +528,26 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
 const TransitionSection: React.FC<{ clip: StudioClip; track: StudioTrack }> = ({ clip, track }) => {
   const { t } = useLocalization('interface');
   const setClipTransition = useStudioStore((s) => s.setClipTransition);
+  const gesture = useUndoGesture();
   const hasPrev = track.clips.some((c) => c.id !== clip.id && c.timelineStart < clip.timelineStart);
   return (
     <Section title={t('contentStudio.inspector.sectionTransition')} icon={<Blend className="w-3.5 h-3.5" />} defaultOpen={false}>
       <Label className="text-[11px] text-muted-foreground">
         {t('contentStudio.inspector.transition')} · {(clip.transitionInSeconds ?? 0).toFixed(1)}s
       </Label>
-      <Slider className="mt-2" min={0} max={4} step={0.1} disabled={!hasPrev} value={[clip.transitionInSeconds ?? 0]} onValueChange={(v) => setClipTransition(clip.id, v[0] ?? 0)} />
+      <Slider
+        className="mt-2"
+        min={0}
+        max={4}
+        step={0.1}
+        disabled={!hasPrev}
+        value={[clip.transitionInSeconds ?? 0]}
+        onValueChange={(v) => {
+          gesture.begin();
+          setClipTransition(clip.id, v[0] ?? 0);
+        }}
+        onValueCommit={gesture.end}
+      />
       {!hasPrev && <p className="text-[11px] text-muted-foreground mt-1">{t('contentStudio.inspector.transitionNoPrev')}</p>}
     </Section>
   );
@@ -502,6 +560,9 @@ const TextSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   const addTextOverlay = useStudioStore((s) => s.addTextOverlay);
   const updateTextOverlay = useStudioStore((s) => s.updateTextOverlay);
   const removeTextOverlay = useStudioStore((s) => s.removeTextOverlay);
+  // Text/color edits batch per focus session — one undo entry, not one per
+  // keystroke. Only one field is focused at a time, so one gesture suffices.
+  const gesture = useUndoGesture();
   return (
     <Section
       title={t('contentStudio.inspector.sectionText')}
@@ -518,8 +579,8 @@ const TextSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
         {(clip.textOverlays ?? []).map((ov) => (
           <div key={ov.id} className="rounded-md border border-border p-2 space-y-2">
             <div className="flex items-center gap-2">
-              <Input className="h-7 text-xs" value={ov.text} placeholder={t('contentStudio.inspector.textPlaceholder')} onChange={(e) => updateTextOverlay(clip.id, ov.id, { text: e.target.value })} />
-              <input type="color" className="h-7 w-7 shrink-0 rounded border border-border bg-transparent" value={ov.color} onChange={(e) => updateTextOverlay(clip.id, ov.id, { color: e.target.value })} />
+              <Input className="h-7 text-xs" value={ov.text} placeholder={t('contentStudio.inspector.textPlaceholder')} onFocus={gesture.begin} onBlur={gesture.end} onChange={(e) => updateTextOverlay(clip.id, ov.id, { text: e.target.value })} />
+              <input type="color" className="h-7 w-7 shrink-0 rounded border border-border bg-transparent" value={ov.color} onFocus={gesture.begin} onBlur={gesture.end} onChange={(e) => updateTextOverlay(clip.id, ov.id, { color: e.target.value })} />
               <Button size="icon" variant="ghost" className="h-7 w-7 shrink-0 text-destructive" onClick={() => removeTextOverlay(clip.id, ov.id)}>
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
@@ -538,14 +599,28 @@ const TextSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
 
 const MiniNumber: React.FC<{ label: string; min: number; max: number; step: number; value: number; onChange: (v: number) => void }> = ({
   label, min, max, step, value, onChange,
-}) => (
-  <div>
-    <Label className="text-[10px] text-muted-foreground flex justify-between">
-      <span>{label}</span>
-      <span className="tabular-nums">{value.toFixed(2)}</span>
-    </Label>
-    <Slider className="mt-1" min={min} max={max} step={step} value={[value]} onValueChange={(v) => onChange(v[0] ?? value)} />
-  </div>
-);
+}) => {
+  const gesture = useUndoGesture();
+  return (
+    <div>
+      <Label className="text-[10px] text-muted-foreground flex justify-between">
+        <span>{label}</span>
+        <span className="tabular-nums">{value.toFixed(2)}</span>
+      </Label>
+      <Slider
+        className="mt-1"
+        min={min}
+        max={max}
+        step={step}
+        value={[value]}
+        onValueChange={(v) => {
+          gesture.begin();
+          onChange(v[0] ?? value);
+        }}
+        onValueCommit={gesture.end}
+      />
+    </div>
+  );
+};
 
 export default ClipInspector;

@@ -9,6 +9,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, clipDuration } from '@/lib/studioStore';
 import { studioSpriteUrl } from '@/lib/studio/previewEngine';
 import ClipWaveform from './clip-waveform';
+import { useUndoGesture } from './useUndoGesture';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
 import type { StudioClip, StudioTrack } from '@/lib/studioTypes';
 
@@ -56,6 +57,7 @@ const Timeline: React.FC = () => {
   const removeTrack = useStudioStore((s) => s.removeTrack);
   const toggleTrackMute = useStudioStore((s) => s.toggleTrackMute);
   const setClipVolume = useStudioStore((s) => s.setClipVolume);
+  const volumeGesture = useUndoGesture();
 
   const contentRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -208,6 +210,8 @@ const Timeline: React.FC = () => {
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
       trimRef.current = { side, clipId: clip.id, startX: e.clientX, orig: { ...clip }, assetDur };
       selectClip(clip.id);
+      // The whole trim drag collapses to one undo entry (closed in onTrimUp).
+      useStudioStore.getState().beginGesture();
     },
     [selectClip],
   );
@@ -236,6 +240,7 @@ const Timeline: React.FC = () => {
     if (!trimRef.current) return;
     trimRef.current = null;
     (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    useStudioStore.getState().endGesture();
   }, []);
 
   if (!project) return null;
@@ -279,7 +284,11 @@ const Timeline: React.FC = () => {
                 max={1}
                 step={0.05}
                 value={[selected.clip.volume ?? 1]}
-                onValueChange={(v) => setClipVolume(selected!.clip.id, v[0] ?? 1)}
+                onValueChange={(v) => {
+                  volumeGesture.begin();
+                  setClipVolume(selected!.clip.id, v[0] ?? 1);
+                }}
+                onValueCommit={volumeGesture.end}
               />
             </div>
           )}
@@ -592,12 +601,14 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
         onPointerDown={(e) => onTrimDown(e, 'l', clip, assetDur)}
         onPointerMove={onTrimMove}
         onPointerUp={onTrimUp}
+        onPointerCancel={onTrimUp}
       />
       <div
         className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize bg-white/20 hover:bg-white/50 touch-none before:absolute before:inset-y-0 before:right-0 before:w-6 before:content-[''] lg:before:hidden"
         onPointerDown={(e) => onTrimDown(e, 'r', clip, assetDur)}
         onPointerMove={onTrimMove}
         onPointerUp={onTrimUp}
+        onPointerCancel={onTrimUp}
       />
     </div>
   );

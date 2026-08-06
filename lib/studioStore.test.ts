@@ -390,6 +390,193 @@ describe('selection semantics', () => {
   });
 });
 
+describe('undo/redo history (ADR ui/0001)', () => {
+  const base = () => [
+    track('v1', 'video', 0, [clip('a', 0, 5), clip('b', 5, 5)]),
+    track('a1', 'audio', 0, []),
+  ];
+
+  it('undoes and redoes a document mutation', () => {
+    load(base());
+    store().updateClip('a', { sourceOut: 3 });
+    expect(clipById('a').sourceOut).toBe(3);
+
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(5);
+    store().redo();
+    expect(clipById('a').sourceOut).toBe(3);
+  });
+
+  it('walks multiple entries in order, both directions', () => {
+    load(base());
+    store().updateClip('a', { sourceOut: 4 });
+    store().updateClip('a', { sourceOut: 3 });
+    store().updateClip('a', { sourceOut: 2 });
+
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(3);
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(4);
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(5);
+    expect(store().past).toHaveLength(0);
+
+    store().redo();
+    store().redo();
+    expect(clipById('a').sourceOut).toBe(3);
+    store().redo();
+    expect(clipById('a').sourceOut).toBe(2);
+    expect(store().future).toHaveLength(0);
+  });
+
+  it('a new edit after undo truncates the redo stack', () => {
+    load(base());
+    store().updateClip('a', { sourceOut: 3 });
+    store().undo();
+    expect(store().future).toHaveLength(1);
+
+    store().updateClip('a', { sourceOut: 2 });
+    expect(store().future).toHaveLength(0);
+    store().redo(); // no-op — the old redo branch is gone
+    expect(clipById('a').sourceOut).toBe(2);
+  });
+
+  it('undo/redo are no-ops on empty stacks', () => {
+    load(base());
+    const before = store().project;
+    store().undo();
+    expect(store().project).toBe(before);
+    store().redo();
+    expect(store().project).toBe(before);
+    expect(store().dirty).toBe(false);
+  });
+
+  it('caps history at 100 entries, evicting the oldest', () => {
+    load(base());
+    for (let i = 0; i < 120; i += 1) store().updateClip('a', { volume: (i % 20) / 10 });
+    expect(store().past).toHaveLength(100);
+
+    for (let i = 0; i < 200; i += 1) store().undo();
+    expect(store().past).toHaveLength(0);
+    // 120 edits, 100 remembered → undo bottoms out at the state after edit #19.
+    expect(clipById('a').volume).toBe(1.9);
+  });
+
+  it('collapses a gesture into a single history entry', () => {
+    load(base());
+    store().beginGesture();
+    for (let i = 1; i <= 5; i += 1) store().updateClip('a', { sourceOut: 5 - i * 0.5 });
+    store().endGesture();
+
+    expect(store().past).toHaveLength(1);
+    expect(clipById('a').sourceOut).toBe(2.5);
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(5);
+  });
+
+  it('a gesture with no document change records nothing', () => {
+    load(base());
+    store().beginGesture();
+    store().endGesture();
+    expect(store().past).toHaveLength(0);
+
+    // Selection inside a gesture is not a document change either.
+    store().beginGesture();
+    store().selectClip('a');
+    store().endGesture();
+    expect(store().past).toHaveLength(0);
+  });
+
+  it('gestures are re-entrant: only the outermost end commits', () => {
+    load(base());
+    store().beginGesture();
+    store().beginGesture();
+    store().updateClip('a', { sourceOut: 3 });
+    store().endGesture();
+    expect(store().past).toHaveLength(0); // still inside the outer gesture
+
+    store().updateClip('a', { sourceOut: 2 });
+    store().endGesture();
+    expect(store().past).toHaveLength(1);
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(5);
+  });
+
+  it('ignores undo/redo while a gesture is open', () => {
+    load(base());
+    store().updateClip('a', { sourceOut: 3 });
+    store().beginGesture();
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(3);
+    store().endGesture();
+    store().undo();
+    expect(clipById('a').sourceOut).toBe(5);
+  });
+
+  it('leaves playhead and zoom untouched and keeps still-valid selection', () => {
+    load(base());
+    store().selectClip('a');
+    store().setPlayhead(2);
+    store().setZoom(120);
+    store().updateClip('a', { sourceOut: 3 });
+
+    store().undo();
+    expect(store().playhead).toBe(2);
+    expect(store().zoom).toBe(120);
+    expect(store().selectedClipIds).toEqual(['a']);
+  });
+
+  it('prunes selection ids that do not exist in the restored document', () => {
+    load(base());
+    store().setPlayhead(2.5);
+    store().splitAtPlayhead(); // selects both halves; the right half is a new clip
+    expect(store().selectedClipIds.length).toBe(2);
+
+    store().undo(); // right half no longer exists in the restored document
+    expect(store().selectedClipIds).toEqual(['a']);
+  });
+
+  it('selection, transport, zoom, and asset changes never create history', () => {
+    load(base());
+    store().selectClip('a');
+    store().selectCaption('cap-1');
+    store().setPlayhead(1);
+    store().play();
+    store().pause();
+    store().togglePlay();
+    store().setZoom(200);
+    store().zoomBy(1.25);
+    store().setAssets([]);
+    expect(store().past).toHaveLength(0);
+  });
+
+  it('loadProject resets history', () => {
+    load(base());
+    store().updateClip('a', { sourceOut: 3 });
+    store().undo();
+    expect(store().future).toHaveLength(1);
+
+    load(base());
+    expect(store().past).toHaveLength(0);
+    expect(store().future).toHaveLength(0);
+  });
+
+  it('undo/redo mark the document dirty so autosave persists the result; markSaved records nothing', () => {
+    load(base());
+    store().updateClip('a', { sourceOut: 3 });
+    store().markSaved(store().project!);
+    expect(store().dirty).toBe(false);
+    expect(store().past).toHaveLength(1); // markSaved itself is not undoable
+
+    store().undo();
+    expect(store().dirty).toBe(true);
+
+    store().markSaved(store().project!);
+    store().redo();
+    expect(store().dirty).toBe(true);
+  });
+});
+
 describe('volume keyframes (mirrors the Go sanitizer)', () => {
   it('sorts, clamps gain to 0..2, and dedupes same-time points (last wins)', () => {
     load([track('v1', 'video', 0, []), track('a1', 'audio', 0, [clip('m', 0, 10)])]);

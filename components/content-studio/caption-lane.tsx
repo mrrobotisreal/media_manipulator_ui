@@ -170,6 +170,8 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
     (e.currentTarget as Element).setPointerCapture(e.pointerId);
     drag.current = { mode, id: clip.id, startX: e.clientX, start: clip.startSeconds, end: clip.endSeconds };
     selectCaption(clip.id);
+    // The whole cue move/retime drag collapses to one undo entry (closed in onUp).
+    useStudioStore.getState().beginGesture();
   };
   const onMove = (e: React.PointerEvent) => {
     const d = drag.current;
@@ -191,6 +193,7 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
     if (!drag.current) return;
     drag.current = null;
     (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    useStudioStore.getState().endGesture();
   };
 
   return (
@@ -210,6 +213,7 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
             onPointerDown={(e) => onDown(e, 'move', cue)}
             onPointerMove={onMove}
             onPointerUp={onUp}
+            onPointerCancel={onUp}
           >
             {cue.text || '…'}
             <div
@@ -217,12 +221,14 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
               onPointerDown={(e) => onDown(e, 'l', cue)}
               onPointerMove={onMove}
               onPointerUp={onUp}
+            onPointerCancel={onUp}
             />
             <div
               className="absolute right-0 top-0 bottom-0 w-1.5 cursor-ew-resize bg-white/10 hover:bg-white/40"
               onPointerDown={(e) => onDown(e, 'r', cue)}
               onPointerMove={onMove}
               onPointerUp={onUp}
+            onPointerCancel={onUp}
             />
           </div>
         );

@@ -55,6 +55,7 @@ const uid = (): string => {
   return `id-${Date.now()}-${Math.floor(Math.random() * 1e9).toString(16)}`;
 };
 
+const HISTORY_CAP = 100; // undo depth (ADR ui/0001); oldest snapshot dropped beyond this
 const DEFAULT_ZOOM = 80; // pixels per second
 const MIN_ZOOM = 10;
 const MAX_ZOOM = 400;
@@ -93,10 +94,31 @@ interface StudioState {
   /** true when the EDL changed since the last successful save */
   dirty: boolean;
 
+  // --- undo history (ADR ui/0001: snapshots of the document slice only) ---
+  /** Undo stack: pre-mutation snapshots of `project`, oldest first. */
+  past: StudioProject[];
+  /** Redo stack: snapshots displaced by undo; the redo target is the last element. */
+  future: StudioProject[];
+  /** >0 while a continuous gesture (clip drag, trim, slider scrub) is in flight. */
+  gestureDepth: number;
+  /** The pre-gesture document; committed as one history entry by endGesture(). */
+  gestureBase: StudioProject | null;
+
   // --- project lifecycle ---
   loadProject: (project: StudioProject) => void;
   markSaved: (project: StudioProject) => void;
   closeProject: () => void;
+
+  // --- history ---
+  undo: () => void;
+  redo: () => void;
+  /**
+   * Batch every document mutation until the matching endGesture() into a single
+   * history entry. Re-entrant: nested begin/end pairs collapse into the
+   * outermost gesture.
+   */
+  beginGesture: () => void;
+  endGesture: () => void;
 
   // --- media bin ---
   setAssets: (assets: StudioAsset[]) => void;
@@ -315,6 +337,21 @@ function placeInTrack(clips: StudioClip[], draggedId: string, desiredStart: numb
   });
 }
 
+// pruneSelection keeps only the selection ids that still exist in the restored
+// document. Undo/redo never snapshot selection (ADR ui/0001) — they just drop
+// ids that point at clips the restored EDL doesn't contain.
+function pruneSelection(ids: string[], project: StudioProject): string[] {
+  if (ids.length === 0) return ids;
+  const alive = new Set<string>();
+  for (const track of project.tracks) for (const c of track.clips) alive.add(c.id);
+  const kept = ids.filter((id) => alive.has(id));
+  return kept.length === ids.length ? ids : kept;
+}
+
+function pruneCaptionId(id: string | null, project: StudioProject): string | null {
+  return id !== null && project.captions.some((c) => c.id === id) ? id : null;
+}
+
 type StudioPatch = Partial<StudioState> | ((s: StudioState) => Partial<StudioState>);
 
 export const useStudioStore = create<StudioState>((rawSet, get) => {
@@ -337,6 +374,22 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       return { ...patch, duration: timelineDuration(nextTracks ?? []) };
     });
 
+  /**
+   * History capture point (ADR ui/0001): every document-mutating action routes
+   * through here instead of `set`. When the recipe produced a new `project`,
+   * the pre-mutation snapshot is pushed onto `past` (capped, oldest dropped)
+   * and the redo stack is cleared. Inside a gesture the recipe just applies —
+   * endGesture() commits the single pre-gesture snapshot. Recipes that bail
+   * out (`{}`) or return the same `project` reference record nothing.
+   */
+  const mutate = (recipe: (s: StudioState) => Partial<StudioState>) =>
+    set((state) => {
+      const patch = recipe(state);
+      if (!state.project || !patch.project || patch.project === state.project) return patch;
+      if (state.gestureDepth > 0) return patch;
+      return { ...patch, past: [...state.past, state.project].slice(-HISTORY_CAP), future: [] };
+    });
+
   return {
   project: null,
   assets: {},
@@ -347,10 +400,15 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   zoom: DEFAULT_ZOOM,
   duration: 0,
   dirty: false,
+  past: [],
+  future: [],
+  gestureDepth: 0,
+  gestureBase: null,
 
   loadProject: (project) => {
     // Upgrade v1 → v2 in memory (additive defaults) before hydrating the store.
     const normalized = normalizeProject(project);
+    // History is session-only and per-document: switching projects starts fresh.
     set({
       project: { ...normalized, tracks: ensureBaseTracks(normalized.tracks ?? []) },
       selectedClipIds: [],
@@ -358,6 +416,10 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       playhead: 0,
       isPlaying: false,
       dirty: false,
+      past: [],
+      future: [],
+      gestureDepth: 0,
+      gestureBase: null,
     });
   },
 
@@ -371,7 +433,78 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       dirty: false,
     })),
 
-  closeProject: () => set({ project: null, assets: {}, selectedClipIds: [], selectedCaptionId: null, playhead: 0, isPlaying: false, dirty: false }),
+  closeProject: () =>
+    set({
+      project: null,
+      assets: {},
+      selectedClipIds: [],
+      selectedCaptionId: null,
+      playhead: 0,
+      isPlaying: false,
+      dirty: false,
+      past: [],
+      future: [],
+      gestureDepth: 0,
+      gestureBase: null,
+    }),
+
+  // --- history (ADR ui/0001: session-only snapshot stacks over `project`) ---
+
+  // Undo/redo swap the document with the top of past/future and mark it dirty
+  // so the autosave effect persists the restored state like any other edit.
+  // Playhead/zoom/transport are deliberately untouched; selection is only
+  // pruned of ids the restored document no longer contains. Ignored while a
+  // gesture is open — the half-applied gesture would corrupt the stacks.
+  undo: () =>
+    set((s) => {
+      if (s.gestureDepth > 0 || !s.project || s.past.length === 0) return {};
+      const restored = s.past[s.past.length - 1];
+      return {
+        project: restored,
+        past: s.past.slice(0, -1),
+        future: [...s.future, s.project],
+        selectedClipIds: pruneSelection(s.selectedClipIds, restored),
+        selectedCaptionId: pruneCaptionId(s.selectedCaptionId, restored),
+        dirty: true,
+      };
+    }),
+
+  redo: () =>
+    set((s) => {
+      if (s.gestureDepth > 0 || !s.project || s.future.length === 0) return {};
+      const restored = s.future[s.future.length - 1];
+      return {
+        project: restored,
+        past: [...s.past, s.project].slice(-HISTORY_CAP),
+        future: s.future.slice(0, -1),
+        selectedClipIds: pruneSelection(s.selectedClipIds, restored),
+        selectedCaptionId: pruneCaptionId(s.selectedCaptionId, restored),
+        dirty: true,
+      };
+    }),
+
+  beginGesture: () =>
+    set((s) =>
+      s.gestureDepth === 0
+        ? { gestureDepth: 1, gestureBase: s.project }
+        : { gestureDepth: s.gestureDepth + 1 },
+    ),
+
+  endGesture: () =>
+    set((s) => {
+      if (s.gestureDepth === 0) return {}; // unbalanced end — tolerate
+      if (s.gestureDepth > 1) return { gestureDepth: s.gestureDepth - 1 };
+      // Outermost end: one entry for the whole gesture, and only if the
+      // document actually changed (reference compare — actions are immutable).
+      const changed = s.gestureBase !== null && s.project !== null && s.gestureBase !== s.project;
+      if (!changed) return { gestureDepth: 0, gestureBase: null };
+      return {
+        gestureDepth: 0,
+        gestureBase: null,
+        past: [...s.past, s.gestureBase!].slice(-HISTORY_CAP),
+        future: [],
+      };
+    }),
 
   setAssets: (assets) =>
     set(() => {
@@ -407,7 +540,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // track, audio assets on the first audio track (both guaranteed to exist),
   // appended after that track's existing content.
   addClipFromAsset: (assetId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const entry = s.assets[assetId];
       if (!entry || entry.asset.mediaKind === 'lut') return {}; // LUTs are graded, not placed
@@ -438,7 +571,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // (used when an asset is dragged from the media bin onto a chosen lane). The
   // caller validates that the asset kind matches the track kind.
   addClipFromAssetToTrack: (assetId, trackId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const entry = s.assets[assetId];
       if (!entry || entry.asset.mediaKind === 'lut') return {};
@@ -465,7 +598,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   updateClip: (clipId, patch) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const next = mapTracks(s.project.tracks, (track) => {
         if (!track.clips.some((c) => c.id === clipId)) return track;
@@ -491,7 +624,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // desiredStart (gaps allowed, overlap prevented). Snapping is applied by the
   // caller before this runs.
   moveClip: (clipId, desiredStart) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const next = mapTracks(s.project.tracks, (track) =>
         track.clips.some((c) => c.id === clipId)
@@ -505,7 +638,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // non-overlapping position to desiredStart. The caller validates that the
   // target track is the same kind (video↔video / audio↔audio).
   moveClipToTrack: (clipId, targetTrackId, desiredStart) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       let moving: StudioClip | undefined;
       for (const tr of s.project.tracks) {
@@ -537,7 +670,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // cut into two (left keeps the original id + selection, right gets a new id).
   // When clips are selected, only those are cut; otherwise all crossing clips.
   splitAtPlayhead: () =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const t = s.playhead;
       const restrictTo = new Set(s.selectedClipIds);
@@ -570,7 +703,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // left by the total duration of selected clips that started before it,
   // closing gaps across one or many deletions.
   deleteSelected: () =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project || s.selectedClipIds.length === 0) return {};
       const sel = new Set(s.selectedClipIds);
       const tracks = mapTracks(s.project.tracks, (track) => {
@@ -605,7 +738,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   selectCaption: (id) => set({ selectedCaptionId: id, selectedClipIds: [] }),
 
   addTrack: (kind) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const maxIndex = s.project.tracks
         .filter((t) => t.kind === kind)
@@ -617,7 +750,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // removeTrack deletes an empty track and renumbers the remaining tracks of
   // each kind so labels stay contiguous (V1, V2, … / A1, A2, …).
   removeTrack: (trackId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const target = s.project.tracks.find((t) => t.id === trackId);
       if (!target || target.clips.length > 0) return {}; // only empty tracks
@@ -630,7 +763,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   toggleTrackMute: (trackId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       return {
         project: {
@@ -649,7 +782,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // clip on the same track: the clip is pulled left to overlap that predecessor
   // by `seconds` (capped to both clips' durations). seconds <= 0 clears it.
   setClipTransition: (clipId, seconds) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = mapTracks(s.project.tracks, (track) => {
         const clip = track.clips.find((c) => c.id === clipId);
@@ -676,14 +809,14 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   setClipAdjustments: (clipId, adjustments) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({ ...c, adjustments }));
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 
   addTextOverlay: (clipId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const fontSize = Math.max(16, Math.round((s.project.height || 1080) * 0.05));
       const overlay: StudioTextOverlay = { id: uid(), text: 'Text', x: 0.05, y: 0.85, fontSize, color: '#FFFFFF' };
@@ -695,7 +828,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   updateTextOverlay: (clipId, overlayId, patch) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
         ...c,
@@ -705,7 +838,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   removeTextOverlay: (clipId, overlayId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
         ...c,
@@ -717,21 +850,21 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // --- EDL v2: motion / crop / blend / effect stack -----------------------
 
   setClipTransform: (clipId, transform) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({ ...c, transform }));
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 
   setClipCrop: (clipId, crop) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({ ...c, crop }));
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 
   setClipBlendMode: (clipId, mode) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       // 'normal' (and undefined) both mean the default source-over; store undefined
       // so v1 clips stay byte-identical.
@@ -741,7 +874,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   addEffect: (clipId, type) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const effect = makeDefaultEffect(type, uid());
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
@@ -752,7 +885,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   updateEffect: (clipId, effectId, patch) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
         ...c,
@@ -764,7 +897,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   removeEffect: (clipId, effectId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
         ...c,
@@ -774,7 +907,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   reorderEffect: (clipId, fromIndex, toIndex) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
         const effects = [...(c.effects ?? [])];
@@ -789,7 +922,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   toggleEffect: (clipId, effectId) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
         ...c,
@@ -803,7 +936,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // --- EDL v2: audio (keyframes / pan / ducking) --------------------------
 
   setClipPan: (clipId, pan) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const value = clampRange(pan, -1, 1);
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
@@ -814,7 +947,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   setVolumeKeyframes: (clipId, kfs) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const normalized = normalizeKeyframes(kfs);
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
@@ -825,7 +958,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   addVolumeKeyframe: (clipId, t, gain) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
         const next = normalizeKeyframes([...(c.volumeKeyframes ?? []), { t, gain }]);
@@ -835,7 +968,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   removeVolumeKeyframe: (clipId, index) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
         const kfs = (c.volumeKeyframes ?? []).filter((_, i) => i !== index);
@@ -845,7 +978,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   setAudioDucking: (patch) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const audio: StudioAudioConfig = { ...DEFAULT_AUDIO_CONFIG, ...s.project.audio, ...patch };
       return { project: { ...s.project, audio }, dirty: true };
@@ -854,14 +987,14 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // --- EDL v2: captions ---------------------------------------------------
 
   setCaptions: (cues) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const sorted = [...cues].sort((a, b) => a.startSeconds - b.startSeconds);
       return { project: { ...s.project, captions: sorted }, dirty: true };
     }),
 
   addCaption: (startSeconds, endSeconds, text = '') =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const start = Math.max(0, startSeconds);
       const end = Math.max(start + MIN_CAPTION_SECONDS, endSeconds);
@@ -871,7 +1004,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   updateCaption: (id, patch) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const captions = s.project.captions
         .map((c) => {
@@ -889,13 +1022,13 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   removeCaption: (id) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       return { project: { ...s.project, captions: s.project.captions.filter((c) => c.id !== id) }, dirty: true };
     }),
 
   splitCaption: (id, atSeconds) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const cue = s.project.captions.find((c) => c.id === id);
       if (!cue) return {};
@@ -914,7 +1047,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   mergeCaptionWithNext: (id) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const sorted = [...s.project.captions].sort((a, b) => a.startSeconds - b.startSeconds);
       const idx = sorted.findIndex((c) => c.id === id);
@@ -931,14 +1064,14 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   setCaptionStyle: (patch) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       const captionStyle: StudioCaptionStyle = { ...DEFAULT_CAPTION_STYLE, ...s.project.captionStyle, ...patch };
       return { project: { ...s.project, captionStyle }, dirty: true };
     }),
 
   setCaptionsEnabled: (enabled) =>
-    set((s) => {
+    mutate((s) => {
       if (!s.project) return {};
       return { project: { ...s.project, captionsEnabled: enabled }, dirty: true };
     }),

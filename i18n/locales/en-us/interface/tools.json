@@ -99,8 +99,10 @@
       "saving": "Saving…",
       "unsaved": "Unsaved changes",
       "saved": "Saved",
+      "undo": "Undo",
+      "redo": "Redo",
       "mobileHint": "Darkroom works best on a larger screen with a mouse or trackpad.",
-      "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom",
+      "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom · ⌘Z undo · ⇧⌘Z redo",
       "tabs": {
         "media": "Media",
         "preview": "Preview",

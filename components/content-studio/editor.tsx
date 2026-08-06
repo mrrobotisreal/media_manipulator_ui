@@ -11,7 +11,7 @@ import {
   type DragStartEvent,
   type DragEndEvent,
 } from '@dnd-kit/core';
-import { ArrowLeft, Loader2, Check, Maximize2, Minimize2, Expand, Shrink } from 'lucide-react';
+import { ArrowLeft, Loader2, Check, Maximize2, Minimize2, Expand, Shrink, Undo2, Redo2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -102,41 +102,52 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   const onDragStart = (e: DragStartEvent) => {
     const data = e.active.data.current as { label?: string } | undefined;
     setActiveDragLabel(data?.label ?? null);
+    // One history entry per drag, however many store writes it produces.
+    useStudioStore.getState().beginGesture();
+  };
+
+  const onDragCancel = () => {
+    setActiveDragLabel(null);
+    useStudioStore.getState().endGesture();
   };
 
   const onDragEnd = (e: DragEndEvent) => {
     setActiveDragLabel(null);
     const st = useStudioStore.getState();
-    const data = e.active.data.current as { type?: string; assetId?: string; kind?: string } | undefined;
-    const overId = e.over ? String(e.over.id) : null;
-    const targetTrack = overId ? st.project?.tracks.find((tr) => tr.id === overId) : null;
+    try {
+      const data = e.active.data.current as { type?: string; assetId?: string; kind?: string } | undefined;
+      const overId = e.over ? String(e.over.id) : null;
+      const targetTrack = overId ? st.project?.tracks.find((tr) => tr.id === overId) : null;
 
-    // Asset dropped from the media bin onto a track (kind must match).
-    if (data?.type === 'asset' && data.assetId) {
-      if (!targetTrack || data.kind !== targetTrack.kind) return;
-      st.addClipFromAssetToTrack(data.assetId, targetTrack.id);
-      return;
-    }
+      // Asset dropped from the media bin onto a track (kind must match).
+      if (data?.type === 'asset' && data.assetId) {
+        if (!targetTrack || data.kind !== targetTrack.kind) return;
+        st.addClipFromAssetToTrack(data.assetId, targetTrack.id);
+        return;
+      }
 
-    // Clip moved: reposition within its track, or move to another track of the
-    // same kind. Horizontal delta sets the new start; the destination track's
-    // neighbours + playhead provide snap points.
-    const clipId = String(e.active.id);
-    const found = st.findClip(clipId);
-    if (!found) return;
-    const dest = targetTrack ?? found.track;
-    const dur = clipDuration(found.clip);
-    const desired = Math.max(0, found.clip.timelineStart + e.delta.x / st.zoom);
-    const points: number[] = [0, st.playhead];
-    for (const c of dest.clips) {
-      if (c.id !== clipId) points.push(c.timelineStart, clipEnd(c));
-    }
-    const snapped = snapValue(desired, dur, points, SNAP_PX / st.zoom);
-    if (dest.id !== found.track.id) {
-      if (dest.kind !== found.track.kind) return; // never mix video/audio
-      st.moveClipToTrack(clipId, dest.id, snapped);
-    } else {
-      st.moveClip(clipId, snapped);
+      // Clip moved: reposition within its track, or move to another track of the
+      // same kind. Horizontal delta sets the new start; the destination track's
+      // neighbours + playhead provide snap points.
+      const clipId = String(e.active.id);
+      const found = st.findClip(clipId);
+      if (!found) return;
+      const dest = targetTrack ?? found.track;
+      const dur = clipDuration(found.clip);
+      const desired = Math.max(0, found.clip.timelineStart + e.delta.x / st.zoom);
+      const points: number[] = [0, st.playhead];
+      for (const c of dest.clips) {
+        if (c.id !== clipId) points.push(c.timelineStart, clipEnd(c));
+      }
+      const snapped = snapValue(desired, dur, points, SNAP_PX / st.zoom);
+      if (dest.id !== found.track.id) {
+        if (dest.kind !== found.track.kind) return; // never mix video/audio
+        st.moveClipToTrack(clipId, dest.id, snapped);
+      } else {
+        st.moveClip(clipId, snapped);
+      }
+    } finally {
+      st.endGesture(); // every early-out above still closes the gesture
     }
   };
 
@@ -194,8 +205,9 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   );
 
   // Keyboard shortcuts: space=play/pause, ←/→=frame step, S=split,
-  // Del/Backspace=ripple delete, +/-=zoom. Ignored while typing in a field or
-  // when a dialog is open.
+  // Del/Backspace=ripple delete, +/-=zoom, Cmd/Ctrl+Z=undo,
+  // Cmd/Ctrl+Shift+Z / Ctrl+Y=redo. Ignored while typing in a field or when a
+  // dialog is open.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const el = document.activeElement as HTMLElement | null;
@@ -205,6 +217,17 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         if (el.closest('[role="dialog"]')) return;
       }
       const st = useStudioStore.getState();
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        if (e.shiftKey) st.redo();
+        else st.undo();
+        return;
+      }
+      if (e.ctrlKey && (e.key === 'y' || e.key === 'Y')) {
+        e.preventDefault();
+        st.redo();
+        return;
+      }
       const fps = Math.max(1, st.project?.fps ?? 30);
       switch (e.key) {
         case ' ':
@@ -282,6 +305,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           <SaveStatus saving={saveMutation.isPending} dirty={dirty} />
         </div>
         <div className="flex items-center gap-2">
+          <UndoRedoButtons />
           <AudioDuckingPopover />
           <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
           {focusMode ? <FocusControls api={focusMode} /> : null}
@@ -293,7 +317,13 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 
       {/* Media bin + timeline share one DndContext so assets can be dragged from
           the bin onto a track and clips can be moved between tracks. */}
-      <DndContext sensors={sensors} collisionDetection={pointerWithin} onDragStart={onDragStart} onDragEnd={onDragEnd}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={pointerWithin}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragCancel={onDragCancel}
+      >
         {isDesktop ? (
           /* media bin + preview + inspector. In focus mode this row flexes to
              fill the viewport (the timeline keeps a fixed-ish height below). */
@@ -377,6 +407,44 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           {t('contentStudio.focus.hint')}
         </div>
       ) : null}
+    </div>
+  );
+};
+
+/**
+ * Undo/redo chrome buttons. Enabled state tracks the history stacks; the
+ * snapshots and gesture batching live in the store (ADR ui/0001). Same
+ * outline-icon treatment (with native title/aria-label tooltips) as the
+ * focus/fullscreen controls beside them.
+ */
+const UndoRedoButtons: React.FC = () => {
+  const { t } = useLocalization('interface');
+  const canUndo = useStudioStore((s) => s.past.length > 0);
+  const canRedo = useStudioStore((s) => s.future.length > 0);
+  const undo = useStudioStore((s) => s.undo);
+  const redo = useStudioStore((s) => s.redo);
+  return (
+    <div className="flex items-center gap-1">
+      <Button
+        variant="outline"
+        size="icon"
+        disabled={!canUndo}
+        onClick={undo}
+        title={t('contentStudio.editor.undo')}
+        aria-label={t('contentStudio.editor.undo')}
+      >
+        <Undo2 className="w-4 h-4" />
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        disabled={!canRedo}
+        onClick={redo}
+        title={t('contentStudio.editor.redo')}
+        aria-label={t('contentStudio.editor.redo')}
+      >
+        <Redo2 className="w-4 h-4" />
+      </Button>
     </div>
   );
 };

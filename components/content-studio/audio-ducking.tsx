@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
+import { useUndoGesture } from './useUndoGesture';
 
 /**
  * Project-level auto-ducking controls (editor top bar). Sidechain-style ducking:
@@ -112,14 +113,28 @@ const DuckSlider: React.FC<{
   step: number;
   value: number;
   onChange: (v: number) => void;
-}> = ({ label, readout, min, max, step, value, onChange }) => (
-  <div>
-    <Label className="text-[11px] text-muted-foreground flex justify-between">
-      <span>{label}</span>
-      <span className="tabular-nums">{readout}</span>
-    </Label>
-    <Slider className="mt-1" min={min} max={max} step={step} value={[value]} onValueChange={(v) => onChange(v[0] ?? value)} />
-  </div>
-);
+}> = ({ label, readout, min, max, step, value, onChange }) => {
+  const gesture = useUndoGesture();
+  return (
+    <div>
+      <Label className="text-[11px] text-muted-foreground flex justify-between">
+        <span>{label}</span>
+        <span className="tabular-nums">{readout}</span>
+      </Label>
+      <Slider
+        className="mt-1"
+        min={min}
+        max={max}
+        step={step}
+        value={[value]}
+        onValueChange={(v) => {
+          gesture.begin();
+          onChange(v[0] ?? value);
+        }}
+        onValueCommit={gesture.end}
+      />
+    </div>
+  );
+};
 
 export default AudioDuckingPopover;

@@ -11,6 +11,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import { DEFAULT_CAPTION_STYLE, type StudioCaptionStyle } from '@/lib/studioTypes';
 import { Panel } from '@/components/darkroom/panel';
+import { useUndoGesture } from './useUndoGesture';
 
 /**
  * Caption editor — replaces the clip inspector when a caption cue is selected.
@@ -31,6 +32,9 @@ const CaptionEditor: React.FC = () => {
 
   const cue = project?.captions.find((c) => c.id === selectedCaptionId) ?? null;
   const style: StudioCaptionStyle = project?.captionStyle ?? { ...DEFAULT_CAPTION_STYLE };
+  // Text/number/color edits batch per focus session into one undo entry; only
+  // one field is focused at a time, so a single gesture covers them all.
+  const gesture = useUndoGesture();
 
   if (!cue) return null;
 
@@ -47,6 +51,8 @@ const CaptionEditor: React.FC = () => {
           className="w-full min-h-[64px] rounded-md border border-border bg-background/60 p-2 text-xs"
           value={cue.text}
           maxLength={500}
+          onFocus={gesture.begin}
+          onBlur={gesture.end}
           onChange={(e) => updateCaption(cue.id, { text: e.target.value })}
         />
         <div className="grid grid-cols-2 gap-2">
@@ -58,6 +64,8 @@ const CaptionEditor: React.FC = () => {
               min={0}
               className="h-7 text-xs"
               value={cue.startSeconds.toFixed(2)}
+              onFocus={gesture.begin}
+              onBlur={gesture.end}
               onChange={(e) => updateCaption(cue.id, { startSeconds: parseFloat(e.target.value) || 0 })}
             />
           </div>
@@ -69,6 +77,8 @@ const CaptionEditor: React.FC = () => {
               min={0}
               className="h-7 text-xs"
               value={cue.endSeconds.toFixed(2)}
+              onFocus={gesture.begin}
+              onBlur={gesture.end}
               onChange={(e) => updateCaption(cue.id, { endSeconds: parseFloat(e.target.value) || 0 })}
             />
           </div>
@@ -113,11 +123,11 @@ const CaptionEditor: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <Label className="text-[11px] text-muted-foreground">{t('contentStudio.captions.color')}</Label>
-            <input type="color" className="h-7 w-9 rounded border border-border bg-transparent" value={style.color} onChange={(e) => setCaptionStyle({ color: e.target.value })} />
+            <input type="color" className="h-7 w-9 rounded border border-border bg-transparent" value={style.color} onFocus={gesture.begin} onBlur={gesture.end} onChange={(e) => setCaptionStyle({ color: e.target.value })} />
           </div>
           <div className="flex items-center gap-2">
             <Label className="text-[11px] text-muted-foreground">{t('contentStudio.captions.background')}</Label>
-            <input type="color" className="h-7 w-9 rounded border border-border bg-transparent" value={style.backgroundColor} onChange={(e) => setCaptionStyle({ backgroundColor: e.target.value })} />
+            <input type="color" className="h-7 w-9 rounded border border-border bg-transparent" value={style.backgroundColor} onFocus={gesture.begin} onBlur={gesture.end} onChange={(e) => setCaptionStyle({ backgroundColor: e.target.value })} />
           </div>
         </div>
 
@@ -160,14 +170,28 @@ const CaptionEditor: React.FC = () => {
 
 const StyleSlider: React.FC<{ label: string; readout: string; min: number; max: number; step: number; value: number; onChange: (v: number) => void }> = ({
   label, readout, min, max, step, value, onChange,
-}) => (
-  <div>
-    <Label className="text-[11px] text-muted-foreground flex justify-between">
-      <span>{label}</span>
-      <span className="tabular-nums">{readout}</span>
-    </Label>
-    <Slider className="mt-1" min={min} max={max} step={step} value={[value]} onValueChange={(v) => onChange(v[0] ?? value)} />
-  </div>
-);
+}) => {
+  const gesture = useUndoGesture();
+  return (
+    <div>
+      <Label className="text-[11px] text-muted-foreground flex justify-between">
+        <span>{label}</span>
+        <span className="tabular-nums">{readout}</span>
+      </Label>
+      <Slider
+        className="mt-1"
+        min={min}
+        max={max}
+        step={step}
+        value={[value]}
+        onValueChange={(v) => {
+          gesture.begin();
+          onChange(v[0] ?? value);
+        }}
+        onValueCommit={gesture.end}
+      />
+    </div>
+  );
+};
 
 export default CaptionEditor;
