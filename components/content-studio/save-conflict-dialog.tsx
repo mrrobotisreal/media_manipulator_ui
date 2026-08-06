@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Loader2, RotateCcw, Upload } from 'lucide-react';
+import { History, Loader2, RotateCcw, Trash2, Upload } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useLocalization } from '@/i18n/useLocalization';
+import type { DraftChangeSummary } from '@/lib/studio/draftRecovery';
+import { DraftDetail } from './draft-recovery-dialog';
 
 /**
  * SaveConflictDialog — shown when a save came back 409: the project was changed
@@ -24,15 +26,29 @@ import { useLocalization } from '@/i18n/useLocalization';
  *   undo history.
  * - Take over: re-save the local document with expectedRevision set to the
  *   server's current revision, overwriting the other writer's save.
+ *
+ * Part 08 adds `mode="draft"` — the same conflict shape reached from crash
+ * recovery: a local draft exists but the project was saved elsewhere *after*
+ * the draft was taken (its base revision is older than the server's). The two
+ * resolutions become "recover and take over" (restore the draft and save it
+ * over the newer server copy) and "discard draft"; `savedAt`/`summary`
+ * describe the draft.
  */
 const SaveConflictDialog: React.FC<{
   open: boolean;
+  mode?: 'save' | 'draft';
+  /** draft mode: when the draft was written + what it changes. */
+  savedAt?: number;
+  summary?: DraftChangeSummary;
   /** Which resolution is in flight, if any (disables both buttons). */
   busy: 'reload' | 'takeOver' | null;
+  /** save mode: reload latest · draft mode: discard the draft. */
   onReload: () => void;
+  /** save mode: take over · draft mode: recover and take over. */
   onTakeOver: () => void;
-}> = ({ open, busy, onReload, onTakeOver }) => {
+}> = ({ open, mode = 'save', savedAt, summary, busy, onReload, onTakeOver }) => {
   const { t } = useLocalization('interface');
+  const draft = mode === 'draft';
   return (
     <Dialog open={open} onOpenChange={() => undefined}>
       <DialogContent
@@ -43,25 +59,42 @@ const SaveConflictDialog: React.FC<{
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle>{t('contentStudio.saveConflict.title')}</DialogTitle>
-          <DialogDescription>{t('contentStudio.saveConflict.description')}</DialogDescription>
+          <DialogTitle>
+            {draft ? t('contentStudio.draftRecovery.conflict.title') : t('contentStudio.saveConflict.title')}
+          </DialogTitle>
+          <DialogDescription>
+            {draft
+              ? t('contentStudio.draftRecovery.conflict.description')
+              : t('contentStudio.saveConflict.description')}
+          </DialogDescription>
         </DialogHeader>
+        {draft && savedAt !== undefined && summary ? (
+          <DraftDetail savedAt={savedAt} summary={summary} />
+        ) : null}
         <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-end">
           <Button variant="outline" disabled={busy !== null} onClick={onReload}>
             {busy === 'reload' ? (
               <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+            ) : draft ? (
+              <Trash2 className="w-4 h-4 mr-1" />
             ) : (
               <RotateCcw className="w-4 h-4 mr-1" />
             )}
-            {t('contentStudio.saveConflict.reload')}
+            {draft
+              ? t('contentStudio.draftRecovery.conflict.discard')
+              : t('contentStudio.saveConflict.reload')}
           </Button>
           <Button disabled={busy !== null} onClick={onTakeOver}>
             {busy === 'takeOver' ? (
               <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+            ) : draft ? (
+              <History className="w-4 h-4 mr-1" />
             ) : (
               <Upload className="w-4 h-4 mr-1" />
             )}
-            {t('contentStudio.saveConflict.takeOver')}
+            {draft
+              ? t('contentStudio.draftRecovery.conflict.recover')
+              : t('contentStudio.saveConflict.takeOver')}
           </Button>
         </DialogFooter>
       </DialogContent>

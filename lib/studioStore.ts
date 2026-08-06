@@ -115,6 +115,14 @@ interface StudioState {
   // --- project lifecycle ---
   loadProject: (project: StudioProject) => void;
   markSaved: (project: StudioProject) => void;
+  /**
+   * Part 08 crash recovery: replace the working document with a recovered
+   * IndexedDB draft. Marks the store dirty (so the autosave pipeline persists
+   * it) and resets undo history; the server-metadata fields (`revision`) and
+   * the media bin are deliberately untouched — the project itself didn't
+   * change, only its document.
+   */
+  restoreDraft: (document: StudioProject) => void;
   closeProject: () => void;
 
   // --- history ---
@@ -445,6 +453,22 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       revision: project.revision ?? s.revision,
       dirty: false,
     })),
+
+  restoreDraft: (document) =>
+    set((s) => {
+      if (!s.project) return {};
+      const normalized = normalizeProject(document);
+      return {
+        project: { ...normalized, tracks: ensureBaseTracks(normalized.tracks ?? []) },
+        selectedClipIds: [],
+        selectedCaptionId: null,
+        dirty: true,
+        past: [],
+        future: [],
+        gestureDepth: 0,
+        gestureBase: null,
+      };
+    }),
 
   closeProject: () =>
     set({

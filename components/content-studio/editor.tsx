@@ -44,7 +44,21 @@ import {
   type SaveStateMachine,
   type SaveStateSnapshot,
 } from '@/lib/studio/saveState';
+import {
+  createDraftWriter,
+  deleteDraft,
+  getDraft,
+  pruneDrafts,
+  putDraft,
+  type StudioDraft,
+} from '@/lib/studio/draftStore';
+import {
+  evaluateDraft,
+  summarizeDraftChanges,
+  type DraftChangeSummary,
+} from '@/lib/studio/draftRecovery';
 import SaveConflictDialog from './save-conflict-dialog';
+import DraftRecoveryDialog from './draft-recovery-dialog';
 import MediaBin from './media-bin';
 import PreviewSurface from './preview-surface';
 import Timeline from './timeline';
@@ -103,6 +117,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   const saveMutation = useSaveProject();
 
   const loadProject = useStudioStore((s) => s.loadProject);
+  const restoreDraft = useStudioStore((s) => s.restoreDraft);
   const setAssets = useStudioStore((s) => s.setAssets);
   const closeProject = useStudioStore((s) => s.closeProject);
   const markSaved = useStudioStore((s) => s.markSaved);
@@ -137,6 +152,25 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   const [conflict, setConflict] = React.useState<{ currentRevision: number | null } | null>(null);
   const [conflictBusy, setConflictBusy] = React.useState<'reload' | 'takeOver' | null>(null);
 
+  // --- Crash recovery (part 08) --------------------------------------------
+  // A pending IndexedDB draft offered on project open: 'recover' (based on the
+  // loaded server revision) shows the recovery dialog, 'conflict' (the project
+  // was saved elsewhere after the draft) shows the conflict dialog's draft
+  // mode.
+  const [draftOffer, setDraftOffer] = React.useState<{
+    kind: 'recover' | 'conflict';
+    draft: StudioDraft;
+    summary: DraftChangeSummary;
+  } | null>(null);
+  const [draftBusy, setDraftBusy] = React.useState<'recover' | 'discard' | null>(null);
+  // The document reference of the last draft write that reached IndexedDB.
+  // When it matches the store's current document, unsaved work is locally safe
+  // and the beforeunload guard stays quiet (ADR ws/0001 item 4, narrowed).
+  const lastDraftedDocRef = React.useRef<object | null>(null);
+  // One recovery check per opened project (a conflict-reload refetch must not
+  // re-offer a draft that reload just invalidated).
+  const draftCheckedRef = React.useRef<string | null>(null);
+
   /**
    * The one save path (autosave debounce, machine retries, and take-over all
    * land here). `expectedRevisionOverride`: undefined → send the store's
@@ -159,6 +193,9 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
       const saved = await saveRef.current.mutateAsync({ id: projectId, req });
       markSaved(saved);
       dispatchSave({ type: 'saveOk' });
+      // The server now holds these edits — the crash-recovery draft is stale.
+      lastDraftedDocRef.current = null;
+      void deleteDraft(projectId);
       return true;
     } catch (err) {
       if (err instanceof StudioSaveConflictError) {
@@ -205,18 +242,122 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
     };
   }, [dispatchSave]);
 
-  // Warn before closing the tab whenever work hasn't reached the server.
-  // Part 08 will narrow this: once IndexedDB drafts land, a locally-drafted
-  // document no longer needs the prompt (ADR ws/0001 item 4).
+  // Warn before closing the tab whenever work has reached neither the server
+  // nor the local draft buffer (ADR ws/0001 item 4). Part 08 narrowed this:
+  // when the latest draft write landed after the last edit, the changes are
+  // locally safe and closing costs nothing, so the prompt stays quiet.
   React.useEffect(() => {
     if (saveSnap.state === 'saved') return;
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      const doc = useStudioStore.getState().project;
+      if (doc !== null && lastDraftedDocRef.current === doc) return;
       e.preventDefault();
       e.returnValue = ''; // legacy Chromium requires a truthy-ish returnValue
     };
     window.addEventListener('beforeunload', onBeforeUnload);
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
   }, [saveSnap.state]);
+
+  // Draft write path (part 08): every document mutation while dirty schedules
+  // a trailing ~3s throttled write of the full EDL to IndexedDB — independent
+  // of (and slower than) the autosave debounce, so a dead network still leaves
+  // a fresh local copy without a write per keystroke. pagehide / tab-hidden
+  // flush immediately (fire-and-forget: IndexedDB can't be sync — acceptable).
+  React.useEffect(() => {
+    const writer = createDraftWriter(() => {
+      const st = useStudioStore.getState();
+      if (!st.dirty || !st.project || st.project.id !== projectId) return;
+      const doc = st.project;
+      void putDraft({
+        projectId,
+        baseRevision: st.revision,
+        savedAt: Date.now(),
+        document: doc,
+      }).then((ok) => {
+        // Only a confirmed write makes the work "locally safe". If an edit
+        // replaced the document while the write was in flight, the recorded
+        // reference simply won't match the live one and the guard still fires.
+        if (ok) lastDraftedDocRef.current = doc;
+      });
+    });
+    const unsubscribe = useStudioStore.subscribe((state, prev) => {
+      if (
+        state.project &&
+        state.project !== prev.project &&
+        state.dirty &&
+        state.project.id === projectId
+      ) {
+        writer.notifyChange();
+      }
+    });
+    const flush = () => writer.flush();
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') writer.flush();
+    };
+    window.addEventListener('pagehide', flush);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => {
+      unsubscribe();
+      window.removeEventListener('pagehide', flush);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      writer.dispose();
+    };
+  }, [projectId]);
+
+  // Housekeeping: cap the draft buffer once per editor session.
+  React.useEffect(() => {
+    void pruneDrafts();
+  }, []);
+
+  // Recovery path (part 08): after the server project loads, look for a local
+  // draft. Newer than the server copy and actually different → offer recovery;
+  // based on an older revision than the server's → the conflict-dialog draft
+  // mode; anything else → silently delete. Runs once per opened project (see
+  // draftCheckedRef); StrictMode's remount re-runs it harmlessly.
+  React.useEffect(() => {
+    const server = projectQuery.data;
+    if (!server || draftCheckedRef.current === server.id) return;
+    draftCheckedRef.current = server.id;
+    let cancelled = false;
+    void (async () => {
+      const draft = await getDraft(server.id);
+      if (cancelled || !draft) return;
+      const decision = evaluateDraft(draft, server);
+      if (decision === 'discard') {
+        void deleteDraft(server.id);
+        return;
+      }
+      setDraftOffer({
+        kind: decision,
+        draft,
+        summary: summarizeDraftChanges(server, draft.document),
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [projectQuery.data]);
+
+  /** Recovery dialog: adopt the draft as the working document. Dirty → the
+   * autosave pipeline persists it (in the conflict variant the store's freshly
+   * loaded server revision makes that save the take-over the user asked for). */
+  const handleDraftRecover = () => {
+    if (!draftOffer) return;
+    restoreDraft(draftOffer.draft.document);
+    setDraftOffer(null);
+  };
+
+  /** Recovery dialog: keep the saved version and drop the draft. */
+  const handleDraftDiscard = async () => {
+    if (!draftOffer) return;
+    setDraftBusy('discard');
+    try {
+      await deleteDraft(projectId);
+      setDraftOffer(null);
+    } finally {
+      setDraftBusy(null);
+    }
+  };
 
   /** Conflict dialog: replace the local document with the server's latest. */
   const handleConflictReload = async () => {
@@ -230,6 +371,10 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         loadProject(res.data);
         setConflict(null);
         dispatchSave({ type: 'conflictResolved' });
+        // "Reload latest" discards the local edits — the draft holding them
+        // must go too, or the next open would offer to resurrect them.
+        lastDraftedDocRef.current = null;
+        void deleteDraft(projectId);
       }
       // On refetch failure the dialog stays open for another attempt.
     } finally {
@@ -349,7 +494,12 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
       const st = useStudioStore.getState();
       if (st.dirty) {
         const req = st.toSaveRequest();
-        if (req) saveRef.current.mutate({ id: projectId, req });
+        if (req)
+          saveRef.current.mutate(
+            { id: projectId, req },
+            // Part 08: a landed flush supersedes the crash-recovery draft.
+            { onSuccess: () => void deleteDraft(projectId) },
+          );
       }
     },
     [projectId],
@@ -565,8 +715,40 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         onReload={() => void handleConflictReload()}
         onTakeOver={() => void handleConflictTakeOver()}
       />
+
+      {/* Part 08 crash recovery. Clean case: the draft is based on the loaded
+          server revision. Conflict case: the project was saved elsewhere after
+          the draft — same dialog as a live 409, in its draft mode. */}
+      <DraftRecoveryDialog
+        open={draftOffer?.kind === 'recover'}
+        savedAt={draftOffer?.draft.savedAt ?? 0}
+        summary={draftOffer?.summary ?? EMPTY_DRAFT_SUMMARY}
+        busy={draftBusy}
+        onRecover={handleDraftRecover}
+        onDiscard={() => void handleDraftDiscard()}
+      />
+      <SaveConflictDialog
+        open={draftOffer?.kind === 'conflict'}
+        mode="draft"
+        savedAt={draftOffer?.draft.savedAt}
+        summary={draftOffer?.summary}
+        busy={draftBusy === 'discard' ? 'reload' : draftBusy === 'recover' ? 'takeOver' : null}
+        onReload={() => void handleDraftDiscard()}
+        onTakeOver={handleDraftRecover}
+      />
     </div>
   );
+};
+
+// Placeholder while no draft is offered (the dialog is closed then anyway).
+const EMPTY_DRAFT_SUMMARY: DraftChangeSummary = {
+  tracksAdded: 0,
+  tracksRemoved: 0,
+  clipsAdded: 0,
+  clipsRemoved: 0,
+  clipsChanged: 0,
+  captionsChanged: false,
+  otherChanges: false,
 };
 
 /**

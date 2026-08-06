@@ -119,6 +119,33 @@
       "reload": "Reload latest",
       "takeOver": "Take over"
     },
+    "draftRecovery": {
+      "title": "Recover unsaved changes?",
+      "description": "This project has edits that never reached the server. Recover them to keep working, or discard them to keep the last saved version.",
+      "from": "Unsaved edits from {{time}}",
+      "recover": "Recover changes",
+      "discard": "Discard",
+      "conflict": {
+        "title": "Unsaved changes from an older session",
+        "description": "This project was saved elsewhere after these edits were made. Recovering will take over and overwrite the newer saved version with this draft.",
+        "recover": "Recover and take over",
+        "discard": "Discard draft"
+      },
+      "summary": {
+        "clipsAdded_one": "{{count}} clip added",
+        "clipsAdded_other": "{{count}} clips added",
+        "clipsRemoved_one": "{{count}} clip removed",
+        "clipsRemoved_other": "{{count}} clips removed",
+        "clipsChanged_one": "{{count}} clip edited",
+        "clipsChanged_other": "{{count}} clips edited",
+        "tracksAdded_one": "{{count}} track added",
+        "tracksAdded_other": "{{count}} tracks added",
+        "tracksRemoved_one": "{{count}} track removed",
+        "tracksRemoved_other": "{{count}} tracks removed",
+        "captions": "caption edits",
+        "other": "edits to project settings"
+      }
+    },
     "focus": {
       "enter": "Focus mode (Esc to exit)",
       "exit": "Exit focus mode",

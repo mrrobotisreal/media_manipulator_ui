@@ -649,3 +649,38 @@ describe('revision tracking', () => {
     expect(store().revision).toBe(5);
   });
 });
+
+// --- Part 08: crash recovery — adopting an IndexedDB draft -------------------
+
+describe('restoreDraft', () => {
+  it('replaces the document, marks it dirty, and keeps the tracked revision', () => {
+    store().loadProject({ ...project([track('v1', 'video', 0, [])]), revision: 4 });
+    const draftDoc = project([track('v1', 'video', 0, [clip('c1', 0, 5)])]);
+    store().restoreDraft(draftDoc);
+    expect(store().findClip('c1')).not.toBeNull();
+    expect(store().dirty).toBe(true); // → the autosave pipeline persists it
+    expect(store().revision).toBe(4); // server metadata untouched by recovery
+  });
+
+  it('resets undo history (the draft is a fresh baseline)', () => {
+    store().loadProject(project([track('v1', 'video', 0, [])]));
+    store().addTrack('video');
+    expect(store().past.length).toBeGreaterThan(0);
+    store().restoreDraft(project([]));
+    expect(store().past).toHaveLength(0);
+    expect(store().future).toHaveLength(0);
+  });
+
+  it('clears selection ids that pointed into the replaced document', () => {
+    store().loadProject(project([track('v1', 'video', 0, [clip('c1', 0, 5)])]));
+    store().selectClip('c1');
+    store().restoreDraft(project([]));
+    expect(store().selectedClipIds).toHaveLength(0);
+  });
+
+  it('is a no-op when no project is open', () => {
+    store().restoreDraft(project([]));
+    expect(store().project).toBeNull();
+    expect(store().dirty).toBe(false);
+  });
+});
