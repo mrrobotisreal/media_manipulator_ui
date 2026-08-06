@@ -485,6 +485,13 @@ export const studioProjectSchema = z.object({
   audio: studioAudioConfigSchema.optional(),
   /** v3: timeline markers (≤500, sorted by t). */
   markers: z.array(studioMarkerSchema).max(500).optional(),
+  /**
+   * Part 07: server-incremented optimistic-concurrency counter. Not part of
+   * the editable document (the store keeps it outside undo history). Optional
+   * because a CreaTV backend that doesn't echo it falls back to legacy
+   * last-write-wins saves.
+   */
+  revision: z.number().int().positive().optional(),
   /** RFC3339 */
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -544,6 +551,12 @@ export const studioSaveProjectRequestSchema = z.object({
   audio: studioAudioConfigSchema.optional(),
   // EDL v3 project-level fields.
   markers: z.array(studioMarkerSchema).max(500).optional(),
+  /**
+   * Part 07: the revision this save is based on. When set, a stale value gets
+   * a 409 (conflict dialog); when omitted the save is legacy last-write-wins
+   * (embed back-compat — the MM client always sends it when it has one).
+   */
+  expectedRevision: z.number().int().positive().optional(),
 });
 export type StudioSaveProjectRequest = z.infer<typeof studioSaveProjectRequestSchema>;
 

@@ -21,6 +21,34 @@ async function readError(res: Response): Promise<string> {
   return body || res.statusText;
 }
 
+/**
+ * A stale compare-and-set save: the server answered 409 because another tab or
+ * device saved first (part 07). Carries the live server revision so "Take
+ * over" can re-send with expectedRevision = currentRevision.
+ */
+export class StudioSaveConflictError extends Error {
+  constructor(
+    public readonly currentRevision: number | undefined,
+    public readonly updatedAt: string | undefined,
+  ) {
+    super('Project was changed in another tab or device');
+    this.name = 'StudioSaveConflictError';
+  }
+}
+
+/** A non-409 HTTP failure, with the status so the save-state machine can pick
+ * retry (5xx) vs. park-in-failed (other 4xx). Plain network failures keep
+ * throwing the underlying TypeError from fetch. */
+export class StudioSaveHttpError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number,
+  ) {
+    super(message);
+    this.name = 'StudioSaveHttpError';
+  }
+}
+
 export function useRecentProjects() {
   const backend = useStudioBackend();
   return useQuery({
@@ -99,7 +127,20 @@ export function useSaveProject() {
         headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
         body: JSON.stringify(backend.adaptSaveProject(req)),
       });
-      if (!res.ok) throw new Error(await readError(res));
+      if (res.status === 409) {
+        // {error, currentRevision, updatedAt} from the MM API; a backend with
+        // a different body degrades to an undefined revision (dialog still
+        // works — take-over then falls back to a legacy save).
+        const body = (await res.json().catch(() => ({}))) as {
+          currentRevision?: number;
+          updatedAt?: string;
+        };
+        throw new StudioSaveConflictError(
+          typeof body.currentRevision === 'number' ? body.currentRevision : undefined,
+          typeof body.updatedAt === 'string' ? body.updatedAt : undefined,
+        );
+      }
+      if (!res.ok) throw new StudioSaveHttpError(await readError(res), res.status);
       return backend.parseProject(await res.json());
     },
   });

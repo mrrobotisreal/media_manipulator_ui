@@ -99,6 +99,10 @@
       "saving": "Saving…",
       "unsaved": "Unsaved changes",
       "saved": "Saved",
+      "offline": "Offline — will retry",
+      "retrying": "Save failed — retrying…",
+      "saveFailed": "Save failed",
+      "conflict": "Save conflict",
       "undo": "Undo",
       "redo": "Redo",
       "mobileHint": "Darkroom works best on a larger screen with a mouse or trackpad.",
@@ -108,6 +112,12 @@
         "preview": "Preview",
         "inspector": "Inspector"
       }
+    },
+    "saveConflict": {
+      "title": "Project changed elsewhere",
+      "description": "This project was changed in another tab or device. Reload the latest version, or take over to overwrite it with this tab's copy.",
+      "reload": "Reload latest",
+      "takeOver": "Take over"
     },
     "focus": {
       "enter": "Focus mode (Esc to exit)",

@@ -93,6 +93,14 @@ interface StudioState {
   duration: number;
   /** true when the EDL changed since the last successful save */
   dirty: boolean;
+  /**
+   * Server revision the loaded document is based on (part 07 save safety).
+   * Server metadata, NOT part of the document slice: undo/redo must never
+   * rewind it, so it lives outside `project` and the history stacks. null when
+   * the backend doesn't echo revisions (CreaTV legacy) → saves omit
+   * expectedRevision and stay last-write-wins.
+   */
+  revision: number | null;
 
   // --- undo history (ADR ui/0001: snapshots of the document slice only) ---
   /** Undo stack: pre-mutation snapshots of `project`, oldest first. */
@@ -400,6 +408,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   zoom: DEFAULT_ZOOM,
   duration: 0,
   dirty: false,
+  revision: null,
   past: [],
   future: [],
   gestureDepth: 0,
@@ -416,6 +425,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       playhead: 0,
       isPlaying: false,
       dirty: false,
+      revision: project.revision ?? null,
       past: [],
       future: [],
       gestureDepth: 0,
@@ -430,6 +440,9 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       project: s.project
         ? { ...s.project, updatedAt: project.updatedAt, durationSeconds: project.durationSeconds }
         : project,
+      // Adopt the incremented server revision so the next save's CAS passes.
+      // A backend that doesn't echo one keeps whatever we had (legacy mode).
+      revision: project.revision ?? s.revision,
       dirty: false,
     })),
 
@@ -442,6 +455,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       playhead: 0,
       isPlaying: false,
       dirty: false,
+      revision: null,
       past: [],
       future: [],
       gestureDepth: 0,
@@ -1102,6 +1116,9 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       audio: p.audio,
       // v3: no marker UI yet — echo loaded markers so a save never drops them.
       markers: p.markers,
+      // Part 07: compare-and-set token. Omitted (legacy last-write-wins) when
+      // the backend never gave us a revision.
+      expectedRevision: get().revision ?? undefined,
     };
   },
 

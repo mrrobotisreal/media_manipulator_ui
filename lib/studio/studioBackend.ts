@@ -318,6 +318,9 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
       captionsEnabled: req.captionsEnabled,
       audio: req.audio,
       markers: req.markers,
+      // Part 07 (additive): the CreaTV backend may ignore this today; when it
+      // learns to CAS it can start honoring it without a client change.
+      expectedRevision: req.expectedRevision,
     }),
     adaptPresign: (input) => ({
       draftId: scope.draftId,
@@ -405,6 +408,9 @@ function parseCreatvProject(json: unknown): StudioProject {
     captionsEnabled: typeof j.captionsEnabled === 'boolean' ? j.captionsEnabled : true,
     audio: j.audio != null ? j.audio : undefined,
     markers: Array.isArray(j.markers) ? j.markers : undefined,
+    // Part 07: a backend that doesn't echo a revision yields undefined and the
+    // client falls back to legacy last-write-wins saves (never break embed).
+    revision: typeof j.revision === 'number' && j.revision > 0 ? j.revision : undefined,
     createdAt: typeof j.createdAt === 'string' ? j.createdAt : new Date(0).toISOString(),
     updatedAt: typeof j.updatedAt === 'string' ? j.updatedAt : new Date(0).toISOString(),
   };

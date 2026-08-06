@@ -11,14 +11,40 @@ import {
   type DragStartEvent,
   type DragEndEvent,
 } from '@dnd-kit/core';
-import { ArrowLeft, Loader2, Check, Maximize2, Minimize2, Expand, Shrink, Undo2, Redo2 } from 'lucide-react';
+import {
+  ArrowLeft,
+  Loader2,
+  Check,
+  Maximize2,
+  Minimize2,
+  Expand,
+  Shrink,
+  Undo2,
+  Redo2,
+  WifiOff,
+  AlertTriangle,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, clipDuration, clipEnd } from '@/lib/studioStore';
-import { useProjectQuery, useProjectAssetsQuery, useSaveProject } from '@/lib/useStudioProject';
+import {
+  useProjectQuery,
+  useProjectAssetsQuery,
+  useSaveProject,
+  StudioSaveConflictError,
+  StudioSaveHttpError,
+} from '@/lib/useStudioProject';
+import {
+  createSaveStateMachine,
+  type SaveState,
+  type SaveStateEvent,
+  type SaveStateMachine,
+  type SaveStateSnapshot,
+} from '@/lib/studio/saveState';
+import SaveConflictDialog from './save-conflict-dialog';
 import MediaBin from './media-bin';
 import PreviewSurface from './preview-surface';
 import Timeline from './timeline';
@@ -80,7 +106,6 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   const setAssets = useStudioStore((s) => s.setAssets);
   const closeProject = useStudioStore((s) => s.closeProject);
   const markSaved = useStudioStore((s) => s.markSaved);
-  const toSaveRequest = useStudioStore((s) => s.toSaveRequest);
   const project = useStudioStore((s) => s.project);
   const dirty = useStudioStore((s) => s.dirty);
   const selectedCaptionId = useStudioStore((s) => s.selectedCaptionId);
@@ -93,6 +118,137 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   const saveTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const saveRef = React.useRef(saveMutation);
   saveRef.current = saveMutation;
+
+  // --- Save safety (part 07) -----------------------------------------------
+  // The save-state machine (lib/studio/saveState.ts) wraps the debounced
+  // autosave: it owns retry/backoff/offline transitions and feeds the header
+  // indicator + beforeunload guard. Created per mount in an effect (StrictMode
+  // runs mount→cleanup→mount, so a ref-cached instance would stay disposed).
+  const machineRef = React.useRef<SaveStateMachine | null>(null);
+  const [saveSnap, setSaveSnap] = React.useState<SaveStateSnapshot>({
+    state: 'saved',
+    attempt: 0,
+    nextRetryDelayMs: null,
+  });
+  const dispatchSave = React.useCallback((event: SaveStateEvent) => {
+    machineRef.current?.dispatch(event);
+  }, []);
+  // 409 details while the conflict dialog is open; autosaving is blocked then.
+  const [conflict, setConflict] = React.useState<{ currentRevision: number | null } | null>(null);
+  const [conflictBusy, setConflictBusy] = React.useState<'reload' | 'takeOver' | null>(null);
+
+  /**
+   * The one save path (autosave debounce, machine retries, and take-over all
+   * land here). `expectedRevisionOverride`: undefined → send the store's
+   * revision (normal CAS); a number → take over at that revision; null →
+   * legacy last-write-wins (take-over fallback when the 409 body carried no
+   * revision). Returns whether the save landed.
+   */
+  const runSaveRef = React.useRef<(expectedRevisionOverride?: number | null) => Promise<boolean>>(
+    async () => false,
+  );
+  runSaveRef.current = async (expectedRevisionOverride) => {
+    const st = useStudioStore.getState();
+    if (st.project?.id !== projectId) return false;
+    const req = st.toSaveRequest();
+    if (!req) return false;
+    if (expectedRevisionOverride === null) delete req.expectedRevision;
+    else if (expectedRevisionOverride !== undefined) req.expectedRevision = expectedRevisionOverride;
+    dispatchSave({ type: 'saveStart' });
+    try {
+      const saved = await saveRef.current.mutateAsync({ id: projectId, req });
+      markSaved(saved);
+      dispatchSave({ type: 'saveOk' });
+      return true;
+    } catch (err) {
+      if (err instanceof StudioSaveConflictError) {
+        setConflict({ currentRevision: err.currentRevision ?? null });
+        dispatchSave({ type: 'save409' });
+      } else if (err instanceof StudioSaveHttpError && err.status < 500) {
+        // Non-retryable client error (409 handled above): park in `failed`
+        // rather than hammering the server with a request it keeps rejecting.
+        dispatchSave({ type: 'saveHardError' });
+      } else {
+        // Network failure or 5xx — the machine schedules a backoff retry.
+        dispatchSave({ type: 'saveNetworkError' });
+      }
+      return false;
+    }
+  };
+
+  React.useEffect(() => {
+    const machine = createSaveStateMachine({
+      onRetry: () => {
+        void runSaveRef.current();
+      },
+    });
+    machineRef.current = machine;
+    setSaveSnap(machine.getSnapshot());
+    const unsubscribe = machine.subscribe(() => setSaveSnap(machine.getSnapshot()));
+    return () => {
+      unsubscribe();
+      machine.dispose();
+      machineRef.current = null;
+    };
+  }, [projectId]);
+
+  // Browser connectivity feeds the machine (offline = wait for 'online'
+  // instead of burning backoff retries into a dead network).
+  React.useEffect(() => {
+    const onOnline = () => dispatchSave({ type: 'online' });
+    const onOffline = () => dispatchSave({ type: 'offline' });
+    window.addEventListener('online', onOnline);
+    window.addEventListener('offline', onOffline);
+    return () => {
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', onOffline);
+    };
+  }, [dispatchSave]);
+
+  // Warn before closing the tab whenever work hasn't reached the server.
+  // Part 08 will narrow this: once IndexedDB drafts land, a locally-drafted
+  // document no longer needs the prompt (ADR ws/0001 item 4).
+  React.useEffect(() => {
+    if (saveSnap.state === 'saved') return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = ''; // legacy Chromium requires a truthy-ish returnValue
+    };
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  }, [saveSnap.state]);
+
+  /** Conflict dialog: replace the local document with the server's latest. */
+  const handleConflictReload = async () => {
+    setConflictBusy('reload');
+    try {
+      const res = await projectQuery.refetch();
+      if (res.data) {
+        // Same project id, so the hydrate effect below won't re-run —
+        // replace the document explicitly. loadProject also resets undo
+        // history and adopts the fresh revision.
+        loadProject(res.data);
+        setConflict(null);
+        dispatchSave({ type: 'conflictResolved' });
+      }
+      // On refetch failure the dialog stays open for another attempt.
+    } finally {
+      setConflictBusy(null);
+    }
+  };
+
+  /** Conflict dialog: force-save our copy at the server's current revision. */
+  const handleConflictTakeOver = async () => {
+    setConflictBusy('takeOver');
+    try {
+      const ok = await runSaveRef.current(conflict?.currentRevision ?? null);
+      if (ok) setConflict(null);
+      // A fresh 409 (someone saved again mid-dialog) re-populates `conflict`
+      // via runSave; any other failure keeps the dialog open to retry.
+    } finally {
+      setConflictBusy(null);
+    }
+  };
 
   // Shared drag-and-drop: clips (reposition / move between tracks) and media-bin
   // assets (drop onto a track) are all dragged within this one DndContext.
@@ -172,24 +328,19 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 
   // Debounced autosave whenever the EDL is dirty. Uses a ref for the mutation
   // so edits settle for AUTOSAVE_DEBOUNCE_MS instead of restarting the timer on
-  // every render.
+  // every render. Suspended while the conflict dialog is open — the user must
+  // pick reload/take-over first (part 07).
   React.useEffect(() => {
-    if (!dirty || storeProjectId !== projectId) return;
+    if (!dirty || storeProjectId !== projectId || conflict) return;
+    dispatchSave({ type: 'edit' });
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
-      const req = toSaveRequest();
-      if (!req) return;
-      saveRef.current
-        .mutateAsync({ id: projectId, req })
-        .then((saved) => markSaved(saved))
-        .catch(() => {
-          /* surfaced by the mutation; will retry on next edit */
-        });
+      void runSaveRef.current();
     }, AUTOSAVE_DEBOUNCE_MS);
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [dirty, projectId, storeProjectId, toSaveRequest, markSaved]);
+  }, [dirty, projectId, storeProjectId, conflict, dispatchSave]);
 
   // Flush a pending edit when leaving the editor so a debounced save in flight
   // isn't lost on unmount/close.
@@ -302,7 +453,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
             {t('contentStudio.editor.back')}
           </Button>
           <span className="font-semibold text-card-foreground truncate">{project.name}</span>
-          <SaveStatus saving={saveMutation.isPending} dirty={dirty} />
+          <SaveStatus state={saveSnap.state} />
         </div>
         <div className="flex items-center gap-2">
           <UndoRedoButtons />
@@ -407,6 +558,13 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           {t('contentStudio.focus.hint')}
         </div>
       ) : null}
+
+      <SaveConflictDialog
+        open={conflict !== null}
+        busy={conflictBusy}
+        onReload={() => void handleConflictReload()}
+        onTakeOver={() => void handleConflictTakeOver()}
+      />
     </div>
   );
 };
@@ -486,25 +644,58 @@ const FocusControls: React.FC<{ api: FocusModeApi }> = ({ api }) => {
   );
 };
 
-const SaveStatus: React.FC<{ saving: boolean; dirty: boolean }> = ({ saving, dirty }) => {
+/**
+ * Always-visible save-state indicator (part 07). Renders the machine state
+ * directly: Saved ✓ / Saving… / Offline — will retry / Save failed — retrying /
+ * Save failed / Save conflict. Subtle by design — it lives in the header next
+ * to the project name.
+ */
+const SaveStatus: React.FC<{ state: SaveState }> = ({ state }) => {
   const { t } = useLocalization('interface');
-  if (saving) {
-    return (
-      <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
-        <Loader2 className="w-3 h-3 animate-spin" />
-        {t('contentStudio.editor.saving')}
-      </span>
-    );
+  switch (state) {
+    case 'saving':
+      return (
+        <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+          <Loader2 className="w-3 h-3 animate-spin" />
+          {t('contentStudio.editor.saving')}
+        </span>
+      );
+    case 'retrying':
+      return (
+        <span className="text-xs text-premium inline-flex items-center gap-1">
+          <Loader2 className="w-3 h-3 animate-spin" />
+          {t('contentStudio.editor.retrying')}
+        </span>
+      );
+    case 'offline':
+      return (
+        <span className="text-xs text-premium inline-flex items-center gap-1">
+          <WifiOff className="w-3 h-3" />
+          {t('contentStudio.editor.offline')}
+        </span>
+      );
+    case 'conflict':
+      return (
+        <span className="text-xs text-destructive inline-flex items-center gap-1">
+          <AlertTriangle className="w-3 h-3" />
+          {t('contentStudio.editor.conflict')}
+        </span>
+      );
+    case 'failed':
+      return (
+        <span className="text-xs text-destructive inline-flex items-center gap-1">
+          <AlertTriangle className="w-3 h-3" />
+          {t('contentStudio.editor.saveFailed')}
+        </span>
+      );
+    case 'saved':
+      return (
+        <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+          <Check className="w-3 h-3 text-success" />
+          {t('contentStudio.editor.saved')}
+        </span>
+      );
   }
-  if (dirty) {
-    return <span className="text-xs text-premium">{t('contentStudio.editor.unsaved')}</span>;
-  }
-  return (
-    <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
-      <Check className="w-3 h-3 text-success" />
-      {t('contentStudio.editor.saved')}
-    </span>
-  );
 };
 
 export default Editor;

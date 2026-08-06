@@ -606,3 +606,46 @@ describe('volume keyframes (mirrors the Go sanitizer)', () => {
     expect(clipById('m').volume).toBe(0);
   });
 });
+
+// --- Part 07: save-safety revision (server metadata, outside undo) ----------
+
+describe('revision tracking', () => {
+  it('loadProject adopts the server revision; closeProject clears it', () => {
+    store().loadProject({ ...project([]), revision: 4 });
+    expect(store().revision).toBe(4);
+    store().closeProject();
+    expect(store().revision).toBeNull();
+  });
+
+  it('defaults to null when the backend does not echo a revision (embed legacy)', () => {
+    store().loadProject(project([]));
+    expect(store().revision).toBeNull();
+    expect(store().toSaveRequest()!.expectedRevision).toBeUndefined();
+  });
+
+  it('toSaveRequest sends the tracked revision as expectedRevision', () => {
+    store().loadProject({ ...project([]), revision: 4 });
+    expect(store().toSaveRequest()!.expectedRevision).toBe(4);
+  });
+
+  it('markSaved adopts the incremented revision from the save response', () => {
+    store().loadProject({ ...project([]), revision: 4 });
+    store().markSaved({ ...project([]), revision: 5 });
+    expect(store().revision).toBe(5);
+    expect(store().dirty).toBe(false);
+  });
+
+  it('markSaved keeps the current revision when the response omits one', () => {
+    store().loadProject({ ...project([]), revision: 4 });
+    store().markSaved(project([]));
+    expect(store().revision).toBe(4);
+  });
+
+  it('undo never rewinds the revision (it is not part of the document slice)', () => {
+    store().loadProject({ ...project([track('v1', 'video', 0, [])]), revision: 4 });
+    store().addTrack('video');
+    store().markSaved({ ...project([]), revision: 5 });
+    store().undo();
+    expect(store().revision).toBe(5);
+  });
+});
