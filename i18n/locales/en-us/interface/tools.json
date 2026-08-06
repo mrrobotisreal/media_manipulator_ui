@@ -4,9 +4,9 @@
     "subtitle": "Focused, single-purpose tools for converting, compressing, transcribing, and cleaning up image, video, and audio files. No signup. Files deleted within 24 hours.",
     "featured": {
       "title": "Featured",
-      "cta": "Open Content Studio",
+      "cta": "Open Darkroom",
       "contentStudio": {
-        "name": "Content Studio",
+        "name": "Darkroom",
         "badge": "New",
         "tagline": "Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser."
       }
@@ -27,7 +27,7 @@
     }
   },
   "contentStudio": {
-    "title": "Content Studio",
+    "title": "Darkroom",
     "badge": "New",
     "tagline": "Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser.",
     "backToTools": "Back to tools",
@@ -99,7 +99,7 @@
       "saving": "Saving…",
       "unsaved": "Unsaved changes",
       "saved": "Saved",
-      "mobileHint": "Content Studio works best on a larger screen with a mouse or trackpad.",
+      "mobileHint": "Darkroom works best on a larger screen with a mouse or trackpad.",
       "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom",
       "tabs": {
         "media": "Media",

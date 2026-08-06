@@ -8,7 +8,7 @@ import { PanelLoading } from '@/components/darkroom/panel-loading';
 // prerender; the page's guide content is server-rendered around it.
 const StudioHost = dynamic(() => import('@/components/content-studio/studio-host'), {
   ssr: false,
-  loading: () => <PanelLoading label="Loading Content Studio…" />,
+  loading: () => <PanelLoading label="Loading Darkroom…" />,
 });
 
 export default function StudioHostClient() {

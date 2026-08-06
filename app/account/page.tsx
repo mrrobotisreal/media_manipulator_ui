@@ -11,7 +11,7 @@ import { SITE_ORIGIN } from '@/lib/seo';
 // buildMetadata() because lib/seo.ts is byte-unchanged since main by design.
 export const metadata: Metadata = {
   title: 'Your account — Media Manipulator',
-  description: 'Your plan, your daily usage, and your saved Content Studio projects.',
+  description: 'Your plan, your daily usage, and your saved Darkroom projects.',
   alternates: { canonical: `${SITE_ORIGIN}/account` },
   robots: { index: false, follow: false },
 };

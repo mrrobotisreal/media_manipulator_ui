@@ -15,7 +15,7 @@ const CATEGORY_LABELS: Record<ToolPageContent['category'], string> = {
   audio: 'Audio tools',
   ai: 'AI tools',
   metadata: 'Privacy & metadata tools',
-  contentStudio: 'Content Studio',
+  contentStudio: 'Darkroom',
 };
 
 const CATEGORY_ORDER: ToolPageContent['category'][] = [
@@ -138,14 +138,14 @@ export default function ToolsIndexPage() {
               <h2 className="text-2xl font-semibold text-card-foreground mb-3">New here?</h2>
               <p className="text-sm text-muted-foreground mb-3">
                 Step-by-step tutorials walk you through the image, video, and audio
-                tools and the Content Studio editor.
+                tools and the Darkroom editor.
               </p>
               <div className="flex flex-wrap gap-2 text-sm">
                 <Link href="/tutorials" className="rounded-lg bg-primary px-3 py-2 text-primary-foreground transition-colors hover:bg-[var(--accent-primary-hover)]">
                   Browse all tutorials
                 </Link>
                 <Link href="/tutorials/content-studio" className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
-                  Content Studio tutorial
+                  Darkroom tutorial
                 </Link>
                 <Link href="/how-it-works" className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
                   How it works

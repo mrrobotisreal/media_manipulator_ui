@@ -351,18 +351,18 @@
         "readTime": "9 min read"
       },
       "contentStudio": {
-        "title": "How to Use Content Studio: Multi-Track Video Editing in Your Browser",
-        "excerpt": "A step-by-step guide to Content Studio — import media, build a multi-track timeline, trim, split and ripple-delete, add cross-dissolves, color adjustments and text overlays, then export MP4.",
+        "title": "How to Use Darkroom: Multi-Track Video Editing in Your Browser",
+        "excerpt": "A step-by-step guide to Darkroom — import media, build a multi-track timeline, trim, split and ripple-delete, add cross-dissolves, color adjustments and text overlays, then export MP4.",
         "readTime": "8 min read",
         "page": {
           "eyebrow": "Video Tutorial",
-          "title": "How to Use Content Studio",
-          "intro": "Content Studio is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished MP4 — no software to install. This guide walks through the whole workflow.",
-          "overviewAlt": "The Content Studio editor showing the media bin, preview, clip effects panel, and a multi-track timeline.",
-          "overviewCaption": "The Content Studio workspace: media bin (left), live preview (center), clip effects (right), and the multi-track timeline (bottom).",
+          "title": "How to Use Darkroom",
+          "intro": "Darkroom is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished MP4 — no software to install. This guide walks through the whole workflow.",
+          "overviewAlt": "The Darkroom editor showing the media bin, preview, clip effects panel, and a multi-track timeline.",
+          "overviewCaption": "The Darkroom workspace: media bin (left), live preview (center), clip effects (right), and the multi-track timeline (bottom).",
           "create": {
             "title": "1. Create a project",
-            "body": "Open Content Studio from the Tools page or the home page banner, then choose “New project”. Pick a name, a target resolution (1080p, 720p, 4K, or vertical 1080×1920) and a frame rate (24, 30, or 60 fps). These define the canvas your timeline renders to on export. Your recent projects appear next to the form so you can jump back into earlier edits."
+            "body": "Open Darkroom from the Tools page or the home page banner, then choose “New project”. Pick a name, a target resolution (1080p, 720p, 4K, or vertical 1080×1920) and a frame rate (24, 30, or 60 fps). These define the canvas your timeline renders to on export. Your recent projects appear next to the form so you can jump back into earlier edits."
           },
           "media": {
             "title": "2. Add your media",
@@ -407,7 +407,7 @@
           },
           "export": {
             "title": "6. Export to MP4",
-            "body": "Click “Export MP4”, choose a file name and quality, and Content Studio renders your full timeline on the server — compositing video tracks, mixing audio, and applying your effects — then gives you a download link. Rendering happens on a GPU, so larger projects finish quickly."
+            "body": "Click “Export MP4”, choose a file name and quality, and Darkroom renders your full timeline on the server — compositing video tracks, mixing audio, and applying your effects — then gives you a download link. Rendering happens on a GPU, so larger projects finish quickly."
           },
           "shortcuts": {
             "title": "Keyboard shortcuts",
@@ -415,13 +415,13 @@
           },
           "cta": {
             "title": "Ready to edit?",
-            "body": "Jump into Content Studio and start your first multi-track edit.",
-            "button": "Open Content Studio"
+            "body": "Jump into Darkroom and start your first multi-track edit.",
+            "button": "Open Darkroom"
           },
           "related": {
             "title": "Related tools & tutorials",
             "intro": "Keep going with related Media Manipulator pages.",
-            "studio": "Content Studio",
+            "studio": "Darkroom",
             "studioDesc": "Open the multi-track editor.",
             "video": "Getting started with video",
             "videoDesc": "Convert, compress, and trim video files."
@@ -1342,7 +1342,7 @@
     },
     "tierBlurb": {
       "anonymous": "Open a tool and go. Nothing to sign up for, nothing stored beyond the day.",
-      "free": "Six times the daily volume, saved history, and Content Studio projects that survive a refresh.",
+      "free": "Six times the daily volume, saved history, and Darkroom projects that survive a refresh.",
       "premium": "4K output, long files, priority on the GPU queue, batch processing, and no ads."
     },
     "rows": {
@@ -1386,7 +1386,7 @@
     "title": "Your account",
     "subtitle": "What you have used today, and what your plan allows.",
     "signedOutTitle": "You are not signed in",
-    "signedOutBody": "Sign in to see your usage, conversion history and saved Content Studio projects.",
+    "signedOutBody": "Sign in to see your usage, conversion history and saved Darkroom projects.",
     "signInCta": "Sign in",
     "usageTitle": "Today",
     "planTitle": "Your plan",
@@ -1400,8 +1400,8 @@
       "export": "Exports"
     },
     "emptyHistory": "Nothing here yet. Your conversions appear in this list once you run a tool.",
-    "emptyProjects": "No saved projects yet. Content Studio saves your timeline automatically once you name a project.",
-    "openStudio": "Open Content Studio",
+    "emptyProjects": "No saved projects yet. Darkroom saves your timeline automatically once you name a project.",
+    "openStudio": "Open Darkroom",
     "comparePlans": "Compare plans",
     "signOut": "Sign out",
     "loadFailed": "Could not load your account. Reload to try again.",

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ContentStudioEmbedHost from '@/components/content-studio/embed-host';
 
 export const metadata: Metadata = {
-  title: 'Content Studio',
+  title: 'Darkroom',
   robots: { index: false, follow: false },
 };
 

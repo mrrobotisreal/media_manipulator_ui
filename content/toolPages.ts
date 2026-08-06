@@ -168,14 +168,14 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- CONTENT STUDIO
   {
     slug: 'content-studio',
-    name: 'Content Studio',
-    h1: 'Content Studio',
+    name: 'Darkroom',
+    h1: 'Darkroom',
     tagline:
       'Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser.',
-    metaTitle: 'Content Studio — Free Online Multi-Track Video Editor | Media Manipulator',
+    metaTitle: 'Darkroom — Free Online Multi-Track Video Editor | Media Manipulator',
     metaDescription:
       'Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a free, Premiere Pro–style video editor that runs right in your browser. No signup, no install.',
-    ogTitle: '🎬 Content Studio — Free Multi-Track Video Editor in Your Browser',
+    ogTitle: '🎬 Darkroom — Free Multi-Track Video Editor in Your Browser',
     ogDescription:
       'Edit, layer & mix video and audio on a multi-track timeline, add titles, transitions & color, then export MP4. A Premiere Pro–style editor — right in your browser, no signup, totally free. Come try it! 🎬',
     category: 'contentStudio',
@@ -187,7 +187,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Create a new project (or reopen a recent one), drag video, image, and audio files into the media bin, then drop them onto the multi-track timeline. Trim, split, and arrange clips, layer overlays and titles, mix audio, and export a finished MP4 — all in your browser.',
     },
     intro:
-      "Content Studio is a free, browser-based multi-track video editor. Instead of converting one file at a time, you build a complete edit: lay video, image, and audio clips across stacked timeline tracks, trim and split them on a frame-accurate timeline, layer titles and overlays on top, mix audio, and export the whole thing to MP4. It's the closest thing to a Premiere Pro–style timeline that runs entirely in your web browser — no install, no signup, and nothing to learn before you start.",
+      "Darkroom is a free, browser-based multi-track video editor. Instead of converting one file at a time, you build a complete edit: lay video, image, and audio clips across stacked timeline tracks, trim and split them on a frame-accurate timeline, layer titles and overlays on top, mix audio, and export the whole thing to MP4. It's the closest thing to a Premiere Pro–style timeline that runs entirely in your web browser — no install, no signup, and nothing to learn before you start.",
     whatItDoes: [
       'Hosts a multi-track timeline where video, image, and audio clips stack on separate layers and play back together.',
       'Lets you trim clip in/out points, split clips at the playhead, and ripple-delete to close gaps.',
@@ -254,8 +254,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     privacyNote: sharedPrivacyNote,
     faq: [
       {
-        question: 'Is Content Studio free?',
-        answer: 'Yes. Content Studio is free to use with no signup or account required.',
+        question: 'Is Darkroom free?',
+        answer: 'Yes. Darkroom is free to use with no signup or account required.',
       },
       {
         question: 'Do I need to install anything?',
@@ -267,7 +267,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
       {
         question: 'What format does it export?',
-        answer: 'Content Studio exports your finished sequence as an MP4 (H.264 video with AAC audio).',
+        answer: 'Darkroom exports your finished sequence as an MP4 (H.264 video with AAC audio).',
       },
       {
         question: 'What resolutions and frame rates are supported?',
@@ -279,7 +279,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
       {
         question: 'Can I come back to a project later?',
-        answer: 'Yes. Recent projects appear on the Content Studio start screen so you can reopen one and keep editing.',
+        answer: 'Yes. Recent projects appear on the Darkroom start screen so you can reopen one and keep editing.',
       },
     ],
     related: [
@@ -299,7 +299,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         description: 'Pull the audio track out of a clip as MP3 or WAV.',
       },
       {
-        label: 'Content Studio tutorial',
+        label: 'Darkroom tutorial',
         to: '/tutorials/content-studio',
         description: 'A step-by-step walkthrough of building an edit and exporting MP4.',
       },
@@ -7195,7 +7195,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         description: 'Generate captions for the restored clip.',
       },
       {
-        label: 'Content Studio',
+        label: 'Darkroom',
         to: '/tools/content-studio',
         description: 'Edit the restored snippet into a full piece.',
       },

@@ -32,7 +32,7 @@
   },
   "authModal": {
     "defaultTitle": "Create a free account",
-    "defaultDescription": "Keep your history, save Content Studio projects, and get a bigger daily allowance.",
+    "defaultDescription": "Keep your history, save Darkroom projects, and get a bigger daily allowance.",
     "signInTitle": "Welcome back",
     "signInDescription": "Your history, saved Studio projects and daily allowance are where you left them.",
     "tabs": {
@@ -70,7 +70,7 @@
     },
     "contextual": {
       "signupTitle": "You've used your {{limit}} free conversions today",
-      "signupBody": "A free account raises your daily allowance, keeps your conversion history, and saves Content Studio projects.",
+      "signupBody": "A free account raises your daily allowance, keeps your conversion history, and saves Darkroom projects.",
       "premiumTitle": "You've hit today's limit of {{limit}}",
       "premiumBody": "Premium raises your daily allowance, unlocks 4K exports and priority processing, and removes ads.",
       "resets": "Your current allowance resets {{when}}."

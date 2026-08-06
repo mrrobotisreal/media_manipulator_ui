@@ -22,11 +22,11 @@ function StudioGuide() {
           the outline jumps h1 → h3. Styled to render exactly as before. */}
       <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 font-semibold text-card-foreground">
         <Info className="h-4 w-4 text-primary" aria-hidden="true" />
-        <h2 className="text-base font-semibold">How Content Studio works — quick guide</h2>
+        <h2 className="text-base font-semibold">How Darkroom works — quick guide</h2>
       </summary>
       <div className="space-y-4 px-4 pb-4 text-sm text-muted-foreground">
         <div>
-          <h3 className="font-medium text-card-foreground">What Content Studio is</h3>
+          <h3 className="font-medium text-card-foreground">What Darkroom is</h3>
           <p>
             A free, browser-based multi-track video editor. You assemble a full
             edit — video, images, titles, and audio across stacked timeline
@@ -36,7 +36,7 @@ function StudioGuide() {
         <div>
           <h3 className="font-medium text-card-foreground">When to use it</h3>
           <p>
-            Reach for Content Studio when one file isn’t enough: combining
+            Reach for Darkroom when one file isn’t enough: combining
             several clips, adding titles or background music, layering overlays,
             or trimming and re-ordering footage into a finished video.
           </p>
@@ -77,7 +77,7 @@ function StudioGuide() {
         <div>
           <h3 className="font-medium text-card-foreground">Limitations</h3>
           <p>
-            Content Studio is actively evolving. Core editing — multi-track
+            Darkroom is actively evolving. Core editing — multi-track
             timeline, trim/split, layering, audio mixing, and MP4 export — is
             available now. Advanced effects continue to be added over time.
           </p>
