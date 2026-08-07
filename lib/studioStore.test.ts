@@ -316,7 +316,7 @@ describe('addTrack / removeTrack', () => {
   });
 });
 
-describe('setClipTransition', () => {
+describe('setClipTransition (typed, part 14)', () => {
   const twoClips = () => [
     track('v1', 'video', 0, [clip('a', 0, 5), clip('b', 5, 5)]),
     track('a1', 'audio', 0, []),
@@ -324,37 +324,56 @@ describe('setClipTransition', () => {
 
   it('pulls the clip left to overlap its predecessor by the transition length', () => {
     load(twoClips());
-    store().setClipTransition('b', 1);
+    store().setClipTransition('b', { type: 'wipeLeft', durationSeconds: 1 });
     const b = clipById('b');
     expect(b.timelineStart).toBe(4);
+    expect(b.transition).toEqual({ type: 'wipeLeft', durationSeconds: 1 });
+    // Legacy mirror stays in sync (the Go sanitizer keeps the same invariant).
     expect(b.transitionInSeconds).toBe(1);
   });
 
-  it('caps the transition at both clip durations and the 4s maximum', () => {
+  it('caps the duration at both clip durations and the registry 5s maximum', () => {
     load([
       track('v1', 'video', 0, [clip('a', 0, 2), clip('b', 2, 10)]),
       track('a1', 'audio', 0, []),
     ]);
-    store().setClipTransition('b', 10); // min(2, 10, 4) = 2
+    store().setClipTransition('b', { type: 'crossDissolve', durationSeconds: 10 }); // min(2, 10, 5) = 2
     const b = clipById('b');
+    expect(b.transition?.durationSeconds).toBe(2);
     expect(b.transitionInSeconds).toBe(2);
     expect(b.timelineStart).toBe(0); // prev end 2 - 2
   });
 
-  it('clears the transition and re-butts the clip at the predecessor end', () => {
+  it('enforces the 0.1s registry minimum', () => {
     load(twoClips());
-    store().setClipTransition('b', 1);
-    store().setClipTransition('b', 0);
+    store().setClipTransition('b', { type: 'crossDissolve', durationSeconds: 0.01 });
+    expect(clipById('b').transition?.durationSeconds).toBe(0.1);
+  });
+
+  it('retiming keeps the overlap pinned to the predecessor end', () => {
+    load(twoClips());
+    store().setClipTransition('b', { type: 'pushUp', durationSeconds: 1 });
+    store().setClipTransition('b', { type: 'pushUp', durationSeconds: 2.5 });
     const b = clipById('b');
+    expect(b.timelineStart).toBe(2.5); // prev end 5 - 2.5
+    expect(b.transition).toEqual({ type: 'pushUp', durationSeconds: 2.5 });
+  });
+
+  it('null clears the transition and re-butts the clip at the predecessor end', () => {
+    load(twoClips());
+    store().setClipTransition('b', { type: 'dipToBlack', durationSeconds: 1 });
+    store().setClipTransition('b', null);
+    const b = clipById('b');
+    expect(b.transition).toBeUndefined();
     expect(b.transitionInSeconds).toBeUndefined();
     expect(b.timelineStart).toBe(5);
   });
 
   it('is a no-op for a clip with no predecessor on its track', () => {
     load(twoClips());
-    store().setClipTransition('a', 1);
+    store().setClipTransition('a', { type: 'crossDissolve', durationSeconds: 1 });
     const a = clipById('a');
-    expect(a.transitionInSeconds).toBeUndefined();
+    expect(a.transition).toBeUndefined();
     expect(a.timelineStart).toBe(0);
   });
 });

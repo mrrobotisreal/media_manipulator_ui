@@ -68,17 +68,29 @@ export interface GLChroma {
   despill: number;
 }
 export interface GLLayer {
-  slot: number; // pool slot → source texture
+  slot: number; // pool slot → source texture (-1 for solid layers)
   srcW: number;
   srcH: number;
   transform?: GLTransform;
   crop?: GLCrop;
-  opacity: number; // already × transitionRamp
+  opacity: number; // already × transition alpha
   blendMode?: StudioBlendMode;
   eq?: GLEq;
   lumetri?: GLLumetri;
   lut?: { key: string; intensity: number };
   chroma?: GLChroma;
+  /**
+   * Solid color layer (part 14 dip transitions): no texture sample, the quad is
+   * filled with this straight RGB (0..1). Set srcW/srcH to the project size so
+   * the quad covers the full canvas; `slot` is ignored.
+   */
+  solid?: [number, number, number];
+  /**
+   * Canvas-space wipe mask (part 14 wipe transitions): fractions of the OUTPUT
+   * frame hidden from each edge, applied after all effects (alpha → 0 outside
+   * the revealed region). Mirrors the export's animated crop on the clip.
+   */
+  wipe?: { left: number; top: number; right: number; bottom: number };
 }
 
 const BLEND_INDEX: Record<StudioBlendMode, number> = {
@@ -128,6 +140,12 @@ uniform float uLutIntensity;
 uniform int uHasChroma;
 uniform vec3 uKeyColor;
 uniform float uSimilarity, uChromaBlend, uDespill;
+
+uniform int uHasSolid;
+uniform vec3 uSolidColor;
+
+uniform int uHasWipe;
+uniform vec4 uWipe; // left, top, right, bottom — canvas fractions hidden
 
 const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
 // vf_vibrance's luma coefficients as applied to (r,g,b) — its rc/bc weights are
@@ -189,8 +207,15 @@ vec3 blendRGB(vec3 b, vec3 s) {
 
 void main() {
   vec4 src = texture(uSource, vUV);
-  vec3 c = src.rgb;
-  float a = src.a * uOpacity;
+  vec3 c = uHasSolid == 1 ? uSolidColor : src.rgb;
+  float a = (uHasSolid == 1 ? 1.0 : src.a) * uOpacity;
+  if (uHasWipe == 1) {
+    // Canvas-space reveal mask (top-left origin; gl_FragCoord is bottom-up).
+    vec2 tl = vec2(gl_FragCoord.x / uOutSize.x, 1.0 - gl_FragCoord.y / uOutSize.y);
+    if (tl.x < uWipe.x || tl.x > 1.0 - uWipe.z || tl.y < uWipe.y || tl.y > 1.0 - uWipe.w) {
+      a = 0.0;
+    }
+  }
   if (uHasEq == 1) c = applyEq(c);
   if (uHasLumetri == 1) c = applyLumetri(c);
   if (uHasLut == 1) {
@@ -224,6 +249,8 @@ export class GLCompositor {
   private slotUploaded = new Map<number, number>(); // slot → last uploaded currentTime
   private lutTex = new Map<string, { tex: WebGLTexture; size: number }>();
   private dummyLut: WebGLTexture | null = null;
+  /** 1×1 2D texture bound for solid layers (the shader ignores the sample). */
+  private dummyTex2D: WebGLTexture | null = null;
   private accum: FBO | null = null;
   private temp: FBO | null = null;
   private fboW = 0;
@@ -294,12 +321,14 @@ export class GLCompositor {
       'uHasEq', 'uEq', 'uHasLumetri', 'uExposure', 'uLumContrast', 'uLumSaturation',
       'uTemperature', 'uTint', 'uVibrance', 'uHasLut', 'uLutIntensity',
       'uHasChroma', 'uKeyColor', 'uSimilarity', 'uChromaBlend', 'uDespill',
+      'uHasSolid', 'uSolidColor', 'uHasWipe', 'uWipe',
     ]) {
       this.uniforms[name] = gl.getUniformLocation(program, name);
     }
     this.posBuf = gl.createBuffer();
     this.uvBuf = gl.createBuffer();
     this.dummyLut = this.makeDummyLut();
+    this.dummyTex2D = this.makeDummyTex2D();
     return true;
   }
 
@@ -318,6 +347,19 @@ export class GLCompositor {
     gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
+    return tex;
+  }
+
+  private makeDummyTex2D(): WebGLTexture | null {
+    const gl = this.gl;
+    if (!gl) return null;
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     return tex;
   }
 
@@ -470,7 +512,7 @@ export class GLCompositor {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     for (const layer of layers) {
-      const srcTex = this.slotTex.get(layer.slot);
+      const srcTex = layer.solid ? this.dummyTex2D : this.slotTex.get(layer.slot);
       if (!srcTex) continue;
 
       // 1) copy accum → temp so pixels outside the layer quad carry through.
@@ -555,6 +597,14 @@ export class GLCompositor {
       gl.uniform1f(u.uDespill, layer.chroma.despill);
     }
 
+    gl.uniform1i(u.uHasSolid, layer.solid ? 1 : 0);
+    if (layer.solid) gl.uniform3f(u.uSolidColor, layer.solid[0], layer.solid[1], layer.solid[2]);
+
+    gl.uniform1i(u.uHasWipe, layer.wipe ? 1 : 0);
+    if (layer.wipe) {
+      gl.uniform4f(u.uWipe, clamp01(layer.wipe.left), clamp01(layer.wipe.top), clamp01(layer.wipe.right), clamp01(layer.wipe.bottom));
+    }
+
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 
@@ -630,6 +680,7 @@ export class GLCompositor {
       this.slotTex.forEach((t) => gl.deleteTexture(t));
       this.lutTex.forEach((l) => gl.deleteTexture(l.tex));
       if (this.dummyLut) gl.deleteTexture(this.dummyLut);
+      if (this.dummyTex2D) gl.deleteTexture(this.dummyTex2D);
       if (this.accum) {
         gl.deleteTexture(this.accum.tex);
         gl.deleteFramebuffer(this.accum.fb);

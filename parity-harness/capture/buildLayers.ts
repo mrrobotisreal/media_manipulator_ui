@@ -1,5 +1,5 @@
 import type { GLCompositor, GLLayer } from '../../lib/studio/glCompositor';
-import { resolveActiveClips, transitionRamp, type ActiveClip } from '../../lib/studio/previewEngine';
+import { clipTransitionState, resolveActiveClips, type ActiveClip } from '../../lib/studio/previewEngine';
 import type { StudioTrack } from '../../lib/studioTypes';
 
 /**
@@ -42,12 +42,17 @@ export function orderedVideoClips(tracks: StudioTrack[], t: number): ActiveClip[
 /**
  * Builds the compositor layers for the active clips. `sources` maps clip id →
  * uploaded slot + source dimensions (the caller has already seeked/uploaded).
+ * `tracks` and the project dimensions feed the typed-transition state (part
+ * 14): entrance/push-out mods per clip plus full-canvas dip color layers.
  */
 export function buildLayersAtTime(
   active: ActiveClip[],
+  tracks: StudioTrack[],
   t: number,
   sources: Map<string, LayerSource>,
   comp: GLCompositor,
+  projectW: number,
+  projectH: number,
 ): GLLayer[] {
   const layers: GLLayer[] = [];
   for (const a of active) {
@@ -81,19 +86,43 @@ export function buildLayersAtTime(
         chroma = { keyColor: hexToRgb01(e.keyColor), similarity: e.similarity, blend: e.blend, despill: e.despill };
       }
     }
+    // Typed transition state (part 14): mirrors buildGLLayer + the dip-layer
+    // emission in preview-surface.tsx exactly.
+    const trackClips = tracks.find((tr) => tr.id === a.trackId)?.clips ?? [];
+    const trs = clipTransitionState(clip, trackClips, t);
+    const base = clip.transform;
+    const transform =
+      trs.offsetX !== 0 || trs.offsetY !== 0
+        ? {
+            x: (base?.x ?? 0) + trs.offsetX,
+            y: (base?.y ?? 0) + trs.offsetY,
+            scale: base?.scale ?? 1,
+            rotationDeg: base?.rotationDeg ?? 0,
+          }
+        : base;
     layers.push({
       slot: src.slot,
       srcW: src.srcW,
       srcH: src.srcH,
-      transform: clip.transform,
+      transform,
       crop: clip.crop,
-      opacity: (clip.opacity ?? 1) * transitionRamp(clip, t),
+      opacity: (clip.opacity ?? 1) * trs.alpha,
       blendMode: clip.blendMode,
       eq,
       lumetri,
       lut,
       chroma,
+      wipe: trs.wipe,
     });
+    if (trs.dip && trs.dip.alpha > 0) {
+      layers.push({
+        slot: -1,
+        srcW: projectW,
+        srcH: projectH,
+        opacity: trs.dip.alpha,
+        solid: trs.dip.color === 'black' ? [0, 0, 0] : [1, 1, 1],
+      });
+    }
   }
   return layers;
 }

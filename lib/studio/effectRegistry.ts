@@ -4,6 +4,7 @@ import type {
   StudioLumetriEffect,
   StudioLutEffect,
   StudioChromaKeyEffect,
+  StudioTransitionType,
 } from '@/lib/studioTypes';
 
 /**
@@ -144,6 +145,26 @@ export function makeDefaultEffect(type: StudioEffectType, id: string): StudioEff
       throw new Error(`unknown effect type: ${type as string}`);
   }
 }
+
+/**
+ * Transition picker taxonomy (part 14): the 15 types grouped the way the UI
+ * presents them (Dissolve / Dip / Wipe / Push / Slide). Directional members
+ * name WHERE THE ENTERING CLIP COMES FROM — the same rule the preview math
+ * (transitionFrameState) and the Go ffmpeg emitter implement.
+ */
+export interface TransitionTypeGroup {
+  /** i18n key suffix under contentStudio.inspector.transitionGroups. */
+  key: 'dissolve' | 'dip' | 'wipe' | 'push' | 'slide';
+  types: StudioTransitionType[];
+}
+
+export const TRANSITION_TYPE_GROUPS: TransitionTypeGroup[] = [
+  { key: 'dissolve', types: ['crossDissolve'] },
+  { key: 'dip', types: ['dipToBlack', 'dipToWhite'] },
+  { key: 'wipe', types: ['wipeLeft', 'wipeRight', 'wipeUp', 'wipeDown'] },
+  { key: 'push', types: ['pushLeft', 'pushRight', 'pushUp', 'pushDown'] },
+  { key: 'slide', types: ['slideLeft', 'slideRight', 'slideUp', 'slideDown'] },
+];
 
 /** Identity transform (matches studioTransformSchema defaults). */
 export const IDENTITY_TRANSFORM = { x: 0, y: 0, scale: 1, rotationDeg: 0 } as const;

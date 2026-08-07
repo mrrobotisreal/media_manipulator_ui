@@ -95,7 +95,19 @@
       "addAudioTrack": "Add audio track",
       "mute": "Mute track",
       "unmute": "Unmute track",
-      "deleteTrack": "Delete empty track"
+      "deleteTrack": "Delete empty track",
+      "transitionRegion": "Transition overlap",
+      "transitionRetime": "Drag to retime the transition (left = longer)",
+      "contextTransition": "Transition",
+      "contextRemoveTransition": "Remove transition"
+    },
+    "preferences": {
+      "open": "Preferences",
+      "title": "Preferences",
+      "description": "Editing defaults, saved in this browser.",
+      "defaultVideoTransition": "Default video transition duration",
+      "defaultAudioCrossfade": "Default audio crossfade duration",
+      "seconds": "s"
     },
     "editor": {
       "back": "Projects",
@@ -186,7 +198,34 @@
       "title": "Clip effects",
       "none": "Select a single clip to edit its effects.",
       "transition": "Cross-dissolve",
-      "transitionNoPrev": "Add a clip before this one to cross-dissolve.",
+      "transitionNoPrev": "Add a clip before this one to add a transition.",
+      "transitionType": "Type",
+      "transitionNone": "None",
+      "transitionDuration": "Duration",
+      "transitionGroups": {
+        "dissolve": "Dissolve",
+        "dip": "Dip",
+        "wipe": "Wipe",
+        "push": "Push",
+        "slide": "Slide"
+      },
+      "transitionTypes": {
+        "crossDissolve": "Cross dissolve",
+        "dipToBlack": "Dip to black",
+        "dipToWhite": "Dip to white",
+        "wipeLeft": "Wipe · from left",
+        "wipeRight": "Wipe · from right",
+        "wipeUp": "Wipe · from top",
+        "wipeDown": "Wipe · from bottom",
+        "pushLeft": "Push · from left",
+        "pushRight": "Push · from right",
+        "pushUp": "Push · from top",
+        "pushDown": "Push · from bottom",
+        "slideLeft": "Slide · from left",
+        "slideRight": "Slide · from right",
+        "slideUp": "Slide · from top",
+        "slideDown": "Slide · from bottom"
+      },
       "color": "Color",
       "addColor": "Adjust",
       "removeColor": "Reset",

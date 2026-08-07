@@ -12,9 +12,11 @@ import {
   studioProxyUrl,
   transitionRamp,
   audioFadeGain,
+  clipTransitionState,
   cssFilterForAdjustments,
   volumeAtClipTime,
   studioAssetFileUrl,
+  type TransitionLayerState,
 } from '@/lib/studio/previewEngine';
 import { peekPeaks, prefetchPeaks } from '@/lib/studio/usePeaks';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
@@ -70,7 +72,13 @@ function hexToRgb01(hex: string): [number, number, number] {
 // does the same (pickEffects in studio_export.go), so the cap is a consistent,
 // intended policy on both sides (part 12; ordered stacks arrive with the P2
 // adjustment-layer work).
-function buildGLLayer(a: ActiveClip, slot: number, el: HTMLVideoElement, t: number, comp: GLCompositor): GLLayer {
+function buildGLLayer(
+  a: ActiveClip,
+  slot: number,
+  el: HTMLVideoElement,
+  trs: TransitionLayerState,
+  comp: GLCompositor,
+): GLLayer {
   const clip = a.clip;
   const eq = clip.adjustments
     ? { brightness: clip.adjustments.brightness, contrast: clip.adjustments.contrast, saturation: clip.adjustments.saturation }
@@ -95,18 +103,31 @@ function buildGLLayer(a: ActiveClip, slot: number, el: HTMLVideoElement, t: numb
       chroma = { keyColor: hexToRgb01(e.keyColor), similarity: e.similarity, blend: e.blend, despill: e.despill };
     }
   }
+  // Typed transitions (part 14): alpha multiplies in, push/slide offsets add to
+  // the clip's own transform position, the wipe mask passes straight through.
+  const base = clip.transform;
+  const transform =
+    trs.offsetX !== 0 || trs.offsetY !== 0
+      ? {
+          x: (base?.x ?? 0) + trs.offsetX,
+          y: (base?.y ?? 0) + trs.offsetY,
+          scale: base?.scale ?? 1,
+          rotationDeg: base?.rotationDeg ?? 0,
+        }
+      : base;
   return {
     slot,
     srcW: el.videoWidth || 16,
     srcH: el.videoHeight || 9,
-    transform: clip.transform,
+    transform,
     crop: clip.crop,
-    opacity: (clip.opacity ?? 1) * transitionRamp(clip, t),
+    opacity: (clip.opacity ?? 1) * trs.alpha,
     blendMode: clip.blendMode,
     eq,
     lumetri,
     lut,
     chroma,
+    wipe: trs.wipe,
   };
 }
 
@@ -644,7 +665,22 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           const el = poolEls.current[i];
           if (!el) continue;
           comp.uploadSlot(i, el, el.currentTime);
-          layers.push(buildGLLayer(a, i, el, t, comp));
+          // Typed transition state (part 14): the clip's own entrance + the next
+          // clip's push-out, evaluated against its track's clip list.
+          const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips ?? [];
+          const trs = clipTransitionState(a.clip, trackClips, t);
+          layers.push(buildGLLayer(a, i, el, trs, comp));
+          if (trs.dip && trs.dip.alpha > 0) {
+            // Dip color layer: a full-canvas solid quad above both clips,
+            // peaking at the transition midpoint (export: color= source + fades).
+            layers.push({
+              slot: -1,
+              srcW: pw,
+              srcH: ph,
+              opacity: trs.dip.alpha,
+              solid: trs.dip.color === 'black' ? [0, 0, 0] : [1, 1, 1],
+            });
+          }
         }
         comp.composite(layers, pw, ph);
       }

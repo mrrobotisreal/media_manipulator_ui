@@ -13,15 +13,20 @@ import {
   audioFadeGain,
   clipDuration,
   clipEnd,
-  nextClipTransition,
+  clipTransitionOf,
+  clipTransitionState,
+  nextClipOnTrack,
+  nextClipOverlap,
+  prevClipOverlap,
   timelineDuration,
+  transitionFrameState,
   resolveActiveClips,
   transitionRamp,
   topVideoClip,
   volumeAtClipTime,
   type ActiveClip,
 } from '@/lib/studio/previewEngine';
-import type { StudioClip, StudioTrack, StudioTrackKind } from '@/lib/studioTypes';
+import type { StudioClip, StudioTrack, StudioTrackKind, StudioTransitionType } from '@/lib/studioTypes';
 
 const clip = (id: string, timelineStart: number, dur: number, extra: Partial<StudioClip> = {}): StudioClip => ({
   id,
@@ -182,32 +187,35 @@ describe('volumeAtClipTime', () => {
   });
 });
 
-describe('audio crossfades (equal-power, mirroring export afade qsin)', () => {
-  it('nextClipTransition picks the following clip on the track', () => {
+describe('audio crossfades (equal-power, overlap-driven, mirroring export afade qsin)', () => {
+  it('overlaps derive from actual clip positions, not the declared transition', () => {
     const a = clip('a', 0, 5);
-    const b = clip('b', 4, 5, { transitionInSeconds: 2 });
-    expect(nextClipTransition([a, b], a)).toBe(2);
-    expect(nextClipTransition([a, b], b)).toBe(0);
-    expect(nextClipTransition([a], a)).toBe(0);
+    const b = clip('b', 4, 5, { transitionInSeconds: 2 }); // declared 2s, real overlap 1s
+    expect(nextClipOverlap([a, b], a)).toBe(1);
+    expect(prevClipOverlap([a, b], b)).toBe(1);
+    expect(nextClipOverlap([a, b], b)).toBe(0);
+    expect(nextClipOverlap([a], a)).toBe(0);
   });
 
-  it('nextClipTransition breaks timelineStart ties by array order (stable sort)', () => {
+  it('breaks timelineStart ties by array order (stable sort, like Go)', () => {
     const a = clip('a', 0, 5);
-    const b = clip('b', 0, 5, { transitionInSeconds: 1.5 });
-    expect(nextClipTransition([a, b], a)).toBe(1.5);
-    expect(nextClipTransition([a, b], b)).toBe(0);
+    const b = clip('b', 0, 5);
+    expect(nextClipOnTrack([a, b], a)).toBe(b);
+    expect(nextClipOnTrack([a, b], b)).toBeUndefined();
+    expect(nextClipOverlap([a, b], a)).toBe(5);
   });
 
-  it('fade-in follows sin(x·π/2) over the clip transition window', () => {
-    const c = clip('a', 10, 4, { transitionInSeconds: 2 });
-    expect(audioFadeGain(c, [c], 10)).toBeCloseTo(0);
-    expect(audioFadeGain(c, [c], 11)).toBeCloseTo(Math.SQRT1_2);
-    expect(audioFadeGain(c, [c], 12.5)).toBe(1);
+  it('fade-in follows sin(x·π/2) over the overlap with the predecessor', () => {
+    const p = clip('p', 6, 6); // ends at 12
+    const c = clip('c', 10, 4); // overlap [10, 12] — NO transition field needed
+    expect(audioFadeGain(c, [p, c], 10)).toBeCloseTo(0);
+    expect(audioFadeGain(c, [p, c], 11)).toBeCloseTo(Math.SQRT1_2);
+    expect(audioFadeGain(c, [p, c], 12.5)).toBe(1);
   });
 
-  it('fade-out spans the tail using the NEXT clip transition, curve sin((1−x)·π/2)', () => {
+  it('fade-out spans the tail over the overlap with the NEXT clip, curve sin((1−x)·π/2)', () => {
     const a = clip('a', 0, 6);
-    const b = clip('b', 4.5, 6, { transitionInSeconds: 1.5 });
+    const b = clip('b', 4.5, 6); // automatic: overlap alone triggers the crossfade
     // fade-out window: [4.5, 6) on clip a
     expect(audioFadeGain(a, [a, b], 4)).toBe(1);
     expect(audioFadeGain(a, [a, b], 5.25)).toBeCloseTo(Math.SQRT1_2);
@@ -216,7 +224,7 @@ describe('audio crossfades (equal-power, mirroring export afade qsin)', () => {
 
   it('a crossfade sums to constant power (sin² + cos² = 1)', () => {
     const a = clip('a', 0, 6);
-    const b = clip('b', 4.5, 6, { transitionInSeconds: 1.5 });
+    const b = clip('b', 4.5, 6);
     for (const t of [4.6, 5, 5.4, 5.9]) {
       const gOut = audioFadeGain(a, [a, b], t);
       const gIn = audioFadeGain(b, [a, b], t);
@@ -224,10 +232,114 @@ describe('audio crossfades (equal-power, mirroring export afade qsin)', () => {
     }
   });
 
-  it('skips the fade-out when it would cover the whole clip (export parity)', () => {
+  it('skips the fade-out when the overlap would cover the whole clip (export parity)', () => {
     const a = clip('a', 0, 1);
-    const b = clip('b', 0.5, 5, { transitionInSeconds: 3 });
+    const b = clip('b', 0, 5); // full-cover overlap = a's duration
     // clamped fadeOut = dur → export omits afade out (dur > FadeOut fails)
     expect(audioFadeGain(a, [a, b], 0.9)).toBe(1);
+  });
+});
+
+describe('transitionFrameState (typed transitions, part 14)', () => {
+  const IDENT = { alpha: 1, offsetX: 0, offsetY: 0 };
+
+  it('crossDissolve ramps B alpha linearly, A untouched', () => {
+    expect(transitionFrameState('crossDissolve', 0).b.alpha).toBe(0);
+    expect(transitionFrameState('crossDissolve', 0.5).b.alpha).toBe(0.5);
+    expect(transitionFrameState('crossDissolve', 1).b.alpha).toBe(1);
+    expect(transitionFrameState('crossDissolve', 0.5).a).toEqual(IDENT);
+    expect(transitionFrameState('crossDissolve', 0.5).dip).toBeUndefined();
+  });
+
+  it('clamps progress outside 0..1', () => {
+    expect(transitionFrameState('crossDissolve', -1).b.alpha).toBe(0);
+    expect(transitionFrameState('crossDissolve', 2).b.alpha).toBe(1);
+  });
+
+  it('dips peak the color layer at p=0.5 and switch B under full color', () => {
+    for (const [type, color] of [['dipToBlack', 'black'], ['dipToWhite', 'white']] as const) {
+      expect(transitionFrameState(type, 0).dip).toEqual({ color, alpha: 0 });
+      expect(transitionFrameState(type, 0.25).dip?.alpha).toBeCloseTo(0.5);
+      expect(transitionFrameState(type, 0.5).dip).toEqual({ color, alpha: 1 });
+      expect(transitionFrameState(type, 0.75).dip?.alpha).toBeCloseTo(0.5);
+      expect(transitionFrameState(type, 1).dip?.alpha).toBeCloseTo(0);
+      expect(transitionFrameState(type, 0.25).b.alpha).toBe(0); // hidden first half
+      expect(transitionFrameState(type, 0.5).b.alpha).toBe(1); // opaque from midpoint
+      expect(transitionFrameState(type, 0.25).a).toEqual(IDENT);
+    }
+  });
+
+  it('wipes reveal B from the named edge (direction = where B comes from)', () => {
+    expect(transitionFrameState('wipeLeft', 0.25).b.wipe).toEqual({ left: 0, top: 0, right: 0.75, bottom: 0 });
+    expect(transitionFrameState('wipeRight', 0.25).b.wipe).toEqual({ left: 0.75, top: 0, right: 0, bottom: 0 });
+    expect(transitionFrameState('wipeUp', 0.25).b.wipe).toEqual({ left: 0, top: 0, right: 0, bottom: 0.75 });
+    expect(transitionFrameState('wipeDown', 0.25).b.wipe).toEqual({ left: 0, top: 0.75, right: 0, bottom: 0 });
+    expect(transitionFrameState('wipeLeft', 1).b.wipe).toEqual({ left: 0, top: 0, right: 0, bottom: 0 });
+    expect(transitionFrameState('wipeLeft', 0.5).a).toEqual(IDENT);
+    expect(transitionFrameState('wipeLeft', 0.5).b.alpha).toBe(1); // fully opaque where revealed
+  });
+
+  it('pushes move BOTH clips; direction = where B comes from', () => {
+    const pl = transitionFrameState('pushLeft', 0.25);
+    expect(pl.b.offsetX).toBeCloseTo(-0.75);
+    expect(pl.a.offsetX).toBeCloseTo(0.25);
+    const pr = transitionFrameState('pushRight', 0.25);
+    expect(pr.b.offsetX).toBeCloseTo(0.75);
+    expect(pr.a.offsetX).toBeCloseTo(-0.25);
+    const pu = transitionFrameState('pushUp', 0.25);
+    expect(pu.b.offsetY).toBeCloseTo(-0.75);
+    expect(pu.a.offsetY).toBeCloseTo(0.25);
+    const pd = transitionFrameState('pushDown', 0.25);
+    expect(pd.b.offsetY).toBeCloseTo(0.75);
+    expect(pd.a.offsetY).toBeCloseTo(-0.25);
+    // Boundaries: B off-canvas at p=0, home at p=1; A home at p=0.
+    expect(transitionFrameState('pushLeft', 0).b.offsetX).toBe(-1);
+    expect(transitionFrameState('pushLeft', 1).b.offsetX).toBeCloseTo(0);
+    expect(transitionFrameState('pushLeft', 0).a.offsetX).toBe(0);
+  });
+
+  it('slides move only B over a static A', () => {
+    for (const [type, key, sign] of [
+      ['slideLeft', 'offsetX', -1],
+      ['slideRight', 'offsetX', 1],
+      ['slideUp', 'offsetY', -1],
+      ['slideDown', 'offsetY', 1],
+    ] as const) {
+      const s = transitionFrameState(type as StudioTransitionType, 0.25);
+      expect(s.b[key]).toBeCloseTo(sign * 0.75);
+      expect(s.a).toEqual(IDENT);
+    }
+  });
+});
+
+describe('clipTransitionOf + clipTransitionState', () => {
+  it('prefers the typed field and upgrades legacy transitionInSeconds', () => {
+    const typed = clip('t', 0, 5, { transition: { type: 'wipeUp', durationSeconds: 2 }, transitionInSeconds: 2 });
+    expect(clipTransitionOf(typed)?.type).toBe('wipeUp');
+    const legacy = clip('l', 0, 5, { transitionInSeconds: 1.5 });
+    expect(clipTransitionOf(legacy)).toEqual({ type: 'crossDissolve', durationSeconds: 1.5 });
+    expect(clipTransitionOf(clip('n', 0, 5))).toBeUndefined();
+  });
+
+  it('applies the entering clip mods inside its own window', () => {
+    const a = clip('a', 0, 5);
+    const b = clip('b', 4, 5, { transition: { type: 'slideLeft', durationSeconds: 1 } });
+    const mid = clipTransitionState(b, [a, b], 4.5);
+    expect(mid.offsetX).toBeCloseTo(-0.5);
+    const after = clipTransitionState(b, [a, b], 5.5);
+    expect(after).toMatchObject({ alpha: 1, offsetX: 0, offsetY: 0 });
+  });
+
+  it('applies the NEXT clip push to the outgoing clip, and carries the dip once', () => {
+    const a = clip('a', 0, 5);
+    const b = clip('b', 4, 5, { transition: { type: 'pushLeft', durationSeconds: 1 } });
+    const outgoing = clipTransitionState(a, [a, b], 4.5);
+    expect(outgoing.offsetX).toBeCloseTo(0.5);
+    expect(outgoing.dip).toBeUndefined();
+    const dipB = clip('b2', 4, 5, { transition: { type: 'dipToBlack', durationSeconds: 1 } });
+    const entering = clipTransitionState(dipB, [a, dipB], 4.5);
+    expect(entering.dip).toEqual({ color: 'black', alpha: 1 });
+    const outgoingUnderDip = clipTransitionState(a, [a, dipB], 4.5);
+    expect(outgoingUnderDip.dip).toBeUndefined(); // emitted only from B's layer
   });
 });

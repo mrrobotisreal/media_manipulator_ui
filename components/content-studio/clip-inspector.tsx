@@ -10,20 +10,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,
+} from '@/components/ui/select';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, clipDuration, type StudioAssetEntry } from '@/lib/studioStore';
 import {
   TRANSFORM_PARAMS, CROP_PARAMS, effectParams, EFFECT_TYPES, EFFECT_LABEL_KEYS,
-  IDENTITY_TRANSFORM, ZERO_CROP, type EffectParam,
+  IDENTITY_TRANSFORM, ZERO_CROP, STUDIO_V3_RANGES, TRANSITION_TYPE_GROUPS, type EffectParam,
 } from '@/lib/studio/effectRegistry';
+import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { requestEyedrop } from '@/lib/studio/eyedropper';
 import { useUndoGesture } from './useUndoGesture';
 import { editSummary } from '@/lib/studio/telemetry';
 import { Panel } from '@/components/darkroom/panel';
 import type {
   StudioClip, StudioTrack, StudioEffect, StudioBlendMode, StudioTransform, StudioCrop,
+  StudioTransitionType,
 } from '@/lib/studioTypes';
 
 const DEFAULT_ADJUSTMENTS = { brightness: 0, contrast: 1, saturation: 1 };
@@ -521,31 +525,79 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   );
 };
 
-// --- Transition (existing) ---------------------------------------------------
+// --- Transition (typed, part 14) ---------------------------------------------
 
 const TransitionSection: React.FC<{ clip: StudioClip; track: StudioTrack }> = ({ clip, track }) => {
   const { t } = useLocalization('interface');
   const setClipTransition = useStudioStore((s) => s.setClipTransition);
   const gesture = useUndoGesture();
   const hasPrev = track.clips.some((c) => c.id !== clip.id && c.timelineStart < clip.timelineStart);
+  const range = STUDIO_V3_RANGES.transitionDurationSeconds;
+  const transition = clip.transition;
+  const duration = transition?.durationSeconds ?? defaultTransitionSeconds(track.kind);
+
+  const applyType = (value: string) => {
+    if (value === 'none') {
+      if (transition) {
+        setClipTransition(clip.id, null);
+        editSummary.increment('uiInvocations');
+      }
+      return;
+    }
+    const type = value as StudioTransitionType;
+    // Counted as an add (with its type) whether fresh or a type change — the
+    // taxonomy asks "which transitions get used", picker-attributed via
+    // uiInvocations (the Cmd/Ctrl+D path counts shortcutInvocations instead).
+    editSummary.increment('transitionsAdded', type);
+    editSummary.increment('uiInvocations');
+    setClipTransition(clip.id, { type, durationSeconds: duration });
+  };
+
   return (
     <Section title={t('contentStudio.inspector.sectionTransition')} icon={<Blend className="w-3.5 h-3.5" />} defaultOpen={false}>
-      <Label className="text-[11px] text-muted-foreground">
-        {t('contentStudio.inspector.transition')} · {(clip.transitionInSeconds ?? 0).toFixed(1)}s
-      </Label>
-      <Slider
-        className="mt-2"
-        min={0}
-        max={4}
-        step={0.1}
-        disabled={!hasPrev}
-        value={[clip.transitionInSeconds ?? 0]}
-        onValueChange={(v) => {
-          gesture.begin();
-          setClipTransition(clip.id, v[0] ?? 0);
-        }}
-        onValueCommit={gesture.end}
-      />
+      <Label className="text-[11px] text-muted-foreground">{t('contentStudio.inspector.transitionType')}</Label>
+      <Select value={transition?.type ?? 'none'} onValueChange={applyType} disabled={!hasPrev}>
+        <SelectTrigger className="h-7 mt-1 text-xs w-full">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="none" className="text-xs">
+            {t('contentStudio.inspector.transitionNone')}
+          </SelectItem>
+          {TRANSITION_TYPE_GROUPS.map((group) => (
+            <SelectGroup key={group.key}>
+              <SelectLabel className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                {t(`contentStudio.inspector.transitionGroups.${group.key}`)}
+              </SelectLabel>
+              {group.types.map((type) => (
+                <SelectItem key={type} value={type} className="text-xs">
+                  {t(`contentStudio.inspector.transitionTypes.${type}`)}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          ))}
+        </SelectContent>
+      </Select>
+      {transition && (
+        <div className="mt-3">
+          <Label className="text-[11px] text-muted-foreground flex justify-between">
+            <span>{t('contentStudio.inspector.transitionDuration')}</span>
+            <span className="tabular-nums">{transition.durationSeconds.toFixed(2)}s</span>
+          </Label>
+          <Slider
+            className="mt-1"
+            min={range.min}
+            max={range.max}
+            step={range.step}
+            value={[transition.durationSeconds]}
+            onValueChange={(v) => {
+              gesture.begin();
+              setClipTransition(clip.id, { ...transition, durationSeconds: v[0] ?? transition.durationSeconds });
+            }}
+            onValueCommit={gesture.end}
+          />
+        </div>
+      )}
       {!hasPrev && <p className="text-[11px] text-muted-foreground mt-1">{t('contentStudio.inspector.transitionNoPrev')}</p>}
     </Section>
   );

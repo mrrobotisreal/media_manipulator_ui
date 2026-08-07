@@ -160,7 +160,7 @@ const parity = {
       sources.set(a.clip.id, { slot: i, srcW: el.videoWidth || 16, srcH: el.videoHeight || 9 });
     }
 
-    const layers = buildLayersAtTime(active, tEval, sources, comp);
+    const layers = buildLayersAtTime(active, project.tracks, tEval, sources, comp, project.width, project.height);
     comp.composite(layers, project.width, project.height);
     const px = comp.readAccumPixels();
     if (!px) throw new Error('readAccumPixels returned null');

@@ -180,6 +180,37 @@ export const PARITY_TOLERANCES: readonly ParityTolerance[] = [
     status: 'closed',
     note: 'policy check: an EDL with duplicate same-type effects must render identically to the first-enabled-only EDL on both sides',
   },
+  // --- Part 14: typed transitions (crossDissolve rides opacity_dissolve). ---
+  // CSS-fallback preview degrades every type to an alpha ramp — that mode is
+  // documented, not measured; these rows hold the WebGL preview vs the export.
+  {
+    id: 'transition_dip',
+    metric: 'psnr',
+    threshold: 36,
+    status: 'closed',
+    note: 'same triangle-alpha color layer both sides (solid GL quad vs ffmpeg color+fade); residual = yuv roundtrip at partial alpha',
+  },
+  {
+    id: 'transition_wipe',
+    metric: 'psnr',
+    threshold: 34,
+    status: 'bounded',
+    note: 'canvas-space reveal both sides, but the edge quantizes differently (GL fragment mask vs ffmpeg even-pixel crop) — a 1px seam band per frame',
+  },
+  {
+    id: 'transition_push',
+    metric: 'psnr',
+    threshold: 34,
+    status: 'bounded',
+    note: 'same lerped offsets both sides; GL subpixel positioning vs ffmpeg integer overlay x/y shifts edges by <1px mid-motion',
+  },
+  {
+    id: 'transition_slide',
+    metric: 'psnr',
+    threshold: 34,
+    status: 'bounded',
+    note: 'same as transition_push (entering clip only; outgoing static)',
+  },
 ] as const;
 
 export function parityTolerance(id: string): ParityTolerance | undefined {

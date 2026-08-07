@@ -127,6 +127,14 @@ per `design/03-parity-tolerances.md`.
 4. On the workstation: `npm run parity -- --scenario <row-id>`, then a full
    run; calibrate the new threshold against the measured value.
 
+**Pending workstation follow-up (part 14)**: the transition rows
+(`transition_dip`, `transition_wipe`, `transition_push`, `transition_slide`)
+and the `audio_crossfade` golden have never run on the workstation — their
+thresholds are reasoned, not measured. On the next harness run, calibrate the
+four transition rows per the protocol above, and eyeball one exported wipe
+(the animated-`crop` + varying-frame-size path through `overlay` is the one
+part of the transition graphs ffmpeg has not yet proven end-to-end here).
+
 ## Layout
 
 ```

@@ -59,6 +59,7 @@ import {
 } from '@/lib/studio/draftRecovery';
 import { useCreateVersion } from '@/lib/useStudioVersions';
 import { createCheckpointScheduler } from '@/lib/studio/versionCheckpoint';
+import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { analytics, EVENTS, countBucket, timelineDurationBucket } from '@/lib/analytics';
 import {
   editSummary,
@@ -70,6 +71,7 @@ import {
 import SaveConflictDialog from './save-conflict-dialog';
 import DraftRecoveryDialog from './draft-recovery-dialog';
 import VersionsPanel from './versions-panel';
+import PreferencesDialog from './preferences-dialog';
 import MediaBin from './media-bin';
 import PreviewSurface from './preview-surface';
 import Timeline from './timeline';
@@ -633,6 +635,29 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         st.redo();
         return;
       }
+      // Cmd/Ctrl+D — apply the default transition to the selected clip
+      // (Premiere's "apply default transition"). Cross-dissolve at the
+      // preference default for the clip's track kind; no-op without a
+      // predecessor (the store bails, so nothing is counted).
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'd' || e.key === 'D')) {
+        e.preventDefault();
+        const clipId = st.selectedClipIds.length === 1 ? st.selectedClipIds[0] : null;
+        const found = clipId ? st.findClip(clipId) : null;
+        if (found) {
+          const hasPrev = found.track.clips.some(
+            (c) => c.id !== found.clip.id && c.timelineStart < found.clip.timelineStart,
+          );
+          if (hasPrev) {
+            editSummary.increment('transitionsAdded', 'crossDissolve');
+            editSummary.increment('shortcutInvocations');
+            st.setClipTransition(found.clip.id, {
+              type: 'crossDissolve',
+              durationSeconds: defaultTransitionSeconds(found.track.kind),
+            });
+          }
+        }
+        return;
+      }
       const fps = Math.max(1, st.project?.fps ?? 30);
       switch (e.key) {
         case ' ':
@@ -715,6 +740,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           <UndoRedoButtons />
           <VersionsPanel projectId={projectId} />
           <AudioDuckingPopover />
+          <PreferencesDialog />
           <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
           {focusMode ? <FocusControls api={focusMode} /> : null}
         </div>

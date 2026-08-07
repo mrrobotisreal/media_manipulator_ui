@@ -14,10 +14,23 @@ import {
   windowClips,
   windowTickRange,
 } from '@/lib/studio/timelineWindow';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from '@/components/ui/context-menu';
+import { TRANSITION_TYPE_GROUPS } from '@/lib/studio/effectRegistry';
+import { defaultTransitionSeconds } from '@/lib/studio/preferences';
+import { editSummary } from '@/lib/studio/telemetry';
 import ClipWaveform from './clip-waveform';
 import { useUndoGesture } from './useUndoGesture';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
-import type { StudioClip, StudioTrack } from '@/lib/studioTypes';
+import type { StudioClip, StudioTrack, StudioTransitionType } from '@/lib/studioTypes';
 
 const RULER_HEIGHT = 28;
 const TRACK_HEIGHT = 56;
@@ -621,6 +634,7 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   onTrimMove,
   onTrimUp,
 }) => {
+  const { t } = useLocalization('interface');
   const entry = assets[clip.assetId];
   const label = entry?.asset.originalFileName ?? clip.assetId;
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -638,7 +652,55 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   const showWaveform = ready && !!entry?.asset.hasAudio;
   const waveH = isAudioTrack ? contentH : Math.round(contentH * 0.35);
 
+  // --- typed transition (part 14): overlap region + drag-to-retime -----------
+  const transition = clip.transition;
+  const clipDur = Math.max(0, clip.sourceOut - clip.sourceIn);
+  const transW = transition ? Math.min(transition.durationSeconds, clipDur) * zoom : 0;
+  const hasPrev = track.clips.some((c) => c.id !== clip.id && c.timelineStart < clip.timelineStart);
+  const retimeRef = React.useRef<null | { startX: number; d0: number }>(null);
+
+  // The whole retime drag is ONE undo entry (gesture API); the store re-clamps
+  // and re-pulls on every move, so the region + clip position track the pointer.
+  const onRetimeDown = (e: React.PointerEvent) => {
+    if (!transition) return;
+    e.stopPropagation();
+    e.preventDefault();
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    retimeRef.current = { startX: e.clientX, d0: transition.durationSeconds };
+    editSummary.increment('uiInvocations');
+    useStudioStore.getState().beginGesture();
+  };
+  const onRetimeMove = (e: React.PointerEvent) => {
+    const d = retimeRef.current;
+    if (!d || !transition) return;
+    // The region is pinned to the predecessor's end and grows LEFTWARD, so
+    // dragging the inner edge away from it (left) lengthens the transition.
+    const next = d.d0 - (e.clientX - d.startX) / zoom;
+    useStudioStore.getState().setClipTransition(clip.id, { ...transition, durationSeconds: next });
+  };
+  const onRetimeUp = (e: React.PointerEvent) => {
+    if (!retimeRef.current) return;
+    retimeRef.current = null;
+    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    useStudioStore.getState().endGesture();
+  };
+
+  const applyTransition = (type: StudioTransitionType) => {
+    editSummary.increment('transitionsAdded', type);
+    editSummary.increment('uiInvocations');
+    useStudioStore.getState().setClipTransition(clip.id, {
+      type,
+      durationSeconds: clip.transition?.durationSeconds ?? defaultTransitionSeconds(track.kind),
+    });
+  };
+  const removeTransition = () => {
+    editSummary.increment('uiInvocations');
+    useStudioStore.getState().setClipTransition(clip.id, null);
+  };
+
   return (
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
     <div
       ref={setNodeRef}
       {...attributes}
@@ -700,7 +762,66 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
         onPointerUp={onTrimUp}
         onPointerCancel={onTrimUp}
       />
+      {/* Transition overlap region (part 14): diagonal hatch in the Darkroom
+          Instrument premium accent over [clip start, clip start + duration] —
+          exactly the span shared with the predecessor under the pull model. */}
+      {transition && transW > 1 && (
+        <div
+          className="absolute top-0 bottom-0 left-0 pointer-events-none border-r border-premium/70"
+          style={{
+            width: transW,
+            backgroundImage:
+              'repeating-linear-gradient(135deg, color-mix(in srgb, var(--accent-premium) 35%, transparent) 0 3px, transparent 3px 7px)',
+          }}
+          title={t('contentStudio.timeline.transitionRegion')}
+        />
+      )}
+      {/* Retime handle on the region's inner edge; drag left = longer. */}
+      {transition && transW > 1 && (
+        <div
+          className="absolute top-0 bottom-0 w-1.5 -ml-0.5 cursor-ew-resize bg-premium/50 hover:bg-premium/80 touch-none"
+          style={{ left: transW }}
+          onPointerDown={onRetimeDown}
+          onPointerMove={onRetimeMove}
+          onPointerUp={onRetimeUp}
+          onPointerCancel={onRetimeUp}
+          title={t('contentStudio.timeline.transitionRetime')}
+        />
+      )}
     </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-48">
+        <ContextMenuSub>
+          <ContextMenuSubTrigger disabled={!hasPrev} className="text-xs">
+            {t('contentStudio.timeline.contextTransition')}
+          </ContextMenuSubTrigger>
+          <ContextMenuSubContent className="w-44">
+            {TRANSITION_TYPE_GROUPS.map((group) => (
+              <ContextMenuSub key={group.key}>
+                <ContextMenuSubTrigger className="text-xs">
+                  {t(`contentStudio.inspector.transitionGroups.${group.key}`)}
+                </ContextMenuSubTrigger>
+                <ContextMenuSubContent className="w-40">
+                  {group.types.map((type) => (
+                    <ContextMenuItem key={type} className="text-xs" onSelect={() => applyTransition(type)}>
+                      {t(`contentStudio.inspector.transitionTypes.${type}`)}
+                    </ContextMenuItem>
+                  ))}
+                </ContextMenuSubContent>
+              </ContextMenuSub>
+            ))}
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        {transition && (
+          <>
+            <ContextMenuSeparator />
+            <ContextMenuItem className="text-xs" onSelect={removeTransition}>
+              {t('contentStudio.timeline.contextRemoveTransition')}
+            </ContextMenuItem>
+          </>
+        )}
+      </ContextMenuContent>
+    </ContextMenu>
   );
 };
 

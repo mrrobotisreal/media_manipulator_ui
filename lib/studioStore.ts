@@ -19,13 +19,14 @@ import type {
   StudioCaptionCue,
   StudioCaptionStyle,
   StudioAudioConfig,
+  StudioTransition,
 } from '@/lib/studioTypes';
 import {
   STUDIO_SCHEMA_VERSION,
   DEFAULT_CAPTION_STYLE,
   normalizeProject,
 } from '@/lib/studioTypes';
-import { makeDefaultEffect } from '@/lib/studio/effectRegistry';
+import { makeDefaultEffect, STUDIO_V3_RANGES } from '@/lib/studio/effectRegistry';
 import { clipDuration, clipEnd, timelineDuration } from '@/lib/studio/previewEngine';
 
 /**
@@ -60,7 +61,6 @@ const DEFAULT_ZOOM = 80; // pixels per second
 const MIN_ZOOM = 10;
 const MAX_ZOOM = 400;
 const MIN_CLIP_SECONDS = 0.1;
-const MAX_TRANSITION_SECONDS = 4;
 const MAX_VOLUME = 2; // +6dB ceiling (Premiere-style boost), matches Zod + Go clamp
 const MIN_CAPTION_SECONDS = 0.3;
 
@@ -159,8 +159,8 @@ interface StudioState {
   toggleTrackMute: (trackId: string) => void;
   setClipVolume: (clipId: string, volume: number) => void;
 
-  // --- effects (Phase 5) ---
-  setClipTransition: (clipId: string, seconds: number) => void;
+  // --- effects (Phase 5; typed transitions since part 14) ---
+  setClipTransition: (clipId: string, transition: StudioTransition | null) => void;
   setClipAdjustments: (clipId: string, adjustments: StudioAdjustments | undefined) => void;
   addTextOverlay: (clipId: string) => void;
   updateTextOverlay: (clipId: string, overlayId: string, patch: Partial<StudioTextOverlay>) => void;
@@ -337,17 +337,21 @@ function placeInTrack(clips: StudioClip[], draggedId: string, desiredStart: numb
       dur,
       Math.max(0, desiredStart),
     );
-    return clips.map((c) => (c.id === draggedId ? { ...c, timelineStart: placed, transitionInSeconds: undefined } : c));
+    return clips.map((c) =>
+      c.id === draggedId
+        ? { ...c, timelineStart: placed, transition: undefined, transitionInSeconds: undefined }
+        : c,
+    );
   }
 
   // Reorder — re-pack contiguously from the block's earliest start. Positions
-  // change, so any cross-dissolves (which depend on overlap) are cleared.
+  // change, so any transitions (which depend on overlap) are cleared.
   const base = Math.max(0, Math.min(...clips.map((c) => c.timelineStart)));
   const byId = new Map(clips.map((c) => [c.id, c]));
   let cursor = base;
   return newOrder.map((id) => {
     const c = byId.get(id)!;
-    const next = { ...c, timelineStart: cursor, transitionInSeconds: undefined };
+    const next = { ...c, timelineStart: cursor, transition: undefined, transitionInSeconds: undefined };
     cursor += clipDuration(c);
     return next;
   });
@@ -723,7 +727,16 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
             changed = true;
             const splitSource = c.sourceIn + (t - c.timelineStart);
             const left: StudioClip = { ...c, sourceOut: splitSource };
-            const right: StudioClip = { ...c, id: uid(), timelineStart: t, sourceIn: splitSource };
+            // The right piece starts flush against the left one — no overlap, so
+            // it must not inherit the entrance transition.
+            const right: StudioClip = {
+              ...c,
+              id: uid(),
+              timelineStart: t,
+              sourceIn: splitSource,
+              transition: undefined,
+              transitionInSeconds: undefined,
+            };
             clips.push(left, right);
             nextSelected.add(left.id);
             nextSelected.add(right.id);
@@ -816,30 +829,40 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     get().updateClip(clipId, { volume: clampRange(volume, 0, MAX_VOLUME) });
   },
 
-  // setClipTransition adds/updates a cross-dissolve from the nearest preceding
-  // clip on the same track: the clip is pulled left to overlap that predecessor
-  // by `seconds` (capped to both clips' durations). seconds <= 0 clears it.
-  setClipTransition: (clipId, seconds) =>
+  // setClipTransition sets/updates the clip's typed entrance transition from
+  // the nearest preceding clip on the same track. The v2 overlap model is kept:
+  // the clip is pulled left to overlap its predecessor by the transition
+  // duration (clamped to both clips' durations + the registry range), and the
+  // legacy transitionInSeconds mirror stays in sync (the Go sanitizer does the
+  // same). `null` removes the transition and restores the un-pulled position
+  // (clip start snaps back to the predecessor's end).
+  setClipTransition: (clipId, transition) =>
     mutate((s) => {
       if (!s.project) return {};
+      const range = STUDIO_V3_RANGES.transitionDurationSeconds;
       const tracks = mapTracks(s.project.tracks, (track) => {
         const clip = track.clips.find((c) => c.id === clipId);
         if (!clip) return track;
         const prev = track.clips
           .filter((c) => c.id !== clipId && c.timelineStart < clip.timelineStart)
           .sort((a, b) => b.timelineStart - a.timelineStart)[0];
-        if (!prev) return track; // nothing before it to dissolve from
+        if (!prev) return track; // nothing before it to transition from
         const prevEnd = clipEnd(prev);
-        const maxD = Math.min(clipDuration(prev), clipDuration(clip), MAX_TRANSITION_SECONDS);
-        const d = Math.max(0, Math.min(seconds, maxD));
+        const maxD = Math.min(clipDuration(prev), clipDuration(clip), range.max);
         return {
           ...track,
           clips: track.clips.map((c) => {
             if (c.id !== clipId) return c;
-            if (d <= 0) {
-              return { ...c, timelineStart: prevEnd, transitionInSeconds: undefined };
+            if (!transition) {
+              return { ...c, timelineStart: prevEnd, transition: undefined, transitionInSeconds: undefined };
             }
-            return { ...c, timelineStart: Math.max(0, prevEnd - d), transitionInSeconds: d };
+            const d = clampRange(transition.durationSeconds, range.min, maxD);
+            return {
+              ...c,
+              timelineStart: Math.max(0, prevEnd - d),
+              transition: { ...transition, durationSeconds: d },
+              transitionInSeconds: d,
+            };
           }),
         };
       });
