@@ -1,0 +1,13 @@
+{
+  // Parity-harness typecheck project (part 13). The harness is EXCLUDED from
+  // the root tsconfig (and therefore from `next build`); `npm run typecheck`
+  // chains `tsc --noEmit -p parity-harness/tsconfig.json` so the laptop gate
+  // still covers it. Imported lib/ modules are pulled in via the import graph.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "plugins": []
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["out"]
+}

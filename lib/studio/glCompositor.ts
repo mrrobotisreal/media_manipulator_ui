@@ -575,6 +575,43 @@ export class GLCompositor {
     return [buf[0], buf[1], buf[2]];
   }
 
+  /**
+   * Full-frame RGBA readback of the latest composite, rows top-down. Reads the
+   * accum FBO directly (persistent texture), so it needs neither
+   * preserveDrawingBuffer nor timing against the canvas present — the
+   * parity-harness capture path (part 13) depends on that.
+   */
+  readAccumPixels(): { width: number; height: number; data: Uint8ClampedArray } | null {
+    const gl = this.gl;
+    if (!gl || this.lost || !this.accum || this.fboW === 0 || this.fboH === 0) return null;
+    const w = this.fboW;
+    const h = this.fboH;
+    const raw = new Uint8Array(w * h * 4);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, this.accum.fb);
+    gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, raw);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null);
+    // GL rows come back bottom-up; flip to image order (top-down).
+    const data = new Uint8ClampedArray(w * h * 4);
+    const rowBytes = w * 4;
+    for (let y = 0; y < h; y += 1) {
+      data.set(raw.subarray((h - 1 - y) * rowBytes, (h - y) * rowBytes), y * rowBytes);
+    }
+    return { width: w, height: h, data };
+  }
+
+  /**
+   * The unmasked GPU renderer string (WEBGL_debug_renderer_info), '' when the
+   * extension is unavailable. The parity harness asserts this matches the
+   * rasterizer it expects (NVIDIA vs SwiftShader) before trusting any frame.
+   */
+  rendererInfo(): string {
+    const gl = this.gl;
+    if (!gl) return '';
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    if (!ext) return '';
+    return String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) ?? '');
+  }
+
   /** Backing FBO dimensions (for mapping client coords to readPixelNorm). */
   get backingW(): number {
     return this.fboW;
