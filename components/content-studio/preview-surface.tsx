@@ -20,6 +20,19 @@ import type { ActiveClip } from '@/lib/studio/previewEngine';
 import { parseCubeLut } from '@/lib/studio/lutParser';
 import { registerEyedropper, rgbToHex } from '@/lib/studio/eyedropper';
 import { DEFAULT_CAPTION_STYLE } from '@/lib/studioTypes';
+import { Segmented } from '@/components/darkroom/segmented';
+import {
+  QUALITY_SCALE,
+  createFrameStats,
+  createGovernor,
+  frameStatsPush,
+  governorPause,
+  governorSecond,
+  governorSetUserLevel,
+  type GovernorState,
+  type QualityLevel,
+} from '@/lib/studio/qualityGovernor';
+import { editSummary, perf } from '@/lib/studio/telemetry';
 
 // hexWithOpacity → rgba() string for the caption background box.
 function hexWithOpacity(hex: string, opacity: number): string {
@@ -89,6 +102,13 @@ function buildGLLayer(a: ActiveClip, slot: number, el: HTMLVideoElement, t: numb
 // Pool of decoders. Kept small to respect Safari's ~4–6 concurrent <video>
 // decoder cap; elements are reassigned as clips enter/leave the playhead.
 const POOL_SIZE = 4;
+
+// Persisted preview-quality choice (part 11). Session-default 'full' when
+// storage is unavailable.
+const QUALITY_STORAGE_KEY = 'mm_studio_preview_quality';
+
+const isQualityLevel = (v: string | null): v is QualityLevel =>
+  v === 'full' || v === 'half' || v === 'quarter';
 
 interface Slot {
   clipId: string | null;
@@ -162,6 +182,41 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const lutRequested = React.useRef<Set<string>>(new Set());
   const [eyedropArmed, setEyedropArmed] = React.useState(false);
   const eyedropCbRef = React.useRef<((hex: string) => void) | null>(null);
+
+  // Preview quality (part 11). The governor is the source of truth (a pure
+  // state machine in lib/studio/qualityGovernor.ts); the ref feeds the rAF
+  // loop, the two state values drive the selector + "Reduced quality" badge.
+  const govRef = React.useRef<GovernorState>(createGovernor('full'));
+  const frameStatsRef = React.useRef(createFrameStats());
+  const [userQuality, setUserQuality] = React.useState<QualityLevel>('full');
+  const [effectiveQuality, setEffectiveQuality] = React.useState<QualityLevel>('full');
+  const [qualityDegraded, setQualityDegraded] = React.useState(false);
+
+  // Per-slot seek bookkeeping (part 11): at most one in-flight seek per
+  // element (newest target wins, re-issued on `seeked`), and the intent
+  // timestamp that turns into the seek-latency perf sample.
+  const seekIntentAt = React.useRef<(number | null)[]>(Array(POOL_SIZE).fill(null));
+  const pendingSeekTarget = React.useRef<(number | null)[]>(Array(POOL_SIZE).fill(null));
+
+  const applyGovernor = React.useCallback((next: GovernorState) => {
+    govRef.current = next;
+    setEffectiveQuality(next.effectiveLevel);
+    setQualityDegraded(next.degraded);
+  }, []);
+
+  // Restore the persisted choice after hydration (an initializer read would
+  // mismatch the server-rendered markup).
+  React.useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(QUALITY_STORAGE_KEY);
+      if (isQualityLevel(stored)) {
+        setUserQuality(stored);
+        applyGovernor(governorSetUserLevel(govRef.current, stored));
+      }
+    } catch {
+      // storage unavailable — session default stands
+    }
+  }, [applyGovernor]);
 
   const isPlaying = useStudioStore((s) => s.isPlaying);
   const playhead = useStudioStore((s) => s.playhead);
@@ -384,12 +439,18 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       const trks = st.project?.tracks ?? [];
       const active = resolveActiveClips(trks, t);
       const activeIds = new Set(active.map((a) => a.clip.id));
+      // Hidden video tracks (part 05 field): their clips still play for audio,
+      // but never reach the composite — no compositor upload, no CSS layer.
+      const hiddenTrackIds = new Set<string>();
+      for (const tr of trks) {
+        if (tr.hidden) hiddenTrackIds.add(tr.id);
+      }
       // Stacking order for active video clips: bottom track first, later-starting
       // clip on top (so a dissolving-in clip sits above its predecessor). Small
       // z-indices keep the status overlays (z-10) on top.
       const zOf = new Map<string, number>();
       active
-        .filter((a) => a.trackKind === 'video')
+        .filter((a) => a.trackKind === 'video' && !hiddenTrackIds.has(a.trackId))
         .sort((x, y) => x.trackIndex - y.trackIndex || x.clip.timelineStart - y.clip.timelineStart)
         .forEach((a, idx) => zOf.set(a.clip.id, idx + 1));
 
@@ -404,6 +465,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             el.style.filter = 'none';
           }
           silenceSlot(i);
+          seekIntentAt.current[i] = null;
+          pendingSeekTarget.current[i] = null;
         }
       });
 
@@ -424,17 +487,33 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         if (slot.srcAssetId !== a.clip.assetId) {
           slot.srcAssetId = a.clip.assetId;
           el.src = studioProxyUrl(a.clip.assetId);
+          seekIntentAt.current[i] = null;
+          pendingSeekTarget.current[i] = null;
         }
         const threshold = playing ? 0.3 : 0.05;
         if (Math.abs(el.currentTime - a.sourceTime) > threshold) {
-          try {
-            el.currentTime = a.sourceTime;
-          } catch {
-            /* element not seekable yet */
+          if (el.seeking) {
+            // One in-flight seek per element: while the decoder is still
+            // seeking, only remember the newest target — the `seeked` handler
+            // re-issues it. Scrubbing used to pile a seek per pointer frame
+            // onto a still-seeking element.
+            pendingSeekTarget.current[i] = a.sourceTime;
+          } else {
+            pendingSeekTarget.current[i] = null;
+            try {
+              seekIntentAt.current[i] = performance.now();
+              el.currentTime = a.sourceTime;
+            } catch {
+              seekIntentAt.current[i] = null; /* element not seekable yet */
+            }
           }
         }
         if (a.trackKind === 'video') {
-          if (gl) {
+          if (hiddenTrackIds.has(a.trackId)) {
+            // Hidden track: decode for audio only, never show the frame.
+            el.style.opacity = '0';
+            el.style.filter = 'none';
+          } else if (gl) {
             // The WebGL canvas owns the visuals; keep the decoder hidden.
             el.style.opacity = '0';
             el.style.filter = 'none';
@@ -491,8 +570,15 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       if (gl && comp && comp.isAvailable()) {
         const pw = st.project?.width ?? 1920;
         const ph = st.project?.height ?? 1080;
+        // Hidden tracks are excluded here, which also skips their texture
+        // uploads — the per-frame texImage2D is the expensive part.
         const ordered = active
-          .filter((a) => a.trackKind === 'video' && clipSlots.has(a.clip.id))
+          .filter(
+            (a) =>
+              a.trackKind === 'video' &&
+              clipSlots.has(a.clip.id) &&
+              !hiddenTrackIds.has(a.trackId),
+          )
           .sort((x, y) => (zOf.get(x.clip.id) ?? 0) - (zOf.get(y.clip.id) ?? 0));
         const layers: GLLayer[] = [];
         for (const a of ordered) {
@@ -515,6 +601,10 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       poolEls.current.forEach((el) => el?.pause());
+      // Pause/stop restores the user-selected quality (part 11) and discards
+      // the partial measurement window.
+      frameStatsRef.current = createFrameStats();
+      applyGovernor(governorPause(govRef.current));
       return;
     }
     lastTsRef.current = performance.now();
@@ -534,6 +624,22 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       syncFrame(head, true);
       st.setPlayhead(head);
       drawMeters();
+      // Frame measurement + auto-degrade (part 11). The compositor repaints
+      // once per rAF, so rAF cadence is the preview frame rate; each completed
+      // ~1s window becomes a perf sample and one governor step.
+      const fr = frameStatsPush(frameStatsRef.current, dt * 1000);
+      frameStatsRef.current = fr.stats;
+      if (fr.sample) {
+        perf.sample({ fps: fr.sample.fps, droppedFrameRatio: fr.sample.droppedFrameRatio });
+        const prev = govRef.current;
+        const next = governorSecond(prev, fr.sample.droppedFrameRatio);
+        if (next !== prev) {
+          if (next.effectiveLevel !== prev.effectiveLevel) {
+            perf.sample({ degradeActivation: true, qualityLevel: next.effectiveLevel });
+          }
+          applyGovernor(next);
+        }
+      }
       rafRef.current = requestAnimationFrame(step);
     };
     rafRef.current = requestAnimationFrame(step);
@@ -541,7 +647,18 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     };
-  }, [isPlaying, syncFrame, drawMeters]);
+  }, [isPlaying, syncFrame, drawMeters, applyGovernor]);
+
+  // Apply the effective quality to the compositor's render scale. Repaint a
+  // paused frame immediately so the change is visible without scrubbing.
+  React.useEffect(() => {
+    const comp = compositorRef.current;
+    if (!comp) return;
+    comp.setRenderScale(QUALITY_SCALE[effectiveQuality]);
+    perf.sample({ qualityLevel: effectiveQuality });
+    const st = useStudioStore.getState();
+    if (!st.isPlaying) syncFrameRef.current?.(st.playhead, false);
+  }, [effectiveQuality, glOk]);
 
   // Clear the meter (and reset peak-hold) when playback stops.
   React.useEffect(() => {
@@ -567,15 +684,42 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
 
   // Recomposite when a paused seek finishes decoding, so scrubbing shows the
   // landed frame in the WebGL path (texImage2D would otherwise upload the old
-  // frame before the seek completed).
+  // frame before the seek completed). Per-slot handlers also close the seek
+  // bookkeeping loop (part 11): report intent→seeked latency, and re-issue the
+  // newest coalesced target if the playhead moved while this seek was in
+  // flight.
   React.useEffect(() => {
-    const handler = () => {
-      const st = useStudioStore.getState();
-      if (!st.isPlaying) syncFrameRef.current?.(st.playhead, false);
-    };
-    const els = poolEls.current.filter(Boolean) as HTMLVideoElement[];
-    els.forEach((el) => el.addEventListener('seeked', handler));
-    return () => els.forEach((el) => el.removeEventListener('seeked', handler));
+    const els = [...poolEls.current];
+    const handlers = els.map((el, i) => {
+      if (!el) return null;
+      const handler = () => {
+        const intent = seekIntentAt.current[i];
+        if (intent != null) {
+          seekIntentAt.current[i] = null;
+          perf.sample({ seekLatencyMs: performance.now() - intent });
+        }
+        const target = pendingSeekTarget.current[i];
+        pendingSeekTarget.current[i] = null;
+        if (target != null && Math.abs(el.currentTime - target) > 0.05) {
+          try {
+            seekIntentAt.current[i] = performance.now();
+            el.currentTime = target;
+            return; // repaint when the re-issued seek lands
+          } catch {
+            seekIntentAt.current[i] = null;
+          }
+        }
+        const st = useStudioStore.getState();
+        if (!st.isPlaying) syncFrameRef.current?.(st.playhead, false);
+      };
+      el.addEventListener('seeked', handler);
+      return handler;
+    });
+    return () =>
+      els.forEach((el, i) => {
+        const h = handlers[i];
+        if (el && h) el.removeEventListener('seeked', h);
+      });
   }, []);
 
   // Track the preview box height so text-overlay font sizes (authored in
@@ -698,6 +842,17 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     eyedropCbRef.current = null;
   };
 
+  const handleQualityChange = (level: QualityLevel) => {
+    setUserQuality(level);
+    try {
+      window.localStorage.setItem(QUALITY_STORAGE_KEY, level);
+    } catch {
+      // storage unavailable — the choice still applies for this session
+    }
+    applyGovernor(governorSetUserLevel(govRef.current, level));
+    editSummary.increment('uiInvocations');
+  };
+
   const handlePlayPause = () => {
     if (isPlaying) {
       pause();
@@ -797,6 +952,11 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             </span>
           </div>
         )}
+        {qualityDegraded && (
+          <div className="absolute top-2 right-2 z-10 rounded-md bg-surface-0/70 px-2 py-0.5 text-[11px] font-medium text-premium pointer-events-none">
+            {t('contentStudio.preview.reducedQuality')}
+          </div>
+        )}
         {!hasClips && (
           <div className="absolute inset-0 z-10 flex items-center justify-center text-sm text-muted-foreground">
             {t('contentStudio.preview.empty')}
@@ -828,6 +988,20 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           </Button>
         </div>
         <div className="flex items-center gap-2">
+          {glOk && (
+            <Segmented<QualityLevel>
+              name="studio-preview-quality"
+              label={t('contentStudio.preview.quality')}
+              value={userQuality}
+              onValueChange={handleQualityChange}
+              options={[
+                { value: 'full', label: t('contentStudio.preview.qualityFull') },
+                { value: 'half', label: t('contentStudio.preview.qualityHalf') },
+                { value: 'quarter', label: t('contentStudio.preview.qualityQuarter') },
+              ]}
+              className="text-xs"
+            />
+          )}
           <canvas
             ref={meterCanvasRef}
             width={18}

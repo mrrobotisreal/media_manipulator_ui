@@ -71,7 +71,12 @@
     },
     "preview": {
       "empty": "Add a clip to preview your edit",
-      "building": "Building preview proxy…"
+      "building": "Building preview proxy…",
+      "quality": "Preview quality",
+      "qualityFull": "Full",
+      "qualityHalf": "1/2",
+      "qualityQuarter": "1/4",
+      "reducedQuality": "Reduced quality"
     },
     "transport": {
       "start": "Jump to start",

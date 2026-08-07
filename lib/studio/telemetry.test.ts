@@ -152,6 +152,20 @@ describe('perf sampler', () => {
     expect(perfSamples()[0].props.webglFallback).toBe(true);
   });
 
+  it('reports quality level (last wins) and bucketed degrade activations', () => {
+    perf.sample({ qualityLevel: 'full' });
+    perf.sample({ degradeActivation: true, qualityLevel: 'half' });
+    perf.sample({ degradeActivation: true, qualityLevel: 'quarter' });
+    flushStudioTelemetry();
+    const props = perfSamples()[0].props;
+    expect(props.qualityLevel).toBe('quarter');
+    expect(props.degradeActivations).toBe('1-10');
+
+    // Consumed with the window: the next flush reports nothing.
+    flushStudioTelemetry();
+    expect(perfSamples()).toHaveLength(1);
+  });
+
   it('sends TTI exactly once per session', () => {
     markTti(1800);
     markTti(9000); // ignored: first call wins

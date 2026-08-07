@@ -202,6 +202,7 @@ export class GLCompositor {
   private uniforms: Record<string, WebGLUniformLocation | null> = {};
   private attribs: { pos: number; uv: number } = { pos: -1, uv: -1 };
   private lost = false;
+  private renderScale = 1;
   onContextLost?: () => void;
   onContextRestored?: () => void;
 
@@ -389,10 +390,26 @@ export class GLCompositor {
     return !!this.accum && !!this.temp;
   }
 
+  /**
+   * Preview quality (part 11): internal render resolution = backing size ×
+   * renderScale (Full 1 / Half 0.5 / Quarter 0.25). The canvas backing store
+   * shrinks with the FBOs and CSS (`object-contain`, full-size element) does
+   * the upscale — every per-pixel cost (fragment work, blits, texture fills)
+   * scales with scale². Takes effect on the next composite(); no reallocation
+   * here, ensureFBOs handles the resize.
+   */
+  setRenderScale(scale: number): void {
+    this.renderScale = Math.min(1, Math.max(0.1, scale));
+  }
+
+  getRenderScale(): number {
+    return this.renderScale;
+  }
+
   /** Computes the FBO/canvas backing size for a project, capping the long edge. */
   backingSize(projectW: number, projectH: number): { w: number; h: number } {
     const longEdge = Math.max(projectW, projectH);
-    const k = longEdge > MAX_BACKING_DIM ? MAX_BACKING_DIM / longEdge : 1;
+    const k = (longEdge > MAX_BACKING_DIM ? MAX_BACKING_DIM / longEdge : 1) * this.renderScale;
     return { w: Math.max(2, Math.round(projectW * k)), h: Math.max(2, Math.round(projectH * k)) };
   }
 

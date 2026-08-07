@@ -6,8 +6,14 @@ import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2 } from 'lucid
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
-import { useStudioStore, clipDuration } from '@/lib/studioStore';
+import { useStudioStore } from '@/lib/studioStore';
 import { studioSpriteUrl } from '@/lib/studio/previewEngine';
+import {
+  quantizeScrollLeft,
+  visibleWindow,
+  windowClips,
+  windowTickRange,
+} from '@/lib/studio/timelineWindow';
 import ClipWaveform from './clip-waveform';
 import { useUndoGesture } from './useUndoGesture';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
@@ -68,6 +74,45 @@ const Timeline: React.FC = () => {
   const scrubClientXRef = React.useRef(0);
   const autoScrollRaf = React.useRef<number | null>(null);
   const rulerRaf = React.useRef<number | null>(null);
+  const viewportRaf = React.useRef<number | null>(null);
+
+  // Virtualization (part 11): track the scroll window so lanes mount only the
+  // clips near it. `left` is quantized to half-viewport steps — the timeline
+  // re-renders every half viewport of scrolling, not every scroll event, and
+  // the one-viewport overscan absorbs the quantization slack.
+  const [viewport, setViewport] = React.useState({ left: 0, width: 0 });
+  const hasProject = !!project;
+  React.useEffect(() => {
+    if (!hasProject) return;
+    const sc = scrollRef.current;
+    if (!sc) return;
+    const measure = () => {
+      setViewport((prev) => {
+        const width = sc.clientWidth;
+        const left = quantizeScrollLeft(sc.scrollLeft, width);
+        return prev.left === left && prev.width === width ? prev : { left, width };
+      });
+    };
+    measure();
+    const onScroll = () => {
+      if (viewportRaf.current != null) return;
+      viewportRaf.current = requestAnimationFrame(() => {
+        viewportRaf.current = null;
+        measure();
+      });
+    };
+    sc.addEventListener('scroll', onScroll, { passive: true });
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null;
+    ro?.observe(sc);
+    return () => {
+      sc.removeEventListener('scroll', onScroll);
+      ro?.disconnect();
+      if (viewportRaf.current != null) {
+        cancelAnimationFrame(viewportRaf.current);
+        viewportRaf.current = null;
+      }
+    };
+  }, [hasProject]);
 
   // Follow the playhead during playback: keep the marker on-screen by paging the
   // scroll container when it nears either edge. A transient subscription, not a
@@ -98,6 +143,13 @@ const Timeline: React.FC = () => {
   );
 
   const tracks = React.useMemo(() => orderTracks(project?.tracks ?? []), [project?.tracks]);
+
+  // Visible time range (with overscan). Before the first measurement the
+  // window is unbounded, which is correct — just not yet virtualized.
+  const win = React.useMemo(
+    () => visibleWindow(viewport.left, viewport.width, zoom),
+    [viewport, zoom],
+  );
 
   const timeFromClientX = React.useCallback(
     (clientX: number): number => {
@@ -368,7 +420,7 @@ const Timeline: React.FC = () => {
               onPointerMove={onRulerMove}
               onPointerUp={onRulerUp}
             >
-              <RulerTicks duration={duration} zoom={zoom} />
+              <RulerTicks duration={duration} zoom={zoom} startSec={win.startSec} endSec={win.endSec} />
             </div>
 
             {/* caption lane (pinned between ruler and tracks) */}
@@ -380,6 +432,8 @@ const Timeline: React.FC = () => {
                 key={track.id}
                 track={track}
                 zoom={zoom}
+                windowStartSec={win.startSec}
+                windowEndSec={win.endSec}
                 selectedClipIds={selectedClipIds}
                 assets={assets}
                 onSelect={selectClip}
@@ -431,14 +485,22 @@ const PlayheadMarker: React.FC<{ zoom: number; height: number }> = ({ zoom, heig
   );
 };
 
-const RulerTicksImpl: React.FC<{ duration: number; zoom: number }> = ({ duration, zoom }) => {
+const RulerTicksImpl: React.FC<{ duration: number; zoom: number; startSec: number; endSec: number }> = ({
+  duration,
+  zoom,
+  startSec,
+  endSec,
+}) => {
   const targetPx = 64;
   const rawStep = targetPx / zoom;
   const steps = [0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300];
   const step = steps.find((s) => s >= rawStep) ?? 600;
   const count = Math.ceil((duration + 4) / step) + 1;
+  // Virtualized like the clips: a 60-minute ruler at 0.5s steps is 7,200
+  // ticks — only the ones inside the scroll window are worth mounting.
+  const { first, last } = windowTickRange({ startSec, endSec }, step, count);
   const ticks = [];
-  for (let i = 0; i < count; i += 1) {
+  for (let i = first; i <= last; i += 1) {
     const sec = i * step;
     const mm = Math.floor(sec / 60);
     const ss = Math.floor(sec % 60);
@@ -453,14 +515,16 @@ const RulerTicksImpl: React.FC<{ duration: number; zoom: number }> = ({ duration
   return <>{ticks}</>;
 };
 
-// Tick labels only change with the zoom level or the timeline length, never
-// with the playhead or the selection.
+// Tick labels only change with the zoom level, the timeline length, or the
+// scroll window — never with the playhead or the selection.
 const RulerTicks = React.memo(RulerTicksImpl);
 RulerTicks.displayName = 'RulerTicks';
 
 interface TrackRowProps {
   track: StudioTrack;
   zoom: number;
+  windowStartSec: number;
+  windowEndSec: number;
   selectedClipIds: string[];
   assets: ReturnType<typeof useStudioStore.getState>['assets'];
   onSelect: (id: string | null, additive?: boolean) => void;
@@ -474,6 +538,27 @@ const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
   const activeKind = (active?.data.current as { kind?: string } | undefined)?.kind;
   const compatible = !!active && activeKind === props.track.kind;
   const incompatible = !!active && activeKind !== props.track.kind;
+
+  // Only the clips near the scroll window are mounted. Selected clips and the
+  // one being dragged are always kept: dnd-kit must never lose its active node
+  // mid-drag near the window edge, and trim/volume gestures target the
+  // selection.
+  const activeClipId = typeof active?.id === 'string' ? active.id : null;
+  const keepIds = React.useMemo(() => {
+    const ids = new Set(props.selectedClipIds);
+    if (activeClipId) ids.add(activeClipId);
+    return ids;
+  }, [props.selectedClipIds, activeClipId]);
+  const visibleClips = React.useMemo(
+    () =>
+      windowClips(
+        props.track.clips,
+        { startSec: props.windowStartSec, endSec: props.windowEndSec },
+        props.zoom,
+        keepIds,
+      ),
+    [props.track.clips, props.windowStartSec, props.windowEndSec, props.zoom, keepIds],
+  );
   return (
     <div
       ref={setNodeRef}
@@ -486,7 +571,7 @@ const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
         if (e.target === e.currentTarget) props.onSelect(null);
       }}
     >
-      {props.track.clips.map((clip) => (
+      {visibleClips.map(({ clip, left, width }) => (
         // `selected` is passed as a boolean rather than the whole selection
         // array: spreading the array made every clip on every track re-render
         // each time the selection changed.
@@ -495,6 +580,8 @@ const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
           clip={clip}
           track={props.track}
           zoom={props.zoom}
+          left={left}
+          width={width}
           selected={props.selectedClipIds.includes(clip.id)}
           assets={props.assets}
           onSelect={props.onSelect}
@@ -513,15 +600,20 @@ const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
 const TrackRow = React.memo(TrackRowImpl);
 TrackRow.displayName = 'TrackRow';
 
-type ClipBlockProps = Omit<TrackRowProps, 'selectedClipIds'> & {
+type ClipBlockProps = Omit<TrackRowProps, 'selectedClipIds' | 'windowStartSec' | 'windowEndSec'> & {
   clip: StudioClip;
   selected: boolean;
+  /** Geometry resolved by the windowing pass (lib/studio/timelineWindow.ts). */
+  left: number;
+  width: number;
 };
 
 const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   clip,
   track,
   zoom,
+  left,
+  width,
   selected,
   assets,
   onSelect,
@@ -538,8 +630,6 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   const assetDur = entry?.asset.durationSeconds ?? 0;
   const ready = entry?.status === 'ready';
   const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video';
-  const left = clip.timelineStart * zoom;
-  const width = Math.max(8, clipDuration(clip) * zoom);
   // Waveform: full block on audio tracks, a bottom strip (~35%) under the
   // filmstrip on video-track clips that carry audio. Rubber-band editing only on
   // audio tracks (video strips are too thin); the inspector handles the rest.

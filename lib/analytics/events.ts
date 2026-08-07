@@ -531,6 +531,10 @@ export interface StudioPerfSampleProps extends StudioHostProp {
   webglFallback?: boolean;
   /** Present on at most one sample per editor session. */
   ttiMsBucket?: string;
+  /** Preview render quality in effect at flush ('full' | 'half' | 'quarter'), part 11. */
+  qualityLevel?: string;
+  /** Bucketed count of auto-degrade step-downs in the window, part 11. */
+  degradeActivations?: string;
 }
 
 export interface ClientErrorProps {
