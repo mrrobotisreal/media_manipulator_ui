@@ -26,6 +26,8 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import { deleteDraft } from '@/lib/studio/draftStore';
 import { formatRelativeTime } from '@/lib/studio/draftRecovery';
+import { analytics, EVENTS } from '@/lib/analytics';
+import { studioHost } from '@/lib/studio/telemetry';
 import {
   useCreateVersion,
   useRestoreVersion,
@@ -86,6 +88,8 @@ const VersionsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
     if (!confirming) return;
     try {
       const project = await restoreMutation.mutateAsync(confirming.id);
+      // Part 10 (ADR ws/0003): restores are a first-class lifecycle event.
+      analytics.track(EVENTS.STUDIO_VERSION_RESTORED, { host: studioHost() }, { feature: 'studio' });
       // Same precedent as the conflict reload: replace the document +
       // revision, reset undo history, and drop the now-stale local draft.
       loadProject(project);

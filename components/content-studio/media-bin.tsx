@@ -7,8 +7,20 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore, type StudioAssetEntry } from '@/lib/studioStore';
-import { useUploadStudioAsset, useDeriveStudioAsset } from '@/lib/useStudioAsset';
+import { useUploadStudioAsset, useDeriveStudioAsset, type StudioDeriveOperation } from '@/lib/useStudioAsset';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
+import { analytics, EVENTS, batchBucket, fileSizeBucket } from '@/lib/analytics';
+import type { StudioImportKind } from '@/lib/analytics';
+import { studioHost } from '@/lib/studio/telemetry';
+
+/** MIME type → the closed import-kind vocabulary. Never the filename. */
+function importKind(file: File): StudioImportKind {
+  const mime = (file.type || '').toLowerCase();
+  if (mime.startsWith('video/')) return 'video';
+  if (mime.startsWith('audio/')) return 'audio';
+  if (mime.startsWith('image/')) return 'image';
+  return 'other';
+}
 
 /**
  * Media bin — drag/drop or pick source files, watch ingest progress, and add
@@ -25,7 +37,23 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
 
   const handleFiles = (files: FileList | null) => {
     if (!files) return;
-    Array.from(files).forEach((file) => upload(file));
+    const batch = Array.from(files);
+    batch.forEach((file) => {
+      // Part 10 (ADR ws/0003): one studio_media_imported per file — kind and
+      // size bucketed, batch size bucketed on each so multi-file drops are
+      // recognizable. Never a filename.
+      analytics.track(
+        EVENTS.STUDIO_MEDIA_IMPORTED,
+        {
+          kind: importKind(file),
+          sizeBucket: fileSizeBucket(file.size),
+          batchBucket: batchBucket(batch.length),
+          host: studioHost(),
+        },
+        { feature: 'studio' },
+      );
+      upload(file);
+    });
   };
 
   const entries = Object.values(assets);
@@ -108,6 +136,12 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
   const isAudio = asset.mediaKind === 'audio';
   const ready = status === 'ready';
   const { derive, isDeriving } = useDeriveStudioAsset();
+  // Part 10: AI derives are a lifecycle event — `op` is the server's closed
+  // operation vocabulary, and nothing about the asset goes along.
+  const deriveTracked = (assetId: string, op: StudioDeriveOperation) => {
+    analytics.track(EVENTS.STUDIO_DERIVE_USED, { op, host: studioHost() }, { feature: 'studio' });
+    derive(assetId, op);
+  };
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `asset:${asset.id}`,
     data: { type: 'asset', assetId: asset.id, kind: asset.mediaKind, label: asset.originalFileName },
@@ -162,13 +196,13 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => derive(asset.id, 'voice_clean')}>
+            <DropdownMenuItem onClick={() => deriveTracked(asset.id, 'voice_clean')}>
               {t('contentStudio.mediaBin.aiCleanVoice')}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => derive(asset.id, 'split_vocals')}>
+            <DropdownMenuItem onClick={() => deriveTracked(asset.id, 'split_vocals')}>
               {t('contentStudio.mediaBin.aiIsolateVocals')}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => derive(asset.id, 'split_instrumental')}>
+            <DropdownMenuItem onClick={() => deriveTracked(asset.id, 'split_instrumental')}>
               {t('contentStudio.mediaBin.aiIsolateMusic')}
             </DropdownMenuItem>
           </DropdownMenuContent>

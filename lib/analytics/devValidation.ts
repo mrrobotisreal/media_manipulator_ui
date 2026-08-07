@@ -48,6 +48,21 @@ const tier = z.enum(['anonymous', 'free', 'premium']);
 const authMethod = z.enum(['google', 'email', 'other']);
 const transport = z.enum(['post', 'presigned_put']);
 
+// Content Studio (part 10). Bucket values are checked as strings, not enums —
+// the bucket vocabularies live in lib/analytics/buckets.ts and re-enumerating
+// them here would create a second copy to drift.
+const studioHostEnum = z.enum(['mm', 'creatv']);
+const studioHostProps = z.object({ host: studioHostEnum.optional() }).strict();
+const studioExportProps = z
+  .object({
+    preset: z.enum(['low', 'medium', 'high']),
+    format: z.literal('mp4'),
+    resolution: z.string(),
+    durationRatioBucket: z.string().optional(),
+    host: studioHostEnum.optional(),
+  })
+  .strict();
+
 /**
  * One schema per catalog event.
  *
@@ -239,6 +254,76 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
   scroll_depth: z
     .object({ pct: z.union([z.literal(25), z.literal(50), z.literal(75), z.literal(100)]) })
+    .strict(),
+
+  studio_project_created: studioHostProps,
+  studio_project_opened: studioHostProps,
+  studio_project_closed: z
+    .object({
+      durationBucket: z.string(),
+      clipCountBucket: z.string(),
+      trackCountBucket: z.string(),
+      host: studioHostEnum.optional(),
+    })
+    .strict(),
+  studio_media_imported: z
+    .object({
+      kind: z.enum(['video', 'audio', 'image', 'other']),
+      sizeBucket: z.string(),
+      batchBucket: z.string(),
+      host: studioHostEnum.optional(),
+    })
+    .strict(),
+  studio_derive_used: z.object({ op: z.string(), host: studioHostEnum.optional() }).strict(),
+  studio_captions_generated: z
+    .object({ cueCountBucket: z.string(), host: studioHostEnum.optional() })
+    .strict(),
+  studio_export_started: studioExportProps,
+  studio_export_completed: studioExportProps,
+  studio_export_failed: studioExportProps,
+  studio_publish_requested: z
+    .object({ embed: z.boolean(), host: studioHostEnum.optional() })
+    .strict(),
+  studio_recovery_offered: studioHostProps,
+  studio_recovery_accepted: studioHostProps,
+  studio_save_conflict: studioHostProps,
+  studio_version_restored: studioHostProps,
+  studio_edit_summary: z
+    .object({
+      splits: z.string().optional(),
+      trimsRoll: z.string().optional(),
+      trimsSlip: z.string().optional(),
+      trimsSlide: z.string().optional(),
+      trimsRipple: z.string().optional(),
+      transitionsAdded: z.string().optional(),
+      transitionsByType: z.record(z.string()).optional(),
+      keyframesAdded: z.string().optional(),
+      keyframesByProperty: z.record(z.string()).optional(),
+      effectsAdded: z.string().optional(),
+      effectsByType: z.record(z.string()).optional(),
+      titlesAdded: z.string().optional(),
+      speedChanges: z.string().optional(),
+      markersAdded: z.string().optional(),
+      mixerAdjustments: z.string().optional(),
+      toolSwitches: z.string().optional(),
+      shortcutInvocations: z.string().optional(),
+      uiInvocations: z.string().optional(),
+      undoCount: z.string().optional(),
+      redoCount: z.string().optional(),
+      sessionSecondsBucket: z.string(),
+      host: studioHostEnum.optional(),
+    })
+    .strict(),
+  studio_perf_sample: z
+    .object({
+      fpsBucket: z.string().optional(),
+      droppedFrameRatioBucket: z.string().optional(),
+      seekLatencyP95Bucket: z.string().optional(),
+      saveRttBucket: z.string().optional(),
+      webglFallback: z.boolean().optional(),
+      ttiMsBucket: z.string().optional(),
+      host: studioHostEnum.optional(),
+    })
     .strict(),
 
   client_error: z

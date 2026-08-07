@@ -13,7 +13,9 @@
  *   lib/webVitals.ts            → ./webVitals
  *   lib/indexedIdentity.ts      → ./identity (localStorage, synchronous, no IndexedDB race)
  *   lib/gtag.ts                 → ./ga4 (three events, not everything)
- *   lib/studio/telemetry.ts     → `feature_used` via useAnalytics
+ *   lib/studio/telemetry.ts     → reborn in part 10 as the `studio_edit_summary`
+ *                                 aggregator + perf sampler (ADR ws/0003); the old
+ *                                 `feature_used` overloading is gone
  *
  * Typical usage:
  *
@@ -74,7 +76,32 @@ export type {
   UploadCompletedProps,
   UploadFailedProps,
   UploadStartedProps,
+  // Content Studio (Darkroom) — ADR ws/0003.
+  StudioHost,
+  StudioImportKind,
+  StudioEditSummaryProps,
+  StudioPerfSampleProps,
+  StudioProjectClosedProps,
+  StudioMediaImportedProps,
+  StudioExportStartedProps,
+  StudioExportCompletedProps,
+  StudioExportFailedProps,
 } from './events';
+
+// Shared bucket helpers (ADR ws/0003 catalog law: enums/buckets only).
+export {
+  batchBucket,
+  countBucket,
+  cueCountBucket,
+  droppedFrameRatioBucket,
+  fileSizeBucket,
+  fpsBucket,
+  latencyMsBucket,
+  ratioBucket,
+  sessionSecondsBucket,
+  timelineDurationBucket,
+  ttiMsBucket,
+} from './buckets';
 
 /**
  * Identity. Exported because non-analytics code genuinely needs these — `authedFetch`

@@ -82,6 +82,27 @@ export const EVENTS = {
   FEATURE_USED: 'feature_used',
   SCROLL_DEPTH: 'scroll_depth',
 
+  // --- Content Studio (Darkroom) --------------------------------------------
+  // First-class `studio_*` events per ADR ws/0003 — the editor no longer
+  // overloads FEATURE_USED. Server-side render telemetry (`studio_render_*`)
+  // is emitted by the API and lives only in the Go catalogs, like `server_*`.
+  STUDIO_PROJECT_CREATED: 'studio_project_created',
+  STUDIO_PROJECT_OPENED: 'studio_project_opened',
+  STUDIO_PROJECT_CLOSED: 'studio_project_closed',
+  STUDIO_MEDIA_IMPORTED: 'studio_media_imported',
+  STUDIO_DERIVE_USED: 'studio_derive_used',
+  STUDIO_CAPTIONS_GENERATED: 'studio_captions_generated',
+  STUDIO_EXPORT_STARTED: 'studio_export_started',
+  STUDIO_EXPORT_COMPLETED: 'studio_export_completed',
+  STUDIO_EXPORT_FAILED: 'studio_export_failed',
+  STUDIO_PUBLISH_REQUESTED: 'studio_publish_requested',
+  STUDIO_RECOVERY_OFFERED: 'studio_recovery_offered',
+  STUDIO_RECOVERY_ACCEPTED: 'studio_recovery_accepted',
+  STUDIO_SAVE_CONFLICT: 'studio_save_conflict',
+  STUDIO_VERSION_RESTORED: 'studio_version_restored',
+  STUDIO_EDIT_SUMMARY: 'studio_edit_summary',
+  STUDIO_PERF_SAMPLE: 'studio_perf_sample',
+
   // --- Quality --------------------------------------------------------------
   CLIENT_ERROR: 'client_error',
   WEB_VITAL: 'web_vital',
@@ -141,6 +162,26 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   cta_clicked: PRIORITY_HIGH,
   feature_used: PRIORITY_NORMAL,
   scroll_depth: PRIORITY_LOW,
+
+  // Content Studio (Darkroom)
+  studio_project_created: PRIORITY_HIGH,
+  studio_project_opened: PRIORITY_HIGH,
+  studio_project_closed: PRIORITY_HIGH,
+  studio_media_imported: PRIORITY_HIGH,
+  studio_derive_used: PRIORITY_NORMAL,
+  studio_captions_generated: PRIORITY_NORMAL,
+  studio_export_started: PRIORITY_CRITICAL,
+  studio_export_completed: PRIORITY_CRITICAL,
+  studio_export_failed: PRIORITY_CRITICAL,
+  studio_publish_requested: PRIORITY_CRITICAL,
+  studio_recovery_offered: PRIORITY_HIGH,
+  studio_recovery_accepted: PRIORITY_HIGH,
+  studio_save_conflict: PRIORITY_HIGH,
+  studio_version_restored: PRIORITY_NORMAL,
+  // High, not normal: a summary carries ~2 minutes of edit telemetry and is
+  // frequently emitted at page teardown, where anything slower may never flush.
+  studio_edit_summary: PRIORITY_HIGH,
+  studio_perf_sample: PRIORITY_LOW,
 
   // Quality
   client_error: PRIORITY_HIGH,
@@ -376,6 +417,122 @@ export interface ScrollDepthProps {
   pct: 25 | 50 | 75 | 100;
 }
 
+/* ---------------------------------------------------------------------------
+ * Content Studio (Darkroom) — ADR ws/0003.
+ *
+ * Studio props are camelCase (matching the editor's EDL vocabulary rather than
+ * the wire funnel's snake_case) and are WITHOUT EXCEPTION enums or buckets from
+ * `lib/analytics/buckets.ts`. Raw counts, filenames, project names, and caption
+ * text are forbidden. `host` says which surface the editor ran on — the MM site
+ * or CreaTV's embedded Darkroom.
+ * ------------------------------------------------------------------------- */
+
+export type StudioHost = 'mm' | 'creatv';
+
+/** Media kind vocabulary for the media bin (narrower than MediaKind — no documents). */
+export type StudioImportKind = 'video' | 'audio' | 'image' | 'other';
+
+export interface StudioHostProp {
+  host?: StudioHost;
+}
+
+export type StudioProjectCreatedProps = StudioHostProp;
+
+export type StudioProjectOpenedProps = StudioHostProp;
+
+export interface StudioProjectClosedProps extends StudioHostProp {
+  /** Timeline duration bucket, NOT wall-clock (that is sessionSecondsBucket on the edit summary). */
+  durationBucket: string;
+  clipCountBucket: string;
+  trackCountBucket: string;
+}
+
+export interface StudioMediaImportedProps extends StudioHostProp {
+  kind: StudioImportKind;
+  sizeBucket: string;
+  /** Size of the import gesture this file arrived in (multi-file drop → one bucket on each). */
+  batchBucket: string;
+}
+
+export interface StudioDeriveUsedProps extends StudioHostProp {
+  /** Server derive operation — a closed vocabulary ('voice_clean', 'split_vocals', …). */
+  op: string;
+}
+
+export interface StudioCaptionsGeneratedProps extends StudioHostProp {
+  cueCountBucket: string;
+}
+
+export interface StudioExportStartedProps extends StudioHostProp {
+  preset: 'low' | 'medium' | 'high';
+  format: 'mp4';
+  /** Project canvas, e.g. '1920x1080'. Bounded by the resolution picker's options. */
+  resolution: string;
+}
+
+export interface StudioExportCompletedProps extends StudioExportStartedProps {
+  /** Client-observed render seconds / timeline seconds. */
+  durationRatioBucket?: string;
+}
+
+export interface StudioExportFailedProps extends StudioExportStartedProps {
+  durationRatioBucket?: string;
+}
+
+export interface StudioPublishRequestedProps extends StudioHostProp {
+  /** Always true today — publish only exists inside the CreaTV embed. */
+  embed: boolean;
+}
+
+export type StudioRecoveryOfferedProps = StudioHostProp;
+export type StudioRecoveryAcceptedProps = StudioHostProp;
+export type StudioSaveConflictProps = StudioHostProp;
+export type StudioVersionRestoredProps = StudioHostProp;
+
+/**
+ * The session-aggregated edit summary (ADR ws/0003 class 2).
+ *
+ * Every value is a countBucket STRING, not a number, and counters sit at zero
+ * until their feature ships (parts 14–21) — the taxonomy is complete now so
+ * later parts only add increment calls. Built exclusively by
+ * `lib/studio/telemetry.ts`; nothing else should construct one.
+ */
+export interface StudioEditSummaryProps extends StudioHostProp {
+  splits?: string;
+  trimsRoll?: string;
+  trimsSlip?: string;
+  trimsSlide?: string;
+  trimsRipple?: string;
+  transitionsAdded?: string;
+  /** Per-type breakdown, bucketed values keyed by transition type. */
+  transitionsByType?: Record<string, string>;
+  keyframesAdded?: string;
+  keyframesByProperty?: Record<string, string>;
+  effectsAdded?: string;
+  effectsByType?: Record<string, string>;
+  titlesAdded?: string;
+  speedChanges?: string;
+  markersAdded?: string;
+  mixerAdjustments?: string;
+  toolSwitches?: string;
+  shortcutInvocations?: string;
+  uiInvocations?: string;
+  undoCount?: string;
+  redoCount?: string;
+  sessionSecondsBucket: string;
+}
+
+/** Periodic editor performance sample (ADR ws/0003 class 3). Buckets only. */
+export interface StudioPerfSampleProps extends StudioHostProp {
+  fpsBucket?: string;
+  droppedFrameRatioBucket?: string;
+  seekLatencyP95Bucket?: string;
+  saveRttBucket?: string;
+  webglFallback?: boolean;
+  /** Present on at most one sample per editor session. */
+  ttiMsBucket?: string;
+}
+
 export interface ClientErrorProps {
   message: string;
   /** Hash of message+stack, used to dedupe an error loop down to one event. */
@@ -434,6 +591,23 @@ export interface EventPropsMap {
   cta_clicked: CTAClickedProps;
   feature_used: FeatureUsedProps;
   scroll_depth: ScrollDepthProps;
+
+  studio_project_created: StudioProjectCreatedProps;
+  studio_project_opened: StudioProjectOpenedProps;
+  studio_project_closed: StudioProjectClosedProps;
+  studio_media_imported: StudioMediaImportedProps;
+  studio_derive_used: StudioDeriveUsedProps;
+  studio_captions_generated: StudioCaptionsGeneratedProps;
+  studio_export_started: StudioExportStartedProps;
+  studio_export_completed: StudioExportCompletedProps;
+  studio_export_failed: StudioExportFailedProps;
+  studio_publish_requested: StudioPublishRequestedProps;
+  studio_recovery_offered: StudioRecoveryOfferedProps;
+  studio_recovery_accepted: StudioRecoveryAcceptedProps;
+  studio_save_conflict: StudioSaveConflictProps;
+  studio_version_restored: StudioVersionRestoredProps;
+  studio_edit_summary: StudioEditSummaryProps;
+  studio_perf_sample: StudioPerfSampleProps;
 
   client_error: ClientErrorProps;
   web_vital: WebVitalProps;

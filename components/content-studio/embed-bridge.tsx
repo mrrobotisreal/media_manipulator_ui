@@ -9,6 +9,7 @@ import {
   type CsInitMessage,
   type EmbedToHostMessage,
 } from '@/lib/studio/embedProtocol';
+import { applyHostConsent } from '@/lib/consent';
 
 const DEFAULT_ALLOWED = ['https://creatv.io', 'https://www.creatv.io', 'http://localhost:8080'];
 const TOKEN_REQUEST_TIMEOUT_MS = 10_000;
@@ -119,6 +120,14 @@ export function useEmbedBridge(): EmbedBridge {
         case 'cs:token': {
           tokenRef.current = data.token;
           resolveTokenWaiters(data.token);
+          break;
+        }
+        case 'cs:consent': {
+          // Part 10: the host's consent state feeds the analytics gate. Origin
+          // was validated above like every message; the state is applied
+          // in-memory only (never persisted, never audited — the host owns the
+          // durable record and re-sends on every handshake/change).
+          applyHostConsent(data.analytics, data.advertising);
           break;
         }
         // cs:command (host-driven save/export) is accepted but optional; the

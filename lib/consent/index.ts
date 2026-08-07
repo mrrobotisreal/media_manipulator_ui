@@ -252,6 +252,37 @@ export function setConsent(input: SetConsentInput): ConsentDetails {
 }
 
 /**
+ * Apply consent decided OUTSIDE this app: the CreaTV host forwarding its own
+ * visitor's state into the embedded editor via the `cs:consent` protocol
+ * message (part 10, ADR ws/0003).
+ *
+ * Deliberately different from setConsent in three ways:
+ *   - NOT persisted (persist=false). The host owns the durable record and
+ *     re-sends on every handshake; writing it to our (partitioned) iframe
+ *     storage would create a second record that could drift from the real one.
+ *   - NOT audited. recordConsent evidences a choice made in OUR banner; a
+ *     forwarded state is the host's evidence, not ours.
+ *   - NOT mirrored to Consent Mode. The embed surface loads no Google scripts.
+ *
+ * The three-valued shape passes through unchanged, so a host that has not
+ * asked yet ('unset') leaves the embed buffering in memory — the same safe
+ * behaviour the standalone site has before its banner is answered.
+ */
+export function applyHostConsent(
+  analyticsValue: ConsentValue,
+  advertisingValue?: ConsentValue,
+): void {
+  updateConsent(
+    {
+      analytics: analyticsValue,
+      ...(advertisingValue !== undefined ? { advertising: advertisingValue } : {}),
+      decidedAt: analyticsValue === 'unset' ? null : new Date().toISOString(),
+    },
+    false,
+  );
+}
+
+/**
  * The CPRA "Do Not Sell or Share My Personal Information" action.
  *
  * Opts out of the advertising category and nothing else. First-party analytics on our

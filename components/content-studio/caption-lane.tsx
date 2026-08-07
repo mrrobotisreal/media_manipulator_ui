@@ -13,23 +13,8 @@ import { useStudioJobProgress } from '@/lib/useStudioJob';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { studioProjectSchema } from '@/lib/studioTypes';
-import { analytics, EVENTS } from '@/lib/analytics';
-
-/**
- * Bucket a cue count.
- *
- * Buckets rather than the raw number for the same reason the old studio telemetry module
- * did it: an exact cue count on a long video is close to a fingerprint of that specific
- * media, and "did they generate a few captions or hundreds" is the only question anyone
- * actually asks of it.
- */
-function cueCountBucket(n: number): string {
-  if (n <= 0) return '0';
-  if (n <= 10) return '1-10';
-  if (n <= 50) return '11-50';
-  if (n <= 200) return '51-200';
-  return '200+';
-}
+import { analytics, EVENTS, cueCountBucket } from '@/lib/analytics';
+import { studioHost } from '@/lib/studio/telemetry';
 
 export const CAPTION_LANE_HEIGHT = 28;
 const MIN_CUE = 0.3;
@@ -61,19 +46,16 @@ export const CaptionControls: React.FC<{ projectId: string }> = ({ projectId }) 
           const fresh = studioProjectSchema.parse(await res.json());
           setCaptions(fresh.captions);
           if (fresh.captionStyle) setCaptionStyle(fresh.captionStyle);
-          // Content Studio events map to `feature_used`, not to the tool funnel: the studio
-          // is an editor, not an upload → job → download flow, and forcing it into the funnel
-          // would corrupt the conversion rates the funnel exists to measure.
+          // First-class studio event (part 10, ADR ws/0003), not the tool funnel: the
+          // studio is an editor, not an upload → job → download flow, and forcing it into
+          // the funnel would corrupt the conversion rates the funnel exists to measure.
           //
-          // PRIVACY: the cue COUNT, bucketed. Never the caption text — that is a transcript
-          // of someone's media and is forbidden in event properties.
+          // PRIVACY: the cue COUNT, bucketed (shared helper — same boundaries as the old
+          // local one, so the data is continuous). Never the caption text — that is a
+          // transcript of someone's media and is forbidden in event properties.
           analytics.track(
-            EVENTS.FEATURE_USED,
-            {
-              feature: 'studio',
-              action: 'captions_generated',
-              value: cueCountBucket(fresh.captions.length),
-            },
+            EVENTS.STUDIO_CAPTIONS_GENERATED,
+            { cueCountBucket: cueCountBucket(fresh.captions.length), host: studioHost() },
             { feature: 'studio' },
           );
           toast.success('Captions ready');

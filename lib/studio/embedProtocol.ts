@@ -7,10 +7,18 @@
  * PROTOCOL_VERSION on any breaking change.
  *
  * Direction matters:
- *   Host → Embed: cs:init, cs:token, cs:command
+ *   Host → Embed: cs:init, cs:token, cs:command, cs:consent
  *   Embed → Host: cs:ready, cs:request-token, cs:state, cs:export-*,
  *                 cs:publish-request, cs:resize, cs:fullscreen-request,
  *                 and cs:command{action:'close'} (Back from inside the editor)
+ *
+ * cs:consent (ADDED in part 10, additive — protocol version unchanged): the
+ * host forwards its visitor's consent state so the embedded editor's analytics
+ * gate can open or close. The embed never shows its own consent prompt and
+ * never persists the forwarded state — the host owns the durable record and
+ * should re-send on every cs:init handshake and on every change. A host that
+ * never sends it leaves the embed at 'unset', i.e. capturing nothing, which is
+ * the safe default.
  *
  * Security: every listener validates event.origin against an allowlist before
  * trusting a message, and token-bearing messages are always posted with an
@@ -61,7 +69,18 @@ export interface CsCommandMessage {
   action: 'save' | 'export' | 'close';
 }
 
-export type HostToEmbedMessage = CsInitMessage | CsTokenMessage | CsCommandMessage;
+/**
+ * Consent state forwarded by the host (part 10, additive). Mirrors the MM
+ * site's three-valued consent shape (lib/consent): 'unset' means "not asked
+ * yet" and keeps the embed's analytics buffered in memory only.
+ */
+export interface CsConsentMessage {
+  type: 'cs:consent';
+  analytics: 'granted' | 'denied' | 'unset';
+  advertising?: 'granted' | 'denied' | 'unset';
+}
+
+export type HostToEmbedMessage = CsInitMessage | CsTokenMessage | CsCommandMessage | CsConsentMessage;
 
 // --- Embed → Host ----------------------------------------------------------
 export interface CsReadyMessage {

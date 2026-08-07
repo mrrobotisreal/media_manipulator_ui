@@ -21,6 +21,8 @@ import { useSaveProject } from '@/lib/useStudioProject';
 import { useStartStudioExport, studioDownloadUrl } from '@/lib/useStudioExport';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
 import { analytics, EVENTS, markJobStarted, takeJobDuration } from '@/lib/analytics';
+import type { StudioExportStartedProps } from '@/lib/analytics';
+import { exportDurationRatioBucket, studioHost } from '@/lib/studio/telemetry';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import { useEmbedBridgeOptional } from './embed-bridge';
 
@@ -65,6 +67,11 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
   // Emit-once guards for the CreaTV lifecycle handoff.
   const handedOffRef = React.useRef(false);
 
+  // The studio_export_started props, remembered so completed/failed carry the
+  // identical dimensions (part 10, ADR ws/0003). A ref, not state: the terminal
+  // callbacks must see the values of the render they belong to.
+  const exportPropsRef = React.useRef<StudioExportStartedProps | null>(null);
+
   const fetchDraftDownload = React.useCallback(async () => {
     const draftId = backend.scope?.draftId;
     if (draftId == null) return;
@@ -101,11 +108,12 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
       // analytics event is wanted on both ecosystems while the bridge messages are
       // CreaTV-only.
       if (jobId) {
+        const renderMs = takeJobDuration(jobId);
         analytics.track(
           EVENTS.JOB_FAILED,
           {
             job_id: jobId,
-            duration_ms: takeJobDuration(jobId),
+            duration_ms: renderMs,
             // The watcher's message, which comes from our own API's job error field — it
             // can name a path, so it is not passed through. `stage` says where instead.
             reason: 'export_failed',
@@ -113,23 +121,51 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
           },
           { job_id: jobId, media_kind: 'video' },
         );
+        // First-class studio event alongside the generic funnel (part 10: the JOB_*
+        // pair stays for continuity; part 22 may retire it).
+        if (exportPropsRef.current) {
+          analytics.track(
+            EVENTS.STUDIO_EXPORT_FAILED,
+            {
+              ...exportPropsRef.current,
+              durationRatioBucket: exportDurationRatioBucket(renderMs, durationSeconds),
+            },
+            { job_id: jobId, feature: 'studio' },
+          );
+        }
       }
       toast.error('Export failed', { description: msg });
       if (isCreatv && jobId) bridge?.emit({ type: 'cs:export-failed', jobId, error: msg });
     },
     onComplete: () => {
       if (jobId) {
+        const renderMs = takeJobDuration(jobId);
         analytics.track(
           EVENTS.JOB_COMPLETED,
-          { job_id: jobId, duration_ms: takeJobDuration(jobId) },
+          { job_id: jobId, duration_ms: renderMs },
           { job_id: jobId, media_kind: 'video' },
         );
+        if (exportPropsRef.current) {
+          analytics.track(
+            EVENTS.STUDIO_EXPORT_COMPLETED,
+            {
+              ...exportPropsRef.current,
+              durationRatioBucket: exportDurationRatioBucket(renderMs, durationSeconds),
+            },
+            { job_id: jobId, feature: 'studio' },
+          );
+        }
       }
       if (!isCreatv || !jobId || handedOffRef.current) return;
       handedOffRef.current = true;
       const draftId = backend.scope?.draftId;
       if (intent === 'publish') {
         if (draftId != null) {
+          analytics.track(
+            EVENTS.STUDIO_PUBLISH_REQUESTED,
+            { embed: true, host: studioHost() },
+            { job_id: jobId, feature: 'studio' },
+          );
           bridge?.emit({
             type: 'cs:publish-request',
             draftId,
@@ -208,6 +244,18 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
         },
         { job_id: res.jobId, media_kind: 'video', feature: 'studio' },
       );
+      // First-class studio export event (part 10). Resolution is the canvas
+      // preset, a closed vocabulary from the new-project picker.
+      exportPropsRef.current = {
+        preset: values.quality,
+        format: 'mp4',
+        resolution: project ? `${project.width}x${project.height}` : 'unknown',
+        host: studioHost(),
+      };
+      analytics.track(EVENTS.STUDIO_EXPORT_STARTED, exportPropsRef.current, {
+        job_id: res.jobId,
+        feature: 'studio',
+      });
       setJobId(res.jobId);
       if (isCreatv) bridge?.emit({ type: 'cs:export-started', jobId: res.jobId });
     } catch (err) {
@@ -226,6 +274,11 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
     if (draftId == null) return;
     handedOffRef.current = true;
     setIntent('publish');
+    analytics.track(
+      EVENTS.STUDIO_PUBLISH_REQUESTED,
+      { embed: true, host: studioHost() },
+      { job_id: jobId, feature: 'studio' },
+    );
     bridge?.emit({
       type: 'cs:publish-request',
       draftId,

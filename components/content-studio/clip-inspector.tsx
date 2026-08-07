@@ -20,7 +20,7 @@ import {
 } from '@/lib/studio/effectRegistry';
 import { requestEyedrop } from '@/lib/studio/eyedropper';
 import { useUndoGesture } from './useUndoGesture';
-import { analytics, EVENTS } from '@/lib/analytics';
+import { editSummary } from '@/lib/studio/telemetry';
 import { Panel } from '@/components/darkroom/panel';
 import type {
   StudioClip, StudioTrack, StudioEffect, StudioBlendMode, StudioTransform, StudioCrop,
@@ -307,13 +307,11 @@ const EffectsSection: React.FC<{ clip: StudioClip; lutAssets: StudioAssetEntry[]
           value=""
           onValueChange={(v) => {
             addEffect(clip.id, v as 'lumetri' | 'lut' | 'chromakey');
-            // The effect TYPE only — a closed vocabulary of three values, so it is a clean
-            // low-cardinality dimension and carries nothing about the media.
-            analytics.track(
-              EVENTS.FEATURE_USED,
-              { feature: 'studio', action: 'effect_added', value: v },
-              { feature: 'studio' },
-            );
+            // Edit actions aggregate (part 10, ADR ws/0003): counted into the session's
+            // studio_edit_summary instead of a discrete event per click. The effect TYPE
+            // only — a closed vocabulary, carrying nothing about the media.
+            editSummary.increment('effectsAdded', v);
+            editSummary.increment('uiInvocations');
           }}
         >
           <SelectTrigger className="h-6 w-auto text-[11px] gap-1 px-2">

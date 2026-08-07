@@ -59,6 +59,14 @@ import {
 } from '@/lib/studio/draftRecovery';
 import { useCreateVersion } from '@/lib/useStudioVersions';
 import { createCheckpointScheduler } from '@/lib/studio/versionCheckpoint';
+import { analytics, EVENTS, countBucket, timelineDurationBucket } from '@/lib/analytics';
+import {
+  editSummary,
+  markTti,
+  perf,
+  startStudioTelemetrySession,
+  studioHost,
+} from '@/lib/studio/telemetry';
 import SaveConflictDialog from './save-conflict-dialog';
 import DraftRecoveryDialog from './draft-recovery-dialog';
 import VersionsPanel from './versions-panel';
@@ -192,8 +200,12 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
     if (expectedRevisionOverride === null) delete req.expectedRevision;
     else if (expectedRevisionOverride !== undefined) req.expectedRevision = expectedRevisionOverride;
     dispatchSave({ type: 'saveStart' });
+    const saveStartedAt = performance.now();
     try {
       const saved = await saveRef.current.mutateAsync({ id: projectId, req });
+      // Save round-trip feeds the perf sampler (part 10) — successful saves
+      // only, so an offline retry storm can't masquerade as server latency.
+      perf.sample({ saveRttMs: performance.now() - saveStartedAt });
       markSaved(saved);
       dispatchSave({ type: 'saveOk' });
       // The server now holds these edits — the crash-recovery draft is stale.
@@ -202,6 +214,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
       return true;
     } catch (err) {
       if (err instanceof StudioSaveConflictError) {
+        analytics.track(EVENTS.STUDIO_SAVE_CONFLICT, { host: studioHost() }, { feature: 'studio' });
         setConflict({ currentRevision: err.currentRevision ?? null });
         dispatchSave({ type: 'save409' });
       } else if (err instanceof StudioSaveHttpError && err.status < 500) {
@@ -362,6 +375,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         void deleteDraft(server.id);
         return;
       }
+      analytics.track(EVENTS.STUDIO_RECOVERY_OFFERED, { host: studioHost() }, { feature: 'studio' });
       setDraftOffer({
         kind: decision,
         draft,
@@ -378,6 +392,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
    * loaded server revision makes that save the take-over the user asked for). */
   const handleDraftRecover = () => {
     if (!draftOffer) return;
+    analytics.track(EVENTS.STUDIO_RECOVERY_ACCEPTED, { host: studioHost() }, { feature: 'studio' });
     restoreDraft(draftOffer.draft.document);
     setDraftOffer(null);
   };
@@ -487,11 +502,26 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
     }
   };
 
+  // --- Session telemetry (part 10, ADR ws/0003) ----------------------------
+  // One aggregator session per mounted editor: the edit-summary counters and
+  // perf window flush on the 2-minute interval, on pagehide, and on this
+  // effect's cleanup (unmount), so closing the editor never drops the tail.
+  // The mount timestamp anchors TTI (mount → first successful hydration);
+  // markTti keeps only the first call per session, so StrictMode's remount is
+  // harmless. Stamped in the effect, not a useRef initializer — render must
+  // stay pure (react-hooks/purity).
+  const mountedAtRef = React.useRef<number>(0);
+  React.useEffect(() => {
+    if (mountedAtRef.current === 0) mountedAtRef.current = performance.now();
+    return startStudioTelemetrySession();
+  }, []);
+
   // Hydrate the store from the loaded project whenever the store isn't already
   // showing it. Self-heals if the store was cleared (StrictMode / navigation).
   React.useEffect(() => {
     if (projectQuery.data && storeProjectId !== projectQuery.data.id) {
       loadProject(projectQuery.data);
+      markTti(performance.now() - mountedAtRef.current);
     }
   }, [projectQuery.data, storeProjectId, loadProject]);
 
@@ -503,8 +533,30 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
     }
   }, [assetsQuery.data, storeProjectId, projectId, setAssets]);
 
-  // Clear the store when leaving the editor.
-  React.useEffect(() => () => closeProject(), [closeProject]);
+  // Clear the store when leaving the editor. The closed event reads the store
+  // in the SAME cleanup, before closeProject wipes it — a sibling effect's
+  // cleanup order would not be guaranteed to run first.
+  React.useEffect(
+    () => () => {
+      const st = useStudioStore.getState();
+      if (st.project && st.project.id === projectId) {
+        analytics.track(
+          EVENTS.STUDIO_PROJECT_CLOSED,
+          {
+            durationBucket: timelineDurationBucket(st.project.durationSeconds ?? 0),
+            clipCountBucket: countBucket(
+              st.project.tracks.reduce((n, tr) => n + tr.clips.length, 0),
+            ),
+            trackCountBucket: countBucket(st.project.tracks.length),
+            host: studioHost(),
+          },
+          { feature: 'studio' },
+        );
+      }
+      closeProject();
+    },
+    [closeProject, projectId],
+  );
 
   // Debounced autosave whenever the EDL is dirty. Uses a ref for the mutation
   // so edits settle for AUTOSAVE_DEBOUNCE_MS instead of restarting the timer on
@@ -553,14 +605,31 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         if (el.closest('[role="dialog"]')) return;
       }
       const st = useStudioStore.getState();
+      // Part 10 (roadmap rule 11): every user action counts into the session
+      // edit summary. Undo/redo only count when the stack had something to do.
       if ((e.metaKey || e.ctrlKey) && (e.key === 'z' || e.key === 'Z')) {
         e.preventDefault();
-        if (e.shiftKey) st.redo();
-        else st.undo();
+        if (e.shiftKey) {
+          if (st.future.length > 0) {
+            editSummary.increment('redoCount');
+            editSummary.increment('shortcutInvocations');
+          }
+          st.redo();
+        } else {
+          if (st.past.length > 0) {
+            editSummary.increment('undoCount');
+            editSummary.increment('shortcutInvocations');
+          }
+          st.undo();
+        }
         return;
       }
       if (e.ctrlKey && (e.key === 'y' || e.key === 'Y')) {
         e.preventDefault();
+        if (st.future.length > 0) {
+          editSummary.increment('redoCount');
+          editSummary.increment('shortcutInvocations');
+        }
         st.redo();
         return;
       }
@@ -583,6 +652,8 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         case 's':
         case 'S':
           e.preventDefault();
+          editSummary.increment('splits');
+          editSummary.increment('shortcutInvocations');
           st.splitAtPlayhead();
           break;
         case 'Delete':
@@ -805,7 +876,12 @@ const UndoRedoButtons: React.FC = () => {
         variant="outline"
         size="icon"
         disabled={!canUndo}
-        onClick={undo}
+        onClick={() => {
+          // Disabled buttons never fire, so every click here is a real undo.
+          editSummary.increment('undoCount');
+          editSummary.increment('uiInvocations');
+          undo();
+        }}
         title={t('contentStudio.editor.undo')}
         aria-label={t('contentStudio.editor.undo')}
       >
@@ -815,7 +891,11 @@ const UndoRedoButtons: React.FC = () => {
         variant="outline"
         size="icon"
         disabled={!canRedo}
-        onClick={redo}
+        onClick={() => {
+          editSummary.increment('redoCount');
+          editSummary.increment('uiInvocations');
+          redo();
+        }}
         title={t('contentStudio.editor.redo')}
         aria-label={t('contentStudio.editor.redo')}
       >
