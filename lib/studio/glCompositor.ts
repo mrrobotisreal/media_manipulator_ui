@@ -25,6 +25,15 @@ import type { StudioBlendMode } from '@/lib/studioTypes';
  * separable blend equations are defined on straight color, and the composite
  * base is opaque black, so this is exact. (The context is alpha:false; canvas
  * compositing with the page never sees our internal alpha.)
+ *
+ * BLEND SPEC (part 12 parity closure — both sides state this one semantic):
+ *   out = mix(backdrop, blendRGB(backdrop, src), layerAlpha)
+ * where layerAlpha = srcTextureAlpha × clipOpacity(×dissolve) × chromaKeyAlpha
+ * and blendRGB is per-RGB-channel (ffmpeg vf_blend on gbrp; `overlay` mode
+ * conditions on the backdrop). The export graph computes exactly this via
+ * gbrp blend + alphamerge + straight-alpha overlay (compositeStep in
+ * studio_export.go); LUT intensity is the same linear mix(c, graded, i) on
+ * both sides.
  */
 
 export interface GLTransform {
@@ -121,26 +130,46 @@ uniform vec3 uKeyColor;
 uniform float uSimilarity, uChromaBlend, uDespill;
 
 const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
+// vf_vibrance's luma coefficients as applied to (r,g,b) — its rc/bc weights are
+// swapped vs BT.709; we mirror the filter, not the standard.
+const vec3 VIB_LUMA = vec3(0.072186, 0.715158, 0.212656);
 
-vec3 applyEq(vec3 c) {
-  c = (c - 0.5) * uEq.y + 0.5 + uEq.x;
+// applyEqCS mirrors ffmpeg's eq filter (contrast/saturation stage shared by the
+// legacy adjustments and the lumetri tail): contrast scales LUMA about 0.5
+// (+brightness), saturation scales chroma independently of contrast — eq gives
+// the chroma planes contrast=saturation, untouched by the luma contrast.
+vec3 applyEqCS(vec3 c, float brightness, float contrast, float saturation) {
   float l = dot(c, LUMA);
-  return mix(vec3(l), c, uEq.z);
+  float nl = (l - 0.5) * contrast + 0.5 + brightness;
+  return clamp(vec3(nl) + (c - vec3(l)) * saturation, 0.0, 1.0);
 }
 
+vec3 applyEq(vec3 c) {
+  return applyEqCS(c, uEq.x, uEq.y, uEq.z);
+}
+
+// applyLumetri mirrors the export chain (lumetriArgs in studio_export.go)
+// stage-for-stage, clamping between stages like each 8-bit ffmpeg filter:
+//   colorchannelmixer(2^exposure) → colorbalance(midtones) → vibrance → eq.
+// Reference TS implementation with unit tests: lib/studio/colorMath.ts.
 vec3 applyLumetri(vec3 c) {
-  c *= exp2(uExposure);
-  c = (c - 0.5) * uLumContrast + 0.5;
+  c = clamp(c * exp2(uExposure), 0.0, 1.0);
+  // colorbalance midtones (vf_colorbalance get_component): lightness =
+  // (max+min)/2, weight = clip((l-1/3)*4+.5)*clip((1-l-1/3)*4+.5)*0.7, then
+  // rm=+temp/100, gm=-tint/100, bm=-temp/100 added under that weight.
   float t = uTemperature / 100.0;
   float ti = uTint / 100.0;
-  c.r += 0.15 * t;
-  c.b -= 0.15 * t;
-  c.g -= 0.15 * ti;
-  float l = dot(c, LUMA);
-  c = mix(vec3(l), c, uLumSaturation);
-  float sat = clamp(length(c - vec3(l)), 0.0, 1.0);
-  c = mix(vec3(l), c, 1.0 + uVibrance * (1.0 - sat));
-  return c;
+  float cbl = 0.5 * (max(c.r, max(c.g, c.b)) + min(c.r, min(c.g, c.b)));
+  float w = clamp((cbl - 0.333) * 4.0 + 0.5, 0.0, 1.0)
+          * clamp((1.0 - cbl - 0.333) * 4.0 + 0.5, 0.0, 1.0) * 0.7;
+  c = clamp(c + vec3(t, -ti, -t) * w, 0.0, 1.0);
+  // vibrance (vf_vibrance, balance=1): factor 1 + i*(1 - sign(i)*(max-min)),
+  // lerp from its luma per channel.
+  float vsat = max(c.r, max(c.g, c.b)) - min(c.r, min(c.g, c.b));
+  float vl = dot(c, VIB_LUMA);
+  float vf = 1.0 + uVibrance * (1.0 - sign(uVibrance) * vsat);
+  c = clamp(mix(vec3(vl), c, vf), 0.0, 1.0);
+  return applyEqCS(c, 0.0, uLumContrast, uLumSaturation);
 }
 
 vec2 toUV(vec3 c) {

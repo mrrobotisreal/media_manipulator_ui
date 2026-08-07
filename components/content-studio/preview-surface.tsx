@@ -11,10 +11,20 @@ import {
   topVideoClip,
   studioProxyUrl,
   transitionRamp,
+  audioFadeGain,
   cssFilterForAdjustments,
   volumeAtClipTime,
   studioAssetFileUrl,
 } from '@/lib/studio/previewEngine';
+import { peekPeaks, prefetchPeaks } from '@/lib/studio/usePeaks';
+import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
+import {
+  INITIAL_DUCK_ENVELOPE,
+  advanceEnvelope,
+  bedGainForVoiceLevel,
+  peakLevelAt,
+  type DuckEnvelopeState,
+} from '@/lib/studio/duckingEnvelope';
 import { GLCompositor, type GLLayer } from '@/lib/studio/glCompositor';
 import type { ActiveClip } from '@/lib/studio/previewEngine';
 import { parseCubeLut } from '@/lib/studio/lutParser';
@@ -56,9 +66,10 @@ function hexToRgb01(hex: string): [number, number, number] {
 }
 
 // buildGLLayer maps an active video clip + its pool slot to a compositor layer.
-// Effect-stack lookup takes the first enabled effect of each type (preview
-// honors one lumetri/lut/chroma per clip; the export applies the full ordered
-// stack — documented divergence).
+// Effect-stack lookup takes the FIRST ENABLED effect of each type — the export
+// does the same (pickEffects in studio_export.go), so the cap is a consistent,
+// intended policy on both sides (part 12; ordered stacks arrive with the P2
+// adjustment-layer work).
 function buildGLLayer(a: ActiveClip, slot: number, el: HTMLVideoElement, t: number, comp: GLCompositor): GLLayer {
   const clip = a.clip;
   const eq = clip.adjustments
@@ -218,6 +229,12 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     }
   }, [applyGovernor]);
 
+  // Level-driven ducking preview (part 12): the envelope state lives across
+  // frames; the peaks capability gates the prefetch (embed backends without
+  // /peaks degrade to presence-driven ducking inside syncFrame).
+  const duckEnvRef = React.useRef<DuckEnvelopeState>(INITIAL_DUCK_ENVELOPE);
+  const peaksCapable = useStudioBackend().capabilities.peaks;
+
   const isPlaying = useStudioStore((s) => s.isPlaying);
   const playhead = useStudioStore((s) => s.playhead);
   const project = useStudioStore((s) => s.project);
@@ -237,6 +254,20 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const topNow = React.useMemo(() => topVideoClip(activeNow), [activeNow]);
   const building = !!topNow && assets[topNow.clip.assetId]?.status !== 'ready';
   const hasClips = React.useMemo(() => tracks.some((tr) => tr.clips.length > 0), [tracks]);
+
+  // Warm the voice-track clips' waveform peaks so the level-driven ducking
+  // preview can read them synchronously at rAF time (module cache in usePeaks).
+  const projectAudio = project?.audio;
+  const voiceAssetIds = React.useMemo(() => {
+    if (!projectAudio?.duckingEnabled || !projectAudio.duckVoiceTrackId) return [] as string[];
+    const voiceTrack = tracks.find((tr) => tr.id === projectAudio.duckVoiceTrackId);
+    if (!voiceTrack) return [] as string[];
+    return Array.from(new Set(voiceTrack.clips.map((c) => c.assetId)));
+  }, [projectAudio, tracks]);
+  React.useEffect(() => {
+    if (!peaksCapable) return;
+    for (const id of voiceAssetIds) prefetchPeaks(id);
+  }, [peaksCapable, voiceAssetIds]);
 
   // Text/location overlays for the active video clips (faked over the surface;
   // the export draws them in with drawtext).
@@ -529,8 +560,12 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         }
         // Evaluate the clip's volume automation at the current clip-local time so
         // keyframed gain is honored live in preview (the export uses the same
-        // piecewise function via volume='…':eval=frame).
-        const gainNow = volumeAtClipTime(a.clip, t - a.clip.timelineStart);
+        // piecewise function via volume='…':eval=frame), times the equal-power
+        // crossfade — the same qsin curve as the export's afades (part 12).
+        const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips;
+        const gainNow =
+          volumeAtClipTime(a.clip, t - a.clip.timelineStart) *
+          (trackClips ? audioFadeGain(a.clip, trackClips, t) : 1);
         routeSlotAudio(i, a.trackId, gainNow, a.trackMuted);
         if (playing) {
           if (el.paused) void el.play().catch(() => {});
@@ -539,28 +574,50 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         }
       }
 
-      // Track gains: mute + presence-driven auto-ducking. This is the preview
-      // approximation of the export's level-driven sidechain compression — here
-      // non-voice tracks duck whenever a voice-track clip is present, ramped with
-      // the configured attack/release. (Documented divergence: export is
-      // level-driven; preview is presence-driven.)
+      // Track gains: mute + LEVEL-DRIVEN auto-ducking (part 12). The bed gain
+      // follows the actual voice-track level read from ingested waveform peaks,
+      // through the same static compressor curve as the export's
+      // sidechaincompress (threshold/ratio mirrored from studio_export.go),
+      // smoothed by a pure attack/release envelope over timeline time
+      // (lib/studio/duckingEnvelope.ts). Clips whose peaks are unavailable
+      // (embed backends without /peaks, or still loading) fall back to
+      // presence-driven full level — documented degraded mode. A muted voice
+      // track contributes no sidechain key, exactly like the export.
       const ag = audio.current;
       if (ag.ctx) {
         const duckCfg = st.project?.audio;
-        const ducking = !!duckCfg?.duckingEnabled && !!duckCfg.duckVoiceTrackId;
-        const voiceActive = ducking && active.some((ac) => ac.trackId === duckCfg!.duckVoiceTrackId);
-        const duckGain = ducking ? Math.pow(10, -(duckCfg!.duckAmountDb ?? 0) / 20) : 1;
-        const attackTc = Math.max(0.01, (duckCfg?.duckAttackMs ?? 120) / 1000 / 3);
-        const releaseTc = Math.max(0.01, (duckCfg?.duckReleaseMs ?? 400) / 1000 / 3);
+        const voiceTrackId =
+          duckCfg?.duckingEnabled && duckCfg.duckVoiceTrackId ? duckCfg.duckVoiceTrackId : '';
+        const voiceTrack = voiceTrackId ? trks.find((tr) => tr.id === voiceTrackId) : undefined;
+        const ducking = !!voiceTrack && !voiceTrack.muted;
+        let bedTarget = 1;
+        if (ducking) {
+          let level = 0;
+          for (const ac of active) {
+            if (ac.trackId !== voiceTrackId) continue;
+            const clipGain =
+              volumeAtClipTime(ac.clip, t - ac.clip.timelineStart) *
+              audioFadeGain(ac.clip, voiceTrack.clips, t);
+            const pk = peekPeaks(ac.clip.assetId);
+            level = Math.max(level, (pk ? peakLevelAt(pk, ac.sourceTime) : 1) * clipGain);
+          }
+          bedTarget = bedGainForVoiceLevel(level, duckCfg?.duckAmountDb ?? 0);
+        }
+        duckEnvRef.current = advanceEnvelope(duckEnvRef.current, bedTarget, t, {
+          attackMs: duckCfg?.duckAttackMs ?? 120,
+          releaseMs: duckCfg?.duckReleaseMs ?? 400,
+        });
+        const envGain = duckEnvRef.current.gain;
         for (const tr of trks) {
           const tg = ag.trackGains.get(tr.id);
           if (!tg) continue;
           let target = tr.muted ? 0 : 1;
-          if (ducking && voiceActive && !tr.muted && tr.id !== duckCfg!.duckVoiceTrackId) {
-            target = duckGain;
+          if (ducking && !tr.muted && tr.id !== voiceTrackId) {
+            target = Math.min(target, envGain);
           }
-          const tc = target < tg.gain.value ? attackTc : releaseTc;
-          tg.gain.setTargetAtTime(target, ag.ctx.currentTime, tc);
+          // The envelope owns attack/release; the tiny time constant here only
+          // dezippers the per-frame steps.
+          tg.gain.setTargetAtTime(target, ag.ctx.currentTime, 0.02);
         }
       }
 

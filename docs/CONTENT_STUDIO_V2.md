@@ -51,43 +51,56 @@ uniform packer, and (c) — by name + range parity — the Go ffmpeg emitter
 (`internal/services/studio_export.go`, which references the registry by path).
 Adding a parameter = edit the registry + the Zod schema + the Go clamp.
 
-## 3. Preview ↔ export parity
+## 3. Preview ↔ export parity (part 12: closed or bounded)
 
-The **server render is authoritative**; the WebGL2 preview approximates it as
-closely as possible. The shared transform spec (crop → fit → center+offset →
-clockwise rotate; fragment order eq → lumetri → lut → chromakey → opacity →
-blend) is written verbatim in both `lib/studio/glCompositor.ts` and
+The **server render is authoritative** (ADR ws/0002); the WebGL2 preview
+implements the SAME stated math, and the residual is bounded per effect by the
+machine-readable tolerance table `lib/studio/parityTolerances.ts` (enforced by
+the part-13 workstation harness; prose rationale + calibration protocol in
+`docs/content-studio/design/03-parity-tolerances.md` at the workspace root).
+The shared transform spec (crop → fit → center+offset → clockwise rotate;
+fragment order eq → lumetri → lut → chromakey → opacity → blend) is written
+verbatim in both `lib/studio/glCompositor.ts` and
 `internal/services/studio_export.go`.
 
-Exact matches: `eq` adjustments, crop, transform position/scale, exposure
-(`c·2^exposure` ↔ `colorchannelmixer`), LUT (trilinear), volume keyframes
-(piecewise ↔ `volume='…':eval=frame`).
+### Closed in part 12 (both sides now state one spec)
 
-### Known divergences (intentional / documented)
+- **Lumetri**: the shader mirrors the export chain stage-for-stage with
+  per-stage clamps — `2^exposure` → `colorbalance` midtones (exact weight
+  curve) → `vf_vibrance`'s exact formula → `eq`-equivalent contrast/saturation
+  (chroma decoupled from luma contrast). Reference math + unit tests:
+  `lib/studio/colorMath.ts`.
+- **Blend modes**: one semantic both sides —
+  `out = mix(backdrop, blendRGB(backdrop, src), layerAlpha)`. The export
+  blends on `gbrp` (per-RGB-channel, `overlay` conditions on the backdrop)
+  and windows by the layer's real alpha via `alphaextract`/`alphamerge` +
+  straight-alpha `overlay`. Dissolves into blend-mode clips now work in export.
+- **LUT intensity < 1**: both sides are the linear `mix(c, graded, intensity)`
+  — part 12 fixed the export's inverted `blend all_opacity` input order
+  (graded is now the top input).
+- **Audio crossfades**: equal-power (`qsin`) on BOTH sides — the preview
+  applies `audioFadeGain()` (previewEngine) with the export's exact fade
+  placement. **Video alpha dissolves are linear on both sides, by spec.**
+- **Auto-ducking**: preview is now **level-driven** like the export — voice
+  peaks (`/peaks`) → the `sidechaincompress` transfer curve (threshold 0.02,
+  `ratio = clamp(1+duckAmountDb,1,20)`, makeup 1) → pure attack/release
+  envelope (`lib/studio/duckingEnvelope.ts`). Documented approximations: peak
+  vs RMS detection, hard vs soft knee, rAF-rate smoothing. Without peaks
+  (embed backends, still loading) it degrades to presence-driven full level.
 
-- **Lumetri temperature/tint**: preview uses a linear RGB shift (`±0.15·t`);
-  export uses `colorbalance`. Both warm/cool; the curves differ slightly.
-- **Effect stack**: preview honors the **first enabled** effect of each type;
-  export does the same (fixed chain order). Multiple effects of one type beyond
-  the first are ignored in both.
-- **Blend modes**: export uses ffmpeg `blend=all_mode=` (which ignores source
-  alpha for some modes) within the clip's enable window; blend + dissolve
-  interaction can differ slightly from the shader.
-- **LUT intensity < 1**: export uses `split`+`blend=all_opacity`; preview uses a
-  shader `mix`.
-- **Auto-ducking**: export is **level-driven** (`sidechaincompress`); preview is
-  **presence-driven** (ramps non-voice tracks toward `10^(-dB/20)` while a
-  voice-track clip is present). `ratio = clamp(1+duckAmountDb, 1, 20)` is a
-  heuristic.
-- **Audio crossfades**: export adds `:curve=qsin` (equal-power) to afades — a
-  deliberate global improvement over linear. Video alpha fades stay **linear**.
-- **Rotation sign**: both use clockwise-positive `rotationDeg`; verify ffmpeg
-  `rotate` direction on the server matches the shader.
-- **Volume boost > 1.0** is honored in the Web Audio preview path but clamped to
-  1.0 in the non-Web-Audio fallback (`HTMLMediaElement.volume` max).
+### Intended policies / degraded modes (documented, not divergences)
+
+- **Effect stack**: BOTH sides honor the first **enabled** effect of each type
+  (`pickEffects` ↔ `buildGLLayer`); extra same-type effects are ignored
+  identically. Ordered stacks arrive with the P2 adjustment-layer work.
+- **Rotation sign**: both clockwise-positive; the harness's rotation scenario
+  verifies ffmpeg `rotate` spins the same way on the server.
+- **Volume boost > 1.0** is honored in the Web Audio preview path but clamped
+  to 1.0 in the non-Web-Audio fallback (`HTMLMediaElement.volume` max).
 - **WebGL fallback**: on context-creation failure or `webglcontextlost`, the
-  preview reverts to the pooled-`<video>` CSS path (CSS `filter` approximations,
-  no LUT/chroma/blend); the surface never blanks.
+  preview reverts to the pooled-`<video>` CSS path (CSS `filter`
+  approximations, no LUT/chroma/blend) — degraded by design, outside the
+  harness's scope; the surface never blanks.
 
 ## 4. Server assumptions (please confirm)
 
@@ -114,6 +127,8 @@ export shares the transcode bucket.
 
 ## 6. Telemetry
 
-Derived-metadata only (`lib/studio/telemetry.ts`) — never text/filenames:
-`studio_effect_added {type}`, `studio_captions_generated {cueCountBucket}`,
-`studio_export {hasLut, hasChromaKey, loudness}`.
+**Superseded by ADR ws/0003** (part 10): Content Studio analytics now use the
+first-party `studio_*` event taxonomy in `lib/analytics/events.ts` (mirrored by
+the analytics service's Go catalog), with the edit-summary aggregator and
+bucket helpers in `lib/analytics/buckets.ts`. The `lib/studio/telemetry.ts`
+event list described here is historical.

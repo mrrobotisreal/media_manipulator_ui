@@ -36,6 +36,37 @@ async function fetchPeaks(assetId: string): Promise<DecodedPeaks> {
   return decoded;
 }
 
+/**
+ * Synchronous cache read for rAF-time consumers (the level-driven ducking
+ * preview reads voice-clip peaks every frame). Returns undefined until a
+ * usePeaks() query or prefetchPeaks() has populated the cache.
+ */
+export function peekPeaks(assetId: string): DecodedPeaks | undefined {
+  return cache.get(assetId);
+}
+
+const prefetchPending = new Set<string>();
+const prefetchFailed = new Set<string>();
+
+/**
+ * Fire-and-forget peaks fetch into the module cache (used to warm the ducking
+ * envelope's voice-track peaks). Failures are remembered and not retried this
+ * session — consumers degrade to presence-driven ducking. No-op when the
+ * active backend doesn't serve /peaks.
+ */
+export function prefetchPeaks(assetId: string): void {
+  if (!assetId || cache.has(assetId) || prefetchPending.has(assetId) || prefetchFailed.has(assetId)) return;
+  if (!studioPeaksUrl(assetId)) return;
+  prefetchPending.add(assetId);
+  fetchPeaks(assetId)
+    .catch(() => {
+      prefetchFailed.add(assetId);
+    })
+    .finally(() => {
+      prefetchPending.delete(assetId);
+    });
+}
+
 export function usePeaks(assetId: string | null, enabled = true) {
   // Skip entirely when the active backend doesn't serve /peaks (e.g. CreaTV
   // Darkroom today) — the waveform UI degrades gracefully to no peaks.

@@ -73,7 +73,9 @@ export function resolveActiveClips(tracks: StudioTrack[], t: number): ActiveClip
 
 /**
  * transitionRamp returns a clip's cross-dissolve opacity multiplier at time t:
- * ramps 0→1 across its transitionInSeconds window, then stays 1.
+ * ramps 0→1 across its transitionInSeconds window, then stays 1. LINEAR by
+ * spec on both sides — the export's `fade=…:alpha=1` is linear too (audio
+ * crossfades are the equal-power ones; see audioFadeGain).
  */
 export function transitionRamp(clip: StudioClip, t: number): number {
   const d = clip.transitionInSeconds ?? 0;
@@ -82,6 +84,68 @@ export function transitionRamp(clip: StudioClip, t: number): number {
   if (into <= 0) return 0;
   if (into >= d) return 1;
   return into / d;
+}
+
+/** A clip's transition-in duration, 0 when unset (mirrors Go transitionOf). */
+function transitionSeconds(c: StudioClip): number {
+  const d = c.transitionInSeconds ?? 0;
+  return d > 0 ? d : 0;
+}
+
+/**
+ * nextClipTransition returns the transition-in duration of the clip that
+ * FOLLOWS `clip` on its track — the export pairs that duration with this
+ * clip's audio fade-OUT (collectExportRefs walks clips stable-sorted by
+ * timelineStart and takes ordered[i+1]). Ties on timelineStart keep array
+ * order, matching Go's sort.SliceStable.
+ */
+export function nextClipTransition(trackClips: StudioClip[], clip: StudioClip): number {
+  const i = trackClips.indexOf(clip);
+  let best = -1;
+  for (let j = 0; j < trackClips.length; j += 1) {
+    const c = trackClips[j];
+    if (c === clip) continue;
+    const after =
+      c.timelineStart > clip.timelineStart ||
+      (c.timelineStart === clip.timelineStart && j > i);
+    if (!after) continue;
+    if (
+      best < 0 ||
+      c.timelineStart < trackClips[best].timelineStart ||
+      (c.timelineStart === trackClips[best].timelineStart && j < best)
+    ) {
+      best = j;
+    }
+  }
+  return best >= 0 ? transitionSeconds(trackClips[best]) : 0;
+}
+
+/**
+ * audioFadeGain evaluates the clip's audio crossfade multiplier at timeline
+ * time `t`, using the SAME equal-power (qsin) curve as the export's
+ * `afade=…:curve=qsin` (part 12 parity closure — preview ramps were linear
+ * before): fade-in gain = sin(x·π/2), fade-out gain = sin((1−x)·π/2), x being
+ * 0→1 progress through the fade window. Fade-in spans the clip's own
+ * transition; fade-out spans the next clip-on-track's transition, placed at
+ * the clip's tail (skipped when it would cover the whole clip, like the
+ * export). Video alpha dissolves intentionally stay LINEAR on both sides —
+ * see transitionRamp.
+ */
+export function audioFadeGain(clip: StudioClip, trackClips: StudioClip[], t: number): number {
+  const dur = clipDuration(clip);
+  if (dur <= 0) return 1;
+  const x = t - clip.timelineStart;
+  let g = 1;
+  const fadeIn = Math.min(transitionSeconds(clip), dur);
+  if (fadeIn > 0 && x < fadeIn) {
+    g *= Math.sin((Math.PI / 2) * Math.max(0, x / fadeIn));
+  }
+  const fadeOut = Math.min(nextClipTransition(trackClips, clip), dur);
+  if (fadeOut > 0 && dur > fadeOut && x > dur - fadeOut) {
+    const p = Math.min(1, (x - (dur - fadeOut)) / fadeOut);
+    g *= Math.sin((Math.PI / 2) * (1 - p));
+  }
+  return g;
 }
 
 /**

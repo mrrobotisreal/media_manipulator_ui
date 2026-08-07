@@ -10,8 +10,10 @@ vi.mock('@/lib/studio/studioBackend', () => ({
 }));
 
 import {
+  audioFadeGain,
   clipDuration,
   clipEnd,
+  nextClipTransition,
   timelineDuration,
   resolveActiveClips,
   transitionRamp,
@@ -177,5 +179,55 @@ describe('volumeAtClipTime', () => {
   it('keyframes override the flat volume', () => {
     const c = clip('a', 0, 10, { volume: 0.1, volumeKeyframes: [{ t: 0, gain: 1.5 }] });
     expect(volumeAtClipTime(c, 5)).toBe(1.5);
+  });
+});
+
+describe('audio crossfades (equal-power, mirroring export afade qsin)', () => {
+  it('nextClipTransition picks the following clip on the track', () => {
+    const a = clip('a', 0, 5);
+    const b = clip('b', 4, 5, { transitionInSeconds: 2 });
+    expect(nextClipTransition([a, b], a)).toBe(2);
+    expect(nextClipTransition([a, b], b)).toBe(0);
+    expect(nextClipTransition([a], a)).toBe(0);
+  });
+
+  it('nextClipTransition breaks timelineStart ties by array order (stable sort)', () => {
+    const a = clip('a', 0, 5);
+    const b = clip('b', 0, 5, { transitionInSeconds: 1.5 });
+    expect(nextClipTransition([a, b], a)).toBe(1.5);
+    expect(nextClipTransition([a, b], b)).toBe(0);
+  });
+
+  it('fade-in follows sin(x·π/2) over the clip transition window', () => {
+    const c = clip('a', 10, 4, { transitionInSeconds: 2 });
+    expect(audioFadeGain(c, [c], 10)).toBeCloseTo(0);
+    expect(audioFadeGain(c, [c], 11)).toBeCloseTo(Math.SQRT1_2);
+    expect(audioFadeGain(c, [c], 12.5)).toBe(1);
+  });
+
+  it('fade-out spans the tail using the NEXT clip transition, curve sin((1−x)·π/2)', () => {
+    const a = clip('a', 0, 6);
+    const b = clip('b', 4.5, 6, { transitionInSeconds: 1.5 });
+    // fade-out window: [4.5, 6) on clip a
+    expect(audioFadeGain(a, [a, b], 4)).toBe(1);
+    expect(audioFadeGain(a, [a, b], 5.25)).toBeCloseTo(Math.SQRT1_2);
+    expect(audioFadeGain(a, [a, b], 5.999)).toBeCloseTo(Math.sin((Math.PI / 2) * (1 - 0.999 / 1)), 2);
+  });
+
+  it('a crossfade sums to constant power (sin² + cos² = 1)', () => {
+    const a = clip('a', 0, 6);
+    const b = clip('b', 4.5, 6, { transitionInSeconds: 1.5 });
+    for (const t of [4.6, 5, 5.4, 5.9]) {
+      const gOut = audioFadeGain(a, [a, b], t);
+      const gIn = audioFadeGain(b, [a, b], t);
+      expect(gOut * gOut + gIn * gIn).toBeCloseTo(1);
+    }
+  });
+
+  it('skips the fade-out when it would cover the whole clip (export parity)', () => {
+    const a = clip('a', 0, 1);
+    const b = clip('b', 0.5, 5, { transitionInSeconds: 3 });
+    // clamped fadeOut = dur → export omits afade out (dur > FadeOut fails)
+    expect(audioFadeGain(a, [a, b], 0.9)).toBe(1);
   });
 });
