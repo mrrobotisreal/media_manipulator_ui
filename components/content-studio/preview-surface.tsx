@@ -29,10 +29,12 @@ import {
   type DuckEnvelopeState,
 } from '@/lib/studio/duckingEnvelope';
 import { GLCompositor, type GLLayer } from '@/lib/studio/glCompositor';
+import { rasterTitle, titleRasterKey } from '@/lib/studio/titleRaster';
+import { ensureStudioFontsLoaded } from '@/lib/studio/titleFonts';
 import type { ActiveClip } from '@/lib/studio/previewEngine';
 import { parseCubeLut } from '@/lib/studio/lutParser';
 import { registerEyedropper, rgbToHex } from '@/lib/studio/eyedropper';
-import { DEFAULT_CAPTION_STYLE } from '@/lib/studioTypes';
+import { DEFAULT_CAPTION_STYLE, type StudioTitle } from '@/lib/studioTypes';
 import { Segmented } from '@/components/darkroom/segmented';
 import {
   QUALITY_SCALE,
@@ -68,17 +70,18 @@ function hexToRgb01(hex: string): [number, number, number] {
   ];
 }
 
-// buildGLLayer maps an active video clip + its pool slot to a compositor layer.
-// Effect-stack lookup takes the FIRST ENABLED effect of each type — the export
-// does the same (pickEffects in studio_export.go), so the cap is a consistent,
-// intended policy on both sides (part 12; ordered stacks arrive with the P2
-// adjustment-layer work). Part 15: `values` carries the per-frame keyframed
-// transform/opacity/effect-params (clipValuesAt); a keyframed param overrides
-// the effect's static field through the same uniforms.
+// buildGLLayer maps an active video clip + its texture source to a compositor
+// layer. Effect-stack lookup takes the FIRST ENABLED effect of each type — the
+// export does the same (pickEffects in studio_export.go), so the cap is a
+// consistent, intended policy on both sides (part 12; ordered stacks arrive
+// with the P2 adjustment-layer work). Part 15: `values` carries the per-frame
+// keyframed transform/opacity/effect-params (clipValuesAt); a keyframed param
+// overrides the effect's static field through the same uniforms. Part 16: a
+// title clip passes `src.imageKey` (its raster texture) instead of a pool slot
+// and flows through the identical layer pipeline.
 function buildGLLayer(
   a: ActiveClip,
-  slot: number,
-  el: HTMLVideoElement,
+  src: { slot: number; srcW: number; srcH: number; imageKey?: string },
   trs: TransitionLayerState,
   comp: GLCompositor,
   values: ClipValues,
@@ -124,9 +127,10 @@ function buildGLLayer(
     rotationDeg: values.transform.rotationDeg,
   };
   return {
-    slot,
-    srcW: el.videoWidth || 16,
-    srcH: el.videoHeight || 9,
+    slot: src.slot,
+    imageKey: src.imageKey,
+    srcW: src.srcW,
+    srcH: src.srcH,
     transform,
     crop: clip.crop,
     opacity: values.opacity * trs.alpha,
@@ -212,6 +216,15 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     r: Float32Array<ArrayBuffer> | null;
   }>({ l: null, r: null });
   const [boxH, setBoxH] = React.useState(0);
+  const [boxW, setBoxW] = React.useState(0);
+
+  // Title raster cache (part 16): clip id → offscreen 2D canvas + content key.
+  // Re-rastered only when the title JSON or the backing size changes (the
+  // dirty-flag contract) — never per frame.
+  const titleRasterCache = React.useRef<Map<string, { canvas: HTMLCanvasElement; key: string }>>(new Map());
+  // Bumped when the @font-face set finishes loading so cached rasters drawn
+  // with fallback fonts are invalidated exactly once.
+  const fontsVersionRef = React.useRef(0);
 
   // WebGL2 compositor (the accurate visual layer). When unavailable or after a
   // context loss we fall back to the pooled-<video> CSS path; glOkRef gates the
@@ -283,7 +296,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const duration = useStudioStore((s) => s.duration);
   const activeNow = React.useMemo(() => resolveActiveClips(tracks, playhead), [tracks, playhead]);
   const topNow = React.useMemo(() => topVideoClip(activeNow), [activeNow]);
-  const building = !!topNow && assets[topNow.clip.assetId]?.status !== 'ready';
+  // Title clips are assetless and always renderable — never "building".
+  const building = !!topNow && !topNow.clip.title && assets[topNow.clip.assetId]?.status !== 'ready';
   const hasClips = React.useMemo(() => tracks.some((tr) => tr.clips.length > 0), [tracks]);
 
   // Warm the voice-track clips' waveform peaks so the level-driven ducking
@@ -299,6 +313,36 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     if (!peaksCapable) return;
     for (const id of voiceAssetIds) prefetchPeaks(id);
   }, [peaksCapable, voiceAssetIds]);
+
+  // Safe-margin guides (part 16): shown while a single selected clip is a
+  // title clip (action-safe 90% / title-safe 80% of the frame).
+  const selectedClipIds = useStudioStore((s) => s.selectedClipIds);
+  const selectedTitle = React.useMemo(() => {
+    if (selectedClipIds.length !== 1) return false;
+    for (const tr of tracks) {
+      const c = tr.clips.find((cc) => cc.id === selectedClipIds[0]);
+      if (c) return !!c.title;
+    }
+    return false;
+  }, [selectedClipIds, tracks]);
+
+  // Active title clips for the CSS fallback path (no WebGL): drawn as DOM
+  // canvases via the same raster engine. The GL path never uses these.
+  const fallbackTitleItems = React.useMemo(() => {
+    if (glOk) return [];
+    return activeNow
+      .filter((a) => a.trackKind === 'video' && !!a.clip.title)
+      .map((a) => {
+        const vals = clipValuesAt(a.clip, playhead - a.clip.timelineStart);
+        return {
+          key: a.clip.id,
+          title: a.clip.title!,
+          transform: vals.transform,
+          opacity: vals.opacity * transitionRamp(a.clip, playhead),
+          z: 7,
+        };
+      });
+  }, [glOk, activeNow, playhead]);
 
   // Text/location overlays for the active video clips (faked over the surface;
   // the export draws them in with drawtext).
@@ -675,7 +719,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       }
 
       // WebGL composite: upload each active video slot's current frame and draw
-      // the layers bottom→top (the exact zOf ordering used above).
+      // the layers bottom→top (the exact zOf ordering used above). Title clips
+      // (part 16) join the same ordering with their raster texture as source.
       const comp = compositorRef.current;
       if (gl && comp && comp.isAvailable()) {
         const pw = st.project?.width ?? 1920;
@@ -686,23 +731,52 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           .filter(
             (a) =>
               a.trackKind === 'video' &&
-              clipSlots.has(a.clip.id) &&
+              (clipSlots.has(a.clip.id) || !!a.clip.title) &&
               !hiddenTrackIds.has(a.trackId),
           )
           .sort((x, y) => (zOf.get(x.clip.id) ?? 0) - (zOf.get(y.clip.id) ?? 0));
         const layers: GLLayer[] = [];
         for (const a of ordered) {
+          const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips ?? [];
+          const trs = clipTransitionState(a.clip, trackClips, t);
+          const vals = valuesByClip.get(a.clip.id) ?? clipValuesAt(a.clip, t - a.clip.timelineStart);
+          if (a.clip.title) {
+            // Raster (dirty-flag cached) + upload the title texture, then flow
+            // through the identical per-clip layer pipeline as video.
+            const back = comp.backingSize(pw, ph);
+            const key = `${fontsVersionRef.current}:${titleRasterKey(a.clip.title, back.w, back.h)}`;
+            let entry = titleRasterCache.current.get(a.clip.id);
+            if (!entry || entry.key !== key) {
+              const canvas = entry?.canvas ?? document.createElement('canvas');
+              canvas.width = back.w;
+              canvas.height = back.h;
+              const ctx2d = canvas.getContext('2d');
+              if (!ctx2d) continue;
+              rasterTitle(ctx2d, a.clip.title, back.w, back.h, pw);
+              entry = { canvas, key };
+              titleRasterCache.current.set(a.clip.id, entry);
+            }
+            if (!comp.uploadImage(a.clip.id, entry.canvas, key)) continue;
+            layers.push(
+              buildGLLayer(
+                a,
+                { slot: -1, srcW: entry.canvas.width, srcH: entry.canvas.height, imageKey: a.clip.id },
+                trs,
+                comp,
+                vals,
+              ),
+            );
+            if (trs.dip && trs.dip.alpha > 0) {
+              layers.push({ slot: -1, srcW: pw, srcH: ph, opacity: trs.dip.alpha, solid: trs.dip.color === 'black' ? [0, 0, 0] : [1, 1, 1] });
+            }
+            continue;
+          }
           const i = clipSlots.get(a.clip.id);
           if (i === undefined) continue;
           const el = poolEls.current[i];
           if (!el) continue;
           comp.uploadSlot(i, el, el.currentTime);
-          // Typed transition state (part 14): the clip's own entrance + the next
-          // clip's push-out, evaluated against its track's clip list.
-          const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips ?? [];
-          const trs = clipTransitionState(a.clip, trackClips, t);
-          const vals = valuesByClip.get(a.clip.id) ?? clipValuesAt(a.clip, t - a.clip.timelineStart);
-          layers.push(buildGLLayer(a, i, el, trs, comp, vals));
+          layers.push(buildGLLayer(a, { slot: i, srcW: el.videoWidth || 16, srcH: el.videoHeight || 9 }, trs, comp, vals));
           if (trs.dip && trs.dip.alpha > 0) {
             // Dip color layer: a full-canvas solid quad above both clips,
             // peaking at the transition midpoint (export: color= source + fades).
@@ -854,7 +928,10 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     const el = containerRef.current;
     if (!el || typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) setBoxH(entry.contentRect.height);
+      for (const entry of entries) {
+        setBoxH(entry.contentRect.height);
+        setBoxW(entry.contentRect.width);
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -903,6 +980,37 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       glOkRef.current = false;
     };
   }, []);
+
+  // Load the curated title fonts once (part 16). When the faces land, bump the
+  // raster version so any title drawn with a fallback font re-rasters, and
+  // repaint the paused frame.
+  React.useEffect(() => {
+    let cancelled = false;
+    void ensureStudioFontsLoaded().then(() => {
+      if (cancelled) return;
+      fontsVersionRef.current += 1;
+      const st = useStudioStore.getState();
+      if (!st.isPlaying) syncFrameRef.current?.(st.playhead, false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Free raster canvases + GL textures of title clips that left the document.
+  React.useEffect(() => {
+    if (!project) return;
+    const live = new Set<string>();
+    for (const tr of project.tracks) {
+      for (const c of tr.clips) {
+        if (c.title) live.add(c.id);
+      }
+    }
+    for (const id of titleRasterCache.current.keys()) {
+      if (!live.has(id)) titleRasterCache.current.delete(id);
+    }
+    compositorRef.current?.pruneImages(live);
+  }, [project]);
 
   // Arm the chroma-key eyedropper when the inspector requests it.
   React.useEffect(() => {
@@ -1028,6 +1136,30 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           className={`absolute inset-0 w-full h-full object-contain ${eyedropArmed ? 'cursor-crosshair z-20' : 'pointer-events-none'}`}
           style={{ display: glOk ? 'block' : 'none' }}
         />
+        {/* CSS-fallback title clips (part 16): raster drawn into DOM canvases.
+            The GL path composites titles on the WebGL canvas instead. */}
+        {fallbackTitleItems.map((item) => (
+          <TitleFallbackCanvas
+            key={item.key}
+            title={item.title}
+            projectW={project?.width ?? 1920}
+            projectH={project?.height ?? 1080}
+            opacity={item.opacity}
+            z={item.z}
+            transform={item.transform}
+          />
+        ))}
+        {/* Safe-margin guides while a title clip is selected: action-safe 90%,
+            title-safe 80% of the PROJECT frame (mapped through the
+            object-contain letterbox). */}
+        {selectedTitle && boxW > 0 && boxH > 0 && (
+          <SafeMarginGuides
+            boxW={boxW}
+            boxH={boxH}
+            projectW={project?.width ?? 1920}
+            projectH={project?.height ?? 1080}
+          />
+        )}
         {textItems.map(({ key, ov, opacity }) => (
           <div
             key={key}
@@ -1141,6 +1273,84 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         </div>
       </div>
     </div>
+  );
+};
+
+/**
+ * CSS-fallback rendering for one active title clip: the raster engine draws
+ * into a DOM canvas (object-contain over the surface, like the GL canvas) and
+ * the clip transform approximates via CSS — the documented degraded mode, same
+ * tier as transitions degrading to alpha ramps without WebGL.
+ */
+const TitleFallbackCanvas: React.FC<{
+  title: StudioTitle;
+  projectW: number;
+  projectH: number;
+  opacity: number;
+  z: number;
+  transform: { x: number; y: number; scale: number; rotationDeg: number };
+}> = ({ title, projectW, projectH, opacity, z, transform }) => {
+  const ref = React.useRef<HTMLCanvasElement>(null);
+  // Cap the fallback raster so a 4K project doesn't allocate a 4K DOM canvas.
+  const k = Math.min(1, 1280 / Math.max(projectW, projectH));
+  const w = Math.max(2, Math.round(projectW * k));
+  const h = Math.max(2, Math.round(projectH * k));
+  React.useEffect(() => {
+    const canvas = ref.current;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
+    let cancelled = false;
+    void ensureStudioFontsLoaded().then(() => {
+      if (!cancelled) rasterTitle(ctx, title, w, h, projectW);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [title, w, h, projectW]);
+  return (
+    <canvas
+      ref={ref}
+      width={w}
+      height={h}
+      className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+      style={{
+        opacity,
+        zIndex: z,
+        transform: `translate(${transform.x * 100}%, ${transform.y * 100}%) scale(${transform.scale}) rotate(${transform.rotationDeg}deg)`,
+      }}
+    />
+  );
+};
+
+/** The 90% / 80% safe-area rectangles, mapped through the letterbox. */
+const SafeMarginGuides: React.FC<{ boxW: number; boxH: number; projectW: number; projectH: number }> = ({
+  boxW,
+  boxH,
+  projectW,
+  projectH,
+}) => {
+  const scale = Math.min(boxW / Math.max(1, projectW), boxH / Math.max(1, projectH));
+  const contentW = projectW * scale;
+  const contentH = projectH * scale;
+  const offX = (boxW - contentW) / 2;
+  const offY = (boxH - contentH) / 2;
+  const rect = (fraction: number, className: string) => (
+    <div
+      className={`absolute border pointer-events-none ${className}`}
+      style={{
+        left: offX + (contentW * (1 - fraction)) / 2,
+        top: offY + (contentH * (1 - fraction)) / 2,
+        width: contentW * fraction,
+        height: contentH * fraction,
+        zIndex: 9,
+      }}
+    />
+  );
+  return (
+    <>
+      {rect(0.9, 'border-foreground/25')}
+      {rect(0.8, 'border-premium/40 border-dashed')}
+    </>
   );
 };
 

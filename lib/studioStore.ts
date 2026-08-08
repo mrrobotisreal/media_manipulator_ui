@@ -22,6 +22,9 @@ import type {
   StudioCaptionStyle,
   StudioAudioConfig,
   StudioTransition,
+  StudioTitle,
+  StudioTitleLayer,
+  StudioTitleTextLayer,
 } from '@/lib/studioTypes';
 import {
   STUDIO_SCHEMA_VERSION,
@@ -39,6 +42,8 @@ import {
   KEYFRAME_TIME_EPSILON,
   type NamedKeyframeProperty,
 } from '@/lib/studio/keyframes';
+import { DEFAULT_TITLE_FONT_FAMILY } from '@/lib/studio/titleFonts';
+import { titleFromTextOverlays } from '@/lib/studio/titleConvert';
 
 /**
  * Zustand store for the Content Studio editor. This holds the live editing
@@ -195,6 +200,17 @@ interface StudioState {
   addVolumeKeyframe: (clipId: string, t: number, gain: number) => void;
   removeVolumeKeyframe: (clipId: string, index: number) => void;
   setAudioDucking: (patch: Partial<StudioAudioConfig>) => void;
+
+  // --- EDL v3: title clips (part 16) ---
+  /** Adds a 5s title clip on the topmost (composite-top) video track at the playhead. */
+  addTitleClip: () => void;
+  addTitleLayer: (clipId: string, type: StudioTitleLayer['type']) => void;
+  /** Merges `patch` onto the layer at `index` (the inspector sends one field at a time). */
+  updateTitleLayer: (clipId: string, index: number, patch: Record<string, unknown>) => void;
+  moveTitleLayer: (clipId: string, fromIndex: number, toIndex: number) => void;
+  removeTitleLayer: (clipId: string, index: number) => void;
+  /** Legacy convert: textOverlays → an equivalent title clip on the track above (one undo entry). */
+  convertOverlaysToTitle: (clipId: string) => void;
 
   // --- EDL v3: per-property keyframes (part 15) ---
   // `property` is a named lane ('positionX'…'pan') or "<effectId>.<param>".
@@ -416,6 +432,39 @@ function writeStaticKeyframeValue(clip: StudioClip, property: string, value: num
     default:
       return clip;
   }
+}
+
+// --- Title clip factories (part 16) ----------------------------------------
+
+// Defaults mirror STUDIO_V3_RANGES.title in effectRegistry.ts.
+function makeDefaultTextLayer(): StudioTitleTextLayer {
+  return {
+    type: 'text',
+    text: 'Title',
+    fontFamily: DEFAULT_TITLE_FONT_FAMILY,
+    fontSizePx: 64,
+    fontWeight: 700,
+    fillColor: '#FFFFFF',
+    align: 'center',
+    x: 0.5,
+    y: 0.5,
+  };
+}
+
+function makeDefaultTitleLayer(type: StudioTitleLayer['type']): StudioTitleLayer {
+  switch (type) {
+    case 'rect':
+      // A lower-third-ish bar so the new layer is immediately visible.
+      return { type: 'rect', x: 0.1, y: 0.75, w: 0.8, h: 0.08, color: '#FFFFFF', opacity: 0.9 };
+    case 'line':
+      return { type: 'line', x1: 0.1, y1: 0.7, x2: 0.9, y2: 0.7, color: '#FFFFFF', thicknessPx: 4 };
+    default:
+      return makeDefaultTextLayer();
+  }
+}
+
+function makeDefaultTitle(): StudioTitle {
+  return { layers: [makeDefaultTextLayer()] };
 }
 
 // splitTextProportional splits caption text at the nearest word boundary to
@@ -1203,6 +1252,147 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       if (!s.project) return {};
       const audio: StudioAudioConfig = { ...DEFAULT_AUDIO_CONFIG, ...s.project.audio, ...patch };
       return { project: { ...s.project, audio }, dirty: true };
+    }),
+
+  // --- EDL v3: title clips (part 16) ---------------------------------------
+
+  // addTitleClip follows addClipFromAsset's placement conventions but needs no
+  // asset: the clip lands on the COMPOSITE-topmost video track (highest index)
+  // at the nearest free position to the playhead, 5s long, with one centered
+  // default text layer.
+  addTitleClip: () =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = ensureBaseTracks(s.project.tracks);
+      let target: StudioTrack | undefined;
+      for (const tr of tracks) {
+        if (tr.kind === 'video' && (!target || tr.index > target.index)) target = tr;
+      }
+      if (!target) return {};
+      const dur = 5;
+      const start = fitInGaps(
+        target.clips.map((c) => ({ start: c.timelineStart, end: clipEnd(c) })),
+        dur,
+        Math.max(0, s.playhead),
+      );
+      const newClipId = uid();
+      const clip: StudioClip = {
+        id: newClipId,
+        assetId: '',
+        streamIndex: 0,
+        timelineStart: start,
+        sourceIn: 0,
+        sourceOut: dur,
+        title: makeDefaultTitle(),
+      };
+      const next = tracks.map((tr) =>
+        tr.id === target!.id ? { ...tr, clips: [...tr.clips, clip] } : tr,
+      );
+      return { project: { ...s.project, tracks: next }, selectedClipIds: [newClipId], dirty: true };
+    }),
+
+  addTitleLayer: (clipId, type) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        if (!c.title || c.title.layers.length >= 8) return c;
+        return { ...c, title: { layers: [...c.title.layers, makeDefaultTitleLayer(type)] } };
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  updateTitleLayer: (clipId, index, patch) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const layer = c.title?.layers[index];
+        if (!c.title || !layer) return c;
+        const merged = { ...layer, ...patch } as StudioTitleLayer;
+        return { ...c, title: { layers: c.title.layers.map((l, i) => (i === index ? merged : l)) } };
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  moveTitleLayer: (clipId, fromIndex, toIndex) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const layers = [...(c.title?.layers ?? [])];
+        if (!c.title || fromIndex < 0 || fromIndex >= layers.length || toIndex < 0 || toIndex >= layers.length) {
+          return c;
+        }
+        const [moved] = layers.splice(fromIndex, 1);
+        layers.splice(toIndex, 0, moved);
+        return { ...c, title: { layers } };
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  removeTitleLayer: (clipId, index) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        if (!c.title || !c.title.layers[index] || c.title.layers.length <= 1) return c; // keep ≥1 layer
+        return { ...c, title: { layers: c.title.layers.filter((_, i) => i !== index) } };
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  // convertOverlaysToTitle builds the equivalent title clip on the video track
+  // ABOVE the source clip's track (created when none exists), spanning the same
+  // timeline interval, and clears the legacy overlays — all in ONE mutate call,
+  // i.e. one undo entry.
+  convertOverlaysToTitle: (clipId) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      let source: { clip: StudioClip; track: StudioTrack } | null = null;
+      for (const tr of s.project.tracks) {
+        const c = tr.clips.find((cc) => cc.id === clipId);
+        if (c) {
+          source = { clip: c, track: tr };
+          break;
+        }
+      }
+      if (!source || source.track.kind !== 'video' || !(source.clip.textOverlays ?? []).length) return {};
+      const title = titleFromTextOverlays(source.clip.textOverlays ?? []);
+      if (title.layers.length === 0) return {};
+
+      let tracks = [...s.project.tracks];
+      let above = tracks.find(
+        (tr) => tr.kind === 'video' && tr.index === source!.track.index + 1,
+      );
+      if (!above) {
+        above = { id: uid(), kind: 'video', index: source.track.index + 1, muted: false, clips: [] };
+        tracks = [...tracks, above];
+      }
+      const dur = clipDuration(source.clip);
+      const start = fitInGaps(
+        above.clips.map((c) => ({ start: c.timelineStart, end: clipEnd(c) })),
+        dur,
+        source.clip.timelineStart,
+      );
+      const newClipId = uid();
+      const titleClip: StudioClip = {
+        id: newClipId,
+        assetId: '',
+        streamIndex: 0,
+        timelineStart: start,
+        sourceIn: 0,
+        sourceOut: dur,
+        title,
+      };
+      const aboveId = above.id;
+      tracks = tracks.map((tr) => {
+        if (tr.id === aboveId) return { ...tr, clips: [...tr.clips, titleClip] };
+        if (tr.id === source!.track.id) {
+          return {
+            ...tr,
+            clips: tr.clips.map((c) => (c.id === clipId ? { ...c, textOverlays: undefined } : c)),
+          };
+        }
+        return tr;
+      });
+      return { project: { ...s.project, tracks }, selectedClipIds: [newClipId], dirty: true };
     }),
 
   // --- EDL v3: per-property keyframes (part 15) ---------------------------

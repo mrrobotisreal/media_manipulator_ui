@@ -32,9 +32,11 @@ import {
 import { useUndoGesture } from './useUndoGesture';
 import { editSummary } from '@/lib/studio/telemetry';
 import { Panel } from '@/components/darkroom/panel';
+import { STUDIO_TITLE_FONTS, titleFontByFamily } from '@/lib/studio/titleFonts';
 import type {
   StudioClip, StudioTrack, StudioEffect, StudioBlendMode, StudioTransform, StudioCrop,
-  StudioTransitionType, StudioKeyframeEase,
+  StudioTransitionType, StudioKeyframeEase, StudioTitleLayer, StudioTitleTextLayer,
+  StudioTitleRectLayer, StudioTitleLineLayer,
 } from '@/lib/studioTypes';
 
 const DEFAULT_ADJUSTMENTS = { brightness: 0, contrast: 1, saturation: 1 };
@@ -239,13 +241,18 @@ const ClipInspector: React.FC = () => {
         {t('contentStudio.inspector.title')}
       </h2>
 
+      {isVideo && clip.title && <TitleSection clip={clip} />}
+
       {isVideo && (
         <>
           <MotionSection clip={clip} />
           <CropSection clip={clip} />
           <OpacityBlendSection clip={clip} />
-          <ColorSection clip={clip} />
-          <EffectsSection clip={clip} lutAssets={lutAssets} />
+          {/* Color/effects are hidden on title clips: ffmpeg's eq/colorbalance
+              stages are alpha-destroying, so the export could not match the
+              preview for a graded transparent title (part 16 scope note). */}
+          {!clip.title && <ColorSection clip={clip} />}
+          {!clip.title && <EffectsSection clip={clip} lutAssets={lutAssets} />}
         </>
       )}
 
@@ -253,7 +260,7 @@ const ClipInspector: React.FC = () => {
 
       <TransitionSection clip={clip} track={track} />
 
-      {isVideo && <TextSection clip={clip} />}
+      {isVideo && !clip.title && <TextSection clip={clip} />}
     </Panel>
   );
 };
@@ -796,6 +803,326 @@ const TransitionSection: React.FC<{ clip: StudioClip; track: StudioTrack }> = ({
         </div>
       )}
       {!hasPrev && <p className="text-[11px] text-muted-foreground mt-1">{t('contentStudio.inspector.transitionNoPrev')}</p>}
+    </Section>
+  );
+};
+
+// --- Title clips (part 16) ---------------------------------------------------
+
+const TITLE = STUDIO_V3_RANGES.title;
+const FONT_CATEGORIES = ['sans', 'serif', 'display', 'mono', 'script'] as const;
+
+/** Compact labelled color swatch, with the shared eyedropper. */
+const TitleColorField: React.FC<{
+  label: string;
+  value: string;
+  onChange: (hex: string) => void;
+  eyedrop?: boolean;
+}> = ({ label, value, onChange, eyedrop = true }) => {
+  const { t } = useLocalization('interface');
+  const gesture = useUndoGesture();
+  return (
+    <div className="flex items-center gap-2">
+      <Label className="text-[11px] text-muted-foreground flex-1">{label}</Label>
+      <input
+        type="color"
+        className="h-7 w-9 rounded border border-border bg-transparent"
+        value={value}
+        onFocus={gesture.begin}
+        onBlur={gesture.end}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {eyedrop && (
+        <Button
+          size="icon"
+          variant="ghost"
+          className="h-7 w-7"
+          title={t('contentStudio.inspector.chromakey.eyedropper')}
+          onClick={() => requestEyedrop(onChange)}
+        >
+          <Pipette className="w-3.5 h-3.5" />
+        </Button>
+      )}
+    </div>
+  );
+};
+
+const TitleTextLayerControls: React.FC<{
+  clip: StudioClip;
+  index: number;
+  layer: StudioTitleTextLayer;
+}> = ({ clip, index, layer }) => {
+  const { t } = useLocalization('interface');
+  const updateTitleLayer = useStudioStore((s) => s.updateTitleLayer);
+  const gesture = useUndoGesture();
+  const patch = (p: Record<string, unknown>) => updateTitleLayer(clip.id, index, p);
+  const font = titleFontByFamily(layer.fontFamily);
+  const tk = (k: string) => t(`contentStudio.inspector.titleUi.${k}`);
+
+  return (
+    <div className="space-y-2">
+      <textarea
+        className="w-full min-h-14 rounded-md border border-border bg-transparent px-2 py-1 text-xs text-foreground resize-y"
+        value={layer.text}
+        placeholder={tk('textPlaceholder')}
+        onFocus={gesture.begin}
+        onBlur={gesture.end}
+        onChange={(e) => patch({ text: e.target.value.slice(0, TITLE.maxTextLength) })}
+      />
+      <div className="flex items-center gap-2">
+        <Label className="text-[11px] text-muted-foreground w-12 shrink-0">{tk('font')}</Label>
+        <Select
+          value={layer.fontFamily}
+          onValueChange={(family) => {
+            const next = titleFontByFamily(family);
+            patch({
+              fontFamily: family,
+              // 400-only families clamp bold away (no synthetic canvas bold).
+              ...(next && !next.supportsBold && layer.fontWeight === 700 ? { fontWeight: 400 } : {}),
+            });
+            editSummary.increment('uiInvocations');
+          }}
+        >
+          <SelectTrigger className="h-7 flex-1 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {FONT_CATEGORIES.map((cat) => (
+              <SelectGroup key={cat}>
+                <SelectLabel className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  {tk(`fontCategories.${cat}`)}
+                </SelectLabel>
+                {STUDIO_TITLE_FONTS.filter((f) => f.category === cat).map((f) => (
+                  <SelectItem
+                    key={f.family}
+                    value={f.family}
+                    className="text-sm"
+                    style={{ fontFamily: `"${f.family}", sans-serif` }}
+                  >
+                    {f.family}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button
+          size="sm"
+          variant={layer.fontWeight === 700 ? 'default' : 'outline'}
+          className="h-7 w-8 px-0 font-bold"
+          disabled={!!font && !font.supportsBold}
+          title={tk('bold')}
+          aria-pressed={layer.fontWeight === 700}
+          onClick={() => patch({ fontWeight: layer.fontWeight === 700 ? 400 : 700 })}
+        >
+          B
+        </Button>
+      </div>
+      <MiniNumber label={tk('size')} min={TITLE.fontSizePx.min} max={TITLE.fontSizePx.max} step={TITLE.fontSizePx.step} value={layer.fontSizePx} onChange={(fontSizePx) => patch({ fontSizePx })} />
+      <div className="grid grid-cols-2 gap-2">
+        <MiniNumber label={tk('posX')} min={0} max={1} step={0.005} value={layer.x} onChange={(x) => patch({ x })} />
+        <MiniNumber label={tk('posY')} min={0} max={1} step={0.005} value={layer.y} onChange={(y) => patch({ y })} />
+      </div>
+      <div className="flex items-center gap-2">
+        <Label className="text-[11px] text-muted-foreground w-12 shrink-0">{tk('align')}</Label>
+        <Select value={layer.align} onValueChange={(align) => patch({ align })}>
+          <SelectTrigger className="h-7 flex-1 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {(['left', 'center', 'right'] as const).map((a) => (
+              <SelectItem key={a} value={a} className="text-xs">
+                {tk(`align${a[0].toUpperCase()}${a.slice(1)}`)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <TitleColorField label={tk('fill')} value={layer.fillColor} onChange={(fillColor) => patch({ fillColor })} />
+      <div className="grid grid-cols-2 gap-2">
+        <MiniNumber label={tk('letterSpacing')} min={TITLE.letterSpacingPx.min} max={TITLE.letterSpacingPx.max} step={TITLE.letterSpacingPx.step} value={layer.letterSpacingPx ?? TITLE.letterSpacingPx.default} onChange={(letterSpacingPx) => patch({ letterSpacingPx })} />
+        <MiniNumber label={tk('lineHeight')} min={TITLE.lineHeight.min} max={TITLE.lineHeight.max} step={TITLE.lineHeight.step} value={layer.lineHeight ?? TITLE.lineHeight.default} onChange={(lineHeight) => patch({ lineHeight })} />
+      </div>
+
+      {/* Stroke */}
+      <div className="flex items-center justify-between">
+        <Label className="text-[11px] text-muted-foreground">{tk('stroke')}</Label>
+        <Switch
+          checked={layer.strokeColor !== undefined}
+          onCheckedChange={(on) =>
+            patch(on ? { strokeColor: '#000000', strokeWidthPx: 2 } : { strokeColor: undefined, strokeWidthPx: undefined })
+          }
+          aria-label={tk('stroke')}
+        />
+      </div>
+      {layer.strokeColor !== undefined && (
+        <div className="space-y-2 pl-2 border-l border-border">
+          <TitleColorField label={tk('fill')} value={layer.strokeColor} onChange={(strokeColor) => patch({ strokeColor })} />
+          <MiniNumber label={tk('strokeWidth')} min={TITLE.strokeWidthPx.min} max={TITLE.strokeWidthPx.max} step={TITLE.strokeWidthPx.step} value={layer.strokeWidthPx ?? 0} onChange={(strokeWidthPx) => patch({ strokeWidthPx })} />
+        </div>
+      )}
+
+      {/* Shadow */}
+      <div className="flex items-center justify-between">
+        <Label className="text-[11px] text-muted-foreground">{tk('shadow')}</Label>
+        <Switch
+          checked={layer.shadow !== undefined}
+          onCheckedChange={(on) =>
+            patch({ shadow: on ? { xPx: 2, yPx: 2, blurPx: TITLE.shadowBlurPx.default, color: '#000000' } : undefined })
+          }
+          aria-label={tk('shadow')}
+        />
+      </div>
+      {layer.shadow && (
+        <div className="space-y-2 pl-2 border-l border-border">
+          <div className="grid grid-cols-2 gap-2">
+            <MiniNumber label={tk('shadowX')} min={TITLE.shadowOffsetPx.min} max={TITLE.shadowOffsetPx.max} step={1} value={layer.shadow.xPx} onChange={(xPx) => patch({ shadow: { ...layer.shadow!, xPx } })} />
+            <MiniNumber label={tk('shadowY')} min={TITLE.shadowOffsetPx.min} max={TITLE.shadowOffsetPx.max} step={1} value={layer.shadow.yPx} onChange={(yPx) => patch({ shadow: { ...layer.shadow!, yPx } })} />
+          </div>
+          <MiniNumber label={tk('shadowBlur')} min={TITLE.shadowBlurPx.min} max={TITLE.shadowBlurPx.max} step={1} value={layer.shadow.blurPx} onChange={(blurPx) => patch({ shadow: { ...layer.shadow!, blurPx } })} />
+          <TitleColorField label={tk('fill')} value={layer.shadow.color} onChange={(color) => patch({ shadow: { ...layer.shadow!, color } })} />
+        </div>
+      )}
+
+      {/* Background box */}
+      <div className="flex items-center justify-between">
+        <Label className="text-[11px] text-muted-foreground">{tk('background')}</Label>
+        <Switch
+          checked={layer.background !== undefined}
+          onCheckedChange={(on) =>
+            patch({
+              background: on
+                ? { color: '#000000', opacity: 0.6, paddingXPx: TITLE.backgroundPaddingPx.default, paddingYPx: TITLE.backgroundPaddingPx.default, radiusPx: TITLE.cornerRadiusPx.default }
+                : undefined,
+            })
+          }
+          aria-label={tk('background')}
+        />
+      </div>
+      {layer.background && (
+        <div className="space-y-2 pl-2 border-l border-border">
+          <TitleColorField label={tk('fill')} value={layer.background.color} onChange={(color) => patch({ background: { ...layer.background!, color } })} />
+          <MiniNumber label={tk('bgOpacity')} min={0} max={1} step={0.01} value={layer.background.opacity} onChange={(opacity) => patch({ background: { ...layer.background!, opacity } })} />
+          <div className="grid grid-cols-2 gap-2">
+            <MiniNumber label={tk('paddingX')} min={TITLE.backgroundPaddingPx.min} max={TITLE.backgroundPaddingPx.max} step={1} value={layer.background.paddingXPx} onChange={(paddingXPx) => patch({ background: { ...layer.background!, paddingXPx } })} />
+            <MiniNumber label={tk('paddingY')} min={TITLE.backgroundPaddingPx.min} max={TITLE.backgroundPaddingPx.max} step={1} value={layer.background.paddingYPx} onChange={(paddingYPx) => patch({ background: { ...layer.background!, paddingYPx } })} />
+          </div>
+          <MiniNumber label={tk('radius')} min={TITLE.cornerRadiusPx.min} max={TITLE.cornerRadiusPx.max} step={1} value={layer.background.radiusPx} onChange={(radiusPx) => patch({ background: { ...layer.background!, radiusPx } })} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const TitleRectLayerControls: React.FC<{
+  clip: StudioClip;
+  index: number;
+  layer: StudioTitleRectLayer;
+}> = ({ clip, index, layer }) => {
+  const { t } = useLocalization('interface');
+  const updateTitleLayer = useStudioStore((s) => s.updateTitleLayer);
+  const patch = (p: Record<string, unknown>) => updateTitleLayer(clip.id, index, p);
+  const tk = (k: string) => t(`contentStudio.inspector.titleUi.${k}`);
+  return (
+    <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        <MiniNumber label={tk('posX')} min={0} max={1} step={0.005} value={layer.x} onChange={(x) => patch({ x })} />
+        <MiniNumber label={tk('posY')} min={0} max={1} step={0.005} value={layer.y} onChange={(y) => patch({ y })} />
+        <MiniNumber label={tk('width')} min={0} max={1} step={0.005} value={layer.w} onChange={(w) => patch({ w })} />
+        <MiniNumber label={tk('height')} min={0} max={1} step={0.005} value={layer.h} onChange={(h) => patch({ h })} />
+      </div>
+      <TitleColorField label={tk('fill')} value={layer.color} onChange={(color) => patch({ color })} />
+      <MiniNumber label={tk('bgOpacity')} min={0} max={1} step={0.01} value={layer.opacity ?? 1} onChange={(opacity) => patch({ opacity })} />
+      <MiniNumber label={tk('radius')} min={TITLE.cornerRadiusPx.min} max={TITLE.cornerRadiusPx.max} step={1} value={layer.radiusPx ?? 0} onChange={(radiusPx) => patch({ radiusPx })} />
+    </div>
+  );
+};
+
+const TitleLineLayerControls: React.FC<{
+  clip: StudioClip;
+  index: number;
+  layer: StudioTitleLineLayer;
+}> = ({ clip, index, layer }) => {
+  const { t } = useLocalization('interface');
+  const updateTitleLayer = useStudioStore((s) => s.updateTitleLayer);
+  const patch = (p: Record<string, unknown>) => updateTitleLayer(clip.id, index, p);
+  const tk = (k: string) => t(`contentStudio.inspector.titleUi.${k}`);
+  return (
+    <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        <MiniNumber label={tk('x1')} min={0} max={1} step={0.005} value={layer.x1} onChange={(x1) => patch({ x1 })} />
+        <MiniNumber label={tk('y1')} min={0} max={1} step={0.005} value={layer.y1} onChange={(y1) => patch({ y1 })} />
+        <MiniNumber label={tk('x2')} min={0} max={1} step={0.005} value={layer.x2} onChange={(x2) => patch({ x2 })} />
+        <MiniNumber label={tk('y2')} min={0} max={1} step={0.005} value={layer.y2} onChange={(y2) => patch({ y2 })} />
+      </div>
+      <TitleColorField label={tk('fill')} value={layer.color} onChange={(color) => patch({ color })} />
+      <MiniNumber label={tk('thickness')} min={TITLE.lineThicknessPx.min} max={TITLE.lineThicknessPx.max} step={1} value={layer.thicknessPx} onChange={(thicknessPx) => patch({ thicknessPx })} />
+    </div>
+  );
+};
+
+/**
+ * Title section (part 16): layer list (add/reorder/delete, ≤8) + per-layer
+ * controls for every StudioTitle contract field. Array order = draw order
+ * (bottom first), matching the raster and the export chain.
+ */
+const TitleSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
+  const { t } = useLocalization('interface');
+  const addTitleLayer = useStudioStore((s) => s.addTitleLayer);
+  const removeTitleLayer = useStudioStore((s) => s.removeTitleLayer);
+  const moveTitleLayer = useStudioStore((s) => s.moveTitleLayer);
+  const layers = clip.title?.layers ?? [];
+  const tk = (k: string) => t(`contentStudio.inspector.titleUi.${k}`);
+  const layerLabel = (l: StudioTitleLayer) =>
+    l.type === 'text' ? tk('layerText') : l.type === 'rect' ? tk('layerRect') : tk('layerLine');
+
+  return (
+    <Section
+      title={t('contentStudio.inspector.sectionTitle')}
+      icon={<Type className="w-3.5 h-3.5" />}
+      action={
+        <Select
+          value=""
+          onValueChange={(v) => {
+            addTitleLayer(clip.id, v as StudioTitleLayer['type']);
+            editSummary.increment('uiInvocations');
+          }}
+        >
+          <SelectTrigger className="h-6 w-auto text-[11px] gap-1 px-2" disabled={layers.length >= TITLE.maxLayers}>
+            <Plus className="w-3 h-3" />
+            {tk('addLayer')}
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="text" className="text-xs">{tk('layerText')}</SelectItem>
+            <SelectItem value="rect" className="text-xs">{tk('layerRect')}</SelectItem>
+            <SelectItem value="line" className="text-xs">{tk('layerLine')}</SelectItem>
+          </SelectContent>
+        </Select>
+      }
+    >
+      <div className="space-y-2">
+        {layers.map((layer, i) => (
+          <div key={i} className="rounded-md border border-border p-2">
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="text-[11px] font-medium text-card-foreground flex-1">
+                {layerLabel(layer)}
+              </span>
+              <Button size="icon" variant="ghost" className="h-6 w-6" disabled={i === 0} onClick={() => moveTitleLayer(clip.id, i, i - 1)} title={tk('moveUp')}>
+                <ArrowUp className="w-3 h-3" />
+              </Button>
+              <Button size="icon" variant="ghost" className="h-6 w-6" disabled={i === layers.length - 1} onClick={() => moveTitleLayer(clip.id, i, i + 1)} title={tk('moveDown')}>
+                <ArrowDown className="w-3 h-3" />
+              </Button>
+              <Button size="icon" variant="ghost" className="h-6 w-6 text-destructive" disabled={layers.length <= 1} onClick={() => removeTitleLayer(clip.id, i)} title={tk('remove')}>
+                <Trash2 className="w-3 h-3" />
+              </Button>
+            </div>
+            {layer.type === 'text' && <TitleTextLayerControls clip={clip} index={i} layer={layer} />}
+            {layer.type === 'rect' && <TitleRectLayerControls clip={clip} index={i} layer={layer} />}
+            {layer.type === 'line' && <TitleLineLayerControls clip={clip} index={i} layer={layer} />}
+          </div>
+        ))}
+      </div>
     </Section>
   );
 };

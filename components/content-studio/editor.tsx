@@ -23,6 +23,7 @@ import {
   Redo2,
   WifiOff,
   AlertTriangle,
+  Type,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -81,6 +82,9 @@ import CaptionEditor from './caption-editor';
 import AudioDuckingPopover from './audio-ducking';
 import type { FocusModeApi } from './useFocusMode';
 import { Panel } from '@/components/darkroom/panel';
+// Title-clip fonts (part 16): loading these faces here scopes them to the
+// editor routes — the marketing pages never fetch them.
+import './studio-fonts.css';
 
 const AUTOSAVE_DEBOUNCE_MS = 1200;
 const SNAP_PX = 8;
@@ -681,6 +685,16 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           editSummary.increment('shortcutInvocations');
           st.splitAtPlayhead();
           break;
+        // T — add a title clip at the playhead (part 16). Free of collisions
+        // with the part-18 keymap plan (V/C/Y/U/H/S/M/Q/W).
+        case 't':
+        case 'T':
+          if (e.metaKey || e.ctrlKey) break; // never shadow the browser's Cmd/Ctrl+T
+          e.preventDefault();
+          editSummary.increment('titlesAdded');
+          editSummary.increment('shortcutInvocations');
+          st.addTitleClip();
+          break;
         case 'Delete':
         case 'Backspace':
           e.preventDefault();
@@ -738,6 +752,19 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
         </div>
         <div className="flex items-center gap-2">
           <UndoRedoButtons />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              editSummary.increment('titlesAdded');
+              editSummary.increment('uiInvocations');
+              useStudioStore.getState().addTitleClip();
+            }}
+            title={t('contentStudio.editor.addTitleHint')}
+          >
+            <Type className="w-4 h-4 mr-1" />
+            {t('contentStudio.editor.addTitle')}
+          </Button>
           <VersionsPanel projectId={projectId} />
           <AudioDuckingPopover />
           <PreferencesDialog />

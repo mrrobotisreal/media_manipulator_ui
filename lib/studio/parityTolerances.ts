@@ -228,6 +228,26 @@ export const PARITY_TOLERANCES: readonly ParityTolerance[] = [
     status: 'bounded',
     note: 'sendcmd-driven eq/colorbalance/vibrance/exposure ramps vs per-frame shader uniforms; command delivery quantizes to frames (≤1 frame skew) on top of the static lumetri residuals',
   },
+  // --- Part 16: title clips. Both sides state the SHARED TITLE LAYOUT SPEC
+  // (titleRaster.ts ↔ titleLayerParts in studio_export.go): same line/anchor
+  // math, same shipped font files. The residual is glyph RASTERIZATION —
+  // browser font engine vs FreeType — plus the documented export degradations
+  // (letter-spacing, shadow blur, background corner radius + per-axis padding,
+  // diagonal-line staircase), all preview-only richness.
+  {
+    id: 'title_layers',
+    metric: 'psnr',
+    threshold: 30,
+    status: 'bounded',
+    note: 'multi-layer title (rect + styled multi-line text + line) over video: same layout math + font files both sides; residual = browser-vs-FreeType glyph AA, canvas middle-baseline vs drawtext text_h centering, and the dropped radius/blur/letter-spacing',
+  },
+  {
+    id: 'title_fonts',
+    metric: 'psnr',
+    threshold: 32,
+    status: 'bounded',
+    note: 'per-font-batch goldens (one text layer per shipped family, 3 batches): residual = glyph rasterizer + hinting differences per family; a regression here usually means the UI and server font sets drifted (04-title-fonts.md invariant)',
+  },
 ] as const;
 
 export function parityTolerance(id: string): ParityTolerance | undefined {

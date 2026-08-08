@@ -91,13 +91,22 @@ function checkFixtures(goldens: Map<string, GoldenFile>): void {
 const MIME: Record<string, string> = {
   '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json',
   '.mp4': 'video/mp4', '.m4a': 'audio/mp4', '.cube': 'text/plain', '.png': 'image/png',
+  '.woff2': 'font/woff2', '.ttf': 'font/ttf',
 };
+
+// Title fonts (part 16) live in the app's public dir, outside HARNESS_DIR —
+// /fonts/studio/* maps there so title goldens raster with the shipped faces.
+const FONTS_DIR = normalize(join(HARNESS_DIR, '..', 'public', 'fonts', 'studio'));
 
 function serveHarness(): Promise<{ server: Server; base: string }> {
   const server = createServer((req, res) => {
     const url = new URL(req.url ?? '/', 'http://x');
-    const path = normalize(join(HARNESS_DIR, decodeURIComponent(url.pathname)));
-    if (!path.startsWith(HARNESS_DIR) || !existsSync(path) || !statSync(path).isFile()) {
+    const pathname = decodeURIComponent(url.pathname);
+    const path = pathname.startsWith('/fonts/studio/')
+      ? normalize(join(FONTS_DIR, pathname.slice('/fonts/studio/'.length)))
+      : normalize(join(HARNESS_DIR, pathname));
+    const rootOk = path.startsWith(HARNESS_DIR) || path.startsWith(FONTS_DIR);
+    if (!rootOk || !existsSync(path) || !statSync(path).isFile()) {
       res.writeHead(404).end();
       return;
     }
@@ -218,8 +227,8 @@ async function capture(goldens: Map<string, GoldenFile>, fallback: boolean): Pro
         const legDir = join(OUT_DIR, id, variant === 'projectRef' ? 'webgl_ref' : 'webgl');
         mkdirSync(legDir, { recursive: true });
         await page.evaluate(
-          ([g, v, fixtureBase]) => window.__parity.setup(g, v, fixtureBase),
-          [golden, variant, `${base}/fixtures`] as const,
+          ([g, v, fixtureBase, fontsBase]) => window.__parity.setup(g, v, fixtureBase, fontsBase),
+          [golden, variant, `${base}/fixtures`, `${base}/fonts/studio`] as const,
         );
         for (const frame of golden.sampleFrames) {
           const res = await page.evaluate((k) => window.__parity.capture(k), frame);

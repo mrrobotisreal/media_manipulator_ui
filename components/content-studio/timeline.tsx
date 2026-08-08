@@ -653,12 +653,22 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
 }) => {
   const { t } = useLocalization('interface');
   const entry = assets[clip.assetId];
-  const label = entry?.asset.originalFileName ?? clip.assetId;
+  // Title clips (part 16) are assetless: labelled by their first text run,
+  // drawn as a dark chip with a "T" glyph, and trimmable without a source
+  // bound (their content is time-independent).
+  const isTitle = !!clip.title;
+  const titleText =
+    (clip.title?.layers.find((l) => l.type === 'text' && l.text.trim() !== '') as
+      | { text: string }
+      | undefined)?.text ?? '';
+  const label = isTitle
+    ? titleText || t('contentStudio.timeline.titleClip')
+    : entry?.asset.originalFileName ?? clip.assetId;
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: clip.id,
     data: { type: 'clip', kind: track.kind, label },
   });
-  const assetDur = entry?.asset.durationSeconds ?? 0;
+  const assetDur = isTitle ? Number.POSITIVE_INFINITY : entry?.asset.durationSeconds ?? 0;
   const ready = entry?.status === 'ready';
   const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video';
   // Waveform: full block on audio tracks, a bottom strip (~35%) under the
@@ -758,7 +768,7 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
       }}
       className={`absolute top-1 bottom-1 rounded-md overflow-hidden border touch-none cursor-grab active:cursor-grabbing ${
         selected ? 'border-primary ring-1 ring-primary' : 'border-border'
-      } ${track.kind === 'video' ? 'bg-data/20' : 'bg-data/10'} ${isDragging ? 'opacity-40' : ''}`}
+      } ${isTitle ? 'bg-surface-0' : track.kind === 'video' ? 'bg-data/20' : 'bg-data/10'} ${isDragging ? 'opacity-40' : ''}`}
       style={{ left, width }}
       title={label}
     >
@@ -787,9 +797,20 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
           />
         </div>
       )}
-      <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none">
-        {entry?.asset.originalFileName ?? clip.assetId}
-      </div>
+      {/* Title chip body: a "T" glyph + the first text run, centered. */}
+      {isTitle && (
+        <div className="absolute inset-0 flex items-center justify-center gap-1.5 px-2 pointer-events-none">
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-premium/20 text-[11px] font-bold text-premium">
+            T
+          </span>
+          <span className="truncate text-[11px] text-foreground/90">{label}</span>
+        </div>
+      )}
+      {!isTitle && (
+        <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none">
+          {label}
+        </div>
+      )}
       {/* Trim handles. The visual bar stays 8px so the timeline reads
           precisely, but below `lg` a transparent ::before widens the hit area
           inward to 24px — 8px is well under a fingertip. Extending inward
@@ -911,6 +932,23 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
             <ContextMenuSeparator />
             <ContextMenuItem className="text-xs" onSelect={removeTransition}>
               {t('contentStudio.timeline.contextRemoveTransition')}
+            </ContextMenuItem>
+          </>
+        )}
+        {/* Legacy convert (part 16): clips bearing textOverlays offer a
+            one-click upgrade to a first-class title clip (one undo entry). */}
+        {(clip.textOverlays?.length ?? 0) > 0 && (
+          <>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              className="text-xs"
+              onSelect={() => {
+                editSummary.increment('titlesAdded');
+                editSummary.increment('uiInvocations');
+                useStudioStore.getState().convertOverlaysToTitle(clip.id);
+              }}
+            >
+              {t('contentStudio.timeline.contextConvertToTitle')}
             </ContextMenuItem>
           </>
         )}

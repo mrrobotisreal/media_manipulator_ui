@@ -101,7 +101,9 @@
       "contextTransition": "Transition",
       "contextRemoveTransition": "Remove transition",
       "keyframeToggle": "Show keyframes",
-      "keyframeDiamond": "drag to retime, double-click to remove"
+      "keyframeDiamond": "drag to retime, double-click to remove",
+      "titleClip": "Title",
+      "contextConvertToTitle": "Convert to title clip"
     },
     "preferences": {
       "open": "Preferences",
@@ -130,7 +132,9 @@
         "media": "Media",
         "preview": "Preview",
         "inspector": "Inspector"
-      }
+      },
+      "addTitle": "Title",
+      "addTitleHint": "Add a title clip at the playhead (T)"
     },
     "versions": {
       "open": "Version history",
@@ -327,6 +331,54 @@
           "easeOut": "Ease out",
           "easeBoth": "Ease both"
         }
+      },
+      "sectionTitle": "Title",
+      "titleUi": {
+        "addLayer": "Add layer",
+        "layerText": "Text",
+        "layerRect": "Rectangle",
+        "layerLine": "Line",
+        "textPlaceholder": "Title text…",
+        "font": "Font",
+        "fontCategories": {
+          "sans": "Sans",
+          "serif": "Serif",
+          "display": "Display",
+          "mono": "Mono",
+          "script": "Script"
+        },
+        "bold": "Bold",
+        "size": "Size",
+        "align": "Align",
+        "alignLeft": "Left",
+        "alignCenter": "Center",
+        "alignRight": "Right",
+        "fill": "Color",
+        "letterSpacing": "Letter spacing",
+        "lineHeight": "Line height",
+        "stroke": "Stroke",
+        "strokeWidth": "Stroke width",
+        "shadow": "Shadow",
+        "shadowX": "Offset X",
+        "shadowY": "Offset Y",
+        "shadowBlur": "Blur",
+        "background": "Background box",
+        "bgOpacity": "Opacity",
+        "paddingX": "Padding X",
+        "paddingY": "Padding Y",
+        "radius": "Corner radius",
+        "posX": "X",
+        "posY": "Y",
+        "width": "W",
+        "height": "H",
+        "x1": "X1",
+        "y1": "Y1",
+        "x2": "X2",
+        "y2": "Y2",
+        "thickness": "Thickness",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "remove": "Remove layer"
       }
     },
     "export": {

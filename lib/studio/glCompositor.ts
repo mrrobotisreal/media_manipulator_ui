@@ -91,6 +91,11 @@ export interface GLLayer {
    * the revealed region). Mirrors the export's animated crop on the clip.
    */
   wipe?: { left: number; top: number; right: number; bottom: number };
+  /**
+   * Static-image source (part 16 title clips): sample the texture uploaded via
+   * uploadImage() under this id instead of a pool slot. `slot` is ignored.
+   */
+  imageKey?: string;
 }
 
 const BLEND_INDEX: Record<StudioBlendMode, number> = {
@@ -247,6 +252,8 @@ export class GLCompositor {
   private uvBuf: WebGLBuffer | null = null;
   private slotTex = new Map<number, WebGLTexture>();
   private slotUploaded = new Map<number, number>(); // slot → last uploaded currentTime
+  /** Static-image textures (part 16 title rasters), id → texture + content key. */
+  private imageTex = new Map<string, { tex: WebGLTexture; key: string }>();
   private lutTex = new Map<string, { tex: WebGLTexture; size: number }>();
   private dummyLut: WebGLTexture | null = null;
   /** 1×1 2D texture bound for solid layers (the shader ignores the sample). */
@@ -297,6 +304,7 @@ export class GLCompositor {
     this.lost = false;
     this.slotTex.clear();
     this.slotUploaded.clear();
+    this.imageTex.clear();
     this.lutTex.clear();
     this.accum = null;
     this.temp = null;
@@ -425,6 +433,58 @@ export class GLCompositor {
     return true;
   }
 
+  /**
+   * Uploads a static image (a title raster canvas) into the texture registered
+   * under `id`. `key` identifies the CONTENT (title JSON + raster size): when
+   * it matches the last upload the call is a no-op — the dirty-flag contract
+   * that keeps title rasters off the per-frame hot path. Returns true when the
+   * texture holds the keyed content (fresh or cached).
+   */
+  uploadImage(id: string, source: TexImageSource, key: string): boolean {
+    const gl = this.gl;
+    if (!gl || this.lost) return false;
+    const existing = this.imageTex.get(id);
+    if (existing && existing.key === key) return true;
+    let tex = existing?.tex;
+    if (!tex) {
+      const created = gl.createTexture();
+      if (!created) return false;
+      tex = created;
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    } else {
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+    }
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    // Title rasters carry straight (non-premultiplied) alpha, matching the
+    // pipeline's alpha model.
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    try {
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+    } catch {
+      return false;
+    }
+    this.imageTex.set(id, { tex, key });
+    return true;
+  }
+
+  hasImage(id: string): boolean {
+    return this.imageTex.has(id);
+  }
+
+  /** Frees image textures whose id is not in `live` (deleted/closed title clips). */
+  pruneImages(live: Set<string>): void {
+    const gl = this.gl;
+    for (const [id, entry] of this.imageTex) {
+      if (live.has(id)) continue;
+      if (gl) gl.deleteTexture(entry.tex);
+      this.imageTex.delete(id);
+    }
+  }
+
   private makeFBO(w: number, h: number): FBO | null {
     const gl = this.gl;
     if (!gl) return null;
@@ -512,7 +572,11 @@ export class GLCompositor {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     for (const layer of layers) {
-      const srcTex = layer.solid ? this.dummyTex2D : this.slotTex.get(layer.slot);
+      const srcTex = layer.solid
+        ? this.dummyTex2D
+        : layer.imageKey !== undefined
+          ? this.imageTex.get(layer.imageKey)?.tex ?? null
+          : this.slotTex.get(layer.slot);
       if (!srcTex) continue;
 
       // 1) copy accum → temp so pixels outside the layer quad carry through.
@@ -678,6 +742,7 @@ export class GLCompositor {
     }
     if (gl) {
       this.slotTex.forEach((t) => gl.deleteTexture(t));
+      this.imageTex.forEach((e) => gl.deleteTexture(e.tex));
       this.lutTex.forEach((l) => gl.deleteTexture(l.tex));
       if (this.dummyLut) gl.deleteTexture(this.dummyLut);
       if (this.dummyTex2D) gl.deleteTexture(this.dummyTex2D);
@@ -692,6 +757,7 @@ export class GLCompositor {
       if (this.program) gl.deleteProgram(this.program);
     }
     this.slotTex.clear();
+    this.imageTex.clear();
     this.lutTex.clear();
     this.gl = null;
     this.program = null;

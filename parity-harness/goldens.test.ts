@@ -35,6 +35,11 @@ const goldenProjectChecks = (id: string, variant: string, p: GoldenProject, g: G
   it(`${id} ${variant}: every clip/effect references a declared asset`, () => {
     for (const track of p.tracks) {
       for (const clip of track.clips) {
+        if (clip.title) {
+          // Title clips (part 16) are assetless by contract (assetId XOR title).
+          expect(clip.assetId).toBe('');
+          continue;
+        }
         expect(g.assets, `clip ${clip.id} assetId`).toHaveProperty(clip.assetId);
         for (const e of clip.effects ?? []) {
           if (e.type === 'lut') {

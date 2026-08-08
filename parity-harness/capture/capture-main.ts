@@ -1,5 +1,7 @@
 import { GLCompositor } from '../../lib/studio/glCompositor';
 import { parseCubeLut } from '../../lib/studio/lutParser';
+import { rasterTitle, titleRasterKey } from '../../lib/studio/titleRaster';
+import { registerStudioFontFaces } from '../../lib/studio/titleFonts';
 import { buildLayersAtTime, orderedVideoClips, type LayerSource } from './buildLayers';
 import type { GoldenFile, GoldenVariantKey } from '../goldenTypes';
 
@@ -36,6 +38,10 @@ const glOk = comp.init(canvas);
 // decoder contexts; goldens reference at most 3 distinct files at once).
 const videoByFile = new Map<string, HTMLVideoElement>();
 let uploadCounter = 0;
+
+// Title raster cache (part 16) — same dirty-flag contract as the editor.
+const titleCanvasById = new Map<string, { canvas: HTMLCanvasElement; key: string }>();
+let fontsLoaded: Promise<void> | null = null;
 
 let current: {
   golden: GoldenFile;
@@ -122,11 +128,21 @@ const parity = {
     return comp.rendererInfo();
   },
 
-  async setup(golden: GoldenFile, variant: GoldenVariantKey, fixtureBase: string): Promise<{ width: number; height: number }> {
+  async setup(
+    golden: GoldenFile,
+    variant: GoldenVariantKey,
+    fixtureBase: string,
+    fontsBase?: string,
+  ): Promise<{ width: number; height: number }> {
     if (!glOk || !comp.isAvailable()) throw new Error('WebGL2 compositor unavailable');
     const project = variant === 'projectRef' ? golden.projectRef : golden.project;
     if (!project) throw new Error(`golden has no ${variant}`);
     current = { golden, variant, fixtureBase };
+
+    // Title goldens (part 16) raster with the SAME shipped faces as the
+    // editor; registered once via the FontFace API (no CSS on this page).
+    if (fontsBase && !fontsLoaded) fontsLoaded = registerStudioFontFaces(fontsBase);
+    if (fontsLoaded) await fontsLoaded;
 
     // Load .cube LUT assets referenced by this golden (loadLut caches per key).
     for (const [assetId, asset] of Object.entries(golden.assets)) {
@@ -150,6 +166,33 @@ const parity = {
     const sources = new Map<string, LayerSource>();
     for (let i = 0; i < active.length; i += 1) {
       const a = active[i];
+      if (a.clip.title) {
+        // Title clip (part 16): raster at the backing size and upload as an
+        // image texture — mirrors the editor's syncFrame title path.
+        const back = comp.backingSize(project.width, project.height);
+        const key = titleRasterKey(a.clip.title, back.w, back.h);
+        let entry = titleCanvasById.get(a.clip.id);
+        if (!entry || entry.key !== key) {
+          const canvas = entry?.canvas ?? document.createElement('canvas');
+          canvas.width = back.w;
+          canvas.height = back.h;
+          const ctx2d = canvas.getContext('2d');
+          if (!ctx2d) throw new Error('2d canvas unavailable for title raster');
+          rasterTitle(ctx2d, a.clip.title, back.w, back.h, project.width);
+          entry = { canvas, key };
+          titleCanvasById.set(a.clip.id, entry);
+        }
+        if (!comp.uploadImage(a.clip.id, entry.canvas, key)) {
+          throw new Error(`uploadImage failed for title clip ${a.clip.id}`);
+        }
+        sources.set(a.clip.id, {
+          slot: -1,
+          srcW: entry.canvas.width,
+          srcH: entry.canvas.height,
+          imageKey: a.clip.id,
+        });
+        continue;
+      }
       const asset = golden.assets[a.clip.assetId];
       if (!asset || asset.kind !== 'video') continue;
       const el = videoFor(fixtureBase, asset.file);

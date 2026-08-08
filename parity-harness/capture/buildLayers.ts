@@ -34,6 +34,8 @@ export interface LayerSource {
   slot: number;
   srcW: number;
   srcH: number;
+  /** Title clips (part 16): GL image-texture id instead of a pool slot. */
+  imageKey?: string;
 }
 
 /** Video clips active at `t`, in composite (bottom→top) order. */
@@ -113,6 +115,7 @@ export function buildLayersAtTime(
     };
     layers.push({
       slot: src.slot,
+      imageKey: src.imageKey,
       srcW: src.srcW,
       srcH: src.srcH,
       transform,
