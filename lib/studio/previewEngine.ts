@@ -1,8 +1,10 @@
 import { getActiveStudioBackend } from '@/lib/studio/studioBackend';
+import { valueAt } from '@/lib/studio/ease';
 import type {
   StudioClip,
   StudioTrack,
   StudioTrackKind,
+  StudioTransform,
   StudioTransition,
   StudioTransitionType,
 } from '@/lib/studioTypes';
@@ -412,13 +414,16 @@ export function studioAssetFileUrl(assetId: string): string {
 
 /**
  * volumeAtClipTime evaluates a clip's effective gain at `clipLocalSeconds`
- * (seconds from the clip's timeline start). With no keyframes it returns the
- * flat volume (default 1). With keyframes it does piecewise-linear interpolation,
- * holding the first/last value beyond the ends — matching the export's
- * `volume='…':eval=frame` expression and the timeline rubber band. Keyframes are
- * assumed sorted (the store normalizes on write).
+ * (seconds from the clip's timeline start). Since part 15 the v3
+ * `keyframes.volume` lane wins (eased interpolation via the shared curve
+ * contract in ease.ts, matching the export's generalized volume expression);
+ * the legacy `volumeKeyframes` piecewise-linear path stays for documents the
+ * store hasn't touched. With neither, the flat volume (default 1). Keyframes
+ * are assumed sorted (the store normalizes on write).
  */
 export function volumeAtClipTime(clip: StudioClip, clipLocalSeconds: number): number {
+  const lane = clip.keyframes?.volume;
+  if (lane && lane.length > 0) return valueAt(lane, clipLocalSeconds, clip.volume ?? 1);
   const kfs = clip.volumeKeyframes;
   if (!kfs || kfs.length === 0) return clip.volume ?? 1;
   if (clipLocalSeconds <= kfs[0].t) return kfs[0].gain;
@@ -435,4 +440,56 @@ export function volumeAtClipTime(clip: StudioClip, clipLocalSeconds: number): nu
     }
   }
   return last.gain;
+}
+
+// --- Keyframed property resolver (part 15) ---------------------------------
+
+/** Effective per-frame values for one clip: keyframed where a lane exists, the static field otherwise. */
+export interface ClipValues {
+  /** Effective 2D transform (identity-based when the clip has none). */
+  transform: StudioTransform;
+  /** Effective opacity 0..1 (transition alpha NOT included). */
+  opacity: number;
+  /** Effective audio gain 0..2. */
+  volume: number;
+  /** Effective stereo balance −1..1. */
+  pan: number;
+  /** Keyframed effect-param overrides, keyed "<effectId>.<param>". Only keyframed params appear. */
+  effects?: Record<string, number>;
+}
+
+/**
+ * clipValuesAt resolves everything animatable on a clip at clip-local time
+ * `t` (seconds from the clip's timeline start): the keyframed value where a
+ * `keyframes.<prop>` lane exists, else the static field. The preview surface
+ * calls this once per active clip per frame and feeds the results into the
+ * WebGL uniforms + Web Audio nodes; the Go export emits expressions/sendcmd
+ * lines that evaluate the SAME curves (ease.ts is the contract).
+ */
+export function clipValuesAt(clip: StudioClip, t: number): ClipValues {
+  const k = clip.keyframes;
+  const base = clip.transform;
+  const transform: StudioTransform = {
+    x: k?.positionX?.length ? valueAt(k.positionX, t) : base?.x ?? 0,
+    y: k?.positionY?.length ? valueAt(k.positionY, t) : base?.y ?? 0,
+    scale: k?.scale?.length ? valueAt(k.scale, t) : base?.scale ?? 1,
+    rotationDeg: k?.rotation?.length ? valueAt(k.rotation, t) : base?.rotationDeg ?? 0,
+  };
+  const out: ClipValues = {
+    transform,
+    opacity: k?.opacity?.length ? valueAt(k.opacity, t) : clip.opacity ?? 1,
+    volume: volumeAtClipTime(clip, t),
+    pan: k?.pan?.length ? valueAt(k.pan, t) : clip.pan ?? 0,
+  };
+  if (k?.effects) {
+    const effects: Record<string, number> = {};
+    let any = false;
+    for (const [key, lane] of Object.entries(k.effects)) {
+      if (lane.length === 0) continue;
+      effects[key] = valueAt(lane, t);
+      any = true;
+    }
+    if (any) out.effects = effects;
+  }
+  return out;
 }

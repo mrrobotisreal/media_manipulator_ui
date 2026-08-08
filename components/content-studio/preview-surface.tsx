@@ -13,9 +13,10 @@ import {
   transitionRamp,
   audioFadeGain,
   clipTransitionState,
+  clipValuesAt,
   cssFilterForAdjustments,
-  volumeAtClipTime,
   studioAssetFileUrl,
+  type ClipValues,
   type TransitionLayerState,
 } from '@/lib/studio/previewEngine';
 import { peekPeaks, prefetchPeaks } from '@/lib/studio/usePeaks';
@@ -71,18 +72,23 @@ function hexToRgb01(hex: string): [number, number, number] {
 // Effect-stack lookup takes the FIRST ENABLED effect of each type — the export
 // does the same (pickEffects in studio_export.go), so the cap is a consistent,
 // intended policy on both sides (part 12; ordered stacks arrive with the P2
-// adjustment-layer work).
+// adjustment-layer work). Part 15: `values` carries the per-frame keyframed
+// transform/opacity/effect-params (clipValuesAt); a keyframed param overrides
+// the effect's static field through the same uniforms.
 function buildGLLayer(
   a: ActiveClip,
   slot: number,
   el: HTMLVideoElement,
   trs: TransitionLayerState,
   comp: GLCompositor,
+  values: ClipValues,
 ): GLLayer {
   const clip = a.clip;
   const eq = clip.adjustments
     ? { brightness: clip.adjustments.brightness, contrast: clip.adjustments.contrast, saturation: clip.adjustments.saturation }
     : undefined;
+  const ov = (effectId: string, param: string, fallback: number): number =>
+    values.effects?.[`${effectId}.${param}`] ?? fallback;
   let lumetri: GLLayer['lumetri'];
   let lut: GLLayer['lut'];
   let chroma: GLLayer['chroma'];
@@ -90,38 +96,40 @@ function buildGLLayer(
     if (!e.enabled) continue;
     if (e.type === 'lumetri' && !lumetri) {
       lumetri = {
-        exposure: e.exposure,
-        contrast: e.contrast,
-        saturation: e.saturation,
-        temperature: e.temperature,
-        tint: e.tint,
-        vibrance: e.vibrance,
+        exposure: ov(e.id, 'exposure', e.exposure),
+        contrast: ov(e.id, 'contrast', e.contrast),
+        saturation: ov(e.id, 'saturation', e.saturation),
+        temperature: ov(e.id, 'temperature', e.temperature),
+        tint: ov(e.id, 'tint', e.tint),
+        vibrance: ov(e.id, 'vibrance', e.vibrance),
       };
     } else if (e.type === 'lut' && !lut && comp.hasLut(e.lutAssetId)) {
-      lut = { key: e.lutAssetId, intensity: e.intensity };
+      lut = { key: e.lutAssetId, intensity: ov(e.id, 'intensity', e.intensity) };
     } else if (e.type === 'chromakey' && !chroma) {
-      chroma = { keyColor: hexToRgb01(e.keyColor), similarity: e.similarity, blend: e.blend, despill: e.despill };
+      chroma = {
+        keyColor: hexToRgb01(e.keyColor),
+        similarity: ov(e.id, 'similarity', e.similarity),
+        blend: ov(e.id, 'blend', e.blend),
+        despill: ov(e.id, 'despill', e.despill),
+      };
     }
   }
   // Typed transitions (part 14): alpha multiplies in, push/slide offsets add to
-  // the clip's own transform position, the wipe mask passes straight through.
-  const base = clip.transform;
-  const transform =
-    trs.offsetX !== 0 || trs.offsetY !== 0
-      ? {
-          x: (base?.x ?? 0) + trs.offsetX,
-          y: (base?.y ?? 0) + trs.offsetY,
-          scale: base?.scale ?? 1,
-          rotationDeg: base?.rotationDeg ?? 0,
-        }
-      : base;
+  // the clip's (possibly keyframed) transform position, the wipe mask passes
+  // straight through.
+  const transform = {
+    x: values.transform.x + trs.offsetX,
+    y: values.transform.y + trs.offsetY,
+    scale: values.transform.scale,
+    rotationDeg: values.transform.rotationDeg,
+  };
   return {
     slot,
     srcW: el.videoWidth || 16,
     srcH: el.videoHeight || 9,
     transform,
     crop: clip.crop,
-    opacity: (clip.opacity ?? 1) * trs.alpha,
+    opacity: values.opacity * trs.alpha,
     blendMode: clip.blendMode,
     eq,
     lumetri,
@@ -151,6 +159,7 @@ interface AudioGraph {
   ctx: AudioContext | null;
   sources: (MediaElementAudioSourceNode | null)[];
   slotGains: (GainNode | null)[]; // per-slot clip volume
+  slotPans: (StereoPannerNode | null)[]; // per-slot clip pan (static + keyframed, part 15)
   trackGains: Map<string, GainNode>; // per-track mute/master
   // Master bus + stereo metering tap (trackGains → master → destination, and
   // master → splitter → 2× analyser for the dBFS meters).
@@ -185,6 +194,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     ctx: null,
     sources: Array(POOL_SIZE).fill(null),
     slotGains: Array(POOL_SIZE).fill(null),
+    slotPans: Array(POOL_SIZE).fill(null),
     trackGains: new Map(),
     master: null,
     splitter: null,
@@ -361,6 +371,16 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           src.connect(g);
           a.sources[i] = src;
           a.slotGains[i] = g;
+          // Per-slot pan stage (part 15). StereoPanner is equal-power, matching
+          // the mental model of stereotools balance on the export side; when
+          // unavailable the slot output is the gain node and pan is a no-op.
+          try {
+            const p = ctx.createStereoPanner();
+            g.connect(p);
+            a.slotPans[i] = p;
+          } catch {
+            a.slotPans[i] = null;
+          }
         } catch {
           // element may already be tapped; ignore
         }
@@ -391,26 +411,30 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const slotRouting = React.useRef<Array<string | null>>([]);
 
   const routeSlotAudio = React.useCallback(
-    (i: number, trackId: string, clipVolume: number, trackMuted: boolean) => {
+    (i: number, trackId: string, clipVolume: number, clipPan: number, trackMuted: boolean) => {
       const a = audio.current;
       const g = a.slotGains[i];
+      const p = a.slotPans[i];
+      // The slot's OUTPUT node (pan stage when available, else the gain).
+      const out = p ?? g;
       const el = poolEls.current[i];
-      if (a.ctx && g) {
+      if (a.ctx && g && out) {
         if (slotRouting.current[i] !== trackId) {
           const tg = trackGain(trackId);
           try {
-            g.disconnect();
+            out.disconnect();
           } catch {
             /* not connected yet */
           }
           if (tg) {
-            g.connect(tg);
+            out.connect(tg);
             // Track gain (mute + ducking) is owned by applyTrackGains below so
             // it can ramp smoothly; here we only ensure the slot is connected.
           }
           slotRouting.current[i] = tg ? trackId : null;
         }
         g.gain.value = clipVolume;
+        if (p) p.pan.value = Math.max(-1, Math.min(1, clipPan));
         if (el) {
           el.muted = false;
           el.volume = 1;
@@ -506,6 +530,13 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         .sort((x, y) => x.trackIndex - y.trackIndex || x.clip.timelineStart - y.clip.timelineStart)
         .forEach((a, idx) => zOf.set(a.clip.id, idx + 1));
 
+      // Per-frame keyframed values (part 15), resolved once per active clip and
+      // shared by the audio routing + GL layer paths below.
+      const valuesByClip = new Map<string, ClipValues>();
+      for (const a of active) {
+        valuesByClip.set(a.clip.id, clipValuesAt(a.clip, t - a.clip.timelineStart));
+      }
+
       // Release slots whose clip left the playhead.
       slots.current.forEach((slot, i) => {
         if (slot.clipId && !activeIds.has(slot.clipId)) {
@@ -542,6 +573,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           seekIntentAt.current[i] = null;
           pendingSeekTarget.current[i] = null;
         }
+        const vals = valuesByClip.get(a.clip.id) ?? clipValuesAt(a.clip, t - a.clip.timelineStart);
         const threshold = playing ? 0.3 : 0.05;
         if (Math.abs(el.currentTime - a.sourceTime) > threshold) {
           if (el.seeking) {
@@ -571,23 +603,23 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             el.style.filter = 'none';
           } else {
             // CSS fallback: composite the decoder elements directly — opacity =
-            // base × dissolve ramp, stacked by track then timeline position.
-            el.style.opacity = String((a.clip.opacity ?? 1) * transitionRamp(a.clip, t));
+            // (possibly keyframed) base × dissolve ramp, stacked by track then
+            // timeline position.
+            el.style.opacity = String(vals.opacity * transitionRamp(a.clip, t));
             el.style.zIndex = String(zOf.get(a.clip.id) ?? 1);
             el.style.filter = cssFilterForAdjustments(a.clip.adjustments);
           }
         } else {
           el.style.opacity = '0';
         }
-        // Evaluate the clip's volume automation at the current clip-local time so
-        // keyframed gain is honored live in preview (the export uses the same
-        // piecewise function via volume='…':eval=frame), times the equal-power
-        // crossfade — the same qsin curve as the export's afades (part 12).
+        // Evaluate the clip's volume/pan automation at the current clip-local
+        // time so keyframed gain + balance are honored live in preview (the
+        // export uses the same curves via volume expressions + the sendcmd
+        // sidecar), times the equal-power crossfade — the same qsin curve as
+        // the export's afades (part 12).
         const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips;
-        const gainNow =
-          volumeAtClipTime(a.clip, t - a.clip.timelineStart) *
-          (trackClips ? audioFadeGain(a.clip, trackClips, t) : 1);
-        routeSlotAudio(i, a.trackId, gainNow, a.trackMuted);
+        const gainNow = vals.volume * (trackClips ? audioFadeGain(a.clip, trackClips, t) : 1);
+        routeSlotAudio(i, a.trackId, gainNow, vals.pan, a.trackMuted);
         if (playing) {
           if (el.paused) void el.play().catch(() => {});
         } else if (!el.paused) {
@@ -617,7 +649,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           for (const ac of active) {
             if (ac.trackId !== voiceTrackId) continue;
             const clipGain =
-              volumeAtClipTime(ac.clip, t - ac.clip.timelineStart) *
+              (valuesByClip.get(ac.clip.id)?.volume ?? 1) *
               audioFadeGain(ac.clip, voiceTrack.clips, t);
             const pk = peekPeaks(ac.clip.assetId);
             level = Math.max(level, (pk ? peakLevelAt(pk, ac.sourceTime) : 1) * clipGain);
@@ -669,7 +701,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           // clip's push-out, evaluated against its track's clip list.
           const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips ?? [];
           const trs = clipTransitionState(a.clip, trackClips, t);
-          layers.push(buildGLLayer(a, i, el, trs, comp));
+          const vals = valuesByClip.get(a.clip.id) ?? clipValuesAt(a.clip, t - a.clip.timelineStart);
+          layers.push(buildGLLayer(a, i, el, trs, comp, vals));
           if (trs.dip && trs.dip.alpha > 0) {
             // Dip color layer: a full-canvas solid quad above both clips,
             // peaking at the transition midpoint (export: color= source + fades).
@@ -835,6 +868,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       a.ctx = null;
       a.trackGains.clear();
       a.slotGains.fill(null);
+      a.slotPans.fill(null);
       slotRouting.current = [];
     },
     [],

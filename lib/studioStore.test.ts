@@ -703,3 +703,107 @@ describe('restoreDraft', () => {
     expect(store().dirty).toBe(false);
   });
 });
+
+// --- part 15: per-property keyframe actions ---------------------------------
+
+describe('keyframe actions (part 15)', () => {
+  const loadOne = (extra: Partial<StudioClip> = {}) =>
+    load([track('v1', 'video', 0, [clip('c1', 2, 6, extra)]), track('a1', 'audio', 0, [])]);
+
+  it('armProperty seeds keyframe[0] from the static value at the given time', () => {
+    loadOne({ transform: { x: 0.25, y: 0, scale: 1, rotationDeg: 0 } });
+    store().armProperty('c1', 'positionX', 1.5);
+    expect(clipById('c1').keyframes?.positionX).toEqual([{ t: 1.5, value: 0.25, ease: 'linear' }]);
+    // Re-arming is a no-op (same document reference — no history entry).
+    const before = store().project;
+    store().armProperty('c1', 'positionX', 3);
+    expect(store().project).toBe(before);
+  });
+
+  it('setKeyframe inserts sorted, updates in place at ≈t, and clamps to the property range', () => {
+    loadOne();
+    store().armProperty('c1', 'opacity', 0);
+    store().setKeyframe('c1', 'opacity', 4, 5); // clamped to 1
+    store().setKeyframe('c1', 'opacity', 2, 0.5, 'easeBoth');
+    expect(clipById('c1').keyframes?.opacity).toEqual([
+      { t: 0, value: 1, ease: 'linear' },
+      { t: 2, value: 0.5, ease: 'easeBoth' },
+      { t: 4, value: 1, ease: 'linear' },
+    ]);
+    // Updating a point keeps its ease when none is passed.
+    store().setKeyframe('c1', 'opacity', 2, 0.75);
+    expect(clipById('c1').keyframes?.opacity?.[1]).toEqual({ t: 2, value: 0.75, ease: 'easeBoth' });
+  });
+
+  it('moveKeyframe retimes and re-sorts; removeKeyframe removes (last removal disarms)', () => {
+    loadOne();
+    store().armProperty('c1', 'rotation', 0);
+    store().setKeyframe('c1', 'rotation', 3, 90);
+    store().moveKeyframe('c1', 'rotation', 3, 1);
+    expect(clipById('c1').keyframes?.rotation?.map((k) => k.t)).toEqual([0, 1]);
+    store().removeKeyframe('c1', 'rotation', 1);
+    store().removeKeyframe('c1', 'rotation', 0);
+    expect(clipById('c1').keyframes?.rotation).toBeUndefined();
+  });
+
+  it('disarmProperty collapses the lane to its value at the playhead time', () => {
+    loadOne();
+    store().armProperty('c1', 'opacity', 0);
+    store().setKeyframe('c1', 'opacity', 0, 0);
+    store().setKeyframe('c1', 'opacity', 4, 1);
+    store().disarmProperty('c1', 'opacity', 2);
+    const c = clipById('c1');
+    expect(c.keyframes?.opacity).toBeUndefined();
+    expect(c.opacity).toBeCloseTo(0.5, 9);
+  });
+
+  it('effect-param lanes live under "<effectId>.<param>" and disarm back onto the effect', () => {
+    loadOne();
+    store().addEffect('c1', 'lumetri');
+    const effectId = clipById('c1').effects![0].id;
+    const key = `${effectId}.exposure`;
+    store().armProperty('c1', key, 0);
+    store().setKeyframe('c1', key, 4, 2);
+    expect(clipById('c1').keyframes?.effects?.[key]).toHaveLength(2);
+    store().disarmProperty('c1', key, 4);
+    const c = clipById('c1');
+    expect(c.keyframes?.effects).toBeUndefined();
+    expect((c.effects![0] as { exposure: number }).exposure).toBe(2);
+  });
+
+  it('volume lane mirrors legacy volumeKeyframes both ways', () => {
+    loadOne({ volume: 1 });
+    store().armProperty('c1', 'volume', 0);
+    store().setKeyframe('c1', 'volume', 3, 0.5);
+    let c = clipById('c1');
+    expect(c.volumeKeyframes).toEqual([
+      { t: 0, gain: 1 },
+      { t: 3, gain: 0.5 },
+    ]);
+    // Legacy rubber-band edit updates the v3 lane (ease preserved at kept times).
+    store().setKeyframe('c1', 'volume', 3, 0.5, 'easeBoth');
+    store().addVolumeKeyframe('c1', 5, 2);
+    c = clipById('c1');
+    expect(c.keyframes?.volume).toEqual([
+      { t: 0, value: 1, ease: 'linear' },
+      { t: 3, value: 0.5, ease: 'easeBoth' },
+      { t: 5, value: 2, ease: 'linear' },
+    ]);
+    // Arming from an existing rubber-band curve adopts it wholesale.
+    store().disarmProperty('c1', 'volume', 0);
+    store().addVolumeKeyframe('c1', 1, 0.25);
+    store().armProperty('c1', 'volume', 0);
+    expect(clipById('c1').keyframes?.volume).toEqual([{ t: 1, value: 0.25, ease: 'linear' }]);
+  });
+
+  it('keyframe edits are undoable through the part-06 history', () => {
+    loadOne();
+    store().armProperty('c1', 'scale', 0);
+    store().setKeyframe('c1', 'scale', 2, 2);
+    expect(clipById('c1').keyframes?.scale).toHaveLength(2);
+    store().undo();
+    expect(clipById('c1').keyframes?.scale).toHaveLength(1);
+    store().undo();
+    expect(clipById('c1').keyframes?.scale).toBeUndefined();
+  });
+});

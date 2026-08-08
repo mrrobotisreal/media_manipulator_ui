@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2 } from 'lucide-react';
+import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -25,6 +25,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { TRANSITION_TYPE_GROUPS } from '@/lib/studio/effectRegistry';
+import { clipKeyframeLanes, type KeyframePropertyGroup } from '@/lib/studio/keyframes';
 import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { editSummary } from '@/lib/studio/telemetry';
 import ClipWaveform from './clip-waveform';
@@ -36,6 +37,22 @@ const RULER_HEIGHT = 28;
 const TRACK_HEIGHT = 56;
 const LABEL_WIDTH = 64;
 const MIN_CLIP = 0.1;
+const KEYFRAME_STRIP_HEIGHT = 20;
+
+// Keyframe strip diamond styling per property group (part 15): color + a small
+// vertical offset so coincident keyframes of different groups stay visible.
+const KF_GROUP_COLOR: Record<KeyframePropertyGroup, string> = {
+  motion: 'bg-data',
+  opacity: 'bg-premium',
+  audio: 'bg-primary',
+  effects: 'bg-foreground',
+};
+const KF_GROUP_TOP: Record<KeyframePropertyGroup, number> = {
+  motion: 0,
+  opacity: 4,
+  audio: 8,
+  effects: 12,
+};
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
@@ -685,6 +702,36 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
     useStudioStore.getState().endGesture();
   };
 
+  // --- keyframe strip (part 15): expandable diamond lane on selected clips ---
+  const kfLanes = clipKeyframeLanes(clip);
+  const hasKeyframes = kfLanes.length > 0;
+  const [kfOpen, setKfOpen] = React.useState(false);
+  const kfDragRef = React.useRef<null | { property: string; t: number; startX: number }>(null);
+
+  const onKfDown = (e: React.PointerEvent, property: string, t: number) => {
+    e.stopPropagation();
+    e.preventDefault();
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    kfDragRef.current = { property, t, startX: e.clientX };
+    editSummary.increment('uiInvocations');
+    // The whole retime drag is ONE undo entry.
+    useStudioStore.getState().beginGesture();
+  };
+  const onKfMove = (e: React.PointerEvent) => {
+    const d = kfDragRef.current;
+    if (!d) return;
+    const nt = Math.max(0, d.t + (e.clientX - d.startX) / zoom);
+    useStudioStore.getState().moveKeyframe(clip.id, d.property, d.t, nt);
+    d.t = nt;
+    d.startX = e.clientX;
+  };
+  const onKfUp = (e: React.PointerEvent) => {
+    if (!kfDragRef.current) return;
+    kfDragRef.current = null;
+    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    useStudioStore.getState().endGesture();
+  };
+
   const applyTransition = (type: StudioTransitionType) => {
     editSummary.increment('transitionsAdded', type);
     editSummary.increment('uiInvocations');
@@ -787,6 +834,53 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
           onPointerCancel={onRetimeUp}
           title={t('contentStudio.timeline.transitionRetime')}
         />
+      )}
+      {/* Keyframe strip disclosure (part 15): selected clips with keyframes. */}
+      {selected && hasKeyframes && (
+        <button
+          type="button"
+          className={`absolute right-0.5 top-0.5 z-10 p-0.5 rounded hover:bg-muted ${kfOpen ? 'text-premium' : 'text-muted-foreground'}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setKfOpen((o) => !o);
+            editSummary.increment('uiInvocations');
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
+          title={t('contentStudio.timeline.keyframeToggle')}
+        >
+          <Diamond className="w-3 h-3" fill={kfOpen ? 'currentColor' : 'none'} />
+        </button>
+      )}
+      {/* Expanded strip: diamonds per property group; drag retimes (one undo
+          entry per drag), double-click removes. Times are clip-local, so
+          left = t × zoom from the block's own left edge. */}
+      {selected && hasKeyframes && kfOpen && (
+        <div
+          className="absolute inset-x-0 bottom-0 bg-surface-0/80 border-t border-border touch-none"
+          style={{ height: KEYFRAME_STRIP_HEIGHT }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {kfLanes.map((lane) =>
+            lane.keyframes.map((k) => (
+              <div
+                key={`${lane.property}@${k.t}`}
+                className={`absolute w-2 h-2 rotate-45 cursor-ew-resize border border-surface-0 ${KF_GROUP_COLOR[lane.group]}`}
+                style={{ left: k.t * zoom - 4, top: KF_GROUP_TOP[lane.group] }}
+                onPointerDown={(e) => onKfDown(e, lane.property, k.t)}
+                onPointerMove={onKfMove}
+                onPointerUp={onKfUp}
+                onPointerCancel={onKfUp}
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                  useStudioStore.getState().removeKeyframe(clip.id, lane.property, k.t);
+                  editSummary.increment('uiInvocations');
+                }}
+                title={`${lane.property} · ${t('contentStudio.timeline.keyframeDiamond')}`}
+              />
+            )),
+          )}
+        </div>
       )}
     </div>
       </ContextMenuTrigger>

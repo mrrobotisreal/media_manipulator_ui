@@ -1,5 +1,10 @@
 import type { GLCompositor, GLLayer } from '../../lib/studio/glCompositor';
-import { clipTransitionState, resolveActiveClips, type ActiveClip } from '../../lib/studio/previewEngine';
+import {
+  clipTransitionState,
+  clipValuesAt,
+  resolveActiveClips,
+  type ActiveClip,
+} from '../../lib/studio/previewEngine';
 import type { StudioTrack } from '../../lib/studioTypes';
 
 /**
@@ -66,6 +71,11 @@ export function buildLayersAtTime(
           saturation: clip.adjustments.saturation,
         }
       : undefined;
+    // Part 15: per-frame keyframed values via the shared resolver — the same
+    // clipValuesAt the editor's buildGLLayer consumes.
+    const values = clipValuesAt(clip, t - clip.timelineStart);
+    const ov = (effectId: string, param: string, fallback: number): number =>
+      values.effects?.[`${effectId}.${param}`] ?? fallback;
     let lumetri: GLLayer['lumetri'];
     let lut: GLLayer['lut'];
     let chroma: GLLayer['chroma'];
@@ -73,40 +83,41 @@ export function buildLayersAtTime(
       if (!e.enabled) continue;
       if (e.type === 'lumetri' && !lumetri) {
         lumetri = {
-          exposure: e.exposure,
-          contrast: e.contrast,
-          saturation: e.saturation,
-          temperature: e.temperature,
-          tint: e.tint,
-          vibrance: e.vibrance,
+          exposure: ov(e.id, 'exposure', e.exposure),
+          contrast: ov(e.id, 'contrast', e.contrast),
+          saturation: ov(e.id, 'saturation', e.saturation),
+          temperature: ov(e.id, 'temperature', e.temperature),
+          tint: ov(e.id, 'tint', e.tint),
+          vibrance: ov(e.id, 'vibrance', e.vibrance),
         };
       } else if (e.type === 'lut' && !lut && comp.hasLut(e.lutAssetId)) {
-        lut = { key: e.lutAssetId, intensity: e.intensity };
+        lut = { key: e.lutAssetId, intensity: ov(e.id, 'intensity', e.intensity) };
       } else if (e.type === 'chromakey' && !chroma) {
-        chroma = { keyColor: hexToRgb01(e.keyColor), similarity: e.similarity, blend: e.blend, despill: e.despill };
+        chroma = {
+          keyColor: hexToRgb01(e.keyColor),
+          similarity: ov(e.id, 'similarity', e.similarity),
+          blend: ov(e.id, 'blend', e.blend),
+          despill: ov(e.id, 'despill', e.despill),
+        };
       }
     }
     // Typed transition state (part 14): mirrors buildGLLayer + the dip-layer
     // emission in preview-surface.tsx exactly.
     const trackClips = tracks.find((tr) => tr.id === a.trackId)?.clips ?? [];
     const trs = clipTransitionState(clip, trackClips, t);
-    const base = clip.transform;
-    const transform =
-      trs.offsetX !== 0 || trs.offsetY !== 0
-        ? {
-            x: (base?.x ?? 0) + trs.offsetX,
-            y: (base?.y ?? 0) + trs.offsetY,
-            scale: base?.scale ?? 1,
-            rotationDeg: base?.rotationDeg ?? 0,
-          }
-        : base;
+    const transform = {
+      x: values.transform.x + trs.offsetX,
+      y: values.transform.y + trs.offsetY,
+      scale: values.transform.scale,
+      rotationDeg: values.transform.rotationDeg,
+    };
     layers.push({
       slot: src.slot,
       srcW: src.srcW,
       srcH: src.srcH,
       transform,
       crop: clip.crop,
-      opacity: (clip.opacity ?? 1) * trs.alpha,
+      opacity: values.opacity * trs.alpha,
       blendMode: clip.blendMode,
       eq,
       lumetri,

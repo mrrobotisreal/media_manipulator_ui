@@ -211,6 +211,23 @@ export const PARITY_TOLERANCES: readonly ParityTolerance[] = [
     status: 'bounded',
     note: 'same as transition_push (entering clip only; outgoing static)',
   },
+  // --- Part 15: keyframing. Both sides evaluate the SAME ease curves
+  // (ease.fixtures.json is the contract), so the residual is the underlying
+  // transform/color tolerance sampled mid-animation. ---
+  {
+    id: 'keyframe_transform',
+    metric: 'psnr',
+    threshold: 33,
+    status: 'bounded',
+    note: 'animated position+scale+rotation+opacity: same curves both sides; export adds an eval=frame resample stage (fit-to-max then per-frame downscale) and even-pixel rounding vs GL subpixel quads',
+  },
+  {
+    id: 'keyframe_lumetri',
+    metric: 'deltaE',
+    threshold: 3,
+    status: 'bounded',
+    note: 'sendcmd-driven eq/colorbalance/vibrance/exposure ramps vs per-frame shader uniforms; command delivery quantizes to frames (≤1 frame skew) on top of the static lumetri residuals',
+  },
 ] as const;
 
 export function parityTolerance(id: string): ParityTolerance | undefined {

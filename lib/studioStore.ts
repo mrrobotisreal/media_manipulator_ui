@@ -16,6 +16,8 @@ import type {
   StudioEffect,
   StudioEffectType,
   StudioVolumeKeyframe,
+  StudioKeyframe,
+  StudioKeyframeEase,
   StudioCaptionCue,
   StudioCaptionStyle,
   StudioAudioConfig,
@@ -28,6 +30,15 @@ import {
 } from '@/lib/studioTypes';
 import { makeDefaultEffect, STUDIO_V3_RANGES } from '@/lib/studio/effectRegistry';
 import { clipDuration, clipEnd, timelineDuration } from '@/lib/studio/previewEngine';
+import { valueAt } from '@/lib/studio/ease';
+import {
+  isEffectKeyframeProperty,
+  keyframeLane,
+  keyframeValueRange,
+  pruneClipKeyframes,
+  KEYFRAME_TIME_EPSILON,
+  type NamedKeyframeProperty,
+} from '@/lib/studio/keyframes';
 
 /**
  * Zustand store for the Content Studio editor. This holds the live editing
@@ -185,6 +196,21 @@ interface StudioState {
   removeVolumeKeyframe: (clipId: string, index: number) => void;
   setAudioDucking: (patch: Partial<StudioAudioConfig>) => void;
 
+  // --- EDL v3: per-property keyframes (part 15) ---
+  // `property` is a named lane ('positionX'…'pan') or "<effectId>.<param>".
+  // All times are clip-local seconds. All actions route through the part-06
+  // history capture (gesture-batched by the calling UI where continuous).
+  /** Insert/update the keyframe at ≈t. Omitted ease keeps the existing point's ease (or 'linear'). */
+  setKeyframe: (clipId: string, property: string, t: number, value: number, ease?: StudioKeyframeEase) => void;
+  /** Remove the keyframe at ≈t; removing the last point disarms the lane. */
+  removeKeyframe: (clipId: string, property: string, t: number) => void;
+  /** Retime the keyframe at ≈fromT to toT (value/ease kept; last-wins on collision). */
+  moveKeyframe: (clipId: string, property: string, fromT: number, toT: number) => void;
+  /** Arm keyframing: seed keyframe[0] at `atT` from the current static value. */
+  armProperty: (clipId: string, property: string, atT: number) => void;
+  /** Disarm (UI confirms first): collapse the lane to its value at `atT` as the static field. */
+  disarmProperty: (clipId: string, property: string, atT: number) => void;
+
   // --- EDL v2: captions ---
   setCaptions: (cues: StudioCaptionCue[]) => void;
   addCaption: (startSeconds: number, endSeconds: number, text?: string) => void;
@@ -258,6 +284,138 @@ function normalizeKeyframes(kfs: StudioVolumeKeyframe[]): StudioVolumeKeyframe[]
     }
   }
   return out;
+}
+
+// --- EDL v3 keyframe lane helpers (part 15) --------------------------------
+
+// normalizeLane mirrors the Go sanitizer: t ≥ 0, value clamped to the
+// property's range, sorted by t, deduped (same time → last wins), capped at 64.
+function normalizeLane(kfs: StudioKeyframe[], min: number, max: number): StudioKeyframe[] {
+  const sorted = [...kfs]
+    .map((k) => ({ t: Math.max(0, k.t), value: clampRange(k.value, min, max), ease: k.ease }))
+    .sort((a, b) => a.t - b.t);
+  const out: StudioKeyframe[] = [];
+  for (const k of sorted) {
+    if (out.length > 0 && Math.abs(out[out.length - 1].t - k.t) < KEYFRAME_TIME_EPSILON) {
+      out[out.length - 1] = k;
+    } else {
+      out.push(k);
+    }
+  }
+  return out.slice(0, STUDIO_V3_RANGES.keyframesPerProperty);
+}
+
+// staticKeyframeValue reads the value an arming stopwatch seeds from — the
+// clip's current static field (or the effect param / registry default).
+function staticKeyframeValue(clip: StudioClip, property: string): number {
+  if (isEffectKeyframeProperty(property)) {
+    const dot = property.lastIndexOf('.');
+    const effectId = property.slice(0, dot);
+    const param = property.slice(dot + 1);
+    const effect = (clip.effects ?? []).find((e) => e.id === effectId);
+    if (effect) {
+      const v = (effect as unknown as Record<string, unknown>)[param];
+      if (typeof v === 'number') return v;
+    }
+    return keyframeValueRange(property).min <= 0 && keyframeValueRange(property).max >= 0 ? 0 : keyframeValueRange(property).min;
+  }
+  switch (property as NamedKeyframeProperty) {
+    case 'positionX':
+      return clip.transform?.x ?? 0;
+    case 'positionY':
+      return clip.transform?.y ?? 0;
+    case 'scale':
+      return clip.transform?.scale ?? 1;
+    case 'rotation':
+      return clip.transform?.rotationDeg ?? 0;
+    case 'opacity':
+      return clip.opacity ?? 1;
+    case 'volume':
+      return clip.volume ?? 1;
+    case 'pan':
+      return clip.pan ?? 0;
+    default:
+      return 0;
+  }
+}
+
+// writeKeyframeLane returns the clip with `property`'s lane replaced (undefined
+// removes it). The v3 'volume' lane keeps the legacy `volumeKeyframes` mirror
+// in sync (linear points, gain = value) so the timeline rubber band, pre-v3
+// readers, and the export's legacy path all see the same automation — the same
+// dual-write convention as transition/transitionInSeconds.
+function writeKeyframeLane(clip: StudioClip, property: string, lane: StudioKeyframe[] | undefined): StudioClip {
+  const next = { ...(clip.keyframes ?? {}) };
+  if (isEffectKeyframeProperty(property)) {
+    const effects = { ...(next.effects ?? {}) };
+    if (lane && lane.length > 0) effects[property] = lane;
+    else delete effects[property];
+    next.effects = effects;
+  } else if (lane && lane.length > 0) {
+    next[property as NamedKeyframeProperty] = lane;
+  } else {
+    delete next[property as NamedKeyframeProperty];
+  }
+  const out: StudioClip = { ...clip, keyframes: pruneClipKeyframes(next) };
+  if (property === 'volume') {
+    out.volumeKeyframes =
+      lane && lane.length > 0 ? lane.map((k) => ({ t: k.t, gain: k.value })) : undefined;
+  }
+  return out;
+}
+
+// mirrorLegacyVolume rebuilds the v3 volume lane from a freshly edited legacy
+// list (rubber-band edits are linear; eases of points that kept their time are
+// preserved). Keeping the lanes mirrored matters because `keyframes.volume`
+// wins everywhere since part 15.
+function mirrorLegacyVolume(clip: StudioClip, legacy: StudioVolumeKeyframe[]): StudioClip {
+  if (legacy.length === 0) {
+    return writeKeyframeLane({ ...clip, volumeKeyframes: undefined }, 'volume', undefined);
+  }
+  const prior = clip.keyframes?.volume ?? [];
+  const lane: StudioKeyframe[] = legacy.map((k) => ({
+    t: k.t,
+    value: k.gain,
+    ease: prior.find((p) => Math.abs(p.t - k.t) < KEYFRAME_TIME_EPSILON)?.ease ?? 'linear',
+  }));
+  const out = writeKeyframeLane(clip, 'volume', lane);
+  out.volumeKeyframes = legacy;
+  return out;
+}
+
+// writeStaticKeyframeValue collapses a disarmed lane's value back onto the
+// clip's static field.
+function writeStaticKeyframeValue(clip: StudioClip, property: string, value: number): StudioClip {
+  if (isEffectKeyframeProperty(property)) {
+    const dot = property.lastIndexOf('.');
+    const effectId = property.slice(0, dot);
+    const param = property.slice(dot + 1);
+    return {
+      ...clip,
+      effects: (clip.effects ?? []).map((e) =>
+        e.id === effectId ? ({ ...e, [param]: value } as StudioEffect) : e,
+      ),
+    };
+  }
+  const tf: StudioTransform = clip.transform ?? { x: 0, y: 0, scale: 1, rotationDeg: 0 };
+  switch (property as NamedKeyframeProperty) {
+    case 'positionX':
+      return { ...clip, transform: { ...tf, x: value } };
+    case 'positionY':
+      return { ...clip, transform: { ...tf, y: value } };
+    case 'scale':
+      return { ...clip, transform: { ...tf, scale: value } };
+    case 'rotation':
+      return { ...clip, transform: { ...tf, rotationDeg: value } };
+    case 'opacity':
+      return { ...clip, opacity: value };
+    case 'volume':
+      return { ...clip, volume: value };
+    case 'pan':
+      return { ...clip, pan: value === 0 ? undefined : value };
+    default:
+      return clip;
+  }
 }
 
 // splitTextProportional splits caption text at the nearest word boundary to
@@ -1007,14 +1165,16 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 
+  // The legacy volume-keyframe actions (rubber band + old UI) now keep the v3
+  // `keyframes.volume` lane mirrored — since part 15 that lane wins in the
+  // resolver and export, so an unmirrored legacy edit would be invisible.
   setVolumeKeyframes: (clipId, kfs) =>
     mutate((s) => {
       if (!s.project) return {};
       const normalized = normalizeKeyframes(kfs);
-      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => ({
-        ...c,
-        volumeKeyframes: normalized.length > 0 ? normalized : undefined,
-      }));
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) =>
+        mirrorLegacyVolume(c, normalized),
+      );
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 
@@ -1023,7 +1183,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
         const next = normalizeKeyframes([...(c.volumeKeyframes ?? []), { t, gain }]);
-        return { ...c, volumeKeyframes: next };
+        return mirrorLegacyVolume(c, next);
       });
       return { project: { ...s.project, tracks }, dirty: true };
     }),
@@ -1033,7 +1193,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       if (!s.project) return {};
       const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
         const kfs = (c.volumeKeyframes ?? []).filter((_, i) => i !== index);
-        return { ...c, volumeKeyframes: kfs.length > 0 ? kfs : undefined };
+        return mirrorLegacyVolume(c, kfs);
       });
       return { project: { ...s.project, tracks }, dirty: true };
     }),
@@ -1043,6 +1203,98 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       if (!s.project) return {};
       const audio: StudioAudioConfig = { ...DEFAULT_AUDIO_CONFIG, ...s.project.audio, ...patch };
       return { project: { ...s.project, audio }, dirty: true };
+    }),
+
+  // --- EDL v3: per-property keyframes (part 15) ---------------------------
+
+  setKeyframe: (clipId, property, t, value, ease) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const { min, max } = keyframeValueRange(property);
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const lane = keyframeLane(c, property) ?? [];
+        const existing = lane.find((k) => Math.abs(k.t - t) < KEYFRAME_TIME_EPSILON);
+        const point: StudioKeyframe = {
+          t: Math.max(0, t),
+          value,
+          ease: ease ?? existing?.ease ?? 'linear',
+        };
+        return writeKeyframeLane(c, property, normalizeLane([...lane, point], min, max));
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  removeKeyframe: (clipId, property, t) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const { min, max } = keyframeValueRange(property);
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const lane = keyframeLane(c, property);
+        if (!lane) return c;
+        const kept = lane.filter((k) => Math.abs(k.t - t) >= KEYFRAME_TIME_EPSILON);
+        if (kept.length === lane.length) return c;
+        return writeKeyframeLane(c, property, kept.length > 0 ? normalizeLane(kept, min, max) : undefined);
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  moveKeyframe: (clipId, property, fromT, toT) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const { min, max } = keyframeValueRange(property);
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const lane = keyframeLane(c, property);
+        if (!lane) return c;
+        let moved = false;
+        const next = lane.map((k) => {
+          if (!moved && Math.abs(k.t - fromT) < KEYFRAME_TIME_EPSILON) {
+            moved = true;
+            return { ...k, t: Math.max(0, toT) };
+          }
+          return k;
+        });
+        if (!moved) return c;
+        return writeKeyframeLane(c, property, normalizeLane(next, min, max));
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  armProperty: (clipId, property, atT) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      // Already armed → true no-op (no rebuilt tree, no history entry).
+      for (const tr of s.project.tracks) {
+        const c = tr.clips.find((cc) => cc.id === clipId);
+        if (c && keyframeLane(c, property)?.length) return {};
+      }
+      const { min, max } = keyframeValueRange(property);
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        // Arming volume adopts an existing rubber-band curve instead of
+        // collapsing it to a single point.
+        if (property === 'volume' && c.volumeKeyframes && c.volumeKeyframes.length > 0) {
+          const lane = c.volumeKeyframes.map((k) => ({ t: k.t, value: k.gain, ease: 'linear' as const }));
+          return writeKeyframeLane(c, property, normalizeLane(lane, min, max));
+        }
+        const seed: StudioKeyframe = {
+          t: Math.max(0, atT),
+          value: clampRange(staticKeyframeValue(c, property), min, max),
+          ease: 'linear',
+        };
+        return writeKeyframeLane(c, property, [seed]);
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  disarmProperty: (clipId, property, atT) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const lane = keyframeLane(c, property);
+        if (!lane || lane.length === 0) return c;
+        const settled = valueAt(lane, Math.max(0, atT));
+        return writeStaticKeyframeValue(writeKeyframeLane(c, property, undefined), property, settled);
+      });
+      return { project: { ...s.project, tracks }, dirty: true };
     }),
 
   // --- EDL v2: captions ---------------------------------------------------

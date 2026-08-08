@@ -99,7 +99,9 @@
       "transitionRegion": "Transition overlap",
       "transitionRetime": "Drag to retime the transition (left = longer)",
       "contextTransition": "Transition",
-      "contextRemoveTransition": "Remove transition"
+      "contextRemoveTransition": "Remove transition",
+      "keyframeToggle": "Show keyframes",
+      "keyframeDiamond": "drag to retime, double-click to remove"
     },
     "preferences": {
       "open": "Preferences",
@@ -310,6 +312,21 @@
         "darken": "Darken",
         "addition": "Addition",
         "difference": "Difference"
+      },
+      "keyframes": {
+        "toggle": "Toggle keyframing for this property",
+        "prev": "Go to previous keyframe",
+        "next": "Go to next keyframe",
+        "addRemove": "Add or remove a keyframe at the playhead",
+        "ease": "Keyframe ease",
+        "confirmDisarm": "Remove all keyframes for this property? The value at the playhead is kept.",
+        "eases": {
+          "linear": "Linear",
+          "hold": "Hold",
+          "easeIn": "Ease in",
+          "easeOut": "Ease out",
+          "easeBoth": "Ease both"
+        }
       }
     },
     "export": {

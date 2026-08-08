@@ -2,8 +2,8 @@
 
 import React from 'react';
 import {
-  Sparkles, Plus, Trash2, Type, ChevronDown, Move, Crop, Blend, Layers,
-  Volume2, Pipette, ArrowUp, ArrowDown, RotateCcw,
+  Sparkles, Plus, Trash2, Type, ChevronDown, ChevronLeft, ChevronRight, Move, Crop, Blend, Layers,
+  Volume2, Pipette, ArrowUp, ArrowDown, RotateCcw, Timer, Diamond,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,16 +22,180 @@ import {
 } from '@/lib/studio/effectRegistry';
 import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { requestEyedrop } from '@/lib/studio/eyedropper';
+import { valueAt } from '@/lib/studio/ease';
+import {
+  keyframeLane,
+  keyframeAt,
+  keyframeAnalyticsSubkey,
+  KEYFRAME_HIT_EPSILON,
+} from '@/lib/studio/keyframes';
 import { useUndoGesture } from './useUndoGesture';
 import { editSummary } from '@/lib/studio/telemetry';
 import { Panel } from '@/components/darkroom/panel';
 import type {
   StudioClip, StudioTrack, StudioEffect, StudioBlendMode, StudioTransform, StudioCrop,
-  StudioTransitionType,
+  StudioTransitionType, StudioKeyframeEase,
 } from '@/lib/studioTypes';
 
 const DEFAULT_ADJUSTMENTS = { brightness: 0, contrast: 1, saturation: 1 };
 const BLEND_MODES: StudioBlendMode[] = ['normal', 'multiply', 'screen', 'overlay', 'lighten', 'darken', 'addition', 'difference'];
+const KEYFRAME_EASES: StudioKeyframeEase[] = ['linear', 'hold', 'easeIn', 'easeOut', 'easeBoth'];
+
+// --- keyframe helpers (part 15) ----------------------------------------------
+
+/** Clip-local playhead seconds, clamped into the clip. Subscribes only while `enabled`. */
+function useClipLocalPlayhead(clip: StudioClip, enabled: boolean): number {
+  return useStudioStore((s) => {
+    if (!enabled) return 0;
+    const local = s.playhead - clip.timelineStart;
+    return Math.max(0, Math.min(clipDuration(clip), local));
+  });
+}
+
+/** Clip-local playhead read imperatively (for write paths — no subscription). */
+function clipLocalPlayheadNow(clip: StudioClip): number {
+  const local = useStudioStore.getState().playhead - clip.timelineStart;
+  return Math.max(0, Math.min(clipDuration(clip), local));
+}
+
+/**
+ * Premiere stopwatch semantics: adjusting an ARMED property writes/updates a
+ * keyframe at the playhead; an unarmed one writes the static field.
+ */
+function writeKeyframable(clip: StudioClip, property: string, v: number, writeStatic: (v: number) => void): void {
+  const lane = keyframeLane(clip, property);
+  if (lane && lane.length > 0) {
+    const t = clipLocalPlayheadNow(clip);
+    if (!keyframeAt(lane, t)) editSummary.increment('keyframesAdded', keyframeAnalyticsSubkey(property));
+    useStudioStore.getState().setKeyframe(clip.id, property, t, v);
+  } else {
+    writeStatic(v);
+  }
+}
+
+/** The value a keyframable row displays: animated at the playhead when armed, else the static. */
+function keyframableDisplayValue(clip: StudioClip, property: string, localT: number, fallback: number): number {
+  const lane = keyframeLane(clip, property);
+  return lane && lane.length > 0 ? valueAt(lane, localT, fallback) : fallback;
+}
+
+/**
+ * Stopwatch + ◀ ✦ ▶ + ease controls for one keyframable row. `effectiveValue`
+ * is what ✦ writes when adding a keyframe at the playhead.
+ */
+const KeyframeButtons: React.FC<{ clip: StudioClip; property: string; effectiveValue: number }> = ({
+  clip,
+  property,
+  effectiveValue,
+}) => {
+  const { t } = useLocalization('interface');
+  const lane = keyframeLane(clip, property);
+  const armed = !!lane && lane.length > 0;
+  const localT = useClipLocalPlayhead(clip, armed);
+  const atPlayhead = armed ? keyframeAt(lane, localT) : undefined;
+  const subkey = keyframeAnalyticsSubkey(property);
+
+  const toggleArm = () => {
+    const st = useStudioStore.getState();
+    if (armed) {
+      if (!window.confirm(t('contentStudio.inspector.keyframes.confirmDisarm'))) return;
+      st.disarmProperty(clip.id, property, clipLocalPlayheadNow(clip));
+    } else {
+      st.armProperty(clip.id, property, clipLocalPlayheadNow(clip));
+      editSummary.increment('keyframesAdded', subkey);
+    }
+    editSummary.increment('uiInvocations');
+  };
+
+  const seek = (kfT: number) => {
+    useStudioStore.getState().setPlayhead(clip.timelineStart + kfT);
+  };
+
+  const toggleAtPlayhead = () => {
+    const st = useStudioStore.getState();
+    const now = clipLocalPlayheadNow(clip);
+    const existing = keyframeAt(lane, now);
+    if (existing) {
+      st.removeKeyframe(clip.id, property, existing.t);
+    } else {
+      st.setKeyframe(clip.id, property, now, effectiveValue);
+      editSummary.increment('keyframesAdded', subkey);
+    }
+    editSummary.increment('uiInvocations');
+  };
+
+  const prevKf = armed ? [...lane].reverse().find((k) => k.t < localT - KEYFRAME_HIT_EPSILON) : undefined;
+  const nextKf = armed ? lane.find((k) => k.t > localT + KEYFRAME_HIT_EPSILON) : undefined;
+
+  return (
+    <span className="inline-flex items-center gap-0.5">
+      <button
+        type="button"
+        onClick={toggleArm}
+        className={`p-0.5 rounded hover:bg-muted ${armed ? 'text-premium' : 'text-muted-foreground/60'}`}
+        title={t('contentStudio.inspector.keyframes.toggle')}
+        aria-pressed={armed}
+      >
+        <Timer className="w-3 h-3" />
+      </button>
+      {armed && (
+        <>
+          <button
+            type="button"
+            disabled={!prevKf}
+            onClick={() => prevKf && seek(prevKf.t)}
+            className="p-0.5 rounded hover:bg-muted text-muted-foreground disabled:opacity-30"
+            title={t('contentStudio.inspector.keyframes.prev')}
+          >
+            <ChevronLeft className="w-3 h-3" />
+          </button>
+          <button
+            type="button"
+            onClick={toggleAtPlayhead}
+            className={`p-0.5 rounded hover:bg-muted ${atPlayhead ? 'text-premium' : 'text-muted-foreground'}`}
+            title={t('contentStudio.inspector.keyframes.addRemove')}
+          >
+            <Diamond className="w-3 h-3" fill={atPlayhead ? 'currentColor' : 'none'} />
+          </button>
+          <button
+            type="button"
+            disabled={!nextKf}
+            onClick={() => nextKf && seek(nextKf.t)}
+            className="p-0.5 rounded hover:bg-muted text-muted-foreground disabled:opacity-30"
+            title={t('contentStudio.inspector.keyframes.next')}
+          >
+            <ChevronRight className="w-3 h-3" />
+          </button>
+          {atPlayhead && (
+            <Select
+              value={atPlayhead.ease}
+              onValueChange={(ease) => {
+                useStudioStore
+                  .getState()
+                  .setKeyframe(clip.id, property, atPlayhead.t, atPlayhead.value, ease as StudioKeyframeEase);
+                editSummary.increment('uiInvocations');
+              }}
+            >
+              <SelectTrigger
+                className="h-5 w-auto gap-0.5 px-1 text-[10px]"
+                title={t('contentStudio.inspector.keyframes.ease')}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {KEYFRAME_EASES.map((e) => (
+                  <SelectItem key={e} value={e} className="text-xs">
+                    {t(`contentStudio.inspector.keyframes.eases.${e}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </>
+      )}
+    </span>
+  );
+};
 
 const ClipInspector: React.FC = () => {
   const { t } = useLocalization('interface');
@@ -125,14 +289,21 @@ const ParamSlider: React.FC<{
   param: EffectParam;
   value: number;
   onChange: (v: number) => void;
-}> = ({ param, value, onChange }) => {
+  /** Part 15: renders the stopwatch/◀✦▶ controls next to the label. */
+  keyframes?: { clip: StudioClip; property: string };
+}> = ({ param, value, onChange, keyframes }) => {
   const { t } = useLocalization('interface');
   // One undo entry per scrub (slider) or focus session (number field).
   const gesture = useUndoGesture();
   return (
     <div className="mb-2">
       <div className="flex items-center justify-between gap-2">
-        <Label className="text-[11px] text-muted-foreground">{t(param.labelKey)}</Label>
+        <span className="flex items-center gap-1 min-w-0">
+          <Label className="text-[11px] text-muted-foreground">{t(param.labelKey)}</Label>
+          {keyframes && (
+            <KeyframeButtons clip={keyframes.clip} property={keyframes.property} effectiveValue={value} />
+          )}
+        </span>
         <Input
           type="number"
           className="h-6 w-16 text-[11px] px-1 text-right"
@@ -166,11 +337,22 @@ const ParamSlider: React.FC<{
 
 // --- Motion ------------------------------------------------------------------
 
+// Transform field → keyframe lane name (the part-05 contract's lane vocabulary).
+const MOTION_PROPERTY: Record<string, string> = {
+  x: 'positionX',
+  y: 'positionY',
+  scale: 'scale',
+  rotationDeg: 'rotation',
+};
+
 const MotionSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   const { t } = useLocalization('interface');
   const setClipTransform = useStudioStore((s) => s.setClipTransform);
   const tf: StudioTransform = clip.transform ?? { ...IDENTITY_TRANSFORM };
-  const update = (key: keyof StudioTransform, v: number) => setClipTransform(clip.id, { ...tf, [key]: v });
+  const anyArmed = TRANSFORM_PARAMS.some((p) => keyframeLane(clip, MOTION_PROPERTY[p.key])?.length);
+  const localT = useClipLocalPlayhead(clip, anyArmed);
+  const update = (key: keyof StudioTransform, v: number) =>
+    writeKeyframable(clip, MOTION_PROPERTY[key], v, (sv) => setClipTransform(clip.id, { ...tf, [key]: sv }));
   return (
     <Section
       title={t('contentStudio.inspector.sectionMotion')}
@@ -185,7 +367,13 @@ const MotionSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
       }
     >
       {TRANSFORM_PARAMS.map((p) => (
-        <ParamSlider key={p.key} param={p} value={(tf as Record<string, number>)[p.key]} onChange={(v) => update(p.key as keyof StudioTransform, v)} />
+        <ParamSlider
+          key={p.key}
+          param={p}
+          value={keyframableDisplayValue(clip, MOTION_PROPERTY[p.key], localT, (tf as Record<string, number>)[p.key])}
+          onChange={(v) => update(p.key as keyof StudioTransform, v)}
+          keyframes={{ clip, property: MOTION_PROPERTY[p.key] }}
+        />
       ))}
     </Section>
   );
@@ -218,12 +406,17 @@ const OpacityBlendSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   const updateClip = useStudioStore((s) => s.updateClip);
   const setClipBlendMode = useStudioStore((s) => s.setClipBlendMode);
   const gesture = useUndoGesture();
-  const opacity = clip.opacity ?? 1;
+  const armed = !!keyframeLane(clip, 'opacity')?.length;
+  const localT = useClipLocalPlayhead(clip, armed);
+  const opacity = keyframableDisplayValue(clip, 'opacity', localT, clip.opacity ?? 1);
   return (
     <Section title={t('contentStudio.inspector.sectionOpacityBlend')} icon={<Blend className="w-3.5 h-3.5" />} defaultOpen={false}>
       <div className="mb-3">
         <Label className="text-[11px] text-muted-foreground flex justify-between">
-          <span>{t('contentStudio.inspector.opacity')}</span>
+          <span className="flex items-center gap-1">
+            {t('contentStudio.inspector.opacity')}
+            <KeyframeButtons clip={clip} property="opacity" effectiveValue={opacity} />
+          </span>
           <span className="tabular-nums">{Math.round(opacity * 100)}%</span>
         </Label>
         <Slider
@@ -234,7 +427,7 @@ const OpacityBlendSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
           value={[opacity]}
           onValueChange={(v) => {
             gesture.begin();
-            updateClip(clip.id, { opacity: v[0] ?? 1 });
+            writeKeyframable(clip, 'opacity', v[0] ?? 1, (sv) => updateClip(clip.id, { opacity: sv }));
           }}
           onValueCommit={gesture.end}
         />
@@ -339,6 +532,7 @@ const EffectsSection: React.FC<{ clip: StudioClip; lutAssets: StudioAssetEntry[]
           {effects.map((effect, i) => (
             <EffectCard
               key={effect.id}
+              clip={clip}
               clipId={clip.id}
               effect={effect}
               index={i}
@@ -357,6 +551,7 @@ const EffectsSection: React.FC<{ clip: StudioClip; lutAssets: StudioAssetEntry[]
 };
 
 const EffectCard: React.FC<{
+  clip: StudioClip;
   clipId: string;
   effect: StudioEffect;
   index: number;
@@ -366,9 +561,14 @@ const EffectCard: React.FC<{
   onToggle: () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
-}> = ({ clipId, effect, index, count, lutAssets, onRemove, onToggle, onMoveUp, onMoveDown }) => {
+}> = ({ clip, clipId, effect, index, count, lutAssets, onRemove, onToggle, onMoveUp, onMoveDown }) => {
   const { t } = useLocalization('interface');
   const updateEffect = useStudioStore((s) => s.updateEffect);
+  // Part 15: Lumetri params are keyframable ("<effectId>.<param>" lanes).
+  const anyArmed =
+    effect.type === 'lumetri' &&
+    effectParams('lumetri').some((p) => keyframeLane(clip, `${effect.id}.${p.key}`)?.length);
+  const localT = useClipLocalPlayhead(clip, anyArmed);
 
   return (
     <div className={`rounded-md border border-border p-2 ${effect.enabled ? '' : 'opacity-50'}`}>
@@ -387,14 +587,20 @@ const EffectCard: React.FC<{
       </div>
 
       {effect.type === 'lumetri' &&
-        effectParams('lumetri').map((p) => (
-          <ParamSlider
-            key={p.key}
-            param={p}
-            value={(effect as unknown as Record<string, number>)[p.key]}
-            onChange={(v) => updateEffect(clipId, effect.id, { [p.key]: v })}
-          />
-        ))}
+        effectParams('lumetri').map((p) => {
+          const property = `${effect.id}.${p.key}`;
+          return (
+            <ParamSlider
+              key={p.key}
+              param={p}
+              value={keyframableDisplayValue(clip, property, localT, (effect as unknown as Record<string, number>)[p.key])}
+              onChange={(v) =>
+                writeKeyframable(clip, property, v, (sv) => updateEffect(clipId, effect.id, { [p.key]: sv }))
+              }
+              keyframes={{ clip, property }}
+            />
+          );
+        })}
 
       {effect.type === 'lut' && (
         <div className="space-y-2">
@@ -455,19 +661,24 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   const { t } = useLocalization('interface');
   const setClipVolume = useStudioStore((s) => s.setClipVolume);
   const setClipPan = useStudioStore((s) => s.setClipPan);
-  const setVolumeKeyframes = useStudioStore((s) => s.setVolumeKeyframes);
   const gesture = useUndoGesture();
-  const volume = clip.volume ?? 1;
-  const pan = clip.pan ?? 0;
-  const usingKeyframes = (clip.volumeKeyframes?.length ?? 0) > 0;
-  const dur = clipDuration(clip);
+  // Part 15: volume/pan adopt the stopwatch UI. Arming volume adopts an
+  // existing rubber-band curve (store keeps the legacy lane mirrored).
+  const volumeArmed = !!keyframeLane(clip, 'volume')?.length;
+  const panArmed = !!keyframeLane(clip, 'pan')?.length;
+  const localT = useClipLocalPlayhead(clip, volumeArmed || panArmed);
+  const volume = keyframableDisplayValue(clip, 'volume', localT, clip.volume ?? 1);
+  const pan = keyframableDisplayValue(clip, 'pan', localT, clip.pan ?? 0);
   const db = volume <= 0 ? '−∞' : (20 * Math.log10(volume)).toFixed(1);
 
   return (
     <Section title={t('contentStudio.inspector.sectionAudio')} icon={<Volume2 className="w-3.5 h-3.5" />} defaultOpen={false}>
       <div className="mb-3">
         <Label className="text-[11px] text-muted-foreground flex justify-between">
-          <span>{t('contentStudio.inspector.audio.volume')}</span>
+          <span className="flex items-center gap-1">
+            {t('contentStudio.inspector.audio.volume')}
+            <KeyframeButtons clip={clip} property="volume" effectiveValue={volume} />
+          </span>
           <span className="tabular-nums">{db} dB</span>
         </Label>
         <Slider
@@ -478,15 +689,17 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
           value={[volume]}
           onValueChange={(v) => {
             gesture.begin();
-            setClipVolume(clip.id, v[0] ?? 1);
+            writeKeyframable(clip, 'volume', v[0] ?? 1, (sv) => setClipVolume(clip.id, sv));
           }}
           onValueCommit={gesture.end}
-          disabled={usingKeyframes}
         />
       </div>
       <div className="mb-3">
         <Label className="text-[11px] text-muted-foreground flex justify-between">
-          <span>{t('contentStudio.inspector.audio.pan')}</span>
+          <span className="flex items-center gap-1">
+            {t('contentStudio.inspector.audio.pan')}
+            <KeyframeButtons clip={clip} property="pan" effectiveValue={pan} />
+          </span>
           <span className="tabular-nums">
             {pan === 0 ? 'C' : `${pan < 0 ? t('contentStudio.inspector.audio.panLeft') : t('contentStudio.inspector.audio.panRight')} ${Math.round(Math.abs(pan) * 100)}`}
           </span>
@@ -499,28 +712,12 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
           value={[pan]}
           onValueChange={(v) => {
             gesture.begin();
-            setClipPan(clip.id, v[0] ?? 0);
+            writeKeyframable(clip, 'pan', v[0] ?? 0, (sv) => setClipPan(clip.id, sv));
           }}
           onValueCommit={gesture.end}
         />
       </div>
-      <div className="flex items-center justify-between gap-2">
-        <Label className="text-[11px] text-muted-foreground">{t('contentStudio.inspector.audio.useKeyframes')}</Label>
-        <Switch
-          checked={usingKeyframes}
-          onCheckedChange={(on) => {
-            if (on) {
-              setVolumeKeyframes(clip.id, [
-                { t: 0, gain: volume },
-                { t: Math.max(0.1, dur), gain: volume },
-              ]);
-            } else {
-              setVolumeKeyframes(clip.id, []);
-            }
-          }}
-        />
-      </div>
-      {usingKeyframes && <p className="text-[11px] text-muted-foreground mt-1">{t('contentStudio.inspector.audio.keyframeNote')}</p>}
+      {volumeArmed && <p className="text-[11px] text-muted-foreground mt-1">{t('contentStudio.inspector.audio.keyframeNote')}</p>}
     </Section>
   );
 };

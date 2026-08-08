@@ -24,6 +24,7 @@ import {
   transitionRamp,
   topVideoClip,
   volumeAtClipTime,
+  clipValuesAt,
   type ActiveClip,
 } from '@/lib/studio/previewEngine';
 import type { StudioClip, StudioTrack, StudioTrackKind, StudioTransitionType } from '@/lib/studioTypes';
@@ -341,5 +342,78 @@ describe('clipTransitionOf + clipTransitionState', () => {
     expect(entering.dip).toEqual({ color: 'black', alpha: 1 });
     const outgoingUnderDip = clipTransitionState(a, [a, dipB], 4.5);
     expect(outgoingUnderDip.dip).toBeUndefined(); // emitted only from B's layer
+  });
+});
+
+// --- part 15: keyframed property resolver -----------------------------------
+
+describe('clipValuesAt', () => {
+  it('falls back to static fields when no lanes exist', () => {
+    const c = clip('c', 0, 5, {
+      transform: { x: 0.2, y: -0.1, scale: 1.5, rotationDeg: 45 },
+      opacity: 0.8,
+      volume: 1.2,
+      pan: -0.5,
+    });
+    const v = clipValuesAt(c, 2);
+    expect(v.transform).toEqual({ x: 0.2, y: -0.1, scale: 1.5, rotationDeg: 45 });
+    expect(v.opacity).toBe(0.8);
+    expect(v.volume).toBe(1.2);
+    expect(v.pan).toBe(-0.5);
+    expect(v.effects).toBeUndefined();
+  });
+
+  it('a keyframed lane overrides its static field; other props keep statics', () => {
+    const c = clip('c', 0, 4, {
+      transform: { x: 0.2, y: 0.3, scale: 1, rotationDeg: 0 },
+      keyframes: {
+        positionX: [
+          { t: 0, value: -1, ease: 'linear' },
+          { t: 4, value: 1, ease: 'linear' },
+        ],
+        opacity: [
+          { t: 0, value: 0, ease: 'easeIn' },
+          { t: 2, value: 1, ease: 'linear' },
+        ],
+      },
+    });
+    const v = clipValuesAt(c, 2);
+    expect(v.transform.x).toBe(0); // keyframed midpoint
+    expect(v.transform.y).toBe(0.3); // static survives
+    expect(v.opacity).toBe(1);
+    expect(clipValuesAt(c, 1).opacity).toBeCloseTo(0.25, 9); // easeIn f² at f=0.5
+  });
+
+  it('keyframes.volume wins over legacy volumeKeyframes; legacy still works alone', () => {
+    const legacyOnly = clip('c', 0, 4, {
+      volumeKeyframes: [
+        { t: 0, gain: 0 },
+        { t: 4, gain: 2 },
+      ],
+    });
+    expect(clipValuesAt(legacyOnly, 2).volume).toBe(1);
+    const both = clip('c', 0, 4, {
+      volumeKeyframes: [
+        { t: 0, gain: 0 },
+        { t: 4, gain: 2 },
+      ],
+      keyframes: { volume: [{ t: 0, value: 0.5, ease: 'linear' }] },
+    });
+    expect(clipValuesAt(both, 2).volume).toBe(0.5);
+    expect(volumeAtClipTime(both, 2)).toBe(0.5);
+  });
+
+  it('resolves effect-param lanes under "<effectId>.<param>" keys', () => {
+    const c = clip('c', 0, 4, {
+      keyframes: {
+        effects: {
+          'lum1.exposure': [
+            { t: 0, value: 0, ease: 'linear' },
+            { t: 4, value: 2, ease: 'linear' },
+          ],
+        },
+      },
+    });
+    expect(clipValuesAt(c, 2).effects).toEqual({ 'lum1.exposure': 1 });
   });
 });
