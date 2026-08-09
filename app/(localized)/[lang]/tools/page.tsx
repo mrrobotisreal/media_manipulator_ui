@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { Clapperboard, Shield, Sparkles, ArrowRight } from 'lucide-react';
 import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
-import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
+import type { ToolPageContent } from '@/content/toolPages';
+import { getLocalizedToolPages } from '@/i18n/toolPageContent';
 import { REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
 import { Panel } from '@/components/darkroom/panel';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
@@ -25,23 +26,23 @@ const CATEGORY_ORDER: ToolPageContent['category'][] = [
   'metadata',
 ];
 
-// Only the review-allowed tools are surfaced here.
-const allowedTools = REVIEW_INDEXED_TOOL_SLUGS.map((slug) =>
-  TOOL_PAGES.find((t) => t.slug === slug),
-).filter((t): t is ToolPageContent => Boolean(t));
-
-const contentStudio = allowedTools.find((t) => t.slug === 'content-studio');
-
-function toolsByCategory(category: ToolPageContent['category']) {
-  return allowedTools.filter(
-    (t) => t.category === category && t.slug !== 'content-studio',
-  );
-}
-
 export default async function ToolsIndexPage({ params }: PageParams) {
   const { lang } = await params;
   const locale = resolveLangParam(lang);
   const t = getServerT('interface', locale);
+  // Only the review-allowed tools are surfaced here. Derived per-request from
+  // the LOCALIZED tool pages (names/taglines come from TOOL_PAGE_OVERRIDES,
+  // like the home-page grid) — a module-scope list built from TOOL_PAGES would
+  // bake English into every locale's prerender.
+  const localizedPages = getLocalizedToolPages(locale);
+  const allowedTools = REVIEW_INDEXED_TOOL_SLUGS.map((slug) =>
+    localizedPages.find((tool) => tool.slug === slug),
+  ).filter((tool): tool is ToolPageContent => Boolean(tool));
+  const contentStudio = allowedTools.find((tool) => tool.slug === 'content-studio');
+  const toolsByCategory = (category: ToolPageContent['category']) =>
+    allowedTools.filter(
+      (tool) => tool.category === category && tool.slug !== 'content-studio',
+    );
   const CATEGORY_LABELS: Record<ToolPageContent['category'], string> = {
     image: t('toolsIndex.categories.image'),
     video: t('toolsIndex.categories.video'),

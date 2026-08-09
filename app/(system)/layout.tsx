@@ -1,12 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import Script from 'next/script';
 import '../globals.css';
 import Providers from '@/app/providers';
-import { ResourceHints } from '@/components/seo/resource-hints';
-import { ADSENSE_ENABLED, ADSENSE_SCRIPT_ORIGIN } from '@/lib/adsenseConfig';
 import { SITE_ORIGIN } from '@/lib/seo';
 import { inter, jetbrainsMono } from '@/lib/fonts';
-import { THEME_INIT, GTAG_CONSENT_BOOTSTRAP } from '@/lib/layoutScripts';
+import { LayoutBootstrap } from '@/lib/layoutScripts';
 
 /**
  * Root layout for the non-localized surfaces: the `/dr/**` Double Raven
@@ -16,7 +13,7 @@ import { THEME_INIT, GTAG_CONSENT_BOOTSTRAP } from '@/lib/layoutScripts';
  *
  * Byte-for-byte this mirrors the old single root layout (fonts, theme
  * bootstrap, consent defaults, GA4 loader) via the shared `lib/fonts.ts` +
- * `lib/layoutScripts.ts` modules; the localized twin lives at
+ * `lib/layoutScripts.tsx` modules; the localized twin lives at
  * `app/(localized)/[lang]/layout.tsx`. `app/providers.tsx` renders these
  * routes through its chromeless, analytics-free branch exactly as before.
  */
@@ -49,31 +46,9 @@ export default function SystemRootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col">
-        <ResourceHints
-          preconnect={
-            ADSENSE_ENABLED
-              ? [{ href: ADSENSE_SCRIPT_ORIGIN, crossOrigin: 'anonymous' }]
-              : []
-          }
-          dnsPrefetch={['https://www.googletagmanager.com']}
-        />
-        {/* Apply the theme class before first paint to avoid a light flash. */}
-        <Script
-          id="theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: THEME_INIT }}
-        />
-        {/* Consent defaults must run before GA processes any events. */}
-        <Script
-          id="gtag-consent"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: GTAG_CONSENT_BOOTSTRAP }}
-        />
-        <Script
-          id="ga4"
-          src="https://www.googletagmanager.com/gtag/js?id=G-6J910CMHRY"
-          strategy="lazyOnload"
-        />
+        {/* Resource hints + theme/consent bootstraps + GA4 loader — shared
+            with the localized twin via lib/layoutScripts.tsx. */}
+        <LayoutBootstrap />
         <Providers>{children}</Providers>
       </body>
     </html>

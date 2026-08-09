@@ -152,6 +152,40 @@ function compareLeaf(ref: unknown, loc: unknown, path: string, issues: Issue[]):
   }
 }
 
+describe("no top-level key collisions across shards of a namespace", () => {
+  // Both bundlers (lib/i18n/server.tsx and i18n/resources.ts) shallow-merge a
+  // namespace's shards into one object, so a top-level key defined in two
+  // shards means whichever shard merges later silently replaces the other's
+  // block. That is invisible to the per-shard parity checks above and rendered
+  // /ru/tools as raw `toolsIndex.*` key echoes when tools.json and pages.json
+  // both owned `toolsIndex`. Checking en-US is sufficient: the parity suite
+  // forces every locale onto en-US's per-shard key trees.
+  const enDir = codeToDir("en-US");
+  const byNamespace = new Map<string, string[]>();
+  for (const shard of shardFiles(enDir)) {
+    const ns = shard.includes("/") ? shard.split("/")[0] : ".";
+    byNamespace.set(ns, [...(byNamespace.get(ns) ?? []), shard]);
+  }
+
+  for (const [ns, shards] of byNamespace) {
+    it(`${ns}: every top-level key has exactly one owning shard`, () => {
+      const owners = new Map<string, string[]>();
+      for (const shard of shards) {
+        const data = JSON.parse(
+          readFileSync(join(LOCALES_DIR, enDir, shard), "utf8"),
+        ) as Record<string, unknown>;
+        for (const key of Object.keys(data)) {
+          owners.set(key, [...(owners.get(key) ?? []), shard]);
+        }
+      }
+      const collisions = [...owners.entries()]
+        .filter(([, files]) => files.length > 1)
+        .map(([key, files]) => `${key}: ${files.join(", ")}`);
+      expect(collisions).toEqual([]);
+    });
+  }
+});
+
 describe("locale parity vs en-US", () => {
   const enDir = codeToDir("en-US");
   const enShards = shardFiles(enDir);

@@ -51,15 +51,20 @@ let browserI18n: I18nInstance | undefined;
 
 /**
  * The instance for a render at `locale`: per-render on the server, the shared
- * browser singleton on the client (switched in place when the URL locale
- * changes, so already-mounted components re-render into the new language).
+ * browser singleton on the client.
+ *
+ * MUST stay render-pure — it is called from a `useState` initializer in
+ * `app/providers.tsx`, i.e. during the render phase. Calling `changeLanguage`
+ * here fires i18next's `languageChanged` event synchronously, which setStates
+ * every mounted `useTranslation` listener mid-render ("Cannot update a
+ * component while rendering a different component"). When the URL locale
+ * changes on a client-side navigation, the post-render `useEffect` in
+ * `app/providers.tsx` performs the switch instead.
  */
 export function getI18nForLocale(locale: string): I18nInstance {
   if (typeof window === "undefined") return createI18nInstance(locale);
   if (!browserI18n) {
     browserI18n = createI18nInstance(locale);
-  } else if (browserI18n.language !== locale) {
-    void browserI18n.changeLanguage(locale);
   }
   return browserI18n;
 }

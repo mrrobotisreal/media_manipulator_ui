@@ -30,9 +30,6 @@
     "trigger": "Change language",
     "icon": "Translate icon"
   },
-  "ad": {
-    "label": "Advertisement"
-  },
   "common": {
     "close": "Close",
     "open": "Open",

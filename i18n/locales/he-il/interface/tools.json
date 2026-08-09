@@ -1,31 +1,4 @@
 {
-  "toolsIndex": {
-    "title": "Free Online Media Tools",
-    "subtitle": "Focused, single-purpose tools for converting, compressing, transcribing, and cleaning up image, video, and audio files. No signup. Files deleted within 24 hours.",
-    "featured": {
-      "title": "Featured",
-      "cta": "Open Darkroom",
-      "contentStudio": {
-        "name": "Darkroom",
-        "badge": "New",
-        "tagline": "Edit, layer, and mix video & audio on a multi-track timeline — then export MP4. A Premiere Pro–style editor, right in your browser."
-      }
-    },
-    "needMore": {
-      "title": "Need more than a single-purpose tool?",
-      "body": "The homepage converter bundles every option — format, AI tools, metadata, trim, transcription — into one upload. Tutorials walk through every setting.",
-      "ctaConverter": "Open the full converter",
-      "ctaTutorials": "Browse tutorials"
-    },
-    "learnMore": {
-      "title": "Learn more",
-      "intro": "Guides and reference pages that pair with these tools.",
-      "howItWorks": {
-        "label": "How Media Manipulator works",
-        "description": "See how files are processed and temporarily stored."
-      }
-    }
-  },
   "contentStudio": {
     "title": "Darkroom",
     "badge": "New",

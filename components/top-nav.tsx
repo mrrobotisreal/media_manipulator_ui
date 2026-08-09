@@ -25,6 +25,7 @@ import { AccountMenu } from "@/components/account/account-menu";
 import { AccountSheetLinks } from "@/components/account/account-sheet-links";
 import { useLocalization } from "@/i18n/useLocalization";
 import { useLocalizedHref } from "@/i18n/useLocalizedHref";
+import { stripLocalePrefix } from "@/i18n/locales";
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -100,9 +101,15 @@ const TopNav: React.FC = () => {
   const pathname = usePathname();
   const { t } = useLocalization(["interface", "accessibility"]);
   const localized = useLocalizedHref();
+  // Active state is computed on locale-NEUTRAL paths: under a locale prefix,
+  // Home's localized href is `/ru`, and every `/ru/...` pathname starts with
+  // it — so matching localized-vs-localized kept Home lit on every page. The
+  // localized href is only for the <Link>.
+  const neutralPath = stripLocalePrefix(pathname ?? "/");
   const components = NAV_LINKS.map((link) => ({
     key: link.key,
     href: localized(link.href),
+    active: isNavActive(neutralPath, link.href),
     title: t(`interface:topNav.${link.key}`),
   }));
 
@@ -125,7 +132,7 @@ const TopNav: React.FC = () => {
         <NavigationMenu viewport={false} className="hidden lg:flex">
           <NavigationMenuList>
             {components.map((component) => {
-              const active = isNavActive(pathname, component.href);
+              const active = component.active;
               return (
                 <NavigationMenuItem key={component.key}>
                   <NavigationMenuLink asChild>
@@ -169,7 +176,7 @@ const TopNav: React.FC = () => {
               </SheetHeader>
               <div className="grid gap-4 py-4 overflow-y-auto max-h-[60dvh]">
                 {components.map((component) => {
-                  const active = isNavActive(pathname, component.href);
+                  const active = component.active;
                   return (
                     <Link
                       key={component.key}
