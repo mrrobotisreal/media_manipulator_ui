@@ -1,132 +1,134 @@
 {
   "transcribeForm": {
-    "outputFormatTitle": "Transcript Output Format",
-    "intro": "We transcribe the {{mediaKind}} on our own GPU server using whisper-ctranslate2. A summary and safety review run automatically once the transcript is ready.",
+    "outputFormatTitle": "Формат виведення розшифровки",
+    "intro": "Ми розшифровуємо {{mediaKind}} на нашому власному GPU-сервері за допомогою whisper-ctranslate2. Після готовності розшифровки автоматично виконуються стислий виклад і перевірка безпеки.",
     "mediaKind": {
-      "video": "video",
-      "audio": "audio"
+      "video": "відео",
+      "audio": "аудіо"
     },
-    "languageLabel": "Language hint (optional)",
-    "languagePlaceholder": "e.g. en, es, ja (leave blank to auto-detect)",
-    "languageHint": "BCP-47 short code. Leave blank to let whisper auto-detect the spoken language.",
-    "languageTooltip": "BCP-47 short code (e.g. en, es, ja, de, fr). Leave blank to let whisper auto-detect the spoken language. Providing the correct hint can improve transcript accuracy for short clips.",
-    "transcribing": "Transcribing...",
-    "submit": "Transcribe File",
+    "languageLabel": "Підказка мови (необов'язково)",
+    "languagePlaceholder": "наприклад, en, es, ja (залиште порожнім для автовизначення)",
+    "languageHint": "Короткий код BCP-47. Залиште поле порожнім, щоб whisper автоматично визначив мову мовлення.",
+    "languageTooltip": "Короткий код BCP-47 (наприклад, en, es, ja, de, fr). Залиште поле порожнім, щоб whisper автоматично визначив мову мовлення. Вказання правильної підказки може підвищити точність розшифровки для коротких роликів.",
+    "transcribing": "Розшифровка...",
+    "submit": "Розшифрувати файл",
     "format": {
       "vtt": {
-        "label": "Captions (VTT)",
-        "description": "Time-coded subtitles for video players and accessibility tools."
+        "label": "Субтитри (VTT)",
+        "description": "Субтитри з таймкодами для відеоплеєрів та інструментів доступності."
       },
       "srt": {
-        "label": "Subtitles (SRT)",
-        "description": "SubRip subtitles compatible with YouTube, Premiere, DaVinci Resolve, and most video editors."
+        "label": "Субтитри (SRT)",
+        "description": "Субтитри SubRip, сумісні з YouTube, Premiere, DaVinci Resolve та більшістю відеоредакторів."
       },
       "txt": {
-        "label": "Plain Text",
-        "description": "Continuous transcript text suitable for reading or further editing."
+        "label": "Звичайний текст",
+        "description": "Суцільний текст розшифровки, зручний для читання або подальшого редагування."
       },
       "json": {
-        "label": "Structured JSON",
-        "description": "Segmented transcript with timing data for downstream processing."
+        "label": "Структурований JSON",
+        "description": "Сегментована розшифровка з даними про час для подальшої обробки."
       }
     },
     "formatTooltip": {
-      "vtt": "<strong>VTT</strong> — time-coded captions/subtitles for HTML5 video players and accessibility tools.",
-      "txt": "<strong>Plain text</strong> — continuous transcript text for reading or further editing.",
-      "json": "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+      "vtt": "<strong>VTT</strong> — субтитри з таймкодами для HTML5-відеоплеєрів та інструментів доступності.",
+      "txt": "<strong>Звичайний текст</strong> — суцільний текст розшифровки для читання або подальшого редагування.",
+      "json": "<strong>Структурований JSON</strong> — сегментована розшифровка з даними про час для подальших конвеєрів обробки."
     }
   },
   "audioForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})",
+    "converting": "Конвертація...",
+    "submit": "Конвертувати файл",
+    "trimStatus": "Обрізка: {{start}} – {{end}} ({{duration}})",
     "ai": {
-      "title": "AI Audio Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.",
-      "tooltipCleanVoice": "<strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).",
-      "tooltipRemoveNoise": "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.",
-      "tooltipIsolateVocals": "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).",
-      "tooltipRemoveVocals": "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.",
-      "intro": "AI audio tools run as GPU jobs and may take longer than basic conversion.",
-      "operationLabel": "Operation",
+      "title": "Інструменти ШІ для аудіо",
+      "tooltipIntro": "На завдання виконується одна ШІ-операція на нашому локальному GPU-сервері. Для цього завдання стандартний ланцюжок обробки FFmpeg пропускається.",
+      "tooltipCleanVoice": "<strong>Очищення голосу</strong> — шумозаглушення DeepFilterNet + ланцюжок поліровки для мовлення (високі/низькі частоти, гучність, лімітер).",
+      "tooltipRemoveNoise": "<strong>Видалення фонового шуму</strong> — шумозаглушення DeepFilterNet без ланцюжка поліровки.",
+      "tooltipIsolateVocals": "<strong>Виділення вокалу</strong> — вокальний стем Demucs htdemucs (за умовчанням lossless WAV).",
+      "tooltipRemoveVocals": "<strong>Видалення вокалу / Караоке</strong> — інструментальний стем Demucs.",
+      "intro": "Інструменти ШІ для аудіо виконуються як завдання на GPU і можуть тривати довше, ніж базова конвертація.",
+      "operationLabel": "Операція",
       "operations": {
-        "none": "None (standard conversion)",
-        "clean_voice": "Clean Voice",
-        "remove_background_noise": "Remove Background Noise",
-        "isolate_vocals": "Isolate Vocals",
-        "remove_vocals": "Remove Vocals / Karaoke"
+        "none": "Немає (стандартна конвертація)",
+        "clean_voice": "Очищення голосу",
+        "remove_background_noise": "Видалення фонового шуму",
+        "isolate_vocals": "Виділення вокалу",
+        "remove_vocals": "Видалення вокалу / Караоке"
       },
-      "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected."
+      "aiActiveNote": "Бітрейт, еквалайзер та інші стандартні параметри аудіо пропускаються, коли вибрано ШІ-операцію."
     }
   },
   "videoForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})"
+    "converting": "Конвертація...",
+    "submit": "Конвертувати файл",
+    "trimStatus": "Обрізка: {{start}} – {{end}} ({{duration}})"
   },
   "imageForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "cropStatus": "Crop area: {{width}}×{{height}} pixels at ({{x}}, {{y}})",
+    "converting": "Конвертація...",
+    "submit": "Конвертувати файл",
+    "cropStatus": "Область кадрування: {{width}}×{{height}} пікселів у точці ({{x}}, {{y}})",
     "vectorize": {
-      "title": "Vectorization (PNG → SVG)",
-      "note": "Vectorization traces your image into real vector paths. It works best for logos, icons, signatures, and black-and-white line art — not photographs.",
-      "thresholdLabel": "Black/white threshold",
-      "thresholdTooltip": "Pixels darker than this cutoff are traced as filled shapes. Raise it to capture more detail, lower it to keep only the boldest shapes."
+      "title": "Векторизація (PNG → SVG)",
+      "note": "Векторизація перетворює зображення на реальні векторні контури. Найкраще підходить для логотипів, значків, підписів і чорно-білої лінійної графіки — не для фотографій.",
+      "thresholdLabel": "Поріг чорного/білого",
+      "thresholdTooltip": "Пікселі темніші за цей поріг перетворюються на закрашені фігури. Збільшіть значення, щоб охопити більше деталей, зменшіть, щоб залишити тільки найсміливіші форми."
     },
     "ico": {
-      "note": "A multi-size .ico is generated containing 16, 32, 48, 64, 128, and 256 px icons — ideal for favicons and Windows app icons."
+      "note": "Створюється багаторозмірний файл .ico, що містить значки 16, 32, 48, 64, 128 і 256 px — ідеально підходить для favicon і значків застосунків Windows."
     },
     "ai": {
-      "title": "AI Image Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard ImageMagick pipeline is skipped for that job.",
-      "tooltipFacePrivacy": "<strong>Face Privacy</strong> — detect and obscure faces (blur, pixelate, or black box).",
-      "tooltipRemoveBackground": "<strong>Remove Background</strong> — outputs a transparent PNG via rembg + BiRefNet/ISNet/U2Net.",
-      "tooltipAiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan 2x or 4x.",
-      "tooltipRedactText": "<strong>Redact Text / PII</strong> — OCR-based redaction.",
-      "tooltipRemoveObject": "<strong>Remove Object</strong> — draw rectangles over unwanted objects; LaMa inpainting reconstructs the area behind them.",
-      "intro": "AI tools run one operation per conversion. For best results, preview the output before posting sensitive media.",
-      "operationLabel": "Operation",
+      "title": "Інструменти ШІ для зображень",
+      "tooltipIntro": "На завдання виконується одна ШІ-операція на нашому локальному GPU-сервері. Для цього завдання стандартний конвеєр ImageMagick пропускається.",
+      "tooltipFacePrivacy": "<strong>Приватність облич</strong> — виявлення та приховування облич (розмиття, пікселізація або чорний прямокутник).",
+      "tooltipRemoveBackground": "<strong>Видалення фону</strong> — виводить прозорий PNG за допомогою rembg + BiRefNet/ISNet/U2Net.",
+      "tooltipAiUpscale": "<strong>ШІ-збільшення</strong> — Real-ESRGAN ncnn Vulkan 2x або 4x.",
+      "tooltipRedactText": "<strong>Приховування тексту / персональних даних</strong> — приховування на основі OCR.",
+      "tooltipRemoveObject": "<strong>Видалення об'єкта</strong> — намалюйте прямокутники поверх небажаних об'єктів; інпейнтинг LaMa відновлює область під ними.",
+      "intro": "Інструменти ШІ виконують одну операцію за конвертацію. Для найкращого результату переглядайте вивід перед публікацією конфіденційних матеріалів.",
+      "operationLabel": "Операція",
       "operations": {
-        "none": "None (standard conversion)",
-        "face_privacy": "Face Blur / Pixelate",
-        "remove_background": "Remove Background",
-        "ai_upscale": "AI Upscale",
-        "redact_text": "Redact Text / PII",
-        "remove_object": "Remove Object (LaMa Inpainting)"
+        "none": "Немає (стандартна конвертація)",
+        "face_privacy": "Розмиття / пікселізація облич",
+        "remove_background": "Видалення фону",
+        "ai_upscale": "ШІ-збільшення",
+        "redact_text": "Приховування тексту / персональних даних",
+        "remove_object": "Видалення об'єкта (інпейнтинг LaMa)"
       },
       "faceMode": {
-        "label": "Face Mode",
-        "blur": "Blur",
-        "pixelate": "Pixelate",
-        "blackbox": "Black Box"
+        "label": "Режим обличчя",
+        "blur": "Розмиття",
+        "pixelate": "Пікселізація",
+        "blackbox": "Чорний прямокутник"
       },
       "selectiveFaces": {
-        "title": "Selective Faces",
-        "tooltipDefault": "Default applies the chosen effect to every detected face.",
-        "tooltipDetect": "Use <strong>Detect faces</strong> to preview boxes and pick which faces to obscure or skip.",
-        "tooltipExpire": "Face boxes are stored temporarily for selection and expire automatically.",
-        "selectionModeLabel": "Selection mode",
+        "title": "Вибіркові обличчя",
+        "tooltipDefault": "За умовчанням вибраний ефект застосовується до всіх виявлених облич.",
+        "tooltipDetect": "Використовуйте <strong>Виявити обличчя</strong>, щоб переглянути рамки та вибрати, які обличчя приховати, а які пропустити.",
+        "tooltipExpire": "Рамки облич зберігаються тимчасово для вибору і автоматично закінчують дію.",
+        "selectionModeLabel": "Режим вибору",
         "selectionMode": {
-          "all": "All detected faces",
-          "only_selected": "Only selected faces",
-          "all_except_selected": "All except selected faces"
+          "all": "Усі виявлені обличчя",
+          "only_selected": "Тільки вибрані обличчя",
+          "all_except_selected": "Усі, крім вибраних облич"
         },
-        "detecting": "Detecting…",
-        "reDetect": "Re-detect faces",
-        "detect": "Detect faces",
-        "selectAll": "Select all",
-        "clearSelection": "Clear selection",
-        "chooseFile": "Choose an image first to detect faces.",
-        "noFaces": "No faces detected. You can still run default face privacy on conversion, or try another image.",
-        "detected_one": "Detected {{count}} face. Selected: {{selected}}.",
-        "detected_other": "Detected {{count}} faces. Selected: {{selected}}.",
-        "defaultNote": "Default: applies to every detected face. Use Detect faces to choose specific faces."
+        "detecting": "Виявлення…",
+        "reDetect": "Виявити обличчя повторно",
+        "detect": "Виявити обличчя",
+        "selectAll": "Вибрати всі",
+        "clearSelection": "Очистити вибір",
+        "chooseFile": "Спочатку виберіть зображення, щоб виявити обличчя.",
+        "noFaces": "Обличчя не виявлено. Ви все одно можете застосувати приватність облич за умовчанням під час конвертації або спробувати інше зображення.",
+        "detected_one": "Виявлено {{count}} обличчя. Вибрано: {{selected}}.",
+        "detected_few": "Виявлено {{count}} обличчя. Вибрано: {{selected}}.",
+        "detected_many": "Виявлено {{count}} облич. Вибрано: {{selected}}.",
+        "detected_other": "Виявлено {{count}} обличчя. Вибрано: {{selected}}.",
+        "defaultNote": "За умовчанням: застосовується до всіх виявлених облич. Використовуйте «Виявити обличчя», щоб вибрати конкретні обличчя."
       },
       "background": {
-        "modelLabel": "Background Model",
+        "modelLabel": "Модель видалення фону",
         "models": {
-          "birefnet-general": "BiRefNet General (recommended)",
+          "birefnet-general": "BiRefNet General (рекомендовано)",
           "birefnet-general-lite": "BiRefNet General Lite",
           "birefnet-portrait": "BiRefNet Portrait",
           "isnet-general-use": "ISNet General Use",
@@ -134,329 +136,331 @@
           "u2netp": "U2Net Lite",
           "u2net_human_seg": "U2Net Human Segmentation"
         },
-        "pngNote": "Output is always PNG so transparency is preserved."
+        "pngNote": "Вивід завжди у форматі PNG, щоб зберегти прозорість."
       },
       "upscale": {
-        "scaleLabel": "Scale",
+        "scaleLabel": "Масштаб",
         "scale4x": "4x",
-        "scale2x": "2x (experimental on some images)",
-        "modelLabel": "Model",
+        "scale2x": "2x (експериментально для деяких зображень)",
+        "modelLabel": "Модель",
         "models": {
-          "realesrgan-x4plus": "realesrgan-x4plus (photos)",
+          "realesrgan-x4plus": "realesrgan-x4plus (фотографії)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI upscale is available, but 4x is the safest/default model path on this server.",
-        "pngNote": "Output is PNG by default."
+        "experimentalNote": "ШІ-збільшення 2x доступне, але 4x — найбезпечніший варіант за умовчанням на цьому сервері.",
+        "pngNote": "За умовчанням вивід у форматі PNG."
       },
       "removeObject": {
-        "title": "Mark objects to remove",
-        "tooltipDraw": "Click and drag on the image to add a rectangle over each object you want to erase. Drag the rectangle body to move it, or the handles to resize.",
-        "tooltipResult": "LaMa inpainting reconstructs the area behind each rectangle. For best results, draw the box snugly around the object — large rectangles ask the model to hallucinate more background.",
-        "tooltipTip": "Tip: multiple smaller rectangles often look cleaner than one huge one.",
-        "clearAll": "Clear all",
-        "chooseFile": "Choose an image first to start marking objects.",
-        "atLeastOne": "Add at least one rectangle covering the object you want to remove.",
-        "readyToInpaint_one": "{{count}} rectangle ready to inpaint.",
-        "readyToInpaint_other": "{{count}} rectangles ready to inpaint.",
-        "formatNote": "LaMa output preserves your chosen output format (JPG, PNG, WebP, GIF). Filters, text overlay, and tint are skipped for this op."
+        "title": "Позначте об'єкти для видалення",
+        "tooltipDraw": "Натисніть і перетягніть на зображенні, щоб додати прямокутник поверх кожного об'єкта, який потрібно стерти. Перетягуйте тіло прямокутника, щоб перемістити його, або маркери, щоб змінити розмір.",
+        "tooltipResult": "Інпейнтинг LaMa відновлює область під кожним прямокутником. Для найкращого результату малюйте рамку щільно навколо об'єкта — великі прямокутники змушують модель домислювати більше фону.",
+        "tooltipTip": "Порада: кілька менших прямокутників часто виглядають чистіше, ніж один величезний.",
+        "clearAll": "Очистити все",
+        "chooseFile": "Спочатку виберіть зображення, щоб почати позначати об'єкти.",
+        "atLeastOne": "Додайте щонайменше один прямокутник, що охоплює об'єкт, який потрібно видалити.",
+        "readyToInpaint_one": "{{count}} прямокутник готовий до інпейнтингу.",
+        "readyToInpaint_few": "{{count}} прямокутники готові до інпейнтингу.",
+        "readyToInpaint_many": "{{count}} прямокутників готові до інпейнтингу.",
+        "readyToInpaint_other": "{{count}} прямокутника готові до інпейнтингу.",
+        "formatNote": "Вивід LaMa зберігає вибраний формат виводу (JPG, PNG, WebP, GIF). Фільтри, накладання тексту та тонування для цієї операції пропускаються."
       },
       "redact": {
-        "detectLabel": "Detect",
+        "detectLabel": "Виявити",
         "detect": {
-          "pii": "PII only",
-          "all-text": "All Text"
+          "pii": "Тільки персональні дані",
+          "all-text": "Увесь текст"
         },
-        "redactionLabel": "Redaction Style",
+        "redactionLabel": "Стиль приховування",
         "redaction": {
-          "blackbox": "Black Box",
-          "blur": "Blur",
-          "pixelate": "Pixelate"
+          "blackbox": "Чорний прямокутник",
+          "blur": "Розмиття",
+          "pixelate": "Пікселізація"
         },
-        "ocrNote": "OCR redaction is best effort. Please review output before sharing."
+        "ocrNote": "Приховування через OCR виконується за можливості. Будь ласка, перевірте результат перед публікацією."
       },
-      "aiActiveNote": "Format, filters, and other standard image options are skipped when an AI operation is selected.",
-      "operationLocked": "Preset for this tool"
+      "aiActiveNote": "Формат, фільтри та інші стандартні параметри зображення пропускаються, коли вибрано ШІ-операцію.",
+      "operationLocked": "Пресет для цього інструменту"
     },
     "textOverlay": {
-      "title": "Text Overlay",
-      "tooltipAria": "About text overlay",
-      "tooltip": "Burn a watermark or caption onto the output image. Type the text, then pick size (8–512 px), gravity (corner/edge/center anchor), text and stroke colors, stroke width, and pixel offsets from the anchor. Leave the text empty to skip the overlay.",
-      "overlayText": "Overlay Text",
-      "overlayPlaceholder": "Optional text to draw on the image",
-      "size": "Text Size",
-      "position": "Position",
-      "textColor": "Text Color",
-      "strokeColor": "Stroke Color",
-      "strokeWidth": "Stroke Width",
-      "xOffset": "X Offset",
-      "yOffset": "Y Offset",
+      "title": "Накладання тексту",
+      "tooltipAria": "Про накладання тексту",
+      "tooltip": "Впишіть водяний знак або підпис у вихідне зображення. Введіть текст, потім виберіть розмір (8–512 px), гравітацію (прив'язку до кута/краю/центру), колір тексту й обводки, товщину обводки та зміщення в пікселях від точки прив'язки. Залиште текст порожнім, щоб пропустити накладання.",
+      "overlayText": "Текст накладання",
+      "overlayPlaceholder": "Необов'язковий текст для нанесення на зображення",
+      "size": "Розмір тексту",
+      "position": "Позиція",
+      "textColor": "Колір тексту",
+      "strokeColor": "Колір обводки",
+      "strokeWidth": "Товщина обводки",
+      "xOffset": "Зміщення по X",
+      "yOffset": "Зміщення по Y",
       "gravity": {
-        "NorthWest": "Top Left",
-        "North": "Top",
-        "NorthEast": "Top Right",
-        "West": "Left",
-        "Center": "Center",
-        "East": "Right",
-        "SouthWest": "Bottom Left",
-        "South": "Bottom",
-        "SouthEast": "Bottom Right"
+        "NorthWest": "Зверху зліва",
+        "North": "Зверху",
+        "NorthEast": "Зверху справа",
+        "West": "Зліва",
+        "Center": "По центру",
+        "East": "Справа",
+        "SouthWest": "Знизу зліва",
+        "South": "Знизу",
+        "SouthEast": "Знизу справа"
       }
     },
     "metadata": {
-      "title": "Metadata",
-      "intro": "Choose whether to keep, strip, or rewrite image metadata.",
-      "tooltipKeep": "<strong>Keep all metadata</strong> — preserve every EXIF/IPTC/XMP/GPS field from the original.",
-      "tooltipStrip": "<strong>Strip all metadata</strong> — remove camera, GPS, software, and timestamp fields. Recommended before sharing photos online.",
-      "tooltipCustom": "<strong>Custom metadata</strong> — strip first, then rewrite only the fields you supply (title, author, copyright, IPTC keywords, GPS fields, etc.).",
-      "modeLabel": "Metadata mode",
+      "title": "Метадані",
+      "intro": "Виберіть, чи зберегти, видалити або переписати метадані зображення.",
+      "tooltipKeep": "<strong>Зберегти всі метадані</strong> — зберігає всі поля EXIF/IPTC/XMP/GPS з оригіналу.",
+      "tooltipStrip": "<strong>Видалити всі метадані</strong> — видаляє поля камери, GPS, програмного забезпечення та часових міток. Рекомендується перед публікацією фотографій в інтернеті.",
+      "tooltipCustom": "<strong>Користувацькі метадані</strong> — спочатку видаляє все, потім переписує тільки вказані вами поля (назва, автор, авторські права, ключові слова IPTC, поля GPS тощо).",
+      "modeLabel": "Режим метаданих",
       "modes": {
-        "keep": "Keep all metadata",
-        "strip": "Strip all metadata",
-        "custom": "Custom metadata"
+        "keep": "Зберегти всі метадані",
+        "strip": "Видалити всі метадані",
+        "custom": "Користувацькі метадані"
       },
       "fields": {
-        "title": "Title",
-        "author": "Artist / Author",
-        "description": "Description",
-        "copyright": "Copyright",
-        "comment": "User Comment",
-        "keywords": "Keywords"
+        "title": "Назва",
+        "author": "Автор / Виконавець",
+        "description": "Опис",
+        "copyright": "Авторські права",
+        "comment": "Коментар користувача",
+        "keywords": "Ключові слова"
       },
-      "exifFields": "EXIF / TIFF Fields",
-      "gpsFields": "GPS / Location Fields",
-      "showAdvanced": "Show Advanced / Device Metadata",
-      "hideAdvanced": "Hide Advanced / Device Metadata",
+      "exifFields": "Поля EXIF / TIFF",
+      "gpsFields": "Поля GPS / місцезнаходження",
+      "showAdvanced": "Показати розширені / метадані пристрою",
+      "hideAdvanced": "Приховати розширені / метадані пристрою",
       "gps": {
-        "title": "GPS / Location Options",
-        "tooltipAria": "About GPS / location options",
-        "tooltip": "Remove or replace GPS metadata stored by your camera or phone. You can also strip just the capture direction, GPS timestamp, altitude, or destination fields. Replace mode lets you pin a different latitude/longitude/altitude and optionally round precision for privacy.",
-        "removeLocationData": "Remove location data",
-        "replaceLocationData": "Replace location data",
-        "roundPrecision": "Round location precision",
-        "removeCaptureDirection": "Remove capture direction / heading",
-        "removeTimestamp": "Remove GPS timestamp",
-        "removeAltitude": "Remove altitude",
-        "removeDestination": "Remove destination fields",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
-        "altitude": "Altitude",
-        "precisionDecimals": "Precision Decimals"
+        "title": "Параметри GPS / місцезнаходження",
+        "tooltipAria": "Про параметри GPS / місцезнаходження",
+        "tooltip": "Видаліть або замініть метадані GPS, збережені вашою камерою або телефоном. Ви також можете видалити тільки напрямок зйомки, часову мітку GPS, висоту або поля призначення. Режим заміни дозволяє закріпити іншу широту/довготу/висоту і за потреби округлити точність з метою конфіденційності.",
+        "removeLocationData": "Видалити дані про місцезнаходження",
+        "replaceLocationData": "Замінити дані про місцезнаходження",
+        "roundPrecision": "Округлити точність місцезнаходження",
+        "removeCaptureDirection": "Видалити напрямок зйомки / курс",
+        "removeTimestamp": "Видалити часову мітку GPS",
+        "removeAltitude": "Видалити висоту",
+        "removeDestination": "Видалити поля призначення",
+        "latitude": "Широта",
+        "longitude": "Довгота",
+        "altitude": "Висота",
+        "precisionDecimals": "Знаків точності"
       }
     },
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "Sign up for a Premium account to get full transcode access! (Premium sign-up Coming Soon!)",
+    "premiumTooltip": "Оформіть Premium-акаунт, щоб отримати повний доступ до транскодування! (Реєстрація Premium незабаром з'явиться!)",
     "premiumBadge": "Premium",
-    "tooSmallBadge": "Too small",
+    "tooSmallBadge": "Занадто мале",
     "protocol": {
-      "title": "Protocol",
-      "tooltipAria": "About transcode protocol",
-      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + per-rendition variants + .ts segments. Plays everywhere.",
-      "tooltipDash": "<strong>DASH</strong> — MPEG-DASH adaptive streaming. AV1 (smallest, modern) or VP9 (broader support); manifest.mpd + .m4s segments.",
-      "hlsSub": "H.264 / AAC · .m3u8 · everywhere",
-      "dashSub": "AV1 or VP9 · .mpd · modern web",
-      "av1Sub": "Recommended · smaller files",
-      "vp9Sub": "Wider playback support"
+      "title": "Протокол",
+      "tooltipAria": "Про протокол транскодування",
+      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + варіанти для кожної якості + сегменти .ts. Відтворюється всюди.",
+      "tooltipDash": "<strong>DASH</strong> — адаптивна потокова передача MPEG-DASH. AV1 (найменший розмір, сучасний) або VP9 (ширша підтримка); manifest.mpd + сегменти .m4s.",
+      "hlsSub": "H.264 / AAC · .m3u8 · всюди",
+      "dashSub": "AV1 або VP9 · .mpd · сучасний веб",
+      "av1Sub": "Рекомендовано · файли менші",
+      "vp9Sub": "Ширша підтримка відтворення"
     },
     "analyze": {
-      "intro": "We'll upload your video and run <code>ffprobe</code> to detect resolution, codec, audio, and the quality rungs your source supports.",
-      "uploadingPercent": "Uploading {{percent}}%",
-      "analyzingSource": "Analyzing source...",
-      "preparingUpload": "Preparing upload...",
-      "analyzeVideo": "Analyze video"
+      "intro": "Ми завантажимо ваше відео і запустимо <code>ffprobe</code>, щоб визначити роздільну здатність, кодек, аудіо та рівні якості, які підтримує ваше джерело.",
+      "uploadingPercent": "Завантаження {{percent}}%",
+      "analyzingSource": "Аналіз джерела...",
+      "preparingUpload": "Підготовка завантаження...",
+      "analyzeVideo": "Аналізувати відео"
     },
     "report": {
-      "title": "Source video report",
-      "resolution": "Resolution",
-      "maxQuality": "Max quality",
-      "fps": "FPS",
-      "duration": "Duration",
-      "audio": "Audio",
-      "videoCodec": "Video codec",
-      "audioCodec": "Audio codec",
-      "container": "Container",
-      "fileSize": "File size",
-      "yes": "Yes",
-      "no": "No"
+      "title": "Звіт про вихідне відео",
+      "resolution": "Роздільна здатність",
+      "maxQuality": "Максимальна якість",
+      "fps": "Частота кадрів (FPS)",
+      "duration": "Тривалість",
+      "audio": "Аудіо",
+      "videoCodec": "Відеокодек",
+      "audioCodec": "Аудіокодек",
+      "container": "Контейнер",
+      "fileSize": "Розмір файлу",
+      "yes": "Так",
+      "no": "Ні"
     },
     "rungs": {
-      "title": "Quality rungs",
-      "tooltipAria": "About quality rungs",
-      "tooltip": "Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are coming soon.",
-      "defaultsNote": "Defaults: 360p + 480p + 720p when the source video supports them."
+      "title": "Рівні якості",
+      "tooltipAria": "Про рівні якості",
+      "tooltip": "Кожен вибраний рівень стає одним варіантом у підсумковому пакеті HLS/DASH. Premium-рівні (144p/240p/1080p/2160p) з'являться пізніше.",
+      "defaultsNote": "За умовчанням: 360p + 480p + 720p, якщо вихідне відео їх підтримує."
     },
     "captions": {
-      "disabledTooltip": "Captions require an audio track. This video does not appear to have audio.",
-      "enabledTooltip": "Generate VTT captions from the audio track using whisper-ctranslate2. Off by default.",
-      "generateCaptions": "Generate captions",
-      "captionsSub": "VTT subtitles auto-generated from the audio track. Off by default.",
-      "generateStoryboards": "Generate storyboards",
-      "storyboardsSub": "Sprite-sheet scrubber thumbnails + WebVTT index. Off by default."
+      "disabledTooltip": "Для субтитрів потрібна аудіодоріжка. Схоже, у цьому відео немає аудіо.",
+      "enabledTooltip": "Створити субтитри VTT з аудіодоріжки за допомогою whisper-ctranslate2. За умовчанням вимкнено.",
+      "generateCaptions": "Створити субтитри",
+      "captionsSub": "Субтитри VTT автоматично створюються з аудіодоріжки. За умовчанням вимкнено.",
+      "generateStoryboards": "Створити розкадровки",
+      "storyboardsSub": "Мініатюри для перемотки у вигляді спрайт-листа + індекс WebVTT. За умовчанням вимкнено."
     },
     "translations": {
-      "title": "Additional caption translations",
-      "tooltipAria": "About additional caption translations",
-      "tooltip1": "The primary caption track is whisper's transcription in the auto-detected source language. Add up to {{max}} more languages and we'll translate the segments via your Ollama text model.",
-      "tooltip2": "Each translation becomes its own VTT plus an HLS subtitle rendition (EXT-X-MEDIA) and DASH text AdaptationSet, so players show a track selector.",
-      "primaryNote": "Primary track: auto-detected source language. Add up to {{max}} translation tracks.",
-      "backendUnreachable": "Translation backend (Ollama) is not reachable. Picked languages will be skipped at job time.",
-      "removeLanguage": "Remove language",
-      "addLanguage": "+ Add translation language ({{count}}/{{max}})"
+      "title": "Додаткові переклади субтитрів",
+      "tooltipAria": "Про додаткові переклади субтитрів",
+      "tooltip1": "Основна доріжка субтитрів — це розшифровка whisper автоматично визначеною вихідною мовою. Додайте до {{max}} додаткових мов, і ми перекладемо сегменти за допомогою вашої текстової моделі Ollama.",
+      "tooltip2": "Кожен переклад стає окремим файлом VTT, а також варіантом субтитрів HLS (EXT-X-MEDIA) і текстовим AdaptationSet DASH, тому плеєри показують перемикач доріжок.",
+      "primaryNote": "Основна доріжка: автоматично визначена вихідна мова. Додайте до {{max}} доріжок перекладу.",
+      "backendUnreachable": "Бекенд перекладу (Ollama) недоступний. Вибрані мови будуть пропущені під час виконання завдання.",
+      "removeLanguage": "Видалити мову",
+      "addLanguage": "+ Додати мову перекладу ({{count}}/{{max}})"
     },
     "bundle": {
-      "title": "Download format",
-      "tooltipAria": "About download format",
-      "tooltipTargz": "<strong>.tar.gz</strong> — smaller for text-heavy playlists, universal on macOS/Linux, and Windows 10+ unpacks it natively via the built-in <code>tar</code> command.",
-      "tooltipZip": "<strong>.zip</strong> — the safe default if you're on older Windows or just want a double-click extract experience without thinking about it. Slightly larger; everything else is identical inside.",
-      "defaultBadge": "Default",
-      "targzSub": "Smaller · macOS/Linux/Win 10+ native",
-      "zipSub": "Friendlier on Windows · double-click extract"
+      "title": "Формат завантаження",
+      "tooltipAria": "Про формат завантаження",
+      "tooltipTargz": "<strong>.tar.gz</strong> — менший для плейлистів з великою кількістю тексту, універсальний на macOS/Linux, а Windows 10+ розпаковує його нативно за допомогою вбудованої команди <code>tar</code>.",
+      "tooltipZip": "<strong>.zip</strong> — безпечний варіант за умовчанням, якщо у вас стара версія Windows або ви просто хочете розпакувати файл подвійним клацанням, не замислюючись. Трохи більший за розміром; усе інше всередині ідентичне.",
+      "defaultBadge": "За умовчанням",
+      "targzSub": "Менший розмір · нативно для macOS/Linux/Win 10+",
+      "zipSub": "Зручніше для Windows · розпакування подвійним клацанням"
     },
     "start": {
-      "starting": "Starting transcode...",
-      "startButton": "Start {{protocol}} transcode (output: {{format}})"
+      "starting": "Запуск транскодування...",
+      "startButton": "Запустити транскодування {{protocol}} (вивід: {{format}})"
     },
-    "tooSmall": "This video is below the free transcode minimum of 360p. Premium support for ultra-low-quality sources is coming soon. Please load a video that is 360p or higher.",
+    "tooSmall": "Це відео нижче мінімальної роздільної здатності 360p для безкоштовного транскодування. Підтримка Premium для джерел наднизької якості незабаром з'явиться. Будь ласка, завантажте відео з роздільною здатністю 360p або вище.",
     "progress": {
-      "title": "Pipeline progress",
-      "failed": "Transcode failed."
+      "title": "Хід виконання конвеєра",
+      "failed": "Транскодування не вдалося."
     },
-    "downloadPackage": "Download {{filename}}"
+    "downloadPackage": "Завантажити {{filename}}"
   },
   "pdfForm": {
     "outputFormat": {
-      "label": "Output image format",
-      "tooltip": "Choose JPG for small, photo-friendly files or PNG for crisp, lossless pages (best for text and line art).",
-      "locked": "Locked to {{format}} for this tool"
+      "label": "Формат вихідного зображення",
+      "tooltip": "Виберіть JPG для невеликих файлів, зручних для фотографій, або PNG для чітких сторінок без втрат (найкраще для тексту та лінійної графіки).",
+      "locked": "Закріплено на {{format}} для цього інструменту"
     },
     "dpi": {
-      "label": "Render quality (DPI)",
-      "tooltip": "Higher DPI renders sharper, larger images. 150 DPI is a good default; use 300 for print-quality output."
+      "label": "Якість рендерингу (DPI)",
+      "tooltip": "Вища роздільна здатність DPI дає чіткіші й більші зображення. 150 DPI — гарне значення за умовчанням; використовуйте 300 для якості друку."
     },
     "pages": {
-      "label": "Pages to convert",
-      "tooltip": "Convert every page (downloaded as a ZIP of images) or just the first page (downloaded as a single image).",
-      "all": "All pages (ZIP)",
-      "allHint": "One image per page, packaged into a single .zip download.",
-      "first": "First page only",
-      "firstHint": "Render just page 1 as a single image."
+      "label": "Сторінки для конвертації",
+      "tooltip": "Конвертуйте всі сторінки (завантажуються у вигляді ZIP-архіву із зображеннями) або тільки першу сторінку (завантажується як одне зображення).",
+      "all": "Усі сторінки (ZIP)",
+      "allHint": "Одне зображення на сторінку, упаковане в єдиний ZIP-архів.",
+      "first": "Тільки перша сторінка",
+      "firstHint": "Відрендерити тільки сторінку 1 як одне зображення."
     },
     "quality": {
-      "label": "JPG quality (%)",
-      "tooltip": "JPEG compression quality from 1–100. 90 is a balanced default; lower values shrink the file at the cost of detail."
+      "label": "Якість JPG (%)",
+      "tooltip": "Якість стиснення JPEG від 1 до 100. 90 — збалансоване значення за умовчанням; нижчі значення зменшують розмір файлу за рахунок деталізації."
     },
-    "submit": "Convert PDF",
-    "converting": "Converting…"
+    "submit": "Конвертувати PDF",
+    "converting": "Конвертація…"
   },
   "conversionOptions": {
     "image": {
       "cropping": {
-        "title": "Image Cropping",
-        "tooltipAria": "About image cropping",
-        "tooltip": "Open a visual crop selector to keep only part of the image. Cropping runs before resize and filters, so dimensions you set below apply to the cropped region. Skip this if you want the whole image.",
-        "selectPortion": "Select the portion of the image you want to keep",
-        "editCrop": "Edit Crop",
-        "cropImage": "Crop Image"
+        "title": "Кадрування зображення",
+        "tooltipAria": "Про кадрування зображення",
+        "tooltip": "Відкрийте візуальний інструмент вибору кадру, щоб залишити тільки частину зображення. Кадрування виконується перед зміною розміру та фільтрами, тому вказані нижче розміри застосовуються до обрізаної області. Пропустіть цей крок, якщо хочете зберегти все зображення.",
+        "selectPortion": "Виберіть частину зображення, яку хочете зберегти",
+        "editCrop": "Змінити кадрування",
+        "cropImage": "Обрізати зображення"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About image format",
-        "tooltip": "The output file type. JPG is best for photos, PNG keeps transparency and is great for graphics, WebP is a modern smaller format, and GIF is for legacy or animated use cases.",
-        "locked": "Locked to {{format}} for this tool"
+        "label": "Формат",
+        "tooltipAria": "Про формат зображення",
+        "tooltip": "Тип вихідного файлу. JPG найкраще підходить для фотографій, PNG зберігає прозорість і чудово підходить для графіки, WebP — сучасний, компактніший формат, а GIF — для застарілих або анімованих сценаріїв використання.",
+        "locked": "Закріплено на {{format}} для цього інструменту"
       },
-      "resizeEmphasis": "Set your target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio.",
+      "resizeEmphasis": "Вкажіть цільову ширину та/або висоту нижче. Залиште одне поле порожнім, щоб масштабувати пропорційно і зберегти вихідне співвідношення сторін.",
       "quality": {
-        "label": "Quality (%)",
-        "tooltipAria": "About image quality",
-        "tooltip": "Compression quality for JPG and WebP outputs (1–100). 85 is a balanced default. Lower values shrink file size at the cost of artifacts; values above 95 rarely show a visible difference. Ignored for PNG and GIF."
+        "label": "Якість (%)",
+        "tooltipAria": "Про якість зображення",
+        "tooltip": "Якість стиснення для виводу в JPG і WebP (1–100). 85 — збалансоване значення за умовчанням. Нижчі значення зменшують розмір файлу за рахунок артефактів; значення вище 95 рідко дають помітну різницю. Ігнорується для PNG і GIF."
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About image width",
-        "tooltip": "Target width in pixels. Leave blank to keep the original width or scale proportionally based on the Height field. The image is auto-oriented from EXIF before resize so the dimensions match what you see in the preview.",
-        "placeholder": "Auto"
+        "label": "Ширина (px)",
+        "tooltipAria": "Про ширину зображення",
+        "tooltip": "Цільова ширина в пікселях. Залиште порожнім, щоб зберегти вихідну ширину або масштабувати пропорційно на основі поля «Висота». Перед зміною розміру зображення автоматично орієнтується за EXIF, щоб розміри відповідали тому, що ви бачите в попередньому перегляді.",
+        "placeholder": "Авто"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About image height",
-        "tooltip": "Target height in pixels. Leave blank to keep the original height or scale proportionally based on the Width field. Setting both Width and Height forces an exact size and may stretch the image.",
-        "placeholder": "Auto"
+        "label": "Висота (px)",
+        "tooltipAria": "Про висоту зображення",
+        "tooltip": "Цільова висота в пікселях. Залиште порожнім, щоб зберегти вихідну висоту або масштабувати пропорційно на основі поля «Ширина». Встановлення одночасно ширини й висоти задає точний розмір і може розтягнути зображення.",
+        "placeholder": "Авто"
       },
       "filter": {
-        "label": "Filter",
-        "tooltipAria": "About image filters",
-        "tooltip": "Apply a single ImageMagick effect to the output: grayscale, sepia, blur/sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation. Choose None to skip filters.",
+        "label": "Фільтр",
+        "tooltipAria": "Про фільтри зображення",
+        "tooltip": "Застосуйте один ефект ImageMagick до результату: відтінки сірого, сепія, розмиття/різкість, вихор, бочкоподібне спотворення, олійний живопис, вінтаж, тиснення, вугілля, ескіз або фіксований поворот. Виберіть «Немає», щоб пропустити фільтри.",
         "options": {
-          "none": "None",
-          "grayscale": "Grayscale",
-          "sepia": "Sepia",
-          "blur": "Blur",
-          "sharpen": "Sharpen",
-          "swirl": "Swirl",
-          "barrel-distortion": "Barrel Distortion",
-          "oil-painting": "Oil Painting",
-          "vintage": "Vintage",
-          "emboss": "Emboss",
-          "charcoal": "Charcoal",
-          "sketch": "Sketch",
-          "rotate-45º": "Rotate 45º",
-          "rotate-90º": "Rotate 90º",
-          "rotate-180º": "Rotate 180º",
-          "rotate-270º": "Rotate 270º"
+          "none": "Немає",
+          "grayscale": "Відтінки сірого",
+          "sepia": "Сепія",
+          "blur": "Розмиття",
+          "sharpen": "Різкість",
+          "swirl": "Вихор",
+          "barrel-distortion": "Бочкоподібне спотворення",
+          "oil-painting": "Олійний живопис",
+          "vintage": "Вінтаж",
+          "emboss": "Тиснення",
+          "charcoal": "Вугілля",
+          "sketch": "Ескіз",
+          "rotate-45º": "Поворот на 45º",
+          "rotate-90º": "Поворот на 90º",
+          "rotate-180º": "Поворот на 180º",
+          "rotate-270º": "Поворот на 270º"
         }
       },
       "tint": {
-        "label": "Tint Color",
-        "tooltipAria": "About tint color",
-        "tooltip": "Lay a 30% colored tint over the image. Useful for branded thumbnails or duotones. Leave the color picker at black (#000000) to skip the tint."
+        "label": "Колір тонування",
+        "tooltipAria": "Про колір тонування",
+        "tooltip": "Накладіть на зображення 30-відсотковий кольоровий відтінок. Корисно для брендованих мініатюр або дуотонів. Залиште вибір кольору на чорному (#000000), щоб пропустити тонування."
       }
     },
     "audio": {
       "trimming": {
-        "title": "Audio Trimming",
-        "tooltipAria": "About audio trimming",
-        "tooltip": "Open a waveform player to pick a start and end time. Only the selected segment is encoded into the output file.",
-        "selectPortion": "Select the portion of the audio you want to keep",
-        "editTrim": "Edit Trim",
-        "trimAudio": "Trim Audio"
+        "title": "Обрізка аудіо",
+        "tooltipAria": "Про обрізку аудіо",
+        "tooltip": "Відкрийте плеєр з хвильовою формою, щоб вибрати час початку та закінчення. У вихідний файл кодується тільки вибраний сегмент.",
+        "selectPortion": "Виберіть частину аудіо, яку хочете зберегти",
+        "editTrim": "Змінити обрізку",
+        "trimAudio": "Обрізати аудіо"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About audio format",
-        "tooltip": "The output codec/container. MP3 has universal support; WAV/FLAC/ALAC are lossless; AAC is efficient for streaming; OGG, Opus, AC3 and DTS target specific workflows."
+        "label": "Формат",
+        "tooltipAria": "Про формат аудіо",
+        "tooltip": "Вихідний кодек/контейнер. MP3 має універсальну підтримку; WAV/FLAC/ALAC — без втрат; AAC ефективний для потокової передачі; OGG, Opus, AC3 і DTS призначені для конкретних робочих процесів."
       },
       "bitrate": {
-        "label": "Bitrate (kbps)",
-        "tooltipAria": "About audio bitrate",
-        "tooltip": "Controls compression quality vs. file size for lossy formats. 128 kbps is fine for podcasts, 192–256 kbps is a strong default for music, and 320 kbps is the maximum MP3 quality. Ignored for WAV, FLAC, and ALAC (lossless)."
+        "label": "Бітрейт (кбіт/с)",
+        "tooltipAria": "Про бітрейт аудіо",
+        "tooltip": "Керує співвідношенням якості стиснення та розміру файлу для форматів із втратами. 128 кбіт/с підходить для подкастів, 192–256 кбіт/с — надійне значення за умовчанням для музики, а 320 кбіт/с — максимальна якість MP3. Ігнорується для WAV, FLAC та ALAC (без втрат)."
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About audio speed multiplier",
-        "tooltip": "Playback tempo from 0.25x (slow) to 4x (fast). Pitch is preserved using FFmpeg's atempo filter, chained automatically for extreme values."
+        "label": "Множник швидкості",
+        "tooltipAria": "Про множник швидкості аудіо",
+        "tooltip": "Темп відтворення від 0.25x (повільно) до 4x (швидко). Висота тону зберігається за допомогою фільтра atempo FFmpeg, який автоматично об'єднується в ланцюжок для екстремальних значень."
       },
       "volume": {
-        "label": "Volume Multiplier",
-        "tooltipAria": "About volume multiplier",
-        "tooltip": "Linear gain factor from 0.1x to 2x. 1.0 leaves the level unchanged. For finer dB control, use the Amplify slider in Advanced Audio Effects."
+        "label": "Множник гучності",
+        "tooltipAria": "Про множник гучності",
+        "tooltip": "Лінійний коефіцієнт підсилення від 0.1x до 2x. Значення 1.0 залишає рівень без змін. Для точнішого керування в дБ використовуйте повзунок «Підсилення» в розділі «Розширені аудіоефекти»."
       }
     },
     "video": {
       "trimming": {
-        "title": "Video Trimming",
-        "tooltipAria": "About video trimming",
-        "tooltip": "Open a player to scrub through the video and pick a start/end time. Only that segment is encoded into the output. Trimming works regardless of the output codec — including animated GIF.",
-        "selectPortion": "Select the portion of the video you want to keep",
-        "editTrim": "Edit Trim",
-        "trimVideo": "Trim Video"
+        "title": "Обрізка відео",
+        "tooltipAria": "Про обрізку відео",
+        "tooltip": "Відкрийте плеєр, щоб промотати відео і вибрати час початку/закінчення. У вивід кодується тільки цей сегмент. Обрізка працює незалежно від вихідного кодека — включно з анімованим GIF.",
+        "selectPortion": "Виберіть частину відео, яку хочете зберегти",
+        "editTrim": "Змінити обрізку",
+        "trimVideo": "Обрізати відео"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About video format",
-        "tooltip": "The output container and codec. MP4 (H.264+AAC) is the safest default for the web. WebM uses VP9+Opus and is great for open-web embeds. MOV/MKV/AVI/WMV/FLV target specific workflows; ProRes/DNxHD are high-bitrate editing codecs. GIF (Animated) downscales and palettizes the clip via ffmpeg + gifsicle — perfect for short, silent loops.",
-        "locked": "Locked to {{format}} for this tool",
+        "label": "Формат",
+        "tooltipAria": "Про формат відео",
+        "tooltip": "Вихідний контейнер і кодек. MP4 (H.264+AAC) — найбезпечніший варіант за умовчанням для вебу. WebM використовує VP9+Opus і чудово підходить для вбудовування у відкритий веб. MOV/MKV/AVI/WMV/FLV призначені для конкретних робочих процесів; ProRes/DNxHD — кодеки для монтажу з високим бітрейтом. GIF (Анімований) зменшує і палітризує ролик за допомогою ffmpeg + gifsicle — ідеально для коротких німих циклів.",
+        "locked": "Закріплено на {{format}} для цього інструменту",
         "options": {
           "mp4": "MP4",
           "webm": "WebM",
@@ -467,227 +471,272 @@
           "wmv": "WMV",
           "prores": "ProRes (MOV)",
           "dnxhd": "DNxHR (MOV)",
-          "gif": "GIF (Animated)"
+          "gif": "GIF (Анімований)"
         }
       },
       "quality": {
-        "label": "Quality",
-        "tooltipAria": "About video quality",
-        "tooltip": "Picks an x264 CRF preset under the hood. Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced default), High ≈ CRF 18 (visually transparent on most footage). Ignored for GIF output — use the GIF panel below to tune palette size and frame rate instead.",
+        "label": "Якість",
+        "tooltipAria": "Про якість відео",
+        "tooltip": "Під капотом вибирає пресет x264 CRF. Низька ≈ CRF 30 (маленький файл), Середня ≈ CRF 23 (збалансоване значення за умовчанням), Висока ≈ CRF 18 (візуально невідрізнима на більшості відеозаписів). Ігнорується для виводу в GIF — використовуйте панель GIF нижче, щоб налаштувати розмір палітри та частоту кадрів.",
         "options": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High"
+          "low": "Низька",
+          "medium": "Середня",
+          "high": "Висока"
         }
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About video width",
-        "tooltip": "Target output width in pixels. Leave blank to keep the original or scale proportionally from the height. Combine with Preserve aspect ratio to avoid stretching. When the format is GIF, leaving this blank uses the width from the Animated GIF panel below.",
-        "placeholder": "Auto"
+        "label": "Ширина (px)",
+        "tooltipAria": "Про ширину відео",
+        "tooltip": "Цільова ширина виводу в пікселях. Залиште порожнім, щоб зберегти вихідну ширину або масштабувати пропорційно висоті. Поєднуйте з параметром «Зберегти співвідношення сторін», щоб уникнути розтягування. Якщо формат — GIF, залишення цього поля порожнім використовує ширину з панелі «Анімований GIF» нижче.",
+        "placeholder": "Авто"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About video height",
-        "tooltip": "Target output height in pixels. Leave blank to keep the original or scale proportionally from the width. Ignored for GIF output — height is computed from width to keep the aspect ratio (and rounded to a multiple of 4).",
-        "placeholder": "Auto",
-        "placeholderGif": "Auto (from width)"
+        "label": "Висота (px)",
+        "tooltipAria": "Про висоту відео",
+        "tooltip": "Цільова висота виводу в пікселях. Залиште порожнім, щоб зберегти вихідну висоту або масштабувати пропорційно ширині. Ігнорується для виводу в GIF — висота обчислюється з ширини для збереження співвідношення сторін (і округляється до кратного 4).",
+        "placeholder": "Авто",
+        "placeholderGif": "Авто (з ширини)"
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About speed multiplier",
-        "tooltip": "Playback speed from 0.25x (slow motion) to 4x (fast). Video PTS and audio tempo are adjusted together so the result stays in sync. For GIF output, control playback feel using the Frame rate and Frame delay knobs in the Animated GIF panel."
+        "label": "Множник швидкості",
+        "tooltipAria": "Про множник швидкості",
+        "tooltip": "Швидкість відтворення від 0.25x (уповільнена зйомка) до 4x (швидко). PTS відео і темп аудіо регулюються узгоджено, щоб результат залишався синхронізованим. Для виводу в GIF керуйте відчуттям відтворення за допомогою регуляторів «Частота кадрів» і «Затримка кадру» на панелі «Анімований GIF»."
       },
       "preserveAspectRatio": {
-        "label": "Preserve aspect ratio",
-        "tooltipAria": "About preserve aspect ratio",
-        "tooltip": "When both Width and Height are set, this uses an FFmpeg force_original_aspect_ratio=decrease scale so the video fits within the box without stretching. Turn it off to force an exact (potentially stretched) size. GIF output always preserves aspect ratio."
+        "label": "Зберегти співвідношення сторін",
+        "tooltipAria": "Про збереження співвідношення сторін",
+        "tooltip": "Коли задано і ширину, і висоту, це використовує масштабування FFmpeg force_original_aspect_ratio=decrease, щоб відео вміщалося в рамку без розтягування. Вимкніть, щоб примусово задати точний (можливо, розтягнутий) розмір. Вивід у GIF завжди зберігає співвідношення сторін."
       },
       "gif": {
-        "title": "Animated GIF Settings",
-        "tooltipAria": "About animated GIF settings",
-        "tooltip": "GIF conversion runs in two stages: ffmpeg downscales the video and samples it at the chosen frame rate, then gifsicle quantizes the palette and optimizes the output. The Convert/Transcribe controls above for Quality, Height, and Speed are skipped for GIF since this panel takes over.",
-        "subtitle": "Tune the ffmpeg → gifsicle pipeline. Defaults match a good screencast preset (900px wide, 12 fps, 128 colors).",
+        "title": "Параметри анімованого GIF",
+        "tooltipAria": "Про параметри анімованого GIF",
+        "tooltip": "Конвертація в GIF виконується у два етапи: ffmpeg зменшує відео і робить вибірку з обраною частотою кадрів, потім gifsicle квантує палітру й оптимізує вивід. Елементи керування «Якість», «Висота» і «Швидкість» вище пропускаються для GIF, оскільки цю роль бере на себе ця панель.",
+        "subtitle": "Налаштуйте конвеєр ffmpeg → gifsicle. Значення за умовчанням відповідають гарному пресету для скринкастів (ширина 900px, 12 fps, 128 кольорів).",
         "width": {
-          "label": "Width (px)",
-          "tooltipAria": "About GIF width",
-          "tooltip": "Output width in pixels. Height is computed automatically to preserve the aspect ratio (rounded to a multiple of 4 to keep ffmpeg happy). 480–900 is a good range for screencasts; smaller values shrink the file fast."
+          "label": "Ширина (px)",
+          "tooltipAria": "Про ширину GIF",
+          "tooltip": "Ширина виводу в пікселях. Висота обчислюється автоматично для збереження співвідношення сторін (округляється до кратного 4, щоб ffmpeg був задоволений). 480–900 — гарний діапазон для скринкастів; менші значення швидко зменшують розмір файлу."
         },
         "fps": {
-          "label": "Frame rate (fps)",
-          "tooltipAria": "About GIF frame rate",
-          "tooltip": "How many frames per second ffmpeg samples from the source video before handing it to gifsicle. 12 fps looks smooth for screen recordings; raise to 18–24 for motion-heavy clips, drop to 8–10 to shrink the file."
+          "label": "Частота кадрів (fps)",
+          "tooltipAria": "Про частоту кадрів GIF",
+          "tooltip": "Скільки кадрів за секунду ffmpeg вибирає з вихідного відео перед передачею в gifsicle. 12 fps виглядає плавно для записів екрана; збільшіть до 18–24 для роликів з великою кількістю руху, знизьте до 8–10, щоб зменшити розмір файлу."
         },
         "colors": {
-          "label": "Colors",
-          "tooltipAria": "About GIF colors",
-          "tooltip": "Maximum palette size gifsicle quantizes to (2–256). 128 is a strong default; drop to 64 to shrink the file on flat UI footage, raise to 256 for photographic clips with smooth gradients."
+          "label": "Кольори",
+          "tooltipAria": "Про кольори GIF",
+          "tooltip": "Максимальний розмір палітри, до якого квантує gifsicle (2–256). 128 — сильне значення за умовчанням; знизьте до 64, щоб зменшити розмір файлу на плоскій графіці інтерфейсу, збільште до 256 для фотографічних роликів з плавними градієнтами."
         },
         "delay": {
-          "label": "Frame delay",
-          "tooltipAria": "About GIF frame delay",
-          "tooltip": "gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (= 30ms) is a snappy screencast feel; 6–10 produces a slower, more deliberate loop. Independent of the ffmpeg sampling rate above."
+          "label": "Затримка кадру",
+          "tooltipAria": "Про затримку кадру GIF",
+          "tooltip": "Міжкадрова затримка gifsicle в 1/100 с. Менше — швидше відтворення. 3 (= 30 мс) дає динамічне відчуття скринкасту; 6–10 створює повільніший, розміреніший цикл. Не залежить від частоти вибірки ffmpeg вище."
         },
         "optimize": {
-          "label": "Optimize level",
-          "tooltipAria": "About GIF optimize level",
-          "tooltip": "gifsicle --optimize level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft.",
+          "label": "Рівень оптимізації",
+          "tooltipAria": "Про рівень оптимізації GIF",
+          "tooltip": "Рівень gifsicle --optimize. 1 — найшвидший з найбільшим розміром виводу, 3 — найповільніший з найменшим розміром виводу. Дотримуйтеся 3, якщо тільки ви не працюєте з чернеткою довгого ролика і не хочете швидкий попередній варіант.",
           "options": {
-            "1": "1 — fast, larger file",
-            "2": "2 — balanced",
-            "3": "3 — smallest, slower"
+            "1": "1 — швидко, файл більший",
+            "2": "2 — збалансовано",
+            "3": "3 — мінімальний розмір, повільніше"
           }
         }
       }
     }
   },
   "advancedAudioEffects": {
-    "title": "Advanced Audio Effects",
-    "tooltipAria": "About Advanced Audio Effects",
-    "tooltipIntro": "Manual audio processing chains, grouped into four expandable sections:",
-    "tooltipBasic": "<strong>Basic Audio Processing</strong> — normalize, amplify, fade in/out, EQ presets, stereo width/pan/balance.",
-    "tooltipTime": "<strong>Time-Based Effects</strong> — reverb, delay, and modulation (chorus, flanger, tremolo, vibrato).",
-    "tooltipRestoration": "<strong>Restoration & Cleanup</strong> — noise reduction, de-hum, declip, silence removal.",
-    "tooltipAdvanced": "<strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.",
+    "title": "Розширені аудіоефекти",
+    "tooltipAria": "Про розширені аудіоефекти",
+    "tooltipIntro": "Ручні ланцюжки обробки звуку, згруповані у чотири розкривні розділи:",
+    "tooltipBasic": "<strong>Базова обробка звуку</strong> — нормалізація, підсилення, наростання/згасання, пресети еквалайзера, стереоширина/панорама/баланс.",
+    "tooltipTime": "<strong>Часові ефекти</strong> — реверберація, затримка та модуляція (хорус, фленджер, тремоло, вібрато).",
+    "tooltipRestoration": "<strong>Відновлення та очищення</strong> — шумозаглушення, усунення гулу, усунення кліпінгу, видалення тиші.",
+    "tooltipAdvanced": "<strong>Розширене аудіо</strong> — зсув висоти тону, розтягування часу, просторове аудіо.",
     "sections": {
-      "basic": { "title": "Basic Audio Processing", "description": "Volume control, EQ, dynamics, and stereo processing" },
-      "time": { "title": "Time-Based Effects", "description": "Reverb, delay, echo, and modulation effects" },
-      "restoration": { "title": "Restoration & Cleanup", "description": "Noise reduction, de-hum, declip, and silence detection" },
-      "advanced": { "title": "Advanced Processing", "description": "Pitch shifting, time stretching, spatial audio, and spectral processing" }
+      "basic": {
+        "title": "Базова обробка звуку",
+        "description": "Керування гучністю, еквалайзер, динаміка та стереообробка"
+      },
+      "time": {
+        "title": "Часові ефекти",
+        "description": "Реверберація, затримка, відлуння та модуляційні ефекти"
+      },
+      "restoration": {
+        "title": "Відновлення та очищення",
+        "description": "Шумозаглушення, усунення гулу, усунення кліпінгу та виявлення тиші"
+      },
+      "advanced": {
+        "title": "Розширена обробка",
+        "description": "Зсув висоти тону, розтягування часу, просторове аудіо та спектральна обробка"
+      }
     },
     "volumeDynamics": {
-      "title": "Volume & Dynamics",
-      "tooltip": "Amplify in decibels (-60 to +60), apply fade-in/out durations, and toggle loudness normalization. Use Amplify for level matching and Normalize when you want a consistent perceived loudness."
+      "title": "Гучність і динаміка",
+      "tooltip": "Підсилення в децибелах (від -60 до +60), застосування тривалості наростання/згасання та перемикання нормалізації гучності. Використовуйте «Підсилення» для вирівнювання рівня і «Нормалізацію», коли потрібна стабільна сприйнята гучність."
     },
     "equalizer": {
-      "title": "Equalizer",
-      "tooltip": "Pick a preset that maps to a multi-band FFmpeg equalizer filter chain: bass-boost, treble-boost, vocal, classical, rock, or jazz. Choose 'none' to leave the EQ untouched.",
-      "enable": "Enable EQ",
-      "presetLabel": "EQ Preset",
+      "title": "Еквалайзер",
+      "tooltip": "Виберіть пресет, який зіставляється з багатосмуговим ланцюжком фільтрів еквалайзера FFmpeg: підсилення басів, підсилення високих частот, вокал, класика, рок або джаз. Виберіть «Немає», щоб залишити еквалайзер без змін.",
+      "enable": "Увімкнути еквалайзер",
+      "presetLabel": "Пресет еквалайзера",
       "presets": {
-        "none": "None",
-        "bass-boost": "Bass Boost",
-        "treble-boost": "Treble Boost",
-        "vocal": "Vocal Enhance",
-        "classical": "Classical",
-        "rock": "Rock",
-        "jazz": "Jazz"
+        "none": "Немає",
+        "bass-boost": "Підсилення басів",
+        "treble-boost": "Підсилення високих частот",
+        "vocal": "Покращення вокалу",
+        "classical": "Класика",
+        "rock": "Рок",
+        "jazz": "Джаз"
       }
     },
     "stereo": {
-      "title": "Stereo Processing",
-      "tooltip": "Adjust pan (-100 left to +100 right), stereo width (0 = mono, 100 = original, up to 200 = wider), toggle mono conversion, and optionally swap left/right channels.",
-      "pan": "Pan",
-      "leftRight": "Left ← → Right",
-      "stereoWidth": "Stereo Width",
-      "widthRange": "0% to 200%"
+      "title": "Стереообробка",
+      "tooltip": "Налаштуйте панораму (від -100 зліва до +100 справа), стереоширину (0 = моно, 100 = оригінал, до 200 = ширше), перемикання конвертації в моно і за потреби заміну лівого та правого каналів.",
+      "pan": "Панорама",
+      "leftRight": "Ліворуч ← → Праворуч",
+      "stereoWidth": "Стереоширина",
+      "widthRange": "від 0% до 200%"
     },
     "reverb": {
-      "title": "Reverb",
-      "tooltip": "Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect.",
-      "enable": "Enable Reverb",
-      "typeLabel": "Reverb Type",
-      "types": { "none": "None", "room": "Room", "hall": "Hall", "plate": "Plate", "spring": "Spring" },
-      "roomSize": "Room Size",
-      "roomRange": "0% to 100%",
-      "wetDry": "Wet/Dry Mix",
+      "title": "Реверберація",
+      "tooltip": "Додайте об'єму звуку. Виберіть кімнату (маленька), зал (великий), плейт (вінтажна студія) або спринг (стиль гітарного підсилювача). Розмір приміщення, демпфування та рівні wet/dry точно налаштовують ефект.",
+      "enable": "Увімкнути реверберацію",
+      "typeLabel": "Тип реверберації",
+      "types": {
+        "none": "Немає",
+        "room": "Кімната",
+        "hall": "Зал",
+        "plate": "Плейт",
+        "spring": "Спринг"
+      },
+      "roomSize": "Розмір приміщення",
+      "roomRange": "від 0% до 100%",
+      "wetDry": "Мікс Wet/Dry",
       "dryWet": "Dry ← → Wet"
     },
     "delay": {
-      "title": "Delay & Echo",
-      "tooltip": "Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats.",
-      "enable": "Enable Delay",
-      "typeLabel": "Delay Type",
-      "types": { "none": "None", "echo": "Simple Echo", "multi-tap": "Multi-tap", "ping-pong": "Ping-Pong" },
-      "delayTime": "Delay Time (ms)",
-      "feedback": "Feedback (%)",
-      "feedbackRange": "0% to 95%"
+      "title": "Затримка та відлуння",
+      "tooltip": "Додайте затриману копію сигналу. Відлуння — це один повтор; мультитап додає кілька зміщених відлунь; пінг-понг перемикається між лівим і правим каналами. Час (мс), зворотний зв'язок % і рівень wet формують повтори.",
+      "enable": "Увімкнути затримку",
+      "typeLabel": "Тип затримки",
+      "types": {
+        "none": "Немає",
+        "echo": "Просте відлуння",
+        "multi-tap": "Мультитап",
+        "ping-pong": "Пінг-понг"
+      },
+      "delayTime": "Час затримки (мс)",
+      "feedback": "Зворотний зв'язок (%)",
+      "feedbackRange": "від 0% до 95%"
     },
     "restoration": {
-      "noiseReduction": "Noise Reduction",
-      "deHum": "De-hum (50/60Hz)",
-      "declip": "Declip Audio",
-      "silenceDetection": "Silence Detection"
+      "noiseReduction": "Шумозаглушення",
+      "deHum": "Усунення гулу (50/60 Гц)",
+      "declip": "Усунення кліпінгу",
+      "silenceDetection": "Виявлення тиші"
     },
     "advanced": {
-      "pitchShift": "Pitch Shift (semitones)",
-      "pitchValue": "{{value}} semitones",
-      "pitchRange": "-24 to +24 semitones",
-      "timeStretch": "Time Stretch Factor",
-      "timeStretchValue": "{{value}}x speed",
-      "timeStretchRange": "0.25x to 4x speed",
-      "spatialAudio": "Spatial Audio",
-      "spatial": { "none": "None", "binaural": "Binaural", "surround": "Surround", "3d": "3D Audio" },
-      "spectral": "Spectral Processing",
-      "spectralOptions": { "none": "None", "vocoder": "Vocoder", "formant": "Formant Filter", "convolution": "Convolution" }
+      "pitchShift": "Зсув висоти тону (півтони)",
+      "pitchValue": "{{value}} півтонів",
+      "pitchRange": "від -24 до +24 півтонів",
+      "timeStretch": "Коефіцієнт розтягування часу",
+      "timeStretchValue": "швидкість {{value}}x",
+      "timeStretchRange": "швидкість від 0.25x до 4x",
+      "spatialAudio": "Просторове аудіо",
+      "spatial": {
+        "none": "Немає",
+        "binaural": "Бінауральне",
+        "surround": "Об'ємне",
+        "3d": "3D-аудіо"
+      },
+      "spectral": "Спектральна обробка",
+      "spectralOptions": {
+        "none": "Немає",
+        "vocoder": "Вокодер",
+        "formant": "Формантний фільтр",
+        "convolution": "Згортка"
+      }
     },
     "labels": {
-      "amplify": "Amplify (dB)",
-      "amplifyRange": "-60dB to +60dB",
-      "normalize": "Normalize Audio",
-      "fadeIn": "Fade In (seconds)",
-      "fadeOut": "Fade Out (seconds)"
+      "amplify": "Підсилення (дБ)",
+      "amplifyRange": "від -60дБ до +60дБ",
+      "normalize": "Нормалізувати звук",
+      "fadeIn": "Наростання (секунди)",
+      "fadeOut": "Згасання (секунди)"
     }
   },
   "advancedVideoEffects": {
-    "title": "Advanced Video Effects",
-    "tooltipAria": "About Advanced Video Effects",
-    "tooltipIntro": "Manual video filter chains, grouped into four expandable sections:",
-    "tooltipVisual": "<strong>Visual Effects</strong> — color correction, blur/sharpen, noise, and artistic filters.",
-    "tooltipTransform": "<strong>Transform</strong> — rotation, flip, custom crop, padding/letterboxing.",
-    "tooltipTemporal": "<strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.",
-    "tooltipAdvanced": "<strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.",
+    "title": "Розширені відеоефекти",
+    "tooltipAria": "Про розширені відеоефекти",
+    "tooltipIntro": "Ручні ланцюжки відеофільтрів, згруповані у чотири розкривні розділи:",
+    "tooltipVisual": "<strong>Візуальні ефекти</strong> — кольорокорекція, розмиття/різкість, шум і художні фільтри.",
+    "tooltipTransform": "<strong>Трансформація</strong> — поворот, віддзеркалення, довільне кадрування, відступи/леттербоксинг.",
+    "tooltipTemporal": "<strong>Часові ефекти</strong> — реверс, пінг-понг, конвертація частоти кадрів, стабілізація.",
+    "tooltipAdvanced": "<strong>Розширена обробка</strong> — деінтерлейсинг, HDR тональне відображення, конвертація кольорового простору.",
     "sections": {
-      "visual": { "title": "Visual Effects", "description": "Color correction, blur/sharpen, artistic effects, and noise control" },
-      "transform": { "title": "Geometric Transform", "description": "Rotation, flipping, cropping, and padding" },
-      "temporal": { "title": "Temporal Effects", "description": "Speed control, reverse, frame rate, and stabilization" },
-      "advanced": { "title": "Advanced Processing", "description": "Deinterlacing, HDR processing, and color space conversion" }
+      "visual": {
+        "title": "Візуальні ефекти",
+        "description": "Кольорокорекція, розмиття/різкість, художні ефекти та керування шумом"
+      },
+      "transform": {
+        "title": "Геометрична трансформація",
+        "description": "Поворот, віддзеркалення, кадрування та відступи"
+      },
+      "temporal": {
+        "title": "Часові ефекти",
+        "description": "Керування швидкістю, реверс, частота кадрів і стабілізація"
+      },
+      "advanced": {
+        "title": "Розширена обробка",
+        "description": "Деінтерлейсинг, HDR-обробка та конвертація кольорового простору"
+      }
     },
     "colorExposure": {
-      "title": "Color & Exposure",
-      "tooltip": "Adjust brightness, contrast, saturation, hue, gamma, exposure, and shadow/highlight recovery. These map to FFmpeg's eq and curves filters and stack into a single color-correction pass."
+      "title": "Колір і експозиція",
+      "tooltip": "Налаштуйте яскравість, контраст, насиченість, відтінок, гамму, експозицію та відновлення тіней/світлих ділянок. Це зіставляється з фільтрами eq і curves FFmpeg та об'єднується в єдиний прохід кольорокорекції."
     },
     "blurSharpen": {
-      "title": "Blur & Sharpen",
-      "tooltip": "Add Gaussian blur (0–50 sigma), motion blur with angle and distance, or unsharp-mask sharpening with adjustable radius, amount, and threshold."
+      "title": "Розмиття та різкість",
+      "tooltip": "Додайте гаусове розмиття (0–50 сигма), розмиття в русі з кутом і відстанню, або різкість з маскою нерізкості з налаштовуваним радіусом, силою та порогом."
     },
     "labels": {
-      "brightness": "Brightness",
-      "contrast": "Contrast",
-      "saturation": "Saturation",
-      "hue": "Hue",
-      "gaussianBlur": "Gaussian Blur",
-      "artisticEffect": "Artistic Effect",
-      "rotation": "Rotation (degrees)",
-      "flipHorizontal": "Flip Horizontal",
-      "flipVertical": "Flip Vertical",
-      "reverseVideo": "Reverse Video",
-      "pingPong": "Ping-Pong Loop",
-      "targetFrameRate": "Target Frame Rate",
-      "stabilization": "Video Stabilization",
-      "deinterlace": "Deinterlace Video",
-      "outputColorSpace": "Output Color Space"
+      "brightness": "Яскравість",
+      "contrast": "Контраст",
+      "saturation": "Насиченість",
+      "hue": "Відтінок",
+      "gaussianBlur": "Гаусове розмиття",
+      "artisticEffect": "Художній ефект",
+      "rotation": "Поворот (градуси)",
+      "flipHorizontal": "Віддзеркалити по горизонталі",
+      "flipVertical": "Віддзеркалити по вертикалі",
+      "reverseVideo": "Реверс відео",
+      "pingPong": "Цикл пінг-понг",
+      "targetFrameRate": "Цільова частота кадрів",
+      "stabilization": "Стабілізація відео",
+      "deinterlace": "Деінтерлейсинг відео",
+      "outputColorSpace": "Вихідний кольоровий простір"
     },
     "ranges": {
-      "hundred": "-100 to +100",
-      "hue": "-180° to +180°",
-      "blur": "0 to 50px"
+      "hundred": "від -100 до +100",
+      "hue": "від -180° до +180°",
+      "blur": "від 0 до 50px"
     },
     "artistic": {
-      "none": "None",
-      "oil-painting": "Oil Painting",
-      "watercolor": "Watercolor",
-      "sketch": "Sketch",
-      "emboss": "Emboss",
-      "edge-detection": "Edge Detection",
-      "posterize": "Posterize"
+      "none": "Немає",
+      "oil-painting": "Олійний живопис",
+      "watercolor": "Акварель",
+      "sketch": "Ескіз",
+      "emboss": "Тиснення",
+      "edge-detection": "Виявлення країв",
+      "posterize": "Постеризація"
     },
     "colorSpace": {
-      "rec709": "Rec.709 (Standard)",
+      "rec709": "Rec.709 (Стандарт)",
       "rec2020": "Rec.2020 (HDR)",
       "srgb": "sRGB",
       "p3": "Display P3"
     },
-    "autoPlaceholder": "Auto"
+    "autoPlaceholder": "Авто"
   }
 }

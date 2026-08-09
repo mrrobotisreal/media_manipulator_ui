@@ -1,56 +1,56 @@
 {
   "topNav": {
-    "homeLink": "Media Manipulator home",
-    "openMenu": "Open menu",
-    "github": "View on GitHub",
+    "homeLink": "Головна сторінка Media Manipulator",
+    "openMenu": "Відкрити меню",
+    "github": "Переглянути на GitHub",
     "winapps": "WinApps",
     "creatv": "CreaTV",
-    "toggleTheme": "Toggle theme",
-    "languageMenu": "Change language",
-    "navIcon": "Media Manipulator Icon",
-    "winappsLogo": "WinApps Logo",
-    "creatvLogo": "CreaTV Logo",
+    "toggleTheme": "Перемкнути тему",
+    "languageMenu": "Змінити мову",
+    "navIcon": "Значок Media Manipulator",
+    "winappsLogo": "Логотип WinApps",
+    "creatvLogo": "Логотип CreaTV",
     "githubLogo": "GitHub"
   },
   "footer": {
-    "homeLink": "Media Manipulator home",
-    "navIcon": "Media Manipulator Icon"
+    "homeLink": "Головна сторінка Media Manipulator",
+    "navIcon": "Значок Media Manipulator"
   },
   "home": {
-    "popularTools": "Popular tools",
-    "closePreview": "Close preview"
+    "popularTools": "Популярні інструменти",
+    "closePreview": "Закрити попередній перегляд"
   },
   "notFound": {
-    "recoveryRoutes": "Recovery routes"
+    "recoveryRoutes": "Шляхи відновлення"
   },
   "loading": {
-    "label": "Loading"
+    "label": "Завантаження"
   },
   "languageSelector": {
-    "trigger": "Change language",
-    "icon": "Translate icon"
+    "trigger": "Змінити мову",
+    "icon": "Значок перекладу"
   },
   "common": {
-    "close": "Close",
-    "open": "Open",
-    "loading": "Loading",
-    "moreOptions": "More options"
+    "close": "Закрити",
+    "open": "Відкрити",
+    "loading": "Завантаження",
+    "moreOptions": "Додаткові параметри"
   },
   "transcribeForm": {
-    "formatTooltip": "About transcript output format",
-    "languageTooltip": "About language hint"
+    "formatTooltip": "Про формат вихідного транскрипту",
+    "languageTooltip": "Про підказку мови"
   },
   "audioForm": {
-    "aiTooltip": "About AI Audio Tools"
+    "aiTooltip": "Про ШІ-інструменти для аудіо"
   },
   "videoForm": {
-    "aiTooltip": "About AI Video Tools"
+    "aiTooltip": "Про ШІ-інструменти для відео"
   },
   "imageForm": {
-    "aiTooltip": "About AI Image Tools",
-    "selectiveFacesTooltip": "About selective face privacy",
-    "removeObjectTooltip": "About object removal",
-    "metadataTooltip": "About metadata handling",
-    "vectorizeThresholdTooltip": "About the vectorization threshold"
+    "aiTooltip": "Про ШІ-інструменти для зображень",
+    "selectiveFacesTooltip": "Про вибіркову приватність облич",
+    "removeObjectTooltip": "Про видалення об'єктів",
+    "metadataTooltip": "Про обробку метаданих",
+    "vectorizeThresholdTooltip": "Про поріг векторизації"
   }
 }

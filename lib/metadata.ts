@@ -9,7 +9,7 @@
 // - `path` is always the locale-NEUTRAL path ('/about'); the locale's URL
 //   prefix is applied here. English keeps the unprefixed canonical.
 // - hreflang alternates list only the locales whose content is actually
-//   translated (`translated: true` — en + ru today), with x-default on the
+//   translated (`translated: true` — en + ru + uk today), with x-default on the
 //   English URL. Locales still serving copied-English files are excluded AND
 //   rendered noindex, so crawlers never see mislabeled duplicate content
 //   while AdSense review is pending. Flipping `translated` in i18n/locales.ts

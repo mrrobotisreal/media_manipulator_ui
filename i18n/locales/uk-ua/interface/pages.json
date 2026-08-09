@@ -1,148 +1,148 @@
 {
   "about": {
-    "title": "About Media Manipulator — A Free Online Media Converter, Editor & AI Toolkit",
-    "intro": "Media Manipulator is a free online media converter, editor, transcriber, and metadata inspector for images, videos, and audio files. It is built and operated by <strong>CreaTV Ltd.</strong> and runs entirely on infrastructure we own — including a dedicated GPU server for AI features — so your files never leave systems we control.",
+    "title": "Про Media Manipulator — безкоштовний онлайн-конвертер медіафайлів, редактор і набір ШІ-інструментів",
+    "intro": "Media Manipulator — це безкоштовний онлайн-конвертер, редактор, інструмент транскрибування та перегляду метаданих для зображень, відео та аудіофайлів. Сервіс створений і працює під керуванням <strong>CreaTV Ltd.</strong> і повністю функціонує на власній інфраструктурі — зокрема на виділеному GPU-сервері для функцій на основі ШІ, — тому ваші файли ніколи не залишають системи, які ми контролюємо.",
     "mission": {
-      "title": "Our Mission",
-      "p1": "We started Media Manipulator because most \"free media converter\" sites are slow, upsell aggressively, paywall basic features behind sign-ups, send your files to third-party AI providers, or quietly retain uploads indefinitely. We wanted a free file converter online that you can trust: open in a browser, drop in a file, pick a setting, get a usable result. No account required, no software to install, no permanent storage of your media.",
-      "p2": "We treat conversion, editing, compression, transcription, summarization, and metadata management as one connected workflow rather than ten separate websites. If you want to compress an MP4 for the web, then trim it, generate VTT captions, and finally strip EXIF metadata from the thumbnail you'll publish alongside it — that's three different sites for most people and a single tab for Media Manipulator users."
+      "title": "Наша місія",
+      "p1": "Ми створили Media Manipulator, бо більшість «безкоштовних конвертерів медіафайлів» повільні, нав'язливо пропонують платні функції, приховують базові можливості за обов'язковою реєстрацією, надсилають ваші файли стороннім ШІ-провайдерам або непомітно зберігають завантаження нескінченно довго. Ми хотіли створити безкоштовний онлайн-конвертер файлів, якому можна довіряти: відкриваєте у браузері, додаєте файл, обираєте налаштування, отримуєте готовий результат. Без обов'язкової реєстрації, без встановлення програм, без постійного зберігання ваших медіафайлів.",
+      "p2": "Ми розглядаємо конвертацію, редагування, стиснення, транскрибування, створення підсумків і керування метаданими як єдиний пов'язаний процес, а не десять різних сайтів. Якщо ви хочете стиснути MP4 для вебу, потім обрізати його, створити субтитри у форматі VTT і, нарешті, видалити метадані EXIF з мініатюри, яку опублікуєте разом із відео, — для більшості людей це три різні сайти, а для користувачів Media Manipulator це одна вкладка."
     },
     "whatItDoes": {
-      "title": "What Media Manipulator Does",
-      "intro": "Media Manipulator covers the full range of \"I need to do something with this file\" tasks across three media types. Everything runs on our servers — there is no desktop app to download, no Chrome extension to install, and no plug-in to update. Open the site, drop in a file, pick a tool, and download the result.",
+      "title": "Що вміє Media Manipulator",
+      "intro": "Media Manipulator охоплює весь спектр завдань «потрібно щось зробити з цим файлом» для трьох типів медіа. Усе працює на наших серверах — не потрібно завантажувати десктопний застосунок, встановлювати розширення для Chrome чи оновлювати плагіни. Відкрийте сайт, додайте файл, оберіть інструмент і завантажте результат.",
       "image": {
-        "title": "Free Image Converter & Editor",
+        "title": "Безкоштовний конвертер і редактор зображень",
         "items": [
-          "Convert JPG, PNG, WebP, GIF, BMP, and TIFF",
-          "Compress images for the web (JPG, WebP quality presets)",
-          "Resize, crop, and rotate online",
-          "Apply filters: grayscale, sepia, blur, sharpen, vintage, sketch",
-          "Add watermark / text overlay with stroke and gravity",
-          "Inspect, keep, strip, or rewrite EXIF / IPTC / XMP metadata",
-          "<strong>Remove GPS metadata from photos</strong> before sharing online",
-          "AI face blur, background removal, upscaling, and OCR text redaction",
-          "<strong>Remove unwanted objects</strong> with LaMa inpainting — draw a box, the model reconstructs the background"
+          "Конвертація JPG, PNG, WebP, GIF, BMP і TIFF",
+          "Стиснення зображень для вебу (пресети якості JPG, WebP)",
+          "Зміна розміру, кадрування та поворот онлайн",
+          "Застосування фільтрів: чорно-білий, сепія, розмиття, різкість, вінтаж, скетч",
+          "Додавання водяного знака / текстового накладання з обводкою та позиціонуванням",
+          "Перегляд, збереження, видалення або перезапис метаданих EXIF / IPTC / XMP",
+          "<strong>Видалення GPS-метаданих із фотографій</strong> перед публікацією в мережі",
+          "ШІ-розмиття облич, видалення фону, збільшення роздільної здатності та OCR-редагування тексту",
+          "<strong>Видалення небажаних об'єктів</strong> за допомогою технології LaMa inpainting — виділіть область, і модель відновить фон"
         ]
       },
       "video": {
-        "title": "Free Video Converter & Editor",
+        "title": "Безкоштовний конвертер і редактор відео",
         "items": [
-          "Convert MP4, WebM, MOV, MKV, AVI, WMV, FLV, ProRes",
-          "<strong>Convert video to animated GIF</strong> with tunable width, fps, palette, and frame delay",
-          "Compress video online without ruining quality",
-          "Trim and cut video clips",
-          "Resize, change frame rate, and adjust playback speed",
-          "Color correction, stabilization, and artistic filters",
-          "HDR tone mapping and colorspace conversion",
-          "<strong>Transcribe video to text</strong> with VTT, plain text, or JSON output",
-          "Auto-generate summaries from long videos"
+          "Конвертація MP4, WebM, MOV, MKV, AVI, WMV, FLV, ProRes",
+          "<strong>Конвертація відео в анімований GIF</strong> з налаштовуваними шириною, частотою кадрів, палітрою та затримкою кадрів",
+          "Стиснення відео онлайн без втрати якості",
+          "Обрізка та нарізка відеокліпів",
+          "Зміна розміру, частоти кадрів і швидкості відтворення",
+          "Кольорокорекція, стабілізація та художні фільтри",
+          "HDR-тонмапінг і перетворення кольорового простору",
+          "<strong>Транскрибування відео в текст</strong> із виводом у форматах VTT, звичайного тексту або JSON",
+          "Автоматичне створення підсумків із довгих відео"
         ]
       },
       "audio": {
-        "title": "Free Audio Converter & Cleanup",
+        "title": "Безкоштовний конвертер і очищення аудіо",
         "items": [
-          "Convert MP3, WAV, AAC, OGG, FLAC, ALAC, M4A, Opus, AC3",
-          "Convert WAV to MP3, FLAC to MP3, OGG to MP3, and more",
-          "Trim, normalize, amplify, and EQ audio",
-          "Reverb, delay, chorus, flanger, pitch shift, time stretch",
-          "<strong>Audio cleanup online</strong> — remove background noise from voice recordings",
-          "AI voice cleanup for podcasts and voiceovers",
-          "Isolate vocals or remove vocals (karaoke maker)",
-          "Transcribe audio to text and summarize transcripts"
+          "Конвертація MP3, WAV, AAC, OGG, FLAC, ALAC, M4A, Opus, AC3",
+          "Конвертація WAV у MP3, FLAC у MP3, OGG у MP3 та інші",
+          "Обрізка, нормалізація, підсилення та еквалізація аудіо",
+          "Реверберація, затримка, хорус, фленджер, пітч-шифтинг, тайм-стретчинг",
+          "<strong>Онлайн-очищення аудіо</strong> — видалення фонового шуму з голосових записів",
+          "ШІ-очищення голосу для подкастів і озвучення",
+          "Виділення вокалу або видалення вокалу (створення караоке)",
+          "Транскрибування аудіо в текст і створення підсумків за транскриптами"
         ]
       },
-      "outro": "Step-by-step walkthroughs for every tool live in our <linkTutorials>tutorials</linkTutorials> section. If you'd rather read the technical breakdown first, see <linkHow>how Media Manipulator works</linkHow>."
+      "outro": "Покрокові інструкції для кожного інструменту доступні в розділі <linkTutorials>навчальних матеріалів</linkTutorials>. Якщо ви хочете спочатку прочитати технічний опис, перегляньте <linkHow>як працює Media Manipulator</linkHow>."
     },
     "whyChoose": {
-      "title": "Why Choose Media Manipulator",
+      "title": "Чому варто обрати Media Manipulator",
       "noSignup": {
-        "title": "No Sign-Up, No Paywall",
-        "body": "Every feature on the site — image conversion, video compression, audio cleanup, transcription, AI tools — is free and usable without an account. We never require you to log in, hand over an email, or pay before downloading a converted file."
+        "title": "Без реєстрації, без платного доступу",
+        "body": "Кожна функція на сайті — конвертація зображень, стиснення відео, очищення аудіо, транскрибування, ШІ-інструменти — безкоштовна та доступна без облікового запису. Ми ніколи не вимагаємо входу в систему, передачі електронної пошти чи оплати перед завантаженням конвертованого файлу."
       },
       "privacy": {
-        "title": "Privacy-Focused (24-Hour Auto Delete)",
-        "body": "Uploaded files and generated outputs are stored only as long as your session needs them, with a hard maximum of <strong>24 hours</strong>, after which they are deleted from our active storage. We do not keep your media files past that window and we don't sell or share uploads with anyone. See our <linkPrivacy>privacy policy</linkPrivacy> for full details."
+        "title": "Орієнтовано на конфіденційність (автовидалення через 24 години)",
+        "body": "Завантажені файли та створені результати зберігаються рівно стільки, скільки потрібно для вашої сесії, але не довше <strong>24 годин</strong>, після чого видаляються з нашого активного сховища. Ми не зберігаємо ваші медіафайли довше цього терміну і не продаємо та не передаємо завантаження третім особам. Подробиці — у нашій <linkPrivacy>політиці конфіденційності</linkPrivacy>."
       },
       "localAi": {
-        "title": "Local AI on Our Own GPU",
-        "body": "AI features — face blur, background removal, AI upscale, OCR-based PII redaction, voice cleanup, vocal isolation, transcription, and AI summaries — run on a dedicated NVIDIA GPU server that <strong>CreaTV Ltd.</strong> owns and operates. We do not send your files to OpenAI, Anthropic, Google, AWS Bedrock, or any other third-party AI provider."
+        "title": "Локальний ШІ на власному GPU",
+        "body": "ШІ-функції — розмиття облич, видалення фону, збільшення роздільної здатності за допомогою ШІ, OCR-редагування персональних даних, очищення голосу, виділення вокалу, транскрибування та створення ШІ-підсумків — працюють на виділеному GPU-сервері NVIDIA, яким володіє й керує <strong>CreaTV Ltd.</strong> Ми не надсилаємо ваші файли в OpenAI, Anthropic, Google, AWS Bedrock чи будь-якому іншому сторонньому ШІ-провайдеру."
       },
       "realTools": {
-        "title": "Real Tools, Not Toy Converters",
-        "body": "Under the hood we run FFmpeg, ImageMagick, and gifsicle for standard pipelines and purpose-built models (Real-ESRGAN, BiRefNet, Demucs, DeepFilterNet, whisper-ctranslate2, exiftool, rembg, simple-lama-inpainting) for everything else. Bitrate, codec, quality, channel layout, color space, GIF palette size and frame delay — every setting that matters to power users is exposed in the UI."
+        "title": "Справжні інструменти, а не іграшкові конвертери",
+        "body": "Під капотом ми використовуємо FFmpeg, ImageMagick і gifsicle для стандартних процесів, а також спеціалізовані моделі (Real-ESRGAN, BiRefNet, Demucs, DeepFilterNet, whisper-ctranslate2, exiftool, rembg, simple-lama-inpainting) для всього іншого. Бітрейт, кодек, якість, конфігурація каналів, кольоровий простір, розмір палітри GIF і затримка кадрів — кожне налаштування, важливе для досвідчених користувачів, доступне в інтерфейсі."
       },
       "web": {
-        "title": "Built for the Web",
-        "body": "Nothing to download, nothing to install, nothing to update. Media Manipulator runs in any modern browser on desktop, laptop, tablet, or phone, and large video uploads use direct-to-S3 presigned URLs so the upload step doesn't choke on slower connections."
+        "title": "Створено для вебу",
+        "body": "Нічого не потрібно завантажувати, встановлювати чи оновлювати. Media Manipulator працює в будь-якому сучасному браузері на комп'ютері, ноутбуці, планшеті або телефоні, а для великих відеофайлів використовуються прямі presigned-посилання на S3, щоб етап завантаження не «зависав» на повільних з'єднаннях."
       },
       "open": {
-        "title": "Open, Honest, Free",
-        "body": "The site is supported by unobtrusive advertising and CreaTV's own product promotions — never by selling your data or your files. If something on the site is misleading, broken, or feels slimy, we want to hear about it at <emailLink>support@media-manipulator.com</emailLink>."
+        "title": "Відкрито, чесно, безкоштовно",
+        "body": "Сайт підтримується ненав'язливою рекламою та просуванням власних продуктів CreaTV — але ніколи за рахунок продажу ваших даних чи файлів. Якщо щось на сайті здається вам оманливим, непрацездатним чи сумнівним, напишіть нам на <emailLink>support@media-manipulator.com</emailLink>."
       }
     },
     "commonTasks": {
-      "title": "Common Tasks Media Manipulator Handles",
-      "intro": "If you've Googled any of the following and ended up here, you're in the right place. Open the <linkHome>converter homepage</linkHome>, upload a file, and the right-hand panel switches to whichever toolset matches.",
+      "title": "Часті завдання, які вирішує Media Manipulator",
+      "intro": "Якщо ви шукали в Google щось із переліченого нижче та потрапили сюди — ви в потрібному місці. Відкрийте <linkHome>головну сторінку конвертера</linkHome>, завантажте файл, і права панель автоматично перемкнеться на відповідний набір інструментів.",
       "image": {
-        "title": "Image tasks",
+        "title": "Завдання із зображеннями",
         "items": [
-          "Convert HEIC to JPG / iPhone photos to JPG",
-          "Convert PNG to WebP for faster web pages",
-          "Convert WebP to JPG for legacy compatibility",
-          "Compress JPG / compress PNG / compress WebP",
-          "Resize an image for a profile picture or thumbnail",
-          "Crop an image to a specific aspect ratio",
-          "Add a watermark or copyright text overlay",
-          "Remove EXIF metadata from photos before sharing",
-          "Strip GPS coordinates from a photo",
-          "Blur faces in event photos automatically",
-          "Remove the background of a product photo",
-          "Upscale a low-resolution image with AI",
-          "Redact PII (emails, phone numbers, SSNs) from screenshots",
-          "Remove an unwanted object (person, sign, watermark) from a photo with LaMa inpainting"
+          "Конвертація HEIC у JPG / фотографій з iPhone у JPG",
+          "Конвертація PNG у WebP для швидшого завантаження сторінок",
+          "Конвертація WebP у JPG для сумісності зі старими системами",
+          "Стиснення JPG / стиснення PNG / стиснення WebP",
+          "Зміна розміру зображення для фото профілю або мініатюри",
+          "Кадрування зображення під конкретне співвідношення сторін",
+          "Додавання водяного знака або тексту з позначенням авторських прав",
+          "Видалення метаданих EXIF із фотографій перед публікацією",
+          "Видалення GPS-координат із фотографії",
+          "Автоматичне розмиття облич на фотографіях із заходів",
+          "Видалення фону з фотографії товару",
+          "Збільшення роздільної здатності зображення низької якості за допомогою ШІ",
+          "Редагування персональних даних (електронна пошта, номери телефонів, номери соцстрахування) на скриншотах",
+          "Видалення небажаного об'єкта (людини, вивіски, водяного знака) з фотографії за допомогою технології LaMa inpainting"
         ]
       },
       "videoAudio": {
-        "title": "Video & audio tasks",
+        "title": "Завдання з відео та аудіо",
         "items": [
-          "Convert MP4 to WebM, MOV to MP4, MKV to MP4, AVI to MP4",
-          "Convert MP4 / MOV / WebM to an optimized animated GIF for chats and docs",
-          "Compress a video file for email or messaging size limits",
-          "Trim or cut a video clip without re-encoding the rest",
-          "Change a video's frame rate or resolution",
-          "Stabilize shaky footage",
-          "Generate captions / subtitles (VTT) from a video",
-          "Transcribe a video to plain text or structured JSON",
-          "Summarize a long video or audio recording",
-          "Convert WAV to MP3, FLAC to MP3, OGG to MP3, M4A to MP3",
-          "Clean up podcast audio / remove background noise",
-          "Isolate vocals from a song",
-          "Remove vocals from a song (karaoke maker)",
-          "Pitch shift or time stretch an audio clip"
+          "Конвертація MP4 у WebM, MOV у MP4, MKV у MP4, AVI у MP4",
+          "Конвертація MP4 / MOV / WebM в оптимізований анімований GIF для чатів і документів",
+          "Стиснення відеофайлу під обмеження розміру для електронної пошти чи месенджерів",
+          "Обрізка або нарізка відеокліпу без перекодування решти",
+          "Зміна частоти кадрів або роздільної здатності відео",
+          "Стабілізація тремтливого відзняття",
+          "Створення субтитрів (VTT) з відео",
+          "Транскрибування відео у звичайний текст або структурований JSON",
+          "Створення підсумку довгого відео чи аудіозапису",
+          "Конвертація WAV у MP3, FLAC у MP3, OGG у MP3, M4A у MP3",
+          "Очищення аудіо подкасту / видалення фонового шуму",
+          "Виділення вокалу з пісні",
+          "Видалення вокалу з пісні (створення караоке)",
+          "Пітч-шифтинг або тайм-стретчинг аудіокліпу"
         ]
       }
     },
     "whoBuilds": {
-      "title": "Who Builds Media Manipulator",
-      "p1": "Media Manipulator is built and operated by <strong>CreaTV Ltd.</strong>, a small independent media-tech company based in Colorado, USA. CreaTV's broader product line is focused on tools that help creators bring ideas to life — Media Manipulator is the free, no-account utility that anchors that ecosystem.",
-      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place files live for at most 24 hours, one GPU server doing the heavy lifting."
+      "title": "Хто створює Media Manipulator",
+      "p1": "Media Manipulator створений і працює під керуванням компанії <strong>CreaTV Ltd.</strong> — невеликої незалежної медіатехнологічної компанії зі штату Колорадо, США. Ширша лінійка продуктів CreaTV зосереджена на інструментах, які допомагають авторам втілювати ідеї в життя, — Media Manipulator це безкоштовна утиліта без реєстрації, яка об'єднує цю екосистему.",
+      "p2": "Ми невелика команда, і саме тому ми створили Media Manipulator саме так: ми не хочемо доглядати за цілим парком сторонніх ШІ-інтеграцій, не хочемо зберігати ваші файли нескінченно і не хочемо керувати десятьма окремими вузькоспеціалізованими сайтами-конвертерами. Одна студія, одне місце, де файли зберігаються максимум 24 години, один GPU-сервер, який виконує всю важку роботу."
     },
     "supportedFormats": {
-      "title": "Supported File Formats (Quick Reference)",
+      "title": "Підтримувані формати файлів (короткий довідник)",
       "images": {
-        "title": "Images",
+        "title": "Зображення",
         "items": [
           "JPEG / JPG",
           "PNG",
-          "WebP (lossy and lossless)",
-          "GIF (incl. animation passthrough)",
+          "WebP (з втратами та без втрат)",
+          "GIF (включно з передачею анімації)",
           "BMP",
           "TIFF",
-          "HEIC / HEIF (input)"
+          "HEIC / HEIF (на вході)"
         ]
       },
       "videos": {
-        "title": "Videos",
+        "title": "Відео",
         "items": [
           "MP4 (H.264 / H.265)",
           "WebM (VP9 + Opus)",
@@ -154,7 +154,7 @@
         ]
       },
       "audio": {
-        "title": "Audio",
+        "title": "Аудіо",
         "items": [
           "MP3",
           "WAV (PCM)",
@@ -165,703 +165,703 @@
           "AC3, DTS"
         ]
       },
-      "footnote": "Need a format we don't list? Drop us a line — most additions are a small FFmpeg or ImageMagick configuration change away."
+      "footnote": "Не знайшли потрібний формат у списку? Напишіть нам — здебільшого додавання формату це лише невелика зміна конфігурації FFmpeg або ImageMagick."
     },
     "contact": {
-      "title": "Contact & Support",
-      "operator": "<strong>Media Manipulator</strong> is a product of <strong>CreaTV Ltd.</strong>",
-      "location": "CreaTV Ltd. — Colorado, USA",
-      "generalSupport": "General support:",
-      "privacyRequests": "Privacy requests:",
-      "helpfulStartingPoints": "Helpful starting points:"
+      "title": "Контакти та підтримка",
+      "operator": "<strong>Media Manipulator</strong> — продукт компанії <strong>CreaTV Ltd.</strong>",
+      "location": "CreaTV Ltd. — Колорадо, США",
+      "generalSupport": "Загальна підтримка:",
+      "privacyRequests": "Запити щодо конфіденційності:",
+      "helpfulStartingPoints": "Корисні відправні точки:"
     },
     "relatedLinks": {
-      "title": "Start somewhere",
-      "intro": "Three good ways to dive into the toolkit.",
+      "title": "З чого почати",
+      "intro": "Три хороші способи почати знайомство з набором інструментів.",
       "converter": {
-        "label": "Open the free media converter",
-        "description": "Convert, compress, transcribe, and edit images, videos, and audio in one place."
+        "label": "Відкрити безкоштовний конвертер медіафайлів",
+        "description": "Конвертуйте, стискайте, транскрибуйте та редагуйте зображення, відео й аудіо в одному місці."
       },
       "tutorials": {
-        "label": "Browse step-by-step tutorials",
-        "description": "Walkthroughs for the image, video, and audio converters and their AI tools."
+        "label": "Переглянути покрокові навчальні матеріали",
+        "description": "Інструкції з роботи з конвертерами зображень, відео й аудіо та їхніми ШІ-інструментами."
       },
       "howItWorks": {
-        "label": "See how it works under the hood",
-        "description": "FFmpeg, ImageMagick, GPU-backed AI, 24-hour auto-delete, and content-safety scanning."
+        "label": "Дізнатися, як це працює зсередини",
+        "description": "FFmpeg, ImageMagick, ШІ на базі GPU, автовидалення через 24 години та сканування безпеки контенту."
       }
     }
   },
   "howItWorks": {
-    "title": "How Media Manipulator Works",
-    "intro": "Media Manipulator is a browser-based studio for converting, editing, transcribing, and AI-processing audio, video, and image files. Every job runs on our own GPU-backed servers — no third-party AI providers, no permanent storage, just fast file processing with optional local AI tools.",
+    "title": "Як працює Media Manipulator",
+    "intro": "Media Manipulator — це браузерна студія для конвертації, редагування, транскрибування та ШІ-обробки аудіо, відео та зображень. Кожне завдання виконується на наших власних серверах з підтримкою GPU — без сторонніх ШІ-провайдерів, без постійного зберігання, просто швидка обробка файлів із додатковими локальними ШІ-інструментами.",
     "process": {
-      "title": "The Conversion Process",
+      "title": "Процес конвертації",
       "step1": {
-        "title": "Upload",
-        "body": "Drag a file into the upload zone or click to browse. We support common image, video, and audio formats up to your plan's size limit."
+        "title": "Вивантаження",
+        "body": "Перетягніть файл у зону вивантаження або натисніть, щоб вибрати його на пристрої. Ми підтримуємо поширені формати зображень, відео та аудіо в межах ліміту розміру вашого тарифу."
       },
       "step2": {
-        "title": "Configure",
-        "body": "Pick the output format, quality, dimensions, filters, metadata behavior, or an AI operation such as face blur, background removal, or vocal isolation."
+        "title": "Налаштування",
+        "body": "Оберіть вихідний формат, якість, розміри, фільтри, поведінку метаданих або ШІ-операцію, наприклад розмиття облич, видалення фону чи виділення вокалу."
       },
       "step3": {
-        "title": "Convert",
-        "body": "Our servers process the file with FFmpeg, ImageMagick, or local AI tooling on a dedicated GPU. Job progress streams back to your browser in real time."
+        "title": "Конвертація",
+        "body": "Наші сервери обробляють файл за допомогою FFmpeg, ImageMagick або локальних ШІ-інструментів на виділеному GPU. Прогрес виконання завдання транслюється у ваш браузер у реальному часі."
       },
       "step4": {
-        "title": "Download",
-        "body": "Preview the result, then download it. Files are kept on our servers for at most 24 hours and then deleted automatically."
+        "title": "Завантаження",
+        "body": "Перегляньте результат, а потім завантажте його. Файли зберігаються на наших серверах не більше 24 годин, після чого видаляються автоматично."
       }
     },
     "capabilities": {
-      "title": "What you can do with Media Manipulator",
+      "title": "Що можна робити з Media Manipulator",
       "image": {
-        "title": "Image Tools",
+        "title": "Інструменти для зображень",
         "items": [
-          "Convert between JPG, PNG, WebP, and GIF",
-          "Resize, crop, and rotate",
-          "Apply filters (grayscale, sepia, blur, sharpen, vintage, sketch, and more)",
-          "Add custom text overlays with positioning and stroke",
-          "Inspect, keep, strip, or rewrite EXIF / IPTC / XMP metadata",
-          "Remove or replace GPS location and capture-direction fields"
+          "Конвертація між JPG, PNG, WebP і GIF",
+          "Зміна розміру, кадрування та поворот",
+          "Застосування фільтрів (чорно-білий, сепія, розмиття, різкість, вінтаж, скетч та інші)",
+          "Додавання власних текстових накладань з позиціонуванням і обводкою",
+          "Перегляд, збереження, видалення або перезапис метаданих EXIF / IPTC / XMP",
+          "Видалення або заміна полів GPS-місцезнаходження та напрямку зйомки"
         ]
       },
       "video": {
-        "title": "Video Tools",
+        "title": "Інструменти для відео",
         "items": [
-          "Convert to MP4, WebM, AVI, MOV, MKV, ProRes, and more",
-          "Convert video to an optimized animated GIF (ffmpeg + gifsicle)",
-          "Trim, resize, and adjust playback speed",
-          "Color correction: brightness, contrast, saturation, hue, gamma",
-          "Motion blur, unsharp mask, noise, artistic filters",
-          "Rotation, flips, padding, and stabilization",
-          "Frame rate conversion and HDR/colorspace controls"
+          "Конвертація в MP4, WebM, AVI, MOV, MKV, ProRes та інші формати",
+          "Конвертація відео в оптимізований анімований GIF (ffmpeg + gifsicle)",
+          "Обрізка, зміна розміру та налаштування швидкості відтворення",
+          "Кольорокорекція: яскравість, контраст, насиченість, відтінок, гамма",
+          "Розмиття в русі, підвищення різкості, шум, художні фільтри",
+          "Поворот, віддзеркалення, додавання полів і стабілізація",
+          "Конвертація частоти кадрів і налаштування HDR / кольорового простору"
         ]
       },
       "audio": {
-        "title": "Audio Tools",
+        "title": "Інструменти для аудіо",
         "items": [
-          "Convert between MP3, WAV, AAC, OGG, FLAC, ALAC, Opus, AC3",
-          "Trim, fade in/out, normalize, and amplify",
-          "EQ presets, stereo width, pan, balance, mono conversion",
-          "Reverb, delay, chorus, flanger, tremolo, vibrato",
-          "Noise reduction, de-hum, declip, silence removal",
-          "Pitch shifting, time stretching, spatial audio"
+          "Конвертація між MP3, WAV, AAC, OGG, FLAC, ALAC, Opus, AC3",
+          "Обрізка, плавна поява/згасання, нормалізація та підсилення",
+          "Пресети еквалайзера, стереоширина, панорама, баланс, конвертація в моно",
+          "Реверберація, затримка, хорус, фленджер, тремоло, вібрато",
+          "Шумозаглушення, усунення гулу, усунення кліпінгу, видалення тиші",
+          "Пітч-шифтинг, тайм-стретчинг, просторове аудіо"
         ]
       }
     },
     "ai": {
-      "title": "AI-Assisted Tools (Local, GPU-Accelerated)",
-      "intro": "Media Manipulator runs every AI operation locally on our own GPU server. Your files are never sent to a third-party AI provider. Each conversion job runs one AI operation; standard editing options are skipped for that job so the AI tool can focus on a clean output.",
+      "title": "ШІ-інструменти (локальні, з прискоренням на GPU)",
+      "intro": "Media Manipulator виконує всі ШІ-операції локально на нашому власному GPU-сервері. Ваші файли ніколи не надсилаються сторонньому ШІ-провайдеру. Кожне завдання конвертації виконує одну ШІ-операцію; стандартні параметри редагування для такого завдання пропускаються, щоб ШІ-інструмент міг зосередитися на чистому результаті.",
       "image": {
-        "title": "AI Image Tools",
+        "title": "ШІ-інструменти для зображень",
         "items": [
-          "<strong>Face Blur / Pixelate / Black Box</strong> — automatic face detection with three privacy styles.",
-          "<strong>Remove Background</strong> — outputs a transparent PNG using BiRefNet, ISNet, or U2Net models.",
-          "<strong>AI Upscale</strong> — Real-ESRGAN 2x or 4x using photo or anime-tuned models.",
-          "<strong>Redact Text / PII</strong> — OCR-based redaction with blackbox, blur, or pixelate styles.",
-          "<strong>Remove Object</strong> — draw rectangles over unwanted objects and LaMa inpainting (simple-lama-inpainting) reconstructs the background."
+          "<strong>Розмиття обличчя / Пікселізація / Чорний прямокутник</strong> — автоматичне виявлення облич із трьома стилями захисту приватності.",
+          "<strong>Видалення фону</strong> — створює прозорий PNG з використанням моделей BiRefNet, ISNet або U2Net.",
+          "<strong>ШІ-збільшення роздільної здатності</strong> — Real-ESRGAN з масштабом 2x або 4x, з моделями, налаштованими для фото чи аніме.",
+          "<strong>Редагування тексту / персональних даних</strong> — OCR-редагування зі стилями «чорний прямокутник», розмиття або пікселізація.",
+          "<strong>Видалення об'єкта</strong> — виділіть прямокутником небажані об'єкти, і технологія LaMa inpainting (simple-lama-inpainting) відновить фон."
         ]
       },
       "audio": {
-        "title": "AI Audio Tools",
+        "title": "ШІ-інструменти для аудіо",
         "items": [
-          "<strong>Clean Voice</strong> — DeepFilterNet denoise + presence/loudness/limiter polish for spoken voice.",
-          "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the broadcast polish chain.",
-          "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem, exported as a lossless WAV by default.",
-          "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem, also lossless WAV by default."
+          "<strong>Очищення голосу</strong> — шумозаглушення DeepFilterNet разом з обробкою присутності/гучності/лімітером для мовлення.",
+          "<strong>Видалення фонового шуму</strong> — шумозаглушення DeepFilterNet без ланцюга радіомовної обробки.",
+          "<strong>Виділення вокалу</strong> — вокальна доріжка Demucs htdemucs, за замовчуванням експортується у форматі WAV без втрат.",
+          "<strong>Видалення вокалу / караоке</strong> — інструментальна доріжка Demucs, також за замовчуванням у форматі WAV без втрат."
         ]
       }
     },
     "transcription": {
-      "title": "Transcription",
-      "intro": "Upload a video or audio file and switch the right-hand panel to <em>Transcribe</em>. Our GPU server runs whisper-ctranslate2 to produce a transcript in your chosen format:",
+      "title": "Транскрибування",
+      "intro": "Завантажте відео- чи аудіофайл і перемкніть праву панель на режим <em>Транскрибування</em>. Наш GPU-сервер використовує whisper-ctranslate2 для створення транскрипту в обраному вами форматі:",
       "items": [
-        "<strong>VTT</strong> — time-coded captions for video players and accessibility tools.",
-        "<strong>Plain text</strong> — continuous transcript suitable for reading or further editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — субтитри з часовими мітками для відеоплеєрів та інструментів доступності.",
+        "<strong>Звичайний текст</strong> — безперервний транскрипт, зручний для читання чи подальшого редагування.",
+        "<strong>Структурований JSON</strong> — сегментований транскрипт із даними про час для подальшої обробки."
       ],
-      "outro": "A summary and content-safety review run automatically once the transcript is ready, so you can scan long recordings quickly."
+      "outro": "Після готовності транскрипту автоматично створюється підсумок і проводиться перевірка безпеки контенту, щоб ви могли швидко переглянути довгі записи."
     },
     "privacy": {
-      "title": "Privacy & Performance",
+      "title": "Конфіденційність і продуктивність",
       "security": {
-        "title": "Security & Privacy",
+        "title": "Безпека та конфіденційність",
         "items": [
-          "All uploads use HTTPS encryption",
-          "Files are automatically deleted within 24 hours",
-          "AI processing runs on our own servers — no third-party AI provider sees your media",
-          "Automatic content-safety scanning for abusive or illegal material"
+          "Усі завантаження використовують шифрування HTTPS",
+          "Файли автоматично видаляються протягом 24 годин",
+          "ШІ-обробка виконується на наших власних серверах — жоден сторонній ШІ-провайдер не бачить ваші медіафайли",
+          "Автоматичне сканування безпеки контенту на предмет образливих чи незаконних матеріалів"
         ],
-        "linkPrefix": "See our",
-        "linkText": "Privacy Policy",
-        "linkSuffix": "for full details"
+        "linkPrefix": "Див. нашу",
+        "linkText": "політику конфіденційності",
+        "linkSuffix": "для отримання повної інформації"
       },
       "quality": {
-        "title": "Quality & Performance",
+        "title": "Якість і продуктивність",
         "items": [
-          "FFmpeg and ImageMagick power the standard pipelines",
-          "Animated GIF export chains FFmpeg with gifsicle for small, palette-optimized files",
-          "AI jobs run on a dedicated NVIDIA GPU",
-          "Real-time progress streamed back to your browser",
-          "Session conversion history so you can revisit recent results"
+          "FFmpeg та ImageMagick забезпечують роботу стандартних процесів",
+          "Експорт анімованих GIF використовує зв'язку FFmpeg і gifsicle для отримання невеликих файлів з оптимізованою палітрою",
+          "ШІ-завдання виконуються на виділеному GPU NVIDIA",
+          "Прогрес виконання транслюється у ваш браузер у реальному часі",
+          "Історія конвертацій за сесію, щоб ви могли повернутися до недавніх результатів"
         ]
       }
     },
     "next": {
-      "title": "Where to next?",
-      "body": "Ready to try a specific tool? Step-by-step walkthroughs for each conversion type live in our tutorials.",
-      "ctaTutorials": "Browse Tutorials",
-      "ctaConvert": "Start Converting"
+      "title": "Що далі?",
+      "body": "Готові спробувати конкретний інструмент? Покрокові інструкції для кожного типу конвертації доступні в розділі з навчальними матеріалами.",
+      "ctaTutorials": "Переглянути навчальні матеріали",
+      "ctaConvert": "Почати конвертацію"
     }
   },
   "tutorials": {
-    "title": "Media Manipulator Tutorials",
-    "intro": "Step-by-step guides for every Media Manipulator tool. Whether you're converting a single MP3, batch-resizing PNGs, redacting faces from a photo, or pulling vocals out of a music track, the tutorials below walk you through every option in the right-hand conversion panel.",
-    "readTutorial": "Read tutorial →",
+    "title": "Навчальні матеріали Media Manipulator",
+    "intro": "Покрокові інструкції для кожного інструменту Media Manipulator. Конвертуєте один MP3, пакетно змінюєте розмір PNG-файлів, редагуєте обличчя на фотографії чи виділяєте вокал із музичного треку — інструкції нижче проведуть вас через усі налаштування правої панелі конвертації.",
+    "readTutorial": "Читати матеріал →",
     "categories": {
       "audio": {
-        "title": "How to use the Audio Converter",
-        "description": "Convert audio files between MP3, WAV, FLAC, OGG, and more. Apply EQ, reverb, denoise, vocal isolation, and other audio AI tools."
+        "title": "Як використовувати аудіоконвертер",
+        "description": "Конвертуйте аудіофайли між MP3, WAV, FLAC, OGG та іншими форматами. Застосовуйте еквалізацію, реверберацію, шумозаглушення, виділення вокалу та інші ШІ-інструменти для аудіо."
       },
       "video": {
-        "title": "How to use the Video Converter",
-        "description": "Convert and edit video files between MP4, WebM, MOV, MKV, ProRes, and more. Trim, resize, apply filters and transforms, and transcribe with subtitles."
+        "title": "Як використовувати відеоконвертер",
+        "description": "Конвертуйте та редагуйте відеофайли між MP4, WebM, MOV, MKV, ProRes та іншими форматами. Обрізайте, змінюйте розмір, застосовуйте фільтри й трансформації, а також створюйте транскрипти із субтитрами."
       },
       "image": {
-        "title": "How to use the Image Converter",
-        "description": "Convert images between JPG, PNG, WebP, and GIF. Resize, crop, apply filters, add text overlays, manage metadata, and run AI tools like Face Blur, Remove Background, AI Upscale, and Redact Text."
+        "title": "Як використовувати конвертер зображень",
+        "description": "Конвертуйте зображення між JPG, PNG, WebP і GIF. Змінюйте розмір, кадруйте, застосовуйте фільтри, додавайте текстові накладання, керуйте метаданими та використовуйте ШІ-інструменти: розмиття облич, видалення фону, збільшення роздільної здатності та редагування тексту."
       }
     },
     "tutorials": {
       "audioGettingStarted": {
-        "title": "Getting Started: Converting Audio Files",
-        "excerpt": "A complete walkthrough of the audio converter — file format selection, bitrate, sample rate, channel layout, trimming, EQ presets, restoration effects, and the Clean Voice / Isolate Vocals / Remove Vocals / Remove Background Noise AI tools.",
-        "readTime": "10 min read"
+        "title": "Початок роботи: конвертація аудіофайлів",
+        "excerpt": "Повний огляд аудіоконвертера — вибір формату файлу, бітрейт, частота дискретизації, конфігурація каналів, обрізка, пресети еквалайзера, ефекти відновлення, а також ШІ-інструменти «Очищення голосу», «Виділення вокалу», «Видалення вокалу» і «Видалення фонового шуму».",
+        "readTime": "10 хв читання"
       },
       "videoGettingStarted": {
-        "title": "Getting Started: Converting Video Files",
-        "excerpt": "Step-by-step guide to the video converter — output format, codecs, quality presets, dimensions, trim, color correction, motion blur, artistic filters, stabilization, frame-rate conversion, and video transcription with VTT/TXT/JSON output.",
-        "readTime": "12 min read"
+        "title": "Початок роботи: конвертація відеофайлів",
+        "excerpt": "Покроковий посібник з відеоконвертера — вихідний формат, кодеки, пресети якості, розміри, обрізка, кольорокорекція, розмиття в русі, художні фільтри, стабілізація, конвертація частоти кадрів і транскрибування відео з виводом VTT/TXT/JSON.",
+        "readTime": "12 хв читання"
       },
       "aiFrameInterpolation": {
-        "title": "What Is AI Frame Interpolation? How Video FPS Smoothing Works",
-        "excerpt": "How AI frame interpolation generates new in-between frames for smoother motion, when to pick 48/60/120fps, common artifacts, and how to run the AI Frame Interpolation tool.",
-        "readTime": "9 min read"
+        "title": "Що таке ШІ-інтерполяція кадрів? Як працює згладжування FPS відео",
+        "excerpt": "Як ШІ-інтерполяція кадрів створює нові проміжні кадри для плавнішого руху, коли обирати 48/60/120 кадрів за секунду, типові артефакти та як використовувати інструмент ШІ-інтерполяції кадрів.",
+        "readTime": "9 хв читання"
       },
       "contentStudio": {
-        "title": "How to Use Darkroom: Multi-Track Video Editing in Your Browser",
-        "excerpt": "A step-by-step guide to Darkroom — import media, build a multi-track timeline, trim, split and ripple-delete, add cross-dissolves, color adjustments and text overlays, then export MP4.",
-        "readTime": "8 min read",
+        "title": "Як використовувати Darkroom: багатодоріжковий відеомонтаж у браузері",
+        "excerpt": "Покроковий посібник з Darkroom — імпорт медіафайлів, побудова багатодоріжкового таймлайну, обрізка, розділення та видалення зі зсувом, додавання крос-діссолвів, кольорокорекції й текстових накладань, потім експорт у MP4.",
+        "readTime": "8 хв читання",
         "page": {
-          "eyebrow": "Video Tutorial",
-          "title": "How to Use Darkroom",
-          "intro": "Darkroom is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished MP4 — no software to install. This guide walks through the whole workflow.",
-          "overviewAlt": "The Darkroom editor showing the media bin, preview, clip effects panel, and a multi-track timeline.",
-          "overviewCaption": "The Darkroom workspace: media bin (left), live preview (center), clip effects (right), and the multi-track timeline (bottom).",
+          "eyebrow": "Відеопосібник",
+          "title": "Як використовувати Darkroom",
+          "intro": "Darkroom — це багатодоріжковий відеоредактор у стилі Premiere Pro, який повністю працює у вашому браузері. Завантажуйте відео й аудіо, розміщуйте їх на таймлайні, накладайте та мікшуйте доріжки, додавайте ефекти й експортуйте готовий MP4 — без встановлення програм. Цей посібник описує весь робочий процес.",
+          "overviewAlt": "Редактор Darkroom з медіабіном, попереднім переглядом, панеллю ефектів кліпу та багатодоріжковим таймлайном.",
+          "overviewCaption": "Робочий простір Darkroom: медіабін (зліва), попередній перегляд у реальному часі (по центру), ефекти кліпу (справа) і багатодоріжковий таймлайн (внизу).",
           "create": {
-            "title": "1. Create a project",
-            "body": "Open Darkroom from the Tools page or the home page banner, then choose “New project”. Pick a name, a target resolution (1080p, 720p, 4K, or vertical 1080×1920) and a frame rate (24, 30, or 60 fps). These define the canvas your timeline renders to on export. Your recent projects appear next to the form so you can jump back into earlier edits."
+            "title": "1. Створення проекту",
+            "body": "Відкрийте Darkroom зі сторінки інструментів або банера на головній сторінці, потім оберіть «Новий проект». Вкажіть назву, цільову роздільну здатність (1080p, 720p, 4K або вертикальну 1080×1920) і частоту кадрів (24, 30 або 60 кадрів за секунду). Ці параметри визначають полотно, у яке рендериться ваш таймлайн під час експорту. Поруч із формою відображаються ваші недавні проекти, щоб ви могли швидко повернутися до попередньої роботи."
           },
           "media": {
-            "title": "2. Add your media",
-            "body": "Drag video or audio files into the Media box, or click “Choose files”. Each upload is analyzed and given a smooth 720p preview proxy plus a filmstrip — you’ll see a brief “building preview” state while that happens. Both video (mp4, mov, webm, mkv, …) and audio (mp3, wav, m4a, aac, ogg, flac) are supported, and you can add as many files as you like."
+            "title": "2. Додавання медіафайлів",
+            "body": "Перетягніть відео- або аудіофайли в блок «Медіа» або натисніть «Вибрати файли». Кожне завантаження аналізується, для нього створюється плавне проксі-перевідтворення в 720p та розкадровка — під час цього процесу ви ненадовго побачите статус «створення попереднього перегляду». Підтримуються як відео (mp4, mov, webm, mkv та інші), так і аудіо (mp3, wav, m4a, aac, ogg, flac), і ви можете додати скільки завгодно файлів."
           },
           "timeline": {
-            "title": "3. Build your timeline",
-            "body": "Put clips on the timeline either by clicking the + on a media tile (it’s appended to the first matching track) or by dragging a media tile straight onto the track you want. From there you can rearrange everything:",
+            "title": "3. Побудова таймлайну",
+            "body": "Розміщуйте кліпи на таймлайні, натискаючи + на плитці медіафайлу (кліп додається в кінець першої відповідної доріжки) або перетягуючи плитку прямо на потрібну доріжку. Після цього ви можете перебудовувати все як завгодно:",
             "bullets": {
-              "tracks": "Add more tracks with the +V / +A buttons — stack multiple video tracks for overlays and multiple audio tracks for music and voiceover.",
-              "drag": "Drag a clip along its track to reposition it, or drop it onto another track of the same kind (video→video, audio→audio). Clips snap to neighbouring edges and the playhead and never overlap.",
-              "trim": "Drag either edge of a clip to trim its in/out point.",
-              "split": "Move the playhead and press S to split (razor) the clip(s) under it.",
-              "ripple": "Select a clip and use Ripple delete to remove it and close the gap. Mute a whole track with the speaker icon, or set a clip’s volume with the slider."
+              "tracks": "Додавайте додаткові доріжки кнопками +V / +A — використовуйте кілька відеодоріжок для накладань і кілька аудіодоріжок для музики та озвучення.",
+              "drag": "Перетягуйте кліп уздовж доріжки, щоб змінити його положення, або переносьте на іншу доріжку того самого типу (відео → відео, аудіо → аудіо). Кліпи прилипають до сусідніх країв і до позиції відтворення та ніколи не перекриваються.",
+              "trim": "Перетягніть будь-який край кліпу, щоб обрізати точку входу або виходу.",
+              "split": "Перемістіть позицію відтворення та натисніть S, щоб розділити («розрізати») кліп(и) під нею.",
+              "ripple": "Виберіть кліп і скористайтеся командою «Видалити зі зсувом», щоб видалити його та закрити утворений проміжок. Вимкніть звук усієї доріжки значком динаміка або налаштуйте гучність кліпу повзунком."
             }
           },
           "effects": {
-            "title": "4. Add effects",
-            "body": "Select a single clip to open the Clip effects panel on the right. From there you can apply a cross-dissolve, color adjustments, and text/location overlays — all previewed live and baked into the final export."
+            "title": "4. Додавання ефектів",
+            "body": "Виберіть один кліп, щоб відкрити панель «Ефекти кліпу» справа. Звідти ви можете застосувати крос-діссолв, кольорокорекцію та текстові/геолокаційні накладання — усі вони відображаються в реальному часі та вбудовуються в підсумковий експорт."
           },
           "color": {
-            "title": "Color adjustments",
-            "body": "Click “Adjust” under Color, then tune Brightness, Contrast, and Saturation. The preview updates instantly (for example, drop saturation to zero for a black-and-white look). “Reset” removes the adjustment."
+            "title": "Кольорокорекція",
+            "body": "Натисніть «Налаштувати» під розділом «Колір», потім відрегулюйте яскравість, контраст і насиченість. Попередній перегляд оновлюється миттєво (наприклад, обнуліть насиченість для чорно-білого ефекту). Кнопка «Скинути» видаляє налаштування."
           },
           "text": {
-            "title": "Text & location overlays",
-            "body": "Click “Add text” to drop a label onto the clip — type your text, pick a color, and position it with the X/Y sliders and size it to taste. Overlays are great for titles or location labels over drone footage and are drawn directly into the exported video."
+            "title": "Текстові та геолокаційні накладання",
+            "body": "Натисніть «Додати текст», щоб розмістити напис на кліпі — введіть текст, оберіть колір, задайте положення повзунками X/Y і налаштуйте розмір на власний смак. Накладання чудово підходять для заголовків або підписів місць на зйомці з дрона та вбудовуються безпосередньо в експортоване відео."
           },
           "dissolve": {
-            "title": "Cross-dissolves",
-            "body": "With a clip that has another clip before it on the same track selected, drag the Cross-dissolve slider — the clip slides back to overlap its neighbour and the two blend over that duration, with the audio crossfading to match."
+            "title": "Крос-діссолви",
+            "body": "При вибраному кліпі, перед яким на тій самій доріжці розташований інший кліп, перетягніть повзунок крос-діссолву — кліп зсувається назад, щоб перекрити сусідній, і обидва змішуються протягом цього часу, а звук плавно переходить від одного до іншого."
           },
-          "effectsAlt": "The Clip effects panel with cross-dissolve, color, and text overlay controls for the selected clip.",
-          "effectsCaption": "Selecting a clip reveals the Clip effects panel: cross-dissolve, color, and text overlays.",
-          "colorAlt": "Color adjustment sliders for brightness, contrast, and saturation, with the preview desaturated.",
-          "colorCaption": "Brightness / Contrast / Saturation update the preview live — here saturation is pulled down for a black-and-white look.",
-          "textAlt": "A red “This is my video!” text overlay drawn over the preview with the text editor on the right.",
-          "textCaption": "Text overlays are positioned and styled in the panel and drawn into the preview and the export.",
+          "effectsAlt": "Панель «Ефекти кліпу» з елементами керування крос-діссолвом, кольором і текстовим накладанням для вибраного кліпу.",
+          "effectsCaption": "Вибір кліпу відкриває панель «Ефекти кліпу»: крос-діссолв, колір і текстові накладання.",
+          "colorAlt": "Повзунки налаштування кольору для яскравості, контрасту та насиченості, з знебарвленим попереднім переглядом.",
+          "colorCaption": "Яскравість / контраст / насиченість оновлюють попередній перегляд у реальному часі — тут насиченість знижена для чорно-білого ефекту.",
+          "textAlt": "Червоне текстове накладання «This is my video!» поверх попереднього перегляду з редактором тексту справа.",
+          "textCaption": "Текстові накладання позиціонуються та оформляються в панелі та відображаються в попередньому перегляді й експорті.",
           "preview": {
-            "title": "5. Preview your edit",
-            "body": "Use the transport controls under the preview to play/pause, step a frame at a time, or jump to the start/end. Drag on the timeline ruler to scrub — drag to the edge and the timeline auto-scrolls so you can reach any point. During playback the view follows the playhead automatically."
+            "title": "5. Попередній перегляд монтажу",
+            "body": "Використовуйте елементи керування відтворенням під попереднім переглядом, щоб відтворити/призупинити, перейти на кадр вперед чи назад, або перестрибнути до початку/кінця. Перетягуйте по лінійці таймлайну для перемотки — при перетягуванні до краю таймлайн автоматично прокручується, щоб ви могли дістатися до будь-якої точки. Під час відтворення область перегляду автоматично слідує за позицією відтворення."
           },
           "export": {
-            "title": "6. Export to MP4",
-            "body": "Click “Export MP4”, choose a file name and quality, and Darkroom renders your full timeline on the server — compositing video tracks, mixing audio, and applying your effects — then gives you a download link. Rendering happens on a GPU, so larger projects finish quickly."
+            "title": "6. Експорт у MP4",
+            "body": "Натисніть «Експортувати MP4», оберіть ім'я файлу та якість, і Darkroom відрендерить увесь ваш таймлайн на сервері — скомпонує відеодоріжки, змікшує аудіо та застосує ваші ефекти — а потім видасть посилання для завантаження. Рендеринг виконується на GPU, тому навіть великі проекти завершуються швидко."
           },
           "shortcuts": {
-            "title": "Keyboard shortcuts",
-            "body": "Space play/pause · ← / → step one frame · S split at playhead · Delete ripple-delete the selection · + / − zoom the timeline."
+            "title": "Гарячі клавіші",
+            "body": "Пробіл — відтворення/пауза · ← / → — крок на один кадр · S — розділити в позиції відтворення · Delete — видалити виділене зі зсувом · + / − — масштаб таймлайну."
           },
           "cta": {
-            "title": "Ready to edit?",
-            "body": "Jump into Darkroom and start your first multi-track edit.",
-            "button": "Open Darkroom"
+            "title": "Готові почати монтаж?",
+            "body": "Перейдіть у Darkroom і почніть свій перший багатодоріжковий монтаж.",
+            "button": "Відкрити Darkroom"
           },
           "related": {
-            "title": "Related tools & tutorials",
-            "intro": "Keep going with related Media Manipulator pages.",
+            "title": "Схожі інструменти та навчальні матеріали",
+            "intro": "Продовжуйте знайомство з іншими сторінками Media Manipulator.",
             "studio": "Darkroom",
-            "studioDesc": "Open the multi-track editor.",
-            "video": "Getting started with video",
-            "videoDesc": "Convert, compress, and trim video files."
+            "studioDesc": "Відкрити багатодоріжковий редактор.",
+            "video": "Початок роботи з відео",
+            "videoDesc": "Конвертуйте, стискайте та обрізайте відеофайли."
           }
         }
       },
       "imageGettingStarted": {
-        "title": "Getting Started: Converting Image Files",
-        "excerpt": "Complete tutorial on the image converter — picking a format, quality, dimensions, cropping, filters, tint, text overlays, EXIF / IPTC / GPS metadata, and the Face Privacy, Remove Background, AI Upscale, and Redact Text AI tools.",
-        "readTime": "10 min read"
+        "title": "Початок роботи: конвертація файлів зображень",
+        "excerpt": "Повний посібник з конвертера зображень — вибір формату, якості, розмірів, кадрування, фільтри, тонування, текстові накладання, метадані EXIF / IPTC / GPS, а також ШІ-інструменти «Приватність облич», «Видалення фону», «Збільшення роздільної здатності» та «Редагування тексту».",
+        "readTime": "10 хв читання"
       }
     },
     "newToHere": {
-      "title": "New to Media Manipulator?",
-      "body": "Start with our high-level overview to see everything the platform can do, then jump into a tutorial that matches the kind of file you're working with.",
-      "ctaHow": "How it Works",
-      "ctaConvert": "Start Converting"
+      "title": "Вперше тут?",
+      "body": "Почніть із нашого загального огляду, щоб побачити всі можливості платформи, а потім перейдіть до посібника, який відповідає типу файлу, з яким ви працюєте.",
+      "ctaHow": "Як це працює",
+      "ctaConvert": "Почати конвертацію"
     }
   },
   "blog": {
-    "title": "Media Conversion Blog",
-    "intro": "Expert guides, tips, and insights on media conversion, optimization, and file formats.",
-    "readMore": "Read more →",
+    "title": "Блог про конвертацію медіафайлів",
+    "intro": "Експертні посібники, поради та матеріали про конвертацію медіафайлів, оптимізацію та формати файлів.",
+    "readMore": "Читати далі →",
     "articles": {
       "videoCompression": {
-        "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI",
-        "excerpt": "Learn the differences between video formats and when to use each one for optimal quality and file size.",
-        "readTime": "8 min read"
+        "title": "Автостопом по стисненню відео: MP4 проти WebM проти AVI",
+        "excerpt": "Дізнайтеся про відмінності між відеоформатами та про те, коли використовувати кожен із них для оптимальної якості та розміру файлу.",
+        "readTime": "8 хв читання"
       },
       "imageOptimization": {
-        "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
-        "excerpt": "Discover how to choose the right image format for your website to improve loading speeds and user experience.",
-        "readTime": "8 min read"
+        "title": "Оптимізація зображень для веб-джедаїв: JPG проти PNG проти WebP",
+        "excerpt": "Дізнайтеся, як обрати підходящий формат зображення для вашого сайту, щоб покращити швидкість завантаження та зручність користувачів.",
+        "readTime": "8 хв читання"
       },
-      "audioQualityPrefix": "The Sound of",
-      "audioQualityStrike": "Silence",
-      "audioQualitySuffix": "Quality: Bitrates, Sample Rates, and Formats",
+      "audioQualityPrefix": "Звук",
+      "audioQualityStrike": "тиші",
+      "audioQualitySuffix": "якості: бітрейти, частоти дискретизації та формати",
       "audioQuality": {
-        "excerpt": "Understanding audio quality settings to achieve the perfect balance between file size and sound quality.",
-        "readTime": "8 min read"
+        "excerpt": "Розбираємося в налаштуваннях якості аудіо, щоб знайти ідеальний баланс між розміром файлу та якістю звуку.",
+        "readTime": "8 хв читання"
       }
     },
     "relatedLinks": {
-      "title": "Want to try the tools?",
-      "intro": "The Media Manipulator tools that pair with these articles are all free.",
+      "title": "Хочете спробувати інструменти?",
+      "intro": "Усі інструменти Media Manipulator, які поєднуються з цими статтями, безкоштовні.",
       "allTools": {
-        "label": "Browse all tools",
-        "description": "Image, video, audio, AI, and metadata tools in one place."
+        "label": "Переглянути всі інструменти",
+        "description": "Інструменти для зображень, відео, аудіо, ШІ та метаданих в одному місці."
       },
       "compressVideo": {
-        "label": "Compress video",
-        "description": "Shrink video file size without ruining quality."
+        "label": "Стиснути відео",
+        "description": "Зменшіть розмір відеофайлу без втрати якості."
       },
       "removeExif": {
-        "label": "Remove EXIF metadata",
-        "description": "Strip GPS and device data before sharing photos."
+        "label": "Видалити метадані EXIF",
+        "description": "Видаліть дані GPS та пристрою перед публікацією фотографій."
       },
       "homepage": {
-        "label": "Open the homepage converter",
-        "description": "Convert, edit, compress, and transcribe images, videos, and audio."
+        "label": "Відкрити конвертер на головній сторінці",
+        "description": "Конвертуйте, редагуйте, стискайте та транскрибуйте зображення, відео й аудіо."
       },
       "tutorials": {
-        "label": "Browse the tutorials",
-        "description": "Step-by-step walkthroughs of every conversion option and AI tool."
+        "label": "Переглянути навчальні матеріали",
+        "description": "Покрокові інструкції з усіх варіантів конвертації та ШІ-інструментів."
       },
       "howItWorks": {
-        "label": "How Media Manipulator works",
-        "description": "See how files are processed, scanned, and temporarily stored."
+        "label": "Як працює Media Manipulator",
+        "description": "Дізнайтеся, як файли обробляються, скануються та тимчасово зберігаються."
       }
     }
   },
   "legalCommon": {
-    "effectiveDate": "Effective Date: 2026-05-14",
-    "lastUpdated": "Last Updated: 2026-05-14",
-    "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
+    "effectiveDate": "Дата набрання чинності: 14 травня 2026 р.",
+    "lastUpdated": "Останнє оновлення: 14 травня 2026 р.",
+    "operator": "Media Manipulator — продукт і сервіс, яким керує компанія CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
-    "operatingAs": "Operating as Media Manipulator",
-    "location": "Colorado, USA",
+    "operatingAs": "Працює під назвою Media Manipulator",
+    "location": "Колорадо, США",
     "emailLabel": "Email:",
-    "websiteLabel": "Website:"
+    "websiteLabel": "Сайт:"
   },
   "privacyPolicy": {
-    "title": "Privacy Policy",
-    "intro": "Media Manipulator is owned and operated by CreaTV Ltd. (“CreaTV,” “Media Manipulator,” “we,” “us,” or “our”). Media Manipulator provides browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "blockquote": "Where Media Manipulator uses AI-assisted features, those AI systems run locally on our own servers or infrastructure that we control and are not outsourced to third-party AI providers.",
-    "explanation": "This Privacy Policy explains how we collect, use, store, protect, and delete information when you use our website, tools, and related services.",
-    "acceptance": "By using Media Manipulator, you agree to the practices described in this Privacy Policy.",
+    "title": "Політика конфіденційності",
+    "intro": "Media Manipulator належить компанії CreaTV Ltd. і керується нею («CreaTV», «Media Manipulator», «ми», «нас» або «наш»). Media Manipulator надає браузерні та серверні інструменти для редагування, конвертації, стиснення, аналізу, транскрибування, створення підсумків та іншої обробки файлів зображень, відео й аудіо.",
+    "blockquote": "Там, де Media Manipulator використовує функції на основі ШІ, ці ШІ-системи працюють локально на наших власних серверах або інфраструктурі, яку ми контролюємо, і не передаються на аутсорсинг стороннім ШІ-провайдерам.",
+    "explanation": "Ця Політика конфіденційності пояснює, як ми збираємо, використовуємо, зберігаємо, захищаємо та видаляємо інформацію під час використання вами нашого сайту, інструментів і пов'язаних із ними сервісів.",
+    "acceptance": "Використовуючи Media Manipulator, ви погоджуєтеся з практиками, описаними в цій Політиці конфіденційності.",
     "sections": [
       {
-        "title": "1. Information We Collect",
+        "title": "1. Інформація, яку ми збираємо",
         "paragraphs": [
-          "We collect information in several ways depending on how you use the website."
+          "Ми збираємо інформацію кількома способами залежно від того, як ви використовуєте сайт."
         ],
         "subsections": [
           {
-            "title": "1.1 Files You Upload",
+            "title": "1.1 Файли, які ви завантажуєте",
             "paragraphs": [
-              "When you upload an image, video, audio file, or other supported media file to Media Manipulator, we may temporarily process that file to provide the requested tool functionality, such as:"
+              "Коли ви завантажуєте зображення, відео, аудіофайл або інший підтримуваний медіафайл у Media Manipulator, ми можемо тимчасово обробити цей файл, щоб надати функціональність запитаного інструменту, наприклад:"
             ],
             "bullets": [
-              "converting a file to another format;",
-              "cropping, trimming, resizing, compressing, filtering, or editing media;",
-              "extracting or displaying metadata;",
-              "removing metadata;",
-              "generating transcripts, captions, summaries, descriptions, or other AI-assisted outputs;",
-              "creating downloadable processed files;",
-              "maintaining temporary session conversion history so you can download recent conversions during your session."
+              "конвертація файлу в інший формат;",
+              "кадрування, обрізка, зміна розміру, стиснення, застосування фільтрів або редагування медіафайлу;",
+              "видобування або відображення метаданих;",
+              "видалення метаданих;",
+              "створення транскриптів, субтитрів, підсумків, описів або інших результатів на основі ШІ;",
+              "створення оброблених файлів, доступних для завантаження;",
+              "ведення тимчасової історії конвертацій за сесію, щоб ви могли завантажити недавні результати конвертації протягом сесії."
             ],
             "afterBullets": [
-              "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours, unless deleted sooner. After that period, they are deleted from our active systems."
+              "Завантажені файли та створені результати зберігаються тимчасово, максимум 24 години, якщо їх не було видалено раніше. Після завершення цього терміну вони видаляються з наших активних систем."
             ]
           },
           {
-            "title": "1.2 File and Conversion Metadata",
+            "title": "1.2 Метадані файлів і конвертацій",
             "paragraphs": [
-              "We may collect technical information about uploaded files and conversion jobs, including:"
+              "Ми можемо збирати технічну інформацію про завантажені файли та завдання конвертації, зокрема:"
             ],
             "bullets": [
-              "file name;",
-              "file type or MIME type;",
-              "file size;",
-              "file duration, dimensions, bitrate, codec, or other technical properties;",
-              "conversion settings selected by the user;",
-              "generated output format;",
-              "job status, processing errors, and timestamps;",
-              "temporary file identifiers or session identifiers."
+              "ім'я файлу;",
+              "тип файлу або MIME-тип;",
+              "розмір файлу;",
+              "тривалість файлу, розміри, бітрейт, кодек чи інші технічні характеристики;",
+              "налаштування конвертації, обрані користувачем;",
+              "формат створеного результату;",
+              "статус завдання, помилки обробки та часові мітки;",
+              "тимчасові ідентифікатори файлів або ідентифікатори сесії."
             ],
             "afterBullets": [
-              "We use this information to operate the service, troubleshoot failed conversions, maintain temporary session history, improve performance, detect abuse, and protect the website."
+              "Ми використовуємо цю інформацію для роботи сервісу, усунення неполадок при невдалих конвертаціях, ведення тимчасової історії сесії, підвищення продуктивності, виявлення зловживань і захисту сайту."
             ]
           },
           {
-            "title": "1.3 Content Scanning and Safety Review",
+            "title": "1.3 Сканування контенту та перевірка безпеки",
             "paragraphs": [
-              "All uploads may be subject to automated scanning and classification for security, abuse prevention, brand safety, advertiser protection, and detection or blocking of suspected illegal or prohibited content.",
-              "These scans may be used to identify or help prevent content involving, for example:"
+              "Усі завантажені файли можуть проходити автоматичне сканування та класифікацію для цілей безпеки, запобігання зловживанням, захисту бренду, захисту рекламодавців, а також виявлення чи блокування ймовірно незаконного або забороненого контенту.",
+              "Ці перевірки можуть використовуватися для виявлення або запобігання контенту, пов'язаному, наприклад, з:"
             ],
             "bullets": [
-              "suspected child sexual abuse material or exploitation;",
-              "malware, malicious files, or harmful code;",
-              "content that appears to violate applicable law;",
-              "content that violates our Terms of Service or Acceptable Use rules;",
-              "adult, sexually explicit, graphic, violent, or otherwise advertiser-sensitive content."
+              "ймовірними матеріалами про сексуальне насильство над дітьми або їх експлуатацію;",
+              "шкідливим ПЗ, шкідливими файлами або небезпечним кодом;",
+              "контентом, який, вочевидь, порушує застосовне законодавство;",
+              "контентом, який порушує наші Умови використання чи правила допустимого використання;",
+              "контентом для дорослих, відверто сексуальним, шокувальним, жорстоким або іншим чином чутливим для рекламодавців."
             ],
             "afterBullets": [
-              "If content is determined or suspected to be illegal, prohibited, abusive, or unsafe, we may block processing, delete the file, prevent display of previews, restrict access to generated outputs, preserve limited records where legally required, or report the content to appropriate authorities if required by law.",
-              "If content is lawful but classified as adult, graphic, violent, or otherwise advertiser-sensitive, we may prevent that content from being displayed or previewed on the website in order to protect users, our brand, and advertisers. In some cases, where lawful and technically available, the user may still be able to download the processed file.",
-              "Users are solely responsible for the files they upload and for ensuring they have all rights, permissions, and legal authority necessary to process those files using Media Manipulator."
+              "Якщо контент визнано або запідозрено як незаконний, заборонений, образливий чи небезпечний, ми можемо заблокувати обробку, видалити файл, заборонити відображення попередніх переглядів, обмежити доступ до створених результатів, зберегти обмежені записи, якщо цього вимагає закон, або повідомити про контент відповідним органам, якщо це вимагається законом.",
+              "Якщо контент законний, але класифікований як контент для дорослих, шокувальний, жорстокий або іншим чином чутливий для рекламодавців, ми можемо заборонити відображення чи попередній перегляд цього контенту на сайті, щоб захистити користувачів, наш бренд і рекламодавців. У деяких випадках, якщо це законно й технічно можливо, користувач усе ж може завантажити оброблений файл.",
+              "Користувачі несуть одноосібну відповідальність за файли, які вони завантажують, і за наявність у них усіх прав, дозволів і юридичних повноважень, необхідних для обробки цих файлів за допомогою Media Manipulator."
             ]
           },
           {
-            "title": "1.4 Usage Data",
+            "title": "1.4 Дані про використання",
             "paragraphs": [
-              "When you visit or use Media Manipulator, we may automatically collect usage and device information, such as:"
+              "Коли ви відвідуєте чи використовуєте Media Manipulator, ми можемо автоматично збирати інформацію про використання та пристрій, таку як:"
             ],
             "bullets": [
-              "pages visited;",
-              "tools used;",
-              "buttons clicked;",
-              "approximate location based on IP address;",
-              "browser type and version;",
-              "operating system;",
-              "device type;",
-              "referral source;",
-              "timestamps;",
-              "diagnostic logs;",
-              "error logs;",
-              "performance data;",
-              "analytics events."
+              "відвідані сторінки;",
+              "використані інструменти;",
+              "натиснуті кнопки;",
+              "приблизне місцезнаходження на основі IP-адреси;",
+              "тип і версію браузера;",
+              "операційну систему;",
+              "тип пристрою;",
+              "джерело переходу;",
+              "часові мітки;",
+              "діагностичні журнали;",
+              "журнали помилок;",
+              "дані про продуктивність;",
+              "події аналітики."
             ],
             "afterBullets": [
-              "We use this information to understand how users use the website, improve features, diagnose issues, prevent abuse, and measure website performance."
+              "Ми використовуємо цю інформацію, щоб розуміти, як користувачі використовують сайт, покращувати функції, діагностувати проблеми, запобігати зловживанням і вимірювати продуктивність сайту."
             ]
           },
           {
-            "title": "1.5 Cookies and Similar Technologies",
+            "title": "1.5 Файли cookie та подібні технології",
             "paragraphs": [
-              "We and our service providers may use cookies, local storage, pixels, tags, and similar technologies to:"
+              "Ми та наші постачальники послуг можемо використовувати файли cookie, локальне сховище, пікселі, теги та подібні технології для:"
             ],
             "bullets": [
-              "operate the website;",
-              "remember user preferences;",
-              "maintain session functionality;",
-              "analyze traffic and usage;",
-              "detect abuse or security risks;",
-              "serve and measure advertisements."
+              "забезпечення роботи сайту;",
+              "запам'ятовування налаштувань користувача;",
+              "підтримання функціональності сесії;",
+              "аналізу трафіку та використання;",
+              "виявлення зловживань чи загроз безпеці;",
+              "показу та вимірювання ефективності реклами."
             ],
             "afterBullets": [
-              "You can control cookies through your browser settings. Some features may not work properly if cookies or local storage are disabled."
+              "Ви можете керувати файлами cookie через налаштування браузера. Деякі функції можуть працювати некоректно, якщо файли cookie чи локальне сховище вимкнено."
             ]
           }
         ]
       },
       {
-        "title": "2. How We Use Information",
+        "title": "2. Як ми використовуємо інформацію",
         "paragraphs": [
-          "We use the information we collect to:"
+          "Ми використовуємо зібрану інформацію, щоб:"
         ],
         "bullets": [
-          "provide media conversion, editing, transcription, metadata, AI analysis, and related tools;",
-          "temporarily store conversion history for up to 24 hours;",
-          "allow users to download recent converted files during a session;",
-          "scan uploads for suspected illegal, prohibited, abusive, or advertiser-sensitive content;",
-          "protect users, advertisers, our website, and our brand;",
-          "prevent fraud, abuse, spam, malware, and security incidents;",
-          "debug errors and improve service reliability;",
-          "analyze traffic and usage trends;",
-          "improve our website, tools, user experience, and performance;",
-          "comply with legal obligations;",
-          "enforce our Terms of Service and Acceptable Use rules."
+          "надавати інструменти конвертації медіафайлів, редагування, транскрибування, роботи з метаданими, ШІ-аналізу та пов'язані з цим функції;",
+          "тимчасово зберігати історію конвертацій до 24 годин;",
+          "дозволяти користувачам завантажувати недавно конвертовані файли протягом сесії;",
+          "сканувати завантажені файли на предмет ймовірно незаконного, забороненого, образливого чи чутливого для рекламодавців контенту;",
+          "захищати користувачів, рекламодавців, наш сайт і наш бренд;",
+          "запобігати шахрайству, зловживанням, спаму, шкідливому ПЗ та інцидентам безпеки;",
+          "усувати помилки та підвищувати надійність сервісу;",
+          "аналізувати трафік і тенденції використання;",
+          "покращувати наш сайт, інструменти, користувацький досвід і продуктивність;",
+          "дотримуватися юридичних зобов'язань;",
+          "забезпечувати дотримання наших Умов використання та правил допустимого використання."
         ]
       },
       {
-        "title": "3. File Storage and Deletion",
+        "title": "3. Зберігання та видалення файлів",
         "paragraphs": [
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from active storage.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary to operate the service, protect against abuse, enforce our policies, comply with law, resolve disputes, or maintain security. These records are not intended to preserve full uploaded media files after the 24-hour temporary storage period."
+          "Завантажені файли та створені результати зберігаються тимчасово, максимум 24 години, для підтримки історії конвертацій за сесію та надання користувачам можливості завантажувати недавні конвертації.",
+          "Після закінчення терміну тимчасового зберігання завантажені файли та створені результати видаляються з активного сховища.",
+          "Ми можемо зберігати обмежені технічні журнали, записи про безпеку, записи про запобігання зловживанням, записи аналітики або записи для дотримання законодавства довше, якщо це розумно необхідно для роботи сервісу, захисту від зловживань, забезпечення дотримання наших правил, відповідності закону, вирішення спорів або підтримання безпеки. Ці записи не призначені для збереження повних завантажених медіафайлів після закінчення 24-годинного терміну тимчасового зберігання."
         ]
       },
       {
-        "title": "4. AI Processing",
+        "title": "4. Обробка з використанням ШІ",
         "paragraphs": [
-          "Some Media Manipulator features may use automated systems or AI-assisted tools to process uploaded media, metadata, audio, video, text, transcripts, captions, descriptions, summaries, or other content.",
-          "AI-assisted features may be used to:"
+          "Деякі функції Media Manipulator можуть використовувати автоматизовані системи або ШІ-інструменти для обробки завантажених медіафайлів, метаданих, аудіо, відео, тексту, транскриптів, субтитрів, описів, підсумків чи іншого контенту.",
+          "Функції на основі ШІ можуть використовуватися, щоб:"
         ],
         "bullets": [
-          "transcribe audio or video;",
-          "generate captions;",
-          "summarize content;",
-          "describe images, videos, or audio;",
-          "classify content for safety or brand-suitability;",
-          "detect suspected illegal, prohibited, abusive, adult, violent, graphic, or otherwise advertiser-sensitive content;",
-          "help prevent misuse of the service."
+          "транскрибувати аудіо чи відео;",
+          "створювати субтитри;",
+          "створювати підсумки контенту;",
+          "описувати зображення, відео чи аудіо;",
+          "класифікувати контент з погляду безпеки чи придатності для бренду;",
+          "виявляти ймовірно незаконний, заборонений, образливий, контент для дорослих, жорстокий, шокувальний або іншим чином чутливий для рекламодавців контент;",
+          "допомагати запобігати неправомірному використанню сервісу."
         ],
         "afterBullets": [
-          "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
-          "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions. After that period, they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
-          "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
-          "We do not use uploaded files to publicly identify users. We do not claim ownership of uploaded files. We do not sell uploaded files or generated outputs. We do not provide uploaded files or generated outputs to third-party AI providers for model training or AI processing."
+          "Уся ШІ-обробка, яку використовує Media Manipulator, виконується локально на наших власних серверах або інфраструктурі, яку ми контролюємо. Ми не передаємо завантажені файли, створені результати, транскрипти, підсумки, описи чи перевірки безпеки контенту стороннім ШІ-провайдерам для обробки.",
+          "Це означає, що під час використання ШІ-функцій ваші завантажені файли та створені результати залишаються в середовищі обробки Media Manipulator і обробляються відповідно до практик зберігання, утримання, видалення та безпеки, описаних у цій Політиці конфіденційності.",
+          "Завантажені файли та створені результати зберігаються тимчасово, максимум 24 години, для підтримки історії конвертацій за сесію та надання можливості завантажувати недавні конвертації. Після завершення цього терміну вони видаляються з наших активних систем, якщо тільки не відбувається раніше видалення або обмежене зберігання не вимагається за законом для цілей безпеки, запобігання зловживанням, дотримання законодавства чи забезпечення виконання правил.",
+          "Результати, створені за допомогою ШІ, можуть бути недосконалими, неповними чи неточними. Користувачі несуть відповідальність за перевірку будь-якого результату, створеного ШІ, перш ніж покладатися на нього.",
+          "Ми не використовуємо завантажені файли для публічної ідентифікації користувачів. Ми не претендуємо на право власності на завантажені файли. Ми не продаємо завантажені файли чи створені результати. Ми не надаємо завантажені файли чи створені результати стороннім ШІ-провайдерам для навчання моделей чи ШІ-обробки."
         ]
       },
       {
-        "title": "5. Advertising",
+        "title": "5. Реклама",
         "paragraphs": [
-          "Media Manipulator may display advertisements, including advertisements served by Google AdSense or other advertising partners.",
-          "Third-party vendors, including Google, may use cookies to serve ads based on a user’s prior visits to Media Manipulator or other websites. Google’s use of advertising cookies enables it and its partners to serve ads to users based on their visit to Media Manipulator and/or other sites on the Internet.",
-          "Users may opt out of personalized advertising by visiting Google’s Ads Settings. Users may also opt out of some third-party vendors’ use of cookies for personalized advertising by visiting industry opt-out pages where available.",
-          "Advertising partners may collect or receive information from our website and other websites and use that information to provide measurement services and targeted ads.",
-          "We do not control third-party advertising cookies or tracking technologies. Their use is governed by the privacy policies of the third parties that provide them."
+          "Media Manipulator може показувати рекламу, зокрема рекламу, розміщувану через Google AdSense чи інших рекламних партнерів.",
+          "Сторонні постачальники, зокрема Google, можуть використовувати файли cookie для показу реклами на основі попередніх відвідувань користувачем Media Manipulator чи інших сайтів. Використання Google рекламних файлів cookie дозволяє їй та її партнерам показувати користувачам рекламу на основі їхніх відвідувань Media Manipulator та/або інших сайтів в інтернеті.",
+          "Користувачі можуть відмовитися від персоналізованої реклами, відвідавши налаштування реклами Google. Користувачі також можуть відмовитися від використання файлів cookie деякими сторонніми постачальниками для персоналізованої реклами, відвідавши галузеві сторінки відмови, де вони доступні.",
+          "Рекламні партнери можуть збирати чи отримувати інформацію з нашого сайту та інших сайтів і використовувати цю інформацію для надання послуг вимірювання та таргетованої реклами.",
+          "Ми не контролюємо сторонні рекламні файли cookie чи технології відстеження. Їх використання регулюється політиками конфіденційності третіх осіб, які їх надають."
         ]
       },
       {
-        "title": "6. Analytics",
+        "title": "6. Аналітика",
         "paragraphs": [
-          "Media Manipulator uses its own first-party analytics, built and operated by us and hosted on our own infrastructure at analytics.media-manipulator.com. It is the primary way we understand which tools are used, where they fail, and what to build next.",
-          "We previously used Mixpanel and Firebase Analytics. Both have been removed, as has Firebase Performance monitoring. Firebase is now used only for account sign-in."
+          "Media Manipulator використовує власну першоджерельну (first-party) аналітику, створену й керовану нами та розміщену на нашій власній інфраструктурі за адресою analytics.media-manipulator.com. Це основний спосіб, за допомогою якого ми розуміємо, які інструменти використовуються, де вони дають збій і що потрібно розробляти далі.",
+          "Раніше ми використовували Mixpanel і Firebase Analytics. Обидва сервіси було видалено, як і моніторинг продуктивності Firebase Performance. Firebase тепер використовується лише для входу в обліковий запис."
         ],
         "subsections": [
           {
-            "title": "6.1 What our analytics collects",
+            "title": "6.1 Що збирає наша аналітика",
             "paragraphs": [
-              "When you have consented to analytics, we record events such as:"
+              "Коли ви дали згоду на аналітику, ми фіксуємо такі події, як:"
             ],
             "bullets": [
-              "pages viewed and how long you were actively engaged with them;",
-              "which tool you used, and the outcome — file selected, upload started or failed, job started, completed or failed, result previewed, download started or completed;",
-              "the file extension, file size, and media kind of the file you processed;",
-              "the tool settings you chose;",
-              "account events: an account was created, signed in to, or signed out of;",
-              "page performance measurements (Core Web Vitals) and client-side errors;",
-              "your device type, browser and version, operating system, viewport size, language, and time zone;",
-              "the referring website and any campaign parameters in the link you arrived through;",
-              "your country, region, and city, derived from your IP address;",
-              "your account tier at the time of each event."
+              "переглянуті сторінки та те, як довго ви були активно з ними взаємодіяли;",
+              "який інструмент ви використовували та результат — вибір файлу, початок або збій завантаження, початок завдання, його завершення чи збій, попередній перегляд результату, початок або завершення завантаження;",
+              "розширення, розмір і тип оброблюваного вами файлу;",
+              "обрані вами налаштування інструменту;",
+              "події облікового запису: створення облікового запису, вхід у нього чи вихід із нього;",
+              "вимірювання продуктивності сторінки (Core Web Vitals) і помилки на боці клієнта;",
+              "тип вашого пристрою, браузер і його версію, операційну систему, розмір області перегляду, мову та часовий пояс;",
+              "сайт, з якого ви перейшли, і будь-які параметри кампанії в посиланні, за яким ви прийшли;",
+              "вашу країну, регіон і місто, визначені за вашою IP-адресою;",
+              "ваш рівень облікового запису на момент кожної події."
             ],
             "afterBullets": [
-              "Each event carries an anonymous device identifier and a visit identifier so that a sequence of actions can be understood as one visit. If you are signed in, events are also associated with your account."
+              "Кожна подія супроводжується анонімним ідентифікатором пристрою та ідентифікатором візиту, щоб послідовність дій можна було сприймати як один візит. Якщо ви увійшли в обліковий запис, події також пов'язуються з вашим обліковим записом."
             ]
           },
           {
-            "title": "6.2 What our analytics never collects",
+            "title": "6.2 Що наша аналітика ніколи не збирає",
             "paragraphs": [
-              "These are technical guarantees enforced in our code, not just policy:"
+              "Це технічні гарантії, закріплені в нашому коді, а не просто політика:"
             ],
             "bullets": [
-              "We do not store your IP address on analytics events. Your IP is used in memory to derive an approximate location and network operator, and is then discarded before the event is recorded.",
-              "We do not collect file names. Only the file extension is recorded.",
-              "We do not collect the contents of your files, transcripts, captions, summaries, or any AI-generated output.",
-              "We do not collect email addresses in event data. Anything resembling an email address is automatically removed, both in your browser and again on our server.",
-              "We do not use cookies for analytics. The identifiers described above are stored in your browser’s local storage, and our analytics endpoint is configured so that your browser cannot send cookies to it at all.",
-              "We do not sell or share your analytics data with anyone."
+              "Ми не зберігаємо вашу IP-адресу в подіях аналітики. Ваш IP використовується в оперативній пам'яті для визначення приблизного місцезнаходження та мережевого оператора, а потім відкидається до того, як подію буде записано.",
+              "Ми не збираємо імена файлів. Записується лише розширення файлу.",
+              "Ми не збираємо вміст ваших файлів, транскриптів, субтитрів, підсумків чи будь-яких інших результатів, створених ШІ.",
+              "Ми не збираємо адреси електронної пошти в даних подій. Усе, що нагадує адресу електронної пошти, автоматично видаляється — як у вашому браузері, так і повторно на нашому сервері.",
+              "Ми не використовуємо файли cookie для аналітики. Описані вище ідентифікатори зберігаються в локальному сховищі вашого браузера, а наша кінцева точка аналітики налаштована так, що ваш браузер взагалі не може надсилати на неї файли cookie.",
+              "Ми не продаємо й не передаємо ваші дані аналітики будь-кому."
             ]
           },
           {
-            "title": "6.3 How long we keep it",
+            "title": "6.3 Як довго ми зберігаємо дані",
             "bullets": [
-              "Individual events and visit records: 13 months, after which they are deleted automatically.",
-              "Device and account records: deleted after 25 months without activity.",
-              "Records of your consent choices: 5 years, because we are required to be able to demonstrate what you agreed to and when.",
-              "Aggregated daily statistics, which contain no identifiers and describe no individual: kept indefinitely."
+              "Окремі події та записи про візити: 13 місяців, після чого вони видаляються автоматично.",
+              "Записи про пристрої та облікові записи: видаляються через 25 місяців відсутності активності.",
+              "Записи про ваші рішення щодо згоди: 5 років, оскільки ми зобов'язані мати можливість підтвердити, на що і коли ви дали згоду.",
+              "Агреговану щоденну статистику, яка не містить ідентифікаторів і не описує окремих осіб: зберігається безстроково."
             ]
           },
           {
             "title": "6.4 Google Analytics 4",
             "paragraphs": [
-              "We keep a deliberately minimal Google Analytics 4 configuration as an independent cross-check on our own numbers. Exactly three events are sent to Google: a page view, an account sign-up, and a completed job. Nothing else is forwarded, and it is subject to the same consent choice as our first-party analytics."
+              "Ми навмисно підтримуємо мінімальну конфігурацію Google Analytics 4 як незалежну перевірку наших власних показників. У Google надсилаються рівно три події: перегляд сторінки, реєстрація облікового запису та завершене завдання. Нічого більше не передається, і це підпорядковується тому самому вибору згоди, що й наша власна first-party аналітика."
             ]
           },
           {
-            "title": "6.5 If you decline analytics",
+            "title": "6.5 Якщо ви відмовляєтеся від аналітики",
             "paragraphs": [
-              "If you decline, we record no events about you at all. We keep a single count of how many times each page was viewed, broken down by country and date, with no identifier of any kind attached — individually or in combination, a row in that count cannot be traced to a person, a device, or a visit. It exists so that a change in how many people decline cannot be mistaken for a change in how many people visit."
+              "Якщо ви відмовляєтеся, ми не фіксуємо жодних подій, пов'язаних із вами. Ми зберігаємо лише загальний лічильник кількості переглядів кожної сторінки з розбивкою за країною та датою, без будь-яких ідентифікаторів — ні окремо, ні в поєднанні один з одним такий запис не може бути прив'язаний до конкретної людини, пристрою чи візиту. Це існує для того, щоб зміну кількості користувачів, які відмовилися, не можна було помилково прийняти за зміну кількості відвідувачів."
             ]
           },
           {
-            "title": "6.6 Identifiers we use regardless of your choice",
+            "title": "6.6 Ідентифікатори, які ми використовуємо незалежно від вашого вибору",
             "paragraphs": [
-              "The anonymous device and visit identifiers described above are created whether or not you consent to analytics, because our API needs them to enforce free-tier limits and to block abuse. That is a strictly necessary purpose and is not analytics: without them we could not offer the tools without an account. What your consent controls is whether we record behavioural events against those identifiers."
+              "Описані вище анонімні ідентифікатори пристрою та візиту створюються незалежно від того, чи дали ви згоду на аналітику, оскільки нашому API вони потрібні для дотримання лімітів безкоштовного тарифу та блокування зловживань. Це строго необхідна мета, а не аналітика: без них ми не змогли б пропонувати інструменти без реєстрації облікового запису. Ваша згода визначає лише те, чи записуємо ми поведінкові події, пов'язані з цими ідентифікаторами."
             ]
           }
         ]
       },
       {
-        "title": "7. Legal Basis for Processing",
+        "title": "7. Правові підстави обробки",
         "paragraphs": [
-          "Depending on where you are located, we may process personal information based on one or more legal bases, including:"
+          "Залежно від вашого місцезнаходження ми можемо обробляти персональні дані на підставі однієї чи кількох правових підстав, зокрема:"
         ],
         "bullets": [
-          "providing the service requested by the user;",
-          "our legitimate interests in operating, securing, improving, and monetizing the website;",
-          "compliance with legal obligations;",
-          "user consent where required, including for certain cookies, analytics, personalized advertising, or AI-related processing."
+          "надання сервісу, запитаного користувачем;",
+          "наші законні інтереси в забезпеченні роботи, безпеки, покращенні та монетизації сайту;",
+          "дотримання юридичних зобов'язань;",
+          "згода користувача, якщо вона потрібна, зокрема для певних файлів cookie, аналітики, персоналізованої реклами чи обробки, пов'язаної з ШІ."
         ],
         "afterBullets": [
-          "For first-party analytics specifically: in the EEA, the UK and Switzerland we rely on your consent and collect nothing until you have given it. In the United States we rely on notice and your right to opt out, which is available at any time from the footer. Where we cannot determine your location, we treat you as requiring consent.",
-          "The anonymous device and visit identifiers used to enforce free-tier limits and prevent abuse rely on our legitimate interest in operating and securing the service, and on providing the service you requested. Records of your consent choices are kept to comply with a legal obligation to be able to demonstrate them."
+          "Щодо конкретно нашої власної аналітики: у ЄЕЗ, Великій Британії та Швейцарії ми покладаємося на вашу згоду і не збираємо нічого, поки ви її не дали. У США ми покладаємося на повідомлення та ваше право відмовитися, доступне в будь-який момент внизу сторінки. Якщо ми не можемо визначити ваше місцезнаходження, ми вважаємо, що потрібна ваша згода.",
+          "Анонімні ідентифікатори пристрою та візиту, що використовуються для дотримання лімітів безкоштовного тарифу та запобігання зловживанням, ґрунтуються на нашому законному інтересі в забезпеченні роботи та безпеки сервісу, а також на наданні запитаного вами сервісу. Записи про ваші рішення щодо згоди зберігаються для дотримання юридичного зобов'язання мати можливість їх підтвердити."
         ]
       },
       {
-        "title": "8. Sharing Information",
+        "title": "8. Передача інформації",
         "paragraphs": [
-          "We may share information with:"
+          "Ми можемо передавати інформацію:"
         ],
         "bullets": [
-          "hosting and cloud infrastructure providers;",
-          "file storage and processing providers;",
-          "analytics providers;",
-          "advertising partners;",
-          "security, abuse-detection, and content-safety providers;",
-          "AI processing is performed locally on our own servers or infrastructure that we control, and we do not share uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans with third-party AI providers for AI processing;",
-          "payment processors, if paid accounts are introduced;",
-          "law enforcement, regulators, or authorities when required by law or when necessary to report suspected illegal content;",
-          "professional advisors, such as attorneys, accountants, or security consultants;",
-          "business successors in the event of a merger, acquisition, financing, reorganization, or sale of assets."
+          "постачальникам хостингу та хмарної інфраструктури;",
+          "постачальникам послуг зберігання й обробки файлів;",
+          "постачальникам аналітики;",
+          "рекламним партнерам;",
+          "постачальникам послуг безпеки, виявлення зловживань і перевірки безпеки контенту;",
+          "ШІ-обробка виконується локально на наших власних серверах або інфраструктурі, яку ми контролюємо, і ми не передаємо завантажені файли, створені результати, транскрипти, підсумки, описи чи перевірки безпеки контенту стороннім ШІ-провайдерам для ШІ-обробки;",
+          "платіжним системам, якщо будуть запроваджені платні облікові записи;",
+          "правоохоронним органам, регуляторам чи іншим органам влади, якщо цього вимагає закон або якщо це необхідно для повідомлення про ймовірно незаконний контент;",
+          "професійним консультантам, таким як юристи, бухгалтери чи консультанти з безпеки;",
+          "правонаступникам бізнесу в разі злиття, поглинання, фінансування, реорганізації чи продажу активів."
         ],
         "afterBullets": [
-          "We do not sell uploaded files."
+          "Ми не продаємо завантажені файли."
         ]
       },
       {
-        "title": "9. User Responsibilities",
+        "title": "9. Обов'язки користувача",
         "paragraphs": [
-          "Users are responsible for the content they upload, process, convert, edit, transcribe, summarize, or download through Media Manipulator.",
-          "Users must not upload content that:"
+          "Користувачі несуть відповідальність за контент, який вони завантажують, обробляють, конвертують, редагують, транскрибують, скорочують у вигляді підсумків чи завантажують через Media Manipulator.",
+          "Користувачі не повинні завантажувати контент, який:"
         ],
         "bullets": [
-          "they do not own or have permission to process;",
-          "infringes copyrights, trademarks, privacy rights, publicity rights, or other legal rights;",
-          "contains child sexual abuse material or exploitation;",
-          "contains malware, viruses, or harmful code;",
-          "is illegal to possess, process, upload, distribute, or transmit;",
-          "violates our Terms of Service or Acceptable Use rules."
+          "їм не належить або на обробку якого в них немає дозволу;",
+          "порушує авторські права, торгові марки, права на недоторканність приватного життя, права на публічність чи інші юридичні права;",
+          "містить матеріали про сексуальне насильство над дітьми або їх експлуатацію;",
+          "містить шкідливе ПЗ, віруси чи небезпечний код;",
+          "заборонений до зберігання, обробки, завантаження, поширення чи передачі за законом;",
+          "порушує наші Умови використання чи правила допустимого використання."
         ],
         "afterBullets": [
-          "Use of Media Manipulator does not transfer ownership of uploaded content to us."
+          "Використання Media Manipulator не передає нам право власності на завантажений контент."
         ]
       },
       {
-        "title": "10. Security",
+        "title": "10. Безпека",
         "paragraphs": [
-          "We use reasonable technical and organizational measures designed to protect uploaded files, generated outputs, logs, and other information from unauthorized access, misuse, loss, or disclosure.",
-          "However, no online service, storage system, or transmission method is completely secure. Users should avoid uploading highly sensitive, confidential, or legally restricted content unless they understand and accept the risks."
+          "Ми застосовуємо розумні технічні й організаційні заходи, покликані захистити завантажені файли, створені результати, журнали та іншу інформацію від несанкціонованого доступу, неправомірного використання, втрати чи розкриття.",
+          "Проте жоден онлайн-сервіс, система зберігання чи спосіб передачі даних не є повністю безпечним. Користувачам слід уникати завантаження вкрай конфіденційного, секретного чи юридично обмеженого контенту, якщо вони не розуміють і не приймають пов'язані з цим ризики."
         ]
       },
       {
-        "title": "11. Children’s Privacy",
+        "title": "11. Конфіденційність даних дітей",
         "paragraphs": [
-          "Media Manipulator is not intended for children under the age of 13, or the minimum age required by applicable law in the user’s jurisdiction.",
-          "We do not knowingly collect personal information from children. If we learn that we have collected personal information from a child without appropriate consent, we will take steps to delete it."
+          "Media Manipulator не призначений для дітей молодше 13 років або молодше мінімального віку, встановленого застосовним законодавством у юрисдикції користувача.",
+          "Ми навмисно не збираємо персональні дані дітей. Якщо нам стане відомо, що ми зібрали персональні дані дитини без належної згоди, ми вживемо заходів для їх видалення."
         ]
       },
       {
-        "title": "12. International Users",
+        "title": "12. Користувачі з інших країн",
         "paragraphs": [
-          "Media Manipulator may be operated from the United States or other locations. If you access the website from outside the United States, your information may be processed in countries that may have different data protection laws than your country of residence.",
-          "By using Media Manipulator, you understand that your information may be transferred to and processed in the United States or other jurisdictions."
+          "Media Manipulator може працювати зі США чи інших місць. Якщо ви заходите на сайт із-за меж США, ваша інформація може оброблятися в країнах, законодавство про захист даних яких може відрізнятися від законодавства країни вашого проживання.",
+          "Використовуючи Media Manipulator, ви розумієте, що ваша інформація може бути передана й оброблена в США чи інших юрисдикціях."
         ]
       },
       {
-        "title": "13. Your Choices and Rights",
+        "title": "13. Ваш вибір і права",
         "paragraphs": [
-          "Depending on your location, you may have rights regarding your personal information, such as the right to:"
+          "Залежно від вашого місцезнаходження у вас можуть бути права щодо ваших персональних даних, зокрема право:"
         ],
         "bullets": [
-          "request access to personal information we maintain about you;",
-          "request correction or deletion;",
-          "object to or restrict certain processing;",
-          "withdraw consent where processing is based on consent;",
-          "opt out of certain advertising or analytics technologies;",
-          "request a copy of your information."
+          "запросити доступ до персональної інформації, яку ми зберігаємо про вас;",
+          "запросити виправлення чи видалення даних;",
+          "заперечити проти певної обробки чи обмежити її;",
+          "відкликати згоду, якщо обробка ґрунтується на згоді;",
+          "відмовитися від певних рекламних чи аналітичних технологій;",
+          "запросити копію своєї інформації."
         ],
         "afterBullets": [
-          "You can change your analytics choice at any time from “Cookie settings” in the footer. If you are in the United States, “Do Not Sell or Share My Personal Information” in the footer opts you out of any sharing for advertising purposes.",
-          "You can export or delete your analytics data yourself, immediately, from “Cookie settings” in the footer under “Your data”. Export downloads a complete copy of what our analytics holds about you as a file; Delete permanently erases your analytics history and gives your browser a brand-new anonymous ID. If you are signed in, both cover every device linked to your account. Because these tools act immediately, they satisfy the response periods the applicable law allows (30 days under CPRA, one month under the GDPR) by construction. You can also email us using the details below and we will do the same on your behalf within those periods.",
-          "One category of records survives deletion: the log of your own consent and opt-out choices. Laws that let you delete your data also require us to be able to prove how we handled your choices (GDPR Article 17(3)(b)), so those records are kept for five years and then deleted. They contain your choices and when you made them — not your browsing activity.",
-          "Because uploaded files and generated outputs are temporary and are deleted after a maximum of 24 hours, we may not be able to retrieve or provide access to files after deletion."
+          "Ви можете в будь-який момент змінити свій вибір щодо аналітики через розділ «Налаштування cookie» внизу сторінки. Якщо ви перебуваєте в США, пункт «Не продавати й не передавати мою персональну інформацію» внизу сторінки дозволяє відмовитися від будь-якої передачі даних у рекламних цілях.",
+          "Ви можете самостійно й негайно експортувати чи видалити свої дані аналітики через розділ «Налаштування cookie» внизу сторінки, у підрозділі «Ваші дані». Експорт завантажує повну копію того, що наша аналітика зберігає про вас, у вигляді файлу; видалення остаточно стирає історію вашої аналітики та присвоює вашому браузеру абсолютно новий анонімний ідентифікатор. Якщо ви увійшли в обліковий запис, обидві дії поширюються на всі пристрої, пов'язані з вашим обліковим записом. Оскільки ці інструменти діють негайно, вони автоматично відповідають строкам реагування, допустимим застосовним законодавством (30 днів за CPRA, один місяць за GDPR). Ви також можете написати нам на адресу, вказану нижче, і ми зробимо те саме від вашого імені в ті самі строки.",
+          "Одна категорія записів переживає видалення: журнал ваших власних рішень про згоду та відмову. Закони, які дозволяють видаляти ваші дані, також вимагають від нас можливості довести, як ми обробили ваш вибір (стаття 17(3)(b) GDPR), тому ці записи зберігаються п'ять років, а потім видаляються. Вони містять ваш вибір і час, коли ви його зробили, — а не історію вашої активності в браузері.",
+          "Оскільки завантажені файли та створені результати є тимчасовими та видаляються не пізніш як через 24 години, ми можемо бути не в змозі відновити чи надати доступ до файлів після видалення."
         ]
       },
       {
-        "title": "14. Do Not Track and Global Privacy Control",
+        "title": "14. Do Not Track і Global Privacy Control",
         "paragraphs": [
-          "Media Manipulator honours Global Privacy Control (GPC). If your browser or an extension sends a GPC signal, we automatically treat it as an opt-out of any sale or sharing of your personal information for advertising purposes, we apply it on every visit — including overriding an advertising opt-in you may have given previously — and we record that we did so.",
-          "GPC is an opt-out of sale and sharing. It does not switch off our first-party analytics, because analytics we run on our own domain for our own product decisions is neither a sale nor a share. Analytics is a separate choice, available at any time from “Cookie settings” in the footer.",
-          "We do not respond to the older “Do Not Track” browser signal. No standard was ever agreed for how sites should interpret it and no regulator gave it legal effect; GPC is the signal that carries weight, and it is the one we honour."
+          "Media Manipulator дотримується сигналу Global Privacy Control (GPC). Якщо ваш браузер чи розширення надсилає сигнал GPC, ми автоматично розцінюємо це як відмову від будь-якого продажу чи передачі вашої персональної інформації в рекламних цілях, застосовуємо це під час кожного візиту — зокрема скасовуючи раніше надану вами згоду на рекламу — і фіксуємо сам факт цієї дії.",
+          "GPC — це відмова від продажу та передачі даних. Він не вимикає нашу власну (first-party) аналітику, оскільки аналітика, яку ми ведемо на власному домені для власних продуктових рішень, не є ні продажем, ні передачею даних. Аналітика — це окремий вибір, доступний у будь-який момент через «Налаштування cookie» внизу сторінки.",
+          "Ми не реагуємо на застарілий сигнал браузера «Do Not Track». Жоден стандарт того, як сайти мають його інтерпретувати, так і не було узгоджено, і жоден регулятор не надав йому юридичної сили; саме GPC — той сигнал, який має значення, і саме його ми дотримуємося."
         ]
       },
       {
-        "title": "15. Changes to This Privacy Policy",
+        "title": "15. Зміни в цій Політиці конфіденційності",
         "paragraphs": [
-          "We may update this Privacy Policy from time to time. When we make changes, we will update the “Last Updated” date at the top of this page.",
-          "If we make material changes, we may provide additional notice, such as by posting a notice on the website.",
-          "Your continued use of Media Manipulator after changes are posted means you accept the updated Privacy Policy."
+          "Ми можемо час від часу оновлювати цю Політику конфіденційності. При внесенні змін ми оновлюємо дату «Останнє оновлення» у верхній частині цієї сторінки.",
+          "Якщо ми вносимо суттєві зміни, ми можемо надати додаткове повідомлення, наприклад, розмістивши повідомлення на сайті.",
+          "Продовжуючи використовувати Media Manipulator після публікації змін, ви приймаєте оновлену Політику конфіденційності."
         ]
       },
       {
-        "title": "16. Contact Us",
+        "title": "16. Зв'язатися з нами",
         "paragraphs": [
-          "If you have questions about this Privacy Policy or how Media Manipulator handles information, contact us at:"
+          "Якщо у вас є запитання про цю Політику конфіденційності або про те, як Media Manipulator обробляє інформацію, зв'яжіться з нами:"
         ],
         "contactBlock": true,
         "contactEmail": "privacy@media-manipulator.com"
@@ -869,452 +869,452 @@
     ]
   },
   "termsOfService": {
-    "title": "Terms of Service and Acceptable Use Policy",
-    "intro": "Media Manipulator is owned and operated by CreaTV Ltd. (“CreaTV,” “Media Manipulator,” “we,” “us,” or “our”).",
-    "scope": "These Terms of Service and Acceptable Use Policy (“Terms”) govern your access to and use of Media Manipulator, including our website, browser-based tools, server-assisted processing tools, media conversion tools, image tools, video tools, audio tools, metadata tools, AI-assisted features, downloadable outputs, and related services.",
-    "agreement": "By accessing or using Media Manipulator, you agree to these Terms. If you do not agree to these Terms, do not use Media Manipulator.",
+    "title": "Умови використання та Політика допустимого використання",
+    "intro": "Media Manipulator належить компанії CreaTV Ltd. і керується нею («CreaTV», «Media Manipulator», «ми», «нас» або «наш»).",
+    "scope": "Ці Умови використання та Політика допустимого використання («Умови») регулюють ваш доступ до Media Manipulator і його використання, зокрема наш сайт, браузерні інструменти, серверні інструменти обробки, інструменти конвертації медіафайлів, інструменти для зображень, відео, аудіо, інструменти роботи з метаданими, функції на основі ШІ, скачувані результати та пов'язані з ними сервіси.",
+    "agreement": "Отримуючи доступ до Media Manipulator або використовуючи його, ви погоджуєтеся з цими Умовами. Якщо ви не погоджуєтеся з цими Умовами, не використовуйте Media Manipulator.",
     "sections": [
       {
-        "title": "1. The Service",
+        "title": "1. Сервіс",
         "paragraphs": [
-          "Media Manipulator provides tools for editing, converting, compressing, cropping, trimming, filtering, analyzing, transcribing, summarizing, describing, and otherwise processing image, video, audio, and related media files.",
-          "Features may include, but are not limited to:"
+          "Media Manipulator надає інструменти для редагування, конвертації, стиснення, кадрування, обрізки, застосування фільтрів, аналізу, транскрибування, створення підсумків, опису та іншої обробки файлів зображень, відео, аудіо та пов'язаних медіафайлів.",
+          "Функції можуть включати, зокрема:"
         ],
         "bullets": [
-          "image conversion, cropping, resizing, compression, and filtering;",
-          "video trimming, cutting, splicing, conversion, compression, and formatting;",
-          "audio cleanup, conversion, compression, and processing;",
-          "metadata and EXIF inspection;",
-          "metadata and EXIF removal;",
-          "AI-assisted transcription, caption generation, summaries, and descriptions;",
-          "content-safety classification and abuse-prevention scanning;",
-          "temporary conversion history and downloadable processed outputs."
+          "конвертацію, кадрування, зміну розміру, стиснення та застосування фільтрів до зображень;",
+          "обрізку, нарізку, склеювання, конвертацію, стиснення та форматування відео;",
+          "очищення, конвертацію, стиснення та обробку аудіо;",
+          "перегляд метаданих та EXIF;",
+          "видалення метаданих та EXIF;",
+          "транскрибування на основі ШІ, створення субтитрів, підсумків та описів;",
+          "класифікацію безпеки контенту та сканування для запобігання зловживанням;",
+          "тимчасову історію конвертацій і скачувані оброблені результати."
         ],
         "afterBullets": [
-          "Some features may be browser-based, while others may require temporary upload and processing on our servers."
+          "Деякі функції можуть працювати в браузері, інші можуть вимагати тимчасового завантаження та обробки на наших серверах."
         ]
       },
       {
-        "title": "2. Ownership and Operator",
+        "title": "2. Право власності та оператор",
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
       },
       {
-        "title": "3. Eligibility",
+        "title": "3. Право на використання",
         "paragraphs": [
-          "You may use Media Manipulator only if you are legally able to enter into a binding agreement and only in compliance with these Terms and all applicable laws.",
-          "Media Manipulator is not intended for children under the age of 13, or the minimum age required by applicable law in your jurisdiction. By using the service, you represent that you are old enough to use Media Manipulator under applicable law.",
-          "If you use Media Manipulator on behalf of a company, organization, or other entity, you represent that you have authority to bind that entity to these Terms."
+          "Ви можете використовувати Media Manipulator, лише якщо ви юридично здатні укладати зобов'язальні угоди і лише за умови дотримання цих Умов і всього застосовного законодавства.",
+          "Media Manipulator не призначений для дітей молодше 13 років або молодше мінімального віку, встановленого застосовним законодавством у вашій юрисдикції. Використовуючи сервіс, ви підтверджуєте, що досягли віку, достатнього для використання Media Manipulator відповідно до застосовного законодавства.",
+          "Якщо ви використовуєте Media Manipulator від імені компанії, організації чи іншої юридичної особи, ви підтверджуєте, що маєте повноваження пов'язувати цю юридичну особу цими Умовами."
         ]
       },
       {
-        "title": "4. Your Responsibility for Uploaded Content",
+        "title": "4. Ваша відповідальність за завантажений контент",
         "paragraphs": [
-          "You are solely responsible for all files, media, metadata, text, prompts, instructions, inputs, outputs, and other content that you upload, submit, process, convert, edit, transcribe, summarize, generate, download, or otherwise use through Media Manipulator (“User Content”).",
-          "You represent and warrant that:"
+          "Ви несете одноосібну відповідальність за всі файли, медіадані, метадані, текст, запити, інструкції, вхідні дані, вихідні дані та інший контент, який ви завантажуєте, надсилаєте, обробляєте, конвертуєте, редагуєте, транскрибуєте, скорочуєте у вигляді підсумків, генеруєте, скачуєте чи іншим чином використовуєте через Media Manipulator («Користувацький контент»).",
+          "Ви заявляєте та гарантуєте, що:"
         ],
         "bullets": [
-          "you own your User Content or have all rights, licenses, permissions, and authority necessary to upload, process, convert, edit, analyze, transcribe, summarize, download, and otherwise use it through Media Manipulator;",
-          "your use of Media Manipulator will not violate any copyright, trademark, privacy right, publicity right, contractual right, or other legal right of any person or entity;",
-          "your User Content and use of Media Manipulator will comply with these Terms and all applicable laws;",
-          "you will not use Media Manipulator to create, process, store, transform, conceal, distribute, or facilitate illegal, abusive, infringing, harmful, or prohibited content."
+          "вам належить ваш Користувацький контент або у вас є всі права, ліцензії, дозволи та повноваження, необхідні для його завантаження, обробки, конвертації, редагування, аналізу, транскрибування, створення підсумків, скачування та іншого використання через Media Manipulator;",
+          "ваше використання Media Manipulator не порушить жодних авторських прав, торгових марок, прав на недоторканність приватного життя, прав на публічність, договірних прав чи інших юридичних прав будь-якої особи чи організації;",
+          "ваш Користувацький контент і використання вами Media Manipulator відповідатимуть цим Умовам і всьому застосовному законодавству;",
+          "ви не будете використовувати Media Manipulator для створення, обробки, зберігання, перетворення, приховування, поширення контенту чи сприяння поширенню незаконного, образливого, такого, що порушує права, шкідливого чи забороненого контенту."
         ],
         "afterBullets": [
-          "We do not claim ownership of your uploaded files or generated outputs. However, you grant us a limited, temporary, non-exclusive license to host, process, analyze, scan, transform, convert, store, display, and make your User Content available as necessary to provide Media Manipulator, protect the service, enforce these Terms, comply with law, and operate related security and abuse-prevention systems."
+          "Ми не претендуємо на право власності на ваші завантажені файли чи створені результати. Тим не менш, ви надаєте нам обмежену тимчасову невиключну ліцензію на розміщення, обробку, аналіз, сканування, перетворення, конвертацію, зберігання, відображення та надання доступу до вашого Користувацького контенту в тій мірі, у якій це необхідно для надання Media Manipulator, захисту сервісу, забезпечення дотримання цих Умов, відповідності закону та роботи пов'язаних систем безпеки й запобігання зловживанням."
         ]
       },
       {
-        "title": "5. Temporary Storage and Deletion",
+        "title": "5. Тимчасове зберігання та видалення",
         "paragraphs": [
-          "Uploaded files and generated outputs may be stored temporarily for a maximum of 24 hours to support session conversion history and allow you to download recent conversions during your session.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from our active systems, unless earlier deletion occurs or limited retention is legally required or reasonably necessary for security, abuse prevention, legal compliance, dispute resolution, or enforcement of these Terms.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer than 24 hours where reasonably necessary. These records are not intended to preserve full uploaded media files after the temporary retention period.",
-          "You are responsible for downloading and backing up any processed files you wish to keep. Media Manipulator is not a permanent storage, backup, archive, or hosting service."
+          "Завантажені файли та створені результати можуть зберігатися тимчасово, максимум 24 години, для підтримки історії конвертацій за сесію та надання вам можливості завантажувати недавні конвертації протягом сесії.",
+          "Після закінчення терміну тимчасового зберігання завантажені файли та створені результати видаляються з наших активних систем, якщо тільки не відбувається раніше видалення або обмежене зберігання не вимагається за законом чи не є розумно необхідним для цілей безпеки, запобігання зловживанням, дотримання законодавства, вирішення спорів чи забезпечення виконання цих Умов.",
+          "Ми можемо зберігати обмежені технічні журнали, записи про безпеку, записи про запобігання зловживанням, записи аналітики або записи для дотримання законодавства довше ніж 24 години, якщо це розумно необхідно. Ці записи не призначені для збереження повних завантажених медіафайлів після закінчення терміну тимчасового зберігання.",
+          "Ви несете відповідальність за завантаження та резервне копіювання будь-яких оброблених файлів, які хочете зберегти. Media Manipulator не є сервісом постійного зберігання, резервного копіювання, архівування чи хостингу."
         ]
       },
       {
-        "title": "6. Local AI Processing",
+        "title": "6. Локальна обробка з використанням ШІ",
         "paragraphs": [
-          "Media Manipulator may use AI-assisted systems to provide features such as transcription, caption generation, summaries, descriptions, metadata analysis, media classification, and content-safety scanning.",
-          "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for AI processing.",
-          "AI-assisted features may be used to:"
+          "Media Manipulator може використовувати системи на основі ШІ для надання таких функцій, як транскрибування, створення субтитрів, підсумків, описів, аналіз метаданих, класифікація медіафайлів і перевірка безпеки контенту.",
+          "Уся ШІ-обробка, яку використовує Media Manipulator, виконується локально на наших власних серверах або інфраструктурі, яку ми контролюємо. Ми не передаємо завантажені файли, створені результати, транскрипти, підсумки, описи чи перевірки безпеки контенту стороннім ШІ-провайдерам для ШІ-обробки.",
+          "Функції на основі ШІ можуть використовуватися, щоб:"
         ],
         "bullets": [
-          "transcribe audio or video;",
-          "generate captions;",
-          "summarize content;",
-          "describe images, videos, or audio;",
-          "classify content for safety or brand suitability;",
-          "detect suspected illegal, prohibited, abusive, adult, violent, graphic, or otherwise advertiser-sensitive content;",
-          "help prevent misuse of the service."
+          "транскрибувати аудіо чи відео;",
+          "створювати субтитри;",
+          "створювати підсумки контенту;",
+          "описувати зображення, відео чи аудіо;",
+          "класифікувати контент з погляду безпеки чи придатності для бренду;",
+          "виявляти ймовірно незаконний, заборонений, образливий, контент для дорослих, жорстокий, шокувальний або іншим чином чутливий для рекламодавців контент;",
+          "допомагати запобігати неправомірному використанню сервісу."
         ],
         "afterBullets": [
-          "AI-generated outputs may be inaccurate, incomplete, misleading, or otherwise imperfect. You are responsible for reviewing any AI-generated output before relying on it.",
-          "You must not use AI-assisted features to create, alter, enhance, conceal, distribute, or facilitate illegal, abusive, infringing, deceptive, sexually exploitative, violent, hateful, or otherwise prohibited content."
+          "Результати, створені за допомогою ШІ, можуть бути неточними, неповними, оманливими або іншим чином недосконалими. Ви несете відповідальність за перевірку будь-якого результату, створеного ШІ, перш ніж покладатися на нього.",
+          "Ви не повинні використовувати ШІ-функції для створення, зміни, покращення, приховування, поширення контенту чи сприяння поширенню незаконного, образливого, такого, що порушує права, оманливого, сексуально експлуататорського, жорстокого, ненависницького або іншим чином забороненого контенту."
         ]
       },
       {
-        "title": "7. Content Scanning and Safety Enforcement",
+        "title": "7. Сканування контенту та забезпечення безпеки",
         "paragraphs": [
-          "All uploads may be subject to automated scanning, classification, and review for security, abuse prevention, legal compliance, brand safety, advertiser protection, and detection or blocking of suspected illegal or prohibited content.",
-          "These scans may be used to identify or help prevent content involving, for example:"
+          "Усі завантажені файли можуть проходити автоматичне сканування, класифікацію та перевірку з метою безпеки, запобігання зловживанням, дотримання законодавства, захисту бренду, захисту рекламодавців, а також виявлення чи блокування ймовірно незаконного або забороненого контенту.",
+          "Ці перевірки можуть використовуватися для виявлення або запобігання контенту, пов'язаному, наприклад, з:"
         ],
         "bullets": [
-          "suspected child sexual abuse material, child exploitation, or sexualization of minors;",
-          "malware, malicious files, viruses, or harmful code;",
-          "illegal content or activity;",
-          "non-consensual intimate imagery;",
-          "threats, harassment, abuse, or violent intimidation;",
-          "terrorist or extremist content;",
-          "hateful or discriminatory content;",
-          "graphic violence, gore, or shocking content;",
-          "adult, sexually explicit, or pornographic content;",
-          "content that appears to violate intellectual property rights;",
-          "content that violates these Terms or our Acceptable Use Policy."
+          "ймовірними матеріалами про сексуальне насильство над дітьми, їх експлуатацію чи сексуалізацію неповнолітніх;",
+          "шкідливим ПЗ, шкідливими файлами, вірусами чи небезпечним кодом;",
+          "незаконним контентом чи діяльністю;",
+          "інтимними зображеннями, поширюваними без згоди;",
+          "погрозами, переслідуванням, образами чи жорстоким залякуванням;",
+          "терористичним чи екстремістським контентом;",
+          "ненависницьким чи дискримінаційним контентом;",
+          "жорстоким насильством, натуралістичними сценами чи шокувальним контентом;",
+          "контентом для дорослих, відверто сексуальним чи порнографічним контентом;",
+          "контентом, який, вочевидь, порушує права інтелектуальної власності;",
+          "контентом, який порушує ці Умови чи нашу Політику допустимого використання."
         ],
         "afterBullets": [
-          "If content is determined or suspected to be illegal, prohibited, abusive, unsafe, or in violation of these Terms, we may take any action we consider appropriate, including:"
+          "Якщо контент визнано або запідозрено як незаконний, заборонений, образливий, небезпечний чи такий, що порушує ці Умови, ми можемо вжити будь-яких заходів, які вважаємо доцільними, зокрема:"
         ],
         "secondBullets": [
-          "blocking upload, processing, conversion, preview, display, or download;",
-          "deleting the uploaded file or generated output;",
-          "disabling access to the service;",
-          "preserving limited records where legally required or reasonably necessary;",
-          "reporting suspected illegal content to appropriate authorities where required or permitted by law;",
-          "cooperating with legal process, law enforcement, regulators, or safety organizations where appropriate."
+          "заблокувати завантаження, обробку, конвертацію, попередній перегляд, відображення чи скачування;",
+          "видалити завантажений файл чи створений результат;",
+          "вимкнути доступ до сервісу;",
+          "зберегти обмежені записи, якщо цього вимагає закон або це розумно необхідно;",
+          "повідомити про ймовірно незаконний контент відповідним органам, якщо це вимагається чи допускається законом;",
+          "співпрацювати з органами правосуддя, правоохоронними органами, регуляторами чи організаціями з безпеки, де це доречно."
         ],
         "afterSecondBullets": [
-          "If content is lawful but classified as adult, graphic, violent, shocking, or otherwise advertiser-sensitive, we may prevent that content from being displayed or previewed on the website in order to protect users, our brand, and advertisers. In some cases, where lawful and technically available, you may still be able to download the processed file.",
-          "We are not obligated to monitor all content, but we reserve the right to do so."
+          "Якщо контент законний, але класифікований як контент для дорослих, шокувальний, жорстокий чи іншим чином чутливий для рекламодавців, ми можемо заборонити відображення чи попередній перегляд цього контенту на сайті, щоб захистити користувачів, наш бренд і рекламодавців. У деяких випадках, якщо це законно й технічно можливо, ви все ж можете завантажити оброблений файл.",
+          "Ми не зобов'язані відстежувати весь контент, але залишаємо за собою право робити це."
         ]
       },
       {
-        "title": "8. Acceptable Use Policy",
+        "title": "8. Політика допустимого використання",
         "paragraphs": [
-          "You agree not to use Media Manipulator for any unlawful, harmful, abusive, deceptive, infringing, exploitative, or prohibited purpose."
+          "Ви погоджуєтеся не використовувати Media Manipulator для будь-яких незаконних, шкідливих, образливих, оманливих, таких, що порушують права, експлуататорських чи заборонених цілей."
         ],
         "subsections": [
           {
-            "title": "8.1 Illegal Content and Activity",
+            "title": "8.1 Незаконний контент і діяльність",
             "paragraphs": [
-              "You must not upload, process, convert, edit, generate, download, or otherwise use Media Manipulator in connection with content or activity that is illegal under applicable law.",
-              "This includes, but is not limited to:"
+              "Ви не повинні завантажувати, обробляти, конвертувати, редагувати, генерувати, скачувати контент чи іншим чином використовувати Media Manipulator у зв'язку з контентом чи діяльністю, незаконними за застосовним законодавством.",
+              "Це включає, зокрема:"
             ],
             "bullets": [
-              "child sexual abuse material, child exploitation, or sexualization of minors;",
-              "non-consensual intimate imagery;",
-              "human trafficking, sexual exploitation, or coercive sexual content;",
-              "credible threats of violence;",
-              "instructions or facilitation for violent wrongdoing;",
-              "terrorist, extremist, or organized criminal activity;",
-              "illegal weapons activity;",
-              "illegal drug trafficking;",
-              "fraud, scams, phishing, or impersonation;",
-              "malware, viruses, credential theft, or harmful code;",
-              "attempts to conceal, launder, transform, or distribute illegal material."
+              "матеріали про сексуальне насильство над дітьми, їх експлуатацію чи сексуалізацію неповнолітніх;",
+              "інтимні зображення, поширювані без згоди;",
+              "торгівлю людьми, сексуальну експлуатацію чи примусовий сексуальний контент;",
+              "реальні погрози насильства;",
+              "інструкції щодо вчинення насильницьких протиправних дій або сприяння їм;",
+              "терористичну, екстремістську чи організовану злочинну діяльність;",
+              "незаконну діяльність, пов'язану зі зброєю;",
+              "незаконний обіг наркотиків;",
+              "шахрайство, афери, фішинг чи видавання себе за іншу особу;",
+              "шкідливе ПЗ, віруси, крадіжку облікових даних чи небезпечний код;",
+              "спроби приховати, легалізувати, перетворити чи поширити незаконні матеріали."
             ]
           },
           {
-            "title": "8.2 Child Safety",
+            "title": "8.2 Безпека дітей",
             "paragraphs": [
-              "You must not upload, process, convert, edit, generate, download, or otherwise use Media Manipulator in connection with any content that exploits, abuses, sexualizes, endangers, or harms minors.",
-              "We have zero tolerance for child sexual abuse material or child exploitation. Suspected violations may be reported to appropriate authorities where required or permitted by law."
+              "Ви не повинні завантажувати, обробляти, конвертувати, редагувати, генерувати, скачувати контент чи іншим чином використовувати Media Manipulator у зв'язку з будь-яким контентом, який експлуатує, піддає насильству, сексуалізує, ставить під загрозу чи завдає шкоди неповнолітнім.",
+              "Ми дотримуємося політики нульової терпимості до матеріалів про сексуальне насильство над дітьми чи їх експлуатацію. Про ймовірні порушення може бути повідомлено відповідним органам, якщо це вимагається чи допускається законом."
             ]
           },
           {
-            "title": "8.3 Adult and Sexually Explicit Content",
+            "title": "8.3 Контент для дорослих і відверто сексуальний контент",
             "paragraphs": [
-              "You must not use Media Manipulator to create, alter, enhance, process, distribute, or facilitate sexually explicit, pornographic, exploitative, or non-consensual sexual content in violation of applicable law or these Terms.",
-              "You must not use Media Manipulator to create or facilitate:"
+              "Ви не повинні використовувати Media Manipulator для створення, зміни, покращення, обробки, поширення контенту чи сприяння поширенню відверто сексуального, порнографічного, експлуататорського контенту чи сексуального контенту, поширюваного без згоди, у порушення застосовного законодавства чи цих Умов.",
+              "Ви не повинні використовувати Media Manipulator для створення чи сприяння створенню:"
             ],
             "bullets": [
-              "non-consensual intimate imagery;",
-              "sexual deepfakes;",
-              "synthetic sexual content involving real people without consent;",
-              "sexualized content involving minors;",
-              "content promoting sexual exploitation or coercion;",
-              "tools, edits, or transformations intended to undress, sexualize, or exploit a person."
+              "інтимних зображень, поширюваних без згоди;",
+              "сексуальних дипфейків;",
+              "синтетичного сексуального контенту за участю реальних людей без їхньої згоди;",
+              "сексуалізованого контенту за участю неповнолітніх;",
+              "контенту, що пропагує сексуальну експлуатацію чи примус;",
+              "інструментів, редагувань чи перетворень, призначених для «роздягання», сексуалізації чи експлуатації людини."
             ],
             "afterBullets": [
-              "Media Manipulator is not an adult-content service and may block, suppress previews of, delete, or restrict content classified as adult, sexually explicit, or advertiser-sensitive."
+              "Media Manipulator не є сервісом для контенту для дорослих і може блокувати, приховувати попередній перегляд, видаляти чи обмежувати доступ до контенту, класифікованого як контент для дорослих, відверто сексуальний чи чутливий для рекламодавців."
             ]
           },
           {
-            "title": "8.4 Violence, Gore, and Graphic Content",
+            "title": "8.4 Насильство, натуралістичні сцени та шокувальний контент",
             "paragraphs": [
-              "You must not use Media Manipulator to create, process, enhance, distribute, or facilitate content that promotes, glorifies, instructs, or encourages violence, self-harm, torture, abuse, or graphic injury.",
-              "We may restrict, suppress previews of, block, or delete graphic, violent, shocking, or gore-related content, even if the underlying content may be lawful, in order to protect users, our brand, and advertisers."
+              "Ви не повинні використовувати Media Manipulator для створення, обробки, покращення, поширення контенту чи сприяння поширенню контенту, який пропагує, звеличує, інструктує чи заохочує насильство, самоушкодження, тортури, жорстоке поводження чи тяжкі травми, показані в натуралістичній формі.",
+              "Ми можемо обмежувати, приховувати попередній перегляд, блокувати чи видаляти шокувальний, жорстокий чи пов'язаний із натуралістичними сценами насильства контент, навіть якщо основний контент може бути законним, щоб захистити користувачів, наш бренд і рекламодавців."
             ]
           },
           {
-            "title": "8.5 Hate, Harassment, and Abuse",
+            "title": "8.5 Ненависть, переслідування та образи",
             "paragraphs": [
-              "You must not use Media Manipulator to create, process, distribute, or facilitate content that promotes hatred, harassment, abuse, discrimination, dehumanization, or violence against individuals or groups based on protected characteristics or other sensitive attributes.",
-              "You must not use Media Manipulator to threaten, stalk, harass, intimidate, dox, impersonate, or abuse another person."
+              "Ви не повинні використовувати Media Manipulator для створення, обробки, поширення контенту чи сприяння поширенню контенту, який пропагує ненависть, переслідування, образи, дискримінацію, дегуманізацію чи насильство щодо окремих осіб чи груп на підставі захищених ознак чи інших чутливих характеристик.",
+              "Ви не повинні використовувати Media Manipulator для погроз, переслідування, домагань, залякування, деанонімізації, видавання себе за іншу особу чи образ на адресу іншої людини."
             ]
           },
           {
-            "title": "8.6 Copyright, Trademark, and Intellectual Property",
+            "title": "8.6 Авторські права, торгові марки та інтелектуальна власність",
             "paragraphs": [
-              "You must not upload, process, convert, edit, transcribe, summarize, distribute, or download content unless you own the content or have the necessary rights and permissions.",
-              "You must not use Media Manipulator to:"
+              "Ви не повинні завантажувати, обробляти, конвертувати, редагувати, транскрибувати, скорочувати у вигляді підсумків, поширювати чи скачувати контент, якщо тільки вам не належить цей контент або у вас немає необхідних прав і дозволів.",
+              "Ви не повинні використовувати Media Manipulator для того, щоб:"
             ],
             "bullets": [
-              "infringe copyrights, trademarks, trade secrets, privacy rights, publicity rights, or other legal rights;",
-              "bypass digital rights management, copy protection, access controls, or paywalls;",
-              "rip, download, transform, or redistribute movies, TV shows, music, software, courses, livestreams, or other protected works without permission;",
-              "remove, obscure, or alter watermarks, copyright notices, attribution, or rights-management information for infringing purposes;",
-              "facilitate piracy or unauthorized distribution of protected works."
+              "порушувати авторські права, торгові марки, комерційну таємницю, права на недоторканність приватного життя, права на публічність чи інші юридичні права;",
+              "обходити засоби керування цифровими правами, захист від копіювання, засоби контролю доступу чи платний доступ;",
+              "копіювати, скачувати, перетворювати чи поширювати без дозволу фільми, телепередачі, музику, програмне забезпечення, курси, прямі трансляції чи інші охоронювані твори;",
+              "видаляти, приховувати чи змінювати водяні знаки, повідомлення про авторські права, зазначення авторства чи інформацію про керування правами з метою порушення прав;",
+              "сприяти піратству чи несанкціонованому поширенню охоронюваних творів."
             ],
             "afterBullets": [
-              "Media Manipulator is intended for processing files you own, files you created, files you are authorized to edit, or files that are lawfully available for your intended use."
+              "Media Manipulator призначений для обробки файлів, які належать вам, які ви створили, які ви уповноважені редагувати, або файлів, які законно доступні для вашого передбачуваного використання."
             ]
           },
           {
-            "title": "8.7 Privacy and Personal Data",
+            "title": "8.7 Конфіденційність і персональні дані",
             "paragraphs": [
-              "You must not use Media Manipulator to violate another person’s privacy or data protection rights.",
-              "You must not upload or process highly sensitive personal data, confidential information, private images, private videos, biometric identifiers, government identification documents, medical records, financial records, or other sensitive information unless you have the legal right and authority to do so.",
-              "You must not use Media Manipulator to expose, extract, publish, exploit, or misuse private information about another person."
+              "Ви не повинні використовувати Media Manipulator для порушення права іншої людини на недоторканність приватного життя чи захист даних.",
+              "Ви не повинні завантажувати чи обробляти вкрай чутливі персональні дані, конфіденційну інформацію, приватні зображення, приватні відео, біометричні ідентифікатори, документи, що посвідчують особу, видані державою, медичні записи, фінансові записи чи іншу чутливу інформацію, якщо у вас немає на це законного права й повноважень.",
+              "Ви не повинні використовувати Media Manipulator для розкриття, видобування, публікації, експлуатації чи неправомірного використання приватної інформації про іншу людину."
             ]
           },
           {
-            "title": "8.8 Security and Abuse",
+            "title": "8.8 Безпека та зловживання",
             "paragraphs": [
-              "You must not interfere with, disrupt, attack, overload, scrape, reverse engineer, bypass, or misuse Media Manipulator or its infrastructure.",
-              "You must not:"
+              "Ви не повинні втручатися в роботу Media Manipulator чи його інфраструктури, порушувати її, атакувати, перевантажувати, сканувати, реверс-інжинірити, обходити чи іншим чином зловживати ними.",
+              "Ви не повинні:"
             ],
             "bullets": [
-              "attempt unauthorized access to our systems;",
-              "probe, scan, or test vulnerabilities without written permission;",
-              "bypass rate limits, authentication, usage limits, paywalls, or technical restrictions;",
-              "automate abusive traffic;",
-              "use bots, scrapers, or automated tools in a way that harms the service;",
-              "upload malware, viruses, malicious scripts, or harmful payloads;",
-              "interfere with other users’ access to the service;",
-              "abuse temporary file storage or conversion history;",
-              "use the service as a file-hosting, file-sharing, CDN, malware analysis, or permanent storage system."
+              "намагатися отримати несанкціонований доступ до наших систем;",
+              "перевіряти, сканувати чи тестувати вразливості без письмового дозволу;",
+              "обходити обмеження швидкості запитів, автентифікацію, ліміти використання, платний доступ чи технічні обмеження;",
+              "автоматизувати шкідливий трафік;",
+              "використовувати ботів, скрапери чи автоматизовані інструменти в спосіб, що завдає шкоди сервісу;",
+              "завантажувати шкідливе ПЗ, віруси, шкідливі скрипти чи небезпечні корисні навантаження;",
+              "перешкоджати доступу інших користувачів до сервісу;",
+              "зловживати тимчасовим зберіганням файлів чи історією конвертацій;",
+              "використовувати сервіс як систему хостингу файлів, обміну файлами, CDN, аналізу шкідливого ПЗ чи постійного зберігання."
             ]
           },
           {
-            "title": "8.9 Advertising and Invalid Traffic",
+            "title": "8.9 Реклама та недійсний трафік",
             "paragraphs": [
-              "Media Manipulator may display advertisements. You must not interact with ads in a fraudulent, artificial, deceptive, or abusive way.",
-              "You must not:"
+              "Media Manipulator може показувати рекламу. Ви не повинні взаємодіяти з рекламою шахрайським, штучним, оманливим чи недобросовісним чином.",
+              "Ви не повинні:"
             ],
             "bullets": [
-              "click advertisements for the purpose of generating revenue for us;",
-              "encourage others to click advertisements;",
-              "use bots, scripts, automated tools, click farms, paid traffic schemes, or deceptive methods to generate ad impressions or ad clicks;",
-              "attempt to manipulate advertising systems, measurement, attribution, or reporting;",
-              "interfere with ad display, ad measurement, or advertiser safety systems."
+              "натискати на рекламу з метою отримання доходу для нас;",
+              "спонукати інших натискати на рекламу;",
+              "використовувати ботів, скрипти, автоматизовані інструменти, ферми кліків, схеми платного трафіку чи оманливі методи для генерації показів чи кліків по рекламі;",
+              "намагатися маніпулювати рекламними системами, вимірюванням, атрибуцією чи звітністю;",
+              "перешкоджати відображенню реклами, її вимірюванню чи системам забезпечення безпеки рекламодавців."
             ],
             "afterBullets": [
-              "If you believe an ad is misleading, harmful, or inappropriate, you should report it through the available ad controls or contact us."
+              "Якщо ви вважаєте, що реклама вводить в оману, шкідлива чи недоречна, вам слід повідомити про це через доступні елементи керування рекламою або зв'язатися з нами."
             ]
           },
           {
-            "title": "8.10 No Deceptive Download or Conversion Behavior",
+            "title": "8.10 Заборона на оманливу поведінку при скачуванні чи конвертації",
             "paragraphs": [
-              "You must not use Media Manipulator to create or facilitate deceptive download buttons, fake update prompts, fake virus warnings, misleading conversion flows, fake system dialogs, or content designed to trick users into clicking ads, downloading unwanted software, or visiting unwanted websites.",
-              "Media Manipulator’s real download buttons, conversion buttons, and user interface controls are intended to be clearly distinguishable from advertisements."
+              "Ви не повинні використовувати Media Manipulator для створення чи сприяння створенню оманливих кнопок скачування, фальшивих повідомлень про оновлення, фальшивих попереджень про віруси, оманливих процесів конвертації, підроблених системних діалогових вікон чи контенту, призначеного для того, щоб обманом змусити користувачів натискати на рекламу, скачувати небажане програмне забезпечення чи відвідувати небажані сайти.",
+              "Справжні кнопки скачування, кнопки конвертації та елементи керування інтерфейсом Media Manipulator мають бути чітко відмінні від реклами."
             ]
           }
         ]
       },
       {
-        "title": "9. Account Registration and Future Paid Features",
+        "title": "9. Реєстрація облікового запису та майбутні платні функції",
         "paragraphs": [
-          "Media Manipulator may currently be available without an account for some features. In the future, we may offer accounts, paid subscriptions, premium features, higher usage limits, unlimited access, ad-free experiences, or other paid services.",
-          "If accounts or paid services are introduced, additional terms may apply, including payment terms, cancellation terms, refund terms, account security requirements, and subscription terms.",
-          "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account.",
-          "We reserve the right to suspend, restrict, or terminate accounts that violate these Terms, create legal risk, cause service abuse, or harm users, advertisers, our brand, or our infrastructure."
+          "Наразі Media Manipulator може бути доступний без реєстрації для деяких функцій. У майбутньому ми можемо запропонувати облікові записи, платні підписки, преміум-функції, підвищені ліміти використання, необмежений доступ, використання без реклами чи інші платні сервіси.",
+          "Якщо будуть запроваджені облікові записи чи платні сервіси, можуть застосовуватися додаткові умови, зокрема умови оплати, умови скасування, умови повернення коштів, вимоги до безпеки облікового запису та умови підписки.",
+          "Ви несете відповідальність за збереження конфіденційності облікових даних вашого облікового запису та за всю активність у межах вашого облікового запису.",
+          "Ми залишаємо за собою право призупиняти, обмежувати чи припиняти дію облікових записів, які порушують ці Умови, створюють юридичні ризики, призводять до зловживання сервісом чи завдають шкоди користувачам, рекламодавцям, нашому бренду чи нашій інфраструктурі."
         ]
       },
       {
-        "title": "10. Service Availability and Changes",
+        "title": "10. Доступність сервісу та зміни",
         "paragraphs": [
-          "Media Manipulator is provided as a dynamic online service. We may modify, suspend, discontinue, limit, or change any feature, tool, format, storage period, usage limit, AI feature, processing capability, pricing model, or availability at any time.",
-          "We may impose usage limits, file size limits, file type restrictions, conversion limits, rate limits, account limits, or geographic restrictions.",
-          "We do not guarantee that Media Manipulator will always be available, uninterrupted, secure, error-free, or compatible with every file, format, codec, browser, device, or operating system."
+          "Media Manipulator надається як динамічний онлайн-сервіс. Ми можемо змінювати, призупиняти, припиняти, обмежувати функції, інструменти, формати, строки зберігання, ліміти використання, ШІ-функції, можливості обробки, модель ціноутворення чи доступність сервісу в будь-який час.",
+          "Ми можемо встановлювати ліміти використання, обмеження на розмір файлів, обмеження за типами файлів, ліміти конвертацій, обмеження швидкості запитів, ліміти облікових записів чи географічні обмеження.",
+          "Ми не гарантуємо, що Media Manipulator завжди буде доступний, працюватиме безперебійно, безпечно, безпомилково чи буде сумісний із будь-яким файлом, форматом, кодеком, браузером, пристроєм чи операційною системою."
         ]
       },
       {
-        "title": "11. File Processing Limitations",
+        "title": "11. Обмеження обробки файлів",
         "paragraphs": [
-          "Media processing can fail for many reasons, including unsupported formats, corrupted files, incompatible codecs, excessive file size, browser limitations, server limitations, timeout errors, network errors, or safety restrictions.",
-          "We do not guarantee that:"
+          "Обробка медіафайлів може завершитися невдачею з багатьох причин, зокрема через непідтримувані формати, пошкоджені файли, несумісні кодеки, надмірний розмір файлу, обмеження браузера, обмеження сервера, помилки тайм-ауту, мережеві помилки чи обмеження безпеки.",
+          "Ми не гарантуємо, що:"
         ],
         "bullets": [
-          "every file can be processed;",
-          "every conversion will be successful;",
-          "output quality will meet your expectations;",
-          "metadata will always be completely removed;",
-          "AI transcripts, summaries, descriptions, or classifications will be accurate;",
-          "generated files will be suitable for any particular purpose;",
-          "temporary conversion history will always be available."
+          "кожен файл може бути оброблений;",
+          "кожна конвертація буде успішною;",
+          "якість результату відповідатиме вашим очікуванням;",
+          "метадані завжди будуть повністю видалені;",
+          "транскрипти, підсумки, описи чи класифікації на основі ШІ будуть точними;",
+          "створені файли будуть придатними для будь-якої конкретної мети;",
+          "тимчасова історія конвертацій завжди буде доступна."
         ],
         "afterBullets": [
-          "You should review all outputs before using, publishing, distributing, or relying on them."
+          "Вам слід перевіряти всі результати перед їх використанням, публікацією, поширенням чи тим, як на них покладатися."
         ]
       },
       {
-        "title": "12. Intellectual Property Rights",
+        "title": "12. Права інтелектуальної власності",
         "paragraphs": [
-          "Media Manipulator, including its website, design, software, code, interface, branding, logos, text, graphics, features, workflows, and related materials, is owned by CreaTV Ltd. or its licensors and is protected by applicable intellectual property laws.",
-          "These Terms do not grant you ownership of Media Manipulator or any CreaTV Ltd. intellectual property.",
-          "You may not copy, modify, distribute, sell, lease, reverse engineer, or create derivative works from Media Manipulator except as permitted by law or with our written permission.",
-          "You retain ownership of your own uploaded files and generated outputs, subject to the rights and licenses granted in these Terms."
+          "Media Manipulator, зокрема його сайт, дизайн, програмне забезпечення, код, інтерфейс, брендинг, логотипи, тексти, графіку, функції, робочі процеси та пов'язані матеріали, належить компанії CreaTV Ltd. чи її ліцензіарам і захищений застосовним законодавством про інтелектуальну власність.",
+          "Ці Умови не надають вам права власності на Media Manipulator чи будь-яку інтелектуальну власність CreaTV Ltd.",
+          "Ви не можете копіювати, змінювати, поширювати, продавати, здавати в оренду, реверс-інжинірити чи створювати похідні роботи на основі Media Manipulator, за винятком випадків, дозволених законом або з нашого письмового дозволу.",
+          "Ви зберігаєте право власності на ваші власні завантажені файли та створені результати з урахуванням прав і ліцензій, наданих у цих Умовах."
         ]
       },
       {
-        "title": "13. Feedback",
+        "title": "13. Зворотний зв'язок",
         "paragraphs": [
-          "If you provide comments, suggestions, ideas, bug reports, feature requests, or other feedback, you grant us a non-exclusive, worldwide, royalty-free, perpetual, irrevocable right to use that feedback without restriction or compensation to you."
+          "Якщо ви надаєте коментарі, пропозиції, ідеї, звіти про помилки, запити функцій чи інший зворотний зв'язок, ви надаєте нам невиключне, всесвітнє, безоплатне, безстрокове й невідкличне право використовувати цей зворотний зв'язок без обмежень і без компенсації вам."
         ]
       },
       {
-        "title": "14. Copyright Complaints",
+        "title": "14. Скарги щодо порушення авторських прав",
         "paragraphs": [
-          "If you believe content processed, displayed, linked, or made available through Media Manipulator infringes your copyright or other intellectual property rights, you may contact us at:",
+          "Якщо ви вважаєте, що контент, оброблений, відображений, розміщений за посиланням чи доступний через Media Manipulator, порушує ваші авторські права чи інші права інтелектуальної власності, ви можете зв'язатися з нами:",
           "Email: legal@media-manipulator.com",
-          "Your notice should include:"
+          "Ваше повідомлення має включати:"
         ],
         "bullets": [
-          "your name and contact information;",
-          "identification of the copyrighted work or protected material;",
-          "identification of the allegedly infringing material;",
-          "a statement that you have a good-faith belief that the use is not authorized;",
-          "a statement that the information in your notice is accurate;",
-          "your physical or electronic signature."
+          "ваше ім'я та контактну інформацію;",
+          "ідентифікацію твору, охоронюваного авторським правом, чи захищеного матеріалу;",
+          "ідентифікацію матеріалу, який ймовірно порушує права;",
+          "заяву про те, що ви добросовісно вважаєте, що використання не дозволене;",
+          "заяву про те, що інформація у вашому повідомленні достовірна;",
+          "ваш фізичний чи електронний підпис."
         ],
         "afterBullets": [
-          "We may remove or restrict access to allegedly infringing material and may terminate or restrict users who repeatedly violate intellectual property rights."
+          "Ми можемо видалити чи обмежити доступ до матеріалу, який ймовірно порушує права, і можемо припинити чи обмежити доступ користувачів, які неодноразово порушують права інтелектуальної власності."
         ]
       },
       {
-        "title": "15. Third-Party Services and Advertising",
+        "title": "15. Сторонні сервіси та реклама",
         "paragraphs": [
-          "Media Manipulator may include links to third-party websites, advertisements, analytics providers, hosting providers, payment processors, or other third-party services.",
-          "We are not responsible for third-party websites, services, advertisements, products, policies, or practices.",
-          "Your interactions with third parties are solely between you and the third party. Third-party services may have their own terms and privacy policies."
+          "Media Manipulator може включати посилання на сторонні сайти, рекламу, постачальників аналітики, постачальників хостингу, платіжні системи чи інші сторонні сервіси.",
+          "Ми не несемо відповідальності за сторонні сайти, сервіси, рекламу, продукти, політики чи практики.",
+          "Ваша взаємодія з третіми особами відбувається виключно між вами та цією третьою особою. Сторонні сервіси можуть мати власні умови використання та політики конфіденційності."
         ]
       },
       {
-        "title": "16. Privacy",
+        "title": "16. Конфіденційність",
         "paragraphs": [
-          "Your use of Media Manipulator is also governed by our Privacy Policy.",
-          "The Privacy Policy explains how we collect, use, store, scan, process, protect, and delete information, including uploaded files, generated outputs, analytics data, advertising data, AI-assisted processing data, and temporary conversion history.",
-          "By using Media Manipulator, you acknowledge that you have read and understood our Privacy Policy."
+          "Використання вами Media Manipulator також регулюється нашою Політикою конфіденційності.",
+          "Політика конфіденційності пояснює, як ми збираємо, використовуємо, зберігаємо, скануємо, обробляємо, захищаємо та видаляємо інформацію, зокрема завантажені файли, створені результати, дані аналітики, рекламні дані, дані обробки на основі ШІ та тимчасову історію конвертацій.",
+          "Використовуючи Media Manipulator, ви підтверджуєте, що прочитали й зрозуміли нашу Політику конфіденційності."
         ]
       },
       {
-        "title": "17. Termination and Suspension",
+        "title": "17. Припинення та призупинення",
         "paragraphs": [
-          "We may suspend, restrict, or terminate your access to Media Manipulator at any time if we believe that:"
+          "Ми можемо призупинити, обмежити чи припинити ваш доступ до Media Manipulator у будь-який час, якщо у нас є підстави вважати, що:"
         ],
         "bullets": [
-          "you violated these Terms;",
-          "your content or activity is illegal, abusive, unsafe, infringing, or prohibited;",
-          "your use creates risk for users, advertisers, our brand, our service, or our infrastructure;",
-          "we are required or permitted to do so by law;",
-          "continued access may expose us or others to legal, security, operational, or reputational harm."
+          "ви порушили ці Умови;",
+          "ваш контент чи діяльність є незаконними, образливими, небезпечними, такими, що порушують права, чи забороненими;",
+          "ваше використання створює ризик для користувачів, рекламодавців, нашого бренду, нашого сервісу чи нашої інфраструктури;",
+          "ми зобов'язані чи вправі зробити це за законом;",
+          "продовження доступу може наразити нас чи інших на юридичні, пов'язані з безпекою, операційні чи репутаційні ризики."
         ],
         "afterBullets": [
-          "We may also delete uploaded files, generated outputs, temporary conversion history, logs, or account data as permitted by these Terms and our Privacy Policy.",
-          "You may stop using Media Manipulator at any time."
+          "Ми також можемо видаляти завантажені файли, створені результати, тимчасову історію конвертацій, журнали чи дані облікового запису, як це дозволено цими Умовами та нашою Політикою конфіденційності.",
+          "Ви можете в будь-який час припинити використання Media Manipulator."
         ]
       },
       {
-        "title": "18. Disclaimers",
+        "title": "18. Відмова від гарантій",
         "paragraphs": [
-          "Media Manipulator is provided on an “as is” and “as available” basis.",
-          "To the maximum extent permitted by law, we disclaim all warranties, express or implied, including warranties of merchantability, fitness for a particular purpose, title, non-infringement, availability, security, accuracy, reliability, and error-free operation.",
-          "We do not warrant that:"
+          "Media Manipulator надається на умовах «як є» і «за наявності».",
+          "У максимальній мірі, дозволеній законом, ми відмовляємося від усіх гарантій, явних чи неявних, зокрема гарантій товарної придатності, придатності для певної мети, титулу, відсутності порушень прав, доступності, безпеки, точності, надійності та безпомилкової роботи.",
+          "Ми не гарантуємо, що:"
         ],
         "bullets": [
-          "the service will be uninterrupted, secure, or error-free;",
-          "files will always be processed successfully;",
-          "outputs will be accurate, complete, or suitable for your needs;",
-          "metadata removal will always remove every possible metadata field;",
-          "AI-generated content will be accurate, safe, complete, or appropriate;",
-          "content-safety scans will detect every violation;",
-          "temporary files or conversion history will always be available;",
-          "the service will meet your expectations."
+          "сервіс працюватиме без перебоїв, безпечно чи безпомилково;",
+          "файли завжди будуть оброблені успішно;",
+          "результати будуть точними, повними чи придатними для ваших потреб;",
+          "видалення метаданих завжди видалятиме всі можливі поля метаданих;",
+          "контент, створений ШІ, буде точним, безпечним, повним чи доречним;",
+          "перевірки безпеки контенту виявлять кожне порушення;",
+          "тимчасові файли чи історія конвертацій завжди будуть доступні;",
+          "сервіс відповідатиме вашим очікуванням."
         ],
         "afterBullets": [
-          "You use Media Manipulator at your own risk."
+          "Ви використовуєте Media Manipulator на власний ризик."
         ]
       },
       {
-        "title": "19. Limitation of Liability",
+        "title": "19. Обмеження відповідальності",
         "paragraphs": [
-          "To the maximum extent permitted by law, CreaTV Ltd., Media Manipulator, and their owners, officers, employees, contractors, affiliates, agents, licensors, and service providers will not be liable for any indirect, incidental, consequential, special, exemplary, punitive, or lost-profit damages arising out of or related to your use of Media Manipulator.",
-          "This includes damages related to:"
+          "У максимальній мірі, дозволеній законом, CreaTV Ltd., Media Manipulator та їхні власники, посадові особи, співробітники, підрядники, афілійовані особи, агенти, ліцензіари та постачальники послуг не несуть відповідальності за будь-які непрямі, випадкові, побічні, особливі, штрафні чи пов'язані з упущеною вигодою збитки, що виникли у зв'язку з використанням вами Media Manipulator.",
+          "Це включає збитки, пов'язані з:"
         ],
         "bullets": [
-          "failed conversions;",
-          "lost files;",
-          "deleted files;",
-          "unavailable downloads;",
-          "inaccurate outputs;",
-          "metadata not being fully removed;",
-          "AI inaccuracies;",
-          "content blocking or preview suppression;",
-          "account suspension or termination;",
-          "service downtime;",
-          "security incidents;",
-          "third-party advertisements or services;",
-          "legal consequences from your uploaded content or use of the service."
+          "невдалими конвертаціями;",
+          "втраченими файлами;",
+          "видаленими файлами;",
+          "недоступними скачуваннями;",
+          "неточними результатами;",
+          "неповним видаленням метаданих;",
+          "неточностями ШІ;",
+          "блокуванням контенту чи приховуванням попереднього перегляду;",
+          "призупиненням чи припиненням дії облікового запису;",
+          "простоєм сервісу;",
+          "інцидентами безпеки;",
+          "сторонньою рекламою чи сервісами;",
+          "юридичними наслідками, пов'язаними з вашим завантаженим контентом чи використанням сервісу."
         ],
         "afterBullets": [
-          "To the maximum extent permitted by law, our total liability for any claim arising out of or related to Media Manipulator will not exceed the greater of:"
+          "У максимальній мірі, дозволеній законом, наша сукупна відповідальність за будь-яку претензію, пов'язану з Media Manipulator, не перевищить більшу з таких сум:"
         ],
         "secondBullets": [
-          "the amount you paid to us for Media Manipulator in the 3 months before the claim arose; or",
-          "$100."
+          "суму, яку ви сплатили нам за Media Manipulator за 3 місяці до виникнення претензії; або",
+          "100 доларів США."
         ],
         "afterSecondBullets": [
-          "Some jurisdictions do not allow certain limitations of liability, so some of these limitations may not apply to you."
+          "Деякі юрисдикції не допускають певних обмежень відповідальності, тому деякі з цих обмежень можуть не застосовуватися до вас."
         ]
       },
       {
-        "title": "20. Indemnification",
+        "title": "20. Відшкодування збитків",
         "paragraphs": [
-          "You agree to defend, indemnify, and hold harmless CreaTV Ltd., Media Manipulator, and their owners, officers, employees, contractors, affiliates, agents, licensors, and service providers from and against any claims, damages, losses, liabilities, costs, and expenses, including reasonable attorneys’ fees, arising out of or related to:"
+          "Ви погоджуєтеся захищати, відшкодовувати збитки й убезпечувати від відповідальності CreaTV Ltd., Media Manipulator та їхніх власників, посадових осіб, співробітників, підрядників, афілійованих осіб, агентів, ліцензіарів і постачальників послуг від будь-яких претензій, збитків, втрат, зобов'язань, витрат і видатків, зокрема розумних гонорарів адвокатів, що виникають у зв'язку з:"
         ],
         "bullets": [
-          "your use of Media Manipulator;",
-          "your User Content;",
-          "your uploaded files or generated outputs;",
-          "your violation of these Terms;",
-          "your violation of applicable law;",
-          "your infringement or alleged infringement of intellectual property, privacy, publicity, or other rights;",
-          "your misuse of AI-assisted features;",
-          "your misuse of advertising systems;",
-          "your illegal, abusive, unsafe, or prohibited activity."
+          "вашим використанням Media Manipulator;",
+          "вашим Користувацьким контентом;",
+          "вашими завантаженими файлами чи створеними результатами;",
+          "вашим порушенням цих Умов;",
+          "вашим порушенням застосовного законодавства;",
+          "порушенням вами чи ймовірним порушенням інтелектуальної власності, права на недоторканність приватного життя, права на публічність чи інших прав;",
+          "вашим неправомірним використанням ШІ-функцій;",
+          "вашим неправомірним використанням рекламних систем;",
+          "вашою незаконною, образливою, небезпечною чи забороненою діяльністю."
         ]
       },
       {
-        "title": "21. Governing Law",
+        "title": "21. Застосовне право",
         "paragraphs": [
-          "These Terms are governed by the laws of the State of Colorado, United States, without regard to conflict-of-law principles.",
-          "Subject to any rights you may have under applicable consumer protection laws, you agree that any dispute arising out of or related to these Terms or Media Manipulator will be brought in the state or federal courts located in Colorado."
+          "Ці Умови регулюються законодавством штату Колорадо, США, без урахування колізійних норм права.",
+          "З урахуванням будь-яких прав, які можуть бути надані вам застосовним законодавством про захист прав споживачів, ви погоджуєтеся, що будь-який спір, що виникає у зв'язку з цими Умовами чи Media Manipulator, розглядатиметься в судах штату чи федеральних судах, розташованих у Колорадо."
         ]
       },
       {
-        "title": "22. Changes to These Terms",
+        "title": "22. Зміни цих Умов",
         "paragraphs": [
-          "We may update these Terms from time to time.",
-          "When we make changes, we will update the “Last Updated” date at the top of this page. If we make material changes, we may provide additional notice, such as by posting a notice on the website.",
-          "Your continued use of Media Manipulator after updated Terms are posted means you accept the updated Terms.",
-          "If you do not agree to the updated Terms, you must stop using Media Manipulator."
+          "Ми можемо час від часу оновлювати ці Умови.",
+          "При внесенні змін ми оновлюємо дату «Останнє оновлення» у верхній частині цієї сторінки. Якщо ми вносимо суттєві зміни, ми можемо надати додаткове повідомлення, наприклад, розмістивши повідомлення на сайті.",
+          "Продовжуючи використовувати Media Manipulator після публікації оновлених Умов, ви приймаєте оновлені Умови.",
+          "Якщо ви не погоджуєтеся з оновленими Умовами, ви повинні припинити використання Media Manipulator."
         ]
       },
       {
-        "title": "23. Contact",
+        "title": "23. Контакти",
         "paragraphs": [
-          "If you have questions about these Terms, contact us at:"
+          "Якщо у вас є запитання про ці Умови, зв'яжіться з нами:"
         ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
@@ -1322,229 +1322,229 @@
     ]
   },
   "pricing": {
-    "eyebrow": "Plans",
-    "title": "Straightforward limits, no surprises",
-    "subtitle": "Every plan runs the same tools on the same hardware. What changes is how much you can put through them in a day, and how long the results stick around.",
-    "currentPlan": "Your plan",
-    "mostPopular": "Most people start here",
-    "free_price": "Free",
-    "perMonth": "/mo",
+    "eyebrow": "Тарифи",
+    "title": "Зрозумілі ліміти, без сюрпризів",
+    "subtitle": "На кожному тарифі працюють одні й ті самі інструменти на одному й тому самому обладнанні. Змінюється лише те, скільки ви можете обробити за день і як довго зберігаються результати.",
+    "currentPlan": "Ваш тариф",
+    "mostPopular": "Більшість починають звідси",
+    "free_price": "Безкоштовно",
+    "perMonth": "/міс",
     "cta": {
-      "anonymous": "Start converting",
-      "free": "Create a free account",
-      "premiumSoon": "Coming soon — get notified",
-      "premiumBuy": "Upgrade to Premium"
+      "anonymous": "Почати конвертацію",
+      "free": "Створити безкоштовний обліковий запис",
+      "premiumSoon": "Скоро — отримати сповіщення",
+      "premiumBuy": "Перейти на Premium"
     },
     "tier": {
-      "anonymous": "No account",
-      "free": "Free account",
+      "anonymous": "Без облікового запису",
+      "free": "Безкоштовний обліковий запис",
       "premium": "Premium"
     },
     "tierBlurb": {
-      "anonymous": "Open a tool and go. Nothing to sign up for, nothing stored beyond the day.",
-      "free": "Six times the daily volume, saved history, and Darkroom projects that survive a refresh.",
-      "premium": "4K output, long files, priority on the GPU queue, batch processing, and no ads."
+      "anonymous": "Відкрийте інструмент і починайте роботу. Не потрібно реєструватися, нічого не зберігається довше доби.",
+      "free": "У шість разів більше денного обсягу, збережена історія та проекти Darkroom, які не зникають після оновлення сторінки.",
+      "premium": "Вивід у 4K, довгі файли, пріоритет у черзі GPU, пакетна обробка та відсутність реклами."
     },
     "rows": {
-      "opsPerDay": "Operations per day",
-      "aiOpsPerDay": "AI operations per day",
-      "maxFileBytes": "Maximum file size",
-      "maxVideoSeconds": "Maximum video length",
-      "maxOutputHeight": "Maximum output resolution",
-      "studioProjects": "Saved Studio projects",
-      "resultRetentionHours": "Results kept for",
-      "batchEnabled": "Batch processing",
-      "priorityGpu": "GPU queue",
-      "adsRemoved": "Ads"
+      "opsPerDay": "Операцій на день",
+      "aiOpsPerDay": "ШІ-операцій на день",
+      "maxFileBytes": "Максимальний розмір файлу",
+      "maxVideoSeconds": "Максимальна тривалість відео",
+      "maxOutputHeight": "Максимальна вихідна роздільна здатність",
+      "studioProjects": "Збережені проекти Studio",
+      "resultRetentionHours": "Строк зберігання результатів",
+      "batchEnabled": "Пакетна обробка",
+      "priorityGpu": "Черга GPU",
+      "adsRemoved": "Реклама"
     },
     "values": {
-      "yes": "Included",
-      "no": "Not included",
-      "unlimited": "Unlimited",
-      "localOnly": "{{count}}, local only",
-      "gpuStandard": "Standard",
-      "gpuPriority": "Priority",
-      "adsShown": "Shown",
-      "adsRemoved": "Removed",
+      "yes": "Включено",
+      "no": "Не включено",
+      "unlimited": "Без обмежень",
+      "localOnly": "{{count}}, лише локально",
+      "gpuStandard": "Стандартна",
+      "gpuPriority": "Пріоритетна",
+      "adsShown": "Показується",
+      "adsRemoved": "Вимкнена",
       "heightSuffix": "{{height}}p"
     },
-    "unavailableTitle": "Plan details are temporarily unavailable",
-    "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
-    "faqTitle": "Questions people actually ask",
+    "unavailableTitle": "Інформація про тарифи тимчасово недоступна",
+    "unavailableBody": "Не вдалося підключитися до сервісу тарифів. Усі інструменти й далі працюють — оновіть сторінку за хвилину, щоб побачити порівняння.",
+    "faqTitle": "Питання, які справді ставлять",
     "faq": {
-      "q1": "What counts as an operation?",
-      "a1": "One conversion, transcode, export, or AI job. Previews, probes and downloads are free — you are only charged for work the server actually does.",
-      "q2": "What happens when I run out?",
-      "a2": "Nothing breaks. The tool tells you the allowance is spent and offers the next tier up. Your allowance resets at midnight UTC.",
-      "q3": "Do free accounts see ads?",
-      "a3": "Yes. Ads pay for the free tier, so only Premium removes them. There are no interstitials, countdowns or forced waits on any plan.",
-      "q4": "Can I use it without an account at all?",
-      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history."
+      "q1": "Що вважається операцією?",
+      "a1": "Одна конвертація, перекодування, експорт чи ШІ-завдання. Попередні перегляди, перевірки та скачування безкоштовні — ви платите лише за роботу, яку сервер справді виконує.",
+      "q2": "Що станеться, коли ліміт закінчиться?",
+      "a2": "Нічого не зламається. Інструмент повідомить, що ліміт вичерпано, і запропонує перейти на наступний тариф. Ваш ліміт оновлюється опівночі за UTC.",
+      "q3": "Чи показується реклама на безкоштовних облікових записах?",
+      "a3": "Так. Реклама оплачує безкоштовний тариф, тому вимкнути її може лише тариф Premium. Жоден тариф не має повноекранної реклами, зворотних відліків чи примусового очікування.",
+      "q4": "Чи можна користуватися сервісом узагалі без облікового запису?",
+      "a4": "Так, і це свідоме рішення. Кожен інструмент працює без входу в систему — обліковий запис лише підвищує ліміти й зберігає історію."
     }
   },
   "account": {
-    "title": "Your account",
-    "subtitle": "What you have used today, and what your plan allows.",
-    "signedOutTitle": "You are not signed in",
-    "signedOutBody": "Sign in to see your usage, conversion history and saved Darkroom projects.",
-    "signInCta": "Sign in",
-    "usageTitle": "Today",
-    "planTitle": "Your plan",
-    "historyTitle": "Recent conversions",
-    "projectsTitle": "Saved Studio projects",
-    "resets": "Resets {{when}}",
-    "usedOf": "{{used}} of {{limit}}",
+    "title": "Ваш обліковий запис",
+    "subtitle": "Що ви використали сьогодні і що дозволяє ваш тариф.",
+    "signedOutTitle": "Ви не увійшли в систему",
+    "signedOutBody": "Увійдіть, щоб побачити свою статистику використання, історію конвертацій і збережені проекти Darkroom.",
+    "signInCta": "Увійти",
+    "usageTitle": "Сьогодні",
+    "planTitle": "Ваш тариф",
+    "historyTitle": "Недавні конвертації",
+    "projectsTitle": "Збережені проекти Studio",
+    "resets": "Оновлюється {{when}}",
+    "usedOf": "{{used}} з {{limit}}",
     "metric": {
-      "ops": "Conversions",
-      "ai_ops": "AI operations",
-      "export": "Exports"
+      "ops": "Конвертації",
+      "ai_ops": "ШІ-операції",
+      "export": "Експорти"
     },
-    "emptyHistory": "Nothing here yet. Your conversions appear in this list once you run a tool.",
-    "emptyProjects": "No saved projects yet. Darkroom saves your timeline automatically once you name a project.",
-    "openStudio": "Open Darkroom",
-    "comparePlans": "Compare plans",
-    "signOut": "Sign out",
-    "loadFailed": "Could not load your account. Reload to try again.",
+    "emptyHistory": "Тут поки що порожньо. Ваші конвертації з'являться в цьому списку, щойно ви скористаєтеся інструментом.",
+    "emptyProjects": "Поки немає збережених проектів. Darkroom автоматично зберігає ваш таймлайн, щойно ви назвете проект.",
+    "openStudio": "Відкрити Darkroom",
+    "comparePlans": "Порівняти тарифи",
+    "signOut": "Вийти",
+    "loadFailed": "Не вдалося завантажити дані облікового запису. Оновіть сторінку, щоб спробувати ще раз.",
     "history": {
-      "loading": "Loading your conversions…",
-      "emptyCta": "Browse the tools",
-      "loadFailed": "Could not load your history. Reload to try again.",
-      "download": "Download",
-      "expired": "Result expired",
-      "loadMore": "Load more",
-      "showing": "Showing {{count}} of {{total}}",
+      "loading": "Завантаження ваших конвертацій…",
+      "emptyCta": "Переглянути інструменти",
+      "loadFailed": "Не вдалося завантажити історію. Оновіть сторінку, щоб спробувати ще раз.",
+      "download": "Завантажити",
+      "expired": "Строк зберігання результату минув",
+      "loadMore": "Завантажити ще",
+      "showing": "Показано {{count}} з {{total}}",
       "status": {
-        "pending": "Queued",
-        "queued": "Queued",
-        "processing": "In progress",
-        "completed": "Done",
-        "failed": "Failed",
-        "cancelled": "Cancelled"
+        "pending": "У черзі",
+        "queued": "У черзі",
+        "processing": "Виконується",
+        "completed": "Готово",
+        "failed": "Помилка",
+        "cancelled": "Скасовано"
       },
       "tool": {
-        "convert": "Conversion",
-        "transcribe": "Transcription",
-        "audio_waveform": "Audio waveform",
-        "extract_audio": "Audio extraction",
-        "extract_video_only": "Silent video",
-        "extract_frames": "Frame extraction",
-        "trim_video": "Video trim",
-        "caption_translator": "Caption translation",
-        "stitch_audio_to_video": "Audio stitch",
-        "video_transcode": "HLS / DASH package",
-        "document_scan": "Document scan",
-        "image_restore": "Image restoration",
-        "video_restore": "Video restoration",
-        "studio_derive": "Studio audio cleanup",
-        "studio_captions": "Studio captions",
-        "studio_export": "Studio export",
-        "ai_upscale": "AI upscale",
-        "ai_background_removal": "Background removal",
-        "ai_face_privacy": "Face privacy",
-        "ai_object_removal": "Object removal",
-        "ai_text_redaction": "Text redaction",
-        "ai_frame_interpolation": "Frame interpolation",
-        "ai_voice_cleanup": "Voice cleanup",
-        "ai_isolate_vocals": "Vocal isolation",
-        "ai_remove_vocals": "Vocal removal"
+        "convert": "Конвертація",
+        "transcribe": "Транскрибування",
+        "audio_waveform": "Аудіохвиля",
+        "extract_audio": "Видобування аудіо",
+        "extract_video_only": "Відео без звуку",
+        "extract_frames": "Видобування кадрів",
+        "trim_video": "Обрізка відео",
+        "caption_translator": "Переклад субтитрів",
+        "stitch_audio_to_video": "Склеювання аудіо з відео",
+        "video_transcode": "Пакет HLS / DASH",
+        "document_scan": "Сканування документа",
+        "image_restore": "Відновлення зображення",
+        "video_restore": "Відновлення відео",
+        "studio_derive": "Очищення аудіо Studio",
+        "studio_captions": "Субтитри Studio",
+        "studio_export": "Експорт Studio",
+        "ai_upscale": "ШІ-збільшення роздільної здатності",
+        "ai_background_removal": "Видалення фону",
+        "ai_face_privacy": "Приватність облич",
+        "ai_object_removal": "Видалення об'єкта",
+        "ai_text_redaction": "Редагування тексту",
+        "ai_frame_interpolation": "Інтерполяція кадрів",
+        "ai_voice_cleanup": "Очищення голосу",
+        "ai_isolate_vocals": "Виділення вокалу",
+        "ai_remove_vocals": "Видалення вокалу"
       }
     }
   },
   "homeContent": {
     "howItWorks": {
-      "eyebrow": "How it works",
-      "title": "Three steps, no account",
+      "eyebrow": "Як це працює",
+      "title": "Три кроки, без облікового запису",
       "steps": [
         {
-          "title": "Choose a file",
-          "body": "Drop in an image, video, or audio file, or pick one from your device. Nothing is uploaded until you start the conversion."
+          "title": "Оберіть файл",
+          "body": "Додайте зображення, відео чи аудіофайл або оберіть його на пристрої. Нічого не вивантажується, поки ви не запустите конвертацію."
         },
         {
-          "title": "Set your options",
-          "body": "Choose an output format and adjust quality, dimensions, or trim points. Sensible defaults are preselected for every tool."
+          "title": "Налаштуйте параметри",
+          "body": "Оберіть вихідний формат і налаштуйте якість, розміри чи точки обрізки. Для кожного інструменту заздалегідь обрані розумні значення за замовчуванням."
         },
         {
-          "title": "Download the result",
-          "body": "Conversion runs on our own servers rather than in your browser, so large files work. Results are designed to be deleted automatically within 24 hours."
+          "title": "Завантажте результат",
+          "body": "Конвертація виконується на наших серверах, а не в браузері, тому великі файли теж працюють. Результати автоматично видаляються протягом 24 годин."
         }
       ],
-      "more": "More detail in <linkHow>how it works</linkHow>, or browse <linkTools>all tools</linkTools>."
+      "more": "Детальніше — у розділі <linkHow>як це працює</linkHow>, або перегляньте <linkTools>всі інструменти</linkTools>."
     },
     "popular": {
-      "eyebrow": "Popular conversions",
-      "title": "Jump straight to a tool"
+      "eyebrow": "Популярні конвертації",
+      "title": "Перейдіть одразу до інструмента"
     }
   },
   "toolsIndex": {
-    "title": "Free Online Media Tools",
-    "intro": "Media Manipulator is a free suite of browser-based tools for converting, compressing, editing, transcribing, and cleaning up image, video, and audio files. No signup, no watermarks, and your files are processed on our own servers and are designed to be deleted automatically within 24 hours.",
+    "title": "Безкоштовні онлайн-інструменти для медіафайлів",
+    "intro": "Media Manipulator — це безкоштовний набір браузерних інструментів для конвертації, стиснення, редагування, транскрибування та очищення зображень, відео й аудіофайлів. Без реєстрації, без водяних знаків — ваші файли обробляються на наших власних серверах і автоматично видаляються протягом 24 годин.",
     "categories": {
-      "image": "Image tools",
-      "video": "Video tools",
-      "audio": "Audio tools",
-      "ai": "AI tools",
-      "metadata": "Privacy & metadata tools",
+      "image": "Інструменти для зображень",
+      "video": "Інструменти для відео",
+      "audio": "Інструменти для аудіо",
+      "ai": "ШІ-інструменти",
+      "metadata": "Приватність і метадані",
       "contentStudio": "Darkroom"
     },
-    "multiTrackEditor": "Multi-track editor",
-    "open": "Open",
-    "privacyAriaLabel": "Privacy & file handling",
-    "privacyTitle": "Your files stay private",
-    "privacyBody": "Uploads are processed on our own infrastructure and are designed to be deleted automatically within 24 hours. AI features run on a GPU server we operate — your files are not shared with third-party AI providers, and no account is required.",
-    "learnMoreAriaLabel": "Learn more",
-    "newHereTitle": "New here?",
-    "newHereBody": "Step-by-step tutorials walk you through the image, video, and audio tools and the Darkroom editor.",
-    "browseAllTutorials": "Browse all tutorials",
-    "darkroomTutorial": "Darkroom tutorial",
-    "howItWorks": "How it works"
+    "multiTrackEditor": "Багатодоріжковий редактор",
+    "open": "Відкрити",
+    "privacyAriaLabel": "Приватність і обробка файлів",
+    "privacyTitle": "Ваші файли залишаються приватними",
+    "privacyBody": "Завантажені файли обробляються на нашій власній інфраструктурі й автоматично видаляються протягом 24 годин. ШІ-функції працюють на GPU-сервері, яким керуємо ми — ваші файли не передаються стороннім ШІ-провайдерам, обліковий запис не потрібен.",
+    "learnMoreAriaLabel": "Дізнатися більше",
+    "newHereTitle": "Вперше тут?",
+    "newHereBody": "Покрокові навчальні матеріали проведуть вас через інструменти для зображень, відео й аудіо, а також через редактор Darkroom.",
+    "browseAllTutorials": "Усі навчальні матеріали",
+    "darkroomTutorial": "Навчальний матеріал з Darkroom",
+    "howItWorks": "Як це працює"
   },
   "toolLandingPage": {
-    "breadcrumbAriaLabel": "Breadcrumb",
-    "home": "Home",
-    "tools": "Tools",
-    "supportedFormatsAriaLabel": "Supported formats",
-    "supportedFormatsHeading": "Supported formats",
-    "inputFormatsHeading": "Input formats",
-    "outputFormatsHeading": "Output formats",
-    "howToUseAriaLabel": "How to use",
-    "howToUseHeading": "How to use it",
-    "whatItDoesAriaLabel": "What this tool does",
-    "whatItDoesHeading": "What this tool does",
-    "whyItMattersAriaLabel": "Why it matters",
-    "whyItMattersHeading": "Why it matters",
-    "useCasesAriaLabel": "Common use cases",
-    "useCasesHeading": "Common use cases",
-    "advancedDetailsSummary": "Advanced details",
-    "whyMediaManipulatorAriaLabel": "Why Media Manipulator",
-    "whyMediaManipulatorHeading": "Why Media Manipulator",
-    "privacyAriaLabel": "Privacy & file handling",
-    "privacyHeading": "Privacy & file handling",
-    "faqAriaLabel": "Frequently asked questions",
-    "faqHeading": "Frequently asked questions",
-    "relatedToolsAriaLabel": "Related tools",
-    "relatedToolsHeading": "Related tools"
+    "breadcrumbAriaLabel": "Навігаційний ланцюжок",
+    "home": "Головна",
+    "tools": "Інструменти",
+    "supportedFormatsAriaLabel": "Підтримувані формати",
+    "supportedFormatsHeading": "Підтримувані формати",
+    "inputFormatsHeading": "Вхідні формати",
+    "outputFormatsHeading": "Вихідні формати",
+    "howToUseAriaLabel": "Як використовувати",
+    "howToUseHeading": "Як це використовувати",
+    "whatItDoesAriaLabel": "Що робить цей інструмент",
+    "whatItDoesHeading": "Що робить цей інструмент",
+    "whyItMattersAriaLabel": "Чому це важливо",
+    "whyItMattersHeading": "Чому це важливо",
+    "useCasesAriaLabel": "Часті сценарії використання",
+    "useCasesHeading": "Часті сценарії використання",
+    "advancedDetailsSummary": "Додаткові відомості",
+    "whyMediaManipulatorAriaLabel": "Чому Media Manipulator",
+    "whyMediaManipulatorHeading": "Чому Media Manipulator",
+    "privacyAriaLabel": "Приватність і обробка файлів",
+    "privacyHeading": "Приватність і обробка файлів",
+    "faqAriaLabel": "Часті запитання",
+    "faqHeading": "Часті запитання",
+    "relatedToolsAriaLabel": "Схожі інструменти",
+    "relatedToolsHeading": "Схожі інструменти"
   },
   "contentStudioGuide": {
-    "summaryTitle": "How Darkroom works — quick guide",
-    "whatItIsTitle": "What Darkroom is",
-    "whatItIsBody": "A free, browser-based multi-track video editor. You assemble a full edit — video, images, titles, and audio across stacked timeline tracks — and export a single MP4. No install and no signup.",
-    "whenToUseTitle": "When to use it",
-    "whenToUseBody": "Reach for Darkroom when one file isn’t enough: combining several clips, adding titles or background music, layering overlays, or trimming and re-ordering footage into a finished video.",
-    "supportedMediaTitle": "Supported media types",
-    "supportedMediaBody": "Video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). The final export is MP4 (H.264 video, AAC audio).",
-    "stepByStepTitle": "Step by step",
-    "step1": "Create a project and choose a resolution (up to 4K) and frame rate (24/30/60 fps).",
-    "step2": "Drag video, image, and audio files into the media bin.",
-    "step3": "Drop clips onto the timeline tracks, then trim and split them at the playhead.",
-    "step4": "Stack overlays and titles on higher tracks and add audio tracks to mix.",
-    "step5": "Preview the composite, then export to MP4 and download.",
-    "timelineTitle": "Timeline & layers",
-    "timelineBody": "The timeline is frame-accurate — the playhead and clip edges snap to the project frame rate. Tracks composite in stacking order, so a clip on a higher track renders over the ones below it. That’s how titles, logos, and picture-in-picture overlays sit on top of your base video.",
-    "exportTitle": "Export",
-    "exportBody": "Exporting renders the whole sequence — every track, trim, and overlay — into one downloadable MP4 encoded with H.264 video and AAC audio.",
-    "limitationsTitle": "Limitations",
-    "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and MP4 export — is available now. Advanced effects continue to be added over time.",
-    "privacyTitle": "Privacy",
-    "privacyBody": "Your media is processed on our own servers and automatically deleted within 24 hours. No account is required and files are never shared with third-party providers."
+    "summaryTitle": "Як працює Darkroom — короткий посібник",
+    "whatItIsTitle": "Що таке Darkroom",
+    "whatItIsBody": "Безкоштовний багатодоріжковий відеоредактор у браузері. Ви збираєте готовий монтаж — відео, зображення, титри й аудіо на кількох доріжках таймлайну — і експортуєте один файл MP4. Не потребує встановлення й реєстрації.",
+    "whenToUseTitle": "Коли його використовувати",
+    "whenToUseBody": "Звертайтеся до Darkroom, коли одного файлу недостатньо: потрібно об'єднати кілька кліпів, додати титри чи фонову музику, накласти оверлеї або обрізати й переставити кадри, щоб зібрати готове відео.",
+    "supportedMediaTitle": "Підтримувані типи медіафайлів",
+    "supportedMediaBody": "Відео (MP4, MOV, WebM, MKV), зображення (JPG, PNG, WebP) та аудіо (MP3, WAV, AAC). Підсумковий експорт — MP4 (відео H.264, аудіо AAC).",
+    "stepByStepTitle": "Покрокова інструкція",
+    "step1": "Створіть проект і оберіть роздільну здатність (до 4K) і частоту кадрів (24/30/60 fps).",
+    "step2": "Перетягніть файли відео, зображень і аудіо в медіабін.",
+    "step3": "Розмістіть кліпи на доріжках таймлайну, потім обріжте та розділіть їх у позиції плейхеда.",
+    "step4": "Розташуйте оверлеї та титри на верхніх доріжках і додайте аудіодоріжки для мікшування.",
+    "step5": "Перегляньте підсумкову композицію, потім експортуйте в MP4 і завантажте.",
+    "timelineTitle": "Таймлайн і шари",
+    "timelineBody": "Таймлайн покадрово точний — плейхед і краї кліпів прив'язуються до частоти кадрів проекту. Доріжки накладаються в порядку стека, тому кліп на верхній доріжці відображається поверх нижніх. Так титри, логотипи й оверлеї «картинка в картинці» опиняються поверх основного відео.",
+    "exportTitle": "Експорт",
+    "exportBody": "Експорт рендерить усю послідовність — кожну доріжку, обрізку та оверлей — в один скачуваний файл MP4 з відео H.264 та аудіо AAC.",
+    "limitationsTitle": "Обмеження",
+    "limitationsBody": "Darkroom активно розвивається. Базовий монтаж — багатодоріжковий таймлайн, обрізка/розділення, накладання шарів, мікшування аудіо та експорт у MP4 — уже доступний. Розширені ефекти продовжують додаватися з часом.",
+    "privacyTitle": "Приватність",
+    "privacyBody": "Ваші медіафайли обробляються на наших власних серверах і автоматично видаляються протягом 24 годин. Реєстрація не потрібна, а файли ніколи не передаються стороннім постачальникам."
   }
 }

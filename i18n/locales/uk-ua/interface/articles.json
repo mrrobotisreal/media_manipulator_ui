@@ -1,1246 +1,1246 @@
 {
   "blogVideoCompression": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← Блог"
     },
-    "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV",
+    "title": "Путівник автостопника по відеокомпресії: MP4 проти WebM проти AVI проти MOV",
     "byline": {
-      "writtenBy": "Written by:",
-      "date": "June 13th, 2025",
-      "time": "10:33 PM"
+      "writtenBy": "Автор:",
+      "date": "13 червня 2025 р.",
+      "time": "22:33"
     },
     "intro": {
-      "title": "A Brief Intro to Video Compression",
-      "p1": "Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.",
-      "p2": "Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.",
-      "p3": "At its core, video compression works by being sneaky in two main ways:",
+      "title": "Короткий вступ до відеокомпресії",
+      "p1": "Вам коли-небудь доводилося завантажувати відео на свій сайт і з жахом спостерігати, як смужка завантаження повзе зі швидкістю равлика? 🐌 Або, можливо, ви записали швидке 30-секундне демо і виявили, що файл чомусь більший за весь ваш сайт цілком? Так, з нами таке бувало з усіма, і задоволення від цього не більше, ніж дивитися, як сохне фарба... на діал-ап інтернеті.",
+      "p2": "Дивіться, у чому суть: відеокомпресія — це, по суті, мистецтво зменшувати розмір відео так, щоб воно не виглядало знятим на картоплину 🥔. Уявіть: необроблені відеодані — це як спроба запхати цілу шафу з одягом у ручну поклажу. Відеокомпресія — це чарівна техніка складання, яка якось умудряється все вмістити, при цьому зберігаючи ваш одяг (більш-менш) без складок.",
+      "p3": "По суті, відеокомпресія працює хитро, причому двома основними способами:",
       "bullets": [
-        "<strong>Spatial compression</strong>: This looks at each frame and says \"Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?\" It's like describing a wall as \"all white\" instead of listing every single brick.",
-        "<strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬"
+        "<strong>Просторове стиснення</strong>: тут аналізується кожен кадр, і алгоритм ніби каже: «Слухай, у цього синього неба тут близько 10 000 пікселів, і всі вони практично одного відтінку синього. Може, просто скажемо «сині пікселі звідси й досюди» замість цього?» Це як описати стіну словом «вся біла», а не перераховувати кожну окрему цеглину.",
+        "<strong>Часове стиснення</strong>: тут усе стає по-справжньому хитрим. Замість того щоб повністю зберігати кожен кадр, алгоритм зберігає лише різницю між кадрами. Тож якщо ви записуєте себе під час розмови, а фон не змінюється, навіщо зберігати цей фон 30 разів на секунду? Достатньо зберегти його один раз і просто позначати зміни! 🎬"
       ],
-      "p4": "The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.",
-      "quote": "\"In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch.\" 💪"
+      "p4": "Магія трапляється тоді, коли ці техніки працюють разом, перетворюючи ваш величезний 2 ГБ скрінкаст на компактний файл на 50 МБ, який усе ще виглядає чітко. Але ось де стає цікаво — різні відеоформати (контейнери) та кодеки (власне алгоритми стиснення) реалізують цю магію дуже по-різному. Одні схожі на швейцарські ножі 🔪 — універсальні, але не завжди найгостріший інструмент для конкретної задачі. Інші більше схожі на спеціалізовані хірургічні інструменти — неймовірно ефективні для конкретних завдань, але марні для всього іншого.",
+      "quote": "«У світі відеокомпресії найважчі файли не завжди найсильніші — іноді найменші воїни завдають найпотужнішого удару». 💪"
     },
     "formats": {
-      "title": "What's the Difference Between These Formats Anyway?",
-      "intro": "Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go \"really?\"",
+      "title": "У чому взагалі різниця між цими форматами?",
+      "intro": "Отже, розберемо ці відеоформати так, ніби порівнюємо команди супергероїв 🦸‍♂️. У кожного свої суперсили, слабкості й та сама дивна особливість, через яку хочеться сказати «серйозно?».",
       "mp4": {
         "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:",
+        "intro": "Вважайте MP4 Суперменом серед відеоформатів — він скрізь, його впізнають усі, і він практично завжди рятує ситуацію. Цей формат:",
         "bullets": [
-          "<strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works",
-          "<strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high",
-          "<strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)",
-          "<strong>File sizes</strong>: Generally gives you that sweet spot between quality and size"
+          "<strong>Дружить з усіма</strong>: від старезного ноутбука вашої бабусі до найновішого iPhone — MP4 просто працює",
+          "<strong>Використовує кодеки H.264/H.265</strong>: це свого роду чарівники стиснення, які зменшують розмір файлів, зберігаючи високу якість",
+          "<strong>Підтримує стримінг</strong>: ідеально, коли ви хочете, щоб відео починало відтворюватися ще до повного завантаження (бо в кого є час чекати? ⏰)",
+          "<strong>Розмір файлів</strong>: зазвичай дає ту саму золоту середину між якістю та розміром"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:",
+        "intro": "WebM — цей собі крутий опенсорсний бунтар цієї компанії 😎. Створений компанією Google і весь просякнутий духом вебу:",
         "bullets": [
-          "<strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say \"buffering\"",
-          "<strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases",
-          "<strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵",
-          "<strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)"
+          "<strong>Створений для браузерів</strong>: спеціально розроблений, щоб веб-відео завантажувалося швидше, ніж ви встигнете сказати «буферизація»",
+          "<strong>Використовує кодеки VP8/VP9</strong>: ці хлопці вміють стискати відео навіть сильніше, ніж MP4, у багатьох випадках",
+          "<strong>Відкритий і безкоштовний</strong>: без ліцензійних відрахувань, що для будь-якого розробника звучить як музика 🎵",
+          "<strong>Загвоздка</strong>: підтримується не всіма браузерами й пристроями (це про тебе, Safari 👀)"
         ]
       },
       "avi": {
         "title": "AVI (Audio Video Interleave)",
-        "intro": "AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:",
+        "intro": "AVI — це бувалий ветеран, він існує ще з часів Windows 3.1! 👴 Ось що потрібно знати:",
         "bullets": [
-          "<strong>Minimal compression</strong>: Often results in HUGE file sizes (like, \"is this a video or the entire Lord of the Rings trilogy?\" huge)",
-          "<strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality",
-          "<strong>Universal compatibility</strong>: If something can play video, it can probably play AVI",
-          "<strong>Best for</strong>: Local storage when quality matters more than file size"
+          "<strong>Мінімальне стиснення</strong>: часто призводить до ВЕЛЕТЕНСЬКИХ розмірів файлів (у дусі «це відео чи вся трилогія «Володаря перснів» цілком?»)",
+          "<strong>Висока якість</strong>: що втрачає у стисненні, компенсує бездоганною якістю",
+          "<strong>Універсальна сумісність</strong>: якщо пристрій узагалі може відтворювати відео, він, найімовірніше, відтворить і AVI",
+          "<strong>Найкраще підходить для</strong>: локального зберігання, коли якість важливіша за розмір файлу"
         ]
       },
       "mov": {
         "title": "MOV (QuickTime File Format)",
-        "intro": "MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:",
+        "intro": "MOV — золота дитина Apple 🍎, і, як більшість продуктів Apple, він прекрасний, але... складний:",
         "bullets": [
-          "<strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing",
-          "<strong>ProRes codec support</strong>: The format professionals drool over 🤤",
-          "<strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)",
-          "<strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime"
+          "<strong>Відмінна якість</strong>: особливо для відео високої роздільної здатності та професійного монтажу",
+          "<strong>Підтримка кодека ProRes</strong>: формат, про який мріють професіонали 🤤",
+          "<strong>Слон у кімнаті</strong>: розміри файлів, через які ваш накопичувач заплаче (пам'ятаєте мій запис екрана на 315,9 МБ? Так, це був MOV)",
+          "<strong>Проблеми крос-платформності</strong>: бездоганно працює на Mac, але користувачам Windows може знадобитися встановити QuickTime"
         ]
       },
-      "comparisonIntro": "Here's a quick comparison to really drive it home:",
+      "comparisonIntro": "Ось коротке порівняння, щоб усе стало остаточно зрозуміло:",
       "table": {
         "headers": [
-          "Format",
-          "File Size",
-          "Compatibility",
-          "Best Use Case"
+          "Формат",
+          "Розмір файлу",
+          "Сумісність",
+          "Найкраще застосування"
         ],
         "rows": [
           [
             "MP4",
-            "Small-Medium",
-            "Universal",
-            "Literally everything"
+            "Малий-середній",
+            "Універсальний",
+            "Буквально все"
           ],
           [
             "WebM",
-            "Smallest",
-            "Modern browsers",
-            "Web optimization"
+            "Найменший",
+            "Сучасні браузери",
+            "Оптимізація для вебу"
           ],
           [
             "AVI",
-            "Largest",
-            "Universal",
-            "Archival/Editing"
+            "Найбільший",
+            "Універсальний",
+            "Архівація/монтаж"
           ],
           [
             "MOV",
-            "Large",
-            "Mac-focused",
-            "Professional work"
+            "Великий",
+            "Орієнтований на Mac",
+            "Професійна робота"
           ]
         ]
       },
-      "quote": "\"Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose.\" ⚔️"
+      "quote": "«Обирайте формат так само, як обираєте битви — не кожен меч підходить кожному воїну, і не кожен кодек підходить для будь-якої задачі». ⚔️"
     },
     "whenToUse": {
-      "title": "How Do I Know When to Use One Format Over Another?",
-      "p1": "Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).",
-      "p2": "Let me break this down into real-world scenarios because that's how we actually make these decisions:",
+      "title": "Як зрозуміти, коли використовувати який формат?",
+      "p1": "Отже, час ухвалювати рішення! 🤔 Вибір правильного відеоформату — це як вибір правильного одягу: ви ж не одягнете смокінг у спортзал, і не варто використовувати AVI для головного відео на сайті (якщо тільки ви не хочете, щоб користувачі встигли постаріти, поки воно завантажується).",
+      "p2": "Розберемо це на реальних прикладах, адже саме так ми й ухвалюємо такі рішення на практиці:",
       "mp4": {
-        "title": "When to Use MP4",
-        "lead": "<strong>Use MP4 when you want to play it safe</strong> 🛡️",
+        "title": "Коли використовувати MP4",
+        "lead": "<strong>Використовуйте MP4, коли хочете підстрахуватися</strong> 🛡️",
         "bullets": [
-          "<strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend",
-          "<strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4",
-          "<strong>Email attachments</strong>: When you need to send a video that just works",
-          "<strong>Mobile apps</strong>: Both iOS and Android will thank you"
+          "<strong>Відео на сайті</strong>: фонові ролики, демонстрації продукту, навчальні матеріали — MP4 ваш надійний друг",
+          "<strong>Соцмережі</strong>: Instagram, Twitter, LinkedIn — усі вони люблять MP4",
+          "<strong>Вкладення в листи</strong>: коли потрібно надіслати відео, яке просто відкриється в будь-кого",
+          "<strong>Мобільні застосунки</strong>: і iOS, і Android скажуть вам дякую"
         ],
-        "proTip": "<strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices."
+        "proTip": "<strong>Порада професіонала</strong>: використовуйте кодек H.264 для максимальної сумісності або H.265, якщо потрібні ще менші файли, а у вашої аудиторії є сучасні пристрої."
       },
       "webm": {
-        "title": "When to Use WebM",
-        "lead": "<strong>Use WebM when every kilobyte counts</strong> 🪶",
+        "title": "Коли використовувати WebM",
+        "lead": "<strong>Використовуйте WebM, коли важливий кожен кілобайт</strong> 🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: Where load speed directly impacts conversion rates",
-          "<strong>Progressive web apps</strong>: When you're building for the modern web",
-          "<strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)",
-          "<strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome"
+          "<strong>Посадкові сторінки</strong>: де швидкість завантаження безпосередньо впливає на конверсію",
+          "<strong>Прогресивні веб-застосунки</strong>: коли ви розробляєте для сучасного вебу",
+          "<strong>Високонавантажені сайти</strong>: економія на трафіку (ваш гаманець скаже дякую 💰)",
+          "<strong>Коли ви контролюєте середовище</strong>: наприклад, внутрішні корпоративні інструменти, де ви точно знаєте, що всі використовують Chrome"
         ],
-        "realTalk": "<strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦"
+        "realTalk": "<strong>Реальний випадок</strong>: одного разу я перевів головне відео клієнта з MP4 на WebM і зрізав 40% розміру файлу. Час завантаження сторінки скоротився на 2 секунди, а показник відмов знизився на 15%. Ось це гроші в кишеню! 🏦"
       },
       "avi": {
-        "title": "When to Use AVI",
-        "lead": "<strong>Use AVI when quality is king and file size is... not a concern</strong> 👑",
+        "title": "Коли використовувати AVI",
+        "lead": "<strong>Використовуйте AVI, коли якість — король, а розмір файлу... не проблема</strong> 👑",
         "bullets": [
-          "<strong>Video editing source files</strong>: When you need every pixel perfect for post-production",
-          "<strong>Archival purposes</strong>: Storing the master copy before compression",
-          "<strong>Local playback</strong>: When it's only playing from a hard drive, not the internet",
-          "<strong>Screen recordings for tutorials</strong>: Before you compress them for distribution"
+          "<strong>Вихідні файли для відеомонтажу</strong>: коли потрібен ідеальний кожен піксель для постпродакшену",
+          "<strong>Архівація</strong>: зберігання майстер-копії перед стисненням",
+          "<strong>Локальне відтворення</strong>: коли програвання йде лише з жорсткого диска, а не з інтернету",
+          "<strong>Записи екрана для навчальних матеріалів</strong>: перед тим як ви стиснете їх для розповсюдження"
         ],
-        "warning": "<strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4)."
+        "warning": "<strong>Попередження</strong>: серйозно, не використовуйте AVI для доставки у вебі. Одного разу в мене був клієнт, який наполягав на використанні AVI для відео про продукт. Головна сторінка завантажувалася 45 секунд. СОРОК. П'ЯТЬ. СЕКУНД. 😱 Він більше не наш клієнт (жартую, ми все виправили за допомогою MP4)."
       },
       "mov": {
-        "title": "When to Use MOV",
-        "lead": "<strong>Use MOV when you're in Apple's ecosystem</strong> 🍎",
+        "title": "Коли використовувати MOV",
+        "lead": "<strong>Використовуйте MOV, коли ви в екосистемі Apple</strong> 🍎",
         "bullets": [
-          "<strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software",
-          "<strong>ProRes workflows</strong>: When color grading and quality are paramount",
-          "<strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac",
-          "<strong>Before converting</strong>: As a high-quality intermediate format"
+          "<strong>Проєкти Final Cut Pro</strong>: MOV чудово працює з монтажним софтом Apple",
+          "<strong>Робочі процеси з ProRes</strong>: коли кольорокорекція та якість понад усе",
+          "<strong>Передача з Mac на Mac</strong>: коли в усіх учасників є Mac",
+          "<strong>Перед конвертацією</strong>: як проміжний формат високої якості"
         ],
-        "realityCheck": "<strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!"
+        "realityCheck": "<strong>Реальність MOV</strong>: пам'ятаєте мій запис екрана на 315,9 МБ? Ось це MOV у всій красі. Чудова якість, жахливо для передавання. Завжди конвертуйте перед завантаженням!"
       },
       "decisionTree": {
-        "title": "Quick Decision Tree 🌳",
-        "diagram": "Is it for the web?\n├─ Yes → Is Safari support critical?\n│   ├─ Yes → MP4\n│   └─ No → WebM (with MP4 fallback)\n└─ No → Is it for editing?\n    ├─ Yes → Are you on Mac?\n    │   ├─ Yes → MOV\n    │   └─ No → AVI\n    └─ No → MP4 (it's always MP4)"
+        "title": "Швидке дерево рішень 🌳",
+        "diagram": "Це для вебу?\n├─ Так → Чи критична підтримка Safari?\n│   ├─ Так → MP4\n│   └─ Ні → WebM (із запасним варіантом MP4)\n└─ Ні → Це для монтажу?\n    ├─ Так → Ви на Mac?\n    │   ├─ Так → MOV\n    │   └─ Ні → AVI\n    └─ Ні → MP4 (це завжди MP4)"
       },
-      "quote": "\"The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer.\" 🧘‍♂️"
+      "quote": "«Мудрий розробник знає: найкращий формат — не найновіший і не найнавороченіший, а той, який виконує свою роботу, не змушуючи користувачів мучитися». 🧘‍♂️"
     },
     "whyImportant": {
-      "title": "Why Is This Even Important For My Website?",
-      "p1": "Look, I get it. You might be thinking \"Can't I just upload whatever and call it a day?\" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?",
-      "p2": "Here's the cold, hard truth about why video formats matter more than you think:",
+      "title": "Чому це взагалі важливо для мого сайту?",
+      "p1": "Слухайте, я розумію. Ви, напевно, думаєте: «Хіба не можна просто завантажити будь-що і на цьому закінчити?» 🤷‍♂️ Звісно можна, так само як можна їсти суп виделкою — але навіщо ускладнювати собі життя без потреби?",
+      "p2": "Ось сувора правда про те, чому відеоформати важливіші, ніж ви думаєте:",
       "threeSecondRule": {
-        "title": "The 3-Second Rule ⏱️",
-        "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
+        "title": "Правило 3 секунд ⏱️",
+        "body": "Дослідження показують, що 53% мобільних користувачів залишають сайти, які завантажуються довше 3 секунд. П'ЯТДЕСЯТ ТРИ ВІДСОТКИ! Це більше половини ваших потенційних клієнтів, втрачених ще до того, як вони побачили ваш чудовий контент. І знаєте, що зазвичай виявляється головним винуватцем повільного завантаження? Правильно — ваше неоптимізоване 200-мегабайтне головне відео, що стирчить там, як цифровий блокпост 🚧."
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "Google стежить (і судить) 👀",
+        "intro": "Швидкість сторінки — прямий фактор ранжування для Google. А це означає:",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>Повільний сайт = нижчі позиції</strong> = менше органічного трафіку",
+          "<strong>Менше трафіку = менше конверсій</strong> = менше грошей",
+          "<strong>Менше грошей = сумний розробник</strong> 😢"
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "У мене був клієнт, чий інтернет-магазин використовував величезні MOV-файли для відео про товари. Після конвертації всього в оптимізовані MP4 та WebM із запасними варіантами:",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "Час завантаження сторінки впав з 8,2 до 2,7 секунди",
+          "Позиції в Google покращилися для 67% цільових ключових слів",
+          "Конверсія зросла на 23%",
+          "Щомісячний дохід зріс на 18 000 $ 💸"
         ]
       },
       "bandwidthBill": {
-        "title": "The Bandwidth Bill From Hell 🔥",
-        "body": "Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.",
-        "realNumbersIntro": "<strong>Real numbers</strong>: If your site gets 10,000 visitors/month:",
+        "title": "Рахунок за трафік із пекла 🔥",
+        "body": "Щоразу, коли хтось завантажує вашу сторінку, ви платите за цей трафік. Використання AVI на 50 МБ замість MP4 на 5 МБ означає, що ви буквально платите за хостинг у 10 разів більше. Це як замовити 10 піц, коли потрібна всього одна — тільки менш смачно і дорожче.",
+        "realNumbersIntro": "<strong>Реальні цифри</strong>: якщо на ваш сайт заходить 10 000 відвідувачів на місяць:",
         "bullets": [
-          "With 50MB videos: 500GB bandwidth = $$",
-          "With 5MB videos: 50GB bandwidth = $",
-          "That's potentially hundreds of dollars saved monthly!"
+          "З відео по 50 МБ: 500 ГБ трафіку = $$",
+          "З відео по 5 МБ: 50 ГБ трафіку = $",
+          "Це потенційно сотні заощаджених доларів щомісяця!"
         ]
       },
       "mobileUsers": {
-        "title": "Mobile Users Will Hate You 📱",
-        "intro": "Remember, over 60% of web traffic is mobile now. That means:",
+        "title": "Мобільні користувачі вас зненавидять 📱",
+        "intro": "Нагадаємо, зараз понад 60% веб-трафіку припадає на мобільні пристрої. А це означає:",
         "bullets": [
-          "<strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video",
-          "<strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty",
-          "<strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users"
+          "<strong>Ліміти трафіку реальні</strong>: ніхто не хоче витрачати весь місячний трафік на перегляд вашого головного відео",
+          "<strong>Повільніші з'єднання</strong>: не в усіх є 5G, а 4G буває нестабільним",
+          "<strong>Розряд батареї</strong>: великі відео = більше обробки = розряджені телефони = злі користувачі"
         ]
       },
       "trust": {
-        "title": "Trust and Professionalism 🤝",
-        "intro": "This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:",
+        "title": "Довіра та професіоналізм 🤝",
+        "intro": "Про це ніхто не говорить, але це величезний фактор. Коли ваш сайт швидко завантажується, а відео відтворюються плавно:",
         "bullets": [
-          "Users trust you more (subconsciously associating speed with competence)",
-          "They're more likely to stay and explore",
-          "They're more likely to come back",
-          "They're more likely to recommend you"
+          "Користувачі довіряють вам більше (підсвідомо пов'язуючи швидкість із компетентністю)",
+          "Вони з більшою ймовірністю залишаться й будуть вивчати сайт",
+          "Вони з більшою ймовірністю повернуться знову",
+          "Вони з більшою ймовірністю порекомендують вас"
         ],
-        "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
+        "outro": "Але якщо ваш сайт повільний? Він кричить «аматорська година» гучніше, ніж корабельна сирена 📯. Користувачі думають: «Якщо вони навіть сайт нормально зробити не можуть, чи можу я довірити їм дані своєї картки?»"
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "Зв'язок із монетизацією 💰",
+        "intro": "Показуєте ви рекламу, продаєте товари чи монетизуєте контент через Medium (привіт колезі-автору Medium! 👋) — продуктивність безпосередньо впливає на підсумковий прибуток:",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>Дохід від реклами</strong>: повільні сайти = більше відмов = менше показів реклами",
+          "<strong>Партнерські посилання</strong>: люди не клікнуть те, що не дочекалися побачити",
+          "<strong>Продажі товарів</strong>: кожна зайва секунда завантаження може знижувати конверсію на 7%",
+          "<strong>Монетизація контенту</strong>: читачі не стануть чекати завантаження вашої блискучої статті"
         ]
       },
-      "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"
+      "quote": "«Швидкість сайту — це як перше враження: у вас є лише одна спроба, і якщо ви її провалите, від вас змахнуть пальцем швидше, ніж ви встигнете сказати «зачекайте, йде завантаження...»». 💨"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.",
-      "cheatSheetIntro": "Here's your TL;DR cheat sheet:",
+      "title": "Висновок",
+      "p1": "Ось і все, дорогі цифрові мандрівники! 🚀 Ми пройшли крізь дикий світ відеоформатів, і, сподіваюся, тепер MP4, WebM, AVI та MOV більше не виглядають для вас загадковими інопланетними мовами.",
+      "cheatSheetIntro": "Ось ваша шпаргалка для швидкого запам'ятовування:",
       "cheatSheet": [
-        "<strong>MP4</strong>: Your reliable, go-everywhere friend",
-        "<strong>WebM</strong>: The speed demon for modern web",
-        "<strong>AVI</strong>: The quality beast for local storage",
-        "<strong>MOV</strong>: Apple's heavyweight champion"
+        "<strong>MP4</strong>: ваш надійний друг, який працює всюди",
+        "<strong>WebM</strong>: демон швидкості для сучасного вебу",
+        "<strong>AVI</strong>: звір якості для локального зберігання",
+        "<strong>MOV</strong>: важковаговик від Apple"
       ],
-      "p2": "But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:",
+      "p2": "Але що ще важливіше, тепер ви знаєте: вибір правильного відеоформату — це не просто занудне технічне рішення, це про:",
       "checklist": [
-        "✅ Keeping your users happy (and on your site)",
-        "✅ Making Google love you (hello, better rankings! 👋)",
-        "✅ Saving money on hosting (cha-ching! 💰)",
-        "✅ Building trust and looking professional",
-        "✅ Actually making money from your content"
+        "✅ підтримання задоволення користувачів (і утримання їх на вашому сайті)",
+        "✅ те, що Google вас полюбить (привіт, кращі позиції! 👋)",
+        "✅ економію на хостингу (касовий чек! 💰)",
+        "✅ зміцнення довіри та професійний вигляд",
+        "✅ реальний заробіток на вашому контенті"
       ],
-      "p3": "The next time you're about to upload a video to your website, take a second to ask yourself: \"Is this format working for me, or am I working for it?\" Because life's too short for slow-loading websites and frustrated users.",
-      "p4": "Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅",
-      "quote": "\"In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!\" ⚡"
+      "p3": "Наступного разу, коли ви збиратиметеся завантажити відео на свій сайт, витратьте секунду і запитайте себе: «Цей формат працює на мене чи я працюю на нього?» Адже життя надто коротке для повільних сайтів і розчарованих користувачів.",
+      "p4": "А тепер ідіть і стискайте ці відео! Ваші користувачі (і ваш гаманець) скажуть вам дякую. І якщо ця стаття виявилася корисною, поставте лайк на Medium або поділіться нею з тим другом, який досі завантажує на сайт необроблені файли MOV. Ми всі знаємо такого 😅",
+      "quote": "«У великій пригоді веброзробки найменші оптимізації часто призводять до найбільших перемог. Нехай ваші відео будуть стиснуті, а завантаження — швидким!» ⚡"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Apply what you just read with the free Media Manipulator tools.",
+      "title": "Схожі інструменти",
+      "intro": "Застосуйте щойно прочитане за допомогою безкоштовних інструментів Media Manipulator.",
       "items": [
         {
-          "label": "Compress video",
-          "description": "Shrink MP4, WebM, MOV, and MKV files for the web."
+          "label": "Стиснути відео",
+          "description": "Зменшіть розмір файлів MP4, WebM, MOV і MKV для вебу."
         },
         {
-          "label": "Video converter",
-          "description": "Convert between MP4, WebM, MOV, AVI, and more."
+          "label": "Конвертер відео",
+          "description": "Конвертуйте між MP4, WebM, MOV, AVI та іншими форматами."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "Конвертувати відео в GIF",
+          "description": "Перетворіть короткі відеокліпи на анімовані GIF, якими легко поділитися."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video into searchable text or captions."
+          "label": "Розшифрувати відео",
+          "description": "Видобувайте промовлені слова з відео в текст для пошуку або субтитри."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Step-by-step walkthrough of every video conversion setting."
+          "label": "Інструкція з конвертера відео",
+          "description": "Покроковий розбір усіх налаштувань конвертації відео."
         },
         {
-          "label": "Image optimization guide",
-          "description": "JPG vs PNG vs WebP and how to shrink images for the web."
+          "label": "Посібник з оптимізації зображень",
+          "description": "JPG проти PNG проти WebP і як зменшити зображення для вебу."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Optimize Your Videos? 🚀",
-      "body": "Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.",
-      "button": "Try the video compressor →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "Готові оптимізувати свої відео? 🚀",
+      "body": "Досить дозволяти величезним відеофайлам сповільнювати ваш сайт! Спробуйте наш безкоштовний інструмент стиснення відео і побачте різницю миттєво. Конвертуйте MP4, WebM, AVI, MOV та інші формати всього за кілька кліків.",
+      "button": "Спробувати компресор відео →",
+      "footnote": "Реєстрація не потрібна • Обробка файлів локально • Швидко та безпечно"
     }
   },
   "blogImageOptimization": {
-    "backLink": "← Blog",
-    "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+    "backLink": "← Блог",
+    "title": "Оптимізація зображень для веб-джедаїв: JPG проти PNG проти WebP",
     "byline": {
-      "label": "Written by:",
-      "date": "June 14th, 2025",
-      "time": "5:32 PM"
+      "label": "Автор:",
+      "date": "14 червня 2025 р.",
+      "time": "17:32"
     },
     "sections": {
       "intro": {
-        "title": "A Brief Intro to Image Formatting",
-        "p1": "Ever uploaded an image to your website and wondered why it takes <em>forever</em> to load? Or maybe you've noticed that your beautiful PNG logo looks crisp and clean, but it's somehow 5MB for a simple graphic? 🤔 Welcome to the wild world of image formats, where choosing the wrong one can make the difference between a lightning-fast website and one that loads slower than dial-up internet (remember that? 😅).",
-        "p2": "Image formats are essentially different ways of encoding and storing visual data. Think of them like different languages for describing the same picture - some are more verbose and detailed (like PNG), while others are more concise and compressed (like JPG). Each format has its own special sauce for how it stores pixels, handles transparency, compresses data, and maintains quality.",
-        "p3": "At their core, all image formats are trying to solve the same problem: how do we store millions of pixels worth of color information in a file that doesn't break the internet when someone tries to download it? The answer lies in <em>compression</em> - and this is where things get interesting! Some formats use \"lossy\" compression (they throw away some data to save space), while others use \"lossless\" compression (they keep everything but find clever ways to pack it smaller). It's like the difference between summarizing a book versus shrinking the font size - both make it \"smaller,\" but one loses information while the other doesn't.",
-        "p4": "The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀",
-        "quote": "\"The wise developer knows that the heaviest burden on a website is not code, but unoptimized images.\" - Ancient Web Proverb 😉"
+        "title": "Короткий вступ до форматів зображень",
+        "p1": "Чи завантажували ви коли-небудь зображення на сайт і дивувалися, чому воно вантажиться <em>цілу вічність</em>? Або помічали, що ваш гарний логотип у PNG виглядає чітко й чисто, але чомусь важить 5 МБ для простої графіки? 🤔 Ласкаво просимо до дикого світу форматів зображень, де неправильний вибір може стати різницею між блискавичним сайтом і сайтом, який вантажиться повільніше за дозвон по модему (пам'ятаєте таке? 😅).",
+        "p2": "Формати зображень — це, по суті, різні способи кодування та зберігання візуальних даних. Уявіть їх як різні мови опису однієї й тієї самої картинки: одні докладніші й «багатослівніші» (як PNG), інші — лаконічніші та стисненіші (як JPG). У кожного формату свій особливий секрет: як він зберігає пікселі, обробляє прозорість, стискає дані та зберігає якість.",
+        "p3": "По суті, усі формати зображень розв'язують одне й те саме завдання: як умістити мільйони пікселів кольорової інформації у файл, який не «зламає» інтернет під час спроби його завантажити? Відповідь криється у <em>стисненні</em> — і ось тут починається найцікавіше! Одні формати використовують стиснення «з втратами» (вони відкидають частину даних, щоб заощадити місце), інші — «без втрат» (зберігають усе, але знаходять хитрі способи упакувати це компактніше). Це як різниця між переказом книги та зменшенням розміру шрифту — і те, і інше робить файл «меншим», але в одному випадку губиться інформація, а в іншому ні.",
+        "p4": "Три головні герої, у яких ми сьогодні розберемося, — JPG, PNG і WebP — кожен вирішує це завдання по-своєму, і розуміння їхніх унікальних суперздібностей (і слабких місць!) перетворить вас із падавана на справжнього веб-джедая. 🚀",
+        "quote": "«Мудрий розробник знає: найважчий тягар для сайту — не код, а неоптимізовані зображення». — Давнє веб-прислів'я 😉"
       },
       "differences": {
-        "title": "What's the Difference Between These Formats Anyway?",
-        "intro": "Alright, let's get into the nitty-gritty of what makes each format tick! Think of these formats as different types of vehicles - they'll all get you from point A to point B, but some are sports cars, some are trucks, and some are those fancy new electric vehicles that do everything. 🚗",
+        "title": "У чому взагалі різниця між цими форматами?",
+        "intro": "Отже, розберімося в деталях того, що робить кожен формат особливим! Уявіть ці формати як різні види транспорту — усі вони довезуть вас із точки А в точку Б, але одні спортивні, інші вантажні, а треті — модні електромобілі, які вміють усе. 🚗",
         "jpg": {
-          "title": "JPG (or JPEG - they're the same thing, don't let anyone tell you otherwise 😄)",
-          "body": "JPG is like that reliable friend who's great at parties but terrible with details. It uses lossy compression, which means it literally throws away data it thinks you won't notice. Perfect for photographs where a tiny bit of quality loss is invisible to the human eye, but terrible for text or sharp edges. Ever seen a meme that's been shared so many times it looks like it was photographed through a potato? That's JPG compression artifacts saying hello! 👋",
+          "title": "JPG (або JPEG — це те саме, не вірте тим, хто каже інакше 😄)",
+          "body": "JPG — як той надійний друг, який чудово тримається на вечірках, але погано розбирається в деталях. Він використовує стиснення з втратами — тобто буквально відкидає дані, які, на його думку, ви не помітите. Ідеальний для фотографій, де невелика втрата якості непомітна людському оку, але жахливий для тексту чи чітких меж. Бачили мем, який пересилали стільки разів, що він виглядає так, ніби його сфотографували крізь картоплину? Це якраз артефакти стиснення JPG передають привіт! 👋",
           "bullets": [
-            "<strong>Pros</strong>: Small file sizes, universally supported, great for photos",
-            "<strong>Cons</strong>: No transparency support, loses quality with each save, makes text look fuzzy",
-            "<strong>Best for</strong>: Photographs, complex images with lots of colors"
+            "<strong>Плюси</strong>: маленький розмір файлу, підтримується повсюдно, чудово підходить для фотографій",
+            "<strong>Мінуси</strong>: немає підтримки прозорості, втрачає якість під час кожного збереження, робить текст розмитим",
+            "<strong>Найкраще для</strong>: фотографій, складних зображень із великою кількістю кольорів"
           ]
         },
         "png": {
           "title": "PNG (Portable Network Graphics)",
-          "body": "PNG is the perfectionist of the group - it refuses to lose any data whatsoever. Using lossless compression, it keeps every single pixel exactly as you intended. It also supports transparency (hello, logos with no background! 🎉), making it the go-to choice for graphics, icons, and anything with text. The downside? File sizes can get chunky real quick, especially with large, complex images.",
+          "body": "PNG — перфекціоніст у цій компанії: він категорично відмовляється втрачати бодай якісь дані. Використовуючи стиснення без втрат, він зберігає кожен піксель саме таким, яким ви його задумали. Він також підтримує прозорість (привіт, логотипи без фону! 🎉), що робить його вибором номер один для графіки, іконок і всього, що містить текст. Недолік? Розмір файлу може дуже швидко роздутися, особливо для великих і складних зображень.",
           "bullets": [
-            "<strong>Pros</strong>: Lossless compression, supports transparency, perfect for graphics and text",
-            "<strong>Cons</strong>: Larger file sizes, not ideal for photographs",
-            "<strong>Best for</strong>: Logos, icons, images with text, anything needing transparency"
+            "<strong>Плюси</strong>: стиснення без втрат, підтримка прозорості, ідеальний для графіки й тексту",
+            "<strong>Мінуси</strong>: більший розмір файлу, не підходить для фотографій",
+            "<strong>Найкраще для</strong>: логотипів, іконок, зображень із текстом, усього, що потребує прозорості"
           ]
         },
         "webp": {
-          "title": "WebP (The New Kid on the Block)",
-          "body": "WebP is Google's attempt to create the ultimate image format - and honestly, they kind of nailed it! 🎯 It's like the Swiss Army knife of image formats, supporting both lossy AND lossless compression, transparency, and even animation (move over, GIF!). It typically achieves 25-35% smaller file sizes than JPG and PNG while maintaining the same quality. The only catch? Not every browser plays nice with it yet (looking at you, older Safari versions 👀).",
+          "title": "WebP (новачок у кварталі)",
+          "body": "WebP — це спроба Google створити ідеальний формат зображень, і, чесно кажучи, у них майже вийшло! 🎯 Це швейцарський ніж серед форматів: підтримує і стиснення з втратами, і без втрат, прозорість і навіть анімацію (посунься, GIF!). Зазвичай він дає файли на 25–35% менші, ніж JPG і PNG, за такої самої якості. Єдина заковика? Не всі браузери ще з ним дружать (це я на вас дивлюся, старі версії Safari 👀).",
           "bullets": [
-            "<strong>Pros</strong>: Smaller file sizes, supports everything (lossy, lossless, transparency, animation), excellent quality-to-size ratio",
-            "<strong>Cons</strong>: Not universally supported (yet), requires fallbacks for older browsers",
-            "<strong>Best for</strong>: Modern websites where you can provide fallbacks, any use case really!"
+            "<strong>Плюси</strong>: менший розмір файлу, підтримує все (стиснення з втратами й без, прозорість, анімацію), відмінне співвідношення якості й розміру",
+            "<strong>Мінуси</strong>: поки підтримується не всюди, потребує резервних варіантів для старих браузерів",
+            "<strong>Найкраще для</strong>: сучасних сайтів, де можна передбачити резервний варіант, — та практично для будь-якого завдання!"
           ]
         },
-        "example": "Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️",
-        "quote": "\"Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses.\" ⚔️"
+        "example": "Ось швидкий приклад із реального життя: фото 1920x1080 може важити 500 КБ у JPG, 2 МБ у PNG, але лише 350 КБ у WebP — за практично ідентичної візуальної якості. Це як отримати люксовий автомобіль за ціною компактного! 🏎️",
+        "quote": "«Обирайте формат так, як самурай обирає меч, — усвідомлено, точно, розуміючи його сильні та слабкі сторони». ⚔️"
       },
       "choosing": {
-        "title": "How Do I Know When to Use One Format Over Another?",
-        "intro": "This is where the rubber meets the road! 🏁 Choosing the right format isn't rocket science, but it does require thinking like a detective. Let me break down the decision-making process with some real-world scenarios that'll make you go \"Aha!\" 💡",
+        "title": "Як зрозуміти, коли використовувати той чи інший формат?",
+        "intro": "Ось тут теорія й зустрічається з практикою! 🏁 Вибір правильного формату — не ракетобудування, але потребує мислення детектива. Розберімо процес ухвалення рішення на реальних прикладах, які змусять вас вигукнути «Ага!». 💡",
         "decisionTree": {
-          "title": "The Quick Decision Tree (Screenshot This! 📸)",
-          "lead": "Ask yourself these questions in order:",
+          "title": "Швидке дерево рішень (зробіть скриншот! 📸)",
+          "lead": "Поставте собі ці запитання по порядку:",
           "items": [
-            "Does it need transparency? → If yes, PNG or WebP",
-            "Is it a photograph with lots of colors and gradients? → JPG or WebP",
-            "Does it have text or sharp edges? → PNG or WebP",
-            "Do I need the absolute smallest file size? → WebP (with JPG/PNG fallback)",
-            "Is it going to be edited and saved multiple times? → PNG (to avoid quality degradation)"
+            "Чи потрібна прозорість? → Якщо так, PNG або WebP",
+            "Це фотографія з великою кількістю кольорів і градієнтів? → JPG або WebP",
+            "Чи є текст або чіткі межі? → PNG або WebP",
+            "Чи потрібен максимально малий розмір файлу? → WebP (із резервним варіантом у JPG/PNG)",
+            "Файл буде редагуватися й зберігатися кілька разів? → PNG (щоб уникнути втрати якості)"
           ]
         },
         "scenarios": {
-          "title": "Real-World Scenarios (Because Theory is Boring 😴)",
+          "title": "Реальні сценарії (бо теорія — це нудно 😴)",
           "items": [
             {
-              "title": "Scenario 1: Your Company Logo",
-              "body": "You've got a slick logo that needs to work on any background. This is PNG territory all day! Why? You need that transparency, baby! Plus, logos typically have clean lines and solid colors that PNG handles like a boss. If you're feeling adventurous and your analytics show most users have modern browsers, go WebP with PNG fallback."
+              "title": "Сценарій 1: логотип вашої компанії",
+              "body": "У вас є стильний логотип, який має працювати на будь-якому фоні. Це територія PNG на всі сто! Чому? Вам потрібна ця прозорість, крихітко! До того ж логотипи зазвичай мають чіткі лінії та суцільні кольори, з якими PNG справляється чудово. Якщо хочете ризикнути й аналітика показує, що в більшості користувачів сучасні браузери, — використовуйте WebP із резервним варіантом у PNG."
             },
             {
-              "title": "Scenario 2: Hero Image on Your Landing Page",
-              "body": "That gorgeous 4K photograph of your product/team/artisanal coffee? JPG or WebP, no question. The slight quality loss from JPG compression is invisible in photographs, and the file size difference is *chef's kiss* 👨‍🍳. A 5MB PNG photo will make your users cry (and bounce), while a 500KB JPG will load faster than they can say \"add to cart.\""
+              "title": "Сценарій 2: головне зображення на посадковій сторінці",
+              "body": "Те розкішне 4K-фото вашого продукту/команди/ремісничої кави? JPG або WebP, жодних сумнівів. Невелика втрата якості від стиснення JPG непомітна на фотографіях, а різниця в розмірі файлу — це просто *пальчики оближеш* 👨‍🍳. 5-мегабайтне PNG-фото змусить користувачів плакати (і йти геть), а 500-кілобайтний JPG завантажиться швидше, ніж вони встигнуть сказати «додати в кошик»."
             },
             {
-              "title": "Scenario 3: Screenshots for Your Blog/Documentation",
-              "body": "This one's tricky! If there's text in the screenshot (and there usually is), PNG is your friend. JPG will make that text look like it went through a blender. However, if you're taking screenshots on a Mac, those bad boys can be HUGE. Consider using WebP or optimizing your PNGs with tools like TinyPNG."
+              "title": "Сценарій 3: скриншоти для блогу/документації",
+              "body": "Тут усе не так просто! Якщо на скриншоті є текст (а він зазвичай є), PNG — ваш друг. JPG перетворить цей текст на кашу. Однак якщо ви робите скриншоти на Mac, ці файли можуть бути ОГРОМНИМИ. Спробуйте WebP або оптимізуйте PNG інструментами на кшталт TinyPNG."
             },
             {
-              "title": "Scenario 4: Product Images for E-commerce",
-              "body": "WebP with JPG fallback is the power move here. 🎯 You get smaller file sizes (faster load times = better conversions), great quality, and you can even add subtle transparency effects if needed. Just make sure to implement proper fallbacks for the Safari-on-iPhone crowd."
+              "title": "Сценарій 4: зображення товарів для інтернет-магазину",
+              "body": "WebP із резервним варіантом у JPG — безпрограшний хід. 🎯 Ви отримуєте менший розмір файлу (швидше завантаження = більше конверсій), відмінну якість і навіть можете додати легкі ефекти прозорості за потреби. Просто не забудьте про резервні варіанти для користувачів Safari на iPhone."
             }
           ]
         },
         "proTips": {
-          "title": "Pro Tips from the Trenches 🪖",
+          "title": "Поради бувалих 🪖",
           "items": [
-            "Always compress your images! Even if you choose the right format, an unoptimized PNG can still be a monster",
-            "Use responsive images with different sizes for different devices (your mobile users will thank you)",
-            "Consider using CDNs that can automatically serve WebP to supported browsers",
-            "When in doubt, test both formats and see which looks better at a reasonable file size"
+            "Завжди стискайте зображення! Навіть правильний формат без оптимізації може важити як монстр",
+            "Використовуйте адаптивні зображення різних розмірів для різних пристроїв (мобільні користувачі скажуть вам спасибі)",
+            "Розгляньте CDN, які автоматично віддають WebP браузерам, що його підтримують",
+            "Якщо сумніваєтеся — протестуйте обидва формати й подивіться, який виглядає краще за розумного розміру файлу"
           ]
         },
-        "quote": "\"The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves.\" 🧘‍♂️"
+        "quote": "«Справжній веброзробник обирає не той формат, що виглядає гарніше, а той, що краще служить користувачу, — адже, служачи іншим, ми вдосконалюємо себе». 🧘‍♂️"
       },
       "whyImportant": {
-        "title": "Why Is This Even Important For My Website?",
-        "intro": "Okay, real talk time. 💯 You might be thinking, \"Come on, it's 2025, everyone has fast internet now, right?\" WRONG! Let me hit you with some truth bombs that'll make you want to optimize every image on your site immediately. 💣",
+        "title": "Чому це взагалі важливо для мого сайту?",
+        "intro": "Гаразд, час серйозної розмови. 💯 Ви, напевно, думаєте: «Та ну, зараз 2025 рік, у всіх швидкий інтернет, хіба ні?» НЕПРАВДА! Зараз я закидаю вас правдою, після якої захочеться негайно оптимізувати всі зображення на сайті. 💣",
         "loadTimes": {
-          "title": "The Brutal Reality of Page Load Times",
-          "p1": "Here's a stat that'll make your jaw drop: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load</strong>. THREE. SECONDS. 😱 And guess what's usually the biggest culprit? Yep, those chunky, unoptimized images you uploaded straight from your camera.",
-          "p2": "Let's do some quick math (don't worry, I'll keep it simple):",
+          "title": "Сувора реальність часу завантаження сторінок",
+          "p1": "Ось статистика, від якої відвисає щелепа: <strong>53% мобільних користувачів залишають сайти, які вантажаться довше 3 секунд</strong>. ТРИ. СЕКУНДИ. 😱 І вгадайте, хто зазвичай головний винуватець? Так, ті самі важкі неоптимізовані зображення, завантажені прямо з камери.",
+          "p2": "Порахуємо трохи (не хвилюйтеся, буде просто):",
           "items": [
-            "Average webpage: 2-3MB total",
-            "Unoptimized hero image: 5MB",
-            "Result: Your page just became slower than a sloth on sedatives 🦥"
+            "Середня вебсторінка: 2–3 МБ загалом",
+            "Неоптимізоване головне зображення: 5 МБ",
+            "Результат: ваша сторінка щойно стала повільнішою за лінивця під заспокійливим 🦥"
           ]
         },
         "seo": {
-          "title": "The SEO Domino Effect 🎯",
-          "intro": "Google's Core Web Vitals (fancy term for \"does your site load fast?\") directly impact your search rankings. Here's the chain reaction:",
+          "title": "Ефект доміно для SEO 🎯",
+          "intro": "Core Web Vitals від Google (модний термін для «чи швидко вантажиться ваш сайт?») напряму впливає на позиції в пошуку. Ось ланцюгова реакція:",
           "items": [
-            "Heavy images → Slow load times",
-            "Slow load times → Poor Core Web Vitals scores",
-            "Poor scores → Lower search rankings",
-            "Lower rankings → Less traffic",
-            "Less traffic → Less money 💸"
+            "Важкі зображення → повільне завантаження",
+            "Повільне завантаження → погані показники Core Web Vitals",
+            "Погані показники → нижчі позиції в пошуку",
+            "Нижчі позиції → менше трафіку",
+            "Менше трафіку → менше грошей 💸"
           ],
-          "outro": "It's like a really expensive game of dominoes where every piece that falls costs you customers!"
+          "outro": "Це як дуже дорога гра в доміно, де кожна кісточка, що падає, коштує вам клієнтів!"
         },
         "mobile": {
-          "title": "The Mobile Reality Check 📱",
-          "p1": "Here's something that might surprise you: In many parts of the world, people are browsing on 3G connections or have data caps. That beautiful 10MB PNG hero image? It just cost someone in India half their daily data allowance. Not cool, and definitely not good for business.",
-          "p2": "Plus, even in countries with \"fast\" internet, people are often on spotty coffee shop WiFi or riding the subway. Your unoptimized images are literally making people close your site and go to your competitor. Ouch! 🤕"
+          "title": "Перевірка мобільної реальності 📱",
+          "p1": "Ось дещо, що може вас здивувати: у багатьох регіонах світу люди користуються інтернетом через 3G або з обмеженим пакетом даних. Те гарне 10-мегабайтне PNG-зображення? Воно щойно коштувало комусь в Індії половини денного ліміту трафіку. Не круто й точно не добре для бізнесу.",
+          "p2": "Більше того, навіть у країнах зі «швидким» інтернетом люди часто сидять на нестабільному Wi-Fi у кав'ярні або в метро. Ваші неоптимізовані зображення буквально змушують людей закривати ваш сайт і йти до конкурентів. Прикро! 🤕"
         },
         "money": {
-          "title": "The Money Talk (Because Let's Be Honest, That's What Matters) 💰",
+          "title": "Розмова про гроші (бо давайте начистоту, ось що справді важливо) 💰",
           "items": [
-            "<strong>Amazon found that every 100ms of latency cost them 1% in sales</strong>",
-            "<strong>Pinterest increased search engine traffic and sign-ups by 15% when they reduced perceived wait times by 40%</strong>",
-            "<strong>Walmart saw a 2% increase in conversions for every 1 second of improvement in load time</strong>"
+            "<strong>Amazon з'ясував, що кожні 100 мс затримки коштували їм 1% продажів</strong>",
+            "<strong>Pinterest збільшив трафік із пошукових систем і кількість реєстрацій на 15%, скоротивши сприйманий час очікування на 40%</strong>",
+            "<strong>Walmart фіксував зростання конверсії на 2% на кожну секунду прискорення завантаження</strong>"
           ],
-          "outro": "Still think image optimization doesn't matter? 🤔"
+          "outro": "Усе ще думаєте, що оптимізація зображень не важлива? 🤔"
         },
         "horrorStory": {
-          "title": "Real-World Horror Story 🎃",
-          "body": "I once worked with a client whose beautiful photography portfolio site was getting almost no traffic. The culprit? Each image was a 15-20MB PNG straight from Photoshop. The homepage took 45 seconds to load on a good day. After optimizing (converting to JPG, proper sizing, lazy loading), load time dropped to 2 seconds. Traffic increased by 70% in one month. True story!"
+          "title": "Історія з реального життя, повна жахів 🎃",
+          "body": "Одного разу я працював із клієнтом, чий гарний сайт-портфоліо фотографа майже не отримував трафіку. Причина? Кожне зображення було 15–20-мегабайтним PNG прямо з Photoshop. Головна сторінка вантажилася 45 секунд у кращому разі. Після оптимізації (конвертація в JPG, правильний розмір, лінива загрузка) час завантаження впав до 2 секунд. Трафік зріс на 70% за місяць. Реальна історія!"
         },
         "trust": {
-          "title": "The Trust Factor 🤝",
-          "intro": "Slow websites don't just lose customers - they lose credibility. Users subconsciously associate slow load times with:",
+          "title": "Фактор довіри 🤝",
+          "intro": "Повільні сайти втрачають не лише клієнтів — вони втрачають довіру. Користувачі підсвідомо пов'язують повільне завантаження з:",
           "items": [
-            "Outdated technology",
-            "Lack of attention to detail",
-            "Unprofessionalism",
-            "Security concerns (yes, really!)"
+            "застарілими технологіями",
+            "неуважністю до деталей",
+            "непрофесіоналізмом",
+            "проблемами з безпекою (так, справді!)"
           ],
-          "outro": "Your image choices are literally affecting how trustworthy people think you are. Wild, right?"
+          "outro": "Те, які зображення ви обираєте, буквально впливає на те, наскільки вам довіряють. Дико, правда?"
         },
-        "quote": "\"A website's speed is like a first impression - you never get a second chance to load quickly.\" ⚡"
+        "quote": "«Швидкість сайту — як перше враження: другого шансу швидко завантажитися вже не буде». ⚡"
       },
       "conclusion": {
-        "title": "Conclusion",
-        "intro": "Alright, my fellow Web Jedis, we've been on quite the journey! 🚀 From understanding the DNA of image formats to seeing how they can literally make or break your website's success. Let's recap the superpowers you've just unlocked:",
+        "title": "Висновок",
+        "intro": "Отже, дорогі веб-джедаї, ми пройшли неабиякий шлях! 🚀 Від розуміння «ДНК» форматів зображень до того, як вони буквально можуть зробити або зруйнувати успіх вашого сайту. Згадаймо суперздібності, які ви щойно отримали:",
         "tldr": {
-          "title": "The TL;DR Version (For Those Who Scrolled Here First 😏)",
+          "title": "Версія TL;DR (для тих, хто одразу прогорнув сюди 😏)",
           "items": [
-            "<strong>JPG</strong>: Your go-to for photos. Small files, great quality, but no transparency",
-            "<strong>PNG</strong>: The perfectionist for logos, graphics, and anything with text. Bigger files but pixel-perfect",
-            "<strong>WebP</strong>: The Swiss Army knife that does it all, just needs fallbacks for older browsers"
+            "<strong>JPG</strong>: ваш вибір номер один для фотографій. Маленькі файли, чудова якість, але без прозорості",
+            "<strong>PNG</strong>: перфекціоніст для логотипів, графіки й усього з текстом. Файли більші, зате піксель у піксель",
+            "<strong>WebP</strong>: швейцарський ніж, який уміє все, просто потрібні резервні варіанти для старих браузерів"
           ]
         },
         "actionPlan": {
-          "title": "Your Action Plan (Do These TODAY!) ✅",
+          "title": "Ваш план дій (зробіть це СЬОГОДНІ!) ✅",
           "items": [
-            "<strong>Audit your current images</strong> - Open your website right now and check those file sizes. I'll wait... Scary, right? 😱",
-            "<strong>Set up an optimization workflow</strong> - Whether it's using tools like TinyPNG, ImageOptim, or good ol' ffmpeg (shameless plug for my other article 😉), make optimization part of your process",
-            "<strong>Implement WebP with fallbacks</strong> - It's 2025, time to give your users that next-gen experience",
-            "<strong>Test your load times</strong> - Use Google's PageSpeed Insights and watch those scores soar",
-            "<strong>Set up responsive images</strong> - Different sizes for different devices = happy users everywhere"
+            "<strong>Перевірте свої поточні зображення</strong> — відкрийте сайт прямо зараз і подивіться на розміри файлів. Я почекаю... Страшнувато, правда? 😱",
+            "<strong>Налаштуйте процес оптимізації</strong> — чи то TinyPNG, ImageOptim, чи старий добрий ffmpeg (безсоромна реклама моєї іншої статті 😉) — зробіть оптимізацію частиною свого робочого процесу",
+            "<strong>Впровадьте WebP із резервними варіантами</strong> — на дворі 2025 рік, час дати користувачам досвід нового покоління",
+            "<strong>Перевірте час завантаження</strong> — використовуйте Google PageSpeed Insights і спостерігайте, як зростають показники",
+            "<strong>Налаштуйте адаптивні зображення</strong> — різні розміри для різних пристроїв = задоволені користувачі всюди"
           ]
         },
         "bigPicture": {
-          "title": "The Bigger Picture 🖼️",
-          "p1": "Remember, optimizing your images isn't just about technical SEO scores or saving bandwidth (though those are awesome bonuses!). It's about respecting your users' time, data, and experience. Every second you shave off your load time is a second you're giving back to someone's day. That's pretty powerful when you think about it! 💪",
-          "p2": "Plus, let's be real - faster websites make more money. It's not rocket science, it's just good business. Your optimized images are literally increasing your bottom line while making the web a better place. You're basically a superhero now! 🦸‍♀️🦸‍♂️"
+          "title": "Ширша картина 🖼️",
+          "p1": "Пам'ятайте: оптимізація зображень — це не лише про технічні показники SEO чи економію трафіку (хоча це чудові бонуси!). Це про повагу до часу, даних і досвіду ваших користувачів. Кожна заощаджена секунда завантаження — це секунда, яку ви повертаєте чиємусь дню. Якщо замислитися, це доволі потужна річ! 💪",
+          "p2": "До того ж, будьмо чесними — швидші сайти приносять більше грошей. Це не ракетобудування, це просто хороший бізнес. Ваші оптимізовані зображення буквально збільшують ваш прибуток, роблячи водночас веб кращим. Тепер ви практично супергерой! 🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
-          "title": "One Final Challenge 🎯",
-          "p1": "Here's my challenge to you: Take the slowest-loading page on your website and optimize just the images. Nothing else. I guarantee you'll see at least a 50% improvement in load time. Share your before/after results in the comments - I love a good optimization success story!",
-          "p2": "Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨"
+          "title": "Останній виклик 🎯",
+          "p1": "Ось вам виклик: візьміть найповільнішу сторінку на вашому сайті й оптимізуйте лише зображення. Більше нічого. Гарантую, ви побачите покращення часу завантаження щонайменше на 50%. Поділіться результатами «до і після» в коментарях — обожнюю хороші історії успіху в оптимізації!",
+          "p2": "Пам'ятайте: у світі веброзробки найкращий код — швидкий код, а найкращі зображення — оптимізовані зображення. Тепер вперед, стискайте! Нехай ваші зображення будуть маленькими, а час завантаження — ще меншим! 🚀✨"
         },
-        "quote": "\"The journey of a thousand optimizations begins with a single compressed image.\" 🏔️"
+        "quote": "«Шлях тисячі оптимізацій починається з одного стисненого зображення». 🏔️"
       }
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the techniques from this guide in the free Media Manipulator image tools.",
+      "title": "Схожі інструменти",
+      "intro": "Застосуйте техніки з цього посібника в безкоштовних інструментах Media Manipulator для роботи із зображеннями.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "Конвертер зображень",
+          "description": "Конвертуйте між JPG, PNG, WebP, AVIF, GIF та іншими форматами."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "Конвертувати WebP у JPG",
+          "description": "Отримайте широко сумісний JPG із джерела у WebP."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "Видалення метаданих EXIF",
+          "description": "Видаляйте дані про GPS, пристрій і час зйомки перед публікацією фотографій."
         },
         {
-          "label": "Image converter tutorial",
-          "description": "Full walkthrough of every setting in the image converter."
+          "label": "Посібник із конвертера зображень",
+          "description": "Повний огляд усіх налаштувань конвертера зображень."
         },
         {
-          "label": "Video compression guide",
-          "description": "Apply the same optimization mindset to video files."
+          "label": "Посібник зі стиснення відео",
+          "description": "Застосуйте той самий підхід до оптимізації для відеофайлів."
         },
         {
-          "label": "Audio quality guide",
-          "description": "Pick the right audio bitrate, sample rate, and codec."
+          "label": "Посібник із якості звуку",
+          "description": "Оберіть правильний бітрейт, частоту дискретизації та кодек для аудіо."
         }
       ]
     },
     "footer": {
-      "title": "Time to Become an Image Optimization Jedi! 🌟",
-      "body": "Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!",
-      "ctaLabel": "Open the image converter →",
-      "disclaimer": "No signup required • Process files locally • Fast & secure"
+      "title": "Час стати джедаєм оптимізації зображень! 🌟",
+      "body": "Готові перетворити свої важкі PNG на блискавичні WebP? Наш безкоштовний конвертер зображень підтримує JPG, PNG, WebP, GIF та інші формати. Оптимізуйте зображення за секунди й спостерігайте, як ваш сайт літає!",
+      "ctaLabel": "Відкрити конвертер зображень →",
+      "disclaimer": "Реєстрація не потрібна • Обробка локально • Швидко та безпечно"
     }
   },
   "blogAudioQuality": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← Блог"
     },
     "header": {
-      "title": "The Sound of <strike>Silence</strike> Quality: Bitrates, Sample Rates, and Formats",
-      "byline": "Written by:",
-      "dateDisplay": "June 14th, 2025",
-      "timeDisplay": "10:08 PM"
+      "title": "Якість <strike>тиші</strike> звуку: бітрейти, частота дискретизації та формати",
+      "byline": "Автор:",
+      "dateDisplay": "14 червня 2025 р.",
+      "timeDisplay": "22:08"
     },
     "intro": {
-      "title": "A Brief Intro to Audio Formats, Bitrates, and Sample Rates",
-      "p1": "Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's \"high-quality\" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:",
+      "title": "Короткий вступ до аудіоформатів, бітрейтів і частоти дискретизації",
+      "p1": "Чи цікавилися ви коли-небудь, чому завантажений подкаст звучить кристально чисто при розмірі 50 МБ, а «якісний» музичний файл вашого друга звучить так, ніби його записали під водою, хоча важить лише 3 МБ? А може, ви помічали, що:",
       "bullets": [
-        "Your website's background music takes forever to load, even though it's only 30 seconds long",
-        "That audio file you converted sounds like someone's playing it through a tin can",
-        "You're trying to add voice-overs to your video content but the file sizes are absolutely massive",
-        "Your carefully crafted sound effects library is eating up all your cloud storage",
-        "You downloaded the same song from different sources and they all sound wildly different"
+        "Фонова музика на вашому сайті вантажиться цілу вічність, хоча триває лише 30 секунд",
+        "Аудіофайл, який ви сконвертували, звучить так, ніби його програють через консервну банку",
+        "Ви намагаєтеся додати закадровий голос до відео, а розмір файлів виходить просто величезним",
+        "Ваша ретельно зібрана бібліотека звукових ефектів з'їдає все хмарне сховище",
+        "Ви завантажили одну й ту саму пісню з різних джерел, і вони звучать зовсім по-різному"
       ],
-      "p2": "If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!",
-      "p3": "Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.",
-      "p4": "In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯",
-      "quote": "\"The ear is the avenue to the heart.\" – Voltaire"
+      "p2": "Якщо ви стикалися з чимось із цих аудіопригод (або злопригод 😅), пристебніться — зараз ми розберемося зі світом аудіоформатів, бітрейтів і частоти дискретизації!",
+      "p3": "Уявіть аудіофайли як каву ☕ — є розчинна кава (MP3 із низьким бітрейтом), звичайна кава з фільтра (аудіо стандартної якості) і кава з навороченої еспресо-машини (lossless-файли FLAC). Це все кава, але враження? Абсолютно різне. І так само, як ви не подасте розчинну каву в дорогій кав'ярні, не варто використовувати неякісні аудіофайли на професійному сайті.",
+      "p4": "У цій статті ми розберемо, що насправді означають ці загадкові цифри й формати, чому вони важливі більше, ніж ви могли подумати, і як правильне поєднання може вирішити, чи залишаться відвідувачі вашого сайту, чи натиснуть ту саму кнопку «назад». 🎯",
+      "quote": "«Вухо — шлях до серця». — Вольтер"
     },
     "difference": {
-      "title": "What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?",
-      "p1": "Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧",
-      "formatsLead": "<strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:",
+      "title": "У чому різниця між форматами, бітрейтами та частотою дискретизації?",
+      "p1": "Гаразд, розберімо це так, ніби пояснюємо нетехнічному другові, який просто хоче, щоб його подкаст звучав добре! 🎧",
+      "formatsLead": "<strong>Аудіоформати</strong> — це як контейнери: думайте про них як про різні види коробок, у які можна упакувати звук. Ось основні:",
       "formatsBullets": [
-        "<strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit",
-        "<strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton",
-        "<strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside",
-        "<strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty",
-        "<strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it"
+        "<strong>MP3</strong>: надійна картонна коробка. Справляється із завданням, приймається всюди, але трохи стискає вміст",
+        "<strong>WAV</strong>: міцний сталевий контейнер. Зберігає все ідеально, але важить тонну",
+        "<strong>AAC</strong>: модна сучасна коробка з покращеною технологією пакування. Той самий розмір, що й у MP3, але якості всередині більше",
+        "<strong>FLAC</strong>: вакуумна упаковка. Стискає без втрат, але все ще доволі важка",
+        "<strong>OGG</strong>: коробка з відкритим вихідним кодом для бунтарів — працює чудово, але відкрити її вміє не кожен"
       ],
-      "bitrateLead": "<strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:",
+      "bitrateLead": "<strong>Бітрейт</strong> — це кількість даних, що проходять за секунду: уявіть водопровідну трубу. Вищий бітрейт = більша труба = більше аудіоінформації проходить через неї:",
       "bitrateBullets": [
-        "<strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)",
-        "<strong>128 kbps</strong>: Standard faucet (decent for casual listening)",
-        "<strong>256 kbps</strong>: Fire hose (great quality for most people)",
-        "<strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)",
-        "<strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿"
+        "<strong>64 кбіт/с</strong>: садовий шланг (нормально для розмовного радіо, жахливо для музики)",
+        "<strong>128 кбіт/с</strong>: стандартний кран (непогано для повсякденного прослуховування)",
+        "<strong>256 кбіт/с</strong>: пожежний шланг (відмінна якість для більшості людей)",
+        "<strong>320 кбіт/с</strong>: промислова труба (максимальна якість для MP3)",
+        "<strong>1411 кбіт/с</strong>: Ніагарський водоспад (нестиснена якість CD) 💿"
       ],
-      "sampleRateLead": "<strong>Sample Rate</strong> is how many times per second we take a \"snapshot\" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):",
+      "sampleRateLead": "<strong>Частота дискретизації</strong> — це скільки разів за секунду ми робимо «знімок» звукової хвилі. Вимірюється в Гц (герцах) або кГц (кілогерцах):",
       "sampleRateBullets": [
-        "<strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy",
-        "<strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear",
-        "<strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)",
-        "<strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)"
+        "<strong>22 050 Гц</strong>: як дивитися фільм на 15 кадрах за секунду — працює, але сіпано",
+        "<strong>44 100 Гц</strong>: золота середина — якість CD, вловлює все, що здатна почути людина",
+        "<strong>48 000 Гц</strong>: професійний відеостандарт (бо математика і синхронізація 🤓)",
+        "<strong>96 000 Гц</strong> і вище: для аудіофілів і собак (серйозно, людина різниці не почує)"
       ],
-      "p2": "Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯",
-      "quote": "\"To understand the whole, you must first understand the parts.\" – Aristotle"
+      "p2": "А тепер найцікавіше — ці три друзі працюють разом! У вас може бути WAV-файл (формат) на 44,1 кГц (частота дискретизації) із бітрейтом 1411 кбіт/с. Або MP3 (формат) на 44,1 кГц (частота дискретизації), але лише 128 кбіт/с (бітрейт). Та сама частота дискретизації, абсолютно різна якість! 🤯",
+      "quote": "«Щоб зрозуміти ціле, потрібно спершу зрозуміти частини». — Аристотель"
     },
     "usage": {
-      "title": "How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?",
-      "p1": "Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?",
+      "title": "Як зрозуміти, який формат використовувати, і до чого тут бітрейт і частота дискретизації?",
+      "p1": "Час серйозної розмови! 💪 Підберімо відповідну зв'язку формату під ваші завдання. Це як вибір вбрання під різні випадки — ви ж не одягнете смокінг у спортзал, правда?",
       "background": {
-        "title": "For Background Music on Websites:",
+        "title": "Для фонової музики на сайтах:",
         "bullets": [
-          "<strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth",
-          "<strong>File size</strong>: ~1MB per minute (your visitors will thank you!)"
+          "<strong>Використовуйте</strong>: MP3 або AAC на 128–192 кбіт/с, 44,1 кГц",
+          "<strong>Чому</strong>: вантажиться швидко, звучить достатньо добре для атмосфери, не витрачає трафік",
+          "<strong>Розмір файлу</strong>: ~1 МБ за хвилину (ваші відвідувачі скажуть вам спасибі!)"
         ]
       },
       "podcasts": {
-        "title": "For Podcasts & Voice Content:",
+        "title": "Для подкастів і голосового контенту:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)",
-          "<strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size",
-          "<strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄"
+          "<strong>Використовуйте</strong>: MP3 на 64–96 кбіт/с, моно, 44,1 кГц (або 22,05 кГц, якщо розмір файлу критичний)",
+          "<strong>Чому</strong>: людському мовленню не потрібен високий бітрейт, моно економить 50% розміру файлу",
+          "<strong>Порада</strong>: нікому не потрібно чути ваше дихання в стерео 😄"
         ]
       },
       "streaming": {
-        "title": "For Music Streaming/Downloads:",
+        "title": "Для музичного стримінгу та завантаження:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz",
-          "<strong>Why</strong>: The sweet spot between quality and file size",
-          "<strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps"
+          "<strong>Використовуйте</strong>: MP3 на 256–320 кбіт/с або AAC на 256 кбіт/с, 44,1 кГц",
+          "<strong>Чому</strong>: золота середина між якістю та розміром файлу",
+          "<strong>Реальність така</strong>: більшість людей не чують різниці між 256 і 320 кбіт/с"
         ]
       },
       "previews": {
-        "title": "For Audio Previews & Samples:",
+        "title": "Для аудіопрев'ю та семплів:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Quick loading, good enough for \"try before you buy\"",
-          "<strong>Smart move</strong>: Save the high-quality files for paying customers 💰"
+          "<strong>Використовуйте</strong>: MP3 на 96–128 кбіт/с, 44,1 кГц",
+          "<strong>Чому</strong>: швидке завантаження, достатньо добре для принципу «спробуй перед покупкою»",
+          "<strong>Розумний хід</strong>: збережіть файли високої якості для клієнтів, що платять 💰"
         ]
       },
       "archival": {
-        "title": "For Professional/Archival:",
+        "title": "Для професійного використання та архівування:",
         "bullets": [
-          "<strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)",
-          "<strong>Why</strong>: Future-proof, perfect for editing, no quality loss",
-          "<strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!"
+          "<strong>Використовуйте</strong>: FLAC або WAV на максимальному бітрейті, 48 кГц (або відповідно до вашого відеостандарту)",
+          "<strong>Чому</strong>: перспективно на майбутнє, ідеально для монтажу, без втрати якості",
+          "<strong>Попередження</strong>: ці файли ОГРОМНІ — йдеться про 10 МБ за хвилину!"
         ]
       },
       "decisionTree": {
-        "title": "Quick Decision Tree:",
-        "content": "Is it voice only? → MP3 at 64-96 kbps\nIs loading speed critical? → MP3/AAC at 128 kbps max\nNeed perfect quality? → FLAC/WAV\nRegular music for web? → MP3/AAC at 192-256 kbps"
+        "title": "Швидке дерево рішень:",
+        "content": "Це лише голос? → MP3 на 64–96 кбіт/с\nШвидкість завантаження критична? → MP3/AAC на 128 кбіт/с максимум\nПотрібна ідеальна якість? → FLAC/WAV\nЗвичайна музика для сайту? → MP3/AAC на 192–256 кбіт/с"
       },
-      "ninjaTip": "Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy \"audio enhancer\" ads claim).",
-      "realWorldExample": "<strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.",
-      "quote": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\" – Antoine de Saint-Exupéry"
+      "ninjaTip": "Ось вам порада ніндзя 🥷: завжди починайте з вихідного файлу максимально високої якості, а потім стискайте. Ви завжди можете піти від WAV → MP3, але не зможете магічно повернути якість, ідучи від MP3 → WAV (що б не стверджувала реклама сумнівних «покращувачів звуку»).",
+      "realWorldExample": "<strong>Реальний приклад</strong>: у мене був клієнт, чий медитативний застосунок використовував WAV-файли для керованих сесій. Кожна 10-хвилинна сесія важила 100 МБ! 😱 Ми сконвертували їх у моно MP3 на 96 кбіт/с, знизивши розмір до 7 МБ кожен, і буквально ніхто не поскаржився на якість. Кількість завантажень застосунку зросла на 40% просто тому, що він перестав бути пожирачем пам'яті.",
+      "quote": "«Досконалість досягається не тоді, коли нічого додати, а коли нічого забрати». — Антуан де Сент-Екзюпері"
     },
     "importance": {
-      "title": "Why Is This Even Important for My Website?",
-      "p1": "Okay, so you might be thinking, \"Cool audio facts, bro, but why should I care?\" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸",
+      "title": "Чому це взагалі важливо для вашого сайту?",
+      "p1": "Гаразд, ви, напевно, думаєте: «Класні факти про аудіо, але до чого тут я?» Що ж, тримайтеся за навушники, бо зараз почнеться найважливіше для вашого прибутку! 💸",
       "pageLoadSpeed": {
-        "title": "Page Load Speed = Money",
-        "lead": "Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:",
+        "title": "Швидкість завантаження сторінки = гроші",
+        "lead": "Google ясно дав зрозуміти: повільні сайти штрафуються в пошуковій видачі. Кожна секунда завантаження може коштувати вам:",
         "bullets": [
-          "<strong>7% decrease</strong> in conversions",
-          "<strong>11% fewer</strong> page views",
-          "<strong>16% decrease</strong> in customer satisfaction"
+          "<strong>Зниження конверсій на 7%</strong>",
+          "<strong>На 11% менше</strong> переглядів сторінок",
+          "<strong>Зниження задоволеності клієнтів на 16%</strong>"
         ],
-        "outro": "That innocent 50MB background music file? It's literally costing you customers! 😱"
+        "outro": "Той безневинний 50-мегабайтний файл фонової музики? Він буквально коштує вам клієнтів! 😱"
       },
       "mobileReality": {
-        "title": "The Mobile Reality Check",
-        "p": "Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)"
+        "title": "Реальність мобільних користувачів",
+        "p": "Цікавий факт: наразі понад 60% веб-трафіку припадає на мобільні пристрої. Знаєте, що обожнюють мобільні користувачі? Витрачати свій обмежений тарифний план на завантаження ваших нестиснених аудіофайлів! (Спойлер: ні, не обожнюють. Вони відскочать від сайту швидше за гумовий м'яч від бетону.)"
       },
       "realNumbers": {
-        "title": "Real Numbers That'll Make You Sweat:",
-        "lead": "Let's say you have a landing page with:",
+        "title": "Реальні цифри, від яких кине в піт:",
+        "lead": "Припустимо, у вас є посадкова сторінка з:",
         "bullets": [
-          "30-second background music loop",
-          "2 product demo voice-overs (1 minute each)",
-          "5 sound effects for interactions"
+          "30-секундною петлею фонової музики",
+          "2 закадровими озвученнями для демо продукту (по 1 хвилині кожне)",
+          "5 звуковими ефектами для інтерактивних елементів"
         ],
-        "comparisonWav": "Using WAV files: <strong>~250MB total</strong> 😵",
-        "comparisonMp3": "Using optimized MP3s: <strong>~8MB total</strong> 🎉",
-        "outro": "That's a 97% reduction! Your hosting bill just breathed a sigh of relief."
+        "comparisonWav": "Використовуючи WAV-файли: <strong>~250 МБ загалом</strong> 😵",
+        "comparisonMp3": "Використовуючи оптимізовані MP3: <strong>~8 МБ загалом</strong> 🎉",
+        "outro": "Це скорочення на 97%! Ваш хостинг зітхне з полегшенням."
       },
       "trustFactor": {
-        "title": "The Trust Factor",
-        "lead": "Nothing screams \"amateur hour\" like:",
+        "title": "Фактор довіри",
+        "lead": "Ніщо так не кричить «аматорство», як:",
         "bullets": [
-          "Audio that takes forever to load",
-          "Stuttering playback",
-          "Quality so bad it sounds like a 1990s dial-up modem"
+          "Аудіо, яке вантажиться цілу вічність",
+          "Заїкання під час відтворення",
+          "Якість настільки погана, що звучить як модем dial-up із 1990-х"
         ],
-        "outro": "Professional audio quality = professional image = customer trust = 💰"
+        "outro": "Професійна якість звуку = професійний імідж = довіра клієнтів = 💰"
       },
       "seoVitals": {
-        "title": "SEO and Core Web Vitals",
-        "lead": "Google's Core Web Vitals specifically measure:",
+        "title": "SEO та Core Web Vitals",
+        "lead": "Core Web Vitals від Google вимірюють конкретно:",
         "bullets": [
-          "<strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this",
-          "<strong>FID (First Input Delay)</strong>: Large files blocking the main thread",
-          "<strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps"
+          "<strong>LCP (Largest Contentful Paint)</strong>: важкі аудіофайли уповільнюють цей показник",
+          "<strong>FID (First Input Delay)</strong>: великі файли блокують основний потік",
+          "<strong>CLS (Cumulative Layout Shift)</strong>: неправильно завантажені аудіоплеєри спричиняють стрибки макета"
         ],
-        "outro": "Translation: Bad audio optimization = bad SEO = less organic traffic = less money."
+        "outro": "Переклад: погана оптимізація звуку = погане SEO = менше органічного трафіку = менше грошей."
       },
       "moreReasons": {
-        "title": "But Wait, There's More!",
-        "lead": "(Said in my best infomercial voice 📺) Optimized audio also means:",
+        "title": "Але це ще не все!",
+        "lead": "(Голосом із рекламного ролика 📺) Оптимізований звук також означає:",
         "bullets": [
-          "Lower CDN costs",
-          "Happier users on slower connections",
-          "Better accessibility (properly compressed audio works better with screen readers)",
-          "Increased engagement (people actually stick around when things load fast)"
+          "Нижчі витрати на CDN",
+          "Більш задоволених користувачів на повільних з'єднаннях",
+          "Кращу доступність (правильно стиснене аудіо краще працює зі скрінрідерами)",
+          "Підвищену залученість (люди дійсно залишаються, коли все вантажиться швидко)"
         ],
-        "clientStory": "I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!"
+        "clientStory": "У мене був клієнт, чия платформа онлайн-навчання втрачала користувачів. Виявилося, аудіофайли курсів були настільки величезними, що студенти в сільській місцевості буквально не могли отримати доступ до контенту. Ми все оптимізували, скоротили розмір файлів на 85%, і показник завершення курсів зріс на 40% лише за два місяці!"
       },
-      "quote": "\"Time is money, and loading time is lost money.\" – Every Web Developer Ever"
+      "quote": "«Час — гроші, а час завантаження — втрачені гроші». — Кожен веброзробник коли-небудь"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):",
+      "title": "Висновок",
+      "p1": "Уф! 🎉 Ми щойно здійснили стрімкий тур по світу аудіоформатів, бітрейтів і частоти дискретизації. Згадаймо головне (так, тут теж каламбур 🎵):",
       "takeaways": {
-        "title": "The Big Takeaways:",
+        "title": "Головні висновки:",
         "bullets": [
-          "Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency",
-          "MP3 at 128-192 kbps is your web workhorse for most use cases",
-          "Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)",
-          "Every MB matters – optimized audio = faster loads = happier visitors = more money",
-          "Start with high quality, compress down (you can't enhance garbage into gold!)"
+          "Аудіоформати — це контейнери, бітрейт — це потік даних, а частота дискретизації — це частота «знімків»",
+          "MP3 на 128–192 кбіт/с — ваш робочий кінь для більшості випадків у вебі",
+          "Голосовий контент можна стискати сильніше (64–96 кбіт/с), музику — слабше (256+ кбіт/с)",
+          "Кожен мегабайт має значення — оптимізований звук = швидке завантаження = задоволені відвідувачі = більше грошей",
+          "Починайте з високої якості, а стискайте потім (ви не зможете перетворити сміття на золото!)"
         ]
       },
       "actionPlan": {
-        "title": "Your Action Plan:",
+        "title": "Ваш план дій:",
         "steps": [
-          "<strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)",
-          "<strong>Convert</strong> them using the guidelines we covered",
-          "<strong>Test</strong> your page load speeds before and after",
-          "<strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)"
+          "<strong>Проведіть аудит</strong> поточних аудіофайлів (готовий посперечатися, там знайдуться важкі WAV-файли 👀)",
+          "<strong>Сконвертуйте</strong> їх, дотримуючись розглянутих рекомендацій",
+          "<strong>Протестуйте</strong> швидкість завантаження сторінок до і після",
+          "<strong>Спостерігайте</strong>, як покращуються метрики (і, може, станцюйте переможний танець 💃)"
         ]
       },
-      "p2": "Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.",
-      "p3": "So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉",
-      "p4": "Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀",
-      "quote": "\"In the realm of digital content, the lightest footprint often leaves the deepest impression.\" – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)"
+      "p2": "Пам'ятайте: у цифровому світі звук може бути невидимим, але його вплив на продуктивність вашого сайту — далеко не невидимий. Ті мілісекунди, які ви заощаджуєте, оптимізуючи звук, безпосередньо перетворюються на кращий користувацький досвід, вищі позиції в пошуку та, зрештою, здоровіший прибуток.",
+      "p3": "Тож вперед, стискайте! Вуха ваших відвідувачів (і їхні інтернет-з'єднання) скажуть вам спасибі. І, до речі, якщо це було корисно, уявіть, що могла б дати правильна оптимізація зображень і відео... але це вже зовсім інша історія! 😉",
+      "p4": "Готові стати ніндзя аудіооптимізації? Трансформація продуктивності вашого сайту починається з першої конвертації файлу. Дійте! 🚀",
+      "quote": "«У світі цифрового контенту найлегший слід часто залишає найглибше враження». — Давнє веброзробницьке прислів'я (гаразд, я це вигадав, але це правда! 😄)"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the Media Manipulator audio tools and explore related guides.",
+      "title": "Схожі інструменти",
+      "intro": "Спробуйте аудіоінструменти Media Manipulator і вивчіть схожі посібники.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate."
+          "label": "Аудіоконвертер",
+          "description": "Конвертуйте WAV, MP3, FLAC, M4A, OGG та інші формати з настроюваним бітрейтом."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV files into widely playable MP3s."
+          "label": "Конвертувати WAV у MP3",
+          "description": "Зменшіть великі WAV-файли до широко підтримуваного MP3."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Pull vocals out of music tracks for remixes or analysis."
+          "label": "Виділити вокал із пісні",
+          "description": "Видобувайте вокал із музичних треків для реміксів або аналізу."
         },
         {
-          "label": "Audio converter tutorial",
-          "description": "Walk through every option including cleanup and vocal isolation."
+          "label": "Посібник з аудіоконвертера",
+          "description": "Пройдіть усі опції, зокрема очищення й виділення вокалу."
         },
         {
-          "label": "Video compression guide",
-          "description": "Pair good audio with optimized video encoding."
+          "label": "Посібник зі стиснення відео",
+          "description": "Поєднуйте якісний звук з оптимізованим відеокодуванням."
         },
         {
-          "label": "Image optimization guide",
-          "description": "Round out a fast site by also optimizing image files."
+          "label": "Посібник з оптимізації зображень",
+          "description": "Доповніть швидкий сайт оптимізацією файлів зображень."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Master Audio Optimization? 🎧",
-      "body": "Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!",
-      "buttonLabel": "Open the audio converter →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "Готові опанувати оптимізацію звуку? 🎧",
+      "body": "Перетворіть громіздкі WAV-файли на блискавичні MP3 і AAC! Наш безкоштовний аудіоконвертер підтримує всі основні формати з настроюваним бітрейтом і частотою дискретизації. Оптимізуйте аудіофайли й пришвидшіть свій сайт!",
+      "buttonLabel": "Відкрити аудіоконвертер →",
+      "footnote": "Реєстрація не потрібна • Обробка файлів локально • Швидко та безпечно"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Video Tutorial",
-    "title": "What Is AI Frame Interpolation?",
-    "intro": "AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.",
+    "eyebrow": "Відеоурок",
+    "title": "Що таке ШІ-інтерполяція кадрів?",
+    "intro": "ШІ-інтерполяція кадрів створює нові проміжні кадри відео, щоб рух відтворювався плавніше. У цьому посібнику пояснюється, як це працює, коли варто це використовувати, які в методу обмеження та як запустити його в Media Manipulator.",
     "toolPanel": {
-      "title": "Try AI frame interpolation without leaving this page",
-      "description": "Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+      "title": "Спробуйте ШІ-інтерполяцію кадрів, не покидаючи цю сторінку",
+      "description": "Виберіть відеофайл, прогорніть до панелі Інструменти ШІ для відео та виберіть ШІ-інтерполяцію кадрів. За замовчуванням на виході виходить плавніший MP4 із частотою 60fps."
     },
     "whatIs": {
-      "title": "1. What is frame interpolation?",
-      "intro": "Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:",
+      "title": "1. Що таке інтерполяція кадрів?",
+      "intro": "Інтерполяція кадрів збільшує частоту кадрів відео, вставляючи нові зображення між вихідними кадрами. Кліп із частотою 30fps містить 30 кадрів на секунду; подвоєння частоти кадрів означає створення ще 30 нових кадрів на секунду, які розташовуються між уже наявними. Існує кілька підходів:",
       "bullets": [
-        "<strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.",
-        "<strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.",
-        "<strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg's minterpolate).",
-        "<strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion."
+        "<strong>Дублювання кадрів</strong> — копіювання попереднього кадру, щоб рух виглядав так само, а частота відтворення відповідала цільовій.",
+        "<strong>Змішування кадрів</strong> — плавний перехід між двома сусідніми кадрами, що згладжує межу. Дешево, але результат розмитий.",
+        "<strong>Інтерполяція руху</strong> — оцінювання векторів руху та деформація кадрів уперед у часі (наприклад, minterpolate у FFmpeg).",
+        "<strong>ШІ-інтерполяція</strong> — нейромережа (наприклад, RIFE) передбачає проміжний кадр на основі двох реальних кадрів навколо нього. Зазвичай дає найчистіший результат для нежорсткого (пластичного) руху."
       ],
-      "outro": "Media Manipulator's AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server."
+      "outro": "Інструмент ШІ-інтерполяції кадрів у Media Manipulator використовує RIFE через rife-ncnn-vulkan на нашому власному GPU-сервері."
     },
     "whyUse": {
-      "title": "2. Why people use frame interpolation",
+      "title": "2. Навіщо потрібна інтерполяція кадрів",
       "bullets": [
-        "Smoother motion on modern displays and social platforms.",
-        "Lifting 24/30fps footage to 60fps.",
-        "Lifting 60fps footage to 120fps for high-refresh playback or editing.",
-        "Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.",
-        "Restoring older, low-FPS clips so they feel less stuttery.",
-        "Producing smoother short cuts for sharing on social."
+        "Плавніший рух на сучасних дисплеях і в соціальних платформах.",
+        "Підвищення частоти кадрів з 24/30fps до 60fps.",
+        "Підвищення частоти кадрів з 60fps до 120fps для відтворення на високочастотних дисплеях або для подальшого монтажу.",
+        "Чистіші перегляди руху для трейлерів, геймплею, спорту, скринкастів і влогів.",
+        "Відновлення старих кліпів із низькою частотою кадрів, щоб вони виглядали менш рвано.",
+        "Створення плавніших коротких роликів для публікації в соцмережах."
       ]
     },
     "howItWorks": {
-      "title": "3. How AI frame interpolation works (high level)",
+      "title": "3. Як працює ШІ-інтерполяція кадрів (загалом)",
       "paragraphs": [
-        "Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.",
-        "Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear."
+        "За двома сусідніми кадрами модель оцінює, як переміщається кожен піксель між ними — процес, споріднений з оптичним потоком. Потім на основі цього руху вона будує один або кілька нових кадрів, розташованих у дробових позиціях часу між двома вихідними. Нейромережа навчена на типових патернах руху, тому зазвичай добре справляється з плавним, природним рухом.",
+        "Складні випадки — швидкий рух, оклюзія (коли один об'єкт проходить перед іншим), тонкі структури на кшталт волосся й коліс, а також зміни сцен — за своєю природою складніші, бо в моделі менше достовірних даних про те, що має відбуватися між кадрами. Саме в цих ділянках найчастіше з'являються артефакти."
       ]
     },
     "vsBasicFps": {
-      "title": "4. AI interpolation vs basic FPS conversion",
-      "p1": "Basic FPS conversion (whether through FFmpeg's <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.",
-      "p2": "AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:",
+      "title": "4. ШІ-інтерполяція проти звичайної конвертації частоти кадрів",
+      "p1": "Звичайна конвертація частоти кадрів (через фільтр <code>fps</code> у FFmpeg або його апаратно прискорений аналог) зазвичай просто дублює, відкидає або змішує кадри, щоб досягти цільової частоти. Підсумкова кількість кадрів на секунду збігається з цільовою, але нова інформація про рух не додається — око все одно бачить лише вихідні інтервали зйомки.",
+      "p2": "ШІ-інтерполяція створює повністю нові кадри, вміст яких оцінюється, а не копіюється. Компроміс такий:",
       "bullets": [
-        "AI usually looks much smoother than duplication or blending.",
-        "AI can warp or hallucinate details on hard regions.",
-        "Basic FPS conversion is faster but rarely feels truly smoother."
+        "ШІ зазвичай виглядає значно плавніше, ніж дублювання чи змішування.",
+        "ШІ може деформувати або домислювати деталі у складних ділянках.",
+        "Звичайна конвертація частоти кадрів швидша, але рідко відчувається справді плавнішою."
       ]
     },
     "fpsChoice": {
-      "title": "5. When to pick 48, 60, or 120 FPS",
+      "title": "5. Як обрати між 48, 60 і 120 FPS",
       "bullets": [
-        "<strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.",
-        "<strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.",
-        "<strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file."
+        "<strong>48 FPS</strong> — помірне підвищення у 2× для кінематографічного матеріалу з 24fps. Менш агресивно, ніж 60fps, і зберігає частину вихідного ритму.",
+        "<strong>60 FPS</strong> — поширена плавна частота відтворення для сучасного вебу. Гарна перша мета для джерела з 24/30fps.",
+        "<strong>120 FPS</strong> — для високочастотних дисплеїв, геймплею, спортивного контенту або подальшого монтажу уповільненої зйомки. Важча обробка та більший розмір файлу."
       ]
     },
     "qualityTradeoffs": {
-      "title": "6. Quality and max-height tradeoffs",
+      "title": "6. Компроміси якості та максимальної висоти",
       "bullets": [
-        "<strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.",
-        "<strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.",
-        "<strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.",
-        "<strong>High quality preset</strong> → slower encode, lower CRF, sharper output."
+        "<strong>Менша максимальна висота обробки</strong> → швидша обробка та менше навантаження на пам'ять GPU. Чудово підходить для швидких тестів.",
+        "<strong>Більша максимальна висота обробки</strong> → зберігається більше деталей, але обробка повільніша й важча.",
+        "<strong>Пресет низької якості</strong> → швидше кодування, більший CRF, менший файл.",
+        "<strong>Пресет високої якості</strong> → повільніше кодування, менший CRF, чіткіший результат."
       ],
-      "outro": "For a first run, try 720p max height with the medium quality preset."
+      "outro": "Для першого запуску спробуйте максимальну висоту 720p із пресетом середньої якості."
     },
     "bestPractices": {
-      "title": "7. Best practices",
+      "title": "7. Рекомендації",
       "bullets": [
-        "Test on a short clip first — interpolation cost scales with duration and resolution.",
-        "Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.",
-        "Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.",
-        "Pick clear, steady source footage when possible.",
-        "Keep the original — interpolation is irreversible re-encoding.",
-        "Try 60fps before 120fps unless you specifically need 120fps."
+        "Спершу протестуйте на короткому кліпі — вартість інтерполяції зростає з тривалістю та роздільною здатністю.",
+        "Уникайте матеріалу з великою кількістю змін сцен. На стиках часто виникає короткочасна деформація.",
+        "Перегляньте результат перед публікацією — інтерполяція може виглядати трохи інакше, ніж реальна зйомка з високою частотою кадрів.",
+        "За можливості обирайте чіткий, стабільний вихідний матеріал.",
+        "Зберігайте оригінал — інтерполяція це незворотне перекодування.",
+        "Спершу спробуйте 60fps і переходьте до 120fps, лише якщо він дійсно потрібен."
       ]
     },
     "limitations": {
-      "title": "8. Limitations and artifacts",
+      "title": "8. Обмеження та артефакти",
       "bullets": [
-        "Warping around hands, hair, wheels, and other fast-moving thin structures.",
-        "Ghosting around occlusions where one object passes in front of another.",
-        "Brief glitches at scene cuts.",
-        "Motion blur mismatch — synthesized frames don't share the source camera's shutter behavior.",
-        "Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.",
-        "Long videos take a lot of GPU time; we cap duration to keep the free tool stable.",
-        "AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame."
+        "Деформація навколо рук, волосся, коліс та інших тонких структур, що швидко рухаються.",
+        "Примарні контури (гостинг) навколо оклюзій, де один об'єкт проходить перед іншим.",
+        "Короткочасні глітчі на зміні сцен.",
+        "Невідповідність розмиття руху — синтезовані кадри не відтворюють поведінку затвора вихідної камери.",
+        "Наявні артефакти стиснення (бендинг, блочність) можуть ставати помітнішими за вищої частоти кадрів.",
+        "Довгі відео потребують багато часу GPU; ми обмежуємо тривалість, щоб безкоштовний інструмент залишався стабільним.",
+        "ШІ-інтерполяція не відновлює реальний рух, який ніколи не був знятий, — вона лише оцінює правдоподібний проміжний кадр."
       ]
     },
     "howTo": {
-      "title": "9. How to use the Media Manipulator AI Frame Interpolation Tool",
+      "title": "9. Як користуватися інструментом ШІ-інтерполяції кадрів у Media Manipulator",
       "steps": [
-        "Open the <linkTool>AI Frame Interpolation tool</linkTool>.",
-        "Upload a video.",
-        "Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.",
-        "Choose a target FPS — 48, 60, or 120.",
-        "Pick a quality preset and a max processing height (start at 720p / medium).",
-        "Leave <em>Preserve audio</em> on unless you want a silent output.",
-        "Submit the conversion and wait for the job to finish.",
-        "Download the resulting MP4 and preview it."
+        "Відкрийте <linkTool>інструмент ШІ-інтерполяції кадрів</linkTool>.",
+        "Завантажте відео.",
+        "Прогорніть до панелі <strong>Інструменти ШІ для відео</strong> і виберіть <em>ШІ-інтерполяцію кадрів</em>.",
+        "Виберіть цільову частоту кадрів — 48, 60 або 120.",
+        "Виберіть пресет якості та максимальну висоту обробки (почніть із 720p / середнього).",
+        "Залиште <em>Preserve audio</em> увімкненим, якщо тільки вам не потрібен результат без звуку.",
+        "Запустіть конвертацію та дочекайтеся завершення завдання.",
+        "Завантажте готовий MP4 і перегляньте його."
       ]
     },
     "faq": {
-      "title": "FAQ",
+      "title": "Часті запитання",
       "items": [
         {
-          "q": "Does frame interpolation improve video quality?",
-          "a": "It improves motion smoothness, not resolution or sharpness."
+          "q": "Чи покращує інтерполяція кадрів якість відео?",
+          "a": "Вона покращує плавність руху, а не роздільну здатність чи чіткість."
         },
         {
-          "q": "Is AI frame interpolation the same as increasing FPS?",
-          "a": "Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending."
+          "q": "Чи це те саме, що просто підвищити FPS?",
+          "a": "Обидва підходи спрямовані на вищу частоту кадрів, але ШІ-інтерполяція синтезує нові кадри, а не дублює чи змішує їх."
         },
         {
-          "q": "Can I convert 30fps to 60fps?",
-          "a": "Yes — it's the most common target."
+          "q": "Чи можна конвертувати 30fps у 60fps?",
+          "a": "Так — це найпоширеніша задача."
         },
         {
-          "q": "Can I convert 60fps to 120fps?",
-          "a": "Yes, but the processing cost roughly doubles versus 60fps."
+          "q": "Чи можна конвертувати 60fps у 120fps?",
+          "a": "Так, але вартість обробки приблизно подвоюється порівняно з 60fps."
         },
         {
-          "q": "Why can frame interpolation create artifacts?",
-          "a": "Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts)."
+          "q": "Чому інтерполяція кадрів може створювати артефакти?",
+          "a": "Оцінюванню руху доводиться «здогадуватися» у складних ділянках (оклюзії, швидкий рух, зміни сцен)."
         },
         {
-          "q": "What output format does the tool create?",
-          "a": "MP4 (H.264 + AAC) in v1."
+          "q": "У якому форматі інструмент створює результат?",
+          "a": "MP4 (H.264 + AAC) у v1."
         },
         {
-          "q": "Is 60fps always better than 30fps?",
-          "a": "Not for cinematic looks — pick what suits the content."
+          "q": "Чи завжди 60fps краще за 30fps?",
+          "a": "Не для кінематографічного стилю — обирайте те, що підходить контенту."
         },
         {
-          "q": "Is AI frame interpolation better than FFmpeg FPS conversion?",
-          "a": "For most clips, yes — but minterpolate is faster and still useful as a quick fallback."
+          "q": "Чи ШІ-інтерполяція кадрів краща за конвертацію FPS через FFmpeg?",
+          "a": "Для більшості кліпів — так, але minterpolate швидший і досі корисний як швидкий резервний варіант."
         },
         {
-          "q": "Why do scene cuts sometimes look strange after interpolation?",
-          "a": "The model assumes adjacent frames belong to the same motion sequence."
+          "q": "Чому зміни сцен іноді виглядають дивно після інтерполяції?",
+          "a": "Модель виходить із того, що сусідні кадри належать до однієї й тієї самої послідовності руху."
         }
       ]
     },
     "actions": {
-      "tryTool": "Try the AI Frame Interpolation Tool",
-      "backToTutorials": "← Back to Tutorials",
-      "videoConverterTutorial": "Video Converter Tutorial"
+      "tryTool": "Спробувати інструмент ШІ-інтерполяції кадрів",
+      "backToTutorials": "← Назад до посібників",
+      "videoConverterTutorial": "Посібник з відеоконвертера"
     },
     "relatedLinks": {
-      "title": "Try related tools and guides",
-      "intro": "Other video tools and reference pages that pair well with AI frame interpolation.",
+      "title": "Спробуйте суміжні інструменти та посібники",
+      "intro": "Інші відеоінструменти та довідкові сторінки, які добре поєднуються з ШІ-інтерполяцією кадрів.",
       "links": [
         {
-          "label": "AI Frame Interpolation Tool",
-          "description": "Upload a video and run interpolation right now."
+          "label": "Інструмент ШІ-інтерполяції кадрів",
+          "description": "Завантажте відео та запустіть інтерполяцію просто зараз."
         },
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "Відеоконвертер",
+          "description": "Конвертуйте MP4, WebM, MOV, AVI, MKV та інші формати."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink a higher-FPS file before sharing."
+          "label": "Стиснути відео",
+          "description": "Зменшіть розмір файлу з високою частотою кадрів перед публікацією."
         },
         {
-          "label": "Extract frames from video",
-          "description": "Pull individual frames out as PNGs."
+          "label": "Витягти кадри з відео",
+          "description": "Витягніть окремі кадри у вигляді PNG."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn a short clip into an animated GIF."
+          "label": "Конвертувати відео в GIF",
+          "description": "Перетворіть короткий кліп на анімований GIF."
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Video Tutorial",
-    "title": "Getting Started: Converting Video Files",
-    "intro": "Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.",
+    "eyebrow": "Відеоурок",
+    "title": "Початок роботи: конвертація відеофайлів",
+    "intro": "Дізнайтеся, як конвертувати та редагувати відеофайли за допомогою відеоконвертера Media Manipulator. Цей посібник розбирає кожен розділ панелі конвертації відео — вибір формату, обрізання, трансформацію, візуальні ефекти, часові ефекти, розширені елементи керування кольором/HDR і варіант транскрибування на GPU для субтитрів і підписів.",
     "toolPanel": {
-      "title": "Try the video converter without leaving this page",
-      "description": "Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+      "title": "Спробуйте відеоконвертер, не покидаючи цю сторінку",
+      "description": "Виберіть відеофайл і конвертуйте його прямо тут. Налаштування нижче повторюють конвертер на головній сторінці, тож ви можете експериментувати під час читання."
     },
     "upload": {
-      "title": "1. Upload your video file",
-      "paragraph1": "Drag a video file into the upload zone on the home page, or click <strong>Choose File</strong>. Common inputs include MP4, MOV, MKV, AVI, WebM, WMV, and FLV. Large videos are uploaded directly to S3 via a presigned URL for speed; smaller files upload through the standard form endpoint.",
-      "paragraph2": "After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below."
+      "title": "1. Завантажте відеофайл",
+      "paragraph1": "Перетягніть відеофайл у зону завантаження на головній сторінці або натисніть <strong>Вибрати файл</strong>. Поширені вхідні формати: MP4, MOV, MKV, AVI, WebM, WMV і FLV. Великі відео для швидкості завантажуються напряму в S3 через попередньо підписаний URL; файли меншого розміру завантажуються через стандартну кінцеву точку форми.",
+      "paragraph2": "Після завантаження на правій панелі з'являється перемикач <strong>Конвертувати / Транскрибувати</strong>. Поки що залиште його в положенні <em>Конвертувати</em> — розділ про транскрибування буде нижче."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
-      "intro": "Use <strong>Format</strong> to choose the container/codec for the output:",
+      "title": "2. Виберіть вихідний формат і якість",
+      "intro": "Використовуйте <strong>Формат</strong>, щоб вибрати контейнер/кодек для виведення:",
       "bullets": [
-        "<strong>MP4</strong> — H.264 + AAC, the safest default for the web and most devices.",
-        "<strong>WebM</strong> — VP9 + Opus, optimal for the open web.",
-        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).",
-        "<strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.",
-        "<strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below."
+        "<strong>MP4</strong> — H.264 + AAC, найбезпечніший варіант за замовчуванням для вебу та більшості пристроїв.",
+        "<strong>WebM</strong> — VP9 + Opus, оптимально для відкритого вебу.",
+        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — контейнери для конкретних робочих процесів (Apple, архівування, застарілі плеєри тощо).",
+        "<strong>ProRes / DNxHD</strong> — професійні монтажні кодеки з високим бітрейтом.",
+        "<strong>GIF (анімований)</strong> — беззвучне циклічне зображення для чатів, README і багрепортів. Див. окремий розділ нижче."
       ],
-      "quality": "<strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over."
+      "quality": "<strong>Якість</strong> обирає пресет CRF під капотом: Низька ≈ CRF 30 (малий файл), Середня ≈ CRF 23 (збалансовано), Висока ≈ CRF 18 (візуально непомітно на більшості відеозаписів). Елементи керування «Якість», «Висота» та «Швидкість» пропускаються для виведення в GIF — їхню роль бере на себе панель «Анімований GIF» нижче."
     },
     "gif": {
-      "title": "2a. Converting video to an animated GIF",
-      "paragraph1": "Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.",
+      "title": "2a. Конвертація відео в анімований GIF",
+      "paragraph1": "Виберіть <strong>GIF (анімований)</strong> як формат, щоб відкрити панель <strong>Налаштування анімованого GIF</strong>. Це запускає двоетапний конвеєр, заснований на перевіреному скрипті для скринкастів: FFmpeg зменшує вихідне відео та робить вибірку з низькою частотою кадрів, після чого <code>gifsicle</code> переквантовує палітру й оптимізує вивід за розміром.",
       "bullets": [
-        "<strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.",
-        "<strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.",
-        "<strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.",
-        "<strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.",
-        "<strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+        "<strong>Ширина (px)</strong> — вихідна ширина. Висота обчислюється автоматично (і округлюється до кратного 4), щоб зберегти співвідношення сторін. 480–900 — гарна золота середина для скринкастів.",
+        "<strong>Частота кадрів (fps)</strong> — скільки кадрів на секунду FFmpeg вибирає з вихідного відео. 12 fps виглядає плавно для записів екрана інтерфейсу; підвищуйте до 18–24 для роликів з активним рухом або знижуйте до 8–10, щоб зменшити файл.",
+        "<strong>Кольори</strong> — розмір палітри gifsicle (2–256). 128 — надійне значення за замовчуванням; знижуйте до 64 для плоскої графіки інтерфейсу, підвищуйте до 256 для фотографічних кліпів із плавними градієнтами.",
+        "<strong>Затримка кадру</strong> — міжкадрова затримка gifsicle в 1/100 с. Менше значення — швидше відтворення. 3 (≈30 мс) дає динамічне відчуття скринкасту; 6–10 створюють повільніший, розміреніший цикл.",
+        "<strong>Рівень оптимізації</strong> — рівень gifsicle <code>--optimize</code>. 1 — найшвидший із найбільшим розміром виводу, 3 — найповільніший із найменшим розміром виводу. Дотримуйтеся 3, якщо тільки ви не працюєте над чернеткою довгого ролика й не хочете швидкий попередній варіант."
       ],
-      "paragraph2": "Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video."
+      "paragraph2": "Обрізання все ще працює для GIF — поєднуйте коротке обрізання з невеликою шириною й помірною кількістю кольорів, щоб файл залишався значно меншим за кілька мегабайт. Модальне вікно попереднього перегляду анімує результат на місці, щойно завдання завершиться; перемкніться на <em>Оригінал</em>, щоб порівняти з вихідним відео."
     },
     "resize": {
-      "title": "3. Resize, speed, and aspect ratio",
-      "paragraph1": "Set <strong>Width</strong> and/or <strong>Height</strong> to resize the video. Leave one blank to scale proportionally. Toggle <strong>Preserve aspect ratio</strong> when you set both to use a non-stretching <em>force_original_aspect_ratio=decrease</em> scale.",
-      "paragraph2": "<strong>Speed Multiplier</strong> changes both video and audio playback tempo from 0.25x to 4x. We pair it with FFmpeg's <em>setpts</em> filter and matching <em>atempo</em> on the audio track."
+      "title": "3. Зміна розміру, швидкість і співвідношення сторін",
+      "paragraph1": "Задайте <strong>Ширину</strong> та/або <strong>Висоту</strong>, щоб змінити розмір відео. Залиште одне поле порожнім для пропорційного масштабування. Увімкніть <strong>Зберегти співвідношення сторін</strong>, якщо задаєте обидва значення, — це використовує масштабування <em>force_original_aspect_ratio=decrease</em> без розтягування.",
+      "paragraph2": "<strong>Множник швидкості</strong> змінює темп відтворення відео й аудіо від 0.25x до 4x. Ми поєднуємо його з фільтром FFmpeg <em>setpts</em> і відповідним <em>atempo</em> на аудіодоріжці."
     },
     "trim": {
-      "title": "4. Trim",
-      "paragraph": "Click <strong>Trim Video</strong> to scrub the player and pick a start and end time. Only the selected segment is encoded into the output, and trim works regardless of the output codec."
+      "title": "4. Обрізання",
+      "paragraph": "Натисніть <strong>Обрізати відео</strong>, щоб промотати програвач і вибрати час початку та завершення. У вивід кодується лише вибраний сегмент, і обрізання працює незалежно від вихідного кодека."
     },
     "effects": {
-      "title": "5. Advanced Video Effects",
-      "intro": "The <strong>Advanced Video Effects</strong> section groups every filter into collapsible panels. Expand a panel to access its controls:",
+      "title": "5. Розширені відеоефекти",
+      "intro": "Розділ <strong>Розширені відеоефекти</strong> групує всі фільтри в розкривні панелі. Розгорніть панель, щоб отримати доступ до її налаштувань:",
       "bullets": [
-        "<strong>Visual Effects</strong> — brightness, contrast, saturation, hue, gamma, exposure, shadow/highlight recovery, Gaussian blur, motion blur, unsharp mask (sharpening), film/digital/vintage noise, and artistic effects (oil painting, watercolor, sketch, emboss, edge detection, posterize).",
-        "<strong>Transform</strong> — free rotation in degrees, horizontal/vertical flip, custom crop, and padded letterboxing with a configurable color.",
-        "<strong>Temporal Effects</strong> — reverse playback, ping-pong (forward then backward), frame-rate conversion with optional motion interpolation, and video stabilization with shakiness/accuracy controls.",
-        "<strong>Advanced Processing</strong> — deinterlacing, HDR tone mapping (hable, reinhard, mobius), and explicit input/output colorspace conversion (Rec.709, Rec.2020, sRGB, P3)."
+        "<strong>Візуальні ефекти</strong> — яскравість, контраст, насиченість, відтінок, гамма, експозиція, відновлення тіней/світел, гаусове розмиття, розмиття руху, нерізке маскування (підвищення різкості), плівковий/цифровий/вінтажний шум і художні ефекти (олійний живопис, акварель, скетч, тиснення, виділення країв, постеризація).",
+        "<strong>Трансформація</strong> — вільне обертання в градусах, горизонтальне/вертикальне віддзеркалення, довільне кадрування та додавання полів із налаштовуваним кольором (леттербоксинг).",
+        "<strong>Часові ефекти</strong> — реверс відтворення, пінг-понг (вперед, потім назад), конвертація частоти кадрів з опціональною інтерполяцією руху та стабілізація відео з налаштуваннями різкості руху й точності.",
+        "<strong>Розширена обробка</strong> — деінтерлейсинг, тональне відображення HDR (hable, reinhard, mobius) та явна конвертація вхідного/вихідного колірного простору (Rec.709, Rec.2020, sRGB, P3)."
       ]
     },
     "convertDownload": {
-      "title": "6. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A streaming progress bar shows real-time job status pulled from FFmpeg. When the job finishes, the result auto-previews in a modal with an <strong>Original / Final</strong> toggle so you can compare the two side by side. A <strong>Download</strong> button saves the final file."
+      "title": "6. Конвертація та завантаження",
+      "paragraph": "Натисніть <strong>Конвертувати файл</strong>. Індикатор прогресу потоково показує статус завдання в реальному часі, отриманий від FFmpeg. Коли завдання завершиться, результат автоматично відкриється в модальному вікні з перемикачем <strong>Оригінал / Результат</strong>, щоб ви могли порівняти їх поруч. Кнопка <strong>Завантажити</strong> зберігає підсумковий файл."
     },
     "transcribe": {
-      "title": "7. Transcribe a video (subtitles, captions, plain text, JSON)",
-      "intro": "Switch the panel toggle to <strong>Transcribe</strong> to run our local GPU transcription pipeline (whisper-ctranslate2). Pick an output format:",
+      "title": "7. Транскрибування відео (субтитри, підписи, звичайний текст, JSON)",
+      "intro": "Перемкніть панель у режим <strong>Транскрибувати</strong>, щоб запустити наш локальний конвеєр транскрибування на GPU (whisper-ctranslate2). Виберіть вихідний формат:",
       "bullets": [
-        "<strong>VTT</strong> — time-coded captions/subtitles that drop into HTML5 video players.",
-        "<strong>Plain text</strong> — a continuous transcript for reading or editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — субтитри/підписи з таймкодами, які підходять для відеоплеєрів HTML5.",
+        "<strong>Звичайний текст</strong> — суцільна розшифровка для читання чи редагування.",
+        "<strong>Структурований JSON</strong> — сегментована розшифровка з даними про час для подальших конвеєрів обробки."
       ],
-      "languageNote": "Optionally type a BCP-47 language hint (e.g. <code>en</code>, <code>es</code>, <code>ja</code>). Leave it blank to auto-detect. A summary and content-safety review run automatically after the transcript is ready."
+      "languageNote": "За бажанням укажіть підказку мови у форматі BCP-47 (наприклад, <code>en</code>, <code>es</code>, <code>ja</code>). Залиште поле порожнім для автовизначення. Після готовності розшифровки автоматично запускаються стислий виклад і перевірка безпеки контенту."
     },
     "tips": {
-      "title": "Tips for great video output",
+      "title": "Поради для якісного відео на виході",
       "bullets": [
-        "Use <strong>MP4 / High</strong> as a default for web delivery — it streams everywhere and looks great.",
-        "Prefer <strong>WebM</strong> for open-web embeds where file size matters and you control the player.",
-        "Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.",
-        "Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.",
-        "Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.",
-        "For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors."
+        "Використовуйте <strong>MP4 / Висока</strong> як варіант за замовчуванням для веб-доставки — він відтворюється всюди й виглядає чудово.",
+        "Віддавайте перевагу <strong>WebM</strong> для вбудовування у відкритий веб, якщо важливий розмір файлу і ви контролюєте плеєр.",
+        "Уникайте збільшення розміру в стандартному конвеєрі — невеликі вихідні файли виглядають краще після кодування без втрат у вихідній роздільній здатності.",
+        "Застосовуйте <strong>стабілізацію</strong> до сильної кольорокорекції, щоб деформація від стабілізації не конфліктувала з кольоровим фільтром.",
+        "Запускайте <strong>Транскрибування</strong> разом із конвертацією, якщо хочете отримати і сконвертований файл, і субтитри — це незалежні завдання.",
+        "Для виведення в <strong>GIF</strong> спершу агресивно обрізайте відео — кожна зайва секунда матеріалу множить підсумковий розмір на частоту кадрів × кількість кольорів."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Video Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "Спробувати відеоконвертер",
+      "backToTutorials": "← Назад до посібників",
+      "howItWorks": "Як це працює"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused video tool or keep exploring related guides.",
+      "title": "Спробуйте суміжні інструменти",
+      "intro": "Перейдіть одразу до потрібного відеоінструменту або продовжуйте вивчати суміжні посібники.",
       "links": [
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "Відеоконвертер",
+          "description": "Конвертуйте MP4, WebM, MOV, AVI, MKV та інші формати."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink video file size for the web without ruining quality."
+          "label": "Стиснути відео",
+          "description": "Зменшіть розмір відеофайлу для вебу без втрати якості."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video as searchable text or captions."
+          "label": "Транскрибувати відео",
+          "description": "Витягуйте вимовлені слова з відео у вигляді тексту для пошуку або підписів."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "Конвертувати відео в GIF",
+          "description": "Перетворюйте короткі відеокліпи на анімовані GIF для публікації."
         },
         {
-          "label": "AI Frame Interpolation tool",
-          "description": "Smooth motion by lifting video FPS with RIFE."
+          "label": "Інструмент ШІ-інтерполяції кадрів",
+          "description": "Згладжуйте рух, підвищуючи частоту кадрів відео за допомогою RIFE."
         },
         {
-          "label": "AI Frame Interpolation tutorial",
-          "description": "Learn how AI frame interpolation works and when to use it."
+          "label": "Посібник з ШІ-інтерполяції кадрів",
+          "description": "Дізнайтеся, як працює ШІ-інтерполяція кадрів і коли її застосовувати."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "Learn how transcription and AI summaries run on a local GPU."
+          "label": "Як працює Media Manipulator",
+          "description": "Дізнайтеся, як транскрибування та стислі виклади від ШІ виконуються на локальному GPU."
         }
       ]
     }
   },
   "tutorialAudioGettingStarted": {
-    "eyebrow": "Audio Tutorial",
-    "title": "Getting Started: Converting Audio Files",
-    "intro": "Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).",
+    "eyebrow": "Аудіоурок",
+    "title": "Початок роботи: конвертація аудіофайлів",
+    "intro": "Дізнайтеся, як конвертувати, очищати й ремікшувати аудіофайли за допомогою аудіоконвертера Media Manipulator. Цей посібник розбирає кожен розділ панелі конвертації аудіо — вибір формату, ефекти обробки, відновлення та нові інструменти ШІ для аудіо (очищення голосу, видалення фонового шуму, виділення вокалу, видалення вокалу).",
     "upload": {
-      "heading": "1. Upload your audio file",
-      "p1": "From the home page, drag and drop an audio file into the upload zone, or click <strong>Choose File</strong>. Supported inputs include MP3, WAV, FLAC, AAC, M4A, OGG, Opus, and most common podcast and music formats. Files are deleted automatically within 24 hours.",
-      "p2": "Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial."
+      "heading": "1. Завантажте аудіофайл",
+      "p1": "На головній сторінці перетягніть аудіофайл у зону завантаження або натисніть <strong>Вибрати файл</strong>. Підтримуються MP3, WAV, FLAC, AAC, M4A, OGG, Opus і більшість поширених форматів подкастів і музики. Файли автоматично видаляються протягом 24 годин.",
+      "p2": "Після вибору файлу права панель перемикається на <strong>Параметри конвертації</strong>. Для відео- та аудіофайлів ви також побачите перемикач <strong>Конвертувати / Транскрибувати</strong> — залиште його в положенні <em>Конвертувати</em> для цього посібника."
     },
     "toolPanel": {
-      "title": "Try the audio converter without leaving this page",
-      "description": "Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "Спробуйте аудіоконвертер, не покидаючи цю сторінку",
+      "description": "Виберіть аудіофайл і конвертуйте його прямо тут. Налаштування нижче повторюють конвертер на головній сторінці, тож ви можете слідувати решті посібника під час експериментів."
     },
     "format": {
-      "heading": "2. Pick the output format",
-      "intro": "The <strong>Format</strong> dropdown sets the container and codec for your output file. The audio converter supports:",
+      "heading": "2. Виберіть вихідний формат",
+      "intro": "Розкривний список <strong>Формат</strong> задає контейнер і кодек для вихідного файлу. Аудіоконвертер підтримує:",
       "items": [
-        "<strong>MP3</strong> — universal compatibility, lossy, small file sizes.",
-        "<strong>WAV</strong> — uncompressed PCM, ideal for masters, editing, or archiving.",
-        "<strong>AAC</strong> — efficient lossy codec used by Apple devices and streaming.",
-        "<strong>OGG</strong> — open-source Vorbis container.",
-        "<strong>FLAC / ALAC</strong> — lossless compression for archival quality at smaller size than WAV.",
-        "<strong>Opus</strong> — modern lossy codec great for voice and low bitrates.",
-        "<strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks."
+        "<strong>MP3</strong> — універсальна сумісність, стиснення з втратами, невеликий розмір файлу.",
+        "<strong>WAV</strong> — нестиснений PCM, ідеальний для майстер-записів, редагування чи архівування.",
+        "<strong>AAC</strong> — ефективний кодек із втратами, який використовують пристрої Apple та стримінгові сервіси.",
+        "<strong>OGG</strong> — контейнер Vorbis з відкритим вихідним кодом.",
+        "<strong>FLAC / ALAC</strong> — стиснення без втрат, що дає архівну якість при меншому розмірі, ніж WAV.",
+        "<strong>Opus</strong> — сучасний кодек із втратами, що чудово підходить для голосу й низьких бітрейтів.",
+        "<strong>AC3 / DTS</strong> — формати з підтримкою об'ємного звуку, які часто використовують для відеосаундтреків."
       ]
     },
     "quality": {
-      "heading": "3. Set bitrate, sample rate, and channels",
-      "bitrate": "<strong>Bitrate</strong> controls quality vs. file size for lossy formats. 128 kbps is \"good enough\" for podcasts; 192–256 kbps is a strong default for music; 320 kbps is the maximum MP3 quality. Lossless formats (WAV, FLAC, ALAC) ignore this setting.",
-      "sampleRate": "<strong>Sample rate</strong> sets how many audio samples per second the file contains. Standard music is 44.1 kHz; pro audio and video typically use 48 kHz. Higher rates (96 kHz, 192 kHz) only matter for professional production.",
-      "channels": "<strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks."
+      "heading": "3. Налаштуйте бітрейт, частоту дискретизації та канали",
+      "bitrate": "<strong>Бітрейт</strong> визначає співвідношення якості та розміру файлу для форматів із втратами. 128 kbps — «достатньо добре» для подкастів; 192–256 kbps — надійне значення за замовчуванням для музики; 320 kbps — максимальна якість MP3. Формати без втрат (WAV, FLAC, ALAC) ігнорують цей параметр.",
+      "sampleRate": "<strong>Частота дискретизації</strong> визначає, скільки аудіосемплів на секунду містить файл. Стандартна музика — 44,1 кГц; професійне аудіо та відео зазвичай використовують 48 кГц. Вищі значення (96 кГц, 192 кГц) мають значення лише для професійного виробництва.",
+      "channels": "<strong>Канали</strong> можуть бути моно, стерео, 5.1 або 7.1. Обирайте моно для голосових нотаток чи записів з одного мікрофона, щоб зменшити розмір файлу вдвічі; стерео — стандартний вибір для музики; 5.1/7.1 — для об'ємних саундтреків."
     },
     "speedVolume": {
-      "heading": "4. Adjust speed, volume, and trim",
-      "p1": "<strong>Speed Multiplier</strong> changes playback tempo from 0.25x to 4x without altering pitch — useful for sped-up podcasts or slowed-down practice tracks. <strong>Volume Multiplier</strong> applies a simple gain factor between 0.1x and 2x.",
-      "p2": "Click <strong>Trim Audio</strong> to scrub through the waveform and pick a start and end time. Only the selected segment is encoded into the output file."
+      "heading": "4. Налаштуйте швидкість, гучність і обрізання",
+      "p1": "<strong>Множник швидкості</strong> змінює темп відтворення від 0.25x до 4x без зміни висоти тону — корисно для прискорених подкастів або уповільнених тренувальних треків. <strong>Множник гучності</strong> застосовує простий коефіцієнт підсилення від 0.1x до 2x.",
+      "p2": "Натисніть <strong>Обрізати аудіо</strong>, щоб прогорнути звукову хвилю та вибрати час початку й завершення. У вихідний файл кодується лише вибраний відрізок."
     },
     "aiTools": {
-      "heading": "5. AI Audio Tools (recommended)",
-      "intro": "The <strong>AI Audio Tools</strong> panel is the fastest path to a great-sounding result for voice and music. Each operation runs on our local GPU server (no data leaves our infrastructure):",
+      "heading": "5. Інструменти ШІ для аудіо (рекомендовано)",
+      "intro": "Панель <strong>Інструменти ШІ для аудіо</strong> — найшвидший спосіб отримати чудовий результат для голосу й музики. Кожна операція виконується на нашому локальному GPU-сервері (дані не залишають нашу інфраструктуру):",
       "items": [
-        "<strong>Clean Voice</strong> — denoises with DeepFilterNet and then runs a broadcast-style polish chain (high-pass, low-pass, loudness normalization, brick-wall limiter). Best for podcast/voiceover takes recorded in noisy rooms.",
-        "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain. Use this when you want to preserve the natural EQ and dynamics of the recording.",
-        "<strong>Isolate Vocals</strong> — runs Demucs htdemucs and outputs the vocal stem only. Output defaults to WAV so you don't lose detail.",
-        "<strong>Remove Vocals / Karaoke</strong> — same Demucs job, but exports the instrumental stem. Great for karaoke tracks or sample workflows."
+        "<strong>Очищення голосу</strong> — усуває шум за допомогою DeepFilterNet, а потім запускає ланцюжок обробки у стилі мовлення (фільтри високих і низьких частот, нормалізація гучності, жорсткий лімітер). Найкраще підходить для дублів подкастів і озвучення, записаних у гучних приміщеннях.",
+        "<strong>Видалення фонового шуму</strong> — усунення шуму DeepFilterNet без ланцюжка обробки. Використовуйте це, коли хочете зберегти природну еквалізацію та динаміку запису.",
+        "<strong>Виділення вокалу</strong> — використовує Demucs htdemucs і виводить лише вокальну доріжку. За замовчуванням використовується формат WAV, щоб не втрачати деталі.",
+        "<strong>Видалення вокалу / караоке</strong> — те саме завдання Demucs, але експортується інструментальна доріжка. Чудово підходить для караоке-треків чи семплування."
       ],
-      "outro": "When you pick any AI operation, the standard FFmpeg chain (bitrate, EQ, reverb, etc.) is skipped for that job so the AI tool has a clean input/output path. AI jobs may take longer than basic conversion because they run on the GPU."
+      "outro": "Коли ви обираєте будь-яку операцію ШІ, стандартний ланцюжок FFmpeg (бітрейт, еквалізація, реверберація тощо) для цього завдання пропускається, щоб інструмент ШІ отримав чистий шлях введення/виведення. Завдання ШІ можуть виконуватися довше за звичайну конвертацію, оскільки вони працюють на GPU."
     },
     "advancedEffects": {
-      "heading": "6. Advanced Audio Effects",
-      "intro": "Expand <strong>Advanced Audio Effects</strong> to access four collapsible groups when you want manual control instead of an AI operation:",
+      "heading": "6. Розширені аудіоефекти",
+      "intro": "Розгорніть <strong>Розширені аудіоефекти</strong>, щоб отримати доступ до чотирьох згорнутих груп, коли вам потрібен ручний контроль замість операції ШІ:",
       "items": [
-        "<strong>Basic Audio Processing</strong> — normalize, amplify (dB), fade in/out, EQ presets (bass boost, treble boost, vocal, classical, rock, jazz), pan, balance, stereo width, mono conversion, channel swap.",
-        "<strong>Time-Based Effects</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), modulation (chorus, flanger, phaser, tremolo, vibrato).",
-        "<strong>Restoration & Cleanup</strong> — spectral/adaptive/gate noise reduction, 50/60 Hz de-hum, declipper, silence detection and removal.",
-        "<strong>Advanced Audio</strong> — pitch shifting (semitones, formant-preserving), time stretching (factor + pitch/time/formant algorithm), spatial audio (binaural, surround, 3D)."
+        "<strong>Базова обробка аудіо</strong> — нормалізація, підсилення (дБ), плавна поява/згасання, пресети еквалайзера (підсилення басів, підсилення високих частот, вокал, класика, рок, джаз), панорама, баланс, ширина стерео, перетворення в моно, заміна каналів.",
+        "<strong>Часові ефекти</strong> — реверберація (кімната, зал, пластина, пружина), затримка (відлуння, мультитап, пінг-понг), модуляція (хорус, фленджер, фейзер, тремоло, вібрато).",
+        "<strong>Відновлення й очищення</strong> — спектральне/адаптивне шумозаглушення та шумовий гейт, усунення гулу 50/60 Гц, усунення кліпінгу, виявлення й видалення тиші.",
+        "<strong>Розширене аудіо</strong> — зміна висоти тону (півтони, зі збереженням формант), розтягування часу (коефіцієнт + алгоритм висоти тону/часу/формант), просторове аудіо (бінауральне, об'ємне, 3D)."
       ]
     },
     "convertDownload": {
-      "heading": "7. Convert and download",
-      "body": "Click <strong>Convert File</strong>. A real-time progress bar appears as the server processes the job. When it finishes, the result auto-previews and a <strong>Download</strong> button appears. The file is also added to your in-session <em>Conversion History</em> so you can revisit or download it later without re-running the job."
+      "heading": "7. Конвертація та завантаження",
+      "body": "Натисніть <strong>Конвертувати файл</strong>. Поки сервер обробляє завдання, з'являється індикатор прогресу в реальному часі. Після завершення результат автоматично відкривається в попередньому перегляді та з'являється кнопка <strong>Завантажити</strong>. Файл також додається до вашої <em>Історії конвертацій</em> за поточну сесію, щоб ви могли повернутися до нього чи завантажити пізніше без повторного запуску завдання."
     },
     "tips": {
-      "heading": "Tips for great audio output",
+      "heading": "Поради для найкращого результату",
       "items": [
-        "For voice recordings, try <strong>Clean Voice</strong> first — it solves most \"muddy podcast\" problems in one click.",
-        "If you only want to remove a constant hum or air-conditioner background, use <strong>Remove Background Noise</strong> to keep the original tone.",
-        "For stems, keep the default <strong>WAV</strong> output — converting Demucs output to a lossy format defeats the purpose of separation.",
-        "Big bitrate jumps don't help small files much; pair 320 kbps with 48 kHz only for high-quality music exports."
+        "Для голосових записів спершу спробуйте <strong>Очищення голосу</strong> — воно вирішує більшість проблем «каламутного подкасту» в один клік.",
+        "Якщо потрібно прибрати лише постійний гул чи фоновий шум кондиціонера, використовуйте <strong>Видалення фонового шуму</strong>, щоб зберегти вихідний тон запису.",
+        "Для доріжок залишайте вихідний формат <strong>WAV</strong> за замовчуванням — конвертація результату Demucs у формат із втратами зводить нанівець сенс розділення.",
+        "Різке підвищення бітрейту мало допомагає невеликим файлам; поєднуйте 320 kbps із 48 kHz лише для експорту музики високої якості."
       ]
     },
     "cta": {
-      "tryConverter": "Try the Audio Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "Спробувати аудіоконвертер",
+      "backToTutorials": "← Назад до посібників",
+      "howItWorks": "Як це працює"
     },
     "related": {
-      "title": "Try related tools",
-      "intro": "Jump straight into the audio tool you need, or keep learning with related guides.",
+      "title": "Спробуйте суміжні інструменти",
+      "intro": "Перейдіть одразу до потрібного аудіоінструменту або продовжуйте вивчення за допомогою суміжних посібників.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more."
+          "label": "Аудіоконвертер",
+          "description": "Конвертуйте WAV, MP3, FLAC, M4A, OGG та інші формати."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV recordings into widely playable MP3s."
+          "label": "Конвертувати WAV у MP3",
+          "description": "Стисніть великі WAV-записи у широко відтворювані MP3."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Extract vocals from music for remixes or analysis."
+          "label": "Виділити вокал із пісні",
+          "description": "Витягуйте вокал із музики для ремiксів або аналізу."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, compress, trim, and transcribe video files."
+          "label": "Посібник з відеоконвертера",
+          "description": "Конвертуйте, стискайте, обрізайте та транскрибуйте відеофайли."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI audio jobs run on a local GPU server."
+          "label": "Як працює Media Manipulator",
+          "description": "Дізнайтеся, як завдання ШІ для аудіо виконуються на локальному GPU-сервері."
         }
       ]
     }
   },
   "tutorialImageGettingStarted": {
-    "eyebrow": "Image Tutorial",
-    "title": "Getting Started: Converting Image Files",
-    "intro": "Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).",
+    "eyebrow": "Урок із зображень",
+    "title": "Початок роботи: конвертація файлів зображень",
+    "intro": "Дізнайтеся, як конвертувати, редагувати та обробляти зображення за допомогою ШІ в конвертері зображень Media Manipulator. Цей посібник розбирає кожен розділ панелі конвертації зображень — вибір формату, кадрування, фільтри, текстові накладення, керування метаданими та інструменти ШІ для зображень (приватність облич, видалення фону, збільшення масштабу ШІ, редагування тексту та видалення об'єкта).",
     "toolPanel": {
-      "title": "Try the image converter without leaving this page",
-      "description": "Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "Спробуйте конвертер зображень, не покидаючи цю сторінку",
+      "description": "Виберіть зображення та сконвертуйте його прямо тут. Налаштування повторюють конвертер на головній сторінці, тож ви можете слідувати решті посібника під час експериментів."
     },
     "upload": {
-      "title": "1. Upload your image",
-      "paragraph": "Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are deleted within 24 hours."
+      "title": "1. Завантажте зображення",
+      "paragraph": "Перетягніть файл зображення в зону завантаження або натисніть <strong>Вибрати файл</strong>. Конвертер зображень приймає JPG, PNG, WebP, GIF та багато інших форматів. Файли видаляються протягом 24 годин."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
+      "title": "2. Виберіть вихідний формат і якість",
       "bullets": [
-        "<strong>JPG</strong> — best for photos. Lossy compression with a quality slider.",
-        "<strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.",
-        "<strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.",
-        "<strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases."
+        "<strong>JPG</strong> — найкращий варіант для фотографій. Стиснення з втратами з повзунком якості.",
+        "<strong>PNG</strong> — без втрат, підтримує прозорість. Найкращий варіант для скриншотів, логотипів і графіки.",
+        "<strong>WebP</strong> — сучасний формат із режимами як з втратами, так і без; менший за розміром, ніж JPG, за схожої якості.",
+        "<strong>GIF</strong> — палітровий формат, підтримує базову анімацію, корисний для застарілих сценаріїв використання."
       ],
-      "quality": "<strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images."
+      "quality": "<strong>Якість (%)</strong> застосовується до JPG і WebP. 85 — чудове значення за замовчуванням; знижуйте для мініатюр, підвищуйте для головних зображень."
     },
     "resize": {
-      "title": "3. Resize, crop, filter, tint",
-      "paragraph1": "Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.",
-      "paragraph2": "Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000)."
+      "title": "3. Зміна розміру, кадрування, фільтри, тонування",
+      "paragraph1": "Використовуйте <strong>Ширину</strong> та <strong>Висоту</strong> для зміни розміру. Залиште будь-яке поле порожнім, щоб масштабувати пропорційно. ImageMagick спершу автоматично застосовує орієнтацію вхідного файлу, щоб JPEG з EXIF-орієнтацією не потрапляв у PNG/WebP повернутим.",
+      "paragraph2": "Натисніть <strong>Кадрувати зображення</strong>, щоб відкрити візуальний вибір ділянки. Розкривний список <strong>Фільтр</strong> застосовує вбудований ефект: відтінки сірого, сепію, розмиття, різкість, вихор, бочкоподібну дисторсію, олійний живопис, вінтаж, тиснення, вугілля, скетч або фіксований поворот (45° / 90° / 180° / 270°). <strong>Колір тонування</strong> накладає на зображення кольоровий відтінок із прозорістю 30% (пропустіть, залишивши чорний/#000000)."
     },
     "textOverlay": {
-      "title": "4. Text overlay",
-      "intro": "Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:",
+      "title": "4. Текстове накладення",
+      "intro": "Додайте водяний знак або підпис прямо на зображення. Введіть текст у поле <strong>Текст накладення</strong>, потім виберіть:",
       "bullets": [
-        "<strong>Text Size</strong> — 8–512 px.",
-        "<strong>Position</strong> — gravity-based anchor (corners, edges, center).",
-        "<strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.",
-        "<strong>Stroke Width</strong> — 0 to disable the outline.",
-        "<strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor."
+        "<strong>Розмір тексту</strong> — 8–512 px.",
+        "<strong>Позиція</strong> — прив'язка на основі гравітації (кути, краї, центр).",
+        "<strong>Колір тексту / Колір обведення</strong> — hex-кольори через палітри вибору кольору.",
+        "<strong>Товщина обведення</strong> — 0, щоб вимкнути контур.",
+        "<strong>Зміщення по X / Зміщення по Y</strong> — точне налаштування в пікселях від точки прив'язки."
       ]
     },
     "metadata": {
-      "title": "5. Metadata",
-      "intro": "Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:",
+      "title": "5. Метадані",
+      "intro": "Виберіть, як Media Manipulator обробляє метадані EXIF, IPTC, XMP і GPS:",
       "bullets": [
-        "<strong>Keep all metadata</strong> — preserved from the original via exiftool.",
-        "<strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online."
+        "<strong>Зберегти всі метадані</strong> — зберігаються з оригіналу за допомогою exiftool.",
+        "<strong>Видалити всі метадані</strong> — видаляє дані про камеру, GPS, програмне забезпечення та часові мітки. Рекомендується перед публікацією фотографій в мережі."
       ],
-      "customLabel": "<strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:",
+      "customLabel": "<strong>Користувацькі метадані</strong> — спочатку видаляє всі, потім переписує вказані вами поля. Включає:",
       "customBullets": [
-        "Title, Artist/Author, Description, Copyright, User Comment, Keywords.",
-        "GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.",
-        "EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist."
+        "Назву, автора/виконавця, опис, авторські права, коментар користувача, ключові слова.",
+        "Видалення/заміну GPS (з можливим округленням точності) та перемикачі напрямку зйомки, часової мітки, висоти й пункту призначення.",
+        "Поля EXIF/TIFF, поля GPS і розширені теги IPTC/XMP/MakerNotes через список дозволених значень."
       ]
     },
     "aiTools": {
-      "title": "6. AI Image Tools (recommended)",
-      "intro": "The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.",
-      "faceBlur": "<strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.",
-      "removeBackground": "<strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.",
-      "aiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.",
-      "redactText": "<strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.",
-      "removeObject": "<strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:",
+      "title": "6. Інструменти ШІ для зображень (рекомендовано)",
+      "intro": "Панель <strong>Інструменти ШІ для зображень</strong> виконує одну локальну GPU-операцію на завдання конвертації. Коли ви обираєте операцію, стандартний конвеєр ImageMagick (фільтри, тонування, накладення тощо) для цього завдання пропускається, щоб інструмент ШІ отримав чистий шлях введення/виведення.",
+      "faceBlur": "<strong>Розмиття обличчя / Пікселізація / Чорний прямокутник</strong> — виявляє кожне обличчя на фотографії та приховує його обраним стилем. Чудово підходить для того, щоб ділитися фотографіями з подій, не розкриваючи особи учасників.",
+      "removeBackground": "<strong>Видалення фону</strong> — використовує rembg з BiRefNet (загальний або портретний режим), ISNet або U2Net. Вивід примусово зберігається в PNG, щоб зберегти прозорість. BiRefNet General — рекомендований варіант за замовчуванням для більшості фотографій.",
+      "aiUpscale": "<strong>Збільшення масштабу ШІ</strong> — апскейлер Real-ESRGAN ncnn Vulkan. Виберіть <em>4x</em> (безпечніше) або <em>2x</em> (швидше), а також модель: <code>realesrgan-x4plus</code> для звичайних фотографій, <code>realesrgan-x4plus-anime</code> для анімації/ілюстрацій або <code>realesr-animevideov3</code> для кадрів аніме-відео. За замовчуванням вивід у PNG.",
+      "redactText": "<strong>Редагування тексту / персональних даних</strong> — редагування на основі OCR. Виберіть <em>Тільки персональні дані</em> (електронні адреси, номери телефонів, номери соцстрахування, адреси тощо) або <em>Весь текст</em>, потім виберіть стиль приховування (чорний прямокутник, розмиття або пікселізація). Працює за принципом «найкращий можливий результат» — перевіряйте вивід перед публікацією.",
+      "removeObject": "<strong>Видалення об'єкта (інпейнтинг LaMa)</strong> — клацніть і перетягніть на попередньому перегляді зображення, щоб намалювати прямокутник над тим, що потрібно видалити: перехожим на задньому плані, вивіскою, водяним знаком, стовпом. Перетягніть тіло прямокутника, щоб перемістити його, перетягніть кутові/бічні маркери, щоб змінити розмір, і додавайте стільки прямокутників, скільки потрібно, новим перетягуванням на вільному місці. Під час відправлення сервер растеризує маску з ваших прямокутників і запускає <code>simple-lama-inpainting</code> на виділеному GPU, щоб відновити ділянку під ними. Вивід зберігає обраний вами формат (JPG, PNG, WebP, GIF). Поради:",
       "removeObjectTips": [
-        "Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.",
-        "Several small rectangles usually beat one huge one, especially for thin objects.",
-        "LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces)."
+        "Обводьте об'єкт прямокутником щільно — великі прямокутники змушують LaMa домислювати більше фону, через що результат може виглядати гірше.",
+        "Кілька маленьких прямокутників зазвичай працюють краще за один великий, особливо для тонких об'єктів.",
+        "LaMa працює найкраще, коли навколишні пікселі дають моделі достатньо контексту (небо, трава, однотонні стіни, рівні за тоном поверхні)."
       ]
     },
     "convertDownload": {
-      "title": "7. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list."
+      "title": "7. Конвертація та завантаження",
+      "paragraph": "Натисніть <strong>Конвертувати файл</strong>. Індикатор прогресу показує статус завдання в реальному часі. Після завершення результат автоматично відкривається в попередньому перегляді з перемикачем <strong>Оригінал / Результат</strong>, щоб ви могли порівняти їх. Скористайтеся <strong>Завантажити</strong>, щоб зберегти його, або поверніться до нього пізніше зі списку <em>Історія конвертацій</em> за поточну сесію."
     },
     "tips": {
-      "title": "Tips for great image output",
+      "title": "Поради для чудового результату із зображеннями",
       "bullets": [
-        "For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.",
-        "Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.",
-        "<strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.",
-        "For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.",
-        "Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.",
-        "Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result."
+        "Для публікацій у соцмережах використовуйте <strong>WebP</strong> з якістю 80–85% для невеликих файлів, що чудово виглядають.",
+        "Поєднуйте <strong>видалення метаданих</strong> з публікацією фотографій в мережі, щоб не розкривати GPS чи дані про пристрій.",
+        "Результати <strong>видалення фону</strong> завжди у форматі PNG — поєднуйте їх із кольоровим фоном у улюбленому редакторі або додавайте до слайд-презентації.",
+        "Для збільшення масштабу ШІ віддавайте перевагу <strong>4x</strong> з <code>realesrgan-x4plus</code> для фотографій; 2x — варіант для досвідчених користувачів, який іноді може показувати артефакти на краях для малих вхідних зображень.",
+        "Запускайте <strong>редагування тексту</strong> перед публікацією скриншоту листа, квитка чи рахунку.",
+        "Використовуйте <strong>видалення об'єкта</strong> для разового очищення, наприклад туриста на відпускному фото чи випадкової вивіски на пейзажі — але будьте готові кілька разів підбирати розмір прямокутника, щоб отримати найчистіший результат."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Image Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "Спробувати конвертер зображень",
+      "backToTutorials": "← Назад до посібників",
+      "howItWorks": "Як це працює"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused image tool or keep exploring related guides.",
+      "title": "Спробуйте суміжні інструменти",
+      "intro": "Перейдіть одразу до потрібного інструменту для зображень або продовжуйте вивчати суміжні посібники.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "Конвертер зображень",
+          "description": "Конвертуйте між JPG, PNG, WebP, AVIF, GIF та іншими форматами."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "Конвертувати WebP у JPG",
+          "description": "Отримайте широко сумісний JPG із вихідного файлу WebP."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "Видалити метадані EXIF",
+          "description": "Видаліть GPS, дані про пристрій і часові мітки перед публікацією фотографій."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, trim, and apply visual effects to video files."
+          "label": "Посібник з відеоконвертера",
+          "description": "Конвертуйте, обрізайте та застосовуйте візуальні ефекти до відеофайлів."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI image tools run on a local GPU server."
+          "label": "Як працює Media Manipulator",
+          "description": "Дізнайтеся, як інструменти ШІ для зображень працюють на локальному GPU-сервері."
         }
       ]
     }
