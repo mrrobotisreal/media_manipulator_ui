@@ -21,8 +21,8 @@ interface Section {
   contactEmail?: string;
 }
 
-const ContactBlock: React.FC<{ email: string }> = ({ email }) => {
-  const t = getServerT();
+const ContactBlock: React.FC<{ email: string; locale?: string }> = ({ email, locale }) => {
+  const t = getServerT('interface', locale);
   return (
     <>
       <p className="mb-2">{t('legalCommon.operator')}</p>
@@ -58,7 +58,7 @@ const SubsectionView: React.FC<{ data: Subsection }> = ({ data }) => (
   </>
 );
 
-const SectionView: React.FC<{ data: Section }> = ({ data }) => (
+const SectionView: React.FC<{ data: Section; locale?: string }> = ({ data, locale }) => (
   <section className="mb-8">
     <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{data.title}</h2>
     {data.paragraphs?.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
@@ -67,12 +67,12 @@ const SectionView: React.FC<{ data: Section }> = ({ data }) => (
     {data.secondBullets && renderBullets(data.secondBullets)}
     {data.afterSecondBullets?.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
     {data.subsections?.map((sub, idx) => <SubsectionView key={idx} data={sub} />)}
-    {data.contactBlock && data.contactEmail && <ContactBlock email={data.contactEmail} />}
+    {data.contactBlock && data.contactEmail && <ContactBlock email={data.contactEmail} locale={locale} />}
   </section>
 );
 
-const PrivacyPolicyPage: React.FC = () => {
-  const t = getServerT();
+const PrivacyPolicyPage: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
   const sections = t('privacyPolicy.sections', { returnObjects: true }) as Section[];
 
   return (
@@ -92,7 +92,7 @@ const PrivacyPolicyPage: React.FC = () => {
           <p className="mb-4">{t('privacyPolicy.explanation')}</p>
           <p className="mb-6">{t('privacyPolicy.acceptance')}</p>
 
-          {sections.map((section, idx) => <SectionView key={idx} data={section} />)}
+          {sections.map((section, idx) => <SectionView key={idx} data={section} locale={locale} />)}
         </div>
       
     </Panel></div>

@@ -30,13 +30,19 @@
 import enUsInterfaceCore from "./locales/en-us/interface/_core.json";
 import enUsInterfaceComponents from "./locales/en-us/interface/components.json";
 import enUsInterfaceTools from "./locales/en-us/interface/tools.json";
+import ruRuInterfaceCore from "./locales/ru-ru/interface/_core.json";
+import ruRuInterfaceComponents from "./locales/ru-ru/interface/components.json";
+import ruRuInterfaceTools from "./locales/ru-ru/interface/tools.json";
 
 // --- error namespace shards ---
 import enUsErrorCore from "./locales/en-us/error/_core.json";
+import ruRuErrorCore from "./locales/ru-ru/error/_core.json";
 
 // --- accessibility namespace shards ---
 import enUsAccessibilityCore from "./locales/en-us/accessibility/_core.json";
 import enUsAccessibilityComponents from "./locales/en-us/accessibility/components.json";
+import ruRuAccessibilityCore from "./locales/ru-ru/accessibility/_core.json";
+import ruRuAccessibilityComponents from "./locales/ru-ru/accessibility/components.json";
 
 export interface SupportedLanguage {
   /** BCP-47 style locale code used as the i18next language key. */
@@ -53,9 +59,12 @@ export interface SupportedLanguage {
 
 export const supportedLanguages: SupportedLanguage[] = [
   { code: "en-US", label: "English", englishLabel: "English", flag: "🇺🇸" },
+  { code: "ru-RU", label: "Русский", englishLabel: "Russian", flag: "🇷🇺" },
   // To add a new language: drop interface/error/accessibility shards into
   // locales/<code>/, mirror the import + spread block above, add an entry
   // here, and the picker + i18n stack will register it automatically.
+  // Also register the language's lazy forms/panels loaders in
+  // `lib/i18n/ensureShard.ts` and its full bundle in `lib/i18n/server.tsx`.
 ];
 
 export const defaultLanguage = "en-US";
@@ -75,11 +84,31 @@ const enUsAccessibility = {
   ...enUsAccessibilityComponents,
 };
 
+const ruRuInterface = {
+  ...ruRuInterfaceCore,
+  ...ruRuInterfaceComponents,
+  ...ruRuInterfaceTools,
+};
+
+const ruRuError = {
+  ...ruRuErrorCore,
+};
+
+const ruRuAccessibility = {
+  ...ruRuAccessibilityCore,
+  ...ruRuAccessibilityComponents,
+};
+
 export const resources = {
   "en-US": {
     interface: enUsInterface,
     error: enUsError,
     accessibility: enUsAccessibility,
+  },
+  "ru-RU": {
+    interface: ruRuInterface,
+    error: ruRuError,
+    accessibility: ruRuAccessibility,
   },
 } as const;
 

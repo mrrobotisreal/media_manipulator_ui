@@ -11,8 +11,8 @@ const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
   howItWorks: '/how-it-works',
 };
 
-const AboutPage: React.FC = () => {
-  const t = getServerT();
+const AboutPage: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
 
   const imageItems = t('about.whatItDoes.image.items', { returnObjects: true }) as string[];
   const videoItems = t('about.whatItDoes.video.items', { returnObjects: true }) as string[];
@@ -29,7 +29,7 @@ const AboutPage: React.FC = () => {
         <Panel level="1" as="section" className="max-w-7xl mx-auto my-2">
           <h1 className="text-4xl font-bold mb-4 text-card-foreground">{t('about.title')}</h1>
           <p className="text-lg text-muted-foreground mb-8">
-            <ServerTrans i18nKey="interface:about.intro" components={{ strong: <strong /> }} />
+            <ServerTrans locale={locale} i18nKey="interface:about.intro" components={{ strong: <strong /> }} />
           </p>
 
           <div className="prose max-w-none text-muted-foreground">
@@ -78,6 +78,7 @@ const AboutPage: React.FC = () => {
 
               <p className="mt-6">
                 <ServerTrans
+                  locale={locale}
                   i18nKey="interface:about.whatItDoes.outro"
                   components={{
                     linkTutorials: <Link href="/tutorials" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
@@ -98,6 +99,7 @@ const AboutPage: React.FC = () => {
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.privacy.title')}</h3>
                   <p>
                     <ServerTrans
+                      locale={locale}
                       i18nKey="interface:about.whyChoose.privacy.body"
                       components={{
                         strong: <strong />,
@@ -109,7 +111,7 @@ const AboutPage: React.FC = () => {
                 <Panel level="2" className="lg:p-6">
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.localAi.title')}</h3>
                   <p>
-                    <ServerTrans i18nKey="interface:about.whyChoose.localAi.body" components={{ strong: <strong /> }} />
+                    <ServerTrans locale={locale} i18nKey="interface:about.whyChoose.localAi.body" components={{ strong: <strong /> }} />
                   </p>
                 </Panel>
                 <Panel level="2" className="lg:p-6">
@@ -124,6 +126,7 @@ const AboutPage: React.FC = () => {
                   <h3 className="font-semibold mb-2 text-card-foreground">{t('about.whyChoose.open.title')}</h3>
                   <p>
                     <ServerTrans
+                      locale={locale}
                       i18nKey="interface:about.whyChoose.open.body"
                       components={{
                         emailLink: (
@@ -143,6 +146,7 @@ const AboutPage: React.FC = () => {
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.commonTasks.title')}</h2>
               <p className="mb-4">
                 <ServerTrans
+                  locale={locale}
                   i18nKey="interface:about.commonTasks.intro"
                   components={{ linkHome: <Link href="/" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" /> }}
                 />
@@ -166,7 +170,7 @@ const AboutPage: React.FC = () => {
             <section className="mb-10">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.whoBuilds.title')}</h2>
               <p className="mb-4">
-                <ServerTrans i18nKey="interface:about.whoBuilds.p1" components={{ strong: <strong /> }} />
+                <ServerTrans locale={locale} i18nKey="interface:about.whoBuilds.p1" components={{ strong: <strong /> }} />
               </p>
               <p className="mb-4">{t('about.whoBuilds.p2')}</p>
             </section>
@@ -199,7 +203,7 @@ const AboutPage: React.FC = () => {
             <section className="mb-10">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.contact.title')}</h2>
               <p className="mb-2">
-                <ServerTrans i18nKey="interface:about.contact.operator" components={{ strong: <strong /> }} />
+                <ServerTrans locale={locale} i18nKey="interface:about.contact.operator" components={{ strong: <strong /> }} />
               </p>
               <p className="mb-1">{t('about.contact.location')}</p>
               <p className="mb-1">

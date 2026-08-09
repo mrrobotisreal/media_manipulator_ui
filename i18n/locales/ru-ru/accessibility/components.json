@@ -1,0 +1,44 @@
+{
+  "filePreview": {
+    "previewAlt": "Предпросмотр"
+  },
+  "pdfForm": {
+    "outputFormatTooltip": "О формате выходного изображения",
+    "dpiTooltip": "О качестве рендеринга (DPI)",
+    "pagesTooltip": "О выборе страниц",
+    "qualityTooltip": "О качестве JPG"
+  },
+  "ad": {
+    "label": "Реклама",
+    "close": "Закрыть рекламу"
+  },
+  "modals": {
+    "close": "Закрыть",
+    "previousStep": "Предыдущий шаг",
+    "nextStep": "Следующий шаг"
+  },
+  "imageCropModal": {
+    "topLeftHandle": "Маркер верхнего левого угла",
+    "topRightHandle": "Маркер верхнего правого угла",
+    "bottomLeftHandle": "Маркер нижнего левого угла",
+    "bottomRightHandle": "Маркер нижнего правого угла"
+  },
+  "mediaTrimModal": {
+    "scrubber": "Ползунок обрезки",
+    "playToggle": "Воспроизвести / приостановить предпросмотр"
+  },
+  "overlays": {
+    "canvas": "Область выделения",
+    "removeRegion": "Удалить эту область",
+    "previousPage": "Предыдущая страница",
+    "nextPage": "Следующая страница"
+  },
+  "quotaMeter": {
+    "gauge": "Использовано {{used}} / {{limit}} операций в день",
+    "openUpgrade": "Узнать, как увеличить дневной лимит",
+    "openAccount": "Открыть аккаунт"
+  },
+  "accountMenu": {
+    "open": "Меню аккаунта"
+  }
+}

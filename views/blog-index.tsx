@@ -14,8 +14,8 @@ const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
   howItWorks: '/how-it-works',
 };
 
-const BlogPage: React.FC = () => {
-  const t = getServerT();
+const BlogPage: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
 
   const articles = [
     {

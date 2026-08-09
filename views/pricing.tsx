@@ -176,8 +176,8 @@ const TierHeader: React.FC<{
   );
 };
 
-export const PricingUnavailable: React.FC = () => {
-  const t = getServerT();
+export const PricingUnavailable: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
   return (
     <Panel className="mx-auto max-w-2xl text-center">
       <h2 className="text-lg font-semibold text-foreground">
@@ -196,8 +196,8 @@ export const PricingUnavailable: React.FC = () => {
   );
 };
 
-export const PricingView: React.FC<{ data: TiersResponse }> = ({ data }) => {
-  const t = getServerT();
+export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = ({ data, locale }) => {
+  const t = getServerT('interface', locale);
   const byTier = new Map<string, TierDescriptor>(
     data.tiers.map((entry) => [entry.tier, entry]),
   );

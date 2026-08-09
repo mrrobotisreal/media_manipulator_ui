@@ -12,9 +12,11 @@
  * to the browser, and the prerendered HTML still contains real translated text
  * for crawlers.
  *
- * Only `en-US` exists today (`i18n/resources.ts`). When a second language ships
- * these helpers take a locale argument and the App Router resolves it per
- * request; every call site already passes through `getServerT()`.
+ * Locale resolution: pages read the visitor's `mm-language` cookie via
+ * `lib/i18n/requestLocale.ts` and pass the code down to `getServerT(ns, locale)`
+ * / `<ServerTrans locale=…>`. No argument (crawlers, cached English HTML)
+ * means en-US. A key missing from a locale falls back to the en-US string, the
+ * same net behavior as i18next's `fallbackLng`.
  */
 import React, { cloneElement, type ReactElement, type ReactNode } from 'react';
 
@@ -27,40 +29,72 @@ import interfaceTools from '@/i18n/locales/en-us/interface/tools.json';
 import errorCore from '@/i18n/locales/en-us/error/_core.json';
 import accessibilityCore from '@/i18n/locales/en-us/accessibility/_core.json';
 import accessibilityComponents from '@/i18n/locales/en-us/accessibility/components.json';
+import ruInterfaceCore from '@/i18n/locales/ru-ru/interface/_core.json';
+import ruInterfacePages from '@/i18n/locales/ru-ru/interface/pages.json';
+import ruInterfaceForms from '@/i18n/locales/ru-ru/interface/forms.json';
+import ruInterfacePanels from '@/i18n/locales/ru-ru/interface/panels.json';
+import ruInterfaceComponents from '@/i18n/locales/ru-ru/interface/components.json';
+import ruInterfaceTools from '@/i18n/locales/ru-ru/interface/tools.json';
+import ruErrorCore from '@/i18n/locales/ru-ru/error/_core.json';
+import ruAccessibilityCore from '@/i18n/locales/ru-ru/accessibility/_core.json';
+import ruAccessibilityComponents from '@/i18n/locales/ru-ru/accessibility/components.json';
 
 type Bundle = Record<string, unknown>;
+
+const DEFAULT_LOCALE = 'en-US';
 
 /**
  * Mirrors the shallow-merge in `i18n/resources.ts` — same three namespaces,
  * same shard precedence — so a key resolves identically on both sides.
  */
-const NAMESPACES: Record<string, Bundle> = {
-  interface: {
-    ...interfaceCore,
-    ...interfacePages,
-    ...interfaceForms,
-    ...interfacePanels,
-    ...interfaceComponents,
-    ...interfaceTools,
+const LOCALES: Record<string, Record<string, Bundle>> = {
+  'en-US': {
+    interface: {
+      ...interfaceCore,
+      ...interfacePages,
+      ...interfaceForms,
+      ...interfacePanels,
+      ...interfaceComponents,
+      ...interfaceTools,
+    },
+    error: { ...errorCore },
+    accessibility: { ...accessibilityCore, ...accessibilityComponents },
   },
-  error: { ...errorCore },
-  accessibility: { ...accessibilityCore, ...accessibilityComponents },
+  'ru-RU': {
+    interface: {
+      ...ruInterfaceCore,
+      ...ruInterfacePages,
+      ...ruInterfaceForms,
+      ...ruInterfacePanels,
+      ...ruInterfaceComponents,
+      ...ruInterfaceTools,
+    },
+    error: { ...ruErrorCore },
+    accessibility: { ...ruAccessibilityCore, ...ruAccessibilityComponents },
+  },
 };
 
 const DEFAULT_NAMESPACE = 'interface';
 
-/** Resolve `"interface:a.b.c"` or `"a.b.c"` against the bundles above. */
-function lookup(key: string, defaultNamespace: string): unknown {
-  const colon = key.indexOf(':');
-  const namespace = colon === -1 ? defaultNamespace : key.slice(0, colon);
-  const path = colon === -1 ? key : key.slice(colon + 1);
-
-  let node: unknown = NAMESPACES[namespace];
+function lookupIn(namespaces: Record<string, Bundle> | undefined, namespace: string, path: string): unknown {
+  let node: unknown = namespaces?.[namespace];
   for (const segment of path.split('.')) {
     if (node === null || typeof node !== 'object') return undefined;
     node = (node as Bundle)[segment];
   }
   return node;
+}
+
+/** Resolve `"interface:a.b.c"` or `"a.b.c"` for `locale`, en-US as fallback. */
+function lookup(key: string, defaultNamespace: string, locale: string = DEFAULT_LOCALE): unknown {
+  const colon = key.indexOf(':');
+  const namespace = colon === -1 ? defaultNamespace : key.slice(0, colon);
+  const path = colon === -1 ? key : key.slice(colon + 1);
+
+  const localized = lookupIn(LOCALES[locale], namespace, path);
+  if (localized !== undefined) return localized;
+  if (locale === DEFAULT_LOCALE) return undefined;
+  return lookupIn(LOCALES[DEFAULT_LOCALE], namespace, path);
 }
 
 /** `{{name}}` interpolation, matching i18next's default delimiters. */
@@ -83,12 +117,15 @@ export interface ServerT {
  * interpolation. A missing key returns the key itself, exactly as i18next does,
  * so a typo is visible in the HTML rather than rendering blank.
  */
-export function getServerT(defaultNamespace: string = DEFAULT_NAMESPACE): ServerT {
+export function getServerT(
+  defaultNamespace: string = DEFAULT_NAMESPACE,
+  locale: string = DEFAULT_LOCALE,
+): ServerT {
   function t(
     key: string,
     options?: { returnObjects?: true; values?: Record<string, string | number> },
   ): string | unknown {
-    const value = lookup(key, defaultNamespace);
+    const value = lookup(key, defaultNamespace, locale);
     if (options?.returnObjects) return value ?? [];
     if (typeof value === 'string') return interpolate(value, options?.values);
     return key;
@@ -161,14 +198,16 @@ export interface ServerTransProps {
   components?: ComponentMap;
   /** `{{name}}` interpolation values. */
   values?: Record<string, string | number>;
+  /** Locale for `i18nKey` lookup (`defaults` is already localized). */
+  locale?: string;
 }
 
 /**
  * Server-component stand-in for react-i18next's `<Trans>`, supporting the props
  * the static views actually pass. Same source strings, same component maps.
  */
-export function ServerTrans({ i18nKey, defaults, components = {}, values }: ServerTransProps) {
-  const raw = defaults ?? (i18nKey ? lookup(i18nKey, DEFAULT_NAMESPACE) : undefined);
+export function ServerTrans({ i18nKey, defaults, components = {}, values, locale }: ServerTransProps) {
+  const raw = defaults ?? (i18nKey ? lookup(i18nKey, DEFAULT_NAMESPACE, locale) : undefined);
   const source = typeof raw === 'string' ? raw : (i18nKey ?? '');
   return <>{renderRich(interpolate(source, values), components)}</>;
 }

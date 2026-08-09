@@ -11,10 +11,10 @@ const QUICK_LINKS: { key: string; to: string }[] = [
   { key: 'tutorials', to: '/tutorials' },
 ];
 
-const NotFoundPage: React.FC = () => {
+const NotFoundPage: React.FC<{ locale?: string }> = ({ locale }) => {
   // Keys here are namespace-qualified (`interface:` / `accessibility:`), which
   // the server resolver handles directly.
-  const t = getServerT();
+  const t = getServerT('interface', locale);
   return (
     <>
       <div className="px-4 sm:px-6"><Panel level="1" className="max-w-3xl mx-auto my-12"><div className="text-center">

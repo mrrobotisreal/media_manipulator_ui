@@ -22,8 +22,8 @@ const K = 'tutorials.tutorials.contentStudio.page';
  * shell (header/sidebar/footer ads + content card) so it matches the existing
  * tutorial-page + AdSense convention. Screenshots are served from R2.
  */
-const ContentStudioTutorial: React.FC = () => {
-  const t = getServerT();
+const ContentStudioTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
 
   const Shot: React.FC<{ src: string; altKey: string; capKey: string }> = ({ src, altKey, capKey }) => (
     <figure className="my-6">

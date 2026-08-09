@@ -18,8 +18,8 @@ const RichList: React.FC<{ items: string[] }> = ({ items }) => (
   </>
 );
 
-const HowItWorksPage: React.FC = () => {
-  const t = getServerT();
+const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
 
   const imageItems = t('howItWorks.capabilities.image.items', { returnObjects: true }) as string[];
   const videoItems = t('howItWorks.capabilities.video.items', { returnObjects: true }) as string[];
@@ -108,7 +108,7 @@ const HowItWorksPage: React.FC = () => {
             <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.transcription.title')}</h2>
               <p className="text-muted-foreground mb-4">
-                <ServerTrans i18nKey="interface:howItWorks.transcription.intro" components={{ em: <em /> }} />
+                <ServerTrans locale={locale} i18nKey="interface:howItWorks.transcription.intro" components={{ em: <em /> }} />
               </p>
               <ul className="text-muted-foreground space-y-1">
                 {transcriptionItems.map((item, idx) => (

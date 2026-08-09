@@ -76,8 +76,8 @@ const CATEGORIES: CategoryDef[] = [
   },
 ];
 
-const TutorialsPage: React.FC = () => {
-  const t = getServerT();
+const TutorialsPage: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
   return (
     <>
       <div className="px-4 sm:px-6"><Panel level="1" className="max-w-7xl mx-auto my-2">

@@ -4,6 +4,7 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   LANGUAGE_STORAGE_KEY,
+  LANGUAGE_COOKIE_KEY,
   supportedLanguages,
   defaultLanguage,
 } from "./index";
@@ -185,6 +186,10 @@ export function useLocalization(namespace?: string | string[]): UseLocalizationR
       if (typeof document !== "undefined") {
         document.documentElement.lang = code;
         document.documentElement.dir = target?.dir ?? "ltr";
+        // Mirror the choice into a cookie so the server-rendered static views
+        // (lib/i18n/requestLocale.ts) render in the same language on the next
+        // request / router.refresh().
+        document.cookie = `${LANGUAGE_COOKIE_KEY}=${encodeURIComponent(code)}; path=/; max-age=31536000; samesite=lax`;
       }
     },
     [i18nInstance],

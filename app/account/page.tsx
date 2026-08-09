@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { getServerT } from '@/lib/i18n/server';
+import { getRequestLocale } from '@/lib/i18n/requestLocale';
 import AccountDashboard, {
   type AccountLabels,
 } from '@/components/account/account-dashboard';
@@ -23,8 +24,9 @@ export const metadata: Metadata = {
  * why the history panel's tool and status maps are read here, with
  * `returnObjects`, rather than in the island.
  */
-export default function Account() {
-  const t = getServerT();
+export default async function Account() {
+  const locale = await getRequestLocale();
+  const t = getServerT('interface', locale);
 
   const labels: AccountLabels = {
     signedOutTitle: t('interface:account.signedOutTitle'),
