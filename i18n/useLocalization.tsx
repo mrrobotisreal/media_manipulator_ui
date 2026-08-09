@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import {
   LANGUAGE_STORAGE_KEY,
@@ -8,6 +9,7 @@ import {
   supportedLanguages,
   defaultLanguage,
 } from "./index";
+import { localizeHref, stripLocalePrefix } from "./locales";
 import type { SupportedLanguage } from "./resources";
 
 // `Intl.ListFormat` exists in all modern browsers we target (Chrome 72+,
@@ -165,6 +167,8 @@ export interface UseLocalizationReturn {
 
 export function useLocalization(namespace?: string | string[]): UseLocalizationReturn {
   const { t, i18n: i18nInstance } = useTranslation(namespace);
+  const router = useRouter();
+  const pathname = usePathname();
   const activeCode = i18nInstance.language || defaultLanguage;
   const language = useMemo<SupportedLanguage>(
     () =>
@@ -174,25 +178,29 @@ export function useLocalization(namespace?: string | string[]): UseLocalizationR
     [activeCode],
   );
 
+  // The URL is the source of truth for language: switching means NAVIGATING to
+  // the same path under the new locale prefix (`/about` ↔ `/ru/about`). The
+  // provider in `app/providers.tsx` observes the new `[lang]` segment and
+  // switches the live i18next instance; the `<html lang dir>` attributes come
+  // from the re-rendered root layout. The localStorage/cookie writes are a
+  // PREFERENCE RECORD only — nothing server-side reads them for rendering.
   const changeLanguage = useCallback(
     async (code: string) => {
-      await i18nInstance.changeLanguage(code);
       try {
         window.localStorage.setItem(LANGUAGE_STORAGE_KEY, code);
       } catch {
-        // localStorage may be unavailable; the change still applies for this session.
+        // localStorage may be unavailable; the navigation still applies.
       }
-      const target = supportedLanguages.find((l) => l.code === code);
       if (typeof document !== "undefined") {
-        document.documentElement.lang = code;
-        document.documentElement.dir = target?.dir ?? "ltr";
-        // Mirror the choice into a cookie so the server-rendered static views
-        // (lib/i18n/requestLocale.ts) render in the same language on the next
-        // request / router.refresh().
         document.cookie = `${LANGUAGE_COOKIE_KEY}=${encodeURIComponent(code)}; path=/; max-age=31536000; samesite=lax`;
       }
+      const neutralPath = stripLocalePrefix(pathname ?? "/");
+      const target = localizeHref(neutralPath, code);
+      const search = typeof window !== "undefined" ? window.location.search : "";
+      const hash = typeof window !== "undefined" ? window.location.hash : "";
+      router.push(`${target}${search}${hash}`);
     },
-    [i18nInstance],
+    [pathname, router],
   );
 
   const formatDate = useMemo(() => buildFormatDate(activeCode), [activeCode]);

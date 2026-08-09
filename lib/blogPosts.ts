@@ -12,6 +12,8 @@ import {
   DEFAULT_LOGO,
   type JsonLd,
 } from '@/lib/seo';
+import { languageAlternates } from '@/lib/metadata';
+import { defaultLocale, getLocaleDef, localizeHref } from '@/i18n/locales';
 
 export interface BlogPost {
   path: string;
@@ -86,17 +88,22 @@ export function getBlogPost(path: string): BlogPost | undefined {
 
 const url = (path: string) => new URL(path, SITE_ORIGIN).toString();
 
-export function blogPostMetadata(post: BlogPost): Metadata {
+export function blogPostMetadata(post: BlogPost, locale: string = defaultLocale): Metadata {
+  const canonicalUrl = url(localizeHref(post.path, locale));
+  const isTranslated = getLocaleDef(locale)?.translated ?? false;
   return {
     title: post.title,
     description: post.description,
     keywords: post.keywords,
-    alternates: { canonical: url(post.path) },
-    robots: { index: true, follow: true },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: languageAlternates(post.path),
+    },
+    robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
       title: post.title,
       description: post.description,
-      url: url(post.path),
+      url: canonicalUrl,
       siteName: SITE_NAME,
       type: 'article',
       images: [{ url: DEFAULT_OG_IMAGE }],
@@ -150,20 +157,25 @@ export function blogPostJsonLd(post: BlogPost): JsonLd[] {
   ];
 }
 
-export function blogIndexMetadata(): Metadata {
+export function blogIndexMetadata(locale: string = defaultLocale): Metadata {
   const title =
     'Media Conversion, Compression & Editing Guides | Media Manipulator Blog';
   const description =
     'Learn how media formats, compression, metadata, transcription, and FFmpeg-powered file processing work with practical guides from Media Manipulator.';
+  const canonicalUrl = url(localizeHref('/blog', locale));
+  const isTranslated = getLocaleDef(locale)?.translated ?? false;
   return {
     title,
     description,
-    alternates: { canonical: url('/blog') },
-    robots: { index: true, follow: true },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: languageAlternates('/blog'),
+    },
+    robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
       title,
       description,
-      url: url('/blog'),
+      url: canonicalUrl,
       siteName: SITE_NAME,
       type: 'website',
       images: [{ url: DEFAULT_OG_IMAGE }],

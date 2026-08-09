@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { getServerT } from '@/lib/i18n/server';
+import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { Panel } from '@/components/darkroom/panel';
 
 const QUICK_LINKS: { key: string; to: string }[] = [
@@ -11,10 +14,19 @@ const QUICK_LINKS: { key: string; to: string }[] = [
   { key: 'tutorials', to: '/tutorials' },
 ];
 
-const NotFoundPage: React.FC<{ locale?: string }> = ({ locale }) => {
+/**
+ * Client component by necessity: Next's `not-found.tsx` receives no props, so
+ * the segment's locale cannot be threaded in from the server. The i18n
+ * provider (initialized from the `[lang]` URL segment by the root layout)
+ * already speaks the right language on both the server render of this
+ * boundary and on the client — and every string used here lives in the
+ * eagerly-bundled `_core` shards, so nothing flashes untranslated.
+ */
+const NotFoundPage: React.FC = () => {
   // Keys here are namespace-qualified (`interface:` / `accessibility:`), which
-  // the server resolver handles directly.
-  const t = getServerT('interface', locale);
+  // useTranslation resolves across both loaded namespaces.
+  const { t } = useLocalization(['interface', 'accessibility']);
+  const localized = useLocalizedHref();
   return (
     <>
       <div className="px-4 sm:px-6"><Panel level="1" className="max-w-3xl mx-auto my-12"><div className="text-center">
@@ -41,7 +53,7 @@ const NotFoundPage: React.FC<{ locale?: string }> = ({ locale }) => {
             {QUICK_LINKS.map((link) => (
               <Link
                 key={link.to}
-                href={link.to}
+                href={localized(link.to)}
                 className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors text-sm"
               >
                 {t(`interface:notFound.links.${link.key}`)}

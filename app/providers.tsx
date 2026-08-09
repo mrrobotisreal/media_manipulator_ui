@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { I18nextProvider } from 'react-i18next';
+import type { i18n as I18nInstance } from 'i18next';
 import { Toaster } from 'sonner';
-import '@/i18n';
+import { getI18nForLocale, defaultLanguage } from '@/i18n';
 import { ThemeProvider } from '@/components/theme-provider';
 import TopNav from '@/components/top-nav';
 import Footer from '@/components/footer';
@@ -38,8 +40,32 @@ function getQueryClient(): QueryClient {
  *
  * Mixpanel is removed entirely, along with Firebase Analytics and Performance.
  */
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function Providers({
+  children,
+  locale = defaultLanguage,
+}: {
+  children: React.ReactNode;
+  /** Locale code resolved from the `[lang]` URL segment by the root layout. */
+  locale?: string;
+}) {
   const [queryClient] = useState(getQueryClient);
+  // The i18next instance must speak the same language as the server HTML it
+  // hydrates into, so it is created synchronously from the URL locale before
+  // the first render — per-render on the server (no cross-request sharing),
+  // the process-wide singleton in the browser.
+  const i18nRef = useRef<I18nInstance | null>(null);
+  if (i18nRef.current === null) {
+    i18nRef.current = getI18nForLocale(locale);
+  }
+  // Client-side navigation across locales (e.g. the language selector calling
+  // router.push('/ru/...')) re-renders this provider with a new locale prop;
+  // switch the live singleton so every mounted component follows.
+  useEffect(() => {
+    const instance = i18nRef.current;
+    if (instance && instance.language !== locale) {
+      void instance.changeLanguage(locale);
+    }
+  }, [locale]);
   const pathname = usePathname();
   // The /embed/* routes are chromeless app surfaces meant to be iframed by
   // CreaTV — no site nav/footer and no analytics of any kind. They still need
@@ -59,17 +85,20 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     // surface inside someone else's page, and `/dr/*` is a private partner
     // portal. Neither may mount a consent prompt or emit a single event.
     return (
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          {children}
-          <Toaster />
-        </ThemeProvider>
-      </QueryClientProvider>
+      <I18nextProvider i18n={i18nRef.current}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </I18nextProvider>
     );
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <I18nextProvider i18n={i18nRef.current}>
+      <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         {/* AuthProvider is deliberately inside the non-chromeless branch only:
             /embed/* is an iframed app surface with no site chrome, and /dr/* is
@@ -97,6 +126,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           </AnalyticsProvider>
         </AuthProvider>
       </ThemeProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </I18nextProvider>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Languages, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocalization } from "@/i18n/useLocalization";
@@ -24,7 +23,6 @@ import { cn } from "@/lib/utils";
 const LanguageSelector: React.FC = () => {
   const { t } = useLocalization(["interface", "accessibility"]);
   const { language, languages, changeLanguage } = useLocalization();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const triggerLabel = t("accessibility:languageSelector.trigger", {
@@ -52,13 +50,14 @@ const LanguageSelector: React.FC = () => {
 
   const handleSelect = useCallback(
     (code: string) => {
-      // changeLanguage persists the choice (localStorage + cookie) and swaps
-      // every client-rendered string; the refresh re-renders the server
-      // components (static views) with the new cookie so they follow suit.
-      void changeLanguage(code).then(() => router.refresh());
+      // changeLanguage records the preference (localStorage + cookie) and
+      // NAVIGATES to the same path under the new locale prefix — the URL is
+      // the source of truth for language, so both server- and client-rendered
+      // strings follow from the new route.
+      void changeLanguage(code);
       setOpen(false);
     },
-    [changeLanguage, router],
+    [changeLanguage],
   );
 
   // Declared after every hook so the hook order stays stable.

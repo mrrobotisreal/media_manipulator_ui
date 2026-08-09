@@ -1,56 +1,29 @@
-import i18n from "i18next";
+import { createInstance, type i18n as I18nInstance } from "i18next";
 import { initReactI18next } from "react-i18next";
 import { resources, supportedLanguages, defaultLanguage } from "./resources";
 
 const LANGUAGE_STORAGE_KEY = "mm-language";
 
-// Same name is used as a cookie so the server-rendered static views (see
-// `lib/i18n/requestLocale.ts`) can resolve the visitor's language per request.
+// Same name is used as a cookie. Neither is read for RENDERING anymore — the
+// URL's `[lang]` segment is the source of truth (see `app/(localized)/[lang]/`)
+// — they persist the visitor's preference for client-side affordances only.
 const LANGUAGE_COOKIE_KEY = "mm-language";
 
-const readLanguageCookie = (): string | null => {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie
-    .split("; ")
-    .find((part) => part.startsWith(`${LANGUAGE_COOKIE_KEY}=`));
-  if (!match) return null;
-  try {
-    return decodeURIComponent(match.slice(LANGUAGE_COOKIE_KEY.length + 1));
-  } catch {
-    return null;
-  }
-};
-
-const detectInitialLanguage = (): string => {
-  if (typeof window === "undefined") return defaultLanguage;
-  try {
-    const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
-    if (stored && supportedLanguages.some((l) => l.code === stored)) {
-      return stored;
-    }
-  } catch {
-    // localStorage may be unavailable (private mode, SSR). Fall through.
-  }
-  const cookie = readLanguageCookie();
-  if (cookie && supportedLanguages.some((l) => l.code === cookie)) {
-    return cookie;
-  }
-  const navLang = window.navigator?.language?.toLowerCase();
-  if (navLang) {
-    const exact = supportedLanguages.find((l) => l.code.toLowerCase() === navLang);
-    if (exact) return exact.code;
-    const prefix = navLang.split("-")[0];
-    const prefixMatch = supportedLanguages.find((l) => l.code.toLowerCase().startsWith(prefix));
-    if (prefixMatch) return prefixMatch.code;
-  }
-  return defaultLanguage;
-};
-
-if (!i18n.isInitialized) {
-  const initialLanguage = detectInitialLanguage();
-  void i18n.use(initReactI18next).init({
+/**
+ * Builds a fresh i18next instance bound to `locale`.
+ *
+ * Why a factory instead of the old module-level singleton: client components
+ * are also rendered ON THE SERVER (SSR inside the static prerender), and with
+ * per-URL locales a singleton shared across concurrent renders is a
+ * cross-request race — request A for `/ru/...` could flip the language under
+ * request B for `/de/...`. Each server render gets its own instance via
+ * `getI18nForLocale`; the browser keeps exactly one.
+ */
+export function createI18nInstance(locale: string = defaultLanguage): I18nInstance {
+  const instance = createInstance();
+  void instance.use(initReactI18next).init({
     resources,
-    lng: initialLanguage,
+    lng: locale,
     fallbackLng: defaultLanguage,
     ns: ["interface", "error", "accessibility"],
     defaultNS: "interface",
@@ -71,15 +44,34 @@ if (!i18n.isInitialized) {
       bindI18nStore: "added removed",
     },
   });
-  // The prerendered HTML ships with the default `lang`; correct the document
-  // as soon as the client picks a stored/browser language. Later switches are
-  // handled by `changeLanguage` in useLocalization.
-  if (typeof document !== "undefined" && initialLanguage !== defaultLanguage) {
-    const entry = supportedLanguages.find((l) => l.code === initialLanguage);
-    document.documentElement.lang = initialLanguage;
-    document.documentElement.dir = entry?.dir ?? "ltr";
+  return instance;
+}
+
+let browserI18n: I18nInstance | undefined;
+
+/**
+ * The instance for a render at `locale`: per-render on the server, the shared
+ * browser singleton on the client (switched in place when the URL locale
+ * changes, so already-mounted components re-render into the new language).
+ */
+export function getI18nForLocale(locale: string): I18nInstance {
+  if (typeof window === "undefined") return createI18nInstance(locale);
+  if (!browserI18n) {
+    browserI18n = createI18nInstance(locale);
+  } else if (browserI18n.language !== locale) {
+    void browserI18n.changeLanguage(locale);
   }
+  return browserI18n;
+}
+
+/**
+ * Browser-only escape hatch for modules that live outside the provider tree
+ * (`lib/i18n/ensureShard.ts` merges lazy shards into the live instance).
+ * Never call during server rendering.
+ */
+export function getBrowserI18n(): I18nInstance {
+  if (!browserI18n) browserI18n = createI18nInstance(defaultLanguage);
+  return browserI18n;
 }
 
 export { LANGUAGE_STORAGE_KEY, LANGUAGE_COOKIE_KEY, supportedLanguages, defaultLanguage };
-export default i18n;

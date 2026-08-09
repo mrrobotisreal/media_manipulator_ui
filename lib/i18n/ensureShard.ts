@@ -1,4 +1,4 @@
-import i18n from '@/i18n';
+import { getBrowserI18n } from '@/i18n';
 import { defaultLanguage } from '@/i18n/resources';
 
 /**
@@ -84,6 +84,7 @@ function ensureShardsForLanguage(language: string): Promise<void> {
     const [forms, panels] = await SHARD_LOADERS[lang]();
     // deep: true, overwrite: true — these shards own disjoint top-level keys,
     // but a deep merge keeps them additive if that ever stops being true.
+    const i18n = getBrowserI18n();
     i18n.addResourceBundle(lang, 'interface', forms.default, true, true);
     i18n.addResourceBundle(lang, 'interface', panels.default, true, true);
   })().catch((error) => {
@@ -98,6 +99,7 @@ function ensureShardsForLanguage(language: string): Promise<void> {
 }
 
 export function ensureToolShards(): Promise<void> {
+  const i18n = getBrowserI18n();
   shardsRequested = true;
   if (!languageListenerBound) {
     languageListenerBound = true;
