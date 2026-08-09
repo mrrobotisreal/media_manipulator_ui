@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
 import {
@@ -139,6 +140,7 @@ interface UseTranscribeFileReturns {
 }
 
 const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): UseTranscribeFileReturns => {
+  const { t } = useLocalization('interface');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<UploadPhase>('idle');
 
@@ -161,8 +163,8 @@ const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): 
     onSuccess: (data, variables) => {
       setUploadProgress(100);
       setUploadPhase('processing');
-      toast.success('Transcription started', {
-        description: `Job ID: ${data.jobId} - Generating transcript`,
+      toast.success(t('toasts.transcriptionStarted'), {
+        description: t('toasts.transcriptionStartedDescription', { jobId: data.jobId }),
       });
       const mediaKind = normalizeMediaKind(getFileType(variables.file));
       markJobStarted(data.jobId, 'transcribe-audio', mediaKind);
@@ -186,8 +188,8 @@ const useTranscribeFile = (onSuccess: (res: TranscribeUploadResponse) => void): 
         { media_kind: normalizeMediaKind(getFileType(variables.file)) },
       );
       reportError(analytics, error, { stage: 'transcription_upload' });
-      toast.error('Failed to start transcription', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('error:toasts.transcriptionStartFailed'), {
+        description: error.message || t('error:toasts.unexpectedFallback'),
       });
     },
   });

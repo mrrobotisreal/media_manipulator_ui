@@ -18,10 +18,12 @@
  * locale falls back to the en-US string, the same net behavior as i18next's
  * `fallbackLng`.
  *
- * Registration: every language in `i18n/locales.ts` needs its full 9-shard
- * bundle imported and spread here; untranslated locales are byte-copies of
- * en-US until their dedicated translation session. The `localeParity` test
- * enforces key parity across all of them.
+ * Registration: every language in `i18n/locales.ts` needs its full 10-shard
+ * bundle imported and spread here (`interface/articles.json` is server-only —
+ * long-form blog/tutorial copy that must never enter `i18n/resources.ts`);
+ * untranslated locales are byte-copies of en-US until their dedicated
+ * translation session. The `localeParity` test enforces key parity across all
+ * of them.
  */
 import React, { cloneElement, type ReactElement, type ReactNode } from 'react';
 
@@ -31,6 +33,7 @@ import interfaceForms from '@/i18n/locales/en-us/interface/forms.json';
 import interfacePanels from '@/i18n/locales/en-us/interface/panels.json';
 import interfaceComponents from '@/i18n/locales/en-us/interface/components.json';
 import interfaceTools from '@/i18n/locales/en-us/interface/tools.json';
+import interfaceArticles from '@/i18n/locales/en-us/interface/articles.json';
 import errorCore from '@/i18n/locales/en-us/error/_core.json';
 import accessibilityCore from '@/i18n/locales/en-us/accessibility/_core.json';
 import accessibilityComponents from '@/i18n/locales/en-us/accessibility/components.json';
@@ -41,6 +44,7 @@ import ruInterfaceForms from '@/i18n/locales/ru-ru/interface/forms.json';
 import ruInterfacePanels from '@/i18n/locales/ru-ru/interface/panels.json';
 import ruInterfaceComponents from '@/i18n/locales/ru-ru/interface/components.json';
 import ruInterfaceTools from '@/i18n/locales/ru-ru/interface/tools.json';
+import ruInterfaceArticles from '@/i18n/locales/ru-ru/interface/articles.json';
 import ruErrorCore from '@/i18n/locales/ru-ru/error/_core.json';
 import ruAccessibilityCore from '@/i18n/locales/ru-ru/accessibility/_core.json';
 import ruAccessibilityComponents from '@/i18n/locales/ru-ru/accessibility/components.json';
@@ -51,6 +55,7 @@ import ukInterfaceForms from '@/i18n/locales/uk-ua/interface/forms.json';
 import ukInterfacePanels from '@/i18n/locales/uk-ua/interface/panels.json';
 import ukInterfaceComponents from '@/i18n/locales/uk-ua/interface/components.json';
 import ukInterfaceTools from '@/i18n/locales/uk-ua/interface/tools.json';
+import ukInterfaceArticles from '@/i18n/locales/uk-ua/interface/articles.json';
 import ukErrorCore from '@/i18n/locales/uk-ua/error/_core.json';
 import ukAccessibilityCore from '@/i18n/locales/uk-ua/accessibility/_core.json';
 import ukAccessibilityComponents from '@/i18n/locales/uk-ua/accessibility/components.json';
@@ -61,6 +66,7 @@ import heInterfaceForms from '@/i18n/locales/he-il/interface/forms.json';
 import heInterfacePanels from '@/i18n/locales/he-il/interface/panels.json';
 import heInterfaceComponents from '@/i18n/locales/he-il/interface/components.json';
 import heInterfaceTools from '@/i18n/locales/he-il/interface/tools.json';
+import heInterfaceArticles from '@/i18n/locales/he-il/interface/articles.json';
 import heErrorCore from '@/i18n/locales/he-il/error/_core.json';
 import heAccessibilityCore from '@/i18n/locales/he-il/accessibility/_core.json';
 import heAccessibilityComponents from '@/i18n/locales/he-il/accessibility/components.json';
@@ -71,6 +77,7 @@ import deInterfaceForms from '@/i18n/locales/de-de/interface/forms.json';
 import deInterfacePanels from '@/i18n/locales/de-de/interface/panels.json';
 import deInterfaceComponents from '@/i18n/locales/de-de/interface/components.json';
 import deInterfaceTools from '@/i18n/locales/de-de/interface/tools.json';
+import deInterfaceArticles from '@/i18n/locales/de-de/interface/articles.json';
 import deErrorCore from '@/i18n/locales/de-de/error/_core.json';
 import deAccessibilityCore from '@/i18n/locales/de-de/accessibility/_core.json';
 import deAccessibilityComponents from '@/i18n/locales/de-de/accessibility/components.json';
@@ -81,6 +88,7 @@ import esInterfaceForms from '@/i18n/locales/es-es/interface/forms.json';
 import esInterfacePanels from '@/i18n/locales/es-es/interface/panels.json';
 import esInterfaceComponents from '@/i18n/locales/es-es/interface/components.json';
 import esInterfaceTools from '@/i18n/locales/es-es/interface/tools.json';
+import esInterfaceArticles from '@/i18n/locales/es-es/interface/articles.json';
 import esErrorCore from '@/i18n/locales/es-es/error/_core.json';
 import esAccessibilityCore from '@/i18n/locales/es-es/accessibility/_core.json';
 import esAccessibilityComponents from '@/i18n/locales/es-es/accessibility/components.json';
@@ -93,7 +101,7 @@ const DEFAULT_LOCALE = 'en-US';
  * Builds one language's namespace map. Mirrors the shallow-merge in
  * `i18n/resources.ts` — same three namespaces, same shard precedence — so a
  * key resolves identically on both sides (plus the server-only `pages`,
- * `forms`, `panels` shards merged into `interface`).
+ * `forms`, `panels`, `articles` shards merged into `interface`).
  */
 function language(
   core: Bundle,
@@ -102,12 +110,13 @@ function language(
   panels: Bundle,
   components: Bundle,
   tools: Bundle,
+  articles: Bundle,
   error: Bundle,
   a11yCore: Bundle,
   a11yComponents: Bundle,
 ): Record<string, Bundle> {
   return {
-    interface: { ...core, ...pages, ...forms, ...panels, ...components, ...tools },
+    interface: { ...core, ...pages, ...forms, ...panels, ...components, ...tools, ...articles },
     error: { ...error },
     accessibility: { ...a11yCore, ...a11yComponents },
   };
@@ -121,6 +130,7 @@ const LOCALES: Record<string, Record<string, Bundle>> = {
     interfacePanels,
     interfaceComponents,
     interfaceTools,
+    interfaceArticles,
     errorCore,
     accessibilityCore,
     accessibilityComponents,
@@ -132,6 +142,7 @@ const LOCALES: Record<string, Record<string, Bundle>> = {
     ruInterfacePanels,
     ruInterfaceComponents,
     ruInterfaceTools,
+    ruInterfaceArticles,
     ruErrorCore,
     ruAccessibilityCore,
     ruAccessibilityComponents,
@@ -143,6 +154,7 @@ const LOCALES: Record<string, Record<string, Bundle>> = {
     ukInterfacePanels,
     ukInterfaceComponents,
     ukInterfaceTools,
+    ukInterfaceArticles,
     ukErrorCore,
     ukAccessibilityCore,
     ukAccessibilityComponents,
@@ -154,6 +166,7 @@ const LOCALES: Record<string, Record<string, Bundle>> = {
     heInterfacePanels,
     heInterfaceComponents,
     heInterfaceTools,
+    heInterfaceArticles,
     heErrorCore,
     heAccessibilityCore,
     heAccessibilityComponents,
@@ -165,6 +178,7 @@ const LOCALES: Record<string, Record<string, Bundle>> = {
     deInterfacePanels,
     deInterfaceComponents,
     deInterfaceTools,
+    deInterfaceArticles,
     deErrorCore,
     deAccessibilityCore,
     deAccessibilityComponents,
@@ -176,6 +190,7 @@ const LOCALES: Record<string, Record<string, Bundle>> = {
     esInterfacePanels,
     esInterfaceComponents,
     esInterfaceTools,
+    esInterfaceArticles,
     esErrorCore,
     esAccessibilityCore,
     esAccessibilityComponents,

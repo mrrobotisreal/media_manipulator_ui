@@ -134,7 +134,7 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
           );
         }
       }
-      toast.error('Export failed', { description: msg });
+      toast.error(t('error:toasts.exportFailed'), { description: msg });
       if (isCreatv && jobId) bridge?.emit({ type: 'cs:export-failed', jobId, error: msg });
     },
     onComplete: () => {
@@ -212,7 +212,7 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
       const saved = await saveMutation.mutateAsync({ id: projectId, req });
       markSaved(saved);
     } catch (err) {
-      toast.error('Failed to save project', { description: (err as Error).message });
+      toast.error(t('error:toasts.saveProjectFailed'), { description: (err as Error).message });
       return;
     }
     try {
@@ -259,7 +259,7 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
       setJobId(res.jobId);
       if (isCreatv) bridge?.emit({ type: 'cs:export-started', jobId: res.jobId });
     } catch (err) {
-      toast.error('Failed to start export', { description: (err as Error).message });
+      toast.error(t('error:toasts.exportStartFailed'), { description: (err as Error).message });
     }
   };
 

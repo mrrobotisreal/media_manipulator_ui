@@ -7,8 +7,31 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import RelatedLinks from '@/components/related-links';
 import TrackedCtaButton from '@/components/analytics/tracked-cta-button';
+import { getServerT, ServerTrans } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
 
-const AudioQualityGuide: React.FC = () => {
+const AudioQualityGuide: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
+
+  const introBullets = t('blogAudioQuality.intro.bullets', { returnObjects: true }) as string[];
+  const formatsBullets = t('blogAudioQuality.difference.formatsBullets', { returnObjects: true }) as string[];
+  const bitrateBullets = t('blogAudioQuality.difference.bitrateBullets', { returnObjects: true }) as string[];
+  const sampleRateBullets = t('blogAudioQuality.difference.sampleRateBullets', { returnObjects: true }) as string[];
+  const backgroundBullets = t('blogAudioQuality.usage.background.bullets', { returnObjects: true }) as string[];
+  const podcastsBullets = t('blogAudioQuality.usage.podcasts.bullets', { returnObjects: true }) as string[];
+  const streamingBullets = t('blogAudioQuality.usage.streaming.bullets', { returnObjects: true }) as string[];
+  const previewsBullets = t('blogAudioQuality.usage.previews.bullets', { returnObjects: true }) as string[];
+  const archivalBullets = t('blogAudioQuality.usage.archival.bullets', { returnObjects: true }) as string[];
+  const decisionTreeContent = t('blogAudioQuality.usage.decisionTree.content');
+  const pageLoadSpeedBullets = t('blogAudioQuality.importance.pageLoadSpeed.bullets', { returnObjects: true }) as string[];
+  const realNumbersBullets = t('blogAudioQuality.importance.realNumbers.bullets', { returnObjects: true }) as string[];
+  const trustFactorBullets = t('blogAudioQuality.importance.trustFactor.bullets', { returnObjects: true }) as string[];
+  const seoVitalsBullets = t('blogAudioQuality.importance.seoVitals.bullets', { returnObjects: true }) as string[];
+  const moreReasonsBullets = t('blogAudioQuality.importance.moreReasons.bullets', { returnObjects: true }) as string[];
+  const takeawaysBullets = t('blogAudioQuality.conclusion.takeaways.bullets', { returnObjects: true }) as string[];
+  const actionPlanSteps = t('blogAudioQuality.conclusion.actionPlan.steps', { returnObjects: true }) as string[];
+  const relatedLinksItems = t('blogAudioQuality.relatedLinks.links', { returnObjects: true }) as Array<{ label: string; description: string }>;
+
   return (
     <>
       {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
@@ -16,23 +39,27 @@ const AudioQualityGuide: React.FC = () => {
       <ContentReadTracker slug="audio-quality-guide" contentType="blog" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
       <aside className="hidden lg:block w-[300px] shrink-0">
-        
+
       </aside>
       <div className="flex-1 min-w-0">
       <Panel level="1">
         <article>
         <div className="mb-4">
         <Link
-          href="/blog"
+          href={localizeHref('/blog', locale ?? 'en-US')}
           className="inline-flex items-center gap-2 text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary font-medium text-sm transition-colors"
         >
-          ← Blog
+          {t('blogAudioQuality.nav.backToBlog')}
         </Link>
       </div>
       <CardHeader className="px-0">
         <header>
           <h1 className="text-4xl font-bold text-card-foreground leading-tight">
-            The Sound of <span className="line-through text-muted-foreground">Silence</span> Quality: Bitrates, Sample Rates, and Formats
+            <ServerTrans
+              locale={locale}
+              i18nKey="interface:blogAudioQuality.header.title"
+              components={{ strike: <span className="line-through text-muted-foreground" /> }}
+            />
           </h1>
 
           <div className="flex items-center gap-4 mt-6">
@@ -45,10 +72,10 @@ const AudioQualityGuide: React.FC = () => {
 
             <div className="flex flex-col">
               <p className="text-sm font-medium text-card-foreground">
-                Written by: Mitchell Wintrow
+                {t('blogAudioQuality.header.byline')} Mitchell Wintrow
               </p>
               <p className="text-sm text-muted-foreground">
-                <time dateTime="2025-06-14">June 14th, 2025</time> • 10:08 PM
+                <time dateTime="2025-06-14">{t('blogAudioQuality.header.dateDisplay')}</time> • {t('blogAudioQuality.header.timeDisplay')}
               </p>
             </div>
           </div>
@@ -58,308 +85,284 @@ const AudioQualityGuide: React.FC = () => {
       </CardHeader>
 
       <CardContent className="px-0 prose prose-lg max-w-none">
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">A Brief Intro to Audio Formats, Bitrates, and Sample Rates</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t('blogAudioQuality.intro.title')}</h2>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's "high-quality" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:
+          {t('blogAudioQuality.intro.p1')}
         </p>
 
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li>Your website's background music takes forever to load, even though it's only 30 seconds long</li>
-          <li>That audio file you converted sounds like someone's playing it through a tin can</li>
-          <li>You're trying to add voice-overs to your video content but the file sizes are absolutely massive</li>
-          <li>Your carefully crafted sound effects library is eating up all your cloud storage</li>
-          <li>You downloaded the same song from different sources and they all sound wildly different</li>
+          {introBullets.map((item, idx) => <li key={idx}>{item}</li>)}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-6">
-          If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!
+          {t('blogAudioQuality.intro.p2')}
         </p>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.
+          {t('blogAudioQuality.intro.p3')}
         </p>
 
         <p className="text-lg text-muted-foreground mb-6">
-          In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯
+          {t('blogAudioQuality.intro.p4')}
         </p>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "The ear is the avenue to the heart." – Voltaire
+          {t('blogAudioQuality.intro.quote')}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t('blogAudioQuality.difference.title')}</h2>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧
+          {t('blogAudioQuality.difference.p1')}
         </p>
 
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:
+          <ServerTrans locale={locale} i18nKey="interface:blogAudioQuality.difference.formatsLead" components={{ strong: <strong /> }} />
         </p>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit</li>
-          <li><strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton</li>
-          <li><strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside</li>
-          <li><strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty</li>
-          <li><strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it</li>
+          {formatsBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:
+          <ServerTrans locale={locale} i18nKey="interface:blogAudioQuality.difference.bitrateLead" components={{ strong: <strong /> }} />
         </p>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)</li>
-          <li><strong>128 kbps</strong>: Standard faucet (decent for casual listening)</li>
-          <li><strong>256 kbps</strong>: Fire hose (great quality for most people)</li>
-          <li><strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)</li>
-          <li><strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿</li>
+          {bitrateBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Sample Rate</strong> is how many times per second we take a "snapshot" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):
+          <ServerTrans locale={locale} i18nKey="interface:blogAudioQuality.difference.sampleRateLead" components={{ strong: <strong /> }} />
         </p>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy</li>
-          <li><strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear</li>
-          <li><strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)</li>
-          <li><strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)</li>
+          {sampleRateBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯
+          {t('blogAudioQuality.difference.p2')}
         </p>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "To understand the whole, you must first understand the parts." – Aristotle
+          {t('blogAudioQuality.difference.quote')}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t('blogAudioQuality.usage.title')}</h2>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?
+          {t('blogAudioQuality.usage.p1')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">For Background Music on Websites:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.usage.background.title')}</h3>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz</li>
-          <li><strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth</li>
-          <li><strong>File size</strong>: ~1MB per minute (your visitors will thank you!)</li>
+          {backgroundBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">For Podcasts & Voice Content:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.usage.podcasts.title')}</h3>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)</li>
-          <li><strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size</li>
-          <li><strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄</li>
+          {podcastsBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">For Music Streaming/Downloads:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.usage.streaming.title')}</h3>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz</li>
-          <li><strong>Why</strong>: The sweet spot between quality and file size</li>
-          <li><strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps</li>
+          {streamingBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">For Audio Previews & Samples:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.usage.previews.title')}</h3>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz</li>
-          <li><strong>Why</strong>: Quick loading, good enough for "try before you buy"</li>
-          <li><strong>Smart move</strong>: Save the high-quality files for paying customers 💰</li>
+          {previewsBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">For Professional/Archival:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.usage.archival.title')}</h3>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)</li>
-          <li><strong>Why</strong>: Future-proof, perfect for editing, no quality loss</li>
-          <li><strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!</li>
+          {archivalBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Quick Decision Tree:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.usage.decisionTree.title')}</h3>
         <div className="bg-surface-2 p-6 rounded-lg mb-8 font-mono text-sm">
           <pre className="whitespace-pre-wrap text-muted-foreground">
-{`Is it voice only? → MP3 at 64-96 kbps
-Is loading speed critical? → MP3/AAC at 128 kbps max
-Need perfect quality? → FLAC/WAV
-Regular music for web? → MP3/AAC at 192-256 kbps`}
+{decisionTreeContent}
           </pre>
         </div>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy "audio enhancer" ads claim).
+          {t('blogAudioQuality.usage.ninjaTip')}
         </p>
 
         <p className="text-lg text-muted-foreground mb-6">
-          <strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.
+          <ServerTrans locale={locale} i18nKey="interface:blogAudioQuality.usage.realWorldExample" components={{ strong: <strong /> }} />
         </p>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away." – Antoine de Saint-Exupéry
+          {t('blogAudioQuality.usage.quote')}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">Why Is This Even Important for My Website?</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t('blogAudioQuality.importance.title')}</h2>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Okay, so you might be thinking, "Cool audio facts, bro, but why should I care?" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸
+          {t('blogAudioQuality.importance.p1')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Page Load Speed = Money</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.importance.pageLoadSpeed.title')}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:
+          {t('blogAudioQuality.importance.pageLoadSpeed.lead')}
         </p>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>7% decrease</strong> in conversions</li>
-          <li><strong>11% fewer</strong> page views</li>
-          <li><strong>16% decrease</strong> in customer satisfaction</li>
+          {pageLoadSpeedBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-6">
-          That innocent 50MB background music file? It's literally costing you customers! 😱
+          {t('blogAudioQuality.importance.pageLoadSpeed.outro')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">The Mobile Reality Check</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.importance.mobileReality.title')}</h3>
         <p className="text-lg text-muted-foreground mb-6">
-          Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)
+          {t('blogAudioQuality.importance.mobileReality.p')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Real Numbers That'll Make You Sweat:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.importance.realNumbers.title')}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          Let's say you have a landing page with:
+          {t('blogAudioQuality.importance.realNumbers.lead')}
         </p>
         <ul className="list-disc pl-6 mb-4 space-y-2 text-muted-foreground">
-          <li>30-second background music loop</li>
-          <li>2 product demo voice-overs (1 minute each)</li>
-          <li>5 sound effects for interactions</li>
+          {realNumbersBullets.map((item, idx) => <li key={idx}>{item}</li>)}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Using WAV files: <strong>~250MB total</strong> 😵<br />
-          Using optimized MP3s: <strong>~8MB total</strong> 🎉
+          <ServerTrans locale={locale} i18nKey="interface:blogAudioQuality.importance.realNumbers.comparisonWav" components={{ strong: <strong /> }} /><br />
+          <ServerTrans locale={locale} i18nKey="interface:blogAudioQuality.importance.realNumbers.comparisonMp3" components={{ strong: <strong /> }} />
         </p>
 
         <p className="text-lg text-muted-foreground mb-6">
-          That's a 97% reduction! Your hosting bill just breathed a sigh of relief.
+          {t('blogAudioQuality.importance.realNumbers.outro')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">The Trust Factor</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.importance.trustFactor.title')}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          Nothing screams "amateur hour" like:
+          {t('blogAudioQuality.importance.trustFactor.lead')}
         </p>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li>Audio that takes forever to load</li>
-          <li>Stuttering playback</li>
-          <li>Quality so bad it sounds like a 1990s dial-up modem</li>
+          {trustFactorBullets.map((item, idx) => <li key={idx}>{item}</li>)}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Professional audio quality = professional image = customer trust = 💰
+          {t('blogAudioQuality.importance.trustFactor.outro')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">SEO and Core Web Vitals</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.importance.seoVitals.title')}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          Google's Core Web Vitals specifically measure:
+          {t('blogAudioQuality.importance.seoVitals.lead')}
         </p>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this</li>
-          <li><strong>FID (First Input Delay)</strong>: Large files blocking the main thread</li>
-          <li><strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps</li>
+          {seoVitalsBullets.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Translation: Bad audio optimization = bad SEO = less organic traffic = less money.
+          {t('blogAudioQuality.importance.seoVitals.outro')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">But Wait, There's More!</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.importance.moreReasons.title')}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          (Said in my best infomercial voice 📺) Optimized audio also means:
+          {t('blogAudioQuality.importance.moreReasons.lead')}
         </p>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li>Lower CDN costs</li>
-          <li>Happier users on slower connections</li>
-          <li>Better accessibility (properly compressed audio works better with screen readers)</li>
-          <li>Increased engagement (people actually stick around when things load fast)</li>
+          {moreReasonsBullets.map((item, idx) => <li key={idx}>{item}</li>)}
         </ul>
 
         <p className="text-lg text-muted-foreground mb-6">
-          I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!
+          {t('blogAudioQuality.importance.moreReasons.clientStory')}
         </p>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "Time is money, and loading time is lost money." – Every Web Developer Ever
+          {t('blogAudioQuality.importance.quote')}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">Conclusion</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t('blogAudioQuality.conclusion.title')}</h2>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):
+          {t('blogAudioQuality.conclusion.p1')}
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">The Big Takeaways:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.conclusion.takeaways.title')}</h3>
         <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li>Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency</li>
-          <li>MP3 at 128-192 kbps is your web workhorse for most use cases</li>
-          <li>Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)</li>
-          <li>Every MB matters – optimized audio = faster loads = happier visitors = more money</li>
-          <li>Start with high quality, compress down (you can't enhance garbage into gold!)</li>
+          {takeawaysBullets.map((item, idx) => <li key={idx}>{item}</li>)}
         </ul>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Your Action Plan:</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t('blogAudioQuality.conclusion.actionPlan.title')}</h3>
         <ol className="list-decimal pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)</li>
-          <li><strong>Convert</strong> them using the guidelines we covered</li>
-          <li><strong>Test</strong> your page load speeds before and after</li>
-          <li><strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)</li>
+          {actionPlanSteps.map((item, idx) => (
+            <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+          ))}
         </ol>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.
+          {t('blogAudioQuality.conclusion.p2')}
         </p>
 
         <p className="text-lg text-muted-foreground mb-6">
-          So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉
+          {t('blogAudioQuality.conclusion.p3')}
         </p>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀
+          {t('blogAudioQuality.conclusion.p4')}
         </p>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "In the realm of digital content, the lightest footprint often leaves the deepest impression." – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)
+          {t('blogAudioQuality.conclusion.quote')}
         </blockquote>
 
         <RelatedLinks
-          title="Related tools"
-          intro="Try the Media Manipulator audio tools and explore related guides."
+          title={t('blogAudioQuality.relatedLinks.title')}
+          intro={t('blogAudioQuality.relatedLinks.intro')}
           links={[
             {
-              label: 'Audio converter',
+              label: relatedLinksItems[0].label,
               to: '/tools/audio-converter',
-              description: 'Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate.',
+              description: relatedLinksItems[0].description,
             },
             {
-              label: 'Convert WAV to MP3',
+              label: relatedLinksItems[1].label,
               to: '/tools/convert-wav-to-mp3',
-              description: 'Shrink large WAV files into widely playable MP3s.',
+              description: relatedLinksItems[1].description,
             },
             {
-              label: 'Isolate vocals from a song',
+              label: relatedLinksItems[2].label,
               to: '/tools/isolate-vocals-from-song',
-              description: 'Pull vocals out of music tracks for remixes or analysis.',
+              description: relatedLinksItems[2].description,
             },
             {
-              label: 'Audio converter tutorial',
+              label: relatedLinksItems[3].label,
               to: '/tutorials/audio/getting-started',
-              description: 'Walk through every option including cleanup and vocal isolation.',
+              description: relatedLinksItems[3].description,
             },
             {
-              label: 'Video compression guide',
+              label: relatedLinksItems[4].label,
               to: '/blog/video/video-compression-guide',
-              description: 'Pair good audio with optimized video encoding.',
+              description: relatedLinksItems[4].description,
             },
             {
-              label: 'Image optimization guide',
+              label: relatedLinksItems[5].label,
               to: '/blog/image/image-optimization-guide',
-              description: 'Round out a fast site by also optimizing image files.',
+              description: relatedLinksItems[5].description,
             },
           ]}
         />
@@ -368,21 +371,21 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
       <CardFooter className="px-0 flex flex-col items-center gap-4 pt-8 border-t">
         <div className="text-center max-w-2xl">
           <h2 className="text-2xl font-bold mb-3 text-card-foreground">
-            Ready to Master Audio Optimization? 🎧
+            {t('blogAudioQuality.cta.title')}
           </h2>
           <p className="text-lg text-muted-foreground mb-6">
-            Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!
+            {t('blogAudioQuality.cta.body')}
           </p>
           <TrackedCtaButton
             ctaId="blog_audio_quality_try_converter"
             placement="blog_guide_audio_quality"
-            href="/tools/audio-converter"
+            href={localizeHref('/tools/audio-converter', locale ?? 'en-US')}
             className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
           >
-            Open the audio converter →
+            {t('blogAudioQuality.cta.buttonLabel')}
           </TrackedCtaButton>
           <p className="text-sm text-muted-foreground mt-3">
-            No signup required • Process files locally • Fast & secure
+            {t('blogAudioQuality.cta.footnote')}
           </p>
         </div>
         </CardFooter>
@@ -390,7 +393,7 @@ Regular music for web? → MP3/AAC at 192-256 kbps`}
       </Panel>
       </div>
       <aside className="hidden lg:block w-[300px] shrink-0">
-        
+
       </aside>
       </div>
       </>

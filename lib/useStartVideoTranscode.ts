@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { analytics, EVENTS, getSessionId, markJobStarted, reportError } from '@/lib/analytics';
@@ -34,6 +35,7 @@ interface UseStartVideoTranscodeReturns {
 const useStartVideoTranscode = (
   onSuccess: (res: TranscodeStartResponse) => void,
 ): UseStartVideoTranscodeReturns => {
+  const { t } = useLocalization('interface');
   const mutation = useMutation({
     mutationFn: async (req: TranscodeStartRequest): Promise<TranscodeStartResponse> => {
       const sessionId = req.sessionId || getSessionId();
@@ -49,8 +51,8 @@ const useStartVideoTranscode = (
       return (await response.json()) as TranscodeStartResponse;
     },
     onSuccess: (data, variables) => {
-      toast.success('Transcode started', {
-        description: `Job ID: ${data.jobId}`,
+      toast.success(t('toasts.transcodeStarted'), {
+        description: t('toasts.jobIdDescription', { jobId: data.jobId }),
       });
       markJobStarted(data.jobId, 'transcode-video', 'video');
       analytics.track(
@@ -82,7 +84,7 @@ const useStartVideoTranscode = (
         { media_kind: 'video' },
       );
       reportError(analytics, error, { stage: 'transcode_start', toolSlug: 'transcode-video' });
-      toast.error('Failed to start transcode', {
+      toast.error(t('error:toasts.transcodeStartFailed'), {
         description: error.message,
       });
     },

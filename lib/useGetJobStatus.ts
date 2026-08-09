@@ -4,6 +4,7 @@ import { getBaseURL } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { analytics, EVENTS, reportError, takeJobDuration } from '@/lib/analytics';
 
 export interface ConversionJob {
@@ -85,6 +86,7 @@ interface UseGetJobStatusReturns {
 // };
 
 const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusReturns => {
+  const { t } = useLocalization('interface');
   const previousStatusRef = useRef<string | null>(null);
 
   const { data: jobStatusData, isPending, isError, error } = useQuery({
@@ -102,8 +104,8 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
   useEffect(() => {
     if (jobStatusData && previousStatusRef.current !== jobStatusData.status) {
       if (jobStatusData.status === 'completed') {
-        toast.success('Conversion completed successfully!', {
-          description: 'Your file is ready for download'
+        toast.success(t('toasts.conversionCompleted'), {
+          description: t('toasts.readyForDownload')
         });
         analytics.track(
           EVENTS.JOB_COMPLETED,
@@ -116,8 +118,8 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
           { job_id: jobStatusData.id },
         );
       } else if (jobStatusData.status === 'failed') {
-        toast.error('Conversion failed', {
-          description: jobStatusData.error || 'The conversion process encountered an error'
+        toast.error(t('error:conversion.failed'), {
+          description: jobStatusData.error || t('error:toasts.conversionFailedFallback')
         });
         analytics.track(
           EVENTS.JOB_FAILED,
@@ -132,7 +134,7 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
       }
       previousStatusRef.current = jobStatusData.status;
     }
-  }, [jobStatusData]);
+  }, [jobStatusData, t]);
 
   // Handle query errors
   useEffect(() => {
@@ -141,11 +143,11 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
       // still be fine. client_error only, and the dedupe stops a persistently failing
       // poll (one every 2s) from flooding the pipeline.
       reportError(analytics, error, { stage: 'job_status_poll' });
-      toast.error('Failed to check job status', {
-        description: error.message || 'Unable to get conversion progress'
+      toast.error(t('error:toasts.jobStatusCheckFailed'), {
+        description: error.message || t('error:toasts.unableToGetProgress')
       });
     }
-  }, [isError, error, conversionJob?.id]);
+  }, [isError, error, conversionJob?.id, t]);
 
   return {
     data: jobStatusData,

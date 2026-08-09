@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import {
@@ -84,6 +85,7 @@ interface UseStitchAudioReturns {
 const useStitchAudioToVideoTool = (
   onSuccess: (res: StitchAudioResponse) => void,
 ): UseStitchAudioReturns => {
+  const { t } = useLocalization('interface');
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const mutation = useMutation({
@@ -101,8 +103,8 @@ const useStitchAudioToVideoTool = (
       });
     },
     onSuccess: (data, variables) => {
-      toast.success('Stitch job started', {
-        description: `Job ID: ${data.jobId}`,
+      toast.success(t('toasts.stitchStarted'), {
+        description: t('toasts.jobIdDescription', { jobId: data.jobId }),
       });
       markJobStarted(data.jobId, 'stitch-audio-to-video', 'video');
       analytics.track(
@@ -129,8 +131,8 @@ const useStitchAudioToVideoTool = (
         { media_kind: 'video', feature: 'stitch_audio_to_video' },
       );
       reportError(analytics, error, { stage: 'stitch_audio_upload', toolSlug: 'stitch-audio-to-video' });
-      toast.error('Failed to start stitch job', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('error:toasts.stitchStartFailed'), {
+        description: error.message || t('error:toasts.unexpectedFallback'),
       });
     },
   });

@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import type { ConversionFormData } from '@/schemas/types';
+import { useLocalization } from '@/i18n/useLocalization';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
 import {
@@ -139,6 +140,7 @@ interface UseConvertFileReturns {
 }
 
 const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConvertFileReturns => {
+  const { t } = useLocalization('interface');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<UploadPhase>('idle');
 
@@ -163,8 +165,8 @@ const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConver
     onSuccess: (data, variables) => {
       setUploadProgress(100);
       setUploadPhase('processing');
-      toast.success('Conversion started successfully', {
-        description: `Job ID: ${data.jobId} - Your file is being processed`
+      toast.success(t('toasts.conversionStarted'), {
+        description: t('toasts.conversionStartedDescription', { jobId: data.jobId }),
       });
       // job_started, not "conversion_started": the catalog name is the contract, and
       // the API has accepted the job by this point. markJobStarted is what makes the
@@ -200,8 +202,8 @@ const useConvertFile = (onSuccess: (res: UploadFileResponse) => void): UseConver
         { media_kind: normalizeMediaKind(getFileType(variables.file)) },
       );
       reportError(analytics, error, { stage: 'conversion_upload' });
-      toast.error('Failed to start conversion', {
-        description: error.message || 'An unexpected error occurred'
+      toast.error(t('error:toasts.conversionStartFailed'), {
+        description: error.message || t('error:toasts.unexpectedFallback'),
       });
     }
   });

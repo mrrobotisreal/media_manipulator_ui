@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL, getFileType } from '@/lib/utils';
 import {
@@ -159,6 +160,7 @@ interface UseSpecializedMediaToolReturns {
 const useSpecializedMediaTool = (
   onSuccess: (res: SpecializedToolResponse) => void,
 ): UseSpecializedMediaToolReturns => {
+  const { t } = useLocalization('interface');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<UploadPhase>('idle');
 
@@ -182,8 +184,8 @@ const useSpecializedMediaTool = (
     onSuccess: (data, variables) => {
       setUploadProgress(100);
       setUploadPhase('processing');
-      toast.success('Job started', {
-        description: `Job ID: ${data.jobId}`,
+      toast.success(t('toasts.jobStarted'), {
+        description: t('toasts.jobIdDescription', { jobId: data.jobId }),
       });
       const mediaKind = normalizeMediaKind(getFileType(variables.file));
       // The mode IS the tool here — these hooks back several distinct tool pages — so it
@@ -213,8 +215,8 @@ const useSpecializedMediaTool = (
         { media_kind: normalizeMediaKind(getFileType(variables.file)), feature: variables.options.mode },
       );
       reportError(analytics, error, { stage: 'specialized_tool_upload' });
-      toast.error('Failed to start job', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('error:toasts.jobStartFailed'), {
+        description: error.message || t('error:toasts.unexpectedFallback'),
       });
     },
   });

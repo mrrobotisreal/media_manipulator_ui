@@ -92,5 +92,33 @@
       "failed": "Extraction failed.",
       "noStreams": "No matching streams found in this file."
     }
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "body": "An unexpected error interrupted this page. Your files were not lost — you can try again, and if the problem continues, reload the page.",
+    "tryAgain": "Try again",
+    "goHome": "Go to homepage"
+  },
+  "toasts": {
+    "conversionStartFailed": "Failed to start conversion.",
+    "transcriptionStartFailed": "Failed to start transcription.",
+    "transcodeStartFailed": "Failed to start transcode.",
+    "videoAnalysisFailed": "Failed to analyze video.",
+    "translationStartFailed": "Failed to start translation.",
+    "scanStartFailed": "Failed to start scan.",
+    "jobStartFailed": "Failed to start job.",
+    "stitchStartFailed": "Failed to start stitch job.",
+    "restorationStartFailed": "Failed to start restoration.",
+    "identificationFailed": "Failed to identify file.",
+    "jobStatusCheckFailed": "Failed to check job status.",
+    "exportStartFailed": "Failed to start export.",
+    "exportFailed": "Export failed.",
+    "saveProjectFailed": "Failed to save project.",
+    "createProjectFailed": "Failed to create project.",
+    "uploadFailed": "Upload failed.",
+    "audioProcessingFailed": "Audio processing failed.",
+    "unexpectedFallback": "An unexpected error occurred.",
+    "conversionFailedFallback": "The conversion process encountered an error.",
+    "unableToGetProgress": "Unable to get conversion progress."
   }
 }

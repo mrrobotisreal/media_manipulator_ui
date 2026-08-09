@@ -15,11 +15,11 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function Page({ params }: PageParams) {
   const { lang } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   return (
     <>
       <JsonLd path={PATH} />
-      <ImageGettingStartedTutorial />
+      <ImageGettingStartedTutorial locale={locale} />
     </>
   );
 }

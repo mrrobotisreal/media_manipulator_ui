@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import type { StudioAssetCompleteResponse } from '@/lib/studioTypes';
 import { useStudioStore } from '@/lib/studioStore';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
@@ -71,12 +72,13 @@ async function postJson<T>(
 export function useUploadStudioAsset(projectId: string | null) {
   const upsertAsset = useStudioStore((s) => s.upsertAsset);
   const backend = useStudioBackend();
+  const { t } = useLocalization('interface');
 
   const mutation = useMutation({
     mutationFn: async (file: File): Promise<StudioAssetCompleteResponse> => {
       if (!projectId) throw new Error('No active project');
       const contentType = guessContentType(file);
-      const toastId = toast.loading(`Uploading ${file.name}…`);
+      const toastId = toast.loading(t('toasts.uploadingFile', { fileName: file.name }));
       try {
         const presign = await postJson(
           backend,
@@ -85,9 +87,9 @@ export function useUploadStudioAsset(projectId: string | null) {
           backend.parsePresign,
         );
         await putToS3(presign.uploadUrl, file, contentType, (p) => {
-          toast.loading(`Uploading ${file.name}… ${p}%`, { id: toastId });
+          toast.loading(t('toasts.uploadingFileProgress', { fileName: file.name, percent: p }), { id: toastId });
         });
-        toast.loading(`Processing ${file.name}…`, { id: toastId });
+        toast.loading(t('toasts.processingFile', { fileName: file.name }), { id: toastId });
         const result = await postJson(
           backend,
           backend.path('/assets/complete'),
@@ -101,10 +103,10 @@ export function useUploadStudioAsset(projectId: string | null) {
           }),
           backend.parseComplete,
         );
-        toast.success(`${file.name} added`, { id: toastId, description: 'Building preview…' });
+        toast.success(t('toasts.assetAdded', { fileName: file.name }), { id: toastId, description: t('toasts.buildingPreview') });
         return result;
       } catch (err) {
-        toast.error('Upload failed', { id: toastId, description: (err as Error).message });
+        toast.error(t('error:toasts.uploadFailed'), { id: toastId, description: (err as Error).message });
         throw err;
       }
     },
@@ -132,10 +134,11 @@ export type StudioDeriveOperation = 'voice_clean' | 'split_vocals' | 'split_inst
 export function useDeriveStudioAsset() {
   const upsertAsset = useStudioStore((s) => s.upsertAsset);
   const backend = useStudioBackend();
+  const { t } = useLocalization('interface');
 
   const mutation = useMutation({
     mutationFn: async ({ assetId, operation }: { assetId: string; operation: StudioDeriveOperation }): Promise<StudioAssetCompleteResponse> => {
-      const toastId = toast.loading('Processing audio…');
+      const toastId = toast.loading(t('toasts.processingAudio'));
       try {
         const result = await postJson(
           backend,
@@ -143,10 +146,10 @@ export function useDeriveStudioAsset() {
           { operation },
           backend.parseComplete,
         );
-        toast.success('Audio added', { id: toastId, description: 'Building preview…' });
+        toast.success(t('toasts.audioAdded'), { id: toastId, description: t('toasts.buildingPreview') });
         return result;
       } catch (err) {
-        toast.error('Audio processing failed', { id: toastId, description: (err as Error).message });
+        toast.error(t('error:toasts.audioProcessingFailed'), { id: toastId, description: (err as Error).message });
         throw err;
       }
     },

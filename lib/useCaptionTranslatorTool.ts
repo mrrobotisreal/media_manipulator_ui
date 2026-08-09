@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import {
@@ -72,6 +73,7 @@ interface UseCaptionTranslatorReturns {
 const useCaptionTranslatorTool = (
   onSuccess: (res: CaptionTranslatorResponse) => void,
 ): UseCaptionTranslatorReturns => {
+  const { t } = useLocalization('interface');
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const mutation = useMutation({
@@ -89,8 +91,8 @@ const useCaptionTranslatorTool = (
       });
     },
     onSuccess: (data, variables) => {
-      toast.success('Caption translation started', {
-        description: `Job ID: ${data.jobId}`,
+      toast.success(t('toasts.translationStarted'), {
+        description: t('toasts.jobIdDescription', { jobId: data.jobId }),
       });
       markJobStarted(data.jobId, 'caption-translator', 'document');
       analytics.track(
@@ -115,8 +117,8 @@ const useCaptionTranslatorTool = (
         { media_kind: 'document', feature: 'caption_translator' },
       );
       reportError(analytics, error, { stage: 'caption_translator_upload', toolSlug: 'caption-translator' });
-      toast.error('Failed to start translation', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('error:toasts.translationStartFailed'), {
+        description: error.message || t('error:toasts.unexpectedFallback'),
       });
     },
   });

@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { analytics, EVENTS, normalizeMediaKind, reportError } from '@/lib/analytics';
 
 export interface FileIdentificationResponse {
@@ -47,6 +48,7 @@ interface UseIdentifyFileReturns {
 }
 
 const useIdentifyFile = (): UseIdentifyFileReturns => {
+  const { t } = useLocalization('interface');
   const identificationMutation = useMutation({
     mutationFn: identifyFile,
     onSuccess: (data) => {
@@ -61,16 +63,19 @@ const useIdentifyFile = (): UseIdentifyFileReturns => {
         },
         { media_kind: normalizeMediaKind(data.fileType), feature: 'file_identification' },
       );
-      toast.success('File identified successfully', {
-        description: `File type: ${data.fileType} | Size: ${(data.fileSize / 1024 / 1024).toFixed(2)} MB`
+      toast.success(t('toasts.identificationSuccess'), {
+        description: t('toasts.identificationDescription', {
+          type: data.fileType,
+          size: (data.fileSize / 1024 / 1024).toFixed(2),
+        }),
       });
     },
     onError: (error, file) => {
       console.error('File identification failed:', error);
       void file;
       reportError(analytics, error, { stage: 'file_identification' });
-      toast.error('Failed to identify file', {
-        description: error.message || 'An unexpected error occurred'
+      toast.error(t('error:toasts.identificationFailed'), {
+        description: error.message || t('error:toasts.unexpectedFallback'),
       });
     }
   });

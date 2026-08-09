@@ -4,7 +4,46 @@ import Link from 'next/link';
 import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
-const ImageGettingStartedTutorial: React.FC = () => {
+import { getServerT, ServerTrans } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
+
+const K = 'tutorialImageGettingStarted';
+
+/**
+ * Render a localised list whose source values may contain inline <strong> /
+ * <em> / <code> markup, matching the `RichList` pattern used by
+ * `views/how-it-works.tsx`.
+ */
+const RichList: React.FC<{ items: string[] }> = ({ items }) => (
+  <>
+    {items.map((item, idx) => (
+      <li key={idx}>
+        <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong />, em: <em />, code: <code /> }} />
+      </li>
+    ))}
+  </>
+);
+
+const PlainList: React.FC<{ items: string[] }> = ({ items }) => (
+  <>
+    {items.map((item, idx) => (
+      <li key={idx}>{item}</li>
+    ))}
+  </>
+);
+
+const ImageGettingStartedTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
+
+  const formatBullets = t(`${K}.format.bullets`, { returnObjects: true }) as string[];
+  const textOverlayBullets = t(`${K}.textOverlay.bullets`, { returnObjects: true }) as string[];
+  const metadataBullets = t(`${K}.metadata.bullets`, { returnObjects: true }) as string[];
+  const metadataCustomBullets = t(`${K}.metadata.customBullets`, { returnObjects: true }) as string[];
+  const removeObjectTips = t(`${K}.aiTools.removeObjectTips`, { returnObjects: true }) as string[];
+  const tipsBullets = t(`${K}.tips.bullets`, { returnObjects: true }) as string[];
+  const relatedLinksData = t(`${K}.relatedLinks.links`, { returnObjects: true }) as { label: string; description: string }[];
+
   return (
     <>
       {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
@@ -12,151 +51,134 @@ const ImageGettingStartedTutorial: React.FC = () => {
       <ContentReadTracker slug="image-getting-started" contentType="tutorial" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
       <aside className="hidden lg:block w-[300px] shrink-0">
-        
+
       </aside>
       <div className="flex-1 min-w-0">
       <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
-          <p className="text-sm uppercase tracking-wide text-data font-medium">Image Tutorial</p>
-          <h1 className="text-4xl font-bold mb-3 text-card-foreground">Getting Started: Converting Image Files</h1>
+          <p className="text-sm uppercase tracking-wide text-data font-medium">{t(`${K}.eyebrow`)}</p>
+          <h1 className="text-4xl font-bold mb-3 text-card-foreground">{t(`${K}.title`)}</h1>
           <p className="text-lg mb-8">
-            Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).
+            {t(`${K}.intro`)}
           </p>
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">1. Upload your image</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.upload.title`)}</h2>
           <p className="mb-4">
-            Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are deleted within 24 hours.
+            <ServerTrans locale={locale} i18nKey={`interface:${K}.upload.paragraph`} components={{ strong: <strong /> }} />
           </p>
 
           <EmbeddedToolPanel
             defaultMediaKind="image"
-            title="Try the image converter without leaving this page"
-            description="Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+            title={t(`${K}.toolPanel.title`)}
+            description={t(`${K}.toolPanel.description`)}
           />
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">2. Pick the output format and quality</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.format.title`)}</h2>
           <ul className="list-disc pl-6 space-y-1 mb-4">
-            <li><strong>JPG</strong> — best for photos. Lossy compression with a quality slider.</li>
-            <li><strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.</li>
-            <li><strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.</li>
-            <li><strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases.</li>
+            <RichList items={formatBullets} />
           </ul>
           <p className="mb-4">
-            <strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images.
+            <ServerTrans locale={locale} i18nKey={`interface:${K}.format.quality`} components={{ strong: <strong /> }} />
             {/* Blog hidden during AdSense review — restore the inline link
                 when the blog returns:
             Need help picking? See our <Link href="/blog/image/image-optimization-guide" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">image optimization guide</Link>.
             */}
           </p>
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">3. Resize, crop, filter, tint</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.resize.title`)}</h2>
           <p className="mb-4">
-            Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.
+            <ServerTrans locale={locale} i18nKey={`interface:${K}.resize.paragraph1`} components={{ strong: <strong /> }} />
           </p>
           <p className="mb-4">
-            Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000).
+            <ServerTrans locale={locale} i18nKey={`interface:${K}.resize.paragraph2`} components={{ strong: <strong /> }} />
           </p>
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">4. Text overlay</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.textOverlay.title`)}</h2>
           <p className="mb-4">
-            Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:
+            <ServerTrans locale={locale} i18nKey={`interface:${K}.textOverlay.intro`} components={{ strong: <strong /> }} />
           </p>
           <ul className="list-disc pl-6 space-y-1 mb-4">
-            <li><strong>Text Size</strong> — 8–512 px.</li>
-            <li><strong>Position</strong> — gravity-based anchor (corners, edges, center).</li>
-            <li><strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.</li>
-            <li><strong>Stroke Width</strong> — 0 to disable the outline.</li>
-            <li><strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor.</li>
+            <RichList items={textOverlayBullets} />
           </ul>
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">5. Metadata</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.metadata.title`)}</h2>
           <p className="mb-4">
-            Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:
+            {t(`${K}.metadata.intro`)}
           </p>
           <ul className="list-disc pl-6 space-y-1 mb-4">
-            <li><strong>Keep all metadata</strong> — preserved from the original via exiftool.</li>
-            <li><strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online.</li>
+            <RichList items={metadataBullets} />
             <li>
-              <strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:
+              <ServerTrans locale={locale} i18nKey={`interface:${K}.metadata.customLabel`} components={{ strong: <strong /> }} />
               <ul className="list-disc pl-6 mt-1 space-y-1">
-                <li>Title, Artist/Author, Description, Copyright, User Comment, Keywords.</li>
-                <li>GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.</li>
-                <li>EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist.</li>
+                <PlainList items={metadataCustomBullets} />
               </ul>
             </li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">6. AI Image Tools (recommended)</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.aiTools.title`)}</h2>
           <p className="mb-4">
-            The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.
+            <ServerTrans locale={locale} i18nKey={`interface:${K}.aiTools.intro`} components={{ strong: <strong /> }} />
           </p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li>
-              <strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.
+              <ServerTrans locale={locale} i18nKey={`interface:${K}.aiTools.faceBlur`} components={{ strong: <strong /> }} />
             </li>
             <li>
-              <strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.
+              <ServerTrans locale={locale} i18nKey={`interface:${K}.aiTools.removeBackground`} components={{ strong: <strong /> }} />
             </li>
             <li>
-              <strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.
+              <ServerTrans locale={locale} i18nKey={`interface:${K}.aiTools.aiUpscale`} components={{ strong: <strong />, em: <em />, code: <code /> }} />
             </li>
             <li>
-              <strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.
+              <ServerTrans locale={locale} i18nKey={`interface:${K}.aiTools.redactText`} components={{ strong: <strong />, em: <em /> }} />
             </li>
             <li>
-              <strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:
+              <ServerTrans locale={locale} i18nKey={`interface:${K}.aiTools.removeObject`} components={{ strong: <strong />, code: <code /> }} />
               <ul className="list-disc pl-6 mt-1 space-y-1">
-                <li>Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.</li>
-                <li>Several small rectangles usually beat one huge one, especially for thin objects.</li>
-                <li>LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces).</li>
+                <PlainList items={removeObjectTips} />
               </ul>
             </li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">7. Convert and download</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.convertDownload.title`)}</h2>
           <p className="mb-4">
-            Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list.
+            <ServerTrans locale={locale} i18nKey={`interface:${K}.convertDownload.paragraph`} components={{ strong: <strong />, em: <em /> }} />
           </p>
 
-          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">Tips for great image output</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.tips.title`)}</h2>
           <ul className="list-disc pl-6 space-y-1 mb-4">
-            <li>For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.</li>
-            <li>Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.</li>
-            <li><strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.</li>
-            <li>For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.</li>
-            <li>Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.</li>
-            <li>Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result.</li>
+            <RichList items={tipsBullets} />
           </ul>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
-              Try the Image Converter
+            <Link href={localizeHref('/', loc)} className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
+              {t(`${K}.actions.tryConverter`)}
             </Link>
-            <Link href="/tutorials" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
-              ← Back to Tutorials
+            <Link href={localizeHref('/tutorials', loc)} className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
+              {t(`${K}.actions.backToTutorials`)}
             </Link>
-            <Link href="/how-it-works" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
-              How it Works
+            <Link href={localizeHref('/how-it-works', loc)} className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
+              {t(`${K}.actions.howItWorks`)}
             </Link>
           </div>
 
           <RelatedLinks
-            title="Try related tools"
-            intro="Jump straight into a focused image tool or keep exploring related guides."
+            title={t(`${K}.relatedLinks.title`)}
+            intro={t(`${K}.relatedLinks.intro`)}
             links={[
               {
-                label: 'Image converter',
+                label: relatedLinksData[0].label,
                 to: '/tools/image-converter',
-                description: 'Convert between JPG, PNG, WebP, AVIF, GIF, and more.',
+                description: relatedLinksData[0].description,
               },
               {
-                label: 'Convert WebP to JPG',
+                label: relatedLinksData[1].label,
                 to: '/tools/convert-webp-to-jpg',
-                description: 'Get a broadly compatible JPG from a WebP source.',
+                description: relatedLinksData[1].description,
               },
               {
-                label: 'Remove EXIF metadata',
+                label: relatedLinksData[2].label,
                 to: '/tools/remove-exif-metadata',
-                description: 'Strip GPS, device, and timestamp metadata before sharing photos.',
+                description: relatedLinksData[2].description,
               },
               // Hidden during AdSense review — re-enable when the blog returns.
               // {
@@ -165,14 +187,14 @@ const ImageGettingStartedTutorial: React.FC = () => {
               //   description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
               // },
               {
-                label: 'Video converter tutorial',
+                label: relatedLinksData[3].label,
                 to: '/tutorials/video/getting-started',
-                description: 'Convert, trim, and apply visual effects to video files.',
+                description: relatedLinksData[3].description,
               },
               {
-                label: 'How Media Manipulator works',
+                label: relatedLinksData[4].label,
                 to: '/how-it-works',
-                description: 'See how AI image tools run on a local GPU server.',
+                description: relatedLinksData[4].description,
               },
             ]}
           />
@@ -180,7 +202,7 @@ const ImageGettingStartedTutorial: React.FC = () => {
       </Panel>
       </div>
       <aside className="hidden lg:block w-[300px] shrink-0">
-        
+
       </aside>
       </div>
       </>

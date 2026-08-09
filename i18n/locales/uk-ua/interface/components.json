@@ -249,5 +249,28 @@
     "policyLink": "privacy policy",
     "cancel": "Cancel",
     "save": "Save preferences"
+  },
+  "toasts": {
+    "conversionStarted": "Conversion started successfully",
+    "conversionStartedDescription": "Job ID: {{jobId}} - Your file is being processed",
+    "transcriptionStarted": "Transcription started",
+    "transcriptionStartedDescription": "Job ID: {{jobId}} - Generating transcript",
+    "transcodeStarted": "Transcode started",
+    "translationStarted": "Caption translation started",
+    "jobStarted": "Job started",
+    "stitchStarted": "Stitch job started",
+    "jobIdDescription": "Job ID: {{jobId}}",
+    "identificationSuccess": "File identified successfully",
+    "identificationDescription": "File type: {{type}} | Size: {{size}} MB",
+    "conversionCompleted": "Conversion completed successfully!",
+    "readyForDownload": "Your file is ready for download",
+    "uploadingFile": "Uploading {{fileName}}…",
+    "uploadingFileProgress": "Uploading {{fileName}}… {{percent}}%",
+    "processingFile": "Processing {{fileName}}…",
+    "buildingPreview": "Building preview…",
+    "assetAdded": "{{fileName}} added",
+    "audioAdded": "Audio added",
+    "processingAudio": "Processing audio…",
+    "captionsReady": "Captions ready"
   }
 }

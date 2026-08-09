@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { getBaseURL } from '@/lib/utils';
 import { authHeaders } from '@/lib/auth/authedFetch';
 import {
@@ -90,6 +91,7 @@ const postMultipart = (
 const useImageRestore = (
   onSuccess: (result: ImageRestoreStartResponse) => void,
 ): UseImageRestoreReturns => {
+  const { t } = useLocalization('error');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<ImageRestoreUploadPhase>('idle');
 
@@ -167,8 +169,8 @@ const useImageRestore = (
         { media_kind: 'image' },
       );
       reportError(analytics, error, { stage: 'image_restore_start', toolSlug: 'image-restore' });
-      toast.error('Failed to start restoration', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('toasts.restorationStartFailed'), {
+        description: error.message || t('toasts.unexpectedFallback'),
       });
     },
   });

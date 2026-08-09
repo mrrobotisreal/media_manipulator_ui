@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { getBaseURL } from '@/lib/utils';
 import { authHeaders } from '@/lib/auth/authedFetch';
 import {
@@ -83,6 +84,7 @@ const postMultipart = (
 const useDocumentScan = (
   onSuccess: (result: DocumentScanStartResponse) => void,
 ): UseDocumentScanReturns => {
+  const { t } = useLocalization('error');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<DocumentScanUploadPhase>('idle');
 
@@ -167,8 +169,8 @@ const useDocumentScan = (
         { media_kind: 'document' },
       );
       reportError(analytics, error, { stage: 'document_scan_start', toolSlug: 'document-scan' });
-      toast.error('Failed to start scan', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('toasts.scanStartFailed'), {
+        description: error.message || t('toasts.unexpectedFallback'),
       });
     },
   });

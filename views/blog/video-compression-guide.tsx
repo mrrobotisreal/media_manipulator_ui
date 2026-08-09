@@ -7,8 +7,61 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import RelatedLinks from '@/components/related-links';
 import TrackedCtaButton from '@/components/analytics/tracked-cta-button';
+import { getServerT, ServerTrans } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
 
-const VideoCompressionGuide: React.FC = () => {
+const RichBullets: React.FC<{ items: string[]; className?: string }> = ({
+  items,
+  className = 'list-disc pl-6 mb-6 space-y-2 text-muted-foreground',
+}) => (
+  <ul className={className}>
+    {items.map((item, idx) => (
+      <li key={idx}>
+        <ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} />
+      </li>
+    ))}
+  </ul>
+);
+
+const VideoCompressionGuide: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
+  const k = (path: string) => `blogVideoCompression.${path}`;
+
+  const introBullets = t(k('intro.bullets'), { returnObjects: true }) as string[];
+
+  const mp4Bullets = t(k('formats.mp4.bullets'), { returnObjects: true }) as string[];
+  const webmBullets = t(k('formats.webm.bullets'), { returnObjects: true }) as string[];
+  const aviBullets = t(k('formats.avi.bullets'), { returnObjects: true }) as string[];
+  const movBullets = t(k('formats.mov.bullets'), { returnObjects: true }) as string[];
+  const tableHeaders = t(k('formats.table.headers'), { returnObjects: true }) as string[];
+  const tableRows = t(k('formats.table.rows'), { returnObjects: true }) as string[][];
+
+  const useMp4Bullets = t(k('whenToUse.mp4.bullets'), { returnObjects: true }) as string[];
+  const useWebmBullets = t(k('whenToUse.webm.bullets'), { returnObjects: true }) as string[];
+  const useAviBullets = t(k('whenToUse.avi.bullets'), { returnObjects: true }) as string[];
+  const useMovBullets = t(k('whenToUse.mov.bullets'), { returnObjects: true }) as string[];
+
+  const googleBullets = t(k('whyImportant.googleWatching.bullets'), { returnObjects: true }) as string[];
+  const clientResults = t(k('whyImportant.googleWatching.clientResults'), { returnObjects: true }) as string[];
+  const bandwidthBullets = t(k('whyImportant.bandwidthBill.bullets'), { returnObjects: true }) as string[];
+  const mobileBullets = t(k('whyImportant.mobileUsers.bullets'), { returnObjects: true }) as string[];
+  const trustBullets = t(k('whyImportant.trust.bullets'), { returnObjects: true }) as string[];
+  const monetizationBullets = t(k('whyImportant.monetization.bullets'), { returnObjects: true }) as string[];
+
+  const cheatSheet = t(k('conclusion.cheatSheet'), { returnObjects: true }) as string[];
+  const checklist = t(k('conclusion.checklist'), { returnObjects: true }) as string[];
+
+  const relatedItems = t(k('relatedLinks.items'), { returnObjects: true }) as { label: string; description: string }[];
+  const relatedHrefs = [
+    '/tools/compress-video',
+    '/tools/video-converter',
+    '/tools/convert-video-to-animated-gif',
+    '/tools/transcribe-video',
+    '/tutorials/video/getting-started',
+    '/blog/image/image-optimization-guide',
+  ];
+
   return (
     <>
       {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
@@ -16,23 +69,23 @@ const VideoCompressionGuide: React.FC = () => {
       <ContentReadTracker slug="video-compression-guide" contentType="blog" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
       <aside className="hidden lg:block w-[300px] shrink-0">
-        
+
       </aside>
       <div className="flex-1 min-w-0">
       <Panel level="1">
         <article>
         <div className="mb-4">
         <Link
-          href="/blog"
+          href={localizeHref('/blog', loc)}
           className="inline-flex items-center gap-2 text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary font-medium text-sm transition-colors"
         >
-          ← Blog
+          {t(k('nav.backToBlog'))}
         </Link>
       </div>
       <CardHeader className="px-0">
         <header>
           <h1 className="text-4xl font-bold text-card-foreground leading-tight">
-            The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV
+            {t(k('title'))}
           </h1>
 
           <div className="flex items-center gap-4 mt-6">
@@ -45,10 +98,10 @@ const VideoCompressionGuide: React.FC = () => {
 
             <div className="flex flex-col">
               <p className="text-sm font-medium text-card-foreground">
-                Written by: Mitchell Wintrow
+                {t(k('byline.writtenBy'))} Mitchell Wintrow
               </p>
               <p className="text-sm text-muted-foreground">
-                <time dateTime="2025-06-13">June 13th, 2025</time> • 10:33 PM
+                <time dateTime="2025-06-13">{t(k('byline.date'))}</time> • {t(k('byline.time'))}
               </p>
             </div>
           </div>
@@ -58,394 +111,206 @@ const VideoCompressionGuide: React.FC = () => {
       </CardHeader>
 
       <CardContent className="px-0 prose prose-lg max-w-none">
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">A Brief Intro to Video Compression</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t(k('intro.title'))}</h2>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('intro.p1'))}</p>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('intro.p2'))}</p>
 
-        <p className="text-lg text-muted-foreground mb-4">
-          At its core, video compression works by being sneaky in two main ways:
-        </p>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('intro.p3'))}</p>
 
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Spatial compression</strong>: This looks at each frame and says "Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?" It's like describing a wall as "all white" instead of listing every single brick.</li>
-          <li><strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬</li>
-        </ul>
+        <RichBullets items={introBullets} />
 
-        <p className="text-lg text-muted-foreground mb-6">
-          The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('intro.p4'))}</p>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch." 💪
+          {t(k('intro.quote'))}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">What's the Difference Between These Formats Anyway?</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t(k('formats.title'))}</h2>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go "really?"
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('formats.intro'))}</p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">MP4 (MPEG-4 Part 14)</h3>
-        <p className="text-lg text-muted-foreground mb-4">
-          Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works</li>
-          <li><strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high</li>
-          <li><strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)</li>
-          <li><strong>File sizes</strong>: Generally gives you that sweet spot between quality and size</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('formats.mp4.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('formats.mp4.intro'))}</p>
+        <RichBullets items={mp4Bullets} />
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">WebM</h3>
-        <p className="text-lg text-muted-foreground mb-4">
-          WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say "buffering"</li>
-          <li><strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases</li>
-          <li><strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵</li>
-          <li><strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('formats.webm.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('formats.webm.intro'))}</p>
+        <RichBullets items={webmBullets} />
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">AVI (Audio Video Interleave)</h3>
-        <p className="text-lg text-muted-foreground mb-4">
-          AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Minimal compression</strong>: Often results in HUGE file sizes (like, "is this a video or the entire Lord of the Rings trilogy?" huge)</li>
-          <li><strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality</li>
-          <li><strong>Universal compatibility</strong>: If something can play video, it can probably play AVI</li>
-          <li><strong>Best for</strong>: Local storage when quality matters more than file size</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('formats.avi.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('formats.avi.intro'))}</p>
+        <RichBullets items={aviBullets} />
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">MOV (QuickTime File Format)</h3>
-        <p className="text-lg text-muted-foreground mb-4">
-          MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing</li>
-          <li><strong>ProRes codec support</strong>: The format professionals drool over 🤤</li>
-          <li><strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)</li>
-          <li><strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('formats.mov.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('formats.mov.intro'))}</p>
+        <RichBullets items={movBullets} />
 
-        <p className="text-lg text-muted-foreground mb-4">
-          Here's a quick comparison to really drive it home:
-        </p>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('formats.comparisonIntro'))}</p>
 
         <div className="overflow-x-auto mb-8">
           <table className="min-w-full bg-card border border-border rounded-lg">
             <thead className="bg-muted/50">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-card-foreground">Format</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-card-foreground">File Size</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-card-foreground">Compatibility</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-card-foreground">Best Use Case</th>
+                {tableHeaders.map((h, idx) => (
+                  <th key={idx} className="px-6 py-3 text-left text-sm font-semibold text-card-foreground">{h}</th>
+                ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-6 py-4 text-sm text-muted-foreground">MP4</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Small-Medium</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Universal</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Literally everything</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-sm text-muted-foreground">WebM</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Smallest</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Modern browsers</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Web optimization</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-sm text-muted-foreground">AVI</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Largest</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Universal</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Archival/Editing</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 text-sm text-muted-foreground">MOV</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Large</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Mac-focused</td>
-                <td className="px-6 py-4 text-sm text-muted-foreground">Professional work</td>
-              </tr>
+              {tableRows.map((row, rIdx) => (
+                <tr key={rIdx}>
+                  {row.map((cell, cIdx) => (
+                    <td key={cIdx} className="px-6 py-4 text-sm text-muted-foreground">{cell}</td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose." ⚔️
+          {t(k('formats.quote'))}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">How Do I Know When to Use One Format Over Another?</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t(k('whenToUse.title'))}</h2>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whenToUse.p1'))}</p>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Let me break this down into real-world scenarios because that's how we actually make these decisions:
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whenToUse.p2'))}</p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">When to Use MP4</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whenToUse.mp4.title'))}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Use MP4 when you want to play it safe</strong> 🛡️
+          <ServerTrans locale={locale} i18nKey={k('whenToUse.mp4.lead')} components={{ strong: <strong /> }} />
         </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend</li>
-          <li><strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4</li>
-          <li><strong>Email attachments</strong>: When you need to send a video that just works</li>
-          <li><strong>Mobile apps</strong>: Both iOS and Android will thank you</li>
-        </ul>
+        <RichBullets items={useMp4Bullets} />
 
         <p className="text-lg text-muted-foreground mb-6">
-          <strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices.
+          <ServerTrans locale={locale} i18nKey={k('whenToUse.mp4.proTip')} components={{ strong: <strong /> }} />
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">When to Use WebM</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whenToUse.webm.title'))}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Use WebM when every kilobyte counts</strong> 🪶
+          <ServerTrans locale={locale} i18nKey={k('whenToUse.webm.lead')} components={{ strong: <strong /> }} />
         </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Landing pages</strong>: Where load speed directly impacts conversion rates</li>
-          <li><strong>Progressive web apps</strong>: When you're building for the modern web</li>
-          <li><strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)</li>
-          <li><strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome</li>
-        </ul>
+        <RichBullets items={useWebmBullets} />
 
         <p className="text-lg text-muted-foreground mb-6">
-          <strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦
+          <ServerTrans locale={locale} i18nKey={k('whenToUse.webm.realTalk')} components={{ strong: <strong /> }} />
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">When to Use AVI</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whenToUse.avi.title'))}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Use AVI when quality is king and file size is... not a concern</strong> 👑
+          <ServerTrans locale={locale} i18nKey={k('whenToUse.avi.lead')} components={{ strong: <strong /> }} />
         </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Video editing source files</strong>: When you need every pixel perfect for post-production</li>
-          <li><strong>Archival purposes</strong>: Storing the master copy before compression</li>
-          <li><strong>Local playback</strong>: When it's only playing from a hard drive, not the internet</li>
-          <li><strong>Screen recordings for tutorials</strong>: Before you compress them for distribution</li>
-        </ul>
+        <RichBullets items={useAviBullets} />
 
         <div className="bg-destructive/10 border-l-4 border-destructive p-4 mb-6">
           <p className="text-destructive">
-            <strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4).
+            <ServerTrans locale={locale} i18nKey={k('whenToUse.avi.warning')} components={{ strong: <strong /> }} />
           </p>
         </div>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">When to Use MOV</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whenToUse.mov.title'))}</h3>
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Use MOV when you're in Apple's ecosystem</strong> 🍎
+          <ServerTrans locale={locale} i18nKey={k('whenToUse.mov.lead')} components={{ strong: <strong /> }} />
         </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software</li>
-          <li><strong>ProRes workflows</strong>: When color grading and quality are paramount</li>
-          <li><strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac</li>
-          <li><strong>Before converting</strong>: As a high-quality intermediate format</li>
-        </ul>
+        <RichBullets items={useMovBullets} />
 
         <p className="text-lg text-muted-foreground mb-6">
-          <strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!
+          <ServerTrans locale={locale} i18nKey={k('whenToUse.mov.realityCheck')} components={{ strong: <strong /> }} />
         </p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Quick Decision Tree 🌳</h3>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whenToUse.decisionTree.title'))}</h3>
         <div className="bg-surface-2 p-6 rounded-lg mb-8 font-mono text-sm">
           <pre className="whitespace-pre-wrap text-muted-foreground">
-{`Is it for the web?
-├─ Yes → Is Safari support critical?
-│   ├─ Yes → MP4
-│   └─ No → WebM (with MP4 fallback)
-└─ No → Is it for editing?
-    ├─ Yes → Are you on Mac?
-    │   ├─ Yes → MOV
-    │   └─ No → AVI
-    └─ No → MP4 (it's always MP4)`}
+            {t(k('whenToUse.decisionTree.diagram'))}
           </pre>
         </div>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer." 🧘‍♂️
+          {t(k('whenToUse.quote'))}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">Why Is This Even Important For My Website?</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t(k('whyImportant.title'))}</h2>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Look, I get it. You might be thinking "Can't I just upload whatever and call it a day?" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whyImportant.p1'))}</p>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Here's the cold, hard truth about why video formats matter more than you think:
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whyImportant.p2'))}</p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">The 3-Second Rule ⏱️</h3>
-        <p className="text-lg text-muted-foreground mb-6">
-          Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧.
-        </p>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whyImportant.threeSecondRule.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whyImportant.threeSecondRule.body'))}</p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Google's Watching (And Judging) 👀</h3>
-        <p className="text-lg text-muted-foreground mb-4">
-          Page speed is a direct ranking factor for Google. This means:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Slow site = Lower rankings</strong> = Less organic traffic</li>
-          <li><strong>Less traffic = Fewer conversions</strong> = Less money</li>
-          <li><strong>Less money = Sad developer</strong> 😢</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whyImportant.googleWatching.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('whyImportant.googleWatching.intro'))}</p>
+        <RichBullets items={googleBullets} />
 
-        <p className="text-lg text-muted-foreground mb-6">
-          I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li>Page load time dropped from 8.2 to 2.7 seconds</li>
-          <li>Google rankings improved for 67% of their target keywords</li>
-          <li>Conversion rate increased by 23%</li>
-          <li>Monthly revenue jumped by $18,000 💸</li>
-        </ul>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whyImportant.googleWatching.clientStory'))}</p>
+        <RichBullets items={clientResults} />
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">The Bandwidth Bill From Hell 🔥</h3>
-        <p className="text-lg text-muted-foreground mb-6">
-          Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.
-        </p>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whyImportant.bandwidthBill.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whyImportant.bandwidthBill.body'))}</p>
 
         <p className="text-lg text-muted-foreground mb-4">
-          <strong>Real numbers</strong>: If your site gets 10,000 visitors/month:
+          <ServerTrans locale={locale} i18nKey={k('whyImportant.bandwidthBill.realNumbersIntro')} components={{ strong: <strong /> }} />
         </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li>With 50MB videos: 500GB bandwidth = $$</li>
-          <li>With 5MB videos: 50GB bandwidth = $</li>
-          <li>That's potentially hundreds of dollars saved monthly!</li>
-        </ul>
+        <RichBullets items={bandwidthBullets} />
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Mobile Users Will Hate You 📱</h3>
-        <p className="text-lg text-muted-foreground mb-4">
-          Remember, over 60% of web traffic is mobile now. That means:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video</li>
-          <li><strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty</li>
-          <li><strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whyImportant.mobileUsers.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('whyImportant.mobileUsers.intro'))}</p>
+        <RichBullets items={mobileBullets} />
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">Trust and Professionalism 🤝</h3>
-        <p className="text-lg text-muted-foreground mb-6">
-          This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li>Users trust you more (subconsciously associating speed with competence)</li>
-          <li>They're more likely to stay and explore</li>
-          <li>They're more likely to come back</li>
-          <li>They're more likely to recommend you</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whyImportant.trust.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whyImportant.trust.intro'))}</p>
+        <RichBullets items={trustBullets} />
 
-        <p className="text-lg text-muted-foreground mb-6">
-          But when your site is slow? It screams "amateur hour" louder than a foghorn 📯. Users think: "If they can't even get their website right, can I trust them with my credit card?"
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('whyImportant.trust.outro'))}</p>
 
-        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">The Monetization Connection 💰</h3>
-        <p className="text-lg text-muted-foreground mb-4">
-          Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions</li>
-          <li><strong>Affiliate links</strong>: People can't click what they don't wait to see</li>
-          <li><strong>Product sales</strong>: Every second of load time can decrease conversions by 7%</li>
-          <li><strong>Content monetization</strong>: Readers won't wait for your brilliant article to load</li>
-        </ul>
+        <h3 className="text-2xl font-semibold mt-8 mb-4 text-card-foreground">{t(k('whyImportant.monetization.title'))}</h3>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('whyImportant.monetization.intro'))}</p>
+        <RichBullets items={monetizationBullets} />
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'" 💨
+          {t(k('whyImportant.quote'))}
         </blockquote>
 
-        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">Conclusion</h2>
+        <h2 className="text-3xl font-semibold mt-12 mb-6 text-card-foreground">{t(k('conclusion.title'))}</h2>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('conclusion.p1'))}</p>
 
-        <p className="text-lg text-muted-foreground mb-4">
-          Here's your TL;DR cheat sheet:
-        </p>
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-muted-foreground">
-          <li><strong>MP4</strong>: Your reliable, go-everywhere friend</li>
-          <li><strong>WebM</strong>: The speed demon for modern web</li>
-          <li><strong>AVI</strong>: The quality beast for local storage</li>
-          <li><strong>MOV</strong>: Apple's heavyweight champion</li>
-        </ul>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('conclusion.cheatSheetIntro'))}</p>
+        <RichBullets items={cheatSheet} />
 
-        <p className="text-lg text-muted-foreground mb-4">
-          But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:
-        </p>
-        <ul className="list-none space-y-2 text-muted-foreground mb-6">
-          <li>✅ Keeping your users happy (and on your site)</li>
-          <li>✅ Making Google love you (hello, better rankings! 👋)</li>
-          <li>✅ Saving money on hosting (cha-ching! 💰)</li>
-          <li>✅ Building trust and looking professional</li>
-          <li>✅ Actually making money from your content</li>
-        </ul>
+        <p className="text-lg text-muted-foreground mb-4">{t(k('conclusion.p2'))}</p>
+        <RichBullets items={checklist} className="list-none space-y-2 text-muted-foreground mb-6" />
 
-        <p className="text-lg text-muted-foreground mb-6">
-          The next time you're about to upload a video to your website, take a second to ask yourself: "Is this format working for me, or am I working for it?" Because life's too short for slow-loading websites and frustrated users.
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('conclusion.p3'))}</p>
 
-        <p className="text-lg text-muted-foreground mb-6">
-          Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅
-        </p>
+        <p className="text-lg text-muted-foreground mb-6">{t(k('conclusion.p4'))}</p>
 
         <blockquote className="border-l-4 border-primary pl-4 italic text-lg text-muted-foreground mb-8">
-          "In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!" ⚡
+          {t(k('conclusion.quote'))}
         </blockquote>
 
         <RelatedLinks
-          title="Related tools"
-          intro="Apply what you just read with the free Media Manipulator tools."
-          links={[
-            {
-              label: 'Compress video',
-              to: '/tools/compress-video',
-              description: 'Shrink MP4, WebM, MOV, and MKV files for the web.',
-            },
-            {
-              label: 'Video converter',
-              to: '/tools/video-converter',
-              description: 'Convert between MP4, WebM, MOV, AVI, and more.',
-            },
-            {
-              label: 'Convert video to GIF',
-              to: '/tools/convert-video-to-animated-gif',
-              description: 'Turn short video clips into shareable animated GIFs.',
-            },
-            {
-              label: 'Transcribe video',
-              to: '/tools/transcribe-video',
-              description: 'Pull spoken words out of video into searchable text or captions.',
-            },
-            {
-              label: 'Video converter tutorial',
-              to: '/tutorials/video/getting-started',
-              description: 'Step-by-step walkthrough of every video conversion setting.',
-            },
-            {
-              label: 'Image optimization guide',
-              to: '/blog/image/image-optimization-guide',
-              description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
-            },
-          ]}
+          title={t(k('relatedLinks.title'))}
+          intro={t(k('relatedLinks.intro'))}
+          links={relatedItems.map((item, idx) => ({
+            label: item.label,
+            to: relatedHrefs[idx],
+            description: item.description,
+          }))}
         />
       </CardContent>
 
       <CardFooter className="px-0 flex flex-col items-center gap-4 pt-8 border-t">
         <div className="text-center max-w-2xl">
           <h2 className="text-2xl font-bold mb-3 text-card-foreground">
-            Ready to Optimize Your Videos? 🚀
+            {t(k('cta.title'))}
           </h2>
           <p className="text-lg text-muted-foreground mb-6">
-            Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.
+            {t(k('cta.body'))}
           </p>
           <TrackedCtaButton
             ctaId="blog_video_compression_try_converter"
@@ -453,10 +318,10 @@ const VideoCompressionGuide: React.FC = () => {
             href="/tools/compress-video"
             className="bg-success hover:bg-success/90 text-success-foreground font-semibold px-8 py-3 text-lg"
           >
-            Try the video compressor →
+            {t(k('cta.button'))}
           </TrackedCtaButton>
           <p className="text-sm text-muted-foreground mt-3">
-            No signup required • Process files locally • Fast & secure
+            {t(k('cta.footnote'))}
           </p>
         </div>
         </CardFooter>
@@ -464,7 +329,7 @@ const VideoCompressionGuide: React.FC = () => {
       </Panel>
       </div>
       <aside className="hidden lg:block w-[300px] shrink-0">
-        
+
       </aside>
       </div>
       </>

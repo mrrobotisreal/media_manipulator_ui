@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { AlertTriangle, RotateCcw } from 'lucide-react';
+import { useLocalization } from '@/i18n/useLocalization';
 
 /**
  * Route-segment error boundary for the app.
@@ -26,6 +27,11 @@ export default function Error({
   error: Error & { digest?: string };
   unstable_retry?: () => void;
 }) {
+  // Defensive: this boundary renders when something else already broke, so its
+  // own translation lookup must never be the thing that leaves it blank —
+  // every t() call below carries a hardcoded English defaultValue fallback.
+  const { t } = useLocalization('error');
+
   useEffect(() => {
     // Surface the original error for debugging / error reporting.
     console.error('Page render error caught by boundary:', error);
@@ -51,11 +57,13 @@ export default function Error({
         <AlertTriangle className="w-10 h-10 text-destructive" />
       </div>
       <h1 className="text-2xl md:text-3xl font-bold text-card-foreground tracking-tight">
-        Something went wrong
+        {t('errorBoundary.title', { defaultValue: 'Something went wrong' })}
       </h1>
       <p className="mt-3 text-muted-foreground max-w-md">
-        An unexpected error interrupted this page. Your files were not lost — you can
-        try again, and if the problem continues, reload the page.
+        {t('errorBoundary.body', {
+          defaultValue:
+            'An unexpected error interrupted this page. Your files were not lost — you can try again, and if the problem continues, reload the page.',
+        })}
       </p>
       <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
         <button
@@ -64,7 +72,7 @@ export default function Error({
           className="bg-primary text-primary-foreground py-2.5 px-5 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors flex items-center gap-2"
         >
           <RotateCcw className="w-4 h-4" />
-          Try again
+          {t('errorBoundary.tryAgain', { defaultValue: 'Try again' })}
         </button>
         <button
           type="button"
@@ -73,7 +81,7 @@ export default function Error({
           }}
           className="bg-card border border-border text-card-foreground py-2.5 px-5 rounded-lg hover:bg-muted transition-colors"
         >
-          Go to homepage
+          {t('errorBoundary.goHome', { defaultValue: 'Go to homepage' })}
         </button>
       </div>
     </div>

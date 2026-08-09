@@ -4,6 +4,11 @@ import Link from 'next/link';
 import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
+import { getServerT, ServerTrans } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
+
+const K = 'tutorialAiFrameInterpolation';
+
 /**
  * Long-form tutorial covering what AI frame interpolation is, how it differs
  * from basic FPS conversion, when to use it, and how to use the Media
@@ -15,7 +20,29 @@ import { Panel } from '@/components/darkroom/panel';
  * the video tutorial section and we don't have dedicated AdSense slots for it
  * yet. The structure is in place to switch them out later.
  */
-const AIFrameInterpolationTutorial: React.FC = () => {
+const AIFrameInterpolationTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
+  const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
+
+  const whatIsBullets = t(`${K}.whatIs.bullets`, { returnObjects: true }) as string[];
+  const whyUseBullets = t(`${K}.whyUse.bullets`, { returnObjects: true }) as string[];
+  const howItWorksParagraphs = t(`${K}.howItWorks.paragraphs`, { returnObjects: true }) as string[];
+  const vsBasicFpsBullets = t(`${K}.vsBasicFps.bullets`, { returnObjects: true }) as string[];
+  const fpsChoiceBullets = t(`${K}.fpsChoice.bullets`, { returnObjects: true }) as string[];
+  const qualityTradeoffsBullets = t(`${K}.qualityTradeoffs.bullets`, { returnObjects: true }) as string[];
+  const bestPracticesBullets = t(`${K}.bestPractices.bullets`, { returnObjects: true }) as string[];
+  const limitationsBullets = t(`${K}.limitations.bullets`, { returnObjects: true }) as string[];
+  const howToSteps = t(`${K}.howTo.steps`, { returnObjects: true }) as string[];
+  const faqItems = t(`${K}.faq.items`, { returnObjects: true }) as { q: string; a: string }[];
+  const relatedLinksData = t(`${K}.relatedLinks.links`, { returnObjects: true }) as { label: string; description: string }[];
+  const RELATED_HREFS = [
+    '/tools/ai-frame-interpolation',
+    '/tools/video-converter',
+    '/tools/compress-video',
+    '/tools/extract-frames-from-video',
+    '/tools/convert-video-to-animated-gif',
+  ];
+
   return (
     <>
       {/* Reading measurement: content_read_progress at 25/50/75, content_read_completed
@@ -23,247 +50,162 @@ const AIFrameInterpolationTutorial: React.FC = () => {
       <ContentReadTracker slug="ai-frame-interpolation" contentType="tutorial" />
       <div className="max-w-[1600px] mx-auto my-2 flex flex-col lg:flex-row gap-6 px-4">
         <aside className="hidden lg:block w-[300px] shrink-0">
-          
+
         </aside>
         <div className="flex-1 min-w-0">
           <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
               <p className="text-sm uppercase tracking-wide text-data font-medium">
-                Video Tutorial
+                {t(`${K}.eyebrow`)}
               </p>
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">
-                What Is AI Frame Interpolation?
+                {t(`${K}.title`)}
               </h1>
               <p className="text-lg mb-8">
-                AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.
+                {t(`${K}.intro`)}
               </p>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                1. What is frame interpolation?
+                {t(`${K}.whatIs.title`)}
               </h2>
               <p className="mb-4">
-                Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:
+                {t(`${K}.whatIs.intro`)}
               </p>
               <ul className="list-disc pl-6 space-y-1 mb-4">
-                <li><strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.</li>
-                <li><strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.</li>
-                <li><strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg’s minterpolate).</li>
-                <li><strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion.</li>
+                {whatIsBullets.map((item, idx) => (
+                  <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+                ))}
               </ul>
               <p className="mb-4">
-                Media Manipulator’s AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server.
+                {t(`${K}.whatIs.outro`)}
               </p>
 
               <EmbeddedToolPanel
                 defaultMediaKind="video"
                 defaultTask="ai_frame_interpolation"
                 defaultOutputFormat="mp4"
-                title="Try AI frame interpolation without leaving this page"
-                description="Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+                title={t(`${K}.toolPanel.title`)}
+                description={t(`${K}.toolPanel.description`)}
               />
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                2. Why people use frame interpolation
+                {t(`${K}.whyUse.title`)}
               </h2>
               <ul className="list-disc pl-6 space-y-1 mb-4">
-                <li>Smoother motion on modern displays and social platforms.</li>
-                <li>Lifting 24/30fps footage to 60fps.</li>
-                <li>Lifting 60fps footage to 120fps for high-refresh playback or editing.</li>
-                <li>Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.</li>
-                <li>Restoring older, low-FPS clips so they feel less stuttery.</li>
-                <li>Producing smoother short cuts for sharing on social.</li>
+                {whyUseBullets.map((item, idx) => <li key={idx}>{item}</li>)}
               </ul>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                3. How AI frame interpolation works (high level)
+                {t(`${K}.howItWorks.title`)}
               </h2>
-              <p className="mb-4">
-                Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.
-              </p>
-              <p className="mb-4">
-                Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear.
-              </p>
+              {howItWorksParagraphs.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                4. AI interpolation vs basic FPS conversion
+                {t(`${K}.vsBasicFps.title`)}
               </h2>
               <p className="mb-4">
-                Basic FPS conversion (whether through FFmpeg’s <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.
+                <ServerTrans locale={locale} i18nKey={`interface:${K}.vsBasicFps.p1`} components={{ code: <code /> }} />
               </p>
               <p className="mb-4">
-                AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:
+                {t(`${K}.vsBasicFps.p2`)}
               </p>
               <ul className="list-disc pl-6 space-y-1 mb-4">
-                <li>AI usually looks much smoother than duplication or blending.</li>
-                <li>AI can warp or hallucinate details on hard regions.</li>
-                <li>Basic FPS conversion is faster but rarely feels truly smoother.</li>
+                {vsBasicFpsBullets.map((item, idx) => <li key={idx}>{item}</li>)}
               </ul>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                5. When to pick 48, 60, or 120 FPS
+                {t(`${K}.fpsChoice.title`)}
               </h2>
               <ul className="list-disc pl-6 space-y-1 mb-4">
-                <li><strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.</li>
-                <li><strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.</li>
-                <li><strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file.</li>
+                {fpsChoiceBullets.map((item, idx) => (
+                  <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+                ))}
               </ul>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                6. Quality and max-height tradeoffs
+                {t(`${K}.qualityTradeoffs.title`)}
               </h2>
               <ul className="list-disc pl-6 space-y-1 mb-4">
-                <li><strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.</li>
-                <li><strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.</li>
-                <li><strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.</li>
-                <li><strong>High quality preset</strong> → slower encode, lower CRF, sharper output.</li>
+                {qualityTradeoffsBullets.map((item, idx) => (
+                  <li key={idx}><ServerTrans i18nKey="_inline" defaults={item} components={{ strong: <strong /> }} /></li>
+                ))}
               </ul>
               <p className="mb-4">
-                For a first run, try 720p max height with the medium quality preset.
+                {t(`${K}.qualityTradeoffs.outro`)}
               </p>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                7. Best practices
+                {t(`${K}.bestPractices.title`)}
               </h2>
               <ul className="list-disc pl-6 space-y-1 mb-4">
-                <li>Test on a short clip first — interpolation cost scales with duration and resolution.</li>
-                <li>Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.</li>
-                <li>Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.</li>
-                <li>Pick clear, steady source footage when possible.</li>
-                <li>Keep the original — interpolation is irreversible re-encoding.</li>
-                <li>Try 60fps before 120fps unless you specifically need 120fps.</li>
+                {bestPracticesBullets.map((item, idx) => <li key={idx}>{item}</li>)}
               </ul>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                8. Limitations and artifacts
+                {t(`${K}.limitations.title`)}
               </h2>
               <ul className="list-disc pl-6 space-y-1 mb-4">
-                <li>Warping around hands, hair, wheels, and other fast-moving thin structures.</li>
-                <li>Ghosting around occlusions where one object passes in front of another.</li>
-                <li>Brief glitches at scene cuts.</li>
-                <li>Motion blur mismatch — synthesized frames don’t share the source camera’s shutter behavior.</li>
-                <li>Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.</li>
-                <li>Long videos take a lot of GPU time; we cap duration to keep the free tool stable.</li>
-                <li>AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame.</li>
+                {limitationsBullets.map((item, idx) => <li key={idx}>{item}</li>)}
               </ul>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                9. How to use the Media Manipulator AI Frame Interpolation Tool
+                {t(`${K}.howTo.title`)}
               </h2>
               <ol className="list-decimal pl-6 space-y-1 mb-4">
-                <li>Open the <Link href="/tools/ai-frame-interpolation" className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary">AI Frame Interpolation tool</Link>.</li>
-                <li>Upload a video.</li>
-                <li>Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.</li>
-                <li>Choose a target FPS — 48, 60, or 120.</li>
-                <li>Pick a quality preset and a max processing height (start at 720p / medium).</li>
-                <li>Leave <em>Preserve audio</em> on unless you want a silent output.</li>
-                <li>Submit the conversion and wait for the job to finish.</li>
-                <li>Download the resulting MP4 and preview it.</li>
+                {howToSteps.map((item, idx) => (
+                  <li key={idx}>
+                    <ServerTrans
+                      i18nKey="_inline"
+                      defaults={item}
+                      components={{
+                        linkTool: <Link href={localizeHref('/tools/ai-frame-interpolation', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary" />,
+                        strong: <strong />,
+                        em: <em />,
+                      }}
+                    />
+                  </li>
+                ))}
               </ol>
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
-                FAQ
+                {t(`${K}.faq.title`)}
               </h2>
               <ul className="list-disc pl-6 space-y-3 mb-4">
-                <li>
-                  <strong>Does frame interpolation improve video quality?</strong>
-                  <br />
-                  It improves motion smoothness, not resolution or sharpness.
-                </li>
-                <li>
-                  <strong>Is AI frame interpolation the same as increasing FPS?</strong>
-                  <br />
-                  Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending.
-                </li>
-                <li>
-                  <strong>Can I convert 30fps to 60fps?</strong>
-                  <br />
-                  Yes — it’s the most common target.
-                </li>
-                <li>
-                  <strong>Can I convert 60fps to 120fps?</strong>
-                  <br />
-                  Yes, but the processing cost roughly doubles versus 60fps.
-                </li>
-                <li>
-                  <strong>Why can frame interpolation create artifacts?</strong>
-                  <br />
-                  Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts).
-                </li>
-                <li>
-                  <strong>What output format does the tool create?</strong>
-                  <br />
-                  MP4 (H.264 + AAC) in v1.
-                </li>
-                <li>
-                  <strong>Is 60fps always better than 30fps?</strong>
-                  <br />
-                  Not for cinematic looks — pick what suits the content.
-                </li>
-                <li>
-                  <strong>Is AI frame interpolation better than FFmpeg FPS conversion?</strong>
-                  <br />
-                  For most clips, yes — but minterpolate is faster and still useful as a quick fallback.
-                </li>
-                <li>
-                  <strong>Why do scene cuts sometimes look strange after interpolation?</strong>
-                  <br />
-                  The model assumes adjacent frames belong to the same motion sequence.
-                </li>
+                {faqItems.map((item, idx) => (
+                  <li key={idx}>
+                    <strong>{item.q}</strong>
+                    <br />
+                    {item.a}
+                  </li>
+                ))}
               </ul>
 
               <div className="mt-10 flex flex-wrap gap-3">
-                <Link href="/tools/ai-frame-interpolation" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
-                  Try the AI Frame Interpolation Tool
+                <Link href={localizeHref('/tools/ai-frame-interpolation', loc)} className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors">
+                  {t(`${K}.actions.tryTool`)}
                 </Link>
-                <Link href="/tutorials" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
-                  ← Back to Tutorials
+                <Link href={localizeHref('/tutorials', loc)} className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
+                  {t(`${K}.actions.backToTutorials`)}
                 </Link>
-                <Link href="/tutorials/video/getting-started" className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
-                  Video Converter Tutorial
+                <Link href={localizeHref('/tutorials/video/getting-started', loc)} className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors">
+                  {t(`${K}.actions.videoConverterTutorial`)}
                 </Link>
               </div>
 
+              {/* Hidden during AdSense review — re-enable the blog guide link when the blog returns. */}
               <RelatedLinks
-                title="Try related tools and guides"
-                intro="Other video tools and reference pages that pair well with AI frame interpolation."
-                links={[
-                  {
-                    label: 'AI Frame Interpolation Tool',
-                    to: '/tools/ai-frame-interpolation',
-                    description: 'Upload a video and run interpolation right now.',
-                  },
-                  {
-                    label: 'Video converter',
-                    to: '/tools/video-converter',
-                    description: 'Convert MP4, WebM, MOV, AVI, MKV, and more.',
-                  },
-                  {
-                    label: 'Compress video',
-                    to: '/tools/compress-video',
-                    description: 'Shrink a higher-FPS file before sharing.',
-                  },
-                  {
-                    label: 'Extract frames from video',
-                    to: '/tools/extract-frames-from-video',
-                    description: 'Pull individual frames out as PNGs.',
-                  },
-                  {
-                    label: 'Convert video to GIF',
-                    to: '/tools/convert-video-to-animated-gif',
-                    description: 'Turn a short clip into an animated GIF.',
-                  },
-                  // Hidden during AdSense review — re-enable when the blog returns.
-                  // {
-                  //   label: 'Video compression guide',
-                  //   to: '/blog/video/video-compression-guide',
-                  //   description: 'Codecs, bitrate, and containers explained.',
-                  // },
-                ]}
+                title={t(`${K}.relatedLinks.title`)}
+                intro={t(`${K}.relatedLinks.intro`)}
+                links={relatedLinksData.map((link, idx) => ({
+                  label: link.label,
+                  to: RELATED_HREFS[idx],
+                  description: link.description,
+                }))}
               />
             </div>
           </Panel>
         </div>
         <aside className="hidden lg:block w-[300px] shrink-0">
-          
+
         </aside>
       </div>
       </>

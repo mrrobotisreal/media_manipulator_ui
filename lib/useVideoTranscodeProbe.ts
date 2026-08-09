@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 import { analytics, EVENTS, getSessionId, reportError, trackUploadStarted } from '@/lib/analytics';
@@ -67,6 +68,7 @@ interface UseVideoTranscodeProbeReturns {
 const useVideoTranscodeProbe = (
   onSuccess: (result: ProbeMutationResult) => void,
 ): UseVideoTranscodeProbeReturns => {
+  const { t } = useLocalization('error');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<TranscodeUploadPhase>('idle');
 
@@ -145,8 +147,8 @@ const useVideoTranscodeProbe = (
         { media_kind: 'video' },
       );
       reportError(analytics, error, { stage: 'transcode_probe', toolSlug: 'transcode-video' });
-      toast.error('Failed to analyze video', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('toasts.videoAnalysisFailed'), {
+        description: error.message || t('toasts.unexpectedFallback'),
       });
     },
   });

@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import type {
   StudioProject,
@@ -65,6 +66,7 @@ export function useRecentProjects() {
 
 export function useCreateProject(onSuccess?: (project: StudioProject) => void) {
   const backend = useStudioBackend();
+  const { t } = useLocalization('error');
   return useMutation({
     mutationFn: async (req: StudioCreateProjectRequest): Promise<StudioProject> => {
       const res = await backend.fetch(backend.path('/projects'), {
@@ -77,7 +79,7 @@ export function useCreateProject(onSuccess?: (project: StudioProject) => void) {
     },
     onSuccess,
     onError: (error: Error) => {
-      toast.error('Failed to create project', { description: error.message });
+      toast.error(t('toasts.createProjectFailed'), { description: error.message });
     },
   });
 }

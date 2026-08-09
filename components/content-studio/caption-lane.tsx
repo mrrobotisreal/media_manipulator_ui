@@ -58,7 +58,7 @@ export const CaptionControls: React.FC<{ projectId: string }> = ({ projectId }) 
             { cueCountBucket: cueCountBucket(fresh.captions.length), host: studioHost() },
             { feature: 'studio' },
           );
-          toast.success('Captions ready');
+          toast.success(t('toasts.captionsReady'));
         } catch {
           /* ignore */
         }

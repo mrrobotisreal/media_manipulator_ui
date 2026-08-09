@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useLocalization } from '@/i18n/useLocalization';
 import { getBaseURL } from '@/lib/utils';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import {
@@ -78,6 +79,7 @@ const sizeBucket = (bytes: number): string => {
 // separately via useTranscodeJobStatus(jobId) — the restoration job flows
 // through the same /job/:jobId machinery.
 const useVideoRestore = (onSuccess: (result: RestoreStartResponse) => void): UseVideoRestoreReturns => {
+  const { t } = useLocalization('error');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadPhase, setUploadPhase] = useState<RestoreUploadPhase>('idle');
 
@@ -171,8 +173,8 @@ const useVideoRestore = (onSuccess: (result: RestoreStartResponse) => void): Use
         { media_kind: 'video' },
       );
       reportError(analytics, error, { stage: 'restore_start', toolSlug: 'video-restore' });
-      toast.error('Failed to start restoration', {
-        description: error.message || 'An unexpected error occurred',
+      toast.error(t('toasts.restorationStartFailed'), {
+        description: error.message || t('toasts.unexpectedFallback'),
       });
     },
   });

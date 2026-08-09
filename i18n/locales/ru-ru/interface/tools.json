@@ -492,26 +492,5 @@
     "tryItNow": "Попробовать сейчас",
     "relatedTitle": "Похожие инструменты, руководства и статьи",
     "relatedIntro": "Продолжите знакомство с похожими страницами Media Manipulator."
-  },
-  "tutorialAiFrameInterpolation": {
-    "_placeholder": "Здесь будет содержимое руководства по ИИ-интерполяции кадров. Статья пока отображает текст на английском языке непосредственно в файле .tsx, до тех пор пока этот файл не будет переведен на использование t()."
-  },
-  "tutorialAudioGettingStarted": {
-    "_placeholder": "Содержимое руководства по началу работы с аудио находится в файле .tsx."
-  },
-  "tutorialVideoGettingStarted": {
-    "_placeholder": "Содержимое руководства по началу работы с видео находится в файле .tsx."
-  },
-  "tutorialImageGettingStarted": {
-    "_placeholder": "Содержимое руководства по началу работы с изображениями находится в файле .tsx."
-  },
-  "blogVideoCompression": {
-    "_placeholder": "Статья блога о сжатии видео находится в файле .tsx."
-  },
-  "blogImageOptimization": {
-    "_placeholder": "Статья блога об оптимизации изображений находится в файле .tsx."
-  },
-  "blogAudioQuality": {
-    "_placeholder": "Статья блога о качестве звука находится в файле .tsx."
   }
 }

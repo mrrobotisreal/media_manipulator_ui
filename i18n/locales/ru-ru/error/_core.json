@@ -92,5 +92,33 @@
       "failed": "Не удалось выполнить извлечение.",
       "noStreams": "В этом файле не найдено подходящих потоков."
     }
+  },
+  "errorBoundary": {
+    "title": "Что-то пошло не так",
+    "body": "Непредвиденная ошибка прервала загрузку страницы. Ваши файлы не потеряны — вы можете попробовать снова, а если проблема повторяется, перезагрузите страницу.",
+    "tryAgain": "Попробовать снова",
+    "goHome": "На главную"
+  },
+  "toasts": {
+    "conversionStartFailed": "Не удалось начать конвертацию.",
+    "transcriptionStartFailed": "Не удалось начать транскрибацию.",
+    "transcodeStartFailed": "Не удалось начать транскодирование.",
+    "videoAnalysisFailed": "Не удалось проанализировать видео.",
+    "translationStartFailed": "Не удалось начать перевод.",
+    "scanStartFailed": "Не удалось начать сканирование.",
+    "jobStartFailed": "Не удалось запустить задачу.",
+    "stitchStartFailed": "Не удалось запустить сведение дорожек.",
+    "restorationStartFailed": "Не удалось начать восстановление.",
+    "identificationFailed": "Не удалось определить файл.",
+    "jobStatusCheckFailed": "Не удалось проверить статус задачи.",
+    "exportStartFailed": "Не удалось начать экспорт.",
+    "exportFailed": "Экспорт не удался.",
+    "saveProjectFailed": "Не удалось сохранить проект.",
+    "createProjectFailed": "Не удалось создать проект.",
+    "uploadFailed": "Загрузка не удалась.",
+    "audioProcessingFailed": "Обработка аудио не удалась.",
+    "unexpectedFallback": "Произошла непредвиденная ошибка.",
+    "conversionFailedFallback": "В процессе конвертации произошла ошибка.",
+    "unableToGetProgress": "Не удалось получить статус конвертации."
   }
 }

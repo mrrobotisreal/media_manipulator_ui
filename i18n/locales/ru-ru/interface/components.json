@@ -255,5 +255,28 @@
     "policyLink": "политика конфиденциальности",
     "cancel": "Отмена",
     "save": "Сохранить настройки"
+  },
+  "toasts": {
+    "conversionStarted": "Конвертация запущена",
+    "conversionStartedDescription": "ID задачи: {{jobId}} — файл обрабатывается",
+    "transcriptionStarted": "Транскрибация запущена",
+    "transcriptionStartedDescription": "ID задачи: {{jobId}} — создаем транскрипт",
+    "transcodeStarted": "Транскодирование запущено",
+    "translationStarted": "Перевод субтитров запущен",
+    "jobStarted": "Задача запущена",
+    "stitchStarted": "Сведение дорожек запущено",
+    "jobIdDescription": "ID задачи: {{jobId}}",
+    "identificationSuccess": "Файл успешно определен",
+    "identificationDescription": "Тип файла: {{type}} | Размер: {{size}} МБ",
+    "conversionCompleted": "Конвертация успешно завершена!",
+    "readyForDownload": "Ваш файл готов к скачиванию",
+    "uploadingFile": "Загружаем {{fileName}}…",
+    "uploadingFileProgress": "Загружаем {{fileName}}… {{percent}}%",
+    "processingFile": "Обрабатываем {{fileName}}…",
+    "buildingPreview": "Создаем превью…",
+    "assetAdded": "{{fileName}} добавлен",
+    "audioAdded": "Аудио добавлено",
+    "processingAudio": "Обрабатываем аудио…",
+    "captionsReady": "Субтитры готовы"
   }
 }

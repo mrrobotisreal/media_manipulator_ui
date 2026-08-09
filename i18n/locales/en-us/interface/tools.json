@@ -482,26 +482,5 @@
     "tryItNow": "Try it now",
     "relatedTitle": "Related tools, tutorials & guides",
     "relatedIntro": "Keep going with related Media Manipulator pages."
-  },
-  "tutorialAiFrameInterpolation": {
-    "_placeholder": "AI frame interpolation tutorial content will live here. The article still renders English text directly in the .tsx file until that file is migrated to use t()."
-  },
-  "tutorialAudioGettingStarted": {
-    "_placeholder": "Audio getting-started tutorial content lives in the .tsx file."
-  },
-  "tutorialVideoGettingStarted": {
-    "_placeholder": "Video getting-started tutorial content lives in the .tsx file."
-  },
-  "tutorialImageGettingStarted": {
-    "_placeholder": "Image getting-started tutorial content lives in the .tsx file."
-  },
-  "blogVideoCompression": {
-    "_placeholder": "Video compression blog post lives in the .tsx file."
-  },
-  "blogImageOptimization": {
-    "_placeholder": "Image optimization blog post lives in the .tsx file."
-  },
-  "blogAudioQuality": {
-    "_placeholder": "Audio quality blog post lives in the .tsx file."
   }
 }

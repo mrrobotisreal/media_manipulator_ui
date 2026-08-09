@@ -9,6 +9,7 @@ import { isReviewSafeInternalHref } from '@/content/reviewAllowlist';
 import type { ToolPageContent } from '@/content/toolPages';
 import { Panel } from '@/components/darkroom/panel';
 import { localizeHref } from '@/i18n/locales';
+import { getServerT } from '@/lib/i18n/server';
 
 /**
  * Server-rendered tool landing page. All marketing/SEO copy (intro, formats,
@@ -47,6 +48,7 @@ export default function ToolLandingPage({
   locale?: string;
 }) {
   const loc = locale ?? 'en-US';
+  const t = getServerT('interface', loc);
   const inContentSlot = getReviewToolInContentAdSlot(tool.slug);
   // During review, only surface related links that point to review-safe pages
   // (core/blog/tutorials + allowlisted tools) so review pages never link into
@@ -68,17 +70,17 @@ export default function ToolLandingPage({
     <div className="max-w-[1400px] mx-auto my-2 px-4">
       <Panel level="1">
           {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground mb-4">
+          <nav aria-label={t('toolLandingPage.breadcrumbAriaLabel')} className="text-sm text-muted-foreground mb-4">
             <ol className="flex flex-wrap items-center gap-1">
               <li>
                 <Link href={localizeHref('/', loc)} className="hover:text-card-foreground transition-colors">
-                  Home
+                  {t('toolLandingPage.home')}
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
               <li>
                 <Link href={localizeHref('/tools', loc)} className="hover:text-card-foreground transition-colors">
-                  Tools
+                  {t('toolLandingPage.tools')}
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
@@ -156,12 +158,12 @@ export default function ToolLandingPage({
 
           {/* Supported formats */}
           {hasFormats && sf ? (
-            <section className="mt-12" aria-label="Supported formats">
-              <SectionHeading>Supported formats</SectionHeading>
+            <section className="mt-12" aria-label={t('toolLandingPage.supportedFormatsAriaLabel')}>
+              <SectionHeading>{t('toolLandingPage.supportedFormatsHeading')}</SectionHeading>
               <div className="grid gap-4 md:grid-cols-2">
                 {sf.supportedInputFormats?.length ? (
                   <div className="rounded-md border border-edge bg-surface-2/40 p-4">
-                    <h3 className="font-medium text-card-foreground mb-2">Input formats</h3>
+                    <h3 className="font-medium text-card-foreground mb-2">{t('toolLandingPage.inputFormatsHeading')}</h3>
                     <ul className="flex flex-wrap gap-2">
                       {sf.supportedInputFormats.map((fmt) => (
                         <li
@@ -176,7 +178,7 @@ export default function ToolLandingPage({
                 ) : null}
                 {sf.supportedOutputFormats?.length ? (
                   <div className="rounded-md border border-edge bg-surface-2/40 p-4">
-                    <h3 className="font-medium text-card-foreground mb-2">Output formats</h3>
+                    <h3 className="font-medium text-card-foreground mb-2">{t('toolLandingPage.outputFormatsHeading')}</h3>
                     <ul className="flex flex-wrap gap-2">
                       {sf.supportedOutputFormats.map((fmt) => (
                         <li
@@ -201,8 +203,8 @@ export default function ToolLandingPage({
 
           {/* How to use */}
           {tool.flowSteps.length > 0 && (
-            <section className="mt-12" aria-label="How to use">
-              <SectionHeading>How to use it</SectionHeading>
+            <section className="mt-12" aria-label={t('toolLandingPage.howToUseAriaLabel')}>
+              <SectionHeading>{t('toolLandingPage.howToUseHeading')}</SectionHeading>
               <ol className="space-y-5">
                 {tool.flowSteps.map((step, idx) => (
                   <li key={step.title || idx} className="flex gap-4">
@@ -230,8 +232,8 @@ export default function ToolLandingPage({
           )}
 
           {/* What this tool does */}
-          <section className="mt-12" aria-label="What this tool does">
-            <SectionHeading>What this tool does</SectionHeading>
+          <section className="mt-12" aria-label={t('toolLandingPage.whatItDoesAriaLabel')}>
+            <SectionHeading>{t('toolLandingPage.whatItDoesHeading')}</SectionHeading>
             <ul className="space-y-2 list-disc pl-6 text-card-foreground">
               {tool.whatItDoes.map((item) => (
                 <li key={item}>{item}</li>
@@ -240,8 +242,8 @@ export default function ToolLandingPage({
           </section>
 
           {/* Why it matters */}
-          <section className="mt-12" aria-label="Why it matters">
-            <SectionHeading>Why it matters</SectionHeading>
+          <section className="mt-12" aria-label={t('toolLandingPage.whyItMattersAriaLabel')}>
+            <SectionHeading>{t('toolLandingPage.whyItMattersHeading')}</SectionHeading>
             <ul className="space-y-2 list-disc pl-6 text-card-foreground">
               {tool.whyItMatters.map((item) => (
                 <li key={item}>{item}</li>
@@ -250,8 +252,8 @@ export default function ToolLandingPage({
           </section>
 
           {/* Common use cases */}
-          <section className="mt-12" aria-label="Common use cases">
-            <SectionHeading>Common use cases</SectionHeading>
+          <section className="mt-12" aria-label={t('toolLandingPage.useCasesAriaLabel')}>
+            <SectionHeading>{t('toolLandingPage.useCasesHeading')}</SectionHeading>
             <div className="grid gap-3 md:grid-cols-2">
               {tool.useCases.map((useCase) => (
                 <div key={useCase.title} className="rounded-md border border-edge bg-surface-2/40 p-4">
@@ -278,7 +280,7 @@ export default function ToolLandingPage({
           {tool.advancedDetails && tool.advancedDetails.length > 0 && (
             <details className="group mt-12 rounded-md border border-edge bg-surface-2/40 p-4">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-card-foreground [&::-webkit-details-marker]:hidden">
-                <span>Advanced details</span>
+                <span>{t('toolLandingPage.advancedDetailsSummary')}</span>
                 <ChevronDown
                   aria-hidden="true"
                   className="size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--dur-base)] ease-[var(--ease-instrument)] group-open:rotate-180"
@@ -293,8 +295,8 @@ export default function ToolLandingPage({
           )}
 
           {/* Why Media Manipulator */}
-          <section className="mt-12" aria-label="Why Media Manipulator">
-            <SectionHeading>Why Media Manipulator</SectionHeading>
+          <section className="mt-12" aria-label={t('toolLandingPage.whyMediaManipulatorAriaLabel')}>
+            <SectionHeading>{t('toolLandingPage.whyMediaManipulatorHeading')}</SectionHeading>
             <ul className="space-y-2 list-disc pl-6 text-card-foreground">
               {tool.whyMediaManipulator.map((item) => (
                 <li key={item}>{item}</li>
@@ -305,19 +307,19 @@ export default function ToolLandingPage({
           {/* Privacy note */}
           <section
             className="mt-12 flex items-start gap-3 rounded-lg border border-edge border-l-2 border-l-data bg-data/8 p-4"
-            aria-label="Privacy & file handling"
+            aria-label={t('toolLandingPage.privacyAriaLabel')}
           >
             <Shield className="mt-0.5 h-5 w-5 shrink-0 text-data" />
             <div>
-              <h2 className="text-base font-semibold text-card-foreground">Privacy &amp; file handling</h2>
+              <h2 className="text-base font-semibold text-card-foreground">{t('toolLandingPage.privacyHeading')}</h2>
               <p className="text-sm text-muted-foreground mt-1">{tool.privacyNote}</p>
             </div>
           </section>
 
           {/* FAQ — <details> keeps every Q/A in the server HTML (crawlable) */}
           {tool.faq.length > 0 && (
-            <section className="mt-12" aria-label="Frequently asked questions">
-              <SectionHeading>Frequently asked questions</SectionHeading>
+            <section className="mt-12" aria-label={t('toolLandingPage.faqAriaLabel')}>
+              <SectionHeading>{t('toolLandingPage.faqHeading')}</SectionHeading>
               <ul className="space-y-2 list-none">
                 {tool.faq.map((item) => (
                   <li
@@ -344,8 +346,8 @@ export default function ToolLandingPage({
 
           {/* Related links (filtered to review-safe destinations) */}
           {relatedLinks.length > 0 && (
-            <section className="mt-12" aria-label="Related tools">
-              <SectionHeading>Related tools</SectionHeading>
+            <section className="mt-12" aria-label={t('toolLandingPage.relatedToolsAriaLabel')}>
+              <SectionHeading>{t('toolLandingPage.relatedToolsHeading')}</SectionHeading>
               <div className="grid gap-3 md:grid-cols-2">
                 {relatedLinks.map((link) => (
                   <Link
