@@ -11,6 +11,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { studioHost } from '@/lib/studio/telemetry';
 import { useCreateProject, useRecentProjects } from '@/lib/useStudioProject';
@@ -52,6 +53,7 @@ interface ContentStudioPageProps {
  */
 const ContentStudioPage: React.FC<ContentStudioPageProps> = ({ embedded = false }) => {
   const { t } = useLocalization('interface');
+  const localized = useLocalizedHref();
   // const { toolPages } = useToolPages();
   const [openProjectId, setOpenProjectId] = React.useState<string | null>(null);
   // Focus/fullscreen state lives at the host level: the host owns the portal
@@ -92,7 +94,7 @@ const ContentStudioPage: React.FC<ContentStudioPageProps> = ({ embedded = false 
               </div>
             </div>
             <Link
-              href="/tools"
+              href={localized('/tools')}
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-card-foreground transition-colors shrink-0"
             >
               <ArrowLeft className="w-4 h-4" />

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
@@ -51,21 +51,17 @@ export default function Providers({
   const [queryClient] = useState(getQueryClient);
   // The i18next instance must speak the same language as the server HTML it
   // hydrates into, so it is created synchronously from the URL locale before
-  // the first render — per-render on the server (no cross-request sharing),
+  // the first render — per-mount on the server (no cross-request sharing),
   // the process-wide singleton in the browser.
-  const i18nRef = useRef<I18nInstance | null>(null);
-  if (i18nRef.current === null) {
-    i18nRef.current = getI18nForLocale(locale);
-  }
+  const [i18nInstance] = useState<I18nInstance>(() => getI18nForLocale(locale));
   // Client-side navigation across locales (e.g. the language selector calling
   // router.push('/ru/...')) re-renders this provider with a new locale prop;
   // switch the live singleton so every mounted component follows.
   useEffect(() => {
-    const instance = i18nRef.current;
-    if (instance && instance.language !== locale) {
-      void instance.changeLanguage(locale);
+    if (i18nInstance.language !== locale) {
+      void i18nInstance.changeLanguage(locale);
     }
-  }, [locale]);
+  }, [i18nInstance, locale]);
   const pathname = usePathname();
   // The /embed/* routes are chromeless app surfaces meant to be iframed by
   // CreaTV — no site nav/footer and no analytics of any kind. They still need
@@ -85,7 +81,7 @@ export default function Providers({
     // surface inside someone else's page, and `/dr/*` is a private partner
     // portal. Neither may mount a consent prompt or emit a single event.
     return (
-      <I18nextProvider i18n={i18nRef.current}>
+      <I18nextProvider i18n={i18nInstance}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
             {children}
@@ -97,7 +93,7 @@ export default function Providers({
   }
 
   return (
-    <I18nextProvider i18n={i18nRef.current}>
+    <I18nextProvider i18n={i18nInstance}>
       <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         {/* AuthProvider is deliberately inside the non-chromeless branch only:

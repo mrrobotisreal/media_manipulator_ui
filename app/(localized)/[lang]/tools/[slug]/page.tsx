@@ -49,7 +49,7 @@ export default async function ToolSlugPage({
   params: Promise<{ lang: string; slug: string }>;
 }) {
   const { lang, slug } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   // Static-route slugs are served by their dedicated page.tsx siblings.
   if (STATIC_ROUTE_SLUGS.has(slug)) notFound();
 
@@ -60,7 +60,7 @@ export default async function ToolSlugPage({
     <>
       {/* Only emit rich structured data for indexed (review-allowed) tools. */}
       {isReviewIndexedToolSlug(slug) ? <JsonLd path={`/tools/${slug}`} /> : null}
-      <ToolLandingPage tool={tool} />
+      <ToolLandingPage tool={tool} locale={locale} />
     </>
   );
 }

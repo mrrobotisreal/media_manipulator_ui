@@ -23,6 +23,7 @@ import {
 import { analyticsBaseUrl, forgetIdentity, getVisitorId } from '@/lib/analytics';
 import { getCurrentIdToken } from '@/lib/firebase';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 
 /**
  * The preferences centre.
@@ -54,6 +55,7 @@ export interface ConsentPreferencesProps {
 
 export function ConsentPreferences({ onClose }: ConsentPreferencesProps) {
   const { t } = useLocalization(['interface']);
+  const localized = useLocalizedHref();
   const [details, setDetails] = React.useState<ConsentDetails>(() => getConsentDetails());
   // Local, uncommitted state: nothing is applied until Save. A toggle that took effect
   // instantly would leave someone who opened this to read it having silently changed their
@@ -162,7 +164,7 @@ export function ConsentPreferences({ onClose }: ConsentPreferencesProps) {
         <p className="text-xs text-muted-foreground">
           {t('interface:consentPrefs.policyPrefix')}{' '}
           <Link
-            href="/privacy-policy"
+            href={localized('/privacy-policy')}
             className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
           >
             {t('interface:consentPrefs.policyLink')}

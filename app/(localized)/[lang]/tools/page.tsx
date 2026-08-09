@@ -7,6 +7,7 @@ import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
 import { Panel } from '@/components/darkroom/panel';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
+import { localizeHref } from '@/i18n/locales';
 
 type PageParams = { params: Promise<{ lang: string }> };
 
@@ -47,7 +48,7 @@ function toolsByCategory(category: ToolPageContent['category']) {
 
 export default async function ToolsIndexPage({ params }: PageParams) {
   const { lang } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   return (
     <>
       <JsonLd path="/tools" />
@@ -69,7 +70,7 @@ export default async function ToolsIndexPage({ params }: PageParams) {
             {/* Featured: Content Studio */}
             {contentStudio && (
               <Link
-                href="/tools/content-studio"
+                href={localizeHref('/tools/content-studio', locale)}
                 className="group mb-8 block rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
               >
                 <div className="flex items-center gap-4">
@@ -108,7 +109,7 @@ export default async function ToolsIndexPage({ params }: PageParams) {
                     {tools.map((tool) => (
                       <Link
                         key={tool.slug}
-                        href={`/tools/${tool.slug}`}
+                        href={localizeHref(`/tools/${tool.slug}`, locale)}
                         className="block rounded-lg border border-border bg-background/40 p-4 hover:bg-muted/40 transition-colors"
                       >
                         <span className="font-medium text-card-foreground">{tool.name}</span>
@@ -149,13 +150,13 @@ export default async function ToolsIndexPage({ params }: PageParams) {
                 tools and the Darkroom editor.
               </p>
               <div className="flex flex-wrap gap-2 text-sm">
-                <Link href="/tutorials" className="rounded-lg bg-primary px-3 py-2 text-primary-foreground transition-colors hover:bg-[var(--accent-primary-hover)]">
+                <Link href={localizeHref('/tutorials', locale)} className="rounded-lg bg-primary px-3 py-2 text-primary-foreground transition-colors hover:bg-[var(--accent-primary-hover)]">
                   Browse all tutorials
                 </Link>
-                <Link href="/tutorials/content-studio" className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
+                <Link href={localizeHref('/tutorials/content-studio', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
                   Darkroom tutorial
                 </Link>
-                <Link href="/how-it-works" className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
+                <Link href={localizeHref('/how-it-works', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
                   How it works
                 </Link>
               </div>

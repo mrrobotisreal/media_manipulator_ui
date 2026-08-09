@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Panel } from '@/components/darkroom/panel';
 import RelatedLinks from '@/components/related-links';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
 
 const RELATED_LINK_KEYS = ['converter', 'tutorials', 'howItWorks'] as const;
 const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
@@ -13,6 +14,7 @@ const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
 
 const AboutPage: React.FC<{ locale?: string }> = ({ locale }) => {
   const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
 
   const imageItems = t('about.whatItDoes.image.items', { returnObjects: true }) as string[];
   const videoItems = t('about.whatItDoes.video.items', { returnObjects: true }) as string[];
@@ -81,8 +83,8 @@ const AboutPage: React.FC<{ locale?: string }> = ({ locale }) => {
                   locale={locale}
                   i18nKey="interface:about.whatItDoes.outro"
                   components={{
-                    linkTutorials: <Link href="/tutorials" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
-                    linkHow: <Link href="/how-it-works" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
+                    linkTutorials: <Link href={localizeHref('/tutorials', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
+                    linkHow: <Link href={localizeHref('/how-it-works', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
                   }}
                 />
               </p>
@@ -103,7 +105,7 @@ const AboutPage: React.FC<{ locale?: string }> = ({ locale }) => {
                       i18nKey="interface:about.whyChoose.privacy.body"
                       components={{
                         strong: <strong />,
-                        linkPrivacy: <Link href="/privacy-policy" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
+                        linkPrivacy: <Link href={localizeHref('/privacy-policy', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" />,
                       }}
                     />
                   </p>
@@ -148,7 +150,7 @@ const AboutPage: React.FC<{ locale?: string }> = ({ locale }) => {
                 <ServerTrans
                   locale={locale}
                   i18nKey="interface:about.commonTasks.intro"
-                  components={{ linkHome: <Link href="/" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" /> }}
+                  components={{ linkHome: <Link href={localizeHref('/', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary" /> }}
                 />
               </p>
               <div className="grid md:grid-cols-2 gap-6">
@@ -220,10 +222,10 @@ const AboutPage: React.FC<{ locale?: string }> = ({ locale }) => {
               </p>
               <p className="mb-4">
                 {t('about.contact.helpfulStartingPoints')}{' '}
-                <Link href="/how-it-works" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.howItWorks')}</Link>{' · '}
-                <Link href="/tutorials" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.tutorials')}</Link>{' · '}
-                <Link href="/privacy-policy" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.privacyPolicy')}</Link>{' · '}
-                <Link href="/terms-of-service" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.termsOfService')}</Link>
+                <Link href={localizeHref('/how-it-works', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.howItWorks')}</Link>{' · '}
+                <Link href={localizeHref('/tutorials', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.tutorials')}</Link>{' · '}
+                <Link href={localizeHref('/privacy-policy', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.privacyPolicy')}</Link>{' · '}
+                <Link href={localizeHref('/terms-of-service', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">{t('topNav.termsOfService')}</Link>
               </p>
             </section>
 

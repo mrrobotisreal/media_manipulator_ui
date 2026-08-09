@@ -14,14 +14,14 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function HomePage({ params }: PageParams) {
   const { lang } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   return (
     <>
       <JsonLd path="/" />
       <FileConverterApp />
       {/* Server-rendered, so this prose is in the crawlable HTML rather than
           behind the client island above. */}
-      <HomeContent />
+      <HomeContent locale={locale} />
     </>
   );
 }

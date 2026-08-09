@@ -1449,5 +1449,30 @@
         "ai_remove_vocals": "Vocal removal"
       }
     }
+  },
+  "homeContent": {
+    "howItWorks": {
+      "eyebrow": "How it works",
+      "title": "Three steps, no account",
+      "steps": [
+        {
+          "title": "Choose a file",
+          "body": "Drop in an image, video, or audio file, or pick one from your device. Nothing is uploaded until you start the conversion."
+        },
+        {
+          "title": "Set your options",
+          "body": "Choose an output format and adjust quality, dimensions, or trim points. Sensible defaults are preselected for every tool."
+        },
+        {
+          "title": "Download the result",
+          "body": "Conversion runs on our own servers rather than in your browser, so large files work. Results are designed to be deleted automatically within 24 hours."
+        }
+      ],
+      "more": "More detail in <linkHow>how it works</linkHow>, or browse <linkTools>all tools</linkTools>."
+    },
+    "popular": {
+      "eyebrow": "Popular conversions",
+      "title": "Jump straight to a tool"
+    }
   }
 }

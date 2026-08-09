@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 
 /**
  * The signed-in half of the nav account slot.
@@ -33,6 +34,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 export const AccountDropdown: React.FC = () => {
   const auth = useAuth();
   const { t } = useLocalization(['interface', 'accessibility']);
+  const localized = useLocalizedHref();
 
   if (!auth?.user) return null;
 
@@ -67,10 +69,10 @@ export const AccountDropdown: React.FC = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/account">{t('interface:accountMenu.account')}</Link>
+          <Link href={localized('/account')}>{t('interface:accountMenu.account')}</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/pricing">{t('interface:authModal.plans.comparePlans')}</Link>
+          <Link href={localized('/pricing')}>{t('interface:authModal.plans.comparePlans')}</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => void handleSignOut()}>

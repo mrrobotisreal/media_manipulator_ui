@@ -5,6 +5,7 @@ import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { languageAlternates } from '@/lib/metadata';
 import { getLocaleDef, localizeHref } from '@/i18n/locales';
 import type { TiersResponse } from '@/lib/auth/accountApi';
+import { getSeoOverride } from '@/lib/seoOverrides';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
 
 // Metadata is written here rather than through buildMetadata(): lib/seo.ts is
@@ -23,18 +24,21 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   const localizedPath = localizeHref('/pricing', locale);
   const canonical = localizedPath === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${localizedPath}`;
   const isTranslated = getLocaleDef(locale)?.translated ?? false;
+  const override = getSeoOverride('/pricing', locale);
+  const title = override?.title ?? TITLE;
+  const description = override?.description ?? DESCRIPTION;
 
   return {
-    title: TITLE,
-    description: DESCRIPTION,
+    title,
+    description,
     alternates: {
       canonical,
       languages: languageAlternates('/pricing'),
     },
     robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
-      title: TITLE,
-      description: DESCRIPTION,
+      title,
+      description,
       url: canonical,
       siteName: SITE_NAME,
       type: 'website',
@@ -42,8 +46,8 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     },
     twitter: {
       card: 'summary_large_image',
-      title: TITLE,
-      description: DESCRIPTION,
+      title,
+      description,
       images: [DEFAULT_OG_IMAGE],
     },
   };

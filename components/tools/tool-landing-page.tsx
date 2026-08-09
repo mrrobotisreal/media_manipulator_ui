@@ -8,6 +8,7 @@ import { getReviewToolInContentAdSlot } from '@/lib/adSlots';
 import { isReviewSafeInternalHref } from '@/content/reviewAllowlist';
 import type { ToolPageContent } from '@/content/toolPages';
 import { Panel } from '@/components/darkroom/panel';
+import { localizeHref } from '@/i18n/locales';
 
 /**
  * Server-rendered tool landing page. All marketing/SEO copy (intro, formats,
@@ -34,6 +35,7 @@ export default function ToolLandingPage({
   tool,
   panel,
   beforeIntroExtra,
+  locale,
 }: {
   tool: ToolPageContent;
   /** Optional custom interactive panel (e.g. the Content Studio editor). When
@@ -41,7 +43,10 @@ export default function ToolLandingPage({
   panel?: ReactNode;
   /** Optional extra node rendered right after the intro (e.g. a help toggle). */
   beforeIntroExtra?: ReactNode;
+  /** Active locale, so internal links (breadcrumbs, related tools) stay inside it. */
+  locale?: string;
 }) {
+  const loc = locale ?? 'en-US';
   const inContentSlot = getReviewToolInContentAdSlot(tool.slug);
   // During review, only surface related links that point to review-safe pages
   // (core/blog/tutorials + allowlisted tools) so review pages never link into
@@ -66,13 +71,13 @@ export default function ToolLandingPage({
           <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground mb-4">
             <ol className="flex flex-wrap items-center gap-1">
               <li>
-                <Link href="/" className="hover:text-card-foreground transition-colors">
+                <Link href={localizeHref('/', loc)} className="hover:text-card-foreground transition-colors">
                   Home
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
               <li>
-                <Link href="/tools" className="hover:text-card-foreground transition-colors">
+                <Link href={localizeHref('/tools', loc)} className="hover:text-card-foreground transition-colors">
                   Tools
                 </Link>
               </li>
@@ -345,7 +350,7 @@ export default function ToolLandingPage({
                 {relatedLinks.map((link) => (
                   <Link
                     key={link.to}
-                    href={link.to}
+                    href={localizeHref(link.to, loc)}
                     className="block rounded-md border border-edge bg-surface-2/40 p-4 transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:border-edge-strong hover:bg-surface-2"
                   >
                     <span className="font-medium text-card-foreground">{link.label}</span>

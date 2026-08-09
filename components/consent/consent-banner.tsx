@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getConsentDetails, setConsent } from '@/lib/consent';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 
 /**
  * The first-party consent bar.
@@ -51,6 +52,7 @@ export interface ConsentBannerProps {
 
 export function ConsentBanner({ onDecided, onCustomize }: ConsentBannerProps) {
   const { t } = useLocalization(['interface']);
+  const localized = useLocalizedHref();
   const region = getConsentDetails().regionGroup;
 
   const decide = (granted: boolean) => {
@@ -73,7 +75,7 @@ export function ConsentBanner({ onDecided, onCustomize }: ConsentBannerProps) {
             ? t('interface:consentBanner.bodyGdpr')
             : t('interface:consentBanner.body')}{' '}
           <Link
-            href="/privacy-policy"
+            href={localized('/privacy-policy')}
             className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
           >
             {t('interface:consentBanner.privacyLink')}

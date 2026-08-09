@@ -13,6 +13,7 @@ import {
   type JsonLd,
 } from '@/lib/seo';
 import { languageAlternates } from '@/lib/metadata';
+import { getSeoOverride } from '@/lib/seoOverrides';
 import { defaultLocale, getLocaleDef, localizeHref } from '@/i18n/locales';
 
 export interface BlogPost {
@@ -91,9 +92,12 @@ const url = (path: string) => new URL(path, SITE_ORIGIN).toString();
 export function blogPostMetadata(post: BlogPost, locale: string = defaultLocale): Metadata {
   const canonicalUrl = url(localizeHref(post.path, locale));
   const isTranslated = getLocaleDef(locale)?.translated ?? false;
+  const override = getSeoOverride(post.path, locale);
+  const title = override?.title ?? post.title;
+  const description = override?.description ?? post.description;
   return {
-    title: post.title,
-    description: post.description,
+    title,
+    description,
     keywords: post.keywords,
     alternates: {
       canonical: canonicalUrl,
@@ -101,8 +105,8 @@ export function blogPostMetadata(post: BlogPost, locale: string = defaultLocale)
     },
     robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
-      title: post.title,
-      description: post.description,
+      title,
+      description,
       url: canonicalUrl,
       siteName: SITE_NAME,
       type: 'article',
@@ -112,8 +116,8 @@ export function blogPostMetadata(post: BlogPost, locale: string = defaultLocale)
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.description,
+      title,
+      description,
       images: [DEFAULT_OG_IMAGE],
     },
   };
@@ -158,9 +162,12 @@ export function blogPostJsonLd(post: BlogPost): JsonLd[] {
 }
 
 export function blogIndexMetadata(locale: string = defaultLocale): Metadata {
+  const override = getSeoOverride('/blog', locale);
   const title =
+    override?.title ??
     'Media Conversion, Compression & Editing Guides | Media Manipulator Blog';
   const description =
+    override?.description ??
     'Learn how media formats, compression, metadata, transcription, and FFmpeg-powered file processing work with practical guides from Media Manipulator.';
   const canonicalUrl = url(localizeHref('/blog', locale));
   const isTranslated = getLocaleDef(locale)?.translated ?? false;

@@ -21,14 +21,14 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function AiImageRestorationRoute({ params }: PageParams) {
   const { lang } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   const tool = TOOL_PAGES.find((t) => t.slug === 'ai-image-restoration');
   if (!tool) notFound();
 
   return (
     <>
       <JsonLd path="/tools/ai-image-restoration" />
-      <ToolLandingPage tool={tool} panel={<ImageRestoreHostClient />} />
+      <ToolLandingPage tool={tool} panel={<ImageRestoreHostClient />} locale={locale} />
     </>
   );
 }

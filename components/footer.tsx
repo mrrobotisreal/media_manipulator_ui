@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { Wordmark } from '@/components/darkroom/wordmark';
 import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
 import { requestConsentReview } from '@/lib/consent';
@@ -33,6 +34,7 @@ const LEGAL_LINK_KEYS: { key: string; href: string }[] = [
 const Footer: React.FC = () => {
   const [cookiePromptOpen, setCookiePromptOpen] = useState(false);
   const { t } = useLocalization(['interface', 'accessibility']);
+  const localized = useLocalizedHref();
 
   // Withdrawing consent has to be as easy as giving it, so this button tries
   // the three routes in order of authority:
@@ -88,7 +90,7 @@ const Footer: React.FC = () => {
                 home" properly contains the visible text. */}
             <div className="mb-3 flex min-w-0 flex-col">
               <Link
-                href="/"
+                href={localized('/')}
                 className="flex items-center space-x-3 hover:opacity-90 transition-opacity"
                 aria-label={t('accessibility:footer.homeLink')}
               >
@@ -120,7 +122,7 @@ const Footer: React.FC = () => {
               {NAV_LINK_KEYS.map(link => (
                 <li key={link.key}>
                   <Link
-                    href={link.href}
+                    href={localized(link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label ?? t(`interface:topNav.${link.key}`)}
@@ -138,7 +140,7 @@ const Footer: React.FC = () => {
               {LEGAL_LINK_KEYS.map(link => (
                 <li key={link.key}>
                   <Link
-                    href={link.href}
+                    href={localized(link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {t(`interface:topNav.${link.key}`)}

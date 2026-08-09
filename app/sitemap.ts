@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
+import { languageAlternates } from '@/lib/metadata';
 import { SITE_ORIGIN } from '@/lib/seo';
 
 // Review-safe sitemap: only the core pages + the review-allowed tool pages.
@@ -24,11 +25,17 @@ const CORE_ROUTES = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
+  // Each path is emitted once, with English as the primary URL and hreflang
+  // alternates for the TRANSLATED locales only (en + ru today, driven by the
+  // `translated` flag in i18n/locales.ts) plus x-default → English. Locales
+  // still serving copied-English files are deliberately absent here and
+  // noindex'd in their page metadata until their real translations land.
   const coreEntries = CORE_ROUTES.map((route) => ({
     url: new URL(route, SITE_ORIGIN).toString(),
     lastModified: now,
     changeFrequency: route === '/' ? ('weekly' as const) : ('monthly' as const),
     priority: route === '/' ? 1 : 0.7,
+    alternates: { languages: languageAlternates(route) },
   }));
 
   const toolEntries = REVIEW_INDEXED_TOOL_SLUGS.filter(
@@ -38,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
+    alternates: { languages: languageAlternates('/tools/' + slug) },
   }));
 
   return [...coreEntries, ...toolEntries];

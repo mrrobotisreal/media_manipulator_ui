@@ -103,7 +103,7 @@ function StudioGuide() {
 
 export default async function ContentStudioRoute({ params }: PageParams) {
   const { lang } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   const tool = TOOL_PAGES.find((t) => t.slug === 'content-studio');
   if (!tool) notFound();
 
@@ -114,6 +114,7 @@ export default async function ContentStudioRoute({ params }: PageParams) {
         tool={tool}
         panel={<StudioHostClient />}
         beforeIntroExtra={<StudioGuide />}
+        locale={locale}
       />
     </>
   );

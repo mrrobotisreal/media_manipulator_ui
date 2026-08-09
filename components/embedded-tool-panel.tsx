@@ -36,6 +36,7 @@ import {
   useToolAnalytics,
 } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { UploadLimitHint, useUpgradeNudge } from '@/components/account/upgrade-surfaces';
 import { Panel } from '@/components/darkroom/panel';
@@ -833,6 +834,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   const heading = title || DEFAULT_TITLES[defaultMediaKind];
   const subheading = description || DEFAULT_DESCRIPTIONS[defaultMediaKind];
   const { t, formatFileSize } = useLocalization('interface');
+  const localized = useLocalizedHref();
   const hint = defaultTask ? TASK_HINTS[defaultTask] : undefined;
   // A single "output is locked" value, regardless of media kind, so the info
   // banner shows the right chip for image / video / extract-audio pages alike.
@@ -1187,7 +1189,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
       <p className="text-xs text-muted-foreground mt-4">
         {t('embeddedToolPanel.needFullPrefix')}{' '}
         <Link
-          href="/"
+          href={localized('/')}
           className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
         >
           {t('embeddedToolPanel.openFullConverter')}

@@ -23,6 +23,7 @@ import {
   TOOL_CATEGORIES,
   type ToolPageContent,
 } from "@/content/toolPages";
+import ruToolPages from "@/i18n/locales/ru-ru/toolPages";
 
 /** Recursive deep-partial so overrides only need the fields they change. */
 type DeepPartial<T> = T extends (infer U)[]
@@ -52,6 +53,9 @@ interface LanguageToolContent {
  */
 const TOOL_PAGE_OVERRIDES: Record<string, LanguageToolContent> = {
   "en-US": {},
+  // name + tagline for the review-allowlisted slugs; full page bodies are
+  // deferred (see locales/ru-ru/toolPages.ts).
+  "ru-RU": ruToolPages as LanguageToolContent,
 };
 
 /** Arrays are replaced wholesale (a translated list is provided in full or not

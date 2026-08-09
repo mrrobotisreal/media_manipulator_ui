@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { cn } from '@/lib/utils';
 
 /**
@@ -23,18 +24,19 @@ const ROW =
 export const AccountSheetLinks: React.FC<{ onNavigate: () => void }> = ({ onNavigate }) => {
   const auth = useAuth();
   const { t } = useLocalization(['interface']);
+  const localized = useLocalizedHref();
 
   if (!auth) return null;
 
   return (
     <>
       <span aria-hidden="true" className="my-1 h-px bg-edge" />
-      <Link href="/pricing" onClick={onNavigate} className={ROW}>
+      <Link href={localized('/pricing')} onClick={onNavigate} className={ROW}>
         {t('interface:authModal.plans.comparePlans')}
       </Link>
       {auth.user ? (
         <>
-          <Link href="/account" onClick={onNavigate} className={ROW}>
+          <Link href={localized('/account')} onClick={onNavigate} className={ROW}>
             {t('interface:accountMenu.account')}
           </Link>
           <button

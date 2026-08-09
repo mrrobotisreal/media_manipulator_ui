@@ -140,7 +140,10 @@
       "transcodeHls": "Transcode → HLS",
       "transcodeDash": "Transcode → DASH",
       "webpToJpg": "WebP → JPG",
-      "wavToMp3": "WAV → MP3"
+      "wavToMp3": "WAV → MP3",
+      "compressImage": "Compress image",
+      "resizeImage": "Resize image",
+      "extractAudio": "Extract audio"
     },
     "upload": {
       "title": "Upload File",

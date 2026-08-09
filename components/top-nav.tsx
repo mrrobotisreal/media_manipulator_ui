@@ -24,6 +24,7 @@ import LanguageSelector from "@/components/language-selector";
 import { AccountMenu } from "@/components/account/account-menu";
 import { AccountSheetLinks } from "@/components/account/account-sheet-links";
 import { useLocalization } from "@/i18n/useLocalization";
+import { useLocalizedHref } from "@/i18n/useLocalizedHref";
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -98,16 +99,17 @@ const TopNav: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
   const { t } = useLocalization(["interface", "accessibility"]);
+  const localized = useLocalizedHref();
   const components = NAV_LINKS.map((link) => ({
     key: link.key,
-    href: link.href,
+    href: localized(link.href),
     title: t(`interface:topNav.${link.key}`),
   }));
 
   return (
     <nav data-site-header className="sticky top-0 z-50 w-full border-b border-edge bg-surface-0/92 shadow-[0_1px_0_var(--edge-highlight)]">
       <div className="container mx-auto flex h-14 items-center justify-between px-4 md:h-16">
-        <Link href="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
+        <Link href={localized("/")} className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
           {/* Was an unsized 80x80 image tag (22% of a 360px viewport, and a CLS
               source) plus Rubik Glitch type. Now a CSS-only lockup. */}
           <Wordmark size="sm" animated text={t("interface:common.brand")} />

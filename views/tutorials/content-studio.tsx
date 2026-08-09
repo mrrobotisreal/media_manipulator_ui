@@ -5,6 +5,7 @@ import { Clapperboard } from 'lucide-react';
 import RelatedLinks from '@/components/related-links';
 import { ResourceHints } from '@/components/seo/resource-hints';
 import { getServerT } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
 
 const SHOT_BASE = 'https://pub-13a4fdf185fa488299e681e08dd9f856.r2.dev';
@@ -24,6 +25,7 @@ const K = 'tutorials.tutorials.contentStudio.page';
  */
 const ContentStudioTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
   const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
 
   const Shot: React.FC<{ src: string; altKey: string; capKey: string }> = ({ src, altKey, capKey }) => (
     <figure className="my-6">
@@ -102,7 +104,7 @@ const ContentStudioTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
                 <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.cta.title`)}</h2>
                 <p className="text-muted-foreground mb-4">{t(`${K}.cta.body`)}</p>
                 <Link
-                  href="/tools/content-studio"
+                  href={localizeHref('/tools/content-studio', loc)}
                   className="inline-flex items-center gap-2 bg-success text-success-foreground px-4 py-2 rounded-lg hover:bg-success/90 transition-colors"
                 >
                   <Clapperboard className="w-4 h-4" />

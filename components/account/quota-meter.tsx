@@ -7,6 +7,7 @@ import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { formatResetsIn } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { cn } from '@/lib/utils';
 
 /**
@@ -106,6 +107,7 @@ function warnOnce(metric: string, emit: () => void): void {
 export const QuotaMeter: React.FC = () => {
   const auth = useAuth();
   const { t } = useLocalization(['interface', 'accessibility']);
+  const localized = useLocalizedHref();
 
   // THE WARNING EFFECT LIVES ABOVE EVERY EARLY RETURN. This component returns early three
   // times (no provider, still loading, signed in), so an effect declared further down would
@@ -180,7 +182,7 @@ export const QuotaMeter: React.FC = () => {
   if (auth.user) {
     return (
       <Link
-        href="/account"
+        href={localized('/account')}
         title={description}
         aria-label={`${t('accessibility:quotaMeter.gauge', { used, limit })}. ${t('accessibility:quotaMeter.openAccount')}`}
         className={shellClass}

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import RelatedLinks from '@/components/related-links';
 import { getServerT } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
 
 const RELATED_LINK_KEYS = ['allTools', 'compressVideo', 'removeExif', 'homepage', 'tutorials', 'howItWorks'] as const;
@@ -16,6 +17,7 @@ const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
 
 const BlogPage: React.FC<{ locale?: string }> = ({ locale }) => {
   const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
 
   const articles = [
     {
@@ -62,7 +64,7 @@ const BlogPage: React.FC<{ locale?: string }> = ({ locale }) => {
                 {articles.map((article, index) => (
                   <Panel key={index} level="2" as="article" className="lg:p-6 transition-shadow">
                     <h2 className="text-2xl font-semibold mb-2 text-card-foreground hover:text-data">
-                      <Link href={`/blog/${article.slug}`}>
+                      <Link href={localizeHref(`/blog/${article.slug}`, loc)}>
                         {article.titleNode ?? t(article.titleKey!)}
                       </Link>
                     </h2>
@@ -73,7 +75,7 @@ const BlogPage: React.FC<{ locale?: string }> = ({ locale }) => {
                     </div>
                     <p className="text-muted-foreground mb-4">{t(article.excerptKey)}</p>
                     <Link
-                      href={`/blog/${article.slug}`}
+                      href={localizeHref(`/blog/${article.slug}`, loc)}
                       className="text-data hover:text-data font-medium"
                     >
                       {t('blog.readMore')}

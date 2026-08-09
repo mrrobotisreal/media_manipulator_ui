@@ -12,6 +12,7 @@ import { fetchHistory, historyDownloadHref } from '@/lib/auth/accountApi';
 import type { HistoryEntry, HistoryStatus } from '@/lib/auth/accountApi';
 import { formatJobDuration } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { cn } from '@/lib/utils';
 
 /**
@@ -143,6 +144,7 @@ export const ConversionHistory: React.FC<{ labels: HistoryLabels; uid: string }>
   uid,
 }) => {
   const { formatDate } = useLocalization();
+  const localized = useLocalizedHref();
   const [limit, setLimit] = React.useState(PAGE_SIZE);
 
   // Keyed on the uid so signing into a different account cannot show the
@@ -184,7 +186,7 @@ export const ConversionHistory: React.FC<{ labels: HistoryLabels; uid: string }>
             back to the work. */}
         <p className="text-sm leading-relaxed text-muted-foreground">{labels.empty}</p>
         <Link
-          href="/tools"
+          href={localized('/tools')}
           className="mt-3 inline-flex text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
         >
           {labels.emptyCta}

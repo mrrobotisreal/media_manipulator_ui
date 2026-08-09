@@ -8,6 +8,7 @@ import { cn, getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import FileDetails from '@/components/file-details';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { withToolShards } from '@/lib/i18n/ensureShard';
 import type { ConversionFormData } from '@/schemas/types';
 
@@ -120,6 +121,7 @@ const FileConverterApp: React.FC = () => (
 
 const FileConverterAppInner: React.FC = () => {
   const { t, formatFileSize, formatTime } = useLocalization(['interface', 'accessibility', 'error']);
+  const localized = useLocalizedHref();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const [conversionOptions, setConversionOptions] = useState<ConversionFormData | null>(null);
@@ -819,21 +821,21 @@ const FileConverterAppInner: React.FC = () => {
             {t('interface:home.hero.subtitle')}
           </p>
           <nav aria-label={t('accessibility:home.popularTools')} className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-            <Link href="/tools" className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors">{t('interface:home.hero.allTools')}</Link>
-            <Link href="/tools/remove-exif-metadata" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
-            <Link href="/tools/compress-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
-            <Link href="/tools/transcribe-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
-            <Link href="/tools/transcode-to-hls" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeHls')}</Link>
+            <Link href={localized('/tools')} className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors">{t('interface:home.hero.allTools')}</Link>
+            <Link href={localized('/tools/remove-exif-metadata')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
+            <Link href={localized('/tools/compress-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
+            <Link href={localized('/tools/transcribe-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
+            <Link href={localized('/tools/transcode-to-hls')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeHls')}</Link>
             {/* Review-visible chips link only to review-allowlisted tool pages. */}
-            <Link href="/tools/compress-image" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Compress image</Link>
-            <Link href="/tools/image-resizer" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Resize image</Link>
-            <Link href="/tools/extract-audio-from-video" className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Extract audio</Link>
+            <Link href={localized('/tools/compress-image')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Compress image</Link>
+            <Link href={localized('/tools/image-resizer')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Resize image</Link>
+            <Link href={localized('/tools/extract-audio-from-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">Extract audio</Link>
           </nav>
         </header>
 
         {/* Content Studio call-to-action */}
         <Link
-          href="/tools/content-studio"
+          href={localized('/tools/content-studio')}
           className="group mb-8 block w-full max-w-5xl rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
           // No aria-label. The card's own text — title, badge, description,
           // CTA — is a better accessible name than a two-word override, and an
@@ -1277,7 +1279,7 @@ const FileConverterAppInner: React.FC = () => {
                         {t('interface:home.notSure.body')}
                       </p>
                       <Link
-                        href="/tutorials"
+                        href={localized('/tutorials')}
                         className="inline-flex items-center gap-2 mt-3 bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors text-sm"
                       >
                         <BookOpen className="w-4 h-4" />
@@ -1296,7 +1298,7 @@ const FileConverterAppInner: React.FC = () => {
                         {t('interface:home.howItWorks.body')}
                       </p>
                       <Link
-                        href="/how-it-works"
+                        href={localized('/how-it-works')}
                         className="inline-flex items-center gap-2 mt-3 bg-card border border-border text-card-foreground px-3 py-2 rounded-lg hover:bg-muted transition-colors text-sm"
                       >
                         <HelpCircle className="w-4 h-4" />

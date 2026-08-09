@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Check, Minus } from 'lucide-react';
 
 import { getServerT } from '@/lib/i18n/server';
+import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
 import { PricingTracker, PricingUpgradeLink } from '@/components/pricing/pricing-tracker';
 import type { TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
@@ -107,7 +108,8 @@ const TierHeader: React.FC<{
   t: T;
   price?: number;
   purchasable?: boolean;
-}> = ({ tier, t, price, purchasable }) => {
+  locale: string;
+}> = ({ tier, t, price, purchasable, locale }) => {
   const isPremium = tier === 'premium';
   return (
     <div className="flex flex-col gap-2">
@@ -155,7 +157,7 @@ const TierHeader: React.FC<{
         // sign-up panel, so clicking this is a visitor deciding to create an account after
         // reading the comparison. Worth the client island (see pricing-tracker.tsx).
         <PricingUpgradeLink
-          href="/account"
+          href={localizeHref('/account', locale)}
           ctaId="pricing_free_tier"
           className="mt-1 inline-flex w-fit items-center text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
         >
@@ -166,7 +168,7 @@ const TierHeader: React.FC<{
           // Anonymous: straight into the tools, which is the whole promise of the tier —
           // navigation, not an upgrade, so it stays a plain server-rendered link with no
           // client JS and no upgrade event.
-          href="/tools"
+          href={localizeHref('/tools', locale)}
           className="mt-1 inline-flex w-fit items-center text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
         >
           {t(`interface:pricing.cta.${tier}`)}
@@ -178,6 +180,7 @@ const TierHeader: React.FC<{
 
 export const PricingUnavailable: React.FC<{ locale?: string }> = ({ locale }) => {
   const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
   return (
     <Panel className="mx-auto max-w-2xl text-center">
       <h2 className="text-lg font-semibold text-foreground">
@@ -187,7 +190,7 @@ export const PricingUnavailable: React.FC<{ locale?: string }> = ({ locale }) =>
         {t('interface:pricing.unavailableBody')}
       </p>
       <Link
-        href="/tools"
+        href={localizeHref('/tools', loc)}
         className="mt-4 inline-flex text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
       >
         {t('interface:pricing.cta.anonymous')}
@@ -198,6 +201,7 @@ export const PricingUnavailable: React.FC<{ locale?: string }> = ({ locale }) =>
 
 export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = ({ data, locale }) => {
   const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
   const byTier = new Map<string, TierDescriptor>(
     data.tiers.map((entry) => [entry.tier, entry]),
   );
@@ -236,6 +240,7 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
               t={t}
               price={data.premiumPriceUSD}
               purchasable={data.premiumPurchasable}
+              locale={loc}
             />
             <dl className="mt-5 grid gap-2 md:hidden">
               {ROWS.map((row) => (

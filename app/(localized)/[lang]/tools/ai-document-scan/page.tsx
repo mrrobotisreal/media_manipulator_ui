@@ -21,14 +21,14 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function AiDocumentScanRoute({ params }: PageParams) {
   const { lang } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   const tool = TOOL_PAGES.find((t) => t.slug === 'ai-document-scan');
   if (!tool) notFound();
 
   return (
     <>
       <JsonLd path="/tools/ai-document-scan" />
-      <ToolLandingPage tool={tool} panel={<DocumentScanHostClient />} />
+      <ToolLandingPage tool={tool} panel={<DocumentScanHostClient />} locale={locale} />
     </>
   );
 }

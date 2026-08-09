@@ -21,14 +21,14 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 
 export default async function AiVideoRestorationRoute({ params }: PageParams) {
   const { lang } = await params;
-  resolveLangParam(lang);
+  const locale = resolveLangParam(lang);
   const tool = TOOL_PAGES.find((t) => t.slug === 'ai-video-restoration');
   if (!tool) notFound();
 
   return (
     <>
       <JsonLd path="/tools/ai-video-restoration" />
-      <ToolLandingPage tool={tool} panel={<VideoRestoreHostClient />} />
+      <ToolLandingPage tool={tool} panel={<VideoRestoreHostClient />} locale={locale} />
     </>
   );
 }

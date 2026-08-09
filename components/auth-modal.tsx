@@ -24,6 +24,7 @@ import { fetchTiers, type TierDescriptor } from '@/lib/auth/accountApi';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { EVENTS, useAnalytics } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { cn } from '@/lib/utils';
 
 /**
@@ -42,6 +43,7 @@ export const AuthModal: React.FC = () => {
   const auth = useAuth();
   const { track } = useAnalytics();
   const { t } = useLocalization(['interface', 'error']);
+  const localized = useLocalizedHref();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(
     auth?.prompt.intent ?? 'signup',
   );
@@ -414,7 +416,7 @@ export const AuthModal: React.FC = () => {
 
             <div className="flex flex-col gap-3 text-center lg:text-left">
               <Link
-                href="/pricing"
+                href={localized('/pricing')}
                 onClick={handleClose}
                 className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary lg:w-fit"
               >
@@ -426,13 +428,13 @@ export const AuthModal: React.FC = () => {
                   components={{
                     tos: (
                       <Link
-                        href="/terms-of-service"
+                        href={localized('/terms-of-service')}
                         className="underline underline-offset-2 hover:text-foreground"
                       />
                     ),
                     privacy: (
                       <Link
-                        href="/privacy-policy"
+                        href={localized('/privacy-policy')}
                         className="underline underline-offset-2 hover:text-foreground"
                       />
                     ),

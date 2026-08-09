@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
+import { localizeHref } from '@/i18n/locales';
 
 /**
  * Render a localised list whose source values may contain inline <strong> /
@@ -20,6 +21,7 @@ const RichList: React.FC<{ items: string[] }> = ({ items }) => (
 
 const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
   const t = getServerT('interface', locale);
+  const loc = locale ?? 'en-US';
 
   const imageItems = t('howItWorks.capabilities.image.items', { returnObjects: true }) as string[];
   const videoItems = t('howItWorks.capabilities.video.items', { returnObjects: true }) as string[];
@@ -126,7 +128,7 @@ const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
                   <ul className="text-muted-foreground space-y-1">
                     <RichList items={securityItems} />
                     <li>• {t('howItWorks.privacy.security.linkPrefix')}{' '}
-                      <Link href="/privacy-policy" className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">
+                      <Link href={localizeHref('/privacy-policy', loc)} className="text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary">
                         {t('howItWorks.privacy.security.linkText')}
                       </Link>
                       {' '}{t('howItWorks.privacy.security.linkSuffix')}
@@ -147,13 +149,13 @@ const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
               <p className="text-muted-foreground mb-4">{t('howItWorks.next.body')}</p>
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href="/tutorials"
+                  href={localizeHref('/tutorials', loc)}
                   className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
                 >
                   {t('howItWorks.next.ctaTutorials')}
                 </Link>
                 <Link
-                  href="/"
+                  href={localizeHref('/', loc)}
                   className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"
                 >
                   {t('howItWorks.next.ctaConvert')}

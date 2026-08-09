@@ -17,6 +17,7 @@ import {
   formatResetsIn,
   formatRetention,
 } from '@/lib/auth/formatLimits';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { cn } from '@/lib/utils';
 
 /**
@@ -89,6 +90,7 @@ const UsageBar: React.FC<{ used: number; limit: number; label: string }> = ({
 
 export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }) => {
   const auth = useAuth();
+  const localized = useLocalizedHref();
 
   if (!auth || auth.loading) {
     // The heading has to exist in the loading state too. Without it the page
@@ -196,7 +198,7 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
           )}
           <div className="mt-5 flex flex-col gap-2">
             <Link
-              href="/pricing"
+              href={localized('/pricing')}
               className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
             >
               {labels.comparePlans}
@@ -220,7 +222,7 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
             {labels.emptyProjects}
           </p>
           <Link
-            href="/tools/content-studio"
+            href={localized('/tools/content-studio')}
             className="mt-3 inline-flex text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
           >
             {labels.openStudio}

@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 
 export interface RelatedLink {
   label: string;
@@ -32,6 +33,7 @@ const RelatedLinks: React.FC<RelatedLinksProps> = ({
   className,
 }) => {
   const { t } = useLocalization('interface');
+  const localized = useLocalizedHref();
   const resolvedTitle = title ?? t('relatedLinks.defaultTitle');
   if (links.length === 0) return null;
   return (
@@ -47,7 +49,7 @@ const RelatedLinks: React.FC<RelatedLinksProps> = ({
         {links.map((link) => (
           <li key={link.to + link.label}>
             <Link
-              href={link.to}
+              href={localized(link.to)}
               className="group flex items-start gap-3 rounded-md border border-transparent hover:border-border hover:bg-muted/50 p-3 transition-colors"
             >
               <ArrowRight className="w-4 h-4 mt-1 text-primary shrink-0 group-hover:translate-x-0.5 transition-transform" />
