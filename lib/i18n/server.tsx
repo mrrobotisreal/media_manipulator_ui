@@ -12,11 +12,16 @@
  * to the browser, and the prerendered HTML still contains real translated text
  * for crawlers.
  *
- * Locale resolution: pages read the visitor's `mm-language` cookie via
- * `lib/i18n/requestLocale.ts` and pass the code down to `getServerT(ns, locale)`
- * / `<ServerTrans locale=…>`. No argument (crawlers, cached English HTML)
- * means en-US. A key missing from a locale falls back to the en-US string, the
- * same net behavior as i18next's `fallbackLng`.
+ * Locale resolution: pages resolve the `[lang]` URL segment to a locale code
+ * (see `lib/i18n/routeLocale.ts`) and pass it down to `getServerT(ns, locale)`
+ * / `<ServerTrans locale=…>`. No argument means en-US. A key missing from a
+ * locale falls back to the en-US string, the same net behavior as i18next's
+ * `fallbackLng`.
+ *
+ * Registration: every language in `i18n/locales.ts` needs its full 9-shard
+ * bundle imported and spread here; untranslated locales are byte-copies of
+ * en-US until their dedicated translation session. The `localeParity` test
+ * enforces key parity across all of them.
  */
 import React, { cloneElement, type ReactElement, type ReactNode } from 'react';
 
@@ -29,6 +34,7 @@ import interfaceTools from '@/i18n/locales/en-us/interface/tools.json';
 import errorCore from '@/i18n/locales/en-us/error/_core.json';
 import accessibilityCore from '@/i18n/locales/en-us/accessibility/_core.json';
 import accessibilityComponents from '@/i18n/locales/en-us/accessibility/components.json';
+
 import ruInterfaceCore from '@/i18n/locales/ru-ru/interface/_core.json';
 import ruInterfacePages from '@/i18n/locales/ru-ru/interface/pages.json';
 import ruInterfaceForms from '@/i18n/locales/ru-ru/interface/forms.json';
@@ -39,39 +45,141 @@ import ruErrorCore from '@/i18n/locales/ru-ru/error/_core.json';
 import ruAccessibilityCore from '@/i18n/locales/ru-ru/accessibility/_core.json';
 import ruAccessibilityComponents from '@/i18n/locales/ru-ru/accessibility/components.json';
 
+import ukInterfaceCore from '@/i18n/locales/uk-ua/interface/_core.json';
+import ukInterfacePages from '@/i18n/locales/uk-ua/interface/pages.json';
+import ukInterfaceForms from '@/i18n/locales/uk-ua/interface/forms.json';
+import ukInterfacePanels from '@/i18n/locales/uk-ua/interface/panels.json';
+import ukInterfaceComponents from '@/i18n/locales/uk-ua/interface/components.json';
+import ukInterfaceTools from '@/i18n/locales/uk-ua/interface/tools.json';
+import ukErrorCore from '@/i18n/locales/uk-ua/error/_core.json';
+import ukAccessibilityCore from '@/i18n/locales/uk-ua/accessibility/_core.json';
+import ukAccessibilityComponents from '@/i18n/locales/uk-ua/accessibility/components.json';
+
+import heInterfaceCore from '@/i18n/locales/he-il/interface/_core.json';
+import heInterfacePages from '@/i18n/locales/he-il/interface/pages.json';
+import heInterfaceForms from '@/i18n/locales/he-il/interface/forms.json';
+import heInterfacePanels from '@/i18n/locales/he-il/interface/panels.json';
+import heInterfaceComponents from '@/i18n/locales/he-il/interface/components.json';
+import heInterfaceTools from '@/i18n/locales/he-il/interface/tools.json';
+import heErrorCore from '@/i18n/locales/he-il/error/_core.json';
+import heAccessibilityCore from '@/i18n/locales/he-il/accessibility/_core.json';
+import heAccessibilityComponents from '@/i18n/locales/he-il/accessibility/components.json';
+
+import deInterfaceCore from '@/i18n/locales/de-de/interface/_core.json';
+import deInterfacePages from '@/i18n/locales/de-de/interface/pages.json';
+import deInterfaceForms from '@/i18n/locales/de-de/interface/forms.json';
+import deInterfacePanels from '@/i18n/locales/de-de/interface/panels.json';
+import deInterfaceComponents from '@/i18n/locales/de-de/interface/components.json';
+import deInterfaceTools from '@/i18n/locales/de-de/interface/tools.json';
+import deErrorCore from '@/i18n/locales/de-de/error/_core.json';
+import deAccessibilityCore from '@/i18n/locales/de-de/accessibility/_core.json';
+import deAccessibilityComponents from '@/i18n/locales/de-de/accessibility/components.json';
+
+import esInterfaceCore from '@/i18n/locales/es-es/interface/_core.json';
+import esInterfacePages from '@/i18n/locales/es-es/interface/pages.json';
+import esInterfaceForms from '@/i18n/locales/es-es/interface/forms.json';
+import esInterfacePanels from '@/i18n/locales/es-es/interface/panels.json';
+import esInterfaceComponents from '@/i18n/locales/es-es/interface/components.json';
+import esInterfaceTools from '@/i18n/locales/es-es/interface/tools.json';
+import esErrorCore from '@/i18n/locales/es-es/error/_core.json';
+import esAccessibilityCore from '@/i18n/locales/es-es/accessibility/_core.json';
+import esAccessibilityComponents from '@/i18n/locales/es-es/accessibility/components.json';
+
 type Bundle = Record<string, unknown>;
 
 const DEFAULT_LOCALE = 'en-US';
 
 /**
- * Mirrors the shallow-merge in `i18n/resources.ts` — same three namespaces,
- * same shard precedence — so a key resolves identically on both sides.
+ * Builds one language's namespace map. Mirrors the shallow-merge in
+ * `i18n/resources.ts` — same three namespaces, same shard precedence — so a
+ * key resolves identically on both sides (plus the server-only `pages`,
+ * `forms`, `panels` shards merged into `interface`).
  */
+function language(
+  core: Bundle,
+  pages: Bundle,
+  forms: Bundle,
+  panels: Bundle,
+  components: Bundle,
+  tools: Bundle,
+  error: Bundle,
+  a11yCore: Bundle,
+  a11yComponents: Bundle,
+): Record<string, Bundle> {
+  return {
+    interface: { ...core, ...pages, ...forms, ...panels, ...components, ...tools },
+    error: { ...error },
+    accessibility: { ...a11yCore, ...a11yComponents },
+  };
+}
+
 const LOCALES: Record<string, Record<string, Bundle>> = {
-  'en-US': {
-    interface: {
-      ...interfaceCore,
-      ...interfacePages,
-      ...interfaceForms,
-      ...interfacePanels,
-      ...interfaceComponents,
-      ...interfaceTools,
-    },
-    error: { ...errorCore },
-    accessibility: { ...accessibilityCore, ...accessibilityComponents },
-  },
-  'ru-RU': {
-    interface: {
-      ...ruInterfaceCore,
-      ...ruInterfacePages,
-      ...ruInterfaceForms,
-      ...ruInterfacePanels,
-      ...ruInterfaceComponents,
-      ...ruInterfaceTools,
-    },
-    error: { ...ruErrorCore },
-    accessibility: { ...ruAccessibilityCore, ...ruAccessibilityComponents },
-  },
+  'en-US': language(
+    interfaceCore,
+    interfacePages,
+    interfaceForms,
+    interfacePanels,
+    interfaceComponents,
+    interfaceTools,
+    errorCore,
+    accessibilityCore,
+    accessibilityComponents,
+  ),
+  'ru-RU': language(
+    ruInterfaceCore,
+    ruInterfacePages,
+    ruInterfaceForms,
+    ruInterfacePanels,
+    ruInterfaceComponents,
+    ruInterfaceTools,
+    ruErrorCore,
+    ruAccessibilityCore,
+    ruAccessibilityComponents,
+  ),
+  'uk-UA': language(
+    ukInterfaceCore,
+    ukInterfacePages,
+    ukInterfaceForms,
+    ukInterfacePanels,
+    ukInterfaceComponents,
+    ukInterfaceTools,
+    ukErrorCore,
+    ukAccessibilityCore,
+    ukAccessibilityComponents,
+  ),
+  'he-IL': language(
+    heInterfaceCore,
+    heInterfacePages,
+    heInterfaceForms,
+    heInterfacePanels,
+    heInterfaceComponents,
+    heInterfaceTools,
+    heErrorCore,
+    heAccessibilityCore,
+    heAccessibilityComponents,
+  ),
+  'de-DE': language(
+    deInterfaceCore,
+    deInterfacePages,
+    deInterfaceForms,
+    deInterfacePanels,
+    deInterfaceComponents,
+    deInterfaceTools,
+    deErrorCore,
+    deAccessibilityCore,
+    deAccessibilityComponents,
+  ),
+  'es-ES': language(
+    esInterfaceCore,
+    esInterfacePages,
+    esInterfaceForms,
+    esInterfacePanels,
+    esInterfaceComponents,
+    esInterfaceTools,
+    esErrorCore,
+    esAccessibilityCore,
+    esAccessibilityComponents,
+  ),
 };
 
 const DEFAULT_NAMESPACE = 'interface';

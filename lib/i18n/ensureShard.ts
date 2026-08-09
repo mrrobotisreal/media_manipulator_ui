@@ -44,6 +44,26 @@ const SHARD_LOADERS: Record<string, () => Promise<[ShardModule, ShardModule]>> =
       import('@/i18n/locales/ru-ru/interface/forms.json'),
       import('@/i18n/locales/ru-ru/interface/panels.json'),
     ]),
+  'uk-UA': () =>
+    Promise.all([
+      import('@/i18n/locales/uk-ua/interface/forms.json'),
+      import('@/i18n/locales/uk-ua/interface/panels.json'),
+    ]),
+  'he-IL': () =>
+    Promise.all([
+      import('@/i18n/locales/he-il/interface/forms.json'),
+      import('@/i18n/locales/he-il/interface/panels.json'),
+    ]),
+  'de-DE': () =>
+    Promise.all([
+      import('@/i18n/locales/de-de/interface/forms.json'),
+      import('@/i18n/locales/de-de/interface/panels.json'),
+    ]),
+  'es-ES': () =>
+    Promise.all([
+      import('@/i18n/locales/es-es/interface/forms.json'),
+      import('@/i18n/locales/es-es/interface/panels.json'),
+    ]),
 };
 
 const pendingByLanguage = new Map<string, Promise<void>>();
