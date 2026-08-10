@@ -196,9 +196,98 @@ const UK_SEO_OVERRIDES: LocaleOverrides = {
   },
 };
 
+const DE_SEO_OVERRIDES: LocaleOverrides = {
+  '/': {
+    title: 'Kostenloser Online-Konverter, -Editor und -Transkriptionsdienst für Medien | Media Manipulator',
+    description:
+      'Konvertieren, bearbeiten, komprimieren, transkribieren und analysieren Sie Bilder, Videos und Audio online. Media Manipulator bietet Medienkonvertierung, Metadaten-Tools, KI-Zusammenfassungen und datenschutzfreundliche Dateiverarbeitung.',
+  },
+  '/about': {
+    title: 'Über Media Manipulator | Kostenlose Online-Medientools von CreaTV Ltd.',
+    description:
+      'Media Manipulator ist ein kostenloser Dienst von CreaTV Ltd. zum Konvertieren, Bearbeiten, Komprimieren, Transkribieren und Analysieren von Bildern, Videos und Audio.',
+  },
+  '/how-it-works': {
+    title: 'So funktioniert Media Manipulator | Dateikonvertierung, KI-Verarbeitung und temporäre Speicherung',
+    description:
+      'Erfahren Sie, wie Media Manipulator Ihre Dateien verarbeitet: Formatkonvertierung, KI-Transkription und -Zusammenfassungen, Sicherheitsprüfung der Uploads und temporäre Speicherung der Ergebnisse für bis zu 24 Stunden.',
+  },
+  '/tools': {
+    title: 'Kostenlose Online-Medientools | Media Manipulator',
+    description:
+      'Kostenlose Online-Tools für Bilder, Videos, Audio, KI und Metadaten – konvertieren, komprimieren, transkribieren, EXIF entfernen, Gesang trennen und mehr.',
+  },
+  '/tutorials': {
+    title: 'Media-Manipulator-Anleitungen | Tools für Bilder, Videos und Audio',
+    description:
+      'Schritt-für-Schritt-Anleitungen zum Bild-, Video- und Audio-Konverter, zu Metadaten-Tools, Transkription und KI-Funktionen von Media Manipulator.',
+  },
+  '/privacy-policy': {
+    title: 'Datenschutzerklärung | Media Manipulator',
+    description:
+      'Erfahren Sie, wie Media Manipulator mit hochgeladenen Dateien umgeht: temporäre Speicherung, lokale KI-Verarbeitung, Analytik, Werbung, Inhaltsprüfung und Löschung.',
+  },
+  '/terms-of-service': {
+    title: 'Nutzungsbedingungen und Regeln zur zulässigen Nutzung | Media Manipulator',
+    description:
+      'Lesen Sie die Bedingungen von Media Manipulator: hochgeladene Inhalte, zulässige Nutzung, Dateiverarbeitung, KI-Funktionen, Werbung und Verantwortung der Nutzer.',
+  },
+  '/pricing': {
+    title: 'Preise – Media Manipulator',
+    description:
+      'Vergleichen Sie den kostenlosen Tarif, den Konto-Tarif und Premium: tägliche Operationslimits, Grenzen für Dateigröße und Videolänge, Ausgabeauflösung, Speicherung und Werbung.',
+  },
+  '/blog': {
+    title: 'Guides zu Medienkonvertierung, Komprimierung und Bearbeitung | Media Manipulator Blog',
+    description:
+      'Praxisnahe Artikel über Medienformate, Komprimierung, Metadaten, Transkription und FFmpeg-basierte Dateiverarbeitung von Media Manipulator.',
+  },
+  '/blog/video/video-compression-guide': {
+    title: 'Videokomprimierung erklärt: Dateigröße reduzieren ohne Qualitätsverlust | Media Manipulator',
+    description:
+      'Erfahren Sie, wie Videokomprimierung funktioniert, wie Codecs und Bitrate die Qualität beeinflussen und wie Sie Videos fürs Web verkleinern – mit praktischen Beispielen aus Media Manipulator und FFmpeg.',
+  },
+  '/blog/image/image-optimization-guide': {
+    title: 'Bildoptimierung erklärt: Komprimieren, Skalieren und Konvertieren fürs Web | Media Manipulator',
+    description:
+      'Erfahren Sie, wie Sie JPG, PNG, WebP, AVIF und GIF optimieren: schnellere Websites, kleinere Downloads, bessere Qualität und sicheres Teilen ohne überflüssige Metadaten.',
+  },
+  '/blog/audio/audio-quality-guide': {
+    title: 'Audioqualität erklärt: Bitrate, Formate, Komprimierung und Bereinigung | Media Manipulator',
+    description:
+      'Erfahren Sie, wie Bitrate, Abtastrate, Kanäle, Codecs, Komprimierung, Bereinigung und Transkription Größe und Qualität von Audiodateien beeinflussen.',
+  },
+  '/tutorials/ai-frame-interpolation': {
+    title: 'Was ist KI-Frame-Interpolation? So funktioniert FPS-Glättung | Media Manipulator',
+    description:
+      'Erfahren Sie, wie KI-Frame-Interpolation funktioniert, worin sie sich von einfacher FPS-Umwandlung unterscheidet, wann 48/60/120 fps sinnvoll sind, welche Artefakte auftreten können und wie Sie das Tool von Media Manipulator nutzen.',
+  },
+  '/tutorials/video/getting-started': {
+    title: 'Erste Schritte mit der Videokonvertierung | Media-Manipulator-Anleitung',
+    description:
+      'Konvertieren, komprimieren, schneiden und transkribieren Sie Videodateien mit den Video-Tools von Media Manipulator.',
+  },
+  '/tutorials/audio/getting-started': {
+    title: 'Erste Schritte mit der Audiokonvertierung | Media-Manipulator-Anleitung',
+    description:
+      'Konvertieren, komprimieren, bereinigen und transkribieren Sie Audiodateien mit den Audio-Tools von Media Manipulator.',
+  },
+  '/tutorials/image/getting-started': {
+    title: 'Erste Schritte mit der Bildkonvertierung | Media-Manipulator-Anleitung',
+    description:
+      'Konvertieren Sie Bilder, ändern Sie ihre Größe, schneiden Sie sie zu und entfernen Sie Metadaten mit den Tools von Media Manipulator.',
+  },
+  '/tutorials/content-studio': {
+    title: 'Darkroom nutzen: Mehrspur-Videoschnitt im Browser | Media Manipulator',
+    description:
+      'Schritt-für-Schritt-Anleitung für Darkroom: Medienimport, Mehrspur-Timeline, Zuschneiden, Schneiden und Ripple-Löschen, Überblendungen, Farbkorrektur, Textebenen und MP4-Export – alles im Browser.',
+  },
+};
+
 const OVERRIDES: Record<string, LocaleOverrides> = {
   'ru-RU': RU_SEO_OVERRIDES,
   'uk-UA': UK_SEO_OVERRIDES,
+  'de-DE': DE_SEO_OVERRIDES,
 };
 
 export function getSeoOverride(path: string, locale: string): SeoOverride | undefined {

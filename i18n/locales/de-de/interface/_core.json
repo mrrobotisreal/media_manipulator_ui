@@ -1,62 +1,62 @@
 {
   "common": {
     "brand": "Media Manipulator",
-    "brandTagline": "Convert images, videos, and audio files with ease",
-    "loading": "Loading…",
-    "loadingShort": "Loading...",
-    "comingSoon": "Coming soon",
-    "tryAgain": "Try again",
-    "cancel": "Cancel",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "save": "Save",
-    "saving": "Saving...",
-    "submit": "Submit",
-    "submitting": "Submitting...",
-    "download": "Download",
-    "preview": "Preview",
-    "remove": "Remove",
-    "clear": "Clear",
-    "reset": "Reset",
-    "apply": "Apply",
-    "enable": "Enable",
-    "disable": "Disable",
-    "yes": "Yes",
-    "no": "No",
-    "more": "More",
-    "less": "Less",
-    "and": "and",
-    "or": "or",
-    "of": "of",
-    "to": "to",
-    "from": "from",
-    "by": "by",
+    "brandTagline": "Bilder, Videos und Audiodateien mühelos konvertieren",
+    "loading": "Wird geladen…",
+    "loadingShort": "Lädt...",
+    "comingSoon": "Demnächst verfügbar",
+    "tryAgain": "Erneut versuchen",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "save": "Speichern",
+    "saving": "Wird gespeichert...",
+    "submit": "Absenden",
+    "submitting": "Wird gesendet...",
+    "download": "Herunterladen",
+    "preview": "Vorschau",
+    "remove": "Entfernen",
+    "clear": "Leeren",
+    "reset": "Zurücksetzen",
+    "apply": "Anwenden",
+    "enable": "Aktivieren",
+    "disable": "Deaktivieren",
+    "yes": "Ja",
+    "no": "Nein",
+    "more": "Mehr",
+    "less": "Weniger",
+    "and": "und",
+    "or": "oder",
+    "of": "von",
+    "to": "bis",
+    "from": "von",
+    "by": "von",
     "in": "in",
-    "with": "with",
-    "all": "All",
-    "none": "None",
-    "off": "Off",
-    "on": "On",
+    "with": "mit",
+    "all": "Alle",
+    "none": "Keine",
+    "off": "Aus",
+    "on": "Ein",
     "optional": "Optional",
-    "required": "Required",
-    "auto": "Auto",
-    "manual": "Manual",
-    "default": "Default",
-    "advanced": "Advanced",
-    "basic": "Basic",
-    "settings": "Settings",
-    "options": "Options",
-    "search": "Search",
+    "required": "Erforderlich",
+    "auto": "Automatisch",
+    "manual": "Manuell",
+    "default": "Standard",
+    "advanced": "Erweitert",
+    "basic": "Einfach",
+    "settings": "Einstellungen",
+    "options": "Optionen",
+    "search": "Suche",
     "filter": "Filter",
-    "selected": "Selected",
-    "step": "Step",
-    "minutes": "minutes",
-    "seconds": "seconds",
-    "items": "items",
-    "showAll": "Show all",
-    "showMore": "Show more",
-    "showLess": "Show less"
+    "selected": "Ausgewählt",
+    "step": "Schritt",
+    "minutes": "Minuten",
+    "seconds": "Sekunden",
+    "items": "Elemente",
+    "showAll": "Alle anzeigen",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen"
   },
   "units": {
     "bytes": "B",
@@ -72,184 +72,184 @@
     "khz": "kHz"
   },
   "duration": {
-    "zero": "0 sec",
-    "hours_one": "{{count}} hr",
-    "hours_other": "{{count}} hr",
-    "minutes_one": "{{count}} min",
-    "minutes_other": "{{count}} min",
-    "seconds_one": "{{count}} sec",
-    "seconds_other": "{{count}} sec"
+    "zero": "0 Sek.",
+    "hours_one": "{{count}} Std.",
+    "hours_other": "{{count}} Std.",
+    "minutes_one": "{{count}} Min.",
+    "minutes_other": "{{count}} Min.",
+    "seconds_one": "{{count}} Sek.",
+    "seconds_other": "{{count}} Sek."
   },
   "topNav": {
-    "home": "Home",
+    "home": "Startseite",
     "tools": "Tools",
-    "about": "About",
-    "howItWorks": "How it works",
+    "about": "Über uns",
+    "howItWorks": "So funktioniert's",
     "tutorials": "Tutorials",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Datenschutzerklärung",
+    "termsOfService": "Nutzungsbedingungen",
     "blog": "Blog",
     "links": {
-      "homeDescription": "Home page where you can convert your files",
-      "toolsDescription": "Free online tools for converting, compressing, transcribing, and cleaning up media files",
-      "aboutDescription": "About page where you can learn more about the project and its creator",
-      "howItWorksDescription": "How it works page where you can learn more about the conversion process",
-      "tutorialsDescription": "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
-      "privacyPolicyDescription": "Privacy policy page where you can learn more about the privacy policy of the project",
-      "termsOfServiceDescription": "Terms of service page where you can learn more about the terms of service of the project",
-      "blogDescription": "Blog page where you can read the latest news and updates about the project"
+      "homeDescription": "Startseite, auf der Sie Ihre Dateien konvertieren können",
+      "toolsDescription": "Kostenlose Online-Tools zum Konvertieren, Komprimieren, Transkribieren und Bereinigen von Mediendateien",
+      "aboutDescription": "Über-uns-Seite mit weiteren Informationen zum Projekt und seinem Urheber",
+      "howItWorksDescription": "Seite „So funktioniert's“ mit weiteren Informationen zum Konvertierungsprozess",
+      "tutorialsDescription": "Schritt-für-Schritt-Anleitungen für die Audio-, Video- und Bildkonverter und ihre KI-Tools",
+      "privacyPolicyDescription": "Datenschutzseite mit weiteren Informationen zur Datenschutzerklärung des Projekts",
+      "termsOfServiceDescription": "Seite zu den Nutzungsbedingungen mit weiteren Informationen zu den Nutzungsbedingungen des Projekts",
+      "blogDescription": "Blogseite, auf der Sie die neuesten Nachrichten und Updates zum Projekt lesen können"
     },
     "navigationLabel": "Navigation",
-    "language": "Language",
-    "selectLanguage": "Select language"
+    "language": "Sprache",
+    "selectLanguage": "Sprache auswählen"
   },
   "footer": {
-    "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "contact": "Contact:",
-    "explore": "Explore",
-    "legal": "Legal",
-    "doNotSell": "Do Not Sell or Share My Personal Information",
-    "cookieSettings": "Cookie settings",
-    "copyright": "© {{year}} Media Manipulator, a CreaTV Ltd. product. All rights reserved.",
-    "operatedBy": "Operated by CreaTV Ltd. · Colorado, USA",
+    "tagline": "Browserbasierte und serverunterstützte Tools zum Bearbeiten, Konvertieren, Komprimieren, Analysieren, Transkribieren, Zusammenfassen und sonstigen Verarbeiten von Bild-, Video- und Audiodateien.",
+    "contact": "Kontakt:",
+    "explore": "Entdecken",
+    "legal": "Rechtliches",
+    "doNotSell": "Meine persönlichen Daten nicht verkaufen oder weitergeben",
+    "cookieSettings": "Cookie-Einstellungen",
+    "copyright": "© {{year}} Media Manipulator, ein Produkt von CreaTV Ltd. Alle Rechte vorbehalten.",
+    "operatedBy": "Betrieben von CreaTV Ltd. · Colorado, USA",
     "cookieDialog": {
-      "title": "Cookie preferences",
-      "description": "Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data."
+      "title": "Cookie-Einstellungen",
+      "description": "Cookie-Einstellungen werden von Google verwaltet. Bitte laden Sie die Seite neu, falls der Cookie-Banner nicht erscheint, oder besuchen Sie unsere Datenschutzerklärung für Details dazu, wie Media Manipulator Daten verarbeitet."
     }
   },
   "languageSelector": {
-    "label": "Language",
-    "current": "Current language: {{language}}",
-    "select": "Select a language"
+    "label": "Sprache",
+    "current": "Aktuelle Sprache: {{language}}",
+    "select": "Sprache auswählen"
   },
   "home": {
     "contentStudioCta": {
       "title": "Darkroom",
-      "badge": "New",
-      "body": "Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style editor, right in your browser.",
-      "cta": "Try Darkroom"
+      "badge": "Neu",
+      "body": "Bearbeiten, layern und mischen Sie Video und Audio auf einer Multitrack-Zeitleiste und exportieren Sie als MP4 — ein Editor im Stil von Premiere Pro, direkt in Ihrem Browser.",
+      "cta": "Darkroom ausprobieren"
     },
     "hero": {
-      "title": "Free Online Media Converter, Editor, Transcriber & Metadata Tool",
-      "subtitle": "Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.",
-      "popularLabel": "Popular tools",
-      "allTools": "All tools",
-      "removeExif": "Remove EXIF",
-      "compressVideo": "Compress video",
-      "transcribeVideo": "Transcribe video",
-      "transcodeHls": "Transcode → HLS",
-      "transcodeDash": "Transcode → DASH",
+      "title": "Kostenloser Online-Mediakonverter, -Editor, -Transkriptionsdienst und Metadaten-Tool",
+      "subtitle": "Konvertieren, komprimieren, bearbeiten, transkribieren, zusammenfassen, Metadaten prüfen und Bild-, Video- und Audiodateien direkt im Browser bereinigen.",
+      "popularLabel": "Beliebte Tools",
+      "allTools": "Alle Tools",
+      "removeExif": "EXIF entfernen",
+      "compressVideo": "Video komprimieren",
+      "transcribeVideo": "Video transkribieren",
+      "transcodeHls": "Transcodieren → HLS",
+      "transcodeDash": "Transcodieren → DASH",
       "webpToJpg": "WebP → JPG",
       "wavToMp3": "WAV → MP3",
-      "compressImage": "Compress image",
-      "resizeImage": "Resize image",
-      "extractAudio": "Extract audio"
+      "compressImage": "Bild komprimieren",
+      "resizeImage": "Bildgröße ändern",
+      "extractAudio": "Audio extrahieren"
     },
     "upload": {
-      "title": "Upload File",
-      "dragDrop": "Drag and drop your file here",
-      "orClickSelect": "or click to select from your computer",
-      "chooseFile": "Choose File",
-      "analyzing": "Analyzing...",
-      "identifyDetails": "Identify File Details",
-      "unsupportedFile": "Unsupported file type. Please select an image, video, or audio file."
+      "title": "Datei hochladen",
+      "dragDrop": "Ziehen Sie Ihre Datei hierher",
+      "orClickSelect": "oder klicken Sie, um sie von Ihrem Computer auszuwählen",
+      "chooseFile": "Datei auswählen",
+      "analyzing": "Wird analysiert...",
+      "identifyDetails": "Dateidetails ermitteln",
+      "unsupportedFile": "Nicht unterstützter Dateityp. Bitte wählen Sie eine Bild-, Video- oder Audiodatei aus."
     },
     "options": {
-      "transcriptionOptions": "Transcription Options",
-      "transcodeOptions": "Transcode Options",
-      "conversionOptions": "Conversion Options",
-      "documentScanOptions": "Document Scan Options",
-      "convert": "Convert",
-      "transcribe": "Transcribe",
-      "transcode": "Transcode",
-      "scanDocument": "Scan to PDF / Word (AI)"
+      "transcriptionOptions": "Transkriptionsoptionen",
+      "transcodeOptions": "Transcodierungsoptionen",
+      "conversionOptions": "Konvertierungsoptionen",
+      "documentScanOptions": "Dokumentenscan-Optionen",
+      "convert": "Konvertieren",
+      "transcribe": "Transkribieren",
+      "transcode": "Transcodieren",
+      "scanDocument": "Zu PDF / Word scannen (KI)"
     },
     "history": {
-      "title": "Conversion History",
-      "subtitle": "Reopen or download any image, video, or audio result from this session.",
-      "newConversion": "New Conversion",
-      "transcriptBadge": "Transcript",
-      "preview": "Preview",
-      "download": "Download",
+      "title": "Konvertierungsverlauf",
+      "subtitle": "Öffnen oder laden Sie jedes Bild-, Video- oder Audioergebnis aus dieser Sitzung erneut herunter.",
+      "newConversion": "Neue Konvertierung",
+      "transcriptBadge": "Transkript",
+      "preview": "Vorschau",
+      "download": "Herunterladen",
       "itemLabel": "#{{number}} {{filename}}",
-      "startedProcessing": "Started {{time}} and still processing",
-      "completedAt": "Completed {{time}}",
-      "transcriptionFailed": "Transcription failed",
-      "conversionFailed": "Conversion failed"
+      "startedProcessing": "Gestartet um {{time}} und wird noch verarbeitet",
+      "completedAt": "Abgeschlossen um {{time}}",
+      "transcriptionFailed": "Transkription fehlgeschlagen",
+      "conversionFailed": "Konvertierung fehlgeschlagen"
     },
     "result": {
-      "transcriptResult": "Transcript Result",
-      "convertedPreview": "Converted File Preview",
-      "transcriptSubtitle": "Transcript and AI review for {{filename}}.",
-      "convertedSubtitle": "Toggle between the original and finalized edited version of {{filename}}.",
+      "transcriptResult": "Transkriptionsergebnis",
+      "convertedPreview": "Vorschau der konvertierten Datei",
+      "transcriptSubtitle": "Transkript und KI-Auswertung für {{filename}}.",
+      "convertedSubtitle": "Wechseln Sie zwischen der Original- und der fertig bearbeiteten Version von {{filename}}.",
       "original": "Original",
       "final": "Final",
-      "loadingPreview": "Loading converted image...",
-      "tryLoadingAgain": "Try Loading Preview Again",
-      "originalImageAlt": "Original image",
-      "convertedImageAlt": "Converted image",
-      "convertedGifAlt": "Converted animated GIF"
+      "loadingPreview": "Konvertiertes Bild wird geladen...",
+      "tryLoadingAgain": "Vorschau erneut laden",
+      "originalImageAlt": "Originalbild",
+      "convertedImageAlt": "Konvertiertes Bild",
+      "convertedGifAlt": "Konvertiertes animiertes GIF"
     },
     "progress": {
-      "preparingUpload": "Preparing secure upload...",
-      "uploadingToS3": "Uploading file directly to S3...",
-      "finalizing": "Staging uploaded file on the server...",
-      "startingTranscription": "Starting transcription...",
-      "startingConversion": "Starting conversion...",
-      "converting": "Converting...",
-      "percentComplete": "{{percent}}% Complete",
-      "conversionFailed": "Conversion failed. Please try again."
+      "preparingUpload": "Sicherer Upload wird vorbereitet...",
+      "uploadingToS3": "Datei wird direkt zu S3 hochgeladen...",
+      "finalizing": "Hochgeladene Datei wird auf dem Server bereitgestellt...",
+      "startingTranscription": "Transkription wird gestartet...",
+      "startingConversion": "Konvertierung wird gestartet...",
+      "converting": "Wird konvertiert...",
+      "percentComplete": "{{percent}}% abgeschlossen",
+      "conversionFailed": "Konvertierung fehlgeschlagen. Bitte versuchen Sie es erneut."
     },
     "download": {
-      "downloadAs": "Download {{filename}}",
-      "fileWillBeDownloaded": "File will be downloaded as: {{filename}}"
+      "downloadAs": "{{filename}} herunterladen",
+      "fileWillBeDownloaded": "Die Datei wird heruntergeladen als: {{filename}}"
     },
-    "fileLoadingConverter": "Loading converter…",
+    "fileLoadingConverter": "Konverter wird geladen…",
     "gettingStarted": {
-      "title": "Get started in 4 steps",
+      "title": "In 4 Schritten loslegen",
       "step1": {
-        "title": "Upload a file",
-        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files stay on our servers for at most 24 hours and are then deleted."
+        "title": "Datei hochladen",
+        "body": "Ziehen Sie ein beliebiges Bild, Video oder eine Audiodatei in den Upload-Bereich links, oder klicken Sie auf <em>Datei auswählen</em>. Dateien verbleiben höchstens 24 Stunden auf unseren Servern und werden danach gelöscht."
       },
       "step2": {
-        "title": "Pick your settings here",
-        "body": "The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation."
+        "title": "Wählen Sie hier Ihre Einstellungen",
+        "body": "Sobald eine Datei ausgewählt ist, wechselt das rechte Panel zum passenden Konverter — Bild, Video oder Audio. Wählen Sie ein Format, passen Sie Filter an oder aktivieren Sie eine KI-Funktion."
       },
       "step3": {
-        "title": "Convert",
-        "body": "Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time."
+        "title": "Konvertieren",
+        "body": "Klicken Sie auf <em>Datei konvertieren</em>. Verfolgen Sie den Fortschrittsbalken — Aufträge laufen in Echtzeit auf unserem GPU-Server."
       },
       "step4": {
-        "title": "Preview and download",
-        "body": "The result auto-previews when it's ready. Toggle between Original and Final, then click Download."
+        "title": "Vorschau und Download",
+        "body": "Das Ergebnis wird automatisch angezeigt, sobald es fertig ist. Wechseln Sie zwischen Original und Final und klicken Sie dann auf Herunterladen."
       }
     },
     "localAi": {
-      "title": "Includes local AI tools",
-      "body": "Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files."
+      "title": "Enthält lokale KI-Tools",
+      "body": "Gesichtsunschärfe, Hintergrundentfernung, KI-Hochskalierung, OCR-basierte Text-/PII-Schwärzung, Sprachbereinigung, Stimmisolierung und Karaoke-Gesangsentfernung laufen alle auf unserem eigenen GPU-Server. Keine KI-Anbieter von Drittanbietern sehen Ihre Dateien."
     },
     "notSure": {
-      "title": "Not sure where to begin?",
-      "body": "Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.",
-      "cta": "Browse Tutorials"
+      "title": "Nicht sicher, wo Sie anfangen sollen?",
+      "body": "Unsere Schritt-für-Schritt-Anleitungen führen durch jede Einstellung in den Audio-, Video- und Bildkonvertern — einschließlich der KI-Tools.",
+      "cta": "Tutorials durchsuchen"
     },
     "howItWorks": {
-      "title": "How it works",
-      "body": "Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.",
-      "cta": "Read How it Works"
+      "title": "So funktioniert's",
+      "body": "Media Manipulator nutzt FFmpeg und ImageMagick für Standardkonvertierungen sowie dedizierte KI-Modelle auf unserer lokalen GPU für die optionalen KI-Funktionen. Die gesamte Verarbeitung erfolgt auf Servern, die wir selbst kontrollieren — lesen Sie die vollständige Übersicht für Details.",
+      "cta": "So funktioniert's lesen"
     }
   },
   "notFound": {
-    "preTitle": "Telemetry lost",
-    "title": "This sector of the ship doesn't exist",
-    "body": "The coordinates you punched in don't map to anything on the navigation console. Try one of the routes below — or head back to the main bridge and pick a tool that does exist.",
+    "preTitle": "Telemetrie verloren",
+    "title": "Dieser Bereich des Schiffs existiert nicht",
+    "body": "Die eingegebenen Koordinaten entsprechen nichts auf der Navigationskonsole. Versuchen Sie eine der folgenden Routen — oder kehren Sie zur Hauptbrücke zurück und wählen Sie ein Tool, das tatsächlich existiert.",
     "links": {
-      "home": "Return to base",
-      "tools": "Tools array",
+      "home": "Zurück zur Basis",
+      "tools": "Tool-Array",
       "tutorials": "Tutorials"
     }
   },
   "themeToggle": {
-    "toggle": "Toggle theme"
+    "toggle": "Design umschalten"
   }
 }
