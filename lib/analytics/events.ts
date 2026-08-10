@@ -28,6 +28,8 @@
  * the wrong urgency.
  */
 
+import { stripLocalePrefix } from '@/i18n/locales';
+
 /** 0 critical · 1 high · 2 normal · 3 low. Lower is more important. */
 export type Priority = 0 | 1 | 2 | 3;
 
@@ -703,7 +705,10 @@ export function normalizeMediaKind(kind: string | null | undefined): MediaKind |
  */
 export function pageTypeFromPathname(pathname: string): PageType {
   if (!pathname) return 'other';
-  const path = pathname.toLowerCase();
+  // Locale-prefixed URLs (/es/tools/…, /ru/pricing) classify identically to
+  // their unprefixed twins: page_type answers "which surface", and the locale
+  // already rides on `pathname`/`url` in the same context block.
+  const path = stripLocalePrefix(pathname.toLowerCase());
   if (path.startsWith('/tools')) return 'tool';
   if (path.startsWith('/pricing')) return 'pricing';
   if (path.startsWith('/blog')) return 'blog';

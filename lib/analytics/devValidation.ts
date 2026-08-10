@@ -404,10 +404,15 @@ export function validateDevEvent(
     // stores unknown names by design (forward compatibility), and the lint
     // rule already blocks inline literals at the call site.
 
-    // Cross-cutting invariant 1: tool-funnel events need a tool_slug.
+    // Cross-cutting invariant 1: tool-funnel events need a tool_slug — except on
+    // the home page. The homepage converter deliberately provides `slug={null}`
+    // (see views/file-converter-app.tsx: a made-up slug would merge its numbers
+    // with /tools/image-converter in every per-tool report), so its slug-less
+    // funnel is correct-by-design, attributed via page_type and pathname instead.
     if (TOOL_FUNNEL_EVENTS.has(name)) {
       const slug = event.context?.tool_slug ?? batchContext.tool_slug;
-      if (!slug) {
+      const pageType = event.context?.page_type ?? batchContext.page_type;
+      if (!slug && pageType !== 'home') {
         issues.push(
           'tool_slug missing: tool-funnel events must carry tool_slug in event or batch context (thread it via ToolAnalyticsProvider)',
         );
