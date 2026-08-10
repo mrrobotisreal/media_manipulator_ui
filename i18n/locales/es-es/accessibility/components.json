@@ -1,44 +1,44 @@
 {
   "filePreview": {
-    "previewAlt": "Preview"
+    "previewAlt": "Vista previa"
   },
   "pdfForm": {
-    "outputFormatTooltip": "About the output image format",
-    "dpiTooltip": "About render quality (DPI)",
-    "pagesTooltip": "About page selection",
-    "qualityTooltip": "About JPG quality"
+    "outputFormatTooltip": "Sobre el formato de imagen de salida",
+    "dpiTooltip": "Sobre la calidad de renderizado (DPI)",
+    "pagesTooltip": "Sobre la selección de páginas",
+    "qualityTooltip": "Sobre la calidad JPG"
   },
   "ad": {
-    "label": "Advertisement",
-    "close": "Close advertisement"
+    "label": "Publicidad",
+    "close": "Cerrar publicidad"
   },
   "modals": {
-    "close": "Close",
-    "previousStep": "Previous step",
-    "nextStep": "Next step"
+    "close": "Cerrar",
+    "previousStep": "Paso anterior",
+    "nextStep": "Paso siguiente"
   },
   "imageCropModal": {
-    "topLeftHandle": "Top-left handle",
-    "topRightHandle": "Top-right handle",
-    "bottomLeftHandle": "Bottom-left handle",
-    "bottomRightHandle": "Bottom-right handle"
+    "topLeftHandle": "Tirador superior izquierdo",
+    "topRightHandle": "Tirador superior derecho",
+    "bottomLeftHandle": "Tirador inferior izquierdo",
+    "bottomRightHandle": "Tirador inferior derecho"
   },
   "mediaTrimModal": {
-    "scrubber": "Trim scrubber",
-    "playToggle": "Play / pause preview"
+    "scrubber": "Barra de recorte",
+    "playToggle": "Reproducir / pausar vista previa"
   },
   "overlays": {
-    "canvas": "Selection canvas",
-    "removeRegion": "Remove this region",
-    "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "canvas": "Lienzo de selección",
+    "removeRegion": "Eliminar esta región",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente"
   },
   "quotaMeter": {
-    "gauge": "{{used}} / {{limit}} daily operations used",
-    "openUpgrade": "See how to get a bigger daily allowance",
-    "openAccount": "Open your account"
+    "gauge": "{{used}} / {{limit}} operaciones diarias utilizadas",
+    "openUpgrade": "Descubre cómo conseguir un límite diario más alto",
+    "openAccount": "Abrir tu cuenta"
   },
   "accountMenu": {
-    "open": "Account menu"
+    "open": "Menú de la cuenta"
   }
 }
