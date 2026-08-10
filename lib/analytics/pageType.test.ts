@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { locales } from '@/i18n/locales';
+import { buildBatchContext } from './context';
 import { pageTypeFromPathname } from './events';
 import { validateDevEvent } from './devValidation';
 
@@ -42,6 +43,25 @@ describe('pageTypeFromPathname', () => {
   // stripLocalePrefix deliberately strips only PUBLIC prefixes.
   it('/en stays unstripped (never a browser pathname)', () => {
     expect(pageTypeFromPathname('/en')).toBe('other');
+  });
+});
+
+describe('buildBatchContext locale handling', () => {
+  // pathname is the locale-neutral logical page (aggregations group by it);
+  // url keeps the exact locale-prefixed address for per-locale analysis.
+  it('strips the locale prefix from pathname but not url', () => {
+    window.history.pushState(null, '', '/es/tools/compress-video');
+    const ctx = buildBatchContext();
+    expect(ctx.pathname).toBe('/tools/compress-video');
+    expect(ctx.url).toBe(`${window.location.origin}/es/tools/compress-video`);
+    expect(ctx.page_type).toBe('tool');
+  });
+
+  it('leaves unprefixed pathnames untouched', () => {
+    window.history.pushState(null, '', '/tools/compress-video');
+    const ctx = buildBatchContext();
+    expect(ctx.pathname).toBe('/tools/compress-video');
+    expect(ctx.url).toBe(`${window.location.origin}/tools/compress-video`);
   });
 });
 

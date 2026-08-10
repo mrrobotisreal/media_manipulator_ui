@@ -27,6 +27,8 @@
  * deliberate accepted imprecision rather than an oversight.
  */
 
+import { stripLocalePrefix } from '@/i18n/locales';
+
 import { uuid } from './identity';
 
 const SESSION_KEY = 'mm.a.session';
@@ -148,7 +150,10 @@ function newSession(now: number): SessionRecord {
     id: uuid(),
     startedAt: now,
     lastActivityAt: now,
-    entryPathname: typeof window !== 'undefined' ? window.location.pathname : '',
+    // Locale-neutral, matching buildBatchContext's `pathname`: which page a
+    // session entered on should not depend on which locale it entered in.
+    entryPathname:
+      typeof window !== 'undefined' ? stripLocalePrefix(window.location.pathname) : '',
     referrer: typeof document !== 'undefined' ? document.referrer || '' : '',
     utm: currentUTM(),
   };

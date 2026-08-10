@@ -29,6 +29,7 @@
  */
 
 import { getConsentDetails, onConsentDetailsChange, type ConsentValue } from '@/lib/consent';
+import { stripLocalePrefix } from '@/i18n/locales';
 
 import { pageTypeFromPathname } from './events';
 import type { QueuedEvent } from './queue';
@@ -163,8 +164,11 @@ let lastCountedPath: string | null = null;
  * The query string is deliberately stripped BEFORE it reaches this function — see the
  * pathname regex on the server, which rejects anything with a query.
  */
-export function sendAnonymousCount(pathname: string): void {
+export function sendAnonymousCount(rawPathname: string): void {
   if (typeof window === 'undefined') return;
+  // Locale-neutral, matching buildBatchContext: daily_anonymous_counts keys on
+  // (day, pathname, country) and a page's count should not fragment per locale.
+  const pathname = rawPathname ? stripLocalePrefix(rawPathname) : rawPathname;
   if (!pathname || pathname === lastCountedPath) return;
   lastCountedPath = pathname;
 

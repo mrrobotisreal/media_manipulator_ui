@@ -13,6 +13,8 @@
  * every event in a 100-event batch would be pure waste.
  */
 
+import { stripLocalePrefix } from '@/i18n/locales';
+
 import { pageTypeFromPathname, type MediaKind, type Tier } from './events';
 import type { WireContext } from './queue';
 
@@ -223,9 +225,15 @@ function currentUTM(): WireContext['utm'] {
  */
 export function buildBatchContext(): WireContext {
   if (typeof window === 'undefined') return {};
-  const pathname = window.location.pathname || '';
+  // `pathname` is the LOCALE-NEUTRAL logical page (/es/tools/x → /tools/x): every
+  // pathname-keyed aggregation downstream — the admin live view's top pathnames,
+  // daily_anonymous_counts, session entry/exit — should group a page's traffic
+  // across locales, not split it six ways. `url` keeps the exact locale-prefixed
+  // address, so per-locale analysis stays possible from the raw rows.
+  const rawPathname = window.location.pathname || '';
+  const pathname = stripLocalePrefix(rawPathname);
   return {
-    url: `${window.location.origin}${pathname}`,
+    url: `${window.location.origin}${rawPathname}`,
     pathname,
     page_type: overrides.page_type || pageTypeFromPathname(pathname),
     referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
