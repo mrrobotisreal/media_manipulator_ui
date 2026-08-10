@@ -26,6 +26,7 @@ import {
 import ruToolPages from "@/i18n/locales/ru-ru/toolPages";
 import ukToolPages from "@/i18n/locales/uk-ua/toolPages";
 import deToolPages from "@/i18n/locales/de-de/toolPages";
+import heToolPages from "@/i18n/locales/he-il/toolPages";
 
 /** Recursive deep-partial so overrides only need the fields they change. */
 type DeepPartial<T> = T extends (infer U)[]
@@ -64,6 +65,9 @@ const TOOL_PAGE_OVERRIDES: Record<string, LanguageToolContent> = {
   // name + tagline for the review-allowlisted slugs; full page bodies are
   // deferred (see locales/de-de/toolPages.ts).
   "de-DE": deToolPages as LanguageToolContent,
+  // name + tagline for the review-allowlisted slugs; full page bodies are
+  // deferred (see locales/he-il/toolPages.ts).
+  "he-IL": heToolPages as LanguageToolContent,
 };
 
 /** Arrays are replaced wholesale (a translated list is provided in full or not

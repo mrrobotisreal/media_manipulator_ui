@@ -1,867 +1,867 @@
 {
   "about": {
-    "title": "About Media Manipulator — A Free Online Media Converter, Editor & AI Toolkit",
-    "intro": "Media Manipulator is a free online media converter, editor, transcriber, and metadata inspector for images, videos, and audio files. It is built and operated by <strong>CreaTV Ltd.</strong> and runs entirely on infrastructure we own — including a dedicated GPU server for AI features — so your files never leave systems we control.",
+    "title": "אודות Media Manipulator — ממיר, עורך וערכת כלי בינה מלאכותית למדיה, מקוונים וחינמיים",
+    "intro": "Media Manipulator הוא ממיר מדיה מקוון וחינמי, עורך, כלי תמלול ובודק מטא־נתונים לתמונות, לווידאו ולקובצי אודיו. הוא נבנה ומופעל על ידי <strong>CreaTV Ltd.</strong> ופועל כולו על תשתית שבבעלותנו — כולל שרת GPU ייעודי לתכונות הבינה המלאכותית — כך שהקבצים שלכם לעולם לא יוצאים מהמערכות שבשליטתנו.",
     "mission": {
-      "title": "Our Mission",
-      "p1": "We started Media Manipulator because most \"free media converter\" sites are slow, upsell aggressively, paywall basic features behind sign-ups, send your files to third-party AI providers, or quietly retain uploads indefinitely. We wanted a free file converter online that you can trust: open in a browser, drop in a file, pick a setting, get a usable result. No account required, no software to install, no permanent storage of your media.",
-      "p2": "We treat conversion, editing, compression, transcription, summarization, and metadata management as one connected workflow rather than ten separate websites. If you want to compress an MP4 for the web, then trim it, generate VTT captions, and finally strip EXIF metadata from the thumbnail you'll publish alongside it — that's three different sites for most people and a single tab for Media Manipulator users."
+      "title": "המשימה שלנו",
+      "p1": "הקמנו את Media Manipulator כי רוב אתרי ״ממיר המדיה החינמי״ איטיים, דוחפים שדרוגים בתוקפנות, נועלים תכונות בסיסיות מאחורי הרשמה, שולחים את הקבצים שלכם לספקי בינה מלאכותית חיצוניים, או שומרים העלאות ללא הגבלת זמן בשקט. רצינו ממיר קבצים מקוון וחינמי שאפשר לסמוך עליו: פותחים בדפדפן, גוררים קובץ, בוחרים הגדרה, ומקבלים תוצאה שמישה. בלי צורך בחשבון, בלי תוכנה להתקנה, ובלי אחסון קבוע של המדיה שלכם.",
+      "p2": "אנחנו מתייחסים להמרה, לעריכה, לדחיסה, לתמלול, לסיכום ולניהול מטא־נתונים כאל תהליך עבודה מחובר אחד, ולא כעשרה אתרים נפרדים. אם אתם רוצים לדחוס קובץ MP4 לאינטרנט, לגזור אותו, ליצור כתוביות VTT, ולבסוף להסיר מטא־נתוני EXIF מהתמונה הממוזערת שתפרסמו לצדו — עבור רוב האנשים אלו שלושה אתרים שונים, ועבור משתמשי Media Manipulator זו לשונית אחת."
     },
     "whatItDoes": {
-      "title": "What Media Manipulator Does",
-      "intro": "Media Manipulator covers the full range of \"I need to do something with this file\" tasks across three media types. Everything runs on our servers — there is no desktop app to download, no Chrome extension to install, and no plug-in to update. Open the site, drop in a file, pick a tool, and download the result.",
+      "title": "מה Media Manipulator עושה",
+      "intro": "Media Manipulator מכסה את כל הטווח של משימות ״אני צריך לעשות משהו עם הקובץ הזה״ בשלושה סוגי מדיה. הכול פועל על השרתים שלנו — אין אפליקציית דסקטופ להורדה, אין תוסף Chrome להתקנה ואין plug-in לעדכן. פותחים את האתר, גוררים קובץ, בוחרים כלי, ומורידים את התוצאה.",
       "image": {
-        "title": "Free Image Converter & Editor",
+        "title": "ממיר ועורך תמונות חינמי",
         "items": [
-          "Convert JPG, PNG, WebP, GIF, BMP, and TIFF",
-          "Compress images for the web (JPG, WebP quality presets)",
-          "Resize, crop, and rotate online",
-          "Apply filters: grayscale, sepia, blur, sharpen, vintage, sketch",
-          "Add watermark / text overlay with stroke and gravity",
-          "Inspect, keep, strip, or rewrite EXIF / IPTC / XMP metadata",
-          "<strong>Remove GPS metadata from photos</strong> before sharing online",
-          "AI face blur, background removal, upscaling, and OCR text redaction",
-          "<strong>Remove unwanted objects</strong> with LaMa inpainting — draw a box, the model reconstructs the background"
+          "המרה בין JPG,‏ PNG,‏ WebP,‏ GIF,‏ BMP ו־TIFF",
+          "דחיסת תמונות לאינטרנט (פריסטים של איכות JPG ו־WebP)",
+          "שינוי גודל, חיתוך וסיבוב באופן מקוון",
+          "החלת פילטרים: גווני אפור, ספיה, טשטוש, חידוד, וינטג׳, סקיצה",
+          "הוספת סימן מים / שכבת טקסט עם קו מתאר ומיקום",
+          "בדיקה, שמירה, הסרה או שכתוב של מטא־נתוני EXIF / IPTC / XMP",
+          "<strong>הסרת מטא־נתוני GPS מתמונות</strong> לפני שיתוף באינטרנט",
+          "טשטוש פנים, הסרת רקע, שדרוג רזולוציה והשחרת טקסט מבוססת OCR — הכול בבינה מלאכותית",
+          "<strong>הסרת אובייקטים לא רצויים</strong> באמצעות LaMa inpainting — מציירים תיבה, והמודל משחזר את הרקע"
         ]
       },
       "video": {
-        "title": "Free Video Converter & Editor",
+        "title": "ממיר ועורך וידאו חינמי",
         "items": [
-          "Convert MP4, WebM, MOV, MKV, AVI, WMV, FLV, ProRes",
-          "<strong>Convert video to animated GIF</strong> with tunable width, fps, palette, and frame delay",
-          "Compress video online without ruining quality",
-          "Trim and cut video clips",
-          "Resize, change frame rate, and adjust playback speed",
-          "Color correction, stabilization, and artistic filters",
-          "HDR tone mapping and colorspace conversion",
-          "<strong>Transcribe video to text</strong> with VTT, plain text, or JSON output",
-          "Auto-generate summaries from long videos"
+          "המרה בין MP4,‏ WebM,‏ MOV,‏ MKV,‏ AVI,‏ WMV,‏ FLV,‏ ProRes",
+          "<strong>המרת וידאו ל־GIF מונפש</strong> עם רוחב, fps, פלטה ועיכוב פריימים הניתנים לכיוונון",
+          "דחיסת וידאו מקוונת בלי לפגוע באיכות",
+          "גזירה וחיתוך של קטעי וידאו",
+          "שינוי גודל, קצב פריימים ומהירות הפעלה",
+          "תיקון צבע, ייצוב ופילטרים אמנותיים",
+          "מיפוי טונים ב־HDR והמרת מרחב צבע",
+          "<strong>תמלול וידאו לטקסט</strong> עם פלט VTT, טקסט רגיל או JSON",
+          "יצירת סיכומים אוטומטית מסרטונים ארוכים"
         ]
       },
       "audio": {
-        "title": "Free Audio Converter & Cleanup",
+        "title": "ממיר וכלי ניקוי אודיו חינמי",
         "items": [
-          "Convert MP3, WAV, AAC, OGG, FLAC, ALAC, M4A, Opus, AC3",
-          "Convert WAV to MP3, FLAC to MP3, OGG to MP3, and more",
-          "Trim, normalize, amplify, and EQ audio",
-          "Reverb, delay, chorus, flanger, pitch shift, time stretch",
-          "<strong>Audio cleanup online</strong> — remove background noise from voice recordings",
-          "AI voice cleanup for podcasts and voiceovers",
-          "Isolate vocals or remove vocals (karaoke maker)",
-          "Transcribe audio to text and summarize transcripts"
+          "המרה בין MP3,‏ WAV,‏ AAC,‏ OGG,‏ FLAC,‏ ALAC,‏ M4A,‏ Opus,‏ AC3",
+          "המרה מ־WAV ל־MP3, מ־FLAC ל־MP3, מ־OGG ל־MP3 ועוד",
+          "גזירה, נרמול, הגברה ואיקוולייזר לאודיו",
+          "רוורב, דיליי, כוראס, פלאנג׳ר, שינוי גובה צליל ומתיחת זמן",
+          "<strong>ניקוי אודיו מקוון</strong> — הסרת רעש רקע מהקלטות קוליות",
+          "ניקוי קול מבוסס בינה מלאכותית עבור פודקאסטים וקריינות",
+          "בידוד שירה או הסרת שירה (יצירת קריוקי)",
+          "תמלול אודיו לטקסט וסיכום התמלולים"
         ]
       },
-      "outro": "Step-by-step walkthroughs for every tool live in our <linkTutorials>tutorials</linkTutorials> section. If you'd rather read the technical breakdown first, see <linkHow>how Media Manipulator works</linkHow>."
+      "outro": "הדרכות שלב־אחר־שלב לכל כלי נמצאות במדור ה<linkTutorials>מדריכים</linkTutorials> שלנו. אם אתם מעדיפים לקרוא קודם את הפירוט הטכני, ראו <linkHow>איך Media Manipulator עובד</linkHow>."
     },
     "whyChoose": {
-      "title": "Why Choose Media Manipulator",
+      "title": "למה לבחור ב־Media Manipulator",
       "noSignup": {
-        "title": "No Sign-Up, No Paywall",
-        "body": "Every feature on the site — image conversion, video compression, audio cleanup, transcription, AI tools — is free and usable without an account. We never require you to log in, hand over an email, or pay before downloading a converted file."
+        "title": "בלי הרשמה, בלי חומת תשלום",
+        "body": "כל תכונה באתר — המרת תמונות, דחיסת וידאו, ניקוי אודיו, תמלול, כלי בינה מלאכותית — חינמית וזמינה לשימוש בלי חשבון. לעולם לא נדרוש מכם להתחבר, למסור אימייל או לשלם לפני הורדת קובץ מומר."
       },
       "privacy": {
-        "title": "Privacy-Focused (24-Hour Auto Delete)",
-        "body": "Uploaded files and generated outputs are stored only as long as your session needs them, with a hard maximum of <strong>24 hours</strong>, after which they are deleted from our active storage. We do not keep your media files past that window and we don't sell or share uploads with anyone. See our <linkPrivacy>privacy policy</linkPrivacy> for full details."
+        "title": "מתמקדים בפרטיות (מחיקה אוטומטית תוך 24 שעות)",
+        "body": "קבצים שהועלו ופלטים שנוצרו נשמרים רק כל עוד ההפעלה שלכם זקוקה להם, עם מקסימום קשיח של <strong>24 שעות</strong>, ולאחר מכן הם נמחקים מהאחסון הפעיל שלנו. אנחנו לא שומרים את קובצי המדיה שלכם מעבר לחלון הזמן הזה, ולא מוכרים או משתפים העלאות עם אף אחד. לפרטים מלאים ראו את <linkPrivacy>מדיניות הפרטיות</linkPrivacy> שלנו."
       },
       "localAi": {
-        "title": "Local AI on Our Own GPU",
-        "body": "AI features — face blur, background removal, AI upscale, OCR-based PII redaction, voice cleanup, vocal isolation, transcription, and AI summaries — run on a dedicated NVIDIA GPU server that <strong>CreaTV Ltd.</strong> owns and operates. We do not send your files to OpenAI, Anthropic, Google, AWS Bedrock, or any other third-party AI provider."
+        "title": "בינה מלאכותית מקומית על ה־GPU שלנו",
+        "body": "תכונות הבינה המלאכותית — טשטוש פנים, הסרת רקע, שדרוג רזולוציה, השחרת מידע מזהה מבוססת OCR, ניקוי קול, בידוד שירה, תמלול וסיכומים — פועלות על שרת GPU ייעודי מבית NVIDIA, שבבעלות <strong>CreaTV Ltd.</strong> ובתפעולה. איננו שולחים את הקבצים שלכם ל־OpenAI, ל־Anthropic, ל־Google, ל־AWS Bedrock או לכל ספק בינה מלאכותית חיצוני אחר."
       },
       "realTools": {
-        "title": "Real Tools, Not Toy Converters",
-        "body": "Under the hood we run FFmpeg, ImageMagick, and gifsicle for standard pipelines and purpose-built models (Real-ESRGAN, BiRefNet, Demucs, DeepFilterNet, whisper-ctranslate2, exiftool, rembg, simple-lama-inpainting) for everything else. Bitrate, codec, quality, channel layout, color space, GIF palette size and frame delay — every setting that matters to power users is exposed in the UI."
+        "title": "כלים אמיתיים, לא ממירי צעצוע",
+        "body": "מתחת למכסה המנוע אנחנו מריצים FFmpeg,‏ ImageMagick ו־gifsicle עבור תהליכי העבודה הסטנדרטיים, ומודלים ייעודיים (Real-ESRGAN,‏ BiRefNet,‏ Demucs,‏ DeepFilterNet,‏ whisper-ctranslate2,‏ exiftool,‏ rembg,‏ simple-lama-inpainting) עבור כל השאר. קצב סיביות, קודק, איכות, פריסת ערוצים, מרחב צבע, גודל פלטת GIF ועיכוב פריימים — כל הגדרה שחשובה למשתמשים מתקדמים חשופה בממשק."
       },
       "web": {
-        "title": "Built for the Web",
-        "body": "Nothing to download, nothing to install, nothing to update. Media Manipulator runs in any modern browser on desktop, laptop, tablet, or phone, and large video uploads use direct-to-S3 presigned URLs so the upload step doesn't choke on slower connections."
+        "title": "בנוי לרשת",
+        "body": "אין מה להוריד, אין מה להתקין, אין מה לעדכן. Media Manipulator פועל בכל דפדפן מודרני, במחשב נייח, מחשב נייד, טאבלט או טלפון, והעלאות וידאו גדולות משתמשות בכתובות URL חתומות מראש ישירות ל־S3 כך ששלב ההעלאה לא נתקע בחיבורים איטיים יותר."
       },
       "open": {
-        "title": "Open, Honest, Free",
-        "body": "The site is supported by unobtrusive advertising and CreaTV's own product promotions — never by selling your data or your files. If something on the site is misleading, broken, or feels slimy, we want to hear about it at <emailLink>support@media-manipulator.com</emailLink>."
+        "title": "פתוח, כן וחינמי",
+        "body": "האתר נתמך על ידי פרסום לא פולשני ופרסום מוצרים עצמי של CreaTV — לעולם לא על ידי מכירת הנתונים או הקבצים שלכם. אם משהו באתר מטעה, שבור, או מרגיש דביק, נשמח לשמוע על כך בכתובת <emailLink>support@media-manipulator.com</emailLink>."
       }
     },
     "commonTasks": {
-      "title": "Common Tasks Media Manipulator Handles",
-      "intro": "If you've Googled any of the following and ended up here, you're in the right place. Open the <linkHome>converter homepage</linkHome>, upload a file, and the right-hand panel switches to whichever toolset matches.",
+      "title": "משימות נפוצות ש־Media Manipulator מטפל בהן",
+      "intro": "אם חיפשתם באינטרנט משהו מהבאים והגעתם לכאן, אתם במקום הנכון. פתחו את <linkHome>דף הבית של הממיר</linkHome>, העלו קובץ, והפאנל הימני יתאים את עצמו לערכת הכלים הרלוונטית.",
       "image": {
-        "title": "Image tasks",
+        "title": "משימות תמונה",
         "items": [
-          "Convert HEIC to JPG / iPhone photos to JPG",
-          "Convert PNG to WebP for faster web pages",
-          "Convert WebP to JPG for legacy compatibility",
-          "Compress JPG / compress PNG / compress WebP",
-          "Resize an image for a profile picture or thumbnail",
-          "Crop an image to a specific aspect ratio",
-          "Add a watermark or copyright text overlay",
-          "Remove EXIF metadata from photos before sharing",
-          "Strip GPS coordinates from a photo",
-          "Blur faces in event photos automatically",
-          "Remove the background of a product photo",
-          "Upscale a low-resolution image with AI",
-          "Redact PII (emails, phone numbers, SSNs) from screenshots",
-          "Remove an unwanted object (person, sign, watermark) from a photo with LaMa inpainting"
+          "המרת HEIC ל־JPG / תמונות אייפון ל־JPG",
+          "המרת PNG ל־WebP לדפי אינטרנט מהירים יותר",
+          "המרת WebP ל־JPG לתאימות לאחור",
+          "דחיסת JPG / דחיסת PNG / דחיסת WebP",
+          "שינוי גודל תמונה לתמונת פרופיל או תמונה ממוזערת",
+          "חיתוך תמונה ליחס גובה־רוחב מסוים",
+          "הוספת סימן מים או שכבת טקסט של זכויות יוצרים",
+          "הסרת מטא־נתוני EXIF מתמונות לפני שיתוף",
+          "הסרת קואורדינטות GPS מתמונה",
+          "טשטוש פנים בתמונות אירועים באופן אוטומטי",
+          "הסרת הרקע מתמונת מוצר",
+          "שדרוג רזולוציה של תמונה באיכות נמוכה באמצעות בינה מלאכותית",
+          "השחרת מידע מזהה (אימיילים, מספרי טלפון, מספרי ביטוח לאומי) מצילומי מסך",
+          "הסרת אובייקט לא רצוי (אדם, שלט, סימן מים) מתמונה באמצעות LaMa inpainting"
         ]
       },
       "videoAudio": {
-        "title": "Video & audio tasks",
+        "title": "משימות וידאו ואודיו",
         "items": [
-          "Convert MP4 to WebM, MOV to MP4, MKV to MP4, AVI to MP4",
-          "Convert MP4 / MOV / WebM to an optimized animated GIF for chats and docs",
-          "Compress a video file for email or messaging size limits",
-          "Trim or cut a video clip without re-encoding the rest",
-          "Change a video's frame rate or resolution",
-          "Stabilize shaky footage",
-          "Generate captions / subtitles (VTT) from a video",
-          "Transcribe a video to plain text or structured JSON",
-          "Summarize a long video or audio recording",
-          "Convert WAV to MP3, FLAC to MP3, OGG to MP3, M4A to MP3",
-          "Clean up podcast audio / remove background noise",
-          "Isolate vocals from a song",
-          "Remove vocals from a song (karaoke maker)",
-          "Pitch shift or time stretch an audio clip"
+          "המרת MP4 ל־WebM, MOV ל־MP4, MKV ל־MP4, AVI ל־MP4",
+          "המרת MP4 / MOV / WebM ל־GIF מונפש ואופטימלי לצ׳אטים ומסמכים",
+          "דחיסת קובץ וידאו למגבלות גודל של אימייל או הודעות",
+          "גזירה או חיתוך של קטע וידאו בלי לקודד מחדש את השאר",
+          "שינוי קצב הפריימים או הרזולוציה של וידאו",
+          "ייצוב צילום רועד",
+          "יצירת כתוביות (VTT) מווידאו",
+          "תמלול וידאו לטקסט רגיל או ל־JSON מובנה",
+          "סיכום סרטון או הקלטת אודיו ארוכים",
+          "המרת WAV ל־MP3, FLAC ל־MP3, OGG ל־MP3, M4A ל־MP3",
+          "ניקוי אודיו של פודקאסט / הסרת רעש רקע",
+          "בידוד שירה משיר",
+          "הסרת שירה משיר (יצירת קריוקי)",
+          "שינוי גובה צליל או מתיחת זמן לקטע אודיו"
         ]
       }
     },
     "whoBuilds": {
-      "title": "Who Builds Media Manipulator",
-      "p1": "Media Manipulator is built and operated by <strong>CreaTV Ltd.</strong>, a small independent media-tech company based in Colorado, USA. CreaTV's broader product line is focused on tools that help creators bring ideas to life — Media Manipulator is the free, no-account utility that anchors that ecosystem.",
-      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place files live for at most 24 hours, one GPU server doing the heavy lifting."
+      "title": "מי בונה את Media Manipulator",
+      "p1": "Media Manipulator נבנה ומופעל על ידי <strong>CreaTV Ltd.</strong>, חברת מדיה־טק עצמאית וקטנה הממוקמת ב־Colorado, USA. קו המוצרים הרחב יותר של CreaTV מתמקד בכלים שעוזרים ליוצרים להגשים רעיונות — Media Manipulator הוא כלי השירות החינמי, שאינו דורש חשבון, שמעגן את המערכת האקולוגית הזו.",
+      "p2": "אנחנו צוות קטן, וזו בדיוק הסיבה שבנינו את Media Manipulator כפי שבנינו: אנחנו לא רוצים לשמור על עשרות אינטגרציות של בינה מלאכותית חיצונית, אנחנו לא רוצים לאחסן את הקבצים שלכם ללא הגבלת זמן, ואנחנו לא רוצים להפעיל עשרה אתרי המרה נפרדים וחד־תכליתיים. סטודיו אחד, מקום אחד שבו קבצים חיים לכל היותר 24 שעות, שרת GPU אחד שעושה את העבודה הקשה."
     },
     "supportedFormats": {
-      "title": "Supported File Formats (Quick Reference)",
+      "title": "פורמטים נתמכים (מדריך מהיר)",
       "images": {
-        "title": "Images",
+        "title": "תמונות",
         "items": [
           "JPEG / JPG",
           "PNG",
-          "WebP (lossy and lossless)",
-          "GIF (incl. animation passthrough)",
+          "WebP (עם אובדן ובלי אובדן)",
+          "GIF (כולל העברת אנימציה כמות שהיא)",
           "BMP",
           "TIFF",
-          "HEIC / HEIF (input)"
+          "HEIC / HEIF (קלט)"
         ]
       },
       "videos": {
-        "title": "Videos",
+        "title": "וידאו",
         "items": [
           "MP4 (H.264 / H.265)",
           "WebM (VP9 + Opus)",
           "MOV",
           "MKV",
           "AVI",
-          "WMV, FLV",
-          "ProRes, DNxHD"
+          "WMV,‏ FLV",
+          "ProRes,‏ DNxHD"
         ]
       },
       "audio": {
-        "title": "Audio",
+        "title": "אודיו",
         "items": [
           "MP3",
           "WAV (PCM)",
-          "AAC, M4A",
+          "AAC,‏ M4A",
           "OGG (Vorbis)",
-          "FLAC, ALAC",
+          "FLAC,‏ ALAC",
           "Opus",
-          "AC3, DTS"
+          "AC3,‏ DTS"
         ]
       },
-      "footnote": "Need a format we don't list? Drop us a line — most additions are a small FFmpeg or ImageMagick configuration change away."
+      "footnote": "צריכים פורמט שלא רשמנו? כתבו לנו — רוב התוספות מרוחקות רק שינוי הגדרה קטן ב־FFmpeg או ב־ImageMagick."
     },
     "contact": {
-      "title": "Contact & Support",
-      "operator": "<strong>Media Manipulator</strong> is a product of <strong>CreaTV Ltd.</strong>",
+      "title": "יצירת קשר ותמיכה",
+      "operator": "<strong>Media Manipulator</strong> הוא מוצר של <strong>CreaTV Ltd.</strong>",
       "location": "CreaTV Ltd. — Colorado, USA",
-      "generalSupport": "General support:",
-      "privacyRequests": "Privacy requests:",
-      "helpfulStartingPoints": "Helpful starting points:"
+      "generalSupport": "תמיכה כללית:",
+      "privacyRequests": "בקשות פרטיות:",
+      "helpfulStartingPoints": "נקודות התחלה מומלצות:"
     },
     "relatedLinks": {
-      "title": "Start somewhere",
-      "intro": "Three good ways to dive into the toolkit.",
+      "title": "התחילו איפשהו",
+      "intro": "שלוש דרכים טובות לצלול לתוך ערכת הכלים.",
       "converter": {
-        "label": "Open the free media converter",
-        "description": "Convert, compress, transcribe, and edit images, videos, and audio in one place."
+        "label": "פתחו את ממיר המדיה החינמי",
+        "description": "המירו, דחסו, תמללו וערכו תמונות, וידאו ואודיו במקום אחד."
       },
       "tutorials": {
-        "label": "Browse step-by-step tutorials",
-        "description": "Walkthroughs for the image, video, and audio converters and their AI tools."
+        "label": "עיינו במדריכים שלב־אחר־שלב",
+        "description": "הדרכות עבור ממירי התמונה, הווידאו והאודיו וכלי הבינה המלאכותית שלהם."
       },
       "howItWorks": {
-        "label": "See how it works under the hood",
-        "description": "FFmpeg, ImageMagick, GPU-backed AI, 24-hour auto-delete, and content-safety scanning."
+        "label": "גלו איך זה עובד מתחת למכסה המנוע",
+        "description": "FFmpeg,‏ ImageMagick, בינה מלאכותית מבוססת GPU, מחיקה אוטומטית תוך 24 שעות וסריקת בטיחות תוכן."
       }
     }
   },
   "howItWorks": {
-    "title": "How Media Manipulator Works",
-    "intro": "Media Manipulator is a browser-based studio for converting, editing, transcribing, and AI-processing audio, video, and image files. Every job runs on our own GPU-backed servers — no third-party AI providers, no permanent storage, just fast file processing with optional local AI tools.",
+    "title": "איך Media Manipulator עובד",
+    "intro": "Media Manipulator הוא סטודיו מבוסס דפדפן להמרה, עריכה, תמלול ועיבוד בבינה מלאכותית של קובצי אודיו, וידאו ותמונה. כל עבודה פועלת על השרתים שלנו מבוססי ה־GPU — בלי ספקי בינה מלאכותית חיצוניים, בלי אחסון קבוע, רק עיבוד קבצים מהיר עם כלי בינה מלאכותית מקומיים כאופציה.",
     "process": {
-      "title": "The Conversion Process",
+      "title": "תהליך ההמרה",
       "step1": {
-        "title": "Upload",
-        "body": "Drag a file into the upload zone or click to browse. We support common image, video, and audio formats up to your plan's size limit."
+        "title": "העלאה",
+        "body": "גררו קובץ לאזור ההעלאה או לחצו כדי לעיין. אנחנו תומכים בפורמטי תמונה, וידאו ואודיו נפוצים עד למגבלת הגודל של התוכנית שלכם."
       },
       "step2": {
-        "title": "Configure",
-        "body": "Pick the output format, quality, dimensions, filters, metadata behavior, or an AI operation such as face blur, background removal, or vocal isolation."
+        "title": "הגדרה",
+        "body": "בחרו את פורמט הפלט, האיכות, המידות, הפילטרים, את אופן הטיפול במטא־נתונים, או פעולת בינה מלאכותית כמו טשטוש פנים, הסרת רקע או בידוד שירה."
       },
       "step3": {
-        "title": "Convert",
-        "body": "Our servers process the file with FFmpeg, ImageMagick, or local AI tooling on a dedicated GPU. Job progress streams back to your browser in real time."
+        "title": "המרה",
+        "body": "השרתים שלנו מעבדים את הקובץ באמצעות FFmpeg,‏ ImageMagick, או כלי בינה מלאכותית מקומיים על GPU ייעודי. התקדמות העבודה זורמת חזרה לדפדפן שלכם בזמן אמת."
       },
       "step4": {
-        "title": "Download",
-        "body": "Preview the result, then download it. Files are kept on our servers for at most 24 hours and then deleted automatically."
+        "title": "הורדה",
+        "body": "תצוגה מקדימה של התוצאה, ואז הורדה. הקבצים נשמרים על השרתים שלנו לכל היותר 24 שעות ולאחר מכן נמחקים אוטומטית."
       }
     },
     "capabilities": {
-      "title": "What you can do with Media Manipulator",
+      "title": "מה אפשר לעשות עם Media Manipulator",
       "image": {
-        "title": "Image Tools",
+        "title": "כלי תמונה",
         "items": [
-          "Convert between JPG, PNG, WebP, and GIF",
-          "Resize, crop, and rotate",
-          "Apply filters (grayscale, sepia, blur, sharpen, vintage, sketch, and more)",
-          "Add custom text overlays with positioning and stroke",
-          "Inspect, keep, strip, or rewrite EXIF / IPTC / XMP metadata",
-          "Remove or replace GPS location and capture-direction fields"
+          "המרה בין JPG,‏ PNG,‏ WebP ו־GIF",
+          "שינוי גודל, חיתוך וסיבוב",
+          "החלת פילטרים (גווני אפור, ספיה, טשטוש, חידוד, וינטג׳, סקיצה ועוד)",
+          "הוספת שכבות טקסט מותאמות אישית עם מיקום וקו מתאר",
+          "בדיקה, שמירה, הסרה או שכתוב של מטא־נתוני EXIF / IPTC / XMP",
+          "הסרה או החלפה של שדות מיקום GPS וכיוון צילום"
         ]
       },
       "video": {
-        "title": "Video Tools",
+        "title": "כלי וידאו",
         "items": [
-          "Convert to MP4, WebM, AVI, MOV, MKV, ProRes, and more",
-          "Convert video to an optimized animated GIF (ffmpeg + gifsicle)",
-          "Trim, resize, and adjust playback speed",
-          "Color correction: brightness, contrast, saturation, hue, gamma",
-          "Motion blur, unsharp mask, noise, artistic filters",
-          "Rotation, flips, padding, and stabilization",
-          "Frame rate conversion and HDR/colorspace controls"
+          "המרה ל־MP4,‏ WebM,‏ AVI,‏ MOV,‏ MKV,‏ ProRes ועוד",
+          "המרת וידאו ל־GIF מונפש ואופטימלי (ffmpeg + gifsicle)",
+          "גזירה, שינוי גודל וכיוונון מהירות הפעלה",
+          "תיקון צבע: בהירות, ניגודיות, רוויה, גוון, גאמה",
+          "טשטוש תנועה, מסכת חידוד, רעש, פילטרים אמנותיים",
+          "סיבוב, היפוך, ריפוד וייצוב",
+          "המרת קצב פריימים ובקרות HDR/מרחב צבע"
         ]
       },
       "audio": {
-        "title": "Audio Tools",
+        "title": "כלי אודיו",
         "items": [
-          "Convert between MP3, WAV, AAC, OGG, FLAC, ALAC, Opus, AC3",
-          "Trim, fade in/out, normalize, and amplify",
-          "EQ presets, stereo width, pan, balance, mono conversion",
-          "Reverb, delay, chorus, flanger, tremolo, vibrato",
-          "Noise reduction, de-hum, declip, silence removal",
-          "Pitch shifting, time stretching, spatial audio"
+          "המרה בין MP3,‏ WAV,‏ AAC,‏ OGG,‏ FLAC,‏ ALAC,‏ Opus,‏ AC3",
+          "גזירה, כניסה/יציאה הדרגתית, נרמול והגברה",
+          "פריסטים לאיקוולייזר, רוחב סטריאו, פאן, איזון, המרה למונו",
+          "רוורב, דיליי, כוראס, פלאנג׳ר, טרמולו, ויברטו",
+          "הפחתת רעש, הסרת המהום, תיקון קליפינג, הסרת שקט",
+          "שינוי גובה צליל, מתיחת זמן, אודיו מרחבי"
         ]
       }
     },
     "ai": {
-      "title": "AI-Assisted Tools (Local, GPU-Accelerated)",
-      "intro": "Media Manipulator runs every AI operation locally on our own GPU server. Your files are never sent to a third-party AI provider. Each conversion job runs one AI operation; standard editing options are skipped for that job so the AI tool can focus on a clean output.",
+      "title": "כלי בינה מלאכותית (מקומיים, מואצי GPU)",
+      "intro": "Media Manipulator מריץ כל פעולת בינה מלאכותית באופן מקומי על שרת ה־GPU שלנו. הקבצים שלכם לעולם לא נשלחים לספק בינה מלאכותית חיצוני. כל עבודת המרה מריצה פעולת בינה מלאכותית אחת; אפשרויות עריכה סטנדרטיות מדולגות עבור אותה עבודה כדי שכלי הבינה המלאכותית יוכל להתמקד בפלט נקי.",
       "image": {
-        "title": "AI Image Tools",
+        "title": "כלי תמונה מבוססי בינה מלאכותית",
         "items": [
-          "<strong>Face Blur / Pixelate / Black Box</strong> — automatic face detection with three privacy styles.",
-          "<strong>Remove Background</strong> — outputs a transparent PNG using BiRefNet, ISNet, or U2Net models.",
-          "<strong>AI Upscale</strong> — Real-ESRGAN 2x or 4x using photo or anime-tuned models.",
-          "<strong>Redact Text / PII</strong> — OCR-based redaction with blackbox, blur, or pixelate styles.",
-          "<strong>Remove Object</strong> — draw rectangles over unwanted objects and LaMa inpainting (simple-lama-inpainting) reconstructs the background."
+          "<strong>טשטוש פנים / פיקסול / תיבה שחורה</strong> — זיהוי פנים אוטומטי בשלושה סגנונות פרטיות.",
+          "<strong>הסרת רקע</strong> — פלט PNG שקוף באמצעות מודלי BiRefNet,‏ ISNet או U2Net.",
+          "<strong>שדרוג רזולוציה בבינה מלאכותית</strong> — Real-ESRGAN פי 2 או פי 4 עם מודלים מותאמים לתמונות או לאנימה.",
+          "<strong>השחרת טקסט / מידע מזהה</strong> — השחרה מבוססת OCR בסגנון תיבה שחורה, טשטוש או פיקסול.",
+          "<strong>הסרת אובייקט</strong> — מציירים מלבנים מעל אובייקטים לא רצויים, ו־LaMa inpainting (simple-lama-inpainting) משחזר את הרקע."
         ]
       },
       "audio": {
-        "title": "AI Audio Tools",
+        "title": "כלי אודיו מבוססי בינה מלאכותית",
         "items": [
-          "<strong>Clean Voice</strong> — DeepFilterNet denoise + presence/loudness/limiter polish for spoken voice.",
-          "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the broadcast polish chain.",
-          "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem, exported as a lossless WAV by default.",
-          "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem, also lossless WAV by default."
+          "<strong>ניקוי קול</strong> — הפחתת רעש עם DeepFilterNet ושיפור נוכחות/עוצמה/לימיטר לקול מדובר.",
+          "<strong>הסרת רעש רקע</strong> — הפחתת רעש עם DeepFilterNet ללא שרשרת ליטוש השידור.",
+          "<strong>בידוד שירה</strong> — סטם שירה עם Demucs htdemucs, שמיוצא כברירת מחדל כ־WAV ללא אובדן.",
+          "<strong>הסרת שירה / קריוקי</strong> — סטם אינסטרומנטלי עם Demucs, גם הוא כ־WAV ללא אובדן כברירת מחדל."
         ]
       }
     },
     "transcription": {
-      "title": "Transcription",
-      "intro": "Upload a video or audio file and switch the right-hand panel to <em>Transcribe</em>. Our GPU server runs whisper-ctranslate2 to produce a transcript in your chosen format:",
+      "title": "תמלול",
+      "intro": "העלו קובץ וידאו או אודיו והחליפו את הפאנל הימני ל־<em>תמלול</em>. שרת ה־GPU שלנו מריץ whisper-ctranslate2 כדי להפיק תמלול בפורמט שבחרתם:",
       "items": [
-        "<strong>VTT</strong> — time-coded captions for video players and accessibility tools.",
-        "<strong>Plain text</strong> — continuous transcript suitable for reading or further editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — כתוביות עם קידוד זמן לנגני וידאו ולכלי נגישות.",
+        "<strong>טקסט רגיל</strong> — תמלול רציף המתאים לקריאה או לעריכה נוספת.",
+        "<strong>JSON מובנה</strong> — תמלול מפולח עם נתוני תזמון לצינורות עיבוד המשך."
       ],
-      "outro": "A summary and content-safety review run automatically once the transcript is ready, so you can scan long recordings quickly."
+      "outro": "סקירת סיכום ובטיחות תוכן פועלות אוטומטית ברגע שהתמלול מוכן, כך שתוכלו לסקור הקלטות ארוכות במהירות."
     },
     "privacy": {
-      "title": "Privacy & Performance",
+      "title": "פרטיות וביצועים",
       "security": {
-        "title": "Security & Privacy",
+        "title": "אבטחה ופרטיות",
         "items": [
-          "All uploads use HTTPS encryption",
-          "Files are automatically deleted within 24 hours",
-          "AI processing runs on our own servers — no third-party AI provider sees your media",
-          "Automatic content-safety scanning for abusive or illegal material"
+          "כל ההעלאות משתמשות בהצפנת HTTPS",
+          "קבצים נמחקים אוטומטית תוך 24 שעות",
+          "עיבוד הבינה המלאכותית פועל על השרתים שלנו — אף ספק בינה מלאכותית חיצוני לא רואה את המדיה שלכם",
+          "סריקת בטיחות תוכן אוטומטית לאיתור חומר פוגעני או בלתי חוקי"
         ],
-        "linkPrefix": "See our",
-        "linkText": "Privacy Policy",
-        "linkSuffix": "for full details"
+        "linkPrefix": "ראו את",
+        "linkText": "מדיניות הפרטיות",
+        "linkSuffix": "שלנו לפרטים מלאים"
       },
       "quality": {
-        "title": "Quality & Performance",
+        "title": "איכות וביצועים",
         "items": [
-          "FFmpeg and ImageMagick power the standard pipelines",
-          "Animated GIF export chains FFmpeg with gifsicle for small, palette-optimized files",
-          "AI jobs run on a dedicated NVIDIA GPU",
-          "Real-time progress streamed back to your browser",
-          "Session conversion history so you can revisit recent results"
+          "FFmpeg ו־ImageMagick מפעילים את תהליכי העבודה הסטנדרטיים",
+          "ייצוא GIF מונפש משלב FFmpeg עם gifsicle לקבצים קטנים ואופטימליים בפלטה",
+          "עבודות בינה מלאכותית פועלות על GPU ייעודי מבית NVIDIA",
+          "התקדמות בזמן אמת זורמת חזרה לדפדפן שלכם",
+          "היסטוריית המרות של ההפעלה כדי שתוכלו לחזור לתוצאות אחרונות"
         ]
       }
     },
     "next": {
-      "title": "Where to next?",
-      "body": "Ready to try a specific tool? Step-by-step walkthroughs for each conversion type live in our tutorials.",
-      "ctaTutorials": "Browse Tutorials",
-      "ctaConvert": "Start Converting"
+      "title": "לאן הלאה?",
+      "body": "מוכנים לנסות כלי מסוים? הדרכות שלב־אחר־שלב לכל סוג המרה נמצאות במדריכים שלנו.",
+      "ctaTutorials": "עיינו במדריכים",
+      "ctaConvert": "התחילו להמיר"
     }
   },
   "tutorials": {
-    "title": "Media Manipulator Tutorials",
-    "intro": "Step-by-step guides for every Media Manipulator tool. Whether you're converting a single MP3, batch-resizing PNGs, redacting faces from a photo, or pulling vocals out of a music track, the tutorials below walk you through every option in the right-hand conversion panel.",
-    "readTutorial": "Read tutorial →",
+    "title": "מדריכי Media Manipulator",
+    "intro": "מדריכים שלב־אחר־שלב לכל כלי ב־Media Manipulator. בין אם אתם ממירים MP3 בודד, משנים גודל של אצווית קובצי PNG, משחירים פנים בתמונה, או שולפים שירה מתוך רצועת מוזיקה — המדריכים שלמטה מלווים אתכם דרך כל אפשרות בפאנל ההמרה הימני.",
+    "readTutorial": "קראו את המדריך ←",
     "categories": {
       "audio": {
-        "title": "How to use the Audio Converter",
-        "description": "Convert audio files between MP3, WAV, FLAC, OGG, and more. Apply EQ, reverb, denoise, vocal isolation, and other audio AI tools."
+        "title": "איך להשתמש בממיר האודיו",
+        "description": "המירו קובצי אודיו בין MP3,‏ WAV,‏ FLAC,‏ OGG ועוד. החילו איקוולייזר, רוורב, הפחתת רעש, בידוד שירה וכלי בינה מלאכותית נוספים לאודיו."
       },
       "video": {
-        "title": "How to use the Video Converter",
-        "description": "Convert and edit video files between MP4, WebM, MOV, MKV, ProRes, and more. Trim, resize, apply filters and transforms, and transcribe with subtitles."
+        "title": "איך להשתמש בממיר הווידאו",
+        "description": "המירו וערכו קובצי וידאו בין MP4,‏ WebM,‏ MOV,‏ MKV,‏ ProRes ועוד. גזרו, שנו גודל, החילו פילטרים וטרנספורמציות, ותמללו עם כתוביות."
       },
       "image": {
-        "title": "How to use the Image Converter",
-        "description": "Convert images between JPG, PNG, WebP, and GIF. Resize, crop, apply filters, add text overlays, manage metadata, and run AI tools like Face Blur, Remove Background, AI Upscale, and Redact Text."
+        "title": "איך להשתמש בממיר התמונות",
+        "description": "המירו תמונות בין JPG,‏ PNG,‏ WebP ו־GIF. שנו גודל, חתכו, החילו פילטרים, הוסיפו שכבות טקסט, נהלו מטא־נתונים, והריצו כלי בינה מלאכותית כמו טשטוש פנים, הסרת רקע, שדרוג רזולוציה והשחרת טקסט."
       }
     },
     "tutorials": {
       "audioGettingStarted": {
-        "title": "Getting Started: Converting Audio Files",
-        "excerpt": "A complete walkthrough of the audio converter — file format selection, bitrate, sample rate, channel layout, trimming, EQ presets, restoration effects, and the Clean Voice / Isolate Vocals / Remove Vocals / Remove Background Noise AI tools.",
-        "readTime": "10 min read"
+        "title": "צעדים ראשונים: המרת קובצי אודיו",
+        "excerpt": "הדרכה מלאה על ממיר האודיו — בחירת פורמט קובץ, קצב סיביות, קצב דגימה, פריסת ערוצים, גזירה, פריסטים לאיקוולייזר, אפקטי שיקום, וכלי הבינה המלאכותית ניקוי קול / בידוד שירה / הסרת שירה / הסרת רעש רקע.",
+        "readTime": "10 דקות קריאה"
       },
       "videoGettingStarted": {
-        "title": "Getting Started: Converting Video Files",
-        "excerpt": "Step-by-step guide to the video converter — output format, codecs, quality presets, dimensions, trim, color correction, motion blur, artistic filters, stabilization, frame-rate conversion, and video transcription with VTT/TXT/JSON output.",
-        "readTime": "12 min read"
+        "title": "צעדים ראשונים: המרת קובצי וידאו",
+        "excerpt": "מדריך שלב־אחר־שלב לממיר הווידאו — פורמט פלט, קודקים, פריסטים לאיכות, מידות, גזירה, תיקון צבע, טשטוש תנועה, פילטרים אמנותיים, ייצוב, המרת קצב פריימים, ותמלול וידאו עם פלט VTT/TXT/JSON.",
+        "readTime": "12 דקות קריאה"
       },
       "aiFrameInterpolation": {
-        "title": "What Is AI Frame Interpolation? How Video FPS Smoothing Works",
-        "excerpt": "How AI frame interpolation generates new in-between frames for smoother motion, when to pick 48/60/120fps, common artifacts, and how to run the AI Frame Interpolation tool.",
-        "readTime": "9 min read"
+        "title": "מהי אינטרפולציית פריימים בבינה מלאכותית? איך עובד החלקת ה־FPS בווידאו",
+        "excerpt": "איך אינטרפולציית פריימים בבינה מלאכותית יוצרת פריימי ביניים חדשים לתנועה חלקה יותר, מתי לבחור 48/60/120fps, פגמים נפוצים, ואיך להריץ את כלי אינטרפולציית הפריימים בבינה מלאכותית.",
+        "readTime": "9 דקות קריאה"
       },
       "contentStudio": {
-        "title": "How to Use Darkroom: Multi-Track Video Editing in Your Browser",
-        "excerpt": "A step-by-step guide to Darkroom — import media, build a multi-track timeline, trim, split and ripple-delete, add cross-dissolves, color adjustments and text overlays, then export MP4.",
-        "readTime": "8 min read",
+        "title": "איך להשתמש ב־Darkroom: עריכת וידאו רב־ערוצית בדפדפן",
+        "excerpt": "מדריך שלב־אחר־שלב ל־Darkroom — ייבוא מדיה, בניית ציר זמן רב־ערוצי, גזירה, פיצול ומחיקה עם היסחפות (ripple), הוספת מעברי דיסולב, תיקוני צבע ושכבות טקסט, ולבסוף ייצוא ל־MP4.",
+        "readTime": "8 דקות קריאה",
         "page": {
-          "eyebrow": "Video Tutorial",
-          "title": "How to Use Darkroom",
-          "intro": "Darkroom is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished MP4 — no software to install. This guide walks through the whole workflow.",
-          "overviewAlt": "The Darkroom editor showing the media bin, preview, clip effects panel, and a multi-track timeline.",
-          "overviewCaption": "The Darkroom workspace: media bin (left), live preview (center), clip effects (right), and the multi-track timeline (bottom).",
+          "eyebrow": "מדריך וידאו",
+          "title": "איך להשתמש ב־Darkroom",
+          "intro": "Darkroom הוא עורך וידאו רב־ערוצי בסגנון Premiere Pro שפועל כולו בדפדפן שלכם. העלו וידאו ואודיו, סדרו אותם על ציר זמן, שכבו וערבבו רצועות, הוסיפו אפקטים, וייצאו קובץ MP4 מוגמר — בלי תוכנה להתקנה. המדריך הזה עובר על כל תהליך העבודה.",
+          "overviewAlt": "עורך Darkroom מציג את תיבת המדיה, התצוגה המקדימה, פאנל אפקטי הקליפ וציר זמן רב־ערוצי.",
+          "overviewCaption": "סביבת העבודה של Darkroom: תיבת מדיה (משמאל), תצוגה מקדימה חיה (במרכז), אפקטי קליפ (מימין), וציר הזמן הרב־ערוצי (למטה).",
           "create": {
-            "title": "1. Create a project",
-            "body": "Open Darkroom from the Tools page or the home page banner, then choose “New project”. Pick a name, a target resolution (1080p, 720p, 4K, or vertical 1080×1920) and a frame rate (24, 30, or 60 fps). These define the canvas your timeline renders to on export. Your recent projects appear next to the form so you can jump back into earlier edits."
+            "title": "1. יצירת פרויקט",
+            "body": "פתחו את Darkroom מדף הכלים או מבאנר דף הבית, ואז בחרו ״פרויקט חדש״. בחרו שם, רזולוציית יעד (1080p,‏ 720p,‏ 4K, או אנכי 1080×1920) וקצב פריימים (24, 30 או 60 fps). אלה מגדירים את הקנבס שאליו ציר הזמן שלכם ייוצא בסופו של דבר. הפרויקטים האחרונים שלכם מופיעים לצד הטופס כדי שתוכלו לחזור לעריכות קודמות."
           },
           "media": {
-            "title": "2. Add your media",
-            "body": "Drag video or audio files into the Media box, or click “Choose files”. Each upload is analyzed and given a smooth 720p preview proxy plus a filmstrip — you’ll see a brief “building preview” state while that happens. Both video (mp4, mov, webm, mkv, …) and audio (mp3, wav, m4a, aac, ogg, flac) are supported, and you can add as many files as you like."
+            "title": "2. הוספת המדיה שלכם",
+            "body": "גררו קובצי וידאו או אודיו לתיבת המדיה, או לחצו על ״בחירת קבצים״. כל העלאה מנותחת ומקבלת פרוקסי תצוגה מקדימה חלק ב־720p וכן פילם־סטריפ — תראו מצב קצר של ״בונה תצוגה מקדימה״ בזמן שזה קורה. נתמכים גם וידאו (mp4,‏ mov,‏ webm,‏ mkv, ...) וגם אודיו (mp3,‏ wav,‏ m4a,‏ aac,‏ ogg,‏ flac), ותוכלו להוסיף כמה קבצים שתרצו."
           },
           "timeline": {
-            "title": "3. Build your timeline",
-            "body": "Put clips on the timeline either by clicking the + on a media tile (it’s appended to the first matching track) or by dragging a media tile straight onto the track you want. From there you can rearrange everything:",
+            "title": "3. בניית ציר הזמן שלכם",
+            "body": "הניחו קליפים על ציר הזמן על ידי לחיצה על ה־+ על אריח מדיה (הוא יתווסף לרצועה המתאימה הראשונה) או על ידי גרירת אריח מדיה ישירות לרצועה שאתם רוצים. מכאן תוכלו לסדר הכול מחדש:",
             "bullets": {
-              "tracks": "Add more tracks with the +V / +A buttons — stack multiple video tracks for overlays and multiple audio tracks for music and voiceover.",
-              "drag": "Drag a clip along its track to reposition it, or drop it onto another track of the same kind (video→video, audio→audio). Clips snap to neighbouring edges and the playhead and never overlap.",
-              "trim": "Drag either edge of a clip to trim its in/out point.",
-              "split": "Move the playhead and press S to split (razor) the clip(s) under it.",
-              "ripple": "Select a clip and use Ripple delete to remove it and close the gap. Mute a whole track with the speaker icon, or set a clip’s volume with the slider."
+              "tracks": "הוסיפו עוד רצועות עם כפתורי ה־V+ / A+ — הערמת כמה רצועות וידאו לשכבות־על וכמה רצועות אודיו למוזיקה וקריינות.",
+              "drag": "גררו קליפ לאורך הרצועה שלו כדי למקם אותו מחדש, או הניחו אותו על רצועה אחרת מאותו סוג (וידאו→וידאו, אודיו→אודיו). קליפים נצמדים לקצוות שכנים ולראש הנגינה ולעולם לא חופפים.",
+              "trim": "גררו כל אחד מקצות הקליפ כדי לגזור את נקודת הכניסה/היציאה שלו.",
+              "split": "הזיזו את ראש הנגינה ולחצו S כדי לפצל (סכין גילוח) את הקליפ/ים שמתחתיו.",
+              "ripple": "בחרו קליפ והשתמשו במחיקה עם היסחפות כדי להסיר אותו ולסגור את הפער. השתיקו רצועה שלמה עם סמל הרמקול, או קבעו את עוצמת הקול של קליפ עם המחוון."
             }
           },
           "effects": {
-            "title": "4. Add effects",
-            "body": "Select a single clip to open the Clip effects panel on the right. From there you can apply a cross-dissolve, color adjustments, and text/location overlays — all previewed live and baked into the final export."
+            "title": "4. הוספת אפקטים",
+            "body": "בחרו קליפ בודד כדי לפתוח את פאנל אפקטי הקליפ מימין. משם תוכלו להחיל דיסולב, תיקוני צבע, ושכבות טקסט/מיקום — הכול בתצוגה מקדימה חיה ואפוי לתוך הייצוא הסופי."
           },
           "color": {
-            "title": "Color adjustments",
-            "body": "Click “Adjust” under Color, then tune Brightness, Contrast, and Saturation. The preview updates instantly (for example, drop saturation to zero for a black-and-white look). “Reset” removes the adjustment."
+            "title": "תיקוני צבע",
+            "body": "לחצו ״כוונון״ תחת צבע, ואז כווננו בהירות, ניגודיות ורוויה. התצוגה המקדימה מתעדכנת מיידית (לדוגמה, הורידו את הרוויה לאפס לקבלת מראה שחור־לבן). ״איפוס״ מסיר את הכיוונון."
           },
           "text": {
-            "title": "Text & location overlays",
-            "body": "Click “Add text” to drop a label onto the clip — type your text, pick a color, and position it with the X/Y sliders and size it to taste. Overlays are great for titles or location labels over drone footage and are drawn directly into the exported video."
+            "title": "שכבות טקסט ומיקום",
+            "body": "לחצו ״הוספת טקסט״ כדי להטיל תווית על הקליפ — הקלידו את הטקסט, בחרו צבע, מקמו אותו עם מחווני X/Y וכווננו את הגודל לטעמכם. שכבות־על נהדרות לכותרות או לתוויות מיקום מעל צילומי רחפן, והן משורטטות ישירות לתוך הווידאו המיוצא."
           },
           "dissolve": {
-            "title": "Cross-dissolves",
-            "body": "With a clip that has another clip before it on the same track selected, drag the Cross-dissolve slider — the clip slides back to overlap its neighbour and the two blend over that duration, with the audio crossfading to match."
+            "title": "מעברי דיסולב",
+            "body": "עם קליפ שיש לפניו קליפ נוסף על אותה רצועה, כשהוא נבחר, גררו את מחוון הדיסולב — הקליפ נסוג אחורה כדי לחפוף לשכן שלו ושניהם מתמזגים לאורך אותו משך זמן, כשהאודיו עובר קרוספייד תואם."
           },
-          "effectsAlt": "The Clip effects panel with cross-dissolve, color, and text overlay controls for the selected clip.",
-          "effectsCaption": "Selecting a clip reveals the Clip effects panel: cross-dissolve, color, and text overlays.",
-          "colorAlt": "Color adjustment sliders for brightness, contrast, and saturation, with the preview desaturated.",
-          "colorCaption": "Brightness / Contrast / Saturation update the preview live — here saturation is pulled down for a black-and-white look.",
-          "textAlt": "A red “This is my video!” text overlay drawn over the preview with the text editor on the right.",
-          "textCaption": "Text overlays are positioned and styled in the panel and drawn into the preview and the export.",
+          "effectsAlt": "פאנל אפקטי הקליפ עם פקדי דיסולב, צבע ושכבת טקסט עבור הקליפ הנבחר.",
+          "effectsCaption": "בחירת קליפ חושפת את פאנל אפקטי הקליפ: דיסולב, צבע ושכבות טקסט.",
+          "colorAlt": "מחווני כיוונון צבע לבהירות, ניגודיות ורוויה, עם התצוגה המקדימה מנוטרלת רוויה.",
+          "colorCaption": "בהירות / ניגודיות / רוויה מתעדכנות בתצוגה המקדימה בזמן אמת — כאן הרוויה הורדה לקבלת מראה שחור־לבן.",
+          "textAlt": "שכבת טקסט אדומה ״This is my video!״ משורטטת מעל התצוגה המקדימה עם עורך הטקסט מימין.",
+          "textCaption": "שכבות טקסט ממוקמות ומעוצבות בפאנל ומשורטטות לתוך התצוגה המקדימה והייצוא.",
           "preview": {
-            "title": "5. Preview your edit",
-            "body": "Use the transport controls under the preview to play/pause, step a frame at a time, or jump to the start/end. Drag on the timeline ruler to scrub — drag to the edge and the timeline auto-scrolls so you can reach any point. During playback the view follows the playhead automatically."
+            "title": "5. תצוגה מקדימה של העריכה",
+            "body": "השתמשו בפקדי ההפעלה שמתחת לתצוגה המקדימה כדי לנגן/להשהות, לדלג פריים אחד בכל פעם, או לקפוץ להתחלה/לסוף. גררו על סרגל ציר הזמן כדי לגלול — גררו אל הקצה וציר הזמן יגלול אוטומטית כך שתוכלו להגיע לכל נקודה. במהלך הנגינה התצוגה עוקבת אחרי ראש הנגינה אוטומטית."
           },
           "export": {
-            "title": "6. Export to MP4",
-            "body": "Click “Export MP4”, choose a file name and quality, and Darkroom renders your full timeline on the server — compositing video tracks, mixing audio, and applying your effects — then gives you a download link. Rendering happens on a GPU, so larger projects finish quickly."
+            "title": "6. ייצוא ל־MP4",
+            "body": "לחצו ״ייצוא MP4״, בחרו שם קובץ ואיכות, ו־Darkroom יעבד את כל ציר הזמן שלכם בשרת — יחבר רצועות וידאו, יערבב אודיו, ויחיל את האפקטים שלכם — ואז ייתן לכם קישור להורדה. העיבוד מתבצע על GPU, כך שפרויקטים גדולים יותר מסתיימים במהירות."
           },
           "shortcuts": {
-            "title": "Keyboard shortcuts",
-            "body": "Space play/pause · ← / → step one frame · S split at playhead · Delete ripple-delete the selection · + / − zoom the timeline."
+            "title": "קיצורי מקלדת",
+            "body": "רווח נגינה/השהיה · ← / → דילוג פריים אחד · S פיצול בראש הנגינה · Delete מחיקה עם היסחפות של הבחירה · + / − זום על ציר הזמן."
           },
           "cta": {
-            "title": "Ready to edit?",
-            "body": "Jump into Darkroom and start your first multi-track edit.",
-            "button": "Open Darkroom"
+            "title": "מוכנים לערוך?",
+            "body": "קפצו לתוך Darkroom והתחילו את העריכה הרב־ערוצית הראשונה שלכם.",
+            "button": "פתחו את Darkroom"
           },
           "related": {
-            "title": "Related tools & tutorials",
-            "intro": "Keep going with related Media Manipulator pages.",
+            "title": "כלים ומדריכים קשורים",
+            "intro": "המשיכו עם דפים קשורים ב־Media Manipulator.",
             "studio": "Darkroom",
-            "studioDesc": "Open the multi-track editor.",
-            "video": "Getting started with video",
-            "videoDesc": "Convert, compress, and trim video files."
+            "studioDesc": "פתחו את העורך הרב־ערוצי.",
+            "video": "צעדים ראשונים בווידאו",
+            "videoDesc": "המירו, דחסו וגזרו קובצי וידאו."
           }
         }
       },
       "imageGettingStarted": {
-        "title": "Getting Started: Converting Image Files",
-        "excerpt": "Complete tutorial on the image converter — picking a format, quality, dimensions, cropping, filters, tint, text overlays, EXIF / IPTC / GPS metadata, and the Face Privacy, Remove Background, AI Upscale, and Redact Text AI tools.",
-        "readTime": "10 min read"
+        "title": "צעדים ראשונים: המרת קובצי תמונה",
+        "excerpt": "מדריך מלא לממיר התמונות — בחירת פורמט, איכות, מידות, חיתוך, פילטרים, גוון, שכבות טקסט, מטא־נתוני EXIF / IPTC / GPS, וכלי הבינה המלאכותית פרטיות פנים, הסרת רקע, שדרוג רזולוציה והשחרת טקסט.",
+        "readTime": "10 דקות קריאה"
       }
     },
     "newToHere": {
-      "title": "New to Media Manipulator?",
-      "body": "Start with our high-level overview to see everything the platform can do, then jump into a tutorial that matches the kind of file you're working with.",
-      "ctaHow": "How it Works",
-      "ctaConvert": "Start Converting"
+      "title": "חדשים כאן?",
+      "body": "התחילו בסקירה הכללית שלנו כדי לראות את כל מה שהפלטפורמה יכולה לעשות, ואז קפצו למדריך שמתאים לסוג הקובץ שאתם עובדים איתו.",
+      "ctaHow": "איך זה עובד",
+      "ctaConvert": "התחילו להמיר"
     }
   },
   "blog": {
-    "title": "Media Conversion Blog",
-    "intro": "Expert guides, tips, and insights on media conversion, optimization, and file formats.",
-    "readMore": "Read more →",
+    "title": "בלוג המרת מדיה",
+    "intro": "מדריכי מומחים, טיפים ותובנות על המרת מדיה, אופטימיזציה ופורמטי קבצים.",
+    "readMore": "קראו עוד ←",
     "articles": {
       "videoCompression": {
-        "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI",
-        "excerpt": "Learn the differences between video formats and when to use each one for optimal quality and file size.",
-        "readTime": "8 min read"
+        "title": "המדריך לטרמפיסט לדחיסת וידאו: MP4 מול WebM מול AVI",
+        "excerpt": "למדו את ההבדלים בין פורמטי וידאו ומתי להשתמש בכל אחד מהם לאיכות אופטימלית וגודל קובץ מיטבי.",
+        "readTime": "8 דקות קריאה"
       },
       "imageOptimization": {
-        "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
-        "excerpt": "Discover how to choose the right image format for your website to improve loading speeds and user experience.",
-        "readTime": "8 min read"
+        "title": "אופטימיזציית תמונות לג׳דאים של הרשת: JPG מול PNG מול WebP",
+        "excerpt": "גלו איך לבחור את פורמט התמונה הנכון לאתר שלכם כדי לשפר את זמני הטעינה וחוויית המשתמש.",
+        "readTime": "8 דקות קריאה"
       },
-      "audioQualityPrefix": "The Sound of",
-      "audioQualityStrike": "Silence",
-      "audioQualitySuffix": "Quality: Bitrates, Sample Rates, and Formats",
+      "audioQualityPrefix": "הצליל של",
+      "audioQualityStrike": "שקט",
+      "audioQualitySuffix": "איכות: קצבי סיביות, קצבי דגימה ופורמטים",
       "audioQuality": {
-        "excerpt": "Understanding audio quality settings to achieve the perfect balance between file size and sound quality.",
-        "readTime": "8 min read"
+        "excerpt": "הבנת הגדרות איכות אודיו כדי להשיג את האיזון המושלם בין גודל קובץ לאיכות צליל.",
+        "readTime": "8 דקות קריאה"
       }
     },
     "relatedLinks": {
-      "title": "Want to try the tools?",
-      "intro": "The Media Manipulator tools that pair with these articles are all free.",
+      "title": "רוצים לנסות את הכלים?",
+      "intro": "כלי Media Manipulator שמתאימים למאמרים האלו כולם חינמיים.",
       "allTools": {
-        "label": "Browse all tools",
-        "description": "Image, video, audio, AI, and metadata tools in one place."
+        "label": "עיינו בכל הכלים",
+        "description": "כלי תמונה, וידאו, אודיו, בינה מלאכותית ומטא־נתונים במקום אחד."
       },
       "compressVideo": {
-        "label": "Compress video",
-        "description": "Shrink video file size without ruining quality."
+        "label": "דחיסת וידאו",
+        "description": "כווצו את גודל קובץ הווידאו בלי לפגוע באיכות."
       },
       "removeExif": {
-        "label": "Remove EXIF metadata",
-        "description": "Strip GPS and device data before sharing photos."
+        "label": "הסרת מטא־נתוני EXIF",
+        "description": "הסירו נתוני GPS ומכשיר לפני שיתוף תמונות."
       },
       "homepage": {
-        "label": "Open the homepage converter",
-        "description": "Convert, edit, compress, and transcribe images, videos, and audio."
+        "label": "פתחו את ממיר דף הבית",
+        "description": "המירו, ערכו, דחסו ותמללו תמונות, וידאו ואודיו."
       },
       "tutorials": {
-        "label": "Browse the tutorials",
-        "description": "Step-by-step walkthroughs of every conversion option and AI tool."
+        "label": "עיינו במדריכים",
+        "description": "הדרכות שלב־אחר־שלב לכל אפשרות המרה וכלי בינה מלאכותית."
       },
       "howItWorks": {
-        "label": "How Media Manipulator works",
-        "description": "See how files are processed, scanned, and temporarily stored."
+        "label": "איך Media Manipulator עובד",
+        "description": "גלו איך קבצים מעובדים, נסרקים ונשמרים באופן זמני."
       }
     }
   },
   "legalCommon": {
-    "effectiveDate": "Effective Date: 2026-05-14",
-    "lastUpdated": "Last Updated: 2026-05-14",
-    "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
+    "effectiveDate": "תאריך כניסה לתוקף: 2026-05-14",
+    "lastUpdated": "עודכן לאחרונה: 2026-05-14",
+    "operator": "Media Manipulator הוא מוצר ושירות המופעלים על ידי CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
-    "operatingAs": "Operating as Media Manipulator",
+    "operatingAs": "פועלת תחת השם Media Manipulator",
     "location": "Colorado, USA",
-    "emailLabel": "Email:",
-    "websiteLabel": "Website:"
+    "emailLabel": "אימייל:",
+    "websiteLabel": "אתר:"
   },
   "privacyPolicy": {
-    "title": "Privacy Policy",
-    "intro": "Media Manipulator is owned and operated by CreaTV Ltd. (“CreaTV,” “Media Manipulator,” “we,” “us,” or “our”). Media Manipulator provides browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "blockquote": "Where Media Manipulator uses AI-assisted features, those AI systems run locally on our own servers or infrastructure that we control and are not outsourced to third-party AI providers.",
-    "explanation": "This Privacy Policy explains how we collect, use, store, protect, and delete information when you use our website, tools, and related services.",
-    "acceptance": "By using Media Manipulator, you agree to the practices described in this Privacy Policy.",
+    "title": "מדיניות פרטיות",
+    "intro": "Media Manipulator בבעלותה ובתפעולה של CreaTV Ltd. (״CreaTV״, ״Media Manipulator״, ״אנחנו״, ״אנו״ או ״שלנו״). Media Manipulator מספקת כלים מבוססי דפדפן ומסייעי שרת לעריכה, המרה, דחיסה, ניתוח, תמלול, סיכום ועיבוד אחר של קובצי תמונה, וידאו ואודיו.",
+    "blockquote": "במקומות שבהם Media Manipulator משתמשת בתכונות מבוססות בינה מלאכותית, מערכות הבינה המלאכותית הללו פועלות באופן מקומי על השרתים שלנו או על תשתית שבשליטתנו, ואינן מועברות למיקור חוץ אצל ספקי בינה מלאכותית חיצוניים.",
+    "explanation": "מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים, שומרים, מגנים ומוחקים מידע כאשר אתם משתמשים באתר, בכלים ובשירותים הנלווים שלנו.",
+    "acceptance": "בשימושכם ב־Media Manipulator, אתם מסכימים לנהלים המתוארים במדיניות פרטיות זו.",
     "sections": [
       {
-        "title": "1. Information We Collect",
+        "title": "1. מידע שאנו אוספים",
         "paragraphs": [
-          "We collect information in several ways depending on how you use the website."
+          "אנו אוספים מידע במספר דרכים, בהתאם לאופן שבו אתם משתמשים באתר."
         ],
         "subsections": [
           {
-            "title": "1.1 Files You Upload",
+            "title": "1.1 קבצים שאתם מעלים",
             "paragraphs": [
-              "When you upload an image, video, audio file, or other supported media file to Media Manipulator, we may temporarily process that file to provide the requested tool functionality, such as:"
+              "כאשר אתם מעלים תמונה, וידאו, קובץ אודיו, או קובץ מדיה נתמך אחר ל־Media Manipulator, אנו עשויים לעבד את הקובץ הזה באופן זמני כדי לספק את פונקציונליות הכלי המבוקש, כגון:"
             ],
             "bullets": [
-              "converting a file to another format;",
-              "cropping, trimming, resizing, compressing, filtering, or editing media;",
-              "extracting or displaying metadata;",
-              "removing metadata;",
-              "generating transcripts, captions, summaries, descriptions, or other AI-assisted outputs;",
-              "creating downloadable processed files;",
-              "maintaining temporary session conversion history so you can download recent conversions during your session."
+              "המרת קובץ לפורמט אחר;",
+              "חיתוך, גזירה, שינוי גודל, דחיסה, סינון או עריכה של מדיה;",
+              "חילוץ או הצגה של מטא־נתונים;",
+              "הסרת מטא־נתונים;",
+              "יצירת תמלולים, כתוביות, סיכומים, תיאורים, או פלטים אחרים מבוססי בינה מלאכותית;",
+              "יצירת קבצים מעובדים הניתנים להורדה;",
+              "שמירת היסטוריית המרות זמנית של ההפעלה כדי שתוכלו להוריד המרות אחרונות במהלך ההפעלה שלכם."
             ],
             "afterBullets": [
-              "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours, unless deleted sooner. After that period, they are deleted from our active systems."
+              "קבצים שהועלו ופלטים שנוצרו נשמרים באופן זמני למשך 24 שעות לכל היותר, אלא אם נמחקו קודם לכן. לאחר תקופה זו, הם נמחקים מהמערכות הפעילות שלנו."
             ]
           },
           {
-            "title": "1.2 File and Conversion Metadata",
+            "title": "1.2 מטא־נתוני קבצים והמרות",
             "paragraphs": [
-              "We may collect technical information about uploaded files and conversion jobs, including:"
+              "אנו עשויים לאסוף מידע טכני על קבצים שהועלו ועל עבודות המרה, לרבות:"
             ],
             "bullets": [
-              "file name;",
-              "file type or MIME type;",
-              "file size;",
-              "file duration, dimensions, bitrate, codec, or other technical properties;",
-              "conversion settings selected by the user;",
-              "generated output format;",
-              "job status, processing errors, and timestamps;",
-              "temporary file identifiers or session identifiers."
+              "שם הקובץ;",
+              "סוג הקובץ או סוג MIME;",
+              "גודל הקובץ;",
+              "משך הקובץ, מידותיו, קצב הסיביות, הקודק, או מאפיינים טכניים אחרים;",
+              "הגדרות ההמרה שבחר המשתמש;",
+              "פורמט הפלט שנוצר;",
+              "סטטוס העבודה, שגיאות עיבוד וחותמות זמן;",
+              "מזהי קבצים זמניים או מזהי הפעלה."
             ],
             "afterBullets": [
-              "We use this information to operate the service, troubleshoot failed conversions, maintain temporary session history, improve performance, detect abuse, and protect the website."
+              "אנו משתמשים במידע זה כדי להפעיל את השירות, לפתור תקלות בהמרות כושלות, לשמור על היסטוריית הפעלה זמנית, לשפר ביצועים, לאתר שימוש לרעה, ולהגן על האתר."
             ]
           },
           {
-            "title": "1.3 Content Scanning and Safety Review",
+            "title": "1.3 סריקת תוכן וסקירת בטיחות",
             "paragraphs": [
-              "All uploads may be subject to automated scanning and classification for security, abuse prevention, brand safety, advertiser protection, and detection or blocking of suspected illegal or prohibited content.",
-              "These scans may be used to identify or help prevent content involving, for example:"
+              "כל ההעלאות עשויות להיות כפופות לסריקה וסיווג אוטומטיים לצורכי אבטחה, מניעת שימוש לרעה, בטיחות המותג, הגנה על מפרסמים, ואיתור או חסימה של תוכן החשוד כבלתי חוקי או אסור.",
+              "סריקות אלה עשויות לשמש לזיהוי או לסיוע במניעה של תוכן הכולל, לדוגמה:"
             ],
             "bullets": [
-              "suspected child sexual abuse material or exploitation;",
-              "malware, malicious files, or harmful code;",
-              "content that appears to violate applicable law;",
-              "content that violates our Terms of Service or Acceptable Use rules;",
-              "adult, sexually explicit, graphic, violent, or otherwise advertiser-sensitive content."
+              "חומר החשוד כניצול או התעללות מינית בקטינים;",
+              "תוכנות זדוניות, קבצים זדוניים, או קוד מזיק;",
+              "תוכן שנראה כמפר את הדין החל;",
+              "תוכן המפר את תנאי השימוש שלנו או את כללי השימוש המקובל;",
+              "תוכן למבוגרים, בעל אופי מיני מפורש, גרפי, אלים, או רגיש למפרסמים בדרך אחרת."
             ],
             "afterBullets": [
-              "If content is determined or suspected to be illegal, prohibited, abusive, or unsafe, we may block processing, delete the file, prevent display of previews, restrict access to generated outputs, preserve limited records where legally required, or report the content to appropriate authorities if required by law.",
-              "If content is lawful but classified as adult, graphic, violent, or otherwise advertiser-sensitive, we may prevent that content from being displayed or previewed on the website in order to protect users, our brand, and advertisers. In some cases, where lawful and technically available, the user may still be able to download the processed file.",
-              "Users are solely responsible for the files they upload and for ensuring they have all rights, permissions, and legal authority necessary to process those files using Media Manipulator."
+              "אם נקבע או קיים חשד שתוכן הוא בלתי חוקי, אסור, פוגעני, או בלתי בטוח, אנו רשאים לחסום את העיבוד, למחוק את הקובץ, למנוע הצגת תצוגות מקדימות, להגביל גישה לפלטים שנוצרו, לשמר רשומות מוגבלות במקרים שבהם הדין מחייב זאת, או לדווח על התוכן לרשויות המוסמכות אם נדרש על פי דין.",
+              "אם תוכן הוא חוקי אך מסווג כתוכן למבוגרים, גרפי, אלים, או רגיש למפרסמים בדרך אחרת, אנו רשאים למנוע את הצגתו או תצוגתו המקדימה באתר על מנת להגן על המשתמשים, על המותג שלנו ועל המפרסמים. במקרים מסוימים, כאשר הדבר חוקי וזמין מבחינה טכנית, ייתכן שהמשתמש עדיין יוכל להוריד את הקובץ המעובד.",
+              "המשתמשים אחראים באופן בלעדי לקבצים שהם מעלים, ולוודא שיש להם את כל הזכויות, ההיתרים והסמכות החוקית הנדרשים לעיבוד קבצים אלה באמצעות Media Manipulator."
             ]
           },
           {
-            "title": "1.4 Usage Data",
+            "title": "1.4 נתוני שימוש",
             "paragraphs": [
-              "When you visit or use Media Manipulator, we may automatically collect usage and device information, such as:"
+              "כאשר אתם מבקרים ב־Media Manipulator או משתמשים בו, אנו עשויים לאסוף באופן אוטומטי מידע על שימוש ומכשיר, כגון:"
             ],
             "bullets": [
-              "pages visited;",
-              "tools used;",
-              "buttons clicked;",
-              "approximate location based on IP address;",
-              "browser type and version;",
-              "operating system;",
-              "device type;",
-              "referral source;",
-              "timestamps;",
-              "diagnostic logs;",
-              "error logs;",
-              "performance data;",
-              "analytics events."
+              "עמודים שבוקרו;",
+              "כלים שבהם נעשה שימוש;",
+              "כפתורים שנלחצו;",
+              "מיקום משוער המבוסס על כתובת IP;",
+              "סוג ודגם הדפדפן;",
+              "מערכת ההפעלה;",
+              "סוג המכשיר;",
+              "מקור ההפניה;",
+              "חותמות זמן;",
+              "יומני אבחון;",
+              "יומני שגיאות;",
+              "נתוני ביצועים;",
+              "אירועי אנליטיקה."
             ],
             "afterBullets": [
-              "We use this information to understand how users use the website, improve features, diagnose issues, prevent abuse, and measure website performance."
+              "אנו משתמשים במידע זה כדי להבין כיצד משתמשים משתמשים באתר, לשפר תכונות, לאבחן בעיות, למנוע שימוש לרעה, ולמדוד את ביצועי האתר."
             ]
           },
           {
-            "title": "1.5 Cookies and Similar Technologies",
+            "title": "1.5 עוגיות וטכנולוגיות דומות",
             "paragraphs": [
-              "We and our service providers may use cookies, local storage, pixels, tags, and similar technologies to:"
+              "אנו וספקי השירות שלנו עשויים להשתמש בעוגיות, באחסון מקומי, בפיקסלים, בתגיות ובטכנולוגיות דומות כדי:"
             ],
             "bullets": [
-              "operate the website;",
-              "remember user preferences;",
-              "maintain session functionality;",
-              "analyze traffic and usage;",
-              "detect abuse or security risks;",
-              "serve and measure advertisements."
+              "להפעיל את האתר;",
+              "לזכור העדפות משתמש;",
+              "לשמור על פונקציונליות ההפעלה;",
+              "לנתח תעבורה ושימוש;",
+              "לאתר שימוש לרעה או סיכוני אבטחה;",
+              "להציג ולמדוד פרסומות."
             ],
             "afterBullets": [
-              "You can control cookies through your browser settings. Some features may not work properly if cookies or local storage are disabled."
+              "תוכלו לשלוט בעוגיות דרך הגדרות הדפדפן שלכם. ייתכן שחלק מהתכונות לא יפעלו כראוי אם עוגיות או אחסון מקומי מושבתים."
             ]
           }
         ]
       },
       {
-        "title": "2. How We Use Information",
+        "title": "2. כיצד אנו משתמשים במידע",
         "paragraphs": [
-          "We use the information we collect to:"
+          "אנו משתמשים במידע שאנו אוספים כדי:"
         ],
         "bullets": [
-          "provide media conversion, editing, transcription, metadata, AI analysis, and related tools;",
-          "temporarily store conversion history for up to 24 hours;",
-          "allow users to download recent converted files during a session;",
-          "scan uploads for suspected illegal, prohibited, abusive, or advertiser-sensitive content;",
-          "protect users, advertisers, our website, and our brand;",
-          "prevent fraud, abuse, spam, malware, and security incidents;",
-          "debug errors and improve service reliability;",
-          "analyze traffic and usage trends;",
-          "improve our website, tools, user experience, and performance;",
-          "comply with legal obligations;",
-          "enforce our Terms of Service and Acceptable Use rules."
+          "לספק כלי המרת מדיה, עריכה, תמלול, מטא־נתונים, ניתוח בבינה מלאכותית וכלים נלווים;",
+          "לאחסן באופן זמני היסטוריית המרות למשך עד 24 שעות;",
+          "לאפשר למשתמשים להוריד קבצים מומרים אחרונים במהלך הפעלה;",
+          "לסרוק העלאות לאיתור תוכן החשוד כבלתי חוקי, אסור, פוגעני, או רגיש למפרסמים;",
+          "להגן על המשתמשים, המפרסמים, האתר שלנו והמותג שלנו;",
+          "למנוע הונאה, שימוש לרעה, ספאם, תוכנות זדוניות ואירועי אבטחה;",
+          "לאתר ולתקן שגיאות ולשפר את אמינות השירות;",
+          "לנתח מגמות תעבורה ושימוש;",
+          "לשפר את האתר, הכלים, חוויית המשתמש והביצועים שלנו;",
+          "לעמוד בחובות משפטיות;",
+          "לאכוף את תנאי השימוש שלנו ואת כללי השימוש המקובל."
         ]
       },
       {
-        "title": "3. File Storage and Deletion",
+        "title": "3. אחסון קבצים ומחיקתם",
         "paragraphs": [
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from active storage.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary to operate the service, protect against abuse, enforce our policies, comply with law, resolve disputes, or maintain security. These records are not intended to preserve full uploaded media files after the 24-hour temporary storage period."
+          "קבצים שהועלו ופלטים שנוצרו נשמרים באופן זמני למשך 24 שעות לכל היותר, כדי לתמוך בהיסטוריית המרות של ההפעלה ולאפשר למשתמשים להוריד המרות אחרונות.",
+          "לאחר שתקופת השמירה הזמנית פוקעת, קבצים שהועלו ופלטים שנוצרו נמחקים מהאחסון הפעיל.",
+          "אנו עשויים לשמר יומנים טכניים מוגבלים, רשומות אבטחה, רשומות מניעת שימוש לרעה, רשומות אנליטיקה, או רשומות ציות משפטי למשך זמן ארוך יותר במקומות שבהם הדבר נחוץ באופן סביר להפעלת השירות, להגנה מפני שימוש לרעה, לאכיפת המדיניות שלנו, לציות לדין, לפתרון מחלוקות, או לשמירה על אבטחה. רשומות אלה אינן מיועדות לשמר קובצי מדיה מלאים שהועלו לאחר תקופת האחסון הזמנית של 24 השעות."
         ]
       },
       {
-        "title": "4. AI Processing",
+        "title": "4. עיבוד בבינה מלאכותית",
         "paragraphs": [
-          "Some Media Manipulator features may use automated systems or AI-assisted tools to process uploaded media, metadata, audio, video, text, transcripts, captions, descriptions, summaries, or other content.",
-          "AI-assisted features may be used to:"
+          "חלק מתכונות Media Manipulator עשויות להשתמש במערכות אוטומטיות או בכלים מבוססי בינה מלאכותית כדי לעבד מדיה שהועלתה, מטא־נתונים, אודיו, וידאו, טקסט, תמלולים, כתוביות, תיאורים, סיכומים, או תוכן אחר.",
+          "תכונות מבוססות בינה מלאכותית עשויות לשמש כדי:"
         ],
         "bullets": [
-          "transcribe audio or video;",
-          "generate captions;",
-          "summarize content;",
-          "describe images, videos, or audio;",
-          "classify content for safety or brand-suitability;",
-          "detect suspected illegal, prohibited, abusive, adult, violent, graphic, or otherwise advertiser-sensitive content;",
-          "help prevent misuse of the service."
+          "לתמלל אודיו או וידאו;",
+          "ליצור כתוביות;",
+          "לסכם תוכן;",
+          "לתאר תמונות, וידאו, או אודיו;",
+          "לסווג תוכן לצורכי בטיחות או התאמה למותג;",
+          "לאתר תוכן החשוד כבלתי חוקי, אסור, פוגעני, למבוגרים, אלים, גרפי, או רגיש למפרסמים בדרך אחרת;",
+          "לסייע במניעת שימוש לרעה בשירות."
         ],
         "afterBullets": [
-          "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
-          "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions. After that period, they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
-          "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
-          "We do not use uploaded files to publicly identify users. We do not claim ownership of uploaded files. We do not sell uploaded files or generated outputs. We do not provide uploaded files or generated outputs to third-party AI providers for model training or AI processing."
+          "כל עיבוד בבינה מלאכותית המשמש את Media Manipulator מתבצע באופן מקומי על השרתים שלנו או על תשתית שבשליטתנו. איננו מעבירים למיקור חוץ קבצים שהועלו, פלטים שנוצרו, תמלולים, סיכומים, תיאורים, או סריקות בטיחות תוכן לספקי בינה מלאכותית חיצוניים לצורך עיבוד.",
+          "המשמעות היא שכאשר נעשה שימוש בתכונות בינה מלאכותית, הקבצים שהעליתם והפלטים שנוצרו נשארים בתוך סביבת העיבוד של Media Manipulator, ומטופלים בהתאם לנהלי האחסון, השמירה, המחיקה והאבטחה המתוארים במדיניות פרטיות זו.",
+          "קבצים שהועלו ופלטים שנוצרו נשמרים באופן זמני למשך 24 שעות לכל היותר, כדי לתמוך בהיסטוריית המרות של ההפעלה ולאפשר למשתמשים להוריד המרות אחרונות. לאחר תקופה זו, הם נמחקים מהמערכות הפעילות שלנו, אלא אם מתבצעת מחיקה מוקדמת יותר או שנדרשת שמירה מוגבלת מטעמים משפטיים לצורכי אבטחה, מניעת שימוש לרעה, ציות משפטי, או אכיפה.",
+          "פלטים שנוצרו בבינה מלאכותית עשויים להיות לא מושלמים, חלקיים, או לא מדויקים. המשתמשים אחראים לבחון כל פלט שנוצר בבינה מלאכותית לפני הסתמכות עליו.",
+          "איננו משתמשים בקבצים שהועלו כדי לזהות משתמשים באופן פומבי. איננו טוענים לבעלות על קבצים שהועלו. איננו מוכרים קבצים שהועלו או פלטים שנוצרו. איננו מספקים קבצים שהועלו או פלטים שנוצרו לספקי בינה מלאכותית חיצוניים לצורך אימון מודלים או עיבוד בבינה מלאכותית."
         ]
       },
       {
-        "title": "5. Advertising",
+        "title": "5. פרסום",
         "paragraphs": [
-          "Media Manipulator may display advertisements, including advertisements served by Google AdSense or other advertising partners.",
-          "Third-party vendors, including Google, may use cookies to serve ads based on a user’s prior visits to Media Manipulator or other websites. Google’s use of advertising cookies enables it and its partners to serve ads to users based on their visit to Media Manipulator and/or other sites on the Internet.",
-          "Users may opt out of personalized advertising by visiting Google’s Ads Settings. Users may also opt out of some third-party vendors’ use of cookies for personalized advertising by visiting industry opt-out pages where available.",
-          "Advertising partners may collect or receive information from our website and other websites and use that information to provide measurement services and targeted ads.",
-          "We do not control third-party advertising cookies or tracking technologies. Their use is governed by the privacy policies of the third parties that provide them."
+          "Media Manipulator עשויה להציג פרסומות, לרבות פרסומות המוצגות באמצעות Google AdSense או שותפי פרסום אחרים.",
+          "ספקים חיצוניים, לרבות Google, עשויים להשתמש בעוגיות כדי להציג פרסומות בהתבסס על ביקורים קודמים של המשתמש ב־Media Manipulator או באתרים אחרים. השימוש של Google בעוגיות פרסום מאפשר לה ולשותפיה להציג פרסומות למשתמשים בהתבסס על ביקורם ב־Media Manipulator ו/או באתרים אחרים באינטרנט.",
+          "משתמשים יכולים לבחור שלא להיכלל בפרסום מותאם אישית באמצעות ביקור בהגדרות הפרסומות של Google. משתמשים יכולים גם לבחור שלא להיכלל בשימוש שעושים חלק מהספקים החיצוניים בעוגיות לפרסום מותאם אישית, באמצעות ביקור בעמודי הסרה ענפיים במקומות שבהם הם זמינים.",
+          "שותפי פרסום עשויים לאסוף או לקבל מידע מהאתר שלנו ומאתרים אחרים, ולהשתמש במידע זה כדי לספק שירותי מדידה ופרסומות ממוקדות.",
+          "איננו שולטים בעוגיות פרסום או בטכנולוגיות מעקב של צדדים שלישיים. השימוש בהן כפוף למדיניות הפרטיות של הצדדים השלישיים המספקים אותן."
         ]
       },
       {
-        "title": "6. Analytics",
+        "title": "6. אנליטיקה",
         "paragraphs": [
-          "Media Manipulator uses its own first-party analytics, built and operated by us and hosted on our own infrastructure at analytics.media-manipulator.com. It is the primary way we understand which tools are used, where they fail, and what to build next.",
-          "We previously used Mixpanel and Firebase Analytics. Both have been removed, as has Firebase Performance monitoring. Firebase is now used only for account sign-in."
+          "Media Manipulator משתמשת באנליטיקה עצמאית משלה (first-party), שנבנתה ומופעלת על ידינו ומתארחת על התשתית שלנו בכתובת analytics.media-manipulator.com. זוהי הדרך העיקרית שבה אנו מבינים אילו כלים נמצאים בשימוש, היכן הם נכשלים, ומה לפתח בהמשך.",
+          "בעבר השתמשנו ב־Mixpanel וב־Firebase Analytics. שניהם הוסרו, וכך גם ניטור הביצועים של Firebase. כיום Firebase משמש רק להתחברות לחשבון."
         ],
         "subsections": [
           {
-            "title": "6.1 What our analytics collects",
+            "title": "6.1 מה האנליטיקה שלנו אוספת",
             "paragraphs": [
-              "When you have consented to analytics, we record events such as:"
+              "כאשר הסכמתם לאנליטיקה, אנו מתעדים אירועים כגון:"
             ],
             "bullets": [
-              "pages viewed and how long you were actively engaged with them;",
-              "which tool you used, and the outcome — file selected, upload started or failed, job started, completed or failed, result previewed, download started or completed;",
-              "the file extension, file size, and media kind of the file you processed;",
-              "the tool settings you chose;",
-              "account events: an account was created, signed in to, or signed out of;",
-              "page performance measurements (Core Web Vitals) and client-side errors;",
-              "your device type, browser and version, operating system, viewport size, language, and time zone;",
-              "the referring website and any campaign parameters in the link you arrived through;",
-              "your country, region, and city, derived from your IP address;",
-              "your account tier at the time of each event."
+              "עמודים שנצפו ומשך הזמן שבו הייתם מעורבים באופן פעיל בהם;",
+              "באיזה כלי השתמשתם, והתוצאה — קובץ שנבחר, העלאה שהחלה או נכשלה, עבודה שהחלה, הושלמה או נכשלה, תוצאה שנצפתה בתצוגה מקדימה, הורדה שהחלה או הושלמה;",
+              "סיומת הקובץ, גודל הקובץ, וסוג המדיה של הקובץ שעיבדתם;",
+              "הגדרות הכלי שבחרתם;",
+              "אירועי חשבון: יצירת חשבון, התחברות אליו, או התנתקות ממנו;",
+              "מדידות ביצועי עמוד (Core Web Vitals) ושגיאות בצד הלקוח;",
+              "סוג המכשיר, הדפדפן ודגמו, מערכת ההפעלה, גודל אזור התצוגה, השפה, ואזור הזמן שלכם;",
+              "האתר המפנה וכל פרמטרי קמפיין בקישור שדרכו הגעתם;",
+              "המדינה, האזור והעיר שלכם, הנגזרים מכתובת ה־IP שלכם;",
+              "רמת החשבון שלכם בזמן כל אירוע."
             ],
             "afterBullets": [
-              "Each event carries an anonymous device identifier and a visit identifier so that a sequence of actions can be understood as one visit. If you are signed in, events are also associated with your account."
+              "כל אירוע נושא מזהה מכשיר אנונימי ומזהה ביקור, כך שרצף פעולות יכול להיות מובן כביקור אחד. אם אתם מחוברים, אירועים משויכים גם לחשבון שלכם."
             ]
           },
           {
-            "title": "6.2 What our analytics never collects",
+            "title": "6.2 מה האנליטיקה שלנו לעולם לא אוספת",
             "paragraphs": [
-              "These are technical guarantees enforced in our code, not just policy:"
+              "אלה ערבויות טכניות שנאכפות בקוד שלנו, לא רק במדיניות:"
             ],
             "bullets": [
-              "We do not store your IP address on analytics events. Your IP is used in memory to derive an approximate location and network operator, and is then discarded before the event is recorded.",
-              "We do not collect file names. Only the file extension is recorded.",
-              "We do not collect the contents of your files, transcripts, captions, summaries, or any AI-generated output.",
-              "We do not collect email addresses in event data. Anything resembling an email address is automatically removed, both in your browser and again on our server.",
-              "We do not use cookies for analytics. The identifiers described above are stored in your browser’s local storage, and our analytics endpoint is configured so that your browser cannot send cookies to it at all.",
-              "We do not sell or share your analytics data with anyone."
+              "איננו שומרים את כתובת ה־IP שלכם על גבי אירועי אנליטיקה. כתובת ה־IP שלכם משמשת בזיכרון בלבד לגזירת מיקום משוער ומפעיל רשת, ולאחר מכן נמחקת עוד לפני שהאירוע נרשם.",
+              "איננו אוספים שמות קבצים. רק סיומת הקובץ נרשמת.",
+              "איננו אוספים את תוכן הקבצים שלכם, תמלולים, כתוביות, סיכומים, או כל פלט שנוצר בבינה מלאכותית.",
+              "איננו אוספים כתובות אימייל בנתוני אירועים. כל דבר שדומה לכתובת אימייל מוסר אוטומטית, הן בדפדפן שלכם והן שוב בשרת שלנו.",
+              "איננו משתמשים בעוגיות לאנליטיקה. המזהים שתוארו לעיל נשמרים באחסון המקומי של הדפדפן שלכם, ונקודת הקצה של האנליטיקה שלנו מוגדרת כך שהדפדפן שלכם לא יכול לשלוח אליה עוגיות כלל.",
+              "איננו מוכרים או משתפים את נתוני האנליטיקה שלכם עם אף אחד."
             ]
           },
           {
-            "title": "6.3 How long we keep it",
+            "title": "6.3 כמה זמן אנו שומרים אותו",
             "bullets": [
-              "Individual events and visit records: 13 months, after which they are deleted automatically.",
-              "Device and account records: deleted after 25 months without activity.",
-              "Records of your consent choices: 5 years, because we are required to be able to demonstrate what you agreed to and when.",
-              "Aggregated daily statistics, which contain no identifiers and describe no individual: kept indefinitely."
+              "אירועים בודדים ורשומות ביקור: 13 חודשים, ולאחר מכן הם נמחקים אוטומטית.",
+              "רשומות מכשיר וחשבון: נמחקות לאחר 25 חודשים ללא פעילות.",
+              "רשומות בחירות ההסכמה שלכם: 5 שנים, מכיוון שאנו נדרשים להיות מסוגלים להוכיח למה הסכמתם ומתי.",
+              "סטטיסטיקות יומיות מצטברות, שאינן מכילות מזהים ואינן מתארות אדם כלשהו: נשמרות ללא הגבלת זמן."
             ]
           },
           {
             "title": "6.4 Google Analytics 4",
             "paragraphs": [
-              "We keep a deliberately minimal Google Analytics 4 configuration as an independent cross-check on our own numbers. Exactly three events are sent to Google: a page view, an account sign-up, and a completed job. Nothing else is forwarded, and it is subject to the same consent choice as our first-party analytics."
+              "אנו שומרים על תצורת Google Analytics 4 מינימלית בכוונה, כבדיקת הצלבה עצמאית מול הנתונים שלנו. בדיוק שלושה אירועים נשלחים ל־Google: צפייה בעמוד, הרשמה לחשבון, ועבודה שהושלמה. שום דבר אחר לא מועבר, וזה כפוף לאותה בחירת הסכמה כמו האנליטיקה העצמאית שלנו."
             ]
           },
           {
-            "title": "6.5 If you decline analytics",
+            "title": "6.5 אם אתם דוחים אנליטיקה",
             "paragraphs": [
-              "If you decline, we record no events about you at all. We keep a single count of how many times each page was viewed, broken down by country and date, with no identifier of any kind attached — individually or in combination, a row in that count cannot be traced to a person, a device, or a visit. It exists so that a change in how many people decline cannot be mistaken for a change in how many people visit."
+              "אם אתם דוחים, איננו מתעדים שום אירוע לגביכם כלל. אנו שומרים ספירה בודדת של כמה פעמים כל עמוד נצפה, מפולחת לפי מדינה ותאריך, בלי שום מזהה מכל סוג שהוא מצורף — בנפרד או בשילוב, שורה בספירה הזו לא יכולה להיות מיוחסת לאדם, למכשיר, או לביקור. היא קיימת כדי ששינוי במספר האנשים שדוחים לא ייחשב בטעות לשינוי במספר האנשים שמבקרים."
             ]
           },
           {
-            "title": "6.6 Identifiers we use regardless of your choice",
+            "title": "6.6 מזהים שבהם אנו משתמשים ללא קשר לבחירתכם",
             "paragraphs": [
-              "The anonymous device and visit identifiers described above are created whether or not you consent to analytics, because our API needs them to enforce free-tier limits and to block abuse. That is a strictly necessary purpose and is not analytics: without them we could not offer the tools without an account. What your consent controls is whether we record behavioural events against those identifiers."
+              "מזהי המכשיר והביקור האנונימיים שתוארו לעיל נוצרים בין אם הסכמתם לאנליטיקה ובין אם לא, מכיוון שה־API שלנו זקוק להם כדי לאכוף מגבלות של המסלול החינמי ולחסום שימוש לרעה. זו מטרה הכרחית באופן מובהק ואינה אנליטיקה: בלעדיה לא היינו יכולים להציע את הכלים בלי חשבון. מה שההסכמה שלכם שולטת בו הוא האם אנו מתעדים אירועים התנהגותיים כנגד המזהים הללו."
             ]
           }
         ]
       },
       {
-        "title": "7. Legal Basis for Processing",
+        "title": "7. הבסיס המשפטי לעיבוד",
         "paragraphs": [
-          "Depending on where you are located, we may process personal information based on one or more legal bases, including:"
+          "בהתאם למיקומכם, אנו עשויים לעבד מידע אישי בהתבסס על בסיס משפטי אחד או יותר, לרבות:"
         ],
         "bullets": [
-          "providing the service requested by the user;",
-          "our legitimate interests in operating, securing, improving, and monetizing the website;",
-          "compliance with legal obligations;",
-          "user consent where required, including for certain cookies, analytics, personalized advertising, or AI-related processing."
+          "מתן השירות שהמשתמש ביקש;",
+          "האינטרסים הלגיטימיים שלנו בהפעלת האתר, אבטחתו, שיפורו, ומיצויו הכלכלי;",
+          "ציות לחובות משפטיות;",
+          "הסכמת המשתמש במקומות שבהם היא נדרשת, לרבות עבור עוגיות מסוימות, אנליטיקה, פרסום מותאם אישית, או עיבוד הקשור לבינה מלאכותית."
         ],
         "afterBullets": [
-          "For first-party analytics specifically: in the EEA, the UK and Switzerland we rely on your consent and collect nothing until you have given it. In the United States we rely on notice and your right to opt out, which is available at any time from the footer. Where we cannot determine your location, we treat you as requiring consent.",
-          "The anonymous device and visit identifiers used to enforce free-tier limits and prevent abuse rely on our legitimate interest in operating and securing the service, and on providing the service you requested. Records of your consent choices are kept to comply with a legal obligation to be able to demonstrate them."
+          "באשר לאנליטיקה העצמאית שלנו באופן ספציפי: באזור הכלכלי האירופי (EEA), בבריטניה ובשווייץ אנו מסתמכים על הסכמתכם ולא אוספים דבר עד שתיתנו אותה. בארצות הברית אנו מסתמכים על הודעה ועל זכותכם להסיר את הסכמתכם, הזמינה בכל עת מהכותרת התחתונה. במקומות שבהם איננו יכולים לקבוע את מיקומכם, אנו מתייחסים אליכם כאל מי שנדרשת הסכמתו.",
+          "מזהי המכשיר והביקור האנונימיים המשמשים לאכיפת מגבלות המסלול החינמי ולמניעת שימוש לרעה מסתמכים על האינטרס הלגיטימי שלנו בהפעלת השירות ואבטחתו, ועל מתן השירות שביקשתם. רשומות בחירות ההסכמה שלכם נשמרות לצורך ציות לחובה משפטית להיות מסוגלים להוכיח אותן."
         ]
       },
       {
-        "title": "8. Sharing Information",
+        "title": "8. שיתוף מידע",
         "paragraphs": [
-          "We may share information with:"
+          "אנו עשויים לשתף מידע עם:"
         ],
         "bullets": [
-          "hosting and cloud infrastructure providers;",
-          "file storage and processing providers;",
-          "analytics providers;",
-          "advertising partners;",
-          "security, abuse-detection, and content-safety providers;",
-          "AI processing is performed locally on our own servers or infrastructure that we control, and we do not share uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans with third-party AI providers for AI processing;",
-          "payment processors, if paid accounts are introduced;",
-          "law enforcement, regulators, or authorities when required by law or when necessary to report suspected illegal content;",
-          "professional advisors, such as attorneys, accountants, or security consultants;",
-          "business successors in the event of a merger, acquisition, financing, reorganization, or sale of assets."
+          "ספקי אחסון ותשתית ענן;",
+          "ספקי אחסון ועיבוד קבצים;",
+          "ספקי אנליטיקה;",
+          "שותפי פרסום;",
+          "ספקי אבטחה, איתור שימוש לרעה, ובטיחות תוכן;",
+          "עיבוד בבינה מלאכותית מתבצע באופן מקומי על השרתים שלנו או על תשתית שבשליטתנו, ואיננו משתפים קבצים שהועלו, פלטים שנוצרו, תמלולים, סיכומים, תיאורים, או סריקות בטיחות תוכן עם ספקי בינה מלאכותית חיצוניים לצורך עיבוד בבינה מלאכותית;",
+          "מעבדי תשלומים, אם ייכנסו לשימוש חשבונות בתשלום;",
+          "רשויות אכיפת חוק, רגולטורים, או רשויות אחרות כאשר נדרש על פי דין או כאשר יש צורך לדווח על תוכן החשוד כבלתי חוקי;",
+          "יועצים מקצועיים, כגון עורכי דין, רואי חשבון, או יועצי אבטחה;",
+          "יורשים עסקיים במקרה של מיזוג, רכישה, מימון, ארגון מחדש, או מכירת נכסים."
         ],
         "afterBullets": [
-          "We do not sell uploaded files."
+          "איננו מוכרים קבצים שהועלו."
         ]
       },
       {
-        "title": "9. User Responsibilities",
+        "title": "9. אחריות המשתמש",
         "paragraphs": [
-          "Users are responsible for the content they upload, process, convert, edit, transcribe, summarize, or download through Media Manipulator.",
-          "Users must not upload content that:"
+          "המשתמשים אחראים לתוכן שהם מעלים, מעבדים, ממירים, עורכים, מתמללים, מסכמים, או מורידים באמצעות Media Manipulator.",
+          "על המשתמשים לא להעלות תוכן ש:"
         ],
         "bullets": [
-          "they do not own or have permission to process;",
-          "infringes copyrights, trademarks, privacy rights, publicity rights, or other legal rights;",
-          "contains child sexual abuse material or exploitation;",
-          "contains malware, viruses, or harmful code;",
-          "is illegal to possess, process, upload, distribute, or transmit;",
-          "violates our Terms of Service or Acceptable Use rules."
+          "אינם הבעלים שלו או שאין להם היתר לעבד אותו;",
+          "מפר זכויות יוצרים, סימני מסחר, זכויות פרטיות, זכויות פרסום, או זכויות משפטיות אחרות;",
+          "מכיל חומר של ניצול או התעללות מינית בקטינים;",
+          "מכיל תוכנות זדוניות, וירוסים, או קוד מזיק;",
+          "אינו חוקי להחזקה, עיבוד, העלאה, הפצה, או העברה;",
+          "מפר את תנאי השימוש שלנו או את כללי השימוש המקובל."
         ],
         "afterBullets": [
-          "Use of Media Manipulator does not transfer ownership of uploaded content to us."
+          "שימוש ב־Media Manipulator אינו מעביר אלינו בעלות על תוכן שהועלה."
         ]
       },
       {
-        "title": "10. Security",
+        "title": "10. אבטחה",
         "paragraphs": [
-          "We use reasonable technical and organizational measures designed to protect uploaded files, generated outputs, logs, and other information from unauthorized access, misuse, loss, or disclosure.",
-          "However, no online service, storage system, or transmission method is completely secure. Users should avoid uploading highly sensitive, confidential, or legally restricted content unless they understand and accept the risks."
+          "אנו נוקטים אמצעים טכניים וארגוניים סבירים שנועדו להגן על קבצים שהועלו, פלטים שנוצרו, יומנים, ומידע אחר מפני גישה בלתי מורשית, שימוש לרעה, אובדן, או חשיפה.",
+          "עם זאת, שום שירות מקוון, מערכת אחסון, או שיטת העברה אינם מאובטחים לחלוטין. על המשתמשים להימנע מהעלאת תוכן רגיש במיוחד, סודי, או מוגבל מבחינה משפטית, אלא אם הם מבינים ומקבלים את הסיכונים."
         ]
       },
       {
-        "title": "11. Children’s Privacy",
+        "title": "11. פרטיות ילדים",
         "paragraphs": [
-          "Media Manipulator is not intended for children under the age of 13, or the minimum age required by applicable law in the user’s jurisdiction.",
-          "We do not knowingly collect personal information from children. If we learn that we have collected personal information from a child without appropriate consent, we will take steps to delete it."
+          "Media Manipulator אינו מיועד לילדים מתחת לגיל 13, או לגיל המינימלי הנדרש על פי הדין החל בתחום השיפוט של המשתמש.",
+          "איננו אוספים ביודעין מידע אישי מילדים. אם נגלה שאספנו מידע אישי מילד ללא הסכמה מתאימה, ננקוט צעדים למחיקתו."
         ]
       },
       {
-        "title": "12. International Users",
+        "title": "12. משתמשים בין־לאומיים",
         "paragraphs": [
-          "Media Manipulator may be operated from the United States or other locations. If you access the website from outside the United States, your information may be processed in countries that may have different data protection laws than your country of residence.",
-          "By using Media Manipulator, you understand that your information may be transferred to and processed in the United States or other jurisdictions."
+          "ייתכן ש־Media Manipulator מופעל מתוך ארצות הברית או ממיקומים אחרים. אם אתם ניגשים לאתר מחוץ לארצות הברית, ייתכן שהמידע שלכם יעובד במדינות שבהן חוקי הגנת מידע שונים מאלה של מדינת מגוריכם.",
+          "בשימושכם ב־Media Manipulator, אתם מבינים שהמידע שלכם עשוי להיות מועבר ומעובד בארצות הברית או בתחומי שיפוט אחרים."
         ]
       },
       {
-        "title": "13. Your Choices and Rights",
+        "title": "13. הבחירות והזכויות שלכם",
         "paragraphs": [
-          "Depending on your location, you may have rights regarding your personal information, such as the right to:"
+          "בהתאם למיקומכם, ייתכן שיש לכם זכויות בנוגע למידע האישי שלכם, כגון הזכות:"
         ],
         "bullets": [
-          "request access to personal information we maintain about you;",
-          "request correction or deletion;",
-          "object to or restrict certain processing;",
-          "withdraw consent where processing is based on consent;",
-          "opt out of certain advertising or analytics technologies;",
-          "request a copy of your information."
+          "לבקש גישה למידע אישי שאנו מחזיקים לגביכם;",
+          "לבקש תיקון או מחיקה;",
+          "להתנגד לעיבוד מסוים או להגבילו;",
+          "למשוך הסכמה במקומות שבהם העיבוד מבוסס על הסכמה;",
+          "להסיר את עצמכם מטכנולוגיות פרסום או אנליטיקה מסוימות;",
+          "לבקש עותק של המידע שלכם."
         ],
         "afterBullets": [
-          "You can change your analytics choice at any time from “Cookie settings” in the footer. If you are in the United States, “Do Not Sell or Share My Personal Information” in the footer opts you out of any sharing for advertising purposes.",
-          "You can export or delete your analytics data yourself, immediately, from “Cookie settings” in the footer under “Your data”. Export downloads a complete copy of what our analytics holds about you as a file; Delete permanently erases your analytics history and gives your browser a brand-new anonymous ID. If you are signed in, both cover every device linked to your account. Because these tools act immediately, they satisfy the response periods the applicable law allows (30 days under CPRA, one month under the GDPR) by construction. You can also email us using the details below and we will do the same on your behalf within those periods.",
-          "One category of records survives deletion: the log of your own consent and opt-out choices. Laws that let you delete your data also require us to be able to prove how we handled your choices (GDPR Article 17(3)(b)), so those records are kept for five years and then deleted. They contain your choices and when you made them — not your browsing activity.",
-          "Because uploaded files and generated outputs are temporary and are deleted after a maximum of 24 hours, we may not be able to retrieve or provide access to files after deletion."
+          "תוכלו לשנות את בחירת האנליטיקה שלכם בכל עת מ״הגדרות עוגיות״ בכותרת התחתונה. אם אתם נמצאים בארצות הברית, הקישור ״אל תמכרו או תשתפו את המידע האישי שלי״ בכותרת התחתונה מסיר אתכם מכל שיתוף למטרות פרסום.",
+          "תוכלו לייצא או למחוק את נתוני האנליטיקה שלכם בעצמכם, מיידית, מ״הגדרות עוגיות״ בכותרת התחתונה תחת ״הנתונים שלכם״. ייצוא מוריד עותק מלא של מה שהאנליטיקה שלנו מחזיקה לגביכם כקובץ; מחיקה מוחקת לצמיתות את היסטוריית האנליטיקה שלכם ומעניקה לדפדפן שלכם מזהה אנונימי חדש לגמרי. אם אתם מחוברים, שתי הפעולות מכסות כל מכשיר המקושר לחשבון שלכם. מכיוון שכלים אלה פועלים מיידית, הם עומדים מעצם טבעם בתקופות המענה שהדין החל מאפשר (30 יום לפי CPRA, חודש אחד לפי GDPR). תוכלו גם לשלוח לנו אימייל באמצעות הפרטים שלמטה, ואנו נעשה את אותו הדבר בשמכם בתוך אותן תקופות.",
+          "קטגוריה אחת של רשומות שורדת מחיקה: יומן בחירות ההסכמה וההסרה שלכם עצמכם. חוקים שמאפשרים לכם למחוק את הנתונים שלכם מחייבים אותנו גם להיות מסוגלים להוכיח כיצד טיפלנו בבחירותיכם (סעיף 17(3)(ב) ל־GDPR), ולכן רשומות אלה נשמרות במשך חמש שנים ולאחר מכן נמחקות. הן מכילות את הבחירות שלכם ואת המועד שבו קיבלתן — לא את פעילות הגלישה שלכם.",
+          "מכיוון שקבצים שהועלו ופלטים שנוצרו הם זמניים ונמחקים לאחר 24 שעות לכל היותר, ייתכן שלא נוכל לשחזר או לספק גישה לקבצים לאחר המחיקה."
         ]
       },
       {
-        "title": "14. Do Not Track and Global Privacy Control",
+        "title": "14. Do Not Track ובקרת פרטיות גלובלית",
         "paragraphs": [
-          "Media Manipulator honours Global Privacy Control (GPC). If your browser or an extension sends a GPC signal, we automatically treat it as an opt-out of any sale or sharing of your personal information for advertising purposes, we apply it on every visit — including overriding an advertising opt-in you may have given previously — and we record that we did so.",
-          "GPC is an opt-out of sale and sharing. It does not switch off our first-party analytics, because analytics we run on our own domain for our own product decisions is neither a sale nor a share. Analytics is a separate choice, available at any time from “Cookie settings” in the footer.",
-          "We do not respond to the older “Do Not Track” browser signal. No standard was ever agreed for how sites should interpret it and no regulator gave it legal effect; GPC is the signal that carries weight, and it is the one we honour."
+          "Media Manipulator מכבדת את Global Privacy Control (GPC). אם הדפדפן שלכם או תוסף שולחים אות GPC, אנו מתייחסים אליו אוטומטית כהסרה מכל מכירה או שיתוף של המידע האישי שלכם למטרות פרסום, אנו מיישמים אותו בכל ביקור — לרבות ביטול של הסכמה לפרסום שאולי נתתם קודם לכן — ואנו מתעדים שעשינו זאת.",
+          "GPC הוא הסרה ממכירה ושיתוף. הוא אינו מכבה את האנליטיקה העצמאית שלנו, מכיוון שאנליטיקה שאנו מריצים בדומיין שלנו לצורך החלטות מוצר משלנו אינה מהווה מכירה או שיתוף. אנליטיקה היא בחירה נפרדת, הזמינה בכל עת מ״הגדרות עוגיות״ בכותרת התחתונה.",
+          "איננו מגיבים לאות הדפדפן הישן יותר ״Do Not Track״. מעולם לא הוסכם על תקן לגבי האופן שבו אתרים אמורים לפרש אותו, ואף רגולטור לא העניק לו תוקף משפטי; GPC הוא האות שנושא משקל, והוא זה שאנו מכבדים."
         ]
       },
       {
-        "title": "15. Changes to This Privacy Policy",
+        "title": "15. שינויים במדיניות פרטיות זו",
         "paragraphs": [
-          "We may update this Privacy Policy from time to time. When we make changes, we will update the “Last Updated” date at the top of this page.",
-          "If we make material changes, we may provide additional notice, such as by posting a notice on the website.",
-          "Your continued use of Media Manipulator after changes are posted means you accept the updated Privacy Policy."
+          "אנו עשויים לעדכן מדיניות פרטיות זו מעת לעת. כאשר אנו מבצעים שינויים, נעדכן את התאריך ״עודכן לאחרונה״ בראש עמוד זה.",
+          "אם אנו מבצעים שינויים מהותיים, אנו עשויים לספק הודעה נוספת, כגון פרסום הודעה באתר.",
+          "המשך השימוש שלכם ב־Media Manipulator לאחר פרסום שינויים משמעו שאתם מקבלים את מדיניות הפרטיות המעודכנת."
         ]
       },
       {
-        "title": "16. Contact Us",
+        "title": "16. צרו קשר",
         "paragraphs": [
-          "If you have questions about this Privacy Policy or how Media Manipulator handles information, contact us at:"
+          "אם יש לכם שאלות לגבי מדיניות פרטיות זו או לגבי האופן שבו Media Manipulator מטפל במידע, צרו איתנו קשר בכתובת:"
         ],
         "contactBlock": true,
         "contactEmail": "privacy@media-manipulator.com"
@@ -869,452 +869,452 @@
     ]
   },
   "termsOfService": {
-    "title": "Terms of Service and Acceptable Use Policy",
-    "intro": "Media Manipulator is owned and operated by CreaTV Ltd. (“CreaTV,” “Media Manipulator,” “we,” “us,” or “our”).",
-    "scope": "These Terms of Service and Acceptable Use Policy (“Terms”) govern your access to and use of Media Manipulator, including our website, browser-based tools, server-assisted processing tools, media conversion tools, image tools, video tools, audio tools, metadata tools, AI-assisted features, downloadable outputs, and related services.",
-    "agreement": "By accessing or using Media Manipulator, you agree to these Terms. If you do not agree to these Terms, do not use Media Manipulator.",
+    "title": "תנאי שימוש ומדיניות שימוש מקובל",
+    "intro": "Media Manipulator בבעלותה ובתפעולה של CreaTV Ltd. (״CreaTV״, ״Media Manipulator״, ״אנחנו״, ״אנו״ או ״שלנו״).",
+    "scope": "תנאי שימוש ומדיניות שימוש מקובל אלה (״התנאים״) מסדירים את הגישה שלכם ל־Media Manipulator ואת השימוש בו, לרבות האתר שלנו, כלים מבוססי דפדפן, כלי עיבוד מסייעי שרת, כלי המרת מדיה, כלי תמונה, כלי וידאו, כלי אודיו, כלי מטא־נתונים, תכונות מבוססות בינה מלאכותית, פלטים הניתנים להורדה, ושירותים נלווים.",
+    "agreement": "בגישה או בשימוש ב־Media Manipulator, אתם מסכימים לתנאים אלה. אם אינכם מסכימים לתנאים אלה, אל תשתמשו ב־Media Manipulator.",
     "sections": [
       {
-        "title": "1. The Service",
+        "title": "1. השירות",
         "paragraphs": [
-          "Media Manipulator provides tools for editing, converting, compressing, cropping, trimming, filtering, analyzing, transcribing, summarizing, describing, and otherwise processing image, video, audio, and related media files.",
-          "Features may include, but are not limited to:"
+          "Media Manipulator מספקת כלים לעריכה, המרה, דחיסה, חיתוך, גזירה, סינון, ניתוח, תמלול, סיכום, תיאור, ועיבוד אחר של קובצי תמונה, וידאו, אודיו, ומדיה נלווית.",
+          "התכונות עשויות לכלול, בין היתר:"
         ],
         "bullets": [
-          "image conversion, cropping, resizing, compression, and filtering;",
-          "video trimming, cutting, splicing, conversion, compression, and formatting;",
-          "audio cleanup, conversion, compression, and processing;",
-          "metadata and EXIF inspection;",
-          "metadata and EXIF removal;",
-          "AI-assisted transcription, caption generation, summaries, and descriptions;",
-          "content-safety classification and abuse-prevention scanning;",
-          "temporary conversion history and downloadable processed outputs."
+          "המרת תמונות, חיתוך, שינוי גודל, דחיסה וסינון;",
+          "גזירת וידאו, חיתוך, חיבור, המרה, דחיסה ועיצוב;",
+          "ניקוי אודיו, המרה, דחיסה ועיבוד;",
+          "בדיקת מטא־נתונים ו־EXIF;",
+          "הסרת מטא־נתונים ו־EXIF;",
+          "תמלול, יצירת כתוביות, סיכומים ותיאורים בסיוע בינה מלאכותית;",
+          "סיווג בטיחות תוכן וסריקת מניעת שימוש לרעה;",
+          "היסטוריית המרות זמנית ופלטים מעובדים הניתנים להורדה."
         ],
         "afterBullets": [
-          "Some features may be browser-based, while others may require temporary upload and processing on our servers."
+          "חלק מהתכונות עשויות להיות מבוססות דפדפן, בעוד שאחרות עשויות לדרוש העלאה ועיבוד זמניים על השרתים שלנו."
         ]
       },
       {
-        "title": "2. Ownership and Operator",
+        "title": "2. בעלות ומפעיל",
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
       },
       {
-        "title": "3. Eligibility",
+        "title": "3. כשירות",
         "paragraphs": [
-          "You may use Media Manipulator only if you are legally able to enter into a binding agreement and only in compliance with these Terms and all applicable laws.",
-          "Media Manipulator is not intended for children under the age of 13, or the minimum age required by applicable law in your jurisdiction. By using the service, you represent that you are old enough to use Media Manipulator under applicable law.",
-          "If you use Media Manipulator on behalf of a company, organization, or other entity, you represent that you have authority to bind that entity to these Terms."
+          "תוכלו להשתמש ב־Media Manipulator רק אם אתם כשירים מבחינה משפטית להתקשר בהסכם מחייב, ורק בהתאם לתנאים אלה ולכל הדינים החלים.",
+          "Media Manipulator אינו מיועד לילדים מתחת לגיל 13, או לגיל המינימלי הנדרש על פי הדין החל בתחום השיפוט שלכם. בשימושכם בשירות, אתם מצהירים שאתם בגיל מספק לשימוש ב־Media Manipulator על פי הדין החל.",
+          "אם אתם משתמשים ב־Media Manipulator בשם חברה, ארגון, או ישות אחרת, אתם מצהירים שיש לכם סמכות לחייב את אותה ישות בתנאים אלה."
         ]
       },
       {
-        "title": "4. Your Responsibility for Uploaded Content",
+        "title": "4. האחריות שלכם לתוכן שהועלה",
         "paragraphs": [
-          "You are solely responsible for all files, media, metadata, text, prompts, instructions, inputs, outputs, and other content that you upload, submit, process, convert, edit, transcribe, summarize, generate, download, or otherwise use through Media Manipulator (“User Content”).",
-          "You represent and warrant that:"
+          "אתם אחראים באופן בלעדי לכל הקבצים, המדיה, המטא־נתונים, הטקסט, ההנחיות, ההוראות, הקלטים, הפלטים, ותוכן אחר שאתם מעלים, מגישים, מעבדים, ממירים, עורכים, מתמללים, מסכמים, יוצרים, מורידים, או משתמשים בהם בדרך אחרת באמצעות Media Manipulator (״תוכן משתמש״).",
+          "אתם מצהירים ומתחייבים כי:"
         ],
         "bullets": [
-          "you own your User Content or have all rights, licenses, permissions, and authority necessary to upload, process, convert, edit, analyze, transcribe, summarize, download, and otherwise use it through Media Manipulator;",
-          "your use of Media Manipulator will not violate any copyright, trademark, privacy right, publicity right, contractual right, or other legal right of any person or entity;",
-          "your User Content and use of Media Manipulator will comply with these Terms and all applicable laws;",
-          "you will not use Media Manipulator to create, process, store, transform, conceal, distribute, or facilitate illegal, abusive, infringing, harmful, or prohibited content."
+          "אתם הבעלים של תוכן המשתמש שלכם או שיש לכם את כל הזכויות, הרישיונות, ההיתרים והסמכות הנדרשים להעלאתו, עיבודו, המרתו, עריכתו, ניתוחו, תמלולו, סיכומו, הורדתו, ושימוש בו בדרך אחרת באמצעות Media Manipulator;",
+          "השימוש שלכם ב־Media Manipulator לא יפר זכויות יוצרים, סימני מסחר, זכויות פרטיות, זכויות פרסום, זכויות חוזיות, או כל זכות משפטית אחרת של כל אדם או ישות;",
+          "תוכן המשתמש שלכם והשימוש שלכם ב־Media Manipulator יעמדו בתנאים אלה ובכל הדינים החלים;",
+          "לא תשתמשו ב־Media Manipulator ליצירה, עיבוד, אחסון, המרה, הסתרה, הפצה, או סיוע ביצירת תוכן בלתי חוקי, פוגעני, מפר, מזיק, או אסור."
         ],
         "afterBullets": [
-          "We do not claim ownership of your uploaded files or generated outputs. However, you grant us a limited, temporary, non-exclusive license to host, process, analyze, scan, transform, convert, store, display, and make your User Content available as necessary to provide Media Manipulator, protect the service, enforce these Terms, comply with law, and operate related security and abuse-prevention systems."
+          "איננו טוענים לבעלות על הקבצים שהעליתם או על הפלטים שנוצרו. עם זאת, אתם מעניקים לנו רישיון מוגבל, זמני ולא בלעדי לארח, לעבד, לנתח, לסרוק, להמיר, לאחסן, להציג, ולהעמיד לרשות את תוכן המשתמש שלכם ככל שנדרש כדי לספק את Media Manipulator, להגן על השירות, לאכוף תנאים אלה, לציית לדין, ולהפעיל מערכות אבטחה ומניעת שימוש לרעה נלוות."
         ]
       },
       {
-        "title": "5. Temporary Storage and Deletion",
+        "title": "5. אחסון זמני ומחיקה",
         "paragraphs": [
-          "Uploaded files and generated outputs may be stored temporarily for a maximum of 24 hours to support session conversion history and allow you to download recent conversions during your session.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from our active systems, unless earlier deletion occurs or limited retention is legally required or reasonably necessary for security, abuse prevention, legal compliance, dispute resolution, or enforcement of these Terms.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer than 24 hours where reasonably necessary. These records are not intended to preserve full uploaded media files after the temporary retention period.",
-          "You are responsible for downloading and backing up any processed files you wish to keep. Media Manipulator is not a permanent storage, backup, archive, or hosting service."
+          "קבצים שהועלו ופלטים שנוצרו עשויים להישמר באופן זמני למשך 24 שעות לכל היותר, כדי לתמוך בהיסטוריית המרות של ההפעלה ולאפשר לכם להוריד המרות אחרונות במהלך ההפעלה שלכם.",
+          "לאחר שתקופת השמירה הזמנית פוקעת, קבצים שהועלו ופלטים שנוצרו נמחקים מהמערכות הפעילות שלנו, אלא אם מתבצעת מחיקה מוקדמת יותר או שנדרשת שמירה מוגבלת מטעמים משפטיים או שהיא נחוצה באופן סביר לצורכי אבטחה, מניעת שימוש לרעה, ציות משפטי, פתרון מחלוקות, או אכיפת תנאים אלה.",
+          "אנו עשויים לשמר יומנים טכניים מוגבלים, רשומות אבטחה, רשומות מניעת שימוש לרעה, רשומות אנליטיקה, או רשומות ציות משפטי למשך זמן ארוך יותר מ־24 שעות במקומות שבהם הדבר נחוץ באופן סביר. רשומות אלה אינן מיועדות לשמר קובצי מדיה מלאים שהועלו לאחר תקופת השמירה הזמנית.",
+          "אתם אחראים להורדה ולגיבוי של כל קובץ מעובד שברצונכם לשמור. Media Manipulator אינו שירות אחסון קבוע, גיבוי, ארכיון, או אירוח."
         ]
       },
       {
-        "title": "6. Local AI Processing",
+        "title": "6. עיבוד מקומי בבינה מלאכותית",
         "paragraphs": [
-          "Media Manipulator may use AI-assisted systems to provide features such as transcription, caption generation, summaries, descriptions, metadata analysis, media classification, and content-safety scanning.",
-          "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for AI processing.",
-          "AI-assisted features may be used to:"
+          "Media Manipulator עשויה להשתמש במערכות מבוססות בינה מלאכותית כדי לספק תכונות כגון תמלול, יצירת כתוביות, סיכומים, תיאורים, ניתוח מטא־נתונים, סיווג מדיה, וסריקת בטיחות תוכן.",
+          "כל עיבוד בבינה מלאכותית המשמש את Media Manipulator מתבצע באופן מקומי על השרתים שלנו או על תשתית שבשליטתנו. איננו מעבירים למיקור חוץ קבצים שהועלו, פלטים שנוצרו, תמלולים, סיכומים, תיאורים, או סריקות בטיחות תוכן לספקי בינה מלאכותית חיצוניים לצורך עיבוד בבינה מלאכותית.",
+          "תכונות מבוססות בינה מלאכותית עשויות לשמש כדי:"
         ],
         "bullets": [
-          "transcribe audio or video;",
-          "generate captions;",
-          "summarize content;",
-          "describe images, videos, or audio;",
-          "classify content for safety or brand suitability;",
-          "detect suspected illegal, prohibited, abusive, adult, violent, graphic, or otherwise advertiser-sensitive content;",
-          "help prevent misuse of the service."
+          "לתמלל אודיו או וידאו;",
+          "ליצור כתוביות;",
+          "לסכם תוכן;",
+          "לתאר תמונות, וידאו, או אודיו;",
+          "לסווג תוכן לצורכי בטיחות או התאמה למותג;",
+          "לאתר תוכן החשוד כבלתי חוקי, אסור, פוגעני, למבוגרים, אלים, גרפי, או רגיש למפרסמים בדרך אחרת;",
+          "לסייע במניעת שימוש לרעה בשירות."
         ],
         "afterBullets": [
-          "AI-generated outputs may be inaccurate, incomplete, misleading, or otherwise imperfect. You are responsible for reviewing any AI-generated output before relying on it.",
-          "You must not use AI-assisted features to create, alter, enhance, conceal, distribute, or facilitate illegal, abusive, infringing, deceptive, sexually exploitative, violent, hateful, or otherwise prohibited content."
+          "פלטים שנוצרו בבינה מלאכותית עשויים להיות לא מדויקים, חלקיים, מטעים, או לא מושלמים בדרך אחרת. אתם אחראים לבחון כל פלט שנוצר בבינה מלאכותית לפני הסתמכות עליו.",
+          "אין להשתמש בתכונות מבוססות בינה מלאכותית ליצירה, שינוי, שיפור, הסתרה, הפצה, או סיוע ביצירת תוכן בלתי חוקי, פוגעני, מפר, מטעה, מנצל מינית, אלים, שופע שנאה, או אסור בדרך אחרת."
         ]
       },
       {
-        "title": "7. Content Scanning and Safety Enforcement",
+        "title": "7. סריקת תוכן ואכיפת בטיחות",
         "paragraphs": [
-          "All uploads may be subject to automated scanning, classification, and review for security, abuse prevention, legal compliance, brand safety, advertiser protection, and detection or blocking of suspected illegal or prohibited content.",
-          "These scans may be used to identify or help prevent content involving, for example:"
+          "כל ההעלאות עשויות להיות כפופות לסריקה, סיווג וסקירה אוטומטיים לצורכי אבטחה, מניעת שימוש לרעה, ציות משפטי, בטיחות המותג, הגנה על מפרסמים, ואיתור או חסימה של תוכן החשוד כבלתי חוקי או אסור.",
+          "סריקות אלה עשויות לשמש לזיהוי או לסיוע במניעה של תוכן הכולל, לדוגמה:"
         ],
         "bullets": [
-          "suspected child sexual abuse material, child exploitation, or sexualization of minors;",
-          "malware, malicious files, viruses, or harmful code;",
-          "illegal content or activity;",
-          "non-consensual intimate imagery;",
-          "threats, harassment, abuse, or violent intimidation;",
-          "terrorist or extremist content;",
-          "hateful or discriminatory content;",
-          "graphic violence, gore, or shocking content;",
-          "adult, sexually explicit, or pornographic content;",
-          "content that appears to violate intellectual property rights;",
-          "content that violates these Terms or our Acceptable Use Policy."
+          "חומר החשוד כניצול או התעללות מינית בקטינים, ניצול קטינים, או מיניות קטינים;",
+          "תוכנות זדוניות, קבצים זדוניים, וירוסים, או קוד מזיק;",
+          "תוכן או פעילות בלתי חוקיים;",
+          "תמונות אינטימיות ללא הסכמה;",
+          "איומים, הטרדה, התעללות, או הפחדה אלימה;",
+          "תוכן טרוריסטי או קיצוני;",
+          "תוכן שופע שנאה או מפלה;",
+          "אלימות גרפית, זוועות, או תוכן מזעזע;",
+          "תוכן למבוגרים, בעל אופי מיני מפורש, או פורנוגרפי;",
+          "תוכן שנראה כמפר זכויות קניין רוחני;",
+          "תוכן המפר תנאים אלה או את כללי השימוש המקובל שלנו."
         ],
         "afterBullets": [
-          "If content is determined or suspected to be illegal, prohibited, abusive, unsafe, or in violation of these Terms, we may take any action we consider appropriate, including:"
+          "אם נקבע או קיים חשד שתוכן הוא בלתי חוקי, אסור, פוגעני, בלתי בטוח, או מפר את תנאים אלה, אנו רשאים לנקוט כל פעולה שאנו רואים לנכון, לרבות:"
         ],
         "secondBullets": [
-          "blocking upload, processing, conversion, preview, display, or download;",
-          "deleting the uploaded file or generated output;",
-          "disabling access to the service;",
-          "preserving limited records where legally required or reasonably necessary;",
-          "reporting suspected illegal content to appropriate authorities where required or permitted by law;",
-          "cooperating with legal process, law enforcement, regulators, or safety organizations where appropriate."
+          "חסימת העלאה, עיבוד, המרה, תצוגה מקדימה, הצגה, או הורדה;",
+          "מחיקת הקובץ שהועלה או הפלט שנוצר;",
+          "השבתת גישה לשירות;",
+          "שימור רשומות מוגבלות במקומות שבהם הדבר נדרש על פי דין או נחוץ באופן סביר;",
+          "דיווח על תוכן החשוד כבלתי חוקי לרשויות המוסמכות במקומות שבהם הדבר נדרש או מותר על פי דין;",
+          "שיתוף פעולה עם הליכים משפטיים, רשויות אכיפת חוק, רגולטורים, או ארגוני בטיחות, במקומות המתאימים."
         ],
         "afterSecondBullets": [
-          "If content is lawful but classified as adult, graphic, violent, shocking, or otherwise advertiser-sensitive, we may prevent that content from being displayed or previewed on the website in order to protect users, our brand, and advertisers. In some cases, where lawful and technically available, you may still be able to download the processed file.",
-          "We are not obligated to monitor all content, but we reserve the right to do so."
+          "אם תוכן הוא חוקי אך מסווג כתוכן למבוגרים, גרפי, אלים, מזעזע, או רגיש למפרסמים בדרך אחרת, אנו רשאים למנוע את הצגתו או תצוגתו המקדימה באתר על מנת להגן על המשתמשים, על המותג שלנו ועל המפרסמים. במקרים מסוימים, כאשר הדבר חוקי וזמין מבחינה טכנית, ייתכן שעדיין תוכלו להוריד את הקובץ המעובד.",
+          "איננו מחויבים לפקח על כל תוכן, אך אנו שומרים לעצמנו את הזכות לעשות זאת."
         ]
       },
       {
-        "title": "8. Acceptable Use Policy",
+        "title": "8. מדיניות שימוש מקובל",
         "paragraphs": [
-          "You agree not to use Media Manipulator for any unlawful, harmful, abusive, deceptive, infringing, exploitative, or prohibited purpose."
+          "אתם מסכימים שלא להשתמש ב־Media Manipulator לכל מטרה בלתי חוקית, מזיקה, פוגענית, מטעה, מפרה, מנצלת, או אסורה."
         ],
         "subsections": [
           {
-            "title": "8.1 Illegal Content and Activity",
+            "title": "8.1 תוכן ופעילות בלתי חוקיים",
             "paragraphs": [
-              "You must not upload, process, convert, edit, generate, download, or otherwise use Media Manipulator in connection with content or activity that is illegal under applicable law.",
-              "This includes, but is not limited to:"
+              "אין להעלות, לעבד, להמיר, לערוך, ליצור, להוריד, או להשתמש ב־Media Manipulator בדרך אחרת בקשר לתוכן או פעילות שאינם חוקיים על פי הדין החל.",
+              "זה כולל, בין היתר:"
             ],
             "bullets": [
-              "child sexual abuse material, child exploitation, or sexualization of minors;",
-              "non-consensual intimate imagery;",
-              "human trafficking, sexual exploitation, or coercive sexual content;",
-              "credible threats of violence;",
-              "instructions or facilitation for violent wrongdoing;",
-              "terrorist, extremist, or organized criminal activity;",
-              "illegal weapons activity;",
-              "illegal drug trafficking;",
-              "fraud, scams, phishing, or impersonation;",
-              "malware, viruses, credential theft, or harmful code;",
-              "attempts to conceal, launder, transform, or distribute illegal material."
+              "חומר של ניצול או התעללות מינית בקטינים, ניצול קטינים, או מיניות קטינים;",
+              "תמונות אינטימיות ללא הסכמה;",
+              "סחר בבני אדם, ניצול מיני, או תוכן מיני כפייתי;",
+              "איומים אמינים באלימות;",
+              "הוראות או סיוע למעשי אלימות פסולים;",
+              "פעילות טרוריסטית, קיצונית, או פשע מאורגן;",
+              "פעילות בלתי חוקית הקשורה לנשק;",
+              "סחר בלתי חוקי בסמים;",
+              "הונאה, תרמיות, דיוג (phishing), או התחזות;",
+              "תוכנות זדוניות, וירוסים, גניבת פרטי התחברות, או קוד מזיק;",
+              "ניסיונות להסתיר, להלבין, להמיר, או להפיץ חומר בלתי חוקי."
             ]
           },
           {
-            "title": "8.2 Child Safety",
+            "title": "8.2 בטיחות ילדים",
             "paragraphs": [
-              "You must not upload, process, convert, edit, generate, download, or otherwise use Media Manipulator in connection with any content that exploits, abuses, sexualizes, endangers, or harms minors.",
-              "We have zero tolerance for child sexual abuse material or child exploitation. Suspected violations may be reported to appropriate authorities where required or permitted by law."
+              "אין להעלות, לעבד, להמיר, לערוך, ליצור, להוריד, או להשתמש ב־Media Manipulator בדרך אחרת בקשר לתוכן המנצל קטינים, מתעלל בהם, הופך אותם למושא מיני, מסכן אותם, או פוגע בהם.",
+              "אין לנו סובלנות אפס כלפי חומר של ניצול או התעללות מינית בקטינים או ניצול קטינים. הפרות חשודות עשויות להיות מדווחות לרשויות המוסמכות במקומות שבהם הדבר נדרש או מותר על פי דין."
             ]
           },
           {
-            "title": "8.3 Adult and Sexually Explicit Content",
+            "title": "8.3 תוכן למבוגרים ובעל אופי מיני מפורש",
             "paragraphs": [
-              "You must not use Media Manipulator to create, alter, enhance, process, distribute, or facilitate sexually explicit, pornographic, exploitative, or non-consensual sexual content in violation of applicable law or these Terms.",
-              "You must not use Media Manipulator to create or facilitate:"
+              "אין להשתמש ב־Media Manipulator ליצירה, שינוי, שיפור, עיבוד, הפצה, או סיוע ביצירת תוכן בעל אופי מיני מפורש, פורנוגרפי, מנצל, או תוכן מיני ללא הסכמה, בניגוד לדין החל או לתנאים אלה.",
+              "אין להשתמש ב־Media Manipulator ליצירה או סיוע ביצירה של:"
             ],
             "bullets": [
-              "non-consensual intimate imagery;",
-              "sexual deepfakes;",
-              "synthetic sexual content involving real people without consent;",
-              "sexualized content involving minors;",
-              "content promoting sexual exploitation or coercion;",
-              "tools, edits, or transformations intended to undress, sexualize, or exploit a person."
+              "תמונות אינטימיות ללא הסכמה;",
+              "דיפפייקים (deepfakes) בעלי אופי מיני;",
+              "תוכן מיני סינתטי הכולל אנשים אמיתיים ללא הסכמתם;",
+              "תוכן בעל אופי מיני הכולל קטינים;",
+              "תוכן המקדם ניצול מיני או כפייה;",
+              "כלים, עריכות, או המרות שמטרתם להפשיט אדם, להפוך אותו למושא מיני, או לנצל אותו."
             ],
             "afterBullets": [
-              "Media Manipulator is not an adult-content service and may block, suppress previews of, delete, or restrict content classified as adult, sexually explicit, or advertiser-sensitive."
+              "Media Manipulator אינו שירות תוכן למבוגרים, ורשאי לחסום, להסתיר תצוגות מקדימות של, למחוק, או להגביל תוכן המסווג כתוכן למבוגרים, בעל אופי מיני מפורש, או רגיש למפרסמים."
             ]
           },
           {
-            "title": "8.4 Violence, Gore, and Graphic Content",
+            "title": "8.4 אלימות, זוועות, ותוכן גרפי",
             "paragraphs": [
-              "You must not use Media Manipulator to create, process, enhance, distribute, or facilitate content that promotes, glorifies, instructs, or encourages violence, self-harm, torture, abuse, or graphic injury.",
-              "We may restrict, suppress previews of, block, or delete graphic, violent, shocking, or gore-related content, even if the underlying content may be lawful, in order to protect users, our brand, and advertisers."
+              "אין להשתמש ב־Media Manipulator ליצירה, עיבוד, שיפור, הפצה, או סיוע ביצירת תוכן המקדם, מפאר, מדריך, או מעודד אלימות, פגיעה עצמית, עינויים, התעללות, או פציעה גרפית.",
+              "אנו רשאים להגביל, להסתיר תצוגות מקדימות של, לחסום, או למחוק תוכן גרפי, אלים, מזעזע, או הקשור לזוועות, גם אם התוכן הבסיסי עשוי להיות חוקי, על מנת להגן על המשתמשים, על המותג שלנו ועל המפרסמים."
             ]
           },
           {
-            "title": "8.5 Hate, Harassment, and Abuse",
+            "title": "8.5 שנאה, הטרדה, והתעללות",
             "paragraphs": [
-              "You must not use Media Manipulator to create, process, distribute, or facilitate content that promotes hatred, harassment, abuse, discrimination, dehumanization, or violence against individuals or groups based on protected characteristics or other sensitive attributes.",
-              "You must not use Media Manipulator to threaten, stalk, harass, intimidate, dox, impersonate, or abuse another person."
+              "אין להשתמש ב־Media Manipulator ליצירה, עיבוד, הפצה, או סיוע ביצירת תוכן המקדם שנאה, הטרדה, התעללות, אפליה, הפשטת אנושיות, או אלימות כלפי יחידים או קבוצות על בסיס מאפיינים מוגנים או תכונות רגישות אחרות.",
+              "אין להשתמש ב־Media Manipulator כדי לאיים, לעקוב אחרי, להטריד, להפחיד, לחשוף פרטים מזהים (doxing), להתחזות, או להתעלל באדם אחר."
             ]
           },
           {
-            "title": "8.6 Copyright, Trademark, and Intellectual Property",
+            "title": "8.6 זכויות יוצרים, סימני מסחר, וקניין רוחני",
             "paragraphs": [
-              "You must not upload, process, convert, edit, transcribe, summarize, distribute, or download content unless you own the content or have the necessary rights and permissions.",
-              "You must not use Media Manipulator to:"
+              "אין להעלות, לעבד, להמיר, לערוך, לתמלל, לסכם, להפיץ, או להוריד תוכן אלא אם אתם הבעלים של התוכן או שיש לכם את הזכויות וההיתרים הנדרשים.",
+              "אין להשתמש ב־Media Manipulator כדי:"
             ],
             "bullets": [
-              "infringe copyrights, trademarks, trade secrets, privacy rights, publicity rights, or other legal rights;",
-              "bypass digital rights management, copy protection, access controls, or paywalls;",
-              "rip, download, transform, or redistribute movies, TV shows, music, software, courses, livestreams, or other protected works without permission;",
-              "remove, obscure, or alter watermarks, copyright notices, attribution, or rights-management information for infringing purposes;",
-              "facilitate piracy or unauthorized distribution of protected works."
+              "להפר זכויות יוצרים, סימני מסחר, סודות מסחריים, זכויות פרטיות, זכויות פרסום, או זכויות משפטיות אחרות;",
+              "לעקוף ניהול זכויות דיגיטלי (DRM), הגנת העתקה, בקרות גישה, או חומות תשלום;",
+              "לחלץ, להוריד, להמיר, או להפיץ מחדש סרטים, תוכניות טלוויזיה, מוזיקה, תוכנה, קורסים, שידורים חיים, או יצירות מוגנות אחרות ללא היתר;",
+              "להסיר, להסתיר, או לשנות סימני מים, הודעות זכויות יוצרים, ייחוס, או מידע ניהול זכויות למטרות מפרות;",
+              "לסייע בפיראטיות או בהפצה בלתי מורשית של יצירות מוגנות."
             ],
             "afterBullets": [
-              "Media Manipulator is intended for processing files you own, files you created, files you are authorized to edit, or files that are lawfully available for your intended use."
+              "Media Manipulator מיועד לעיבוד קבצים שבבעלותכם, קבצים שיצרתם, קבצים שיש לכם היתר לערוך, או קבצים הזמינים באופן חוקי לשימוש המיועד שלכם."
             ]
           },
           {
-            "title": "8.7 Privacy and Personal Data",
+            "title": "8.7 פרטיות ומידע אישי",
             "paragraphs": [
-              "You must not use Media Manipulator to violate another person’s privacy or data protection rights.",
-              "You must not upload or process highly sensitive personal data, confidential information, private images, private videos, biometric identifiers, government identification documents, medical records, financial records, or other sensitive information unless you have the legal right and authority to do so.",
-              "You must not use Media Manipulator to expose, extract, publish, exploit, or misuse private information about another person."
+              "אין להשתמש ב־Media Manipulator כדי להפר את פרטיותו של אדם אחר או את זכויות הגנת המידע שלו.",
+              "אין להעלות או לעבד מידע אישי רגיש במיוחד, מידע סודי, תמונות פרטיות, סרטוני וידאו פרטיים, מזהים ביומטריים, מסמכי זיהוי ממשלתיים, רשומות רפואיות, רשומות פיננסיות, או מידע רגיש אחר, אלא אם יש לכם את הזכות והסמכות החוקית לעשות זאת.",
+              "אין להשתמש ב־Media Manipulator כדי לחשוף, לחלץ, לפרסם, לנצל, או לעשות שימוש לרעה במידע פרטי על אדם אחר."
             ]
           },
           {
-            "title": "8.8 Security and Abuse",
+            "title": "8.8 אבטחה ושימוש לרעה",
             "paragraphs": [
-              "You must not interfere with, disrupt, attack, overload, scrape, reverse engineer, bypass, or misuse Media Manipulator or its infrastructure.",
-              "You must not:"
+              "אין להפריע, לשבש, לתקוף, להעמיס יתר על המידה, לגרד (scrape), להנדס לאחור, לעקוף, או לעשות שימוש לרעה ב־Media Manipulator או בתשתית שלו.",
+              "אין:"
             ],
             "bullets": [
-              "attempt unauthorized access to our systems;",
-              "probe, scan, or test vulnerabilities without written permission;",
-              "bypass rate limits, authentication, usage limits, paywalls, or technical restrictions;",
-              "automate abusive traffic;",
-              "use bots, scrapers, or automated tools in a way that harms the service;",
-              "upload malware, viruses, malicious scripts, or harmful payloads;",
-              "interfere with other users’ access to the service;",
-              "abuse temporary file storage or conversion history;",
-              "use the service as a file-hosting, file-sharing, CDN, malware analysis, or permanent storage system."
+              "לנסות גישה בלתי מורשית למערכות שלנו;",
+              "לבדוק, לסרוק, או לבחון נקודות תורפה ללא היתר בכתב;",
+              "לעקוף מגבלות קצב, אימות, מגבלות שימוש, חומות תשלום, או מגבלות טכניות;",
+              "להפוך תעבורה פוגענית לאוטומטית;",
+              "להשתמש בבוטים, בכלי גירוד (scrapers), או בכלים אוטומטיים באופן הפוגע בשירות;",
+              "להעלות תוכנות זדוניות, וירוסים, סקריפטים זדוניים, או מטענים מזיקים;",
+              "להפריע לגישתם של משתמשים אחרים לשירות;",
+              "לעשות שימוש לרעה באחסון קבצים זמני או בהיסטוריית המרות;",
+              "להשתמש בשירות כמערכת אירוח קבצים, שיתוף קבצים, CDN, ניתוח תוכנות זדוניות, או אחסון קבוע."
             ]
           },
           {
-            "title": "8.9 Advertising and Invalid Traffic",
+            "title": "8.9 פרסום ותעבורה לא תקינה",
             "paragraphs": [
-              "Media Manipulator may display advertisements. You must not interact with ads in a fraudulent, artificial, deceptive, or abusive way.",
-              "You must not:"
+              "Media Manipulator עשויה להציג פרסומות. אין לתקשר עם פרסומות באופן מרמה, מלאכותי, מטעה, או פוגעני.",
+              "אין:"
             ],
             "bullets": [
-              "click advertisements for the purpose of generating revenue for us;",
-              "encourage others to click advertisements;",
-              "use bots, scripts, automated tools, click farms, paid traffic schemes, or deceptive methods to generate ad impressions or ad clicks;",
-              "attempt to manipulate advertising systems, measurement, attribution, or reporting;",
-              "interfere with ad display, ad measurement, or advertiser safety systems."
+              "ללחוץ על פרסומות במטרה ליצור הכנסה עבורנו;",
+              "לעודד אחרים ללחוץ על פרסומות;",
+              "להשתמש בבוטים, בסקריפטים, בכלים אוטומטיים, בחוות קליקים, בתכניות תעבורה בתשלום, או בשיטות מטעות כדי ליצור חשיפות או קליקים על פרסומות;",
+              "לנסות לתפעל מערכות פרסום, מדידה, ייחוס, או דיווח;",
+              "להפריע להצגת פרסומות, למדידת פרסומות, או למערכות בטיחות מפרסמים."
             ],
             "afterBullets": [
-              "If you believe an ad is misleading, harmful, or inappropriate, you should report it through the available ad controls or contact us."
+              "אם אתם סבורים שפרסומת מסוימת מטעה, מזיקה, או בלתי הולמת, עליכם לדווח עליה באמצעות פקדי הפרסום הזמינים או ליצור איתנו קשר."
             ]
           },
           {
-            "title": "8.10 No Deceptive Download or Conversion Behavior",
+            "title": "8.10 בלי התנהגות הורדה או המרה מטעה",
             "paragraphs": [
-              "You must not use Media Manipulator to create or facilitate deceptive download buttons, fake update prompts, fake virus warnings, misleading conversion flows, fake system dialogs, or content designed to trick users into clicking ads, downloading unwanted software, or visiting unwanted websites.",
-              "Media Manipulator’s real download buttons, conversion buttons, and user interface controls are intended to be clearly distinguishable from advertisements."
+              "אין להשתמש ב־Media Manipulator ליצירה או סיוע ביצירה של כפתורי הורדה מטעים, הודעות עדכון מזויפות, אזהרות וירוס מזויפות, תהליכי המרה מטעים, תיבות דו־שיח מערכת מזויפות, או תוכן שנועד להטעות משתמשים ללחוץ על פרסומות, להוריד תוכנה לא רצויה, או לבקר באתרים לא רצויים.",
+              "כפתורי ההורדה האמיתיים, כפתורי ההמרה, ופקדי ממשק המשתמש של Media Manipulator מיועדים להיות ניתנים להבחנה בבירור מפרסומות."
             ]
           }
         ]
       },
       {
-        "title": "9. Account Registration and Future Paid Features",
+        "title": "9. רישום חשבון ותכונות בתשלום עתידיות",
         "paragraphs": [
-          "Media Manipulator may currently be available without an account for some features. In the future, we may offer accounts, paid subscriptions, premium features, higher usage limits, unlimited access, ad-free experiences, or other paid services.",
-          "If accounts or paid services are introduced, additional terms may apply, including payment terms, cancellation terms, refund terms, account security requirements, and subscription terms.",
-          "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account.",
-          "We reserve the right to suspend, restrict, or terminate accounts that violate these Terms, create legal risk, cause service abuse, or harm users, advertisers, our brand, or our infrastructure."
+          "ייתכן ש־Media Manipulator זמין כיום ללא חשבון עבור חלק מהתכונות. בעתיד, אנו עשויים להציע חשבונות, מנויים בתשלום, תכונות פרימיום, מגבלות שימוש גבוהות יותר, גישה בלתי מוגבלת, חוויות ללא פרסומות, או שירותים אחרים בתשלום.",
+          "אם ייכנסו לשימוש חשבונות או שירותים בתשלום, ייתכן שיחולו תנאים נוספים, לרבות תנאי תשלום, תנאי ביטול, תנאי החזר כספי, דרישות אבטחת חשבון, ותנאי מנוי.",
+          "אתם אחראים לשמירה על סודיות פרטי ההתחברות לחשבון שלכם ולכל פעילות המתבצעת תחת חשבונכם.",
+          "אנו שומרים לעצמנו את הזכות להשעות, להגביל, או לסיים חשבונות המפרים תנאים אלה, יוצרים סיכון משפטי, גורמים לשימוש לרעה בשירות, או פוגעים במשתמשים, במפרסמים, במותג שלנו, או בתשתית שלנו."
         ]
       },
       {
-        "title": "10. Service Availability and Changes",
+        "title": "10. זמינות השירות ושינויים",
         "paragraphs": [
-          "Media Manipulator is provided as a dynamic online service. We may modify, suspend, discontinue, limit, or change any feature, tool, format, storage period, usage limit, AI feature, processing capability, pricing model, or availability at any time.",
-          "We may impose usage limits, file size limits, file type restrictions, conversion limits, rate limits, account limits, or geographic restrictions.",
-          "We do not guarantee that Media Manipulator will always be available, uninterrupted, secure, error-free, or compatible with every file, format, codec, browser, device, or operating system."
+          "Media Manipulator מסופק כשירות מקוון דינמי. אנו רשאים לשנות, להשעות, להפסיק, להגביל, או לשנות כל תכונה, כלי, פורמט, תקופת אחסון, מגבלת שימוש, תכונת בינה מלאכותית, יכולת עיבוד, מודל תמחור, או זמינות, בכל עת.",
+          "אנו רשאים להטיל מגבלות שימוש, מגבלות גודל קובץ, הגבלות סוג קובץ, מגבלות המרה, מגבלות קצב, מגבלות חשבון, או הגבלות גאוגרפיות.",
+          "איננו מתחייבים ש־Media Manipulator יהיה זמין תמיד, בלתי מופרע, מאובטח, נטול שגיאות, או תואם לכל קובץ, פורמט, קודק, דפדפן, מכשיר, או מערכת הפעלה."
         ]
       },
       {
-        "title": "11. File Processing Limitations",
+        "title": "11. מגבלות עיבוד קבצים",
         "paragraphs": [
-          "Media processing can fail for many reasons, including unsupported formats, corrupted files, incompatible codecs, excessive file size, browser limitations, server limitations, timeout errors, network errors, or safety restrictions.",
-          "We do not guarantee that:"
+          "עיבוד מדיה עלול להיכשל מסיבות רבות, לרבות פורמטים לא נתמכים, קבצים פגומים, קודקים בלתי תואמים, גודל קובץ מוגזם, מגבלות דפדפן, מגבלות שרת, שגיאות פסק זמן, שגיאות רשת, או הגבלות בטיחות.",
+          "איננו מתחייבים כי:"
         ],
         "bullets": [
-          "every file can be processed;",
-          "every conversion will be successful;",
-          "output quality will meet your expectations;",
-          "metadata will always be completely removed;",
-          "AI transcripts, summaries, descriptions, or classifications will be accurate;",
-          "generated files will be suitable for any particular purpose;",
-          "temporary conversion history will always be available."
+          "כל קובץ יוכל להיות מעובד;",
+          "כל המרה תצליח;",
+          "איכות הפלט תעמוד בציפיותיכם;",
+          "מטא־נתונים תמיד יוסרו במלואם;",
+          "תמלולים, סיכומים, תיאורים, או סיווגים שנוצרו בבינה מלאכותית יהיו מדויקים;",
+          "קבצים שנוצרו יתאימו לכל מטרה מסוימת;",
+          "היסטוריית המרות זמנית תמיד תהיה זמינה."
         ],
         "afterBullets": [
-          "You should review all outputs before using, publishing, distributing, or relying on them."
+          "עליכם לבחון את כל הפלטים לפני שימוש בהם, פרסומם, הפצתם, או הסתמכות עליהם."
         ]
       },
       {
-        "title": "12. Intellectual Property Rights",
+        "title": "12. זכויות קניין רוחני",
         "paragraphs": [
-          "Media Manipulator, including its website, design, software, code, interface, branding, logos, text, graphics, features, workflows, and related materials, is owned by CreaTV Ltd. or its licensors and is protected by applicable intellectual property laws.",
-          "These Terms do not grant you ownership of Media Manipulator or any CreaTV Ltd. intellectual property.",
-          "You may not copy, modify, distribute, sell, lease, reverse engineer, or create derivative works from Media Manipulator except as permitted by law or with our written permission.",
-          "You retain ownership of your own uploaded files and generated outputs, subject to the rights and licenses granted in these Terms."
+          "Media Manipulator, לרבות האתר, העיצוב, התוכנה, הקוד, הממשק, המיתוג, הלוגואים, הטקסט, הגרפיקה, התכונות, תהליכי העבודה, והחומרים הנלווים שלו, הם בבעלות CreaTV Ltd. או מעניקי הרישיון שלה, ומוגנים על ידי חוקי קניין רוחני חלים.",
+          "תנאים אלה אינם מעניקים לכם בעלות על Media Manipulator או על כל קניין רוחני של CreaTV Ltd.",
+          "אין להעתיק, לשנות, להפיץ, למכור, להשכיר, להנדס לאחור, או ליצור יצירות נגזרות מ־Media Manipulator, אלא כפי שמותר על פי דין או בהיתר בכתב מאיתנו.",
+          "אתם שומרים על הבעלות על הקבצים שהעליתם ועל הפלטים שנוצרו, בכפוף לזכויות ולרישיונות שהוענקו בתנאים אלה."
         ]
       },
       {
-        "title": "13. Feedback",
+        "title": "13. משוב",
         "paragraphs": [
-          "If you provide comments, suggestions, ideas, bug reports, feature requests, or other feedback, you grant us a non-exclusive, worldwide, royalty-free, perpetual, irrevocable right to use that feedback without restriction or compensation to you."
+          "אם אתם מספקים הערות, הצעות, רעיונות, דיווחי באגים, בקשות לתכונות, או משוב אחר, אתם מעניקים לנו זכות לא בלעדית, כלל־עולמית, ללא תמלוגים, קבועה, ובלתי חוזרת, להשתמש במשוב זה ללא הגבלה או תמורה כלפיכם."
         ]
       },
       {
-        "title": "14. Copyright Complaints",
+        "title": "14. תלונות בנושא זכויות יוצרים",
         "paragraphs": [
-          "If you believe content processed, displayed, linked, or made available through Media Manipulator infringes your copyright or other intellectual property rights, you may contact us at:",
-          "Email: legal@media-manipulator.com",
-          "Your notice should include:"
+          "אם אתם סבורים שתוכן שעובד, הוצג, קושר, או הועמד לרשות באמצעות Media Manipulator מפר את זכויות היוצרים שלכם או זכויות קניין רוחני אחרות, תוכלו ליצור איתנו קשר בכתובת:",
+          "אימייל: legal@media-manipulator.com",
+          "ההודעה שלכם צריכה לכלול:"
         ],
         "bullets": [
-          "your name and contact information;",
-          "identification of the copyrighted work or protected material;",
-          "identification of the allegedly infringing material;",
-          "a statement that you have a good-faith belief that the use is not authorized;",
-          "a statement that the information in your notice is accurate;",
-          "your physical or electronic signature."
+          "שמכם ופרטי הקשר שלכם;",
+          "זיהוי היצירה המוגנת בזכויות יוצרים או החומר המוגן;",
+          "זיהוי החומר המפר לכאורה;",
+          "הצהרה שיש לכם אמונה בתום לב שהשימוש אינו מורשה;",
+          "הצהרה שהמידע בהודעתכם מדויק;",
+          "חתימתכם הפיזית או האלקטרונית."
         ],
         "afterBullets": [
-          "We may remove or restrict access to allegedly infringing material and may terminate or restrict users who repeatedly violate intellectual property rights."
+          "אנו רשאים להסיר או להגביל גישה לחומר מפר לכאורה, ורשאים לסיים או להגביל משתמשים המפרים באופן חוזר ונשנה זכויות קניין רוחני."
         ]
       },
       {
-        "title": "15. Third-Party Services and Advertising",
+        "title": "15. שירותי צד שלישי ופרסום",
         "paragraphs": [
-          "Media Manipulator may include links to third-party websites, advertisements, analytics providers, hosting providers, payment processors, or other third-party services.",
-          "We are not responsible for third-party websites, services, advertisements, products, policies, or practices.",
-          "Your interactions with third parties are solely between you and the third party. Third-party services may have their own terms and privacy policies."
+          "Media Manipulator עשוי לכלול קישורים לאתרי צד שלישי, פרסומות, ספקי אנליטיקה, ספקי אירוח, מעבדי תשלומים, או שירותי צד שלישי אחרים.",
+          "איננו אחראים לאתרי צד שלישי, שירותים, פרסומות, מוצרים, מדיניות, או נהלים.",
+          "האינטראקציות שלכם עם צדדים שלישיים הן עניין שבינכם לבין הצד השלישי בלבד. לשירותי צד שלישי עשויים להיות תנאים ומדיניות פרטיות משלהם."
         ]
       },
       {
-        "title": "16. Privacy",
+        "title": "16. פרטיות",
         "paragraphs": [
-          "Your use of Media Manipulator is also governed by our Privacy Policy.",
-          "The Privacy Policy explains how we collect, use, store, scan, process, protect, and delete information, including uploaded files, generated outputs, analytics data, advertising data, AI-assisted processing data, and temporary conversion history.",
-          "By using Media Manipulator, you acknowledge that you have read and understood our Privacy Policy."
+          "השימוש שלכם ב־Media Manipulator כפוף גם למדיניות הפרטיות שלנו.",
+          "מדיניות הפרטיות מסבירה כיצד אנו אוספים, משתמשים, שומרים, סורקים, מעבדים, מגנים, ומוחקים מידע, לרבות קבצים שהועלו, פלטים שנוצרו, נתוני אנליטיקה, נתוני פרסום, נתוני עיבוד בסיוע בינה מלאכותית, והיסטוריית המרות זמנית.",
+          "בשימושכם ב־Media Manipulator, אתם מאשרים שקראתם והבנתם את מדיניות הפרטיות שלנו."
         ]
       },
       {
-        "title": "17. Termination and Suspension",
+        "title": "17. סיום והשעיה",
         "paragraphs": [
-          "We may suspend, restrict, or terminate your access to Media Manipulator at any time if we believe that:"
+          "אנו רשאים להשעות, להגביל, או לסיים את הגישה שלכם ל־Media Manipulator בכל עת אם אנו סבורים כי:"
         ],
         "bullets": [
-          "you violated these Terms;",
-          "your content or activity is illegal, abusive, unsafe, infringing, or prohibited;",
-          "your use creates risk for users, advertisers, our brand, our service, or our infrastructure;",
-          "we are required or permitted to do so by law;",
-          "continued access may expose us or others to legal, security, operational, or reputational harm."
+          "הפרתם תנאים אלה;",
+          "התוכן או הפעילות שלכם בלתי חוקיים, פוגעניים, בלתי בטוחים, מפרים, או אסורים;",
+          "השימוש שלכם יוצר סיכון עבור משתמשים, מפרסמים, המותג שלנו, השירות שלנו, או התשתית שלנו;",
+          "אנו נדרשים או רשאים לעשות זאת על פי דין;",
+          "המשך הגישה עלול לחשוף אותנו או אחרים לנזק משפטי, ביטחוני, תפעולי, או תדמיתי."
         ],
         "afterBullets": [
-          "We may also delete uploaded files, generated outputs, temporary conversion history, logs, or account data as permitted by these Terms and our Privacy Policy.",
-          "You may stop using Media Manipulator at any time."
+          "אנו רשאים גם למחוק קבצים שהועלו, פלטים שנוצרו, היסטוריית המרות זמנית, יומנים, או נתוני חשבון, כפי שמותר על פי תנאים אלה ומדיניות הפרטיות שלנו.",
+          "תוכלו להפסיק להשתמש ב־Media Manipulator בכל עת."
         ]
       },
       {
-        "title": "18. Disclaimers",
+        "title": "18. כתבי ויתור",
         "paragraphs": [
-          "Media Manipulator is provided on an “as is” and “as available” basis.",
-          "To the maximum extent permitted by law, we disclaim all warranties, express or implied, including warranties of merchantability, fitness for a particular purpose, title, non-infringement, availability, security, accuracy, reliability, and error-free operation.",
-          "We do not warrant that:"
+          "Media Manipulator מסופק על בסיס ״כמות שהוא״ (as is) ו״כפי שזמין״ (as available).",
+          "במידה המרבית המותרת על פי דין, אנו מתנערים מכל האחריות, מפורשת או משתמעת, לרבות אחריות לסחירות, להתאמה למטרה מסוימת, לבעלות, לאי־הפרה, לזמינות, לאבטחה, לדיוק, לאמינות, ולפעולה נטולת שגיאות.",
+          "איננו מתחייבים כי:"
         ],
         "bullets": [
-          "the service will be uninterrupted, secure, or error-free;",
-          "files will always be processed successfully;",
-          "outputs will be accurate, complete, or suitable for your needs;",
-          "metadata removal will always remove every possible metadata field;",
-          "AI-generated content will be accurate, safe, complete, or appropriate;",
-          "content-safety scans will detect every violation;",
-          "temporary files or conversion history will always be available;",
-          "the service will meet your expectations."
+          "השירות יהיה בלתי מופרע, מאובטח, או נטול שגיאות;",
+          "קבצים תמיד יעובדו בהצלחה;",
+          "הפלטים יהיו מדויקים, שלמים, או מתאימים לצרכיכם;",
+          "הסרת מטא־נתונים תסיר תמיד כל שדה מטא־נתונים אפשרי;",
+          "תוכן שנוצר בבינה מלאכותית יהיה מדויק, בטוח, שלם, או הולם;",
+          "סריקות בטיחות תוכן יאתרו כל הפרה;",
+          "קבצים זמניים או היסטוריית המרות תמיד יהיו זמינים;",
+          "השירות יעמוד בציפיותיכם."
         ],
         "afterBullets": [
-          "You use Media Manipulator at your own risk."
+          "אתם משתמשים ב־Media Manipulator על אחריותכם הבלעדית."
         ]
       },
       {
-        "title": "19. Limitation of Liability",
+        "title": "19. הגבלת אחריות",
         "paragraphs": [
-          "To the maximum extent permitted by law, CreaTV Ltd., Media Manipulator, and their owners, officers, employees, contractors, affiliates, agents, licensors, and service providers will not be liable for any indirect, incidental, consequential, special, exemplary, punitive, or lost-profit damages arising out of or related to your use of Media Manipulator.",
-          "This includes damages related to:"
+          "במידה המרבית המותרת על פי דין, CreaTV Ltd.,‏ Media Manipulator, והבעלים, נושאי המשרה, העובדים, הקבלנים, השותפים, הסוכנים, מעניקי הרישיון, וספקי השירות שלהם, לא יישאו באחריות לכל נזק עקיף, אגבי, תוצאתי, מיוחד, לדוגמה, עונשי, או אובדן רווחים, הנובע מהשימוש שלכם ב־Media Manipulator או הקשור אליו.",
+          "זה כולל נזקים הקשורים ל:"
         ],
         "bullets": [
-          "failed conversions;",
-          "lost files;",
-          "deleted files;",
-          "unavailable downloads;",
-          "inaccurate outputs;",
-          "metadata not being fully removed;",
-          "AI inaccuracies;",
-          "content blocking or preview suppression;",
-          "account suspension or termination;",
-          "service downtime;",
-          "security incidents;",
-          "third-party advertisements or services;",
-          "legal consequences from your uploaded content or use of the service."
+          "המרות שנכשלו;",
+          "קבצים שאבדו;",
+          "קבצים שנמחקו;",
+          "הורדות בלתי זמינות;",
+          "פלטים לא מדויקים;",
+          "מטא־נתונים שלא הוסרו במלואם;",
+          "אי־דיוקים בבינה מלאכותית;",
+          "חסימת תוכן או הסתרת תצוגה מקדימה;",
+          "השעיית או סיום חשבון;",
+          "השבתת שירות;",
+          "אירועי אבטחה;",
+          "פרסומות או שירותים של צד שלישי;",
+          "השלכות משפטיות הנובעות מהתוכן שהעליתם או משימושכם בשירות."
         ],
         "afterBullets": [
-          "To the maximum extent permitted by law, our total liability for any claim arising out of or related to Media Manipulator will not exceed the greater of:"
+          "במידה המרבית המותרת על פי דין, סך האחריות הכוללת שלנו לכל תביעה הנובעת מ־Media Manipulator או הקשורה אליו לא תעלה על הגבוה מבין:"
         ],
         "secondBullets": [
-          "the amount you paid to us for Media Manipulator in the 3 months before the claim arose; or",
+          "הסכום ששילמתם לנו עבור Media Manipulator ב־3 החודשים שקדמו להיווצרות התביעה; או",
           "$100."
         ],
         "afterSecondBullets": [
-          "Some jurisdictions do not allow certain limitations of liability, so some of these limitations may not apply to you."
+          "תחומי שיפוט מסוימים אינם מתירים הגבלות מסוימות על אחריות, כך שייתכן שחלק מההגבלות הללו לא יחולו עליכם."
         ]
       },
       {
-        "title": "20. Indemnification",
+        "title": "20. שיפוי",
         "paragraphs": [
-          "You agree to defend, indemnify, and hold harmless CreaTV Ltd., Media Manipulator, and their owners, officers, employees, contractors, affiliates, agents, licensors, and service providers from and against any claims, damages, losses, liabilities, costs, and expenses, including reasonable attorneys’ fees, arising out of or related to:"
+          "אתם מסכימים להגן, לשפות, ולפטור מאחריות את CreaTV Ltd.,‏ Media Manipulator, והבעלים, נושאי המשרה, העובדים, הקבלנים, השותפים, הסוכנים, מעניקי הרישיון, וספקי השירות שלהם, מפני ובגין כל תביעה, נזק, הפסד, אחריות, עלות, והוצאה, לרבות שכר טרחת עורכי דין סביר, הנובעים מ־ או הקשורים ל:"
         ],
         "bullets": [
-          "your use of Media Manipulator;",
-          "your User Content;",
-          "your uploaded files or generated outputs;",
-          "your violation of these Terms;",
-          "your violation of applicable law;",
-          "your infringement or alleged infringement of intellectual property, privacy, publicity, or other rights;",
-          "your misuse of AI-assisted features;",
-          "your misuse of advertising systems;",
-          "your illegal, abusive, unsafe, or prohibited activity."
+          "השימוש שלכם ב־Media Manipulator;",
+          "תוכן המשתמש שלכם;",
+          "הקבצים שהעליתם או הפלטים שנוצרו;",
+          "הפרתכם את תנאים אלה;",
+          "הפרתכם את הדין החל;",
+          "הפרתכם או הפרתכם לכאורה של קניין רוחני, פרטיות, פרסום, או זכויות אחרות;",
+          "השימוש לרעה שלכם בתכונות מבוססות בינה מלאכותית;",
+          "השימוש לרעה שלכם במערכות פרסום;",
+          "פעילותכם הבלתי חוקית, הפוגענית, הבלתי בטוחה, או האסורה."
         ]
       },
       {
-        "title": "21. Governing Law",
+        "title": "21. הדין החל",
         "paragraphs": [
-          "These Terms are governed by the laws of the State of Colorado, United States, without regard to conflict-of-law principles.",
-          "Subject to any rights you may have under applicable consumer protection laws, you agree that any dispute arising out of or related to these Terms or Media Manipulator will be brought in the state or federal courts located in Colorado."
+          "תנאים אלה כפופים לדיני מדינת קולורדו, ארצות הברית, מבלי להתחשב בכללי ברירת הדין.",
+          "בכפוף לכל זכות שעשויה לעמוד לכם על פי חוקי הגנת הצרכן החלים, אתם מסכימים שכל מחלוקת הנובעת מתנאים אלה או מ־Media Manipulator, או הקשורה אליהם, תובא בפני בתי המשפט המדינתיים או הפדרליים הממוקמים בקולורדו."
         ]
       },
       {
-        "title": "22. Changes to These Terms",
+        "title": "22. שינויים בתנאים אלה",
         "paragraphs": [
-          "We may update these Terms from time to time.",
-          "When we make changes, we will update the “Last Updated” date at the top of this page. If we make material changes, we may provide additional notice, such as by posting a notice on the website.",
-          "Your continued use of Media Manipulator after updated Terms are posted means you accept the updated Terms.",
-          "If you do not agree to the updated Terms, you must stop using Media Manipulator."
+          "אנו עשויים לעדכן תנאים אלה מעת לעת.",
+          "כאשר אנו מבצעים שינויים, נעדכן את התאריך ״עודכן לאחרונה״ בראש עמוד זה. אם אנו מבצעים שינויים מהותיים, אנו עשויים לספק הודעה נוספת, כגון פרסום הודעה באתר.",
+          "המשך השימוש שלכם ב־Media Manipulator לאחר פרסום תנאים מעודכנים משמעו שאתם מקבלים את התנאים המעודכנים.",
+          "אם אינכם מסכימים לתנאים המעודכנים, עליכם להפסיק להשתמש ב־Media Manipulator."
         ]
       },
       {
-        "title": "23. Contact",
+        "title": "23. יצירת קשר",
         "paragraphs": [
-          "If you have questions about these Terms, contact us at:"
+          "אם יש לכם שאלות לגבי תנאים אלה, צרו איתנו קשר בכתובת:"
         ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
@@ -1322,229 +1322,229 @@
     ]
   },
   "pricing": {
-    "eyebrow": "Plans",
-    "title": "Straightforward limits, no surprises",
-    "subtitle": "Every plan runs the same tools on the same hardware. What changes is how much you can put through them in a day, and how long the results stick around.",
-    "currentPlan": "Your plan",
-    "mostPopular": "Most people start here",
-    "free_price": "Free",
-    "perMonth": "/mo",
+    "eyebrow": "תוכניות",
+    "title": "מגבלות ברורות, בלי הפתעות",
+    "subtitle": "כל התוכניות מריצות את אותם הכלים על אותה החומרה. מה שמשתנה הוא כמה תוכלו להעביר דרכם ביום אחד, וכמה זמן התוצאות נשארות זמינות.",
+    "currentPlan": "התוכנית שלכם",
+    "mostPopular": "רוב האנשים מתחילים כאן",
+    "free_price": "חינם",
+    "perMonth": "/חודש",
     "cta": {
-      "anonymous": "Start converting",
-      "free": "Create a free account",
-      "premiumSoon": "Coming soon — get notified",
-      "premiumBuy": "Upgrade to Premium"
+      "anonymous": "התחילו להמיר",
+      "free": "צרו חשבון חינמי",
+      "premiumSoon": "בקרוב — קבלו התראה",
+      "premiumBuy": "שדרגו לפרימיום"
     },
     "tier": {
-      "anonymous": "No account",
-      "free": "Free account",
-      "premium": "Premium"
+      "anonymous": "בלי חשבון",
+      "free": "חשבון חינמי",
+      "premium": "פרימיום"
     },
     "tierBlurb": {
-      "anonymous": "Open a tool and go. Nothing to sign up for, nothing stored beyond the day.",
-      "free": "Six times the daily volume, saved history, and Darkroom projects that survive a refresh.",
-      "premium": "4K output, long files, priority on the GPU queue, batch processing, and no ads."
+      "anonymous": "פתחו כלי ופשוט תתחילו. אין צורך להירשם, ושום דבר לא נשמר מעבר ליום.",
+      "free": "פי שישה מהנפח היומי, היסטוריה שמורה, ופרויקטי Darkroom ששורדים רענון דף.",
+      "premium": "פלט 4K, קבצים ארוכים, עדיפות בתור ה־GPU, עיבוד באצווה, ובלי פרסומות."
     },
     "rows": {
-      "opsPerDay": "Operations per day",
-      "aiOpsPerDay": "AI operations per day",
-      "maxFileBytes": "Maximum file size",
-      "maxVideoSeconds": "Maximum video length",
-      "maxOutputHeight": "Maximum output resolution",
-      "studioProjects": "Saved Studio projects",
-      "resultRetentionHours": "Results kept for",
-      "batchEnabled": "Batch processing",
-      "priorityGpu": "GPU queue",
-      "adsRemoved": "Ads"
+      "opsPerDay": "פעולות ליום",
+      "aiOpsPerDay": "פעולות בינה מלאכותית ליום",
+      "maxFileBytes": "גודל קובץ מקסימלי",
+      "maxVideoSeconds": "אורך וידאו מקסימלי",
+      "maxOutputHeight": "רזולוציית פלט מקסימלית",
+      "studioProjects": "פרויקטי Studio שמורים",
+      "resultRetentionHours": "תוצאות נשמרות למשך",
+      "batchEnabled": "עיבוד באצווה",
+      "priorityGpu": "תור GPU",
+      "adsRemoved": "פרסומות"
     },
     "values": {
-      "yes": "Included",
-      "no": "Not included",
-      "unlimited": "Unlimited",
-      "localOnly": "{{count}}, local only",
-      "gpuStandard": "Standard",
-      "gpuPriority": "Priority",
-      "adsShown": "Shown",
-      "adsRemoved": "Removed",
+      "yes": "כלול",
+      "no": "לא כלול",
+      "unlimited": "בלתי מוגבל",
+      "localOnly": "{{count}}, מקומי בלבד",
+      "gpuStandard": "רגיל",
+      "gpuPriority": "עדיפות",
+      "adsShown": "מוצגות",
+      "adsRemoved": "מוסרות",
       "heightSuffix": "{{height}}p"
     },
-    "unavailableTitle": "Plan details are temporarily unavailable",
-    "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
-    "faqTitle": "Questions people actually ask",
+    "unavailableTitle": "פרטי התוכנית אינם זמינים כרגע",
+    "unavailableBody": "לא הצלחנו להתחבר לשירות התוכניות. כל הכלים עדיין פועלים — טענו מחדש בעוד רגע כדי לראות את ההשוואה.",
+    "faqTitle": "שאלות שאנשים באמת שואלים",
     "faq": {
-      "q1": "What counts as an operation?",
-      "a1": "One conversion, transcode, export, or AI job. Previews, probes and downloads are free — you are only charged for work the server actually does.",
-      "q2": "What happens when I run out?",
-      "a2": "Nothing breaks. The tool tells you the allowance is spent and offers the next tier up. Your allowance resets at midnight UTC.",
-      "q3": "Do free accounts see ads?",
-      "a3": "Yes. Ads pay for the free tier, so only Premium removes them. There are no interstitials, countdowns or forced waits on any plan.",
-      "q4": "Can I use it without an account at all?",
-      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history."
+      "q1": "מה נחשב לפעולה?",
+      "a1": "המרה, שינוי קידוד, ייצוא, או משימת בינה מלאכותית אחת. תצוגות מקדימות, בדיקות, והורדות הן חינמיות — אתם מחויבים רק על עבודה שהשרת באמת מבצע.",
+      "q2": "מה קורה כשהמכסה שלי נגמרת?",
+      "a2": "שום דבר לא נשבר. הכלי מודיע לכם שהמכסה נוצלה ומציע לכם לעבור לתוכנית הבאה. המכסה שלכם מתאפסת בחצות UTC.",
+      "q3": "האם חשבונות חינמיים רואים פרסומות?",
+      "a3": "כן. הפרסומות מממנות את התוכנית החינמית, כך שרק פרימיום מסיר אותן. אין מסכי ביניים, ספירות לאחור, או המתנות כפויות באף תוכנית.",
+      "q4": "האם אפשר להשתמש בזה בלי חשבון בכלל?",
+      "a4": "כן, וזה במכוון. כל הכלים פועלים גם בלי התחברות — חשבון רק מגדיל את התקרה ושומר את ההיסטוריה שלכם."
     }
   },
   "account": {
-    "title": "Your account",
-    "subtitle": "What you have used today, and what your plan allows.",
-    "signedOutTitle": "You are not signed in",
-    "signedOutBody": "Sign in to see your usage, conversion history and saved Darkroom projects.",
-    "signInCta": "Sign in",
-    "usageTitle": "Today",
-    "planTitle": "Your plan",
-    "historyTitle": "Recent conversions",
-    "projectsTitle": "Saved Studio projects",
-    "resets": "Resets {{when}}",
-    "usedOf": "{{used}} of {{limit}}",
+    "title": "החשבון שלכם",
+    "subtitle": "מה השתמשתם היום, ומה התוכנית שלכם מאפשרת.",
+    "signedOutTitle": "אינכם מחוברים",
+    "signedOutBody": "התחברו כדי לראות את השימוש שלכם, היסטוריית המרות, ופרויקטי Darkroom שמורים.",
+    "signInCta": "התחברות",
+    "usageTitle": "היום",
+    "planTitle": "התוכנית שלכם",
+    "historyTitle": "המרות אחרונות",
+    "projectsTitle": "פרויקטי Studio שמורים",
+    "resets": "מתאפס {{when}}",
+    "usedOf": "{{used}} מתוך {{limit}}",
     "metric": {
-      "ops": "Conversions",
-      "ai_ops": "AI operations",
-      "export": "Exports"
+      "ops": "המרות",
+      "ai_ops": "פעולות בינה מלאכותית",
+      "export": "ייצואים"
     },
-    "emptyHistory": "Nothing here yet. Your conversions appear in this list once you run a tool.",
-    "emptyProjects": "No saved projects yet. Darkroom saves your timeline automatically once you name a project.",
-    "openStudio": "Open Darkroom",
-    "comparePlans": "Compare plans",
-    "signOut": "Sign out",
-    "loadFailed": "Could not load your account. Reload to try again.",
+    "emptyHistory": "עדיין אין כאן כלום. ההמרות שלכם יופיעו ברשימה הזו לאחר שתריצו כלי.",
+    "emptyProjects": "עדיין אין פרויקטים שמורים. Darkroom שומר את ציר הזמן שלכם אוטומטית לאחר שתתנו שם לפרויקט.",
+    "openStudio": "פתחו את Darkroom",
+    "comparePlans": "השוואת תוכניות",
+    "signOut": "התנתקות",
+    "loadFailed": "לא הצלחנו לטעון את החשבון שלכם. טענו מחדש כדי לנסות שוב.",
     "history": {
-      "loading": "Loading your conversions…",
-      "emptyCta": "Browse the tools",
-      "loadFailed": "Could not load your history. Reload to try again.",
-      "download": "Download",
-      "expired": "Result expired",
-      "loadMore": "Load more",
-      "showing": "Showing {{count}} of {{total}}",
+      "loading": "טוען את ההמרות שלכם…",
+      "emptyCta": "עיינו בכלים",
+      "loadFailed": "לא הצלחנו לטעון את ההיסטוריה שלכם. טענו מחדש כדי לנסות שוב.",
+      "download": "הורדה",
+      "expired": "התוצאה פגה",
+      "loadMore": "טענו עוד",
+      "showing": "מציג {{count}} מתוך {{total}}",
       "status": {
-        "pending": "Queued",
-        "queued": "Queued",
-        "processing": "In progress",
-        "completed": "Done",
-        "failed": "Failed",
-        "cancelled": "Cancelled"
+        "pending": "בתור",
+        "queued": "בתור",
+        "processing": "בתהליך",
+        "completed": "הושלם",
+        "failed": "נכשל",
+        "cancelled": "בוטל"
       },
       "tool": {
-        "convert": "Conversion",
-        "transcribe": "Transcription",
-        "audio_waveform": "Audio waveform",
-        "extract_audio": "Audio extraction",
-        "extract_video_only": "Silent video",
-        "extract_frames": "Frame extraction",
-        "trim_video": "Video trim",
-        "caption_translator": "Caption translation",
-        "stitch_audio_to_video": "Audio stitch",
-        "video_transcode": "HLS / DASH package",
-        "document_scan": "Document scan",
-        "image_restore": "Image restoration",
-        "video_restore": "Video restoration",
-        "studio_derive": "Studio audio cleanup",
-        "studio_captions": "Studio captions",
-        "studio_export": "Studio export",
-        "ai_upscale": "AI upscale",
-        "ai_background_removal": "Background removal",
-        "ai_face_privacy": "Face privacy",
-        "ai_object_removal": "Object removal",
-        "ai_text_redaction": "Text redaction",
-        "ai_frame_interpolation": "Frame interpolation",
-        "ai_voice_cleanup": "Voice cleanup",
-        "ai_isolate_vocals": "Vocal isolation",
-        "ai_remove_vocals": "Vocal removal"
+        "convert": "המרה",
+        "transcribe": "תמלול",
+        "audio_waveform": "צורת גל אודיו",
+        "extract_audio": "חילוץ אודיו",
+        "extract_video_only": "וידאו ללא קול",
+        "extract_frames": "חילוץ פריימים",
+        "trim_video": "גזירת וידאו",
+        "caption_translator": "תרגום כתוביות",
+        "stitch_audio_to_video": "חיבור אודיו לווידאו",
+        "video_transcode": "חבילת HLS / DASH",
+        "document_scan": "סריקת מסמכים",
+        "image_restore": "שחזור תמונה",
+        "video_restore": "שחזור וידאו",
+        "studio_derive": "ניקוי אודיו ב־Studio",
+        "studio_captions": "כתוביות Studio",
+        "studio_export": "ייצוא Studio",
+        "ai_upscale": "שדרוג רזולוציה בבינה מלאכותית",
+        "ai_background_removal": "הסרת רקע",
+        "ai_face_privacy": "פרטיות פנים",
+        "ai_object_removal": "הסרת אובייקטים",
+        "ai_text_redaction": "השחרת טקסט",
+        "ai_frame_interpolation": "אינטרפולציית פריימים",
+        "ai_voice_cleanup": "ניקוי קול",
+        "ai_isolate_vocals": "בידוד שירה",
+        "ai_remove_vocals": "הסרת שירה"
       }
     }
   },
   "homeContent": {
     "howItWorks": {
-      "eyebrow": "How it works",
-      "title": "Three steps, no account",
+      "eyebrow": "איך זה עובד",
+      "title": "שלושה שלבים, בלי חשבון",
       "steps": [
         {
-          "title": "Choose a file",
-          "body": "Drop in an image, video, or audio file, or pick one from your device. Nothing is uploaded until you start the conversion."
+          "title": "בחרו קובץ",
+          "body": "גררו תמונה, וידאו, או קובץ אודיו, או בחרו אחד מהמכשיר שלכם. שום דבר לא מועלה עד שתתחילו את ההמרה."
         },
         {
-          "title": "Set your options",
-          "body": "Choose an output format and adjust quality, dimensions, or trim points. Sensible defaults are preselected for every tool."
+          "title": "הגדירו את האפשרויות שלכם",
+          "body": "בחרו פורמט פלט וכווננו איכות, מידות, או נקודות גזירה. ברירות מחדל הגיוניות כבר נבחרות מראש בכל כלי."
         },
         {
-          "title": "Download the result",
-          "body": "Conversion runs on our own servers rather than in your browser, so large files work. Results are designed to be deleted automatically within 24 hours."
+          "title": "הורידו את התוצאה",
+          "body": "ההמרה רצה על השרתים שלנו ולא בדפדפן שלכם, כך שגם קבצים גדולים עובדים. התוצאות מיועדות להימחק אוטומטית תוך 24 שעות."
         }
       ],
-      "more": "More detail in <linkHow>how it works</linkHow>, or browse <linkTools>all tools</linkTools>."
+      "more": "פרטים נוספים ב<linkHow>איך זה עובד</linkHow>, או עיינו ב<linkTools>כל הכלים</linkTools>."
     },
     "popular": {
-      "eyebrow": "Popular conversions",
-      "title": "Jump straight to a tool"
+      "eyebrow": "המרות פופולריות",
+      "title": "קפצו ישר לכלי"
     }
   },
   "toolsIndex": {
-    "title": "Free Online Media Tools",
-    "intro": "Media Manipulator is a free suite of browser-based tools for converting, compressing, editing, transcribing, and cleaning up image, video, and audio files. No signup, no watermarks, and your files are processed on our own servers and are designed to be deleted automatically within 24 hours.",
+    "title": "כלי מדיה מקוונים חינמיים",
+    "intro": "Media Manipulator היא חבילה חינמית של כלים מבוססי דפדפן להמרה, דחיסה, עריכה, תמלול, וניקוי של קובצי תמונה, וידאו, ואודיו. בלי הרשמה, בלי סימני מים, והקבצים שלכם מעובדים על השרתים שלנו ומיועדים להימחק אוטומטית תוך 24 שעות.",
     "categories": {
-      "image": "Image tools",
-      "video": "Video tools",
-      "audio": "Audio tools",
-      "ai": "AI tools",
-      "metadata": "Privacy & metadata tools",
+      "image": "כלי תמונה",
+      "video": "כלי וידאו",
+      "audio": "כלי אודיו",
+      "ai": "כלי בינה מלאכותית",
+      "metadata": "כלי פרטיות ומטא־נתונים",
       "contentStudio": "Darkroom"
     },
-    "multiTrackEditor": "Multi-track editor",
-    "open": "Open",
-    "privacyAriaLabel": "Privacy & file handling",
-    "privacyTitle": "Your files stay private",
-    "privacyBody": "Uploads are processed on our own infrastructure and are designed to be deleted automatically within 24 hours. AI features run on a GPU server we operate — your files are not shared with third-party AI providers, and no account is required.",
-    "learnMoreAriaLabel": "Learn more",
-    "newHereTitle": "New here?",
-    "newHereBody": "Step-by-step tutorials walk you through the image, video, and audio tools and the Darkroom editor.",
-    "browseAllTutorials": "Browse all tutorials",
-    "darkroomTutorial": "Darkroom tutorial",
-    "howItWorks": "How it works"
+    "multiTrackEditor": "עורך רב־ערוצי",
+    "open": "פתיחה",
+    "privacyAriaLabel": "פרטיות וטיפול בקבצים",
+    "privacyTitle": "הקבצים שלכם נשארים פרטיים",
+    "privacyBody": "העלאות מעובדות על התשתית שלנו ומיועדות להימחק אוטומטית תוך 24 שעות. תכונות הבינה המלאכותית פועלות על שרת GPU שאנחנו מפעילים — הקבצים שלכם אינם משותפים עם ספקי בינה מלאכותית חיצוניים, ואין צורך בחשבון.",
+    "learnMoreAriaLabel": "למידע נוסף",
+    "newHereTitle": "חדשים כאן?",
+    "newHereBody": "מדריכים שלב־אחר־שלב מלווים אתכם דרך כלי התמונה, הווידאו, והאודיו, ודרך עורך Darkroom.",
+    "browseAllTutorials": "עיינו בכל המדריכים",
+    "darkroomTutorial": "מדריך Darkroom",
+    "howItWorks": "איך זה עובד"
   },
   "toolLandingPage": {
-    "breadcrumbAriaLabel": "Breadcrumb",
-    "home": "Home",
-    "tools": "Tools",
-    "supportedFormatsAriaLabel": "Supported formats",
-    "supportedFormatsHeading": "Supported formats",
-    "inputFormatsHeading": "Input formats",
-    "outputFormatsHeading": "Output formats",
-    "howToUseAriaLabel": "How to use",
-    "howToUseHeading": "How to use it",
-    "whatItDoesAriaLabel": "What this tool does",
-    "whatItDoesHeading": "What this tool does",
-    "whyItMattersAriaLabel": "Why it matters",
-    "whyItMattersHeading": "Why it matters",
-    "useCasesAriaLabel": "Common use cases",
-    "useCasesHeading": "Common use cases",
-    "advancedDetailsSummary": "Advanced details",
-    "whyMediaManipulatorAriaLabel": "Why Media Manipulator",
-    "whyMediaManipulatorHeading": "Why Media Manipulator",
-    "privacyAriaLabel": "Privacy & file handling",
-    "privacyHeading": "Privacy & file handling",
-    "faqAriaLabel": "Frequently asked questions",
-    "faqHeading": "Frequently asked questions",
-    "relatedToolsAriaLabel": "Related tools",
-    "relatedToolsHeading": "Related tools"
+    "breadcrumbAriaLabel": "פירורי לחם",
+    "home": "בית",
+    "tools": "כלים",
+    "supportedFormatsAriaLabel": "פורמטים נתמכים",
+    "supportedFormatsHeading": "פורמטים נתמכים",
+    "inputFormatsHeading": "פורמטי קלט",
+    "outputFormatsHeading": "פורמטי פלט",
+    "howToUseAriaLabel": "איך להשתמש",
+    "howToUseHeading": "איך להשתמש בזה",
+    "whatItDoesAriaLabel": "מה הכלי הזה עושה",
+    "whatItDoesHeading": "מה הכלי הזה עושה",
+    "whyItMattersAriaLabel": "למה זה חשוב",
+    "whyItMattersHeading": "למה זה חשוב",
+    "useCasesAriaLabel": "מקרי שימוש נפוצים",
+    "useCasesHeading": "מקרי שימוש נפוצים",
+    "advancedDetailsSummary": "פרטים מתקדמים",
+    "whyMediaManipulatorAriaLabel": "למה Media Manipulator",
+    "whyMediaManipulatorHeading": "למה Media Manipulator",
+    "privacyAriaLabel": "פרטיות וטיפול בקבצים",
+    "privacyHeading": "פרטיות וטיפול בקבצים",
+    "faqAriaLabel": "שאלות נפוצות",
+    "faqHeading": "שאלות נפוצות",
+    "relatedToolsAriaLabel": "כלים קשורים",
+    "relatedToolsHeading": "כלים קשורים"
   },
   "contentStudioGuide": {
-    "summaryTitle": "How Darkroom works — quick guide",
-    "whatItIsTitle": "What Darkroom is",
-    "whatItIsBody": "A free, browser-based multi-track video editor. You assemble a full edit — video, images, titles, and audio across stacked timeline tracks — and export a single MP4. No install and no signup.",
-    "whenToUseTitle": "When to use it",
-    "whenToUseBody": "Reach for Darkroom when one file isn’t enough: combining several clips, adding titles or background music, layering overlays, or trimming and re-ordering footage into a finished video.",
-    "supportedMediaTitle": "Supported media types",
-    "supportedMediaBody": "Video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). The final export is MP4 (H.264 video, AAC audio).",
-    "stepByStepTitle": "Step by step",
-    "step1": "Create a project and choose a resolution (up to 4K) and frame rate (24/30/60 fps).",
-    "step2": "Drag video, image, and audio files into the media bin.",
-    "step3": "Drop clips onto the timeline tracks, then trim and split them at the playhead.",
-    "step4": "Stack overlays and titles on higher tracks and add audio tracks to mix.",
-    "step5": "Preview the composite, then export to MP4 and download.",
-    "timelineTitle": "Timeline & layers",
-    "timelineBody": "The timeline is frame-accurate — the playhead and clip edges snap to the project frame rate. Tracks composite in stacking order, so a clip on a higher track renders over the ones below it. That’s how titles, logos, and picture-in-picture overlays sit on top of your base video.",
-    "exportTitle": "Export",
-    "exportBody": "Exporting renders the whole sequence — every track, trim, and overlay — into one downloadable MP4 encoded with H.264 video and AAC audio.",
-    "limitationsTitle": "Limitations",
-    "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and MP4 export — is available now. Advanced effects continue to be added over time.",
-    "privacyTitle": "Privacy",
-    "privacyBody": "Your media is processed on our own servers and automatically deleted within 24 hours. No account is required and files are never shared with third-party providers."
+    "summaryTitle": "איך Darkroom עובד — מדריך מהיר",
+    "whatItIsTitle": "מה זה Darkroom",
+    "whatItIsBody": "עורך וידאו רב־ערוצי, חינמי ומבוסס דפדפן. אתם מרכיבים עריכה מלאה — וידאו, תמונות, כותרות, ואודיו על פני רצועות ציר זמן מוערמות — ומייצאים קובץ MP4 בודד. בלי התקנה ובלי הרשמה.",
+    "whenToUseTitle": "מתי להשתמש בזה",
+    "whenToUseBody": "פנו אל Darkroom כשקובץ אחד לא מספיק: שילוב של כמה קליפים, הוספת כותרות או מוזיקת רקע, שכבות של שכבות־על, או גזירה וסידור מחדש של צילומים לכדי וידאו מוגמר.",
+    "supportedMediaTitle": "סוגי מדיה נתמכים",
+    "supportedMediaBody": "וידאו (MP4,‏ MOV,‏ WebM,‏ MKV), תמונות (JPG,‏ PNG,‏ WebP), ואודיו (MP3,‏ WAV,‏ AAC). הייצוא הסופי הוא MP4 (וידאו H.264, אודיו AAC).",
+    "stepByStepTitle": "שלב אחר שלב",
+    "step1": "צרו פרויקט ובחרו רזולוציה (עד 4K) וקצב פריימים (24/30/60 fps).",
+    "step2": "גררו קובצי וידאו, תמונה, ואודיו לתיבת המדיה.",
+    "step3": "הניחו קליפים על רצועות ציר הזמן, ואז גזרו ופצלו אותם בראש הנגינה.",
+    "step4": "הערימו שכבות־על וכותרות על רצועות גבוהות יותר, והוסיפו רצועות אודיו לערבוב.",
+    "step5": "הציגו תצוגה מקדימה של התוצר המורכב, ואז ייצאו ל־MP4 והורידו.",
+    "timelineTitle": "ציר זמן ושכבות",
+    "timelineBody": "ציר הזמן מדויק לפריים — ראש הנגינה וקצוות הקליפים נצמדים לקצב הפריימים של הפרויקט. הרצועות מורכבות לפי סדר הערימה, כך שקליפ ברצועה גבוהה יותר מוצג מעל אלו שמתחתיו. כך כותרות, לוגואים, ושכבות תמונה־בתוך־תמונה יושבות מעל הווידאו הבסיסי שלכם.",
+    "exportTitle": "ייצוא",
+    "exportBody": "הייצוא מרנדר את כל הרצף — כל רצועה, גזירה, ושכבת־על — לכדי קובץ MP4 בודד הניתן להורדה, מקודד עם וידאו H.264 ואודיו AAC.",
+    "limitationsTitle": "מגבלות",
+    "limitationsBody": "Darkroom נמצא בפיתוח פעיל. עריכה בסיסית — ציר זמן רב־ערוצי, גזירה/פיצול, שכבות, ערבוב אודיו, וייצוא MP4 — זמינה כבר עכשיו. אפקטים מתקדמים ממשיכים להתווסף עם הזמן.",
+    "privacyTitle": "פרטיות",
+    "privacyBody": "המדיה שלכם מעובדת על השרתים שלנו ונמחקת אוטומטית תוך 24 שעות. אין צורך בחשבון, והקבצים לעולם אינם משותפים עם ספקי צד שלישי."
   }
 }

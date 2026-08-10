@@ -284,10 +284,99 @@ const DE_SEO_OVERRIDES: LocaleOverrides = {
   },
 };
 
+const HE_SEO_OVERRIDES: LocaleOverrides = {
+  '/': {
+    title: 'ממיר, עורך ומתמלל מדיה חינמי אונליין | Media Manipulator',
+    description:
+      'המירו, ערכו, דחסו, תמללו ונתחו תמונות, וידאו ואודיו אונליין. Media Manipulator — המרת מדיה, כלי מטא־נתונים, סיכומי בינה מלאכותית ועיבוד קבצים ששומר על הפרטיות.',
+  },
+  '/about': {
+    title: 'אודות Media Manipulator | כלי מדיה חינמיים אונליין מבית CreaTV Ltd.',
+    description:
+      'Media Manipulator הוא שירות חינמי מבית CreaTV Ltd. להמרה, עריכה, דחיסה, תמלול וניתוח של תמונות, וידאו ואודיו.',
+  },
+  '/how-it-works': {
+    title: 'איך Media Manipulator עובד | המרת קבצים, עיבוד בבינה מלאכותית ואחסון זמני',
+    description:
+      'גלו איך Media Manipulator מעבד קבצים: המרת פורמטים, תמלול וסיכומים בבינה מלאכותית, בדיקות אבטחה להעלאות ואחסון זמני של התוצאות עד 24 שעות.',
+  },
+  '/tools': {
+    title: 'כלי מדיה חינמיים אונליין | Media Manipulator',
+    description:
+      'כלים חינמיים אונליין לתמונות, וידאו, אודיו, בינה מלאכותית ומטא־נתונים — המירו, דחסו, תמללו, הסירו EXIF, הפרידו שירה ועוד.',
+  },
+  '/tutorials': {
+    title: 'מדריכי Media Manipulator | כלים לתמונות, וידאו ואודיו',
+    description:
+      'מדריכים שלב אחר שלב לממיר התמונות, הווידאו והאודיו, לכלי מטא־נתונים, לתמלול וליכולות הבינה המלאכותית של Media Manipulator.',
+  },
+  '/privacy-policy': {
+    title: 'מדיניות פרטיות | Media Manipulator',
+    description:
+      'גלו איך Media Manipulator מטפל בקבצים שהועלו: אחסון זמני, עיבוד מקומי בבינה מלאכותית, אנליטיקה, פרסומות, בדיקת תוכן ומחיקה.',
+  },
+  '/terms-of-service': {
+    title: 'תנאי שימוש וכללי שימוש מקובל | Media Manipulator',
+    description:
+      'קראו את תנאי Media Manipulator: תוכן שמועלה, שימוש מקובל, עיבוד קבצים, יכולות בינה מלאכותית, פרסומות ואחריות המשתמשים.',
+  },
+  '/pricing': {
+    title: 'תמחור — Media Manipulator',
+    description:
+      'השוו בין המסלול החינמי, מסלול עם חשבון ו־Premium: מכסות פעולות יומיות, מגבלות גודל קובץ ואורך וידאו, רזולוציית פלט, אחסון ופרסומות.',
+  },
+  '/blog': {
+    title: 'מדריכים להמרה, דחיסה ועריכה של מדיה | הבלוג של Media Manipulator',
+    description:
+      'מאמרים מעשיים על פורמטים של מדיה, דחיסה, מטא־נתונים, תמלול ועיבוד קבצים מבוסס FFmpeg מבית Media Manipulator.',
+  },
+  '/blog/video/video-compression-guide': {
+    title: 'המדריך לדחיסת וידאו: הקטינו את גודל הקובץ בלי לאבד איכות | Media Manipulator',
+    description:
+      'גלו איך דחיסת וידאו עובדת, איך קודקים וקצב סיביות משפיעים על האיכות ואיך להקטין וידאו לאינטרנט — עם דוגמאות מעשיות מ־Media Manipulator ו־FFmpeg.',
+  },
+  '/blog/image/image-optimization-guide': {
+    title: 'המדריך לאופטימיזציית תמונות: דחיסה, שינוי גודל והמרה לאינטרנט | Media Manipulator',
+    description:
+      'גלו איך לייעל JPG, PNG, WebP, AVIF ו־GIF: אתרים מהירים יותר, הורדות קטנות יותר, איכות טובה יותר ושיתוף בטוח בלי מטא־נתונים מיותרים.',
+  },
+  '/blog/audio/audio-quality-guide': {
+    title: 'המדריך לאיכות שמע: קצב סיביות, פורמטים, דחיסה וניקוי | Media Manipulator',
+    description:
+      'גלו איך קצב סיביות, קצב דגימה, ערוצים, קודקים, דחיסה, ניקוי ותמלול משפיעים על הגודל והאיכות של קובצי אודיו.',
+  },
+  '/tutorials/ai-frame-interpolation': {
+    title: 'מהי אינטרפולציית פריימים בבינה מלאכותית? כך עובדת החלקת FPS | Media Manipulator',
+    description:
+      'גלו איך אינטרפולציית פריימים בבינה מלאכותית עובדת, במה היא שונה מהמרת FPS פשוטה, מתי לבחור 48/60/120 fps, אילו ארטיפקטים אפשריים ואיך להשתמש בכלי של Media Manipulator.',
+  },
+  '/tutorials/video/getting-started': {
+    title: 'צעדים ראשונים בהמרת וידאו | מדריך Media Manipulator',
+    description:
+      'המירו, דחסו, חתכו ותמללו קובצי וידאו עם כלי הווידאו של Media Manipulator.',
+  },
+  '/tutorials/audio/getting-started': {
+    title: 'צעדים ראשונים בהמרת אודיו | מדריך Media Manipulator',
+    description:
+      'המירו, דחסו, נקו ותמללו קובצי אודיו עם כלי האודיו של Media Manipulator.',
+  },
+  '/tutorials/image/getting-started': {
+    title: 'צעדים ראשונים בהמרת תמונות | מדריך Media Manipulator',
+    description:
+      'המירו תמונות, שנו את גודלן, חתכו אותן והסירו מטא־נתונים עם הכלים של Media Manipulator.',
+  },
+  '/tutorials/content-studio': {
+    title: 'איך להשתמש ב־Darkroom: עריכת וידאו מרובת רצועות בדפדפן | Media Manipulator',
+    description:
+      'מדריך שלב אחר שלב ל־Darkroom: ייבוא מדיה, טיימליין מרובה רצועות, חיתוך, פיצול ומחיקת ripple, מעברי דיסולב, תיקון צבע, שכבות טקסט וייצוא MP4 — הכול בדפדפן.',
+  },
+};
+
 const OVERRIDES: Record<string, LocaleOverrides> = {
   'ru-RU': RU_SEO_OVERRIDES,
   'uk-UA': UK_SEO_OVERRIDES,
   'de-DE': DE_SEO_OVERRIDES,
+  'he-IL': HE_SEO_OVERRIDES,
 };
 
 export function getSeoOverride(path: string, locale: string): SeoOverride | undefined {

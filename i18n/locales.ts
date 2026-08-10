@@ -45,7 +45,7 @@ export const locales: LocaleDef[] = [
   { code: "en-US", prefix: "en", label: "English", englishLabel: "English", flag: "🇺🇸", dir: "ltr", translated: true },
   { code: "uk-UA", prefix: "uk", label: "Українська", englishLabel: "Ukrainian", flag: "🇺🇦", dir: "ltr", translated: true },
   { code: "ru-RU", prefix: "ru", label: "Русский", englishLabel: "Russian", flag: "🇷🇺", dir: "ltr", translated: true },
-  { code: "he-IL", prefix: "he", label: "עברית", englishLabel: "Hebrew", flag: "🇮🇱", dir: "rtl", translated: false },
+  { code: "he-IL", prefix: "he", label: "עברית", englishLabel: "Hebrew", flag: "🇮🇱", dir: "rtl", translated: true },
   { code: "de-DE", prefix: "de", label: "Deutsch", englishLabel: "German", flag: "🇩🇪", dir: "ltr", translated: true },
   { code: "es-ES", prefix: "es", label: "Español", englishLabel: "Spanish", flag: "🇪🇸", dir: "ltr", translated: false },
 ];

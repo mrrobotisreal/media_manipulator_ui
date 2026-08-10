@@ -1,44 +1,44 @@
 {
   "filePreview": {
-    "previewAlt": "Preview"
+    "previewAlt": "תצוגה מקדימה"
   },
   "pdfForm": {
-    "outputFormatTooltip": "About the output image format",
-    "dpiTooltip": "About render quality (DPI)",
-    "pagesTooltip": "About page selection",
-    "qualityTooltip": "About JPG quality"
+    "outputFormatTooltip": "מידע על פורמט תמונת הפלט",
+    "dpiTooltip": "מידע על איכות העיבוד (DPI)",
+    "pagesTooltip": "מידע על בחירת עמודים",
+    "qualityTooltip": "מידע על איכות ה־JPG"
   },
   "ad": {
-    "label": "Advertisement",
-    "close": "Close advertisement"
+    "label": "פרסומת",
+    "close": "סגירת הפרסומת"
   },
   "modals": {
-    "close": "Close",
-    "previousStep": "Previous step",
-    "nextStep": "Next step"
+    "close": "סגירה",
+    "previousStep": "השלב הקודם",
+    "nextStep": "השלב הבא"
   },
   "imageCropModal": {
-    "topLeftHandle": "Top-left handle",
-    "topRightHandle": "Top-right handle",
-    "bottomLeftHandle": "Bottom-left handle",
-    "bottomRightHandle": "Bottom-right handle"
+    "topLeftHandle": "נקודת אחיזה שמאלית עליונה",
+    "topRightHandle": "נקודת אחיזה ימנית עליונה",
+    "bottomLeftHandle": "נקודת אחיזה שמאלית תחתונה",
+    "bottomRightHandle": "נקודת אחיזה ימנית תחתונה"
   },
   "mediaTrimModal": {
-    "scrubber": "Trim scrubber",
-    "playToggle": "Play / pause preview"
+    "scrubber": "מחוון גזירה",
+    "playToggle": "הפעלה / השהיה של התצוגה המקדימה"
   },
   "overlays": {
-    "canvas": "Selection canvas",
-    "removeRegion": "Remove this region",
-    "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "canvas": "משטח בחירה",
+    "removeRegion": "הסרת האזור הזה",
+    "previousPage": "העמוד הקודם",
+    "nextPage": "העמוד הבא"
   },
   "quotaMeter": {
-    "gauge": "{{used}} / {{limit}} daily operations used",
-    "openUpgrade": "See how to get a bigger daily allowance",
-    "openAccount": "Open your account"
+    "gauge": "נוצלו {{used}} מתוך {{limit}} פעולות יומיות",
+    "openUpgrade": "כך תוכלו לקבל מכסה יומית גדולה יותר",
+    "openAccount": "פתיחת החשבון שלך"
   },
   "accountMenu": {
-    "open": "Account menu"
+    "open": "תפריט החשבון"
   }
 }

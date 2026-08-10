@@ -1,56 +1,56 @@
 {
   "topNav": {
-    "homeLink": "Media Manipulator home",
-    "openMenu": "Open menu",
-    "github": "View on GitHub",
+    "homeLink": "דף הבית של Media Manipulator",
+    "openMenu": "פתיחת התפריט",
+    "github": "צפייה ב־GitHub",
     "winapps": "WinApps",
     "creatv": "CreaTV",
-    "toggleTheme": "Toggle theme",
-    "languageMenu": "Change language",
-    "navIcon": "Media Manipulator Icon",
-    "winappsLogo": "WinApps Logo",
-    "creatvLogo": "CreaTV Logo",
+    "toggleTheme": "החלפת ערכת נושא",
+    "languageMenu": "שינוי שפה",
+    "navIcon": "סמל Media Manipulator",
+    "winappsLogo": "לוגו WinApps",
+    "creatvLogo": "לוגו CreaTV",
     "githubLogo": "GitHub"
   },
   "footer": {
-    "homeLink": "Media Manipulator home",
-    "navIcon": "Media Manipulator Icon"
+    "homeLink": "דף הבית של Media Manipulator",
+    "navIcon": "סמל Media Manipulator"
   },
   "home": {
-    "popularTools": "Popular tools",
-    "closePreview": "Close preview"
+    "popularTools": "כלים פופולריים",
+    "closePreview": "סגירת התצוגה המקדימה"
   },
   "notFound": {
-    "recoveryRoutes": "Recovery routes"
+    "recoveryRoutes": "נתיבי שחזור"
   },
   "loading": {
-    "label": "Loading"
+    "label": "בטעינה"
   },
   "languageSelector": {
-    "trigger": "Change language",
-    "icon": "Translate icon"
+    "trigger": "שינוי שפה",
+    "icon": "סמל תרגום"
   },
   "common": {
-    "close": "Close",
-    "open": "Open",
-    "loading": "Loading",
-    "moreOptions": "More options"
+    "close": "סגירה",
+    "open": "פתיחה",
+    "loading": "בטעינה",
+    "moreOptions": "אפשרויות נוספות"
   },
   "transcribeForm": {
-    "formatTooltip": "About transcript output format",
-    "languageTooltip": "About language hint"
+    "formatTooltip": "מידע על פורמט פלט התמלול",
+    "languageTooltip": "מידע על רמז השפה"
   },
   "audioForm": {
-    "aiTooltip": "About AI Audio Tools"
+    "aiTooltip": "מידע על כלי בינה מלאכותית לאודיו"
   },
   "videoForm": {
-    "aiTooltip": "About AI Video Tools"
+    "aiTooltip": "מידע על כלי בינה מלאכותית לווידאו"
   },
   "imageForm": {
-    "aiTooltip": "About AI Image Tools",
-    "selectiveFacesTooltip": "About selective face privacy",
-    "removeObjectTooltip": "About object removal",
-    "metadataTooltip": "About metadata handling",
-    "vectorizeThresholdTooltip": "About the vectorization threshold"
+    "aiTooltip": "מידע על כלי בינה מלאכותית לתמונות",
+    "selectiveFacesTooltip": "מידע על פרטיות פנים סלקטיבית",
+    "removeObjectTooltip": "מידע על הסרת אובייקטים",
+    "metadataTooltip": "מידע על הטיפול במטא-נתונים",
+    "vectorizeThresholdTooltip": "מידע על סף הווקטוריזציה"
   }
 }

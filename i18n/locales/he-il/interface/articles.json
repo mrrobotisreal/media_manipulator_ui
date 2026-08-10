@@ -1,1246 +1,1246 @@
 {
   "blogVideoCompression": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← בלוג"
     },
-    "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV",
+    "title": "מדריך הטרמפיסט לדחיסת וידאו: MP4 מול WebM מול AVI מול MOV",
     "byline": {
-      "writtenBy": "Written by:",
-      "date": "June 13th, 2025",
-      "time": "10:33 PM"
+      "writtenBy": "נכתב על ידי:",
+      "date": "13 ביוני 2025",
+      "time": "22:33"
     },
     "intro": {
-      "title": "A Brief Intro to Video Compression",
-      "p1": "Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.",
-      "p2": "Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.",
-      "p3": "At its core, video compression works by being sneaky in two main ways:",
+      "title": "היכרות קצרה עם דחיסת וידאו",
+      "p1": "קרה לכם פעם שניסיתם להעלות סרטון לאתר שלכם וצפיתם באימה בפס הטעינה שזוחל בקצב של חילזון? 🐌 או אולי הקלטתם דמו קצר של 30 שניות רק כדי לגלות שהקובץ גדול איכשהו מכל האתר שלכם? כן, כולנו היינו שם, וזה כיף בערך כמו לצפות בצבע מתייבש... באינטרנט חיוג.",
+      "p2": "הנה העניין: דחיסת וידאו היא בעצם אמנות הקטנת הסרטונים שלכם בלי לגרום להם להיראות כאילו צולמו בתפוח אדמה 🥔. תחשבו על זה כך - נתוני וידאו גולמיים דומים לניסיון לדחוס ארון בגדים שלם למזוודת יד. דחיסת וידאו היא טכניקת הקיפול הקסומה שאיכשהו מצליחה להכניס הכול פנימה ועדיין לשמור על הבגדים (כמעט) חלקים מקמטים.",
+      "p3": "בבסיסה, דחיסת וידאו פועלת בשתי דרכים ערמומיות עיקריות:",
       "bullets": [
-        "<strong>Spatial compression</strong>: This looks at each frame and says \"Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?\" It's like describing a wall as \"all white\" instead of listing every single brick.",
-        "<strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬"
+        "<strong>דחיסה מרחבית</strong>: זו מסתכלת על כל פריים ואומרת ״היי, לשמיים הכחולים האלה יש כמו 10,000 פיקסלים שכולם בעצם באותו גוון כחול בערך. מה דעתכם שפשוט נגיד ׳פיקסלים כחולים מכאן עד כאן׳ במקום?״ זה כמו לתאר קיר כ״כולו לבן״ במקום למנות כל לבנה בנפרד.",
+        "<strong>דחיסה זמנית</strong>: כאן הדברים נהיים ממש חכמים. במקום לשמור כל פריים בשלמותו, היא שומרת רק את ההבדלים בין הפריימים. אז אם אתם מקליטים את עצמכם מדברים והרקע לא משתנה, למה לשמור את הרקע הזה 30 פעמים בשנייה? פשוט שמרו אותו פעם אחת וסמנו מה משתנה! 🎬"
       ],
-      "p4": "The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.",
-      "quote": "\"In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch.\" 💪"
+      "p4": "הקסם קורה כשהטכניקות האלה פועלות יחד, והופכות את הקלטת המסך הענקית שלכם בגודל 2GB לקובץ נוח בגודל 50MB שעדיין נראה חד. אבל כאן זה נהיה מעניין - פורמטים שונים של וידאו (מכולות) וקודקים (אלגוריתמי הדחיסה בפועל) מטפלים בקסם הזה בדרכים שונות מאוד. חלקם כמו סכיני שוויץ 🔪 - רב-תכליתיים אך לא תמיד הכלי החד ביותר לכל משימה. אחרים דומים יותר למכשירים כירורגיים ייעודיים - יעילים להפליא למשימות ספציפיות אך חסרי תועלת לכל דבר אחר.",
+      "quote": "״בעולם דחיסת הווידאו, הקבצים הכבדים ביותר אינם תמיד החזקים ביותר - לפעמים הלוחמים הקטנים ביותר מכים הכי חזק.״ 💪"
     },
     "formats": {
-      "title": "What's the Difference Between These Formats Anyway?",
-      "intro": "Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go \"really?\"",
+      "title": "אז מה בעצם ההבדל בין הפורמטים האלה?",
+      "intro": "טוב, בואו נפרק את פורמטי הווידאו האלה כאילו אנחנו משווים בין קבוצות גיבורי-על 🦸‍♂️. לכל אחד יש כוחות-על משלו, חולשות, ואותה תכונה מוזרה אחת שגורמת לכם לחשוב ״באמת?״",
       "mp4": {
         "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:",
+        "intro": "תחשבו על MP4 כסופרמן של פורמטי הווידאו - הוא נמצא בכל מקום, כולם מזהים אותו, והוא כמעט תמיד מציל את המצב. הפורמט הזה:",
         "bullets": [
-          "<strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works",
-          "<strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high",
-          "<strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)",
-          "<strong>File sizes</strong>: Generally gives you that sweet spot between quality and size"
+          "<strong>מסתדר עם כולם</strong>: מהמחשב הנייד העתיק של הסבתא שלכם ועד לאייפון האחרון, MP4 פשוט עובד",
+          "<strong>משתמש בקודקים H.264/H.265</strong>: אלה כמו קוסמי הדחיסה שהופכים את הקבצים שלכם לקטנים תוך שמירה על איכות גבוהה",
+          "<strong>תומך בסטרימינג</strong>: מושלם לכשאתם רוצים שהסרטונים שלכם יתחילו להתנגן לפני שהם נטענים במלואם (כי למי יש זמן לחכות? ⏰)",
+          "<strong>גודל קבצים</strong>: בדרך כלל נותן לכם את נקודת האיזון המתוקה בין איכות לגודל"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:",
+        "intro": "WebM הוא כמו המורד המגניב וקוד-הפתוח של הקבוצה 😎. נוצר על ידי גוגל, כולו על חיי הרשת:",
         "bullets": [
-          "<strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say \"buffering\"",
-          "<strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases",
-          "<strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵",
-          "<strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)"
+          "<strong>נבנה בשביל דפדפנים</strong>: מתוכנן במיוחד לגרום לסרטוני רשת להיטען מהר יותר משתספיקו להגיד ״טוען...״",
+          "<strong>משתמש בקודקים VP8/VP9</strong>: הבחורים הקשוחים האלה יכולים לדחוס וידאו אפילו קטן יותר מ-MP4 במקרים רבים",
+          "<strong>פתוח וחינמי</strong>: ללא דמי רישיון, מה שנשמע כמו מוזיקה לאוזניים של כל מפתח 🎵",
+          "<strong>הקאץ׳</strong>: לא כל הדפדפנים והמכשירים תומכים בו (אליכם אני מדבר, Safari 👀)"
         ]
       },
       "avi": {
         "title": "AVI (Audio Video Interleave)",
-        "intro": "AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:",
+        "intro": "AVI הוא הוותיק המחוספס - הוא קיים כבר מאז Windows 3.1! 👴 הנה מה שכדאי לדעת:",
         "bullets": [
-          "<strong>Minimal compression</strong>: Often results in HUGE file sizes (like, \"is this a video or the entire Lord of the Rings trilogy?\" huge)",
-          "<strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality",
-          "<strong>Universal compatibility</strong>: If something can play video, it can probably play AVI",
-          "<strong>Best for</strong>: Local storage when quality matters more than file size"
+          "<strong>דחיסה מינימלית</strong>: לרוב מוביל לקבצים ענקיים (מהסוג של ״זה סרטון או כל הטרילוגיה של שר הטבעות?״ ענקי)",
+          "<strong>איכות גבוהה</strong>: מה שחסר לו בדחיסה, הוא משלים באיכות טהורה",
+          "<strong>תאימות אוניברסלית</strong>: אם משהו יכול לנגן וידאו, הוא כנראה יכול לנגן AVI",
+          "<strong>הכי טוב עבור</strong>: אחסון מקומי כשהאיכות חשובה יותר מגודל הקובץ"
         ]
       },
       "mov": {
         "title": "MOV (QuickTime File Format)",
-        "intro": "MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:",
+        "intro": "MOV הוא ילד הזהב של אפל 🍎, וכמו רוב מוצרי אפל, הוא יפהפה אבל... מסובך:",
         "bullets": [
-          "<strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing",
-          "<strong>ProRes codec support</strong>: The format professionals drool over 🤤",
-          "<strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)",
-          "<strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime"
+          "<strong>איכות מצוינת</strong>: במיוחד לסרטונים ברזולוציה גבוהה ולעריכה מקצועית",
+          "<strong>תמיכה בקודק ProRes</strong>: הפורמט שאנשי מקצוע מזילים עליו ריר 🤤",
+          "<strong>הפיל בחדר</strong>: גדלי קבצים שיגרמו לכונן האחסון שלכם לבכות (זוכרים את הקלטת המסך שלי בגודל 315.9MB? כן, זה היה MOV)",
+          "<strong>בעיות חוצות פלטפורמות</strong>: עובד בצורה מושלמת ב-Mac, אבל משתמשי Windows אולי יצטרכו להתקין QuickTime"
         ]
       },
-      "comparisonIntro": "Here's a quick comparison to really drive it home:",
+      "comparisonIntro": "הנה השוואה מהירה שתבהיר את זה עוד יותר:",
       "table": {
         "headers": [
-          "Format",
-          "File Size",
-          "Compatibility",
-          "Best Use Case"
+          "פורמט",
+          "גודל קובץ",
+          "תאימות",
+          "השימוש הטוב ביותר"
         ],
         "rows": [
           [
             "MP4",
-            "Small-Medium",
-            "Universal",
-            "Literally everything"
+            "קטן-בינוני",
+            "אוניברסלי",
+            "פשוט הכול"
           ],
           [
             "WebM",
-            "Smallest",
-            "Modern browsers",
-            "Web optimization"
+            "הכי קטן",
+            "דפדפנים מודרניים",
+            "אופטימיזציה לרשת"
           ],
           [
             "AVI",
-            "Largest",
-            "Universal",
-            "Archival/Editing"
+            "הכי גדול",
+            "אוניברסלי",
+            "ארכיון/עריכה"
           ],
           [
             "MOV",
-            "Large",
-            "Mac-focused",
-            "Professional work"
+            "גדול",
+            "ממוקד Mac",
+            "עבודה מקצועית"
           ]
         ]
       },
-      "quote": "\"Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose.\" ⚔️"
+      "quote": "״בחרו את הפורמט שלכם כמו שבוחרים את הקרבות שלכם - לא כל חרב מתאימה לכל לוחם, ולא כל קודק מתאים לכל מטרה.״ ⚔️"
     },
     "whenToUse": {
-      "title": "How Do I Know When to Use One Format Over Another?",
-      "p1": "Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).",
-      "p2": "Let me break this down into real-world scenarios because that's how we actually make these decisions:",
+      "title": "איך אדע מתי להשתמש בפורמט אחד על פני האחר?",
+      "p1": "טוב, הגיע זמן ההחלטות! 🤔 בחירת פורמט הווידאו הנכון דומה לבחירת התלבושת הנכונה - לא הייתם לובשים חליפת ערב לחדר הכושר, ולא כדאי לכם להשתמש ב-AVI לסרטון הגיבור של האתר שלכם (אלא אם אתם רוצים שהמשתמשים שלכם יזדקנו בזמן שהוא נטען).",
+      "p2": "בואו נפרק את זה לתרחישים מהעולם האמיתי, כי ככה אנחנו באמת מקבלים את ההחלטות האלה:",
       "mp4": {
-        "title": "When to Use MP4",
-        "lead": "<strong>Use MP4 when you want to play it safe</strong> 🛡️",
+        "title": "מתי להשתמש ב-MP4",
+        "lead": "<strong>השתמשו ב-MP4 כשאתם רוצים לשחק בטוח</strong> 🛡️",
         "bullets": [
-          "<strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend",
-          "<strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4",
-          "<strong>Email attachments</strong>: When you need to send a video that just works",
-          "<strong>Mobile apps</strong>: Both iOS and Android will thank you"
+          "<strong>סרטוני אתר</strong>: סרטוני רקע, הדגמות מוצר, מדריכים - MP4 הוא החבר האמין שלכם",
+          "<strong>רשתות חברתיות</strong>: אינסטגרם, טוויטר, לינקדאין - כולם אוהבים MP4",
+          "<strong>קבצים מצורפים למייל</strong>: כשאתם צריכים לשלוח סרטון שפשוט עובד",
+          "<strong>אפליקציות מובייל</strong>: גם iOS וגם Android יודו לכם"
         ],
-        "proTip": "<strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices."
+        "proTip": "<strong>טיפ מקצועי</strong>: השתמשו בקודק H.264 לתאימות מקסימלית, או H.265 אם אתם צריכים קבצים קטנים אף יותר והקהל שלכם מחזיק מכשירים חדשים יותר."
       },
       "webm": {
-        "title": "When to Use WebM",
-        "lead": "<strong>Use WebM when every kilobyte counts</strong> 🪶",
+        "title": "מתי להשתמש ב-WebM",
+        "lead": "<strong>השתמשו ב-WebM כשכל קילובייט נחשב</strong> 🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: Where load speed directly impacts conversion rates",
-          "<strong>Progressive web apps</strong>: When you're building for the modern web",
-          "<strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)",
-          "<strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome"
+          "<strong>דפי נחיתה</strong>: שבהם מהירות הטעינה משפיעה ישירות על שיעורי ההמרה",
+          "<strong>אפליקציות רשת מתקדמות (PWA)</strong>: כשאתם בונים לרשת המודרנית",
+          "<strong>אתרים בעלי תנועה גבוהה</strong>: חסכו בעלויות רוחב פס (הארנק שלכם יודה לכם 💰)",
+          "<strong>כשאתם שולטים בסביבה</strong>: כמו כלים פנים-ארגוניים שבהם אתם יודעים שכולם משתמשים ב-Chrome"
         ],
-        "realTalk": "<strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦"
+        "realTalk": "<strong>דיבור ישר</strong>: פעם החלפתי ללקוח את סרטון הגיבור מ-MP4 ל-WebM וחתכתי 40% מגודל הקובץ. זמן טעינת העמוד שלהם ירד בשתי שניות, ושיעור הנטישה ירד ב-15%. זה כסף בבנק! 🏦"
       },
       "avi": {
-        "title": "When to Use AVI",
-        "lead": "<strong>Use AVI when quality is king and file size is... not a concern</strong> 👑",
+        "title": "מתי להשתמש ב-AVI",
+        "lead": "<strong>השתמשו ב-AVI כשאיכות היא המלך וגודל הקובץ... לא מהווה בעיה</strong> 👑",
         "bullets": [
-          "<strong>Video editing source files</strong>: When you need every pixel perfect for post-production",
-          "<strong>Archival purposes</strong>: Storing the master copy before compression",
-          "<strong>Local playback</strong>: When it's only playing from a hard drive, not the internet",
-          "<strong>Screen recordings for tutorials</strong>: Before you compress them for distribution"
+          "<strong>קבצי מקור לעריכת וידאו</strong>: כשאתם צריכים כל פיקסל מושלם לפוסט-פרודקשן",
+          "<strong>מטרות ארכיון</strong>: אחסון עותק המאסטר לפני הדחיסה",
+          "<strong>ניגון מקומי</strong>: כשהוא מתנגן רק מכונן קשיח, לא מהאינטרנט",
+          "<strong>הקלטות מסך למדריכים</strong>: לפני שדוחסים אותן להפצה"
         ],
-        "warning": "<strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4)."
+        "warning": "<strong>אזהרה</strong>: ברצינות, אל תשתמשו ב-AVI להפצה באינטרנט. פעם היה לי לקוח שהתעקש להשתמש ב-AVI לסרטוני המוצר שלו. דף הבית שלהם נטען במשך 45 שניות. ארבעים. וחמש. שניות. 😱 הם כבר לא לקוחות (סתם צוחק, תיקנו את זה עם MP4)."
       },
       "mov": {
-        "title": "When to Use MOV",
-        "lead": "<strong>Use MOV when you're in Apple's ecosystem</strong> 🍎",
+        "title": "מתי להשתמש ב-MOV",
+        "lead": "<strong>השתמשו ב-MOV כשאתם בתוך המערכת של אפל</strong> 🍎",
         "bullets": [
-          "<strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software",
-          "<strong>ProRes workflows</strong>: When color grading and quality are paramount",
-          "<strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac",
-          "<strong>Before converting</strong>: As a high-quality intermediate format"
+          "<strong>פרויקטי Final Cut Pro</strong>: MOV מסתדר יפה עם תוכנת העריכה של אפל",
+          "<strong>תהליכי עבודה עם ProRes</strong>: כשדירוג צבע ואיכות הם קריטיים",
+          "<strong>העברות בין מחשבי Mac</strong>: כשלכל המעורבים יש Mac",
+          "<strong>לפני המרה</strong>: כפורמט ביניים באיכות גבוהה"
         ],
-        "realityCheck": "<strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!"
+        "realityCheck": "<strong>בדיקת המציאות של MOV</strong>: זוכרים את הקלטת המסך שלי בגודל 315.9MB? זה MOV שנשאר MOV. איכות נהדרת, נורא לשיתוף. תמיד המירו לפני העלאה!"
       },
       "decisionTree": {
-        "title": "Quick Decision Tree 🌳",
-        "diagram": "Is it for the web?\n├─ Yes → Is Safari support critical?\n│   ├─ Yes → MP4\n│   └─ No → WebM (with MP4 fallback)\n└─ No → Is it for editing?\n    ├─ Yes → Are you on Mac?\n    │   ├─ Yes → MOV\n    │   └─ No → AVI\n    └─ No → MP4 (it's always MP4)"
+        "title": "עץ החלטות מהיר 🌳",
+        "diagram": "האם זה בשביל הרשת?\n├─ כן → האם תמיכה ב-Safari קריטית?\n│   ├─ כן → MP4\n│   └─ לא → WebM (עם גיבוי ל-MP4)\n└─ לא → האם זה בשביל עריכה?\n    ├─ כן → האם אתם על Mac?\n    │   ├─ כן → MOV\n    │   └─ לא → AVI\n    └─ לא → MP4 (זה תמיד MP4)"
       },
-      "quote": "\"The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer.\" 🧘‍♂️"
+      "quote": "״המפתח הנבון יודע שהפורמט הטוב ביותר הוא לא החדש ביותר או המפואר ביותר - הוא זה שמבצע את העבודה בלי לגרום למשתמשים לסבול.״ 🧘‍♂️"
     },
     "whyImportant": {
-      "title": "Why Is This Even Important For My Website?",
-      "p1": "Look, I get it. You might be thinking \"Can't I just upload whatever and call it a day?\" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?",
-      "p2": "Here's the cold, hard truth about why video formats matter more than you think:",
+      "title": "למה זה בכלל חשוב לאתר שלי?",
+      "p1": "תראו, אני מבין. אולי אתם חושבים ״האם אני לא יכול פשוט להעלות מה שבא לי ולסיים עם זה?״ 🤷‍♂️ בטח, אתם גם יכולים לאכול מרק עם מזלג, אבל למה להקשות על החיים יותר מהצורך?",
+      "p2": "הנה האמת הקרה והקשה על כך שפורמטי וידאו חשובים יותר משאתם חושבים:",
       "threeSecondRule": {
-        "title": "The 3-Second Rule ⏱️",
-        "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
+        "title": "כלל שלוש השניות ⏱️",
+        "body": "מחקרים מראים ש-53% ממשתמשי המובייל נוטשים אתרים שלוקח להם יותר משלוש שניות להיטען. חמישים ושלוש אחוז! זה יותר מחצי מהלקוחות הפוטנציאליים שלכם, נעלמים עוד לפני שהם בכלל ראו את התוכן המדהים שלכם. ונחשו מה בדרך כלל האשם העיקרי בזמני טעינה איטיים? נכון - סרטון הגיבור שלכם הלא-מאופטם בגודל 200MB, יושב שם כמו מחסום דיגיטלי 🚧."
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "גוגל צופה (ושופטת) 👀",
+        "intro": "מהירות הדף היא גורם דירוג ישיר עבור גוגל. זה אומר:",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>אתר איטי = דירוג נמוך יותר</strong> = פחות תנועה אורגנית",
+          "<strong>פחות תנועה = פחות המרות</strong> = פחות כסף",
+          "<strong>פחות כסף = מפתח עצוב</strong> 😢"
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "היה לי לקוח שאתר המסחר האלקטרוני שלו השתמש בקבצי MOV ענקיים לסרטוני מוצר. אחרי המרת הכול ל-MP4 מאופטמים עם גיבוי ל-WebM, אצלם:",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "זמן טעינת הדף ירד מ-8.2 ל-2.7 שניות",
+          "דירוגי גוגל השתפרו עבור 67% ממילות המפתח היעד שלהם",
+          "שיעור ההמרה עלה ב-23%",
+          "ההכנסה החודשית קפצה ב-18,000$ 💸"
         ]
       },
       "bandwidthBill": {
-        "title": "The Bandwidth Bill From Hell 🔥",
-        "body": "Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.",
-        "realNumbersIntro": "<strong>Real numbers</strong>: If your site gets 10,000 visitors/month:",
+        "title": "חשבון רוחב הפס מהגיהינום 🔥",
+        "body": "בכל פעם שמישהו טוען את הדף שלכם, אתם משלמים על רוחב הפס הזה. שימוש ב-AVI בגודל 50MB במקום MP4 בגודל 5MB אומר שאתם משלמים פשוטו כמשמעו פי 10 יותר על אחסון. זה כמו להזמין 10 פיצות כשאתם צריכים רק אחת - רק פחות טעים ויותר יקר.",
+        "realNumbersIntro": "<strong>מספרים אמיתיים</strong>: אם האתר שלכם מקבל 10,000 מבקרים בחודש:",
         "bullets": [
-          "With 50MB videos: 500GB bandwidth = $$",
-          "With 5MB videos: 50GB bandwidth = $",
-          "That's potentially hundreds of dollars saved monthly!"
+          "עם סרטונים של 50MB: 500GB רוחב פס = $$",
+          "עם סרטונים של 5MB: 50GB רוחב פס = $",
+          "זה חיסכון פוטנציאלי של מאות דולרים בחודש!"
         ]
       },
       "mobileUsers": {
-        "title": "Mobile Users Will Hate You 📱",
-        "intro": "Remember, over 60% of web traffic is mobile now. That means:",
+        "title": "משתמשי מובייל ישנאו אתכם 📱",
+        "intro": "זכרו, מעל 60% מתנועת הרשת היא כיום מובייל. זה אומר:",
         "bullets": [
-          "<strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video",
-          "<strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty",
-          "<strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users"
+          "<strong>מכסות נתונים הן אמיתיות</strong>: אף אחד לא רוצה לגמור את חבילת הנתונים החודשית שלו בצפייה בסרטון הגיבור שלכם",
+          "<strong>חיבורים איטיים יותר</strong>: לא לכולם יש 5G, וגם 4G יכול להיות לא יציב",
+          "<strong>התרוקנות סוללה</strong>: סרטונים גדולים = יותר עיבוד = טלפונים מתים = משתמשים כועסים"
         ]
       },
       "trust": {
-        "title": "Trust and Professionalism 🤝",
-        "intro": "This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:",
+        "title": "אמון ומקצועיות 🤝",
+        "intro": "זה אחד שאף אחד לא מדבר עליו, אבל הוא ענק. כשהאתר שלכם נטען מהר וסרטונים מתנגנים בצורה חלקה:",
         "bullets": [
-          "Users trust you more (subconsciously associating speed with competence)",
-          "They're more likely to stay and explore",
-          "They're more likely to come back",
-          "They're more likely to recommend you"
+          "משתמשים סומכים עליכם יותר (מקשרים באופן לא-מודע מהירות עם מקצועיות)",
+          "סביר יותר שהם יישארו ויחקרו",
+          "סביר יותר שהם יחזרו",
+          "סביר יותר שהם ימליצו עליכם"
         ],
-        "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
+        "outro": "אבל כשהאתר שלכם איטי? זה צועק ״חובבנות״ חזק יותר מצופר ערפל 📯. משתמשים חושבים: ״אם הם אפילו לא מצליחים לתקן את האתר שלהם כמו שצריך, האם אני יכול לסמוך עליהם עם כרטיס האשראי שלי?״"
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "הקשר למונטיזציה 💰",
+        "intro": "בין אם אתם מריצים פרסומות, מוכרים מוצרים, או ממנטזים תוכן דרך Medium (היי, קולגה כותב ב-Medium! 👋), הביצועים משפיעים ישירות על השורה התחתונה שלכם:",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>הכנסות מפרסום</strong>: אתרים איטיים = שיעורי נטישה גבוהים יותר = פחות חשיפות פרסום",
+          "<strong>קישורי שותפים</strong>: אנשים לא יכולים ללחוץ על מה שהם לא מחכים לראות",
+          "<strong>מכירת מוצרים</strong>: כל שנייה נוספת של זמן טעינה יכולה להוריד המרות ב-7%",
+          "<strong>מונטיזציית תוכן</strong>: קוראים לא יחכו שהמאמר המבריק שלכם ייטען"
         ]
       },
-      "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"
+      "quote": "״מהירות האתר היא כמו רושם ראשוני - יש לכם רק הזדמנות אחת, ואם תפספסו אותה, הם יחליקו שמאלה מהר יותר משתספיקו להגיד ׳רגע, טוען...׳״ 💨"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.",
-      "cheatSheetIntro": "Here's your TL;DR cheat sheet:",
+      "title": "סיכום",
+      "p1": "אז הנה זה, חברים הרפתקנים דיגיטליים! 🚀 עברנו יחד את העולם הפרוע של פורמטי הווידאו, ומקווה שאתם כבר לא מסתכלים על MP4, WebM, AVI ו-MOV כאילו הם שפות חייזרים מסתוריות.",
+      "cheatSheetIntro": "הנה דף הרמאות המקוצר שלכם:",
       "cheatSheet": [
-        "<strong>MP4</strong>: Your reliable, go-everywhere friend",
-        "<strong>WebM</strong>: The speed demon for modern web",
-        "<strong>AVI</strong>: The quality beast for local storage",
-        "<strong>MOV</strong>: Apple's heavyweight champion"
+        "<strong>MP4</strong>: החבר האמין שלכם, שהולך איתכם לכל מקום",
+        "<strong>WebM</strong>: שד המהירות של הרשת המודרנית",
+        "<strong>AVI</strong>: מפלצת האיכות לאחסון מקומי",
+        "<strong>MOV</strong>: אלוף המשקל הכבד של אפל"
       ],
-      "p2": "But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:",
+      "p2": "אבל חשוב יותר, עכשיו אתם יודעים שבחירת פורמט הווידאו הנכון היא לא סתם החלטה טכנית חנונית - היא נוגעת ל:",
       "checklist": [
-        "✅ Keeping your users happy (and on your site)",
-        "✅ Making Google love you (hello, better rankings! 👋)",
-        "✅ Saving money on hosting (cha-ching! 💰)",
-        "✅ Building trust and looking professional",
-        "✅ Actually making money from your content"
+        "✅ לשמור על שביעות רצון המשתמשים שלכם (ושהם יישארו באתר)",
+        "✅ לגרום לגוגל לאהוב אתכם (שלום, דירוג טוב יותר! 👋)",
+        "✅ לחסוך כסף על אחסון (צ׳ה-צ׳ינג! 💰)",
+        "✅ לבנות אמון ולהיראות מקצועיים",
+        "✅ להרוויח בפועל כסף מהתוכן שלכם"
       ],
-      "p3": "The next time you're about to upload a video to your website, take a second to ask yourself: \"Is this format working for me, or am I working for it?\" Because life's too short for slow-loading websites and frustrated users.",
-      "p4": "Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅",
-      "quote": "\"In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!\" ⚡"
+      "p3": "בפעם הבאה שאתם עומדים להעלות סרטון לאתר שלכם, קחו רגע לשאול את עצמכם: ״האם הפורמט הזה עובד בשבילי, או שאני עובד בשבילו?״ כי החיים קצרים מדי לאתרים איטיים ומשתמשים מתוסכלים.",
+      "p4": "עכשיו לכו ודחסו את הסרטונים האלה! המשתמשים שלכם (והארנק שלכם) יודו לכם. ואגב, אם מצאתם את זה מועיל, תנו לייק ב-Medium או שתפו עם החבר שעדיין מעלה קבצי MOV גולמיים לאתר שלו. כולנו מכירים מישהו כזה 😅",
+      "quote": "״בהרפתקה הגדולה של פיתוח האתרים, האופטימיזציות הקטנות ביותר מובילות לרוב לניצחונות הגדולים ביותר. שיהיו הסרטונים שלכם דחוסים וזמני הטעינה שלכם מהירים!״ ⚡"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Apply what you just read with the free Media Manipulator tools.",
+      "title": "כלים קשורים",
+      "intro": "יישמו את מה שקראתם זה עתה עם הכלים החינמיים של Media Manipulator.",
       "items": [
         {
-          "label": "Compress video",
-          "description": "Shrink MP4, WebM, MOV, and MKV files for the web."
+          "label": "דחיסת וידאו",
+          "description": "כווצו קבצי MP4, WebM, MOV ו-MKV לרשת."
         },
         {
-          "label": "Video converter",
-          "description": "Convert between MP4, WebM, MOV, AVI, and more."
+          "label": "ממיר וידאו",
+          "description": "המירו בין MP4, WebM, MOV, AVI ועוד."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "המרת וידאו ל-GIF",
+          "description": "הפכו קליפים קצרים ל-GIF מונפש הניתן לשיתוף."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video into searchable text or captions."
+          "label": "תמלול וידאו",
+          "description": "חלצו מילים מדוברות מווידאו לטקסט חיפוש או כתוביות."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Step-by-step walkthrough of every video conversion setting."
+          "label": "מדריך ממיר הווידאו",
+          "description": "הליכה שלב-אחר-שלב בכל הגדרות המרת הווידאו."
         },
         {
-          "label": "Image optimization guide",
-          "description": "JPG vs PNG vs WebP and how to shrink images for the web."
+          "label": "מדריך אופטימיזציית תמונות",
+          "description": "JPG מול PNG מול WebP וכיצד לכווץ תמונות לרשת."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Optimize Your Videos? 🚀",
-      "body": "Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.",
-      "button": "Try the video compressor →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "מוכנים לייעל את הסרטונים שלכם? 🚀",
+      "body": "תפסיקו לתת לקבצי וידאו ענקיים להאט את האתר שלכם! נסו את כלי דחיסת הווידאו החינמי שלנו וראו את ההבדל מיד. המירו MP4, WebM, AVI, MOV ועוד בכמה קליקים בלבד.",
+      "button": "נסו את דחיסת הווידאו →",
+      "footnote": "לא נדרשת הרשמה • עיבוד קבצים מקומי • מהיר ומאובטח"
     }
   },
   "blogImageOptimization": {
-    "backLink": "← Blog",
-    "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+    "backLink": "← בלוג",
+    "title": "אופטימיזציית תמונות לג׳דאים של הרשת: JPG מול PNG מול WebP",
     "byline": {
-      "label": "Written by:",
-      "date": "June 14th, 2025",
-      "time": "5:32 PM"
+      "label": "נכתב על ידי:",
+      "date": "14 ביוני 2025",
+      "time": "17:32"
     },
     "sections": {
       "intro": {
-        "title": "A Brief Intro to Image Formatting",
-        "p1": "Ever uploaded an image to your website and wondered why it takes <em>forever</em> to load? Or maybe you've noticed that your beautiful PNG logo looks crisp and clean, but it's somehow 5MB for a simple graphic? 🤔 Welcome to the wild world of image formats, where choosing the wrong one can make the difference between a lightning-fast website and one that loads slower than dial-up internet (remember that? 😅).",
-        "p2": "Image formats are essentially different ways of encoding and storing visual data. Think of them like different languages for describing the same picture - some are more verbose and detailed (like PNG), while others are more concise and compressed (like JPG). Each format has its own special sauce for how it stores pixels, handles transparency, compresses data, and maintains quality.",
-        "p3": "At their core, all image formats are trying to solve the same problem: how do we store millions of pixels worth of color information in a file that doesn't break the internet when someone tries to download it? The answer lies in <em>compression</em> - and this is where things get interesting! Some formats use \"lossy\" compression (they throw away some data to save space), while others use \"lossless\" compression (they keep everything but find clever ways to pack it smaller). It's like the difference between summarizing a book versus shrinking the font size - both make it \"smaller,\" but one loses information while the other doesn't.",
-        "p4": "The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀",
-        "quote": "\"The wise developer knows that the heaviest burden on a website is not code, but unoptimized images.\" - Ancient Web Proverb 😉"
+        "title": "היכרות קצרה עם פורמטי תמונה",
+        "p1": "העליתם פעם תמונה לאתר שלכם ותהיתם למה היא נטענת <em>לנצח</em>? או אולי שמתם לב שהלוגו היפה שלכם בפורמט PNG נראה חד ונקי, אבל איכשהו שוקל 5MB לגרפיקה פשוטה? 🤔 ברוכים הבאים לעולם הפרוע של פורמטי תמונה, שבו בחירה שגויה יכולה להיות ההבדל בין אתר מהיר כברק לאתר שנטען לאט יותר מאינטרנט חיוג (זוכרים את זה? 😅).",
+        "p2": "פורמטי תמונה הם למעשה דרכים שונות לקידוד ואחסון מידע חזותי. תחשבו עליהם כמו שפות שונות לתיאור אותה תמונה - חלקן מפורטות ומדויקות יותר (כמו PNG), ואחרות תמציתיות ודחוסות יותר (כמו JPG). לכל פורמט יש את הרוטב הסודי שלו לאופן שבו הוא שומר פיקסלים, מטפל בשקיפות, דוחס נתונים ושומר על איכות.",
+        "p3": "בבסיסם, כל פורמטי התמונה מנסים לפתור את אותה בעיה: איך שומרים מידע צבע של מיליוני פיקסלים בקובץ שלא ישבור את האינטרנט כשמישהו מנסה להוריד אותו? התשובה טמונה ב<em>דחיסה</em> - וכאן זה נהיה מעניין! חלק מהפורמטים משתמשים בדחיסה ״עם אובדן״ (הם זורקים חלק מהנתונים כדי לחסוך מקום), בעוד אחרים משתמשים בדחיסה ״ללא אובדן״ (הם שומרים על הכול אבל מוצאים דרכים חכמות לדחוס אותו לגודל קטן יותר). זה כמו ההבדל בין לסכם ספר לבין להקטין את גודל הגופן - שניהם מקטינים אותו, אבל אחד מאבד מידע והשני לא.",
+        "p4": "שלושת החברים שנצלול אליהם היום - JPG, PNG ו-WebP - כל אחד ניגש לאתגר הזה בצורה שונה, וההבנה של כוחות-העל הייחודיים שלהם (וגם נקודות התורפה!) תהפוך אתכם מפדאוואן לג׳דאי אמיתי של הרשת. 🚀",
+        "quote": "״המפתח הנבון יודע שהנטל הכבד ביותר על אתר אינו הקוד, אלא תמונות לא-מאופטמות.״ - פתגם עתיק של הרשת 😉"
       },
       "differences": {
-        "title": "What's the Difference Between These Formats Anyway?",
-        "intro": "Alright, let's get into the nitty-gritty of what makes each format tick! Think of these formats as different types of vehicles - they'll all get you from point A to point B, but some are sports cars, some are trucks, and some are those fancy new electric vehicles that do everything. 🚗",
+        "title": "אז מה בעצם ההבדל בין הפורמטים האלה?",
+        "intro": "טוב, בואו ניכנס לפרטים הקטנים של מה שגורם לכל פורמט לתקתק! תחשבו על הפורמטים האלה כסוגי רכבים שונים - כולם יביאו אתכם מנקודה A לנקודה B, אבל חלקם מכוניות ספורט, חלקם משאיות, וחלקם הרכבים החשמליים המפוארים החדשים שעושים הכול. 🚗",
         "jpg": {
-          "title": "JPG (or JPEG - they're the same thing, don't let anyone tell you otherwise 😄)",
-          "body": "JPG is like that reliable friend who's great at parties but terrible with details. It uses lossy compression, which means it literally throws away data it thinks you won't notice. Perfect for photographs where a tiny bit of quality loss is invisible to the human eye, but terrible for text or sharp edges. Ever seen a meme that's been shared so many times it looks like it was photographed through a potato? That's JPG compression artifacts saying hello! 👋",
+          "title": "JPG (או JPEG - זה אותו דבר, אל תתנו לאף אחד לספר לכם אחרת 😄)",
+          "body": "JPG הוא כמו החבר האמין שממש טוב במסיבות אבל נורא עם פרטים. הוא משתמש בדחיסה עם אובדן, כלומר הוא פשוטו כמשמעו זורק נתונים שהוא חושב שלא תשימו לב אליהם. מושלם לצילומים שבהם אובדן איכות זעיר בלתי נראה לעין האנושית, אבל נורא לטקסט או קצוות חדים. ראיתם פעם מם ששותף כל כך הרבה פעמים עד שהוא נראה כאילו צולם דרך תפוח אדמה? זה ארטיפקטים של דחיסת JPG אומרים שלום! 👋",
           "bullets": [
-            "<strong>Pros</strong>: Small file sizes, universally supported, great for photos",
-            "<strong>Cons</strong>: No transparency support, loses quality with each save, makes text look fuzzy",
-            "<strong>Best for</strong>: Photographs, complex images with lots of colors"
+            "<strong>יתרונות</strong>: גודל קובץ קטן, נתמך באופן אוניברסלי, מצוין לצילומים",
+            "<strong>חסרונות</strong>: אין תמיכה בשקיפות, מאבד איכות בכל שמירה, גורם לטקסט להיראות מטושטש",
+            "<strong>הכי טוב עבור</strong>: צילומים, תמונות מורכבות עם הרבה צבעים"
           ]
         },
         "png": {
           "title": "PNG (Portable Network Graphics)",
-          "body": "PNG is the perfectionist of the group - it refuses to lose any data whatsoever. Using lossless compression, it keeps every single pixel exactly as you intended. It also supports transparency (hello, logos with no background! 🎉), making it the go-to choice for graphics, icons, and anything with text. The downside? File sizes can get chunky real quick, especially with large, complex images.",
+          "body": "PNG הוא הפרפקציוניסט של הקבוצה - הוא מסרב לאבד אפילו ביט אחד של נתונים. באמצעות דחיסה ללא אובדן, הוא שומר כל פיקסל בדיוק כפי שהתכוונתם. הוא גם תומך בשקיפות (שלום, לוגואים בלי רקע! 🎉), מה שהופך אותו לבחירה המועדפת לגרפיקה, אייקונים וכל דבר עם טקסט. החיסרון? גדלי קבצים יכולים לתפוח מהר מאוד, במיוחד עם תמונות גדולות ומורכבות.",
           "bullets": [
-            "<strong>Pros</strong>: Lossless compression, supports transparency, perfect for graphics and text",
-            "<strong>Cons</strong>: Larger file sizes, not ideal for photographs",
-            "<strong>Best for</strong>: Logos, icons, images with text, anything needing transparency"
+            "<strong>יתרונות</strong>: דחיסה ללא אובדן, תומך בשקיפות, מושלם לגרפיקה וטקסט",
+            "<strong>חסרונות</strong>: גדלי קבצים גדולים יותר, לא אידיאלי לצילומים",
+            "<strong>הכי טוב עבור</strong>: לוגואים, אייקונים, תמונות עם טקסט, כל דבר שדורש שקיפות"
           ]
         },
         "webp": {
-          "title": "WebP (The New Kid on the Block)",
-          "body": "WebP is Google's attempt to create the ultimate image format - and honestly, they kind of nailed it! 🎯 It's like the Swiss Army knife of image formats, supporting both lossy AND lossless compression, transparency, and even animation (move over, GIF!). It typically achieves 25-35% smaller file sizes than JPG and PNG while maintaining the same quality. The only catch? Not every browser plays nice with it yet (looking at you, older Safari versions 👀).",
+          "title": "WebP (הילד החדש בשכונה)",
+          "body": "WebP הוא הניסיון של גוגל ליצור את פורמט התמונה האולטימטיבי - ובכנות, הם די הצליחו! 🎯 הוא כמו סכין השוויץ של פורמטי התמונה, תומך גם בדחיסה עם אובדן וגם ללא אובדן, בשקיפות ואפילו באנימציה (זוזו הצידה, GIF!). הוא בדרך כלל משיג גדלי קבצים קטנים ב-25-35% מ-JPG ו-PNG תוך שמירה על אותה איכות. הקאץ׳ היחיד? לא כל דפדפן משחק יפה איתו עדיין (אליכן אני מדבר, גרסאות ישנות של Safari 👀).",
           "bullets": [
-            "<strong>Pros</strong>: Smaller file sizes, supports everything (lossy, lossless, transparency, animation), excellent quality-to-size ratio",
-            "<strong>Cons</strong>: Not universally supported (yet), requires fallbacks for older browsers",
-            "<strong>Best for</strong>: Modern websites where you can provide fallbacks, any use case really!"
+            "<strong>יתרונות</strong>: גדלי קבצים קטנים יותר, תומך בהכול (עם אובדן, ללא אובדן, שקיפות, אנימציה), יחס איכות-לגודל מצוין",
+            "<strong>חסרונות</strong>: לא נתמך באופן אוניברסלי (עדיין), דורש גיבויים לדפדפנים ישנים",
+            "<strong>הכי טוב עבור</strong>: אתרים מודרניים שבהם אפשר לספק גיבויים, ולמעשה כל שימוש!"
           ]
         },
-        "example": "Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️",
-        "quote": "\"Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses.\" ⚔️"
+        "example": "הנה דוגמה מהירה מהעולם האמיתי: תמונה בגודל 1920x1080 עשויה לשקול 500KB כ-JPG, 2MB כ-PNG, אבל רק 350KB כ-WebP - עם איכות חזותית כמעט זהה. זה כמו לקבל מכונית יוקרה במחיר של מכונית קומפקטית! 🏎️",
+        "quote": "״בחרו את הפורמט שלכם כמו שסמוראי בוחר את חרבו - במטרה, בדיוק ובהבנה של החוזקות והחולשות שלו.״ ⚔️"
       },
       "choosing": {
-        "title": "How Do I Know When to Use One Format Over Another?",
-        "intro": "This is where the rubber meets the road! 🏁 Choosing the right format isn't rocket science, but it does require thinking like a detective. Let me break down the decision-making process with some real-world scenarios that'll make you go \"Aha!\" 💡",
+        "title": "איך אדע מתי להשתמש בפורמט אחד על פני האחר?",
+        "intro": "כאן זה נהיה מעשי! 🏁 בחירת הפורמט הנכון היא לא מדעי טילים, אבל היא כן דורשת לחשוב כמו בלש. הרשו לי לפרק את תהליך קבלת ההחלטות עם כמה תרחישים מהעולם האמיתי שיגרמו לכם לומר ״אהה!״ 💡",
         "decisionTree": {
-          "title": "The Quick Decision Tree (Screenshot This! 📸)",
-          "lead": "Ask yourself these questions in order:",
+          "title": "עץ ההחלטות המהיר (צלמו מסך לזה! 📸)",
+          "lead": "שאלו את עצמכם את השאלות האלה בסדר הבא:",
           "items": [
-            "Does it need transparency? → If yes, PNG or WebP",
-            "Is it a photograph with lots of colors and gradients? → JPG or WebP",
-            "Does it have text or sharp edges? → PNG or WebP",
-            "Do I need the absolute smallest file size? → WebP (with JPG/PNG fallback)",
-            "Is it going to be edited and saved multiple times? → PNG (to avoid quality degradation)"
+            "האם התמונה זקוקה לשקיפות? → אם כן, PNG או WebP",
+            "האם זה צילום עם הרבה צבעים וגרדיאנטים? → JPG או WebP",
+            "יש בה טקסט או קצוות חדים? → PNG או WebP",
+            "אני צריך את גודל הקובץ הקטן ביותר האפשרי? → WebP (עם גיבוי JPG/PNG)",
+            "היא הולכת להיערך ולהישמר מספר פעמים? → PNG (כדי למנוע ירידה באיכות)"
           ]
         },
         "scenarios": {
-          "title": "Real-World Scenarios (Because Theory is Boring 😴)",
+          "title": "תרחישים מהעולם האמיתי (כי תיאוריה משעממת 😴)",
           "items": [
             {
-              "title": "Scenario 1: Your Company Logo",
-              "body": "You've got a slick logo that needs to work on any background. This is PNG territory all day! Why? You need that transparency, baby! Plus, logos typically have clean lines and solid colors that PNG handles like a boss. If you're feeling adventurous and your analytics show most users have modern browsers, go WebP with PNG fallback."
+              "title": "תרחיש 1: הלוגו של החברה שלכם",
+              "body": "יש לכם לוגו מהמם שצריך לעבוד על כל רקע. זה שטח של PNG כל היום! למה? אתם צריכים את השקיפות ההיא, מותק! בנוסף, ללוגואים בדרך כלל יש קווים נקיים וצבעים אחידים ש-PNG מטפל בהם כמו בוס. אם אתם מרגישים הרפתקניים והנתונים שלכם מראים שרוב המשתמשים משתמשים בדפדפנים מודרניים, לכו על WebP עם גיבוי PNG."
             },
             {
-              "title": "Scenario 2: Hero Image on Your Landing Page",
-              "body": "That gorgeous 4K photograph of your product/team/artisanal coffee? JPG or WebP, no question. The slight quality loss from JPG compression is invisible in photographs, and the file size difference is *chef's kiss* 👨‍🍳. A 5MB PNG photo will make your users cry (and bounce), while a 500KB JPG will load faster than they can say \"add to cart.\""
+              "title": "תרחיש 2: תמונת גיבור בדף הנחיתה שלכם",
+              "body": "התמונה המהממת הזו ב-4K של המוצר/הצוות/הקפה האומנותי שלכם? JPG או WebP, בלי שאלות. אובדן האיכות הקל מדחיסת JPG בלתי נראה בצילומים, וההבדל בגודל הקובץ הוא *נשיקת שף* 👨‍🍳. תמונת PNG בגודל 5MB תגרום למשתמשים שלכם לבכות (ולנטוש), בעוד JPG בגודל 500KB ייטען מהר יותר משיספיקו להגיד ״הוסף לעגלה.״"
             },
             {
-              "title": "Scenario 3: Screenshots for Your Blog/Documentation",
-              "body": "This one's tricky! If there's text in the screenshot (and there usually is), PNG is your friend. JPG will make that text look like it went through a blender. However, if you're taking screenshots on a Mac, those bad boys can be HUGE. Consider using WebP or optimizing your PNGs with tools like TinyPNG."
+              "title": "תרחיש 3: צילומי מסך לבלוג/תיעוד שלכם",
+              "body": "זה עדין! אם יש טקסט בצילום המסך (ובדרך כלל יש), PNG הוא החבר שלכם. JPG יגרום לטקסט הזה להיראות כאילו עבר בבלנדר. עם זאת, אם אתם מצלמי מסך במחשב Mac, הקבצים האלה יכולים להיות ענקיים. שקלו להשתמש ב-WebP או לאופטם את קובצי ה-PNG שלכם עם כלים כמו TinyPNG."
             },
             {
-              "title": "Scenario 4: Product Images for E-commerce",
-              "body": "WebP with JPG fallback is the power move here. 🎯 You get smaller file sizes (faster load times = better conversions), great quality, and you can even add subtle transparency effects if needed. Just make sure to implement proper fallbacks for the Safari-on-iPhone crowd."
+              "title": "תרחיש 4: תמונות מוצר למסחר אלקטרוני",
+              "body": "WebP עם גיבוי JPG הוא המהלך החכם כאן. 🎯 אתם מקבלים גדלי קבצים קטנים יותר (זמני טעינה מהירים יותר = המרות טובות יותר), איכות מצוינת, ואפילו יכולים להוסיף אפקטי שקיפות עדינים במידת הצורך. רק תוודאו שאתם מיישמים גיבויים תקינים לקהל ה-Safari-על-iPhone."
             }
           ]
         },
         "proTips": {
-          "title": "Pro Tips from the Trenches 🪖",
+          "title": "טיפים מקצועיים מהשטח 🪖",
           "items": [
-            "Always compress your images! Even if you choose the right format, an unoptimized PNG can still be a monster",
-            "Use responsive images with different sizes for different devices (your mobile users will thank you)",
-            "Consider using CDNs that can automatically serve WebP to supported browsers",
-            "When in doubt, test both formats and see which looks better at a reasonable file size"
+            "תמיד דחסו את התמונות שלכם! גם אם בחרתם בפורמט הנכון, PNG לא-מאופטם עדיין יכול להיות מפלצת",
+            "השתמשו בתמונות רספונסיביות עם גדלים שונים למכשירים שונים (משתמשי המובייל שלכם יודו לכם)",
+            "שקלו להשתמש ב-CDN-ים שיכולים לספק אוטומטית WebP לדפדפנים נתמכים",
+            "כשיש ספק, בדקו את שני הפורמטים ובחנו איזה נראה טוב יותר בגודל קובץ סביר"
           ]
         },
-        "quote": "\"The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves.\" 🧘‍♂️"
+        "quote": "״מפתח הרשת האמיתי לא בוחר את הפורמט שנראה הכי טוב, אלא זה שמשרת את המשתמש הכי טוב - כי בשירות אחרים, אנו משפרים את עצמנו.״ 🧘‍♂️"
       },
       "whyImportant": {
-        "title": "Why Is This Even Important For My Website?",
-        "intro": "Okay, real talk time. 💯 You might be thinking, \"Come on, it's 2025, everyone has fast internet now, right?\" WRONG! Let me hit you with some truth bombs that'll make you want to optimize every image on your site immediately. 💣",
+        "title": "למה זה בכלל חשוב לאתר שלי?",
+        "intro": "אוקיי, זמן לדיבור ישר. 💯 אולי אתם חושבים, ״נו באמת, זה 2025, לכולם יש אינטרנט מהיר עכשיו, נכון?״ טעות! תנו לי להפציץ אתכם עם כמה אמיתות שיגרמו לכם לרצות לאופטם כל תמונה באתר שלכם מיד. 💣",
         "loadTimes": {
-          "title": "The Brutal Reality of Page Load Times",
-          "p1": "Here's a stat that'll make your jaw drop: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load</strong>. THREE. SECONDS. 😱 And guess what's usually the biggest culprit? Yep, those chunky, unoptimized images you uploaded straight from your camera.",
-          "p2": "Let's do some quick math (don't worry, I'll keep it simple):",
+          "title": "המציאות האכזרית של זמני טעינת דפים",
+          "p1": "הנה סטטיסטיקה שתפיל לכם את הלסת: <strong>53% ממשתמשי המובייל נוטשים אתרים שלוקח להם יותר משלוש שניות להיטען</strong>. שלוש. שניות. 😱 ונחשו מה בדרך כלל האשם העיקרי? נכון, אותן תמונות מגושמות ולא-מאופטמות שהעליתם ישירות מהמצלמה שלכם.",
+          "p2": "בואו נעשה חשבון מהיר (אל תדאגו, אשמור על זה פשוט):",
           "items": [
-            "Average webpage: 2-3MB total",
-            "Unoptimized hero image: 5MB",
-            "Result: Your page just became slower than a sloth on sedatives 🦥"
+            "עמוד רשת ממוצע: 2-3MB בסך הכול",
+            "תמונת גיבור לא-מאופטמת: 5MB",
+            "התוצאה: הדף שלכם הפך פתאום לאיטי יותר מעצלן בהרגעה 🦥"
           ]
         },
         "seo": {
-          "title": "The SEO Domino Effect 🎯",
-          "intro": "Google's Core Web Vitals (fancy term for \"does your site load fast?\") directly impact your search rankings. Here's the chain reaction:",
+          "title": "אפקט הדומינו של קידום אתרים 🎯",
+          "intro": "Core Web Vitals של גוגל (מונח מפואר ל״האם האתר שלך נטען מהר?״) משפיעים ישירות על דירוגי החיפוש שלכם. הנה שרשרת התגובה:",
           "items": [
-            "Heavy images → Slow load times",
-            "Slow load times → Poor Core Web Vitals scores",
-            "Poor scores → Lower search rankings",
-            "Lower rankings → Less traffic",
-            "Less traffic → Less money 💸"
+            "תמונות כבדות → זמני טעינה איטיים",
+            "זמני טעינה איטיים → ציוני Core Web Vitals ירודים",
+            "ציונים ירודים → דירוגי חיפוש נמוכים יותר",
+            "דירוגים נמוכים יותר → פחות תנועה",
+            "פחות תנועה → פחות כסף 💸"
           ],
-          "outro": "It's like a really expensive game of dominoes where every piece that falls costs you customers!"
+          "outro": "זה כמו משחק דומינו יקר במיוחד, שבו כל אריח שנופל עולה לכם בלקוחות!"
         },
         "mobile": {
-          "title": "The Mobile Reality Check 📱",
-          "p1": "Here's something that might surprise you: In many parts of the world, people are browsing on 3G connections or have data caps. That beautiful 10MB PNG hero image? It just cost someone in India half their daily data allowance. Not cool, and definitely not good for business.",
-          "p2": "Plus, even in countries with \"fast\" internet, people are often on spotty coffee shop WiFi or riding the subway. Your unoptimized images are literally making people close your site and go to your competitor. Ouch! 🤕"
+          "title": "בדיקת המציאות של המובייל 📱",
+          "p1": "הנה משהו שאולי יפתיע אתכם: בהרבה חלקים בעולם, אנשים גולשים בחיבורי 3G או שיש להם מכסות נתונים. תמונת הגיבור היפה ההיא בגודל 10MB PNG? היא בדיוק עלתה למישהו בהודו חצי ממכסת הנתונים היומית שלו. זה לא מגניב, ובהחלט לא טוב לעסק.",
+          "p2": "בנוסף, גם במדינות עם אינטרנט ״מהיר״, אנשים לעיתים קרובות מחוברים ל-WiFi לא יציב בבית קפה או נוסעים ברכבת התחתית. התמונות הלא-מאופטמות שלכם פשוטו כמשמעו גורמות לאנשים לסגור את האתר שלכם וללכת למתחרה. אאוץ׳! 🤕"
         },
         "money": {
-          "title": "The Money Talk (Because Let's Be Honest, That's What Matters) 💰",
+          "title": "דיבור על כסף (כי בואו נהיה כנים, זה מה שחשוב) 💰",
           "items": [
-            "<strong>Amazon found that every 100ms of latency cost them 1% in sales</strong>",
-            "<strong>Pinterest increased search engine traffic and sign-ups by 15% when they reduced perceived wait times by 40%</strong>",
-            "<strong>Walmart saw a 2% increase in conversions for every 1 second of improvement in load time</strong>"
+            "<strong>אמזון גילתה שכל 100 מילישניות של השהיה עלו להם 1% במכירות</strong>",
+            "<strong>פינטרסט הגדילה את תנועת מנועי החיפוש וההרשמות ב-15% כשקיצרה זמני המתנה נתפסים ב-40%</strong>",
+            "<strong>וולמארט ראתה עלייה של 2% בהמרות עבור כל שיפור של שנייה אחת בזמן הטעינה</strong>"
           ],
-          "outro": "Still think image optimization doesn't matter? 🤔"
+          "outro": "עדיין חושבים שאופטימיזציית תמונות לא משנה? 🤔"
         },
         "horrorStory": {
-          "title": "Real-World Horror Story 🎃",
-          "body": "I once worked with a client whose beautiful photography portfolio site was getting almost no traffic. The culprit? Each image was a 15-20MB PNG straight from Photoshop. The homepage took 45 seconds to load on a good day. After optimizing (converting to JPG, proper sizing, lazy loading), load time dropped to 2 seconds. Traffic increased by 70% in one month. True story!"
+          "title": "סיפור אימה מהעולם האמיתי 🎃",
+          "body": "פעם עבדתי עם לקוח שאתר תיק העבודות הצילומי היפהפה שלו כמעט ולא קיבל תנועה. האשם? כל תמונה הייתה PNG בגודל 15-20MB ישירות מפוטושופ. דף הבית נטען במשך 45 שניות ביום טוב. אחרי אופטימיזציה (המרה ל-JPG, גודל נכון, טעינה עצלה), זמן הטעינה ירד לשתי שניות. התנועה עלתה ב-70% תוך חודש אחד. סיפור אמיתי!"
         },
         "trust": {
-          "title": "The Trust Factor 🤝",
-          "intro": "Slow websites don't just lose customers - they lose credibility. Users subconsciously associate slow load times with:",
+          "title": "גורם האמון 🤝",
+          "intro": "אתרים איטיים לא רק מאבדים לקוחות - הם מאבדים אמינות. משתמשים מקשרים באופן לא-מודע זמני טעינה איטיים עם:",
           "items": [
-            "Outdated technology",
-            "Lack of attention to detail",
-            "Unprofessionalism",
-            "Security concerns (yes, really!)"
+            "טכנולוגיה מיושנת",
+            "חוסר תשומת לב לפרטים",
+            "חוסר מקצועיות",
+            "חששות אבטחה (כן, באמת!)"
           ],
-          "outro": "Your image choices are literally affecting how trustworthy people think you are. Wild, right?"
+          "outro": "הבחירות שלכם בתמונות משפיעות פשוטו כמשמעו על עד כמה אנשים חושבים שאתם אמינים. מטורף, נכון?"
         },
-        "quote": "\"A website's speed is like a first impression - you never get a second chance to load quickly.\" ⚡"
+        "quote": "״מהירות האתר היא כמו רושם ראשוני - לעולם אין לך הזדמנות שנייה להיטען מהר.״ ⚡"
       },
       "conclusion": {
-        "title": "Conclusion",
-        "intro": "Alright, my fellow Web Jedis, we've been on quite the journey! 🚀 From understanding the DNA of image formats to seeing how they can literally make or break your website's success. Let's recap the superpowers you've just unlocked:",
+        "title": "סיכום",
+        "intro": "טוב, חברי הג׳דאים של הרשת, עברנו מסע שלם! 🚀 מהבנת ה-DNA של פורמטי תמונה ועד לראות איך הם יכולים פשוטו כמשמעו לעשות או לשבור את הצלחת האתר שלכם. בואו נסכם את כוחות-העל שזה עתה שחררתם:",
         "tldr": {
-          "title": "The TL;DR Version (For Those Who Scrolled Here First 😏)",
+          "title": "הגרסה המקוצרת (עבור אלה שגללו לכאן ראשונים 😏)",
           "items": [
-            "<strong>JPG</strong>: Your go-to for photos. Small files, great quality, but no transparency",
-            "<strong>PNG</strong>: The perfectionist for logos, graphics, and anything with text. Bigger files but pixel-perfect",
-            "<strong>WebP</strong>: The Swiss Army knife that does it all, just needs fallbacks for older browsers"
+            "<strong>JPG</strong>: הבחירה שלכם לצילומים. קבצים קטנים, איכות מעולה, אבל בלי שקיפות",
+            "<strong>PNG</strong>: הפרפקציוניסט ללוגואים, גרפיקה וכל דבר עם טקסט. קבצים גדולים יותר אבל מדויק לפיקסל",
+            "<strong>WebP</strong>: סכין השוויץ שעושה הכול, רק צריך גיבויים לדפדפנים ישנים"
           ]
         },
         "actionPlan": {
-          "title": "Your Action Plan (Do These TODAY!) ✅",
+          "title": "תוכנית הפעולה שלכם (עשו את זה היום!) ✅",
           "items": [
-            "<strong>Audit your current images</strong> - Open your website right now and check those file sizes. I'll wait... Scary, right? 😱",
-            "<strong>Set up an optimization workflow</strong> - Whether it's using tools like TinyPNG, ImageOptim, or good ol' ffmpeg (shameless plug for my other article 😉), make optimization part of your process",
-            "<strong>Implement WebP with fallbacks</strong> - It's 2025, time to give your users that next-gen experience",
-            "<strong>Test your load times</strong> - Use Google's PageSpeed Insights and watch those scores soar",
-            "<strong>Set up responsive images</strong> - Different sizes for different devices = happy users everywhere"
+            "<strong>בדקו את התמונות הנוכחיות שלכם</strong> - פתחו את האתר שלכם עכשיו ובדקו את גדלי הקבצים האלה. אני אחכה... מפחיד, נכון? 😱",
+            "<strong>הקימו תהליך אופטימיזציה</strong> - בין אם זה שימוש בכלים כמו TinyPNG, ImageOptim, או ffmpeg הטוב הישן (פרסומת עצמית חסרת בושה למאמר האחר שלי 😉), הפכו את האופטימיזציה לחלק מהתהליך שלכם",
+            "<strong>יישמו WebP עם גיבויים</strong> - זה 2025, זמן לתת למשתמשים שלכם את חוויית הדור הבא",
+            "<strong>בדקו את זמני הטעינה שלכם</strong> - השתמשו ב-PageSpeed Insights של גוגל וצפו בציונים עולים",
+            "<strong>הקימו תמונות רספונסיביות</strong> - גדלים שונים למכשירים שונים = משתמשים מרוצים בכל מקום"
           ]
         },
         "bigPicture": {
-          "title": "The Bigger Picture 🖼️",
-          "p1": "Remember, optimizing your images isn't just about technical SEO scores or saving bandwidth (though those are awesome bonuses!). It's about respecting your users' time, data, and experience. Every second you shave off your load time is a second you're giving back to someone's day. That's pretty powerful when you think about it! 💪",
-          "p2": "Plus, let's be real - faster websites make more money. It's not rocket science, it's just good business. Your optimized images are literally increasing your bottom line while making the web a better place. You're basically a superhero now! 🦸‍♀️🦸‍♂️"
+          "title": "התמונה הגדולה יותר 🖼️",
+          "p1": "זכרו, אופטימיזציית התמונות שלכם היא לא רק על ציוני קידום אתרים טכניים או חיסכון ברוחב פס (למרות שאלה בונוסים מדהימים!). זה על כבוד לזמן, לנתונים ולחוויה של המשתמשים שלכם. כל שנייה שאתם חוסכים מזמן הטעינה היא שנייה שאתם מחזירים ליום של מישהו. זה די עוצמתי כשחושבים על זה! 💪",
+          "p2": "ובנוסף, בואו נהיה כנים - אתרים מהירים יותר מרוויחים יותר כסף. זה לא מדעי טילים, זה פשוט עסק טוב. התמונות המאופטמות שלכם פשוטו כמשמעו מגדילות את השורה התחתונה שלכם תוך כדי שהן הופכות את הרשת למקום טוב יותר. אתם למעשה גיבורי-על עכשיו! 🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
-          "title": "One Final Challenge 🎯",
-          "p1": "Here's my challenge to you: Take the slowest-loading page on your website and optimize just the images. Nothing else. I guarantee you'll see at least a 50% improvement in load time. Share your before/after results in the comments - I love a good optimization success story!",
-          "p2": "Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨"
+          "title": "אתגר אחרון 🎯",
+          "p1": "הנה האתגר שלי אליכם: קחו את הדף האיטי ביותר באתר שלכם ואופטמו רק את התמונות. שום דבר אחר. אני מבטיח לכם שתראו לפחות שיפור של 50% בזמן הטעינה. שתפו את תוצאות ה-לפני/אחרי בתגובות - אני אוהב סיפור הצלחה טוב של אופטימיזציה!",
+          "p2": "זכרו, בעולם פיתוח האתרים, הקוד הטוב ביותר הוא קוד מהיר, אבל התמונות הטובות ביותר הן תמונות מאופטמות. עכשיו לכו ודחסו! שיהיו התמונות שלכם קטנות וזמני הטעינה שלכם קטנים אף יותר! 🚀✨"
         },
-        "quote": "\"The journey of a thousand optimizations begins with a single compressed image.\" 🏔️"
+        "quote": "״המסע של אלף אופטימיזציות מתחיל בתמונה דחוסה אחת.״ 🏔️"
       }
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the techniques from this guide in the free Media Manipulator image tools.",
+      "title": "כלים קשורים",
+      "intro": "נסו את הטכניקות מהמדריך הזה בכלי התמונה החינמיים של Media Manipulator.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "ממיר תמונות",
+          "description": "המירו בין JPG, PNG, WebP, AVIF, GIF ועוד."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "המרת WebP ל-JPG",
+          "description": "קבלו JPG תואם באופן רחב ממקור WebP."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "הסרת מטא-נתוני EXIF",
+          "description": "הסירו מיקום GPS, מכשיר ומטא-נתוני חותמת זמן לפני שיתוף תמונות."
         },
         {
-          "label": "Image converter tutorial",
-          "description": "Full walkthrough of every setting in the image converter."
+          "label": "מדריך ממיר התמונות",
+          "description": "הליכה מלאה בכל הגדרה בממיר התמונות."
         },
         {
-          "label": "Video compression guide",
-          "description": "Apply the same optimization mindset to video files."
+          "label": "מדריך דחיסת וידאו",
+          "description": "יישמו את אותה גישת אופטימיזציה על קבצי וידאו."
         },
         {
-          "label": "Audio quality guide",
-          "description": "Pick the right audio bitrate, sample rate, and codec."
+          "label": "מדריך איכות אודיו",
+          "description": "בחרו את קצב הסיביות, קצב הדגימה והקודק הנכונים לאודיו."
         }
       ]
     },
     "footer": {
-      "title": "Time to Become an Image Optimization Jedi! 🌟",
-      "body": "Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!",
-      "ctaLabel": "Open the image converter →",
-      "disclaimer": "No signup required • Process files locally • Fast & secure"
+      "title": "הגיע הזמן להפוך לג׳דאי אופטימיזציית תמונות! 🌟",
+      "body": "מוכנים להפוך את קובצי ה-PNG המגושמים שלכם ל-WebP מהירים כברק? ממיר התמונות החינמי שלנו תומך ב-JPG, PNG, WebP, GIF ועוד. אופטמו את התמונות שלכם תוך שניות וצפו באתר שלכם ממריא!",
+      "ctaLabel": "פתחו את ממיר התמונות →",
+      "disclaimer": "לא נדרשת הרשמה • עיבוד קבצים מקומי • מהיר ומאובטח"
     }
   },
   "blogAudioQuality": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← בלוג"
     },
     "header": {
-      "title": "The Sound of <strike>Silence</strike> Quality: Bitrates, Sample Rates, and Formats",
-      "byline": "Written by:",
-      "dateDisplay": "June 14th, 2025",
-      "timeDisplay": "10:08 PM"
+      "title": "הצליל של <strike>השקט</strike> האיכות: קצבי סיביות, קצבי דגימה ופורמטים",
+      "byline": "נכתב על ידי:",
+      "dateDisplay": "14 ביוני 2025",
+      "timeDisplay": "22:08"
     },
     "intro": {
-      "title": "A Brief Intro to Audio Formats, Bitrates, and Sample Rates",
-      "p1": "Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's \"high-quality\" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:",
+      "title": "היכרות קצרה עם פורמטי אודיו, קצבי סיביות וקצבי דגימה",
+      "p1": "תהיתם פעם למה הפודקאסט שהורדתם נשמע צלול לגמרי במשקל 50MB בעוד שקובץ המוזיקה ה״איכותי״ של החבר שלכם נשמע כאילו הוקלט מתחת למים במשקל 3MB? או אולי שמתם לב ש:",
       "bullets": [
-        "Your website's background music takes forever to load, even though it's only 30 seconds long",
-        "That audio file you converted sounds like someone's playing it through a tin can",
-        "You're trying to add voice-overs to your video content but the file sizes are absolutely massive",
-        "Your carefully crafted sound effects library is eating up all your cloud storage",
-        "You downloaded the same song from different sources and they all sound wildly different"
+        "מוזיקת הרקע של האתר שלכם לוקחת נצח להיטען, למרות שהיא רק 30 שניות",
+        "קובץ האודיו שהמרתם נשמע כאילו מישהו מנגן אותו דרך פחית שימורים",
+        "אתם מנסים להוסיף קריינות לתוכן הווידאו שלכם אבל גדלי הקבצים ענקיים בטירוף",
+        "ספריית אפקטי הקול המושקעת שלכם אוכלת את כל האחסון הענני שלכם",
+        "הורדתם את אותו השיר ממקורות שונים והם נשמעים שונים בצורה מטורפת"
       ],
-      "p2": "If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!",
-      "p3": "Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.",
-      "p4": "In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯",
-      "quote": "\"The ear is the avenue to the heart.\" – Voltaire"
+      "p2": "אם חוויתם משהו מההרפתקאות (או צרות) האודיו האלה 😅, אז תתכוננו, כי אנחנו עומדים לפענח את עולם פורמטי האודיו, קצבי הסיביות וקצבי הדגימה!",
+      "p3": "תחשבו על קבצי אודיו כמו קפה ☕ - יש לכם קפה נמס (קובצי MP3 בקצב סיביות נמוך), קפה סנן רגיל (אודיו באיכות רגילה), ומכונת אספרסו מפוארת (קבצי FLAC ללא אובדן). כולם קפה, אבל החוויה? שונה לגמרי. וכמו שלא הייתם מגישים קפה נמס בבית קפה יוקרתי, אתם לא צריכים להשתמש בקבצי אודיו באיכות נמוכה באתר המקצועי שלכם.",
+      "p4": "במאמר הזה נחקור מה המספרים והפורמטים המסתוריים האלה באמת אומרים, למה הם חשובים יותר משאתם חושבים, ואיך בחירת השילוב הנכון יכולה להיות ההבדל בין מבקרי האתר שלכם שנשארים מעורבים לבין לחיצה על כפתור החזרה המפחיד ההוא. 🎯",
+      "quote": "״האוזן היא השדרה אל הלב.״ - וולטר"
     },
     "difference": {
-      "title": "What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?",
-      "p1": "Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧",
-      "formatsLead": "<strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:",
+      "title": "אז מה בעצם ההבדל בין פורמטים, קצבי סיביות וקצבי דגימה?",
+      "p1": "טוב, בואו נפרק את זה כאילו אנחנו מסבירים לחבר לא-טכני שרק רוצה שהפודקאסט שלו יישמע טוב! 🎧",
+      "formatsLead": "<strong>פורמטי אודיו</strong> הם כמו מכולות - תחשבו עליהם כסוגים שונים של קופסאות שאפשר לארוז בהן את האודיו שלכם. יש לכם:",
       "formatsBullets": [
-        "<strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit",
-        "<strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton",
-        "<strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside",
-        "<strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty",
-        "<strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it"
+        "<strong>MP3</strong>: קופסת הקרטון האמינה. עושה את העבודה, מתקבלת באופן אוניברסלי, אבל עלולה לדחוס קצת את התוכן שלכם",
+        "<strong>WAV</strong>: המכולה הכבדה מפלדה. שומרת על הכול בצורה מושלמת אבל שוקלת טונה",
+        "<strong>AAC</strong>: הקופסה המודרנית והמפוארת עם טכנולוגיית אריזה טובה יותר. אותו גודל כמו MP3 אבל מכניסה יותר איכות פנימה",
+        "<strong>FLAC</strong>: המכולה האטומה בוואקום. דוחסת בלי לאבד כלום, אבל עדיין די כבדה",
+        "<strong>OGG</strong>: קופסת המורדים קוד-הפתוח שעובדת מעולה אבל לא כולם יודעים איך לפתוח אותה"
       ],
-      "bitrateLead": "<strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:",
+      "bitrateLead": "<strong>קצב סיביות (Bitrate)</strong> הוא כמות הנתונים שזורמת בכל שנייה - תדמיינו את זה כצינור מים. קצב סיביות גבוה יותר = צינור גדול יותר = יותר מידע אודיו זורם דרכו:",
       "bitrateBullets": [
-        "<strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)",
-        "<strong>128 kbps</strong>: Standard faucet (decent for casual listening)",
-        "<strong>256 kbps</strong>: Fire hose (great quality for most people)",
-        "<strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)",
-        "<strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿"
+        "<strong>64 kbps</strong>: צינור השקיה (טוב לרדיו דיבורים, נורא למוזיקה)",
+        "<strong>128 kbps</strong>: ברז סטנדרטי (סביר להאזנה מזדמנת)",
+        "<strong>256 kbps</strong>: זרנוק כיבוי אש (איכות מעולה לרוב האנשים)",
+        "<strong>320 kbps</strong>: צינור תעשייתי (איכות מקסימלית ל-MP3)",
+        "<strong>1,411 kbps</strong>: מפלי הניאגרה (איכות CD ללא דחיסה) 💿"
       ],
-      "sampleRateLead": "<strong>Sample Rate</strong> is how many times per second we take a \"snapshot\" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):",
+      "sampleRateLead": "<strong>קצב דגימה (Sample Rate)</strong> הוא כמה פעמים בשנייה אנחנו לוקחים ״תמונת מצב״ של גל הקול. הוא נמדד ב-Hz (הרץ) או kHz (קילוהרץ):",
       "sampleRateBullets": [
-        "<strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy",
-        "<strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear",
-        "<strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)",
-        "<strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)"
+        "<strong>22,050 Hz</strong>: כמו לצפות בסרט ב-15fps - פונקציונלי אבל מקוטע",
+        "<strong>44,100 Hz</strong>: נקודת האיזון המושלמת - איכות CD, לוכדת כל מה שבני אדם יכולים לשמוע",
+        "<strong>48,000 Hz</strong>: תקן הווידאו המקצועי (בגלל מתמטיקה וסנכרון 🤓)",
+        "<strong>96,000 Hz</strong> ומעלה: לחנוני אודיו ולכלבים (ברצינות, בני אדם לא שומעים את ההבדל)"
       ],
-      "p2": "Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯",
-      "quote": "\"To understand the whole, you must first understand the parts.\" – Aristotle"
+      "p2": "הנה החלק המעניין - שלושת החברים האלה עובדים יחד! יכול להיות לכם קובץ WAV (פורמט) ב-44.1 kHz (קצב דגימה) עם קצב סיביות של 1,411 kbps. או MP3 (פורמט) ב-44.1 kHz (קצב דגימה) אבל רק 128 kbps (קצב סיביות). אותו קצב דגימה, איכות שונה לגמרי! 🤯",
+      "quote": "״כדי להבין את השלם, יש להבין תחילה את החלקים.״ - אריסטו"
     },
     "usage": {
-      "title": "How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?",
-      "p1": "Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?",
+      "title": "איך אדע מתי להשתמש בפורמט אחד על פני אחר, ואיך קצב הסיביות וקצב הדגימה משתלבים בזה?",
+      "p1": "זמן לדיבור ישר! 💪 בואו נתאים את צרכי האודיו שלכם לשילוב הפורמט הנכון. תחשבו על זה כבחירת התלבושת המתאימה לאירועים שונים - לא הייתם לובשים חליפת ערב לחדר הכושר, נכון?",
       "background": {
-        "title": "For Background Music on Websites:",
+        "title": "למוזיקת רקע באתרים:",
         "bullets": [
-          "<strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth",
-          "<strong>File size</strong>: ~1MB per minute (your visitors will thank you!)"
+          "<strong>השתמשו ב</strong>: MP3 או AAC ב-128-192 kbps, 44.1 kHz",
+          "<strong>למה</strong>: נטען מהר, נשמע מספיק טוב לאווירה, לא אוכל רוחב פס",
+          "<strong>גודל קובץ</strong>: כ-1MB לדקה (המבקרים שלכם יודו לכם!)"
         ]
       },
       "podcasts": {
-        "title": "For Podcasts & Voice Content:",
+        "title": "לפודקאסטים ותוכן קולי:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)",
-          "<strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size",
-          "<strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄"
+          "<strong>השתמשו ב</strong>: MP3 ב-64-96 kbps מונו, 44.1 kHz (או 22.05 kHz אם גודל הקובץ קריטי)",
+          "<strong>למה</strong>: דיבור אנושי לא צריך קצבי סיביות גבוהים, מונו חוסך 50% מגודל הקובץ",
+          "<strong>טיפ מקצועי</strong>: אף אחד לא צריך לשמוע את הנשימה שלכם בסטריאו 😄"
         ]
       },
       "streaming": {
-        "title": "For Music Streaming/Downloads:",
+        "title": "להזרמת/הורדת מוזיקה:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz",
-          "<strong>Why</strong>: The sweet spot between quality and file size",
-          "<strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps"
+          "<strong>השתמשו ב</strong>: MP3 ב-256-320 kbps או AAC ב-256 kbps, 44.1 kHz",
+          "<strong>למה</strong>: נקודת האיזון המושלמת בין איכות לגודל קובץ",
+          "<strong>בדיקת מציאות</strong>: רוב האנשים לא מסוגלים להבחין בין 256 ל-320 kbps"
         ]
       },
       "previews": {
-        "title": "For Audio Previews & Samples:",
+        "title": "לתצוגות מקדימות ודוגמיות אודיו:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Quick loading, good enough for \"try before you buy\"",
-          "<strong>Smart move</strong>: Save the high-quality files for paying customers 💰"
+          "<strong>השתמשו ב</strong>: MP3 ב-96-128 kbps, 44.1 kHz",
+          "<strong>למה</strong>: טעינה מהירה, מספיק טוב ל״נסה לפני שתקנה״",
+          "<strong>מהלך חכם</strong>: שמרו את הקבצים באיכות גבוהה ללקוחות משלמים 💰"
         ]
       },
       "archival": {
-        "title": "For Professional/Archival:",
+        "title": "למקצועי/ארכיון:",
         "bullets": [
-          "<strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)",
-          "<strong>Why</strong>: Future-proof, perfect for editing, no quality loss",
-          "<strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!"
+          "<strong>השתמשו ב</strong>: FLAC או WAV בקצב הסיביות המקסימלי, 48 kHz (או התאימו לתקן הווידאו שלכם)",
+          "<strong>למה</strong>: עמיד לעתיד, מושלם לעריכה, ללא אובדן איכות",
+          "<strong>אזהרה</strong>: הקבצים האלה ענקיים - אנחנו מדברים על 10MB לדקה!"
         ]
       },
       "decisionTree": {
-        "title": "Quick Decision Tree:",
-        "content": "Is it voice only? → MP3 at 64-96 kbps\nIs loading speed critical? → MP3/AAC at 128 kbps max\nNeed perfect quality? → FLAC/WAV\nRegular music for web? → MP3/AAC at 192-256 kbps"
+        "title": "עץ החלטות מהיר:",
+        "content": "זה קול בלבד? → MP3 ב-64-96 kbps\nמהירות טעינה קריטית? → MP3/AAC עד 128 kbps\nצריך איכות מושלמת? → FLAC/WAV\nמוזיקה רגילה לרשת? → MP3/AAC ב-192-256 kbps"
       },
-      "ninjaTip": "Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy \"audio enhancer\" ads claim).",
-      "realWorldExample": "<strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.",
-      "quote": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\" – Antoine de Saint-Exupéry"
+      "ninjaTip": "הנה טיפ נינג׳ה 🥷: תמיד התחילו עם קובץ המקור באיכות הגבוהה ביותר שתוכלו להשיג, ואז דחסו כלפי מטה. אתם תמיד יכולים ללכת מ-WAV ל-MP3, אבל אתם לא יכולים באורח קסם להוסיף איכות בחזרה כשהולכים מ-MP3 ל-WAV (למרות מה שאותן פרסומות מפוקפקות של ״משפרי אודיו״ טוענות).",
+      "realWorldExample": "<strong>דוגמה מהעולם האמיתי</strong>: פעם היה לי לקוח שאפליקציית המדיטציה שלו השתמשה בקבצי WAV למפגשים מודרכים. כל מפגש בן 10 דקות שקל 100MB! 😱 המרנו אותם ל-MP3 מונו ב-96 kbps, הורדנו את גודל הקובץ ל-7MB כל אחד, ופשוטו כמשמעו אף אחד לא התלונן על האיכות. ההורדות של האפליקציה שלהם עלו ב-40% רק כי היא כבר לא הייתה מפלצת אחסון.",
+      "quote": "״שלמות מושגת לא כשאין יותר מה להוסיף, אלא כשאין יותר מה להסיר.״ - אנטואן דה סנט-אכזופרי"
     },
     "importance": {
-      "title": "Why Is This Even Important for My Website?",
-      "p1": "Okay, so you might be thinking, \"Cool audio facts, bro, but why should I care?\" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸",
+      "title": "למה זה בכלל חשוב לאתר שלי?",
+      "p1": "אוקיי, אז אולי אתם חושבים, ״עובדות מגניבות על אודיו, אחי, אבל למה זה צריך להטריד אותי?״ ובכן, תחזיקו חזק את האוזניות, כי כאן זה נהיה אמיתי לגבי השורה התחתונה שלכם! 💸",
       "pageLoadSpeed": {
-        "title": "Page Load Speed = Money",
-        "lead": "Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:",
+        "title": "מהירות טעינת הדף = כסף",
+        "lead": "גוגל הבהירה זאת לחלוטין: אתרים איטיים נענשים בדירוגי החיפוש. כל שנייה נוספת של זמן טעינה יכולה לעלות לכם:",
         "bullets": [
-          "<strong>7% decrease</strong> in conversions",
-          "<strong>11% fewer</strong> page views",
-          "<strong>16% decrease</strong> in customer satisfaction"
+          "<strong>ירידה של 7%</strong> בהמרות",
+          "<strong>11% פחות</strong> צפיות בדפים",
+          "<strong>ירידה של 16%</strong> בשביעות רצון לקוחות"
         ],
-        "outro": "That innocent 50MB background music file? It's literally costing you customers! 😱"
+        "outro": "אותו קובץ מוזיקת רקע תמים בגודל 50MB? הוא פשוטו כמשמעו עולה לכם לקוחות! 😱"
       },
       "mobileReality": {
-        "title": "The Mobile Reality Check",
-        "p": "Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)"
+        "title": "בדיקת המציאות של המובייל",
+        "p": "הנה עובדה מעניינת: מעל 60% מתנועת הרשת היא כיום מובייל. יודעים מה משתמשי מובייל אוהבים? להשתמש בחבילת הנתונים המוגבלת שלהם כדי להוריד את קבצי האודיו הלא-דחוסים שלכם! (ספוילר: הם לא. הם ינטשו מהר יותר מכדור גומי על בטון.)"
       },
       "realNumbers": {
-        "title": "Real Numbers That'll Make You Sweat:",
-        "lead": "Let's say you have a landing page with:",
+        "title": "מספרים אמיתיים שיגרמו לכם להזיע:",
+        "lead": "נניח שיש לכם דף נחיתה עם:",
         "bullets": [
-          "30-second background music loop",
-          "2 product demo voice-overs (1 minute each)",
-          "5 sound effects for interactions"
+          "לולאת מוזיקת רקע של 30 שניות",
+          "2 קריינויות הדגמת מוצר (דקה כל אחת)",
+          "5 אפקטי קול לאינטראקציות"
         ],
-        "comparisonWav": "Using WAV files: <strong>~250MB total</strong> 😵",
-        "comparisonMp3": "Using optimized MP3s: <strong>~8MB total</strong> 🎉",
-        "outro": "That's a 97% reduction! Your hosting bill just breathed a sigh of relief."
+        "comparisonWav": "בשימוש בקבצי WAV: <strong>כ-250MB בסך הכול</strong> 😵",
+        "comparisonMp3": "בשימוש ב-MP3 מאופטמים: <strong>כ-8MB בסך הכול</strong> 🎉",
+        "outro": "זה צמצום של 97%! חשבון האחסון שלכם בדיוק נשם לרווחה."
       },
       "trustFactor": {
-        "title": "The Trust Factor",
-        "lead": "Nothing screams \"amateur hour\" like:",
+        "title": "גורם האמון",
+        "lead": "שום דבר לא צועק ״חובבנות״ כמו:",
         "bullets": [
-          "Audio that takes forever to load",
-          "Stuttering playback",
-          "Quality so bad it sounds like a 1990s dial-up modem"
+          "אודיו שלוקח נצח להיטען",
+          "ניגון מגמגם",
+          "איכות כל כך גרועה שנשמעת כמו מודם חיוג משנות ה-90"
         ],
-        "outro": "Professional audio quality = professional image = customer trust = 💰"
+        "outro": "איכות אודיו מקצועית = תדמית מקצועית = אמון לקוחות = 💰"
       },
       "seoVitals": {
-        "title": "SEO and Core Web Vitals",
-        "lead": "Google's Core Web Vitals specifically measure:",
+        "title": "קידום אתרים ו-Core Web Vitals",
+        "lead": "ה-Core Web Vitals של גוגל מודדים באופן ספציפי:",
         "bullets": [
-          "<strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this",
-          "<strong>FID (First Input Delay)</strong>: Large files blocking the main thread",
-          "<strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps"
+          "<strong>LCP (Largest Contentful Paint)</strong>: קבצי אודיו כבדים מעכבים את זה",
+          "<strong>FID (First Input Delay)</strong>: קבצים גדולים שחוסמים את התהליך הראשי",
+          "<strong>CLS (Cumulative Layout Shift)</strong>: נגני אודיו שנטענים לא כראוי גורמים לקפיצות"
         ],
-        "outro": "Translation: Bad audio optimization = bad SEO = less organic traffic = less money."
+        "outro": "בתרגום: אופטימיזציית אודיו גרועה = קידום אתרים גרוע = פחות תנועה אורגנית = פחות כסף."
       },
       "moreReasons": {
-        "title": "But Wait, There's More!",
-        "lead": "(Said in my best infomercial voice 📺) Optimized audio also means:",
+        "title": "אבל רגע, יש עוד!",
+        "lead": "(נאמר בקול הפרסומת הכי טוב שלי 📺) אודיו מאופטם משמעו גם:",
         "bullets": [
-          "Lower CDN costs",
-          "Happier users on slower connections",
-          "Better accessibility (properly compressed audio works better with screen readers)",
-          "Increased engagement (people actually stick around when things load fast)"
+          "עלויות CDN נמוכות יותר",
+          "משתמשים מרוצים יותר בחיבורים איטיים",
+          "נגישות טובה יותר (אודיו דחוס כראוי עובד טוב יותר עם קוראי מסך)",
+          "מעורבות מוגברת (אנשים באמת נשארים כשהדברים נטענים מהר)"
         ],
-        "clientStory": "I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!"
+        "clientStory": "היה לי לקוח שפלטפורמת הלמידה המקוונת שלו איבדה משתמשים בקצב מדאיג. התברר שקבצי האודיו של הקורסים שלהם היו כל כך ענקיים שתלמידים באזורים כפריים פשוטו כמשמעו לא הצליחו לגשת לתוכן. אופטמנו הכול, קיצצנו את גדלי הקבצים ב-85%, ושיעורי ההשלמה שלהם קפצו ב-40% תוך חודשיים בלבד!"
       },
-      "quote": "\"Time is money, and loading time is lost money.\" – Every Web Developer Ever"
+      "quote": "״זמן הוא כסף, וזמן טעינה הוא כסף שאבד.״ - כל מפתח אתרים אי פעם"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):",
+      "title": "סיכום",
+      "p1": "פוו! 🎉 עברנו טיול מסחרר בעולם פורמטי האודיו, קצבי הסיביות וקצבי הדגימה. בואו נסכם את הלהיטים (משחק מילים מכוון 🎵):",
       "takeaways": {
-        "title": "The Big Takeaways:",
+        "title": "המסקנות המרכזיות:",
         "bullets": [
-          "Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency",
-          "MP3 at 128-192 kbps is your web workhorse for most use cases",
-          "Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)",
-          "Every MB matters – optimized audio = faster loads = happier visitors = more money",
-          "Start with high quality, compress down (you can't enhance garbage into gold!)"
+          "פורמטי אודיו הם מכולות, קצבי סיביות הם זרימת נתונים, וקצבי דגימה הם תדירות תמונות המצב",
+          "MP3 ב-128-192 kbps הוא סוס העבודה שלכם ברשת עבור רוב מקרי השימוש",
+          "תוכן קולי יכול ללכת נמוך יותר (64-96 kbps), מוזיקה צריכה ללכת גבוה יותר (256+ kbps)",
+          "כל מגה-בייט חשוב - אודיו מאופטם = טעינות מהירות יותר = מבקרים מרוצים יותר = יותר כסף",
+          "התחילו באיכות גבוהה, דחסו כלפי מטה (אי אפשר להפוך זבל לזהב!)"
         ]
       },
       "actionPlan": {
-        "title": "Your Action Plan:",
+        "title": "תוכנית הפעולה שלכם:",
         "steps": [
-          "<strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)",
-          "<strong>Convert</strong> them using the guidelines we covered",
-          "<strong>Test</strong> your page load speeds before and after",
-          "<strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)"
+          "<strong>בדקו</strong> את קובצי האודיו הנוכחיים שלכם (אני מתערב שתמצאו כמה קבצי WAV מגושמים מתחבאים שם 👀)",
+          "<strong>המירו</strong> אותם באמצעות ההנחיות שסקרנו",
+          "<strong>בדקו</strong> את מהירויות טעינת הדף לפני ואחרי",
+          "<strong>צפו</strong> במדדים שלכם משתפרים (ואולי תרקדו קצת ריקוד ניצחון 💃)"
         ]
       },
-      "p2": "Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.",
-      "p3": "So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉",
-      "p4": "Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀",
-      "quote": "\"In the realm of digital content, the lightest footprint often leaves the deepest impression.\" – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)"
+      "p2": "זכרו, בעולם הדיגיטלי, קול אולי בלתי נראה, אבל ההשפעה שלו על ביצועי האתר שלכם היא הכול מלבד זה. אותם המילישניות שאתם חוסכים באמצעות אופטימיזציית האודיו שלכם? הן מתורגמות ישירות לחוויית משתמש טובה יותר, דירוגי חיפוש גבוהים יותר, ובסופו של דבר, שורה תחתונה בריאה יותר.",
+      "p3": "אז לכו ודחסו! האוזניים (וחיבורי האינטרנט) של המבקרים שלכם יודו לכם. ואגב, אם מצאתם את זה מועיל, תארו לעצמכם מה אופטימיזציית תמונה ווידאו נכונה יכולה לעשות לאתר שלכם... אבל זה סיפור ליום אחר! 😉",
+      "p4": "מוכנים להפוך לנינג׳ה של אופטימיזציית אודיו? טרנספורמציית הביצועים של האתר שלכם מתחילה בהמרת הקובץ הראשון ההיא. עשו את זה! 🚀",
+      "quote": "״בתחום התוכן הדיגיטלי, טביעת הרגל הקלה ביותר משאירה לרוב את הרושם העמוק ביותר.״ - פתגם עתיק של מפתחי הרשת (אוקיי, המצאתי את זה, אבל זה נכון! 😄)"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the Media Manipulator audio tools and explore related guides.",
+      "title": "כלים קשורים",
+      "intro": "נסו את כלי האודיו של Media Manipulator וגלו מדריכים קשורים.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate."
+          "label": "ממיר אודיו",
+          "description": "המירו WAV, MP3, FLAC, M4A, OGG ועוד עם קצב סיביות מותאם אישית."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV files into widely playable MP3s."
+          "label": "המרת WAV ל-MP3",
+          "description": "כווצו קבצי WAV גדולים ל-MP3 שניתן לנגן בקלות בכל מקום."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Pull vocals out of music tracks for remixes or analysis."
+          "label": "בידוד שירה משיר",
+          "description": "חלצו שירה מתוך רצועות מוזיקה למיקסים או לניתוח."
         },
         {
-          "label": "Audio converter tutorial",
-          "description": "Walk through every option including cleanup and vocal isolation."
+          "label": "מדריך ממיר האודיו",
+          "description": "עברו על כל אפשרות כולל ניקוי ובידוד שירה."
         },
         {
-          "label": "Video compression guide",
-          "description": "Pair good audio with optimized video encoding."
+          "label": "מדריך דחיסת וידאו",
+          "description": "שלבו אודיו איכותי עם קידוד וידאו מאופטם."
         },
         {
-          "label": "Image optimization guide",
-          "description": "Round out a fast site by also optimizing image files."
+          "label": "מדריך אופטימיזציית תמונות",
+          "description": "השלימו אתר מהיר על ידי אופטימיזציית קובצי תמונה גם כן."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Master Audio Optimization? 🎧",
-      "body": "Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!",
-      "buttonLabel": "Open the audio converter →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "מוכנים לשלוט באופטימיזציית אודיו? 🎧",
+      "body": "הפכו את קובצי ה-WAV הכבדים שלכם ל-MP3 ו-AAC מהירים כברק! ממיר האודיו החינמי שלנו תומך בכל הפורמטים המרכזיים עם קצבי סיביות וקצבי דגימה הניתנים להתאמה אישית. אופטמו את קובצי האודיו שלכם והאיצו את ביצועי האתר שלכם!",
+      "buttonLabel": "פתחו את ממיר האודיו →",
+      "footnote": "לא נדרשת הרשמה • עיבוד קבצים מקומי • מהיר ומאובטח"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Video Tutorial",
-    "title": "What Is AI Frame Interpolation?",
-    "intro": "AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.",
+    "eyebrow": "מדריך וידאו",
+    "title": "מהי אינטרפולציית פריימים בבינה מלאכותית?",
+    "intro": "אינטרפולציית פריימים בבינה מלאכותית יוצרת פריימי וידאו חדשים בין הפריימים הקיימים כך שהתנועה מתנגנת בצורה חלקה יותר. המדריך הזה מסביר איך זה עובד, מתי כדאי להשתמש בזה, מהן המגבלות שלו, ואיך להריץ אותו ב-Media Manipulator.",
     "toolPanel": {
-      "title": "Try AI frame interpolation without leaving this page",
-      "description": "Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+      "title": "נסו אינטרפולציית פריימים בבינה מלאכותית בלי לעזוב את הדף הזה",
+      "description": "בחרו קובץ וידאו, גללו לפאנל כלי הווידאו בבינה מלאכותית, ובחרו באינטרפולציית פריימים בבינה מלאכותית. ברירת המחדל מייצרת פלט MP4 חלק יותר ב-60fps."
     },
     "whatIs": {
-      "title": "1. What is frame interpolation?",
-      "intro": "Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:",
+      "title": "1. מהי אינטרפולציית פריימים?",
+      "intro": "אינטרפולציית פריימים מגדילה את קצב הפריימים של וידאו על ידי הוספת תמונות חדשות בין הפריימים המקוריים. לקליפ ב-30fps יש 30 פריימים בשנייה; הכפלת קצב הפריימים שלו משמעה יצירת 30 פריימים חדשים בשנייה שיישבו בין הפריימים הקיימים. יש כמה גישות:",
       "bullets": [
-        "<strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.",
-        "<strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.",
-        "<strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg's minterpolate).",
-        "<strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion."
+        "<strong>שכפול פריימים</strong> — העתקת הפריים הקודם כך שהתנועה נראית זהה אבל קצב הניגון תואם את היעד.",
+        "<strong>מיזוג פריימים</strong> — דהייה בין שני פריימים סמוכים כדי לרכך את הגבול. זול אבל מטושטש.",
+        "<strong>אינטרפולציית תנועה</strong> — הערכת וקטורי תנועה ועיוות הפריימים קדימה (למשל, המסנן minterpolate של FFmpeg).",
+        "<strong>אינטרפולציה בבינה מלאכותית</strong> — רשת נוירונים (למשל RIFE) חוזה את הפריים שביניים משני הפריימים האמיתיים סביבו. בדרך כלל התוצאה הנקייה ביותר לתנועה לא-קשיחה."
       ],
-      "outro": "Media Manipulator's AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server."
+      "outro": "כלי אינטרפולציית הפריימים בבינה מלאכותית של Media Manipulator משתמש ב-RIFE דרך rife-ncnn-vulkan על שרת ה-GPU שלנו."
     },
     "whyUse": {
-      "title": "2. Why people use frame interpolation",
+      "title": "2. למה אנשים משתמשים באינטרפולציית פריימים",
       "bullets": [
-        "Smoother motion on modern displays and social platforms.",
-        "Lifting 24/30fps footage to 60fps.",
-        "Lifting 60fps footage to 120fps for high-refresh playback or editing.",
-        "Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.",
-        "Restoring older, low-FPS clips so they feel less stuttery.",
-        "Producing smoother short cuts for sharing on social."
+        "תנועה חלקה יותר על מסכים מודרניים ופלטפורמות חברתיות.",
+        "העלאת חומר גלם מ-24/30fps ל-60fps.",
+        "העלאת חומר גלם מ-60fps ל-120fps לניגון בקצב רענון גבוה או לעריכה.",
+        "תצוגות מקדימות נקיות יותר של תנועה עבור טריילרים, גיימפליי, ספורט, הקלטות מסך ווְלוֹגים.",
+        "שחזור קליפים ישנים בקצב פריימים נמוך כך שיורגשו פחות מקוטעים.",
+        "יצירת קטעים קצרים וחלקים יותר לשיתוף ברשתות חברתיות."
       ]
     },
     "howItWorks": {
-      "title": "3. How AI frame interpolation works (high level)",
+      "title": "3. איך אינטרפולציית פריימים בבינה מלאכותית עובדת (ברמה הגבוהה)",
       "paragraphs": [
-        "Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.",
-        "Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear."
+        "בהינתן שני פריימים סמוכים, המודל מעריך כיצד כל פיקסל זז ביניהם - תהליך הקשור ל-optical flow. לאחר מכן הוא משתמש בתנועה הזו כדי לבנות פריים אחד או יותר שממוקמים בנקודות זמן חלקיות בין שני המקוריים. רשת הנוירונים לומדת דפוסי תנועה נפוצים מנתוני אימון, ולכן היא נוטה להתמודד היטב עם תנועה חלקה וטבעית.",
+        "מקרים קשים - תנועה מהירה, הסתרה (חפץ אחד עובר לפני אחר), מבנים דקים כמו שיער וגלגלים, ומעברי סצנה - קשים באופן טבעי כי למודל יש פחות עדות אמינה לגבי מה צריך לקרות ביניהם. באזורים האלה נוטים להופיע ארטיפקטים."
       ]
     },
     "vsBasicFps": {
-      "title": "4. AI interpolation vs basic FPS conversion",
-      "p1": "Basic FPS conversion (whether through FFmpeg's <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.",
-      "p2": "AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:",
+      "title": "4. אינטרפולציה בבינה מלאכותית מול המרת FPS בסיסית",
+      "p1": "המרת FPS בסיסית (בין אם דרך המסנן <code>fps</code> של FFmpeg או מקבילה מואצת חומרה) בדרך כלל רק משכפלת, מוחקת או ממזגת פריימים כדי להגיע לקצב פריימים יעד. המספר הכולל של פריימים בשנייה תואם ליעד, אבל לא מתווסף מידע תנועה חדש - העין עדיין רואה רק את מרווחי הצילום המקוריים.",
+      "p2": "אינטרפולציה בבינה מלאכותית יוצרת פריימים חדשים לגמרי שהתוכן שלהם מוערך ולא מועתק. הפשרה:",
       "bullets": [
-        "AI usually looks much smoother than duplication or blending.",
-        "AI can warp or hallucinate details on hard regions.",
-        "Basic FPS conversion is faster but rarely feels truly smoother."
+        "בינה מלאכותית בדרך כלל נראית הרבה יותר חלקה משכפול או מיזוג.",
+        "בינה מלאכותית עלולה לעוות או ״להזות״ פרטים באזורים קשים.",
+        "המרת FPS בסיסית מהירה יותר אבל לעיתים רחוקות מרגישה חלקה באמת."
       ]
     },
     "fpsChoice": {
-      "title": "5. When to pick 48, 60, or 120 FPS",
+      "title": "5. מתי לבחור 48, 60 או 120 FPS",
       "bullets": [
-        "<strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.",
-        "<strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.",
-        "<strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file."
+        "<strong>48 FPS</strong> — העלאה עדינה פי 2 על חומר גלם קולנועי ב-24fps. פחות אגרסיבי מ-60fps ושומר קצת מהקצב המקורי.",
+        "<strong>60 FPS</strong> — קצב ניגון חלק נפוץ עבור הרשת המודרנית. יעד ראשון טוב עבור מקור ב-24/30fps.",
+        "<strong>120 FPS</strong> — מסכים בקצב רענון גבוה, תוכן גיימפליי/ספורט, או עריכת תנועה איטית בהמשך. עלות עיבוד כבדה יותר וקובץ גדול יותר."
       ]
     },
     "qualityTradeoffs": {
-      "title": "6. Quality and max-height tradeoffs",
+      "title": "6. פשרות איכות וגובה מקסימלי",
       "bullets": [
-        "<strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.",
-        "<strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.",
-        "<strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.",
-        "<strong>High quality preset</strong> → slower encode, lower CRF, sharper output."
+        "<strong>גובה עיבוד מקסימלי נמוך יותר</strong> ← זמן עיבוד מהיר יותר ועומס נמוך יותר על זיכרון ה-GPU. מצוין לבדיקות מהירות.",
+        "<strong>גובה עיבוד מקסימלי גבוה יותר</strong> ← יותר פרטים נשמרים, אבל איטי וכבד יותר.",
+        "<strong>פריסט איכות נמוכה</strong> ← קידוד מהיר יותר, CRF גדול יותר, קובץ קטן יותר.",
+        "<strong>פריסט איכות גבוהה</strong> ← קידוד איטי יותר, CRF נמוך יותר, פלט חד יותר."
       ],
-      "outro": "For a first run, try 720p max height with the medium quality preset."
+      "outro": "להרצה ראשונה, נסו גובה מקסימלי של 720p עם פריסט האיכות הבינוני."
     },
     "bestPractices": {
-      "title": "7. Best practices",
+      "title": "7. שיטות עבודה מומלצות",
       "bullets": [
-        "Test on a short clip first — interpolation cost scales with duration and resolution.",
-        "Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.",
-        "Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.",
-        "Pick clear, steady source footage when possible.",
-        "Keep the original — interpolation is irreversible re-encoding.",
-        "Try 60fps before 120fps unless you specifically need 120fps."
+        "בדקו קודם על קליפ קצר - עלות האינטרפולציה גדלה עם משך הזמן והרזולוציה.",
+        "הימנעו מתוכן עם הרבה מעברי סצנה. מעברים לרוב יוצרים עיוות קצר בגבול.",
+        "צפו בתוצאה לפני הפרסום - אינטרפולציה יכולה להיראות שונה במעט מצילום אמיתי בקצב פריימים גבוה.",
+        "בחרו חומר גלם ברור ויציב במידת האפשר.",
+        "שמרו את המקור - אינטרפולציה היא קידוד מחדש בלתי הפיך.",
+        "נסו 60fps לפני 120fps אלא אם אתם זקוקים ל-120fps באופן ספציפי."
       ]
     },
     "limitations": {
-      "title": "8. Limitations and artifacts",
+      "title": "8. מגבלות וארטיפקטים",
       "bullets": [
-        "Warping around hands, hair, wheels, and other fast-moving thin structures.",
-        "Ghosting around occlusions where one object passes in front of another.",
-        "Brief glitches at scene cuts.",
-        "Motion blur mismatch — synthesized frames don't share the source camera's shutter behavior.",
-        "Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.",
-        "Long videos take a lot of GPU time; we cap duration to keep the free tool stable.",
-        "AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame."
+        "עיוות סביב ידיים, שיער, גלגלים ומבנים דקים אחרים בתנועה מהירה.",
+        "רפאים (ghosting) סביב הסתרות שבהן חפץ אחד עובר לפני אחר.",
+        "תקלות קצרות במעברי סצנה.",
+        "אי-התאמת טשטוש תנועה - הפריימים המסונתזים לא חולקים את התנהגות התריס של מצלמת המקור.",
+        "ארטיפקטים קיימים מדחיסה (פסים, בלוקים) עלולים להיות בולטים יותר בקצבי פריימים גבוהים יותר.",
+        "סרטונים ארוכים דורשים הרבה זמן GPU; אנחנו מגבילים את משך הזמן כדי לשמור על יציבות הכלי החינמי.",
+        "אינטרפולציה בבינה מלאכותית לא משחזרת תנועה אמיתית שמעולם לא נלכדה - היא מעריכה פריים ביניים סביר."
       ]
     },
     "howTo": {
-      "title": "9. How to use the Media Manipulator AI Frame Interpolation Tool",
+      "title": "9. איך להשתמש בכלי אינטרפולציית הפריימים בבינה מלאכותית של Media Manipulator",
       "steps": [
-        "Open the <linkTool>AI Frame Interpolation tool</linkTool>.",
-        "Upload a video.",
-        "Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.",
-        "Choose a target FPS — 48, 60, or 120.",
-        "Pick a quality preset and a max processing height (start at 720p / medium).",
-        "Leave <em>Preserve audio</em> on unless you want a silent output.",
-        "Submit the conversion and wait for the job to finish.",
-        "Download the resulting MP4 and preview it."
+        "פתחו את <linkTool>כלי אינטרפולציית הפריימים בבינה מלאכותית</linkTool>.",
+        "העלו וידאו.",
+        "גללו לפאנל <strong>כלי הווידאו בבינה מלאכותית</strong> ובחרו <em>אינטרפולציית פריימים בבינה מלאכותית</em>.",
+        "בחרו FPS יעד — 48, 60 או 120.",
+        "בחרו פריסט איכות וגובה עיבוד מקסימלי (התחילו ב-720p / בינוני).",
+        "השאירו את <em>שמירת אודיו</em> פעילה אלא אם אתם רוצים פלט ללא קול.",
+        "שלחו את ההמרה וחכו שהמשימה תסתיים.",
+        "הורידו את קובץ ה-MP4 שהתקבל וצפו בו."
       ]
     },
     "faq": {
-      "title": "FAQ",
+      "title": "שאלות נפוצות",
       "items": [
         {
-          "q": "Does frame interpolation improve video quality?",
-          "a": "It improves motion smoothness, not resolution or sharpness."
+          "q": "האם אינטרפולציית פריימים משפרת את איכות הווידאו?",
+          "a": "היא משפרת את חלקות התנועה, לא את הרזולוציה או החדות."
         },
         {
-          "q": "Is AI frame interpolation the same as increasing FPS?",
-          "a": "Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending."
+          "q": "האם אינטרפולציית פריימים בבינה מלאכותית זהה להעלאת FPS?",
+          "a": "שתיהן מכוונות לקצב פריימים גבוה יותר, אך אינטרפולציה בבינה מלאכותית מסנתזת פריימים חדשים במקום לשכפל או למזג."
         },
         {
-          "q": "Can I convert 30fps to 60fps?",
-          "a": "Yes — it's the most common target."
+          "q": "האם אפשר להמיר מ-30fps ל-60fps?",
+          "a": "כן — זהו היעד הנפוץ ביותר."
         },
         {
-          "q": "Can I convert 60fps to 120fps?",
-          "a": "Yes, but the processing cost roughly doubles versus 60fps."
+          "q": "האם אפשר להמיר מ-60fps ל-120fps?",
+          "a": "כן, אבל עלות העיבוד בערך מכפילה את עצמה לעומת 60fps."
         },
         {
-          "q": "Why can frame interpolation create artifacts?",
-          "a": "Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts)."
+          "q": "למה אינטרפולציית פריימים עלולה ליצור ארטיפקטים?",
+          "a": "הערכת התנועה נאלצת לנחש באזורים קשים (הסתרות, תנועה מהירה, מעברי סצנה)."
         },
         {
-          "q": "What output format does the tool create?",
-          "a": "MP4 (H.264 + AAC) in v1."
+          "q": "באיזה פורמט פלט הכלי מייצר?",
+          "a": "MP4 (H.264 + AAC) בגרסה 1."
         },
         {
-          "q": "Is 60fps always better than 30fps?",
-          "a": "Not for cinematic looks — pick what suits the content."
+          "q": "האם 60fps תמיד עדיף על 30fps?",
+          "a": "לא עבור מראה קולנועי - בחרו את מה שמתאים לתוכן."
         },
         {
-          "q": "Is AI frame interpolation better than FFmpeg FPS conversion?",
-          "a": "For most clips, yes — but minterpolate is faster and still useful as a quick fallback."
+          "q": "האם אינטרפולציית פריימים בבינה מלאכותית טובה יותר מהמרת FPS של FFmpeg?",
+          "a": "לרוב הקליפים, כן — אבל minterpolate מהיר יותר ועדיין שימושי כגיבוי מהיר."
         },
         {
-          "q": "Why do scene cuts sometimes look strange after interpolation?",
-          "a": "The model assumes adjacent frames belong to the same motion sequence."
+          "q": "למה מעברי סצנה לפעמים נראים מוזר אחרי אינטרפולציה?",
+          "a": "המודל מניח שפריימים סמוכים שייכים לאותו רצף תנועה."
         }
       ]
     },
     "actions": {
-      "tryTool": "Try the AI Frame Interpolation Tool",
-      "backToTutorials": "← Back to Tutorials",
-      "videoConverterTutorial": "Video Converter Tutorial"
+      "tryTool": "נסו את כלי אינטרפולציית הפריימים בבינה מלאכותית",
+      "backToTutorials": "← חזרה למדריכים",
+      "videoConverterTutorial": "מדריך ממיר הווידאו"
     },
     "relatedLinks": {
-      "title": "Try related tools and guides",
-      "intro": "Other video tools and reference pages that pair well with AI frame interpolation.",
+      "title": "נסו כלים ומדריכים קשורים",
+      "intro": "כלי וידאו ודפי עיון נוספים שמשתלבים היטב עם אינטרפולציית פריימים בבינה מלאכותית.",
       "links": [
         {
-          "label": "AI Frame Interpolation Tool",
-          "description": "Upload a video and run interpolation right now."
+          "label": "כלי אינטרפולציית פריימים בבינה מלאכותית",
+          "description": "העלו וידאו והריצו אינטרפולציה עכשיו."
         },
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "ממיר וידאו",
+          "description": "המירו MP4, WebM, MOV, AVI, MKV ועוד."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink a higher-FPS file before sharing."
+          "label": "דחיסת וידאו",
+          "description": "כווצו קובץ בקצב פריימים גבוה יותר לפני שיתוף."
         },
         {
-          "label": "Extract frames from video",
-          "description": "Pull individual frames out as PNGs."
+          "label": "חילוץ פריימים מווידאו",
+          "description": "חלצו פריימים בודדים כקובצי PNG."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn a short clip into an animated GIF."
+          "label": "המרת וידאו ל-GIF",
+          "description": "הפכו קליפ קצר ל-GIF מונפש."
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Video Tutorial",
-    "title": "Getting Started: Converting Video Files",
-    "intro": "Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.",
+    "eyebrow": "מדריך וידאו",
+    "title": "צעדים ראשונים: המרת קובצי וידאו",
+    "intro": "למדו כיצד להמיר ולערוך קובצי וידאו עם ממיר הווידאו של Media Manipulator. המדריך הזה עובר על כל חלק בפאנל המרת הווידאו — בחירת פורמט, חיתוך, טרנספורמציה, אפקטים חזותיים, אפקטים זמניים, פקדי צבע/HDR מתקדמים, ואפשרות התמלול המבוססת GPU לכתוביות.",
     "toolPanel": {
-      "title": "Try the video converter without leaving this page",
-      "description": "Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+      "title": "נסו את ממיר הווידאו בלי לעזוב את הדף הזה",
+      "description": "בחרו קובץ וידאו והמירו אותו ממש כאן. ההגדרות שלמטה זהות לממיר בדף הבית, כך שתוכלו להתנסות תוך כדי קריאה."
     },
     "upload": {
-      "title": "1. Upload your video file",
-      "paragraph1": "Drag a video file into the upload zone on the home page, or click <strong>Choose File</strong>. Common inputs include MP4, MOV, MKV, AVI, WebM, WMV, and FLV. Large videos are uploaded directly to S3 via a presigned URL for speed; smaller files upload through the standard form endpoint.",
-      "paragraph2": "After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below."
+      "title": "1. העלאת קובץ הווידאו שלכם",
+      "paragraph1": "גררו קובץ וידאו לאזור ההעלאה בדף הבית, או לחצו על <strong>בחר קובץ</strong>. פורמטי קלט נפוצים כוללים MP4, MOV, MKV, AVI, WebM, WMV ו-FLV. סרטונים גדולים מועלים ישירות ל-S3 באמצעות כתובת URL חתומה מראש למען המהירות; קבצים קטנים יותר מועלים דרך נקודת הקצה הרגילה של הטופס.",
+      "paragraph2": "לאחר ההעלאה, הפאנל בצד ימין מציג מתג <strong>המרה / תמלול</strong>. השאירו אותו על <em>המרה</em> בינתיים - נסקור את התמלול בהמשך."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
-      "intro": "Use <strong>Format</strong> to choose the container/codec for the output:",
+      "title": "2. בחירת פורמט הפלט והאיכות",
+      "intro": "השתמשו ב<strong>פורמט</strong> כדי לבחור את המכולה/הקודק עבור הפלט:",
       "bullets": [
-        "<strong>MP4</strong> — H.264 + AAC, the safest default for the web and most devices.",
-        "<strong>WebM</strong> — VP9 + Opus, optimal for the open web.",
-        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).",
-        "<strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.",
-        "<strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below."
+        "<strong>MP4</strong> — H.264 + AAC, ברירת המחדל הבטוחה ביותר לרשת ולרוב המכשירים.",
+        "<strong>WebM</strong> — VP9 + Opus, אופטימלי לרשת הפתוחה.",
+        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — מכולות לתהליכי עבודה ספציפיים (אפל, ארכיון, נגנים ישנים וכו׳).",
+        "<strong>ProRes / DNxHD</strong> — קודקים מקצועיים לעריכה בקצב סיביות גבוה.",
+        "<strong>GIF (מונפש)</strong> — תמונה חוזרת ללא קול לשרשורי צ׳אט, קבצי README ודיווחי באגים. ראו את החלק הייעודי למטה."
       ],
-      "quality": "<strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over."
+      "quality": "<strong>איכות</strong> בוחרת פריסט CRF מתחת למכסה המנוע: נמוכה ≈ CRF 30 (קובץ קטן), בינונית ≈ CRF 23 (מאוזן), גבוהה ≈ CRF 18 (שקוף מבחינה חזותית ברוב הקטעים). הפקדים איכות, גובה ומהירות מדולגים עבור פלט GIF - פאנל ה-GIF המונפש שלמטה משתלט."
     },
     "gif": {
-      "title": "2a. Converting video to an animated GIF",
-      "paragraph1": "Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.",
+      "title": "2א. המרת וידאו ל-GIF מונפש",
+      "paragraph1": "בחרו <strong>GIF (מונפש)</strong> כפורמט כדי לחשוף את פאנל <strong>הגדרות ה-GIF המונפש</strong>. זה מריץ תהליך דו-שלבי המבוסס על סקריפט הקלטת מסך מנוסה: FFmpeg מקטין את המקור ודוגם אותו בקצב פריימים נמוך, ואז <code>gifsicle</code> מבצע קוונטיזציה מחדש לפלטה ומאופטם את הפלט לגודל.",
       "bullets": [
-        "<strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.",
-        "<strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.",
-        "<strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.",
-        "<strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.",
-        "<strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+        "<strong>רוחב (פיקסלים)</strong> — רוחב הפלט. הגובה מחושב אוטומטית (ומעוגל לכפולה של 4) כדי לשמור על יחס הממדים. 480–900 היא נקודת איזון טובה להקלטות מסך.",
+        "<strong>קצב פריימים (fps)</strong> — כמה פריימים בשנייה FFmpeg דוגם מהמקור. 12fps נראה חלק להקלטות ממשק, העלו ל-18–24 עבור קליפים עתירי תנועה, או הורידו ל-8–10 כדי לכווץ את הקובץ.",
+        "<strong>צבעים</strong> — גודל פלטת gifsicle (2–256). 128 היא ברירת מחדל חזקה; הורידו ל-64 בהקלטות ממשק שטוחות, העלו ל-256 עבור קליפים צילומיים עם גרדיאנטים חלקים.",
+        "<strong>השהיית פריים</strong> — השהייה בין-פריימית של gifsicle ביחידות של 1/100 שנייה. נמוך יותר = ניגון מהיר יותר. 3 (כ-30 מילישניות) נותן תחושת הקלטת מסך קופצנית; 6–10 מייצר לולאה איטית ומכוונת יותר.",
+        "<strong>רמת אופטימיזציה</strong> — רמת ה-<code>optimize--</code> של gifsicle. 1 היא המהירה ביותר עם הפלט הגדול ביותר, 3 היא האיטית ביותר עם הפלט הקטן ביותר. הישארו עם 3 אלא אם אתם מבצעים איטרציות על קליפ ארוך ורוצים טיוטה מהירה."
       ],
-      "paragraph2": "Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video."
+      "paragraph2": "החיתוך עדיין עובד עבור GIF-ים - שלבו חיתוך קצר עם רוחב קטן וכמות צבעים מתונה כדי לשמור על הקובץ הרבה מתחת לכמה מגה-בייטים. חלון התצוגה המקדימה מנפיש את התוצאה במקום ברגע שהמשימה מסתיימת; עברו ל<em>מקור</em> כדי להשוות מול הווידאו המקורי."
     },
     "resize": {
-      "title": "3. Resize, speed, and aspect ratio",
-      "paragraph1": "Set <strong>Width</strong> and/or <strong>Height</strong> to resize the video. Leave one blank to scale proportionally. Toggle <strong>Preserve aspect ratio</strong> when you set both to use a non-stretching <em>force_original_aspect_ratio=decrease</em> scale.",
-      "paragraph2": "<strong>Speed Multiplier</strong> changes both video and audio playback tempo from 0.25x to 4x. We pair it with FFmpeg's <em>setpts</em> filter and matching <em>atempo</em> on the audio track."
+      "title": "3. שינוי גודל, מהירות ויחס ממדים",
+      "paragraph1": "הגדירו <strong>רוחב</strong> ו/או <strong>גובה</strong> כדי לשנות את גודל הווידאו. השאירו אחד ריק כדי לקנה מידה באופן פרופורציונלי. הפעילו <strong>שמירה על יחס ממדים</strong> כשאתם מגדירים את שניהם כדי להשתמש בקנה מידה <em>force_original_aspect_ratio=decrease</em> שאינו מותח.",
+      "paragraph2": "<strong>מכפיל מהירות</strong> משנה את קצב הניגון של הווידאו והאודיו כאחד מ-0.25x עד 4x. אנחנו משלבים אותו עם המסנן <em>setpts</em> של FFmpeg ועם <em>atempo</em> תואם ברצועת האודיו."
     },
     "trim": {
-      "title": "4. Trim",
-      "paragraph": "Click <strong>Trim Video</strong> to scrub the player and pick a start and end time. Only the selected segment is encoded into the output, and trim works regardless of the output codec."
+      "title": "4. חיתוך",
+      "paragraph": "לחצו על <strong>חתוך וידאו</strong> כדי לגלול בנגן ולבחור זמן התחלה וסיום. רק המקטע שנבחר מקודד לתוך הפלט, והחיתוך עובד ללא קשר לקודק הפלט."
     },
     "effects": {
-      "title": "5. Advanced Video Effects",
-      "intro": "The <strong>Advanced Video Effects</strong> section groups every filter into collapsible panels. Expand a panel to access its controls:",
+      "title": "5. אפקטי וידאו מתקדמים",
+      "intro": "החלק <strong>אפקטי וידאו מתקדמים</strong> מקבץ כל מסנן לפאנלים ניתנים לקיפול. הרחיבו פאנל כדי לגשת לפקדים שלו:",
       "bullets": [
-        "<strong>Visual Effects</strong> — brightness, contrast, saturation, hue, gamma, exposure, shadow/highlight recovery, Gaussian blur, motion blur, unsharp mask (sharpening), film/digital/vintage noise, and artistic effects (oil painting, watercolor, sketch, emboss, edge detection, posterize).",
-        "<strong>Transform</strong> — free rotation in degrees, horizontal/vertical flip, custom crop, and padded letterboxing with a configurable color.",
-        "<strong>Temporal Effects</strong> — reverse playback, ping-pong (forward then backward), frame-rate conversion with optional motion interpolation, and video stabilization with shakiness/accuracy controls.",
-        "<strong>Advanced Processing</strong> — deinterlacing, HDR tone mapping (hable, reinhard, mobius), and explicit input/output colorspace conversion (Rec.709, Rec.2020, sRGB, P3)."
+        "<strong>אפקטים חזותיים</strong> — בהירות, ניגודיות, רוויה, גוון, גמא, חשיפה, שחזור צללים/הבהרות, טשטוש גאוסי, טשטוש תנועה, מסכת חידוד (unsharp mask), רעש פילם/דיגיטלי/וינטג׳, ואפקטים אמנותיים (ציור שמן, אקוורל, סקיצה, תבליט, זיהוי קצוות, פוסטריזציה).",
+        "<strong>טרנספורמציה</strong> — סיבוב חופשי במעלות, היפוך אופקי/אנכי, חיתוך מותאם אישית, ומסגור עם ריפוד בצבע הניתן להתאמה.",
+        "<strong>אפקטים זמניים</strong> — ניגון הפוך, פינג-פונג (קדימה ואז אחורה), המרת קצב פריימים עם אינטרפולציית תנועה אופציונלית, וייצוב וידאו עם פקדי רעד/דיוק.",
+        "<strong>עיבוד מתקדם</strong> — ביטול שזירה (deinterlacing), מיפוי גווני HDR (hable, reinhard, mobius), והמרת מרחב צבע קלט/פלט מפורשת (Rec.709, Rec.2020, sRGB, P3)."
       ]
     },
     "convertDownload": {
-      "title": "6. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A streaming progress bar shows real-time job status pulled from FFmpeg. When the job finishes, the result auto-previews in a modal with an <strong>Original / Final</strong> toggle so you can compare the two side by side. A <strong>Download</strong> button saves the final file."
+      "title": "6. המרה והורדה",
+      "paragraph": "לחצו על <strong>המר קובץ</strong>. פס התקדמות בזרימה חיה מציג את סטטוס המשימה בזמן אמת ישירות מ-FFmpeg. כשהמשימה מסתיימת, התוצאה מוצגת אוטומטית בחלון עם מתג <strong>מקור / תוצאה סופית</strong> כך שתוכלו להשוות בין השניים זה לצד זה. כפתור <strong>הורדה</strong> שומר את הקובץ הסופי."
     },
     "transcribe": {
-      "title": "7. Transcribe a video (subtitles, captions, plain text, JSON)",
-      "intro": "Switch the panel toggle to <strong>Transcribe</strong> to run our local GPU transcription pipeline (whisper-ctranslate2). Pick an output format:",
+      "title": "7. תמלול וידאו (כתוביות, טקסט רגיל, JSON)",
+      "intro": "העבירו את מתג הפאנל ל<strong>תמלול</strong> כדי להריץ את צינור התמלול המקומי שלנו המבוסס GPU (whisper-ctranslate2). בחרו פורמט פלט:",
       "bullets": [
-        "<strong>VTT</strong> — time-coded captions/subtitles that drop into HTML5 video players.",
-        "<strong>Plain text</strong> — a continuous transcript for reading or editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — כתוביות מתוזמנות שנכנסות ישירות לנגני וידאו של HTML5.",
+        "<strong>טקסט רגיל</strong> — תמלול רציף לקריאה או עריכה.",
+        "<strong>JSON מובנה</strong> — תמלול מפולח עם נתוני תזמון לצינורות עיבוד בהמשך."
       ],
-      "languageNote": "Optionally type a BCP-47 language hint (e.g. <code>en</code>, <code>es</code>, <code>ja</code>). Leave it blank to auto-detect. A summary and content-safety review run automatically after the transcript is ready."
+      "languageNote": "אופציונלית, הקלידו רמז שפה בתקן BCP-47 (למשל <code>en</code>, <code>es</code>, <code>ja</code>). השאירו ריק לזיהוי אוטומטי. סיכום וסקירת בטיחות תוכן רצים אוטומטית לאחר שהתמלול מוכן."
     },
     "tips": {
-      "title": "Tips for great video output",
+      "title": "טיפים לפלט וידאו מעולה",
       "bullets": [
-        "Use <strong>MP4 / High</strong> as a default for web delivery — it streams everywhere and looks great.",
-        "Prefer <strong>WebM</strong> for open-web embeds where file size matters and you control the player.",
-        "Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.",
-        "Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.",
-        "Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.",
-        "For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors."
+        "השתמשו ב<strong>MP4 / גבוהה</strong> כברירת מחדל להפצה ברשת - זה מתנגן בכל מקום ונראה מעולה.",
+        "העדיפו <strong>WebM</strong> להטמעות ברשת הפתוחה שבהן גודל הקובץ חשוב ואתם שולטים בנגן.",
+        "הימנעו מהגדלת גודל בצינור הרגיל - קלטים קטנים נראים טוב יותר אחרי קידוד ללא אובדן ברזולוציה המקורית.",
+        "החילו <strong>ייצוב</strong> לפני דירוג צבע חזק כדי שהעיוות לא יתנגש עם מסנן הצבע.",
+        "הריצו <strong>תמלול</strong> יחד עם ההמרה אם אתם רוצים גם קובץ מומר וגם כתוביות - אלה משימות עצמאיות.",
+        "עבור פלט <strong>GIF</strong>, חתכו בצורה אגרסיבית קודם - כל שנייה נוספת של חומר גלם מכפילה את הגודל הסופי בקצב פריימים × צבעים."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Video Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "נסו את ממיר הווידאו",
+      "backToTutorials": "← חזרה למדריכים",
+      "howItWorks": "איך זה עובד"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused video tool or keep exploring related guides.",
+      "title": "נסו כלים קשורים",
+      "intro": "קפצו ישר לכלי וידאו ממוקד או המשיכו לחקור מדריכים קשורים.",
       "links": [
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "ממיר וידאו",
+          "description": "המירו MP4, WebM, MOV, AVI, MKV ועוד."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink video file size for the web without ruining quality."
+          "label": "דחיסת וידאו",
+          "description": "כווצו את גודל קובץ הווידאו לרשת בלי לפגוע באיכות."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video as searchable text or captions."
+          "label": "תמלול וידאו",
+          "description": "חלצו מילים מדוברות מווידאו כטקסט חיפוש או כתוביות."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "המרת וידאו ל-GIF",
+          "description": "הפכו קליפי וידאו קצרים ל-GIF מונפש הניתן לשיתוף."
         },
         {
-          "label": "AI Frame Interpolation tool",
-          "description": "Smooth motion by lifting video FPS with RIFE."
+          "label": "כלי אינטרפולציית פריימים בבינה מלאכותית",
+          "description": "החליקו תנועה על ידי העלאת FPS של הווידאו עם RIFE."
         },
         {
-          "label": "AI Frame Interpolation tutorial",
-          "description": "Learn how AI frame interpolation works and when to use it."
+          "label": "מדריך אינטרפולציית פריימים בבינה מלאכותית",
+          "description": "למדו איך אינטרפולציית פריימים בבינה מלאכותית עובדת ומתי להשתמש בה."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "Learn how transcription and AI summaries run on a local GPU."
+          "label": "איך Media Manipulator עובד",
+          "description": "למדו איך תמלול וסיכומי בינה מלאכותית רצים על GPU מקומי."
         }
       ]
     }
   },
   "tutorialAudioGettingStarted": {
-    "eyebrow": "Audio Tutorial",
-    "title": "Getting Started: Converting Audio Files",
-    "intro": "Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).",
+    "eyebrow": "מדריך אודיו",
+    "title": "צעדים ראשונים: המרת קובצי אודיו",
+    "intro": "למדו כיצד להמיר, לנקות ולרמיקס קובצי אודיו עם ממיר האודיו של Media Manipulator. המדריך הזה עובר על כל חלק בפאנל המרת האודיו — בחירת פורמט, אפקטי עיבוד, שחזור, וכלי האודיו החדשים בבינה מלאכותית (ניקוי קול, הסרת רעש רקע, בידוד שירה, הסרת שירה).",
     "upload": {
-      "heading": "1. Upload your audio file",
-      "p1": "From the home page, drag and drop an audio file into the upload zone, or click <strong>Choose File</strong>. Supported inputs include MP3, WAV, FLAC, AAC, M4A, OGG, Opus, and most common podcast and music formats. Files are deleted automatically within 24 hours.",
-      "p2": "Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial."
+      "heading": "1. העלאת קובץ האודיו שלכם",
+      "p1": "מדף הבית, גררו ושחררו קובץ אודיו לאזור ההעלאה, או לחצו על <strong>בחר קובץ</strong>. פורמטי קלט נתמכים כוללים MP3, WAV, FLAC, AAC, M4A, OGG, Opus, ורוב פורמטי הפודקאסטים והמוזיקה הנפוצים. קבצים נמחקים אוטומטית תוך 24 שעות.",
+      "p2": "לאחר בחירת הקובץ, הפאנל בצד ימין עובר ל<strong>אפשרויות המרה</strong>. עבור קובצי וידאו ואודיו תראו גם מתג <strong>המרה / תמלול</strong> - השאירו אותו על <em>המרה</em> עבור המדריך הזה."
     },
     "toolPanel": {
-      "title": "Try the audio converter without leaving this page",
-      "description": "Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "נסו את ממיר האודיו בלי לעזוב את הדף הזה",
+      "description": "בחרו קובץ אודיו והמירו אותו ממש כאן. ההגדרות שלמטה זהות לממיר בדף הבית, כך שתוכלו לעקוב אחרי שאר המדריך תוך כדי התנסות."
     },
     "format": {
-      "heading": "2. Pick the output format",
-      "intro": "The <strong>Format</strong> dropdown sets the container and codec for your output file. The audio converter supports:",
+      "heading": "2. בחירת פורמט הפלט",
+      "intro": "התפריט הנפתח <strong>פורמט</strong> קובע את המכולה והקודק עבור קובץ הפלט שלכם. ממיר האודיו תומך ב:",
       "items": [
-        "<strong>MP3</strong> — universal compatibility, lossy, small file sizes.",
-        "<strong>WAV</strong> — uncompressed PCM, ideal for masters, editing, or archiving.",
-        "<strong>AAC</strong> — efficient lossy codec used by Apple devices and streaming.",
-        "<strong>OGG</strong> — open-source Vorbis container.",
-        "<strong>FLAC / ALAC</strong> — lossless compression for archival quality at smaller size than WAV.",
-        "<strong>Opus</strong> — modern lossy codec great for voice and low bitrates.",
-        "<strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks."
+        "<strong>MP3</strong> — תאימות אוניברסלית, עם אובדן, גדלי קבצים קטנים.",
+        "<strong>WAV</strong> — PCM ללא דחיסה, אידיאלי למאסטרים, עריכה או ארכוב.",
+        "<strong>AAC</strong> — קודק יעיל עם אובדן שמשמש מכשירי אפל ושירותי הזרמה.",
+        "<strong>OGG</strong> — מכולת Vorbis בקוד פתוח.",
+        "<strong>FLAC / ALAC</strong> — דחיסה ללא אובדן לאיכות ארכיון בגודל קטן יותר מ-WAV.",
+        "<strong>Opus</strong> — קודק מודרני עם אובדן, מצוין לקול ולקצבי סיביות נמוכים.",
+        "<strong>AC3 / DTS</strong> — פורמטים תומכי סראונד שמשמשים לרוב לפסקולי וידאו."
       ]
     },
     "quality": {
-      "heading": "3. Set bitrate, sample rate, and channels",
-      "bitrate": "<strong>Bitrate</strong> controls quality vs. file size for lossy formats. 128 kbps is \"good enough\" for podcasts; 192–256 kbps is a strong default for music; 320 kbps is the maximum MP3 quality. Lossless formats (WAV, FLAC, ALAC) ignore this setting.",
-      "sampleRate": "<strong>Sample rate</strong> sets how many audio samples per second the file contains. Standard music is 44.1 kHz; pro audio and video typically use 48 kHz. Higher rates (96 kHz, 192 kHz) only matter for professional production.",
-      "channels": "<strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks."
+      "heading": "3. הגדרת קצב סיביות, קצב דגימה וערוצים",
+      "bitrate": "<strong>קצב סיביות</strong> שולט באיכות מול גודל קובץ בפורמטים עם אובדן. 128 kbps ״מספיק טוב״ לפודקאסטים; 192–256 kbps היא ברירת מחדל חזקה למוזיקה; 320 kbps היא האיכות המקסימלית ל-MP3. פורמטים ללא אובדן (WAV, FLAC, ALAC) מתעלמים מהגדרה זו.",
+      "sampleRate": "<strong>קצב דגימה</strong> קובע כמה דגימות אודיו בשנייה הקובץ מכיל. מוזיקה סטנדרטית היא 44.1 kHz; אודיו ווידאו מקצועי בדרך כלל משתמשים ב-48 kHz. קצבים גבוהים יותר (96 kHz, 192 kHz) חשובים רק לייצור מקצועי.",
+      "channels": "<strong>ערוצים</strong> יכולים להיות מונו, סטריאו, 5.1 או 7.1. בחרו מונו עבור תזכורות קוליות או הקלטות במיקרופון בודד כדי לחצות את גודל הקובץ; סטריאו היא ברירת המחדל למוזיקה; 5.1/7.1 מיועדים לפסקולי סראונד."
     },
     "speedVolume": {
-      "heading": "4. Adjust speed, volume, and trim",
-      "p1": "<strong>Speed Multiplier</strong> changes playback tempo from 0.25x to 4x without altering pitch — useful for sped-up podcasts or slowed-down practice tracks. <strong>Volume Multiplier</strong> applies a simple gain factor between 0.1x and 2x.",
-      "p2": "Click <strong>Trim Audio</strong> to scrub through the waveform and pick a start and end time. Only the selected segment is encoded into the output file."
+      "heading": "4. התאמת מהירות, עוצמה וחיתוך",
+      "p1": "<strong>מכפיל מהירות</strong> משנה את קצב הניגון מ-0.25x עד 4x בלי לשנות את הגובה הצלילי - שימושי לפודקאסטים מואצים או רצועות תרגול מואטות. <strong>מכפיל עוצמה</strong> מחיל פקטור הגברה פשוט בין 0.1x ל-2x.",
+      "p2": "לחצו על <strong>חתוך אודיו</strong> כדי לגלול בצורת הגל ולבחור זמן התחלה וסיום. רק המקטע שנבחר מקודד לתוך קובץ הפלט."
     },
     "aiTools": {
-      "heading": "5. AI Audio Tools (recommended)",
-      "intro": "The <strong>AI Audio Tools</strong> panel is the fastest path to a great-sounding result for voice and music. Each operation runs on our local GPU server (no data leaves our infrastructure):",
+      "heading": "5. כלי אודיו בבינה מלאכותית (מומלץ)",
+      "intro": "פאנל <strong>כלי האודיו בבינה מלאכותית</strong> הוא הדרך המהירה ביותר לתוצאה נהדרת לקול ולמוזיקה. כל פעולה רצה על שרת ה-GPU המקומי שלנו (שום נתון לא יוצא מהתשתית שלנו):",
       "items": [
-        "<strong>Clean Voice</strong> — denoises with DeepFilterNet and then runs a broadcast-style polish chain (high-pass, low-pass, loudness normalization, brick-wall limiter). Best for podcast/voiceover takes recorded in noisy rooms.",
-        "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain. Use this when you want to preserve the natural EQ and dynamics of the recording.",
-        "<strong>Isolate Vocals</strong> — runs Demucs htdemucs and outputs the vocal stem only. Output defaults to WAV so you don't lose detail.",
-        "<strong>Remove Vocals / Karaoke</strong> — same Demucs job, but exports the instrumental stem. Great for karaoke tracks or sample workflows."
+        "<strong>ניקוי קול</strong> — מבצע הסרת רעש עם DeepFilterNet ולאחר מכן מריץ שרשרת ליטוש בסגנון שידור (high-pass, low-pass, נורמליזציית עוצמה, limiter). מצוין לצילומי פודקאסט/קריינות שהוקלטו בחדרים רועשים.",
+        "<strong>הסרת רעש רקע</strong> — הסרת רעש עם DeepFilterNet ללא שרשרת הליטוש. השתמשו בזה כשאתם רוצים לשמר את האקולייזר והדינמיקה הטבעיים של ההקלטה.",
+        "<strong>בידוד שירה</strong> — מריץ Demucs htdemucs ומפיק רק את רצועת השירה. הפלט מוגדר כברירת מחדל ל-WAV כדי לא לאבד פרטים.",
+        "<strong>הסרת שירה / קריוקי</strong> — אותה משימת Demucs, אך מייצא את הרצועה האינסטרומנטלית. מצוין לרצועות קריוקי או לתהליכי עבודה עם דגימות."
       ],
-      "outro": "When you pick any AI operation, the standard FFmpeg chain (bitrate, EQ, reverb, etc.) is skipped for that job so the AI tool has a clean input/output path. AI jobs may take longer than basic conversion because they run on the GPU."
+      "outro": "כשאתם בוחרים כל פעולת בינה מלאכותית, שרשרת ה-FFmpeg הרגילה (קצב סיביות, אקולייזר, הדהוד וכו׳) מדולגת עבור אותה משימה כך שלכלי הבינה המלאכותית יש נתיב קלט/פלט נקי. משימות בינה מלאכותית עשויות לקחת יותר זמן מהמרה בסיסית כי הן רצות על ה-GPU."
     },
     "advancedEffects": {
-      "heading": "6. Advanced Audio Effects",
-      "intro": "Expand <strong>Advanced Audio Effects</strong> to access four collapsible groups when you want manual control instead of an AI operation:",
+      "heading": "6. אפקטי אודיו מתקדמים",
+      "intro": "הרחיבו את <strong>אפקטי אודיו מתקדמים</strong> כדי לגשת לארבע קבוצות ניתנות לקיפול כשאתם רוצים שליטה ידנית במקום פעולת בינה מלאכותית:",
       "items": [
-        "<strong>Basic Audio Processing</strong> — normalize, amplify (dB), fade in/out, EQ presets (bass boost, treble boost, vocal, classical, rock, jazz), pan, balance, stereo width, mono conversion, channel swap.",
-        "<strong>Time-Based Effects</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), modulation (chorus, flanger, phaser, tremolo, vibrato).",
-        "<strong>Restoration & Cleanup</strong> — spectral/adaptive/gate noise reduction, 50/60 Hz de-hum, declipper, silence detection and removal.",
-        "<strong>Advanced Audio</strong> — pitch shifting (semitones, formant-preserving), time stretching (factor + pitch/time/formant algorithm), spatial audio (binaural, surround, 3D)."
+        "<strong>עיבוד אודיו בסיסי</strong> — נורמליזציה, הגברה (dB), עמעום כניסה/יציאה, פריסטים לאקולייזר (הדגשת בס, הדגשת טרבל, שירה, קלאסי, רוק, ג׳אז), פאן, איזון, רוחב סטריאו, המרה למונו, החלפת ערוצים.",
+        "<strong>אפקטים מבוססי זמן</strong> — הדהוד (חדר, אולם, פלטה, קפיץ), עיכוב (הד, מולטי-טאפ, פינג-פונג), מודולציה (מקהלה, פלנג׳ר, פייזר, טרמולו, ויברטו).",
+        "<strong>שחזור וניקוי</strong> — הפחתת רעש ספקטרלית/אדפטיבית/גייט, הסרת זמזום 50/60 הרץ, הסרת קליפינג, זיהוי והסרת שקט.",
+        "<strong>אודיו מתקדם</strong> — הזזת גובה צלילי (חצאי טונים, שמירה על פורמנט), מתיחת זמן (פקטור + אלגוריתם גובה/זמן/פורמנט), אודיו מרחבי (בינאורלי, סראונד, תלת-ממדי)."
       ]
     },
     "convertDownload": {
-      "heading": "7. Convert and download",
-      "body": "Click <strong>Convert File</strong>. A real-time progress bar appears as the server processes the job. When it finishes, the result auto-previews and a <strong>Download</strong> button appears. The file is also added to your in-session <em>Conversion History</em> so you can revisit or download it later without re-running the job."
+      "heading": "7. המרה והורדה",
+      "body": "לחצו על <strong>המר קובץ</strong>. פס התקדמות בזמן אמת מופיע בזמן שהשרת מעבד את המשימה. כשהיא מסתיימת, התוצאה מוצגת אוטומטית בתצוגה מקדימה ומופיע כפתור <strong>הורדה</strong>. הקובץ גם מתווסף ל<em>היסטוריית ההמרות</em> שלכם בתוך הסשן, כך שתוכלו לחזור אליו או להוריד אותו מאוחר יותר בלי להריץ מחדש את המשימה."
     },
     "tips": {
-      "heading": "Tips for great audio output",
+      "heading": "טיפים לפלט אודיו מעולה",
       "items": [
-        "For voice recordings, try <strong>Clean Voice</strong> first — it solves most \"muddy podcast\" problems in one click.",
-        "If you only want to remove a constant hum or air-conditioner background, use <strong>Remove Background Noise</strong> to keep the original tone.",
-        "For stems, keep the default <strong>WAV</strong> output — converting Demucs output to a lossy format defeats the purpose of separation.",
-        "Big bitrate jumps don't help small files much; pair 320 kbps with 48 kHz only for high-quality music exports."
+        "עבור הקלטות קול, נסו <strong>ניקוי קול</strong> קודם - זה פותר את רוב בעיות ה״פודקאסט העמום״ בלחיצה אחת.",
+        "אם אתם רק רוצים להסיר זמזום קבוע או רעש מזגן ברקע, השתמשו ב<strong>הסרת רעש רקע</strong> כדי לשמור על הטון המקורי.",
+        "עבור רצועות מבודדות, השאירו את פלט ה<strong>WAV</strong> כברירת מחדל - המרת פלט Demucs לפורמט עם אובדן מבטלת את המטרה של ההפרדה.",
+        "קפיצות גדולות בקצב הסיביות לא עוזרות הרבה לקבצים קטנים; שלבו 320 kbps עם 48 kHz רק עבור ייצוא מוזיקה באיכות גבוהה."
       ]
     },
     "cta": {
-      "tryConverter": "Try the Audio Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "נסו את ממיר האודיו",
+      "backToTutorials": "← חזרה למדריכים",
+      "howItWorks": "איך זה עובד"
     },
     "related": {
-      "title": "Try related tools",
-      "intro": "Jump straight into the audio tool you need, or keep learning with related guides.",
+      "title": "נסו כלים קשורים",
+      "intro": "קפצו ישר לכלי האודיו שאתם צריכים, או המשיכו ללמוד עם מדריכים קשורים.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more."
+          "label": "ממיר אודיו",
+          "description": "המירו WAV, MP3, FLAC, M4A, OGG ועוד."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV recordings into widely playable MP3s."
+          "label": "המרת WAV ל-MP3",
+          "description": "כווצו הקלטות WAV גדולות ל-MP3 שניתן לנגן בקלות בכל מקום."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Extract vocals from music for remixes or analysis."
+          "label": "בידוד שירה משיר",
+          "description": "חלצו שירה ממוזיקה למיקסים או לניתוח."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, compress, trim, and transcribe video files."
+          "label": "מדריך ממיר הווידאו",
+          "description": "המירו, דחסו, חתכו ותמללו קובצי וידאו."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI audio jobs run on a local GPU server."
+          "label": "איך Media Manipulator עובד",
+          "description": "ראו איך משימות אודיו בבינה מלאכותית רצות על שרת GPU מקומי."
         }
       ]
     }
   },
   "tutorialImageGettingStarted": {
-    "eyebrow": "Image Tutorial",
-    "title": "Getting Started: Converting Image Files",
-    "intro": "Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).",
+    "eyebrow": "מדריך תמונות",
+    "title": "צעדים ראשונים: המרת קובצי תמונה",
+    "intro": "למדו כיצד להמיר, לערוך ולעבד תמונות בבינה מלאכותית עם ממיר התמונות של Media Manipulator. המדריך הזה עובר על כל חלק בפאנל המרת התמונות — בחירת פורמט, חיתוך, פילטרים, שכבות טקסט, ניהול מטא-נתונים, וכלי התמונה בבינה מלאכותית (פרטיות פנים, הסרת רקע, הגדלת רזולוציה בבינה מלאכותית, טשטוש טקסט, והסרת אובייקטים).",
     "toolPanel": {
-      "title": "Try the image converter without leaving this page",
-      "description": "Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "נסו את ממיר התמונות בלי לעזוב את הדף הזה",
+      "description": "בחרו תמונה והמירו אותה ממש כאן. ההגדרות זהות לממיר בדף הבית, כך שתוכלו לעקוב אחרי שאר המדריך תוך כדי התנסות."
     },
     "upload": {
-      "title": "1. Upload your image",
-      "paragraph": "Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are deleted within 24 hours."
+      "title": "1. העלאת התמונה שלכם",
+      "paragraph": "גררו קובץ תמונה לאזור ההעלאה, או לחצו על <strong>בחר קובץ</strong>. ממיר התמונות מקבל JPG, PNG, WebP, GIF ופורמטים רבים נוספים. קבצים נמחקים תוך 24 שעות."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
+      "title": "2. בחירת פורמט הפלט והאיכות",
       "bullets": [
-        "<strong>JPG</strong> — best for photos. Lossy compression with a quality slider.",
-        "<strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.",
-        "<strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.",
-        "<strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases."
+        "<strong>JPG</strong> — הכי טוב לצילומים. דחיסה עם אובדן עם מחוון איכות.",
+        "<strong>PNG</strong> — ללא אובדן, תומך בשקיפות. הכי טוב לצילומי מסך, לוגואים וגרפיקה.",
+        "<strong>WebP</strong> — פורמט מודרני עם מצבי אובדן וללא אובדן; קטן יותר מ-JPG באיכות דומה.",
+        "<strong>GIF</strong> — מבוסס פלטה, תומך באנימציה בסיסית, שימושי למקרי שימוש מדור קודם."
       ],
-      "quality": "<strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images."
+      "quality": "<strong>איכות (%)</strong> חלה על JPG ו-WebP. 85 היא ברירת מחדל מצוינת; נמוך יותר לתמונות ממוזערות, גבוה יותר לתמונות גיבור."
     },
     "resize": {
-      "title": "3. Resize, crop, filter, tint",
-      "paragraph1": "Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.",
-      "paragraph2": "Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000)."
+      "title": "3. שינוי גודל, חיתוך, פילטר, גוון",
+      "paragraph1": "השתמשו ב<strong>רוחב</strong> וב<strong>גובה</strong> כדי לשנות גודל. השאירו אחד מהם ריק כדי לקנה מידה באופן פרופורציונלי. ImageMagick מכוון אוטומטית את כיוון הקלט תחילה כך שקובצי JPEG עם כיוון EXIF לא יישלחו מסובבים ל-PNG/WebP.",
+      "paragraph2": "לחצו על <strong>חיתוך תמונה</strong> עבור בורר חיתוך חזותי. התפריט הנפתח <strong>פילטר</strong> מחיל אפקט מובנה: גווני אפור, ספיה, טשטוש, חידוד, מערבולת, עיוות חבית, ציור שמן, וינטג׳, תבליט, פחם, סקיצה, או סיבוב קבוע (45° / 90° / 180° / 270°). <strong>צבע גוון</strong> מניח גוון צבעוני בשקיפות 30% מעל התמונה (דלגו על ידי השארה על שחור/#000000)."
     },
     "textOverlay": {
-      "title": "4. Text overlay",
-      "intro": "Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:",
+      "title": "4. שכבת טקסט",
+      "intro": "הוסיפו סימן מים או כיתוב ישירות לתמונה. הקלידו את הטקסט שלכם ב<strong>טקסט שכבה</strong>, ואז בחרו:",
       "bullets": [
-        "<strong>Text Size</strong> — 8–512 px.",
-        "<strong>Position</strong> — gravity-based anchor (corners, edges, center).",
-        "<strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.",
-        "<strong>Stroke Width</strong> — 0 to disable the outline.",
-        "<strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor."
+        "<strong>גודל טקסט</strong> — 8–512 פיקסלים.",
+        "<strong>מיקום</strong> — עיגון מבוסס כיווניות (פינות, קצוות, מרכז).",
+        "<strong>צבע טקסט / צבע קו מתאר</strong> — צבעי הקס דרך בוררי הצבע.",
+        "<strong>רוחב קו מתאר</strong> — 0 כדי לבטל את המתאר.",
+        "<strong>היסט X / היסט Y</strong> — הזזה ברמת הפיקסל מנקודת העיגון."
       ]
     },
     "metadata": {
-      "title": "5. Metadata",
-      "intro": "Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:",
+      "title": "5. מטא-נתונים",
+      "intro": "בחרו כיצד Media Manipulator מטפל במטא-נתוני EXIF, IPTC, XMP ו-GPS:",
       "bullets": [
-        "<strong>Keep all metadata</strong> — preserved from the original via exiftool.",
-        "<strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online."
+        "<strong>שמירת כל המטא-נתונים</strong> — נשמר מהמקור באמצעות exiftool.",
+        "<strong>הסרת כל המטא-נתונים</strong> — מסיר מצלמה, GPS, תוכנה וחותמות זמן. מומלץ לפני שיתוף תמונות באינטרנט."
       ],
-      "customLabel": "<strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:",
+      "customLabel": "<strong>מטא-נתונים מותאמים אישית</strong> — מסיר תחילה, ואז כותב מחדש את השדות שאתם מספקים. כולל:",
       "customBullets": [
-        "Title, Artist/Author, Description, Copyright, User Comment, Keywords.",
-        "GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.",
-        "EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist."
+        "כותרת, אמן/יוצר, תיאור, זכויות יוצרים, הערת משתמש, מילות מפתח.",
+        "הסרה/החלפה של GPS (עם עיגול דיוק אופציונלי) ומתגי כיוון/חותמת זמן/גובה/יעד.",
+        "שדות EXIF/TIFF, שדות GPS, ותגי IPTC/XMP/MakerNotes מתקדמים דרך רשימת היתרים."
       ]
     },
     "aiTools": {
-      "title": "6. AI Image Tools (recommended)",
-      "intro": "The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.",
-      "faceBlur": "<strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.",
-      "removeBackground": "<strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.",
-      "aiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.",
-      "redactText": "<strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.",
-      "removeObject": "<strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:",
+      "title": "6. כלי תמונה בבינה מלאכותית (מומלץ)",
+      "intro": "פאנל <strong>כלי התמונה בבינה מלאכותית</strong> מריץ פעולת GPU מקומית אחת עבור כל משימת המרה. כשאתם בוחרים פעולה, צינור ImageMagick הרגיל (פילטרים, גוון, שכבת טקסט וכו׳) מדולג עבור אותה משימה כך שלכלי הבינה המלאכותית יש נתיב קלט/פלט נקי.",
+      "faceBlur": "<strong>טשטוש פנים / פיקסול / תיבה שחורה</strong> — מזהה כל פרצוף בתמונה ומסתיר אותו בסגנון שבחרתם. מצוין לשיתוף תמונות מאירועים בלי לחשוף זהויות משתתפים.",
+      "removeBackground": "<strong>הסרת רקע</strong> — מריץ rembg עם BiRefNet (כללי או פורטרט), ISNet, או U2Net. הפלט נכפה ל-PNG כדי לשמר את השקיפות. BiRefNet General היא ברירת המחדל המומלצת לרוב התמונות.",
+      "aiUpscale": "<strong>הגדלת רזולוציה בבינה מלאכותית</strong> — מגדיל רזולוציה Real-ESRGAN ncnn Vulkan. בחרו <em>4x</em> (הבטוח ביותר) או <em>2x</em> (מהיר יותר), ובחרו מודל: <code>realesrgan-x4plus</code> לצילומים כלליים, <code>realesrgan-x4plus-anime</code> לאנימציה/איור, או <code>realesr-animevideov3</code> לפריימי וידאו אנימה. פלט PNG כברירת מחדל.",
+      "redactText": "<strong>טשטוש טקסט / מידע מזהה</strong> — טשטוש מבוסס OCR. בחרו <em>מידע מזהה בלבד</em> (אימיילים, מספרי טלפון, מספרי ביטוח לאומי, כתובות וכו׳) או <em>כל הטקסט</em>, ואז בחרו סגנון טשטוש (תיבה שחורה, טשטוש, או פיקסול). מאמץ סביר בלבד - בדקו את הפלט לפני השיתוף.",
+      "removeObject": "<strong>הסרת אובייקט (LaMa Inpainting)</strong> — לחצו וגררו על תצוגת התמונה כדי לצייר מלבן מעל כל מה שאתם רוצים למחוק: עובר אורח ברקע, שלט, סימן מים, עמוד. גררו את גוף המלבן כדי להזיז אותו, גררו את נקודות האחיזה בפינה/קצה כדי לשנות גודל, והוסיפו כמה מלבנים שתרצו עם עוד גרירה על שטח ריק. כשאתם שולחים, השרת מייצר מסכה מהמלבנים שלכם ומריץ <code>simple-lama-inpainting</code> על GPU ייעודי כדי לשחזר את השטח שמאחוריהם. הפלט שומר על הפורמט שבחרתם (JPG, PNG, WebP, GIF). טיפים:",
       "removeObjectTips": [
-        "Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.",
-        "Several small rectangles usually beat one huge one, especially for thin objects.",
-        "LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces)."
+        "ציירו את המלבן צמוד לאובייקט - מלבנים גדולים גורמים ל-LaMa ״להזות״ יותר רקע, מה שעלול להיראות גרוע יותר.",
+        "כמה מלבנים קטנים בדרך כלל עדיפים על אחד ענק, במיוחד לאובייקטים דקים.",
+        "LaMa עובד הכי טוב כשהפיקסלים הסובבים נותנים למודל מספיק הקשר (שמיים, דשא, קירות פשוטים, משטחים בגוון אחיד)."
       ]
     },
     "convertDownload": {
-      "title": "7. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list."
+      "title": "7. המרה והורדה",
+      "paragraph": "לחצו על <strong>המר קובץ</strong>. פס התקדמות מציג את סטטוס המשימה בזמן אמת. לאחר הסיום, התוצאה מוצגת אוטומטית עם מתג <strong>מקור / תוצאה סופית</strong> כך שתוכלו להשוות. השתמשו ב<strong>הורדה</strong> כדי לשמור אותה, או חזרו אליה מאוחר יותר מרשימת <em>היסטוריית ההמרות</em> שבתוך הסשן."
     },
     "tips": {
-      "title": "Tips for great image output",
+      "title": "טיפים לפלט תמונה מעולה",
       "bullets": [
-        "For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.",
-        "Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.",
-        "<strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.",
-        "For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.",
-        "Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.",
-        "Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result."
+        "עבור העלאות לרשתות חברתיות, השתמשו ב<strong>WebP</strong> באיכות 80–85% לקבצים קטנים ומרשימים.",
+        "שלבו <strong>הסרת מטא-נתונים</strong> עם שיתוף תמונות באינטרנט כדי להימנע מחשיפת מידע GPS או מכשיר.",
+        "פלטי <strong>הסרת רקע</strong> הם תמיד PNG - שלבו אותם עם רקע צבעוני בכלי העיצוב המועדף עליכם או ערמו אותם במצגת שקופיות.",
+        "עבור הגדלת רזולוציה בבינה מלאכותית, העדיפו <strong>4x</strong> עם <code>realesrgan-x4plus</code> על תמונות; 2x היא אפשרות למשתמשים מתקדמים שיכולה לפעמים להראות ארטיפקטים במסגור על קלטים קטנים.",
+        "הריצו <strong>טשטוש טקסט</strong> לפני פרסום צילום מסך של אימייל, כרטיס תמיכה, או חשבונית.",
+        "השתמשו ב<strong>הסרת אובייקט</strong> לניקוי חד-פעמי כמו תייר בתמונת חופשה או שלט תועה מעל נוף - אבל צפו שתצטרכו לבצע איטרציות על גודל המלבן כדי למצוא את התוצאה הנקייה ביותר."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Image Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "נסו את ממיר התמונות",
+      "backToTutorials": "← חזרה למדריכים",
+      "howItWorks": "איך זה עובד"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused image tool or keep exploring related guides.",
+      "title": "נסו כלים קשורים",
+      "intro": "קפצו ישר לכלי תמונה ממוקד או המשיכו לחקור מדריכים קשורים.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "ממיר תמונות",
+          "description": "המירו בין JPG, PNG, WebP, AVIF, GIF ועוד."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "המרת WebP ל-JPG",
+          "description": "קבלו JPG תואם באופן רחב ממקור WebP."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "הסרת מטא-נתוני EXIF",
+          "description": "הסירו מיקום GPS, מכשיר ומטא-נתוני חותמת זמן לפני שיתוף תמונות."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, trim, and apply visual effects to video files."
+          "label": "מדריך ממיר הווידאו",
+          "description": "המירו, חתכו והחילו אפקטים חזותיים על קובצי וידאו."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI image tools run on a local GPU server."
+          "label": "איך Media Manipulator עובד",
+          "description": "ראו איך כלי תמונה בבינה מלאכותית רצים על שרת GPU מקומי."
         }
       ]
     }
