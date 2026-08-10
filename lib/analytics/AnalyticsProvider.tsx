@@ -74,6 +74,15 @@ function onIdle(callback: () => void, timeout = 2000): () => void {
   return () => window.clearTimeout(timer);
 }
 
+// MODULE scope, not refs: this provider lives inside the `[lang]` root layout, and a
+// language switch REMOUNTS that layout (the param value is in the router tree key).
+// Per-mount refs made every locale switch look like a fresh session entry — a second
+// `page_view` with `is_initial: true` and a repeat `identify` — when it is an ordinary
+// in-session navigation. "Initial" means first view of this PAGELOAD, so the flags
+// must survive a remount and reset only on a real document load.
+let initialViewSent = false;
+let identifiedUid: string | null = null;
+
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   // Tolerates null: this provider is only mounted inside AuthProvider today, but a
@@ -82,8 +91,6 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
 
   const trackerRef = React.useRef<EngagementTracker | null>(null);
-  const initialViewSentRef = React.useRef(false);
-  const identifiedUidRef = React.useRef<string | null>(null);
   // Gates the lazy inspector so its chunk loads on IDLE rather than at
   // hydration — the harness must never compete with the page for first paint,
   // even in dev.
@@ -144,13 +151,13 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     if (!auth) return;
     const uid = auth.user?.uid ?? null;
 
-    if (uid && uid !== identifiedUidRef.current) {
-      identifiedUidRef.current = uid;
+    if (uid && uid !== identifiedUid) {
+      identifiedUid = uid;
       analytics.identify(uid, { tier: auth.tier });
       return;
     }
-    if (!uid && identifiedUidRef.current) {
-      identifiedUidRef.current = null;
+    if (!uid && identifiedUid) {
+      identifiedUid = null;
       analytics.reset();
     }
   }, [auth, auth?.user?.uid, auth?.tier]);
@@ -177,7 +184,7 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
         // The title is owned by the Next.js Metadata API, so it is only correct after the
         // route commits — which is why the non-initial fire waits a frame.
         page_title: typeof document !== 'undefined' ? document.title : undefined,
-        is_initial: !initialViewSentRef.current,
+        is_initial: !initialViewSent,
       });
     };
 
@@ -185,8 +192,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     // FIRST page view fires synchronously so it is not lost if the visitor leaves
     // immediately, while subsequent ones wait a frame for the new document.title to be in
     // place. Firing the first one a frame late loses the bounce visits entirely.
-    if (!initialViewSentRef.current) {
-      initialViewSentRef.current = true;
+    if (!initialViewSent) {
+      initialViewSent = true;
       sendPageView();
       return () => undefined;
     }
@@ -223,10 +230,18 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  /* --- Stop the tracker on unmount ------------------------------------- */
+  /* --- Close out the page on unmount ------------------------------------ */
+  // A locale switch remounts this provider (see the module-scope note above), and in
+  // that teardown neither the route effect (new instance, fresh refs) nor the pagehide
+  // handler (no document unload) runs — so without this, every language switch silently
+  // dropped the outgoing page's page_leave and its engagement numbers.
   React.useEffect(
     () => () => {
-      trackerRef.current?.stop();
+      const tracker = trackerRef.current;
+      if (tracker) {
+        analytics.track(EVENTS.PAGE_LEAVE, tracker.snapshot());
+        tracker.stop();
+      }
       trackerRef.current = null;
     },
     [],
