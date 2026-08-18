@@ -22,7 +22,7 @@ import { BLADE_SEAMS, OPENING_BLADES } from './aperture-paths';
  *   ring  polar curve r(θ) = 10 + amp·cos(kθ + φ), stroke 1.5   (the barrel)
  *   mid   polar harmonic curve, stroke 1.1, opacity animated    (petals)
  *   core  polar curve, filled                                   (the iris)
- *   rays  fixed pool of 24 segments, each (r1, r2, tilt°)        (blades/spokes)
+ *   rays  fixed pool of 24 segments, each [r1, a1°, r2, a2°]     (blades/spokes)
  *
  * That is the whole reason this approach was chosen over the obvious ones. SMIL
  * `<animate>` on `d`, CSS `d: path()` transitions, and flubber-style libraries
@@ -31,9 +31,10 @@ import { BLADE_SEAMS, OPENING_BLADES } from './aperture-paths';
  * unpredictably, because there is nothing to reconcile: 120 radii and 24
  * segments in, 120 radii and 24 segments out, at every frame.
  *
- * Hidden rays collapse to zero length (r1 === r2) parked at the radius they will
- * grow from. Butt caps — the default — render nothing for a zero-length segment,
- * which is what makes the collapse invisible. Round caps would leave 24 beads.
+ * Hidden rays collapse to zero length (r1 === r2 && a1 === a2) parked at the
+ * radius/angle they will grow from. Butt caps — the default — render nothing for
+ * a zero-length segment, which is what makes the collapse invisible. Round caps
+ * would leave 24 beads.
  *
  * Cost: pre-sampled Float64Array keyframes lerped into reusable scratch buffers,
  * written to four <path> elements via refs. React renders once and is never
@@ -90,25 +91,31 @@ function sampleRadii(fn: RadiusFn): Float64Array {
 
 /* ---- ray pool ------------------------------------------------------------- */
 
-/** A segment: outward from r1 to r2, the far end offset tangentially by tilt°. */
-type Ray = [r1: number, r2: number, tilt: number];
+/**
+ * A segment from polar(r1, slot + a1°) to polar(r2, slot + a2°), where slot i's
+ * angle is i/24 · 360°. The two INDEPENDENT angle offsets let a segment sit off
+ * its slot angle entirely — the aperture's blade bars need this, because each
+ * bar runs along a hexagon edge line rather than out along a radius.
+ */
+type Ray = [r1: number, a1: number, r2: number, a2: number];
 
 /**
- * visibleEvery: 4 → 6 rays, 2 → 12, 1 → 24, 0 → none. Hidden rays sit at
- * (rHide, rHide) so they have a stable radius to grow out of and collapse back
- * into rather than sliding in from the centre.
+ * visibleEvery: 4 → 6 rays, 2 → 12, 1 → 24, 0 → none. Hidden rays collapse to a
+ * zero-length point parked at (rHide, a2) so they have a stable radius/angle to
+ * grow out of and collapse back into rather than sliding in from the centre.
  */
 function rayPool(
   visibleEvery: number,
   r1: number,
+  a1: number,
   r2: number,
-  tilt: number,
+  a2: number,
   rHide: number
 ): Ray[] {
   const pool: Ray[] = [];
   for (let i = 0; i < RAYS; i++) {
     const on = visibleEvery > 0 && i % visibleEvery === 0;
-    pool.push(on ? [r1, r2, tilt] : [rHide, rHide, tilt]);
+    pool.push(on ? [r1, a1, r2, a2] : [rHide, a2, rHide, a2]);
   }
   return pool;
 }
@@ -185,24 +192,31 @@ interface Keyframe {
   mid: { fn: RadiusFn; alpha: number };
   rays: Ray[];
   rayAlpha: number;
+  /** Rays stroke width. The aperture's blade bars match the barrel at 1.5; the
+   *  cymatic stages keep their finer 1.2 default. Lerped per frame. */
+  rayWidth?: number;
 }
 
 const KF: Keyframe[] = [
   {
-    // 0 — THE APERTURE. Matches the shipped static mark exactly: circle r=10,
-    // hexagonal iris r=3.9, six seams from 3.9 out to 9.5 offset 28°.
+    // 0 — THE APERTURE. Matches the corrected static mark exactly: circle r=10,
+    // hexagonal iris r=3.9, six overlapping-shutter blade bars.
+    // [4.775, −60.18, 9.6, 34.54] is the derived edge-line bar — see
+    // aperture-paths.ts for the construction; sampled every 4th slot it
+    // reproduces BLADE_SEAMS to 2dp. Bars share the barrel's stroke width.
     ring: circle(10),
     core: hexagon(3.9),
     mid: { fn: circle(6.7), alpha: 0 },
-    rays: rayPool(4, 3.9, 9.5, 28, 9.5),
+    rays: rayPool(4, 4.775, -60.18, 9.6, 34.54, 9.5),
     rayAlpha: 1,
+    rayWidth: 1.5,
   },
   {
     // 1 — amber bloom: 10-petal rosette over a 5-lobe core
     ring: harmonic(10, [[10, 0.3, 0]]),
     core: harmonic(2.9, [[5, 0.55, 0]]),
     mid: { fn: harmonic(6.3, [[10, 1.5, 18]]), alpha: 1 },
-    rays: rayPool(0, 0, 0, 0, 9.7),
+    rays: rayPool(0, 0, 0, 0, 0, 9.7),
     rayAlpha: 0,
   },
   {
@@ -210,7 +224,7 @@ const KF: Keyframe[] = [
     ring: circle(10),
     core: harmonic(3.3, [[8, 0.45, 0]]),
     mid: { fn: harmonic(5.0, [[12, 0.35, 0]]), alpha: 0.65 },
-    rays: rayPool(2, 5.3, 9.5, 4, 9.5),
+    rays: rayPool(2, 5.3, 0, 9.5, 4, 9.5),
     rayAlpha: 1,
   },
   {
@@ -218,7 +232,7 @@ const KF: Keyframe[] = [
     ring: harmonic(10, [[24, 0.35, 0]]),
     core: circle(2.1),
     mid: { fn: harmonic(6.1, [[24, 0.5, 7.5]]), alpha: 1 },
-    rays: rayPool(1, 8.3, 10.6, 0, 8.3),
+    rays: rayPool(1, 8.3, 0, 10.6, 0, 8.3),
     rayAlpha: 0.9,
   },
   {
@@ -226,7 +240,7 @@ const KF: Keyframe[] = [
     ring: circle(10),
     core: circle(1.5),
     mid: { fn: harmonic(4.6, [[18, 0.4, 0]]), alpha: 1 },
-    rays: rayPool(2, 6.6, 9.6, 10, 9.6),
+    rays: rayPool(2, 6.6, 0, 9.6, 10, 9.6),
     rayAlpha: 1,
   },
   {
@@ -234,7 +248,7 @@ const KF: Keyframe[] = [
     ring: harmonic(10, [[8, 0.3, 22.5]]),
     core: harmonic(2.9, [[6, 0.6, 30]]),
     mid: { fn: harmonic(6.3, [[8, 1.25, 0]]), alpha: 1 },
-    rays: rayPool(0, 0, 0, 0, 9.6),
+    rays: rayPool(0, 0, 0, 0, 0, 9.6),
     rayAlpha: 0,
   },
   {
@@ -242,7 +256,7 @@ const KF: Keyframe[] = [
     ring: harmonic(10, [[12, 0.5, 15]]),
     core: circle(1.7),
     mid: { fn: harmonic(6.0, [[12, 1.7, 15]]), alpha: 1 },
-    rays: rayPool(0, 0, 0, 0, 9.6),
+    rays: rayPool(0, 0, 0, 0, 0, 9.6),
     rayAlpha: 0,
   },
 ];
@@ -258,6 +272,7 @@ const GEOM = KF.map((k) => ({
   midAlpha: k.mid.alpha,
   rays: k.rays,
   rayAlpha: k.rayAlpha,
+  rayWidth: k.rayWidth ?? 1.2,
 }));
 
 /* ---- palettes -------------------------------------------------------------
@@ -309,10 +324,12 @@ function polarPath(radii: Float64Array): string {
 function raysPath(pool: Ray[]): string {
   let d = '';
   for (let i = 0; i < RAYS; i++) {
-    const [r1, r2, tilt] = pool[i];
-    if (Math.abs(r2 - r1) < 0.05) continue; // collapsed → contributes nothing
-    const a1 = (i / RAYS) * TAU;
-    const a2 = a1 + (tilt * Math.PI) / 180;
+    const [r1, a1o, r2, a2o] = pool[i];
+    // collapsed to a point → contributes nothing (butt caps)
+    if (Math.abs(r2 - r1) < 0.05 && Math.abs(a2o - a1o) < 0.05) continue;
+    const slot = (i / RAYS) * TAU;
+    const a1 = slot + (a1o * Math.PI) / 180;
+    const a2 = slot + (a2o * Math.PI) / 180;
     d +=
       'M' +
       (12 + r1 * Math.cos(a1)).toFixed(2) +
@@ -342,7 +359,7 @@ interface Scratch {
 
 function makeScratch(): Scratch {
   const rays: Ray[] = [];
-  for (let i = 0; i < RAYS; i++) rays.push([0, 0, 0]);
+  for (let i = 0; i < RAYS; i++) rays.push([0, 0, 0, 0]);
   return {
     ring: new Float64Array(N),
     core: new Float64Array(N),
@@ -426,6 +443,7 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
         sr[0] = lerp(ar[0], br[0], t);
         sr[1] = lerp(ar[1], br[1], t);
         sr[2] = lerp(ar[2], br[2], t);
+        sr[3] = lerp(ar[3], br[3], t);
       }
 
       const j = idx * 3;
@@ -437,6 +455,8 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
       coreEl.setAttribute('d', polarPath(core));
       raysEl.setAttribute('d', raysPath(rays));
       raysEl.setAttribute('opacity', lerp(a.rayAlpha, b.rayAlpha, t).toFixed(3));
+      // Blade bars share the barrel's 1.5; cymatic rays ease to their finer 1.2.
+      raysEl.setAttribute('stroke-width', lerp(a.rayWidth, b.rayWidth, t).toFixed(3));
       svg.style.color = oklabToCss(
         lerp(labs[j], labs[k], t),
         lerp(labs[j + 1], labs[k + 1], t),
@@ -453,6 +473,7 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
       coreEl.setAttribute('d', OPENING_BLADES);
       raysEl.setAttribute('d', BLADE_SEAMS);
       raysEl.setAttribute('opacity', '1');
+      raysEl.setAttribute('stroke-width', '1.5');
       svg.style.removeProperty('color'); // fall back to `text-primary`
     };
 
@@ -570,7 +591,7 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
       <path ref={ringRef} fill="none" stroke="currentColor" strokeWidth="1.5" />
       <path ref={midRef} fill="none" stroke="currentColor" strokeWidth="1.1" opacity="0" />
       <path ref={coreRef} d={OPENING_BLADES} fill="currentColor" />
-      <path ref={raysRef} d={BLADE_SEAMS} fill="none" stroke="currentColor" strokeWidth="1.2" />
+      <path ref={raysRef} d={BLADE_SEAMS} fill="none" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
 }

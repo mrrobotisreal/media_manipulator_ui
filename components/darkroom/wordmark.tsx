@@ -99,9 +99,11 @@ function ApertureMark({ className }: { className?: string }) {
       {/* Iris opening */}
       <path d={blades ? OPENING_BLADES : OPENING_IRIS} fill="currentColor" />
       {blades && (
-        // Blade seams. Thinner than the barrel so the mark keeps one dominant
-        // outline instead of reading as a tangle of equal-weight lines.
-        <path d={BLADE_SEAMS} fill="none" stroke="currentColor" strokeWidth="1.2" />
+        // Blade bars — overlapping-shutter-leaf construction (see
+        // aperture-paths.ts). Stroke matches the barrel's 1.5 so the whole
+        // mechanism reads as one stroke weight, and the bars merge flush into
+        // the barrel at radius 9.6.
+        <path d={BLADE_SEAMS} fill="none" stroke="currentColor" strokeWidth="1.5" />
       )}
     </svg>
   );

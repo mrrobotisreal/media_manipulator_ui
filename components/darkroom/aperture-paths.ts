@@ -16,21 +16,37 @@
  *
  *   BARREL         circle r = 10, stroke 1.5 (so its stroke spans 9.25 … 10.75)
  *   OPENING_BLADES flat-top hexagon, r = 3.9,  vertices at θ = 0°, 60° … 300°
- *   BLADE_SEAMS    six lines, polar(3.9, θ) → polar(9.5, θ + 28°)
+ *   BLADE_SEAMS    six blade bars, polar(4.775, θ − 60.18°) → polar(9.6, θ + 34.54°)
  *   OPENING_IRIS   flat-top hexagon, r = 4.6   (the original, larger opening)
  *
- * Three numbers carry the whole drawing, and each was chosen against a render:
+ * BLADE_SEAMS is the classic overlapping-shutter-leaf construction, matching
+ * the brand reference image. Each bar lies along a hexagon EDGE LINE — the line
+ * through edge V(k−1)→Vk of the r = 3.9 hexagon, extended past Vk toward the
+ * barrel — with the bar's body entirely on the exterior side of that line: the
+ * stroke centerline is the edge line offset outward by 0.75 (half the 1.5
+ * stroke), so the bar's inner edge IS the edge line. Centering the stroke on
+ * the line instead juts it past the hexagon edge and stair-steps it mid-edge.
  *
- *   28°  is what separates "aperture" from "gear". Seams drawn straight out
- *        along the radius read as sun rays; the tangential offset is the entire
- *        cue that these are overlapping leaves.
- *   9.5  lands inside the barrel's stroke band, so each seam MERGES into the
- *        barrel instead of stopping near it. Ending short (8.6 was tried) leaves
- *        six floating slivers that read as spokes, not blades.
- *   3.9  is a smaller opening than the plain iris uses. The blades need annulus
- *        to live in; at 4.6 they are stubs.
+ *   0.45  the butt end is tucked this far back along the edge BEFORE V(k−1),
+ *         which buries the entire butt cap inside the previous blade's body —
+ *         no bar end is ever visible (anywhere in 0 … 0.866 back conceals it).
+ *         With the butt buried, each blade fills the 60° wedge at its vertex,
+ *         the iris reads as a pinwheel, and every black opening tapers to a
+ *         clean point where one blade's outer edge meets the next blade's
+ *         inner-edge line — the only corners in the figure are blade-edge
+ *         intersections, exactly like physical shutter leaves.
+ *   9.6   where the centerline ends, inside the barrel's stroke band
+ *         (9.25 … 10.75), so each bar MERGES flush into the barrel instead of
+ *         stopping near it.
+ *   1.5   bar stroke width — identical to the barrel, one stroke weight across
+ *         the whole mark.
  *
- * Butt caps, not round: round caps put a visible bead on the end of every seam,
+ * Derivation: S = V(k−1) − 0.45·û + 0.75·n̂ and E = S + s·û with |E| = 9.6,
+ * where û is the unit edge direction and n̂ the outward unit normal. In the
+ * animated mark's ray-pool polar form this is [4.775, −60.18°, 9.6, +34.54°]
+ * on every 4th of its 24 slots.
+ *
+ * Butt caps, not round: round caps put a visible bead on the end of every bar,
  * which at 6x magnification reads as a spider rather than a mechanism. The
  * animated mark depends on this too — its hidden rays are zero-length segments,
  * which only render as nothing under butt caps.
@@ -40,12 +56,12 @@ export const OPENING_BLADES =
   'M15.9 12 L13.95 15.38 L10.05 15.38 L8.1 12 L10.05 8.62 L13.95 8.62 Z';
 
 export const BLADE_SEAMS = [
-  'M15.9 12 L20.39 16.46',
-  'M13.95 15.38 L12.33 21.49',
-  'M10.05 15.38 L3.94 17.03',
-  'M8.1 12 L3.61 7.54',
-  'M10.05 8.62 L11.67 2.51',
-  'M13.95 8.62 L20.06 6.97',
+  'M14.37 7.86 L19.91 17.44',
+  'M16.77 11.99 L11.24 21.57',
+  'M14.4 16.13 L3.33 16.13',
+  'M9.63 16.14 L4.09 6.56',
+  'M7.23 12.01 L12.76 2.43',
+  'M9.6 7.87 L20.67 7.87',
 ].join(' ');
 
 export const OPENING_IRIS =
