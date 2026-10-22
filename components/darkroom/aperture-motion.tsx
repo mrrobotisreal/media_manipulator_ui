@@ -410,7 +410,6 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
     let lastHeldIdx = -1;
     let running = false;
     let visible = false;
-    let allowed = false; // false while prefers-reduced-motion is set
 
     /**
      * Stage 0's coral comes from the live `--accent-primary`, read off the svg
@@ -509,7 +508,7 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
     };
 
     const start = () => {
-      if (running || !allowed || !visible) return;
+      if (running || !visible) return;
       running = true;
       buildLabs();
       colorsDirtyRef.current = false;
@@ -532,15 +531,11 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
       resetStatic();
     };
 
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const onMotionPref = () => {
-      allowed = !mq.matches;
-      if (allowed) start();
-      else stop();
-    };
-    allowed = !mq.matches;
-    mq.addEventListener('change', onMotionPref);
-
+    // Deliberately NOT gated on `prefers-reduced-motion`. The morph is the brand
+    // itself, not decoration, so it runs for every visitor (owner's decision,
+    // 2026-10-23). macOS "Reduce motion" — which many people leave on for window
+    // switching — used to freeze it on the static aperture with no indication why.
+    //
     // The footer mark shouldn't burn frames while the visitor is at the top of
     // the page. Tab-hidden pausing comes free with rAF.
     const io = new IntersectionObserver((entries) => {
@@ -557,7 +552,6 @@ export function AnimatedApertureMark({ className }: { className?: string }) {
       // leave the barrel hidden behind a ring path nobody is driving any more.
       stop();
       io.disconnect();
-      mq.removeEventListener('change', onMotionPref);
     };
   }, []);
 

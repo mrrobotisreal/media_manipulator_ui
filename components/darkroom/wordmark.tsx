@@ -122,8 +122,8 @@ export interface WordmarkProps extends React.ComponentProps<'span'> {
    * Use the cymatic morphing mark instead of the static one: it renders as the
    * identical coral aperture and then cycles through six resonance figures every
    * 21s. First paint is byte-identical to the static mark, so this is free of
-   * hydration mismatch and CLS; `prefers-reduced-motion` and offscreen instances
-   * never animate. See `aperture-motion.tsx`.
+   * hydration mismatch and CLS. Offscreen instances pause; it deliberately runs
+   * regardless of `prefers-reduced-motion`. See `aperture-motion.tsx`.
    */
   animated?: boolean;
 }
