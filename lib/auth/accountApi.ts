@@ -86,6 +86,13 @@ export interface AccountUser {
 }
 
 /** The shared shape of /api/account/me, /sync and /usage. */
+/**
+ * Where the signed-in address stands with the server's operator allowlist.
+ * 'unverified' is the one that matters: listed, but the Firebase email is not
+ * verified, so the server (correctly) refuses the tier until it is.
+ */
+export type OperatorEligibility = 'none' | 'unverified' | 'granted';
+
 export interface AccountSnapshot {
   tier: Tier;
   limits: TierLimits;
@@ -93,6 +100,10 @@ export interface AccountSnapshot {
   resetsAt: string;
   user?: AccountUser;
   anonymous: boolean;
+  /** The verified ID token's own email_verified claim. */
+  emailVerified?: boolean;
+  /** Present for signed-in callers only. */
+  operatorEligibility?: OperatorEligibility;
 }
 
 export interface TierDescriptor {

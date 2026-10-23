@@ -1405,6 +1405,15 @@
     "openStudio": "Abrir Darkroom",
     "comparePlans": "Comparar planes",
     "signOut": "Cerrar sesión",
+    "verify": {
+      "title": "El acceso de operador espera la verificación del correo",
+      "body": "Esta dirección está en la lista de operadores, pero Firebase aún no la ha verificado, así que el servidor te mantiene en el plan gratuito. Envía el correo de verificación, haz clic en el enlace y luego pulsa «Ya lo verifiqué».",
+      "send": "Enviar correo de verificación",
+      "sent": "Enviado. Revisa tu bandeja de entrada (y el spam), haz clic en el enlace y luego pulsa «Ya lo verifiqué».",
+      "sendFailed": "No se pudo enviar el correo. Puede que Firebase esté limitando los envíos: espera unos minutos y vuelve a intentarlo.",
+      "check": "Ya lo verifiqué",
+      "stillUnverified": "Firebase sigue indicando que esta dirección no está verificada. Asegúrate de haber hecho clic en el enlace y vuelve a intentarlo."
+    },
     "loadFailed": "No se pudo cargar tu cuenta. Recarga para volver a intentarlo.",
     "history": {
       "loading": "Cargando tus conversiones…",

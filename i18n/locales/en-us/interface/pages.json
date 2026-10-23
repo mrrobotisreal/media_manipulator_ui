@@ -1405,6 +1405,15 @@
     "openStudio": "Open Darkroom",
     "comparePlans": "Compare plans",
     "signOut": "Sign out",
+    "verify": {
+      "title": "Operator access is waiting on email verification",
+      "body": "This address is on the operator list, but Firebase has not verified it yet, so the server keeps you on the free plan. Send the verification email, click the link in it, then come back and press “I’ve verified”.",
+      "send": "Send verification email",
+      "sent": "Sent. Check your inbox (and spam), click the link, then press “I’ve verified”.",
+      "sendFailed": "Could not send the email. Firebase may be rate-limiting — wait a few minutes and try again.",
+      "check": "I’ve verified",
+      "stillUnverified": "Firebase still reports this address as unverified. Make sure you clicked the link, then try again."
+    },
     "loadFailed": "Could not load your account. Reload to try again.",
     "history": {
       "loading": "Loading your conversions…",

@@ -161,6 +161,43 @@ export const signUpWithEmail = async (
   }
 };
 
+/**
+ * Sends Firebase's email-verification link to the signed-in user.
+ *
+ * Email/password sign-up never sends one on its own, and the server's operator
+ * allowlist (and anything else that trusts `email_verified`) is correct to
+ * ignore an unverified address — so an owner on the list who signed up with a
+ * password is a free account until they click this link. Throws when nobody is
+ * signed in, or when Firebase rate-limits the send (`auth/too-many-requests`).
+ */
+export const sendVerificationEmail = async () => {
+  const auth = await getFirebaseAuth();
+  const user = auth?.currentUser;
+  if (!user) throw new Error('Not signed in');
+  const { sendEmailVerification } = await import('firebase/auth');
+  await sendEmailVerification(user);
+};
+
+/**
+ * Re-reads the user from Firebase and forces a fresh ID token.
+ *
+ * Verification happens out of band (a link in an email), and the client caches
+ * both the user record and the ID token for up to an hour — so after
+ * verifying, the next API call would still carry `email_verified: false` until
+ * the cached token expired. `reload()` refreshes the record and
+ * `getIdToken(true)` mints a token with the new claim. Returns the fresh
+ * `emailVerified` value, or null when nobody is signed in.
+ */
+export const refreshIdentity = async (): Promise<boolean | null> => {
+  const auth = await getFirebaseAuth();
+  const user = auth?.currentUser;
+  if (!user) return null;
+  const { reload } = await import('firebase/auth');
+  await reload(user);
+  await user.getIdToken(true);
+  return user.emailVerified;
+};
+
 export const signOut = async () => {
   const auth = await getFirebaseAuth();
   if (!auth) return;

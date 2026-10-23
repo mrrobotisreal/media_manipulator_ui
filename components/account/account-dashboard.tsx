@@ -47,6 +47,16 @@ export interface AccountLabels {
   tierNames: Record<string, string>;
   unlimited: string;
   history: HistoryLabels;
+  /** The "listed but unverified" notice. */
+  verify: {
+    title: string;
+    body: string;
+    send: string;
+    sent: string;
+    sendFailed: string;
+    check: string;
+    stillUnverified: string;
+  };
 }
 
 const METRICS: UsageMetric[] = ['ops', 'ai_ops', 'export'];
@@ -87,6 +97,67 @@ const UsageBar: React.FC<{ used: number; limit: number; label: string; unlimited
         />
       </span>
     </div>
+  );
+};
+
+/**
+ * Shown only when the server says the signed-in address is on the operator
+ * allowlist but its email is unverified. Without it the situation is invisible:
+ * the server is doing the right thing, and the page just reads "Free account".
+ */
+const VerifyNotice: React.FC<{ labels: AccountLabels['verify'] }> = ({ labels }) => {
+  const auth = useAuth();
+  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent' | 'sendFailed' | 'checking' | 'stillUnverified'>('idle');
+  if (!auth) return null;
+
+  const send = async () => {
+    setStatus('sending');
+    try {
+      await auth.sendVerificationEmail();
+      setStatus('sent');
+    } catch {
+      setStatus('sendFailed');
+    }
+  };
+  const check = async () => {
+    setStatus('checking');
+    const verified = await auth.refreshIdentity().catch(() => null);
+    // On success the snapshot refetch flips operatorEligibility and this
+    // component unmounts; only the failure state needs a word.
+    setStatus(verified ? 'idle' : 'stillUnverified');
+  };
+
+  const note =
+    status === 'sent'
+      ? labels.sent
+      : status === 'sendFailed'
+        ? labels.sendFailed
+        : status === 'stillUnverified'
+          ? labels.stillUnverified
+          : null;
+
+  return (
+    <Panel className="border-premium/40">
+      <h2 className="text-base font-semibold text-foreground">{labels.title}</h2>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{labels.body}</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Button onClick={() => void send()} disabled={status === 'sending' || status === 'checking'}>
+          {labels.send}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => void check()}
+          disabled={status === 'sending' || status === 'checking'}
+        >
+          {labels.check}
+        </Button>
+      </div>
+      {note ? (
+        <p className="mt-3 text-xs text-muted-foreground" role="status">
+          {note}
+        </p>
+      ) : null}
+    </Panel>
   );
 };
 
@@ -158,6 +229,7 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
       {/* The wide column carries the two things that change: today's counts and
           the log of what produced them. */}
       <div className="grid gap-6">
+        {auth.operatorEligibility === 'unverified' ? <VerifyNotice labels={labels.verify} /> : null}
         <Panel title={labels.usageTitle} titleAs="h2">
           <div className="grid gap-5">
             {METRICS.map((metric) => (

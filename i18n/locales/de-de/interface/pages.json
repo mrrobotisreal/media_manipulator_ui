@@ -1405,6 +1405,15 @@
     "openStudio": "Darkroom öffnen",
     "comparePlans": "Pläne vergleichen",
     "signOut": "Abmelden",
+    "verify": {
+      "title": "Operator-Zugang wartet auf die E-Mail-Bestätigung",
+      "body": "Diese Adresse steht auf der Operator-Liste, aber Firebase hat sie noch nicht bestätigt, daher bleiben Sie auf dem kostenlosen Tarif. Senden Sie die Bestätigungs-E-Mail, klicken Sie auf den Link darin und drücken Sie dann „Ich habe bestätigt“.",
+      "send": "Bestätigungs-E-Mail senden",
+      "sent": "Gesendet. Prüfen Sie Ihren Posteingang (und Spam), klicken Sie auf den Link und drücken Sie dann „Ich habe bestätigt“.",
+      "sendFailed": "Die E-Mail konnte nicht gesendet werden. Firebase begrenzt möglicherweise die Rate – warten Sie einige Minuten und versuchen Sie es erneut.",
+      "check": "Ich habe bestätigt",
+      "stillUnverified": "Firebase meldet diese Adresse weiterhin als unbestätigt. Stellen Sie sicher, dass Sie auf den Link geklickt haben, und versuchen Sie es erneut."
+    },
     "loadFailed": "Ihr Konto konnte nicht geladen werden. Laden Sie die Seite neu, um es erneut zu versuchen.",
     "history": {
       "loading": "Ihre Konvertierungen werden geladen …",

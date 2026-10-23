@@ -72,6 +72,15 @@ export default async function Account({ params }: PageParams) {
         string
       >,
     },
+    verify: {
+      title: t('interface:account.verify.title'),
+      body: t('interface:account.verify.body'),
+      send: t('interface:account.verify.send'),
+      sent: t('interface:account.verify.sent'),
+      sendFailed: t('interface:account.verify.sendFailed'),
+      check: t('interface:account.verify.check'),
+      stillUnverified: t('interface:account.verify.stillUnverified'),
+    },
     planRows: [
       { label: t('interface:pricing.rows.opsPerDay'), value: 'ops' },
       { label: t('interface:pricing.rows.maxFileBytes'), value: 'file' },

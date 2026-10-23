@@ -28,6 +28,8 @@ import {
   signOut as firebaseSignOut,
   signUpWithEmail,
   getCurrentIdToken,
+  refreshIdentity,
+  sendVerificationEmail,
 } from '@/lib/firebase';
 import { analytics, EVENTS, getSessionId } from '@/lib/analytics';
 import {
@@ -35,6 +37,7 @@ import {
   fetchAccount,
   fetchUsage,
   type AccountSnapshot,
+  type OperatorEligibility,
   type Tier,
   type TierLimits,
   type UsageMetric,
@@ -87,6 +90,22 @@ export interface AuthContextValue {
   signOut: () => Promise<void>;
   /** Re-reads the snapshot from the API. */
   refresh: () => void;
+
+  /**
+   * The server's verdict on the signed-in address and the operator allowlist.
+   * 'unverified' means the only thing missing is email verification.
+   */
+  operatorEligibility: OperatorEligibility | null;
+  /** The ID token's email_verified claim, as the server last saw it. */
+  emailVerified: boolean | null;
+  /** Sends Firebase's verification link to the signed-in address. */
+  sendVerificationEmail: () => Promise<void>;
+  /**
+   * Forces a fresh user record + ID token (so a just-clicked verification link
+   * takes effect now rather than when the cached token expires), then refetches
+   * the snapshot. Resolves to the new emailVerified value.
+   */
+  refreshIdentity: () => Promise<boolean | null>;
 
   /** How much of `metric` remains today. Null when the metric is uncounted or unlimited. */
   remainingFor: (metric: UsageMetric) => number | null;
@@ -252,6 +271,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     void queryClient.invalidateQueries({ queryKey: ['account-snapshot'] });
   }, [queryClient]);
 
+  const refreshIdentityAndSnapshot = useCallback(async () => {
+    const verified = await refreshIdentity();
+    // The tier may have changed with the claim; the snapshot is the only thing
+    // that knows, so it must be refetched with the new token, not read from cache.
+    await queryClient.invalidateQueries({ queryKey: ['account-snapshot'] });
+    return verified;
+  }, [queryClient]);
+
   const openAuth = useCallback((options: OpenAuthOptions = {}) => {
     setPrompt({ open: true, intent: options.intent ?? 'signup', ...options });
   }, []);
@@ -315,6 +342,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       refresh,
       remainingFor,
       allowanceOf,
+      operatorEligibility: snapshot?.operatorEligibility ?? null,
+      emailVerified: snapshot?.emailVerified ?? null,
+      sendVerificationEmail,
+      refreshIdentity: refreshIdentityAndSnapshot,
       prompt,
       openAuth,
       closeAuth,
@@ -328,6 +359,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       limits,
       observed,
       refresh,
+      refreshIdentityAndSnapshot,
       remainingFor,
       signIn,
       signInWithGoogle,
