@@ -475,5 +475,17 @@
     "close": "Jetzt nicht",
     "signup": "Kostenloses Konto erstellen",
     "upgrade": "Auf Premium upgraden"
+  },
+  "recentStrip": {
+    "title": "Zuletzt",
+    "clear": "Verlauf löschen",
+    "open": "{{name}} öffnen",
+    "converter": "Konverter",
+    "expiresInHours": "Läuft in {{hours}} Std. ab",
+    "expiresInMinutes": "Läuft in {{minutes}} Min. ab",
+    "expired": "Diese Datei ist abgelaufen",
+    "openFailed": "Diese Datei konnte nicht geöffnet werden. Versuchen Sie es erneut.",
+    "signupCta": "Dateien von Gästen werden nach 24 Stunden gelöscht. Registrieren Sie sich, um sie 6 Monate lang zu behalten.",
+    "signupAction": "Kostenlos registrieren"
   }
 }

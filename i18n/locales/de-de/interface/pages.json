@@ -659,7 +659,8 @@
             "afterBullets": [
               "Der Zeitraum wird ab der Erstellung der jeweiligen Datei bzw. des jeweiligen Projekts gezählt. Wenn Sie den Zeitraum ändern, gilt er auch für Ihre vorhandenen Dateien, gemessen ab deren Erstellungsdatum; ein kürzerer Zeitraum kann daher dazu führen, dass vorhandene Dateien kurz darauf gelöscht werden. Ein einzelnes Ergebnis können Sie in Ihrem Verlauf länger aufbewahren.",
               "Wenn Sie sich anmelden, nachdem Sie den Dienst als Besucher genutzt haben, können Dateien aus diesem Besuch Ihrem Konto zugeordnet werden und folgen dann Ihrem gewählten Zeitraum.",
-              "Abgelaufene Dateien werden durch eine automatische Bereinigung entfernt, die regelmäßig läuft; die Löschung kann daher kurz nach Ablauf des Zeitraums erfolgen. Nach der Löschung stehen die Dateien in unseren aktiven Systemen nicht mehr zur Verfügung. Wir führen keine Backups von Medien."
+              "Abgelaufene Dateien werden durch eine automatische Bereinigung entfernt, die regelmäßig läuft; die Löschung kann daher kurz nach Ablauf des Zeitraums erfolgen. Nach der Löschung stehen die Dateien in unseren aktiven Systemen nicht mehr zur Verfügung. Wir führen keine Backups von Medien.",
+              "Zuletzt-Liste auf diesem Gerät: Für Besucher ohne Konto wird die Liste „Zuletzt“ auf der Startseite und den Tool-Seiten ausschließlich in diesem Browser gespeichert (in IndexedDB). Sie enthält Job-ID, Tool, Name der Ergebnisdatei, Größe, Zeitangaben und ein kleines Vorschaubild, niemals die Datei selbst. Sie wird nicht an uns übertragen und kann jederzeit mit „Verlauf löschen“ entfernt werden."
             ]
           },
           {
