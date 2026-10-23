@@ -28,6 +28,7 @@ import { ResultPanel } from '@/components/results/result-panel';
 import { ExifInspect, ExifResult } from '@/components/metadata/exif-flow';
 import { fpsHint } from '@/lib/results/videoFps';
 import type { ConversionFormData } from '@/schemas/types';
+import type { EmbedPreset } from '@/content/toolPages';
 import {
   EVENTS,
   normalizeMediaKind,
@@ -215,6 +216,16 @@ export interface VideoFormPresets {
   defaultWidth?: number;
   defaultHeight?: number;
   defaultSpeed?: number;
+  /** `embed.preset` of kind 'video' + frame_interpolation: seeds the AI op. */
+  aiPreset?: Extract<EmbedPreset, { kind: 'video'; aiOperation: 'frame_interpolation' }>;
+}
+
+/** Preset config for the audio converter (`embed.preset` of kind 'audio'). */
+export interface AudioFormPresets {
+  aiOperation?: Extract<EmbedPreset, { kind: 'audio' }>['aiOperation'];
+  /** Show a read-only chip instead of the operation select. */
+  hideOperationSelect?: boolean;
+  defaultFormat?: string;
 }
 
 /**
@@ -292,6 +303,12 @@ interface EmbeddedToolPanelProps {
   surface?: 'tool_page' | 'tutorial';
   /** Default media kind to bias the panel toward when no file is selected yet. */
   defaultMediaKind: EmbeddedMediaKind;
+  /**
+   * Task preset (content/toolPages.ts `embed.preset`): seeds the form's initial
+   * state so the page opens ready for the task its copy promises. Absent means
+   * the panel behaves exactly as before.
+   */
+  preset?: EmbedPreset;
   /** Optional high-intent task. Drives recommended settings + banner copy. */
   defaultTask?: EmbeddedTask;
   /** Heading shown above the panel. */
@@ -597,6 +614,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   toolSlug,
   surface,
   defaultMediaKind,
+  preset,
   defaultTask,
   title,
   description,
@@ -901,7 +919,20 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     defaultWidth: defaultVideoWidth,
     defaultHeight: defaultVideoHeight,
     defaultSpeed: defaultVideoSpeed,
+    aiPreset:
+      preset && preset.kind === 'video' && 'aiOperation' in preset ? preset : undefined,
   };
+
+  // Audio converter preset. Undefined unless the page declares an audio preset,
+  // so every other audio page keeps its untouched initial form state.
+  const audioPresets: AudioFormPresets | undefined =
+    preset && preset.kind === 'audio'
+      ? {
+          aiOperation: preset.aiOperation,
+          hideOperationSelect: preset.hideOperationSelect,
+          defaultFormat: preset.format,
+        }
+      : undefined;
 
   // Concrete preset/lock config for the specialized extract-audio panel
   // (mp4-to-mp3 / video-to-mp3 pages).
@@ -948,7 +979,14 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   const isTranscribeAllowed =
     transcribeMode && (defaultMediaKind === 'video' || defaultMediaKind === 'audio');
   const isTranscodeAllowed = transcodeMode && defaultMediaKind === 'video';
-  const specializedPanel = defaultTask && SPECIALIZED_PANEL_TASKS[defaultTask] ? defaultTask : null;
+  // A `panel: 'video_compressor'` preset selects the focused compressor panel
+  // even when the page's defaultTask is the generic compress_video.
+  const specializedPanel: EmbeddedTask | null =
+    preset && preset.kind === 'video' && 'panel' in preset
+      ? preset.panel
+      : defaultTask && SPECIALIZED_PANEL_TASKS[defaultTask]
+        ? defaultTask
+        : null;
 
   return (
     <Panel
@@ -1153,6 +1191,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
                   onSubmit={handleConvert}
                   isLoading={isProcessing}
                   audioUrl={originalMediaUrl || undefined}
+                  presets={audioPresets}
                 />
               )}
               {effectiveKind === 'pdf' && (

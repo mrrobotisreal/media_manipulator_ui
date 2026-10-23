@@ -56,7 +56,8 @@
         "isolate_vocals": "Gesang isolieren",
         "remove_vocals": "Gesang entfernen / Karaoke"
       },
-      "aiActiveNote": "Bitrate, Equalizer und andere Standard-Audiooptionen werden übersprungen, wenn eine KI-Operation ausgewählt ist."
+      "aiActiveNote": "Bitrate, Equalizer und andere Standard-Audiooptionen werden übersprungen, wenn eine KI-Operation ausgewählt ist.",
+      "presetLocked": "Voreinstellung für dieses Tool"
     }
   },
   "videoForm": {

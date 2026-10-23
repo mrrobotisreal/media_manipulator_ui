@@ -11,9 +11,11 @@ import { useLocalization } from '@/i18n/useLocalization';
 interface AIVideoToolsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
   setValue: UseFormSetValue<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  /** Tool-page preset: render the target-FPS picker above the other AI options. */
+  fpsPickerOnTop?: boolean;
 }
 
-const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
+const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue, fpsPickerOnTop = false }) => {
   const { t } = useLocalization(['interface', 'accessibility']);
   const operation = useWatch({ control, name: 'ai.operation' }) as
     | 'none'
@@ -37,6 +39,34 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
       setValue('ai.operation', 'none', { shouldDirty: true });
     }
   };
+
+  const fpsPicker = (
+    <div>
+      <label
+        htmlFor="ai-target-fps"
+        className="block text-sm font-medium mb-1 text-card-foreground"
+      >
+        {t('interface:aiVideoTools.frameInterpolation.targetFpsLabel')}
+      </label>
+      <Controller
+        name="ai.frameInterpolation.targetFps"
+        control={control}
+        defaultValue={60}
+        render={({ field }) => (
+          <select
+            id="ai-target-fps"
+            value={field.value || 60}
+            onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+            className="w-full p-2 border border-input rounded-md text-card-foreground bg-card"
+          >
+            <option value={48}>48 FPS</option>
+            <option value={60}>60 FPS</option>
+            <option value={120}>120 FPS</option>
+          </select>
+        )}
+      />
+    </div>
+  );
 
   return (
     <div className="space-y-4">
@@ -91,6 +121,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
 
         {isFrameInterpolation && (
           <div className="space-y-4">
+            {fpsPickerOnTop && <div className="max-w-xs">{fpsPicker}</div>}
             <div className="rounded-md border border-premium dark:border-premium/60 bg-premium/50 dark:bg-premium/30 p-3 text-sm text-card-foreground space-y-1">
               <p>
                 {t('interface:aiVideoTools.intro')}
@@ -101,31 +132,7 @@ const AIVideoTools: React.FC<AIVideoToolsProps> = ({ control, setValue }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label
-                  htmlFor="ai-target-fps"
-                  className="block text-sm font-medium mb-1 text-card-foreground"
-                >
-                  {t('interface:aiVideoTools.frameInterpolation.targetFpsLabel')}
-                </label>
-                <Controller
-                  name="ai.frameInterpolation.targetFps"
-                  control={control}
-                  defaultValue={60}
-                  render={({ field }) => (
-                    <select
-                      id="ai-target-fps"
-                      value={field.value || 60}
-                      onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
-                      className="w-full p-2 border border-input rounded-md text-card-foreground bg-card"
-                    >
-                      <option value={48}>48 FPS</option>
-                      <option value={60}>60 FPS</option>
-                      <option value={120}>120 FPS</option>
-                    </select>
-                  )}
-                />
-              </div>
+              {!fpsPickerOnTop && fpsPicker}
 
               <div>
                 <label

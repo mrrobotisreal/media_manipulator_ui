@@ -39,7 +39,7 @@ const VideoConversionForm: React.FC<{
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(videoConversionSchema),
     defaultValues: {
-      format: initialFormat,
+      format: presets?.aiPreset ? ('mp4' as const) : initialFormat,
       quality: presets?.defaultQuality ?? 'medium',
       speed: presets?.defaultSpeed ?? 1,
       width: presets?.defaultWidth,
@@ -119,10 +119,10 @@ const VideoConversionForm: React.FC<{
       },
       // AI Video Tools defaults — inactive until user picks an operation.
       ai: {
-        enabled: false,
-        operation: 'none' as const,
+        enabled: !!presets?.aiPreset,
+        operation: presets?.aiPreset ? presets.aiPreset.aiOperation : ('none' as const),
         frameInterpolation: {
-          targetFps: 60 as const,
+          targetFps: presets?.aiPreset?.targetFps ?? (60 as const),
           model: 'rife-v4.6' as const,
           quality: 'medium' as const,
           maxHeight: 720,
@@ -182,7 +182,11 @@ const VideoConversionForm: React.FC<{
         />
 
         {/* AI Video Tools — currently AI Frame Interpolation */}
-        <AIVideoTools control={control} setValue={setValue} />
+        <AIVideoTools
+          control={control}
+          setValue={setValue}
+          fpsPickerOnTop={presets?.aiPreset?.fpsPickerOnTop}
+        />
 
         {/* Advanced Video Effects */}
         <AdvancedVideoEffects control={control} />
