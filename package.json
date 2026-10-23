@@ -40,6 +40,7 @@
     "@radix-ui/react-toggle-group": "^1.1.12",
     "@radix-ui/react-tooltip": "^1.2.9",
     "@tanstack/react-query": "^5.101.0",
+    "@tanstack/react-virtual": "3.14.22",
     "@tiptap/core": "^3.27.1",
     "@tiptap/extension-link": "^3.27.1",
     "@tiptap/extension-placeholder": "^3.27.1",
