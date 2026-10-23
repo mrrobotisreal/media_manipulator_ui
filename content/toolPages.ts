@@ -17,6 +17,14 @@ import type {
 } from '@/components/embedded-tool-panel';
 import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 
+/**
+ * The one retention sentence used across every tool entry (MM26). English only: non-English tool
+ * copy comes from the `common.retentionPromiseShort` i18n key, never from this constant. Keep it
+ * in step with that key. Interpolated with no trailing period; callers add their own.
+ */
+export const RETENTION_PROMISE =
+  'Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years';
+
 export interface ToolFaq {
   question: string;
   answer: string;
@@ -162,7 +170,7 @@ export interface ToolPageContent {
 }
 
 const sharedPrivacyNote =
-  'Your uploads are processed on our own servers and are designed to be automatically deleted within 24 hours. We do not share your files with third-party AI providers, and AI features run on a local GPU server we operate. No login or account is required.';
+  `Your uploads are processed on our own servers. ${RETENTION_PROMISE}. We do not share your files with third-party AI providers, and AI features run on a local GPU server we operate. No login or account is required.`;
 
 export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- CONTENT STUDIO
@@ -275,7 +283,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
       {
         question: 'Are my files kept private?',
-        answer: 'Your media is processed on our own servers and is designed to be automatically deleted within 24 hours. We do not share files with third-party providers.',
+        answer: `Your media is processed on our own servers. ${RETENTION_PROMISE}. We do not share files with third-party providers.`,
       },
       {
         question: 'Can I come back to a project later?',
@@ -321,7 +329,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       ],
       supportedOutputFormats: ['MP4 (H.264 / AAC)'],
       maxFileNotes: [
-        'Source and exported files are processed on our servers and deleted within 24 hours.',
+        `Source and exported files are processed on our servers. ${RETENTION_PROMISE}.`,
       ],
       processingNotes: [
         'Preview composites in the browser; the final export is encoded to H.264 MP4.',
@@ -339,7 +347,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     metaTitle:
       'Remove EXIF Metadata from Images Online (Free) | Media Manipulator',
     metaDescription:
-      'Free online tool to remove EXIF, GPS, IPTC, and camera metadata from JPG, PNG, WebP, and HEIC images. No signup, deleted within 24 hours.',
+      `Free online tool to remove EXIF, GPS, IPTC, and camera metadata from JPG, PNG, WebP, and HEIC images. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Remove EXIF Metadata from Images Online',
     ogDescription:
       'Strip GPS location, camera, and timestamp metadata from images before sharing them publicly.',
@@ -408,7 +416,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Runs entirely on our own infrastructure — no third-party metadata service sees your photo.',
       'Strips every common metadata profile, not just the EXIF block.',
-      'Free, no signup, no watermarks, and the original is auto-deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     faq: [
@@ -430,7 +438,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads kept?',
         answer:
-          'No — files are deleted within 24 hours and never shared with third-party providers.',
+          `No — files are never shared with third-party providers. ${RETENTION_PROMISE}.`,
       },
     ],
     related: [
@@ -475,7 +483,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Shrink MP4, WebM, MOV, MKV, and AVI files for the web, email, social, and cloud uploads.',
     metaTitle: 'Compress Video Online (Free) | Media Manipulator',
     metaDescription:
-      'Free online video compressor. Reduce MP4, WebM, MOV, MKV, and AVI file size while keeping good quality. No signup, deleted within 24 hours.',
+      `Free online video compressor. Reduce MP4, WebM, MOV, MKV, and AVI file size while keeping good quality. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Compress Video Online Without Ruining Quality',
     ogDescription:
       'Shrink MP4, WebM, MOV, and AVI video files for the web without losing watchable quality.',
@@ -1119,7 +1127,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Runs entirely on our own GPU server — no OpenAI/Anthropic/Google sees your audio.',
       'Outputs the format you actually need: VTT, text, or JSON.',
-      'Same upload + delete-within-24-hours privacy model as the rest of the toolset.',
+      'Same upload and retention privacy model as the rest of the toolset.',
     ],
     privacyNote: sharedPrivacyNote,
     faq: [
@@ -1141,7 +1149,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Does my video leave your servers?',
         answer:
-          'No — transcription happens on a GPU server we operate. The original file and the transcript are deleted within 24 hours.',
+          `No — transcription happens on a GPU server we operate. The original file and the transcript follow the same retention rule: ${RETENTION_PROMISE}.`,
       },
     ],
     related: [
@@ -1257,7 +1265,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'No watermarks, no signup, free for casual use.',
       'Tune quality and compression precisely, instead of one-size-fits-all preset.',
-      'Same privacy and 24-hour deletion model as the rest of the toolset.',
+      'Same privacy and retention model as the rest of the toolset.',
     ],
     privacyNote: sharedPrivacyNote,
     faq: [
@@ -1334,7 +1342,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn large PNG screenshots and graphics into small, universally compatible JPG photos in seconds.',
     metaTitle: 'Convert PNG to JPG Online Free | Media Manipulator',
     metaDescription:
-      'Free online PNG to JPG converter. Turn .png files into smaller, universally compatible JPG images at the quality you choose. No signup, files deleted within 24 hours.',
+      `Free online PNG to JPG converter. Turn .png files into smaller, universally compatible JPG images at the quality you choose. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert PNG to JPG Online Free',
     ogDescription:
       'Turn PNG images into smaller, universally compatible JPG files. Free, fast, no signup.',
@@ -1384,7 +1392,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is genuinely locked to JPG, so there’s nothing to misconfigure.',
       'Precise quality control instead of a one-size-fits-all preset.',
-      'Free, no signup, no watermarks, and uploads are deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -1418,7 +1426,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploaded files kept?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No login is required and we never share your files with third parties.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No login is required and we never share your files with third parties.`,
       },
     ],
     related: [
@@ -1445,7 +1453,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn JPG photos into lossless PNG files ready for editing, transparency, and high-quality graphics work.',
     metaTitle: 'Convert JPG to PNG Online Free | Media Manipulator',
     metaDescription:
-      'Free online JPG to PNG converter. Turn .jpg photos into lossless PNG files for editing, transparency, and graphics. No signup, files deleted within 24 hours.',
+      `Free online JPG to PNG converter. Turn .jpg photos into lossless PNG files for editing, transparency, and graphics. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert JPG to PNG Online Free',
     ogDescription:
       'Turn JPG photos into lossless PNG files for editing and graphics. Free, fast, no signup.',
@@ -1495,7 +1503,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is genuinely locked to PNG, so the result is always lossless.',
       'Runs on our own servers — no third-party processing of your image.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -1529,7 +1537,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploaded files private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -1556,7 +1564,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn WebP images into lossless PNG files that open everywhere and keep full transparency.',
     metaTitle: 'Convert WebP to PNG Online Free | Media Manipulator',
     metaDescription:
-      'Free online WebP to PNG converter. Turn .webp images into lossless PNG files that keep transparency and open in any editor. No signup, files deleted within 24 hours.',
+      `Free online WebP to PNG converter. Turn .webp images into lossless PNG files that keep transparency and open in any editor. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert WebP to PNG Online Free',
     ogDescription:
       'Turn WebP images into lossless, transparency-preserving PNG files. Free, fast, no signup.',
@@ -1605,7 +1613,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to PNG with transparency preserved automatically.',
       'Runs on our own servers — no third-party processing of your image.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -1639,7 +1647,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads stored?',
         answer:
-          'No. Uploads are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Uploads are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -1666,7 +1674,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Shrink PNG graphics into modern WebP files that load faster on the web and keep full transparency.',
     metaTitle: 'Convert PNG to WebP Online Free | Media Manipulator',
     metaDescription:
-      'Free online PNG to WebP converter. Shrink .png files into smaller WebP images for faster websites while keeping transparency. No signup, files deleted within 24 hours.',
+      `Free online PNG to WebP converter. Shrink .png files into smaller WebP images for faster websites while keeping transparency. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert PNG to WebP Online Free',
     ogDescription:
       'Shrink PNG graphics into smaller, transparency-preserving WebP files for faster websites. Free, no signup.',
@@ -1716,7 +1724,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to WebP with transparency preserved.',
       'Precise quality control so you decide the size/fidelity trade-off.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -1750,7 +1758,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads kept?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -1777,7 +1785,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Shrink JPG photos into modern WebP files that load faster on the web at the same visual quality.',
     metaTitle: 'Convert JPG to WebP Online Free | Media Manipulator',
     metaDescription:
-      'Free online JPG to WebP converter. Shrink .jpg photos into smaller WebP images for faster websites at the quality you choose. No signup, files deleted within 24 hours.',
+      `Free online JPG to WebP converter. Shrink .jpg photos into smaller WebP images for faster websites at the quality you choose. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert JPG to WebP Online Free',
     ogDescription:
       'Shrink JPG photos into smaller WebP files for faster websites at the same visual quality. Free, no signup.',
@@ -1827,7 +1835,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to WebP, so there’s nothing to misconfigure.',
       'Precise quality control instead of a fixed preset.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -1861,7 +1869,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -1890,7 +1898,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Convert PNG, WebP, GIF, and more into universally compatible JPG photos at the quality you choose.',
     metaTitle: 'Free JPG Converter Online | Media Manipulator',
     metaDescription:
-      'Free online JPG converter. Convert PNG, WebP, and GIF images into universally compatible JPG files at the quality you choose. No signup, files deleted within 24 hours.',
+      `Free online JPG converter. Convert PNG, WebP, and GIF images into universally compatible JPG files at the quality you choose. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Free JPG Converter Online',
     ogDescription:
       'Convert PNG, WebP, GIF, and more into universally compatible JPG photos. Free, fast, no signup.',
@@ -1936,7 +1944,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'JPG preselected for one-click conversion, with full quality control.',
       'Handles PNG, WebP, GIF, and more in one place.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -1970,7 +1978,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads stored?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2000,7 +2008,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Convert JPG, WebP, GIF, and more into lossless PNG files with full transparency support.',
     metaTitle: 'Free PNG Converter Online | Media Manipulator',
     metaDescription:
-      'Free online PNG converter. Convert JPG, WebP, and GIF images into lossless PNG files with transparency support. No signup, files deleted within 24 hours.',
+      `Free online PNG converter. Convert JPG, WebP, and GIF images into lossless PNG files with transparency support. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Free PNG Converter Online',
     ogDescription:
       'Convert JPG, WebP, GIF, and more into lossless, transparency-capable PNG files. Free, fast, no signup.',
@@ -2046,7 +2054,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'PNG preselected for one-click, always-lossless conversion.',
       'Handles JPG, WebP, GIF, and more in one place, with transparency preserved.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2080,7 +2088,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads kept?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2113,7 +2121,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Resize JPG, PNG, WebP, and GIF images to exact pixel dimensions while keeping the aspect ratio.',
     metaTitle: 'Resize Image Online Free | Media Manipulator',
     metaDescription:
-      'Free online image resizer. Resize JPG, PNG, WebP, and GIF images to exact pixel dimensions while keeping the aspect ratio. No signup, files deleted within 24 hours.',
+      `Free online image resizer. Resize JPG, PNG, WebP, and GIF images to exact pixel dimensions while keeping the aspect ratio. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Resize Image Online Free',
     ogDescription:
       'Resize JPG, PNG, WebP, and GIF images to exact pixel dimensions. Free, fast, no signup.',
@@ -2160,7 +2168,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Exact pixel control with aspect-ratio preservation built in.',
       'Resize and re-encode in one upload, with no watermarks.',
-      'Free, no signup, uploads deleted within 24 hours.',
+      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2194,7 +2202,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2221,7 +2229,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Shrink JPG, PNG, and WebP file sizes for faster websites, smaller uploads, and easier sharing.',
     metaTitle: 'Compress Image Online Free | Media Manipulator',
     metaDescription:
-      'Free online image compressor. Shrink JPG, PNG, and WebP file sizes while keeping good quality. No signup, files deleted within 24 hours.',
+      `Free online image compressor. Shrink JPG, PNG, and WebP file sizes while keeping good quality. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Compress Image Online Free',
     ogDescription:
       'Shrink JPG, PNG, and WebP file sizes while keeping good quality. Free, fast, no signup.',
@@ -2268,7 +2276,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Sensible default quality with precise manual control.',
       'Compress, resize, and convert in a single upload.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2302,7 +2310,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads stored?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2329,7 +2337,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Automatically erase the background from any photo and download a clean, transparent PNG cutout.',
     metaTitle: 'Remove Background from Image Online Free | Media Manipulator',
     metaDescription:
-      'Free online background remover. Automatically erase the background from any photo and download a transparent PNG. Runs on our own GPU — no third-party AI. Files deleted within 24 hours.',
+      `Free online background remover. Automatically erase the background from any photo and download a transparent PNG. Runs on our own GPU — no third-party AI. ${RETENTION_PROMISE}.`,
     ogTitle: 'Remove Background from Image Online Free',
     ogDescription:
       'Automatically erase the background from any photo and download a transparent PNG cutout. Free, no signup.',
@@ -2379,7 +2387,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'AI background removal runs on our own GPU — no third-party AI provider sees your image.',
       'Output is preset to a transparent PNG, so there’s nothing to configure.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2403,7 +2411,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Does my image get sent to a third-party AI service?',
         answer:
-          'No. Background removal runs on a GPU server we operate. Your image is never sent to OpenAI, Google, or any other third-party AI provider, and it is deleted within 24 hours.',
+          `No. Background removal runs on a GPU server we operate. Your image is never sent to OpenAI, Google, or any other third-party AI provider. ${RETENTION_PROMISE}.`,
       },
       {
         question: 'What kinds of images work best?',
@@ -2442,7 +2450,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn JPG, PNG, and other images into a clean, shareable PDF document in one click.',
     metaTitle: 'Convert Image to PDF Online Free | Media Manipulator',
     metaDescription:
-      'Free online image to PDF converter. Turn JPG, PNG, and other images into a clean PDF document. No signup, no watermarks, files deleted within 24 hours.',
+      `Free online image to PDF converter. Turn JPG, PNG, and other images into a clean PDF document. No signup, no watermarks. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert Image to PDF Online Free',
     ogDescription:
       'Turn JPG, PNG, and other images into a clean, shareable PDF. Free, fast, no signup.',
@@ -2491,7 +2499,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'JPG embedding is lossless — your photo quality is preserved exactly.',
       'Runs on our own servers with no third-party processing of your file.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2525,7 +2533,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2552,7 +2560,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn JPG photos and scans into clean PDF documents ready to share, print, or upload.',
     metaTitle: 'Convert JPG to PDF Online Free | Media Manipulator',
     metaDescription:
-      'Free online JPG to PDF converter. Turn .jpg photos and scans into clean PDF documents with no quality loss. No signup, files deleted within 24 hours.',
+      `Free online JPG to PDF converter. Turn .jpg photos and scans into clean PDF documents with no quality loss. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert JPG to PDF Online Free',
     ogDescription:
       'Turn JPG photos and scans into clean PDF documents. Lossless, free, no signup.',
@@ -2601,7 +2609,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Truly lossless — the JPG inside the PDF is identical to your original.',
       'Output is locked to PDF, so there is nothing to misconfigure.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2635,7 +2643,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads stored?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2662,7 +2670,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn PNG screenshots, graphics, and scans into clean, crisp PDF documents.',
     metaTitle: 'Convert PNG to PDF Online Free | Media Manipulator',
     metaDescription:
-      'Free online PNG to PDF converter. Turn .png screenshots and graphics into crisp, lossless PDF documents. No signup, files deleted within 24 hours.',
+      `Free online PNG to PDF converter. Turn .png screenshots and graphics into crisp, lossless PDF documents. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert PNG to PDF Online Free',
     ogDescription:
       'Turn PNG screenshots and graphics into crisp, lossless PDF documents. Free, no signup.',
@@ -2711,7 +2719,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Lossless embedding keeps text and edges razor-sharp.',
       'Output is locked to PDF, so there is nothing to misconfigure.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2745,7 +2753,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2772,7 +2780,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Render every page of a PDF to high-quality JPG images you can share, edit, or post.',
     metaTitle: 'Convert PDF to JPG Online Free | Media Manipulator',
     metaDescription:
-      'Free online PDF to JPG converter. Render every page of a PDF to high-quality JPG images, downloaded as a ZIP. No signup, files deleted within 24 hours.',
+      `Free online PDF to JPG converter. Render every page of a PDF to high-quality JPG images, downloaded as a ZIP. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert PDF to JPG Online Free',
     ogDescription:
       'Render every page of a PDF to high-quality JPG images. Free, fast, no signup.',
@@ -2823,7 +2831,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Poppler-based rendering for accurate, high-quality page images.',
       'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2858,7 +2866,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. PDFs are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. PDFs are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2885,7 +2893,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Render every page of a PDF to crisp, lossless PNG images — ideal for text, diagrams, and editing.',
     metaTitle: 'Convert PDF to PNG Online Free | Media Manipulator',
     metaDescription:
-      'Free online PDF to PNG converter. Render every page of a PDF to crisp, lossless PNG images, downloaded as a ZIP. No signup, files deleted within 24 hours.',
+      `Free online PDF to PNG converter. Render every page of a PDF to crisp, lossless PNG images, downloaded as a ZIP. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert PDF to PNG Online Free',
     ogDescription:
       'Render every page of a PDF to crisp, lossless PNG images. Free, fast, no signup.',
@@ -2936,7 +2944,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Lossless PNG rendering keeps text and edges sharp.',
       'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -2971,7 +2979,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads stored?',
         answer:
-          'No. PDFs are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. PDFs are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2998,7 +3006,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Convert PDFs to JPG or PNG images, and turn images into PDFs — all in one place.',
     metaTitle: 'Free PDF Converter Online | Media Manipulator',
     metaDescription:
-      'Free online PDF converter. Convert PDF to JPG or PNG images, and convert images to PDF. No signup, no watermarks, files deleted within 24 hours.',
+      `Free online PDF converter. Convert PDF to JPG or PNG images, and convert images to PDF. No signup, no watermarks. ${RETENTION_PROMISE}.`,
     ogTitle: 'Free PDF Converter Online',
     ogDescription:
       'Convert PDF to JPG/PNG images and images to PDF — all in one free tool. No signup.',
@@ -3048,7 +3056,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Both conversion directions in a single, adaptive tool.',
       'Lossless image→PDF and accurate Poppler PDF→image rendering.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3078,12 +3086,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Is it really free?',
         answer:
-          'Yes — no signup, no watermarks, and your files are deleted within 24 hours.',
+          `Yes — no signup, no watermarks. ${RETENTION_PROMISE}.`,
       },
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Everything is processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Everything is processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3113,7 +3121,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn iPhone HEIC photos into universally compatible JPG files that open and upload anywhere.',
     metaTitle: 'Convert HEIC to JPG Online Free | Media Manipulator',
     metaDescription:
-      'Free online HEIC to JPG converter. Turn iPhone .heic/.heif photos into universally compatible JPG files. No signup, files deleted within 24 hours.',
+      `Free online HEIC to JPG converter. Turn iPhone .heic/.heif photos into universally compatible JPG files. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert HEIC to JPG Online Free',
     ogDescription:
       'Turn iPhone HEIC photos into universally compatible JPG files. Free, fast, no signup.',
@@ -3162,7 +3170,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Correct auto-orientation — no sideways photos.',
       'Quality control instead of a fixed preset.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3196,7 +3204,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3223,7 +3231,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn modern AVIF images into universally compatible JPG files for apps and sites that don’t accept AVIF.',
     metaTitle: 'Convert AVIF to JPG Online Free | Media Manipulator',
     metaDescription:
-      'Free online AVIF to JPG converter. Turn .avif images into universally compatible JPG files at the quality you choose. No signup, files deleted within 24 hours.',
+      `Free online AVIF to JPG converter. Turn .avif images into universally compatible JPG files at the quality you choose. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert AVIF to JPG Online Free',
     ogDescription:
       'Turn modern AVIF images into universally compatible JPG files. Free, fast, no signup.',
@@ -3272,7 +3280,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality control instead of a one-size-fits-all preset.',
       'Runs on our own servers — no third-party processing.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3306,7 +3314,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads stored?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3333,7 +3341,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn AVIF images into lossless PNG files that open everywhere and keep full transparency.',
     metaTitle: 'Convert AVIF to PNG Online Free | Media Manipulator',
     metaDescription:
-      'Free online AVIF to PNG converter. Turn .avif images into lossless PNG files that preserve transparency and open in any editor. No signup, files deleted within 24 hours.',
+      `Free online AVIF to PNG converter. Turn .avif images into lossless PNG files that preserve transparency and open in any editor. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert AVIF to PNG Online Free',
     ogDescription:
       'Turn AVIF images into lossless, transparency-preserving PNG files. Free, fast, no signup.',
@@ -3382,7 +3390,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Transparency preserved automatically.',
       'Lossless PNG output for graphics work.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3416,7 +3424,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3443,7 +3451,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Rasterize SVG icons and logos into PNG images at any size for uploads, slides, and apps.',
     metaTitle: 'Convert SVG to PNG Online Free | Media Manipulator',
     metaDescription:
-      'Free online SVG to PNG converter. Rasterize SVG icons and logos into PNG images at the size you choose. No signup, files deleted within 24 hours.',
+      `Free online SVG to PNG converter. Rasterize SVG icons and logos into PNG images at the size you choose. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert SVG to PNG Online Free',
     ogDescription:
       'Rasterize SVG icons and logos into PNG images at any size. Free, fast, no signup.',
@@ -3492,7 +3500,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Render at any size with no quality loss — vectors scale perfectly.',
       'Safe SVG handling with external fetches disabled.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3526,7 +3534,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads stored?',
         answer:
-          'No. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3553,7 +3561,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Vectorize logos, icons, and line art from PNG into real, scalable SVG paths with potrace.',
     metaTitle: 'Convert PNG to SVG Online Free | Media Manipulator',
     metaDescription:
-      'Free online PNG to SVG vectorizer. Trace logos, icons, and line art into real scalable SVG paths. Best for simple graphics, not photos. No signup, deleted within 24 hours.',
+      `Free online PNG to SVG vectorizer. Trace logos, icons, and line art into real scalable SVG paths. Best for simple graphics, not photos. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert PNG to SVG Online Free',
     ogDescription:
       'Vectorize logos, icons, and line art from PNG into real, scalable SVG paths. Free, no signup.',
@@ -3603,7 +3611,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real potrace vectorization — honest about what it’s good at (and not).',
       'Threshold control so you can dial in the trace.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3637,7 +3645,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3664,7 +3672,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn a PNG into a real multi-size .ico favicon for websites and Windows app icons.',
     metaTitle: 'Convert PNG to ICO Online Free | Media Manipulator',
     metaDescription:
-      'Free online PNG to ICO converter. Generate a real multi-size .ico favicon (16–256px) for websites and Windows icons. No signup, files deleted within 24 hours.',
+      `Free online PNG to ICO converter. Generate a real multi-size .ico favicon (16–256px) for websites and Windows icons. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert PNG to ICO Online Free',
     ogDescription:
       'Generate a real multi-size .ico favicon from a PNG. Free, fast, no signup.',
@@ -3713,7 +3721,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'A genuine multi-size ICO, not a renamed PNG.',
       'Transparency preserved for clean icons.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3747,7 +3755,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3774,7 +3782,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Convert SVG to PNG and vectorize PNG to SVG — the complete SVG conversion hub.',
     metaTitle: 'Free SVG Converter Online | Media Manipulator',
     metaDescription:
-      'Free online SVG converter. Rasterize SVG to PNG, or vectorize PNG to a real SVG. No signup, no watermarks, files deleted within 24 hours.',
+      `Free online SVG converter. Rasterize SVG to PNG, or vectorize PNG to a real SVG. No signup, no watermarks. ${RETENTION_PROMISE}.`,
     ogTitle: 'Free SVG Converter Online',
     ogDescription:
       'Rasterize SVG to PNG and vectorize PNG to SVG — all in one free tool. No signup.',
@@ -3821,7 +3829,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Both SVG conversion directions in one adaptive tool.',
       'Real potrace vectorization and safe SVG rasterization.',
-      'Free, no signup, no watermarks, uploads deleted within 24 hours.',
+      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -3855,7 +3863,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Are my uploads private?',
         answer:
-          'Yes. Files are processed on our own servers and deleted within 24 hours. No account is required.',
+          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3955,7 +3963,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Pick exact bitrate, sample rate, and channel layout.',
       'Free, no signup, no watermarks, output is fully yours.',
-      'Same 24-hour deletion privacy model as the rest of the toolset.',
+      'Same retention privacy model as the rest of the toolset.',
     ],
     privacyNote: sharedPrivacyNote,
     faq: [
@@ -4334,7 +4342,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Convert almost any video — MOV, WebM, AVI, MKV, FLV, or WMV — into a universally compatible MP4 (H.264 + AAC).',
     metaTitle: 'Free MP4 Converter Online | Media Manipulator',
     metaDescription:
-      'Free online MP4 converter. Convert MOV, WebM, AVI, MKV, FLV, and WMV to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup, deleted in 24 hours.',
+      `Free online MP4 converter. Convert MOV, WebM, AVI, MKV, FLV, and WMV to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Free MP4 Converter Online',
     ogDescription:
       'Convert MOV, WebM, AVI, MKV, FLV, and WMV to a universal MP4 that plays on every device and platform.',
@@ -4380,7 +4388,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg with the correct pixel format and faststart flag baked in.',
       'Output is not locked — convert to MP4 today, WebM or GIF tomorrow from the same tool.',
-      'Free, no watermark, no signup, and files are deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4422,7 +4430,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Turn QuickTime and iPhone .mov files into a universal MP4 that plays and uploads everywhere.',
     metaTitle: 'Convert MOV to MP4 Online Free | Media Manipulator',
     metaDescription:
-      'Free online MOV to MP4 converter. Convert QuickTime and iPhone .mov videos to MP4 that plays everywhere. No watermark, no signup, deleted within 24 hours.',
+      `Free online MOV to MP4 converter. Convert QuickTime and iPhone .mov videos to MP4 that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert MOV to MP4 Online Free',
     ogDescription:
       'Convert QuickTime / iPhone MOV files to a universal MP4 that uploads and plays on any device.',
@@ -4470,7 +4478,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output locked to a known-good MP4 profile — no guessing at settings.',
       'Server-side FFmpeg handles ProRes-in-MOV and HEVC-in-MOV sources too.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4483,7 +4491,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does converting MOV to MP4 lose quality?', answer: 'Most MOV files use H.264, so at High quality the re-encode is visually near-lossless. Lower presets trade some quality for a smaller file.' },
       { question: 'Why will my iPhone MOV not play on Windows?', answer: 'Windows may lack the QuickTime/HEVC codecs. MP4 with H.264 + AAC plays without extra software.' },
       { question: 'Is QuickTime to MP4 the same thing?', answer: 'Yes — QuickTime files use the .mov container, so converting QuickTime to MP4 is exactly this tool.' },
-      { question: 'Is there a watermark or signup?', answer: 'No watermark and no account required. Files are deleted within 24 hours.' },
+      { question: 'Is there a watermark or signup?', answer: `No watermark and no account required. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
@@ -4557,7 +4565,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg decodes VP8 and VP9 reliably.',
       'Output locked to a known-good MP4 profile.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4570,7 +4578,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Why can my editor not open WebM?', answer: 'Most editors do not include VP8/VP9 import. Converting to MP4 (H.264) fixes the import.' },
       { question: 'Will the file get bigger?', answer: 'MP4/H.264 can be slightly larger than VP9 WebM at the same quality. Pick a lower quality preset if size matters.' },
       { question: 'Does it keep the audio?', answer: 'Yes — Vorbis/Opus audio is re-encoded to AAC and stays in sync.' },
-      { question: 'Is it free?', answer: 'Yes, free with no watermark and no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes, free with no watermark and no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
@@ -4594,7 +4602,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Modernize old .avi videos into a compact MP4 that plays on every phone, browser, and TV.',
     metaTitle: 'Convert AVI to MP4 Online Free | Media Manipulator',
     metaDescription:
-      'Free online AVI to MP4 converter. Convert old .avi (Xvid/DivX) videos to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup, deleted in 24 hours.',
+      `Free online AVI to MP4 converter. Convert old .avi (Xvid/DivX) videos to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert AVI to MP4 Online Free',
     ogDescription:
       'Convert legacy .avi video to a modern, compact MP4 that plays on any device.',
@@ -4642,7 +4650,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg decodes old AVI codecs other tools choke on.',
       'Output locked to a known-good MP4 profile.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4655,7 +4663,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Will the MP4 be smaller than the AVI?', answer: 'Usually yes. H.264 is far more efficient than the Xvid/DivX codecs most AVIs use.' },
       { question: 'Does it support old DivX/Xvid AVIs?', answer: 'Yes — FFmpeg decodes the common AVI codecs and re-encodes them to H.264.' },
       { question: 'Will I lose quality?', answer: 'Re-encoding is lossy, but at High quality the difference is minimal and the file is still smaller.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
@@ -4727,7 +4735,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg handles MKV with multiple tracks.',
       'Output locked to a known-good MP4 profile.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4740,7 +4748,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does converting MKV to MP4 lose quality?', answer: 'If the MKV already uses H.264, the result is visually lossless at High quality. Otherwise it is a normal lossy re-encode.' },
       { question: 'What happens to extra audio or subtitle tracks?', answer: 'The converter keeps the main video and the first audio track. For multi-track needs, reach out and we can look at track selection.' },
       { question: 'Why will my MKV not play?', answer: 'Many phones, TVs, browsers, and sites do not support the MKV container even when the codecs inside are common.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
@@ -4764,7 +4772,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Re-encode MP4 into a smaller, open VP9 WebM that is perfect for fast-loading web video.',
     metaTitle: 'Convert MP4 to WebM Online Free | Media Manipulator',
     metaDescription:
-      'Free online MP4 to WebM converter. Re-encode MP4 to VP9 + Opus WebM for smaller, faster web video. No watermark, no signup, files deleted within 24 hours.',
+      `Free online MP4 to WebM converter. Re-encode MP4 to VP9 + Opus WebM for smaller, faster web video. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert MP4 to WebM Online Free',
     ogDescription:
       'Convert MP4 to a smaller, open VP9 WebM that is ideal for embedding on the modern web.',
@@ -4812,7 +4820,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'VP9 + Opus encoding with an automatic VP8 + Vorbis fallback.',
       'Output locked to WebM so the result is predictable.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4825,7 +4833,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is WebM smaller than MP4?', answer: 'At the same visual quality, VP9 WebM is usually 25-50% smaller than H.264 MP4.' },
       { question: 'Do all browsers support WebM?', answer: 'All modern browsers do. For older browsers, provide an MP4 fallback in your <video> tag.' },
       { question: 'Why is WebM encoding slower?', answer: 'VP9 is more computationally intensive than H.264. The payoff is a smaller file.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'The reverse direction.' },
@@ -4849,7 +4857,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Extract the audio track from an MP4 video and save it as a clean MP3 file.',
     metaTitle: 'Convert MP4 to MP3 Online Free | Media Manipulator',
     metaDescription:
-      'Free online MP4 to MP3 converter. Extract the audio from an MP4 video and save it as MP3. No watermark, no signup, files deleted within 24 hours.',
+      `Free online MP4 to MP3 converter. Extract the audio from an MP4 video and save it as MP3. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert MP4 to MP3 Online Free',
     ogDescription:
       'Extract the audio from an MP4 video and download it as a clean MP3 file. Free, no signup.',
@@ -4897,7 +4905,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg means no browser codec headaches.',
       'Clear errors when the MP4 has no audio track.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4910,7 +4918,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is this really converting, or extracting audio?', answer: 'It extracts the audio track from the MP4 and encodes it as MP3. That is exactly what people mean by MP4 to MP3.' },
       { question: 'What MP3 quality do I get?', answer: 'About 190 kbps VBR (libmp3lame -q:a 2), which sounds great for both speech and music.' },
       { question: 'What if my MP4 has no sound?', answer: 'We detect that up front and return a clear error instead of giving you an empty file.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video to MP3', to: '/tools/video-to-mp3', description: 'Same thing for any video format.' },
@@ -4933,7 +4941,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Extract the audio from any video — MP4, MOV, MKV, WebM, AVI — and save it as MP3.',
     metaTitle: 'Convert Video to MP3 Online Free | Media Manipulator',
     metaDescription:
-      'Free online video to MP3 converter. Extract the audio from MP4, MOV, MKV, WebM, and AVI videos and save it as MP3. No watermark, no signup, deleted in 24 hours.',
+      `Free online video to MP3 converter. Extract the audio from MP4, MOV, MKV, WebM, and AVI videos and save it as MP3. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Convert Video to MP3 Online Free',
     ogDescription:
       'Extract the audio from any video file and download it as MP3. Free, no signup.',
@@ -4980,7 +4988,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Handles every common video container server-side with FFmpeg.',
       'MP3 by default, with WAV/M4A/AAC/FLAC/OGG one click away.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -4993,7 +5001,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Which video formats are supported?', answer: 'MP4, MOV, MKV, WebM, AVI, and M4V are all supported.' },
       { question: 'Can I get lossless audio instead of MP3?', answer: 'Yes — switch the output to WAV (lossless PCM) or FLAC before extracting.' },
       { question: 'What if the video has no sound?', answer: 'We detect that up front and return a clear error rather than an empty file.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'The MP4-specific version.' },
@@ -5064,7 +5072,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Palette-aware FFmpeg + gifsicle pipeline for clean colors and small files.',
       'Trim and tune size/frame rate in one upload.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5077,7 +5085,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'How do I make the GIF smaller?', answer: 'Trim aggressively, lower the width (e.g. 480px), drop the frame rate to 10-12 fps, and reduce the color count.' },
       { question: 'Will the GIF loop?', answer: 'Yes — exported GIFs loop by default and autoplay inline on most platforms.' },
       { question: 'How long can the clip be?', answer: 'There is no hard limit, but GIFs over ~10 seconds get large fast. Consider a short MP4 or WebM instead.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video to GIF', to: '/tools/video-to-gif', description: 'Same thing for any video format.' },
@@ -5147,7 +5155,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Accepts any common video container, not just MP4.',
       'Palette-aware FFmpeg + gifsicle pipeline for clean colors and small files.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5160,7 +5168,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Which video formats can I use?', answer: 'MP4, MOV, WebM, MKV, AVI, and M4V are all supported.' },
       { question: 'How do I keep the GIF small?', answer: 'Trim aggressively, lower the width, drop the frame rate to 10-12 fps, and reduce the color count.' },
       { question: 'Will the GIF loop?', answer: 'Yes — exported GIFs loop by default and autoplay inline on most platforms.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 to GIF', to: '/tools/mp4-to-gif', description: 'The MP4-specific version.' },
@@ -5183,7 +5191,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Make animated GIFs from video clips and tune them — width, frame rate, colors, and optimization — in one place.',
     metaTitle: 'Free GIF Converter Online | Media Manipulator',
     metaDescription:
-      'Free online GIF converter. Make animated GIFs from MP4, MOV, WebM, and more and tune width and frame rate. No watermark, no signup, deleted within 24 hours.',
+      `Free online GIF converter. Make animated GIFs from MP4, MOV, WebM, and more and tune width and frame rate. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Free GIF Converter Online',
     ogDescription:
       'Make and tune animated GIFs from any short video clip. Control width, frame rate, and colors.',
@@ -5230,7 +5238,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'The full GIF tuning panel, not a one-button converter.',
       'Palette-aware FFmpeg + gifsicle for clean colors and small files.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5243,7 +5251,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Can I convert MP4 to GIF here?', answer: 'Yes. There is also a dedicated MP4-to-GIF page if you want the output pre-locked to GIF.' },
       { question: 'How do I get the smallest GIF?', answer: 'Trim the clip, lower the width and frame rate, reduce the color count, and use optimization level 3.' },
       { question: 'Can I export something other than GIF?', answer: 'Yes — the output is not locked, so you can switch to MP4 or WebM for longer clips.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 to GIF', to: '/tools/mp4-to-gif', description: 'Output locked to GIF for MP4 input.' },
@@ -5270,7 +5278,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Shrink any video for email, social, and the web with simple presets — no watermark, no signup.',
     metaTitle: 'Compress Video Online Free | Media Manipulator',
     metaDescription:
-      'Free online video compressor. Reduce video file size with simple presets while keeping good quality. MP4 output, no watermark, no signup, deleted in 24 hours.',
+      `Free online video compressor. Reduce video file size with simple presets while keeping good quality. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Compress Video Online Free',
     ogDescription:
       'Shrink video files with one-click presets while keeping watchable quality. Free, no watermark.',
@@ -5318,7 +5326,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Simple presets instead of a wall of codec settings.',
       'H.265 and resolution downscale available when you want them.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5357,7 +5365,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Reduce MP4 file size while keeping H.264 compatibility — perfect for email, social, and the web.',
     metaTitle: 'Compress MP4 Online Free | Media Manipulator',
     metaDescription:
-      'Free online MP4 compressor. Reduce MP4 file size with simple presets and H.264 + AAC output that plays everywhere. No watermark, no signup, deleted in 24 hours.',
+      `Free online MP4 compressor. Reduce MP4 file size with simple presets and H.264 + AAC output that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Compress MP4 Online Free',
     ogDescription:
       'Shrink MP4 files with one-click presets. H.264 + AAC output, no watermark, no signup.',
@@ -5406,7 +5414,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output locked to a known-good MP4 profile.',
       'Simple presets, with H.265 and downscale available.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5419,7 +5427,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Will the MP4 still play everywhere?', answer: 'Yes — we keep H.264 + AAC with yuv420p, the most compatible MP4 profile.' },
       { question: 'How much smaller will it be?', answer: 'It depends on the source, but Balanced often halves the size; Smallest or H.265 can shrink it much more.' },
       { question: 'Can I keep the resolution?', answer: 'Yes — leave the resolution on "Keep original" to compress without resizing.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video compressor', to: '/tools/video-compressor', description: 'Compress any video format.' },
@@ -5443,7 +5451,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Cut a clip to the part you want with a fast, quality-preserving trim — no re-encode when possible.',
     metaTitle: 'Trim Video Online Free | Media Manipulator',
     metaDescription:
-      'Free online video trimmer. Set a start and end time and cut your clip with a fast, lossless trim. MP4 output, no watermark, no signup, deleted in 24 hours.',
+      `Free online video trimmer. Set a start and end time and cut your clip with a fast, lossless trim. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Trim Video Online Free',
     ogDescription:
       'Trim videos to the part you want with a fast, quality-preserving cut. Free, no watermark.',
@@ -5489,7 +5497,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality-preserving stream-copy by default.',
       'Numeric and visual range selection in one panel.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5502,7 +5510,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does trimming reduce quality?', answer: 'No — the default lossless stream-copy keeps the original quality. Only the frame-accurate re-encode option re-compresses.' },
       { question: 'Why does my cut start slightly early?', answer: 'Lossless cuts snap to the nearest keyframe. Enable the frame-accurate re-encode option to cut at the exact time.' },
       { question: 'What output format do I get?', answer: 'MP4 by default; you can also choose MOV or WebM.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Trim MP4 files specifically.' },
@@ -5526,7 +5534,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Cut an MP4 to the part you want with a fast, lossless trim and an MP4 output.',
     metaTitle: 'Trim MP4 Online Free | Media Manipulator',
     metaDescription:
-      'Free online MP4 trimmer and cutter. Set a start and end time and cut your MP4 losslessly. MP4 output, no watermark, no signup, deleted within 24 hours.',
+      `Free online MP4 trimmer and cutter. Set a start and end time and cut your MP4 losslessly. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Trim MP4 Online Free',
     ogDescription:
       'Trim and cut MP4 files with a fast, quality-preserving cut. Free, no watermark.',
@@ -5573,7 +5581,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Lossless MP4-to-MP4 trim by default.',
       'Visual scrubber plus precise numeric inputs.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5586,7 +5594,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is the MP4 trim lossless?', answer: 'Yes by default. We stream-copy the segment without re-encoding, so there is no quality loss.' },
       { question: 'Can I cut at an exact frame?', answer: 'Enable the frame-accurate re-encode option; otherwise the cut snaps to the nearest keyframe.' },
       { question: 'Is this also an MP4 cutter?', answer: 'Yes — trimming and cutting an MP4 are the same operation here.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Trim any video format.' },
@@ -5610,7 +5618,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Cut a section out of any video with a fast, quality-preserving trim — straight in your browser.',
     metaTitle: 'Cut Video Online Free | Media Manipulator',
     metaDescription:
-      'Free online video cutter. Cut a clip from any video by start and end time with a fast, lossless cut. MP4 output, no watermark, no signup, deleted in 24 hours.',
+      `Free online video cutter. Cut a clip from any video by start and end time with a fast, lossless cut. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Cut Video Online Free',
     ogDescription:
       'Cut a section out of any video with a fast, quality-preserving trim. Free, no watermark.',
@@ -5624,7 +5632,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video, set the start and end of the part you want to keep, and we cut it out — losslessly when possible. Output defaults to MP4.',
     },
     intro:
-      'Cutting a video means keeping a single section and dropping the rest. The Media Manipulator video cutter takes a start and end time and produces just that segment, using a fast stream-copy that preserves the original quality whenever possible. Everything runs server-side and your file is deleted within 24 hours.',
+      `Cutting a video means keeping a single section and dropping the rest. The Media Manipulator video cutter takes a start and end time and produces just that segment, using a fast stream-copy that preserves the original quality whenever possible. Everything runs server-side. ${RETENTION_PROMISE}.`,
     whatItDoes: [
       'Cuts the selected start-to-end section out of a video.',
       'Prefers a lossless stream-copy (no re-encode).',
@@ -5656,7 +5664,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality-preserving stream-copy cut.',
       'Visual + numeric range selection.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5669,7 +5677,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is cutting the same as trimming?', answer: 'Yes — here cutting and trimming both keep a single start-to-end section.' },
       { question: 'Does cutting lose quality?', answer: 'No — the default lossless stream-copy preserves the source. Only the frame-accurate option re-encodes.' },
       { question: 'What output do I get?', answer: 'MP4 by default; MOV and WebM are also available.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Trim a clip to a range.' },
@@ -5693,7 +5701,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'A quick, no-install way to cut a clip out of any video right in your browser.',
     metaTitle: 'Cut Video Online Free — No Install | Media Manipulator',
     metaDescription:
-      'Cut video online free, no install. Set a start and end and cut any clip in your browser with a fast, lossless cut. No watermark, no signup, deleted in 24 hours.',
+      `Cut video online free, no install. Set a start and end and cut any clip in your browser with a fast, lossless cut. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Cut Video Online Free — No Install',
     ogDescription:
       'Cut a clip out of any video right in your browser. Fast, lossless, no install, no watermark.',
@@ -5723,7 +5731,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     advancedDetails: [
       'The browser uploads your file and the cut runs server-side with ffmpeg stream-copy — fast and lossless on the happy path.',
       'For a frame-exact cut, enable the re-encode option; otherwise the cut snaps to keyframes.',
-      'Files are processed on our infrastructure and deleted within 24 hours.',
+      `Files are processed on our infrastructure. ${RETENTION_PROMISE}.`,
     ],
     whyItMatters: [
       'No-install tools win when you just need a quick cut.',
@@ -5739,7 +5747,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Truly no-install — just a web page.',
       'Quality-preserving stream-copy cut.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5752,7 +5760,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'How do I cut a video online for free?', answer: 'Upload your video, mark the start and end of the part to keep, and download the clip.' },
       { question: 'Is the cut lossless?', answer: 'Yes on the fast path — we stream-copy without re-encoding. The frame-accurate option re-encodes.' },
       { question: 'Which tool should I use for repeated edits?', answer: 'For focused trimming use the video trimmer or video cutter; this page is tuned for quick, one-off cuts.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Focused trimming with a visual range.' },
@@ -5776,7 +5784,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Cut away the edges of a video — change the framing or aspect ratio without an editor.',
     metaTitle: 'Crop Video Online Free | Media Manipulator',
     metaDescription:
-      'Free online video cropper. Crop the edges of a video to reframe it or change the aspect ratio. MP4 output, no watermark, no signup, deleted within 24 hours.',
+      `Free online video cropper. Crop the edges of a video to reframe it or change the aspect ratio. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Crop Video Online Free',
     ogDescription:
       'Crop the edges of a video to reframe it or change the aspect ratio. Free, no watermark.',
@@ -5822,7 +5830,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Precise pixel cropping server-side with FFmpeg.',
       'Clean MP4 output, no watermark.',
-      'Free, no signup, files deleted within 24 hours.',
+      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5835,7 +5843,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Can I crop to a square or vertical aspect ratio?', answer: 'Yes — set the width and height to the ratio you want (e.g. equal values for square, taller than wide for 9:16).' },
       { question: 'Will cropping lower the quality?', answer: 'Cropping re-encodes, but at our default quality the loss is minimal.' },
       { question: 'Can I crop out a watermark?', answer: 'Yes, if the watermark is near an edge — crop the frame to exclude it.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution instead of cropping.' },
@@ -5859,7 +5867,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Change a video resolution — scale to 1080p, 720p, 480p, or any custom width and height.',
     metaTitle: 'Resize Video Online Free | Media Manipulator',
     metaDescription:
-      'Free online video resizer. Change video resolution to 1080p, 720p, 480p, or a custom size. MP4 output, no watermark, no signup, deleted within 24 hours.',
+      `Free online video resizer. Change video resolution to 1080p, 720p, 480p, or a custom size. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Resize Video Online Free',
     ogDescription:
       'Change a video resolution to 1080p, 720p, 480p, or a custom size. Free, no watermark.',
@@ -5905,7 +5913,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Aspect-ratio-aware scaling server-side with FFmpeg.',
       'Clean MP4 output, no watermark.',
-      'Free, no signup, files deleted within 24 hours.',
+      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -5918,7 +5926,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'How do I change the resolution to 720p?', answer: 'Set the height to 720 and leave the width blank to scale proportionally.' },
       { question: 'Will resizing keep the aspect ratio?', answer: 'Yes — leave one dimension blank, or keep "Preserve aspect ratio" on so the video is not stretched.' },
       { question: 'Can I upscale a video?', answer: 'You can scale up to a larger size, but upscaling cannot add detail that was not captured.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away edges instead of scaling.' },
@@ -5942,7 +5950,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Fix sideways or upside-down video — rotate 90°, 180°, or 270° and flip in one click.',
     metaTitle: 'Rotate Video Online Free | Media Manipulator',
     metaDescription:
-      'Free online video rotator. Rotate a video 90°, 180°, or 270° and fix sideways or upside-down clips. MP4 output, no watermark, no signup, deleted in 24 hours.',
+      `Free online video rotator. Rotate a video 90°, 180°, or 270° and fix sideways or upside-down clips. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Rotate Video Online Free',
     ogDescription:
       'Rotate a video 90°, 180°, or 270° to fix sideways or upside-down footage. Free, no watermark.',
@@ -5989,7 +5997,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real frame rotation (transpose), not just a metadata flag.',
       'Rotate and flip in one focused panel.',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -6002,7 +6010,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'How do I fix a sideways phone video?', answer: 'Rotate 90° clockwise or counter-clockwise until it plays upright; the rotation is baked into the frames.' },
       { question: 'Does it really rotate the frames, or just set a flag?', answer: 'It rotates the actual frames (FFmpeg transpose), so the video is upright in every player.' },
       { question: 'Can I flip / mirror the video too?', answer: 'Yes — horizontal and vertical flip options are included.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away the edges.' },
@@ -6026,7 +6034,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Mute a video for good — strip the audio track and download a silent, video-only file.',
     metaTitle: 'Remove Audio from Video Online Free | Media Manipulator',
     metaDescription:
-      'Free online tool to remove audio from a video. Strip the sound and download a silent, video-only MP4. No watermark, no signup, files deleted within 24 hours.',
+      `Free online tool to remove audio from a video. Strip the sound and download a silent, video-only MP4. No watermark, no signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Remove Audio from Video Online Free',
     ogDescription:
       'Strip the audio track from a video and download a silent, video-only file. Free, no watermark.',
@@ -6072,7 +6080,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality-preserving stream-copy of the video stream.',
       'Truly silent output (audio track removed, not just lowered).',
-      'Free, no watermark, no signup, deleted within 24 hours.',
+      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -6085,7 +6093,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does this mute the video or remove the track?', answer: 'It removes the audio track entirely, so the result is truly silent rather than muted to zero.' },
       { question: 'Will the video quality change?', answer: 'No — we stream-copy the video stream where possible, so the picture is untouched.' },
       { question: 'Why is the file named "_silent"?', answer: 'We add a _silent suffix so you can tell the audio-free copy apart from the original.' },
-      { question: 'Is it free?', answer: 'Yes — no watermark, no signup. Files are deleted within 24 hours.' },
+      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Remove audio (video-only)', to: '/tools/extract-video-only-from-video', description: 'The same silent-video tool.' },
@@ -6189,7 +6197,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Upload a video or audio file and generate a downloadable .srt subtitle file ready for YouTube, editors, and accessibility tools.',
     metaTitle: 'Free SRT Generator Online — Video & Audio to SRT | Media Manipulator',
     metaDescription:
-      'Generate SRT subtitle files from MP4, MOV, MP3, WAV, and more. Free, no signup, files deleted within 24 hours. Works with YouTube, Premiere, DaVinci Resolve.',
+      `Generate SRT subtitle files from MP4, MOV, MP3, WAV, and more. Free, no signup. ${RETENTION_PROMISE}. Works with YouTube, Premiere, DaVinci Resolve.`,
     ogTitle: 'Free SRT Generator — Video & Audio to SRT',
     ogDescription:
       'Generate accurate SRT subtitle files from any video or audio. Local AI transcription, no third-party providers.',
@@ -6236,7 +6244,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     whyMediaManipulator: [
       'Whisper runs on our own GPU infrastructure — your media never touches a third-party AI provider.',
-      'No signup, no watermarks, files deleted within 24 hours.',
+      `No signup, no watermarks. ${RETENTION_PROMISE}.`,
       'Same transcription engine the rest of the app uses, so accuracy is consistent across SRT, VTT, plain text, and JSON outputs.',
     ],
     privacyNote: sharedPrivacyNote,
@@ -6252,7 +6260,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'What is an SRT file?', answer: 'SRT (SubRip) is a plain-text subtitle file with timestamps and cue numbers. It is the default subtitle format accepted by YouTube, most video editors, and most video players.' },
       { question: 'Can I generate subtitles from an MP4?', answer: 'Yes. Upload any MP4 (or MOV, MKV, WebM, AVI, M4V) and we will produce a downloadable .srt subtitle file.' },
       { question: 'Can I use the SRT file on YouTube?', answer: 'Yes — YouTube accepts SRT directly. Upload your video, then add the subtitle file under Subtitles → Add language → Upload file.' },
-      { question: 'Are my uploaded files private?', answer: 'Yes. Uploaded media stays on our own server and is deleted within 24 hours. Transcription runs on a GPU we operate — no third-party AI provider sees your file.' },
+      { question: 'Are my uploaded files private?', answer: `Yes. Uploaded media stays on our own server. ${RETENTION_PROMISE}. Transcription runs on a GPU we operate — no third-party AI provider sees your file.` },
       { question: 'What languages are supported?', answer: 'Whisper supports dozens of languages and can auto-detect the spoken language. You can also pass a BCP-47 hint (e.g. en, es, ja) for better accuracy on very short clips.' },
     ],
     related: [
@@ -6329,7 +6337,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Local AI translation — your captions never go to a third-party AI provider.',
       'Timing-safe parsing that pins original cue start/end times back even if the model misbehaves.',
-      'Free, no signup, files deleted within 24 hours.',
+      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -6467,10 +6475,10 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Save the audio track from any video as a clean MP3, WAV, M4A, AAC, FLAC, or OGG file.',
     metaTitle: 'Extract Audio from Video — MP3, WAV, M4A & More | Media Manipulator',
     metaDescription:
-      'Free online tool to extract the audio from any video file (MP4, MOV, MKV, WebM, AVI). Output MP3, WAV, M4A, AAC, FLAC, or OGG. No signup, files deleted within 24 hours.',
+      `Free online tool to extract the audio from any video file (MP4, MOV, MKV, WebM, AVI). Output MP3, WAV, M4A, AAC, FLAC, or OGG. No signup. ${RETENTION_PROMISE}.`,
     ogTitle: 'Extract Audio from Video',
     ogDescription:
-      'Save MP4/MOV/MKV/WebM/AVI audio tracks as MP3, WAV, M4A, AAC, FLAC, or OGG. Free, no signup, files deleted within 24 hours.',
+      `Save MP4/MOV/MKV/WebM/AVI audio tracks as MP3, WAV, M4A, AAC, FLAC, or OGG. Free, no signup. ${RETENTION_PROMISE}.`,
     category: 'video',
     embed: {
       defaultMediaKind: 'video',
@@ -6511,7 +6519,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg means no codec headaches in the browser.',
       'Clear errors when the source video has no audio.',
-      'Free, no signup, files deleted within 24 hours.',
+      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -6559,7 +6567,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Free online tool to export a video-only (silent) copy with every audio track removed. Stream-copies the video where possible — no re-encoding, no quality loss.',
     ogTitle: 'Extract Video Without Audio (Video-Only)',
     ogDescription:
-      'Export a video-only (silent) copy of your video with every audio track removed. Free, no signup, files deleted within 24 hours.',
+      `Export a video-only (silent) copy of your video with every audio track removed. Free, no signup. ${RETENTION_PROMISE}.`,
     category: 'video',
     embed: {
       defaultMediaKind: 'video',
@@ -6601,7 +6609,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Stream copy where possible — preserves the original video quality.',
       'Clear, fast, no signup, no watermarks.',
-      'Free; files deleted within 24 hours.',
+      `Free. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -6616,7 +6624,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'How do I remove audio from a video?', answer: 'Upload your video and click "Remove audio from video". The tool emits a video-only copy in your chosen container.' },
       { question: 'Will the video quality change?', answer: 'No, in the default case. We stream-copy the video stream so the output is bit-for-bit identical on the video side. We only re-encode if the destination container needs it.' },
       { question: 'Can I make an MP4 silent?', answer: 'Yes — MP4 is the default output container and the most common use case.' },
-      { question: 'Is the original video modified?', answer: 'No. The original upload stays untouched. We produce a new file and delete the upload within 24 hours.' },
+      { question: 'Is the original video modified?', answer: `No. The original upload stays untouched. We produce a new file and keep or delete the upload according to the retention rule: ${RETENTION_PROMISE}.` },
       { question: 'What if my video has no audio?', answer: 'No problem — the tool succeeds normally and returns a clean re-packaged copy.' },
     ],
     related: [
@@ -6779,7 +6787,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Per-track volume and offset controls — not just a single drop-in audio file.',
       'Stream-copies video where possible — preserves the original video quality.',
-      'Free, no signup, server-side FFmpeg, files deleted within 24 hours.',
+      `Free, no signup, server-side FFmpeg. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -6905,7 +6913,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Runs on our own GPU infrastructure — no third-party AI provider receives the file.',
       'Uses rife-ncnn-vulkan, a portable Vulkan binary, instead of a heavy PyTorch stack — fewer dependencies, faster cold starts.',
-      'Free, no signup, automatic cleanup of uploads within 24 hours.',
+      `Free, no signup, ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
@@ -7556,7 +7564,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Do my files go to a third-party AI service?',
         answer:
-          'No. All processing — OCR and the handwriting AI — runs on our own GPU server. Your uploads are designed to be deleted automatically within 24 hours and no account is required.',
+          `No. All processing — OCR and the handwriting AI — runs on our own GPU server. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [

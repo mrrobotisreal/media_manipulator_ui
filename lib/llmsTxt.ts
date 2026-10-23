@@ -61,13 +61,13 @@ const PLANS = [
     name: 'Free account',
     ops: '30 operations a day, 5 of them AI',
     file: '1 GB per file, video up to 20 minutes, output up to 1440p',
-    extras: 'results kept 7 days, 5 saved Darkroom projects',
+    extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), 5 saved Darkroom projects',
   },
   {
     name: 'Premium ($7/month or $70/year, cancel any time)',
     ops: '300 operations a day, 60 of them AI',
     file: '5 GB per file, video up to 2 hours, output up to 4K (2160p)',
-    extras: 'results kept 30 days, unlimited Darkroom projects, priority GPU queue, no ads',
+    extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), unlimited Darkroom projects, priority GPU queue, no ads',
   },
 ] as const;
 
@@ -98,7 +98,7 @@ function keyFactsSection(): string[] {
     '',
     `- ${TOOL_PAGES.length} single-purpose tools for video, images, PDFs, audio, captions and documents, each on its own page under ${abs('/tools')}, plus Darkroom, a multi-track video editor that runs in the browser.`,
     '- Every tool works without an account and with nothing to install. A free account raises the daily limits and keeps history and Darkroom projects.',
-    '- Files are processed on servers the owner runs, not in third-party clouds. Uploads and results are deleted automatically, within 24 hours for visitors without an account.',
+    '- Files are processed on servers the owner runs, not in third-party clouds. Uploads and results are deleted automatically when their retention period ends: 24 hours for visitors without an account, and a period of 24 hours to 2 years that each signed-in user chooses (default 6 months).',
     '- AI features (transcription, background removal, upscaling and restoration, frame interpolation, vocal isolation, document OCR, caption translation) run on GPU servers operated by the owner. Files are never sent to OpenAI, Anthropic, Google or any other third-party AI provider.',
     '- Standard processing uses FFmpeg, ImageMagick and gifsicle. AI models include Whisper (whisper-ctranslate2), Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, VRT, GFPGAN, CodeFormer, RIFE, BiRefNet, Demucs, DeepFilterNet and LaMa.',
     '- The free service is supported by ads; only Premium removes them. There are no forced waits or countdowns.',

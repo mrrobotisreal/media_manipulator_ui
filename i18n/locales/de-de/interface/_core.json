@@ -56,7 +56,9 @@
     "items": "Elemente",
     "showAll": "Alle anzeigen",
     "showMore": "Mehr anzeigen",
-    "showLess": "Weniger anzeigen"
+    "showLess": "Weniger anzeigen",
+    "retentionPromise": "Sie bestimmen, wie lange wir Ihre Dateien aufbewahren — standardmäßig 24 Stunden für Gäste, bis zu 2 Jahre mit einem kostenlosen Konto",
+    "retentionPromiseShort": "Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre"
   },
   "units": {
     "bytes": "B",
@@ -203,7 +205,7 @@
       "title": "In 4 Schritten loslegen",
       "step1": {
         "title": "Datei hochladen",
-        "body": "Ziehen Sie ein beliebiges Bild, Video oder eine Audiodatei in den Upload-Bereich links, oder klicken Sie auf <em>Datei auswählen</em>. Dateien verbleiben höchstens 24 Stunden auf unseren Servern und werden danach gelöscht."
+        "body": "Ziehen Sie ein beliebiges Bild, Video oder eine Audiodatei in den Upload-Bereich links, oder klicken Sie auf <em>Datei auswählen</em>. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre."
       },
       "step2": {
         "title": "Wählen Sie hier Ihre Einstellungen",

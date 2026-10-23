@@ -60,8 +60,8 @@
         "body": "Jede Funktion der Website — Bildkonvertierung, Videokomprimierung, Audiobereinigung, Transkription, KI-Werkzeuge — ist kostenlos und ohne Konto nutzbar. Wir verlangen niemals, dass Sie sich anmelden, eine E-Mail-Adresse angeben oder vor dem Herunterladen einer konvertierten Datei bezahlen."
       },
       "privacy": {
-        "title": "Datenschutzorientiert (automatische Löschung nach 24 Stunden)",
-        "body": "Hochgeladene Dateien und erzeugte Ergebnisse werden nur so lange gespeichert, wie Ihre Sitzung sie benötigt, mit einer harten Obergrenze von <strong>24 Stunden</strong>, danach werden sie aus unserem aktiven Speicher gelöscht. Wir bewahren Ihre Mediendateien nicht über dieses Zeitfenster hinaus auf und verkaufen oder teilen Uploads mit niemandem. Alle Einzelheiten finden Sie in unserer <linkPrivacy>Datenschutzerklärung</linkPrivacy>."
+        "title": "Datenschutzorientiert: Sie bestimmen, wie lange Dateien bleiben",
+        "body": "Hochgeladene Dateien und erzeugte Ergebnisse werden nur für den jeweils geltenden Aufbewahrungszeitraum gespeichert: <strong>24 Stunden</strong> für Besucher ohne Konto oder der von Ihnen gewählte Zeitraum (24 Stunden bis 2 Jahre) mit einem kostenlosen Konto. Wir verkaufen oder teilen Uploads mit niemandem. Alle Einzelheiten finden Sie in unserer <linkPrivacy>Datenschutzerklärung</linkPrivacy>."
       },
       "localAi": {
         "title": "Lokale KI auf unserer eigenen GPU",
@@ -125,7 +125,7 @@
     "whoBuilds": {
       "title": "Wer Media Manipulator baut",
       "p1": "Media Manipulator wird von <strong>CreaTV Ltd.</strong> entwickelt und betrieben, einem kleinen, unabhängigen Medientechnologie-Unternehmen mit Sitz in Colorado, USA. CreaTVs breiteres Produktangebot konzentriert sich auf Werkzeuge, die Kreativen helfen, Ideen umzusetzen — Media Manipulator ist das kostenlose, kontofreie Werkzeug, das dieses Ökosystem verankert.",
-      "p2": "Wir sind ein kleines Team, und genau deshalb haben wir Media Manipulator so gebaut, wie wir es getan haben: Wir wollen keine Flotte von Drittanbieter-KI-Integrationen betreuen, wir wollen Ihre Dateien nicht dauerhaft speichern, und wir wollen keine zehn separaten Ein-Zweck-Konverter-Websites betreiben. Ein Studio, ein Ort, an dem Dateien höchstens 24 Stunden liegen, ein GPU-Server, der die Schwerarbeit übernimmt."
+      "p2": "Wir sind ein kleines Team, und genau deshalb haben wir Media Manipulator so gebaut, wie wir es getan haben: Wir wollen keine Flotte von Drittanbieter-KI-Integrationen betreuen, wir wollen Ihre Dateien nicht dauerhaft speichern, und wir wollen keine zehn separaten Ein-Zweck-Konverter-Websites betreiben. Ein Studio, ein Ort, an dem Sie bestimmen, wie lange Ihre Dateien liegen, ein GPU-Server, der die Schwerarbeit übernimmt."
     },
     "supportedFormats": {
       "title": "Unterstützte Dateiformate (Kurzübersicht)",
@@ -188,7 +188,7 @@
       },
       "howItWorks": {
         "label": "Sehen, wie es unter der Haube funktioniert",
-        "description": "FFmpeg, ImageMagick, GPU-gestützte KI, automatische Löschung nach 24 Stunden und Inhaltssicherheitsprüfung."
+        "description": "FFmpeg, ImageMagick, GPU-gestützte KI, Aufbewahrung nach Ihrer Wahl und Inhaltssicherheitsprüfung."
       }
     }
   },
@@ -211,7 +211,7 @@
       },
       "step4": {
         "title": "Herunterladen",
-        "body": "Sehen Sie sich das Ergebnis in der Vorschau an und laden Sie es dann herunter. Dateien werden höchstens 24 Stunden auf unseren Servern aufbewahrt und danach automatisch gelöscht."
+        "body": "Sehen Sie sich das Ergebnis in der Vorschau an und laden Sie es dann herunter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre."
       }
     },
     "capabilities": {
@@ -290,7 +290,7 @@
         "title": "Sicherheit & Datenschutz",
         "items": [
           "Alle Uploads nutzen HTTPS-Verschlüsselung",
-          "Dateien werden automatisch innerhalb von 24 Stunden gelöscht",
+          "Sie bestimmen, wie lange Dateien aufbewahrt werden (24 Stunden für Gäste)",
           "KI-Verarbeitung läuft auf unseren eigenen Servern — kein KI-Anbieter Dritter sieht Ihre Medien",
           "Automatische Inhaltssicherheitsprüfung auf missbräuchliches oder illegales Material"
         ],
@@ -1773,7 +1773,7 @@
         },
         {
           "title": "Ergebnis herunterladen",
-          "body": "Die Konvertierung läuft auf unseren eigenen Servern statt in Ihrem Browser, sodass auch große Dateien funktionieren. Ergebnisse werden so ausgelegt, dass sie automatisch innerhalb von 24 Stunden gelöscht werden."
+          "body": "Die Konvertierung läuft auf unseren eigenen Servern statt in Ihrem Browser, sodass auch große Dateien funktionieren. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre."
         }
       ],
       "more": "Weitere Details unter <linkHow>So funktioniert es</linkHow>, oder durchstöbern Sie <linkTools>alle Werkzeuge</linkTools>."
@@ -1785,7 +1785,7 @@
   },
   "toolsIndex": {
     "title": "Kostenlose Online-Medienwerkzeuge",
-    "intro": "Media Manipulator ist eine kostenlose Suite browserbasierter Werkzeuge zum Konvertieren, Komprimieren, Bearbeiten, Transkribieren und Bereinigen von Bild-, Video- und Audiodateien. Keine Anmeldung, keine Wasserzeichen, und Ihre Dateien werden auf unserer eigenen Infrastruktur verarbeitet und so ausgelegt, dass sie automatisch innerhalb von 24 Stunden gelöscht werden.",
+    "intro": "Media Manipulator ist eine kostenlose Suite browserbasierter Werkzeuge zum Konvertieren, Komprimieren, Bearbeiten, Transkribieren und Bereinigen von Bild-, Video- und Audiodateien. Keine Anmeldung, keine Wasserzeichen, und Ihre Dateien werden auf unserer eigenen Infrastruktur verarbeitet und für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.",
     "categories": {
       "image": "Bildwerkzeuge",
       "video": "Videowerkzeuge",
@@ -1798,7 +1798,7 @@
     "open": "Öffnen",
     "privacyAriaLabel": "Datenschutz & Dateiverarbeitung",
     "privacyTitle": "Ihre Dateien bleiben privat",
-    "privacyBody": "Uploads werden auf unserer eigenen Infrastruktur verarbeitet und so ausgelegt, dass sie automatisch innerhalb von 24 Stunden gelöscht werden. KI-Funktionen laufen auf einem von uns betriebenen GPU-Server — Ihre Dateien werden nicht mit KI-Anbietern Dritter geteilt, und es ist kein Konto erforderlich.",
+    "privacyBody": "Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. KI-Funktionen laufen auf einem von uns betriebenen GPU-Server — Ihre Dateien werden nicht mit KI-Anbietern Dritter geteilt, und es ist kein Konto erforderlich.",
     "learnMoreAriaLabel": "Mehr erfahren",
     "newHereTitle": "Neu hier?",
     "newHereBody": "Schritt-für-Schritt-Tutorials führen Sie durch die Bild-, Video- und Audiowerkzeuge sowie den Darkroom-Editor.",
@@ -1853,7 +1853,7 @@
     "limitationsTitle": "Einschränkungen",
     "limitationsBody": "Darkroom entwickelt sich aktiv weiter. Die Kernbearbeitung — Multi-Track-Zeitleiste, Zuschneiden/Teilen, Ebenenschichtung, Audiomischung und MP4-Export — ist bereits verfügbar. Erweiterte Effekte werden im Laufe der Zeit weiter ergänzt.",
     "privacyTitle": "Datenschutz",
-    "privacyBody": "Ihre Medien werden auf unseren eigenen Servern verarbeitet und automatisch innerhalb von 24 Stunden gelöscht. Es ist kein Konto erforderlich, und Dateien werden niemals mit Drittanbietern geteilt."
+    "privacyBody": "Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Es ist kein Konto erforderlich, und Dateien werden niemals mit Drittanbietern geteilt."
   },
   "voices": {
     "eyebrow": "Stimmen",

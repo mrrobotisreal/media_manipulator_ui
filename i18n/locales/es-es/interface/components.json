@@ -140,7 +140,7 @@
   },
   "privacyPolicyComponent": {
     "title": "Privacidad de un vistazo",
-    "summary": "Los archivos se procesan en nuestros servidores, se eliminan automáticamente en un plazo de 24 horas y nunca se envían a proveedores de IA externos.",
+    "summary": "Los archivos se procesan en nuestros servidores y nunca se envían a proveedores de IA externos. Sin cuenta se conservan 24 horas; con una cuenta gratuita eliges de 24 horas a 2 años.",
     "learnMore": "Lee la política de privacidad completa"
   },
   "quotaMeter": {

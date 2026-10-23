@@ -27,7 +27,7 @@
   },
   "specializedToolShell": {
     "dropHere": "Legen Sie Ihre {{hint}}-Datei hier ab",
-    "selectHint": "oder klicken Sie, um eine Datei von Ihrem Computer auszuwählen. Dateien verbleiben höchstens 24 Stunden auf unseren Servern und werden danach gelöscht.",
+    "selectHint": "oder klicken Sie, um eine Datei von Ihrem Computer auszuwählen. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.",
     "selectFile": "Datei auswählen",
     "removeFile": "Datei entfernen",
     "uploadingPercent": "Wird hochgeladen {{percent}}%",
@@ -57,7 +57,7 @@
       "audio": "Audio",
       "pdf": "PDF"
     },
-    "selectHint": "oder klicken Sie, um eine Datei von Ihrem Computer auszuwählen. Dateien verbleiben höchstens 24 Stunden auf unseren Servern und werden danach gelöscht.",
+    "selectHint": "oder klicken Sie, um eine Datei von Ihrem Computer auszuwählen. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.",
     "selectFile": "Datei auswählen",
     "removeFile": "Datei entfernen",
     "uploadingPercent": "Wird hochgeladen {{percent}}%",
@@ -215,7 +215,7 @@
     "title": "Untertitel übersetzen",
     "subtitle": "Laden Sie eine VTT-, SRT- oder TXT-Untertiteldatei hoch und übersetzen Sie sie in eine andere Sprache.",
     "dropHere": "Legen Sie Ihre .srt- oder .vtt-Datei hier ab",
-    "privacyNote": "Dateien werden auf unserem eigenen Server verarbeitet und innerhalb von 24 Stunden gelöscht. Wir senden Ihre Untertitel nicht an KI-Anbieter Dritter.",
+    "privacyNote": "Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Wir senden Ihre Untertitel nicht an KI-Anbieter Dritter.",
     "selectCaptionFile": "Untertiteldatei auswählen",
     "removeFile": "Datei entfernen",
     "sourceLanguage": "Ausgangssprache",
@@ -333,12 +333,24 @@
       "runningTotal": "{{count}} Modell(e) ausgewählt · geschätzte Gesamtverarbeitungszeit {{estimate}}"
     },
     "models": {
-      "realesrgan": { "description": "Schneller GAN-Upscaler — die schnelle Basisreferenz, die in jedem Vergleich enthalten sein sollte." },
-      "swinir": { "description": "Transformer-basierte Real-World-SR — starke Texturen, langsamer als Real-ESRGAN." },
-      "hat": { "description": "Hybrid-Attention-SR-GAN — oft die schärfsten Standbilder, das langsamste Modell der Gruppe A." },
-      "basicvsrpp": { "description": "Rekurrente Video-SR — nutzt benachbarte Einzelbilder für zeitliche Konsistenz." },
-      "rvrt": { "description": "Rekurrenter Video-Restaurierungs-Transformer — starke Details mit Bewegungserkennung." },
-      "vrt": { "description": "Video-Restaurierungs-Transformer — Spitzenqualität bei vielen Clips, mit Abstand am langsamsten." }
+      "realesrgan": {
+        "description": "Schneller GAN-Upscaler — die schnelle Basisreferenz, die in jedem Vergleich enthalten sein sollte."
+      },
+      "swinir": {
+        "description": "Transformer-basierte Real-World-SR — starke Texturen, langsamer als Real-ESRGAN."
+      },
+      "hat": {
+        "description": "Hybrid-Attention-SR-GAN — oft die schärfsten Standbilder, das langsamste Modell der Gruppe A."
+      },
+      "basicvsrpp": {
+        "description": "Rekurrente Video-SR — nutzt benachbarte Einzelbilder für zeitliche Konsistenz."
+      },
+      "rvrt": {
+        "description": "Rekurrenter Video-Restaurierungs-Transformer — starke Details mit Bewegungserkennung."
+      },
+      "vrt": {
+        "description": "Video-Restaurierungs-Transformer — Spitzenqualität bei vielen Clips, mit Abstand am langsamsten."
+      }
     },
     "panel": {
       "loading": "Serverfähigkeiten werden geprüft…",
@@ -404,14 +416,30 @@
       "unavailable": "Auf diesem Server nicht verfügbar"
     },
     "models": {
-      "fbcnn": { "description": "Blinde JPEG-/Kompressionsartefaktentfernung (1x, nicht generativ)." },
-      "scunet": { "description": "Blinde Rauschunterdrückung bei echtem Bildrauschen — PSNR-Variante, keine halluzinierte Textur (1x)." },
-      "nafnet": { "description": "Bewegungsunschärfe-Entfernung (GoPro-Gewichte, 1x)." },
-      "realesrgan": { "description": "Schneller GAN-Upscaler — die schnelle Basisreferenz, die in jedem Vergleich enthalten sein sollte." },
-      "swinir": { "description": "Transformer-basierte Real-World-SR — starke Texturen, langsamer als Real-ESRGAN." },
-      "hat": { "description": "Hybrid-Attention-SR-GAN — oft das schärfste Ergebnis." },
-      "gfpgan": { "description": "GFPGAN v1.4 Gesichtsrestaurierung — generative Rekonstruktion." },
-      "codeformer": { "description": "CodeFormer-Gesichtsrestaurierung mit Fidelity-Regler — generative Rekonstruktion." }
+      "fbcnn": {
+        "description": "Blinde JPEG-/Kompressionsartefaktentfernung (1x, nicht generativ)."
+      },
+      "scunet": {
+        "description": "Blinde Rauschunterdrückung bei echtem Bildrauschen — PSNR-Variante, keine halluzinierte Textur (1x)."
+      },
+      "nafnet": {
+        "description": "Bewegungsunschärfe-Entfernung (GoPro-Gewichte, 1x)."
+      },
+      "realesrgan": {
+        "description": "Schneller GAN-Upscaler — die schnelle Basisreferenz, die in jedem Vergleich enthalten sein sollte."
+      },
+      "swinir": {
+        "description": "Transformer-basierte Real-World-SR — starke Texturen, langsamer als Real-ESRGAN."
+      },
+      "hat": {
+        "description": "Hybrid-Attention-SR-GAN — oft das schärfste Ergebnis."
+      },
+      "gfpgan": {
+        "description": "GFPGAN v1.4 Gesichtsrestaurierung — generative Rekonstruktion."
+      },
+      "codeformer": {
+        "description": "CodeFormer-Gesichtsrestaurierung mit Fidelity-Regler — generative Rekonstruktion."
+      }
     },
     "panel": {
       "loading": "Serverfähigkeiten werden geprüft…",
@@ -465,10 +493,22 @@
     },
     "sizeLabel": "{{width}}×{{height}} ({{qualifier}})",
     "modes": {
-      "point": { "label": "Punkt", "description": "Ein einzelner Punkt pro Sample — klar und minimalistisch." },
-      "line": { "label": "Linie", "description": "Ein vertikaler Balken pro Sample — kräftigere Wirkung." },
-      "p2p": { "label": "Punkt zu Punkt", "description": "Ein Punkt pro Sample plus Verbindungslinien — fließende Optik." },
-      "cline": { "label": "Zentrierte Linie", "description": "Vertikale Linie auf der Achse zentriert — symmetrische Optik." }
+      "point": {
+        "label": "Punkt",
+        "description": "Ein einzelner Punkt pro Sample — klar und minimalistisch."
+      },
+      "line": {
+        "label": "Linie",
+        "description": "Ein vertikaler Balken pro Sample — kräftigere Wirkung."
+      },
+      "p2p": {
+        "label": "Punkt zu Punkt",
+        "description": "Ein Punkt pro Sample plus Verbindungslinien — fließende Optik."
+      },
+      "cline": {
+        "label": "Zentrierte Linie",
+        "description": "Vertikale Linie auf der Achse zentriert — symmetrische Optik."
+      }
     },
     "output": "Ausgabe",
     "outputOptions": {
@@ -480,9 +520,15 @@
     "includeAudio": "Original-Audio in erzeugtes Wellenform-Video einbetten",
     "includeAudioNote": "Das Wellenform-Video wird synchron mit dem Quellaudio abgespielt — perfekt für Audiogramme, Musikvorschauen und Podcast-Clips. Deaktivieren Sie dies für eine stumme Wellenform.",
     "videoFormat": "Videoformat",
-    "videoFormats": { "mp4": "MP4 (empfohlen)", "webm": "WebM" },
+    "videoFormats": {
+      "mp4": "MP4 (empfohlen)",
+      "webm": "WebM"
+    },
     "imageFormat": "Bildformat",
-    "imageFormats": { "png": "PNG (empfohlen)", "webp": "WebP" },
+    "imageFormats": {
+      "png": "PNG (empfohlen)",
+      "webp": "WebP"
+    },
     "aspectRatioSize": "Seitenverhältnis & Größe",
     "useCustomSize": "Benutzerdefinierte Breite / Höhe verwenden",
     "widthPlaceholder": "Breite",
@@ -508,7 +554,10 @@
       "cbrt": "cbrt — stärkere Anhebung leiser Passagen"
     },
     "draw": "Zeichnen",
-    "drawOptions": { "scale": "Skalierung (Standard)", "full": "voll" },
+    "drawOptions": {
+      "scale": "Skalierung (Standard)",
+      "full": "voll"
+    },
     "generating": "Wellenform wird erzeugt…",
     "generate": "Wellenform erzeugen"
   },

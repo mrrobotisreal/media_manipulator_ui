@@ -1035,7 +1035,7 @@
     "intro": "Aprende a convertir, limpiar y remezclar archivos de audio con el conversor de audio de Media Manipulator. Este tutorial recorre cada sección del panel de conversión de audio: selección de formato, efectos de procesamiento, restauración y las nuevas herramientas de audio con IA (Limpiar voz, Eliminar ruido de fondo, Aislar voces, Eliminar voces).",
     "upload": {
       "heading": "1. Sube tu archivo de audio",
-      "p1": "Desde la página de inicio, arrastra y suelta un archivo de audio en la zona de subida, o haz clic en <strong>Elegir archivo</strong>. Los formatos admitidos incluyen MP3, WAV, FLAC, AAC, M4A, OGG, Opus y la mayoría de formatos habituales de pódcast y música. Los archivos se eliminan automáticamente en un plazo de 24 horas.",
+      "p1": "Desde la página de inicio, arrastra y suelta un archivo de audio en la zona de subida, o haz clic en <strong>Elegir archivo</strong>. Los formatos admitidos incluyen MP3, WAV, FLAC, AAC, M4A, OGG, Opus y la mayoría de formatos habituales de pódcast y música. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.",
       "p2": "Una vez seleccionado el archivo, el panel derecho cambia a <strong>Opciones de conversión</strong>. Para archivos de vídeo y audio también verás un interruptor <strong>Convertir / Transcribir</strong> — déjalo en <em>Convertir</em> para este tutorial."
     },
     "toolPanel": {
@@ -1142,7 +1142,7 @@
     },
     "upload": {
       "title": "1. Sube tu imagen",
-      "paragraph": "Arrastra un archivo de imagen a la zona de subida, o haz clic en <strong>Elegir archivo</strong>. El conversor de imagen admite JPG, PNG, WebP, GIF y muchos otros formatos. Los archivos se eliminan en un plazo de 24 horas."
+      "paragraph": "Arrastra un archivo de imagen a la zona de subida, o haz clic en <strong>Elegir archivo</strong>. El conversor de imagen admite JPG, PNG, WebP, GIF y muchos otros formatos. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
     },
     "format": {
       "title": "2. Elige el formato de salida y la calidad",

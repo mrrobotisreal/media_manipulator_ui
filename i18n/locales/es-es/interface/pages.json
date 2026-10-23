@@ -60,8 +60,8 @@
         "body": "Todas las funciones del sitio —conversión de imágenes, compresión de vídeo, limpieza de audio, transcripción, herramientas de IA— son gratuitas y utilizables sin cuenta. Nunca te exigimos iniciar sesión, dar un correo electrónico ni pagar antes de descargar un archivo convertido."
       },
       "privacy": {
-        "title": "Centrado en la privacidad (borrado automático a las 24 horas)",
-        "body": "Los archivos subidos y los resultados generados se almacenan solo el tiempo que tu sesión los necesita, con un máximo estricto de <strong>24 horas</strong>, tras las cuales se eliminan de nuestro almacenamiento activo. No conservamos tus archivos de medios más allá de ese plazo y no vendemos ni compartimos las subidas con nadie. Consulta nuestra <linkPrivacy>política de privacidad</linkPrivacy> para más detalles."
+        "title": "Centrado en la privacidad: tú decides cuánto se conservan los archivos",
+        "body": "Los archivos subidos y los resultados generados se almacenan solo durante el periodo de retención aplicable: <strong>24 horas</strong> para visitantes sin cuenta, o el periodo que elijas (de 24 horas a 2 años) con una cuenta gratuita. No vendemos ni compartimos las subidas con nadie. Consulta nuestra <linkPrivacy>política de privacidad</linkPrivacy> para más detalles."
       },
       "localAi": {
         "title": "IA local en nuestra propia GPU",
@@ -125,7 +125,7 @@
     "whoBuilds": {
       "title": "Quién crea Media Manipulator",
       "p1": "Media Manipulator está creado y operado por <strong>CreaTV Ltd.</strong>, una pequeña empresa independiente de tecnología multimedia con sede en Colorado, EE. UU. La línea de productos más amplia de CreaTV se centra en herramientas que ayudan a los creadores a dar vida a sus ideas; Media Manipulator es la utilidad gratuita y sin cuenta que sostiene ese ecosistema.",
-      "p2": "Somos un equipo pequeño, y por eso hemos creado Media Manipulator así: no queremos estar pendientes de una flota de integraciones de IA de terceros, no queremos almacenar tus archivos indefinidamente y no queremos operar diez sitios conversores independientes de un solo propósito. Un estudio, un lugar donde los archivos viven como máximo 24 horas, un servidor GPU que hace el trabajo pesado."
+      "p2": "Somos un equipo pequeño, y por eso hemos creado Media Manipulator así: no queremos estar pendientes de una flota de integraciones de IA de terceros, no queremos almacenar tus archivos indefinidamente y no queremos operar diez sitios conversores independientes de un solo propósito. Un estudio, un lugar donde tú eliges cuánto viven tus archivos, un servidor GPU que hace el trabajo pesado."
     },
     "supportedFormats": {
       "title": "Formatos de archivo compatibles (referencia rápida)",
@@ -188,7 +188,7 @@
       },
       "howItWorks": {
         "label": "Descubre cómo funciona por dentro",
-        "description": "FFmpeg, ImageMagick, IA con GPU, borrado automático a las 24 horas y escaneo de seguridad de contenido."
+        "description": "FFmpeg, ImageMagick, IA con GPU, retención de archivos a tu elección y escaneo de seguridad de contenido."
       }
     }
   },
@@ -211,7 +211,7 @@
       },
       "step4": {
         "title": "Descarga",
-        "body": "Previsualiza el resultado y luego descárgalo. Los archivos se conservan en nuestros servidores como máximo 24 horas y después se eliminan automáticamente."
+        "body": "Previsualiza el resultado y luego descárgalo. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
       }
     },
     "capabilities": {
@@ -290,7 +290,7 @@
         "title": "Seguridad y privacidad",
         "items": [
           "Todas las subidas usan cifrado HTTPS",
-          "Los archivos se eliminan automáticamente en un plazo de 24 horas",
+          "Tú decides cuánto se conservan los archivos (24 horas para visitantes)",
           "El procesamiento de IA se ejecuta en nuestros propios servidores: ningún proveedor de IA externo ve tus archivos",
           "Escaneo automático de seguridad de contenido para material abusivo o ilegal"
         ],
@@ -1773,7 +1773,7 @@
         },
         {
           "title": "Descarga el resultado",
-          "body": "La conversión se ejecuta en nuestros propios servidores en lugar de en tu navegador, así que los archivos grandes funcionan bien. Los resultados están diseñados para eliminarse automáticamente en un plazo de 24 horas."
+          "body": "La conversión se ejecuta en nuestros propios servidores en lugar de en tu navegador, así que los archivos grandes funcionan bien. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
         }
       ],
       "more": "Más detalles en <linkHow>cómo funciona</linkHow>, o consulta <linkTools>todas las herramientas</linkTools>."
@@ -1785,7 +1785,7 @@
   },
   "toolsIndex": {
     "title": "Herramientas de medios online gratuitas",
-    "intro": "Media Manipulator es un conjunto gratuito de herramientas basadas en el navegador para convertir, comprimir, editar, transcribir y limpiar archivos de imagen, vídeo y audio. Sin registro, sin marcas de agua, y tus archivos se procesan en nuestros propios servidores y están diseñados para eliminarse automáticamente en un plazo de 24 horas.",
+    "intro": "Media Manipulator es un conjunto gratuito de herramientas basadas en el navegador para convertir, comprimir, editar, transcribir y limpiar archivos de imagen, vídeo y audio. Sin registro, sin marcas de agua, y tus archivos se procesan en nuestros propios servidores y se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.",
     "categories": {
       "image": "Herramientas de imagen",
       "video": "Herramientas de vídeo",
@@ -1798,7 +1798,7 @@
     "open": "Abrir",
     "privacyAriaLabel": "Privacidad y gestión de archivos",
     "privacyTitle": "Tus archivos permanecen privados",
-    "privacyBody": "Las subidas se procesan en nuestra propia infraestructura y están diseñadas para eliminarse automáticamente en un plazo de 24 horas. Las funciones de IA se ejecutan en un servidor GPU que operamos nosotros: tus archivos no se comparten con proveedores de IA externos, y no se requiere cuenta.",
+    "privacyBody": "Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años. Las funciones de IA se ejecutan en un servidor GPU que operamos nosotros: tus archivos no se comparten con proveedores de IA externos, y no se requiere cuenta.",
     "learnMoreAriaLabel": "Más información",
     "newHereTitle": "¿Nuevo por aquí?",
     "newHereBody": "Los tutoriales paso a paso te guían por las herramientas de imagen, vídeo y audio y por el editor Darkroom.",
@@ -1853,7 +1853,7 @@
     "limitationsTitle": "Limitaciones",
     "limitationsBody": "Darkroom evoluciona activamente. La edición esencial —línea de tiempo multipista, recorte/división, superposición de capas, mezcla de audio y exportación a MP4— ya está disponible. Con el tiempo se siguen añadiendo efectos avanzados.",
     "privacyTitle": "Privacidad",
-    "privacyBody": "Tus archivos se procesan en nuestros propios servidores y se eliminan automáticamente en un plazo de 24 horas. No se requiere cuenta y los archivos nunca se comparten con proveedores externos."
+    "privacyBody": "Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años. No se requiere cuenta y los archivos nunca se comparten con proveedores externos."
   },
   "voices": {
     "eyebrow": "Voces",

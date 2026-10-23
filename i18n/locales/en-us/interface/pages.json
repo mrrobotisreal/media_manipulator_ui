@@ -60,8 +60,8 @@
         "body": "Every feature on the site — image conversion, video compression, audio cleanup, transcription, AI tools — is free and usable without an account. We never require you to log in, hand over an email, or pay before downloading a converted file."
       },
       "privacy": {
-        "title": "Privacy-Focused (24-Hour Auto Delete)",
-        "body": "Uploaded files and generated outputs are stored only as long as your session needs them, with a hard maximum of <strong>24 hours</strong>, after which they are deleted from our active storage. We do not keep your media files past that window and we don't sell or share uploads with anyone. See our <linkPrivacy>privacy policy</linkPrivacy> for full details."
+        "title": "Privacy-Focused: You Choose How Long Files Stay",
+        "body": "Uploaded files and generated outputs are stored only for the retention period that applies: <strong>24 hours</strong> for visitors without an account, or the period you choose (24 hours to 2 years) with a free account. We don't sell or share uploads with anyone. See our <linkPrivacy>privacy policy</linkPrivacy> for full details."
       },
       "localAi": {
         "title": "Local AI on Our Own GPU",
@@ -125,7 +125,7 @@
     "whoBuilds": {
       "title": "Who Builds Media Manipulator",
       "p1": "Media Manipulator is built and operated by <strong>CreaTV Ltd.</strong>, a small independent media-tech company based in Colorado, USA. CreaTV's broader product line is focused on tools that help creators bring ideas to life — Media Manipulator is the free, no-account utility that anchors that ecosystem.",
-      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place files live for at most 24 hours, one GPU server doing the heavy lifting."
+      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place where you choose how long your files live, one GPU server doing the heavy lifting."
     },
     "supportedFormats": {
       "title": "Supported File Formats (Quick Reference)",
@@ -188,7 +188,7 @@
       },
       "howItWorks": {
         "label": "See how it works under the hood",
-        "description": "FFmpeg, ImageMagick, GPU-backed AI, 24-hour auto-delete, and content-safety scanning."
+        "description": "FFmpeg, ImageMagick, GPU-backed AI, your choice of file retention, and content-safety scanning."
       }
     }
   },
@@ -211,7 +211,7 @@
       },
       "step4": {
         "title": "Download",
-        "body": "Preview the result, then download it. Files are kept on our servers for at most 24 hours and then deleted automatically."
+        "body": "Preview the result, then download it. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
       }
     },
     "capabilities": {
@@ -290,7 +290,7 @@
         "title": "Security & Privacy",
         "items": [
           "All uploads use HTTPS encryption",
-          "Files are automatically deleted within 24 hours",
+          "You choose how long files are kept (24 hours for guests)",
           "AI processing runs on our own servers — no third-party AI provider sees your media",
           "Automatic content-safety scanning for abusive or illegal material"
         ],
@@ -1773,7 +1773,7 @@
         },
         {
           "title": "Download the result",
-          "body": "Conversion runs on our own servers rather than in your browser, so large files work. Results are designed to be deleted automatically within 24 hours."
+          "body": "Conversion runs on our own servers rather than in your browser, so large files work. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
         }
       ],
       "more": "More detail in <linkHow>how it works</linkHow>, or browse <linkTools>all tools</linkTools>."
@@ -1785,7 +1785,7 @@
   },
   "toolsIndex": {
     "title": "Free Online Media Tools",
-    "intro": "Media Manipulator is a free suite of browser-based tools for converting, compressing, editing, transcribing, and cleaning up image, video, and audio files. No signup, no watermarks, and your files are processed on our own servers and are designed to be deleted automatically within 24 hours.",
+    "intro": "Media Manipulator is a free suite of browser-based tools for converting, compressing, editing, transcribing, and cleaning up image, video, and audio files. No signup, no watermarks, and your files are processed on our own servers and kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
     "categories": {
       "image": "Image tools",
       "video": "Video tools",
@@ -1798,7 +1798,7 @@
     "open": "Open",
     "privacyAriaLabel": "Privacy & file handling",
     "privacyTitle": "Your files stay private",
-    "privacyBody": "Uploads are processed on our own infrastructure and are designed to be deleted automatically within 24 hours. AI features run on a GPU server we operate — your files are not shared with third-party AI providers, and no account is required.",
+    "privacyBody": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years. AI features run on a GPU server we operate — your files are not shared with third-party AI providers, and no account is required.",
     "learnMoreAriaLabel": "Learn more",
     "newHereTitle": "New here?",
     "newHereBody": "Step-by-step tutorials walk you through the image, video, and audio tools and the Darkroom editor.",
@@ -1853,7 +1853,7 @@
     "limitationsTitle": "Limitations",
     "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and MP4 export — is available now. Advanced effects continue to be added over time.",
     "privacyTitle": "Privacy",
-    "privacyBody": "Your media is processed on our own servers and automatically deleted within 24 hours. No account is required and files are never shared with third-party providers."
+    "privacyBody": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years. No account is required and files are never shared with third-party providers."
   },
   "voices": {
     "eyebrow": "Voices",
