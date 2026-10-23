@@ -269,6 +269,15 @@ export interface HistoryEntry {
    * the media itself has expired: the metadata routes read the cached JSON, not the file.
    */
   metadataAvailable?: { original: boolean; result: boolean };
+  /**
+   * MM23/MM25 (account.go historyEntry): the ledger row governing this result. Omitted for
+   * jobs created before the ledger existed (no row means no keep-longer, no "Deletes on").
+   */
+  retainedObjectId?: string;
+  /** RFC 3339: when the sweeper deletes the result (ledger expires_at). */
+  deletesOn?: string;
+  /** True when a "keep longer" pin pushed the deadline past the account's window. */
+  keptLonger?: boolean;
 }
 
 export interface HistoryResponse {
@@ -509,4 +518,249 @@ export function isLimitRefusal(body: unknown): body is LimitRefusal {
   if (typeof body !== 'object' || body === null) return false;
   const error = (body as { error?: unknown }).error;
   return error === 'output_height_limited' || error === 'project_limit_reached';
+}
+
+
+// --- Retention, deletion and export (MM22 account_settings.go, MM24 data.go / ownership) ------
+
+/**
+ * A non-2xx answer from the MM22/MM24 routes. `code` is the handler's `error` string when it
+ * sent one (`reauth_required`, `export_rate_limited`, `nothing_to_keep`, `sign_in_required`,
+ * `confirm_required`, ...), else ''. `retryAfterSeconds` rides on a 429 export; `retryable`
+ * and `report` on a 502 from DELETE /api/account.
+ */
+export class AccountApiError extends Error {
+  readonly status: number;
+  readonly code: string;
+  readonly retryAfterSeconds?: number;
+  readonly retryable?: boolean;
+  readonly report?: AccountDeleteReport;
+
+  constructor(
+    status: number,
+    code: string,
+    extra: { message?: string; retryAfterSeconds?: number; retryable?: boolean; report?: AccountDeleteReport } = {},
+  ) {
+    super(extra.message || `Account request failed (${status})${code ? `: ${code}` : ''}`);
+    this.name = 'AccountApiError';
+    this.status = status;
+    this.code = code;
+    this.retryAfterSeconds = extra.retryAfterSeconds;
+    this.retryable = extra.retryable;
+    this.report = extra.report;
+  }
+}
+
+async function accountError(response: Response): Promise<AccountApiError> {
+  const body = (await response.json().catch(() => null)) as {
+    error?: string;
+    message?: string;
+    retryAfterSeconds?: number;
+    retryable?: boolean;
+    status?: string;
+    steps?: unknown;
+  } | null;
+  const header = Number(response.headers.get('Retry-After'));
+  const retryAfterSeconds =
+    typeof body?.retryAfterSeconds === 'number'
+      ? body.retryAfterSeconds
+      : Number.isFinite(header) && header > 0
+        ? header
+        : undefined;
+  const isReport = !!body && typeof body.status === 'string' && Array.isArray(body.steps);
+  return new AccountApiError(response.status, typeof body?.error === 'string' ? body.error : '', {
+    message: body?.message,
+    retryAfterSeconds,
+    retryable: body?.retryable,
+    report: isReport ? (body as unknown as AccountDeleteReport) : undefined,
+  });
+}
+
+async function accountJson<T>(path: string, idToken: string, init: RequestInit = {}): Promise<T> {
+  const response = await fetch(`${getBaseURL()}${path}`, {
+    ...init,
+    headers: {
+      ...(init.body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+      ...authHeaders(idToken),
+    },
+  });
+  if (!response.ok) throw await accountError(response);
+  return response.json() as Promise<T>;
+}
+
+export type HistoryVisibility = 'full' | 'names_only';
+
+/** GET/PATCH /api/account/settings. Mirrors settingsResponse (account_settings.go). */
+export interface AccountSettings {
+  retentionHours: number;
+  /** Always "all" today. */
+  retentionScope: 'all';
+  deleteMetadataReports: boolean;
+  historyVisibility: HistoryVisibility;
+  updatedAt: string;
+  limits: { minHours: number; maxHours: number; defaultHours: number };
+  /** PATCH only: live items whose expiry moved. */
+  restamped?: number;
+}
+
+/** The PATCH body (settingsPatchBody). Any non-empty subset. */
+export interface SettingsPatch {
+  retentionHours?: number;
+  deleteMetadataReports?: boolean;
+  historyVisibility?: HistoryVisibility;
+}
+
+/** GET /api/account/settings/preview. Mirrors previewResponse (account_settings.go). */
+export interface RetentionPreview {
+  wouldDelete: { results: number; projects: number; other: number; bytes: number };
+  earliestDeletionAt: string | null;
+}
+
+/** GET /api/account/settings. */
+export function fetchSettings(idToken: string): Promise<AccountSettings> {
+  return accountJson<AccountSettings>('/account/settings', idToken);
+}
+
+/** PATCH /api/account/settings (SettingsHandler.Patch). Re-stamps live items server-side. */
+export function patchSettings(idToken: string, patch: SettingsPatch): Promise<AccountSettings> {
+  return accountJson<AccountSettings>('/account/settings', idToken, {
+    method: 'PATCH',
+    body: JSON.stringify(patch),
+  });
+}
+
+/** GET /api/account/settings/preview?retentionHours=N (SettingsHandler.Preview). Read-only. */
+export function previewRetention(idToken: string, hours: number): Promise<RetentionPreview> {
+  return accountJson<RetentionPreview>(
+    `/account/settings/preview?retentionHours=${encodeURIComponent(String(hours))}`,
+    idToken,
+  );
+}
+
+/** Response of DELETE /api/jobs/:jobId and DELETE /api/studio/projects/:id (newDeletedBody, data.go). */
+export interface DeletedBody {
+  deleted: { objects: number; bytes: number };
+  /** >0: something could not be deleted yet; the sweeper finishes it. */
+  pending: number;
+}
+
+/** DELETE /api/jobs/:jobId (DataHandler.DeleteJob). Strangers get 404. */
+export function deleteJob(idToken: string, jobId: string): Promise<DeletedBody> {
+  return accountJson<DeletedBody>(`/jobs/${encodeURIComponent(jobId)}`, idToken, { method: 'DELETE' });
+}
+
+/** DELETE /api/studio/projects/:id (StudioHandler.DeleteProject, studio_delete.go). */
+export function deleteProject(idToken: string, id: string): Promise<DeletedBody> {
+  return accountJson<DeletedBody>(`/studio/projects/${encodeURIComponent(id)}`, idToken, {
+    method: 'DELETE',
+  });
+}
+
+/** Response of PATCH /api/jobs/:jobId/retention (DataHandler.KeepJobLonger, data.go). */
+export interface KeepLongerResult {
+  keepForHours: number;
+  expiresAt: string;
+  keptLonger: boolean;
+  updated: number;
+}
+
+/**
+ * PATCH /api/jobs/:jobId/retention. 1 to 17,520 hours; extends, never shortens. Errors:
+ * 400 `sign_in_required`, 409 `nothing_to_keep`.
+ */
+export function keepJobLonger(idToken: string, jobId: string, hours: number): Promise<KeepLongerResult> {
+  return accountJson<KeepLongerResult>(`/jobs/${encodeURIComponent(jobId)}/retention`, idToken, {
+    method: 'PATCH',
+    body: JSON.stringify({ keepForHours: hours }),
+  });
+}
+
+/** Response of POST /api/account/data/delete-all (deleteAllBody, account_data.go). */
+export interface DeleteAllResult {
+  deleted: { objects: number; bytes: number; projects: number; jobs: number };
+  pending: number;
+}
+
+/** POST /api/account/data/delete-all. The handler requires the exact string "DELETE". */
+export function deleteAllData(idToken: string, confirm: string): Promise<DeleteAllResult> {
+  return accountJson<DeleteAllResult>('/account/data/delete-all', idToken, {
+    method: 'POST',
+    body: JSON.stringify({ confirm }),
+  });
+}
+
+/**
+ * GET /api/account/data/export (AccountDataHandler.Export): a streamed zip. 429
+ * `export_rate_limited` carries `retryAfterSeconds` (3 per hour per user).
+ */
+export async function exportData(idToken: string): Promise<{ blob: Blob; fileName: string }> {
+  const response = await fetch(`${getBaseURL()}/account/data/export`, { headers: authHeaders(idToken) });
+  if (!response.ok) throw await accountError(response);
+  const disposition = response.headers.get('Content-Disposition') ?? '';
+  const match = /filename="?([^";]+)"?/i.exec(disposition);
+  return { blob: await response.blob(), fileName: match?.[1] ?? 'mm-data-export.zip' };
+}
+
+/** One step of the DELETE /api/account report (StepReport, account_delete.go). */
+export interface AccountDeleteStep {
+  step: string;
+  status: string;
+  detail?: string;
+}
+
+/** Mirrors AccountDeleteReport (account_delete.go). 200 when completed, 502 when incomplete. */
+export interface AccountDeleteReport {
+  status: 'completed' | 'incomplete';
+  steps: AccountDeleteStep[];
+  deleted: {
+    objects: number;
+    bytes: number;
+    projects: number;
+    jobs: number;
+    settings: number;
+    grants: number;
+  };
+  stripe: string;
+  analytics: string;
+  retryable: boolean;
+  message?: string;
+}
+
+/**
+ * DELETE /api/account (AccountDataHandler.DeleteAccount). The handler requires the exact
+ * string "DELETE MY ACCOUNT" and a Firebase token whose auth_time is under 5 minutes; else
+ * 401 `reauth_required` (an AccountApiError with that code). A 502 carries the report and
+ * `retryable`; calling again resumes.
+ */
+export function deleteAccount(idToken: string, confirm: string): Promise<AccountDeleteReport> {
+  return accountJson<AccountDeleteReport>('/account', idToken, {
+    method: 'DELETE',
+    body: JSON.stringify({ confirm }),
+  });
+}
+
+/** POST /api/account/sessions/revoke (RevokeSessions, account_data.go). */
+export function revokeSessions(idToken: string): Promise<{ revokedAt: string }> {
+  return accountJson<{ revokedAt: string }>('/account/sessions/revoke', idToken, { method: 'POST' });
+}
+
+/**
+ * One Darkroom project row of GET /api/studio/projects (StudioHandler.ListRecentProjects,
+ * models.StudioProject). Only the fields the list needs; the full EDL is ignored. The API sends
+ * no thumbnail and no expiry for projects.
+ */
+export interface StudioProjectSummary {
+  id: string;
+  name: string;
+  durationSeconds: number;
+  width?: number;
+  height?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** GET /api/studio/projects (newest 25, account-scoped when a token is sent). */
+export async function fetchStudioProjects(idToken: string): Promise<StudioProjectSummary[]> {
+  const body = await accountJson<{ projects?: StudioProjectSummary[] }>('/studio/projects', idToken);
+  return Array.isArray(body.projects) ? body.projects : [];
 }
