@@ -243,6 +243,13 @@ function mimeFor(job: DescribableJob, ext: string): { mime: string; fromServer: 
   return { mime: MIME_BY_EXT[ext] ?? 'application/octet-stream', fromServer: false };
 }
 
+/** Kind of a file inside an archive, by name alone (no task context); `unknown` when undecided. */
+export function kindOfFileName(fileName: string): ResultKind {
+  const ext = extensionOf(fileName);
+  // Nested archives are plain archives here; stream bundles only get hls/dash from a job's task.
+  return kindFromExtension(ext, {}) ?? (/\.(m3u8|mpd)$/i.test(fileName) ? 'metadata' : 'unknown');
+}
+
 /** Kind of an uploaded original, for the compare modes. */
 export function kindOfOriginal(file: File | null | undefined): ResultKind {
   if (!file) return 'unknown';
