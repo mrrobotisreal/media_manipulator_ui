@@ -357,7 +357,7 @@
         "page": {
           "eyebrow": "Video-Tutorial",
           "title": "So verwenden Sie Darkroom",
-          "intro": "Darkroom ist ein Multi-Track-Videoeditor im Stil von Premiere Pro, der vollständig in Ihrem Browser läuft. Laden Sie Video und Audio hoch, ordnen Sie sie auf einer Zeitleiste an, schichten und mischen Sie Spuren, fügen Sie Effekte hinzu und exportieren Sie ein fertiges MP4 — ohne Software zu installieren. Diese Anleitung führt Sie durch den gesamten Workflow.",
+          "intro": "Darkroom ist ein Multi-Track-Videoeditor im Stil von Premiere Pro, der vollständig in Ihrem Browser läuft. Laden Sie Video, Bilder und Audio hoch, ordnen Sie sie auf einer Zeitleiste an, schichten und mischen Sie Spuren, fügen Sie Effekte hinzu und exportieren Sie ein fertiges MP4 — ohne Software zu installieren. Diese Anleitung führt Sie durch den gesamten Workflow.",
           "overviewAlt": "Der Darkroom-Editor mit Medienablage, Vorschau, Clip-Effekte-Panel und einer Multi-Track-Zeitleiste.",
           "overviewCaption": "Der Darkroom-Arbeitsbereich: Medienablage (links), Live-Vorschau (Mitte), Clip-Effekte (rechts) und die Multi-Track-Zeitleiste (unten).",
           "create": {
@@ -366,7 +366,7 @@
           },
           "media": {
             "title": "2. Ihre Medien hinzufügen",
-            "body": "Ziehen Sie Video- oder Audiodateien in das Medienfeld, oder klicken Sie auf „Dateien auswählen“. Jeder Upload wird analysiert und erhält eine flüssige 720p-Vorschau-Proxy-Datei sowie einen Filmstreifen — dabei sehen Sie kurz den Status „Vorschau wird erstellt“. Unterstützt werden sowohl Video (mp4, mov, webm, mkv, …) als auch Audio (mp3, wav, m4a, aac, ogg, flac), und Sie können beliebig viele Dateien hinzufügen."
+            "body": "Ziehen Sie Video-, Bild- oder Audiodateien in das Medienfeld, oder klicken Sie auf „Dateien auswählen“. Jeder Upload wird analysiert und erhält eine flüssige 720p-Vorschau-Proxy-Datei sowie einen Filmstreifen — dabei sehen Sie kurz den Status „Vorschau wird erstellt“. Unterstützt werden Video (mp4, mov, webm, mkv, …), Bilder (jpg, png, webp, heic, avif, gif, bmp, tiff) und Audio (mp3, wav, m4a, aac, ogg, flac) — Bilder werden als Standbilder gehalten, die Sie auf jede beliebige Länge dehnen können — und Sie können beliebig viele Dateien hinzufügen."
           },
           "timeline": {
             "title": "3. Ihre Zeitleiste aufbauen",
