@@ -2,11 +2,11 @@
 
 import React, { lazy, Suspense, useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Trans } from 'react-i18next';
-import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
+import { Upload, Download, Image, Video, Music, X, Settings, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
 import { cn, getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
-import FileDetails from '@/components/file-details';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { withToolShards } from '@/lib/i18n/ensureShard';
@@ -43,7 +43,6 @@ import { saveBlobToDisk } from '@/lib/results/save';
 import { describe as describeResult } from '@/lib/results/describe';
 import { peekResultBlob } from '@/lib/results/useResultBlob';
 import { ResultPanel } from '@/components/results/result-panel';
-import useIdentifyFile from '@/lib/useIdentifyFile';
 import {
   EVENTS,
   getVisitorId,
@@ -58,6 +57,9 @@ import {
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { Panel } from '@/components/darkroom/panel';
 import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
+
+/** Lazy chunk: the inspector flow adds nothing to the home route's first load. */
+const HomeMetadata = dynamic(() => import('@/components/metadata/home-metadata'), { ssr: false });
 
 type WorkflowMode = 'convert' | 'transcribe' | 'transcode' | 'document';
 
@@ -77,6 +79,8 @@ interface ConversionHistoryItem {
   resultSizeBytes?: number;
   expiresAt?: string;
   resultMime?: string;
+  metadataAvailable?: { original: boolean; result: boolean };
+  strippedCount?: number;
   error?: string;
 }
 
@@ -133,7 +137,6 @@ const FileConverterAppInner: React.FC = () => {
   const { reportError } = useAnalytics();
 
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
-  const { data: fileDetails, mutate: identifyFile, isPending: isIdentifying, reset: resetIdentification } = useIdentifyFile();
 
   /**
    * One place for `file_selected`, shared by the picker and the drop handler.
@@ -265,6 +268,8 @@ const FileConverterAppInner: React.FC = () => {
               resultSizeBytes: jobStatusData.resultSizeBytes,
               expiresAt: jobStatusData.expiresAt,
               resultMime: jobStatusData.resultMime,
+              metadataAvailable: jobStatusData.metadataAvailable,
+              strippedCount: jobStatusData.strippedCount,
             }
           : item
         ));
@@ -279,9 +284,6 @@ const FileConverterAppInner: React.FC = () => {
       }
     }
   }, [jobStatusData, conversionJob?.status, conversionStartTime, conversionOptions, fileType, selectedFile]);
-
-  // Identification COMPLETION is emitted by useIdentifyFile (which owns the mutation and
-  // therefore knows success from failure). Nothing to do here.
 
   // File drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -514,20 +516,8 @@ const FileConverterAppInner: React.FC = () => {
     setIsResultModalOpen(false);
     setAutoOpenedResultJobId(null);
     setWorkflowMode('convert');
-    resetIdentification();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
-    }
-  };
-
-  const handleIdentifyFile = () => {
-    if (selectedFile) {
-      identifyFile(selectedFile);
-      trackTool(EVENTS.FEATURE_USED, {
-        feature: 'file_identification',
-        action: 'started',
-        value: safeFileExtension(selectedFile.name),
-      });
     }
   };
 
@@ -569,6 +559,8 @@ const FileConverterAppInner: React.FC = () => {
         resultSizeBytes: activeHistoryItem.resultSizeBytes,
         expiresAt: activeHistoryItem.expiresAt,
         resultMime: activeHistoryItem.resultMime,
+        metadataAvailable: activeHistoryItem.metadataAvailable,
+        strippedCount: activeHistoryItem.strippedCount,
       },
       mode: activeHistoryItem.mode,
       original: {
@@ -735,23 +727,13 @@ const FileConverterAppInner: React.FC = () => {
                   onShowResult={() => loadResultPreview(conversionJob?.id, true)}
                 />
 
-                {/* Identify File Button */}
-                <button
-                  onClick={handleIdentifyFile}
-                  disabled={isIdentifying}
-                  className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Search className="w-4 h-4" />
-                  {isIdentifying ? t('interface:home.upload.analyzing') : t('interface:home.upload.identifyDetails')}
-                </button>
-
-                {/* File Details */}
-                {fileDetails && (
-                  <FileDetails
-                    fileDetails={fileDetails}
-                    className="mt-4"
-                  />
-                )}
+                {/* Metadata inspector (MM11): auto for images, documents and files up to 100 MB. */}
+                <HomeMetadata
+                  key={`${selectedFile.name}:${selectedFile.size}:${selectedFile.lastModified}`}
+                  file={selectedFile}
+                  kind={getFileType(selectedFile)}
+                  uploading={isPending || isTranscribePending}
+                />
 
               </div>
             )}

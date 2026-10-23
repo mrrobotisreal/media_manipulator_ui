@@ -151,8 +151,6 @@
       "dragDrop": "Ziehen Sie Ihre Datei hierher",
       "orClickSelect": "oder klicken Sie, um sie von Ihrem Computer auszuwählen",
       "chooseFile": "Datei auswählen",
-      "analyzing": "Wird analysiert...",
-      "identifyDetails": "Dateidetails ermitteln",
       "unsupportedFile": "Nicht unterstützter Dateityp. Bitte wählen Sie eine Bild-, Video- oder Audiodatei aus."
     },
     "options": {

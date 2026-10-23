@@ -2151,6 +2151,10 @@
       "unchanged": "Metadata unchanged",
       "compare": "Compare",
       "disclosure": "Result metadata"
+    },
+    "home": {
+      "inspect": "Inspect metadata",
+      "privacyNote": "Inspection happens on our servers; the file is deleted after analysis."
     }
   }
 }
