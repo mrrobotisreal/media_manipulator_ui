@@ -13,14 +13,17 @@ import type { ResultDescriptor, ResultKind } from '@/lib/results/describe';
 import { useResultBlob } from '@/lib/results/useResultBlob';
 import { useResultDownload } from '@/lib/results/useResultDownload';
 import { cn } from '@/lib/utils';
+import { compareFor, readCompareMode, writeCompareMode, type CompareMode as CompareViewMode } from './compare';
 import { viewerFor } from './viewers';
 import { KIND_ICONS } from './viewers/unknown-viewer';
 
 /**
- * Original/Result comparison modes. MM01 ships `toggle` only; MM02 adds `wipe`,
- * `side_by_side` and `synced` by extending this union and the `compare` branch below.
+ * Comparison modes. `toggle` on its own is the plain Original/Result switch; the rest come
+ * from the compare registry (components/results/compare) per kind.
  */
-export type CompareMode = 'toggle';
+export type CompareMode = CompareViewMode;
+
+const ALL_COMPARE_MODES: CompareMode[] = ['wipe', 'side_by_side', 'toggle', 'ab'];
 
 export interface ResultPanelProps {
   /** From `describe()`. The panel is a pure function of this plus the props below. */
@@ -47,6 +50,10 @@ export interface ResultPanelProps {
   onRunAnother?: () => void;
   /** Comparison modes offered when `descriptor.original` exists. */
   compareModes?: CompareMode[];
+  /** Fired when the visitor picks a compare mode (MM06 wires `result_compare_used`). */
+  onCompareModeChange?: (kind: ResultKind, mode: CompareMode) => void;
+  /** Target fps of the result when known (frame interpolation); shown as "target" in video compare. */
+  targetFps?: number | null;
   /** Which side opens first. Default `result`. */
   initialView?: 'original' | 'result';
   /** Bytes the caller already holds; used instead of a fetch the first time. */
@@ -147,7 +154,9 @@ function ResultPanelBody({
   onDownload,
   onDownloaded,
   onRunAnother,
-  compareModes = ['toggle'],
+  compareModes = ALL_COMPARE_MODES,
+  onCompareModeChange,
+  targetFps,
   initialView = 'result',
   seedBlob,
   onBlobLoaded,
@@ -167,11 +176,31 @@ function ResultPanelBody({
 
   const canCompare =
     !viewerOverride &&
-    compareModes.includes('toggle') &&
     !!descriptor.original &&
     COMPARABLE.has(descriptor.kind) &&
     COMPARABLE.has(descriptor.original.kind);
-  const shown: 'original' | 'result' = canCompare ? view : 'result';
+  // A registered compare view (image/video/audio) replaces the plain Original/Result toggle.
+  const compareEntry = canCompare && (descriptor.original?.file || descriptor.original?.objectUrl) ? compareFor(descriptor.kind) : undefined;
+  const entryModes = compareEntry && compareEntry.originals.includes(descriptor.original!.kind)
+    ? compareEntry.modes.filter((m) => compareModes.includes(m))
+    : [];
+  const [modeState, setModeState] = useState<Partial<Record<ResultKind, CompareMode>>>({});
+  const compareMode: CompareMode | null =
+    compareEntry && entryModes.length > 0
+      ? (modeState[descriptor.kind] && entryModes.includes(modeState[descriptor.kind]!)
+          ? modeState[descriptor.kind]!
+          : (() => {
+              const remembered = readCompareMode(descriptor.kind, compareEntry);
+              return entryModes.includes(remembered) ? remembered : entryModes[0];
+            })())
+      : null;
+  const legacyToggle = canCompare && compareMode === null && compareModes.includes('toggle');
+  const setCompareMode = (next: CompareMode) => {
+    setModeState((s) => ({ ...s, [descriptor.kind]: next }));
+    writeCompareMode(descriptor.kind, next);
+    onCompareModeChange?.(descriptor.kind, next);
+  };
+  const shown: 'original' | 'result' = legacyToggle ? view : 'result';
 
   // `result_previewed`: the visitor was shown the result. Once per job.
   useEffect(() => {
@@ -194,7 +223,7 @@ function ResultPanelBody({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedBlob]);
 
-  const originalUrl = useOriginalUrl(descriptor.original, active && canCompare);
+  const originalUrl = useOriginalUrl(descriptor.original, active && (legacyToggle || compareMode !== null));
   const saveName = downloadFileName ?? descriptor.fileName;
   const { download, isDownloading, failed } = useResultDownload({
     jobId: descriptor.jobId,
@@ -247,6 +276,24 @@ function ResultPanelBody({
         <Loader2 aria-hidden="true" className="size-4 animate-spin motion-reduce:animate-none" />
         {t('resultPanel.loading')}
       </p>
+    );
+  } else if (compareEntry && compareMode !== null && (!originalUrl || !blobState.url)) {
+    stage = <p className="text-muted-foreground">{t('resultPanel.loading')}</p>;
+  } else if (compareEntry && compareMode !== null && originalUrl && blobState.url) {
+    const CompareView = compareEntry.component;
+    stage = (
+      <CompareView
+        mode={compareMode}
+        descriptor={descriptor}
+        targetFps={targetFps}
+        original={{
+          src: originalUrl,
+          fileName: descriptor.original?.file?.name ?? descriptor.original?.fileName ?? descriptor.fileName,
+          mime: descriptor.original?.file?.type || descriptor.original?.mime || 'application/octet-stream',
+          sizeBytes: descriptor.original?.file?.size,
+        }}
+        result={{ src: blobState.url, fileName: descriptor.fileName, mime: descriptor.mime, sizeBytes: descriptor.sizeBytes }}
+      />
     );
   } else {
     stage = (
@@ -302,7 +349,17 @@ function ResultPanelBody({
           )}
           {downloadLabel ?? t('resultPanel.download')}
         </button>
-        {canCompare && (
+        {compareMode !== null && entryModes.length > 1 && (
+          <Segmented
+            name={`${groupName}-compare`}
+            label={t('resultPanel.compare')}
+            value={compareMode}
+            onValueChange={setCompareMode}
+            options={entryModes.map((m) => ({ value: m, label: t(`resultPanel.compareModes.${m}`) }))}
+            className={entryModes.length > 2 ? 'w-72' : 'w-56'}
+          />
+        )}
+        {legacyToggle && (
           <Segmented
             name={`${groupName}-compare`}
             label={t('resultPanel.compare')}

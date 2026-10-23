@@ -117,9 +117,9 @@ describe('ResultPanel', () => {
     expect(track).toHaveBeenCalledTimes(1);
   });
 
-  it('toggles Original/Result when an original exists and plays each side', async () => {
-    const original = new File(['abc'], 'in.png', { type: 'image/png' });
-    const d = descriptorFor('image', 'out.png', original);
+  it('toggles Original/Result for kinds without a compare view (gif)', async () => {
+    const original = new File(['abc'], 'in.gif', { type: 'image/gif' });
+    const d = descriptorFor('gif', 'out.gif', original);
     const { container } = render(<ResultPanel descriptor={d} />);
     await waitFor(() => expect(container.querySelector('img')).toBeTruthy());
     const resultSrc = container.querySelector('img')!.getAttribute('src');
@@ -152,5 +152,51 @@ describe('ResultPanel', () => {
     expect(screen.getByRole('dialog')).toBeTruthy();
     view.rerender(<ResultPanel descriptor={d} variant="modal" open={false} onOpenChange={() => undefined} />);
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  describe('compare modes', () => {
+    beforeEach(() => {
+      window.matchMedia = vi.fn().mockReturnValue({ matches: true, addEventListener: () => undefined, removeEventListener: () => undefined }) as unknown as typeof window.matchMedia;
+      sessionStorage.clear();
+    });
+
+    it('image with an original offers wipe / side by side / toggle, wipe first', async () => {
+      const d = descriptorFor('image', 'out.png', new File(['abc'], 'in.png', { type: 'image/png' }));
+      const onCompareModeChange = vi.fn();
+      const { container } = render(<ResultPanel descriptor={d} onCompareModeChange={onCompareModeChange} />);
+      const group = screen.getByRole('radiogroup', { name: 'Compare' });
+      expect(group.querySelectorAll('input[type="radio"]')).toHaveLength(3);
+      await waitFor(() => expect(container.querySelector('[data-compare-mode="wipe"]')).toBeTruthy());
+      expect(screen.getByRole('radio', { name: 'Wipe' })).toHaveProperty('checked', true);
+
+      fireEvent.click(screen.getByRole('radio', { name: 'Side by side' }));
+      await waitFor(() => expect(container.querySelector('[data-compare-mode="side_by_side"]')).toBeTruthy());
+      expect(onCompareModeChange).toHaveBeenCalledWith('image', 'side_by_side');
+      expect(sessionStorage.getItem('mm.result.compareMode.image')).toBe('side_by_side');
+    });
+
+    it('remembers the mode per kind for the session', async () => {
+      sessionStorage.setItem('mm.result.compareMode.image', 'toggle');
+      const d = descriptorFor('image', 'out.png', new File(['abc'], 'in.png', { type: 'image/png' }));
+      const { container } = render(<ResultPanel descriptor={d} />);
+      await waitFor(() => expect(container.querySelector('[data-compare-mode="toggle"]')).toBeTruthy());
+    });
+
+    it('shows no Compare control without an original', () => {
+      render(<ResultPanel descriptor={descriptorFor('image', 'out.png')} />);
+      expect(screen.queryByRole('radiogroup', { name: 'Compare' })).toBeNull();
+    });
+
+    it('video defaults to side by side with three modes; audio is a single A/B view', async () => {
+      const video = descriptorFor('video', 'out.mp4', new File(['abc'], 'in.mp4', { type: 'video/mp4' }));
+      const v = render(<ResultPanel descriptor={video} />);
+      expect(screen.getByRole('radiogroup', { name: 'Compare' }).querySelectorAll('input')).toHaveLength(3);
+      await waitFor(() => expect(v.container.querySelector('[data-compare-mode="side_by_side"]')).toBeTruthy());
+      v.unmount();
+      const audio = descriptorFor('audio', 'out.mp3', new File(['abc'], 'in.mp3', { type: 'audio/mpeg' }));
+      const a = render(<ResultPanel descriptor={audio} />);
+      await waitFor(() => expect(a.container.querySelector('[data-compare-mode="ab"]')).toBeTruthy());
+      expect(screen.queryByRole('radiogroup', { name: 'Compare' })).toBeNull();
+    });
   });
 });

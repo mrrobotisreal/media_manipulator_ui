@@ -6,11 +6,7 @@ import { Stat } from '@/components/darkroom/stat';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
 import type { ViewerProps } from './types';
-
-type Zoom = 'fit' | '1x' | '2x';
-
-const CHECKERBOARD =
-  'bg-[length:16px_16px] bg-[position:0_0,8px_8px] bg-[image:conic-gradient(var(--surface-3)_25%,transparent_0_50%,var(--surface-3)_0_75%,transparent_0)]';
+import { CHECKERBOARD, useZoom } from './use-zoom';
 
 /**
  * Image viewer: fit / 1x / 2x zoom by CSS transform and a transparency-grid toggle, so a
@@ -19,12 +15,10 @@ const CHECKERBOARD =
 export function ImageViewer({ src, fileName, role }: ViewerProps) {
   const { t } = useLocalization('interface');
   const name = useId();
-  const [zoom, setZoom] = useState<Zoom>('fit');
-  const [grid, setGrid] = useState(false);
+  const { zoom, setZoom, grid, setGrid, imageStyle } = useZoom();
   const [natural, setNatural] = useState<{ width: number; height: number } | null>(null);
   if (!src) return null;
 
-  const scale = zoom === '2x' ? 2 : 1;
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -72,7 +66,7 @@ export function ImageViewer({ src, fileName, role }: ViewerProps) {
           decoding="async"
           onLoad={(e) => setNatural({ width: e.currentTarget.naturalWidth, height: e.currentTarget.naturalHeight })}
           className={cn('object-contain', zoom === 'fit' && 'max-h-[calc(100dvh-22rem)] max-w-full')}
-          style={zoom === 'fit' ? undefined : { transform: `scale(${scale})`, transformOrigin: 'center', imageRendering: 'auto' }}
+          style={imageStyle}
           data-zoom={zoom}
         />
       </div>
