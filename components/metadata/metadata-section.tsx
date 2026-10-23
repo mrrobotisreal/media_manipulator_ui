@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { useLocalization } from '@/i18n/useLocalization';
 import type { MetadataRow } from '@/lib/metadata/rows';
 import type { PrivacyClass } from '@/lib/metadata/types';
-import { iconFor } from './category-icon';
+import { CategoryIcon } from './category-icon';
 import { MetadataTable, type MetadataTableProps } from './metadata-table';
 import { PRIVACY_ICON } from './privacy';
 
@@ -23,12 +23,11 @@ export interface MetadataSectionProps extends Pick<MetadataTableProps, 'resolveB
 /** One accordion item: icon, title, one-sentence summary, count, privacy badges, then the table. */
 export function MetadataSection({ id, rows, total, privacy, filtering, lead, ...tableProps }: MetadataSectionProps) {
   const { t } = useLocalization('interface');
-  const Icon = iconFor(id);
   const title = t(`metadata.categories.${id}.title`, { defaultValue: id });
   return (
     <AccordionItem value={id} data-category={id} data-testid={`metadata-section-${id}`}>
       <AccordionTrigger className="px-3 sm:px-4">
-        <Icon aria-hidden="true" className="size-4 shrink-0 text-primary" />
+        <CategoryIcon id={id} className="size-4 shrink-0 text-primary" />
         <span className="min-w-0 flex-1">
           <span className="block text-sm font-semibold text-foreground">{title}</span>
           <span className="hidden text-xs text-muted-foreground sm:block">

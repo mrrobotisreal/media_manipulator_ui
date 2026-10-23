@@ -52,3 +52,10 @@ export const categoryIcon: Record<string, LucideIcon> = {
 export function iconFor(id: string): LucideIcon {
   return categoryIcon[id] ?? Tag;
 }
+
+
+/** Renders the icon for a category id; keeps icon lookup out of render bodies. */
+export function CategoryIcon({ id, className }: { id: string; className?: string }) {
+  const Icon = iconFor(id);
+  return <Icon aria-hidden="true" className={className} />;
+}

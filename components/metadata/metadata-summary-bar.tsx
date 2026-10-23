@@ -9,8 +9,10 @@ import { cn } from '@/lib/utils';
 import { useLocalization } from '@/i18n/useLocalization';
 import { PRIVACY_CHIP_ORDER } from '@/lib/metadata/categories';
 import type { PrivacyClass } from '@/lib/metadata/types';
-import { categoryIcon } from './category-icon';
+import { CategoryIcon } from './category-icon';
 import { PRIVACY_ICON } from './privacy';
+
+const KIND_CATEGORY: Record<string, string> = { image: 'image', video: 'video', audio: 'audio', document: 'pdf' };
 
 export interface SummaryBarProps {
   fileName: string;
@@ -79,7 +81,6 @@ function PrivacyChips({
 export function MetadataSummaryBar(props: SummaryBarProps) {
   const { t } = useLocalization('interface');
   const [sheetOpen, setSheetOpen] = useState(false);
-  const KindIcon = categoryIcon[props.kind] ?? categoryIcon.file;
   const active = props.activeFilters.length;
 
   const chips = (
@@ -93,7 +94,7 @@ export function MetadataSummaryBar(props: SummaryBarProps) {
     >
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
         <div className="flex min-w-0 items-center gap-2">
-          <KindIcon aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
+          <CategoryIcon id={KIND_CATEGORY[props.kind] ?? 'file'} className="size-4 shrink-0 text-muted-foreground" />
           <span className="truncate text-sm font-semibold text-foreground" title={props.fileName}>
             {props.fileName}
           </span>
