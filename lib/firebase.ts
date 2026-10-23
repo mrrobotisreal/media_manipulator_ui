@@ -198,6 +198,46 @@ export const refreshIdentity = async (): Promise<boolean | null> => {
   return user.emailVerified;
 };
 
+/** A freshly minted ID token (forces a refresh), or null when nobody is signed in. */
+export async function getFreshIdToken(): Promise<string | null> {
+  try {
+    const auth = await getFirebaseAuth();
+    const user = auth?.currentUser;
+    return user ? await user.getIdToken(true) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Provider ids of the signed-in user (`password`, `google.com`), empty when signed out. */
+export const getSignInProviders = async (): Promise<string[]> => {
+  const auth = await getFirebaseAuth();
+  return auth?.currentUser?.providerData.map((p) => p.providerId) ?? [];
+};
+
+/**
+ * Re-authenticates the signed-in user and returns a fresh ID token (its auth_time is now).
+ * Account deletion needs this: the API answers 401 `reauth_required` unless the token's
+ * auth_time is under 5 minutes old (internal/handlers/account_delete.go). A popup is used
+ * for Google; where popups are blocked (`auth/popup-blocked`) the error propagates so the
+ * caller can say so.
+ */
+export const reauthenticate = async (
+  method: { kind: 'password'; password: string } | { kind: 'google' },
+): Promise<string> => {
+  const auth = await getFirebaseAuth();
+  const user = auth?.currentUser;
+  if (!auth || !user) throw new Error('Not signed in');
+  const mod = await import('firebase/auth');
+  if (method.kind === 'google') {
+    await mod.reauthenticateWithPopup(user, new mod.GoogleAuthProvider());
+  } else {
+    if (!user.email) throw new Error('This account has no email to re-authenticate with');
+    await mod.reauthenticateWithCredential(user, mod.EmailAuthProvider.credential(user.email, method.password));
+  }
+  return user.getIdToken(true);
+};
+
 export const signOut = async () => {
   const auth = await getFirebaseAuth();
   if (!auth) return;
