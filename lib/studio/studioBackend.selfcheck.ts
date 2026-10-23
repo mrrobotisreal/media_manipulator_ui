@@ -108,6 +108,13 @@ export function runStudioBackendSelfCheck(): { ok: true } {
   assert(cExport.user_id === 7 && cExport.fileName === 'o.mp4' && cExport.loudness === 'streaming', 'creatv export envelope carries loudness');
   assert(cre.parseExport({ job_id: 'JX' }).jobId === 'JX', 'creatv export parses job_id alias');
 
+  // --- Image assets: the adapter maps mediaKind 'image' explicitly ---
+  const cImg = cre.parseComplete({
+    asset: { id: 'I1', draftId: 1234, originalFileName: 'a.png', s3KeyOriginal: 'k', mediaKind: 'image', width: 800, height: 600 },
+    jobId: 'J1',
+  });
+  assert(cImg.asset.mediaKind === 'image' && cImg.asset.durationSeconds === 0, 'creatv maps image mediaKind');
+
   // --- Origin allowlist: scheme-tolerant matching (the env footgun) ---
   // event.origin always has a scheme; a scheme-less env value must still match.
   const schemeless = parseAllowedOrigins('creatv.io www.creatv.io localhost:8080', []);

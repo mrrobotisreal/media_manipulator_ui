@@ -461,7 +461,8 @@ function parseCreatvAsset(json: unknown): StudioAsset {
     s3KeyOriginal: String(j.s3KeyOriginal ?? ''),
     s3KeyProxy: j.s3KeyProxy != null ? String(j.s3KeyProxy) : undefined,
     thumbnailSpriteUrl: j.thumbnailSpriteUrl != null ? String(j.thumbnailSpriteUrl) : undefined,
-    mediaKind: j.mediaKind === 'audio' ? 'audio' : j.mediaKind === 'lut' ? 'lut' : 'video',
+    mediaKind:
+      j.mediaKind === 'audio' ? 'audio' : j.mediaKind === 'lut' ? 'lut' : j.mediaKind === 'image' ? 'image' : 'video',
     durationSeconds: typeof j.durationSeconds === 'number' ? j.durationSeconds : 0,
     width: typeof j.width === 'number' ? j.width : undefined,
     height: typeof j.height === 'number' ? j.height : undefined,
