@@ -116,6 +116,7 @@ const FileConverterAppInner: React.FC = () => {
   const [conversionStartTime, setConversionStartTime] = useState<number | null>(null);
   const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [resultSurface, setResultSurface] = useState<'home' | 'history'>('home');
   const [autoOpenedResultJobId, setAutoOpenedResultJobId] = useState<string | null>(null);
   const [conversionHistory, setConversionHistory] = useState<ConversionHistoryItem[]>([]);
   const [activeResultJobId, setActiveResultJobId] = useState<string | null>(null);
@@ -422,12 +423,13 @@ const FileConverterAppInner: React.FC = () => {
    * Original/Result toggle and `result_previewed` (once per job) now belong to ResultPanel,
    * so all this does is pick the job and open the dialog.
    */
-  const loadResultPreview = useCallback((jobId = conversionJob?.id, openModal = true) => {
+  const loadResultPreview = useCallback((jobId = conversionJob?.id, openModal = true, surface: 'home' | 'history' = 'home') => {
     if (!jobId) return;
     const historyItem = conversionHistory.find(item => item.jobId === jobId);
     const isCompleted = historyItem?.status === 'completed' || (conversionJob?.id === jobId && conversionJob.status === 'completed');
     if (!historyItem || !isCompleted) return;
     setActiveResultJobId(jobId);
+    setResultSurface(surface);
     if (openModal) setIsResultModalOpen(true);
   }, [conversionHistory, conversionJob?.id, conversionJob?.status]);
 
@@ -584,6 +586,7 @@ const FileConverterAppInner: React.FC = () => {
       {activeHistoryItem && (
         <ResultPanel
           variant="modal"
+          surface={resultSurface}
           open={isResultModalOpen}
           onOpenChange={setIsResultModalOpen}
           descriptor={activeDescriptor!}
@@ -799,7 +802,7 @@ const FileConverterAppInner: React.FC = () => {
                           <button
                             type="button"
                             disabled={item.status !== 'completed'}
-                            onClick={() => loadResultPreview(item.jobId, true)}
+                            onClick={() => loadResultPreview(item.jobId, true, 'history')}
                             className="text-sm bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors"
                           >
                             {t('interface:home.history.preview')}

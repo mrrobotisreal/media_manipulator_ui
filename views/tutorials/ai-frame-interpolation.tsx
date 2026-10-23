@@ -80,6 +80,7 @@ const AIFrameInterpolationTutorial: React.FC<{ locale?: string }> = ({ locale })
               </p>
 
               <EmbeddedToolPanel
+                surface="tutorial"
                 defaultMediaKind="video"
                 defaultTask="ai_frame_interpolation"
                 defaultOutputFormat="mp4"

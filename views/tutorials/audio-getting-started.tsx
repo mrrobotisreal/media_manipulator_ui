@@ -64,6 +64,7 @@ const AudioGettingStartedTutorial: React.FC<{ locale?: string }> = ({ locale }) 
           </p>
 
           <EmbeddedToolPanel
+            surface="tutorial"
             defaultMediaKind="audio"
             title={t(`${K}.toolPanel.title`)}
             description={t(`${K}.toolPanel.description`)}

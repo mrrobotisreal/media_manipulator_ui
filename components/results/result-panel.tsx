@@ -14,6 +14,7 @@ import { useResultBlob } from '@/lib/results/useResultBlob';
 import { useResultDownload } from '@/lib/results/useResultDownload';
 import { cn } from '@/lib/utils';
 import { compareFor, readCompareMode, writeCompareMode, type CompareMode as CompareViewMode } from './compare';
+import { resetResultAnalyticsForTests, useResultAnalytics, type ResultSurface } from './result-analytics';
 import { viewerFor } from './viewers';
 import { KIND_ICONS } from './viewers/unknown-viewer';
 
@@ -50,7 +51,7 @@ export interface ResultPanelProps {
   onRunAnother?: () => void;
   /** Comparison modes offered when `descriptor.original` exists. */
   compareModes?: CompareMode[];
-  /** Fired when the visitor picks a compare mode (MM06 wires `result_compare_used`). */
+  /** Fired when the visitor picks a compare mode (the panel already reports `result_compare_used`). */
   onCompareModeChange?: (kind: ResultKind, mode: CompareMode) => void;
   /** Target fps of the result when known (frame interpolation); shown as "target" in video compare. */
   targetFps?: number | null;
@@ -68,6 +69,8 @@ export interface ResultPanelProps {
   viewerOverride?: ReactNode;
   /** Set false on surfaces that must not count a `result_previewed` (history prefetch). */
   trackPreview?: boolean;
+  /** Which surface mounts the panel; rides on `result_viewed` and `result_download_clicked`. Default `tool_page`. */
+  surface?: ResultSurface;
   className?: string;
 }
 
@@ -92,6 +95,7 @@ const previewKindOf = (kind: ResultKind): NonNullable<PropsFor<'result_previewed
 const previewed = new Set<string>();
 export function resetPreviewedForTests(): void {
   previewed.clear();
+  resetResultAnalyticsForTests();
 }
 
 /** Kinds where an Original/Result comparison means something. */
@@ -162,6 +166,7 @@ function ResultPanelBody({
   onBlobLoaded,
   viewerOverride,
   trackPreview = true,
+  surface = 'tool_page',
   className,
   active,
   bare = false,
@@ -195,9 +200,16 @@ function ResultPanelBody({
             })())
       : null;
   const legacyToggle = canCompare && compareMode === null && compareModes.includes('toggle');
+  const analytics = useResultAnalytics({
+    jobId: descriptor.jobId,
+    kind: descriptor.kind,
+    surface,
+    hasOriginal: !!descriptor.original,
+  });
   const setCompareMode = (next: CompareMode) => {
     setModeState((s) => ({ ...s, [descriptor.kind]: next }));
     writeCompareMode(descriptor.kind, next);
+    analytics.onCompare(next);
     onCompareModeChange?.(descriptor.kind, next);
   };
   const shown: 'original' | 'result' = legacyToggle ? view : 'result';
@@ -212,6 +224,12 @@ function ResultPanelBody({
       { job_id: descriptor.jobId },
     );
   }, [active, descriptor.jobId, descriptor.kind, track, trackPreview]);
+
+  // `result_viewed`: the viewer is on screen (an open modal, an inline panel). Once per job.
+  const { onViewed } = analytics;
+  useEffect(() => {
+    if (active) onViewed();
+  }, [active, descriptor.jobId, onViewed]);
 
   const resultViewer = viewerFor(descriptor.kind);
   const wantsBytes = active && !viewerOverride && shown === 'result' && resultViewer.needsBlob;
@@ -231,10 +249,12 @@ function ResultPanelBody({
     cachedBlob: loadedBlob ?? seedBlob,
     onDownloaded,
   });
+  const { onDownload: trackDownloadClick } = analytics;
   const handleDownload = useCallback(() => {
+    trackDownloadClick();
     if (onDownload) return void Promise.resolve(onDownload());
     return void download();
-  }, [download, onDownload]);
+  }, [download, onDownload, trackDownloadClick]);
 
   const KindIcon = KIND_ICONS[descriptor.kind];
   const expires = useMemo(() => {
@@ -306,6 +326,9 @@ function ResultPanelBody({
         mime={sideDescriptor.mime}
         sizeBytes={sideDescriptor.sizeBytes}
         descriptor={descriptor}
+        onEntryOpen={analytics.onArchiveEntry}
+        onRungSelect={analytics.onRung}
+        onSeek={analytics.onSeek}
       />
     );
   }
@@ -364,7 +387,10 @@ function ResultPanelBody({
             name={`${groupName}-compare`}
             label={t('resultPanel.compare')}
             value={shown}
-            onValueChange={setView}
+            onValueChange={(next) => {
+              setView(next);
+              analytics.onCompare('toggle');
+            }}
             options={[
               { value: 'original', label: t('resultPanel.original') },
               { value: 'result', label: t('resultPanel.result') },

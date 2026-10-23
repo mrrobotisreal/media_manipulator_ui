@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import type { Cue } from '@/lib/results/captions';
 import type { ResultDescriptor, ResultKind } from '@/lib/results/describe';
 
 /**
@@ -20,10 +21,12 @@ export interface ViewerProps {
   mime: string;
   sizeBytes?: number;
   descriptor: ResultDescriptor;
-  /** Archive viewer: the visitor opened/played/downloaded an entry of this kind (MM06 wires analytics). */
+  /** Archive viewer: the visitor opened/played/downloaded an entry of this kind . */
   onEntryOpen?: (entryKind: ResultKind) => void;
   /** Stream viewer: the visitor picked a quality rung ('auto' or a height such as '720p'). */
   onRungSelect?: (rung: string) => void;
+  /** Transcript/captions viewers: a cue timestamp moved the original media. */
+  onSeek?: (cue: Cue) => void;
 }
 
 export interface ViewerEntry {

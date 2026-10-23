@@ -12,7 +12,7 @@ export interface RestoreCompareProps {
   manifest: RestoreResultsResponse;
   /** Display names per model id (capabilities `displayName`); falls back to the id. */
   modelNames?: Record<string, string>;
-  /** Fired when the visitor picks another model (MM06 wires analytics). */
+  /** Fired when the visitor picks another model (the restore panel reports it as an `ab` compare). */
   onModelSelect?: (modelId: string) => void;
 }
 

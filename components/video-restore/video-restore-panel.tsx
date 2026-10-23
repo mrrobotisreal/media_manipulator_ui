@@ -12,6 +12,7 @@ import SnippetSelector, { type SnippetSelection } from './snippet-selector';
 import ModelPicker from './model-picker';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
+import { useResultAnalytics } from '@/components/results/result-analytics';
 import useVideoRestoreResults from '@/lib/useVideoRestoreResults';
 import RestoreCompare from './restore-compare';
 
@@ -61,6 +62,9 @@ const VideoRestorePanel: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const restore = useVideoRestore((result) => setJobId(result.jobId));
+  // RestoreCompare is a viewerOverride, so the panel cannot see its model picker; the same
+  // once-per-(job, mode) memory dedupes against the ResultPanel's own hook.
+  const resultAnalytics = useResultAnalytics({ jobId: jobId ?? '', kind: 'archive', surface: 'tool_page', hasOriginal: true });
   const { data: job } = useTranscodeJobStatus(jobId);
   // MM05 per-model manifest; null (404) means an older API, so the tarball path stays.
   const manifestQuery = useVideoRestoreResults(jobId, job?.status === 'completed');
@@ -341,6 +345,7 @@ const VideoRestorePanel: React.FC = () => {
                       jobId={jobId}
                       manifest={manifest}
                       modelNames={Object.fromEntries((caps?.models ?? []).map((m) => [m.id, m.displayName]))}
+                      onModelSelect={() => resultAnalytics.onCompare('ab')}
                     />
                   ) : manifestQuery.isLoading ? (
                     <p role="status" className="text-muted-foreground">{t('resultPanel.restore.loading')}</p>

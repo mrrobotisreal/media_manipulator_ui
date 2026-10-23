@@ -105,11 +105,22 @@ describe('ResultPanel', () => {
     const d = descriptorFor('image', 'out.png');
     const view = render(<ResultPanel descriptor={d} />);
     view.rerender(<ResultPanel descriptor={d} />);
-    expect(track).toHaveBeenCalledTimes(1);
+    const previews = () => track.mock.calls.filter((c) => c[0] === 'result_previewed');
+    expect(previews()).toHaveLength(1);
     expect(track).toHaveBeenCalledWith('result_previewed', { job_id: 'job-image', preview_kind: 'image' }, { job_id: 'job-image' });
     view.unmount();
     render(<ResultPanel descriptor={d} />);
-    expect(track).toHaveBeenCalledTimes(1);
+    expect(previews()).toHaveLength(1);
+  });
+
+  it('emits result_viewed with the surface and result_download_clicked before the download', () => {
+    const d = descriptorFor('image', 'out.png');
+    render(<ResultPanel descriptor={d} surface="tutorial" onDownload={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /Download/ }));
+    const calls = track.mock.calls.filter((c) => /^result_(viewed|download)/.test(c[0]));
+    expect(calls.map((c) => c[0])).toEqual(['result_viewed', 'result_download_clicked']);
+    expect(calls[0][1]).toEqual({ job_id: 'job-image', kind: 'image', surface: 'tutorial', has_original: false });
+    expect(calls[1][1]).toEqual({ job_id: 'job-image', kind: 'image', surface: 'tutorial', viewed_first: true });
   });
 
   it('toggles Original/Result for kinds without a compare view (gif)', async () => {

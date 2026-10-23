@@ -283,6 +283,11 @@ interface EmbeddedToolPanelProps {
    * those show up in the data as unattributed, which is visible rather than silent.
    */
   toolSlug?: string | null;
+  /**
+   * Which surface hosts the panel, for result analytics. Defaults to `tool_page` when a
+   * `toolSlug` is set and `tutorial` otherwise; tutorial views pass it explicitly.
+   */
+  surface?: 'tool_page' | 'tutorial';
   /** Default media kind to bias the panel toward when no file is selected yet. */
   defaultMediaKind: EmbeddedMediaKind;
   /** Optional high-intent task. Drives recommended settings + banner copy. */
@@ -588,6 +593,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = (props) => (
 
 const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   toolSlug,
+  surface,
   defaultMediaKind,
   defaultTask,
   title,
@@ -1160,6 +1166,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
 
           {!isTranscodeAllowed && isCompleted && conversionJob && resultDescriptor && (
             <ResultPanel
+              surface={surface ?? (toolSlug ? 'tool_page' : 'tutorial')}
               descriptor={resultDescriptor}
               targetFps={fpsHint(defaultTask, conversionOptions)}
               downloadFileName={getConvertedFilename()}
