@@ -52,7 +52,12 @@ export function Stat({
       className={cn(
         orientation === 'stacked'
           ? 'flex flex-col gap-0.5'
-          : 'flex items-baseline justify-between gap-3',
+          : wrap
+            ? // Wrapping inline row: when label + value don't fit side by side,
+              // the value drops to its own line (still end-aligned) instead of
+              // being squeezed into a few characters.
+              'flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5'
+            : 'flex items-baseline justify-between gap-3',
         'min-w-0',
         className
       )}
@@ -64,7 +69,9 @@ export function Stat({
       <span
         className={cn(
           'num text-sm',
-          wrap ? 'break-words' : 'truncate',
+          wrap
+            ? cn('break-words', orientation === 'inline' && 'ms-auto text-end')
+            : 'truncate',
           VALUE_TONE[accent]
         )}
       >

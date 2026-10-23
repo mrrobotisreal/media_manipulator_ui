@@ -148,9 +148,9 @@ export const OverviewTab: React.FC<{
         {limits ? (
           <div className="grid gap-3">
             {extras.planRows.map((row) => (
-              <Stat key={row.value} orientation="inline" label={row.label} value={planValue(row.value)} />
+              <Stat key={row.value} orientation="inline" label={row.label} value={planValue(row.value)} wrap />
             ))}
-            <Stat orientation="inline" label={copy.retentionLabel} value={copy.retentionChoose} />
+            <Stat orientation="inline" label={copy.retentionLabel} value={copy.retentionChoose} wrap />
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">{copy.loadFailed}</p>

@@ -62,9 +62,9 @@ export const ProfileTab: React.FC<{ copy: AccountCopy }> = ({ copy }) => {
     <div className="grid max-w-2xl gap-6">
       <Panel title={c.title} titleAs="h2">
         <div className="grid gap-3">
-          <Stat orientation="inline" label={c.displayName} value={user.displayName || c.noName} />
+          <Stat orientation="inline" label={c.displayName} value={user.displayName || c.noName} wrap />
           <p className="text-xs text-muted-foreground">{c.nameReadOnly}</p>
-          <Stat orientation="inline" label={c.email} value={user.email ?? '—'} />
+          <Stat orientation="inline" label={c.email} value={user.email ?? '—'} wrap />
           <Stat orientation="inline" label="" value={verified ? c.verified : c.unverified} accent={verified ? 'data' : 'premium'} />
         </div>
         {verified ? null : (
