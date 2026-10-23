@@ -2084,6 +2084,73 @@
       "audio": "Audio",
       "document": "Document",
       "unknown": "File"
+    },
+    "diff": {
+      "open": "Compare",
+      "title": "Metadata changes",
+      "description": "What changed between the original file and the result.",
+      "originalToResult": "{{original}} → {{result}}",
+      "counts": {
+        "removed": "{{count}} removed",
+        "added": "{{count}} added",
+        "changed": "{{count}} changed",
+        "unchanged": "{{count}} unchanged"
+      },
+      "kind": {
+        "removed": "removed",
+        "added": "added",
+        "changed": "changed",
+        "unchanged": "unchanged",
+        "expected": "expected change"
+      },
+      "mode": {
+        "label": "Diff layout",
+        "unified": "Unified",
+        "split": "Split"
+      },
+      "filters": {
+        "label": "Show",
+        "removed": "Removed",
+        "added": "Added",
+        "changed": "Changed",
+        "unchanged": "Unchanged",
+        "categories": "Categories",
+        "allCategories": "All categories",
+        "privacyOnly": "Privacy tags only"
+      },
+      "search": {
+        "label": "Search changes",
+        "placeholder": "Search tag names and values"
+      },
+      "copy": "Copy diff as text",
+      "copied": "Diff copied",
+      "copyFailed": "Could not copy the diff",
+      "original": "Original",
+      "result": "Result",
+      "empty": "Nothing to show with these filters.",
+      "noChanges": "The metadata is identical.",
+      "categoryCounts": "−{{removed}} +{{added}} ~{{changed}}",
+      "showMore": "Show {{count}} more",
+      "emptyCell": "no value",
+      "loading": "Comparing metadata…",
+      "error": "Could not compare the metadata for this file.",
+      "delta": "{{from}} → {{to}} ({{delta}})"
+    },
+    "strip": {
+      "stripEverything": "Strip everything",
+      "stripping": "Stripping…",
+      "intro": "This is what the file carries today. Strip everything removes it all and keeps the same format.",
+      "defaultNote": "Everything is stripped by default. Open advanced options below to keep or edit specific fields.",
+      "removedCount_one": "Removed {{count}} tag",
+      "removedCount_other": "Removed {{count}} tags",
+      "includingLocation": "including location",
+      "resultTitle": "Metadata in the cleaned file"
+    },
+    "resultLine": {
+      "summary": "Metadata: {{kept}} kept · {{removed}} removed",
+      "unchanged": "Metadata unchanged",
+      "compare": "Compare",
+      "disclosure": "Result metadata"
     }
   }
 }

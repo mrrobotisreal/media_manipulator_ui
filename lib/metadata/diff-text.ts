@@ -165,8 +165,8 @@ export function valueText(value: unknown): string {
 
 export interface DiffTextChanged {
   id: string;
-  before: unknown;
-  after: unknown;
+  before?: unknown;
+  after?: unknown;
 }
 
 export interface DiffTextInput {

@@ -112,3 +112,8 @@ export type InspectorEvent =
   | { type: 'binary_downloaded'; entryId: string };
 
 export type InspectorSurface = 'home' | 'tool_page' | 'result';
+
+/** Events the diff modal and the result line report; MM11 maps them to analytics. */
+export type DiffEvent =
+  | { type: 'diff_opened'; surface: InspectorSurface }
+  | { type: 'mode_changed'; mode: 'unified' | 'split' };
