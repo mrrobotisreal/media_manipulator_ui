@@ -32,7 +32,7 @@ import { editSummary } from '@/lib/studio/telemetry';
 import ClipWaveform from './clip-waveform';
 import { useUndoGesture } from './useUndoGesture';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
-import type { StudioClip, StudioTrack, StudioTransitionType } from '@/lib/studioTypes';
+import type { StudioClip, StudioMediaKind, StudioTrack, StudioTransitionType } from '@/lib/studioTypes';
 
 const RULER_HEIGHT = 28;
 const TRACK_HEIGHT = 56;
