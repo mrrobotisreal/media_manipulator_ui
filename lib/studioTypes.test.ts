@@ -103,6 +103,18 @@ describe('normalizeProject', () => {
     expect(twice.tracks).toBe(once.tracks);
   });
 
+  it('is idempotent for a project holding an image asset clip', () => {
+    const tracks: StudioTrack[] = [
+      { id: 'v1', kind: 'video', index: 0, muted: false, clips: [
+        { id: 'img', assetId: 'img-1', streamIndex: 0, timelineStart: 0, sourceIn: 0, sourceOut: 3600 },
+      ] },
+    ];
+    const once = normalizeProject(v2Project(tracks));
+    const twice = normalizeProject(once);
+    expect(twice).toEqual(once);
+    expect(once.tracks[0].clips[0].sourceOut).toBe(3600);
+  });
+
   it('leaves clips with nothing to upgrade byte-stable (mirrors the Go no-op guard)', () => {
     const input = v1Project(stableTracks());
     const out = normalizeProject(input);
