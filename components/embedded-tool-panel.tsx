@@ -430,134 +430,6 @@ const DEFAULT_DESCRIPTIONS: Record<EmbeddedMediaKind, string> = {
     'Upload a PDF to convert to images, or an image to turn into a PDF. No signup required.',
 };
 
-const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: string }>> = {
-  remove_metadata: {
-    note:
-      'Everything is stripped by default: EXIF, GPS, and IPTC fields. Open the form’s advanced options below if you want to keep or edit specific fields.',
-  },
-  compress_video: {
-    note:
-      'Lower the quality preset or bitrate to shrink the file. Keep the same resolution and codec for the most natural-looking result.',
-  },
-  video_to_gif: {
-    recommended: 'gif',
-    note: 'Pick GIF as the output format. Trim to under ~10 seconds for a small, shareable file.',
-  },
-  webp_to_jpg: {
-    recommended: 'jpg',
-    note: 'Pick JPG as the output format. JPG drops transparency, so use PNG instead if your image has a transparent background.',
-  },
-  wav_to_mp3: {
-    recommended: 'mp3',
-    note: 'Pick MP3 as the output format. 192 kbps is a good default for voice; 256–320 kbps for music.',
-  },
-  isolate_vocals: {
-    note: 'After uploading, enable the “Isolate Vocals” AI tool in the audio panel. Output WAV preserves the most detail.',
-  },
-  image_converter: {
-    note: 'Pick any output format: JPG for photos, PNG for transparency, WebP/AVIF for the smallest web files.',
-  },
-  video_converter: {
-    note: 'MP4 is the safe everywhere default. WebM gives smaller files for modern browsers.',
-  },
-  audio_converter: {
-    note: 'MP3 plays everywhere. WAV is lossless but large. M4A/AAC is a good compressed default for music.',
-  },
-  transcribe_video: {
-    note: 'Choose the transcript format that fits your use case — VTT for captions, plain text for an article, JSON for downstream tooling.',
-  },
-  transcode_to_hls: {
-    note: 'Free tier covers 360p/480p/720p. We package master.m3u8 + variant playlists + .ts segments into a downloadable .tar.gz.',
-  },
-  transcode_to_dash: {
-    note: 'Pick AV1 (smaller files) or VP9 (broader playback). The .tar.gz contains manifest.mpd + per-rendition init/segment files.',
-  },
-  srt_generator: {
-    recommended: 'srt',
-    note: 'SRT is selected by default — the file works on YouTube, in DaVinci Resolve / Premiere, and in most video editors.',
-  },
-  caption_translator: {
-    note: 'Upload an existing .srt or .vtt file. Cue timings are preserved exactly — only the text is translated, on our local AI server.',
-  },
-  audio_waveform: {
-    note: 'Defaults to a wide 10:1 waveform video — perfect for podcasts, music previews, and editing timelines. Switch to image-only or both via the Output selector.',
-  },
-  extract_audio: {
-    recommended: 'mp3',
-    note: 'Extracts the first audio track of the video. Videos with no audio return a clear error.',
-  },
-  extract_video_only: {
-    recommended: 'mp4',
-    note: 'Strips all audio tracks. We stream-copy the video stream where possible — no re-encode, no quality loss.',
-  },
-  extract_frames: {
-    note: 'Bundles the extracted frames into a single .zip you can download in one click. The max-frame cap keeps runs short.',
-  },
-  stitch_audio_to_video: {
-    note: 'Add up to three audio tracks (music, voiceover, narration) and pick "mix" or "replace" to control whether the original audio stays.',
-  },
-  ai_frame_interpolation: {
-    recommended: 'mp4',
-    note: 'After uploading, scroll to the "AI Video Tools" panel and pick AI Frame Interpolation. Choose a target FPS (48, 60, or 120). Output is MP4 in v1.',
-  },
-  // Image SEO tasks. User-facing guidance prose lives in each tool's
-  // canonical `embed.description` (toolPages.ts) rather than being hardcoded
-  // here, so these only carry the data-shaped `recommended` format chip.
-  png_to_jpg: { recommended: 'jpg' },
-  jpg_to_png: { recommended: 'png' },
-  webp_to_png: { recommended: 'png' },
-  png_to_webp: { recommended: 'webp' },
-  jpg_to_webp: { recommended: 'webp' },
-  jpg_converter: { recommended: 'jpg' },
-  png_converter: { recommended: 'png' },
-  image_resizer: {},
-  compress_image: {},
-  remove_background: { recommended: 'png' },
-  // PDF tasks. Guidance prose lives in each tool's canonical embed.description.
-  image_to_pdf: { recommended: 'pdf' },
-  jpg_to_pdf: { recommended: 'pdf' },
-  png_to_pdf: { recommended: 'pdf' },
-  pdf_to_jpg: { recommended: 'jpg' },
-  pdf_to_png: { recommended: 'png' },
-  pdf_converter: {},
-  // Modern image / vector / favicon tasks. Guidance prose lives in each tool's
-  // canonical embed.description.
-  heic_to_jpg: { recommended: 'jpg' },
-  avif_to_jpg: { recommended: 'jpg' },
-  avif_to_png: { recommended: 'png' },
-  svg_to_png: { recommended: 'png' },
-  png_to_svg: { recommended: 'svg' },
-  png_to_ico: { recommended: 'ico' },
-  svg_converter: { recommended: 'png' },
-  // Video SEO tasks. Like the image batch, guidance prose lives in each tool's
-  // canonical `embed.description` (toolPages.ts); these only carry the
-  // data-shaped `recommended` format chip. The actual default/lock behavior is
-  // driven by the embed's defaultVideoOutputFormat / lockedVideoOutputFormat
-  // (and defaultExtractAudioFormat / lockedExtractAudioFormat for audio output).
-  mp4_converter: { recommended: 'mp4' },
-  mov_to_mp4: { recommended: 'mp4' },
-  webm_to_mp4: { recommended: 'mp4' },
-  avi_to_mp4: { recommended: 'mp4' },
-  mkv_to_mp4: { recommended: 'mp4' },
-  mp4_to_webm: { recommended: 'webm' },
-  mp4_to_mp3: { recommended: 'mp3' },
-  video_to_mp3: { recommended: 'mp3' },
-  mp4_to_gif: { recommended: 'gif' },
-  gif_converter: { recommended: 'gif' },
-  // Video utility tasks (batch 2). These render focused specialized panels, so
-  // they carry no recommended-format chip — the panel UI states the task.
-  video_compressor: {},
-  compress_mp4: {},
-  video_trimmer: {},
-  mp4_trimmer: {},
-  video_cutter: {},
-  cut_video_online: {},
-  crop_video: {},
-  resize_video: {},
-  rotate_video: {},
-  remove_audio_from_video: {},
-};
-
 const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
   audio_waveform: true,
   extract_audio: true,
@@ -861,7 +733,6 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   const subheading = description || DEFAULT_DESCRIPTIONS[defaultMediaKind];
   const { t, formatFileSize } = useLocalization('interface');
   const localized = useLocalizedHref();
-  const hint = defaultTask ? TASK_HINTS[defaultTask] : undefined;
   // A single "output is locked" value, regardless of media kind, so the info
   // banner shows the right chip for image / video / extract-audio pages alike.
   const lockedOutputDisplay =
@@ -872,8 +743,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     ? undefined
     : defaultOutputFormat ||
       defaultVideoOutputFormat ||
-      defaultExtractAudioFormat ||
-      hint?.recommended;
+      defaultExtractAudioFormat;
 
   // Must recognize EVERY EmbeddedImageFormat — otherwise tool pages advertising
   // AVIF/PDF/SVG/ICO output silently fall through and the promised output is
@@ -1011,7 +881,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         </div>
       </div>
 
-      {(hint?.note || recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
+      {(recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
         <div className="mb-4 flex items-start gap-2 rounded-md border border-primary/30 bg-primary/10 p-3">
           <Info className="w-4 h-4 text-primary mt-0.5 shrink-0" />
           <div className="text-sm text-card-foreground">
@@ -1045,7 +915,6 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
                 {allowedInputFormats.map((f) => f.toUpperCase()).join(', ')}
               </p>
             )}
-            {hint?.note && <p className="text-muted-foreground mt-1">{hint.note}</p>}
           </div>
         </div>
       )}

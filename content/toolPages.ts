@@ -524,7 +524,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       preset: { kind: 'video', panel: 'video_compressor' },
       title: 'Compress a video',
       description:
-        'Upload a video and pick a smaller quality preset or lower bitrate. Keep the same codec for the fastest result, or switch to WebM/H.265 for smaller files on modern devices.',
+        'Upload a video and pick a smaller quality preset or lower bitrate. Keep the same codec for the fastest result, or switch to WebM/H.265 for smaller files on modern devices. Keeping the same resolution gives the most natural-looking result.',
     },
     intro:
       'A 30-second clip from a modern phone or screen recorder can easily be hundreds of megabytes. Media Manipulator re-encodes your video at a lower bitrate or with a more efficient codec so the file shrinks dramatically while still looking good. Most users get 50–80% smaller files with no visible quality loss.',
@@ -1099,7 +1099,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       transcribeMode: true,
       title: 'Transcribe a video',
       description:
-        'Upload a video. The AI transcription model runs on our local GPU server and exports as VTT captions, plain text, or JSON.',
+        'Upload a video. The AI transcription model runs on our local GPU server and exports as VTT captions, plain text, or JSON: VTT for captions, plain text for an article, JSON for downstream tooling.',
     },
     intro:
       'Whether you are adding accessibility captions, building a searchable archive, or just want to skim a long video, transcription unlocks the speech inside your file. Media Manipulator transcribes your video locally on our own GPU server — no third-party AI provider sees your media.',
@@ -1237,7 +1237,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       acceptOverride: 'image/webp,image/*',
       title: 'Convert WebP to JPG',
       description:
-        'Upload a WebP image and pick JPG as the output format. Adjust the quality slider to balance file size against image quality.',
+        'Upload a WebP image and pick JPG as the output format. Adjust the quality slider to balance file size against image quality. JPG drops transparency, so use PNG instead if your image has a transparent background.',
     },
     intro:
       'WebP is great for the web — but older software, presentation tools, and printers often can\'t read it. Media Manipulator converts WebP back to JPG so you can use the image anywhere. Pick the quality you want, and we handle the rest.',
@@ -2819,6 +2819,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'pdf',
       defaultTask: 'pdf_to_jpg',
+      defaultOutputFormat: 'jpg',
       acceptOverride: 'application/pdf',
       pdfDefaultOutputFormat: 'jpg',
       pdfLockOutputFormat: true,
@@ -2932,6 +2933,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'pdf',
       defaultTask: 'pdf_to_png',
+      defaultOutputFormat: 'png',
       acceptOverride: 'application/pdf',
       pdfDefaultOutputFormat: 'png',
       pdfLockOutputFormat: true,
@@ -4207,7 +4209,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       defaultTask: 'image_converter',
       title: 'Convert an image',
       description:
-        'Upload any image and choose the output format, quality, and resize/crop settings.',
+        'Upload any image and choose the output format, quality, and resize/crop settings. JPG suits photos, PNG keeps transparency, and WebP/AVIF give the smallest web files.',
     },
     intro:
       'A single image often needs to live in several places — your website, a presentation, a print piece, a marketplace listing. Each one prefers a different format. Media Manipulator handles every common image format in one place, with fine control over quality, resizing, and metadata.',
@@ -4293,7 +4295,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       defaultTask: 'video_converter',
       title: 'Convert a video',
       description:
-        'Upload any video and choose the target container/codec. The "medium" quality preset is a good default.',
+        'Upload any video and choose the target container/codec. The "medium" quality preset is a good default. MP4 plays everywhere; WebM gives smaller files in modern browsers.',
     },
     intro:
       'Different platforms want different video formats. Edit on a Mac in MOV, post to the web in MP4 or WebM, archive in MKV. Media Manipulator handles every common video container and codec in one place, with full control over bitrate, resolution, and audio.',
@@ -6160,7 +6162,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       defaultTask: 'audio_converter',
       title: 'Convert an audio file',
       description:
-        'Upload any audio file and pick the target format. 192 kbps MP3 is a sensible default.',
+        'Upload any audio file and pick the target format. 192 kbps MP3 is a sensible default. WAV is lossless but large; M4A/AAC is a good compressed choice for music.',
     },
     intro:
       'Different devices, podcast hosts, and audio editors want different formats. Media Manipulator handles every common audio format in one place, with fine control over bitrate, sample rate, and channel layout.',
@@ -6427,7 +6429,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       defaultTask: 'audio_waveform',
       title: 'Generate a waveform from an audio file',
       description:
-        'Upload an audio file and pick whether you want a waveform video, a waveform image, or both. Advanced controls let you tune size, colors, render mode, and stereo behavior.',
+        'Upload an audio file and pick whether you want a waveform video, a waveform image, or both. Advanced controls let you tune size, colors, render mode, and stereo behavior. The default is a wide 10:1 waveform video, suited to podcasts and music previews.',
     },
     intro:
       'A waveform makes audio visible — a critical asset for podcasts, music previews, social-clip thumbnails, and editing timelines. Media Manipulator renders waveforms using FFmpeg’s showwaves / showwavespic filters, with sensible defaults (a wide 10:1 strip at 1600×160) and a full advanced panel for tuning render mode, color, scale, and stereo splitting.',
@@ -6516,9 +6518,10 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'video',
       defaultTask: 'extract_audio',
+      defaultExtractAudioFormat: 'mp3',
       title: 'Extract the audio track from a video',
       description:
-        'Upload any common video container. Pick MP3 for broad compatibility, WAV for lossless, or M4A/AAC for a compact compressed file.',
+        'Upload any common video container. Pick MP3 for broad compatibility, WAV for lossless, or M4A/AAC for a compact compressed file. Videos with no audio track return a clear error.',
     },
     intro:
       'Pulling the audio out of a video is one of the most common editing tasks — for podcasting, voiceover review, transcript preparation, or simply saving a song from a music video. Media Manipulator extracts the first audio track from any common video container and re-encodes it into the format you choose, with no quality loss when the source already matches.',
@@ -6605,6 +6608,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'video',
       defaultTask: 'extract_video_only',
+      defaultOutputFormat: 'mp4',
       title: 'Remove audio from a video',
       description:
         'Upload your video and we produce a silent/video-only copy. The video stream is stream-copied wherever possible so there is no re-encode and no quality loss.',
