@@ -101,7 +101,8 @@
     },
     "navigationLabel": "Navigation",
     "language": "Language",
-    "selectLanguage": "Select language"
+    "selectLanguage": "Select language",
+    "voices": "Voices"
   },
   "footer": {
     "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",

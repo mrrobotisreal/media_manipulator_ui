@@ -1556,5 +1556,49 @@
     "limitationsBody": "Darkroom evoluciona activamente. La edición esencial —línea de tiempo multipista, recorte/división, superposición de capas, mezcla de audio y exportación a MP4— ya está disponible. Con el tiempo se siguen añadiendo efectos avanzados.",
     "privacyTitle": "Privacidad",
     "privacyBody": "Tus archivos se procesan en nuestros propios servidores y se eliminan automáticamente en un plazo de 24 horas. No se requiere cuenta y los archivos nunca se comparten con proveedores externos."
+  },
+  "voices": {
+    "eyebrow": "Voces",
+    "title": "Mis voces en ElevenLabs",
+    "intro": "Soy Mitchell Wintrow, el creador de Media Manipulator. Hice dos clones de voz profesionales en ElevenLabs y ambos son públicos en la biblioteca de voces de ElevenLabs, así que cualquiera puede usarlos para narración, personajes, vídeos y juegos.",
+    "made": "Las dos voces están probadas y verificadas en más de 14 idiomas. Las dos escenas de abajo suenan en ocho de ellos. Se generaron con Eleven v4 y etiquetas de audio, con efectos de sonido de ElevenLabs y música original creada en Suno.",
+    "languageLabel": "Idioma de la demo",
+    "languageHint": "Las dos escenas cambian a la vez.",
+    "useVoice": "Usar {{name}} en ElevenLabs",
+    "roles": {
+      "narration": "Narración",
+      "characters": "Personajes"
+    },
+    "mrWintrow": {
+      "description": "Un clon profesional de mi propia voz, pensado para narraciones largas: audiolibros, historias de terror, vídeos explicativos y locuciones. En una sola lectura pasa de la calma a la burla, al miedo y a quebrarse.",
+      "demoTitle": "The Last Exit",
+      "demoDescription": "Una narración de terror en un viaje nocturno: calma, burla, pánico, falta de aliento, quiebre… y vuelta."
+    },
+    "obsidian": {
+      "description": "Un segundo clon profesional afinado para personajes: villanos, hechiceros, papeles de videojuegos y radioteatro que piden amenaza y teatralidad en lugar de la contención de un narrador.",
+      "demoTitle": "The Tower at Vaelmoor",
+      "demoDescription": "Un nigromante se bate en duelo con su viejo maestro, Cornelius (una voz de la biblioteca de ElevenLabs), en plena tormenta."
+    },
+    "howTo": {
+      "title": "Cómo usarlas",
+      "steps": [
+        "Abre una voz con el enlace que hay bajo su demo. Basta con una cuenta gratuita de ElevenLabs.",
+        "Añádela a tus voces y elígela en Text to Speech, en Studio o mediante la API.",
+        "Para lecturas expresivas, usa Eleven v4 y etiquetas de audio como [whispers] o [laughs]."
+      ]
+    },
+    "darkroomTip": "Genera una frase en ElevenLabs, descárgala y arrastra el audio a la biblioteca de medios de Darkroom para ponerlo bajo tu edición.",
+    "sumrak": "También narran las historias de Сумрак, la app para aprender ruso que construí. <linkSumrak>Más información en winapps.io</linkSumrak>.",
+    "home": {
+      "eyebrow": "Voces",
+      "title": "La voz detrás de Media Manipulator",
+      "body": "Dos voces profesionales que hice en ElevenLabs, gratis para probar, con escenas en ocho idiomas.",
+      "cta": "Todas las demos de voz"
+    },
+    "darkroom": {
+      "title": "¿Necesitas una locución para tu edición?",
+      "body": "Prueba mis dos voces de ElevenLabs, genera allí una frase y añade el audio a la biblioteca de medios de Darkroom.",
+      "cta": "Más sobre las voces"
+    }
   }
 }

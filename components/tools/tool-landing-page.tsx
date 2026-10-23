@@ -36,6 +36,7 @@ export default function ToolLandingPage({
   tool,
   panel,
   beforeIntroExtra,
+  afterPanelExtra,
   locale,
 }: {
   tool: ToolPageContent;
@@ -44,6 +45,8 @@ export default function ToolLandingPage({
   panel?: ReactNode;
   /** Optional extra node rendered right after the intro (e.g. a help toggle). */
   beforeIntroExtra?: ReactNode;
+  /** Optional extra node rendered right after the tool panel (e.g. the voices panel on Darkroom). */
+  afterPanelExtra?: ReactNode;
   /** Active locale, so internal links (breadcrumbs, related tools) stay inside it. */
   locale?: string;
 }) {
@@ -155,6 +158,8 @@ export default function ToolLandingPage({
           />
           )}
           </ToolAnalyticsBoundary>
+
+          {afterPanelExtra}
 
           {/* Supported formats */}
           {hasFormats && sf ? (

@@ -101,7 +101,8 @@
     },
     "navigationLabel": "Navigation",
     "language": "Sprache",
-    "selectLanguage": "Sprache auswählen"
+    "selectLanguage": "Sprache auswählen",
+    "voices": "Stimmen"
   },
   "footer": {
     "tagline": "Browserbasierte und serverunterstützte Tools zum Bearbeiten, Konvertieren, Komprimieren, Analysieren, Transkribieren, Zusammenfassen und sonstigen Verarbeiten von Bild-, Video- und Audiodateien.",

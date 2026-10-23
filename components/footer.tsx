@@ -19,6 +19,7 @@ const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'home', href: '/' },
   { key: 'tools', href: '/tools' },
   { key: 'contentStudio', href: '/tools/content-studio', label: 'Darkroom' },
+  { key: 'voices', href: '/voices' },
   { key: 'blog', href: '/blog' },
   { key: 'tutorials', href: '/tutorials' },
   { key: 'howItWorks', href: '/how-it-works' },

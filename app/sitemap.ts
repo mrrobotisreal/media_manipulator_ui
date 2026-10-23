@@ -20,6 +20,8 @@ const CORE_ROUTES = [
   // Phase 4. Public, indexable, and the one page that answers "what does this
   // cost" — the question an AdSense reviewer and a search visitor both ask.
   '/pricing',
+  // Mitchell Wintrow's ElevenLabs voices, playable in eight languages.
+  '/voices',
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

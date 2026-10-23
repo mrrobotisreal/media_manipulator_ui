@@ -16,6 +16,7 @@ import { ROUTE_SEO_MAP, SITE_NAME, SITE_ORIGIN, ORG_NAME } from '@/lib/seo';
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
 import { locales } from '@/i18n/locales';
+import { VOICES, VOICE_DEMO_LANGUAGES } from '@/content/voices';
 
 const abs = (path: string): string =>
   path.startsWith('http') ? path : `${SITE_ORIGIN}${path === '/' ? '/' : path}`;
@@ -106,6 +107,19 @@ function keyFactsSection(): string[] {
   ];
 }
 
+function voicesSection(): string[] {
+  const languages = VOICE_DEMO_LANGUAGES.map((l) => l.label).join(', ');
+  return [
+    '## Voices on ElevenLabs',
+    '',
+    `${OWNER.name} created two professional voice clones on ElevenLabs. Both are public in the ElevenLabs voice library, tested and verified in over 14 languages, and anyone can use them for narration, characters, videos and games. ${abs('/voices')} plays a demo scene for each voice in eight languages (${languages}), rendered on Eleven v4 with audio tags, ElevenLabs sound effects and original Suno scores.`,
+    '',
+    ...VOICES.map(
+      (v) => `- [${v.name}](${v.elevenLabsUrl}): ${v.role === 'narration' ? 'a clone of his own voice for long-form narration (audiobooks, horror stories, explainers, voiceovers)' : 'a character voice for villains, sorcerers, games and audio drama'}.`,
+    ),
+  ];
+}
+
 function plansSection(): string[] {
   return [
     '## Plans and limits',
@@ -178,6 +192,8 @@ export function llmsIndexMarkdown(): string {
     '',
     ...darkroomSection(),
     '',
+    ...voicesSection(),
+    '',
     '## Tools',
     '',
     ...toolSections(true),
@@ -185,6 +201,7 @@ export function llmsIndexMarkdown(): string {
     '',
     pageLine('/'),
     `- [Pricing](${abs('/pricing')}): Plans and daily limits for visitors, free accounts and Premium.`,
+    `- [Voices](${abs('/voices')}): ${OWNER.name}'s two ElevenLabs voices, Mr. Wintrow and Obsidian, playable in eight languages.`,
     ...PAGE_PATHS.map(pageLine),
     '',
     '## Optional',

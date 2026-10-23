@@ -45,6 +45,7 @@ const isNavActive = (currentPath: string, linkHref: string): boolean => {
 const NAV_LINKS: { key: string; href: string }[] = [
   { key: "home", href: "/" },
   { key: "tools", href: "/tools" },
+  { key: "voices", href: "/voices" },
   { key: "about", href: "/about" },
   { key: "howItWorks", href: "/how-it-works" },
   { key: "tutorials", href: "/tutorials" },

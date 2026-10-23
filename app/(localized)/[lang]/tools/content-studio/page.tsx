@@ -5,6 +5,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import ToolLandingPage from '@/components/tools/tool-landing-page';
 import StudioHostClient from '@/components/content-studio/studio-host-client';
+import VoiceShowcaseSection from '@/components/voices/voice-showcase-section';
 import { TOOL_PAGES } from '@/content/toolPages';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { getServerT } from '@/lib/i18n/server';
@@ -89,6 +90,7 @@ export default async function ContentStudioRoute({ params }: PageParams) {
         tool={tool}
         panel={<StudioHostClient />}
         beforeIntroExtra={<StudioGuide locale={locale} />}
+        afterPanelExtra={<VoiceShowcaseSection locale={locale} variant="darkroom" className="mt-8" />}
         locale={locale}
       />
     </>

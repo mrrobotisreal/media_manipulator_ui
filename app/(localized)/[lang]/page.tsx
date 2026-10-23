@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import HomeContent from '@/components/home/home-content';
+import VoiceShowcaseSection from '@/components/voices/voice-showcase-section';
 import FileConverterApp from '@/views/file-converter-app';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 
@@ -22,6 +23,9 @@ export default async function HomePage({ params }: PageParams) {
       {/* Server-rendered, so this prose is in the crawlable HTML rather than
           behind the client island above. */}
       <HomeContent locale={locale} />
+      <div className="mx-auto max-w-[1600px] px-4 pb-12">
+        <VoiceShowcaseSection locale={locale} variant="home" />
+      </div>
     </>
   );
 }

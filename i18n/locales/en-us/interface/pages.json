@@ -1556,5 +1556,49 @@
     "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and MP4 export — is available now. Advanced effects continue to be added over time.",
     "privacyTitle": "Privacy",
     "privacyBody": "Your media is processed on our own servers and automatically deleted within 24 hours. No account is required and files are never shared with third-party providers."
+  },
+  "voices": {
+    "eyebrow": "Voices",
+    "title": "My voices on ElevenLabs",
+    "intro": "I'm Mitchell Wintrow, the creator of Media Manipulator. I made two professional voice clones on ElevenLabs, and both are public in the ElevenLabs voice library, so anyone can use them for narration, characters, videos and games.",
+    "made": "Both voices are tested and verified in over 14 languages. The two scenes below play in eight of them. They were rendered on Eleven v4 with audio tags, with sound effects from ElevenLabs and original scores made in Suno.",
+    "languageLabel": "Demo language",
+    "languageHint": "Both scenes switch together.",
+    "useVoice": "Use {{name}} on ElevenLabs",
+    "roles": {
+      "narration": "Narration",
+      "characters": "Characters"
+    },
+    "mrWintrow": {
+      "description": "A professional clone of my own voice, built for long-form narration: audiobooks, horror stories, explainers and voiceovers. It carries calm, amused, frightened and broken in a single read.",
+      "demoTitle": "The Last Exit",
+      "demoDescription": "A night-drive horror narration: calm, amused, terrified, breathless, broken, and back."
+    },
+    "obsidian": {
+      "description": "A second professional clone tuned for character work: villains, sorcerers, game and audio-drama roles that need menace and theatre rather than a narrator's restraint.",
+      "demoTitle": "The Tower at Vaelmoor",
+      "demoDescription": "A necromancer duels his old teacher, Cornelius (an ElevenLabs library voice), in a storm."
+    },
+    "howTo": {
+      "title": "How to use them",
+      "steps": [
+        "Open a voice with the link under its demo. A free ElevenLabs account is enough.",
+        "Add it to your voices, then pick it in Text to Speech, in Studio, or through the API.",
+        "For expressive reads, use Eleven v4 and audio tags such as [whispers] or [laughs]."
+      ]
+    },
+    "darkroomTip": "Render a line on ElevenLabs, download it, and drop the audio into Darkroom's media bin to put it under your edit.",
+    "sumrak": "They also narrate the stories in Сумрак, the Russian-learning app I built. <linkSumrak>Read about it on winapps.io</linkSumrak>.",
+    "home": {
+      "eyebrow": "Voices",
+      "title": "Hear the voice behind Media Manipulator",
+      "body": "Two professional voices I made on ElevenLabs, free to try, with scenes in eight languages.",
+      "cta": "All voice demos"
+    },
+    "darkroom": {
+      "title": "Need a voiceover for your edit?",
+      "body": "Try my two ElevenLabs voices, render a line there, then add the audio to Darkroom's media bin.",
+      "cta": "More about the voices"
+    }
   }
 }

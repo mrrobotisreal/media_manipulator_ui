@@ -18,6 +18,13 @@ describe('llms.txt', () => {
     expect(index).toContain('https://www.winapps.io');
   });
 
+  it('lists both ElevenLabs voices with their library links', () => {
+    expect(index).toContain('https://www.media-manipulator.com/voices');
+    expect(index).toContain('https://elevenlabs.io/app/voice-lab/share/');
+    expect(index).toMatch(/\[Mr\. Wintrow\]/);
+    expect(index).toMatch(/\[Obsidian\]/);
+  });
+
   it('links every tool page exactly once', () => {
     for (const tool of TOOL_PAGES) {
       const url = `](https://www.media-manipulator.com/tools/${tool.slug})`;
