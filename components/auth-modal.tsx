@@ -22,6 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlanSummary } from '@/components/account/plan-summary';
 import { fetchTiers, type TierDescriptor } from '@/lib/auth/accountApi';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { useUpgradeAction } from '@/lib/billing/useUpgradeAction';
 import { EVENTS, useAnalytics } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
@@ -47,6 +48,7 @@ export const AuthModal: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(
     auth?.prompt.intent === 'signin' ? 'signin' : 'signup',
   );
+  const premiumUpgrade = useUpgradeAction('auth_modal_premium');
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -404,10 +406,15 @@ export const AuthModal: React.FC = () => {
                         {t('interface:authModal.plans.premiumPrice', { price: premiumPrice })}
                       </span>
                     ) : null}
-                    {!tiersQuery.data?.premiumPurchasable ? (
-                      <span className="text-xs text-muted-foreground">
-                        {t('interface:authModal.plans.premiumComingSoon')}
-                      </span>
+                    {auth.tier === 'free' && premiumUpgrade.visible ? (
+                      <button
+                        type="button"
+                        onClick={premiumUpgrade.run}
+                        disabled={premiumUpgrade.busy}
+                        className="text-xs text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary disabled:opacity-60"
+                      >
+                        {t('interface:authModal.plans.premiumUpgrade')}
+                      </button>
                     ) : null}
                   </span>
                 }

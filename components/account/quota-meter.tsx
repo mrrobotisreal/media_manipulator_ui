@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { useUpgradeAction } from '@/lib/billing/useUpgradeAction';
 import { isUnlimited } from '@/lib/auth/accountApi';
 import { formatResetsIn } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -110,6 +111,8 @@ export const QuotaMeter: React.FC = () => {
   const auth = useAuth();
   const { t } = useLocalization(['interface', 'accessibility']);
   const localized = useLocalizedHref();
+  // Only the signed-out button upgrades from here; signed-in callers get a link to /account.
+  const upgrade = useUpgradeAction('quota_meter');
 
   // THE WARNING EFFECT LIVES ABOVE EVERY EARLY RETURN. This component returns early three
   // times (no provider, still loading, signed in), so an effect declared further down would
@@ -206,13 +209,7 @@ export const QuotaMeter: React.FC = () => {
   return (
     <button
       type="button"
-      onClick={() => {
-        analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
-          placement: 'quota_meter',
-          from_tier: auth.tier,
-        });
-        auth.openAuth({ intent: 'signup', source: 'quota_meter' });
-      }}
+      onClick={upgrade.run}
       title={description}
       aria-label={`${t('accessibility:quotaMeter.gauge', { used, limit })}. ${t('accessibility:quotaMeter.openUpgrade')}`}
       className={shellClass}
