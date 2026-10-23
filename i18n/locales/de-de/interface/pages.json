@@ -1338,7 +1338,8 @@
     "tier": {
       "anonymous": "Kein Konto",
       "free": "Kostenloses Konto",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "Operator"
     },
     "tierBlurb": {
       "anonymous": "Ein Werkzeug öffnen und loslegen. Nichts anzumelden, nichts über den Tag hinaus gespeichert.",

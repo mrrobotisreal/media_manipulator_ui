@@ -54,6 +54,7 @@ export default async function Account({ params }: PageParams) {
       anonymous: t('interface:pricing.tier.anonymous'),
       free: t('interface:pricing.tier.free'),
       premium: t('interface:pricing.tier.premium'),
+      operator: t('interface:pricing.tier.operator'),
     },
     history: {
       title: t('interface:account.historyTitle'),

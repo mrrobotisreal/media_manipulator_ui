@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { isUnlimited } from '@/lib/auth/accountApi';
 import { formatResetsIn } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
@@ -45,6 +46,7 @@ interface GaugeProps {
 }
 
 const Gauge: React.FC<GaugeProps> = ({ used, limit, tone, pending }) => {
+  const unlimited = isUnlimited(limit);
   const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
   return (
     <span className={cn('flex w-full flex-col items-stretch gap-1', tone)}>
@@ -55,7 +57,7 @@ const Gauge: React.FC<GaugeProps> = ({ used, limit, tone, pending }) => {
           Hiding this text instead does NOT satisfy the rule: axe compares the
           accessible name against text visible on screen, aria-hidden or not. */}
       <span className="num text-[11px] leading-none">
-        {pending ? '— / —' : `${used} / ${limit}`}
+        {pending ? '— / —' : unlimited ? '∞' : `${used} / ${limit}`}
       </span>
       <span
         aria-hidden="true"
@@ -121,6 +123,7 @@ export const QuotaMeter: React.FC = () => {
   const warnLimit = auth?.allowanceOf('ops') ?? 0;
   const warnUsed = auth?.usage.ops ?? 0;
   const warnRemaining = Math.max(0, warnLimit - warnUsed);
+  // `warnLimit > 0` also rules out the unlimited (negative) allowance.
   const nearLimit =
     !!auth &&
     !auth.loading &&
@@ -144,9 +147,12 @@ export const QuotaMeter: React.FC = () => {
 
   const limit = auth.allowanceOf('ops');
   const used = auth.usage.ops ?? 0;
-  const pending = auth.loading || limit <= 0;
-  const tone = pending ? 'text-muted-foreground' : toneFor(used, limit);
-  const remaining = Math.max(0, limit - used);
+  const unlimited = isUnlimited(limit);
+  // An unlimited allowance (operator) is a resolved state with nothing to
+  // fill, not a pending one: it links to the account like any signed-in meter.
+  const pending = auth.loading || (limit <= 0 && !unlimited);
+  const tone = pending ? 'text-muted-foreground' : unlimited ? 'text-data' : toneFor(used, limit);
+  const remaining = unlimited ? Number.POSITIVE_INFINITY : Math.max(0, limit - used);
   const atLimit = !pending && remaining === 0;
 
   const gauge = <Gauge used={used} limit={limit} tone={tone} pending={pending} />;
@@ -162,11 +168,16 @@ export const QuotaMeter: React.FC = () => {
   }
 
   const resets = formatResetsIn(auth.resetsAt);
-  const description = atLimit
-    ? [t('interface:quotaMeter.atLimit'), resets && t('interface:quotaMeter.resets', { when: resets })]
-        .filter(Boolean)
-        .join(' · ')
-    : t('interface:quotaMeter.remaining', { remaining, limit });
+  const description = unlimited
+    ? t('interface:quotaMeter.unlimited')
+    : atLimit
+      ? [t('interface:quotaMeter.atLimit'), resets && t('interface:quotaMeter.resets', { when: resets })]
+          .filter(Boolean)
+          .join(' · ')
+      : t('interface:quotaMeter.remaining', { remaining, limit });
+  const gaugeLabel = unlimited
+    ? t('accessibility:quotaMeter.gaugeUnlimited')
+    : t('accessibility:quotaMeter.gauge', { used, limit });
 
   const shellClass = cn(
     SHELL,
@@ -184,7 +195,7 @@ export const QuotaMeter: React.FC = () => {
       <Link
         href={localized('/account')}
         title={description}
-        aria-label={`${t('accessibility:quotaMeter.gauge', { used, limit })}. ${t('accessibility:quotaMeter.openAccount')}`}
+        aria-label={`${gaugeLabel}. ${t('accessibility:quotaMeter.openAccount')}`}
         className={shellClass}
       >
         {gauge}

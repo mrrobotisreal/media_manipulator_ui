@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Check } from 'lucide-react';
 
-import type { TierDescriptor, TierLimits } from '@/lib/auth/accountApi';
+import { isUnlimited, type TierDescriptor, type TierLimits } from '@/lib/auth/accountApi';
 import {
   formatBytes,
   formatDuration,
@@ -25,13 +25,15 @@ export function planLines(
   t: (key: string, options?: Record<string, unknown>) => string,
 ): string[] {
   const lines = [
-    t('interface:authModal.plans.opsPerDay', { count: limits.opsPerDay }),
+    isUnlimited(limits.opsPerDay)
+      ? t('interface:authModal.plans.opsPerDayUnlimited')
+      : t('interface:authModal.plans.opsPerDay', { count: limits.opsPerDay }),
     t('interface:authModal.plans.maxFileSize', { size: formatBytes(limits.maxFileBytes) }),
     t('interface:authModal.plans.maxVideoLength', {
       duration: formatDuration(limits.maxVideoSeconds),
     }),
     t('interface:authModal.plans.maxOutput', { height: limits.maxOutputHeight }),
-    limits.studioProjects < 0
+    isUnlimited(limits.studioProjects)
       ? t('interface:authModal.plans.studioProjectsUnlimited')
       : t('interface:authModal.plans.studioProjects', { count: limits.studioProjects }),
     t('interface:authModal.plans.retention', {

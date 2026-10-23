@@ -82,6 +82,7 @@
       "premiumComingSoon": "Demnächst verfügbar",
       "comparePlans": "Alle Tarife vergleichen",
       "opsPerDay": "{{count}} Vorgänge pro Tag",
+      "opsPerDayUnlimited": "Unbegrenzte Vorgänge pro Tag",
       "maxFileSize": "Dateien bis zu {{size}}",
       "maxVideoLength": "Videos bis zu {{duration}}",
       "maxOutput": "Ausgabe bis zu {{height}}p",
@@ -174,6 +175,7 @@
     "empty": "—",
     "remaining": "{{remaining}} von {{limit}} heute übrig",
     "atLimit": "Tageslimit erreicht",
+    "unlimited": "Kein Tageslimit für dieses Konto",
     "resets": "Wird {{when}} zurückgesetzt",
     "moreCta": "Mehr erhalten"
   },
@@ -185,7 +187,8 @@
     "tier": {
       "anonymous": "Gast",
       "free": "Kostenlos",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "Operator"
     }
   },
   "upgradeSurfaces": {

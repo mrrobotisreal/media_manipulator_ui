@@ -10,7 +10,7 @@ import { PanelLoading } from '@/components/darkroom/panel-loading';
 import { ConversionHistory, type HistoryLabels } from '@/components/account/conversion-history';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import type { UsageMetric } from '@/lib/auth/accountApi';
+import { isUnlimited, type UsageMetric } from '@/lib/auth/accountApi';
 import {
   formatBytes,
   formatDuration,
@@ -60,20 +60,22 @@ function toneFor(used: number, limit: number): string {
   return 'text-data';
 }
 
-const UsageBar: React.FC<{ used: number; limit: number; label: string }> = ({
+const UsageBar: React.FC<{ used: number; limit: number; label: string; unlimited: string }> = ({
   used,
   limit,
   label,
+  unlimited,
 }) => {
+  // A negative allowance is the server's "unlimited" sentinel (operator):
+  // the count is still real, the bar has nothing to fill.
+  const uncapped = isUnlimited(limit);
   const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
-  const tone = toneFor(used, limit);
+  const tone = uncapped ? 'text-data' : toneFor(used, limit);
   return (
     <div className={cn('flex flex-col gap-1.5', tone)}>
       <div className="flex items-baseline justify-between gap-3">
         <span className="text-sm text-muted-foreground">{label}</span>
-        <span className="num text-sm">
-          {used} / {limit}
-        </span>
+        <span className="num text-sm">{uncapped ? `${used} / ${unlimited}` : `${used} / ${limit}`}</span>
       </div>
       <span
         aria-hidden="true"
@@ -135,7 +137,7 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
     if (!limits) return '—';
     switch (kind) {
       case 'ops':
-        return `${limits.opsPerDay}`;
+        return isUnlimited(limits.opsPerDay) ? labels.unlimited : `${limits.opsPerDay}`;
       case 'file':
         return formatBytes(limits.maxFileBytes);
       case 'video':
@@ -143,7 +145,7 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
       case 'output':
         return `${limits.maxOutputHeight}p`;
       case 'projects':
-        return limits.studioProjects < 0 ? labels.unlimited : `${limits.studioProjects}`;
+        return isUnlimited(limits.studioProjects) ? labels.unlimited : `${limits.studioProjects}`;
       case 'retention':
         return formatRetention(limits.resultRetentionHours);
       default:
@@ -164,6 +166,7 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
                 label={labels.metric[metric]}
                 used={auth.usage[metric] ?? 0}
                 limit={auth.allowanceOf(metric)}
+                unlimited={labels.unlimited}
               />
             ))}
           </div>

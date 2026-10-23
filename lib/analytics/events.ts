@@ -206,7 +206,7 @@ export type PageType =
   | 'legal'
   | 'other';
 
-export type Tier = 'anonymous' | 'free' | 'premium';
+export type Tier = 'anonymous' | 'free' | 'premium' | 'operator';
 
 /**
  * Values a property may hold. Deliberately narrow — no functions, no Dates, no

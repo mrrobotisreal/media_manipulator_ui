@@ -1338,7 +1338,8 @@
     "tier": {
       "anonymous": "Sin cuenta",
       "free": "Cuenta gratuita",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "Operador"
     },
     "tierBlurb": {
       "anonymous": "Abre una herramienta y adelante. Nada que registrar, nada que se guarde más allá del día.",

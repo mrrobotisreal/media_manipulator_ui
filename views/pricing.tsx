@@ -39,8 +39,14 @@ interface Row {
  * "true" and a number never loses its tabular alignment.
  */
 const ROWS: Row[] = [
-  { key: 'opsPerDay', render: (l) => `${l.opsPerDay}` },
-  { key: 'aiOpsPerDay', render: (l) => `${l.aiOpsPerDay}` },
+  {
+    key: 'opsPerDay',
+    render: (l, t) => (l.opsPerDay < 0 ? t('interface:pricing.values.unlimited') : `${l.opsPerDay}`),
+  },
+  {
+    key: 'aiOpsPerDay',
+    render: (l, t) => (l.aiOpsPerDay < 0 ? t('interface:pricing.values.unlimited') : `${l.aiOpsPerDay}`),
+  },
   { key: 'maxFileBytes', render: (l) => formatBytes(l.maxFileBytes) },
   { key: 'maxVideoSeconds', render: (l) => formatDuration(l.maxVideoSeconds) },
   {

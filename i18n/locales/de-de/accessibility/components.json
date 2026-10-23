@@ -35,6 +35,7 @@
   },
   "quotaMeter": {
     "gauge": "{{used}} von {{limit}} täglichen Vorgängen genutzt",
+    "gaugeUnlimited": "Kein tägliches Vorgangslimit",
     "openUpgrade": "So erhalten Sie ein größeres Tageskontingent",
     "openAccount": "Ihr Konto öffnen"
   },

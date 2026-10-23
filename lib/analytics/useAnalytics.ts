@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { analytics } from './client';
 import { reportError } from './errors';
-import type { EventName, PropsFor, TrackOptions } from './events';
+import type { EventName, PropsFor, Tier, TrackOptions } from './events';
 import type { ContextPatch } from './context';
 
 /**
@@ -17,7 +17,7 @@ import type { ContextPatch } from './context';
  */
 export interface UseAnalytics {
   track: <E extends EventName>(name: E, props?: PropsFor<E>, options?: TrackOptions) => void;
-  identify: (firebaseUid: string, traits?: { tier?: 'anonymous' | 'free' | 'premium' }) => void;
+  identify: (firebaseUid: string, traits?: { tier?: Tier }) => void;
   reset: () => void;
   setContext: (patch: ContextPatch) => void;
   /** Force a flush. Rarely needed — priority 0 already flushes immediately. */

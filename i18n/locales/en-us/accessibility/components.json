@@ -35,6 +35,7 @@
   },
   "quotaMeter": {
     "gauge": "{{used}} / {{limit}} daily operations used",
+    "gaugeUnlimited": "No daily operation limit",
     "openUpgrade": "See how to get a bigger daily allowance",
     "openAccount": "Open your account"
   },

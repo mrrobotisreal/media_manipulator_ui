@@ -82,6 +82,7 @@
       "premiumComingSoon": "Coming soon",
       "comparePlans": "Compare all plans",
       "opsPerDay": "{{count}} operations a day",
+      "opsPerDayUnlimited": "Unlimited operations a day",
       "maxFileSize": "Files up to {{size}}",
       "maxVideoLength": "Videos up to {{duration}}",
       "maxOutput": "Output up to {{height}}p",
@@ -174,6 +175,7 @@
     "empty": "—",
     "remaining": "{{remaining}} of {{limit}} left today",
     "atLimit": "Daily limit reached",
+    "unlimited": "No daily limit on this account",
     "resets": "Resets {{when}}",
     "moreCta": "Get more"
   },
@@ -185,7 +187,8 @@
     "tier": {
       "anonymous": "Guest",
       "free": "Free",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "Operator"
     }
   },
   "upgradeSurfaces": {

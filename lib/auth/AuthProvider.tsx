@@ -88,8 +88,9 @@ export interface AuthContextValue {
   /** Re-reads the snapshot from the API. */
   refresh: () => void;
 
-  /** How much of `metric` remains today. Null when the metric is uncounted. */
+  /** How much of `metric` remains today. Null when the metric is uncounted or unlimited. */
   remainingFor: (metric: UsageMetric) => number | null;
+  /** The daily allowance; 0 when uncounted, negative when unlimited (operator). */
   allowanceOf: (metric: UsageMetric) => number;
 
   /** The account panel's current state. */
@@ -239,6 +240,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const remainingFor = useCallback(
     (metric: UsageMetric): number | null => {
       const allowance = allowanceOf(metric);
+      // 0 is uncounted and a negative value is unlimited (operator): neither
+      // has a remaining count to report.
       if (allowance <= 0) return null;
       return Math.max(0, allowance - (usage[metric] ?? 0));
     },

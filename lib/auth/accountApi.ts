@@ -10,11 +10,51 @@
 
 import { getBaseURL } from '@/lib/utils';
 
-export type Tier = 'anonymous' | 'free' | 'premium';
+/**
+ * Mirrors internal/tiers.Tier.
+ *
+ * `operator` is the site's own people. It is not a plan: it never appears in
+ * /api/tiers, so /pricing never renders it, and the server derives it per
+ * request from a verified Firebase token — nothing in this client can ask for
+ * it. The UI only has to know the value exists so the meter, the account page
+ * and the upsell surfaces render it honestly (no allowance, no upgrade prompts).
+ */
+export type Tier = 'anonymous' | 'free' | 'premium' | 'operator';
+
+const TIERS: readonly Tier[] = ['anonymous', 'free', 'premium', 'operator'];
+
+/** Narrows an unknown string to a Tier. */
+export function isTier(value: unknown): value is Tier {
+  return typeof value === 'string' && (TIERS as readonly string[]).includes(value);
+}
+
+/**
+ * Whether a tier has nothing left to upgrade to. Premium is the top of the
+ * public ladder; operator is above it. Every upsell surface keys off this
+ * rather than comparing against 'premium' directly, so adding a tier above
+ * Premium cannot resurface a "buy Premium" prompt to someone who already
+ * outranks it.
+ */
+export function isTopTier(tier: Tier): boolean {
+  return tier === 'premium' || tier === 'operator';
+}
+
+/**
+ * The server's sentinel for "no cap" (internal/tiers.Unlimited). Applies to
+ * studioProjects on every tier and to opsPerDay / aiOpsPerDay on the operator
+ * tier.
+ */
+export const UNLIMITED = -1;
+
+export function isUnlimited(value: number): boolean {
+  return value < 0;
+}
 
 /** Mirrors internal/tiers.Limits. Field names are its JSON tags. */
 export interface TierLimits {
+  /** -1 means unlimited (operator). */
   opsPerDay: number;
+  /** -1 means unlimited (operator). */
   aiOpsPerDay: number;
   maxFileBytes: number;
   maxVideoSeconds: number;
@@ -26,6 +66,8 @@ export interface TierLimits {
   priorityGpu: boolean;
   resultRetentionHours: number;
   adsRemoved: boolean;
+  /** Operator only: the per-route hourly abuse buckets are skipped. */
+  rateLimitExempt?: boolean;
 }
 
 /** The countable metrics, matching internal/models' Metric* constants. */
@@ -106,7 +148,7 @@ export function readQuotaHeaders(response: Response): QuotaHeaderState | null {
   if (!tier && !limit && !remaining && !resetsAt) return null;
 
   const state: QuotaHeaderState = {};
-  if (tier === 'anonymous' || tier === 'free' || tier === 'premium') state.tier = tier;
+  if (isTier(tier)) state.tier = tier;
   if (limit !== null && Number.isFinite(Number(limit))) state.limit = Number(limit);
   if (remaining !== null && Number.isFinite(Number(remaining))) state.remaining = Number(remaining);
   if (resetsAt) state.resetsAt = resetsAt;
@@ -262,7 +304,11 @@ export async function fetchTiers(signal?: AbortSignal): Promise<TiersResponse> {
   return response.json() as Promise<TiersResponse>;
 }
 
-/** How many of `metric`'s daily allowance this tier gets. 0 means uncounted. */
+/**
+ * How many of `metric`'s daily allowance this tier gets. 0 means uncounted,
+ * and a negative value (UNLIMITED) means counted nowhere and capped nowhere —
+ * callers that render a gauge must treat both as "no bar to fill".
+ */
 export function allowanceFor(limits: TierLimits | undefined, metric: UsageMetric): number {
   if (!limits) return 0;
   switch (metric) {

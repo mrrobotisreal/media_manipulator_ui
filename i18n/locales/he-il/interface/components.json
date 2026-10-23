@@ -84,6 +84,7 @@
       "premiumComingSoon": "בקרוב",
       "comparePlans": "השוואת כל התוכניות",
       "opsPerDay": "{{count}} פעולות ביום",
+      "opsPerDayUnlimited": "פעולות ללא הגבלה ביום",
       "maxFileSize": "קבצים עד {{size}}",
       "maxVideoLength": "סרטונים עד {{duration}}",
       "maxOutput": "פלט עד {{height}}p",
@@ -180,6 +181,7 @@
     "empty": "—",
     "remaining": "{{remaining}} מתוך {{limit}} נותרו היום",
     "atLimit": "הגעתם למגבלה היומית",
+    "unlimited": "לחשבון זה אין מגבלה יומית",
     "resets": "מתאפס ב-{{when}}",
     "moreCta": "קבלו עוד"
   },
@@ -191,7 +193,8 @@
     "tier": {
       "anonymous": "אורח",
       "free": "חינמי",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "מפעיל"
     }
   },
   "upgradeSurfaces": {

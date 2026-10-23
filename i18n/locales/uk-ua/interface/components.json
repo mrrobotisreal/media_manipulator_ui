@@ -84,6 +84,7 @@
       "premiumComingSoon": "Скоро",
       "comparePlans": "Порівняти всі тарифи",
       "opsPerDay": "{{count}} операцій на день",
+      "opsPerDayUnlimited": "Операції без обмежень на день",
       "maxFileSize": "Файли до {{size}}",
       "maxVideoLength": "Відео до {{duration}}",
       "maxOutput": "Вивід до {{height}}p",
@@ -180,6 +181,7 @@
     "empty": "—",
     "remaining": "Залишилося {{remaining}} із {{limit}} на сьогодні",
     "atLimit": "Досягнуто денний ліміт",
+    "unlimited": "Для цього акаунта немає денного ліміту",
     "resets": "Оновиться {{when}}",
     "moreCta": "Отримати більше"
   },
@@ -191,7 +193,8 @@
     "tier": {
       "anonymous": "Гість",
       "free": "Безкоштовно",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "Оператор"
     }
   },
   "upgradeSurfaces": {

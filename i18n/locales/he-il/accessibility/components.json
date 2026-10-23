@@ -35,6 +35,7 @@
   },
   "quotaMeter": {
     "gauge": "נוצלו {{used}} מתוך {{limit}} פעולות יומיות",
+    "gaugeUnlimited": "אין מגבלת פעולות יומית",
     "openUpgrade": "כך תוכלו לקבל מכסה יומית גדולה יותר",
     "openAccount": "פתיחת החשבון שלך"
   },

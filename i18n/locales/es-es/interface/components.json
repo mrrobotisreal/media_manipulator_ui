@@ -82,6 +82,7 @@
       "premiumComingSoon": "Próximamente",
       "comparePlans": "Comparar todos los planes",
       "opsPerDay": "{{count}} operaciones al día",
+      "opsPerDayUnlimited": "Operaciones ilimitadas al día",
       "maxFileSize": "Archivos de hasta {{size}}",
       "maxVideoLength": "Vídeos de hasta {{duration}}",
       "maxOutput": "Salida de hasta {{height}}p",
@@ -174,6 +175,7 @@
     "empty": "—",
     "remaining": "Te quedan {{remaining}} de {{limit}} hoy",
     "atLimit": "Límite diario alcanzado",
+    "unlimited": "Esta cuenta no tiene límite diario",
     "resets": "Se restablece {{when}}",
     "moreCta": "Consigue más"
   },
@@ -185,7 +187,8 @@
     "tier": {
       "anonymous": "Invitado",
       "free": "Gratis",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "Operador"
     }
   },
   "upgradeSurfaces": {

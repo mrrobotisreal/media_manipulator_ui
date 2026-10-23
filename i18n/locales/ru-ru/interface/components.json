@@ -84,6 +84,7 @@
       "premiumComingSoon": "Скоро",
       "comparePlans": "Сравнить все тарифы",
       "opsPerDay": "{{count}} операций в день",
+      "opsPerDayUnlimited": "Операции без ограничений в день",
       "maxFileSize": "Файлы до {{size}}",
       "maxVideoLength": "Видео до {{duration}}",
       "maxOutput": "Вывод до {{height}}p",
@@ -180,6 +181,7 @@
     "empty": "—",
     "remaining": "Осталось {{remaining}} из {{limit}} на сегодня",
     "atLimit": "Достигнут дневной лимит",
+    "unlimited": "У этого аккаунта нет дневного лимита",
     "resets": "Обновится {{when}}",
     "moreCta": "Получить больше"
   },
@@ -191,7 +193,8 @@
     "tier": {
       "anonymous": "Гость",
       "free": "Бесплатно",
-      "premium": "Premium"
+      "premium": "Premium",
+      "operator": "Оператор"
     }
   },
   "upgradeSurfaces": {

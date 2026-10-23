@@ -44,7 +44,7 @@ const propertyValue: z.ZodType<PropertyValue> = z.lazy(() =>
 );
 
 const mediaKind = z.enum(['image', 'video', 'audio', 'document', 'unknown']);
-const tier = z.enum(['anonymous', 'free', 'premium']);
+const tier = z.enum(['anonymous', 'free', 'premium', 'operator']);
 const authMethod = z.enum(['google', 'email', 'other']);
 const transport = z.enum(['post', 'presigned_put']);
 

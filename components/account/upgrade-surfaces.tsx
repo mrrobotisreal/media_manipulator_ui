@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { isTopTier } from '@/lib/auth/accountApi';
 import { formatBytes } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
@@ -45,7 +46,7 @@ export const UploadLimitHint: React.FC<{ className?: string }> = ({ className })
   const ready = !auth.loading && auth.limits !== null;
   const size = ready ? formatBytes(auth.limits!.maxFileBytes) : '';
   const upsell =
-    !ready || auth.tier === 'premium'
+    !ready || isTopTier(auth.tier)
       ? null
       : auth.tier === 'anonymous'
         ? t('interface:upgradeSurfaces.fileLimitMoreFree')
@@ -113,7 +114,7 @@ export function useUpgradeNudge(): () => void {
   const { t } = useLocalization(['interface']);
 
   return React.useCallback(() => {
-    if (!auth || auth.tier === 'premium') return;
+    if (!auth || isTopTier(auth.tier)) return;
     if (alreadyNudged()) return;
     markNudged();
 
