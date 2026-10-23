@@ -1,40 +1,53 @@
 /* TEAM */
-Developer: Mitchell Wintrow
+Owner, creator & sole engineer: Mitchell Wintrow (Mitch Wintrow)
+Role: Founder, CreaTV Ltd.
 Contact: founder@creatv.io
 Location: Delta, CO, USA
+Portfolio: https://www.winapps.io
+LinkedIn: https://www.linkedin.com/in/mitchell-wintrow/
+GitHub: https://github.com/mrrobotisreal
 
 /* THANKS */
 Thanks to all the devs who came before me that taught me what I know and developed the powerful languages and tools, which made this project possible.
 
 /* SITE */
-Last update: 2026-05-15
-Standards: HTML5, CSS3, ES2020+
-Components: React, TypeScript, Vite
+Last update: 2026-10-23
+Standards: HTML5, CSS3, ES2022+
+Language: TypeScript
 Doctype: HTML5
-IDE: Cursor
+Languages: English, Ukrainian, Russian, Hebrew, German, Spanish
+For language models: https://www.media-manipulator.com/llms.txt
 
 /* TECHNOLOGIES */
-Frontend Framework: React 18
-Build Tool: Vite
-Language: TypeScript
-Styling: Tailwind CSS
-State Management: TanStack Query
-Analytics: Firebase Analytics, Google Analytics, Mixpanel Analytics,& a custom made "in-house" analytics package
+Frontend Framework: Next.js 16 (App Router), React 19
+Styling: Tailwind CSS 4, Radix UI, shadcn/ui
+State & Data: TanStack Query, Zustand, Zod
+Internationalization: i18next
+Icons: Lucide
+Authentication: Firebase Authentication
+Analytics: First-party, in-house analytics service (Go), with a minimal Google Analytics 4 cross-check
 Monetization: Google AdSense
-Icons: Lucide React
-UI Components: Shadcn UI/Radix UI
-Utilities: Class Variance Authority, clsx
+Testing: Vitest, Testing Library
 Development: ESLint, PostCSS
 
+/* BACKEND */
+API: Go (Gin), PostgreSQL, Redis
+Media Processing: FFmpeg, ImageMagick, gifsicle, exiftool
+AI: Self-hosted models on owner-operated NVIDIA GPUs; no third-party AI providers
+AI Models: Whisper, Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, VRT, GFPGAN, CodeFormer, RIFE, BiRefNet, Demucs, DeepFilterNet, LaMa, Tesseract
+
 /* INFRASTRUCTURE */
-Hosting: Vercel
+Hosting: Vercel (web), owner-operated servers (API, media processing, AI)
+CDN / DNS: Cloudflare
+Storage: Amazon S3 (temporary; files deleted automatically)
 Domain: media-manipulator.com
-CDN: Modern web hosting with global distribution
 
 /* CONTACT ORGANIZATION */
-Organization: CreaTV Ltd.
+Organization: CreaTV Ltd. (owned by Mitchell Wintrow)
 Website: https://www.media-manipulator.com
-Main Product: Media Manipulator - File Converter
+Main Product: Media Manipulator, a free online media toolkit with 68 tools and Darkroom, a multi-track video editor
+Support: support@media-manipulator.com
+Also by Mitchell Wintrow: CreaTV (https://www.creatv.io), WinApps (https://www.winapps.io)
 
           .-.
          /   \
