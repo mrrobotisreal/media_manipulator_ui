@@ -494,16 +494,16 @@
     }
   },
   "legalCommon": {
-    "effectiveDate": "Effective Date: 2026-10-23",
-    "lastUpdated": "Last Updated: 2026-10-23",
+    "effectiveDate": "Effective Date: 2026-10-24",
+    "lastUpdated": "Last Updated: 2026-10-24",
     "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operating as Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "What changed on 2026-10-23",
-    "whatChangedBody": "Retention is now your choice. Visitors without an account still have their files deleted after 24 hours. If you sign in, you choose how long we keep your files, from 24 hours to 2 years (6 months unless you change it), and you can delete files, export your data, or delete your account from the Account page. The retention section below describes this in full."
+    "whatChangedTitle": "What changed on 2026-10-24",
+    "whatChangedBody": "We reviewed this policy against how the service works today. New or corrected: payments run through the Stripe account of CreaTV Ltd. (so checkout and your card statement may show CreaTV), the AI tools we run on our own servers are named, Google Analytics 4 and advertising are described more precisely (including cookies), account sign-in with Firebase is explained, and Darkroom inside CreaTV Studio is covered. Retention is unchanged: 24 hours for visitors, 24 hours to 2 years (6 months by default) with an account."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -533,7 +533,8 @@
               "keeping your conversion history so you can download or reopen recent conversions."
             ],
             "afterBullets": [
-              "Uploaded files and generated outputs are kept for the retention period described in Section 3: 24 hours if you do not have an account, or the period you choose if you are signed in. You can delete them sooner."
+              "Uploaded files and generated outputs are kept for the retention period described in Section 3: 24 hours if you do not have an account, or the period you choose if you are signed in. You can delete them sooner.",
+              "If you use the metadata inspector, the file is analyzed on our server with ExifTool and ffprobe, the report is returned to your browser, and the temporary copy of the uploaded file is deleted as soon as the analysis finishes."
             ]
           },
           {
@@ -619,7 +620,22 @@
             "title": "1.6 Payment and Subscription Data",
             "paragraphs": [
               "If you subscribe to Premium, payment is handled by our payment processor, Stripe. Your card details are entered on Stripe's pages and are processed by Stripe; we do not receive or store card numbers.",
-              "We store only what we need to run your subscription: your Stripe customer identifier, your subscription status, your billing interval (monthly or yearly), and the date your current period ends. We use it to give you the right plan, show your billing status, and handle refunds and support requests."
+              "We store only what we need to run your subscription: your Stripe customer identifier, your subscription status, your billing interval (monthly or yearly), and the date your current period ends. We use it to give you the right plan, show your billing status, and handle refunds and support requests.",
+              "Our Stripe account belongs to CreaTV Ltd., the company that operates Media Manipulator. As a result, Stripe's checkout page, your receipts and the statement on your card may show CreaTV (or CreaTV Ltd.) instead of Media Manipulator."
+            ]
+          },
+          {
+            "title": "1.7 Account Information",
+            "paragraphs": [
+              "If you create an account, sign-in is handled by Firebase Authentication, a Google service. You can sign in with an email address and password or with your Google account. Firebase stores your credentials and sends the emails it needs to run sign-in, such as email verification.",
+              "On our side we store a record for your account: your email address, display name, whether your email is verified, your Firebase sign-in identifier, your plan, when you signed up and last used the service, the retention settings you chose, and your conversion history and projects (Section 3). We do not send marketing emails. Apart from the emails sent by Firebase and Stripe (for example email verification and payment receipts), we do not currently send email."
+            ]
+          },
+          {
+            "title": "1.8 Darkroom Inside CreaTV Studio",
+            "paragraphs": [
+              "Darkroom, our video editor, can also be embedded inside CreaTV Studio, a product of the same company. In that mode, CreaTV Studio passes your CreaTV sign-in token to the embedded editor through your browser (a message between the CreaTV page and the editor), and the editor uses it only to call CreaTV's own studio services. Your projects, media and exports are then stored and processed by CreaTV's services under your CreaTV account, not in a Media Manipulator account, and CreaTV's own privacy policy applies to them.",
+              "CreaTV Studio also tells the embedded editor whether you have accepted analytics and advertising on CreaTV. The embedded editor does not show our cookie banner or ads, and it does not run our analytics."
             ]
           }
         ]
@@ -647,7 +663,7 @@
         "id": "retention",
         "title": "3. File Storage, Retention and Deletion",
         "paragraphs": [
-          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media and Darkroom projects stored on our servers and in Amazon S3 (us-west-2)."
+          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media and Darkroom projects stored on our servers and in Amazon S3 (us-west-2). Records about your conversions and settings (such as job history, retention choices and account details) are kept in a PostgreSQL database, and AI processing runs on our own self-hosted GPU server."
         ],
         "subsections": [
           {
@@ -666,7 +682,7 @@
           {
             "title": "3.2 Metadata reports",
             "paragraphs": [
-              "Metadata reports are small records describing the technical properties of a file. A setting on your Account page lets you choose whether reports are kept after the files they describe have been deleted at the end of the retention period. When you delete a file yourself, its report is deleted with it."
+              "Metadata reports are small records describing the technical properties of a file. A setting on your Account page lets you choose whether reports are kept after the files they describe have been deleted at the end of the retention period. When you delete a file yourself, its report is deleted with it. Visitors without an account do not have this setting: their metadata reports are deleted together with their files."
             ]
           },
           {
@@ -722,6 +738,7 @@
         ],
         "afterBullets": [
           "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
+          "The AI features use open models and tools that we run ourselves, mainly on a self-hosted GPU server: Whisper for transcription, Real-ESRGAN for image upscaling, Demucs for separating audio, and other local models, plus language and vision models served through Ollama for text tasks such as summaries, descriptions and caption translation.",
           "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
           "Uploaded files and generated outputs are kept and deleted as described in Section 3, including when AI features are used. After the applicable retention period they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
           "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
@@ -732,6 +749,7 @@
         "title": "5. Advertising",
         "paragraphs": [
           "Media Manipulator may display advertisements, including advertisements served by Google AdSense or other advertising partners.",
+          "Advertising is limited and may change. We show ads only on selected tool pages, never on our home, pricing, account or legal pages, and Premium subscribers do not see ads. Ads appear only when advertising is switched on for the site, and Google's ad script is loaded only on a page that actually displays an ad. Google's consent signals for advertising are denied by default and are updated according to your choice in “Cookie settings” in the footer.",
           "Third-party vendors, including Google, may use cookies to serve ads based on a user’s prior visits to Media Manipulator or other websites. Google’s use of advertising cookies enables it and its partners to serve ads to users based on their visit to Media Manipulator and/or other sites on the Internet.",
           "Users may opt out of personalized advertising by visiting Google’s Ads Settings. Users may also opt out of some third-party vendors’ use of cookies for personalized advertising by visiting industry opt-out pages where available.",
           "Advertising partners may collect or receive information from our website and other websites and use that information to provide measurement services and targeted ads.",
@@ -754,7 +772,7 @@
               "pages viewed and how long you were actively engaged with them;",
               "which tool you used, and the outcome — file selected, upload started or failed, job started, completed or failed, result previewed, download started or completed;",
               "the file extension, file size, and media kind of the file you processed;",
-              "the tool settings you chose;",
+              "the tool settings you chose, recorded as preset values or ranges rather than free text;",
               "account events: an account was created, signed in to, or signed out of;",
               "page performance measurements (Core Web Vitals) and client-side errors;",
               "your device type, browser and version, operating system, viewport size, language, and time zone;",
@@ -776,8 +794,8 @@
               "We do not collect file names. Only the file extension is recorded.",
               "We do not collect the contents of your files, transcripts, captions, summaries, or any AI-generated output.",
               "We do not collect email addresses in event data. Anything resembling an email address is automatically removed, both in your browser and again on our server.",
-              "We do not use cookies for analytics. The identifiers described above are stored in your browser’s local storage, and our analytics endpoint is configured so that your browser cannot send cookies to it at all.",
-              "We do not sell or share your analytics data with anyone."
+              "Our first-party analytics does not use cookies. Its identifiers are stored in your browser’s local storage, and our analytics endpoint is configured so that your browser cannot send cookies to it at all. Google Analytics 4 (Section 6.4) is separate and, if you allow analytics, may set its own cookies.",
+              "We do not sell your analytics data. The only analytics data that leaves our systems is the three Google Analytics 4 events described in Section 6.4, subject to your analytics choice."
             ]
           },
           {
@@ -792,7 +810,7 @@
           {
             "title": "6.4 Google Analytics 4",
             "paragraphs": [
-              "We keep a deliberately minimal Google Analytics 4 configuration as an independent cross-check on our own numbers. Exactly three events are sent to Google: a page view, an account sign-up, and a completed job. Nothing else is forwarded, and it is subject to the same consent choice as our first-party analytics."
+              "We keep a deliberately minimal Google Analytics 4 configuration as an independent cross-check on our own numbers. Exactly three events are sent to Google: a page view (with the page address and title), an account sign-up (with the sign-up method), and a completed job (with the tool name and media type). Nothing else is forwarded. They are sent only if your analytics choice allows it, and Google's consent signals stay denied until then. Google's tag script is nevertheless loaded on every page, so Google receives the technical data that any web request involves, such as your IP address and browser details, and when analytics is allowed Google may set its own cookies."
             ]
           },
           {
@@ -832,8 +850,8 @@
         ],
         "bullets": [
           "hosting and cloud infrastructure providers;",
-          "file storage and processing providers;",
-          "analytics providers;",
+          "Amazon Web Services, which hosts our file storage (Amazon S3, region us-west-2);",
+          "Google, for Firebase Authentication (sign-in), the limited Google Analytics 4 events described in Section 6.4 and, where ads are shown, Google AdSense;",
           "advertising partners;",
           "security, abuse-detection, and content-safety providers;",
           "AI processing is performed locally on our own servers or infrastructure that we control, and we do not share uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans with third-party AI providers for AI processing;",
@@ -902,7 +920,7 @@
           "You can change your analytics choice at any time from “Cookie settings” in the footer. If you are in the United States, “Do Not Sell or Share My Personal Information” in the footer opts you out of any sharing for advertising purposes.",
           "You can export or delete your analytics data yourself, immediately, from “Cookie settings” in the footer under “Your data”. Export downloads a complete copy of what our analytics holds about you as a file; Delete permanently erases your analytics history and gives your browser a brand-new anonymous ID. If you are signed in, both cover every device linked to your account. Because these tools act immediately, they satisfy the response periods the applicable law allows (30 days under CPRA, one month under the GDPR) by construction. You can also email us using the details below and we will do the same on your behalf within those periods.",
           "One category of records survives deletion: the log of your own consent and opt-out choices. Laws that let you delete your data also require us to be able to prove how we handled your choices (GDPR Article 17(3)(b)), so those records are kept for five years and then deleted. They contain your choices and when you made them — not your browsing activity.",
-          "If you have an account, you can delete individual files, delete all of your files, export your data, or delete your account yourself from the Account page (see Section 3).",
+          "If you have an account, you can delete individual files, delete all of your files, export your data as a ZIP file, sign out of all devices, or delete your account yourself from the Account page (see Section 3).",
           "Once a file has been deleted, whether by you or at the end of its retention period, we cannot retrieve it or provide access to it."
         ]
       },
@@ -955,7 +973,8 @@
           "temporary conversion history and downloadable processed outputs."
         ],
         "afterBullets": [
-          "Some features may be browser-based, while others may require temporary upload and processing on our servers."
+          "Some features may be browser-based, while others may require temporary upload and processing on our servers.",
+          "Darkroom can also be used embedded inside CreaTV Studio. In that case the editor connects to CreaTV's services, and your CreaTV account and content are also governed by CreaTV's own terms."
         ]
       },
       {
@@ -1192,6 +1211,7 @@
         "title": "9. Account Registration",
         "paragraphs": [
           "Media Manipulator is available without an account for most features. An account unlocks higher limits and saved history, and Premium is a paid subscription described in Section 10.",
+          "Accounts are handled by Firebase Authentication (a Google service); you can sign in with an email address and password or with Google. You can sign out of all devices or delete your account from the Account page. Deleting your account also cancels any Premium subscription, as described in the Privacy Policy.",
           "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account.",
           "We reserve the right to suspend, restrict, or terminate accounts that violate these Terms, create legal risk, cause service abuse, or harm users, advertisers, our brand, or our infrastructure."
         ]
@@ -1199,11 +1219,11 @@
       {
         "title": "10. Payments, Renewals and Refunds",
         "paragraphs": [
-          "Premium is a paid subscription billed in US dollars, either monthly or yearly. The price and billing interval are shown on the pricing page and again at checkout before you pay. Prices are in USD and taxes may apply depending on where you live.",
+          "Premium is a paid subscription billed in US dollars, currently $7 per month or $70 per year. The price and billing interval are shown on the pricing page and again at checkout before you pay. The amount shown at checkout is the amount charged; we do not currently calculate or add sales tax or VAT at checkout.",
           "Your subscription renews automatically at the end of each billing period until you cancel. You can cancel at any time from the Billing section of your Account page or through the billing portal it links to. After you cancel, your Premium access continues until the end of the period you already paid for, and you will not be charged again.",
           "If you are not satisfied, you may request a refund of your first payment within 14 days of making it by emailing support@media-manipulator.com. Renewal payments are not refundable except where required by law.",
           "If a payment fails, we retry it and your Premium access continues for up to 7 days. If the payment still has not succeeded after that, your account returns to the free plan until you update your payment method and subscribe again.",
-          "Payments are processed by Stripe, Inc. We never receive or store your full card number. Stripe's own terms and privacy policy apply to the payment itself."
+          "Payments are processed by Stripe, Inc. We never receive or store your full card number. Stripe's own terms and privacy policy apply to the payment itself. Our Stripe account belongs to CreaTV Ltd., so Stripe's checkout page, receipts and the statement on your card may show CreaTV (or CreaTV Ltd.) instead of Media Manipulator."
         ]
       },
       {
