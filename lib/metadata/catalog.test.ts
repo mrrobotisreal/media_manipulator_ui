@@ -55,8 +55,8 @@ describe('lookupTag', () => {
   });
 
   it('matches a group-scoped catch-all only inside its group', () => {
-    expect(lookupTag(index, 'XMP-xmpDM', 'Genre')?.group).toBe('XMP-xmpDM');
-    expect(lookupTag(index, 'Nikon', 'Genre')).toBeUndefined();
+    expect(lookupTag(index, 'XMP-xmpDM', 'ZzzNotListed')?.group).toBe('XMP-xmpDM');
+    expect(lookupTag(index, 'Nikon', 'ZzzNotListed')).toBeUndefined();
   });
 
   it('returns undefined for unknown tags', () => {

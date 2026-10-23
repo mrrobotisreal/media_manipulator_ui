@@ -4,6 +4,7 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } f
 import { Info, TriangleAlert, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Accordion } from '@/components/ui/accordion';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { PanelLoading } from '@/components/darkroom/panel-loading';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -129,7 +130,9 @@ export function MetadataInspector({
   const [closure, setClosure] = useState<{ key: string; ids: string[] }>({ key: '', ids: [] });
 
   const emit = useRef(onEvent);
-  emit.current = onEvent;
+  useEffect(() => {
+    emit.current = onEvent;
+  });
 
   // Rows: entries joined with catalog text and formatted values. Rebuilt when the catalog,
   // shard or language arrives, so the table never flashes raw keys.
@@ -253,6 +256,7 @@ export function MetadataInspector({
   const thumbSectionShown = sections.some((s) => s.id === 'thumbnail');
 
   return (
+    <TooltipProvider delayDuration={300}>
     <div
       data-testid="metadata-inspector"
       data-surface={surface}
@@ -371,6 +375,7 @@ export function MetadataInspector({
         )}
       </div>
     </div>
+    </TooltipProvider>
   );
 }
 

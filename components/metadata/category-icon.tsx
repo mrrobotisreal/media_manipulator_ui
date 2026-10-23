@@ -49,13 +49,10 @@ export const categoryIcon: Record<string, LucideIcon> = {
   other: Tag,
 };
 
-export function iconFor(id: string): LucideIcon {
-  return categoryIcon[id] ?? Tag;
-}
 
 
-/** Renders the icon for a category id; keeps icon lookup out of render bodies. */
+/** Renders the icon for a category id. */
 export function CategoryIcon({ id, className }: { id: string; className?: string }) {
-  const Icon = iconFor(id);
+  const Icon = categoryIcon[id] ?? Tag;
   return <Icon aria-hidden="true" className={className} />;
 }

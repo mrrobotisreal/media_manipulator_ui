@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Info } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -55,20 +55,30 @@ function AboutText({ row }: { row: MetadataRow }) {
   );
 }
 
-function TagCell({ row, compact }: { row: MetadataRow; compact: boolean }) {
+function TagCell({ row, compact, lightweight = false }: { row: MetadataRow; compact: boolean; lightweight?: boolean }) {
   const { t } = useLocalization('interface');
   return (
     <div className="min-w-0">
       <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
         <span className="break-words text-sm font-medium text-foreground">{row.label}</span>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="rounded-sm border border-edge px-1 text-[10px] leading-4 text-muted-foreground" tabIndex={0}>
-              {row.groupLabel}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>{t('metadata.table.group', { group: row.groupLabel })}</TooltipContent>
-        </Tooltip>
+        {lightweight ? (
+          // Virtualized rows mount and unmount constantly; a native title avoids a Popper per row.
+          <span
+            className="rounded-sm border border-edge px-1 text-[10px] leading-4 text-muted-foreground"
+            title={t('metadata.table.group', { group: row.groupLabel })}
+          >
+            {row.groupLabel}
+          </span>
+        ) : (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="rounded-sm border border-edge px-1 text-[10px] leading-4 text-muted-foreground" tabIndex={0}>
+                {row.groupLabel}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>{t('metadata.table.group', { group: row.groupLabel })}</TooltipContent>
+          </Tooltip>
+        )}
       </div>
       {row.entry.tag !== row.label ? (
         <div className="break-all font-mono text-[11px] text-muted-foreground">{row.entry.tag}</div>
@@ -86,12 +96,13 @@ export function MetadataTable({ rows, label, compact = false, virtualizeAt = VIR
   const { t } = useLocalization('interface');
   const parentRef = useRef<HTMLDivElement>(null);
   const virtual = rows.length >= virtualizeAt;
+  const getItemKey = useCallback((i: number) => rows[i]?.entry.id ?? i, [rows]);
   const virtualizer = useVirtualizer({
     count: virtual ? rows.length : 0,
     getScrollElement: () => parentRef.current,
     estimateSize: () => ROW_ESTIMATE,
     overscan: 8,
-    getItemKey: (i) => rows[i]?.entry.id ?? i,
+    getItemKey,
   });
   const grid = compact ? GRID_COMPACT : GRID;
 
@@ -141,7 +152,7 @@ export function MetadataTable({ rows, label, compact = false, virtualizeAt = VIR
                 className={`${grid} absolute left-0 top-0 w-full border-t border-edge px-2 py-2`}
                 style={{ transform: `translateY(${item.start}px)` }}
               >
-                <div role="cell" className="min-w-0"><TagCell row={row} compact={compact} /></div>
+                <div role="cell" className="min-w-0"><TagCell row={row} compact={compact} lightweight /></div>
                 <div role="cell" className="min-w-0"><MetadataValueCell row={row} {...cellProps} /></div>
                 {compact ? null : <div role="cell" className="min-w-0"><AboutText row={row} /></div>}
               </div>
