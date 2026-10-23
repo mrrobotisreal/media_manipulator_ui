@@ -42,7 +42,7 @@ const STORE = 'jobs';
 export interface LocalHistory {
   /** Live entries, newest first. Expired entries are pruned as a side effect. */
   list(): Promise<LocalHistoryEntry[]>;
-  /** Upsert by jobId (idempotent: a repeat never duplicates; a missing thumbnail never erases one). Evicts the oldest beyond the cap. */
+  /** Upsert by jobId (idempotent: a repeat never duplicates, keeps the first createdAt, and a missing thumbnail never erases one). Evicts the oldest beyond the cap. */
   add(entry: LocalHistoryEntry): Promise<void>;
   remove(jobId: string): Promise<void>;
   clear(): Promise<void>;
@@ -83,7 +83,7 @@ export function createLocalHistory(
         const all = await a.getAll();
         const existing = all.find((e) => e.jobId === entry.jobId);
         const merged: LocalHistoryEntry = existing
-          ? { ...existing, ...entry, thumbnail: entry.thumbnail ?? existing.thumbnail }
+          ? { ...existing, ...entry, createdAt: existing.createdAt, thumbnail: entry.thumbnail ?? existing.thumbnail }
           : entry;
         await a.put(merged);
         const rest = [...all.filter((e) => e.jobId !== entry.jobId), merged].sort((x, y) => x.createdAt - y.createdAt);

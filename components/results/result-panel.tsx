@@ -11,6 +11,8 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { EVENTS, useToolAnalytics } from '@/lib/analytics';
 import type { PropsFor } from '@/lib/analytics/events';
 import type { ResultDescriptor, ResultKind } from '@/lib/results/describe';
+import { localHistory } from '@/lib/history/localHistory';
+import { makeThumbnail, thumbnailable } from '@/lib/history/thumbnail';
 import { useResultBlob } from '@/lib/results/useResultBlob';
 import { useResultDownload } from '@/lib/results/useResultDownload';
 import { cn } from '@/lib/utils';
@@ -74,6 +76,11 @@ export interface ResultPanelProps {
   surface?: ResultSurface;
   /** Set false when the caller renders its own metadata block (the EXIF page). Default true. */
   metadataStrip?: boolean;
+  /**
+   * MM29: remember this job in the browser's Recent list. Default true; surfaces that reopen
+   * stored jobs (`surface="history"`) never record, whatever this says.
+   */
+  recordHistory?: boolean;
   className?: string;
 }
 
@@ -99,6 +106,69 @@ const previewed = new Set<string>();
 export function resetPreviewedForTests(): void {
   previewed.clear();
   resetResultAnalyticsForTests();
+  recorded.clear();
+  thumbnailed.clear();
+}
+
+/** MM29: jobs already written to the Recent list this page load (the store is idempotent too). */
+const recorded = new Set<string>();
+const thumbnailed = new Set<string>();
+const DAY_MS = 86_400_000;
+
+const whenIdle = (fn: () => void) => {
+  const w = globalThis as { requestIdleCallback?: (cb: () => void) => number };
+  if (typeof w.requestIdleCallback === 'function') w.requestIdleCallback(fn);
+  else setTimeout(fn, 200);
+};
+
+/**
+ * Writes a completed job's metadata (never the bytes) to the guest history on first mount, then
+ * adds a thumbnail off the critical path once the bytes happen to be loaded.
+ */
+function useRecordHistory(
+  descriptor: ResultDescriptor,
+  toolSlug: string | null,
+  blob: Blob | null,
+  enabled: boolean,
+): void {
+  const { jobId, kind, fileName, sizeBytes, expiresAt } = descriptor;
+  useEffect(() => {
+    if (!enabled || recorded.has(jobId)) return;
+    recorded.add(jobId);
+    const createdAt = Date.now();
+    const parsed = expiresAt ? Date.parse(expiresAt) : NaN;
+    void localHistory.add({
+      jobId,
+      tool: toolSlug || 'converter',
+      kind,
+      fileName,
+      sizeBytes,
+      createdAt,
+      // Guests' results are kept 24 h; use the server's own deadline when it sent one.
+      expiresAt: Number.isFinite(parsed) ? parsed : createdAt + DAY_MS,
+    });
+  }, [enabled, jobId, kind, fileName, sizeBytes, expiresAt, toolSlug]);
+  useEffect(() => {
+    if (!enabled || !blob || !thumbnailable(kind) || thumbnailed.has(jobId)) return;
+    thumbnailed.add(jobId);
+    whenIdle(() => {
+      void makeThumbnail(blob, kind).then((thumbnail) => {
+        if (!thumbnail) return;
+        const parsed = expiresAt ? Date.parse(expiresAt) : NaN;
+        const createdAt = Date.now();
+        return localHistory.add({
+          jobId,
+          tool: toolSlug || 'converter',
+          kind,
+          fileName,
+          sizeBytes,
+          createdAt,
+          expiresAt: Number.isFinite(parsed) ? parsed : createdAt + DAY_MS,
+          thumbnail,
+        });
+      });
+    });
+  }, [enabled, blob, kind, jobId, fileName, sizeBytes, expiresAt, toolSlug]);
 }
 
 /** Kinds where an Original/Result comparison means something. */
@@ -171,12 +241,13 @@ function ResultPanelBody({
   trackPreview = true,
   surface = 'tool_page',
   metadataStrip = true,
+  recordHistory = true,
   className,
   active,
   bare = false,
 }: BodyProps) {
   const { t, formatFileSize, formatDate, formatTime } = useLocalization(['interface']);
-  const { track } = useToolAnalytics();
+  const { track, toolSlug } = useToolAnalytics();
   const groupName = useId();
   // Keyed by job so a new job starts on its own first view without an effect.
   const [viewState, setViewState] = useState({ jobId: descriptor.jobId, view: initialView });
@@ -244,6 +315,10 @@ function ResultPanelBody({
     // onBlobLoaded is a callback the caller may recreate every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedBlob]);
+
+  // The upsert merges, so the thumbnail pass after the first write never duplicates the entry.
+  // A re-created createdAt on the thumbnail write is harmless: add() keeps the existing row's other fields.
+  useRecordHistory(descriptor, toolSlug, loadedBlob ?? seedBlob ?? null, active && recordHistory && surface !== 'history');
 
   const originalUrl = useOriginalUrl(descriptor.original, active && (legacyToggle || compareMode !== null));
   const saveName = downloadFileName ?? descriptor.fileName;

@@ -59,11 +59,12 @@ describe('localHistory', () => {
     const h = createLocalHistory(() => a, () => NOW);
     const thumb = new Blob(['x']);
     await h.add(entry(1, { thumbnail: thumb }));
-    await h.add(entry(1));
-    await h.add(entry(1));
+    await h.add(entry(1, { createdAt: NOW + 50 }));
+    await h.add(entry(1, { createdAt: NOW + 99 }));
     const list = await h.list();
     expect(list).toHaveLength(1);
     expect(list[0].thumbnail).toBe(thumb);
+    expect(list[0].createdAt).toBe(NOW + 1);
   });
 
   it('remove and clear work', async () => {
