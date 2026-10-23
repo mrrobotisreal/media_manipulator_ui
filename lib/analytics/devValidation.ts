@@ -46,6 +46,7 @@ const propertyValue: z.ZodType<PropertyValue> = z.lazy(() =>
 const mediaKind = z.enum(['image', 'video', 'audio', 'document', 'unknown']);
 const tier = z.enum(['anonymous', 'free', 'premium', 'operator']);
 const authMethod = z.enum(['google', 'email', 'other']);
+const metadataTagBucket = z.enum(['0', '1-25', '26-100', '101-500', '500+']);
 const resultSurface = z.enum(['home', 'tool_page', 'tutorial', 'history']);
 const transport = z.enum(['post', 'presigned_put']);
 
@@ -167,6 +168,23 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   result_viewed: z
     .object({ job_id: z.string(), kind: z.string(), surface: resultSurface, has_original: z.boolean() })
     .strict(),
+  metadata_inspected: z
+    .object({
+      surface: z.enum(['home', 'tool_page', 'result', 'history']),
+      kind: z.string(),
+      tag_bucket: metadataTagBucket,
+      has_gps: z.boolean(),
+      has_c2pa: z.boolean(),
+    })
+    .strict(),
+  metadata_section_toggled: z.object({ category: z.string(), open: z.boolean() }).strict(),
+  metadata_search_used: z.object({}).strict(),
+  metadata_privacy_filter_used: z.object({ flag: z.enum(['location', 'identity', 'device', 'history']) }).strict(),
+  metadata_diff_opened: z
+    .object({ tool: z.string(), removed_bucket: metadataTagBucket, added_bucket: metadataTagBucket, changed_bucket: metadataTagBucket })
+    .strict(),
+  metadata_diff_mode_changed: z.object({ mode: z.enum(['unified', 'split']) }).strict(),
+  metadata_binary_downloaded: z.object({ category: z.string() }).strict(),
   result_compare_used: z
     .object({
       job_id: z.string(),

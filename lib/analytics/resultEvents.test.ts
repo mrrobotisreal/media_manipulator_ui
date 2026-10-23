@@ -50,3 +50,42 @@ describe('result viewer event schemas', () => {
     }
   });
 });
+
+const META_VALID: Record<string, Record<string, unknown>> = {
+  metadata_inspected: { surface: 'home', kind: 'image', tag_bucket: '26-100', has_gps: true, has_c2pa: false },
+  metadata_section_toggled: { category: 'gps', open: true },
+  metadata_search_used: {},
+  metadata_privacy_filter_used: { flag: 'location' },
+  metadata_diff_opened: { tool: 'exif-remover', removed_bucket: '1-25', added_bucket: '0', changed_bucket: '0' },
+  metadata_diff_mode_changed: { mode: 'split' },
+  metadata_binary_downloaded: { category: 'thumbnail' },
+};
+const META_BAD: Record<string, Record<string, unknown>> = {
+  metadata_inspected: { ...META_VALID.metadata_inspected, tag_bucket: '12' },
+  metadata_section_toggled: { category: 'gps', open: 'yes' },
+  metadata_search_used: { query: 'iphone' },
+  metadata_privacy_filter_used: { flag: 'gps' },
+  metadata_diff_opened: { ...META_VALID.metadata_diff_opened, removed_bucket: 7 },
+  metadata_diff_mode_changed: { mode: 'side' },
+  metadata_binary_downloaded: { category: 5 },
+};
+
+describe('metadata event schemas', () => {
+  it.each(Object.keys(META_VALID))('%s accepts a valid payload', (name) => {
+    expect(check(name, META_VALID[name])).toEqual([]);
+  });
+  it.each(Object.keys(META_VALID))('%s rejects an extra key', (name) => {
+    expect(check(name, { ...META_VALID[name], extra: 1 }).length).toBeGreaterThan(0);
+  });
+  it.each(Object.keys(META_VALID))('%s rejects a bad value', (name) => {
+    expect(check(name, META_BAD[name]).length).toBeGreaterThan(0);
+  });
+  it('registers priorities', () => {
+    expect(EVENT_PRIORITY.metadata_inspected).toBe(EVENT_PRIORITY.result_viewed);
+    expect(EVENT_PRIORITY.metadata_diff_opened).toBe(EVENT_PRIORITY.result_viewed);
+    for (const n of ['metadata_section_toggled', 'metadata_search_used', 'metadata_privacy_filter_used', 'metadata_diff_mode_changed', 'metadata_binary_downloaded']) {
+      expect(EVENT_PRIORITY[n as keyof typeof EVENT_PRIORITY]).toBe(3);
+    }
+    expect(EVENTS.METADATA_SEARCH_USED).toBe('metadata_search_used');
+  });
+});
