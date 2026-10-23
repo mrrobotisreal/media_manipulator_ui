@@ -63,6 +63,33 @@ export interface ToolSupportedFormats {
   processingNotes?: string[];
 }
 
+/**
+ * Task preset for a tool page: tells the embedded form to open already set up
+ * for the task the page's SEO copy promises, so the visitor never has to
+ * "scroll down and change a setting". Discriminated by `kind` so the compiler
+ * rejects nonsense (e.g. an audio preset carrying `targetFps`).
+ */
+export type EmbedPreset =
+  | { kind: 'metadata'; mode: 'strip' }
+  | {
+      kind: 'audio';
+      aiOperation: 'clean_voice' | 'remove_background_noise' | 'isolate_vocals' | 'remove_vocals';
+      /** Replace the operation select with a read-only chip naming the operation. */
+      hideOperationSelect?: boolean;
+      /** Output format seeded into the form (e.g. 'wav'). */
+      format?: string;
+    }
+  | {
+      kind: 'video';
+      aiOperation: 'frame_interpolation';
+      /** Mount with the AI Video Tools panel open and the operation selected. */
+      openAiPanel: true;
+      targetFps?: 48 | 60 | 120;
+      /** Render the target-FPS picker before the other AI options. */
+      fpsPickerOnTop?: boolean;
+    }
+  | { kind: 'video'; panel: 'video_compressor' };
+
 export interface ToolPageContent {
   /** Path slug under /tools, e.g. "remove-exif-metadata" -> /tools/remove-exif-metadata */
   slug: string;
@@ -91,6 +118,8 @@ export interface ToolPageContent {
     lockedOutputFormat?: string;
     allowedInputFormats?: string[];
     acceptOverride?: string;
+    /** Task preset: the form opens already set up for this page's task. */
+    preset?: EmbedPreset;
     /** Preselect an AI image operation (image tools only). */
     defaultAIImageOperation?: EmbeddedAIImageOperation;
     /** Lock the AI image operation select (image tools only). */
@@ -355,6 +384,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'image',
       defaultTask: 'remove_metadata',
+      preset: { kind: 'metadata', mode: 'strip' },
       title: 'Remove metadata from an image',
       description:
         'Upload a JPG, PNG, WebP, or HEIC photo. We show every tag it carries, then press Strip everything to remove them all and see exactly what was removed.',
@@ -491,6 +521,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'video',
       defaultTask: 'compress_video',
+      preset: { kind: 'video', panel: 'video_compressor' },
       title: 'Compress a video',
       description:
         'Upload a video and pick a smaller quality preset or lower bitrate. Keep the same codec for the fastest result, or switch to WebM/H.265 for smaller files on modern devices.',
@@ -4036,9 +4067,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'audio',
       defaultTask: 'isolate_vocals',
+      defaultOutputFormat: 'wav',
+      preset: { kind: 'audio', aiOperation: 'isolate_vocals', hideOperationSelect: true, format: 'wav' },
       title: 'Isolate vocals',
       description:
-        'Upload a song. After it loads, enable the Isolate Vocals AI tool in the audio form below. Output as WAV for the cleanest stem, or MP3 for a smaller file.',
+        'Upload a song and press the button: Isolate Vocals is already selected. The stem is returned as WAV, which is lossless and keeps the most detail but makes a larger file.',
     },
     intro:
       'AI-based source separation can pull a vocal track out of a finished mix — great for remixes, covers, karaoke prep, or transcribing lyrics. Media Manipulator runs the separation on our own GPU server. The result is a single vocal stem you can download and use anywhere — as long as you have the right to do so for your source material.',
@@ -6841,9 +6874,16 @@ export const TOOL_PAGES: ToolPageContent[] = [
       defaultMediaKind: 'video',
       defaultTask: 'ai_frame_interpolation',
       defaultOutputFormat: 'mp4',
+      preset: {
+        kind: 'video',
+        aiOperation: 'frame_interpolation',
+        openAiPanel: true,
+        targetFps: 60,
+        fpsPickerOnTop: true,
+      },
       title: 'AI frame interpolation',
       description:
-        'Upload a short video. Then open the "AI Video Tools" panel below, pick "AI Frame Interpolation", and choose a target FPS (48, 60, or 120). The tool synthesizes new in-between frames and returns an MP4.',
+        'Upload a short video. AI Frame Interpolation is already selected: choose a target FPS (48, 60, or 120) and the tool synthesizes new in-between frames and returns an MP4.',
     },
     intro:
       'AI Frame Interpolation increases a video’s frame rate by generating new in-between frames with a neural network (RIFE) instead of simply duplicating or blending existing frames. The result is noticeably smoother motion — 24/30fps footage starts to feel like 60fps, and 60fps clips can be lifted to a high-refresh-friendly 120fps. The processing runs on our own GPU server, not a third-party API, and the output is an MP4 you can drop straight into any player.',
