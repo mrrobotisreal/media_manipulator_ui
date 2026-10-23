@@ -12,6 +12,8 @@ import SnippetSelector, { type SnippetSelection } from './snippet-selector';
 import ModelPicker from './model-picker';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
+import useVideoRestoreResults from '@/lib/useVideoRestoreResults';
+import RestoreCompare from './restore-compare';
 
 const ASSUMED_FPS = 30;
 
@@ -60,6 +62,9 @@ const VideoRestorePanel: React.FC = () => {
 
   const restore = useVideoRestore((result) => setJobId(result.jobId));
   const { data: job } = useTranscodeJobStatus(jobId);
+  // MM05 per-model manifest; null (404) means an older API, so the tarball path stays.
+  const manifestQuery = useVideoRestoreResults(jobId, job?.status === 'completed');
+  const manifest = manifestQuery.data ?? null;
 
   const maxClipSeconds = caps?.maxClipSeconds ?? 15;
   const recommendedClipSeconds = caps?.recommendedClipSeconds ?? 10;
@@ -330,6 +335,17 @@ const VideoRestorePanel: React.FC = () => {
                 })}
                 downloadLabel={downloadedOnce ? t('videoRestore.panel.downloadAgain') : t('videoRestore.panel.download')}
                 onDownload={handleDownload}
+                viewerOverride={
+                  manifest && jobId ? (
+                    <RestoreCompare
+                      jobId={jobId}
+                      manifest={manifest}
+                      modelNames={Object.fromEntries((caps?.models ?? []).map((m) => [m.id, m.displayName]))}
+                    />
+                  ) : manifestQuery.isLoading ? (
+                    <p role="status" className="text-muted-foreground">{t('resultPanel.restore.loading')}</p>
+                  ) : undefined
+                }
               />
               <span className="text-xs text-muted-foreground">
                 {countdown

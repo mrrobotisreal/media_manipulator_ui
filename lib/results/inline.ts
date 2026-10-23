@@ -19,3 +19,12 @@ export function inlineResultUrl(
   if (!descriptor.mimeFromServer || !INLINE_KINDS.has(descriptor.kind)) return null;
   return `${getBaseURL()}/result/${encodeURIComponent(descriptor.jobId)}?sid=${encodeURIComponent(getSessionId())}`;
 }
+
+/**
+ * Inline URL of one video-restoration clip: `name` is "original" or a completed model id
+ * (MM05 `GET /video-restore/:jobId/result/:name`, video/mp4 with range support). `?sid=`
+ * because <video> cannot send X-MM-Session-ID.
+ */
+export function restoreResultUrl(jobId: string, name: string): string {
+  return `${getBaseURL()}/video-restore/${encodeURIComponent(jobId)}/result/${encodeURIComponent(name)}?sid=${encodeURIComponent(getSessionId())}`;
+}
