@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 
 import { Panel } from '@/components/darkroom/panel';
 import { Button } from '@/components/ui/button';
@@ -34,8 +33,6 @@ type Phase = 'verifying' | 'waiting' | 'confirmed' | 'shortly' | 'foreign' | 'fa
 export const CheckoutReturn: React.FC = () => {
   const auth = useAuth();
   const { t } = useLocalization(['interface']);
-  const router = useRouter();
-  const pathname = usePathname();
   const [phase, setPhase] = React.useState<Phase | null>(null);
   // Read once, at mount. window rather than useSearchParams: the account page is static, and
   // useSearchParams would force a Suspense boundary around the whole dashboard.
@@ -50,7 +47,15 @@ export const CheckoutReturn: React.FC = () => {
   const signedIn = !!auth?.user;
   const authLoading = auth?.loading ?? true;
 
-  const strip = React.useCallback(() => router.replace(pathname, { scroll: false }), [pathname, router]);
+  // Drop checkout/session_id but keep the browser path and any ?tab= (pathname
+  // from usePathname is the internal /en rewrite; navigating to it 308s).
+  const strip = React.useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete('checkout');
+    params.delete('session_id');
+    const query = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+  }, []);
 
   const complete = React.useCallback(async () => {
     if (completed.current) return;

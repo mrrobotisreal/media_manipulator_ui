@@ -3,13 +3,14 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 
 const h = vi.hoisted(() => ({
   search: '',
-  replace: vi.fn(),
   auth: null as unknown,
 }));
 
+// Production reality: usePathname() would be the internal rewrite (/en/account)
+// while the address bar is /account. The dashboard must only touch the query.
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ replace: h.replace, push: vi.fn() }),
-  usePathname: () => '/account',
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+  usePathname: () => '/en/account',
   useSearchParams: () => new URLSearchParams(h.search),
 }));
 vi.mock('@/i18n/useLocalization', async () => (await import('@/components/account/test-utils')).localizationMock());
@@ -32,12 +33,12 @@ const signedIn = { loading: false, user: { uid: 'u1' }, tier: 'free', operatorEl
 function renderAt(search: string, auth: unknown = signedIn) {
   h.search = search;
   h.auth = auth;
+  window.history.replaceState(null, '', `/account${search ? `?${search}` : ''}`);
   return render(<AccountDashboard labels={labels} />);
 }
 
 afterEach(() => {
   cleanup();
-  h.replace.mockReset();
 });
 
 describe('account tabs routing', () => {
@@ -67,16 +68,24 @@ describe('account tabs routing', () => {
     expect(screen.getByRole('tab', { name: 'History' }).getAttribute('aria-selected')).toBe('true');
   });
 
-  it('changing tab replaces the URL without scrolling and keeps other params', () => {
+  it('changing tab rewrites only the query on the browser path and keeps other params', () => {
     renderAt('tab=history&checkout=cancelled');
     fireEvent.mouseDown(screen.getByRole('tab', { name: 'Privacy & data' }));
-    expect(h.replace).toHaveBeenCalledWith('/account?tab=privacy&checkout=cancelled', { scroll: false });
+    expect(window.location.pathname + window.location.search).toBe('/account?tab=privacy&checkout=cancelled');
   });
 
   it('going back to overview drops the tab param', () => {
     renderAt('tab=history');
     fireEvent.mouseDown(screen.getByRole('tab', { name: 'Overview' }));
-    expect(h.replace).toHaveBeenCalledWith('/account', { scroll: false });
+    expect(window.location.pathname + window.location.search).toBe('/account');
+  });
+
+  it('regression: leaving Profile never navigates to the internal /en path', () => {
+    renderAt('tab=profile');
+    for (const name of ['History', 'Projects', 'Billing', 'Privacy & data', 'Overview']) {
+      fireEvent.mouseDown(screen.getByRole('tab', { name }));
+      expect(window.location.pathname).toBe('/account');
+    }
   });
 
   it('signed-out state is unchanged: sign-in prompt, no tabs', () => {

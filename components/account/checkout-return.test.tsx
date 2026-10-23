@@ -48,7 +48,7 @@ async function advance(ms: number) {
 
 beforeEach(() => {
   vi.useFakeTimers();
-  window.history.pushState({}, '', '/account?checkout=success&session_id=cs_test_1');
+  window.history.pushState({}, '', '/account?tab=billing&checkout=success&session_id=cs_test_1');
   h.billing.mockResolvedValue({ interval: 'yearly' });
 });
 afterEach(() => {
@@ -71,7 +71,8 @@ describe('CheckoutReturn', () => {
     expect(screen.getByTestId('checkout-return').dataset.phase).toBe('confirmed');
     expect(h.track).toHaveBeenCalledTimes(1);
     expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly' });
-    expect(h.replace).toHaveBeenCalledWith('/account', { scroll: false });
+    // Checkout params dropped; browser path and the open tab kept.
+    expect(window.location.pathname + window.location.search).toBe('/account?tab=billing');
     // Polling has stopped.
     const calls = h.account.mock.calls.length;
     await advance(POLL_LIMIT_MS);

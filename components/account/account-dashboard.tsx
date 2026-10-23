@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import { Panel } from '@/components/darkroom/panel';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocalization } from '@/i18n/useLocalization';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { ACCOUNT_TABS, parseAccountTab, type AccountTab } from '@/lib/account/tabs';
+import { ACCOUNT_TABS, accountTabHref, parseAccountTab, type AccountTab } from '@/lib/account/tabs';
 
 /**
  * The live half of /account: URL-routed tabs (`?tab=`).
@@ -80,22 +80,18 @@ const VerifyNotice: React.FC<{ labels: AccountCopy['verify'] }> = ({ labels }) =
 export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }) => {
   const { copy } = labels;
   const auth = useAuth();
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { dir } = useLocalization('interface');
   const tab = parseAccountTab(searchParams?.get('tab'));
 
-  const selectTab = React.useCallback(
-    (next: AccountTab) => {
-      const params = new URLSearchParams(searchParams?.toString() ?? '');
-      if (next === 'overview') params.delete('tab');
-      else params.set('tab', next);
-      const query = params.toString();
-      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-    },
-    [pathname, router, searchParams],
-  );
+  const selectTab = React.useCallback((next: AccountTab) => {
+    // Rewrite only the query string, in place. usePathname() is the internal
+    // rewritten path (/en/account for English), so router.replace(pathname)
+    // navigated to /en/account, which the proxy 308s back to /account and the
+    // tab change was lost. Next syncs replaceState into useSearchParams when the
+    // state is not its own (__NA), so pass null as its docs do.
+    window.history.replaceState(null, '', accountTabHref(window.location, next));
+  }, []);
 
   const signedIn = !!auth?.user;
   React.useEffect(() => {
