@@ -63,9 +63,10 @@
       "maxOutput": "Output up to {{height}}p",
       "studioProjects": "{{count}} saved Studio projects",
       "studioProjectsUnlimited": "Unlimited saved Studio projects",
-      "retention": "Results kept for {{duration}}",
+      "retention": "You choose how long files are kept: 24 hours to 2 years",
       "priorityGpu": "Priority processing",
-      "noAds": "No ads"
+      "noAds": "No ads",
+      "retentionGuest": "Files kept for 24 hours"
     },
     "loadingPlans": "Loading plans…"
   },
@@ -140,7 +141,7 @@
   },
   "privacyPolicyComponent": {
     "title": "Privacy at a glance",
-    "summary": "Files are processed on our servers, automatically deleted within 24 hours, and never sent to third-party AI providers.",
+    "summary": "Files are processed on our servers and never sent to third-party AI providers. Without an account they are kept 24 hours; with a free account you choose 24 hours to 2 years.",
     "learnMore": "Read the full Privacy Policy"
   },
   "quotaMeter": {

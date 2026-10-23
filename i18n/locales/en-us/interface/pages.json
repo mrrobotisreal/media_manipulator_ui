@@ -60,8 +60,8 @@
         "body": "Every feature on the site — image conversion, video compression, audio cleanup, transcription, AI tools — is free and usable without an account. We never require you to log in, hand over an email, or pay before downloading a converted file."
       },
       "privacy": {
-        "title": "Privacy-Focused (24-Hour Auto Delete)",
-        "body": "Uploaded files and generated outputs are stored only as long as your session needs them, with a hard maximum of <strong>24 hours</strong>, after which they are deleted from our active storage. We do not keep your media files past that window and we don't sell or share uploads with anyone. See our <linkPrivacy>privacy policy</linkPrivacy> for full details."
+        "title": "Privacy-Focused: You Choose How Long Files Stay",
+        "body": "Uploaded files and generated outputs are stored only for the retention period that applies: <strong>24 hours</strong> for visitors without an account, or the period you choose (24 hours to 2 years) with a free account. We don't sell or share uploads with anyone. See our <linkPrivacy>privacy policy</linkPrivacy> for full details."
       },
       "localAi": {
         "title": "Local AI on Our Own GPU",
@@ -125,7 +125,7 @@
     "whoBuilds": {
       "title": "Who Builds Media Manipulator",
       "p1": "Media Manipulator is built and operated by <strong>CreaTV Ltd.</strong>, a small independent media-tech company based in Colorado, USA. CreaTV's broader product line is focused on tools that help creators bring ideas to life — Media Manipulator is the free, no-account utility that anchors that ecosystem.",
-      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place files live for at most 24 hours, one GPU server doing the heavy lifting."
+      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place where you choose how long your files live, one GPU server doing the heavy lifting."
     },
     "supportedFormats": {
       "title": "Supported File Formats (Quick Reference)",
@@ -188,7 +188,7 @@
       },
       "howItWorks": {
         "label": "See how it works under the hood",
-        "description": "FFmpeg, ImageMagick, GPU-backed AI, 24-hour auto-delete, and content-safety scanning."
+        "description": "FFmpeg, ImageMagick, GPU-backed AI, your choice of file retention, and content-safety scanning."
       }
     }
   },
@@ -211,7 +211,7 @@
       },
       "step4": {
         "title": "Download",
-        "body": "Preview the result, then download it. Files are kept on our servers for at most 24 hours and then deleted automatically."
+        "body": "Preview the result, then download it. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
       }
     },
     "capabilities": {
@@ -290,7 +290,7 @@
         "title": "Security & Privacy",
         "items": [
           "All uploads use HTTPS encryption",
-          "Files are automatically deleted within 24 hours",
+          "You choose how long files are kept (24 hours for guests)",
           "AI processing runs on our own servers — no third-party AI provider sees your media",
           "Automatic content-safety scanning for abusive or illegal material"
         ],
@@ -494,14 +494,16 @@
     }
   },
   "legalCommon": {
-    "effectiveDate": "Effective Date: 2026-05-14",
+    "effectiveDate": "Effective Date: 2026-10-23",
     "lastUpdated": "Last Updated: 2026-10-23",
     "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operating as Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
-    "websiteLabel": "Website:"
+    "websiteLabel": "Website:",
+    "whatChangedTitle": "What changed on 2026-10-23",
+    "whatChangedBody": "Retention is now your choice. Visitors without an account still have their files deleted after 24 hours. If you sign in, you choose how long we keep your files, from 24 hours to 2 years (6 months unless you change it), and you can delete files, export your data, or delete your account from the Account page. The retention section below describes this in full."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -528,10 +530,10 @@
               "removing metadata;",
               "generating transcripts, captions, summaries, descriptions, or other AI-assisted outputs;",
               "creating downloadable processed files;",
-              "maintaining temporary session conversion history so you can download recent conversions during your session."
+              "keeping your conversion history so you can download or reopen recent conversions."
             ],
             "afterBullets": [
-              "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours, unless deleted sooner. After that period, they are deleted from our active systems."
+              "Uploaded files and generated outputs are kept for the retention period described in Section 3: 24 hours if you do not have an account, or the period you choose if you are signed in. You can delete them sooner."
             ]
           },
           {
@@ -629,8 +631,8 @@
         ],
         "bullets": [
           "provide media conversion, editing, transcription, metadata, AI analysis, and related tools;",
-          "temporarily store conversion history for up to 24 hours;",
-          "allow users to download recent converted files during a session;",
+          "store your conversion history for the retention period that applies to you (24 hours for visitors without an account, or the period you choose if you are signed in);",
+          "allow users to download recent converted files while they are retained;",
           "scan uploads for suspected illegal, prohibited, abusive, or advertiser-sensitive content;",
           "protect users, advertisers, our website, and our brand;",
           "prevent fraud, abuse, spam, malware, and security incidents;",
@@ -642,11 +644,64 @@
         ]
       },
       {
-        "title": "3. File Storage and Deletion",
+        "id": "retention",
+        "title": "3. File Storage, Retention and Deletion",
         "paragraphs": [
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from active storage.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary to operate the service, protect against abuse, enforce our policies, comply with law, resolve disputes, or maintain security. These records are not intended to preserve full uploaded media files after the 24-hour temporary storage period."
+          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media and Darkroom projects stored on our servers and in Amazon S3 (us-west-2)."
+        ],
+        "subsections": [
+          {
+            "title": "3.1 How long we keep your files",
+            "bullets": [
+              "Visitors without an account: files are kept for 24 hours.",
+              "Signed-in users: you choose a retention period from 24 hours to 2 years. Every account has this choice; it does not depend on your plan. Until you choose, the default is 6 months."
+            ],
+            "afterBullets": [
+              "The period is counted from when each file or project was created. When you change the period it also applies to your existing files, measured from their creation date, so choosing a shorter period can cause existing files to be deleted soon afterwards. You can keep an individual result longer from your History.",
+              "If you sign in after using the service as a visitor, files from that visit may be attached to your account and then follow your chosen period.",
+              "Expired files are removed by an automated cleanup that runs regularly, so deletion may happen a short time after the period ends. After deletion, files are no longer available in our active systems. We keep no backups of media."
+            ]
+          },
+          {
+            "title": "3.2 Metadata reports",
+            "paragraphs": [
+              "Metadata reports are small records describing the technical properties of a file. A setting on your Account page lets you choose whether reports are kept after the files they describe have been deleted at the end of the retention period. When you delete a file yourself, its report is deleted with it."
+            ]
+          },
+          {
+            "title": "3.3 Deleting your files",
+            "paragraphs": [
+              "If you have an account, you can delete an individual result or Darkroom project, delete all of your files at once, or delete your whole account from the Account page. Visitors without an account can delete their own results during the session in which they were created."
+            ]
+          },
+          {
+            "title": "3.4 Deleting your account",
+            "paragraphs": [
+              "When you delete your account from the Account page, we:"
+            ],
+            "bullets": [
+              "cancel your Premium subscription with Stripe, if you have one;",
+              "delete your files and Darkroom projects;",
+              "delete your account record and settings and detach your remaining activity records from your identity;",
+              "ask our first-party analytics to delete the analytics data linked to your account (see Section 6);",
+              "delete your sign-in login."
+            ],
+            "afterBullets": [
+              "For 30 days afterwards we keep a minimal deletion record that contains only a one-way hash of your account identifier and the deletion date. It exists so that nothing from the deleted account can be attached to a new sign-up, and it is then purged automatically. Records held by Stripe are governed by Stripe's own policies. If any step cannot be completed, the Account page tells you, and you can contact us at the address in Section 16."
+            ]
+          },
+          {
+            "title": "3.5 Exporting your data",
+            "paragraphs": [
+              "Signed-in users can download an export of their data from the Account page. It is a ZIP file containing your history, projects, file list, account details and metadata reports. It does not contain the media files themselves, so download those before they expire. Exports are limited to a small number of requests per hour."
+            ]
+          },
+          {
+            "title": "3.6 Other records",
+            "paragraphs": [
+              "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary to operate the service, protect against abuse, enforce our policies, comply with law, resolve disputes, or maintain security. These records are not intended to preserve full uploaded media files after their retention period ends. Analytics data follows the periods in Section 6.3."
+            ]
+          }
         ]
       },
       {
@@ -667,7 +722,7 @@
         "afterBullets": [
           "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
           "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions. After that period, they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
+          "Uploaded files and generated outputs are kept and deleted as described in Section 3, including when AI features are used. After the applicable retention period they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
           "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
           "We do not use uploaded files to publicly identify users. We do not claim ownership of uploaded files. We do not sell uploaded files or generated outputs. We do not provide uploaded files or generated outputs to third-party AI providers for model training or AI processing."
         ]
@@ -846,7 +901,8 @@
           "You can change your analytics choice at any time from “Cookie settings” in the footer. If you are in the United States, “Do Not Sell or Share My Personal Information” in the footer opts you out of any sharing for advertising purposes.",
           "You can export or delete your analytics data yourself, immediately, from “Cookie settings” in the footer under “Your data”. Export downloads a complete copy of what our analytics holds about you as a file; Delete permanently erases your analytics history and gives your browser a brand-new anonymous ID. If you are signed in, both cover every device linked to your account. Because these tools act immediately, they satisfy the response periods the applicable law allows (30 days under CPRA, one month under the GDPR) by construction. You can also email us using the details below and we will do the same on your behalf within those periods.",
           "One category of records survives deletion: the log of your own consent and opt-out choices. Laws that let you delete your data also require us to be able to prove how we handled your choices (GDPR Article 17(3)(b)), so those records are kept for five years and then deleted. They contain your choices and when you made them — not your browsing activity.",
-          "Because uploaded files and generated outputs are temporary and are deleted after a maximum of 24 hours, we may not be able to retrieve or provide access to files after deletion."
+          "If you have an account, you can delete individual files, delete all of your files, export your data, or delete your account yourself from the Account page (see Section 3).",
+          "Once a file has been deleted, whether by you or at the end of its retention period, we cannot retrieve it or provide access to it."
         ]
       },
       {
@@ -931,12 +987,14 @@
         ]
       },
       {
-        "title": "5. Temporary Storage and Deletion",
+        "id": "retention",
+        "title": "5. Storage, Retention and Deletion",
         "paragraphs": [
-          "Uploaded files and generated outputs may be stored temporarily for a maximum of 24 hours to support session conversion history and allow you to download recent conversions during your session.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from our active systems, unless earlier deletion occurs or limited retention is legally required or reasonably necessary for security, abuse prevention, legal compliance, dispute resolution, or enforcement of these Terms.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer than 24 hours where reasonably necessary. These records are not intended to preserve full uploaded media files after the temporary retention period.",
-          "You are responsible for downloading and backing up any processed files you wish to keep. Media Manipulator is not a permanent storage, backup, archive, or hosting service."
+          "Visitors without an account: uploaded files and generated outputs are stored for 24 hours. If you have an account, you choose how long we store your files, from 24 hours to 2 years (6 months unless you change it). This choice is available on every account and does not depend on your plan. The Privacy Policy describes the details.",
+          "After the applicable retention period ends, uploaded files and generated outputs are deleted from our active systems, unless earlier deletion occurs or limited retention is legally required or reasonably necessary for security, abuse prevention, legal compliance, dispute resolution, or enforcement of these Terms. Deletion is carried out by an automated process and may happen a short time after the period ends.",
+          "You can delete individual files, delete all of your files, export your data, or delete your account from the Account page. Deleting files or an account is permanent: we keep no backups of media and cannot restore deleted files.",
+          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary. These records are not intended to preserve full uploaded media files after the retention period ends.",
+          "You are responsible for downloading and keeping your own copies of any processed files you wish to keep. Media Manipulator is not a backup, archive, or hosting service, and we cannot retrieve or provide access to files after they are deleted."
         ]
       },
       {
@@ -1340,7 +1398,7 @@
   "pricing": {
     "eyebrow": "Plans",
     "title": "Straightforward limits, no surprises",
-    "subtitle": "Every plan runs the same tools on the same hardware. What changes is how much you can put through them in a day, and how long the results stick around.",
+    "subtitle": "Every plan runs the same tools on the same hardware. What changes is how much you can put through them in a day.",
     "currentPlan": "Your plan",
     "mostPopular": "Most people start here",
     "free_price": "Free",
@@ -1367,7 +1425,6 @@
       "maxVideoSeconds": "Maximum video length",
       "maxOutputHeight": "Maximum output resolution",
       "studioProjects": "Saved Studio projects",
-      "resultRetentionHours": "Results kept for",
       "priorityGpu": "GPU queue",
       "adsRemoved": "Ads"
     },
@@ -1393,8 +1450,9 @@
       "q3": "Do free accounts see ads?",
       "a3": "Yes. Ads pay for the free tier, so only Premium removes them. There are no interstitials, countdowns or forced waits on any plan.",
       "q4": "Can I use it without an account at all?",
-      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history."
-    }
+      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history. Without an account your files are kept for 24 hours; with an account you choose how long, from 24 hours to 2 years."
+    },
+    "retentionNote": "You choose: 24 hours to 2 years. Guests without an account: 24 hours."
   },
   "account": {
     "title": "Your account",
@@ -1470,8 +1528,235 @@
         "ai_voice_cleanup": "Voice cleanup",
         "ai_isolate_vocals": "Vocal isolation",
         "ai_remove_vocals": "Vocal removal"
+      },
+      "deletesOn": "Deletes on {{date}}",
+      "keptLonger": "Kept longer",
+      "noDeadline": "No deletion date recorded",
+      "created": "Created",
+      "preview": "Preview",
+      "previewTitle": "Preview of {{name}}",
+      "metadata": "Metadata",
+      "keepLonger": "Keep longer",
+      "keepMenu": "Keep this result for",
+      "keep": {
+        "week": "1 week",
+        "month": "1 month",
+        "sixMonths": "6 months",
+        "year": "1 year"
+      },
+      "keepDone": "Kept until {{date}}.",
+      "keepFailed": "Could not extend this result. Try again.",
+      "keepGone": "This result has already been deleted.",
+      "deleteNow": "Delete now",
+      "deleteRecord": "Delete record",
+      "deleteTitle": "Delete this result now?",
+      "deleteBody": "The file is removed from our servers and can't be recovered. This cannot be undone.",
+      "deleteRecordBody": "The file has already expired. This removes the remaining record of the conversion.",
+      "deleteConfirm": "Delete",
+      "cancel": "Cancel",
+      "deleted": "Deleted.",
+      "deletedPending": "Deleted. A few files are still being removed in the background.",
+      "deleteFailed": "Could not delete this result. Nothing was changed; try again.",
+      "filters": {
+        "label": "Filter history",
+        "kind": "Type",
+        "allKinds": "All types",
+        "tool": "Tool",
+        "allTools": "All tools",
+        "from": "From",
+        "to": "To",
+        "expiringSoon": "Expiring within 7 days",
+        "clear": "Clear filters",
+        "noMatch": "No results match these filters."
+      },
+      "kinds": {
+        "video": "Video",
+        "audio": "Audio",
+        "image": "Image",
+        "lut": "Color LUT",
+        "other": "Other"
+      },
+      "bulk": {
+        "select": "Select {{name}}",
+        "selected": "{{count}} selected",
+        "delete": "Delete selected",
+        "clear": "Clear selection",
+        "title": "Delete {{count}} results now?",
+        "body": "The files are removed from our servers and can't be recovered. This cannot be undone.",
+        "progress": "Deleting {{done}} of {{total}}",
+        "done": "Deleted {{count}} results.",
+        "partial": "Deleted {{done}} of {{total}}. These could not be deleted:"
+      },
+      "expiredShort": "Expired",
+      "actions": "Actions for {{name}}"
+    },
+    "tabs": {
+      "label": "Account sections",
+      "overview": "Overview",
+      "history": "History",
+      "projects": "Projects",
+      "billing": "Billing",
+      "privacy": "Privacy & data",
+      "profile": "Profile"
+    },
+    "retentionChoose": "You choose: 24 hours to 2 years",
+    "overview": {
+      "bannerTitle": "Choose how long we keep your files",
+      "bannerBody": "Your results and Darkroom projects are kept for 6 months unless you pick another window. Anything from 24 hours to 2 years is yours to choose.",
+      "bannerCta": "Open Privacy & data",
+      "bannerDismiss": "Dismiss"
+    },
+    "projects": {
+      "intro": "Your saved Darkroom timelines. Deleting a project also removes its uploaded media.",
+      "loading": "Loading your projects…",
+      "loadFailed": "Could not load your projects. Reload to try again.",
+      "untitled": "Untitled project",
+      "duration": "Length {{duration}}",
+      "edited": "Edited {{date}}",
+      "open": "Open",
+      "delete": "Delete",
+      "deleteTitle": "Delete “{{name}}”?",
+      "deleteBody": "The project, its versions and every uploaded media file are removed from our servers. This cannot be undone.",
+      "deleteConfirm": "Delete project",
+      "cancel": "Cancel",
+      "deleted": "Project deleted.",
+      "deletedPending": "Project deleted. A few files are still being removed in the background.",
+      "deleteFailed": "Could not delete this project. Nothing was changed; try again."
+    },
+    "billing": {
+      "plans": "Compare plans"
+    },
+    "privacy": {
+      "loading": "Loading your privacy settings…",
+      "loadFailed": "Could not load your settings. Reload to try again.",
+      "retention": {
+        "title": "How long we keep your files",
+        "body": "Applies to everything you create: conversion results, uploads and Darkroom projects. Your choice, not your plan: every account can pick anything from 24 hours to 2 years.",
+        "label": "Retention window",
+        "recommended": "Recommended",
+        "preset": {
+          "h24": "24 hours",
+          "d7": "7 days",
+          "d30": "30 days",
+          "d90": "90 days",
+          "m6": "6 months",
+          "y1": "1 year",
+          "y2": "2 years"
+        },
+        "custom": "Custom",
+        "customLabel": "Custom window in days (1–730)",
+        "customApply": "Apply",
+        "customInvalid": "Enter a whole number of days from 1 to 730.",
+        "current": "Currently {{window}}.",
+        "saving": "Saving…",
+        "saved": "Saved. Your files are now kept for {{window}}.",
+        "saveFailed": "Could not save your retention window. It was left as it was.",
+        "previewFailed": "Could not check what this change would delete, so nothing was changed. Try again.",
+        "windowHours": "{{count}} hours",
+        "windowDays": "{{count}} days",
+        "windowMonths": "{{count}} months",
+        "windowYears": "{{count}} years",
+        "windowDay": "1 day",
+        "windowYear": "1 year"
+      },
+      "shrink": {
+        "title": "Shorten to {{window}}?",
+        "body": "Shortening to {{window}} will delete {{results}} results and {{projects}} projects older than that within the hour.",
+        "bytes": "About {{size}} will be freed.",
+        "other": "Plus {{other}} other stored items.",
+        "irreversible": "Deleted files can't be recovered.",
+        "confirm": "Shorten and delete",
+        "cancel": "Keep my current window"
+      },
+      "why": {
+        "title": "Why longer is better",
+        "revisit": "Revisit and re-download any result without running it again.",
+        "reopen": "Reopen your Darkroom projects exactly where you left them.",
+        "metadata": "See metadata reports for files you converted a while ago.",
+        "tradeoff": "The honest trade-off: a longer window means we store more of your data, for longer. Pick the shortest window you will actually use."
+      },
+      "store": {
+        "title": "What we store and where",
+        "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
+        "metadataTitle": "Metadata reports",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataToggle": "Delete metadata reports together with their files",
+        "visibilityTitle": "History visibility",
+        "visibilityLabel": "What your history list shows",
+        "full": "Full details",
+        "namesOnly": "Names only",
+        "settingFailed": "Could not save that setting. It was left as it was.",
+        "settingSaved": "Saved."
+      },
+      "storage": {
+        "title": "What you have stored",
+        "note": "Counts come from your loaded history; the account does not report storage size yet.",
+        "results": "Results in history",
+        "projects": "Darkroom projects",
+        "kind": "{{kind}}: {{count}}",
+        "empty": "Nothing stored right now."
+      },
+      "data": {
+        "title": "Your data",
+        "exportTitle": "Download my data",
+        "exportBody": "A zip with your history, projects, files, account details and metadata reports. Up to 3 exports per hour.",
+        "exportCta": "Download my data",
+        "exportPending": "Preparing your export…",
+        "exportDone": "Your export was saved.",
+        "exportLimited": "You have reached the export limit. Try again in {{minutes}} min.",
+        "exportLimitedGeneric": "You have reached the export limit. Try again in a while.",
+        "exportFailed": "Could not prepare your export. Try again.",
+        "deleteAllTitle": "Delete all my files",
+        "deleteAllBody": "Removes every result, upload, Darkroom project and metadata report. Your account and plan stay.",
+        "deleteAllCta": "Delete all my files",
+        "deleteAllDialogTitle": "Delete all your files?",
+        "deleteAllDialogBody": "Every result, upload, Darkroom project and metadata report is removed from our servers and can't be recovered.",
+        "typeToConfirm": "Type {{word}} to confirm",
+        "confirmInput": "Confirmation text",
+        "deleteAllConfirm": "Delete everything",
+        "deleteAllDone": "All your files were deleted.",
+        "deleteAllPending": "Deleted. A few files are still being removed in the background.",
+        "deleteAllFailed": "Could not delete your files. Try again.",
+        "accountTitle": "Delete my account",
+        "accountBody": "Cancels any subscription, deletes all your files and settings, and removes your sign-in. This cannot be undone.",
+        "accountCta": "Delete my account",
+        "accountDialogTitle": "Delete your account?",
+        "accountDialogBody": "This permanently deletes your account, files, settings and sign-in. Any subscription is cancelled. You will be signed out.",
+        "accountConfirm": "Delete my account",
+        "reauthTitle": "Sign in again to continue",
+        "reauthBody": "For your security, deleting an account needs a sign-in from the last 5 minutes.",
+        "reauthPassword": "Password",
+        "reauthGoogle": "Continue with Google",
+        "reauthPasswordCta": "Confirm password",
+        "reauthFailed": "That sign-in did not work. Check it and try again.",
+        "reauthBlocked": "The sign-in window was blocked. Allow pop-ups for this site and try again.",
+        "accountIncomplete": "Part of the deletion did not finish. Nothing is lost: retry and it will resume where it stopped.",
+        "accountRetry": "Retry deletion",
+        "accountFailed": "Could not delete your account. Try again.",
+        "accountDone": "Your account and data were deleted.",
+        "cancel": "Cancel"
       }
-    }
+    },
+    "profile": {
+      "title": "Your profile",
+      "displayName": "Display name",
+      "noName": "Not set",
+      "nameReadOnly": "Your display name comes from your sign-in provider and cannot be edited here yet.",
+      "email": "Email",
+      "verified": "Verified",
+      "unverified": "Not verified",
+      "sendVerification": "Send verification email",
+      "checkVerification": "I’ve verified",
+      "verificationSent": "Sent. Check your inbox (and spam), click the link, then press “I’ve verified”.",
+      "verificationFailed": "Could not send the email. Firebase may be rate-limiting — wait a few minutes and try again.",
+      "stillUnverified": "Firebase still reports this address as unverified. Make sure you clicked the link, then try again.",
+      "sessionsTitle": "Sessions",
+      "signOut": "Sign out",
+      "signOutEverywhere": "Sign out everywhere",
+      "signOutEverywhereBody": "Ends your session on every device, including this one.",
+      "revokeFailed": "Could not sign you out everywhere. Try again."
+    },
+    "retentionLabel": "Result retention"
   },
   "homeContent": {
     "howItWorks": {
@@ -1488,7 +1773,7 @@
         },
         {
           "title": "Download the result",
-          "body": "Conversion runs on our own servers rather than in your browser, so large files work. Results are designed to be deleted automatically within 24 hours."
+          "body": "Conversion runs on our own servers rather than in your browser, so large files work. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
         }
       ],
       "more": "More detail in <linkHow>how it works</linkHow>, or browse <linkTools>all tools</linkTools>."
@@ -1500,7 +1785,7 @@
   },
   "toolsIndex": {
     "title": "Free Online Media Tools",
-    "intro": "Media Manipulator is a free suite of browser-based tools for converting, compressing, editing, transcribing, and cleaning up image, video, and audio files. No signup, no watermarks, and your files are processed on our own servers and are designed to be deleted automatically within 24 hours.",
+    "intro": "Media Manipulator is a free suite of browser-based tools for converting, compressing, editing, transcribing, and cleaning up image, video, and audio files. No signup, no watermarks, and your files are processed on our own servers and kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
     "categories": {
       "image": "Image tools",
       "video": "Video tools",
@@ -1513,7 +1798,7 @@
     "open": "Open",
     "privacyAriaLabel": "Privacy & file handling",
     "privacyTitle": "Your files stay private",
-    "privacyBody": "Uploads are processed on our own infrastructure and are designed to be deleted automatically within 24 hours. AI features run on a GPU server we operate — your files are not shared with third-party AI providers, and no account is required.",
+    "privacyBody": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years. AI features run on a GPU server we operate — your files are not shared with third-party AI providers, and no account is required.",
     "learnMoreAriaLabel": "Learn more",
     "newHereTitle": "New here?",
     "newHereBody": "Step-by-step tutorials walk you through the image, video, and audio tools and the Darkroom editor.",
@@ -1568,7 +1853,7 @@
     "limitationsTitle": "Limitations",
     "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and MP4 export — is available now. Advanced effects continue to be added over time.",
     "privacyTitle": "Privacy",
-    "privacyBody": "Your media is processed on our own servers and automatically deleted within 24 hours. No account is required and files are never shared with third-party providers."
+    "privacyBody": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years. No account is required and files are never shared with third-party providers."
   },
   "voices": {
     "eyebrow": "Voices",

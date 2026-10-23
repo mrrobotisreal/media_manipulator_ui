@@ -4,11 +4,7 @@ import * as React from 'react';
 import { Check } from 'lucide-react';
 
 import { isUnlimited, type TierDescriptor, type TierLimits } from '@/lib/auth/accountApi';
-import {
-  formatBytes,
-  formatDuration,
-  formatRetention,
-} from '@/lib/auth/formatLimits';
+import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +19,7 @@ import { cn } from '@/lib/utils';
 export function planLines(
   limits: TierLimits,
   t: (key: string, options?: Record<string, unknown>) => string,
+  tier?: string,
 ): string[] {
   const lines = [
     isUnlimited(limits.opsPerDay)
@@ -36,9 +33,12 @@ export function planLines(
     isUnlimited(limits.studioProjects)
       ? t('interface:authModal.plans.studioProjectsUnlimited')
       : t('interface:authModal.plans.studioProjects', { count: limits.studioProjects }),
-    t('interface:authModal.plans.retention', {
-      duration: formatRetention(limits.resultRetentionHours),
-    }),
+    // Retention is the user's choice, not a plan limit (MM26): guests are fixed at 24 hours,
+    // every signed-in tier picks 24 hours to 2 years. limits.resultRetentionHours is only the
+    // server default and is deliberately not shown as a promise.
+    tier === 'anonymous'
+      ? t('interface:authModal.plans.retentionGuest')
+      : t('interface:authModal.plans.retention'),
   ];
   if (limits.priorityGpu) lines.push(t('interface:authModal.plans.priorityGpu'));
   if (limits.adsRemoved) lines.push(t('interface:authModal.plans.noAds'));
@@ -78,7 +78,7 @@ export const PlanSummary: React.FC<PlanSummaryProps> = ({
         {aside}
       </header>
       <ul className="grid gap-1.5">
-        {planLines(descriptor.limits, t).map((line) => (
+        {planLines(descriptor.limits, t, descriptor.tier).map((line) => (
           <li key={line} className="flex items-start gap-2 text-sm text-muted-foreground">
             <Check aria-hidden="true" className={cn('mt-0.5 size-3.5 shrink-0', accent)} />
             <span>{line}</span>

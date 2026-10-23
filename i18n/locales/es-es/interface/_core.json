@@ -56,7 +56,9 @@
     "items": "elementos",
     "showAll": "Mostrar todo",
     "showMore": "Mostrar más",
-    "showLess": "Mostrar menos"
+    "showLess": "Mostrar menos",
+    "retentionPromise": "Tú decides cuánto tiempo conservamos tus archivos: 24 horas por defecto para visitantes, hasta 2 años con una cuenta gratuita",
+    "retentionPromiseShort": "Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años"
   },
   "units": {
     "bytes": "B",
@@ -203,7 +205,7 @@
       "title": "Empieza en 4 pasos",
       "step1": {
         "title": "Sube un archivo",
-        "body": "Arrastra cualquier archivo de imagen, vídeo o audio a la zona de subida de la izquierda, o haz clic en <em>Elegir archivo</em>. Los archivos permanecen en nuestros servidores como máximo 24 horas y después se eliminan."
+        "body": "Arrastra cualquier archivo de imagen, vídeo o audio a la zona de subida de la izquierda, o haz clic en <em>Elegir archivo</em>. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
       },
       "step2": {
         "title": "Elige tus ajustes aquí",

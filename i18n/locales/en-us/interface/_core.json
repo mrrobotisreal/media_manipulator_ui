@@ -56,7 +56,9 @@
     "items": "items",
     "showAll": "Show all",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "retentionPromise": "You choose how long we keep your files — 24 hours by default for guests, up to 2 years with a free account",
+    "retentionPromiseShort": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years"
   },
   "units": {
     "bytes": "B",
@@ -203,7 +205,7 @@
       "title": "Get started in 4 steps",
       "step1": {
         "title": "Upload a file",
-        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files stay on our servers for at most 24 hours and are then deleted."
+        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
       },
       "step2": {
         "title": "Pick your settings here",

@@ -1035,7 +1035,7 @@
     "intro": "Erfahren Sie, wie Sie mit dem Audiokonverter von Media Manipulator Audiodateien konvertieren, bereinigen und remixen. Dieses Tutorial führt durch jeden Abschnitt des Audiokonvertierungspanels — Formatauswahl, Verarbeitungseffekte, Restaurierung und die neuen KI-Audio-Tools (Stimme säubern, Hintergrundgeräusche entfernen, Gesang isolieren, Gesang entfernen).",
     "upload": {
       "heading": "1. Audiodatei hochladen",
-      "p1": "Ziehen Sie auf der Startseite eine Audiodatei in den Upload-Bereich oder klicken Sie auf <strong>Datei auswählen</strong>. Unterstützte Eingaben sind MP3, WAV, FLAC, AAC, M4A, OGG, Opus und die meisten gängigen Podcast- und Musikformate. Dateien werden automatisch innerhalb von 24 Stunden gelöscht.",
+      "p1": "Ziehen Sie auf der Startseite eine Audiodatei in den Upload-Bereich oder klicken Sie auf <strong>Datei auswählen</strong>. Unterstützte Eingaben sind MP3, WAV, FLAC, AAC, M4A, OGG, Opus und die meisten gängigen Podcast- und Musikformate. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.",
       "p2": "Sobald die Datei ausgewählt ist, wechselt das rechte Panel zu <strong>Konvertierungsoptionen</strong>. Bei Video- und Audiodateien sehen Sie außerdem einen Umschalter <strong>Konvertieren / Transkribieren</strong> — lassen Sie ihn für dieses Tutorial auf <em>Konvertieren</em>."
     },
     "toolPanel": {
@@ -1142,7 +1142,7 @@
     },
     "upload": {
       "title": "1. Bild hochladen",
-      "paragraph": "Ziehen Sie eine Bilddatei in den Upload-Bereich oder klicken Sie auf <strong>Datei auswählen</strong>. Der Bildkonverter akzeptiert JPG, PNG, WebP, GIF und viele weitere Formate. Dateien werden innerhalb von 24 Stunden gelöscht."
+      "paragraph": "Ziehen Sie eine Bilddatei in den Upload-Bereich oder klicken Sie auf <strong>Datei auswählen</strong>. Der Bildkonverter akzeptiert JPG, PNG, WebP, GIF und viele weitere Formate. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre."
     },
     "format": {
       "title": "2. Ausgabeformat und Qualität wählen",

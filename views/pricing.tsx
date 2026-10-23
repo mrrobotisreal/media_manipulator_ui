@@ -19,11 +19,7 @@ import {
   type PremiumPricingLabels,
 } from '@/components/pricing/premium-cta';
 import type { TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
-import {
-  formatBytes,
-  formatDuration,
-  formatRetention,
-} from '@/lib/auth/formatLimits';
+import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
 import { cn } from '@/lib/utils';
 
 type T = ReturnType<typeof getServerT>;
@@ -64,7 +60,6 @@ const ROWS: Row[] = [
         ? t('interface:pricing.values.unlimited')
         : `${l.studioProjects}`,
   },
-  { key: 'resultRetentionHours', render: (l) => formatRetention(l.resultRetentionHours) },
   {
     key: 'priorityGpu',
     render: (l, t) =>
@@ -96,7 +91,6 @@ const NUMERIC_ROWS = new Set([
   'maxVideoSeconds',
   'maxOutputHeight',
   'studioProjects',
-  'resultRetentionHours',
 ]);
 
 function premiumLabels(t: T, data: TiersResponse): PremiumPricingLabels {
@@ -316,6 +310,10 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
           </tbody>
         </table>
       </div>
+
+      <p data-testid="pricing-retention-note" className="mt-4 text-sm text-muted-foreground">
+        {t('interface:pricing.retentionNote')}
+      </p>
 
       <section className="mt-14 max-w-2xl">
         <h2 className="text-xl font-semibold tracking-[-0.02em] text-foreground">

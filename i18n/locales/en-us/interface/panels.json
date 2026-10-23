@@ -27,7 +27,7 @@
   },
   "specializedToolShell": {
     "dropHere": "Drop your {{hint}} here",
-    "selectHint": "or click to select from your computer. Files stay on our servers for at most 24 hours and are then deleted.",
+    "selectHint": "or click to select from your computer. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
     "selectFile": "Select file",
     "removeFile": "Remove file",
     "uploadingPercent": "Uploading {{percent}}%",
@@ -57,7 +57,7 @@
       "audio": "audio",
       "pdf": "PDF"
     },
-    "selectHint": "or click to select from your computer. Files stay on our servers for at most 24 hours and are then deleted.",
+    "selectHint": "or click to select from your computer. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
     "selectFile": "Select file",
     "removeFile": "Remove file",
     "uploadingPercent": "Uploading {{percent}}%",
@@ -215,7 +215,7 @@
     "title": "Translate captions",
     "subtitle": "Upload a VTT, SRT, or TXT caption file and translate it to another language.",
     "dropHere": "Drop your .srt or .vtt file here",
-    "privacyNote": "Files are processed on our own server and deleted within 24 hours. We do not send your captions to third-party AI providers.",
+    "privacyNote": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years. We do not send your captions to third-party AI providers.",
     "selectCaptionFile": "Select caption file",
     "removeFile": "Remove file",
     "sourceLanguage": "Source language",
@@ -333,12 +333,24 @@
       "runningTotal": "{{count}} model(s) selected · {{estimate}} total processing estimate"
     },
     "models": {
-      "realesrgan": { "description": "Fast GAN upscaler — the quick baseline every comparison should include." },
-      "swinir": { "description": "Transformer-based real-world SR — strong textures, slower than Real-ESRGAN." },
-      "hat": { "description": "Hybrid attention SR GAN — often the sharpest stills, the slowest of Group A." },
-      "basicvsrpp": { "description": "Recurrent video SR — uses neighboring frames for temporal consistency." },
-      "rvrt": { "description": "Recurrent video restoration transformer — strong detail with motion awareness." },
-      "vrt": { "description": "Video restoration transformer — top quality on many clips, by far the slowest." }
+      "realesrgan": {
+        "description": "Fast GAN upscaler — the quick baseline every comparison should include."
+      },
+      "swinir": {
+        "description": "Transformer-based real-world SR — strong textures, slower than Real-ESRGAN."
+      },
+      "hat": {
+        "description": "Hybrid attention SR GAN — often the sharpest stills, the slowest of Group A."
+      },
+      "basicvsrpp": {
+        "description": "Recurrent video SR — uses neighboring frames for temporal consistency."
+      },
+      "rvrt": {
+        "description": "Recurrent video restoration transformer — strong detail with motion awareness."
+      },
+      "vrt": {
+        "description": "Video restoration transformer — top quality on many clips, by far the slowest."
+      }
     },
     "panel": {
       "loading": "Checking server capabilities…",
@@ -404,14 +416,30 @@
       "unavailable": "Not available on this server"
     },
     "models": {
-      "fbcnn": { "description": "Blind JPEG / compression-artifact removal (1x, non-generative)." },
-      "scunet": { "description": "Blind real-noise denoising — PSNR variant, no hallucinated texture (1x)." },
-      "nafnet": { "description": "Motion deblurring (GoPro weights, 1x)." },
-      "realesrgan": { "description": "Fast GAN upscaler — the quick baseline every comparison should include." },
-      "swinir": { "description": "Transformer-based real-world SR — strong textures, slower than Real-ESRGAN." },
-      "hat": { "description": "Hybrid attention SR GAN — often the sharpest result." },
-      "gfpgan": { "description": "GFPGAN v1.4 face restoration — generative reconstruction." },
-      "codeformer": { "description": "CodeFormer face restoration with a fidelity dial — generative reconstruction." }
+      "fbcnn": {
+        "description": "Blind JPEG / compression-artifact removal (1x, non-generative)."
+      },
+      "scunet": {
+        "description": "Blind real-noise denoising — PSNR variant, no hallucinated texture (1x)."
+      },
+      "nafnet": {
+        "description": "Motion deblurring (GoPro weights, 1x)."
+      },
+      "realesrgan": {
+        "description": "Fast GAN upscaler — the quick baseline every comparison should include."
+      },
+      "swinir": {
+        "description": "Transformer-based real-world SR — strong textures, slower than Real-ESRGAN."
+      },
+      "hat": {
+        "description": "Hybrid attention SR GAN — often the sharpest result."
+      },
+      "gfpgan": {
+        "description": "GFPGAN v1.4 face restoration — generative reconstruction."
+      },
+      "codeformer": {
+        "description": "CodeFormer face restoration with a fidelity dial — generative reconstruction."
+      }
     },
     "panel": {
       "loading": "Checking server capabilities…",
@@ -465,10 +493,22 @@
     },
     "sizeLabel": "{{width}}×{{height}} ({{qualifier}})",
     "modes": {
-      "point": { "label": "Point", "description": "A single dot per sample — clean and minimal." },
-      "line": { "label": "Line", "description": "A vertical bar per sample — bolder presence." },
-      "p2p": { "label": "Point to point", "description": "A dot per sample plus connecting lines — flowing look." },
-      "cline": { "label": "Centered line", "description": "Vertical line centered on the axis — symmetrical look." }
+      "point": {
+        "label": "Point",
+        "description": "A single dot per sample — clean and minimal."
+      },
+      "line": {
+        "label": "Line",
+        "description": "A vertical bar per sample — bolder presence."
+      },
+      "p2p": {
+        "label": "Point to point",
+        "description": "A dot per sample plus connecting lines — flowing look."
+      },
+      "cline": {
+        "label": "Centered line",
+        "description": "Vertical line centered on the axis — symmetrical look."
+      }
     },
     "output": "Output",
     "outputOptions": {
@@ -480,9 +520,15 @@
     "includeAudio": "Include original audio with generated waveform video",
     "includeAudioNote": "The waveform video will play in sync with the source audio — perfect for audiograms, music previews, and podcast clips. Turn off for a silent waveform.",
     "videoFormat": "Video format",
-    "videoFormats": { "mp4": "MP4 (recommended)", "webm": "WebM" },
+    "videoFormats": {
+      "mp4": "MP4 (recommended)",
+      "webm": "WebM"
+    },
     "imageFormat": "Image format",
-    "imageFormats": { "png": "PNG (recommended)", "webp": "WebP" },
+    "imageFormats": {
+      "png": "PNG (recommended)",
+      "webp": "WebP"
+    },
     "aspectRatioSize": "Aspect ratio & size",
     "useCustomSize": "Use custom width / height",
     "widthPlaceholder": "Width",
@@ -508,7 +554,10 @@
       "cbrt": "cbrt — stronger boost to quiet parts"
     },
     "draw": "Draw",
-    "drawOptions": { "scale": "scale (default)", "full": "full" },
+    "drawOptions": {
+      "scale": "scale (default)",
+      "full": "full"
+    },
     "generating": "Generating waveform…",
     "generate": "Generate waveform"
   },

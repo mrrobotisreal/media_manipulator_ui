@@ -60,8 +60,8 @@
         "body": "כל תכונה באתר — המרת תמונות, דחיסת וידאו, ניקוי אודיו, תמלול, כלי בינה מלאכותית — חינמית וזמינה לשימוש בלי חשבון. לעולם לא נדרוש מכם להתחבר, למסור אימייל או לשלם לפני הורדת קובץ מומר."
       },
       "privacy": {
-        "title": "מתמקדים בפרטיות (מחיקה אוטומטית תוך 24 שעות)",
-        "body": "קבצים שהועלו ופלטים שנוצרו נשמרים רק כל עוד ההפעלה שלכם זקוקה להם, עם מקסימום קשיח של <strong>24 שעות</strong>, ולאחר מכן הם נמחקים מהאחסון הפעיל שלנו. אנחנו לא שומרים את קובצי המדיה שלכם מעבר לחלון הזמן הזה, ולא מוכרים או משתפים העלאות עם אף אחד. לפרטים מלאים ראו את <linkPrivacy>מדיניות הפרטיות</linkPrivacy> שלנו."
+        "title": "מתמקדים בפרטיות: אתם בוחרים כמה זמן הקבצים נשארים",
+        "body": "קבצים שהועלו ופלטים שנוצרו נשמרים רק למשך תקופת השמירה החלה: <strong>24 שעות</strong> למבקרים ללא חשבון, או התקופה שבחרתם (בין 24 שעות לשנתיים) עם חשבון חינמי. אנחנו לא מוכרים או משתפים העלאות עם אף אחד. לפרטים מלאים ראו את <linkPrivacy>מדיניות הפרטיות</linkPrivacy> שלנו."
       },
       "localAi": {
         "title": "בינה מלאכותית מקומית על ה־GPU שלנו",
@@ -125,7 +125,7 @@
     "whoBuilds": {
       "title": "מי בונה את Media Manipulator",
       "p1": "Media Manipulator נבנה ומופעל על ידי <strong>CreaTV Ltd.</strong>, חברת מדיה־טק עצמאית וקטנה הממוקמת ב־Colorado, USA. קו המוצרים הרחב יותר של CreaTV מתמקד בכלים שעוזרים ליוצרים להגשים רעיונות — Media Manipulator הוא כלי השירות החינמי, שאינו דורש חשבון, שמעגן את המערכת האקולוגית הזו.",
-      "p2": "אנחנו צוות קטן, וזו בדיוק הסיבה שבנינו את Media Manipulator כפי שבנינו: אנחנו לא רוצים לשמור על עשרות אינטגרציות של בינה מלאכותית חיצונית, אנחנו לא רוצים לאחסן את הקבצים שלכם ללא הגבלת זמן, ואנחנו לא רוצים להפעיל עשרה אתרי המרה נפרדים וחד־תכליתיים. סטודיו אחד, מקום אחד שבו קבצים חיים לכל היותר 24 שעות, שרת GPU אחד שעושה את העבודה הקשה."
+      "p2": "אנחנו צוות קטן, וזו בדיוק הסיבה שבנינו את Media Manipulator כפי שבנינו: אנחנו לא רוצים לשמור על עשרות אינטגרציות של בינה מלאכותית חיצונית, אנחנו לא רוצים לאחסן את הקבצים שלכם ללא הגבלת זמן, ואנחנו לא רוצים להפעיל עשרה אתרי המרה נפרדים וחד־תכליתיים. סטודיו אחד, מקום אחד שבו אתם בוחרים כמה זמן הקבצים שלכם חיים, שרת GPU אחד שעושה את העבודה הקשה."
     },
     "supportedFormats": {
       "title": "פורמטים נתמכים (מדריך מהיר)",
@@ -188,7 +188,7 @@
       },
       "howItWorks": {
         "label": "גלו איך זה עובד מתחת למכסה המנוע",
-        "description": "FFmpeg,‏ ImageMagick, בינה מלאכותית מבוססת GPU, מחיקה אוטומטית תוך 24 שעות וסריקת בטיחות תוכן."
+        "description": "FFmpeg,‏ ImageMagick, בינה מלאכותית מבוססת GPU, שמירת קבצים לפי בחירתכם וסריקת בטיחות תוכן."
       }
     }
   },
@@ -211,7 +211,7 @@
       },
       "step4": {
         "title": "הורדה",
-        "body": "תצוגה מקדימה של התוצאה, ואז הורדה. הקבצים נשמרים על השרתים שלנו לכל היותר 24 שעות ולאחר מכן נמחקים אוטומטית."
+        "body": "תצוגה מקדימה של התוצאה, ואז הורדה. קבצים נשמרים 24 שעות לאורחים; עם חשבון חינמי אתם בוחרים בין 24 שעות לשנתיים."
       }
     },
     "capabilities": {
@@ -290,7 +290,7 @@
         "title": "אבטחה ופרטיות",
         "items": [
           "כל ההעלאות משתמשות בהצפנת HTTPS",
-          "קבצים נמחקים אוטומטית תוך 24 שעות",
+          "אתם בוחרים כמה זמן הקבצים נשמרים (24 שעות לאורחים)",
           "עיבוד הבינה המלאכותית פועל על השרתים שלנו — אף ספק בינה מלאכותית חיצוני לא רואה את המדיה שלכם",
           "סריקת בטיחות תוכן אוטומטית לאיתור חומר פוגעני או בלתי חוקי"
         ],
@@ -494,14 +494,16 @@
     }
   },
   "legalCommon": {
-    "effectiveDate": "תאריך כניסה לתוקף: 2026-05-14",
+    "effectiveDate": "תאריך כניסה לתוקף: 2026-10-23",
     "lastUpdated": "עודכן לאחרונה: 2026-10-23",
     "operator": "Media Manipulator הוא מוצר ושירות המופעלים על ידי CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "פועלת תחת השם Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "אימייל:",
-    "websiteLabel": "אתר:"
+    "websiteLabel": "אתר:",
+    "whatChangedTitle": "מה השתנה ב-2026-10-23",
+    "whatChangedBody": "משך השמירה הוא עכשיו הבחירה שלכם. מבקרים ללא חשבון עדיין מקבלים מחיקת קבצים לאחר 24 שעות. אם אתם מתחברים, אתם בוחרים כמה זמן נשמור את הקבצים שלכם, מ-24 שעות עד שנתיים (6 חודשים אלא אם תשנו זאת), וניתן למחוק קבצים, לייצא את הנתונים או למחוק את החשבון מעמוד החשבון. סעיף השמירה שלהלן מתאר זאת במלואו."
   },
   "privacyPolicy": {
     "title": "מדיניות פרטיות",
@@ -528,10 +530,10 @@
               "הסרת מטא־נתונים;",
               "יצירת תמלולים, כתוביות, סיכומים, תיאורים, או פלטים אחרים מבוססי בינה מלאכותית;",
               "יצירת קבצים מעובדים הניתנים להורדה;",
-              "שמירת היסטוריית המרות זמנית של ההפעלה כדי שתוכלו להוריד המרות אחרונות במהלך ההפעלה שלכם."
+              "שמירת היסטוריית ההמרות שלכם כדי שתוכלו להוריד או לפתוח מחדש המרות אחרונות."
             ],
             "afterBullets": [
-              "קבצים שהועלו ופלטים שנוצרו נשמרים באופן זמני למשך 24 שעות לכל היותר, אלא אם נמחקו קודם לכן. לאחר תקופה זו, הם נמחקים מהמערכות הפעילות שלנו."
+              "קבצים שהועלו ופלטים שנוצרו נשמרים למשך תקופת השמירה המתוארת בסעיף 3: 24 שעות אם אין לכם חשבון, או התקופה שבחרתם אם אתם מחוברים. אפשר למחוק אותם מוקדם יותר."
             ]
           },
           {
@@ -629,8 +631,8 @@
         ],
         "bullets": [
           "לספק כלי המרת מדיה, עריכה, תמלול, מטא־נתונים, ניתוח בבינה מלאכותית וכלים נלווים;",
-          "לאחסן באופן זמני היסטוריית המרות למשך עד 24 שעות;",
-          "לאפשר למשתמשים להוריד קבצים מומרים אחרונים במהלך הפעלה;",
+          "לשמור את היסטוריית ההמרות שלכם למשך תקופת השמירה החלה עליכם (24 שעות למבקרים ללא חשבון, או התקופה שבחרתם אם אתם מחוברים);",
+          "לאפשר למשתמשים להוריד המרות אחרונות כל עוד הן נשמרות;",
           "לסרוק העלאות לאיתור תוכן החשוד כבלתי חוקי, אסור, פוגעני, או רגיש למפרסמים;",
           "להגן על המשתמשים, המפרסמים, האתר שלנו והמותג שלנו;",
           "למנוע הונאה, שימוש לרעה, ספאם, תוכנות זדוניות ואירועי אבטחה;",
@@ -642,11 +644,64 @@
         ]
       },
       {
-        "title": "3. אחסון קבצים ומחיקתם",
+        "id": "retention",
+        "title": "3. אחסון קבצים, תקופת שמירה ומחיקה",
         "paragraphs": [
-          "קבצים שהועלו ופלטים שנוצרו נשמרים באופן זמני למשך 24 שעות לכל היותר, כדי לתמוך בהיסטוריית המרות של ההפעלה ולאפשר למשתמשים להוריד המרות אחרונות.",
-          "לאחר שתקופת השמירה הזמנית פוקעת, קבצים שהועלו ופלטים שנוצרו נמחקים מהאחסון הפעיל.",
-          "אנו עשויים לשמר יומנים טכניים מוגבלים, רשומות אבטחה, רשומות מניעת שימוש לרעה, רשומות אנליטיקה, או רשומות ציות משפטי למשך זמן ארוך יותר במקומות שבהם הדבר נחוץ באופן סביר להפעלת השירות, להגנה מפני שימוש לרעה, לאכיפת המדיניות שלנו, לציות לדין, לפתרון מחלוקות, או לשמירה על אבטחה. רשומות אלה אינן מיועדות לשמר קובצי מדיה מלאים שהועלו לאחר תקופת האחסון הזמנית של 24 השעות."
+          "משך הזמן שבו אנו שומרים את הקבצים שלכם תלוי בשאלה אם יש לכם חשבון. סעיף זה חל על קבצים שהועלו, פלטים שנוצרו, מדיה של Darkroom ופרויקטים של Darkroom המאוחסנים בשרתים שלנו וב-Amazon S3 (us-west-2)."
+        ],
+        "subsections": [
+          {
+            "title": "3.1 כמה זמן אנו שומרים את הקבצים שלכם",
+            "bullets": [
+              "מבקרים ללא חשבון: הקבצים נשמרים למשך 24 שעות.",
+              "משתמשים מחוברים: אתם בוחרים תקופת שמירה מ-24 שעות עד שנתיים. לכל חשבון יש בחירה זו, והיא אינה תלויה במסלול שלכם. כל עוד לא בחרתם, ברירת המחדל היא 6 חודשים."
+            ],
+            "afterBullets": [
+              "התקופה נספרת ממועד יצירתו של כל קובץ או פרויקט. כששניתם את התקופה, היא חלה גם על הקבצים הקיימים שלכם, בהתאם למועד יצירתם, ולכן בחירה בתקופה קצרה יותר עלולה לגרום למחיקת קבצים קיימים זמן קצר לאחר מכן. אפשר להשאיר תוצאה מסוימת זמן רב יותר מתוך ההיסטוריה שלכם.",
+              "אם אתם מתחברים לאחר שהשתמשתם בשירות כמבקרים, קבצים מאותו ביקור עשויים להיות משויכים לחשבון שלכם ולהיות כפופים לתקופה שבחרתם.",
+              "קבצים שתוקפם פג מוסרים באמצעות ניקוי אוטומטי שרץ באופן קבוע, ולכן המחיקה עשויה להתבצע זמן קצר לאחר תום התקופה. לאחר המחיקה הקבצים אינם זמינים עוד במערכות הפעילות שלנו. איננו שומרים גיבויים של מדיה."
+            ]
+          },
+          {
+            "title": "3.2 דוחות מטא-נתונים",
+            "paragraphs": [
+              "דוחות מטא-נתונים הם רשומות קטנות המתארות את המאפיינים הטכניים של קובץ. הגדרה בעמוד החשבון שלכם מאפשרת לבחור אם הדוחות יישמרו לאחר שהקבצים שהם מתארים נמחקו בתום תקופת השמירה. כשאתם מוחקים קובץ בעצמכם, הדוח שלו נמחק יחד איתו."
+            ]
+          },
+          {
+            "title": "3.3 מחיקת הקבצים שלכם",
+            "paragraphs": [
+              "אם יש לכם חשבון, תוכלו מעמוד החשבון למחוק תוצאה או פרויקט Darkroom בודדים, למחוק את כל הקבצים שלכם בבת אחת, או למחוק את החשבון כולו. מבקרים ללא חשבון יכולים למחוק את התוצאות שלהם במהלך ההפעלה שבה נוצרו."
+            ]
+          },
+          {
+            "title": "3.4 מחיקת החשבון שלכם",
+            "paragraphs": [
+              "כשאתם מוחקים את החשבון מעמוד החשבון, אנחנו:"
+            ],
+            "bullets": [
+              "מבטלים את מנוי ה-Premium שלכם ב-Stripe, אם יש לכם כזה;",
+              "מוחקים את הקבצים והפרויקטים שלכם ב-Darkroom;",
+              "מוחקים את רשומת החשבון וההגדרות שלכם ומנתקים משייכותכם את שאר רשומות הפעילות;",
+              "מבקשים ממערכת האנליטיקה העצמית שלנו למחוק את נתוני האנליטיקה המקושרים לחשבון שלכם (ראו סעיף 6);",
+              "מוחקים את פרטי ההתחברות שלכם."
+            ],
+            "afterBullets": [
+              "במשך 30 הימים שלאחר מכן אנו שומרים רשומת מחיקה מינימלית המכילה רק גיבוב חד-כיווני של מזהה החשבון שלכם ואת תאריך המחיקה. היא קיימת כדי שדבר מהחשבון שנמחק לא ישויך להרשמה חדשה, ולאחר מכן היא נמחקת אוטומטית. מידע המוחזק אצל Stripe כפוף למדיניות של Stripe עצמה. אם לא ניתן להשלים שלב כלשהו, עמוד החשבון יודיע לכם על כך, ותוכלו לפנות אלינו בכתובת שבסעיף 16."
+            ]
+          },
+          {
+            "title": "3.5 ייצוא הנתונים שלכם",
+            "paragraphs": [
+              "משתמשים מחוברים יכולים להוריד מעמוד החשבון ייצוא של הנתונים שלהם. זהו קובץ ZIP המכיל את ההיסטוריה, הפרויקטים, רשימת הקבצים, פרטי החשבון ודוחות המטא-נתונים שלכם. הוא אינו כולל את קובצי המדיה עצמם, ולכן הורידו אותם לפני שתוקפם יפוג. מספר בקשות הייצוא בשעה מוגבל."
+            ]
+          },
+          {
+            "title": "3.6 רשומות אחרות",
+            "paragraphs": [
+              "אנו עשויים לשמור יומנים טכניים מוגבלים, רשומות אבטחה, רשומות למניעת שימוש לרעה, רשומות אנליטיקה או רשומות ציות משפטי למשך זמן ארוך יותר כאשר הדבר נחוץ באופן סביר להפעלת השירות, להגנה מפני שימוש לרעה, לאכיפת המדיניות שלנו, לציות לדין, ליישוב מחלוקות או לשמירה על האבטחה. רשומות אלה אינן נועדות לשמר קובצי מדיה שלמים שהועלו לאחר תום תקופת השמירה שלהם. נתוני אנליטיקה כפופים לתקופות שבסעיף 6.3."
+            ]
+          }
         ]
       },
       {
@@ -667,7 +722,7 @@
         "afterBullets": [
           "כל עיבוד בבינה מלאכותית המשמש את Media Manipulator מתבצע באופן מקומי על השרתים שלנו או על תשתית שבשליטתנו. איננו מעבירים למיקור חוץ קבצים שהועלו, פלטים שנוצרו, תמלולים, סיכומים, תיאורים, או סריקות בטיחות תוכן לספקי בינה מלאכותית חיצוניים לצורך עיבוד.",
           "המשמעות היא שכאשר נעשה שימוש בתכונות בינה מלאכותית, הקבצים שהעליתם והפלטים שנוצרו נשארים בתוך סביבת העיבוד של Media Manipulator, ומטופלים בהתאם לנהלי האחסון, השמירה, המחיקה והאבטחה המתוארים במדיניות פרטיות זו.",
-          "קבצים שהועלו ופלטים שנוצרו נשמרים באופן זמני למשך 24 שעות לכל היותר, כדי לתמוך בהיסטוריית המרות של ההפעלה ולאפשר למשתמשים להוריד המרות אחרונות. לאחר תקופה זו, הם נמחקים מהמערכות הפעילות שלנו, אלא אם מתבצעת מחיקה מוקדמת יותר או שנדרשת שמירה מוגבלת מטעמים משפטיים לצורכי אבטחה, מניעת שימוש לרעה, ציות משפטי, או אכיפה.",
+          "קבצים שהועלו ופלטים שנוצרו נשמרים ונמחקים כמתואר בסעיף 3, גם כאשר נעשה שימוש בתכונות בינה מלאכותית. בתום תקופת השמירה החלה, הם נמחקים מהמערכות הפעילות שלנו, אלא אם מתבצעת מחיקה מוקדמת יותר או שנדרשת שמירה מוגבלת מטעמים משפטיים לצורכי אבטחה, מניעת שימוש לרעה, ציות משפטי, או אכיפה.",
           "פלטים שנוצרו בבינה מלאכותית עשויים להיות לא מושלמים, חלקיים, או לא מדויקים. המשתמשים אחראים לבחון כל פלט שנוצר בבינה מלאכותית לפני הסתמכות עליו.",
           "איננו משתמשים בקבצים שהועלו כדי לזהות משתמשים באופן פומבי. איננו טוענים לבעלות על קבצים שהועלו. איננו מוכרים קבצים שהועלו או פלטים שנוצרו. איננו מספקים קבצים שהועלו או פלטים שנוצרו לספקי בינה מלאכותית חיצוניים לצורך אימון מודלים או עיבוד בבינה מלאכותית."
         ]
@@ -846,7 +901,8 @@
           "תוכלו לשנות את בחירת האנליטיקה שלכם בכל עת מ״הגדרות עוגיות״ בכותרת התחתונה. אם אתם נמצאים בארצות הברית, הקישור ״אל תמכרו או תשתפו את המידע האישי שלי״ בכותרת התחתונה מסיר אתכם מכל שיתוף למטרות פרסום.",
           "תוכלו לייצא או למחוק את נתוני האנליטיקה שלכם בעצמכם, מיידית, מ״הגדרות עוגיות״ בכותרת התחתונה תחת ״הנתונים שלכם״. ייצוא מוריד עותק מלא של מה שהאנליטיקה שלנו מחזיקה לגביכם כקובץ; מחיקה מוחקת לצמיתות את היסטוריית האנליטיקה שלכם ומעניקה לדפדפן שלכם מזהה אנונימי חדש לגמרי. אם אתם מחוברים, שתי הפעולות מכסות כל מכשיר המקושר לחשבון שלכם. מכיוון שכלים אלה פועלים מיידית, הם עומדים מעצם טבעם בתקופות המענה שהדין החל מאפשר (30 יום לפי CPRA, חודש אחד לפי GDPR). תוכלו גם לשלוח לנו אימייל באמצעות הפרטים שלמטה, ואנו נעשה את אותו הדבר בשמכם בתוך אותן תקופות.",
           "קטגוריה אחת של רשומות שורדת מחיקה: יומן בחירות ההסכמה וההסרה שלכם עצמכם. חוקים שמאפשרים לכם למחוק את הנתונים שלכם מחייבים אותנו גם להיות מסוגלים להוכיח כיצד טיפלנו בבחירותיכם (סעיף 17(3)(ב) ל־GDPR), ולכן רשומות אלה נשמרות במשך חמש שנים ולאחר מכן נמחקות. הן מכילות את הבחירות שלכם ואת המועד שבו קיבלתן — לא את פעילות הגלישה שלכם.",
-          "מכיוון שקבצים שהועלו ופלטים שנוצרו הם זמניים ונמחקים לאחר 24 שעות לכל היותר, ייתכן שלא נוכל לשחזר או לספק גישה לקבצים לאחר המחיקה."
+          "אם יש לכם חשבון, תוכלו למחוק קבצים בודדים, למחוק את כל הקבצים שלכם, לייצא את הנתונים שלכם או למחוק את החשבון בעצמכם מעמוד החשבון (ראו סעיף 3).",
+          "לאחר שקובץ נמחק, בין על ידכם ובין בתום תקופת השמירה שלו, איננו יכולים לשחזר אותו או לספק גישה אליו."
         ]
       },
       {
@@ -931,12 +987,14 @@
         ]
       },
       {
-        "title": "5. אחסון זמני ומחיקה",
+        "id": "retention",
+        "title": "5. אחסון, תקופת שמירה ומחיקה",
         "paragraphs": [
-          "קבצים שהועלו ופלטים שנוצרו עשויים להישמר באופן זמני למשך 24 שעות לכל היותר, כדי לתמוך בהיסטוריית המרות של ההפעלה ולאפשר לכם להוריד המרות אחרונות במהלך ההפעלה שלכם.",
-          "לאחר שתקופת השמירה הזמנית פוקעת, קבצים שהועלו ופלטים שנוצרו נמחקים מהמערכות הפעילות שלנו, אלא אם מתבצעת מחיקה מוקדמת יותר או שנדרשת שמירה מוגבלת מטעמים משפטיים או שהיא נחוצה באופן סביר לצורכי אבטחה, מניעת שימוש לרעה, ציות משפטי, פתרון מחלוקות, או אכיפת תנאים אלה.",
-          "אנו עשויים לשמר יומנים טכניים מוגבלים, רשומות אבטחה, רשומות מניעת שימוש לרעה, רשומות אנליטיקה, או רשומות ציות משפטי למשך זמן ארוך יותר מ־24 שעות במקומות שבהם הדבר נחוץ באופן סביר. רשומות אלה אינן מיועדות לשמר קובצי מדיה מלאים שהועלו לאחר תקופת השמירה הזמנית.",
-          "אתם אחראים להורדה ולגיבוי של כל קובץ מעובד שברצונכם לשמור. Media Manipulator אינו שירות אחסון קבוע, גיבוי, ארכיון, או אירוח."
+          "מבקרים ללא חשבון: קבצים שהועלו ופלטים שנוצרו נשמרים למשך 24 שעות. אם יש לכם חשבון, אתם בוחרים כמה זמן נאחסן את הקבצים שלכם, מ-24 שעות עד שנתיים (6 חודשים אלא אם תשנו זאת). בחירה זו זמינה בכל חשבון ואינה תלויה במסלול שלכם. מדיניות הפרטיות מתארת את הפרטים.",
+          "בתום תקופת השמירה החלה, קבצים שהועלו ופלטים שנוצרו נמחקים מהמערכות הפעילות שלנו, אלא אם מתבצעת מחיקה מוקדמת יותר או שנדרשת שמירה מוגבלת על פי דין או שהיא נחוצה באופן סביר לצורכי אבטחה, מניעת שימוש לרעה, ציות משפטי, יישוב מחלוקות או אכיפת תנאים אלה. המחיקה מתבצעת בתהליך אוטומטי ועשויה להתרחש זמן קצר לאחר תום התקופה.",
+          "מעמוד החשבון תוכלו למחוק קבצים בודדים, למחוק את כל הקבצים שלכם, לייצא את הנתונים שלכם או למחוק את החשבון. מחיקת קבצים או חשבון היא סופית: איננו שומרים גיבויים של מדיה ואיננו יכולים לשחזר קבצים שנמחקו.",
+          "אנו עשויים לשמור יומנים טכניים מוגבלים, רשומות אבטחה, רשומות למניעת שימוש לרעה, רשומות אנליטיקה או רשומות ציות משפטי למשך זמן ארוך יותר כאשר הדבר נחוץ באופן סביר. רשומות אלה אינן נועדות לשמר קובצי מדיה שלמים שהועלו לאחר תום תקופת השמירה.",
+          "אתם אחראים להורדה ולשמירה של עותקים משלכם של כל קובץ מעובד שברצונכם לשמור. Media Manipulator אינו שירות גיבוי, ארכיון או אירוח, ואיננו יכולים לשחזר קבצים או לספק גישה אליהם לאחר שנמחקו."
         ]
       },
       {
@@ -1340,7 +1398,7 @@
   "pricing": {
     "eyebrow": "תוכניות",
     "title": "מגבלות ברורות, בלי הפתעות",
-    "subtitle": "כל התוכניות מריצות את אותם הכלים על אותה החומרה. מה שמשתנה הוא כמה תוכלו להעביר דרכם ביום אחד, וכמה זמן התוצאות נשארות זמינות.",
+    "subtitle": "כל התוכניות מריצות את אותם הכלים על אותה החומרה. מה שמשתנה הוא כמה תוכלו להעביר דרכם ביום אחד.",
     "currentPlan": "התוכנית שלכם",
     "mostPopular": "רוב האנשים מתחילים כאן",
     "free_price": "חינם",
@@ -1367,7 +1425,6 @@
       "maxVideoSeconds": "אורך וידאו מקסימלי",
       "maxOutputHeight": "רזולוציית פלט מקסימלית",
       "studioProjects": "פרויקטי Studio שמורים",
-      "resultRetentionHours": "תוצאות נשמרות למשך",
       "priorityGpu": "תור GPU",
       "adsRemoved": "פרסומות"
     },
@@ -1393,8 +1450,9 @@
       "q3": "האם חשבונות חינמיים רואים פרסומות?",
       "a3": "כן. הפרסומות מממנות את התוכנית החינמית, כך שרק פרימיום מסיר אותן. אין מסכי ביניים, ספירות לאחור, או המתנות כפויות באף תוכנית.",
       "q4": "האם אפשר להשתמש בזה בלי חשבון בכלל?",
-      "a4": "כן, וזה במכוון. כל הכלים פועלים גם בלי התחברות — חשבון רק מגדיל את התקרה ושומר את ההיסטוריה שלכם."
-    }
+      "a4": "כן, וזה במכוון. כל הכלים פועלים גם בלי התחברות — חשבון רק מגדיל את התקרה ושומר את ההיסטוריה שלכם. ללא חשבון הקבצים שלכם נשמרים 24 שעות; עם חשבון אתם בוחרים כמה זמן, בין 24 שעות לשנתיים."
+    },
+    "retentionNote": "אתם בוחרים: בין 24 שעות לשנתיים. אורחים ללא חשבון: 24 שעות."
   },
   "account": {
     "title": "החשבון שלכם",
@@ -1470,8 +1528,235 @@
         "ai_voice_cleanup": "ניקוי קול",
         "ai_isolate_vocals": "בידוד שירה",
         "ai_remove_vocals": "הסרת שירה"
+      },
+      "deletesOn": "Deletes on {{date}}",
+      "keptLonger": "Kept longer",
+      "noDeadline": "No deletion date recorded",
+      "created": "Created",
+      "preview": "Preview",
+      "previewTitle": "Preview of {{name}}",
+      "metadata": "Metadata",
+      "keepLonger": "Keep longer",
+      "keepMenu": "Keep this result for",
+      "keep": {
+        "week": "1 week",
+        "month": "1 month",
+        "sixMonths": "6 months",
+        "year": "1 year"
+      },
+      "keepDone": "Kept until {{date}}.",
+      "keepFailed": "Could not extend this result. Try again.",
+      "keepGone": "This result has already been deleted.",
+      "deleteNow": "Delete now",
+      "deleteRecord": "Delete record",
+      "deleteTitle": "Delete this result now?",
+      "deleteBody": "The file is removed from our servers and can't be recovered. This cannot be undone.",
+      "deleteRecordBody": "The file has already expired. This removes the remaining record of the conversion.",
+      "deleteConfirm": "Delete",
+      "cancel": "Cancel",
+      "deleted": "Deleted.",
+      "deletedPending": "Deleted. A few files are still being removed in the background.",
+      "deleteFailed": "Could not delete this result. Nothing was changed; try again.",
+      "filters": {
+        "label": "Filter history",
+        "kind": "Type",
+        "allKinds": "All types",
+        "tool": "Tool",
+        "allTools": "All tools",
+        "from": "From",
+        "to": "To",
+        "expiringSoon": "Expiring within 7 days",
+        "clear": "Clear filters",
+        "noMatch": "No results match these filters."
+      },
+      "kinds": {
+        "video": "Video",
+        "audio": "Audio",
+        "image": "Image",
+        "lut": "Color LUT",
+        "other": "Other"
+      },
+      "bulk": {
+        "select": "Select {{name}}",
+        "selected": "{{count}} selected",
+        "delete": "Delete selected",
+        "clear": "Clear selection",
+        "title": "Delete {{count}} results now?",
+        "body": "The files are removed from our servers and can't be recovered. This cannot be undone.",
+        "progress": "Deleting {{done}} of {{total}}",
+        "done": "Deleted {{count}} results.",
+        "partial": "Deleted {{done}} of {{total}}. These could not be deleted:"
+      },
+      "expiredShort": "Expired",
+      "actions": "Actions for {{name}}"
+    },
+    "tabs": {
+      "label": "Account sections",
+      "overview": "Overview",
+      "history": "History",
+      "projects": "Projects",
+      "billing": "Billing",
+      "privacy": "Privacy & data",
+      "profile": "Profile"
+    },
+    "retentionChoose": "You choose: 24 hours to 2 years",
+    "overview": {
+      "bannerTitle": "Choose how long we keep your files",
+      "bannerBody": "Your results and Darkroom projects are kept for 6 months unless you pick another window. Anything from 24 hours to 2 years is yours to choose.",
+      "bannerCta": "Open Privacy & data",
+      "bannerDismiss": "Dismiss"
+    },
+    "projects": {
+      "intro": "Your saved Darkroom timelines. Deleting a project also removes its uploaded media.",
+      "loading": "Loading your projects…",
+      "loadFailed": "Could not load your projects. Reload to try again.",
+      "untitled": "Untitled project",
+      "duration": "Length {{duration}}",
+      "edited": "Edited {{date}}",
+      "open": "Open",
+      "delete": "Delete",
+      "deleteTitle": "Delete “{{name}}”?",
+      "deleteBody": "The project, its versions and every uploaded media file are removed from our servers. This cannot be undone.",
+      "deleteConfirm": "Delete project",
+      "cancel": "Cancel",
+      "deleted": "Project deleted.",
+      "deletedPending": "Project deleted. A few files are still being removed in the background.",
+      "deleteFailed": "Could not delete this project. Nothing was changed; try again."
+    },
+    "billing": {
+      "plans": "Compare plans"
+    },
+    "privacy": {
+      "loading": "Loading your privacy settings…",
+      "loadFailed": "Could not load your settings. Reload to try again.",
+      "retention": {
+        "title": "How long we keep your files",
+        "body": "Applies to everything you create: conversion results, uploads and Darkroom projects. Your choice, not your plan: every account can pick anything from 24 hours to 2 years.",
+        "label": "Retention window",
+        "recommended": "Recommended",
+        "preset": {
+          "h24": "24 hours",
+          "d7": "7 days",
+          "d30": "30 days",
+          "d90": "90 days",
+          "m6": "6 months",
+          "y1": "1 year",
+          "y2": "2 years"
+        },
+        "custom": "Custom",
+        "customLabel": "Custom window in days (1–730)",
+        "customApply": "Apply",
+        "customInvalid": "Enter a whole number of days from 1 to 730.",
+        "current": "Currently {{window}}.",
+        "saving": "Saving…",
+        "saved": "Saved. Your files are now kept for {{window}}.",
+        "saveFailed": "Could not save your retention window. It was left as it was.",
+        "previewFailed": "Could not check what this change would delete, so nothing was changed. Try again.",
+        "windowHours": "{{count}} hours",
+        "windowDays": "{{count}} days",
+        "windowMonths": "{{count}} months",
+        "windowYears": "{{count}} years",
+        "windowDay": "1 day",
+        "windowYear": "1 year"
+      },
+      "shrink": {
+        "title": "Shorten to {{window}}?",
+        "body": "Shortening to {{window}} will delete {{results}} results and {{projects}} projects older than that within the hour.",
+        "bytes": "About {{size}} will be freed.",
+        "other": "Plus {{other}} other stored items.",
+        "irreversible": "Deleted files can't be recovered.",
+        "confirm": "Shorten and delete",
+        "cancel": "Keep my current window"
+      },
+      "why": {
+        "title": "Why longer is better",
+        "revisit": "Revisit and re-download any result without running it again.",
+        "reopen": "Reopen your Darkroom projects exactly where you left them.",
+        "metadata": "See metadata reports for files you converted a while ago.",
+        "tradeoff": "The honest trade-off: a longer window means we store more of your data, for longer. Pick the shortest window you will actually use."
+      },
+      "store": {
+        "title": "What we store and where",
+        "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
+        "metadataTitle": "Metadata reports",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataToggle": "Delete metadata reports together with their files",
+        "visibilityTitle": "History visibility",
+        "visibilityLabel": "What your history list shows",
+        "full": "Full details",
+        "namesOnly": "Names only",
+        "settingFailed": "Could not save that setting. It was left as it was.",
+        "settingSaved": "Saved."
+      },
+      "storage": {
+        "title": "What you have stored",
+        "note": "Counts come from your loaded history; the account does not report storage size yet.",
+        "results": "Results in history",
+        "projects": "Darkroom projects",
+        "kind": "{{kind}}: {{count}}",
+        "empty": "Nothing stored right now."
+      },
+      "data": {
+        "title": "Your data",
+        "exportTitle": "Download my data",
+        "exportBody": "A zip with your history, projects, files, account details and metadata reports. Up to 3 exports per hour.",
+        "exportCta": "Download my data",
+        "exportPending": "Preparing your export…",
+        "exportDone": "Your export was saved.",
+        "exportLimited": "You have reached the export limit. Try again in {{minutes}} min.",
+        "exportLimitedGeneric": "You have reached the export limit. Try again in a while.",
+        "exportFailed": "Could not prepare your export. Try again.",
+        "deleteAllTitle": "Delete all my files",
+        "deleteAllBody": "Removes every result, upload, Darkroom project and metadata report. Your account and plan stay.",
+        "deleteAllCta": "Delete all my files",
+        "deleteAllDialogTitle": "Delete all your files?",
+        "deleteAllDialogBody": "Every result, upload, Darkroom project and metadata report is removed from our servers and can't be recovered.",
+        "typeToConfirm": "Type {{word}} to confirm",
+        "confirmInput": "Confirmation text",
+        "deleteAllConfirm": "Delete everything",
+        "deleteAllDone": "All your files were deleted.",
+        "deleteAllPending": "Deleted. A few files are still being removed in the background.",
+        "deleteAllFailed": "Could not delete your files. Try again.",
+        "accountTitle": "Delete my account",
+        "accountBody": "Cancels any subscription, deletes all your files and settings, and removes your sign-in. This cannot be undone.",
+        "accountCta": "Delete my account",
+        "accountDialogTitle": "Delete your account?",
+        "accountDialogBody": "This permanently deletes your account, files, settings and sign-in. Any subscription is cancelled. You will be signed out.",
+        "accountConfirm": "Delete my account",
+        "reauthTitle": "Sign in again to continue",
+        "reauthBody": "For your security, deleting an account needs a sign-in from the last 5 minutes.",
+        "reauthPassword": "Password",
+        "reauthGoogle": "Continue with Google",
+        "reauthPasswordCta": "Confirm password",
+        "reauthFailed": "That sign-in did not work. Check it and try again.",
+        "reauthBlocked": "The sign-in window was blocked. Allow pop-ups for this site and try again.",
+        "accountIncomplete": "Part of the deletion did not finish. Nothing is lost: retry and it will resume where it stopped.",
+        "accountRetry": "Retry deletion",
+        "accountFailed": "Could not delete your account. Try again.",
+        "accountDone": "Your account and data were deleted.",
+        "cancel": "Cancel"
       }
-    }
+    },
+    "profile": {
+      "title": "Your profile",
+      "displayName": "Display name",
+      "noName": "Not set",
+      "nameReadOnly": "Your display name comes from your sign-in provider and cannot be edited here yet.",
+      "email": "Email",
+      "verified": "Verified",
+      "unverified": "Not verified",
+      "sendVerification": "Send verification email",
+      "checkVerification": "I’ve verified",
+      "verificationSent": "Sent. Check your inbox (and spam), click the link, then press “I’ve verified”.",
+      "verificationFailed": "Could not send the email. Firebase may be rate-limiting — wait a few minutes and try again.",
+      "stillUnverified": "Firebase still reports this address as unverified. Make sure you clicked the link, then try again.",
+      "sessionsTitle": "Sessions",
+      "signOut": "Sign out",
+      "signOutEverywhere": "Sign out everywhere",
+      "signOutEverywhereBody": "Ends your session on every device, including this one.",
+      "revokeFailed": "Could not sign you out everywhere. Try again."
+    },
+    "retentionLabel": "Result retention"
   },
   "homeContent": {
     "howItWorks": {
@@ -1488,7 +1773,7 @@
         },
         {
           "title": "הורידו את התוצאה",
-          "body": "ההמרה רצה על השרתים שלנו ולא בדפדפן שלכם, כך שגם קבצים גדולים עובדים. התוצאות מיועדות להימחק אוטומטית תוך 24 שעות."
+          "body": "ההמרה רצה על השרתים שלנו ולא בדפדפן שלכם, כך שגם קבצים גדולים עובדים. קבצים נשמרים 24 שעות לאורחים; עם חשבון חינמי אתם בוחרים בין 24 שעות לשנתיים."
         }
       ],
       "more": "פרטים נוספים ב<linkHow>איך זה עובד</linkHow>, או עיינו ב<linkTools>כל הכלים</linkTools>."
@@ -1500,7 +1785,7 @@
   },
   "toolsIndex": {
     "title": "כלי מדיה מקוונים חינמיים",
-    "intro": "Media Manipulator היא חבילה חינמית של כלים מבוססי דפדפן להמרה, דחיסה, עריכה, תמלול, וניקוי של קובצי תמונה, וידאו, ואודיו. בלי הרשמה, בלי סימני מים, והקבצים שלכם מעובדים על השרתים שלנו ומיועדים להימחק אוטומטית תוך 24 שעות.",
+    "intro": "Media Manipulator היא חבילה חינמית של כלים מבוססי דפדפן להמרה, דחיסה, עריכה, תמלול, וניקוי של קובצי תמונה, וידאו, ואודיו. בלי הרשמה, בלי סימני מים, והקבצים שלכם מעובדים על השרתים שלנו ונשמרים 24 שעות לאורחים; עם חשבון חינמי אתם בוחרים בין 24 שעות לשנתיים.",
     "categories": {
       "image": "כלי תמונה",
       "video": "כלי וידאו",
@@ -1513,7 +1798,7 @@
     "open": "פתיחה",
     "privacyAriaLabel": "פרטיות וטיפול בקבצים",
     "privacyTitle": "הקבצים שלכם נשארים פרטיים",
-    "privacyBody": "העלאות מעובדות על התשתית שלנו ומיועדות להימחק אוטומטית תוך 24 שעות. תכונות הבינה המלאכותית פועלות על שרת GPU שאנחנו מפעילים — הקבצים שלכם אינם משותפים עם ספקי בינה מלאכותית חיצוניים, ואין צורך בחשבון.",
+    "privacyBody": "קבצים נשמרים 24 שעות לאורחים; עם חשבון חינמי אתם בוחרים בין 24 שעות לשנתיים. תכונות הבינה המלאכותית פועלות על שרת GPU שאנחנו מפעילים — הקבצים שלכם אינם משותפים עם ספקי בינה מלאכותית חיצוניים, ואין צורך בחשבון.",
     "learnMoreAriaLabel": "למידע נוסף",
     "newHereTitle": "חדשים כאן?",
     "newHereBody": "מדריכים שלב־אחר־שלב מלווים אתכם דרך כלי התמונה, הווידאו, והאודיו, ודרך עורך Darkroom.",
@@ -1568,7 +1853,7 @@
     "limitationsTitle": "מגבלות",
     "limitationsBody": "Darkroom נמצא בפיתוח פעיל. עריכה בסיסית — ציר זמן רב־ערוצי, גזירה/פיצול, שכבות, ערבוב אודיו, וייצוא MP4 — זמינה כבר עכשיו. אפקטים מתקדמים ממשיכים להתווסף עם הזמן.",
     "privacyTitle": "פרטיות",
-    "privacyBody": "המדיה שלכם מעובדת על השרתים שלנו ונמחקת אוטומטית תוך 24 שעות. אין צורך בחשבון, והקבצים לעולם אינם משותפים עם ספקי צד שלישי."
+    "privacyBody": "קבצים נשמרים 24 שעות לאורחים; עם חשבון חינמי אתם בוחרים בין 24 שעות לשנתיים. אין צורך בחשבון, והקבצים לעולם אינם משותפים עם ספקי צד שלישי."
   },
   "voices": {
     "eyebrow": "קולות",

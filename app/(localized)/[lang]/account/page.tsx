@@ -1,4 +1,7 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
+
+import type { AccountCopy } from '@/components/account/account-copy';
 
 import { getServerT } from '@/lib/i18n/server';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
@@ -32,23 +35,8 @@ export default async function Account({ params }: PageParams) {
   const t = getServerT('interface', locale);
 
   const labels: AccountLabels = {
-    signedOutTitle: t('interface:account.signedOutTitle'),
-    signedOutBody: t('interface:account.signedOutBody'),
-    signInCta: t('interface:account.signInCta'),
-    usageTitle: t('interface:account.usageTitle'),
-    planTitle: t('interface:account.planTitle'),
-    projectsTitle: t('interface:account.projectsTitle'),
-    resets: t('interface:account.resets'),
-    metric: {
-      ops: t('interface:account.metric.ops'),
-      ai_ops: t('interface:account.metric.ai_ops'),
-      export: t('interface:account.metric.export'),
-    },
-    emptyProjects: t('interface:account.emptyProjects'),
-    openStudio: t('interface:account.openStudio'),
-    comparePlans: t('interface:account.comparePlans'),
-    signOut: t('interface:account.signOut'),
-    loadFailed: t('interface:account.loadFailed'),
+    // Read as one object so the client island gets every tab string without importing pages.json.
+    copy: t('interface:account', { returnObjects: true }) as unknown as AccountCopy,
     unlimited: t('interface:pricing.values.unlimited'),
     tierNames: {
       anonymous: t('interface:pricing.tier.anonymous'),
@@ -56,38 +44,12 @@ export default async function Account({ params }: PageParams) {
       premium: t('interface:pricing.tier.premium'),
       operator: t('interface:pricing.tier.operator'),
     },
-    history: {
-      title: t('interface:account.historyTitle'),
-      loading: t('interface:account.history.loading'),
-      empty: t('interface:account.emptyHistory'),
-      emptyCta: t('interface:account.history.emptyCta'),
-      loadFailed: t('interface:account.history.loadFailed'),
-      download: t('interface:account.history.download'),
-      expired: t('interface:account.history.expired'),
-      loadMore: t('interface:account.history.loadMore'),
-      showing: t('interface:account.history.showing'),
-      tool: t('interface:account.history.tool', { returnObjects: true }) as Record<string, string>,
-      status: t('interface:account.history.status', { returnObjects: true }) as Record<
-        string,
-        string
-      >,
-    },
-    verify: {
-      title: t('interface:account.verify.title'),
-      body: t('interface:account.verify.body'),
-      send: t('interface:account.verify.send'),
-      sent: t('interface:account.verify.sent'),
-      sendFailed: t('interface:account.verify.sendFailed'),
-      check: t('interface:account.verify.check'),
-      stillUnverified: t('interface:account.verify.stillUnverified'),
-    },
     planRows: [
       { label: t('interface:pricing.rows.opsPerDay'), value: 'ops' },
       { label: t('interface:pricing.rows.maxFileBytes'), value: 'file' },
       { label: t('interface:pricing.rows.maxVideoSeconds'), value: 'video' },
       { label: t('interface:pricing.rows.maxOutputHeight'), value: 'output' },
       { label: t('interface:pricing.rows.studioProjects'), value: 'projects' },
-      { label: t('interface:pricing.rows.resultRetentionHours'), value: 'retention' },
     ],
   };
 
@@ -101,7 +63,10 @@ export default async function Account({ params }: PageParams) {
           {t('interface:account.subtitle')}
         </p>
       </header>
-      <AccountDashboard labels={labels} />
+      {/* useSearchParams (the ?tab= routing) needs a Suspense boundary on a static page. */}
+      <Suspense fallback={null}>
+        <AccountDashboard labels={labels} />
+      </Suspense>
     </div>
   );
 }

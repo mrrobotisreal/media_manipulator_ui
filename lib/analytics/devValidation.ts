@@ -54,6 +54,7 @@ const transport = z.enum(['post', 'presigned_put']);
 // the bucket vocabularies live in lib/analytics/buckets.ts and re-enumerating
 // them here would create a second copy to drift.
 const studioHostEnum = z.enum(['mm', 'creatv']);
+const retentionBucketEnum = z.enum(['24h', '7d', '30d', '90d', '6mo', '1y', '2y', 'custom']);
 const studioHostProps = z.object({ host: studioHostEnum.optional() }).strict();
 const studioExportProps = z
   .object({
@@ -306,6 +307,18 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
   scroll_depth: z
     .object({ pct: z.union([z.literal(25), z.literal(50), z.literal(75), z.literal(100)]) })
+    .strict(),
+
+  retention_setting_changed: z.object({ from_bucket: retentionBucketEnum, to_bucket: retentionBucketEnum }).strict(),
+  data_deleted: z
+    .object({
+      scope: z.enum(['item', 'all', 'account']),
+      kind: z.enum(['result', 'project', 'all_files', 'account']),
+    })
+    .strict(),
+  data_export_requested: z.object({}).strict(),
+  history_item_reopened: z
+    .object({ kind: z.string(), age_bucket: z.enum(['<1d', '1-7d', '7-30d', '30-90d', '90d+']) })
     .strict(),
 
   studio_project_created: studioHostProps,

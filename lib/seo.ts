@@ -499,7 +499,7 @@ const ROUTES: RouteSeo[] = [
     title:
       'How Media Manipulator Works | File Conversion, AI Processing & Temporary Storage',
     description:
-      'Learn how Media Manipulator processes files, converts media formats, handles AI transcription and summaries, scans uploads for safety, and temporarily stores outputs for up to 24 hours.',
+      'Learn how Media Manipulator processes files, converts media formats, handles AI transcription and summaries, scans uploads for safety, and keeps files 24 hours for guests or the period you choose with a free account.',
     canonicalUrl: buildCanonical('/how-it-works'),
     ogTitle:
       'How Media Manipulator Works | Conversion, AI Processing & Temporary Storage',

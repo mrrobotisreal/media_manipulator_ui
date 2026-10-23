@@ -27,7 +27,7 @@
   },
   "specializedToolShell": {
     "dropHere": "Suelta tu {{hint}} aquí",
-    "selectHint": "o haz clic para seleccionarlo desde tu ordenador. Los archivos permanecen en nuestros servidores un máximo de 24 horas y después se eliminan.",
+    "selectHint": "o haz clic para seleccionarlo desde tu ordenador. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.",
     "selectFile": "Seleccionar archivo",
     "removeFile": "Quitar archivo",
     "uploadingPercent": "Subiendo {{percent}}%",
@@ -57,7 +57,7 @@
       "audio": "audio",
       "pdf": "PDF"
     },
-    "selectHint": "o haz clic para seleccionarlo desde tu ordenador. Los archivos permanecen en nuestros servidores un máximo de 24 horas y después se eliminan.",
+    "selectHint": "o haz clic para seleccionarlo desde tu ordenador. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.",
     "selectFile": "Seleccionar archivo",
     "removeFile": "Quitar archivo",
     "uploadingPercent": "Subiendo {{percent}}%",
@@ -215,7 +215,7 @@
     "title": "Traducir subtítulos",
     "subtitle": "Sube un archivo de subtítulos VTT, SRT o TXT y tradúcelo a otro idioma.",
     "dropHere": "Suelta aquí tu archivo .srt o .vtt",
-    "privacyNote": "Los archivos se procesan en nuestro propio servidor y se eliminan en un plazo de 24 horas. No enviamos tus subtítulos a proveedores de IA externos.",
+    "privacyNote": "Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años. No enviamos tus subtítulos a proveedores de IA externos.",
     "selectCaptionFile": "Seleccionar archivo de subtítulos",
     "removeFile": "Quitar archivo",
     "sourceLanguage": "Idioma de origen",
@@ -333,12 +333,24 @@
       "runningTotal": "{{count}} modelo(s) seleccionado(s) · estimación de procesamiento total: {{estimate}}"
     },
     "models": {
-      "realesrgan": { "description": "Escalador GAN rápido — la referencia básica que toda comparación debería incluir." },
-      "swinir": { "description": "SR basado en transformadores para escenas reales — texturas potentes, más lento que Real-ESRGAN." },
-      "hat": { "description": "GAN de SR con atención híbrida — a menudo las imágenes fijas más nítidas, el más lento del grupo A." },
-      "basicvsrpp": { "description": "SR de vídeo recurrente — usa fotogramas cercanos para lograr coherencia temporal." },
-      "rvrt": { "description": "Transformador recurrente de restauración de vídeo — gran detalle con conciencia del movimiento." },
-      "vrt": { "description": "Transformador de restauración de vídeo — máxima calidad en muchos clips, con diferencia el más lento." }
+      "realesrgan": {
+        "description": "Escalador GAN rápido — la referencia básica que toda comparación debería incluir."
+      },
+      "swinir": {
+        "description": "SR basado en transformadores para escenas reales — texturas potentes, más lento que Real-ESRGAN."
+      },
+      "hat": {
+        "description": "GAN de SR con atención híbrida — a menudo las imágenes fijas más nítidas, el más lento del grupo A."
+      },
+      "basicvsrpp": {
+        "description": "SR de vídeo recurrente — usa fotogramas cercanos para lograr coherencia temporal."
+      },
+      "rvrt": {
+        "description": "Transformador recurrente de restauración de vídeo — gran detalle con conciencia del movimiento."
+      },
+      "vrt": {
+        "description": "Transformador de restauración de vídeo — máxima calidad en muchos clips, con diferencia el más lento."
+      }
     },
     "panel": {
       "loading": "Comprobando las capacidades del servidor…",
@@ -404,14 +416,30 @@
       "unavailable": "No disponible en este servidor"
     },
     "models": {
-      "fbcnn": { "description": "Eliminación ciega de artefactos JPEG / de compresión (1x, no generativo)." },
-      "scunet": { "description": "Reducción ciega de ruido real — variante PSNR, sin texturas alucinadas (1x)." },
-      "nafnet": { "description": "Corrección de desenfoque de movimiento (pesos GoPro, 1x)." },
-      "realesrgan": { "description": "Escalador GAN rápido — la referencia básica que toda comparación debería incluir." },
-      "swinir": { "description": "SR basado en transformadores para escenas reales — texturas potentes, más lento que Real-ESRGAN." },
-      "hat": { "description": "GAN de SR con atención híbrida — a menudo el resultado más nítido." },
-      "gfpgan": { "description": "Restauración facial GFPGAN v1.4 — reconstrucción generativa." },
-      "codeformer": { "description": "Restauración facial CodeFormer con control de fidelidad — reconstrucción generativa." }
+      "fbcnn": {
+        "description": "Eliminación ciega de artefactos JPEG / de compresión (1x, no generativo)."
+      },
+      "scunet": {
+        "description": "Reducción ciega de ruido real — variante PSNR, sin texturas alucinadas (1x)."
+      },
+      "nafnet": {
+        "description": "Corrección de desenfoque de movimiento (pesos GoPro, 1x)."
+      },
+      "realesrgan": {
+        "description": "Escalador GAN rápido — la referencia básica que toda comparación debería incluir."
+      },
+      "swinir": {
+        "description": "SR basado en transformadores para escenas reales — texturas potentes, más lento que Real-ESRGAN."
+      },
+      "hat": {
+        "description": "GAN de SR con atención híbrida — a menudo el resultado más nítido."
+      },
+      "gfpgan": {
+        "description": "Restauración facial GFPGAN v1.4 — reconstrucción generativa."
+      },
+      "codeformer": {
+        "description": "Restauración facial CodeFormer con control de fidelidad — reconstrucción generativa."
+      }
     },
     "panel": {
       "loading": "Comprobando las capacidades del servidor…",
@@ -465,10 +493,22 @@
     },
     "sizeLabel": "{{width}}×{{height}} ({{qualifier}})",
     "modes": {
-      "point": { "label": "Punto", "description": "Un solo punto por muestra — aspecto limpio y minimalista." },
-      "line": { "label": "Línea", "description": "Una barra vertical por muestra — presencia más marcada." },
-      "p2p": { "label": "Punto a punto", "description": "Un punto por muestra más líneas de conexión — aspecto fluido." },
-      "cline": { "label": "Línea centrada", "description": "Línea vertical centrada en el eje — aspecto simétrico." }
+      "point": {
+        "label": "Punto",
+        "description": "Un solo punto por muestra — aspecto limpio y minimalista."
+      },
+      "line": {
+        "label": "Línea",
+        "description": "Una barra vertical por muestra — presencia más marcada."
+      },
+      "p2p": {
+        "label": "Punto a punto",
+        "description": "Un punto por muestra más líneas de conexión — aspecto fluido."
+      },
+      "cline": {
+        "label": "Línea centrada",
+        "description": "Línea vertical centrada en el eje — aspecto simétrico."
+      }
     },
     "output": "Salida",
     "outputOptions": {
@@ -480,9 +520,15 @@
     "includeAudio": "Incluir el audio original con el vídeo de forma de onda generado",
     "includeAudioNote": "El vídeo de forma de onda se reproducirá sincronizado con el audio original: perfecto para audiogramas, avances musicales y clips de pódcast. Desactívalo para una forma de onda silenciosa.",
     "videoFormat": "Formato de vídeo",
-    "videoFormats": { "mp4": "MP4 (recomendado)", "webm": "WebM" },
+    "videoFormats": {
+      "mp4": "MP4 (recomendado)",
+      "webm": "WebM"
+    },
     "imageFormat": "Formato de imagen",
-    "imageFormats": { "png": "PNG (recomendado)", "webp": "WebP" },
+    "imageFormats": {
+      "png": "PNG (recomendado)",
+      "webp": "WebP"
+    },
     "aspectRatioSize": "Relación de aspecto y tamaño",
     "useCustomSize": "Usar ancho / alto personalizados",
     "widthPlaceholder": "Ancho",
@@ -508,7 +554,10 @@
       "cbrt": "cbrt — realce más fuerte de las partes silenciosas"
     },
     "draw": "Dibujar",
-    "drawOptions": { "scale": "escala (por defecto)", "full": "completo" },
+    "drawOptions": {
+      "scale": "escala (por defecto)",
+      "full": "completo"
+    },
     "generating": "Generando forma de onda…",
     "generate": "Generar forma de onda"
   },

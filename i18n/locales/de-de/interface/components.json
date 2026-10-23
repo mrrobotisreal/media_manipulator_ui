@@ -63,9 +63,10 @@
       "maxOutput": "Ausgabe bis zu {{height}}p",
       "studioProjects": "{{count}} gespeicherte Studio-Projekte",
       "studioProjectsUnlimited": "Unbegrenzt gespeicherte Studio-Projekte",
-      "retention": "Ergebnisse werden {{duration}} gespeichert",
+      "retention": "Sie bestimmen, wie lange Dateien aufbewahrt werden: 24 Stunden bis 2 Jahre",
       "priorityGpu": "Vorrangige Verarbeitung",
-      "noAds": "Keine Werbung"
+      "noAds": "Keine Werbung",
+      "retentionGuest": "Dateien werden 24 Stunden aufbewahrt"
     },
     "loadingPlans": "Tarife werden geladen …"
   },
@@ -140,7 +141,7 @@
   },
   "privacyPolicyComponent": {
     "title": "Datenschutz auf einen Blick",
-    "summary": "Dateien werden auf unseren Servern verarbeitet, innerhalb von 24 Stunden automatisch gelöscht und niemals an KI-Anbieter Dritter gesendet.",
+    "summary": "Dateien werden auf unseren Servern verarbeitet und niemals an KI-Anbieter Dritter gesendet. Ohne Konto werden sie 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.",
     "learnMore": "Vollständige Datenschutzerklärung lesen"
   },
   "quotaMeter": {
