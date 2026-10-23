@@ -83,11 +83,11 @@ describe('useResultBlob', () => {
   it('prefers the inline URL for streamable kinds when the API sent a MIME, and fetches nothing', () => {
     const fetchBlob = vi.fn(async () => new Blob(['x']));
     let state: ResultBlobState | undefined;
-    function InlineProbe() {
-      state = useResultBlob({ jobId: 'v1', kind: 'video', mimeFromServer: true }, { fetchBlob });
+    function InlineProbe({ onState }: { onState: (s: ResultBlobState) => void }) {
+      onState(useResultBlob({ jobId: 'v1', kind: 'video', mimeFromServer: true }, { fetchBlob }));
       return null;
     }
-    render(<InlineProbe />);
+    render(<InlineProbe onState={(s) => (state = s)} />);
     expect(state?.source).toBe('inline');
     expect(state?.url).toContain('/result/v1?sid=');
     expect(fetchBlob).not.toHaveBeenCalled();

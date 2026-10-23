@@ -34,7 +34,11 @@ function drop(jobId: string, entry: Entry) {
   entry.blob = undefined;
 }
 
-function acquire(jobId: string, fetchBlob: (jobId: string) => Promise<Blob>): Entry {
+function acquire(
+  jobId: string,
+  fetchBlob: (jobId: string) => Promise<Blob>,
+  seed?: Blob | null,
+): Entry {
   let entry = entries.get(jobId);
   if (!entry) {
     entry = { refs: 0, listeners: new Set() };
@@ -42,7 +46,10 @@ function acquire(jobId: string, fetchBlob: (jobId: string) => Promise<Blob>): En
   }
   entry.refs += 1;
   const current = entry;
-  if (!current.blob && !current.promise) {
+  if (seed && !current.blob && !current.promise) {
+    current.blob = seed;
+    current.url = URL.createObjectURL(seed);
+  } else if (!current.blob && !current.promise) {
     current.error = undefined;
     current.promise = fetchBlob(jobId)
       .then((blob) => {
@@ -98,6 +105,11 @@ export interface ResultBlobState {
 export interface UseResultBlobOptions {
   /** Viewers that need no bytes (file cards, archives) pass false so nothing is fetched. */
   enabled?: boolean;
+  /**
+   * Bytes the caller already has (home keeps the blob per history entry). Used instead of a
+   * fetch the first time the job is acquired.
+   */
+  seedBlob?: Blob | null;
   /** Override the fetcher (tests). Defaults to `useDownloadFile().downloadFile`. */
   fetchBlob?: (jobId: string) => Promise<Blob>;
 }
@@ -119,7 +131,7 @@ export function useResultBlob(
   // tick so render re-reads the module map.
   useEffect(() => {
     if (!enabled || !jobId) return;
-    const entry = acquire(jobId, fetchBlob);
+    const entry = acquire(jobId, fetchBlob, options.seedBlob);
     const onChange = () => setTick((n) => n + 1);
     entry.listeners.add(onChange);
     onChange();

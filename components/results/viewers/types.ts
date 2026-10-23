@@ -1,0 +1,33 @@
+import type { ComponentType } from 'react';
+import type { ResultDescriptor, ResultKind } from '@/lib/results/describe';
+
+/**
+ * What the panel hands a viewer.
+ *
+ * `kind`, `fileName`, `mime` and `sizeBytes` describe the side being shown, which is the
+ * result or, in the Original/Result toggle, the original. `descriptor` is always the
+ * RESULT's descriptor so a viewer that needs sidecars or the job id (MM03/MM04) has them
+ * on either side.
+ */
+export interface ViewerProps {
+  role: 'original' | 'result';
+  kind: ResultKind;
+  /** Object URL or inline URL; null when the registry entry has `needsBlob: false`. */
+  src: string | null;
+  /** The bytes behind `src` when they were fetched (null for inline streaming). */
+  blob: Blob | null;
+  fileName: string;
+  mime: string;
+  sizeBytes?: number;
+  descriptor: ResultDescriptor;
+}
+
+export interface ViewerEntry {
+  component: ComponentType<ViewerProps>;
+  /**
+   * True when the viewer plays/draws the bytes, so the panel loads them through
+   * `useResultBlob`. False for viewers that need no bytes up front (file cards, and later
+   * archive/stream viewers that fetch for themselves).
+   */
+  needsBlob: boolean;
+}
