@@ -45,6 +45,8 @@ export interface MetadataInspectorProps {
   fileName?: string;
   /** Renders a "Strip all metadata" button in the summary bar when given. */
   onStripAll?: () => void;
+  stripDisabled?: boolean;
+  stripLabel?: string;
   extraActions?: React.ReactNode;
   className?: string;
   /** Surfaces own fetching; the inspector only renders what it is given. */
@@ -93,6 +95,8 @@ export function MetadataInspector({
   surface,
   fileName,
   onStripAll,
+  stripDisabled,
+  stripLabel,
   extraActions,
   className,
   status = 'ready',
@@ -281,6 +285,8 @@ export function MetadataInspector({
         onCopy={copyJson}
         mobile={mobile}
         onStripAll={onStripAll}
+        stripDisabled={stripDisabled}
+        stripLabel={stripLabel}
         extraActions={extraActions}
       />
 

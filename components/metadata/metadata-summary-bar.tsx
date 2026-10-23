@@ -34,6 +34,10 @@ export interface SummaryBarProps {
   onCopy: () => void;
   mobile: boolean;
   onStripAll?: () => void;
+  /** Disables the strip button (a job is running). */
+  stripDisabled?: boolean;
+  /** Overrides the strip label and makes the button the primary action. */
+  stripLabel?: string;
   extraActions?: React.ReactNode;
 }
 
@@ -176,9 +180,16 @@ export function MetadataSummaryBar(props: SummaryBarProps) {
             </Button>
           ) : null}
           {props.onStripAll ? (
-            <Button type="button" variant="outline" size="sm" onClick={props.onStripAll}>
+            <Button
+              type="button"
+              variant={props.stripLabel ? 'default' : 'outline'}
+              size="sm"
+              onClick={props.onStripAll}
+              disabled={props.stripDisabled}
+              data-testid="metadata-strip-all"
+            >
               <Eraser aria-hidden="true" />
-              {t('metadata.stripAll')}
+              {props.stripLabel ?? t('metadata.stripAll')}
             </Button>
           ) : null}
           {props.extraActions}

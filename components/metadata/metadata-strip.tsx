@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { ChevronDown } from 'lucide-react';
 import { useLocalization } from '@/i18n/useLocalization';
 import { ensureMetadataShard } from '@/lib/i18n/ensureShard';
@@ -8,8 +9,10 @@ import { keptCount } from '@/lib/metadata/diff-model';
 import type { DiffEvent, InspectorSurface } from '@/lib/metadata/types';
 import { cn } from '@/lib/utils';
 import { LazyMetadataInspector } from './metadata-inspector-lazy';
-import { MetadataDiffModal } from './metadata-diff-modal';
 import { useJobBinaryUrls, useJobMetadata, useJobMetadataDiff } from './use-metadata-data';
+
+/** The modal (accordion, rows, diff helpers) loads only when Compare is first opened. */
+const MetadataDiffModal = dynamic(() => import('./metadata-diff-modal').then((m) => m.MetadataDiffModal), { ssr: false });
 
 /** Kinds whose results carry comparable metadata. */
 const STRIP_KINDS: ReadonlySet<string> = new Set(['image', 'video', 'audio', 'pdf']);
@@ -107,7 +110,7 @@ function StripInner({ jobId, originalName, resultName, surface = 'result', discl
             ) : null}
           </p>
           {disclosure && showResult ? <ResultInspector jobId={jobId} name={resultName} surface={surface} /> : null}
-          <MetadataDiffModal
+          {open ? <MetadataDiffModal
             jobId={jobId}
             open={open}
             onOpenChange={setOpen}
@@ -115,7 +118,7 @@ function StripInner({ jobId, originalName, resultName, surface = 'result', discl
             resultName={resultName}
             surface={surface}
             onEvent={onEvent}
-          />
+          /> : null}
         </>
       ) : null}
     </div>

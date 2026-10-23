@@ -349,7 +349,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       defaultTask: 'remove_metadata',
       title: 'Remove metadata from an image',
       description:
-        'Upload a JPG, PNG, WebP, or HEIC photo. Use the Metadata section in the form below and set the metadata mode to "Strip" before converting.',
+        'Upload a JPG, PNG, WebP, or HEIC photo. We show every tag it carries, then press Strip everything to remove them all and see exactly what was removed.',
     },
     intro:
       'Every photo you take stores hidden information about it — the camera you used, the exact time, and often the GPS coordinates of where the photo was taken. This metadata can leak your home address, daily routine, or device details whenever you share a picture online. Media Manipulator strips all of that out and gives you a clean image safe to publish.',
@@ -366,7 +366,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
       {
         title: 'Read metadata',
-        description: 'We parse EXIF/IPTC/XMP fields locally on our servers.',
+        description: 'We read EXIF/IPTC/XMP fields on our servers and list them, with the private ones flagged.',
       },
       {
         title: 'Remove private fields',

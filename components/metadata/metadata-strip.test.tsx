@@ -52,7 +52,7 @@ describe('MetadataStrip', () => {
     const line = await screen.findByTestId('metadata-strip');
     await waitFor(() => expect(line.textContent).toContain('12 kept · 5 removed'));
     fireEvent.click(screen.getByRole('button', { name: 'Compare' }));
-    expect(screen.getByTestId('modal-open')).toBeTruthy();
+    expect(await screen.findByTestId('modal-open')).toBeTruthy();
   });
 
   it('says "Metadata unchanged" when nothing was removed', async () => {
