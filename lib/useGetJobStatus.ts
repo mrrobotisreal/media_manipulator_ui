@@ -33,6 +33,10 @@ export interface ConversionJob {
    * reader feature-detects it; it is a hint for inline streaming, never the kind source.
    */
   resultMime?: string;
+  /** Which metadata documents exist (MM08, additive). Absent on older APIs. */
+  metadataAvailable?: { original: boolean; result: boolean };
+  /** Metadata tags a strip job removed (MM08, additive; omitted by the API when 0). */
+  strippedCount?: number;
 }
 
 /**
@@ -68,6 +72,11 @@ const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
     resultFileName: typeof data.resultFileName === 'string' ? data.resultFileName : undefined,
     expiresAt: typeof data.expiresAt === 'string' ? data.expiresAt : undefined,
     resultMime: typeof data.resultMime === 'string' ? data.resultMime : undefined,
+    metadataAvailable:
+      data.metadataAvailable && typeof data.metadataAvailable === 'object'
+        ? { original: data.metadataAvailable.original === true, result: data.metadataAvailable.result === true }
+        : undefined,
+    strippedCount: typeof data.strippedCount === 'number' ? data.strippedCount : undefined,
   };
 };
 

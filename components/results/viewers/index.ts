@@ -4,6 +4,7 @@ import { AudioViewer } from './audio-viewer';
 import { CaptionsViewer } from './captions-viewer';
 import { GifViewer } from './gif-viewer';
 import { ImageViewer } from './image-viewer';
+import { MetadataViewer } from './metadata-viewer';
 import { PdfViewer } from './pdf-viewer';
 import { StreamViewer } from './stream-viewer';
 import { TranscriptViewer } from './transcript-viewer';
@@ -32,6 +33,7 @@ export const RESULT_VIEWERS: Partial<Record<ResultKind, ViewerEntry>> = {
   pdf: { component: PdfViewer, needsBlob: true },
   hls: { component: StreamViewer, needsBlob: false },
   dash: { component: StreamViewer, needsBlob: false },
+  metadata: { component: MetadataViewer, needsBlob: false },
   unknown: { component: UnknownViewer, needsBlob: false },
 };
 

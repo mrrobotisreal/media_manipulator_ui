@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useMemo, useState, type ReactNode } from 'react';
 import { Download, Loader2, RotateCcw } from 'lucide-react';
+import { MetadataStrip } from '@/components/metadata/metadata-strip';
 import { Panel } from '@/components/darkroom/panel';
 import { Segmented } from '@/components/darkroom/segmented';
 import { Stat } from '@/components/darkroom/stat';
@@ -71,6 +72,8 @@ export interface ResultPanelProps {
   trackPreview?: boolean;
   /** Which surface mounts the panel; rides on `result_viewed` and `result_download_clicked`. Default `tool_page`. */
   surface?: ResultSurface;
+  /** Set false when the caller renders its own metadata block (the EXIF page). Default true. */
+  metadataStrip?: boolean;
   className?: string;
 }
 
@@ -167,6 +170,7 @@ function ResultPanelBody({
   viewerOverride,
   trackPreview = true,
   surface = 'tool_page',
+  metadataStrip = true,
   className,
   active,
   bare = false,
@@ -414,6 +418,17 @@ function ResultPanelBody({
           </span>
         )}
       </div>
+
+      {metadataStrip && active && !viewerOverride ? (
+        <MetadataStrip
+          jobId={descriptor.jobId}
+          kind={descriptor.kind}
+          available={descriptor.metadataAvailable}
+          originalName={descriptor.original?.file?.name ?? descriptor.original?.fileName ?? descriptor.fileName}
+          resultName={descriptor.fileName}
+          surface="result"
+        />
+      ) : null}
     </div>
   );
 
