@@ -56,7 +56,8 @@
         "isolate_vocals": "Isolate Vocals",
         "remove_vocals": "Remove Vocals / Karaoke"
       },
-      "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected."
+      "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.",
+      "presetLocked": "Preset for this tool"
     }
   },
   "videoForm": {

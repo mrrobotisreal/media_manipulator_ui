@@ -122,6 +122,7 @@ export default function ToolLandingPage({
             toolSlug={tool.slug}
             defaultMediaKind={tool.embed.defaultMediaKind}
             defaultTask={tool.embed.defaultTask}
+            preset={tool.embed.preset}
             defaultOutputFormat={tool.embed.defaultOutputFormat}
             lockedInputFormat={tool.embed.lockedInputFormat}
             lockedOutputFormat={tool.embed.lockedOutputFormat}

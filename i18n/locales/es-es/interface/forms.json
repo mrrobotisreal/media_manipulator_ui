@@ -56,7 +56,8 @@
         "isolate_vocals": "Aislar voces",
         "remove_vocals": "Eliminar voces / Karaoke"
       },
-      "aiActiveNote": "La tasa de bits, el ecualizador y otras opciones de audio estándar se omiten cuando se selecciona una operación de IA."
+      "aiActiveNote": "La tasa de bits, el ecualizador y otras opciones de audio estándar se omiten cuando se selecciona una operación de IA.",
+      "presetLocked": "Preestablecido para esta herramienta"
     }
   },
   "videoForm": {

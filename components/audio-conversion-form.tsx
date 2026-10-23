@@ -12,6 +12,7 @@ import InfoTooltip from "@/components/info-tooltip";
 import type { ConversionFormData } from "@/schemas/types";
 import { useEffect, useState } from "react";
 import { useLocalization } from "@/i18n/useLocalization";
+import type { AudioFormPresets } from "@/components/embedded-tool-panel";
 
 interface TrimRange {
   startTime: number;
@@ -23,7 +24,9 @@ const AudioConversionForm: React.FC<{
   onSubmit: (data: ConversionFormData) => void;
   isLoading: boolean;
   audioUrl?: string;
-}> = ({ onSubmit, isLoading, audioUrl }) => {
+  /** Tool-page preset (embed.preset kind 'audio'). Absent = untouched defaults. */
+  presets?: AudioFormPresets;
+}> = ({ onSubmit, isLoading, audioUrl, presets }) => {
   const { t, formatDuration } = useLocalization(['interface', 'error', 'accessibility']);
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [trimRange, setTrimRange] = useState<TrimRange | null>(null);
@@ -31,7 +34,7 @@ const AudioConversionForm: React.FC<{
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(audioConversionSchema),
     defaultValues: {
-      format: 'mp3' as const,
+      format: (presets?.defaultFormat as 'mp3' | undefined) ?? ('mp3' as const),
       bitrate: '192' as const,
       speed: 1,
       volume: 1,
@@ -131,8 +134,8 @@ const AudioConversionForm: React.FC<{
         },
       },
       ai: {
-        enabled: false,
-        operation: 'none' as const,
+        enabled: !!presets?.aiOperation,
+        operation: presets?.aiOperation ?? ('none' as const),
       },
     },
     mode: 'onChange',
@@ -221,6 +224,15 @@ const AudioConversionForm: React.FC<{
               {t('interface:audioForm.ai.intro')}
             </p>
           </div>
+          {presets?.hideOperationSelect && presets.aiOperation ? (
+            <p className="text-sm text-card-foreground" data-testid="audio-ai-preset-chip">
+              <span className="font-medium">{t('interface:audioForm.ai.operationLabel')}</span>{' '}
+              <span className="inline-block px-2 py-0.5 bg-card border border-border rounded text-xs">
+                {t(`interface:audioForm.ai.operations.${presets.aiOperation}`)}
+              </span>
+              <span className="sr-only">{t('interface:audioForm.ai.presetLocked')}</span>
+            </p>
+          ) : (
           <Controller
             name="ai.operation"
             control={control}
@@ -237,6 +249,7 @@ const AudioConversionForm: React.FC<{
               </label>
             )}
           />
+          )}
           {aiOperation && aiOperation !== 'none' && (
             <p className="text-xs text-muted-foreground">
               {t('interface:audioForm.ai.aiActiveNote')}
