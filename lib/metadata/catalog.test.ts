@@ -54,7 +54,12 @@ describe('lookupTag', () => {
     expect(lookupTag(index, 'ExifIFD', 'OffsetTimeOriginal')).toBeDefined();
   });
 
-  it('returns undefined for unknown tags (the catch-all * row is not a description)', () => {
+  it('matches a group-scoped catch-all only inside its group', () => {
+    expect(lookupTag(index, 'XMP-xmpDM', 'Genre')?.group).toBe('XMP-xmpDM');
+    expect(lookupTag(index, 'Nikon', 'Genre')).toBeUndefined();
+  });
+
+  it('returns undefined for unknown tags', () => {
     expect(lookupTag(index, 'Nikon', 'ZzzNotARealTag')).toBeUndefined();
   });
 });

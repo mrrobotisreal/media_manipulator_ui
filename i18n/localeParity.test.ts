@@ -13,6 +13,14 @@
  * This makes "someone added an en key and forgot a locale" a permanent test
  * failure. Locales whose files are still byte-copies of en-US pass trivially
  * until their translation sessions overwrite them.
+ *
+ * DOCUMENTED EXCEPTION (MM09, design METADATA_INSPECTOR.md section 4.2/7 Q3):
+ * `interface/metadata.json` is English-only. It holds ~1,800 catalog tag
+ * descriptions; copying them into five locales would only hide the gap. Non
+ * English locales therefore need not ship that shard (they fall back to en-US
+ * through i18next `fallbackLng`). If a locale DOES ship it, it is still
+ * compared against en-US, so translation sessions get parity for free.
+ * See `parityShards()` and the "English-only shard exception" tests below.
  */
 import { describe, expect, it } from "vitest";
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -38,6 +46,18 @@ function shardFiles(localeDir: string, subdir = ""): string[] {
     }
   }
   return out.sort();
+}
+
+// TODO(i18n): translate per locale, then delete this entry.
+const ENGLISH_ONLY_SHARDS = new Set(["interface/metadata.json"]);
+
+/**
+ * Shards a non-English locale must have to match en-US: every en-US shard,
+ * minus English-only shards the locale does not ship. A shipped English-only
+ * shard stays in the list and is compared like any other.
+ */
+function expectedShards(enShards: string[], localeShards: string[]): string[] {
+  return enShards.filter((s) => !ENGLISH_ONLY_SHARDS.has(s) || localeShards.includes(s));
 }
 
 const PLURAL_SUFFIXES = ["zero", "one", "two", "few", "many", "other"];
@@ -200,10 +220,11 @@ describe("locale parity vs en-US", () => {
 
     describe(code, () => {
       it("has exactly the en-US shard files", () => {
-        expect(shardFiles(dir)).toEqual(enShards);
+        const have = shardFiles(dir);
+        expect(have).toEqual(expectedShards(enShards, have));
       });
 
-      for (const shard of enShards) {
+      for (const shard of expectedShards(enShards, shardFiles(dir))) {
         it(`${shard}: key tree, array lengths and placeholders match`, () => {
           const ref = JSON.parse(
             readFileSync(join(LOCALES_DIR, enDir, shard), "utf8"),
@@ -222,4 +243,36 @@ describe("locale parity vs en-US", () => {
       }
     });
   }
+});
+
+describe("English-only shard exception", () => {
+  const enShards = ["interface/forms.json", "interface/metadata.json"];
+
+  it("lets a locale omit an English-only shard", () => {
+    expect(expectedShards(enShards, ["interface/forms.json"])).toEqual(["interface/forms.json"]);
+  });
+
+  it("still requires every other shard", () => {
+    expect(expectedShards(enShards, [])).toEqual(["interface/forms.json"]);
+  });
+
+  it("keeps comparing an English-only shard once a locale ships it", () => {
+    expect(expectedShards(enShards, enShards)).toEqual(enShards);
+  });
+
+  it("flags a deliberately mismatched metadata.json in another locale", () => {
+    const en = JSON.parse(
+      readFileSync(join(LOCALES_DIR, "en-us", "interface", "metadata.json"), "utf8"),
+    ) as { metadata: Record<string, unknown> };
+    const broken = structuredClone(en) as { metadata: Record<string, unknown> };
+    delete broken.metadata.raw;
+    broken.metadata.extraKey = "x";
+    (broken.metadata.copied as unknown) = "Copied {{what}}";
+    const issues: Issue[] = [];
+    compare(en, broken, "interface/metadata", issues);
+    const problems = issues.map((i) => `${i.path}: ${i.problem}`);
+    expect(problems).toContain("interface/metadata.metadata.raw: missing key");
+    expect(problems).toContain("interface/metadata.metadata.extraKey: extra key not in en-US");
+    expect(problems.some((p) => p.includes("copied") && p.includes("placeholders"))).toBe(true);
+  });
 });

@@ -106,10 +106,11 @@ const pick = (rows: CatalogTag[] | undefined, category?: string): CatalogTag | u
 
 /**
  * Finds the catalog row for an entry: exact `group:tag`, then tag-only, then an
- * alias that is itself a tag name, then trailing-`*` wildcard rows. `category`
+ * alias that is itself a tag name, then trailing-`*` wildcard rows (a bare `*` only
+ * within its own group). `category`
  * (the server-assigned one) disambiguates tags the catalog documents once per
  * category. Unknown tags return `undefined`; the UI then shows the raw name and
- * `metadata:about.unknown`. The catch-all `*` row is deliberately not used.
+ * `metadata:about.unknown`.
  */
 export function lookupTag(
   index: CatalogIndex,
@@ -124,8 +125,10 @@ export function lookupTag(
   if (byTag) return byTag;
   const alias = pick(index.byAlias.get(t), category);
   if (alias) return alias;
+  const g = group.toLowerCase();
   for (const row of index.wildcards) {
-    if (row.tag === '*') continue;
+    // Group-scoped wildcards (XMP-xmpDM:*) only match their own group.
+    if (row.group && row.group.toLowerCase() !== g) continue;
     if (t.startsWith(row.tag.toLowerCase().slice(0, -1))) return row;
   }
   return undefined;

@@ -5,10 +5,11 @@
  * so a tag such as `com.apple.quicktime.make` cannot be a JSON key segment as
  * is. `sanitizeKeySegment` maps both (and whitespace runs) to `_`.
  *
- * Description keys are `about.<Group>.<Tag>`; catalog rows with no group use
- * the group segment `_` and carry the category as a `__<category>` suffix
+ * Description keys are `about.<Group|_>.<Tag>__<category>`: group-less catalog
+ * rows use the group segment `_`, and the category suffix is always present
  * because one tag name (e.g. `DateTimeOriginal`) has a different description per
- * category.
+ * category, even within one group (`XMP-exif`). Deviation from the ticket's
+ * `about.<Group>.<Tag>`, recorded in the MM09 log.
  */
 export function sanitizeKeySegment(segment: string): string {
   return segment.replace(/[.:\s]+/g, '_');
@@ -22,6 +23,6 @@ export interface AboutKeySource {
 
 /** Key (relative to the `metadata` root, no namespace) of a catalog row's description. */
 export function aboutKey(row: AboutKeySource): string {
-  if (row.group) return `about.${sanitizeKeySegment(row.group)}.${sanitizeKeySegment(row.tag)}`;
-  return `about._.${sanitizeKeySegment(row.tag)}__${row.category}`;
+  const group = row.group ? sanitizeKeySegment(row.group) : '_';
+  return `about.${group}.${sanitizeKeySegment(row.tag)}__${row.category}`;
 }

@@ -15,7 +15,7 @@ describe('sanitizeKeySegment', () => {
 describe('aboutKey', () => {
   it('uses the group when the row has one', () => {
     expect(aboutKey({ group: 'XMP-exif', tag: 'DateTimeOriginal', category: 'xmp' })).toBe(
-      'about.XMP-exif.DateTimeOriginal',
+      'about.XMP-exif.DateTimeOriginal__xmp',
     );
   });
   it('disambiguates group-less rows by category', () => {
@@ -26,6 +26,6 @@ describe('aboutKey', () => {
   });
   it('never contains separators inside a segment', () => {
     const key = aboutKey({ group: 'QuickTime', tag: 'com.apple.quicktime.make', category: 'apple' });
-    expect(key.split('.')).toEqual(['about', 'QuickTime', 'com_apple_quicktime_make']);
+    expect(key.split('.')).toEqual(['about', 'QuickTime', 'com_apple_quicktime_make__apple']);
   });
 });
