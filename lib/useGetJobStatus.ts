@@ -26,6 +26,13 @@ export interface ConversionJob {
    */
   resultSizeBytes?: number;
   resultFileName?: string;
+  /** When the result is deleted (ISO-8601), if the API sent it. */
+  expiresAt?: string;
+  /**
+   * Server-sniffed MIME of the result (MM05, additive). Absent on older APIs, so every
+   * reader feature-detects it; it is a hint for inline streaming, never the kind source.
+   */
+  resultMime?: string;
 }
 
 /**
@@ -59,6 +66,8 @@ const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
     // the properties below are omitted rather than reported as zero.
     resultSizeBytes: typeof data.resultSizeBytes === 'number' ? data.resultSizeBytes : undefined,
     resultFileName: typeof data.resultFileName === 'string' ? data.resultFileName : undefined,
+    expiresAt: typeof data.expiresAt === 'string' ? data.expiresAt : undefined,
+    resultMime: typeof data.resultMime === 'string' ? data.resultMime : undefined,
   };
 };
 

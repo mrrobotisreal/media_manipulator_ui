@@ -2,6 +2,7 @@
 
 import { analytics, EVENTS, takeJobDuration } from '@/lib/analytics';
 import { getBaseURL } from '@/lib/utils';
+import { authedFetch } from '@/lib/auth/authedFetch';
 
 /**
  * Result download.
@@ -52,7 +53,9 @@ const downloadFile = async (jobId: string): Promise<Blob> => {
 
   let response: Response;
   try {
-    response = await fetch(`${getBaseURL()}/download/${jobId}`);
+    // authedFetch, not fetch: the API enforces job ownership on /download (404 to anyone
+    // who does not present the job's X-MM-Session-ID or the owner's token).
+    response = await authedFetch(`${getBaseURL()}/download/${jobId}`);
   } catch (error) {
     analytics.track(
       EVENTS.DOWNLOAD_FAILED,

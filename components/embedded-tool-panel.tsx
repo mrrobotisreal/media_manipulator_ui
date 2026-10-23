@@ -25,6 +25,7 @@ import useTranscribeFile, {
 } from '@/lib/useTranscribeFile';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
+import { saveBlobToDisk } from '@/lib/results/save';
 import type { ConversionFormData } from '@/schemas/types';
 import {
   analytics,
@@ -775,17 +776,6 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
       return `${nameWithoutExt}_converted.${opts.format || 'jpg'}`;
     }
     return `${nameWithoutExt}.${conversionOptions.format}`;
-  };
-
-  const saveBlobToDisk = (blob: Blob, fileName: string) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   };
 
   const upgradeNudge = useUpgradeNudge();

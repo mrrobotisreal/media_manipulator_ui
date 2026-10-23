@@ -41,6 +41,7 @@ import { useTranscribeResult, useAnalysisResult } from '@/lib/useTranscribeResul
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
+import { saveBlobToDisk } from '@/lib/results/save';
 import useIdentifyFile from '@/lib/useIdentifyFile';
 import {
   EVENTS,
@@ -460,17 +461,6 @@ const FileConverterAppInner: React.FC = () => {
     }
 
     return `${nameWithoutExt}.${newExtension}`;
-  };
-
-  const saveBlobToDisk = (blob: Blob, fileName: string) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   };
 
   /**

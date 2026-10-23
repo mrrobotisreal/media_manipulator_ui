@@ -78,6 +78,11 @@ export interface DescribeInput {
   kindHint?: ResultKind;
   /** Name to show when the API sent no `resultFileName` (the surface's suggested name). */
   fallbackFileName?: string;
+  /**
+   * An already-built original (home history keeps only an object URL, not a File).
+   * Wins over `originalFile`.
+   */
+  original?: ResultOriginal;
 }
 
 const IMAGE_EXT = new Set(['jpg', 'jpeg', 'png', 'webp', 'avif', 'bmp', 'tiff', 'tif', 'ico', 'svg', 'heic']);
@@ -264,9 +269,10 @@ export function describe(input: DescribeInput): ResultDescriptor {
 
   const { mime, fromServer } = mimeFor(job, ext);
   const original: ResultOriginal | undefined =
-    originalFile && originalFile.size > 0
+    input.original ??
+    (originalFile && originalFile.size > 0
       ? { file: originalFile, kind: kindOfOriginal(originalFile) }
-      : undefined;
+      : undefined);
 
   return {
     kind,

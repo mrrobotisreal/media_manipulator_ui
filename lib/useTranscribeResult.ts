@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
+import { authedFetch } from '@/lib/auth/authedFetch';
 
 export interface TranscribeSegment {
   id: number;
@@ -59,7 +60,7 @@ export interface AnalysisResult {
 }
 
 const fetchJSON = async <T,>(url: string): Promise<T | null> => {
-  const response = await fetch(url);
+  const response = await authedFetch(url);
   if (response.status === 404) return null;
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}: ${response.statusText}`);

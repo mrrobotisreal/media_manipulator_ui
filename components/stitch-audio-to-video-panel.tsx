@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Upload, Download, Music, Plus, Trash2, Video, X } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
+import { saveBlobToDisk } from '@/lib/results/save';
 import useStitchAudioToVideoTool, {
   type StitchAudioTrackInput,
   type StitchMode,
@@ -78,14 +79,7 @@ const StitchAudioToVideoPanel: React.FC = () => {
       const blob = await downloadFile(conversionJob.id);
       const baseName = video.name.substring(0, video.name.lastIndexOf('.')) || video.name;
       const fileName = `${baseName}_stitched.mp4`;
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      saveBlobToDisk(blob, fileName);
     } catch (err) {
       console.error('Stitch download failed', err);
     }

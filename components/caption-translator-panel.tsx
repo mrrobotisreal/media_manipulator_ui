@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Upload, Download, Languages, X } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
+import { saveBlobToDisk } from '@/lib/results/save';
 import useCaptionTranslatorTool, {
   type CaptionFormat,
 } from '@/lib/useCaptionTranslatorTool';
@@ -135,14 +136,7 @@ const CaptionTranslatorPanel: React.FC = () => {
       const resolvedOutput: CaptionFormat = outputFormat === 'same' ? inputFormat : outputFormat;
       const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
       const fileName = `${baseName}_${targetLanguage}.${resolvedOutput}`;
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      saveBlobToDisk(blob, fileName);
     } catch (err) {
       console.error('Caption translator download failed', err);
     }

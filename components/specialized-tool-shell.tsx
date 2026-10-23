@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Upload, Download, X, Play, Music } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
+import { saveBlobToDisk } from '@/lib/results/save';
 import { getFileType } from '@/lib/utils';
 import {
   analytics,
@@ -246,17 +247,6 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
     const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || selectedFile.name;
     const ext = outputExtensionHint || 'bin';
     return `${baseName}.${ext.replace(/^\./, '')}`;
-  };
-
-  const saveBlobToDisk = (blob: Blob, fileName: string) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   };
 
   const handleDownload = async () => {
