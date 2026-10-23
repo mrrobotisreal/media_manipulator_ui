@@ -366,8 +366,6 @@
       "unmute": "Unmute result sound",
       "prevFrame": "Previous frame",
       "nextFrame": "Next frame",
-      "fpsOriginal": "Original frame rate",
-      "fpsResult": "Result frame rate",
       "fpsValue": "{{fps}} fps",
       "fpsTarget": "{{fps}} fps (target)",
       "largeNotice": "Preview is capped at the container width; very large videos may play slowly.",
@@ -408,7 +406,6 @@
       "auto": "Auto",
       "rungLabel": "{{height}}p, {{bitrate}} kbps",
       "unsupported": "This stream cannot be played in the browser, so here is its report.",
-      "reportTitle": "Transcode report",
       "loading": "Preparing the stream",
       "av1": "This browser cannot decode AV1."
     },
@@ -418,7 +415,6 @@
       "modelOption": "{{name}}, {{duration}}s, {{size}}",
       "failedTitle": "Models that failed",
       "failedItem": "{{name}}: {{error}}",
-      "compareTitle": "Original versus {{name}}",
       "loading": "Loading the restored clips",
       "download": "Download all results"
     }

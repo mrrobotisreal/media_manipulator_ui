@@ -40,11 +40,8 @@ export interface SpecializedToolShellRenderArgs {
  * only decides when the extension cannot ('zip' means an archive).
  */
 export interface SpecializedToolPreviewConfig {
-  /** What kind of media the original uploaded file is. Drives the Original
-   *  tab in the modal. */
-  originalMediaKind: 'audio' | 'video' | 'image';
-  /** What kind of media the final result is. Drives the Final tab in the
-   *  modal. Use 'zip' when the result isn't browser-previewable. */
+  /** What kind of media the final result is. Use 'zip' when the result isn't
+   *  browser-previewable. */
   finalMediaKind: 'audio' | 'video' | 'image' | 'zip';
   /** Optional override for the result panel heading. */
   title?: string;

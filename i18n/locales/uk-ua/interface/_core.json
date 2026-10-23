@@ -190,12 +190,7 @@
       "transcriptSubtitle": "Транскрипт та ШІ-огляд для {{filename}}.",
       "convertedSubtitle": "Перемикайтеся між оригіналом і кінцевою відредагованою версією {{filename}}.",
       "original": "Оригінал",
-      "final": "Підсумок",
-      "loadingPreview": "Завантаження конвертованого зображення...",
-      "tryLoadingAgain": "Спробувати завантажити попередній перегляд знову",
-      "originalImageAlt": "Оригінальне зображення",
-      "convertedImageAlt": "Конвертоване зображення",
-      "convertedGifAlt": "Конвертований анімований GIF"
+      "final": "Підсумок"
     },
     "progress": {
       "preparingUpload": "Підготовка безпечного завантаження...",

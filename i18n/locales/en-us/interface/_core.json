@@ -184,12 +184,7 @@
       "transcriptSubtitle": "Transcript and AI review for {{filename}}.",
       "convertedSubtitle": "Toggle between the original and finalized edited version of {{filename}}.",
       "original": "Original",
-      "final": "Final",
-      "loadingPreview": "Loading converted image...",
-      "tryLoadingAgain": "Try Loading Preview Again",
-      "originalImageAlt": "Original image",
-      "convertedImageAlt": "Converted image",
-      "convertedGifAlt": "Converted animated GIF"
+      "final": "Final"
     },
     "progress": {
       "preparingUpload": "Preparing secure upload...",

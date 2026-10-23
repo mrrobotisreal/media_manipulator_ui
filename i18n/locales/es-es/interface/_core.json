@@ -184,12 +184,7 @@
       "transcriptSubtitle": "Transcripción y revisión con IA de {{filename}}.",
       "convertedSubtitle": "Alterna entre la versión original y la versión final editada de {{filename}}.",
       "original": "Original",
-      "final": "Final",
-      "loadingPreview": "Cargando imagen convertida...",
-      "tryLoadingAgain": "Intentar cargar la vista previa de nuevo",
-      "originalImageAlt": "Imagen original",
-      "convertedImageAlt": "Imagen convertida",
-      "convertedGifAlt": "GIF animado convertido"
+      "final": "Final"
     },
     "progress": {
       "preparingUpload": "Preparando subida segura...",

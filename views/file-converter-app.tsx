@@ -48,7 +48,6 @@ import {
   EVENTS,
   getVisitorId,
   normalizeMediaKind,
-  reportError,
   safeFileExtension,
   takeJobDuration,
   trackFileChoice,

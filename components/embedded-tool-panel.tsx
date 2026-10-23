@@ -28,7 +28,6 @@ import { ResultPanel } from '@/components/results/result-panel';
 import { fpsHint } from '@/lib/results/videoFps';
 import type { ConversionFormData } from '@/schemas/types';
 import {
-  analytics,
   EVENTS,
   normalizeMediaKind,
   safeFileExtension,
@@ -568,7 +567,7 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
  * Compact, embedded version of the homepage converter for tutorial and
  * /tools landing pages. Reuses the same form components, upload hook,
  * status poller, and download helper as the full app so behavior stays
- * consistent. Intentionally omits conversion history and ads. A finished
+ * consistent. Leaves out conversion history and ads. A finished
  * job renders the shared ResultPanel inline (viewer, Original/Result toggle,
  * Download), the same panel the home converter opens in a modal.
  */
