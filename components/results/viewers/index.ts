@@ -1,8 +1,11 @@
 import type { ResultKind } from '@/lib/results/describe';
+import { ArchiveViewer } from './archive-viewer';
 import { AudioViewer } from './audio-viewer';
 import { CaptionsViewer } from './captions-viewer';
 import { GifViewer } from './gif-viewer';
 import { ImageViewer } from './image-viewer';
+import { PdfViewer } from './pdf-viewer';
+import { StreamViewer } from './stream-viewer';
 import { TranscriptViewer } from './transcript-viewer';
 import { UnknownViewer } from './unknown-viewer';
 import { VideoViewer } from './video-viewer';
@@ -25,6 +28,10 @@ export const RESULT_VIEWERS: Partial<Record<ResultKind, ViewerEntry>> = {
   audio: { component: AudioViewer, needsBlob: true },
   captions: { component: CaptionsViewer, needsBlob: true },
   transcript: { component: TranscriptViewer, needsBlob: false },
+  archive: { component: ArchiveViewer, needsBlob: false },
+  pdf: { component: PdfViewer, needsBlob: true },
+  hls: { component: StreamViewer, needsBlob: false },
+  dash: { component: StreamViewer, needsBlob: false },
   unknown: { component: UnknownViewer, needsBlob: false },
 };
 

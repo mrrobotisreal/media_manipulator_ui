@@ -39,11 +39,6 @@ const FILES: Array<[ResultKind, string]> = [
   ['video', 'out.mp4'],
   ['audio', 'out.mp3'],
   ['unknown', 'out.xyz'],
-  // Kinds without a viewer yet fall back to the file card.
-  ['pdf', 'out.pdf'],
-  ['archive', 'out.zip'],
-  ['hls', 'out.tar.gz'],
-  ['dash', 'out.tar.gz'],
 ];
 
 const descriptorFor = (kind: ResultKind, fileName: string, original?: File) =>
@@ -102,8 +97,8 @@ describe('ResultPanel', () => {
     }
   });
 
-  it('registry covers the core kinds and leaves the MM04 kinds to the fallback', () => {
-    expect(Object.keys(RESULT_VIEWERS).sort()).toEqual(['audio', 'captions', 'gif', 'image', 'transcript', 'unknown', 'video']);
+  it('registry covers every kind that has a viewer', () => {
+    expect(Object.keys(RESULT_VIEWERS).sort()).toEqual(['archive', 'audio', 'captions', 'dash', 'gif', 'hls', 'image', 'pdf', 'transcript', 'unknown', 'video']);
   });
 
   it('emits result_previewed once per job with a coarse kind', () => {
