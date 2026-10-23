@@ -1,6 +1,6 @@
 import { describe as suite, expect, it } from 'vitest';
 import { TOOL_PAGES } from '@/content/toolPages';
-import { describe, extensionOf, kindOfOriginal, type ResultKind, type ResultMode } from './describe';
+import { describe, extensionOf, kindOfFileName, kindOfOriginal, mimeForFileName, type ResultKind, type ResultMode } from './describe';
 
 const job = (resultFileName?: string, extra: Record<string, unknown> = {}) => ({
   id: 'job-1',
@@ -77,6 +77,10 @@ const MATRIX: Array<[string | undefined, ResultMode | undefined, string | undefi
   // Archives
   ['extract_frames', 'convert', 'frames.zip', 'archive'],
   ['extract_frames', 'convert', 'frames.tar.gz', 'archive'],
+  ['extract_frames', 'convert', 'frames.tgz', 'archive'],
+  ['pdf_to_jpg', 'convert', 'scan_pages.zip', 'archive'],
+  ['transcode_to_dash', 'transcode', 'dash-package.zip', 'dash'],
+  ['transcode_to_hls', 'transcode', 'hls-package.tgz', 'hls'],
   ['ai_video_restoration', 'transcode', 'restoration.tgz', 'hls'],
   ['ai_video_restoration', 'convert', 'restoration_results.tar.gz', 'archive'],
   // Transcode bundles
@@ -212,5 +216,21 @@ suite('describe() over content/toolPages.ts', () => {
       if (kind === 'unknown') unknown.push(page.slug);
     }
     expect(unknown).toEqual([]);
+  });
+});
+
+suite('archive entry helpers (MM04)', () => {
+  it('kindOfFileName classifies entries by extension, never hls/dash', () => {
+    expect(kindOfFileName('frames/f1.PNG')).toBe('image');
+    expect(kindOfFileName('a/b.mp4')).toBe('video');
+    expect(kindOfFileName('master.m3u8')).toBe('metadata');
+    expect(kindOfFileName('x.tar.gz')).toBe('archive');
+    expect(kindOfFileName('README')).toBe('unknown');
+  });
+  it('mimeForFileName knows stream parts', () => {
+    expect(mimeForFileName('a.m3u8')).toBe('application/vnd.apple.mpegurl');
+    expect(mimeForFileName('a.mpd')).toBe('application/dash+xml');
+    expect(mimeForFileName('s.m4s')).toBe('video/mp4');
+    expect(mimeForFileName('s.ts')).toBe('video/mp2t');
   });
 });

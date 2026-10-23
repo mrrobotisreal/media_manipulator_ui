@@ -54,3 +54,19 @@ describe('PdfViewer', () => {
     expect(object.getAttribute('data')).toMatch(/\/result\/p2\?sid=sid-1$/);
   });
 });
+
+describe('tool pages that produce a pdf, archive or stream no longer fall back to the file card', () => {
+  it('registry maps pdf, archive, hls and dash to real viewers', async () => {
+    const { viewerFor } = await import('./index');
+    const { UnknownViewer } = await import('./unknown-viewer');
+    for (const kind of ['pdf', 'archive', 'hls', 'dash'] as const) {
+      expect(viewerFor(kind).component).not.toBe(UnknownViewer);
+    }
+  });
+
+  it('every pdf converter task decides kind pdf', () => {
+    for (const task of ['image_to_pdf', 'jpg_to_pdf', 'png_to_pdf']) {
+      expect(describeResult({ job: { id: 'x', resultFileName: 'o.pdf' }, task }).kind).toBe('pdf');
+    }
+  });
+});
