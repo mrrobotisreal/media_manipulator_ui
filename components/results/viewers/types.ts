@@ -20,6 +20,10 @@ export interface ViewerProps {
   mime: string;
   sizeBytes?: number;
   descriptor: ResultDescriptor;
+  /** Archive viewer: the visitor opened/played/downloaded an entry of this kind (MM06 wires analytics). */
+  onEntryOpen?: (entryKind: ResultKind) => void;
+  /** Stream viewer: the visitor picked a quality rung ('auto' or a height such as '720p'). */
+  onRungSelect?: (rung: string) => void;
 }
 
 export interface ViewerEntry {

@@ -1,3 +1,4 @@
+import type { TranscodeProbeResponse } from '@/lib/transcodeTypes';
 import { getBaseURL } from '@/lib/utils';
 
 /**
@@ -69,6 +70,8 @@ export interface ResultDescriptor {
   /** Set when an original exists to compare against. */
   original?: ResultOriginal;
   sidecars?: { transcript?: string; analysis?: string; manifest?: string };
+  /** Transcode probe report (HLS/DASH): the stream viewer's fallback when a bundle cannot play. */
+  probe?: TranscodeProbeResponse;
 }
 
 export interface DescribeInput {
@@ -86,6 +89,8 @@ export interface DescribeInput {
    * Wins over `originalFile`.
    */
   original?: ResultOriginal;
+  /** Transcode probe report, carried through to the descriptor for the stream viewer. */
+  probe?: TranscodeProbeResponse;
 }
 
 const IMAGE_EXT = new Set(['jpg', 'jpeg', 'png', 'webp', 'avif', 'bmp', 'tiff', 'tif', 'ico', 'svg', 'heic']);
@@ -243,6 +248,16 @@ function mimeFor(job: DescribableJob, ext: string): { mime: string; fromServer: 
   return { mime: MIME_BY_EXT[ext] ?? 'application/octet-stream', fromServer: false };
 }
 
+/** Best-guess MIME of a file by name (for blob URLs of archive entries). */
+export function mimeForFileName(fileName: string): string {
+  const ext = extensionOf(fileName);
+  if (ext === 'm3u8') return 'application/vnd.apple.mpegurl';
+  if (ext === 'mpd') return 'application/dash+xml';
+  if (ext === 'm4s' || ext === 'mp4') return 'video/mp4';
+  if (ext === 'ts') return 'video/mp2t';
+  return MIME_BY_EXT[ext] ?? 'application/octet-stream';
+}
+
 /** Kind of a file inside an archive, by name alone (no task context); `unknown` when undecided. */
 export function kindOfFileName(fileName: string): ResultKind {
   const ext = extensionOf(fileName);
@@ -294,5 +309,6 @@ export function describe(input: DescribeInput): ResultDescriptor {
     expiresAt: job.expiresAt,
     mimeFromServer: fromServer,
     original,
+    ...(input.probe ? { probe: input.probe } : {}),
   };
 }
