@@ -130,7 +130,7 @@ describe('HistoryTab rows', () => {
   it('emits history_item_reopened (kind and age bucket only) on Preview and Download, never on render', async () => {
     renderHistory([row('j9', { mediaKind: 'video', createdAt: new Date(Date.now() - 40 * DAY).toISOString(), resultFileName: 'out.mp4', downloadPath: '/download/j9' })]);
     fireEvent.click(await screen.findByRole('button', { name: 'Preview' }));
-    expect(track).toHaveBeenCalledWith('history_item_reopened', { kind: 'video', age_bucket: '30-90d' });
+    expect(track).toHaveBeenCalledWith('history_item_reopened', { kind: 'video', age_bucket: '30-90d', source: 'account' });
     fireEvent.click(screen.getByRole('link', { name: 'Download' }));
     expect(track).toHaveBeenCalledTimes(2);
   });
