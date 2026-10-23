@@ -9,6 +9,8 @@
 // hard-code a limit — see the tier matrix in the v14 brief.
 
 import { getBaseURL } from '@/lib/utils';
+import { getSessionId } from '@/lib/analytics/session';
+import { getVisitorId } from '@/lib/analytics/identity';
 
 /**
  * Mirrors internal/tiers.Tier.
@@ -56,13 +58,14 @@ export interface TierLimits {
   opsPerDay: number;
   /** -1 means unlimited (operator). */
   aiOpsPerDay: number;
+  /** Studio exports per day (MM18). -1 means unlimited. */
+  exportsPerDay: number;
   maxFileBytes: number;
   maxVideoSeconds: number;
   maxOutputHeight: number;
   maxLadderHeight: number;
   /** -1 means unlimited. */
   studioProjects: number;
-  batchEnabled: boolean;
   priorityGpu: boolean;
   resultRetentionHours: number;
   adsRemoved: boolean;
@@ -115,6 +118,8 @@ export interface TiersResponse {
   tiers: TierDescriptor[];
   premiumPurchasable: boolean;
   premiumPriceUSD: number;
+  /** Yearly price in USD (MM17). Absent on older APIs. */
+  premiumPriceYearlyUSD?: number;
 }
 
 /** The body of a 429 from the quota middleware. */
@@ -336,4 +341,172 @@ export function allowanceFor(limits: TierLimits | undefined, metric: UsageMetric
     default:
       return 0;
   }
+}
+
+
+// --- Billing (MM17 wire shapes: internal/handlers/billing.go) -----------------------------
+
+export type BillingInterval = 'monthly' | 'yearly';
+
+/** GET /api/billing/status. 200 with purchasable:false when billing is off. */
+export interface BillingStatus {
+  purchasable: boolean;
+  interval: BillingInterval | null;
+  /** Stripe subscription status mirror: active, trialing, past_due, canceled, ... */
+  status: string | null;
+  renewsAt: string | null;
+  cancelAtPeriodEnd: boolean;
+  portalAvailable: boolean;
+  /** Present only while a team-granted Premium is live; expiresAt null = no end date. */
+  manualGrant: { expiresAt: string | null } | null;
+}
+
+/** GET /api/billing/session/:id. */
+export interface CheckoutSessionVerdict {
+  belongsToUser: boolean;
+  paid: boolean;
+  tierApplied: boolean;
+}
+
+export type BillingRefusalReason =
+  | 'already_subscribed'
+  | 'manual_grant_active'
+  | 'billing_unavailable'
+  | 'operator_account'
+  | 'account_not_synced'
+  | 'no_billing_account'
+  | 'billing_provider_error'
+  | 'unauthorized'
+  | 'unknown';
+
+/** A structured refusal from a billing route; `reason` is the server's code. */
+export class BillingRefusal extends Error {
+  readonly reason: BillingRefusalReason;
+  readonly status: number;
+  /** already_subscribed: whether the Portal can be opened instead. */
+  readonly portalAvailable?: boolean;
+  /** manual_grant_active: when the grant ends (null = never). */
+  readonly expiresAt?: string | null;
+
+  constructor(
+    reason: BillingRefusalReason,
+    status: number,
+    extra: { portalAvailable?: boolean; expiresAt?: string | null } = {},
+  ) {
+    super(`Billing request refused (${status}): ${reason}`);
+    this.name = 'BillingRefusal';
+    this.reason = reason;
+    this.status = status;
+    this.portalAvailable = extra.portalAvailable;
+    this.expiresAt = extra.expiresAt;
+  }
+}
+
+const KNOWN_REASONS: readonly BillingRefusalReason[] = [
+  'already_subscribed',
+  'manual_grant_active',
+  'billing_unavailable',
+  'operator_account',
+  'account_not_synced',
+  'no_billing_account',
+  'billing_provider_error',
+];
+
+async function billingRefusal(response: Response): Promise<BillingRefusal> {
+  const body = (await response.json().catch(() => null)) as {
+    error?: string;
+    reason?: string;
+    portalAvailable?: boolean;
+    expiresAt?: string | null;
+  } | null;
+  const code = body?.reason ?? body?.error ?? '';
+  const reason: BillingRefusalReason =
+    response.status === 401
+      ? 'unauthorized'
+      : (KNOWN_REASONS as readonly string[]).includes(code)
+        ? (code as BillingRefusalReason)
+        : 'unknown';
+  return new BillingRefusal(reason, response.status, {
+    portalAvailable: body?.portalAvailable,
+    expiresAt: body?.expiresAt,
+  });
+}
+
+/**
+ * Billing requests carry the browser's visitor and session ids: Checkout stamps them onto the
+ * subscription so the server-side events join the funnel (internal/handlers/billing.go).
+ */
+function billingHeaders(idToken: string): Record<string, string> {
+  return {
+    'Content-Type': 'application/json',
+    ...authHeaders(idToken),
+    'X-MM-Session-ID': getSessionId(),
+    'X-MM-Visitor-ID': getVisitorId(),
+  };
+}
+
+export async function createCheckoutSession(
+  idToken: string,
+  body: { interval: BillingInterval; locale?: string },
+): Promise<{ url: string }> {
+  const response = await fetch(`${getBaseURL()}/billing/checkout`, {
+    method: 'POST',
+    headers: billingHeaders(idToken),
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) throw await billingRefusal(response);
+  return response.json() as Promise<{ url: string }>;
+}
+
+export async function createPortalSession(
+  idToken: string,
+  body: { locale?: string } = {},
+): Promise<{ url: string }> {
+  const response = await fetch(`${getBaseURL()}/billing/portal`, {
+    method: 'POST',
+    headers: billingHeaders(idToken),
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) throw await billingRefusal(response);
+  return response.json() as Promise<{ url: string }>;
+}
+
+export async function fetchBillingStatus(idToken: string): Promise<BillingStatus> {
+  const response = await fetch(`${getBaseURL()}/billing/status`, {
+    headers: authHeaders(idToken),
+  });
+  if (!response.ok) throw await billingRefusal(response);
+  return response.json() as Promise<BillingStatus>;
+}
+
+export async function verifyCheckoutSession(
+  idToken: string,
+  sessionId: string,
+): Promise<CheckoutSessionVerdict> {
+  const response = await fetch(
+    `${getBaseURL()}/billing/session/${encodeURIComponent(sessionId)}`,
+    { headers: authHeaders(idToken) },
+  );
+  if (!response.ok) throw await billingRefusal(response);
+  return response.json() as Promise<CheckoutSessionVerdict>;
+}
+
+// --- 403 output_height_limited / project_limit_reached (MM18, studio.go) ----------------
+
+/** The body of a 403 from the output-height or saved-project checks. */
+export interface LimitRefusal {
+  error: 'output_height_limited' | 'project_limit_reached';
+  message?: string;
+  limit: number;
+  requested?: number;
+  used?: number;
+  /** Absent for premium and operator (nothing higher to buy). */
+  upgradePath?: 'signup' | 'premium';
+}
+
+/** Narrows an unknown 403 body to a plan-limit refusal. */
+export function isLimitRefusal(body: unknown): body is LimitRefusal {
+  if (typeof body !== 'object' || body === null) return false;
+  const error = (body as { error?: unknown }).error;
+  return error === 'output_height_limited' || error === 'project_limit_reached';
 }

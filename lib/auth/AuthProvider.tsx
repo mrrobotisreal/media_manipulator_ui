@@ -52,7 +52,7 @@ import { formatResetsIn } from './formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 
 /** How the account panel should be opened when something asks for it. */
-export type AuthIntent = 'signin' | 'signup';
+export type AuthIntent = 'signin' | 'signup' | 'upgrade';
 
 export interface OpenAuthOptions {
   intent?: AuthIntent;

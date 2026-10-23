@@ -268,6 +268,14 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .object({ limit: z.number().optional(), scope: z.string().optional() })
     .strict(),
 
+  checkout_started: z
+    .object({ interval: z.enum(['monthly', 'yearly']), placement: z.string() })
+    .strict(),
+  checkout_completed: z.object({ interval: z.enum(['monthly', 'yearly']) }).strict(),
+  checkout_abandoned: z.object({}).strict(),
+  portal_opened: z.object({ placement: z.string() }).strict(),
+  subscription_status_viewed: z.object({ status: z.string(), interval: z.string() }).strict(),
+
   content_read_progress: z
     .object({
       pct: z.union([z.literal(25), z.literal(50), z.literal(75)]),

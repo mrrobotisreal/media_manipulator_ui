@@ -45,7 +45,7 @@ export const AuthModal: React.FC = () => {
   const { t } = useLocalization(['interface', 'error']);
   const localized = useLocalizedHref();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(
-    auth?.prompt.intent ?? 'signup',
+    auth?.prompt.intent === 'signin' ? 'signin' : 'signup',
   );
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -82,7 +82,7 @@ export const AuthModal: React.FC = () => {
     track(EVENTS.AUTH_PROMPT_SHOWN, { source });
     track(EVENTS.AUTH_MODAL_OPENED, {
       source,
-      mode: (auth?.prompt.intent ?? 'signup') as 'signin' | 'signup',
+      mode: auth?.prompt.intent === 'signin' ? 'signin' : 'signup',
     });
     // Deliberately fires once per mount: AuthProvider mounts this only while
     // open, so mount and open are the same event.

@@ -8,7 +8,6 @@
 // one that silently disagrees the first time a limit is retuned.
 
 import Link from 'next/link';
-import { Check, Minus } from 'lucide-react';
 
 import { getServerT } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
@@ -61,7 +60,6 @@ const ROWS: Row[] = [
         : `${l.studioProjects}`,
   },
   { key: 'resultRetentionHours', render: (l) => formatRetention(l.resultRetentionHours) },
-  { key: 'batchEnabled', render: (l, t) => <BoolCell on={l.batchEnabled} t={t} /> },
   {
     key: 'priorityGpu',
     render: (l, t) =>
@@ -77,19 +75,6 @@ const ROWS: Row[] = [
         : t('interface:pricing.values.adsShown'),
   },
 ];
-
-const BoolCell: React.FC<{ on: boolean; t: T }> = ({ on, t }) =>
-  on ? (
-    <span className="inline-flex items-center gap-1.5 text-data">
-      <Check aria-hidden="true" className="size-3.5" />
-      <span className="sr-only">{t('interface:pricing.values.yes')}</span>
-    </span>
-  ) : (
-    <span className="inline-flex items-center gap-1.5 text-text-subtle">
-      <Minus aria-hidden="true" className="size-3.5" />
-      <span className="sr-only">{t('interface:pricing.values.no')}</span>
-    </span>
-  );
 
 /** The value cell. Measured numbers are monospace; prose is not. */
 const ValueCell: React.FC<{ children: React.ReactNode; numeric: boolean }> = ({
