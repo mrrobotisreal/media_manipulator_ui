@@ -769,7 +769,8 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     defaultWidth,
     defaultHeight,
     emphasizeResize,
-    defaultMetadataMode: defaultTask === 'remove_metadata' ? 'strip' : undefined,
+    defaultMetadataMode:
+      preset?.kind === 'metadata' ? preset.mode : defaultTask === 'remove_metadata' ? 'strip' : undefined,
   };
 
   const pdfPresets: PdfFormPresets = {
