@@ -231,7 +231,10 @@ const ClipInspector: React.FC = () => {
 
   const { clip, track } = found;
   const isVideo = track.kind === 'video';
-  const hasAudio = !!assets[clip.assetId]?.asset.hasAudio;
+  // Still images carry no audio and no source speed: the Audio section (and the
+  // Speed controls when part 17 lands) must never render for them.
+  const isImageClip = assets[clip.assetId]?.asset.mediaKind === 'image';
+  const hasAudio = !isImageClip && !!assets[clip.assetId]?.asset.hasAudio;
   const lutAssets = Object.values(assets).filter((a) => a.asset.mediaKind === 'lut');
 
   return (

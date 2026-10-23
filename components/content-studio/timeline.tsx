@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond } from 'lucide-react';
+import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond, ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackAcceptsAsset } from '@/lib/studio/trackRules';
+import { clipTrimBound } from '@/lib/studio/clipTrimBound';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
@@ -674,9 +675,11 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
     id: clip.id,
     data: { type: 'clip', kind: track.kind, label },
   });
-  const assetDur = isTitle ? Number.POSITIVE_INFINITY : entry?.asset.durationSeconds ?? 0;
+  const isImage = entry?.asset.mediaKind === 'image';
+  const assetDur = clipTrimBound(entry?.asset, isTitle);
   const ready = entry?.status === 'ready';
-  const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video';
+  const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video' && !isImage;
+  const imageThumb = isImage && !!entry?.asset.thumbnailSpriteUrl;
   // Waveform: full block on audio tracks, a bottom strip (~35%) under the
   // filmstrip on video-track clips that carry audio. Rubber-band editing only on
   // audio tracks (video strips are too thin); the inspector handles the rest.
@@ -788,6 +791,16 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
           }}
         />
       )}
+      {imageThumb && (
+        <div
+          className="absolute inset-0 opacity-50 pointer-events-none"
+          style={{
+            backgroundImage: `url(${studioSpriteUrl(clip.assetId)})`,
+            backgroundSize: 'auto 100%',
+            backgroundRepeat: 'repeat-x',
+          }}
+        />
+      )}
       {showWaveform && (
         <div
           className="absolute inset-x-0"
@@ -813,8 +826,9 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
         </div>
       )}
       {!isTitle && (
-        <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none">
-          {label}
+        <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none flex items-center gap-1">
+          {isImage && <ImageIcon className="h-3 w-3 shrink-0 text-primary" aria-hidden />}
+          <span className="truncate">{label}</span>
         </div>
       )}
       {/* Trim handles. The visual bar stays 8px so the timeline reads
