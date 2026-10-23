@@ -45,9 +45,11 @@ import {
 import {
   lastQuotaState,
   resetQuotaState,
+  subscribeLimitRefusal,
   subscribeQuotaExceeded,
   subscribeQuotaState,
 } from './quotaBus';
+import type { InterstitialDetail } from '@/components/account/upgrade-interstitial';
 import { formatResetsIn } from './formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 
@@ -144,6 +146,11 @@ const CLOSED_PROMPT: AuthPromptState = { open: false, intent: 'signup' };
  */
 const AuthModal = dynamic(() => import('@/components/auth-modal'), { ssr: false });
 
+/** Same reasoning: the plan-limit dialog only exists after a refusal. */
+const UpgradeInterstitial = dynamic(() => import('@/components/account/upgrade-interstitial'), {
+  ssr: false,
+});
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const { t } = useLocalization(['interface']);
@@ -153,6 +160,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // last snapshot fetch and costs no extra request.
   const [observed, setObserved] = useState(lastQuotaState);
   const [prompt, setPrompt] = useState<AuthPromptState>(CLOSED_PROMPT);
+  const [interstitial, setInterstitial] = useState<InterstitialDetail | null>(null);
   const syncedUidRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -193,6 +201,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           limit: detail.limit,
           scope: detail.metric,
         });
+        // A free account at its cap has already signed up: sending it to a sign-up modal is
+        // wrong, so 'premium' goes to the plan-limit dialog (Checkout) instead.
+        if (detail.upgradePath === 'premium') {
+          setInterstitial({ kind: 'quota', detail });
+          return;
+        }
         setPrompt({
           open: true,
           intent: 'signup',
@@ -207,6 +221,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       }),
     [t],
+  );
+
+  // 403 output_height_limited / project_limit_reached, published by authedFetch. The caller
+  // keeps its own error path; this adds the upgrade moment on top of it.
+  useEffect(
+    () =>
+      subscribeLimitRefusal((detail) => {
+        analytics.track(EVENTS.QUOTA_EXCEEDED_SHOWN, { limit: detail.limit, scope: detail.error });
+        setInterstitial({ kind: 'limit', detail });
+      }),
+    [],
   );
 
   const signedIn = user !== null;
@@ -378,6 +403,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider value={value}>
       {children}
       {prompt.open ? <AuthModal /> : null}
+      {interstitial ? (
+        <UpgradeInterstitial input={interstitial} onClose={() => setInterstitial(null)} />
+      ) : null}
     </AuthContext.Provider>
   );
 }

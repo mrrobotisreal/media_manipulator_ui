@@ -13,8 +13,8 @@
 
 import { getCurrentIdToken } from '@/lib/firebase';
 import { getSessionId } from '@/lib/analytics';
-import { isQuotaExceeded, readQuotaHeaders, type QuotaExceeded } from './accountApi';
-import { publishQuotaExceeded, publishQuotaState } from './quotaBus';
+import { isLimitRefusal, isQuotaExceeded, readQuotaHeaders, type QuotaExceeded } from './accountApi';
+import { publishLimitRefusal, publishQuotaExceeded, publishQuotaState } from './quotaBus';
 
 /**
  * Thrown for a 429 from the quota middleware, carrying the server's structured
@@ -98,6 +98,17 @@ export async function authedFetch(
       publishQuotaExceeded(body);
       throw new QuotaExceededError(body);
     }
+  }
+
+  if (response.status === 403) {
+    // MM18's plan-limit refusals (output height, saved projects). Unlike the 429 these do NOT
+    // throw: every caller already has a 403 path, and it keeps rendering its own error. This
+    // only adds the upgrade dialog on top, so the upgrade moment is not lost to a generic toast.
+    const body = await response
+      .clone()
+      .json()
+      .catch(() => null);
+    if (isLimitRefusal(body)) publishLimitRefusal(body);
   }
 
   return response;
