@@ -10,6 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { PdfFrame } from '@/components/results/viewers/pdf-viewer';
+import { getSessionId } from '@/lib/analytics';
 import { getBaseURL } from '@/lib/utils';
 import { useLocalization } from '@/i18n/useLocalization';
 import type { DocumentScanResultsResponse } from '@/lib/documentScanTypes';
@@ -22,13 +24,15 @@ interface PdfResultViewerProps {
 }
 
 // PdfResultViewer shows the finished searchable PDF in a browser-native <iframe>
-// (no pdf.js dependency) with download buttons for every produced artifact and,
+// (no pdf.js dependency, via the shared PdfFrame) with download buttons for every produced artifact and,
 // for handwriting/auto jobs, an inline confidence/uncertainty note.
 const PdfResultViewer: React.FC<PdfResultViewerProps> = ({ jobId, open, onOpenChange, results }) => {
   const { t } = useLocalization('interface');
 
   const resultUrl = (format: string) =>
     `${getBaseURL()}/document-scan/${jobId}/result?format=${format}`;
+  // <object>/<iframe> cannot send X-MM-Session-ID; the inline GET route accepts ?sid= (MM05).
+  const inlinePdfUrl = `${resultUrl('pdf')}&sid=${encodeURIComponent(getSessionId())}`;
 
   const outputs = results?.outputs ?? [];
   const hasPdf = outputs.some((o) => o.format === 'pdf');
@@ -63,12 +67,7 @@ const PdfResultViewer: React.FC<PdfResultViewerProps> = ({ jobId, open, onOpenCh
         )}
 
         {hasPdf ? (
-          <iframe
-            src={resultUrl('pdf')}
-            title={t('documentScan.viewer.title')}
-            className="w-full rounded-md border border-border"
-            style={{ minHeight: '60dvh' }}
-          />
+          <PdfFrame src={inlinePdfUrl} title={t('documentScan.viewer.title')} />
         ) : (
           <div className="rounded-md border border-border bg-background/40 p-8 text-center text-sm text-muted-foreground">
             {t('documentScan.viewer.noPdf')}

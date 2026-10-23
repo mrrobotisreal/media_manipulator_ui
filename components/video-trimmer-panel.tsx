@@ -41,7 +41,7 @@ const VideoTrimmerPanel: React.FC<{ presets?: VideoTrimmerPresets }> = ({ preset
       isUploading={isPending}
       uploadProgress={uploadProgress}
       outputExtensionHint={lockedFormat ?? presets?.defaultOutputFormat ?? 'mp4'}
-      previewConfig={{ originalMediaKind: 'video', finalMediaKind: 'video' }}
+      previewConfig={{ finalMediaKind: 'video' }}
       renderForm={({ file, isProcessing }) => (
         <TrimFields
           file={file}

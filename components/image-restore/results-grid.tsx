@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { AlertTriangle, ShieldCheck, ImageOff } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { getSessionId } from '@/lib/analytics';
 import { getBaseURL } from '@/lib/utils';
 import { useLocalization } from '@/i18n/useLocalization';
 import type { ImageRestoreResultEntry, ImageRestoreResultsResponse } from '@/lib/imageRestoreTypes';
@@ -26,7 +27,7 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ jobId, data }) => {
   const [active, setActive] = useState<ImageRestoreResultEntry | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
-  const previewUrl = (id: string) => `${getBaseURL()}/image-restore/${jobId}/result/${id}`;
+  const previewUrl = (id: string) => `${getBaseURL()}/image-restore/${jobId}/result/${id}?sid=${encodeURIComponent(getSessionId())}`;
   const markFailed = (id: string) => setFailedImages((prev) => new Set(prev).add(id));
 
   const renderThumb = (entry: ImageRestoreResultEntry, large = false) => {

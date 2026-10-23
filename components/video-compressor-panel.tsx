@@ -89,7 +89,7 @@ const VideoCompressorPanel: React.FC<{ presets?: VideoCompressorPresets }> = ({ 
       isUploading={isPending}
       uploadProgress={uploadProgress}
       outputExtensionHint={submitFormat}
-      previewConfig={{ originalMediaKind: 'video', finalMediaKind: 'video' }}
+      previewConfig={{ finalMediaKind: 'video' }}
       renderForm={({ file, isProcessing }) => (
         <form
           onSubmit={(e) => {

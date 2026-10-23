@@ -85,7 +85,7 @@ const VideoTransformPanel: React.FC<{ presets: VideoTransformPresets }> = ({ pre
       isUploading={isPending}
       uploadProgress={uploadProgress}
       outputExtensionHint={submitFormat}
-      previewConfig={{ originalMediaKind: 'video', finalMediaKind: 'video' }}
+      previewConfig={{ finalMediaKind: 'video' }}
       renderForm={({ file, isProcessing }) => (
         <form
           onSubmit={(e) => {

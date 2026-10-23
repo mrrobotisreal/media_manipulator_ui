@@ -190,12 +190,7 @@
       "transcriptSubtitle": "תמליל וסקירת בינה מלאכותית עבור {{filename}}.",
       "convertedSubtitle": "עברו בין הגרסה המקורית לגרסה הערוכה הסופית של {{filename}}.",
       "original": "מקורי",
-      "final": "סופי",
-      "loadingPreview": "טוען את התמונה שהומרה...",
-      "tryLoadingAgain": "ניסיון נוסף לטעינת התצוגה המקדימה",
-      "originalImageAlt": "תמונה מקורית",
-      "convertedImageAlt": "תמונה שהומרה",
-      "convertedGifAlt": "GIF מונפש שהומר"
+      "final": "סופי"
     },
     "progress": {
       "preparingUpload": "מכין העלאה מאובטחת...",

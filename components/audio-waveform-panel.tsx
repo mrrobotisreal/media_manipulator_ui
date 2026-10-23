@@ -176,7 +176,6 @@ const AudioWaveformPanel: React.FC = () => {
       uploadProgress={uploadProgress}
       outputExtensionHint={ext}
       previewConfig={{
-        originalMediaKind: 'audio',
         finalMediaKind,
         title: t('audioWaveformPanel.previewTitle'),
       }}

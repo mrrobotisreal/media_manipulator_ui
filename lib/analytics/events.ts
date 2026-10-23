@@ -55,6 +55,12 @@ export const EVENTS = {
   JOB_COMPLETED: 'job_completed',
   JOB_FAILED: 'job_failed',
   RESULT_PREVIEWED: 'result_previewed',
+  RESULT_VIEWED: 'result_viewed',
+  RESULT_COMPARE_USED: 'result_compare_used',
+  RESULT_DOWNLOAD_CLICKED: 'result_download_clicked',
+  RESULT_ARCHIVE_ENTRY_OPENED: 'result_archive_entry_opened',
+  RESULT_STREAM_RUNG_SELECTED: 'result_stream_rung_selected',
+  TRANSCRIPT_CUE_SEEKED: 'transcript_cue_seeked',
   DOWNLOAD_STARTED: 'download_started',
   DOWNLOAD_COMPLETED: 'download_completed',
   DOWNLOAD_FAILED: 'download_failed',
@@ -136,6 +142,12 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   job_completed: PRIORITY_CRITICAL,
   job_failed: PRIORITY_CRITICAL,
   result_previewed: PRIORITY_NORMAL,
+  result_viewed: PRIORITY_NORMAL,
+  result_compare_used: PRIORITY_NORMAL,
+  result_download_clicked: PRIORITY_HIGH,
+  result_archive_entry_opened: PRIORITY_NORMAL,
+  result_stream_rung_selected: PRIORITY_NORMAL,
+  transcript_cue_seeked: PRIORITY_NORMAL,
   download_started: PRIORITY_CRITICAL,
   download_completed: PRIORITY_CRITICAL,
   download_failed: PRIORITY_CRITICAL,
@@ -314,7 +326,46 @@ export interface JobFailedProps {
 
 export interface ResultPreviewedProps {
   job_id?: string;
-  preview_kind?: 'image' | 'video' | 'audio' | 'text' | 'other';
+  preview_kind?: 'image' | 'video' | 'audio' | 'text' | 'transcript' | 'archive' | 'document' | 'stream' | 'other';
+}
+
+export type ResultSurface = 'home' | 'tool_page' | 'tutorial' | 'history';
+export type ResultCompareMode = 'wipe' | 'side_by_side' | 'toggle' | 'synced' | 'ab';
+export type ResultEntryKind = 'image' | 'video' | 'audio' | 'text' | 'other';
+export type ResultRung = 'auto' | '240p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '2160p' | 'other';
+
+export interface ResultViewedProps {
+  job_id: string;
+  kind: string;
+  surface: ResultSurface;
+  has_original: boolean;
+}
+
+export interface ResultCompareUsedProps {
+  job_id: string;
+  kind: string;
+  mode: ResultCompareMode;
+}
+
+export interface ResultDownloadClickedProps {
+  job_id: string;
+  kind: string;
+  surface: ResultSurface;
+  viewed_first: boolean;
+}
+
+export interface ResultArchiveEntryOpenedProps {
+  job_id: string;
+  entry_kind: ResultEntryKind;
+}
+
+export interface ResultStreamRungSelectedProps {
+  job_id: string;
+  rung: ResultRung;
+}
+
+export interface TranscriptCueSeekedProps {
+  job_id: string;
 }
 
 export interface DownloadStartedProps {
@@ -572,6 +623,12 @@ export interface EventPropsMap {
   job_completed: JobCompletedProps;
   job_failed: JobFailedProps;
   result_previewed: ResultPreviewedProps;
+  result_viewed: ResultViewedProps;
+  result_compare_used: ResultCompareUsedProps;
+  result_download_clicked: ResultDownloadClickedProps;
+  result_archive_entry_opened: ResultArchiveEntryOpenedProps;
+  result_stream_rung_selected: ResultStreamRungSelectedProps;
+  transcript_cue_seeked: TranscriptCueSeekedProps;
   download_started: DownloadStartedProps;
   download_completed: DownloadCompletedProps;
   download_failed: DownloadFailedProps;

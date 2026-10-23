@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   Upload,
-  Download,
   Image as ImageIcon,
   Video as VideoIcon,
   Music,
@@ -24,10 +23,11 @@ import useTranscribeFile, {
   type TranscribeUploadResponse,
 } from '@/lib/useTranscribeFile';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
-import useDownloadFile from '@/lib/useDownloadFile';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
+import { fpsHint } from '@/lib/results/videoFps';
 import type { ConversionFormData } from '@/schemas/types';
 import {
-  analytics,
   EVENTS,
   normalizeMediaKind,
   safeFileExtension,
@@ -282,6 +282,11 @@ interface EmbeddedToolPanelProps {
    * those show up in the data as unattributed, which is visible rather than silent.
    */
   toolSlug?: string | null;
+  /**
+   * Which surface hosts the panel, for result analytics. Defaults to `tool_page` when a
+   * `toolSlug` is set and `tutorial` otherwise; tutorial views pass it explicitly.
+   */
+  surface?: 'tool_page' | 'tutorial';
   /** Default media kind to bias the panel toward when no file is selected yet. */
   defaultMediaKind: EmbeddedMediaKind;
   /** Optional high-intent task. Drives recommended settings + banner copy. */
@@ -562,9 +567,9 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
  * Compact, embedded version of the homepage converter for tutorial and
  * /tools landing pages. Reuses the same form components, upload hook,
  * status poller, and download helper as the full app so behavior stays
- * consistent. Intentionally omits conversion history, ads, and the
- * result modal — landing pages only need the core "upload → convert →
- * download" loop.
+ * consistent. Leaves out conversion history and ads. A finished
+ * job renders the shared ResultPanel inline (viewer, Original/Result toggle,
+ * Download), the same panel the home converter opens in a modal.
  */
 const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = (props) => (
   // This provider stays even though tool-landing-page now wraps its own
@@ -587,6 +592,7 @@ const EmbeddedToolPanel: React.FC<EmbeddedToolPanelProps> = (props) => (
 
 const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   toolSlug,
+  surface,
   defaultMediaKind,
   defaultTask,
   title,
@@ -635,7 +641,6 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
-  const { downloadFile } = useDownloadFile();
   // Nullable: this panel also renders in the chromeless /embed tree, where there is no
   // AuthProvider. Read only for the tier's file-size ceiling on `file_rejected`. Declared
   // up here with the other hooks because onFileChosen below closes over it, and a reference
@@ -777,33 +782,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     return `${nameWithoutExt}.${conversionOptions.format}`;
   };
 
-  const saveBlobToDisk = (blob: Blob, fileName: string) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
   const upgradeNudge = useUpgradeNudge();
-
-  const handleDownload = async () => {
-    if (!conversionJob?.id) return;
-    try {
-      // download_started/completed/failed come from useDownloadFile, which wraps the fetch.
-      const blob = await downloadFile(conversionJob.id);
-      const fileName = getConvertedFilename();
-      saveBlobToDisk(blob, fileName);
-      // The single post-conversion prompt, at most once per session, and only
-      // after a download that actually succeeded.
-      upgradeNudge();
-    } catch (err) {
-      console.error('Embedded tool download failed', err);
-    }
-  };
 
   /** What preceded a reset, from the job state that is about to be discarded. */
   const resetOutcome = (): 'success' | 'failure' | 'idle' => {
@@ -829,6 +808,23 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   const activeProgress = transcribeMode ? transcribeProgress : uploadProgress;
   const isProcessing = isPending || conversionJob?.status === 'processing';
   const isCompleted = conversionJob?.status === 'completed';
+  // The shared ResultPanel renders this where the Download button used to be. `task` and
+  // `mode` only matter when the API named no file; the extension decides first.
+  const resultDescriptor = useMemo(
+    () =>
+      isCompleted && conversionJob
+        ? describeResult({
+            job: conversionJob,
+            originalFile: selectedFile,
+            task: defaultTask,
+            mode: transcribeMode ? 'transcribe' : effectiveKind === 'pdf' ? 'document' : 'convert',
+            fallbackFileName: getConvertedFilename(),
+          })
+        : null,
+    // getConvertedFilename is derived from the same file/options listed here.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isCompleted, conversionJob, selectedFile, defaultTask, transcribeMode, effectiveKind, conversionOptions],
+  );
   const accept = acceptOverride || ACCEPT_MAP[defaultMediaKind];
 
   const heading = title || DEFAULT_TITLES[defaultMediaKind];
@@ -1167,15 +1163,16 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
             </div>
           )}
 
-          {!isTranscodeAllowed && isCompleted && (
-            <button
-              type="button"
-              onClick={() => void handleDownload()}
-              className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              {t('embeddedToolPanel.downloadFilename', { filename: getConvertedFilename() })}
-            </button>
+          {!isTranscodeAllowed && isCompleted && conversionJob && resultDescriptor && (
+            <ResultPanel
+              surface={surface ?? (toolSlug ? 'tool_page' : 'tutorial')}
+              descriptor={resultDescriptor}
+              targetFps={fpsHint(defaultTask, conversionOptions)}
+              downloadFileName={getConvertedFilename()}
+              downloadLabel={t('embeddedToolPanel.downloadFilename', { filename: getConvertedFilename() })}
+              onDownloaded={upgradeNudge}
+              onRunAnother={clearFile}
+            />
           )}
 
           {!isTranscodeAllowed && conversionJob?.status === 'failed' && (

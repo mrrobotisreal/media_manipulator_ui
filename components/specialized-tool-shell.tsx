@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Upload, Download, X, Play, Music } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
-import useDownloadFile from '@/lib/useDownloadFile';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
 import { getFileType } from '@/lib/utils';
 import {
-  analytics,
   EVENTS,
   normalizeMediaKind,
   safeFileExtension,
@@ -15,16 +15,6 @@ import {
 } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { Panel } from '@/components/darkroom/panel';
-
-/**
- * Map a preview surface's media kind onto the catalog's `preview_kind` vocabulary.
- * A zip is 'other': the modal shows a "preview not available" message for it, which is a
- * genuinely different experience from playing a video and should not be counted as one.
- */
-const previewKindFor = (
-  kind: 'audio' | 'video' | 'image' | 'zip',
-): 'image' | 'video' | 'audio' | 'text' | 'other' => (kind === 'zip' ? 'other' : kind);
 
 /**
  * SpecializedToolShell renders the common upload → progress → download UX
@@ -43,24 +33,17 @@ export interface SpecializedToolShellRenderArgs {
 }
 
 /**
- * SpecializedToolPreviewConfig opts the result modal in. When supplied, a
- * "Preview result" button appears alongside Download once the job completes.
- * Clicking it opens a modal that mirrors the home-page result viewer — toggle
- * between the original input and the final output, then download from inside
- * the modal.
+ * SpecializedToolPreviewConfig is now only a HINT for `describe()`.
  *
- * For ZIP outputs (e.g. waveform "both", extracted frames) we still show the
- * modal but render a "preview not available" message on the Final tab so the
- * user can fall back to plain download.
+ * Every completed job renders the shared ResultPanel (viewer, Original/Result toggle,
+ * Download). The kind comes from the result file name's extension first; `finalMediaKind`
+ * only decides when the extension cannot ('zip' means an archive).
  */
 export interface SpecializedToolPreviewConfig {
-  /** What kind of media the original uploaded file is. Drives the Original
-   *  tab in the modal. */
-  originalMediaKind: 'audio' | 'video' | 'image';
-  /** What kind of media the final result is. Drives the Final tab in the
-   *  modal. Use 'zip' when the result isn't browser-previewable. */
+  /** What kind of media the final result is. Use 'zip' when the result isn't
+   *  browser-previewable. */
   finalMediaKind: 'audio' | 'video' | 'image' | 'zip';
-  /** Optional override label for the result modal header. */
+  /** Optional override for the result panel heading. */
   title?: string;
 }
 
@@ -82,8 +65,7 @@ interface SpecializedToolShellProps {
   renderForm: (args: SpecializedToolShellRenderArgs) => React.ReactNode;
   /** Suggested output extension for the download button label. */
   outputExtensionHint?: string;
-  /** Opt in to the in-browser result preview modal. When omitted, only the
-   *  download button is shown after completion. */
+  /** Hint for the result kind and panel heading; see SpecializedToolPreviewConfig. */
   previewConfig?: SpecializedToolPreviewConfig;
 }
 
@@ -106,28 +88,11 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // Which job's result has already been counted as previewed. A ref, not state: it must
-  // not trigger a render, and it has to survive the modal opening and closing.
-  const previewedJobRef = useRef<string | null>(null);
   // Nullable outside the AuthProvider (the chromeless trees). Read only for the tier's
   // file-size ceiling on `file_rejected`.
   const auth = useAuth();
   const submitRef = useRef<() => void>(() => {});
 
-  // Preview-modal state. We lazy-create blob URLs only when the user opens
-  // the modal so unopened previews don't burn memory, and revoke them on
-  // close / unmount / file-change to keep the page leak-free.
-  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
-  const [resultView, setResultView] = useState<'original' | 'final'>('final');
-  const [originalUrl, setOriginalUrl] = useState<string | null>(null);
-  const [resultUrl, setResultUrl] = useState<string | null>(null);
-  const [resultBlob, setResultBlob] = useState<Blob | null>(null);
-  const [isLoadingResultPreview, setIsLoadingResultPreview] = useState(false);
-  const [resultPreviewError, setResultPreviewError] = useState<string | null>(null);
-  const originalUrlRef = useRef<string | null>(null);
-  const resultUrlRef = useRef<string | null>(null);
-
-  const { downloadFile } = useDownloadFile();
   const { data: jobStatusData } = useGetJobStatus(conversionJob);
 
   useEffect(() => {
@@ -137,47 +102,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jobStatusData]);
 
-  // Keep refs in sync with the latest blob URLs so the unmount cleanup
-  // below can revoke them without depending on closure values that get
-  // stale across renders.
-  useEffect(() => {
-    originalUrlRef.current = originalUrl;
-  }, [originalUrl]);
-  useEffect(() => {
-    resultUrlRef.current = resultUrl;
-  }, [resultUrl]);
-
-  // Revoke any pending blob URLs on unmount.
-  useEffect(() => {
-    return () => {
-      if (originalUrlRef.current) URL.revokeObjectURL(originalUrlRef.current);
-      if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
-    };
-  }, []);
-
-  const revokeOriginalUrl = () => {
-    if (originalUrlRef.current) {
-      URL.revokeObjectURL(originalUrlRef.current);
-      originalUrlRef.current = null;
-    }
-    setOriginalUrl(null);
-  };
-  const revokeResultUrl = () => {
-    if (resultUrlRef.current) {
-      URL.revokeObjectURL(resultUrlRef.current);
-      resultUrlRef.current = null;
-    }
-    setResultUrl(null);
-    setResultBlob(null);
-  };
-
   const onFileChosen = (file: File) => {
-    // Reset any previously-loaded preview state when the user picks a new
-    // input file — the old blob URLs are no longer relevant.
-    revokeOriginalUrl();
-    revokeResultUrl();
-    setResultPreviewError(null);
-    setIsResultModalOpen(false);
     setSelectedFile(file);
     setConversionJob(null);
 
@@ -229,10 +154,6 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
             ? 'failure'
             : 'idle',
     });
-    revokeOriginalUrl();
-    revokeResultUrl();
-    setResultPreviewError(null);
-    setIsResultModalOpen(false);
     setSelectedFile(null);
     setConversionJob(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -246,104 +167,6 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
     const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || selectedFile.name;
     const ext = outputExtensionHint || 'bin';
     return `${baseName}.${ext.replace(/^\./, '')}`;
-  };
-
-  const saveBlobToDisk = (blob: Blob, fileName: string) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleDownload = async () => {
-    if (!conversionJob?.id || !selectedFile) return;
-    try {
-      // Reuse the cached preview blob when present — no need to re-fetch
-      // the same artifact when the user already opened the preview modal.
-      // useDownloadFile emits download_started/completed/failed around the FETCH. When the
-      // preview modal already fetched the blob there is no fetch, so nothing would be
-      // recorded for what is, to the visitor, a download — hence the explicit event on
-      // that path only. Emitting on both paths would double-count.
-      const servedFromCache = !!resultBlob;
-      const blob = resultBlob || (await downloadFile(conversionJob.id));
-      if (!resultBlob) setResultBlob(blob);
-      const fileName = resultFilename();
-      saveBlobToDisk(blob, fileName);
-      if (servedFromCache) {
-        trackTool(
-          EVENTS.DOWNLOAD_COMPLETED,
-          {
-            job_id: conversionJob.id,
-            output_format: safeFileExtension(fileName),
-            size_bytes: blob.size,
-          },
-          { job_id: conversionJob.id },
-        );
-      }
-    } catch (err) {
-      console.error('Specialized tool download failed', err);
-      analytics.track(
-        EVENTS.DOWNLOAD_FAILED,
-        {
-          job_id: conversionJob.id,
-          reason: err instanceof Error ? err.message : 'unknown',
-        },
-        { job_id: conversionJob.id },
-      );
-    }
-  };
-
-  // openPreview lazy-fetches the result blob the first time the user opens
-  // the modal and creates a blob URL for in-browser playback. It also makes
-  // sure an Original blob URL exists for the selected file so the modal can
-  // toggle between Original and Final without re-creating URLs on every
-  // tab switch.
-  const openPreview = async () => {
-    if (!previewConfig || !conversionJob?.id || !selectedFile) return;
-    setIsResultModalOpen(true);
-    setResultView('final');
-    // `result_previewed` separates "looked at it" from "kept it", which is the difference
-    // between a tool that produces something people want and one that produces something
-    // people inspect and discard. Once per job, not once per modal open: reopening the same
-    // result is the same preview, and counting reopens would make a confusing result look
-    // like an engaging one.
-    if (previewedJobRef.current !== conversionJob.id) {
-      previewedJobRef.current = conversionJob.id;
-      trackTool(
-        EVENTS.RESULT_PREVIEWED,
-        { job_id: conversionJob.id, preview_kind: previewKindFor(previewConfig.finalMediaKind) },
-        { job_id: conversionJob.id },
-      );
-    }
-    if (!originalUrl) {
-      const url = URL.createObjectURL(selectedFile);
-      originalUrlRef.current = url;
-      setOriginalUrl(url);
-    }
-    if (previewConfig.finalMediaKind === 'zip') {
-      // ZIPs can't render inline; we still surface the modal so the user can
-      // play the Original side and read the "preview not available" message.
-      return;
-    }
-    if (resultUrl && resultBlob) return;
-    try {
-      setIsLoadingResultPreview(true);
-      setResultPreviewError(null);
-      const blob = resultBlob || (await downloadFile(conversionJob.id));
-      const url = URL.createObjectURL(blob);
-      resultUrlRef.current = url;
-      setResultBlob(blob);
-      setResultUrl(url);
-    } catch (err) {
-      console.error('Failed to load result preview', err);
-      setResultPreviewError(err instanceof Error ? err.message : 'Failed to load preview');
-    } finally {
-      setIsLoadingResultPreview(false);
-    }
   };
 
   const isProcessing = isUploading || conversionJob?.status === 'processing';
@@ -429,36 +252,22 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
             </div>
           )}
 
-          {isCompleted && (
-            previewConfig ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => void openPreview()}
-                  className="bg-primary text-primary-foreground py-3 px-6 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors flex items-center justify-center gap-2"
-                >
-                  <Play className="w-4 h-4" />
-                  {t('specializedToolShell.previewResult')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void handleDownload()}
-                  className="bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  {t('specializedToolShell.downloadResult')}
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => void handleDownload()}
-                className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                {t('specializedToolShell.downloadResult')}
-              </button>
-            )
+          {isCompleted && conversionJob && (
+            <ResultPanel
+              descriptor={describeResult({
+                job: conversionJob,
+                originalFile: selectedFile,
+                kindHint: previewConfig
+                  ? previewConfig.finalMediaKind === 'zip'
+                    ? 'archive'
+                    : previewConfig.finalMediaKind
+                  : undefined,
+                fallbackFileName: resultFilename(),
+              })}
+              title={previewConfig?.title}
+              downloadFileName={resultFilename()}
+              onRunAnother={clearFile}
+            />
           )}
           {isFailed && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
@@ -468,158 +277,8 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
         </>
       )}
 
-      {/* Result preview modal — opt-in via previewConfig. Mirrors the home-
-          page result viewer so the experience is consistent across the app. */}
-      {previewConfig && isResultModalOpen && selectedFile && (
-        <div className="fixed inset-0 z-50 bg-surface-0/80 p-4 flex items-center justify-center">
-          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100dvh-2rem)] flex flex-col overflow-hidden shadow-2xl">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
-              <div>
-                <h2 className="text-xl font-semibold text-card-foreground">
-                  {previewConfig.title || t('specializedToolShell.resultPreview')}
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  {t('specializedToolShell.toggleHint')}
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="flex rounded-lg border overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setResultView('original')}
-                    className={`px-4 py-2 text-sm transition-colors ${
-                      resultView === 'original'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-background text-card-foreground hover:bg-muted'
-                    }`}
-                  >
-                    {t('home.result.original')}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setResultView('final')}
-                    className={`px-4 py-2 text-sm transition-colors ${
-                      resultView === 'final'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-background text-card-foreground hover:bg-muted'
-                    }`}
-                  >
-                    {t('home.result.final')}
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => void handleDownload()}
-                  className="bg-success text-success-foreground py-2 px-4 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  {t('common.download')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsResultModalOpen(false)}
-                  className="text-muted-foreground hover:text-card-foreground transition-colors p-2"
-                  aria-label={t('specializedToolShell.closePreview')}
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-4 bg-muted/30 flex-1 min-h-0 flex items-center justify-center">
-              {resultView === 'original' ? (
-                <SpecializedToolMediaPreview
-                  kind={previewConfig.originalMediaKind}
-                  src={originalUrl}
-                  filename={selectedFile.name}
-                />
-              ) : isLoadingResultPreview ? (
-                <p className="text-card-foreground">{t('specializedToolShell.loadingPreview')}</p>
-              ) : resultPreviewError ? (
-                <div className="text-center space-y-3">
-                  <p className="text-destructive">{resultPreviewError}</p>
-                  <button
-                    type="button"
-                    onClick={() => void openPreview()}
-                    className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
-                  >
-                    {t('common.tryAgain')}
-                  </button>
-                </div>
-              ) : previewConfig.finalMediaKind === 'zip' ? (
-                <div className="text-center max-w-md space-y-3">
-                  <p className="text-card-foreground font-medium">{t('specializedToolShell.zipPreviewTitle')}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {t('specializedToolShell.zipPreviewBody')}
-                  </p>
-                </div>
-              ) : (
-                <SpecializedToolMediaPreview
-                  kind={previewConfig.finalMediaKind}
-                  src={resultUrl}
-                  filename={resultFilename()}
-                />
-              )}
-            </div>
-          </Panel>
-        </div>
-      )}
     </div>
   );
-};
-
-/**
- * SpecializedToolMediaPreview renders a single piece of media inside the
- * result preview modal — a video for video kinds, an image for images, and
- * an audio player with a filename label for audio kinds. ZIP/no-preview
- * cases are handled by the parent before this component is reached.
- */
-interface SpecializedToolMediaPreviewProps {
-  kind: 'audio' | 'video' | 'image' | 'zip';
-  src: string | null;
-  filename: string;
-}
-
-const SpecializedToolMediaPreview: React.FC<SpecializedToolMediaPreviewProps> = ({
-  kind,
-  src,
-  filename,
-}) => {
-  const { t } = useLocalization('interface');
-  if (!src) {
-    return <p className="text-card-foreground">{t('specializedToolShell.loadingPreview')}</p>;
-  }
-  if (kind === 'image') {
-    return (
-      <img
-        src={src}
-        alt={filename}
-        className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
-        decoding="async"
-      />
-    );
-  }
-  if (kind === 'video') {
-    return (
-      <video
-        src={src}
-        controls
-        className="max-w-full max-h-[calc(100dvh-14rem)] rounded-lg bg-surface-0"
-      />
-    );
-  }
-  if (kind === 'audio') {
-    return (
-      <div className="w-full max-w-3xl bg-background rounded-lg border p-8">
-        <div className="flex flex-col items-center justify-center gap-4">
-          <Music className="w-16 h-16 text-muted-foreground" />
-          <p className="text-card-foreground font-medium truncate max-w-full">{filename}</p>
-          <audio src={src} controls className="w-full" />
-        </div>
-      </div>
-    );
-  }
-  return null;
 };
 
 export default SpecializedToolShell;

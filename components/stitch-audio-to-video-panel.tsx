@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Upload, Download, Music, Plus, Trash2, Video, X } from 'lucide-react';
+import { Upload, Music, Plus, Trash2, Video, X } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
-import useDownloadFile from '@/lib/useDownloadFile';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
 import useStitchAudioToVideoTool, {
   type StitchAudioTrackInput,
   type StitchMode,
@@ -40,7 +41,6 @@ const StitchAudioToVideoPanel: React.FC = () => {
     });
   });
   const { data: jobStatus } = useGetJobStatus(conversionJob);
-  const { downloadFile } = useDownloadFile();
 
   useEffect(() => {
     if (jobStatus) {
@@ -70,25 +70,6 @@ const StitchAudioToVideoPanel: React.FC = () => {
       video,
       options: { mode, trimToVideoDuration, tracks },
     });
-  };
-
-  const handleDownload = async () => {
-    if (!conversionJob?.id || !video) return;
-    try {
-      const blob = await downloadFile(conversionJob.id);
-      const baseName = video.name.substring(0, video.name.lastIndexOf('.')) || video.name;
-      const fileName = `${baseName}_stitched.mp4`;
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Stitch download failed', err);
-    }
   };
 
   const isProcessing = isPending || conversionJob?.status === 'processing';
@@ -297,15 +278,20 @@ const StitchAudioToVideoPanel: React.FC = () => {
             </div>
           )}
 
-          {isCompleted && (
-            <button
-              type="button"
-              onClick={() => void handleDownload()}
-              className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              {t('stitchAudioToVideo.downloadStitched')}
-            </button>
+          {isCompleted && conversionJob && (
+            <ResultPanel
+              descriptor={describeResult({
+                job: conversionJob,
+                originalFile: video,
+                task: 'stitch_audio_to_video',
+                fallbackFileName: `${(video?.name ?? 'video').replace(/\.[^.]+$/, '')}_stitched.mp4`,
+              })}
+              downloadLabel={t('stitchAudioToVideo.downloadStitched')}
+              onRunAnother={() => {
+                setVideo(null);
+                setConversionJob(null);
+              }}
+            />
           )}
           {conversionJob?.status === 'failed' && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">

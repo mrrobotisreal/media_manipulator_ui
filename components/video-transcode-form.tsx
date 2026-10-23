@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Loader2, Film, Sparkles, Captions, Image as ImageIcon, Info, Download, AlertTriangle, Languages, X, Radio, Package } from 'lucide-react';
+import { Loader2, Film, Sparkles, Captions, Image as ImageIcon, Info, AlertTriangle, Languages, X, Radio, Package } from 'lucide-react';
 import useVideoTranscodeProbe, { type ProbeMutationResult } from '@/lib/useVideoTranscodeProbe';
 import useStartVideoTranscode from '@/lib/useStartVideoTranscode';
 import useTranscodeJobStatus from '@/lib/useTranscodeJobStatus';
@@ -18,6 +18,9 @@ import {
 import InfoTooltip from '@/components/info-tooltip';
 import { Trans } from 'react-i18next';
 import { useLocalization } from '@/i18n/useLocalization';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
+import { StreamReport } from '@/components/results/stream-report';
 
 const MAX_EXTRA_LANGUAGES = 3;
 
@@ -28,25 +31,6 @@ export interface VideoTranscodeFormProps {
   lockProtocol?: boolean;
   onJobStarted?: (jobId: string) => void;
 }
-
-const formatBytes = (bytes: number | undefined): string => {
-  if (!bytes || bytes <= 0) return '—';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  let value = bytes;
-  let i = 0;
-  while (value >= 1024 && i < units.length - 1) {
-    value /= 1024;
-    i++;
-  }
-  return `${value.toFixed(value >= 10 ? 0 : 1)} ${units[i]}`;
-};
-
-const formatSeconds = (secs: number | undefined): string => {
-  if (!secs || secs <= 0) return '—';
-  const m = Math.floor(secs / 60);
-  const s = Math.round(secs - m * 60);
-  return `${m}:${String(s).padStart(2, '0')}`;
-};
 
 const RungChip: React.FC<{
   rung: TranscodeQualityRung;
@@ -351,33 +335,8 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
         </div>
       )}
 
-      {/* Probe report */}
-      {probe && (
-        <div className="rounded-lg border border-border p-4 bg-muted/20">
-          <h3 className="font-semibold text-card-foreground mb-2">{t('videoTranscodeForm.report.title')}</h3>
-          <dl className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm">
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.resolution')}</dt><dd className="text-card-foreground">{probe.width}×{probe.height}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.maxQuality')}</dt><dd className="text-card-foreground uppercase">{probe.maxQualityLabel}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.fps')}</dt><dd className="text-card-foreground">{probe.fps ? probe.fps.toFixed(2) : '—'}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.duration')}</dt><dd className="text-card-foreground">{formatSeconds(probe.durationSeconds)}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.audio')}</dt><dd className="text-card-foreground">{probe.hasAudio ? t('videoTranscodeForm.report.yes') : t('videoTranscodeForm.report.no')}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.videoCodec')}</dt><dd className="text-card-foreground">{probe.videoCodec || '—'}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.audioCodec')}</dt><dd className="text-card-foreground">{probe.audioCodec || '—'}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.container')}</dt><dd className="text-card-foreground">{probe.containerFormat || '—'}</dd></div>
-            <div><dt className="text-muted-foreground">{t('videoTranscodeForm.report.fileSize')}</dt><dd className="text-card-foreground">{formatBytes(probe.fileSizeBytes)}</dd></div>
-          </dl>
-          {probe.warnings && probe.warnings.length > 0 && (
-            <div className="mt-3 rounded border border-premium dark:border-premium/60 bg-premium/60 dark:bg-premium/30 p-3 text-sm flex items-start gap-2">
-              <AlertTriangle className="w-4 h-4 text-premium mt-0.5 shrink-0" />
-              <div>
-                <ul className="space-y-1">
-                  {probe.warnings.map((w, i) => <li key={i}>{w}</li>)}
-                </ul>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Probe report (shared with the stream viewer's fallback) */}
+      {probe && <StreamReport probe={probe} />}
 
       {/* Quality rungs */}
       {probe && !probe.sourceTooSmall && (
@@ -621,17 +580,22 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
         </div>
       )}
 
-      {/* Download tarball */}
-      {downloadUrl && (
-        <a
-          href={downloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-        >
-          <Download className="w-4 h-4" />
-          {t('videoTranscodeForm.downloadPackage', { filename: job.data?.resultFileName || `${protocol}-package.tar.gz` })}
-        </a>
+      {/* The HLS/DASH package. Download stays the presigned link; MM04 adds the stream viewer. */}
+      {downloadUrl && job.data && (
+        <ResultPanel
+          descriptor={describeResult({
+            job: job.data,
+            originalFile: file,
+            probe: probe ?? undefined,
+            task: protocol === 'dash' ? 'transcode_to_dash' : 'transcode_to_hls',
+            mode: 'transcode',
+            fallbackFileName: `${protocol}-package.tar.gz`,
+          })}
+          downloadLabel={t('videoTranscodeForm.downloadPackage', { filename: job.data.resultFileName || `${protocol}-package.tar.gz` })}
+          onDownload={() => {
+            window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+          }}
+        />
       )}
     </div>
   );

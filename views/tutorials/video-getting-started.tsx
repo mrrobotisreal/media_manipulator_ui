@@ -58,6 +58,7 @@ const VideoGettingStartedTutorial: React.FC<{ locale?: string }> = ({ locale }) 
           <RichParagraph className="mb-4" text={t('tutorialVideoGettingStarted.upload.paragraph2')} />
 
           <EmbeddedToolPanel
+            surface="tutorial"
             defaultMediaKind="video"
             title={t('tutorialVideoGettingStarted.toolPanel.title')}
             description={t('tutorialVideoGettingStarted.toolPanel.description')}

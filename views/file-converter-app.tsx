@@ -1,6 +1,6 @@
 'use client';
 
-import React, { lazy, Suspense, useState, useCallback, useRef, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Trans } from 'react-i18next';
 import { Upload, Download, Image, Video, Music, X, Settings, Search, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
@@ -23,7 +23,6 @@ const ImageConversionForm = lazy(() => withToolShards(() => import('@/components
 const VideoConversionForm = lazy(() => withToolShards(() => import('@/components/video-conversion-form')));
 const AudioConversionForm = lazy(() => withToolShards(() => import('@/components/audio-conversion-form')));
 const TranscribeForm = lazy(() => withToolShards(() => import('@/components/transcribe-form')));
-const TranscribeResultView = lazy(() => withToolShards(() => import('@/components/transcribe-result-view')));
 const VideoTranscodeForm = lazy(() => withToolShards(() => import('@/components/video-transcode-form')));
 // AI Document Scan island — the panel owns its own upload/SSE/result-modal flow,
 // so the home page needs no extra job plumbing for it.
@@ -37,16 +36,18 @@ const FormFallback: React.FC = () => {
 };
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, { type TranscribeFormData, type TranscribeUploadResponse } from '@/lib/useTranscribeFile';
-import { useTranscribeResult, useAnalysisResult } from '@/lib/useTranscribeResult';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
+import { saveBlobToDisk } from '@/lib/results/save';
+import { describe as describeResult } from '@/lib/results/describe';
+import { peekResultBlob } from '@/lib/results/useResultBlob';
+import { ResultPanel } from '@/components/results/result-panel';
 import useIdentifyFile from '@/lib/useIdentifyFile';
 import {
   EVENTS,
   getVisitorId,
   normalizeMediaKind,
-  reportError,
   safeFileExtension,
   takeJobDuration,
   trackFileChoice,
@@ -60,24 +61,6 @@ import { ProcessingIndicator } from '@/components/darkroom/processing-indicator'
 
 type WorkflowMode = 'convert' | 'transcribe' | 'transcode' | 'document';
 
-/**
- * The catalog's `preview_kind` for a history entry.
- *
- * A transcript is 'text' regardless of what went in — the visitor is reading, not watching,
- * and lumping it with the source video would hide that the transcription tools have a
- * completely different preview experience from the converters.
- */
-const previewKindFor = (
-  item: { mode: WorkflowMode; mediaKind: string } | undefined,
-): 'image' | 'video' | 'audio' | 'text' | 'other' => {
-  if (!item) return 'other';
-  if (item.mode === 'transcribe') return 'text';
-  if (item.mediaKind === 'image' || item.mediaKind === 'video' || item.mediaKind === 'audio') {
-    return item.mediaKind;
-  }
-  return 'other';
-};
-
 interface ConversionHistoryItem {
   jobId: string;
   mediaKind: 'image' | 'video' | 'audio' | 'pdf' | 'unknown';
@@ -90,7 +73,10 @@ interface ConversionHistoryItem {
   completedAt?: number;
   status: 'processing' | 'completed' | 'failed';
   blob?: Blob;
-  objectUrl?: string;
+  /** From the job snapshot at completion; feed the ResultPanel header and viewer choice. */
+  resultSizeBytes?: number;
+  expiresAt?: string;
+  resultMime?: string;
   error?: string;
 }
 
@@ -128,20 +114,14 @@ const FileConverterAppInner: React.FC = () => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [conversionStartTime, setConversionStartTime] = useState<number | null>(null);
   const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
-  const [resultImageUrl, setResultImageUrl] = useState<string | null>(null);
-  const [resultBlob, setResultBlob] = useState<Blob | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
-  const [resultView, setResultView] = useState<'original' | 'final'>('final');
-  const [isLoadingResultPreview, setIsLoadingResultPreview] = useState(false);
-  const [resultPreviewError, setResultPreviewError] = useState<string | null>(null);
+  const [resultSurface, setResultSurface] = useState<'home' | 'history'>('home');
   const [autoOpenedResultJobId, setAutoOpenedResultJobId] = useState<string | null>(null);
-  const resultImageUrlRef = useRef<string | null>(null);
   const [conversionHistory, setConversionHistory] = useState<ConversionHistoryItem[]>([]);
   const [activeResultJobId, setActiveResultJobId] = useState<string | null>(null);
   const conversionHistoryRef = useRef<ConversionHistoryItem[]>([]);
   const pendingConversionRef = useRef<PendingConversionDetails | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const previewedJobsRef = useRef<Set<string>>(new Set());
 
   const [workflowMode, setWorkflowMode] = useState<WorkflowMode>('convert');
 
@@ -240,14 +220,8 @@ const FileConverterAppInner: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      if (resultImageUrlRef.current) {
-        URL.revokeObjectURL(resultImageUrlRef.current);
-      }
       conversionHistoryRef.current.forEach(item => {
         URL.revokeObjectURL(item.originalUrl);
-        if (item.objectUrl) {
-          URL.revokeObjectURL(item.objectUrl);
-        }
       });
     };
   }, []);
@@ -284,7 +258,14 @@ const FileConverterAppInner: React.FC = () => {
       // is the one place every tool's polling goes through.
       if (previousStatus === 'processing' && jobStatusData.status === 'completed') {
         setConversionHistory(prev => prev.map(item => item.jobId === jobStatusData.id
-          ? { ...item, status: 'completed', completedAt: Date.now() }
+          ? {
+              ...item,
+              status: 'completed',
+              completedAt: Date.now(),
+              resultSizeBytes: jobStatusData.resultSizeBytes,
+              expiresAt: jobStatusData.expiresAt,
+              resultMime: jobStatusData.resultMime,
+            }
           : item
         ));
       }
@@ -324,15 +305,8 @@ const FileConverterAppInner: React.FC = () => {
       setConversionJob(null);
       setConversionOptions(null);
       setIsResultModalOpen(false);
-      setResultBlob(null);
-      setResultImageUrl(null);
-      setResultPreviewError(null);
       setActiveResultJobId(null);
       setWorkflowMode('convert');
-      if (resultImageUrlRef.current) {
-        URL.revokeObjectURL(resultImageUrlRef.current);
-        resultImageUrlRef.current = null;
-      }
 
       trackFileChosen(file, 'drop');
     }
@@ -348,15 +322,8 @@ const FileConverterAppInner: React.FC = () => {
       setConversionJob(null);
       setConversionOptions(null);
       setIsResultModalOpen(false);
-      setResultBlob(null);
-      setResultImageUrl(null);
-      setResultPreviewError(null);
       setActiveResultJobId(null);
       setWorkflowMode('convert');
-      if (resultImageUrlRef.current) {
-        URL.revokeObjectURL(resultImageUrlRef.current);
-        resultImageUrlRef.current = null;
-      }
 
       trackFileChosen(file, 'picker');
     }
@@ -380,17 +347,9 @@ const FileConverterAppInner: React.FC = () => {
     setConversionOptions(data); // Store the conversion options
     setConversionJob(null);
     setIsResultModalOpen(false);
-    setResultBlob(null);
-    setResultImageUrl(null);
-    setResultPreviewError(null);
     setAutoOpenedResultJobId(null);
     setActiveResultJobId(null);
     setActiveResultJobId(null);
-    if (resultImageUrlRef.current) {
-      URL.revokeObjectURL(resultImageUrlRef.current);
-      resultImageUrlRef.current = null;
-      setResultImageUrl(null);
-    }
 
     // Which options people actually touch, one priority-3 event per non-default option.
     // These are the lowest-value events in the catalog and the first evicted under
@@ -429,15 +388,8 @@ const FileConverterAppInner: React.FC = () => {
     setConversionOptions({ format: data.format } as unknown as ConversionFormData);
     setConversionJob(null);
     setIsResultModalOpen(false);
-    setResultBlob(null);
-    setResultImageUrl(null);
-    setResultPreviewError(null);
     setAutoOpenedResultJobId(null);
     setActiveResultJobId(null);
-    if (resultImageUrlRef.current) {
-      URL.revokeObjectURL(resultImageUrlRef.current);
-      resultImageUrlRef.current = null;
-    }
     transcribeMutate({ file: selectedFile, options: data });
     // The transcribe workflow's own job_started comes from useTranscribeFile. This records
     // the workflow CHOICE, which is a different question: how many homepage visitors reach
@@ -462,85 +414,29 @@ const FileConverterAppInner: React.FC = () => {
     return `${nameWithoutExt}.${newExtension}`;
   };
 
-  const saveBlobToDisk = (blob: Blob, fileName: string) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
   /**
-   * `result_previewed` — once per job, whichever of the four entry points opened it.
+   * Open the shared ResultPanel for a finished job.
    *
-   * Four buttons reach loadResultPreview (the inline Show result, the history list, the
-   * transcribe view, and the auto-open effect after a conversion completes), so the guard
-   * lives here rather than at the call sites. Once per JOB, not once per open: reopening the
-   * same result is the same preview, and counting reopens would make a confusing result look
-   * like an engaging one.
-   *
-   * A ref rather than state — it must not cause a render, and it has to survive the modal
-   * being closed and reopened.
+   * Four buttons reach this (the inline Show result, the history list, the transcribe view
+   * and the auto-open effect after a conversion completes). Fetching the bytes, the
+   * Original/Result toggle and `result_previewed` (once per job) now belong to ResultPanel,
+   * so all this does is pick the job and open the dialog.
    */
-  const trackResultPreviewed = useCallback(
-    (jobId: string, item: ConversionHistoryItem | undefined) => {
-      if (previewedJobsRef.current.has(jobId)) return;
-      previewedJobsRef.current.add(jobId);
-      trackTool(
-        EVENTS.RESULT_PREVIEWED,
-        { job_id: jobId, preview_kind: previewKindFor(item) },
-        { job_id: jobId, media_kind: normalizeMediaKind(item?.mediaKind) },
-      );
-    },
-    [trackTool],
-  );
-
-  const loadResultPreview = useCallback(async (jobId = conversionJob?.id, openModal = true) => {
+  const loadResultPreview = useCallback((jobId = conversionJob?.id, openModal = true, surface: 'home' | 'history' = 'home') => {
     if (!jobId) return;
     const historyItem = conversionHistory.find(item => item.jobId === jobId);
     const isCompleted = historyItem?.status === 'completed' || (conversionJob?.id === jobId && conversionJob.status === 'completed');
     if (!historyItem || !isCompleted) return;
-    // Emitted on the OPEN, not after the blob loads: the visitor asked to look at the
-    // result, and a preview that then fails to render is a `client_error`, not an absent
-    // preview. Guarded on openModal so a silent prefetch is not counted as a look.
-    if (openModal) trackResultPreviewed(jobId, historyItem);
-    if (historyItem.mode === 'transcribe') {
-      setActiveResultJobId(jobId);
-      setResultView('final');
-      setResultPreviewError(null);
-      if (openModal) setIsResultModalOpen(true);
-      return;
-    }
-    if (activeResultJobId === jobId && resultImageUrl && resultBlob) {
-      setResultView('final');
-      if (openModal) setIsResultModalOpen(true);
-      return;
-    }
+    setActiveResultJobId(jobId);
+    setResultSurface(surface);
+    if (openModal) setIsResultModalOpen(true);
+  }, [conversionHistory, conversionJob?.id, conversionJob?.status]);
 
-    try {
-      setIsLoadingResultPreview(true);
-      setResultPreviewError(null);
-      const blob = historyItem?.blob || await downloadFile(jobId);
-      const url = historyItem.objectUrl || URL.createObjectURL(blob);
-      resultImageUrlRef.current = null;
-      setResultBlob(blob);
-      setResultImageUrl(url);
-      setActiveResultJobId(jobId);
-      setConversionHistory(prev => prev.map(item => item.jobId === jobId ? { ...item, blob, objectUrl: url } : item));
-      setResultView('final');
-      if (openModal) setIsResultModalOpen(true);
-    } catch (error) {
-      console.error('Failed to load result preview:', error);
-      const message = error instanceof Error ? error.message : t('error:conversion.previewFailed');
-      setResultPreviewError(message);
-      reportError(error, { stage: 'result_preview' });
-    } finally {
-      setIsLoadingResultPreview(false);
-    }
-  }, [activeResultJobId, conversionHistory, conversionJob?.id, conversionJob?.status, downloadFile, resultBlob, resultImageUrl, trackResultPreviewed]);
+  const cacheHistoryBlob = useCallback((jobId: string, blob: Blob) => {
+    setConversionHistory(prev => prev.some(item => item.jobId === jobId && !item.blob)
+      ? prev.map(item => item.jobId === jobId && !item.blob ? { ...item, blob } : item)
+      : prev);
+  }, []);
 
   useEffect(() => {
     if (
@@ -549,7 +445,7 @@ const FileConverterAppInner: React.FC = () => {
       conversionHistory.some(item => item.jobId === conversionJob.id)
     ) {
       setAutoOpenedResultJobId(conversionJob.id);
-      void loadResultPreview(conversionJob.id, true);
+      loadResultPreview(conversionJob.id, true);
     }
   }, [autoOpenedResultJobId, conversionHistory, conversionJob?.id, conversionJob?.status, loadResultPreview]);
 
@@ -557,7 +453,7 @@ const FileConverterAppInner: React.FC = () => {
     if (jobId) {
       try {
         const historyItem = conversionHistory.find(item => item.jobId === jobId);
-        const cached = historyItem?.blob || (activeResultJobId === jobId ? resultBlob : null);
+        const cached = historyItem?.blob ?? peekResultBlob(jobId);
         const servedFromCache = !!cached;
         const blob = cached || (await downloadFile(jobId));
         if (!historyItem?.blob) {
@@ -616,15 +512,8 @@ const FileConverterAppInner: React.FC = () => {
     setConversionOptions(null);
     setConversionStartTime(null);
     setIsResultModalOpen(false);
-    setResultBlob(null);
-    setResultPreviewError(null);
     setAutoOpenedResultJobId(null);
     setWorkflowMode('convert');
-    if (resultImageUrlRef.current) {
-      URL.revokeObjectURL(resultImageUrlRef.current);
-      resultImageUrlRef.current = null;
-      setResultImageUrl(null);
-    }
     resetIdentification();
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -668,148 +557,47 @@ const FileConverterAppInner: React.FC = () => {
   const activeHistoryItem = activeResultJobId
     ? conversionHistory.find(item => item.jobId === activeResultJobId)
     : undefined;
-  const isTranscribeResultActive = !!activeHistoryItem && activeHistoryItem.mode === 'transcribe' && activeHistoryItem.status === 'completed';
-  const { data: transcribeResult, isLoading: isTranscribeResultLoading } = useTranscribeResult(
-    isTranscribeResultActive ? activeHistoryItem!.jobId : null,
-    isTranscribeResultActive,
-  );
-  const { data: transcribeAnalysis, isLoading: isTranscribeAnalysisLoading } = useAnalysisResult(
-    isTranscribeResultActive ? activeHistoryItem!.jobId : null,
-    isTranscribeResultActive,
-  );
+  const activeDescriptor = useMemo(() => {
+    if (!activeHistoryItem) return null;
+    const originalKind = activeHistoryItem.mediaKind === 'image' || activeHistoryItem.mediaKind === 'video' || activeHistoryItem.mediaKind === 'audio'
+      ? activeHistoryItem.mediaKind
+      : 'unknown';
+    return describeResult({
+      job: {
+        id: activeHistoryItem.jobId,
+        resultFileName: activeHistoryItem.outputFileName,
+        resultSizeBytes: activeHistoryItem.resultSizeBytes,
+        expiresAt: activeHistoryItem.expiresAt,
+        resultMime: activeHistoryItem.resultMime,
+      },
+      mode: activeHistoryItem.mode,
+      original: {
+        file: null,
+        objectUrl: activeHistoryItem.originalUrl,
+        fileName: activeHistoryItem.fileName,
+        kind: originalKind,
+      },
+    });
+  }, [activeHistoryItem]);
 
   return (
     <>
-      {isResultModalOpen && activeHistoryItem && (
-        <div className="fixed inset-0 z-50 bg-surface-0/80 p-4 flex items-center justify-center">
-          <Panel level="1" padding={false} className="w-full max-w-7xl max-h-[calc(100dvh-2rem)] flex flex-col overflow-hidden shadow-2xl">
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4 border-b">
-              <div>
-                <h2 className="text-xl font-semibold text-card-foreground">
-                  {activeHistoryItem.mode === 'transcribe' ? t('interface:home.result.transcriptResult') : t('interface:home.result.convertedPreview')}
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  {activeHistoryItem.mode === 'transcribe'
-                    ? t('interface:home.result.transcriptSubtitle', { filename: activeHistoryItem.fileName })
-                    : t('interface:home.result.convertedSubtitle', { filename: activeHistoryItem.fileName })}
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                {activeHistoryItem.mode !== 'transcribe' && (
-                  <div className="flex rounded-lg border overflow-hidden">
-                    <button
-                      type="button"
-                      onClick={() => setResultView('original')}
-                      className={`px-4 py-2 text-sm transition-colors ${
-                        resultView === 'original'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-background text-card-foreground hover:bg-muted'
-                      }`}
-                    >
-                      {t('interface:home.result.original')}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setResultView('final')}
-                      className={`px-4 py-2 text-sm transition-colors ${
-                        resultView === 'final'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-background text-card-foreground hover:bg-muted'
-                      }`}
-                    >
-                      {t('interface:home.result.final')}
-                    </button>
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={() => void handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
-                  className="bg-success text-success-foreground py-2 px-4 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  {t('interface:common.download')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsResultModalOpen(false)}
-                  className="text-muted-foreground hover:text-card-foreground transition-colors p-2"
-                  aria-label={t('accessibility:home.closePreview')}
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-4 bg-muted/30 flex-1 min-h-0 flex items-center justify-center">
-              {activeHistoryItem.mode === 'transcribe' ? (
-                <Suspense fallback={<FormFallback />}>
-                  <TranscribeResultView
-                    result={transcribeResult ?? null}
-                    analysis={transcribeAnalysis ?? null}
-                    isLoading={isTranscribeResultLoading}
-                    isAnalysisLoading={isTranscribeAnalysisLoading}
-                  />
-                </Suspense>
-              ) : isLoadingResultPreview ? (
-                <p className="text-card-foreground">{t('interface:home.result.loadingPreview')}</p>
-              ) : resultPreviewError ? (
-                <div className="text-center space-y-3">
-                  <p className="text-destructive">{resultPreviewError}</p>
-                  <button
-                    type="button"
-                    onClick={() => void loadResultPreview(activeResultJobId || conversionJob?.id, true)}
-                    className="bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
-                  >
-                    {t('interface:home.result.tryLoadingAgain')}
-                  </button>
-                </div>
-              ) : (
-                <>
-                  {activeHistoryItem.mediaKind === 'image' && (
-                    <img
-                      src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
-                      alt={resultView === 'original' ? t('interface:home.result.originalImageAlt') : t('interface:home.result.convertedImageAlt')}
-                      className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
-                      decoding="async"
-                    />
-                  )}
-                  {activeHistoryItem.mediaKind === 'video' && activeHistoryItem.format === 'gif' && resultView === 'final' && (
-                    <img
-                      src={resultImageUrl || undefined}
-                      alt={t('interface:home.result.convertedGifAlt')}
-                      className="max-w-full max-h-[calc(100dvh-14rem)] object-contain rounded-lg bg-background"
-                      decoding="async"
-                    />
-                  )}
-                  {activeHistoryItem.mediaKind === 'video' && !(activeHistoryItem.format === 'gif' && resultView === 'final') && (
-                    <video
-                      key={`${activeHistoryItem.jobId}-${resultView}`}
-                      src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
-                      controls
-                      className="max-w-full max-h-[calc(100dvh-14rem)] rounded-lg bg-surface-0"
-                    />
-                  )}
-                  {activeHistoryItem.mediaKind === 'audio' && (
-                    <div className="w-full max-w-3xl bg-background rounded-lg border p-8">
-                      <div className="flex flex-col items-center justify-center gap-4">
-                        <Music className="w-16 h-16 text-muted-foreground" />
-                        <p className="text-card-foreground font-medium">
-                          {resultView === 'original' ? activeHistoryItem.fileName : activeHistoryItem.outputFileName}
-                        </p>
-                        <audio
-                          key={`${activeHistoryItem.jobId}-${resultView}`}
-                          src={resultView === 'original' ? activeHistoryItem.originalUrl : resultImageUrl || undefined}
-                          controls
-                          className="w-full"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </Panel>
-        </div>
+      {activeHistoryItem && (
+        <ResultPanel
+          variant="modal"
+          surface={resultSurface}
+          open={isResultModalOpen}
+          onOpenChange={setIsResultModalOpen}
+          descriptor={activeDescriptor!}
+          title={activeHistoryItem.mode === 'transcribe' ? t('interface:home.result.transcriptResult') : t('interface:home.result.convertedPreview')}
+          subtitle={activeHistoryItem.mode === 'transcribe'
+            ? t('interface:home.result.transcriptSubtitle', { filename: activeHistoryItem.fileName })
+            : t('interface:home.result.convertedSubtitle', { filename: activeHistoryItem.fileName })}
+          downloadFileName={activeHistoryItem.outputFileName}
+          onDownload={() => handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
+          seedBlob={activeHistoryItem.blob}
+          onBlobLoaded={(blob) => cacheHistoryBlob(activeHistoryItem.jobId, blob)}
+        />
       )}
 
       <div className="mx-auto flex max-w-[1600px] flex-col items-center justify-center p-4 pt-8">
@@ -944,7 +732,7 @@ const FileConverterAppInner: React.FC = () => {
                 <FilePreview
                   file={selectedFile}
                   resultAvailable={conversionJob?.status === 'completed'}
-                  onShowResult={() => void loadResultPreview(conversionJob?.id, true)}
+                  onShowResult={() => loadResultPreview(conversionJob?.id, true)}
                 />
 
                 {/* Identify File Button */}
@@ -1013,7 +801,7 @@ const FileConverterAppInner: React.FC = () => {
                           <button
                             type="button"
                             disabled={item.status !== 'completed'}
-                            onClick={() => void loadResultPreview(item.jobId, true)}
+                            onClick={() => loadResultPreview(item.jobId, true, 'history')}
                             className="text-sm bg-primary text-primary-foreground px-3 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors"
                           >
                             {t('interface:home.history.preview')}

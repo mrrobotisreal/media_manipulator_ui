@@ -21,6 +21,8 @@ export interface TranscodeJob {
   /** Size of the packaged result artifact (set by e.g. video restoration). */
   resultSizeBytes?: number;
   expiresAt?: string;
+  /** Server-sniffed MIME of the result (MM05, additive; absent on older APIs). */
+  resultMime?: string;
   transcodeReport?: TranscodeProbeResponse;
 }
 

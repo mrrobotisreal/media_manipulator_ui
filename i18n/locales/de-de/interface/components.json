@@ -275,5 +275,148 @@
     "audioAdded": "Audio hinzugefügt",
     "processingAudio": "Audio wird verarbeitet …",
     "captionsReady": "Untertitel bereit"
+  },
+  "resultPanel": {
+    "ariaLabel": "Result",
+    "download": "Download",
+    "downloadFailed": "Download failed. Try again.",
+    "compare": "Compare",
+    "original": "Original",
+    "result": "Result",
+    "runAnother": "Run another",
+    "size": "Size",
+    "keepsUntil": "Keeps until",
+    "loading": "Loading preview…",
+    "loadFailed": "Could not load the result.",
+    "retry": "Try again",
+    "kind": {
+      "image": "Image",
+      "gif": "Animated GIF",
+      "video": "Video",
+      "audio": "Audio",
+      "transcript": "Transcript",
+      "captions": "Captions",
+      "pdf": "PDF document",
+      "archive": "Archive",
+      "hls": "HLS package",
+      "dash": "DASH package",
+      "metadata": "Metadata",
+      "unknown": "File"
+    },
+    "image": {
+      "zoom": "Zoom",
+      "fit": "Fit",
+      "transparencyGrid": "Transparency grid",
+      "dimensions": "Dimensions",
+      "originalAlt": "Original image {{fileName}}",
+      "resultAlt": "Result image {{fileName}}"
+    },
+    "gif": {
+      "alt": "Animated GIF {{fileName}}"
+    },
+    "audio": {
+      "waveform": "Audio waveform"
+    },
+    "unknown": {
+      "body": "This result has no in-browser preview yet. Download it to open it.",
+      "type": "Type",
+      "size": "Size"
+    },
+    "transcript": {
+      "search": "Search transcript",
+      "searchPlaceholder": "Search…",
+      "matchCount": "{{current}} of {{total}}",
+      "noMatches": "No matches",
+      "prevMatch": "Previous match",
+      "nextMatch": "Next match",
+      "copyAll": "Copy all",
+      "copied": "Copied",
+      "format": "Format",
+      "rawPreview": "Raw text",
+      "seekTo": "Jump to {{time}}",
+      "showMore": "Show more ({{count}} left)",
+      "details": "Language, audio description and AI review"
+    },
+    "captions": {
+      "cues": "Cues",
+      "sourceCues": "Source cues",
+      "skipped": "Skipped blocks",
+      "countMismatch": "The source has {{source}} cues but the translation has {{translated}}. Extra rows are shown against an empty cell.",
+      "source": "Source",
+      "translated": "Translated",
+      "timingDiffers": "timing differs",
+      "empty": "(none)"
+    },
+    "compareModes": {
+      "label": "Compare view",
+      "slider": "Comparison position",
+      "sliderValue": "{{before}} {{beforePct}}%, {{after}} {{afterPct}}%",
+      "wipe": "Wipe",
+      "side_by_side": "Side by side",
+      "toggle": "Toggle",
+      "ab": "A/B",
+      "a": "A",
+      "b": "B",
+      "transport": "Playback controls",
+      "play": "Play",
+      "pause": "Pause",
+      "seek": "Seek",
+      "rate": "Speed",
+      "mute": "Mute",
+      "unmute": "Unmute result sound",
+      "prevFrame": "Previous frame",
+      "nextFrame": "Next frame",
+      "fpsValue": "{{fps}} fps",
+      "fpsTarget": "{{fps}} fps (target)",
+      "largeNotice": "Preview is capped at the container width; very large videos may play slowly.",
+      "videoOriginal": "Original video",
+      "videoResult": "Result video",
+      "audibleLabel": "Audible side",
+      "audioOriginal": "Original audio",
+      "audioResult": "Result audio",
+      "otherPeaks": "Other side waveform",
+      "time": "{{current}} / {{total}}"
+    },
+    "archive": {
+      "summary_one": "{{count}} file",
+      "summary_other": "{{count}} files",
+      "truncated": "The archive is cut short; showing what could be read.",
+      "search": "Search files",
+      "view": "View",
+      "gallery": "Gallery",
+      "list": "List",
+      "noMatches": "No files match.",
+      "play": "Play {{name}}",
+      "open": "Open",
+      "downloadEntry": "Download {{name}}",
+      "lightbox": "Image preview",
+      "previous": "Previous",
+      "next": "Next",
+      "tooLarge": "Too large to preview in the browser.",
+      "unreadable": "This archive could not be read in the browser.",
+      "noSingleEntry": "Single files cannot be downloaded from the server, so download the whole archive."
+    },
+    "pdf": {
+      "title": "PDF preview",
+      "openInNewTab": "Open in new tab",
+      "fallback": "Your browser cannot show this PDF inline."
+    },
+    "stream": {
+      "rung": "Quality",
+      "auto": "Auto",
+      "rungLabel": "{{height}}p, {{bitrate}} kbps",
+      "unsupported": "This stream cannot be played in the browser, so here is its report.",
+      "loading": "Preparing the stream",
+      "av1": "This browser cannot decode AV1."
+    },
+    "restore": {
+      "picker": "Model",
+      "original": "Original",
+      "modelOption": "{{name}}, {{duration}}s, {{size}}",
+      "failedTitle": "Models that failed",
+      "failedItem": "{{name}}: {{error}}",
+      "loading": "Loading the restored clips",
+      "download": "Download all results"
+    }
   }
 }

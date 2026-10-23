@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { CheckCircle2, Circle, Download, Loader2, RotateCcw, Upload, XCircle } from 'lucide-react';
+import { CheckCircle2, Circle, Loader2, RotateCcw, Upload, XCircle } from 'lucide-react';
 import { useLocalization } from '@/i18n/useLocalization';
 import useRestoreCapabilities from '@/lib/useRestoreCapabilities';
 import useVideoRestore from '@/lib/useVideoRestore';
@@ -10,6 +10,11 @@ import type { TranscodeJobStage } from '@/lib/transcodeTypes';
 import type { RestoreModelId } from '@/lib/restoreTypes';
 import SnippetSelector, { type SnippetSelection } from './snippet-selector';
 import ModelPicker from './model-picker';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
+import { useResultAnalytics } from '@/components/results/result-analytics';
+import useVideoRestoreResults from '@/lib/useVideoRestoreResults';
+import RestoreCompare from './restore-compare';
 
 const ASSUMED_FPS = 30;
 
@@ -57,7 +62,13 @@ const VideoRestorePanel: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const restore = useVideoRestore((result) => setJobId(result.jobId));
+  // RestoreCompare is a viewerOverride, so the panel cannot see its model picker; the same
+  // once-per-(job, mode) memory dedupes against the ResultPanel's own hook.
+  const resultAnalytics = useResultAnalytics({ jobId: jobId ?? '', kind: 'archive', surface: 'tool_page', hasOriginal: true });
   const { data: job } = useTranscodeJobStatus(jobId);
+  // MM05 per-model manifest; null (404) means an older API, so the tarball path stays.
+  const manifestQuery = useVideoRestoreResults(jobId, job?.status === 'completed');
+  const manifest = manifestQuery.data ?? null;
 
   const maxClipSeconds = caps?.maxClipSeconds ?? 15;
   const recommendedClipSeconds = caps?.recommendedClipSeconds ?? 10;
@@ -313,30 +324,39 @@ const VideoRestorePanel: React.FC = () => {
                 </ul>
               )}
               {job.resultSizeBytes ? (
-                <div className="space-y-0.5">
-                  <p className="text-sm font-medium">
-                    {t('videoRestore.panel.downloadSize', { size: formatFileSize(job.resultSizeBytes) })}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {t('videoRestore.panel.downloadSizeHint', { size: formatFileSize(job.resultSizeBytes) })}
-                  </p>
-                </div>
+                <p className="text-xs text-muted-foreground">
+                  {t('videoRestore.panel.downloadSizeHint', { size: formatFileSize(job.resultSizeBytes) })}
+                </p>
               ) : null}
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleDownload}
-                  className="inline-flex items-center gap-1.5 rounded-md bg-success px-4 py-2 text-success-foreground font-medium hover:bg-success/90 transition-colors motion-reduce:transition-none"
-                >
-                  <Download className="w-4 h-4" aria-hidden="true" />
-                  {downloadedOnce ? t('videoRestore.panel.downloadAgain') : t('videoRestore.panel.download')}
-                </button>
-                <span className="text-xs text-muted-foreground">
-                  {countdown
-                    ? t('videoRestore.panel.linkExpiresIn', { countdown })
-                    : t('videoRestore.panel.linkExpired')}
-                </span>
-              </div>
+              {/* The package is a multi-GB tarball, so the panel keeps its direct presigned
+                  download (onDownload) instead of buffering it as a blob. */}
+              <ResultPanel
+                descriptor={describeResult({
+                  job,
+                  originalFile: file,
+                  task: 'ai_video_restoration',
+                  fallbackFileName: 'restoration_results.tar.gz',
+                })}
+                downloadLabel={downloadedOnce ? t('videoRestore.panel.downloadAgain') : t('videoRestore.panel.download')}
+                onDownload={handleDownload}
+                viewerOverride={
+                  manifest && jobId ? (
+                    <RestoreCompare
+                      jobId={jobId}
+                      manifest={manifest}
+                      modelNames={Object.fromEntries((caps?.models ?? []).map((m) => [m.id, m.displayName]))}
+                      onModelSelect={() => resultAnalytics.onCompare('ab')}
+                    />
+                  ) : manifestQuery.isLoading ? (
+                    <p role="status" className="text-muted-foreground">{t('resultPanel.restore.loading')}</p>
+                  ) : undefined
+                }
+              />
+              <span className="text-xs text-muted-foreground">
+                {countdown
+                  ? t('videoRestore.panel.linkExpiresIn', { countdown })
+                  : t('videoRestore.panel.linkExpired')}
+              </span>
               <button
                 type="button"
                 onClick={handleReset}

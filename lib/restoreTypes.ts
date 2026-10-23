@@ -63,3 +63,37 @@ export type RestoreUploadPhase =
   | 'uploading-to-s3'
   | 'starting'
   | 'processing';
+
+// GET /video-restore/:jobId/results (MM05, internal/models/restore.go RestoreResultsResponse).
+// Failed models carry `error` and omit the file fields; width/height/fileName/sizeBytes/mime
+// are present only on completed models.
+export interface RestoreResultOriginal {
+  /** Always "original". */
+  id: string;
+  label: string;
+  width: number;
+  height: number;
+  fileName: string;
+  sizeBytes: number;
+  mime: string;
+}
+
+export interface RestoreResultModel {
+  id: string;
+  group: RestoreModelGroup;
+  status: 'completed' | 'failed';
+  durationSeconds: number;
+  width?: number;
+  height?: number;
+  fileName?: string;
+  sizeBytes?: number;
+  mime?: string;
+  note?: string;
+  error?: string;
+}
+
+export interface RestoreResultsResponse {
+  jobId: string;
+  original: RestoreResultOriginal;
+  models: RestoreResultModel[];
+}

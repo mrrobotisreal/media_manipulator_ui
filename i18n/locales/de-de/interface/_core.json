@@ -184,12 +184,7 @@
       "transcriptSubtitle": "Transkript und KI-Auswertung für {{filename}}.",
       "convertedSubtitle": "Wechseln Sie zwischen der Original- und der fertig bearbeiteten Version von {{filename}}.",
       "original": "Original",
-      "final": "Final",
-      "loadingPreview": "Konvertiertes Bild wird geladen...",
-      "tryLoadingAgain": "Vorschau erneut laden",
-      "originalImageAlt": "Originalbild",
-      "convertedImageAlt": "Konvertiertes Bild",
-      "convertedGifAlt": "Konvertiertes animiertes GIF"
+      "final": "Final"
     },
     "progress": {
       "preparingUpload": "Sicherer Upload wird vorbereitet...",

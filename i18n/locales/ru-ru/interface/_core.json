@@ -190,12 +190,7 @@
       "transcriptSubtitle": "Транскрипт и ИИ-обзор для {{filename}}.",
       "convertedSubtitle": "Переключайтесь между оригиналом и итоговой отредактированной версией {{filename}}.",
       "original": "Оригинал",
-      "final": "Итог",
-      "loadingPreview": "Загрузка конвертированного изображения...",
-      "tryLoadingAgain": "Попробовать загрузить предпросмотр снова",
-      "originalImageAlt": "Оригинальное изображение",
-      "convertedImageAlt": "Конвертированное изображение",
-      "convertedGifAlt": "Конвертированный анимированный GIF"
+      "final": "Итог"
     },
     "progress": {
       "preparingUpload": "Подготовка безопасной загрузки...",

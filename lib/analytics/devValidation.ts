@@ -46,6 +46,7 @@ const propertyValue: z.ZodType<PropertyValue> = z.lazy(() =>
 const mediaKind = z.enum(['image', 'video', 'audio', 'document', 'unknown']);
 const tier = z.enum(['anonymous', 'free', 'premium', 'operator']);
 const authMethod = z.enum(['google', 'email', 'other']);
+const resultSurface = z.enum(['home', 'tool_page', 'tutorial', 'history']);
 const transport = z.enum(['post', 'presigned_put']);
 
 // Content Studio (part 10). Bucket values are checked as strings, not enums —
@@ -158,9 +159,34 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   result_previewed: z
     .object({
       job_id: z.string().optional(),
-      preview_kind: z.enum(['image', 'video', 'audio', 'text', 'other']).optional(),
+      preview_kind: z
+        .enum(['image', 'video', 'audio', 'text', 'transcript', 'archive', 'document', 'stream', 'other'])
+        .optional(),
     })
     .strict(),
+  result_viewed: z
+    .object({ job_id: z.string(), kind: z.string(), surface: resultSurface, has_original: z.boolean() })
+    .strict(),
+  result_compare_used: z
+    .object({
+      job_id: z.string(),
+      kind: z.string(),
+      mode: z.enum(['wipe', 'side_by_side', 'toggle', 'synced', 'ab']),
+    })
+    .strict(),
+  result_download_clicked: z
+    .object({ job_id: z.string(), kind: z.string(), surface: resultSurface, viewed_first: z.boolean() })
+    .strict(),
+  result_archive_entry_opened: z
+    .object({ job_id: z.string(), entry_kind: z.enum(['image', 'video', 'audio', 'text', 'other']) })
+    .strict(),
+  result_stream_rung_selected: z
+    .object({
+      job_id: z.string(),
+      rung: z.enum(['auto', '240p', '360p', '480p', '720p', '1080p', '1440p', '2160p', 'other']),
+    })
+    .strict(),
+  transcript_cue_seeked: z.object({ job_id: z.string() }).strict(),
   download_started: z
     .object({
       job_id: z.string().optional(),
@@ -362,6 +388,12 @@ const TOOL_FUNNEL_EVENTS: ReadonlySet<string> = new Set<string>([
   EVENTS.JOB_COMPLETED,
   EVENTS.JOB_FAILED,
   EVENTS.RESULT_PREVIEWED,
+  EVENTS.RESULT_VIEWED,
+  EVENTS.RESULT_COMPARE_USED,
+  EVENTS.RESULT_DOWNLOAD_CLICKED,
+  EVENTS.RESULT_ARCHIVE_ENTRY_OPENED,
+  EVENTS.RESULT_STREAM_RUNG_SELECTED,
+  EVENTS.TRANSCRIPT_CUE_SEEKED,
   EVENTS.DOWNLOAD_STARTED,
   EVENTS.DOWNLOAD_COMPLETED,
   EVENTS.DOWNLOAD_FAILED,

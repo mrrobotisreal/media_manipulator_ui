@@ -1,14 +1,42 @@
 'use client';
 
-import { AlertTriangle, AudioLines, FileText, Sparkles, ShieldCheck, Languages } from 'lucide-react';
-import type { TranscribeResult, AnalysisResult } from '@/lib/useTranscribeResult';
+import { useId, useMemo, useState } from 'react';
+import { AlertTriangle, AudioLines, FileText, Languages, ShieldCheck, Sparkles } from 'lucide-react';
+import { Segmented } from '@/components/darkroom/segmented';
 import { useLocalization } from '@/i18n/useLocalization';
+import { transcriptCues, renderTranscript, type TranscriptFormat } from '@/lib/results/transcriptFormats';
+import type { Cue } from '@/lib/results/captions';
+import type { ResultDescriptor } from '@/lib/results/describe';
+import { useAnalysisResult, useTranscribeResult, type AnalysisResult, type TranscribeResult } from '@/lib/useTranscribeResult';
+import { cn } from '@/lib/utils';
+import {
+  CopyAllButton,
+  displayTime,
+  Highlight,
+  SearchBox,
+  ShowMore,
+  useChunk,
+  useFollowScroll,
+  useMediaSync,
+  useOriginalMedia,
+  useRowSearch,
+} from './cue-tools';
+import type { ViewerProps } from './types';
 
-interface TranscribeResultViewProps {
+export interface TranscriptCallbacks {
+  /** A cue timestamp was clicked and the original media was moved to its start. */
+  onSeek?: (cue: Cue) => void;
+  /** Copy-all succeeded; `format` is the format whose text was copied. */
+  onCopy?: (format: TranscriptFormat) => void;
+}
+
+export interface TranscriptViewProps extends TranscriptCallbacks {
   result: TranscribeResult | null | undefined;
   analysis: AnalysisResult | null | undefined;
   isLoading: boolean;
   isAnalysisLoading: boolean;
+  /** The user's uploaded media; enables click-to-seek when audio/video. */
+  original?: ResultDescriptor['original'];
 }
 
 const safetyBadgeClasses = (rating?: string) => {
@@ -24,8 +52,21 @@ const safetyBadgeClasses = (rating?: string) => {
   }
 };
 
-const TranscribeResultView: React.FC<TranscribeResultViewProps> = ({ result, analysis, isLoading, isAnalysisLoading }) => {
+const FORMATS: TranscriptFormat[] = ['vtt', 'srt', 'txt', 'json'];
+
+export function TranscriptView({ result, analysis, isLoading, isAnalysisLoading, original, onSeek, onCopy }: TranscriptViewProps) {
   const { t, formatDuration } = useLocalization('interface');
+  const groupName = useId();
+  const [format, setFormat] = useState<TranscriptFormat | null>(null);
+  const [raw, setRaw] = useState(false);
+
+  const cues = useMemo(() => (result ? transcriptCues(result) : []), [result]);
+  const texts = useMemo(() => cues.map((c) => c.text), [cues]);
+  const search = useRowSearch(texts);
+  const media = useOriginalMedia(original);
+  const sync = useMediaSync(cues, media, onSeek);
+  const scroll = useFollowScroll(sync.active, search.current);
+  const chunk = useChunk(cues.length, search.current);
 
   if (isLoading && !result) {
     return <p className="text-card-foreground">{t('transcribeResultView.loading')}</p>;
@@ -34,11 +75,13 @@ const TranscribeResultView: React.FC<TranscribeResultViewProps> = ({ result, ana
     return <p className="text-muted-foreground">{t('transcribeResultView.noResult')}</p>;
   }
 
+  const activeFormat: TranscriptFormat = format ?? result.format;
   const showTranscript = result.hasSpeech && (result.transcriptText || (result.segments && result.segments.length > 0));
   const reviewing = analysis?.transcriptReview;
+  const rendered = raw ? renderTranscript(result, activeFormat) : '';
 
   return (
-    <div className="w-full max-w-4xl space-y-4 overflow-y-auto max-h-[calc(100dvh-14rem)] pr-2">
+    <div className="w-full max-w-4xl space-y-4 pr-2" data-testid="transcript-view">
       <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 bg-background rounded-lg border p-3">
         <div className="flex items-center gap-3 text-card-foreground">
           <AudioLines className="w-5 h-5 text-primary" />
@@ -88,30 +131,90 @@ const TranscribeResultView: React.FC<TranscribeResultViewProps> = ({ result, ana
           )}
         </section>
       ) : (
-        <section className="bg-background border rounded-lg p-4 space-y-3">
-          <h3 className="font-semibold text-card-foreground flex items-center gap-2">
-            <FileText className="w-4 h-4 text-primary" />
+        <section className="space-y-3 rounded-lg border bg-background p-4">
+          <h3 className="flex items-center gap-2 font-semibold text-card-foreground">
+            <FileText className="h-4 w-4 text-primary" />
             {t('transcribeResultView.transcriptHeader', { count: result.segments?.length ?? result.segmentCount })}
           </h3>
-          {result.segments && result.segments.length > 0 ? (
-            <div className="space-y-2 max-h-[40dvh] overflow-y-auto pr-2">
-              {result.segments.map(segment => (
-                <div key={segment.id} className="text-sm bg-muted/30 rounded-md p-2">
-                  <div className="text-xs text-muted-foreground mb-1">
-                    {formatDuration(segment.start)} → {formatDuration(segment.end)}
-                  </div>
-                  <div className="text-card-foreground whitespace-pre-wrap">{segment.text}</div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <pre className="whitespace-pre-wrap text-sm text-card-foreground bg-muted/30 rounded-md p-3 max-h-[40dvh] overflow-y-auto">
-              {result.transcriptText}
+          {sync.player}
+          <div className="flex flex-wrap items-center gap-2">
+            <SearchBox search={search} className="min-w-48 flex-1" />
+            <CopyAllButton getText={() => renderTranscript(result, activeFormat)} onCopy={() => onCopy?.(activeFormat)} />
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Segmented
+              name={`${groupName}-format`}
+              label={t('resultPanel.transcript.format')}
+              value={activeFormat}
+              onValueChange={setFormat}
+              options={FORMATS.map((value) => ({ value, label: value.toUpperCase() }))}
+              className="w-64"
+            />
+            <button
+              type="button"
+              aria-pressed={raw}
+              onClick={() => setRaw((v) => !v)}
+              className={cn('min-h-9 rounded-md border border-edge px-3 text-sm hover:bg-surface-2', raw && 'bg-surface-2')}
+            >
+              {t('resultPanel.transcript.rawPreview')}
+            </button>
+          </div>
+          {raw ? (
+            <pre
+              data-testid="transcript-raw"
+              className="max-h-[40dvh] overflow-auto whitespace-pre-wrap rounded-md bg-muted/30 p-3 text-sm text-card-foreground"
+            >
+              {rendered}
             </pre>
+          ) : (
+            <div ref={scroll.container} {...scroll.handlers} className="max-h-[40dvh] space-y-2 overflow-y-auto pr-2" data-testid="cue-list">
+              {cues.slice(0, chunk.limit).map((cue, i) => {
+                const isActive = sync.active === i;
+                const isCurrentMatch = search.current === i;
+                return (
+                  <div
+                    key={cue.index}
+                    data-row={i}
+                    data-active={isActive || undefined}
+                    className={cn(
+                      'rounded-md bg-muted/30 p-2 text-sm',
+                      isActive && 'ring-1 ring-primary bg-primary/10',
+                      isCurrentMatch && 'outline outline-2 outline-premium',
+                    )}
+                  >
+                    <div className="mb-1 text-xs text-muted-foreground">
+                      {sync.canSeek ? (
+                        <button
+                          type="button"
+                          onClick={() => sync.seek(cue)}
+                          aria-label={t('resultPanel.transcript.seekTo', { time: displayTime(cue.startMs) })}
+                          className="num rounded px-1 text-primary underline-offset-2 hover:underline"
+                        >
+                          {formatDuration(cue.startMs / 1000)}
+                        </button>
+                      ) : (
+                        <span className="num">{formatDuration(cue.startMs / 1000)}</span>
+                      )}
+                      {' → '}
+                      <span className="num">{formatDuration(cue.endMs / 1000)}</span>
+                    </div>
+                    <div className="whitespace-pre-wrap text-card-foreground">
+                      <Highlight text={cue.text} query={search.query} />
+                    </div>
+                  </div>
+                );
+              })}
+              {chunk.hasMore && <ShowMore onClick={chunk.more} remaining={cues.length - chunk.limit} />}
+            </div>
           )}
         </section>
       )}
 
+      <details open className="group">
+        <summary className="cursor-pointer text-sm font-medium text-card-foreground">
+          {t('resultPanel.transcript.details')}
+        </summary>
+        <div className="mt-2">
       <section className="bg-background border rounded-lg p-4 space-y-2">
         <h3 className="font-semibold text-card-foreground flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-premium" />
@@ -191,8 +294,30 @@ const TranscribeResultView: React.FC<TranscribeResultViewProps> = ({ result, ana
           )
         )}
       </section>
+        </div>
+      </details>
     </div>
   );
-};
+}
 
-export default TranscribeResultView;
+/**
+ * Registry viewer for `transcript` results: fetches the `/transcript/:id` sidecar (and the
+ * analysis review) for the job itself, so it runs wherever a ResultPanel does.
+ */
+export function TranscriptViewer({ descriptor, onSeek, onCopy }: ViewerProps & TranscriptCallbacks) {
+  const { data: result, isLoading, isError } = useTranscribeResult(descriptor.jobId, true);
+  const { data: analysis, isLoading: isAnalysisLoading } = useAnalysisResult(descriptor.jobId, true);
+  return (
+    <TranscriptView
+      result={isError ? null : result}
+      analysis={analysis}
+      isLoading={isLoading}
+      isAnalysisLoading={isAnalysisLoading}
+      original={descriptor.original}
+      onSeek={onSeek}
+      onCopy={onCopy}
+    />
+  );
+}
+
+export default TranscriptViewer;
