@@ -108,6 +108,12 @@ export const EVENTS = {
   DATA_EXPORT_REQUESTED: 'data_export_requested',
   HISTORY_ITEM_REOPENED: 'history_item_reopened',
 
+  // --- Activation and return (MM30) -----------------------------------------
+  ACTIVATION_FIRST_JOB_COMPLETED: 'activation_first_job_completed',
+  RETURN_VISIT: 'return_visit',
+  /** RESERVED for MM32 (share links): registered, nothing emits it yet. */
+  SHARE_LINK_COPIED: 'share_link_copied',
+
   // --- Content Studio (Darkroom) --------------------------------------------
   // First-class `studio_*` events per ADR ws/0003 — the editor no longer
   // overloads FEATURE_USED. Server-side render telemetry (`studio_render_*`)
@@ -213,6 +219,11 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   data_deleted: PRIORITY_HIGH,
   data_export_requested: PRIORITY_NORMAL,
   history_item_reopened: PRIORITY_NORMAL,
+
+  // Activation and return (MM30)
+  activation_first_job_completed: PRIORITY_CRITICAL,
+  return_visit: PRIORITY_HIGH,
+  share_link_copied: PRIORITY_NORMAL,
 
   // Content Studio (Darkroom)
   studio_project_created: PRIORITY_HIGH,
@@ -581,6 +592,28 @@ export interface HistoryItemReopenedProps {
   /** Media kind of a result (`video`, `image`, ...) or `project` for a Darkroom project. */
   kind: string;
   age_bucket: ReopenedAgeBucket;
+  /** MM30: `account` (Account page, the default when absent) or `local` (the guest Recent strip). */
+  source?: HistorySource;
+}
+
+export type HistorySource = 'account' | 'local';
+export type DaysSinceLastBucket = '0' | '1' | '2_3' | '4_7' | '8_30' | '31_plus';
+export type HoursSinceSignupBucket = '<1h' | '1-24h' | '1-7d' | '7d+';
+
+export interface ActivationFirstJobCompletedProps {
+  tool_slug: string | null;
+  media_kind: MediaKind;
+  /** Bucket since account creation; null for guests. */
+  hours_since_signup: HoursSinceSignupBucket | null;
+  /** True when the person was signed out. */
+  guest: boolean;
+}
+export interface ReturnVisitProps {
+  days_since_last: DaysSinceLastBucket;
+}
+export interface ShareLinkCopiedProps {
+  job_kind: MediaKind;
+  source: string;
 }
 
 export interface ScrollDepthProps {
@@ -794,6 +827,9 @@ export interface EventPropsMap {
   data_deleted: DataDeletedProps;
   data_export_requested: DataExportRequestedProps;
   history_item_reopened: HistoryItemReopenedProps;
+  activation_first_job_completed: ActivationFirstJobCompletedProps;
+  return_visit: ReturnVisitProps;
+  share_link_copied: ShareLinkCopiedProps;
 
   studio_project_created: StudioProjectCreatedProps;
   studio_project_opened: StudioProjectOpenedProps;

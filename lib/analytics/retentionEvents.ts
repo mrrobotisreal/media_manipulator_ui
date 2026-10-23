@@ -7,7 +7,7 @@
 // destructive flow.
 
 import { analytics } from './client';
-import { EVENTS, type DataDeletedKind, type DataDeletedScope } from './events';
+import { EVENTS, type DataDeletedKind, type DataDeletedScope, type HistorySource } from './events';
 import { reopenAgeBucket, retentionBucket } from './buckets';
 
 export interface RetentionSettingsChange {
@@ -66,13 +66,14 @@ export const retentionEvents = {
    * a result or `project`; the age is bucketed. This is the number that says whether long retention
    * is actually used.
    */
-  itemReopened(kind: string | undefined, createdAt: string): void {
+  itemReopened(kind: string | undefined, createdAt: string, source: HistorySource = 'account'): void {
     safely(() => {
       const created = Date.parse(createdAt);
       if (!Number.isFinite(created)) return;
       analytics.track(EVENTS.HISTORY_ITEM_REOPENED, {
         kind: kind || 'other',
         age_bucket: reopenAgeBucket(Date.now() - created),
+        source,
       });
     });
   },

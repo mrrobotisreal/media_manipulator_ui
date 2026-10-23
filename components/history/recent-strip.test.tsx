@@ -32,6 +32,8 @@ vi.mock('@/lib/history/localHistory', () => ({
 }));
 vi.mock('@/lib/auth/AuthProvider', () => ({ useAuth: () => auth.value }));
 vi.mock('@/lib/auth/authedFetch', () => ({ authedFetch }));
+const itemReopened = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/analytics/retentionEvents', () => ({ retentionEvents: { itemReopened } }));
 vi.mock('sonner', () => ({ toast: { error: toastError } }));
 vi.mock('@/components/results/result-panel', () => ({
   ResultPanel: (p: { descriptor: { jobId: string } }) => <div data-testid="panel">{p.descriptor.jobId}</div>,
@@ -95,6 +97,8 @@ describe('RecentStrip', () => {
     expect((await screen.findByTestId('panel')).textContent).toBe('a');
     expect(onReopen).toHaveBeenCalledWith(expect.objectContaining({ jobId: 'a' }));
     expect(authedFetch.mock.calls[0][0]).toMatch(/\/download\/a$/);
+    // MM30: the guest strip reports the reopen with source 'local' (kind and a derived timestamp only).
+    expect(itemReopened).toHaveBeenCalledWith(expect.anything(), expect.any(String), 'local');
   });
 
   it('a 404 removes the entry and toasts that it expired', async () => {

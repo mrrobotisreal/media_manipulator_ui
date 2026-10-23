@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { initConsent } from '@/lib/consent';
 
+import { setActivationIdentity } from './activationEvents';
 import { analytics } from './client';
 import { EngagementTracker } from './engagement';
 import { initGlobalErrorHandlers } from './errors';
@@ -150,6 +151,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     if (!auth) return;
     const uid = auth.user?.uid ?? null;
+    const created = Date.parse(auth.user?.metadata?.creationTime ?? '');
+    setActivationIdentity({ uid, createdAtMs: Number.isFinite(created) ? created : null });
 
     if (uid && uid !== identifiedUid) {
       identifiedUid = uid;
