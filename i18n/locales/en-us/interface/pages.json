@@ -494,14 +494,16 @@
     }
   },
   "legalCommon": {
-    "effectiveDate": "Effective Date: 2026-05-14",
+    "effectiveDate": "Effective Date: 2026-10-23",
     "lastUpdated": "Last Updated: 2026-10-23",
     "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operating as Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
-    "websiteLabel": "Website:"
+    "websiteLabel": "Website:",
+    "whatChangedTitle": "What changed on 2026-10-23",
+    "whatChangedBody": "Retention is now your choice. Visitors without an account still have their files deleted after 24 hours. If you sign in, you choose how long we keep your files, from 24 hours to 2 years (6 months unless you change it), and you can delete files, export your data, or delete your account from the Account page. The retention section below describes this in full."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -528,10 +530,10 @@
               "removing metadata;",
               "generating transcripts, captions, summaries, descriptions, or other AI-assisted outputs;",
               "creating downloadable processed files;",
-              "maintaining temporary session conversion history so you can download recent conversions during your session."
+              "keeping your conversion history so you can download or reopen recent conversions."
             ],
             "afterBullets": [
-              "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours, unless deleted sooner. After that period, they are deleted from our active systems."
+              "Uploaded files and generated outputs are kept for the retention period described in Section 3: 24 hours if you do not have an account, or the period you choose if you are signed in. You can delete them sooner."
             ]
           },
           {
@@ -629,8 +631,8 @@
         ],
         "bullets": [
           "provide media conversion, editing, transcription, metadata, AI analysis, and related tools;",
-          "temporarily store conversion history for up to 24 hours;",
-          "allow users to download recent converted files during a session;",
+          "store your conversion history for the retention period that applies to you (24 hours for visitors without an account, or the period you choose if you are signed in);",
+          "allow users to download recent converted files while they are retained;",
           "scan uploads for suspected illegal, prohibited, abusive, or advertiser-sensitive content;",
           "protect users, advertisers, our website, and our brand;",
           "prevent fraud, abuse, spam, malware, and security incidents;",
@@ -642,11 +644,64 @@
         ]
       },
       {
-        "title": "3. File Storage and Deletion",
+        "id": "retention",
+        "title": "3. File Storage, Retention and Deletion",
         "paragraphs": [
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from active storage.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary to operate the service, protect against abuse, enforce our policies, comply with law, resolve disputes, or maintain security. These records are not intended to preserve full uploaded media files after the 24-hour temporary storage period."
+          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media and Darkroom projects stored on our servers and in Amazon S3 (us-west-2)."
+        ],
+        "subsections": [
+          {
+            "title": "3.1 How long we keep your files",
+            "bullets": [
+              "Visitors without an account: files are kept for 24 hours.",
+              "Signed-in users: you choose a retention period from 24 hours to 2 years. Every account has this choice; it does not depend on your plan. Until you choose, the default is 6 months."
+            ],
+            "afterBullets": [
+              "The period is counted from when each file or project was created. When you change the period it also applies to your existing files, measured from their creation date, so choosing a shorter period can cause existing files to be deleted soon afterwards. You can keep an individual result longer from your History.",
+              "If you sign in after using the service as a visitor, files from that visit may be attached to your account and then follow your chosen period.",
+              "Expired files are removed by an automated cleanup that runs regularly, so deletion may happen a short time after the period ends. After deletion, files are no longer available in our active systems. We keep no backups of media."
+            ]
+          },
+          {
+            "title": "3.2 Metadata reports",
+            "paragraphs": [
+              "Metadata reports are small records describing the technical properties of a file. A setting on your Account page lets you choose whether reports are kept after the files they describe have been deleted at the end of the retention period. When you delete a file yourself, its report is deleted with it."
+            ]
+          },
+          {
+            "title": "3.3 Deleting your files",
+            "paragraphs": [
+              "If you have an account, you can delete an individual result or Darkroom project, delete all of your files at once, or delete your whole account from the Account page. Visitors without an account can delete their own results during the session in which they were created."
+            ]
+          },
+          {
+            "title": "3.4 Deleting your account",
+            "paragraphs": [
+              "When you delete your account from the Account page, we:"
+            ],
+            "bullets": [
+              "cancel your Premium subscription with Stripe, if you have one;",
+              "delete your files and Darkroom projects;",
+              "delete your account record and settings and detach your remaining activity records from your identity;",
+              "ask our first-party analytics to delete the analytics data linked to your account (see Section 6);",
+              "delete your sign-in login."
+            ],
+            "afterBullets": [
+              "For 30 days afterwards we keep a minimal deletion record that contains only a one-way hash of your account identifier and the deletion date. It exists so that nothing from the deleted account can be attached to a new sign-up, and it is then purged automatically. Records held by Stripe are governed by Stripe's own policies. If any step cannot be completed, the Account page tells you, and you can contact us at the address in Section 16."
+            ]
+          },
+          {
+            "title": "3.5 Exporting your data",
+            "paragraphs": [
+              "Signed-in users can download an export of their data from the Account page. It is a ZIP file containing your history, projects, file list, account details and metadata reports. It does not contain the media files themselves, so download those before they expire. Exports are limited to a small number of requests per hour."
+            ]
+          },
+          {
+            "title": "3.6 Other records",
+            "paragraphs": [
+              "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary to operate the service, protect against abuse, enforce our policies, comply with law, resolve disputes, or maintain security. These records are not intended to preserve full uploaded media files after their retention period ends. Analytics data follows the periods in Section 6.3."
+            ]
+          }
         ]
       },
       {
@@ -667,7 +722,7 @@
         "afterBullets": [
           "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
           "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
-          "Uploaded files and generated outputs are stored temporarily for a maximum of 24 hours to support session conversion history and allow users to download recent conversions. After that period, they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
+          "Uploaded files and generated outputs are kept and deleted as described in Section 3, including when AI features are used. After the applicable retention period they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
           "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
           "We do not use uploaded files to publicly identify users. We do not claim ownership of uploaded files. We do not sell uploaded files or generated outputs. We do not provide uploaded files or generated outputs to third-party AI providers for model training or AI processing."
         ]
@@ -846,7 +901,8 @@
           "You can change your analytics choice at any time from “Cookie settings” in the footer. If you are in the United States, “Do Not Sell or Share My Personal Information” in the footer opts you out of any sharing for advertising purposes.",
           "You can export or delete your analytics data yourself, immediately, from “Cookie settings” in the footer under “Your data”. Export downloads a complete copy of what our analytics holds about you as a file; Delete permanently erases your analytics history and gives your browser a brand-new anonymous ID. If you are signed in, both cover every device linked to your account. Because these tools act immediately, they satisfy the response periods the applicable law allows (30 days under CPRA, one month under the GDPR) by construction. You can also email us using the details below and we will do the same on your behalf within those periods.",
           "One category of records survives deletion: the log of your own consent and opt-out choices. Laws that let you delete your data also require us to be able to prove how we handled your choices (GDPR Article 17(3)(b)), so those records are kept for five years and then deleted. They contain your choices and when you made them — not your browsing activity.",
-          "Because uploaded files and generated outputs are temporary and are deleted after a maximum of 24 hours, we may not be able to retrieve or provide access to files after deletion."
+          "If you have an account, you can delete individual files, delete all of your files, export your data, or delete your account yourself from the Account page (see Section 3).",
+          "Once a file has been deleted, whether by you or at the end of its retention period, we cannot retrieve it or provide access to it."
         ]
       },
       {
@@ -931,12 +987,14 @@
         ]
       },
       {
-        "title": "5. Temporary Storage and Deletion",
+        "id": "retention",
+        "title": "5. Storage, Retention and Deletion",
         "paragraphs": [
-          "Uploaded files and generated outputs may be stored temporarily for a maximum of 24 hours to support session conversion history and allow you to download recent conversions during your session.",
-          "After the temporary retention period expires, uploaded files and generated outputs are deleted from our active systems, unless earlier deletion occurs or limited retention is legally required or reasonably necessary for security, abuse prevention, legal compliance, dispute resolution, or enforcement of these Terms.",
-          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer than 24 hours where reasonably necessary. These records are not intended to preserve full uploaded media files after the temporary retention period.",
-          "You are responsible for downloading and backing up any processed files you wish to keep. Media Manipulator is not a permanent storage, backup, archive, or hosting service."
+          "Visitors without an account: uploaded files and generated outputs are stored for 24 hours. If you have an account, you choose how long we store your files, from 24 hours to 2 years (6 months unless you change it). This choice is available on every account and does not depend on your plan. The Privacy Policy describes the details.",
+          "After the applicable retention period ends, uploaded files and generated outputs are deleted from our active systems, unless earlier deletion occurs or limited retention is legally required or reasonably necessary for security, abuse prevention, legal compliance, dispute resolution, or enforcement of these Terms. Deletion is carried out by an automated process and may happen a short time after the period ends.",
+          "You can delete individual files, delete all of your files, export your data, or delete your account from the Account page. Deleting files or an account is permanent: we keep no backups of media and cannot restore deleted files.",
+          "We may retain limited technical logs, security records, abuse-prevention records, analytics records, or legal compliance records for longer where reasonably necessary. These records are not intended to preserve full uploaded media files after the retention period ends.",
+          "You are responsible for downloading and keeping your own copies of any processed files you wish to keep. Media Manipulator is not a backup, archive, or hosting service, and we cannot retrieve or provide access to files after they are deleted."
         ]
       },
       {

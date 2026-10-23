@@ -1,5 +1,6 @@
 import React from 'react';
 import { getServerT } from '@/lib/i18n/server';
+import { WhatChanged } from '@/components/legal/what-changed';
 import { Panel } from '@/components/darkroom/panel';
 
 interface Subsection {
@@ -82,6 +83,8 @@ const PrivacyPolicyPage: React.FC<{ locale?: string }> = ({ locale }) => {
         <div className="prose max-w-none text-muted-foreground">
           <p className="mb-2">{t('legalCommon.effectiveDate')}</p>
           <p className="mb-6">{t('legalCommon.lastUpdated')}</p>
+
+          <WhatChanged locale={locale} />
 
           <p className="mb-4">{t('privacyPolicy.intro')}</p>
 

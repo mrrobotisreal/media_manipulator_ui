@@ -494,14 +494,16 @@
     }
   },
   "legalCommon": {
-    "effectiveDate": "Gültig ab: 14.05.2026",
+    "effectiveDate": "Gültig ab: 23.10.2026",
     "lastUpdated": "Zuletzt aktualisiert: 23.10.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "E-Mail:",
-    "websiteLabel": "Website:"
+    "websiteLabel": "Website:",
+    "whatChangedTitle": "Was sich am 23.10.2026 geändert hat",
+    "whatChangedBody": "Die Aufbewahrung liegt jetzt in Ihrer Hand. Bei Besuchern ohne Konto werden Dateien weiterhin nach 24 Stunden gelöscht. Wenn Sie sich anmelden, bestimmen Sie selbst, wie lange wir Ihre Dateien aufbewahren, von 24 Stunden bis 2 Jahren (6 Monate, solange Sie es nicht ändern), und Sie können auf der Seite „Konto“ Dateien löschen, Ihre Daten exportieren oder Ihr Konto löschen. Der folgende Abschnitt zur Aufbewahrung beschreibt dies ausführlich."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -528,10 +530,10 @@
               "Metadaten zu entfernen;",
               "Transkripte, Untertitel, Zusammenfassungen, Beschreibungen oder andere KI-gestützte Ausgaben zu erzeugen;",
               "herunterladbare verarbeitete Dateien zu erstellen;",
-              "einen vorübergehenden Sitzungs-Konvertierungsverlauf zu führen, damit Sie aktuelle Konvertierungen während Ihrer Sitzung herunterladen können."
+              "Ihren Konvertierungsverlauf zu führen, damit Sie aktuelle Konvertierungen herunterladen oder erneut öffnen können."
             ],
             "afterBullets": [
-              "Hochgeladene Dateien und erzeugte Ergebnisse werden vorübergehend für maximal 24 Stunden gespeichert, sofern sie nicht früher gelöscht werden. Nach Ablauf dieses Zeitraums werden sie aus unseren aktiven Systemen gelöscht."
+              "Hochgeladene Dateien und erzeugte Ergebnisse werden für den in Abschnitt 3 beschriebenen Aufbewahrungszeitraum gespeichert: 24 Stunden, wenn Sie kein Konto haben, oder den von Ihnen gewählten Zeitraum, wenn Sie angemeldet sind. Sie können sie früher löschen."
             ]
           },
           {
@@ -629,8 +631,8 @@
         ],
         "bullets": [
           "Medienkonvertierung, -bearbeitung, -transkription, Metadaten-, KI-Analyse- und verwandte Werkzeuge bereitzustellen;",
-          "den Konvertierungsverlauf vorübergehend für bis zu 24 Stunden zu speichern;",
-          "es Nutzern zu ermöglichen, aktuelle konvertierte Dateien während einer Sitzung herunterzuladen;",
+          "Ihren Konvertierungsverlauf für den für Sie geltenden Aufbewahrungszeitraum zu speichern (24 Stunden für Besucher ohne Konto, oder den von Ihnen gewählten Zeitraum, wenn Sie angemeldet sind);",
+          "es Nutzern zu ermöglichen, aktuelle konvertierte Dateien herunterzuladen, solange sie aufbewahrt werden;",
           "Uploads auf mutmaßlich illegale, unzulässige, missbräuchliche oder für Werbetreibende sensible Inhalte zu scannen;",
           "Nutzer, Werbetreibende, unsere Website und unsere Marke zu schützen;",
           "Betrug, Missbrauch, Spam, Malware und Sicherheitsvorfälle zu verhindern;",
@@ -642,11 +644,64 @@
         ]
       },
       {
-        "title": "3. Dateispeicherung und -löschung",
+        "id": "retention",
+        "title": "3. Dateispeicherung, Aufbewahrung und Löschung",
         "paragraphs": [
-          "Hochgeladene Dateien und erzeugte Ergebnisse werden vorübergehend für maximal 24 Stunden gespeichert, um den Sitzungs-Konvertierungsverlauf zu unterstützen und Nutzern das Herunterladen aktueller Konvertierungen zu ermöglichen.",
-          "Nach Ablauf des vorübergehenden Speicherzeitraums werden hochgeladene Dateien und erzeugte Ergebnisse aus dem aktiven Speicher gelöscht.",
-          "Wir können begrenzte technische Protokolle, Sicherheitsaufzeichnungen, Missbrauchspräventionsaufzeichnungen, Analyseaufzeichnungen oder rechtliche Compliance-Aufzeichnungen länger aufbewahren, soweit dies zum Betrieb des Dienstes, zum Schutz vor Missbrauch, zur Durchsetzung unserer Richtlinien, zur Einhaltung von Gesetzen, zur Beilegung von Streitigkeiten oder zur Aufrechterhaltung der Sicherheit angemessen erforderlich ist. Diese Aufzeichnungen sind nicht dazu bestimmt, vollständige hochgeladene Mediendateien nach Ablauf der 24-stündigen vorübergehenden Speicherung zu bewahren."
+          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien und Darkroom-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind."
+        ],
+        "subsections": [
+          {
+            "title": "3.1 Wie lange wir Ihre Dateien aufbewahren",
+            "bullets": [
+              "Besucher ohne Konto: Dateien werden 24 Stunden lang aufbewahrt.",
+              "Angemeldete Nutzer: Sie wählen einen Aufbewahrungszeitraum von 24 Stunden bis 2 Jahren. Diese Wahl hat jedes Konto; sie hängt nicht von Ihrem Tarif ab. Solange Sie nichts wählen, gilt der Standard von 6 Monaten."
+            ],
+            "afterBullets": [
+              "Der Zeitraum wird ab der Erstellung der jeweiligen Datei bzw. des jeweiligen Projekts gezählt. Wenn Sie den Zeitraum ändern, gilt er auch für Ihre vorhandenen Dateien, gemessen ab deren Erstellungsdatum; ein kürzerer Zeitraum kann daher dazu führen, dass vorhandene Dateien kurz darauf gelöscht werden. Ein einzelnes Ergebnis können Sie in Ihrem Verlauf länger aufbewahren.",
+              "Wenn Sie sich anmelden, nachdem Sie den Dienst als Besucher genutzt haben, können Dateien aus diesem Besuch Ihrem Konto zugeordnet werden und folgen dann Ihrem gewählten Zeitraum.",
+              "Abgelaufene Dateien werden durch eine automatische Bereinigung entfernt, die regelmäßig läuft; die Löschung kann daher kurz nach Ablauf des Zeitraums erfolgen. Nach der Löschung stehen die Dateien in unseren aktiven Systemen nicht mehr zur Verfügung. Wir führen keine Backups von Medien."
+            ]
+          },
+          {
+            "title": "3.2 Metadatenberichte",
+            "paragraphs": [
+              "Metadatenberichte sind kleine Datensätze, die die technischen Eigenschaften einer Datei beschreiben. Mit einer Einstellung auf Ihrer Kontoseite legen Sie fest, ob Berichte aufbewahrt werden, nachdem die Dateien, die sie beschreiben, am Ende des Aufbewahrungszeitraums gelöscht wurden. Wenn Sie eine Datei selbst löschen, wird ihr Bericht mitgelöscht."
+            ]
+          },
+          {
+            "title": "3.3 Löschen Ihrer Dateien",
+            "paragraphs": [
+              "Wenn Sie ein Konto haben, können Sie auf der Seite „Konto“ ein einzelnes Ergebnis oder Darkroom-Projekt löschen, alle Ihre Dateien auf einmal löschen oder Ihr gesamtes Konto löschen. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden."
+            ]
+          },
+          {
+            "title": "3.4 Löschen Ihres Kontos",
+            "paragraphs": [
+              "Wenn Sie Ihr Konto auf der Seite „Konto“ löschen, tun wir Folgendes:"
+            ],
+            "bullets": [
+              "Wir kündigen Ihr Premium-Abonnement bei Stripe, falls Sie eines haben;",
+              "wir löschen Ihre Dateien und Darkroom-Projekte;",
+              "wir löschen Ihren Kontodatensatz und Ihre Einstellungen und lösen Ihre übrigen Aktivitätsdatensätze von Ihrer Identität;",
+              "wir bitten unsere First-Party-Analyse, die mit Ihrem Konto verknüpften Analysedaten zu löschen (siehe Abschnitt 6);",
+              "wir löschen Ihren Anmelde-Zugang."
+            ],
+            "afterBullets": [
+              "Danach bewahren wir 30 Tage lang einen minimalen Löschvermerk auf, der nur einen Einweg-Hash Ihrer Kontokennung und das Löschdatum enthält. Er dient dazu, dass nichts aus dem gelöschten Konto einer neuen Registrierung zugeordnet werden kann, und wird anschließend automatisch gelöscht. Für Daten bei Stripe gelten die eigenen Richtlinien von Stripe. Kann ein Schritt nicht abgeschlossen werden, teilt Ihnen die Seite „Konto“ dies mit, und Sie können uns unter der Adresse in Abschnitt 16 kontaktieren."
+            ]
+          },
+          {
+            "title": "3.5 Exportieren Ihrer Daten",
+            "paragraphs": [
+              "Angemeldete Nutzer können auf der Seite „Konto“ einen Export ihrer Daten herunterladen. Er ist eine ZIP-Datei mit Ihrem Verlauf, Ihren Projekten, Ihrer Dateiliste, Ihren Kontodaten und Metadatenberichten. Die Mediendateien selbst sind nicht enthalten; laden Sie diese herunter, bevor sie ablaufen. Exporte sind auf eine kleine Anzahl von Anfragen pro Stunde begrenzt."
+            ]
+          },
+          {
+            "title": "3.6 Sonstige Aufzeichnungen",
+            "paragraphs": [
+              "Wir können begrenzte technische Protokolle, Sicherheitsaufzeichnungen, Aufzeichnungen zur Missbrauchsprävention, Analyseaufzeichnungen oder Aufzeichnungen zur Einhaltung gesetzlicher Vorschriften länger aufbewahren, soweit dies zum Betrieb des Dienstes, zum Schutz vor Missbrauch, zur Durchsetzung unserer Richtlinien, zur Einhaltung von Gesetzen, zur Beilegung von Streitigkeiten oder zur Wahrung der Sicherheit angemessen erforderlich ist. Diese Aufzeichnungen sollen nach Ende des Aufbewahrungszeitraums keine vollständigen hochgeladenen Mediendateien erhalten. Für Analysedaten gelten die Fristen in Abschnitt 6.3."
+            ]
+          }
         ]
       },
       {
@@ -667,7 +722,7 @@
         "afterBullets": [
           "Sämtliche von Media Manipulator eingesetzte KI-Verarbeitung erfolgt lokal auf unseren eigenen Servern oder auf von uns kontrollierter Infrastruktur. Wir lagern hochgeladene Dateien, erzeugte Ergebnisse, Transkripte, Zusammenfassungen, Beschreibungen oder Inhaltssicherheitsscans nicht zur Verarbeitung an KI-Anbieter Dritter aus.",
           "Das bedeutet, dass Ihre hochgeladenen Dateien und erzeugten Ergebnisse bei Nutzung von KI-Funktionen innerhalb der Verarbeitungsumgebung von Media Manipulator verbleiben und gemäß den in dieser Datenschutzerklärung beschriebenen Speicher-, Aufbewahrungs-, Lösch- und Sicherheitspraktiken behandelt werden.",
-          "Hochgeladene Dateien und erzeugte Ergebnisse werden vorübergehend für maximal 24 Stunden gespeichert, um den Sitzungs-Konvertierungsverlauf zu unterstützen und aktuelle Konvertierungen zum Download bereitzustellen. Nach Ablauf dieses Zeitraums werden sie aus unseren aktiven Systemen gelöscht, sofern keine frühere Löschung erfolgt oder eine begrenzte Aufbewahrung aus Gründen der Sicherheit, Missbrauchsprävention, gesetzlichen Compliance oder Durchsetzung rechtlich erforderlich ist.",
+          "Hochgeladene Dateien und erzeugte Ergebnisse werden gespeichert und gelöscht, wie in Abschnitt 3 beschrieben, auch wenn KI-Funktionen genutzt werden. Nach Ablauf des jeweils geltenden Aufbewahrungszeitraums werden sie aus unseren aktiven Systemen gelöscht, sofern keine frühere Löschung erfolgt oder eine begrenzte Aufbewahrung aus Gründen der Sicherheit, Missbrauchsprävention, gesetzlichen Compliance oder Durchsetzung rechtlich erforderlich ist.",
           "KI-generierte Ausgaben können unvollkommen, unvollständig oder ungenau sein. Nutzer sind dafür verantwortlich, jede KI-generierte Ausgabe zu überprüfen, bevor sie sich darauf verlassen.",
           "Wir verwenden hochgeladene Dateien nicht, um Nutzer öffentlich zu identifizieren. Wir erheben keinen Eigentumsanspruch auf hochgeladene Dateien. Wir verkaufen keine hochgeladenen Dateien oder erzeugten Ergebnisse. Wir stellen hochgeladene Dateien oder erzeugte Ergebnisse keinen KI-Anbietern Dritter für Modelltraining oder KI-Verarbeitung zur Verfügung."
         ]
@@ -846,7 +901,8 @@
           "Sie können Ihre Analytik-Entscheidung jederzeit über „Cookie-Einstellungen“ in der Fußzeile ändern. Wenn Sie sich in den Vereinigten Staaten befinden, können Sie über „Meine personenbezogenen Daten nicht verkaufen oder teilen“ in der Fußzeile jeder Weitergabe zu Werbezwecken widersprechen.",
           "Sie können Ihre Analysedaten selbst, sofort, über „Cookie-Einstellungen“ in der Fußzeile unter „Ihre Daten“ exportieren oder löschen. Export lädt eine vollständige Kopie dessen herunter, was unsere Analytik als Datei über Sie enthält; Löschen entfernt Ihren Analyseverlauf dauerhaft und gibt Ihrem Browser eine brandneue anonyme ID. Wenn Sie angemeldet sind, gilt beides für jedes mit Ihrem Konto verknüpfte Gerät. Da diese Werkzeuge sofort wirken, erfüllen sie die nach geltendem Recht zulässigen Antwortfristen (30 Tage nach CPRA, ein Monat nach der DSGVO) bereits durch ihre Funktionsweise. Sie können uns auch über die untenstehenden Kontaktdaten per E-Mail erreichen, und wir werden innerhalb dieser Fristen dasselbe in Ihrem Namen tun.",
           "Eine Kategorie von Aufzeichnungen überdauert die Löschung: das Protokoll Ihrer eigenen Einwilligungs- und Widerspruchsentscheidungen. Gesetze, die Ihnen die Löschung Ihrer Daten erlauben, verpflichten uns auch, nachweisen zu können, wie wir mit Ihren Entscheidungen umgegangen sind (Art. 17 Abs. 3 lit. b DSGVO), daher werden diese Aufzeichnungen fünf Jahre lang aufbewahrt und dann gelöscht. Sie enthalten Ihre Entscheidungen und wann Sie diese getroffen haben — nicht Ihr Surfverhalten.",
-          "Da hochgeladene Dateien und erzeugte Ergebnisse vorübergehend sind und nach maximal 24 Stunden gelöscht werden, können wir Dateien nach der Löschung möglicherweise nicht mehr abrufen oder zugänglich machen."
+          "Wenn Sie ein Konto haben, können Sie einzelne Dateien löschen, alle Ihre Dateien löschen, Ihre Daten exportieren oder Ihr Konto selbst löschen, und zwar auf der Seite „Konto“ (siehe Abschnitt 3).",
+          "Sobald eine Datei gelöscht wurde, sei es durch Sie oder nach Ablauf ihres Aufbewahrungszeitraums, können wir sie nicht wiederherstellen und keinen Zugriff darauf gewähren."
         ]
       },
       {
@@ -931,12 +987,14 @@
         ]
       },
       {
-        "title": "5. Vorübergehende Speicherung und Löschung",
+        "id": "retention",
+        "title": "5. Speicherung, Aufbewahrung und Löschung",
         "paragraphs": [
-          "Hochgeladene Dateien und erzeugte Ergebnisse können vorübergehend für maximal 24 Stunden gespeichert werden, um den Sitzungs-Konvertierungsverlauf zu unterstützen und Ihnen das Herunterladen aktueller Konvertierungen während Ihrer Sitzung zu ermöglichen.",
-          "Nach Ablauf des vorübergehenden Speicherzeitraums werden hochgeladene Dateien und erzeugte Ergebnisse aus unseren aktiven Systemen gelöscht, sofern keine frühere Löschung erfolgt oder eine begrenzte Aufbewahrung aus Gründen der Sicherheit, Missbrauchsprävention, gesetzlichen Compliance, Streitbeilegung oder Durchsetzung dieser Bedingungen rechtlich erforderlich oder angemessen notwendig ist.",
-          "Wir können begrenzte technische Protokolle, Sicherheitsaufzeichnungen, Missbrauchspräventionsaufzeichnungen, Analyseaufzeichnungen oder rechtliche Compliance-Aufzeichnungen länger als 24 Stunden aufbewahren, soweit angemessen erforderlich. Diese Aufzeichnungen sind nicht dazu bestimmt, vollständige hochgeladene Mediendateien nach Ablauf des vorübergehenden Speicherzeitraums zu bewahren.",
-          "Sie sind dafür verantwortlich, alle verarbeiteten Dateien, die Sie behalten möchten, herunterzuladen und zu sichern. Media Manipulator ist kein dauerhafter Speicher-, Backup-, Archiv- oder Hosting-Dienst."
+          "Besucher ohne Konto: Hochgeladene Dateien und erzeugte Ergebnisse werden 24 Stunden lang gespeichert. Wenn Sie ein Konto haben, bestimmen Sie, wie lange wir Ihre Dateien speichern, von 24 Stunden bis 2 Jahren (6 Monate, solange Sie es nicht ändern). Diese Wahl steht jedem Konto offen und hängt nicht von Ihrem Tarif ab. Einzelheiten beschreibt die Datenschutzerklärung.",
+          "Nach Ablauf des jeweils geltenden Aufbewahrungszeitraums werden hochgeladene Dateien und erzeugte Ergebnisse aus unseren aktiven Systemen gelöscht, sofern keine frühere Löschung erfolgt oder eine begrenzte Aufbewahrung rechtlich erforderlich oder aus Gründen der Sicherheit, Missbrauchsprävention, gesetzlichen Compliance, Streitbeilegung oder Durchsetzung dieser Bedingungen angemessen erforderlich ist. Die Löschung erfolgt durch einen automatisierten Vorgang und kann kurz nach Ablauf des Zeitraums stattfinden.",
+          "Auf der Seite „Konto“ können Sie einzelne Dateien löschen, alle Ihre Dateien löschen, Ihre Daten exportieren oder Ihr Konto löschen. Das Löschen von Dateien oder eines Kontos ist endgültig: Wir führen keine Backups von Medien und können gelöschte Dateien nicht wiederherstellen.",
+          "Wir können begrenzte technische Protokolle, Sicherheitsaufzeichnungen, Aufzeichnungen zur Missbrauchsprävention, Analyseaufzeichnungen oder Aufzeichnungen zur Einhaltung gesetzlicher Vorschriften länger aufbewahren, soweit dies angemessen erforderlich ist. Diese Aufzeichnungen sollen nach Ende des Aufbewahrungszeitraums keine vollständigen hochgeladenen Mediendateien erhalten.",
+          "Sie sind dafür verantwortlich, alle verarbeiteten Dateien, die Sie behalten möchten, herunterzuladen und selbst aufzubewahren. Media Manipulator ist kein Backup-, Archiv- oder Hosting-Dienst, und wir können Dateien nach ihrer Löschung weder wiederherstellen noch Zugriff darauf gewähren."
         ]
       },
       {
