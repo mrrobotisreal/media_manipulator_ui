@@ -27,7 +27,7 @@
       "error": "Couldn't load your recent projects. Refresh to try again."
     },
     "mediaBin": {
-      "dropHint": "Drop video, audio, or .cube LUTs here",
+      "dropHint": "Drop video, images, audio, or .cube LUTs here",
       "choose": "Choose files",
       "empty": "No media yet. Add a clip to get started.",
       "building": "building preview…",

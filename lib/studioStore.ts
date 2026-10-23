@@ -77,6 +77,8 @@ const DEFAULT_ZOOM = 80; // pixels per second
 const MIN_ZOOM = 10;
 const MAX_ZOOM = 400;
 const MIN_CLIP_SECONDS = 0.1;
+/** Default hold for a freshly placed still image (ADR-0008). */
+export const DEFAULT_IMAGE_SECONDS = 5;
 const MAX_VOLUME = 2; // +6dB ceiling (Premiere-style boost), matches Zod + Go clamp
 const MIN_CAPTION_SECONDS = 0.3;
 
@@ -794,14 +796,21 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const entry = s.assets[assetId];
       if (!entry || entry.asset.mediaKind === 'lut') return {}; // LUTs are graded, not placed
       const kind: StudioTrackKind = entry.asset.mediaKind === 'audio' ? 'audio' : 'video';
-      const duration = entry.asset.durationSeconds > 0 ? entry.asset.durationSeconds : 5;
+      const isImage = entry.asset.mediaKind === 'image';
+      const duration = isImage
+        ? DEFAULT_IMAGE_SECONDS
+        : entry.asset.durationSeconds > 0
+          ? entry.asset.durationSeconds
+          : 5;
       const tracks = ensureBaseTracks(s.project.tracks);
       const newClipId = uid();
       let placed = false;
       const next = tracks.map((track) => {
         if (placed || track.kind !== kind) return track;
         placed = true;
-        const startAt = track.clips.reduce((max, c) => Math.max(max, clipEnd(c)), 0);
+        const startAt = isImage
+          ? fitInGaps(track.clips.map((c) => ({ start: c.timelineStart, end: clipEnd(c) })), duration, 0)
+          : track.clips.reduce((max, c) => Math.max(max, clipEnd(c)), 0);
         const clip: StudioClip = {
           id: newClipId,
           assetId,
@@ -809,7 +818,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
           timelineStart: startAt,
           sourceIn: 0,
           sourceOut: duration,
-          volume: entry.asset.hasAudio ? 1 : undefined,
+          volume: !isImage && entry.asset.hasAudio ? 1 : undefined,
         };
         return { ...track, clips: [...track.clips, clip] };
       });
@@ -824,13 +833,20 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       if (!s.project) return {};
       const entry = s.assets[assetId];
       if (!entry || entry.asset.mediaKind === 'lut') return {};
-      const duration = entry.asset.durationSeconds > 0 ? entry.asset.durationSeconds : 5;
+      const isImage = entry.asset.mediaKind === 'image';
+      const duration = isImage
+        ? DEFAULT_IMAGE_SECONDS
+        : entry.asset.durationSeconds > 0
+          ? entry.asset.durationSeconds
+          : 5;
       const newClipId = uid();
       let placed = false;
       const next = s.project.tracks.map((track) => {
         if (track.id !== trackId) return track;
         placed = true;
-        const startAt = track.clips.reduce((max, c) => Math.max(max, clipEnd(c)), 0);
+        const startAt = isImage
+          ? fitInGaps(track.clips.map((c) => ({ start: c.timelineStart, end: clipEnd(c) })), duration, 0)
+          : track.clips.reduce((max, c) => Math.max(max, clipEnd(c)), 0);
         const clip: StudioClip = {
           id: newClipId,
           assetId,
@@ -838,7 +854,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
           timelineStart: startAt,
           sourceIn: 0,
           sourceOut: duration,
-          volume: entry.asset.hasAudio ? 1 : undefined,
+          volume: !isImage && entry.asset.hasAudio ? 1 : undefined,
         };
         return { ...track, clips: [...track.clips, clip] };
       });

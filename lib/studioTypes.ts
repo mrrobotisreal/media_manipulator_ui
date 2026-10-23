@@ -12,7 +12,7 @@ import { z } from 'zod';
  * schemas so a drift between the two is impossible.
  */
 
-export const studioMediaKindSchema = z.enum(['video', 'audio', 'lut']);
+export const studioMediaKindSchema = z.enum(['video', 'audio', 'lut', 'image']);
 export type StudioMediaKind = z.infer<typeof studioMediaKindSchema>;
 
 export const studioTrackKindSchema = z.enum(['video', 'audio']);

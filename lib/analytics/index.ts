@@ -95,6 +95,7 @@ export {
   cueCountBucket,
   droppedFrameRatioBucket,
   fileSizeBucket,
+  imageHoldBucket,
   fpsBucket,
   latencyMsBucket,
   ratioBucket,

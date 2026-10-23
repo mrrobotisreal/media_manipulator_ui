@@ -82,6 +82,8 @@ import CaptionEditor from './caption-editor';
 import AudioDuckingPopover from './audio-ducking';
 import type { FocusModeApi } from './useFocusMode';
 import { Panel } from '@/components/darkroom/panel';
+import { trackAcceptsAsset } from '@/lib/studio/trackRules';
+import type { StudioMediaKind } from '@/lib/studioTypes';
 // Title-clip fonts (part 16): loading these faces here scopes them to the
 // editor routes — the marketing pages never fetch them.
 import './studio-fonts.css';
@@ -478,7 +480,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 
       // Asset dropped from the media bin onto a track (kind must match).
       if (data?.type === 'asset' && data.assetId) {
-        if (!targetTrack || data.kind !== targetTrack.kind) return;
+        if (!targetTrack || !trackAcceptsAsset(targetTrack.kind, data.kind as StudioMediaKind)) return;
         st.addClipFromAssetToTrack(data.assetId, targetTrack.id);
         return;
       }

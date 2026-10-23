@@ -27,7 +27,7 @@
       "error": "Ihre letzten Projekte konnten nicht geladen werden. Aktualisieren Sie die Seite, um es erneut zu versuchen."
     },
     "mediaBin": {
-      "dropHint": "Video, Audio oder .cube-LUTs hier ablegen",
+      "dropHint": "Video, Bilder, Audio oder .cube-LUTs hier ablegen",
       "choose": "Dateien auswählen",
       "empty": "Noch keine Medien. Fügen Sie einen Clip hinzu, um loszulegen.",
       "building": "Vorschau wird erstellt…",

@@ -9,7 +9,7 @@ import type { StudioAudioConfig, StudioTrack } from '../lib/studioTypes';
 export interface GoldenAsset {
   /** Fixture file name inside parity-harness/fixtures/ (see make-fixtures.sh). */
   file: string;
-  kind: 'video' | 'audio' | 'lut';
+  kind: 'video' | 'audio' | 'lut' | 'image';
   hasAudio?: boolean;
 }
 

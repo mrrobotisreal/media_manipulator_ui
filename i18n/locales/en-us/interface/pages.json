@@ -357,7 +357,7 @@
         "page": {
           "eyebrow": "Video Tutorial",
           "title": "How to Use Darkroom",
-          "intro": "Darkroom is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished MP4 — no software to install. This guide walks through the whole workflow.",
+          "intro": "Darkroom is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video, images, and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished MP4 — no software to install. This guide walks through the whole workflow.",
           "overviewAlt": "The Darkroom editor showing the media bin, preview, clip effects panel, and a multi-track timeline.",
           "overviewCaption": "The Darkroom workspace: media bin (left), live preview (center), clip effects (right), and the multi-track timeline (bottom).",
           "create": {
@@ -366,7 +366,7 @@
           },
           "media": {
             "title": "2. Add your media",
-            "body": "Drag video or audio files into the Media box, or click “Choose files”. Each upload is analyzed and given a smooth 720p preview proxy plus a filmstrip — you’ll see a brief “building preview” state while that happens. Both video (mp4, mov, webm, mkv, …) and audio (mp3, wav, m4a, aac, ogg, flac) are supported, and you can add as many files as you like."
+            "body": "Drag video, image, or audio files into the Media box, or click “Choose files”. Each upload is analyzed and given a smooth 720p preview proxy plus a filmstrip — you’ll see a brief “building preview” state while that happens. Video (mp4, mov, webm, mkv, …), images (jpg, png, webp, heic, avif, gif, bmp, tiff), and audio (mp3, wav, m4a, aac, ogg, flac) are all supported — images are held as stills you can stretch to any length — and you can add as many files as you like."
           },
           "timeline": {
             "title": "3. Build your timeline",

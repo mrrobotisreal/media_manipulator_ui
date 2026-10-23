@@ -88,6 +88,30 @@ describe('golden EDLs', () => {
     expect(missing, 'tolerance rows without a golden EDL').toEqual([]);
   });
 
+  it('every referenced fixture file is produced by make-fixtures.sh (or committed)', () => {
+    const script = readFileSync(join(__dirname, 'make-fixtures.sh'), 'utf8');
+    const committed = new Set(readdirSync(join(__dirname, 'fixtures')));
+    for (const [id, g] of goldens) {
+      for (const [assetId, asset] of Object.entries(g.assets)) {
+        const known = committed.has(asset.file) || script.includes(asset.file);
+        expect(known, `${id}: asset ${assetId} fixture '${asset.file}'`).toBe(true);
+      }
+    }
+  });
+
+  it('image goldens use image assets only on image kinds', () => {
+    for (const id of [
+      'image_hold_passthrough',
+      'image_hold_transform',
+      'image_hold_dissolve_to_video',
+      'image_alpha_over_video',
+    ]) {
+      const g = goldens.get(id);
+      expect(g, id).toBeDefined();
+      expect(Object.values(g!.assets).some((a) => a.kind === 'image'), `${id} has an image asset`).toBe(true);
+    }
+  });
+
   it('policy scenarios carry a projectRef variant', () => {
     expect(goldens.get('effect_stack_first_per_type')?.projectRef).toBeDefined();
   });

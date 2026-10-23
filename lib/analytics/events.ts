@@ -115,6 +115,7 @@ export const EVENTS = {
   STUDIO_RECOVERY_ACCEPTED: 'studio_recovery_accepted',
   STUDIO_SAVE_CONFLICT: 'studio_save_conflict',
   STUDIO_VERSION_RESTORED: 'studio_version_restored',
+  STUDIO_IMAGE_CLIP_EXTENDED: 'studio_image_clip_extended',
   STUDIO_EDIT_SUMMARY: 'studio_edit_summary',
   STUDIO_PERF_SAMPLE: 'studio_perf_sample',
 
@@ -206,6 +207,7 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   studio_recovery_accepted: PRIORITY_HIGH,
   studio_save_conflict: PRIORITY_HIGH,
   studio_version_restored: PRIORITY_NORMAL,
+  studio_image_clip_extended: PRIORITY_NORMAL,
   // High, not normal: a summary carries ~2 minutes of edit telemetry and is
   // frequently emitted at page teardown, where anything slower may never flush.
   studio_edit_summary: PRIORITY_HIGH,
@@ -589,6 +591,13 @@ export type StudioRecoveryAcceptedProps = StudioHostProp;
 export type StudioSaveConflictProps = StudioHostProp;
 export type StudioVersionRestoredProps = StudioHostProp;
 
+/** How long a still-image clip was held after a right-trim gesture (imageHoldBucket). */
+export type StudioImageHoldBucket = '<=5s' | '<=30s' | '<=5m' | '<=1h' | '>1h';
+
+export interface StudioImageClipExtendedProps extends StudioHostProp {
+  durationBucket: StudioImageHoldBucket;
+}
+
 /**
  * The session-aggregated edit summary (ADR ws/0003 class 2).
  *
@@ -723,6 +732,7 @@ export interface EventPropsMap {
   studio_recovery_accepted: StudioRecoveryAcceptedProps;
   studio_save_conflict: StudioSaveConflictProps;
   studio_version_restored: StudioVersionRestoredProps;
+  studio_image_clip_extended: StudioImageClipExtendedProps;
   studio_edit_summary: StudioEditSummaryProps;
   studio_perf_sample: StudioPerfSampleProps;
 

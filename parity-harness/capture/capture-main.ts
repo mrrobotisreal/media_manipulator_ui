@@ -37,6 +37,9 @@ const glOk = comp.init(canvas);
 // One <video> per fixture FILE, shared across scenarios (browsers cap live
 // decoder contexts; goldens reference at most 3 distinct files at once).
 const videoByFile = new Map<string, HTMLVideoElement>();
+// Still-image fixtures (MM15): decoded once per file with the SAME options as
+// lib/studio/imageCache.ts, then uploaded as GL image textures keyed by asset id.
+const bitmapByFile = new Map<string, ImageBitmap>();
 let uploadCounter = 0;
 
 // Title raster cache (part 16) — same dirty-flag contract as the editor.
@@ -48,6 +51,18 @@ let current: {
   variant: GoldenVariantKey;
   fixtureBase: string;
 } | null = null;
+
+async function bitmapFor(fixtureBase: string, file: string): Promise<ImageBitmap> {
+  let bmp = bitmapByFile.get(file);
+  if (!bmp) {
+    const res = await fetch(`${fixtureBase}/${file}`);
+    if (!res.ok) throw new Error(`image fixture fetch failed: ${file}`);
+    const blob = await res.blob();
+    bmp = await createImageBitmap(blob, { premultiplyAlpha: 'none', colorSpaceConversion: 'default' });
+    bitmapByFile.set(file, bmp);
+  }
+  return bmp;
+}
 
 function videoFor(fixtureBase: string, file: string): HTMLVideoElement {
   let el = videoByFile.get(file);
@@ -194,6 +209,16 @@ const parity = {
         continue;
       }
       const asset = golden.assets[a.clip.assetId];
+      if (asset?.kind === 'image') {
+        // Image clip (MM15): mirrors preview-surface.tsx — upload the decoded
+        // bitmap under the asset id and reference it by imageKey (no pool slot).
+        const bmp = await bitmapFor(fixtureBase, asset.file);
+        if (!comp.uploadImage(a.clip.assetId, bmp, a.clip.assetId)) {
+          throw new Error(`uploadImage failed for ${asset.file}`);
+        }
+        sources.set(a.clip.id, { slot: -1, srcW: bmp.width, srcH: bmp.height, imageKey: a.clip.assetId });
+        continue;
+      }
       if (!asset || asset.kind !== 'video') continue;
       const el = videoFor(fixtureBase, asset.file);
       await seekTo(el, a.clip.sourceIn + (tSeek - a.clip.timelineStart));

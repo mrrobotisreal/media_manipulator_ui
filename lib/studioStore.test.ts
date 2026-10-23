@@ -807,3 +807,76 @@ describe('keyframe actions (part 15)', () => {
     expect(clipById('c1').keyframes?.scale).toBeUndefined();
   });
 });
+
+describe('image clips (ADR-0008)', () => {
+  const imageAsset = (id = 'img-1', ready = true) => ({
+    asset: {
+      id,
+      projectId: 'p1',
+      originalFileName: 'still.png',
+      s3KeyOriginal: 'k',
+      s3KeyProxy: ready ? 'p' : undefined,
+      mediaKind: 'image' as const,
+      durationSeconds: 0,
+      width: 800,
+      height: 600,
+      hasAudio: false,
+      probeJson: null,
+      createdAt: '2026-01-01T00:00:00Z',
+    },
+    status: ready ? ('ready' as const) : ('processing' as const),
+    uploadProgress: 100,
+  });
+  const base = () => [track('v1', 'video', 0, []), track('a1', 'audio', 0, [])];
+
+  it('addClipFromAsset places a 5s image on the first video track with no volume', () => {
+    load(base());
+    store().upsertAsset(imageAsset());
+    store().addClipFromAsset('img-1');
+    const clips = trackById('v1').clips;
+    expect(clips).toHaveLength(1);
+    expect(clips[0].sourceOut - clips[0].sourceIn).toBe(5);
+    expect(clips[0].volume).toBeUndefined();
+    expect(trackById('a1').clips).toHaveLength(0);
+  });
+
+  it('addClipFromAsset fits an image into the first gap instead of appending', () => {
+    load([track('v1', 'video', 0, [clip('a', 0, 2), clip('b', 8, 4)]), track('a1', 'audio', 0, [])]);
+    store().upsertAsset(imageAsset());
+    store().addClipFromAsset('img-1');
+    const img = trackById('v1').clips.find((c) => c.assetId === 'img-1')!;
+    // gap 2..8 is 6s wide, so the 5s still lands at its start rather than after 12s
+    expect(img.timelineStart).toBe(2);
+  });
+
+  it('addClipFromAsset appends after clips when no earlier gap fits', () => {
+    load([track('v1', 'video', 0, [clip('a', 0, 2), clip('b', 4, 4)]), track('a1', 'audio', 0, [])]);
+    store().upsertAsset(imageAsset());
+    store().addClipFromAsset('img-1');
+    const img = trackById('v1').clips.find((c) => c.assetId === 'img-1')!;
+    expect(img.timelineStart).toBe(8);
+  });
+
+  it('addClipFromAssetToTrack fits an image into a gap and undo restores the project', () => {
+    load([track('v1', 'video', 0, [clip('a', 0, 2), clip('b', 8, 4)]), track('a1', 'audio', 0, [])]);
+    store().upsertAsset(imageAsset());
+    store().addClipFromAssetToTrack('img-1', 'v1');
+    const img = trackById('v1').clips.find((c) => c.assetId === 'img-1')!;
+    expect(img.timelineStart).toBe(2);
+    expect(img.sourceOut - img.sourceIn).toBe(5);
+    expect(img.volume).toBeUndefined();
+    store().undo();
+    expect(trackById('v1').clips.map((c) => c.id)).toEqual(['a', 'b']);
+  });
+
+  it('splits a long image clip into two halves of the same asset', () => {
+    load([track('v1', 'video', 0, [clip('long', 0, 3600, { assetId: 'img-1' })]), track('a1', 'audio', 0, [])]);
+    store().setPlayhead(1234);
+    store().splitAtPlayhead();
+    const clips = trackById('v1').clips;
+    expect(clips).toHaveLength(2);
+    const total = clips.reduce((n, c) => n + (c.sourceOut - c.sourceIn), 0);
+    expect(total).toBe(3600);
+    expect(clips[0].assetId).toBe(clips[1].assetId);
+  });
+});

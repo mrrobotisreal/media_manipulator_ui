@@ -2,8 +2,11 @@
 
 import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond } from 'lucide-react';
+import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond, ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { trackAcceptsAsset } from '@/lib/studio/trackRules';
+import { clipTrimBound } from '@/lib/studio/clipTrimBound';
+import { analytics, EVENTS, imageHoldBucket } from '@/lib/analytics';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
@@ -27,11 +30,11 @@ import {
 import { TRANSITION_TYPE_GROUPS } from '@/lib/studio/effectRegistry';
 import { clipKeyframeLanes, type KeyframePropertyGroup } from '@/lib/studio/keyframes';
 import { defaultTransitionSeconds } from '@/lib/studio/preferences';
-import { editSummary } from '@/lib/studio/telemetry';
+import { editSummary, studioHost } from '@/lib/studio/telemetry';
 import ClipWaveform from './clip-waveform';
 import { useUndoGesture } from './useUndoGesture';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
-import type { StudioClip, StudioTrack, StudioTransitionType } from '@/lib/studioTypes';
+import type { StudioClip, StudioMediaKind, StudioTrack, StudioTransitionType } from '@/lib/studioTypes';
 
 const RULER_HEIGHT = 28;
 const TRACK_HEIGHT = 56;
@@ -320,9 +323,26 @@ const Timeline: React.FC = () => {
 
   const onTrimUp = React.useCallback((e: React.PointerEvent) => {
     if (!trimRef.current) return;
+    const trim = trimRef.current;
     trimRef.current = null;
     (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
     useStudioStore.getState().endGesture();
+    // Still images: report how long the hold ended up when the right edge grew
+    // (once per gesture, bucketed — no ids).
+    if (trim && trim.side === 'r' && trim.assetDur === Number.POSITIVE_INFINITY && !trim.orig.title) {
+      const st = useStudioStore.getState();
+      let now: StudioClip | undefined;
+      for (const tr of st.project?.tracks ?? []) {
+        now = tr.clips.find((c) => c.id === trim.clipId) ?? now;
+      }
+      if (now && now.sourceOut > trim.orig.sourceOut) {
+        analytics.track(
+          EVENTS.STUDIO_IMAGE_CLIP_EXTENDED,
+          { durationBucket: imageHoldBucket(now.sourceOut - now.sourceIn), host: studioHost() },
+          { feature: 'studio' },
+        );
+      }
+    }
   }, []);
 
   if (!project) return null;
@@ -565,9 +585,14 @@ interface TrackRowProps {
 
 const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
   const { setNodeRef, isOver, active } = useDroppable({ id: props.track.id, data: { kind: props.track.kind } });
-  const activeKind = (active?.data.current as { kind?: string } | undefined)?.kind;
-  const compatible = !!active && activeKind === props.track.kind;
-  const incompatible = !!active && activeKind !== props.track.kind;
+  const activeData = active?.data.current as { type?: string; kind?: string } | undefined;
+  const activeKind = activeData?.kind;
+  const accepts =
+    activeData?.type === 'asset'
+      ? trackAcceptsAsset(props.track.kind, activeKind as StudioMediaKind)
+      : activeKind === props.track.kind;
+  const compatible = !!active && accepts;
+  const incompatible = !!active && !accepts;
 
   // Only the clips near the scroll window are mounted. Selected clips and the
   // one being dragged are always kept: dnd-kit must never lose its active node
@@ -668,9 +693,11 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
     id: clip.id,
     data: { type: 'clip', kind: track.kind, label },
   });
-  const assetDur = isTitle ? Number.POSITIVE_INFINITY : entry?.asset.durationSeconds ?? 0;
+  const isImage = entry?.asset.mediaKind === 'image';
+  const assetDur = clipTrimBound(entry?.asset, isTitle);
   const ready = entry?.status === 'ready';
-  const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video';
+  const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video' && !isImage;
+  const imageThumb = isImage && !!entry?.asset.thumbnailSpriteUrl;
   // Waveform: full block on audio tracks, a bottom strip (~35%) under the
   // filmstrip on video-track clips that carry audio. Rubber-band editing only on
   // audio tracks (video strips are too thin); the inspector handles the rest.
@@ -782,6 +809,16 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
           }}
         />
       )}
+      {imageThumb && (
+        <div
+          className="absolute inset-0 opacity-50 pointer-events-none"
+          style={{
+            backgroundImage: `url(${studioSpriteUrl(clip.assetId)})`,
+            backgroundSize: 'auto 100%',
+            backgroundRepeat: 'repeat-x',
+          }}
+        />
+      )}
       {showWaveform && (
         <div
           className="absolute inset-x-0"
@@ -807,8 +844,9 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
         </div>
       )}
       {!isTitle && (
-        <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none">
-          {label}
+        <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none flex items-center gap-1">
+          {isImage && <ImageIcon className="h-3 w-3 shrink-0 text-primary" aria-hidden />}
+          <span className="truncate">{label}</span>
         </div>
       )}
       {/* Trim handles. The visual bar stays 8px so the timeline reads

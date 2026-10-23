@@ -13,11 +13,14 @@ const EXT_MIME: Record<string, string> = {
   mkv: 'video/x-matroska', avi: 'video/x-msvideo', flv: 'video/x-flv', wmv: 'video/x-ms-wmv',
   mpeg: 'video/mpeg', mpg: 'video/mpeg',
   mp3: 'audio/mpeg', wav: 'audio/wav', aac: 'audio/aac', m4a: 'audio/mp4', ogg: 'audio/ogg', flac: 'audio/flac',
+  jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif',
+  bmp: 'image/bmp', tif: 'image/tiff', tiff: 'image/tiff', heic: 'image/heic', heif: 'image/heif',
+  avif: 'image/avif', svg: 'image/svg+xml',
 };
 
 /** The browser's File.type is often empty for media; fall back to extension. */
 function guessContentType(file: File): string {
-  if (file.type && (file.type.startsWith('video/') || file.type.startsWith('audio/'))) return file.type;
+  if (file.type && (file.type.startsWith('video/') || file.type.startsWith('audio/') || file.type.startsWith('image/'))) return file.type;
   const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
   return EXT_MIME[ext] || 'application/octet-stream';
 }

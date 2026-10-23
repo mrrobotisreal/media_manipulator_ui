@@ -34,6 +34,7 @@ import { ensureStudioFontsLoaded } from '@/lib/studio/titleFonts';
 import type { ActiveClip } from '@/lib/studio/previewEngine';
 import { parseCubeLut } from '@/lib/studio/lutParser';
 import { registerEyedropper, rgbToHex } from '@/lib/studio/eyedropper';
+import { ensureImage, getImageBitmap, pruneImageCache, subscribeImageCache } from '@/lib/studio/imageCache';
 import { DEFAULT_CAPTION_STYLE, type StudioTitle } from '@/lib/studioTypes';
 import { Segmented } from '@/components/darkroom/segmented';
 import {
@@ -344,6 +345,31 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       });
   }, [glOk, activeNow, playhead]);
 
+  // Active still-image clips for the CSS fallback path (no WebGL): plain <img>
+  // elements styled like the fallback <video> (opacity x dissolve ramp, stack
+  // order, color adjustments).
+  const fallbackImageItems = React.useMemo(() => {
+    if (glOk) return [];
+    return activeNow
+      .filter(
+        (a) =>
+          a.trackKind === 'video' &&
+          assets[a.clip.assetId]?.asset.mediaKind === 'image' &&
+          assets[a.clip.assetId]?.status === 'ready',
+      )
+      .sort((x, y) => x.trackIndex - y.trackIndex || x.clip.timelineStart - y.clip.timelineStart)
+      .map((a, idx) => {
+        const vals = clipValuesAt(a.clip, playhead - a.clip.timelineStart);
+        return {
+          key: a.clip.id,
+          src: studioProxyUrl(a.clip.assetId),
+          opacity: vals.opacity * transitionRamp(a.clip, playhead),
+          z: idx + 1,
+          filter: cssFilterForAdjustments(a.clip.adjustments),
+        };
+      });
+  }, [glOk, activeNow, assets, playhead]);
+
   // Text/location overlays for the active video clips (faked over the surface;
   // the export draws them in with drawtext).
   const projectHeight = project?.height ?? 1080;
@@ -603,6 +629,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       for (const a of active) {
         const entry = st.assets[a.clip.assetId];
         if (!entry || entry.status !== 'ready') continue;
+        // Still images never take a decoder slot: they draw from the bitmap cache.
+        if (entry.asset.mediaKind === 'image') continue;
         let i = slots.current.findIndex((s) => s.clipId === a.clip.id);
         if (i < 0) i = slots.current.findIndex((s) => s.clipId === null);
         if (i < 0) continue; // pool exhausted — skip extra concurrent clip
@@ -731,7 +759,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           .filter(
             (a) =>
               a.trackKind === 'video' &&
-              (clipSlots.has(a.clip.id) || !!a.clip.title) &&
+              (clipSlots.has(a.clip.id) || !!a.clip.title || st.assets[a.clip.assetId]?.asset.mediaKind === 'image') &&
               !hiddenTrackIds.has(a.trackId),
           )
           .sort((x, y) => (zOf.get(x.clip.id) ?? 0) - (zOf.get(y.clip.id) ?? 0));
@@ -761,6 +789,31 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
               buildGLLayer(
                 a,
                 { slot: -1, srcW: entry.canvas.width, srcH: entry.canvas.height, imageKey: a.clip.id },
+                trs,
+                comp,
+                vals,
+              ),
+            );
+            if (trs.dip && trs.dip.alpha > 0) {
+              layers.push({ slot: -1, srcW: pw, srcH: ph, opacity: trs.dip.alpha, solid: trs.dip.color === 'black' ? [0, 0, 0] : [1, 1, 1] });
+            }
+            continue;
+          }
+          const imgEntry = st.assets[a.clip.assetId];
+          if (imgEntry?.asset.mediaKind === 'image') {
+            // Still image: one decoded bitmap per asset, uploaded once under the
+            // asset id (shared by every clip of it), then the same layer pipeline.
+            if (imgEntry.status !== 'ready') continue;
+            const bmp = getImageBitmap(a.clip.assetId);
+            if (!bmp) {
+              void ensureImage(a.clip.assetId);
+              continue;
+            }
+            if (!comp.uploadImage(a.clip.assetId, bmp, a.clip.assetId)) continue;
+            layers.push(
+              buildGLLayer(
+                a,
+                { slot: -1, srcW: bmp.width, srcH: bmp.height, imageKey: a.clip.assetId },
                 trs,
                 comp,
                 vals,
@@ -997,20 +1050,37 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     };
   }, []);
 
+  // A decoded still-image bitmap landing repaints the paused frame.
+  React.useEffect(
+    () =>
+      subscribeImageCache(() => {
+        const st = useStudioStore.getState();
+        if (!st.isPlaying) syncFrameRef.current?.(st.playhead, false);
+      }),
+    [],
+  );
+
   // Free raster canvases + GL textures of title clips that left the document.
   React.useEffect(() => {
     if (!project) return;
     const live = new Set<string>();
+    const liveImages = new Set<string>();
     for (const tr of project.tracks) {
       for (const c of tr.clips) {
         if (c.title) live.add(c.id);
+        // Image textures are keyed by asset id (shared by every clip of it).
+        else if (assets[c.assetId]?.asset.mediaKind === 'image') {
+          live.add(c.assetId);
+          liveImages.add(c.assetId);
+        }
       }
     }
     for (const id of titleRasterCache.current.keys()) {
       if (!live.has(id)) titleRasterCache.current.delete(id);
     }
     compositorRef.current?.pruneImages(live);
-  }, [project]);
+    pruneImageCache(liveImages);
+  }, [project, assets]);
 
   // Arm the chroma-key eyedropper when the inspector requests it.
   React.useEffect(() => {
@@ -1136,6 +1206,19 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           className={`absolute inset-0 w-full h-full object-contain ${eyedropArmed ? 'cursor-crosshair z-20' : 'pointer-events-none'}`}
           style={{ display: glOk ? 'block' : 'none' }}
         />
+        {/* CSS-fallback still images (no WebGL): same stacking contract as the
+            fallback <video> pool. */}
+        {fallbackImageItems.map((item) => (
+          <img
+            key={item.key}
+            src={item.src}
+            alt=""
+            crossOrigin="anonymous"
+            draggable={false}
+            className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+            style={{ opacity: item.opacity, zIndex: item.z, filter: item.filter }}
+          />
+        ))}
         {/* CSS-fallback title clips (part 16): raster drawn into DOM canvases.
             The GL path composites titles on the WebGL canvas instead. */}
         {fallbackTitleItems.map((item) => (

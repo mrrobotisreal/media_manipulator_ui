@@ -27,7 +27,7 @@
       "error": "No se han podido cargar tus proyectos recientes. Actualiza la página para volver a intentarlo."
     },
     "mediaBin": {
-      "dropHint": "Suelta aquí vídeo, audio o LUTs .cube",
+      "dropHint": "Suelta aquí vídeo, imágenes, audio o LUTs .cube",
       "choose": "Elegir archivos",
       "empty": "Todavía no hay contenido multimedia. Añade un clip para empezar.",
       "building": "generando vista previa…",

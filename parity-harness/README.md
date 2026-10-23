@@ -92,7 +92,7 @@ first time the suite ever runs: all thresholds are reasoned, not measured.
 | Leg | What | Where |
 | --- | --- | --- |
 | Goldens | Hand-authored v3 EDLs, one per tolerance row (+ the audio-ducking scene) | `goldens/*.json` (format: `goldenTypes.ts`) |
-| Fixtures | Deterministic synthetic media (`testsrc2`/`testsrc`/green screen/sine), bt709-tagged | `make-fixtures.sh` → `fixtures/` |
+| Fixtures | Deterministic synthetic media (`testsrc2`/`testsrc`/green screen/sine, plus `photo.jpg` and alpha `still.png`), bt709-tagged | `make-fixtures.sh` → `fixtures/` |
 | Capture | esbuild-bundled page importing the real `GLCompositor` + `previewEngine` resolver; driven by `playwright-core` | `capture/`, `run.ts` |
 | Render | Go CLI reusing the real export compiler, lossless x264, frame extraction with `in_color_matrix=bt709` | `media_manipulator_api/cmd/parity-render` |
 | Compare | PSNR + mean CIEDE2000 vs `parityTolerances.ts`, noise-floor calibrated | `compare.ts`, `imageMetrics.ts` |

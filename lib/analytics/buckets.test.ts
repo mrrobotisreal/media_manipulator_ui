@@ -7,6 +7,7 @@ import {
   droppedFrameRatioBucket,
   fileSizeBucket,
   fpsBucket,
+  imageHoldBucket,
   latencyMsBucket,
   metadataTagBucket,
   ratioBucket,
@@ -30,6 +31,20 @@ describe('countBucket', () => {
 
   it('is the cue-count bucket (caption continuity)', () => {
     expect(cueCountBucket).toBe(countBucket);
+  });
+});
+
+describe('imageHoldBucket', () => {
+  it('covers every boundary (upper-inclusive)', () => {
+    expect(imageHoldBucket(0)).toBe('<=5s');
+    expect(imageHoldBucket(5)).toBe('<=5s');
+    expect(imageHoldBucket(5.01)).toBe('<=30s');
+    expect(imageHoldBucket(30)).toBe('<=30s');
+    expect(imageHoldBucket(30.5)).toBe('<=5m');
+    expect(imageHoldBucket(300)).toBe('<=5m');
+    expect(imageHoldBucket(301)).toBe('<=1h');
+    expect(imageHoldBucket(3600)).toBe('<=1h');
+    expect(imageHoldBucket(3601)).toBe('>1h');
   });
 });
 

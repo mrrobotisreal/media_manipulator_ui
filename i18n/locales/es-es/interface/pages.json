@@ -357,7 +357,7 @@
         "page": {
           "eyebrow": "Tutorial en vídeo",
           "title": "Cómo usar Darkroom",
-          "intro": "Darkroom es un editor de vídeo multipista, al estilo de Premiere Pro, que funciona íntegramente en tu navegador. Sube vídeo y audio, colócalos en una línea de tiempo, apila y mezcla pistas, añade efectos y exporta un MP4 terminado, sin instalar software. Esta guía recorre todo el flujo de trabajo.",
+          "intro": "Darkroom es un editor de vídeo multipista, al estilo de Premiere Pro, que funciona íntegramente en tu navegador. Sube vídeo, imágenes y audio, colócalos en una línea de tiempo, apila y mezcla pistas, añade efectos y exporta un MP4 terminado, sin instalar software. Esta guía recorre todo el flujo de trabajo.",
           "overviewAlt": "El editor Darkroom mostrando el depósito de medios, la vista previa, el panel de efectos de clip y una línea de tiempo multipista.",
           "overviewCaption": "El espacio de trabajo de Darkroom: depósito de medios (izquierda), vista previa en directo (centro), efectos de clip (derecha) y la línea de tiempo multipista (abajo).",
           "create": {
@@ -366,7 +366,7 @@
           },
           "media": {
             "title": "2. Añade tus archivos",
-            "body": "Arrastra archivos de vídeo o audio al recuadro Media, o haz clic en «Elegir archivos». Cada subida se analiza y recibe una vista previa suave de 720p más una tira de fotogramas; verás un breve estado de «generando vista previa» mientras ocurre. Se admiten tanto vídeo (mp4, mov, webm, mkv, …) como audio (mp3, wav, m4a, aac, ogg, flac), y puedes añadir tantos archivos como quieras."
+            "body": "Arrastra archivos de vídeo, imagen o audio al recuadro Media, o haz clic en «Elegir archivos». Cada subida se analiza y recibe una vista previa suave de 720p más una tira de fotogramas; verás un breve estado de «generando vista previa» mientras ocurre. Se admiten vídeo (mp4, mov, webm, mkv, …), imágenes (jpg, png, webp, heic, avif, gif, bmp, tiff) y audio (mp3, wav, m4a, aac, ogg, flac); las imágenes se mantienen como fotogramas fijos que puedes estirar hasta la duración que quieras, y puedes añadir tantos archivos como quieras."
           },
           "timeline": {
             "title": "3. Monta tu línea de tiempo",
