@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ChevronDown, Shield } from 'lucide-react';
 import EmbeddedToolPanelClient from '@/components/tools/embedded-tool-panel-client';
 import ToolAnalyticsBoundary from '@/components/tools/tool-analytics-boundary';
+import { RecentStrip } from '@/components/history/recent-strip';
 import AdBanner from '@/components/ad-banner';
 import { getReviewToolInContentAdSlot } from '@/lib/adSlots';
 import { isReviewSafeInternalHref } from '@/content/reviewAllowlist';
@@ -159,6 +160,8 @@ export default function ToolLandingPage({
           />
           )}
           </ToolAnalyticsBoundary>
+
+          <RecentStrip toolSlug={tool.slug} className="mt-6 w-full" />
 
           {afterPanelExtra}
 

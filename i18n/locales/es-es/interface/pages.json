@@ -659,7 +659,8 @@
             "afterBullets": [
               "El periodo se cuenta desde que se creó cada archivo o proyecto. Cuando cambias el periodo, también se aplica a tus archivos existentes, medido desde su fecha de creación, por lo que elegir un periodo más corto puede hacer que se eliminen poco después archivos existentes. Puedes conservar un resultado concreto más tiempo desde tu Historial.",
               "Si inicias sesión después de haber usado el servicio como visitante, los archivos de esa visita pueden asociarse a tu cuenta y pasan a seguir el periodo que hayas elegido.",
-              "Los archivos caducados se eliminan mediante una limpieza automática que se ejecuta con regularidad, por lo que la eliminación puede producirse poco después de que termine el periodo. Tras la eliminación, los archivos dejan de estar disponibles en nuestros sistemas activos. No conservamos copias de seguridad de los medios."
+              "Los archivos caducados se eliminan mediante una limpieza automática que se ejecuta con regularidad, por lo que la eliminación puede producirse poco después de que termine el periodo. Tras la eliminación, los archivos dejan de estar disponibles en nuestros sistemas activos. No conservamos copias de seguridad de los medios.",
+              "Historial reciente en este dispositivo: para los visitantes sin cuenta, la lista «Recientes» de la página de inicio y de las páginas de herramientas se guarda solo en este navegador (en IndexedDB). Contiene el ID del trabajo, la herramienta, el nombre del archivo de resultado, el tamaño, las fechas y una miniatura pequeña, nunca el archivo en sí. No se nos envía y puedes eliminarla en cualquier momento con «Borrar recientes»."
             ]
           },
           {

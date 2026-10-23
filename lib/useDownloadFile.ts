@@ -71,7 +71,8 @@ const downloadFile = async (jobId: string): Promise<Blob> => {
       { job_id: jobId, reason: response.statusText || 'http error', status: response.status },
       { job_id: jobId },
     );
-    throw new Error(`Download failed: ${response.statusText}`);
+    // `status` lets callers tell "gone" (404/410: the 24 h retention passed) from a flaky network.
+    throw Object.assign(new Error(`Download failed: ${response.statusText}`), { status: response.status });
   }
 
   const blob = await response.blob();

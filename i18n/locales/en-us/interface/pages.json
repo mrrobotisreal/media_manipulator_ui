@@ -659,7 +659,8 @@
             "afterBullets": [
               "The period is counted from when each file or project was created. When you change the period it also applies to your existing files, measured from their creation date, so choosing a shorter period can cause existing files to be deleted soon afterwards. You can keep an individual result longer from your History.",
               "If you sign in after using the service as a visitor, files from that visit may be attached to your account and then follow your chosen period.",
-              "Expired files are removed by an automated cleanup that runs regularly, so deletion may happen a short time after the period ends. After deletion, files are no longer available in our active systems. We keep no backups of media."
+              "Expired files are removed by an automated cleanup that runs regularly, so deletion may happen a short time after the period ends. After deletion, files are no longer available in our active systems. We keep no backups of media.",
+              "Recent history on this device: for visitors without an account, the Recent list on the home and tool pages is stored in this browser only (in IndexedDB). It holds the job ID, tool, result file name, size, timing and a small thumbnail, never the file itself. It is not sent to us, and you can remove it any time with “Clear recent”."
             ]
           },
           {

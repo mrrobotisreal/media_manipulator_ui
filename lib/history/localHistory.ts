@@ -164,10 +164,26 @@ export function indexedDbAdapter(): HistoryAdapter | null {
 }
 
 let shared: HistoryAdapter | null | undefined;
-/** The app's store. The adapter is created lazily and re-resolved while IndexedDB is missing. */
-export const localHistory: LocalHistory = createLocalHistory(() => {
+const base: LocalHistory = createLocalHistory(() => {
   if (shared === undefined) shared = indexedDbAdapter();
   const current = shared;
   if (current === null) shared = undefined; // retry later; storage may become available
   return current;
 });
+
+const listeners = new Set<() => void>();
+/** Tells mounted Recent strips that the list changed (same-page job completed, entry removed). */
+export function subscribeLocalHistory(fn: () => void): () => void {
+  listeners.add(fn);
+  return () => void listeners.delete(fn);
+}
+const changed = () => listeners.forEach((fn) => { try { fn(); } catch { /* a listener must not break a write */ } });
+
+/** The app's store. */
+export const localHistory: LocalHistory = {
+  list: base.list,
+  prune: base.prune,
+  add: async (e) => { await base.add(e); changed(); },
+  remove: async (id) => { await base.remove(id); changed(); },
+  clear: async () => { await base.clear(); changed(); },
+};

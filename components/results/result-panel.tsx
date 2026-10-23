@@ -11,6 +11,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { EVENTS, useToolAnalytics } from '@/lib/analytics';
 import type { PropsFor } from '@/lib/analytics/events';
 import type { ResultDescriptor, ResultKind } from '@/lib/results/describe';
+import { useAuth } from '@/lib/auth/AuthProvider';
 import { localHistory } from '@/lib/history/localHistory';
 import { makeThumbnail, thumbnailable } from '@/lib/history/thumbnail';
 import { useResultBlob } from '@/lib/results/useResultBlob';
@@ -318,7 +319,11 @@ function ResultPanelBody({
 
   // The upsert merges, so the thumbnail pass after the first write never duplicates the entry.
   // A re-created createdAt on the thumbnail write is harmless: add() keeps the existing row's other fields.
-  useRecordHistory(descriptor, toolSlug, loadedBlob ?? seedBlob ?? null, active && recordHistory && surface !== 'history');
+  // Signed-in accounts have server history (and the sign-in handover clears the browser copy), so
+  // only guests record. Wait out the identity check: a returning member must not leave a stray entry.
+  const auth = useAuth();
+  const isGuest = !auth || (!auth.loading && !auth.user);
+  useRecordHistory(descriptor, toolSlug, loadedBlob ?? seedBlob ?? null, active && isGuest && recordHistory && surface !== 'history');
 
   const originalUrl = useOriginalUrl(descriptor.original, active && (legacyToggle || compareMode !== null));
   const saveName = downloadFileName ?? descriptor.fileName;

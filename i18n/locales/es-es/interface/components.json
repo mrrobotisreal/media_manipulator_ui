@@ -475,5 +475,17 @@
     "close": "Ahora no",
     "signup": "Crear una cuenta gratuita",
     "upgrade": "Actualizar a Premium"
+  },
+  "recentStrip": {
+    "title": "Recientes",
+    "clear": "Borrar recientes",
+    "open": "Abrir {{name}}",
+    "converter": "Conversor",
+    "expiresInHours": "Caduca en {{hours}} h",
+    "expiresInMinutes": "Caduca en {{minutes}} min",
+    "expired": "Este archivo ha caducado",
+    "openFailed": "No se pudo abrir este archivo. Inténtalo de nuevo.",
+    "signupCta": "Los archivos de invitados se eliminan a las 24 horas. Regístrate para conservarlos 6 meses.",
+    "signupAction": "Regístrate gratis"
   }
 }

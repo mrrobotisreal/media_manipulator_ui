@@ -43,6 +43,7 @@ import { saveBlobToDisk } from '@/lib/results/save';
 import { describe as describeResult } from '@/lib/results/describe';
 import { peekResultBlob } from '@/lib/results/useResultBlob';
 import { ResultPanel } from '@/components/results/result-panel';
+import { RecentStrip } from '@/components/history/recent-strip';
 import {
   EVENTS,
   getVisitorId,
@@ -647,6 +648,8 @@ const FileConverterAppInner: React.FC = () => {
             </span>
           </div>
         </Link>
+
+        <RecentStrip className="mx-auto mb-6 w-full max-w-5xl" />
 
         <div className="mx-auto grid w-full max-w-[1600px] gap-6 lg:grid-cols-2">
           {/* File Upload Section */}
