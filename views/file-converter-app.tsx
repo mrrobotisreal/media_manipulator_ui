@@ -23,7 +23,6 @@ const ImageConversionForm = lazy(() => withToolShards(() => import('@/components
 const VideoConversionForm = lazy(() => withToolShards(() => import('@/components/video-conversion-form')));
 const AudioConversionForm = lazy(() => withToolShards(() => import('@/components/audio-conversion-form')));
 const TranscribeForm = lazy(() => withToolShards(() => import('@/components/transcribe-form')));
-const TranscribeResultView = lazy(() => withToolShards(() => import('@/components/transcribe-result-view')));
 const VideoTranscodeForm = lazy(() => withToolShards(() => import('@/components/video-transcode-form')));
 // AI Document Scan island — the panel owns its own upload/SSE/result-modal flow,
 // so the home page needs no extra job plumbing for it.
@@ -37,7 +36,6 @@ const FormFallback: React.FC = () => {
 };
 import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, { type TranscribeFormData, type TranscribeUploadResponse } from '@/lib/useTranscribeFile';
-import { useTranscribeResult, useAnalysisResult } from '@/lib/useTranscribeResult';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
 import useDownloadFile from '@/lib/useDownloadFile';
@@ -558,15 +556,6 @@ const FileConverterAppInner: React.FC = () => {
   const activeHistoryItem = activeResultJobId
     ? conversionHistory.find(item => item.jobId === activeResultJobId)
     : undefined;
-  const isTranscribeResultActive = !!activeHistoryItem && activeHistoryItem.mode === 'transcribe' && activeHistoryItem.status === 'completed';
-  const { data: transcribeResult, isLoading: isTranscribeResultLoading } = useTranscribeResult(
-    isTranscribeResultActive ? activeHistoryItem!.jobId : null,
-    isTranscribeResultActive,
-  );
-  const { data: transcribeAnalysis, isLoading: isTranscribeAnalysisLoading } = useAnalysisResult(
-    isTranscribeResultActive ? activeHistoryItem!.jobId : null,
-    isTranscribeResultActive,
-  );
   const activeDescriptor = useMemo(() => {
     if (!activeHistoryItem) return null;
     const originalKind = activeHistoryItem.mediaKind === 'image' || activeHistoryItem.mediaKind === 'video' || activeHistoryItem.mediaKind === 'audio'
@@ -606,16 +595,6 @@ const FileConverterAppInner: React.FC = () => {
           onDownload={() => handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
           seedBlob={activeHistoryItem.blob}
           onBlobLoaded={(blob) => cacheHistoryBlob(activeHistoryItem.jobId, blob)}
-          viewerOverride={activeHistoryItem.mode === 'transcribe' ? (
-            <Suspense fallback={<FormFallback />}>
-              <TranscribeResultView
-                result={transcribeResult ?? null}
-                analysis={transcribeAnalysis ?? null}
-                isLoading={isTranscribeResultLoading}
-                isAnalysisLoading={isTranscribeAnalysisLoading}
-              />
-            </Suspense>
-          ) : undefined}
         />
       )}
 
