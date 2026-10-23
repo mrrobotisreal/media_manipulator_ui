@@ -4190,6 +4190,749 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
   },
 
+  // ----------------------------------------------------------------------- MM28: AI IMAGE TOOLS (op-specific pages)
+  {
+    slug: 'ai-image-upscaler',
+    name: 'AI Image Upscaler',
+    h1: 'AI Image Upscaler: Enlarge Photos 2x or 4x Online',
+    tagline:
+      'Enlarge a small or soft photo with a Real-ESRGAN model that rebuilds fine detail instead of just stretching pixels.',
+    metaTitle: 'AI Image Upscaler: Enlarge Photos 2x or 4x | Media Manipulator',
+    metaDescription:
+      `Upscale a low-resolution photo 2x or 4x with AI that restores edges and texture. Runs on our own GPU, outputs PNG. ${RETENTION_PROMISE}.`,
+    ogTitle: 'AI Image Upscaler: Enlarge Photos 2x or 4x',
+    ogDescription:
+      'Enlarge small or soft photos with a Real-ESRGAN AI model that rebuilds detail instead of stretching pixels.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_converter',
+      defaultAIImageOperation: 'ai_upscale',
+      lockedAIImageOperation: true,
+      defaultOutputFormat: 'png',
+      title: 'Upscale an image with AI',
+      description:
+        'Upload a photo. AI Upscale is already selected and locked, with the output set to PNG. Pick 2x or 4x and a model (photo or anime), then convert.',
+    },
+    intro:
+      'Ordinary resizing only interpolates between the pixels you already have, so a bigger copy of a small photo looks blurry. This page runs an AI super-resolution model (Real-ESRGAN) that has learned what edges, skin, fabric and foliage usually look like at higher resolution, and draws plausible detail back in. You choose 2x or 4x, and the enlarged image comes back as a lossless PNG.',
+    whatItDoes: [
+      'Enlarges the image to 2x or 4x its original width and height using a Real-ESRGAN model.',
+      'Offers a general photo model and an anime/illustration model, so line art stays crisp.',
+      'Saves the result as PNG so no extra compression damage is added after upscaling.',
+      'Runs on a GPU server we operate, not a third-party AI service.',
+    ],
+    flowSteps: [
+      { title: 'Upload a small photo', description: 'Drop in a JPG, PNG or WebP that you want to make larger.' },
+      { title: 'Choose 2x or 4x', description: 'The operation is already set to AI Upscale; just pick the scale and model.' },
+      { title: 'AI rebuilds detail', description: 'The model enlarges the image and synthesizes sharper edges and texture.' },
+      { title: 'Download the PNG', description: 'Save the enlarged, lossless result.' },
+    ],
+    advancedDetails: [
+      'The photo model (realesrgan-x4plus) suits natural images; the anime models suit drawings, screenshots of cartoons and flat-color art.',
+      'Upscaling cannot recover information that was never captured. Fine text, faces and patterns are inferred, so they can look slightly different from reality.',
+      'A 4x result is 16 times as many pixels, so the PNG can be large. Use the 2x option if you only need a modest bump.',
+      'Whether a very large input or a high scale is allowed depends on your plan; the form shows the live limits for your account.',
+    ],
+    whyItMatters: [
+      'Old photos, thumbnails and low-resolution downloads often need to be printed or shown bigger than they were captured.',
+      'AI upscaling is the difference between a soft, blocky enlargement and an image that still looks intentional.',
+      'Starting from a lossless PNG means you can still compress or resize the result afterward for the web.',
+    ],
+    useCases: [
+      { title: 'Printing old photos', description: 'Enlarge a scanned or phone-sized photo before sending it to a printer.' },
+      { title: 'Rescuing small downloads', description: 'Bring a tiny product or reference image up to a usable size.' },
+      { title: 'Illustrations and anime art', description: 'Scale up line art with the anime model without muddy edges.' },
+      { title: 'Wallpapers and backgrounds', description: 'Turn a low-resolution picture into something that fills a modern display.' },
+    ],
+    whyMediaManipulator: [
+      'The upscaler runs on our own GPU, so your photo is not sent to an outside AI provider.',
+      'The operation is locked in for this page, so there is no menu to hunt through.',
+      `Free to try without an account. ${RETENTION_PROMISE}.`,
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
+      supportedOutputFormats: ['png'],
+      processingNotes: [
+        'Output is PNG. Size limits and daily AI quotas depend on your plan and are shown in the form, not fixed on this page.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How is AI upscaling different from just resizing?',
+        answer:
+          'A normal resize interpolates existing pixels, which makes a larger image look blurry. The AI model predicts plausible edges and texture at the higher resolution, so the enlarged result looks sharper. It is still an educated guess, not recovered original data.',
+      },
+      {
+        question: 'Should I pick 2x or 4x?',
+        answer:
+          'Use 2x when the source is already decent and you only need a modest increase. Use 4x for very small images, but expect a much larger file and a bit more invented detail.',
+      },
+      {
+        question: 'Will it make a blurry photo sharp?',
+        answer:
+          'It helps with softness caused by low resolution. It cannot repair heavy motion blur or missed focus, and it may over-smooth faces or textures. Always compare against the original.',
+      },
+      {
+        question: 'Which model should I use for drawings?',
+        answer:
+          'Choose one of the anime models for illustrations, cartoons and flat-color art. The photo model can add texture that does not belong in clean line art.',
+      },
+      {
+        question: 'Are there limits for free use?',
+        answer:
+          'AI operations can be limited by file size or daily quota depending on your plan. The form shows the limits that apply to you at the moment you upload, so they are never out of date.',
+      },
+    ],
+    related: [
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up compression and noise before or after enlarging.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize to exact pixel dimensions without AI.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the large upscaled file for sharing.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option, including all AI tools, in one upload.' },
+    ],
+    primaryKeyword: 'ai image upscaler',
+    secondaryKeywords: [
+      'upscale image online',
+      'enlarge photo without losing quality',
+      'increase image resolution',
+      'real-esrgan online',
+      'make small image bigger',
+    ],
+  },
+  {
+    slug: 'blur-faces-in-photo',
+    name: 'Blur Faces in Photo',
+    h1: 'Blur Faces in a Photo Online',
+    tagline:
+      'Detect faces automatically, then blur, pixelate or black out all of them or only the ones you choose.',
+    metaTitle: 'Blur Faces in a Photo Online | Media Manipulator',
+    metaDescription:
+      `Blur, pixelate or black out faces in a photo. Detect every face, then pick which to hide. AI runs on our own GPU. ${RETENTION_PROMISE}.`,
+    ogTitle: 'Blur Faces in a Photo Online',
+    ogDescription:
+      'Automatically find faces in a photo and blur, pixelate or black out all of them or just the ones you pick.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_converter',
+      defaultAIImageOperation: 'face_privacy',
+      lockedAIImageOperation: true,
+      title: 'Blur faces in a photo',
+      description:
+        'Upload a photo. Face Blur / Pixelate is already selected and locked. Choose the style, optionally detect faces and select which to hide, then convert.',
+    },
+    intro:
+      'Posting a photo of a crowd, a classroom or a street scene often means protecting people who never agreed to be shown. This page finds faces with an AI detector and hides them with a blur, a pixel mosaic or a solid black box. You can hide every face in one click, or run detection first and tick only the faces that should be covered.',
+    whatItDoes: [
+      'Detects faces in the uploaded photo with an AI model.',
+      'Hides them with a Gaussian blur, a pixelation mosaic, or a solid black box.',
+      'Lets you hide all faces or select individual faces from the detected set.',
+      'Returns a new image; your original upload is not modified.',
+    ],
+    flowSteps: [
+      { title: 'Upload a photo', description: 'Choose a picture that contains the faces you want to protect.' },
+      { title: 'Pick a style', description: 'Blur, pixelate or black box. Face Blur is already selected for you.' },
+      { title: 'Detect and select (optional)', description: 'Run detection and tap the faces to cover, or leave it on all faces.' },
+      { title: 'Download the result', description: 'Save the anonymized image and check every face before posting.' },
+    ],
+    advancedDetails: [
+      'A solid black box is the most irreversible choice. Light blur on a large, sharp face can sometimes be partly reversed by software, so use a stronger blur or a box for sensitive cases.',
+      'Detectors can miss faces that are tiny, turned away, heavily occluded or in low light. Zoom in and check the output yourself.',
+      'Selected-face mode uses a detection session tied to the exact file you uploaded; choosing a different file means detecting again.',
+      'Other identifying details such as name tags, license plates or screens are not faces. Use the redact text tool or the object remover for those.',
+    ],
+    whyItMatters: [
+      'Sharing photos of other people, especially children, carries real privacy and sometimes legal consequences.',
+      'Editing faces by hand in an image editor is slow when a photo has many people in it.',
+      'Detecting first and selecting lets you keep a friend or family member visible while anonymizing bystanders.',
+    ],
+    useCases: [
+      { title: 'Event and crowd photos', description: 'Hide bystanders before publishing pictures from a public event.' },
+      { title: 'School and club posts', description: 'Cover specific children whose families have not given consent.' },
+      { title: 'Journalism and reporting', description: 'Protect sources or participants in a documentary still.' },
+      { title: 'Screenshots and evidence', description: 'Anonymize people in an image you need to share with a third party.' },
+    ],
+    whyMediaManipulator: [
+      'Face detection and blurring run on our own GPU, not an outside AI provider.',
+      'You choose which faces to hide instead of an all-or-nothing filter.',
+      `Free to try without an account. ${RETENTION_PROMISE}.`,
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
+      supportedOutputFormats: ['jpg', 'png', 'webp'],
+      processingNotes: [
+        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+      ],
+    },
+    faq: [
+      {
+        question: 'Does it find every face?',
+        answer:
+          'No detector is perfect. Very small, side-on, covered or poorly lit faces can be missed. Check the result at full size before you share it.',
+      },
+      {
+        question: 'Can I blur only some of the faces?',
+        answer:
+          'Yes. Run face detection first, then select the faces to cover. If you skip that step, every detected face is hidden.',
+      },
+      {
+        question: 'Is blur, pixelate or a black box safest?',
+        answer:
+          'A solid black box is the safest because it removes the pixels completely. A light blur or coarse pixelation on a big, sharp face can occasionally be partly reconstructed, so go heavier for sensitive photos.',
+      },
+      {
+        question: 'Is my photo sent to an outside AI company?',
+        answer:
+          'No. Detection and blurring run on a GPU server we operate. Files are not shared with third-party AI providers.',
+      },
+      {
+        question: 'What about license plates or name tags?',
+        answer:
+          'Those are not faces. Use the redact text tool for readable text, or the object remover to erase something from the picture.',
+      },
+    ],
+    related: [
+      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Hide names, numbers and other personal text.' },
+      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase something else that identifies a place or person.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip GPS and camera data from the same photo.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+    ],
+    primaryKeyword: 'blur faces in photo',
+    secondaryKeywords: [
+      'face blur online',
+      'pixelate faces in image',
+      'anonymize faces in photo',
+      'hide face in picture',
+      'automatic face blur',
+    ],
+  },
+  {
+    slug: 'redact-text-in-image',
+    name: 'Redact Text in Image',
+    h1: 'Redact Text and Personal Data in an Image',
+    tagline:
+      'Find readable text in a screenshot or photo and cover personal details, or all text, with a blur or a black box.',
+    metaTitle: 'Redact Text in an Image Online | Media Manipulator',
+    metaDescription:
+      `Automatically find text in an image and black out or blur names, emails, numbers and other personal data. AI on our own GPU. ${RETENTION_PROMISE}.`,
+    ogTitle: 'Redact Text and Personal Data in an Image',
+    ogDescription:
+      'Find text in screenshots and photos and cover personal data or all text with a blur or black box.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_converter',
+      defaultAIImageOperation: 'redact_text',
+      lockedAIImageOperation: true,
+      title: 'Redact text in an image',
+      description:
+        'Upload a screenshot or photo. Redact Text / PII is already selected and locked. Choose whether to cover personal data or all text, and the redaction style, then convert.',
+    },
+    intro:
+      'Screenshots tend to leak things their owners forgot were visible: an email address in a corner, an account number in a table, a name in a chat. This page reads the text in an image with OCR and covers it for you. You can limit it to personal data such as emails, phone numbers and IDs, or cover every piece of text, using a blur or an opaque black box.',
+    whatItDoes: [
+      'Runs text recognition (OCR) over the image to locate words and lines.',
+      'Offers a personal-data mode (names, emails, numbers and similar patterns) and an all-text mode.',
+      'Covers matches with a solid black box or a blur.',
+      'Produces a new image and leaves your upload untouched.',
+    ],
+    flowSteps: [
+      { title: 'Upload the image', description: 'A screenshot, scanned form or photo with readable text.' },
+      { title: 'Choose what to hide', description: 'Redact Text is preselected; pick personal data only or all text.' },
+      { title: 'Pick black box or blur', description: 'A black box is the safer, irreversible option.' },
+      { title: 'Review and download', description: 'Read the result carefully, then save it.' },
+    ],
+    advancedDetails: [
+      'OCR reads clean, horizontal text best. Handwriting, stylized fonts, tiny print and skewed photos can be missed, so scan the output by eye.',
+      'Personal-data detection is pattern based and cannot know context; a name that does not look like one may stay visible.',
+      'Choose the black box for anything you will publish. Blurred text can sometimes be sharpened back by software.',
+      'Redaction here changes pixels only. It does not touch hidden file metadata; use the EXIF tool for that, or flatten the image first.',
+    ],
+    whyItMatters: [
+      'Support tickets, bug reports and social posts frequently include screenshots with real customer or account data.',
+      'Covering text by hand with a drawing tool misses lines and leaves inconsistent results.',
+      'Automated detection catches the pieces you stopped noticing after the third read.',
+    ],
+    useCases: [
+      { title: 'Bug reports and support', description: 'Share a screenshot without exposing emails, tokens or account numbers.' },
+      { title: 'Documents and forms', description: 'Hide ID numbers and addresses on a scanned page before sending it on.' },
+      { title: 'Social posts', description: 'Remove usernames and phone numbers from a chat screenshot.' },
+      { title: 'Training material', description: 'Turn a real screen capture into a safe example for a tutorial.' },
+    ],
+    whyMediaManipulator: [
+      'Text detection and redaction run on our own server, so sensitive screenshots do not go to an outside AI provider.',
+      'Switch between personal-data-only and all-text without re-uploading.',
+      `Free to try without an account. ${RETENTION_PROMISE}.`,
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
+      supportedOutputFormats: ['jpg', 'png', 'webp'],
+      processingNotes: [
+        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+      ],
+    },
+    faq: [
+      {
+        question: 'Does it catch all personal information?',
+        answer:
+          'No. It finds text with OCR and flags patterns such as emails and numbers. Handwriting, unusual fonts, tiny text and anything that is not text (like a face) can be missed, so review the output before sharing.',
+      },
+      {
+        question: 'What is the difference between personal data and all text?',
+        answer:
+          'Personal-data mode only covers text that looks like private details. All-text mode covers every word it can read, which is safer when you cannot predict what is on the page.',
+      },
+      {
+        question: 'Should I use blur or a black box?',
+        answer:
+          'Use the black box for anything you will publish. Blurred text can sometimes be reconstructed by sharpening, while a solid box removes the pixels entirely.',
+      },
+      {
+        question: 'Does this remove hidden metadata too?',
+        answer:
+          'No, it only edits visible pixels. Strip location and camera data with the EXIF metadata tool.',
+      },
+      {
+        question: 'Does the text get uploaded anywhere else?',
+        answer:
+          'Recognition runs on a server we operate and the file is not shared with third-party AI providers.',
+      },
+    ],
+    related: [
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Also hide the people in the same picture.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip hidden location and device data.' },
+      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'Turn a scan into searchable text and PDF.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+    ],
+    primaryKeyword: 'redact text in image',
+    secondaryKeywords: [
+      'censor text in screenshot',
+      'blur personal information in image',
+      'hide pii in screenshot',
+      'black out text in image',
+      'image redaction tool',
+    ],
+  },
+  {
+    slug: 'remove-object-from-photo',
+    name: 'Remove Object from Photo',
+    h1: 'Remove an Object from a Photo Online',
+    tagline:
+      'Draw a box around something you do not want in the picture and an inpainting model fills the gap with matching background.',
+    metaTitle: 'Remove an Object from a Photo Online | Media Manipulator',
+    metaDescription:
+      `Erase unwanted objects from a photo. Draw a rectangle and AI inpainting fills the space to match the background. Runs on our own GPU. ${RETENTION_PROMISE}.`,
+    ogTitle: 'Remove an Object from a Photo Online',
+    ogDescription:
+      'Draw a box over an unwanted object and AI inpainting fills the space with matching background.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'image_converter',
+      defaultAIImageOperation: 'remove_object',
+      lockedAIImageOperation: true,
+      title: 'Remove an object from a photo',
+      description:
+        'Upload a photo. Remove Object is already selected and locked. Draw one or more rectangles over what you want gone, then convert.',
+    },
+    intro:
+      'A stray cable, a photobomber, a trash can at the edge of a landscape: small distractions can spoil a good shot. Upload the photo, drag a rectangle over the thing you want gone, and the LaMa inpainting model repaints that region using the surrounding scene. It works best on simple, repetitive backgrounds like sky, grass, walls and water.',
+    whatItDoes: [
+      'Lets you mark one or more rectangular areas on your photo.',
+      'Fills each marked area with generated content that continues the surrounding background.',
+      'Uses the LaMa inpainting model on a GPU server we operate.',
+      'Returns a new image and leaves your original untouched.',
+    ],
+    flowSteps: [
+      { title: 'Upload a photo', description: 'Choose the picture with the unwanted object.' },
+      { title: 'Draw rectangles', description: 'Drag a box over the object. Add more boxes for more objects.' },
+      { title: 'AI fills the gap', description: 'The model paints new pixels that blend with what surrounds the box.' },
+      { title: 'Download and inspect', description: 'Zoom in on the repaired area to check the seams.' },
+    ],
+    advancedDetails: [
+      'Draw the box a little larger than the object so the model also covers shadows and edge fringes.',
+      'Large boxes over detailed regions (faces, text, intricate patterns) produce visible artifacts because the model has to invent a lot.',
+      'Multiple small passes often look better than one huge rectangle. Remove one object, download, and repeat if needed.',
+      'Rectangles are a coarse selection tool. For irregular shapes, include a little of the background inside the box; the model usually blends it.',
+    ],
+    whyItMatters: [
+      'Retouching with a clone stamp takes skill and patience, especially across textured backgrounds.',
+      'Removing a distraction can rescue an otherwise perfect shot without a reshoot.',
+      'It is also useful for hiding things that should not be visible, like a house number or a screen.',
+    ],
+    useCases: [
+      { title: 'Travel photos', description: 'Remove a stranger, sign or wire from a landscape.' },
+      { title: 'Product pictures', description: 'Erase a dust speck, tag or stand from the shot.' },
+      { title: 'Real estate and listings', description: 'Clear clutter or a car from the edge of the frame.' },
+      { title: 'Privacy', description: 'Remove a visible address, plate or screen from a personal photo.' },
+    ],
+    whyMediaManipulator: [
+      'Inpainting runs on our own GPU, so your photo is not sent to an outside AI provider.',
+      'The box-drawing overlay is built in; no separate editor to learn.',
+      `Free to try without an account. ${RETENTION_PROMISE}.`,
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
+      supportedOutputFormats: ['jpg', 'png', 'webp'],
+      processingNotes: [
+        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+      ],
+    },
+    faq: [
+      {
+        question: 'How does the object removal work?',
+        answer:
+          'You mark an area with a rectangle. An inpainting model then generates new pixels for that area so it matches the nearby texture, colors and lines.',
+      },
+      {
+        question: 'What kinds of objects can it remove well?',
+        answer:
+          'Small to medium objects on simple or repeating backgrounds such as sky, grass, sand, water, walls and floors. Complex scenes and large objects are harder.',
+      },
+      {
+        question: 'Why does the repaired area look smudged?',
+        answer:
+          'The model has to invent detail. Try a tighter box, remove the object in several smaller steps, or choose a photo where the background behind the object is simpler.',
+      },
+      {
+        question: 'Do I have to draw a precise outline?',
+        answer:
+          'No. Rectangles are enough, and drawing them slightly larger than the object usually gives a cleaner result.',
+      },
+      {
+        question: 'Is the removed content stored?',
+        answer:
+          'Only the output you download. The original and result are handled like any other upload and expire according to the retention rules.',
+      },
+    ],
+    related: [
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Anonymize people instead of erasing objects.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Cut the subject out entirely.' },
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up noise and compression afterward.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+    ],
+    primaryKeyword: 'remove object from photo',
+    secondaryKeywords: [
+      'erase object from image',
+      'remove unwanted objects from photos',
+      'ai object remover',
+      'inpainting online',
+      'remove photobomber',
+    ],
+  },
+  // ----------------------------------------------------------------------- MM28: AI AUDIO TOOLS (op-specific pages)
+  {
+    slug: 'clean-voice-audio',
+    name: 'Clean Voice Audio',
+    h1: 'Clean Up Voice Recordings with AI',
+    tagline:
+      'Make speech clearer by reducing hiss, room tone and rumble in podcasts, interviews and voice memos.',
+    metaTitle: 'Clean Up Voice Recordings with AI | Media Manipulator',
+    metaDescription:
+      `Clean up a voice recording with AI. Reduce hiss, hum and room noise so speech is easier to hear. Runs on our own GPU. ${RETENTION_PROMISE}.`,
+    ogTitle: 'Clean Up Voice Recordings with AI',
+    ogDescription:
+      'Reduce hiss, hum and room noise so speech is clearer in podcasts, interviews and voice memos.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'audio',
+      defaultTask: 'audio_converter',
+      preset: { kind: 'audio', aiOperation: 'clean_voice', hideOperationSelect: true },
+      title: 'Clean up a voice recording',
+      description:
+        'Upload a recording. Clean Voice is already applied, so there is no operation menu to set. Choose an output format if you need something other than the default, then convert.',
+    },
+    intro:
+      'A phone voice memo in a echoey kitchen, a podcast guest on a laptop microphone, a lecture recorded from the back of the room: the words are there, but they are buried under hiss and room sound. Clean Voice processes the recording with an AI speech-enhancement step to bring the speaker forward and quiet what is not speech. It is built for talking, not for music.',
+    whatItDoes: [
+      'Applies an AI speech-enhancement pass that lifts voice and suppresses steady background sound.',
+      'Reduces hiss, hum, fans, room tone and light reverb in spoken recordings.',
+      'Accepts common audio formats and returns the cleaned audio in the format you select.',
+      'Skips standard bitrate and EQ controls, since the AI pass handles the cleanup.',
+    ],
+    flowSteps: [
+      { title: 'Upload a recording', description: 'Voice memos, interview audio, podcast takes or lecture captures.' },
+      { title: 'Clean Voice is preset', description: 'No menu: the page is already set to the voice cleanup operation.' },
+      { title: 'AI enhances the speech', description: 'The model separates the voice from distracting sound and rebalances it.' },
+      { title: 'Download the cleaned audio', description: 'Listen with headphones before using it.' },
+    ],
+    advancedDetails: [
+      'Heavy cleanup can make a voice sound slightly processed or watery. If it does, compare against the original and avoid running the result through a second cleanup.',
+      'Competing voices, music or sudden loud noises are harder to separate than steady background sound.',
+      'For music beds under speech, try the vocal isolation tools instead; this operation is tuned for talking.',
+      'Longer files and daily AI usage depend on your plan; the form shows the limits that apply when you upload.',
+    ],
+    whyItMatters: [
+      'Listeners abandon audio that is tiring to hear, even when the content is good.',
+      'Clean speech also makes transcription and captions noticeably more accurate.',
+      'A one-step cleanup is faster than learning to tune a noise gate and equalizer by ear.',
+    ],
+    useCases: [
+      { title: 'Podcasts and interviews', description: 'Tidy up a remote guest recorded on a basic microphone.' },
+      { title: 'Voice memos and notes', description: 'Make a phone recording understandable later.' },
+      { title: 'Lectures and meetings', description: 'Improve a recording captured from the back of a room.' },
+      { title: 'Video voice-overs', description: 'Polish narration before adding it to a video project.' },
+    ],
+    whyMediaManipulator: [
+      'The enhancement runs on our own GPU, so your recording is not sent to an outside AI provider.',
+      'Operation is locked to voice cleanup, so you get the right result with no menu hunting.',
+      `Free to try without an account. ${RETENTION_PROMISE}.`,
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
+      supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
+      processingNotes: [
+        'Quota and length limits for AI operations depend on your plan and are shown live in the form.',
+      ],
+    },
+    faq: [
+      {
+        question: 'Will it remove all background noise?',
+        answer:
+          'It greatly reduces steady sounds such as hiss, hum and room tone. Sudden noises, other voices and music are harder, so results vary with the recording.',
+      },
+      {
+        question: 'Can it make a bad microphone sound professional?',
+        answer:
+          'It can make speech clearer, but it cannot add quality that was never recorded. Distortion or heavy clipping cannot be fully fixed.',
+      },
+      {
+        question: 'How is this different from removing background noise?',
+        answer:
+          'Clean Voice focuses on improving the speech itself, while the background noise tool concentrates on lowering the noise around it. If one does not suit your recording, try the other.',
+      },
+      {
+        question: 'Does it work on music?',
+        answer:
+          'It is tuned for speech and can damage music. To work with singing, use the vocal isolation or vocal removal tools.',
+      },
+    ],
+    related: [
+      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Focus on lowering the noise around the speaker.' },
+      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Turn clean speech into text.' },
+      { label: 'Convert WAV to MP3', to: '/tools/convert-wav-to-mp3', description: 'Shrink the cleaned file for sharing.' },
+    ],
+    primaryKeyword: 'clean up voice recording',
+    secondaryKeywords: [
+      'improve voice quality online',
+      'enhance speech audio',
+      'ai voice cleaner',
+      'make voice clearer',
+      'podcast audio cleanup',
+    ],
+  },
+  {
+    slug: 'remove-background-noise',
+    name: 'Remove Background Noise',
+    h1: 'Remove Background Noise from Audio Online',
+    tagline:
+      'Lower hiss, hum, traffic and room noise in a recording with an AI denoiser, keeping the main sound in front.',
+    metaTitle: 'Remove Background Noise from Audio Online | Media Manipulator',
+    metaDescription:
+      `Remove background noise from audio. An AI denoiser lowers hiss, hum and ambient sound in recordings. Runs on our own GPU. ${RETENTION_PROMISE}.`,
+    ogTitle: 'Remove Background Noise from Audio Online',
+    ogDescription:
+      'An AI denoiser that lowers hiss, hum, traffic and room noise in audio recordings.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'audio',
+      defaultTask: 'audio_converter',
+      preset: { kind: 'audio', aiOperation: 'remove_background_noise' },
+      title: 'Remove background noise',
+      description:
+        'Upload a recording. Remove Background Noise is already selected for you. You can still change the output format, then convert.',
+    },
+    intro:
+      'Air conditioners, computer fans, street traffic and electrical hum are all steady sounds that sit underneath what you actually meant to record. This page applies an AI denoising model to lower that bed of noise and leave the main audio easier to hear. It suits interviews, voice-overs, field recordings and the audio track pulled from a video.',
+    whatItDoes: [
+      'Applies an AI denoiser that estimates the background and subtracts it.',
+      'Reduces constant noise such as hiss, hum, fans and street ambience.',
+      'Keeps the standard format selector so you can choose WAV, MP3 or another output.',
+      'Runs on a GPU server we operate rather than an outside AI service.',
+    ],
+    flowSteps: [
+      { title: 'Upload audio', description: 'Any common audio file, including audio extracted from video.' },
+      { title: 'Denoise is preselected', description: 'The AI operation is already set to Remove Background Noise.' },
+      { title: 'AI lowers the noise', description: 'The model separates steady noise from the foreground sound.' },
+      { title: 'Download and compare', description: 'Listen to the result next to the original before you use it.' },
+    ],
+    advancedDetails: [
+      'Steady noise is far easier to remove than random clatter, conversation or music in the background.',
+      'Very aggressive denoising can leave a watery or hollow quality on voices. Always compare against the original.',
+      'Output as WAV if you plan more editing, then export to MP3 at the end so you only compress once.',
+      'AI operations bypass the standard bitrate and EQ controls on the form.',
+    ],
+    whyItMatters: [
+      'Constant noise fatigues listeners and hides quieter words.',
+      'Many recordings cannot be redone: a wedding, a lecture, a family video.',
+      'Lower noise also helps automatic captions and transcripts catch more words correctly.',
+    ],
+    useCases: [
+      { title: 'Video soundtracks', description: 'Extract the audio from a clip and quiet the fan or wind noise.' },
+      { title: 'Field recordings', description: 'Reduce ambient hum in a recording captured outdoors or on the road.' },
+      { title: 'Calls and meetings', description: 'Tidy up an exported call recording.' },
+      { title: 'Old digitized tapes', description: 'Lower tape hiss in a converted cassette recording.' },
+    ],
+    whyMediaManipulator: [
+      'The denoiser runs on our own GPU, so your audio is not sent to an outside AI provider.',
+      'Choose your output format in the same step.',
+      `Free to try without an account. ${RETENTION_PROMISE}.`,
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
+      supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
+      processingNotes: [
+        'Quota and length limits for AI operations depend on your plan and are shown live in the form.',
+      ],
+    },
+    faq: [
+      {
+        question: 'What kinds of noise does it handle best?',
+        answer:
+          'Steady sounds: hiss, hum, fans, air conditioning, room tone and constant traffic. Sudden bangs, overlapping conversation and music are much harder to remove.',
+      },
+      {
+        question: 'Will my voice sound different afterward?',
+        answer:
+          'Possibly a little. Strong denoising can make voices sound thinner or slightly processed, which is why you should compare with the original.',
+      },
+      {
+        question: 'Can I use it on a video?',
+        answer:
+          'Extract the audio from the video first, denoise it here, then put it back with the stitch-audio tool.',
+      },
+      {
+        question: 'Which output format should I choose?',
+        answer:
+          'WAV keeps full quality for more editing. MP3 is smaller for sharing. If you will edit again, choose WAV now and compress at the end.',
+      },
+    ],
+    related: [
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Improve the speech itself, not just the noise.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Pull the audio track out of a video first.' },
+      { label: 'Stitch audio to video', to: '/tools/stitch-audio-to-video', description: 'Put the cleaned audio back onto your video.' },
+      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
+    ],
+    primaryKeyword: 'remove background noise from audio',
+    secondaryKeywords: [
+      'audio denoiser online',
+      'reduce noise in recording',
+      'remove hiss from audio',
+      'ai noise reduction',
+      'remove hum from audio',
+    ],
+  },
+  {
+    slug: 'remove-vocals-from-song',
+    name: 'Remove Vocals from a Song',
+    h1: 'Remove Vocals from a Song for an Instrumental or Karaoke Track',
+    tagline:
+      'Strip the singing from a track and keep the music, for karaoke, practice and backing tracks. Use only on music you have rights to.',
+    metaTitle: 'Remove Vocals from a Song: Karaoke Maker | Media Manipulator',
+    metaDescription:
+      `Remove vocals from a song with AI and download the instrumental as WAV. Karaoke and practice tracks, on our own GPU. ${RETENTION_PROMISE}.`,
+    ogTitle: 'Remove Vocals from a Song for Karaoke',
+    ogDescription:
+      'Strip the singing from a song with AI and download the instrumental as a lossless WAV.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'audio',
+      defaultTask: 'audio_converter',
+      defaultOutputFormat: 'wav',
+      preset: { kind: 'audio', aiOperation: 'remove_vocals', hideOperationSelect: true, format: 'wav' },
+      title: 'Remove vocals from a song',
+      description:
+        'Upload a song. Remove Vocals is already selected, and the instrumental comes back as WAV, which is lossless but a larger file. Press convert.',
+    },
+    intro:
+      'Karaoke nights, singing practice and cover recordings all need the same thing: the band without the singer. An AI source-separation model splits a finished mix into vocals and accompaniment, and this page hands you the accompaniment. The instrumental is delivered as a lossless WAV so you can edit it or convert it to MP3 yourself.',
+    whatItDoes: [
+      'Separates the vocal part from the rest of the mix using AI.',
+      'Returns the instrumental (everything but the lead vocal) as a single track.',
+      'Outputs lossless WAV by default so nothing is lost before your own editing.',
+      'Runs on our own GPU, not a third-party service.',
+    ],
+    flowSteps: [
+      { title: 'Upload a song', description: 'Use a track you own or are licensed to use.' },
+      { title: 'Remove Vocals is preset', description: 'No menu to configure; the page is set to remove the singing.' },
+      { title: 'AI splits the mix', description: 'The model estimates the vocal and the accompaniment separately.' },
+      { title: 'Download the instrumental', description: 'Save the WAV, or convert it to MP3 for your phone.' },
+    ],
+    advancedDetails: [
+      'Separation is never perfect. Faint vocal ghosts, reverb tails and backing harmonies may remain in the instrumental.',
+      'Mono-recorded or very old songs separate less cleanly than modern stereo productions.',
+      'A WAV file is large. Convert it to MP3 afterward if you only need to play it on a phone.',
+      'To get the vocal alone instead, use the isolate vocals page.',
+    ],
+    whyItMatters: [
+      'Official karaoke versions do not exist for most songs, especially niche or older ones.',
+      'Musicians use backing tracks to rehearse their own part against the original arrangement.',
+      'Making an instrumental from a song you own is quicker than hunting for a stem pack.',
+    ],
+    useCases: [
+      { title: 'Karaoke at home', description: 'Make a singalong track from a song you already have.' },
+      { title: 'Vocal practice', description: 'Rehearse over the original arrangement without the lead voice.' },
+      { title: 'Covers and remixes', description: 'Use the instrumental as a starting bed for your own recording.' },
+      { title: 'Video background music', description: 'Pull a vocal-free bed from music you are licensed to use.' },
+    ],
+    whyMediaManipulator: [
+      'Separation runs on our own GPU, so your music is not sent to an outside AI provider.',
+      'Lossless WAV output is the default, with nothing to configure.',
+      `Free to try without an account. ${RETENTION_PROMISE}.`,
+    ],
+    privacyNote: sharedPrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
+      supportedOutputFormats: ['wav'],
+      processingNotes: [
+        'Quota and length limits for AI operations depend on your plan and are shown live in the form.',
+      ],
+    },
+    faq: [
+      {
+        question: 'Will all the vocals be gone?',
+        answer:
+          'Most of the lead vocal, but not always everything. Reverb tails, backing harmonies and bleed can remain, and results vary by song.',
+      },
+      {
+        question: 'Why is the output a WAV file?',
+        answer:
+          'WAV is lossless, so the instrumental keeps all its detail for editing. It is larger than MP3; convert it afterward if you want something smaller.',
+      },
+      {
+        question: 'Can I use this on any song?',
+        answer:
+          'Only on music you own, have a license for, or can use under fair use where you live. You are responsible for how you use the result.',
+      },
+      {
+        question: 'How do I get just the vocals instead?',
+        answer:
+          'Use the isolate vocals page, which returns the vocal stem rather than the instrumental.',
+      },
+    ],
+    related: [
+      { label: 'Isolate vocals from a song', to: '/tools/isolate-vocals-from-song', description: 'Get the vocal stem instead of the instrumental.' },
+      { label: 'Convert WAV to MP3', to: '/tools/convert-wav-to-mp3', description: 'Shrink the instrumental for your phone.' },
+      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
+      { label: 'Audio waveform generator', to: '/tools/audio-waveform-generator', description: 'Turn the finished track into a waveform video.' },
+    ],
+    primaryKeyword: 'remove vocals from song',
+    secondaryKeywords: [
+      'karaoke maker online',
+      'make instrumental from song',
+      'vocal remover',
+      'ai vocal remover',
+      'create backing track',
+    ],
+  },
+
   // ----------------------------------------------------------------------- GENERAL CONVERTERS
   {
     slug: 'image-converter',
