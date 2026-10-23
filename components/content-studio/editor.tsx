@@ -82,6 +82,8 @@ import CaptionEditor from './caption-editor';
 import AudioDuckingPopover from './audio-ducking';
 import type { FocusModeApi } from './useFocusMode';
 import { Panel } from '@/components/darkroom/panel';
+import { trackAcceptsAsset } from '@/lib/studio/trackRules';
+import type { StudioMediaKind } from '@/lib/studioTypes';
 // Title-clip fonts (part 16): loading these faces here scopes them to the
 // editor routes — the marketing pages never fetch them.
 import './studio-fonts.css';
