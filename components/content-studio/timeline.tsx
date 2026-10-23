@@ -4,6 +4,7 @@ import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { trackAcceptsAsset } from '@/lib/studio/trackRules';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
@@ -565,9 +566,14 @@ interface TrackRowProps {
 
 const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
   const { setNodeRef, isOver, active } = useDroppable({ id: props.track.id, data: { kind: props.track.kind } });
-  const activeKind = (active?.data.current as { kind?: string } | undefined)?.kind;
-  const compatible = !!active && activeKind === props.track.kind;
-  const incompatible = !!active && activeKind !== props.track.kind;
+  const activeData = active?.data.current as { type?: string; kind?: string } | undefined;
+  const activeKind = activeData?.kind;
+  const accepts =
+    activeData?.type === 'asset'
+      ? trackAcceptsAsset(props.track.kind, activeKind as StudioMediaKind)
+      : activeKind === props.track.kind;
+  const compatible = !!active && accepts;
+  const incompatible = !!active && !accepts;
 
   // Only the clips near the scroll window are mounted. Selected clips and the
   // one being dragged are always kept: dnd-kit must never lose its active node

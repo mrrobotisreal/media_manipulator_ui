@@ -478,7 +478,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 
       // Asset dropped from the media bin onto a track (kind must match).
       if (data?.type === 'asset' && data.assetId) {
-        if (!targetTrack || data.kind !== targetTrack.kind) return;
+        if (!targetTrack || !trackAcceptsAsset(targetTrack.kind, data.kind as StudioMediaKind)) return;
         st.addClipFromAssetToTrack(data.assetId, targetTrack.id);
         return;
       }
