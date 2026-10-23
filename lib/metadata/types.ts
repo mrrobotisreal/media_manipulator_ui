@@ -115,5 +115,5 @@ export type InspectorSurface = 'home' | 'tool_page' | 'result';
 
 /** Events the diff modal and the result line report; MM11 maps them to analytics. */
 export type DiffEvent =
-  | { type: 'diff_opened'; surface: InspectorSurface }
+  | { type: 'diff_opened'; surface: InspectorSurface; removed: number; added: number; changed: number }
   | { type: 'mode_changed'; mode: 'unified' | 'split' };

@@ -7,6 +7,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { ensureMetadataShard } from '@/lib/i18n/ensureShard';
 import { keptCount } from '@/lib/metadata/diff-model';
 import type { DiffEvent, InspectorSurface } from '@/lib/metadata/types';
+import { useMetadataAnalytics } from '@/lib/metadata/useMetadataAnalytics';
 import { cn } from '@/lib/utils';
 import { LazyMetadataInspector } from './metadata-inspector-lazy';
 import { useJobBinaryUrls, useJobMetadata, useJobMetadataDiff } from './use-metadata-data';
@@ -64,6 +65,7 @@ function StripInner({ jobId, originalName, resultName, surface = 'result', discl
   const ref = useRef<HTMLDivElement>(null);
   const visible = useVisible(ref);
   const diffQ = useJobMetadataDiff(jobId, { enabled: visible });
+  const analytics = useMetadataAnalytics(surface);
   const [open, setOpen] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [shard, setShard] = useState(false);
@@ -117,7 +119,7 @@ function StripInner({ jobId, originalName, resultName, surface = 'result', discl
             originalName={originalName}
             resultName={resultName}
             surface={surface}
-            onEvent={onEvent}
+            onEvent={onEvent ?? analytics.onDiffEvent}
           /> : null}
         </>
       ) : null}
@@ -128,6 +130,7 @@ function StripInner({ jobId, originalName, resultName, surface = 'result', discl
 /** The result-side inspector (second inspector on the page, so no hash persistence). */
 export function ResultInspector({ jobId, name, surface = 'result', className }: { jobId: string; name?: string; surface?: InspectorSurface; className?: string }) {
   const q = useJobMetadata(jobId, 'result');
+  const analytics = useMetadataAnalytics(surface, q.data);
   const resolve = useJobBinaryUrls(jobId, 'result');
   if (!q.data) {
     return q.status === 'error' ? null : <LazyMetadataInspector document={EMPTY_DOC} surface={surface} status="loading" persistHash={false} className={className} />;
@@ -140,6 +143,7 @@ export function ResultInspector({ jobId, name, surface = 'result', className }: 
       status="ready"
       persistHash={false}
       resolveBinaryUrl={resolve}
+      onEvent={analytics.onEvent}
       className={className}
     />
   );

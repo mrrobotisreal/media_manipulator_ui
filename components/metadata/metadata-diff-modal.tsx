@@ -80,9 +80,6 @@ function DiffBody({ jobId, originalName, resultName, surface = 'result', onEvent
   useEffect(() => {
     emit.current = onEvent;
   });
-  useEffect(() => {
-    emit.current?.({ type: 'diff_opened', surface });
-  }, [surface]);
 
   const [visible, setVisible] = useState<Visible>({ removed: true, added: true, changed: true, unchanged: false });
   const [cats, setCats] = useState<string[]>([]);
@@ -95,6 +92,15 @@ function DiffBody({ jobId, originalName, resultName, surface = 'result', onEvent
     () => (diffQ.data ? buildDiffModel(diffQ.data, origQ.data) : null),
     [diffQ.data, origQ.data],
   );
+
+  // Reported once the counts exist (they are the event's payload), once per open.
+  const openedReported = useRef(false);
+  useEffect(() => {
+    if (!model || openedReported.current) return;
+    openedReported.current = true;
+    const { removed, added, changed } = model.totals;
+    emit.current?.({ type: 'diff_opened', surface, removed, added, changed });
+  }, [model, surface]);
 
   const tokens = useMemo(() => query.toLowerCase().split(/\s+/).filter(Boolean), [query]);
   const categories = useMemo(() => {

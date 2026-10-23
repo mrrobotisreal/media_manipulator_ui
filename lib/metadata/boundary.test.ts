@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 describe('lib/metadata import boundary', () => {
   it('imports nothing from components/ or React', () => {
-    const files = readdirSync(__dirname).filter((f) => /\.tsx?$/.test(f) && !f.endsWith('.test.ts'));
+    const files = readdirSync(__dirname).filter((f) => /\.tsx?$/.test(f) && !/\.test\.tsx?$/.test(f) && !/^use[A-Z]/.test(f)); // hooks (MM11 useMetadataAnalytics) are the React seam
     expect(files.length).toBeGreaterThan(5);
     for (const f of files) {
       const imports = [...readFileSync(join(__dirname, f), 'utf8').matchAll(/from\s+['"]([^'"]+)['"]/g)].map((m) => m[1]);

@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { useLocalization } from '@/i18n/useLocalization';
 import { removedLocation } from '@/lib/metadata/diff-model';
+import { useMetadataAnalytics } from '@/lib/metadata/useMetadataAnalytics';
 import { LazyMetadataInspector } from './metadata-inspector-lazy';
 import { ResultInspector } from './metadata-strip';
 import { useJobMetadataDiff, useMetadataInspect } from './use-metadata-data';
@@ -22,6 +23,7 @@ export interface ExifInspectProps {
 export function ExifInspect({ file, onStripAll, processing }: ExifInspectProps) {
   const { t } = useLocalization('interface');
   const q = useMetadataInspect(file);
+  const analytics = useMetadataAnalytics('tool_page', q.data);
   if (q.status === 'error') return null; // passive path: the form below still works
   return (
     <div data-testid="exif-inspect" className="space-y-2">
@@ -31,6 +33,7 @@ export function ExifInspect({ file, onStripAll, processing }: ExifInspectProps) 
           surface="tool_page"
           fileName={file.name}
           status="ready"
+          onEvent={analytics.onEvent}
           onStripAll={onStripAll}
           stripDisabled={processing}
           stripLabel={processing ? t('metadata.strip.stripping', { defaultValue: 'Stripping…' }) : t('metadata.strip.stripEverything')}
@@ -59,6 +62,7 @@ export function ExifResult({ jobId, originalName, resultName, strippedCount, ava
   const { t } = useLocalization('interface');
   const [open, setOpen] = useState(false);
   const diffQ = useJobMetadataDiff(jobId, { enabled: !!available?.result });
+  const analytics = useMetadataAnalytics('tool_page');
   if (!available?.result) return null; // pre-MM08 API: nothing to show
   const count = strippedCount ?? diffQ.data?.removed.length;
   const location = diffQ.data ? removedLocation(diffQ.data) : false;
@@ -83,6 +87,7 @@ export function ExifResult({ jobId, originalName, resultName, strippedCount, ava
         originalName={originalName}
         resultName={resultName}
         surface="tool_page"
+        onEvent={analytics.onDiffEvent}
       /> : null}
     </div>
   );
