@@ -2155,6 +2155,17 @@
     "home": {
       "inspect": "Inspect metadata",
       "privacyNote": "Inspection happens on our servers; the file is deleted after analysis."
+    },
+    "history": {
+      "action": "Metadata",
+      "title": "File metadata",
+      "description": "What the file carried, from the saved report.",
+      "switchLabel": "Which file",
+      "original": "Original",
+      "result": "Result",
+      "compare": "Compare",
+      "unavailable": "Metadata no longer available",
+      "loadFailed": "Could not load this metadata report."
     }
   }
 }
