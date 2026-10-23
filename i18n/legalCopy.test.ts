@@ -49,8 +49,8 @@ describe("legal retention copy", () => {
         expect(pages.legalCommon.whatChangedTitle?.length).toBeGreaterThan(10);
         expect(pages.legalCommon.whatChangedBody?.length).toBeGreaterThan(50);
         expect(pages.legalCommon.effectiveDate).toMatch(/2026/);
-        expect(pages.legalCommon.effectiveDate).toMatch(/23/);
-        expect(pages.legalCommon.lastUpdated).toMatch(/23/);
+        expect(pages.legalCommon.effectiveDate).toMatch(/24/);
+        expect(pages.legalCommon.lastUpdated).toMatch(/24/);
       });
 
       it("states the 6 month default and the 2 year ceiling", () => {

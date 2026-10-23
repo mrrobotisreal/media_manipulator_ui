@@ -494,16 +494,16 @@
     }
   },
   "legalCommon": {
-    "effectiveDate": "Gültig ab: 23.10.2026",
-    "lastUpdated": "Zuletzt aktualisiert: 23.10.2026",
+    "effectiveDate": "Gültig ab: 24.10.2026",
+    "lastUpdated": "Zuletzt aktualisiert: 24.10.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Was sich am 23.10.2026 geändert hat",
-    "whatChangedBody": "Die Aufbewahrung liegt jetzt in Ihrer Hand. Bei Besuchern ohne Konto werden Dateien weiterhin nach 24 Stunden gelöscht. Wenn Sie sich anmelden, bestimmen Sie selbst, wie lange wir Ihre Dateien aufbewahren, von 24 Stunden bis 2 Jahren (6 Monate, solange Sie es nicht ändern), und Sie können auf der Seite „Konto“ Dateien löschen, Ihre Daten exportieren oder Ihr Konto löschen. Der folgende Abschnitt zur Aufbewahrung beschreibt dies ausführlich."
+    "whatChangedTitle": "Was sich am 24.10.2026 geändert hat",
+    "whatChangedBody": "Wir haben diese Erklärung mit der heutigen Funktionsweise des Dienstes abgeglichen. Neu oder korrigiert: Zahlungen laufen über das Stripe-Konto der CreaTV Ltd. (daher können Checkout und Kartenabrechnung CreaTV anzeigen), die KI-Werkzeuge, die wir auf eigenen Servern betreiben, werden benannt, Google Analytics 4 und Werbung (einschließlich Cookies) sind genauer beschrieben, die Anmeldung per Firebase wird erklärt, und Darkroom innerhalb von CreaTV Studio wird behandelt. Die Aufbewahrung bleibt unverändert: 24 Stunden für Besucher, 24 Stunden bis 2 Jahre (standardmäßig 6 Monate) mit Konto."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -533,7 +533,8 @@
               "Ihren Konvertierungsverlauf zu führen, damit Sie aktuelle Konvertierungen herunterladen oder erneut öffnen können."
             ],
             "afterBullets": [
-              "Hochgeladene Dateien und erzeugte Ergebnisse werden für den in Abschnitt 3 beschriebenen Aufbewahrungszeitraum gespeichert: 24 Stunden, wenn Sie kein Konto haben, oder den von Ihnen gewählten Zeitraum, wenn Sie angemeldet sind. Sie können sie früher löschen."
+              "Hochgeladene Dateien und erzeugte Ergebnisse werden für den in Abschnitt 3 beschriebenen Aufbewahrungszeitraum gespeichert: 24 Stunden, wenn Sie kein Konto haben, oder den von Ihnen gewählten Zeitraum, wenn Sie angemeldet sind. Sie können sie früher löschen.",
+              "Wenn du den Metadaten-Inspektor nutzt, wird die Datei auf unserem Server mit ExifTool und ffprobe analysiert, der Bericht wird an deinen Browser zurückgegeben, und die temporäre Kopie der hochgeladenen Datei wird gelöscht, sobald die Analyse abgeschlossen ist."
             ]
           },
           {
@@ -619,7 +620,22 @@
             "title": "1.6 Zahlungs- und Abonnementdaten",
             "paragraphs": [
               "Wenn du Premium abonnierst, wird die Zahlung von unserem Zahlungsdienstleister Stripe abgewickelt. Deine Kartendaten gibst du auf den Seiten von Stripe ein, und Stripe verarbeitet sie; wir erhalten und speichern keine Kartennummern.",
-              "Wir speichern nur, was wir für dein Abonnement brauchen: deine Stripe-Kundenkennung, den Abonnementstatus, den Abrechnungszeitraum (monatlich oder jährlich) und das Ende deines aktuellen Zeitraums. Wir nutzen diese Daten, um dir den richtigen Tarif zu geben, deinen Abrechnungsstatus anzuzeigen und Rückerstattungen und Supportanfragen zu bearbeiten."
+              "Wir speichern nur, was wir für dein Abonnement brauchen: deine Stripe-Kundenkennung, den Abonnementstatus, den Abrechnungszeitraum (monatlich oder jährlich) und das Ende deines aktuellen Zeitraums. Wir nutzen diese Daten, um dir den richtigen Tarif zu geben, deinen Abrechnungsstatus anzuzeigen und Rückerstattungen und Supportanfragen zu bearbeiten.",
+              "Unser Stripe-Konto gehört der CreaTV Ltd., dem Unternehmen, das Media Manipulator betreibt. Deshalb können die Stripe-Checkout-Seite, deine Belege und die Abbuchung auf deiner Karte CreaTV (oder CreaTV Ltd.) statt Media Manipulator anzeigen."
+            ]
+          },
+          {
+            "title": "1.7 Kontoinformationen",
+            "paragraphs": [
+              "Wenn du ein Konto erstellst, wird die Anmeldung von Firebase Authentication abgewickelt, einem Google-Dienst. Du kannst dich mit E-Mail-Adresse und Passwort oder mit deinem Google-Konto anmelden. Firebase speichert deine Zugangsdaten und versendet die E-Mails, die für die Anmeldung nötig sind, etwa die E-Mail-Bestätigung.",
+              "Auf unserer Seite speichern wir einen Datensatz zu deinem Konto: deine E-Mail-Adresse, deinen Anzeigenamen, ob deine E-Mail bestätigt ist, deine Firebase-Anmeldekennung, deinen Tarif, wann du dich registriert und den Dienst zuletzt genutzt hast, die gewählten Aufbewahrungseinstellungen sowie deinen Konvertierungsverlauf und deine Projekte (Abschnitt 3). Wir versenden keine Werbe-E-Mails. Abgesehen von den E-Mails, die Firebase und Stripe versenden (zum Beispiel E-Mail-Bestätigung und Zahlungsbelege), versenden wir derzeit keine E-Mails."
+            ]
+          },
+          {
+            "title": "1.8 Darkroom innerhalb von CreaTV Studio",
+            "paragraphs": [
+              "Darkroom, unser Video-Editor, kann auch in CreaTV Studio eingebettet sein, ein Produkt desselben Unternehmens. In diesem Modus übergibt CreaTV Studio dein CreaTV-Anmeldetoken über deinen Browser an den eingebetteten Editor (eine Nachricht zwischen der CreaTV-Seite und dem Editor), und der Editor verwendet es ausschließlich für Aufrufe der eigenen Studio-Dienste von CreaTV. Deine Projekte, Medien und Exporte werden dann von den Diensten von CreaTV unter deinem CreaTV-Konto gespeichert und verarbeitet, nicht in einem Media-Manipulator-Konto, und es gilt die Datenschutzerklärung von CreaTV.",
+              "CreaTV Studio teilt dem eingebetteten Editor außerdem mit, ob du auf CreaTV Analyse und Werbung akzeptiert hast. Der eingebettete Editor zeigt weder unser Cookie-Banner noch Werbung an und führt unsere Analyse nicht aus."
             ]
           }
         ]
@@ -647,7 +663,7 @@
         "id": "retention",
         "title": "3. Dateispeicherung, Aufbewahrung und Löschung",
         "paragraphs": [
-          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien und Darkroom-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind."
+          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien und Darkroom-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu deinen Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
         ],
         "subsections": [
           {
@@ -666,7 +682,7 @@
           {
             "title": "3.2 Metadatenberichte",
             "paragraphs": [
-              "Metadatenberichte sind kleine Datensätze, die die technischen Eigenschaften einer Datei beschreiben. Mit einer Einstellung auf Ihrer Kontoseite legen Sie fest, ob Berichte aufbewahrt werden, nachdem die Dateien, die sie beschreiben, am Ende des Aufbewahrungszeitraums gelöscht wurden. Wenn Sie eine Datei selbst löschen, wird ihr Bericht mitgelöscht."
+              "Metadatenberichte sind kleine Datensätze, die die technischen Eigenschaften einer Datei beschreiben. Mit einer Einstellung auf Ihrer Kontoseite legen Sie fest, ob Berichte aufbewahrt werden, nachdem die Dateien, die sie beschreiben, am Ende des Aufbewahrungszeitraums gelöscht wurden. Wenn Sie eine Datei selbst löschen, wird ihr Bericht mitgelöscht. Besucher ohne Konto haben diese Einstellung nicht: Ihre Metadatenberichte werden zusammen mit ihren Dateien gelöscht."
             ]
           },
           {
@@ -722,6 +738,7 @@
         ],
         "afterBullets": [
           "Sämtliche von Media Manipulator eingesetzte KI-Verarbeitung erfolgt lokal auf unseren eigenen Servern oder auf von uns kontrollierter Infrastruktur. Wir lagern hochgeladene Dateien, erzeugte Ergebnisse, Transkripte, Zusammenfassungen, Beschreibungen oder Inhaltssicherheitsscans nicht zur Verarbeitung an KI-Anbieter Dritter aus.",
+          "Die KI-Funktionen nutzen offene Modelle und Werkzeuge, die wir selbst betreiben, hauptsächlich auf einem selbst gehosteten GPU-Server: Whisper für die Transkription, Real-ESRGAN für die Bildhochskalierung, Demucs zur Trennung von Audiospuren und weitere lokale Modelle, dazu über Ollama bereitgestellte Sprach- und Bildmodelle für Textaufgaben wie Zusammenfassungen, Beschreibungen und Untertitelübersetzung.",
           "Das bedeutet, dass Ihre hochgeladenen Dateien und erzeugten Ergebnisse bei Nutzung von KI-Funktionen innerhalb der Verarbeitungsumgebung von Media Manipulator verbleiben und gemäß den in dieser Datenschutzerklärung beschriebenen Speicher-, Aufbewahrungs-, Lösch- und Sicherheitspraktiken behandelt werden.",
           "Hochgeladene Dateien und erzeugte Ergebnisse werden gespeichert und gelöscht, wie in Abschnitt 3 beschrieben, auch wenn KI-Funktionen genutzt werden. Nach Ablauf des jeweils geltenden Aufbewahrungszeitraums werden sie aus unseren aktiven Systemen gelöscht, sofern keine frühere Löschung erfolgt oder eine begrenzte Aufbewahrung aus Gründen der Sicherheit, Missbrauchsprävention, gesetzlichen Compliance oder Durchsetzung rechtlich erforderlich ist.",
           "KI-generierte Ausgaben können unvollkommen, unvollständig oder ungenau sein. Nutzer sind dafür verantwortlich, jede KI-generierte Ausgabe zu überprüfen, bevor sie sich darauf verlassen.",
@@ -732,6 +749,7 @@
         "title": "5. Werbung",
         "paragraphs": [
           "Media Manipulator kann Werbung anzeigen, einschließlich Werbung, die von Google AdSense oder anderen Werbepartnern ausgeliefert wird.",
+          "Werbung ist begrenzt und kann sich ändern. Wir zeigen Anzeigen nur auf ausgewählten Tool-Seiten, nie auf unserer Startseite, der Preisseite, der Kontoseite oder den rechtlichen Seiten, und Premium-Abonnenten sehen keine Werbung. Anzeigen erscheinen nur, wenn Werbung für die Website eingeschaltet ist, und das Google-Werbeskript wird nur auf einer Seite geladen, die tatsächlich eine Anzeige zeigt. Die Google-Einwilligungssignale für Werbung sind standardmäßig abgelehnt und werden entsprechend deiner Auswahl unter „Cookie-Einstellungen“ in der Fußzeile aktualisiert.",
           "Drittanbieter, einschließlich Google, können Cookies verwenden, um Werbung auf Grundlage früherer Besuche eines Nutzers auf Media Manipulator oder anderen Websites auszuliefern. Googles Nutzung von Werbe-Cookies ermöglicht es Google und seinen Partnern, Nutzern Werbung auf Grundlage ihres Besuchs von Media Manipulator und/oder anderer Websites im Internet anzuzeigen.",
           "Nutzer können personalisierter Werbung widersprechen, indem sie die Anzeigeneinstellungen von Google besuchen. Nutzer können der Verwendung von Cookies durch einige Drittanbieter für personalisierte Werbung auch widersprechen, indem sie branchenweite Opt-out-Seiten besuchen, sofern verfügbar.",
           "Werbepartner können Informationen von unserer Website und anderen Websites erheben oder erhalten und diese Informationen zur Bereitstellung von Messdiensten und zielgerichteter Werbung verwenden.",
@@ -754,7 +772,7 @@
               "aufgerufene Seiten und wie lange Sie aktiv mit ihnen beschäftigt waren;",
               "welches Werkzeug Sie genutzt haben und mit welchem Ergebnis — Datei ausgewählt, Upload gestartet oder fehlgeschlagen, Auftrag gestartet, abgeschlossen oder fehlgeschlagen, Ergebnis in Vorschau angesehen, Download gestartet oder abgeschlossen;",
               "die Dateiendung, Dateigröße und Medienart der von Ihnen verarbeiteten Datei;",
-              "die von Ihnen gewählten Werkzeugeinstellungen;",
+              "die von dir gewählten Tool-Einstellungen, erfasst als voreingestellte Werte oder Bereiche und nicht als Freitext;",
               "Kontoereignisse: ein Konto wurde erstellt, angemeldet oder abgemeldet;",
               "Messungen der Seitenleistung (Core Web Vitals) und clientseitige Fehler;",
               "Ihr Gerätetyp, Browser und dessen Version, Betriebssystem, Viewport-Größe, Sprache und Zeitzone;",
@@ -776,8 +794,8 @@
               "Wir erheben keine Dateinamen. Es wird nur die Dateiendung erfasst.",
               "Wir erheben nicht den Inhalt Ihrer Dateien, Transkripte, Untertitel, Zusammenfassungen oder anderer KI-generierter Ausgaben.",
               "Wir erheben keine E-Mail-Adressen in Ereignisdaten. Alles, was einer E-Mail-Adresse ähnelt, wird automatisch entfernt, sowohl in Ihrem Browser als auch erneut auf unserem Server.",
-              "Wir verwenden keine Cookies für die Analytik. Die oben beschriebenen Kennungen werden im lokalen Speicher Ihres Browsers gespeichert, und unser Analytik-Endpunkt ist so konfiguriert, dass Ihr Browser überhaupt keine Cookies an ihn senden kann.",
-              "Wir verkaufen oder teilen Ihre Analysedaten mit niemandem."
+              "Unsere eigene Analyse verwendet keine Cookies. Ihre Kennungen werden im lokalen Speicher deines Browsers abgelegt, und unser Analyse-Endpunkt ist so konfiguriert, dass dein Browser überhaupt keine Cookies an ihn senden kann. Google Analytics 4 (Abschnitt 6.4) ist davon getrennt und kann, wenn du Analyse erlaubst, eigene Cookies setzen.",
+              "Wir verkaufen deine Analysedaten nicht. Die einzigen Analysedaten, die unsere Systeme verlassen, sind die drei Google-Analytics-4-Ereignisse aus Abschnitt 6.4, abhängig von deiner Analyse-Auswahl."
             ]
           },
           {
@@ -792,7 +810,7 @@
           {
             "title": "6.4 Google Analytics 4",
             "paragraphs": [
-              "Wir führen eine bewusst minimale Google-Analytics-4-Konfiguration als unabhängige Gegenprobe zu unseren eigenen Zahlen. Genau drei Ereignisse werden an Google gesendet: ein Seitenaufruf, eine Kontoregistrierung und ein abgeschlossener Auftrag. Es wird nichts anderes weitergeleitet, und dies unterliegt derselben Einwilligungsentscheidung wie unsere Erstanbieter-Analytik."
+              "Wir betreiben eine bewusst minimale Google-Analytics-4-Konfiguration als unabhängige Gegenprobe zu unseren eigenen Zahlen. Genau drei Ereignisse werden an Google gesendet: ein Seitenaufruf (mit Seitenadresse und Titel), eine Kontoregistrierung (mit der Registrierungsmethode) und ein abgeschlossener Auftrag (mit Tool-Name und Medientyp). Nichts anderes wird weitergeleitet. Sie werden nur gesendet, wenn deine Analyse-Auswahl es erlaubt, und die Google-Einwilligungssignale bleiben bis dahin abgelehnt. Das Google-Tag-Skript wird dennoch auf jeder Seite geladen, sodass Google die technischen Daten erhält, die jede Webanfrage mit sich bringt, etwa deine IP-Adresse und Browserangaben; ist Analyse erlaubt, kann Google eigene Cookies setzen."
             ]
           },
           {
@@ -832,8 +850,8 @@
         ],
         "bullets": [
           "Hosting- und Cloud-Infrastrukturanbieter;",
-          "Anbieter von Dateispeicherung und -verarbeitung;",
-          "Analytikanbieter;",
+          "Amazon Web Services, das unseren Dateispeicher hostet (Amazon S3, Region us-west-2);",
+          "Google, für Firebase Authentication (Anmeldung), die begrenzten Google-Analytics-4-Ereignisse aus Abschnitt 6.4 und, wo Werbung gezeigt wird, Google AdSense;",
           "Werbepartner;",
           "Anbieter von Sicherheits-, Missbrauchserkennungs- und Inhaltssicherheitsdiensten;",
           "die KI-Verarbeitung erfolgt lokal auf unseren eigenen Servern oder auf von uns kontrollierter Infrastruktur, und wir geben hochgeladene Dateien, erzeugte Ergebnisse, Transkripte, Zusammenfassungen, Beschreibungen oder Inhaltssicherheitsscans nicht zur KI-Verarbeitung an KI-Anbieter Dritter weiter;",
@@ -902,7 +920,7 @@
           "Sie können Ihre Analytik-Entscheidung jederzeit über „Cookie-Einstellungen“ in der Fußzeile ändern. Wenn Sie sich in den Vereinigten Staaten befinden, können Sie über „Meine personenbezogenen Daten nicht verkaufen oder teilen“ in der Fußzeile jeder Weitergabe zu Werbezwecken widersprechen.",
           "Sie können Ihre Analysedaten selbst, sofort, über „Cookie-Einstellungen“ in der Fußzeile unter „Ihre Daten“ exportieren oder löschen. Export lädt eine vollständige Kopie dessen herunter, was unsere Analytik als Datei über Sie enthält; Löschen entfernt Ihren Analyseverlauf dauerhaft und gibt Ihrem Browser eine brandneue anonyme ID. Wenn Sie angemeldet sind, gilt beides für jedes mit Ihrem Konto verknüpfte Gerät. Da diese Werkzeuge sofort wirken, erfüllen sie die nach geltendem Recht zulässigen Antwortfristen (30 Tage nach CPRA, ein Monat nach der DSGVO) bereits durch ihre Funktionsweise. Sie können uns auch über die untenstehenden Kontaktdaten per E-Mail erreichen, und wir werden innerhalb dieser Fristen dasselbe in Ihrem Namen tun.",
           "Eine Kategorie von Aufzeichnungen überdauert die Löschung: das Protokoll Ihrer eigenen Einwilligungs- und Widerspruchsentscheidungen. Gesetze, die Ihnen die Löschung Ihrer Daten erlauben, verpflichten uns auch, nachweisen zu können, wie wir mit Ihren Entscheidungen umgegangen sind (Art. 17 Abs. 3 lit. b DSGVO), daher werden diese Aufzeichnungen fünf Jahre lang aufbewahrt und dann gelöscht. Sie enthalten Ihre Entscheidungen und wann Sie diese getroffen haben — nicht Ihr Surfverhalten.",
-          "Wenn Sie ein Konto haben, können Sie einzelne Dateien löschen, alle Ihre Dateien löschen, Ihre Daten exportieren oder Ihr Konto selbst löschen, und zwar auf der Seite „Konto“ (siehe Abschnitt 3).",
+          "Wenn du ein Konto hast, kannst du einzelne Dateien löschen, alle deine Dateien löschen, deine Daten als ZIP-Datei exportieren, dich auf allen Geräten abmelden oder dein Konto selbst über die Kontoseite löschen (siehe Abschnitt 3).",
           "Sobald eine Datei gelöscht wurde, sei es durch Sie oder nach Ablauf ihres Aufbewahrungszeitraums, können wir sie nicht wiederherstellen und keinen Zugriff darauf gewähren."
         ]
       },
@@ -955,7 +973,8 @@
           "vorübergehender Konvertierungsverlauf und herunterladbare verarbeitete Ausgaben."
         ],
         "afterBullets": [
-          "Einige Funktionen können browserbasiert sein, während andere ein vorübergehendes Hochladen und eine Verarbeitung auf unseren Servern erfordern können."
+          "Einige Funktionen können browserbasiert sein, während andere ein vorübergehendes Hochladen und eine Verarbeitung auf unseren Servern erfordern können.",
+          "Darkroom kann auch eingebettet in CreaTV Studio genutzt werden. In diesem Fall verbindet sich der Editor mit den Diensten von CreaTV, und für dein CreaTV-Konto und deine Inhalte gelten zusätzlich die eigenen Bedingungen von CreaTV."
         ]
       },
       {
@@ -1192,6 +1211,7 @@
         "title": "9. Kontoregistrierung",
         "paragraphs": [
           "Die meisten Funktionen von Media Manipulator sind ohne Konto verfügbar. Ein Konto schaltet höhere Limits und einen gespeicherten Verlauf frei, und Premium ist ein kostenpflichtiges Abonnement, das in Abschnitt 10 beschrieben wird.",
+          "Konten werden von Firebase Authentication (einem Google-Dienst) verwaltet; du kannst dich mit E-Mail-Adresse und Passwort oder mit Google anmelden. Du kannst dich auf allen Geräten abmelden oder dein Konto auf der Kontoseite löschen. Das Löschen deines Kontos beendet außerdem ein bestehendes Premium-Abonnement, wie in der Datenschutzerklärung beschrieben.",
           "Sie sind für die Vertraulichkeit Ihrer Kontodaten und für alle Aktivitäten unter Ihrem Konto verantwortlich.",
           "Wir behalten uns das Recht vor, Konten zu sperren, einzuschränken oder zu kündigen, die gegen diese Bedingungen verstoßen, ein rechtliches Risiko schaffen, den Dienst missbrauchen oder Nutzern, Werbetreibenden, unserer Marke oder unserer Infrastruktur schaden."
         ]
@@ -1199,11 +1219,11 @@
       {
         "title": "10. Zahlungen, Verlängerungen und Rückerstattungen",
         "paragraphs": [
-          "Premium ist ein kostenpflichtiges Abonnement, das in US-Dollar monatlich oder jährlich abgerechnet wird. Preis und Abrechnungszeitraum werden auf der Preisseite und vor der Zahlung erneut an der Kasse angezeigt. Die Preise verstehen sich in USD; je nach Wohnort können Steuern anfallen.",
+          "Premium ist ein kostenpflichtiges Abonnement, das in US-Dollar abgerechnet wird, derzeit 7 $ pro Monat oder 70 $ pro Jahr. Preis und Abrechnungszeitraum werden auf der Preisseite und noch einmal an der Kasse vor der Zahlung angezeigt. Der an der Kasse angezeigte Betrag ist der abgebuchte Betrag; wir berechnen oder erheben derzeit keine Umsatzsteuer oder MwSt. an der Kasse.",
           "Dein Abonnement verlängert sich automatisch am Ende jedes Abrechnungszeitraums, bis du kündigst. Du kannst jederzeit im Bereich „Abrechnung“ deiner Kontoseite oder über das dort verlinkte Abrechnungsportal kündigen. Nach der Kündigung bleibt dein Premium-Zugang bis zum Ende des bereits bezahlten Zeitraums bestehen, und es wird nichts mehr abgebucht.",
           "Wenn du nicht zufrieden bist, kannst du innerhalb von 14 Tagen nach deiner ersten Zahlung per E-Mail an support@media-manipulator.com deren Rückerstattung verlangen. Verlängerungszahlungen werden nicht erstattet, soweit das Gesetz nichts anderes vorschreibt.",
           "Schlägt eine Zahlung fehl, versuchen wir es erneut, und dein Premium-Zugang bleibt bis zu 7 Tage bestehen. Ist die Zahlung danach weiterhin nicht erfolgt, kehrt dein Konto zum kostenlosen Tarif zurück, bis du deine Zahlungsmethode aktualisierst und erneut abonnierst.",
-          "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe."
+          "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe. Unser Stripe-Konto gehört der CreaTV Ltd.; daher können die Stripe-Checkout-Seite, Belege und die Abbuchung auf deiner Karte CreaTV (oder CreaTV Ltd.) statt Media Manipulator anzeigen."
         ]
       },
       {
