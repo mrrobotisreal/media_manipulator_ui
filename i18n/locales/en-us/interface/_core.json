@@ -151,8 +151,6 @@
       "dragDrop": "Drag and drop your file here",
       "orClickSelect": "or click to select from your computer",
       "chooseFile": "Choose File",
-      "analyzing": "Analyzing...",
-      "identifyDetails": "Identify File Details",
       "unsupportedFile": "Unsupported file type. Please select an image, video, or audio file."
     },
     "options": {

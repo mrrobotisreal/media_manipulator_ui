@@ -45,6 +45,10 @@ export interface DescribableJob {
   resultMime?: string;
   /** Present on jobs that already carry a download URL; otherwise derived from the id. */
   resultUrl?: string;
+  /** MM08 additive: which metadata documents exist for the job. */
+  metadataAvailable?: { original: boolean; result: boolean };
+  /** MM08 additive: tags a strip job removed. */
+  strippedCount?: number;
 }
 
 export interface ResultOriginal {
@@ -72,6 +76,10 @@ export interface ResultDescriptor {
   sidecars?: { transcript?: string; analysis?: string; manifest?: string };
   /** Transcode probe report (HLS/DASH): the stream viewer's fallback when a bundle cannot play. */
   probe?: TranscodeProbeResponse;
+  /** Metadata documents the API can serve for this job (absent on pre-MM08 APIs). */
+  metadataAvailable?: { original: boolean; result: boolean };
+  /** Tags a strip job removed, when the API said. */
+  strippedCount?: number;
 }
 
 export interface DescribeInput {
@@ -153,6 +161,7 @@ export function extensionOf(fileName: string | undefined): string {
  * extension and no hint those are `unknown` rather than a guess.
  */
 const KIND_BY_TASK: Record<string, ResultKind> = {
+  inspect_metadata: 'metadata',
   transcribe_video: 'transcript',
   srt_generator: 'captions',
   caption_translator: 'captions',
@@ -310,5 +319,7 @@ export function describe(input: DescribeInput): ResultDescriptor {
     mimeFromServer: fromServer,
     original,
     ...(input.probe ? { probe: input.probe } : {}),
+    ...(job.metadataAvailable ? { metadataAvailable: job.metadataAvailable } : {}),
+    ...(job.strippedCount ? { strippedCount: job.strippedCount } : {}),
   };
 }

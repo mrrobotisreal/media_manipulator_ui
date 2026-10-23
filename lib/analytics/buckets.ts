@@ -113,3 +113,15 @@ export function droppedFrameRatioBucket(ratio: number): string {
   if (ratio < 0.15) return '5-15%';
   return '15%+';
 }
+
+/**
+ * Number of metadata tags (inspector document size, or a diff's removed/added/changed
+ * count). One definition for every metadata event; never inline these boundaries.
+ */
+export function metadataTagBucket(n: number): '0' | '1-25' | '26-100' | '101-500' | '500+' {
+  if (!(n > 0)) return '0';
+  if (n <= 25) return '1-25';
+  if (n <= 100) return '26-100';
+  if (n <= 500) return '101-500';
+  return '500+';
+}

@@ -98,6 +98,30 @@ function ensureShardsForLanguage(language: string): Promise<void> {
   return pending;
 }
 
+let metadataShardPromise: Promise<void> | null = null;
+
+/**
+ * Merges the English-only `interface/metadata.json` shard (~120 KB, mostly
+ * catalog tag descriptions) into the en-US `interface` bundle. Other languages
+ * resolve it through i18next `fallbackLng` (en-US) until a per-locale
+ * translation ships; see the ENGLISH_ONLY_SHARDS exception in
+ * `i18n/localeParity.test.ts`. Call from the dynamic import that loads the
+ * metadata inspector. Idempotent.
+ */
+export function ensureMetadataShard(): Promise<void> {
+  if (!metadataShardPromise) {
+    metadataShardPromise = import('@/i18n/locales/en-us/interface/metadata.json')
+      .then((mod) => {
+        getBrowserI18n().addResourceBundle(defaultLanguage, 'interface', mod.default, true, true);
+      })
+      .catch((error) => {
+        metadataShardPromise = null;
+        throw error;
+      });
+  }
+  return metadataShardPromise;
+}
+
 export function ensureToolShards(): Promise<void> {
   const i18n = getBrowserI18n();
   shardsRequested = true;

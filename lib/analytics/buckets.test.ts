@@ -8,6 +8,7 @@ import {
   fileSizeBucket,
   fpsBucket,
   latencyMsBucket,
+  metadataTagBucket,
   ratioBucket,
   sessionSecondsBucket,
   timelineDurationBucket,
@@ -127,5 +128,22 @@ describe('droppedFrameRatioBucket', () => {
     expect(droppedFrameRatioBucket(0.01)).toBe('1-5%');
     expect(droppedFrameRatioBucket(0.05)).toBe('5-15%');
     expect(droppedFrameRatioBucket(0.15)).toBe('15%+');
+  });
+});
+
+describe('metadataTagBucket', () => {
+  it.each([
+    [0, '0'],
+    [1, '1-25'],
+    [25, '1-25'],
+    [26, '26-100'],
+    [100, '26-100'],
+    [101, '101-500'],
+    [500, '101-500'],
+    [501, '500+'],
+    [-3, '0'],
+    [Number.NaN, '0'],
+  ])('%d -> %s', (n, expected) => {
+    expect(metadataTagBucket(n)).toBe(expected);
   });
 });

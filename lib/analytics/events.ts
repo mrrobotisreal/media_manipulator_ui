@@ -56,6 +56,13 @@ export const EVENTS = {
   JOB_FAILED: 'job_failed',
   RESULT_PREVIEWED: 'result_previewed',
   RESULT_VIEWED: 'result_viewed',
+  METADATA_INSPECTED: 'metadata_inspected',
+  METADATA_SECTION_TOGGLED: 'metadata_section_toggled',
+  METADATA_SEARCH_USED: 'metadata_search_used',
+  METADATA_PRIVACY_FILTER_USED: 'metadata_privacy_filter_used',
+  METADATA_DIFF_OPENED: 'metadata_diff_opened',
+  METADATA_DIFF_MODE_CHANGED: 'metadata_diff_mode_changed',
+  METADATA_BINARY_DOWNLOADED: 'metadata_binary_downloaded',
   RESULT_COMPARE_USED: 'result_compare_used',
   RESULT_DOWNLOAD_CLICKED: 'result_download_clicked',
   RESULT_ARCHIVE_ENTRY_OPENED: 'result_archive_entry_opened',
@@ -143,6 +150,13 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   job_failed: PRIORITY_CRITICAL,
   result_previewed: PRIORITY_NORMAL,
   result_viewed: PRIORITY_NORMAL,
+  metadata_inspected: PRIORITY_NORMAL,
+  metadata_section_toggled: PRIORITY_LOW,
+  metadata_search_used: PRIORITY_LOW,
+  metadata_privacy_filter_used: PRIORITY_LOW,
+  metadata_diff_opened: PRIORITY_NORMAL,
+  metadata_diff_mode_changed: PRIORITY_LOW,
+  metadata_binary_downloaded: PRIORITY_LOW,
   result_compare_used: PRIORITY_NORMAL,
   result_download_clicked: PRIORITY_HIGH,
   result_archive_entry_opened: PRIORITY_NORMAL,
@@ -339,6 +353,39 @@ export interface ResultViewedProps {
   kind: string;
   surface: ResultSurface;
   has_original: boolean;
+}
+
+export type MetadataSurface = 'home' | 'tool_page' | 'result' | 'history';
+export type MetadataTagBucket = '0' | '1-25' | '26-100' | '101-500' | '500+';
+export type MetadataPrivacyFlag = 'location' | 'identity' | 'device' | 'history';
+
+// Metadata inspector (MM11). Enums and buckets only: never tag names, values, file names or coordinates.
+export interface MetadataInspectedProps {
+  surface: MetadataSurface;
+  kind: string;
+  tag_bucket: MetadataTagBucket;
+  has_gps: boolean;
+  has_c2pa: boolean;
+}
+export interface MetadataSectionToggledProps {
+  category: string;
+  open: boolean;
+}
+export type MetadataSearchUsedProps = Record<string, never>;
+export interface MetadataPrivacyFilterUsedProps {
+  flag: MetadataPrivacyFlag;
+}
+export interface MetadataDiffOpenedProps {
+  tool: string;
+  removed_bucket: MetadataTagBucket;
+  added_bucket: MetadataTagBucket;
+  changed_bucket: MetadataTagBucket;
+}
+export interface MetadataDiffModeChangedProps {
+  mode: 'unified' | 'split';
+}
+export interface MetadataBinaryDownloadedProps {
+  category: string;
 }
 
 export interface ResultCompareUsedProps {
@@ -624,6 +671,13 @@ export interface EventPropsMap {
   job_failed: JobFailedProps;
   result_previewed: ResultPreviewedProps;
   result_viewed: ResultViewedProps;
+  metadata_inspected: MetadataInspectedProps;
+  metadata_section_toggled: MetadataSectionToggledProps;
+  metadata_search_used: MetadataSearchUsedProps;
+  metadata_privacy_filter_used: MetadataPrivacyFilterUsedProps;
+  metadata_diff_opened: MetadataDiffOpenedProps;
+  metadata_diff_mode_changed: MetadataDiffModeChangedProps;
+  metadata_binary_downloaded: MetadataBinaryDownloadedProps;
   result_compare_used: ResultCompareUsedProps;
   result_download_clicked: ResultDownloadClickedProps;
   result_archive_entry_opened: ResultArchiveEntryOpenedProps;

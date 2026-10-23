@@ -98,7 +98,7 @@ describe('ResultPanel', () => {
   });
 
   it('registry covers every kind that has a viewer', () => {
-    expect(Object.keys(RESULT_VIEWERS).sort()).toEqual(['archive', 'audio', 'captions', 'dash', 'gif', 'hls', 'image', 'pdf', 'transcript', 'unknown', 'video']);
+    expect(Object.keys(RESULT_VIEWERS).sort()).toEqual(['archive', 'audio', 'captions', 'dash', 'gif', 'hls', 'image', 'metadata', 'pdf', 'transcript', 'unknown', 'video']);
   });
 
   it('emits result_previewed once per job with a coarse kind', () => {

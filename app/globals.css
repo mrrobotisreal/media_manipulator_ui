@@ -102,6 +102,18 @@
   --success-foreground: #04220F;  /* white on #4ADE80 is 1.8:1 — unusable */
   --danger: #F4525C;
 
+  /* Metadata diff (MM10). Row bg + fg pairs; char tokens are inline-highlight backgrounds
+     drawn under the row's fg. Contrast (WCAG): removed 7.70, added 10.19, changed 9.23;
+     char-removed 6.13 and char-added 6.50 against their row fg. Hue anchors: --danger/--success. */
+  --mm-diff-removed-bg: #3A1A1F;
+  --mm-diff-removed-fg: #FF9AA0;
+  --mm-diff-added-bg: #12301F;
+  --mm-diff-added-fg: #86EFAC;
+  --mm-diff-changed-bg: #3A2E10;
+  --mm-diff-changed-fg: #FCD34D;
+  --mm-diff-char-removed: #5C2029;
+  --mm-diff-char-added: #1B5232;
+
   /* shadcn semantics mapped onto the ramp */
   --background: var(--surface-0);
   --foreground: #ECEFF4;
@@ -167,6 +179,17 @@
   --success: #15803D;
   --success-foreground: #FFFFFF;
   --danger: #DA2626;
+
+  /* Metadata diff (MM10), light. Contrast: removed 6.56, added 6.49, changed 6.15;
+     char-removed 4.79 and char-added 5.51 against their row fg. */
+  --mm-diff-removed-bg: #FDE2E4;
+  --mm-diff-removed-fg: #9F1239;
+  --mm-diff-added-bg: #DCFCE7;
+  --mm-diff-added-fg: #166534;
+  --mm-diff-changed-bg: #FEF3C7;
+  --mm-diff-changed-fg: #854D0E;
+  --mm-diff-char-removed: #F7B8BE;
+  --mm-diff-char-added: #A7F3C0;
 
   --background: var(--surface-0);
   --foreground: #14181F;

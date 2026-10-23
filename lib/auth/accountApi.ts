@@ -259,6 +259,11 @@ export interface HistoryEntry {
   downloadUrl?: string;
   /** API-relative path for a result still served off the box's local disk. */
   downloadPath?: string;
+  /**
+   * Which cached metadata reports exist (additive; absent on older APIs). Stays true after
+   * the media itself has expired: the metadata routes read the cached JSON, not the file.
+   */
+  metadataAvailable?: { original: boolean; result: boolean };
 }
 
 export interface HistoryResponse {

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useQuery } from '@tanstack/react-query';
 
 import { Panel } from '@/components/darkroom/panel';
@@ -14,6 +15,9 @@ import { formatJobDuration } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { cn } from '@/lib/utils';
+
+/** Lazy: the inspector, catalog and metadata strings load only when a row's Metadata is opened. */
+const HistoryMetadataDialog = dynamic(() => import('@/components/metadata/history-metadata-dialog'), { ssr: false });
 
 /**
  * Recent conversions — the signed-in half of /account.
@@ -96,6 +100,11 @@ const HistoryRow: React.FC<RowProps> = ({ entry, labels, timestamp }) => {
     .join(' · ');
   const inFlight = IN_FLIGHT.has(entry.status);
   const failed = entry.status === 'failed' || entry.status === 'cancelled';
+  const { t } = useLocalization('interface');
+  const [metaOpen, setMetaOpen] = React.useState(false);
+  // Cached report present (original and/or result), expired or not.
+  const metadata = entry.metadataAvailable;
+  const hasMetadata = !!metadata && (metadata.original || metadata.result);
 
   return (
     <li className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4 gap-y-1 border-b border-edge py-3.5 first:pt-0 last:border-b-0">
@@ -109,7 +118,17 @@ const HistoryRow: React.FC<RowProps> = ({ entry, labels, timestamp }) => {
 
       <p className="num truncate text-xs text-muted-foreground">{detail}</p>
 
-      <div className="justify-self-end text-xs">
+      <div className="flex items-baseline gap-3 justify-self-end text-xs">
+        {hasMetadata ? (
+          <button
+            type="button"
+            data-testid="history-metadata-button"
+            onClick={() => setMetaOpen(true)}
+            className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+          >
+            {t('metadata.history.action', { defaultValue: 'Metadata' })}
+          </button>
+        ) : null}
         {href ? (
           <a
             href={href}
@@ -135,6 +154,9 @@ const HistoryRow: React.FC<RowProps> = ({ entry, labels, timestamp }) => {
           </span>
         )}
       </div>
+      {hasMetadata && metaOpen ? (
+        <HistoryMetadataDialog jobId={entry.jobId} available={metadata} open={metaOpen} onOpenChange={setMetaOpen} />
+      ) : null}
     </li>
   );
 };

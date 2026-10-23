@@ -25,6 +25,7 @@ import useTranscribeFile, {
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
+import { ExifInspect, ExifResult } from '@/components/metadata/exif-flow';
 import { fpsHint } from '@/lib/results/videoFps';
 import type { ConversionFormData } from '@/schemas/types';
 import {
@@ -179,6 +180,8 @@ export interface ImageFormPresets {
   defaultHeight?: number;
   /** Visually emphasize the width/height controls (image resizer). */
   emphasizeResize?: boolean;
+  /** Starting value of the metadata mode select (the EXIF page starts on strip). */
+  defaultMetadataMode?: 'keep' | 'strip';
 }
 
 /** Output containers/codecs the embedded video converter understands. Mirrors
@@ -413,7 +416,7 @@ const DEFAULT_DESCRIPTIONS: Record<EmbeddedMediaKind, string> = {
 const TASK_HINTS: Partial<Record<EmbeddedTask, { recommended?: string; note?: string }>> = {
   remove_metadata: {
     note:
-      'Scroll to the Metadata section after uploading and set metadata mode to “Strip” to remove EXIF, GPS, and IPTC fields.',
+      'Everything is stripped by default: EXIF, GPS, and IPTC fields. Open the form’s advanced options below if you want to keep or edit specific fields.',
   },
   compress_video: {
     note:
@@ -755,6 +758,15 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     convertMutate({ file: selectedFile, options: data });
   };
 
+  // EXIF page: "Strip everything" in the inspector. Same container as the input (HEIC/TIFF/BMP
+  // fall back to JPG), metadata forced to strip, through the ordinary handleConvert path.
+  const handleStripEverything = () => {
+    if (!selectedFile) return;
+    const ext = safeFileExtension(selectedFile.name).toLowerCase().replace(/^\./, '');
+    const format = ext === 'jpeg' ? 'jpg' : ['jpg', 'png', 'webp', 'gif', 'avif'].includes(ext) ? ext : 'jpg';
+    handleConvert({ format, quality: 85, filter: 'none', metadataMode: 'strip' } as ConversionFormData);
+  };
+
   const handleTranscribe = (data: TranscribeFormData) => {
     if (!selectedFile) return;
     setConversionOptions({ format: data.format } as unknown as ConversionFormData);
@@ -869,6 +881,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     defaultWidth,
     defaultHeight,
     emphasizeResize,
+    defaultMetadataMode: defaultTask === 'remove_metadata' ? 'strip' : undefined,
   };
 
   const pdfPresets: PdfFormPresets = {
@@ -1089,6 +1102,14 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
             </button>
           </div>
 
+          {defaultTask === 'remove_metadata' && !isCompleted && (
+            <ExifInspect
+              file={selectedFile}
+              processing={isProcessing}
+              onStripAll={effectiveKind === 'image' ? handleStripEverything : undefined}
+            />
+          )}
+
           {isTranscodeAllowed && effectiveKind === 'video' ? (
             <VideoTranscodeForm
               file={selectedFile}
@@ -1172,6 +1193,17 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
               downloadLabel={t('embeddedToolPanel.downloadFilename', { filename: getConvertedFilename() })}
               onDownloaded={upgradeNudge}
               onRunAnother={clearFile}
+              metadataStrip={defaultTask !== 'remove_metadata'}
+            />
+          )}
+
+          {defaultTask === 'remove_metadata' && !isTranscodeAllowed && isCompleted && conversionJob && (
+            <ExifResult
+              jobId={conversionJob.id}
+              originalName={selectedFile.name}
+              resultName={resultDescriptor?.fileName ?? getConvertedFilename()}
+              strippedCount={conversionJob.strippedCount}
+              available={conversionJob.metadataAvailable}
             />
           )}
 

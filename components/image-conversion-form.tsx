@@ -118,7 +118,7 @@ const ImageConversionForm: React.FC<{
         x: 0,
         y: 0,
       },
-      metadataMode: 'keep' as const,
+      metadataMode: (presets?.defaultMetadataMode ?? 'keep') as 'keep' | 'strip',
       metadata: {
         title: '',
         author: '',

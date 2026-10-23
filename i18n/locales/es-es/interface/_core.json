@@ -151,8 +151,6 @@
       "dragDrop": "Arrastra y suelta tu archivo aquí",
       "orClickSelect": "o haz clic para seleccionarlo desde tu ordenador",
       "chooseFile": "Elegir archivo",
-      "analyzing": "Analizando...",
-      "identifyDetails": "Identificar detalles del archivo",
       "unsupportedFile": "Tipo de archivo no compatible. Selecciona un archivo de imagen, vídeo o audio."
     },
     "options": {

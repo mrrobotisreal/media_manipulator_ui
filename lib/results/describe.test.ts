@@ -234,3 +234,17 @@ suite('archive entry helpers (MM04)', () => {
     expect(mimeForFileName('s.ts')).toBe('video/mp2t');
   });
 });
+
+suite('describe: metadata (MM10)', () => {
+  it('inspect_metadata with no file name resolves to the metadata kind', () => {
+    expect(describe({ job: job(undefined), task: 'inspect_metadata' }).kind).toBe('metadata');
+  });
+  it('carries metadataAvailable and strippedCount through only when present', () => {
+    const d = describe({ job: job('a.jpg', { metadataAvailable: { original: true, result: true }, strippedCount: 7 }) });
+    expect(d.metadataAvailable).toEqual({ original: true, result: true });
+    expect(d.strippedCount).toBe(7);
+    const plain = describe({ job: job('a.jpg') });
+    expect('metadataAvailable' in plain).toBe(false);
+    expect('strippedCount' in plain).toBe(false);
+  });
+});
