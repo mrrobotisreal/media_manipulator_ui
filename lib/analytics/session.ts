@@ -71,7 +71,12 @@ export interface SessionRecord {
   utm: SessionUTM;
 }
 
-type SessionStartListener = (session: SessionRecord) => void;
+/** What the replaced session looked like, when there was one (drives `return_visit`). */
+export interface PreviousSession {
+  lastActivityAt: number;
+}
+
+type SessionStartListener = (session: SessionRecord, previous?: PreviousSession) => void;
 
 const startListeners = new Set<SessionStartListener>();
 
@@ -205,7 +210,11 @@ function announceRotation(record: SessionRecord): void {
  * listener is registered — which is what keeps `session_start` to exactly one event
  * per session.
  */
-function resolveSession(now: number): { session: SessionRecord; rotated: boolean } {
+function resolveSession(now: number): {
+  session: SessionRecord;
+  rotated: boolean;
+  previous?: PreviousSession;
+} {
   wireCrossTab();
 
   const stored = cached && cached.id ? cached : readStored();
@@ -220,7 +229,7 @@ function resolveSession(now: number): { session: SessionRecord; rotated: boolean
     const rotated = newSession(now);
     persist(rotated);
     announceRotation(rotated);
-    return { session: rotated, rotated: true };
+    return { session: rotated, rotated: true, previous: { lastActivityAt: stored.lastActivityAt } };
   }
 
   cached = stored;
@@ -241,13 +250,13 @@ export function getSessionId(): string {
     return '00000000-0000-4000-8000-000000000000';
   }
   const now = Date.now();
-  const { session, rotated } = resolveSession(now);
+  const { session, rotated, previous } = resolveSession(now);
   if (rotated && startListeners.size > 0) {
     const snapshot = session;
     queueMicrotask(() => {
       startListeners.forEach((listener) => {
         try {
-          listener(snapshot);
+          listener(snapshot, previous);
         } catch {
           // A listener must never break identity resolution.
         }

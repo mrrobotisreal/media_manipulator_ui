@@ -1,3 +1,5 @@
+import type { DaysSinceLastBucket, HoursSinceSignupBucket } from './events';
+
 /**
  * Shared bucket helpers for event properties.
  *
@@ -164,4 +166,24 @@ export function reopenAgeBucket(ageMs: number): ReopenAgeBucket {
   if (days < 30) return '7-30d';
   if (days < 90) return '30-90d';
   return '90d+';
+}
+
+/** Whole days since the visitor's previous session was last active. Never a timestamp. */
+export function daysSinceLastBucket(gapMs: number): DaysSinceLastBucket {
+  const days = Math.floor(Math.max(0, gapMs) / 86_400_000);
+  if (days < 1) return '0';
+  if (days === 1) return '1';
+  if (days <= 3) return '2_3';
+  if (days <= 7) return '4_7';
+  if (days <= 30) return '8_30';
+  return '31_plus';
+}
+
+/** Gap between account creation and the first completed job. */
+export function hoursSinceSignupBucket(gapMs: number): HoursSinceSignupBucket {
+  const hours = Math.max(0, gapMs) / 3_600_000;
+  if (hours < 1) return '<1h';
+  if (hours < 24) return '1-24h';
+  if (hours < 168) return '1-7d';
+  return '7d+';
 }

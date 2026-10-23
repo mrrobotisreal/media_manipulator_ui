@@ -41,6 +41,7 @@ import {
 } from './consent-bridge';
 import { getVisitorId, isSelfExcluded, uuid } from './identity';
 import { EventQueue, type QueuedEvent, type WireContext } from './queue';
+import { daysSinceLastBucket } from './buckets';
 import { getSessionId, onSessionStart, touchSession } from './session';
 import {
   FLUSH_AT_QUEUE_SIZE,
@@ -149,10 +150,17 @@ export class AnalyticsClient {
       // `session_start` is emitted only by the tab that actually rotated the session,
       // which is what keeps it to one event per session across many tabs.
       this.teardown.push(
-        onSessionStart((session) => {
+        onSessionStart((session, previous) => {
           this.track(EVENTS.SESSION_START, {
             entry_pathname: session.entryPathname || undefined,
           });
+          // MM30: a rotation that replaced an earlier session is a return visit. The first
+          // session on a browser has no predecessor and emits nothing.
+          if (previous) {
+            this.track(EVENTS.RETURN_VISIT, {
+              days_since_last: daysSinceLastBucket(Date.now() - previous.lastActivityAt),
+            });
+          }
         }),
       );
 

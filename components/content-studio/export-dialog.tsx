@@ -20,7 +20,7 @@ import { useStudioStore } from '@/lib/studioStore';
 import { useSaveProject } from '@/lib/useStudioProject';
 import { useStartStudioExport, studioDownloadUrl } from '@/lib/useStudioExport';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
-import { analytics, EVENTS, markJobStarted, takeJobDuration } from '@/lib/analytics';
+import { activationEvents, analytics, EVENTS, markJobStarted, takeJobDuration } from '@/lib/analytics';
 import type { StudioExportStartedProps } from '@/lib/analytics';
 import { exportDurationRatioBucket, studioHost } from '@/lib/studio/telemetry';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
@@ -145,6 +145,7 @@ const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ pro
           { job_id: jobId, duration_ms: renderMs },
           { job_id: jobId, media_kind: 'video' },
         );
+        activationEvents.jobCompleted();
         if (exportPropsRef.current) {
           analytics.track(
             EVENTS.STUDIO_EXPORT_COMPLETED,

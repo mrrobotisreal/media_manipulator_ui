@@ -57,7 +57,7 @@ describe('retentionEvents emission', () => {
     retentionEvents.itemReopened('video', new Date(Date.now() - 40 * 86_400_000).toISOString());
     retentionEvents.itemReopened(undefined, 'not a date');
     expect(track).toHaveBeenCalledTimes(1);
-    expect(track).toHaveBeenCalledWith(EVENTS.HISTORY_ITEM_REOPENED, { kind: 'video', age_bucket: '30-90d' });
+    expect(track).toHaveBeenCalledWith(EVENTS.HISTORY_ITEM_REOPENED, { kind: 'video', age_bucket: '30-90d', source: 'account' });
   });
 });
 

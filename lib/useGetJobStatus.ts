@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { useLocalization } from '@/i18n/useLocalization';
-import { analytics, EVENTS, reportError, takeJobDuration } from '@/lib/analytics';
+import { activationEvents, analytics, EVENTS, reportError, takeJobDuration } from '@/lib/analytics';
 
 export interface ConversionJob {
   id: string;
@@ -135,6 +135,7 @@ const useGetJobStatus = (conversionJob: ConversionJob | null): UseGetJobStatusRe
           },
           { job_id: jobStatusData.id },
         );
+        activationEvents.jobCompleted();
       } else if (jobStatusData.status === 'failed') {
         toast.error(t('error:conversion.failed'), {
           description: jobStatusData.error || t('error:toasts.conversionFailedFallback')

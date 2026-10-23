@@ -318,8 +318,22 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
   data_export_requested: z.object({}).strict(),
   history_item_reopened: z
-    .object({ kind: z.string(), age_bucket: z.enum(['<1d', '1-7d', '7-30d', '30-90d', '90d+']) })
+    .object({
+      kind: z.string(),
+      age_bucket: z.enum(['<1d', '1-7d', '7-30d', '30-90d', '90d+']),
+      source: z.enum(['account', 'local']).optional(),
+    })
     .strict(),
+  activation_first_job_completed: z
+    .object({
+      tool_slug: z.string().nullable(),
+      media_kind: mediaKind,
+      hours_since_signup: z.enum(['<1h', '1-24h', '1-7d', '7d+']).nullable(),
+      guest: z.boolean(),
+    })
+    .strict(),
+  return_visit: z.object({ days_since_last: z.enum(['0', '1', '2_3', '4_7', '8_30', '31_plus']) }).strict(),
+  share_link_copied: z.object({ job_kind: mediaKind, source: z.string() }).strict(),
 
   studio_project_created: studioHostProps,
   studio_project_opened: studioHostProps,

@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { ResultPanel } from '@/components/results/result-panel';
 import { KIND_ICONS } from '@/components/results/viewers/unknown-viewer';
 import { useLocalization } from '@/i18n/useLocalization';
+import { retentionEvents } from '@/lib/analytics/retentionEvents';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { localHistory, subscribeLocalHistory, type LocalHistoryEntry } from '@/lib/history/localHistory';
@@ -113,6 +114,7 @@ export function RecentStrip({ toolSlug, onReopen, now = Date.now, className }: R
       try {
         const blob = await fetchResult(entry.jobId);
         setOpen({ entry, blob });
+        retentionEvents.itemReopened(entry.kind, new Date(entry.createdAt).toISOString(), 'local');
         onReopen?.(entry);
       } catch (error) {
         if (error instanceof Gone) {
