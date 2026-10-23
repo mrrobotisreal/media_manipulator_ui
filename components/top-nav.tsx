@@ -42,7 +42,12 @@ const isNavActive = (currentPath: string, linkHref: string): boolean => {
 
 // Link metadata: titles + descriptions are translated at render time so the
 // nav stays in sync with whatever language is currently active.
-const NAV_LINKS: { key: string; href: string }[] = [
+// `desktop: false` keeps a link out of the desktop row but in the mobile sheet.
+// The legal pages are linked from the footer on every page, and the desktop
+// row has no room for them: with them, the links need 1297px (English) to
+// 1432px (Russian) on one line, which either wrapped two-word links onto two
+// lines or pushed the row off-screen on a 1280-1440px laptop.
+const NAV_LINKS: { key: string; href: string; desktop?: false }[] = [
   { key: "home", href: "/" },
   { key: "tools", href: "/tools" },
   { key: "voices", href: "/voices" },
@@ -50,8 +55,8 @@ const NAV_LINKS: { key: string; href: string }[] = [
   { key: "howItWorks", href: "/how-it-works" },
   { key: "tutorials", href: "/tutorials" },
   { key: "blog", href: "/blog" },
-  { key: "privacyPolicy", href: "/privacy-policy" },
-  { key: "termsOfService", href: "/terms-of-service" },
+  { key: "privacyPolicy", href: "/privacy-policy", desktop: false },
+  { key: "termsOfService", href: "/terms-of-service", desktop: false },
   // { key: "blog", href: "/blog" },
 ];
 
@@ -112,6 +117,7 @@ const TopNav: React.FC = () => {
     href: localized(link.href),
     active: isNavActive(neutralPath, link.href),
     title: t(`interface:topNav.${link.key}`),
+    desktop: link.desktop !== false,
   }));
 
   return (
@@ -121,18 +127,20 @@ const TopNav: React.FC = () => {
           {/* Was an unsized 80x80 image tag (22% of a 360px viewport, and a CLS
               source) plus Rubik Glitch type. Now a CSS-only lockup. */}
           <Wordmark size="sm" animated text={t("interface:common.brand")} />
-          <span className="hidden border-l border-edge pl-3 text-xs text-muted-foreground lg:block">
+          <span className="hidden border-l border-edge pl-3 text-xs text-muted-foreground 2xl:block">
             {t("interface:common.brandTagline")}
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        {/* Eight links do not fit at 768px next to the account slot — at that
-            width the row squeezed the nav past the viewport edge. The desktop
-            row starts at lg; 768-1023 uses the same sheet as a phone. */}
-        <NavigationMenu viewport={false} className="hidden lg:flex">
+        {/* Links never wrap. Measured with every link on one line, the row
+            (logo, links, controls) needs up to 1073px (English), so the desktop
+            row starts at xl and the tagline beside the logo at 2xl (1280px
+            English, 1187px Russian). Below xl the sheet takes over, as on a
+            phone. */}
+        <NavigationMenu viewport={false} className="hidden xl:flex">
           <NavigationMenuList>
-            {components.map((component) => {
+            {components.filter((component) => component.desktop).map((component) => {
               const active = component.active;
               return (
                 <NavigationMenuItem key={component.key}>
@@ -141,7 +149,7 @@ const TopNav: React.FC = () => {
                       href={component.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "relative px-3 py-2 text-sm transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)]",
+                        "relative whitespace-nowrap px-3 py-2 text-sm transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)]",
                         "after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 after:origin-left after:bg-primary",
                         "after:transition-transform after:duration-[var(--dur-base)] after:ease-[var(--ease-instrument)]",
                         active
@@ -165,7 +173,7 @@ const TopNav: React.FC = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
+                className="xl:hidden rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
               >
                 <Menu className="h-6 w-6 text-foreground" />
                 <span className="sr-only">{t("accessibility:topNav.openMenu")}</span>
