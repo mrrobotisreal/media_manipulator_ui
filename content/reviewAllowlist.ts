@@ -22,6 +22,23 @@ export const REVIEW_INDEXED_TOOL_SLUGS = [
   'ai-document-scan',
 ] as const;
 
+/**
+ * PENDING_ALLOWLIST (MM28 -> MM34). These seven pages exist, are fully written
+ * in all six locales, and are deliberately NOT in REVIEW_INDEXED_TOOL_SLUGS, so
+ * they stay noindex,nofollow and out of the sitemap and /tools grid. MM34 flips
+ * them into the allowlist after the AdSense content pass. Do not add them here
+ * before then. Nothing reads this constant at runtime.
+ */
+export const PENDING_ALLOWLIST = [
+  'ai-image-upscaler',
+  'blur-faces-in-photo',
+  'redact-text-in-image',
+  'remove-object-from-photo',
+  'clean-voice-audio',
+  'remove-background-noise',
+  'remove-vocals-from-song',
+] as const;
+
 export type ReviewIndexedToolSlug = (typeof REVIEW_INDEXED_TOOL_SLUGS)[number];
 
 export function isReviewIndexedToolSlug(

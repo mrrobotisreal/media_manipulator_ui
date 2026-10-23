@@ -80,9 +80,12 @@ describe('page entries', () => {
     expect(page('compress-video').embed.preset).toEqual({ kind: 'video', panel: 'video_compressor' });
   });
 
-  it('only those four pages carry a preset', () => {
+  it('only the four MM27 pages plus the three MM28 audio pages carry a preset', () => {
     const slugs = TOOL_PAGES.filter((t) => t.embed.preset).map((t) => t.slug).sort();
-    expect(slugs).toEqual(['ai-frame-interpolation', 'compress-video', 'isolate-vocals-from-song', 'remove-exif-metadata']);
+    expect(slugs).toEqual([
+      'ai-frame-interpolation', 'clean-voice-audio', 'compress-video', 'isolate-vocals-from-song',
+      'remove-background-noise', 'remove-exif-metadata', 'remove-vocals-from-song',
+    ]);
   });
 
   it('keeps every former per-task recommended format on its page', () => {
