@@ -33,3 +33,13 @@ describe('fpsHint', () => {
     expect(fpsHint(undefined, {})).toBeNull();
   });
 });
+
+describe('fpsHint wiring (embedded tool panel)', () => {
+  it('reads the target the AI form writes into the submitted options, for the interpolation task only', () => {
+    const submitted = { format: 'mp4', ai: { frameInterpolation: { targetFps: 120 } } };
+    expect(fpsHint('ai_frame_interpolation', submitted)).toBe(120);
+    expect(fpsHint('compress_video', submitted)).toBeNull();
+    // Before a job is submitted the panel passes null options
+    expect(fpsHint('ai_frame_interpolation', null)).toBeNull();
+  });
+});

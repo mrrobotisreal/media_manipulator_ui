@@ -25,6 +25,7 @@ import useTranscribeFile, {
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
+import { fpsHint } from '@/lib/results/videoFps';
 import type { ConversionFormData } from '@/schemas/types';
 import {
   analytics,
@@ -1160,6 +1161,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           {!isTranscodeAllowed && isCompleted && conversionJob && resultDescriptor && (
             <ResultPanel
               descriptor={resultDescriptor}
+              targetFps={fpsHint(defaultTask, conversionOptions)}
               downloadFileName={getConvertedFilename()}
               downloadLabel={t('embeddedToolPanel.downloadFilename', { filename: getConvertedFilename() })}
               onDownloaded={upgradeNudge}
