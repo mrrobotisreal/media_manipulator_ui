@@ -2,6 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+const track = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/analytics/client', () => ({ analytics: { track } }));
+
 const h = vi.hoisted(() => ({ push: vi.fn(), signOut: vi.fn(async () => undefined), save: vi.fn() }));
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: h.push, replace: vi.fn() }) }));
@@ -55,6 +58,7 @@ function renderTab() {
 }
 
 beforeEach(() => {
+  track.mockClear();
   h.push.mockReset();
   h.signOut.mockClear();
   vi.mocked(deleteAllData).mockReset();
@@ -94,6 +98,13 @@ describe('PrivacyTab', () => {
     expect(await screen.findByText('You have reached the export limit. Try again in 10 min.')).toBeTruthy();
   });
 
+  it('emits data_export_requested once the export is accepted, and not for a 429', async () => {
+    renderTab();
+    fireEvent.click(await screen.findByRole('button', { name: 'Download my data' }));
+    vi.mocked(exportData).mockResolvedValueOnce({ blob: new Blob(['z']), fileName: 'mm.zip' });
+    await waitFor(() => expect(track).toHaveBeenCalledWith('data_export_requested', {}));
+  });
+
   it('delete-all is gated behind typing DELETE and never fires on a single click', async () => {
     vi.mocked(deleteAllData).mockResolvedValue({ deleted: { objects: 1, bytes: 1, projects: 0, jobs: 1 }, pending: 0 });
     renderTab();
@@ -112,6 +123,7 @@ describe('PrivacyTab', () => {
     expect(confirm.disabled).toBe(false);
     fireEvent.click(confirm);
     await waitFor(() => expect(deleteAllData).toHaveBeenCalledWith('tok', 'DELETE'));
+    await waitFor(() => expect(track).toHaveBeenCalledWith('data_deleted', { scope: 'all', kind: 'all_files' }));
   });
 
   it('account deletion needs the phrase; reauth_required prompts a re-sign-in, then retries and redirects', async () => {
@@ -141,6 +153,7 @@ describe('PrivacyTab', () => {
     // Success: signed out, local state cleared, redirected home with a notice.
     await waitFor(() => expect(h.signOut).toHaveBeenCalled());
     await waitFor(() => expect(h.push).toHaveBeenCalledWith('/?accountDeleted=1'));
+    expect(track.mock.calls.filter(([n]) => n === 'data_deleted')).toEqual([['data_deleted', { scope: 'account', kind: 'account' }]]);
   });
 
   it('a retryable 502 keeps the dialog open with a retry, and does not sign out', async () => {

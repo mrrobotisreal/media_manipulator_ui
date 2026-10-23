@@ -68,7 +68,7 @@ export const RetentionPicker: React.FC<RetentionPickerProps> = ({ copy, settings
 
   const selected: Pick = customMode ? CUSTOM_ID : (presetForHours(hours) ?? CUSTOM_ID);
 
-  const commit = async (next: number, confirmedShrink: boolean) => {
+  const commit = async (next: number) => {
     const previous = hours;
     setHours(next); // optimistic
     setBusy('saving');
@@ -77,7 +77,7 @@ export const RetentionPicker: React.FC<RetentionPickerProps> = ({ copy, settings
       const saved = await save(next);
       setHours(saved.retentionHours);
       onSaved(saved);
-      retentionEvents.settingsChanged({ from_hours: previous, to_hours: saved.retentionHours, confirmed_shrink: confirmedShrink });
+      retentionEvents.settingsChanged({ from_hours: previous, to_hours: saved.retentionHours });
       const done = fmt(r.saved, { window: windowLabel(saved.retentionHours, r) });
       setMessage(done);
       toast.success(done);
@@ -94,7 +94,7 @@ export const RetentionPicker: React.FC<RetentionPickerProps> = ({ copy, settings
   const request = async (next: number) => {
     if (next === hours || busy !== 'idle') return;
     if (next > hours) {
-      await commit(next, false); // lengthening never prompts
+      await commit(next); // lengthening never prompts
       return;
     }
     setBusy('checking');
@@ -103,14 +103,9 @@ export const RetentionPicker: React.FC<RetentionPickerProps> = ({ copy, settings
       const result = await preview(next);
       if (previewTotal(result) === 0) {
         setBusy('idle');
-        await commit(next, false); // a zero-impact shrink saves directly
+        await commit(next); // a zero-impact shrink saves directly
         return;
       }
-      retentionEvents.shrinkDialogShown({
-        results: result.wouldDelete.results,
-        projects: result.wouldDelete.projects,
-        bytes: result.wouldDelete.bytes,
-      });
       setPending({ hours: next, preview: result });
     } catch {
       // Without the preview we cannot say what would be deleted, so nothing changes.
@@ -199,7 +194,6 @@ export const RetentionPicker: React.FC<RetentionPickerProps> = ({ copy, settings
         open={pending !== null}
         onOpenChange={(open) => {
           if (!open) {
-            retentionEvents.shrinkDialogCancelled();
             setPending(null);
             setCustomMode(presetForHours(hours) === null);
           }
@@ -221,7 +215,7 @@ export const RetentionPicker: React.FC<RetentionPickerProps> = ({ copy, settings
           if (!pending) return;
           const next = pending.hours;
           setPending(null);
-          await commit(next, true);
+          await commit(next);
         }}
       >
         {w ? (

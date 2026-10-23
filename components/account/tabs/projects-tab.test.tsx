@@ -16,6 +16,9 @@ import { deleteProject, fetchStudioProjects } from '@/lib/auth/accountApi';
 import { ProjectsTab } from './projects-tab';
 import { copy } from '@/components/account/test-utils';
 
+const track = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/analytics/client', () => ({ analytics: { track } }));
+
 const project = (id: string, name: string) => ({
   id, name, durationSeconds: 75, createdAt: '2026-10-01T00:00:00Z', updatedAt: '2026-10-02T00:00:00Z',
 });
@@ -31,6 +34,7 @@ function renderTab() {
 
 afterEach(() => {
   cleanup();
+  track.mockClear();
   vi.mocked(deleteProject).mockReset();
 });
 
@@ -49,6 +53,17 @@ describe('ProjectsTab', () => {
     renderTab();
     expect(await screen.findByText(copy.emptyProjects)).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Open Darkroom' })).toBeTruthy();
+  });
+
+  it('emits history_item_reopened for a project Open and data_deleted item/project on delete', async () => {
+    vi.mocked(fetchStudioProjects).mockResolvedValue([project('p1', 'Trailer')] as never);
+    vi.mocked(deleteProject).mockResolvedValue({ deleted: { objects: 3, bytes: 9 }, pending: 0 });
+    renderTab();
+    fireEvent.click(await screen.findByRole('link', { name: 'Open' }));
+    expect(track).toHaveBeenCalledWith('history_item_reopened', expect.objectContaining({ kind: 'project' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    fireEvent.click(within(await screen.findByRole('alertdialog')).getByRole('button', { name: 'Delete project' }));
+    await waitFor(() => expect(track).toHaveBeenCalledWith('data_deleted', { scope: 'item', kind: 'project' }));
   });
 
   it('delete asks first, then calls deleteProject and refetches', async () => {

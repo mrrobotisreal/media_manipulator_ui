@@ -116,7 +116,11 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Link href={openProjectHref(localized, project.id)} className={LINK_CLASS}>
+                  <Link
+                    href={openProjectHref(localized, project.id)}
+                    className={LINK_CLASS}
+                    onClick={() => retentionEvents.itemReopened('project', project.createdAt)}
+                  >
                     {p.open}
                   </Link>
                   <button type="button" onClick={() => setToDelete(project)} className={DANGER_TEXT_BUTTON_CLASS}>

@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 
+const track = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/analytics/client', () => ({ analytics: { track } }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import { RetentionPicker } from './retention-picker';
@@ -29,7 +31,10 @@ function setup(hours = 4320, p: RetentionPreview = preview(0)) {
 }
 const radio = (name: string) => screen.getByRole('radio', { name: new RegExp(name) });
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  track.mockClear();
+});
 
 describe('RetentionPicker states', () => {
   it.each([
@@ -74,6 +79,20 @@ describe('RetentionPicker states', () => {
     expect((radio('1 year') as HTMLInputElement).checked).toBe(true); // optimistic
     release(settings(8760));
     expect(await screen.findByText(/Saved\. Your files are now kept for 1 year/)).toBeTruthy();
+  });
+
+  it('emits retention_setting_changed with buckets after a successful save, not after a failed one', async () => {
+    const save = vi.fn(async (h: number) => settings(h));
+    render(<RetentionPicker copy={copy} settings={settings(4320)} preview={vi.fn(async () => preview(0))} save={save} onSaved={vi.fn()} />);
+    fireEvent.click(radio('1 year'));
+    await waitFor(() => expect(track).toHaveBeenCalledWith('retention_setting_changed', { from_bucket: '6mo', to_bucket: '1y' }));
+    cleanup();
+    track.mockClear();
+    const bad = vi.fn(async () => { throw new Error('500'); });
+    render(<RetentionPicker copy={copy} settings={settings(4320)} preview={vi.fn()} save={bad} onSaved={vi.fn()} />);
+    fireEvent.click(radio('1 year'));
+    await waitFor(() => expect(bad).toHaveBeenCalled());
+    expect(track).not.toHaveBeenCalled();
   });
 
   it('rolls back and says so when the save fails', async () => {

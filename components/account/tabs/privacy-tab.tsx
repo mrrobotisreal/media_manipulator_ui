@@ -142,18 +142,16 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
     try {
       const { blob, fileName } = await exportData(await requireToken());
       saveBlobToDisk(blob, fileName);
-      retentionEvents.exportRequested('started');
+      retentionEvents.exportRequested();
       setExportNote(d.exportDone);
     } catch (error) {
       if (error instanceof AccountApiError && error.status === 429) {
-        retentionEvents.exportRequested('rate_limited');
         setExportNote(
           error.retryAfterSeconds
             ? fmt(d.exportLimited, { minutes: Math.max(1, Math.ceil(error.retryAfterSeconds / 60)) })
             : d.exportLimitedGeneric,
         );
       } else {
-        retentionEvents.exportRequested('failed');
         setExportNote(d.exportFailed);
       }
     } finally {
@@ -165,7 +163,7 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
     setDeleteAllBusy(true);
     try {
       const result = await deleteAllData(await requireToken(), DELETE_ALL_PHRASE);
-      retentionEvents.deleteAllConfirmed();
+      retentionEvents.allFilesDeleted();
       const message = result.pending > 0 ? d.deleteAllPending : d.deleteAllDone;
       setExportNote(message);
       toast.success(message);
@@ -182,7 +180,7 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
   };
 
   const finishAccountDeletion = async () => {
-    retentionEvents.accountDeleteConfirmed('completed');
+    retentionEvents.accountDeleted();
     toast.success(d.accountDone);
     setAccountOpen(false);
     // The Firebase user is gone server-side; signing out clears the local session.
@@ -199,15 +197,12 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
       await finishAccountDeletion();
     } catch (error) {
       if (error instanceof AccountApiError && error.status === 401 && error.code === 'reauth_required') {
-        retentionEvents.accountDeleteConfirmed('reauth_required');
         setProviders(await getSignInProviders());
         setReauth('needed');
       } else if (error instanceof AccountApiError && error.status === 502) {
-        retentionEvents.accountDeleteConfirmed('incomplete');
         setIncomplete(true);
         setAccountNote(d.accountIncomplete);
       } else {
-        retentionEvents.accountDeleteConfirmed('failed');
         setAccountNote(d.accountFailed);
       }
     } finally {

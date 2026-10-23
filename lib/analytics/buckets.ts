@@ -137,3 +137,31 @@ export function metadataTagBucket(n: number): '0' | '1-25' | '26-100' | '101-500
   if (n <= 500) return '101-500';
   return '500+';
 }
+
+type RetentionBucket = '24h' | '7d' | '30d' | '90d' | '6mo' | '1y' | '2y' | 'custom';
+
+/** The account retention window (hours) as one of the picker presets, else `custom`. */
+export function retentionBucket(hours: number): RetentionBucket {
+  switch (hours) {
+    case 24: return '24h';
+    case 168: return '7d';
+    case 720: return '30d';
+    case 2160: return '90d';
+    case 4320: return '6mo';
+    case 8760: return '1y';
+    case 17520: return '2y';
+    default: return 'custom';
+  }
+}
+
+type ReopenAgeBucket = '<1d' | '1-7d' | '7-30d' | '30-90d' | '90d+';
+
+/** How old an item was (since creation) when its owner reopened it. The retention lever. */
+export function reopenAgeBucket(ageMs: number): ReopenAgeBucket {
+  const days = ageMs / 86_400_000;
+  if (!(days >= 1)) return '<1d';
+  if (days < 7) return '1-7d';
+  if (days < 30) return '7-30d';
+  if (days < 90) return '30-90d';
+  return '90d+';
+}

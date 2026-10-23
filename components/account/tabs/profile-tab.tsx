@@ -45,7 +45,6 @@ export const ProfileTab: React.FC<{ copy: AccountCopy }> = ({ copy }) => {
     setRevoking(true);
     try {
       await revokeSessions(await requireToken());
-      retentionEvents.sessionsRevoked();
       setRevokeOpen(false);
       await auth.signOut();
     } catch {

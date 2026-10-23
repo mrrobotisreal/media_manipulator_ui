@@ -179,7 +179,7 @@ const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, 
               </button>
             ) : null}
             {href ? (
-              <a href={href} className={LINK_CLASS}>
+              <a href={href} className={LINK_CLASS} onClick={() => retentionEvents.itemReopened(entry.mediaKind, entry.createdAt)}>
                 {copy.download}
               </a>
             ) : null}
@@ -247,8 +247,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ copy, uid }) => {
   const keep = useMutation({
     mutationFn: async ({ entry, hours }: { entry: HistoryEntry; hours: number }) =>
       keepJobLonger(await requireToken(), entry.jobId, hours),
-    onSuccess: (result, { hours }) => {
-      retentionEvents.keepLonger(hours);
+    onSuccess: (result) => {
       const message = fmt(h.keepDone, { date: new Date(result.expiresAt).toLocaleDateString() });
       setLive(message);
       toast.success(message);
@@ -313,7 +312,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ copy, uid }) => {
       }
       setBulk({ done: i + 1, total: ids.length, failed: [...failed], running: i + 1 < ids.length });
     }
-    retentionEvents.itemDeleted('bulk', ids.length - failed.length);
+    retentionEvents.itemDeleted('result', ids.length - failed.length);
     const message = failed.length
       ? fmt(h.bulk.partial, { done: ids.length - failed.length, total: ids.length })
       : fmt(h.bulk.done, { count: ids.length });
@@ -465,7 +464,10 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ copy, uid }) => {
               now={now}
               selected={selected.has(entry.jobId)}
               onSelect={(checked) => toggle(entry.jobId, checked)}
-              onPreview={setPreview}
+              onPreview={(e) => {
+                retentionEvents.itemReopened(e.mediaKind, e.createdAt);
+                setPreview(e);
+              }}
               onKeep={(e, hours) => keep.mutate({ entry: e, hours })}
               onDelete={setToDelete}
             />

@@ -102,6 +102,12 @@ export const EVENTS = {
   FEATURE_USED: 'feature_used',
   SCROLL_DEPTH: 'scroll_depth',
 
+  // --- Account retention and data control (MM26) ----------------------------
+  RETENTION_SETTING_CHANGED: 'retention_setting_changed',
+  DATA_DELETED: 'data_deleted',
+  DATA_EXPORT_REQUESTED: 'data_export_requested',
+  HISTORY_ITEM_REOPENED: 'history_item_reopened',
+
   // --- Content Studio (Darkroom) --------------------------------------------
   // First-class `studio_*` events per ADR ws/0003 — the editor no longer
   // overloads FEATURE_USED. Server-side render telemetry (`studio_render_*`)
@@ -201,6 +207,12 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   cta_clicked: PRIORITY_HIGH,
   feature_used: PRIORITY_NORMAL,
   scroll_depth: PRIORITY_LOW,
+
+  // Account retention and data control (MM26)
+  retention_setting_changed: PRIORITY_HIGH,
+  data_deleted: PRIORITY_HIGH,
+  data_export_requested: PRIORITY_NORMAL,
+  history_item_reopened: PRIORITY_NORMAL,
 
   // Content Studio (Darkroom)
   studio_project_created: PRIORITY_HIGH,
@@ -549,6 +561,28 @@ export interface FeatureUsedProps {
   value?: PropertyValue;
 }
 
+/** Preset buckets for the account retention window; `custom` is any non-preset hour count. */
+export type RetentionSettingBucket = '24h' | '7d' | '30d' | '90d' | '6mo' | '1y' | '2y' | 'custom';
+export type ReopenedAgeBucket = '<1d' | '1-7d' | '7-30d' | '30-90d' | '90d+';
+export type DataDeletedScope = 'item' | 'all' | 'account';
+/** What was deleted. `all_files` is the delete-all action; `account` the whole account. */
+export type DataDeletedKind = 'result' | 'project' | 'all_files' | 'account';
+
+export interface RetentionSettingChangedProps {
+  from_bucket: RetentionSettingBucket;
+  to_bucket: RetentionSettingBucket;
+}
+export interface DataDeletedProps {
+  scope: DataDeletedScope;
+  kind: DataDeletedKind;
+}
+export type DataExportRequestedProps = Record<string, never>;
+export interface HistoryItemReopenedProps {
+  /** Media kind of a result (`video`, `image`, ...) or `project` for a Darkroom project. */
+  kind: string;
+  age_bucket: ReopenedAgeBucket;
+}
+
 export interface ScrollDepthProps {
   pct: 25 | 50 | 75 | 100;
 }
@@ -756,6 +790,10 @@ export interface EventPropsMap {
   cta_clicked: CTAClickedProps;
   feature_used: FeatureUsedProps;
   scroll_depth: ScrollDepthProps;
+  retention_setting_changed: RetentionSettingChangedProps;
+  data_deleted: DataDeletedProps;
+  data_export_requested: DataExportRequestedProps;
+  history_item_reopened: HistoryItemReopenedProps;
 
   studio_project_created: StudioProjectCreatedProps;
   studio_project_opened: StudioProjectOpenedProps;

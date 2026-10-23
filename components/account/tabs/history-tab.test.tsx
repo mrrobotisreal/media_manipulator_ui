@@ -29,6 +29,9 @@ vi.mock('next/dynamic', async () => {
   };
 });
 
+const track = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/analytics/client', () => ({ analytics: { track } }));
+
 const hooks = vi.hoisted(() => ({ result: { data: undefined as unknown, status: 'loading' as string, error: null as unknown } }));
 vi.mock('@/components/metadata/use-metadata-data', () => ({
   useJobMetadata: (_id: string, side: string) => ({ ...hooks.result, side }),
@@ -65,6 +68,7 @@ function renderHistory(entries: object[]) {
 }
 
 beforeEach(() => {
+  track.mockClear();
   vi.mocked(deleteJob).mockReset();
   vi.mocked(keepJobLonger).mockReset();
 });
@@ -121,6 +125,22 @@ describe('HistoryTab rows', () => {
     renderHistory([row('j9', { resultFileName: 'out.mp4', downloadPath: '/download/j9' })]);
     fireEvent.click(await screen.findByRole('button', { name: 'Preview' }));
     expect((await screen.findByTestId('result-panel')).textContent).toBe('j9:out.mp4');
+  });
+
+  it('emits history_item_reopened (kind and age bucket only) on Preview and Download, never on render', async () => {
+    renderHistory([row('j9', { mediaKind: 'video', createdAt: new Date(Date.now() - 40 * DAY).toISOString(), resultFileName: 'out.mp4', downloadPath: '/download/j9' })]);
+    fireEvent.click(await screen.findByRole('button', { name: 'Preview' }));
+    expect(track).toHaveBeenCalledWith('history_item_reopened', { kind: 'video', age_bucket: '30-90d' });
+    fireEvent.click(screen.getByRole('link', { name: 'Download' }));
+    expect(track).toHaveBeenCalledTimes(2);
+  });
+
+  it('emits data_deleted item/result for a single delete', async () => {
+    vi.mocked(deleteJob).mockResolvedValue({ deleted: { objects: 1, bytes: 1 }, pending: 0 });
+    renderHistory([row('j1', { downloadPath: '/x' })]);
+    fireEvent.click(await screen.findByRole('button', { name: 'Delete now' }));
+    fireEvent.click(within(await screen.findByRole('alertdialog')).getByRole('button', { name: 'Delete' }));
+    await waitFor(() => expect(track).toHaveBeenCalledWith('data_deleted', { scope: 'item', kind: 'result' }));
   });
 
   it('Keep longer calls keepJobLonger with the chosen hours', async () => {

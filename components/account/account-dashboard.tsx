@@ -17,7 +17,6 @@ import { ProjectsTab } from '@/components/account/tabs/projects-tab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocalization } from '@/i18n/useLocalization';
 import { analytics, EVENTS } from '@/lib/analytics';
-import { retentionEvents } from '@/lib/analytics/retentionEvents';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { ACCOUNT_TABS, parseAccountTab, type AccountTab } from '@/lib/account/tabs';
 
@@ -100,7 +99,6 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
 
   const signedIn = !!auth?.user;
   React.useEffect(() => {
-    if (signedIn) retentionEvents.tabViewed(tab);
   }, [signedIn, tab]);
 
   if (!auth || auth.loading) {
