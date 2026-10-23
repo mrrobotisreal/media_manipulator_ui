@@ -54,7 +54,7 @@
       "freeTitle": "Lo que obtienes con una cuenta gratuita",
       "premiumTitle": "Premium",
       "premiumPrice": "{{price}} $/mes",
-      "premiumComingSoon": "Próximamente",
+      "premiumUpgrade": "Actualizar a Premium",
       "comparePlans": "Comparar todos los planes",
       "opsPerDay": "{{count}} operaciones al día",
       "opsPerDayUnlimited": "Operaciones ilimitadas al día",
@@ -65,8 +65,7 @@
       "studioProjectsUnlimited": "Proyectos de Studio guardados ilimitados",
       "retention": "Resultados conservados durante {{duration}}",
       "priorityGpu": "Procesamiento prioritario",
-      "noAds": "Sin anuncios",
-      "batch": "Procesamiento por lotes"
+      "noAds": "Sin anuncios"
     },
     "loadingPlans": "Cargando planes…"
   },
@@ -391,5 +390,89 @@
       "loading": "Loading the restored clips",
       "download": "Download all results"
     }
+  },
+  "billing": {
+    "intervalLabel": "Periodo de facturación",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "perMonth": "/mes",
+    "perYear": "/año",
+    "yearlyBonus": "{{months}} meses gratis",
+    "cancelAnytime": "Cancela cuando quieras",
+    "refund": "Reembolso de 14 días en tu primer pago",
+    "taxNote": "Precios en USD; pueden aplicarse impuestos",
+    "upgrade": "Actualizar a Premium",
+    "manage": "Gestionar suscripción",
+    "operator": "Ilimitado (operador)",
+    "unavailable": "Premium aún no está disponible",
+    "busy": "Abriendo el pago…",
+    "cancelledNote": "El pago se canceló. No se te ha cobrado nada.",
+    "dismiss": "Cerrar",
+    "errors": {
+      "unavailable": "Premium aún no está disponible.",
+      "operator": "Las cuentas de operador ya tienen acceso ilimitado.",
+      "generic": "No se pudo iniciar el pago. Inténtalo de nuevo en un momento."
+    },
+    "panel": {
+      "title": "Facturación",
+      "loading": "Cargando tus datos de facturación…",
+      "loadFailed": "No se pudieron cargar tus datos de facturación. Recarga para intentarlo de nuevo.",
+      "operator": "Acceso de operador. No necesitas suscripción.",
+      "unavailable": "Las suscripciones aún no están disponibles.",
+      "grantUntil": "Premium concedido por el equipo hasta el {{date}}.",
+      "grantOpen": "Premium concedido por el equipo sin fecha de fin.",
+      "freeBody": "Estás en el plan gratuito. Premium aumenta tus límites y quita los anuncios.",
+      "upgrade": "Actualizar a Premium",
+      "pastDueTitle": "Tu último pago no se pudo procesar",
+      "pastDueBody": "El acceso Premium continúa hasta 7 días mientras reintentamos. Actualiza tu método de pago para conservarlo.",
+      "intervalLabel": "Facturación",
+      "endsLabel": "Termina el",
+      "renewsLabel": "Se renueva el",
+      "endsOn": "Tu suscripción termina el {{date}}.",
+      "resumeHint": "Abre «Gestionar suscripción» para reanudarla.",
+      "renewsOn": "Se renueva el {{date}}.",
+      "updatePayment": "Actualizar método de pago"
+    },
+    "return": {
+      "waiting": {
+        "title": "Confirmando tu pago…",
+        "body": "Suele tardar unos segundos."
+      },
+      "confirmed": {
+        "title": "Te damos la bienvenida a Premium",
+        "body": "Tu pago se realizó y tu plan ahora es Premium."
+      },
+      "shortly": {
+        "title": "Pago recibido",
+        "body": "Tu plan se actualizará en breve. Si en un minuto sigue como gratuito, actualiza abajo."
+      },
+      "foreign": {
+        "title": "No pudimos asociar este pago a tu cuenta",
+        "body": "Si acabas de pagar, inicia sesión con la cuenta que usaste al pagar."
+      },
+      "failed": {
+        "title": "Aún no pudimos confirmar tu pago",
+        "body": "Tu plan se actualiza automáticamente cuando se confirma el pago. Inténtalo de nuevo en un momento."
+      },
+      "refresh": "Actualizar mi plan"
+    }
+  },
+  "upgradeInterstitial": {
+    "quota": {
+      "title": "Has alcanzado el límite de hoy: {{limit}}",
+      "body": "Premium aumenta tu límite diario y quita los anuncios."
+    },
+    "outputHeight": {
+      "title": "Esta salida es más alta de lo que permite tu plan",
+      "body": "Pediste {{requested}}p; tu plan permite hasta {{limit}}p."
+    },
+    "projects": {
+      "title": "Has alcanzado el límite de proyectos guardados",
+      "body": "Tu plan guarda hasta {{limit}} proyectos de Darkroom."
+    },
+    "topTier": "Tu plan ya es el más alto. Reduce el ajuste para continuar.",
+    "close": "Ahora no",
+    "signup": "Crear una cuenta gratuita",
+    "upgrade": "Actualizar a Premium"
   }
 }

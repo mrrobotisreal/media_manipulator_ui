@@ -247,7 +247,7 @@
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "Registrieren Sie sich für ein Premium-Konto, um vollen Zugriff auf die Transcodierung zu erhalten! (Premium-Registrierung kommt bald!)",
+    "premiumTooltip": "Registrieren Sie sich für ein Premium-Konto, um vollen Zugriff auf die Transcodierung zu erhalten.",
     "premiumBadge": "Premium",
     "tooSmallBadge": "Zu klein",
     "protocol": {
@@ -284,7 +284,7 @@
     "rungs": {
       "title": "Qualitätsstufen",
       "tooltipAria": "Über Qualitätsstufen",
-      "tooltip": "Jede ausgewählte Stufe wird zu einer Rendition im finalen HLS-/DASH-Paket. Premium-Stufen (144p/240p/1080p/2160p) folgen in Kürze.",
+      "tooltip": "Jede ausgewählte Stufe wird zu einer Rendition im finalen HLS-/DASH-Paket. Premium-Stufen (144p/240p/1080p/2160p) sind mit Premium verfügbar.",
       "defaultsNote": "Standard: 360p + 480p + 720p, sofern das Quellvideo diese unterstützt."
     },
     "captions": {
@@ -318,7 +318,7 @@
       "starting": "Transcodierung wird gestartet …",
       "startButton": "{{protocol}}-Transcodierung starten (Ausgabe: {{format}})"
     },
-    "tooSmall": "Dieses Video liegt unter dem kostenlosen Mindestwert von 360p für die Transcodierung. Premium-Unterstützung für Quellen mit sehr niedriger Qualität folgt in Kürze. Bitte laden Sie ein Video mit mindestens 360p.",
+    "tooSmall": "Dieses Video liegt unter dem kostenlosen Mindestwert von 360p für die Transcodierung. Bitte laden Sie ein Video mit mindestens 360p.",
     "progress": {
       "title": "Pipeline-Fortschritt",
       "failed": "Transcodierung fehlgeschlagen."

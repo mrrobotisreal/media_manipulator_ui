@@ -247,7 +247,7 @@
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "¡Regístrate para obtener una cuenta Premium y acceso completo a la transcodificación! (¡El registro Premium llegará pronto!)",
+    "premiumTooltip": "Obtén una cuenta Premium para desbloquear el acceso completo a la transcodificación.",
     "premiumBadge": "Premium",
     "tooSmallBadge": "Demasiado pequeño",
     "protocol": {
@@ -284,7 +284,7 @@
     "rungs": {
       "title": "Niveles de calidad",
       "tooltipAria": "Acerca de los niveles de calidad",
-      "tooltip": "Cada nivel seleccionado se convierte en una variante del paquete final HLS/DASH. Los niveles Premium (144p/240p/1080p/2160p) llegarán pronto.",
+      "tooltip": "Cada nivel seleccionado se convierte en una variante del paquete final HLS/DASH. Los niveles Premium (144p/240p/1080p/2160p) están disponibles con Premium.",
       "defaultsNote": "Valores predeterminados: 360p + 480p + 720p cuando el vídeo de origen los admite."
     },
     "captions": {
@@ -318,7 +318,7 @@
       "starting": "Iniciando la transcodificación...",
       "startButton": "Iniciar transcodificación {{protocol}} (salida: {{format}})"
     },
-    "tooSmall": "Este vídeo está por debajo del mínimo gratuito de transcodificación de 360p. La compatibilidad Premium con orígenes de calidad muy baja llegará pronto. Carga un vídeo de 360p o superior.",
+    "tooSmall": "Este vídeo está por debajo del mínimo gratuito de transcodificación de 360p. Carga un vídeo de 360p o superior.",
     "progress": {
       "title": "Progreso del proceso",
       "failed": "La transcodificación ha fallado."
