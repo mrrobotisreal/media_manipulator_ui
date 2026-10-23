@@ -55,6 +55,18 @@ export function timelineDurationBucket(seconds: number): string {
   return '30m+';
 }
 
+/**
+ * How long a still-image clip is held (a clip's on-timeline length), for
+ * `studio_image_clip_extended`. Closed enum, upper-inclusive; low cardinality.
+ */
+export function imageHoldBucket(seconds: number): '<=5s' | '<=30s' | '<=5m' | '<=1h' | '>1h' {
+  if (seconds <= 5) return '<=5s';
+  if (seconds <= 30) return '<=30s';
+  if (seconds <= 300) return '<=5m';
+  if (seconds <= 3600) return '<=1h';
+  return '>1h';
+}
+
 /** How long an editing session lasted. */
 export function sessionSecondsBucket(seconds: number): string {
   if (seconds < 60) return '<1m';

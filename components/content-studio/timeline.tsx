@@ -6,6 +6,7 @@ import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond, Ima
 import { Button } from '@/components/ui/button';
 import { trackAcceptsAsset } from '@/lib/studio/trackRules';
 import { clipTrimBound } from '@/lib/studio/clipTrimBound';
+import { analytics, EVENTS, imageHoldBucket } from '@/lib/analytics';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
@@ -29,7 +30,7 @@ import {
 import { TRANSITION_TYPE_GROUPS } from '@/lib/studio/effectRegistry';
 import { clipKeyframeLanes, type KeyframePropertyGroup } from '@/lib/studio/keyframes';
 import { defaultTransitionSeconds } from '@/lib/studio/preferences';
-import { editSummary } from '@/lib/studio/telemetry';
+import { editSummary, studioHost } from '@/lib/studio/telemetry';
 import ClipWaveform from './clip-waveform';
 import { useUndoGesture } from './useUndoGesture';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
@@ -322,9 +323,26 @@ const Timeline: React.FC = () => {
 
   const onTrimUp = React.useCallback((e: React.PointerEvent) => {
     if (!trimRef.current) return;
+    const trim = trimRef.current;
     trimRef.current = null;
     (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
     useStudioStore.getState().endGesture();
+    // Still images: report how long the hold ended up when the right edge grew
+    // (once per gesture, bucketed — no ids).
+    if (trim && trim.side === 'r' && trim.assetDur === Number.POSITIVE_INFINITY && !trim.orig.title) {
+      const st = useStudioStore.getState();
+      let now: StudioClip | undefined;
+      for (const tr of st.project?.tracks ?? []) {
+        now = tr.clips.find((c) => c.id === trim.clipId) ?? now;
+      }
+      if (now && now.sourceOut > trim.orig.sourceOut) {
+        analytics.track(
+          EVENTS.STUDIO_IMAGE_CLIP_EXTENDED,
+          { durationBucket: imageHoldBucket(now.sourceOut - now.sourceIn), host: studioHost() },
+          { feature: 'studio' },
+        );
+      }
+    }
   }, []);
 
   if (!project) return null;

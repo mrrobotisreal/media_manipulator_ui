@@ -314,6 +314,12 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   studio_recovery_accepted: studioHostProps,
   studio_save_conflict: studioHostProps,
   studio_version_restored: studioHostProps,
+  studio_image_clip_extended: z
+    .object({
+      durationBucket: z.enum(['<=5s', '<=30s', '<=5m', '<=1h', '>1h']),
+      host: studioHostEnum.optional(),
+    })
+    .strict(),
   studio_edit_summary: z
     .object({
       splits: z.string().optional(),
