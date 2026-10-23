@@ -4647,7 +4647,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a recording. Clean Voice is already applied, so there is no operation menu to set. Choose an output format if you need something other than the default, then convert.',
     },
     intro:
-      'A phone voice memo in a echoey kitchen, a podcast guest on a laptop microphone, a lecture recorded from the back of the room: the words are there, but they are buried under hiss and room sound. Clean Voice processes the recording with an AI speech-enhancement step to bring the speaker forward and quiet what is not speech. It is built for talking, not for music.',
+      'A phone voice memo in an echoey kitchen, a podcast guest on a laptop microphone, a lecture recorded from the back of the room: the words are there, but they are buried under hiss and room sound. Clean Voice processes the recording with an AI speech-enhancement step to bring the speaker forward and quiet what is not speech. It is built for talking, not for music.',
     whatItDoes: [
       'Applies an AI speech-enhancement pass that lifts voice and suppresses steady background sound.',
       'Reduces hiss, hum, fans, room tone and light reverb in spoken recordings.',
