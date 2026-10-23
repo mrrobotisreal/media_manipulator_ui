@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import { Film, Music, Plus, UploadCloud, Loader2, AlertCircle, Palette, Sparkles } from 'lucide-react';
+import { Film, ImageIcon, Music, Plus, UploadCloud, Loader2, AlertCircle, Palette, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -12,6 +12,7 @@ import { useStudioJobProgress } from '@/lib/useStudioJob';
 import { analytics, EVENTS, batchBucket, fileSizeBucket } from '@/lib/analytics';
 import type { StudioImportKind } from '@/lib/analytics';
 import { studioHost } from '@/lib/studio/telemetry';
+import { studioSpriteUrl } from '@/lib/studio/previewEngine';
 
 /** MIME type → the closed import-kind vocabulary. Never the filename. */
 function importKind(file: File): StudioImportKind {
@@ -96,7 +97,7 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
         <input
           ref={inputRef}
           type="file"
-          accept="video/*,audio/*,.cube"
+          accept="video/*,audio/*,image/*,.cube,.heic,.heif,.avif"
           multiple
           className="hidden"
           onChange={(e) => {
@@ -134,6 +135,7 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
   const { t, formatReadableDuration } = useLocalization('interface');
   const { asset, status } = entry;
   const isAudio = asset.mediaKind === 'audio';
+  const isImage = asset.mediaKind === 'image';
   const ready = status === 'ready';
   const { derive, isDeriving } = useDeriveStudioAsset();
   // Part 10: AI derives are a lifecycle event — `op` is the server's closed
@@ -159,14 +161,38 @@ const MediaTile: React.FC<{ entry: StudioAssetEntry; onAdd: () => void }> = ({ e
       title={ready ? t('contentStudio.mediaBin.dragHint') : undefined}
     >
       <div className="shrink-0 w-12 h-9 rounded bg-muted flex items-center justify-center">
-        {isAudio ? <Music className="w-4 h-4 text-primary" /> : <Film className="w-4 h-4 text-primary" />}
+        {isImage ? (
+          <div className="relative w-full h-full overflow-hidden rounded">
+            {/* Thumbnail sprite is empty when the server-side thumbnail failed; the badge below remains. */}
+            <img
+              src={studioSpriteUrl(asset.id)}
+              alt=""
+              draggable={false}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+            <ImageIcon className="absolute bottom-0.5 right-0.5 w-3 h-3 text-primary drop-shadow" aria-hidden />
+          </div>
+        ) : isAudio ? (
+          <Music className="w-4 h-4 text-primary" />
+        ) : (
+          <Film className="w-4 h-4 text-primary" />
+        )}
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-xs font-medium text-card-foreground truncate" title={asset.originalFileName}>
           {asset.originalFileName}
         </p>
         <p className="text-[11px] text-muted-foreground">
-          {asset.durationSeconds > 0 ? formatReadableDuration(asset.durationSeconds) : '—'}
+          {isImage
+            ? asset.width && asset.height
+              ? `${asset.width}×${asset.height}`
+              : '—'
+            : asset.durationSeconds > 0
+              ? formatReadableDuration(asset.durationSeconds)
+              : '—'}
           {status === 'processing' && (
             <span className="ml-1 inline-flex items-center gap-1 text-premium">
               <Loader2 className="w-3 h-3 animate-spin" />
