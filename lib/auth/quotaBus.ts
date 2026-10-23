@@ -6,7 +6,7 @@
 // what the server just told it, and lets AuthProvider subscribe — without
 // either importing the other, and without a refetch after every conversion.
 
-import type { QuotaExceeded, QuotaHeaderState } from './accountApi';
+import type { LimitRefusal, QuotaExceeded, QuotaHeaderState } from './accountApi';
 
 type Listener = (state: QuotaHeaderState) => void;
 type ExceededListener = (detail: QuotaExceeded) => void;
@@ -68,5 +68,29 @@ export function subscribeQuotaExceeded(listener: ExceededListener): () => void {
   exceededListeners.add(listener);
   return () => {
     exceededListeners.delete(listener);
+  };
+}
+
+type LimitListener = (detail: LimitRefusal) => void;
+const limitListeners = new Set<LimitListener>();
+
+/**
+ * Announces a 403 `output_height_limited` / `project_limit_reached` so the shared upgrade
+ * interstitial can open, wherever in the app the request was made.
+ */
+export function publishLimitRefusal(detail: LimitRefusal): void {
+  limitListeners.forEach((listener) => {
+    try {
+      listener(detail);
+    } catch {
+      // A broken subscriber must never break the request that triggered it.
+    }
+  });
+}
+
+export function subscribeLimitRefusal(listener: LimitListener): () => void {
+  limitListeners.add(listener);
+  return () => {
+    limitListeners.delete(listener);
   };
 }

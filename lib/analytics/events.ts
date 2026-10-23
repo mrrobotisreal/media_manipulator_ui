@@ -89,6 +89,11 @@ export const EVENTS = {
   UPGRADE_CTA_CLICKED: 'upgrade_cta_clicked',
   QUOTA_WARNING_SHOWN: 'quota_warning_shown',
   QUOTA_EXCEEDED_SHOWN: 'quota_exceeded_shown',
+  CHECKOUT_STARTED: 'checkout_started',
+  CHECKOUT_COMPLETED: 'checkout_completed',
+  CHECKOUT_ABANDONED: 'checkout_abandoned',
+  PORTAL_OPENED: 'portal_opened',
+  SUBSCRIPTION_STATUS_VIEWED: 'subscription_status_viewed',
 
   // --- Engagement / content -------------------------------------------------
   CONTENT_READ_PROGRESS: 'content_read_progress',
@@ -184,6 +189,11 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   upgrade_cta_clicked: PRIORITY_CRITICAL,
   quota_warning_shown: PRIORITY_HIGH,
   quota_exceeded_shown: PRIORITY_CRITICAL,
+  checkout_started: PRIORITY_CRITICAL,
+  checkout_completed: PRIORITY_CRITICAL,
+  checkout_abandoned: PRIORITY_CRITICAL,
+  portal_opened: PRIORITY_CRITICAL,
+  subscription_status_viewed: PRIORITY_CRITICAL,
 
   // Engagement
   content_read_progress: PRIORITY_LOW,
@@ -480,6 +490,30 @@ export interface UpgradeCTAClickedProps {
   from_tier?: Tier;
 }
 
+/** Billing interval, mirroring the API's billing.Interval* constants. */
+export type BillingIntervalProp = 'monthly' | 'yearly';
+
+export interface CheckoutStartedProps {
+  interval: BillingIntervalProp;
+  placement: string;
+}
+
+export interface CheckoutCompletedProps {
+  interval: BillingIntervalProp;
+}
+
+// checkout_abandoned carries no properties.
+export type CheckoutAbandonedProps = Record<string, never>;
+
+export interface PortalOpenedProps {
+  placement: string;
+}
+
+export interface SubscriptionStatusViewedProps {
+  status: string;
+  interval: string;
+}
+
 export interface QuotaWarningShownProps {
   limit?: number;
   remaining?: number;
@@ -711,6 +745,11 @@ export interface EventPropsMap {
   upgrade_cta_clicked: UpgradeCTAClickedProps;
   quota_warning_shown: QuotaWarningShownProps;
   quota_exceeded_shown: QuotaExceededShownProps;
+  checkout_started: CheckoutStartedProps;
+  checkout_completed: CheckoutCompletedProps;
+  checkout_abandoned: CheckoutAbandonedProps;
+  portal_opened: PortalOpenedProps;
+  subscription_status_viewed: SubscriptionStatusViewedProps;
 
   content_read_progress: ContentReadProgressProps;
   content_read_completed: ContentReadCompletedProps;

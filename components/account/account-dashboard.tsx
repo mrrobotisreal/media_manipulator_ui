@@ -7,6 +7,8 @@ import { Panel } from '@/components/darkroom/panel';
 import { Button } from '@/components/ui/button';
 import { Stat } from '@/components/darkroom/stat';
 import { PanelLoading } from '@/components/darkroom/panel-loading';
+import { BillingPanel } from '@/components/account/billing-panel';
+import { CheckoutReturn } from '@/components/account/checkout-return';
 import { ConversionHistory, type HistoryLabels } from '@/components/account/conversion-history';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
@@ -225,6 +227,8 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
   };
 
   return (
+    <>
+    <CheckoutReturn />
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
       {/* The wide column carries the two things that change: today's counts and
           the log of what produced them. */}
@@ -288,6 +292,8 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
           </div>
         </Panel>
 
+        <BillingPanel />
+
         <Panel title={labels.projectsTitle} titleAs="h2">
           {/* Studio projects are scoped server-side to the signed-in account
               (internal/handlers/studio.go). The editor owns listing and
@@ -305,6 +311,7 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
         </Panel>
       </div>
     </div>
+    </>
   );
 };
 

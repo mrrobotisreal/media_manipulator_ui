@@ -8,12 +8,16 @@
 // one that silently disagrees the first time a limit is retuned.
 
 import Link from 'next/link';
-import { Check, Minus } from 'lucide-react';
 
 import { getServerT } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
 import { PricingTracker, PricingUpgradeLink } from '@/components/pricing/pricing-tracker';
+import {
+  CheckoutCancelledNote,
+  PremiumPricing,
+  type PremiumPricingLabels,
+} from '@/components/pricing/premium-cta';
 import type { TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
 import {
   formatBytes,
@@ -61,7 +65,6 @@ const ROWS: Row[] = [
         : `${l.studioProjects}`,
   },
   { key: 'resultRetentionHours', render: (l) => formatRetention(l.resultRetentionHours) },
-  { key: 'batchEnabled', render: (l, t) => <BoolCell on={l.batchEnabled} t={t} /> },
   {
     key: 'priorityGpu',
     render: (l, t) =>
@@ -77,19 +80,6 @@ const ROWS: Row[] = [
         : t('interface:pricing.values.adsShown'),
   },
 ];
-
-const BoolCell: React.FC<{ on: boolean; t: T }> = ({ on, t }) =>
-  on ? (
-    <span className="inline-flex items-center gap-1.5 text-data">
-      <Check aria-hidden="true" className="size-3.5" />
-      <span className="sr-only">{t('interface:pricing.values.yes')}</span>
-    </span>
-  ) : (
-    <span className="inline-flex items-center gap-1.5 text-text-subtle">
-      <Minus aria-hidden="true" className="size-3.5" />
-      <span className="sr-only">{t('interface:pricing.values.no')}</span>
-    </span>
-  );
 
 /** The value cell. Measured numbers are monospace; prose is not. */
 const ValueCell: React.FC<{ children: React.ReactNode; numeric: boolean }> = ({
@@ -109,13 +99,36 @@ const NUMERIC_ROWS = new Set([
   'resultRetentionHours',
 ]);
 
+function premiumLabels(t: T, data: TiersResponse): PremiumPricingLabels {
+  const monthly = data.premiumPriceUSD;
+  const yearly = data.premiumPriceYearlyUSD;
+  // "N months free" is derived from the two served prices, never hard-coded.
+  const months = yearly && monthly > 0 ? Math.round(12 - yearly / monthly) : 0;
+  return {
+    intervalLabel: t('interface:billing.intervalLabel'),
+    monthly: t('interface:billing.monthly'),
+    yearly: t('interface:billing.yearly'),
+    priceMonthly: `$${monthly}${t('interface:billing.perMonth')}`,
+    priceYearly: yearly ? `$${yearly}${t('interface:billing.perYear')}` : '',
+    yearlyBonus: months >= 1 ? t('interface:billing.yearlyBonus', { values: { months } }) : '',
+    blurb: t('interface:pricing.tierBlurb.premium'),
+    cancelAnytime: t('interface:billing.cancelAnytime'),
+    refund: t('interface:billing.refund'),
+    taxNote: t('interface:billing.taxNote'),
+    ctaUpgrade: t('interface:billing.upgrade'),
+    ctaManage: t('interface:billing.manage'),
+    ctaOperator: t('interface:billing.operator'),
+    ctaUnavailable: t('interface:billing.unavailable'),
+    ctaBusy: t('interface:billing.busy'),
+  };
+}
+
 const TierHeader: React.FC<{
   tier: TierKey;
   t: T;
-  price?: number;
-  purchasable?: boolean;
+  data: TiersResponse;
   locale: string;
-}> = ({ tier, t, price, purchasable, locale }) => {
+}> = ({ tier, t, data, locale }) => {
   const isPremium = tier === 'premium';
   return (
     <div className="flex flex-col gap-2">
@@ -127,38 +140,24 @@ const TierHeader: React.FC<{
       >
         {t(`interface:pricing.tier.${tier}`)}
       </h2>
-      <p className="num text-2xl leading-none text-foreground">
-        {isPremium && price !== undefined ? (
-          <>
-            ${price}
-            <span className="text-sm text-muted-foreground">
-              {t('interface:pricing.perMonth')}
-            </span>
-          </>
-        ) : (
-          t('interface:pricing.free_price')
-        )}
-      </p>
-      <p className="text-sm leading-relaxed text-muted-foreground">
-        {t(`interface:pricing.tierBlurb.${tier}`)}
-      </p>
       {isPremium ? (
-        // NOT a button, and not instrumented: there is no checkout to send anyone to yet,
-        // so this is a status badge. It becomes a real CTA (and gets its own
-        // upgrade_cta_clicked) when billing lands.
-        <span
-          className={cn(
-            'mt-1 inline-flex w-fit items-center rounded-full border px-2.5 py-1 text-xs',
-            purchasable
-              ? 'border-premium/40 text-premium'
-              : 'border-edge text-muted-foreground',
-          )}
-        >
-          {purchasable
-            ? t('interface:pricing.cta.premiumBuy')
-            : t('interface:pricing.cta.premiumSoon')}
-        </span>
-      ) : tier === 'free' ? (
+        // Price, interval toggle and CTA live in one client island so the page stays a
+        // server component and the matrix stays in the prerendered HTML.
+        <PremiumPricing
+          labels={premiumLabels(t, data)}
+          purchasable={data.premiumPurchasable}
+        />
+      ) : (
+        <>
+          <p className="num text-2xl leading-none text-foreground">
+            {t('interface:pricing.free_price')}
+          </p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {t(`interface:pricing.tierBlurb.${tier}`)}
+          </p>
+        </>
+      )}
+      {isPremium ? null : tier === 'free' ? (
         // The one genuine upgrade CTA on this page: /account's signed-out state IS the
         // sign-up panel, so clicking this is a visitor deciding to create an account after
         // reading the comparison. Worth the client island (see pricing-tracker.tsx).
@@ -219,6 +218,10 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
     <div className="container mx-auto max-w-[1100px] px-4 py-12 md:py-16">
       {/* Renders nothing; emits pricing_viewed once. */}
       <PricingTracker />
+      <CheckoutCancelledNote
+        message={t('interface:billing.cancelledNote')}
+        dismiss={t('interface:billing.dismiss')}
+      />
       <header className="mb-10 max-w-2xl">
         <p className="text-xs font-medium uppercase tracking-[0.12em] text-data">
           {t('interface:pricing.eyebrow')}
@@ -244,8 +247,7 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
             <TierHeader
               tier={column.tier as TierKey}
               t={t}
-              price={data.premiumPriceUSD}
-              purchasable={data.premiumPurchasable}
+              data={data}
               locale={loc}
             />
             <dl className="mt-5 grid gap-2 md:hidden">

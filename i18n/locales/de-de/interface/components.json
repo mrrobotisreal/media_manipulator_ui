@@ -54,7 +54,7 @@
       "freeTitle": "Das bietet Ihnen ein kostenloses Konto",
       "premiumTitle": "Premium",
       "premiumPrice": "{{price}} $/Monat",
-      "premiumComingSoon": "Demnächst verfügbar",
+      "premiumUpgrade": "Auf Premium upgraden",
       "comparePlans": "Alle Tarife vergleichen",
       "opsPerDay": "{{count}} Vorgänge pro Tag",
       "opsPerDayUnlimited": "Unbegrenzte Vorgänge pro Tag",
@@ -65,8 +65,7 @@
       "studioProjectsUnlimited": "Unbegrenzt gespeicherte Studio-Projekte",
       "retention": "Ergebnisse werden {{duration}} gespeichert",
       "priorityGpu": "Vorrangige Verarbeitung",
-      "noAds": "Keine Werbung",
-      "batch": "Stapelverarbeitung"
+      "noAds": "Keine Werbung"
     },
     "loadingPlans": "Tarife werden geladen …"
   },
@@ -391,5 +390,89 @@
       "loading": "Loading the restored clips",
       "download": "Download all results"
     }
+  },
+  "billing": {
+    "intervalLabel": "Abrechnungszeitraum",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich",
+    "perMonth": "/Monat",
+    "perYear": "/Jahr",
+    "yearlyBonus": "{{months}} Monate gratis",
+    "cancelAnytime": "Jederzeit kündbar",
+    "refund": "14 Tage Rückerstattung auf deine erste Zahlung",
+    "taxNote": "Preise in USD; Steuern können anfallen",
+    "upgrade": "Auf Premium upgraden",
+    "manage": "Abo verwalten",
+    "operator": "Unbegrenzt (Operator)",
+    "unavailable": "Premium ist noch nicht verfügbar",
+    "busy": "Kasse wird geöffnet…",
+    "cancelledNote": "Der Bezahlvorgang wurde abgebrochen. Es wurde nichts abgebucht.",
+    "dismiss": "Schließen",
+    "errors": {
+      "unavailable": "Premium ist noch nicht verfügbar.",
+      "operator": "Operator-Konten haben bereits unbegrenzten Zugriff.",
+      "generic": "Der Bezahlvorgang konnte nicht gestartet werden. Bitte versuche es gleich noch einmal."
+    },
+    "panel": {
+      "title": "Abrechnung",
+      "loading": "Abrechnungsdaten werden geladen…",
+      "loadFailed": "Abrechnungsdaten konnten nicht geladen werden. Lade die Seite neu.",
+      "operator": "Operator-Zugang. Kein Abo nötig.",
+      "unavailable": "Abos sind noch nicht verfügbar.",
+      "grantUntil": "Premium wurde vom Team bis {{date}} gewährt.",
+      "grantOpen": "Premium wurde vom Team ohne Enddatum gewährt.",
+      "freeBody": "Du nutzt den kostenlosen Tarif. Premium erhöht deine Limits und entfernt Werbung.",
+      "upgrade": "Auf Premium upgraden",
+      "pastDueTitle": "Deine letzte Zahlung ist fehlgeschlagen",
+      "pastDueBody": "Der Premium-Zugang bleibt bis zu 7 Tage bestehen, während wir es erneut versuchen. Aktualisiere deine Zahlungsmethode, um ihn zu behalten.",
+      "intervalLabel": "Abrechnung",
+      "endsLabel": "Endet am",
+      "renewsLabel": "Verlängert sich am",
+      "endsOn": "Dein Abo endet am {{date}}.",
+      "resumeHint": "Öffne „Abo verwalten“, um es fortzusetzen.",
+      "renewsOn": "Verlängert sich am {{date}}.",
+      "updatePayment": "Zahlungsmethode aktualisieren"
+    },
+    "return": {
+      "waiting": {
+        "title": "Zahlung wird bestätigt…",
+        "body": "Das dauert normalerweise nur wenige Sekunden."
+      },
+      "confirmed": {
+        "title": "Willkommen bei Premium",
+        "body": "Deine Zahlung war erfolgreich und dein Tarif ist jetzt Premium."
+      },
+      "shortly": {
+        "title": "Zahlung eingegangen",
+        "body": "Dein Tarif wird in Kürze aktualisiert. Zeigt er in einer Minute noch „Kostenlos“, aktualisiere unten."
+      },
+      "foreign": {
+        "title": "Wir konnten diese Zahlung deinem Konto nicht zuordnen",
+        "body": "Wenn du gerade bezahlt hast, melde dich mit dem Konto an, das du beim Bezahlen verwendet hast."
+      },
+      "failed": {
+        "title": "Wir konnten deine Zahlung noch nicht bestätigen",
+        "body": "Dein Tarif wird automatisch aktualisiert, sobald die Zahlung bestätigt ist. Versuche es gleich noch einmal."
+      },
+      "refresh": "Meinen Tarif aktualisieren"
+    }
+  },
+  "upgradeInterstitial": {
+    "quota": {
+      "title": "Du hast das heutige Limit von {{limit}} erreicht",
+      "body": "Premium erhöht dein Tageslimit und entfernt Werbung."
+    },
+    "outputHeight": {
+      "title": "Diese Ausgabe ist höher, als dein Tarif erlaubt",
+      "body": "Du hast {{requested}}p angefordert; dein Tarif erlaubt bis zu {{limit}}p."
+    },
+    "projects": {
+      "title": "Du hast dein Limit für gespeicherte Projekte erreicht",
+      "body": "Dein Tarif speichert bis zu {{limit}} Darkroom-Projekte."
+    },
+    "topTier": "Dein Tarif ist bereits der höchste. Verringere die Einstellung, um fortzufahren.",
+    "close": "Jetzt nicht",
+    "signup": "Kostenloses Konto erstellen",
+    "upgrade": "Auf Premium upgraden"
   }
 }

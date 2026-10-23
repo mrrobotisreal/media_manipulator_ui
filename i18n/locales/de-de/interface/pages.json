@@ -495,7 +495,7 @@
   },
   "legalCommon": {
     "effectiveDate": "Gültig ab: 14.05.2026",
-    "lastUpdated": "Zuletzt aktualisiert: 14.05.2026",
+    "lastUpdated": "Zuletzt aktualisiert: 23.10.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
@@ -611,6 +611,13 @@
             ],
             "afterBullets": [
               "Sie können Cookies über Ihre Browsereinstellungen steuern. Einige Funktionen funktionieren möglicherweise nicht ordnungsgemäß, wenn Cookies oder lokaler Speicher deaktiviert sind."
+            ]
+          },
+          {
+            "title": "1.6 Zahlungs- und Abonnementdaten",
+            "paragraphs": [
+              "Wenn du Premium abonnierst, wird die Zahlung von unserem Zahlungsdienstleister Stripe abgewickelt. Deine Kartendaten gibst du auf den Seiten von Stripe ein, und Stripe verarbeitet sie; wir erhalten und speichern keine Kartennummern.",
+              "Wir speichern nur, was wir für dein Abonnement brauchen: deine Stripe-Kundenkennung, den Abonnementstatus, den Abrechnungszeitraum (monatlich oder jährlich) und das Ende deines aktuellen Zeitraums. Wir nutzen diese Daten, um dir den richtigen Tarif zu geben, deinen Abrechnungsstatus anzuzeigen und Rückerstattungen und Supportanfragen zu bearbeiten."
             ]
           }
         ]
@@ -774,7 +781,7 @@
           "Werbepartner;",
           "Anbieter von Sicherheits-, Missbrauchserkennungs- und Inhaltssicherheitsdiensten;",
           "die KI-Verarbeitung erfolgt lokal auf unseren eigenen Servern oder auf von uns kontrollierter Infrastruktur, und wir geben hochgeladene Dateien, erzeugte Ergebnisse, Transkripte, Zusammenfassungen, Beschreibungen oder Inhaltssicherheitsscans nicht zur KI-Verarbeitung an KI-Anbieter Dritter weiter;",
-          "Zahlungsdienstleister, falls kostenpflichtige Konten eingeführt werden;",
+          "Stripe, unser Zahlungsdienstleister, wenn du Premium abonnierst (wir erhalten und speichern deine Kartennummer nicht);",
           "Strafverfolgungsbehörden, Aufsichtsbehörden oder sonstige Behörden, sofern gesetzlich vorgeschrieben oder erforderlich, um mutmaßlich illegale Inhalte zu melden;",
           "professionelle Berater, wie Rechtsanwälte, Wirtschaftsprüfer oder Sicherheitsberater;",
           "Unternehmensnachfolger im Falle einer Fusion, Übernahme, Finanzierung, Umstrukturierung oder eines Vermögensverkaufs."
@@ -1123,16 +1130,25 @@
         ]
       },
       {
-        "title": "9. Kontoregistrierung und künftige kostenpflichtige Funktionen",
+        "title": "9. Kontoregistrierung",
         "paragraphs": [
-          "Media Manipulator ist derzeit für einige Funktionen möglicherweise ohne Konto verfügbar. In Zukunft können wir Konten, kostenpflichtige Abonnements, Premium-Funktionen, höhere Nutzungsgrenzen, unbegrenzten Zugriff, werbefreie Erlebnisse oder andere kostenpflichtige Dienste anbieten.",
-          "Falls Konten oder kostenpflichtige Dienste eingeführt werden, können zusätzliche Bedingungen gelten, einschließlich Zahlungsbedingungen, Kündigungsbedingungen, Rückerstattungsbedingungen, Anforderungen an die Kontosicherheit und Abonnementbedingungen.",
+          "Die meisten Funktionen von Media Manipulator sind ohne Konto verfügbar. Ein Konto schaltet höhere Limits und einen gespeicherten Verlauf frei, und Premium ist ein kostenpflichtiges Abonnement, das in Abschnitt 10 beschrieben wird.",
           "Sie sind für die Vertraulichkeit Ihrer Kontodaten und für alle Aktivitäten unter Ihrem Konto verantwortlich.",
           "Wir behalten uns das Recht vor, Konten zu sperren, einzuschränken oder zu kündigen, die gegen diese Bedingungen verstoßen, ein rechtliches Risiko schaffen, den Dienst missbrauchen oder Nutzern, Werbetreibenden, unserer Marke oder unserer Infrastruktur schaden."
         ]
       },
       {
-        "title": "10. Verfügbarkeit des Dienstes und Änderungen",
+        "title": "10. Zahlungen, Verlängerungen und Rückerstattungen",
+        "paragraphs": [
+          "Premium ist ein kostenpflichtiges Abonnement, das in US-Dollar monatlich oder jährlich abgerechnet wird. Preis und Abrechnungszeitraum werden auf der Preisseite und vor der Zahlung erneut an der Kasse angezeigt. Die Preise verstehen sich in USD; je nach Wohnort können Steuern anfallen.",
+          "Dein Abonnement verlängert sich automatisch am Ende jedes Abrechnungszeitraums, bis du kündigst. Du kannst jederzeit im Bereich „Abrechnung“ deiner Kontoseite oder über das dort verlinkte Abrechnungsportal kündigen. Nach der Kündigung bleibt dein Premium-Zugang bis zum Ende des bereits bezahlten Zeitraums bestehen, und es wird nichts mehr abgebucht.",
+          "Wenn du nicht zufrieden bist, kannst du innerhalb von 14 Tagen nach deiner ersten Zahlung per E-Mail an support@media-manipulator.com deren Rückerstattung verlangen. Verlängerungszahlungen werden nicht erstattet, soweit das Gesetz nichts anderes vorschreibt.",
+          "Schlägt eine Zahlung fehl, versuchen wir es erneut, und dein Premium-Zugang bleibt bis zu 7 Tage bestehen. Ist die Zahlung danach weiterhin nicht erfolgt, kehrt dein Konto zum kostenlosen Tarif zurück, bis du deine Zahlungsmethode aktualisierst und erneut abonnierst.",
+          "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe."
+        ]
+      },
+      {
+        "title": "11. Verfügbarkeit des Dienstes und Änderungen",
         "paragraphs": [
           "Media Manipulator wird als dynamischer Online-Dienst bereitgestellt. Wir können jederzeit jede Funktion, jedes Werkzeug, Format, jeden Speicherzeitraum, jede Nutzungsgrenze, KI-Funktion, Verarbeitungsfähigkeit, jedes Preismodell oder die Verfügbarkeit ändern, aussetzen, einstellen, einschränken oder anpassen.",
           "Wir können Nutzungsgrenzen, Dateigrößenbeschränkungen, Dateitypbeschränkungen, Konvertierungsgrenzen, Ratenbegrenzungen, Kontogrenzen oder geografische Beschränkungen auferlegen.",
@@ -1140,7 +1156,7 @@
         ]
       },
       {
-        "title": "11. Einschränkungen der Dateiverarbeitung",
+        "title": "12. Einschränkungen der Dateiverarbeitung",
         "paragraphs": [
           "Die Medienverarbeitung kann aus vielen Gründen fehlschlagen, einschließlich nicht unterstützter Formate, beschädigter Dateien, inkompatibler Codecs, übermäßiger Dateigröße, Browser- oder Serverbeschränkungen, Zeitüberschreitungsfehlern, Netzwerkfehlern oder Sicherheitsbeschränkungen.",
           "Wir garantieren nicht, dass:"
@@ -1159,7 +1175,7 @@
         ]
       },
       {
-        "title": "12. Rechte an geistigem Eigentum",
+        "title": "13. Rechte an geistigem Eigentum",
         "paragraphs": [
           "Media Manipulator, einschließlich Website, Design, Software, Code, Benutzeroberfläche, Marke, Logos, Text, Grafiken, Funktionen, Arbeitsabläufe und verwandter Materialien, gehört der CreaTV Ltd. oder ihren Lizenzgebern und ist durch geltendes Recht zum Schutz geistigen Eigentums geschützt.",
           "Diese Bedingungen gewähren Ihnen kein Eigentum an Media Manipulator oder an geistigem Eigentum der CreaTV Ltd.",
@@ -1168,13 +1184,13 @@
         ]
       },
       {
-        "title": "13. Feedback",
+        "title": "14. Feedback",
         "paragraphs": [
           "Wenn Sie Kommentare, Vorschläge, Ideen, Fehlerberichte, Funktionswünsche oder sonstiges Feedback geben, gewähren Sie uns ein nicht ausschließliches, weltweites, gebührenfreies, unbefristetes, unwiderrufliches Recht, dieses Feedback ohne Einschränkung und ohne Vergütung an Sie zu nutzen."
         ]
       },
       {
-        "title": "14. Urheberrechtsbeschwerden",
+        "title": "15. Urheberrechtsbeschwerden",
         "paragraphs": [
           "Wenn Sie der Ansicht sind, dass über Media Manipulator verarbeitete, angezeigte, verlinkte oder zugänglich gemachte Inhalte Ihr Urheberrecht oder sonstige Rechte an geistigem Eigentum verletzen, können Sie uns kontaktieren unter:",
           "E-Mail: legal@media-manipulator.com",
@@ -1193,7 +1209,7 @@
         ]
       },
       {
-        "title": "15. Dienste Dritter und Werbung",
+        "title": "16. Dienste Dritter und Werbung",
         "paragraphs": [
           "Media Manipulator kann Links zu Websites Dritter, Werbung, Analytikanbietern, Hostinganbietern, Zahlungsdienstleistern oder anderen Diensten Dritter enthalten.",
           "Wir sind nicht verantwortlich für Websites, Dienste, Werbung, Produkte, Richtlinien oder Praktiken Dritter.",
@@ -1201,7 +1217,7 @@
         ]
       },
       {
-        "title": "16. Datenschutz",
+        "title": "17. Datenschutz",
         "paragraphs": [
           "Ihre Nutzung von Media Manipulator unterliegt auch unserer Datenschutzerklärung.",
           "Die Datenschutzerklärung erläutert, wie wir Informationen erheben, verwenden, speichern, scannen, verarbeiten, schützen und löschen, einschließlich hochgeladener Dateien, erzeugter Ergebnisse, Analysedaten, Werbedaten, KI-gestützter Verarbeitungsdaten und des vorübergehenden Konvertierungsverlaufs.",
@@ -1209,7 +1225,7 @@
         ]
       },
       {
-        "title": "17. Kündigung und Sperrung",
+        "title": "18. Kündigung und Sperrung",
         "paragraphs": [
           "Wir können Ihren Zugriff auf Media Manipulator jederzeit aussetzen, einschränken oder kündigen, wenn wir der Ansicht sind, dass:"
         ],
@@ -1226,7 +1242,7 @@
         ]
       },
       {
-        "title": "18. Haftungsausschlüsse",
+        "title": "19. Haftungsausschlüsse",
         "paragraphs": [
           "Media Manipulator wird „wie besehen“ und „wie verfügbar“ bereitgestellt.",
           "Im nach geltendem Recht maximal zulässigen Umfang schließen wir alle ausdrücklichen oder stillschweigenden Gewährleistungen aus, einschließlich Gewährleistungen der Marktgängigkeit, der Eignung für einen bestimmten Zweck, des Eigentums, der Nichtverletzung von Rechten, der Verfügbarkeit, der Sicherheit, der Genauigkeit, der Zuverlässigkeit und des fehlerfreien Betriebs.",
@@ -1247,7 +1263,7 @@
         ]
       },
       {
-        "title": "19. Haftungsbeschränkung",
+        "title": "20. Haftungsbeschränkung",
         "paragraphs": [
           "Im nach geltendem Recht maximal zulässigen Umfang haften CreaTV Ltd., Media Manipulator und deren Eigentümer, leitende Angestellte, Mitarbeiter, Auftragnehmer, verbundene Unternehmen, Vertreter, Lizenzgeber und Dienstleister nicht für indirekte, zufällige, Folge-, besondere, exemplarische, Strafschadensersatz- oder entgangene Gewinnschäden, die sich aus oder im Zusammenhang mit Ihrer Nutzung von Media Manipulator ergeben.",
           "Dies umfasst Schäden im Zusammenhang mit:"
@@ -1279,7 +1295,7 @@
         ]
       },
       {
-        "title": "20. Freistellung",
+        "title": "21. Freistellung",
         "paragraphs": [
           "Sie erklären sich damit einverstanden, CreaTV Ltd., Media Manipulator und deren Eigentümer, leitende Angestellte, Mitarbeiter, Auftragnehmer, verbundene Unternehmen, Vertreter, Lizenzgeber und Dienstleister zu verteidigen, freizustellen und schadlos zu halten von und gegen alle Ansprüche, Schäden, Verluste, Haftungen, Kosten und Auslagen, einschließlich angemessener Anwaltskosten, die sich ergeben aus oder im Zusammenhang stehen mit:"
         ],
@@ -1296,14 +1312,14 @@
         ]
       },
       {
-        "title": "21. Anwendbares Recht",
+        "title": "22. Anwendbares Recht",
         "paragraphs": [
           "Diese Bedingungen unterliegen dem Recht des Bundesstaates Colorado, Vereinigte Staaten, ohne Berücksichtigung kollisionsrechtlicher Grundsätze.",
           "Vorbehaltlich etwaiger Rechte, die Ihnen nach geltendem Verbraucherschutzrecht zustehen, stimmen Sie zu, dass jede Streitigkeit, die sich aus oder im Zusammenhang mit diesen Bedingungen oder Media Manipulator ergibt, bei den staatlichen oder Bundesgerichten in Colorado anhängig gemacht wird."
         ]
       },
       {
-        "title": "22. Änderungen dieser Bedingungen",
+        "title": "23. Änderungen dieser Bedingungen",
         "paragraphs": [
           "Wir können diese Bedingungen von Zeit zu Zeit aktualisieren.",
           "Wenn wir Änderungen vornehmen, aktualisieren wir das Datum „Zuletzt aktualisiert“ oben auf dieser Seite. Bei wesentlichen Änderungen können wir zusätzliche Hinweise geben, etwa durch einen Hinweis auf der Website.",
@@ -1312,7 +1328,7 @@
         ]
       },
       {
-        "title": "23. Kontakt",
+        "title": "24. Kontakt",
         "paragraphs": [
           "Wenn Sie Fragen zu diesen Bedingungen haben, kontaktieren Sie uns unter:"
         ],
@@ -1331,9 +1347,7 @@
     "perMonth": "/Monat",
     "cta": {
       "anonymous": "Jetzt konvertieren",
-      "free": "Kostenloses Konto erstellen",
-      "premiumSoon": "Demnächst — benachrichtigen lassen",
-      "premiumBuy": "Auf Premium upgraden"
+      "free": "Kostenloses Konto erstellen"
     },
     "tier": {
       "anonymous": "Kein Konto",
@@ -1344,7 +1358,7 @@
     "tierBlurb": {
       "anonymous": "Ein Werkzeug öffnen und loslegen. Nichts anzumelden, nichts über den Tag hinaus gespeichert.",
       "free": "Sechsfaches Tagesvolumen, gespeicherter Verlauf und Darkroom-Projekte, die einen Neustart überstehen.",
-      "premium": "4K-Ausgabe, lange Dateien, Priorität in der GPU-Warteschlange, Stapelverarbeitung und keine Werbung."
+      "premium": "4K-Ausgabe, lange Dateien, Priorität in der GPU-Warteschlange und keine Werbung."
     },
     "rows": {
       "opsPerDay": "Operationen pro Tag",
@@ -1354,7 +1368,6 @@
       "maxOutputHeight": "Maximale Ausgabeauflösung",
       "studioProjects": "Gespeicherte Studio-Projekte",
       "resultRetentionHours": "Ergebnisse gespeichert für",
-      "batchEnabled": "Stapelverarbeitung",
       "priorityGpu": "GPU-Warteschlange",
       "adsRemoved": "Werbung"
     },

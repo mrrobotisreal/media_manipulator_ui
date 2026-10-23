@@ -138,11 +138,13 @@ export function Segmented<T extends string>({
       {/* Sliding indicator. Equal-width segments make translateX exact. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0.5 left-0.5 rounded-sm bg-surface-3 ring-1 ring-edge-strong transition-transform duration-[var(--dur-fast)] ease-[var(--ease-instrument)]"
-        style={{
-          width: `calc((100% - 0.25rem) / ${options.length})`,
-          transform: `translateX(${selectedIndex * 100}%)`,
-        }}
+        className="pointer-events-none absolute inset-y-0.5 start-0.5 rounded-sm bg-surface-3 ring-1 ring-edge-strong transition-transform duration-[var(--dur-fast)] ease-[var(--ease-instrument)] [transform:translateX(calc(var(--seg-i)*100%))] rtl:[transform:translateX(calc(var(--seg-i)*-100%))]"
+        style={
+          {
+            width: `calc((100% - 0.25rem) / ${options.length})`,
+            '--seg-i': selectedIndex,
+          } as React.CSSProperties
+        }
       />
       {options.map((option) => {
         const selected = option.value === value;

@@ -64,10 +64,10 @@ const PLANS = [
     extras: 'results kept 7 days, 5 saved Darkroom projects',
   },
   {
-    name: 'Premium (planned, $7/month, not yet purchasable)',
+    name: 'Premium ($7/month or $70/year, cancel any time)',
     ops: '300 operations a day, 60 of them AI',
     file: '5 GB per file, video up to 2 hours, output up to 4K (2160p)',
-    extras: 'results kept 30 days, unlimited Darkroom projects, batch processing, priority GPU queue, no ads',
+    extras: 'results kept 30 days, unlimited Darkroom projects, priority GPU queue, no ads',
   },
 ] as const;
 

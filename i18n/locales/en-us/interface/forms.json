@@ -247,7 +247,7 @@
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "Sign up for a Premium account to get full transcode access! (Premium sign-up Coming Soon!)",
+    "premiumTooltip": "Sign up for a Premium account to unlock full transcode access.",
     "premiumBadge": "Premium",
     "tooSmallBadge": "Too small",
     "protocol": {
@@ -284,7 +284,7 @@
     "rungs": {
       "title": "Quality rungs",
       "tooltipAria": "About quality rungs",
-      "tooltip": "Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are coming soon.",
+      "tooltip": "Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are available with Premium.",
       "defaultsNote": "Defaults: 360p + 480p + 720p when the source video supports them."
     },
     "captions": {
@@ -318,7 +318,7 @@
       "starting": "Starting transcode...",
       "startButton": "Start {{protocol}} transcode (output: {{format}})"
     },
-    "tooSmall": "This video is below the free transcode minimum of 360p. Premium support for ultra-low-quality sources is coming soon. Please load a video that is 360p or higher.",
+    "tooSmall": "This video is below the free transcode minimum of 360p. Please load a video that is 360p or higher.",
     "progress": {
       "title": "Pipeline progress",
       "failed": "Transcode failed."

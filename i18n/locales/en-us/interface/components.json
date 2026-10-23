@@ -54,7 +54,7 @@
       "freeTitle": "What a free account gives you",
       "premiumTitle": "Premium",
       "premiumPrice": "${{price}}/mo",
-      "premiumComingSoon": "Coming soon",
+      "premiumUpgrade": "Upgrade to Premium",
       "comparePlans": "Compare all plans",
       "opsPerDay": "{{count}} operations a day",
       "opsPerDayUnlimited": "Unlimited operations a day",
@@ -65,8 +65,7 @@
       "studioProjectsUnlimited": "Unlimited saved Studio projects",
       "retention": "Results kept for {{duration}}",
       "priorityGpu": "Priority processing",
-      "noAds": "No ads",
-      "batch": "Batch processing"
+      "noAds": "No ads"
     },
     "loadingPlans": "Loading plans…"
   },
@@ -391,5 +390,89 @@
       "loading": "Loading the restored clips",
       "download": "Download all results"
     }
+  },
+  "billing": {
+    "intervalLabel": "Billing interval",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "perMonth": "/mo",
+    "perYear": "/yr",
+    "yearlyBonus": "{{months}} months free",
+    "cancelAnytime": "Cancel any time",
+    "refund": "14-day refund on your first payment",
+    "taxNote": "Prices in USD; tax may apply",
+    "upgrade": "Upgrade to Premium",
+    "manage": "Manage subscription",
+    "operator": "Unlimited (operator)",
+    "unavailable": "Premium is not available yet",
+    "busy": "Opening checkout…",
+    "cancelledNote": "Checkout was cancelled. You have not been charged.",
+    "dismiss": "Dismiss",
+    "errors": {
+      "unavailable": "Premium is not available yet.",
+      "operator": "Operator accounts already have unlimited access.",
+      "generic": "Could not start checkout. Please try again in a moment."
+    },
+    "panel": {
+      "title": "Billing",
+      "loading": "Loading your billing details…",
+      "loadFailed": "Could not load your billing details. Reload to try again.",
+      "operator": "Operator access. No subscription needed.",
+      "unavailable": "Subscriptions are not available yet.",
+      "grantUntil": "Premium granted by the team until {{date}}.",
+      "grantOpen": "Premium granted by the team with no end date.",
+      "freeBody": "You are on the free plan. Premium raises your limits and removes ads.",
+      "upgrade": "Upgrade to Premium",
+      "pastDueTitle": "Your last payment did not go through",
+      "pastDueBody": "Premium access continues for up to 7 days while we retry. Update your payment method to keep it.",
+      "intervalLabel": "Billing",
+      "endsLabel": "Ends on",
+      "renewsLabel": "Renews on",
+      "endsOn": "Your subscription ends on {{date}}.",
+      "resumeHint": "Open Manage subscription to resume it.",
+      "renewsOn": "Renews on {{date}}.",
+      "updatePayment": "Update payment method"
+    },
+    "return": {
+      "waiting": {
+        "title": "Confirming your payment…",
+        "body": "This usually takes a few seconds."
+      },
+      "confirmed": {
+        "title": "Welcome to Premium",
+        "body": "Your payment went through and your plan is now Premium."
+      },
+      "shortly": {
+        "title": "Payment received",
+        "body": "Your plan will update shortly. If it still shows Free in a minute, refresh below."
+      },
+      "foreign": {
+        "title": "We could not match this payment to your account",
+        "body": "If you just paid, sign in with the account you used at checkout."
+      },
+      "failed": {
+        "title": "We could not confirm your payment yet",
+        "body": "Your plan updates automatically once the payment is confirmed. Try again in a moment."
+      },
+      "refresh": "Refresh my plan"
+    }
+  },
+  "upgradeInterstitial": {
+    "quota": {
+      "title": "You've hit today's limit of {{limit}}",
+      "body": "Premium raises your daily allowance and removes ads."
+    },
+    "outputHeight": {
+      "title": "This output is taller than your plan allows",
+      "body": "You asked for {{requested}}p; your plan allows up to {{limit}}p."
+    },
+    "projects": {
+      "title": "You've reached your saved-project limit",
+      "body": "Your plan keeps up to {{limit}} saved Darkroom projects."
+    },
+    "topTier": "Your plan is already at the top. Lower the setting to continue.",
+    "close": "Not now",
+    "signup": "Create a free account",
+    "upgrade": "Upgrade to Premium"
   }
 }

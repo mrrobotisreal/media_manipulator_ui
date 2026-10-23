@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { useUpgradeAction } from '@/lib/billing/useUpgradeAction';
 import { isTopTier } from '@/lib/auth/accountApi';
 import { formatBytes } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -33,6 +34,7 @@ import { cn } from '@/lib/utils';
 export const UploadLimitHint: React.FC<{ className?: string }> = ({ className }) => {
   const auth = useAuth();
   const { t } = useLocalization(['interface']);
+  const upgrade = useUpgradeAction('file_limit_hint');
 
   // Outside the provider (/embed, /dr) there is no tier and never will be, so
   // render nothing at all — that decision is synchronous and shifts nothing.
@@ -46,7 +48,7 @@ export const UploadLimitHint: React.FC<{ className?: string }> = ({ className })
   const ready = !auth.loading && auth.limits !== null;
   const size = ready ? formatBytes(auth.limits!.maxFileBytes) : '';
   const upsell =
-    !ready || isTopTier(auth.tier)
+    !ready || isTopTier(auth.tier) || !upgrade.visible
       ? null
       : auth.tier === 'anonymous'
         ? t('interface:upgradeSurfaces.fileLimitMoreFree')
@@ -60,17 +62,12 @@ export const UploadLimitHint: React.FC<{ className?: string }> = ({ className })
           {' · '}
           <button
             type="button"
-            onClick={() => {
-              // `upgrade_cta_clicked` is priority 0 — the strongest purchase-intent signal
-              // available until a checkout flow exists. `placement` matches the `source`
-              // already passed to openAuth, so the analytics dimension and the auth
-              // attribution cannot drift apart.
-              analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
-                placement: 'file_limit_hint',
-                from_tier: auth.tier,
-              });
-              auth.openAuth({ intent: 'signup', source: 'file_limit_hint' });
-            }}
+            // `upgrade_cta_clicked` (priority 0) fires inside the hook, with `placement`
+            // matching the `source` passed to openAuth so the analytics dimension and the
+            // auth attribution cannot drift apart. Routing: anonymous -> signup modal,
+            // free -> Checkout.
+            onClick={upgrade.run}
+            disabled={upgrade.busy}
             className="underline decoration-muted-foreground/40 underline-offset-2 hover:text-foreground"
           >
             {upsell}
@@ -112,9 +109,10 @@ function markNudged(): void {
 export function useUpgradeNudge(): () => void {
   const auth = useAuth();
   const { t } = useLocalization(['interface']);
+  const upgrade = useUpgradeAction('post_download');
 
   return React.useCallback(() => {
-    if (!auth || isTopTier(auth.tier)) return;
+    if (!auth || isTopTier(auth.tier) || !upgrade.visible) return;
     if (alreadyNudged()) return;
     markNudged();
 
@@ -133,14 +131,8 @@ export function useUpgradeNudge(): () => void {
       description: body,
       action: {
         label: t('interface:upgradeSurfaces.nudgeAction'),
-        onClick: () => {
-          analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
-            placement: 'post_download',
-            from_tier: auth.tier,
-          });
-          auth.openAuth({ intent: 'signup', source: 'post_download' });
-        },
+        onClick: upgrade.run,
       },
     });
-  }, [auth, t]);
+  }, [auth, t, upgrade.run, upgrade.visible]);
 }

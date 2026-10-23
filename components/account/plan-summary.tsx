@@ -40,7 +40,6 @@ export function planLines(
       duration: formatRetention(limits.resultRetentionHours),
     }),
   ];
-  if (limits.batchEnabled) lines.push(t('interface:authModal.plans.batch'));
   if (limits.priorityGpu) lines.push(t('interface:authModal.plans.priorityGpu'));
   if (limits.adsRemoved) lines.push(t('interface:authModal.plans.noAds'));
   return lines;
