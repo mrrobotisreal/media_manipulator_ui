@@ -321,6 +321,31 @@
       "body": "This result has no in-browser preview yet. Download it to open it.",
       "type": "Type",
       "size": "Size"
+    },
+    "transcript": {
+      "search": "Search transcript",
+      "searchPlaceholder": "Search…",
+      "matchCount": "{{current}} of {{total}}",
+      "noMatches": "No matches",
+      "prevMatch": "Previous match",
+      "nextMatch": "Next match",
+      "copyAll": "Copy all",
+      "copied": "Copied",
+      "format": "Format",
+      "rawPreview": "Raw text",
+      "seekTo": "Jump to {{time}}",
+      "showMore": "Show more ({{count}} left)",
+      "details": "Language, audio description and AI review"
+    },
+    "captions": {
+      "cues": "Cues",
+      "sourceCues": "Source cues",
+      "skipped": "Skipped blocks",
+      "countMismatch": "The source has {{source}} cues but the translation has {{translated}}. Extra rows are shown against an empty cell.",
+      "source": "Source",
+      "translated": "Translated",
+      "timingDiffers": "timing differs",
+      "empty": "(none)"
     }
   }
 }

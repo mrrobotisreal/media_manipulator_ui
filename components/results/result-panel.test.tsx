@@ -40,8 +40,6 @@ const FILES: Array<[ResultKind, string]> = [
   ['audio', 'out.mp3'],
   ['unknown', 'out.xyz'],
   // Kinds without a viewer yet fall back to the file card.
-  ['transcript', 'out.txt'],
-  ['captions', 'out.srt'],
   ['pdf', 'out.pdf'],
   ['archive', 'out.zip'],
   ['hls', 'out.tar.gz'],
@@ -104,8 +102,8 @@ describe('ResultPanel', () => {
     }
   });
 
-  it('registry covers the core kinds and leaves the MM03/MM04 kinds to the fallback', () => {
-    expect(Object.keys(RESULT_VIEWERS).sort()).toEqual(['audio', 'gif', 'image', 'unknown', 'video']);
+  it('registry covers the core kinds and leaves the MM04 kinds to the fallback', () => {
+    expect(Object.keys(RESULT_VIEWERS).sort()).toEqual(['audio', 'captions', 'gif', 'image', 'transcript', 'unknown', 'video']);
   });
 
   it('emits result_previewed once per job with a coarse kind', () => {

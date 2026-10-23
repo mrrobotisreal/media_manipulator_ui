@@ -1,7 +1,9 @@
 import type { ResultKind } from '@/lib/results/describe';
 import { AudioViewer } from './audio-viewer';
+import { CaptionsViewer } from './captions-viewer';
 import { GifViewer } from './gif-viewer';
 import { ImageViewer } from './image-viewer';
+import { TranscriptViewer } from './transcript-viewer';
 import { UnknownViewer } from './unknown-viewer';
 import { VideoViewer } from './video-viewer';
 import type { ViewerEntry } from './types';
@@ -21,6 +23,8 @@ export const RESULT_VIEWERS: Partial<Record<ResultKind, ViewerEntry>> = {
   gif: { component: GifViewer, needsBlob: true },
   video: { component: VideoViewer, needsBlob: true },
   audio: { component: AudioViewer, needsBlob: true },
+  captions: { component: CaptionsViewer, needsBlob: true },
+  transcript: { component: TranscriptViewer, needsBlob: false },
   unknown: { component: UnknownViewer, needsBlob: false },
 };
 

@@ -12,7 +12,7 @@ export interface TranscribeSegment {
 }
 
 export interface TranscribeResult {
-  format: 'vtt' | 'txt' | 'json';
+  format: 'vtt' | 'srt' | 'txt' | 'json';
   language?: string;
   hasAudio: boolean;
   hasSpeech: boolean;
