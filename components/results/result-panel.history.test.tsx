@@ -4,7 +4,7 @@ import { describe as describeResult } from '@/lib/results/describe';
 import { resetResultBlobCache } from '@/lib/results/useResultBlob';
 import { ResultPanel, resetPreviewedForTests } from './result-panel';
 
-const add = vi.hoisted(() => vi.fn(async () => undefined));
+const add = vi.hoisted(() => vi.fn(async (_entry: unknown) => undefined));
 vi.mock('@/lib/history/localHistory', () => ({ localHistory: { add } }));
 vi.mock('@/lib/history/thumbnail', () => ({
   thumbnailable: (k: string) => k === 'image',
