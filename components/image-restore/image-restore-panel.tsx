@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { CheckCircle2, Circle, Download, Loader2, RotateCcw, Upload, XCircle } from 'lucide-react';
+import { CheckCircle2, Circle, Loader2, RotateCcw, Upload, XCircle } from 'lucide-react';
 import { useLocalization } from '@/i18n/useLocalization';
 import useImageRestoreCapabilities from '@/lib/useImageRestoreCapabilities';
 import useImageRestore from '@/lib/useImageRestore';
@@ -12,6 +12,8 @@ import type { ImageRestoreModelId, NormalizedRect } from '@/lib/imageRestoreType
 import CropSelector from './crop-selector';
 import ImageModelPicker from './model-picker';
 import ResultsGrid from './results-grid';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
 
 const FIXED_STAGE_KEYS = new Set(['queued', 'prepare', 'package', 'completed']);
 
@@ -325,21 +327,18 @@ const ImageRestorePanel: React.FC = () => {
                 <p className="text-sm font-medium text-data">
                   {t('imageRestore.panel.completedTitle')}
                 </p>
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={handleDownload}
-                    className="inline-flex items-center gap-1.5 rounded-md bg-success px-4 py-2 text-success-foreground font-medium hover:bg-success/90 transition-colors motion-reduce:transition-none"
-                  >
-                    <Download className="w-4 h-4" aria-hidden="true" />
-                    {downloadedOnce ? t('imageRestore.panel.downloadAgain') : t('imageRestore.panel.download')}
-                  </button>
-                  {job.resultSizeBytes ? (
-                    <span className="text-xs text-muted-foreground">
-                      {t('imageRestore.panel.downloadSize', { size: formatFileSize(job.resultSizeBytes) })}
-                    </span>
-                  ) : null}
-                </div>
+                {/* The tarball wraps every model's output; the grid below is the preview. */}
+                <ResultPanel
+                  descriptor={describeResult({
+                    job,
+                    originalFile: file,
+                    task: 'image_restoration',
+                    kindHint: 'archive',
+                    fallbackFileName: 'image_restoration_results.tar.gz',
+                  })}
+                  downloadLabel={downloadedOnce ? t('imageRestore.panel.downloadAgain') : t('imageRestore.panel.download')}
+                  onDownload={handleDownload}
+                />
                 <button
                   type="button"
                   onClick={handleReset}

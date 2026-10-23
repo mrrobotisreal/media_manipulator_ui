@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Loader2, Film, Sparkles, Captions, Image as ImageIcon, Info, Download, AlertTriangle, Languages, X, Radio, Package } from 'lucide-react';
+import { Loader2, Film, Sparkles, Captions, Image as ImageIcon, Info, AlertTriangle, Languages, X, Radio, Package } from 'lucide-react';
 import useVideoTranscodeProbe, { type ProbeMutationResult } from '@/lib/useVideoTranscodeProbe';
 import useStartVideoTranscode from '@/lib/useStartVideoTranscode';
 import useTranscodeJobStatus from '@/lib/useTranscodeJobStatus';
@@ -18,6 +18,8 @@ import {
 import InfoTooltip from '@/components/info-tooltip';
 import { Trans } from 'react-i18next';
 import { useLocalization } from '@/i18n/useLocalization';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
 
 const MAX_EXTRA_LANGUAGES = 3;
 
@@ -621,17 +623,21 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
         </div>
       )}
 
-      {/* Download tarball */}
-      {downloadUrl && (
-        <a
-          href={downloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-        >
-          <Download className="w-4 h-4" />
-          {t('videoTranscodeForm.downloadPackage', { filename: job.data?.resultFileName || `${protocol}-package.tar.gz` })}
-        </a>
+      {/* The HLS/DASH package. Download stays the presigned link; MM04 adds the stream viewer. */}
+      {downloadUrl && job.data && (
+        <ResultPanel
+          descriptor={describeResult({
+            job: job.data,
+            originalFile: file,
+            task: protocol === 'dash' ? 'transcode_to_dash' : 'transcode_to_hls',
+            mode: 'transcode',
+            fallbackFileName: `${protocol}-package.tar.gz`,
+          })}
+          downloadLabel={t('videoTranscodeForm.downloadPackage', { filename: job.data.resultFileName || `${protocol}-package.tar.gz` })}
+          onDownload={() => {
+            window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+          }}
+        />
       )}
     </div>
   );

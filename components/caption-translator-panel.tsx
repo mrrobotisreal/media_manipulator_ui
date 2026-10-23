@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Upload, Download, Languages, X } from 'lucide-react';
+import { Upload, Languages, X } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
-import useDownloadFile from '@/lib/useDownloadFile';
-import { saveBlobToDisk } from '@/lib/results/save';
+import { describe as describeResult } from '@/lib/results/describe';
+import { ResultPanel } from '@/components/results/result-panel';
 import useCaptionTranslatorTool, {
   type CaptionFormat,
 } from '@/lib/useCaptionTranslatorTool';
@@ -79,7 +79,6 @@ const CaptionTranslatorPanel: React.FC = () => {
     });
   });
   const { data: jobStatus } = useGetJobStatus(conversionJob);
-  const { downloadFile } = useDownloadFile();
 
   useEffect(() => {
     if (jobStatus) {
@@ -127,19 +126,6 @@ const CaptionTranslatorPanel: React.FC = () => {
         targetLanguage,
       },
     });
-  };
-
-  const handleDownload = async () => {
-    if (!conversionJob?.id || !file) return;
-    try {
-      const blob = await downloadFile(conversionJob.id);
-      const resolvedOutput: CaptionFormat = outputFormat === 'same' ? inputFormat : outputFormat;
-      const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
-      const fileName = `${baseName}_${targetLanguage}.${resolvedOutput}`;
-      saveBlobToDisk(blob, fileName);
-    } catch (err) {
-      console.error('Caption translator download failed', err);
-    }
   };
 
   const isProcessing = isPending || conversionJob?.status === 'processing';
@@ -272,15 +258,20 @@ const CaptionTranslatorPanel: React.FC = () => {
             </div>
           )}
 
-          {isCompleted && (
-            <button
-              type="button"
-              onClick={() => void handleDownload()}
-              className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              {t('captionTranslator.downloadTranslated')}
-            </button>
+          {isCompleted && conversionJob && (
+            <ResultPanel
+              descriptor={describeResult({
+                job: conversionJob,
+                originalFile: file,
+                task: 'caption_translator',
+                fallbackFileName: `${(file?.name ?? 'captions').replace(/\.[^.]+$/, '')}_${targetLanguage}.${outputFormat === 'same' ? inputFormat : outputFormat}`,
+              })}
+              downloadLabel={t('captionTranslator.downloadTranslated')}
+              onRunAnother={() => {
+                setFile(null);
+                setConversionJob(null);
+              }}
+            />
           )}
           {conversionJob?.status === 'failed' && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive">
