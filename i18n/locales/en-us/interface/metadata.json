@@ -2076,6 +2076,14 @@
         "title": "Other",
         "summary": "Tags that do not fit another category."
       }
+    },
+    "stripAll": "Strip all metadata",
+    "kind": {
+      "image": "Image",
+      "video": "Video",
+      "audio": "Audio",
+      "document": "Document",
+      "unknown": "File"
     }
   }
 }
