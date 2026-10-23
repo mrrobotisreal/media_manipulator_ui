@@ -59,19 +59,19 @@ const TOOL_PAGE_OVERRIDES: Record<string, LanguageToolContent> = {
   "en-US": {},
   // name + tagline for the review-allowlisted slugs; full page bodies are
   // deferred (see locales/ru-ru/toolPages.ts).
-  "ru-RU": ruToolPages as LanguageToolContent,
+  "ru-RU": ruToolPages as unknown as LanguageToolContent,
   // name + tagline for the review-allowlisted slugs; full page bodies are
   // deferred (see locales/uk-ua/toolPages.ts).
-  "uk-UA": ukToolPages as LanguageToolContent,
+  "uk-UA": ukToolPages as unknown as LanguageToolContent,
   // name + tagline for the review-allowlisted slugs; full page bodies are
   // deferred (see locales/de-de/toolPages.ts).
-  "de-DE": deToolPages as LanguageToolContent,
+  "de-DE": deToolPages as unknown as LanguageToolContent,
   // name + tagline for the review-allowlisted slugs; full page bodies are
   // deferred (see locales/he-il/toolPages.ts).
-  "he-IL": heToolPages as LanguageToolContent,
+  "he-IL": heToolPages as unknown as LanguageToolContent,
   // name + tagline for the review-allowlisted slugs; full page bodies are
   // deferred (see locales/es-es/toolPages.ts).
-  "es-ES": esToolPages as LanguageToolContent,
+  "es-ES": esToolPages as unknown as LanguageToolContent,
 };
 
 /** Arrays are replaced wholesale (a translated list is provided in full or not
