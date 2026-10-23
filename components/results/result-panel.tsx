@@ -218,7 +218,7 @@ function ResultPanelBody({
   const original = descriptor.original;
   const sideDescriptor =
     shown === 'original' && original
-      ? { kind: original.kind, fileName: original.file?.name ?? descriptor.fileName, mime: original.file?.type || 'application/octet-stream', sizeBytes: original.file?.size }
+      ? { kind: original.kind, fileName: original.file?.name ?? original.fileName ?? descriptor.fileName, mime: original.file?.type || original.mime || 'application/octet-stream', sizeBytes: original.file?.size }
       : { kind: descriptor.kind, fileName: descriptor.fileName, mime: descriptor.mime, sizeBytes: descriptor.sizeBytes };
   const sideEntry = shown === 'original' ? viewerFor(sideDescriptor.kind) : resultViewer;
   const Viewer = sideEntry.component;

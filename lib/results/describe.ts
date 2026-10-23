@@ -48,6 +48,9 @@ export interface DescribableJob {
 
 export interface ResultOriginal {
   file: File | null;
+  /** Display name/type when `file` is null (home history keeps only a URL). */
+  fileName?: string;
+  mime?: string;
   /** Object URL for the original, when the caller already made one. */
   objectUrl?: string;
   kind: ResultKind;
