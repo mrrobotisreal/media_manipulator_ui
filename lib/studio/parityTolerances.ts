@@ -248,6 +248,37 @@ export const PARITY_TOLERANCES: readonly ParityTolerance[] = [
     status: 'bounded',
     note: 'per-font-batch goldens (one text layer per shipped family, 3 batches): residual = glyph rasterizer + hinting differences per family; a regression here usually means the UI and server font sets drifted (04-title-fonts.md invariant)',
   },
+  // --- MM15: still images. Export loops the ORIGINAL still (-loop 1 -t) through
+  // format=rgba + a bt709 yuva420p conversion; the preview samples the decoded
+  // proxy-quality bitmap in sRGB. Thresholds are REASONED, NOT MEASURED. ---
+  {
+    id: 'image_hold_passthrough',
+    metric: 'psnr',
+    threshold: 38,
+    status: 'bounded',
+    note: 'reasoned, not measured: held photo, identity transform; bt709 matrix + sRGB proxy vs original; calibrate against the identity-EDL noise floor',
+  },
+  {
+    id: 'image_hold_transform',
+    metric: 'psnr',
+    threshold: 38,
+    status: 'bounded',
+    note: 'reasoned, not measured: held photo with scale + rotation + position keyframe; bt709 matrix + sRGB proxy vs original; calibrate against the identity-EDL noise floor',
+  },
+  {
+    id: 'image_hold_dissolve_to_video',
+    metric: 'psnr',
+    threshold: 36,
+    status: 'bounded',
+    note: 'reasoned, not measured: video dissolving into a held photo; bt709 matrix + sRGB proxy vs original; calibrate against the identity-EDL noise floor',
+  },
+  {
+    id: 'image_alpha_over_video',
+    metric: 'psnr',
+    threshold: 38,
+    status: 'bounded',
+    note: 'reasoned, not measured: RGBA PNG over video; bt709 matrix + sRGB proxy vs original; calibrate against the identity-EDL noise floor',
+  },
 ] as const;
 
 export function parityTolerance(id: string): ParityTolerance | undefined {

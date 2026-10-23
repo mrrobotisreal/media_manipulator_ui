@@ -43,4 +43,20 @@ ffmpeg -y -hide_banner -loglevel error \
 ffmpeg -y -hide_banner -loglevel error \
   -f lavfi -i "sine=frequency=880:sample_rate=48000:duration=4" -c:a aac -b:a 128k voice.m4a
 
-echo "fixtures ready: $(ls -m *.mp4 *.m4a)"
+# Still-image fixtures (MM15). Both are 8-bit sRGB only (16-bit PNG / CMYK JPEG
+# decode differently across ffmpeg versions and are out of scope).
+# still.png: 640x360 RGBA — blue field whose alpha ramps 0 -> 255 left to right,
+# with centred text, so the alpha-over-video scenario shows the backdrop through
+# the left half. drawtext uses fontconfig's default face (any face is fine: both
+# pipelines decode the same PNG).
+ffmpeg -y -hide_banner -loglevel error \
+  -f lavfi -i "color=c=0x3060C0:s=640x360,format=rgba,geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='255*X/W',drawtext=text='DARKROOM':fontsize=72:fontcolor=white:x=(w-tw)/2:y=(h-th)/2" \
+  -frames:v 1 -pix_fmt rgba still.png
+
+# photo.jpg: frame 0 of srcA.mp4 with the bt709 -> sRGB conversion BAKED IN
+# (scale in_color_matrix=bt709 -> rgb24), then JPEG-encoded. The browser decodes
+# JPEGs as sRGB and ffmpeg as full-range JFIF, so no matrix guess remains.
+ffmpeg -y -hide_banner -loglevel error \
+  -i srcA.mp4 -frames:v 1 -vf "scale=in_color_matrix=bt709:out_range=full,format=rgb24" -q:v 2 photo.jpg
+
+echo "fixtures ready: $(ls -m *.mp4 *.m4a *.png *.jpg)"
