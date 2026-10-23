@@ -1398,7 +1398,7 @@
   "pricing": {
     "eyebrow": "Plans",
     "title": "Straightforward limits, no surprises",
-    "subtitle": "Every plan runs the same tools on the same hardware. What changes is how much you can put through them in a day, and how long the results stick around.",
+    "subtitle": "Every plan runs the same tools on the same hardware. What changes is how much you can put through them in a day.",
     "currentPlan": "Your plan",
     "mostPopular": "Most people start here",
     "free_price": "Free",
@@ -1425,7 +1425,6 @@
       "maxVideoSeconds": "Maximum video length",
       "maxOutputHeight": "Maximum output resolution",
       "studioProjects": "Saved Studio projects",
-      "resultRetentionHours": "Results kept for",
       "priorityGpu": "GPU queue",
       "adsRemoved": "Ads"
     },
@@ -1451,8 +1450,9 @@
       "q3": "Do free accounts see ads?",
       "a3": "Yes. Ads pay for the free tier, so only Premium removes them. There are no interstitials, countdowns or forced waits on any plan.",
       "q4": "Can I use it without an account at all?",
-      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history."
-    }
+      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history. Without an account your files are kept for 24 hours; with an account you choose how long, from 24 hours to 2 years."
+    },
+    "retentionNote": "You choose: 24 hours to 2 years. Guests without an account: 24 hours."
   },
   "account": {
     "title": "Your account",

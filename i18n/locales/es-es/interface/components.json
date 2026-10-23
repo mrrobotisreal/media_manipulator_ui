@@ -63,9 +63,10 @@
       "maxOutput": "Salida de hasta {{height}}p",
       "studioProjects": "{{count}} proyectos de Studio guardados",
       "studioProjectsUnlimited": "Proyectos de Studio guardados ilimitados",
-      "retention": "Resultados conservados durante {{duration}}",
+      "retention": "Tú decides cuánto se conservan los archivos: de 24 horas a 2 años",
       "priorityGpu": "Procesamiento prioritario",
-      "noAds": "Sin anuncios"
+      "noAds": "Sin anuncios",
+      "retentionGuest": "Archivos conservados 24 horas"
     },
     "loadingPlans": "Cargando planes…"
   },

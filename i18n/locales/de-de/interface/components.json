@@ -63,9 +63,10 @@
       "maxOutput": "Ausgabe bis zu {{height}}p",
       "studioProjects": "{{count}} gespeicherte Studio-Projekte",
       "studioProjectsUnlimited": "Unbegrenzt gespeicherte Studio-Projekte",
-      "retention": "Ergebnisse werden {{duration}} gespeichert",
+      "retention": "Sie bestimmen, wie lange Dateien aufbewahrt werden: 24 Stunden bis 2 Jahre",
       "priorityGpu": "Vorrangige Verarbeitung",
-      "noAds": "Keine Werbung"
+      "noAds": "Keine Werbung",
+      "retentionGuest": "Dateien werden 24 Stunden aufbewahrt"
     },
     "loadingPlans": "Tarife werden geladen …"
   },

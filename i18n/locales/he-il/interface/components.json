@@ -63,9 +63,10 @@
       "maxOutput": "פלט עד {{height}}p",
       "studioProjects": "{{count}} פרויקטים שמורים ב־Studio",
       "studioProjectsUnlimited": "פרויקטים שמורים ללא הגבלה ב־Studio",
-      "retention": "התוצאות נשמרות למשך {{duration}}",
+      "retention": "אתם בוחרים כמה זמן הקבצים נשמרים: בין 24 שעות לשנתיים",
       "priorityGpu": "עיבוד בעדיפות גבוהה",
-      "noAds": "ללא פרסומות"
+      "noAds": "ללא פרסומות",
+      "retentionGuest": "הקבצים נשמרים 24 שעות"
     },
     "loadingPlans": "טוען תוכניות…"
   },

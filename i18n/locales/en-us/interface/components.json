@@ -63,9 +63,10 @@
       "maxOutput": "Output up to {{height}}p",
       "studioProjects": "{{count}} saved Studio projects",
       "studioProjectsUnlimited": "Unlimited saved Studio projects",
-      "retention": "Results kept for {{duration}}",
+      "retention": "You choose how long files are kept: 24 hours to 2 years",
       "priorityGpu": "Priority processing",
-      "noAds": "No ads"
+      "noAds": "No ads",
+      "retentionGuest": "Files kept for 24 hours"
     },
     "loadingPlans": "Loading plans…"
   },

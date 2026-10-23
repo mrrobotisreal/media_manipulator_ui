@@ -63,9 +63,10 @@
       "maxOutput": "Вивід до {{height}}p",
       "studioProjects": "{{count}} збережених проєктів Studio",
       "studioProjectsUnlimited": "Необмежена кількість збережених проєктів Studio",
-      "retention": "Результати зберігаються {{duration}}",
+      "retention": "Строк зберігання файлів обираєте ви: від 24 годин до 2 років",
       "priorityGpu": "Пріоритетна обробка",
-      "noAds": "Без реклами"
+      "noAds": "Без реклами",
+      "retentionGuest": "Файли зберігаються 24 години"
     },
     "loadingPlans": "Завантаження тарифів…"
   },

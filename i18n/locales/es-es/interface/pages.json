@@ -1398,7 +1398,7 @@
   "pricing": {
     "eyebrow": "Planes",
     "title": "Límites sencillos, sin sorpresas",
-    "subtitle": "Todos los planes ejecutan las mismas herramientas en el mismo hardware. Lo que cambia es cuánto puedes procesar al día y cuánto tiempo se conservan los resultados.",
+    "subtitle": "Todos los planes ejecutan las mismas herramientas en el mismo hardware. Lo que cambia es cuánto puedes procesar al día.",
     "currentPlan": "Tu plan",
     "mostPopular": "La mayoría empieza aquí",
     "free_price": "Gratis",
@@ -1425,7 +1425,6 @@
       "maxVideoSeconds": "Duración de vídeo máxima",
       "maxOutputHeight": "Resolución de salida máxima",
       "studioProjects": "Proyectos de Studio guardados",
-      "resultRetentionHours": "Resultados conservados durante",
       "priorityGpu": "Cola de GPU",
       "adsRemoved": "Anuncios"
     },
@@ -1451,8 +1450,9 @@
       "q3": "¿Las cuentas gratuitas ven anuncios?",
       "a3": "Sí. Los anuncios financian el nivel gratuito, así que solo Premium los elimina. No hay intersticiales, cuentas atrás ni esperas forzadas en ningún plan.",
       "q4": "¿Puedo usarlo sin cuenta en absoluto?",
-      "a4": "Sí, y es algo deliberado. Todas las herramientas funcionan sin iniciar sesión; una cuenta solo eleva el límite y conserva tu historial."
-    }
+      "a4": "Sí, y es algo deliberado. Todas las herramientas funcionan sin iniciar sesión; una cuenta solo eleva el límite y conserva tu historial. Sin cuenta, tus archivos se conservan 24 horas; con una cuenta eliges cuánto tiempo, de 24 horas a 2 años."
+    },
+    "retentionNote": "Tú decides: de 24 horas a 2 años. Visitantes sin cuenta: 24 horas."
   },
   "account": {
     "title": "Tu cuenta",

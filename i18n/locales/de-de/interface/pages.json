@@ -1398,7 +1398,7 @@
   "pricing": {
     "eyebrow": "Pläne",
     "title": "Klare Grenzen, keine Überraschungen",
-    "subtitle": "Jeder Plan nutzt dieselben Werkzeuge auf derselben Hardware. Was sich ändert, ist, wie viel Sie täglich damit erledigen können und wie lange die Ergebnisse erhalten bleiben.",
+    "subtitle": "Jeder Plan nutzt dieselben Werkzeuge auf derselben Hardware. Was sich ändert, ist, wie viel Sie täglich damit erledigen können.",
     "currentPlan": "Ihr Plan",
     "mostPopular": "Die meisten starten hier",
     "free_price": "Kostenlos",
@@ -1425,7 +1425,6 @@
       "maxVideoSeconds": "Maximale Videolänge",
       "maxOutputHeight": "Maximale Ausgabeauflösung",
       "studioProjects": "Gespeicherte Studio-Projekte",
-      "resultRetentionHours": "Ergebnisse gespeichert für",
       "priorityGpu": "GPU-Warteschlange",
       "adsRemoved": "Werbung"
     },
@@ -1451,8 +1450,9 @@
       "q3": "Sehen kostenlose Konten Werbung?",
       "a3": "Ja. Werbung finanziert die kostenlose Stufe, deshalb entfernt nur Premium sie. Es gibt bei keinem Plan Interstitials, Countdowns oder erzwungene Wartezeiten.",
       "q4": "Kann ich es ganz ohne Konto nutzen?",
-      "a4": "Ja, und das ist Absicht. Jedes Werkzeug funktioniert auch abgemeldet — ein Konto hebt lediglich die Obergrenze an und speichert Ihren Verlauf."
-    }
+      "a4": "Ja, und das ist Absicht. Jedes Werkzeug funktioniert auch abgemeldet — ein Konto hebt lediglich die Obergrenze an und speichert Ihren Verlauf. Ohne Konto werden Ihre Dateien 24 Stunden aufbewahrt; mit einem Konto bestimmen Sie selbst, wie lange, von 24 Stunden bis 2 Jahren."
+    },
+    "retentionNote": "Sie bestimmen: 24 Stunden bis 2 Jahre. Gäste ohne Konto: 24 Stunden."
   },
   "account": {
     "title": "Ihr Konto",
