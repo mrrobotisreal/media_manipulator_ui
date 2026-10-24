@@ -1219,7 +1219,7 @@
       {
         "title": "10. Payments, Renewals and Refunds",
         "paragraphs": [
-          "Premium is a paid subscription billed in US dollars, currently $7 per month or $70 per year. The price and billing interval are shown on the pricing page and again at checkout before you pay. The amount shown at checkout is the amount charged; we do not currently calculate or add sales tax or VAT at checkout.",
+          "Premium is a paid subscription billed in US dollars, currently $7 per month or $70 per year, plus any applicable sales tax or VAT, calculated at checkout based on your location. The price and billing interval are shown on the pricing page, and the total including any tax is shown at checkout before you pay. The amount shown at checkout is the amount charged.",
           "Your subscription renews automatically at the end of each billing period until you cancel. You can cancel at any time from the Billing section of your Account page or through the billing portal it links to. After you cancel, your Premium access continues until the end of the period you already paid for, and you will not be charged again.",
           "If you are not satisfied, you may request a refund of your first payment within 14 days of making it by emailing support@media-manipulator.com. Renewal payments are not refundable except where required by law.",
           "If a payment fails, we retry it and your Premium access continues for up to 7 days. If the payment still has not succeeded after that, your account returns to the free plan until you update your payment method and subscribe again.",
