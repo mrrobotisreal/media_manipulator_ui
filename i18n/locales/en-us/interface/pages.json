@@ -503,7 +503,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "What changed on 2026-10-24",
-    "whatChangedBody": "We reviewed this policy against how the service works today. New or corrected: payments run through the Stripe account of CreaTV Ltd. (so checkout and your card statement may show CreaTV), the AI tools we run on our own servers are named, Google Analytics 4 and advertising are described more precisely (including cookies), account sign-in with Firebase is explained, and Darkroom inside CreaTV Studio is covered. Retention is unchanged: 24 hours for visitors, 24 hours to 2 years (6 months by default) with an account."
+    "whatChangedBody": "We reviewed this policy against how the service works today. New or corrected: payments run through the Stripe account of CreaTV Ltd. (so the Stripe checkout page shows CreaTV, while your card statement shows MEDIA MNPLTR PREMIUM), sales tax or VAT is added on top of the price where applicable and calculated at checkout, metadata reports are now deleted together with their files by default, Google's analytics script now loads only after you consent to analytics (nothing is sent to Google before that), the AI tools we run on our own servers are named, Google Analytics 4 and advertising are described more precisely (including cookies), account sign-in with Firebase is explained, and Darkroom inside CreaTV Studio is covered. Retention is unchanged: 24 hours for visitors, 24 hours to 2 years (6 months by default) with an account."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
