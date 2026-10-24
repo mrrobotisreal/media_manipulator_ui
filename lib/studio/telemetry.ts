@@ -68,7 +68,12 @@ export type StudioEditCounter =
   | 'binOrganizations'
   | 'assetsDeleted'
   | 'uploadRetries'
-  | 'voiceoversRecorded';
+  | 'voiceoversRecorded'
+  // Part 18 pro timeline tools.
+  | 'clipsGrouped'
+  | 'audioDetached'
+  | 'trackControlChanges'
+  | 'markersEdited';
 
 /** Counters that also keep a per-subkey breakdown map. */
 const SUBKEY_MAPS: Partial<Record<StudioEditCounter, 'transitionsByType' | 'keyframesByProperty' | 'effectsByType'>> = {

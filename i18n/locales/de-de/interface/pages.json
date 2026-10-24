@@ -375,7 +375,7 @@
               "tracks": "Fügen Sie mit den Schaltflächen +V / +A weitere Spuren hinzu — stapeln Sie mehrere Videospuren für Überlagerungen und mehrere Audiospuren für Musik und Voiceover.",
               "drag": "Ziehen Sie einen Clip entlang seiner Spur, um ihn neu zu positionieren, oder legen Sie ihn auf einer anderen Spur derselben Art ab (Video→Video, Audio→Audio). Clips rasten an benachbarten Kanten und am Abspielkopf ein und überlappen sich nie.",
               "trim": "Ziehen Sie an einer der beiden Kanten eines Clips, um seinen Ein-/Ausstiegspunkt zuzuschneiden.",
-              "split": "Bewegen Sie den Abspielkopf und drücken Sie S, um den/die darunterliegenden Clip(s) zu teilen (Rasierklinge).",
+              "split": "Bewegen Sie den Abspielkopf und drücken Sie Cmd/Strg+K, um den/die darunterliegenden Clip(s) zu teilen (Rasierklinge).",
               "ripple": "Wählen Sie einen Clip aus und nutzen Sie Ripple-Delete, um ihn zu entfernen und die Lücke zu schließen. Stummschalten einer ganzen Spur über das Lautsprechersymbol oder Einstellen der Lautstärke eines Clips über den Schieberegler."
             }
           },

@@ -137,7 +137,38 @@
       "keyframeToggle": "Show keyframes",
       "keyframeDiamond": "drag to retime, double-click to remove",
       "titleClip": "Title",
-      "contextConvertToTitle": "Convert to title clip"
+      "contextConvertToTitle": "Convert to title clip",
+      "tools": "Timeline tools",
+      "toolSelect": "Selection",
+      "toolRazor": "Razor",
+      "toolSlip": "Slip",
+      "toolSlide": "Slide",
+      "toolHand": "Hand",
+      "trackLockedToast": "That track is locked. Unlock it to edit.",
+      "snapping": "Snapping",
+      "markersPanel": "Markers",
+      "markersPanelTitle": "Markers",
+      "markersEmpty": "No markers yet. Press M to add one at the playhead.",
+      "markerName": "Name",
+      "markerColor": "Color",
+      "markerComment": "Comment",
+      "markerDelete": "Delete marker",
+      "slipUnavailable": "Slip needs a clip with source footage to re-window. Stills, titles and freeze frames have none.",
+      "razorMiss": "Click inside a clip, away from its edges, to cut.",
+      "rollHint": "Drag to roll this edit point (Alt: trim only this clip, Shift: ripple)",
+      "grouped": "Grouped",
+      "contextGroup": "Group selected clips",
+      "contextUngroup": "Ungroup",
+      "contextDetachAudio": "Detach audio",
+      "renameTrack": "Track name",
+      "renameTrackHint": "Double-click to rename",
+      "lock": "Lock track",
+      "unlock": "Unlock track",
+      "solo": "Solo track",
+      "unsolo": "Remove solo",
+      "show": "Show track",
+      "hide": "Hide track",
+      "resizeTrack": "Resize track height"
     },
     "preferences": {
       "open": "Preferences",
@@ -161,7 +192,7 @@
       "undo": "Undo",
       "redo": "Redo",
       "mobileHint": "Darkroom works best on a larger screen with a mouse or trackpad.",
-      "shortcuts": "Space play/pause · ←/→ step · S split · Del delete · +/− zoom · ⌘Z undo · ⇧⌘Z redo",
+      "shortcuts": "Space play/pause · ←/→ step · V/C/Y/U/H tools · ⌘/Ctrl+K split · S snapping · M marker · Q/W ripple trim · Del delete · +/− zoom · ⌘Z undo · ? all shortcuts",
       "tabs": {
         "media": "Media",
         "preview": "Preview",
@@ -513,6 +544,17 @@
         "neighbor": "Slowed down as far as the next clip allows",
         "range": "Speed limited to 10%–1000%",
         "minLength": "Speed limited so the clip stays at least 0.1 s long"
+      }
+    },
+    "keymap": {
+      "title": "Keyboard shortcuts",
+      "description": "Press ? any time to open this list.",
+      "category": {
+        "tools": "Tools",
+        "editing": "Editing",
+        "playback": "Playback",
+        "view": "View",
+        "history": "History"
       }
     }
   },

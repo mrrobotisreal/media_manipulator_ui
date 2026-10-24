@@ -409,6 +409,10 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       assetsDeleted: z.string().optional(),
       uploadRetries: z.string().optional(),
       voiceoversRecorded: z.string().optional(),
+      clipsGrouped: z.string().optional(),
+      audioDetached: z.string().optional(),
+      trackControlChanges: z.string().optional(),
+      markersEdited: z.string().optional(),
       sessionSecondsBucket: z.string(),
       host: studioHostEnum.optional(),
     })

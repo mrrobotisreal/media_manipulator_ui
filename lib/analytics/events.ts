@@ -761,6 +761,14 @@ export interface StudioEditSummaryProps extends StudioHostProp {
   assetsDeleted?: string;
   uploadRetries?: string;
   voiceoversRecorded?: string;
+  /** Part 18: group / ungroup actions (ungroup is not separately keyed — one counter). */
+  clipsGrouped?: string;
+  /** Part 18: Detach audio actions. */
+  audioDetached?: string;
+  /** Part 18: track rename / lock / hide / solo / height changes. */
+  trackControlChanges?: string;
+  /** Part 18: marker edits (move / rename / recolor / delete). `markersAdded` counts adds. */
+  markersEdited?: string;
   sessionSecondsBucket: string;
 }
 
