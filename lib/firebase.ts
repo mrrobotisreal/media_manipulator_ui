@@ -25,6 +25,7 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import type { Auth, User } from 'firebase/auth';
 import { syncAccount } from './auth/accountApi';
+import { getBrowserI18n } from '@/i18n';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
@@ -91,12 +92,22 @@ export async function getCurrentIdToken(): Promise<string | null> {
  * turn a successful sign-in into an error the user sees; the AuthProvider
  * retries on its next load, and every tier check is server-side anyway.
  */
+function currentUiLocale(): string | undefined {
+  try {
+    return getBrowserI18n().language || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 async function registerSignIn(user: User, signupSource: string, displayName?: string) {
   try {
     const idToken = await user.getIdToken();
     await syncAccount(idToken, {
       displayName: displayName || user.displayName || undefined,
       signupSource,
+      // MM31: the API stores this as the language of the account's emails.
+      locale: currentUiLocale(),
     });
   } catch (error) {
     console.warn('Account sync failed; continuing signed in.', error);

@@ -192,7 +192,7 @@ function authHeaders(idToken?: string | null): Record<string, string> {
  */
 export async function syncAccount(
   idToken: string,
-  body: { displayName?: string; signupSource?: string } = {},
+  body: { displayName?: string; signupSource?: string; locale?: string } = {},
 ): Promise<AccountSnapshot> {
   const response = await fetch(`${getBaseURL()}/account/sync`, {
     method: 'POST',
@@ -611,6 +611,10 @@ export interface AccountSettings {
   retentionScope: 'all';
   deleteMetadataReports: boolean;
   historyVisibility: HistoryVisibility;
+  /** MM31: opt-in email when a long AI job finishes (default false). */
+  emailAiJobFinished: boolean;
+  /** MM31: email before files expire (default true). */
+  emailExpiryDigest: boolean;
   updatedAt: string;
   limits: { minHours: number; maxHours: number; defaultHours: number };
   /** PATCH only: live items whose expiry moved. */
@@ -622,6 +626,8 @@ export interface SettingsPatch {
   retentionHours?: number;
   deleteMetadataReports?: boolean;
   historyVisibility?: HistoryVisibility;
+  emailAiJobFinished?: boolean;
+  emailExpiryDigest?: boolean;
 }
 
 /** GET /api/account/settings/preview. Mirrors previewResponse (account_settings.go). */
