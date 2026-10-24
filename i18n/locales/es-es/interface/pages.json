@@ -682,7 +682,7 @@
           {
             "title": "3.2 Informes de metadatos",
             "paragraphs": [
-              "Los informes de metadatos son registros pequeños que describen las propiedades técnicas de un archivo. Un ajuste de tu página Cuenta te permite elegir si los informes se conservan una vez eliminados, al final del periodo de retención, los archivos que describen. Cuando eliminas un archivo tú mismo, su informe se elimina con él. Los visitantes sin cuenta no tienen este ajuste: sus informes de metadatos se eliminan junto con sus archivos."
+              "Los informes de metadatos son registros pequeños que describen las propiedades técnicas de un archivo. De forma predeterminada, el informe de metadatos de un archivo se elimina cuando se elimina el archivo, tanto si lo eliminas tú como si se borra al final del periodo de retención. La pestaña Privacidad y datos de tu página Cuenta tiene un ajuste que te permite elegir conservar los informes de metadatos una vez eliminados sus archivos. Los visitantes sin cuenta no tienen este ajuste: sus informes de metadatos siempre se eliminan junto con sus archivos."
             ]
           },
           {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",

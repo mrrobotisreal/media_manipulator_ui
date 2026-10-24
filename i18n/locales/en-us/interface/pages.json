@@ -682,7 +682,7 @@
           {
             "title": "3.2 Metadata reports",
             "paragraphs": [
-              "Metadata reports are small records describing the technical properties of a file. A setting on your Account page lets you choose whether reports are kept after the files they describe have been deleted at the end of the retention period. When you delete a file yourself, its report is deleted with it. Visitors without an account do not have this setting: their metadata reports are deleted together with their files."
+              "Metadata reports are small records describing the technical properties of a file. By default, a file's metadata report is deleted when the file is deleted, whether you delete it yourself or it is removed at the end of the retention period. The Privacy & data tab of your Account page has a setting that lets you choose to keep metadata reports after their files are gone. Visitors without an account do not have this setting: their metadata reports are always deleted together with their files."
             ]
           },
           {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",

@@ -682,7 +682,7 @@
           {
             "title": "3.2 Отчёты о метаданных",
             "paragraphs": [
-              "Отчёты о метаданных — это небольшие записи с техническими свойствами файла. Настройка на странице «Аккаунт» позволяет выбрать, сохранять ли отчёты после того, как описываемые ими файлы удалены по окончании срока хранения. Когда вы сами удаляете файл, его отчёт удаляется вместе с ним. У посетителей без аккаунта этой настройки нет: их отчёты о метаданных удаляются вместе с файлами."
+              "Отчёты о метаданных — это небольшие записи с техническими свойствами файла. По умолчанию отчёт о метаданных файла удаляется вместе с файлом — удалили ли вы его сами или он удалён по окончании срока хранения. На вкладке «Конфиденциальность и данные» страницы «Аккаунт» есть настройка, позволяющая сохранять отчёты о метаданных после удаления их файлов. У посетителей без аккаунта этой настройки нет: их отчёты о метаданных всегда удаляются вместе с файлами."
             ]
           },
           {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",

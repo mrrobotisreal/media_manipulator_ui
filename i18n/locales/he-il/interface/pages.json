@@ -682,7 +682,7 @@
           {
             "title": "3.2 דוחות מטא-נתונים",
             "paragraphs": [
-              "דוחות מטא-נתונים הם רשומות קטנות המתארות את המאפיינים הטכניים של קובץ. הגדרה בעמוד החשבון שלכם מאפשרת לבחור אם הדוחות יישמרו לאחר שהקבצים שהם מתארים נמחקו בתום תקופת השמירה. כשאתם מוחקים קובץ בעצמכם, הדוח שלו נמחק יחד איתו. למבקרים ללא חשבון אין הגדרה זו: דוחות המטא־דאטה שלהם נמחקים יחד עם הקבצים שלהם."
+              "דוחות מטא-נתונים הם רשומות קטנות המתארות את המאפיינים הטכניים של קובץ. כברירת מחדל, דוח המטא-נתונים של קובץ נמחק כאשר הקובץ נמחק, בין אם מחקתם אותו בעצמכם ובין אם הוא הוסר בתום תקופת השמירה. בלשונית הפרטיות והנתונים בעמוד החשבון שלכם יש הגדרה המאפשרת לבחור לשמור דוחות מטא-נתונים גם לאחר שהקבצים שלהם נמחקו. למבקרים ללא חשבון אין הגדרה זו: דוחות המטא-נתונים שלהם תמיד נמחקים יחד עם הקבצים שלהם."
             ]
           },
           {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",

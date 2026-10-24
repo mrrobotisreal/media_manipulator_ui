@@ -682,7 +682,7 @@
           {
             "title": "3.2 Metadatenberichte",
             "paragraphs": [
-              "Metadatenberichte sind kleine Datensätze, die die technischen Eigenschaften einer Datei beschreiben. Mit einer Einstellung auf Ihrer Kontoseite legen Sie fest, ob Berichte aufbewahrt werden, nachdem die Dateien, die sie beschreiben, am Ende des Aufbewahrungszeitraums gelöscht wurden. Wenn Sie eine Datei selbst löschen, wird ihr Bericht mitgelöscht. Besucher ohne Konto haben diese Einstellung nicht: Ihre Metadatenberichte werden zusammen mit ihren Dateien gelöscht."
+              "Metadatenberichte sind kleine Datensätze, die die technischen Eigenschaften einer Datei beschreiben. Standardmäßig wird der Metadatenbericht einer Datei gelöscht, wenn die Datei gelöscht wird, unabhängig davon, ob du sie selbst löschst oder sie am Ende des Aufbewahrungszeitraums entfernt wird. Auf dem Tab „Datenschutz & Daten“ deiner Kontoseite kannst du in einer Einstellung festlegen, dass Metadatenberichte aufbewahrt werden, nachdem ihre Dateien entfernt wurden. Besucher ohne Konto haben diese Einstellung nicht: Ihre Metadatenberichte werden immer zusammen mit ihren Dateien gelöscht."
             ]
           },
           {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",
