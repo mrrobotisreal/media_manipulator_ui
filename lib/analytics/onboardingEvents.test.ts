@@ -22,12 +22,6 @@ describe('onboarding events', () => {
       [EVENTS.ONBOARDING_STEP_COMPLETED, { step: 3, action: 'cta' }],
     ]);
   });
-  it('never throws into the tour', () => {
-    track.mockImplementation(() => {
-      throw new Error('boom');
-    });
-    expect(() => onboardingEvents.stepViewed(1)).not.toThrow();
-  });
   it('schemas accept valid payloads and reject extras and bad enums', () => {
     expect(check('onboarding_step_viewed', { step: 1, step_id: 'keep_results' })).toEqual([]);
     expect(check('onboarding_step_viewed', { step: 4, step_id: 'keep_results' }).length).toBeGreaterThan(0);

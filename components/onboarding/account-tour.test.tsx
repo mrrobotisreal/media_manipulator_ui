@@ -23,9 +23,10 @@ vi.mock('next/navigation', () => ({
 vi.mock('next/dynamic', async () => {
   const React = await import('react');
   return {
-    default: (loader: () => Promise<{ default: React.ComponentType<never> }>) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    default: (loader: () => Promise<{ default: React.ComponentType<any> }>) => {
       const Lazy = React.lazy(loader);
-      return (props: object) => React.createElement(React.Suspense, { fallback: null }, React.createElement(Lazy, props as never));
+      return (props: object) => React.createElement(React.Suspense, { fallback: null }, React.createElement(Lazy, props));
     },
   };
 });
