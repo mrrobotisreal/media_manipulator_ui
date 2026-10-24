@@ -26,6 +26,7 @@ import type {
   StudioTitleLayer,
   StudioTitleTextLayer,
   StudioMarker,
+  StudioTrackEffects,
 } from '@/lib/studioTypes';
 import {
   STUDIO_SCHEMA_VERSION,
@@ -60,6 +61,7 @@ import {
   type TrimBound,
 } from '@/lib/studio/proTrim';
 import { clipTrimBound } from '@/lib/studio/clipTrimBound';
+import { normalizeTrackEffects } from '@/lib/studio/audioPresets';
 import { DEFAULT_TITLE_FONT_FAMILY } from '@/lib/studio/titleFonts';
 import { titleFromTextOverlays } from '@/lib/studio/titleConvert';
 
@@ -171,6 +173,8 @@ interface StudioState {
   snapping: boolean;
   selectedMarkerId: string | null;
   markersPanelOpen: boolean;
+  /** Mixer drawer (part 19). Ephemeral UI state. */
+  mixerOpen: boolean;
   cheatSheetOpen: boolean;
   /** Set when a mutation was rejected because it touched a locked track. */
   lockNotice: LockNotice | null;
@@ -310,6 +314,20 @@ interface StudioState {
   addVolumeKeyframe: (clipId: string, t: number, gain: number) => void;
   removeVolumeKeyframe: (clipId: string, index: number) => void;
   setAudioDucking: (patch: Partial<StudioAudioConfig>) => void;
+
+  // --- EDL v3: audio mixer (part 19) ---
+  // Continuous controls (faders/knobs/sliders) wrap drags in a gesture
+  // (useUndoGesture) so one drag is one undo entry. Neutral values are stored
+  // as ABSENT so untouched tracks/projects stay byte-stable.
+  /** Track fader, linear 0..2 (1 clears the field). */
+  setTrackGain: (trackId: string, gain: number) => void;
+  /** Track pan -1..1 (0 clears the field). */
+  setTrackPan: (trackId: string, pan: number) => void;
+  /** Replace the track's insert effects (flat EQ + no compressor clears them). */
+  setTrackEffects: (trackId: string, effects: StudioTrackEffects | undefined) => void;
+  /** Project master fader, linear 0..2 (1 clears the field). */
+  setMasterGain: (gain: number) => void;
+  setMixerOpen: (open: boolean) => void;
 
   // --- EDL v3: title clips (part 16) ---
   /** Adds a 5s title clip on the topmost (composite-top) video track at the playhead. */
@@ -933,6 +951,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   snapping: true,
   selectedMarkerId: null,
   markersPanelOpen: false,
+  mixerOpen: false,
   cheatSheetOpen: false,
   lockNotice: null,
   past: [],
@@ -1000,6 +1019,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       selectedMarkerId: null,
       toolMode: 'select',
       markersPanelOpen: false,
+      mixerOpen: false,
       cheatSheetOpen: false,
       lockNotice: null,
       playhead: 0,
@@ -2131,6 +2151,61 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const audio: StudioAudioConfig = { ...DEFAULT_AUDIO_CONFIG, ...s.project.audio, ...patch };
       return { project: { ...s.project, audio }, dirty: true };
     }),
+
+  // --- EDL v3: audio mixer (part 19) ----------------------------------------
+  setTrackGain: (trackId, gain) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const g = clampRange(Number.isFinite(gain) ? gain : 1, 0, MAX_VOLUME);
+      const next = g === 1 ? undefined : g;
+      let changed = false;
+      const tracks = s.project.tracks.map((t) => {
+        if (t.id !== trackId || t.gain === next) return t;
+        changed = true;
+        return { ...t, gain: next };
+      });
+      return changed ? { project: { ...s.project, tracks }, dirty: true } : {};
+    }),
+
+  setTrackPan: (trackId, pan) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const p = clampRange(Number.isFinite(pan) ? pan : 0, -1, 1);
+      const next = p === 0 ? undefined : p;
+      let changed = false;
+      const tracks = s.project.tracks.map((t) => {
+        if (t.id !== trackId || t.pan === next) return t;
+        changed = true;
+        return { ...t, pan: next };
+      });
+      return changed ? { project: { ...s.project, tracks }, dirty: true } : {};
+    }),
+
+  setTrackEffects: (trackId, effects) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const next = normalizeTrackEffects(effects);
+      let changed = false;
+      const tracks = s.project.tracks.map((t) => {
+        if (t.id !== trackId || JSON.stringify(t.effects) === JSON.stringify(next)) return t;
+        changed = true;
+        return { ...t, effects: next };
+      });
+      return changed ? { project: { ...s.project, tracks }, dirty: true } : {};
+    }),
+
+  setMasterGain: (gain) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const g = clampRange(Number.isFinite(gain) ? gain : 1, 0, MAX_VOLUME);
+      const next = g === 1 ? undefined : g;
+      if (s.project.audio?.masterGain === next) return {};
+      if (!s.project.audio && next === undefined) return {};
+      const audio: StudioAudioConfig = { ...DEFAULT_AUDIO_CONFIG, ...s.project.audio, masterGain: next };
+      return { project: { ...s.project, audio }, dirty: true };
+    }),
+
+  setMixerOpen: (open) => set({ mixerOpen: open }),
 
   // --- EDL v3: title clips (part 16) ---------------------------------------
 

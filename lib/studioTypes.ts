@@ -457,6 +457,8 @@ export const studioAudioConfigSchema = z.object({
   duckAmountDb: z.number().min(0).max(24).default(9),
   duckAttackMs: z.number().min(0).max(2000).default(120),
   duckReleaseMs: z.number().min(0).max(5000).default(400),
+  /** Project master fader 0–2 (part 19). Absent = unity; stored only when not 1. */
+  masterGain: z.number().min(0).max(2).optional(),
 });
 export type StudioAudioConfig = z.infer<typeof studioAudioConfigSchema>;
 

@@ -198,6 +198,10 @@ export const STUDIO_V3_RANGES = {
   /** Track mixer. */
   trackGain: { min: 0, max: 2, step: 0.01, default: 1 },
   trackPan: { min: -1, max: 1, step: 0.01, default: 0 },
+  /** Project master fader (audio.masterGain; part 19). Same 0..2 linear range as track gain. */
+  masterGain: { min: 0, max: 2, step: 0.01, default: 1 },
+  /** Mixer fader scale in dB (UI only): bottom = -inf, +6 dB top = linear 2. */
+  faderDb: { min: -60, max: 6.020599913279624 },
   trackNameMaxLength: 80,
   /** Track 3-band EQ (shared range for low/mid/high shelf gains). */
   eqGainDb: { min: -12, max: 12, step: 0.5, default: 0 },

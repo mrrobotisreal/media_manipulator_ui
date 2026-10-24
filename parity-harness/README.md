@@ -108,6 +108,17 @@ clip boundaries.
 each pipeline — they assert a policy ("duplicate effects behave as
 first-enabled-only"), not cross-pipeline closeness.
 
+**Audio mixer (part 19)**: the `audio_mixer` golden (two audio tracks with
+track gain/pan, EQ + compressor at the "Music bed"/"Voice clarity" preset
+values, and `audio.masterGain` 0.8) proves the mixer export graph renders
+end-to-end; its video frames use the `passthrough` row. Audio comparison is
+audible-equivalence with the generous window recorded in
+`design/03-parity-tolerances.md` ("Audio mixer"): run
+`npm run parity -- --scenario audio_mixer`, then spot-check levels with
+`ffmpeg -i out/audio_mixer/ffmpeg/render.mp4 -af ebur128=peak=true -f null -`
+(integrated loudness within +-1.5 LU of a Web Audio offline render of the same
+EDL).
+
 **Audio**: the `audio_ducking` golden proves the sidechain export graph
 renders end-to-end and holds its (untouched) video frames to the passthrough
 row. Audio parity itself has no numeric tolerance — audible-equivalence only,

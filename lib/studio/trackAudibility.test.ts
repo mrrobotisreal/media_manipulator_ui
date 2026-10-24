@@ -29,3 +29,22 @@ describe('track audibility (solo semantics)', () => {
     expect(anySolo([tr('video', { solo: true })])).toBe(false);
   });
 });
+
+// Shared truth table, identical to media_manipulator_api/internal/models/testdata/track_audibility.json
+// (the Go export mirror, models.IsTrackAudible, is tested against the same file).
+import fixture from './trackAudibility.fixture.json';
+
+describe('shared audibility truth table (UI == Go export)', () => {
+  const mk = (t: { kind: string; muted?: boolean; solo?: boolean; hidden?: boolean }) =>
+    tr(t.kind as 'video' | 'audio', { muted: t.muted ?? false, solo: t.solo, hidden: t.hidden });
+  for (const c of fixture.anySolo) {
+    it(`anySolo: ${c.name}`, () => {
+      expect(anySolo(c.tracks.map(mk))).toBe(c.expect);
+    });
+  }
+  for (const c of fixture.audible) {
+    it(`isTrackAudible: ${c.name}`, () => {
+      expect(isTrackAudible(mk(c.track), c.soloActive)).toBe(c.expect);
+    });
+  }
+});
