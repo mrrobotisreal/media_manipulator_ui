@@ -368,6 +368,11 @@ export interface BillingStatus {
   portalAvailable: boolean;
   /** Present only while a team-granted Premium is live; expiresAt null = no end date. */
   manualGrant: { expiresAt: string | null } | null;
+  /**
+   * Consecutive paid billing periods on the current subscription. Additive and NOT sent by the
+   * API today (MM33 feature-detects it): the yearly nudge shows only when this is a number.
+   */
+  periodsPaid?: number;
 }
 
 /** GET /api/billing/session/:id. */

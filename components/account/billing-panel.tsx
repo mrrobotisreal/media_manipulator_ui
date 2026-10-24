@@ -19,6 +19,7 @@ import { getCurrentIdToken } from '@/lib/firebase';
 import { openPortal, readLastInterval, startCheckout } from '@/lib/billing/checkout';
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
 import { useLocalization } from '@/i18n/useLocalization';
+import { YearlyNudge } from './yearly-nudge';
 
 /**
  * The /account Billing panel (MM19 decision 4).
@@ -226,6 +227,7 @@ export const BillingPanel: React.FC = () => {
               {t('interface:billing.panel.renewsOn', { date: date(status.renewsAt) })}
             </p>
           ) : null}
+          {state === 'active' ? <YearlyNudge uid={uid} status={status} tiers={tiersQuery.data} /> : null}
           {status?.portalAvailable ? (
             <Button className="w-fit" onClick={manage} disabled={busy}>
               {state === 'past_due'

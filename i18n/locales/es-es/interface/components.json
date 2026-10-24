@@ -522,5 +522,11 @@
   "queueLine": {
     "text": "Esto esperó {{time}} en la cola compartida. Los trabajos Premium van primero.",
     "cta": "Ver Premium"
+  },
+  "yearlyNudge": {
+    "title": "Pasa a anual y consigue {{months}} meses gratis",
+    "body": "Llevas varios meses pagando seguidos. El plan anual cuesta menos que doce pagos mensuales. Puedes cambiar cuando quieras desde el portal de facturación.",
+    "cta": "Cambiar a anual",
+    "dismiss": "No, gracias"
   }
 }

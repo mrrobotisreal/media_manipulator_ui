@@ -522,5 +522,11 @@
   "queueLine": {
     "text": "Das hat {{time}} in der gemeinsamen Warteschlange gewartet. Premium-Aufträge kommen zuerst dran.",
     "cta": "Premium ansehen"
+  },
+  "yearlyNudge": {
+    "title": "Wechsle auf jährlich und erhalte {{months}} Monate gratis",
+    "body": "Du zahlst jetzt schon mehrere Monate in Folge. Der Jahrestarif kostet weniger als zwölf Monatszahlungen. Du kannst jederzeit im Abrechnungsportal wechseln.",
+    "cta": "Auf jährlich wechseln",
+    "dismiss": "Nein danke"
   }
 }

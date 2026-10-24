@@ -522,5 +522,11 @@
   "queueLine": {
     "text": "This waited {{time}} on the shared queue. Premium jobs go first.",
     "cta": "See Premium"
+  },
+  "yearlyNudge": {
+    "title": "Switch to yearly and get {{months}} months free",
+    "body": "You have paid for several months in a row. The yearly plan costs less than twelve monthly payments. You can switch any time from the billing portal.",
+    "cta": "Switch to yearly",
+    "dismiss": "No thanks"
   }
 }
