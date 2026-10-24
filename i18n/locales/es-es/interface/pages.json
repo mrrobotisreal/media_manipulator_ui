@@ -621,7 +621,7 @@
             "paragraphs": [
               "Si te suscribes a Premium, el pago lo gestiona nuestro procesador de pagos, Stripe. Los datos de tu tarjeta se introducen en las páginas de Stripe y los procesa Stripe; nosotros no recibimos ni almacenamos números de tarjeta.",
               "Solo guardamos lo necesario para gestionar tu suscripción: tu identificador de cliente de Stripe, el estado de la suscripción, el periodo de facturación (mensual o anual) y la fecha en que termina el periodo actual. Lo usamos para darte el plan correcto, mostrar tu estado de facturación y gestionar reembolsos y solicitudes de soporte.",
-              "Nuestra cuenta de Stripe pertenece a CreaTV Ltd., la empresa que opera Media Manipulator. Por eso, la página de pago de Stripe, tus recibos y el cargo en tu tarjeta pueden mostrar CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator."
+              "Nuestra cuenta de Stripe pertenece a CreaTV Ltd., la empresa que opera Media Manipulator. Por eso, la página de pago de Stripe muestra la marca de CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator. El cargo en el extracto de tu tarjeta aparece como «MEDIA MNPLTR PREMIUM»."
             ]
           },
           {
@@ -1223,7 +1223,7 @@
           "Tu suscripción se renueva automáticamente al final de cada periodo de facturación hasta que la canceles. Puedes cancelar en cualquier momento desde la sección Facturación de tu página de cuenta o a través del portal de facturación al que enlaza. Tras cancelar, tu acceso Premium continúa hasta el final del periodo que ya pagaste y no se te volverá a cobrar.",
           "Si no estás satisfecho, puedes solicitar el reembolso de tu primer pago dentro de los 14 días siguientes escribiendo a support@media-manipulator.com. Los pagos de renovación no son reembolsables, salvo cuando la ley lo exija.",
           "Si un pago falla, lo reintentamos y tu acceso Premium continúa hasta 7 días. Si pasado ese plazo el pago sigue sin completarse, tu cuenta vuelve al plan gratuito hasta que actualices tu método de pago y te suscribas de nuevo.",
-          "Los pagos los procesa Stripe, Inc. Nunca recibimos ni almacenamos el número completo de tu tarjeta. Al pago en sí se aplican los términos y la política de privacidad de Stripe. Nuestra cuenta de Stripe pertenece a CreaTV Ltd., por lo que la página de pago de Stripe, los recibos y el cargo en tu tarjeta pueden mostrar CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator."
+          "Los pagos los procesa Stripe, Inc. Nunca recibimos ni almacenamos el número completo de tu tarjeta. Al pago en sí se aplican los términos y la política de privacidad de Stripe. Nuestra cuenta de Stripe pertenece a CreaTV Ltd., por lo que la página de pago de Stripe muestra la marca de CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator. El cargo en el extracto de tu tarjeta aparece como «MEDIA MNPLTR PREMIUM»."
         ]
       },
       {

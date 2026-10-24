@@ -621,7 +621,7 @@
             "paragraphs": [
               "If you subscribe to Premium, payment is handled by our payment processor, Stripe. Your card details are entered on Stripe's pages and are processed by Stripe; we do not receive or store card numbers.",
               "We store only what we need to run your subscription: your Stripe customer identifier, your subscription status, your billing interval (monthly or yearly), and the date your current period ends. We use it to give you the right plan, show your billing status, and handle refunds and support requests.",
-              "Our Stripe account belongs to CreaTV Ltd., the company that operates Media Manipulator. As a result, Stripe's checkout page, your receipts and the statement on your card may show CreaTV (or CreaTV Ltd.) instead of Media Manipulator."
+              "Our Stripe account belongs to CreaTV Ltd., the company that operates Media Manipulator. As a result, Stripe's checkout page shows CreaTV (or CreaTV Ltd.) branding instead of Media Manipulator. The charge on your card statement appears as “MEDIA MNPLTR PREMIUM”."
             ]
           },
           {
@@ -1223,7 +1223,7 @@
           "Your subscription renews automatically at the end of each billing period until you cancel. You can cancel at any time from the Billing section of your Account page or through the billing portal it links to. After you cancel, your Premium access continues until the end of the period you already paid for, and you will not be charged again.",
           "If you are not satisfied, you may request a refund of your first payment within 14 days of making it by emailing support@media-manipulator.com. Renewal payments are not refundable except where required by law.",
           "If a payment fails, we retry it and your Premium access continues for up to 7 days. If the payment still has not succeeded after that, your account returns to the free plan until you update your payment method and subscribe again.",
-          "Payments are processed by Stripe, Inc. We never receive or store your full card number. Stripe's own terms and privacy policy apply to the payment itself. Our Stripe account belongs to CreaTV Ltd., so Stripe's checkout page, receipts and the statement on your card may show CreaTV (or CreaTV Ltd.) instead of Media Manipulator."
+          "Payments are processed by Stripe, Inc. We never receive or store your full card number. Stripe's own terms and privacy policy apply to the payment itself. Our Stripe account belongs to CreaTV Ltd., so Stripe's checkout page shows CreaTV (or CreaTV Ltd.) branding instead of Media Manipulator. The charge on your card statement appears as “MEDIA MNPLTR PREMIUM”."
         ]
       },
       {

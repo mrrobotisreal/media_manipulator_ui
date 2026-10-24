@@ -621,7 +621,7 @@
             "paragraphs": [
               "Wenn du Premium abonnierst, wird die Zahlung von unserem Zahlungsdienstleister Stripe abgewickelt. Deine Kartendaten gibst du auf den Seiten von Stripe ein, und Stripe verarbeitet sie; wir erhalten und speichern keine Kartennummern.",
               "Wir speichern nur, was wir für dein Abonnement brauchen: deine Stripe-Kundenkennung, den Abonnementstatus, den Abrechnungszeitraum (monatlich oder jährlich) und das Ende deines aktuellen Zeitraums. Wir nutzen diese Daten, um dir den richtigen Tarif zu geben, deinen Abrechnungsstatus anzuzeigen und Rückerstattungen und Supportanfragen zu bearbeiten.",
-              "Unser Stripe-Konto gehört der CreaTV Ltd., dem Unternehmen, das Media Manipulator betreibt. Deshalb können die Stripe-Checkout-Seite, deine Belege und die Abbuchung auf deiner Karte CreaTV (oder CreaTV Ltd.) statt Media Manipulator anzeigen."
+              "Unser Stripe-Konto gehört der CreaTV Ltd., dem Unternehmen, das Media Manipulator betreibt. Deshalb zeigt die Stripe-Checkout-Seite das Branding von CreaTV (oder CreaTV Ltd.) statt Media Manipulator. Auf deiner Kartenabrechnung erscheint die Abbuchung als „MEDIA MNPLTR PREMIUM“."
             ]
           },
           {
@@ -1223,7 +1223,7 @@
           "Dein Abonnement verlängert sich automatisch am Ende jedes Abrechnungszeitraums, bis du kündigst. Du kannst jederzeit im Bereich „Abrechnung“ deiner Kontoseite oder über das dort verlinkte Abrechnungsportal kündigen. Nach der Kündigung bleibt dein Premium-Zugang bis zum Ende des bereits bezahlten Zeitraums bestehen, und es wird nichts mehr abgebucht.",
           "Wenn du nicht zufrieden bist, kannst du innerhalb von 14 Tagen nach deiner ersten Zahlung per E-Mail an support@media-manipulator.com deren Rückerstattung verlangen. Verlängerungszahlungen werden nicht erstattet, soweit das Gesetz nichts anderes vorschreibt.",
           "Schlägt eine Zahlung fehl, versuchen wir es erneut, und dein Premium-Zugang bleibt bis zu 7 Tage bestehen. Ist die Zahlung danach weiterhin nicht erfolgt, kehrt dein Konto zum kostenlosen Tarif zurück, bis du deine Zahlungsmethode aktualisierst und erneut abonnierst.",
-          "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe. Unser Stripe-Konto gehört der CreaTV Ltd.; daher können die Stripe-Checkout-Seite, Belege und die Abbuchung auf deiner Karte CreaTV (oder CreaTV Ltd.) statt Media Manipulator anzeigen."
+          "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe. Unser Stripe-Konto gehört der CreaTV Ltd.; daher zeigt die Stripe-Checkout-Seite das Branding von CreaTV (oder CreaTV Ltd.) statt Media Manipulator. Auf deiner Kartenabrechnung erscheint die Abbuchung als „MEDIA MNPLTR PREMIUM“."
         ]
       },
       {
