@@ -62,3 +62,20 @@ verified.
 5. `/sitemap.xml` contains only the review-safe URL set.
 6. No `MobileAnchorAd` / side rails / sticky ads render.
 7. Footer + top-nav links all resolve to real routes.
+
+## Post-approval flip checklist (MM34)
+
+Do this only after AdSense has approved the site. Until then
+`NEXT_PUBLIC_SEO_FULL_INDEX` stays unset and everything above applies unchanged.
+
+1. Set `NEXT_PUBLIC_SEO_FULL_INDEX=true` in the UI deploy environment and
+   rebuild (it is inlined at build time; a restart alone is not enough).
+2. Effect: `/sitemap.xml` grows from 25 URLs per set to core + all 75
+   `content/toolPages.ts` slugs + 3 blog + 5 tutorial details + `/changelog`;
+   non-allowlisted tool pages lose `noindex`; `PENDING_ALLOWLIST` pages index.
+3. Verify `/sitemap.xml`, view-source of one formerly noindex tool page
+   (`/tools/ai-image-upscaler`) shows `index, follow`, and `/robots.txt` still
+   disallows `/admin/`, `/private/`, `/dr`, `/r/`. `/status` stays noindex.
+4. Submit the sitemap in Search Console (manual, not part of the code).
+5. Rollback: unset the variable and rebuild; the sitemap returns to the
+   review-safe set (frozen by `app/sitemap.test.ts`).

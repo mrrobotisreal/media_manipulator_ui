@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Panel } from '@/components/darkroom/panel';
 import { useLocalization } from '@/i18n/useLocalization';
 import { fetchSystemHealth, type CheckResult, type ServiceState, type SystemHealth } from '@/lib/status/systemHealth';
@@ -101,24 +101,27 @@ export default function StatusView() {
   const { t, formatTime } = useLocalization(['interface']);
   const [health, setHealth] = useState<SystemHealth | null>(null);
   const [checkedAt, setCheckedAt] = useState<string>();
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-
-  const tick = useCallback(async (signal: AbortSignal) => {
-    const next = await fetchSystemHealth(signal);
-    if (signal.aborted) return;
-    setHealth(next);
-    setCheckedAt(formatTime(new Date()));
-    timer.current = setTimeout(() => void tick(signal), STATUS_POLL_MS);
+  const formatTimeRef = useRef(formatTime);
+  useEffect(() => {
+    formatTimeRef.current = formatTime;
   }, [formatTime]);
 
   useEffect(() => {
     const ctl = new AbortController();
-    void tick(ctl.signal);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const tick = async () => {
+      const next = await fetchSystemHealth(ctl.signal);
+      if (ctl.signal.aborted) return;
+      setHealth(next);
+      setCheckedAt(formatTimeRef.current(new Date()));
+      timer = setTimeout(() => void tick(), STATUS_POLL_MS);
+    };
+    void tick();
     return () => {
       ctl.abort();
-      clearTimeout(timer.current);
+      clearTimeout(timer);
     };
-  }, [tick]);
+  }, []);
 
   return (
     <div className="px-4 sm:px-6">
