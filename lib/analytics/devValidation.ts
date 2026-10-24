@@ -60,8 +60,9 @@ const studioHostProps = z.object({ host: studioHostEnum.optional() }).strict();
 const studioExportProps = z
   .object({
     preset: z.enum(['low', 'medium', 'high']),
-    format: z.literal('mp4'),
+    format: z.enum(['h264', 'hevc', 'mp3', 'wav', 'mp4']),
     resolution: z.string(),
+    captionsMode: z.enum(['none', 'burn_in', 'sidecar']).optional(),
     durationRatioBucket: z.string().optional(),
     host: studioHostEnum.optional(),
   })
@@ -409,6 +410,9 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       assetsDeleted: z.string().optional(),
       uploadRetries: z.string().optional(),
       voiceoversRecorded: z.string().optional(),
+      canvasChanges: z.string().optional(),
+      framesExported: z.string().optional(),
+      exportsRerendered: z.string().optional(),
       clipsGrouped: z.string().optional(),
       audioDetached: z.string().optional(),
       trackControlChanges: z.string().optional(),

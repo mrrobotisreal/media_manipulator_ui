@@ -1,5 +1,6 @@
 'use client';
 
+import { clampCanvas } from '@/lib/studio/exportOptions';
 import { create } from 'zustand';
 import type {
   StudioProject,
@@ -328,6 +329,15 @@ interface StudioState {
   /** Project master fader, linear 0..2 (1 clears the field). */
   setMasterGain: (gain: number) => void;
   setMixerOpen: (open: boolean) => void;
+
+  // --- Export depth (part 20) ---
+  /**
+   * Change the project canvas. Undoable (a normal history entry). Clips keep
+   * their transforms untouched — the compositor letterboxes — and nothing is
+   * auto-reframed. Width/height are clamped to the server range and made even.
+   * No-op when the size is unchanged.
+   */
+  setCanvas: (width: number, height: number) => void;
 
   // --- EDL v3: title clips (part 16) ---
   /** Adds a 5s title clip on the topmost (composite-top) video track at the playhead. */
@@ -2206,6 +2216,14 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     }),
 
   setMixerOpen: (open) => set({ mixerOpen: open }),
+
+  setCanvas: (width, height) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const next = clampCanvas(width, height);
+      if (next.width === s.project.width && next.height === s.project.height) return {};
+      return { project: { ...s.project, width: next.width, height: next.height }, dirty: true };
+    }),
 
   // --- EDL v3: title clips (part 16) ---------------------------------------
 

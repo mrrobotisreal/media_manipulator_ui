@@ -14,6 +14,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { studioHost } from '@/lib/studio/telemetry';
+import { clampCanvas } from '@/lib/studio/exportOptions';
 import { useCreateProject, useRecentProjects } from '@/lib/useStudioProject';
 import Editor from './editor';
 import FocusableEditorShell from './focusable-editor-shell';
@@ -23,11 +24,16 @@ import { Panel } from '@/components/darkroom/panel';
 // import { useToolPages } from '@/i18n/useToolPages';
 // import type { ToolPageContent } from '@/content/toolPages';
 
+// Canvas presets (part 20): the four aspect ratios people actually deliver, each
+// at its standard working size, plus the original 720p/4K sizes and Custom.
 const RESOLUTIONS = [
-  { key: '1920x1080', label: '1080p — 1920×1080', width: 1920, height: 1080 },
+  { key: '1920x1080', label: '16:9 — 1920×1080', width: 1920, height: 1080 },
+  { key: '1080x1920', label: '9:16 — 1080×1920', width: 1080, height: 1920 },
+  { key: '1080x1080', label: '1:1 — 1080×1080', width: 1080, height: 1080 },
+  { key: '1080x1350', label: '4:5 — 1080×1350', width: 1080, height: 1350 },
   { key: '1280x720', label: '720p — 1280×720', width: 1280, height: 720 },
   { key: '3840x2160', label: '4K — 3840×2160', width: 3840, height: 2160 },
-  { key: '1080x1920', label: 'Vertical — 1080×1920', width: 1080, height: 1920 },
+  { key: 'custom', label: 'Custom…', width: 1920, height: 1080 },
 ];
 const FPS_OPTIONS = [24, 30, 60];
 
@@ -129,15 +135,18 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
   const [name, setName] = React.useState('');
   const [resKey, setResKey] = React.useState(RESOLUTIONS[0].key);
   const [fps, setFps] = React.useState('30');
+  const [customW, setCustomW] = React.useState('1920');
+  const [customH, setCustomH] = React.useState('1080');
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const res = RESOLUTIONS.find((r) => r.key === resKey) ?? RESOLUTIONS[0];
+    const size = res.key === 'custom' ? clampCanvas(Number(customW), Number(customH)) : { width: res.width, height: res.height };
     createProject.mutate({
       name: name.trim() || 'Untitled project',
       fps: Number(fps),
-      width: res.width,
-      height: res.height,
+      width: size.width,
+      height: size.height,
     });
   };
 
@@ -172,6 +181,19 @@ const EntryScreen: React.FC<{ onOpen: (id: string) => void }> = ({ onOpen }) => 
             </SelectContent>
           </Select>
         </div>
+
+        {resKey === 'custom' && (
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label htmlFor="cs-custom-w">{t('contentStudio.canvas.width')}</Label>
+              <Input id="cs-custom-w" inputMode="numeric" value={customW} onChange={(e) => setCustomW(e.target.value.replace(/\D/g, ''))} />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="cs-custom-h">{t('contentStudio.canvas.height')}</Label>
+              <Input id="cs-custom-h" inputMode="numeric" value={customH} onChange={(e) => setCustomH(e.target.value.replace(/\D/g, ''))} />
+            </div>
+          </div>
+        )}
 
         <div className="space-y-2">
           <Label htmlFor="cs-fps">{t('contentStudio.newProject.fps')}</Label>

@@ -9,6 +9,7 @@
  * Direction matters:
  *   Host → Embed: cs:init, cs:token, cs:command, cs:consent
  *   Embed → Host: cs:ready, cs:request-token, cs:state, cs:export-*,
+ *                 cs:export-history (part 20, additive),
  *                 cs:publish-request, cs:resize, cs:fullscreen-request,
  *                 and cs:command{action:'close'} (Back from inside the editor)
  *
@@ -42,6 +43,8 @@ export interface EmbedCapabilities {
   captions?: boolean;
   peaks?: boolean;
   lut?: boolean;
+  /** Part 20 (additive): host API serves export format/resolution/history/frame routes. Absent = false. */
+  exportDepth?: boolean;
 }
 
 // --- Host → Embed ----------------------------------------------------------
@@ -121,6 +124,25 @@ export interface CsExportFailedMessage {
   error: string;
 }
 
+/**
+ * Part 20 (additive, optional): a summary of the project's export history,
+ * emitted alongside cs:export-complete/failed so a host can render its own
+ * "recent exports" UI. Counts and the newest entries only; downloads stay
+ * host-mediated. A host that ignores it loses nothing.
+ */
+export interface CsExportHistoryMessage {
+  type: 'cs:export-history';
+  total: number;
+  running: number;
+  entries: Array<{
+    jobId: string;
+    format: 'h264' | 'hevc' | 'mp3' | 'wav';
+    resolution: number;
+    status: 'running' | 'completed' | 'failed';
+    available: boolean;
+  }>;
+}
+
 export interface CsPublishRequestMessage {
   type: 'cs:publish-request';
   draftId: number;
@@ -146,6 +168,7 @@ export type EmbedToHostMessage =
   | CsExportProgressMessage
   | CsExportCompleteMessage
   | CsExportFailedMessage
+  | CsExportHistoryMessage
   | CsPublishRequestMessage
   | CsResizeMessage
   | CsFullscreenRequestMessage

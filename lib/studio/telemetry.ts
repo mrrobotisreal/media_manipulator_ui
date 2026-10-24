@@ -73,7 +73,11 @@ export type StudioEditCounter =
   | 'clipsGrouped'
   | 'audioDetached'
   | 'trackControlChanges'
-  | 'markersEdited';
+  | 'markersEdited'
+  // Part 20 export depth.
+  | 'canvasChanges'
+  | 'framesExported'
+  | 'exportsRerendered';
 
 /** Counters that also keep a per-subkey breakdown map. */
 const SUBKEY_MAPS: Partial<Record<StudioEditCounter, 'transitionsByType' | 'keyframesByProperty' | 'effectsByType'>> = {
