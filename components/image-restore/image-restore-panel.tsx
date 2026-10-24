@@ -14,6 +14,7 @@ import ImageModelPicker from './model-picker';
 import ResultsGrid from './results-grid';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
+import { QuotaChip } from '@/components/quota-chip';
 
 const FIXED_STAGE_KEYS = new Set(['queued', 'prepare', 'package', 'completed']);
 
@@ -127,6 +128,7 @@ const ImageRestorePanel: React.FC = () => {
 
   return (
     <div className="my-6 space-y-6">
+      <QuotaChip task="image_restoration" />
       {/* Step 1 — file */}
       {!file && (
         <div

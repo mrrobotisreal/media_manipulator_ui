@@ -491,5 +491,20 @@
     "openFailed": "לא ניתן לפתוח את הקובץ. נסו שוב.",
     "signupCta": "קבצים של אורחים נמחקים לאחר 24 שעות. הירשמו כדי לשמור אותם למשך 6 חודשים.",
     "signupAction": "הרשמה בחינם"
+  },
+  "quotaChip": {
+    "title": "לצפייה בתוכניות Premium",
+    "ops": {
+      "remaining": "נותרו {{remaining}} מתוך {{limit}} המרות להיום",
+      "empty": "כל {{limit}} ההמרות להיום נוצלו"
+    },
+    "ai_ops": {
+      "remaining": "נותרו {{remaining}} מתוך {{limit}} משימות AI להיום",
+      "empty": "כל {{limit}} משימות ה-AI להיום נוצלו"
+    },
+    "export": {
+      "remaining": "נותרו {{remaining}} מתוך {{limit}} ייצואים להיום",
+      "empty": "כל {{limit}} הייצואים להיום נוצלו"
+    }
   }
 }

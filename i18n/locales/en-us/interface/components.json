@@ -487,5 +487,20 @@
     "openFailed": "Could not open this file. Try again.",
     "signupCta": "Guest files are deleted after 24 hours. Sign up to keep these for 6 months.",
     "signupAction": "Sign up free"
+  },
+  "quotaChip": {
+    "title": "See Premium plans",
+    "ops": {
+      "remaining": "{{remaining}} of {{limit}} conversions left today",
+      "empty": "All {{limit}} conversions used today"
+    },
+    "ai_ops": {
+      "remaining": "{{remaining}} of {{limit}} AI jobs left today",
+      "empty": "All {{limit}} AI jobs used today"
+    },
+    "export": {
+      "remaining": "{{remaining}} of {{limit}} exports left today",
+      "empty": "All {{limit}} exports used today"
+    }
   }
 }

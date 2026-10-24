@@ -507,6 +507,17 @@ export interface PricingViewedProps {
   placement?: string;
 }
 
+/**
+ * MM33 upgrade moments. `UpgradeCTAClickedProps.placement` stays a string (older surfaces
+ * pass their own), but the four moment surfaces pick from this union so a typo cannot
+ * silently fork the funnel. The limit that triggered an interstitial rides on `cta_id`.
+ */
+export type UpgradeMomentPlacement =
+  | 'quota_chip'
+  | 'limit_interstitial'
+  | 'queue_line'
+  | 'yearly_nudge';
+
 export interface UpgradeCTAClickedProps {
   placement: string;
   cta_id?: string;

@@ -5,6 +5,7 @@ import { Upload, X } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
+import { QuotaChip } from '@/components/quota-chip';
 import { getFileType } from '@/lib/utils';
 import {
   EVENTS,
@@ -67,6 +68,8 @@ interface SpecializedToolShellProps {
   outputExtensionHint?: string;
   /** Hint for the result kind and panel heading; see SpecializedToolPreviewConfig. */
   previewConfig?: SpecializedToolPreviewConfig;
+  /** Task the tool spends allowance on (picks the quota chip's metric); default is a conversion. */
+  quotaTask?: string;
 }
 
 const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
@@ -79,6 +82,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
   renderForm,
   outputExtensionHint,
   previewConfig,
+  quotaTask,
 }) => {
   const { t, formatFileSize } = useLocalization('interface');
   // tool_slug and media_kind arrive from the ToolAnalyticsProvider that tool-landing-page
@@ -175,6 +179,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
 
   return (
     <div className="space-y-4">
+      <QuotaChip task={quotaTask} busy={isProcessing} />
       {!selectedFile ? (
         <div
           onDragOver={handleDragOver}

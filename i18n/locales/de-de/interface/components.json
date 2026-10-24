@@ -487,5 +487,20 @@
     "openFailed": "Diese Datei konnte nicht geöffnet werden. Versuchen Sie es erneut.",
     "signupCta": "Dateien von Gästen werden nach 24 Stunden gelöscht. Registrieren Sie sich, um sie 6 Monate lang zu behalten.",
     "signupAction": "Kostenlos registrieren"
+  },
+  "quotaChip": {
+    "title": "Premium-Tarife ansehen",
+    "ops": {
+      "remaining": "Noch {{remaining}} von {{limit}} Konvertierungen heute",
+      "empty": "Alle {{limit}} Konvertierungen heute verbraucht"
+    },
+    "ai_ops": {
+      "remaining": "Noch {{remaining}} von {{limit}} KI-Aufträgen heute",
+      "empty": "Alle {{limit}} KI-Aufträge heute verbraucht"
+    },
+    "export": {
+      "remaining": "Noch {{remaining}} von {{limit}} Exporten heute",
+      "empty": "Alle {{limit}} Exporte heute verbraucht"
+    }
   }
 }

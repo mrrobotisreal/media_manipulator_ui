@@ -487,5 +487,20 @@
     "openFailed": "No se pudo abrir este archivo. Inténtalo de nuevo.",
     "signupCta": "Los archivos de invitados se eliminan a las 24 horas. Regístrate para conservarlos 6 meses.",
     "signupAction": "Regístrate gratis"
+  },
+  "quotaChip": {
+    "title": "Ver los planes Premium",
+    "ops": {
+      "remaining": "Te quedan {{remaining}} de {{limit}} conversiones hoy",
+      "empty": "Has usado las {{limit}} conversiones de hoy"
+    },
+    "ai_ops": {
+      "remaining": "Te quedan {{remaining}} de {{limit}} trabajos de IA hoy",
+      "empty": "Has usado los {{limit}} trabajos de IA de hoy"
+    },
+    "export": {
+      "remaining": "Te quedan {{remaining}} de {{limit}} exportaciones hoy",
+      "empty": "Has usado las {{limit}} exportaciones de hoy"
+    }
   }
 }
