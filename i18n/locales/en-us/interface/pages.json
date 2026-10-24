@@ -503,7 +503,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "What changed on 2026-10-24",
-    "whatChangedBody": "We reviewed this policy against how the service works today. New or corrected: payments run through the Stripe account of CreaTV Ltd. (so checkout and your card statement may show CreaTV), the AI tools we run on our own servers are named, Google Analytics 4 and advertising are described more precisely (including cookies), account sign-in with Firebase is explained, and Darkroom inside CreaTV Studio is covered. Retention is unchanged: 24 hours for visitors, 24 hours to 2 years (6 months by default) with an account."
+    "whatChangedBody": "We reviewed this policy against how the service works today. New or corrected: payments run through the Stripe account of CreaTV Ltd. (so the Stripe checkout page shows CreaTV, while your card statement shows MEDIA MNPLTR PREMIUM), sales tax or VAT is added on top of the price where applicable and calculated at checkout, metadata reports are now deleted together with their files by default, Google's analytics script now loads only after you consent to analytics (nothing is sent to Google before that), the AI tools we run on our own servers are named, Google Analytics 4 and advertising are described more precisely (including cookies), account sign-in with Firebase is explained, and Darkroom inside CreaTV Studio is covered. Retention is unchanged: 24 hours for visitors, 24 hours to 2 years (6 months by default) with an account."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -621,7 +621,7 @@
             "paragraphs": [
               "If you subscribe to Premium, payment is handled by our payment processor, Stripe. Your card details are entered on Stripe's pages and are processed by Stripe; we do not receive or store card numbers.",
               "We store only what we need to run your subscription: your Stripe customer identifier, your subscription status, your billing interval (monthly or yearly), and the date your current period ends. We use it to give you the right plan, show your billing status, and handle refunds and support requests.",
-              "Our Stripe account belongs to CreaTV Ltd., the company that operates Media Manipulator. As a result, Stripe's checkout page, your receipts and the statement on your card may show CreaTV (or CreaTV Ltd.) instead of Media Manipulator."
+              "Our Stripe account belongs to CreaTV Ltd., the company that operates Media Manipulator. As a result, Stripe's checkout page shows CreaTV (or CreaTV Ltd.) branding instead of Media Manipulator. The charge on your card statement appears as “MEDIA MNPLTR PREMIUM”."
             ]
           },
           {
@@ -682,7 +682,7 @@
           {
             "title": "3.2 Metadata reports",
             "paragraphs": [
-              "Metadata reports are small records describing the technical properties of a file. A setting on your Account page lets you choose whether reports are kept after the files they describe have been deleted at the end of the retention period. When you delete a file yourself, its report is deleted with it. Visitors without an account do not have this setting: their metadata reports are deleted together with their files."
+              "Metadata reports are small records describing the technical properties of a file. By default, a file's metadata report is deleted when the file is deleted, whether you delete it yourself or it is removed at the end of the retention period. The Privacy & data tab of your Account page has a setting that lets you choose to keep metadata reports after their files are gone. Visitors without an account do not have this setting: their metadata reports are always deleted together with their files."
             ]
           },
           {
@@ -810,7 +810,7 @@
           {
             "title": "6.4 Google Analytics 4",
             "paragraphs": [
-              "We keep a deliberately minimal Google Analytics 4 configuration as an independent cross-check on our own numbers. Exactly three events are sent to Google: a page view (with the page address and title), an account sign-up (with the sign-up method), and a completed job (with the tool name and media type). Nothing else is forwarded. They are sent only if your analytics choice allows it, and Google's consent signals stay denied until then. Google's tag script is nevertheless loaded on every page, so Google receives the technical data that any web request involves, such as your IP address and browser details, and when analytics is allowed Google may set its own cookies."
+              "We keep a deliberately minimal Google Analytics 4 configuration as an independent cross-check on our own numbers. Google's analytics script is loaded only after you consent to analytics, and nothing is sent to Google before that: no script request, no events, and no IP address or browser details. Once you consent, exactly three events are sent to Google: a page view (with the page address and title), an account sign-up (with the sign-up method), and a completed job (with the tool name and media type). Nothing else is forwarded, and events from before you consented are not sent. If you withdraw consent, we stop sending events to Google. Once allowed, Google receives the technical data that any web request involves, such as your IP address and browser details, and may set its own cookies."
             ]
           },
           {
@@ -1219,11 +1219,11 @@
       {
         "title": "10. Payments, Renewals and Refunds",
         "paragraphs": [
-          "Premium is a paid subscription billed in US dollars, currently $7 per month or $70 per year. The price and billing interval are shown on the pricing page and again at checkout before you pay. The amount shown at checkout is the amount charged; we do not currently calculate or add sales tax or VAT at checkout.",
+          "Premium is a paid subscription billed in US dollars, currently $7 per month or $70 per year, plus any applicable sales tax or VAT, calculated at checkout based on your location. The price and billing interval are shown on the pricing page, and the total including any tax is shown at checkout before you pay. The amount shown at checkout is the amount charged.",
           "Your subscription renews automatically at the end of each billing period until you cancel. You can cancel at any time from the Billing section of your Account page or through the billing portal it links to. After you cancel, your Premium access continues until the end of the period you already paid for, and you will not be charged again.",
           "If you are not satisfied, you may request a refund of your first payment within 14 days of making it by emailing support@media-manipulator.com. Renewal payments are not refundable except where required by law.",
           "If a payment fails, we retry it and your Premium access continues for up to 7 days. If the payment still has not succeeded after that, your account returns to the free plan until you update your payment method and subscribe again.",
-          "Payments are processed by Stripe, Inc. We never receive or store your full card number. Stripe's own terms and privacy policy apply to the payment itself. Our Stripe account belongs to CreaTV Ltd., so Stripe's checkout page, receipts and the statement on your card may show CreaTV (or CreaTV Ltd.) instead of Media Manipulator."
+          "Payments are processed by Stripe, Inc. We never receive or store your full card number. Stripe's own terms and privacy policy apply to the payment itself. Our Stripe account belongs to CreaTV Ltd., so Stripe's checkout page shows CreaTV (or CreaTV Ltd.) branding instead of Media Manipulator. The charge on your card statement appears as “MEDIA MNPLTR PREMIUM”."
         ]
       },
       {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",

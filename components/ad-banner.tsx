@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { MockAd } from '@/components/mock-ad';
+import { hasAdStorageConsent, onConsentDetailsChange } from '@/lib/consent';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import {
   ADSENSE_CLIENT_ID,
@@ -95,7 +96,16 @@ export default function AdBanner({
   const auth = useAuth();
   const tierRemovesAds = auth && !auth.loading ? Boolean(auth.limits?.adsRemoved) : undefined;
 
-  const canRenderAdSense = shouldRenderAdSense({
+  // Google's ad script (and the ad request) waits for the advertising consent
+  // category. It is dormant today (never granted, GPC forces denied), so the
+  // script stays unloaded until that category is actually switched on.
+  const adConsent = useSyncExternalStore(
+    (cb) => onConsentDetailsChange(cb),
+    hasAdStorageConsent,
+    () => false,
+  );
+
+  const canRenderAdSense = adConsent && shouldRenderAdSense({
     slot: resolvedSlot,
     pathname,
     placement: resolvedPlacement,

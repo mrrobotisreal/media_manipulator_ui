@@ -2,7 +2,6 @@
 // (`app/(localized)/[lang]/layout.tsx` and `app/(system)/layout.tsx`).
 // Extracted so the two layouts cannot drift.
 
-import Script from 'next/script';
 import { ResourceHints } from '@/components/seo/resource-hints';
 import { ADSENSE_ENABLED, ADSENSE_SCRIPT_ORIGIN } from '@/lib/adsenseConfig';
 
@@ -51,8 +50,6 @@ gtag('consent', 'default', {
   security_storage: 'granted',
   wait_for_update: 500
 });
-gtag('js', new Date());
-gtag('config', 'G-6J910CMHRY', { send_page_view: false });
 `;
 
 // The two bootstraps as raw HTML, NOT as React-rendered <script> elements.
@@ -75,7 +72,7 @@ gtag('config', 'G-6J910CMHRY', { send_page_view: false });
 const BOOTSTRAP_SCRIPTS_HTML = `<script id="theme-init">${THEME_INIT}</script><script id="gtag-consent">${GTAG_CONSENT_BOOTSTRAP}</script>`;
 
 /**
- * Resource hints + inline bootstraps + GA4 loader for a root layout `<body>`.
+ * Resource hints + inline bootstraps + bootstraps for a root layout (GA4 is loaded on consent, not here) `<body>`.
  * Render as the first child of `<body>` in BOTH root layouts.
  */
 export function LayoutBootstrap() {
@@ -93,9 +90,9 @@ export function LayoutBootstrap() {
         fold and the DNS+TLS handshake is on the critical path to filling the
         reserved height, so the full preconnect is right.
 
-        googletagmanager gets a DNS prefetch only: GA4 loads lazily, so
-        resolving the name early is enough. (ReactDOM float methods dedupe, so
-        the layout remount on locale navigation is harmless here.)
+        There is deliberately NO hint for googletagmanager.com: Google's
+        script is loaded only after analytics consent (lib/analytics/ga4.ts),
+        and even a DNS prefetch would be contact before consent.
       */}
       <ResourceHints
         preconnect={
@@ -103,32 +100,11 @@ export function LayoutBootstrap() {
             ? [{ href: ADSENSE_SCRIPT_ORIGIN, crossOrigin: 'anonymous' }]
             : []
         }
-        dnsPrefetch={['https://www.googletagmanager.com']}
       />
       {/* Theme class before first paint + consent defaults before GA — see
           BOOTSTRAP_SCRIPTS_HTML above for why this is raw HTML. The wrapper is
           `hidden` so the flex-col <body> never sees it as a layout box. */}
       <div hidden dangerouslySetInnerHTML={{ __html: BOOTSTRAP_SCRIPTS_HTML }} />
-      {/*
-        gtag/js is 149 KB of third-party JavaScript and nothing on the page
-        waits for it — the consent defaults and the dataLayer stub above are
-        what matter early, and both are inline. `lazyOnload` moves it past the
-        load event instead of competing with the app's own hydration during
-        the interactive window. next/script's load cache dedupes by src, so a
-        layout remount cannot load it twice.
-
-        GA4 now receives exactly three events (page_view, sign_up,
-        job_completed), forwarded by lib/analytics/ga4.ts from the first-party
-        SDK. It is a CROSS-CHECK, not a second analytics system: if our own
-        numbers and GA4's diverge beyond a sampling-and-blocking band, one of
-        them is broken. Events are dispatched through the dataLayer, which
-        buffers until the tag arrives, so nothing is lost to the lazy load.
-      */}
-      <Script
-        id="ga4"
-        src="https://www.googletagmanager.com/gtag/js?id=G-6J910CMHRY"
-        strategy="lazyOnload"
-      />
     </>
   );
 }

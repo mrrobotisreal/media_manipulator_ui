@@ -503,7 +503,7 @@
     "emailLabel": "Correo electrónico:",
     "websiteLabel": "Sitio web:",
     "whatChangedTitle": "Qué cambió el 24/10/2026",
-    "whatChangedBody": "Hemos revisado esta política frente al funcionamiento actual del servicio. Novedades o correcciones: los pagos pasan por la cuenta de Stripe de CreaTV Ltd. (por lo que el pago y el cargo en tu tarjeta pueden mostrar CreaTV), se nombran las herramientas de IA que ejecutamos en nuestros propios servidores, se describen con más precisión Google Analytics 4 y la publicidad (incluidas las cookies), se explica el inicio de sesión con Firebase y se cubre Darkroom dentro de CreaTV Studio. La conservación no cambia: 24 horas para visitantes, de 24 horas a 2 años (6 meses por defecto) con cuenta."
+    "whatChangedBody": "Hemos revisado esta política frente al funcionamiento actual del servicio. Novedades o correcciones: los pagos pasan por la cuenta de Stripe de CreaTV Ltd. (por lo que la página de pago de Stripe muestra CreaTV, mientras que el extracto de tu tarjeta muestra MEDIA MNPLTR PREMIUM), los impuestos sobre las ventas o el IVA se añaden al precio cuando corresponde y se calculan al pagar, los informes de metadatos se eliminan ahora junto con sus archivos de forma predeterminada, el script de analítica de Google solo se carga después de que consientas la analítica (antes no se envía nada a Google), se nombran las herramientas de IA que ejecutamos en nuestros propios servidores, se describen con más precisión Google Analytics 4 y la publicidad (incluidas las cookies), se explica el inicio de sesión con Firebase y se cubre Darkroom dentro de CreaTV Studio. La conservación no cambia: 24 horas para visitantes, de 24 horas a 2 años (6 meses por defecto) con cuenta."
   },
   "privacyPolicy": {
     "title": "Política de privacidad",
@@ -621,7 +621,7 @@
             "paragraphs": [
               "Si te suscribes a Premium, el pago lo gestiona nuestro procesador de pagos, Stripe. Los datos de tu tarjeta se introducen en las páginas de Stripe y los procesa Stripe; nosotros no recibimos ni almacenamos números de tarjeta.",
               "Solo guardamos lo necesario para gestionar tu suscripción: tu identificador de cliente de Stripe, el estado de la suscripción, el periodo de facturación (mensual o anual) y la fecha en que termina el periodo actual. Lo usamos para darte el plan correcto, mostrar tu estado de facturación y gestionar reembolsos y solicitudes de soporte.",
-              "Nuestra cuenta de Stripe pertenece a CreaTV Ltd., la empresa que opera Media Manipulator. Por eso, la página de pago de Stripe, tus recibos y el cargo en tu tarjeta pueden mostrar CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator."
+              "Nuestra cuenta de Stripe pertenece a CreaTV Ltd., la empresa que opera Media Manipulator. Por eso, la página de pago de Stripe muestra la marca de CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator. El cargo en el extracto de tu tarjeta aparece como «MEDIA MNPLTR PREMIUM»."
             ]
           },
           {
@@ -682,7 +682,7 @@
           {
             "title": "3.2 Informes de metadatos",
             "paragraphs": [
-              "Los informes de metadatos son registros pequeños que describen las propiedades técnicas de un archivo. Un ajuste de tu página Cuenta te permite elegir si los informes se conservan una vez eliminados, al final del periodo de retención, los archivos que describen. Cuando eliminas un archivo tú mismo, su informe se elimina con él. Los visitantes sin cuenta no tienen este ajuste: sus informes de metadatos se eliminan junto con sus archivos."
+              "Los informes de metadatos son registros pequeños que describen las propiedades técnicas de un archivo. De forma predeterminada, el informe de metadatos de un archivo se elimina cuando se elimina el archivo, tanto si lo eliminas tú como si se borra al final del periodo de retención. La pestaña Privacidad y datos de tu página Cuenta tiene un ajuste que te permite elegir conservar los informes de metadatos una vez eliminados sus archivos. Los visitantes sin cuenta no tienen este ajuste: sus informes de metadatos siempre se eliminan junto con sus archivos."
             ]
           },
           {
@@ -810,7 +810,7 @@
           {
             "title": "6.4 Google Analytics 4",
             "paragraphs": [
-              "Mantenemos una configuración deliberadamente mínima de Google Analytics 4 como contraste independiente de nuestras propias cifras. Se envían a Google exactamente tres eventos: una visita de página (con la dirección y el título de la página), un registro de cuenta (con el método de registro) y un trabajo completado (con el nombre de la herramienta y el tipo de medio). No se reenvía nada más. Solo se envían si tu elección sobre la analítica lo permite, y las señales de consentimiento de Google permanecen denegadas hasta entonces. Aun así, el script de etiqueta de Google se carga en todas las páginas, por lo que Google recibe los datos técnicos que implica cualquier solicitud web, como tu dirección IP y datos del navegador, y cuando la analítica está permitida Google puede establecer sus propias cookies."
+              "Mantenemos una configuración deliberadamente mínima de Google Analytics 4 como contraste independiente de nuestras propias cifras. El script de analítica de Google se carga solo después de que consientas la analítica, y antes de eso no se envía nada a Google: ni solicitud del script, ni eventos, ni tu dirección IP o datos del navegador. Una vez que consientes, se envían a Google exactamente tres eventos: una visita de página (con la dirección y el título de la página), un registro de cuenta (con el método de registro) y un trabajo completado (con el nombre de la herramienta y el tipo de medio). No se reenvía nada más, y los eventos anteriores a tu consentimiento no se envían. Si retiras el consentimiento, dejamos de enviar eventos a Google. Una vez permitida la analítica, Google recibe los datos técnicos que implica cualquier solicitud web, como tu dirección IP y datos del navegador, y puede establecer sus propias cookies."
             ]
           },
           {
@@ -1219,11 +1219,11 @@
       {
         "title": "10. Pagos, renovaciones y reembolsos",
         "paragraphs": [
-          "Premium es una suscripción de pago facturada en dólares estadounidenses, actualmente 7 $ al mes o 70 $ al año. El precio y el periodo de facturación se muestran en la página de precios y de nuevo al pagar, antes de realizar el pago. El importe que se muestra al pagar es el importe cobrado; actualmente no calculamos ni añadimos impuestos sobre las ventas ni IVA al pagar.",
+          "Premium es una suscripción de pago facturada en dólares estadounidenses, actualmente 7 $ al mes o 70 $ al año, más los impuestos sobre las ventas o el IVA que correspondan, calculados al pagar según tu ubicación. El precio y el periodo de facturación se muestran en la página de precios, y el total, incluidos los impuestos, se muestra al pagar antes de realizar el pago. El importe que se muestra al pagar es el importe cobrado.",
           "Tu suscripción se renueva automáticamente al final de cada periodo de facturación hasta que la canceles. Puedes cancelar en cualquier momento desde la sección Facturación de tu página de cuenta o a través del portal de facturación al que enlaza. Tras cancelar, tu acceso Premium continúa hasta el final del periodo que ya pagaste y no se te volverá a cobrar.",
           "Si no estás satisfecho, puedes solicitar el reembolso de tu primer pago dentro de los 14 días siguientes escribiendo a support@media-manipulator.com. Los pagos de renovación no son reembolsables, salvo cuando la ley lo exija.",
           "Si un pago falla, lo reintentamos y tu acceso Premium continúa hasta 7 días. Si pasado ese plazo el pago sigue sin completarse, tu cuenta vuelve al plan gratuito hasta que actualices tu método de pago y te suscribas de nuevo.",
-          "Los pagos los procesa Stripe, Inc. Nunca recibimos ni almacenamos el número completo de tu tarjeta. Al pago en sí se aplican los términos y la política de privacidad de Stripe. Nuestra cuenta de Stripe pertenece a CreaTV Ltd., por lo que la página de pago de Stripe, los recibos y el cargo en tu tarjeta pueden mostrar CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator."
+          "Los pagos los procesa Stripe, Inc. Nunca recibimos ni almacenamos el número completo de tu tarjeta. Al pago en sí se aplican los términos y la política de privacidad de Stripe. Nuestra cuenta de Stripe pertenece a CreaTV Ltd., por lo que la página de pago de Stripe muestra la marca de CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator. El cargo en el extracto de tu tarjeta aparece como «MEDIA MNPLTR PREMIUM»."
         ]
       },
       {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",

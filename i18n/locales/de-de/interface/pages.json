@@ -503,7 +503,7 @@
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "Was sich am 24.10.2026 geändert hat",
-    "whatChangedBody": "Wir haben diese Erklärung mit der heutigen Funktionsweise des Dienstes abgeglichen. Neu oder korrigiert: Zahlungen laufen über das Stripe-Konto der CreaTV Ltd. (daher können Checkout und Kartenabrechnung CreaTV anzeigen), die KI-Werkzeuge, die wir auf eigenen Servern betreiben, werden benannt, Google Analytics 4 und Werbung (einschließlich Cookies) sind genauer beschrieben, die Anmeldung per Firebase wird erklärt, und Darkroom innerhalb von CreaTV Studio wird behandelt. Die Aufbewahrung bleibt unverändert: 24 Stunden für Besucher, 24 Stunden bis 2 Jahre (standardmäßig 6 Monate) mit Konto."
+    "whatChangedBody": "Wir haben diese Erklärung mit der heutigen Funktionsweise des Dienstes abgeglichen. Neu oder korrigiert: Zahlungen laufen über das Stripe-Konto der CreaTV Ltd. (daher zeigt die Stripe-Checkout-Seite CreaTV, während deine Kartenabrechnung MEDIA MNPLTR PREMIUM zeigt), Umsatzsteuer oder MwSt. wird, soweit anwendbar, zusätzlich zum Preis erhoben und an der Kasse berechnet, Metadatenberichte werden standardmäßig zusammen mit ihren Dateien gelöscht, das Analyse-Skript von Google wird erst nach deiner Zustimmung zur Analyse geladen (davor wird nichts an Google gesendet), die KI-Werkzeuge, die wir auf eigenen Servern betreiben, werden benannt, Google Analytics 4 und Werbung (einschließlich Cookies) sind genauer beschrieben, die Anmeldung per Firebase wird erklärt, und Darkroom innerhalb von CreaTV Studio wird behandelt. Die Aufbewahrung bleibt unverändert: 24 Stunden für Besucher, 24 Stunden bis 2 Jahre (standardmäßig 6 Monate) mit Konto."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -621,7 +621,7 @@
             "paragraphs": [
               "Wenn du Premium abonnierst, wird die Zahlung von unserem Zahlungsdienstleister Stripe abgewickelt. Deine Kartendaten gibst du auf den Seiten von Stripe ein, und Stripe verarbeitet sie; wir erhalten und speichern keine Kartennummern.",
               "Wir speichern nur, was wir für dein Abonnement brauchen: deine Stripe-Kundenkennung, den Abonnementstatus, den Abrechnungszeitraum (monatlich oder jährlich) und das Ende deines aktuellen Zeitraums. Wir nutzen diese Daten, um dir den richtigen Tarif zu geben, deinen Abrechnungsstatus anzuzeigen und Rückerstattungen und Supportanfragen zu bearbeiten.",
-              "Unser Stripe-Konto gehört der CreaTV Ltd., dem Unternehmen, das Media Manipulator betreibt. Deshalb können die Stripe-Checkout-Seite, deine Belege und die Abbuchung auf deiner Karte CreaTV (oder CreaTV Ltd.) statt Media Manipulator anzeigen."
+              "Unser Stripe-Konto gehört der CreaTV Ltd., dem Unternehmen, das Media Manipulator betreibt. Deshalb zeigt die Stripe-Checkout-Seite das Branding von CreaTV (oder CreaTV Ltd.) statt Media Manipulator. Auf deiner Kartenabrechnung erscheint die Abbuchung als „MEDIA MNPLTR PREMIUM“."
             ]
           },
           {
@@ -682,7 +682,7 @@
           {
             "title": "3.2 Metadatenberichte",
             "paragraphs": [
-              "Metadatenberichte sind kleine Datensätze, die die technischen Eigenschaften einer Datei beschreiben. Mit einer Einstellung auf Ihrer Kontoseite legen Sie fest, ob Berichte aufbewahrt werden, nachdem die Dateien, die sie beschreiben, am Ende des Aufbewahrungszeitraums gelöscht wurden. Wenn Sie eine Datei selbst löschen, wird ihr Bericht mitgelöscht. Besucher ohne Konto haben diese Einstellung nicht: Ihre Metadatenberichte werden zusammen mit ihren Dateien gelöscht."
+              "Metadatenberichte sind kleine Datensätze, die die technischen Eigenschaften einer Datei beschreiben. Standardmäßig wird der Metadatenbericht einer Datei gelöscht, wenn die Datei gelöscht wird, unabhängig davon, ob du sie selbst löschst oder sie am Ende des Aufbewahrungszeitraums entfernt wird. Auf dem Tab „Datenschutz & Daten“ deiner Kontoseite kannst du in einer Einstellung festlegen, dass Metadatenberichte aufbewahrt werden, nachdem ihre Dateien entfernt wurden. Besucher ohne Konto haben diese Einstellung nicht: Ihre Metadatenberichte werden immer zusammen mit ihren Dateien gelöscht."
             ]
           },
           {
@@ -810,7 +810,7 @@
           {
             "title": "6.4 Google Analytics 4",
             "paragraphs": [
-              "Wir betreiben eine bewusst minimale Google-Analytics-4-Konfiguration als unabhängige Gegenprobe zu unseren eigenen Zahlen. Genau drei Ereignisse werden an Google gesendet: ein Seitenaufruf (mit Seitenadresse und Titel), eine Kontoregistrierung (mit der Registrierungsmethode) und ein abgeschlossener Auftrag (mit Tool-Name und Medientyp). Nichts anderes wird weitergeleitet. Sie werden nur gesendet, wenn deine Analyse-Auswahl es erlaubt, und die Google-Einwilligungssignale bleiben bis dahin abgelehnt. Das Google-Tag-Skript wird dennoch auf jeder Seite geladen, sodass Google die technischen Daten erhält, die jede Webanfrage mit sich bringt, etwa deine IP-Adresse und Browserangaben; ist Analyse erlaubt, kann Google eigene Cookies setzen."
+              "Wir betreiben eine bewusst minimale Google-Analytics-4-Konfiguration als unabhängige Gegenprobe zu unseren eigenen Zahlen. Das Analyse-Skript von Google wird erst geladen, nachdem du der Analyse zugestimmt hast; davor wird nichts an Google gesendet: keine Skriptanfrage, keine Ereignisse und weder IP-Adresse noch Browserangaben. Nach deiner Zustimmung werden genau drei Ereignisse an Google gesendet: ein Seitenaufruf (mit Seitenadresse und Titel), eine Kontoregistrierung (mit der Registrierungsmethode) und ein abgeschlossener Auftrag (mit Tool-Name und Medientyp). Nichts anderes wird weitergeleitet, und Ereignisse aus der Zeit vor deiner Zustimmung werden nicht gesendet. Widerrufst du die Zustimmung, senden wir keine Ereignisse mehr an Google. Sobald die Analyse erlaubt ist, erhält Google die technischen Daten, die jede Webanfrage mit sich bringt, etwa deine IP-Adresse und Browserangaben, und kann eigene Cookies setzen."
             ]
           },
           {
@@ -1219,11 +1219,11 @@
       {
         "title": "10. Zahlungen, Verlängerungen und Rückerstattungen",
         "paragraphs": [
-          "Premium ist ein kostenpflichtiges Abonnement, das in US-Dollar abgerechnet wird, derzeit 7 $ pro Monat oder 70 $ pro Jahr. Preis und Abrechnungszeitraum werden auf der Preisseite und noch einmal an der Kasse vor der Zahlung angezeigt. Der an der Kasse angezeigte Betrag ist der abgebuchte Betrag; wir berechnen oder erheben derzeit keine Umsatzsteuer oder MwSt. an der Kasse.",
+          "Premium ist ein kostenpflichtiges Abonnement, das in US-Dollar abgerechnet wird, derzeit 7 $ pro Monat oder 70 $ pro Jahr, zuzüglich gegebenenfalls anfallender Umsatzsteuer oder MwSt., die an der Kasse anhand deines Standorts berechnet wird. Preis und Abrechnungszeitraum werden auf der Preisseite angezeigt, und der Gesamtbetrag einschließlich etwaiger Steuern wird an der Kasse vor der Zahlung angezeigt. Der an der Kasse angezeigte Betrag ist der abgebuchte Betrag.",
           "Dein Abonnement verlängert sich automatisch am Ende jedes Abrechnungszeitraums, bis du kündigst. Du kannst jederzeit im Bereich „Abrechnung“ deiner Kontoseite oder über das dort verlinkte Abrechnungsportal kündigen. Nach der Kündigung bleibt dein Premium-Zugang bis zum Ende des bereits bezahlten Zeitraums bestehen, und es wird nichts mehr abgebucht.",
           "Wenn du nicht zufrieden bist, kannst du innerhalb von 14 Tagen nach deiner ersten Zahlung per E-Mail an support@media-manipulator.com deren Rückerstattung verlangen. Verlängerungszahlungen werden nicht erstattet, soweit das Gesetz nichts anderes vorschreibt.",
           "Schlägt eine Zahlung fehl, versuchen wir es erneut, und dein Premium-Zugang bleibt bis zu 7 Tage bestehen. Ist die Zahlung danach weiterhin nicht erfolgt, kehrt dein Konto zum kostenlosen Tarif zurück, bis du deine Zahlungsmethode aktualisierst und erneut abonnierst.",
-          "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe. Unser Stripe-Konto gehört der CreaTV Ltd.; daher können die Stripe-Checkout-Seite, Belege und die Abbuchung auf deiner Karte CreaTV (oder CreaTV Ltd.) statt Media Manipulator anzeigen."
+          "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe. Unser Stripe-Konto gehört der CreaTV Ltd.; daher zeigt die Stripe-Checkout-Seite das Branding von CreaTV (oder CreaTV Ltd.) statt Media Manipulator. Auf deiner Kartenabrechnung erscheint die Abbuchung als „MEDIA MNPLTR PREMIUM“."
         ]
       },
       {
@@ -1700,7 +1700,7 @@
         "title": "What we store and where",
         "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
         "metadataTitle": "Metadata reports",
-        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default these outlive the file itself so the Metadata button keeps working after the media has expired.",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
         "metadataToggle": "Delete metadata reports together with their files",
         "visibilityTitle": "History visibility",
         "visibilityLabel": "What your history list shows",

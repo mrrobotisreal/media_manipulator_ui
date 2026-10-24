@@ -24,6 +24,7 @@
  * sharing.
  */
 
+import { getConsentDetails, onConsentDetailsChange } from '@/lib/consent';
 import type { AnalyticsClient } from './client';
 import { EVENTS, type EventName } from './events';
 import type { QueuedEvent } from './queue';
@@ -38,10 +39,73 @@ const FORWARDED: Partial<Record<EventName, string>> = {
   [EVENTS.JOB_COMPLETED]: 'job_completed',
 };
 
-function gtagFn(): ((...args: unknown[]) => void) | null {
+export const GA4_SCRIPT_ID = 'ga4';
+export const GA4_SCRIPT_SRC = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+
+type GtagFn = (...args: unknown[]) => void;
+type GtagWindow = typeof window & { gtag?: GtagFn; dataLayer?: unknown[] } & Record<string, unknown>;
+
+function gtagFn(): GtagFn | null {
   if (typeof window === 'undefined') return null;
-  const fn = (window as typeof window & { gtag?: (...args: unknown[]) => void }).gtag;
+  const fn = (window as GtagWindow).gtag;
   return typeof fn === 'function' ? fn : null;
+}
+
+function analyticsGranted(): boolean {
+  return getConsentDetails().analytics === 'granted';
+}
+
+/**
+ * Load Google's gtag.js. Called ONLY once analytics consent is granted; idempotent.
+ *
+ * Nothing about Google is fetched or contacted before this runs: the layout carries no
+ * <script src> and no resource hint for googletagmanager.com. The inline bootstrap only
+ * defines a local `gtag` stub and the Consent Mode defaults (all denied), which touch no
+ * network. A loaded script cannot be unloaded, so withdrawal is handled by Consent Mode
+ * plus the bridge refusing to call gtag (see initGA4Bridge).
+ */
+export function loadGa4(): void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  const w = window as GtagWindow;
+  // Re-grant after a withdrawal: re-enable the property-level kill switch we set.
+  w[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
+
+  const gtag = gtagFn();
+  if (gtag) gtag('consent', 'update', { analytics_storage: 'granted' });
+
+  if (document.getElementById(GA4_SCRIPT_ID)) return;
+
+  w.dataLayer = w.dataLayer || [];
+  if (!gtagFn()) {
+    w.gtag = function gtagStub() {
+      // gtag.js requires the real `arguments` object, not a rest array.
+      // eslint-disable-next-line prefer-rest-params
+      (w.dataLayer as unknown[]).push(arguments);
+    };
+  }
+  const g = gtagFn();
+  g?.('js', new Date());
+  g?.('config', GA_MEASUREMENT_ID, { send_page_view: false });
+
+  const el = document.createElement('script');
+  el.id = GA4_SCRIPT_ID;
+  el.async = true;
+  el.src = GA4_SCRIPT_SRC;
+  document.head.appendChild(el);
+}
+
+/** Withdrawal: tell Google to stop and make sure we never call it again. */
+function suspendGa4(): void {
+  if (typeof window === 'undefined') return;
+  (window as GtagWindow)[`ga-disable-${GA_MEASUREMENT_ID}`] = true;
+  const gtag = gtagFn();
+  if (gtag) {
+    try {
+      gtag('consent', 'update', { analytics_storage: 'denied' });
+    } catch {
+      // never affects the app
+    }
+  }
 }
 
 /**
@@ -77,23 +141,41 @@ function paramsFor(name: EventName, event: QueuedEvent): Record<string, unknown>
 /**
  * Subscribe the bridge to the SDK. Returns an unsubscribe function.
  *
- * No consent check here, deliberately: this only ever runs for events that already passed
- * the SDK's consent gate, and GA4 is independently gated by Consent Mode — which
- * `lib/consent/consentModeBridge.ts` keeps in sync with the same decision. Two gates on
- * one decision is enough; a third would just be another place for them to disagree.
+ * CONSENT GATES GOOGLE ENTIRELY. gtag.js is injected only when analytics consent is
+ * `granted` (at init if already granted, or the moment a grant arrives later). Events are
+ * forwarded only while consent is granted AND the script was loaded; events that occur
+ * before consent are never queued or replayed to Google (the SDK buffers them for first
+ * party only and drains that buffer without notifying subscribers). On withdrawal
+ * Consent Mode is set to denied and no further gtag calls are made.
  */
 export function initGA4Bridge(client: AnalyticsClient): () => void {
   if (typeof window === 'undefined') return () => undefined;
 
-  return client.subscribe((name, event) => {
+  let wasGranted = false;
+  const sync = () => {
+    const granted = analyticsGranted();
+    if (granted && !wasGranted) loadGa4();
+    else if (!granted && wasGranted) suspendGa4();
+    wasGranted = granted;
+  };
+  sync();
+  const offConsent = onConsentDetailsChange(sync);
+
+  const offEvents = client.subscribe((name, event) => {
     const ga4Name = FORWARDED[name];
     if (!ga4Name) return;
+    if (!analyticsGranted()) return;
     const gtag = gtagFn();
-    if (!gtag) return;
+    if (!gtag || !document.getElementById(GA4_SCRIPT_ID)) return;
     try {
       gtag('event', ga4Name, { send_to: GA_MEASUREMENT_ID, ...paramsFor(name, event) });
     } catch {
       // GA4 must never affect the app or first-party capture.
     }
   });
+
+  return () => {
+    offConsent();
+    offEvents();
+  };
 }
