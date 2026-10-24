@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { ConfirmDialog } from '@/components/account/confirm-dialog';
@@ -8,10 +9,12 @@ import type { AccountCopy } from '@/components/account/account-copy';
 import { Panel } from '@/components/darkroom/panel';
 import { Stat } from '@/components/darkroom/stat';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { useLocalization } from '@/i18n/useLocalization';
 import { retentionEvents } from '@/lib/analytics/retentionEvents';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { revokeSessions } from '@/lib/auth/accountApi';
+import { fetchSettings, patchSettings, revokeSessions, type AccountSettings, type SettingsPatch } from '@/lib/auth/accountApi';
 import { requestTourReplay } from '@/lib/onboarding/state';
 import { requireToken } from '@/lib/account/requireToken';
 
@@ -25,7 +28,30 @@ export const ProfileTab: React.FC<{ copy: AccountCopy }> = ({ copy }) => {
   const [revokeOpen, setRevokeOpen] = React.useState(false);
   const [revoking, setRevoking] = React.useState(false);
   const [revokeNote, setRevokeNote] = React.useState('');
+  const queryClient = useQueryClient();
+  const uid = auth?.user?.uid ?? '';
+  const settingsKey = ['account-settings', uid];
+  const settingsQuery = useQuery({
+    queryKey: settingsKey,
+    enabled: Boolean(uid),
+    staleTime: 30_000,
+    retry: 1,
+    queryFn: async () => fetchSettings(await requireToken()),
+  });
   if (!auth || !auth.user) return null;
+
+  // MM31: optimistic flip, rolled back if the PATCH fails (same shape as the Privacy tab).
+  const patchEmail = async (patch: Pick<SettingsPatch, 'emailAiJobFinished' | 'emailExpiryDigest'>) => {
+    const before = queryClient.getQueryData<AccountSettings>(settingsKey);
+    if (before) queryClient.setQueryData(settingsKey, { ...before, ...patch });
+    try {
+      queryClient.setQueryData(settingsKey, await patchSettings(await requireToken(), patch));
+    } catch {
+      if (before) queryClient.setQueryData(settingsKey, before);
+      toast.error(c.emailSaveFailed);
+    }
+  };
+  const prefs = settingsQuery.data;
 
   const user = auth.user;
   const verified = auth.emailVerified ?? user.emailVerified;
@@ -83,6 +109,34 @@ export const ProfileTab: React.FC<{ copy: AccountCopy }> = ({ copy }) => {
         <p role="status" aria-live="polite" className="mt-3 min-h-4 text-xs text-muted-foreground">
           {note}
         </p>
+      </Panel>
+
+      <Panel title={c.emailTitle} titleAs="h2">
+        <div className="grid gap-3">
+          <div className="flex min-h-11 items-center justify-between gap-4">
+            <Label htmlFor="email-ai-job-finished" className="text-sm text-foreground">
+              {c.emailAiJob}
+            </Label>
+            <Switch
+              id="email-ai-job-finished"
+              checked={prefs?.emailAiJobFinished ?? false}
+              disabled={!prefs}
+              onCheckedChange={(checked) => void patchEmail({ emailAiJobFinished: checked })}
+            />
+          </div>
+          <div className="flex min-h-11 items-center justify-between gap-4">
+            <Label htmlFor="email-expiry-digest" className="text-sm text-foreground">
+              {c.emailExpiry}
+            </Label>
+            <Switch
+              id="email-expiry-digest"
+              checked={prefs?.emailExpiryDigest ?? true}
+              disabled={!prefs}
+              onCheckedChange={(checked) => void patchEmail({ emailExpiryDigest: checked })}
+            />
+          </div>
+        </div>
+        <p className="mt-3 text-xs text-muted-foreground">{c.emailAlways}</p>
       </Panel>
 
       <Panel title={c.sessionsTitle} titleAs="h2">

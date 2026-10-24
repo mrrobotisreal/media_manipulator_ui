@@ -13,7 +13,7 @@ const settings = (hours: number): AccountSettings => ({
   retentionHours: hours,
   retentionScope: 'all',
   deleteMetadataReports: false,
-  historyVisibility: 'full',
+  historyVisibility: 'full', emailAiJobFinished: false, emailExpiryDigest: true,
   updatedAt: 'x',
   limits: { minHours: 24, maxHours: 17520, defaultHours: 4320 },
 });

@@ -503,7 +503,7 @@
     "emailLabel": "Correo electrónico:",
     "websiteLabel": "Sitio web:",
     "whatChangedTitle": "Qué cambió el 24/10/2026",
-    "whatChangedBody": "Hemos revisado esta política frente al funcionamiento actual del servicio. Novedades o correcciones: los pagos pasan por la cuenta de Stripe de CreaTV Ltd. (por lo que la página de pago de Stripe muestra CreaTV, mientras que el extracto de tu tarjeta muestra MEDIA MNPLTR PREMIUM), los impuestos sobre las ventas o el IVA se añaden al precio cuando corresponde y se calculan al pagar, los informes de metadatos se eliminan ahora junto con sus archivos de forma predeterminada, el script de analítica de Google solo se carga después de que consientas la analítica (antes no se envía nada a Google), se nombran las herramientas de IA que ejecutamos en nuestros propios servidores, se describen con más precisión Google Analytics 4 y la publicidad (incluidas las cookies), se explica el inicio de sesión con Firebase y se cubre Darkroom dentro de CreaTV Studio. La conservación no cambia: 24 horas para visitantes, de 24 horas a 2 años (6 meses por defecto) con cuenta."
+    "whatChangedBody": "Hemos revisado esta política frente al funcionamiento actual del servicio. Novedades o correcciones: los pagos pasan por la cuenta de Stripe de CreaTV Ltd. (por lo que la página de pago de Stripe muestra CreaTV, mientras que el extracto de tu tarjeta muestra MEDIA MNPLTR PREMIUM), los impuestos sobre las ventas o el IVA se añaden al precio cuando corresponde y se calculan al pagar, los informes de metadatos se eliminan ahora junto con sus archivos de forma predeterminada, el script de analítica de Google solo se carga después de que consientas la analítica (antes no se envía nada a Google), se nombran las herramientas de IA que ejecutamos en nuestros propios servidores, se describen con más precisión Google Analytics 4 y la publicidad (incluidas las cookies), se explica el inicio de sesión con Firebase y se cubre Darkroom dentro de CreaTV Studio. La conservación no cambia: 24 horas para visitantes, de 24 horas a 2 años (6 meses por defecto) con cuenta. Correos de servicio: ahora enviamos nosotros mismos unos pocos correos (bienvenida, avisos de pago y de eliminación de la cuenta, y recordatorios opcionales de caducidad de archivos y de tareas de IA) a través de Resend; la Sección 1.7 detalla cuáles."
   },
   "privacyPolicy": {
     "title": "Política de privacidad",
@@ -628,7 +628,7 @@
             "title": "1.7 Información de la cuenta",
             "paragraphs": [
               "Si creas una cuenta, el inicio de sesión lo gestiona Firebase Authentication, un servicio de Google. Puedes iniciar sesión con una dirección de correo y una contraseña o con tu cuenta de Google. Firebase guarda tus credenciales y envía los correos que necesita para el inicio de sesión, como la verificación del correo.",
-              "Por nuestra parte guardamos un registro de tu cuenta: tu correo electrónico, tu nombre visible, si tu correo está verificado, tu identificador de inicio de sesión de Firebase, tu plan, cuándo te registraste y cuándo usaste el servicio por última vez, los ajustes de conservación que elegiste y tu historial de conversiones y proyectos (Sección 3). No enviamos correos de marketing. Aparte de los correos que envían Firebase y Stripe (por ejemplo, la verificación del correo y los recibos de pago), actualmente no enviamos correo electrónico."
+              "Por nuestra parte guardamos un registro de tu cuenta: tu correo electrónico, tu nombre visible, si tu correo está verificado, tu identificador de inicio de sesión de Firebase, tu plan, cuándo te registraste y cuándo usaste el servicio por última vez, los ajustes de conservación que elegiste y tu historial de conversiones y proyectos (Sección 3). Enviamos un pequeño número de correos de servicio desde Media Manipulator: un correo de bienvenida, avisos de pago y de eliminación de la cuenta y, si los mantienes activados en los ajustes de tu cuenta, recordatorios antes de que caduquen tus archivos y avisos cuando termina una tarea larga de IA. No enviamos correo de marketing. Los correos se entregan a través de nuestro proveedor de correo, Resend."
             ]
           },
           {
@@ -1775,7 +1775,12 @@
       "signOut": "Sign out",
       "signOutEverywhere": "Sign out everywhere",
       "signOutEverywhereBody": "Ends your session on every device, including this one.",
-      "revokeFailed": "Could not sign you out everywhere. Try again."
+      "revokeFailed": "Could not sign you out everywhere. Try again.",
+      "emailTitle": "Correo electrónico",
+      "emailAiJob": "Avisarme por correo cuando termine una tarea larga de IA",
+      "emailExpiry": "Avisarme por correo antes de que caduquen mis archivos",
+      "emailAlways": "Los correos de bienvenida, de pago y de eliminación de la cuenta se envían siempre.",
+      "emailSaveFailed": "No se pudo guardar tu preferencia de correo. Inténtalo de nuevo."
     },
     "retentionLabel": "Result retention"
   },
