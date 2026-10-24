@@ -251,7 +251,9 @@
     "assetAdded": "{{fileName}} добавлен",
     "audioAdded": "Аудио добавлено",
     "processingAudio": "Обрабатываем аудио…",
-    "captionsReady": "Субтитры готовы"
+    "captionsReady": "Субтитры готовы",
+    "binUpdateFailed": "Couldn't update the media bin",
+    "assetDeleteFailed": "Couldn't delete that media"
   },
   "resultPanel": {
     "ariaLabel": "Result",

@@ -78,6 +78,13 @@ export interface StudioBackendCapabilities {
   peaks: boolean;
   /** Backend serves the LUT /file route (hide LUT effect picker if false). */
   lut: boolean;
+  /**
+   * Part 21: PATCH/DELETE /assets/:id (folders, labels, rename, delete). CreaTV's
+   * Darkroom API has no such routes, so the bin hides those controls there and
+   * keeps search/sort/layout, batch upload and voiceover (which only need the
+   * existing presign/complete flow).
+   */
+  binManagement: boolean;
 }
 
 export interface StudioBackendScope {
@@ -160,6 +167,7 @@ export function createMmBackend(): StudioBackend {
       captions: true,
       peaks: true,
       lut: true,
+      binManagement: true,
     },
     // Sync, so it can only carry the session id; the Firebase token needs an
     // await. Everything that actually goes over the wire uses fetch() below,
@@ -269,6 +277,7 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
     captions: true,
     peaks: true,
     lut: true,
+    binManagement: false,
     ...opts.capabilities,
   };
 
@@ -474,6 +483,9 @@ function parseCreatvAsset(json: unknown): StudioAsset {
     channels: typeof j.channels === 'number' ? j.channels : undefined,
     probeJson: j.probeJson ?? null,
     createdAt: typeof j.createdAt === 'string' ? j.createdAt : new Date(0).toISOString(),
+    displayName: typeof j.displayName === 'string' && j.displayName ? j.displayName : undefined,
+    folder: typeof j.folder === 'string' && j.folder ? j.folder : undefined,
+    label: typeof j.label === 'string' && j.label ? j.label : undefined,
   };
   return studioAssetSchema.parse(mapped);
 }

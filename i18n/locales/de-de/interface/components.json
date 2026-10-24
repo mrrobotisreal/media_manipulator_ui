@@ -247,7 +247,9 @@
     "assetAdded": "{{fileName}} hinzugefügt",
     "audioAdded": "Audio hinzugefügt",
     "processingAudio": "Audio wird verarbeitet …",
-    "captionsReady": "Untertitel bereit"
+    "captionsReady": "Untertitel bereit",
+    "binUpdateFailed": "Couldn't update the media bin",
+    "assetDeleteFailed": "Couldn't delete that media"
   },
   "resultPanel": {
     "ariaLabel": "Result",

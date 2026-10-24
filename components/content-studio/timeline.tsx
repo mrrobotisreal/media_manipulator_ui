@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond, ImageIcon } from 'lucide-react';
+import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond, ImageIcon, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackAcceptsAsset } from '@/lib/studio/trackRules';
+import { assetDisplayName, isClipOffline } from '@/lib/studio/mediaBin';
 import { clipTrimBound } from '@/lib/studio/clipTrimBound';
 import { analytics, EVENTS, imageHoldBucket } from '@/lib/analytics';
 import { Slider } from '@/components/ui/slider';
@@ -688,7 +689,13 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
       | undefined)?.text ?? '';
   const label = isTitle
     ? titleText || t('contentStudio.timeline.titleClip')
-    : entry?.asset.originalFileName ?? clip.assetId;
+    : entry
+      ? assetDisplayName(entry.asset)
+      : clip.assetId;
+  // Part 21: an undone usage-protected delete leaves clips pointing at a dead
+  // asset. Render them as an offline chip instead of crashing or looking empty.
+  const assetsLoaded = useStudioStore((s) => s.assetsLoaded);
+  const offline = isClipOffline(clip, assets, assetsLoaded);
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: clip.id,
     data: { type: 'clip', kind: track.kind, label },
@@ -795,10 +802,17 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
       }}
       className={`absolute top-1 bottom-1 rounded-md overflow-hidden border touch-none cursor-grab active:cursor-grabbing ${
         selected ? 'border-primary ring-1 ring-primary' : 'border-border'
-      } ${isTitle ? 'bg-surface-0' : track.kind === 'video' ? 'bg-data/20' : 'bg-data/10'} ${isDragging ? 'opacity-40' : ''}`}
+      } ${isTitle || offline ? 'bg-surface-0' : track.kind === 'video' ? 'bg-data/20' : 'bg-data/10'} ${offline ? 'border-destructive/70 border-dashed' : ''} ${isDragging ? 'opacity-40' : ''}`}
       style={{ left, width }}
-      title={label}
+      title={offline ? t('contentStudio.mediaBin.offline') : label}
+      data-offline={offline || undefined}
     >
+      {offline && (
+        <div className="absolute inset-0 flex items-center gap-1 px-1.5 pointer-events-none">
+          <AlertTriangle className="h-3 w-3 shrink-0 text-destructive" aria-hidden />
+          <span className="truncate text-[10px] text-destructive">{t('contentStudio.mediaBin.offline')}</span>
+        </div>
+      )}
       {spriteReady && assetDur > 0 && (
         <div
           className="absolute inset-0 opacity-40 bg-no-repeat pointer-events-none"

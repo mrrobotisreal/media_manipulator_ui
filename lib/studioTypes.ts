@@ -522,6 +522,14 @@ export const studioAssetSchema = z.object({
   /** full ffprobe payload for debugging */
   probeJson: z.unknown(),
   createdAt: z.string(),
+  /**
+   * Part 21 bin organization (server state, NOT part of the EDL): rename without
+   * touching the original filename, single-level folder name, label color slug.
+   * Absent = unset.
+   */
+  displayName: z.string().optional(),
+  folder: z.string().optional(),
+  label: z.string().optional(),
 });
 export type StudioAsset = z.infer<typeof studioAssetSchema>;
 

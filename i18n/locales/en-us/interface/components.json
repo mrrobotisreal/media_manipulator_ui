@@ -247,7 +247,9 @@
     "assetAdded": "{{fileName}} added",
     "audioAdded": "Audio added",
     "processingAudio": "Processing audio…",
-    "captionsReady": "Captions ready"
+    "captionsReady": "Captions ready",
+    "binUpdateFailed": "Couldn't update the media bin",
+    "assetDeleteFailed": "Couldn't delete that media"
   },
   "resultPanel": {
     "ariaLabel": "Result",

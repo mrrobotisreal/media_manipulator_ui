@@ -405,6 +405,10 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       uiInvocations: z.string().optional(),
       undoCount: z.string().optional(),
       redoCount: z.string().optional(),
+      binOrganizations: z.string().optional(),
+      assetsDeleted: z.string().optional(),
+      uploadRetries: z.string().optional(),
+      voiceoversRecorded: z.string().optional(),
       sessionSecondsBucket: z.string(),
       host: studioHostEnum.optional(),
     })

@@ -251,7 +251,9 @@
     "assetAdded": "{{fileName}} נוסף",
     "audioAdded": "האודיו נוסף",
     "processingAudio": "מעבדים אודיו…",
-    "captionsReady": "הכתוביות מוכנות"
+    "captionsReady": "הכתוביות מוכנות",
+    "binUpdateFailed": "Couldn't update the media bin",
+    "assetDeleteFailed": "Couldn't delete that media"
   },
   "resultPanel": {
     "ariaLabel": "Result",
