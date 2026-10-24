@@ -2,6 +2,11 @@
 // review. /tools prominently lists only these, and app/sitemap.ts includes
 // only these (plus core pages). Non-allowlisted tool pages still work but are
 // noindex,nofollow when visited directly.
+//
+// MM34: when NEXT_PUBLIC_SEO_FULL_INDEX is on (post-approval), every tool page
+// is indexable; see isReviewIndexedToolSlug below and lib/seoFlags.ts.
+
+import { isSeoFullIndex } from '@/lib/seoFlags';
 
 export const REVIEW_INDEXED_TOOL_SLUGS = [
   'content-studio',
@@ -27,7 +32,9 @@ export const REVIEW_INDEXED_TOOL_SLUGS = [
  * in all six locales, and are deliberately NOT in REVIEW_INDEXED_TOOL_SLUGS, so
  * they stay noindex,nofollow and out of the sitemap and /tools grid. MM34 flips
  * them into the allowlist after the AdSense content pass. Do not add them here
- * before then. Nothing reads this constant at runtime.
+ * before then. Honoured at runtime only under NEXT_PUBLIC_SEO_FULL_INDEX
+ * (MM34): with the flag on, isReviewIndexedToolSlug accepts these too (and
+ * every other tool page).
  */
 export const PENDING_ALLOWLIST = [
   'ai-image-upscaler',
@@ -41,10 +48,15 @@ export const PENDING_ALLOWLIST = [
 
 export type ReviewIndexedToolSlug = (typeof REVIEW_INDEXED_TOOL_SLUGS)[number];
 
-export function isReviewIndexedToolSlug(
-  slug: string,
-): slug is ReviewIndexedToolSlug {
-  return (REVIEW_INDEXED_TOOL_SLUGS as readonly string[]).includes(slug);
+/**
+ * Flag off (default): true only for the 16 allowlisted slugs. Flag on: true for
+ * every tool slug, including PENDING_ALLOWLIST. Unknown slugs never reach a
+ * rendered page (the route 404s first), so the flag-on branch does not import
+ * the large toolPages catalog into client bundles just to re-check membership.
+ */
+export function isReviewIndexedToolSlug(slug: string): boolean {
+  if ((REVIEW_INDEXED_TOOL_SLUGS as readonly string[]).includes(slug)) return true;
+  return isSeoFullIndex() && slug.length > 0;
 }
 
 /** Extract the tool slug from a /tools/<slug> href, or null. */

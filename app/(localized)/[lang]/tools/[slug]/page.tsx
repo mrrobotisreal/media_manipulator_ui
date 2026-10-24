@@ -4,6 +4,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import ToolLandingPage from '@/components/tools/tool-landing-page';
 import { TOOL_PAGES } from '@/content/toolPages';
+import { isSeoFullIndex } from '@/lib/seoFlags';
 import {
   REVIEW_INDEXED_TOOL_SLUGS,
   isReviewIndexedToolSlug,
@@ -19,7 +20,11 @@ const STATIC_ROUTE_SLUGS = new Set(['content-studio', 'ai-video-restoration', 'a
 // their own dedicated routes). dynamicParams stays true so any other valid
 // tool slug still renders on demand — but as noindex (see generateMetadata).
 export function generateStaticParams() {
-  return REVIEW_INDEXED_TOOL_SLUGS.filter((s) => !STATIC_ROUTE_SLUGS.has(s)).map(
+  // MM34: with the full-index flag on, prerender every tool page.
+  const slugs: readonly string[] = isSeoFullIndex()
+    ? TOOL_PAGES.map((t) => t.slug)
+    : REVIEW_INDEXED_TOOL_SLUGS;
+  return slugs.filter((s) => !STATIC_ROUTE_SLUGS.has(s)).map(
     (slug) => ({ slug }),
   );
 }
