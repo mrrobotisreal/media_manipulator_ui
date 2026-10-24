@@ -11,6 +11,7 @@
 import { getBaseURL } from '@/lib/utils';
 import { getSessionId } from '@/lib/analytics/session';
 import { getVisitorId } from '@/lib/analytics/identity';
+import { authedFetch } from '@/lib/auth/authedFetch';
 
 /**
  * Mirrors internal/tiers.Tier.
@@ -373,6 +374,30 @@ export interface BillingStatus {
    * API today (MM33 feature-detects it): the yearly nudge shows only when this is a number.
    */
   periodsPaid?: number;
+  /**
+   * Additive (billing retention spec). Every field below is optional: the deployed API may not
+   * send them yet, and the UI must work without.
+   * When Premium ends if cancelled.
+   */
+  endsAt?: string | null;
+  /** What this subscriber currently pays per interval; null when unknown. */
+  priceMonthlyUSD?: number | null;
+  /** The "stay" offer, or null when none applies. */
+  offer?: RetentionOffer | null;
+}
+
+export type RetentionOfferKind = 'retain7' | 'retain6' | 'resume';
+
+export interface RetentionOffer {
+  kind: RetentionOfferKind;
+  priceUSD: number;
+  nextChargeAt: string;
+}
+
+/** When a cancelled plan ends: `endsAt`, else the legacy `renewsAt` (the period end). */
+export function endsAtOf(status: BillingStatus | undefined | null): string | null {
+  if (!status?.cancelAtPeriodEnd) return null;
+  return status.endsAt ?? status.renewsAt ?? null;
 }
 
 /** GET /api/billing/session/:id. */
@@ -491,6 +516,40 @@ export async function fetchBillingStatus(idToken: string): Promise<BillingStatus
   });
   if (!response.ok) throw await billingRefusal(response);
   return response.json() as Promise<BillingStatus>;
+}
+
+/** Result of POST /api/billing/retain. */
+export type RetainResult =
+  | { ok: true; status: BillingStatus }
+  | { ok: false; reason: 'offer_changed'; offer: RetentionOffer | null }
+  | { ok: false; reason: 'not_cancelled' }
+  | { ok: false; reason: 'error'; status: number };
+
+/** Accepts the retention offer; the server decides the tier and rejects a stale one. */
+export async function retainSubscription(
+  idToken: string,
+  offer: RetentionOfferKind,
+): Promise<RetainResult> {
+  const response = await authedFetch(`${getBaseURL()}/billing/retain`, {
+    method: 'POST',
+    headers: billingHeaders(idToken),
+    body: JSON.stringify({ offer }),
+  });
+  if (response.ok) {
+    const body = (await response.json()) as { status: BillingStatus };
+    return { ok: true, status: body.status };
+  }
+  if (response.status === 409) {
+    const body = (await response.json().catch(() => null)) as {
+      error?: string;
+      reason?: string;
+      offer?: RetentionOffer | null;
+    } | null;
+    const code = body?.reason ?? body?.error;
+    if (code === 'offer_changed') return { ok: false, reason: 'offer_changed', offer: body?.offer ?? null };
+    if (code === 'not_cancelled') return { ok: false, reason: 'not_cancelled' };
+  }
+  return { ok: false, reason: 'error', status: response.status };
 }
 
 export async function verifyCheckoutSession(

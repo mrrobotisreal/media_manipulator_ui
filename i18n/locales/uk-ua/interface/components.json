@@ -168,7 +168,8 @@
       "free": "Безкоштовно",
       "premium": "Premium",
       "operator": "Оператор"
-    }
+    },
+    "tierEnds": "Premium · до {{date}}"
   },
   "upgradeSurfaces": {
     "fileLimit": "Файли до {{size}}",
@@ -433,12 +434,15 @@
       "pastDueTitle": "Останній платіж не пройшов",
       "pastDueBody": "Доступ до Premium зберігається до 7 днів, поки ми повторюємо спробу. Оновіть спосіб оплати, щоб зберегти його.",
       "intervalLabel": "Період",
-      "endsLabel": "Закінчується",
+      "endsLabel": "Premium закінчується",
       "renewsLabel": "Поновлюється",
       "endsOn": "Підписка закінчується {{date}}.",
       "resumeHint": "Відкрийте «Керування підпискою», щоб відновити її.",
       "renewsOn": "Поновлюється {{date}}.",
-      "updatePayment": "Оновити спосіб оплати"
+      "updatePayment": "Оновити спосіб оплати",
+      "cancelledTitle": "Вашу підписку Premium скасовано",
+      "cancelledBody": "Premium діє до {{date}}. Після цього акаунт перейде на Free, і більше нічого не списуватиметься.",
+      "cancelledBodyNoDate": "Premium діє до кінця поточного розрахункового періоду. Після цього акаунт перейде на Free, і більше нічого не списуватиметься."
     },
     "return": {
       "waiting": {
@@ -462,6 +466,21 @@
         "body": "Тариф оновиться автоматично після підтвердження платежу. Спробуйте ще раз трохи згодом."
       },
       "refresh": "Оновити мій тариф"
+    },
+    "offer": {
+      "title": "Передумали? Залиште Premium за ${{price}}/місяць",
+      "resumeTitle": "Передумали? Залиште Premium",
+      "fineprint": "Сьогодні нічого не списується. Наступний платіж — {{date}} за новою ціною, а потім щомісяця, доки ви не скасуєте підписку.",
+      "cta": "Залишити Premium за ${{price}}/місяць",
+      "resumeCta": "Залишити Premium",
+      "keepAtCurrent": "Залишити Premium за ${{price}}/місяць",
+      "keepAtCurrentNoPrice": "Залишити Premium за звичайною ціною",
+      "working": "Виконується…",
+      "renewed": "Premium продовжиться {{date}} за ${{price}}/місяць",
+      "renewedNoPrice": "Premium продовжиться {{date}}",
+      "renewedBare": "Premium продовжуватиметься",
+      "changed": "Пропозицію змінено, ось актуальна.",
+      "failed": "Не вдалося оновити підписку. Спробуйте ще раз."
     }
   },
   "upgradeInterstitial": {

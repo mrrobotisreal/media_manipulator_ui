@@ -94,6 +94,8 @@ export const EVENTS = {
   CHECKOUT_ABANDONED: 'checkout_abandoned',
   PORTAL_OPENED: 'portal_opened',
   SUBSCRIPTION_STATUS_VIEWED: 'subscription_status_viewed',
+  RETENTION_OFFER_VIEWED: 'retention_offer_viewed',
+  RETENTION_OFFER_ACCEPTED: 'retention_offer_accepted',
 
   // --- Engagement / content -------------------------------------------------
   CONTENT_READ_PROGRESS: 'content_read_progress',
@@ -210,6 +212,8 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   checkout_abandoned: PRIORITY_CRITICAL,
   portal_opened: PRIORITY_CRITICAL,
   subscription_status_viewed: PRIORITY_CRITICAL,
+  retention_offer_viewed: PRIORITY_HIGH,
+  retention_offer_accepted: PRIORITY_HIGH,
 
   // Engagement
   content_read_progress: PRIORITY_LOW,
@@ -554,6 +558,10 @@ export interface SubscriptionStatusViewedProps {
   interval: string;
 }
 
+export interface RetentionOfferProps {
+  offer: 'retain7' | 'retain6' | 'resume';
+}
+
 export interface QuotaWarningShownProps {
   limit?: number;
   remaining?: number;
@@ -870,6 +878,8 @@ export interface EventPropsMap {
   checkout_abandoned: CheckoutAbandonedProps;
   portal_opened: PortalOpenedProps;
   subscription_status_viewed: SubscriptionStatusViewedProps;
+  retention_offer_viewed: RetentionOfferProps;
+  retention_offer_accepted: RetentionOfferProps;
 
   content_read_progress: ContentReadProgressProps;
   content_read_completed: ContentReadCompletedProps;

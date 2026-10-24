@@ -168,7 +168,8 @@
       "free": "חינמי",
       "premium": "Premium",
       "operator": "מפעיל"
-    }
+    },
+    "tierEnds": "Premium · מסתיים ב־{{date}}"
   },
   "upgradeSurfaces": {
     "fileLimit": "קבצים עד {{size}}",
@@ -433,12 +434,15 @@
       "pastDueTitle": "התשלום האחרון לא עבר",
       "pastDueBody": "הגישה לפרימיום נשמרת עד 7 ימים בזמן שאנחנו מנסים שוב. עדכנו את אמצעי התשלום כדי לשמור עליה.",
       "intervalLabel": "חיוב",
-      "endsLabel": "מסתיים ב־",
+      "endsLabel": "Premium מסתיים ב־",
       "renewsLabel": "מתחדש ב־",
       "endsOn": "המנוי שלכם מסתיים ב־{{date}}.",
       "resumeHint": "פתחו את ״ניהול המנוי״ כדי לחדש אותו.",
       "renewsOn": "מתחדש ב־{{date}}.",
-      "updatePayment": "עדכון אמצעי תשלום"
+      "updatePayment": "עדכון אמצעי תשלום",
+      "cancelledTitle": "מנוי ה־Premium שלכם בוטל",
+      "cancelledBody": "Premium נשאר שלכם עד {{date}}. לאחר מכן החשבון יעבור ל־Free ולא יתבצע חיוב נוסף.",
+      "cancelledBodyNoDate": "Premium נשאר שלכם עד סוף תקופת החיוב הנוכחית. לאחר מכן החשבון יעבור ל־Free ולא יתבצע חיוב נוסף."
     },
     "return": {
       "waiting": {
@@ -462,6 +466,21 @@
         "body": "המסלול יתעדכן אוטומטית לאחר אישור התשלום. נסו שוב בעוד רגע."
       },
       "refresh": "רענון המסלול שלי"
+    },
+    "offer": {
+      "title": "התחרטתם? שמרו על Premium ב־${{price}} לחודש",
+      "resumeTitle": "התחרטתם? שמרו על Premium",
+      "fineprint": "היום לא מתבצע חיוב. התשלום הבא שלכם ב־{{date}}, במחיר החדש, ובכל חודש לאחר מכן עד שתבטלו.",
+      "cta": "שמרו על Premium ב־${{price}} לחודש",
+      "resumeCta": "שמרו על Premium",
+      "keepAtCurrent": "שמרו על Premium ב־${{price}} לחודש",
+      "keepAtCurrentNoPrice": "שמרו על Premium במחיר הרגיל",
+      "working": "מעבד…",
+      "renewed": "Premium יתחדש ב־{{date}} ב־${{price}} לחודש",
+      "renewedNoPrice": "Premium יתחדש ב־{{date}}",
+      "renewedBare": "Premium ימשיך להתחדש",
+      "changed": "ההצעה השתנתה, הנה ההצעה העדכנית.",
+      "failed": "לא ניתן היה לעדכן את המנוי. נסו שוב."
     }
   },
   "upgradeInterstitial": {
