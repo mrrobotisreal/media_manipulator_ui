@@ -10,8 +10,8 @@ describe('changelog data', () => {
     for (const d of dates) expect(['2026-10-23', '2026-10-24']).toContain(d);
   });
 
-  it('does not announce unshipped share links', () => {
-    expect(JSON.stringify(CHANGELOG).toLowerCase()).not.toMatch(/share link|shareable/);
+  it('does not announce email as being sent (sending is off until configured)', () => {
+    expect(JSON.stringify(CHANGELOG).toLowerCase()).not.toMatch(/we (will )?email you|we send you an email/);
   });
 });
 

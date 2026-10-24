@@ -1,8 +1,8 @@
 // MM34 — public changelog. Original, factual release notes (English body; the
 // /changelog page chrome is localized). Newest first. Dates are the real
-// merge dates from git (UI and API repos). Only list what has shipped: no
-// share links (MM32), and email is configured off, so only the preference
-// toggles are mentioned, never "we email you".
+// merge dates from git (UI and API repos). Only list what has shipped. Email
+// is configured off, so only the preference toggles are mentioned, never
+// "we email you".
 
 export type ChangelogTag = 'new' | 'improved' | 'fixed';
 
@@ -23,6 +23,13 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: '2026-10-24-share-links',
+    date: '2026-10-24',
+    title: 'Share a result with a link',
+    body: 'Use Share on a finished result to copy a private link anyone can open to view and download it, with no account needed. Links last 72 hours by default and never longer than the file itself is kept. You can revoke them any time from your history. Metadata reports and Darkroom projects cannot be shared.',
+    tags: ['new'],
+  },
   {
     id: '2026-10-24-email-preferences',
     date: '2026-10-24',
