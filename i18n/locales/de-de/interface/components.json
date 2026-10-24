@@ -575,5 +575,35 @@
     "basicOnly": "Derzeit ist nur der Gesamtstatus verfügbar.",
     "lastChecked": "Zuletzt geprüft {{time}}",
     "metaTitle": "Status | Media Manipulator"
+  },
+  "share": {
+    "button": "Teilen",
+    "revokeLinks": "Links widerrufen",
+    "copied": "Link kopiert. Er funktioniert bis {{when}}.",
+    "copyManually": "Automatisches Kopieren nicht möglich. Kopieren Sie diesen Link: {{url}}",
+    "notAllowed": "Diese Art von Ergebnis kann nicht geteilt werden.",
+    "expired": "Diese Datei ist abgelaufen.",
+    "limitTitle": "Limit für Freigaben erreicht",
+    "limitBody": "Für dieses Ergebnis gibt es bereits 5 aktive Freigabelinks, das Maximum. Widerrufen Sie sie, um einen neuen zu erstellen.",
+    "revokeConfirm": "Links widerrufen",
+    "cancel": "Abbrechen",
+    "signIn": "Melden Sie sich erneut an, um dieses Ergebnis zu teilen.",
+    "failed": "Der Freigabelink konnte nicht erstellt werden. Versuchen Sie es erneut.",
+    "revoked": "Alle Freigabelinks für dieses Ergebnis wurden widerrufen.",
+    "revokeNone": "Es gab keine aktiven Links zum Widerrufen.",
+    "revokeFailed": "Die Links konnten nicht widerrufen werden. Versuchen Sie es erneut.",
+    "revokeTitle": "Alle Freigabelinks widerrufen?",
+    "revokeBody": "Jeder, der einen Link zu diesem Ergebnis hat, verliert sofort den Zugriff. Danach können Sie einen neuen Link erstellen."
+  },
+  "sharedResult": {
+    "metaTitle": "Geteiltes Ergebnis | Media Manipulator",
+    "metaDescription": "Eine mit Media Manipulator erstellte Datei, per Link geteilt.",
+    "ogTitle": "{{fileName}}, erstellt mit Media Manipulator",
+    "goneTitle": "Dieser Link ist abgelaufen oder wurde entfernt",
+    "goneBody": "Freigabelinks funktionieren nicht mehr, wenn sie ablaufen, der Eigentümer sie widerruft oder die Datei gelöscht wird.",
+    "goneCta": "Zu Media Manipulator",
+    "madeWith": "Erstellt mit Media Manipulator",
+    "tryIt": "Mit Ihrer Datei ausprobieren",
+    "expires": "Dieser Link funktioniert bis {{when}}."
   }
 }

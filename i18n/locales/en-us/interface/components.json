@@ -575,5 +575,35 @@
     "basicOnly": "Only the overall status is available right now.",
     "lastChecked": "Last checked {{time}}",
     "metaTitle": "Status | Media Manipulator"
+  },
+  "share": {
+    "button": "Share",
+    "revokeLinks": "Revoke links",
+    "copied": "Link copied. It works until {{when}}.",
+    "copyManually": "Could not copy automatically. Copy this link: {{url}}",
+    "notAllowed": "This kind of result can't be shared.",
+    "expired": "This file has expired.",
+    "limitTitle": "Share limit reached",
+    "limitBody": "This result already has 5 live share links, the maximum. Revoke them to create a new one.",
+    "revokeConfirm": "Revoke links",
+    "cancel": "Cancel",
+    "signIn": "Sign in again to share this result.",
+    "failed": "Could not create a share link. Try again.",
+    "revoked": "All share links for this result were revoked.",
+    "revokeNone": "There were no live links to revoke.",
+    "revokeFailed": "Could not revoke the links. Try again.",
+    "revokeTitle": "Revoke all share links?",
+    "revokeBody": "Anyone who has a link to this result will lose access right away. You can create a new link afterwards."
+  },
+  "sharedResult": {
+    "metaTitle": "Shared result | Media Manipulator",
+    "metaDescription": "A file made with Media Manipulator, shared with a link.",
+    "ogTitle": "{{fileName}} made with Media Manipulator",
+    "goneTitle": "This link has expired or was removed",
+    "goneBody": "Share links stop working when they expire, when the owner revokes them, or when the file is deleted.",
+    "goneCta": "Go to Media Manipulator",
+    "madeWith": "Made with Media Manipulator",
+    "tryIt": "Try it on your file",
+    "expires": "This link works until {{when}}."
   }
 }

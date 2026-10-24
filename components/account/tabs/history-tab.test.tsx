@@ -244,3 +244,23 @@ describe('HistoryTab delete flows', () => {
     expect(failures.textContent).not.toContain('one.png');
   });
 });
+
+describe('HistoryTab share (MM32)', () => {
+  it('shows Share and Revoke links on completed, shareable rows only; revoke asks first', async () => {
+    const shareApi = await import('@/lib/share/shareApi');
+    const revoke = vi.spyOn(shareApi, 'revokeShareLinks').mockResolvedValue(2);
+    renderHistory([
+      row('a', { resultFileName: 'out.png', downloadPath: '/api/download/a', tool: 'compress_image' }),
+      row('b', { resultFileName: 'report.json', downloadPath: '/api/download/b', tool: 'inspect_metadata' }),
+    ]);
+    await screen.findAllByTestId('history-row');
+    expect(screen.getAllByTestId('history-share-button')).toHaveLength(1);
+    fireEvent.click(screen.getByTestId('history-revoke-button'));
+    expect(revoke).not.toHaveBeenCalled();
+    // The test double echoes keys for non-metadata strings; the dialog's confirm is the second 'share.revokeConfirm'.
+    const confirm = await screen.findByRole('button', { name: 'share.revokeConfirm' });
+    fireEvent.click(confirm);
+    await waitFor(() => expect(revoke).toHaveBeenCalledWith('a'));
+    revoke.mockRestore();
+  });
+});

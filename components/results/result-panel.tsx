@@ -1,9 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useId, useMemo, useState, type ReactNode } from 'react';
-import { Download, Loader2, RotateCcw } from 'lucide-react';
+import { Download, Link2, Loader2, RotateCcw } from 'lucide-react';
 import { MetadataStrip } from '@/components/metadata/metadata-strip';
 import { QueueLine } from './queue-line';
+import { ConfirmDialog } from '@/components/account/confirm-dialog';
+import { useShareAction, type ShareMessages } from '@/components/share/use-share-action';
+import { isShareable } from '@/lib/share/shareApi';
 import { Panel } from '@/components/darkroom/panel';
 import { Segmented } from '@/components/darkroom/segmented';
 import { Stat } from '@/components/darkroom/stat';
@@ -83,6 +86,11 @@ export interface ResultPanelProps {
    * stored jobs (`surface="history"`) never record, whatever this says.
    */
   recordHistory?: boolean;
+  /**
+   * MM32: the public `/r/[token]` rendering. No "Run another", no Compare, no Share, no
+   * metadata strip, and no history recording; keeps the viewers and Download.
+   */
+  readOnly?: boolean;
   className?: string;
 }
 
@@ -244,6 +252,7 @@ function ResultPanelBody({
   surface = 'tool_page',
   metadataStrip = true,
   recordHistory = true,
+  readOnly = false,
   className,
   active,
   bare = false,
@@ -257,6 +266,7 @@ function ResultPanelBody({
   const setView = (next: 'original' | 'result') => setViewState({ jobId: descriptor.jobId, view: next });
 
   const canCompare =
+    !readOnly &&
     !viewerOverride &&
     !!descriptor.original &&
     COMPARABLE.has(descriptor.kind) &&
@@ -293,22 +303,25 @@ function ResultPanelBody({
 
   // `result_previewed`: the visitor was shown the result. Once per job.
   useEffect(() => {
-    if (!active || !trackPreview || previewed.has(descriptor.jobId)) return;
+    if (!active || readOnly || !trackPreview || previewed.has(descriptor.jobId)) return;
     previewed.add(descriptor.jobId);
     track(
       EVENTS.RESULT_PREVIEWED,
       { job_id: descriptor.jobId, preview_kind: previewKindOf(descriptor.kind) },
       { job_id: descriptor.jobId },
     );
-  }, [active, descriptor.jobId, descriptor.kind, track, trackPreview]);
+  }, [active, readOnly, descriptor.jobId, descriptor.kind, track, trackPreview]);
 
   // `result_viewed`: the viewer is on screen (an open modal, an inline panel). Once per job.
   const { onViewed } = analytics;
   useEffect(() => {
-    if (active) onViewed();
-  }, [active, descriptor.jobId, onViewed]);
+    // A shared page's job id is a placeholder, not a job: it must not pollute result_viewed.
+    if (active && !readOnly) onViewed();
+  }, [active, readOnly, descriptor.jobId, onViewed]);
 
-  const resultViewer = viewerFor(descriptor.kind);
+  // A shared transcript has no owner API to read from: it gets the file card (and Download).
+  const resultViewer =
+    descriptor.sourceUrl && descriptor.kind === 'transcript' ? viewerFor('unknown') : viewerFor(descriptor.kind);
   const wantsBytes = active && !viewerOverride && shown === 'result' && resultViewer.needsBlob;
   const blobState = useResultBlob(descriptor, { enabled: wantsBytes, seedBlob });
   const loadedBlob = blobState.blob;
@@ -324,7 +337,7 @@ function ResultPanelBody({
   // only guests record. Wait out the identity check: a returning member must not leave a stray entry.
   const auth = useAuth();
   const isGuest = !auth || (!auth.loading && !auth.user);
-  useRecordHistory(descriptor, toolSlug, loadedBlob ?? seedBlob ?? null, active && isGuest && recordHistory && surface !== 'history');
+  useRecordHistory(descriptor, toolSlug, loadedBlob ?? seedBlob ?? null, active && isGuest && recordHistory && !readOnly && surface !== 'history');
 
   const originalUrl = useOriginalUrl(descriptor.original, active && (legacyToggle || compareMode !== null));
   const saveName = downloadFileName ?? descriptor.fileName;
@@ -336,10 +349,52 @@ function ResultPanelBody({
   });
   const { onDownload: trackDownloadClick } = analytics;
   const handleDownload = useCallback(() => {
-    trackDownloadClick();
+    if (!readOnly) trackDownloadClick();
     if (onDownload) return void Promise.resolve(onDownload());
+    // MM32: a shared result downloads from its public attachment URL, not the owner route.
+    if (descriptor.sourceUrl) {
+      const a = document.createElement('a');
+      a.href = descriptor.downloadUrl;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      return;
+    }
     return void download();
-  }, [download, onDownload, trackDownloadClick]);
+  }, [descriptor.downloadUrl, descriptor.sourceUrl, download, onDownload, readOnly, trackDownloadClick]);
+
+  // MM32 share: only the owner's panel, only for kinds the API will accept.
+  const shareable = !readOnly && !descriptor.sourceUrl && isShareable(descriptor.kind, toolSlug);
+  const shareMessages = useMemo<ShareMessages>(
+    () => ({
+      copied: (when) => t('share.copied', { when }),
+      copyManually: (url) => t('share.copyManually', { url }),
+      notAllowed: t('share.notAllowed'),
+      expired: t('share.expired'),
+      limit: t('share.limitBody'),
+      signIn: t('share.signIn'),
+      failed: t('share.failed'),
+      revoked: () => t('share.revoked'),
+      revokeNone: t('share.revokeNone'),
+      revokeFailed: t('share.revokeFailed'),
+    }),
+    [t],
+  );
+  const formatExpiry = useCallback(
+    (iso: string) => {
+      const when = new Date(iso);
+      return Number.isNaN(when.getTime()) ? '' : `${formatDate(when)} ${formatTime(when, { hour: 'numeric', minute: '2-digit' })}`;
+    },
+    [formatDate, formatTime],
+  );
+  const shareAction = useShareAction({
+    jobId: descriptor.jobId,
+    kind: descriptor.kind,
+    source: surface === 'history' ? 'history' : 'result_panel',
+    messages: shareMessages,
+    formatExpiry,
+  });
 
   const KindIcon = KIND_ICONS[descriptor.kind];
   const expires = useMemo(() => {
@@ -483,7 +538,22 @@ function ResultPanelBody({
             className="w-56"
           />
         )}
-        {onRunAnother && (
+        {shareable && (
+          <button
+            type="button"
+            onClick={() => void shareAction.share()}
+            disabled={shareAction.busy}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-edge px-3 py-2 text-sm text-foreground transition-colors hover:bg-surface-2 disabled:opacity-60"
+          >
+            {shareAction.busy ? (
+              <Loader2 aria-hidden="true" className="size-4 animate-spin motion-reduce:animate-none" />
+            ) : (
+              <Link2 aria-hidden="true" className="size-4" />
+            )}
+            {t('share.button')}
+          </button>
+        )}
+        {!readOnly && onRunAnother && (
           <button
             type="button"
             onClick={onRunAnother}
@@ -500,9 +570,22 @@ function ResultPanelBody({
         )}
       </div>
 
+      {shareable && (
+        <ConfirmDialog
+          open={shareAction.limitOpen}
+          onOpenChange={shareAction.setLimitOpen}
+          title={t('share.limitTitle')}
+          description={t('share.limitBody')}
+          confirmLabel={t('share.revokeConfirm')}
+          cancelLabel={t('share.cancel')}
+          busy={shareAction.revoking}
+          onConfirm={() => void shareAction.revoke()}
+        />
+      )}
+
       <QueueLine waitMs={descriptor.queueWaitMs} />
 
-      {metadataStrip && active && !viewerOverride ? (
+      {metadataStrip && !readOnly && active && !viewerOverride ? (
         <MetadataStrip
           jobId={descriptor.jobId}
           kind={descriptor.kind}

@@ -47,7 +47,7 @@ const mediaKind = z.enum(['image', 'video', 'audio', 'document', 'unknown']);
 const tier = z.enum(['anonymous', 'free', 'premium', 'operator']);
 const authMethod = z.enum(['google', 'email', 'other']);
 const metadataTagBucket = z.enum(['0', '1-25', '26-100', '101-500', '500+']);
-const resultSurface = z.enum(['home', 'tool_page', 'tutorial', 'history']);
+const resultSurface = z.enum(['home', 'tool_page', 'tutorial', 'history', 'shared']);
 const transport = z.enum(['post', 'presigned_put']);
 
 // Content Studio (part 10). Bucket values are checked as strings, not enums —

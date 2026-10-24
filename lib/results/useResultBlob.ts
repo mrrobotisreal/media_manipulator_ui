@@ -90,6 +90,13 @@ export function resetResultBlobCache(): void {
   for (const [jobId, entry] of [...entries]) drop(jobId, entry);
 }
 
+/** MM32: bytes of a shared result, from the public token URL (no identity headers). */
+async function fetchPublicBlob(url: string): Promise<Blob> {
+  const res = await fetch(url);
+  if (!res.ok) throw Object.assign(new Error(`Download failed: ${res.statusText}`), { status: res.status });
+  return res.blob();
+}
+
 export type ResultBlobStatus = 'idle' | 'loading' | 'ready' | 'error';
 
 export interface ResultBlobState {
@@ -115,11 +122,13 @@ export interface UseResultBlobOptions {
 }
 
 export function useResultBlob(
-  descriptor: Pick<ResultDescriptor, 'jobId' | 'kind' | 'mimeFromServer'> | null,
+  descriptor: (Pick<ResultDescriptor, 'jobId' | 'kind' | 'mimeFromServer'> & { sourceUrl?: string }) | null,
   options: UseResultBlobOptions = {},
 ): ResultBlobState {
   const { downloadFile } = useDownloadFile();
-  const fetchBlob = options.fetchBlob ?? downloadFile;
+  const sourceUrl = descriptor?.sourceUrl;
+  const fetchBlob =
+    options.fetchBlob ?? (sourceUrl ? () => fetchPublicBlob(sourceUrl) : downloadFile);
   const jobId = descriptor?.jobId ?? null;
   const inlineUrl = descriptor ? inlineResultUrl(descriptor) : null;
   // The inline route needs no blob for playback; Download still fetches on click.
