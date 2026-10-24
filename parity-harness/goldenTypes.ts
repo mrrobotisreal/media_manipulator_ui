@@ -11,6 +11,13 @@ export interface GoldenAsset {
   file: string;
   kind: 'video' | 'audio' | 'lut' | 'image';
   hasAudio?: boolean;
+  /**
+   * Reversed-proxy fixture (part 17): the SAME clip played backwards (see
+   * make-fixtures.sh). The capture leg uses it for reversed clips, exactly as
+   * the editor swaps to the server's reversed proxy; the ffmpeg leg ignores it
+   * (the export reverses the original).
+   */
+  reversedFile?: string;
 }
 
 export interface GoldenProject {

@@ -288,3 +288,43 @@ export function useDeriveStudioAsset() {
     isDeriving: mutation.isPending,
   };
 }
+
+/**
+ * useReverseProxy (part 17): browsers can't play video backwards, so a
+ * reversed clip previews from a server-derived REVERSED 720p proxy. Toggling
+ * Reverse on calls `request(assetId)`, which POSTs /assets/:id/reverse-proxy
+ * (the derive-job pattern; idempotent server-side) and marks the asset
+ * `reversed: 'processing'` with the job id; the media bin's watcher
+ * (ReverseWatcher) polls the job and flips it to 'ready'. Toggling Reverse off
+ * needs nothing — the clip goes back to the ordinary proxy. Unavailable on
+ * backends without `reverseProxy` (CreaTV), where `available` is false.
+ */
+export function useReverseProxy() {
+  const backend = useStudioBackend();
+  const setAssetReversed = useStudioStore((s) => s.setAssetReversed);
+  const { t } = useLocalization('interface');
+
+  const request = React.useCallback(
+    async (assetId: string): Promise<void> => {
+      const entry = useStudioStore.getState().assets[assetId];
+      if (!entry || entry.reversed === 'ready' || entry.reversed === 'processing') return;
+      if (!backend.capabilities.reverseProxy) return;
+      setAssetReversed(assetId, 'processing');
+      try {
+        const result = await postJson(
+          backend,
+          backend.path(`/assets/${assetId}/reverse-proxy`),
+          {},
+          backend.parseComplete,
+        );
+        setAssetReversed(assetId, 'processing', result.jobId);
+      } catch (err) {
+        setAssetReversed(assetId, 'failed');
+        toast.error(t('contentStudio.speed.reverseFailed'), { description: (err as Error).message });
+      }
+    },
+    [backend, setAssetReversed, t],
+  );
+
+  return { available: backend.capabilities.reverseProxy, request };
+}

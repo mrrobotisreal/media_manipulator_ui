@@ -3,6 +3,7 @@ import { basename, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { PARITY_TOLERANCES, parityTolerance } from '../lib/studio/parityTolerances';
+import { clipTimelineDuration } from '../lib/studio/speed';
 import { studioAudioConfigSchema, studioTrackSchema } from '../lib/studioTypes';
 import type { GoldenFile, GoldenProject } from './goldenTypes';
 
@@ -56,7 +57,7 @@ const goldenProjectChecks = (id: string, variant: string, p: GoldenProject, g: G
     let end = 0;
     for (const track of p.tracks) {
       for (const clip of track.clips) {
-        end = Math.max(end, clip.timelineStart + (clip.sourceOut - clip.sourceIn));
+        end = Math.max(end, clip.timelineStart + clipTimelineDuration(clip));
       }
     }
     for (const k of g.sampleFrames) {
@@ -109,6 +110,19 @@ describe('golden EDLs', () => {
       const g = goldens.get(id);
       expect(g, id).toBeDefined();
       expect(Object.values(g!.assets).some((a) => a.kind === 'image'), `${id} has an image asset`).toBe(true);
+    }
+  });
+
+  it('speed goldens exercise their control and stay image-free (part 17)', () => {
+    const clipOf = (id: string) => goldens.get(id)!.project.tracks[0].clips[0];
+    expect(clipOf('speed_up').speed).toBe(2);
+    expect(clipOf('speed_slow').speed).toBe(0.5);
+    expect(clipOf('speed_reverse').reverse).toBe(true);
+    expect(clipOf('speed_freeze').freeze).toBeDefined();
+    // The reversed scenario needs the reversed fixture the capture leg swaps to.
+    expect(Object.values(goldens.get('speed_reverse')!.assets).some((a) => !!a.reversedFile)).toBe(true);
+    for (const id of ['speed_up', 'speed_slow', 'speed_reverse', 'speed_freeze']) {
+      expect(Object.values(goldens.get(id)!.assets).every((a) => a.kind === 'video'), id).toBe(true);
     }
   });
 

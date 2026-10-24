@@ -10,6 +10,7 @@ import {
   resolveActiveClips,
   topVideoClip,
   studioProxyUrl,
+  studioProxyReversedUrl,
   transitionRamp,
   audioFadeGain,
   clipTransitionState,
@@ -49,6 +50,8 @@ import {
   type QualityLevel,
 } from '@/lib/studio/qualityGovernor';
 import { editSummary, perf } from '@/lib/studio/telemetry';
+import { clipSpeed, isFreezeClip, isReversed, maintainsPitch, reverseProxyReady, reversedProxyTime } from '@/lib/studio/speed';
+import ReverseWatchers from './reverse-watchers';
 
 // hexWithOpacity → rgba() string for the caption background box.
 function hexWithOpacity(hex: string, opacity: number): string {
@@ -301,6 +304,18 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   // A clip whose asset is gone (undone usage-protected delete) is offline, not "building".
   const building =
     !!topNow && !topNow.clip.title && !!assets[topNow.clip.assetId] && assets[topNow.clip.assetId]?.status !== 'ready';
+  // Part 17: a reversed clip whose reversed proxy isn't ready yet shows its
+  // poster frame (the ordinary proxy, paused) under a "Processing reverse
+  // preview…" scrim, with its audio muted.
+  const reversePending = React.useMemo(
+    () =>
+      activeNow.some((a) => {
+        if (!isReversed(a.clip)) return false;
+        const e = assets[a.clip.assetId];
+        return !!e && e.status === 'ready' && !reverseProxyReady(e);
+      }),
+    [activeNow, assets],
+  );
   const hasClips = React.useMemo(() => tracks.some((tr) => tr.clips.length > 0), [tracks]);
 
   // Warm the voice-track clips' waveform peaks so the level-driven ducking
@@ -641,26 +656,48 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         if (!el) continue;
         slot.clipId = a.clip.id;
         clipSlots.set(a.clip.id, i);
-        if (slot.srcAssetId !== a.clip.assetId) {
-          slot.srcAssetId = a.clip.assetId;
-          el.src = studioProxyUrl(a.clip.assetId);
+
+        // --- Speed controls (part 17) ---
+        // Forward clips play the ordinary proxy at playbackRate = speed
+        // (pitch preserved natively unless the clip opts out). Reversed clips
+        // play the REVERSED proxy forward, with the source position mirrored
+        // through the proxy's duration; until it is ready the ordinary proxy
+        // is held paused as a poster frame. Freeze clips hold one frame.
+        const frozen = isFreezeClip(a.clip);
+        const reversed = isReversed(a.clip);
+        const reverseReady = reversed && reverseProxyReady(entry);
+        const rate = clipSpeed(a.clip);
+        const useReversedSrc = reverseReady;
+        const srcKey = useReversedSrc ? `${a.clip.assetId}:r` : a.clip.assetId;
+        if (slot.srcAssetId !== srcKey) {
+          slot.srcAssetId = srcKey;
+          el.src = useReversedSrc ? studioProxyReversedUrl(a.clip.assetId) : studioProxyUrl(a.clip.assetId);
           seekIntentAt.current[i] = null;
           pendingSeekTarget.current[i] = null;
         }
+        const mediaDur = Number.isFinite(el.duration) && el.duration > 0 ? el.duration : entry.asset.durationSeconds;
+        const targetTime = useReversedSrc ? reversedProxyTime(a.sourceTime, mediaDur) : a.sourceTime;
+        // Stalled = nothing should sound or advance: a held frame, or a reversed clip still building.
+        const stalled = frozen || (reversed && !reverseReady);
+        if (el.playbackRate !== rate) el.playbackRate = rate;
+        const keepPitch = maintainsPitch(a.clip);
+        if (el.preservesPitch !== keepPitch) el.preservesPitch = keepPitch;
         const vals = valuesByClip.get(a.clip.id) ?? clipValuesAt(a.clip, t - a.clip.timelineStart);
-        const threshold = playing ? 0.3 : 0.05;
-        if (Math.abs(el.currentTime - a.sourceTime) > threshold) {
+        // The element advances `rate` source-seconds per second, so the drift
+        // tolerance scales with the rate to stay a constant ~timeline slack.
+        const threshold = playing && !stalled ? 0.3 * Math.max(1, rate) : 0.05;
+        if (Math.abs(el.currentTime - targetTime) > threshold) {
           if (el.seeking) {
             // One in-flight seek per element: while the decoder is still
             // seeking, only remember the newest target — the `seeked` handler
             // re-issues it. Scrubbing used to pile a seek per pointer frame
             // onto a still-seeking element.
-            pendingSeekTarget.current[i] = a.sourceTime;
+            pendingSeekTarget.current[i] = targetTime;
           } else {
             pendingSeekTarget.current[i] = null;
             try {
               seekIntentAt.current[i] = performance.now();
-              el.currentTime = a.sourceTime;
+              el.currentTime = targetTime;
             } catch {
               seekIntentAt.current[i] = null; /* element not seekable yet */
             }
@@ -693,8 +730,9 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         // the export's afades (part 12).
         const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips;
         const gainNow = vals.volume * (trackClips ? audioFadeGain(a.clip, trackClips, t) : 1);
-        routeSlotAudio(i, a.trackId, gainNow, vals.pan, a.trackMuted);
-        if (playing) {
+        // Stalled clips (freeze / reverse still building) are silent.
+        routeSlotAudio(i, a.trackId, stalled ? 0 : gainNow, vals.pan, a.trackMuted || stalled);
+        if (playing && !stalled) {
           if (el.paused) void el.play().catch(() => {});
         } else if (!el.paused) {
           el.pause();
@@ -1311,6 +1349,16 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             {t('contentStudio.preview.building')}
           </div>
         )}
+        {/* Part 17: poster frame stays visible beneath a lighter scrim. */}
+        {!building && reversePending && (
+          <div
+            className="absolute inset-0 z-10 flex items-center justify-center text-sm text-premium bg-surface-0/40 pointer-events-none"
+            role="status"
+          >
+            {t('contentStudio.speed.processingReverse')}
+          </div>
+        )}
+        <ReverseWatchers />
       </div>
 
       <div className="flex items-center justify-between gap-2">

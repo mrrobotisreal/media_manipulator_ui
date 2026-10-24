@@ -35,6 +35,14 @@ import { makeDefaultEffect, STUDIO_V3_RANGES } from '@/lib/studio/effectRegistry
 import { clipDuration, clipEnd, timelineDuration } from '@/lib/studio/previewEngine';
 import { valueAt } from '@/lib/studio/ease';
 import {
+  planSpeed,
+  planDuration,
+  planFreezeDuration,
+  planFreezeInsert,
+  splitSourcePoint,
+  type SpeedPlan,
+} from '@/lib/studio/speed';
+import {
   isEffectKeyframeProperty,
   keyframeLane,
   keyframeValueRange,
@@ -65,6 +73,13 @@ export interface StudioAssetEntry {
   /** 0..100 during the S3 upload phase */
   uploadProgress: number;
   error?: string;
+  /**
+   * Reversed preview proxy lifecycle (part 17). Absent = never requested.
+   * 'ready' also holds when the asset row already carries s3KeyProxyReversed.
+   */
+  reversed?: 'processing' | 'ready' | 'failed';
+  /** reverse_proxy job id while `reversed === 'processing'` */
+  reverseJobId?: string;
 }
 
 const uid = (): string => {
@@ -161,6 +176,8 @@ interface StudioState {
   upsertAsset: (entry: StudioAssetEntry) => void;
   setAssetStatus: (assetId: string, status: AssetIngestStatus, error?: string) => void;
   setUploadProgress: (assetId: string, progress: number) => void;
+  /** Reversed-proxy lifecycle (part 17); not undoable (server state). */
+  setAssetReversed: (assetId: string, state: 'processing' | 'ready' | 'failed', jobId?: string) => void;
   /** Part 21: apply server-side bin organization (rename/folder/label). Not undoable, not in the EDL. */
   patchAssetMeta: (assetId: string, patch: Pick<Partial<StudioAsset>, 'displayName' | 'folder' | 'label'>) => void;
   /** Part 21: drop assets from the bin after a successful server delete. Not undoable. */
@@ -231,6 +248,25 @@ interface StudioState {
   /** Legacy convert: textOverlays → an equivalent title clip on the track above (one undo entry). */
   convertOverlaysToTitle: (clipId: string) => void;
 
+  // --- EDL v3: speed controls (part 17) ---
+  // No ripple: the clip keeps its start; slow-downs clamp against the next clip.
+  // Each is one undo entry. They no-op (returning null) for image/title clips.
+  /** Set constant speed (clamped to 0.1x–10x and the neighbour); returns the applied plan. */
+  setClipSpeed: (clipId: string, speed: number) => SpeedPlan | null;
+  /** Back-solve speed from a desired timeline duration (Premiere-style). Freeze clips just resize. */
+  setClipDuration: (clipId: string, seconds: number) => SpeedPlan | { duration: number; clamped: boolean; maxDuration: number } | null;
+  /** Flip the clip's play direction (a no-op for freeze/image/title clips). */
+  setClipReverse: (clipId: string, reverse: boolean) => void;
+  /** The "Maintain audio pitch" toggle (default on; stored only when off). */
+  setClipMaintainPitch: (clipId: string, maintain: boolean) => void;
+  /**
+   * Insert a freeze clip of the frame at the playhead right after the clip
+   * (default 2 s, bounded by the neighbour). Returns the new clip id, or null
+   * when there is no room / the clip can't be frozen. `bounded` says the
+   * length was shortened by the neighbour.
+   */
+  addFreezeFrame: (clipId: string) => { clipId: string; bounded: boolean } | null;
+
   // --- EDL v3: per-property keyframes (part 15) ---
   // `property` is a named lane ('positionX'…'pan') or "<effectId>.<param>".
   // All times are clip-local seconds. All actions route through the part-06
@@ -280,6 +316,26 @@ function ensureBaseTracks(tracks: StudioTrack[]): StudioTrack[] {
     out.push({ id: uid(), kind: 'audio', index: 0, muted: false, clips: [] });
   }
   return out;
+}
+
+// findSpeedTarget locates the clip + its track for a speed action, refusing
+// clips that cannot be retimed: image clips (no time axis; MM15) and title
+// clips (generated). `allowFreeze` lets duration edits through for freeze clips.
+function findSpeedTarget(
+  s: StudioState,
+  clipId: string,
+  allowFreeze = false,
+): { clip: StudioClip; track: StudioTrack } | null {
+  if (!s.project) return null;
+  for (const track of s.project.tracks) {
+    const clip = track.clips.find((c) => c.id === clipId);
+    if (!clip) continue;
+    if (clip.title) return null;
+    if (s.assets[clip.assetId]?.asset.mediaKind === 'image') return null;
+    if (clip.freeze && !allowFreeze) return null;
+    return { clip, track };
+  }
+  return null;
 }
 
 function mapTracks(
@@ -784,6 +840,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
           asset: a,
           status: a.s3KeyProxy ? 'ready' : 'processing',
           uploadProgress: 100,
+          ...(a.s3KeyProxyReversed ? { reversed: 'ready' as const } : {}),
         };
       }
       return { assets: map, assetsLoaded: true };
@@ -797,6 +854,18 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const existing = s.assets[assetId];
       if (!existing) return {};
       return { assets: { ...s.assets, [assetId]: { ...existing, status, error } } };
+    }),
+
+  setAssetReversed: (assetId, state, jobId) =>
+    set((s) => {
+      const existing = s.assets[assetId];
+      if (!existing) return {};
+      return {
+        assets: {
+          ...s.assets,
+          [assetId]: { ...existing, reversed: state, reverseJobId: state === 'processing' ? jobId : undefined },
+        },
+      };
     }),
 
   setUploadProgress: (assetId, progress) =>
@@ -1047,15 +1116,18 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
           const crosses = t > c.timelineStart + MIN_CLIP_SECONDS && t < clipEnd(c) - MIN_CLIP_SECONDS;
           if (crosses && (!restrict || restrictTo.has(c.id))) {
             changed = true;
-            const splitSource = c.sourceIn + (t - c.timelineStart);
-            const left: StudioClip = { ...c, sourceOut: splitSource };
+            // Speed-aware (part 17): the cut point maps through the clip's
+            // speed, and a reversed clip's LEFT half is the tail of the source.
+            const splitSource = splitSourcePoint(c, t);
+            const reversed = c.reverse === true && !c.freeze;
+            const left: StudioClip = reversed ? { ...c, sourceIn: splitSource } : { ...c, sourceOut: splitSource };
             // The right piece starts flush against the left one — no overlap, so
             // it must not inherit the entrance transition.
             const right: StudioClip = {
               ...c,
               id: uid(),
               timelineStart: t,
-              sourceIn: splitSource,
+              ...(reversed ? { sourceOut: splitSource } : { sourceIn: splitSource }),
               transition: undefined,
               transitionInSeconds: undefined,
             };
@@ -1158,6 +1230,77 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // legacy transitionInSeconds mirror stays in sync (the Go sanitizer does the
   // same). `null` removes the transition and restores the un-pulled position
   // (clip start snaps back to the predecessor's end).
+  // --- EDL v3: speed controls (part 17) ---
+
+  setClipSpeed: (clipId, speed) => {
+    const found = findSpeedTarget(get(), clipId);
+    if (!found) return null;
+    const plan = planSpeed(found.track.clips, found.clip, speed);
+    get().updateClip(clipId, { speed: plan.speed === 1 ? undefined : plan.speed });
+    return plan;
+  },
+
+  setClipDuration: (clipId, seconds) => {
+    const found = findSpeedTarget(get(), clipId, true);
+    if (!found) return null;
+    if (found.clip.freeze) {
+      const fp = planFreezeDuration(found.track.clips, found.clip, seconds);
+      get().updateClip(clipId, { sourceOut: found.clip.sourceIn + fp.duration });
+      return fp;
+    }
+    const plan = planDuration(found.track.clips, found.clip, seconds);
+    get().updateClip(clipId, { speed: plan.speed === 1 ? undefined : plan.speed });
+    return plan;
+  },
+
+  setClipReverse: (clipId, reverse) => {
+    const found = findSpeedTarget(get(), clipId);
+    if (!found || found.clip.freeze) return;
+    get().updateClip(clipId, { reverse: reverse ? true : undefined });
+  },
+
+  setClipMaintainPitch: (clipId, maintain) => {
+    const found = findSpeedTarget(get(), clipId);
+    if (!found) return;
+    get().updateClip(clipId, { maintainPitch: maintain ? undefined : false });
+  },
+
+  addFreezeFrame: (clipId) => {
+    const st = get();
+    const found = findSpeedTarget(st, clipId, true);
+    if (!found || found.clip.freeze || found.track.kind !== 'video') return null;
+    const asset = st.assets[found.clip.assetId]?.asset;
+    if (!asset || asset.mediaKind !== 'video') return null;
+    const plan = planFreezeInsert(found.track.clips, found.clip, st.playhead);
+    if (!plan) return null;
+    const src = found.clip;
+    const frame: StudioClip = {
+      id: uid(),
+      assetId: src.assetId,
+      streamIndex: src.streamIndex,
+      timelineStart: plan.timelineStart,
+      sourceIn: plan.sourceTime,
+      sourceOut: plan.sourceTime + plan.duration,
+      freeze: { sourceTime: plan.sourceTime },
+      // A held frame keeps the clip's LOOK (static grade/placement); it has no
+      // sound, no entrance transition and no animation lanes.
+      opacity: src.opacity,
+      adjustments: src.adjustments,
+      transform: src.transform,
+      crop: src.crop,
+      blendMode: src.blendMode,
+      effects: src.effects,
+    };
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = mapTracks(s.project.tracks, (track) =>
+        track.id === found.track.id ? { ...track, clips: [...track.clips, frame] } : track,
+      );
+      return { project: { ...s.project, tracks }, selectedClipIds: [frame.id], dirty: true };
+    });
+    return { clipId: frame.id, bounded: plan.bounded };
+  },
+
   setClipTransition: (clipId, transition) =>
     mutate((s) => {
       if (!s.project) return {};
