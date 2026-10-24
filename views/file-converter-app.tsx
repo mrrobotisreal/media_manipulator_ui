@@ -43,6 +43,7 @@ import { saveBlobToDisk } from '@/lib/results/save';
 import { describe as describeResult } from '@/lib/results/describe';
 import { peekResultBlob } from '@/lib/results/useResultBlob';
 import { ResultPanel } from '@/components/results/result-panel';
+import { QuotaChip } from '@/components/quota-chip';
 import { RecentStrip } from '@/components/history/recent-strip';
 import {
   EVENTS,
@@ -612,6 +613,7 @@ const FileConverterAppInner: React.FC = () => {
             <Link href={localized('/tools/image-resizer')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.resizeImage')}</Link>
             <Link href={localized('/tools/extract-audio-from-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.extractAudio')}</Link>
           </nav>
+          <QuotaChip busy={isLoading} className="mt-4 justify-center" />
         </header>
 
         {/* Content Studio call-to-action */}

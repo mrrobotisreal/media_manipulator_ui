@@ -11,6 +11,7 @@ import type { TranscodeJobStage } from '@/lib/transcodeTypes';
 import type { DocumentScanContentMode } from '@/lib/documentScanTypes';
 import PageOrderList from './page-order-list';
 import PdfResultViewer from './pdf-result-viewer';
+import { QuotaChip } from '@/components/quota-chip';
 
 const FIXED_STAGE_KEYS = new Set(['queued', 'prepare', 'package', 'completed']);
 
@@ -193,6 +194,7 @@ const DocumentScanPanel: React.FC<DocumentScanPanelProps> = ({ enableReorder = f
 
   return (
     <div className="my-6 space-y-6">
+      <QuotaChip task="document_scan" />
       {/* Step 1 — add pages */}
       {!jobId && (
         <div

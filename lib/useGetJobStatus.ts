@@ -37,6 +37,8 @@ export interface ConversionJob {
   metadataAvailable?: { original: boolean; result: boolean };
   /** Metadata tags a strip job removed (MM08, additive; omitted by the API when 0). */
   strippedCount?: number;
+  /** Shared GPU-queue wait in ms (additive; absent until the API reports it). */
+  queueWaitMs?: number;
 }
 
 /**
@@ -77,6 +79,7 @@ const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
         ? { original: data.metadataAvailable.original === true, result: data.metadataAvailable.result === true }
         : undefined,
     strippedCount: typeof data.strippedCount === 'number' ? data.strippedCount : undefined,
+    queueWaitMs: typeof data.queueWaitMs === 'number' ? data.queueWaitMs : undefined,
   };
 };
 

@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { fetchTiers, isTopTier, type BillingInterval } from '@/lib/auth/accountApi';
+import { fetchTiers, isTopTier, type BillingInterval, type TiersResponse } from '@/lib/auth/accountApi';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { openPortal, readLastInterval, startCheckout, type BillingOutcome } from './checkout';
@@ -19,23 +19,46 @@ import { openPortal, readLastInterval, startCheckout, type BillingOutcome } from
 // One shared /api/tiers fetch for every surface that asks. Deliberately NOT react-query: the
 // upgrade hint renders inside the chromeless /embed and /dr trees, which mount no
 // QueryClientProvider, and useQuery would throw there.
-let purchasableCache: Promise<boolean> | null = null;
+let tiersCache: Promise<TiersResponse | null> | null = null;
+
+/** The one shared /api/tiers fetch; null when it failed (and the next caller retries). */
+function loadTiers(): Promise<TiersResponse | null> {
+  if (!tiersCache) {
+    tiersCache = fetchTiers().catch(() => {
+      tiersCache = null;
+      return null;
+    });
+  }
+  return tiersCache;
+}
 
 function loadPurchasable(): Promise<boolean> {
-  if (!purchasableCache) {
-    purchasableCache = fetchTiers()
-      .then((data) => data.premiumPurchasable === true)
-      .catch(() => {
-        purchasableCache = null;
-        return false;
-      });
-  }
-  return purchasableCache;
+  return loadTiers().then((data) => data?.premiumPurchasable === true);
 }
 
 /** Test seam: forget the cached /api/tiers verdict. */
 export function resetPurchasableCacheForTests(): void {
-  purchasableCache = null;
+  tiersCache = null;
+}
+
+/**
+ * The served /api/tiers table, for surfaces that must quote what Premium changes. Nothing
+ * here is a literal: the numbers come from the same endpoint the pricing page renders.
+ * undefined until loaded (or if it failed).
+ */
+export function useTiers(enabled = true): TiersResponse | undefined {
+  const [value, setValue] = React.useState<TiersResponse | undefined>(undefined);
+  React.useEffect(() => {
+    if (!enabled) return;
+    let live = true;
+    void loadTiers().then((v) => {
+      if (live && v) setValue(v);
+    });
+    return () => {
+      live = false;
+    };
+  }, [enabled]);
+  return value;
 }
 
 /** Whether Premium can be bought right now; undefined until known. */

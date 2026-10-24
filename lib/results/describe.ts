@@ -49,6 +49,12 @@ export interface DescribableJob {
   metadataAvailable?: { original: boolean; result: boolean };
   /** MM08 additive: tags a strip job removed. */
   strippedCount?: number;
+  /**
+   * Milliseconds the job waited in the shared GPU queue before it started (additive; no
+   * pipeline sends it yet). The queue line renders only when this exists, so an API that
+   * does not report waits can never produce a claim about one.
+   */
+  queueWaitMs?: number;
 }
 
 export interface ResultOriginal {
@@ -80,6 +86,8 @@ export interface ResultDescriptor {
   metadataAvailable?: { original: boolean; result: boolean };
   /** Tags a strip job removed, when the API said. */
   strippedCount?: number;
+  /** Shared-queue wait in ms, when the API reported one (MM33 queue line). */
+  queueWaitMs?: number;
 }
 
 export interface DescribeInput {
@@ -321,5 +329,6 @@ export function describe(input: DescribeInput): ResultDescriptor {
     ...(input.probe ? { probe: input.probe } : {}),
     ...(job.metadataAvailable ? { metadataAvailable: job.metadataAvailable } : {}),
     ...(job.strippedCount ? { strippedCount: job.strippedCount } : {}),
+    ...(typeof job.queueWaitMs === 'number' && job.queueWaitMs >= 0 ? { queueWaitMs: job.queueWaitMs } : {}),
   };
 }

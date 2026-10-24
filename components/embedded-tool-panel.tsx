@@ -41,6 +41,7 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { UploadLimitHint, useUpgradeNudge } from '@/components/account/upgrade-surfaces';
+import { QuotaChip } from '@/components/quota-chip';
 import { Panel } from '@/components/darkroom/panel';
 
 /**
@@ -881,6 +882,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           </p>
         </div>
       </div>
+      <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" />
 
       {(recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
         <div className="mb-4 flex items-start gap-2 rounded-md border border-primary/30 bg-primary/10 p-3">

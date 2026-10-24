@@ -368,6 +368,11 @@ export interface BillingStatus {
   portalAvailable: boolean;
   /** Present only while a team-granted Premium is live; expiresAt null = no end date. */
   manualGrant: { expiresAt: string | null } | null;
+  /**
+   * Consecutive paid billing periods on the current subscription. Additive and NOT sent by the
+   * API today (MM33 feature-detects it): the yearly nudge shows only when this is a number.
+   */
+  periodsPaid?: number;
 }
 
 /** GET /api/billing/session/:id. */
@@ -504,7 +509,7 @@ export async function verifyCheckoutSession(
 
 /** The body of a 403 from the output-height or saved-project checks. */
 export interface LimitRefusal {
-  error: 'output_height_limited' | 'project_limit_reached';
+  error: 'output_height_limited' | 'project_limit_reached' | 'file_too_large';
   message?: string;
   limit: number;
   requested?: number;
@@ -518,6 +523,15 @@ export function isLimitRefusal(body: unknown): body is LimitRefusal {
   if (typeof body !== 'object' || body === null) return false;
   const error = (body as { error?: unknown }).error;
   return error === 'output_height_limited' || error === 'project_limit_reached';
+}
+
+/**
+ * A 413 from an upload route carries no structured body, so the refusal is synthesized
+ * client-side. `limit` is 0 here ("unknown to the fetch layer"); the interstitial fills the
+ * caller's real cap from the account snapshot, and the upgrade path from the tier.
+ */
+export function fileTooLargeRefusal(): LimitRefusal {
+  return { error: 'file_too_large', limit: 0 };
 }
 
 

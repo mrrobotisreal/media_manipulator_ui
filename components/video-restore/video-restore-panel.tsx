@@ -15,6 +15,7 @@ import { ResultPanel } from '@/components/results/result-panel';
 import { useResultAnalytics } from '@/components/results/result-analytics';
 import useVideoRestoreResults from '@/lib/useVideoRestoreResults';
 import RestoreCompare from './restore-compare';
+import { QuotaChip } from '@/components/quota-chip';
 
 const ASSUMED_FPS = 30;
 
@@ -151,6 +152,7 @@ const VideoRestorePanel: React.FC = () => {
 
   return (
     <div className="my-6 space-y-6">
+      <QuotaChip task="ai_video_restoration" />
       {/* Step 1 — file */}
       {!file && (
         <div

@@ -472,9 +472,25 @@
       "body": "Your plan keeps up to {{limit}} saved Darkroom projects."
     },
     "topTier": "Your plan is already at the top. Lower the setting to continue.",
-    "close": "Not now",
+    "close": "Maybe later",
     "signup": "Create a free account",
-    "upgrade": "Upgrade to Premium"
+    "upgrade": "Upgrade to Premium",
+    "fileSize": {
+      "title": "This file is larger than your plan allows",
+      "body": "Your plan accepts files up to {{limit}}."
+    },
+    "premiumChange": {
+      "fileSize": "Premium accepts files up to {{value}}.",
+      "ops": "Premium allows {{value}} conversions a day.",
+      "opsUnlimited": "Premium has no daily conversion limit.",
+      "aiOps": "Premium allows {{value}} AI jobs a day.",
+      "aiOpsUnlimited": "Premium has no daily AI job limit.",
+      "exports": "Premium allows {{value}} exports a day.",
+      "exportsUnlimited": "Premium has no daily export limit.",
+      "height": "Premium outputs up to {{value}}p.",
+      "projects": "Premium keeps up to {{value}} saved projects.",
+      "projectsUnlimited": "Premium has no saved-project limit."
+    }
   },
   "recentStrip": {
     "title": "Recent",
@@ -487,5 +503,30 @@
     "openFailed": "Could not open this file. Try again.",
     "signupCta": "Guest files are deleted after 24 hours. Sign up to keep these for 6 months.",
     "signupAction": "Sign up free"
+  },
+  "quotaChip": {
+    "title": "See Premium plans",
+    "ops": {
+      "remaining": "{{remaining}} of {{limit}} conversions left today",
+      "empty": "All {{limit}} conversions used today"
+    },
+    "ai_ops": {
+      "remaining": "{{remaining}} of {{limit}} AI jobs left today",
+      "empty": "All {{limit}} AI jobs used today"
+    },
+    "export": {
+      "remaining": "{{remaining}} of {{limit}} exports left today",
+      "empty": "All {{limit}} exports used today"
+    }
+  },
+  "queueLine": {
+    "text": "This waited {{time}} on the shared queue. Premium jobs go first.",
+    "cta": "See Premium"
+  },
+  "yearlyNudge": {
+    "title": "Switch to yearly and get {{months}} months free",
+    "body": "You have paid for several months in a row. The yearly plan costs less than twelve monthly payments. You can switch any time from the billing portal.",
+    "cta": "Switch to yearly",
+    "dismiss": "No thanks"
   }
 }

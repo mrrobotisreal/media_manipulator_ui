@@ -50,6 +50,7 @@ import {
   subscribeQuotaState,
 } from './quotaBus';
 import type { InterstitialDetail } from '@/components/account/upgrade-interstitial';
+import { claimInterstitial, limitKeyOf } from './interstitialGate';
 import { formatResetsIn } from './formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 
@@ -180,6 +181,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => subscribeQuotaState(setObserved), []);
 
+  // MM33 frequency caps: one interstitial per distinct limit per session, never stacked on
+  // another one that is already open. (The sign-up panel is a different surface and the 429
+  // for anonymous callers still goes there.)
+  const openInterstitial = useCallback((input: InterstitialDetail) => {
+    if (!claimInterstitial(limitKeyOf(input))) return;
+    setInterstitial((current) => current ?? input);
+  }, []);
+
   // A 429 from anywhere in the app opens the panel already explaining what
   // happened. The headline is driven by the server's `upgradePath`, never
   // guessed here: telling someone to buy Premium when a free account would
@@ -204,7 +213,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // A free account at its cap has already signed up: sending it to a sign-up modal is
         // wrong, so 'premium' goes to the plan-limit dialog (Checkout) instead.
         if (detail.upgradePath === 'premium') {
-          setInterstitial({ kind: 'quota', detail });
+          openInterstitial({ kind: 'quota', detail });
           return;
         }
         setPrompt({
@@ -220,7 +229,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             .join(' '),
         });
       }),
-    [t],
+    [t, openInterstitial],
   );
 
   // 403 output_height_limited / project_limit_reached, published by authedFetch. The caller
@@ -229,9 +238,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () =>
       subscribeLimitRefusal((detail) => {
         analytics.track(EVENTS.QUOTA_EXCEEDED_SHOWN, { limit: detail.limit, scope: detail.error });
-        setInterstitial({ kind: 'limit', detail });
+        openInterstitial({ kind: 'limit', detail });
       }),
-    [],
+    [openInterstitial],
   );
 
   const signedIn = user !== null;

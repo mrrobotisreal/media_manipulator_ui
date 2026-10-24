@@ -29,4 +29,14 @@ describe('authedFetch 403 plan-limit refusals', () => {
     off();
     expect(seen).toEqual([]);
   });
+
+  it('publishes a file_too_large refusal on a 413 and returns the response untouched', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('too big', { status: 413 })));
+    const seen: unknown[] = [];
+    const off = subscribeLimitRefusal((d) => seen.push(d));
+    const res = await authedFetch('https://api.test/api/upload', { method: 'POST' });
+    off();
+    expect(res.status).toBe(413);
+    expect(seen).toEqual([{ error: 'file_too_large', limit: 0 }]);
+  });
 });

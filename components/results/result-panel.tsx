@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useMemo, useState, type ReactNode } from 'react';
 import { Download, Loader2, RotateCcw } from 'lucide-react';
 import { MetadataStrip } from '@/components/metadata/metadata-strip';
+import { QueueLine } from './queue-line';
 import { Panel } from '@/components/darkroom/panel';
 import { Segmented } from '@/components/darkroom/segmented';
 import { Stat } from '@/components/darkroom/stat';
@@ -498,6 +499,8 @@ function ResultPanelBody({
           </span>
         )}
       </div>
+
+      <QueueLine waitMs={descriptor.queueWaitMs} />
 
       {metadataStrip && active && !viewerOverride ? (
         <MetadataStrip
