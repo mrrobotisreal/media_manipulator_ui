@@ -74,6 +74,7 @@ import DraftRecoveryDialog from './draft-recovery-dialog';
 import VersionsPanel from './versions-panel';
 import PreferencesDialog from './preferences-dialog';
 import MediaBin from './media-bin';
+import { dispatchFolderDrop } from '@/lib/studio/binDrop';
 import PreviewSurface from './preview-surface';
 import Timeline from './timeline';
 import ExportDialog from './export-dialog';
@@ -480,6 +481,8 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
 
       // Asset dropped from the media bin onto a track (kind must match).
       if (data?.type === 'asset' && data.assetId) {
+        // Dropped on a media-bin folder chip: organize, no document edit.
+        if (dispatchFolderDrop(overId, data.assetId)) return;
         if (!targetTrack || !trackAcceptsAsset(targetTrack.kind, data.kind as StudioMediaKind)) return;
         st.addClipFromAssetToTrack(data.assetId, targetTrack.id);
         return;

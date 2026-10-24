@@ -94,6 +94,8 @@ const DEFAULT_AUDIO_CONFIG: StudioAudioConfig = {
 interface StudioState {
   project: StudioProject | null;
   assets: Record<string, StudioAssetEntry>;
+  /** true once the bin was seeded from the server (guards the offline-clip check). */
+  assetsLoaded: boolean;
   selectedClipIds: string[];
   selectedCaptionId: string | null;
   playhead: number;
@@ -159,6 +161,21 @@ interface StudioState {
   upsertAsset: (entry: StudioAssetEntry) => void;
   setAssetStatus: (assetId: string, status: AssetIngestStatus, error?: string) => void;
   setUploadProgress: (assetId: string, progress: number) => void;
+  /** Part 21: apply server-side bin organization (rename/folder/label). Not undoable, not in the EDL. */
+  patchAssetMeta: (assetId: string, patch: Pick<Partial<StudioAsset>, 'displayName' | 'folder' | 'label'>) => void;
+  /** Part 21: drop assets from the bin after a successful server delete. Not undoable. */
+  removeAssetEntries: (assetIds: string[]) => void;
+  /**
+   * Part 21 usage-protected delete: remove every clip referencing these assets
+   * as ONE undo entry (no ripple; neighbours stay put). Returns the removed clip count.
+   */
+  removeClipsForAssets: (assetIds: string[]) => number;
+  /**
+   * Part 21 voiceover: place an asset at the playhead on the first track of the
+   * right kind with room, creating a track when none has room. `at` overrides
+   * the playhead (voiceover passes where recording began).
+   */
+  placeAssetAtPlayhead: (assetId: string, at?: number) => void;
 
   // --- timeline editing ---
   addClipFromAsset: (assetId: string) => void;
@@ -622,6 +639,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   return {
   project: null,
   assets: {},
+  assetsLoaded: false,
   selectedClipIds: [],
   selectedCaptionId: null,
   playhead: 0,
@@ -687,6 +705,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
     set({
       project: null,
       assets: {},
+      assetsLoaded: false,
       selectedClipIds: [],
       selectedCaptionId: null,
       playhead: 0,
@@ -767,7 +786,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
           uploadProgress: 100,
         };
       }
-      return { assets: map };
+      return { assets: map, assetsLoaded: true };
     }),
 
   upsertAsset: (entry) =>
@@ -785,6 +804,86 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const existing = s.assets[assetId];
       if (!existing) return {};
       return { assets: { ...s.assets, [assetId]: { ...existing, uploadProgress: progress } } };
+    }),
+
+  patchAssetMeta: (assetId, patch) =>
+    set((s) => {
+      const existing = s.assets[assetId];
+      if (!existing) return {};
+      const asset = { ...existing.asset };
+      for (const key of ['displayName', 'folder', 'label'] as const) {
+        if (key in patch) asset[key] = patch[key] || undefined;
+      }
+      return { assets: { ...s.assets, [assetId]: { ...existing, asset } } };
+    }),
+
+  removeAssetEntries: (assetIds) =>
+    set((s) => {
+      const drop = new Set(assetIds);
+      const next: Record<string, StudioAssetEntry> = {};
+      for (const [id, entry] of Object.entries(s.assets)) if (!drop.has(id)) next[id] = entry;
+      return { assets: next };
+    }),
+
+  removeClipsForAssets: (assetIds) => {
+    const drop = new Set(assetIds);
+    let removed = 0;
+    mutate((s) => {
+      if (!s.project) return {};
+      const gone = new Set<string>();
+      const tracks = mapTracks(s.project.tracks, (track) => {
+        const hit = track.clips.filter((c) => c.assetId && drop.has(c.assetId));
+        if (hit.length === 0) return track;
+        for (const c of hit) gone.add(c.id);
+        return { ...track, clips: track.clips.filter((c) => !gone.has(c.id)) };
+      });
+      removed = gone.size;
+      if (removed === 0) return {};
+      return {
+        project: { ...s.project, tracks },
+        selectedClipIds: s.selectedClipIds.filter((id) => !gone.has(id)),
+        dirty: true,
+      };
+    });
+    return removed;
+  },
+
+  placeAssetAtPlayhead: (assetId, at) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const entry = s.assets[assetId];
+      if (!entry || entry.asset.mediaKind === 'lut') return {};
+      const kind: StudioTrackKind = entry.asset.mediaKind === 'audio' ? 'audio' : 'video';
+      const isImage = entry.asset.mediaKind === 'image';
+      const duration = isImage
+        ? DEFAULT_IMAGE_SECONDS
+        : entry.asset.durationSeconds > 0
+          ? entry.asset.durationSeconds
+          : 5;
+      const start = Math.max(0, at ?? s.playhead);
+      const end = start + duration;
+      const hasRoom = (t: StudioTrack) =>
+        t.kind === kind && !t.clips.some((c) => c.timelineStart < end && clipEnd(c) > start);
+      let tracks = ensureBaseTracks(s.project.tracks);
+      let target = tracks.find(hasRoom);
+      if (!target) {
+        const maxIndex = tracks.filter((t) => t.kind === kind).reduce((m, t) => Math.max(m, t.index), -1);
+        target = { id: uid(), kind, index: maxIndex + 1, muted: false, clips: [] };
+        tracks = [...tracks, target];
+      }
+      const targetId = target.id;
+      const newClipId = uid();
+      const clip: StudioClip = {
+        id: newClipId,
+        assetId,
+        streamIndex: 0,
+        timelineStart: start,
+        sourceIn: 0,
+        sourceOut: duration,
+        volume: !isImage && entry.asset.hasAudio ? 1 : undefined,
+      };
+      const next = tracks.map((t) => (t.id === targetId ? { ...t, clips: [...t.clips, clip] } : t));
+      return { project: { ...s.project, tracks: next }, selectedClipIds: [newClipId], dirty: true };
     }),
 
   // addClipFromAsset routes by media kind: video assets land on the first video

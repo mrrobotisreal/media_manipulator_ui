@@ -756,6 +756,11 @@ export interface StudioEditSummaryProps extends StudioHostProp {
   uiInvocations?: string;
   undoCount?: string;
   redoCount?: string;
+  /** Part 21: folder/label/rename/move actions in the media bin. */
+  binOrganizations?: string;
+  assetsDeleted?: string;
+  uploadRetries?: string;
+  voiceoversRecorded?: string;
   sessionSecondsBucket: string;
 }
 

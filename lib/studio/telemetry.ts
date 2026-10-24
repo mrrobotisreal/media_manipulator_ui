@@ -63,7 +63,12 @@ export type StudioEditCounter =
   | 'shortcutInvocations'
   | 'uiInvocations'
   | 'undoCount'
-  | 'redoCount';
+  | 'redoCount'
+  // Part 21 media bin.
+  | 'binOrganizations'
+  | 'assetsDeleted'
+  | 'uploadRetries'
+  | 'voiceoversRecorded';
 
 /** Counters that also keep a per-subkey breakdown map. */
 const SUBKEY_MAPS: Partial<Record<StudioEditCounter, 'transitionsByType' | 'keyframesByProperty' | 'effectsByType'>> = {

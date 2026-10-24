@@ -298,7 +298,9 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const activeNow = React.useMemo(() => resolveActiveClips(tracks, playhead), [tracks, playhead]);
   const topNow = React.useMemo(() => topVideoClip(activeNow), [activeNow]);
   // Title clips are assetless and always renderable — never "building".
-  const building = !!topNow && !topNow.clip.title && assets[topNow.clip.assetId]?.status !== 'ready';
+  // A clip whose asset is gone (undone usage-protected delete) is offline, not "building".
+  const building =
+    !!topNow && !topNow.clip.title && !!assets[topNow.clip.assetId] && assets[topNow.clip.assetId]?.status !== 'ready';
   const hasClips = React.useMemo(() => tracks.some((tr) => tr.clips.length > 0), [tracks]);
 
   // Warm the voice-track clips' waveform peaks so the level-driven ducking
