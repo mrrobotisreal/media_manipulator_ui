@@ -85,6 +85,12 @@ export interface StudioBackendCapabilities {
    * existing presign/complete flow).
    */
   binManagement: boolean;
+  /**
+   * Part 17: POST /assets/:id/reverse-proxy + GET /assets/:id/proxy-reversed.
+   * CreaTV's Darkroom API has neither, so the Reverse toggle is disabled there
+   * (speed and freeze work everywhere — they need no server help in preview).
+   */
+  reverseProxy: boolean;
 }
 
 export interface StudioBackendScope {
@@ -113,6 +119,8 @@ export interface StudioBackend {
 
   // Asset passthrough URLs (origin differs per ecosystem).
   proxyUrl: (assetId: string) => string;
+  /** Reversed preview proxy passthrough (MM only today; part 17). */
+  proxyReversedUrl?: (assetId: string) => string;
   spriteUrl: (assetId: string) => string;
   peaksUrl?: (assetId: string) => string;
   /** Raw original-file passthrough used to load .cube LUT assets (MM only today). */
@@ -168,6 +176,7 @@ export function createMmBackend(): StudioBackend {
       peaks: true,
       lut: true,
       binManagement: true,
+      reverseProxy: true,
     },
     // Sync, so it can only carry the session id; the Firebase token needs an
     // await. Everything that actually goes over the wire uses fetch() below,
@@ -180,6 +189,7 @@ export function createMmBackend(): StudioBackend {
     fetch: (url, init) => authedFetch(url, init),
 
     proxyUrl: (assetId) => `${base()}/studio/assets/${assetId}/proxy`,
+    proxyReversedUrl: (assetId) => `${base()}/studio/assets/${assetId}/proxy-reversed`,
     spriteUrl: (assetId) => `${base()}/studio/assets/${assetId}/sprite`,
     peaksUrl: (assetId) => `${base()}/studio/assets/${assetId}/peaks`,
     assetFileUrl: (assetId) => `${base()}/studio/assets/${assetId}/file`,
@@ -278,6 +288,7 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
     peaks: true,
     lut: true,
     binManagement: false,
+    reverseProxy: false,
     ...opts.capabilities,
   };
 

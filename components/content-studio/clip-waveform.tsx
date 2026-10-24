@@ -4,6 +4,7 @@ import React from 'react';
 import { usePeaks } from '@/lib/studio/usePeaks';
 import { useStudioStore } from '@/lib/studioStore';
 import { clipDuration } from '@/lib/studio/previewEngine';
+import { isReversed } from '@/lib/studio/speed';
 import type { StudioClip, StudioVolumeKeyframe } from '@/lib/studioTypes';
 
 /**
@@ -40,6 +41,8 @@ const ClipWaveform: React.FC<Props> = ({ clip, assetId, width, height, selected,
   const removeVolumeKeyframe = useStudioStore((s) => s.removeVolumeKeyframe);
 
   const dur = clipDuration(clip);
+  const span = Math.max(0, clip.sourceOut - clip.sourceIn);
+  const reversed = isReversed(clip);
   const kfs = clip.volumeKeyframes;
   const flatVolume = clip.volume ?? 1;
   const peaks = peaksQuery.data;
@@ -68,8 +71,14 @@ const ClipWaveform: React.FC<Props> = ({ clip, assetId, width, height, selected,
         ctx.fillStyle = selected ? 'rgba(125,211,252,0.85)' : 'rgba(125,211,252,0.5)';
         const bps = peaks.bucketsPerSecond;
         for (let x = 0; x < devW; x += 1) {
-          const t0 = clip.sourceIn + (x / devW) * dur;
-          const t1 = clip.sourceIn + ((x + 1) / devW) * dur;
+          // Speed-aware (part 17): the bar maps over the SOURCE span, mirrored
+          // for a reversed clip (its audio plays tail-first).
+          const f0 = x / devW;
+          const f1 = (x + 1) / devW;
+          const s0 = reversed ? clip.sourceOut - f0 * span : clip.sourceIn + f0 * span;
+          const s1 = reversed ? clip.sourceOut - f1 * span : clip.sourceIn + f1 * span;
+          const t0 = Math.min(s0, s1);
+          const t1 = Math.max(s0, s1);
           const b0 = Math.floor(t0 * bps);
           const b1 = Math.max(b0, Math.floor(t1 * bps));
           const stride = Math.max(1, Math.floor((b1 - b0) / 32));
@@ -132,7 +141,7 @@ const ClipWaveform: React.FC<Props> = ({ clip, assetId, width, height, selected,
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [peaks, width, height, selected, dur, clip.sourceIn, flatVolume, kfs, showRubberBand]);
+  }, [peaks, width, height, selected, dur, span, reversed, clip.sourceIn, clip.sourceOut, flatVolume, kfs, showRubberBand]);
 
   // --- rubber-band pointer editing (CSS-space coordinates) ---
   const hitDot = (localX: number, localY: number): number => {

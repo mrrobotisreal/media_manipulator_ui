@@ -279,6 +279,39 @@ export const PARITY_TOLERANCES: readonly ParityTolerance[] = [
     status: 'bounded',
     note: 'reasoned, not measured: RGBA PNG over video; bt709 matrix + sRGB proxy vs original; calibrate against the identity-EDL noise floor',
   },
+  // --- Part 17: speed controls. Both pipelines SAMPLE frames (no optical flow):
+  // the export retimes with setpts, the preview seeks the mapped source time.
+  // Thresholds are REASONED, NOT MEASURED (workstation calibration pending);
+  // frame-boundary rounding differs by up to half an output frame, so sample
+  // frames sit away from clip boundaries. ---
+  {
+    id: 'speed_up',
+    metric: 'psnr',
+    threshold: 36,
+    status: 'bounded',
+    note: 'reasoned, not measured: 2x via setpts=(PTS-STARTPTS)/2 vs preview seek of sourceIn+u*2; residual = which source frame each side picks (half-frame rounding) on a moving test pattern',
+  },
+  {
+    id: 'speed_slow',
+    metric: 'psnr',
+    threshold: 36,
+    status: 'bounded',
+    note: 'reasoned, not measured: 0.5x slow-mo repeats source frames; the preview holds the decoded frame, the export holds via fps; a one-frame phase difference is the residual',
+  },
+  {
+    id: 'speed_reverse',
+    metric: 'psnr',
+    threshold: 35,
+    status: 'bounded',
+    note: 'reasoned, not measured: preview reads the reversed proxy fixture at mirrored time, the export applies reverse to the trimmed original; reversed GOP seeks can land one frame off',
+  },
+  {
+    id: 'speed_freeze',
+    metric: 'psnr',
+    threshold: 38,
+    status: 'closed',
+    note: 'reasoned, not measured: both sides hold the one decoded frame (tpad=clone vs constant sourceTime); only the frame pick at the 1.5 s seek can differ',
+  },
 ] as const;
 
 export function parityTolerance(id: string): ParityTolerance | undefined {

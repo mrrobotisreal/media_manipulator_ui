@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
+import { toast } from 'sonner';
 import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond, ImageIcon, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackAcceptsAsset } from '@/lib/studio/trackRules';
@@ -10,7 +11,7 @@ import { clipTrimBound } from '@/lib/studio/clipTrimBound';
 import { analytics, EVENTS, imageHoldBucket } from '@/lib/analytics';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
-import { useStudioStore } from '@/lib/studioStore';
+import { useStudioStore, clipDuration } from '@/lib/studioStore';
 import { studioSpriteUrl } from '@/lib/studio/previewEngine';
 import {
   quantizeScrollLeft,
@@ -32,6 +33,8 @@ import { TRANSITION_TYPE_GROUPS } from '@/lib/studio/effectRegistry';
 import { clipKeyframeLanes, type KeyframePropertyGroup } from '@/lib/studio/keyframes';
 import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { editSummary, studioHost } from '@/lib/studio/telemetry';
+import { trimPatch, clipSpeed, isReversed, isFreezeClip } from '@/lib/studio/speed';
+import { speedDialog } from '@/lib/studio/speedDialog';
 import ClipWaveform from './clip-waveform';
 import { useUndoGesture } from './useUndoGesture';
 import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './caption-lane';
@@ -40,7 +43,6 @@ import type { StudioClip, StudioMediaKind, StudioTrack, StudioTransitionType } f
 const RULER_HEIGHT = 28;
 const TRACK_HEIGHT = 56;
 const LABEL_WIDTH = 64;
-const MIN_CLIP = 0.1;
 const KEYFRAME_STRIP_HEIGHT = 20;
 
 // Keyframe strip diamond styling per property group (part 15): color + a small
@@ -57,8 +59,6 @@ const KF_GROUP_TOP: Record<KeyframePropertyGroup, number> = {
   audio: 8,
   effects: 12,
 };
-
-const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 // Display order: video tracks (index asc) on top, audio tracks (index asc) below.
 function orderTracks(tracks: StudioTrack[]): StudioTrack[] {
@@ -307,16 +307,14 @@ const Timeline: React.FC = () => {
       const d = trimRef.current;
       if (!d) return;
       const deltaSec = (e.clientX - d.startX) / zoom;
+      // Speed-aware (part 17): the drag is in TIMELINE seconds; trimPatch maps
+      // it through the clip's speed/direction (identical to the classic
+      // sourceIn/sourceOut arithmetic at 1x forward).
+      const patch = trimPatch(d.orig, d.side, deltaSec, { assetDuration: d.assetDur });
       if (d.side === 'l') {
-        const maxDelta = d.orig.sourceOut - MIN_CLIP - d.orig.sourceIn;
-        const minDelta = Math.max(-d.orig.sourceIn, -d.orig.timelineStart);
-        const delta = clamp(deltaSec, minDelta, maxDelta);
-        updateClip(d.clipId, { sourceIn: d.orig.sourceIn + delta, timelineStart: d.orig.timelineStart + delta });
+        updateClip(d.clipId, { sourceIn: patch.sourceIn, sourceOut: patch.sourceOut, timelineStart: patch.timelineStart });
       } else {
-        const minDelta = d.orig.sourceIn + MIN_CLIP - d.orig.sourceOut;
-        const maxDelta = (d.assetDur > 0 ? d.assetDur : d.orig.sourceOut) - d.orig.sourceOut;
-        const delta = clamp(deltaSec, minDelta, maxDelta);
-        updateClip(d.clipId, { sourceOut: d.orig.sourceOut + delta });
+        updateClip(d.clipId, { sourceIn: patch.sourceIn, sourceOut: patch.sourceOut });
       }
     },
     [updateClip, zoom],
@@ -703,7 +701,16 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   const isImage = entry?.asset.mediaKind === 'image';
   const assetDur = clipTrimBound(entry?.asset, isTitle);
   const ready = entry?.status === 'ready';
-  const spriteReady = ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video' && !isImage;
+  // Speed controls (part 17): the filmstrip scales with the rate, mirrors for
+  // reverse, and is replaced by a held-frame chip for freeze clips.
+  const speedRate = clipSpeed(clip);
+  const reversedClip = isReversed(clip);
+  const freezeClip = isFreezeClip(clip);
+  const speedBadge = freezeClip
+    ? t('contentStudio.speed.badgeFreeze')
+    : `${reversedClip ? '◀ ' : ''}${speedRate !== 1 ? `${Math.round(speedRate * 1000) / 10}%` : ''}`.trim();
+  const spriteReady =
+    ready && !!entry?.asset.thumbnailSpriteUrl && track.kind === 'video' && !isImage && !freezeClip;
   const imageThumb = isImage && !!entry?.asset.thumbnailSpriteUrl;
   // Waveform: full block on audio tracks, a bottom strip (~35%) under the
   // filmstrip on video-track clips that carry audio. Rubber-band editing only on
@@ -715,7 +722,7 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
 
   // --- typed transition (part 14): overlap region + drag-to-retime -----------
   const transition = clip.transition;
-  const clipDur = Math.max(0, clip.sourceOut - clip.sourceIn);
+  const clipDur = clipDuration(clip);
   const transW = transition ? Math.min(transition.durationSeconds, clipDur) * zoom : 0;
   const hasPrev = track.clips.some((c) => c.id !== clip.id && c.timelineStart < clip.timelineStart);
   const retimeRef = React.useRef<null | { startX: number; d0: number }>(null);
@@ -784,6 +791,20 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
       durationSeconds: clip.transition?.durationSeconds ?? defaultTransitionSeconds(track.kind),
     });
   };
+  // Speed controls (part 17): not offered for stills or generated titles.
+  const canRetime = !isTitle && !isImage && !!entry;
+  const canFreeze = canRetime && track.kind === 'video' && !freezeClip && entry?.asset.mediaKind === 'video';
+  const openSpeedDialog = () => {
+    editSummary.increment('uiInvocations');
+    speedDialog.open(clip.id);
+  };
+  const addFreezeFrame = () => {
+    editSummary.increment('speedChanges');
+    editSummary.increment('uiInvocations');
+    const res = useStudioStore.getState().addFreezeFrame(clip.id);
+    if (!res) toast.message(t('contentStudio.speed.freezeNoRoom'));
+    else if (res.bounded) toast.message(t('contentStudio.speed.freezeBounded'));
+  };
   const removeTransition = () => {
     editSummary.increment('uiInvocations');
     useStudioStore.getState().setClipTransition(clip.id, null);
@@ -818,8 +839,10 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
           className="absolute inset-0 opacity-40 bg-no-repeat pointer-events-none"
           style={{
             backgroundImage: `url(${studioSpriteUrl(clip.assetId)})`,
-            backgroundSize: `${assetDur * zoom}px 100%`,
-            backgroundPositionX: `${-clip.sourceIn * zoom}px`,
+            backgroundSize: `${(assetDur * zoom) / speedRate}px 100%`,
+            backgroundPositionX: `${(-clip.sourceIn * zoom) / speedRate}px`,
+            // A reversed clip plays its source tail-first: mirror the strip.
+            transform: reversedClip ? 'scaleX(-1)' : undefined,
           }}
         />
       )}
@@ -861,6 +884,14 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
         <div className="absolute inset-x-0 top-0 px-1.5 py-0.5 text-[10px] text-foreground truncate bg-surface-0/30 pointer-events-none flex items-center gap-1">
           {isImage && <ImageIcon className="h-3 w-3 shrink-0 text-primary" aria-hidden />}
           <span className="truncate">{label}</span>
+          {speedBadge && (
+            <span
+              className="ml-auto shrink-0 rounded bg-premium/25 px-1 text-[9px] font-semibold tabular-nums text-premium"
+              title={t('contentStudio.speed.badgeTitle')}
+            >
+              {speedBadge}
+            </span>
+          )}
         </div>
       )}
       {/* Trim handles. The visual bar stays 8px so the timeline reads
@@ -986,6 +1017,19 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
               {t('contentStudio.timeline.contextRemoveTransition')}
             </ContextMenuItem>
           </>
+        )}
+        {canRetime && (
+          <>
+            <ContextMenuSeparator />
+            <ContextMenuItem className="text-xs" onSelect={openSpeedDialog}>
+              {t('contentStudio.speed.contextSpeedDuration')}
+            </ContextMenuItem>
+          </>
+        )}
+        {canFreeze && (
+          <ContextMenuItem className="text-xs" onSelect={addFreezeFrame}>
+            {t('contentStudio.speed.contextAddFreeze')}
+          </ContextMenuItem>
         )}
         {/* Legacy convert (part 16): clips bearing textOverlays offer a
             one-click upgrade to a first-class title clip (one undo entry). */}

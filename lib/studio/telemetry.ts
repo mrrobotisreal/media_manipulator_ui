@@ -11,7 +11,7 @@
  *
  * THE STANDING RULE (roadmap rule 11): from part 10 on, EVERY new user action
  * added to the editor must increment this aggregator. Counters for features
- * that have not shipped yet (transitions, keyframes, titles, speed, markers,
+ * that have not shipped yet (transitions, keyframes, titles, markers,
  * mixer — parts 14–21) exist now and simply stay at zero; those parts only add
  * increment calls, never new plumbing.
  *

@@ -417,3 +417,36 @@ describe('clipValuesAt', () => {
     expect(clipValuesAt(c, 2).effects).toEqual({ 'lum1.exposure': 1 });
   });
 });
+
+describe('speed controls in the resolver (part 17)', () => {
+  it('clipDuration/clipEnd are speed-aware', () => {
+    const c = clip('c', 2, 6, { speed: 2 }); // 6s of source at 2x
+    expect(clipDuration(c)).toBe(3);
+    expect(clipEnd(c)).toBe(5);
+    expect(clipDuration(clip('f', 0, 2, { freeze: { sourceTime: 1 }, speed: 4 }))).toBe(2);
+  });
+
+  it('timelineDuration uses the shrunken end; the gap remains', () => {
+    const tr = [track('v', 'video', 0, [clip('a', 0, 8, { speed: 4 }), clip('b', 8, 2)])];
+    expect(timelineDuration(tr)).toBe(10);
+    expect(clipEnd(tr[0].clips[0])).toBe(2); // a ends at 2 -> gap [2, 8)
+  });
+
+  it('active only inside the retimed span, with the mapped source time', () => {
+    const tr = [track('v', 'video', 0, [clip('a', 10, 6, { sourceIn: 2, sourceOut: 8, speed: 2 })])];
+    expect(resolveActiveClips(tr, 9.99)).toHaveLength(0);
+    expect(resolveActiveClips(tr, 11)[0].sourceTime).toBe(4);
+    expect(resolveActiveClips(tr, 12.99)[0].sourceTime).toBeCloseTo(7.98, 9);
+    expect(resolveActiveClips(tr, 13)).toHaveLength(0); // [10, 13)
+  });
+
+  it('reverse mirrors; freeze is constant over any duration', () => {
+    const rev = [track('v', 'video', 0, [clip('a', 0, 6, { sourceIn: 2, sourceOut: 8, reverse: true })])];
+    expect(resolveActiveClips(rev, 0)[0].sourceTime).toBe(8);
+    expect(resolveActiveClips(rev, 2)[0].sourceTime).toBe(6);
+    const fz = [track('v', 'video', 0, [clip('f', 5, 4, { sourceIn: 3, sourceOut: 7, freeze: { sourceTime: 3.5 } })])];
+    expect(resolveActiveClips(fz, 5)[0].sourceTime).toBe(3.5);
+    expect(resolveActiveClips(fz, 8.5)[0].sourceTime).toBe(3.5);
+    expect(resolveActiveClips(fz, 9)).toHaveLength(0);
+  });
+});

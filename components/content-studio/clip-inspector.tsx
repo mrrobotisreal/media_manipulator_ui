@@ -3,7 +3,7 @@
 import React from 'react';
 import {
   Sparkles, Plus, Trash2, Type, ChevronDown, ChevronLeft, ChevronRight, Move, Crop, Blend, Layers,
-  Volume2, Pipette, ArrowUp, ArrowDown, RotateCcw, Timer, Diamond,
+  Volume2, Pipette, ArrowUp, ArrowDown, RotateCcw, Timer, Diamond, Gauge,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,6 +30,7 @@ import {
   KEYFRAME_HIT_EPSILON,
 } from '@/lib/studio/keyframes';
 import { useUndoGesture } from './useUndoGesture';
+import { SpeedControls } from './speed-controls';
 import { editSummary } from '@/lib/studio/telemetry';
 import { Panel } from '@/components/darkroom/panel';
 import { STUDIO_TITLE_FONTS, titleFontByFamily } from '@/lib/studio/titleFonts';
@@ -231,8 +232,8 @@ const ClipInspector: React.FC = () => {
 
   const { clip, track } = found;
   const isVideo = track.kind === 'video';
-  // Still images carry no audio and no source speed: the Audio section (and the
-  // Speed controls when part 17 lands) must never render for them.
+  // Still images carry no audio and no source speed: the Audio and Speed
+  // sections must never render for them (nor for generated title clips).
   const isImageClip = assets[clip.assetId]?.asset.mediaKind === 'image';
   const hasAudio = !isImageClip && !!assets[clip.assetId]?.asset.hasAudio;
   const lutAssets = Object.values(assets).filter((a) => a.asset.mediaKind === 'lut');
@@ -259,7 +260,9 @@ const ClipInspector: React.FC = () => {
         </>
       )}
 
-      {hasAudio && <AudioSection clip={clip} />}
+      {!isImageClip && !clip.title && <SpeedSection clip={clip} hasAudio={hasAudio} />}
+
+      {hasAudio && !clip.freeze && <AudioSection clip={clip} />}
 
       <TransitionSection clip={clip} track={track} />
 
@@ -662,6 +665,21 @@ const EffectCard: React.FC<{
         </div>
       )}
     </div>
+  );
+};
+
+// --- Speed (part 17) ---------------------------------------------------------
+
+const SpeedSection: React.FC<{ clip: StudioClip; hasAudio: boolean }> = ({ clip, hasAudio }) => {
+  const { t } = useLocalization('interface');
+  return (
+    <Section
+      title={t('contentStudio.inspector.sectionSpeed')}
+      icon={<Gauge className="w-3.5 h-3.5" />}
+      defaultOpen={false}
+    >
+      <SpeedControls clip={clip} hasAudio={hasAudio} />
+    </Section>
   );
 };
 

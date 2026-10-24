@@ -423,7 +423,8 @@
         "moveUp": "Перемістити вгору",
         "moveDown": "Перемістити вниз",
         "remove": "Видалити шар"
-      }
+      },
+      "sectionSpeed": "Speed"
     },
     "export": {
       "button": "Експорт у MP4",
@@ -496,6 +497,33 @@
       "positionTop": "Вгорі",
       "maxWidth": "Максимальна ширина",
       "add": "Додати субтитр"
+    },
+    "speed": {
+      "badgeFreeze": "Freeze",
+      "badgeTitle": "Speed / direction",
+      "speed": "Speed",
+      "speedPercent": "Speed percent",
+      "duration": "Duration",
+      "durationSeconds": "Duration in seconds",
+      "secondsUnit": "s",
+      "noRippleHint": "Neighboring clips never move. Speeding up leaves a gap; slowing down stops at the next clip.",
+      "freezeHint": "A held frame. Its length is bounded by the next clip.",
+      "reverse": "Reverse",
+      "reverseUnavailable": "Reverse isn't available in this host.",
+      "maintainPitch": "Maintain audio pitch",
+      "processingReverse": "Processing reverse preview…",
+      "reverseFailed": "Couldn't build the reverse preview",
+      "contextSpeedDuration": "Speed/Duration…",
+      "contextAddFreeze": "Add freeze frame",
+      "freezeNoRoom": "No room after this clip for a freeze frame",
+      "freezeBounded": "Freeze frame shortened to fit before the next clip",
+      "dialogTitle": "Speed / Duration",
+      "dialogDescription": "Change the clip's speed, or set the duration you want and Darkroom works out the speed.",
+      "clamp": {
+        "neighbor": "Slowed down as far as the next clip allows",
+        "range": "Speed limited to 10%–1000%",
+        "minLength": "Speed limited so the clip stays at least 0.1 s long"
+      }
     }
   },
   "toolPage": {

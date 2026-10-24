@@ -1,5 +1,6 @@
 import { getActiveStudioBackend } from '@/lib/studio/studioBackend';
 import { valueAt } from '@/lib/studio/ease';
+import { clipTimelineDuration, sourceTimeAt } from '@/lib/studio/speed';
 import type {
   StudioClip,
   StudioTrack,
@@ -18,9 +19,12 @@ import type {
  * elements → canvas/WebCodecs) without touching the timeline math.
  */
 
-/** Effective on-timeline duration of a clip. */
+/**
+ * Effective on-timeline duration of a clip: the source span divided by its
+ * speed (part 17); a freeze or an unset speed is the raw span.
+ */
 export function clipDuration(c: StudioClip): number {
-  return Math.max(0, c.sourceOut - c.sourceIn);
+  return clipTimelineDuration(c);
 }
 
 /** On-timeline end position (seconds) of a clip. */
@@ -69,7 +73,7 @@ export function resolveActiveClips(tracks: StudioTrack[], t: number): ActiveClip
           trackKind: track.kind,
           trackIndex: track.index,
           trackMuted: track.muted,
-          sourceTime: clip.sourceIn + (t - start),
+          sourceTime: sourceTimeAt(clip, t),
         });
         // No break: clips on a track may overlap during a cross-dissolve, so a
         // track can have two active clips. The renderer composites them.
@@ -396,6 +400,11 @@ export function topVideoClip(active: ActiveClip[]): ActiveClip | undefined {
 
 export function studioProxyUrl(assetId: string): string {
   return getActiveStudioBackend().proxyUrl(assetId);
+}
+
+/** Reversed preview proxy (part 17), or '' when the backend has none. */
+export function studioProxyReversedUrl(assetId: string): string {
+  return getActiveStudioBackend().proxyReversedUrl?.(assetId) ?? '';
 }
 
 export function studioSpriteUrl(assetId: string): string {

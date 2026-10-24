@@ -509,6 +509,8 @@ export const studioAssetSchema = z.object({
   thumbnailSpriteUrl: z.string().optional(),
   /** audio waveform peaks JSON (present once generated/backfilled) */
   s3KeyPeaks: z.string().optional(),
+  /** reversed 720p preview proxy (part 17); present once the reverse_proxy job finished */
+  s3KeyProxyReversed: z.string().optional(),
   mediaKind: studioMediaKindSchema,
   durationSeconds: z.number().min(0),
   width: z.number().int().optional(),

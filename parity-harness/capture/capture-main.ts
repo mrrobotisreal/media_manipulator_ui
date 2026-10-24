@@ -2,6 +2,7 @@ import { GLCompositor } from '../../lib/studio/glCompositor';
 import { parseCubeLut } from '../../lib/studio/lutParser';
 import { rasterTitle, titleRasterKey } from '../../lib/studio/titleRaster';
 import { registerStudioFontFaces } from '../../lib/studio/titleFonts';
+import { reversedProxyTime, sourceTimeAt, isReversed } from '../../lib/studio/speed';
 import { buildLayersAtTime, orderedVideoClips, type LayerSource } from './buildLayers';
 import type { GoldenFile, GoldenVariantKey } from '../goldenTypes';
 
@@ -220,8 +221,19 @@ const parity = {
         continue;
       }
       if (!asset || asset.kind !== 'video') continue;
-      const el = videoFor(fixtureBase, asset.file);
-      await seekTo(el, a.clip.sourceIn + (tSeek - a.clip.timelineStart));
+      // Speed controls (part 17): the same source-time mapping the editor
+      // uses; a reversed clip reads the reversed fixture with mirrored time,
+      // like the preview's reversed-proxy swap.
+      let el: HTMLVideoElement;
+      let seekT = sourceTimeAt(a.clip, tSeek);
+      if (isReversed(a.clip) && asset.reversedFile) {
+        el = videoFor(fixtureBase, asset.reversedFile);
+        await ready(el);
+        seekT = reversedProxyTime(seekT, el.duration);
+      } else {
+        el = videoFor(fixtureBase, asset.file);
+      }
+      await seekTo(el, seekT);
       if (!comp.uploadSlot(i, el, ++uploadCounter)) {
         throw new Error(`uploadSlot failed for ${asset.file} (slot ${i})`);
       }

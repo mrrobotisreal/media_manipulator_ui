@@ -79,6 +79,7 @@ import PreviewSurface from './preview-surface';
 import Timeline from './timeline';
 import ExportDialog from './export-dialog';
 import ClipInspector from './clip-inspector';
+import { SpeedDialog } from './speed-controls';
 import CaptionEditor from './caption-editor';
 import AudioDuckingPopover from './audio-ducking';
 import type { FocusModeApi } from './useFocusMode';
@@ -773,6 +774,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           <VersionsPanel projectId={projectId} />
           <AudioDuckingPopover />
           <PreferencesDialog />
+          <SpeedDialog />
           <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
           {focusMode ? <FocusControls api={focusMode} /> : null}
         </div>

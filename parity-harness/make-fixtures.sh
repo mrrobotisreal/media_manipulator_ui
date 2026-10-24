@@ -26,6 +26,11 @@ VID_ARGS=(-pix_fmt yuv420p -c:v libx264 -preset veryfast -crf 1
 ffmpeg -y -hide_banner -loglevel error \
   -f lavfi -i "testsrc2=s=640x360:r=30:d=4" "${VID_ARGS[@]}" srcA.mp4
 
+# Reversed copy of srcA (part 17): stands in for the server's reversed preview
+# proxy in the capture leg of the speed_reverse scenario.
+ffmpeg -y -hide_banner -loglevel error \
+  -i srcA.mp4 -vf reverse "${VID_ARGS[@]}" srcA_rev.mp4
+
 # Second, visually distinct clip (dissolve/blend partner).
 ffmpeg -y -hide_banner -loglevel error \
   -f lavfi -i "testsrc=s=640x360:r=30:d=4" "${VID_ARGS[@]}" srcB.mp4
