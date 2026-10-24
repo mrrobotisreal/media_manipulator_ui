@@ -13,6 +13,7 @@ import Footer from '@/components/footer';
 // MobileAnchorAd is intentionally NOT rendered — the sticky mobile anchor ad
 // is disabled for the AdSense review build.
 import { ConsentGate } from '@/components/consent/consent-gate';
+import { AccountTourHost } from '@/components/onboarding/account-tour-host';
 import { AnalyticsProvider } from '@/lib/analytics';
 import { AuthProvider } from '@/lib/auth/AuthProvider';
 
@@ -116,6 +117,8 @@ export default function Providers({
                 screen-reader user only finds after traversing the entire page.
                 Consent has to be offered, not discoverable. */}
             <ConsentGate />
+            {/* MM35: renders nothing for guests; the tour itself is a lazy chunk. */}
+            <AccountTourHost />
             <main className="flex-1">{children}</main>
             <Footer />
             <Toaster />
