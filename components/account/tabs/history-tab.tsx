@@ -47,6 +47,8 @@ import {
 } from '@/lib/account/retention';
 import { requireToken } from '@/lib/account/requireToken';
 import { describe } from '@/lib/results/describe';
+import { useShareAction, type ShareMessages } from '@/components/share/use-share-action';
+import { isShareable, revokeShareLinks } from '@/lib/share/shareApi';
 import { cn } from '@/lib/utils';
 
 /** Lazy: the inspector, catalog and metadata strings load only when a row's Metadata is opened. */
@@ -87,10 +89,14 @@ interface RowProps {
   onPreview: (entry: HistoryEntry) => void;
   onKeep: (entry: HistoryEntry, hours: number) => void;
   onDelete: (entry: HistoryEntry) => void;
+  /** MM32: ask to revoke every live link of the entry (the tab owns the confirm dialog). */
+  onRevokeLinks: (entry: HistoryEntry) => void;
+  shareMessages: ShareMessages;
+  formatExpiry: (iso: string) => string;
 }
 
-const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, onPreview, onKeep, onDelete }) => {
-  const { formatDate, language } = useLocalization('interface');
+const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, onPreview, onKeep, onDelete, onRevokeLinks, shareMessages, formatExpiry }) => {
+  const { t, formatDate, language } = useLocalization('interface');
   const [metaOpen, setMetaOpen] = React.useState(false);
   const href = historyDownloadHref(entry);
   const name = entry.resultFileName || toolLabel(entry, copy);
@@ -101,6 +107,10 @@ const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, 
   const hasMetadata = !!metadata && (metadata.original || metadata.result);
   const deadline = deadlineOf(entry);
   const created = formatDate(entry.createdAt, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const kind = describe({ job: { id: entry.jobId, resultFileName: entry.resultFileName }, task: entry.tool, mode: entry.mode }).kind;
+  const canShare =
+    !entry.expired && entry.status === 'completed' && !!href && isShareable(kind, entry.tool, entry.mode);
+  const sharing = useShareAction({ jobId: entry.jobId, kind, source: 'history', messages: shareMessages, formatExpiry });
   const canKeep = !entry.expired && !!entry.retainedObjectId && entry.status === 'completed';
 
   return (
@@ -183,6 +193,16 @@ const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, 
                 {copy.download}
               </a>
             ) : null}
+            {canShare ? (
+              <>
+                <button type="button" data-testid="history-share-button" disabled={sharing.busy} onClick={() => void sharing.share()} className={TEXT_BUTTON_CLASS}>
+                  {t('share.button')}
+                </button>
+                <button type="button" data-testid="history-revoke-button" onClick={() => onRevokeLinks(entry)} className={TEXT_BUTTON_CLASS}>
+                  {t('share.revokeLinks')}
+                </button>
+              </>
+            ) : null}
             {canKeep ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -206,6 +226,18 @@ const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, 
           </>
         )}
       </div>
+      {canShare ? (
+        <ConfirmDialog
+          open={sharing.limitOpen}
+          onOpenChange={sharing.setLimitOpen}
+          title={t('share.limitTitle')}
+          description={t('share.limitBody')}
+          confirmLabel={t('share.revokeConfirm')}
+          cancelLabel={t('share.cancel')}
+          busy={sharing.revoking}
+          onConfirm={() => void sharing.revoke()}
+        />
+      ) : null}
       {hasMetadata && metaOpen ? (
         <HistoryMetadataDialog jobId={entry.jobId} available={metadata} open={metaOpen} onOpenChange={setMetaOpen} />
       ) : null}
@@ -234,6 +266,41 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ copy, uid }) => {
   const [bulkOpen, setBulkOpen] = React.useState(false);
   const [bulk, setBulk] = React.useState<{ done: number; total: number; failed: string[]; running: boolean } | null>(null);
   const [live, setLive] = React.useState('');
+  const [toRevoke, setToRevoke] = React.useState<HistoryEntry | null>(null);
+  const { t, formatDate: formatLocalDate } = useLocalization('interface');
+  const shareMessages = React.useMemo<ShareMessages>(
+    () => ({
+      copied: (when) => fmt(t('share.copied'), { when }),
+      copyManually: (url) => fmt(t('share.copyManually'), { url }),
+      notAllowed: t('share.notAllowed'),
+      expired: t('share.expired'),
+      limit: t('share.limitBody'),
+      signIn: t('share.signIn'),
+      failed: t('share.failed'),
+      revoked: () => t('share.revoked'),
+      revokeNone: t('share.revokeNone'),
+      revokeFailed: t('share.revokeFailed'),
+    }),
+    [t],
+  );
+  const formatExpiry = React.useCallback(
+    (iso: string) => formatLocalDate(iso, { dateStyle: 'medium', timeStyle: 'short' } as Intl.DateTimeFormatOptions),
+    [formatLocalDate],
+  );
+  const revokeLinks = useMutation({
+    mutationFn: async (entry: HistoryEntry) => revokeShareLinks(entry.jobId),
+    onSuccess: (n) => {
+      const message = n > 0 ? t('share.revoked') : t('share.revokeNone');
+      setLive(message);
+      toast.success(message);
+      setToRevoke(null);
+    },
+    onError: () => {
+      setLive(t('share.revokeFailed'));
+      toast.error(t('share.revokeFailed'));
+      setToRevoke(null);
+    },
+  });
 
   const history = useQuery({
     queryKey: ['account-history', uid, limit],
@@ -470,6 +537,9 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ copy, uid }) => {
               }}
               onKeep={(e, hours) => keep.mutate({ entry: e, hours })}
               onDelete={setToDelete}
+              onRevokeLinks={setToRevoke}
+              shareMessages={shareMessages}
+              formatExpiry={formatExpiry}
             />
           ))}
         </ol>
@@ -517,6 +587,21 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ copy, uid }) => {
         busy={remove.isPending}
         onConfirm={() => {
           if (toDelete) remove.mutate(toDelete);
+        }}
+      />
+
+      <ConfirmDialog
+        open={toRevoke !== null}
+        onOpenChange={(open) => {
+          if (!open) setToRevoke(null);
+        }}
+        title={t('share.revokeTitle')}
+        description={t('share.revokeBody')}
+        confirmLabel={t('share.revokeConfirm')}
+        cancelLabel={t('share.cancel')}
+        busy={revokeLinks.isPending}
+        onConfirm={() => {
+          if (toRevoke) revokeLinks.mutate(toRevoke);
         }}
       />
 

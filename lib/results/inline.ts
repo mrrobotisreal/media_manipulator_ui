@@ -5,6 +5,9 @@ import type { ResultDescriptor, ResultKind } from './describe';
 /** Kinds the browser can stream from the inline route with range requests. */
 const INLINE_KINDS: ReadonlySet<ResultKind> = new Set<ResultKind>(['video', 'audio', 'pdf']);
 
+/** Kinds a public share URL can feed straight into an element. */
+const PUBLIC_INLINE_KINDS: ReadonlySet<ResultKind> = new Set<ResultKind>(['video', 'audio', 'pdf', 'image', 'gif']);
+
 /**
  * URL of `GET /api/result/:jobId` (MM05) for kinds that can stream, or null.
  *
@@ -14,8 +17,10 @@ const INLINE_KINDS: ReadonlySet<ResultKind> = new Set<ResultKind>(['video', 'aud
  * X-MM-Session-ID header; the API accepts it on the inline routes only, never on /download.
  */
 export function inlineResultUrl(
-  descriptor: Pick<ResultDescriptor, 'jobId' | 'kind' | 'mimeFromServer'>,
+  descriptor: Pick<ResultDescriptor, 'jobId' | 'kind' | 'mimeFromServer'> & { sourceUrl?: string },
 ): string | null {
+  // MM32 shared result: the token URL streams image, GIF, video, audio and PDF directly.
+  if (descriptor.sourceUrl && PUBLIC_INLINE_KINDS.has(descriptor.kind)) return descriptor.sourceUrl;
   if (!descriptor.mimeFromServer || !INLINE_KINDS.has(descriptor.kind)) return null;
   return `${getBaseURL()}/result/${encodeURIComponent(descriptor.jobId)}?sid=${encodeURIComponent(getSessionId())}`;
 }

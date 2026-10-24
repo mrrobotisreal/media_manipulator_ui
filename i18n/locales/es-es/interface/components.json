@@ -575,5 +575,35 @@
     "basicOnly": "Ahora mismo solo está disponible el estado general.",
     "lastChecked": "Última comprobación {{time}}",
     "metaTitle": "Estado | Media Manipulator"
+  },
+  "share": {
+    "button": "Compartir",
+    "revokeLinks": "Revocar enlaces",
+    "copied": "Enlace copiado. Funciona hasta {{when}}.",
+    "copyManually": "No se pudo copiar automáticamente. Copia este enlace: {{url}}",
+    "notAllowed": "Este tipo de resultado no se puede compartir.",
+    "expired": "Este archivo ha caducado.",
+    "limitTitle": "Límite de enlaces alcanzado",
+    "limitBody": "Este resultado ya tiene 5 enlaces activos, el máximo. Revócalos para crear uno nuevo.",
+    "revokeConfirm": "Revocar enlaces",
+    "cancel": "Cancelar",
+    "signIn": "Vuelve a iniciar sesión para compartir este resultado.",
+    "failed": "No se pudo crear el enlace. Inténtalo de nuevo.",
+    "revoked": "Se revocaron todos los enlaces de este resultado.",
+    "revokeNone": "No había enlaces activos que revocar.",
+    "revokeFailed": "No se pudieron revocar los enlaces. Inténtalo de nuevo.",
+    "revokeTitle": "¿Revocar todos los enlaces?",
+    "revokeBody": "Quien tenga un enlace a este resultado perderá el acceso de inmediato. Después podrás crear un enlace nuevo."
+  },
+  "sharedResult": {
+    "metaTitle": "Resultado compartido | Media Manipulator",
+    "metaDescription": "Un archivo creado con Media Manipulator y compartido con un enlace.",
+    "ogTitle": "{{fileName}}, creado con Media Manipulator",
+    "goneTitle": "Este enlace ha caducado o se ha eliminado",
+    "goneBody": "Los enlaces dejan de funcionar cuando caducan, cuando el propietario los revoca o cuando se elimina el archivo.",
+    "goneCta": "Ir a Media Manipulator",
+    "madeWith": "Creado con Media Manipulator",
+    "tryIt": "Pruébalo con tu archivo",
+    "expires": "Este enlace funciona hasta {{when}}."
   }
 }

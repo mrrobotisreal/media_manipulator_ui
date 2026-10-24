@@ -111,7 +111,7 @@ export const EVENTS = {
   // --- Activation and return (MM30) -----------------------------------------
   ACTIVATION_FIRST_JOB_COMPLETED: 'activation_first_job_completed',
   RETURN_VISIT: 'return_visit',
-  /** RESERVED for MM32 (share links): registered, nothing emits it yet. */
+  /** MM32: the owner created and copied a share link (`source` = result_panel | history). */
   SHARE_LINK_COPIED: 'share_link_copied',
 
   // --- Account onboarding tour (MM35) ----------------------------------------
@@ -384,7 +384,7 @@ export interface ResultPreviewedProps {
   preview_kind?: 'image' | 'video' | 'audio' | 'text' | 'transcript' | 'archive' | 'document' | 'stream' | 'other';
 }
 
-export type ResultSurface = 'home' | 'tool_page' | 'tutorial' | 'history';
+export type ResultSurface = 'home' | 'tool_page' | 'tutorial' | 'history' | 'shared';
 export type ResultCompareMode = 'wipe' | 'side_by_side' | 'toggle' | 'synced' | 'ab';
 export type ResultEntryKind = 'image' | 'video' | 'audio' | 'text' | 'other';
 export type ResultRung = 'auto' | '240p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '2160p' | 'other';

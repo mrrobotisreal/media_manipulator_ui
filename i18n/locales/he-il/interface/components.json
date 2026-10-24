@@ -579,5 +579,35 @@
     "basicOnly": "כרגע זמין רק הסטטוס הכללי.",
     "lastChecked": "נבדק לאחרונה {{time}}",
     "metaTitle": "סטטוס | Media Manipulator"
+  },
+  "share": {
+    "button": "שיתוף",
+    "revokeLinks": "ביטול קישורים",
+    "copied": "הקישור הועתק. הוא פעיל עד {{when}}.",
+    "copyManually": "ההעתקה האוטומטית נכשלה. העתיקו את הקישור: {{url}}",
+    "notAllowed": "לא ניתן לשתף סוג תוצאה זה.",
+    "expired": "תוקף הקובץ הזה פג.",
+    "limitTitle": "הגעתם למגבלת הקישורים",
+    "limitBody": "לתוצאה הזו כבר יש 5 קישורי שיתוף פעילים, המקסימום. בטלו אותם כדי ליצור קישור חדש.",
+    "revokeConfirm": "ביטול קישורים",
+    "cancel": "ביטול",
+    "signIn": "התחברו שוב כדי לשתף את התוצאה הזו.",
+    "failed": "לא ניתן היה ליצור קישור שיתוף. נסו שוב.",
+    "revoked": "כל קישורי השיתוף של התוצאה הזו בוטלו.",
+    "revokeNone": "לא היו קישורים פעילים לביטול.",
+    "revokeFailed": "לא ניתן היה לבטל את הקישורים. נסו שוב.",
+    "revokeTitle": "לבטל את כל קישורי השיתוף?",
+    "revokeBody": "כל מי שיש לו קישור לתוצאה הזו יאבד גישה מיד. לאחר מכן אפשר ליצור קישור חדש."
+  },
+  "sharedResult": {
+    "metaTitle": "תוצאה משותפת | Media Manipulator",
+    "metaDescription": "קובץ שנוצר ב-Media Manipulator ומשותף בקישור.",
+    "ogTitle": "{{fileName}}, נוצר ב-Media Manipulator",
+    "goneTitle": "תוקף הקישור פג או שהוא הוסר",
+    "goneBody": "קישורי שיתוף מפסיקים לעבוד כשתוקפם פג, כשהבעלים מבטל אותם או כשהקובץ נמחק.",
+    "goneCta": "מעבר ל-Media Manipulator",
+    "madeWith": "נוצר ב-Media Manipulator",
+    "tryIt": "נסו את זה על הקובץ שלכם",
+    "expires": "הקישור הזה פעיל עד {{when}}."
   }
 }

@@ -74,6 +74,11 @@ export interface ResultDescriptor {
   sizeBytes?: number;
   jobId: string;
   downloadUrl: string;
+  /**
+   * MM32: public, tokenised URL of the result bytes (`/r/[token]` page). When set the viewers
+   * read from it instead of the owner-only `/download/:jobId` and `/result/:jobId` routes.
+   */
+  sourceUrl?: string;
   expiresAt?: string;
   /** True when `job.resultMime` was a usable MIME (inline-streaming viewers may use it). */
   mimeFromServer: boolean;
