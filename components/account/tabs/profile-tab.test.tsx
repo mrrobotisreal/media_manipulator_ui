@@ -3,6 +3,10 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 
 const h = vi.hoisted(() => ({ auth: null as unknown }));
 vi.mock('@/lib/auth/AuthProvider', () => ({ useAuth: () => h.auth }));
+vi.mock('@/i18n/useLocalization', async () => {
+  const m = await import('@/lib/billing/test-utils');
+  return { useLocalization: () => m.fakeLocalization() };
+});
 vi.mock('@/lib/firebase', () => ({ getCurrentIdToken: async () => 'tok' }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 vi.mock('@/lib/auth/accountApi', async (orig) => ({ ...(await orig<typeof import('@/lib/auth/accountApi')>()), revokeSessions: vi.fn(async () => ({ revokedAt: 'x' })) }));
@@ -25,6 +29,16 @@ afterEach(() => {
 });
 
 describe('ProfileTab', () => {
+  it('Replay tour asks the tour host to open', () => {
+    h.auth = auth(true);
+    const seen = vi.fn();
+    window.addEventListener('mm:onboarding-replay', seen);
+    render(<ProfileTab copy={copy} />);
+    fireEvent.click(screen.getByRole('button', { name: 'interface:accountTour.replay' }));
+    window.removeEventListener('mm:onboarding-replay', seen);
+    expect(seen).toHaveBeenCalledTimes(1);
+  });
+
   it('shows name, email and the verification flow for an unverified user', async () => {
     const a = auth(false);
     h.auth = a;

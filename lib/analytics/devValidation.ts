@@ -54,6 +54,7 @@ const transport = z.enum(['post', 'presigned_put']);
 // the bucket vocabularies live in lib/analytics/buckets.ts and re-enumerating
 // them here would create a second copy to drift.
 const studioHostEnum = z.enum(['mm', 'creatv']);
+const onboardingStepId = z.enum(['keep_results', 'darkroom_projects', 'retention']);
 const retentionBucketEnum = z.enum(['24h', '7d', '30d', '90d', '6mo', '1y', '2y', 'custom']);
 const studioHostProps = z.object({ host: studioHostEnum.optional() }).strict();
 const studioExportProps = z
@@ -334,6 +335,15 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
   return_visit: z.object({ days_since_last: z.enum(['0', '1', '2_3', '4_7', '8_30', '31_plus']) }).strict(),
   share_link_copied: z.object({ job_kind: mediaKind, source: z.string() }).strict(),
+  onboarding_step_viewed: z
+    .object({ step: z.union([z.literal(1), z.literal(2), z.literal(3)]), step_id: onboardingStepId })
+    .strict(),
+  onboarding_step_completed: z
+    .object({
+      step: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+      action: z.enum(['next', 'cta', 'skip', 'dismiss']),
+    })
+    .strict(),
 
   studio_project_created: studioHostProps,
   studio_project_opened: studioHostProps,

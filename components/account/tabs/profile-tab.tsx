@@ -8,15 +8,18 @@ import type { AccountCopy } from '@/components/account/account-copy';
 import { Panel } from '@/components/darkroom/panel';
 import { Stat } from '@/components/darkroom/stat';
 import { Button } from '@/components/ui/button';
+import { useLocalization } from '@/i18n/useLocalization';
 import { retentionEvents } from '@/lib/analytics/retentionEvents';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { revokeSessions } from '@/lib/auth/accountApi';
+import { requestTourReplay } from '@/lib/onboarding/state';
 import { requireToken } from '@/lib/account/requireToken';
 
 type VerifyStatus = 'idle' | 'sending' | 'sent' | 'sendFailed' | 'checking' | 'stillUnverified';
 
 export const ProfileTab: React.FC<{ copy: AccountCopy }> = ({ copy }) => {
   const c = copy.profile;
+  const { t } = useLocalization(['interface']);
   const auth = useAuth();
   const [status, setStatus] = React.useState<VerifyStatus>('idle');
   const [revokeOpen, setRevokeOpen] = React.useState(false);
@@ -93,6 +96,20 @@ export const ProfileTab: React.FC<{ copy: AccountCopy }> = ({ copy }) => {
         </div>
         <p className="mt-3 text-xs text-muted-foreground">{c.signOutEverywhereBody}</p>
       </Panel>
+
+      <p className="text-xs text-muted-foreground">
+        <button
+          type="button"
+          className="min-h-11 text-start underline underline-offset-4 hover:text-foreground sm:min-h-0"
+          onClick={requestTourReplay}
+          aria-describedby="replay-tour-hint"
+        >
+          {t('interface:accountTour.replay')}
+        </button>
+        <span id="replay-tour-hint" className="ms-2">
+          {t('interface:accountTour.replayHint')}
+        </span>
+      </p>
 
       <ConfirmDialog
         open={revokeOpen}

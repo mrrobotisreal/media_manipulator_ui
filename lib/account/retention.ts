@@ -6,6 +6,9 @@
 
 import type { HistoryEntry, RetentionPreview } from '@/lib/auth/accountApi';
 
+/** localStorage key for the one-time "choose how long we keep your files" banner (Overview tab). */
+export const RETENTION_BANNER_KEY = 'mm.account.retentionBannerDismissed';
+
 export const FALLBACK_LIMITS = { minHours: 24, maxHours: 17520, defaultHours: 4320 } as const;
 
 export const RETENTION_PRESETS = [

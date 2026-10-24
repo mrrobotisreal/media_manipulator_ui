@@ -528,5 +528,28 @@
     "body": "Du zahlst jetzt schon mehrere Monate in Folge. Der Jahrestarif kostet weniger als zwölf Monatszahlungen. Du kannst jederzeit im Abrechnungsportal wechseln.",
     "cta": "Auf jährlich wechseln",
     "dismiss": "Nein danke"
+  },
+  "accountTour": {
+    "title": "Willkommen bei Media Manipulator",
+    "step": "Schritt {{current}} von {{total}}",
+    "next": "Weiter",
+    "back": "Zurück",
+    "skip": "Überspringen",
+    "notNow": "Jetzt nicht",
+    "setRetention": "Aufbewahrung festlegen",
+    "keepResults": {
+      "title": "Ihre Ergebnisse bleiben erhalten",
+      "body": "Alles, was Sie angemeldet umwandeln, wird im Verlauf gespeichert, sodass Sie es später erneut öffnen oder herunterladen können. Wir bewahren es so lange auf, wie Sie festlegen."
+    },
+    "darkroomProjects": {
+      "title": "Darkroom-Projekte",
+      "body": "Darkroom-Projekte werden in Ihrem Konto gespeichert und unter „Projekte“ aufgelistet, sodass Sie auf jedem Gerät weiterarbeiten können."
+    },
+    "retention": {
+      "title": "Aufbewahrungsdauer wählen",
+      "body": "Wir empfehlen 6 Monate. Sie können jeden Zeitraum von 24 Stunden bis 2 Jahren wählen und ihn jederzeit unter „Datenschutz & Daten“ ändern."
+    },
+    "replay": "Tour erneut ansehen",
+    "replayHint": "Die kurze Einführung in Ihr Konto noch einmal ansehen."
   }
 }

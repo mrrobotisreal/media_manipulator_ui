@@ -114,6 +114,10 @@ export const EVENTS = {
   /** RESERVED for MM32 (share links): registered, nothing emits it yet. */
   SHARE_LINK_COPIED: 'share_link_copied',
 
+  // --- Account onboarding tour (MM35) ----------------------------------------
+  ONBOARDING_STEP_VIEWED: 'onboarding_step_viewed',
+  ONBOARDING_STEP_COMPLETED: 'onboarding_step_completed',
+
   // --- Content Studio (Darkroom) --------------------------------------------
   // First-class `studio_*` events per ADR ws/0003 — the editor no longer
   // overloads FEATURE_USED. Server-side render telemetry (`studio_render_*`)
@@ -224,6 +228,8 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   activation_first_job_completed: PRIORITY_CRITICAL,
   return_visit: PRIORITY_HIGH,
   share_link_copied: PRIORITY_NORMAL,
+  onboarding_step_viewed: PRIORITY_NORMAL,
+  onboarding_step_completed: PRIORITY_NORMAL,
 
   // Content Studio (Darkroom)
   studio_project_created: PRIORITY_HIGH,
@@ -594,6 +600,16 @@ export interface RetentionSettingChangedProps {
   from_bucket: RetentionSettingBucket;
   to_bucket: RetentionSettingBucket;
 }
+export type OnboardingStepId = 'keep_results' | 'darkroom_projects' | 'retention';
+export type OnboardingAction = 'next' | 'cta' | 'skip' | 'dismiss';
+export interface OnboardingStepViewedProps {
+  step: 1 | 2 | 3;
+  step_id: OnboardingStepId;
+}
+export interface OnboardingStepCompletedProps {
+  step: 1 | 2 | 3;
+  action: OnboardingAction;
+}
 export interface DataDeletedProps {
   scope: DataDeletedScope;
   kind: DataDeletedKind;
@@ -841,6 +857,8 @@ export interface EventPropsMap {
   activation_first_job_completed: ActivationFirstJobCompletedProps;
   return_visit: ReturnVisitProps;
   share_link_copied: ShareLinkCopiedProps;
+  onboarding_step_viewed: OnboardingStepViewedProps;
+  onboarding_step_completed: OnboardingStepCompletedProps;
 
   studio_project_created: StudioProjectCreatedProps;
   studio_project_opened: StudioProjectOpenedProps;
