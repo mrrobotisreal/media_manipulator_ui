@@ -375,7 +375,7 @@
               "tracks": "Añade más pistas con los botones +V / +A: apila varias pistas de vídeo para superposiciones y varias pistas de audio para música y locución.",
               "drag": "Arrastra un clip a lo largo de su pista para reubicarlo, o suéltalo en otra pista del mismo tipo (vídeo→vídeo, audio→audio). Los clips se ajustan a los bordes vecinos y a la cabeza de reproducción, y nunca se superponen.",
               "trim": "Arrastra cualquiera de los bordes de un clip para recortar su punto de entrada/salida.",
-              "split": "Mueve la cabeza de reproducción y pulsa S para dividir (cortar) el clip o clips que haya bajo ella.",
+              "split": "Mueve la cabeza de reproducción y pulsa Cmd/Ctrl+K para dividir (cortar) el clip o clips que haya bajo ella.",
               "ripple": "Selecciona un clip y usa Eliminar por ondulación para quitarlo y cerrar el hueco. Silencia toda una pista con el icono de altavoz, o ajusta el volumen de un clip con el control deslizante."
             }
           },

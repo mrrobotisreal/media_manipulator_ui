@@ -60,7 +60,6 @@ import {
 } from '@/lib/studio/draftRecovery';
 import { useCreateVersion } from '@/lib/useStudioVersions';
 import { createCheckpointScheduler } from '@/lib/studio/versionCheckpoint';
-import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { analytics, EVENTS, countBucket, timelineDurationBucket } from '@/lib/analytics';
 import {
   editSummary,
@@ -69,6 +68,9 @@ import {
   startStudioTelemetrySession,
   studioHost,
 } from '@/lib/studio/telemetry';
+import { matchBinding, isRepeatable, shouldIgnoreKeyEvent } from '@/lib/studio/keymap';
+import { runCommand } from '@/lib/studio/commands';
+import ShortcutCheatSheet from './shortcut-cheatsheet';
 import SaveConflictDialog from './save-conflict-dialog';
 import DraftRecoveryDialog from './draft-recovery-dialog';
 import VersionsPanel from './versions-panel';
@@ -99,6 +101,14 @@ const SNAP_PX = 8;
 const MOBILE_TAB =
   'rounded-[4px] text-sm data-[state=active]:bg-surface-0 data-[state=active]:text-foreground ' +
   "data-[state=active]:shadow-[inset_0_-2px_0_var(--accent-primary)]";
+
+/** True when the clip is the only member of its group (a stale single-member groupId). */
+function isSoleGroupMember(project: ReturnType<typeof useStudioStore.getState>['project'], clip: { id: string; groupId?: string }): boolean {
+  if (!project || !clip.groupId) return true;
+  let n = 0;
+  for (const tr of project.tracks) for (const c of tr.clips) if (c.groupId === clip.groupId) n += 1;
+  return n <= 1;
+}
 
 // snapValue nudges a dragged clip's start so its leading/trailing edge clicks
 // onto a nearby snap point (neighbour edges on the destination track, the
@@ -502,7 +512,23 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
       for (const c of dest.clips) {
         if (c.id !== clipId) points.push(c.timelineStart, clipEnd(c));
       }
-      const snapped = snapValue(desired, dur, points, SNAP_PX / st.zoom);
+      // S toggles snapping (part 18): off means the drop lands exactly where released.
+      const snapped = st.snapping ? snapValue(desired, dur, points, SNAP_PX / st.zoom) : desired;
+
+      // Grouped clips move as one (part 18): a drag within the lane (or lane
+      // change on a single-member group) shifts every member by the same delta.
+      // Cross-lane drags of multi-track groups are not supported — the store
+      // moves the dragged clip alone only when it has no group.
+      if (found.clip.groupId) {
+        if (dest.id !== found.track.id && !isSoleGroupMember(st.project, found.clip)) return;
+        if (dest.id === found.track.id) {
+          const applied = st.moveGroupBy(found.clip.groupId, snapped - found.clip.timelineStart);
+          if (applied !== 0) {
+            editSummary.increment('uiInvocations');
+          }
+          return;
+        }
+      }
       if (dest.id !== found.track.id) {
         if (dest.kind !== found.track.kind) return; // never mix video/audio
         st.moveClipToTrack(clipId, dest.id, snapped);
@@ -604,121 +630,27 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
     [projectId],
   );
 
-  // Keyboard shortcuts: space=play/pause, ←/→=frame step, S=split,
-  // Del/Backspace=ripple delete, +/-=zoom, Cmd/Ctrl+Z=undo,
-  // Cmd/Ctrl+Shift+Z / Ctrl+Y=redo. Ignored while typing in a field or when a
-  // dialog is open.
+  // Keyboard (part 18): the whole map lives in lib/studio/keymap.ts and is
+  // dispatched through lib/studio/commands.ts, so the cheat sheet, the tool
+  // palette and this handler can never disagree. Guards: text entry, menus and
+  // dialogs swallow keys (shouldIgnoreKeyEvent); plain-letter bindings never
+  // fire with Cmd/Ctrl/Alt held (matchBinding), so browser/OS chords such as
+  // Cmd+C/W/T/S are untouched. This listener is on `window` and the editor is
+  // the same component in /embed/content-studio, so embed mode gets the
+  // identical keymap. Auto-repeat only drives the repeatable commands.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const el = document.activeElement as HTMLElement | null;
-      if (el) {
-        const tag = el.tagName;
-        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON' || el.isContentEditable) return;
-        if (el.closest('[role="dialog"]')) return;
-      }
-      const st = useStudioStore.getState();
-      // Part 10 (roadmap rule 11): every user action counts into the session
-      // edit summary. Undo/redo only count when the stack had something to do.
-      if ((e.metaKey || e.ctrlKey) && (e.key === 'z' || e.key === 'Z')) {
+      if (e.defaultPrevented || e.isComposing) return;
+      if (shouldIgnoreKeyEvent(e, document.activeElement as HTMLElement | null)) return;
+      const binding = matchBinding(e);
+      if (!binding) return;
+      if (e.repeat && !isRepeatable(binding.command)) {
         e.preventDefault();
-        if (e.shiftKey) {
-          if (st.future.length > 0) {
-            editSummary.increment('redoCount');
-            editSummary.increment('shortcutInvocations');
-          }
-          st.redo();
-        } else {
-          if (st.past.length > 0) {
-            editSummary.increment('undoCount');
-            editSummary.increment('shortcutInvocations');
-          }
-          st.undo();
-        }
         return;
       }
-      if (e.ctrlKey && (e.key === 'y' || e.key === 'Y')) {
-        e.preventDefault();
-        if (st.future.length > 0) {
-          editSummary.increment('redoCount');
-          editSummary.increment('shortcutInvocations');
-        }
-        st.redo();
-        return;
-      }
-      // Cmd/Ctrl+D — apply the default transition to the selected clip
-      // (Premiere's "apply default transition"). Cross-dissolve at the
-      // preference default for the clip's track kind; no-op without a
-      // predecessor (the store bails, so nothing is counted).
-      if ((e.metaKey || e.ctrlKey) && (e.key === 'd' || e.key === 'D')) {
-        e.preventDefault();
-        const clipId = st.selectedClipIds.length === 1 ? st.selectedClipIds[0] : null;
-        const found = clipId ? st.findClip(clipId) : null;
-        if (found) {
-          const hasPrev = found.track.clips.some(
-            (c) => c.id !== found.clip.id && c.timelineStart < found.clip.timelineStart,
-          );
-          if (hasPrev) {
-            editSummary.increment('transitionsAdded', 'crossDissolve');
-            editSummary.increment('shortcutInvocations');
-            st.setClipTransition(found.clip.id, {
-              type: 'crossDissolve',
-              durationSeconds: defaultTransitionSeconds(found.track.kind),
-            });
-          }
-        }
-        return;
-      }
-      const fps = Math.max(1, st.project?.fps ?? 30);
-      switch (e.key) {
-        case ' ':
-          e.preventDefault();
-          st.togglePlay();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          st.pause();
-          st.setPlayhead(st.playhead - 1 / fps);
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          st.pause();
-          st.setPlayhead(st.playhead + 1 / fps);
-          break;
-        case 's':
-        case 'S':
-          e.preventDefault();
-          editSummary.increment('splits');
-          editSummary.increment('shortcutInvocations');
-          st.splitAtPlayhead();
-          break;
-        // T — add a title clip at the playhead (part 16). Free of collisions
-        // with the part-18 keymap plan (V/C/Y/U/H/S/M/Q/W).
-        case 't':
-        case 'T':
-          if (e.metaKey || e.ctrlKey) break; // never shadow the browser's Cmd/Ctrl+T
-          e.preventDefault();
-          editSummary.increment('titlesAdded');
-          editSummary.increment('shortcutInvocations');
-          st.addTitleClip();
-          break;
-        case 'Delete':
-        case 'Backspace':
-          e.preventDefault();
-          st.deleteSelected();
-          break;
-        case '+':
-        case '=':
-          e.preventDefault();
-          st.zoomBy(1.25);
-          break;
-        case '-':
-        case '_':
-          e.preventDefault();
-          st.zoomBy(1 / 1.25);
-          break;
-        default:
-          break;
-      }
+      if (!useStudioStore.getState().project) return;
+      e.preventDefault();
+      runCommand(binding.command, 'shortcut', { repeat: e.repeat });
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -775,6 +707,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           <AudioDuckingPopover />
           <PreferencesDialog />
           <SpeedDialog />
+          <ShortcutCheatSheet />
           <ExportDialog projectId={projectId} disabled={!project.tracks.some((tr) => tr.clips.length > 0)} />
           {focusMode ? <FocusControls api={focusMode} /> : null}
         </div>

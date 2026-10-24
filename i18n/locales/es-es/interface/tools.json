@@ -137,7 +137,38 @@
       "keyframeToggle": "Mostrar fotogramas clave",
       "keyframeDiamond": "arrastra para ajustar el tiempo, doble clic para eliminar",
       "titleClip": "Título",
-      "contextConvertToTitle": "Convertir en clip de título"
+      "contextConvertToTitle": "Convertir en clip de título",
+      "tools": "Timeline tools",
+      "toolSelect": "Selection",
+      "toolRazor": "Razor",
+      "toolSlip": "Slip",
+      "toolSlide": "Slide",
+      "toolHand": "Hand",
+      "trackLockedToast": "That track is locked. Unlock it to edit.",
+      "snapping": "Snapping",
+      "markersPanel": "Markers",
+      "markersPanelTitle": "Markers",
+      "markersEmpty": "No markers yet. Press M to add one at the playhead.",
+      "markerName": "Name",
+      "markerColor": "Color",
+      "markerComment": "Comment",
+      "markerDelete": "Delete marker",
+      "slipUnavailable": "Slip needs a clip with source footage to re-window. Stills, titles and freeze frames have none.",
+      "razorMiss": "Click inside a clip, away from its edges, to cut.",
+      "rollHint": "Drag to roll this edit point (Alt: trim only this clip, Shift: ripple)",
+      "grouped": "Grouped",
+      "contextGroup": "Group selected clips",
+      "contextUngroup": "Ungroup",
+      "contextDetachAudio": "Detach audio",
+      "renameTrack": "Track name",
+      "renameTrackHint": "Double-click to rename",
+      "lock": "Lock track",
+      "unlock": "Unlock track",
+      "solo": "Solo track",
+      "unsolo": "Remove solo",
+      "show": "Show track",
+      "hide": "Hide track",
+      "resizeTrack": "Resize track height"
     },
     "preferences": {
       "open": "Preferencias",
@@ -161,7 +192,7 @@
       "undo": "Deshacer",
       "redo": "Rehacer",
       "mobileHint": "Darkroom funciona mejor en una pantalla más grande con ratón o trackpad.",
-      "shortcuts": "Espacio reproducir/pausar · ←/→ avanzar fotograma · S dividir · Supr eliminar · +/− zoom · ⌘Z deshacer · ⇧⌘Z rehacer",
+      "shortcuts": "Espacio reproducir/pausar · ←/→ avanzar fotograma · V/C/Y/U/H herramientas · ⌘/Ctrl+K dividir · S imán · M marcador · Q/W recorte en cascada · Supr eliminar · +/− zoom · ⌘Z deshacer · ? todos los atajos",
       "tabs": {
         "media": "Multimedia",
         "preview": "Vista previa",
@@ -513,6 +544,17 @@
         "neighbor": "Slowed down as far as the next clip allows",
         "range": "Speed limited to 10%–1000%",
         "minLength": "Speed limited so the clip stays at least 0.1 s long"
+      }
+    },
+    "keymap": {
+      "title": "Keyboard shortcuts",
+      "description": "Press ? any time to open this list.",
+      "category": {
+        "tools": "Tools",
+        "editing": "Editing",
+        "playback": "Playback",
+        "view": "View",
+        "history": "History"
       }
     }
   },

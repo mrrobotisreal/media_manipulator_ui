@@ -3,7 +3,27 @@
 import React from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { toast } from 'sonner';
-import { ZoomIn, ZoomOut, Scissors, Volume2, VolumeX, Plus, Trash2, Diamond, ImageIcon, AlertTriangle } from 'lucide-react';
+import {
+  ZoomIn,
+  ZoomOut,
+  Scissors,
+  Volume2,
+  VolumeX,
+  Plus,
+  Trash2,
+  Diamond,
+  ImageIcon,
+  AlertTriangle,
+  Lock,
+  LockOpen,
+  Eye,
+  EyeOff,
+  Headphones,
+  Magnet,
+  Flag,
+  Keyboard,
+  Link as LinkIcon,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackAcceptsAsset } from '@/lib/studio/trackRules';
 import { assetDisplayName, isClipOffline } from '@/lib/studio/mediaBin';
@@ -11,7 +31,7 @@ import { clipTrimBound } from '@/lib/studio/clipTrimBound';
 import { analytics, EVENTS, imageHoldBucket } from '@/lib/analytics';
 import { Slider } from '@/components/ui/slider';
 import { useLocalization } from '@/i18n/useLocalization';
-import { useStudioStore, clipDuration } from '@/lib/studioStore';
+import { useStudioStore, clipDuration, clipEnd, type StudioToolMode } from '@/lib/studioStore';
 import { studioSpriteUrl } from '@/lib/studio/previewEngine';
 import {
   quantizeScrollLeft,
@@ -34,6 +54,18 @@ import { clipKeyframeLanes, type KeyframePropertyGroup } from '@/lib/studio/keyf
 import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { editSummary, studioHost } from '@/lib/studio/telemetry';
 import { trimPatch, clipSpeed, isReversed, isFreezeClip } from '@/lib/studio/speed';
+import { findEditPair, canSlip, EDIT_EPS } from '@/lib/studio/proTrim';
+import { runCommand } from '@/lib/studio/commands';
+import {
+  DEFAULT_TRACK_HEIGHT,
+  MAX_TRACK_HEIGHT,
+  MIN_TRACK_HEIGHT,
+  clampTrackHeight,
+  loadTrackHeights,
+  saveTrackHeights,
+} from '@/lib/studio/trackHeights';
+import ToolPalette from './tool-palette';
+import { MarkersPanel, RulerMarkers } from './markers-panel';
 import { speedDialog } from '@/lib/studio/speedDialog';
 import ClipWaveform from './clip-waveform';
 import { useUndoGesture } from './useUndoGesture';
@@ -41,8 +73,7 @@ import { CaptionControls, CaptionLaneContent, CAPTION_LANE_HEIGHT } from './capt
 import type { StudioClip, StudioMediaKind, StudioTrack, StudioTransitionType } from '@/lib/studioTypes';
 
 const RULER_HEIGHT = 28;
-const TRACK_HEIGHT = 56;
-const LABEL_WIDTH = 64;
+const LABEL_WIDTH = 112;
 const KEYFRAME_STRIP_HEIGHT = 20;
 
 // Keyframe strip diamond styling per property group (part 15): color + a small
@@ -94,16 +125,63 @@ const Timeline: React.FC = () => {
   const updateClip = useStudioStore((s) => s.updateClip);
   const deleteSelected = useStudioStore((s) => s.deleteSelected);
   const addTrack = useStudioStore((s) => s.addTrack);
-  const removeTrack = useStudioStore((s) => s.removeTrack);
-  const toggleTrackMute = useStudioStore((s) => s.toggleTrackMute);
   const setClipVolume = useStudioStore((s) => s.setClipVolume);
   const volumeGesture = useUndoGesture();
+  const toolMode = useStudioStore((s) => s.toolMode);
+  const snapping = useStudioStore((s) => s.snapping);
+  const markersPanelOpen = useStudioStore((s) => s.markersPanelOpen);
+  const lockNotice = useStudioStore((s) => s.lockNotice);
+  const projectId = useStudioStore((s) => s.project?.id);
+
+  // Lane heights are a view preference (localStorage per project), not
+  // document state — they never touch the EDL or undo history.
+  const [heightState, setHeightState] = React.useState<{ pid?: string; map: Record<string, number> }>({ map: {} });
+  // Lazily (re)load when the project changes — derived during render, not in an effect.
+  if (projectId && heightState.pid !== projectId) {
+    setHeightState({ pid: projectId, map: loadTrackHeights(projectId) });
+  }
+  const heights = heightState.map;
+  const setHeights = React.useCallback(
+    (fn: (prev: Record<string, number>) => Record<string, number>) =>
+      setHeightState((st) => ({ ...st, map: fn(st.map) })),
+    [],
+  );
+  const heightOf = React.useCallback((id: string) => heights[id] ?? DEFAULT_TRACK_HEIGHT, [heights]);
+
+  // Locked-track rejection (store-level) -> subtle shake + toast. The store
+  // bumps `seq` on every rejection; a ref makes the effect fire once per bump.
+  const [shakeTrackId, setShakeTrackId] = React.useState<string | null>(null);
+  const lastNoticeSeq = React.useRef(0);
+  React.useEffect(() => {
+    if (!lockNotice || lockNotice.seq === lastNoticeSeq.current) return;
+    lastNoticeSeq.current = lockNotice.seq;
+    setShakeTrackId(lockNotice.trackId);
+    toast.message(t('contentStudio.timeline.trackLockedToast'), { id: 'darkroom-track-locked' });
+    const h = setTimeout(() => setShakeTrackId(null), 450);
+    return () => clearTimeout(h);
+  }, [lockNotice, t]);
 
   const contentRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  // One edge-drag gesture. `mode` is picked on pointer-down from the modifiers
+  // and the neighbourhood: a plain trim, a ROLL (the handle sits on a shared
+  // edit point, so both clips move with it), or a RIPPLE trim (Shift held).
   const trimRef = React.useRef<
-    null | { side: 'l' | 'r'; clipId: string; startX: number; orig: StudioClip; assetDur: number }
+    null | {
+      mode: 'trim' | 'roll' | 'ripple';
+      side: 'l' | 'r';
+      clipId: string;
+      trackId: string;
+      startX: number;
+      orig: StudioClip;
+      assetDur: number;
+      /** timeline time of the shared edit point (roll only); follows the edit as it moves */
+      editTime: number;
+      /** timeline seconds applied so far (roll / ripple) */
+      applied: number;
+    }
   >(null);
+  const handRef = React.useRef<null | { startX: number; startScroll: number }>(null);
   const scrubRef = React.useRef(false);
   const scrubClientXRef = React.useRef(0);
   const autoScrollRaf = React.useRef<number | null>(null);
@@ -245,6 +323,7 @@ const Timeline: React.FC = () => {
 
   const onRulerDown = React.useCallback(
     (e: React.PointerEvent) => {
+      e.stopPropagation(); // the hand tool's pan listener lives on the parent
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
       scrubRef.current = true;
       scrubClientXRef.current = e.clientX;
@@ -293,13 +372,41 @@ const Timeline: React.FC = () => {
     (e: React.PointerEvent, side: 'l' | 'r', clip: StudioClip, assetDur: number) => {
       e.stopPropagation();
       e.preventDefault();
+      const st = useStudioStore.getState();
+      const track = st.project?.tracks.find((tr) => tr.clips.some((c) => c.id === clip.id));
+      if (!track) return;
+      if (track.locked) {
+        st.notifyLocked(track.id);
+        return;
+      }
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
-      trimRef.current = { side, clipId: clip.id, startX: e.clientX, orig: { ...clip }, assetDur };
-      selectClip(clip.id);
+      // Roll applies when this edge is shared with a touching neighbour and the
+      // user did not hold Alt (Alt = trim this clip only); Shift = ripple.
+      const sorted = [...track.clips].sort((a, b) => a.timelineStart - b.timelineStart);
+      const idx = sorted.findIndex((c) => c.id === clip.id);
+      const partner = side === 'r' ? sorted[idx + 1] : sorted[idx - 1];
+      const edgeTime = side === 'r' ? clipEnd(clip) : clip.timelineStart;
+      const shared =
+        !!partner &&
+        !!findEditPair(track.clips, edgeTime) &&
+        Math.abs((side === 'r' ? partner.timelineStart : clipEnd(partner)) - edgeTime) <= EDIT_EPS;
+      const mode: 'trim' | 'roll' | 'ripple' = e.shiftKey ? 'ripple' : shared && !e.altKey ? 'roll' : 'trim';
+      trimRef.current = {
+        mode,
+        side,
+        clipId: clip.id,
+        trackId: track.id,
+        startX: e.clientX,
+        orig: { ...clip },
+        assetDur,
+        editTime: edgeTime,
+        applied: 0,
+      };
+      st.selectClip(clip.id);
       // The whole trim drag collapses to one undo entry (closed in onTrimUp).
-      useStudioStore.getState().beginGesture();
+      st.beginGesture();
     },
-    [selectClip],
+    [],
   );
 
   const onTrimMove = React.useCallback(
@@ -307,6 +414,16 @@ const Timeline: React.FC = () => {
       const d = trimRef.current;
       if (!d) return;
       const deltaSec = (e.clientX - d.startX) / zoom;
+      const st = useStudioStore.getState();
+      if (d.mode === 'roll') {
+        d.applied += st.rollEdit(d.trackId, d.editTime, deltaSec - d.applied);
+        d.editTime = (d.side === 'r' ? clipEnd(d.orig) : d.orig.timelineStart) + d.applied;
+        return;
+      }
+      if (d.mode === 'ripple') {
+        d.applied += st.rippleTrimClip(d.clipId, d.side, deltaSec - d.applied);
+        return;
+      }
       // Speed-aware (part 17): the drag is in TIMELINE seconds; trimPatch maps
       // it through the clip's speed/direction (identical to the classic
       // sourceIn/sourceOut arithmetic at 1x forward).
@@ -326,6 +443,14 @@ const Timeline: React.FC = () => {
     trimRef.current = null;
     (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
     useStudioStore.getState().endGesture();
+    // Part 18: trims by mode (one count per gesture that actually moved something).
+    if (trim.mode === 'roll' && trim.applied !== 0) {
+      editSummary.increment('trimsRoll');
+      editSummary.increment('uiInvocations');
+    } else if (trim.mode === 'ripple' && trim.applied !== 0) {
+      editSummary.increment('trimsRipple');
+      editSummary.increment('uiInvocations');
+    }
     // Still images: report how long the hold ended up when the right edge grew
     // (once per gesture, bucketed — no ids).
     if (trim && trim.side === 'r' && trim.assetDur === Number.POSITIVE_INFINITY && !trim.orig.title) {
@@ -344,8 +469,53 @@ const Timeline: React.FC = () => {
     }
   }, []);
 
+  // Hand tool: dragging anywhere on the lanes pans the scroll container.
+  const onHandDown = (e: React.PointerEvent) => {
+    if (toolMode !== 'hand') return;
+    const sc = scrollRef.current;
+    if (!sc) return;
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    handRef.current = { startX: e.clientX, startScroll: sc.scrollLeft };
+  };
+  const onHandMove = (e: React.PointerEvent) => {
+    const h = handRef.current;
+    const sc = scrollRef.current;
+    if (!h || !sc) return;
+    sc.scrollLeft = Math.max(0, h.startScroll - (e.clientX - h.startX));
+  };
+  const onHandUp = (e: React.PointerEvent) => {
+    if (!handRef.current) return;
+    handRef.current = null;
+    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+  };
+
+  // Track-header height resize (view preference; persisted per project).
+  const resizeRef = React.useRef<null | { id: string; startY: number; h0: number }>(null);
+  const onResizeDown = (e: React.PointerEvent, id: string) => {
+    e.stopPropagation();
+    e.preventDefault();
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    resizeRef.current = { id, startY: e.clientY, h0: heightOf(id) };
+  };
+  const onResizeMove = (e: React.PointerEvent) => {
+    const r = resizeRef.current;
+    if (!r) return;
+    const h = clampTrackHeight(r.h0 + (e.clientY - r.startY));
+    setHeights((prev) => (prev[r.id] === h ? prev : { ...prev, [r.id]: h }));
+  };
+  const onResizeUp = (e: React.PointerEvent) => {
+    if (!resizeRef.current) return;
+    resizeRef.current = null;
+    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    if (projectId) saveTrackHeights(projectId, heights);
+    editSummary.increment('trackControlChanges');
+    editSummary.increment('uiInvocations');
+  };
+
   if (!project) return null;
   const contentWidth = Math.max(800, (duration + 4) * zoom);
+  const lanesHeight = tracks.reduce((sum, tr) => sum + heightOf(tr.id), 0);
+  const anySoloTrack = tracks.some((tr) => tr.kind === 'audio' && tr.solo);
 
   // The per-clip volume control targets a single selected clip that carries audio.
   const primaryId = selectedClipIds.length === 1 ? selectedClipIds[0] : null;
@@ -405,6 +575,38 @@ const Timeline: React.FC = () => {
               {t('contentStudio.timeline.rippleDelete')}
             </Button>
           )}
+          <Button
+            size="icon"
+            variant="ghost"
+            className={`h-7 w-7 ${snapping ? 'text-primary' : 'text-muted-foreground'}`}
+            aria-pressed={snapping}
+            onClick={() => runCommand('edit.toggleSnapping', 'ui')}
+            title={`${t('contentStudio.timeline.snapping')} (S)`}
+            aria-label={t('contentStudio.timeline.snapping')}
+          >
+            <Magnet className="w-4 h-4" />
+          </Button>
+          <Button
+            size="icon"
+            variant="ghost"
+            className={`h-7 w-7 ${markersPanelOpen ? 'text-primary' : 'text-muted-foreground'}`}
+            aria-pressed={markersPanelOpen}
+            onClick={() => runCommand('view.toggleMarkersPanel', 'ui')}
+            title={`${t('contentStudio.timeline.markersPanel')} (Shift+M)`}
+            aria-label={t('contentStudio.timeline.markersPanel')}
+          >
+            <Flag className="w-4 h-4" />
+          </Button>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="h-7 w-7 text-muted-foreground"
+            onClick={() => runCommand('view.cheatSheet', 'ui')}
+            title={`${t('contentStudio.keymap.title')} (?)`}
+            aria-label={t('contentStudio.keymap.title')}
+          >
+            <Keyboard className="w-4 h-4" />
+          </Button>
           <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => zoomBy(1 / 1.25)} title={t('contentStudio.timeline.zoomOut')}>
             <ZoomOut className="w-4 h-4" />
           </Button>
@@ -414,7 +616,10 @@ const Timeline: React.FC = () => {
         </div>
       </div>
 
+      {markersPanelOpen && <MarkersPanel />}
+
       <div className="flex">
+        <ToolPalette />
         {/* fixed track labels + mute */}
         <div className="shrink-0 border-r border-border" style={{ width: LABEL_WIDTH }}>
           <div style={{ height: RULER_HEIGHT }} className="border-b border-border" />
@@ -425,42 +630,29 @@ const Timeline: React.FC = () => {
             CC
           </div>
           {tracks.map((track) => (
-            <div
+            <TrackHeader
               key={track.id}
-              style={{ height: TRACK_HEIGHT }}
-              className="flex flex-col items-center justify-center gap-1 text-xs font-medium text-muted-foreground border-b border-border"
-            >
-              <span>
-                {track.kind === 'video' ? 'V' : 'A'}
-                {track.index + 1}
-              </span>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => toggleTrackMute(track.id)}
-                  className={`p-0.5 rounded hover:bg-muted ${track.muted ? 'text-destructive' : 'text-muted-foreground'}`}
-                  title={track.muted ? t('contentStudio.timeline.unmute') : t('contentStudio.timeline.mute')}
-                >
-                  {track.muted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                </button>
-                {track.clips.length === 0 && (
-                  <button
-                    type="button"
-                    onClick={() => removeTrack(track.id)}
-                    className="p-0.5 rounded hover:bg-muted text-muted-foreground hover:text-destructive"
-                    title={t('contentStudio.timeline.deleteTrack')}
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-            </div>
+              track={track}
+              height={heightOf(track.id)}
+              soloActive={anySoloTrack}
+              onResizeDown={onResizeDown}
+              onResizeMove={onResizeMove}
+              onResizeUp={onResizeUp}
+            />
           ))}
         </div>
 
         {/* scrollable timeline */}
         <div ref={scrollRef} className="flex-1 overflow-x-auto">
-          <div ref={contentRef} className="relative" style={{ width: contentWidth }}>
+          <div
+            ref={contentRef}
+            className={`relative ${toolMode === 'hand' ? 'cursor-grab active:cursor-grabbing' : ''}`}
+            style={{ width: contentWidth }}
+            onPointerDown={onHandDown}
+            onPointerMove={onHandMove}
+            onPointerUp={onHandUp}
+            onPointerCancel={onHandUp}
+          >
             {/* ruler */}
             <div
               className="relative bg-muted/40 cursor-pointer select-none touch-none border-b border-border"
@@ -470,6 +662,7 @@ const Timeline: React.FC = () => {
               onPointerUp={onRulerUp}
             >
               <RulerTicks duration={duration} zoom={zoom} startSec={win.startSec} endSec={win.endSec} />
+              <RulerMarkers zoom={zoom} startSec={win.startSec} endSec={win.endSec} />
             </div>
 
             {/* caption lane (pinned between ruler and tracks) */}
@@ -483,6 +676,9 @@ const Timeline: React.FC = () => {
                 zoom={zoom}
                 windowStartSec={win.startSec}
                 windowEndSec={win.endSec}
+                height={heightOf(track.id)}
+                shaking={shakeTrackId === track.id}
+                toolMode={toolMode}
                 selectedClipIds={selectedClipIds}
                 assets={assets}
                 onSelect={selectClip}
@@ -494,11 +690,159 @@ const Timeline: React.FC = () => {
 
             <PlayheadMarker
               zoom={zoom}
-              height={RULER_HEIGHT + CAPTION_LANE_HEIGHT + tracks.length * TRACK_HEIGHT}
+              height={RULER_HEIGHT + CAPTION_LANE_HEIGHT + lanesHeight}
             />
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+/**
+ * One lane's header: inline-renamable name, lock, hide (video) / solo + mute
+ * (audio), delete-when-empty, and a bottom drag handle that resizes the lane.
+ * Every toggle is a store action (one undo entry) counted into the edit
+ * summary as a 'ui' track-control change.
+ */
+const TrackHeader: React.FC<{
+  track: StudioTrack;
+  height: number;
+  soloActive: boolean;
+  onResizeDown: (e: React.PointerEvent, id: string) => void;
+  onResizeMove: (e: React.PointerEvent) => void;
+  onResizeUp: (e: React.PointerEvent) => void;
+}> = ({ track, height, soloActive, onResizeDown, onResizeMove, onResizeUp }) => {
+  const { t } = useLocalization('interface');
+  const toggleTrackMute = useStudioStore((s) => s.toggleTrackMute);
+  const toggleTrackLock = useStudioStore((s) => s.toggleTrackLock);
+  const toggleTrackHidden = useStudioStore((s) => s.toggleTrackHidden);
+  const toggleTrackSolo = useStudioStore((s) => s.toggleTrackSolo);
+  const setTrackName = useStudioStore((s) => s.setTrackName);
+  const removeTrack = useStudioStore((s) => s.removeTrack);
+  const defaultName = `${track.kind === 'video' ? 'V' : 'A'}${track.index + 1}`;
+  const [editing, setEditing] = React.useState(false);
+  const [draft, setDraft] = React.useState('');
+  const counted = (fn: () => void) => () => {
+    fn();
+    editSummary.increment('trackControlChanges');
+    editSummary.increment('uiInvocations');
+  };
+  const commitName = () => {
+    setEditing(false);
+    if (draft.trim() !== (track.name ?? '')) {
+      setTrackName(track.id, draft);
+      editSummary.increment('trackControlChanges');
+      editSummary.increment('uiInvocations');
+    }
+  };
+  const btn = (on: boolean, tone: string) =>
+    `p-0.5 rounded hover:bg-muted ${on ? tone : 'text-muted-foreground'}`;
+  const isAudio = track.kind === 'audio';
+  // Solo wins over mute: while any track solos, a non-soloed track reads as dimmed.
+  const dimmed = soloActive && !(isAudio && track.solo);
+  return (
+    <div
+      style={{ height }}
+      className={`relative flex flex-col items-center justify-center gap-1 border-b border-border px-1 text-xs font-medium text-muted-foreground ${
+        dimmed ? 'opacity-50' : ''
+      }`}
+      data-track-header={track.id}
+    >
+      {editing ? (
+        <input
+          autoFocus
+          value={draft}
+          maxLength={80}
+          aria-label={t('contentStudio.timeline.renameTrack')}
+          className="h-5 w-full rounded border border-input bg-background px-1 text-center text-[11px] text-foreground outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          onChange={(e) => setDraft(e.target.value)}
+          onBlur={commitName}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+            if (e.key === 'Escape') {
+              setDraft(track.name ?? '');
+              setEditing(false);
+            }
+          }}
+        />
+      ) : (
+        <button
+          type="button"
+          className="max-w-full truncate rounded px-1 hover:bg-muted hover:text-foreground"
+          title={t('contentStudio.timeline.renameTrackHint')}
+          onDoubleClick={() => {
+            setDraft(track.name ?? '');
+            setEditing(true);
+          }}
+        >
+          {track.name || defaultName}
+        </button>
+      )}
+      <div className="flex flex-wrap items-center justify-center gap-0.5">
+        <button
+          type="button"
+          onClick={counted(() => toggleTrackLock(track.id))}
+          aria-pressed={!!track.locked}
+          className={btn(!!track.locked, 'text-premium')}
+          title={track.locked ? t('contentStudio.timeline.unlock') : t('contentStudio.timeline.lock')}
+        >
+          {track.locked ? <Lock className="h-3.5 w-3.5" /> : <LockOpen className="h-3.5 w-3.5" />}
+        </button>
+        {isAudio ? (
+          <button
+            type="button"
+            onClick={counted(() => toggleTrackSolo(track.id))}
+            aria-pressed={!!track.solo}
+            className={btn(!!track.solo, 'text-primary')}
+            title={track.solo ? t('contentStudio.timeline.unsolo') : t('contentStudio.timeline.solo')}
+          >
+            <Headphones className="h-3.5 w-3.5" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={counted(() => toggleTrackHidden(track.id))}
+            aria-pressed={!!track.hidden}
+            className={btn(!!track.hidden, 'text-destructive')}
+            title={track.hidden ? t('contentStudio.timeline.show') : t('contentStudio.timeline.hide')}
+          >
+            {track.hidden ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={counted(() => toggleTrackMute(track.id))}
+          aria-pressed={track.muted}
+          className={btn(track.muted, 'text-destructive')}
+          title={track.muted ? t('contentStudio.timeline.unmute') : t('contentStudio.timeline.mute')}
+        >
+          {track.muted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+        </button>
+        {track.clips.length === 0 && !track.locked && (
+          <button
+            type="button"
+            onClick={() => removeTrack(track.id)}
+            className="rounded p-0.5 text-muted-foreground hover:bg-muted hover:text-destructive"
+            title={t('contentStudio.timeline.deleteTrack')}
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </div>
+      {/* Height resize handle (view preference; persisted per project). */}
+      <div
+        role="separator"
+        aria-orientation="horizontal"
+        aria-label={t('contentStudio.timeline.resizeTrack')}
+        className="absolute inset-x-0 bottom-0 h-1.5 cursor-row-resize touch-none hover:bg-primary/40"
+        onPointerDown={(e) => onResizeDown(e, track.id)}
+        onPointerMove={onResizeMove}
+        onPointerUp={onResizeUp}
+        onPointerCancel={onResizeUp}
+        data-min={MIN_TRACK_HEIGHT}
+        data-max={MAX_TRACK_HEIGHT}
+      />
     </div>
   );
 };
@@ -574,6 +918,9 @@ interface TrackRowProps {
   zoom: number;
   windowStartSec: number;
   windowEndSec: number;
+  height: number;
+  shaking: boolean;
+  toolMode: StudioToolMode;
   selectedClipIds: string[];
   assets: ReturnType<typeof useStudioStore.getState>['assets'];
   onSelect: (id: string | null, additive?: boolean) => void;
@@ -616,10 +963,17 @@ const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
   return (
     <div
       ref={setNodeRef}
-      className={`relative border-b border-border ${props.track.muted ? 'opacity-60' : ''} ${
+      data-track-id={props.track.id}
+      data-locked={props.track.locked || undefined}
+      className={`relative border-b border-border ${props.track.muted ? 'opacity-60' : ''} ${props.track.hidden ? 'opacity-40' : ''} ${props.shaking ? 'cs-lock-shake' : ''} ${
         isOver && compatible ? 'bg-primary/10 ring-1 ring-inset ring-primary/60' : ''
       } ${isOver && incompatible ? 'bg-destructive/10 ring-1 ring-inset ring-destructive/50' : ''}`}
-      style={{ height: TRACK_HEIGHT }}
+      style={{
+        height: props.height,
+        ...(props.track.locked
+          ? { backgroundImage: 'repeating-linear-gradient(135deg, color-mix(in srgb, var(--muted-foreground) 14%, transparent) 0 2px, transparent 2px 9px)' }
+          : {}),
+      }}
       onClick={(e) => {
         // Clicking empty lane space clears the selection.
         if (e.target === e.currentTarget) props.onSelect(null);
@@ -636,6 +990,8 @@ const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
           zoom={props.zoom}
           left={left}
           width={width}
+          height={props.height}
+          toolMode={props.toolMode}
           selected={props.selectedClipIds.includes(clip.id)}
           assets={props.assets}
           onSelect={props.onSelect}
@@ -654,9 +1010,13 @@ const TrackRowImpl: React.FC<TrackRowProps> = (props) => {
 const TrackRow = React.memo(TrackRowImpl);
 TrackRow.displayName = 'TrackRow';
 
-type ClipBlockProps = Omit<TrackRowProps, 'selectedClipIds' | 'windowStartSec' | 'windowEndSec'> & {
+type ClipBlockProps = Omit<
+  TrackRowProps,
+  'selectedClipIds' | 'windowStartSec' | 'windowEndSec' | 'height' | 'shaking'
+> & {
   clip: StudioClip;
   selected: boolean;
+  height: number;
   /** Geometry resolved by the windowing pass (lib/studio/timelineWindow.ts). */
   left: number;
   width: number;
@@ -668,6 +1028,8 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   zoom,
   left,
   width,
+  height,
+  toolMode,
   selected,
   assets,
   onSelect,
@@ -694,9 +1056,13 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   // asset. Render them as an offline chip instead of crashing or looking empty.
   const assetsLoaded = useStudioStore((s) => s.assetsLoaded);
   const offline = isClipOffline(clip, assets, assetsLoaded);
+  // Dragging only exists in the Selection tool, and never on a locked lane
+  // (the store would reject the move anyway; this keeps the cursor honest).
+  const locked = !!track.locked;
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: clip.id,
     data: { type: 'clip', kind: track.kind, label },
+    disabled: toolMode !== 'select' || locked,
   });
   const isImage = entry?.asset.mediaKind === 'image';
   const assetDur = clipTrimBound(entry?.asset, isTitle);
@@ -716,7 +1082,7 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
   // filmstrip on video-track clips that carry audio. Rubber-band editing only on
   // audio tracks (video strips are too thin); the inspector handles the rest.
   const isAudioTrack = track.kind === 'audio';
-  const contentH = TRACK_HEIGHT - 8; // matches the top-1/bottom-1 insets
+  const contentH = height - 8; // matches the top-1/bottom-1 insets
   const showWaveform = ready && !!entry?.asset.hasAudio;
   const waveH = isAudioTrack ? contentH : Math.round(contentH * 0.35);
 
@@ -783,6 +1149,80 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
     useStudioStore.getState().endGesture();
   };
 
+  // --- pro tools (part 18): razor click, slip / slide drags, roll affordance ---
+  const proRef = React.useRef<null | { mode: 'slip' | 'slide'; startX: number; applied: number }>(null);
+  const [slipReadout, setSlipReadout] = React.useState<number | null>(null);
+  const slipOk = canSlip(clip, assetDur);
+  const prevTouches = track.clips.some((c) => c.id !== clip.id && Math.abs(clipEnd(c) - clip.timelineStart) <= EDIT_EPS);
+  const nextTouches = track.clips.some((c) => c.id !== clip.id && Math.abs(c.timelineStart - clipEnd(clip)) <= EDIT_EPS);
+
+  const onProDown = (e: React.PointerEvent) => {
+    if (toolMode !== 'slip' && toolMode !== 'slide') return;
+    e.stopPropagation();
+    e.preventDefault();
+    const st = useStudioStore.getState();
+    if (locked) {
+      st.notifyLocked(track.id);
+      return;
+    }
+    if (toolMode === 'slip' && !slipOk) {
+      toast.message(t('contentStudio.timeline.slipUnavailable'), { id: 'darkroom-slip-unavailable' });
+      return;
+    }
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    proRef.current = { mode: toolMode, startX: e.clientX, applied: 0 };
+    st.selectClip(clip.id);
+    st.beginGesture(); // the whole drag is ONE undo entry
+  };
+  const onProMove = (e: React.PointerEvent) => {
+    const d = proRef.current;
+    if (!d) return;
+    const dxSec = (e.clientX - d.startX) / zoom;
+    const st = useStudioStore.getState();
+    if (d.mode === 'slide') {
+      d.applied += st.slideClip(clip.id, dxSec - d.applied);
+    } else {
+      // Dragging right drags the picture right: the window moves EARLIER in the
+      // source. dx is timeline seconds; the window moves `speed` source s per s.
+      const wantSource = -dxSec * clipSpeed(clip);
+      d.applied += st.slipClip(clip.id, wantSource - d.applied);
+      setSlipReadout(d.applied);
+    }
+  };
+  const onProUp = (e: React.PointerEvent) => {
+    const d = proRef.current;
+    if (!d) return;
+    proRef.current = null;
+    setSlipReadout(null);
+    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    useStudioStore.getState().endGesture();
+    if (d.applied !== 0) {
+      editSummary.increment(d.mode === 'slip' ? 'trimsSlip' : 'trimsSlide');
+      editSummary.increment('uiInvocations');
+    }
+  };
+  const onRazorClick = (e: React.MouseEvent) => {
+    const st = useStudioStore.getState();
+    const rect = e.currentTarget.getBoundingClientRect();
+    let at = clip.timelineStart + (e.clientX - rect.left) / zoom;
+    if (st.snapping && Math.abs(at - st.playhead) <= 8 / zoom) at = st.playhead; // snap the cut to the playhead
+    if (st.razorAt(clip.id, at)) {
+      editSummary.increment('splits');
+      editSummary.increment('uiInvocations');
+    } else if (!track.locked) {
+      toast.message(t('contentStudio.timeline.razorMiss'), { id: 'darkroom-razor-miss' });
+    }
+  };
+  const canDetach =
+    track.kind === 'video' &&
+    !isTitle &&
+    !freezeClip &&
+    entry?.asset.mediaKind === 'video' &&
+    !!entry.asset.hasAudio &&
+    !((clip.volume ?? 1) === 0 && !clip.volumeKeyframes?.length && !clip.keyframes?.volume?.length);
+  const selectedCount = useStudioStore((s) => s.selectedClipIds.length);
+  const canGroup = selected && selectedCount >= 2;
+
   const applyTransition = (type: StudioTransitionType) => {
     editSummary.increment('transitionsAdded', type);
     editSummary.increment('uiInvocations');
@@ -816,12 +1256,39 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
     <div
       ref={setNodeRef}
       {...attributes}
-      {...listeners}
       onClick={(e) => {
         e.stopPropagation();
+        if (toolMode === 'razor') {
+          onRazorClick(e);
+          return;
+        }
         onSelect(clip.id, e.metaKey || e.ctrlKey || e.shiftKey);
       }}
-      className={`absolute top-1 bottom-1 rounded-md overflow-hidden border touch-none cursor-grab active:cursor-grabbing ${
+      onPointerDown={(e) => {
+        // dnd-kit's own pointerdown (select tool) and the pro tools' gesture are
+        // mutually exclusive by `toolMode`; compose rather than override.
+        if (toolMode === 'select' && !locked) (listeners as { onPointerDown?: (ev: React.PointerEvent) => void } | undefined)?.onPointerDown?.(e);
+        else onProDown(e);
+      }}
+      onPointerMove={toolMode === 'slip' || toolMode === 'slide' ? onProMove : undefined}
+      onPointerUp={toolMode === 'slip' || toolMode === 'slide' ? onProUp : undefined}
+      onPointerCancel={toolMode === 'slip' || toolMode === 'slide' ? onProUp : undefined}
+      data-group-id={clip.groupId || undefined}
+      className={`absolute top-1 bottom-1 rounded-md overflow-hidden border touch-none ${
+        toolMode === 'razor'
+          ? 'cursor-crosshair'
+          : toolMode === 'slip'
+            ? slipOk
+              ? 'cursor-ew-resize'
+              : 'cursor-not-allowed'
+            : toolMode === 'slide'
+              ? 'cursor-ew-resize'
+              : toolMode === 'hand'
+                ? 'cursor-grab'
+                : locked
+                  ? 'cursor-not-allowed'
+                  : 'cursor-grab active:cursor-grabbing'
+      } ${
         selected ? 'border-primary ring-1 ring-primary' : 'border-border'
       } ${isTitle || offline ? 'bg-surface-0' : track.kind === 'video' ? 'bg-data/20' : 'bg-data/10'} ${offline ? 'border-destructive/70 border-dashed' : ''} ${isDragging ? 'opacity-40' : ''}`}
       style={{ left, width }}
@@ -894,20 +1361,40 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
           )}
         </div>
       )}
+      {/* Slip readout (part 18): the live source window while dragging. */}
+      {slipReadout !== null && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center">
+          <span className="rounded-t bg-surface-0/90 px-1.5 py-0.5 font-mono text-[10px] tabular-nums text-premium">
+            {clip.sourceIn.toFixed(2)}s – {clip.sourceOut.toFixed(2)}s · {slipReadout >= 0 ? '+' : ''}
+            {slipReadout.toFixed(2)}s
+          </span>
+        </div>
+      )}
+      {/* Group badge (part 18). */}
+      {clip.groupId && (
+        <LinkIcon
+          className="pointer-events-none absolute bottom-0.5 right-1 z-10 h-3 w-3 text-premium"
+          aria-label={t('contentStudio.timeline.grouped')}
+        />
+      )}
       {/* Trim handles. The visual bar stays 8px so the timeline reads
           precisely, but below `lg` a transparent ::before widens the hit area
           inward to 24px — 8px is well under a fingertip. Extending inward
           rather than outward keeps it from stealing the neighbouring clip's
           handle. */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-2 cursor-ew-resize bg-white/20 hover:bg-white/50 touch-none before:absolute before:inset-y-0 before:left-0 before:w-6 before:content-[''] lg:before:hidden"
+        data-roll={prevTouches || undefined}
+        title={prevTouches ? t('contentStudio.timeline.rollHint') : undefined}
+        className={`absolute left-0 top-0 bottom-0 w-2 ${prevTouches ? 'cursor-col-resize bg-primary/40 hover:bg-primary/70' : 'cursor-ew-resize bg-white/20 hover:bg-white/50'} touch-none before:absolute before:inset-y-0 before:left-0 before:w-6 before:content-[''] lg:before:hidden`}
         onPointerDown={(e) => onTrimDown(e, 'l', clip, assetDur)}
         onPointerMove={onTrimMove}
         onPointerUp={onTrimUp}
         onPointerCancel={onTrimUp}
       />
       <div
-        className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize bg-white/20 hover:bg-white/50 touch-none before:absolute before:inset-y-0 before:right-0 before:w-6 before:content-[''] lg:before:hidden"
+        data-roll={nextTouches || undefined}
+        title={nextTouches ? t('contentStudio.timeline.rollHint') : undefined}
+        className={`absolute right-0 top-0 bottom-0 w-2 ${nextTouches ? 'cursor-col-resize bg-primary/40 hover:bg-primary/70' : 'cursor-ew-resize bg-white/20 hover:bg-white/50'} touch-none before:absolute before:inset-y-0 before:right-0 before:w-6 before:content-[''] lg:before:hidden`}
         onPointerDown={(e) => onTrimDown(e, 'r', clip, assetDur)}
         onPointerMove={onTrimMove}
         onPointerUp={onTrimUp}
@@ -1029,6 +1516,34 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
         {canFreeze && (
           <ContextMenuItem className="text-xs" onSelect={addFreezeFrame}>
             {t('contentStudio.speed.contextAddFreeze')}
+          </ContextMenuItem>
+        )}
+        {(canGroup || clip.groupId || canDetach) && <ContextMenuSeparator />}
+        {canGroup && (
+          <ContextMenuItem className="text-xs" onSelect={() => runCommand('edit.group', 'ui')}>
+            {t('contentStudio.timeline.contextGroup')}
+          </ContextMenuItem>
+        )}
+        {clip.groupId && (
+          <ContextMenuItem
+            className="text-xs"
+            onSelect={() => {
+              if (!selected) useStudioStore.getState().selectClip(clip.id);
+              runCommand('edit.ungroup', 'ui');
+            }}
+          >
+            {t('contentStudio.timeline.contextUngroup')}
+          </ContextMenuItem>
+        )}
+        {canDetach && (
+          <ContextMenuItem
+            className="text-xs"
+            onSelect={() => {
+              useStudioStore.getState().selectClip(clip.id);
+              runCommand('edit.detachAudio', 'ui');
+            }}
+          >
+            {t('contentStudio.timeline.contextDetachAudio')}
           </ContextMenuItem>
         )}
         {/* Legacy convert (part 16): clips bearing textOverlays offer a

@@ -248,6 +248,8 @@ interface StudioState {
   // Lock enforcement is STORE-LEVEL: any mutation that would change the clips
   // of a locked track (or delete it) is dropped whole and raises `lockNotice`.
   setToolMode: (mode: StudioToolMode) => void;
+  /** Raise the "track is locked" notice for a UI path that refuses to start a gesture. */
+  notifyLocked: (trackId: string) => void;
   toggleSnapping: () => void;
   setMarkersPanelOpen: (open: boolean) => void;
   setCheatSheetOpen: (open: boolean) => void;
@@ -1172,7 +1174,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const start = Math.max(0, at ?? s.playhead);
       const end = start + duration;
       const hasRoom = (t: StudioTrack) =>
-        t.kind === kind && !t.clips.some((c) => c.timelineStart < end && clipEnd(c) > start);
+        t.kind === kind && !t.locked && !t.clips.some((c) => c.timelineStart < end && clipEnd(c) > start);
       let tracks = ensureBaseTracks(s.project.tracks);
       let target = tracks.find(hasRoom);
       if (!target) {
@@ -1214,7 +1216,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const newClipId = uid();
       let placed = false;
       const next = tracks.map((track) => {
-        if (placed || track.kind !== kind) return track;
+        if (placed || track.kind !== kind || track.locked) return track;
         placed = true;
         const startAt = isImage
           ? fitInGaps(track.clips.map((c) => ({ start: c.timelineStart, end: clipEnd(c) })), duration, 0)
@@ -1490,6 +1492,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   // --- pro timeline tools (part 18) ---------------------------------------
 
   setToolMode: (mode) => set((s) => (s.toolMode === mode ? {} : { toolMode: mode })),
+  notifyLocked: (trackId) => set((s) => ({ lockNotice: lockNoticeFor(s, trackId) })),
   toggleSnapping: () => set((s) => ({ snapping: !s.snapping })),
   setMarkersPanelOpen: (open) => set({ markersPanelOpen: open }),
   setCheatSheetOpen: (open) => set({ cheatSheetOpen: open }),
@@ -2141,7 +2144,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const tracks = ensureBaseTracks(s.project.tracks);
       let target: StudioTrack | undefined;
       for (const tr of tracks) {
-        if (tr.kind === 'video' && (!target || tr.index > target.index)) target = tr;
+        if (tr.kind === 'video' && !tr.locked && (!target || tr.index > target.index)) target = tr;
       }
       if (!target) return {};
       const dur = 5;

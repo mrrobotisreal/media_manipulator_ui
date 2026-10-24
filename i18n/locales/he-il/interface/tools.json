@@ -137,7 +137,38 @@
       "keyframeToggle": "הצגת קיפריימים",
       "keyframeDiamond": "גרירה לשינוי תזמון, לחיצה כפולה להסרה",
       "titleClip": "כותרת",
-      "contextConvertToTitle": "המרה לקליפ כותרת"
+      "contextConvertToTitle": "המרה לקליפ כותרת",
+      "tools": "Timeline tools",
+      "toolSelect": "Selection",
+      "toolRazor": "Razor",
+      "toolSlip": "Slip",
+      "toolSlide": "Slide",
+      "toolHand": "Hand",
+      "trackLockedToast": "That track is locked. Unlock it to edit.",
+      "snapping": "Snapping",
+      "markersPanel": "Markers",
+      "markersPanelTitle": "Markers",
+      "markersEmpty": "No markers yet. Press M to add one at the playhead.",
+      "markerName": "Name",
+      "markerColor": "Color",
+      "markerComment": "Comment",
+      "markerDelete": "Delete marker",
+      "slipUnavailable": "Slip needs a clip with source footage to re-window. Stills, titles and freeze frames have none.",
+      "razorMiss": "Click inside a clip, away from its edges, to cut.",
+      "rollHint": "Drag to roll this edit point (Alt: trim only this clip, Shift: ripple)",
+      "grouped": "Grouped",
+      "contextGroup": "Group selected clips",
+      "contextUngroup": "Ungroup",
+      "contextDetachAudio": "Detach audio",
+      "renameTrack": "Track name",
+      "renameTrackHint": "Double-click to rename",
+      "lock": "Lock track",
+      "unlock": "Unlock track",
+      "solo": "Solo track",
+      "unsolo": "Remove solo",
+      "show": "Show track",
+      "hide": "Hide track",
+      "resizeTrack": "Resize track height"
     },
     "preferences": {
       "open": "העדפות",
@@ -161,7 +192,7 @@
       "undo": "ביטול",
       "redo": "ביצוע מחדש",
       "mobileHint": "Darkroom עובד הכי טוב במסך גדול יותר עם עכבר או משטח מגע.",
-      "shortcuts": "רווח הפעלה/השהיה · ←/→ צעד · S פיצול · Del מחיקה · +/− זום · ⌘Z ביטול · ⇧⌘Z ביצוע מחדש",
+      "shortcuts": "רווח הפעלה/השהיה · ←/→ צעד · V/C/Y/U/H כלים · ⌘/Ctrl+K פיצול · S הצמדה · M סמן · Q/W חיתוך אדווה · Del מחיקה · +/− זום · ⌘Z ביטול · ? כל הקיצורים",
       "tabs": {
         "media": "מדיה",
         "preview": "תצוגה מקדימה",
@@ -523,6 +554,17 @@
         "neighbor": "Slowed down as far as the next clip allows",
         "range": "Speed limited to 10%–1000%",
         "minLength": "Speed limited so the clip stays at least 0.1 s long"
+      }
+    },
+    "keymap": {
+      "title": "Keyboard shortcuts",
+      "description": "Press ? any time to open this list.",
+      "category": {
+        "tools": "Tools",
+        "editing": "Editing",
+        "playback": "Playback",
+        "view": "View",
+        "history": "History"
       }
     }
   },

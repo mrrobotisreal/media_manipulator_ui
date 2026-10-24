@@ -137,7 +137,38 @@
       "keyframeToggle": "Показать ключевые кадры",
       "keyframeDiamond": "перетащите, чтобы изменить время, дважды щелкните, чтобы удалить",
       "titleClip": "Титр",
-      "contextConvertToTitle": "Преобразовать в титровый клип"
+      "contextConvertToTitle": "Преобразовать в титровый клип",
+      "tools": "Timeline tools",
+      "toolSelect": "Selection",
+      "toolRazor": "Razor",
+      "toolSlip": "Slip",
+      "toolSlide": "Slide",
+      "toolHand": "Hand",
+      "trackLockedToast": "That track is locked. Unlock it to edit.",
+      "snapping": "Snapping",
+      "markersPanel": "Markers",
+      "markersPanelTitle": "Markers",
+      "markersEmpty": "No markers yet. Press M to add one at the playhead.",
+      "markerName": "Name",
+      "markerColor": "Color",
+      "markerComment": "Comment",
+      "markerDelete": "Delete marker",
+      "slipUnavailable": "Slip needs a clip with source footage to re-window. Stills, titles and freeze frames have none.",
+      "razorMiss": "Click inside a clip, away from its edges, to cut.",
+      "rollHint": "Drag to roll this edit point (Alt: trim only this clip, Shift: ripple)",
+      "grouped": "Grouped",
+      "contextGroup": "Group selected clips",
+      "contextUngroup": "Ungroup",
+      "contextDetachAudio": "Detach audio",
+      "renameTrack": "Track name",
+      "renameTrackHint": "Double-click to rename",
+      "lock": "Lock track",
+      "unlock": "Unlock track",
+      "solo": "Solo track",
+      "unsolo": "Remove solo",
+      "show": "Show track",
+      "hide": "Hide track",
+      "resizeTrack": "Resize track height"
     },
     "preferences": {
       "open": "Настройки",
@@ -161,7 +192,7 @@
       "undo": "Отменить",
       "redo": "Повторить",
       "mobileHint": "Darkroom лучше всего работает на большом экране с мышью или трекпадом.",
-      "shortcuts": "Space воспроизведение/пауза · ←/→ шаг · S разделить · Del удалить · +/− масштаб · ⌘Z отменить · ⇧⌘Z повторить",
+      "shortcuts": "Space воспроизведение/пауза · ←/→ шаг · V/C/Y/U/H инструменты · ⌘/Ctrl+K разделить · S привязка · M маркер · Q/W обрезка со сдвигом · Del удалить · +/− масштаб · ⌘Z отменить · ? все сочетания",
       "tabs": {
         "media": "Медиа",
         "preview": "Предпросмотр",
@@ -523,6 +554,17 @@
         "neighbor": "Slowed down as far as the next clip allows",
         "range": "Speed limited to 10%–1000%",
         "minLength": "Speed limited so the clip stays at least 0.1 s long"
+      }
+    },
+    "keymap": {
+      "title": "Keyboard shortcuts",
+      "description": "Press ? any time to open this list.",
+      "category": {
+        "tools": "Tools",
+        "editing": "Editing",
+        "playback": "Playback",
+        "view": "View",
+        "history": "History"
       }
     }
   },

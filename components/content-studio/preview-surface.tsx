@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
+import { anySolo, isTrackAudible } from '@/lib/studio/trackAudibility';
 import {
   resolveActiveClips,
   topVideoClip,
@@ -299,6 +300,9 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const fps = project?.fps ?? 30;
   const duration = useStudioStore((s) => s.duration);
   const activeNow = React.useMemo(() => resolveActiveClips(tracks, playhead), [tracks, playhead]);
+  // Part 18: hidden video tracks never reach the composite, in any render path
+  // (the WebGL path filters them in syncFrame; this feeds the CSS fallbacks).
+  const hiddenIds = React.useMemo(() => new Set(tracks.filter((tr) => tr.hidden).map((tr) => tr.id)), [tracks]);
   const topNow = React.useMemo(() => topVideoClip(activeNow), [activeNow]);
   // Title clips are assetless and always renderable — never "building".
   // A clip whose asset is gone (undone usage-protected delete) is offline, not "building".
@@ -349,7 +353,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const fallbackTitleItems = React.useMemo(() => {
     if (glOk) return [];
     return activeNow
-      .filter((a) => a.trackKind === 'video' && !!a.clip.title)
+      .filter((a) => a.trackKind === 'video' && !!a.clip.title && !hiddenIds.has(a.trackId))
       .map((a) => {
         const vals = clipValuesAt(a.clip, playhead - a.clip.timelineStart);
         return {
@@ -360,7 +364,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           z: 7,
         };
       });
-  }, [glOk, activeNow, playhead]);
+  }, [glOk, activeNow, playhead, hiddenIds]);
 
   // Active still-image clips for the CSS fallback path (no WebGL): plain <img>
   // elements styled like the fallback <video> (opacity x dissolve ramp, stack
@@ -371,6 +375,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       .filter(
         (a) =>
           a.trackKind === 'video' &&
+          !hiddenIds.has(a.trackId) &&
           assets[a.clip.assetId]?.asset.mediaKind === 'image' &&
           assets[a.clip.assetId]?.status === 'ready',
       )
@@ -385,7 +390,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           filter: cssFilterForAdjustments(a.clip.adjustments),
         };
       });
-  }, [glOk, activeNow, assets, playhead]);
+  }, [glOk, activeNow, assets, playhead, hiddenIds]);
 
   // Text/location overlays for the active video clips (faked over the surface;
   // the export draws them in with drawtext).
@@ -393,7 +398,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const textItems = React.useMemo(
     () =>
       activeNow
-        .filter((a) => a.trackKind === 'video')
+        .filter((a) => a.trackKind === 'video' && !hiddenIds.has(a.trackId))
         .flatMap((a) =>
           (a.clip.textOverlays ?? []).map((ov) => ({
             key: a.clip.id + ov.id,
@@ -608,6 +613,14 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       for (const tr of trks) {
         if (tr.hidden) hiddenTrackIds.add(tr.id);
       }
+      // Part 18 solo: when any audio track is soloed only soloed audio is
+      // heard (solo beats mute; video embedded audio goes silent). Mirrors
+      // lib/studio/trackAudibility.ts; the export side belongs to part 19.
+      const soloOn = anySolo(trks);
+      const audibleTrackIds = new Set<string>();
+      for (const tr of trks) {
+        if (isTrackAudible(tr, soloOn)) audibleTrackIds.add(tr.id);
+      }
       // Stacking order for active video clips: bottom track first, later-starting
       // clip on top (so a dissolving-in clip sits above its predecessor). Small
       // z-indices keep the status overlays (z-10) on top.
@@ -731,7 +744,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips;
         const gainNow = vals.volume * (trackClips ? audioFadeGain(a.clip, trackClips, t) : 1);
         // Stalled clips (freeze / reverse still building) are silent.
-        routeSlotAudio(i, a.trackId, stalled ? 0 : gainNow, vals.pan, a.trackMuted || stalled);
+        routeSlotAudio(i, a.trackId, stalled ? 0 : gainNow, vals.pan, !audibleTrackIds.has(a.trackId) || stalled);
         if (playing && !stalled) {
           if (el.paused) void el.play().catch(() => {});
         } else if (!el.paused) {
@@ -754,7 +767,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         const voiceTrackId =
           duckCfg?.duckingEnabled && duckCfg.duckVoiceTrackId ? duckCfg.duckVoiceTrackId : '';
         const voiceTrack = voiceTrackId ? trks.find((tr) => tr.id === voiceTrackId) : undefined;
-        const ducking = !!voiceTrack && !voiceTrack.muted;
+        const ducking = !!voiceTrack && audibleTrackIds.has(voiceTrack.id);
         let bedTarget = 1;
         if (ducking) {
           let level = 0;
@@ -776,8 +789,9 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         for (const tr of trks) {
           const tg = ag.trackGains.get(tr.id);
           if (!tg) continue;
-          let target = tr.muted ? 0 : 1;
-          if (ducking && !tr.muted && tr.id !== voiceTrackId) {
+          const audible = audibleTrackIds.has(tr.id);
+          let target = audible ? 1 : 0;
+          if (ducking && audible && tr.id !== voiceTrackId) {
             target = Math.min(target, envGain);
           }
           // The envelope owns attack/release; the tiny time constant here only

@@ -187,3 +187,14 @@ describe('ripple to playhead (Q / W)', () => {
     expect(planRippleToPlayhead(clips, 4, 'prev', bound)).toBeNull();
   });
 });
+
+describe('ripple head-trim at the timeline start', () => {
+  it('can extend the head of a clip at t=0 (the track closes up around it)', () => {
+    const cs = [clip('a', 0, 3, 7), clip('b', 4, 0, 4)];
+    const r = planRippleTrim(cs, 'a', 'l', -2, bound)!;
+    expect(r.applied).toBe(-2);
+    expect(by(r.clips, 'a').timelineStart).toBe(0);
+    expect(by(r.clips, 'a').sourceIn).toBe(1);
+    expect(by(r.clips, 'b').timelineStart).toBe(6);
+  });
+});

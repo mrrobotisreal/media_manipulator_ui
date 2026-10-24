@@ -375,7 +375,7 @@
               "tracks": "Add more tracks with the +V / +A buttons — stack multiple video tracks for overlays and multiple audio tracks for music and voiceover.",
               "drag": "Drag a clip along its track to reposition it, or drop it onto another track of the same kind (video→video, audio→audio). Clips snap to neighbouring edges and the playhead and never overlap.",
               "trim": "Drag either edge of a clip to trim its in/out point.",
-              "split": "Move the playhead and press S to split (razor) the clip(s) under it.",
+              "split": "Move the playhead and press Cmd/Ctrl+K to split (razor) the clip(s) under it.",
               "ripple": "Select a clip and use Ripple delete to remove it and close the gap. Mute a whole track with the speaker icon, or set a clip’s volume with the slider."
             }
           },

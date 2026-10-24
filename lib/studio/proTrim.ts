@@ -203,8 +203,12 @@ export function planRippleTrim(
 ): TrimPlan | null {
   const c = clips.find((x) => x.id === clipId);
   if (!c) return null;
-  const patch = trimPatch(c, side, delta, { assetDuration: bound(c) });
-  const applied = appliedDelta(c, side, patch);
+  // A ripple head-trim keeps the clip where it is (the track closes up around
+  // it), so growing the head is NOT bounded by the clip's distance from 0:
+  // probe with the start pushed far right to defeat trimPatch's position clamp.
+  const probe: StudioClip = side === 'l' ? { ...c, timelineStart: c.timelineStart + 1e6 } : c;
+  const patch = trimPatch(probe, side, delta, { assetDuration: bound(c) });
+  const applied = appliedDelta(probe, side, patch);
   if (applied === 0) return { clips: [...clips], applied: 0 };
   // Left: the clip stays put, later clips move by -applied. Right: by +applied.
   const shift = side === 'l' ? -applied : applied;
