@@ -1924,5 +1924,16 @@
       "body": "נסו את שני הקולות שלי ב-ElevenLabs, הקליטו שם שורה והוסיפו את האודיו לספריית המדיה של Darkroom.",
       "cta": "עוד על הקולות"
     }
+  },
+  "changelog": {
+    "title": "יומן שינויים",
+    "intro": "מה השתנה ב-Media Manipulator, החדש ביותר ראשון.",
+    "subscribe": "הרשמה דרך RSS",
+    "note": "רשומות יומן השינויים כתובות באנגלית.",
+    "new": "חדש",
+    "improved": "שופר",
+    "fixed": "תוקן",
+    "metaTitle": "יומן שינויים | Media Manipulator",
+    "metaDesc": "הערות גרסה של Media Manipulator: כלים חדשים, תכונות חשבון, עדכוני Darkroom ותיקונים."
   }
 }

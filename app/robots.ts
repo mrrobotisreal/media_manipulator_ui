@@ -9,7 +9,9 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         // /dr is the private Double Raven partner portal — keep it out of search
         // indexes entirely (also noindex'd via metadata; excluded from sitemap).
-        disallow: ['/admin/', '/private/', '/dr'],
+        // /r/ is the MM32 result share-link route: private by construction,
+        // never indexable (also noindex via metadata when the route lands).
+        disallow: ['/admin/', '/private/', '/dr', '/r/'],
       },
       { userAgent: 'Mediapartners-Google', allow: '/' },
       { userAgent: 'Google-Display-Ads-Bot', allow: '/' },

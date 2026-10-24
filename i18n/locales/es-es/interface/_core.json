@@ -118,7 +118,9 @@
     "cookieDialog": {
       "title": "Preferencias de cookies",
       "description": "Las preferencias de cookies las gestiona Google. Recarga la página si el banner de cookies no aparece, o visita nuestra Política de privacidad para obtener más información sobre cómo Media Manipulator procesa los datos."
-    }
+    },
+    "changelog": "Registro de cambios",
+    "status": "Estado"
   },
   "languageSelector": {
     "label": "Idioma",

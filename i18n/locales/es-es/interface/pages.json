@@ -1924,5 +1924,16 @@
       "body": "Prueba mis dos voces de ElevenLabs, genera allí una frase y añade el audio a la biblioteca de medios de Darkroom.",
       "cta": "Más sobre las voces"
     }
+  },
+  "changelog": {
+    "title": "Registro de cambios",
+    "intro": "Qué ha cambiado en Media Manipulator, lo más reciente primero.",
+    "subscribe": "Suscribirse por RSS",
+    "note": "Las entradas del registro de cambios están escritas en inglés.",
+    "new": "Nuevo",
+    "improved": "Mejorado",
+    "fixed": "Corregido",
+    "metaTitle": "Registro de cambios | Media Manipulator",
+    "metaDesc": "Notas de versión de Media Manipulator: nuevas herramientas, funciones de cuenta, novedades de Darkroom y correcciones."
   }
 }

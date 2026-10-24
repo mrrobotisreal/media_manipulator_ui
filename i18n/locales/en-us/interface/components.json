@@ -551,5 +551,29 @@
     },
     "replay": "Replay the tour",
     "replayHint": "See the short introduction to your account again."
+  },
+  "status": {
+    "title": "Service status",
+    "intro": "Live status of the Media Manipulator service. Updates every 10 seconds.",
+    "operational": "Operational",
+    "degraded": "Degraded",
+    "down": "Down",
+    "checking": "Checking...",
+    "operationalDetail": "All systems are working normally.",
+    "degradedDetail": "Some parts of the service are having trouble. Conversions may be slow or fail.",
+    "downDetail": "The service is not responding. Please try again in a few minutes.",
+    "queueTitle": "AI processing queue",
+    "running": "Running now",
+    "waiting": "Waiting",
+    "gpuOff": "AI processing is not enabled on this server.",
+    "checksTitle": "Components",
+    "database": "Database",
+    "storage": "Storage",
+    "cache": "Cache",
+    "ok": "OK",
+    "fail": "Problem",
+    "basicOnly": "Only the overall status is available right now.",
+    "lastChecked": "Last checked {{time}}",
+    "metaTitle": "Status | Media Manipulator"
   }
 }

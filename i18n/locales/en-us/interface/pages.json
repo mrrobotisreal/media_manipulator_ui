@@ -1924,5 +1924,16 @@
       "body": "Try my two ElevenLabs voices, render a line there, then add the audio to Darkroom's media bin.",
       "cta": "More about the voices"
     }
+  },
+  "changelog": {
+    "title": "Changelog",
+    "intro": "What has changed in Media Manipulator, newest first.",
+    "subscribe": "Subscribe via RSS",
+    "note": "Changelog entries are written in English.",
+    "new": "New",
+    "improved": "Improved",
+    "fixed": "Fixed",
+    "metaTitle": "Changelog | Media Manipulator",
+    "metaDesc": "Release notes for Media Manipulator: new tools, account features, Darkroom updates and fixes."
   }
 }

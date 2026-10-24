@@ -27,6 +27,12 @@ const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'pricing', href: '/pricing', label: 'Pricing' },
 ];
 
+// MM34: footer-only links (not in the header nav, per the ticket).
+const FOOTER_EXTRA_LINKS: { key: string; href: string }[] = [
+  { key: 'changelog', href: '/changelog' },
+  { key: 'status', href: '/status' },
+];
+
 const LEGAL_LINK_KEYS: { key: string; href: string }[] = [
   { key: 'privacyPolicy', href: '/privacy-policy' },
   { key: 'termsOfService', href: '/terms-of-service' },
@@ -127,6 +133,16 @@ const Footer: React.FC = () => {
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label ?? t(`interface:topNav.${link.key}`)}
+                  </Link>
+                </li>
+              ))}
+              {FOOTER_EXTRA_LINKS.map(link => (
+                <li key={link.key}>
+                  <Link
+                    href={localized(link.href)}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {t(`interface:footer.${link.key}`)}
                   </Link>
                 </li>
               ))}

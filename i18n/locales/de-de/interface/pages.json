@@ -1924,5 +1924,16 @@
       "body": "Probier meine zwei ElevenLabs-Stimmen aus, erzeuge dort eine Zeile und füge das Audio der Medienablage von Darkroom hinzu.",
       "cta": "Mehr über die Stimmen"
     }
+  },
+  "changelog": {
+    "title": "Änderungsprotokoll",
+    "intro": "Was sich bei Media Manipulator geändert hat, das Neueste zuerst.",
+    "subscribe": "Per RSS abonnieren",
+    "note": "Die Einträge des Änderungsprotokolls sind auf Englisch verfasst.",
+    "new": "Neu",
+    "improved": "Verbessert",
+    "fixed": "Behoben",
+    "metaTitle": "Änderungsprotokoll | Media Manipulator",
+    "metaDesc": "Versionshinweise zu Media Manipulator: neue Tools, Kontofunktionen, Darkroom-Updates und Fehlerbehebungen."
   }
 }

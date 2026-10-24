@@ -118,7 +118,9 @@
     "cookieDialog": {
       "title": "Cookie-Einstellungen",
       "description": "Cookie-Einstellungen werden von Google verwaltet. Bitte laden Sie die Seite neu, falls der Cookie-Banner nicht erscheint, oder besuchen Sie unsere Datenschutzerklärung für Details dazu, wie Media Manipulator Daten verarbeitet."
-    }
+    },
+    "changelog": "Änderungsprotokoll",
+    "status": "Status"
   },
   "languageSelector": {
     "label": "Sprache",
