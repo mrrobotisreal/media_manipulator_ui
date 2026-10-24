@@ -278,6 +278,8 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   checkout_abandoned: z.object({}).strict(),
   portal_opened: z.object({ placement: z.string() }).strict(),
   subscription_status_viewed: z.object({ status: z.string(), interval: z.string() }).strict(),
+  retention_offer_viewed: z.object({ offer: z.enum(['retain7', 'retain6', 'resume']) }).strict(),
+  retention_offer_accepted: z.object({ offer: z.enum(['retain7', 'retain6', 'resume']) }).strict(),
 
   content_read_progress: z
     .object({
