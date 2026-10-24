@@ -13,7 +13,7 @@
 
 import { getCurrentIdToken } from '@/lib/firebase';
 import { getSessionId } from '@/lib/analytics';
-import { isLimitRefusal, isQuotaExceeded, readQuotaHeaders, type QuotaExceeded } from './accountApi';
+import { fileTooLargeRefusal, isLimitRefusal, isQuotaExceeded, readQuotaHeaders, type QuotaExceeded } from './accountApi';
 import { publishLimitRefusal, publishQuotaExceeded, publishQuotaState } from './quotaBus';
 
 /**
@@ -109,6 +109,13 @@ export async function authedFetch(
       .json()
       .catch(() => null);
     if (isLimitRefusal(body)) publishLimitRefusal(body);
+  }
+
+  if (response.status === 413) {
+    // The upload cap is enforced with MaxBytesReader, which answers 413 without a body worth
+    // parsing. Announce it so the file-size limit gets its own upgrade moment; the caller
+    // keeps its own error path exactly as for the 403s.
+    publishLimitRefusal(fileTooLargeRefusal());
   }
 
   return response;

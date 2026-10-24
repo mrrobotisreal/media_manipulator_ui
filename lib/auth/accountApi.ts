@@ -504,7 +504,7 @@ export async function verifyCheckoutSession(
 
 /** The body of a 403 from the output-height or saved-project checks. */
 export interface LimitRefusal {
-  error: 'output_height_limited' | 'project_limit_reached';
+  error: 'output_height_limited' | 'project_limit_reached' | 'file_too_large';
   message?: string;
   limit: number;
   requested?: number;
@@ -518,6 +518,15 @@ export function isLimitRefusal(body: unknown): body is LimitRefusal {
   if (typeof body !== 'object' || body === null) return false;
   const error = (body as { error?: unknown }).error;
   return error === 'output_height_limited' || error === 'project_limit_reached';
+}
+
+/**
+ * A 413 from an upload route carries no structured body, so the refusal is synthesized
+ * client-side. `limit` is 0 here ("unknown to the fetch layer"); the interstitial fills the
+ * caller's real cap from the account snapshot, and the upgrade path from the tier.
+ */
+export function fileTooLargeRefusal(): LimitRefusal {
+  return { error: 'file_too_large', limit: 0 };
 }
 
 

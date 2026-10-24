@@ -6,6 +6,7 @@ const h = vi.hoisted(() => ({
   track: vi.fn(),
   startCheckout: vi.fn(),
   purchasable: true as boolean | undefined,
+  tiers: undefined as unknown,
 }));
 
 vi.mock('@/i18n/useLocalization', async () => {
@@ -24,15 +25,18 @@ vi.mock('@/lib/billing/checkout', async (orig) => ({
 vi.mock('@/lib/billing/useUpgradeAction', () => ({
   useBillingFallback: () => vi.fn(async () => undefined),
   usePremiumPurchasable: () => h.purchasable,
+  useTiers: () => h.tiers,
 }));
 
-import { UpgradeInterstitial, interstitialCopy } from './upgrade-interstitial';
+import { UpgradeInterstitial, interstitialCopy, premiumChange } from './upgrade-interstitial';
+import { claimInterstitial, limitKeyOf } from '@/lib/auth/interstitialGate';
 
 const heightBody = { error: 'output_height_limited', limit: 1440, requested: 2160, upgradePath: 'premium' } as const;
 const projectsBody = { error: 'project_limit_reached', limit: 5, used: 5, upgradePath: 'premium' } as const;
 
 beforeEach(() => {
   h.purchasable = true;
+  h.tiers = undefined;
   h.auth = { tier: 'free', openAuth: vi.fn() };
   h.startCheckout.mockResolvedValue({ ok: true });
 });
@@ -63,8 +67,8 @@ describe('UpgradeInterstitial', () => {
     expect(screen.getByText('interface:upgradeInterstitial.outputHeight.body|limit=1440,requested=2160')).toBeTruthy();
     fireEvent.click(screen.getByLabelText('interface:billing.yearly'));
     fireEvent.click(screen.getByRole('button', { name: 'interface:upgradeInterstitial.upgrade' }));
-    await waitFor(() => expect(h.startCheckout).toHaveBeenCalledWith('yearly', 'output_height_limited', 'en-US'));
-    expect(h.track).toHaveBeenCalledWith('upgrade_cta_clicked', { placement: 'output_height_limited', from_tier: 'free' });
+    await waitFor(() => expect(h.startCheckout).toHaveBeenCalledWith('yearly', 'limit_interstitial', 'en-US'));
+    expect(h.track).toHaveBeenCalledWith('upgrade_cta_clicked', { placement: 'limit_interstitial', cta_id: 'output_height_limited', from_tier: 'free' });
   });
 
   it('project_limit_reached: names the project cap', () => {
@@ -105,5 +109,56 @@ describe('UpgradeInterstitial', () => {
     render(<UpgradeInterstitial input={{ kind: 'limit', detail: heightBody }} onClose={vi.fn()} />);
     expect(screen.getByText('interface:billing.unavailable')).toBeTruthy();
     expect(screen.queryByRole('button', { name: 'interface:upgradeInterstitial.upgrade' })).toBeNull();
+  });
+});
+
+const premiumLimits = {
+  opsPerDay: 100, aiOpsPerDay: 20, exportsPerDay: 50, maxFileBytes: 5 * 1024 ** 3, maxOutputHeight: 2160,
+  studioProjects: -1,
+};
+const servedTiers = { tiers: [{ tier: 'premium', limits: premiumLimits }], premiumPurchasable: true, premiumPriceUSD: 7 } as never;
+const quotaBody = (metric: string) =>
+  ({ error: 'quota_exceeded', tier: 'free', metric, limit: 5, used: 5, resetsAt: '', upgradePath: 'premium' }) as never;
+
+describe('limit-specific interstitial (MM33)', () => {
+  it('shows the right limit for each of the four error shapes', () => {
+    const free = { tier: 'free', limits: { maxFileBytes: 1024 ** 3 } };
+    const file = interstitialCopy({ kind: 'limit', detail: { error: 'file_too_large', limit: 0 } }, free as never);
+    expect(file).toMatchObject({ titleKey: 'interface:upgradeInterstitial.fileSize.title', limitKey: 'file_too_large', upgradePath: 'premium', values: { limit: '1 GB' } });
+    expect(interstitialCopy({ kind: 'quota', detail: quotaBody('ops') })).toMatchObject({ titleKey: 'interface:upgradeInterstitial.quota.title', limitKey: 'quota_ops' });
+    expect(interstitialCopy({ kind: 'quota', detail: quotaBody('ai_ops') })).toMatchObject({ limitKey: 'quota_ai_ops', placement: 'limit_interstitial' });
+    expect(interstitialCopy({ kind: 'limit', detail: heightBody })).toMatchObject({ limitKey: 'output_height_limited' });
+  });
+
+  it('413 for an anonymous caller offers sign-up, and for premium nothing higher', () => {
+    const d = { kind: 'limit', detail: { error: 'file_too_large', limit: 0 } } as const;
+    expect(interstitialCopy(d, { tier: 'anonymous' }).upgradePath).toBe('signup');
+    expect(interstitialCopy(d, { tier: 'premium' }).upgradePath).toBeUndefined();
+  });
+
+  it('quotes what Premium changes from the served table, per limit', () => {
+    expect(premiumChange('file_too_large', servedTiers)).toEqual({ key: 'interface:upgradeInterstitial.premiumChange.fileSize', values: { value: '5 GB' } });
+    expect(premiumChange('quota_ai_ops', servedTiers)).toEqual({ key: 'interface:upgradeInterstitial.premiumChange.aiOps', values: { value: 20 } });
+    expect(premiumChange('output_height_limited', servedTiers)).toMatchObject({ values: { value: 2160 } });
+    expect(premiumChange('project_limit_reached', servedTiers)?.key).toContain('projectsUnlimited');
+    expect(premiumChange('quota_ops', undefined)).toBeNull();
+  });
+
+  it('renders the Premium line only when the table is served', () => {
+    h.tiers = servedTiers;
+    render(<UpgradeInterstitial input={{ kind: 'quota', detail: quotaBody('ai_ops') }} onClose={vi.fn()} />);
+    expect(screen.getByTestId('premium-change').textContent).toContain('premiumChange.aiOps');
+    cleanup();
+    h.tiers = undefined;
+    render(<UpgradeInterstitial input={{ kind: 'quota', detail: quotaBody('ai_ops') }} onClose={vi.fn()} />);
+    expect(screen.queryByTestId('premium-change')).toBeNull();
+  });
+
+  it('allows one interstitial per distinct limit per session', () => {
+    const ai = { kind: 'quota', detail: quotaBody('ai_ops') } as const;
+    const ops = { kind: 'quota', detail: quotaBody('ops') } as const;
+    expect(claimInterstitial(limitKeyOf(ai))).toBe(true);
+    expect(claimInterstitial(limitKeyOf(ai))).toBe(false);
+    expect(claimInterstitial(limitKeyOf(ops))).toBe(true);
   });
 });

@@ -476,9 +476,25 @@
       "body": "Ваш тариф хранит до {{limit}} сохранённых проектов Darkroom."
     },
     "topTier": "У вас уже максимальный тариф. Уменьшите значение, чтобы продолжить.",
-    "close": "Не сейчас",
+    "close": "Может, позже",
     "signup": "Создать бесплатный аккаунт",
-    "upgrade": "Перейти на Premium"
+    "upgrade": "Перейти на Premium",
+    "fileSize": {
+      "title": "Этот файл больше, чем разрешает ваш тариф",
+      "body": "Ваш тариф принимает файлы до {{limit}}."
+    },
+    "premiumChange": {
+      "fileSize": "Premium принимает файлы до {{value}}.",
+      "ops": "Premium позволяет {{value}} конвертаций в день.",
+      "opsUnlimited": "В Premium нет дневного лимита конвертаций.",
+      "aiOps": "Premium позволяет {{value}} ИИ-задач в день.",
+      "aiOpsUnlimited": "В Premium нет дневного лимита ИИ-задач.",
+      "exports": "Premium позволяет {{value}} экспортов в день.",
+      "exportsUnlimited": "В Premium нет дневного лимита экспортов.",
+      "height": "Premium выдаёт до {{value}}p.",
+      "projects": "Premium хранит до {{value}} проектов.",
+      "projectsUnlimited": "В Premium нет лимита сохранённых проектов."
+    }
   },
   "recentStrip": {
     "title": "Недавние",

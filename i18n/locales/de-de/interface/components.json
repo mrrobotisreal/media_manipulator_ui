@@ -472,9 +472,25 @@
       "body": "Dein Tarif speichert bis zu {{limit}} Darkroom-Projekte."
     },
     "topTier": "Dein Tarif ist bereits der höchste. Verringere die Einstellung, um fortzufahren.",
-    "close": "Jetzt nicht",
+    "close": "Vielleicht später",
     "signup": "Kostenloses Konto erstellen",
-    "upgrade": "Auf Premium upgraden"
+    "upgrade": "Auf Premium upgraden",
+    "fileSize": {
+      "title": "Diese Datei ist größer, als dein Tarif erlaubt",
+      "body": "Dein Tarif akzeptiert Dateien bis {{limit}}."
+    },
+    "premiumChange": {
+      "fileSize": "Premium akzeptiert Dateien bis {{value}}.",
+      "ops": "Premium erlaubt {{value}} Konvertierungen pro Tag.",
+      "opsUnlimited": "Premium hat kein tägliches Konvertierungslimit.",
+      "aiOps": "Premium erlaubt {{value}} KI-Aufträge pro Tag.",
+      "aiOpsUnlimited": "Premium hat kein tägliches Limit für KI-Aufträge.",
+      "exports": "Premium erlaubt {{value}} Exporte pro Tag.",
+      "exportsUnlimited": "Premium hat kein tägliches Exportlimit.",
+      "height": "Premium gibt bis zu {{value}}p aus.",
+      "projects": "Premium speichert bis zu {{value}} Projekte.",
+      "projectsUnlimited": "Premium hat kein Limit für gespeicherte Projekte."
+    }
   },
   "recentStrip": {
     "title": "Zuletzt",

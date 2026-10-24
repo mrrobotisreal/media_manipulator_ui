@@ -472,9 +472,25 @@
       "body": "Your plan keeps up to {{limit}} saved Darkroom projects."
     },
     "topTier": "Your plan is already at the top. Lower the setting to continue.",
-    "close": "Not now",
+    "close": "Maybe later",
     "signup": "Create a free account",
-    "upgrade": "Upgrade to Premium"
+    "upgrade": "Upgrade to Premium",
+    "fileSize": {
+      "title": "This file is larger than your plan allows",
+      "body": "Your plan accepts files up to {{limit}}."
+    },
+    "premiumChange": {
+      "fileSize": "Premium accepts files up to {{value}}.",
+      "ops": "Premium allows {{value}} conversions a day.",
+      "opsUnlimited": "Premium has no daily conversion limit.",
+      "aiOps": "Premium allows {{value}} AI jobs a day.",
+      "aiOpsUnlimited": "Premium has no daily AI job limit.",
+      "exports": "Premium allows {{value}} exports a day.",
+      "exportsUnlimited": "Premium has no daily export limit.",
+      "height": "Premium outputs up to {{value}}p.",
+      "projects": "Premium keeps up to {{value}} saved projects.",
+      "projectsUnlimited": "Premium has no saved-project limit."
+    }
   },
   "recentStrip": {
     "title": "Recent",

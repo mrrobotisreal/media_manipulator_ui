@@ -476,9 +476,25 @@
       "body": "Ваш тариф зберігає до {{limit}} збережених проєктів Darkroom."
     },
     "topTier": "У вас уже найвищий тариф. Зменште значення, щоб продовжити.",
-    "close": "Не зараз",
+    "close": "Можливо, пізніше",
     "signup": "Створити безкоштовний обліковий запис",
-    "upgrade": "Перейти на Premium"
+    "upgrade": "Перейти на Premium",
+    "fileSize": {
+      "title": "Цей файл більший, ніж дозволяє ваш тариф",
+      "body": "Ваш тариф приймає файли до {{limit}}."
+    },
+    "premiumChange": {
+      "fileSize": "Premium приймає файли до {{value}}.",
+      "ops": "Premium дозволяє {{value}} конвертацій на день.",
+      "opsUnlimited": "У Premium немає денного ліміту конвертацій.",
+      "aiOps": "Premium дозволяє {{value}} ШІ-завдань на день.",
+      "aiOpsUnlimited": "У Premium немає денного ліміту ШІ-завдань.",
+      "exports": "Premium дозволяє {{value}} експортів на день.",
+      "exportsUnlimited": "У Premium немає денного ліміту експортів.",
+      "height": "Premium видає до {{value}}p.",
+      "projects": "Premium зберігає до {{value}} проєктів.",
+      "projectsUnlimited": "У Premium немає ліміту збережених проєктів."
+    }
   },
   "recentStrip": {
     "title": "Нещодавні",

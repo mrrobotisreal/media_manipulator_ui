@@ -476,9 +476,25 @@
       "body": "המסלול שלכם שומר עד {{limit}} פרויקטים של Darkroom."
     },
     "topTier": "המסלול שלכם כבר הגבוה ביותר. הקטינו את ההגדרה כדי להמשיך.",
-    "close": "לא עכשיו",
+    "close": "אולי מאוחר יותר",
     "signup": "יצירת חשבון חינמי",
-    "upgrade": "שדרגו לפרימיום"
+    "upgrade": "שדרגו לפרימיום",
+    "fileSize": {
+      "title": "הקובץ הזה גדול ממה שהתוכנית שלך מאפשרת",
+      "body": "התוכנית שלך מקבלת קבצים עד {{limit}}."
+    },
+    "premiumChange": {
+      "fileSize": "Premium מקבל קבצים עד {{value}}.",
+      "ops": "Premium מאפשר {{value}} המרות ביום.",
+      "opsUnlimited": "ב-Premium אין הגבלה יומית על המרות.",
+      "aiOps": "Premium מאפשר {{value}} משימות AI ביום.",
+      "aiOpsUnlimited": "ב-Premium אין הגבלה יומית על משימות AI.",
+      "exports": "Premium מאפשר {{value}} ייצואים ביום.",
+      "exportsUnlimited": "ב-Premium אין הגבלה יומית על ייצואים.",
+      "height": "Premium מייצא עד {{value}}p.",
+      "projects": "Premium שומר עד {{value}} פרויקטים.",
+      "projectsUnlimited": "ב-Premium אין הגבלה על פרויקטים שמורים."
+    }
   },
   "recentStrip": {
     "title": "אחרונים",
