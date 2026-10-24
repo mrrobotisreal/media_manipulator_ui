@@ -40,7 +40,7 @@ export interface PremiumPricingLabels {
   intervalLabel: string;
   monthly: string;
   yearly: string;
-  /** Pre-formatted, e.g. "$7/mo" and "$70/yr". */
+  /** Pre-formatted, e.g. "$8/mo" and "$80/yr". */
   priceMonthly: string;
   /** Empty when the API did not send a yearly price: the toggle is then hidden. */
   priceYearly: string;

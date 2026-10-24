@@ -64,7 +64,7 @@ const PLANS = [
     extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), 5 saved Darkroom projects',
   },
   {
-    name: 'Premium ($7/month or $70/year, cancel any time)',
+    name: 'Premium ($8/month or $80/year, cancel any time)',
     ops: '300 operations a day, 60 of them AI',
     file: '5 GB per file, video up to 2 hours, output up to 4K (2160p)',
     extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), unlimited Darkroom projects, priority GPU queue, no ads',
