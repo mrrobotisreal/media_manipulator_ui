@@ -1274,6 +1274,7 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
       onPointerUp={toolMode === 'slip' || toolMode === 'slide' ? onProUp : undefined}
       onPointerCancel={toolMode === 'slip' || toolMode === 'slide' ? onProUp : undefined}
       data-group-id={clip.groupId || undefined}
+      data-testid="timeline-clip"
       className={`absolute top-1 bottom-1 rounded-md overflow-hidden border touch-none ${
         toolMode === 'razor'
           ? 'cursor-crosshair'
