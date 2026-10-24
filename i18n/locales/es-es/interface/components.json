@@ -551,5 +551,29 @@
     },
     "replay": "Ver el recorrido de nuevo",
     "replayHint": "Vuelve a ver la breve introducción a tu cuenta."
+  },
+  "status": {
+    "title": "Estado del servicio",
+    "intro": "Estado en vivo del servicio Media Manipulator. Se actualiza cada 10 segundos.",
+    "operational": "Operativo",
+    "degraded": "Degradado",
+    "down": "Caído",
+    "checking": "Comprobando...",
+    "operationalDetail": "Todos los sistemas funcionan con normalidad.",
+    "degradedDetail": "Algunas partes del servicio tienen problemas. Las conversiones pueden ser lentas o fallar.",
+    "downDetail": "El servicio no responde. Inténtalo de nuevo en unos minutos.",
+    "queueTitle": "Cola de procesamiento de IA",
+    "running": "En ejecución",
+    "waiting": "En espera",
+    "gpuOff": "El procesamiento de IA no está activado en este servidor.",
+    "checksTitle": "Componentes",
+    "database": "Base de datos",
+    "storage": "Almacenamiento",
+    "cache": "Caché",
+    "ok": "Correcto",
+    "fail": "Problema",
+    "basicOnly": "Ahora mismo solo está disponible el estado general.",
+    "lastChecked": "Última comprobación {{time}}",
+    "metaTitle": "Estado | Media Manipulator"
   }
 }

@@ -551,5 +551,29 @@
     },
     "replay": "Tour erneut ansehen",
     "replayHint": "Die kurze Einführung in Ihr Konto noch einmal ansehen."
+  },
+  "status": {
+    "title": "Dienststatus",
+    "intro": "Aktueller Status des Dienstes Media Manipulator. Aktualisiert sich alle 10 Sekunden.",
+    "operational": "In Betrieb",
+    "degraded": "Eingeschränkt",
+    "down": "Nicht erreichbar",
+    "checking": "Wird geprüft...",
+    "operationalDetail": "Alle Systeme laufen normal.",
+    "degradedDetail": "Teile des Dienstes haben Probleme. Konvertierungen können langsam sein oder fehlschlagen.",
+    "downDetail": "Der Dienst antwortet nicht. Bitte versuche es in ein paar Minuten erneut.",
+    "queueTitle": "KI-Verarbeitungswarteschlange",
+    "running": "Läuft gerade",
+    "waiting": "Wartend",
+    "gpuOff": "Die KI-Verarbeitung ist auf diesem Server nicht aktiviert.",
+    "checksTitle": "Komponenten",
+    "database": "Datenbank",
+    "storage": "Speicher",
+    "cache": "Cache",
+    "ok": "OK",
+    "fail": "Problem",
+    "basicOnly": "Derzeit ist nur der Gesamtstatus verfügbar.",
+    "lastChecked": "Zuletzt geprüft {{time}}",
+    "metaTitle": "Status | Media Manipulator"
   }
 }

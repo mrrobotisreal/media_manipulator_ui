@@ -100,12 +100,13 @@ describe('MM34 flag on', () => {
     for (const u of TODAY_URLS) expect(list).toContain(u);
   });
 
-  it('URL count = core (10) + tool slugs + blog + tutorials (+ changelog later)', () => {
+  it('URL count = core (10) + tool slugs + blog + tutorials + changelog', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'true');
     // /tools/content-studio is already a core route, so it is not double counted.
     const toolsOutsideCore = TOOL_PAGES.filter((t) => t.slug !== 'content-studio').length;
-    const base = 10 + toolsOutsideCore + BLOG_POSTS.length + 5;
-    expect(urls().length).toBeGreaterThanOrEqual(base);
+    const expected = 10 + toolsOutsideCore + BLOG_POSTS.length + 5 + 1;
+    expect(urls()).toHaveLength(expected);
+    expect(urls()).toContain(new URL('/changelog', ORIGIN).toString());
   });
 
   it('every tool page becomes indexable', () => {

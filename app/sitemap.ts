@@ -5,6 +5,7 @@ import { BLOG_POSTS } from '@/lib/blogPosts';
 import { languageAlternates } from '@/lib/metadata';
 import { PUBLIC_ROUTES, ROUTE_SEO_MAP, SITE_ORIGIN } from '@/lib/seo';
 import { isSeoFullIndex } from '@/lib/seoFlags';
+import { CHANGELOG } from '@/content/changelog';
 
 // Review-safe sitemap: only the core pages + the review-allowed tool pages.
 // Deliberately excludes the full 65-tool catalog, thin/placeholder pages, and
@@ -89,12 +90,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: languageAlternates(path) },
   }));
 
+  // Original content, so it is indexable, but only listed under the flag.
+  const changelogEntry = {
+    url: new URL('/changelog', SITE_ORIGIN).toString(),
+    lastModified: new Date(CHANGELOG[0]?.date ?? now),
+    changeFrequency: 'weekly' as const,
+    priority: 0.5,
+    alternates: { languages: languageAlternates('/changelog') },
+  };
+
   return [
     ...coreEntries,
     ...toolEntries,
     ...fullToolEntries,
     ...blogEntries,
     ...tutorialEntries,
+    changelogEntry,
   ];
 }
 
