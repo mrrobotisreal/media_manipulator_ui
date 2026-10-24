@@ -695,9 +695,16 @@ export interface StudioCaptionsGeneratedProps extends StudioHostProp {
 
 export interface StudioExportStartedProps extends StudioHostProp {
   preset: 'low' | 'medium' | 'high';
-  format: 'mp4';
-  /** Project canvas, e.g. '1920x1080'. Bounded by the resolution picker's options. */
+  /** Part 20: h264 | hevc | mp3 | wav. (Pre-part-20 builds sent 'mp4'.) */
+  format: 'h264' | 'hevc' | 'mp3' | 'wav' | 'mp4';
+  /**
+   * Output height rung ('720p' | '1080p' | '1440p' | '2160p'), or 'canvas' for the
+   * project's own size, or 'audio' for audio-only. A closed vocabulary; never a
+   * free-form size.
+   */
   resolution: string;
+  /** Part 20: the one explicit captions choice. */
+  captionsMode?: 'none' | 'burn_in' | 'sidecar';
 }
 
 export interface StudioExportCompletedProps extends StudioExportStartedProps {
@@ -769,6 +776,12 @@ export interface StudioEditSummaryProps extends StudioHostProp {
   trackControlChanges?: string;
   /** Part 18: marker edits (move / rename / recolor / delete). `markersAdded` counts adds. */
   markersEdited?: string;
+  /** Part 20: project canvas changes (Change canvas dialog). */
+  canvasChanges?: string;
+  /** Part 20: playhead frame-as-PNG exports. */
+  framesExported?: string;
+  /** Part 20: "Render again" from the Exports panel. */
+  exportsRerendered?: string;
   sessionSecondsBucket: string;
 }
 

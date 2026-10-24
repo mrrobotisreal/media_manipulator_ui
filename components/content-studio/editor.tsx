@@ -75,6 +75,8 @@ import ShortcutCheatSheet from './shortcut-cheatsheet';
 import SaveConflictDialog from './save-conflict-dialog';
 import DraftRecoveryDialog from './draft-recovery-dialog';
 import VersionsPanel from './versions-panel';
+import CanvasDialog from './canvas-dialog';
+import ExportsPanel from './exports-panel';
 import PreferencesDialog from './preferences-dialog';
 import MediaBin from './media-bin';
 import { dispatchFolderDrop } from '@/lib/studio/binDrop';
@@ -707,6 +709,8 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
             {t('contentStudio.editor.addTitle')}
           </Button>
           <VersionsPanel projectId={projectId} />
+          <CanvasDialog />
+          <ExportsPanel projectId={projectId} />
           <AudioDuckingPopover />
           <Button
             variant={mixerOpen ? 'secondary' : 'outline'}

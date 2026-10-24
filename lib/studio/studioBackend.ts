@@ -12,6 +12,8 @@ import {
   type StudioExportRequest,
   type StudioCreateVersionRequest,
   type StudioProjectVersion,
+  type StudioExportRecord,
+  studioExportRecordSchema,
 } from '@/lib/studioTypes';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
@@ -91,6 +93,13 @@ export interface StudioBackendCapabilities {
    * (speed and freeze work everywhere — they need no server help in preview).
    */
   reverseProxy: boolean;
+  /**
+   * Part 20: format/resolution/captions-mode on export, the persistent exports
+   * history (GET /projects/:id/exports, render-again) and the frame-PNG route.
+   * CreaTV's Darkroom API has none of them, so the export dialog collapses to
+   * the legacy MP4 options there and the Exports panel / frame export hide.
+   */
+  exportDepth: boolean;
 }
 
 export interface StudioBackendScope {
@@ -154,6 +163,8 @@ export interface StudioBackend {
   parseJob: (json: unknown) => StudioJobProgress;
   parseVersion: (json: unknown) => StudioProjectVersion;
   parseVersions: (json: unknown) => StudioProjectVersion[];
+  /** Export history rows (part 20). CreaTV has no history route: always []. */
+  parseExports: (json: unknown) => StudioExportRecord[];
 }
 
 // ---------------------------------------------------------------------------
@@ -177,6 +188,7 @@ export function createMmBackend(): StudioBackend {
       lut: true,
       binManagement: true,
       reverseProxy: true,
+      exportDepth: true,
     },
     // Sync, so it can only carry the session id; the Firebase token needs an
     // await. Everything that actually goes over the wire uses fetch() below,
@@ -252,6 +264,11 @@ export function createMmBackend(): StudioBackend {
       const arr = Array.isArray(parsed.versions) ? parsed.versions : [];
       return arr.map((v) => studioProjectVersionSchema.parse(v));
     },
+    parseExports: (json) => {
+      const parsed = (json ?? {}) as { exports?: unknown };
+      const arr = Array.isArray(parsed.exports) ? parsed.exports : [];
+      return arr.map((e) => studioExportRecordSchema.parse(e));
+    },
   };
 }
 
@@ -289,6 +306,7 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
     lut: true,
     binManagement: false,
     reverseProxy: false,
+    exportDepth: false,
     ...opts.capabilities,
   };
 
@@ -435,6 +453,7 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
       return { jobId };
     },
     parseJob: (json) => parseCreatvJob(json),
+    parseExports: () => [],
     parseVersion: (json) => parseCreatvVersion(json),
     parseVersions: (json) => {
       const arr = ((json ?? {}) as { versions?: unknown[] }).versions ?? [];

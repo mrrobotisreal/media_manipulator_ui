@@ -607,13 +607,52 @@ export type StudioAssetCompleteResponse = z.infer<typeof studioAssetCompleteResp
 export const studioLoudnessPresetSchema = z.enum(['', 'streaming', 'podcast', 'broadcast']);
 export type StudioLoudnessPreset = z.infer<typeof studioLoudnessPresetSchema>;
 
+/** Export formats (part 20): H.264/HEVC render an MP4; mp3/wav are audio-only. */
+export const studioExportFormatSchema = z.enum(['h264', 'hevc', 'mp3', 'wav']);
+export type StudioExportFormat = z.infer<typeof studioExportFormatSchema>;
+
+/** One explicit captions choice per export (part 20). */
+export const studioCaptionsModeSchema = z.enum(['none', 'burn_in', 'sidecar']);
+export type StudioCaptionsMode = z.infer<typeof studioCaptionsModeSchema>;
+
+/** The output-height ladder the server accepts (0 = the project's canvas). */
+export const STUDIO_EXPORT_RESOLUTIONS = [0, 2160, 1440, 1080, 720] as const;
+export type StudioExportResolution = (typeof STUDIO_EXPORT_RESOLUTIONS)[number];
+
 export const studioExportRequestSchema = z.object({
   fileName: z.string().optional(),
   preset: z.string().optional(),
   /** loudnorm target preset applied to the master audio (empty = off). */
   loudness: studioLoudnessPresetSchema.optional(),
+  /** Part 20 (additive; omitted = h264). */
+  format: studioExportFormatSchema.optional(),
+  /** Part 20 (additive): output height in px; 0/omitted = the canvas. */
+  resolution: z.number().int().optional(),
+  /** Part 20 (additive): omitted = legacy (burn in when the project has captions on). */
+  captionsMode: studioCaptionsModeSchema.optional(),
 });
 export type StudioExportRequest = z.infer<typeof studioExportRequestSchema>;
+
+/** One studio_exports row (GET /projects/:id/exports), part 20. */
+export const studioExportRecordSchema = z.object({
+  id: z.string(),
+  projectId: z.string().optional(),
+  jobId: z.string(),
+  fileName: z.string().optional(),
+  preset: z.string().optional(),
+  format: studioExportFormatSchema,
+  resolution: z.number().int().default(0),
+  captionsMode: studioCaptionsModeSchema.default('none'),
+  loudness: z.string().optional(),
+  status: z.enum(['running', 'completed', 'failed']),
+  /** Coarse error class (timeout, unsupported, gpu, interrupted, ...), never raw text. */
+  error: z.string().optional(),
+  createdAt: z.string(),
+  completedAt: z.string().optional(),
+  /** True while the rendered artifact is still inside its retention window. */
+  available: z.boolean().default(false),
+});
+export type StudioExportRecord = z.infer<typeof studioExportRecordSchema>;
 
 // ---------------------------------------------------------------------------
 // Version history (part 09) — server-side checkpoints (ADR ws/0001 item 3).

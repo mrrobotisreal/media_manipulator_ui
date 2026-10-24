@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import type { StudioExportRequest } from '@/lib/studioTypes';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
+import { extractFetchError } from '@/lib/useStudioExportsError';
 import { getActiveStudioBackend } from '@/lib/studio/studioBackend';
 
 export interface StudioExportResponse {
@@ -27,8 +28,9 @@ export function useStartStudioExport(projectId: string | null) {
         body: JSON.stringify(backend.adaptExport(req)),
       });
       if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(text || res.statusText);
+        // The plan-limit 403 (output_height_limited) was already routed to the
+        // upgrade interstitial by authedFetch; this just keeps the toast readable.
+        throw new Error(await extractFetchError(res));
       }
       return backend.parseExport(await res.json());
     },
