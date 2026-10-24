@@ -75,3 +75,5 @@ ADS.md
 
 # Lighthouse reports (never commit — a previous attempt committed ~67k lines of these)
 lh-*.json
+/e2e/results/
+/e2e/report/

@@ -10,5 +10,8 @@ export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
     environment: 'jsdom',
+    // Playwright E2E is workstation-only (e2e/README.md): its files are
+    // *.e2e.ts, and this exclude keeps `npm test` from ever collecting them.
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**'],
   },
 });
