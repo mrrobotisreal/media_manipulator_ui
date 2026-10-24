@@ -24,6 +24,8 @@ export interface TranscodeJob {
   /** Server-sniffed MIME of the result (MM05, additive; absent on older APIs). */
   resultMime?: string;
   transcodeReport?: TranscodeProbeResponse;
+  /** Shared GPU-queue wait in ms (additive; absent until the API reports it). */
+  queueWaitMs?: number;
 }
 
 interface UseTranscodeJobStatusReturns {

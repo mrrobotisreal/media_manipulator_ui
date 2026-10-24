@@ -518,5 +518,9 @@
       "remaining": "Te quedan {{remaining}} de {{limit}} exportaciones hoy",
       "empty": "Has usado las {{limit}} exportaciones de hoy"
     }
+  },
+  "queueLine": {
+    "text": "Esto esperó {{time}} en la cola compartida. Los trabajos Premium van primero.",
+    "cta": "Ver Premium"
   }
 }

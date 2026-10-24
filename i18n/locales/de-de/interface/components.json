@@ -518,5 +518,9 @@
       "remaining": "Noch {{remaining}} von {{limit}} Exporten heute",
       "empty": "Alle {{limit}} Exporte heute verbraucht"
     }
+  },
+  "queueLine": {
+    "text": "Das hat {{time}} in der gemeinsamen Warteschlange gewartet. Premium-Aufträge kommen zuerst dran.",
+    "cta": "Premium ansehen"
   }
 }

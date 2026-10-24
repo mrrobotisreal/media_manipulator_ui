@@ -518,5 +518,9 @@
       "remaining": "{{remaining}} of {{limit}} exports left today",
       "empty": "All {{limit}} exports used today"
     }
+  },
+  "queueLine": {
+    "text": "This waited {{time}} on the shared queue. Premium jobs go first.",
+    "cta": "See Premium"
   }
 }
