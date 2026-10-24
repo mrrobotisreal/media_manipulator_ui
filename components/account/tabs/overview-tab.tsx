@@ -13,6 +13,8 @@ import { isUnlimited, type UsageMetric } from '@/lib/auth/accountApi';
 import { formatBytes, formatDuration, formatResetsIn } from '@/lib/auth/formatLimits';
 import { fmt, RETENTION_BANNER_KEY } from '@/lib/account/retention';
 import { cn } from '@/lib/utils';
+import { useCancelledEndsAt } from '@/lib/billing/useBillingStatus';
+import { useLocalization } from '@/i18n/useLocalization';
 import { LINK_CLASS } from '@/components/account/tabs/shared';
 
 export interface OverviewExtras {
@@ -73,6 +75,8 @@ export const OverviewTab: React.FC<{
 }> = ({ copy, extras, onOpenPrivacy }) => {
   const auth = useAuth();
   const localized = useLocalizedHref();
+  const { t, formatDate } = useLocalization(['interface']);
+  const endsAt = useCancelledEndsAt();
   // Hidden until mounted so the server render and the first client render agree.
   const [dismissed, setDismissed] = React.useState(true);
   React.useEffect(() => setDismissed(readDismissed()), []);
@@ -143,7 +147,11 @@ export const OverviewTab: React.FC<{
       </div>
 
       <Panel title={copy.planTitle} titleAs="h2">
-        <p className="num mb-4 text-lg text-foreground">{extras.tierNames[auth.tier] ?? auth.tier}</p>
+        <p className="num mb-4 text-lg text-foreground">
+          {endsAt
+            ? t('interface:accountMenu.tierEnds', { date: formatDate(endsAt) })
+            : (extras.tierNames[auth.tier] ?? auth.tier)}
+        </p>
         {limits ? (
           <div className="grid gap-3">
             {extras.planRows.map((row) => (

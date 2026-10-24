@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import { Panel } from '@/components/darkroom/panel';
 import { Segmented } from '@/components/darkroom/segmented';
@@ -10,12 +11,15 @@ import { Button } from '@/components/ui/button';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import {
-  fetchBillingStatus,
+  endsAtOf,
   fetchTiers,
+  retainSubscription,
   type BillingInterval,
   type BillingStatus,
+  type RetentionOffer,
 } from '@/lib/auth/accountApi';
 import { getCurrentIdToken } from '@/lib/firebase';
+import { billingStatusKey, useBillingStatus } from '@/lib/billing/useBillingStatus';
 import { openPortal, readLastInterval, startCheckout } from '@/lib/billing/checkout';
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -53,6 +57,65 @@ export function billingState(tier: string, status: BillingStatus | undefined): B
   return status.purchasable ? 'free' : 'unavailable';
 }
 
+const RetentionOfferCard: React.FC<{
+  offer: RetentionOffer;
+  currentPrice: number | null | undefined;
+  fallbackPrice: number | undefined;
+  busy: boolean;
+  onAccept: (kind: RetentionOffer['kind']) => void;
+  t: (key: string, options?: Record<string, unknown>) => string;
+  date: (iso: string | null | undefined) => string;
+}> = ({ offer, currentPrice, fallbackPrice, busy, onAccept, t, date }) => {
+  const discounted = offer.kind !== 'resume';
+  return (
+    <section
+      aria-labelledby="retention-offer-title"
+      data-testid="retention-offer"
+      data-offer={offer.kind}
+      className="grid gap-3 rounded-md border border-premium/40 bg-surface-2 p-4"
+    >
+      {discounted ? (
+        <h3 id="retention-offer-title" className="text-base font-semibold text-foreground">
+          {t('interface:billing.offer.title', { price: offer.priceUSD })}
+        </h3>
+      ) : (
+        <h3 id="retention-offer-title" className="text-base font-semibold text-foreground">
+          {t('interface:billing.offer.resumeTitle')}
+        </h3>
+      )}
+      <p className="text-xs text-muted-foreground">
+        {t('interface:billing.offer.fineprint', { date: date(offer.nextChargeAt) })}
+      </p>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <Button
+          className="w-fit"
+          onClick={() => onAccept(offer.kind)}
+          disabled={busy}
+          aria-busy={busy}
+        >
+          {busy
+            ? t('interface:billing.offer.working')
+            : discounted
+              ? t('interface:billing.offer.cta', { price: offer.priceUSD })
+              : t('interface:billing.offer.resumeCta')}
+        </Button>
+        {discounted ? (
+          <button
+            type="button"
+            className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground disabled:opacity-50"
+            onClick={() => onAccept('resume')}
+            disabled={busy}
+          >
+            {typeof (currentPrice ?? fallbackPrice) === 'number'
+              ? t('interface:billing.offer.keepAtCurrent', { price: currentPrice ?? fallbackPrice })
+              : t('interface:billing.offer.keepAtCurrentNoPrice')}
+          </button>
+        ) : null}
+      </div>
+    </section>
+  );
+};
+
 export const BillingPanel: React.FC = () => {
   const auth = useAuth();
   const { t, formatDate, language } = useLocalization(['interface']);
@@ -60,22 +123,16 @@ export const BillingPanel: React.FC = () => {
   const uid = auth?.user?.uid;
   const [interval, setInterval] = React.useState<BillingInterval>('monthly');
   const [busy, setBusy] = React.useState(false);
+  const queryClient = useQueryClient();
+  const [retaining, setRetaining] = React.useState(false);
+  const retainingRef = React.useRef(false);
+  const viewedOffers = React.useRef(new Set<string>());
 
   React.useEffect(() => {
     setInterval(readLastInterval());
   }, []);
 
-  const statusQuery = useQuery({
-    queryKey: ['billing-status', uid ?? 'none'],
-    enabled: !!uid && auth?.tier !== 'operator',
-    staleTime: 30_000,
-    retry: 1,
-    queryFn: async () => {
-      const token = await getCurrentIdToken();
-      if (!token) throw new Error('no token');
-      return fetchBillingStatus(token);
-    },
-  });
+  const statusQuery = useBillingStatus();
   const tiersQuery = useQuery({
     queryKey: ['tiers'],
     queryFn: ({ signal }) => fetchTiers(signal),
@@ -125,6 +182,57 @@ export const BillingPanel: React.FC = () => {
 
   const monthly = tiersQuery.data?.premiumPriceUSD;
   const yearly = tiersQuery.data?.premiumPriceYearlyUSD;
+
+  const endsAt = endsAtOf(status);
+  const offer: RetentionOffer | null =
+    state === 'cancel_at_period_end' && status?.offer ? status.offer : null;
+  const offerKind = offer?.kind;
+  React.useEffect(() => {
+    if (!offerKind || viewedOffers.current.has(offerKind)) return;
+    viewedOffers.current.add(offerKind);
+    analytics.track(EVENTS.RETENTION_OFFER_VIEWED, { offer: offerKind });
+  }, [offerKind]);
+
+  const setStatus = (next: BillingStatus) => queryClient.setQueryData(billingStatusKey(uid), next);
+  const accept = async (kind: RetentionOffer['kind']) => {
+    if (retainingRef.current) return;
+    retainingRef.current = true;
+    setRetaining(true);
+    try {
+      const token = await getCurrentIdToken();
+      if (!token) {
+        toast.error(t('interface:billing.offer.failed'));
+        return;
+      }
+      const result = await retainSubscription(token, kind);
+      if (result.ok) {
+        analytics.track(EVENTS.RETENTION_OFFER_ACCEPTED, { offer: kind });
+        setStatus(result.status);
+        const next = result.status.renewsAt;
+        const price = result.status.priceMonthlyUSD;
+        toast.success(
+          next && typeof price === 'number'
+            ? t('interface:billing.offer.renewed', { date: date(next), price })
+            : next
+              ? t('interface:billing.offer.renewedNoPrice', { date: date(next) })
+              : t('interface:billing.offer.renewedBare'),
+        );
+      } else if (result.reason === 'offer_changed') {
+        if (status) setStatus({ ...status, offer: result.offer ?? null });
+        else void statusQuery.refetch();
+        toast(t('interface:billing.offer.changed'));
+      } else if (result.reason === 'not_cancelled') {
+        await statusQuery.refetch();
+      } else {
+        toast.error(t('interface:billing.offer.failed'));
+      }
+    } catch {
+      toast.error(t('interface:billing.offer.failed'));
+    } finally {
+      retainingRef.current = false;
+      setRetaining(false);
+    }
+  };
 
   let body: React.ReactNode;
   switch (state) {
@@ -205,27 +313,47 @@ export const BillingPanel: React.FC = () => {
               label={t('interface:billing.panel.intervalLabel')}
               value={intervalName(status?.interval)}
             />
-            {status?.renewsAt ? (
+            {ending ? (
+              endsAt ? (
+                <Stat
+                  orientation="inline"
+                  label={t('interface:billing.panel.endsLabel')}
+                  value={date(endsAt)}
+                />
+              ) : null
+            ) : status?.renewsAt ? (
               <Stat
                 orientation="inline"
-                label={
-                  ending
-                    ? t('interface:billing.panel.endsLabel')
-                    : t('interface:billing.panel.renewsLabel')
-                }
+                label={t('interface:billing.panel.renewsLabel')}
                 value={date(status.renewsAt)}
               />
             ) : null}
           </div>
           {ending ? (
-            <p className="text-sm text-muted-foreground">
-              {t('interface:billing.panel.endsOn', { date: date(status?.renewsAt) })}{' '}
-              {t('interface:billing.panel.resumeHint')}
-            </p>
+            <div className="grid gap-1">
+              <p className="text-sm font-medium text-foreground">{t('interface:billing.panel.cancelledTitle')}</p>
+              <p className="text-sm text-muted-foreground">
+                {endsAt
+                  ? t('interface:billing.panel.cancelledBody', { date: date(endsAt) })
+                  : t('interface:billing.panel.cancelledBodyNoDate')}
+                {offer ? null : <> {t('interface:billing.panel.resumeHint')}</>}
+              </p>
+            </div>
           ) : state === 'active' && status?.renewsAt ? (
             <p className="text-sm text-muted-foreground">
               {t('interface:billing.panel.renewsOn', { date: date(status.renewsAt) })}
             </p>
+          ) : null}
+          {offer ? (
+            <RetentionOfferCard
+              offer={offer}
+              currentPrice={status?.priceMonthlyUSD}
+              fallbackPrice={monthly}
+              busy={retaining}
+              onAccept={accept}
+              t={t}
+              date={date}
+            />
           ) : null}
           {state === 'active' ? <YearlyNudge uid={uid} status={status} tiers={tiersQuery.data} /> : null}
           {status?.portalAvailable ? (

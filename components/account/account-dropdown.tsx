@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { useCancelledEndsAt } from '@/lib/billing/useBillingStatus';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 
@@ -33,7 +34,8 @@ import { useLocalizedHref } from '@/i18n/useLocalizedHref';
  */
 export const AccountDropdown: React.FC = () => {
   const auth = useAuth();
-  const { t } = useLocalization(['interface', 'accessibility']);
+  const { t, formatDate } = useLocalization(['interface', 'accessibility']);
+  const endsAt = useCancelledEndsAt();
   const localized = useLocalizedHref();
 
   if (!auth?.user) return null;
@@ -64,7 +66,9 @@ export const AccountDropdown: React.FC = () => {
             {auth.user.displayName || auth.user.email}
           </span>
           <span className="num text-xs text-muted-foreground">
-            {t(`interface:accountMenu.tier.${auth.tier}`)}
+            {endsAt
+              ? t('interface:accountMenu.tierEnds', { date: formatDate(endsAt) })
+              : t(`interface:accountMenu.tier.${auth.tier}`)}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
