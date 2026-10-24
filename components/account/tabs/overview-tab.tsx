@@ -11,7 +11,7 @@ import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { isUnlimited, type UsageMetric } from '@/lib/auth/accountApi';
 import { formatBytes, formatDuration, formatResetsIn } from '@/lib/auth/formatLimits';
-import { fmt } from '@/lib/account/retention';
+import { fmt, RETENTION_BANNER_KEY } from '@/lib/account/retention';
 import { cn } from '@/lib/utils';
 import { LINK_CLASS } from '@/components/account/tabs/shared';
 
@@ -56,8 +56,7 @@ const UsageBar: React.FC<{ used: number; limit: number; label: string; unlimited
   );
 };
 
-/** localStorage key for the one-time "choose how long we keep your files" banner. */
-export const RETENTION_BANNER_KEY = 'mm.account.retentionBannerDismissed';
+export { RETENTION_BANNER_KEY };
 
 function readDismissed(): boolean {
   try {

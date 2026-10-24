@@ -528,5 +528,28 @@
     "body": "Llevas varios meses pagando seguidos. El plan anual cuesta menos que doce pagos mensuales. Puedes cambiar cuando quieras desde el portal de facturación.",
     "cta": "Cambiar a anual",
     "dismiss": "No, gracias"
+  },
+  "accountTour": {
+    "title": "Te damos la bienvenida a Media Manipulator",
+    "step": "Paso {{current}} de {{total}}",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "skip": "Omitir",
+    "notNow": "Ahora no",
+    "setRetention": "Configurar conservación",
+    "keepResults": {
+      "title": "Conserva tus resultados",
+      "body": "Todo lo que conviertas con la sesión iniciada se guarda en el Historial, para que puedas abrirlo o descargarlo más tarde. Lo conservamos durante el periodo que elijas."
+    },
+    "darkroomProjects": {
+      "title": "Proyectos de Darkroom",
+      "body": "Los proyectos de Darkroom se guardan en tu cuenta y aparecen en Proyectos, así que puedes retomar una edición en cualquier dispositivo."
+    },
+    "retention": {
+      "title": "Elige cuánto tiempo conservarlo",
+      "body": "Recomendamos 6 meses. Puedes elegir cualquier periodo entre 24 horas y 2 años, y cambiarlo cuando quieras en Privacidad y datos."
+    },
+    "replay": "Ver el recorrido de nuevo",
+    "replayHint": "Vuelve a ver la breve introducción a tu cuenta."
   }
 }

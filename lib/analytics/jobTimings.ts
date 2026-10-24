@@ -94,3 +94,13 @@ function sweep(): void {
 export function resetJobTimingsForTests(): void {
   timings.clear();
 }
+
+/**
+ * True while any job started in this tab has not reported a terminal state. Surfaces that must
+ * not interrupt work in progress (the MM35 onboarding tour) read this; stale entries are swept
+ * after an hour, so it cannot stay true forever.
+ */
+export function hasActiveJobs(): boolean {
+  sweep();
+  return timings.size > 0;
+}

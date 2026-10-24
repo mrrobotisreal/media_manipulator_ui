@@ -528,5 +528,28 @@
     "body": "You have paid for several months in a row. The yearly plan costs less than twelve monthly payments. You can switch any time from the billing portal.",
     "cta": "Switch to yearly",
     "dismiss": "No thanks"
+  },
+  "accountTour": {
+    "title": "Welcome to Media Manipulator",
+    "step": "Step {{current}} of {{total}}",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "notNow": "Not now",
+    "setRetention": "Set retention",
+    "keepResults": {
+      "title": "Keep your results",
+      "body": "Everything you convert while signed in is saved to History, so you can reopen or download it later. We keep it for the period you choose."
+    },
+    "darkroomProjects": {
+      "title": "Darkroom projects",
+      "body": "Darkroom projects are saved to your account and listed under Projects, so you can pick up an edit on any device."
+    },
+    "retention": {
+      "title": "Choose your retention",
+      "body": "We recommend 6 months. You can pick anything from 24 hours to 2 years, and change it whenever you like in Privacy & data."
+    },
+    "replay": "Replay the tour",
+    "replayHint": "See the short introduction to your account again."
   }
 }
