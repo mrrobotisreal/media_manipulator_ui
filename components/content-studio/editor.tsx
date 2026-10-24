@@ -24,6 +24,7 @@ import {
   WifiOff,
   AlertTriangle,
   Type,
+  SlidersVertical,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -84,6 +85,7 @@ import ClipInspector from './clip-inspector';
 import { SpeedDialog } from './speed-controls';
 import CaptionEditor from './caption-editor';
 import AudioDuckingPopover from './audio-ducking';
+import Mixer from './mixer';
 import type { FocusModeApi } from './useFocusMode';
 import { Panel } from '@/components/darkroom/panel';
 import { trackAcceptsAsset } from '@/lib/studio/trackRules';
@@ -153,6 +155,7 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
   const closeProject = useStudioStore((s) => s.closeProject);
   const markSaved = useStudioStore((s) => s.markSaved);
   const project = useStudioStore((s) => s.project);
+  const mixerOpen = useStudioStore((s) => s.mixerOpen);
   const dirty = useStudioStore((s) => s.dirty);
   const selectedCaptionId = useStudioStore((s) => s.selectedCaptionId);
   // The id of the project currently hydrated in the store. We gate hydration on
@@ -705,6 +708,19 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
           </Button>
           <VersionsPanel projectId={projectId} />
           <AudioDuckingPopover />
+          <Button
+            variant={mixerOpen ? 'secondary' : 'outline'}
+            size="sm"
+            aria-pressed={mixerOpen}
+            onClick={() => {
+              editSummary.increment('uiInvocations');
+              useStudioStore.getState().setMixerOpen(!mixerOpen);
+            }}
+            title={t('contentStudio.mixer.title')}
+          >
+            <SlidersVertical className="w-4 h-4 mr-1" />
+            {t('contentStudio.mixer.button')}
+          </Button>
           <PreferencesDialog />
           <SpeedDialog />
           <ShortcutCheatSheet />
@@ -786,6 +802,11 @@ const Editor: React.FC<{ projectId: string; onClose: () => void; focusMode?: Foc
             the extra space; keeps a comfortable minimum height. */}
         <div className={cn('mt-4', !isDesktop && 'min-h-[180px]', focused && 'shrink-0 min-h-[220px]')}>
           <Timeline />
+        </div>
+
+        {/* Mixer drawer (part 19): toggled from the toolbar; same in embed mode. */}
+        <div className="mt-4 empty:hidden">
+          <Mixer />
         </div>
 
         <DragOverlay dropAnimation={null}>

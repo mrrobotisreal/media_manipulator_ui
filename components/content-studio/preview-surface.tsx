@@ -7,6 +7,9 @@ import { cn } from '@/lib/utils';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import { anySolo, isTrackAudible } from '@/lib/studio/trackAudibility';
+import { EQ_BANDS } from '@/lib/studio/audioPresets';
+import { fallbackElementVolume, masterGainOf, peakDb, trackNodeParams } from '@/lib/studio/mixerMath';
+import { setMeterSource } from '@/lib/studio/audioBus';
 import {
   resolveActiveClips,
   topVideoClip,
@@ -164,12 +167,35 @@ interface Slot {
   srcAssetId: string | null;
 }
 
+/**
+ * One track's mixer chain (part 19):
+ *   input -> EQ low shelf -> mid peaking -> high shelf -> compressor ->
+ *   fader gain -> track pan -> [duck/mute gain = AudioGraph.trackGains] -> master
+ * with a stereo analyser tap after the duck gain (so muted/ducked tracks meter
+ * what is actually heard). The export mirrors this order (studio_export.go
+ * trackStageParts): EQ -> acompressor -> volume -> stereotools.
+ */
+interface TrackChain {
+  input: GainNode;
+  low: BiquadFilterNode;
+  mid: BiquadFilterNode;
+  high: BiquadFilterNode;
+  comp: DynamicsCompressorNode;
+  fader: GainNode;
+  pan: StereoPannerNode | null;
+  tapL: AnalyserNode | null;
+  tapR: AnalyserNode | null;
+  /** Last applied params key — skips redundant AudioParam writes. */
+  key: string;
+}
+
 interface AudioGraph {
   ctx: AudioContext | null;
   sources: (MediaElementAudioSourceNode | null)[];
   slotGains: (GainNode | null)[]; // per-slot clip volume
   slotPans: (StereoPannerNode | null)[]; // per-slot clip pan (static + keyframed, part 15)
-  trackGains: Map<string, GainNode>; // per-track mute/master
+  trackGains: Map<string, GainNode>; // per-track mute/solo/ducking gain (chain output)
+  trackChains: Map<string, TrackChain>; // per-track mixer chain (part 19)
   // Master bus + stereo metering tap (trackGains → master → destination, and
   // master → splitter → 2× analyser for the dBFS meters).
   master: GainNode | null;
@@ -205,6 +231,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     slotGains: Array(POOL_SIZE).fill(null),
     slotPans: Array(POOL_SIZE).fill(null),
     trackGains: new Map(),
+    trackChains: new Map(),
     master: null,
     splitter: null,
     analyserL: null,
@@ -453,6 +480,23 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         // metering is optional; ignore if the splitter can't be created
       }
       a.master = master;
+      // Mixer meters (part 19): the drawer polls these at ~20 Hz; reads reuse
+      // two shared buffers, so there is no per-frame allocation.
+      const meterBuf = new Float32Array(1024);
+      const read = (l: AnalyserNode | null, r: AnalyserNode | null) => {
+        if (!l || !r) return null;
+        l.getFloatTimeDomainData(meterBuf);
+        const dl = peakDb(meterBuf.subarray(0, l.fftSize));
+        r.getFloatTimeDomainData(meterBuf);
+        return { l: dl, r: peakDb(meterBuf.subarray(0, r.fftSize)) };
+      };
+      setMeterSource({
+        track: (id) => {
+          const ch = a.trackChains.get(id);
+          return ch ? read(ch.tapL, ch.tapR) : null;
+        },
+        master: () => read(a.analyserL, a.analyserR),
+      });
       for (let i = 0; i < POOL_SIZE; i += 1) {
         const el = poolEls.current[i];
         if (!el) continue;
@@ -482,17 +526,97 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     }
   }, []);
 
+  // Returns the track's chain INPUT node (slots connect here), building the
+  // whole chain + duck/mute gain + meter taps on first use.
   const trackGain = React.useCallback((trackId: string): GainNode | null => {
     const a = audio.current;
     if (!a.ctx) return null;
-    let g = a.trackGains.get(trackId);
-    if (!g) {
-      g = a.ctx.createGain();
-      g.gain.value = 1;
-      g.connect(a.master ?? a.ctx.destination);
-      a.trackGains.set(trackId, g);
+    const existing = a.trackChains.get(trackId);
+    if (existing) return existing.input;
+    const ctx = a.ctx;
+    const input = ctx.createGain();
+    const low = ctx.createBiquadFilter();
+    low.type = EQ_BANDS.low.type;
+    low.frequency.value = EQ_BANDS.low.hz;
+    const mid = ctx.createBiquadFilter();
+    mid.type = EQ_BANDS.mid.type;
+    mid.frequency.value = EQ_BANDS.mid.hz;
+    mid.Q.value = EQ_BANDS.mid.q;
+    const high = ctx.createBiquadFilter();
+    high.type = EQ_BANDS.high.type;
+    high.frequency.value = EQ_BANDS.high.hz;
+    const comp = ctx.createDynamicsCompressor();
+    // Transparent until the track has a compressor (see trackNodeParams).
+    comp.threshold.value = 0;
+    comp.ratio.value = 1;
+    comp.knee.value = 0;
+    const fader = ctx.createGain();
+    let pan: StereoPannerNode | null = null;
+    try {
+      pan = ctx.createStereoPanner();
+    } catch {
+      pan = null;
     }
-    return g;
+    const duck = ctx.createGain();
+    duck.gain.value = 1;
+    input.connect(low);
+    low.connect(mid);
+    mid.connect(high);
+    high.connect(comp);
+    comp.connect(fader);
+    if (pan) {
+      fader.connect(pan);
+      pan.connect(duck);
+    } else {
+      fader.connect(duck);
+    }
+    duck.connect(a.master ?? ctx.destination);
+    let tapL: AnalyserNode | null = null;
+    let tapR: AnalyserNode | null = null;
+    try {
+      const splitter = ctx.createChannelSplitter(2);
+      tapL = ctx.createAnalyser();
+      tapR = ctx.createAnalyser();
+      tapL.fftSize = 512;
+      tapR.fftSize = 512;
+      duck.connect(splitter);
+      splitter.connect(tapL, 0);
+      splitter.connect(tapR, 1);
+    } catch {
+      /* metering is optional */
+    }
+    a.trackGains.set(trackId, duck);
+    a.trackChains.set(trackId, { input, low, mid, high, comp, fader, pan, tapL, tapR, key: '' });
+    return input;
+  }, []);
+
+  // Writes each track's fader/pan/EQ/compressor and the master fader from the
+  // document. Cheap and idempotent (keyed), so it can run every frame from
+  // syncFrame and from the paused effect below.
+  const applyMixerParams = React.useCallback(() => {
+    const a = audio.current;
+    if (!a.ctx) return;
+    const st = useStudioStore.getState();
+    const now = a.ctx.currentTime;
+    for (const tr of st.project?.tracks ?? []) {
+      const ch = a.trackChains.get(tr.id);
+      if (!ch) continue;
+      const p = trackNodeParams(tr);
+      const key = JSON.stringify(p);
+      if (key === ch.key) continue;
+      ch.key = key;
+      ch.low.gain.setTargetAtTime(p.lowDb, now, 0.01);
+      ch.mid.gain.setTargetAtTime(p.midDb, now, 0.01);
+      ch.high.gain.setTargetAtTime(p.highDb, now, 0.01);
+      ch.comp.threshold.setTargetAtTime(p.comp.thresholdDb, now, 0.01);
+      ch.comp.ratio.setTargetAtTime(p.comp.ratio, now, 0.01);
+      ch.comp.knee.setTargetAtTime(p.comp.kneeDb, now, 0.01);
+      ch.comp.attack.setTargetAtTime(p.comp.attackS, now, 0.01);
+      ch.comp.release.setTargetAtTime(p.comp.releaseS, now, 0.01);
+      ch.fader.gain.setTargetAtTime(p.gain, now, 0.01);
+      if (ch.pan) ch.pan.pan.setTargetAtTime(Math.max(-1, Math.min(1, p.pan)), now, 0.01);
+    }
+    if (a.master) a.master.gain.setTargetAtTime(masterGainOf(st.project?.audio), now, 0.01);
   }, []);
 
   // Which track each slot's gain node is currently wired to. Re-wiring the
@@ -503,7 +627,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const slotRouting = React.useRef<Array<string | null>>([]);
 
   const routeSlotAudio = React.useCallback(
-    (i: number, trackId: string, clipVolume: number, clipPan: number, trackMuted: boolean) => {
+    (i: number, trackId: string, clipVolume: number, clipPan: number, trackMuted: boolean, trackGainLinear?: number, masterLinear?: number) => {
       const a = audio.current;
       const g = a.slotGains[i];
       const p = a.slotPans[i];
@@ -534,8 +658,10 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       } else if (el) {
         // Fallback when Web Audio is unavailable: per-element output sums at the
         // system mixer. Coarser, but keeps mute + per-clip volume working.
+        // Degraded mode (part 19): clip x track x master composed into the
+        // element volume, capped at 1.0; no EQ, compressor or pan.
         el.muted = trackMuted;
-        el.volume = clipVolume;
+        el.volume = fallbackElementVolume(clipVolume, trackGainLinear, masterLinear);
       }
     },
     [trackGain],
@@ -744,7 +870,15 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         const trackClips = trks.find((tr) => tr.id === a.trackId)?.clips;
         const gainNow = vals.volume * (trackClips ? audioFadeGain(a.clip, trackClips, t) : 1);
         // Stalled clips (freeze / reverse still building) are silent.
-        routeSlotAudio(i, a.trackId, stalled ? 0 : gainNow, vals.pan, !audibleTrackIds.has(a.trackId) || stalled);
+        routeSlotAudio(
+          i,
+          a.trackId,
+          stalled ? 0 : gainNow,
+          vals.pan,
+          !audibleTrackIds.has(a.trackId) || stalled,
+          trks.find((tr) => tr.id === a.trackId)?.gain,
+          masterGainOf(st.project?.audio),
+        );
         if (playing && !stalled) {
           if (el.paused) void el.play().catch(() => {});
         } else if (!el.paused) {
@@ -763,6 +897,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       // track contributes no sidechain key, exactly like the export.
       const ag = audio.current;
       if (ag.ctx) {
+        applyMixerParams();
         const duckCfg = st.project?.audio;
         const voiceTrackId =
           duckCfg?.duckingEnabled && duckCfg.duckVoiceTrackId ? duckCfg.duckVoiceTrackId : '';
@@ -899,7 +1034,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         comp.composite(layers, pw, ph);
       }
     },
-    [routeSlotAudio, silenceSlot],
+    [routeSlotAudio, silenceSlot, applyMixerParams],
   );
 
   // Playback loop.
@@ -1044,6 +1179,13 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     return () => ro.disconnect();
   }, []);
 
+  // Mixer edits while paused (or between frames): re-apply fader/pan/EQ/comp.
+  // During playback syncFrame also applies them every frame.
+  const mixerTracks = project?.tracks;
+  React.useEffect(() => {
+    applyMixerParams();
+  }, [mixerTracks, projectAudio, applyMixerParams]);
+
   // Tear down the audio graph on unmount.
   React.useEffect(
     () => () => {
@@ -1051,6 +1193,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       if (a.ctx) void a.ctx.close().catch(() => {});
       a.ctx = null;
       a.trackGains.clear();
+      a.trackChains.clear();
+      setMeterSource(null);
       a.slotGains.fill(null);
       a.slotPans.fill(null);
       slotRouting.current = [];

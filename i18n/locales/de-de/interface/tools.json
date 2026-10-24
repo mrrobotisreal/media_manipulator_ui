@@ -556,6 +556,36 @@
         "view": "View",
         "history": "History"
       }
+    },
+    "mixer": {
+      "button": "Mixer",
+      "title": "Mixer",
+      "empty": "Add audio to see its channel strip.",
+      "master": "Master",
+      "masterFader": "Master fader",
+      "fader": "fader",
+      "pan": "pan",
+      "fx": "Track effects",
+      "fxTitle": "Track effects",
+      "reset": "Reset",
+      "presets": "Preset",
+      "presetPlaceholder": "Preset…",
+      "eqLow": "Low (120 Hz)",
+      "eqMid": "Mid (1 kHz)",
+      "eqHigh": "High (8 kHz)",
+      "compressor": "Compressor",
+      "compOn": "Enable",
+      "compOff": "Disable",
+      "threshold": "Threshold",
+      "ratio": "Ratio",
+      "attack": "Attack",
+      "release": "Release",
+      "makeup": "Makeup",
+      "preset": {
+        "voiceClarity": "Voice clarity",
+        "musicBed": "Music bed",
+        "podcast": "Podcast"
+      }
     }
   },
   "toolPage": {
