@@ -188,18 +188,32 @@ describe('retention offer', () => {
     const card = await screen.findByTestId('retention-offer');
     expect(card.dataset.offer).toBe(kind);
     expect(screen.getByText(`interface:billing.offer.title|price=${price}`)).toBeTruthy();
-    expect(screen.getByText(/billing\.offer\.fineprint\|date=D\(2026-11-23/)).toBeTruthy();
+    // The fine print names both prices, so "the new price" is never left unexplained.
+    expect(screen.getByText(new RegExp(`billing\\.offer\\.fineprint\\|date=D\\(2026-11-23[^|]*\\),price=${price},current=8`))).toBeTruthy();
     expect(screen.getByRole('button', { name: 'interface:billing.offer.keepAtCurrent|price=8' })).toBeTruthy();
     await waitFor(() => expect(h.track).toHaveBeenCalledWith('retention_offer_viewed', { offer: kind }));
     expect(h.track.mock.calls.filter((c) => c[0] === 'retention_offer_viewed')).toHaveLength(1);
   });
 
-  it('resume: plain Keep Premium, no discount, no secondary link', async () => {
+  it('resume (yearly): shows the current price, same-price fine print, no discount, no secondary link', async () => {
     renderPanel('premium', { ...cancelled, interval: 'yearly', offer: offerOf('resume', 80) });
     await screen.findByText('interface:billing.offer.resumeTitle');
-    expect(screen.getByRole('button', { name: 'interface:billing.offer.resumeCta' })).toBeTruthy();
+    expect(screen.getByText('interface:billing.offer.resumePrice|price=80,unit=interface:billing.offer.unitYear')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'interface:billing.offer.resumeCta|price=80,unit=interface:billing.offer.unitYear' })).toBeTruthy();
     expect(screen.queryByText(/keepAtCurrent/)).toBeNull();
-    expect(screen.getByText(/billing\.offer\.fineprint/)).toBeTruthy();
+    expect(screen.getByText(/billing\.offer\.resumeFineprint/)).toBeTruthy();
+    expect(screen.queryByText(/billing\.offer\.fineprint/)).toBeNull();
+  });
+
+  // Mitch's case: a monthly subscriber already on $7 (signed up before $8) gets
+  // "resume" at $7. The card must say $7 and must not mention a "new price".
+  it('resume (monthly, legacy $7): shows $7/month and no "new price" fine print', async () => {
+    renderPanel('premium', { ...cancelled, interval: 'monthly', priceMonthlyUSD: 7, offer: offerOf('resume', 7) });
+    await screen.findByText('interface:billing.offer.resumeTitle');
+    expect(screen.getByText('interface:billing.offer.resumePrice|price=7,unit=interface:billing.offer.unitMonth')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'interface:billing.offer.resumeCta|price=7,unit=interface:billing.offer.unitMonth' })).toBeTruthy();
+    expect(screen.getByText(/billing\.offer\.resumeFineprint/)).toBeTruthy();
+    expect(screen.queryByText(/billing\.offer\.fineprint/)).toBeNull();
   });
 
   it('accept success: posts the kind once, replaces status, toasts, tracks accepted', async () => {

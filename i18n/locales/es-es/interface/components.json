@@ -465,10 +465,10 @@
     },
     "offer": {
       "title": "¿Has cambiado de opinión? Mantén Premium por ${{price}}/mes",
-      "resumeTitle": "¿Has cambiado de opinión? Mantén Premium",
-      "fineprint": "Hoy no se cobra nada. Tu próximo pago es el {{date}}, al nuevo precio, y cada mes después hasta que canceles.",
+      "resumeTitle": "¿Has cambiado de opinión? Mantén Premium a tu precio actual",
+      "fineprint": "Hoy no se cobra nada. Desde el {{date}} pagas ${{price}}/mes en lugar de ${{current}}/mes, cada mes hasta que canceles.",
       "cta": "Mantener Premium por ${{price}}/mes",
-      "resumeCta": "Mantener Premium",
+      "resumeCta": "Mantener Premium a ${{price}}{{unit}}",
       "keepAtCurrent": "Mantener Premium a ${{price}}/mes",
       "keepAtCurrentNoPrice": "Mantener Premium al precio habitual",
       "working": "Procesando…",
@@ -476,7 +476,13 @@
       "renewedNoPrice": "Premium se renovará el {{date}}",
       "renewedBare": "Premium seguirá renovándose",
       "changed": "La oferta ha cambiado; esta es la actual.",
-      "failed": "No se pudo actualizar tu suscripción. Inténtalo de nuevo."
+      "failed": "No se pudo actualizar tu suscripción. Inténtalo de nuevo.",
+      "resumePrice": "Ahora pagas ${{price}}{{unit}} y seguirás pagando lo mismo.",
+      "resumeCtaNoPrice": "Mantener Premium",
+      "fineprintNoCurrent": "Hoy no se cobra nada. Desde el {{date}} pagas ${{price}}/mes, cada mes hasta que canceles.",
+      "resumeFineprint": "Hoy no se cobra nada. Tu próximo pago es el {{date}}, al mismo precio, y se renueva como siempre hasta que canceles.",
+      "unitMonth": "/mes",
+      "unitYear": "/año"
     }
   },
   "upgradeInterstitial": {

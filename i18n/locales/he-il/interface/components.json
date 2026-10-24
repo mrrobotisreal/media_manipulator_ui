@@ -469,10 +469,10 @@
     },
     "offer": {
       "title": "התחרטתם? שמרו על Premium ב־${{price}} לחודש",
-      "resumeTitle": "התחרטתם? שמרו על Premium",
-      "fineprint": "היום לא מתבצע חיוב. התשלום הבא שלכם ב־{{date}}, במחיר החדש, ובכל חודש לאחר מכן עד שתבטלו.",
+      "resumeTitle": "התחרטתם? שמרו על Premium במחיר הנוכחי שלכם",
+      "fineprint": "היום לא מתבצע חיוב. החל מ־{{date}} תשלמו ${{price}} לחודש במקום ${{current}} לחודש, בכל חודש עד שתבטלו.",
       "cta": "שמרו על Premium ב־${{price}} לחודש",
-      "resumeCta": "שמרו על Premium",
+      "resumeCta": "שמרו על Premium ב־${{price}}{{unit}}",
       "keepAtCurrent": "שמרו על Premium ב־${{price}} לחודש",
       "keepAtCurrentNoPrice": "שמרו על Premium במחיר הרגיל",
       "working": "מעבד…",
@@ -480,7 +480,13 @@
       "renewedNoPrice": "Premium יתחדש ב־{{date}}",
       "renewedBare": "Premium ימשיך להתחדש",
       "changed": "ההצעה השתנתה, הנה ההצעה העדכנית.",
-      "failed": "לא ניתן היה לעדכן את המנוי. נסו שוב."
+      "failed": "לא ניתן היה לעדכן את המנוי. נסו שוב.",
+      "resumePrice": "אתם משלמים כיום ${{price}}{{unit}}, וזה המחיר שתמשיכו לשלם.",
+      "resumeCtaNoPrice": "שמרו על Premium",
+      "fineprintNoCurrent": "היום לא מתבצע חיוב. החל מ־{{date}} תשלמו ${{price}} לחודש, בכל חודש עד שתבטלו.",
+      "resumeFineprint": "היום לא מתבצע חיוב. התשלום הבא שלכם ב־{{date}}, באותו מחיר, והמנוי יתחדש כרגיל עד שתבטלו.",
+      "unitMonth": " לחודש",
+      "unitYear": " לשנה"
     }
   },
   "upgradeInterstitial": {

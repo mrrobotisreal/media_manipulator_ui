@@ -465,10 +465,10 @@
     },
     "offer": {
       "title": "Anders überlegt? Behalte Premium für ${{price}}/Monat",
-      "resumeTitle": "Anders überlegt? Behalte Premium",
-      "fineprint": "Heute wird nichts abgebucht. Deine nächste Zahlung erfolgt am {{date}} zum neuen Preis und danach jeden Monat, bis du kündigst.",
+      "resumeTitle": "Anders überlegt? Behalte Premium zu deinem aktuellen Preis",
+      "fineprint": "Heute wird nichts abgebucht. Ab dem {{date}} zahlst du ${{price}}/Monat statt ${{current}}/Monat, jeden Monat, bis du kündigst.",
       "cta": "Premium für ${{price}}/Monat behalten",
-      "resumeCta": "Premium behalten",
+      "resumeCta": "Premium für ${{price}}{{unit}} behalten",
       "keepAtCurrent": "Premium für ${{price}}/Monat behalten",
       "keepAtCurrentNoPrice": "Premium zum regulären Preis behalten",
       "working": "Wird bearbeitet…",
@@ -476,7 +476,13 @@
       "renewedNoPrice": "Premium verlängert sich am {{date}}",
       "renewedBare": "Premium verlängert sich weiterhin",
       "changed": "Das Angebot hat sich geändert, hier ist das aktuelle.",
-      "failed": "Dein Abo konnte nicht aktualisiert werden. Bitte versuche es erneut."
+      "failed": "Dein Abo konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+      "resumePrice": "Du zahlst derzeit ${{price}}{{unit}} und behältst diesen Preis.",
+      "resumeCtaNoPrice": "Premium behalten",
+      "fineprintNoCurrent": "Heute wird nichts abgebucht. Ab dem {{date}} zahlst du ${{price}}/Monat, jeden Monat, bis du kündigst.",
+      "resumeFineprint": "Heute wird nichts abgebucht. Deine nächste Zahlung erfolgt am {{date}} zum gleichen Preis und verlängert sich wie gewohnt, bis du kündigst.",
+      "unitMonth": "/Monat",
+      "unitYear": "/Jahr"
     }
   },
   "upgradeInterstitial": {

@@ -61,12 +61,18 @@ const RetentionOfferCard: React.FC<{
   offer: RetentionOffer;
   currentPrice: number | null | undefined;
   fallbackPrice: number | undefined;
+  interval: string | null | undefined;
   busy: boolean;
   onAccept: (kind: RetentionOffer['kind']) => void;
   t: (key: string, options?: Record<string, unknown>) => string;
   date: (iso: string | null | undefined) => string;
-}> = ({ offer, currentPrice, fallbackPrice, busy, onAccept, t, date }) => {
+}> = ({ offer, currentPrice, fallbackPrice, interval, busy, onAccept, t, date }) => {
   const discounted = offer.kind !== 'resume';
+  // What the subscriber pays now: the API's offer.priceUSD for "resume" is
+  // exactly that (read from the Stripe subscription), else priceMonthlyUSD.
+  const current = discounted ? (currentPrice ?? fallbackPrice) : (offer.priceUSD ?? currentPrice ?? fallbackPrice);
+  const unit = t(interval === 'yearly' ? 'interface:billing.offer.unitYear' : 'interface:billing.offer.unitMonth');
+  const hasCurrent = typeof current === 'number';
   return (
     <section
       aria-labelledby="retention-offer-title"
@@ -83,8 +89,17 @@ const RetentionOfferCard: React.FC<{
           {t('interface:billing.offer.resumeTitle')}
         </h3>
       )}
+      {!discounted && hasCurrent ? (
+        <p className="text-sm text-foreground">
+          {t('interface:billing.offer.resumePrice', { price: current, unit })}
+        </p>
+      ) : null}
       <p className="text-xs text-muted-foreground">
-        {t('interface:billing.offer.fineprint', { date: date(offer.nextChargeAt) })}
+        {discounted
+          ? hasCurrent
+            ? t('interface:billing.offer.fineprint', { date: date(offer.nextChargeAt), price: offer.priceUSD, current })
+            : t('interface:billing.offer.fineprintNoCurrent', { date: date(offer.nextChargeAt), price: offer.priceUSD })
+          : t('interface:billing.offer.resumeFineprint', { date: date(offer.nextChargeAt) })}
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <Button
@@ -97,7 +112,9 @@ const RetentionOfferCard: React.FC<{
             ? t('interface:billing.offer.working')
             : discounted
               ? t('interface:billing.offer.cta', { price: offer.priceUSD })
-              : t('interface:billing.offer.resumeCta')}
+              : hasCurrent
+                ? t('interface:billing.offer.resumeCta', { price: current, unit })
+                : t('interface:billing.offer.resumeCtaNoPrice')}
         </Button>
         {discounted ? (
           <button
@@ -348,7 +365,8 @@ export const BillingPanel: React.FC = () => {
             <RetentionOfferCard
               offer={offer}
               currentPrice={status?.priceMonthlyUSD}
-              fallbackPrice={monthly}
+              fallbackPrice={status?.interval === 'yearly' ? yearly : monthly}
+              interval={status?.interval}
               busy={retaining}
               onAccept={accept}
               t={t}
