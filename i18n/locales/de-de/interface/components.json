@@ -164,7 +164,8 @@
       "free": "Kostenlos",
       "premium": "Premium",
       "operator": "Operator"
-    }
+    },
+    "tierEnds": "Premium · endet am {{date}}"
   },
   "upgradeSurfaces": {
     "fileLimit": "Dateien bis zu {{size}}",
@@ -429,12 +430,15 @@
       "pastDueTitle": "Deine letzte Zahlung ist fehlgeschlagen",
       "pastDueBody": "Der Premium-Zugang bleibt bis zu 7 Tage bestehen, während wir es erneut versuchen. Aktualisiere deine Zahlungsmethode, um ihn zu behalten.",
       "intervalLabel": "Abrechnung",
-      "endsLabel": "Endet am",
+      "endsLabel": "Premium endet am",
       "renewsLabel": "Verlängert sich am",
       "endsOn": "Dein Abo endet am {{date}}.",
       "resumeHint": "Öffne „Abo verwalten“, um es fortzusetzen.",
       "renewsOn": "Verlängert sich am {{date}}.",
-      "updatePayment": "Zahlungsmethode aktualisieren"
+      "updatePayment": "Zahlungsmethode aktualisieren",
+      "cancelledTitle": "Dein Premium-Abo ist gekündigt",
+      "cancelledBody": "Du behältst Premium bis zum {{date}}. Danach wechselt dein Konto zu Free und es wird nichts mehr abgebucht.",
+      "cancelledBodyNoDate": "Du behältst Premium bis zum Ende des aktuellen Abrechnungszeitraums. Danach wechselt dein Konto zu Free und es wird nichts mehr abgebucht."
     },
     "return": {
       "waiting": {
@@ -458,6 +462,21 @@
         "body": "Dein Tarif wird automatisch aktualisiert, sobald die Zahlung bestätigt ist. Versuche es gleich noch einmal."
       },
       "refresh": "Meinen Tarif aktualisieren"
+    },
+    "offer": {
+      "title": "Anders überlegt? Behalte Premium für ${{price}}/Monat",
+      "resumeTitle": "Anders überlegt? Behalte Premium",
+      "fineprint": "Heute wird nichts abgebucht. Deine nächste Zahlung erfolgt am {{date}} zum neuen Preis und danach jeden Monat, bis du kündigst.",
+      "cta": "Premium für ${{price}}/Monat behalten",
+      "resumeCta": "Premium behalten",
+      "keepAtCurrent": "Premium für ${{price}}/Monat behalten",
+      "keepAtCurrentNoPrice": "Premium zum regulären Preis behalten",
+      "working": "Wird bearbeitet…",
+      "renewed": "Premium verlängert sich am {{date}} für ${{price}}/Monat",
+      "renewedNoPrice": "Premium verlängert sich am {{date}}",
+      "renewedBare": "Premium verlängert sich weiterhin",
+      "changed": "Das Angebot hat sich geändert, hier ist das aktuelle.",
+      "failed": "Dein Abo konnte nicht aktualisiert werden. Bitte versuche es erneut."
     }
   },
   "upgradeInterstitial": {
