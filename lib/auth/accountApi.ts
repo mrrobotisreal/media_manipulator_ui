@@ -843,3 +843,28 @@ export async function fetchStudioProjects(idToken: string): Promise<StudioProjec
   const body = await accountJson<{ projects?: StudioProjectSummary[] }>('/studio/projects', idToken);
   return Array.isArray(body.projects) ? body.projects : [];
 }
+
+/**
+ * One row of GET /api/vector/projects (VectorHandler.ListProjects, vector.go).
+ * Summaries never carry the document body.
+ */
+export interface VectorProjectSummary {
+  id: string;
+  name: string;
+  revision: number;
+  thumbnailKey?: string;
+  documentBytes: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** GET /api/vector/projects (auth required). */
+export async function fetchVectorProjects(idToken: string): Promise<VectorProjectSummary[]> {
+  const body = await accountJson<{ projects?: VectorProjectSummary[] }>('/vector/projects', idToken);
+  return Array.isArray(body.projects) ? body.projects : [];
+}
+
+/** DELETE /api/vector/projects/:id (same DeletedBody shape as deleteProject). */
+export function deleteVectorProject(idToken: string, id: string): Promise<DeletedBody> {
+  return accountJson<DeletedBody>(`/vector/projects/${encodeURIComponent(id)}`, idToken, { method: 'DELETE' });
+}
