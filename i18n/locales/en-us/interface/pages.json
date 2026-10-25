@@ -495,15 +495,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Effective Date: 2026-10-24",
-    "lastUpdated": "Last Updated: 2026-10-24",
+    "lastUpdated": "Last Updated: 2026-10-25",
     "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operating as Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "What changed on 2026-10-24",
-    "whatChangedBody": "We reviewed this policy against how the service works today. New or corrected: payments run through the Stripe account of CreaTV Ltd. (so the Stripe checkout page shows CreaTV, while your card statement shows MEDIA MNPLTR PREMIUM), metadata reports are now deleted together with their files by default, Google's analytics script now loads only after you consent to analytics (nothing is sent to Google before that), the AI tools we run on our own servers are named, Google Analytics 4 and advertising are described more precisely (including cookies), account sign-in with Firebase is explained, and Darkroom inside CreaTV Studio is covered. Retention is unchanged: 24 hours for visitors, 24 hours to 2 years (6 months by default) with an account. Service emails: we now send a few emails ourselves (welcome, payment and account-deletion notices, and optional file-expiry and AI-job reminders), delivered through Resend; section 1.7 says exactly which."
+    "whatChangedTitle": "What changed on 2026-10-25",
+    "whatChangedBody": "We added a second paid plan, Pro, at $15 per month or $150 per year, next to Premium at $8 per month or $80 per year. Section 10 of the Terms now explains plan changes: an upgrade from Premium to Pro applies right away, with a prorated charge for the rest of the period and the same renewal date; a downgrade from Pro to Premium applies at the end of the period you paid for, with no refund for the rest of it. The 14-day refund of a first payment applies to both plans. The Privacy Policy (section 1.6) names both plans and explains that a scheduled plan change is kept by Stripe. Everything from the 2026-10-24 review (payments through the Stripe account of CreaTV Ltd., metadata reports deleted with their files, Google's analytics loading only after consent, the named AI tools, Firebase sign-in, Darkroom inside CreaTV Studio, retention and the service emails described in section 1.7) still applies."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -619,8 +619,8 @@
           {
             "title": "1.6 Payment and Subscription Data",
             "paragraphs": [
-              "If you subscribe to Premium, payment is handled by our payment processor, Stripe. Your card details are entered on Stripe's pages and are processed by Stripe; we do not receive or store card numbers.",
-              "We store only what we need to run your subscription: your Stripe customer identifier, your subscription status, your billing interval (monthly or yearly), and the date your current period ends. We use it to give you the right plan, show your billing status, and handle refunds and support requests.",
+              "If you subscribe to Premium or Pro, payment is handled by our payment processor, Stripe. Your card details are entered on Stripe's pages and are processed by Stripe; we do not receive or store card numbers.",
+              "We store only what we need to run your subscription: your Stripe customer identifier, your subscription status, your plan (Premium or Pro), your billing interval (monthly or yearly), and the date your current period ends. A plan change you schedule (for example from Pro to Premium at the end of the period) is kept by Stripe, and we read it from Stripe to show it on your Account page. We use this information to give you the right plan, show your billing status, and handle refunds and support requests.",
               "Our Stripe account belongs to CreaTV Ltd., the company that operates Media Manipulator. As a result, Stripe's checkout page shows CreaTV (or CreaTV Ltd.) branding instead of Media Manipulator. The charge on your card statement appears as “MEDIA MNPLTR PREMIUM”."
             ]
           },
@@ -697,7 +697,7 @@
               "When you delete your account from the Account page, we:"
             ],
             "bullets": [
-              "cancel your Premium subscription with Stripe, if you have one;",
+              "cancel your Premium or Pro subscription with Stripe, if you have one;",
               "delete your files and Darkroom projects;",
               "delete your account record and settings and detach your remaining activity records from your identity;",
               "ask our first-party analytics to delete the analytics data linked to your account (see Section 6);",
@@ -749,7 +749,7 @@
         "title": "5. Advertising",
         "paragraphs": [
           "Media Manipulator may display advertisements, including advertisements served by Google AdSense or other advertising partners.",
-          "Advertising is limited and may change. We show ads only on selected tool pages, never on our home, pricing, account or legal pages, and Premium subscribers do not see ads. Ads appear only when advertising is switched on for the site, and Google's ad script is loaded only on a page that actually displays an ad. Google's consent signals for advertising are denied by default and are updated according to your choice in “Cookie settings” in the footer.",
+          "Advertising is limited and may change. We show ads only on selected tool pages, never on our home, pricing, account or legal pages, and Premium and Pro subscribers do not see ads. Ads appear only when advertising is switched on for the site, and Google's ad script is loaded only on a page that actually displays an ad. Google's consent signals for advertising are denied by default and are updated according to your choice in “Cookie settings” in the footer.",
           "Third-party vendors, including Google, may use cookies to serve ads based on a user’s prior visits to Media Manipulator or other websites. Google’s use of advertising cookies enables it and its partners to serve ads to users based on their visit to Media Manipulator and/or other sites on the Internet.",
           "Users may opt out of personalized advertising by visiting Google’s Ads Settings. Users may also opt out of some third-party vendors’ use of cookies for personalized advertising by visiting industry opt-out pages where available.",
           "Advertising partners may collect or receive information from our website and other websites and use that information to provide measurement services and targeted ads.",
@@ -855,7 +855,7 @@
           "advertising partners;",
           "security, abuse-detection, and content-safety providers;",
           "AI processing is performed locally on our own servers or infrastructure that we control, and we do not share uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans with third-party AI providers for AI processing;",
-          "Stripe, our payment processor, when you subscribe to Premium (we do not receive or store your card number);",
+          "Stripe, our payment processor, when you subscribe to Premium or Pro (we do not receive or store your card number);",
           "law enforcement, regulators, or authorities when required by law or when necessary to report suspected illegal content;",
           "professional advisors, such as attorneys, accountants, or security consultants;",
           "business successors in the event of a merger, acquisition, financing, reorganization, or sale of assets."
@@ -1210,8 +1210,8 @@
       {
         "title": "9. Account Registration",
         "paragraphs": [
-          "Media Manipulator is available without an account for most features. An account unlocks higher limits and saved history, and Premium is a paid subscription described in Section 10.",
-          "Accounts are handled by Firebase Authentication (a Google service); you can sign in with an email address and password or with Google. You can sign out of all devices or delete your account from the Account page. Deleting your account also cancels any Premium subscription, as described in the Privacy Policy.",
+          "Media Manipulator is available without an account for most features. An account unlocks higher limits and saved history, and Premium and Pro are paid subscriptions described in Section 10.",
+          "Accounts are handled by Firebase Authentication (a Google service); you can sign in with an email address and password or with Google. You can sign out of all devices or delete your account from the Account page. Deleting your account also cancels any Premium or Pro subscription, as described in the Privacy Policy.",
           "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account.",
           "We reserve the right to suspend, restrict, or terminate accounts that violate these Terms, create legal risk, cause service abuse, or harm users, advertisers, our brand, or our infrastructure."
         ]
@@ -1219,10 +1219,11 @@
       {
         "title": "10. Payments, Renewals and Refunds",
         "paragraphs": [
-          "Premium is a paid subscription billed in US dollars, currently $8 per month or $80 per year. The price and billing interval are shown on the pricing page, and no tax is added on top at checkout. The amount shown at checkout is the amount charged.",
-          "Your subscription renews automatically at the end of each billing period until you cancel. You can cancel at any time from the Billing section of your Account page or through the billing portal it links to. After you cancel, your Premium access continues until the end of the period you already paid for, and you will not be charged again.",
-          "If you are not satisfied, you may request a refund of your first payment within 14 days of making it by emailing support@media-manipulator.com. Renewal payments are not refundable except where required by law.",
-          "If a payment fails, we retry it and your Premium access continues for up to 7 days. If the payment still has not succeeded after that, your account returns to the free plan until you update your payment method and subscribe again.",
+          "Premium and Pro are paid subscriptions billed in US dollars, currently $8 per month or $80 per year for Premium, and $15 per month or $150 per year for Pro. The price and billing interval are shown on the pricing page, and no tax is added on top at checkout. The amount shown at checkout is the amount charged.",
+          "Your subscription renews automatically at the end of each billing period until you cancel. You can cancel at any time from the Billing section of your Account page or through the billing portal it links to. After you cancel, your paid plan continues until the end of the period you already paid for, and you will not be charged again.",
+          "You can change plans from the Billing section of your Account page. An upgrade from Premium to Pro takes effect immediately: you pay the prorated difference for the rest of the current billing period, and your renewal date does not change. A downgrade from Pro to Premium takes effect at the end of the period you already paid for: you keep Pro until then, nothing is refunded for the rest of that period, and you can keep Pro instead at any time before the switch.",
+          "If you are not satisfied, you may request a refund of your first payment within 14 days of making it by emailing support@media-manipulator.com. This applies to Premium and to Pro. Renewal payments are not refundable except where required by law.",
+          "If a payment fails, we retry it and your paid plan continues for up to 7 days. If the payment still has not succeeded after that, your account returns to the free plan until you update your payment method and subscribe again.",
           "Payments are processed by Stripe, Inc. We never receive or store your full card number. Stripe's own terms and privacy policy apply to the payment itself. Our Stripe account belongs to CreaTV Ltd., so Stripe's checkout page shows CreaTV (or CreaTV Ltd.) branding instead of Media Manipulator. The charge on your card statement appears as “MEDIA MNPLTR PREMIUM”."
         ]
       },
@@ -1432,12 +1433,14 @@
       "anonymous": "No account",
       "free": "Free account",
       "premium": "Premium",
-      "operator": "Operator"
+      "operator": "Operator",
+      "pro": "Pro"
     },
     "tierBlurb": {
       "anonymous": "Open a tool and go. Nothing to sign up for, nothing stored beyond the day.",
       "free": "Six times the daily volume, saved history, and Darkroom projects that survive a refresh.",
-      "premium": "4K output, long files, priority on the GPU queue, and no ads."
+      "premium": "4K output, long files, priority on the GPU queue, and no ads.",
+      "pro": "Everything in Premium, much higher daily limits for operations, AI jobs and exports, and the largest Motion allowance."
     },
     "rows": {
       "opsPerDay": "Operations per day",
@@ -1447,7 +1450,10 @@
       "maxOutputHeight": "Maximum output resolution",
       "studioProjects": "Saved Studio projects",
       "priorityGpu": "GPU queue",
-      "adsRemoved": "Ads"
+      "adsRemoved": "Ads",
+      "exportsPerDay": "Darkroom exports per day",
+      "vectorExportsPerDay": "Motion exports per day",
+      "vectorProjects": "Saved Motion projects"
     },
     "values": {
       "yes": "Included",
@@ -1469,11 +1475,14 @@
       "q2": "What happens when I run out?",
       "a2": "Nothing breaks. The tool tells you the allowance is spent and offers the next tier up. Your allowance resets at midnight UTC.",
       "q3": "Do free accounts see ads?",
-      "a3": "Yes. Ads pay for the free tier, so only Premium removes them. There are no interstitials, countdowns or forced waits on any plan.",
+      "a3": "Yes. Ads pay for the free tier, so only Premium and Pro remove them. There are no interstitials, countdowns or forced waits on any plan.",
       "q4": "Can I use it without an account at all?",
       "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history. Without an account your files are kept for 24 hours; with an account you choose how long, from 24 hours to 2 years."
     },
-    "retentionNote": "You choose: 24 hours to 2 years. Guests without an account: 24 hours."
+    "retentionNote": "You choose: 24 hours to 2 years. Guests without an account: 24 hours.",
+    "pendingFrom": "Premium from {{date}}",
+    "proBadge": "Best for Motion",
+    "motionNote": "Motion, the SVG animation editor, is rolling out. Its allowances are listed so you can see what each plan includes."
   },
   "account": {
     "title": "Your account",

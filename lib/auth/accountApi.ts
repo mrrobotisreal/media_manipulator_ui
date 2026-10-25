@@ -22,9 +22,10 @@ import { authedFetch } from '@/lib/auth/authedFetch';
  * it. The UI only has to know the value exists so the meter, the account page
  * and the upsell surfaces render it honestly (no allowance, no upgrade prompts).
  */
-export type Tier = 'anonymous' | 'free' | 'premium' | 'operator';
+export type Tier = 'anonymous' | 'free' | 'premium' | 'pro' | 'operator';
 
-const TIERS: readonly Tier[] = ['anonymous', 'free', 'premium', 'operator'];
+/** Ladder order (internal/tiers.Rank, ADR-0011): each tier outranks the ones before it. */
+const TIERS: readonly Tier[] = ['anonymous', 'free', 'premium', 'pro', 'operator'];
 
 /** Narrows an unknown string to a Tier. */
 export function isTier(value: unknown): value is Tier {
@@ -32,14 +33,30 @@ export function isTier(value: unknown): value is Tier {
 }
 
 /**
- * Whether a tier has nothing left to upgrade to. Premium is the top of the
- * public ladder; operator is above it. Every upsell surface keys off this
- * rather than comparing against 'premium' directly, so adding a tier above
- * Premium cannot resurface a "buy Premium" prompt to someone who already
- * outranks it.
+ * The tier's position on the single ladder (anonymous < free < premium < pro <
+ * operator), mirroring internal/tiers.Rank. Compare tiers with this, never with
+ * string equality, so a new rung cannot be missed.
+ */
+export function tierRank(tier: Tier): number {
+  return TIERS.indexOf(tier);
+}
+
+/**
+ * Whether a tier has nothing left to upgrade to. Pro is the top of the public
+ * ladder (MM40); operator is above it. Every "nothing more to sell" check keys
+ * off this rather than comparing against a tier name.
  */
 export function isTopTier(tier: Tier): boolean {
-  return tier === 'premium' || tier === 'operator';
+  return tierRank(tier) >= tierRank('pro');
+}
+
+/**
+ * Whether a tier is paid for (or above): premium, pro or operator. The old
+ * meaning of "isTopTier" before Pro existed; surfaces that sell Premium hide
+ * on it.
+ */
+export function isPaidTier(tier: Tier): boolean {
+  return tierRank(tier) >= tierRank('premium');
 }
 
 /**
@@ -72,6 +89,17 @@ export interface TierLimits {
   adsRemoved: boolean;
   /** Operator only: the per-route hourly abuse buckets are skipped. */
   rateLimitExempt?: boolean;
+  // Motion (vector, MM43). Optional: absent on APIs before MM43.
+  /** Counted Motion exports per day; -1 means unlimited. */
+  vectorExportsPerDay?: number;
+  /** Countable Motion export formats this tier may use. */
+  vectorFormats?: string[];
+  /** Saved Motion projects; -1 means unlimited (anonymous: browser-only). */
+  vectorProjects?: number;
+  /** Longest counted export in ms; 0 means no cap. */
+  vectorMaxDurationMs?: number;
+  /** Raster export caps; a 0 field means no cap on that axis. */
+  vectorVideo?: { maxHeight: number; maxFps: number; maxSeconds: number };
 }
 
 /** The countable metrics, matching internal/models' Metric* constants. */
@@ -121,6 +149,10 @@ export interface TiersResponse {
   premiumPriceUSD: number;
   /** Yearly price in USD (MM17). Absent on older APIs. */
   premiumPriceYearlyUSD?: number;
+  /** MM39: Pro is for sale (billing on and both Pro price ids set). Absent on older APIs. */
+  proPurchasable?: boolean;
+  proPriceUSD?: number;
+  proPriceYearlyUSD?: number;
 }
 
 /** The body of a 429 from the quota middleware. */
@@ -131,7 +163,11 @@ export interface QuotaExceeded {
   limit: number;
   used: number;
   resetsAt: string;
-  /** 'signup' asks an anonymous visitor for a free account; 'premium' upsells. */
+  /**
+   * 'signup' asks an anonymous visitor for a free account; 'premium' upsells. The quota
+   * middleware answers 'premium' for every signed-in tier, so the UI resolves what to offer
+   * a Premium or Pro caller itself (lib/billing/plans.ts).
+   */
   upgradePath: 'signup' | 'premium';
 }
 
@@ -358,6 +394,20 @@ export function allowanceFor(limits: TierLimits | undefined, metric: UsageMetric
 
 export type BillingInterval = 'monthly' | 'yearly';
 
+/** The two plans Stripe sells (MM39 config.PlanPremium / PlanPro). */
+export type PaidPlan = 'premium' | 'pro';
+
+export function isPaidPlan(value: unknown): value is PaidPlan {
+  return value === 'premium' || value === 'pro';
+}
+
+/** A scheduled plan change (the Pro -> Premium downgrade): the plan and when it starts. */
+export interface PendingPlan {
+  to: PaidPlan;
+  /** RFC 3339: the end of the paid period, when the switch happens. */
+  at: string;
+}
+
 /** GET /api/billing/status. 200 with purchasable:false when billing is off. */
 export interface BillingStatus {
   purchasable: boolean;
@@ -382,8 +432,12 @@ export interface BillingStatus {
   endsAt?: string | null;
   /** What this subscriber currently pays per interval; null when unknown. */
   priceMonthlyUSD?: number | null;
-  /** The "stay" offer, or null when none applies. */
+  /** The "stay" offer, or null when none applies. Always null for a Pro subscription (MM39). */
   offer?: RetentionOffer | null;
+  /** MM39: the subscription user's current paid plan; null for everyone else. Absent on older APIs. */
+  plan?: PaidPlan | null;
+  /** MM39: a scheduled plan change, or null. Absent on older APIs. */
+  pendingPlan?: PendingPlan | null;
 }
 
 export type RetentionOfferKind = 'retain7' | 'retain6' | 'resume';
@@ -405,10 +459,16 @@ export interface CheckoutSessionVerdict {
   belongsToUser: boolean;
   paid: boolean;
   tierApplied: boolean;
+  /** MM39: the paid plan now in force; null until applied. Absent on older APIs. */
+  plan?: PaidPlan | null;
 }
 
 export type BillingRefusalReason =
   | 'already_subscribed'
+  | 'already_on_plan'
+  | 'not_subscription'
+  | 'same_plan'
+  | 'change_not_available'
   | 'manual_grant_active'
   | 'billing_unavailable'
   | 'operator_account'
@@ -443,6 +503,10 @@ export class BillingRefusal extends Error {
 
 const KNOWN_REASONS: readonly BillingRefusalReason[] = [
   'already_subscribed',
+  'already_on_plan',
+  'not_subscription',
+  'same_plan',
+  'change_not_available',
   'manual_grant_active',
   'billing_unavailable',
   'operator_account',
@@ -486,7 +550,7 @@ function billingHeaders(idToken: string): Record<string, string> {
 
 export async function createCheckoutSession(
   idToken: string,
-  body: { interval: BillingInterval; locale?: string },
+  body: { interval: BillingInterval; plan?: PaidPlan; locale?: string },
 ): Promise<{ url: string }> {
   const response = await fetch(`${getBaseURL()}/billing/checkout`, {
     method: 'POST',
@@ -552,6 +616,38 @@ export async function retainSubscription(
   return { ok: false, reason: 'error', status: response.status };
 }
 
+/** A change-plan answer (MM39 billing_change_plan.go). `timing` is absent on DELETE. */
+export interface PlanChangeResult {
+  plan: PaidPlan | null;
+  pendingPlan: PendingPlan | null;
+  timing?: 'immediate' | 'period_end';
+}
+
+/**
+ * POST /api/billing/change-plan {target}: Premium -> Pro now (prorated, same renewal date), or
+ * Pro -> Premium at the end of the paid period. Refusals arrive as a BillingRefusal
+ * (not_subscription, same_plan, change_not_available, billing_unavailable, ...).
+ */
+export async function requestPlanChange(idToken: string, target: PaidPlan): Promise<PlanChangeResult> {
+  const response = await authedFetch(`${getBaseURL()}/billing/change-plan`, {
+    method: 'POST',
+    headers: billingHeaders(idToken),
+    body: JSON.stringify({ target }),
+  });
+  if (!response.ok) throw await billingRefusal(response);
+  return response.json() as Promise<PlanChangeResult>;
+}
+
+/** DELETE /api/billing/change-plan: "Keep Pro", releasing a scheduled downgrade. No-op when none. */
+export async function cancelPlanChange(idToken: string): Promise<PlanChangeResult> {
+  const response = await authedFetch(`${getBaseURL()}/billing/change-plan`, {
+    method: 'DELETE',
+    headers: billingHeaders(idToken),
+  });
+  if (!response.ok) throw await billingRefusal(response);
+  return response.json() as Promise<PlanChangeResult>;
+}
+
 export async function verifyCheckoutSession(
   idToken: string,
   sessionId: string,
@@ -573,7 +669,7 @@ export interface LimitRefusal {
   limit: number;
   requested?: number;
   used?: number;
-  /** Absent for premium and operator (nothing higher to buy). */
+  /** Absent for premium, pro and operator (nothing higher to buy for this limit). */
   upgradePath?: 'signup' | 'premium';
 }
 

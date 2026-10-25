@@ -42,6 +42,7 @@ export default async function Account({ params }: PageParams) {
       anonymous: t('interface:pricing.tier.anonymous'),
       free: t('interface:pricing.tier.free'),
       premium: t('interface:pricing.tier.premium'),
+      pro: t('interface:pricing.tier.pro'),
       operator: t('interface:pricing.tier.operator'),
     },
     planRows: [

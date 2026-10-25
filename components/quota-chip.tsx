@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { isTopTier, isUnlimited, type UsageMetric } from '@/lib/auth/accountApi';
+import { limitRaisedByPro } from '@/lib/billing/plans';
 import { formatResetsIn } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
@@ -18,8 +19,9 @@ import { cn } from '@/lib/utils';
  * metric THIS tool spends: conversions, AI jobs or exports. It is information first and a
  * link to /pricing second, so it never opens a modal and never counts down.
  *
- * Hidden for Premium/Operator and for any unlimited allowance. While the tier is resolving
- * it renders a skeleton of the same box, so resolving shifts nothing.
+ * Hidden for Pro/Operator and for any unlimited allowance. Premium sees it (MM40): every
+ * metric it counts is one Pro raises, so its /pricing link reads "See Pro". While the tier is
+ * resolving it renders a skeleton of the same box, so resolving shifts nothing.
  */
 
 /** Tasks that spend the AI allowance, matching the API's `ai_ops` routes. */
@@ -67,6 +69,7 @@ export const QuotaChip: React.FC<QuotaChipProps> = ({ task, metric: metricProp, 
   // Outside the provider (/embed, /dr) there is no allowance to show.
   if (!auth) return null;
   if (!auth.loading && isTopTier(auth.tier)) return null;
+  if (!auth.loading && auth.tier === 'premium' && !limitRaisedByPro(`quota_${metric}`)) return null;
 
   const box = cn('flex min-h-7 items-center', className);
 
@@ -98,7 +101,11 @@ export const QuotaChip: React.FC<QuotaChipProps> = ({ task, metric: metricProp, 
         tabIndex={busy ? -1 : undefined}
         data-testid="quota-chip"
         data-tone={tone}
-        title={resets ? t('interface:quotaMeter.resets', { when: resets }) : t('interface:quotaChip.title')}
+        title={
+          resets
+            ? t('interface:quotaMeter.resets', { when: resets })
+            : t(auth.tier === 'premium' ? 'interface:quotaChip.titlePro' : 'interface:quotaChip.title')
+        }
         onClick={() =>
           analytics.track(EVENTS.UPGRADE_CTA_CLICKED, {
             placement: 'quota_chip',

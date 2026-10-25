@@ -44,7 +44,7 @@ const propertyValue: z.ZodType<PropertyValue> = z.lazy(() =>
 );
 
 const mediaKind = z.enum(['image', 'video', 'audio', 'document', 'unknown']);
-const tier = z.enum(['anonymous', 'free', 'premium', 'operator']);
+const tier = z.enum(['anonymous', 'free', 'premium', 'pro', 'operator']);
 const authMethod = z.enum(['google', 'email', 'other']);
 const metadataTagBucket = z.enum(['0', '1-25', '26-100', '101-500', '500+']);
 const resultSurface = z.enum(['home', 'tool_page', 'tutorial', 'history', 'shared']);
@@ -272,14 +272,24 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
 
   checkout_started: z
-    .object({ interval: z.enum(['monthly', 'yearly']), placement: z.string() })
+    .object({ interval: z.enum(['monthly', 'yearly']), placement: z.string(), plan: z.enum(['premium', 'pro']).optional() })
     .strict(),
-  checkout_completed: z.object({ interval: z.enum(['monthly', 'yearly']) }).strict(),
+  checkout_completed: z
+    .object({ interval: z.enum(['monthly', 'yearly']), plan: z.enum(['premium', 'pro']).optional() })
+    .strict(),
   checkout_abandoned: z.object({}).strict(),
   portal_opened: z.object({ placement: z.string() }).strict(),
   subscription_status_viewed: z.object({ status: z.string(), interval: z.string() }).strict(),
   retention_offer_viewed: z.object({ offer: z.enum(['retain7', 'retain6', 'resume']) }).strict(),
   retention_offer_accepted: z.object({ offer: z.enum(['retain7', 'retain6', 'resume']) }).strict(),
+  billing_plan_change_requested: z
+    .object({
+      from: z.enum(['premium', 'pro']),
+      to: z.enum(['premium', 'pro']),
+      timing: z.enum(['immediate', 'period_end']),
+    })
+    .strict(),
+  billing_plan_change_cancelled: z.object({ from: z.enum(['premium', 'pro']), to: z.enum(['premium', 'pro']) }).strict(),
 
   content_read_progress: z
     .object({

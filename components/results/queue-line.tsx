@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { isTopTier, type Tier } from '@/lib/auth/accountApi';
+import { isPaidTier, type Tier } from '@/lib/auth/accountApi';
 import { useTiers } from '@/lib/billing/useUpgradeAction';
 import { formatJobDuration } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -17,7 +17,8 @@ import { useLocalizedHref } from '@/i18n/useLocalizedHref';
  * It states only what is true, so every condition below is load-bearing:
  *   - the job REPORTED a queue wait (`queueWaitMs`; no pipeline sends one yet, so today this
  *     renders nothing) and it was at least 30 s, i.e. worth mentioning;
- *   - the caller is not Premium/Operator (nothing to sell them);
+ *   - the caller is not on a paid tier (Premium, Pro and operator already go first; Pro does
+ *     not change queue priority, so a Premium caller is not upsold here, MM40);
  *   - the served tier table says Premium has GPU priority (`priorityGpu`), i.e. MM18's
  *     scheduling is live. Without it we would be claiming a perk that does not exist.
  *
@@ -29,13 +30,13 @@ export const QUEUE_LINE_MIN_MS = 30_000;
 
 export function shouldShowQueueLine(input: {
   waitMs: number | undefined;
-  tierIsTop: boolean;
+  tierIsPaid: boolean;
   premiumHasPriority: boolean;
 }): boolean {
   return (
     typeof input.waitMs === 'number' &&
     input.waitMs >= QUEUE_LINE_MIN_MS &&
-    !input.tierIsTop &&
+    !input.tierIsPaid &&
     input.premiumHasPriority
   );
 }
@@ -43,11 +44,11 @@ export function shouldShowQueueLine(input: {
 export const QueueLine: React.FC<{ waitMs?: number }> = ({ waitMs }) => {
   const auth = useAuth();
   // Only fetch the tier table when there is a wait worth explaining.
-  const relevant = !!auth && !auth.loading && !isTopTier(auth.tier) && (waitMs ?? 0) >= QUEUE_LINE_MIN_MS;
+  const relevant = !!auth && !auth.loading && !isPaidTier(auth.tier) && (waitMs ?? 0) >= QUEUE_LINE_MIN_MS;
   const tiers = useTiers(relevant);
 
   const premiumHasPriority = tiers?.tiers.find((x) => x.tier === 'premium')?.limits.priorityGpu === true;
-  if (!auth || !shouldShowQueueLine({ waitMs, tierIsTop: isTopTier(auth.tier), premiumHasPriority })) return null;
+  if (!auth || !shouldShowQueueLine({ waitMs, tierIsPaid: isPaidTier(auth.tier), premiumHasPriority })) return null;
 
   return <QueueLineBody waitMs={waitMs} tier={auth.tier} />;
 };

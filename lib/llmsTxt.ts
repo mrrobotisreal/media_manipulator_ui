@@ -69,6 +69,12 @@ const PLANS = [
     file: '5 GB per file, video up to 2 hours, output up to 4K (2160p)',
     extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), unlimited Darkroom projects, priority GPU queue, no ads',
   },
+  {
+    name: 'Pro ($15/month or $150/year, cancel any time)',
+    ops: '700 operations a day, 120 of them AI',
+    file: 'the same file, length and output limits as Premium',
+    extras: 'everything in Premium, and the largest Motion allowance as the Motion editor rolls out',
+  },
 ] as const;
 
 function ownerSection(): string[] {
@@ -103,7 +109,7 @@ function keyFactsSection(): string[] {
     '- Files are processed on servers the owner runs, not in third-party clouds. Uploads and results are deleted automatically when their retention period ends: 24 hours for visitors without an account, and a period of 24 hours to 2 years that each signed-in user chooses (default 6 months).',
     '- AI features (transcription, background removal, upscaling and restoration, frame interpolation, vocal isolation, document OCR, caption translation) run on GPU servers operated by the owner. Files are never sent to OpenAI, Anthropic, Google or any other third-party AI provider.',
     '- Standard processing uses FFmpeg, ImageMagick and gifsicle. AI models include Whisper (whisper-ctranslate2), Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, VRT, GFPGAN, CodeFormer, RIFE, BiRefNet, Demucs, DeepFilterNet and LaMa.',
-    '- The free service is supported by ads; only Premium removes them. There are no forced waits or countdowns.',
+    '- The free service is supported by ads; only Premium and Pro remove them. There are no forced waits or countdowns.',
     `- The site is available in ${languages}.`,
     `- Support: support@media-manipulator.com. Privacy requests: privacy@media-manipulator.com.`,
   ];
@@ -202,7 +208,7 @@ export function llmsIndexMarkdown(): string {
     '## Pages',
     '',
     pageLine('/'),
-    `- [Pricing](${abs('/pricing')}): Plans and daily limits for visitors, free accounts and Premium.`,
+    `- [Pricing](${abs('/pricing')}): Plans and daily limits for visitors, free accounts, Premium and Pro.`,
     `- [Voices](${abs('/voices')}): ${OWNER.name}'s two ElevenLabs voices, Mr. Wintrow and Obsidian, playable in eight languages.`,
     ...PAGE_PATHS.map(pageLine),
     '',

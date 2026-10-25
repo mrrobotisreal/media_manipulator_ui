@@ -24,6 +24,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-25-media-manipulator-pro',
+    date: '2026-10-25',
+    title: 'Media Manipulator Pro',
+    body: 'A new plan above Premium: $15 a month or $150 a year. Pro raises the daily allowance for operations, AI jobs and Darkroom exports, keeps Premium\'s file size, length and resolution limits, and comes with the largest Motion allowance when Motion arrives. The pricing page now compares Free, Premium and Pro side by side. Premium subscribers can upgrade from the Billing tab and pay only the prorated difference, with the same renewal date; moving back to Premium happens at the end of the paid period. The 14-day refund on a first payment applies to both plans.',
+    tags: ['new'],
+    links: [{ label: 'Compare plans', href: '/pricing' }],
+  },
+  {
     id: '2026-10-24-share-links',
     date: '2026-10-24',
     title: 'Share a result with a link',

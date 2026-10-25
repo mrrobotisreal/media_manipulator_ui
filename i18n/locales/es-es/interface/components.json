@@ -163,9 +163,11 @@
       "anonymous": "Invitado",
       "free": "Gratis",
       "premium": "Premium",
-      "operator": "Operador"
+      "operator": "Operador",
+      "pro": "Pro"
     },
-    "tierEnds": "Premium · termina el {{date}}"
+    "tierEnds": "Premium · termina el {{date}}",
+    "tierEndsPro": "Pro · termina el {{date}}"
   },
   "upgradeSurfaces": {
     "fileLimit": "Archivos de hasta {{size}}",
@@ -415,7 +417,8 @@
     "errors": {
       "unavailable": "Premium aún no está disponible.",
       "operator": "Las cuentas de operador ya tienen acceso ilimitado.",
-      "generic": "No se pudo iniciar el pago. Inténtalo de nuevo en un momento."
+      "generic": "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
+      "alreadyOnPlan": "Ya tienes este plan o uno superior."
     },
     "panel": {
       "title": "Facturación",
@@ -438,7 +441,17 @@
       "updatePayment": "Actualizar método de pago",
       "cancelledTitle": "Tu plan Premium está cancelado",
       "cancelledBody": "Mantienes Premium hasta el {{date}}. Después, tu cuenta pasa a Free y no se te cobrará nada más.",
-      "cancelledBodyNoDate": "Mantienes Premium hasta el final del periodo de facturación actual. Después, tu cuenta pasa a Free y no se te cobrará nada más."
+      "cancelledBodyNoDate": "Mantienes Premium hasta el final del periodo de facturación actual. Después, tu cuenta pasa a Free y no se te cobrará nada más.",
+      "planLabel": "Plan",
+      "pro": {
+        "grantUntil": "Pro concedido por el equipo hasta el {{date}}.",
+        "grantOpen": "Pro concedido por el equipo sin fecha de fin.",
+        "pastDueBody": "El acceso Pro continúa hasta 7 días mientras reintentamos. Actualiza tu método de pago para conservarlo.",
+        "endsLabel": "Pro termina el",
+        "cancelledTitle": "Tu plan Pro está cancelado",
+        "cancelledBody": "Mantienes Pro hasta el {{date}}. Después, tu cuenta pasa a Free y no se te cobrará nada más.",
+        "cancelledBodyNoDate": "Mantienes Pro hasta el final del periodo de facturación actual. Después, tu cuenta pasa a Free y no se te cobrará nada más."
+      }
     },
     "return": {
       "waiting": {
@@ -461,7 +474,11 @@
         "title": "Aún no pudimos confirmar tu pago",
         "body": "Tu plan se actualiza automáticamente cuando se confirma el pago. Inténtalo de nuevo en un momento."
       },
-      "refresh": "Actualizar mi plan"
+      "refresh": "Actualizar mi plan",
+      "confirmedPro": {
+        "title": "Te damos la bienvenida a Pro",
+        "body": "Tu pago se realizó y tu plan ahora es Pro: los límites diarios más altos y la mayor asignación de Motion a medida que se despliega el editor Motion."
+      }
     },
     "offer": {
       "title": "¿Has cambiado de opinión? Mantén Premium por ${{price}}/mes",
@@ -483,6 +500,43 @@
       "resumeFineprint": "Hoy no se cobra nada. Tu próximo pago es el {{date}}, al mismo precio, y se renueva como siempre hasta que canceles.",
       "unitMonth": "/mes",
       "unitYear": "/año"
+    },
+    "upgradePro": "Actualizar a Pro",
+    "unavailablePro": "Pro aún no está disponible",
+    "switchToPremium": "Cambiar a Premium",
+    "planChange": {
+      "cancel": "Ahora no",
+      "upgrade": {
+        "title": "¿Actualizar a Pro ahora?",
+        "body": "Hoy pagas la diferencia prorrateada por el resto de este periodo de facturación. Tu fecha de renovación sigue siendo el {{date}}, y a partir de entonces Pro cuesta {{price}}{{unit}}.",
+        "bodyNoPrice": "Hoy pagas la diferencia prorrateada por el resto de este periodo de facturación. Tu fecha de renovación sigue siendo el {{date}}.",
+        "bodyNoDate": "Hoy pagas la diferencia prorrateada por el resto de este periodo de facturación. Tu fecha de renovación no cambia.",
+        "fineprint": "Pro empieza en cuanto se completa el pago. El reembolso de 14 días se aplica solo a tu primer pago.",
+        "confirm": "Actualizar a Pro"
+      },
+      "downgrade": {
+        "title": "¿Cambiar a Premium al final de este periodo?",
+        "body": "Mantienes Pro hasta el {{date}}. Después, tu plan será Premium a {{price}}{{unit}}.",
+        "bodyNoPrice": "Mantienes Pro hasta el {{date}}. Después, tu plan será Premium.",
+        "bodyNoDate": "Mantienes Pro hasta el final del periodo de facturación actual. Después, tu plan será Premium.",
+        "fineprint": "No se reembolsa nada por el resto de este periodo. Puedes mantener Pro en cualquier momento antes del cambio.",
+        "confirm": "Cambiar a Premium"
+      },
+      "upgraded": "Ahora estás en Pro.",
+      "scheduled": "Tu plan cambia a Premium el {{date}}.",
+      "scheduledNoDate": "Tu plan cambia a Premium al final de este periodo de facturación.",
+      "kept": "Te quedas con Pro.",
+      "pendingBody": "Premium desde el {{date}}. Mantienes Pro hasta entonces.",
+      "keepPro": "Mantener Pro",
+      "dropTitle": "Pasa a Premium y sigue adelante",
+      "dropBody": "En lugar de perderlo todo, puedes seguir en Premium a su precio habitual. Reanuda tu suscripción en Gestionar suscripción y luego elige Cambiar a Premium aquí.",
+      "dropCta": "Reanudar en Gestionar suscripción",
+      "errors": {
+        "notSubscription": "Los cambios de plan solo están disponibles para una suscripción de pago. Un plan concedido por el equipo no se puede cambiar aquí.",
+        "samePlan": "Ya estás en este plan.",
+        "notAvailable": "Este cambio no está disponible ahora mismo. Si tu suscripción está cancelada, reanúdala primero en Gestionar suscripción.",
+        "generic": "No se pudo cambiar tu plan. Inténtalo de nuevo en un momento."
+      }
     }
   },
   "upgradeInterstitial": {
@@ -517,6 +571,16 @@
       "height": "Premium exporta hasta {{value}}p.",
       "projects": "Premium guarda hasta {{value}} proyectos.",
       "projectsUnlimited": "Premium no tiene límite de proyectos guardados."
+    },
+    "noHigherPlan": "Ningún plan aumenta más este límite. Reduce el ajuste para continuar.",
+    "proNote": "Al actualizar se cobra hoy la diferencia prorrateada; tu fecha de renovación sigue igual.",
+    "proChange": {
+      "ops": "Pro permite {{value}} conversiones al día.",
+      "opsUnlimited": "Pro no tiene límite diario de conversiones.",
+      "aiOps": "Pro permite {{value}} trabajos de IA al día.",
+      "aiOpsUnlimited": "Pro no tiene límite diario de trabajos de IA.",
+      "exports": "Pro permite {{value}} exportaciones al día.",
+      "exportsUnlimited": "Pro no tiene límite diario de exportaciones."
     }
   },
   "recentStrip": {
@@ -544,7 +608,8 @@
     "export": {
       "remaining": "Te quedan {{remaining}} de {{limit}} exportaciones hoy",
       "empty": "Has usado las {{limit}} exportaciones de hoy"
-    }
+    },
+    "titlePro": "Ver los planes Pro"
   },
   "queueLine": {
     "text": "Esto esperó {{time}} en la cola compartida. Los trabajos Premium van primero.",
@@ -632,5 +697,16 @@
     "madeWith": "Creado con Media Manipulator",
     "tryIt": "Pruébalo con tu archivo",
     "expires": "Este enlace funciona hasta {{when}}."
+  },
+  "planSummary": {
+    "title": "Planes de un vistazo",
+    "current": "Tu plan",
+    "free": "Gratis",
+    "ops": "{{value}} operaciones al día",
+    "opsUnlimited": "Operaciones ilimitadas al día",
+    "aiOps": "{{value}} trabajos de IA al día",
+    "aiOpsUnlimited": "Trabajos de IA ilimitados al día",
+    "fileSize": "Archivos de hasta {{value}}",
+    "compare": "Comparar todos los planes"
   }
 }

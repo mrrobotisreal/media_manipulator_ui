@@ -3,8 +3,15 @@
 import * as React from 'react';
 import { Check } from 'lucide-react';
 
-import { isUnlimited, type TierDescriptor, type TierLimits } from '@/lib/auth/accountApi';
+import {
+  isUnlimited,
+  type Tier,
+  type TierDescriptor,
+  type TierLimits,
+  type TiersResponse,
+} from '@/lib/auth/accountApi';
 import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
+import { displayPrice, planPrices } from '@/lib/billing/price';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
 
@@ -85,6 +92,94 @@ export const PlanSummary: React.FC<PlanSummaryProps> = ({
           </li>
         ))}
       </ul>
+    </section>
+  );
+};
+
+/** The four public rungs, in ladder order (MM40 decision 6). Operator is never a row. */
+export const LADDER: readonly Tier[] = ['anonymous', 'free', 'premium', 'pro'];
+
+export interface PlanLadderRow {
+  tier: Tier;
+  /** The served monthly price through displayPrice, or the free label. */
+  price: string;
+  ops: string;
+  aiOps: string;
+  fileSize: string;
+  current: boolean;
+}
+
+/**
+ * One row per public tier the API serves, in ladder order, every number from /api/tiers
+ * (`tiers`). `current` marks the caller's tier; an operator matches no row.
+ */
+export function planLadderRows(
+  tiers: TiersResponse,
+  currentTier: Tier | undefined,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): PlanLadderRow[] {
+  const byTier = new Map(tiers.tiers.map((x) => [x.tier, x.limits]));
+  const perMonth = t('interface:billing.perMonth');
+  return LADDER.flatMap((tier) => {
+    const limits = byTier.get(tier);
+    if (!limits) return [];
+    const monthly = tier === 'premium' || tier === 'pro' ? planPrices(tiers, tier).monthly : undefined;
+    return [
+      {
+        tier,
+        price: typeof monthly === 'number' ? `${displayPrice(monthly)}${perMonth}` : t('interface:planSummary.free'),
+        ops: isUnlimited(limits.opsPerDay)
+          ? t('interface:planSummary.opsUnlimited')
+          : t('interface:planSummary.ops', { value: limits.opsPerDay }),
+        aiOps: isUnlimited(limits.aiOpsPerDay)
+          ? t('interface:planSummary.aiOpsUnlimited')
+          : t('interface:planSummary.aiOps', { value: limits.aiOpsPerDay }),
+        fileSize: t('interface:planSummary.fileSize', { value: formatBytes(limits.maxFileBytes) }),
+        current: tier === currentTier,
+      },
+    ];
+  });
+}
+
+/** The plan ladder on the account Billing tab: four rows, the caller's own highlighted. */
+export const PlanLadder: React.FC<{ tiers: TiersResponse | undefined; currentTier: Tier | undefined }> = ({
+  tiers,
+  currentTier,
+}) => {
+  const { t } = useLocalization(['interface']);
+  if (!tiers) return null;
+  const rows = planLadderRows(tiers, currentTier, t);
+  if (!rows.length) return null;
+  return (
+    <section className="rounded-lg border border-edge bg-surface-2/60 p-4" data-testid="plan-ladder">
+      <h3 className="mb-3 text-sm font-semibold text-foreground">{t('interface:planSummary.title')}</h3>
+      <ol className="grid gap-2">
+        {rows.map((row) => (
+          <li
+            key={row.tier}
+            data-tier={row.tier}
+            data-current={row.current || undefined}
+            aria-current={row.current ? 'true' : undefined}
+            className={cn(
+              'grid gap-1 rounded-md border px-3 py-2 sm:grid-cols-[8rem_1fr]',
+              row.current ? 'border-premium/50 bg-surface-2' : 'border-edge',
+            )}
+          >
+            <div className="flex items-baseline justify-between gap-2 sm:flex-col sm:justify-start">
+              <span className={cn('text-sm font-medium', row.current ? 'text-premium' : 'text-foreground')}>
+                {t(`interface:accountMenu.tier.${row.tier}`)}
+              </span>
+              <span className="num text-xs text-muted-foreground">{row.price}</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {[row.ops, row.aiOps, row.fileSize].join(' · ')}
+              {row.current ? (
+                <span className="ms-2 text-xs font-medium text-premium">{t('interface:planSummary.current')}</span>
+              ) : null}
+            </p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 };
