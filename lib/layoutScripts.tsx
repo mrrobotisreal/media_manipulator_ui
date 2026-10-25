@@ -71,6 +71,10 @@ gtag('consent', 'default', {
 // Order matters and is preserved: theme first, consent defaults second.
 const BOOTSTRAP_SCRIPTS_HTML = `<script id="theme-init">${THEME_INIT}</script><script id="gtag-consent">${GTAG_CONSENT_BOOTSTRAP}</script>`;
 
+// MM52: translator deployments load no Google tag at all, so they get no gtag
+// stub or Consent Mode defaults either; only the first-party theme bootstrap.
+const TRANSLATOR_BOOTSTRAP_SCRIPTS_HTML = `<script id="theme-init">${THEME_INIT}</script>`;
+
 /**
  * Resource hints + inline bootstraps + bootstraps for a root layout (GA4 is loaded on consent, not here) `<body>`.
  * Render as the first child of `<body>` in BOTH root layouts.
@@ -104,7 +108,15 @@ export function LayoutBootstrap() {
       {/* Theme class before first paint + consent defaults before GA — see
           BOOTSTRAP_SCRIPTS_HTML above for why this is raw HTML. The wrapper is
           `hidden` so the flex-col <body> never sees it as a layout box. */}
-      <div hidden dangerouslySetInnerHTML={{ __html: BOOTSTRAP_SCRIPTS_HTML }} />
+      <div
+        hidden
+        dangerouslySetInnerHTML={{
+          __html:
+            process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator'
+              ? TRANSLATOR_BOOTSTRAP_SCRIPTS_HTML
+              : BOOTSTRAP_SCRIPTS_HTML,
+        }}
+      />
     </>
   );
 }

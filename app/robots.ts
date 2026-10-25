@@ -1,7 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { SITE_ORIGIN } from '@/lib/seo';
+import { isTranslatorEnv } from '@/lib/translator/mode';
 
 export default function robots(): MetadataRoute.Robots {
+  // MM52: translator deployments are never crawled (and advertise no sitemap).
+  if (isTranslatorEnv()) return { rules: [{ userAgent: '*', disallow: '/' }] };
   return {
     rules: [
       {

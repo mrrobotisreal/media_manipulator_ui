@@ -15,6 +15,7 @@ import { fetchTiers, isTopTier, type BillingInterval, type TiersResponse } from 
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { openPortal, readLastInterval, startCheckout, type BillingOutcome } from './checkout';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 // One shared /api/tiers fetch for every surface that asks. Deliberately NOT react-query: the
 // upgrade hint renders inside the chromeless /embed and /dr trees, which mount no
@@ -133,10 +134,12 @@ export function useUpgradeAction(placement: string, interval?: BillingInterval):
   const purchasable = usePremiumPurchasable(tier === 'free');
 
   const top = isTopTier(tier);
-  const visible = !!auth && !top && (tier !== 'free' || purchasable === true);
+  // MM52: translator deployments sell nothing (design §2.15).
+  const visible =
+    !isIrreversibleActionHidden() && !!auth && !top && (tier !== 'free' || purchasable === true);
 
   const run = React.useCallback(() => {
-    if (!auth || isTopTier(auth.tier)) return;
+    if (!auth || isTopTier(auth.tier) || isIrreversibleActionHidden()) return;
     // Same props as the per-surface calls this replaced.
     analytics.track(EVENTS.UPGRADE_CTA_CLICKED, { placement, from_tier: auth.tier });
     if (auth.tier !== 'free') {

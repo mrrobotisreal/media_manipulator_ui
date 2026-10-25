@@ -2,6 +2,7 @@ import { createInstance, type i18n as I18nInstance, type Resource } from "i18nex
 import { initReactI18next } from "react-i18next";
 import { resources, supportedLanguages, defaultLanguage } from "./resources";
 import type { ClientBundle } from "./clientBundle";
+import { loadTranslatorMarkerRuntime } from "@/lib/translator/mode";
 
 const LANGUAGE_STORAGE_KEY = "mm-language";
 
@@ -29,6 +30,10 @@ export function createI18nInstance(
   // `[lang]` layout (see `i18n/localeResources.ts`, MM51).
   const initial: Resource =
     localeResources && locale !== defaultLanguage ? { ...resources, [locale]: localeResources } : resources;
+  // Translator deployments only (MM52): every resolved string gets a zero-width
+  // key marker. Always null in production (the env check folds at build time).
+  const markers = loadTranslatorMarkerRuntime();
+  if (markers) instance.use(markers.postProcessor);
   void instance.use(initReactI18next).init({
     resources: initial,
     lng: locale,
@@ -39,6 +44,8 @@ export function createI18nInstance(
       escapeValue: false,
     },
     returnNull: false,
+    // `postProcessPassResolved` hands the plugin the RESOLVED key (`foo_few`).
+    ...(markers ? { postProcess: [markers.postProcessor.name], postProcessPassResolved: true } : {}),
     // Resources are bundled inline, so namespaces are ready synchronously.
     // Disabling Suspense keeps server prerendering (SSG) from suspending and
     // guarantees real translated text in the initial HTML for SEO.

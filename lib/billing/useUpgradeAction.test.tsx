@@ -103,3 +103,34 @@ describe('UploadLimitHint upgrade link', () => {
     expect(screen.queryByRole('button')).toBeNull();
   });
 });
+
+describe('useUpgradeAction translator mode (MM52)', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it('translator mode: free is not visible and nothing starts checkout', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    const auth = authAs('free');
+    render(<Probe placement="x" />);
+    await act(async () => {});
+    expect(screen.getByText('none')).toBeTruthy();
+    expect(auth.openAuth).not.toHaveBeenCalled();
+    expect(h.startCheckout).not.toHaveBeenCalled();
+  });
+
+  it('translator mode: anonymous is not visible', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    authAs('anonymous');
+    render(<Probe placement="x" />);
+    await act(async () => {});
+    expect(screen.getByText('none')).toBeTruthy();
+  });
+
+  it('production: free is visible and run starts checkout', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    authAs('free');
+    render(<Probe placement="x" />);
+    await waitFor(() => expect(screen.getByText('go')).toBeTruthy());
+    fireEvent.click(screen.getByText('go'));
+    await waitFor(() => expect(h.startCheckout).toHaveBeenCalled());
+  });
+});

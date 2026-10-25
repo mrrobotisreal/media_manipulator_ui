@@ -12,6 +12,7 @@
 | --- | --- |
 | `specs/darkroom-journey.e2e.ts` | create project (9:16 canvas preset) -> batch-import video + audio fixtures -> place on timeline -> edit (split, transition, keyframe, title clip) -> **Saved** -> reload -> project intact, no false recovery prompt -> export to completion -> download the file -> the persistent Exports panel lists it |
 | `specs/darkroom-recovery.e2e.ts` | edit offline so only the local IndexedDB draft has it -> close the whole browser context mid-edit -> reopen with the saved storage -> recovery prompt -> Recover -> the edit is back and saves |
+| `translator/rtl-shaping.e2e.ts` | MM52: a zero-width key marker after Arabic/Hebrew/Hindi text leaves the glyphs pixel-identical (own config: `npx playwright test -c e2e/translator/playwright.config.ts`; Chromium only, no stack, no fixtures) |
 
 Scoped to what shipped (parts 03-21). Not covered, deliberately: the CreaTV
 embed (needs a CreaTV host page), the mixer/EQ, speed/reverse, voiceover

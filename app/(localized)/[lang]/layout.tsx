@@ -11,6 +11,7 @@ import {
   urlPrefixToCode,
 } from '@/i18n/locales';
 import { getClientResources } from '@/i18n/localeResources';
+import { isTranslatorEnv, TRANSLATOR_ROBOTS } from '@/lib/translator/mode';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
@@ -28,6 +29,9 @@ export const metadata: Metadata = {
   other: {
     'google-adsense-account': 'ca-pub-3413790368941825',
   },
+  // MM52: translator deployments are noindex/nofollow and never claim the
+  // AdSense account (pages that set `robots` force it too: lib/translator/mode.ts).
+  ...(isTranslatorEnv() ? { robots: TRANSLATOR_ROBOTS, other: {} } : {}),
 };
 
 export const viewport: Viewport = {

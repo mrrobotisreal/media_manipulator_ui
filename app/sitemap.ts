@@ -6,6 +6,7 @@ import { languageAlternates } from '@/lib/metadata';
 import { PUBLIC_ROUTES, ROUTE_SEO_MAP, SITE_ORIGIN } from '@/lib/seo';
 import { isSeoFullIndex } from '@/lib/seoFlags';
 import { CHANGELOG } from '@/content/changelog';
+import { isTranslatorEnv } from '@/lib/translator/mode';
 
 // Review-safe sitemap: only the core pages + the review-allowed tool pages.
 // Deliberately excludes the full 65-tool catalog, thin/placeholder pages, and
@@ -33,6 +34,8 @@ const CORE_ROUTES = [
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // MM52: a translator deployment lists nothing.
+  if (isTranslatorEnv()) return [];
   const now = new Date();
 
   // Each path is emitted once, with English as the primary URL and hreflang

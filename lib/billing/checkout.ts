@@ -13,6 +13,7 @@ import {
   type BillingInterval,
   type BillingRefusalReason,
 } from '@/lib/auth/accountApi';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 const INTERVAL_KEY = 'mm.billingInterval';
 const PENDING_KEY = 'mm.pendingCheckout';
@@ -98,6 +99,8 @@ export async function startCheckout(
   placement: string,
   locale?: string,
 ): Promise<BillingOutcome> {
+  // MM52 (design §2.15): no Checkout on translator deployments, whatever UI calls this.
+  if (isIrreversibleActionHidden()) return { ok: false, reason: 'billing_unavailable' };
   const idToken = await getCurrentIdToken();
   if (!idToken) return { ok: false, reason: 'no_token' };
   rememberInterval(interval);
@@ -113,6 +116,7 @@ export async function startCheckout(
 
 /** Opens the Stripe billing portal (manage, cancel, update card). */
 export async function openPortal(placement: string, locale?: string): Promise<BillingOutcome> {
+  if (isIrreversibleActionHidden()) return { ok: false, reason: 'billing_unavailable' };
   const idToken = await getCurrentIdToken();
   if (!idToken) return { ok: false, reason: 'no_token' };
   try {

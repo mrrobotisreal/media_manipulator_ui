@@ -15,7 +15,8 @@
     "dr:roundtrip": "tsx scripts/dr-editor-roundtrip.ts",
     "audit:ads": "node scripts/audit-adsense.mjs",
     "clean:macos-artifacts": "node scripts/clean-appledouble.mjs",
-    "i18n:gen": "node scripts/gen-i18n-registry.mjs"
+    "i18n:gen": "node scripts/gen-i18n-registry.mjs",
+    "check:no-translator": "node scripts/check-no-translator-in-prod.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

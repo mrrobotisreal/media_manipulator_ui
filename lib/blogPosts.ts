@@ -15,6 +15,7 @@ import {
 import { languageAlternates } from '@/lib/metadata';
 import { getSeoOverride } from '@/lib/seoOverrides';
 import { defaultLocale, getLocaleDef, localizeHref } from '@/i18n/locales';
+import { translatorRobots } from '@/lib/translator/mode';
 
 export interface BlogPost {
   path: string;
@@ -103,7 +104,7 @@ export function blogPostMetadata(post: BlogPost, locale: string = defaultLocale)
       canonical: canonicalUrl,
       languages: languageAlternates(post.path),
     },
-    robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
+    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
     openGraph: {
       title,
       description,
@@ -178,7 +179,7 @@ export function blogIndexMetadata(locale: string = defaultLocale): Metadata {
       canonical: canonicalUrl,
       languages: languageAlternates('/blog'),
     },
-    robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
+    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
     openGraph: {
       title,
       description,

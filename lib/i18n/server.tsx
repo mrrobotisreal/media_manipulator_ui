@@ -29,6 +29,7 @@ import React, { cloneElement, type ReactElement, type ReactNode } from 'react';
 
 import { locales } from '@/i18n/locales';
 import { serverShards } from '@/i18n/generated/serverBundles.generated';
+import { loadTranslatorMarkerRuntime, type TranslatorMarkerRuntime } from '@/lib/translator/mode';
 
 type Bundle = Record<string, unknown>;
 
@@ -71,11 +72,17 @@ function lookupIn(namespaces: Record<string, Bundle> | undefined, namespace: str
   return node;
 }
 
+/** `"interface:a.b.c"` or `"a.b.c"` -> namespace + dotted path. */
+function splitKey(key: string, defaultNamespace: string): { namespace: string; path: string } {
+  const colon = key.indexOf(':');
+  return colon === -1
+    ? { namespace: defaultNamespace, path: key }
+    : { namespace: key.slice(0, colon), path: key.slice(colon + 1) };
+}
+
 /** Resolve `"interface:a.b.c"` or `"a.b.c"` for `locale`, en-US as fallback. */
 function lookup(key: string, defaultNamespace: string, locale: string = DEFAULT_LOCALE): unknown {
-  const colon = key.indexOf(':');
-  const namespace = colon === -1 ? defaultNamespace : key.slice(0, colon);
-  const path = colon === -1 ? key : key.slice(colon + 1);
+  const { namespace, path } = splitKey(key, defaultNamespace);
 
   const localized = lookupIn(LOCALES[locale], namespace, path);
   if (localized !== undefined) return localized;
@@ -89,6 +96,35 @@ function interpolate(text: string, values?: Record<string, string | number>): st
   return text.replace(/\{\{\s*(\w+)\s*\}\}/g, (match, name: string) =>
     name in values ? String(values[name]) : match,
   );
+}
+
+/**
+ * Translator deployments only (MM52, design §2.9): the zero-width key marker for
+ * a server-rendered string, so the DOM scanner can map it to its key exactly as
+ * it maps client `t()` output. The marker is content-derived (namespace +
+ * resolved key + page locale), so a string rendered here and by a client
+ * component's `t()` carries the same one. `null` in production (folds away).
+ */
+function markerRuntime(): TranslatorMarkerRuntime | null {
+  return loadTranslatorMarkerRuntime();
+}
+
+/** Every string leaf of a `returnObjects` result, marked with its own dotted key. Copies; never mutates the bundle. */
+function markTree(
+  value: unknown,
+  runtime: TranslatorMarkerRuntime,
+  ns: string,
+  path: string,
+  locale: string,
+): unknown {
+  if (typeof value === 'string') return runtime.markServerString(value, { ns, key: path, lng: locale });
+  if (Array.isArray(value)) return value.map((v, i) => markTree(v, runtime, ns, `${path}.${i}`, locale));
+  if (value !== null && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [k, markTree(v, runtime, ns, `${path}.${k}`, locale)]),
+    );
+  }
+  return value;
 }
 
 export interface ServerT {
@@ -107,13 +143,44 @@ export function getServerT(
   defaultNamespace: string = DEFAULT_NAMESPACE,
   locale: string = DEFAULT_LOCALE,
 ): ServerT {
+  return buildServerT(defaultNamespace, locale, markerRuntime());
+}
+
+/**
+ * `getServerT` that NEVER carries translator key markers. For `generateMetadata`
+ * only: `<title>`, `<meta>` and Open Graph text must stay clean in the HTML on
+ * translator deployments too (MM52 decision 6). Identical to `getServerT` in
+ * production.
+ */
+export function getServerMetadataT(
+  defaultNamespace: string = DEFAULT_NAMESPACE,
+  locale: string = DEFAULT_LOCALE,
+): ServerT {
+  return buildServerT(defaultNamespace, locale, null);
+}
+
+function buildServerT(
+  defaultNamespace: string,
+  locale: string,
+  runtime: TranslatorMarkerRuntime | null,
+): ServerT {
   function t(
     key: string,
     options?: { returnObjects?: true; values?: Record<string, string | number> },
   ): string | unknown {
     const value = lookup(key, defaultNamespace, locale);
-    if (options?.returnObjects) return value ?? [];
-    if (typeof value === 'string') return interpolate(value, options?.values);
+    if (options?.returnObjects) {
+      if (value === undefined) return [];
+      if (!runtime) return value;
+      const { namespace, path } = splitKey(key, defaultNamespace);
+      return markTree(value, runtime, namespace, path, locale);
+    }
+    if (typeof value === 'string') {
+      const text = interpolate(value, options?.values);
+      if (!runtime) return text;
+      const { namespace, path } = splitKey(key, defaultNamespace);
+      return runtime.markServerString(text, { ns: namespace, key: path, lng: locale });
+    }
     return key;
   }
   return t as ServerT;
@@ -195,7 +262,16 @@ export interface ServerTransProps {
 export function ServerTrans({ i18nKey, defaults, components = {}, values, locale }: ServerTransProps) {
   const raw = defaults ?? (i18nKey ? lookup(i18nKey, DEFAULT_NAMESPACE, locale) : undefined);
   const source = typeof raw === 'string' ? raw : (i18nKey ?? '');
-  return <>{renderRich(interpolate(source, values), components)}</>;
+  let text = interpolate(source, values);
+  // Translator deployments: one marker per rich string, appended to the source
+  // so it lands in the last text node (`defaults` came from a `returnObjects`
+  // lookup and already carries its leaf's marker).
+  const runtime = defaults === undefined && i18nKey && typeof raw === 'string' ? markerRuntime() : null;
+  if (runtime && i18nKey) {
+    const { namespace, path } = splitKey(i18nKey, DEFAULT_NAMESPACE);
+    text = runtime.markServerString(text, { ns: namespace, key: path, lng: locale ?? DEFAULT_LOCALE });
+  }
+  return <>{renderRich(text, components)}</>;
 }
 
 export default getServerT;

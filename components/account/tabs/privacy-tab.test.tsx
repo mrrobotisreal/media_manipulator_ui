@@ -169,3 +169,22 @@ describe('PrivacyTab', () => {
     expect(h.push).not.toHaveBeenCalled();
   });
 });
+
+describe('PrivacyTab translator mode (MM52)', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it('translator mode: hides delete-all and delete-account, keeps export', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    renderTab();
+    await screen.findByRole('button', { name: 'Download my data' });
+    expect(screen.queryByRole('button', { name: 'Delete all my files' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Delete my account' })).toBeNull();
+  });
+
+  it('production: shows delete-all and delete-account', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    renderTab();
+    expect(await screen.findByRole('button', { name: 'Delete all my files' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Delete my account' })).toBeTruthy();
+  });
+});

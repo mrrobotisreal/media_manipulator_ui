@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { SharedResultView } from '@/components/share/shared-result-view';
 import { localizeHref } from '@/i18n/locales';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerMetadataT } from '@/lib/i18n/server';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
 import { absoluteApiUrl } from '@/lib/share/apiUrl';
 import { lookupShareCached, shareToResultDescriptor, toolPathFor } from '@/lib/share/sharedResult';
@@ -17,7 +17,7 @@ const NOINDEX = { index: false, follow: false } as const;
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang, token } = await params;
   const locale = resolveLangParam(lang);
-  const t = getServerT('interface', locale);
+  const t = getServerMetadataT('interface', locale);
   const lookup = await lookupShareCached(token).catch(() => null);
   if (lookup?.status !== 'ok') {
     const title = t('sharedResult.goneTitle') as string;

@@ -66,6 +66,10 @@ function analyticsGranted(): boolean {
  */
 export function loadGa4(): void {
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  // MM52: never on a translator deployment. GA_MEASUREMENT_ID falls back to a
+  // hard-coded id, so an empty NEXT_PUBLIC_GA_MEASUREMENT_ID does NOT disable
+  // GA4; the role check has to live at the loader.
+  if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return;
   const w = window as GtagWindow;
   // Re-grant after a withdrawal: re-enable the property-level kill switch we set.
   w[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
@@ -150,6 +154,7 @@ function paramsFor(name: EventName, event: QueuedEvent): Record<string, unknown>
  */
 export function initGA4Bridge(client: AnalyticsClient): () => void {
   if (typeof window === 'undefined') return () => undefined;
+  if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return () => undefined;
 
   let wasGranted = false;
   const sync = () => {

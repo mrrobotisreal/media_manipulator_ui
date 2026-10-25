@@ -137,3 +137,32 @@ describe('CheckoutCancelledNote', () => {
     window.history.pushState({}, '', '/');
   });
 });
+
+describe('translator mode (MM52)', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it.each(['free', 'premium'])('translator mode: %s sees only the disabled unavailable button', (tier) => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    authAs(tier);
+    render(<PremiumPricing labels={labels} purchasable />);
+    const btn = screen.getByRole('button', { name: 'Not available yet' }) as HTMLButtonElement;
+    expect(btn.disabled).toBe(true);
+    expect(screen.queryByRole('button', { name: 'Upgrade' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Manage' })).toBeNull();
+  });
+
+  it('production: shows the Upgrade button for free', () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    authAs('free');
+    render(<PremiumPricing labels={labels} purchasable />);
+    expect(screen.getByRole('button', { name: 'Upgrade' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Not available yet' })).toBeNull();
+  });
+
+  it('production: shows the Manage button for premium', () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    authAs('premium');
+    render(<PremiumPricing labels={labels} purchasable />);
+    expect(screen.getByRole('button', { name: 'Manage' })).toBeTruthy();
+  });
+});

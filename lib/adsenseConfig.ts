@@ -28,13 +28,17 @@ export const ADSENSE_SCRIPT_ORIGIN = `https://pagead2.google${'syndication'}.com
 export const ADSENSE_SCRIPT_SRC =
   `${ADSENSE_SCRIPT_ORIGIN}/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}` as const;
 
+// MM52: never on a translator deployment (NEXT_PUBLIC_DEPLOY_ROLE=translator),
+// whatever the ad env vars say. The literal folds to `true` in production builds.
 export const ADSENSE_ENABLED =
   process.env.NEXT_PUBLIC_ADSENSE_ENABLED === 'true' &&
-  process.env.NODE_ENV === 'production';
+  process.env.NODE_ENV === 'production' &&
+  process.env.NEXT_PUBLIC_DEPLOY_ROLE !== 'translator';
 
 export const MOCK_ADS_ENABLED =
   process.env.NEXT_PUBLIC_MOCK_ADS_ENABLED === 'true' &&
-  process.env.NODE_ENV !== 'production';
+  process.env.NODE_ENV !== 'production' &&
+  process.env.NEXT_PUBLIC_DEPLOY_ROLE !== 'translator';
 
 export type AdPlacement =
   | 'incontent'

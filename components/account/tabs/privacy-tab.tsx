@@ -35,6 +35,7 @@ import { getFreshIdToken, getSignInProviders, reauthenticate } from '@/lib/fireb
 import { requireToken } from '@/lib/account/requireToken';
 import { fmt } from '@/lib/account/retention';
 import { saveBlobToDisk } from '@/lib/results/save';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 export const DELETE_ALL_PHRASE = 'DELETE';
 export const DELETE_ACCOUNT_PHRASE = 'DELETE MY ACCOUNT';
@@ -337,6 +338,9 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
             </p>
           </div>
 
+          {/* MM52 (design §2.15): no irreversible deletion on translator deployments. */}
+          {isIrreversibleActionHidden() ? null : (
+          <>
           <div className="border-t border-edge pt-6">
             <h3 className="text-sm font-medium text-destructive">{d.deleteAllTitle}</h3>
             <p className="mt-1 text-sm text-muted-foreground">{d.deleteAllBody}</p>
@@ -352,6 +356,8 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
               {d.accountCta}
             </Button>
           </div>
+          </>
+          )}
         </div>
       </Panel>
 
