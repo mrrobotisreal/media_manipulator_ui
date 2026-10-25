@@ -67,7 +67,7 @@ export const AccountDropdown: React.FC = () => {
           </span>
           <span className="num text-xs text-muted-foreground">
             {endsAt
-              ? t('interface:accountMenu.tierEnds', { date: formatDate(endsAt) })
+              ? t(auth.tier === 'pro' ? 'interface:accountMenu.tierEndsPro' : 'interface:accountMenu.tierEnds', { date: formatDate(endsAt) })
               : t(`interface:accountMenu.tier.${auth.tier}`)}
           </span>
         </DropdownMenuLabel>

@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useUpgradeAction } from '@/lib/billing/useUpgradeAction';
-import { isTopTier } from '@/lib/auth/accountApi';
+import { isPaidTier } from '@/lib/auth/accountApi';
 import { formatBytes } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
@@ -48,7 +48,8 @@ export const UploadLimitHint: React.FC<{ className?: string }> = ({ className })
   const ready = !auth.loading && auth.limits !== null;
   const size = ready ? formatBytes(auth.limits!.maxFileBytes) : '';
   const upsell =
-    !ready || isTopTier(auth.tier) || !upgrade.visible
+    // File size is a limit Pro does not raise (MM40 decision 3): paid tiers see no upsell.
+    !ready || isPaidTier(auth.tier) || !upgrade.visible
       ? null
       : auth.tier === 'anonymous'
         ? t('interface:upgradeSurfaces.fileLimitMoreFree')
@@ -103,8 +104,8 @@ function markNudged(): void {
  * Returns a callback to run after a successful download.
  *
  * A toast, not a modal: the visitor has just finished a task and is probably
- * leaving, so interrupting them would be pure friction. Premium users are
- * never nudged — there is nothing to sell them.
+ * leaving, so interrupting them would be pure friction. Paid users are
+ * never nudged: the nudge sells Premium, and Pro is not a download upsell.
  */
 export function useUpgradeNudge(): () => void {
   const auth = useAuth();
@@ -112,7 +113,7 @@ export function useUpgradeNudge(): () => void {
   const upgrade = useUpgradeAction('post_download');
 
   return React.useCallback(() => {
-    if (!auth || isTopTier(auth.tier) || !upgrade.visible) return;
+    if (!auth || isPaidTier(auth.tier) || !upgrade.visible) return;
     if (alreadyNudged()) return;
     markNudged();
 
