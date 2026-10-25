@@ -15,7 +15,7 @@ import { BLOG_POSTS } from '@/lib/blogPosts';
 import { ROUTE_SEO_MAP, SITE_NAME, SITE_ORIGIN, ORG_NAME } from '@/lib/seo';
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
-import { locales } from '@/i18n/locales';
+import { translatedLocales } from '@/i18n/locales';
 import { VOICES, VOICE_DEMO_LANGUAGES } from '@/content/voices';
 
 const abs = (path: string): string =>
@@ -90,7 +90,9 @@ function ownerSection(): string[] {
 }
 
 function keyFactsSection(): string[] {
-  const languages = locales
+  // Translated locales only (MM51): byte-copy locales serve English and are
+  // noindex, so claiming them as site languages would be false.
+  const languages = translatedLocales
     .map((l) => (l.prefix === 'en' ? `${l.englishLabel} (${SITE_ORIGIN}/)` : `${l.englishLabel} (/${l.prefix}/)`))
     .join(', ');
   return [

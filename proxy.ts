@@ -12,7 +12,8 @@ import { isSupportedPrefix } from './i18n/locales';
  *   (internally, invisibly) to `/en/about`. Existing indexed URLs never change.
  * - An explicit `/en/...` request is permanently REDIRECTED to the unprefixed
  *   URL so English never serves the same content at two live URLs.
- * - `/ru|uk|he|de|es/...` pass through untouched and hit their static pages.
+ * - Any registered prefix (`/ru/...`, `/zh-cn/...`, `/pt-br/...`; the list is
+ *   `i18n/locales.ts`) passes through untouched and hits its static pages.
  * - `/dr/**`, `/embed/**`, `/api/**`, Next internals and static files are
  *   excluded via the matcher (and re-checked below, defensively).
  *
@@ -46,7 +47,7 @@ export function proxy(request: NextRequest) {
 
   const first = pathname.split('/')[1];
 
-  // /ru/..., /uk/..., /he/..., /de/..., /es/... — already locale-prefixed.
+  // Any registered prefix (i18n/locales.ts) — already locale-prefixed.
   if (first && isSupportedPrefix(first)) {
     return NextResponse.next();
   }

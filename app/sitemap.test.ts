@@ -10,6 +10,7 @@ import {
   isReviewIndexedToolSlug,
 } from '@/content/reviewAllowlist';
 import { PUBLIC_ROUTES } from '@/lib/seo';
+import { locales } from '@/i18n/locales';
 
 // The URLs the review-safe sitemap emitted on main before MM34 (10 core routes
 // + the 15 allowlisted tools other than content-studio). Frozen here as a
@@ -120,5 +121,28 @@ describe('MM34 flag on', () => {
     const entry = sitemap().find((e) => e.url === new URL(post.path, ORIGIN).toString());
     expect(entry?.lastModified).toEqual(new Date(post.dateModified));
     expect(entry?.alternates?.languages?.['x-default']).toBe(new URL(post.path, ORIGIN).toString());
+  });
+});
+
+describe('MM51 untranslated locales', () => {
+  const NEW_PREFIXES = ['fr', 'it', 'ja', 'zh-cn', 'zh-tw', 'ko', 'ar', 'hi', 'pt-pt', 'pt-br', 'vi'];
+
+  it('the 11 new prefixes are registered but untranslated', () => {
+    const untranslated = locales.filter((l) => !l.translated).map((l) => l.prefix);
+    expect(untranslated).toEqual(NEW_PREFIXES);
+  });
+
+  it.each(['', 'true'])('sitemap.xml lists none of the 11 new prefixes (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
+    vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', flag);
+    const entries = sitemap();
+    const all = entries.flatMap((e) => [e.url, ...Object.values(e.alternates?.languages ?? {})]);
+    for (const prefix of NEW_PREFIXES) {
+      const hits = all.filter((u) => new URL(u as string).pathname.split('/')[1] === prefix);
+      expect(hits, prefix).toEqual([]);
+    }
+    for (const e of entries) {
+      const langs = Object.keys(e.alternates?.languages ?? {});
+      for (const l of locales.filter((x) => !x.translated)) expect(langs).not.toContain(l.code);
+    }
   });
 });
