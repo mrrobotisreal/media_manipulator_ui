@@ -669,7 +669,8 @@
         "not_svg": "That file is not an SVG image.",
         "malformed": "That SVG could not be read. It may be damaged.",
         "entities": "SVGs that declare XML entities cannot be imported.",
-        "too_complex": "That SVG has too many layers to edit."
+        "too_complex": "That SVG has too many layers to edit.",
+        "json": "That file is not a Motion document this version can open."
       },
       "warnings": {
         "script_removed": "Script removed:",
@@ -879,6 +880,42 @@
       "capOther": "This export is larger than your plan allows.",
       "unavailable": "Exports are unavailable right now. Nothing was counted; try again in a moment.",
       "upgrade": "See plans"
+    },
+    "projects": {
+      "save": "Save",
+      "saveToAccount": "Save to account",
+      "status": {
+        "local": "In this browser only",
+        "saved": "Saved",
+        "saving": "Saving…",
+        "retrying": "Retrying…",
+        "offline": "Offline, changes kept here",
+        "conflict": "Changed elsewhere",
+        "failed": "Not saved"
+      },
+      "signIn": "Sign in",
+      "signInTitle": "Sign in to save to your account",
+      "signInBody": "Without an account, projects stay in this browser. Sign in (in a new tab, then come back) to save this one to your account, or download it as a file you can open again later.",
+      "downloadJson": "Download .json",
+      "limit_one": "Your plan saves {{count}} project. Delete one in your account, or upgrade.",
+      "limit_other": "Your plan saves {{count}} projects. Delete one in your account, or upgrade.",
+      "saveFailed": "This project could not be saved to your account. Your changes are kept in this browser.",
+      "open": {
+        "signin": "Sign in to open this project. Account projects are only visible to their owner.",
+        "notFound": "This project does not exist, or it belongs to another account.",
+        "failed": "This project could not be loaded. Check your connection and reload the page.",
+        "unreadable": "This project was saved by a newer version and cannot be opened here."
+      },
+      "conflict": {
+        "title": "This project changed in another tab or device.",
+        "reload": "Reload theirs",
+        "keep": "Keep mine",
+        "reloadTitle": "Replace your version?",
+        "reloadBody": "Reloading opens the copy saved elsewhere and discards the changes in this tab. Download your version first if you want to keep it.",
+        "downloadMine": "Download my version",
+        "reloadConfirm": "Reload theirs",
+        "reloadFailed": "The saved copy could not be loaded. Try again."
+      }
     }
   }
 }

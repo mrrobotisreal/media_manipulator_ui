@@ -98,6 +98,8 @@ export interface VectorState {
 
   load: (projectId: string, doc: VectorDoc, name?: string) => void;
   close: () => void;
+  /** MM44: the project got a server id (first save). Keeps the document, history and view. */
+  setProjectId: (projectId: string) => void;
   rename: (name: string) => void;
   /** Apply `fn` to the document as one undoable step (or as part of the open gesture). */
   mutate: (label: string, fn: (doc: VectorDoc) => VectorDoc, selection?: string[]) => void;
@@ -246,6 +248,8 @@ export const createVectorStore = () =>
         set({ ...initial, projectId, doc, name, autokey: get().autokey, revision: get().revision + 1 }),
 
       close: () => set({ ...initial }),
+
+      setProjectId: (projectId) => set((s) => (s.projectId === projectId ? {} : { projectId })),
 
       rename: (name) => set((s) => (s.name === name ? {} : { name, revision: s.revision + 1 })),
 
