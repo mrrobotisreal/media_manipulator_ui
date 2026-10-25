@@ -31,7 +31,7 @@ describe("legal retention copy", () => {
     expect(locales.map((l) => l.code.toLowerCase()).sort()).toEqual(dirs);
   });
 
-  for (const { code } of locales as unknown as { code: string }[]) {
+  for (const { code, translated } of locales) {
     describe(code, () => {
       const pages = load(code);
       const privacy = pages.privacyPolicy.sections.filter((s) => s.id === "retention");
@@ -64,8 +64,10 @@ describe("legal retention copy", () => {
         expect(text).toMatch(/Amazon S3/);
       });
 
+      // Byte-copy locales (`translated: false`, MM51) are English by design; the
+      // check switches on when a translation session flips the flag (MM57–MM67).
       it("does not leave the English retention text untranslated in other locales", () => {
-        if (code.toLowerCase() === "en-us") return;
+        if (code.toLowerCase() === "en-us" || !translated) return;
         expect(flatten(privacy[0])).not.toBe(flatten(en.privacyPolicy.sections[2]));
         expect(pages.legalCommon.whatChangedBody).not.toBe(en.legalCommon.whatChangedBody);
         expect(flatten(pages)).not.toMatch(/TODO\(i18n\)/);

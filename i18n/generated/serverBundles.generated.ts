@@ -64,6 +64,116 @@ import esEsInterfaceArticles from "../locales/es-es/interface/articles.json";
 import esEsErrorCore from "../locales/es-es/error/_core.json";
 import esEsAccessibilityCore from "../locales/es-es/accessibility/_core.json";
 import esEsAccessibilityComponents from "../locales/es-es/accessibility/components.json";
+import frFrInterfaceCore from "../locales/fr-fr/interface/_core.json";
+import frFrInterfacePages from "../locales/fr-fr/interface/pages.json";
+import frFrInterfaceForms from "../locales/fr-fr/interface/forms.json";
+import frFrInterfacePanels from "../locales/fr-fr/interface/panels.json";
+import frFrInterfaceComponents from "../locales/fr-fr/interface/components.json";
+import frFrInterfaceTools from "../locales/fr-fr/interface/tools.json";
+import frFrInterfaceArticles from "../locales/fr-fr/interface/articles.json";
+import frFrErrorCore from "../locales/fr-fr/error/_core.json";
+import frFrAccessibilityCore from "../locales/fr-fr/accessibility/_core.json";
+import frFrAccessibilityComponents from "../locales/fr-fr/accessibility/components.json";
+import itItInterfaceCore from "../locales/it-it/interface/_core.json";
+import itItInterfacePages from "../locales/it-it/interface/pages.json";
+import itItInterfaceForms from "../locales/it-it/interface/forms.json";
+import itItInterfacePanels from "../locales/it-it/interface/panels.json";
+import itItInterfaceComponents from "../locales/it-it/interface/components.json";
+import itItInterfaceTools from "../locales/it-it/interface/tools.json";
+import itItInterfaceArticles from "../locales/it-it/interface/articles.json";
+import itItErrorCore from "../locales/it-it/error/_core.json";
+import itItAccessibilityCore from "../locales/it-it/accessibility/_core.json";
+import itItAccessibilityComponents from "../locales/it-it/accessibility/components.json";
+import jaJpInterfaceCore from "../locales/ja-jp/interface/_core.json";
+import jaJpInterfacePages from "../locales/ja-jp/interface/pages.json";
+import jaJpInterfaceForms from "../locales/ja-jp/interface/forms.json";
+import jaJpInterfacePanels from "../locales/ja-jp/interface/panels.json";
+import jaJpInterfaceComponents from "../locales/ja-jp/interface/components.json";
+import jaJpInterfaceTools from "../locales/ja-jp/interface/tools.json";
+import jaJpInterfaceArticles from "../locales/ja-jp/interface/articles.json";
+import jaJpErrorCore from "../locales/ja-jp/error/_core.json";
+import jaJpAccessibilityCore from "../locales/ja-jp/accessibility/_core.json";
+import jaJpAccessibilityComponents from "../locales/ja-jp/accessibility/components.json";
+import zhCnInterfaceCore from "../locales/zh-cn/interface/_core.json";
+import zhCnInterfacePages from "../locales/zh-cn/interface/pages.json";
+import zhCnInterfaceForms from "../locales/zh-cn/interface/forms.json";
+import zhCnInterfacePanels from "../locales/zh-cn/interface/panels.json";
+import zhCnInterfaceComponents from "../locales/zh-cn/interface/components.json";
+import zhCnInterfaceTools from "../locales/zh-cn/interface/tools.json";
+import zhCnInterfaceArticles from "../locales/zh-cn/interface/articles.json";
+import zhCnErrorCore from "../locales/zh-cn/error/_core.json";
+import zhCnAccessibilityCore from "../locales/zh-cn/accessibility/_core.json";
+import zhCnAccessibilityComponents from "../locales/zh-cn/accessibility/components.json";
+import zhTwInterfaceCore from "../locales/zh-tw/interface/_core.json";
+import zhTwInterfacePages from "../locales/zh-tw/interface/pages.json";
+import zhTwInterfaceForms from "../locales/zh-tw/interface/forms.json";
+import zhTwInterfacePanels from "../locales/zh-tw/interface/panels.json";
+import zhTwInterfaceComponents from "../locales/zh-tw/interface/components.json";
+import zhTwInterfaceTools from "../locales/zh-tw/interface/tools.json";
+import zhTwInterfaceArticles from "../locales/zh-tw/interface/articles.json";
+import zhTwErrorCore from "../locales/zh-tw/error/_core.json";
+import zhTwAccessibilityCore from "../locales/zh-tw/accessibility/_core.json";
+import zhTwAccessibilityComponents from "../locales/zh-tw/accessibility/components.json";
+import koKrInterfaceCore from "../locales/ko-kr/interface/_core.json";
+import koKrInterfacePages from "../locales/ko-kr/interface/pages.json";
+import koKrInterfaceForms from "../locales/ko-kr/interface/forms.json";
+import koKrInterfacePanels from "../locales/ko-kr/interface/panels.json";
+import koKrInterfaceComponents from "../locales/ko-kr/interface/components.json";
+import koKrInterfaceTools from "../locales/ko-kr/interface/tools.json";
+import koKrInterfaceArticles from "../locales/ko-kr/interface/articles.json";
+import koKrErrorCore from "../locales/ko-kr/error/_core.json";
+import koKrAccessibilityCore from "../locales/ko-kr/accessibility/_core.json";
+import koKrAccessibilityComponents from "../locales/ko-kr/accessibility/components.json";
+import arSaInterfaceCore from "../locales/ar-sa/interface/_core.json";
+import arSaInterfacePages from "../locales/ar-sa/interface/pages.json";
+import arSaInterfaceForms from "../locales/ar-sa/interface/forms.json";
+import arSaInterfacePanels from "../locales/ar-sa/interface/panels.json";
+import arSaInterfaceComponents from "../locales/ar-sa/interface/components.json";
+import arSaInterfaceTools from "../locales/ar-sa/interface/tools.json";
+import arSaInterfaceArticles from "../locales/ar-sa/interface/articles.json";
+import arSaErrorCore from "../locales/ar-sa/error/_core.json";
+import arSaAccessibilityCore from "../locales/ar-sa/accessibility/_core.json";
+import arSaAccessibilityComponents from "../locales/ar-sa/accessibility/components.json";
+import hiInInterfaceCore from "../locales/hi-in/interface/_core.json";
+import hiInInterfacePages from "../locales/hi-in/interface/pages.json";
+import hiInInterfaceForms from "../locales/hi-in/interface/forms.json";
+import hiInInterfacePanels from "../locales/hi-in/interface/panels.json";
+import hiInInterfaceComponents from "../locales/hi-in/interface/components.json";
+import hiInInterfaceTools from "../locales/hi-in/interface/tools.json";
+import hiInInterfaceArticles from "../locales/hi-in/interface/articles.json";
+import hiInErrorCore from "../locales/hi-in/error/_core.json";
+import hiInAccessibilityCore from "../locales/hi-in/accessibility/_core.json";
+import hiInAccessibilityComponents from "../locales/hi-in/accessibility/components.json";
+import ptPtInterfaceCore from "../locales/pt-pt/interface/_core.json";
+import ptPtInterfacePages from "../locales/pt-pt/interface/pages.json";
+import ptPtInterfaceForms from "../locales/pt-pt/interface/forms.json";
+import ptPtInterfacePanels from "../locales/pt-pt/interface/panels.json";
+import ptPtInterfaceComponents from "../locales/pt-pt/interface/components.json";
+import ptPtInterfaceTools from "../locales/pt-pt/interface/tools.json";
+import ptPtInterfaceArticles from "../locales/pt-pt/interface/articles.json";
+import ptPtErrorCore from "../locales/pt-pt/error/_core.json";
+import ptPtAccessibilityCore from "../locales/pt-pt/accessibility/_core.json";
+import ptPtAccessibilityComponents from "../locales/pt-pt/accessibility/components.json";
+import ptBrInterfaceCore from "../locales/pt-br/interface/_core.json";
+import ptBrInterfacePages from "../locales/pt-br/interface/pages.json";
+import ptBrInterfaceForms from "../locales/pt-br/interface/forms.json";
+import ptBrInterfacePanels from "../locales/pt-br/interface/panels.json";
+import ptBrInterfaceComponents from "../locales/pt-br/interface/components.json";
+import ptBrInterfaceTools from "../locales/pt-br/interface/tools.json";
+import ptBrInterfaceArticles from "../locales/pt-br/interface/articles.json";
+import ptBrErrorCore from "../locales/pt-br/error/_core.json";
+import ptBrAccessibilityCore from "../locales/pt-br/accessibility/_core.json";
+import ptBrAccessibilityComponents from "../locales/pt-br/accessibility/components.json";
+import viVnInterfaceCore from "../locales/vi-vn/interface/_core.json";
+import viVnInterfacePages from "../locales/vi-vn/interface/pages.json";
+import viVnInterfaceForms from "../locales/vi-vn/interface/forms.json";
+import viVnInterfacePanels from "../locales/vi-vn/interface/panels.json";
+import viVnInterfaceComponents from "../locales/vi-vn/interface/components.json";
+import viVnInterfaceTools from "../locales/vi-vn/interface/tools.json";
+import viVnInterfaceArticles from "../locales/vi-vn/interface/articles.json";
+import viVnErrorCore from "../locales/vi-vn/error/_core.json";
+import viVnAccessibilityCore from "../locales/vi-vn/accessibility/_core.json";
+import viVnAccessibilityComponents from "../locales/vi-vn/accessibility/components.json";
 
 /** locale code → shard path (no `.json`) → parsed shard. */
 export const serverShards: Record<string, Record<string, Record<string, unknown>>> = {
@@ -138,5 +248,137 @@ export const serverShards: Record<string, Record<string, Record<string, unknown>
     "error/_core": esEsErrorCore,
     "accessibility/_core": esEsAccessibilityCore,
     "accessibility/components": esEsAccessibilityComponents,
+  },
+  "fr-FR": {
+    "interface/_core": frFrInterfaceCore,
+    "interface/pages": frFrInterfacePages,
+    "interface/forms": frFrInterfaceForms,
+    "interface/panels": frFrInterfacePanels,
+    "interface/components": frFrInterfaceComponents,
+    "interface/tools": frFrInterfaceTools,
+    "interface/articles": frFrInterfaceArticles,
+    "error/_core": frFrErrorCore,
+    "accessibility/_core": frFrAccessibilityCore,
+    "accessibility/components": frFrAccessibilityComponents,
+  },
+  "it-IT": {
+    "interface/_core": itItInterfaceCore,
+    "interface/pages": itItInterfacePages,
+    "interface/forms": itItInterfaceForms,
+    "interface/panels": itItInterfacePanels,
+    "interface/components": itItInterfaceComponents,
+    "interface/tools": itItInterfaceTools,
+    "interface/articles": itItInterfaceArticles,
+    "error/_core": itItErrorCore,
+    "accessibility/_core": itItAccessibilityCore,
+    "accessibility/components": itItAccessibilityComponents,
+  },
+  "ja-JP": {
+    "interface/_core": jaJpInterfaceCore,
+    "interface/pages": jaJpInterfacePages,
+    "interface/forms": jaJpInterfaceForms,
+    "interface/panels": jaJpInterfacePanels,
+    "interface/components": jaJpInterfaceComponents,
+    "interface/tools": jaJpInterfaceTools,
+    "interface/articles": jaJpInterfaceArticles,
+    "error/_core": jaJpErrorCore,
+    "accessibility/_core": jaJpAccessibilityCore,
+    "accessibility/components": jaJpAccessibilityComponents,
+  },
+  "zh-CN": {
+    "interface/_core": zhCnInterfaceCore,
+    "interface/pages": zhCnInterfacePages,
+    "interface/forms": zhCnInterfaceForms,
+    "interface/panels": zhCnInterfacePanels,
+    "interface/components": zhCnInterfaceComponents,
+    "interface/tools": zhCnInterfaceTools,
+    "interface/articles": zhCnInterfaceArticles,
+    "error/_core": zhCnErrorCore,
+    "accessibility/_core": zhCnAccessibilityCore,
+    "accessibility/components": zhCnAccessibilityComponents,
+  },
+  "zh-TW": {
+    "interface/_core": zhTwInterfaceCore,
+    "interface/pages": zhTwInterfacePages,
+    "interface/forms": zhTwInterfaceForms,
+    "interface/panels": zhTwInterfacePanels,
+    "interface/components": zhTwInterfaceComponents,
+    "interface/tools": zhTwInterfaceTools,
+    "interface/articles": zhTwInterfaceArticles,
+    "error/_core": zhTwErrorCore,
+    "accessibility/_core": zhTwAccessibilityCore,
+    "accessibility/components": zhTwAccessibilityComponents,
+  },
+  "ko-KR": {
+    "interface/_core": koKrInterfaceCore,
+    "interface/pages": koKrInterfacePages,
+    "interface/forms": koKrInterfaceForms,
+    "interface/panels": koKrInterfacePanels,
+    "interface/components": koKrInterfaceComponents,
+    "interface/tools": koKrInterfaceTools,
+    "interface/articles": koKrInterfaceArticles,
+    "error/_core": koKrErrorCore,
+    "accessibility/_core": koKrAccessibilityCore,
+    "accessibility/components": koKrAccessibilityComponents,
+  },
+  "ar-SA": {
+    "interface/_core": arSaInterfaceCore,
+    "interface/pages": arSaInterfacePages,
+    "interface/forms": arSaInterfaceForms,
+    "interface/panels": arSaInterfacePanels,
+    "interface/components": arSaInterfaceComponents,
+    "interface/tools": arSaInterfaceTools,
+    "interface/articles": arSaInterfaceArticles,
+    "error/_core": arSaErrorCore,
+    "accessibility/_core": arSaAccessibilityCore,
+    "accessibility/components": arSaAccessibilityComponents,
+  },
+  "hi-IN": {
+    "interface/_core": hiInInterfaceCore,
+    "interface/pages": hiInInterfacePages,
+    "interface/forms": hiInInterfaceForms,
+    "interface/panels": hiInInterfacePanels,
+    "interface/components": hiInInterfaceComponents,
+    "interface/tools": hiInInterfaceTools,
+    "interface/articles": hiInInterfaceArticles,
+    "error/_core": hiInErrorCore,
+    "accessibility/_core": hiInAccessibilityCore,
+    "accessibility/components": hiInAccessibilityComponents,
+  },
+  "pt-PT": {
+    "interface/_core": ptPtInterfaceCore,
+    "interface/pages": ptPtInterfacePages,
+    "interface/forms": ptPtInterfaceForms,
+    "interface/panels": ptPtInterfacePanels,
+    "interface/components": ptPtInterfaceComponents,
+    "interface/tools": ptPtInterfaceTools,
+    "interface/articles": ptPtInterfaceArticles,
+    "error/_core": ptPtErrorCore,
+    "accessibility/_core": ptPtAccessibilityCore,
+    "accessibility/components": ptPtAccessibilityComponents,
+  },
+  "pt-BR": {
+    "interface/_core": ptBrInterfaceCore,
+    "interface/pages": ptBrInterfacePages,
+    "interface/forms": ptBrInterfaceForms,
+    "interface/panels": ptBrInterfacePanels,
+    "interface/components": ptBrInterfaceComponents,
+    "interface/tools": ptBrInterfaceTools,
+    "interface/articles": ptBrInterfaceArticles,
+    "error/_core": ptBrErrorCore,
+    "accessibility/_core": ptBrAccessibilityCore,
+    "accessibility/components": ptBrAccessibilityComponents,
+  },
+  "vi-VN": {
+    "interface/_core": viVnInterfaceCore,
+    "interface/pages": viVnInterfacePages,
+    "interface/forms": viVnInterfaceForms,
+    "interface/panels": viVnInterfacePanels,
+    "interface/components": viVnInterfaceComponents,
+    "interface/tools": viVnInterfaceTools,
+    "interface/articles": viVnInterfaceArticles,
+    "error/_core": viVnErrorCore,
+    "accessibility/_core": viVnAccessibilityCore,
+    "accessibility/components": viVnAccessibilityComponents,
   },
 };

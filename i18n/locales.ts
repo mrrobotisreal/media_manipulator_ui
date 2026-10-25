@@ -55,6 +55,18 @@ export const locales: LocaleDef[] = [
   { code: "he-IL", prefix: "he", label: "עברית", englishLabel: "Hebrew", flag: "🇮🇱", dir: "rtl", translated: true },
   { code: "de-DE", prefix: "de", label: "Deutsch", englishLabel: "German", flag: "🇩🇪", dir: "ltr", translated: true },
   { code: "es-ES", prefix: "es", label: "Español", englishLabel: "Spanish", flag: "🇪🇸", dir: "ltr", translated: true },
+  // MM51: byte-copies of en-US until their translation sessions (MM57–MM67).
+  { code: "fr-FR", prefix: "fr", label: "Français", englishLabel: "French", flag: "🇫🇷", dir: "ltr", translated: false },
+  { code: "it-IT", prefix: "it", label: "Italiano", englishLabel: "Italian", flag: "🇮🇹", dir: "ltr", translated: false },
+  { code: "ja-JP", prefix: "ja", label: "日本語", englishLabel: "Japanese", flag: "🇯🇵", dir: "ltr", translated: false },
+  { code: "zh-CN", prefix: "zh-cn", label: "简体中文", englishLabel: "Chinese (Simplified)", flag: "🇨🇳", dir: "ltr", translated: false },
+  { code: "zh-TW", prefix: "zh-tw", label: "繁體中文", englishLabel: "Chinese (Traditional)", flag: "🇹🇼", dir: "ltr", translated: false },
+  { code: "ko-KR", prefix: "ko", label: "한국어", englishLabel: "Korean", flag: "🇰🇷", dir: "ltr", translated: false },
+  { code: "ar-SA", prefix: "ar", label: "العربية", englishLabel: "Arabic", flag: "🇸🇦", dir: "rtl", translated: false },
+  { code: "hi-IN", prefix: "hi", label: "हिन्दी", englishLabel: "Hindi", flag: "🇮🇳", dir: "ltr", translated: false },
+  { code: "pt-PT", prefix: "pt-pt", label: "Português (Portugal)", englishLabel: "Portuguese (Portugal)", flag: "🇵🇹", dir: "ltr", translated: false },
+  { code: "pt-BR", prefix: "pt-br", label: "Português (Brasil)", englishLabel: "Portuguese (Brazil)", flag: "🇧🇷", dir: "ltr", translated: false },
+  { code: "vi-VN", prefix: "vi", label: "Tiếng Việt", englishLabel: "Vietnamese", flag: "🇻🇳", dir: "ltr", translated: false },
 ];
 
 export const defaultLocale = "en-US";

@@ -37,4 +37,59 @@ export const SHARD_LOADERS: Record<string, () => Promise<[ShardModule, ShardModu
       import("../locales/es-es/interface/forms.json"),
       import("../locales/es-es/interface/panels.json"),
     ]),
+  "fr-FR": () =>
+    Promise.all([
+      import("../locales/fr-fr/interface/forms.json"),
+      import("../locales/fr-fr/interface/panels.json"),
+    ]),
+  "it-IT": () =>
+    Promise.all([
+      import("../locales/it-it/interface/forms.json"),
+      import("../locales/it-it/interface/panels.json"),
+    ]),
+  "ja-JP": () =>
+    Promise.all([
+      import("../locales/ja-jp/interface/forms.json"),
+      import("../locales/ja-jp/interface/panels.json"),
+    ]),
+  "zh-CN": () =>
+    Promise.all([
+      import("../locales/zh-cn/interface/forms.json"),
+      import("../locales/zh-cn/interface/panels.json"),
+    ]),
+  "zh-TW": () =>
+    Promise.all([
+      import("../locales/zh-tw/interface/forms.json"),
+      import("../locales/zh-tw/interface/panels.json"),
+    ]),
+  "ko-KR": () =>
+    Promise.all([
+      import("../locales/ko-kr/interface/forms.json"),
+      import("../locales/ko-kr/interface/panels.json"),
+    ]),
+  "ar-SA": () =>
+    Promise.all([
+      import("../locales/ar-sa/interface/forms.json"),
+      import("../locales/ar-sa/interface/panels.json"),
+    ]),
+  "hi-IN": () =>
+    Promise.all([
+      import("../locales/hi-in/interface/forms.json"),
+      import("../locales/hi-in/interface/panels.json"),
+    ]),
+  "pt-PT": () =>
+    Promise.all([
+      import("../locales/pt-pt/interface/forms.json"),
+      import("../locales/pt-pt/interface/panels.json"),
+    ]),
+  "pt-BR": () =>
+    Promise.all([
+      import("../locales/pt-br/interface/forms.json"),
+      import("../locales/pt-br/interface/panels.json"),
+    ]),
+  "vi-VN": () =>
+    Promise.all([
+      import("../locales/vi-vn/interface/forms.json"),
+      import("../locales/vi-vn/interface/panels.json"),
+    ]),
 };
