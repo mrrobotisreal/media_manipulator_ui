@@ -22,6 +22,7 @@ import {
   type VectorProjectSummary,
 } from '@/lib/auth/accountApi';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 import { fmt } from '@/lib/account/retention';
 import { requireToken } from '@/lib/account/requireToken';
 
@@ -172,9 +173,12 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
                     >
                       {p.open}
                     </Link>
-                    <button type="button" onClick={() => setToDelete(row)} className={DANGER_TEXT_BUTTON_CLASS}>
-                      {p.delete}
-                    </button>
+                    {/* MM44: Motion server deletes are hidden on translator deployments (MM52 rule). */}
+                    {isMotion && isIrreversibleActionHidden() ? null : (
+                      <button type="button" onClick={() => setToDelete(row)} className={DANGER_TEXT_BUTTON_CLASS}>
+                        {p.delete}
+                      </button>
+                    )}
                   </div>
                 </li>
               );

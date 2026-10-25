@@ -148,4 +148,18 @@ describe('ProjectsTab', () => {
     renderTab();
     expect(await screen.findByText(copy.projects.loadFailed, {}, { timeout: 4000 })).toBeTruthy();
   });
+
+  it('translator deployments hide the Motion delete but keep Open (MM52 rule)', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    try {
+      vi.mocked(fetchVectorProjects).mockResolvedValue([vproject('v1', 'Logo')] as never);
+      vi.mocked(fetchStudioProjects).mockResolvedValue([]);
+      renderTab();
+      expect(await screen.findByText('Logo')).toBeTruthy();
+      expect(screen.getByRole('link', { name: 'Open' }).getAttribute('href')).toBe('/motion/v1');
+      expect(screen.queryByRole('button', { name: 'Delete' })).toBeNull();
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
 });
