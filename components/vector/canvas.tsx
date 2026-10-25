@@ -121,10 +121,20 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
   const [spaceDown, setSpaceDown] = React.useState(false);
   // Draw tool machine state (opaque per tool), keyed by the tool it belongs
   // to so switching tools starts the new one fresh without an effect.
+  // Handlers read the ref (updated synchronously) so back-to-back pointer
+  // events never act on a state from before the last re-render.
   const [toolSlot, setToolSlot] = React.useState<{ tool: string; state: unknown } | null>(null);
+  const toolRef = React.useRef<{ tool: string; state: unknown } | null>(null);
   const machine = tool in DRAW_TOOLS ? (DRAW_TOOLS[tool as DrawToolId] as ToolMachine<unknown>) : null;
   const machineState = machine ? (toolSlot?.tool === tool ? toolSlot.state : machine.initial) : null;
-  const setToolState = React.useCallback((state: unknown) => setToolSlot({ tool, state }), [tool]);
+  const currentToolState = () => (machine ? (toolRef.current?.tool === tool ? toolRef.current.state : machine.initial) : null);
+  const setToolState = React.useCallback(
+    (state: unknown) => {
+      toolRef.current = { tool, state };
+      setToolSlot({ tool, state });
+    },
+    [tool],
+  );
   const ctx = React.useMemo(() => ({ zoom: view.zoom }), [view.zoom]);
 
   const toDoc = React.useCallback(
@@ -196,7 +206,7 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
 
     if (machine) {
       dragRef.current = { kind: 'tool' };
-      runTool(machine.pointerDown(machineState, p, mods(e), ctx) as { state: unknown; commit?: Layer });
+      runTool(machine.pointerDown(currentToolState(), p, mods(e), ctx) as { state: unknown; commit?: Layer });
       return;
     }
 
@@ -280,7 +290,7 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
     const p = toDoc(e.clientX, e.clientY);
     const s = store.getState();
     if (machine && (!drag || drag.kind === 'tool')) {
-      runTool(machine.pointerMove(machineState, p, mods(e), ctx) as { state: unknown; commit?: Layer });
+      runTool(machine.pointerMove(currentToolState(), p, mods(e), ctx) as { state: unknown; commit?: Layer });
       return;
     }
     if (!drag) return;
@@ -373,7 +383,7 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
     setGuides({});
     const p = toDoc(e.clientX, e.clientY);
     if (machine && drag?.kind === 'tool') {
-      runTool(machine.pointerUp(machineState, p, mods(e), ctx) as { state: unknown; commit?: Layer });
+      runTool(machine.pointerUp(currentToolState(), p, mods(e), ctx) as { state: unknown; commit?: Layer });
       return;
     }
     if (drag && drag.kind !== 'pan' && drag.kind !== 'marquee') store.getState().endGesture();
@@ -406,9 +416,10 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
       if (e.key === ' ' && e.type === 'keyup') setSpaceDown(false);
       if (e.type !== 'keydown') return;
       const s = store.getState();
-      if (machine && machine.busy(machineState) && ['Enter', 'Escape', 'Backspace'].includes(e.key)) {
+      const ts = currentToolState();
+      if (machine && machine.busy(ts) && ['Enter', 'Escape', 'Backspace'].includes(e.key)) {
         e.preventDefault();
-        runTool(machine.key(machineState, e.key, mods(e), ctx) as { state: unknown; commit?: Layer });
+        runTool(machine.key(ts, e.key, mods(e), ctx) as { state: unknown; commit?: Layer });
         return;
       }
       if (e.key === 'Escape' && dragRef.current) {
@@ -431,7 +442,8 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('keyup', onKey);
     };
-  }, [ctx, machine, machineState, runTool, store]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- currentToolState reads a ref
+  }, [ctx, machine, tool, runTool, store]);
 
   if (!doc) return null;
 
@@ -505,8 +517,8 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
           zoom={view.zoom}
           value={textEditing.text}
           placeholder={t('vector.tools.textPlaceholder')}
-          onChange={(text) => setToolState(setText(textEditing, text))}
-          onKey={(key) => runTool(textEditingKey(machine, machineState, key, ctx))}
+          onChange={(text) => setToolState(setText((currentToolState() as TextState) ?? textEditing, text))}
+          onKey={(key) => runTool(textEditingKey(machine, currentToolState(), key, ctx))}
         />
       )}
     </div>
