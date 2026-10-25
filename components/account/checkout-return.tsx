@@ -7,10 +7,13 @@ import { Button } from '@/components/ui/button';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import {
+  isPaidPlan,
+  isPaidTier,
   fetchAccount,
   fetchBillingStatus,
   verifyCheckoutSession,
   type BillingInterval,
+  type PaidPlan,
 } from '@/lib/auth/accountApi';
 import { getCurrentIdToken } from '@/lib/firebase';
 import { isBillingInterval, readLastInterval } from '@/lib/billing/checkout';
@@ -23,6 +26,10 @@ import { useLocalization } from '@/i18n/useLocalization';
  * (2) poll /account/me until the webhook has flipped the tier, (3) confirm. The webhook can
  * lag the redirect by seconds, so after POLL_LIMIT_MS the page stops polling and says the
  * payment was received and the plan will update shortly, with a manual refresh.
+ *
+ * MM40: the success URL may carry `plan` (`?checkout=success&plan=pro`); when it does not (the
+ * API's success URL today has only session_id), the plan comes from the session verdict's
+ * `plan`, then from the account tier, so a Pro purchase lands on Pro copy either way.
  */
 
 export const POLL_INTERVAL_MS = 2_000;
@@ -41,6 +48,17 @@ export const CheckoutReturn: React.FC = () => {
     const p = new URLSearchParams(window.location.search);
     return p.get('checkout') === 'success' ? p.get('session_id') : null;
   });
+  const [plan, setPlan] = React.useState<PaidPlan | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const value = new URLSearchParams(window.location.search).get('plan');
+    return isPaidPlan(value) ? value : null;
+  });
+  const planRef = React.useRef(plan);
+  const notePlan = React.useCallback((next: unknown) => {
+    if (planRef.current || !isPaidPlan(next)) return;
+    planRef.current = next;
+    setPlan(next);
+  }, []);
   const started = React.useRef(false);
   const completed = React.useRef(false);
   const refresh = auth?.refresh;
@@ -53,6 +71,7 @@ export const CheckoutReturn: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     params.delete('checkout');
     params.delete('session_id');
+    params.delete('plan');
     const query = params.toString();
     window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
   }, []);
@@ -65,14 +84,15 @@ export const CheckoutReturn: React.FC = () => {
       const token = await getCurrentIdToken();
       const status = token ? await fetchBillingStatus(token) : null;
       if (status && isBillingInterval(status.interval)) interval = status.interval;
+      notePlan(status?.plan);
     } catch {
       /* the remembered interval is a fine fallback for a lossy client event */
     }
-    analytics.track(EVENTS.CHECKOUT_COMPLETED, { interval });
+    analytics.track(EVENTS.CHECKOUT_COMPLETED, { interval, plan: planRef.current ?? 'premium' });
     refresh?.();
     setPhase('confirmed');
     strip();
-  }, [refresh, strip]);
+  }, [notePlan, refresh, strip]);
 
   const poll = React.useCallback(
     async (isCancelled: () => boolean) => {
@@ -83,7 +103,9 @@ export const CheckoutReturn: React.FC = () => {
         if (isCancelled()) return;
         try {
           const token = await getCurrentIdToken();
-          if (token && (await fetchAccount(token)).tier === 'premium') {
+          const tier = token ? (await fetchAccount(token)).tier : null;
+          if (tier && isPaidTier(tier)) {
+            notePlan(tier);
             await complete();
             return;
           }
@@ -97,7 +119,7 @@ export const CheckoutReturn: React.FC = () => {
         }
       }
     },
-    [complete, strip],
+    [complete, notePlan, strip],
   );
 
   React.useEffect(() => {
@@ -111,6 +133,7 @@ export const CheckoutReturn: React.FC = () => {
         if (!token) throw new Error('no token');
         const verdict = await verifyCheckoutSession(token, sessionId);
         if (cancelled) return;
+        notePlan(verdict.plan);
         if (!verdict.belongsToUser) {
           setPhase('foreign');
           strip();
@@ -133,7 +156,7 @@ export const CheckoutReturn: React.FC = () => {
       // StrictMode re-runs the effect: allow the second pass to start the work again.
       started.current = false;
     };
-  }, [authLoading, complete, poll, sessionId, signedIn, strip]);
+  }, [authLoading, complete, notePlan, poll, sessionId, signedIn, strip]);
 
   if (!sessionId || !phase) return null;
 
@@ -145,7 +168,9 @@ export const CheckoutReturn: React.FC = () => {
     void (async () => {
       try {
         const token = await getCurrentIdToken();
-        if (token && (await fetchAccount(token)).tier === 'premium') {
+        const tier = token ? (await fetchAccount(token)).tier : null;
+        if (tier && isPaidTier(tier)) {
+          notePlan(tier);
           await complete();
           return;
         }
@@ -156,7 +181,12 @@ export const CheckoutReturn: React.FC = () => {
     })();
   };
 
-  const key = phase === 'verifying' || phase === 'waiting' ? 'waiting' : phase;
+  const key =
+    phase === 'verifying' || phase === 'waiting'
+      ? 'waiting'
+      : phase === 'confirmed' && plan === 'pro'
+        ? 'confirmedPro'
+        : phase;
   return (
     <Panel
       className="mb-6"
@@ -164,6 +194,7 @@ export const CheckoutReturn: React.FC = () => {
       role="status"
       data-testid="checkout-return"
       data-phase={phase}
+      data-plan={plan ?? undefined}
     >
       <h2 className="text-base font-semibold text-foreground">
         {t(`interface:billing.return.${key}.title`)}

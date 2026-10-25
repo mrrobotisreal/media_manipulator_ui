@@ -70,7 +70,7 @@ describe('CheckoutReturn', () => {
     await advance(POLL_INTERVAL_MS);
     expect(screen.getByTestId('checkout-return').dataset.phase).toBe('confirmed');
     expect(h.track).toHaveBeenCalledTimes(1);
-    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly' });
+    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'premium' });
     // Checkout params dropped; browser path and the open tab kept.
     expect(window.location.pathname + window.location.search).toBe('/account?tab=billing');
     // Polling has stopped.
@@ -119,5 +119,44 @@ describe('CheckoutReturn', () => {
     await advance(0);
     expect(screen.queryByTestId('checkout-return')).toBeNull();
     expect(h.verify).not.toHaveBeenCalled();
+  });
+
+  it('checkout=success&plan=pro: Pro copy (with the Motion mention), checkout_completed carries plan pro', async () => {
+    window.history.pushState({}, '', '/account?tab=billing&checkout=success&session_id=cs_test_1&plan=pro');
+    h.verify.mockResolvedValue({ belongsToUser: true, paid: true, tierApplied: true, plan: 'pro' });
+    render(<CheckoutReturn />);
+    await advance(0);
+    const panel = screen.getByTestId('checkout-return');
+    expect(panel.dataset.phase).toBe('confirmed');
+    expect(panel.dataset.plan).toBe('pro');
+    expect(screen.getByText('interface:billing.return.confirmedPro.title')).toBeTruthy();
+    expect(screen.getByText('interface:billing.return.confirmedPro.body')).toBeTruthy();
+    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'pro' });
+    expect(window.location.search).toBe('?tab=billing');
+  });
+
+  it('no plan in the URL (the API success URL today): reads plan from the session verdict', async () => {
+    h.verify.mockResolvedValue({ belongsToUser: true, paid: true, tierApplied: true, plan: 'pro' });
+    render(<CheckoutReturn />);
+    await advance(0);
+    expect(screen.getByText('interface:billing.return.confirmedPro.title')).toBeTruthy();
+    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'pro' });
+  });
+
+  it('webhook lag: the polled tier pro confirms with Pro copy', async () => {
+    h.verify.mockResolvedValue({ belongsToUser: true, paid: true, tierApplied: false, plan: null });
+    h.account.mockResolvedValue({ tier: 'pro' });
+    render(<CheckoutReturn />);
+    await advance(0);
+    await advance(POLL_INTERVAL_MS);
+    expect(screen.getByTestId('checkout-return').dataset.plan).toBe('pro');
+    expect(screen.getByText('interface:billing.return.confirmedPro.title')).toBeTruthy();
+  });
+
+  it('a Premium purchase keeps the Premium copy', async () => {
+    h.verify.mockResolvedValue({ belongsToUser: true, paid: true, tierApplied: true, plan: 'premium' });
+    render(<CheckoutReturn />);
+    await advance(0);
+    expect(screen.getByText('interface:billing.return.confirmed.title')).toBeTruthy();
   });
 });
