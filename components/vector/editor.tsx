@@ -57,6 +57,7 @@ import { cn } from '@/lib/utils';
 import { VectorCanvas, fitView, zoomAt, type View } from './canvas';
 import { Inspector } from './inspector';
 import { IconButton, LayerPanel } from './layer-panel';
+import { Timeline } from './timeline';
 
 export interface MotionEditorProps {
   projectId: string;
@@ -225,6 +226,17 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
         s.selectAll();
         return;
       }
+      // MM44: keyframe clipboard (layers have Duplicate, Cmd+D).
+      if (mod && k === 'c' && s.keySelection.length > 0) {
+        e.preventDefault();
+        s.copySelectedKeys();
+        return;
+      }
+      if (mod && k === 'v' && s.keyClipboard) {
+        e.preventDefault();
+        s.pasteKeys();
+        return;
+      }
       if (mod && k === 's') {
         e.preventDefault();
         exportSvg();
@@ -242,6 +254,18 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
         return;
       }
       if (mod || e.altKey) return;
+      // MM44 transport: Home / End (space is handled on keyup, see below).
+      if (e.key === 'Home' || e.key === 'End') {
+        e.preventDefault();
+        s.setPlaying(false);
+        if (s.doc) s.setTime(e.key === 'Home' ? (s.range?.start ?? 0) : (s.range?.end ?? s.doc.duration));
+        return;
+      }
+      if ((e.key === 'Delete' || e.key === 'Backspace') && s.keySelection.length > 0) {
+        e.preventDefault();
+        s.deleteSelectedKeys();
+        return;
+      }
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if (s.selection.length > 0 && !(s.tool === 'pen' || s.tool === 'text')) {
           e.preventDefault();
@@ -259,6 +283,42 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [phase.kind, fit, zoomBy]);
+
+  // ---- space = play/pause (MM44). A TAP toggles; holding space and dragging
+  // the canvas still pans (MM42), so the toggle fires on keyup only when no
+  // pointer went down while space was held. ----
+  React.useEffect(() => {
+    if (phase.kind !== 'ready') return;
+    let held = false;
+    let panned = false;
+    const typing = (el: EventTarget | null) => {
+      const target = el as HTMLElement | null;
+      return !!target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(target.tagName));
+    };
+    const down = (e: KeyboardEvent) => {
+      if (e.key !== ' ' || typing(e.target) || e.metaKey || e.ctrlKey || e.altKey) return;
+      e.preventDefault();
+      if (e.repeat) return;
+      held = true;
+      panned = false;
+    };
+    const up = (e: KeyboardEvent) => {
+      if (e.key !== ' ' || !held) return;
+      held = false;
+      if (!panned) useVectorStore.getState().togglePlaying();
+    };
+    const pointer = () => {
+      if (held) panned = true;
+    };
+    window.addEventListener('keydown', down);
+    window.addEventListener('keyup', up);
+    window.addEventListener('pointerdown', pointer, true);
+    return () => {
+      window.removeEventListener('keydown', down);
+      window.removeEventListener('keyup', up);
+      window.removeEventListener('pointerdown', pointer, true);
+    };
+  }, [phase.kind]);
 
   // ---- import / export ----
   const importFile = async (file: File) => {
@@ -360,6 +420,7 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
         </Button>
       </header>
 
+      <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex min-h-0 flex-1">
         {/* Tool rail */}
         <nav aria-label={t('vector.tools.label')} className="flex w-11 shrink-0 flex-col items-center gap-1 border-e border-edge bg-surface-1 py-2">
@@ -427,6 +488,13 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
             <Inspector />
           </div>
         </aside>
+      </div>
+      {/* MM44 timeline */}
+      {phase.kind === 'ready' && doc && (
+        <div className="flex h-56 shrink-0 flex-col">
+          <Timeline />
+        </div>
+      )}
       </div>
 
       {phase.kind === 'recover' && <RecoveryDialog draft={phase.draft} onRecover={() => recover(phase.draft)} onDiscard={() => discard(phase.draft)} />}

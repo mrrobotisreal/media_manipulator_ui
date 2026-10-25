@@ -774,7 +774,8 @@
       "useAsMask": "Use as mask",
       "useAsClip": "Use as clip",
       "releaseMask": "Release mask",
-      "releaseClip": "Release clip path"
+      "releaseClip": "Release clip path",
+      "skewY": "Skew Y"
     },
     "gradient": {
       "stops": "Gradient stops",
@@ -787,6 +788,66 @@
       "radius": "Radius",
       "centreX": "Centre X",
       "centreY": "Centre Y"
+    },
+    "properties": {
+      "x": "Position X",
+      "y": "Position Y",
+      "scaleX": "Scale X",
+      "scaleY": "Scale Y",
+      "rotation": "Rotation",
+      "skewX": "Skew X",
+      "skewY": "Skew Y",
+      "anchorX": "Anchor X",
+      "anchorY": "Anchor Y",
+      "opacity": "Opacity",
+      "fill": "Fill",
+      "stroke": "Stroke",
+      "strokeWidth": "Stroke width"
+    },
+    "timeline": {
+      "title": "Timeline",
+      "play": "Play (Space)",
+      "pause": "Pause (Space)",
+      "toStart": "Go to start (Home)",
+      "toEnd": "Go to end (End)",
+      "loop": "Loop",
+      "autokey": "Auto-key",
+      "autokeyHint": "When on, changing any property on the canvas or in the inspector adds a keyframe at the playhead.",
+      "duration": "Length",
+      "playhead": "Playhead",
+      "setIn": "Set play range start at the playhead",
+      "setOut": "Set play range end at the playhead",
+      "clearRange": "Clear play range",
+      "inMarker": "Play range start",
+      "outMarker": "Play range end",
+      "addKeys": "Add keyframes at the playhead for the selected layers",
+      "copyKeys": "Copy keyframes",
+      "pasteKeys": "Paste keyframes at the playhead",
+      "deleteKeys": "Delete keyframes",
+      "zoomIn": "Zoom timeline in",
+      "zoomOut": "Zoom timeline out",
+      "empty": "Draw or import a shape, then animate it here.",
+      "animate": "Animate {{property}}",
+      "stopAnimating": "Stop animating {{property}}",
+      "addKeyHere": "Add a {{property}} keyframe at the playhead",
+      "removeKeyHere": "Remove the {{property}} keyframe at the playhead",
+      "key": "{{property}} keyframe at {{time}}",
+      "layerKey": "{{layer}} keyframes at {{time}}"
+    },
+    "easing": {
+      "title": "Easing",
+      "presets": "Easing presets",
+      "linear": "Linear",
+      "easeIn": "Ease in",
+      "easeOut": "Ease out",
+      "easeBoth": "Ease in-out",
+      "hold": "Hold",
+      "custom": "Curve",
+      "curve": "Easing curve",
+      "handle": "Curve handle {{name}}",
+      "mixed": "The selected keyframes use different easings. Pick one to apply it to all of them.",
+      "applies_one": "Easing of the segment after {{count}} keyframe.",
+      "applies_other": "Easing of the segments after {{count}} keyframes."
     }
   }
 }
