@@ -68,3 +68,13 @@ Only English's eager shards ship in client JS. Every other locale's eager bundle
 
 **Translator locale**:
 Any non-English locale (`translatorLocales` in `i18n/locales.ts`). Each has a translator deployment at branch `translate/<prefix>` and domain `<prefix>.translate.media-manipulator.com`. Scripts and workflows read the list from `node scripts/list-locales.mjs` (`--json`, `--codes`).
+
+**Translator mode**:
+A build with `NEXT_PUBLIC_DEPLOY_ROLE=translator` (a `translate/<prefix>` Vercel branch; production never sets it). It is hardened: `X-Robots-Tag: noindex, nofollow`, robots disallow-all, empty sitemap, no GA4/AdSense/consent/first-party analytics, `/dr` 404, and no Checkout, account deletion or Darkroom export (`isIrreversibleActionHidden()`). It is **armed** (markers, scanner, MM53 panel) only when `NEXT_PUBLIC_TRANSLATOR_LOCALE` is also a translator locale. Every flag lives in `lib/translator/mode.ts`, the only translator module app code may import statically. `npm run check:no-translator` proves a production build holds none of it.
+_Avoid_: "staging", "preview mode" (a Vercel preview without the role is plain production behaviour).
+
+**Key marker**:
+An invisible run of U+200C/U+200D, 63 chars, appended to every translated string in translator mode (client `t()` through the `mmKeyMarker` i18next post-processor, server `getServerT`/`ServerTrans`). It encodes a key-registry index. `lib/translator/markerCodec.ts` owns the format. The DOM scanner (`lib/translator/domScanner.ts`) decodes markers and strips them from the page. Metadata uses `getServerMetadataT`, which never marks.
+
+**Key registry**:
+`lib/translator/keyRegistry.ts`, which maps a marker index to `{ ns, key, lng }`, where `key` is the *resolved* key (`foo_few`, `items.0.title`). The index is content-derived: locale slot × 2³² + FNV-1a of `ns:key`. Server and client therefore mint identical markers without shared state, which keeps hydration safe.
