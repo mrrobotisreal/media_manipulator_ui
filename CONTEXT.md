@@ -38,7 +38,13 @@ One node of the VectorDoc tree: `group` (has children) or a shape (`path`, `rect
 A `raw` layer holds imported SVG markup the model does not cover (patterns, filters beyond one blur, `foreignObject`, SMIL, multi-line text, un-inlinable styles…). It round-trips byte-stable and is not editable; scripts, event handlers and external references are stripped before it is stored.
 
 **Track**:
-One animated property of one layer (`{layerId, property, keyframes, extras}`), with preset, cubic-bezier or hold easing per keyframe. The shape is fixed in v1; tracks are created from MM44 on.
+One animated property of one layer (`{layerId, property, keyframes, extras}`), with preset, cubic-bezier or hold easing per keyframe. The shape is fixed in v1; tracks are created from MM44 on. The segment from one keyframe to the next uses the LEFT keyframe's easing; a **hold** keeps the value until the next keyframe, then jumps. `sampleTrack` (`lib/vector/sampleTrack.ts`) is the one definition of a track's value at time t: the preview renders from it and the CSS exporter is tested against it.
+
+**Playhead edit / autokey** (MM44):
+The canvas and inspector show and edit the document at the playhead. Changing an animated property there writes a keyframe at the playhead instead of changing the static layer. With **autokey** on (off by default), changing an un-animated property also starts a track. `mutateAt` / `foldAt` in `lib/vector/vectorStore.ts` (logic in `lib/vector/timeEdit.ts`). Scrubbing, play and the play range are view state and never undo steps.
+
+**Account project / browser-only project** (MM44):
+A Motion project is either browser-only (a `local-…` id; it lives only in the IndexedDB draft, the only kind anonymous users have) or an account project (a server UUID in `vector_projects`, saved with `If-Match` revisions, 409 on a conflict). "Save to account" turns the first into the second and replaces the URL. The draft is kept until a save succeeds.
 
 ### Editor domain
 

@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "group",
+      "id": "card",
+      "name": "Card",
+      "children": [
+        {
+          "type": "rect",
+          "id": "card-transform",
+          "x": 0,
+          "y": 0,
+          "width": 40,
+          "height": 40,
+          "fill": "#3b82f6",
+          "name": "Card"
+        }
+      ]
+    },
+    {
+      "type": "rect",
+      "id": "card_transform",
+      "x": 100,
+      "y": 0,
+      "width": 40,
+      "height": 40,
+      "fill": "#3b82f6",
+      "name": "Card"
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "card",
+      "property": "transform.x",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 40,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "card-transform",
+      "property": "opacity",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 1,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 0.2,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "card_transform",
+      "property": "transform.y",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 40,
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

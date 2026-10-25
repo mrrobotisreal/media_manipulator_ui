@@ -516,7 +516,16 @@ const docShape = obj({
   layers: z.array(layerSchema).default([]),
   defs: defsSchema.default({}),
   animations: z.array(trackSchema).default([]),
+  /**
+   * MM44 (additive, optional): whether the animation repeats. Absent = loops
+   * (`docLoops`). Drives the CSS export's `animation-iteration-count` and the
+   * preview's loop toggle.
+   */
+  loop: z.boolean().optional(),
 });
+
+/** Absent `loop` means the animation repeats. */
+export const docLoops = (doc: Pick<VectorDoc, 'loop'>): boolean => doc.loop !== false;
 
 export const vectorDocSchema = docShape.superRefine((doc, ctx) => {
   for (const message of docIntegrityIssues(doc as VectorDoc)) {

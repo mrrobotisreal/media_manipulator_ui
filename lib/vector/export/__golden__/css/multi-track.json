@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "ellipse",
+      "id": "ball",
+      "cx": 0,
+      "cy": 0,
+      "rx": 12,
+      "ry": 12,
+      "fill": "#22c55e",
+      "transform": {
+        "x": 20,
+        "y": 100,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0,
+        "skewX": 0,
+        "skewY": 0,
+        "anchorX": 0,
+        "anchorY": 0
+      }
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "ball",
+      "property": "transform.x",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 20,
+          "easing": "easeOut"
+        },
+        {
+          "t": 1500,
+          "value": 180,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "ball",
+      "property": "transform.y",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 100,
+          "easing": "easeIn"
+        },
+        {
+          "t": 750,
+          "value": 160,
+          "easing": "easeOut"
+        },
+        {
+          "t": 1500,
+          "value": 100,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "ball",
+      "property": "transform.skewX",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "hold"
+        },
+        {
+          "t": 750,
+          "value": 15,
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": 0,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "ball",
+      "property": "opacity",
+      "keyframes": [
+        {
+          "t": 1500,
+          "value": 1,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 0,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "ball",
+      "property": "fill",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "#22c55e",
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": "gold",
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

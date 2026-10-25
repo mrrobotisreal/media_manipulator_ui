@@ -12,6 +12,13 @@
  * clears `future`. Documents are immutable and structurally shared, so a
  * snapshot is one pointer. A pointer drag (or a focus session on an input)
  * runs inside `beginGesture()` / `endGesture()` and lands as ONE entry.
+ *
+ * MM44 adds the timeline: playback state (`time`, `playing`, play range),
+ * autokey, keyframe selection and the keyframe actions. Playhead, play and
+ * range changes are VIEW state: they never touch `doc`, so a scrub creates no
+ * history entry. `mutateAt` is the time-aware edit (see `lib/vector/timeEdit.ts`):
+ * canvas and inspector edits made while the playhead sits on an animated
+ * property become keyframes instead of static edits.
  */
 import { create } from 'zustand';
 
@@ -30,8 +37,26 @@ import {
   updateLayer,
   childrenOf,
 } from '@/lib/vector/layerTree';
+import {
+  clampTime,
+  copyKeyframes,
+  liveKeyRefs,
+  moveKeyframes,
+  pasteKeyframes,
+  pruneTracks,
+  removeKeyframes,
+  removeTrack,
+  setDuration as setDocDuration,
+  setKeyframeEasing,
+  upsertKeyframe,
+  type KeyClipboard,
+  type KeyRef,
+} from '@/lib/vector/keyframes';
+import { baseValue, isAnimatable, type EditableProperty } from '@/lib/vector/properties';
+import { sampleDoc } from '@/lib/vector/sampleTrack';
+import { applyAtTime } from '@/lib/vector/timeEdit';
 import { isLocked, rotateLayers, translateLayers } from '@/lib/vector/transformOps';
-import { forEachLayer, type Layer, type VectorDoc } from '@/lib/vector/vectorTypes';
+import { forEachLayer, type Easing, type Layer, type VectorDoc } from '@/lib/vector/vectorTypes';
 import type { ToolId } from '@/lib/vector/tools/types';
 
 /** Proposed (ticket decision 12): undo depth. */
@@ -58,8 +83,23 @@ export interface VectorState {
   /** Bumped on every document change (drafts debounce on it). */
   revision: number;
 
+  // ---- MM44 timeline (view state; never in history) ----
+  /** Playhead, integer ms in [0, doc.duration]. */
+  time: number;
+  playing: boolean;
+  /** Play range (in/out markers), ms; null = the whole composition. */
+  range: { start: number; end: number } | null;
+  /** Proposed (decision 4): off by default. */
+  autokey: boolean;
+  /** Selected keyframes (timeline diamonds). */
+  keySelection: KeyRef[];
+  /** Keyframe clipboard (in-editor only). */
+  keyClipboard: KeyClipboard | null;
+
   load: (projectId: string, doc: VectorDoc, name?: string) => void;
   close: () => void;
+  /** MM44: the project got a server id (first save). Keeps the document, history and view. */
+  setProjectId: (projectId: string) => void;
   rename: (name: string) => void;
   /** Apply `fn` to the document as one undoable step (or as part of the open gesture). */
   mutate: (label: string, fn: (doc: VectorDoc) => VectorDoc, selection?: string[]) => void;
@@ -88,6 +128,44 @@ export interface VectorState {
   patchLayer: (id: string, label: string, patch: Partial<Layer> | ((l: Layer) => Layer)) => void;
   addLayers: (layers: Layer[], label: string, parentId?: string | null) => void;
   selectAll: () => void;
+
+  // ---- MM44 timeline ----
+  /**
+   * Time-aware edit: `fn` receives the document sampled at the playhead and
+   * returns an edited copy; changes to animated properties become keyframes at
+   * the playhead (autokey keys un-animated ones too). Same history rules as
+   * `mutate`.
+   */
+  mutateAt: (label: string, fn: (sampled: VectorDoc) => VectorDoc, selection?: string[]) => void;
+  /**
+   * Fold an edit of `sampled` (= `sampleDoc(root, time)`) back into `root` at
+   * the playhead. For drags that re-apply their op to the pointer-down state:
+   * `mutate(label, () => foldAt(root, sampled, op(sampled)))`.
+   */
+  foldAt: (root: VectorDoc, sampled: VectorDoc, edited: VectorDoc) => VectorDoc;
+  /** Move the playhead (clamped, rounded). Never a history entry. */
+  setTime: (ms: number) => void;
+  setPlaying: (playing: boolean) => void;
+  togglePlaying: () => void;
+  /** In/out markers; null clears. Clamped to the composition, start < end. */
+  setRange: (range: { start: number; end: number } | null) => void;
+  setAutokey: (on: boolean) => void;
+  /** Loop flag on the document (exported as `animation-iteration-count`): undoable. */
+  setLoop: (loop: boolean) => void;
+  /** Composition length (integer ms): undoable; keys after the end are removed. */
+  setDuration: (ms: number) => void;
+  /** Stopwatch on: start a track with one keyframe of the current value at the playhead. */
+  addKeyframe: (layerId: string, property: EditableProperty) => void;
+  /** Stopwatch off: remove the property's track (the layer keeps its static value). */
+  removeTrack: (layerId: string, property: string) => void;
+  setKeySelection: (refs: KeyRef[]) => void;
+  toggleKeySelected: (ref: KeyRef) => void;
+  deleteSelectedKeys: () => void;
+  moveSelectedKeys: (dt: number) => void;
+  setSelectedEasing: (easing: Easing) => void;
+  copySelectedKeys: () => void;
+  /** Paste at the playhead (onto the one selected layer when the copy came from one layer). */
+  pasteKeys: () => void;
 }
 
 /** Selection ids that still exist in `doc` (ids nested inside raw layers never count). */
@@ -112,25 +190,54 @@ const initial = {
   gestureBase: null,
   gestureLabel: '',
   revision: 0,
+  time: 0,
+  playing: false,
+  range: null as { start: number; end: number } | null,
+  autokey: false,
+  keySelection: [] as KeyRef[],
+  keyClipboard: null as KeyClipboard | null,
 };
+
+/** View state that survives a document reload (load keeps autokey). */
+const sameRefs = (a: KeyRef[], b: KeyRef[]) =>
+  a.length === b.length && a.every((r, i) => r.layerId === b[i].layerId && r.property === b[i].property && r.t === b[i].t);
 
 export const createVectorStore = () =>
   create<VectorState>((set, get) => {
     const mutate: VectorState['mutate'] = (label, fn, selection) =>
       set((s) => {
         if (!s.doc) return {};
-        const next = fn(s.doc);
-        if (next === s.doc) return selection ? { selection } : {};
+        const raw = fn(s.doc);
+        if (raw === s.doc) return selection ? { selection } : {};
+        // Tracks never outlive their layer (delete, ungroup of a raw…).
+        const next = pruneTracks(raw);
         const sel = pruneSelection(selection ?? s.selection, next);
-        if (s.gestureDepth > 0) return { doc: next, selection: sel, revision: s.revision + 1 };
+        const keySelection = liveKeyRefs(next, s.keySelection);
+        const time = Math.min(s.time, next.duration);
+        const view = { selection: sel, keySelection, time, revision: s.revision + 1 };
+        if (s.gestureDepth > 0) return { doc: next, ...view };
         return {
           doc: next,
-          selection: sel,
+          ...view,
           past: pushPast(s.past, { doc: s.doc, label }),
           future: [],
-          revision: s.revision + 1,
         };
       });
+
+    const foldAt: VectorState['foldAt'] = (root, sampled, edited) => {
+      const s = get();
+      return applyAtTime(root, sampled, edited, s.time, s.autokey);
+    };
+
+    const mutateAt: VectorState['mutateAt'] = (label, fn, selection) =>
+      mutate(
+        label,
+        (d) => {
+          const sampled = sampleDoc(d, get().time);
+          return foldAt(d, sampled, fn(sampled));
+        },
+        selection,
+      );
 
     const selected = () => get().selection;
 
@@ -138,13 +245,17 @@ export const createVectorStore = () =>
       ...initial,
 
       load: (projectId, doc, name = '') =>
-        set({ ...initial, projectId, doc, name, revision: get().revision + 1 }),
+        set({ ...initial, projectId, doc, name, autokey: get().autokey, revision: get().revision + 1 }),
 
       close: () => set({ ...initial }),
+
+      setProjectId: (projectId) => set((s) => (s.projectId === projectId ? {} : { projectId })),
 
       rename: (name) => set((s) => (s.name === name ? {} : { name, revision: s.revision + 1 })),
 
       mutate,
+      mutateAt,
+      foldAt,
 
       undo: () =>
         set((s) => {
@@ -155,6 +266,8 @@ export const createVectorStore = () =>
             past: s.past.slice(0, -1),
             future: [...s.future, { doc: s.doc, label: entry.label }],
             selection: pruneSelection(s.selection, entry.doc),
+            keySelection: liveKeyRefs(entry.doc, s.keySelection),
+            time: Math.min(s.time, entry.doc.duration),
             revision: s.revision + 1,
           };
         }),
@@ -168,6 +281,8 @@ export const createVectorStore = () =>
             past: pushPast(s.past, { doc: s.doc, label: entry.label }),
             future: s.future.slice(0, -1),
             selection: pruneSelection(s.selection, entry.doc),
+            keySelection: liveKeyRefs(entry.doc, s.keySelection),
+            time: Math.min(s.time, entry.doc.duration),
             revision: s.revision + 1,
           };
         }),
@@ -276,9 +391,9 @@ export const createVectorStore = () =>
         );
       },
 
-      nudgeSelection: (dx, dy) => mutate('Nudge', (d) => translateLayers(d, selected(), dx, dy)),
+      nudgeSelection: (dx, dy) => mutateAt('Nudge', (d) => translateLayers(d, selected(), dx, dy)),
 
-      rotateSelection: (deg) => mutate('Rotate', (d) => rotateLayers(d, selected(), deg)),
+      rotateSelection: (deg) => mutateAt('Rotate', (d) => rotateLayers(d, selected(), deg)),
 
       reorderLayer: (id, parentId, index) => mutate('Reorder', (d) => {
         const layers = moveLayer(d.layers, id, parentId, index);
@@ -317,6 +432,114 @@ export const createVectorStore = () =>
           if (!s.doc) return {};
           return { selection: s.doc.layers.filter((l) => l.type !== 'raw' && !l.locked && !l.hidden).map((l) => l.id) };
         }),
+
+      // ---- MM44 timeline ----
+
+      setTime: (ms) =>
+        set((s) => {
+          if (!s.doc) return {};
+          const time = clampTime(ms, s.doc.duration);
+          return time === s.time ? {} : { time };
+        }),
+
+      setPlaying: (playing) => set((s) => (s.playing === playing || !s.doc ? {} : { playing })),
+
+      togglePlaying: () => get().setPlaying(!get().playing),
+
+      setRange: (range) =>
+        set((s) => {
+          if (!s.doc) return {};
+          if (!range) return s.range ? { range: null } : {};
+          const a = clampTime(Math.min(range.start, range.end), s.doc.duration);
+          const b = clampTime(Math.max(range.start, range.end), s.doc.duration);
+          if (b - a < 1 || (a === 0 && b === s.doc.duration)) return s.range ? { range: null } : {};
+          if (s.range && s.range.start === a && s.range.end === b) return {};
+          return { range: { start: a, end: b } };
+        }),
+
+      setAutokey: (on) => set((s) => (s.autokey === on ? {} : { autokey: on })),
+
+      setLoop: (loop) =>
+        mutate(loop ? 'Loop on' : 'Loop off', (d) => {
+          if ((d.loop !== false) === loop) return d;
+          const { loop: _old, ...rest } = d;
+          void _old;
+          // Canonical form: absent = loops.
+          return (loop ? rest : { ...rest, loop: false }) as VectorDoc;
+        }),
+
+      setDuration: (ms) => {
+        mutate('Duration', (d) => setDocDuration(d, ms));
+        const s = get();
+        if (s.range && s.doc && s.range.end > s.doc.duration) s.setRange({ start: s.range.start, end: s.doc.duration });
+      },
+
+      addKeyframe: (layerId, property) => {
+        const s = get();
+        if (!s.doc) return;
+        const layer = findLayer(sampleDoc(s.doc, s.time).layers, layerId);
+        if (!isAnimatable(layer)) return;
+        const ref = { layerId, property, t: s.time };
+        mutate('Add keyframe', (d) => upsertKeyframe(d, layerId, property, s.time, baseValue(layer, property)));
+        set({ keySelection: [ref] });
+      },
+
+      removeTrack: (layerId, property) => mutate('Remove animation', (d) => removeTrack(d, layerId, property)),
+
+      setKeySelection: (refs) =>
+        set((s) => {
+          const next = s.doc ? liveKeyRefs(s.doc, refs) : [];
+          return sameRefs(next, s.keySelection) ? {} : { keySelection: next };
+        }),
+
+      toggleKeySelected: (ref) =>
+        set((s) => {
+          const has = s.keySelection.some((r) => r.layerId === ref.layerId && r.property === ref.property && r.t === ref.t);
+          return {
+            keySelection: has
+              ? s.keySelection.filter((r) => !(r.layerId === ref.layerId && r.property === ref.property && r.t === ref.t))
+              : [...s.keySelection, ref],
+          };
+        }),
+
+      deleteSelectedKeys: () => {
+        const refs = get().keySelection;
+        if (refs.length === 0) return;
+        mutate(refs.length === 1 ? 'Delete keyframe' : 'Delete keyframes', (d) => removeKeyframes(d, refs));
+        set({ keySelection: [] });
+      },
+
+      moveSelectedKeys: (dt) => {
+        const s = get();
+        if (!s.doc || s.keySelection.length === 0) return;
+        const moved = moveKeyframes(s.doc, s.keySelection, dt);
+        if (moved.doc === s.doc) return;
+        mutate('Move keyframes', () => moved.doc);
+        set({ keySelection: moved.refs });
+      },
+
+      setSelectedEasing: (easing) => {
+        const refs = get().keySelection;
+        if (refs.length === 0) return;
+        mutate('Easing', (d) => setKeyframeEasing(d, refs, easing));
+      },
+
+      copySelectedKeys: () => {
+        const s = get();
+        if (!s.doc || s.keySelection.length === 0) return;
+        const clip = copyKeyframes(s.doc, s.keySelection);
+        if (clip.entries.length > 0) set({ keyClipboard: clip });
+      },
+
+      pasteKeys: () => {
+        const s = get();
+        if (!s.doc || !s.keyClipboard || s.keyClipboard.entries.length === 0) return;
+        const target = s.selection.length === 1 ? s.selection[0] : undefined;
+        const pasted = pasteKeyframes(s.doc, s.keyClipboard, s.time, target);
+        if (pasted.doc === s.doc) return;
+        mutate('Paste keyframes', () => pasted.doc);
+        set({ keySelection: liveKeyRefs(get().doc!, pasted.refs) });
+      },
     };
   });
 

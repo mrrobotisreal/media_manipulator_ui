@@ -669,7 +669,8 @@
         "not_svg": "That file is not an SVG image.",
         "malformed": "That SVG could not be read. It may be damaged.",
         "entities": "SVGs that declare XML entities cannot be imported.",
-        "too_complex": "That SVG has too many layers to edit."
+        "too_complex": "That SVG has too many layers to edit.",
+        "json": "That file is not a Motion document this version can open."
       },
       "warnings": {
         "script_removed": "Script removed:",
@@ -683,7 +684,8 @@
       }
     },
     "export": {
-      "svg": "Export SVG"
+      "svg": "Export SVG",
+      "open": "Export"
     },
     "draft": {
       "title": "Recover unsaved changes?",
@@ -776,7 +778,8 @@
       "useAsMask": "Use as mask",
       "useAsClip": "Use as clip",
       "releaseMask": "Release mask",
-      "releaseClip": "Release clip path"
+      "releaseClip": "Release clip path",
+      "skewY": "Skew Y"
     },
     "gradient": {
       "stops": "Gradient stops",
@@ -789,6 +792,130 @@
       "radius": "Radius",
       "centreX": "Centre X",
       "centreY": "Centre Y"
+    },
+    "properties": {
+      "x": "Position X",
+      "y": "Position Y",
+      "scaleX": "Scale X",
+      "scaleY": "Scale Y",
+      "rotation": "Rotation",
+      "skewX": "Skew X",
+      "skewY": "Skew Y",
+      "anchorX": "Anchor X",
+      "anchorY": "Anchor Y",
+      "opacity": "Opacity",
+      "fill": "Fill",
+      "stroke": "Stroke",
+      "strokeWidth": "Stroke width"
+    },
+    "timeline": {
+      "title": "Timeline",
+      "play": "Play (Space)",
+      "pause": "Pause (Space)",
+      "toStart": "Go to start (Home)",
+      "toEnd": "Go to end (End)",
+      "loop": "Loop",
+      "autokey": "Auto-key",
+      "autokeyHint": "When on, changing any property on the canvas or in the inspector adds a keyframe at the playhead.",
+      "duration": "Length",
+      "playhead": "Playhead",
+      "setIn": "Set play range start at the playhead",
+      "setOut": "Set play range end at the playhead",
+      "clearRange": "Clear play range",
+      "inMarker": "Play range start",
+      "outMarker": "Play range end",
+      "addKeys": "Add keyframes at the playhead for the selected layers",
+      "copyKeys": "Copy keyframes",
+      "pasteKeys": "Paste keyframes at the playhead",
+      "deleteKeys": "Delete keyframes",
+      "zoomIn": "Zoom timeline in",
+      "zoomOut": "Zoom timeline out",
+      "empty": "Draw or import a shape, then animate it here.",
+      "animate": "Animate {{property}}",
+      "stopAnimating": "Stop animating {{property}}",
+      "addKeyHere": "Add a {{property}} keyframe at the playhead",
+      "removeKeyHere": "Remove the {{property}} keyframe at the playhead",
+      "key": "{{property}} keyframe at {{time}}",
+      "layerKey": "{{layer}} keyframes at {{time}}"
+    },
+    "easing": {
+      "title": "Easing",
+      "presets": "Easing presets",
+      "linear": "Linear",
+      "easeIn": "Ease in",
+      "easeOut": "Ease out",
+      "easeBoth": "Ease in-out",
+      "hold": "Hold",
+      "custom": "Curve",
+      "curve": "Easing curve",
+      "handle": "Curve handle {{name}}",
+      "mixed": "The selected keyframes use different easings. Pick one to apply it to all of them.",
+      "applies_one": "Easing of the segment after {{count}} keyframe.",
+      "applies_other": "Easing of the segments after {{count}} keyframes."
+    },
+    "exportDialog": {
+      "title": "Export",
+      "description": "Exports are made in your browser. Animated exports count toward your daily allowance; static SVG is always free.",
+      "formats": "Export format",
+      "animated": "Animated SVG (CSS)",
+      "animatedHint": "One SVG file with its animation in CSS. No script; plays in every modern browser.",
+      "static": "Static SVG",
+      "staticHint": "The frame at the playhead, without animation. Free, never counted.",
+      "comingSoon": "Coming soon",
+      "formats_lottie": "Lottie JSON",
+      "formats_react_tsx": "React / JavaScript code",
+      "formats_flutter": "Flutter",
+      "formats_gif": "GIF",
+      "formats_mp4": "MP4 and WebM video",
+      "export": "Export",
+      "unsupported": "This animation uses effects that animated SVG (CSS) cannot export yet.",
+      "doneStatic": "Static SVG downloaded.",
+      "done_one": "Downloaded. {{count}} animated export left today.",
+      "done_other": "Downloaded. {{count}} animated exports left today.",
+      "doneUnlimited": "Downloaded.",
+      "limit_one": "You have used your {{count}} animated export for today.",
+      "limit_other": "You have used your {{count}} animated exports for today.",
+      "locked": "Your plan does not include this format.",
+      "capDuration": "Your plan exports animations up to {{seconds}} s long. Shorten the animation or upgrade.",
+      "capOther": "This export is larger than your plan allows.",
+      "unavailable": "Exports are unavailable right now. Nothing was counted; try again in a moment.",
+      "upgrade": "See plans"
+    },
+    "projects": {
+      "save": "Save",
+      "saveToAccount": "Save to account",
+      "status": {
+        "local": "In this browser only",
+        "saved": "Saved",
+        "saving": "Saving…",
+        "retrying": "Retrying…",
+        "offline": "Offline, changes kept here",
+        "conflict": "Changed elsewhere",
+        "failed": "Not saved"
+      },
+      "signIn": "Sign in",
+      "signInTitle": "Sign in to save to your account",
+      "signInBody": "Without an account, projects stay in this browser. Sign in (in a new tab, then come back) to save this one to your account, or download it as a file you can open again later.",
+      "downloadJson": "Download .json",
+      "limit_one": "Your plan saves {{count}} project. Delete one in your account, or upgrade.",
+      "limit_other": "Your plan saves {{count}} projects. Delete one in your account, or upgrade.",
+      "saveFailed": "This project could not be saved to your account. Your changes are kept in this browser.",
+      "open": {
+        "signin": "Sign in to open this project. Account projects are only visible to their owner.",
+        "notFound": "This project does not exist, or it belongs to another account.",
+        "failed": "This project could not be loaded. Check your connection and reload the page.",
+        "unreadable": "This project was saved by a newer version and cannot be opened here."
+      },
+      "conflict": {
+        "title": "This project changed in another tab or device.",
+        "reload": "Reload theirs",
+        "keep": "Keep mine",
+        "reloadTitle": "Replace your version?",
+        "reloadBody": "Reloading opens the copy saved elsewhere and discards the changes in this tab. Download your version first if you want to keep it.",
+        "downloadMine": "Download my version",
+        "reloadConfirm": "Reload theirs",
+        "reloadFailed": "The saved copy could not be loaded. Try again."
+      }
     }
   }
 }

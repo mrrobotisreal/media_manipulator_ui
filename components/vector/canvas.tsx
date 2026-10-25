@@ -37,6 +37,7 @@ import {
   transformableIds,
   translateLayers,
 } from '@/lib/vector/transformOps';
+import { sampleDoc } from '@/lib/vector/sampleTrack';
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import { forEachLayer, type Layer, type PathLayer, type VectorDoc } from '@/lib/vector/vectorTypes';
 import { DefsNodes, LayerNodes } from './render';
@@ -53,6 +54,12 @@ import { DefsNodes, LayerNodes } from './render';
  * its ops to the document captured at pointer-down (no drift).
  *
  * The canvas is always LTR (only the editor chrome mirrors for RTL locales).
+ *
+ * MM44: the canvas shows the document AT THE PLAYHEAD (`sampleDoc`), and every
+ * drag edits that sampled view; `foldAt` turns changes to animated properties
+ * into keyframes at the playhead (or autokeys), and the rest into static
+ * edits of the stored document. Without tracks this is exactly MM42's
+ * behaviour. Pointer-down pauses playback.
  */
 
 export interface View {
@@ -110,9 +117,14 @@ const mods = (e: { shiftKey: boolean; altKey: boolean }): ToolModifiers => ({ sh
 
 export function VectorCanvas({ view, onViewChange, onToolUsed, className }: CanvasProps) {
   const { t } = useLocalization('interface');
-  const doc = useVectorStore((s) => s.doc);
+  const storedDoc = useVectorStore((s) => s.doc);
+  const time = useVectorStore((s) => s.time);
+  // The render tree at the playhead (transient; `storedDoc` itself when nothing is animated).
+  const doc = React.useMemo(() => (storedDoc ? sampleDoc(storedDoc, time) : null), [storedDoc, time]);
   const selection = useVectorStore((s) => s.selection);
   const tool = useVectorStore((s) => s.tool);
+  /** The stored document at pointer-down (drags fold their edits into it). */
+  const rootRef = React.useRef<VectorDoc | null>(null);
   const viewportRef = React.useRef<HTMLDivElement>(null);
   const contentRef = React.useRef<SVGGElement>(null);
   const dragRef = React.useRef<Drag | null>(null);
@@ -198,6 +210,10 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
     (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
     const p = toDoc(e.clientX, e.clientY);
     const s = store.getState();
+    s.setPlaying(false);
+    // Layer and keyframe selection are separate focuses: Delete on the canvas means layers.
+    s.setKeySelection([]);
+    rootRef.current = s.doc;
 
     if (e.button === 1 || tool === 'hand' || spaceDown) {
       dragRef.current = { kind: 'pan', start: { x: e.clientX, y: e.clientY }, view };
@@ -289,6 +305,11 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
     const drag = dragRef.current;
     const p = toDoc(e.clientX, e.clientY);
     const s = store.getState();
+    // Re-apply the drag's op to the pointer-down view and fold it into the stored document.
+    const commit = (label: string, sampledBase: VectorDoc, edited: VectorDoc) => {
+      const root = rootRef.current;
+      s.mutate(label, () => (root ? s.foldAt(root, sampledBase, edited) : edited));
+    };
     if (machine && (!drag || drag.kind === 'tool')) {
       runTool(machine.pointerMove(currentToolState(), p, mods(e), ctx) as { state: unknown; commit?: Layer });
       return;
@@ -326,28 +347,28 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
           g = snapped.guides;
         }
         setGuides(g);
-        s.mutate('Move', () => translateLayers(drag.base, drag.ids, dx, dy));
+        commit('Move', drag.base, translateLayers(drag.base, drag.ids, dx, dy));
         return;
       }
       case 'scale': {
         if (drag.single) {
           const local = apply(invert(drag.single.toDoc), p);
           const { fx, fy, fixed } = handleScaleFactors(drag.single.box, drag.handle, local, e.shiftKey);
-          s.mutate('Scale', () => scaleLayerLocal(drag.base, drag.single!.id, fx, fy, fixed));
+          commit('Scale', drag.base, scaleLayerLocal(drag.base, drag.single.id, fx, fy, fixed));
         } else {
           const { fx, fy, fixed } = handleScaleFactors(drag.box, drag.handle, p, e.shiftKey);
-          s.mutate('Scale', () => scaleLayersDoc(drag.base, drag.ids, fx, fy, fixed));
+          commit('Scale', drag.base, scaleLayersDoc(drag.base, drag.ids, fx, fy, fixed));
         }
         return;
       }
       case 'rotate': {
         let deg = ((Math.atan2(p.y - drag.centre.y, p.x - drag.centre.x) - drag.startAngle) * 180) / Math.PI;
         if (e.shiftKey) deg = Math.round(deg / 15) * 15;
-        s.mutate('Rotate', () => rotateLayers(drag.base, drag.ids, deg, drag.ids.length > 1 ? drag.centre : undefined));
+        commit('Rotate', drag.base, rotateLayers(drag.base, drag.ids, deg, drag.ids.length > 1 ? drag.centre : undefined));
         return;
       }
       case 'anchor':
-        s.mutate('Move anchor', () => setLayerAnchorDoc(drag.base, drag.id, p));
+        commit('Move anchor', drag.base, setLayerAnchorDoc(drag.base, drag.id, p));
         return;
       case 'node':
       case 'handle': {
@@ -365,10 +386,10 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
             ? moveNode(segs, drag.segIndex, local.x - drag.start.x, local.y - drag.start.y)
             : moveHandle(segs, drag.segIndex, drag.which, local, e.altKey ? false : 'angle');
         const d = serializePath(next);
-        s.mutate('Edit path', () => ({
+        commit('Edit path', drag.base, {
           ...drag.base,
           layers: updateLayer(drag.base.layers, drag.id, (l) => (l.type === 'path' ? { ...l, d } : l)),
-        }));
+        });
         return;
       }
       case 'tool':

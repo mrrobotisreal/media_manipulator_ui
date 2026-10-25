@@ -1,14 +1,17 @@
 'use client';
 
 import * as React from 'react';
-import { Plus, Scissors, Trash2, VenetianMask } from 'lucide-react';
+import { Diamond, Plus, Scissors, Trash2, VenetianMask } from 'lucide-react';
 
 import { Panel } from '@/components/darkroom/panel';
 import { Segmented } from '@/components/darkroom/segmented';
 import { Stat } from '@/components/darkroom/stat';
 import { useLocalization } from '@/i18n/useLocalization';
 import { resolveTransform } from '@/lib/vector/geometry';
-import { findLayer } from '@/lib/vector/layerTree';
+import { findTrack, removeKeyframes } from '@/lib/vector/keyframes';
+import { findLayer, updateLayer } from '@/lib/vector/layerTree';
+import type { EditableProperty } from '@/lib/vector/properties';
+import { sampleDoc } from '@/lib/vector/sampleTrack';
 import {
   addStop,
   applyGradient,
@@ -27,6 +30,8 @@ import {
 import { selectionBounds, setLayerTransform } from '@/lib/vector/transformOps';
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import type { Gradient, Layer, VectorDoc, VectorTransform } from '@/lib/vector/vectorTypes';
+import { cn } from '@/lib/utils';
+import { propertyKey } from './timeline';
 
 /**
  * Inspector: position/size/rotation/anchor, fill/stroke/stroke width/opacity,
@@ -36,11 +41,19 @@ import type { Gradient, Layer, VectorDoc, VectorTransform } from '@/lib/vector/v
  *
  * Every field edits the model through the store. Text-like inputs commit on
  * change inside a focus gesture, so one focus session is one undo step.
+ *
+ * MM44: fields show the value AT THE PLAYHEAD. Animatable fields (transform,
+ * opacity, fill, stroke, stroke width) carry a keyed-state diamond: filled =
+ * a keyframe at the playhead, hollow = animated but between keys, faint = not
+ * animated (click to start a track). Their edits go through `mutateAt`, so an
+ * edit of an animated field writes a keyframe at the playhead.
  */
 export function Inspector() {
   const { t } = useLocalization('interface');
-  const doc = useVectorStore((s) => s.doc);
+  const stored = useVectorStore((s) => s.doc);
+  const time = useVectorStore((s) => s.time);
   const selection = useVectorStore((s) => s.selection);
+  const doc = React.useMemo(() => (stored ? sampleDoc(stored, time) : null), [stored, time]);
   if (!doc) return null;
 
   const layers = selection.map((id) => findLayer(doc.layers, id)).filter((l): l is Layer => Boolean(l));
@@ -90,6 +103,7 @@ function NumField({
   max,
   suffix,
   disabled,
+  keyed,
 }: {
   label: string;
   value: number;
@@ -99,15 +113,23 @@ function NumField({
   max?: number;
   suffix?: string;
   disabled?: boolean;
+  /** MM44: the keyed-state diamond of an animatable field. */
+  keyed?: React.ReactNode;
 }) {
   const [draft, setDraft] = React.useState<string | null>(null);
   const gesture = useFocusGesture(label);
   const shown = draft ?? formatShown(value);
+  const id = React.useId();
+  // The keyed diamond sits OUTSIDE the <label> so it never joins the input's accessible name.
   return (
-    <label className="flex min-w-0 flex-col gap-0.5">
-      <span className="text-[11px] text-muted-foreground">{label}</span>
+    <div className="flex min-w-0 flex-col gap-0.5">
+      <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+        {keyed}
+        <label htmlFor={id}>{label}</label>
+      </span>
       <span className="relative">
         <input
+          id={id}
           type="number"
           inputMode="decimal"
           className={fieldClass}
@@ -134,7 +156,7 @@ function NumField({
         />
         {suffix && <span className="pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 text-[10px] text-text-subtle">{suffix}</span>}
       </span>
-    </label>
+    </div>
   );
 }
 
@@ -158,14 +180,29 @@ function useFocusGesture(label: string) {
 }
 
 /** Colour swatch + hex text. `allowNone` adds a "none" toggle. */
-function ColorField({ label, value, onChange, allowNone }: { label: string; value: string | undefined; onChange: (v: string) => void; allowNone?: boolean }) {
+function ColorField({
+  label,
+  value,
+  onChange,
+  allowNone,
+  keyed,
+}: {
+  label: string;
+  value: string | undefined;
+  onChange: (v: string) => void;
+  allowNone?: boolean;
+  keyed?: React.ReactNode;
+}) {
   const { t } = useLocalization('interface');
   const gesture = useFocusGesture(label);
   const hex = toHex(value);
   const none = !value || value === 'none';
   return (
     <div className="flex min-w-0 flex-col gap-0.5">
-      <span className="text-[11px] text-muted-foreground">{label}</span>
+      <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+        {keyed}
+        {label}
+      </span>
       <div className="flex items-center gap-1.5">
         <input
           type="color"
@@ -206,6 +243,43 @@ function toHex(v: string | undefined): string | null {
   if (/^#[0-9a-f]{6}$/i.test(s)) return s.toLowerCase();
   if (/^#[0-9a-f]{3}$/i.test(s)) return `#${s[1]}${s[1]}${s[2]}${s[2]}${s[3]}${s[3]}`.toLowerCase();
   return null;
+}
+
+/**
+ * Keyed-state diamond (decision 4): filled = keyframe at the playhead,
+ * hollow = animated, faint = not animated. Click: add a keyframe at the
+ * playhead, or remove the one that is there.
+ */
+export function KeyToggle({ layerId, property }: { layerId: string; property: EditableProperty }) {
+  const { t } = useLocalization('interface');
+  const track = useVectorStore((s) => (s.doc ? findTrack(s.doc, layerId, property) : undefined));
+  const time = useVectorStore((s) => s.time);
+  const keyedNow = !!track?.keyframes.some((k) => k.t === time);
+  const state = keyedNow ? 'key' : track ? 'animated' : 'static';
+  const label = t(propertyKey(property));
+  const action = keyedNow ? t('vector.timeline.removeKeyHere', { property: label }) : t('vector.timeline.addKeyHere', { property: label });
+  return (
+    <button
+      type="button"
+      data-testid={`key-toggle-${property}`}
+      data-state={state}
+      aria-label={action}
+      title={action}
+      aria-pressed={keyedNow}
+      onClick={(e) => {
+        e.preventDefault();
+        const s = useVectorStore.getState();
+        if (keyedNow) s.mutate('Delete keyframe', (d) => removeKeyframes(d, [{ layerId, property, t: s.time }]));
+        else s.addKeyframe(layerId, property);
+      }}
+      className={cn(
+        'grid size-3.5 shrink-0 place-items-center rounded-sm',
+        state === 'static' ? 'text-text-subtle/60 hover:text-muted-foreground' : 'text-data',
+      )}
+    >
+      <Diamond className={cn('size-2.5', keyedNow && 'fill-current')} />
+    </button>
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -323,21 +397,25 @@ function LayerSections({ doc, layer }: { doc: VectorDoc; layer: Layer }) {
 function TransformSection({ doc, layer }: { doc: VectorDoc; layer: Exclude<Layer, { type: 'raw' }> }) {
   const { t } = useLocalization('interface');
   const tf = resolveTransform(layer.transform);
+  // Time-aware: an animated field gets a keyframe at the playhead.
   const set = (patch: Partial<VectorTransform>) =>
-    useVectorStore.getState().mutate('Transform', (d) => setLayerTransform(d, layer.id, { ...tf, ...patch }));
+    useVectorStore.getState().mutateAt('Transform', (d) => setLayerTransform(d, layer.id, { ...tf, ...patch }));
   const locked = layer.locked === true;
+  const k = (field: keyof VectorTransform) => <KeyToggle layerId={layer.id} property={`transform.${field}` as EditableProperty} />;
   void doc;
   return (
     <Section title={t('vector.inspector.transform')}>
       <div className="grid grid-cols-2 gap-2">
-        <NumField label="X" value={tf.x} onChange={(x) => set({ x })} disabled={locked} />
-        <NumField label="Y" value={tf.y} onChange={(y) => set({ y })} disabled={locked} />
-        <NumField label={t('vector.inspector.scaleX')} value={tf.scaleX} step={0.05} onChange={(scaleX) => set({ scaleX })} disabled={locked} />
-        <NumField label={t('vector.inspector.scaleY')} value={tf.scaleY} step={0.05} onChange={(scaleY) => set({ scaleY })} disabled={locked} />
-        <NumField label={t('vector.inspector.rotation')} value={tf.rotation} min={-360} max={360} suffix="°" onChange={(rotation) => set({ rotation })} disabled={locked} />
-        <NumField label={t('vector.inspector.skewX')} value={tf.skewX} min={-89} max={89} suffix="°" onChange={(skewX) => set({ skewX })} disabled={locked} />
-        <NumField label={t('vector.inspector.anchorX')} value={tf.anchorX} onChange={(anchorX) => set({ anchorX })} disabled={locked} />
-        <NumField label={t('vector.inspector.anchorY')} value={tf.anchorY} onChange={(anchorY) => set({ anchorY })} disabled={locked} />
+        <NumField label="X" keyed={k('x')} value={tf.x} onChange={(x) => set({ x })} disabled={locked} />
+        <NumField label="Y" keyed={k('y')} value={tf.y} onChange={(y) => set({ y })} disabled={locked} />
+        <NumField label={t('vector.inspector.scaleX')} keyed={k('scaleX')} value={tf.scaleX} step={0.05} onChange={(scaleX) => set({ scaleX })} disabled={locked} />
+        <NumField label={t('vector.inspector.scaleY')} keyed={k('scaleY')} value={tf.scaleY} step={0.05} onChange={(scaleY) => set({ scaleY })} disabled={locked} />
+        <NumField label={t('vector.inspector.rotation')} keyed={k('rotation')} value={tf.rotation} min={-360} max={360} suffix="°" onChange={(rotation) => set({ rotation })} disabled={locked} />
+        <NumField label={t('vector.inspector.skewX')} keyed={k('skewX')} value={tf.skewX} min={-89} max={89} suffix="°" onChange={(skewX) => set({ skewX })} disabled={locked} />
+        <NumField label={t('vector.inspector.skewY')} keyed={k('skewY')} value={tf.skewY} min={-89} max={89} suffix="°" onChange={(skewY) => set({ skewY })} disabled={locked} />
+        <span aria-hidden />
+        <NumField label={t('vector.inspector.anchorX')} keyed={k('anchorX')} value={tf.anchorX} onChange={(anchorX) => set({ anchorX })} disabled={locked} />
+        <NumField label={t('vector.inspector.anchorY')} keyed={k('anchorY')} value={tf.anchorY} onChange={(anchorY) => set({ anchorY })} disabled={locked} />
       </div>
     </Section>
   );
@@ -456,15 +534,24 @@ function TextSection({ layer }: { layer: Extract<Layer, { type: 'text' }> }) {
 
 function StyleSection({ doc, layer }: { doc: VectorDoc; layer: Exclude<Layer, { type: 'raw' }> }) {
   const { t } = useLocalization('interface');
+  // Time-aware (opacity / stroke width are animatable).
   const patch = (p: Record<string, unknown>, label = 'Style') =>
-    useVectorStore.getState().patchLayer(layer.id, label, (l) => ({ ...l, ...p }) as Layer);
+    useVectorStore.getState().mutateAt(label, (d) => ({ ...d, layers: updateLayer(d.layers, layer.id, (l) => ({ ...l, ...p }) as Layer) }));
   return (
     <Section title={t('vector.inspector.appearance')}>
       {layer.type !== 'line' && <PaintEditor doc={doc} layer={layer} paintKey="fill" />}
       <PaintEditor doc={doc} layer={layer} paintKey="stroke" />
       <div className="grid grid-cols-2 gap-2">
-        <NumField label={t('vector.inspector.strokeWidth')} value={layer.strokeWidth ?? 1} min={0} step={0.5} onChange={(strokeWidth) => patch({ strokeWidth })} />
         <NumField
+          label={t('vector.inspector.strokeWidth')}
+          keyed={<KeyToggle layerId={layer.id} property="strokeWidth" />}
+          value={layer.strokeWidth ?? 1}
+          min={0}
+          step={0.5}
+          onChange={(strokeWidth) => patch({ strokeWidth })}
+        />
+        <NumField
+          keyed={<KeyToggle layerId={layer.id} property="opacity" />}
           label={t('vector.inspector.opacity')}
           value={Math.round((layer.opacity ?? 1) * 100)}
           min={0}
@@ -502,7 +589,13 @@ function PaintEditor({ doc, layer, paintKey }: { doc: VectorDoc; layer: Exclude<
       {gradient ? (
         <GradientEditor gradient={gradient} />
       ) : (
-        <ColorField label={label} value={solidOf(layer[paintKey])} allowNone onChange={(v) => s().patchLayer(layer.id, label, (l) => ({ ...l, [paintKey]: v }) as Layer)} />
+        <ColorField
+          label={label}
+          keyed={<KeyToggle layerId={layer.id} property={paintKey} />}
+          value={solidOf(layer[paintKey])}
+          allowNone
+          onChange={(v) => s().mutateAt(label, (d) => ({ ...d, layers: updateLayer(d.layers, layer.id, (l) => ({ ...l, [paintKey]: v }) as Layer) }))}
+        />
       )}
     </div>
   );

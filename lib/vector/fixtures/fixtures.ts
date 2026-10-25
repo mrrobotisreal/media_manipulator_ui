@@ -12,8 +12,11 @@ const list = (dir: string, ext: string) =>
     .filter((f) => f.endsWith(ext))
     .sort();
 
-/** Canonical documents: the shared contract with MM43's Go sanitizer. */
-export const docFixtures = () => list(FIXTURES_DIR, '.json');
+/**
+ * Canonical documents: the shared contract with MM43's Go sanitizer.
+ * `*.fixtures.json` value tables (MM44's `sample.fixtures.json`) are not documents.
+ */
+export const docFixtures = () => list(FIXTURES_DIR, '.json').filter((f) => !f.endsWith('.fixtures.json'));
 /** Golden SVG inputs for import / export idempotence. */
 export const svgFixtures = () => list(FIXTURES_DIR, '.svg');
 /** Non-canonical inputs that must parse (defaults are filled in). */

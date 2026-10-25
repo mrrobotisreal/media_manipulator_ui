@@ -1651,7 +1651,10 @@
       "cancel": "Cancel",
       "deleted": "Project deleted.",
       "deletedPending": "Project deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this project. Nothing was changed; try again."
+      "deleteFailed": "Could not delete this project. Nothing was changed; try again.",
+      "kindDarkroom": "Darkroom",
+      "motionLoadFailed": "Could not load your {{brand}} projects.",
+      "motionDeleteBody": "The {{brand}} project and its thumbnail are removed from our servers. This cannot be undone."
     },
     "billing": {
       "plans": "Compare plans"

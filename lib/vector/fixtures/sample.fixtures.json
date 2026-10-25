@@ -1,0 +1,892 @@
+{
+  "comment": "Motion keyframe sampler value table (MM44). UI-only: lib/vector/sampleTrack.ts is asserted against it (sampleTrack.test.ts) and the bezier rows against lib/vector/bezier.ts within 1e-4. Not shared with Go (no server sampling). Generated with an independent reference (bisection-only bezier, closed-form presets); numbers rounded to 1e-6.",
+  "bezier": [
+    {
+      "name": "css ease",
+      "curve": [
+        0.25,
+        0.1,
+        0.25,
+        1
+      ],
+      "samples": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0.05,
+          "y": 0.032952
+        },
+        {
+          "x": 0.1,
+          "y": 0.094796
+        },
+        {
+          "x": 0.25,
+          "y": 0.408511
+        },
+        {
+          "x": 0.5,
+          "y": 0.802403
+        },
+        {
+          "x": 0.75,
+          "y": 0.960459
+        },
+        {
+          "x": 0.9,
+          "y": 0.994316
+        },
+        {
+          "x": 0.95,
+          "y": 0.998625
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "name": "css ease-in-out",
+      "curve": [
+        0.42,
+        0,
+        0.58,
+        1
+      ],
+      "samples": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0.05,
+          "y": 0.00483
+        },
+        {
+          "x": 0.1,
+          "y": 0.019722
+        },
+        {
+          "x": 0.25,
+          "y": 0.129162
+        },
+        {
+          "x": 0.5,
+          "y": 0.5
+        },
+        {
+          "x": 0.75,
+          "y": 0.870838
+        },
+        {
+          "x": 0.9,
+          "y": 0.980278
+        },
+        {
+          "x": 0.95,
+          "y": 0.99517
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "name": "back out (overshoot)",
+      "curve": [
+        0.34,
+        1.56,
+        0.64,
+        1
+      ],
+      "samples": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0.05,
+          "y": 0.215562
+        },
+        {
+          "x": 0.1,
+          "y": 0.403933
+        },
+        {
+          "x": 0.25,
+          "y": 0.816289
+        },
+        {
+          "x": 0.5,
+          "y": 1.087401
+        },
+        {
+          "x": 0.75,
+          "y": 1.059647
+        },
+        {
+          "x": 0.9,
+          "y": 1.012616
+        },
+        {
+          "x": 0.95,
+          "y": 1.003384
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "name": "x clamped (1.5 → 1, -0.2 → 0)",
+      "curve": [
+        1.5,
+        0.2,
+        -0.2,
+        0.8
+      ],
+      "samples": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0.05,
+          "y": 0.010706
+        },
+        {
+          "x": 0.1,
+          "y": 0.023009
+        },
+        {
+          "x": 0.25,
+          "y": 0.07378
+        },
+        {
+          "x": 0.5,
+          "y": 0.499997
+        },
+        {
+          "x": 0.75,
+          "y": 0.92622
+        },
+        {
+          "x": 0.9,
+          "y": 0.976991
+        },
+        {
+          "x": 0.95,
+          "y": 0.989294
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "name": "preset linear",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": 100,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 0
+        },
+        {
+          "t": 100,
+          "expected": 10
+        },
+        {
+          "t": 250,
+          "expected": 25
+        },
+        {
+          "t": 500,
+          "expected": 50
+        },
+        {
+          "t": 750,
+          "expected": 75
+        },
+        {
+          "t": 900,
+          "expected": 90
+        },
+        {
+          "t": 1000,
+          "expected": 100
+        }
+      ]
+    },
+    {
+      "name": "preset easeIn",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "easeIn"
+        },
+        {
+          "t": 1000,
+          "value": 100,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 0
+        },
+        {
+          "t": 100,
+          "expected": 1
+        },
+        {
+          "t": 250,
+          "expected": 6.25
+        },
+        {
+          "t": 500,
+          "expected": 25
+        },
+        {
+          "t": 750,
+          "expected": 56.25
+        },
+        {
+          "t": 900,
+          "expected": 81
+        },
+        {
+          "t": 1000,
+          "expected": 100
+        }
+      ]
+    },
+    {
+      "name": "preset easeOut",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "easeOut"
+        },
+        {
+          "t": 1000,
+          "value": 100,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 0
+        },
+        {
+          "t": 100,
+          "expected": 19
+        },
+        {
+          "t": 250,
+          "expected": 43.75
+        },
+        {
+          "t": 500,
+          "expected": 75
+        },
+        {
+          "t": 750,
+          "expected": 93.75
+        },
+        {
+          "t": 900,
+          "expected": 99
+        },
+        {
+          "t": 1000,
+          "expected": 100
+        }
+      ]
+    },
+    {
+      "name": "preset easeBoth",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "easeBoth"
+        },
+        {
+          "t": 1000,
+          "value": 100,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 0
+        },
+        {
+          "t": 100,
+          "expected": 2
+        },
+        {
+          "t": 250,
+          "expected": 12.5
+        },
+        {
+          "t": 500,
+          "expected": 50
+        },
+        {
+          "t": 750,
+          "expected": 87.5
+        },
+        {
+          "t": 900,
+          "expected": 98
+        },
+        {
+          "t": 1000,
+          "expected": 100
+        }
+      ]
+    },
+    {
+      "name": "hold jumps at the next key, not before",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 10,
+          "easing": "hold"
+        },
+        {
+          "t": 1000,
+          "value": 20,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 30,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 10
+        },
+        {
+          "t": 500,
+          "expected": 10
+        },
+        {
+          "t": 999,
+          "expected": 10
+        },
+        {
+          "t": 1000,
+          "expected": 20
+        },
+        {
+          "t": 1500,
+          "expected": 25
+        },
+        {
+          "t": 2000,
+          "expected": 30
+        }
+      ]
+    },
+    {
+      "name": "cubic-bezier css ease",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": {
+            "cubicBezier": [
+              0.25,
+              0.1,
+              0.25,
+              1
+            ]
+          }
+        },
+        {
+          "t": 2000,
+          "value": 200,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 0
+        },
+        {
+          "t": 200,
+          "expected": 18.959261
+        },
+        {
+          "t": 500,
+          "expected": 81.702118
+        },
+        {
+          "t": 1000,
+          "expected": 160.480678
+        },
+        {
+          "t": 1500,
+          "expected": 192.091796
+        },
+        {
+          "t": 1800,
+          "expected": 198.863295
+        },
+        {
+          "t": 2000,
+          "expected": 200
+        }
+      ]
+    },
+    {
+      "name": "cubic-bezier css ease-in-out",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": {
+            "cubicBezier": [
+              0.42,
+              0,
+              0.58,
+              1
+            ]
+          }
+        },
+        {
+          "t": 2000,
+          "value": 200,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 0
+        },
+        {
+          "t": 200,
+          "expected": 3.944491
+        },
+        {
+          "t": 500,
+          "expected": 25.832386
+        },
+        {
+          "t": 1000,
+          "expected": 100
+        },
+        {
+          "t": 1500,
+          "expected": 174.167614
+        },
+        {
+          "t": 1800,
+          "expected": 196.055509
+        },
+        {
+          "t": 2000,
+          "expected": 200
+        }
+      ]
+    },
+    {
+      "name": "cubic-bezier back out (overshoot)",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": {
+            "cubicBezier": [
+              0.34,
+              1.56,
+              0.64,
+              1
+            ]
+          }
+        },
+        {
+          "t": 2000,
+          "value": 200,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 0
+        },
+        {
+          "t": 200,
+          "expected": 80.786608
+        },
+        {
+          "t": 500,
+          "expected": 163.25784
+        },
+        {
+          "t": 1000,
+          "expected": 217.480134
+        },
+        {
+          "t": 1500,
+          "expected": 211.929372
+        },
+        {
+          "t": 1800,
+          "expected": 202.523116
+        },
+        {
+          "t": 2000,
+          "expected": 200
+        }
+      ]
+    },
+    {
+      "name": "mixed lane: segment easing comes from the left key",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "easeIn"
+        },
+        {
+          "t": 1000,
+          "value": 100,
+          "easing": {
+            "cubicBezier": [
+              0.25,
+              0.1,
+              0.25,
+              1
+            ]
+          }
+        },
+        {
+          "t": 2000,
+          "value": 0,
+          "easing": "hold"
+        },
+        {
+          "t": 3000,
+          "value": 50,
+          "easing": "easeOut"
+        }
+      ],
+      "samples": [
+        {
+          "t": 500,
+          "expected": 25
+        },
+        {
+          "t": 1000,
+          "expected": 100
+        },
+        {
+          "t": 1500,
+          "expected": 19.759661
+        },
+        {
+          "t": 2000,
+          "expected": 0
+        },
+        {
+          "t": 2999,
+          "expected": 0
+        },
+        {
+          "t": 3000,
+          "expected": 50
+        },
+        {
+          "t": 4000,
+          "expected": 50
+        }
+      ]
+    },
+    {
+      "name": "colour lerp in sRGB",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "#000000",
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": "#ffffff",
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": "#000000"
+        },
+        {
+          "t": 250,
+          "expected": "#404040"
+        },
+        {
+          "t": 500,
+          "expected": "#808080"
+        },
+        {
+          "t": 1000,
+          "expected": "#ffffff"
+        }
+      ]
+    },
+    {
+      "name": "colour lerp: named, short hex and rgb() syntax",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "red",
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": "#00f",
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": "rgb(0 255 0)",
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 500,
+          "expected": "#800080"
+        },
+        {
+          "t": 1500,
+          "expected": "#008080"
+        }
+      ]
+    },
+    {
+      "name": "colour lerp with alpha is premultiplied",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "rgba(255, 0, 0, 0)",
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": "#0000ff",
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": "rgba(255, 0, 0, 0)"
+        },
+        {
+          "t": 500,
+          "expected": "rgba(0, 0, 255, 0.5)"
+        },
+        {
+          "t": 1000,
+          "expected": "#0000ff"
+        }
+      ]
+    },
+    {
+      "name": "colour hold",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "#ff0000",
+          "easing": "hold"
+        },
+        {
+          "t": 1000,
+          "value": "#00ff00",
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 999,
+          "expected": "#ff0000"
+        },
+        {
+          "t": 1000,
+          "expected": "#00ff00"
+        }
+      ]
+    },
+    {
+      "name": "non-colour paint holds (none, url)",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "none",
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": "#ff0000",
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": "url(#g)",
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 500,
+          "expected": "none"
+        },
+        {
+          "t": 1000,
+          "expected": "#ff0000"
+        },
+        {
+          "t": 1500,
+          "expected": "#ff0000"
+        },
+        {
+          "t": 2000,
+          "expected": "url(#g)"
+        }
+      ]
+    },
+    {
+      "name": "before first / after last hold the end values",
+      "keyframes": [
+        {
+          "t": 500,
+          "value": 5,
+          "easing": "linear"
+        },
+        {
+          "t": 1500,
+          "value": 15,
+          "easing": "linear"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 5
+        },
+        {
+          "t": 499,
+          "expected": 5
+        },
+        {
+          "t": 1000,
+          "expected": 10
+        },
+        {
+          "t": 1500,
+          "expected": 15
+        },
+        {
+          "t": 99999,
+          "expected": 15
+        }
+      ]
+    },
+    {
+      "name": "single keyframe track",
+      "keyframes": [
+        {
+          "t": 700,
+          "value": 42,
+          "easing": "easeBoth"
+        }
+      ],
+      "samples": [
+        {
+          "t": 0,
+          "expected": 42
+        },
+        {
+          "t": 700,
+          "expected": 42
+        },
+        {
+          "t": 5000,
+          "expected": 42
+        }
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "name": "coincident times",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "linear"
+        },
+        {
+          "t": 500,
+          "value": 1,
+          "easing": "linear"
+        },
+        {
+          "t": 500,
+          "value": 2,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "name": "coincident after rounding to integer ms",
+      "keyframes": [
+        {
+          "t": 999.6,
+          "value": 0,
+          "easing": "linear"
+        },
+        {
+          "t": 1000.4,
+          "value": 1,
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}
