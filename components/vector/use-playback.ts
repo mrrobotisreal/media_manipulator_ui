@@ -22,15 +22,16 @@ export function usePlayback(opts: {
   caf?: (id: number) => void;
 } = {}) {
   const playing = useVectorStore((s) => s.playing);
-  const now = opts.now ?? (() => performance.now());
-  const raf = opts.raf ?? ((cb: () => void) => requestAnimationFrame(cb));
-  const caf = opts.caf ?? ((id: number) => cancelAnimationFrame(id));
-  const clock = React.useRef({ now, raf, caf });
-  clock.current = { now, raf, caf };
+  // The clock is fixed for the component's life (tests inject one; the editor uses the browser's).
+  const [clock] = React.useState(() => ({
+    n: opts.now ?? (() => performance.now()),
+    r: opts.raf ?? ((cb: () => void) => requestAnimationFrame(cb)),
+    c: opts.caf ?? ((id: number) => cancelAnimationFrame(id)),
+  }));
 
   React.useEffect(() => {
     if (!playing) return;
-    const { now: n, raf: r, caf: c } = clock.current;
+    const { n, r, c } = clock;
     const store = useVectorStore;
     const s0 = store.getState();
     if (!s0.doc) return;
@@ -68,5 +69,5 @@ export function usePlayback(opts: {
     if (origin !== s0.time) s0.setTime(origin);
     id = r(tick);
     return () => c(id);
-  }, [playing]);
+  }, [playing, clock]);
 }
