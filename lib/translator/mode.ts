@@ -24,10 +24,10 @@
  * Loading translator code: never `import` it statically. Guard the dynamic
  * import / require with the LITERAL expression
  *     if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') { ... }
- * at the call site (not a call to `isTranslatorEnv()`): bundlers fold the
- * literal, they do not inline a function from another module, and only a
- * folded branch keeps the chunk out of the build. `npm run check:no-translator`
- * proves it on the built output.
+ * right around it (not a call to `isTranslatorEnv()`): bundlers fold the
+ * literal and drop the branch, and only a dropped branch keeps the chunk out of
+ * the build. `loadTranslatorMarkerRuntime()` below is the one synchronous
+ * loader; `npm run check:no-translator` proves the result on the built output.
  */
 import { translatorLocales } from '@/i18n/locales';
 
@@ -118,6 +118,28 @@ const RUNTIME_SLOT = '__mmTranslatorMarkerRuntime';
 /** The loaded marker runtime, or `null` (always `null` in production). */
 export function getTranslatorMarkerRuntime(): TranslatorMarkerRuntime | null {
   return ((globalThis as Record<string, unknown>)[RUNTIME_SLOT] as TranslatorMarkerRuntime | undefined) ?? null;
+}
+
+/**
+ * The key-marker runtime for `i18n/index.ts` and `lib/i18n/server.tsx`, loading
+ * `lib/translator/keyMarker.ts` on first use. Synchronous because i18next and
+ * `getServerT` are: markers must be in the prerendered HTML and in the first
+ * client render alike (hydration). `null` unless the deployment is armed.
+ */
+export function loadTranslatorMarkerRuntime(): TranslatorMarkerRuntime | null {
+  if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') {
+    if (!translatorLocale()) return null;
+    if (!getTranslatorMarkerRuntime()) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        require('./keyMarker');
+      } catch (error) {
+        console.error('[translator] key markers unavailable; the site renders without them', error);
+      }
+    }
+    return getTranslatorMarkerRuntime();
+  }
+  return null;
 }
 
 /** Called by `lib/translator/keyMarker.ts` when it is evaluated. */

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ChangelogPage from '@/views/changelog';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { languageAlternates } from '@/lib/metadata';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerMetadataT } from '@/lib/i18n/server';
 import { getLocaleDef, localizeHref } from '@/i18n/locales';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
 
@@ -15,7 +15,7 @@ type PageParams = { params: Promise<{ lang: string }> };
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang } = await params;
   const locale = resolveLangParam(lang);
-  const t = getServerT('interface', locale);
+  const t = getServerMetadataT('interface', locale);
   const title = t('changelog.metaTitle');
   const description = t('changelog.metaDesc');
   const path = localizeHref('/changelog', locale);

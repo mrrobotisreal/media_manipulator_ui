@@ -5,7 +5,7 @@ import VoicesPage from '@/views/voices';
 import { VOICES } from '@/content/voices';
 import { getLocaleDef, localizeHref } from '@/i18n/locales';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerMetadataT } from '@/lib/i18n/server';
 import { languageAlternates } from '@/lib/metadata';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN, type JsonLd } from '@/lib/seo';
 
@@ -22,7 +22,7 @@ const canonicalFor = (locale: string) => {
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang } = await params;
   const locale = resolveLangParam(lang);
-  const t = getServerT('interface', locale);
+  const t = getServerMetadataT('interface', locale);
   const title = `${t('interface:voices.title')} — ${SITE_NAME}`;
   const description = t('interface:voices.intro');
   const canonical = canonicalFor(locale);
