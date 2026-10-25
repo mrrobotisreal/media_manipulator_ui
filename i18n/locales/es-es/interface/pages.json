@@ -1432,12 +1432,14 @@
       "anonymous": "Sin cuenta",
       "free": "Cuenta gratuita",
       "premium": "Premium",
-      "operator": "Operador"
+      "operator": "Operador",
+      "pro": "Pro"
     },
     "tierBlurb": {
       "anonymous": "Abre una herramienta y adelante. Nada que registrar, nada que se guarde más allá del día.",
       "free": "Seis veces el volumen diario, historial guardado y proyectos de Darkroom que sobreviven a un refresco de página.",
-      "premium": "Salida en 4K, archivos largos, prioridad en la cola de GPU y sin anuncios."
+      "premium": "Salida en 4K, archivos largos, prioridad en la cola de GPU y sin anuncios.",
+      "pro": "Todo lo de Premium, límites diarios mucho más altos de operaciones, trabajos de IA y exportaciones, y la mayor asignación de Motion."
     },
     "rows": {
       "opsPerDay": "Operaciones al día",
@@ -1447,7 +1449,10 @@
       "maxOutputHeight": "Resolución de salida máxima",
       "studioProjects": "Proyectos de Studio guardados",
       "priorityGpu": "Cola de GPU",
-      "adsRemoved": "Anuncios"
+      "adsRemoved": "Anuncios",
+      "exportsPerDay": "Exportaciones de Darkroom al día",
+      "vectorExportsPerDay": "Exportaciones de Motion al día",
+      "vectorProjects": "Proyectos de Motion guardados"
     },
     "values": {
       "yes": "Incluido",
@@ -1469,11 +1474,14 @@
       "q2": "¿Qué pasa cuando se me acaba?",
       "a2": "Nada se rompe. La herramienta te avisa de que se ha agotado el límite y te ofrece el siguiente nivel. Tu límite se restablece a medianoche UTC.",
       "q3": "¿Las cuentas gratuitas ven anuncios?",
-      "a3": "Sí. Los anuncios financian el nivel gratuito, así que solo Premium los elimina. No hay intersticiales, cuentas atrás ni esperas forzadas en ningún plan.",
+      "a3": "Sí. Los anuncios financian el nivel gratuito, así que solo Premium y Pro los eliminan. No hay intersticiales, cuentas atrás ni esperas forzadas en ningún plan.",
       "q4": "¿Puedo usarlo sin cuenta en absoluto?",
       "a4": "Sí, y es algo deliberado. Todas las herramientas funcionan sin iniciar sesión; una cuenta solo eleva el límite y conserva tu historial. Sin cuenta, tus archivos se conservan 24 horas; con una cuenta eliges cuánto tiempo, de 24 horas a 2 años."
     },
-    "retentionNote": "Tú decides: de 24 horas a 2 años. Visitantes sin cuenta: 24 horas."
+    "retentionNote": "Tú decides: de 24 horas a 2 años. Visitantes sin cuenta: 24 horas.",
+    "pendingFrom": "Premium desde el {{date}}",
+    "proBadge": "Lo mejor para Motion",
+    "motionNote": "Motion, el editor de animaciones SVG, se está desplegando. Se indican sus asignaciones para que veas qué incluye cada plan."
   },
   "account": {
     "title": "Tu cuenta",

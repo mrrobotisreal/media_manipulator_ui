@@ -163,9 +163,11 @@
       "anonymous": "Guest",
       "free": "Free",
       "premium": "Premium",
-      "operator": "Operator"
+      "operator": "Operator",
+      "pro": "Pro"
     },
-    "tierEnds": "Premium · ends {{date}}"
+    "tierEnds": "Premium · ends {{date}}",
+    "tierEndsPro": "Pro · ends {{date}}"
   },
   "upgradeSurfaces": {
     "fileLimit": "Files up to {{size}}",
@@ -415,7 +417,8 @@
     "errors": {
       "unavailable": "Premium is not available yet.",
       "operator": "Operator accounts already have unlimited access.",
-      "generic": "Could not start checkout. Please try again in a moment."
+      "generic": "Could not start checkout. Please try again in a moment.",
+      "alreadyOnPlan": "You already have this plan or a higher one."
     },
     "panel": {
       "title": "Billing",
@@ -438,7 +441,17 @@
       "updatePayment": "Update payment method",
       "cancelledTitle": "Your Premium plan is cancelled",
       "cancelledBody": "You keep Premium until {{date}}. After that your account switches to Free and nothing more is charged.",
-      "cancelledBodyNoDate": "You keep Premium until the end of the current billing period. After that your account switches to Free and nothing more is charged."
+      "cancelledBodyNoDate": "You keep Premium until the end of the current billing period. After that your account switches to Free and nothing more is charged.",
+      "planLabel": "Plan",
+      "pro": {
+        "grantUntil": "Pro granted by the team until {{date}}.",
+        "grantOpen": "Pro granted by the team with no end date.",
+        "pastDueBody": "Pro access continues for up to 7 days while we retry. Update your payment method to keep it.",
+        "endsLabel": "Pro ends on",
+        "cancelledTitle": "Your Pro plan is cancelled",
+        "cancelledBody": "You keep Pro until {{date}}. After that your account switches to Free and nothing more is charged.",
+        "cancelledBodyNoDate": "You keep Pro until the end of the current billing period. After that your account switches to Free and nothing more is charged."
+      }
     },
     "return": {
       "waiting": {
@@ -461,7 +474,11 @@
         "title": "We could not confirm your payment yet",
         "body": "Your plan updates automatically once the payment is confirmed. Try again in a moment."
       },
-      "refresh": "Refresh my plan"
+      "refresh": "Refresh my plan",
+      "confirmedPro": {
+        "title": "Welcome to Pro",
+        "body": "Your payment went through and your plan is now Pro: the highest daily limits, and the largest Motion allowance as the Motion editor rolls out."
+      }
     },
     "offer": {
       "title": "Changed your mind? Keep Premium for ${{price}}/month",
@@ -483,6 +500,43 @@
       "resumeFineprint": "Nothing is charged today. Your next payment is on {{date}}, at the same price, and it renews as usual until you cancel.",
       "unitMonth": "/month",
       "unitYear": "/year"
+    },
+    "upgradePro": "Upgrade to Pro",
+    "unavailablePro": "Pro is not available yet",
+    "switchToPremium": "Switch to Premium",
+    "planChange": {
+      "cancel": "Not now",
+      "upgrade": {
+        "title": "Upgrade to Pro now?",
+        "body": "You pay the prorated difference for the rest of this billing period today. Your renewal date stays {{date}}, and from then Pro costs {{price}}{{unit}}.",
+        "bodyNoPrice": "You pay the prorated difference for the rest of this billing period today. Your renewal date stays {{date}}.",
+        "bodyNoDate": "You pay the prorated difference for the rest of this billing period today. Your renewal date does not change.",
+        "fineprint": "Pro starts as soon as the payment goes through. The 14-day refund applies to your first payment only.",
+        "confirm": "Upgrade to Pro"
+      },
+      "downgrade": {
+        "title": "Switch to Premium at the end of this period?",
+        "body": "You keep Pro until {{date}}. After that your plan is Premium at {{price}}{{unit}}.",
+        "bodyNoPrice": "You keep Pro until {{date}}. After that your plan is Premium.",
+        "bodyNoDate": "You keep Pro until the end of the current billing period. After that your plan is Premium.",
+        "fineprint": "Nothing is refunded for the rest of this period. You can keep Pro any time before the switch.",
+        "confirm": "Switch to Premium"
+      },
+      "upgraded": "You are on Pro now.",
+      "scheduled": "Your plan switches to Premium on {{date}}.",
+      "scheduledNoDate": "Your plan switches to Premium at the end of this billing period.",
+      "kept": "You are keeping Pro.",
+      "pendingBody": "Premium from {{date}}. You keep Pro until then.",
+      "keepPro": "Keep Pro",
+      "dropTitle": "Drop to Premium and keep going",
+      "dropBody": "Instead of losing everything, you can stay on Premium at its regular price. Resume your subscription in Manage subscription, then choose Switch to Premium here.",
+      "dropCta": "Resume in Manage subscription",
+      "errors": {
+        "notSubscription": "Plan changes are only available for a paid subscription. A plan granted by the team cannot be changed here.",
+        "samePlan": "You are already on this plan.",
+        "notAvailable": "This change is not available right now. If your subscription is cancelled, resume it in Manage subscription first.",
+        "generic": "Could not change your plan. Please try again in a moment."
+      }
     }
   },
   "upgradeInterstitial": {
@@ -517,6 +571,16 @@
       "height": "Premium outputs up to {{value}}p.",
       "projects": "Premium keeps up to {{value}} saved projects.",
       "projectsUnlimited": "Premium has no saved-project limit."
+    },
+    "noHigherPlan": "No plan raises this limit further. Lower the setting to continue.",
+    "proNote": "Upgrading charges the prorated difference today; your renewal date stays the same.",
+    "proChange": {
+      "ops": "Pro allows {{value}} conversions a day.",
+      "opsUnlimited": "Pro has no daily conversion limit.",
+      "aiOps": "Pro allows {{value}} AI jobs a day.",
+      "aiOpsUnlimited": "Pro has no daily AI job limit.",
+      "exports": "Pro allows {{value}} exports a day.",
+      "exportsUnlimited": "Pro has no daily export limit."
     }
   },
   "recentStrip": {
@@ -544,7 +608,8 @@
     "export": {
       "remaining": "{{remaining}} of {{limit}} exports left today",
       "empty": "All {{limit}} exports used today"
-    }
+    },
+    "titlePro": "See Pro plans"
   },
   "queueLine": {
     "text": "This waited {{time}} on the shared queue. Premium jobs go first.",
@@ -632,5 +697,16 @@
     "madeWith": "Made with Media Manipulator",
     "tryIt": "Try it on your file",
     "expires": "This link works until {{when}}."
+  },
+  "planSummary": {
+    "title": "Plans at a glance",
+    "current": "Your plan",
+    "free": "Free",
+    "ops": "{{value}} operations a day",
+    "opsUnlimited": "Unlimited operations a day",
+    "aiOps": "{{value}} AI jobs a day",
+    "aiOpsUnlimited": "Unlimited AI jobs a day",
+    "fileSize": "Files up to {{value}}",
+    "compare": "Compare all plans"
   }
 }

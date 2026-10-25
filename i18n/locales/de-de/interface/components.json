@@ -163,9 +163,11 @@
       "anonymous": "Gast",
       "free": "Kostenlos",
       "premium": "Premium",
-      "operator": "Operator"
+      "operator": "Operator",
+      "pro": "Pro"
     },
-    "tierEnds": "Premium · endet am {{date}}"
+    "tierEnds": "Premium · endet am {{date}}",
+    "tierEndsPro": "Pro · endet am {{date}}"
   },
   "upgradeSurfaces": {
     "fileLimit": "Dateien bis zu {{size}}",
@@ -415,7 +417,8 @@
     "errors": {
       "unavailable": "Premium ist noch nicht verfügbar.",
       "operator": "Operator-Konten haben bereits unbegrenzten Zugriff.",
-      "generic": "Der Bezahlvorgang konnte nicht gestartet werden. Bitte versuche es gleich noch einmal."
+      "generic": "Der Bezahlvorgang konnte nicht gestartet werden. Bitte versuche es gleich noch einmal.",
+      "alreadyOnPlan": "Du hast diesen Tarif oder einen höheren bereits."
     },
     "panel": {
       "title": "Abrechnung",
@@ -438,7 +441,17 @@
       "updatePayment": "Zahlungsmethode aktualisieren",
       "cancelledTitle": "Dein Premium-Abo ist gekündigt",
       "cancelledBody": "Du behältst Premium bis zum {{date}}. Danach wechselt dein Konto zu Free und es wird nichts mehr abgebucht.",
-      "cancelledBodyNoDate": "Du behältst Premium bis zum Ende des aktuellen Abrechnungszeitraums. Danach wechselt dein Konto zu Free und es wird nichts mehr abgebucht."
+      "cancelledBodyNoDate": "Du behältst Premium bis zum Ende des aktuellen Abrechnungszeitraums. Danach wechselt dein Konto zu Free und es wird nichts mehr abgebucht.",
+      "planLabel": "Tarif",
+      "pro": {
+        "grantUntil": "Pro wurde vom Team bis {{date}} gewährt.",
+        "grantOpen": "Pro wurde vom Team ohne Enddatum gewährt.",
+        "pastDueBody": "Der Pro-Zugang bleibt bis zu 7 Tage bestehen, während wir es erneut versuchen. Aktualisiere deine Zahlungsmethode, um ihn zu behalten.",
+        "endsLabel": "Pro endet am",
+        "cancelledTitle": "Dein Pro-Abo ist gekündigt",
+        "cancelledBody": "Du behältst Pro bis zum {{date}}. Danach wechselt dein Konto zu Free und es wird nichts mehr abgebucht.",
+        "cancelledBodyNoDate": "Du behältst Pro bis zum Ende des aktuellen Abrechnungszeitraums. Danach wechselt dein Konto zu Free und es wird nichts mehr abgebucht."
+      }
     },
     "return": {
       "waiting": {
@@ -461,7 +474,11 @@
         "title": "Wir konnten deine Zahlung noch nicht bestätigen",
         "body": "Dein Tarif wird automatisch aktualisiert, sobald die Zahlung bestätigt ist. Versuche es gleich noch einmal."
       },
-      "refresh": "Meinen Tarif aktualisieren"
+      "refresh": "Meinen Tarif aktualisieren",
+      "confirmedPro": {
+        "title": "Willkommen bei Pro",
+        "body": "Deine Zahlung war erfolgreich und dein Tarif ist jetzt Pro: die höchsten Tageslimits und das größte Motion-Kontingent, sobald der Motion-Editor ausgerollt wird."
+      }
     },
     "offer": {
       "title": "Anders überlegt? Behalte Premium für ${{price}}/Monat",
@@ -483,6 +500,43 @@
       "resumeFineprint": "Heute wird nichts abgebucht. Deine nächste Zahlung erfolgt am {{date}} zum gleichen Preis und verlängert sich wie gewohnt, bis du kündigst.",
       "unitMonth": "/Monat",
       "unitYear": "/Jahr"
+    },
+    "upgradePro": "Auf Pro upgraden",
+    "unavailablePro": "Pro ist noch nicht verfügbar",
+    "switchToPremium": "Zu Premium wechseln",
+    "planChange": {
+      "cancel": "Jetzt nicht",
+      "upgrade": {
+        "title": "Jetzt auf Pro upgraden?",
+        "body": "Du zahlst heute die anteilige Differenz für den Rest dieses Abrechnungszeitraums. Dein Verlängerungsdatum bleibt der {{date}}, und ab dann kostet Pro {{price}}{{unit}}.",
+        "bodyNoPrice": "Du zahlst heute die anteilige Differenz für den Rest dieses Abrechnungszeitraums. Dein Verlängerungsdatum bleibt der {{date}}.",
+        "bodyNoDate": "Du zahlst heute die anteilige Differenz für den Rest dieses Abrechnungszeitraums. Dein Verlängerungsdatum ändert sich nicht.",
+        "fineprint": "Pro beginnt, sobald die Zahlung erfolgreich war. Die 14-tägige Rückerstattung gilt nur für deine erste Zahlung.",
+        "confirm": "Auf Pro upgraden"
+      },
+      "downgrade": {
+        "title": "Am Ende dieses Zeitraums zu Premium wechseln?",
+        "body": "Du behältst Pro bis zum {{date}}. Danach ist dein Tarif Premium für {{price}}{{unit}}.",
+        "bodyNoPrice": "Du behältst Pro bis zum {{date}}. Danach ist dein Tarif Premium.",
+        "bodyNoDate": "Du behältst Pro bis zum Ende des aktuellen Abrechnungszeitraums. Danach ist dein Tarif Premium.",
+        "fineprint": "Für den Rest dieses Zeitraums wird nichts erstattet. Du kannst Pro jederzeit vor dem Wechsel behalten.",
+        "confirm": "Zu Premium wechseln"
+      },
+      "upgraded": "Du bist jetzt bei Pro.",
+      "scheduled": "Dein Tarif wechselt am {{date}} zu Premium.",
+      "scheduledNoDate": "Dein Tarif wechselt am Ende dieses Abrechnungszeitraums zu Premium.",
+      "kept": "Du behältst Pro.",
+      "pendingBody": "Premium ab dem {{date}}. Bis dahin behältst du Pro.",
+      "keepPro": "Pro behalten",
+      "dropTitle": "Auf Premium zurückstufen und weitermachen",
+      "dropBody": "Statt alles zu verlieren, kannst du zum regulären Preis bei Premium bleiben. Setze dein Abo unter „Abo verwalten“ fort und wähle dann hier „Zu Premium wechseln“.",
+      "dropCta": "In „Abo verwalten“ fortsetzen",
+      "errors": {
+        "notSubscription": "Tarifwechsel sind nur für ein kostenpflichtiges Abo möglich. Ein vom Team gewährter Tarif kann hier nicht geändert werden.",
+        "samePlan": "Du hast bereits diesen Tarif.",
+        "notAvailable": "Diese Änderung ist gerade nicht verfügbar. Wenn dein Abo gekündigt ist, setze es zuerst unter „Abo verwalten“ fort.",
+        "generic": "Dein Tarif konnte nicht geändert werden. Bitte versuche es gleich noch einmal."
+      }
     }
   },
   "upgradeInterstitial": {
@@ -517,6 +571,16 @@
       "height": "Premium gibt bis zu {{value}}p aus.",
       "projects": "Premium speichert bis zu {{value}} Projekte.",
       "projectsUnlimited": "Premium hat kein Limit für gespeicherte Projekte."
+    },
+    "noHigherPlan": "Kein Tarif erhöht dieses Limit weiter. Verringere die Einstellung, um fortzufahren.",
+    "proNote": "Beim Upgrade wird heute die anteilige Differenz abgebucht; dein Verlängerungsdatum bleibt gleich.",
+    "proChange": {
+      "ops": "Pro erlaubt {{value}} Konvertierungen pro Tag.",
+      "opsUnlimited": "Pro hat kein tägliches Konvertierungslimit.",
+      "aiOps": "Pro erlaubt {{value}} KI-Aufträge pro Tag.",
+      "aiOpsUnlimited": "Pro hat kein tägliches Limit für KI-Aufträge.",
+      "exports": "Pro erlaubt {{value}} Exporte pro Tag.",
+      "exportsUnlimited": "Pro hat kein tägliches Exportlimit."
     }
   },
   "recentStrip": {
@@ -544,7 +608,8 @@
     "export": {
       "remaining": "Noch {{remaining}} von {{limit}} Exporten heute",
       "empty": "Alle {{limit}} Exporte heute verbraucht"
-    }
+    },
+    "titlePro": "Pro-Tarife ansehen"
   },
   "queueLine": {
     "text": "Das hat {{time}} in der gemeinsamen Warteschlange gewartet. Premium-Aufträge kommen zuerst dran.",
@@ -632,5 +697,16 @@
     "madeWith": "Erstellt mit Media Manipulator",
     "tryIt": "Mit Ihrer Datei ausprobieren",
     "expires": "Dieser Link funktioniert bis {{when}}."
+  },
+  "planSummary": {
+    "title": "Tarife im Überblick",
+    "current": "Dein Tarif",
+    "free": "Kostenlos",
+    "ops": "{{value}} Operationen pro Tag",
+    "opsUnlimited": "Unbegrenzte Operationen pro Tag",
+    "aiOps": "{{value}} KI-Aufträge pro Tag",
+    "aiOpsUnlimited": "Unbegrenzte KI-Aufträge pro Tag",
+    "fileSize": "Dateien bis {{value}}",
+    "compare": "Alle Tarife vergleichen"
   }
 }

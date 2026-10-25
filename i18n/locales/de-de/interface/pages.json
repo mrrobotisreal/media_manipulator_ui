@@ -1432,12 +1432,14 @@
       "anonymous": "Kein Konto",
       "free": "Kostenloses Konto",
       "premium": "Premium",
-      "operator": "Operator"
+      "operator": "Operator",
+      "pro": "Pro"
     },
     "tierBlurb": {
       "anonymous": "Ein Werkzeug öffnen und loslegen. Nichts anzumelden, nichts über den Tag hinaus gespeichert.",
       "free": "Sechsfaches Tagesvolumen, gespeicherter Verlauf und Darkroom-Projekte, die einen Neustart überstehen.",
-      "premium": "4K-Ausgabe, lange Dateien, Priorität in der GPU-Warteschlange und keine Werbung."
+      "premium": "4K-Ausgabe, lange Dateien, Priorität in der GPU-Warteschlange und keine Werbung.",
+      "pro": "Alles aus Premium, deutlich höhere Tageslimits für Operationen, KI-Aufträge und Exporte sowie das größte Motion-Kontingent."
     },
     "rows": {
       "opsPerDay": "Operationen pro Tag",
@@ -1447,7 +1449,10 @@
       "maxOutputHeight": "Maximale Ausgabeauflösung",
       "studioProjects": "Gespeicherte Studio-Projekte",
       "priorityGpu": "GPU-Warteschlange",
-      "adsRemoved": "Werbung"
+      "adsRemoved": "Werbung",
+      "exportsPerDay": "Darkroom-Exporte pro Tag",
+      "vectorExportsPerDay": "Motion-Exporte pro Tag",
+      "vectorProjects": "Gespeicherte Motion-Projekte"
     },
     "values": {
       "yes": "Enthalten",
@@ -1469,11 +1474,14 @@
       "q2": "Was passiert, wenn ich mein Kontingent aufgebraucht habe?",
       "a2": "Nichts geht kaputt. Das Werkzeug informiert Sie, dass das Kontingent aufgebraucht ist, und bietet die nächsthöhere Stufe an. Ihr Kontingent wird um Mitternacht UTC zurückgesetzt.",
       "q3": "Sehen kostenlose Konten Werbung?",
-      "a3": "Ja. Werbung finanziert die kostenlose Stufe, deshalb entfernt nur Premium sie. Es gibt bei keinem Plan Interstitials, Countdowns oder erzwungene Wartezeiten.",
+      "a3": "Ja. Werbung finanziert die kostenlose Stufe, deshalb entfernen nur Premium und Pro sie. Es gibt bei keinem Tarif Interstitials, Countdowns oder erzwungene Wartezeiten.",
       "q4": "Kann ich es ganz ohne Konto nutzen?",
       "a4": "Ja, und das ist Absicht. Jedes Werkzeug funktioniert auch abgemeldet — ein Konto hebt lediglich die Obergrenze an und speichert Ihren Verlauf. Ohne Konto werden Ihre Dateien 24 Stunden aufbewahrt; mit einem Konto bestimmen Sie selbst, wie lange, von 24 Stunden bis 2 Jahren."
     },
-    "retentionNote": "Sie bestimmen: 24 Stunden bis 2 Jahre. Gäste ohne Konto: 24 Stunden."
+    "retentionNote": "Sie bestimmen: 24 Stunden bis 2 Jahre. Gäste ohne Konto: 24 Stunden.",
+    "pendingFrom": "Premium ab dem {{date}}",
+    "proBadge": "Am besten für Motion",
+    "motionNote": "Motion, der SVG-Animationseditor, wird gerade ausgerollt. Die Kontingente sind bereits aufgeführt, damit du siehst, was jeder Tarif enthält."
   },
   "account": {
     "title": "Ihr Konto",
