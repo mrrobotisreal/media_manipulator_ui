@@ -68,3 +68,17 @@ result of importing `<name>.svg`. The idempotence test
 every `.svg` here. Regenerate derived JSON with
 `UPDATE_VECTOR_FIXTURES=1 npx vitest run lib/vector/importSvg.test.ts`, then
 copy the changed JSON to the Go testdata.
+
+## Keyframe sampler table (UI only, MM44)
+
+`sample.fixtures.json` is **not a document** and **not shared with Go** (there
+is no server-side sampling). It is the value table for `sampleTrack` /
+`solveCubicBezier` (`lib/vector/sampleTrack.test.ts`). `docFixtures()` skips
+`*.fixtures.json`; do not copy it to `internal/vector/testdata/`.
+
+## `loop` (MM44, additive)
+
+`VectorDoc.loop?: boolean` (absent = loops; `false` = plays once). It is
+optional and canonical-absent when the animation loops. The Go sanitizer passes
+it through today as an unknown doc key (additive rule); MM45 or MM49 should add
+it to `docSpec` as an optional boolean so a non-boolean value is rejected.
