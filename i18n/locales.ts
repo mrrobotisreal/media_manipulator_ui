@@ -18,7 +18,14 @@
  * later translation session throws after overwriting the locale's files.
  *
  * NOTE: this module must stay dependency-free (no JSON imports, no i18next) —
- * it is imported by `proxy.ts` and by server + client code alike.
+ * it is imported by `proxy.ts` and by server + client code alike. It must also
+ * stay erasable TypeScript (no enums, namespaces or parameter properties):
+ * `scripts/gen-i18n-registry.mjs` and `scripts/list-locales.mjs` import it on
+ * bare Node 24 through built-in type stripping.
+ *
+ * Adding a locale (MM51): add its row below, copy `locales/en-us/` to
+ * `locales/<code lowercased>/` (without `interface/metadata.json`), then run
+ * `npm run i18n:gen`. Nothing else is hand-edited.
  */
 
 export interface LocaleDef {
@@ -48,6 +55,18 @@ export const locales: LocaleDef[] = [
   { code: "he-IL", prefix: "he", label: "עברית", englishLabel: "Hebrew", flag: "🇮🇱", dir: "rtl", translated: true },
   { code: "de-DE", prefix: "de", label: "Deutsch", englishLabel: "German", flag: "🇩🇪", dir: "ltr", translated: true },
   { code: "es-ES", prefix: "es", label: "Español", englishLabel: "Spanish", flag: "🇪🇸", dir: "ltr", translated: true },
+  // MM51: byte-copies of en-US until their translation sessions (MM57–MM67).
+  { code: "fr-FR", prefix: "fr", label: "Français", englishLabel: "French", flag: "🇫🇷", dir: "ltr", translated: false },
+  { code: "it-IT", prefix: "it", label: "Italiano", englishLabel: "Italian", flag: "🇮🇹", dir: "ltr", translated: false },
+  { code: "ja-JP", prefix: "ja", label: "日本語", englishLabel: "Japanese", flag: "🇯🇵", dir: "ltr", translated: false },
+  { code: "zh-CN", prefix: "zh-cn", label: "简体中文", englishLabel: "Chinese (Simplified)", flag: "🇨🇳", dir: "ltr", translated: false },
+  { code: "zh-TW", prefix: "zh-tw", label: "繁體中文", englishLabel: "Chinese (Traditional)", flag: "🇹🇼", dir: "ltr", translated: false },
+  { code: "ko-KR", prefix: "ko", label: "한국어", englishLabel: "Korean", flag: "🇰🇷", dir: "ltr", translated: false },
+  { code: "ar-SA", prefix: "ar", label: "العربية", englishLabel: "Arabic", flag: "🇸🇦", dir: "rtl", translated: false },
+  { code: "hi-IN", prefix: "hi", label: "हिन्दी", englishLabel: "Hindi", flag: "🇮🇳", dir: "ltr", translated: false },
+  { code: "pt-PT", prefix: "pt-pt", label: "Português (Portugal)", englishLabel: "Portuguese (Portugal)", flag: "🇵🇹", dir: "ltr", translated: false },
+  { code: "pt-BR", prefix: "pt-br", label: "Português (Brasil)", englishLabel: "Portuguese (Brazil)", flag: "🇧🇷", dir: "ltr", translated: false },
+  { code: "vi-VN", prefix: "vi", label: "Tiếng Việt", englishLabel: "Vietnamese", flag: "🇻🇳", dir: "ltr", translated: false },
 ];
 
 export const defaultLocale = "en-US";
@@ -60,6 +79,14 @@ export const localePrefixes = locales.map((l) => l.prefix);
 
 /** Prefixes that appear in public URLs (everything but English). */
 export const publicLocalePrefixes = locales.filter((l) => l.code !== defaultLocale).map((l) => l.prefix);
+
+/**
+ * Locales a translator deployment can serve (every non-English locale). The
+ * translator workbench (MM52–MM56) derives its `translate/<prefix>` branches,
+ * `<prefix>.translate.media-manipulator.com` domains and per-branch env from
+ * this list via `scripts/list-locales.mjs`; never hand-list locales elsewhere.
+ */
+export const translatorLocales = locales.filter((l) => l.code !== defaultLocale);
 
 /** Locales allowed into sitemap/hreflang (en + genuinely translated ones). */
 export const translatedLocales = locales.filter((l) => l.translated);

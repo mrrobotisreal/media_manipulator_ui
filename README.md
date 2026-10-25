@@ -269,7 +269,7 @@ Deployed on **Vercel** (zero‑config Next.js). Set the `NEXT_PUBLIC_*` variable
 
 ## Internationalization
 
-Translations live in `i18n/locales/<locale>/<namespace>/*.json`, sharded by feature (interface, forms, panels, pages, components, accessibility, error). `useLocalization()` wraps `react-i18next` and adds locale‑aware date/number/file‑size/duration formatters. Resources are bundled inline so server‑prerendered HTML contains real translated text (good for SEO). Add a language by dropping in new locale shards and registering it in `i18n/resources.ts`.
+Translations live in `i18n/locales/<locale>/<namespace>/*.json`, sharded by feature (interface, forms, panels, pages, components, accessibility, error). `useLocalization()` wraps `react-i18next` and adds locale‑aware date/number/file‑size/duration formatters. Resources are bundled inline so server‑prerendered HTML contains real translated text (good for SEO). Add a language by adding its row to `i18n/locales.ts`, copying `i18n/locales/en-us/` to `i18n/locales/<code-lowercased>/` (without the English-only `interface/metadata.json`) and running `npm run i18n:gen`. Only English is bundled into client JS; other locales reach the client through the `[lang]` layout. `node scripts/list-locales.mjs` prints the non-English prefixes for scripts and workflows.
 
 ---
 

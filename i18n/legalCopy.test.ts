@@ -5,7 +5,7 @@
  * entry with id "retention" and the old "temporary storage" entry must be gone.
  */
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { locales } from "./locales";
@@ -23,11 +23,15 @@ const flatten = (v: unknown): string => JSON.stringify(v);
 const en = load("en-US");
 
 describe("legal retention copy", () => {
-  it("registers six locales", () => {
-    expect(locales.length).toBe(6);
+  it("covers every registered locale, one locale directory each", () => {
+    const dirs = readdirSync(join(__dirname, "locales"), { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name)
+      .sort();
+    expect(locales.map((l) => l.code.toLowerCase()).sort()).toEqual(dirs);
   });
 
-  for (const { code } of locales as unknown as { code: string }[]) {
+  for (const { code, translated } of locales) {
     describe(code, () => {
       const pages = load(code);
       const privacy = pages.privacyPolicy.sections.filter((s) => s.id === "retention");
@@ -60,8 +64,10 @@ describe("legal retention copy", () => {
         expect(text).toMatch(/Amazon S3/);
       });
 
+      // Byte-copy locales (`translated: false`, MM51) are English by design; the
+      // check switches on when a translation session flips the flag (MM57–MM67).
       it("does not leave the English retention text untranslated in other locales", () => {
-        if (code.toLowerCase() === "en-us") return;
+        if (code.toLowerCase() === "en-us" || !translated) return;
         expect(flatten(privacy[0])).not.toBe(flatten(en.privacyPolicy.sections[2]));
         expect(pages.legalCommon.whatChangedBody).not.toBe(en.legalCommon.whatChangedBody);
         expect(flatten(pages)).not.toMatch(/TODO\(i18n\)/);

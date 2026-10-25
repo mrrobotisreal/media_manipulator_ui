@@ -1,5 +1,6 @@
 import { getBrowserI18n } from '@/i18n';
 import { defaultLanguage } from '@/i18n/resources';
+import { SHARD_LOADERS } from '@/i18n/generated/shardLoaders.generated';
 
 /**
  * Lazily merges the tool-surface translation shards into the live i18next
@@ -29,43 +30,9 @@ import { defaultLanguage } from '@/i18n/resources';
  * Idempotent per language — each language's fetch happens once and every later
  * caller awaits the same promise.
  */
-type ShardModule = { default: Record<string, unknown> };
-
-// One loader per registered language. Adding a language: add its entry here
-// (dynamic imports keep each language's JSON in its own lazy chunk).
-const SHARD_LOADERS: Record<string, () => Promise<[ShardModule, ShardModule]>> = {
-  'en-US': () =>
-    Promise.all([
-      import('@/i18n/locales/en-us/interface/forms.json'),
-      import('@/i18n/locales/en-us/interface/panels.json'),
-    ]),
-  'ru-RU': () =>
-    Promise.all([
-      import('@/i18n/locales/ru-ru/interface/forms.json'),
-      import('@/i18n/locales/ru-ru/interface/panels.json'),
-    ]),
-  'uk-UA': () =>
-    Promise.all([
-      import('@/i18n/locales/uk-ua/interface/forms.json'),
-      import('@/i18n/locales/uk-ua/interface/panels.json'),
-    ]),
-  'he-IL': () =>
-    Promise.all([
-      import('@/i18n/locales/he-il/interface/forms.json'),
-      import('@/i18n/locales/he-il/interface/panels.json'),
-    ]),
-  'de-DE': () =>
-    Promise.all([
-      import('@/i18n/locales/de-de/interface/forms.json'),
-      import('@/i18n/locales/de-de/interface/panels.json'),
-    ]),
-  'es-ES': () =>
-    Promise.all([
-      import('@/i18n/locales/es-es/interface/forms.json'),
-      import('@/i18n/locales/es-es/interface/panels.json'),
-    ]),
-};
-
+// One lazy loader per registered language, generated from `i18n/locales.ts`
+// by `npm run i18n:gen` (dynamic imports keep each language's JSON in its own
+// lazy chunk). Never hand-edit the generated file.
 const pendingByLanguage = new Map<string, Promise<void>>();
 let shardsRequested = false;
 let languageListenerBound = false;

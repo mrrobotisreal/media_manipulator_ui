@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { llmsFullMarkdown, llmsIndexMarkdown } from '@/lib/llmsTxt';
 import { TOOL_PAGES } from '@/content/toolPages';
+import { locales } from '@/i18n/locales';
 
 describe('llms.txt', () => {
   const index = llmsIndexMarkdown();
@@ -23,6 +24,16 @@ describe('llms.txt', () => {
     expect(index).toContain('https://elevenlabs.io/app/voice-lab/share/');
     expect(index).toMatch(/\[Mr\. Wintrow\]/);
     expect(index).toMatch(/\[Obsidian\]/);
+  });
+
+  it('names translated locales only, never a byte-copy locale (MM51)', () => {
+    const line = index.split('\n').find((l) => l.startsWith('- The site is available in'))!;
+    expect(line).toBe(
+      '- The site is available in English (https://www.media-manipulator.com/), Ukrainian (/uk/), Russian (/ru/), Hebrew (/he/), German (/de/), Spanish (/es/).',
+    );
+    for (const l of locales.filter((x) => !x.translated)) {
+      expect(line).not.toContain(`(/${l.prefix}/)`);
+    }
   });
 
   it('links every tool page exactly once', () => {
