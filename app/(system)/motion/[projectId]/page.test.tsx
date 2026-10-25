@@ -80,7 +80,8 @@ describe('/motion/[projectId]', () => {
     expect(screen.queryByTestId('site-analytics')).toBeNull();
     expect(document.querySelector('ins.adsbygoogle')).toBeNull();
     expect(screen.getByTestId('vector-beta-chip').textContent).toBe('Motion (beta)');
-    expect(screen.getByRole('button', { name: 'Export SVG' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Export' })).toBeTruthy();
+    expect(screen.getByRole('region', { name: 'Timeline' })).toBeTruthy();
     // A blank 512×512 document was created under a fresh local id.
     const s = useVectorStore.getState();
     expect(s.projectId).toMatch(/^local-/);
