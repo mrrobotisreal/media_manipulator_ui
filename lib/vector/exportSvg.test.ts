@@ -39,14 +39,14 @@ describe('golden idempotence', () => {
   });
 
   it('keeps an unsupported element byte-identical as a raw layer', () => {
-    const source = '<foreignObject x="0" y="100" width="200" height="50"><div xmlns="http://www.w3.org/1999/xhtml">Hello</div></foreignObject>';
+    const source = '<switch><rect x="150" y="150" width="40" height="40" fill="green"/></switch>';
     expect(readFixture('unsupported.svg')).toContain(source);
     const d1 = parseSvg(readFixture('unsupported.svg')).doc;
-    const raw = d1.layers.find((l) => l.type === 'raw' && l.markup.startsWith('<foreignObject'));
+    const raw = d1.layers.find((l) => l.type === 'raw' && l.markup.startsWith('<switch'));
     expect(raw && raw.type === 'raw' && raw.markup).toBe(source);
     const svg1 = serializeSvg(d1);
     expect(svg1).toContain(source);
-    const again = parseSvg(svg1).doc.layers.find((l) => l.type === 'raw' && l.markup.startsWith('<foreignObject'));
+    const again = parseSvg(svg1).doc.layers.find((l) => l.type === 'raw' && l.markup.startsWith('<switch'));
     expect(again && again.type === 'raw' && again.markup).toBe(source);
   });
 });

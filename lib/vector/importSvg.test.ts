@@ -74,11 +74,29 @@ describe('parseSvg: security', () => {
     expect(codes).toContain('unsupported_element');
   });
 
+  it('drops foreignObject (the only route into HTML parsing) and CDATA sections', () => {
+    const { doc, warnings } = parseSvg(
+      svg('<foreignObject width="10" height="10"><div xmlns="http://www.w3.org/1999/xhtml"><![CDATA[><iframe/srcdoc="x">]]></div></foreignObject><pattern id="p"><text><![CDATA[<img src=x>]]></text></pattern>'),
+    );
+    const text = serializeVectorDoc(doc);
+    expect(text).not.toMatch(/foreignObject|iframe|CDATA|img/i);
+    expect(warnings).toContainEqual({ code: 'unsafe_content_removed', detail: '<foreignObject>' });
+  });
+
   it('removes handlers inside raw markup too', () => {
-    const { doc } = parseSvg(svg('<foreignObject width="10" height="10"><div xmlns="http://www.w3.org/1999/xhtml" onmouseover="x()">hi</div></foreignObject>'));
+    const { doc } = parseSvg(svg('<switch><rect width="1" height="1" onmouseover="x()"/></switch>'));
     const raw = doc.layers[0];
     expect(raw.type).toBe('raw');
     expect(raw.type === 'raw' && raw.markup).not.toMatch(/onmouseover/);
+  });
+
+  it('drops CSS-escaped urls and imports', () => {
+    const { doc } = parseSvg(
+      svg('<style>@\\69mport "https://e/x.css"; .a{fill:red}</style><rect class="a" width="1" height="1" style="fill:\\75rl(https://e/x)" stroke="\\75rl(https://e/y)"/>'),
+    );
+    const text = serializeVectorDoc(doc);
+    expect(text).not.toMatch(/https:\/\/e/);
+    expect(text).not.toMatch(/\\\\/);
   });
 
   it('drops dangerous elements and SMIL that targets href', () => {
@@ -119,9 +137,10 @@ describe('parseSvg: normalisation', () => {
     expect(doc.layers[1]).toMatchObject({ fill: 'green', stroke: 'blue' });
   });
 
-  it('keeps a complex stylesheet as a raw layer', () => {
-    const { doc } = parseSvg(svg('<style>g > rect:hover { fill: red }</style><rect width="1" height="1"/>'));
-    expect(doc.layers[0].type).toBe('raw');
+  it('drops a stylesheet it cannot inline instead of keeping global CSS', () => {
+    const { doc, warnings } = parseSvg(svg('<style>g > rect:hover { fill: red }</style><rect width="1" height="1"/>'));
+    expect(doc.layers.map((l) => l.type)).toEqual(['rect']);
+    expect(warnings).toContainEqual({ code: 'style_dropped', detail: '<style>' });
   });
 
   it('drops editor metadata and namespaced attributes, keeps the Inkscape label as the name', () => {

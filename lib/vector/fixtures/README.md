@@ -23,14 +23,31 @@ Canonical documents. Each must parse, and re-serialise to the same bytes:
 | `text.json` | single-line text with font fields; multi-line text as a `raw` layer |
 | `use-symbol.json` | `symbol` with viewBox, `use` of a symbol and of a layer |
 | `nested-groups.json` | nested groups, anchored transform, root presentation attributes, hidden layer |
-| `unsupported.json` | `raw` layers (pattern, filter, foreignObject, SMIL, `<a>`, `<switch>`), `ids` on raw layers |
+| `unsupported.json` | `raw` layers (pattern, filter, SMIL, `<a>`, `<switch>`), `ids` on raw layers; `foreignObject`, `<script>`, handlers, external refs and un-inlinable `<style>` are gone |
 
 `inputs/*.json`: non-canonical documents that must parse (defaults filled).
 `invalid/*.json`: documents that must be rejected (`version` 2 or missing,
 dangling gradient/mask/use refs, duplicate ids, `use` cycles, raw markup with
-`<script`/`on*=`/external `href`, tracks on missing layers or bad property
-names, bad ids, external image hrefs, `attrs` handlers, unknown layer types).
+`<script`/`on*=`/external or unquoted `href`/CDATA/`<iframe>`/`<style>`/
+entity-encoded `javascript:`, tracks on missing layers or bad property names,
+bad ids, external image hrefs, `attrs` names outside the allowlist, CSS-escaped
+paints, a `url()` background, unknown layer types).
 Both directories are part of the contract too.
+
+## Safety rules the Go sanitizer must mirror
+
+- `rawMarkupIssues` (`vectorTypes.ts`): no `<script`, no
+  `iframe|object|embed|frame|frameset|applet|meta|link|base|form|input|button|textarea|select|template|noscript|portal|style`
+  elements, no CDATA / comments / declarations, no character references other
+  than `&amp; &lt; &gt; &quot; &apos;` and the whitespace refs, no `on*=`, no
+  `srcdoc|formaction|srcset|ping|background=`, no `javascript:|vbscript:|data:text/html`,
+  no unquoted attributes, `href`/`src` only `#id` or a base64 raster data URI,
+  no animated `href`, no `url()` other than `url(#id)`, no `image-set(`, no
+  `@import`, no backslash inside an attribute value.
+- `PAINT_PATTERN` / `COLOR_PATTERN` for every paint, stop colour and
+  `canvas.background` (no backslash, no `url(` other than `url(#id)`).
+- `attrs` names: the `SAFE_ATTRS` allowlist (`svgMap.ts`) or `data-*`; values
+  pass the same no-escape/no-external-url rule.
 
 ## Canonical JSON
 

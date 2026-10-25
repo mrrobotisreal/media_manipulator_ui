@@ -4,19 +4,20 @@ import * as React from 'react';
 
 import { matrixToAttr, transformToAttr } from '@/lib/vector/geometry';
 import { STYLE_FIELDS, TEXT_FIELDS } from '@/lib/vector/svgMap';
+import { buildRawNodes } from '@/lib/vector/rawRender';
 import {
-  rawMarkupIssues,
+  isAllowedAttrName,
+  isSafeAttrValue,
   type Gradient,
   type Layer,
   type VectorDoc,
 } from '@/lib/vector/vectorTypes';
 
 /**
- * Renders a `VectorDoc` as React SVG elements, FROM THE MODEL: imported
- * markup never reaches the DOM except a `raw` layer's markup, which the
- * importer has already sanitised and which is re-checked with
- * `rawMarkupIssues` before it is mounted (inside the editor's own `<svg>`,
- * an inert, script-free context).
+ * Renders a `VectorDoc` as React SVG elements, FROM THE MODEL. Imported
+ * markup never goes through `innerHTML`: a `raw` layer is rebuilt node by node
+ * from an SVG allowlist (`lib/vector/rawRender.ts`), so no HTML parser ever
+ * sees it.
  *
  * Each editable layer carries `data-layer-id` so the canvas can hit-test with
  * `elementFromPoint` / `closest()`.
@@ -63,7 +64,7 @@ function styleProps(layer: Exclude<Layer, { type: 'raw' }>, prefix: string): Pro
     else out[name] = v as string | number;
   }
   for (const [k, v] of Object.entries(layer.attrs ?? {})) {
-    if (k === 'class') continue; // classes target stylesheets we never mount
+    if (k === 'class' || !isAllowedAttrName(k) || !isSafeAttrValue(v)) continue; // defensive; the schema enforces both
     out[toReactName(k)] = v;
   }
   const t = transformToAttr(layer.transform);
@@ -95,11 +96,7 @@ export function LayerNodes({ layers, opts }: { layers: Layer[]; opts: RenderOpti
 
 const LayerNode = React.memo(function LayerNode({ layer, opts }: { layer: Layer; opts: RenderOptions }) {
   const prefix = opts.idPrefix ?? '';
-  if (layer.type === 'raw') {
-    if (!layer.markup || rawMarkupIssues(layer.markup).length > 0) return null;
-    // Sanitised on import, re-checked above; rendered inside our own <svg>.
-    return <g data-raw-layer={layer.id} dangerouslySetInnerHTML={{ __html: layer.markup }} />;
-  }
+  if (layer.type === 'raw') return <RawLayerNode markup={layer.markup} id={layer.id} prefix={prefix} />;
   const common: Props = { ...styleProps(layer, prefix), id: `${prefix}${layer.id}` };
   if (opts.interactive) common['data-layer-id'] = layer.id;
   switch (layer.type) {
@@ -147,6 +144,17 @@ const LayerNode = React.memo(function LayerNode({ layer, opts }: { layer: Layer;
       return <use {...common} href={`#${prefix}${layer.ref}`} x={layer.x} y={layer.y} width={layer.width} height={layer.height} />;
   }
 });
+
+/** Mounts the allowlist-rebuilt nodes of a raw layer into a `<g>`. */
+function RawLayerNode({ markup, id, prefix }: { markup: string; id: string; prefix: string }) {
+  const ref = React.useRef<SVGGElement>(null);
+  React.useLayoutEffect(() => {
+    const g = ref.current;
+    if (!g) return;
+    g.replaceChildren(...buildRawNodes(markup, prefix, g.ownerDocument));
+  }, [markup, prefix]);
+  return <g ref={ref} data-raw-layer={id} />;
+}
 
 function GradientNode({ g, prefix }: { g: Gradient; prefix: string }) {
   const stops = g.stops.map((s, i) => <stop key={i} offset={s.offset} stopColor={s.color} stopOpacity={s.opacity} />);

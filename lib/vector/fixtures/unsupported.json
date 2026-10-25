@@ -42,21 +42,16 @@
     {
       "type": "raw",
       "id": "raw-3",
-      "markup": "<foreignObject x=\"0\" y=\"100\" width=\"200\" height=\"50\"><div xmlns=\"http://www.w3.org/1999/xhtml\">Hello</div></foreignObject>"
-    },
-    {
-      "type": "raw",
-      "id": "raw-4",
       "markup": "<circle cx=\"50\" cy=\"170\" r=\"20\" fill=\"blue\" filter=\"url(#shadow)\">\n    <animate attributeName=\"r\" values=\"20;25;20\" dur=\"2s\" repeatCount=\"indefinite\"/>\n  </circle>"
     },
     {
       "type": "raw",
-      "id": "raw-5",
+      "id": "raw-4",
       "markup": "<a><rect x=\"100\" y=\"150\" width=\"40\" height=\"40\" fill=\"red\"/></a>"
     },
     {
       "type": "raw",
-      "id": "raw-6",
+      "id": "raw-5",
       "markup": "<switch><rect x=\"150\" y=\"150\" width=\"40\" height=\"40\" fill=\"green\"/></switch>"
     }
   ],

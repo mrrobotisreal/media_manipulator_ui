@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { SAFE_ATTRS } from '@/lib/vector/svgMap';
+
 /**
  * `VectorDoc` v1: the Motion editor's document (code name `vector`, design
  * `docs/design/MOTION_SVG_ANIMATOR.md` §3.2, ADR-0012).
@@ -86,10 +88,20 @@ export const matrixSchema = z.tuple([num, num, num, num, num, num]);
 export type Matrix = z.infer<typeof matrixSchema>;
 
 /**
- * Paint: `none`, `currentColor`, a colour (`#rrggbb`, a CSS colour keyword or
- * function), or `url(#id)` naming a gradient (or an id inside a raw layer).
+ * Colour: `#hex`, a CSS colour keyword or a colour function (`rgb()`,
+ * `hsl()`, `color-mix()`…). Strict grammar: no backslash (CSS escapes), no
+ * `url(`, no quotes or punctuation that could end a declaration.
  */
-export const paintSchema = z.string().min(1).max(256);
+export const COLOR_PATTERN = /^(?!.*url\()[#A-Za-z0-9(),.%\s/+-]+$/i;
+/**
+ * Paint: `none`, `currentColor`, a colour, or `url(#id)` naming a gradient
+ * (or an id inside a raw layer) with an optional fallback colour.
+ */
+export const PAINT_PATTERN = /^(url\(\s*#[A-Za-z_][\w-]*\s*\)(\s+(?!.*url\()[#A-Za-z0-9(),.%\s/+-]+)?|(?!.*url\()[#A-Za-z0-9(),.%\s/+-]+)$/i;
+export const isSafePaint = (v: string) => v.length <= 256 && PAINT_PATTERN.test(v.trim());
+export const isSafeColor = (v: string) => v.length <= 128 && COLOR_PATTERN.test(v.trim());
+export const paintSchema = z.string().min(1).max(256).refine(isSafePaint, { message: 'invalid paint' });
+export const colorSchema = z.string().min(1).max(128).refine(isSafeColor, { message: 'invalid colour' });
 
 /**
  * Unmodelled-but-safe SVG presentation attributes (`paint-order`,
@@ -97,12 +109,15 @@ export const paintSchema = z.string().min(1).max(256);
  * order. Never event handlers, hrefs, `style`, or values that could reach the
  * network or run script.
  */
-const UNSAFE_ATTR_NAME = /^(on|xlink|xmlns)|^(href|src|style)$/i;
-const UNSAFE_ATTR_VALUE = /javascript:|vbscript:|@import|expression\(|url\(\s*['"]?(?!#)/i;
+const UNSAFE_ATTR_VALUE = /javascript:|vbscript:|@import|expression\(|image-set\(|\\|url\(\s*['"]?(?!#)/i;
+/** True when `name` may appear in `attrs`: the `SAFE_ATTRS` allowlist or `data-*`. */
+export const isAllowedAttrName = (name: string) =>
+  SAFE_ATTRS.has(name) || /^data-[a-z0-9-]+$/.test(name);
+export const isSafeAttrValue = (v: string) => v.length <= 4096 && !UNSAFE_ATTR_VALUE.test(v);
 export const attrsSchema = z
   .record(z.string().regex(/^[a-z][a-zA-Z0-9-]*$/), z.string().max(4096))
-  .refine((a) => Object.entries(a).every(([k, v]) => !UNSAFE_ATTR_NAME.test(k) && !UNSAFE_ATTR_VALUE.test(v)), {
-    message: 'attrs may not carry handlers, hrefs, styles or external urls',
+  .refine((a) => Object.entries(a).every(([k, v]) => isAllowedAttrName(k) && isSafeAttrValue(v)), {
+    message: 'attrs may only carry allow-listed presentation attributes with safe values',
   });
 
 const styleShape = {
@@ -330,7 +345,7 @@ export type ShapeLayer = Exclude<Layer, RawLayer | GroupLayer>;
 export const gradientStopSchema = obj({
   /** 0..1, non-decreasing within a gradient. */
   offset: unit,
-  color: z.string().min(1).max(128),
+  color: colorSchema,
   /** Absent = 1. */
   opacity: unit.optional(),
 });
@@ -481,7 +496,7 @@ export const canvasSchema = obj({
   height: num.positive().default(DEFAULT_CANVAS_SIZE),
   /** Absent on input = `0 0 width height`. Always present on output. */
   viewBox: viewBoxSchema.optional(),
-  background: z.string().min(1).max(128).default(DEFAULT_BACKGROUND),
+  background: colorSchema.default(DEFAULT_BACKGROUND),
 }).transform(({ width, height, viewBox, background, ...rest }) => ({
   width,
   height,
@@ -524,17 +539,33 @@ export function paintRef(paint: string | undefined): string | null {
   return m ? m[1] : null;
 }
 
-/** Problems a raw layer's markup must never carry (UI strips them on import; Go rejects). */
+/**
+ * Problems a raw layer's markup must never carry (UI strips them on import;
+ * the Go sanitizer rejects). Raw markup is canonical `XMLSerializer` output,
+ * so anything a serializer never produces (CDATA, numeric/named entities other
+ * than the five XML escapes and the whitespace char refs, unquoted
+ * attributes) is rejected outright: those are how parser differentials hide
+ * payloads.
+ */
 export function rawMarkupIssues(markup: string): string[] {
   const issues: string[] = [];
   if (/<\s*script/i.test(markup)) issues.push('script element');
+  if (/<\s*\/?\s*(iframe|object|embed|frame|frameset|applet|meta|link|base|form|input|button|textarea|select|template|noscript|portal|style)\b/i.test(markup)) {
+    issues.push('forbidden element');
+  }
+  if (/<!\[CDATA\[|<!--|<\?|<!DOCTYPE|<!ENTITY/i.test(markup)) issues.push('CDATA, comment or declaration');
+  if (/&(?!(amp|lt|gt|quot|apos|#9|#10|#13|#xA|#xD|#x9);)/i.test(markup)) issues.push('character reference');
   if (/[\s"'/]on[a-z]+\s*=/i.test(markup)) issues.push('event-handler attribute');
-  if (/javascript:/i.test(markup)) issues.push('javascript: URL');
+  if (/\b(srcdoc|formaction|srcset|ping|background)\s*=/i.test(markup)) issues.push('dangerous attribute');
+  if (/javascript:|vbscript:|data:text\/html/i.test(markup)) issues.push('script URL');
+  if (/\s[\w:-]+\s*=\s*(?!["'])/.test(markup)) issues.push('unquoted attribute');
   if (/(?:^|[\s"'])(?:xlink:)?(?:href|src)\s*=\s*["'](?!#|data:image\/(?:png|jpeg|gif|webp|avif);)/i.test(markup)) {
     issues.push('external reference');
   }
-  if (/url\(\s*["']?(?!#)/i.test(markup)) issues.push('external url()');
+  if (/attributeName\s*=\s*["']\s*(xlink:)?href/i.test(markup)) issues.push('animated href');
+  if (/url\(\s*["']?(?!#)/i.test(markup) || /image-set\(/i.test(markup)) issues.push('external url()');
   if (/@import/i.test(markup)) issues.push('@import');
+  if (/=\s*"[^"]*\\|=\s*'[^']*\\/.test(markup)) issues.push('backslash in attribute');
   return issues;
 }
 

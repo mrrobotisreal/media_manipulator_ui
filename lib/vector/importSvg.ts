@@ -32,6 +32,10 @@ import {
   VECTOR_MAX_LAYERS,
   VECTOR_MAX_RAW_BYTES,
   forEachLayer,
+  isSafeColor,
+  isSafePaint,
+  isAllowedAttrName,
+  isSafeAttrValue,
   paintRef,
   rawMarkupIssues,
   vectorDocSchema,
@@ -140,7 +144,7 @@ PRESENTATION_PROPS.delete('lengthAdjust');
 PRESENTATION_PROPS.delete('textLength');
 
 const IMAGE_DATA_HREF = /^data:image\/(png|jpeg|gif|webp|avif);base64,/i;
-const UNSAFE_VALUE = /javascript:|vbscript:|livescript:|data:text\/html|expression\(|@import|-moz-binding|behavior\s*:/i;
+const UNSAFE_VALUE = /javascript:|vbscript:|livescript:|data:text\/html|expression\(|@import|-moz-binding|behavior\s*:|image-set\(|\\/i;
 const EXTERNAL_URL = /url\(\s*(?!["']?#)/i;
 
 const stripWs = (s: string) => s.replace(/[\s\u0000-\u001f]+/g, '');
@@ -214,9 +218,11 @@ function elementChildren(el: Element): Element[] {
 }
 
 function clean(root: Element, warn: Warn): void {
-  // Comments and processing instructions are editor noise.
+  // Comments and processing instructions are editor noise; CDATA sections
+  // are dropped because the HTML parser reads them differently (a parser
+  // differential is how payloads hide).
   const removeNodes: Node[] = [];
-  const walker = root.ownerDocument.createTreeWalker(root, 0x80 | 0x40); // COMMENT | PROCESSING_INSTRUCTION
+  const walker = root.ownerDocument.createTreeWalker(root, 0x80 | 0x40 | 0x08); // COMMENT | PROCESSING_INSTRUCTION | CDATA_SECTION
   for (let n = walker.nextNode(); n; n = walker.nextNode()) removeNodes.push(n);
   for (const n of removeNodes) n.parentNode?.removeChild(n);
 
@@ -224,6 +230,12 @@ function clean(root: Element, warn: Warn): void {
     const name = el.localName.toLowerCase();
     if (el !== root && el.prefix && el.prefix !== 'svg') {
       el.remove(); // inkscape:*, sodipodi:*, sketch:*, … editor metadata
+      return;
+    }
+    if (name === 'foreignobject') {
+      // The only way into HTML parsing inside SVG; never kept (XSS surface).
+      warn('unsafe_content_removed', `<${el.localName}>`);
+      el.remove();
       return;
     }
     if (DENY_ELEMENTS.has(name)) {
@@ -384,6 +396,10 @@ function inlineStyles(root: Element, warn: Warn): void {
       }
     }
     for (const s of sheets) s.remove();
+  } else if (sheets.length > 0) {
+    // A sheet we cannot inline would be global CSS in the editor page: drop it.
+    for (const s of sheets) s.remove();
+    warn('style_dropped', '<style>');
   }
 
   const dropped = new Set<string>();
@@ -531,7 +547,8 @@ class Converter {
     const kids = elementChildren(root);
     const first = kids[0];
     if (first && first.localName === 'rect' && first.hasAttribute(BACKGROUND_ATTR)) {
-      this.background = first.getAttribute('fill')?.trim() || undefined;
+      const fill = first.getAttribute('fill')?.trim();
+      this.background = fill && isSafeColor(fill) ? fill : undefined;
       first.remove();
     }
     const layers = this.convertChildren(root, 1);
@@ -743,9 +760,8 @@ class Converter {
             : undefined;
         if (parsed !== undefined || !SAFE_ATTRS.has(name)) continue;
       }
-      if (!(SAFE_ATTRS.has(name) || name.startsWith('data-'))) continue;
-      if (!/^[a-z][a-zA-Z0-9-]*$/.test(name)) continue;
-      out[name] = attr.value.slice(0, 4096);
+      if (!isAllowedAttrName(name) || !isSafeAttrValue(attr.value)) continue;
+      out[name] = attr.value;
     }
     return Object.keys(out).length > 0 ? out : undefined;
   }
@@ -866,7 +882,8 @@ class Converter {
       let offset = off ? (off.percent ? off.n / 100 : off.n) : 0;
       offset = roundNum(Math.min(1, Math.max(last, offset)));
       last = offset;
-      const stop: GradientStop = { offset, color: s.getAttribute('stop-color')?.trim() || 'black' };
+      const rawColor = s.getAttribute('stop-color')?.trim() || 'black';
+      const stop: GradientStop = { offset, color: isSafeColor(rawColor) ? rawColor : 'black' };
       const op = parseStyleValue(s.getAttribute('stop-opacity') ?? '', 'unit');
       if (typeof op === 'number' && op !== 1) stop.opacity = op;
       stops.push(stop);
@@ -1028,7 +1045,10 @@ function resolveGradientHref(el: Element): { attr: (name: string) => string | nu
 function parseStyleValue(raw: string, kind: StyleKind): unknown {
   const v = raw.trim();
   if (!v) return undefined;
-  if (kind === 'paint') return v.replace(/\s+/g, ' ').slice(0, 256);
+  if (kind === 'paint') {
+    const p = v.replace(/\s+/g, ' ');
+    return isSafePaint(p) ? p : undefined;
+  }
   if (kind === 'ref') {
     if (v === 'none') return undefined;
     const ref = paintRef(v);
