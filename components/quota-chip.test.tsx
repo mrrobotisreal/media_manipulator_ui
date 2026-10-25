@@ -60,10 +60,18 @@ describe('QuotaChip', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it.each(['premium', 'operator'])('is hidden for %s', (tier) => {
+  it.each(['pro', 'operator'])('is hidden for %s', (tier) => {
     h.auth = auth({ tier });
     const { container } = render(<QuotaChip />);
     expect(container.firstChild).toBeNull();
+  });
+
+  it.each(['ops', 'ai_ops', 'export'] as const)('premium (MM40): shows the %s count, pointing at Pro (a limit Pro raises)', (metric) => {
+    h.auth = auth({ tier: 'premium' });
+    render(<QuotaChip metric={metric} />);
+    const chip = screen.getByTestId('quota-chip');
+    expect(chip.getAttribute('title')).toBe('interface:quotaChip.titlePro');
+    expect(chip.getAttribute('href')).toBe('/pricing');
   });
 
   it('is hidden for an unlimited allowance', () => {

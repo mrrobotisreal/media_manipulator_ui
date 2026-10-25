@@ -9,6 +9,9 @@ const h = vi.hoisted(() => ({
   startCheckout: vi.fn(),
   openPortal: vi.fn(),
   retain: vi.fn(),
+  change: vi.fn(),
+  keep: vi.fn(),
+  tiers: null as unknown,
   toast: Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn() }),
 }));
 vi.mock('sonner', () => ({ toast: h.toast }));
@@ -25,6 +28,8 @@ vi.mock('@/lib/analytics', () => ({
     SUBSCRIPTION_STATUS_VIEWED: 'subscription_status_viewed',
     RETENTION_OFFER_VIEWED: 'retention_offer_viewed',
     RETENTION_OFFER_ACCEPTED: 'retention_offer_accepted',
+    BILLING_PLAN_CHANGE_REQUESTED: 'billing_plan_change_requested',
+    BILLING_PLAN_CHANGE_CANCELLED: 'billing_plan_change_cancelled',
   },
 }));
 vi.mock('@/lib/billing/useUpgradeAction', () => ({ useBillingFallback: () => vi.fn(async () => undefined) }));
@@ -37,7 +42,9 @@ vi.mock('@/lib/auth/accountApi', async (orig) => ({
   ...(await orig<typeof import('@/lib/auth/accountApi')>()),
   fetchBillingStatus: vi.fn(async () => h.status),
   retainSubscription: (...args: unknown[]) => h.retain(...args),
-  fetchTiers: vi.fn(async () => ({ tiers: [], premiumPurchasable: true, premiumPriceUSD: 7, premiumPriceYearlyUSD: 70 })),
+  requestPlanChange: (...args: unknown[]) => h.change(...args),
+  cancelPlanChange: (...args: unknown[]) => h.keep(...args),
+  fetchTiers: vi.fn(async () => h.tiers ?? ({ tiers: [], premiumPurchasable: true, premiumPriceUSD: 7, premiumPriceYearlyUSD: 70 })),
 }));
 
 import { BillingPanel, billingState } from './billing-panel';
@@ -61,6 +68,7 @@ function renderPanel(tier: string, status: object | null) {
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+  h.tiers = null;
   window.sessionStorage.clear();
 });
 
@@ -330,5 +338,135 @@ describe('translator mode (MM52)', () => {
     window.localStorage.clear();
     renderPanel('premium', nudgeEligible);
     expect(await screen.findByText('interface:yearlyNudge.cta')).toBeTruthy();
+  });
+});
+
+describe('Pro plan states (MM40 decision 4)', () => {
+  const active = { status: 'active', interval: 'monthly', renewsAt: '2026-11-25T00:00:00Z', portalAvailable: true };
+  const withPro = async () => {
+    const m = await import('@/lib/billing/test-utils');
+    h.tiers = m.tiersFixture();
+  };
+
+  it('premium: plan chip reads Premium; "Upgrade to Pro" confirms the prorated charge, then posts target pro', async () => {
+    await withPro();
+    h.change.mockResolvedValue({ plan: 'pro', pendingPlan: null, timing: 'immediate' });
+    renderPanel('premium', { ...active, plan: 'premium' });
+    expect((await screen.findByTestId('billing-plan-chip')).dataset.plan).toBe('premium');
+    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.upgradePro' }));
+    const dialog = await screen.findByTestId('plan-change-dialog');
+    // The served Pro monthly price (fixture: 17), the unchanged renewal date.
+    expect(dialog.textContent).toContain('interface:billing.planChange.upgrade.body|date=D(2026-11-25T00:00:00Z),price=$17,unit=interface:billing.offer.unitMonth');
+    fireEvent.click(screen.getByRole('button', { name: 'interface:billing.planChange.upgrade.confirm' }));
+    await waitFor(() => expect(h.change).toHaveBeenCalledWith('tok', 'pro'));
+    expect(h.track).toHaveBeenCalledWith('billing_plan_change_requested', { from: 'premium', to: 'pro', timing: 'immediate' });
+    await waitFor(() => expect(h.toast.success).toHaveBeenCalledWith('interface:billing.planChange.upgraded'));
+    expect(screen.queryByRole('button', { name: 'interface:billing.switchToPremium' })).toBeNull();
+  });
+
+  it('premium: no "Upgrade to Pro" while Pro is not purchasable', async () => {
+    const m = await import('@/lib/billing/test-utils');
+    h.tiers = m.tiersFixture({ proPurchasable: false });
+    renderPanel('premium', { ...active, plan: 'premium' });
+    await screen.findByTestId('billing-plan-chip');
+    await screen.findByRole('button', { name: 'interface:billing.manage' });
+    expect(screen.queryByRole('button', { name: 'interface:billing.upgradePro' })).toBeNull();
+  });
+
+  it('pro: plan chip reads Pro; "Switch to Premium" confirms period-end, no refund, then posts target premium', async () => {
+    await withPro();
+    h.change.mockResolvedValue({ plan: 'pro', pendingPlan: { to: 'premium', at: '2026-11-25T00:00:00Z' }, timing: 'period_end' });
+    renderPanel('pro', { ...active, interval: 'yearly', plan: 'pro' });
+    expect((await screen.findByTestId('billing-plan-chip')).dataset.plan).toBe('pro');
+    expect(screen.queryByRole('button', { name: 'interface:billing.upgradePro' })).toBeNull();
+    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.switchToPremium' }));
+    const dialog = await screen.findByTestId('plan-change-dialog');
+    expect(dialog.dataset.target).toBe('premium');
+    expect(dialog.textContent).toContain('price=$90,unit=interface:billing.offer.unitYear');
+    expect(dialog.textContent).toContain('interface:billing.planChange.downgrade.fineprint');
+    fireEvent.click(screen.getByRole('button', { name: 'interface:billing.planChange.downgrade.confirm' }));
+    await waitFor(() => expect(h.change).toHaveBeenCalledWith('tok', 'premium'));
+    expect(h.track).toHaveBeenCalledWith('billing_plan_change_requested', { from: 'pro', to: 'premium', timing: 'period_end' });
+    await waitFor(() => expect(h.toast.success).toHaveBeenCalledWith('interface:billing.planChange.scheduled|date=D(2026-11-25T00:00:00Z)'));
+  });
+
+  it('pending downgrade: "Premium from <date>" with Keep Pro (DELETE), and no Switch to Premium', async () => {
+    await withPro();
+    h.keep.mockResolvedValue({ plan: 'pro', pendingPlan: null });
+    renderPanel('pro', { ...active, plan: 'pro', pendingPlan: { to: 'premium', at: '2026-11-25T00:00:00Z' } });
+    const box = await screen.findByTestId('pending-downgrade');
+    expect(box.textContent).toContain('interface:billing.planChange.pendingBody|date=D(2026-11-25T00:00:00Z)');
+    expect(screen.queryByRole('button', { name: 'interface:billing.switchToPremium' })).toBeNull();
+    expect(screen.queryByText(/billing\.panel\.renewsOn/)).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'interface:billing.planChange.keepPro' }));
+    await waitFor(() => expect(h.keep).toHaveBeenCalledWith('tok'));
+    expect(h.track).toHaveBeenCalledWith('billing_plan_change_cancelled', { from: 'pro', to: 'premium' });
+    await waitFor(() => expect(h.toast.success).toHaveBeenCalledWith('interface:billing.planChange.kept'));
+  });
+
+  it.each([
+    ['not_subscription', 'interface:billing.planChange.errors.notSubscription'],
+    ['same_plan', 'interface:billing.planChange.errors.samePlan'],
+    ['change_not_available', 'interface:billing.planChange.errors.notAvailable'],
+    ['billing_unavailable', 'interface:billing.errors.unavailable'],
+    ['billing_provider_error', 'interface:billing.planChange.errors.generic'],
+  ])('a %s refusal shows its friendly message and records no event', async (reason, key) => {
+    await withPro();
+    const { BillingRefusal } = await import('@/lib/auth/accountApi');
+    h.change.mockRejectedValue(new BillingRefusal(reason as never, 409));
+    renderPanel('premium', { ...active, plan: 'premium' });
+    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.upgradePro' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.planChange.upgrade.confirm' }));
+    await waitFor(() => expect(h.toast.error).toHaveBeenCalledWith(key));
+    expect(h.track).not.toHaveBeenCalledWith('billing_plan_change_requested', expect.anything());
+  });
+
+  it('cancelling Pro: no retention offer (even if one arrives), "Drop to Premium and keep going" instead', async () => {
+    await withPro();
+    renderPanel('pro', {
+      ...active, plan: 'pro', cancelAtPeriodEnd: true, endsAt: '2026-11-25T00:00:00Z',
+      offer: { kind: 'retain7', priceUSD: 7, nextChargeAt: '2026-11-25T00:00:00Z' },
+    });
+    await screen.findByText('interface:billing.panel.pro.cancelledTitle');
+    expect(screen.queryByTestId('retention-offer')).toBeNull();
+    expect(h.track).not.toHaveBeenCalledWith('retention_offer_viewed', expect.anything());
+    const drop = screen.getByTestId('pro-drop-to-premium');
+    expect(drop.textContent).toContain('interface:billing.planChange.dropTitle');
+    h.openPortal.mockResolvedValue({ ok: true });
+    fireEvent.click(screen.getByRole('button', { name: 'interface:billing.planChange.dropCta' }));
+    await waitFor(() => expect(h.openPortal).toHaveBeenCalledWith('account_billing', 'en-US'));
+    // A cancelling subscription cannot change plan through the API (409 change_not_available).
+    expect(screen.queryByRole('button', { name: 'interface:billing.switchToPremium' })).toBeNull();
+  });
+
+  it('cancelling Premium keeps the Premium retention offer and wording', async () => {
+    renderPanel('premium', {
+      ...active, plan: 'premium', cancelAtPeriodEnd: true, endsAt: '2026-11-25T00:00:00Z',
+      offer: { kind: 'retain7', priceUSD: 7, nextChargeAt: '2026-11-25T00:00:00Z' },
+    });
+    expect(await screen.findByTestId('retention-offer')).toBeTruthy();
+    expect(screen.getByText('interface:billing.panel.cancelledTitle')).toBeTruthy();
+    expect(screen.queryByTestId('pro-drop-to-premium')).toBeNull();
+  });
+
+  it('translator mode: hides Upgrade to Pro, Switch to Premium and Keep Pro', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    await withPro();
+    renderPanel('premium', { ...active, plan: 'premium' });
+    await screen.findByTestId('billing-plan-chip');
+    expect(screen.queryByRole('button', { name: 'interface:billing.upgradePro' })).toBeNull();
+    cleanup();
+    renderPanel('pro', { ...active, plan: 'pro' });
+    await screen.findByTestId('billing-plan-chip');
+    expect(screen.queryByRole('button', { name: 'interface:billing.switchToPremium' })).toBeNull();
+    cleanup();
+    renderPanel('pro', { ...active, plan: 'pro', pendingPlan: { to: 'premium', at: '2026-11-25T00:00:00Z' } });
+    await screen.findByTestId('billing-plan-chip');
+    expect(screen.queryByRole('button', { name: 'interface:billing.planChange.keepPro' })).toBeNull();
+    cleanup();
+    renderPanel('pro', { ...active, plan: 'pro', cancelAtPeriodEnd: true });
+    await screen.findByTestId('billing-plan-chip');
+    expect(screen.queryByTestId('pro-drop-to-premium')).toBeNull();
+    vi.unstubAllEnvs();
   });
 });

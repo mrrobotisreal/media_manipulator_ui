@@ -96,6 +96,10 @@ export const EVENTS = {
   SUBSCRIPTION_STATUS_VIEWED: 'subscription_status_viewed',
   RETENTION_OFFER_VIEWED: 'retention_offer_viewed',
   RETENTION_OFFER_ACCEPTED: 'retention_offer_accepted',
+  /** MM40: a Premium <-> Pro change the server accepted (catalog side: MM41). */
+  BILLING_PLAN_CHANGE_REQUESTED: 'billing_plan_change_requested',
+  /** MM40: "Keep Pro" released a scheduled downgrade (catalog side: MM41). */
+  BILLING_PLAN_CHANGE_CANCELLED: 'billing_plan_change_cancelled',
 
   // --- Engagement / content -------------------------------------------------
   CONTENT_READ_PROGRESS: 'content_read_progress',
@@ -214,6 +218,8 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   subscription_status_viewed: PRIORITY_CRITICAL,
   retention_offer_viewed: PRIORITY_HIGH,
   retention_offer_accepted: PRIORITY_HIGH,
+  billing_plan_change_requested: PRIORITY_CRITICAL,
+  billing_plan_change_cancelled: PRIORITY_CRITICAL,
 
   // Engagement
   content_read_progress: PRIORITY_LOW,
@@ -277,7 +283,7 @@ export type PageType =
   | 'legal'
   | 'other';
 
-export type Tier = 'anonymous' | 'free' | 'premium' | 'operator';
+export type Tier = 'anonymous' | 'free' | 'premium' | 'pro' | 'operator';
 
 /**
  * Values a property may hold. Deliberately narrow — no functions, no Dates, no
@@ -537,13 +543,32 @@ export interface UpgradeCTAClickedProps {
 /** Billing interval, mirroring the API's billing.Interval* constants. */
 export type BillingIntervalProp = 'monthly' | 'yearly';
 
+/** The plan bought or changed to (MM39/MM40), mirroring the API's config.Plan* constants. */
+export type BillingPlanProp = 'premium' | 'pro';
+
 export interface CheckoutStartedProps {
   interval: BillingIntervalProp;
   placement: string;
+  /** MM40. Optional so a catalog without it (before MM41) still accepts the event shape. */
+  plan?: BillingPlanProp;
 }
 
 export interface CheckoutCompletedProps {
   interval: BillingIntervalProp;
+  plan?: BillingPlanProp;
+}
+
+export interface BillingPlanChangeRequestedProps {
+  from: BillingPlanProp;
+  to: BillingPlanProp;
+  timing: 'immediate' | 'period_end';
+}
+
+export interface BillingPlanChangeCancelledProps {
+  /** The plan kept (pro). */
+  from: BillingPlanProp;
+  /** The scheduled plan that was released (premium). */
+  to: BillingPlanProp;
 }
 
 // checkout_abandoned carries no properties.
@@ -880,6 +905,8 @@ export interface EventPropsMap {
   subscription_status_viewed: SubscriptionStatusViewedProps;
   retention_offer_viewed: RetentionOfferProps;
   retention_offer_accepted: RetentionOfferProps;
+  billing_plan_change_requested: BillingPlanChangeRequestedProps;
+  billing_plan_change_cancelled: BillingPlanChangeCancelledProps;
 
   content_read_progress: ContentReadProgressProps;
   content_read_completed: ContentReadCompletedProps;

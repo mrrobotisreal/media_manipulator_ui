@@ -54,7 +54,33 @@ describe("legal retention copy", () => {
         expect(pages.legalCommon.whatChangedBody?.length).toBeGreaterThan(50);
         expect(pages.legalCommon.effectiveDate).toMatch(/2026/);
         expect(pages.legalCommon.effectiveDate).toMatch(/24/);
-        expect(pages.legalCommon.lastUpdated).toMatch(/24/);
+        // MM40: Pro was added on 2026-10-25.
+        expect(pages.legalCommon.lastUpdated).toMatch(/25/);
+        expect(pages.legalCommon.whatChangedTitle).toMatch(/25/);
+      });
+
+      // MM40 decision 8: both plan names in ToS §10 and Privacy §1.6, and the four prices in §10.
+      const payments = pages.termsOfService.sections[9];
+      const paymentData = pages.privacyPolicy.sections[0].subsections?.[5];
+
+      it("names Premium and Pro in ToS §10 (payments) and Privacy §1.6 (payment data)", () => {
+        expect(payments.title).toMatch(/^10\./);
+        expect(paymentData?.title).toMatch(/^1\.6/);
+        expect(flatten(payments)).toMatch(/\bPro\b/);
+        expect(flatten(paymentData)).toMatch(/\bPro\b/);
+      });
+
+      it("states both plans' prices in ToS §10 and nothing else", () => {
+        const text = flatten(payments);
+        for (const n of ["8", "80", "15", "150"]) expect(text).toMatch(new RegExp(`(?<![\\d.,])${n}(?![\\d.,])`));
+        // The price paragraph names no other price (the pre-2026-10-24 $7/$70 must not linger).
+        expect(payments.paragraphs?.[0] ?? "").not.toMatch(/(?<![\d.,])(7|70)(?![\d.,])/);
+      });
+
+      it("explains the period-end downgrade and keeps the 14-day refund", () => {
+        expect(payments.paragraphs).toHaveLength(6);
+        expect(flatten(payments)).toMatch(/14/);
+        expect(flatten(payments)).toMatch(/7/);
       });
 
       it("states the 6 month default and the 2 year ceiling", () => {
@@ -74,6 +100,23 @@ describe("legal retention copy", () => {
       });
     });
   }
+
+  it("en-us ToS §10 names $15 and $150 for Pro beside $8 and $80 for Premium (MM40)", () => {
+    const payments = en.termsOfService.sections[9];
+    const first = payments.paragraphs?.[0] ?? "";
+    expect(first).toContain("$8 per month or $80 per year for Premium");
+    expect(first).toContain("$15 per month or $150 per year for Pro");
+    expect(first).toContain("no tax is added on top");
+    expect(flatten(payments)).toMatch(/downgrade from Pro to Premium takes effect at the end of the period/);
+    expect(flatten(payments)).toMatch(/nothing is refunded for the rest of that period/);
+    expect(flatten(payments)).toMatch(/within 14 days.*This applies to Premium and to Pro/);
+  });
+
+  it("en-us Privacy §1.6 names both plans and the stored plan", () => {
+    const text = flatten(en.privacyPolicy.sections[0].subsections?.[5]);
+    expect(text).toContain("Premium or Pro");
+    expect(text).toContain("your plan (Premium or Pro)");
+  });
 
   it("en-us no longer promises a universal 24 hour maximum", () => {
     const legal = flatten([en.privacyPolicy, en.termsOfService]);

@@ -24,10 +24,21 @@ import { openPortal, readLastInterval, startCheckout } from '@/lib/billing/check
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
 import { useLocalization } from '@/i18n/useLocalization';
 import { YearlyNudge } from './yearly-nudge';
+import { PlanChangeDialog } from './plan-change-dialog';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
+import { displayPrice, planPrices } from '@/lib/billing/price';
+import { usePlanChange } from '@/lib/billing/usePlanChange';
+import type { PaidPlan } from '@/lib/auth/accountApi';
 
 /**
- * The /account Billing panel (MM19 decision 4).
+ * The /account Billing panel (MM19 decision 4; Premium and Pro since MM40).
+ *
+ * Plan changes (MM40 decision 4): an active Premium subscription can upgrade to Pro (confirm,
+ * then POST change-plan); an active Pro one can switch to Premium at the end of the paid
+ * period; once that is scheduled the panel says "Premium from <date>" with "Keep Pro" (DELETE
+ * change-plan). A cancelling Pro subscription never sees the Premium retention offer; it gets
+ * "Drop to Premium and keep going" instead, which routes through the Portal because the API
+ * refuses a plan change on a cancelling subscription.
  *
  * One pure function, `billingState`, maps the server's status plus the account tier onto the
  * seven states the panel can show; the render is a switch over that. Everything comes from
@@ -56,6 +67,12 @@ export function billingState(tier: string, status: BillingStatus | undefined): B
     return status.cancelAtPeriodEnd ? 'cancel_at_period_end' : 'active';
   }
   return status.purchasable ? 'free' : 'unavailable';
+}
+
+/** The panel copy key for this plan: Pro has its own wording where Premium is named. */
+const PRO_KEYS = new Set(['endsLabel', 'cancelledTitle', 'cancelledBody', 'cancelledBodyNoDate', 'pastDueBody', 'grantUntil', 'grantOpen']);
+function panelKey(plan: PaidPlan, key: string): string {
+  return plan === 'pro' && PRO_KEYS.has(key) ? `interface:billing.panel.pro.${key}` : `interface:billing.panel.${key}`;
 }
 
 const RetentionOfferCard: React.FC<{
@@ -145,6 +162,8 @@ export const BillingPanel: React.FC = () => {
   const [retaining, setRetaining] = React.useState(false);
   const retainingRef = React.useRef(false);
   const viewedOffers = React.useRef(new Set<string>());
+  const planChange = usePlanChange();
+  const [confirming, setConfirming] = React.useState<'pro' | 'premium' | null>(null);
 
   React.useEffect(() => {
     setInterval(readLastInterval());
@@ -202,10 +221,15 @@ export const BillingPanel: React.FC = () => {
 
   const monthly = tiersQuery.data?.premiumPriceUSD;
   const yearly = tiersQuery.data?.premiumPriceYearlyUSD;
+  // The subscription's plan (MM39 status.plan); a team grant has none, so the tier says.
+  const plan: PaidPlan = status?.plan ?? (tier === 'pro' ? 'pro' : 'premium');
+  const pk = (key: string) => panelKey(plan, key);
+  const pending = status?.pendingPlan ?? null;
 
   const endsAt = endsAtOf(status);
+  // The retention offer is Premium-only (MM39): never rendered for Pro, whatever arrives.
   const offer: RetentionOffer | null =
-    state === 'cancel_at_period_end' && status?.offer ? status.offer : null;
+    state === 'cancel_at_period_end' && status?.offer && plan !== 'pro' ? status.offer : null;
   const offerKind = offer?.kind;
   React.useEffect(() => {
     if (!offerKind || viewedOffers.current.has(offerKind)) return;
@@ -277,8 +301,8 @@ export const BillingPanel: React.FC = () => {
       body = (
         <p className="text-sm text-foreground">
           {status?.manualGrant?.expiresAt
-            ? t('interface:billing.panel.grantUntil', { date: date(status.manualGrant.expiresAt) })
-            : t('interface:billing.panel.grantOpen')}
+            ? t(pk('grantUntil'), { date: date(status.manualGrant.expiresAt) })
+            : t(pk('grantOpen'))}
         </p>
       );
       break;
@@ -302,8 +326,8 @@ export const BillingPanel: React.FC = () => {
           {typeof monthly === 'number' ? (
             <p className="num text-lg text-foreground">
               {interval === 'yearly' && typeof yearly === 'number'
-                ? `$${yearly}${t('interface:billing.perYear')}`
-                : `$${monthly}${t('interface:billing.perMonth')}`}
+                ? `${displayPrice(yearly)}${t('interface:billing.perYear')}`
+                : `${displayPrice(monthly)}${t('interface:billing.perMonth')}`}
             </p>
           ) : null}
           <p className="text-xs text-muted-foreground">{t('interface:billing.refund')}</p>
@@ -318,6 +342,13 @@ export const BillingPanel: React.FC = () => {
     default: {
       // active | cancel_at_period_end | past_due: all have a subscription and a Portal.
       const ending = state === 'cancel_at_period_end';
+      const active = state === 'active';
+      const proPurchasable = tiersQuery.data?.proPurchasable === true;
+      // Plan changes need an active, uncancelled subscription the API knows the plan of.
+      const canChange = active && !hideBilling && status?.plan != null;
+      const showUpgrade = canChange && plan === 'premium' && proPurchasable;
+      const showDowngrade = canChange && plan === 'pro' && !pending;
+      const showKeep = active && !hideBilling && plan === 'pro' && pending?.to === 'premium';
       body = (
         <div className="grid gap-4">
           {state === 'past_due' ? (
@@ -326,10 +357,19 @@ export const BillingPanel: React.FC = () => {
               className="rounded-md border border-premium/40 bg-surface-2 p-3 text-sm text-foreground"
             >
               <p className="font-medium">{t('interface:billing.panel.pastDueTitle')}</p>
-              <p className="mt-1 text-muted-foreground">{t('interface:billing.panel.pastDueBody')}</p>
+              <p className="mt-1 text-muted-foreground">{t(pk('pastDueBody'))}</p>
             </div>
           ) : null}
           <div className="grid gap-3">
+            <Stat
+              orientation="inline"
+              label={t('interface:billing.panel.planLabel')}
+              value={
+                <span data-testid="billing-plan-chip" data-plan={plan} className="text-premium">
+                  {t(`interface:accountMenu.tier.${plan}`)}
+                </span>
+              }
+            />
             <Stat
               orientation="inline"
               label={t('interface:billing.panel.intervalLabel')}
@@ -339,7 +379,7 @@ export const BillingPanel: React.FC = () => {
               endsAt ? (
                 <Stat
                   orientation="inline"
-                  label={t('interface:billing.panel.endsLabel')}
+                  label={t(pk('endsLabel'))}
                   value={date(endsAt)}
                 />
               ) : null
@@ -353,18 +393,46 @@ export const BillingPanel: React.FC = () => {
           </div>
           {ending ? (
             <div className="grid gap-1">
-              <p className="text-sm font-medium text-foreground">{t('interface:billing.panel.cancelledTitle')}</p>
+              <p className="text-sm font-medium text-foreground">{t(pk('cancelledTitle'))}</p>
               <p className="text-sm text-muted-foreground">
                 {endsAt
-                  ? t('interface:billing.panel.cancelledBody', { date: date(endsAt) })
-                  : t('interface:billing.panel.cancelledBodyNoDate')}
-                {offer ? null : <> {t('interface:billing.panel.resumeHint')}</>}
+                  ? t(pk('cancelledBody'), { date: date(endsAt) })
+                  : t(pk('cancelledBodyNoDate'))}
+                {offer || plan === 'pro' ? null : <> {t('interface:billing.panel.resumeHint')}</>}
               </p>
             </div>
-          ) : state === 'active' && status?.renewsAt ? (
+          ) : state === 'active' && status?.renewsAt && !pending ? (
             <p className="text-sm text-muted-foreground">
               {t('interface:billing.panel.renewsOn', { date: date(status.renewsAt) })}
             </p>
+          ) : null}
+          {showKeep && pending ? (
+            <div className="grid gap-3 rounded-md border border-edge bg-surface-2 p-3" data-testid="pending-downgrade">
+              <p className="text-sm text-foreground">
+                {t('interface:billing.planChange.pendingBody', { date: date(pending.at) })}
+              </p>
+              <Button
+                className="w-fit"
+                onClick={() => void planChange.run('keep')}
+                disabled={planChange.busy}
+                aria-busy={planChange.busy}
+              >
+                {planChange.busy ? t('interface:billing.offer.working') : t('interface:billing.planChange.keepPro')}
+              </Button>
+            </div>
+          ) : null}
+          {ending && plan === 'pro' && !hideBilling ? (
+            // MM39: no discount for Pro. Change-plan refuses a cancelling subscription, so the
+            // way to "drop to Premium and keep going" is to resume in the Portal, then switch.
+            <section className="grid gap-2 rounded-md border border-premium/40 bg-surface-2 p-4" data-testid="pro-drop-to-premium">
+              <h3 className="text-base font-semibold text-foreground">{t('interface:billing.planChange.dropTitle')}</h3>
+              <p className="text-sm text-muted-foreground">{t('interface:billing.planChange.dropBody')}</p>
+              {status?.portalAvailable ? (
+                <Button className="w-fit" onClick={manage} disabled={busy}>
+                  {t('interface:billing.planChange.dropCta')}
+                </Button>
+              ) : null}
+            </section>
           ) : null}
           {offer && !hideBilling ? (
             <RetentionOfferCard
@@ -379,12 +447,43 @@ export const BillingPanel: React.FC = () => {
             />
           ) : null}
           {state === 'active' && !hideBilling ? <YearlyNudge uid={uid} status={status} tiers={tiersQuery.data} /> : null}
-          {status?.portalAvailable && !hideBilling ? (
-            <Button className="w-fit" onClick={manage} disabled={busy}>
-              {state === 'past_due'
-                ? t('interface:billing.panel.updatePayment')
-                : t('interface:billing.manage')}
-            </Button>
+          <div className="flex flex-wrap gap-2">
+            {showUpgrade ? (
+              <Button className="w-fit" onClick={() => setConfirming('pro')} disabled={planChange.busy}>
+                {t('interface:billing.upgradePro')}
+              </Button>
+            ) : null}
+            {status?.portalAvailable && !hideBilling ? (
+              <Button className="w-fit" variant={showUpgrade ? 'outline' : 'default'} onClick={manage} disabled={busy}>
+                {state === 'past_due'
+                  ? t('interface:billing.panel.updatePayment')
+                  : t('interface:billing.manage')}
+              </Button>
+            ) : null}
+            {showDowngrade ? (
+              <Button className="w-fit" variant="ghost" onClick={() => setConfirming('premium')} disabled={planChange.busy}>
+                {t('interface:billing.switchToPremium')}
+              </Button>
+            ) : null}
+          </div>
+          {showUpgrade || showDowngrade ? (
+            <PlanChangeDialog
+              open={confirming !== null}
+              onOpenChange={(open) => !open && setConfirming(null)}
+              target={confirming ?? 'pro'}
+              interval={status?.interval}
+              price={(() => {
+                const p = planPrices(tiersQuery.data, confirming ?? 'pro');
+                return status?.interval === 'yearly' ? p.yearly : status?.interval === 'monthly' ? p.monthly : undefined;
+              })()}
+              periodEnd={status?.renewsAt}
+              busy={planChange.busy}
+              onConfirm={() =>
+                void planChange.run(confirming === 'premium' ? 'downgrade' : 'upgrade').then((outcome) => {
+                  if (outcome) setConfirming(null);
+                })
+              }
+            />
           ) : null}
         </div>
       );

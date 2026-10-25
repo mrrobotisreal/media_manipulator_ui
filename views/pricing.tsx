@@ -15,23 +15,37 @@ import { Panel } from '@/components/darkroom/panel';
 import { PricingTracker, PricingUpgradeLink } from '@/components/pricing/pricing-tracker';
 import {
   CheckoutCancelledNote,
-  PremiumPricing,
-  type PremiumPricingLabels,
+  PlanPricing,
+  PricingIntervalToggle,
+  type PlanPricingLabels,
 } from '@/components/pricing/premium-cta';
-import type { TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
+import type { PaidPlan, TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
 import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
+import { displayPrice, planPrices, yearlyMonthsFree } from '@/lib/billing/price';
 import { cn } from '@/lib/utils';
 
 type T = ReturnType<typeof getServerT>;
 
 /** Ordered so the table reads left-to-right as increasing capability. */
-const TIER_ORDER = ['anonymous', 'free', 'premium'] as const;
+const TIER_ORDER = ['anonymous', 'free', 'premium', 'pro'] as const;
 type TierKey = (typeof TIER_ORDER)[number];
+
+/**
+ * The panels above the table (MM40: Free · Premium · Pro). The anonymous tier is the first
+ * column of the comparison table and a slim strip above the panels, not a fourth panel.
+ */
+const PANEL_ORDER = ['free', 'premium', 'pro'] as const;
+
+const isPaid = (tier: TierKey): tier is PaidPlan => tier === 'premium' || tier === 'pro';
 
 interface Row {
   key: string;
-  render: (limits: TierLimits, t: T) => React.ReactNode;
+  render: (limits: TierLimits, t: T, tier: TierKey) => React.ReactNode;
+  /** Present only when every served tier carries the field (older APIs omit Motion). */
+  served?: (limits: TierLimits) => boolean;
 }
+
+const count = (n: number, t: T) => (n < 0 ? t('interface:pricing.values.unlimited') : `${n}`);
 
 /**
  * One row per matrix line. `render` returns a string for measured values and a
@@ -47,6 +61,7 @@ const ROWS: Row[] = [
     key: 'aiOpsPerDay',
     render: (l, t) => (l.aiOpsPerDay < 0 ? t('interface:pricing.values.unlimited') : `${l.aiOpsPerDay}`),
   },
+  { key: 'exportsPerDay', render: (l, t) => count(l.exportsPerDay, t) },
   { key: 'maxFileBytes', render: (l) => formatBytes(l.maxFileBytes) },
   { key: 'maxVideoSeconds', render: (l) => formatDuration(l.maxVideoSeconds) },
   {
@@ -59,6 +74,20 @@ const ROWS: Row[] = [
       l.studioProjects < 0
         ? t('interface:pricing.values.unlimited')
         : `${l.studioProjects}`,
+  },
+  {
+    key: 'vectorExportsPerDay',
+    render: (l, t) => count(l.vectorExportsPerDay ?? 0, t),
+    served: (l) => typeof l.vectorExportsPerDay === 'number',
+  },
+  {
+    key: 'vectorProjects',
+    // The anonymous allowance lives in the browser only (the server never stores it).
+    render: (l, t, tier) =>
+      tier === 'anonymous' && (l.vectorProjects ?? 0) > 0
+        ? t('interface:pricing.values.localOnly', { values: { count: l.vectorProjects ?? 0 } })
+        : count(l.vectorProjects ?? 0, t),
+    served: (l) => typeof l.vectorProjects === 'number',
   },
   {
     key: 'priorityGpu',
@@ -87,33 +116,36 @@ const ValueCell: React.FC<{ children: React.ReactNode; numeric: boolean }> = ({
 const NUMERIC_ROWS = new Set([
   'opsPerDay',
   'aiOpsPerDay',
+  'exportsPerDay',
+  'vectorExportsPerDay',
+  'vectorProjects',
   'maxFileBytes',
   'maxVideoSeconds',
   'maxOutputHeight',
   'studioProjects',
 ]);
 
-function premiumLabels(t: T, data: TiersResponse): PremiumPricingLabels {
-  const monthly = data.premiumPriceUSD;
-  const yearly = data.premiumPriceYearlyUSD;
+function planLabels(t: T, data: TiersResponse, plan: PaidPlan): PlanPricingLabels {
+  const { monthly, yearly } = planPrices(data, plan);
   // "N months free" is derived from the two served prices, never hard-coded.
-  const months = yearly && monthly > 0 ? Math.round(12 - yearly / monthly) : 0;
+  const months = yearlyMonthsFree(monthly, yearly);
   return {
-    intervalLabel: t('interface:billing.intervalLabel'),
-    monthly: t('interface:billing.monthly'),
-    yearly: t('interface:billing.yearly'),
-    priceMonthly: `$${monthly}${t('interface:billing.perMonth')}`,
-    priceYearly: yearly ? `$${yearly}${t('interface:billing.perYear')}` : '',
+    priceMonthly: typeof monthly === 'number' ? `${displayPrice(monthly)}${t('interface:billing.perMonth')}` : '',
+    priceYearly: typeof yearly === 'number' ? `${displayPrice(yearly)}${t('interface:billing.perYear')}` : '',
     yearlyBonus: months >= 1 ? t('interface:billing.yearlyBonus', { values: { months } }) : '',
-    blurb: t('interface:pricing.tierBlurb.premium'),
+    blurb: t(`interface:pricing.tierBlurb.${plan}`),
     cancelAnytime: t('interface:billing.cancelAnytime'),
     refund: t('interface:billing.refund'),
     taxNote: t('interface:billing.taxNote'),
-    ctaUpgrade: t('interface:billing.upgrade'),
+    ctaUpgrade: t(plan === 'pro' ? 'interface:billing.upgradePro' : 'interface:billing.upgrade'),
     ctaManage: t('interface:billing.manage'),
     ctaOperator: t('interface:billing.operator'),
-    ctaUnavailable: t('interface:billing.unavailable'),
+    ctaUnavailable: t(plan === 'pro' ? 'interface:billing.unavailablePro' : 'interface:billing.unavailable'),
     ctaBusy: t('interface:billing.busy'),
+    currentPlan: t('interface:pricing.currentPlan'),
+    ctaChangeUp: t('interface:billing.upgradePro'),
+    ctaChangeDown: t('interface:billing.switchToPremium'),
+    pendingFrom: t('interface:pricing.pendingFrom'),
   };
 }
 
@@ -123,35 +155,44 @@ const TierHeader: React.FC<{
   data: TiersResponse;
   locale: string;
 }> = ({ tier, t, data, locale }) => {
-  const isPremium = tier === 'premium';
+  if (isPaid(tier)) {
+    const { monthly, yearly } = planPrices(data, tier);
+    const purchasable = tier === 'pro' ? data.proPurchasable === true : data.premiumPurchasable;
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-base font-semibold tracking-[-0.02em] text-premium">
+            {t(`interface:pricing.tier.${tier}`)}
+          </h2>
+          {tier === 'pro' ? (
+            <span className="rounded-full bg-premium/15 px-2 py-0.5 text-xs font-medium text-premium" data-testid="pro-badge">
+              {t('interface:pricing.proBadge')}
+            </span>
+          ) : null}
+        </div>
+        {/* Price, CTA and plan state live in one client island per column so the page stays a
+            server component and the matrix stays in the prerendered HTML. */}
+        <PlanPricing
+          plan={tier}
+          labels={planLabels(t, data, tier)}
+          purchasable={purchasable}
+          prices={{ monthly, yearly }}
+        />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-2">
-      <h2
-        className={cn(
-          'text-base font-semibold tracking-[-0.02em]',
-          isPremium ? 'text-premium' : 'text-foreground',
-        )}
-      >
+      <h2 className="text-base font-semibold tracking-[-0.02em] text-foreground">
         {t(`interface:pricing.tier.${tier}`)}
       </h2>
-      {isPremium ? (
-        // Price, interval toggle and CTA live in one client island so the page stays a
-        // server component and the matrix stays in the prerendered HTML.
-        <PremiumPricing
-          labels={premiumLabels(t, data)}
-          purchasable={data.premiumPurchasable}
-        />
-      ) : (
-        <>
-          <p className="num text-2xl leading-none text-foreground">
-            {t('interface:pricing.free_price')}
-          </p>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {t(`interface:pricing.tierBlurb.${tier}`)}
-          </p>
-        </>
-      )}
-      {isPremium ? null : tier === 'free' ? (
+      <p className="num text-2xl leading-none text-foreground">
+        {t('interface:pricing.free_price')}
+      </p>
+      <p className="text-sm leading-relaxed text-muted-foreground">
+        {t(`interface:pricing.tierBlurb.${tier}`)}
+      </p>
+      {tier === 'free' ? (
         // The one genuine upgrade CTA on this page: /account's signed-out state IS the
         // sign-up panel, so clicking this is a visitor deciding to create an account after
         // reading the comparison. Worth the client island (see pricing-tracker.tsx).
@@ -176,6 +217,24 @@ const TierHeader: React.FC<{
     </div>
   );
 };
+
+const RowList: React.FC<{ rows: Row[]; column: TierDescriptor; t: T }> = ({ rows, column, t }) => (
+  <dl className="mt-5 grid gap-2 md:hidden">
+    {rows.map((row) => (
+      <div
+        key={row.key}
+        className="flex items-baseline justify-between gap-4 border-b border-edge pb-2 last:border-0 last:pb-0"
+      >
+        <dt className="text-sm text-muted-foreground">{t(`interface:pricing.rows.${row.key}`)}</dt>
+        <dd className="text-end">
+          <ValueCell numeric={NUMERIC_ROWS.has(row.key)}>
+            {row.render(column.limits, t, column.tier as TierKey)}
+          </ValueCell>
+        </dd>
+      </div>
+    ))}
+  </dl>
+);
 
 export const PricingUnavailable: React.FC<{ locale?: string }> = ({ locale }) => {
   const t = getServerT('interface', locale);
@@ -207,6 +266,14 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
   const columns = TIER_ORDER.map((tier) => byTier.get(tier)).filter(
     (entry): entry is TierDescriptor => Boolean(entry),
   );
+  const panels = PANEL_ORDER.map((tier) => byTier.get(tier)).filter(
+    (entry): entry is TierDescriptor => Boolean(entry),
+  );
+  const anonymous = byTier.get('anonymous');
+  const rows = ROWS.filter((row) => !row.served || columns.every((c) => row.served!(c.limits)));
+  const hasMotion = rows.some((row) => row.key.startsWith('vector'));
+  // The toggle shows when any paid column has a yearly price to switch to.
+  const hasYearly = panels.some((c) => isPaid(c.tier as TierKey) && typeof planPrices(data, c.tier as PaidPlan).yearly === 'number');
 
   return (
     <div className="container mx-auto max-w-[1100px] px-4 py-12 md:py-16">
@@ -228,15 +295,36 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
         </p>
       </header>
 
-      {/* One panel per tier. Below md it carries the full row list, so the
-          comparison is readable on a phone without a sideways-scrolling table;
-          from md up the list collapses and the aligned table below takes over.
-          Each tier is headed exactly once either way. */}
+      {/* One interval for both paid columns. The row leaves room for a currency toggle
+          beside it (MM69). */}
+      {hasYearly ? (
+        <div className="mb-6 flex flex-wrap items-center gap-3" data-testid="pricing-toggles">
+          <PricingIntervalToggle
+            label={t('interface:billing.intervalLabel')}
+            monthly={t('interface:billing.monthly')}
+            yearly={t('interface:billing.yearly')}
+          />
+        </div>
+      ) : null}
+
+      {anonymous ? (
+        // The no-account tier: a slim strip rather than a fourth panel (MM40), with its full
+        // row list below md, where the comparison table is hidden.
+        <Panel className="mb-6" data-testid="pricing-anonymous">
+          <TierHeader tier="anonymous" t={t} data={data} locale={loc} />
+          <RowList rows={rows} column={anonymous} t={t} />
+        </Panel>
+      ) : null}
+
+      {/* One panel per paid-or-free tier. Below md it carries the full row list, so the
+          comparison is readable on a phone without a sideways-scrolling table; from md up
+          the list collapses and the aligned table below takes over. */}
       <div className="grid gap-6 md:grid-cols-3">
-        {columns.map((column) => (
+        {panels.map((column) => (
           <Panel
             key={column.tier}
-            className={cn(column.tier === 'premium' && 'border-premium/30')}
+            className={cn(isPaid(column.tier as TierKey) && 'border-premium/30')}
+            data-testid={`pricing-panel-${column.tier}`}
           >
             <TierHeader
               tier={column.tier as TierKey}
@@ -244,37 +332,21 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
               data={data}
               locale={loc}
             />
-            <dl className="mt-5 grid gap-2 md:hidden">
-              {ROWS.map((row) => (
-                <div
-                  key={row.key}
-                  className="flex items-baseline justify-between gap-4 border-b border-edge pb-2 last:border-0 last:pb-0"
-                >
-                  <dt className="text-sm text-muted-foreground">
-                    {t(`interface:pricing.rows.${row.key}`)}
-                  </dt>
-                  <dd className="text-right">
-                    <ValueCell numeric={NUMERIC_ROWS.has(row.key)}>
-                      {row.render(column.limits, t)}
-                    </ValueCell>
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            <RowList rows={rows} column={column} t={t} />
           </Panel>
         ))}
       </div>
 
       {/* md+: the values aligned in columns, which is what makes a comparison
-          a comparison rather than three lists side by side. */}
+          a comparison rather than four lists side by side. */}
       <div className="mt-10 hidden md:block">
-        <table className="w-full border-collapse text-left">
+        <table className="w-full border-collapse text-start" data-testid="pricing-table">
           <caption className="sr-only">{t('interface:pricing.title')}</caption>
           <thead>
             <tr className="border-b border-edge-strong">
               <th
                 scope="col"
-                className="w-2/5 py-3 pr-4 text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                className="w-1/3 py-3 pe-4 text-start text-xs font-medium uppercase tracking-wide text-muted-foreground"
               >
                 {t('interface:pricing.eyebrow')}
               </th>
@@ -282,7 +354,7 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
                 <th
                   key={column.tier}
                   scope="col"
-                  className="py-3 pr-4 text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                  className="py-3 pe-4 text-start text-xs font-medium uppercase tracking-wide text-muted-foreground"
                 >
                   {t(`interface:pricing.tier.${column.tier}`)}
                 </th>
@@ -290,18 +362,18 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
             </tr>
           </thead>
           <tbody>
-            {ROWS.map((row) => (
+            {rows.map((row) => (
               <tr key={row.key} className="border-b border-edge last:border-0">
                 <th
                   scope="row"
-                  className="py-3 pr-4 text-sm font-normal text-muted-foreground"
+                  className="py-3 pe-4 text-start text-sm font-normal text-muted-foreground"
                 >
                   {t(`interface:pricing.rows.${row.key}`)}
                 </th>
                 {columns.map((column) => (
-                  <td key={column.tier} className="py-3 pr-4">
+                  <td key={column.tier} className="py-3 pe-4" data-tier={column.tier} data-row={row.key}>
                     <ValueCell numeric={NUMERIC_ROWS.has(row.key)}>
-                      {row.render(column.limits, t)}
+                      {row.render(column.limits, t, column.tier as TierKey)}
                     </ValueCell>
                   </td>
                 ))}
@@ -311,6 +383,11 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
         </table>
       </div>
 
+      {hasMotion ? (
+        <p data-testid="pricing-motion-note" className="mt-4 text-sm text-muted-foreground">
+          {t('interface:pricing.motionNote')}
+        </p>
+      ) : null}
       <p data-testid="pricing-retention-note" className="mt-4 text-sm text-muted-foreground">
         {t('interface:pricing.retentionNote')}
       </p>

@@ -149,7 +149,7 @@ export const OverviewTab: React.FC<{
       <Panel title={copy.planTitle} titleAs="h2">
         <p className="num mb-4 text-lg text-foreground">
           {endsAt
-            ? t('interface:accountMenu.tierEnds', { date: formatDate(endsAt) })
+            ? t(auth.tier === 'pro' ? 'interface:accountMenu.tierEndsPro' : 'interface:accountMenu.tierEnds', { date: formatDate(endsAt) })
             : (extras.tierNames[auth.tier] ?? auth.tier)}
         </p>
         {limits ? (

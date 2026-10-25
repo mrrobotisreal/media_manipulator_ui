@@ -14,7 +14,7 @@ import {
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import {
-  isTopTier,
+  isPaidTier,
   isUnlimited,
   type BillingInterval,
   type LimitRefusal,
@@ -25,7 +25,10 @@ import {
 } from '@/lib/auth/accountApi';
 import { formatBytes } from '@/lib/auth/formatLimits';
 import { readLastInterval, startCheckout } from '@/lib/billing/checkout';
-import { useBillingFallback, usePremiumPurchasable, useTiers } from '@/lib/billing/useUpgradeAction';
+import { useBillingFallback, usePremiumPurchasable, useProPurchasable, useTiers } from '@/lib/billing/useUpgradeAction';
+import { upsellTargetFor } from '@/lib/billing/plans';
+import { usePlanChange } from '@/lib/billing/usePlanChange';
+import { useBillingStatus } from '@/lib/billing/useBillingStatus';
 import { useLocalization } from '@/i18n/useLocalization';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
@@ -45,6 +48,12 @@ import { isIrreversibleActionHidden } from '@/lib/translator/mode';
  *   'premium' -> a free account: Checkout (interval picker first), or an honest "not
  *                available yet" while Premium is not purchasable
  *   absent    -> Premium/operator: nothing higher to buy, so an explanation and Close only
+ *
+ * MM40: the quota 429 answers 'premium' for every signed-in tier, so for a Premium caller the
+ * dialog decides itself (lib/billing/plans.ts): "Upgrade to Pro" (a change-plan, not a
+ * Checkout) only when the limit is one Pro raises per the served table (daily operations, AI
+ * jobs, exports, Motion exports); nothing for file size, length or resolution. Pro and
+ * operator callers never see an offer.
  */
 
 export type InterstitialDetail =
@@ -65,7 +74,21 @@ export interface InterstitialCopy {
 function pathForTier(tier: Tier | undefined): 'signup' | 'premium' | undefined {
   if (!tier) return undefined;
   if (tier === 'anonymous') return 'signup';
-  return isTopTier(tier) ? undefined : 'premium';
+  return isPaidTier(tier) ? undefined : 'premium';
+}
+
+/** What the dialog offers: the server's path for free/anonymous, the Pro rule for paid tiers. */
+export type InterstitialOffer = 'signup' | 'premium' | 'pro' | undefined;
+
+export function interstitialOffer(
+  copy: InterstitialCopy,
+  tier: Tier | undefined,
+  tiers: TiersResponse | undefined,
+): InterstitialOffer {
+  if (tier && isPaidTier(tier)) {
+    return upsellTargetFor(tier, copy.limitKey, tiers) === 'pro' ? 'pro' : undefined;
+  }
+  return copy.upgradePath;
 }
 
 /** Pure mapping from a server body to copy keys: the part worth unit-testing. */
@@ -124,8 +147,26 @@ export function premiumChange(
   limitKey: string,
   tiers: TiersResponse | undefined,
 ): { key: string; values: Record<string, unknown> } | null {
-  const premium = tiers?.tiers.find((x) => x.tier === 'premium')?.limits;
-  if (!premium) return null;
+  return planChangeLine('premium', limitKey, tiers);
+}
+
+/** What Pro changes for a limit Pro raises (daily allowances only), from the served table. */
+export function proChange(
+  limitKey: string,
+  tiers: TiersResponse | undefined,
+): { key: string; values: Record<string, unknown> } | null {
+  if (!['quota_ops', 'quota_ai_ops', 'quota_export'].includes(limitKey)) return null;
+  return planChangeLine('pro', limitKey, tiers);
+}
+
+function planChangeLine(
+  plan: 'premium' | 'pro',
+  limitKey: string,
+  tiers: TiersResponse | undefined,
+): { key: string; values: Record<string, unknown> } | null {
+  const limits = tiers?.tiers.find((x) => x.tier === plan)?.limits;
+  if (!limits) return null;
+  const prefix = plan === 'pro' ? 'interface:upgradeInterstitial.proChange' : 'interface:upgradeInterstitial.premiumChange';
   const count = (n: number, key: string) =>
     isUnlimited(n)
       ? { key: `${key}Unlimited`, values: {} }
@@ -134,21 +175,21 @@ export function premiumChange(
         : null;
   switch (limitKey) {
     case 'file_too_large':
-      return premium.maxFileBytes > 0
-        ? { key: 'interface:upgradeInterstitial.premiumChange.fileSize', values: { value: formatBytes(premium.maxFileBytes) } }
+      return limits.maxFileBytes > 0
+        ? { key: `${prefix}.fileSize`, values: { value: formatBytes(limits.maxFileBytes) } }
         : null;
     case 'quota_ops':
-      return count(premium.opsPerDay, 'interface:upgradeInterstitial.premiumChange.ops');
+      return count(limits.opsPerDay, `${prefix}.ops`);
     case 'quota_ai_ops':
-      return count(premium.aiOpsPerDay, 'interface:upgradeInterstitial.premiumChange.aiOps');
+      return count(limits.aiOpsPerDay, `${prefix}.aiOps`);
     case 'quota_export':
-      return count(premium.exportsPerDay, 'interface:upgradeInterstitial.premiumChange.exports');
+      return count(limits.exportsPerDay, `${prefix}.exports`);
     case 'output_height_limited':
-      return premium.maxOutputHeight > 0
-        ? { key: 'interface:upgradeInterstitial.premiumChange.height', values: { value: premium.maxOutputHeight } }
+      return limits.maxOutputHeight > 0
+        ? { key: `${prefix}.height`, values: { value: limits.maxOutputHeight } }
         : null;
     case 'project_limit_reached':
-      return count(premium.studioProjects, 'interface:upgradeInterstitial.premiumChange.projects');
+      return count(limits.studioProjects, `${prefix}.projects`);
     default:
       return null;
   }
@@ -162,9 +203,18 @@ export const UpgradeInterstitial: React.FC<{
   const { t, language } = useLocalization(['interface']);
   const fallback = useBillingFallback();
   const copy = interstitialCopy(input, { tier: auth?.tier, limits: auth?.limits });
-  const tiers = useTiers(copy.upgradePath === 'premium');
-  const change = copy.upgradePath === 'premium' ? premiumChange(copy.limitKey, tiers) : null;
-  const purchasable = usePremiumPurchasable(copy.upgradePath === 'premium');
+  const paid = !!auth && isPaidTier(auth.tier);
+  const tiers = useTiers(copy.upgradePath === 'premium' || paid);
+  const offer = interstitialOffer(copy, auth?.tier, tiers);
+  const change =
+    offer === 'premium' ? premiumChange(copy.limitKey, tiers) : offer === 'pro' ? proChange(copy.limitKey, tiers) : null;
+  const premiumPurchasable = usePremiumPurchasable(offer === 'premium');
+  const proPurchasable = useProPurchasable(offer === 'pro');
+  const purchasable = offer === 'pro' ? proPurchasable : premiumPurchasable;
+  // A Pro upgrade is a plan change on the caller's live subscription; a team grant has none.
+  const statusQuery = useBillingStatus(offer === 'pro');
+  const changeable = offer !== 'pro' || (statusQuery.data?.plan === 'premium' && !statusQuery.data?.cancelAtPeriodEnd);
+  const planChange = usePlanChange();
   const [interval, setInterval] = React.useState<BillingInterval>('monthly');
   const [busy, setBusy] = React.useState(false);
 
@@ -179,9 +229,15 @@ export const UpgradeInterstitial: React.FC<{
       cta_id: copy.limitKey,
       from_tier: auth.tier,
     });
-    if (copy.upgradePath === 'signup') {
+    if (offer === 'signup') {
       onClose();
       auth.openAuth({ intent: 'signup', source: copy.limitKey });
+      return;
+    }
+    if (offer === 'pro') {
+      void planChange.run('upgrade').then((outcome) => {
+        if (outcome) onClose();
+      });
       return;
     }
     setBusy(true);
@@ -202,12 +258,18 @@ export const UpgradeInterstitial: React.FC<{
         </DialogHeader>
 
         {change ? (
-          <p className="text-sm text-foreground" data-testid="premium-change">
+          <p className="text-sm text-foreground" data-testid={offer === 'pro' ? 'pro-change' : 'premium-change'}>
             {t(change.key, change.values)}
           </p>
         ) : null}
 
-        {copy.upgradePath === 'premium' && purchasable ? (
+        {offer === 'pro' && purchasable && changeable ? (
+          // The prorated charge is stated before the click, as in the Billing panel.
+          <p className="text-sm text-muted-foreground" data-testid="pro-upgrade-note">
+            {t('interface:upgradeInterstitial.proNote')}
+          </p>
+        ) : null}
+        {offer === 'premium' && purchasable ? (
           <Segmented<BillingInterval>
             name="interstitial-interval"
             label={t('interface:billing.intervalLabel')}
@@ -219,14 +281,15 @@ export const UpgradeInterstitial: React.FC<{
             ]}
           />
         ) : null}
-        {copy.upgradePath === 'premium' && purchasable === false ? (
+        {offer === 'premium' && purchasable === false ? (
           <p className="text-sm text-muted-foreground">
             {t('interface:billing.unavailable')}
           </p>
         ) : null}
-        {copy.upgradePath === undefined ? (
+        {offer === undefined ? (
           <p className="text-sm text-muted-foreground">
-            {t('interface:upgradeInterstitial.topTier')}
+            {/* Premium is not the top any more (MM40), but no plan raises this limit further. */}
+            {t(auth?.tier === 'premium' ? 'interface:upgradeInterstitial.noHigherPlan' : 'interface:upgradeInterstitial.topTier')}
           </p>
         ) : null}
 
@@ -234,12 +297,17 @@ export const UpgradeInterstitial: React.FC<{
           <Button variant="outline" onClick={onClose}>
             {t('interface:upgradeInterstitial.close')}
           </Button>
-          {copy.upgradePath === 'signup' ? (
+          {offer === 'signup' ? (
             <Button onClick={proceed}>{t('interface:upgradeInterstitial.signup')}</Button>
           ) : null}
-          {copy.upgradePath === 'premium' && purchasable && !isIrreversibleActionHidden() ? (
+          {offer === 'premium' && purchasable && !isIrreversibleActionHidden() ? (
             <Button onClick={proceed} disabled={busy}>
               {t('interface:upgradeInterstitial.upgrade')}
+            </Button>
+          ) : null}
+          {offer === 'pro' && purchasable && changeable && !isIrreversibleActionHidden() ? (
+            <Button onClick={proceed} disabled={planChange.busy} aria-busy={planChange.busy}>
+              {t('interface:billing.upgradePro')}
             </Button>
           ) : null}
         </div>

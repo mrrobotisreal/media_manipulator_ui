@@ -4,14 +4,15 @@
 // auth-modal plan card, the interstitial). Routing by state:
 //   anonymous      -> the signup modal
 //   free           -> Stripe Checkout with the last-used interval (when Premium is purchasable)
-//   premium/operator -> nothing to sell; `visible` is false and `run` is a no-op
+//   premium/pro/operator -> this hook sells Premium only; `visible` is false and `run` is a
+//                    no-op (Premium -> Pro is a plan change, offered on /pricing and Billing)
 
 import * as React from 'react';
 import { toast } from 'sonner';
 
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { fetchTiers, isTopTier, type BillingInterval, type TiersResponse } from '@/lib/auth/accountApi';
+import { fetchTiers, isPaidTier, type BillingInterval, type TiersResponse } from '@/lib/auth/accountApi';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { openPortal, readLastInterval, startCheckout, type BillingOutcome } from './checkout';
@@ -78,6 +79,22 @@ export function usePremiumPurchasable(enabled = true): boolean | undefined {
   return value;
 }
 
+/** Whether Pro can be bought right now (MM39 `proPurchasable`); undefined until known. */
+export function useProPurchasable(enabled = true): boolean | undefined {
+  const [value, setValue] = React.useState<boolean | undefined>(undefined);
+  React.useEffect(() => {
+    if (!enabled) return;
+    let live = true;
+    void loadTiers().then((data) => {
+      if (live) setValue(data?.proPurchasable === true);
+    });
+    return () => {
+      live = false;
+    };
+  }, [enabled]);
+  return value;
+}
+
 /**
  * Turns a refused checkout into the right next step instead of a dead end.
  * Returns after surfacing a toast or navigating; never throws.
@@ -90,6 +107,11 @@ export function useBillingFallback() {
     async (outcome: BillingOutcome, placement: string): Promise<void> => {
       if (outcome.ok) return;
       switch (outcome.reason) {
+        case 'already_on_plan':
+          // MM39: already on this plan or higher without a live subscription; nothing to buy.
+          toast(t('interface:billing.errors.alreadyOnPlan'));
+          window.location.assign(localized('/account'));
+          return;
         case 'already_subscribed':
           if (outcome.refusal?.portalAvailable) {
             const portal = await openPortal(placement, language?.code);
@@ -118,7 +140,7 @@ export function useBillingFallback() {
 }
 
 export interface UpgradeAction {
-  /** False for premium/operator, and for free users while Premium is not purchasable. */
+  /** False for premium/pro/operator, and for free users while Premium is not purchasable. */
   visible: boolean;
   busy: boolean;
   /** Fires `upgrade_cta_clicked`, then routes by state. */
@@ -133,13 +155,13 @@ export function useUpgradeAction(placement: string, interval?: BillingInterval):
   const tier = auth?.tier ?? 'anonymous';
   const purchasable = usePremiumPurchasable(tier === 'free');
 
-  const top = isTopTier(tier);
+  const paid = isPaidTier(tier);
   // MM52: translator deployments sell nothing (design §2.15).
   const visible =
-    !isIrreversibleActionHidden() && !!auth && !top && (tier !== 'free' || purchasable === true);
+    !isIrreversibleActionHidden() && !!auth && !paid && (tier !== 'free' || purchasable === true);
 
   const run = React.useCallback(() => {
-    if (!auth || isTopTier(auth.tier) || isIrreversibleActionHidden()) return;
+    if (!auth || isPaidTier(auth.tier) || isIrreversibleActionHidden()) return;
     // Same props as the per-surface calls this replaced.
     analytics.track(EVENTS.UPGRADE_CTA_CLICKED, { placement, from_tier: auth.tier });
     if (auth.tier !== 'free') {

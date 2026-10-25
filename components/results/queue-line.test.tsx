@@ -27,14 +27,14 @@ afterEach(() => {
 });
 
 describe('shouldShowQueueLine', () => {
-  const ok = { waitMs: 48_000, tierIsTop: false, premiumHasPriority: true };
+  const ok = { waitMs: 48_000, tierIsPaid: false, premiumHasPriority: true };
   it('needs a reported wait of at least 30 s', () => {
     expect(shouldShowQueueLine(ok)).toBe(true);
     expect(shouldShowQueueLine({ ...ok, waitMs: 29_999 })).toBe(false);
     expect(shouldShowQueueLine({ ...ok, waitMs: undefined })).toBe(false);
   });
   it('is off for top tiers and when priority is not deployed', () => {
-    expect(shouldShowQueueLine({ ...ok, tierIsTop: true })).toBe(false);
+    expect(shouldShowQueueLine({ ...ok, tierIsPaid: true })).toBe(false);
     expect(shouldShowQueueLine({ ...ok, premiumHasPriority: false })).toBe(false);
   });
 });

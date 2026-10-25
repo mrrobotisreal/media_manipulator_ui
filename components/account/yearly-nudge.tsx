@@ -4,8 +4,9 @@ import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { analytics, EVENTS } from '@/lib/analytics';
-import type { BillingStatus, TiersResponse } from '@/lib/auth/accountApi';
+import type { BillingStatus, PaidPlan, TiersResponse } from '@/lib/auth/accountApi';
 import { openPortal } from '@/lib/billing/checkout';
+import { planPrices, yearlyMonthsFree } from '@/lib/billing/price';
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
 import { useLocalization } from '@/i18n/useLocalization';
 
@@ -22,12 +23,13 @@ import { useLocalization } from '@/i18n/useLocalization';
 export const YEARLY_NUDGE_MIN_PERIODS = 3;
 const DISMISS_PREFIX = 'mm.yearlyNudgeDismissed.';
 
-/** Whole months the yearly price saves versus twelve monthly ones; 0 when it is no discount. */
-export function monthsFree(tiers: TiersResponse | undefined): number {
-  const monthly = tiers?.premiumPriceUSD;
-  const yearly = tiers?.premiumPriceYearlyUSD;
-  if (!monthly || monthly <= 0 || !yearly) return 0;
-  return Math.max(0, Math.round(12 - yearly / monthly));
+/**
+ * Whole months the yearly price saves versus twelve monthly ones; 0 when it is no discount.
+ * Read from the subscriber's own plan (MM40): Pro has its own two prices.
+ */
+export function monthsFree(tiers: TiersResponse | undefined, plan: PaidPlan = 'premium'): number {
+  const { monthly, yearly } = planPrices(tiers, plan);
+  return yearlyMonthsFree(monthly, yearly);
 }
 
 export function shouldShowYearlyNudge(input: {
@@ -40,7 +42,7 @@ export function shouldShowYearlyNudge(input: {
   if (s.interval !== 'monthly' || s.status !== 'active' || s.cancelAtPeriodEnd || s.manualGrant) return false;
   if (!s.portalAvailable) return false;
   if (typeof s.periodsPaid !== 'number' || s.periodsPaid < YEARLY_NUDGE_MIN_PERIODS) return false;
-  return monthsFree(input.tiers) >= 1;
+  return monthsFree(input.tiers, s.plan ?? 'premium') >= 1;
 }
 
 function readDismissed(uid: string): boolean {
@@ -86,7 +88,7 @@ export const YearlyNudge: React.FC<{
 
   const placement = 'yearly_nudge';
   const switchToYearly = () => {
-    analytics.track(EVENTS.UPGRADE_CTA_CLICKED, { placement, from_tier: 'premium' });
+    analytics.track(EVENTS.UPGRADE_CTA_CLICKED, { placement, from_tier: status?.plan ?? 'premium' });
     setBusy(true);
     // The Stripe portal is where a plan change happens; no new checkout is created.
     void openPortal(placement, language?.code)
@@ -105,7 +107,7 @@ export const YearlyNudge: React.FC<{
     >
       <div>
         <p className="font-medium text-foreground">
-          {t('interface:yearlyNudge.title', { months: monthsFree(tiers) })}
+          {t('interface:yearlyNudge.title', { months: monthsFree(tiers, status?.plan ?? 'premium') })}
         </p>
         <p className="mt-1 text-muted-foreground">{t('interface:yearlyNudge.body')}</p>
       </div>
