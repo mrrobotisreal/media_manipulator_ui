@@ -5,7 +5,7 @@
  * entry with id "retention" and the old "temporary storage" entry must be gone.
  */
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { locales } from "./locales";
@@ -23,8 +23,12 @@ const flatten = (v: unknown): string => JSON.stringify(v);
 const en = load("en-US");
 
 describe("legal retention copy", () => {
-  it("registers six locales", () => {
-    expect(locales.length).toBe(6);
+  it("covers every registered locale, one locale directory each", () => {
+    const dirs = readdirSync(join(__dirname, "locales"), { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name)
+      .sort();
+    expect(locales.map((l) => l.code.toLowerCase()).sort()).toEqual(dirs);
   });
 
   for (const { code } of locales as unknown as { code: string }[]) {
