@@ -560,11 +560,18 @@ export interface SnapResult {
 /**
  * Snap a box being moved by (dx, dy) so its left/centre/right (top/middle/
  * bottom) lands on the canvas edges or centre when within `threshold` canvas
- * units (the caller divides the screen threshold by the zoom).
+ * units (the caller divides the screen threshold by the zoom). Guides are
+ * document coordinates.
  */
-export function snapMove(box: Box, dx: number, dy: number, canvas: { width: number; height: number }, threshold: number): SnapResult {
-  const pick = (start: number, size: number, d: number, extent: number) => {
-    const targets = [0, extent / 2, extent];
+export function snapMove(
+  box: Box,
+  dx: number,
+  dy: number,
+  canvas: { x?: number; y?: number; width: number; height: number },
+  threshold: number,
+): SnapResult {
+  const pick = (start: number, size: number, d: number, origin: number, extent: number) => {
+    const targets = [origin, origin + extent / 2, origin + extent];
     const probes = [start + d, start + d + size / 2, start + d + size];
     let best: { delta: number; at: number } | null = null;
     for (const p of probes) {
@@ -575,8 +582,8 @@ export function snapMove(box: Box, dx: number, dy: number, canvas: { width: numb
     }
     return best;
   };
-  const sx = pick(box.x, box.width, dx, canvas.width);
-  const sy = pick(box.y, box.height, dy, canvas.height);
+  const sx = pick(box.x, box.width, dx, canvas.x ?? 0, canvas.width);
+  const sy = pick(box.y, box.height, dy, canvas.y ?? 0, canvas.height);
   return {
     dx: dx + (sx?.delta ?? 0),
     dy: dy + (sy?.delta ?? 0),
