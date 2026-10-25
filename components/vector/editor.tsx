@@ -58,6 +58,7 @@ import { VectorCanvas, fitView, zoomAt, type View } from './canvas';
 import { Inspector } from './inspector';
 import { IconButton, LayerPanel } from './layer-panel';
 import { Timeline } from './timeline';
+import { usePlayback } from './use-playback';
 
 export interface MotionEditorProps {
   projectId: string;
@@ -104,6 +105,8 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
   const fileRef = React.useRef<HTMLInputElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
   const idRef = React.useRef<string | null>(null);
+  // MM44: the preview clock (play shares the scrub render path).
+  usePlayback();
 
   // ---- open: classify the id, look for a draft, maybe prompt ----
   React.useEffect(() => {
