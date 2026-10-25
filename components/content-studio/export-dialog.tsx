@@ -39,6 +39,7 @@ import type { StudioExportStartedProps } from '@/lib/analytics';
 import { exportDurationRatioBucket, studioHost } from '@/lib/studio/telemetry';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import { useEmbedBridgeOptional } from './embed-bridge';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 const exportFormSchema = z.object({
   fileName: z.string().min(1, 'Enter a file name').max(120),
@@ -62,7 +63,14 @@ type ExportIntent = 'download' | 'publish';
  * upload flow via cs:publish-request) — and emits the cs:export-* lifecycle so
  * Darkroom can drive its own toasts/download outside the iframe.
  */
-const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = ({ projectId, disabled }) => {
+const ExportDialog: React.FC<{ projectId: string; disabled?: boolean }> = (props) => {
+  // MM52 (design §2.15): no Darkroom export on translator deployments. A wrapper,
+  // so the dialog's hooks are never conditional.
+  if (isIrreversibleActionHidden()) return null;
+  return <ExportDialogInner {...props} />;
+};
+
+const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = ({ projectId, disabled }) => {
   const { t } = useLocalization('interface');
   const backend = useStudioBackend();
   const bridge = useEmbedBridgeOptional();

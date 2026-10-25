@@ -27,6 +27,7 @@ import { formatBytes } from '@/lib/auth/formatLimits';
 import { readLastInterval, startCheckout } from '@/lib/billing/checkout';
 import { useBillingFallback, usePremiumPurchasable, useTiers } from '@/lib/billing/useUpgradeAction';
 import { useLocalization } from '@/i18n/useLocalization';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 /**
  * The shared "you hit a plan limit" dialog for the 429 `quota_exceeded` (free account on its
@@ -236,7 +237,7 @@ export const UpgradeInterstitial: React.FC<{
           {copy.upgradePath === 'signup' ? (
             <Button onClick={proceed}>{t('interface:upgradeInterstitial.signup')}</Button>
           ) : null}
-          {copy.upgradePath === 'premium' && purchasable ? (
+          {copy.upgradePath === 'premium' && purchasable && !isIrreversibleActionHidden() ? (
             <Button onClick={proceed} disabled={busy}>
               {t('interface:upgradeInterstitial.upgrade')}
             </Button>

@@ -4,6 +4,7 @@ import Providers from '@/app/providers';
 import { SITE_ORIGIN } from '@/lib/seo';
 import { inter, jetbrainsMono } from '@/lib/fonts';
 import { LayoutBootstrap } from '@/lib/layoutScripts';
+import { isTranslatorEnv, TRANSLATOR_ROBOTS } from '@/lib/translator/mode';
 
 /**
  * Root layout for the non-localized surfaces: the `/dr/**` Double Raven
@@ -26,6 +27,8 @@ export const metadata: Metadata = {
   other: {
     'google-adsense-account': 'ca-pub-3413790368941825',
   },
+  // MM52: translator deployments are noindex/nofollow and never claim the AdSense account.
+  ...(isTranslatorEnv() ? { robots: TRANSLATOR_ROBOTS, other: {} } : {}),
 };
 
 export const viewport: Viewport = {

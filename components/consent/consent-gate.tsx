@@ -48,6 +48,14 @@ const ConsentPreferences = dynamic(() => import('@/components/consent/consent-pr
 });
 
 export function ConsentGate() {
+  // MM52: nothing is captured on a translator deployment, so there is nothing to
+  // consent to, and initConsent() would contact the analytics service (region
+  // lookup, consent audit). The literal folds away in production builds.
+  if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return null;
+  return <ConsentGateInner />;
+}
+
+function ConsentGateInner() {
   const [showBanner, setShowBanner] = React.useState(false);
   const [showPreferences, setShowPreferences] = React.useState(false);
 

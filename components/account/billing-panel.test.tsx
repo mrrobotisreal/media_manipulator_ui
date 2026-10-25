@@ -264,3 +264,71 @@ describe('retention offer', () => {
     expect(h.toast.error).not.toHaveBeenCalled();
   });
 });
+
+describe('translator mode (MM52)', () => {
+  afterEach(() => vi.unstubAllEnvs());
+  const offerCancelled = {
+    status: 'active', interval: 'monthly', cancelAtPeriodEnd: true, portalAvailable: true,
+    renewsAt: '2026-11-23T00:00:00Z', endsAt: '2026-11-23T00:00:00Z', priceMonthlyUSD: 8,
+    offer: { kind: 'retain7', priceUSD: 7, nextChargeAt: '2026-11-23T00:00:00Z' },
+  };
+
+  it('translator mode: hides the upgrade button', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    renderPanel('free', {});
+    await screen.findByText('interface:billing.panel.freeBody');
+    expect(screen.queryByRole('button', { name: 'interface:billing.panel.upgrade' })).toBeNull();
+  });
+
+  it('production: shows the upgrade button', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    renderPanel('free', {});
+    await screen.findByText('interface:billing.panel.freeBody');
+    expect(screen.getByRole('button', { name: 'interface:billing.panel.upgrade' })).toBeTruthy();
+  });
+
+  it('translator mode: hides the Manage subscription portal button', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    renderPanel('premium', { status: 'active', interval: 'yearly', portalAvailable: true });
+    await screen.findByText('interface:billing.yearly');
+    expect(screen.queryByRole('button', { name: 'interface:billing.manage' })).toBeNull();
+  });
+
+  it('production: shows the Manage subscription portal button', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    renderPanel('premium', { status: 'active', interval: 'yearly', portalAvailable: true });
+    expect(await screen.findByRole('button', { name: 'interface:billing.manage' })).toBeTruthy();
+  });
+
+  it('translator mode: hides the retention offer card', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    renderPanel('premium', offerCancelled);
+    await screen.findByText('interface:billing.panel.cancelledTitle');
+    expect(screen.queryByTestId('retention-offer')).toBeNull();
+  });
+
+  it('production: shows the retention offer card', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    renderPanel('premium', offerCancelled);
+    expect(await screen.findByTestId('retention-offer')).toBeTruthy();
+  });
+
+  const nudgeEligible = {
+    status: 'active', interval: 'monthly', portalAvailable: true, periodsPaid: 4, renewsAt: '2026-11-23T00:00:00Z',
+  };
+
+  it('translator mode: hides the yearly-switch nudge', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    window.localStorage.clear();
+    renderPanel('premium', nudgeEligible);
+    await screen.findByText('interface:billing.monthly');
+    expect(screen.queryByText('interface:yearlyNudge.cta')).toBeNull();
+  });
+
+  it('production: shows the yearly-switch nudge', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    window.localStorage.clear();
+    renderPanel('premium', nudgeEligible);
+    expect(await screen.findByText('interface:yearlyNudge.cta')).toBeTruthy();
+  });
+});

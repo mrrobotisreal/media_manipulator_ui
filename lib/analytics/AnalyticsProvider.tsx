@@ -85,6 +85,14 @@ let initialViewSent = false;
 let identifiedUid: string | null = null;
 
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
+  // MM52: translator deployments mount no tracker of any kind (no client start,
+  // no consent resolution, no GA4 bridge, no engagement tracker, no vitals).
+  // The literal folds at build time, so production keeps exactly the tracker below.
+  if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return <>{children}</>;
+  return <AnalyticsTracker>{children}</AnalyticsTracker>;
+}
+
+function AnalyticsTracker({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   // Tolerates null: this provider is only mounted inside AuthProvider today, but a
   // component that throws when its optional parent is absent is a trap for whoever moves

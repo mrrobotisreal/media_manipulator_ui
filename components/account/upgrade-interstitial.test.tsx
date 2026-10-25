@@ -162,3 +162,19 @@ describe('limit-specific interstitial (MM33)', () => {
     expect(claimInterstitial(limitKeyOf(ops))).toBe(true);
   });
 });
+
+describe('UpgradeInterstitial translator mode (MM52)', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it('translator mode: hides the upgrade button', () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    render(<UpgradeInterstitial input={{ kind: 'limit', detail: heightBody }} onClose={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: 'interface:upgradeInterstitial.upgrade' })).toBeNull();
+  });
+
+  it('production: shows the upgrade button', () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    render(<UpgradeInterstitial input={{ kind: 'limit', detail: heightBody }} onClose={vi.fn()} />);
+    expect(screen.getByRole('button', { name: 'interface:upgradeInterstitial.upgrade' })).toBeTruthy();
+  });
+});

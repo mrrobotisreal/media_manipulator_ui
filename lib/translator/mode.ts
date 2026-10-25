@@ -76,6 +76,16 @@ export function isIrreversibleActionHidden(): boolean {
 /** `metadata.robots` forced on translator deployments (design §2.7). */
 export const TRANSLATOR_ROBOTS = { index: false, follow: false } as const;
 
+/**
+ * A page's `metadata.robots`, forced to noindex/nofollow on translator
+ * deployments. Needed at every page that sets `robots`, not only in the root
+ * layouts: Next merges metadata SHALLOWLY, so a page's `robots` replaces the
+ * layout's. Returns `rule` unchanged in production.
+ */
+export function translatorRobots<T>(rule: T): T | typeof TRANSLATOR_ROBOTS {
+  return isTranslatorEnv() ? TRANSLATOR_ROBOTS : rule;
+}
+
 /** Test seam: re-arm the once-only invalid-locale warning. */
 export function resetTranslatorModeWarningsForTests(): void {
   warnedInvalidLocale = false;

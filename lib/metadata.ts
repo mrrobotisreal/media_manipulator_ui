@@ -21,6 +21,7 @@ import type { Metadata } from 'next';
 import { getSeoForPath, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
 import { getSeoOverride } from '@/lib/seoOverrides';
 import { defaultLocale, getLocaleDef, localizeHref, translatedLocales } from '@/i18n/locales';
+import { translatorRobots } from '@/lib/translator/mode';
 
 const localizedUrl = (path: string, locale: string): string => {
   const localizedPath = localizeHref(path, locale);
@@ -64,10 +65,11 @@ export function buildMetadata(path: string, locale: string = defaultLocale): Met
       // Alternates only on indexable pages; noindex pages advertise nothing.
       languages: seo.noindex ? undefined : languageAlternates(path),
     },
-    robots:
+    robots: translatorRobots(
       seo.noindex || !isTranslated
         ? { index: false, follow: true }
         : { index: true, follow: true },
+    ),
     openGraph: {
       title: ogTitle,
       description: ogDescription,

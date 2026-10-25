@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+import { isTranslatorEnv } from '@/lib/translator/mode';
 
 // The /dr section is private. This noindex/nofollow metadata applies to every
 // nested route (including /dr/auth). app/robots.ts also disallows /dr and
@@ -13,5 +16,8 @@ export const metadata: Metadata = {
 };
 
 export default function DrLayout({ children }: { children: React.ReactNode }) {
+  // MM52: the partner portal does not exist on translator deployments. Done in
+  // the route (not proxy.ts) so the production build output is unchanged.
+  if (isTranslatorEnv()) notFound();
   return <>{children}</>;
 }

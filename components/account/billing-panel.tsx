@@ -24,6 +24,7 @@ import { openPortal, readLastInterval, startCheckout } from '@/lib/billing/check
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
 import { useLocalization } from '@/i18n/useLocalization';
 import { YearlyNudge } from './yearly-nudge';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 /**
  * The /account Billing panel (MM19 decision 4).
@@ -180,6 +181,8 @@ export const BillingPanel: React.FC = () => {
   }, [state, status?.interval]);
 
   const placement = 'account_billing';
+  // MM52 (design §2.15): no Checkout, portal or plan change on translator deployments.
+  const hideBilling = isIrreversibleActionHidden();
   const manage = () => {
     setBusy(true);
     void openPortal(placement, language?.code)
@@ -304,9 +307,11 @@ export const BillingPanel: React.FC = () => {
             </p>
           ) : null}
           <p className="text-xs text-muted-foreground">{t('interface:billing.refund')}</p>
-          <Button className="w-fit" onClick={upgrade} disabled={busy}>
-            {t('interface:billing.panel.upgrade')}
-          </Button>
+          {hideBilling ? null : (
+            <Button className="w-fit" onClick={upgrade} disabled={busy}>
+              {t('interface:billing.panel.upgrade')}
+            </Button>
+          )}
         </div>
       );
       break;
@@ -361,7 +366,7 @@ export const BillingPanel: React.FC = () => {
               {t('interface:billing.panel.renewsOn', { date: date(status.renewsAt) })}
             </p>
           ) : null}
-          {offer ? (
+          {offer && !hideBilling ? (
             <RetentionOfferCard
               offer={offer}
               currentPrice={status?.priceMonthlyUSD}
@@ -373,8 +378,8 @@ export const BillingPanel: React.FC = () => {
               date={date}
             />
           ) : null}
-          {state === 'active' ? <YearlyNudge uid={uid} status={status} tiers={tiersQuery.data} /> : null}
-          {status?.portalAvailable ? (
+          {state === 'active' && !hideBilling ? <YearlyNudge uid={uid} status={status} tiers={tiersQuery.data} /> : null}
+          {status?.portalAvailable && !hideBilling ? (
             <Button className="w-fit" onClick={manage} disabled={busy}>
               {state === 'past_due'
                 ? t('interface:billing.panel.updatePayment')

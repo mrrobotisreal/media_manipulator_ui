@@ -112,6 +112,8 @@ export class AnalyticsClient {
   start(): () => void {
     if (this.started) return () => undefined;
     if (typeof window === 'undefined') return () => undefined;
+    // MM52: analytics is off on translator deployments (no outbox, no heartbeat).
+    if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return () => undefined;
     this.started = true;
 
     try {
@@ -246,6 +248,8 @@ export class AnalyticsClient {
     options?: TrackOptions,
   ): void {
     if (typeof window === 'undefined') return;
+    // MM52: translator deployments capture nothing, not even the anonymous count.
+    if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return;
 
     const consent = analyticsConsent();
 
@@ -380,6 +384,7 @@ export class AnalyticsClient {
   /** Flush the queue. Never throws; the promise never rejects. */
   async flush(): Promise<void> {
     try {
+      if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return;
       if (!canCapture()) return;
       this.queue.dropStale();
       if (this.queue.size() === 0) return;
@@ -404,6 +409,7 @@ export class AnalyticsClient {
    */
   flushSync(): void {
     try {
+      if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') return;
       if (!canCapture()) return;
       this.queue.dropStale();
       while (this.queue.size() > 0) {

@@ -35,6 +35,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { useEmbedBridgeOptional } from './embed-bridge';
 import type { StudioExportRecord } from '@/lib/studioTypes';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 /**
  * Watches ONE running export job and reports its live state upward. One
@@ -271,15 +272,17 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
                             {t('contentStudio.exports.hostDownload')}
                           </span>
                         )}
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          disabled={renderAgain.isPending}
-                          onClick={() => void handleAgain(row)}
-                        >
-                          <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-                          {t('contentStudio.exports.again')}
-                        </Button>
+                        {isIrreversibleActionHidden() ? null : (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={renderAgain.isPending}
+                            onClick={() => void handleAgain(row)}
+                          >
+                            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+                            {t('contentStudio.exports.again')}
+                          </Button>
+                        )}
                       </div>
                     )}
                   </li>

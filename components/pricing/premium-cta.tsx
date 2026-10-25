@@ -20,6 +20,7 @@ import {
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 /**
  * The Premium column's price, interval toggle and call to action: the pricing page's third
@@ -134,7 +135,9 @@ export const PremiumPricing: React.FC<{
   let cta: React.ReactNode;
   if (tier === 'operator') {
     cta = <p className="mt-1 text-sm text-data">{labels.ctaOperator}</p>;
-  } else if (!purchasable && tier !== 'premium') {
+  } else if (isIrreversibleActionHidden() || (!purchasable && tier !== 'premium')) {
+    // MM52: on a translator deployment Checkout and the portal are disabled; the
+    // existing "not available" label is the reason (no new copy, design §2.15).
     cta = (
       <Button className="mt-1 w-full" variant="outline" disabled>
         {labels.ctaUnavailable}

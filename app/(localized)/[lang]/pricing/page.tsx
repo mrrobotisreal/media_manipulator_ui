@@ -7,6 +7,7 @@ import { getLocaleDef, localizeHref } from '@/i18n/locales';
 import type { TiersResponse } from '@/lib/auth/accountApi';
 import { getSeoOverride } from '@/lib/seoOverrides';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
+import { translatorRobots } from '@/lib/translator/mode';
 
 // Metadata is written here rather than through buildMetadata(): lib/seo.ts is
 // byte-unchanged since main by design, and getSeoForPath() falls back to the
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
       canonical,
       languages: languageAlternates('/pricing'),
     },
-    robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
+    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
     openGraph: {
       title,
       description,

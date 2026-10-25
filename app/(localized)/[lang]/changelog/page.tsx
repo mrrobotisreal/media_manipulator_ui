@@ -5,6 +5,7 @@ import { languageAlternates } from '@/lib/metadata';
 import { getServerMetadataT } from '@/lib/i18n/server';
 import { getLocaleDef, localizeHref } from '@/i18n/locales';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
+import { translatorRobots } from '@/lib/translator/mode';
 
 // Metadata is written here (like /pricing) because lib/seo.ts is not extended:
 // getSeoForPath() falls back to the noindex 404 entry for unknown paths.
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
       languages: languageAlternates('/changelog'),
       types: { 'application/rss+xml': `${SITE_ORIGIN}/changelog.xml` },
     },
-    robots: isTranslated ? { index: true, follow: true } : { index: false, follow: true },
+    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
     openGraph: {
       title,
       description,
