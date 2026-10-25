@@ -81,7 +81,11 @@ export default function Providers({
   // and still needs react-query + theme, so it takes the same chromeless branch
   // as /embed.
   const isDoubleRaven = pathname?.startsWith('/dr') ?? false;
-  const isChromeless = isEmbed || isDoubleRaven;
+  // MM42: the Motion editor (`/motion/[projectId]`) is a chromeless app surface
+  // like Darkroom's embed: no nav/footer/ads/consent bar. Exact match so a
+  // `/motion-*` page keeps the site chrome. (Its analytics arrive with MM49.)
+  const isMotionEditor = pathname === '/motion' || (pathname?.startsWith('/motion/') ?? false);
+  const isChromeless = isEmbed || isDoubleRaven || isMotionEditor;
 
   if (isChromeless) {
     // ANALYTICS-FREE BY CONSTRUCTION, not by a runtime flag. There is no
@@ -89,6 +93,7 @@ export default function Providers({
     // there is nothing to accidentally leave enabled: `/embed/*` is an iframed
     // surface inside someone else's page, and `/dr/*` is a private partner
     // portal. Neither may mount a consent prompt or emit a single event.
+    // `/motion/*` (MM42) is here too until MM49 decides its analytics surface.
     return (
       <I18nextProvider i18n={i18nInstance}>
         <QueryClientProvider client={queryClient}>

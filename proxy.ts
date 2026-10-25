@@ -14,8 +14,10 @@ import { isSupportedPrefix } from './i18n/locales';
  *   URL so English never serves the same content at two live URLs.
  * - Any registered prefix (`/ru/...`, `/zh-cn/...`, `/pt-br/...`; the list is
  *   `i18n/locales.ts`) passes through untouched and hits its static pages.
- * - `/dr/**`, `/embed/**`, `/api/**`, Next internals and static files are
- *   excluded via the matcher (and re-checked below, defensively).
+ * - `/dr/**`, `/embed/**`, `/motion/**` (the chromeless Motion editor, MM42),
+ *   `/api/**`, Next internals and static files are excluded via the matcher
+ *   (and re-checked below, defensively). The checks are exact (`/motion` or
+ *   `/motion/…`), so a future `/motion-*` page and `/tools/motion` stay localized.
  *
  * Deliberately NO locale detection: no Accept-Language sniffing, no cookie
  * reads, no automatic redirects. A crawler and a user requesting the same URL
@@ -33,6 +35,8 @@ export function proxy(request: NextRequest) {
     pathname.startsWith('/dr/') ||
     pathname === '/embed' ||
     pathname.startsWith('/embed/') ||
+    pathname === '/motion' ||
+    pathname.startsWith('/motion/') ||
     pathname.includes('.')
   ) {
     return NextResponse.next();
@@ -59,8 +63,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip Next internals, API routes, the non-localized /dr and /embed trees,
+  // Skip Next internals, API routes, the non-localized /dr, /embed and /motion trees,
   // and anything with a file extension (static assets, sw.js, robots.txt,
   // sitemap.xml, icons). Everything else flows through the locale logic above.
-  matcher: ['/((?!_next|api/|dr$|dr/|embed$|embed/|.*\\.).*)'],
+  matcher: ['/((?!_next|api/|dr$|dr/|embed$|embed/|motion$|motion/|.*\\.).*)'],
 };

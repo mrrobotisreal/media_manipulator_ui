@@ -87,3 +87,21 @@ describe("href helpers with hyphenated prefixes", () => {
     expect(localizeHref(stripLocalePrefix(zh), "pt-PT")).toBe("/pt-pt/pricing");
   });
 });
+
+describe("localizeHref and the Motion editor (MM42)", () => {
+  it("leaves /motion/x unchanged for ru-RU while /tools/motion is prefixed", () => {
+    expect(localizeHref("/motion/x", "ru-RU")).toBe("/motion/x");
+    expect(localizeHref("/tools/motion", "ru-RU")).toBe("/ru/tools/motion");
+  });
+
+  it.each(locales.map((l) => [l.code]))("never prefixes the editor route for %s", (code) => {
+    for (const href of ["/motion", "/motion/new", "/motion/abc?x=1", "/motion#top", "/motion?from=tools"]) {
+      expect(localizeHref(href, code)).toBe(href);
+    }
+  });
+
+  it("still localizes look-alikes", () => {
+    expect(localizeHref("/motion-graphics", "de-DE")).toBe("/de/motion-graphics");
+    expect(localizeHref("/motions", "de-DE")).toBe("/de/motions");
+  });
+});
