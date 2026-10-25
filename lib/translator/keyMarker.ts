@@ -92,7 +92,7 @@ export function refForCall(
       key = key.slice(0, -suffix.length) + translator.pluralResolver.getSuffix(lng, count, options);
     }
   }
-  if (!shouldMarkKey(key)) return null;
+  if (!shouldMarkKey(key, typeof resolved.res === 'string' ? resolved.res : undefined)) return null;
   return { ns: resolved.usedNS, key, lng };
 }
 
@@ -116,7 +116,7 @@ export const keyMarkerPostProcessor: TranslatorMarkerRuntime['postProcessor'] = 
 
 /** Server path (`getServerT`/`ServerTrans`): same index, same codec. */
 export function markServerString(value: string, ref: MarkerRef): string {
-  if (!value || !shouldMarkKey(ref.key)) return value;
+  if (!value || !shouldMarkKey(ref.key, value)) return value;
   return appendMarker(value, keyRegistry.record(ref));
 }
 

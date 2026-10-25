@@ -60,10 +60,19 @@ export function markerIndex(ref: MarkerRef): number {
   return localeSlot(ref.lng) * SLOT_FACTOR + fnv1a32(`${ref.ns}:${ref.key}`);
 }
 
-/** False for identifier leaves that must never carry a marker. */
-export function shouldMarkKey(key: string): boolean {
+/**
+ * Values that are machine-readable even though they live in a shard: an email
+ * address or a URL (e.g. `privacyPolicy.sections.N.contactEmail`, rendered both
+ * as text and inside `href="mailto:…"`). A marker there would break the link,
+ * and `href` is not a scanned attribute, so it would never be cleaned.
+ */
+const MACHINE_VALUE_RE = /^(?:[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}|(?:https?|mailto|tel):\S+)$/i;
+
+/** False for identifier leaves and machine-readable values that must never carry a marker. */
+export function shouldMarkKey(key: string, value?: string): boolean {
   const leaf = key.slice(key.lastIndexOf('.') + 1);
-  return !UNMARKED_LEAVES.has(leaf);
+  if (UNMARKED_LEAVES.has(leaf)) return false;
+  return !(value !== undefined && MACHINE_VALUE_RE.test(value.trim()));
 }
 
 /** `foo_one` -> `foo`; any other key unchanged. */

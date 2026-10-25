@@ -91,6 +91,11 @@ describe('key registry index', () => {
     );
     expect(shouldMarkKey('privacyPolicy.sections.2.id')).toBe(false);
     expect(shouldMarkKey('privacyPolicy.sections.2.title')).toBe(true);
+    // Machine-readable values (they end up in href="mailto:…" / href="…").
+    expect(shouldMarkKey('privacyPolicy.sections.9.contactEmail', 'privacy@media-manipulator.com')).toBe(false);
+    expect(shouldMarkKey('x.link', 'https://www.media-manipulator.com/pricing')).toBe(false);
+    expect(shouldMarkKey('x.body', 'Write to support@media-manipulator.com any time')).toBe(true);
+    expect(shouldMarkKey('x.unit', '/mo')).toBe(true);
     expect(leafKeys({ a: ['x', { b: 'y' }] })).toEqual(['a.0', 'a.1.b']);
   });
 });

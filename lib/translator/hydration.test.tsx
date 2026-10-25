@@ -124,6 +124,10 @@ describe('key markers are hydration-safe', () => {
     >;
     expect(objects.some((s) => s.id === 'retention')).toBe(true);
     expect(m.hasMarker(String(objects[0].title))).toBe(true);
+    // The legal contact email is rendered inside href="mailto:…": never marked.
+    const emails = objects.map((o) => o.contactEmail).filter(Boolean) as string[];
+    expect(emails.length).toBeGreaterThan(0);
+    for (const e of emails) expect(m.hasMarker(e)).toBe(false);
   });
 
   it('generateMetadata of the pages that read copy returns clean strings', async () => {

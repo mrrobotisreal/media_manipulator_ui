@@ -285,3 +285,21 @@ describe('/dr partner portal', () => {
     expect(renderToStaticMarkup(Dr({ children: <i>portal</i> }))).toBe('<i>portal</i>');
   });
 });
+
+describe('markers never reach attributes the scanner does not clean', () => {
+  it('translator mode: the privacy policy and terms render no marker inside href/src/id', async () => {
+    vi.stubEnv(ROLE, 'translator');
+    vi.stubEnv('NEXT_PUBLIC_TRANSLATOR_LOCALE', 'de-DE');
+    vi.resetModules();
+    await import('@/lib/translator/keyMarker');
+    const { hasMarker } = await import('@/lib/translator/markerCodec');
+    const views = await Promise.all([import('@/views/privacy-policy'), import('@/views/terms-of-service')]);
+    for (const view of views) {
+      const html = renderToStaticMarkup(<view.default locale="de-DE" />);
+      expect(hasMarker(html)).toBe(true); // copy is marked…
+      for (const [, attr, value] of html.matchAll(/\s(href|src|id|for|name)="([^"]*)"/g)) {
+        expect(hasMarker(value), `${attr}="${value.slice(0, 40)}"`).toBe(false); // …identifiers are not
+      }
+    }
+  });
+});
