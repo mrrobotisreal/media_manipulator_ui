@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120">
+  <text x="20" y="40" font-family="Inter, sans-serif" font-size="24" font-weight="700" fill="#111">Hello &amp; welcome</text>
+  <text x="160" y="80" text-anchor="middle" font-style="italic" letter-spacing="2" style="font-size:18px" fill="#555">  centred   line  </text>
+  <text x="20" y="110" fill="#900"><tspan x="20" dy="0">two</tspan><tspan x="20" dy="1.2em">lines</tspan></text>
+</svg>
