@@ -5,7 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import { NextRequest } from 'next/server';
 
-import { proxy } from './proxy';
+import { config, proxy } from './proxy';
 import { publicLocalePrefixes } from './i18n/locales';
 
 const ORIGIN = 'https://www.media-manipulator.com';
@@ -58,4 +58,40 @@ describe('proxy', () => {
       expect(isPassThrough(res), path).toBe(true);
     }
   });
+
+  // MM42: the chromeless Motion editor is never localized or rewritten.
+  it.each(['', ...publicLocalePrefixes.map((p) => `/${p}`)])(
+    'does not rewrite /motion/... requested from locale %s',
+    (localePrefix) => {
+      const paths = ['/motion', '/motion/new', '/motion/abc-123'];
+      for (const path of paths) {
+        const res = run(path);
+        expect(isPassThrough(res), path).toBe(true);
+        expect(rewriteTarget(res), path).toBeNull();
+        expect(res.status, path).not.toBe(308);
+      }
+      // A locale-prefixed /<lang>/motion/... is just an unknown page under that
+      // locale (passed through, never rewritten onto the English tree).
+      if (localePrefix) {
+        const res = run(`${localePrefix}/motion/new`);
+        expect(rewriteTarget(res)).toBeNull();
+      }
+    },
+  );
+
+  it('keeps /motion-* look-alikes and /tools/motion on the locale logic', () => {
+    expect(rewriteTarget(run('/motion-graphics'))).toBe('/en/motion-graphics');
+    expect(rewriteTarget(run('/motions'))).toBe('/en/motions');
+    expect(rewriteTarget(run('/tools/motion'))).toBe('/en/tools/motion');
+  });
+
+  it('excludes /motion in the matcher exactly', () => {
+    const matcher = new RegExp(`^${config.matcher[0]}$`);
+    expect(matcher.test('/motion')).toBe(false);
+    expect(matcher.test('/motion/new')).toBe(false);
+    expect(matcher.test('/motion-graphics')).toBe(true);
+    expect(matcher.test('/motions')).toBe(true);
+    expect(matcher.test('/tools/motion')).toBe(true);
+  });
 });
+

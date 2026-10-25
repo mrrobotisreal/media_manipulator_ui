@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" onload="alert(1)">
+  <script>alert('x')</script>
+  <style>@import url(https://evil.example/x.css); .a { fill: red }</style>
+  <defs>
+    <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse">
+      <circle cx="5" cy="5" r="2" fill="#333"/>
+    </pattern>
+    <filter id="shadow"><feDropShadow dx="2" dy="2" stdDeviation="2"/></filter>
+  </defs>
+  <rect width="200" height="100" fill="url(#dots)" onclick="steal()"/>
+  <foreignObject x="0" y="100" width="200" height="50"><div xmlns="http://www.w3.org/1999/xhtml">Hello</div></foreignObject>
+  <circle cx="50" cy="170" r="20" fill="blue" filter="url(#shadow)">
+    <animate attributeName="r" values="20;25;20" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <a href="javascript:alert(2)"><rect x="100" y="150" width="40" height="40" fill="red"/></a>
+  <image href="https://evil.example/track.png" x="0" y="0" width="10" height="10"/>
+  <switch><rect x="150" y="150" width="40" height="40" fill="green"/></switch>
+</svg>

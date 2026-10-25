@@ -112,14 +112,22 @@ export function getLocaleDef(code: string): LocaleDef | undefined {
 /**
  * Prepend the locale's URL prefix to a site-internal href. English (and any
  * unknown code) returns the href unchanged, preserving the unprefixed URLs.
- * External URLs, `mailto:`, hashes, `/dr`, and `/embed` are returned as-is.
+ * External URLs, `mailto:`, hashes, `/dr`, `/embed`, `/api` and the Motion
+ * editor (`/motion`, `/motion/…`; MM42) are returned as-is. The Motion check is
+ * exact, so `/tools/motion` and any `/motion-*` page are still localized.
  */
 export function localizeHref(href: string, code: string): string {
   if (!href.startsWith("/")) return href;
   if (href.startsWith("/dr") || href.startsWith("/embed") || href.startsWith("/api")) return href;
+  if (isMotionEditorHref(href)) return href;
   const def = byCode.get(code);
   if (!def || def.code === defaultLocale) return href;
   return href === "/" ? `/${def.prefix}` : `/${def.prefix}${href}`;
+}
+
+/** `/motion`, `/motion/…`, `/motion?…`, `/motion#…`: the chromeless editor route. */
+function isMotionEditorHref(href: string): boolean {
+  return href === "/motion" || /^\/motion[/?#]/.test(href);
 }
 
 /**
