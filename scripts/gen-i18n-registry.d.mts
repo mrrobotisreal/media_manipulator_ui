@@ -4,5 +4,10 @@ export const EAGER_SHARDS: string[];
 export const LAZY_SHARDS: string[];
 export const SERVER_SHARDS: string[];
 export function codeToDir(code: string): string;
-export function render(input: { codes: string[]; toolPagesCodes: string[] }): Record<string, string>;
-export function collectInput(root: string, locales: { code: string }[]): { codes: string[]; toolPagesCodes: string[] };
+export interface RenderInput {
+  codes: string[];
+  defaultCode: string;
+  toolPagesCodes: string[];
+}
+export function render(input: RenderInput): Record<string, string>;
+export function collectInput(root: string, locales: { code: string }[], defaultCode: string): RenderInput;

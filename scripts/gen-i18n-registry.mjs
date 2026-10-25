@@ -9,10 +9,15 @@
  *   3. `npm run i18n:gen`.
  *
  * Outputs (all checked in, all "DO NOT EDIT"):
- *   - resources.generated.ts     client-eager shards (interface/_core,
- *                                components, tools; error/_core;
- *                                accessibility/_core, components) for
- *                                `i18n/resources.ts`
+ *   - resources.generated.ts     the DEFAULT locale's client-eager shards
+ *                                (interface/_core, components, tools;
+ *                                error/_core; accessibility/_core,
+ *                                components) for `i18n/resources.ts`. Only
+ *                                English ships in the client bundle; every
+ *                                other locale's eager bundle reaches the
+ *                                browser as a layout prop (see
+ *                                `i18n/localeResources.ts`), so adding a
+ *                                locale does not grow first-load JS.
  *   - shardLoaders.generated.ts  lazy `import()` of interface/forms + panels
  *                                per locale, for `lib/i18n/ensureShard.ts`
  *   - serverBundles.generated.ts all ten shards per locale, for the server
@@ -106,15 +111,21 @@ function shardMap(name, codes, shards) {
   return lines;
 }
 
-function renderResources(codes) {
+function renderResources(defaultCode) {
   return [
     ...HEADER,
     '//',
-    '// Client-eager shards per locale, consumed only by `i18n/resources.ts`.',
+    '// The default locale\'s client-eager shards, consumed only by `i18n/resources.ts`.',
+    '// Other locales are deliberately absent: see `i18n/localeResources.ts`.',
     '',
-    ...importBlock(codes, EAGER_SHARDS),
+    ...importBlock([defaultCode], EAGER_SHARDS),
     '',
-    ...shardMap('eagerShards', codes, EAGER_SHARDS),
+    `export const defaultLocaleCode = "${defaultCode}";`,
+    '',
+    '/** shard path (no `.json`) → parsed shard. */',
+    'export const defaultEagerShards: Record<string, Record<string, unknown>> = {',
+    ...EAGER_SHARDS.map((shard) => `  "${shard}": ${ident(defaultCode, shard)},`),
+    '};',
     '',
   ].join('\n');
 }
@@ -172,15 +183,16 @@ function renderToolPages(codes) {
 
 /**
  * Pure: the generated files for a locale list.
- * @param {{ codes: string[], toolPagesCodes: string[] }} input
- *   `codes` in `locales.ts` order; `toolPagesCodes` the subset whose locale
- *   directory ships a `toolPages.ts`.
+ * @param {{ codes: string[], defaultCode: string, toolPagesCodes: string[] }} input
+ *   `codes` in `locales.ts` order; `defaultCode` the default locale;
+ *   `toolPagesCodes` the subset whose locale directory ships a `toolPages.ts`.
  * @returns {Record<string, string>} repo-relative path → file content
  */
-export function render({ codes, toolPagesCodes }) {
+export function render({ codes, defaultCode, toolPagesCodes }) {
+  if (!codes.includes(defaultCode)) throw new Error(`default locale ${defaultCode} is not registered`);
   const withToolPages = codes.filter((c) => toolPagesCodes.includes(c));
   return {
-    [`${GENERATED_DIR}/resources.generated.ts`]: renderResources(codes),
+    [`${GENERATED_DIR}/resources.generated.ts`]: renderResources(defaultCode),
     [`${GENERATED_DIR}/shardLoaders.generated.ts`]: renderShardLoaders(codes),
     [`${GENERATED_DIR}/serverBundles.generated.ts`]: renderServerBundles(codes),
     [`${GENERATED_DIR}/toolPages.generated.ts`]: renderToolPages(withToolPages),
@@ -188,17 +200,17 @@ export function render({ codes, toolPagesCodes }) {
 }
 
 /** The `render()` input for a checkout at `root`, given the parsed locale list. */
-export function collectInput(root, locales) {
+export function collectInput(root, locales, defaultCode) {
   const codes = locales.map((l) => l.code);
   const toolPagesCodes = codes.filter((c) => existsSync(join(root, 'i18n', 'locales', codeToDir(c), 'toolPages.ts')));
-  return { codes, toolPagesCodes };
+  return { codes, defaultCode, toolPagesCodes };
 }
 
 async function main() {
   const { loadLocales, repoRoot } = await import('./lib/load-locales.mjs');
   const check = process.argv.includes('--check');
-  const { locales } = await loadLocales(repoRoot);
-  const files = render(collectInput(repoRoot, locales));
+  const { locales, defaultLocale } = await loadLocales(repoRoot);
+  const files = render(collectInput(repoRoot, locales, defaultLocale));
   const stale = [];
   for (const [rel, content] of Object.entries(files)) {
     const abs = join(repoRoot, rel);

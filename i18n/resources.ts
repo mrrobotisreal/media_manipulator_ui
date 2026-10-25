@@ -28,7 +28,8 @@
 
 import { locales, defaultLocale, type LocaleDef } from "./locales";
 
-import { eagerShards } from "./generated/resources.generated";
+import { defaultEagerShards } from "./generated/resources.generated";
+import { buildClientBundle, type ClientBundle } from "./clientBundle";
 
 export type SupportedLanguage = LocaleDef;
 
@@ -37,22 +38,16 @@ export const supportedLanguages: SupportedLanguage[] = locales;
 
 export const defaultLanguage = defaultLocale;
 
-/** One locale's client namespaces, shallow-merged from its eager shards. */
-const bundle = (shards: Record<string, Record<string, unknown>>) => ({
-  interface: {
-    ...shards["interface/_core"],
-    ...shards["interface/components"],
-    ...shards["interface/tools"],
-  },
-  error: { ...shards["error/_core"] },
-  accessibility: {
-    ...shards["accessibility/_core"],
-    ...shards["accessibility/components"],
-  },
-});
+/**
+ * The resources the client bundle ships: English only (MM51). English is the
+ * i18next fallback for every locale and the language of the non-localized
+ * routes, so it must be present synchronously everywhere. Every other
+ * locale's eager bundle arrives from the server as a `<Providers resources>`
+ * prop (see `i18n/localeResources.ts`), which keeps first-load JS flat no
+ * matter how many locales `i18n/locales.ts` registers.
+ */
+export const resources: Record<string, ClientBundle> = {
+  [defaultLocale]: buildClientBundle(defaultEagerShards),
+};
 
-export const resources: Record<string, ReturnType<typeof bundle>> = Object.fromEntries(
-  locales.map((l) => [l.code, bundle(eagerShards[l.code])]),
-);
-
-export type AppResources = ReturnType<typeof bundle>;
+export type AppResources = ClientBundle;

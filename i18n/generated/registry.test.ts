@@ -11,7 +11,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { locales } from "../locales";
+import { defaultLocale, locales } from "../locales";
 import {
   EAGER_SHARDS,
   LAZY_SHARDS,
@@ -23,7 +23,7 @@ import {
 
 const ROOT = join(__dirname, "..", "..");
 const LOCALES_DIR = join(ROOT, "i18n", "locales");
-const expected = render(collectInput(ROOT, locales)) as Record<string, string>;
+const expected = render(collectInput(ROOT, locales, defaultLocale)) as Record<string, string>;
 
 describe("generated i18n registry", () => {
   it("emits exactly the files present in i18n/generated", () => {
@@ -50,9 +50,14 @@ describe("generated i18n registry", () => {
     }
   });
 
-  it("lists every registered locale in each shard map", () => {
+  it("ships only the default locale's eager shards to the client", () => {
+    const client = expected["i18n/generated/resources.generated.ts"];
+    const dirs = [...client.matchAll(/\.\.\/locales\/([^/]+)\//g)].map((m) => m[1]);
+    expect(new Set(dirs)).toEqual(new Set([codeToDir(defaultLocale)]));
+  });
+
+  it("lists every registered locale in the server and lazy maps", () => {
     for (const { code } of locales) {
-      expect(expected["i18n/generated/resources.generated.ts"]).toContain(`"${code}": {`);
       expect(expected["i18n/generated/serverBundles.generated.ts"]).toContain(`"${code}": {`);
       expect(expected["i18n/generated/shardLoaders.generated.ts"]).toContain(`"${code}": () =>`);
     }

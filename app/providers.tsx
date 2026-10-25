@@ -6,7 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
 import type { i18n as I18nInstance } from 'i18next';
 import { Toaster } from 'sonner';
-import { getI18nForLocale, defaultLanguage } from '@/i18n';
+import { addLocaleResources, getI18nForLocale, defaultLanguage } from '@/i18n';
+import type { ClientBundle } from '@/i18n/clientBundle';
 import { ThemeProvider } from '@/components/theme-provider';
 import TopNav from '@/components/top-nav';
 import Footer from '@/components/footer';
@@ -44,25 +45,32 @@ function getQueryClient(): QueryClient {
 export default function Providers({
   children,
   locale = defaultLanguage,
+  resources: localeResources,
 }: {
   children: React.ReactNode;
   /** Locale code resolved from the `[lang]` URL segment by the root layout. */
   locale?: string;
+  /**
+   * That locale's client-eager bundle, read on the server by the root layout
+   * (`i18n/localeResources.ts`). Undefined for English, which is bundled.
+   */
+  resources?: ClientBundle;
 }) {
   const [queryClient] = useState(getQueryClient);
   // The i18next instance must speak the same language as the server HTML it
   // hydrates into, so it is created synchronously from the URL locale before
   // the first render — per-mount on the server (no cross-request sharing),
   // the process-wide singleton in the browser.
-  const [i18nInstance] = useState<I18nInstance>(() => getI18nForLocale(locale));
+  const [i18nInstance] = useState<I18nInstance>(() => getI18nForLocale(locale, localeResources));
   // Client-side navigation across locales (e.g. the language selector calling
   // router.push('/ru/...')) re-renders this provider with a new locale prop;
   // switch the live singleton so every mounted component follows.
   useEffect(() => {
     if (i18nInstance.language !== locale) {
+      addLocaleResources(i18nInstance, locale, localeResources);
       void i18nInstance.changeLanguage(locale);
     }
-  }, [i18nInstance, locale]);
+  }, [i18nInstance, locale, localeResources]);
   const pathname = usePathname();
   // The /embed/* routes are chromeless app surfaces meant to be iframed by
   // CreaTV — no site nav/footer and no analytics of any kind. They still need

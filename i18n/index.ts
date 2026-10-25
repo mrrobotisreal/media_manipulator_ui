@@ -1,6 +1,7 @@
-import { createInstance, type i18n as I18nInstance } from "i18next";
+import { createInstance, type i18n as I18nInstance, type Resource } from "i18next";
 import { initReactI18next } from "react-i18next";
 import { resources, supportedLanguages, defaultLanguage } from "./resources";
+import type { ClientBundle } from "./clientBundle";
 
 const LANGUAGE_STORAGE_KEY = "mm-language";
 
@@ -19,10 +20,17 @@ const LANGUAGE_COOKIE_KEY = "mm-language";
  * request B for `/de/...`. Each server render gets its own instance via
  * `getI18nForLocale`; the browser keeps exactly one.
  */
-export function createI18nInstance(locale: string = defaultLanguage): I18nInstance {
+export function createI18nInstance(
+  locale: string = defaultLanguage,
+  localeResources?: ClientBundle,
+): I18nInstance {
   const instance = createInstance();
+  // English is bundled; any other locale's eager bundle is passed in by the
+  // `[lang]` layout (see `i18n/localeResources.ts`, MM51).
+  const initial: Resource =
+    localeResources && locale !== defaultLanguage ? { ...resources, [locale]: localeResources } : resources;
   void instance.use(initReactI18next).init({
-    resources,
+    resources: initial,
     lng: locale,
     fallbackLng: defaultLanguage,
     ns: ["interface", "error", "accessibility"],
@@ -61,12 +69,38 @@ let browserI18n: I18nInstance | undefined;
  * changes on a client-side navigation, the post-render `useEffect` in
  * `app/providers.tsx` performs the switch instead.
  */
-export function getI18nForLocale(locale: string): I18nInstance {
-  if (typeof window === "undefined") return createI18nInstance(locale);
+export function getI18nForLocale(locale: string, localeResources?: ClientBundle): I18nInstance {
+  if (typeof window === "undefined") return createI18nInstance(locale, localeResources);
   if (!browserI18n) {
-    browserI18n = createI18nInstance(locale);
+    browserI18n = createI18nInstance(locale, localeResources);
+  } else {
+    // An instance created earlier (getBrowserI18n, or a previous locale's
+    // layout) still needs this locale's strings before it can switch to it.
+    // Silent, so this stays render-pure (no store events fire).
+    addLocaleResources(browserI18n, locale, localeResources);
   }
   return browserI18n;
+}
+
+/**
+ * Merges a locale's eager bundle into an existing instance before switching to
+ * it (client-side navigation to another locale reuses the browser singleton).
+ * Idempotent per instance + locale; silent (no store events), so it is safe
+ * during render, and the caller's `changeLanguage` re-renders anyway.
+ */
+const mergedLocales = new WeakMap<I18nInstance, Set<string>>();
+
+export function addLocaleResources(instance: I18nInstance, locale: string, localeResources?: ClientBundle): void {
+  if (!localeResources || locale === defaultLanguage) return;
+  const merged = mergedLocales.get(instance) ?? new Set<string>();
+  mergedLocales.set(instance, merged);
+  if (merged.has(locale)) return;
+  merged.add(locale);
+  // deep + no overwrite: lazily merged forms/panels keys (ensureShard.ts) for
+  // this locale, if any arrived first, are kept; the eager keys fill in.
+  for (const [ns, bundle] of Object.entries(localeResources)) {
+    instance.addResourceBundle(locale, ns, bundle, true, false, { silent: true, skipCopy: false });
+  }
 }
 
 /**

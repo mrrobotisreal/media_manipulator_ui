@@ -10,6 +10,7 @@ import {
   localePrefixes,
   urlPrefixToCode,
 } from '@/i18n/locales';
+import { getClientResources } from '@/i18n/localeResources';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
@@ -77,7 +78,9 @@ export default async function RootLayout({
           lib/adsenseConfig.ts), which is disabled by default via env. The
           `google-adsense-account` meta above is kept for account verification.
         */}
-        <Providers locale={locale}>{children}</Providers>
+        <Providers locale={locale} resources={getClientResources(locale)}>
+          {children}
+        </Providers>
       </body>
     </html>
   );
