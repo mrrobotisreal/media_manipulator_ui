@@ -495,15 +495,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Gültig ab: 24.10.2026",
-    "lastUpdated": "Zuletzt aktualisiert: 24.10.2026",
+    "lastUpdated": "Zuletzt aktualisiert: 25.10.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Was sich am 24.10.2026 geändert hat",
-    "whatChangedBody": "Wir haben diese Erklärung mit der heutigen Funktionsweise des Dienstes abgeglichen. Neu oder korrigiert: Zahlungen laufen über das Stripe-Konto der CreaTV Ltd. (daher zeigt die Stripe-Checkout-Seite CreaTV, während deine Kartenabrechnung MEDIA MNPLTR PREMIUM zeigt), Metadatenberichte werden standardmäßig zusammen mit ihren Dateien gelöscht, das Analyse-Skript von Google wird erst nach deiner Zustimmung zur Analyse geladen (davor wird nichts an Google gesendet), die KI-Werkzeuge, die wir auf eigenen Servern betreiben, werden benannt, Google Analytics 4 und Werbung (einschließlich Cookies) sind genauer beschrieben, die Anmeldung per Firebase wird erklärt, und Darkroom innerhalb von CreaTV Studio wird behandelt. Die Aufbewahrung bleibt unverändert: 24 Stunden für Besucher, 24 Stunden bis 2 Jahre (standardmäßig 6 Monate) mit Konto. Service-E-Mails: Wir versenden jetzt selbst einige E-Mails (Willkommen, Hinweise zu Zahlungen und zur Kontolöschung sowie optionale Erinnerungen zum Ablauf von Dateien und zu KI-Aufgaben) über Resend; Abschnitt 1.7 beschreibt genau, welche."
+    "whatChangedTitle": "Was sich am 25.10.2026 geändert hat",
+    "whatChangedBody": "Wir haben neben Premium für 8 $ pro Monat oder 80 $ pro Jahr einen zweiten kostenpflichtigen Tarif hinzugefügt: Pro für 15 $ pro Monat oder 150 $ pro Jahr. Abschnitt 10 der Nutzungsbedingungen erklärt nun Tarifwechsel: Ein Upgrade von Premium auf Pro gilt sofort, mit einer anteiligen Abbuchung für den Rest des Zeitraums und demselben Verlängerungsdatum; ein Downgrade von Pro auf Premium gilt ab dem Ende des bezahlten Zeitraums, ohne Erstattung für den Rest. Die 14-tägige Rückerstattung einer ersten Zahlung gilt für beide Tarife. Die Datenschutzerklärung (Abschnitt 1.6) nennt beide Tarife und erklärt, dass ein geplanter Tarifwechsel bei Stripe gespeichert wird. Alles aus der Überprüfung vom 24.10.2026 (Zahlungen über das Stripe-Konto der CreaTV Ltd., Metadatenberichte, die zusammen mit ihren Dateien gelöscht werden, Google-Analytics, das erst nach Einwilligung geladen wird, die genannten KI-Tools, die Firebase-Anmeldung, Darkroom innerhalb von CreaTV Studio, Aufbewahrung und die in Abschnitt 1.7 beschriebenen Service-E-Mails) gilt weiterhin."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -619,8 +619,8 @@
           {
             "title": "1.6 Zahlungs- und Abonnementdaten",
             "paragraphs": [
-              "Wenn du Premium abonnierst, wird die Zahlung von unserem Zahlungsdienstleister Stripe abgewickelt. Deine Kartendaten gibst du auf den Seiten von Stripe ein, und Stripe verarbeitet sie; wir erhalten und speichern keine Kartennummern.",
-              "Wir speichern nur, was wir für dein Abonnement brauchen: deine Stripe-Kundenkennung, den Abonnementstatus, den Abrechnungszeitraum (monatlich oder jährlich) und das Ende deines aktuellen Zeitraums. Wir nutzen diese Daten, um dir den richtigen Tarif zu geben, deinen Abrechnungsstatus anzuzeigen und Rückerstattungen und Supportanfragen zu bearbeiten.",
+              "Wenn du Premium oder Pro abonnierst, wird die Zahlung von unserem Zahlungsdienstleister Stripe abgewickelt. Deine Kartendaten gibst du auf den Seiten von Stripe ein, und Stripe verarbeitet sie; wir erhalten und speichern keine Kartennummern.",
+              "Wir speichern nur, was wir für dein Abonnement brauchen: deine Stripe-Kundenkennung, den Abonnementstatus, deinen Tarif (Premium oder Pro), den Abrechnungszeitraum (monatlich oder jährlich) und das Ende deines aktuellen Zeitraums. Ein von dir geplanter Tarifwechsel (zum Beispiel von Pro auf Premium zum Ende des Zeitraums) wird von Stripe gespeichert, und wir lesen ihn bei Stripe aus, um ihn auf deiner Kontoseite anzuzeigen. Wir nutzen diese Daten, um dir den richtigen Tarif zu geben, deinen Abrechnungsstatus anzuzeigen und Rückerstattungen und Supportanfragen zu bearbeiten.",
               "Unser Stripe-Konto gehört der CreaTV Ltd., dem Unternehmen, das Media Manipulator betreibt. Deshalb zeigt die Stripe-Checkout-Seite das Branding von CreaTV (oder CreaTV Ltd.) statt Media Manipulator. Auf deiner Kartenabrechnung erscheint die Abbuchung als „MEDIA MNPLTR PREMIUM“."
             ]
           },
@@ -697,7 +697,7 @@
               "Wenn Sie Ihr Konto auf der Seite „Konto“ löschen, tun wir Folgendes:"
             ],
             "bullets": [
-              "Wir kündigen Ihr Premium-Abonnement bei Stripe, falls Sie eines haben;",
+              "Wir kündigen Ihr Premium- oder Pro-Abonnement bei Stripe, falls Sie eines haben;",
               "wir löschen Ihre Dateien und Darkroom-Projekte;",
               "wir löschen Ihren Kontodatensatz und Ihre Einstellungen und lösen Ihre übrigen Aktivitätsdatensätze von Ihrer Identität;",
               "wir bitten unsere First-Party-Analyse, die mit Ihrem Konto verknüpften Analysedaten zu löschen (siehe Abschnitt 6);",
@@ -749,7 +749,7 @@
         "title": "5. Werbung",
         "paragraphs": [
           "Media Manipulator kann Werbung anzeigen, einschließlich Werbung, die von Google AdSense oder anderen Werbepartnern ausgeliefert wird.",
-          "Werbung ist begrenzt und kann sich ändern. Wir zeigen Anzeigen nur auf ausgewählten Tool-Seiten, nie auf unserer Startseite, der Preisseite, der Kontoseite oder den rechtlichen Seiten, und Premium-Abonnenten sehen keine Werbung. Anzeigen erscheinen nur, wenn Werbung für die Website eingeschaltet ist, und das Google-Werbeskript wird nur auf einer Seite geladen, die tatsächlich eine Anzeige zeigt. Die Google-Einwilligungssignale für Werbung sind standardmäßig abgelehnt und werden entsprechend deiner Auswahl unter „Cookie-Einstellungen“ in der Fußzeile aktualisiert.",
+          "Werbung ist begrenzt und kann sich ändern. Wir zeigen Anzeigen nur auf ausgewählten Tool-Seiten, nie auf unserer Startseite, der Preisseite, der Kontoseite oder den rechtlichen Seiten, und Abonnenten von Premium und Pro sehen keine Werbung. Anzeigen erscheinen nur, wenn Werbung für die Website eingeschaltet ist, und das Google-Werbeskript wird nur auf einer Seite geladen, die tatsächlich eine Anzeige zeigt. Die Google-Einwilligungssignale für Werbung sind standardmäßig abgelehnt und werden entsprechend deiner Auswahl unter „Cookie-Einstellungen“ in der Fußzeile aktualisiert.",
           "Drittanbieter, einschließlich Google, können Cookies verwenden, um Werbung auf Grundlage früherer Besuche eines Nutzers auf Media Manipulator oder anderen Websites auszuliefern. Googles Nutzung von Werbe-Cookies ermöglicht es Google und seinen Partnern, Nutzern Werbung auf Grundlage ihres Besuchs von Media Manipulator und/oder anderer Websites im Internet anzuzeigen.",
           "Nutzer können personalisierter Werbung widersprechen, indem sie die Anzeigeneinstellungen von Google besuchen. Nutzer können der Verwendung von Cookies durch einige Drittanbieter für personalisierte Werbung auch widersprechen, indem sie branchenweite Opt-out-Seiten besuchen, sofern verfügbar.",
           "Werbepartner können Informationen von unserer Website und anderen Websites erheben oder erhalten und diese Informationen zur Bereitstellung von Messdiensten und zielgerichteter Werbung verwenden.",
@@ -855,7 +855,7 @@
           "Werbepartner;",
           "Anbieter von Sicherheits-, Missbrauchserkennungs- und Inhaltssicherheitsdiensten;",
           "die KI-Verarbeitung erfolgt lokal auf unseren eigenen Servern oder auf von uns kontrollierter Infrastruktur, und wir geben hochgeladene Dateien, erzeugte Ergebnisse, Transkripte, Zusammenfassungen, Beschreibungen oder Inhaltssicherheitsscans nicht zur KI-Verarbeitung an KI-Anbieter Dritter weiter;",
-          "Stripe, unser Zahlungsdienstleister, wenn du Premium abonnierst (wir erhalten und speichern deine Kartennummer nicht);",
+          "Stripe, unser Zahlungsdienstleister, wenn du Premium oder Pro abonnierst (wir erhalten und speichern deine Kartennummer nicht);",
           "Strafverfolgungsbehörden, Aufsichtsbehörden oder sonstige Behörden, sofern gesetzlich vorgeschrieben oder erforderlich, um mutmaßlich illegale Inhalte zu melden;",
           "professionelle Berater, wie Rechtsanwälte, Wirtschaftsprüfer oder Sicherheitsberater;",
           "Unternehmensnachfolger im Falle einer Fusion, Übernahme, Finanzierung, Umstrukturierung oder eines Vermögensverkaufs."
@@ -1210,8 +1210,8 @@
       {
         "title": "9. Kontoregistrierung",
         "paragraphs": [
-          "Die meisten Funktionen von Media Manipulator sind ohne Konto verfügbar. Ein Konto schaltet höhere Limits und einen gespeicherten Verlauf frei, und Premium ist ein kostenpflichtiges Abonnement, das in Abschnitt 10 beschrieben wird.",
-          "Konten werden von Firebase Authentication (einem Google-Dienst) verwaltet; du kannst dich mit E-Mail-Adresse und Passwort oder mit Google anmelden. Du kannst dich auf allen Geräten abmelden oder dein Konto auf der Kontoseite löschen. Das Löschen deines Kontos beendet außerdem ein bestehendes Premium-Abonnement, wie in der Datenschutzerklärung beschrieben.",
+          "Die meisten Funktionen von Media Manipulator sind ohne Konto verfügbar. Ein Konto schaltet höhere Limits und einen gespeicherten Verlauf frei, und Premium und Pro sind kostenpflichtige Abonnements, die in Abschnitt 10 beschrieben werden.",
+          "Konten werden von Firebase Authentication (einem Google-Dienst) verwaltet; du kannst dich mit E-Mail-Adresse und Passwort oder mit Google anmelden. Du kannst dich auf allen Geräten abmelden oder dein Konto auf der Kontoseite löschen. Das Löschen deines Kontos beendet außerdem ein bestehendes Premium- oder Pro-Abonnement, wie in der Datenschutzerklärung beschrieben.",
           "Sie sind für die Vertraulichkeit Ihrer Kontodaten und für alle Aktivitäten unter Ihrem Konto verantwortlich.",
           "Wir behalten uns das Recht vor, Konten zu sperren, einzuschränken oder zu kündigen, die gegen diese Bedingungen verstoßen, ein rechtliches Risiko schaffen, den Dienst missbrauchen oder Nutzern, Werbetreibenden, unserer Marke oder unserer Infrastruktur schaden."
         ]
@@ -1219,10 +1219,11 @@
       {
         "title": "10. Zahlungen, Verlängerungen und Rückerstattungen",
         "paragraphs": [
-          "Premium ist ein kostenpflichtiges Abonnement, das in US-Dollar abgerechnet wird, derzeit 8 $ pro Monat oder 80 $ pro Jahr. Preis und Abrechnungszeitraum werden auf der Preisseite angezeigt, und an der Kasse wird keine Steuer aufgeschlagen. Der an der Kasse angezeigte Betrag ist der abgebuchte Betrag.",
-          "Dein Abonnement verlängert sich automatisch am Ende jedes Abrechnungszeitraums, bis du kündigst. Du kannst jederzeit im Bereich „Abrechnung“ deiner Kontoseite oder über das dort verlinkte Abrechnungsportal kündigen. Nach der Kündigung bleibt dein Premium-Zugang bis zum Ende des bereits bezahlten Zeitraums bestehen, und es wird nichts mehr abgebucht.",
-          "Wenn du nicht zufrieden bist, kannst du innerhalb von 14 Tagen nach deiner ersten Zahlung per E-Mail an support@media-manipulator.com deren Rückerstattung verlangen. Verlängerungszahlungen werden nicht erstattet, soweit das Gesetz nichts anderes vorschreibt.",
-          "Schlägt eine Zahlung fehl, versuchen wir es erneut, und dein Premium-Zugang bleibt bis zu 7 Tage bestehen. Ist die Zahlung danach weiterhin nicht erfolgt, kehrt dein Konto zum kostenlosen Tarif zurück, bis du deine Zahlungsmethode aktualisierst und erneut abonnierst.",
+          "Premium und Pro sind kostenpflichtige Abonnements, die in US-Dollar abgerechnet werden, derzeit 8 $ pro Monat oder 80 $ pro Jahr für Premium und 15 $ pro Monat oder 150 $ pro Jahr für Pro. Preis und Abrechnungszeitraum werden auf der Preisseite angezeigt, und an der Kasse wird keine Steuer aufgeschlagen. Der an der Kasse angezeigte Betrag ist der abgebuchte Betrag.",
+          "Dein Abonnement verlängert sich automatisch am Ende jedes Abrechnungszeitraums, bis du kündigst. Du kannst jederzeit im Bereich „Abrechnung“ deiner Kontoseite oder über das dort verlinkte Abrechnungsportal kündigen. Nach der Kündigung bleibt dein kostenpflichtiger Tarif bis zum Ende des bereits bezahlten Zeitraums bestehen, und es wird nichts mehr abgebucht.",
+          "Du kannst deinen Tarif im Bereich „Abrechnung“ deiner Kontoseite wechseln. Ein Upgrade von Premium auf Pro gilt sofort: Du zahlst die anteilige Differenz für den Rest des laufenden Abrechnungszeitraums, und dein Verlängerungsdatum ändert sich nicht. Ein Downgrade von Pro auf Premium gilt ab dem Ende des bereits bezahlten Zeitraums: Bis dahin behältst du Pro, für den Rest dieses Zeitraums wird nichts erstattet, und du kannst jederzeit vor dem Wechsel stattdessen Pro behalten.",
+          "Wenn du nicht zufrieden bist, kannst du innerhalb von 14 Tagen nach deiner ersten Zahlung per E-Mail an support@media-manipulator.com deren Rückerstattung verlangen. Das gilt für Premium und für Pro. Verlängerungszahlungen werden nicht erstattet, soweit das Gesetz nichts anderes vorschreibt.",
+          "Schlägt eine Zahlung fehl, versuchen wir es erneut, und dein kostenpflichtiger Tarif bleibt bis zu 7 Tage bestehen. Ist die Zahlung danach weiterhin nicht erfolgt, kehrt dein Konto zum kostenlosen Tarif zurück, bis du deine Zahlungsmethode aktualisierst und erneut abonnierst.",
           "Zahlungen werden von Stripe, Inc. verarbeitet. Wir erhalten oder speichern niemals deine vollständige Kartennummer. Für die Zahlung selbst gelten die Bedingungen und die Datenschutzerklärung von Stripe. Unser Stripe-Konto gehört der CreaTV Ltd.; daher zeigt die Stripe-Checkout-Seite das Branding von CreaTV (oder CreaTV Ltd.) statt Media Manipulator. Auf deiner Kartenabrechnung erscheint die Abbuchung als „MEDIA MNPLTR PREMIUM“."
         ]
       },
