@@ -52,7 +52,7 @@ interface LanguageToolContent {
  * copy in toolPages.ts is already the en-US content. Every other entry comes
  * from a locale's optional `locales/<code>/toolPages.ts` via the generated map
  * (the five shipped files hold name + tagline for the review-allowlisted
- * slugs; full page bodies are deferred, see e.g. locales/ru-ru/toolPages.ts).
+ * slugs; full page bodies are deferred, see the header of any shipped file).
  */
 const TOOL_PAGE_OVERRIDES: Record<string, LanguageToolContent> = {
   "en-US": {},
