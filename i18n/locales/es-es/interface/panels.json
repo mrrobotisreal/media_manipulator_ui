@@ -681,7 +681,8 @@
       }
     },
     "export": {
-      "svg": "Export SVG"
+      "svg": "Export SVG",
+      "open": "Export"
     },
     "draft": {
       "title": "Recover unsaved changes?",
@@ -848,6 +849,34 @@
       "mixed": "The selected keyframes use different easings. Pick one to apply it to all of them.",
       "applies_one": "Easing of the segment after {{count}} keyframe.",
       "applies_other": "Easing of the segments after {{count}} keyframes."
+    },
+    "exportDialog": {
+      "title": "Export",
+      "description": "Exports are made in your browser. Animated exports count toward your daily allowance; static SVG is always free.",
+      "formats": "Export format",
+      "animated": "Animated SVG (CSS)",
+      "animatedHint": "One SVG file with its animation in CSS. No script; plays in every modern browser.",
+      "static": "Static SVG",
+      "staticHint": "The frame at the playhead, without animation. Free, never counted.",
+      "comingSoon": "Coming soon",
+      "formats_lottie": "Lottie JSON",
+      "formats_react_tsx": "React / JavaScript code",
+      "formats_flutter": "Flutter",
+      "formats_gif": "GIF",
+      "formats_mp4": "MP4 and WebM video",
+      "export": "Export",
+      "unsupported": "This animation uses effects that animated SVG (CSS) cannot export yet.",
+      "doneStatic": "Static SVG downloaded.",
+      "done_one": "Downloaded. {{count}} animated export left today.",
+      "done_other": "Downloaded. {{count}} animated exports left today.",
+      "doneUnlimited": "Downloaded.",
+      "limit_one": "You have used your {{count}} animated export for today.",
+      "limit_other": "You have used your {{count}} animated exports for today.",
+      "locked": "Your plan does not include this format.",
+      "capDuration": "Your plan exports animations up to {{seconds}} s long. Shorten the animation or upgrade.",
+      "capOther": "This export is larger than your plan allows.",
+      "unavailable": "Exports are unavailable right now. Nothing was counted; try again in a moment.",
+      "upgrade": "See plans"
     }
   }
 }

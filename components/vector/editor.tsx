@@ -57,8 +57,10 @@ import { cn } from '@/lib/utils';
 import { VectorCanvas, fitView, zoomAt, type View } from './canvas';
 import { Inspector } from './inspector';
 import { IconButton, LayerPanel } from './layer-panel';
+import { ExportDialog } from './export-dialog';
 import { Timeline } from './timeline';
 import { usePlayback } from './use-playback';
+import { useSignedIn } from './use-signed-in';
 
 export interface MotionEditorProps {
   projectId: string;
@@ -107,6 +109,8 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
   const idRef = React.useRef<string | null>(null);
   // MM44: the preview clock (play shares the scrub render path).
   usePlayback();
+  const signedIn = useSignedIn();
+  const [exportOpen, setExportOpen] = React.useState(false);
 
   // ---- open: classify the id, look for a draft, maybe prompt ----
   React.useEffect(() => {
@@ -417,9 +421,9 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
           {importing ? <Loader2 className="animate-spin" /> : <FileUp />}
           <span className="hidden sm:inline">{t('vector.import.button')}</span>
         </Button>
-        <Button size="sm" disabled={!doc} onClick={exportSvg}>
+        <Button size="sm" disabled={!doc} onClick={() => setExportOpen(true)}>
           <Download />
-          <span className="hidden sm:inline">{t('vector.export.svg')}</span>
+          <span className="hidden sm:inline">{t('vector.export.open')}</span>
         </Button>
       </header>
 
@@ -500,6 +504,16 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
       )}
       </div>
 
+      {doc && exportOpen && (
+        <ExportDialog
+          open={exportOpen}
+          onOpenChange={setExportOpen}
+          doc={doc}
+          name={name}
+          time={useVectorStore.getState().time}
+          signedIn={signedIn === true}
+        />
+      )}
       {phase.kind === 'recover' && <RecoveryDialog draft={phase.draft} onRecover={() => recover(phase.draft)} onDiscard={() => discard(phase.draft)} />}
     </div>
   );
