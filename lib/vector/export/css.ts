@@ -41,8 +41,7 @@
  * `canExportCss(doc)` lists what CSS cannot express in MM44; MM45 extends it
  * (and adds the anime.js runtime exporter for what CSS cannot do).
  */
-import { solveCubicBezier, type CubicBezier } from '@/lib/vector/bezier';
-import { parseColor } from '@/lib/vector/color';
+import type { CubicBezier } from '@/lib/vector/bezier';
 import { serializeSvg } from '@/lib/vector/exportSvg';
 import { resolveTransform } from '@/lib/vector/geometry';
 import { MOTION_BRAND } from '@/lib/vector/brand';
