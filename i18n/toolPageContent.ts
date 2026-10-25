@@ -8,11 +8,12 @@
  * of slug → deep-partial `ToolPageContent` containing only the fields a
  * translator wants to localize. Anything omitted falls back to English.
  *
- * To add a language:
- *   1. Create `toolPageOverrides['<code>'] = { '<slug>': { h1: '…', … } }`
- *      (a separate file you import here keeps this tidy as it grows).
- *   2. That's it — `getLocalizedToolPages(code)` deep-merges the override over
- *      the English default, so partial translations degrade gracefully.
+ * To add a language's overrides: create `i18n/locales/<code-lowercase>/toolPages.ts`
+ * (default-exporting `{ pages, categories }`) and run `npm run i18n:gen`; the
+ * generated `i18n/generated/toolPages.generated.ts` picks it up (MM51). A
+ * locale without the file renders English tool pages. `getLocalizedToolPages`
+ * deep-merges the override over the English default, so partial translations
+ * degrade gracefully.
  *
  * This module is framework-agnostic (no React) so `src/lib/seo.ts` can localize
  * SEO metadata at route-change time, and `useLocalizedToolPages` (a thin hook)
@@ -23,11 +24,7 @@ import {
   TOOL_CATEGORIES,
   type ToolPageContent,
 } from "@/content/toolPages";
-import ruToolPages from "@/i18n/locales/ru-ru/toolPages";
-import ukToolPages from "@/i18n/locales/uk-ua/toolPages";
-import deToolPages from "@/i18n/locales/de-de/toolPages";
-import heToolPages from "@/i18n/locales/he-il/toolPages";
-import esToolPages from "@/i18n/locales/es-es/toolPages";
+import { toolPageOverrideModules } from "@/i18n/generated/toolPages.generated";
 
 /** Recursive deep-partial so overrides only need the fields they change. */
 type DeepPartial<T> = T extends (infer U)[]
@@ -52,26 +49,14 @@ interface LanguageToolContent {
 
 /**
  * Per-language override registry. en-US is intentionally empty — the English
- * copy in toolPages.ts is already the en-US content. Drop new languages in
- * here (or import them from `locales/<code>/toolPages.ts`).
+ * copy in toolPages.ts is already the en-US content. Every other entry comes
+ * from a locale's optional `locales/<code>/toolPages.ts` via the generated map
+ * (the five shipped files hold name + tagline for the review-allowlisted
+ * slugs; full page bodies are deferred, see e.g. locales/ru-ru/toolPages.ts).
  */
 const TOOL_PAGE_OVERRIDES: Record<string, LanguageToolContent> = {
   "en-US": {},
-  // name + tagline for the review-allowlisted slugs; full page bodies are
-  // deferred (see locales/ru-ru/toolPages.ts).
-  "ru-RU": ruToolPages as unknown as LanguageToolContent,
-  // name + tagline for the review-allowlisted slugs; full page bodies are
-  // deferred (see locales/uk-ua/toolPages.ts).
-  "uk-UA": ukToolPages as unknown as LanguageToolContent,
-  // name + tagline for the review-allowlisted slugs; full page bodies are
-  // deferred (see locales/de-de/toolPages.ts).
-  "de-DE": deToolPages as unknown as LanguageToolContent,
-  // name + tagline for the review-allowlisted slugs; full page bodies are
-  // deferred (see locales/he-il/toolPages.ts).
-  "he-IL": heToolPages as unknown as LanguageToolContent,
-  // name + tagline for the review-allowlisted slugs; full page bodies are
-  // deferred (see locales/es-es/toolPages.ts).
-  "es-ES": esToolPages as unknown as LanguageToolContent,
+  ...(toolPageOverrideModules as Record<string, LanguageToolContent>),
 };
 
 /** Arrays are replaced wholesale (a translated list is provided in full or not
