@@ -3,6 +3,7 @@ export const GENERATED_DIR: string;
 export const EAGER_SHARDS: string[];
 export const LAZY_SHARDS: string[];
 export const SERVER_SHARDS: string[];
+export const TRANSLATOR_SHARDS: string[];
 export function codeToDir(code: string): string;
 export interface RenderInput {
   codes: string[];
