@@ -1,0 +1,73 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Lottie reader unsupported list (never silent) > the expected warning lists (snapshot) 1`] = `
+{
+  "autoOrient": [
+    "autoOrient@l1",
+  ],
+  "blendMode": [
+    "blendMode@l1",
+  ],
+  "effect": [
+    "effect@l1",
+  ],
+  "expression": [
+    "expression@l1",
+  ],
+  "gradientAnimation": [
+    "gradientAnimation@l1",
+  ],
+  "imageExternal": [
+    "imageExternal@l1",
+  ],
+  "layerTiming": [
+    "layerTiming@l1",
+  ],
+  "maskMode": [
+    "maskMode@l1",
+  ],
+  "matte": [
+    "matte@l1",
+    "matte@l3",
+  ],
+  "modifier": [
+    "modifier@l1",
+  ],
+  "morphCounts": [
+    "morphCounts@l1",
+  ],
+  "multipleStyles": [
+    "multipleStyles@l1",
+  ],
+  "polystar": [
+    "polystar@l1",
+  ],
+  "skewAxis": [
+    "skewAxis@l1",
+  ],
+  "spatialTangents": [
+    "spatialTangents@l1",
+  ],
+  "styleOpacity": [
+    "styleOpacity@l3",
+  ],
+  "textLayer": [
+    "textLayer@l1",
+  ],
+  "threeD": [
+    "threeD@l1",
+  ],
+  "timeRemap": [
+    "timeRemap@l1",
+  ],
+  "trimComplex": [
+    "trimComplex@l1",
+  ],
+  "unknownLayer": [
+    "unknownLayer@l1",
+  ],
+  "unknownShape": [
+    "unknownShape@l1",
+  ],
+}
+`;

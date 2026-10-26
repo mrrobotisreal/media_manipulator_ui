@@ -656,10 +656,10 @@
       "textPlaceholder": "Type, then press Enter"
     },
     "import": {
-      "button": "Import SVG",
+      "button": "Import",
       "done_one": "Imported {{count}} layer",
       "done_other": "Imported {{count}} layers",
-      "tooLarge": "That SVG is larger than 4 MB.",
+      "tooLarge": "That file is larger than 4 MB.",
       "warningsTitle_one": "{{count}} note from the import",
       "warningsTitle_other": "{{count}} notes from the import",
       "errors": {
@@ -868,9 +868,6 @@
       "static": "Static SVG",
       "staticHint": "The frame at the playhead, without animation. Free, never counted.",
       "comingSoon": "Coming soon",
-      "formats_lottie": "Lottie JSON",
-      "formats_react_tsx": "React / JavaScript code",
-      "formats_flutter": "Flutter",
       "formats_gif": "GIF",
       "formats_mp4": "MP4 and WebM video",
       "export": "Export",
@@ -896,6 +893,47 @@
         "stopOffset": "gradient stop position",
         "blur": "blur (Safari)",
         "motionRotate": "path rotation with a rotation track"
+      },
+      "code": {
+        "lottie": {
+          "title": "Lottie JSON",
+          "hint": "For LottieFiles, lottie-web, and the iOS, Android and Flutter Lottie players. Features Lottie cannot carry are listed after the download."
+        },
+        "react_tsx": {
+          "title": "React component (.tsx)",
+          "hint": "One component file with the SVG inline. Needs only React, plus the anime.js package when the script runtime is used."
+        },
+        "js": {
+          "title": "JavaScript module (.js)",
+          "hint": "A plain ES module with mount, play, pause and seek. No framework."
+        },
+        "ts": {
+          "title": "TypeScript module (.ts)",
+          "hint": "The JavaScript module with types."
+        },
+        "flutter": {
+          "title": "Flutter widget (.dart)",
+          "hint": "A native flutter_svg widget when the animation only moves, fades and recolours; otherwise a WebView player."
+        }
+      },
+      "emitted": {
+        "css": "Animated with CSS, no script.",
+        "anime": "Animated with anime.js (MIT, imported as a dependency).",
+        "animeBecause": "Animated with anime.js (MIT, imported as a dependency) because: {{reasons}}."
+      },
+      "flutter": {
+        "native": "Emitted the native widget (flutter_svg and an AnimationController): the animation only uses transform, opacity and colour.",
+        "webview": "Emitted the WebView player (webview_flutter) because {{reasons}}. A WebView has an opaque background and is heavier than a native widget."
+      },
+      "flutterReasons": {
+        "morph": "it morphs a shape",
+        "mask": "it animates a mask or clip path",
+        "blur": "it animates a blur",
+        "motionPath": "it moves along a motion path",
+        "drawOn": "it draws a stroke on",
+        "gradient": "it animates gradient stops",
+        "symbol": "it animates layers inside a symbol",
+        "raw": "it contains SVG markup the editor keeps as-is"
       }
     },
     "projects": {
@@ -958,6 +996,69 @@
       "spanHint": "Animators run from the playhead to the end. Adjust their keyframes in the timeline.",
       "notApplied": "That animator does not apply to this layer.",
       "morphFailed": "These two shapes cannot be morphed."
+    },
+    "lottie": {
+      "supportSummary": "What Lottie cannot carry",
+      "document": "whole animation",
+      "warningsTitle_one": "{{count}} thing did not carry over",
+      "warningsTitle_other": "{{count}} things did not carry over",
+      "unsupported": {
+        "maskAdvanced": "Masks other than simple white or black shapes, and masks on nested layers",
+        "filter": "Blur and other filters",
+        "text": "Text (needs font outlines; convert text to paths first)",
+        "image": "Images that are not embedded, or images inside a group",
+        "useComplex": "Reused symbols with their own size or view box",
+        "raw": "SVG markup the editor keeps as-is",
+        "cssOnly": "Blend modes, markers and other CSS-only styles",
+        "strokeGradientAnimation": "Animated gradients on strokes",
+        "gradientShape": "Repeating, focal or stretched gradients",
+        "paint": "Paints that are not a colour or a gradient",
+        "skew": "Skew on both axes at once",
+        "morph": "Shape morphs that change the number of subpaths",
+        "playOnce": "Play once (Lottie players loop by default)",
+        "expression": "Expressions (the keyframed values are used)",
+        "effect": "Layer effects such as blur or drop shadow",
+        "textLayer": "Text layers (kept as empty, named groups)",
+        "timeRemap": "Time remapping",
+        "threeD": "3D layers and 3D rotation",
+        "blendMode": "Blend modes other than normal",
+        "matte": "Track mattes",
+        "maskMode": "Masks other than add and subtract",
+        "modifier": "Repeaters, rounded corners and other shape modifiers",
+        "imageExternal": "Images that are not embedded in the file",
+        "spatialTangents": "Curved motion paths (the layer moves in straight lines)",
+        "layerTiming": "Layer in and out points on a layer whose opacity is animated",
+        "unknownLayer": "Layer types the editor does not draw",
+        "unknownShape": "Unknown shape items",
+        "autoOrient": "Auto-orient along the path",
+        "skewAxis": "Skew along an angled axis",
+        "polystar": "Rounded or animated stars and polygons (drawn as a plain outline)",
+        "trimComplex": "Trim paths that do more than draw on or erase",
+        "gradientAnimation": "Animated gradient positions and animated stroke gradients",
+        "multipleStyles": "Several fills or strokes on one shape (the nearest is used)",
+        "styleOpacity": "Animated fill or stroke opacity on gradients",
+        "morphCounts": "Shape keys with different point counts (in-betweens will differ)"
+      },
+      "import": {
+        "warningsTitle_one": "{{count}} thing could not be imported",
+        "warningsTitle_other": "{{count}} things could not be imported",
+        "warningsBody": "The animation is ready to open. These parts of the Lottie file are not supported and were left out or simplified:",
+        "open": "Open animation",
+        "unavailable": "Lottie import is not available on this site.",
+        "refused": {
+          "limit": "You have used your exports and imports for today.",
+          "locked": "Your plan does not include Lottie import.",
+          "cap": "This file is larger than your plan allows.",
+          "unavailable": "Import is unavailable right now. Nothing was counted; try again in a moment."
+        },
+        "errors": {
+          "too_large": "That file is larger than 4 MB.",
+          "not_json": "That file could not be read as JSON.",
+          "not_lottie": "That file is not a Lottie animation.",
+          "too_complex": "That animation has too many layers, keyframes or points.",
+          "invalid": "That Lottie file could not be turned into an animation."
+        }
+      }
     }
   }
 }

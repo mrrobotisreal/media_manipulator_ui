@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "rect",
+      "id": "box",
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 40,
+      "fill": "#3b82f6",
+      "transform": {
+        "x": 60,
+        "y": 60,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0,
+        "skewX": 0,
+        "skewY": 0,
+        "anchorX": 20,
+        "anchorY": 20
+      }
+    },
+    {
+      "type": "ellipse",
+      "id": "dot",
+      "name": "dot",
+      "cx": 150,
+      "cy": 150,
+      "rx": 10,
+      "ry": 10,
+      "fill": "#ef4444"
+    }
+  ],
+  "defs": {},
+  "animations": [
+    {
+      "layerId": "box",
+      "property": "transform.rotation",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "easeBoth"
+        },
+        {
+          "t": 2000,
+          "value": 360,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "box",
+      "property": "transform.scaleX",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 1,
+          "easing": "easeBoth"
+        },
+        {
+          "t": 2000,
+          "value": 2,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "box",
+      "property": "transform.scaleY",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 1,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 0.5,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "box",
+      "property": "opacity",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 1,
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": 0.25,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 1,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "dot",
+      "property": "transform.x",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "hold"
+        },
+        {
+          "t": 1000,
+          "value": -80,
+          "easing": {
+            "cubicBezier": [
+              0.25,
+              0.1,
+              0.25,
+              1
+            ]
+          }
+        },
+        {
+          "t": 2000,
+          "value": 0,
+          "easing": "linear"
+        }
+      ]
+    },
+    {
+      "layerId": "dot",
+      "property": "fill",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "#ef4444",
+          "easing": "easeOut"
+        },
+        {
+          "t": 2000,
+          "value": "#22c55e",
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

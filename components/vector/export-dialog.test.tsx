@@ -68,10 +68,11 @@ function mount(extra: Partial<React.ComponentProps<typeof ExportDialog>> = {}) {
 const exportButton = () => screen.getByRole('button', { name: 'Export' });
 
 describe('Motion export dialog', () => {
-  it('lists animated SVG and static SVG, the beta label, and later formats disabled', () => {
+  it('lists animated SVG, static SVG, the MM46 formats, the beta label, and GIF / video disabled', () => {
     mount();
     expect(screen.getByRole('radio', { name: /Animated SVG/ })).toBeTruthy();
     expect(screen.getByRole('radio', { name: /Static SVG/ })).toBeTruthy();
+    for (const name of [/^Lottie JSON/, /^React component/, /^JavaScript module/, /^TypeScript module/, /^Flutter widget/]) expect(screen.getByRole('radio', { name })).toBeTruthy();
     expect(screen.getByText('Motion (beta)')).toBeTruthy();
     expect(screen.getAllByText('Coming soon').length).toBeGreaterThan(1);
   });
@@ -247,5 +248,114 @@ describe('countVectorExport', () => {
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.refusal.kind).toBe(kind);
     }
+  });
+});
+
+describe('MM46: Lottie and code exports in the dialog', () => {
+  const ok = (format: string) => json(200, { ok: true, format, tier: 'premium', limit: 30, remaining: 29, resetsAt: '' });
+  const pick = (name: RegExp) => fireEvent.click(screen.getByRole('radio', { name }));
+
+  it.each([
+    [/^Lottie JSON/, 'lottie', 'Bounce.json'],
+    [/^React component/, 'react_tsx', 'Bounce.tsx'],
+    [/^JavaScript module/, 'js_ts', 'Bounce.js'],
+    [/^TypeScript module/, 'js_ts', 'Bounce.ts'],
+    [/^Flutter widget/, 'flutter', 'bounce.dart'],
+  ])('%s counts as %s first, then downloads %s', async (radio, format, fileName) => {
+    fetchMock.mockResolvedValueOnce(ok(format));
+    const { save } = mount();
+    pick(radio);
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body))).toEqual({ format, durationMs: 1500, height: 300, fps: 30 });
+    expect((save.mock.calls[0] as [Blob, string])[1]).toBe(fileName);
+    expect(screen.getByTestId('vector-export-status').textContent).toContain('29 animated exports left today.');
+  });
+
+  it.each([
+    [429, { error: 'vector_export_limit', limit: 30, used: 30, upgradePath: 'pro' }, 'limit'],
+    [403, { error: 'vector_format_locked', format: 'flutter', tier: 'free', upgradePath: 'premium' }, 'locked'],
+  ])('%i: no exporter run, no download', async (status, body, kind) => {
+    fetchMock.mockResolvedValueOnce(json(status, body));
+    const { save } = mount();
+    pick(/^Flutter widget/);
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(screen.getByTestId('vector-export-status').querySelector('[data-refusal]')).toBeTruthy());
+    expect(screen.getByTestId('vector-export-status').querySelector('[data-refusal]')!.getAttribute('data-refusal')).toBe(kind);
+    expect(save).not.toHaveBeenCalled();
+  });
+
+  it('Lottie: the unsupported list is shown, and the warnings after the export name the feature and layer', async () => {
+    const r = parseVectorDoc({ ...JSON.parse(JSON.stringify(doc)), layers: [...JSON.parse(JSON.stringify(doc)).layers, { type: 'text', id: 'title', name: 'Headline', x: 0, y: 20, text: 'Hi' }] });
+    if (!r.ok) throw new Error(r.error);
+    fetchMock.mockResolvedValueOnce(ok('lottie'));
+    const { save } = mount({ doc: r.doc });
+    pick(/^Lottie JSON/);
+    expect(screen.getByTestId('vector-lottie-support').textContent).toContain('Blur and other filters');
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    const list = screen.getByTestId('vector-export-warnings');
+    expect(list.textContent).toContain('1 thing did not carry over');
+    expect(list.querySelector('[data-feature="text"]')!.textContent).toContain('Headline');
+    const lottie = JSON.parse(await (save.mock.calls[0][0] as Blob).text());
+    expect(lottie.ver).toBe(10001);
+  });
+
+  it('Flutter: a transform-only document says it emitted the native widget', async () => {
+    fetchMock.mockResolvedValueOnce(ok('flutter'));
+    mount();
+    pick(/^Flutter widget/);
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(screen.getByTestId('vector-export-emitted-flutter')).toBeTruthy());
+    const note = screen.getByTestId('vector-export-emitted-flutter');
+    expect(note.dataset.emitter).toBe('native');
+    expect(note.textContent).toContain('native widget');
+  });
+
+  it('Flutter: a morph says it emitted the WebView player and why', async () => {
+    fetchMock.mockResolvedValueOnce(ok('flutter'));
+    const { save } = mount({ doc: morphDoc });
+    pick(/^Flutter widget/);
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    const note = screen.getByTestId('vector-export-emitted-flutter');
+    expect(note.dataset.emitter).toBe('webview');
+    expect(note.textContent).toContain('because it morphs a shape');
+    expect(note.textContent).toContain('opaque background');
+    expect(screen.getByTestId('vector-export-emitted-runtime').textContent).toContain('because: shape morph');
+  });
+
+  it('React: the runtime that was emitted is stated', async () => {
+    fetchMock.mockResolvedValueOnce(ok('react_tsx'));
+    const { save } = mount();
+    pick(/^React component/);
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    expect(screen.getByTestId('vector-export-emitted-runtime').textContent).toBe('Animated with CSS, no script.');
+    expect(await (save.mock.calls[0][0] as Blob).text()).toContain("from 'react'");
+  });
+
+  it('a document no exporter can write disables the code formats before any API call', async () => {
+    const r = parseVectorDoc({
+      ...JSON.parse(JSON.stringify(doc)),
+      layers: [...JSON.parse(JSON.stringify(doc)).layers, { type: 'use', id: 'u', ref: 'sym' }],
+      defs: { symbols: [{ id: 'sym', layers: [{ type: 'rect', id: 'in-sym', x: 0, y: 0, width: 5, height: 5 }] }] },
+      animations: [{ layerId: 'in-sym', property: 'opacity', keyframes: [{ t: 0, value: 1, easing: 'linear' }, { t: 1000, value: 0, easing: 'linear' }] }],
+    });
+    if (!r.ok) throw new Error(r.error);
+    mount({ doc: r.doc });
+    pick(/^React component/);
+    expect((exportButton() as HTMLButtonElement).disabled).toBe(true);
+    pick(/^Lottie JSON/);
+    expect((exportButton() as HTMLButtonElement).disabled).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('translator deployments hide every counted MM46 format', () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
+    mount();
+    for (const name of [/^Lottie JSON/, /^React component/, /^JavaScript module/, /^TypeScript module/, /^Flutter widget/]) expect(screen.queryByRole('radio', { name })).toBeNull();
+    vi.unstubAllEnvs();
   });
 });

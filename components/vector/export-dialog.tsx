@@ -15,6 +15,9 @@ import { chooseRuntime } from '@/lib/vector/export/chooseRuntime';
 import { canExportCss, exportAnimatedSvgCss } from '@/lib/vector/export/css';
 import { serializeSvg, svgFileName } from '@/lib/vector/exportSvg';
 import { countVectorExport, type VectorExportRefusal, type VectorExportResult, type VectorExportRequest } from '@/lib/vector/exportsApi';
+import { CODE_FORMATS, SERVER_FORMAT, formatProblem, runFormatExport, type CodeFormat, type FormatExport } from '@/lib/vector/export/formats';
+import { LOTTIE_UNSUPPORTED, lottieFeatureKey } from '@/lib/vector/export/lottieSupport';
+import { findDocLayer } from '@/lib/vector/advanced';
 import { sampleDoc } from '@/lib/vector/sampleTrack';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 import type { VectorDoc } from '@/lib/vector/vectorTypes';
@@ -29,7 +32,14 @@ import { cn } from '@/lib/utils';
  *     runs the exporter only on `{ok:true}`; 429 / 403 / 422 show a message
  *     with a plain link to /pricing (upgrade routing by ladder is MM49).
  *     The remaining count comes from the response.
- *   - Lottie, code, GIF and video are listed disabled, "Coming soon" (MM46/MM47).
+ *   - MM46: Lottie JSON, React/TSX, JS and TS modules and Flutter/Dart are
+ *     counted the same way (`SERVER_FORMAT`: `lottie`, `react_tsx`, `js_ts`,
+ *     `flutter`) and run their exporter only on `{ok:true}`. A tier without
+ *     the format gets the server's 403 message (no client-side locks until
+ *     MM49). After the download the dialog lists what did not carry over
+ *     (Lottie warnings, raw layers left out of React) and what was emitted
+ *     (runtime and reasons; Flutter: native or WebView, and why).
+ *   - GIF and video are listed disabled, "Coming soon" (MM47).
  *
  * MM45: animated SVG picks its runtime with `chooseRuntime`: CSS when every
  * feature is CSS in every major engine, else the inline MIT anime.js script
@@ -60,13 +70,14 @@ export interface ExportDialogProps {
   save?: (blob: Blob, fileName: string) => void;
 }
 
-type Format = 'svg_animated' | 'svg_static';
-const COMING_SOON = ['lottie', 'react_tsx', 'flutter', 'gif', 'mp4'] as const;
+type Format = 'svg_animated' | 'svg_static' | CodeFormat;
+const COMING_SOON = ['gif', 'mp4'] as const;
+const isCode = (f: Format): f is CodeFormat => (CODE_FORMATS as readonly string[]).includes(f);
 
 type Status =
   | { kind: 'idle' }
   | { kind: 'counting' }
-  | { kind: 'done'; remaining: number | null }
+  | { kind: 'done'; remaining: number | null; result?: FormatExport }
   | { kind: 'refused'; refusal: VectorExportRefusal }
   | { kind: 'invalid' };
 
@@ -81,6 +92,12 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
     () => (choice.runtime === 'css' ? canExportCss(doc).ok : canExportAnime(doc).ok),
     [doc, choice.runtime],
   );
+  // MM46: code formats run the web exporters, so they inherit their limits (checked before counting).
+  const codeOk = React.useMemo(() => {
+    const out = {} as Record<CodeFormat, boolean>;
+    for (const f of CODE_FORMATS) out[f] = formatProblem(doc, f, forceAnime) === null;
+    return out;
+  }, [doc, forceAnime]);
 
   const exportStatic = () => {
     const svg = serializeSvg(sampleDoc(doc, time));
@@ -111,8 +128,32 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
     setStatus({ kind: 'done', remaining: result.granted.remaining });
   };
 
-  const run = () => (format === 'svg_static' ? exportStatic() : void exportAnimated());
+  const exportCode = async (f: CodeFormat) => {
+    if (!codeOk[f]) {
+      setStatus({ kind: 'invalid' });
+      return;
+    }
+    setStatus({ kind: 'counting' });
+    const result = await count({
+      ...(projectId ? { projectId } : {}),
+      format: SERVER_FORMAT[f],
+      durationMs: doc.duration,
+      height: Math.round(doc.canvas.height),
+      fps: Math.round(doc.fps),
+    });
+    if (!result.ok) {
+      setStatus({ kind: 'refused', refusal: result.refusal });
+      return;
+    }
+    // Only now: the unit is spent server-side.
+    const out = runFormatExport(doc, f, { name, forceAnime });
+    save(out.blob, out.fileName);
+    setStatus({ kind: 'done', remaining: result.granted.remaining, result: out });
+  };
+
+  const run = () => (format === 'svg_static' ? exportStatic() : format === 'svg_animated' ? void exportAnimated() : void exportCode(format));
   const busy = status.kind === 'counting';
+  const runDisabled = busy || (format === 'svg_animated' && !animatedOk) || (isCode(format) && !codeOk[format]);
 
   const option = (id: Format, title: string, hint: string, extra?: React.ReactNode) => (
     <label
@@ -153,15 +194,25 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
               !animatedOk ? (
                 <span className="mt-1 block text-xs text-destructive">{t('vector.exportDialog.unsupported')}</span>
               ) : (
-                <RuntimeNote
-                  runtime={choice.runtime}
-                  reasons={choice.reasons}
-                  forceAnime={forceAnime}
-                  onForceAnime={setForceAnime}
-                />
+                format === 'svg_animated' && <RuntimeNote runtime={choice.runtime} reasons={choice.reasons} forceAnime={forceAnime} onForceAnime={setForceAnime} />
               ),
             )}
           {option('svg_static', t('vector.exportDialog.static'), t('vector.exportDialog.staticHint'))}
+          {!countedHidden &&
+            CODE_FORMATS.map((f) =>
+              option(
+                f,
+                t(`vector.exportDialog.code.${f}.title`),
+                t(`vector.exportDialog.code.${f}.hint`),
+                !codeOk[f] ? (
+                  <span className="mt-1 block text-xs text-destructive">{t('vector.exportDialog.unsupported')}</span>
+                ) : format !== f ? undefined : f === 'lottie' ? (
+                  <LottieSupportNote />
+                ) : (
+                  <RuntimeNote runtime={choice.runtime} reasons={choice.reasons} forceAnime={forceAnime} onForceAnime={setForceAnime} />
+                ),
+              ),
+            )}
           <ul className="space-y-1 pt-1" aria-label={t('vector.exportDialog.comingSoon')}>
             {COMING_SOON.map((f) => (
               <li key={f} className="flex items-center justify-between rounded-md border border-dashed border-edge px-3 py-2 text-xs text-text-subtle">
@@ -182,6 +233,7 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
                   : t('vector.exportDialog.done', { count: status.remaining })}
             </span>
           )}
+          {status.kind === 'done' && status.result && <ExportReport doc={doc} result={status.result} />}
           {status.kind === 'invalid' && <span className="text-destructive">{t('vector.exportDialog.unsupported')}</span>}
           {status.kind === 'refused' && <RefusalMessage refusal={status.refusal} />}
         </div>
@@ -190,13 +242,71 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={busy}>
             {t('common.close')}
           </Button>
-          <Button onClick={run} disabled={busy || (format === 'svg_animated' && !animatedOk)}>
+          <Button onClick={run} disabled={runDisabled}>
             {busy ? <Loader2 className="animate-spin" /> : <Download />}
             {t('vector.exportDialog.export')}
           </Button>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+/** The documented Lottie unsupported list (decision 1: rendered in the dialog), collapsed. */
+function LottieSupportNote() {
+  const { t } = useLocalization('interface');
+  return (
+    <details className="mt-1.5 text-xs text-muted-foreground" onClick={(e) => e.stopPropagation()} data-testid="vector-lottie-support">
+      <summary className="cursor-pointer">{t('vector.lottie.supportSummary')}</summary>
+      <ul className="mt-1 list-disc space-y-0.5 ps-4">
+        {LOTTIE_UNSUPPORTED.map((f) => (
+          <li key={f}>{t(lottieFeatureKey(f))}</li>
+        ))}
+      </ul>
+    </details>
+  );
+}
+
+/** After an MM46 export: the warnings (never silent) and what was emitted (decision 10). */
+function ExportReport({ doc, result }: { doc: VectorDoc; result: FormatExport }) {
+  const { t } = useLocalization('interface');
+  const label = (id: string) => {
+    if (!id) return t('vector.lottie.document');
+    const l = findDocLayer(doc, id);
+    return (l && l.name) || id;
+  };
+  const because = (codes: string[], ns: string) => codes.map((r) => t(`${ns}.${r}`)).join(', ');
+  return (
+    <div className="mt-2 space-y-1.5 text-xs" data-testid="vector-export-report">
+      {result.runtime && (
+        <p className="text-muted-foreground" data-testid="vector-export-emitted-runtime">
+          {result.runtime === 'css'
+            ? t('vector.exportDialog.emitted.css')
+            : result.runtimeReasons.length > 0
+              ? t('vector.exportDialog.emitted.animeBecause', { reasons: because(result.runtimeReasons, 'vector.exportDialog.reasons') })
+              : t('vector.exportDialog.emitted.anime')}
+        </p>
+      )}
+      {result.flutter && (
+        <p className="text-muted-foreground" data-testid="vector-export-emitted-flutter" data-emitter={result.flutter.emitter}>
+          {result.flutter.emitter === 'native'
+            ? t('vector.exportDialog.flutter.native')
+            : t('vector.exportDialog.flutter.webview', { reasons: because(result.flutter.reasons, 'vector.exportDialog.flutterReasons') })}
+        </p>
+      )}
+      {result.warnings.length > 0 && (
+        <div className="rounded-md border border-premium/40 p-2" data-testid="vector-export-warnings">
+          <p className="mb-1 font-medium text-premium">{t('vector.lottie.warningsTitle', { count: result.warnings.length })}</p>
+          <ul className="max-h-32 space-y-0.5 overflow-y-auto text-muted-foreground">
+            {result.warnings.map((w, i) => (
+              <li key={i} data-feature={w.feature}>
+                {t(lottieFeatureKey(w.feature as never))} <span className="font-mono text-text-subtle">{label(w.layerId)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }
 

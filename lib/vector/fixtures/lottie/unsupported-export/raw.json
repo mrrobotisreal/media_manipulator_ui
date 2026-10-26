@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "raw",
+      "id": "pattern",
+      "markup": "<pattern id=\"p\" width=\"4\" height=\"4\"/>",
+      "ids": [
+        "p"
+      ]
+    }
+  ]
+}

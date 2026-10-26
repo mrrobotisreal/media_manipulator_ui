@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "rect",
+      "id": "box",
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 40,
+      "fill": "#3b82f6"
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "box",
+      "property": "fill",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "#ff0000",
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": "#00ff00",
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": "rgba(0, 0, 255, 0.5)",
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

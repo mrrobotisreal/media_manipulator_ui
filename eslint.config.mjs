@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated-code goldens (exporter output is a byte-exact fixture, not source).
+    "**/__golden__/**",
   ]),
   {
     // Rule tuning for code ported from the Vite app. Deliberate, narrow choices

@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "rect",
+      "id": "sx",
+      "x": 20,
+      "y": 20,
+      "width": 60,
+      "height": 60,
+      "fill": "#3b82f6",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0,
+        "skewX": 20,
+        "skewY": 0,
+        "anchorX": 50,
+        "anchorY": 50
+      }
+    },
+    {
+      "type": "rect",
+      "id": "sy",
+      "x": 120,
+      "y": 20,
+      "width": 60,
+      "height": 60,
+      "fill": "#ef4444",
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 10,
+        "skewX": 0,
+        "skewY": -15,
+        "anchorX": 150,
+        "anchorY": 50
+      }
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "sx",
+      "property": "transform.skewX",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 20,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": -20,
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

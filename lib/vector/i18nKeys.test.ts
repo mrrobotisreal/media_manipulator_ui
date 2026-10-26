@@ -9,6 +9,9 @@ import { join } from 'node:path';
 
 import panels from '@/i18n/locales/en-us/interface/panels.json';
 import { TOOL_IDS } from './tools/types';
+import { NATIVE_FLUTTER_REASONS } from './export/dart';
+import { CODE_FORMATS } from './export/formats';
+import { LOTTIE_UNSUPPORTED } from './export/lottieSupport';
 
 const ROOT = join(__dirname, '..', '..');
 const files = (dir: string): string[] =>
@@ -57,6 +60,17 @@ describe('vector i18n keys', () => {
     ]) {
       expect(has(`vector.import.warnings.${code}`), code).toBe(true);
     }
+  });
+
+  it('covers the MM46 dynamic keys (Lottie unsupported list, code formats, Flutter reasons, import errors)', () => {
+    for (const f of LOTTIE_UNSUPPORTED) expect(has(`vector.lottie.unsupported.${f}`), f).toBe(true);
+    for (const f of CODE_FORMATS) {
+      expect(has(`vector.exportDialog.code.${f}.title`), f).toBe(true);
+      expect(has(`vector.exportDialog.code.${f}.hint`), f).toBe(true);
+    }
+    for (const r of NATIVE_FLUTTER_REASONS) expect(has(`vector.exportDialog.flutterReasons.${r}`), r).toBe(true);
+    for (const k of ['limit', 'locked', 'cap', 'unavailable']) expect(has(`vector.lottie.import.refused.${k}`), k).toBe(true);
+    for (const k of ['too_large', 'not_json', 'not_lottie', 'too_complex', 'invalid']) expect(has(`vector.lottie.import.errors.${k}`), k).toBe(true);
   });
 
   it('the beta chip reads "<brand> (beta)"', () => {

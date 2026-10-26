@@ -53,12 +53,18 @@ import {
 } from '@/lib/vector/draftStore';
 import { serializeSvg, svgFileName } from '@/lib/vector/exportSvg';
 import { parseSvg, SvgImportError, type ImportWarning } from '@/lib/vector/importSvg';
+import { countVectorExport } from '@/lib/vector/exportsApi';
+import { lottieFeatureKey, type LottieWarning } from '@/lib/vector/export/lottieSupport';
+import type { LottieImport } from '@/lib/vector/import/lottie';
+import { looksLikeLottie, runLottieImport } from '@/lib/vector/import/lottieImportFlow';
+import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 import { blankDoc, classifyProjectId, docFileName, newLocalProjectId } from '@/lib/vector/projects';
 import { VectorApiError, getVectorProject } from '@/lib/vector/projectsApi';
 import { getCurrentIdToken } from '@/lib/firebase';
 import { TOOL_SHORTCUTS, type DrawToolId, type ToolId } from '@/lib/vector/tools/types';
 import { useVectorStore } from '@/lib/vector/vectorStore';
-import { VECTOR_MAX_DOC_BYTES, parseVectorDoc, serializeVectorDoc } from '@/lib/vector/vectorTypes';
+import { VECTOR_MAX_DOC_BYTES, parseVectorDoc, serializeVectorDoc, type VectorDoc } from '@/lib/vector/vectorTypes';
+import { findDocLayer } from '@/lib/vector/advanced';
 import type { AnimatorId } from '@/lib/vector/animators';
 import { cn } from '@/lib/utils';
 import { VectorCanvas, fitView, zoomAt, type View } from './canvas';
@@ -123,6 +129,8 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
   const [phase, setPhase] = React.useState<Phase>({ kind: 'loading' });
   const [view, setView] = React.useState<View>({ zoom: 1, panX: 0, panY: 0 });
   const [warnings, setWarnings] = React.useState<ImportWarning[] | null>(null);
+  // MM46: a Lottie import is shown with its full warning list BEFORE it opens (decision 3).
+  const [lottiePending, setLottiePending] = React.useState<{ result: LottieImport; base: string } | null>(null);
   const [importing, setImporting] = React.useState(false);
   const fileRef = React.useRef<HTMLInputElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
@@ -431,6 +439,26 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
     setImporting(true);
     try {
       const text = await file.text();
+      if ((/\.json$/i.test(file.name) || file.type === 'application/json') && looksLikeLottie(text)) {
+        // MM46: a Lottie animation. Counted (`import_lottie`) before parsing; translator deployments never count.
+        if (isIrreversibleActionHidden()) {
+          toast.error(t('vector.lottie.import.unavailable'));
+          return;
+        }
+        const outcome = await runLottieImport({ size: file.size, text: async () => text }, { count: countVectorExport, projectId: serverRef.current?.id });
+        if (outcome.kind === 'refused') {
+          toast.error(t(`vector.lottie.import.refused.${outcome.refusal.kind}`));
+          return;
+        }
+        if (outcome.kind === 'error') {
+          toast.error(t(`vector.lottie.import.errors.${outcome.code}`));
+          return;
+        }
+        const base = file.name.replace(/(\.lottie)?\.json$/i, '').slice(0, 120);
+        if (outcome.result.warnings.length > 0) setLottiePending({ result: outcome.result, base });
+        else openLottie(outcome.result, base);
+        return;
+      }
       if (/\.json$/i.test(file.name) || file.type === 'application/json') {
         // MM44: a Motion document file (the signed-out "download .json").
         const parsed = parseVectorDoc(text);
@@ -462,6 +490,18 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
     } finally {
       setImporting(false);
     }
+  };
+
+  const openLottie = (result: LottieImport, base: string) => {
+    const s = useVectorStore.getState();
+    if (s.doc && s.doc.layers.length === 0 && s.past.length === 0) {
+      s.load(s.projectId ?? idRef.current ?? newLocalProjectId(), result.doc, base || s.name);
+    } else {
+      s.mutate('Import Lottie', () => result.doc, []);
+      s.rename(base || s.name);
+    }
+    setLottiePending(null);
+    toast.success(t('vector.import.done', { count: result.doc.layers.length }));
   };
 
   const recover = (draft: VectorDraft) => {
@@ -675,7 +715,16 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
           doc={doc}
           name={name}
           time={useVectorStore.getState().time}
+          {...(sync.server ? { projectId: sync.server.id } : {})}
           signedIn={signedIn === true}
+        />
+      )}
+      {lottiePending && (
+        <LottieWarningsDialog
+          warnings={lottiePending.result.warnings}
+          doc={lottiePending.result.doc}
+          onCancel={() => setLottiePending(null)}
+          onOpen={() => openLottie(lottiePending.result, lottiePending.base)}
         />
       )}
       {signInOpen && <SignInPrompt onClose={() => setSignInOpen(false)} />}
@@ -820,6 +869,53 @@ function ReloadTheirsDialog({ onCancel, onReload }: { onCancel: () => void; onRe
             {busy && <Loader2 className="animate-spin" />}
             {t('vector.projects.conflict.reloadConfirm')}
           </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+/**
+ * MM46 decision 3: the full list of what a Lottie import could not map, shown
+ * before the document opens (never a silent drop). The unit is already spent;
+ * "Cancel" just keeps the current document.
+ */
+export function LottieWarningsDialog({
+  warnings,
+  doc,
+  onCancel,
+  onOpen,
+}: {
+  warnings: LottieWarning[];
+  doc: VectorDoc;
+  onCancel: () => void;
+  onOpen: () => void;
+}) {
+  const { t } = useLocalization('interface');
+  const label = (id: string) => {
+    if (!id) return t('vector.lottie.document');
+    const l = findDocLayer(doc, id);
+    return (l && l.name) || id;
+  };
+  return (
+    <Dialog open onOpenChange={(o) => !o && onCancel()}>
+      <DialogContent className="sm:max-w-md" data-testid="vector-lottie-warnings">
+        <DialogHeader>
+          <DialogTitle>{t('vector.lottie.import.warningsTitle', { count: warnings.length })}</DialogTitle>
+          <DialogDescription>{t('vector.lottie.import.warningsBody')}</DialogDescription>
+        </DialogHeader>
+        <ul className="max-h-64 space-y-1 overflow-y-auto text-sm text-muted-foreground">
+          {warnings.map((w, i) => (
+            <li key={i} data-feature={w.feature}>
+              {t(lottieFeatureKey(w.feature))} <span className="font-mono text-xs text-text-subtle">{label(w.layerId)}</span>
+            </li>
+          ))}
+        </ul>
+        <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-end">
+          <Button variant="outline" onClick={onCancel}>
+            {t('common.cancel')}
+          </Button>
+          <Button onClick={onOpen}>{t('vector.lottie.import.open')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
