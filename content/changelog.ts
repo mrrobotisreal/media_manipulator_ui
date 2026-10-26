@@ -24,6 +24,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-26-prices-in-euros',
+    date: '2026-10-26',
+    title: 'Prices in euros for European visitors, switchable any time',
+    body: 'Visitors in Europe now see prices in euros: Premium is €8 a month or €80 a year and Pro is €15 or €150, the same numbers as in US dollars. Anyone can switch between USD and EUR on the pricing page, on the Billing tab and in the upgrade prompts, and the choice is remembered. A subscription keeps the currency it was bought in, and no tax is added on top.',
+    tags: ['new'],
+    links: [{ label: 'Compare plans', href: '/pricing' }],
+  },
+  {
     id: '2026-10-26-motion-pro-video',
     date: '2026-10-26',
     title: 'Motion: MP4, WebM and PNG sequence exports on Pro',

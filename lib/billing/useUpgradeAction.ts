@@ -125,6 +125,13 @@ export function useBillingFallback() {
           // A full navigation, not router.push: this hook also runs in trees without an app router.
           window.location.assign(localized('/account'));
           return;
+        case 'currency_locked':
+          // MM69: the Stripe customer is fixed to the other currency. startCheckout already
+          // switched the page to it; say why the prices changed and let them click again.
+          toast(t('interface:billing.errors.currencyLocked', {
+            currency: (outcome.refusal?.currency ?? 'usd').toUpperCase(),
+          }));
+          return;
         case 'billing_unavailable':
           toast(t('interface:billing.errors.unavailable'));
           return;

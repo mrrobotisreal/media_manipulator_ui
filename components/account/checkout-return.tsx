@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import {
+  isBillingCurrency,
   isPaidPlan,
   isPaidTier,
   fetchAccount,
@@ -17,6 +18,7 @@ import {
 } from '@/lib/auth/accountApi';
 import { getCurrentIdToken } from '@/lib/firebase';
 import { isBillingInterval, readLastInterval } from '@/lib/billing/checkout';
+import { readStoredCurrency } from '@/lib/billing/currency';
 import { useLocalization } from '@/i18n/useLocalization';
 
 /**
@@ -80,15 +82,19 @@ export const CheckoutReturn: React.FC = () => {
     if (completed.current) return;
     completed.current = true;
     let interval: BillingInterval = readLastInterval();
+    // MM69: the subscription's currency once the API reports it, else the pick the visitor
+    // checked out with (the cookie survives the Stripe round trip).
+    let currency = readStoredCurrency() ?? 'usd';
     try {
       const token = await getCurrentIdToken();
       const status = token ? await fetchBillingStatus(token) : null;
       if (status && isBillingInterval(status.interval)) interval = status.interval;
+      if (isBillingCurrency(status?.currency)) currency = status.currency;
       notePlan(status?.plan);
     } catch {
       /* the remembered interval is a fine fallback for a lossy client event */
     }
-    analytics.track(EVENTS.CHECKOUT_COMPLETED, { interval, plan: planRef.current ?? 'premium' });
+    analytics.track(EVENTS.CHECKOUT_COMPLETED, { interval, plan: planRef.current ?? 'premium', currency });
     refresh?.();
     setPhase('confirmed');
     strip();

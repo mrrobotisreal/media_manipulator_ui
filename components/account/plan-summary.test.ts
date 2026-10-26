@@ -53,3 +53,15 @@ describe('planLadderRows: four rows, numbers from /api/tiers (MM40 decision 6)',
     expect(planLadderRows(tiersFixture({ withPro: false }), 'free', t).map((r) => r.tier)).toEqual(['anonymous', 'free', 'premium']);
   });
 });
+
+describe('planLadderRows currency (MM69)', () => {
+  it('formats the served numerals in the visitor currency and locale', async () => {
+    const { planLadderRows } = await import('./plan-summary');
+    const { tiersFixture } = await import('@/lib/billing/test-utils');
+    const t = (key: string) => key;
+    const rows = Object.fromEntries(planLadderRows(tiersFixture() as never, 'free', t, 'eur', 'de-DE').map((r) => [r.tier, r]));
+    const eur = (n: number) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+    expect(rows.premium.price).toBe(`${eur(9)}interface:billing.perMonth`);
+    expect(rows.pro.price).toBe(`${eur(17)}interface:billing.perMonth`);
+  });
+});

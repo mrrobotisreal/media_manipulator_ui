@@ -53,7 +53,7 @@
     "plans": {
       "freeTitle": "Das bietet Ihnen ein kostenloses Konto",
       "premiumTitle": "Premium",
-      "premiumPrice": "{{price}} $/Monat",
+      "premiumPrice": "{{price}}/Monat",
       "premiumUpgrade": "Auf Premium upgraden",
       "comparePlans": "Alle Tarife vergleichen",
       "opsPerDay": "{{count}} Vorgänge pro Tag",
@@ -403,10 +403,15 @@
     "yearly": "Jährlich",
     "perMonth": "/Monat",
     "perYear": "/Jahr",
+    "currency": {
+      "label": "Währung",
+      "panelLabel": "Währung",
+      "lockedNote": "Dein Abonnement wird in {{currency}} abgerechnet. Das lässt sich nicht ändern, solange es aktiv ist."
+    },
     "yearlyBonus": "{{months}} Monate gratis",
     "cancelAnytime": "Jederzeit kündbar",
     "refund": "14 Tage Rückerstattung auf deine erste Zahlung",
-    "taxNote": "Preise in USD",
+    "taxNote": "Es wird keine Steuer aufgeschlagen",
     "upgrade": "Auf Premium upgraden",
     "manage": "Abo verwalten",
     "operator": "Unbegrenzt (Operator)",
@@ -418,7 +423,8 @@
       "unavailable": "Premium ist noch nicht verfügbar.",
       "operator": "Operator-Konten haben bereits unbegrenzten Zugriff.",
       "generic": "Der Bezahlvorgang konnte nicht gestartet werden. Bitte versuche es gleich noch einmal.",
-      "alreadyOnPlan": "Du hast diesen Tarif oder einen höheren bereits."
+      "alreadyOnPlan": "Du hast diesen Tarif oder einen höheren bereits.",
+      "currencyLocked": "Dein Abrechnungskonto ist auf {{currency}} festgelegt, daher werden die Preise jetzt in {{currency}} angezeigt. Wähle deinen Tarif erneut, um fortzufahren."
     },
     "panel": {
       "title": "Abrechnung",
@@ -481,22 +487,22 @@
       }
     },
     "offer": {
-      "title": "Anders überlegt? Behalte Premium für ${{price}}/Monat",
+      "title": "Anders überlegt? Behalte Premium für {{price}}/Monat",
       "resumeTitle": "Anders überlegt? Behalte Premium zu deinem aktuellen Preis",
-      "fineprint": "Heute wird nichts abgebucht. Ab dem {{date}} zahlst du ${{price}}/Monat statt ${{current}}/Monat, jeden Monat, bis du kündigst.",
-      "cta": "Premium für ${{price}}/Monat behalten",
-      "resumeCta": "Premium für ${{price}}{{unit}} behalten",
-      "keepAtCurrent": "Premium für ${{price}}/Monat behalten",
+      "fineprint": "Heute wird nichts abgebucht. Ab dem {{date}} zahlst du {{price}}/Monat statt {{current}}/Monat, jeden Monat, bis du kündigst.",
+      "cta": "Premium für {{price}}/Monat behalten",
+      "resumeCta": "Premium für {{price}}{{unit}} behalten",
+      "keepAtCurrent": "Premium für {{price}}/Monat behalten",
       "keepAtCurrentNoPrice": "Premium zum regulären Preis behalten",
       "working": "Wird bearbeitet…",
-      "renewed": "Premium verlängert sich am {{date}} für ${{price}}/Monat",
+      "renewed": "Premium verlängert sich am {{date}} für {{price}}/Monat",
       "renewedNoPrice": "Premium verlängert sich am {{date}}",
       "renewedBare": "Premium verlängert sich weiterhin",
       "changed": "Das Angebot hat sich geändert, hier ist das aktuelle.",
       "failed": "Dein Abo konnte nicht aktualisiert werden. Bitte versuche es erneut.",
-      "resumePrice": "Du zahlst derzeit ${{price}}{{unit}} und behältst diesen Preis.",
+      "resumePrice": "Du zahlst derzeit {{price}}{{unit}} und behältst diesen Preis.",
       "resumeCtaNoPrice": "Premium behalten",
-      "fineprintNoCurrent": "Heute wird nichts abgebucht. Ab dem {{date}} zahlst du ${{price}}/Monat, jeden Monat, bis du kündigst.",
+      "fineprintNoCurrent": "Heute wird nichts abgebucht. Ab dem {{date}} zahlst du {{price}}/Monat, jeden Monat, bis du kündigst.",
       "resumeFineprint": "Heute wird nichts abgebucht. Deine nächste Zahlung erfolgt am {{date}} zum gleichen Preis und verlängert sich wie gewohnt, bis du kündigst.",
       "unitMonth": "/Monat",
       "unitYear": "/Jahr"

@@ -29,6 +29,7 @@ import { useBillingFallback, usePremiumPurchasable, useProPurchasable, useTiers 
 import { upsellTargetFor } from '@/lib/billing/plans';
 import { usePlanChange } from '@/lib/billing/usePlanChange';
 import { useBillingStatus } from '@/lib/billing/useBillingStatus';
+import { CurrencyToggle } from '@/components/pricing/currency-toggle';
 import { useLocalization } from '@/i18n/useLocalization';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
@@ -270,16 +271,20 @@ export const UpgradeInterstitial: React.FC<{
           </p>
         ) : null}
         {offer === 'premium' && purchasable ? (
-          <Segmented<BillingInterval>
-            name="interstitial-interval"
-            label={t('interface:billing.intervalLabel')}
-            value={interval}
-            onValueChange={setInterval}
-            options={[
-              { value: 'monthly', label: t('interface:billing.monthly') },
-              { value: 'yearly', label: t('interface:billing.yearly') },
-            ]}
-          />
+          <div className="grid gap-3">
+            <Segmented<BillingInterval>
+              name="interstitial-interval"
+              label={t('interface:billing.intervalLabel')}
+              value={interval}
+              onValueChange={setInterval}
+              options={[
+                { value: 'monthly', label: t('interface:billing.monthly') },
+                { value: 'yearly', label: t('interface:billing.yearly') },
+              ]}
+            />
+            {/* MM69: Checkout opens in this currency (hidden until the API sells EUR). */}
+            <CurrencyToggle placement="interstitial" />
+          </div>
         ) : null}
         {offer === 'premium' && purchasable === false ? (
           <p className="text-sm text-muted-foreground">

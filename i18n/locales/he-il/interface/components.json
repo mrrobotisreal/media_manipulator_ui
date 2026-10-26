@@ -53,7 +53,7 @@
     "plans": {
       "freeTitle": "מה חשבון חינמי נותן לכם",
       "premiumTitle": "Premium",
-      "premiumPrice": "${{price}}/חודש",
+      "premiumPrice": "{{price}}/חודש",
       "premiumUpgrade": "שדרגו לפרימיום",
       "comparePlans": "השוואת כל התוכניות",
       "opsPerDay": "{{count}} פעולות ביום",
@@ -407,10 +407,15 @@
     "yearly": "שנתי",
     "perMonth": "/חודש",
     "perYear": "/שנה",
+    "currency": {
+      "label": "מטבע",
+      "panelLabel": "מטבע",
+      "lockedNote": "המנוי שלכם מחויב ב־{{currency}}. לא ניתן לשנות זאת כל עוד המנוי פעיל."
+    },
     "yearlyBonus": "{{months}} חודשים חינם",
     "cancelAnytime": "ביטול בכל עת",
     "refund": "החזר כספי תוך 14 יום על התשלום הראשון",
-    "taxNote": "המחירים בדולר ארה״ב",
+    "taxNote": "לא מתווסף מס",
     "upgrade": "שדרגו לפרימיום",
     "manage": "ניהול המנוי",
     "operator": "ללא הגבלה (מפעיל)",
@@ -422,7 +427,8 @@
       "unavailable": "פרימיום עדיין לא זמין.",
       "operator": "לחשבונות מפעיל כבר יש גישה בלתי מוגבלת.",
       "generic": "לא ניתן היה להתחיל את התשלום. נסו שוב בעוד רגע.",
-      "alreadyOnPlan": "כבר יש לכם את המסלול הזה או מסלול גבוה יותר."
+      "alreadyOnPlan": "כבר יש לכם את המסלול הזה או מסלול גבוה יותר.",
+      "currencyLocked": "חשבון החיוב שלכם מוגדר ל־{{currency}}, ולכן המחירים מוצגים כעת ב־{{currency}}. בחרו שוב את המסלול כדי להמשיך."
     },
     "panel": {
       "title": "חיוב",
@@ -485,22 +491,22 @@
       }
     },
     "offer": {
-      "title": "התחרטתם? שמרו על Premium ב־${{price}} לחודש",
+      "title": "התחרטתם? שמרו על Premium ב־{{price}} לחודש",
       "resumeTitle": "התחרטתם? שמרו על Premium במחיר הנוכחי שלכם",
-      "fineprint": "היום לא מתבצע חיוב. החל מ־{{date}} תשלמו ${{price}} לחודש במקום ${{current}} לחודש, בכל חודש עד שתבטלו.",
-      "cta": "שמרו על Premium ב־${{price}} לחודש",
-      "resumeCta": "שמרו על Premium ב־${{price}}{{unit}}",
-      "keepAtCurrent": "שמרו על Premium ב־${{price}} לחודש",
+      "fineprint": "היום לא מתבצע חיוב. החל מ־{{date}} תשלמו {{price}} לחודש במקום {{current}} לחודש, בכל חודש עד שתבטלו.",
+      "cta": "שמרו על Premium ב־{{price}} לחודש",
+      "resumeCta": "שמרו על Premium ב־{{price}}{{unit}}",
+      "keepAtCurrent": "שמרו על Premium ב־{{price}} לחודש",
       "keepAtCurrentNoPrice": "שמרו על Premium במחיר הרגיל",
       "working": "מעבד…",
-      "renewed": "Premium יתחדש ב־{{date}} ב־${{price}} לחודש",
+      "renewed": "Premium יתחדש ב־{{date}} ב־{{price}} לחודש",
       "renewedNoPrice": "Premium יתחדש ב־{{date}}",
       "renewedBare": "Premium ימשיך להתחדש",
       "changed": "ההצעה השתנתה, הנה ההצעה העדכנית.",
       "failed": "לא ניתן היה לעדכן את המנוי. נסו שוב.",
-      "resumePrice": "אתם משלמים כיום ${{price}}{{unit}}, וזה המחיר שתמשיכו לשלם.",
+      "resumePrice": "אתם משלמים כיום {{price}}{{unit}}, וזה המחיר שתמשיכו לשלם.",
       "resumeCtaNoPrice": "שמרו על Premium",
-      "fineprintNoCurrent": "היום לא מתבצע חיוב. החל מ־{{date}} תשלמו ${{price}} לחודש, בכל חודש עד שתבטלו.",
+      "fineprintNoCurrent": "היום לא מתבצע חיוב. החל מ־{{date}} תשלמו {{price}} לחודש, בכל חודש עד שתבטלו.",
       "resumeFineprint": "היום לא מתבצע חיוב. התשלום הבא שלכם ב־{{date}}, באותו מחיר, והמנוי יתחדש כרגיל עד שתבטלו.",
       "unitMonth": " לחודש",
       "unitYear": " לשנה"

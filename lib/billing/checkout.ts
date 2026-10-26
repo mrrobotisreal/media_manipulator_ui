@@ -13,12 +13,14 @@ import {
   createPortalSession,
   isPaidPlan,
   requestPlanChange,
+  type BillingCurrency,
   type BillingInterval,
   type BillingRefusalReason,
   type PaidPlan,
   type PlanChangeResult,
 } from '@/lib/auth/accountApi';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
+import { currentCurrency, noteLock, pickCurrency } from './currency';
 
 const INTERVAL_KEY = 'mm.billingInterval';
 const PENDING_KEY = 'mm.pendingCheckout';
@@ -124,6 +126,12 @@ function outcomeFor(error: unknown): BillingOutcome {
  * Creates a Checkout Session and redirects. `checkout_started` fires once the request is
  * about to go out (the redirect is imminent), never on a refusal path. `plan` defaults to
  * Premium: only /pricing sells Pro directly (MM40 decision 3).
+ *
+ * MM69: the session opens in the currency the page shows (lib/billing/currency.ts). It is
+ * sent only once the API sells EUR; a pre-MM69 API ignores the field and charges USD, which
+ * is also what the page shows against it. A `currency_locked` refusal
+ * means the Stripe customer is fixed to the other currency: the page switches to it so the
+ * visitor sees the price they would actually pay, and the caller explains.
  */
 export async function startCheckout(
   interval: BillingInterval,
@@ -136,14 +144,29 @@ export async function startCheckout(
   const idToken = await getCurrentIdToken();
   if (!idToken) return { ok: false, reason: 'no_token' };
   rememberInterval(interval);
+  const { currency, supported } = currentCurrency();
   try {
-    const { url } = await createCheckoutSession(idToken, { interval, plan, locale });
-    analytics.track(EVENTS.CHECKOUT_STARTED, { interval, placement, plan });
+    const { url } = await createCheckoutSession(idToken, {
+      interval,
+      plan,
+      locale,
+      ...(supported ? { currency } : {}),
+    });
+    analytics.track(EVENTS.CHECKOUT_STARTED, { interval, placement, plan, currency });
     window.location.assign(url);
     return { ok: true };
   } catch (error) {
+    if (error instanceof BillingRefusal && error.reason === 'currency_locked' && error.currency) {
+      noteLock(error.currency);
+      pickCurrency(error.currency, true);
+    }
     return outcomeFor(error);
   }
+}
+
+/** The currency a plan change bills in: the subscription's own (locked) currency. */
+function planChangeCurrency(): BillingCurrency {
+  return currentCurrency().currency;
 }
 
 /** Opens the Stripe billing portal (manage, cancel, update card). */
@@ -195,6 +218,7 @@ export async function changePlan(from: PaidPlan, target: PaidPlan): Promise<Plan
       from,
       to: target,
       timing: result.timing ?? (target === 'pro' ? 'immediate' : 'period_end'),
+      currency: planChangeCurrency(),
     });
     return { ok: true, result };
   } catch (error) {

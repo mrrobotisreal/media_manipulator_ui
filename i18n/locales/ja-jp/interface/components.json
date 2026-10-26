@@ -53,7 +53,7 @@
     "plans": {
       "freeTitle": "無料アカウントでできること",
       "premiumTitle": "Premium",
-      "premiumPrice": "${{price}}/月",
+      "premiumPrice": "{{price}}/月",
       "premiumUpgrade": "Premiumにアップグレード",
       "comparePlans": "すべてのプランを比較",
       "opsPerDay": "1日{{count}}回の操作",
@@ -400,10 +400,15 @@
     "yearly": "年払い",
     "perMonth": "/月",
     "perYear": "/年",
+    "currency": {
+      "label": "通貨",
+      "panelLabel": "通貨",
+      "lockedNote": "ご利用中のサブスクリプションは{{currency}}で請求されています。有効な間は変更できません。"
+    },
     "yearlyBonus": "{{months}}か月分無料",
     "cancelAnytime": "いつでもキャンセル可能",
     "refund": "初回のお支払いは14日間返金可能",
-    "taxNote": "価格は米ドル表示",
+    "taxNote": "税金の上乗せはありません",
     "upgrade": "Premiumにアップグレード",
     "manage": "サブスクリプションを管理",
     "operator": "無制限（オペレーター）",
@@ -415,7 +420,8 @@
       "unavailable": "Premiumはまだご利用いただけません。",
       "operator": "オペレーターアカウントはすでに無制限でご利用いただけます。",
       "generic": "チェックアウトを開始できませんでした。しばらくしてからもう一度お試しください。",
-      "alreadyOnPlan": "すでにこのプラン、またはそれより上位のプランをご利用中です。"
+      "alreadyOnPlan": "すでにこのプラン、またはそれより上位のプランをご利用中です。",
+      "currencyLocked": "請求アカウントが{{currency}}に設定されているため、価格を{{currency}}で表示しています。続行するにはもう一度プランを選択してください。"
     },
     "panel": {
       "title": "お支払い",
@@ -478,22 +484,22 @@
       }
     },
     "offer": {
-      "title": "気が変わりましたか？月額${{price}}でPremiumを継続",
+      "title": "気が変わりましたか？月額{{price}}でPremiumを継続",
       "resumeTitle": "気が変わりましたか？現在の価格でPremiumを継続",
-      "fineprint": "本日の請求はありません。{{date}}から、キャンセルするまで毎月${{current}}ではなく${{price}}をお支払いいただきます。",
-      "cta": "月額${{price}}でPremiumを継続",
-      "resumeCta": "${{price}}{{unit}}でPremiumを継続",
-      "keepAtCurrent": "月額${{price}}でPremiumを継続",
+      "fineprint": "本日の請求はありません。{{date}}から、キャンセルするまで毎月{{current}}ではなく{{price}}をお支払いいただきます。",
+      "cta": "月額{{price}}でPremiumを継続",
+      "resumeCta": "{{price}}{{unit}}でPremiumを継続",
+      "keepAtCurrent": "月額{{price}}でPremiumを継続",
       "keepAtCurrentNoPrice": "通常価格でPremiumを継続",
       "working": "処理中…",
-      "renewed": "Premiumは{{date}}に月額${{price}}で更新されます",
+      "renewed": "Premiumは{{date}}に月額{{price}}で更新されます",
       "renewedNoPrice": "Premiumは{{date}}に更新されます",
       "renewedBare": "Premiumは引き続き更新されます",
       "changed": "オファーが変更されました。現在のオファーはこちらです。",
       "failed": "サブスクリプションを更新できませんでした。もう一度お試しください。",
-      "resumePrice": "本日${{price}}{{unit}}をお支払いいただき、以降も同じ金額です。",
+      "resumePrice": "本日{{price}}{{unit}}をお支払いいただき、以降も同じ金額です。",
       "resumeCtaNoPrice": "Premiumを継続",
-      "fineprintNoCurrent": "本日の請求はありません。{{date}}から、キャンセルするまで毎月${{price}}をお支払いいただきます。",
+      "fineprintNoCurrent": "本日の請求はありません。{{date}}から、キャンセルするまで毎月{{price}}をお支払いいただきます。",
       "resumeFineprint": "本日の請求はありません。次回のお支払いは{{date}}に同じ価格で行われ、キャンセルするまで通常どおり更新されます。",
       "unitMonth": "/月",
       "unitYear": "/年"

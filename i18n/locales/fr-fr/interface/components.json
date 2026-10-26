@@ -53,7 +53,7 @@
     "plans": {
       "freeTitle": "Ce qu'un compte gratuit vous apporte",
       "premiumTitle": "Premium",
-      "premiumPrice": "{{price}} $/mois",
+      "premiumPrice": "{{price}}/mois",
       "premiumUpgrade": "Passer à Premium",
       "comparePlans": "Comparer toutes les offres",
       "opsPerDay": "{{count}} opérations par jour",
@@ -403,10 +403,15 @@
     "yearly": "Annuel",
     "perMonth": "/mois",
     "perYear": "/an",
+    "currency": {
+      "label": "Devise",
+      "panelLabel": "Devise",
+      "lockedNote": "Votre abonnement est facturé en {{currency}}. Cela ne peut pas changer tant qu'il est actif."
+    },
     "yearlyBonus": "{{months}} mois offerts",
     "cancelAnytime": "Résiliable à tout moment",
     "refund": "Remboursement sous 14 jours sur votre premier paiement",
-    "taxNote": "Prix en USD",
+    "taxNote": "Aucune taxe n'est ajoutée en sus",
     "upgrade": "Passer à Premium",
     "manage": "Gérer l'abonnement",
     "operator": "Illimité (opérateur)",
@@ -418,7 +423,8 @@
       "unavailable": "Premium n'est pas encore disponible.",
       "operator": "Les comptes opérateur ont déjà un accès illimité.",
       "generic": "Impossible de lancer le paiement. Veuillez réessayer dans un instant.",
-      "alreadyOnPlan": "Vous avez déjà cette offre ou une offre supérieure."
+      "alreadyOnPlan": "Vous avez déjà cette offre ou une offre supérieure.",
+      "currencyLocked": "Votre compte de facturation est défini en {{currency}} ; les prix sont donc désormais affichés en {{currency}}. Choisissez à nouveau votre offre pour continuer."
     },
     "panel": {
       "title": "Facturation",
@@ -481,22 +487,22 @@
       }
     },
     "offer": {
-      "title": "Vous changez d'avis ? Gardez Premium pour {{price}} $/mois",
+      "title": "Vous changez d'avis ? Gardez Premium pour {{price}}/mois",
       "resumeTitle": "Vous changez d'avis ? Gardez Premium à votre tarif actuel",
-      "fineprint": "Rien n'est facturé aujourd'hui. À partir du {{date}}, vous payez {{price}} $/mois au lieu de {{current}} $/mois, chaque mois jusqu'à la résiliation.",
-      "cta": "Garder Premium pour {{price}} $/mois",
-      "resumeCta": "Garder Premium à {{price}} ${{unit}}",
-      "keepAtCurrent": "Garder Premium à {{price}} $/mois",
+      "fineprint": "Rien n'est facturé aujourd'hui. À partir du {{date}}, vous payez {{price}}/mois au lieu de {{current}}/mois, chaque mois jusqu'à la résiliation.",
+      "cta": "Garder Premium pour {{price}}/mois",
+      "resumeCta": "Garder Premium à {{price}}{{unit}}",
+      "keepAtCurrent": "Garder Premium à {{price}}/mois",
       "keepAtCurrentNoPrice": "Garder Premium au tarif normal",
       "working": "Traitement…",
-      "renewed": "Premium sera renouvelé le {{date}} à {{price}} $/mois",
+      "renewed": "Premium sera renouvelé le {{date}} à {{price}}/mois",
       "renewedNoPrice": "Premium sera renouvelé le {{date}}",
       "renewedBare": "Premium continuera d'être renouvelé",
       "changed": "L'offre a changé, voici l'offre actuelle.",
       "failed": "Impossible de mettre à jour votre abonnement. Veuillez réessayer.",
-      "resumePrice": "Vous payez {{price}} ${{unit}} aujourd'hui, et c'est ce que vous continuerez de payer.",
+      "resumePrice": "Vous payez {{price}}{{unit}} aujourd'hui, et c'est ce que vous continuerez de payer.",
       "resumeCtaNoPrice": "Garder Premium",
-      "fineprintNoCurrent": "Rien n'est facturé aujourd'hui. À partir du {{date}}, vous payez {{price}} $/mois, chaque mois jusqu'à la résiliation.",
+      "fineprintNoCurrent": "Rien n'est facturé aujourd'hui. À partir du {{date}}, vous payez {{price}}/mois, chaque mois jusqu'à la résiliation.",
       "resumeFineprint": "Rien n'est facturé aujourd'hui. Votre prochain paiement a lieu le {{date}}, au même tarif, et l'abonnement se renouvelle normalement jusqu'à la résiliation.",
       "unitMonth": "/mois",
       "unitYear": "/an"

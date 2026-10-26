@@ -5,13 +5,15 @@ import { Check } from 'lucide-react';
 
 import {
   isUnlimited,
+  type BillingCurrency,
   type Tier,
   type TierDescriptor,
   type TierLimits,
   type TiersResponse,
 } from '@/lib/auth/accountApi';
 import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
-import { displayPrice, planPrices } from '@/lib/billing/price';
+import { formatPrice, planPrices } from '@/lib/billing/price';
+import { useCurrency } from '@/lib/billing/useCurrency';
 import { useLocalization } from '@/i18n/useLocalization';
 import { cn } from '@/lib/utils';
 
@@ -101,7 +103,7 @@ export const LADDER: readonly Tier[] = ['anonymous', 'free', 'premium', 'pro'];
 
 export interface PlanLadderRow {
   tier: Tier;
-  /** The served monthly price through displayPrice, or the free label. */
+  /** The served monthly price through formatPrice (MM69: in the visitor's currency), or the free label. */
   price: string;
   ops: string;
   aiOps: string;
@@ -117,17 +119,19 @@ export function planLadderRows(
   tiers: TiersResponse,
   currentTier: Tier | undefined,
   t: (key: string, options?: Record<string, unknown>) => string,
+  currency: BillingCurrency = 'usd',
+  locale = 'en-US',
 ): PlanLadderRow[] {
   const byTier = new Map(tiers.tiers.map((x) => [x.tier, x.limits]));
   const perMonth = t('interface:billing.perMonth');
   return LADDER.flatMap((tier) => {
     const limits = byTier.get(tier);
     if (!limits) return [];
-    const monthly = tier === 'premium' || tier === 'pro' ? planPrices(tiers, tier).monthly : undefined;
+    const monthly = tier === 'premium' || tier === 'pro' ? planPrices(tiers, tier, currency).monthly : undefined;
     return [
       {
         tier,
-        price: typeof monthly === 'number' ? `${displayPrice(monthly)}${perMonth}` : t('interface:planSummary.free'),
+        price: typeof monthly === 'number' ? `${formatPrice(monthly, currency, locale)}${perMonth}` : t('interface:planSummary.free'),
         ops: isUnlimited(limits.opsPerDay)
           ? t('interface:planSummary.opsUnlimited')
           : t('interface:planSummary.ops', { value: limits.opsPerDay }),
@@ -146,9 +150,10 @@ export const PlanLadder: React.FC<{ tiers: TiersResponse | undefined; currentTie
   tiers,
   currentTier,
 }) => {
-  const { t } = useLocalization(['interface']);
+  const { t, language } = useLocalization(['interface']);
+  const { currency } = useCurrency();
   if (!tiers) return null;
-  const rows = planLadderRows(tiers, currentTier, t);
+  const rows = planLadderRows(tiers, currentTier, t, currency, language?.code);
   if (!rows.length) return null;
   return (
     <section className="rounded-lg border border-edge bg-surface-2/60 p-4" data-testid="plan-ladder">

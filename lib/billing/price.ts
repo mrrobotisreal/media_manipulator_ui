@@ -1,13 +1,47 @@
-// The one place a price numeral becomes display text (MM40, design PRO_TIER.md §7).
+// The one place a price numeral becomes display text (MM40, made currency-aware by MM69;
+// design PRO_TIER.md §7).
 //
-// Every price on /pricing, the Billing panel, the plan summary and the confirm dialogs goes
-// through displayPrice, so MM69 can swap it for formatPrice(amount, currency, locale) without
-// touching a component. The numerals themselves always come from /api/tiers or
-// /api/billing/status; this module never knows a price.
+// Every price on /pricing, the Billing panel, the plan summary, the interstitials, the auth
+// modal and the confirm dialogs goes through formatPrice. The numerals always come from
+// /api/tiers or /api/billing/status; this module never knows a price. USD and EUR carry the
+// SAME numerals (no FX conversion anywhere) and are never added together.
 
-/** A served price numeral as display text, e.g. 8 -> "$8". Today every price is USD. */
-export function displayPrice(amount: number): string {
-  return `$${amount}`;
+import type { BillingCurrency, TiersResponse } from '@/lib/auth/accountApi';
+
+const formatters = new Map<string, Intl.NumberFormat>();
+
+/**
+ * A served numeral as a localized currency string through Intl (e.g. 8 -> "$8" or "€8" in
+ * en-US, "8 €" in de-DE). Whole numbers drop the fraction; a non-integer (a legacy $7.50)
+ * keeps two digits. An unsupported locale falls back to en-US.
+ */
+export function formatPrice(amount: number, currency: BillingCurrency, locale = 'en-US'): string {
+  const fraction = Number.isInteger(amount) ? 0 : 2;
+  const key = `${locale}|${currency}|${fraction}`;
+  let f = formatters.get(key);
+  if (!f) {
+    const options: Intl.NumberFormatOptions = {
+      style: 'currency',
+      currency: currency.toUpperCase(),
+      minimumFractionDigits: fraction,
+      maximumFractionDigits: fraction,
+    };
+    try {
+      f = new Intl.NumberFormat(locale, options);
+    } catch {
+      f = new Intl.NumberFormat('en-US', options);
+    }
+    formatters.set(key, f);
+  }
+  return f.format(amount);
+}
+
+/**
+ * MM40's helper, kept for callers that have no currency in scope: a USD price in en-US.
+ * New code calls formatPrice.
+ */
+export function displayPrice(amount: number, currency: BillingCurrency = 'usd', locale = 'en-US'): string {
+  return formatPrice(amount, currency, locale);
 }
 
 /**
@@ -19,12 +53,27 @@ export function yearlyMonthsFree(monthly: number | undefined, yearly: number | u
   return Math.max(0, Math.round(12 - yearly / monthly));
 }
 
-/** The served monthly and yearly numerals for a plan (legacy `*USD` fields; MM69 adds currency). */
+type PriceSource = Pick<
+  TiersResponse,
+  'prices' | 'premiumPriceUSD' | 'premiumPriceYearlyUSD' | 'proPriceUSD' | 'proPriceYearlyUSD'
+>;
+
+/**
+ * A plan's served monthly and yearly numerals in a currency: `prices[currency]` (MM69), else
+ * the legacy `*USD` fields an older API sends (same numerals, so they serve EUR as well).
+ */
 export function planPrices(
-  tiers: { premiumPriceUSD?: number; premiumPriceYearlyUSD?: number; proPriceUSD?: number; proPriceYearlyUSD?: number } | undefined | null,
+  tiers: Partial<PriceSource> | undefined | null,
   plan: 'premium' | 'pro',
+  currency: BillingCurrency = 'usd',
 ): { monthly: number | undefined; yearly: number | undefined } {
   if (!tiers) return { monthly: undefined, yearly: undefined };
+  const served = tiers.prices?.[currency] ?? tiers.prices?.usd;
+  if (served) {
+    return plan === 'pro'
+      ? { monthly: served.proMonthly, yearly: served.proYearly }
+      : { monthly: served.premiumMonthly, yearly: served.premiumYearly };
+  }
   return plan === 'pro'
     ? { monthly: tiers.proPriceUSD, yearly: tiers.proPriceYearlyUSD }
     : { monthly: tiers.premiumPriceUSD, yearly: tiers.premiumPriceYearlyUSD };

@@ -53,7 +53,7 @@
     "plans": {
       "freeTitle": "What a free account gives you",
       "premiumTitle": "Premium",
-      "premiumPrice": "${{price}}/mo",
+      "premiumPrice": "{{price}}/mo",
       "premiumUpgrade": "Upgrade to Premium",
       "comparePlans": "Compare all plans",
       "opsPerDay": "{{count}} operations a day",
@@ -403,10 +403,15 @@
     "yearly": "Yearly",
     "perMonth": "/mo",
     "perYear": "/yr",
+    "currency": {
+      "label": "Currency",
+      "panelLabel": "Currency",
+      "lockedNote": "Your subscription is billed in {{currency}}. This cannot change while it is active."
+    },
     "yearlyBonus": "{{months}} months free",
     "cancelAnytime": "Cancel any time",
     "refund": "14-day refund on your first payment",
-    "taxNote": "Prices in USD",
+    "taxNote": "No tax is added on top",
     "upgrade": "Upgrade to Premium",
     "manage": "Manage subscription",
     "operator": "Unlimited (operator)",
@@ -418,7 +423,8 @@
       "unavailable": "Premium is not available yet.",
       "operator": "Operator accounts already have unlimited access.",
       "generic": "Could not start checkout. Please try again in a moment.",
-      "alreadyOnPlan": "You already have this plan or a higher one."
+      "alreadyOnPlan": "You already have this plan or a higher one.",
+      "currencyLocked": "Your billing account is set to {{currency}}, so prices are now shown in {{currency}}. Choose your plan again to continue."
     },
     "panel": {
       "title": "Billing",
@@ -481,22 +487,22 @@
       }
     },
     "offer": {
-      "title": "Changed your mind? Keep Premium for ${{price}}/month",
+      "title": "Changed your mind? Keep Premium for {{price}}/month",
       "resumeTitle": "Changed your mind? Keep Premium at your current price",
-      "fineprint": "Nothing is charged today. From {{date}} you pay ${{price}}/month instead of ${{current}}/month, every month until you cancel.",
-      "cta": "Keep Premium for ${{price}}/month",
-      "resumeCta": "Keep Premium at ${{price}}{{unit}}",
-      "keepAtCurrent": "Keep Premium at ${{price}}/month",
+      "fineprint": "Nothing is charged today. From {{date}} you pay {{price}}/month instead of {{current}}/month, every month until you cancel.",
+      "cta": "Keep Premium for {{price}}/month",
+      "resumeCta": "Keep Premium at {{price}}{{unit}}",
+      "keepAtCurrent": "Keep Premium at {{price}}/month",
       "keepAtCurrentNoPrice": "Keep Premium at the regular price",
       "working": "Working…",
-      "renewed": "Premium will renew on {{date}} at ${{price}}/month",
+      "renewed": "Premium will renew on {{date}} at {{price}}/month",
       "renewedNoPrice": "Premium will renew on {{date}}",
       "renewedBare": "Premium will keep renewing",
       "changed": "The offer changed, here's the current one.",
       "failed": "Could not update your subscription. Please try again.",
-      "resumePrice": "You pay ${{price}}{{unit}} today, and that is what you keep paying.",
+      "resumePrice": "You pay {{price}}{{unit}} today, and that is what you keep paying.",
       "resumeCtaNoPrice": "Keep Premium",
-      "fineprintNoCurrent": "Nothing is charged today. From {{date}} you pay ${{price}}/month, every month until you cancel.",
+      "fineprintNoCurrent": "Nothing is charged today. From {{date}} you pay {{price}}/month, every month until you cancel.",
       "resumeFineprint": "Nothing is charged today. Your next payment is on {{date}}, at the same price, and it renews as usual until you cancel.",
       "unitMonth": "/month",
       "unitYear": "/year"
