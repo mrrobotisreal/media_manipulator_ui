@@ -1,7 +1,9 @@
 /**
- * Module worker for GIF encoding (ticket MM47 decision 2: "encoder runs in a
+ * Worker entry for GIF encoding (ticket MM47 decision 2: "encoder runs in a
  * Worker"). Quantisation, indexing and LZW all happen here; the main thread
- * only rasterises and posts RGBA frames (transferred, not copied).
+ * only rasterises and posts RGBA frames (transferred, not copied). Not loaded
+ * directly: `scripts/gen-gif-worker.mjs` bundles it into
+ * `gifWorker.generated.ts`, which `gif.ts` starts from a Blob URL.
  */
 import { createGifSession, type GifRequest } from './gifSession';
 

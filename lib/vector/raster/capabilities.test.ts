@@ -17,7 +17,7 @@ describe('probeRaster (fakes)', () => {
     expect(p).toEqual({ gif: true, png: true, webcodecs: false, h264: false, vp9: false, av1: false, offscreen: true, secureContext: true });
   });
 
-  it('H.264 unsupported but VP9 supported → MP4 falls back to AV1 or is disabled, WebM enabled', async () => {
+  it('H.264 unsupported but VP9 supported → MP4 disabled, WebM enabled', async () => {
     const g: RasterGlobals = { isSecureContext: true, VideoEncoder: encoder((c) => c.startsWith('vp09')) };
     const p = await probeRaster(g);
     expect(p).toMatchObject({ webcodecs: true, h264: false, vp9: true, av1: false });

@@ -12,6 +12,7 @@ import { TOOL_IDS } from './tools/types';
 import { NATIVE_FLUTTER_REASONS } from './export/dart';
 import { CODE_FORMATS } from './export/formats';
 import { LOTTIE_UNSUPPORTED } from './export/lottieSupport';
+import { RASTER_FORMATS } from './raster/caps';
 
 const ROOT = join(__dirname, '..', '..');
 const files = (dir: string): string[] =>
@@ -40,6 +41,14 @@ describe('vector i18n keys', () => {
 
   it.each(Array.from(new Set(literal)).map((k) => [k]))('%s exists in en-US panels.json', (key) => {
     expect(has(key)).toBe(true);
+  });
+
+  it('covers the MM47 raster keys', () => {
+    for (const f of RASTER_FORMATS) for (const k of ['title', 'hint']) expect(has(`vector.raster.formats.${f}.${k}`), f).toBe(true);
+    for (const b of ['locked', 'notOnAnyPlan', 'useChromium', 'noCodec']) expect(has(`vector.raster.block.${b}`), b).toBe(true);
+    for (const a of ['height', 'fps', 'duration']) expect(has(`vector.raster.clamped.${a}`), a).toBe(true);
+    for (const r of ['tooLarge', 'codec', 'unsafe', 'error']) expect(has(`vector.raster.failed.${r}`), r).toBe(true);
+    expect(has('vector.raster.gif.plays')).toBe(true);
   });
 
   it('covers the dynamic keys', () => {

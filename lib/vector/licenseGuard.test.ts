@@ -50,6 +50,33 @@ describe('licences data (content/licenses.ts)', () => {
     expect(text).toContain(anime.copyright);
   });
 
+  it('MM47: mediabunny is listed MPL-2.0, unmodified, with the package copyright and Exhibit A notice', () => {
+    const mb = LICENSES.find((l) => l.name === 'mediabunny')!;
+    expect(mb).toMatchObject({ license: 'MPL-2.0', modified: false, embeddedInExports: false });
+    const own = JSON.parse(readFileSync(join(ROOT, 'node_modules', 'mediabunny', 'package.json'), 'utf8'));
+    expect(own.license).toBe('MPL-2.0');
+    expect(own.version).toBe(pkg.dependencies.mediabunny);
+    const license = readFileSync(join(ROOT, 'node_modules', 'mediabunny', 'LICENSE'), 'utf8').replace(/\s+/g, ' ');
+    expect(license).toContain('Mozilla Public License Version 2.0');
+    expect(license).toContain(mb.notice!);
+    const header = readFileSync(join(ROOT, 'node_modules', 'mediabunny', 'dist', 'modules', 'src', 'index.js'), 'utf8');
+    expect(header).toContain(mb.copyright);
+  });
+
+  it('MM47: fflate is listed with the copyright from its LICENSE', () => {
+    const f = LICENSES.find((l) => l.name === 'fflate')!;
+    expect(readFileSync(join(ROOT, 'node_modules', 'fflate', 'LICENSE'), 'utf8')).toContain(f.copyright);
+  });
+
+  it('MM47: every exact pin in content/licenses.ts is also exact in package.json (no ranges)', () => {
+    for (const l of LICENSES) expect(pkg.dependencies[l.name], l.name).toMatch(/^\d+\.\d+\.\d+$/);
+  });
+
+  it('MM47: no third-party GIF encoder (the in-house encoder replaces gifenc / modern-gif)', () => {
+    expect(Object.keys(pkg.dependencies)).not.toContain('gifenc');
+    expect(Object.keys(pkg.dependencies)).not.toContain('modern-gif');
+  });
+
   it('the pinned animejs is exact and MIT in its own package.json', () => {
     const own = JSON.parse(readFileSync(join(ROOT, 'node_modules', 'animejs', 'package.json'), 'utf8'));
     expect(own.license).toBe('MIT');

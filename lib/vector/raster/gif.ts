@@ -2,7 +2,7 @@
  * GIF export (ticket MM47 decision 2).
  *
  * Frames come from the frame renderer (`frames.ts`) one at a time; the RGBA
- * pixels are TRANSFERRED to a module Worker (`gif.worker.ts`) that builds one
+ * pixels are TRANSFERRED to a Worker (`gif.worker.ts`, pre-bundled) that builds one
  * global palette, indexes and LZW-compresses each frame with the in-house
  * encoder (`gifEncoder.ts`). At most one frame is in flight while the next
  * one renders, so memory stays at a couple of frames plus the growing file.
@@ -22,6 +22,7 @@ import { DEFAULT_BACKGROUND, docLoops } from '@/lib/vector/vectorTypes';
 
 import { createFrameRenderer, frameCount, frameTime } from './frames';
 import { createGifSession, type GifReply, type GifRequest } from './gifSession';
+import { GIF_WORKER_SOURCE } from './gifWorker.generated';
 import { RasterAbortError, checkBytes, throwIfAborted, yieldToEventLoop, type RasterJob } from './pipeline';
 
 /** Frames sampled for the global palette. */
@@ -48,11 +49,17 @@ export function inProcessGifPort(): GifPort {
   };
 }
 
-/** The module-worker port; falls back to in-process when workers are unavailable. */
+/**
+ * The Worker port: the pre-bundled worker (`gifWorker.generated.ts`, see
+ * `scripts/gen-gif-worker.mjs`) started from a Blob URL. Falls back to
+ * in-process when Workers or Blob URLs are unavailable.
+ */
 export function workerGifPort(): GifPort {
   let worker: Worker;
+  let url: string;
   try {
-    worker = new Worker(new URL('./gif.worker.ts', import.meta.url), { type: 'module', name: 'motion-gif' });
+    url = URL.createObjectURL(new Blob([GIF_WORKER_SOURCE], { type: 'text/javascript' }));
+    worker = new Worker(url, { name: 'motion-gif' });
   } catch {
     return inProcessGifPort();
   }
@@ -73,6 +80,7 @@ export function workerGifPort(): GifPort {
     },
     terminate() {
       worker.terminate();
+      URL.revokeObjectURL(url);
       failAll(new RasterAbortError());
     },
   };

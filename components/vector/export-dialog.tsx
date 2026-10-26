@@ -2,6 +2,13 @@
 
 import * as React from 'react';
 import { Download, Loader2 } from 'lucide-react';
+import type { RasterProbe } from '@/lib/vector/raster/capabilities';
+import { RASTER_FORMATS, clampRasterOptions, isVideoFormat, outputSize, type RasterFormat, type RasterOptions } from '@/lib/vector/raster/caps';
+import { loadRasterPlan, type RasterPlan } from '@/lib/vector/raster/plan';
+import type { RasterProgress } from '@/lib/vector/raster/pipeline';
+import type { RasterRuntime } from '@/lib/vector/raster/run';
+import { svgFileName as baseFileName } from '@/lib/vector/exportSvg';
+import { RasterBlockNote, RasterProgressBar, RasterSettings, defaultProbe, defaultRasterOptions, rasterBlock, useRasterProbe, type GifSettings } from './raster-export';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -39,7 +46,17 @@ import { cn } from '@/lib/utils';
  *     MM49). After the download the dialog lists what did not carry over
  *     (Lottie warnings, raw layers left out of React) and what was emitted
  *     (runtime and reasons; Flutter: native or WebView, and why).
- *   - GIF and video are listed disabled, "Coming soon" (MM47).
+ *   - MM47: GIF, PNG sequence, MP4 and WebM, rendered and encoded in the
+ *     browser (`lib/vector/raster/*`). Counted as the MM43 formats `gif`,
+ *     `png_sequence`, `mp4`, `webm` with the export's real duration, height
+ *     and fps. Before counting, the options are clamped to the caller's caps
+ *     (`/api/account/usage` limits, the same row `/api/tiers` lists), a
+ *     format the tier lacks is shown locked, and one NO public tier offers
+ *     yet (MP4/WebM/PNG sequence until MM49) says so instead of calling. Video
+ *     needs WebCodecs: without it the options say "Use Chrome or Edge for
+ *     video export". The exporters load with a dynamic import on Export, run
+ *     with a progress bar and Cancel (AbortController; the GIF worker is
+ *     terminated, the video encoder closed). A cancelled export stays counted.
  *
  * MM45: animated SVG picks its runtime with `chooseRuntime`: CSS when every
  * feature is CSS in every major engine, else the inline MIT anime.js script
@@ -68,20 +85,47 @@ export interface ExportDialogProps {
   signedIn: boolean;
   count?: (req: VectorExportRequest) => Promise<VectorExportResult>;
   save?: (blob: Blob, fileName: string) => void;
+  /** MM47 seams: the caller's plan, the codec probe and the raster exporters (lazy-loaded by default). */
+  plan?: (signal: AbortSignal) => Promise<RasterPlan | null>;
+  probe?: () => Promise<RasterProbe>;
+  raster?: () => Promise<RasterRuntime>;
 }
 
-type Format = 'svg_animated' | 'svg_static' | CodeFormat;
-const COMING_SOON = ['gif', 'mp4'] as const;
+const loadRasterRuntime = () => import('@/lib/vector/raster/run').then((m) => m.createRasterRuntime());
+
+const RASTER_EXT: Record<RasterFormat, string> = { gif: 'gif', png_sequence: 'zip', mp4: 'mp4', webm: 'webm' };
+/** `<name>.<ext>` (PNG sequence: `<name>-frames.zip`), filesystem-safe like the SVG name. */
+export const rasterFileName = (name: string | undefined, f: RasterFormat) => baseFileName(name).replace(/\.svg$/, f === 'png_sequence' ? '-frames.zip' : `.${RASTER_EXT[f]}`);
+
+type Format = 'svg_animated' | 'svg_static' | CodeFormat | RasterFormat;
 const isCode = (f: Format): f is CodeFormat => (CODE_FORMATS as readonly string[]).includes(f);
+const isRaster = (f: Format): f is RasterFormat => (RASTER_FORMATS as readonly string[]).includes(f);
 
 type Status =
   | { kind: 'idle' }
   | { kind: 'counting' }
   | { kind: 'done'; remaining: number | null; result?: FormatExport }
   | { kind: 'refused'; refusal: VectorExportRefusal }
-  | { kind: 'invalid' };
+  | { kind: 'invalid' }
+  /** MM47: a raster export is rendering / encoding. */
+  | { kind: 'rendering'; progress: RasterProgress | null }
+  | { kind: 'cancelled' }
+  | { kind: 'rasterFailed'; reason: 'tooLarge' | 'codec' | 'unsafe' | 'error' };
 
-export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, signedIn, count = countVectorExport, save = saveBlobToDisk }: ExportDialogProps) {
+export function ExportDialog({
+  open,
+  onOpenChange,
+  doc,
+  name,
+  time,
+  projectId,
+  signedIn,
+  count = countVectorExport,
+  save = saveBlobToDisk,
+  plan: loadPlan = loadRasterPlan,
+  probe = defaultProbe,
+  raster = loadRasterRuntime,
+}: ExportDialogProps) {
   const { t } = useLocalization('interface');
   const countedHidden = isIrreversibleActionHidden();
   const [format, setFormat] = React.useState<Format>(countedHidden ? 'svg_static' : 'svg_animated');
@@ -98,6 +142,98 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
     for (const f of CODE_FORMATS) out[f] = formatProblem(doc, f, forceAnime) === null;
     return out;
   }, [doc, forceAnime]);
+
+  // MM47 raster state. The plan and the probe are reads (never counted); a
+  // translator deployment never loads them (raster formats are hidden there).
+  const [plan, setPlan] = React.useState<RasterPlan | null>(null);
+  React.useEffect(() => {
+    if (countedHidden) return;
+    const ctl = new AbortController();
+    loadPlan(ctl.signal).then((p) => !ctl.signal.aborted && setPlan(p), () => {});
+    return () => ctl.abort();
+  }, [countedHidden, loadPlan]);
+  const rasterProbe = useRasterProbe(countedHidden ? neverProbe : probe);
+  const [rasterOptions, setRasterOptions] = React.useState<RasterOptions>(() => defaultRasterOptions('gif', doc));
+  const [gif, setGif] = React.useState<GifSettings>({ transparent: true, dither: false, plays: doc.loop === false ? 1 : 0 });
+  const abortRef = React.useRef<AbortController | null>(null);
+  React.useEffect(() => () => abortRef.current?.abort(), []);
+
+  const pickFormat = (f: Format) => {
+    setFormat(f);
+    if (isRaster(f)) setRasterOptions((o) => ({ ...o, format: f }));
+  };
+
+  const exportRaster = async (f: RasterFormat) => {
+    const clamp = clampRasterOptions({ ...rasterOptions, format: f }, plan?.caps ?? null, doc.duration);
+    if (!clamp.available || rasterBlock(f, plan, rasterProbe)) return;
+    const o = clamp.options;
+    const size = outputSize(doc.canvas, o.height, isVideoFormat(f));
+    const ctl = new AbortController();
+    abortRef.current = ctl;
+    setStatus({ kind: 'rendering', progress: null });
+    let runtime: RasterRuntime;
+    try {
+      runtime = await raster();
+    } catch {
+      setStatus({ kind: 'rasterFailed', reason: 'error' });
+      return;
+    }
+    // Before spending the export: the document must be rasterisable and the
+    // browser must encode this exact size and rate.
+    if (runtime.check(doc).length > 0) {
+      setStatus({ kind: 'rasterFailed', reason: 'unsafe' });
+      return;
+    }
+    if (!(await runtime.canEncode(f, size, o.fps))) {
+      setStatus({ kind: 'rasterFailed', reason: 'codec' });
+      return;
+    }
+    if (ctl.signal.aborted) {
+      setStatus({ kind: 'cancelled' });
+      return;
+    }
+    setStatus({ kind: 'counting' });
+    const result = await count({
+      ...(projectId ? { projectId } : {}),
+      format: f,
+      durationMs: o.endMs - o.startMs,
+      height: size.height,
+      fps: o.fps,
+    });
+    if (!result.ok) {
+      setStatus({ kind: 'refused', refusal: result.refusal });
+      return;
+    }
+    // Only now: the unit is spent server-side (a cancel from here on is not refunded).
+    setStatus({ kind: 'rendering', progress: null });
+    try {
+      const out = await runtime.run({
+        doc,
+        format: f,
+        size,
+        fps: o.fps,
+        startMs: o.startMs,
+        endMs: o.endMs,
+        gif,
+        signal: ctl.signal,
+        onProgress: (progress) => !ctl.signal.aborted && setStatus({ kind: 'rendering', progress }),
+      });
+      if (ctl.signal.aborted) throw new DOMException('cancelled', 'AbortError');
+      save(out.blob, rasterFileName(name, f));
+      setStatus({ kind: 'done', remaining: result.granted.remaining });
+    } catch (e) {
+      const errName = e instanceof Error ? e.name : '';
+      setStatus(
+        ctl.signal.aborted || errName === 'AbortError'
+          ? { kind: 'cancelled' }
+          : { kind: 'rasterFailed', reason: errName === 'RasterTooLargeError' ? 'tooLarge' : errName === 'VideoUnsupportedError' ? 'codec' : 'error' },
+      );
+    } finally {
+      if (abortRef.current === ctl) abortRef.current = null;
+    }
+  };
+
+  const cancelRaster = () => abortRef.current?.abort();
 
   const exportStatic = () => {
     const svg = serializeSvg(sampleDoc(doc, time));
@@ -151,9 +287,11 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
     setStatus({ kind: 'done', remaining: result.granted.remaining, result: out });
   };
 
-  const run = () => (format === 'svg_static' ? exportStatic() : format === 'svg_animated' ? void exportAnimated() : void exportCode(format));
-  const busy = status.kind === 'counting';
-  const runDisabled = busy || (format === 'svg_animated' && !animatedOk) || (isCode(format) && !codeOk[format]);
+  const run = () =>
+    format === 'svg_static' ? exportStatic() : format === 'svg_animated' ? void exportAnimated() : isRaster(format) ? void exportRaster(format) : void exportCode(format);
+  const busy = status.kind === 'counting' || status.kind === 'rendering';
+  const rasterBlocked = isRaster(format) && rasterBlock(format, plan, rasterProbe) !== null;
+  const runDisabled = busy || (format === 'svg_animated' && !animatedOk) || (isCode(format) && !codeOk[format]) || rasterBlocked;
 
   const option = (id: Format, title: string, hint: string, extra?: React.ReactNode) => (
     <label
@@ -163,7 +301,7 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
         format === id && 'border-edge-strong bg-surface-2',
       )}
     >
-      <input type="radio" name="vector-export-format" value={id} checked={format === id} onChange={() => setFormat(id)} className="mt-1" />
+      <input type="radio" name="vector-export-format" value={id} checked={format === id} onChange={() => pickFormat(id)} className="mt-1" disabled={busy} />
       <span className="min-w-0">
         <span className="block text-sm font-medium">{title}</span>
         <span className="block text-xs text-muted-foreground">{hint}</span>
@@ -174,7 +312,7 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
 
   return (
     <Dialog open={open} onOpenChange={(o) => !busy && onOpenChange(o)}>
-      <DialogContent className="sm:max-w-lg" data-testid="vector-export-dialog">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg" data-testid="vector-export-dialog">
         <DialogHeader>
           <DialogTitle>
             {t('vector.exportDialog.title')}{' '}
@@ -213,14 +351,20 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
                 ),
               ),
             )}
-          <ul className="space-y-1 pt-1" aria-label={t('vector.exportDialog.comingSoon')}>
-            {COMING_SOON.map((f) => (
-              <li key={f} className="flex items-center justify-between rounded-md border border-dashed border-edge px-3 py-2 text-xs text-text-subtle">
-                <span>{t(`vector.exportDialog.formats_${f}`)}</span>
-                <span className="uppercase tracking-wider">{t('vector.exportDialog.comingSoon')}</span>
-              </li>
-            ))}
-          </ul>
+          {!countedHidden &&
+            RASTER_FORMATS.map((f) => {
+              const block = rasterBlock(f, plan, rasterProbe);
+              return option(
+                f,
+                t(`vector.raster.formats.${f}.title`),
+                t(`vector.raster.formats.${f}.hint`),
+                block ? (
+                  <RasterBlockNote block={block} />
+                ) : format === f ? (
+                  <RasterSettings doc={doc} options={rasterOptions} onOptions={setRasterOptions} plan={plan} gif={gif} onGif={setGif} disabled={busy} />
+                ) : undefined,
+              );
+            })}
         </div>
 
         <div role="status" aria-live="polite" className="min-h-5 text-sm" data-testid="vector-export-status">
@@ -236,6 +380,9 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
           {status.kind === 'done' && status.result && <ExportReport doc={doc} result={status.result} />}
           {status.kind === 'invalid' && <span className="text-destructive">{t('vector.exportDialog.unsupported')}</span>}
           {status.kind === 'refused' && <RefusalMessage refusal={status.refusal} />}
+          {status.kind === 'rendering' && <RasterProgressBar progress={status.progress} onCancel={cancelRaster} />}
+          {status.kind === 'cancelled' && <span className="text-muted-foreground">{t('vector.raster.cancelled')}</span>}
+          {status.kind === 'rasterFailed' && <span className="text-destructive">{t(`vector.raster.failed.${status.reason}`)}</span>}
         </div>
 
         <div className="flex justify-end gap-2">
@@ -251,6 +398,8 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
     </Dialog>
   );
 }
+
+const neverProbe = () => new Promise<RasterProbe>(() => {});
 
 /** The documented Lottie unsupported list (decision 1: rendered in the dialog), collapsed. */
 function LottieSupportNote() {
@@ -369,7 +518,11 @@ function RefusalMessage({ refusal }: { refusal: VectorExportRefusal }) {
       case 'cap':
         return refusal.cap === 'duration'
           ? t('vector.exportDialog.capDuration', { seconds: Math.round(refusal.max / 100) / 10 })
-          : t('vector.exportDialog.capOther');
+          : refusal.cap === 'height'
+            ? t('vector.raster.capHeight', { max: refusal.max })
+            : refusal.cap === 'fps'
+              ? t('vector.raster.capFps', { max: refusal.max })
+              : t('vector.exportDialog.capOther');
       case 'unavailable':
         return t('vector.exportDialog.unavailable');
     }
