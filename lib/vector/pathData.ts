@@ -378,7 +378,7 @@ function quadAt(p0: number, p1: number, p2: number, t: number): number {
   return u * u * p0 + 2 * u * t * p1 + t * t * p2;
 }
 
-interface ArcCenter {
+export interface ArcCenter {
   cx: number;
   cy: number;
   rx: number;
@@ -389,7 +389,7 @@ interface ArcCenter {
 }
 
 /** SVG spec F.6.5 endpoint → center parameterisation (with F.6.6 radii scaling). */
-function arcToCenter(
+export function arcToCenter(
   x1: number,
   y1: number,
   seg: Extract<PathSegment, { cmd: 'A' }>,

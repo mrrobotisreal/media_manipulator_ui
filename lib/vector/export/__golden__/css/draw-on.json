@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "canvas": { "width": 200, "height": 120 },
+  "duration": 1500,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "path",
+      "id": "signature",
+      "d": "M10 90C40 10 65 10 95 90C125 170 150 170 180 90",
+      "fill": "none",
+      "stroke": "#f97316",
+      "strokeWidth": 4,
+      "strokeLinecap": "round",
+      "strokeDasharray": [306.752],
+      "strokeDashoffset": 306.752
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "signature",
+      "property": "strokeDashoffset",
+      "keyframes": [
+        { "t": 0, "value": 306.752, "easing": "easeOut" },
+        { "t": 1200, "value": 0, "easing": "linear" }
+      ]
+    }
+  ]
+}

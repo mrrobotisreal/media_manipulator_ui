@@ -806,7 +806,13 @@
       "opacity": "Opacity",
       "fill": "Fill",
       "stroke": "Stroke",
-      "strokeWidth": "Stroke width"
+      "strokeWidth": "Stroke width",
+      "strokeDashoffset": "Draw on (dash offset)",
+      "d": "Shape (morph)",
+      "motionPath": "Motion path",
+      "stopColor": "Gradient stop {{n}} colour",
+      "stopOffset": "Gradient stop {{n}} position",
+      "blur": "Blur"
     },
     "timeline": {
       "title": "Timeline",
@@ -836,7 +842,9 @@
       "addKeyHere": "Add a {{property}} keyframe at the playhead",
       "removeKeyHere": "Remove the {{property}} keyframe at the playhead",
       "key": "{{property}} keyframe at {{time}}",
-      "layerKey": "{{layer}} keyframes at {{time}}"
+      "layerKey": "{{layer}} keyframes at {{time}}",
+      "maskContent": "Mask: {{layer}}",
+      "clipContent": "Clip: {{layer}}"
     },
     "easing": {
       "title": "Easing",
@@ -857,8 +865,8 @@
       "title": "Export",
       "description": "Exports are made in your browser. Animated exports count toward your daily allowance; static SVG is always free.",
       "formats": "Export format",
-      "animated": "Animated SVG (CSS)",
-      "animatedHint": "One SVG file with its animation in CSS. No script; plays in every modern browser.",
+      "animated": "Animated SVG",
+      "animatedHint": "One SVG file with its animation. Pure CSS when possible, otherwise a small inline script.",
       "static": "Static SVG",
       "staticHint": "The frame at the playhead, without animation. Free, never counted.",
       "comingSoon": "Coming soon",
@@ -868,7 +876,7 @@
       "formats_gif": "GIF",
       "formats_mp4": "MP4 and WebM video",
       "export": "Export",
-      "unsupported": "This animation uses effects that animated SVG (CSS) cannot export yet.",
+      "unsupported": "This animation uses effects that animated SVG cannot export yet.",
       "doneStatic": "Static SVG downloaded.",
       "done_one": "Downloaded. {{count}} animated export left today.",
       "done_other": "Downloaded. {{count}} animated exports left today.",
@@ -879,7 +887,18 @@
       "capDuration": "Your plan exports animations up to {{seconds}} s long. Shorten the animation or upgrade.",
       "capOther": "This export is larger than your plan allows.",
       "unavailable": "Exports are unavailable right now. Nothing was counted; try again in a moment.",
-      "upgrade": "See plans"
+      "upgrade": "See plans",
+      "runtimeCss": "Pure CSS, no script.",
+      "runtimeAnimeBecause": "Uses a {{size}} KB script (anime.js, MIT) because: {{reasons}}.",
+      "runtimeAnimeChosen": "Uses a {{size}} KB script (anime.js, MIT).",
+      "scriptImgNote": "Scripts run when the SVG is opened directly or placed inline in a page, not inside an <img> tag (that shows the first frame).",
+      "forceAnime": "Use the script runtime",
+      "reasons": {
+        "morph": "shape morph",
+        "stopOffset": "gradient stop position",
+        "blur": "blur (Safari)",
+        "motionRotate": "path rotation with a rotation track"
+      }
     },
     "projects": {
       "save": "Save",
@@ -916,6 +935,31 @@
         "reloadConfirm": "Reload theirs",
         "reloadFailed": "The saved copy could not be loaded. Try again."
       }
+    },
+    "animators": {
+      "title": "Animate",
+      "selectOne": "Select one layer to animate it.",
+      "drawOn": "Draw on",
+      "drawOnHint": "Draw the stroke from start to end (stroke dash offset).",
+      "motionPath": "Motion path",
+      "motionPathHint": "Move the layer along a path. Pick a path or draw one with the pen.",
+      "morph": "Morph",
+      "morphHint": "Morph this path into another shape. Pick the target shape.",
+      "gradient": "Gradient",
+      "gradientHint": "Animate the colours of this layer's gradient (one track per stop).",
+      "maskClip": "Mask/Clip",
+      "maskClipHint": "Animate the layer's mask or clip shape with its own tracks.",
+      "blur": "Blur",
+      "blurHint": "Blur the layer in over time.",
+      "blurAmount": "Blur amount",
+      "pickGuide": "Move along which path?",
+      "pickTarget": "Morph into which shape?",
+      "noShapes": "No other shapes yet.",
+      "drawWithPen": "Draw a new one with the pen",
+      "autoOrient": "Rotate with the path",
+      "spanHint": "Animators run from the playhead to the end. Adjust their keyframes in the timeline.",
+      "notApplied": "That animator does not apply to this layer.",
+      "morphFailed": "These two shapes cannot be morphed."
     }
   }
 }

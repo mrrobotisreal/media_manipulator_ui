@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 240,
+    "height": 160
+  },
+  "duration": 2000,
+  "fps": 24,
+  "loop": false,
+  "layers": [
+    {
+      "type": "path",
+      "id": "track",
+      "d": "M20 140C60 20 180 20 220 140",
+      "fill": "none",
+      "stroke": "#334155",
+      "strokeWidth": 2
+    },
+    {
+      "type": "rect",
+      "id": "car",
+      "x": 0,
+      "y": 0,
+      "width": 20,
+      "height": 10,
+      "fill": "#22c55e",
+      "transform": {
+        "x": -10,
+        "y": -5,
+        "scaleX": 1,
+        "scaleY": 1,
+        "rotation": 0,
+        "skewX": 0,
+        "skewY": 0,
+        "anchorX": 10,
+        "anchorY": 5
+      }
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "car",
+      "property": "motionPath",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "easeBoth"
+        },
+        {
+          "t": 2000,
+          "value": 1,
+          "easing": "linear"
+        }
+      ],
+      "extras": {
+        "pathId": "track",
+        "autoOrient": true
+      }
+    },
+    {
+      "layerId": "car",
+      "property": "transform.rotation",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": 360,
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

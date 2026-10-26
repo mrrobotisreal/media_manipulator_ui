@@ -113,13 +113,13 @@ describe('sampleDoc (preview render tree)', () => {
     return r.doc as VectorDoc;
   })();
 
-  it('samples nested layers, shares untouched ones and ignores MM45 properties', () => {
+  it('samples nested layers, shares untouched ones and applies MM45 properties (dash offset)', () => {
     const at = sampleDoc(doc, 500);
     const g = at.layers[0] as Extract<VectorDoc['layers'][number], { type: 'group' }>;
     const r = g.children[0] as Extract<VectorDoc['layers'][number], { type: 'rect' }>;
     expect(r.transform?.x).toBe(50);
     expect(r.fill).toBe('#808080');
-    expect(r.strokeDashoffset).toBeUndefined();
+    expect(r.strokeDashoffset).toBe(4.5);
     expect(at.layers[1]).toBe(doc.layers[1]);
     expect(doc.layers[0]).not.toBe(at.layers[0]);
   });

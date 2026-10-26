@@ -24,10 +24,12 @@ import {
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useLocalization } from '@/i18n/useLocalization';
-import { findTrack, keyId, layerKeyTimes, moveKeyframes, removeKeyframes, type KeyRef } from '@/lib/vector/keyframes';
+import { findTrack, keyId, layerKeyTimes, moveKeyframes, removeKeyframes, upsertKeyframe, type KeyRef } from '@/lib/vector/keyframes';
+import { sampleTrack } from '@/lib/vector/sampleTrack';
 import { layerLabel } from '@/lib/vector/layerTree';
 import { formatTimecode, snapToFrame } from '@/lib/vector/playback';
-import { EDITABLE_PROPERTIES, type EditableProperty } from '@/lib/vector/properties';
+import { advancedKind, parseStopProperty } from '@/lib/vector/advanced';
+import { EDITABLE_PROPERTIES, isEditableProperty, isSampledLayerProperty, type EditableProperty } from '@/lib/vector/properties';
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import { docLoops, type Easing, type Layer, type VectorDoc } from '@/lib/vector/vectorTypes';
 import { cn } from '@/lib/utils';
@@ -47,8 +49,23 @@ import { IconButton } from './layer-panel';
  * edit is one undo step through the store's `mutate`.
  */
 
-/** i18n key of a property label: `transform.rotation` → `vector.properties.rotation`. */
-export const propertyKey = (p: string) => `vector.properties.${p.replace(/^transform\./, '')}`;
+/**
+ * i18n key of a property label: `transform.rotation` → `vector.properties.rotation`;
+ * MM45: `gradientStop[2].color` → `vector.properties.stopColor` (the stop
+ * number is passed as `{{n}}`, see `propertyLabel`), `filter.blur` → `blur`.
+ */
+export const propertyKey = (p: string) => {
+  const stop = parseStopProperty(p);
+  if (stop) return stop.field === 'color' ? 'vector.properties.stopColor' : 'vector.properties.stopOffset';
+  if (p === 'filter.blur') return 'vector.properties.blur';
+  return `vector.properties.${p.replace(/^transform\./, '')}`;
+};
+
+/** Label of a property, with the 1-based stop number for gradient stops. */
+export function propertyLabel(t: (k: string, o?: Record<string, unknown>) => string, p: string): string {
+  const stop = parseStopProperty(p);
+  return t(propertyKey(p), stop ? { n: stop.index + 1 } : undefined);
+}
 
 const LABEL_W = 208;
 const ROW_H = 26;
@@ -59,15 +76,28 @@ const TICK_STEPS = [10, 20, 50, 100, 200, 250, 500, 1000, 2000, 5000, 10_000, 30
 interface Row {
   layer: Exclude<Layer, { type: 'raw' }>;
   depth: number;
+  /** MM45: a mask / clip content layer (listed under the layer that uses it). */
+  container?: 'mask' | 'clip';
 }
 
-/** Layer tree, top of the paint order first (like the layer panel), raw layers skipped. */
-export function timelineRows(layers: Layer[], depth = 0): Row[] {
+/**
+ * Layer tree, top of the paint order first (like the layer panel), raw layers
+ * skipped. MM45: when `defs` is given, the content layers of a layer's mask
+ * and clip path follow it one level deeper, so their own tracks (mask / clip
+ * animation, decision 6) show like any other.
+ */
+export function timelineRows(layers: Layer[], depth = 0, defs?: VectorDoc['defs']): Row[] {
   const out: Row[] = [];
   for (const l of [...layers].reverse()) {
     if (l.type === 'raw') continue;
     out.push({ layer: l, depth });
-    if (l.type === 'group') out.push(...timelineRows(l.children, depth + 1));
+    if (defs) {
+      const mask = l.mask ? defs.masks.find((m) => m.id === l.mask) : undefined;
+      if (mask) out.push(...timelineRows(mask.layers, depth + 1).map((r) => ({ ...r, container: 'mask' as const })));
+      const clip = l.clipPath ? defs.clipPaths.find((c) => c.id === l.clipPath) : undefined;
+      if (clip) out.push(...timelineRows(clip.layers, depth + 1).map((r) => ({ ...r, container: 'clip' as const })));
+    }
+    if (l.type === 'group') out.push(...timelineRows(l.children, depth + 1, defs));
   }
   return out;
 }
@@ -75,6 +105,15 @@ export function timelineRows(layers: Layer[], depth = 0): Row[] {
 /** Properties a layer shows when expanded (a line has no fill). */
 export function rowProperties(layer: Layer): EditableProperty[] {
   return EDITABLE_PROPERTIES.filter((p) => !(p === 'fill' && layer.type === 'line'));
+}
+
+/**
+ * MM45: the advanced tracks a layer has (draw-on, morph, motion path,
+ * gradient stops, blur), in document order. They show as rows when the layer
+ * is expanded; they are started from the animator panel, not the stopwatch.
+ */
+export function advancedRows(doc: VectorDoc, layerId: string): string[] {
+  return doc.animations.filter((tr) => tr.layerId === layerId && !isEditableProperty(tr.property) && advancedKind(tr.property) !== 'container').map((tr) => tr.property);
 }
 
 function tickStep(pxPerMs: number): number {
@@ -130,7 +169,7 @@ export function Timeline() {
   if (!doc) return null;
   const pxPerMs = pxPerSec / 1000;
   const width = Math.max(1, doc.duration * pxPerMs);
-  const rows = timelineRows(doc.layers);
+  const rows = timelineRows(doc.layers, 0, doc.defs);
   const step = tickStep(pxPerMs);
   const ticks: number[] = [];
   for (let ms = 0; ms <= doc.duration; ms += step) ticks.push(ms);
@@ -237,13 +276,23 @@ export function Timeline() {
       return next;
     });
 
-  const toggleKeyAt = (layerId: string, property: EditableProperty) => {
+  const toggleKeyAt = (layerId: string, property: string) => {
     const st = s();
     if (!st.doc) return;
     const track = findTrack(st.doc, layerId, property);
     if (track?.keyframes.some((k) => k.t === st.time)) {
       st.mutate('Delete keyframe', (d) => removeKeyframes(d, [{ layerId, property, t: st.time }]));
-    } else st.addKeyframe(layerId, property);
+    } else if (isSampledLayerProperty(property)) st.addKeyframe(layerId, property);
+    else if (track) {
+      // Defs-level / motion tracks: key the sampled value at the playhead.
+      const v = sampleTrack(track, st.time);
+      if (v !== undefined) st.mutate('Add keyframe', (d) => upsertKeyframe(d, layerId, property, st.time, v));
+    }
+  };
+
+  const toggleKeyAtIfMissing = (layerId: string, property: string) => {
+    const doc0 = s().doc;
+    if (doc0 && !findTrack(doc0, layerId, property)?.keyframes.some((k) => k.t === s().time)) toggleKeyAt(layerId, property);
   };
 
   const addKeysForSelection = () => {
@@ -252,7 +301,7 @@ export function Timeline() {
     const props = st.doc.animations.filter((tr) => st.selection.includes(tr.layerId));
     if (props.length === 0) return;
     st.beginGesture('Add keyframe');
-    for (const tr of props) st.addKeyframe(tr.layerId, tr.property as EditableProperty);
+    for (const tr of props) toggleKeyAtIfMissing(tr.layerId, tr.property);
     st.endGesture();
   };
   const canAddKeys = doc.animations.some((tr) => selection.includes(tr.layerId));
@@ -425,7 +474,7 @@ export function Timeline() {
             </p>
           )}
 
-          {rows.map(({ layer, depth }) => {
+          {rows.map(({ layer, depth, container }) => {
             const open = expanded.has(layer.id);
             const isSel = selection.includes(layer.id);
             const times = layerKeyTimes(doc, layer.id);
@@ -446,13 +495,20 @@ export function Timeline() {
                     >
                       {open ? <ChevronDown className="size-3.5" /> : <ChevronRight className="size-3.5" />}
                     </button>
-                    <button
-                      type="button"
-                      onClick={(e) => (e.shiftKey ? s().toggleSelected(layer.id) : s().setSelection([layer.id]))}
-                      className={cn('min-w-0 flex-1 truncate text-start', isSel ? 'text-foreground' : 'text-muted-foreground')}
-                    >
-                      {layerLabel(layer)}
-                    </button>
+                    {container ? (
+                      // Mask / clip content is not on the canvas: not selectable, labelled by its role.
+                      <span className="min-w-0 flex-1 truncate text-start italic text-muted-foreground" data-container={container}>
+                        {t(container === 'mask' ? 'vector.timeline.maskContent' : 'vector.timeline.clipContent', { layer: layerLabel(layer) })}
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={(e) => (e.shiftKey ? s().toggleSelected(layer.id) : s().setSelection([layer.id]))}
+                        className={cn('min-w-0 flex-1 truncate text-start', isSel ? 'text-foreground' : 'text-muted-foreground')}
+                      >
+                        {layerLabel(layer)}
+                      </button>
+                    )}
                     {tracks.length > 0 && <Timer className="size-3 shrink-0 text-data" aria-hidden />}
                   </div>
                   <div className="relative" style={{ width }} onPointerDown={onTrackDown}>
@@ -467,10 +523,11 @@ export function Timeline() {
                   </div>
                 </div>
                 {open &&
-                  rowProperties(layer).map((p) => {
+                  [...rowProperties(layer), ...advancedRows(doc, layer.id)].map((p) => {
                     const track = findTrack(doc, layer.id, p);
                     const keyedNow = !!track?.keyframes.some((k) => k.t === time);
-                    const label = t(propertyKey(p));
+                    const label = propertyLabel(t, p);
+                    const advanced = !isEditableProperty(p);
                     return (
                       <div key={p} data-testid="timeline-property" data-property={p} className="flex border-b border-edge/40" style={{ height: ROW_H }}>
                         <div
@@ -482,7 +539,7 @@ export function Timeline() {
                             aria-pressed={!!track}
                             aria-label={track ? t('vector.timeline.stopAnimating', { property: label }) : t('vector.timeline.animate', { property: label })}
                             title={track ? t('vector.timeline.stopAnimating', { property: label }) : t('vector.timeline.animate', { property: label })}
-                            onClick={() => (track ? s().removeTrack(layer.id, p) : s().addKeyframe(layer.id, p))}
+                            onClick={() => (track ? s().removeTrack(layer.id, p) : !advanced && s().addKeyframe(layer.id, p as EditableProperty))}
                             className={cn('grid size-5 place-items-center rounded-sm hover:bg-surface-2', track ? 'text-data' : 'text-text-subtle')}
                           >
                             <Timer className="size-3" />

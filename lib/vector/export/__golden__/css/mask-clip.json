@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "canvas": { "width": 200, "height": 200 },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    { "type": "rect", "id": "photo", "x": 0, "y": 0, "width": 200, "height": 200, "fill": "#14b8a6", "mask": "spot" },
+    { "type": "rect", "id": "wipe", "x": 0, "y": 0, "width": 200, "height": 200, "fill": "#f43f5e", "clipPath": "reveal" }
+  ],
+  "defs": {
+    "masks": [
+      { "id": "spot", "layers": [{ "type": "ellipse", "id": "spot-light", "cx": 100, "cy": 100, "rx": 40, "ry": 40, "fill": "#ffffff" }] }
+    ],
+    "clipPaths": [
+      { "id": "reveal", "layers": [{ "type": "rect", "id": "reveal-box", "x": 0, "y": 0, "width": 200, "height": 60 }] }
+    ]
+  },
+  "animations": [
+    {
+      "layerId": "spot-light",
+      "property": "opacity",
+      "keyframes": [
+        { "t": 0, "value": 0.2, "easing": "easeBoth" },
+        { "t": 2000, "value": 1, "easing": "linear" }
+      ]
+    },
+    {
+      "layerId": "reveal-box",
+      "property": "transform.x",
+      "keyframes": [
+        { "t": 0, "value": -200, "easing": "easeOut" },
+        { "t": 1500, "value": 0, "easing": "linear" }
+      ]
+    }
+  ]
+}

@@ -43,6 +43,15 @@ One animated property of one layer (`{layerId, property, keyframes, extras}`), w
 **Playhead edit / autokey** (MM44):
 The canvas and inspector show and edit the document at the playhead. Changing an animated property there writes a keyframe at the playhead instead of changing the static layer. With **autokey** on (off by default), changing an un-animated property also starts a track. `mutateAt` / `foldAt` in `lib/vector/vectorStore.ts` (logic in `lib/vector/timeEdit.ts`). Scrubbing, play and the play range are view state and never undo steps.
 
+**Animator** (MM45):
+A one-click action in the animator panel (`components/vector/animator-panel.tsx`, pure ops in `lib/vector/animators.ts`) that creates the tracks for one effect on the selected layer, from the playhead to the end: **Draw on** (`stroke-dasharray` = outline length, `strokeDashoffset` L → 0), **Motion path** (`motionPath` 0 → 1 along a guide path, centre on the path), **Morph** (`d` keys normalised to one command sequence), **Gradient** (`gradientStop[i].color` per stop), **Mask/Clip** (a track on the mask or clip content layer itself) and **Blur** (`filter.blur` stdDeviation). Each is one undo step. `advanced.ts` defines what every advanced track targets.
+
+**Morph normalisation** (MM45):
+Rewriting the `d` keys of one morph track so all have the same command sequence (absolute cubics, same count per subpath, start point and winding aligned; `lib/vector/morph.ts`, in-house, no flubber). Morph keys are stored normalised, so exporters never recompute them; two keys whose sequences differ hold instead of morphing.
+
+**Export runtime** (MM45):
+How an animated SVG export plays: **CSS** (one `<style>`, no script) or **anime** (the tree-shaken MIT anime.js runtime + a small player in one inline `<script>`, licence notice first). `chooseRuntime` (`lib/vector/export/chooseRuntime.ts`) picks CSS only when every feature is CSS in Chromium, Firefox and Safari; `reasons` say why not (morph, stop position, blur, motion-path rotation edge case). Both count as the one server format `svg_animated`. Scripts do not run inside `<img>`.
+
 **Account project / browser-only project** (MM44):
 A Motion project is either browser-only (a `local-…` id; it lives only in the IndexedDB draft, the only kind anonymous users have) or an account project (a server UUID in `vector_projects`, saved with `If-Match` revisions, 409 on a conflict). "Save to account" turns the first into the second and replaces the URL. The draft is kept until a save succeeds.
 

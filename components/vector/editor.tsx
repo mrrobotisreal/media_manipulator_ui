@@ -59,8 +59,10 @@ import { getCurrentIdToken } from '@/lib/firebase';
 import { TOOL_SHORTCUTS, type DrawToolId, type ToolId } from '@/lib/vector/tools/types';
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import { VECTOR_MAX_DOC_BYTES, parseVectorDoc, serializeVectorDoc } from '@/lib/vector/vectorTypes';
+import type { AnimatorId } from '@/lib/vector/animators';
 import { cn } from '@/lib/utils';
 import { VectorCanvas, fitView, zoomAt, type View } from './canvas';
+import { AnimatorPanel } from './animator-panel';
 import { Inspector } from './inspector';
 import { IconButton, LayerPanel } from './layer-panel';
 import { ExportDialog } from './export-dialog';
@@ -76,6 +78,11 @@ export interface MotionEditorProps {
    * emits `vector_tool_used`; MM42 emits nothing.
    */
   onToolUsed?: (tool: DrawToolId) => void;
+  /**
+   * MM45 decision 11: the animator seam. MM49 passes a callback that emits
+   * `vector_animator_used {animator}`; MM45 emits nothing.
+   */
+  onAnimatorUsed?: (animator: AnimatorId) => void;
 }
 
 const TOOLS: Array<{ id: ToolId; icon: React.ComponentType<{ className?: string }> }> = [
@@ -105,7 +112,7 @@ type Phase =
  * The chrome follows the locale's direction (Hebrew/Arabic mirror); the canvas
  * itself stays LTR.
  */
-export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProps) {
+export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: MotionEditorProps) {
   const { t, dir } = useLocalization('interface');
   const localized = useLocalizedHref();
   const doc = useVectorStore((s) => s.doc);
@@ -647,6 +654,9 @@ export default function MotionEditor({ projectId, onToolUsed }: MotionEditorProp
           </div>
           <div className="flex min-h-0 flex-1 flex-col">
             <Inspector />
+          </div>
+          <div className="shrink-0">
+            <AnimatorPanel onAnimatorUsed={onAnimatorUsed} />
           </div>
         </aside>
       </div>

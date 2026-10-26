@@ -19,7 +19,10 @@ import {
   type Matrix,
   type Pt,
 } from '@/lib/vector/geometry';
-import { docIds, findLayer, localToDocMatrix, nextId, updateLayer } from '@/lib/vector/layerTree';
+import { docIds, findLayer, localToDocMatrix, nextId, parentToDocMatrix, updateLayer } from '@/lib/vector/layerTree';
+import { motionPathData } from '@/lib/vector/advanced';
+import { findTrack } from '@/lib/vector/keyframes';
+import { measurePath } from '@/lib/vector/pathLength';
 import { moveHandle, moveNode, parsePath, pathNodes, serializePath, type PathSegment } from '@/lib/vector/pathData';
 import { DRAW_TOOLS, type ToolMachine } from '@/lib/vector/tools';
 import { setText, type TextState } from '@/lib/vector/tools/text';
@@ -512,6 +515,7 @@ export function VectorCanvas({ view, onViewChange, onToolUsed, className }: Canv
           </svg>
           <rect x={vb.x} y={vb.y} width={vb.width} height={vb.height} fill="none" stroke="var(--edge-strong)" strokeWidth={1 / view.zoom} pointerEvents="none" />
         </g>
+        {storedDoc && <MotionGuides doc={storedDoc} selection={selection} toScreen={toScreen} />}
         <Overlay doc={doc} selection={selection} tool={tool} toScreen={toScreen} view={view} />
         {guides.x !== undefined && (
           <line x1={toScreen({ x: guides.x, y: 0 }).x} x2={toScreen({ x: guides.x, y: 0 }).x} y1={0} y2="100%" stroke="var(--accent-data)" strokeDasharray="4 3" pointerEvents="none" />
@@ -584,6 +588,29 @@ function TextEntry({
       className="absolute rounded-sm border border-data bg-surface-1/90 px-1 text-foreground outline-none"
       style={{ left: screen.x, top: screen.y - size * 1.1, fontSize: size, lineHeight: 1.1, minWidth: 120 }}
     />
+  );
+}
+
+/**
+ * MM45: the motion path of each selected layer, dashed, in screen space (the
+ * path is in the layer's parent space; the parent chain maps it to the doc).
+ */
+function MotionGuides({ doc, selection, toScreen }: { doc: VectorDoc; selection: string[]; toScreen: (p: Pt) => Pt }) {
+  const paths = selection.flatMap((id) => {
+    const tr = findTrack(doc, id, 'motionPath');
+    const d = tr ? motionPathData(doc, tr) : null;
+    const m = d ? measurePath(d) : null;
+    if (!m) return [];
+    const p2d = parentToDocMatrix(doc.layers, id);
+    return m.polylines().map((line, i) => ({ key: `${id}-${i}`, points: line.map((p) => toScreen(apply(p2d, p))) }));
+  });
+  if (paths.length === 0) return null;
+  return (
+    <g data-testid="motion-guide" pointerEvents="none">
+      {paths.map(({ key, points }) => (
+        <polyline key={key} points={points.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--accent-data)" strokeOpacity={0.7} strokeDasharray="4 4" />
+      ))}
+    </g>
   );
 }
 

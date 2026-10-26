@@ -52,7 +52,9 @@ import {
   type KeyClipboard,
   type KeyRef,
 } from '@/lib/vector/keyframes';
-import { baseValue, isAnimatable, type EditableProperty } from '@/lib/vector/properties';
+import { baseValue, isAnimatable, type SampledLayerProperty } from '@/lib/vector/properties';
+import { findDocLayer } from '@/lib/vector/advanced';
+import { renormalizeMorphTrack } from '@/lib/vector/animators';
 import { sampleDoc } from '@/lib/vector/sampleTrack';
 import { applyAtTime } from '@/lib/vector/timeEdit';
 import { isLocked, rotateLayers, translateLayers } from '@/lib/vector/transformOps';
@@ -155,7 +157,7 @@ export interface VectorState {
   /** Composition length (integer ms): undoable; keys after the end are removed. */
   setDuration: (ms: number) => void;
   /** Stopwatch on: start a track with one keyframe of the current value at the playhead. */
-  addKeyframe: (layerId: string, property: EditableProperty) => void;
+  addKeyframe: (layerId: string, property: SampledLayerProperty) => void;
   /** Stopwatch off: remove the property's track (the layer keeps its static value). */
   removeTrack: (layerId: string, property: string) => void;
   setKeySelection: (refs: KeyRef[]) => void;
@@ -166,6 +168,14 @@ export interface VectorState {
   copySelectedKeys: () => void;
   /** Paste at the playhead (onto the one selected layer when the copy came from one layer). */
   pasteKeys: () => void;
+
+  // ---- MM45 animators ----
+  /**
+   * Run one animator (`lib/vector/animators.ts`) as ONE undo step. Returns
+   * whether the document changed. `addKeyframe` also accepts the advanced
+   * layer properties (`strokeDashoffset`, `d`).
+   */
+  applyAnimator: (label: string, fn: (doc: VectorDoc, time: number) => VectorDoc) => boolean;
 }
 
 /** Selection ids that still exist in `doc` (ids nested inside raw layers never count). */
@@ -477,10 +487,14 @@ export const createVectorStore = () =>
       addKeyframe: (layerId, property) => {
         const s = get();
         if (!s.doc) return;
-        const layer = findLayer(sampleDoc(s.doc, s.time).layers, layerId);
+        const layer = findDocLayer(sampleDoc(s.doc, s.time), layerId);
         if (!isAnimatable(layer)) return;
         const ref = { layerId, property, t: s.time };
-        mutate('Add keyframe', (d) => upsertKeyframe(d, layerId, property, s.time, baseValue(layer, property)));
+        mutate('Add keyframe', (d) => {
+          const next = upsertKeyframe(d, layerId, property, s.time, baseValue(layer, property));
+          // A morph key added at the playhead joins the track's command sequence.
+          return property === 'd' ? renormalizeMorphTrack(next, layerId) : next;
+        });
         set({ keySelection: [ref] });
       },
 
@@ -539,6 +553,13 @@ export const createVectorStore = () =>
         if (pasted.doc === s.doc) return;
         mutate('Paste keyframes', () => pasted.doc);
         set({ keySelection: liveKeyRefs(get().doc!, pasted.refs) });
+      },
+
+      applyAnimator: (label, fn) => {
+        const before = get().doc;
+        if (!before) return false;
+        mutate(label, (d) => fn(d, get().time));
+        return get().doc !== before;
       },
     };
   });

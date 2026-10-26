@@ -17,14 +17,38 @@
  *     overshoot extrapolates; the property clamps on write);
  *   - two plain colours interpolate in premultiplied sRGB (`lib/vector/color.ts`,
  *     what browsers do for CSS keyframe colours); anything else (`none`,
- *     `url(#…)`, a number vs a string) holds like a `hold` segment.
+ *     `url(#…)`, a number vs a string) holds like a `hold` segment;
+ *   - MM45: two path-data strings with the same command sequence (normalised
+ *     morph keys, `lib/vector/morph.ts`) interpolate number by number; paths
+ *     that do not match hold.
+ *
+ * MM45 also applies the advanced tracks (`lib/vector/advanced.ts`): dash
+ * offset and `d` on the layer, gradient stops in `defs.gradients`, blur in
+ * `defs.filters`, and the motion path folded into the layer transform.
+ * Tracks on layers inside masks and clip paths apply like any other.
  */
 import { easedProgress } from '@/lib/studio/ease';
 import { solveCubicBezier } from '@/lib/vector/bezier';
 import { formatColor, lerpColor, parseColor } from '@/lib/vector/color';
-import { findLayer } from '@/lib/vector/layerTree';
-import { isAnimatable, isEditableProperty, withValue, type AnimatableLayer, type EditableProperty } from '@/lib/vector/properties';
-import type { Easing, Keyframe, Layer, Track, VectorDoc } from '@/lib/vector/vectorTypes';
+import {
+  findDocLayer,
+  motionExtras,
+  motionPathData,
+  motionPointAt,
+  parseStopProperty,
+  trackBlurFilter,
+  trackGradient,
+  withMotion,
+} from '@/lib/vector/advanced';
+import { interpolatePath, morphCompatible } from '@/lib/vector/morph';
+import {
+  isAnimatable,
+  isSampledLayerProperty,
+  withValue,
+  type AnimatableLayer,
+  type SampledLayerProperty,
+} from '@/lib/vector/properties';
+import { isSafeColor, type Easing, type Gradient, type Keyframe, type Layer, type Track, type VectorDoc, type VectorFilter } from '@/lib/vector/vectorTypes';
 
 export type TrackValue = number | string;
 
@@ -37,7 +61,10 @@ export function easingProgress(easing: Easing, f: number): number {
 /** Whether a segment from `a` to `b` can interpolate (else it holds). */
 export function interpolable(a: TrackValue, b: TrackValue): boolean {
   if (typeof a === 'number' && typeof b === 'number') return true;
-  if (typeof a === 'string' && typeof b === 'string') return parseColor(a) !== null && parseColor(b) !== null;
+  if (typeof a === 'string' && typeof b === 'string') {
+    if (parseColor(a) !== null && parseColor(b) !== null) return true;
+    return morphCompatible(a, b);
+  }
   return false;
 }
 
@@ -46,8 +73,9 @@ export function interpolate(a: TrackValue, b: TrackValue, p: number): TrackValue
   if (typeof a === 'number' && typeof b === 'number') return a + (b - a) * p;
   const ca = parseColor(a);
   const cb = parseColor(b);
-  if (!ca || !cb) return a;
-  return formatColor(lerpColor(ca, cb, p));
+  if (ca && cb) return formatColor(lerpColor(ca, cb, p));
+  if (typeof a === 'string' && typeof b === 'string' && morphCompatible(a, b)) return interpolatePath(a, b, p);
+  return a;
 }
 
 /** Value of a keyframe list at time t (ms). Undefined for an empty list. */
@@ -78,75 +106,149 @@ export function sampleTrack(track: Pick<Track, 'keyframes'>, t: number): TrackVa
   return sampleKeyframes(track.keyframes, t);
 }
 
-/** Tracks the MM44 preview applies: editable properties with at least one keyframe. */
+/** Tracks the preview applies: every known property with at least one keyframe (mask / clip tracks carry no value). */
 export function previewTracks(doc: VectorDoc): Track[] {
-  return doc.animations.filter((tr) => tr.keyframes.length > 0 && isEditableProperty(tr.property));
+  return doc.animations.filter((tr) => tr.keyframes.length > 0 && tr.property !== 'mask' && tr.property !== 'clipPath');
 }
 
-/** Apply every editable track of `layer` at time t (tracks already grouped by layer). */
-function applyLayerTracks(layer: AnimatableLayer, tracks: Track[], t: number): AnimatableLayer {
+/** Per-layer view of the sampled tracks. */
+interface LayerSample {
+  values: Array<{ property: SampledLayerProperty; value: TrackValue }>;
+  /** Folded last, after every transform track. */
+  motion?: { d: string; fraction: number; autoOrient: boolean };
+}
+
+/** Apply a layer's sampled values; the motion path goes on top of the sampled transform. */
+function applyLayerSample(layer: AnimatableLayer, sample: LayerSample): AnimatableLayer {
   let out = layer;
-  for (const tr of tracks) {
-    const v = sampleTrack(tr, t);
-    if (v !== undefined) out = withValue(out, tr.property as EditableProperty, v);
+  for (const v of sample.values) out = withValue(out, v.property, v.value);
+  if (sample.motion) {
+    const p = motionPointAt(sample.motion.d, sample.motion.fraction);
+    if (p) out = { ...out, transform: withMotion(out.transform, p, sample.motion.autoOrient) };
   }
   return out;
 }
 
-function mapTree(layers: Layer[], byLayer: Map<string, Track[]>, t: number): Layer[] {
+function mapTree(layers: Layer[], byLayer: Map<string, LayerSample>): Layer[] {
   let changed = false;
   const out = layers.map((l) => {
     let next: Layer = l;
     if (l.type === 'group') {
-      const children = mapTree(l.children, byLayer, t);
+      const children = mapTree(l.children, byLayer);
       if (children !== l.children) next = { ...l, children };
     }
-    const tracks = byLayer.get(l.id);
-    if (tracks && isAnimatable(next)) next = applyLayerTracks(next, tracks, t);
+    const sample = byLayer.get(l.id);
+    if (sample && isAnimatable(next)) next = applyLayerSample(next, sample);
     if (next !== l) changed = true;
     return next;
   });
   return changed ? out : layers;
 }
 
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+
+/** Gradients with stop tracks applied (first track per stop field wins). */
+function sampleGradients(doc: VectorDoc, tracks: Track[], t: number): Gradient[] {
+  const patches = new Map<string, Map<string, TrackValue>>();
+  for (const tr of tracks) {
+    const stop = parseStopProperty(tr.property);
+    if (!stop) continue;
+    const g = trackGradient(doc, tr);
+    if (!g || stop.index >= g.stops.length) continue;
+    const v = sampleTrack(tr, t);
+    if (v === undefined) continue;
+    let m = patches.get(g.id);
+    if (!m) patches.set(g.id, (m = new Map()));
+    const key = `${stop.index}.${stop.field}`;
+    if (!m.has(key)) m.set(key, v);
+  }
+  if (patches.size === 0) return doc.defs.gradients;
+  return doc.defs.gradients.map((g) => {
+    const m = patches.get(g.id);
+    if (!m) return g;
+    const stops = g.stops.map((s, i) => {
+      let next = s;
+      const color = m.get(`${i}.color`);
+      if (typeof color === 'string' && isSafeColor(color) && color !== s.color) next = { ...next, color };
+      const offset = m.get(`${i}.offset`);
+      if (typeof offset === 'number' && Number.isFinite(offset) && clamp01(offset) !== s.offset) next = { ...next, offset: clamp01(offset) };
+      return next;
+    });
+    return stops.some((s, i) => s !== g.stops[i]) ? { ...g, stops } : g;
+  });
+}
+
+/** Filters with `filter.blur` tracks applied (first track per filter wins). */
+function sampleFilters(doc: VectorDoc, tracks: Track[], t: number): VectorFilter[] {
+  const values = new Map<string, number>();
+  for (const tr of tracks) {
+    if (tr.property !== 'filter.blur') continue;
+    const id = trackBlurFilter(doc, tr.layerId);
+    const v = sampleTrack(tr, t);
+    if (!id || typeof v !== 'number' || !Number.isFinite(v) || values.has(id)) continue;
+    values.set(id, Math.max(0, v));
+  }
+  if (values.size === 0) return doc.defs.filters;
+  return doc.defs.filters.map((f) => {
+    const v = values.get(f.id);
+    return v === undefined || v === f.stdDeviation ? f : { ...f, stdDeviation: v };
+  });
+}
+
 /**
- * The document as it looks at time t (decision 6): every editable track
- * sampled into a transient copy, structurally shared (unanimated layers keep
- * their identity, so memoised renders skip them). `t` is capped to
+ * The document as it looks at time t (decision 6): every track sampled into
+ * a transient copy, structurally shared (unanimated layers keep their
+ * identity, so memoised renders skip them). `t` is capped to
  * `[0, doc.duration]`. Returns `doc` itself when nothing is animated.
  */
 export function sampleDoc(doc: VectorDoc, t: number): VectorDoc {
   const tracks = previewTracks(doc);
   if (tracks.length === 0) return doc;
   const time = Math.min(Math.max(0, t), doc.duration);
-  const byLayer = new Map<string, Track[]>();
+  const byLayer = new Map<string, LayerSample>();
+  const entry = (id: string) => {
+    let e = byLayer.get(id);
+    if (!e) byLayer.set(id, (e = { values: [] }));
+    return e;
+  };
   for (const tr of tracks) {
-    const list = byLayer.get(tr.layerId);
-    if (list) list.push(tr);
-    else byLayer.set(tr.layerId, [tr]);
+    if (isSampledLayerProperty(tr.property)) {
+      const v = sampleTrack(tr, time);
+      if (v !== undefined) entry(tr.layerId).values.push({ property: tr.property, value: v });
+    } else if (tr.property === 'motionPath') {
+      const e = entry(tr.layerId);
+      if (e.motion) continue;
+      const d = motionPathData(doc, tr);
+      const v = sampleTrack(tr, time);
+      if (d && typeof v === 'number') e.motion = { d, fraction: v, autoOrient: motionExtras(tr).autoOrient === true };
+    }
   }
-  const layers = mapTree(doc.layers, byLayer, time);
+  const layers = mapTree(doc.layers, byLayer);
   const masks = doc.defs.masks.map((m) => {
-    const ls = mapTree(m.layers, byLayer, time);
+    const ls = mapTree(m.layers, byLayer);
     return ls === m.layers ? m : { ...m, layers: ls };
   });
   const clipPaths = doc.defs.clipPaths.map((c) => {
-    const ls = mapTree(c.layers, byLayer, time);
+    const ls = mapTree(c.layers, byLayer);
     return ls === c.layers ? c : { ...c, layers: ls };
   });
   const symbols = doc.defs.symbols.map((s) => {
-    const ls = mapTree(s.layers, byLayer, time);
+    const ls = mapTree(s.layers, byLayer);
     return ls === s.layers ? s : { ...s, layers: ls };
   });
+  const gradients = sampleGradients(doc, tracks, time);
+  const filters = sampleFilters(doc, tracks, time);
   const defsChanged =
+    gradients !== doc.defs.gradients ||
+    filters !== doc.defs.filters ||
     masks.some((m, i) => m !== doc.defs.masks[i]) ||
     clipPaths.some((c, i) => c !== doc.defs.clipPaths[i]) ||
     symbols.some((s, i) => s !== doc.defs.symbols[i]);
   if (layers === doc.layers && !defsChanged) return doc;
-  return { ...doc, layers, defs: defsChanged ? { ...doc.defs, masks, clipPaths, symbols } : doc.defs };
+  return { ...doc, layers, defs: defsChanged ? { ...doc.defs, gradients, filters, masks, clipPaths, symbols } : doc.defs };
 }
 
-/** The sampled layer `id` at time t (undefined when missing). */
+/** The sampled layer `id` at time t, anywhere in the document (undefined when missing). */
 export function sampledLayer(doc: VectorDoc, id: string, t: number): Layer | undefined {
-  return findLayer(sampleDoc(doc, t).layers, id);
+  return findDocLayer(sampleDoc(doc, t), id);
 }
