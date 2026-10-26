@@ -24,6 +24,17 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-26-motion-pro-video',
+    date: '2026-10-26',
+    title: 'Motion: MP4, WebM and PNG sequence exports on Pro',
+    body: 'Pro now includes video exports in Motion: MP4, WebM and PNG sequences, up to 4K at 60 fps and 60 seconds, with 150 Motion exports a day. The export dialog marks each format your plan does not include with a lock and names the plan that does, with one button to sign in or upgrade. Exports are still made in your browser.',
+    tags: ['new', 'improved'],
+    links: [
+      { label: 'Open Motion', href: '/tools/motion' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
+  {
     id: '2026-10-26-motion-beta',
     date: '2026-10-26',
     title: 'Motion (beta): animate SVG in your browser',
