@@ -572,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Fecha de entrada en vigor: 24/10/2026",
-    "lastUpdated": "Última actualización: 25/10/2026",
+    "lastUpdated": "Última actualización: 26/10/2026",
     "operator": "Media Manipulator es un producto y servicio operado por CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Que opera como Media Manipulator",
     "location": "Colorado, EE. UU.",
     "emailLabel": "Correo electrónico:",
     "websiteLabel": "Sitio web:",
-    "whatChangedTitle": "Qué cambió el 25/10/2026",
-    "whatChangedBody": "Añadimos un segundo plan de pago, Pro, a 15 $ al mes o 150 $ al año, junto a Premium a 8 $ al mes u 80 $ al año. La Sección 10 de los Términos ahora explica los cambios de plan: pasar de Premium a Pro se aplica de inmediato, con un cobro prorrateado por el resto del periodo y la misma fecha de renovación; pasar de Pro a Premium se aplica al final del periodo pagado, sin reembolso por el resto del mismo. El reembolso de 14 días del primer pago se aplica a ambos planes. La Política de Privacidad (sección 1.6) nombra ambos planes y explica que Stripe conserva un cambio de plan programado. Todo lo de la revisión del 24/10/2026 (pagos a través de la cuenta de Stripe de CreaTV Ltd., informes de metadatos eliminados junto con sus archivos, analítica de Google que solo se carga tras el consentimiento, las herramientas de IA nombradas, el inicio de sesión con Firebase, Darkroom dentro de CreaTV Studio, la conservación y los correos de servicio descritos en la sección 1.7) sigue vigente."
+    "whatChangedTitle": "Qué cambió el 26/10/2026",
+    "whatChangedBody": "Añadimos Motion, nuestro editor de animación SVG (en beta). La Política de Privacidad tiene una nueva sección 1.9: los proyectos y las exportaciones de Motion se crean en tu navegador y no se suben para crearlos; los proyectos que guardas en tu cuenta se almacenan como los proyectos de Darkroom, siguen el periodo de conservación que elijas y pueden eliminarse; y de cada exportación contabilizada registramos su formato, tamaño, duración y hora para aplicar el cupo diario. Las secciones 3, 3.3 y 3.4 ahora nombran los proyectos de Motion. La Sección 13 de los Términos confirma que tus exportaciones de Motion te pertenecen, explica que algunas exportaciones contienen código de anime.js con licencia MIT cuyo aviso debe conservarse, y remite a nuestra página de licencias de código abierto. Todo lo de la actualización del 25/10/2026 (el plan Pro, los cambios de plan y los reembolsos) sigue vigente."
   },
   "privacyPolicy": {
     "title": "Política de privacidad",
@@ -714,6 +714,14 @@
               "Darkroom, nuestro editor de vídeo, también puede estar integrado en CreaTV Studio, un producto de la misma empresa. En ese modo, CreaTV Studio pasa tu token de inicio de sesión de CreaTV al editor integrado a través de tu navegador (un mensaje entre la página de CreaTV y el editor), y el editor lo usa únicamente para llamar a los servicios de estudio de CreaTV. Tus proyectos, medios y exportaciones se almacenan y procesan entonces en los servicios de CreaTV bajo tu cuenta de CreaTV, no en una cuenta de Media Manipulator, y se les aplica la política de privacidad de CreaTV.",
               "CreaTV Studio también informa al editor integrado de si has aceptado la analítica y la publicidad en CreaTV. El editor integrado no muestra nuestro aviso de cookies ni anuncios, y no ejecuta nuestra analítica."
             ]
+          },
+          {
+            "title": "1.9 Proyectos y exportaciones de Motion",
+            "paragraphs": [
+              "Motion, nuestro editor de animación SVG, se ejecuta en tu navegador. Los dibujos que importas o creas y los archivos que exportas a partir de ellos (SVG animado, Lottie, código, GIF y otros formatos) se producen en tu navegador. No recibimos tus ilustraciones ni los archivos exportados para crearlos.",
+              "Sin una cuenta, los proyectos de Motion se conservan únicamente en tu navegador (en IndexedDB) y nunca llegan a nuestros servidores. Si has iniciado sesión y eliges «Guardar en la cuenta», el proyecto y una pequeña imagen en miniatura se almacenan en nuestros servidores y en Amazon S3 del mismo modo que un proyecto de Darkroom: son tu contenido, siguen el periodo de conservación que elijas (Sección 3), puedes eliminarlos desde tu página Cuenta, se eliminan junto con tu cuenta y figuran en tu exportación de datos.",
+              "Cada exportación animada y cada importación de Lottie se cuenta en nuestro servidor antes de que tu navegador la ejecute, para aplicar el cupo diario de Motion de tu plan. De cada una almacenamos el formato, la altura de salida, la tasa de fotogramas y la duración, la hora, tu plan, el proyecto guardado del que procede (si lo hay) y un identificador de tu cuenta, de la sesión de tu navegador o de una dirección IP con hash. Usamos estos registros para aplicar el cupo y para saber qué formatos se usan. Cuando eliminas tu cuenta, se desvinculan de tu identidad."
+            ]
           }
         ]
       },
@@ -740,7 +748,7 @@
         "id": "retention",
         "title": "3. Almacenamiento, retención y eliminación de archivos",
         "paragraphs": [
-          "El tiempo que conservamos tus archivos depende de si tienes una cuenta. Esta sección abarca los archivos subidos, los resultados generados, los medios de Darkroom y los proyectos de Darkroom almacenados en nuestros servidores y en Amazon S3 (us-west-2). Los registros sobre tus conversiones y ajustes (como el historial de trabajos, las opciones de conservación y los datos de la cuenta) se guardan en una base de datos PostgreSQL, y el procesamiento de IA se ejecuta en nuestro propio servidor GPU autoalojado."
+          "El tiempo que conservamos tus archivos depende de si tienes una cuenta. Esta sección abarca los archivos subidos, los resultados generados, los medios de Darkroom, los proyectos de Darkroom y los proyectos de Motion guardados en tu cuenta, almacenados en nuestros servidores y en Amazon S3 (us-west-2). Los registros sobre tus conversiones y ajustes (como el historial de trabajos, las opciones de conservación y los datos de la cuenta) se guardan en una base de datos PostgreSQL, y el procesamiento de IA se ejecuta en nuestro propio servidor GPU autoalojado."
         ],
         "subsections": [
           {
@@ -765,7 +773,7 @@
           {
             "title": "3.3 Eliminar tus archivos",
             "paragraphs": [
-              "Si tienes una cuenta, puedes eliminar un resultado o proyecto de Darkroom concreto, eliminar todos tus archivos a la vez o eliminar toda tu cuenta desde la página Cuenta. Los visitantes sin cuenta pueden eliminar sus propios resultados durante la sesión en la que se crearon."
+              "Si tienes una cuenta, puedes eliminar un resultado, un proyecto de Darkroom o un proyecto de Motion concreto, eliminar todos tus archivos a la vez o eliminar toda tu cuenta desde la página Cuenta. Los visitantes sin cuenta pueden eliminar sus propios resultados durante la sesión en la que se crearon."
             ]
           },
           {
@@ -775,7 +783,7 @@
             ],
             "bullets": [
               "cancelamos tu suscripción Premium o Pro en Stripe, si tienes una;",
-              "eliminamos tus archivos y proyectos de Darkroom;",
+              "eliminamos tus archivos y tus proyectos de Darkroom y de Motion;",
               "eliminamos el registro de tu cuenta y tus ajustes, y desvinculamos de tu identidad el resto de tus registros de actividad;",
               "pedimos a nuestra analítica propia que elimine los datos analíticos vinculados a tu cuenta (consulta la Sección 6);",
               "eliminamos tu acceso de inicio de sesión."
@@ -1047,6 +1055,7 @@
           "eliminación de metadatos y EXIF;",
           "transcripción asistida por IA, generación de subtítulos, resúmenes y descripciones;",
           "clasificación de seguridad de contenido y detección para prevención de abusos;",
+          "crear, animar y exportar gráficos vectoriales y animaciones con Motion;",
           "historial temporal de conversiones y resultados procesados descargables."
         ],
         "afterBullets": [
@@ -1337,7 +1346,9 @@
           "Media Manipulator, incluidos su sitio web, diseño, software, código, interfaz, marca, logotipos, textos, gráficos, funciones, flujos de trabajo y materiales relacionados, es propiedad de CreaTV Ltd. o de sus licenciantes y está protegido por la legislación de propiedad intelectual aplicable.",
           "Estos Términos no te conceden la propiedad de Media Manipulator ni de ninguna propiedad intelectual de CreaTV Ltd.",
           "No puedes copiar, modificar, distribuir, vender, arrendar, aplicar ingeniería inversa ni crear obras derivadas de Media Manipulator, salvo que la ley lo permita o cuentes con nuestro permiso por escrito.",
-          "Conservas la propiedad de tus propios archivos subidos y de los resultados generados, sujeta a los derechos y licencias concedidos en estos Términos."
+          "Conservas la propiedad de tus propios archivos subidos y de los resultados generados, sujeta a los derechos y licencias concedidos en estos Términos.",
+          "Las animaciones y los archivos que creas con Motion, incluidas las exportaciones de SVG animado, Lottie, código e imagen, te pertenecen del mismo modo que tus demás resultados generados. Algunas exportaciones incluyen código abierto de terceros que hace que la animación se reproduzca: anime.js, licenciado bajo la licencia MIT. Su aviso de copyright y de licencia se escribe al principio del archivo exportado, y debes conservar ese aviso si usas o distribuyes el archivo. Las exportaciones de código que usan un paquete en lugar de incrustarlo (el paquete anime.js para React y JavaScript, y flutter_svg o webview_flutter para Flutter) lo nombran en el archivo, y lo instalas tú mismo bajo su propia licencia (MIT, o BSD-3-Clause para webview_flutter).",
+          "Media Manipulator usa bibliotecas de código abierto en tu navegador, entre ellas mediabunny, licenciada bajo la Mozilla Public License 2.0 y usada sin modificar para empaquetar los archivos de vídeo creados en tu navegador. Sus licencias, avisos de copyright y enlaces al código fuente figuran en nuestra página de licencias de código abierto: https://www.media-manipulator.com/licenses."
         ]
       },
       {

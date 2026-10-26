@@ -572,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Gültig ab: 24.10.2026",
-    "lastUpdated": "Zuletzt aktualisiert: 25.10.2026",
+    "lastUpdated": "Zuletzt aktualisiert: 26.10.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Was sich am 25.10.2026 geändert hat",
-    "whatChangedBody": "Wir haben neben Premium für 8 $ pro Monat oder 80 $ pro Jahr einen zweiten kostenpflichtigen Tarif hinzugefügt: Pro für 15 $ pro Monat oder 150 $ pro Jahr. Abschnitt 10 der Nutzungsbedingungen erklärt nun Tarifwechsel: Ein Upgrade von Premium auf Pro gilt sofort, mit einer anteiligen Abbuchung für den Rest des Zeitraums und demselben Verlängerungsdatum; ein Downgrade von Pro auf Premium gilt ab dem Ende des bezahlten Zeitraums, ohne Erstattung für den Rest. Die 14-tägige Rückerstattung einer ersten Zahlung gilt für beide Tarife. Die Datenschutzerklärung (Abschnitt 1.6) nennt beide Tarife und erklärt, dass ein geplanter Tarifwechsel bei Stripe gespeichert wird. Alles aus der Überprüfung vom 24.10.2026 (Zahlungen über das Stripe-Konto der CreaTV Ltd., Metadatenberichte, die zusammen mit ihren Dateien gelöscht werden, Google-Analytics, das erst nach Einwilligung geladen wird, die genannten KI-Tools, die Firebase-Anmeldung, Darkroom innerhalb von CreaTV Studio, Aufbewahrung und die in Abschnitt 1.7 beschriebenen Service-E-Mails) gilt weiterhin."
+    "whatChangedTitle": "Was sich am 26.10.2026 geändert hat",
+    "whatChangedBody": "Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -714,6 +714,14 @@
               "Darkroom, unser Video-Editor, kann auch in CreaTV Studio eingebettet sein, ein Produkt desselben Unternehmens. In diesem Modus übergibt CreaTV Studio dein CreaTV-Anmeldetoken über deinen Browser an den eingebetteten Editor (eine Nachricht zwischen der CreaTV-Seite und dem Editor), und der Editor verwendet es ausschließlich für Aufrufe der eigenen Studio-Dienste von CreaTV. Deine Projekte, Medien und Exporte werden dann von den Diensten von CreaTV unter deinem CreaTV-Konto gespeichert und verarbeitet, nicht in einem Media-Manipulator-Konto, und es gilt die Datenschutzerklärung von CreaTV.",
               "CreaTV Studio teilt dem eingebetteten Editor außerdem mit, ob du auf CreaTV Analyse und Werbung akzeptiert hast. Der eingebettete Editor zeigt weder unser Cookie-Banner noch Werbung an und führt unsere Analyse nicht aus."
             ]
+          },
+          {
+            "title": "1.9 Motion-Projekte und Exporte",
+            "paragraphs": [
+              "Motion, unser SVG-Animationseditor, läuft in Ihrem Browser. Die Zeichnungen, die Sie importieren oder erstellen, und die Dateien, die Sie daraus exportieren (animiertes SVG, Lottie, Code, GIF und weitere Formate), werden in Ihrem Browser erzeugt. Wir erhalten weder Ihre Grafik noch die exportierten Dateien, um diese zu erstellen.",
+              "Ohne Konto werden Motion-Projekte nur in Ihrem Browser (in IndexedDB) gespeichert und gelangen nie auf unsere Server. Wenn Sie angemeldet sind und „Im Konto speichern“ wählen, werden das Projekt und ein kleines Vorschaubild auf unseren Servern und in Amazon S3 auf dieselbe Weise gespeichert wie ein Darkroom-Projekt: Sie sind Ihre Inhalte, sie folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3), Sie können sie auf Ihrer Kontoseite löschen, sie werden mit Ihrem Konto gelöscht, und sie sind in Ihrem Datenexport aufgeführt.",
+              "Jeder animierte Export und jeder Lottie-Import wird auf unserem Server gezählt, bevor Ihr Browser ihn ausführt, um das tägliche Motion-Kontingent Ihres Tarifs durchzusetzen. Zu jedem speichern wir das Format, die Ausgabehöhe, Bildrate und Länge, den Zeitpunkt, Ihren Tarif, das gespeicherte Projekt, aus dem er stammt (falls vorhanden), sowie eine Kennung für Ihr Konto, Ihre Browsersitzung oder eine gehashte IP-Adresse. Wir verwenden diese Datensätze, um das Kontingent durchzusetzen und zu verstehen, welche Formate genutzt werden. Wenn Sie Ihr Konto löschen, werden sie von Ihrer Identität gelöst."
+            ]
           }
         ]
       },
@@ -740,7 +748,7 @@
         "id": "retention",
         "title": "3. Dateispeicherung, Aufbewahrung und Löschung",
         "paragraphs": [
-          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien und Darkroom-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu deinen Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
+          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien, Darkroom-Projekte und in Ihrem Konto gespeicherte Motion-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu deinen Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
         ],
         "subsections": [
           {
@@ -765,7 +773,7 @@
           {
             "title": "3.3 Löschen Ihrer Dateien",
             "paragraphs": [
-              "Wenn Sie ein Konto haben, können Sie auf der Seite „Konto“ ein einzelnes Ergebnis oder Darkroom-Projekt löschen, alle Ihre Dateien auf einmal löschen oder Ihr gesamtes Konto löschen. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden."
+              "Wenn Sie ein Konto haben, können Sie auf der Seite „Konto“ ein einzelnes Ergebnis, Darkroom-Projekt oder Motion-Projekt löschen, alle Ihre Dateien auf einmal löschen oder Ihr gesamtes Konto löschen. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden."
             ]
           },
           {
@@ -775,7 +783,7 @@
             ],
             "bullets": [
               "Wir kündigen Ihr Premium- oder Pro-Abonnement bei Stripe, falls Sie eines haben;",
-              "wir löschen Ihre Dateien und Darkroom-Projekte;",
+              "wir löschen Ihre Dateien sowie Ihre Darkroom- und Motion-Projekte;",
               "wir löschen Ihren Kontodatensatz und Ihre Einstellungen und lösen Ihre übrigen Aktivitätsdatensätze von Ihrer Identität;",
               "wir bitten unsere First-Party-Analyse, die mit Ihrem Konto verknüpften Analysedaten zu löschen (siehe Abschnitt 6);",
               "wir löschen Ihren Anmelde-Zugang."
@@ -1047,6 +1055,7 @@
           "Metadaten- und EXIF-Entfernung;",
           "KI-gestützte Transkription, Untertitelerzeugung, Zusammenfassungen und Beschreibungen;",
           "Inhaltssicherheitsklassifizierung und Missbrauchspräventions-Scans;",
+          "Erstellen, Animieren und Exportieren von Vektorgrafiken und Animationen mit Motion;",
           "vorübergehender Konvertierungsverlauf und herunterladbare verarbeitete Ausgaben."
         ],
         "afterBullets": [
@@ -1337,7 +1346,9 @@
           "Media Manipulator, einschließlich Website, Design, Software, Code, Benutzeroberfläche, Marke, Logos, Text, Grafiken, Funktionen, Arbeitsabläufe und verwandter Materialien, gehört der CreaTV Ltd. oder ihren Lizenzgebern und ist durch geltendes Recht zum Schutz geistigen Eigentums geschützt.",
           "Diese Bedingungen gewähren Ihnen kein Eigentum an Media Manipulator oder an geistigem Eigentum der CreaTV Ltd.",
           "Sie dürfen Media Manipulator nicht kopieren, verändern, verbreiten, verkaufen, verleasen, zurückentwickeln oder daraus abgeleitete Werke erstellen, außer soweit gesetzlich zulässig oder mit unserer schriftlichen Genehmigung.",
-          "Sie behalten das Eigentum an Ihren eigenen hochgeladenen Dateien und erzeugten Ergebnissen, vorbehaltlich der in diesen Bedingungen gewährten Rechte und Lizenzen."
+          "Sie behalten das Eigentum an Ihren eigenen hochgeladenen Dateien und erzeugten Ergebnissen, vorbehaltlich der in diesen Bedingungen gewährten Rechte und Lizenzen.",
+          "Animationen und Dateien, die Sie mit Motion erstellen, einschließlich animiertem SVG sowie Lottie-, Code- und Bildexporten, gehören Ihnen auf dieselbe Weise wie Ihre anderen erzeugten Ergebnisse. Einige Exporte enthalten Open-Source-Code von Drittanbietern, der die Animation abspielt: anime.js, das unter der MIT License lizenziert ist. Sein Urheberrechts- und Lizenzvermerk steht am Anfang der exportierten Datei, und Sie müssen diesen Vermerk beibehalten, wenn Sie die Datei verwenden oder verbreiten. Code-Exporte, die ein Paket verwenden, statt es einzubetten (das Paket anime.js für React und JavaScript sowie flutter_svg oder webview_flutter für Flutter), nennen es in der Datei, und Sie installieren es selbst unter seiner eigenen Lizenz (MIT oder BSD-3-Clause für webview_flutter).",
+          "Media Manipulator verwendet Open-Source-Bibliotheken in Ihrem Browser, darunter mediabunny, das unter der Mozilla Public License 2.0 lizenziert ist und unverändert verwendet wird, um in Ihrem Browser erstellte Videodateien zu verpacken. Ihre Lizenzen, Urheberrechtsvermerke und Quellcode-Links sind auf unserer Seite mit Open-Source-Lizenzen aufgeführt: https://www.media-manipulator.com/licenses."
         ]
       },
       {

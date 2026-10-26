@@ -572,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Effective Date: 2026-10-24",
-    "lastUpdated": "Last Updated: 2026-10-25",
+    "lastUpdated": "Last Updated: 2026-10-26",
     "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operating as Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "What changed on 2026-10-25",
-    "whatChangedBody": "We added a second paid plan, Pro, at $15 per month or $150 per year, next to Premium at $8 per month or $80 per year. Section 10 of the Terms now explains plan changes: an upgrade from Premium to Pro applies right away, with a prorated charge for the rest of the period and the same renewal date; a downgrade from Pro to Premium applies at the end of the period you paid for, with no refund for the rest of it. The 14-day refund of a first payment applies to both plans. The Privacy Policy (section 1.6) names both plans and explains that a scheduled plan change is kept by Stripe. Everything from the 2026-10-24 review (payments through the Stripe account of CreaTV Ltd., metadata reports deleted with their files, Google's analytics loading only after consent, the named AI tools, Firebase sign-in, Darkroom inside CreaTV Studio, retention and the service emails described in section 1.7) still applies."
+    "whatChangedTitle": "What changed on 2026-10-26",
+    "whatChangedBody": "We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -714,6 +714,14 @@
               "Darkroom, our video editor, can also be embedded inside CreaTV Studio, a product of the same company. In that mode, CreaTV Studio passes your CreaTV sign-in token to the embedded editor through your browser (a message between the CreaTV page and the editor), and the editor uses it only to call CreaTV's own studio services. Your projects, media and exports are then stored and processed by CreaTV's services under your CreaTV account, not in a Media Manipulator account, and CreaTV's own privacy policy applies to them.",
               "CreaTV Studio also tells the embedded editor whether you have accepted analytics and advertising on CreaTV. The embedded editor does not show our cookie banner or ads, and it does not run our analytics."
             ]
+          },
+          {
+            "title": "1.9 Motion Projects and Exports",
+            "paragraphs": [
+              "Motion, our SVG animation editor, runs in your browser. The drawings you import or create and the files you export from them (animated SVG, Lottie, code, GIF and other formats) are produced in your browser. We do not receive your artwork or the exported files to make them.",
+              "Without an account, Motion projects are kept only in your browser (in IndexedDB) and never reach our servers. If you are signed in and choose “Save to account”, the project and a small thumbnail image are stored on our servers and in Amazon S3 in the same way as a Darkroom project: they are your content, they follow the retention period you choose (Section 3), you can delete them from your Account page, they are deleted with your account, and they are listed in your data export.",
+              "Each animated export and each Lottie import is counted on our server before your browser runs it, to enforce your plan's daily Motion allowance. For each one we store the format, the output height, frame rate and length, the time, your plan, the saved project it came from (if any), and an identifier for your account, your browser session or a hashed IP address. We use these records to enforce the allowance and to understand which formats are used. When you delete your account, they are detached from your identity."
+            ]
           }
         ]
       },
@@ -740,7 +748,7 @@
         "id": "retention",
         "title": "3. File Storage, Retention and Deletion",
         "paragraphs": [
-          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media and Darkroom projects stored on our servers and in Amazon S3 (us-west-2). Records about your conversions and settings (such as job history, retention choices and account details) are kept in a PostgreSQL database, and AI processing runs on our own self-hosted GPU server."
+          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media, Darkroom projects and Motion projects saved to your account, stored on our servers and in Amazon S3 (us-west-2). Records about your conversions and settings (such as job history, retention choices and account details) are kept in a PostgreSQL database, and AI processing runs on our own self-hosted GPU server."
         ],
         "subsections": [
           {
@@ -765,7 +773,7 @@
           {
             "title": "3.3 Deleting your files",
             "paragraphs": [
-              "If you have an account, you can delete an individual result or Darkroom project, delete all of your files at once, or delete your whole account from the Account page. Visitors without an account can delete their own results during the session in which they were created."
+              "If you have an account, you can delete an individual result, Darkroom project or Motion project, delete all of your files at once, or delete your whole account from the Account page. Visitors without an account can delete their own results during the session in which they were created."
             ]
           },
           {
@@ -775,7 +783,7 @@
             ],
             "bullets": [
               "cancel your Premium or Pro subscription with Stripe, if you have one;",
-              "delete your files and Darkroom projects;",
+              "delete your files and your Darkroom and Motion projects;",
               "delete your account record and settings and detach your remaining activity records from your identity;",
               "ask our first-party analytics to delete the analytics data linked to your account (see Section 6);",
               "delete your sign-in login."
@@ -1047,6 +1055,7 @@
           "metadata and EXIF removal;",
           "AI-assisted transcription, caption generation, summaries, and descriptions;",
           "content-safety classification and abuse-prevention scanning;",
+          "creating, animating and exporting vector graphics and animations with Motion;",
           "temporary conversion history and downloadable processed outputs."
         ],
         "afterBullets": [
@@ -1337,7 +1346,9 @@
           "Media Manipulator, including its website, design, software, code, interface, branding, logos, text, graphics, features, workflows, and related materials, is owned by CreaTV Ltd. or its licensors and is protected by applicable intellectual property laws.",
           "These Terms do not grant you ownership of Media Manipulator or any CreaTV Ltd. intellectual property.",
           "You may not copy, modify, distribute, sell, lease, reverse engineer, or create derivative works from Media Manipulator except as permitted by law or with our written permission.",
-          "You retain ownership of your own uploaded files and generated outputs, subject to the rights and licenses granted in these Terms."
+          "You retain ownership of your own uploaded files and generated outputs, subject to the rights and licenses granted in these Terms.",
+          "Animations and files you create with Motion, including animated SVG, Lottie, code and image exports, belong to you in the same way as your other generated outputs. Some exports include third-party open-source code that makes the animation play: anime.js, which is licensed under the MIT License. Its copyright and licence notice is written at the top of the exported file, and you must keep that notice if you use or distribute the file. Code exports that use a package instead of embedding it (the anime.js package for React and JavaScript, and flutter_svg or webview_flutter for Flutter) name it in the file, and you install it yourself under its own licence (MIT, or BSD-3-Clause for webview_flutter).",
+          "Media Manipulator uses open-source libraries in your browser, including mediabunny, which is licensed under the Mozilla Public License 2.0 and is used unmodified to package video files made in your browser. Their licences, copyright notices and source code links are listed on our open-source licences page: https://www.media-manipulator.com/licenses."
         ]
       },
       {
