@@ -12,6 +12,7 @@
 
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { cleanFaqEntries, cleanSteps, cleanStringArray } from '@/lib/schema';
+import { MOTION_BRAND } from '@/lib/vector/brand';
 
 export const SITE_ORIGIN = 'https://www.media-manipulator.com';
 export const SITE_NAME = 'Media Manipulator';
@@ -136,6 +137,30 @@ const articleLd = (params: {
   },
 });
 
+// MM48: a tool that lists its shipped features (Motion) is described as a
+// SoftwareApplication with a featureList; every other tool keeps the
+// WebApplication block below.
+const softwareApplicationToolLd = (tool: ToolPageContent, featureList: string[]): JsonLd => ({
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: `${SITE_NAME} ${tool.name}`,
+  url: buildCanonical(`/tools/${tool.slug}`),
+  applicationCategory: 'DesignApplication',
+  operatingSystem: 'Web',
+  description: tool.metaDescription,
+  featureList,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: ORG_NAME,
+    url: SITE_ORIGIN,
+  },
+});
+
 const webApplicationToolLd = (tool: ToolPageContent): JsonLd => ({
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
@@ -217,7 +242,9 @@ const buildToolRouteSeo = (tool: ToolPageContent): RouteSeo => {
     // Drop any null blocks (empty FAQ / insufficient HowTo) so we never emit
     // hollow structured data.
     jsonLd: [
-      webApplicationToolLd(tool),
+      tool.featureList && cleanStringArray(tool.featureList).length > 0
+        ? softwareApplicationToolLd(tool, cleanStringArray(tool.featureList))
+        : webApplicationToolLd(tool),
       breadcrumbList([
         { name: 'Home', path: '/' },
         { name: 'Tools', path: '/tools' },
@@ -920,6 +947,48 @@ const ROUTES: RouteSeo[] = [
         operatingSystem: 'Web',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       },
+    ],
+  },
+  {
+    path: '/tutorials/motion',
+    title: `How to Animate an SVG with ${MOTION_BRAND} | Media Manipulator Tutorial`,
+    description:
+      `Step-by-step ${MOTION_BRAND} tutorial: import an SVG, animate it with keyframes, shape the timing with easing and holds, then export animated SVG, Lottie, code or GIF.`,
+    canonicalUrl: buildCanonical('/tutorials/motion'),
+    ogTitle: `How to Animate an SVG with ${MOTION_BRAND}`,
+    ogDescription:
+      'Import an SVG, add keyframes, shape the easing and export animated SVG, Lottie JSON, React, JavaScript, Flutter or GIF, all in your browser.',
+    ogType: 'article',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: [
+      'svg animation tutorial',
+      'how to animate svg',
+      'animated svg',
+      'svg to lottie',
+      'keyframe animation',
+      'easing curve',
+    ],
+    jsonLd: [
+      {
+        ...techArticleLd({
+          path: '/tutorials/motion',
+          title: `How to Animate an SVG with ${MOTION_BRAND}`,
+          description:
+            'Import an SVG, animate it with keyframes, shape the timing with easing and holds, and export animated SVG, Lottie, code or GIF.',
+          section: 'Animation Tutorials',
+          keywords: ['svg animation tutorial', 'how to animate svg', 'animated svg', 'lottie'],
+          dependencies: 'Modern web browser',
+        }),
+        // Real publication date (MM48), read by the sitemap under the full-index flag.
+        datePublished: '2026-10-26',
+        dateModified: '2026-10-26',
+      },
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Tutorials', path: '/tutorials' },
+        { name: MOTION_BRAND, path: '/tutorials/motion' },
+      ]),
     ],
   },
   {

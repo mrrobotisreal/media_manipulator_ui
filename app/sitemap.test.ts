@@ -15,6 +15,7 @@ import { locales } from '@/i18n/locales';
 // The URLs the review-safe sitemap emitted on main before MM34 (10 core routes
 // + the 15 allowlisted tools other than content-studio). Frozen here as a
 // literal so the flag-off assertion cannot drift with the implementation.
+// MM48 adds exactly two core routes after it: /tools/motion and /licenses.
 const ORIGIN = 'https://www.media-manipulator.com';
 const TODAY_URLS = [
   '/',
@@ -46,20 +47,38 @@ const TODAY_URLS = [
   ].map((s) => `/tools/${s}`),
 ].map((p) => new URL(p, ORIGIN).toString());
 
+/** MM48: Motion's tool page beside Darkroom, and MM47's /licenses page. */
+const MM48_URLS = ['/tools/motion', '/licenses'].map((p) => new URL(p, ORIGIN).toString());
+/** The flag-off sitemap since MM48: the pre-MM34 list with Motion and /licenses in the core block. */
+const REVIEW_SAFE_URLS = [...TODAY_URLS.slice(0, 2), MM48_URLS[0], ...TODAY_URLS.slice(2, 10), MM48_URLS[1], ...TODAY_URLS.slice(10)];
+
 const urls = () => sitemap().map((e) => e.url);
 
 afterEach(() => vi.unstubAllEnvs());
 
 describe('MM34 flag off (default)', () => {
-  it('sitemap equals the pre-MM34 review-safe list exactly', () => {
+  it('sitemap equals the pre-MM34 review-safe list plus the two MM48 core routes, exactly', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
-    expect(urls()).toEqual(TODAY_URLS);
-    expect(urls()).toHaveLength(25);
+    expect(urls()).toEqual(REVIEW_SAFE_URLS);
+    expect(urls()).toHaveLength(27);
+    for (const u of TODAY_URLS) expect(urls()).toContain(u);
+  });
+
+  it('MM48: /tools/motion and /licenses are listed once, with translated-locale hreflang only', () => {
+    vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
+    for (const u of MM48_URLS) {
+      const entries = sitemap().filter((e) => e.url === u);
+      expect(entries, u).toHaveLength(1);
+      const langs = Object.keys(entries[0].alternates?.languages ?? {}).sort();
+      expect(langs).toEqual([...locales.filter((l) => l.translated).map((l) => l.code), 'x-default'].sort());
+    }
+    // The tutorial is a detail page: listed only under the full-index flag.
+    expect(urls()).not.toContain(new URL('/tutorials/motion', ORIGIN).toString());
   });
 
   it('unset behaves the same as empty / "false"', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'false');
-    expect(urls()).toEqual(TODAY_URLS);
+    expect(urls()).toEqual(REVIEW_SAFE_URLS);
   });
 
   it('only the allowlist is indexable; PENDING_ALLOWLIST stays noindex', () => {
@@ -95,17 +114,19 @@ describe('MM34 flag on', () => {
     }
     for (const p of BLOG_POSTS) expect(list).toContain(new URL(p.path, ORIGIN).toString());
     const tutorials = PUBLIC_ROUTES.filter((p) => p.startsWith('/tutorials/'));
-    expect(tutorials.length).toBe(5);
+    // MM48 adds /tutorials/motion to the five earlier tutorials.
+    expect(tutorials.length).toBe(6);
+    expect(tutorials).toContain('/tutorials/motion');
     for (const p of tutorials) expect(list).toContain(new URL(p, ORIGIN).toString());
     // Every flag-off URL is still present.
     for (const u of TODAY_URLS) expect(list).toContain(u);
   });
 
-  it('URL count = core (10) + tool slugs + blog + tutorials + changelog', () => {
+  it('URL count = core (12) + tool slugs + blog + tutorials + changelog', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'true');
-    // /tools/content-studio is already a core route, so it is not double counted.
-    const toolsOutsideCore = TOOL_PAGES.filter((t) => t.slug !== 'content-studio').length;
-    const expected = 10 + toolsOutsideCore + BLOG_POSTS.length + 5 + 1;
+    // /tools/content-studio and /tools/motion are core routes, so they are not double counted.
+    const toolsOutsideCore = TOOL_PAGES.filter((t) => t.slug !== 'content-studio' && t.slug !== 'motion').length;
+    const expected = 12 + toolsOutsideCore + BLOG_POSTS.length + 6 + 1;
     expect(urls()).toHaveLength(expected);
     expect(urls()).toContain(new URL('/changelog', ORIGIN).toString());
   });

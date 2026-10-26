@@ -17,6 +17,7 @@ import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
 import { translatedLocales } from '@/i18n/locales';
 import { VOICES, VOICE_DEMO_LANGUAGES } from '@/content/voices';
+import { MOTION_BRAND } from '@/lib/vector/brand';
 
 const abs = (path: string): string =>
   path.startsWith('http') ? path : `${SITE_ORIGIN}${path === '/' ? '/' : path}`;
@@ -26,6 +27,7 @@ const toolUrl = (slug: string): string => abs(`/tools/${slug}`);
 /** Display order and headings for TOOL_PAGES categories. */
 const CATEGORY_HEADINGS: Array<[ToolPageContent['category'], string]> = [
   ['contentStudio', 'Darkroom video editor'],
+  ['motion', `${MOTION_BRAND} SVG animation editor`],
   ['video', 'Video tools'],
   ['image', 'Image and PDF tools'],
   ['audio', 'Audio tools'],
@@ -104,7 +106,7 @@ function keyFactsSection(): string[] {
   return [
     '## Key facts',
     '',
-    `- ${TOOL_PAGES.length} single-purpose tools for video, images, PDFs, audio, captions and documents, each on its own page under ${abs('/tools')}, plus Darkroom, a multi-track video editor that runs in the browser.`,
+    `- ${TOOL_PAGES.length} tool pages for video, images, PDFs, audio, captions and documents under ${abs('/tools')}, including Darkroom, a multi-track video editor, and ${MOTION_BRAND}, an SVG animation editor, both of which run in the browser.`,
     '- Every tool works without an account and with nothing to install. A free account raises the daily limits and keeps history and Darkroom projects.',
     '- Files are processed on servers the owner runs, not in third-party clouds. Uploads and results are deleted automatically when their retention period ends: 24 hours for visitors without an account, and a period of 24 hours to 2 years that each signed-in user chooses (default 6 months).',
     '- AI features (transcription, background removal, upscaling and restoration, frame interpolation, vocal isolation, document OCR, caption translation) run on GPU servers operated by the owner. Files are never sent to OpenAI, Anthropic, Google or any other third-party AI provider.',
@@ -150,6 +152,19 @@ function darkroomSection(): string[] {
   ];
 }
 
+// MM48: Motion is in beta; list only what has shipped (MM42–MM47). Formats a
+// plan does not include yet are described from the served table on the page.
+function motionSection(): string[] {
+  return [
+    `## ${MOTION_BRAND}`,
+    '',
+    `${MOTION_BRAND} (${toolUrl('motion')}) is ${SITE_NAME}'s SVG and SVG-animation editor, in beta. It imports SVG files into editable layers (groups, paths, shapes, text, images, gradients, masks and clip paths) and imports Lottie JSON animations; it also draws new artwork with rectangle, ellipse, line, pen and text tools. A keyframe timeline animates position, scale, rotation, skew, opacity, fill, stroke and stroke width, with linear, ease-in, ease-out and ease-in-out presets, custom cubic-bezier curves and hold keyframes. One-click animators add stroke draw-on, motion along a path, shape morphing, gradient stop colours, mask and clip-path animation, and blur. Exports are made entirely in the browser: static SVG (free and uncounted), animated SVG (pure CSS when possible, otherwise an inline MIT-licensed anime.js runtime), Lottie JSON, React (.tsx), JavaScript or TypeScript modules, Flutter (.dart) and animated GIF. Animated exports count toward a separate daily ${MOTION_BRAND} allowance per plan. Projects stay in the browser without an account and can be saved to a signed-in account.`,
+    '',
+    `- [${MOTION_BRAND} tutorial](${abs('/tutorials/motion')}): ${ROUTE_SEO_MAP['/tutorials/motion']?.description ?? ''}`.trimEnd(),
+    `- [Open-source licences](${abs('/licenses')}): the libraries ${MOTION_BRAND} runs in the browser or writes into exports (anime.js MIT, mediabunny MPL-2.0, fflate MIT).`,
+  ];
+}
+
 function toolLine(tool: ToolPageContent): string {
   return `- [${tool.name}](${toolUrl(tool.slug)}): ${tool.tagline}`;
 }
@@ -173,6 +188,7 @@ const PAGE_PATHS = [
   '/tutorials/image/getting-started',
   '/tutorials/audio/getting-started',
   '/tutorials/ai-frame-interpolation',
+  '/tutorials/motion',
   '/privacy-policy',
   '/terms-of-service',
 ] as const;
@@ -188,7 +204,7 @@ export function llmsIndexMarkdown(): string {
   const lines = [
     `# ${SITE_NAME}`,
     '',
-    `> ${SITE_NAME} (${SITE_ORIGIN}) is a free online media toolkit for converting, compressing, trimming, transcribing, restoring and editing video, images, PDFs and audio in the browser, with Darkroom, a multi-track video editor. It was created by and is owned by ${OWNER.name}, who also created CreaTV (${OWNER.creatv}) and WinApps (${OWNER.portfolio}).`,
+    `> ${SITE_NAME} (${SITE_ORIGIN}) is a free online media toolkit for converting, compressing, trimming, transcribing, restoring and editing video, images, PDFs and audio in the browser, with Darkroom, a multi-track video editor, and ${MOTION_BRAND}, an SVG animation editor. It was created by and is owned by ${OWNER.name}, who also created CreaTV (${OWNER.creatv}) and WinApps (${OWNER.portfolio}).`,
     '',
     `No signup or install is needed. Files are processed on servers the owner operates, AI runs on his own GPUs rather than third-party AI providers, and uploads are deleted automatically. Every tool page is listed below; the full text of every tool page (what it does, how it works, supported formats, FAQ) is at ${abs('/llms-full.txt')}.`,
     '',
@@ -199,6 +215,8 @@ export function llmsIndexMarkdown(): string {
     ...plansSection(),
     '',
     ...darkroomSection(),
+    '',
+    ...motionSection(),
     '',
     ...voicesSection(),
     '',

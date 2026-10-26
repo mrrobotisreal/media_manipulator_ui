@@ -20,6 +20,8 @@ import { isTranslatorEnv } from '@/lib/translator/mode';
 const CORE_ROUTES = [
   '/',
   '/tools/content-studio',
+  // MM48: Motion's landing page, beside Darkroom (also in the review allowlist).
+  '/tools/motion',
   '/about',
   '/how-it-works',
   '/tutorials',
@@ -31,7 +33,13 @@ const CORE_ROUTES = [
   '/pricing',
   // Mitchell Wintrow's ElevenLabs voices, playable in eight languages.
   '/voices',
+  // MM47's open-source licence notices (mediabunny MPL-2.0, anime.js, fflate);
+  // indexable in translated locales, listed here by MM48.
+  '/licenses',
 ] as const;
+
+/** Tool pages already emitted as core routes, so the tool lists skip them. */
+const CORE_TOOL_SLUGS = new Set(['content-studio', 'motion']);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // MM52: a translator deployment lists nothing.
@@ -52,7 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const toolEntries = REVIEW_INDEXED_TOOL_SLUGS.filter(
-    (slug) => slug !== 'content-studio',
+    (slug) => !CORE_TOOL_SLUGS.has(slug),
   ).map((slug) => ({
     url: new URL('/tools/' + slug, SITE_ORIGIN).toString(),
     lastModified: now,
@@ -65,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const seen = new Set<string>(toolEntries.map((e) => e.url));
   const fullToolEntries = TOOL_PAGES.map((t) => t.slug)
-    .filter((slug) => slug !== 'content-studio')
+    .filter((slug) => !CORE_TOOL_SLUGS.has(slug))
     .map((slug) => ({
       url: new URL('/tools/' + slug, SITE_ORIGIN).toString(),
       lastModified: now,
