@@ -16,18 +16,31 @@
  * Nothing changed → the base document itself is returned (same reference), so
  * `mutate` records no history entry. With no tracks and autokey off this is
  * exactly MM42's behaviour: the edited document IS the result.
+ *
+ * MM45 (`lib/vector/advanced.ts`):
+ *   - `strokeDashoffset` and `d` fold like the MM44 layer properties (autokey
+ *     never starts them; the animator panel does);
+ *   - the sampled transform of a layer on a motion path includes the path
+ *     offset, so it is taken off (`withoutMotion`) before folding: a drag of
+ *     a moving layer shifts its own offset from the path;
+ *   - an animated gradient stop field or blur `stdDeviation` edited in the
+ *     sampled defs gets a keyframe on its track; the static value stays.
  */
+import { motionExtras, motionPathData, motionPointAt, parseStopProperty, trackBlurFilter, trackGradient, withoutMotion } from '@/lib/vector/advanced';
+import { renormalizeMorphTrack } from '@/lib/vector/animators';
 import { resolveTransform } from '@/lib/vector/geometry';
 import { findTrack, pruneTracks, upsertKeyframe } from '@/lib/vector/keyframes';
 import {
   EDITABLE_PROPERTIES,
+  SAMPLED_LAYER_PROPERTIES,
   baseValue,
   isTransformProperty,
   transformField,
   type AnimatableLayer,
-  type EditableProperty,
+  type SampledLayerProperty,
 } from '@/lib/vector/properties';
-import { forEachLayer, type Layer, type VectorDoc, type VectorTransform } from '@/lib/vector/vectorTypes';
+import { sampleTrack } from '@/lib/vector/sampleTrack';
+import { forEachLayer, type Layer, type VectorDefs, type VectorDoc, type VectorTransform } from '@/lib/vector/vectorTypes';
 
 const sameValue = (a: number | string, b: number | string) => a === b;
 
@@ -38,7 +51,7 @@ function layerMap(doc: VectorDoc): Map<string, Layer> {
 }
 
 /** Copy property `p` of `from` (the base layer) onto `to`, keeping "unset" unset. */
-function restoreProp(to: AnimatableLayer, from: AnimatableLayer, p: EditableProperty): AnimatableLayer {
+function restoreProp(to: AnimatableLayer, from: AnimatableLayer, p: SampledLayerProperty): AnimatableLayer {
   if (isTransformProperty(p)) {
     const field = transformField(p);
     const src = resolveTransform(from.transform);
@@ -98,28 +111,45 @@ export function applyAtTime(base: VectorDoc, sampled: VectorDoc, edited: VectorD
   const sampledLayers = layerMap(sampled);
   let animations = base;
   const keyed = (id: string, p: string) => findTrack(base, id, p) !== undefined;
+  const autokeyable = new Set<string>(EDITABLE_PROPERTIES);
+  const motion = motionOffsets(base, t);
+  /** Layers whose morph track got an edited key (re-normalised after the fold). */
+  const morphed = new Set<string>();
 
   const fold = (layers: Layer[]): Layer[] =>
     layers.map((l) => {
       let next: Layer = l.type === 'group' ? { ...l, children: fold(l.children) } : l;
       const b = baseLayers.get(l.id);
-      const s = sampledLayers.get(l.id);
+      let s = sampledLayers.get(l.id);
       if (!b || !s || b.type !== l.type || next.type === 'raw' || b.type === 'raw' || s.type === 'raw') return next;
-      for (const p of EDITABLE_PROPERTIES) {
+      const mo = motion.get(l.id);
+      if (mo) {
+        // Compare and fold in the layer's own frame (the path offset taken off).
+        next = { ...next, transform: withoutMotion(next.transform, mo.point, mo.autoOrient) } as Layer;
+        s = { ...s, transform: withoutMotion(s.transform, mo.point, mo.autoOrient) } as Layer;
+      }
+      for (const p of SAMPLED_LAYER_PROPERTIES) {
         const after = baseValue(next as AnimatableLayer, p);
         const before = baseValue(s as AnimatableLayer, p);
-        const changed = !sameValue(after, before);
+        const changed = !sameValue(after, before) && !(typeof after === 'number' && typeof before === 'number' && Math.abs(after - before) < 1e-9);
         if (keyed(l.id, p)) {
-          if (changed) animations = upsertKeyframe(animations, l.id, p, t, after);
+          if (changed) {
+            animations = upsertKeyframe(animations, l.id, p, t, after);
+            if (p === 'd') morphed.add(l.id);
+          }
           next = restoreProp(next as AnimatableLayer, b as AnimatableLayer, p);
-        } else if (autokey && changed) {
+        } else if (mo && isTransformProperty(p) && !changed) {
+          // Unchanged by the edit: keep the base value exactly (no float drift from the round trip).
+          next = restoreProp(next as AnimatableLayer, b as AnimatableLayer, p);
+        } else if (autokey && changed && autokeyable.has(p)) {
           animations = upsertKeyframe(animations, l.id, p, t, after);
           next = restoreProp(next as AnimatableLayer, b as AnimatableLayer, p);
         }
       }
       // An identity transform the restore produced on a layer that had none.
-      if (b.transform === undefined && next.transform !== undefined && sameTransform(next.transform, undefined)) {
-        const { transform: _drop, ...rest } = next;
+      const nl = next as AnimatableLayer;
+      if (b.transform === undefined && nl.transform !== undefined && sameTransform(nl.transform, undefined)) {
+        const { transform: _drop, ...rest } = nl;
         void _drop;
         next = rest as Layer;
       }
@@ -127,6 +157,7 @@ export function applyAtTime(base: VectorDoc, sampled: VectorDoc, edited: VectorD
     });
 
   const layers = fold(edited.layers);
+  for (const id of morphed) animations = renormalizeMorphTrack(animations, id);
   const mapDefs = <T extends { layers: Layer[] }>(items: T[], baseItems: T[]): T[] =>
     items.map((it, i) => {
       const ls = fold(it.layers);
@@ -134,8 +165,10 @@ export function applyAtTime(base: VectorDoc, sampled: VectorDoc, edited: VectorD
       const same = bi && ls.length === bi.layers.length && ls.every((l, j) => l === bi.layers[j]);
       return same && sameDefShell(it, bi) ? bi : { ...it, layers: ls };
     });
+  const folded = foldDefs(base, sampled, edited.defs, t, animations);
+  animations = folded.doc;
   const defs = {
-    ...edited.defs,
+    ...folded.defs,
     masks: mapDefs(edited.defs.masks, base.defs.masks),
     clipPaths: mapDefs(edited.defs.clipPaths, base.defs.clipPaths),
     symbols: mapDefs(edited.defs.symbols, base.defs.symbols),
@@ -165,4 +198,72 @@ function docUnchanged(a: VectorDoc, b: VectorDoc): boolean {
   const { layers: _4, defs: _5, animations: _6, ...rb } = b;
   void [_1, _2, _3, _4, _5, _6];
   return JSON.stringify(ra) === JSON.stringify(rb);
+}
+
+/** Motion-path offset at t for every layer with a motion track (first track per layer). */
+function motionOffsets(base: VectorDoc, t: number) {
+  const out = new Map<string, { point: { x: number; y: number; angle: number }; autoOrient: boolean }>();
+  for (const tr of base.animations) {
+    if (tr.property !== 'motionPath' || tr.keyframes.length === 0 || out.has(tr.layerId)) continue;
+    const d = motionPathData(base, tr);
+    const v = sampleTrack(tr, Math.min(Math.max(0, t), base.duration));
+    const point = d && typeof v === 'number' ? motionPointAt(d, v) : null;
+    if (point) out.set(tr.layerId, { point, autoOrient: motionExtras(tr).autoOrient === true });
+  }
+  return out;
+}
+
+/**
+ * Animated defs fields (gradient stop colour / offset, blur stdDeviation):
+ * an edit of the sampled value becomes a keyframe at t on its track, and the
+ * stored (static) value stays as in `base`.
+ */
+function foldDefs(base: VectorDoc, sampled: VectorDoc, editedDefs: VectorDefs, t: number, docIn: VectorDoc): { defs: VectorDefs; doc: VectorDoc } {
+  let doc = docIn;
+  let gradients = editedDefs.gradients;
+  let filters = editedDefs.filters;
+  const seen = new Set<string>();
+  for (const tr of base.animations) {
+    if (tr.keyframes.length === 0) continue;
+    const stop = parseStopProperty(tr.property);
+    if (stop) {
+      const g = trackGradient(base, tr);
+      if (!g) continue;
+      const key = `${g.id}\u0000${tr.property}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const e = gradients.find((x) => x.id === g.id)?.stops[stop.index];
+      const smp = sampled.defs.gradients.find((x) => x.id === g.id)?.stops[stop.index];
+      const orig = g.stops[stop.index];
+      if (!e || !smp || !orig) continue;
+      const after = e[stop.field];
+      if (after !== smp[stop.field]) doc = upsertKeyframe(doc, tr.layerId, tr.property, t, after);
+      if (after !== orig[stop.field]) {
+        gradients = gradients.map((x) =>
+          x.id === g.id ? { ...x, stops: x.stops.map((st, i) => (i === stop.index ? { ...st, [stop.field]: orig[stop.field] } : st)) } : x,
+        );
+      }
+      continue;
+    }
+    if (tr.property === 'filter.blur') {
+      const id = trackBlurFilter(base, tr.layerId);
+      if (!id || seen.has(`f\u0000${id}`)) continue;
+      seen.add(`f\u0000${id}`);
+      const e = filters.find((x) => x.id === id);
+      const smp = sampled.defs.filters.find((x) => x.id === id);
+      const orig = base.defs.filters.find((x) => x.id === id);
+      if (!e || !smp || !orig) continue;
+      if (e.stdDeviation !== smp.stdDeviation) doc = upsertKeyframe(doc, tr.layerId, tr.property, t, e.stdDeviation);
+      if (e.stdDeviation !== orig.stdDeviation) filters = filters.map((x) => (x.id === id ? { ...x, stdDeviation: orig.stdDeviation } : x));
+    }
+  }
+  const same = <T>(a: T[], b: T[]) => a.length === b.length && a.every((v, i) => v === b[i] || JSON.stringify(v) === JSON.stringify(b[i]));
+  return {
+    doc,
+    defs: {
+      ...editedDefs,
+      gradients: same(gradients, base.defs.gradients) ? base.defs.gradients : gradients,
+      filters: same(filters, base.defs.filters) ? base.defs.filters : filters,
+    },
+  };
 }

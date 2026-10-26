@@ -806,7 +806,13 @@
       "opacity": "Opacity",
       "fill": "Fill",
       "stroke": "Stroke",
-      "strokeWidth": "Stroke width"
+      "strokeWidth": "Stroke width",
+      "strokeDashoffset": "Draw on (dash offset)",
+      "d": "Shape (morph)",
+      "motionPath": "Motion path",
+      "stopColor": "Gradient stop {{n}} colour",
+      "stopOffset": "Gradient stop {{n}} position",
+      "blur": "Blur"
     },
     "timeline": {
       "title": "Timeline",
@@ -836,7 +842,9 @@
       "addKeyHere": "Add a {{property}} keyframe at the playhead",
       "removeKeyHere": "Remove the {{property}} keyframe at the playhead",
       "key": "{{property}} keyframe at {{time}}",
-      "layerKey": "{{layer}} keyframes at {{time}}"
+      "layerKey": "{{layer}} keyframes at {{time}}",
+      "maskContent": "Mask: {{layer}}",
+      "clipContent": "Clip: {{layer}}"
     },
     "easing": {
       "title": "Easing",

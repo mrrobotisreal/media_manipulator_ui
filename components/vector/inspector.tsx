@@ -31,7 +31,7 @@ import { selectionBounds, setLayerTransform } from '@/lib/vector/transformOps';
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import type { Gradient, Layer, VectorDoc, VectorTransform } from '@/lib/vector/vectorTypes';
 import { cn } from '@/lib/utils';
-import { propertyKey } from './timeline';
+import { propertyLabel } from './timeline';
 
 /**
  * Inspector: position/size/rotation/anchor, fill/stroke/stroke width/opacity,
@@ -256,7 +256,7 @@ export function KeyToggle({ layerId, property }: { layerId: string; property: Ed
   const time = useVectorStore((s) => s.time);
   const keyedNow = !!track?.keyframes.some((k) => k.t === time);
   const state = keyedNow ? 'key' : track ? 'animated' : 'static';
-  const label = t(propertyKey(property));
+  const label = propertyLabel(t, property);
   const action = keyedNow ? t('vector.timeline.removeKeyHere', { property: label }) : t('vector.timeline.addKeyHere', { property: label });
   return (
     <button

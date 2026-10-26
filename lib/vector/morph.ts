@@ -199,6 +199,7 @@ export function normalizeMorph(from: string, to: string): MorphSetResult {
 // interpolation
 // ---------------------------------------------------------------------------
 
+const PATH_START = /^\s*[Mm]\s*[-+.\d]/;
 const NUM = /[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g;
 
 interface PathTemplate {
@@ -224,7 +225,8 @@ function template(d: string): PathTemplate {
 /** Same command letters and separators, same number count: interpolable number by number. */
 export function morphCompatible(a: string, b: string): boolean {
   if (a === b) return true;
-  if (!/^\s*M/i.test(a) || !/^\s*M/i.test(b)) return false;
+  // Path data starts with a move AND a number ("maroon" is a colour, not a path).
+  if (!PATH_START.test(a) || !PATH_START.test(b)) return false;
   const ta = template(a);
   const tb = template(b);
   if (ta.nums.length !== tb.nums.length || ta.parts.length !== tb.parts.length) return false;
