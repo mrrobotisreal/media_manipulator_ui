@@ -297,6 +297,7 @@ export const WorkbenchPanel: React.FC<WorkbenchPanelProps> = ({
           onClick={() => setCollapsedPersist(false)}
           aria-label={CHROME.openPanel}
           aria-expanded={false}
+          lang="en"
           data-workbench-handle=""
           className={cn(
             'flex h-28 w-7 items-center justify-center border border-border bg-background text-[11px] font-medium text-muted-foreground shadow-md',
@@ -317,6 +318,7 @@ export const WorkbenchPanel: React.FC<WorkbenchPanelProps> = ({
       data-workbench-panel=""
       data-side={side}
       dir={dir}
+      lang="en"
       aria-label={CHROME.panelLabel}
       style={{ width }}
       className={cn(

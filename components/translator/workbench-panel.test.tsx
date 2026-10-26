@@ -316,3 +316,28 @@ describe('dock side, RTL and keyboard (criteria 10, 11)', () => {
     expect(model.valueOf(model.table.entries[0].id)).toBe('von <script>alert(1)</script>');
   });
 });
+
+describe('a11y (criterion 11)', () => {
+  it('chrome is lang=en; target fields carry the locale lang and dir; English source is LTR; no focus trap', async () => {
+    const model = await makeModel('ar-SA', [shard('ar-SA', 'interface/components', { a: 'Hello' })]);
+    render(
+      <>
+        <button>before</button>
+        <WorkbenchPanel model={model} controller={nullController} dir="rtl" lang="ar-SA" initialCollapsed={false} virtualRect={{ width: 400, height: 900 }} />
+        <button>after</button>
+      </>,
+    );
+    const panel = document.querySelector('[data-workbench-panel]')!;
+    expect(panel.getAttribute('lang')).toBe('en');
+    fireEvent.mouseDown(screen.getByRole('tab', { name: 'All keys' }));
+    const field = screen.getByLabelText('Translation for a');
+    expect(field.getAttribute('lang')).toBe('ar-SA');
+    expect(field.getAttribute('dir')).toBe('rtl');
+    expect(field.closest('[data-entry-id]')!.querySelector('p[lang="en"]')!.getAttribute('dir')).toBe('ltr');
+    // Nothing intercepts Tab: focus leaves the panel normally.
+    field.focus();
+    fireEvent.keyDown(field, { key: 'Tab' });
+    screen.getByText('after').focus();
+    expect(document.activeElement!.textContent).toBe('after');
+  });
+});
