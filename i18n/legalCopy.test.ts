@@ -92,6 +92,23 @@ describe("legal retention copy", () => {
         expect(payments.paragraphs?.[0] ?? "").not.toMatch(/(?<![\d.,])(7|70)(?![\d.,])/);
       });
 
+      // MM69 decision 8: USD or EUR at identical numerals, and the mm-currency cookie.
+      it("names both currencies in ToS §10 and the mm-currency cookie in Privacy §1.6 and the what-changed note", () => {
+        const first = payments.paragraphs?.[0] ?? "";
+        expect(first).toContain("$");
+        expect(first).toContain("€");
+        expect(flatten(paymentData)).toContain("mm-currency");
+        expect(flatten(paymentData)).toMatch(/usd/);
+        expect(flatten(paymentData)).toMatch(/eur/);
+        expect(pages.legalCommon.whatChangedBody).toContain("mm-currency");
+        expect(pages.legalCommon.whatChangedBody).toContain("1.6");
+        expect(pages.legalCommon.whatChangedBody).toMatch(/\b10\b/);
+        if (code.toLowerCase() === "en-us" || !translated) return;
+        expect(first).not.toBe(en.termsOfService.sections[9].paragraphs?.[0]);
+        expect(flatten(paymentData)).not.toBe(flatten(en.privacyPolicy.sections[0].subsections?.[5]));
+        expect(pages.legalCommon.whatChangedBody).not.toBe(en.legalCommon.whatChangedBody);
+      });
+
       it("explains the period-end downgrade and keeps the 14-day refund", () => {
         expect(payments.paragraphs).toHaveLength(6);
         expect(flatten(payments)).toMatch(/14/);
@@ -153,9 +170,16 @@ describe("legal retention copy", () => {
   it("en-us ToS §10 names $15 and $150 for Pro beside $8 and $80 for Premium (MM40)", () => {
     const payments = en.termsOfService.sections[9];
     const first = payments.paragraphs?.[0] ?? "";
-    expect(first).toContain("$8 per month or $80 per year for Premium");
-    expect(first).toContain("$15 per month or $150 per year for Pro");
+    expect(first).toContain("Premium is $8 or €8 per month, or $80 or €80 per year");
+    expect(first).toContain("Pro is $15 or €15 per month, or $150 or €150 per year");
+    expect(first).toContain("billed in US dollars or euros");
+    expect(first).toContain("euros by default to visitors in Europe");
+    expect(first).toContain("cannot change while it is active");
     expect(first).toContain("no tax is added on top");
+    const billing = flatten(en.privacyPolicy.sections[0].subsections?.[5]);
+    expect(billing).toContain("the currency you are billed in (US dollars or euros)");
+    expect(billing).toContain("mm-currency");
+    expect(en.legalCommon.whatChangedBody).toContain("mm-currency");
     expect(flatten(payments)).toMatch(/downgrade from Pro to Premium takes effect at the end of the period/);
     expect(flatten(payments)).toMatch(/nothing is refunded for the rest of that period/);
     expect(flatten(payments)).toMatch(/within 14 days.*This applies to Premium and to Pro/);
