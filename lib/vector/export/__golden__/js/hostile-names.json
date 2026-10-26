@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 120,
+    "height": 80
+  },
+  "duration": 1000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "rect",
+      "id": "box",
+      "name": "he said \"hi\" 'yo' `tick` ${x} */ /* \n</script> ]]> {} \\ <b>&amp;",
+      "x": 5,
+      "y": 5,
+      "width": 40,
+      "height": 30,
+      "fill": "#222222"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "name": "`${evil}`",
+      "x": 10,
+      "y": 60,
+      "text": "he said \"hi\" 'yo' `tick` ${x} */ /* \n</script> ]]> {} \\ <b>&amp;",
+      "fontFamily": "Arial",
+      "fill": "#000000"
+    },
+    {
+      "type": "raw",
+      "id": "opaque",
+      "name": "raw",
+      "markup": "<g id=\"inner\"><circle cx=\"5\" cy=\"5\" r=\"2\"/></g>",
+      "ids": [
+        "inner"
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "box",
+      "property": "opacity",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 1,
+          "easing": "linear"
+        },
+        {
+          "t": 1000,
+          "value": 0.5,
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}
