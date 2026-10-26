@@ -1,45 +1,45 @@
 {
   "filePreview": {
-    "previewAlt": "Preview"
+    "previewAlt": "Anteprima"
   },
   "pdfForm": {
-    "outputFormatTooltip": "About the output image format",
-    "dpiTooltip": "About render quality (DPI)",
-    "pagesTooltip": "About page selection",
-    "qualityTooltip": "About JPG quality"
+    "outputFormatTooltip": "Informazioni sul formato immagine di output",
+    "dpiTooltip": "Informazioni sulla qualità di rendering (DPI)",
+    "pagesTooltip": "Informazioni sulla selezione delle pagine",
+    "qualityTooltip": "Informazioni sulla qualità JPG"
   },
   "ad": {
-    "label": "Advertisement",
-    "close": "Close advertisement"
+    "label": "Annuncio",
+    "close": "Chiudi l'annuncio"
   },
   "modals": {
-    "close": "Close",
-    "previousStep": "Previous step",
-    "nextStep": "Next step"
+    "close": "Chiudi",
+    "previousStep": "Passaggio precedente",
+    "nextStep": "Passaggio successivo"
   },
   "imageCropModal": {
-    "topLeftHandle": "Top-left handle",
-    "topRightHandle": "Top-right handle",
-    "bottomLeftHandle": "Bottom-left handle",
-    "bottomRightHandle": "Bottom-right handle"
+    "topLeftHandle": "Maniglia in alto a sinistra",
+    "topRightHandle": "Maniglia in alto a destra",
+    "bottomLeftHandle": "Maniglia in basso a sinistra",
+    "bottomRightHandle": "Maniglia in basso a destra"
   },
   "mediaTrimModal": {
-    "scrubber": "Trim scrubber",
-    "playToggle": "Play / pause preview"
+    "scrubber": "Cursore di ritaglio",
+    "playToggle": "Riproduci / metti in pausa l'anteprima"
   },
   "overlays": {
-    "canvas": "Selection canvas",
-    "removeRegion": "Remove this region",
-    "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "canvas": "Area di selezione",
+    "removeRegion": "Rimuovi questa regione",
+    "previousPage": "Pagina precedente",
+    "nextPage": "Pagina successiva"
   },
   "quotaMeter": {
-    "gauge": "{{used}} / {{limit}} daily operations used",
-    "gaugeUnlimited": "No daily operation limit",
-    "openUpgrade": "See how to get a bigger daily allowance",
-    "openAccount": "Open your account"
+    "gauge": "{{used}} / {{limit}} operazioni giornaliere usate",
+    "gaugeUnlimited": "Nessun limite giornaliero di operazioni",
+    "openUpgrade": "Scopri come ottenere una quota giornaliera più ampia",
+    "openAccount": "Apri il tuo account"
   },
   "accountMenu": {
-    "open": "Account menu"
+    "open": "Menu account"
   }
 }

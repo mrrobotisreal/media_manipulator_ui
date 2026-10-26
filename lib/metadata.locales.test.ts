@@ -11,7 +11,7 @@ const untranslated = locales.filter((l) => !l.translated);
 
 describe("SEO for untranslated locales", () => {
   it("covers the 11 MM51 locales", () => {
-    expect(untranslated).toHaveLength(10);
+    expect(untranslated).toHaveLength(9);
   });
 
   it("hreflang alternates contain no untranslated locale", () => {
