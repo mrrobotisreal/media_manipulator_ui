@@ -24,6 +24,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-26-darkroom-smoother-playback',
+    date: '2026-10-26',
+    title: 'Smoother Darkroom playback',
+    body: 'Darkroom preview no longer freezes on a frame while the audio keeps playing. Before, a slow connection could leave the picture stuck for seconds, or until you paused and pressed play again. Now the music and dialogue set the pace, the picture catches up on its own, and the next clip starts loading before the cut. Video imported from today seeks faster in the preview. To speed up seeking on a clip imported earlier, import it again.',
+    tags: ['fixed', 'improved'],
+    links: [{ label: 'Open Darkroom', href: '/tools/content-studio' }],
+  },
+  {
     id: '2026-10-25-media-manipulator-pro',
     date: '2026-10-25',
     title: 'Media Manipulator Pro',
