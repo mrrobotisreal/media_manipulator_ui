@@ -5,6 +5,8 @@
  */
 import type { FrameEnv, RasterCanvas, RasterContext } from './frames';
 
+export const PNG_SIGNATURE = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+
 export interface FakeCanvasLog {
   draws: number;
   fills: string[];
@@ -39,7 +41,14 @@ export function fakeCanvas(width: number, height: number, log: FakeCanvasLog = {
       fillStyle = v;
     },
   };
-  return { width, height, getContext: () => ctx, log };
+  return {
+    width,
+    height,
+    getContext: () => ctx,
+    // A tiny fake PNG: the real signature, then the draw count (frames differ).
+    convertToBlob: async () => new Blob([PNG_SIGNATURE, new Uint8Array([log.draws & 255])], { type: 'image/png' }),
+    log,
+  };
 }
 
 export interface FakeEnvLog {

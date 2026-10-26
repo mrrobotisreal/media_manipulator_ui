@@ -106,6 +106,10 @@ export function bakeFrameSvg(doc: VectorDoc, tMs: number, size: FrameSize): stri
 export interface RasterCanvas {
   width: number;
   height: number;
+  /** OffscreenCanvas. */
+  convertToBlob?(options?: { type?: string }): Promise<Blob>;
+  /** HTMLCanvasElement. */
+  toBlob?(callback: (blob: Blob | null) => void, type?: string): void;
   getContext(kind: '2d', options?: { colorSpace?: 'srgb'; willReadFrequently?: boolean; alpha?: boolean }): RasterContext | null;
 }
 
@@ -203,6 +207,18 @@ export function createFrameRenderer(doc: VectorDoc, size: FrameSize, options: Fr
       return ctx.getImageData(0, 0, size.width, size.height).data;
     },
   };
+}
+
+/**
+ * Encode the canvas as PNG (the browser's encoder: sRGB, no EXIF or other
+ * metadata chunks; decision 9). Asynchronous, so it does not block the page.
+ */
+export function canvasToPng(canvas: RasterCanvas): Promise<Blob> {
+  if (canvas.convertToBlob) return canvas.convertToBlob({ type: 'image/png' });
+  return new Promise((resolve, reject) => {
+    if (!canvas.toBlob) return reject(new Error('canvas cannot encode PNG'));
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('PNG encoding failed'))), 'image/png');
+  });
 }
 
 /**
