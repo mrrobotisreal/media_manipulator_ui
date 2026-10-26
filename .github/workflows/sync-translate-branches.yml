@@ -4,15 +4,16 @@
 #   1. `list` reads the translator locales from i18n/locales.ts via
 #      `node scripts/list-locales.mjs --matrix` (never hand-listed).
 #   2. `ff` (one matrix job per locale) fast-forwards `translate/<prefix>` to
-#      `main` (creating it if missing), then pokes that locale's Vercel Deploy
-#      Hook, because a push made with GITHUB_TOKEN may not trigger a Vercel build.
+#      `main` (creating it if missing), then asks the Vercel REST API for a
+#      Preview deployment of that branch: Vercel does not build bot pushes,
+#      and Deploy Hooks are capped at 5 per project (MM55, 2026-10-26).
 #
-# Deploy-hook secret name: `VERCEL_DEPLOY_HOOK_<PREFIX>` with the prefix
-# uppercased and `-` turned into `_` (de -> VERCEL_DEPLOY_HOOK_DE,
-# pt-br -> VERCEL_DEPLOY_HOOK_PT_BR). The matrix carries the name (`hook`).
+# Secrets: VERCEL_TOKEN (a Vercel access token), VERCEL_PROJECT_ID, and
+# VERCEL_TEAM_ID when the project belongs to a team. Missing secrets skip the
+# deploy step with a ::notice:: (the branch sync itself still runs).
 #
 # Before the MM55 infra setup, the first run creates the 16 mirror branches and
-# logs a ::notice:: per missing hook secret (no failure). The workflow fails
+# logs a ::notice:: per locale while the Vercel secrets are missing (no failure). The workflow fails
 # only if a mirror branch has diverged from `main` (someone committed to it:
 # a policy violation). It never force-pushes; the push is fast-forward only.
 #
@@ -109,16 +110,38 @@ jobs:
           fi
           echo "Fast-forwarding ${branch} to origin/main"
           push
-      - name: Trigger Vercel deploy hook
+      - name: Deploy translate/${{ matrix.prefix }} on Vercel
+        # Vercel does not build a branch that a GitHub Actions bot pushed
+        # (found 2026-10-26: the 16 mirror branches got no deployment), and
+        # Deploy Hooks are capped at 5 per project. So ask the Vercel REST API
+        # (POST /v13/deployments, gitSource = this repo + branch) for a Preview
+        # deployment of the branch. It is a git deployment of that branch, so it
+        # gets the branch-scoped Preview env vars and the branch domain.
+        # Needs repo secrets VERCEL_TOKEN and VERCEL_PROJECT_ID (+ VERCEL_TEAM_ID
+        # when the project is under a team); without them it skips with a notice.
         env:
-          HOOK: ${{ secrets[matrix.hook] }}
-          HOOK_NAME: ${{ matrix.hook }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          PREFIX: ${{ matrix.prefix }}
+          REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          if [ -z "${HOOK}" ]; then
-            echo "::notice::Secret ${HOOK_NAME} is not set; skipping the deploy hook for this locale."
+          if [ -z "${VERCEL_TOKEN}" ] || [ -z "${VERCEL_PROJECT_ID}" ]; then
+            echo "::notice::VERCEL_TOKEN / VERCEL_PROJECT_ID are not set; skipping the Vercel deployment of translate/${PREFIX}."
             exit 0
           fi
-          echo "::add-mask::${HOOK}"
-          curl -fsS --retry 2 -X POST "${HOOK}" -o /dev/null
-          echo "Deploy hook triggered"
+          echo "::add-mask::${VERCEL_TOKEN}"
+          query="forceNew=1"
+          if [ -n "${VERCEL_TEAM_ID}" ]; then query="${query}&teamId=${VERCEL_TEAM_ID}"; fi
+          body="$(jq -n --arg project "${VERCEL_PROJECT_ID}" --arg org "${REPO%%/*}" --arg repo "${REPO#*/}" --arg ref "translate/${PREFIX}" \
+            '{name: $project, project: $project, gitSource: {type: "github", org: $org, repo: $repo, ref: $ref}}')"
+          status="$(curl -sS -o /tmp/vercel-deploy.json -w '%{http_code}' -X POST \
+            "https://api.vercel.com/v13/deployments?${query}" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" -H 'Content-Type: application/json' \
+            --data "${body}")"
+          if [ "${status}" -ge 200 ] && [ "${status}" -lt 300 ]; then
+            echo "Vercel deployment created for translate/${PREFIX}: $(jq -r '.url // "?"' /tmp/vercel-deploy.json)"
+          else
+            echo "::warning::Vercel did not create a deployment for translate/${PREFIX} (HTTP ${status}): $(jq -r '.error.message // .error.code // "no message"' /tmp/vercel-deploy.json 2>/dev/null)"
+          fi

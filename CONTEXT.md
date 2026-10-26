@@ -126,7 +126,7 @@ A translator's pending value for one key, kept in IndexedDB `mm-translator-draft
 The `main` commit SHA plus per-file blob SHAs from `GET /api/translator/base`, stored per locale beside the drafts. It is fetched on the first panel open of a session that has no pending drafts, and on "Refresh base". MM54's conflict check compares it with `main` at submit.
 
 **Mirror branch**:
-A `translate/<prefix>` branch: an exact copy of `main` with no commits of its own, which Vercel builds as that locale's translator deployment. `.github/workflows/sync-translate-branches.yml` creates or fast-forwards all 16 on every push to `main` (never `--force`; a diverged mirror fails the job), then pokes `VERCEL_DEPLOY_HOOK_<PREFIX>`. Translator edits never land on a mirror branch; they arrive as pull requests.
+A `translate/<prefix>` branch: an exact copy of `main` with no commits of its own, which Vercel builds as that locale's translator deployment. `.github/workflows/sync-translate-branches.yml` creates or fast-forwards all 16 on every push to `main` (never `--force`; a diverged mirror fails the job), then asks the Vercel REST API for a Preview deployment of each branch (Vercel does not build bot pushes, and Deploy Hooks are capped at 5 per project). Translator edits never land on a mirror branch; they arrive as pull requests.
 _Avoid_: "translation branch" (that is the `i18n/<prefix>/…` PR branch).
 
 **Translator submit**:
