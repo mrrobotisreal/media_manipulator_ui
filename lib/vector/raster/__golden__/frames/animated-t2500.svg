@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect data-vector-background="" x="0" y="0" width="400" height="300" fill="#0a0b0d"/>
+  <defs>
+    <linearGradient id="trail-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#a855f7" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <circle id="ball" data-name="Ball" cx="0" cy="0" r="20" fill="#3b82f6" transform="translate(262.216 270.575) rotate(53.973)"/>
+  <path id="trail" d="M40 150C120 40 280 40 360 150" fill="none" stroke="url(#trail-grad)" stroke-width="4" stroke-dasharray="400" stroke-dashoffset="0"/>
+</svg>
