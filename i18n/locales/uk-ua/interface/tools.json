@@ -101,7 +101,18 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
-      "moreActions": "More actions"
+      "moreActions": "More actions",
+      "rebuildPreview": "Перебудувати попередній перегляд",
+      "rebuildPreviewHint": "Заново кодує попередній перегляд кліпу з оригіналу, щоб перемотування й переходи спрацьовували швидше. Монтаж і експорт не змінюються.",
+      "rebuilding": "перебудова попереднього перегляду… {{percent}}%",
+      "rebuildFailed": "Не вдалося перебудувати попередній перегляд. Кліп зберігає поточний.",
+      "rebuildUnavailable": "Перебудова попереднього перегляду на цьому сервері поки недоступна.",
+      "rebuildRateLimited": "За останню годину перебудовано забагато попередніх переглядів. Решту спробуйте пізніше.",
+      "rebuildOldHint": "Кліпів, імпортованих раніше: {{count}}. У попередньому перегляді вони перемотуються повільно.",
+      "rebuildAll": "Перебудувати",
+      "rebuildAllTitle": "Перебудувати старі попередні перегляди?",
+      "rebuildAllBody": "Darkroom заново закодує попередній перегляд кліпів ({{count}}) з оригінальних файлів, по кілька за раз. Можна продовжувати монтаж: кожен кліп перемкнеться на новий попередній перегляд, коли той буде готовий. Монтаж і експорт не змінюються.",
+      "rebuildAllConfirm": "Перебудувати попередні перегляди"
     },
     "preview": {
       "empty": "Додайте кліп, щоб переглянути монтаж",

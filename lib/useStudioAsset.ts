@@ -9,6 +9,12 @@ import { useStudioStore } from '@/lib/studioStore';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import type { StudioBackend } from '@/lib/studio/studioBackend';
 import { studioUploadQueue, type UploadJobContext } from '@/lib/studio/uploadQueue';
+import {
+  isProxyRebuildCandidate,
+  proxyRebuildAvailable,
+  rebuildOutcomeForStatus,
+  type RebuildRequestOutcome,
+} from '@/lib/studio/proxyRebuild';
 
 const EXT_MIME: Record<string, string> = {
   mp4: 'video/mp4', mov: 'video/quicktime', m4v: 'video/x-m4v', webm: 'video/webm',
@@ -327,4 +333,70 @@ export function useReverseProxy() {
   );
 
   return { available: backend.capabilities.reverseProxy, request };
+}
+
+/**
+ * useRebuildStudioProxies (MM71): POST /assets/:id/rebuild-proxy for each id,
+ * one at a time (the server queues encodes, two at once, and dedupes per
+ * asset), marking each asset `proxyRebuild: processing` with its job; the
+ * ProxyRebuildWatchers (mounted by the preview surface) follow the jobs and
+ * switch the asset to its new proxy generation. Stops at the first 429 or at
+ * a missing route (an API older than MM71). `available` is false where the
+ * backend has no rebuild route (CreaTV) and on translator deployments.
+ */
+export function useRebuildStudioProxies() {
+  const backend = useStudioBackend();
+  const setAssetProxyRebuild = useStudioStore((s) => s.setAssetProxyRebuild);
+  const { t } = useLocalization('interface');
+  const available = proxyRebuildAvailable(backend);
+
+  const rebuild = React.useCallback(
+    async (assetIds: string[]): Promise<number> => {
+      if (!proxyRebuildAvailable(backend) || !backend.rebuildProxyUrl) return 0;
+      let started = 0;
+      for (const id of assetIds) {
+        const entry = useStudioStore.getState().assets[id];
+        if (!entry || !isProxyRebuildCandidate(entry)) continue;
+        setAssetProxyRebuild(id, { state: 'processing', progress: 0 });
+        let outcome: RebuildRequestOutcome = 'failed';
+        let detail = '';
+        try {
+          const res = await backend.fetch(backend.rebuildProxyUrl(id), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...backend.authHeaders() },
+            body: '{}',
+          });
+          outcome = rebuildOutcomeForStatus(res.status);
+          if (outcome === 'started') {
+            const body = (await res.json()) as { jobId?: unknown; proxyGeneration?: unknown };
+            if (typeof body.jobId === 'string' && typeof body.proxyGeneration === 'number') {
+              setAssetProxyRebuild(id, { state: 'processing', jobId: body.jobId, generation: body.proxyGeneration, progress: 0 });
+              started++;
+              continue;
+            }
+            outcome = 'failed';
+          } else {
+            detail = await res.text().catch(() => '');
+          }
+        } catch (err) {
+          detail = (err as Error).message;
+        }
+        // Not started: the asset keeps its current proxy, untouched.
+        setAssetProxyRebuild(id, outcome === 'failed' ? { state: 'failed' } : undefined);
+        if (outcome === 'unavailable') {
+          toast.error(t('contentStudio.mediaBin.rebuildUnavailable'));
+          break;
+        }
+        if (outcome === 'rate-limited') {
+          toast.error(t('contentStudio.mediaBin.rebuildRateLimited'));
+          break;
+        }
+        toast.error(t('contentStudio.mediaBin.rebuildFailed'), { description: detail || undefined });
+      }
+      return started;
+    },
+    [backend, setAssetProxyRebuild, t],
+  );
+
+  return { available, rebuild };
 }

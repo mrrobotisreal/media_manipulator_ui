@@ -101,7 +101,18 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
-      "moreActions": "More actions"
+      "moreActions": "More actions",
+      "rebuildPreview": "בנייה מחדש של התצוגה המקדימה",
+      "rebuildPreviewHint": "מקודד מחדש את התצוגה המקדימה של הקליפ מהקובץ המקורי, כך שגלילה וקפיצה מגיבות מהר יותר. העריכה והייצוא לא משתנים.",
+      "rebuilding": "בונה מחדש תצוגה מקדימה… {{percent}}%",
+      "rebuildFailed": "לא ניתן היה לבנות מחדש את התצוגה המקדימה. הקליפ שומר על התצוגה הנוכחית.",
+      "rebuildUnavailable": "בנייה מחדש של תצוגות מקדימות עדיין לא זמינה בשרת הזה.",
+      "rebuildRateLimited": "נבנו מחדש יותר מדי תצוגות מקדימות בשעה האחרונה. נסו את השאר מאוחר יותר.",
+      "rebuildOldHint": "{{count}} קליפים שיובאו קודם קופצים לאט בתצוגה המקדימה.",
+      "rebuildAll": "בנייה מחדש",
+      "rebuildAllTitle": "לבנות מחדש תצוגות מקדימות ישנות?",
+      "rebuildAllBody": "Darkroom מקודד מחדש את התצוגה המקדימה של {{count}} קליפים מהקבצים המקוריים, כמה בכל פעם. אפשר להמשיך לערוך; כל קליפ עובר לתצוגה המקדימה החדשה שלו כשהיא מוכנה. העריכה והייצוא לא משתנים.",
+      "rebuildAllConfirm": "בנייה מחדש של תצוגות מקדימות"
     },
     "preview": {
       "empty": "הוסיפו קליפ כדי לצפות בעריכה שלכם",

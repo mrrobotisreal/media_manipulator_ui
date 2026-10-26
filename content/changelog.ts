@@ -24,6 +24,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-26-darkroom-rebuild-previews',
+    date: '2026-10-26',
+    title: 'Faster seeking for clips you imported earlier',
+    body: 'Video clips imported before today now seek as quickly in the Darkroom preview as new ones, without importing them again. The media bin shows how many clips have an older preview: choose Rebuild to re-encode all of them from the original files, or pick Rebuild preview from a single clip\'s menu. You can keep editing while they rebuild, and each clip switches to its new preview when it is ready. Your edit and your exports are not changed.',
+    tags: ['improved'],
+    links: [{ label: 'Open Darkroom', href: '/tools/content-studio' }],
+  },
+  {
     id: '2026-10-26-darkroom-smoother-playback',
     date: '2026-10-26',
     title: 'Smoother Darkroom playback',

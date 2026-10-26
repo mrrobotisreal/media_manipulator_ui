@@ -101,7 +101,18 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
-      "moreActions": "More actions"
+      "moreActions": "More actions",
+      "rebuildPreview": "Rebuild preview",
+      "rebuildPreviewHint": "Re-encode this clip's preview from the original so scrubbing and seeking respond faster. Your edit and export are not affected.",
+      "rebuilding": "rebuilding preview… {{percent}}%",
+      "rebuildFailed": "Couldn't rebuild the preview. The clip keeps its current preview.",
+      "rebuildUnavailable": "Rebuilding previews isn't available on this server yet.",
+      "rebuildRateLimited": "Too many previews rebuilt in the last hour. Try the rest later.",
+      "rebuildOldHint": "{{count}} clip(s) imported earlier seek slowly in the preview.",
+      "rebuildAll": "Rebuild",
+      "rebuildAllTitle": "Rebuild old previews?",
+      "rebuildAllBody": "Darkroom re-encodes the preview of {{count}} clip(s) from the original files, a few at a time. You can keep editing; each clip switches to its new preview when it is ready. Your edit and export are not affected.",
+      "rebuildAllConfirm": "Rebuild previews"
     },
     "preview": {
       "empty": "Add a clip to preview your edit",

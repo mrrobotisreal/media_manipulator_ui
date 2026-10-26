@@ -101,7 +101,18 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
-      "moreActions": "More actions"
+      "moreActions": "More actions",
+      "rebuildPreview": "Пересобрать предпросмотр",
+      "rebuildPreviewHint": "Заново кодирует предпросмотр клипа из оригинала, чтобы перемотка и переходы срабатывали быстрее. Монтаж и экспорт не меняются.",
+      "rebuilding": "пересборка предпросмотра… {{percent}}%",
+      "rebuildFailed": "Не удалось пересобрать предпросмотр. У клипа остаётся прежний.",
+      "rebuildUnavailable": "Пересборка предпросмотра на этом сервере пока недоступна.",
+      "rebuildRateLimited": "За последний час пересобрано слишком много предпросмотров. Остальные попробуйте позже.",
+      "rebuildOldHint": "Клипов, импортированных раньше: {{count}}. В предпросмотре они перематываются медленно.",
+      "rebuildAll": "Пересобрать",
+      "rebuildAllTitle": "Пересобрать старые предпросмотры?",
+      "rebuildAllBody": "Darkroom заново закодирует предпросмотр клипов ({{count}}) из оригинальных файлов, по несколько за раз. Можно продолжать монтаж: каждый клип переключится на новый предпросмотр, когда тот будет готов. Монтаж и экспорт не меняются.",
+      "rebuildAllConfirm": "Пересобрать предпросмотры"
     },
     "preview": {
       "empty": "Добавьте клип, чтобы просмотреть монтаж",
