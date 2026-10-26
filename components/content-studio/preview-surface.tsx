@@ -54,7 +54,26 @@ import {
   type QualityLevel,
 } from '@/lib/studio/qualityGovernor';
 import { editSummary, perf } from '@/lib/studio/telemetry';
-import { clipSpeed, isFreezeClip, isReversed, maintainsPitch, reverseProxyReady, reversedProxyTime } from '@/lib/studio/speed';
+import {
+  clipSpeed,
+  isFreezeClip,
+  isReversed,
+  maintainsPitch,
+  reverseProxyReady,
+  reversedProxyTime,
+  sourceTimeAt,
+} from '@/lib/studio/speed';
+import {
+  DEFAULT_SEEK_LATENCY_MS,
+  createSlotSync,
+  masterClockStep,
+  nextLatencyEstimate,
+  noteSeekIssued,
+  planSync,
+  upcomingClips,
+  WARM_LOOKAHEAD_S,
+  type SlotSyncState,
+} from '@/lib/studio/playbackSync';
 import ReverseWatchers from './reverse-watchers';
 
 // hexWithOpacity → rgba() string for the caption background box.
@@ -165,7 +184,13 @@ const isQualityLevel = (v: string | null): v is QualityLevel =>
 interface Slot {
   clipId: string | null;
   srcAssetId: string | null;
+  /** MM70: a free slot pre-loaded (src + first frame) for a clip about to start. */
+  warmFor: string | null;
 }
+
+// MM70: an element in the `error` state (e.g. a failed Range request) is dead
+// until its src is reloaded; reload at most this often per slot.
+const ERROR_RELOAD_COOLDOWN_MS = 2000;
 
 /**
  * One track's mixer chain (part 19):
@@ -213,7 +238,14 @@ interface AudioGraph {
  * Audio graph — one GainNode per track (mute) and a per-slot gain (clip volume)
  * — so mixing is honored live.
  *
- * KNOWN LIMITATION: driving HTMLMediaElement.currentTime from a wall clock
+ * MM70: the playhead advances on the AUDIO OUTPUT clock (masterClockStep),
+ * and each element follows it through lib/studio/playbackSync.ts — rate
+ * nudges for small drift, one latency-led seek with a cooldown for large
+ * drift, automatic recovery from lost seeks / stuck buffers — and the next
+ * clip on a track is warmed in a spare slot before its cut. Audio is the
+ * master and never stutters; video catches up.
+ *
+ * KNOWN LIMITATION: driving HTMLMediaElement.currentTime from a timeline clock
  * drifts on long timelines (decode jitter, variable seek latency), and clip
  * boundaries can flash when the proxy element reloads a new source. The robust
  * fix is to decode into AudioBuffers and schedule them on the AudioContext
@@ -224,7 +256,9 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   const { t } = useLocalization('interface');
   const containerRef = React.useRef<HTMLDivElement>(null);
   const poolEls = React.useRef<(HTMLVideoElement | null)[]>(Array(POOL_SIZE).fill(null));
-  const slots = React.useRef<Slot[]>(Array.from({ length: POOL_SIZE }, () => ({ clipId: null, srcAssetId: null })));
+  const slots = React.useRef<Slot[]>(
+    Array.from({ length: POOL_SIZE }, () => ({ clipId: null, srcAssetId: null, warmFor: null })),
+  );
   const audio = React.useRef<AudioGraph>({
     ctx: null,
     sources: Array(POOL_SIZE).fill(null),
@@ -239,6 +273,8 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   });
   const rafRef = React.useRef<number | null>(null);
   const lastTsRef = React.useRef(0);
+  // MM70 master clock: the last audio-output time the playhead advanced to.
+  const lastAudioClockRef = React.useRef<number | null>(null);
   const meterCanvasRef = React.useRef<HTMLCanvasElement>(null);
   const meterHold = React.useRef({ l: -60, r: -60 });
   // Scratch buffers for the level meter, sized to the analyser's fftSize on
@@ -284,6 +320,13 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
   // timestamp that turns into the seek-latency perf sample.
   const seekIntentAt = React.useRef<(number | null)[]>(Array(POOL_SIZE).fill(null));
   const pendingSeekTarget = React.useRef<(number | null)[]>(Array(POOL_SIZE).fill(null));
+  // MM70 drift/seek policy state (lib/studio/playbackSync.ts): per-slot seek
+  // bookkeeping, plus a seek-latency estimate per media kind that sizes the
+  // seek lead. Kept apart because a long-GOP video seek costs far more than an
+  // AAC audio seek; one shared estimate would aim audio seconds ahead.
+  const slotSync = React.useRef<SlotSyncState[]>(Array.from({ length: POOL_SIZE }, createSlotSync));
+  const seekLatencyMs = React.useRef({ video: DEFAULT_SEEK_LATENCY_MS, audio: DEFAULT_SEEK_LATENCY_MS });
+  const errorReloadAt = React.useRef<number[]>(Array(POOL_SIZE).fill(-Infinity));
 
   const applyGovernor = React.useCallback((next: GovernorState) => {
     govRef.current = next;
@@ -779,21 +822,44 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         }
       });
 
+      // Source key a clip plays from (part 17: reversed clips with a ready
+      // reversed proxy play that file instead).
+      const srcKeyOf = (clip: (typeof active)[number]['clip'], entry: (typeof st.assets)[string]): string =>
+        isReversed(clip) && reverseProxyReady(entry) ? `${clip.assetId}:r` : clip.assetId;
+
       // Assign/refresh a slot per active clip whose proxy is ready.
       const gl = glOkRef.current;
+      const nowMs = performance.now();
       const clipSlots = new Map<string, number>();
       for (const a of active) {
         const entry = st.assets[a.clip.assetId];
         if (!entry || entry.status !== 'ready') continue;
         // Still images never take a decoder slot: they draw from the bitmap cache.
         if (entry.asset.mediaKind === 'image') continue;
+        // Slot choice (MM70): the clip's own slot, else the slot warmed for it,
+        // else a free slot already holding the same source (a split clip or a
+        // cut back to the same file keeps its buffered element instead of a
+        // cold src reload), else any free slot not warming another clip.
+        const want = srcKeyOf(a.clip, entry);
         let i = slots.current.findIndex((s) => s.clipId === a.clip.id);
+        if (i < 0) i = slots.current.findIndex((s) => s.clipId === null && s.warmFor === a.clip.id);
+        if (i < 0) i = slots.current.findIndex((s) => s.clipId === null && s.srcAssetId === want);
+        if (i < 0) i = slots.current.findIndex((s) => s.clipId === null && s.warmFor === null);
         if (i < 0) i = slots.current.findIndex((s) => s.clipId === null);
         if (i < 0) continue; // pool exhausted — skip extra concurrent clip
         const slot = slots.current[i];
         const el = poolEls.current[i];
         if (!el) continue;
+        // A newly claimed slot starts with clean sync bookkeeping: a warm-up
+        // or the previous clip's seek must not count as this clip's seek.
+        // A warm-up seek still in flight counts as issued now, so it is waited
+        // for rather than presumed lost.
+        if (slot.clipId !== a.clip.id) {
+          slotSync.current[i] =
+            el.seeking || el.readyState < 3 ? noteSeekIssued(createSlotSync(), nowMs, false) : createSlotSync();
+        }
         slot.clipId = a.clip.id;
+        slot.warmFor = null;
         clipSlots.set(a.clip.id, i);
 
         // --- Speed controls (part 17) ---
@@ -807,39 +873,85 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         const reverseReady = reversed && reverseProxyReady(entry);
         const rate = clipSpeed(a.clip);
         const useReversedSrc = reverseReady;
-        const srcKey = useReversedSrc ? `${a.clip.assetId}:r` : a.clip.assetId;
+        const srcKey = want;
+        // A dead element (network/decode error) never recovers by seeking:
+        // reload its source, rate-limited (MM70).
+        if (el.error && slot.srcAssetId === srcKey && nowMs - errorReloadAt.current[i] > ERROR_RELOAD_COOLDOWN_MS) {
+          errorReloadAt.current[i] = nowMs;
+          slot.srcAssetId = null;
+        }
+        let freshSrc = false;
         if (slot.srcAssetId !== srcKey) {
           slot.srcAssetId = srcKey;
           el.src = useReversedSrc ? studioProxyReversedUrl(a.clip.assetId) : studioProxyUrl(a.clip.assetId);
           seekIntentAt.current[i] = null;
           pendingSeekTarget.current[i] = null;
+          // A fresh src load is the slowest "seek" there is: start the
+          // planner's clock so it waits for the load instead of re-seeking,
+          // without counting the load as a seek-latency sample.
+          slotSync.current[i] = noteSeekIssued(createSlotSync(), nowMs, false);
+          freshSrc = true;
         }
         const mediaDur = Number.isFinite(el.duration) && el.duration > 0 ? el.duration : entry.asset.durationSeconds;
         const targetTime = useReversedSrc ? reversedProxyTime(a.sourceTime, mediaDur) : a.sourceTime;
+        const latKind = entry.asset.mediaKind === 'audio' ? 'audio' : 'video';
+        if (freshSrc) {
+          // Start the load at the right place (the default playback start
+          // position), ahead by the seek lead while playing.
+          try {
+            el.currentTime = playing ? targetTime + (seekLatencyMs.current[latKind] / 1000) * rate : targetTime;
+          } catch {
+            /* applied on the next frame by the planner */
+          }
+        }
         // Stalled = nothing should sound or advance: a held frame, or a reversed clip still building.
         const stalled = frozen || (reversed && !reverseReady);
-        if (el.playbackRate !== rate) el.playbackRate = rate;
         const keepPitch = maintainsPitch(a.clip);
         if (el.preservesPitch !== keepPitch) el.preservesPitch = keepPitch;
         const vals = valuesByClip.get(a.clip.id) ?? clipValuesAt(a.clip, t - a.clip.timelineStart);
-        // The element advances `rate` source-seconds per second, so the drift
-        // tolerance scales with the rate to stay a constant ~timeline slack.
-        const threshold = playing && !stalled ? 0.3 * Math.max(1, rate) : 0.05;
-        if (Math.abs(el.currentTime - targetTime) > threshold) {
-          if (el.seeking) {
-            // One in-flight seek per element: while the decoder is still
-            // seeking, only remember the newest target — the `seeked` handler
-            // re-issues it. Scrubbing used to pile a seek per pointer frame
-            // onto a still-seeking element.
-            pendingSeekTarget.current[i] = targetTime;
-          } else {
-            pendingSeekTarget.current[i] = null;
-            try {
-              seekIntentAt.current[i] = performance.now();
-              el.currentTime = targetTime;
-            } catch {
-              seekIntentAt.current[i] = null; /* element not seekable yet */
-            }
+        // Drift policy (MM70, lib/studio/playbackSync.ts). The playhead is the
+        // master; the element is a slave. Small drift is closed by nudging
+        // playbackRate (video only — audio-only clips are never stretched),
+        // large drift by ONE seek aimed ahead by the measured seek latency,
+        // with a cooldown; an in-flight seek is never stacked on, and a seek
+        // or buffer that never completes is re-kicked. The old policy re-seeked
+        // to the current target every frame past 0.3 s, so any seek slower than
+        // 0.3 s landed behind and re-seeked forever: a frozen picture under
+        // perfectly playing audio until pause/play stopped the target moving.
+        const nudge = a.trackKind === 'video' && entry.asset.mediaKind !== 'audio';
+        const plan = planSync(slotSync.current[i], {
+          el,
+          target: targetTime,
+          baseRate: rate,
+          playing: playing && !stalled,
+          nowMs,
+          latencyMs: seekLatencyMs.current[latKind],
+          maxTime: mediaDur > 0 ? mediaDur : undefined,
+          nudge,
+        });
+        slotSync.current[i] = plan.state;
+        if (plan.latencySampleMs !== undefined) {
+          // Every landed seek (scrub ones too) sizes the lead for the next
+          // playing seek; paused seeks already report telemetry via `seeked`.
+          seekLatencyMs.current[latKind] = nextLatencyEstimate(seekLatencyMs.current[latKind], plan.latencySampleMs);
+          if (playing) perf.sample({ seekLatencyMs: plan.latencySampleMs });
+        }
+        const act = plan.action;
+        if (el.playbackRate !== act.rate) el.playbackRate = act.rate;
+        if (act.kind === 'defer') {
+          // Paused/scrubbing with a seek in flight: remember only the newest
+          // target — the `seeked` handler re-issues it.
+          pendingSeekTarget.current[i] = act.time;
+        } else if (act.kind === 'seek') {
+          pendingSeekTarget.current[i] = null;
+          // Playing-mode seeks report latency through the planner (issue →
+          // playable); paused ones through the `seeked` handler.
+          seekIntentAt.current[i] = act.reason === 'exact' ? nowMs : null;
+          if (act.reason !== 'exact') perf.sample(act.reason === 'stuck' ? { stuckRecovery: true } : { resyncSeek: true });
+          try {
+            el.currentTime = act.time;
+          } catch {
+            seekIntentAt.current[i] = null; /* element not seekable yet */
           }
         }
         if (a.trackKind === 'video') {
@@ -884,6 +996,63 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         } else if (!el.paused) {
           el.pause();
         }
+      }
+
+      // Warm the next clip on each track (MM70): while playing, a free slot
+      // loads a clip that starts within WARM_LOOKAHEAD_S and parks on its
+      // first frame, paused and silent, so the cut plays from a buffered
+      // element instead of a cold src load. Same-source cuts need no warm-up
+      // (the slot choice above reuses the playing element's buffer).
+      if (playing) {
+        const activeSrcs = new Set(slots.current.filter((s) => s.clipId).map((s) => s.srcAssetId));
+        // Only clips inside the lookahead window are collected: this runs per
+        // frame and must stay O(clips) without allocating per clip.
+        const candidates: Array<{ clipId: string; trackId: string; timelineStart: number; clip: (typeof active)[number]['clip'] }> = [];
+        for (const tr of trks) {
+          for (const c of tr.clips) {
+            if (c.timelineStart > t && c.timelineStart <= t + WARM_LOOKAHEAD_S) {
+              candidates.push({ clipId: c.id, trackId: tr.id, timelineStart: c.timelineStart, clip: c });
+            }
+          }
+        }
+        const wanted = new Set<string>();
+        for (const next of upcomingClips(candidates, t)) {
+          if (activeIds.has(next.clipId)) continue;
+          const entry = st.assets[next.clip.assetId];
+          if (!entry || entry.status !== 'ready' || entry.asset.mediaKind === 'image' || next.clip.title) continue;
+          const key = srcKeyOf(next.clip, entry);
+          if (activeSrcs.has(key)) continue;
+          wanted.add(next.clipId);
+          let i = slots.current.findIndex((s) => s.clipId === null && s.warmFor === next.clipId);
+          if (i < 0) i = slots.current.findIndex((s) => s.clipId === null && s.warmFor === null);
+          if (i < 0) break; // pool full: the clip loads on activation, as before
+          const slot = slots.current[i];
+          const el = poolEls.current[i];
+          if (!el) continue;
+          if (slot.warmFor !== next.clipId) {
+            slot.warmFor = next.clipId;
+            silenceSlot(i);
+            el.pause();
+            if (slot.srcAssetId !== key) {
+              slot.srcAssetId = key;
+              el.src = key.endsWith(':r') ? studioProxyReversedUrl(next.clip.assetId) : studioProxyUrl(next.clip.assetId);
+            }
+          }
+          const first = sourceTimeAt(next.clip, next.timelineStart);
+          const dur = Number.isFinite(el.duration) && el.duration > 0 ? el.duration : entry.asset.durationSeconds;
+          const at = key.endsWith(':r') ? reversedProxyTime(first, dur) : first;
+          if (!el.seeking && el.readyState >= 1 && Math.abs(el.currentTime - at) > 0.05) {
+            try {
+              el.currentTime = at;
+            } catch {
+              /* not seekable yet; retried next frame */
+            }
+          }
+        }
+        // A warm slot whose clip is no longer upcoming (seek away, edit) is freed.
+        slots.current.forEach((s) => {
+          if (s.clipId === null && s.warmFor !== null && !wanted.has(s.warmFor)) s.warmFor = null;
+        });
       }
 
       // Track gains: mute + LEVEL-DRIVEN auto-ducking (part 12). The bed gain
@@ -1050,9 +1219,29 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       return;
     }
     lastTsRef.current = performance.now();
+    lastAudioClockRef.current = null;
     const step = (ts: number) => {
-      const dt = (ts - lastTsRef.current) / 1000;
+      const rafDt = (ts - lastTsRef.current) / 1000;
       lastTsRef.current = ts;
+      // Master clock (MM70): advance by the audio output clock when the
+      // context runs (interpolated through getOutputTimestamp so it moves
+      // smoothly between audio callbacks), else by the rAF delta.
+      const ctx = audio.current.ctx;
+      let audioNow: number | null = null;
+      if (ctx && ctx.state === 'running') {
+        audioNow = ctx.currentTime;
+        try {
+          const ots = ctx.getOutputTimestamp?.();
+          if (ots && typeof ots.contextTime === 'number' && typeof ots.performanceTime === 'number' && ots.performanceTime > 0) {
+            audioNow = ots.contextTime + Math.max(0, performance.now() - ots.performanceTime) / 1000;
+          }
+        } catch {
+          /* currentTime stands */
+        }
+      }
+      const clock = masterClockStep(lastAudioClockRef.current, audioNow, rafDt);
+      lastAudioClockRef.current = clock.audio;
+      const dt = clock.dt;
       const st = useStudioStore.getState();
       // `duration` is cached on the store; this used to rescan every clip on
       // every track, every frame (B9).
@@ -1069,7 +1258,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       // Frame measurement + auto-degrade (part 11). The compositor repaints
       // once per rAF, so rAF cadence is the preview frame rate; each completed
       // ~1s window becomes a perf sample and one governor step.
-      const fr = frameStatsPush(frameStatsRef.current, dt * 1000);
+      const fr = frameStatsPush(frameStatsRef.current, rafDt * 1000);
       frameStatsRef.current = fr.stats;
       if (fr.sample) {
         perf.sample({ fps: fr.sample.fps, droppedFrameRatio: fr.sample.droppedFrameRatio });
@@ -1142,9 +1331,14 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         }
         const target = pendingSeekTarget.current[i];
         pendingSeekTarget.current[i] = null;
-        if (target != null && Math.abs(el.currentTime - target) > 0.05) {
+        // Coalesced targets are a paused/scrubbing mechanism only (MM70): while
+        // playing, a target captured before this seek started is already stale
+        // by the seek's own latency — re-issuing it landed behind again and fed
+        // the seek storm. The rAF planner owns playing-mode seeks.
+        if (target != null && !useStudioStore.getState().isPlaying && Math.abs(el.currentTime - target) > 0.05) {
           try {
             seekIntentAt.current[i] = performance.now();
+            slotSync.current[i] = noteSeekIssued(slotSync.current[i], performance.now());
             el.currentTime = target;
             return; // repaint when the re-issued seek lands
           } catch {
@@ -1393,6 +1587,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             }}
             crossOrigin="anonymous"
             playsInline
+            preload="auto"
             className="absolute inset-0 w-full h-full object-contain"
             style={{ opacity: 0 }}
           />

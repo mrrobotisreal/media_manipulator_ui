@@ -441,6 +441,10 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       saveRttBucket: z.string().optional(),
       webglFallback: z.boolean().optional(),
       ttiMsBucket: z.string().optional(),
+      qualityLevel: z.string().optional(),
+      degradeActivations: z.string().optional(),
+      resyncSeeks: z.string().optional(),
+      stuckRecoveries: z.string().optional(),
       host: studioHostEnum.optional(),
     })
     .strict(),
