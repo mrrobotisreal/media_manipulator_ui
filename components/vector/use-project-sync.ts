@@ -54,6 +54,8 @@ export function useProjectSync(opts: {
   signedIn: boolean | null;
   /** Set when the editor opened an account project. */
   initialServer: { id: string; revision: number } | null;
+  /** MM49: a save landed (revision, document bytes), for `vector_project_saved`. */
+  onSaved?: (revision: number, documentBytes: number) => void;
 }): ProjectSync {
   const available = !isIrreversibleActionHidden();
   const [snap, setSnap] = React.useState<SaveStateSnapshot>({ state: 'saved', attempt: 0, nextRetryDelayMs: null });
@@ -64,6 +66,10 @@ export function useProjectSync(opts: {
   const lastThumb = React.useRef(0);
   const lastThumbDoc = React.useRef<object | null>(null);
   const localIdRef = React.useRef<string | null>(null);
+  const onSavedRef = React.useRef(opts.onSaved);
+  React.useEffect(() => {
+    onSavedRef.current = opts.onSaved;
+  }, [opts.onSaved]);
 
   React.useEffect(() => {
     if (!opts.ready || !available) return;
@@ -91,6 +97,7 @@ export function useProjectSync(opts: {
       },
       onSaved: (p, docSaved) => {
         setServer({ id: p.id, revision: p.revision });
+        onSavedRef.current?.(p.revision, p.documentBytes);
         setConflict(null);
         const s = useVectorStore.getState();
         if (s.doc === docSaved) void deleteVectorDraft(p.id);

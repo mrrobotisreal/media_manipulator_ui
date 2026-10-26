@@ -187,3 +187,71 @@ export function hoursSinceSignupBucket(gapMs: number): HoursSinceSignupBucket {
   if (hours < 168) return '1-7d';
   return '7d+';
 }
+
+/* ---------------------------------------------------------------------------
+ * Motion (code name vector, MM49). One definition each; the analytics rollups
+ * (internal/rollup/vector.go) list the ms and bytes vocabularies in this order,
+ * ascending, and docs/EVENT_CATALOG.md documents every boundary.
+ * ------------------------------------------------------------------------- */
+
+/** An export's animated span (`duration_ms`). */
+export function vectorDurationBucket(ms: number): string {
+  if (!(ms > 0)) return '0';
+  if (ms < 1000) return '<1s';
+  if (ms <= 5000) return '1-5s';
+  if (ms <= 10000) return '5-10s';
+  if (ms <= 30000) return '10-30s';
+  if (ms <= 60000) return '30-60s';
+  return '60s+';
+}
+
+/** Output pixel height (`height`). Upper-inclusive at the export presets. */
+export function vectorHeightBucket(px: number): string {
+  if (!(px > 0)) return '0';
+  if (px <= 480) return '<=480';
+  if (px <= 720) return '<=720';
+  if (px <= 1080) return '<=1080';
+  if (px <= 1440) return '<=1440';
+  if (px <= 2160) return '<=2160';
+  return '>2160';
+}
+
+/** Output frame rate (`fps`). */
+export function vectorFpsBucket(fps: number): string {
+  if (!(fps > 0)) return '0';
+  if (fps <= 12) return '<=12';
+  if (fps <= 24) return '<=24';
+  if (fps <= 30) return '<=30';
+  if (fps <= 60) return '<=60';
+  return '>60';
+}
+
+/** Output file or saved document size (`bytes`). */
+export function vectorBytesBucket(bytes: number): string {
+  const kb = bytes / 1024;
+  if (!(kb >= 10)) return '<10kb';
+  if (kb < 100) return '10-100kb';
+  if (kb < 1024) return '100kb-1mb';
+  if (kb < 10 * 1024) return '1-10mb';
+  if (kb < 100 * 1024) return '10-100mb';
+  return '100mb+';
+}
+
+/** Wall-clock export time (`ms`). */
+export function vectorMsBucket(ms: number): string {
+  if (!(ms >= 100)) return '<100ms';
+  if (ms < 1000) return '100ms-1s';
+  if (ms < 5000) return '1-5s';
+  if (ms < 30000) return '5-30s';
+  if (ms < 120000) return '30s-2m';
+  return '2m+';
+}
+
+/** A saved project's revision (`revision`). */
+export function vectorRevisionBucket(revision: number): string {
+  if (revision <= 1) return '1';
+  if (revision <= 5) return '2-5';
+  if (revision <= 20) return '6-20';
+  if (revision <= 100) return '21-100';
+  return '100+';
+}

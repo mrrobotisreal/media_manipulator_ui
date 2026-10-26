@@ -146,6 +146,23 @@ export const EVENTS = {
   STUDIO_EDIT_SUMMARY: 'studio_edit_summary',
   STUDIO_PERF_SAMPLE: 'studio_perf_sample',
 
+  // --- Motion (code name vector, MM49) ----------------------------------------
+  // The chromeless /motion editor. Sent only with the visitor's stored analytics
+  // consent (lib/vector/analytics.ts); the server twin of the export counter,
+  // `server_vector_export_counted`, lives in the Go catalogs like `server_*`.
+  VECTOR_EDITOR_OPENED: 'vector_editor_opened',
+  VECTOR_PROJECT_CREATED: 'vector_project_created',
+  VECTOR_IMPORT_COMPLETED: 'vector_import_completed',
+  VECTOR_IMPORT_FAILED: 'vector_import_failed',
+  VECTOR_TOOL_USED: 'vector_tool_used',
+  VECTOR_KEYFRAME_ADDED: 'vector_keyframe_added',
+  VECTOR_ANIMATOR_USED: 'vector_animator_used',
+  VECTOR_EXPORT_STARTED: 'vector_export_started',
+  VECTOR_EXPORT_COMPLETED: 'vector_export_completed',
+  VECTOR_EXPORT_FAILED: 'vector_export_failed',
+  VECTOR_EXPORT_GATED: 'vector_export_gated',
+  VECTOR_PROJECT_SAVED: 'vector_project_saved',
+
   // --- Quality --------------------------------------------------------------
   CLIENT_ERROR: 'client_error',
   WEB_VITAL: 'web_vital',
@@ -261,6 +278,20 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   // frequently emitted at page teardown, where anything slower may never flush.
   studio_edit_summary: PRIORITY_HIGH,
   studio_perf_sample: PRIORITY_LOW,
+
+  // Motion (vector, MM49)
+  vector_editor_opened: PRIORITY_HIGH,
+  vector_project_created: PRIORITY_HIGH,
+  vector_import_completed: PRIORITY_HIGH,
+  vector_import_failed: PRIORITY_HIGH,
+  vector_tool_used: PRIORITY_LOW,
+  vector_keyframe_added: PRIORITY_NORMAL,
+  vector_animator_used: PRIORITY_NORMAL,
+  vector_export_started: PRIORITY_CRITICAL,
+  vector_export_completed: PRIORITY_CRITICAL,
+  vector_export_failed: PRIORITY_CRITICAL,
+  vector_export_gated: PRIORITY_CRITICAL,
+  vector_project_saved: PRIORITY_NORMAL,
 
   // Quality
   client_error: PRIORITY_HIGH,
@@ -837,6 +868,117 @@ export interface StudioPerfSampleProps extends StudioHostProp {
   stuckRecoveries?: string;
 }
 
+/* ---------------------------------------------------------------------------
+ * Motion (code name vector) — MM49, design MOTION_SVG_ANIMATOR.md §3.8.
+ *
+ * snake_case like the funnel (the design's names). WITHOUT EXCEPTION enums or
+ * buckets from `lib/analytics/buckets.ts` (`vector*Bucket`): no layer counts,
+ * byte sizes, durations or timings in the raw. Never a filename or project
+ * name. Built only by `lib/vector/analytics.ts`.
+ * ------------------------------------------------------------------------- */
+
+/** How the editor opened: /motion/new, a browser-only draft, or an account project. */
+export type VectorEditorSource = 'new' | 'draft' | 'account';
+/** What a new project's first content was. `vectorize` is reserved (no editor UI yet). */
+export type VectorCreateSource = 'blank' | 'svg_import' | 'lottie_import' | 'vectorize';
+export type VectorImportFormat = 'svg' | 'lottie' | 'motion_json';
+export type VectorDrawTool = 'rect' | 'ellipse' | 'line' | 'pen' | 'text';
+export type VectorAnimatorName = 'drawOn' | 'motionPath' | 'morph' | 'gradient' | 'maskClip' | 'blur';
+/** The export dialog's format ids (js and ts are both counted as the server's js_ts). */
+export type VectorExportFormatProp =
+  | 'svg_static'
+  | 'svg_animated'
+  | 'lottie'
+  | 'react_tsx'
+  | 'js'
+  | 'ts'
+  | 'flutter'
+  | 'gif'
+  | 'png_sequence'
+  | 'mp4'
+  | 'webm';
+export type VectorRuntimeProp = 'css' | 'anime';
+export type VectorUpgradePathProp = 'signup' | 'premium' | 'pro' | 'none';
+export type VectorExportFailReason =
+  | 'locked'
+  | 'cap'
+  | 'limit'
+  | 'unavailable'
+  | 'unsupported'
+  | 'unsafe'
+  | 'codec'
+  | 'too_large'
+  | 'cancelled'
+  | 'error';
+
+export interface VectorEditorOpenedProps {
+  source: VectorEditorSource;
+}
+
+export interface VectorProjectCreatedProps {
+  source: VectorCreateSource;
+}
+
+export interface VectorImportProps {
+  format: VectorImportFormat;
+  /** countBucket of the imported layers. */
+  layers: string;
+  /** countBucket of import warnings (unsupported features). */
+  unsupported_count: string;
+}
+
+export type VectorImportCompletedProps = VectorImportProps;
+export type VectorImportFailedProps = VectorImportProps;
+
+export interface VectorToolUsedProps {
+  tool: VectorDrawTool;
+}
+
+export interface VectorKeyframeAddedProps {
+  /** Track property, gradient stop indices folded (`gradientStop.color`). */
+  property: string;
+}
+
+export interface VectorAnimatorUsedProps {
+  animator: VectorAnimatorName;
+}
+
+export interface VectorExportProps {
+  format: VectorExportFormatProp;
+  runtime?: VectorRuntimeProp;
+  /** vectorDurationBucket of the exported span. */
+  duration_ms: string;
+  /** vectorHeightBucket of the output height ('0' = not applicable). */
+  height: string;
+  /** vectorFpsBucket of the output rate ('0' = not applicable). */
+  fps: string;
+  /** vectorBytesBucket of the produced file (completed only). */
+  bytes?: string;
+  /** vectorMsBucket of the wall-clock export time (completed / failed). */
+  ms?: string;
+}
+
+export type VectorExportStartedProps = VectorExportProps;
+export type VectorExportCompletedProps = VectorExportProps;
+
+export interface VectorExportFailedProps extends VectorExportProps {
+  reason: VectorExportFailReason;
+}
+
+export interface VectorExportGatedProps {
+  /** The dialog format, or `import_lottie` for a refused Lottie import. */
+  format: VectorExportFormatProp | 'import_lottie';
+  tier: Tier;
+  upgrade_path: VectorUpgradePathProp;
+}
+
+export interface VectorProjectSavedProps {
+  /** vectorRevisionBucket. */
+  revision: string;
+  /** vectorBytesBucket of the saved document. */
+  bytes: string;
+}
+
 export interface ClientErrorProps {
   message: string;
   /** Hash of message+stack, used to dedupe an error loop down to one event. */
@@ -944,6 +1086,19 @@ export interface EventPropsMap {
   studio_image_clip_extended: StudioImageClipExtendedProps;
   studio_edit_summary: StudioEditSummaryProps;
   studio_perf_sample: StudioPerfSampleProps;
+
+  vector_editor_opened: VectorEditorOpenedProps;
+  vector_project_created: VectorProjectCreatedProps;
+  vector_import_completed: VectorImportCompletedProps;
+  vector_import_failed: VectorImportFailedProps;
+  vector_tool_used: VectorToolUsedProps;
+  vector_keyframe_added: VectorKeyframeAddedProps;
+  vector_animator_used: VectorAnimatorUsedProps;
+  vector_export_started: VectorExportStartedProps;
+  vector_export_completed: VectorExportCompletedProps;
+  vector_export_failed: VectorExportFailedProps;
+  vector_export_gated: VectorExportGatedProps;
+  vector_project_saved: VectorProjectSavedProps;
 
   client_error: ClientErrorProps;
   web_vital: WebVitalProps;

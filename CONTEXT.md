@@ -58,6 +58,13 @@ The single list of what Lottie cannot carry in either direction (`lib/vector/exp
 **Code export** (MM46):
 A counted export of the animation as source code: React component (`.tsx`, server format `react_tsx`), JS or TS module (`js_ts`), Flutter widget (`.dart`, `flutter`). Pure functions with byte-golden fixtures; strings from the document reach the source only through the language's string-literal escaper (`jsString`, `dartString`). The Flutter export is **native** (`flutter_svg` + `AnimationController`, when `canExportNativeFlutter`: transform / opacity / colour / stroke width only) or a **WebView player** (`webview_flutter`, every other document; opaque background).
 
+**Format gate** (MM49):
+The advisory, ladder-aware lock on a Motion export format (`lib/vector/gating.ts`). `resolveFormatGate(tier, format, tiers)` reads the served `/api/tiers` table: allowed, or locked with the lowest plan that has the format and one CTA (`signup` / `premium` / `pro` / `none`); `resolveLimitCta` routes a server 403/422/429 the same way. Never numbers in code; Pro and operator never see an upsell; the server's `CheckExport` stays the authority.
+_Avoid_: "paywall" (nothing is enforced client-side).
+
+**Stored-consent analytics** (MM49):
+How the chromeless Motion editor sends `vector_*` events (`lib/vector/analytics.ts`): only when the visitor's stored analytics decision (`mm-consent-v2`) is `granted`. No banner, no region default, no pre-consent buffer, no consent record written, nothing on translator deployments; `X-MM-Visitor-ID` goes on the export count only with consent.
+
 **Raster export / frame-baked SVG** (MM47):
 A counted export rendered frame by frame in the browser: GIF (`gif`), PNG sequence zip (`png_sequence`), MP4 (`mp4`), WebM (`webm`). Each frame is a **frame-baked SVG**, `serializeSvg(sampleDoc(doc, t))` with every animated property resolved to a constant at `t = i / fps` (never the wall clock), drawn through a Blob-URL `<img>` onto one reused canvas (`lib/vector/raster/frames.ts`). The document is re-validated and the exact SVG text re-checked before any `<img>`, so external references never load and the canvas is never tainted. GIF uses the in-house encoder (`gifEncoder.ts`, one global palette, Worker); video uses WebCodecs + `mediabunny` (MPL-2.0, unmodified, lazy-loaded). Options are pre-clamped to the caller's tier caps (`clampRasterOptions`); the **capability probe** (`probeRaster`) asks `VideoEncoder.isConfigSupported` per codec.
 _Avoid_: "render" alone (Darkroom renders on the server), "screen recording".
