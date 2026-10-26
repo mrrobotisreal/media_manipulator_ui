@@ -82,3 +82,25 @@ is no server-side sampling). It is the value table for `sampleTrack` /
 optional and canonical-absent when the animation loops. The Go sanitizer passes
 it through today as an unknown doc key (additive rule); MM45 or MM49 should add
 it to `docSpec` as an optional boolean so a non-boolean value is rejected.
+
+## MM45 (advanced animators): what the Go sanitizer should add (MM49)
+
+MM45 adds **no new document fields** and **no new contract fixtures**: every
+property it animates was already in `TRACK_PROPERTY_PATTERN` (MM42), and the
+shared fixtures are unchanged (`animated.json` already carried
+`strokeDashoffset`, `gradientStop[1].color` and `motionPath` + `extras`).
+What MM45 fixes is the *meaning* of values Go currently passes through
+unchecked. Optional tightening for `internal/vector/doc.go` (none is needed
+for correctness; the UI refuses bad values at export time):
+
+| Where | Rule | Notes |
+|---|---|---|
+| `loop` (doc, MM44) | optional boolean | reject non-boolean |
+| `animations[].extras` when `property == "motionPath"` | object with optional `pathId` (id pattern, must name a layer in the tree), optional `d` (string ≤ 2 000 000, path-data characters only `[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\-\s]`), optional `autoOrient` (boolean) | unknown extras keys stay allowed (additive) |
+| `animations[].extras.gradientId` on `gradientStop[i].*` | optional id that names a gradient | the UI falls back to the layer's fill/stroke gradient |
+| keyframe `value` when `property == "d"` | string, path-data characters only (as above) | a morph key; length cap as today |
+| keyframe `value` when `property` is `motionPath`, `strokeDashoffset`, `filter.blur`, `gradientStop[i].offset` | number | `filter.blur` ≥ 0; `gradientStop[i].offset` in 0..1 (clamped on render) |
+| keyframe `value` when `property == "gradientStop[i].color"` | string matching `COLOR_PATTERN` | same rule as stop colours |
+
+Morph tracks store **normalised** `d` keys (same command sequence in every
+key); Go does not need to check that, a non-matching pair simply holds.
