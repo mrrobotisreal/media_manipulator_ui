@@ -580,7 +580,7 @@
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "Was sich am 26.10.2026 geändert hat",
-    "whatChangedBody": "Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin."
+    "whatChangedBody": "Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin. Abschnitt 8 erklärt nun außerdem, dass von uns beauftragte Übersetzer ihre Arbeit als GitHub-Pull-Requests über die GitHub-App der CreaTV Ltd. einreichen und dass diese Einreichungen nur Übersetzungstext und keine personenbezogenen Daten über Besucher enthalten."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -946,7 +946,8 @@
           "Unternehmensnachfolger im Falle einer Fusion, Übernahme, Finanzierung, Umstrukturierung oder eines Vermögensverkaufs."
         ],
         "afterBullets": [
-          "Wir verkaufen keine hochgeladenen Dateien."
+          "Wir verkaufen keine hochgeladenen Dateien.",
+          "Von uns beauftragte Übersetzer reichen ihre Arbeit als GitHub-Pull-Requests ein, die von der GitHub-App der CreaTV Ltd. erstellt werden; diese Einreichungen enthalten nur Übersetzungstext und keine personenbezogenen Daten über Besucher."
         ]
       },
       {

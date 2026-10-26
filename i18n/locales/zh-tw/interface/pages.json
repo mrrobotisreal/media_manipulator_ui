@@ -580,7 +580,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "What changed on 2026-10-26",
-    "whatChangedBody": "We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies."
+    "whatChangedBody": "We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -946,7 +946,8 @@
           "business successors in the event of a merger, acquisition, financing, reorganization, or sale of assets."
         ],
         "afterBullets": [
-          "We do not sell uploaded files."
+          "We do not sell uploaded files.",
+          "Translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App; those submissions contain only translation text, no personal data about visitors."
         ]
       },
       {

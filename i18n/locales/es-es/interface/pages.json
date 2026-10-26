@@ -580,7 +580,7 @@
     "emailLabel": "Correo electrónico:",
     "websiteLabel": "Sitio web:",
     "whatChangedTitle": "Qué cambió el 26/10/2026",
-    "whatChangedBody": "Añadimos Motion, nuestro editor de animación SVG (en beta). La Política de Privacidad tiene una nueva sección 1.9: los proyectos y las exportaciones de Motion se crean en tu navegador y no se suben para crearlos; los proyectos que guardas en tu cuenta se almacenan como los proyectos de Darkroom, siguen el periodo de conservación que elijas y pueden eliminarse; y de cada exportación contabilizada registramos su formato, tamaño, duración y hora para aplicar el cupo diario. Las secciones 3, 3.3 y 3.4 ahora nombran los proyectos de Motion. La Sección 13 de los Términos confirma que tus exportaciones de Motion te pertenecen, explica que algunas exportaciones contienen código de anime.js con licencia MIT cuyo aviso debe conservarse, y remite a nuestra página de licencias de código abierto. Todo lo de la actualización del 25/10/2026 (el plan Pro, los cambios de plan y los reembolsos) sigue vigente."
+    "whatChangedBody": "Añadimos Motion, nuestro editor de animación SVG (en beta). La Política de Privacidad tiene una nueva sección 1.9: los proyectos y las exportaciones de Motion se crean en tu navegador y no se suben para crearlos; los proyectos que guardas en tu cuenta se almacenan como los proyectos de Darkroom, siguen el periodo de conservación que elijas y pueden eliminarse; y de cada exportación contabilizada registramos su formato, tamaño, duración y hora para aplicar el cupo diario. Las secciones 3, 3.3 y 3.4 ahora nombran los proyectos de Motion. La Sección 13 de los Términos confirma que tus exportaciones de Motion te pertenecen, explica que algunas exportaciones contienen código de anime.js con licencia MIT cuyo aviso debe conservarse, y remite a nuestra página de licencias de código abierto. Todo lo de la actualización del 25/10/2026 (el plan Pro, los cambios de plan y los reembolsos) sigue vigente. La sección 8 indica ahora también que los traductores que contratamos envían su trabajo como pull requests de GitHub creadas por la GitHub App de CreaTV Ltd., y que esos envíos contienen solo texto de traducción y ningún dato personal de los visitantes."
   },
   "privacyPolicy": {
     "title": "Política de privacidad",
@@ -946,7 +946,8 @@
           "sucesores empresariales en caso de fusión, adquisición, financiación, reorganización o venta de activos."
         ],
         "afterBullets": [
-          "No vendemos los archivos subidos."
+          "No vendemos los archivos subidos.",
+          "Los traductores que contratamos envían su trabajo como pull requests de GitHub creadas por la GitHub App de CreaTV Ltd.; esos envíos contienen solo texto de traducción, sin datos personales de los visitantes."
         ]
       },
       {
