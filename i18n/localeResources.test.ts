@@ -34,7 +34,7 @@ describe("client resources", () => {
   );
 
   it("byte-copy locales resolve to the English strings", () => {
-    expect(getClientResources("it-IT")).toEqual(resources[defaultLocale]);
+    expect(getClientResources("ko-KR")).toEqual(resources[defaultLocale]);
   });
 
   it("a server-passed bundle is usable synchronously at init", () => {

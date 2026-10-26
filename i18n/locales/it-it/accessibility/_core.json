@@ -1,56 +1,56 @@
 {
   "topNav": {
-    "homeLink": "Media Manipulator home",
-    "openMenu": "Open menu",
-    "github": "View on GitHub",
+    "homeLink": "Home di Media Manipulator",
+    "openMenu": "Apri il menu",
+    "github": "Vedi su GitHub",
     "winapps": "WinApps",
     "creatv": "CreaTV",
-    "toggleTheme": "Toggle theme",
-    "languageMenu": "Change language",
-    "navIcon": "Media Manipulator Icon",
-    "winappsLogo": "WinApps Logo",
-    "creatvLogo": "CreaTV Logo",
+    "toggleTheme": "Cambia tema",
+    "languageMenu": "Cambia lingua",
+    "navIcon": "Icona di Media Manipulator",
+    "winappsLogo": "Logo WinApps",
+    "creatvLogo": "Logo CreaTV",
     "githubLogo": "GitHub"
   },
   "footer": {
-    "homeLink": "Media Manipulator home",
-    "navIcon": "Media Manipulator Icon"
+    "homeLink": "Home di Media Manipulator",
+    "navIcon": "Icona di Media Manipulator"
   },
   "home": {
-    "popularTools": "Popular tools",
-    "closePreview": "Close preview"
+    "popularTools": "Strumenti più usati",
+    "closePreview": "Chiudi l'anteprima"
   },
   "notFound": {
-    "recoveryRoutes": "Recovery routes"
+    "recoveryRoutes": "Rotte di recupero"
   },
   "loading": {
-    "label": "Loading"
+    "label": "Caricamento"
   },
   "languageSelector": {
-    "trigger": "Change language",
-    "icon": "Translate icon"
+    "trigger": "Cambia lingua",
+    "icon": "Icona di traduzione"
   },
   "common": {
-    "close": "Close",
-    "open": "Open",
-    "loading": "Loading",
-    "moreOptions": "More options"
+    "close": "Chiudi",
+    "open": "Apri",
+    "loading": "Caricamento",
+    "moreOptions": "Altre opzioni"
   },
   "transcribeForm": {
-    "formatTooltip": "About transcript output format",
-    "languageTooltip": "About language hint"
+    "formatTooltip": "Informazioni sul formato di output della trascrizione",
+    "languageTooltip": "Informazioni sul suggerimento della lingua"
   },
   "audioForm": {
-    "aiTooltip": "About AI Audio Tools"
+    "aiTooltip": "Informazioni sugli strumenti audio IA"
   },
   "videoForm": {
-    "aiTooltip": "About AI Video Tools"
+    "aiTooltip": "Informazioni sugli strumenti video IA"
   },
   "imageForm": {
-    "aiTooltip": "About AI Image Tools",
-    "selectiveFacesTooltip": "About selective face privacy",
-    "removeObjectTooltip": "About object removal",
-    "metadataTooltip": "About metadata handling",
-    "vectorizeThresholdTooltip": "About the vectorization threshold"
+    "aiTooltip": "Informazioni sugli strumenti immagine IA",
+    "selectiveFacesTooltip": "Informazioni sulla privacy selettiva dei volti",
+    "removeObjectTooltip": "Informazioni sulla rimozione degli oggetti",
+    "metadataTooltip": "Informazioni sulla gestione dei metadati",
+    "vectorizeThresholdTooltip": "Informazioni sulla soglia di vettorializzazione"
   }
 }
