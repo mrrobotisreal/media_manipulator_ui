@@ -513,6 +513,12 @@ export const studioAssetSchema = z.object({
   s3KeyPeaks: z.string().optional(),
   /** reversed 720p preview proxy (part 17); present once the reverse_proxy job finished */
   s3KeyProxyReversed: z.string().optional(),
+  /**
+   * MM71: the video proxy's generation, derived by the API from its key. 0 =
+   * built before MM71 (pre-MM70 imports seek slowly), >= 1 = 1 s keyframes.
+   * Absent on non-video assets and from APIs without the rebuild route.
+   */
+  proxyGeneration: z.number().int().min(0).optional(),
   mediaKind: studioMediaKindSchema,
   durationSeconds: z.number().min(0),
   width: z.number().int().optional(),

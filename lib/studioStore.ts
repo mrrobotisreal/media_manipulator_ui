@@ -37,6 +37,7 @@ import {
 import { makeDefaultEffect, STUDIO_V3_RANGES } from '@/lib/studio/effectRegistry';
 import { clipDuration, clipEnd, timelineDuration } from '@/lib/studio/previewEngine';
 import { valueAt } from '@/lib/studio/ease';
+import type { ProxyRebuildState } from '@/lib/studio/proxyRebuild';
 import {
   planSpeed,
   planDuration,
@@ -93,6 +94,8 @@ export interface StudioAssetEntry {
   reversed?: 'processing' | 'ready' | 'failed';
   /** reverse_proxy job id while `reversed === 'processing'` */
   reverseJobId?: string;
+  /** MM71 proxy rebuild lifecycle. Absent = none requested this session. */
+  proxyRebuild?: ProxyRebuildState;
 }
 
 const uid = (): string => {
@@ -216,6 +219,14 @@ interface StudioState {
   setUploadProgress: (assetId: string, progress: number) => void;
   /** Reversed-proxy lifecycle (part 17); not undoable (server state). */
   setAssetReversed: (assetId: string, state: 'processing' | 'ready' | 'failed', jobId?: string) => void;
+  /** MM71 proxy-rebuild lifecycle; not undoable (server state). `undefined` clears it. */
+  setAssetProxyRebuild: (assetId: string, state: ProxyRebuildState | undefined) => void;
+  /**
+   * MM71: the rebuild job finished. The asset now plays generation `generation`
+   * (a new proxy URL, so the preview pool reloads its src), and its reversed
+   * proxy, which the server cleared, has to be rebuilt from the new proxy.
+   */
+  applyProxyRebuilt: (assetId: string, generation: number) => void;
   /** Part 21: apply server-side bin organization (rename/folder/label). Not undoable, not in the EDL. */
   patchAssetMeta: (assetId: string, patch: Pick<Partial<StudioAsset>, 'displayName' | 'folder' | 'label'>) => void;
   /** Part 21: drop assets from the bin after a successful server delete. Not undoable. */
@@ -1143,6 +1154,26 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       const existing = s.assets[assetId];
       if (!existing) return {};
       return { assets: { ...s.assets, [assetId]: { ...existing, uploadProgress: progress } } };
+    }),
+
+  setAssetProxyRebuild: (assetId, state) =>
+    set((s) => {
+      const existing = s.assets[assetId];
+      if (!existing) return {};
+      return { assets: { ...s.assets, [assetId]: { ...existing, proxyRebuild: state } } };
+    }),
+
+  applyProxyRebuilt: (assetId, generation) =>
+    set((s) => {
+      const existing = s.assets[assetId];
+      if (!existing) return {};
+      const asset = { ...existing.asset, proxyGeneration: generation, s3KeyProxyReversed: undefined };
+      return {
+        assets: {
+          ...s.assets,
+          [assetId]: { ...existing, asset, proxyRebuild: undefined, reversed: undefined, reverseJobId: undefined },
+        },
+      };
     }),
 
   patchAssetMeta: (assetId, patch) =>

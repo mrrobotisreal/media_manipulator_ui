@@ -94,6 +94,16 @@ export interface StudioBackendCapabilities {
    */
   reverseProxy: boolean;
   /**
+   * MM71: POST /assets/:id/rebuild-proxy (rebuild an old preview proxy with
+   * 1 s keyframes). CreaTV's Darkroom API has no such route, so the media-bin
+   * "Rebuild preview" actions are hidden there. Effective only together with
+   * `rebuildProxyUrl` (proxyRebuildAvailable), so a host that sets the flag
+   * without the route still sees nothing. Even on MM the action shows only
+   * for assets whose `proxyGeneration` the API reports, so an API older than
+   * MM71 hides it too.
+   */
+  proxyRebuild: boolean;
+  /**
    * Part 20: format/resolution/captions-mode on export, the persistent exports
    * history (GET /projects/:id/exports, render-again) and the frame-PNG route.
    * CreaTV's Darkroom API has none of them, so the export dialog collapses to
@@ -130,6 +140,8 @@ export interface StudioBackend {
   proxyUrl: (assetId: string) => string;
   /** Reversed preview proxy passthrough (MM only today; part 17). */
   proxyReversedUrl?: (assetId: string) => string;
+  /** MM71 proxy rebuild route (MM only today). Absent = no rebuild. */
+  rebuildProxyUrl?: (assetId: string) => string;
   spriteUrl: (assetId: string) => string;
   peaksUrl?: (assetId: string) => string;
   /** Raw original-file passthrough used to load .cube LUT assets (MM only today). */
@@ -188,6 +200,7 @@ export function createMmBackend(): StudioBackend {
       lut: true,
       binManagement: true,
       reverseProxy: true,
+      proxyRebuild: true,
       exportDepth: true,
     },
     // Sync, so it can only carry the session id; the Firebase token needs an
@@ -202,6 +215,7 @@ export function createMmBackend(): StudioBackend {
 
     proxyUrl: (assetId) => `${base()}/studio/assets/${assetId}/proxy`,
     proxyReversedUrl: (assetId) => `${base()}/studio/assets/${assetId}/proxy-reversed`,
+    rebuildProxyUrl: (assetId) => `${base()}/studio/assets/${assetId}/rebuild-proxy`,
     spriteUrl: (assetId) => `${base()}/studio/assets/${assetId}/sprite`,
     peaksUrl: (assetId) => `${base()}/studio/assets/${assetId}/peaks`,
     assetFileUrl: (assetId) => `${base()}/studio/assets/${assetId}/file`,
@@ -306,6 +320,7 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
     lut: true,
     binManagement: false,
     reverseProxy: false,
+    proxyRebuild: false,
     exportDepth: false,
     ...opts.capabilities,
   };

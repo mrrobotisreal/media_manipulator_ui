@@ -101,7 +101,18 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
-      "moreActions": "More actions"
+      "moreActions": "More actions",
+      "rebuildPreview": "Vorschau neu erstellen",
+      "rebuildPreviewHint": "Erstellt die Vorschau dieses Clips aus dem Original neu, damit Scrubben und Springen schneller reagieren. Schnitt und Export bleiben unverändert.",
+      "rebuilding": "Vorschau wird neu erstellt… {{percent}} %",
+      "rebuildFailed": "Die Vorschau konnte nicht neu erstellt werden. Der Clip behält seine bisherige Vorschau.",
+      "rebuildUnavailable": "Das Neuerstellen von Vorschauen ist auf diesem Server noch nicht verfügbar.",
+      "rebuildRateLimited": "In der letzten Stunde wurden zu viele Vorschauen neu erstellt. Versuche den Rest später.",
+      "rebuildOldHint": "{{count}} früher importierte(r) Clip(s) springen in der Vorschau langsam.",
+      "rebuildAll": "Neu erstellen",
+      "rebuildAllTitle": "Alte Vorschauen neu erstellen?",
+      "rebuildAllBody": "Darkroom erstellt die Vorschau von {{count}} Clip(s) aus den Originaldateien neu, jeweils einige gleichzeitig. Du kannst weiter schneiden; jeder Clip wechselt zu seiner neuen Vorschau, sobald sie fertig ist. Schnitt und Export bleiben unverändert.",
+      "rebuildAllConfirm": "Vorschauen neu erstellen"
     },
     "preview": {
       "empty": "Fügen Sie einen Clip hinzu, um Ihren Schnitt in der Vorschau anzuzeigen",

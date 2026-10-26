@@ -75,6 +75,8 @@ import {
   type SlotSyncState,
 } from '@/lib/studio/playbackSync';
 import ReverseWatchers from './reverse-watchers';
+import ProxyRebuildWatchers from './proxy-rebuild-watchers';
+import { isReversedSrcKey, proxyGenerationOf, proxySrcKey } from '@/lib/studio/proxyRebuild';
 
 // hexWithOpacity → rgba() string for the caption background box.
 function hexWithOpacity(hex: string, opacity: number): string {
@@ -823,9 +825,15 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       });
 
       // Source key a clip plays from (part 17: reversed clips with a ready
-      // reversed proxy play that file instead).
+      // reversed proxy play that file instead). MM71: it includes the proxy
+      // generation, so a rebuilt proxy is a new source and the slot reloads
+      // its src through the fresh-src path below.
       const srcKeyOf = (clip: (typeof active)[number]['clip'], entry: (typeof st.assets)[string]): string =>
-        isReversed(clip) && reverseProxyReady(entry) ? `${clip.assetId}:r` : clip.assetId;
+        proxySrcKey(clip.assetId, proxyGenerationOf(entry.asset), isReversed(clip) && reverseProxyReady(entry));
+      const srcUrlOf = (assetId: string, entry: (typeof st.assets)[string], key: string): string => {
+        const gen = proxyGenerationOf(entry.asset);
+        return isReversedSrcKey(key) ? studioProxyReversedUrl(assetId, gen) : studioProxyUrl(assetId, gen);
+      };
 
       // Assign/refresh a slot per active clip whose proxy is ready.
       const gl = glOkRef.current;
@@ -883,7 +891,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
         let freshSrc = false;
         if (slot.srcAssetId !== srcKey) {
           slot.srcAssetId = srcKey;
-          el.src = useReversedSrc ? studioProxyReversedUrl(a.clip.assetId) : studioProxyUrl(a.clip.assetId);
+          el.src = srcUrlOf(a.clip.assetId, entry, srcKey);
           seekIntentAt.current[i] = null;
           pendingSeekTarget.current[i] = null;
           // A fresh src load is the slowest "seek" there is: start the
@@ -1034,12 +1042,12 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             el.pause();
             if (slot.srcAssetId !== key) {
               slot.srcAssetId = key;
-              el.src = key.endsWith(':r') ? studioProxyReversedUrl(next.clip.assetId) : studioProxyUrl(next.clip.assetId);
+              el.src = srcUrlOf(next.clip.assetId, entry, key);
             }
           }
           const first = sourceTimeAt(next.clip, next.timelineStart);
           const dur = Number.isFinite(el.duration) && el.duration > 0 ? el.duration : entry.asset.durationSeconds;
-          const at = key.endsWith(':r') ? reversedProxyTime(first, dur) : first;
+          const at = isReversedSrcKey(key) ? reversedProxyTime(first, dur) : first;
           if (!el.seeking && el.readyState >= 1 && Math.abs(el.currentTime - at) > 0.05) {
             try {
               el.currentTime = at;
@@ -1711,6 +1719,7 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           </div>
         )}
         <ReverseWatchers />
+        <ProxyRebuildWatchers />
       </div>
 
       <div className="flex items-center justify-between gap-2">

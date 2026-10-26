@@ -1,4 +1,5 @@
 import { getActiveStudioBackend } from '@/lib/studio/studioBackend';
+import { versionedProxyUrl } from '@/lib/studio/proxyRebuild';
 import { valueAt } from '@/lib/studio/ease';
 import { clipTimelineDuration, sourceTimeAt } from '@/lib/studio/speed';
 import type {
@@ -398,13 +399,18 @@ export function topVideoClip(active: ActiveClip[]): ActiveClip | undefined {
 // against the active StudioBackend so the decoder pool, waveforms, and LUT
 // loads hit the correct origin (MM api vs CreaTV transcoding api).
 
-export function studioProxyUrl(assetId: string): string {
-  return getActiveStudioBackend().proxyUrl(assetId);
+/**
+ * Preview proxy URL. `generation` (MM71, the asset's `proxyGeneration`)
+ * versions it (`?v=g<N>`) so a rebuilt proxy is never answered from the
+ * week-long browser cache of the old one; 0/absent keeps the bare URL.
+ */
+export function studioProxyUrl(assetId: string, generation?: number): string {
+  return versionedProxyUrl(getActiveStudioBackend().proxyUrl(assetId), generation);
 }
 
-/** Reversed preview proxy (part 17), or '' when the backend has none. */
-export function studioProxyReversedUrl(assetId: string): string {
-  return getActiveStudioBackend().proxyReversedUrl?.(assetId) ?? '';
+/** Reversed preview proxy (part 17), or '' when the backend has none. Versioned like the proxy (MM71). */
+export function studioProxyReversedUrl(assetId: string, generation?: number): string {
+  return versionedProxyUrl(getActiveStudioBackend().proxyReversedUrl?.(assetId) ?? '', generation);
 }
 
 export function studioSpriteUrl(assetId: string): string {

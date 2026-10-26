@@ -22,6 +22,7 @@ import {
   Pencil,
   CheckSquare,
   RotateCcw,
+  RefreshCw,
   X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -53,6 +54,7 @@ import {
   useDeriveStudioAsset,
   useStudioAssetOrganization,
   useDeleteStudioAssets,
+  useRebuildStudioProxies,
   retryStudioUpload,
   type StudioDeriveOperation,
 } from '@/lib/useStudioAsset';
@@ -83,6 +85,7 @@ import {
 } from '@/lib/studio/mediaBin';
 import { FOLDER_DROP_PREFIX, UNFILED_DROP_ID, setBinFolderDropHandler } from '@/lib/studio/binDrop';
 import { studioUploadQueue, type UploadItem } from '@/lib/studio/uploadQueue';
+import { isProxyRebuildCandidate, proxyRebuildCandidates } from '@/lib/studio/proxyRebuild';
 import VoiceoverRecorder from './voiceover-recorder';
 
 /** MIME type → the closed import-kind vocabulary. Never the filename. */
@@ -124,6 +127,8 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
   const { upload, queue } = useUploadStudioAsset(projectId);
   const { available: manage, patchOne, patchMany } = useStudioAssetOrganization();
   const deleteAssets = useDeleteStudioAssets();
+  const { available: canRebuild, rebuild: rebuildProxies } = useRebuildStudioProxies();
+  const [rebuildAllOpen, setRebuildAllOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = React.useState(false);
 
@@ -263,6 +268,13 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
       editSummary.increment('uiInvocations');
     }
     setSelected((prev) => new Set([...prev].filter((id) => !deleted.includes(id))));
+  };
+
+  // MM71: proxies built before the 1 s keyframe cadence (generation 0).
+  const rebuildIds = canRebuild ? proxyRebuildCandidates(entries) : [];
+  const rebuild = (ids: string[]) => {
+    editSummary.increment('uiInvocations');
+    void rebuildProxies(ids);
   };
 
   const retry = (id: string) => {
@@ -429,6 +441,18 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
 
       <UploadRows items={queue} onRetry={retry} />
 
+      {rebuildIds.length > 0 && (
+        <div className="mt-2 flex items-center gap-2 rounded-md border border-border bg-background/60 px-2 py-1">
+          <p className="min-w-0 flex-1 text-[11px] text-muted-foreground">
+            {t('contentStudio.mediaBin.rebuildOldHint', { count: rebuildIds.length })}
+          </p>
+          <Button size="sm" variant="outline" className="h-6 shrink-0 px-2 text-[11px]" onClick={() => setRebuildAllOpen(true)}>
+            <RefreshCw className="w-3 h-3 mr-1" />
+            {t('contentStudio.mediaBin.rebuildAll')}
+          </Button>
+        </div>
+      )}
+
       <div className="mt-2 flex-1 min-h-0 overflow-y-auto">
         {entries.length === 0 ? (
           <p className="text-xs text-muted-foreground px-1">{t('contentStudio.mediaBin.empty')}</p>
@@ -455,6 +479,7 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
                   onLabel={(c) => void setLabel([asset.id], c)}
                   onMove={(name) => void moveToFolder([asset.id], name)}
                   onDelete={() => requestDelete([asset.id])}
+                  onRebuild={canRebuild ? () => rebuild([asset.id]) : undefined}
                 />
               );
             })}
@@ -474,6 +499,28 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
           </>
         )}
       </div>
+
+      <AlertDialog open={rebuildAllOpen} onOpenChange={setRebuildAllOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('contentStudio.mediaBin.rebuildAllTitle')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('contentStudio.mediaBin.rebuildAllBody', { count: rebuildIds.length })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('contentStudio.mediaBin.cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setRebuildAllOpen(false);
+                rebuild(rebuildIds);
+              }}
+            >
+              {t('contentStudio.mediaBin.rebuildAllConfirm')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={pendingDelete !== null} onOpenChange={(open) => !open && setPendingDelete(null)}>
         <AlertDialogContent>
@@ -798,13 +845,17 @@ const MediaTile: React.FC<{
   onLabel: (color: string) => void;
   onMove: (folder: string) => void;
   onDelete: () => void;
-}> = ({ entry, layout, manage, folders, selectMode, selected, onToggleSelect, onAdd, onRename, onLabel, onMove, onDelete }) => {
+  /** MM71: present only where the backend can rebuild proxies (and not on translator deployments). */
+  onRebuild?: () => void;
+}> = ({ entry, layout, manage, folders, selectMode, selected, onToggleSelect, onAdd, onRename, onLabel, onMove, onDelete, onRebuild }) => {
   const { t, formatReadableDuration } = useLocalization('interface');
   const { asset, status } = entry;
   const isAudio = asset.mediaKind === 'audio';
   const isImage = asset.mediaKind === 'image';
   const ready = status === 'ready';
   const name = assetDisplayName(asset);
+  const rebuildState = entry.proxyRebuild;
+  const showRebuild = !!onRebuild && isProxyRebuildCandidate(entry);
   const [editing, setEditing] = React.useState(false);
   const { derive, isDeriving } = useDeriveStudioAsset();
   // Part 10: AI derives are a lifecycle event — `op` is the server's closed
@@ -891,13 +942,19 @@ const MediaTile: React.FC<{
             {t('contentStudio.mediaBin.failed')}
           </span>
         )}
+        {ready && rebuildState?.state === 'processing' && (
+          <span className="ml-1 inline-flex items-center gap-1 text-premium" role="status">
+            <Loader2 className="w-3 h-3 animate-spin" />
+            {t('contentStudio.mediaBin.rebuilding', { percent: rebuildState.progress ?? 0 })}
+          </span>
+        )}
       </p>
     </div>
   );
 
   const actions = (
     <div className="flex items-center shrink-0">
-      {(manage || (ready && asset.hasAudio)) && (
+      {(manage || (ready && asset.hasAudio) || showRebuild) && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -960,6 +1017,15 @@ const MediaTile: React.FC<{
                 <DropdownMenuItem onClick={() => deriveTracked(asset.id, 'split_instrumental')}>
                   <Sparkles className="w-3.5 h-3.5" />
                   {t('contentStudio.mediaBin.aiIsolateMusic')}
+                </DropdownMenuItem>
+              </>
+            )}
+            {showRebuild && (
+              <>
+                {(manage || (ready && asset.hasAudio)) && <DropdownMenuSeparator />}
+                <DropdownMenuItem onClick={onRebuild} title={t('contentStudio.mediaBin.rebuildPreviewHint')}>
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  {t('contentStudio.mediaBin.rebuildPreview')}
                 </DropdownMenuItem>
               </>
             )}
