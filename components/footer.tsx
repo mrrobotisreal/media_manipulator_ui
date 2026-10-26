@@ -14,11 +14,13 @@ import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { Wordmark } from '@/components/darkroom/wordmark';
 import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
 import { requestConsentReview } from '@/lib/consent';
+import { MOTION_BRAND } from '@/lib/vector/brand';
 
 const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'home', href: '/' },
   { key: 'tools', href: '/tools' },
   { key: 'contentStudio', href: '/tools/content-studio', label: 'Darkroom' },
+  { key: 'motion', href: '/tools/motion', label: MOTION_BRAND },
   { key: 'voices', href: '/voices' },
   { key: 'blog', href: '/blog' },
   { key: 'tutorials', href: '/tutorials' },
@@ -33,9 +35,11 @@ const FOOTER_EXTRA_LINKS: { key: string; href: string }[] = [
   { key: 'status', href: '/status' },
 ];
 
-const LEGAL_LINK_KEYS: { key: string; href: string }[] = [
+const LEGAL_LINK_KEYS: { key: string; href: string; labelKey?: string }[] = [
   { key: 'privacyPolicy', href: '/privacy-policy' },
   { key: 'termsOfService', href: '/terms-of-service' },
+  // MM48: MM47's open-source licence notices.
+  { key: 'licenses', href: '/licenses', labelKey: 'interface:footer.licenses' },
 ];
 
 const Footer: React.FC = () => {
@@ -160,7 +164,7 @@ const Footer: React.FC = () => {
                     href={localized(link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {t(`interface:topNav.${link.key}`)}
+                    {t(link.labelKey ?? `interface:topNav.${link.key}`)}
                   </Link>
                 </li>
               ))}

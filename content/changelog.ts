@@ -24,6 +24,17 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-26-motion-beta',
+    date: '2026-10-26',
+    title: 'Motion (beta): animate SVG in your browser',
+    body: 'Motion is a new SVG animation editor. Import an SVG or Lottie file, or draw with the shape, pen and text tools, then animate position, scale, rotation, opacity, colour and stroke on a keyframe timeline with easing presets, custom curves and holds. One-click animators add stroke draw-on, motion paths, shape morphs, gradient, mask and blur animation. Export a static SVG for free, or an animated SVG, Lottie JSON, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. Every export is made in your browser. Animated exports count toward a daily Motion allowance that depends on your plan, and the tool page shows which formats each plan includes. Projects stay in your browser, or in your account when you are signed in. The Privacy Policy and Terms have a short Motion addition.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Motion', href: '/tools/motion' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
+  {
     id: '2026-10-26-darkroom-rebuild-previews',
     date: '2026-10-26',
     title: 'Faster seeking for clips you imported earlier',
