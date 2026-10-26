@@ -259,7 +259,7 @@ Set **only** as branch-scoped Vercel **Preview** variables on a `translate/<pref
 | `GITHUB_BASE_BRANCH` | server | `main` (PR base and conflict reference) |
 | `NEXT_PUBLIC_FB_PROJECT_ID` | build | Already set for auth; also the issuer/audience for ID-token checks |
 
-GitHub Actions secrets for `.github/workflows/sync-translate-branches.yml`: `VERCEL_DEPLOY_HOOK_<PREFIX>`, one per branch, with the prefix uppercased and `-` turned into `_` (`de` -> `VERCEL_DEPLOY_HOOK_DE`, `pt-br` -> `VERCEL_DEPLOY_HOOK_PT_BR`; `node scripts/list-locales.mjs --matrix` prints the mapping). A missing hook is a notice, not a failure. `TRANSLATE_SYNC_TOKEN` is optional: a fine-grained token with Contents + Workflows write, used only if GitHub refuses a `GITHUB_TOKEN` push of commits that change workflow files.
+GitHub Actions secrets for `.github/workflows/sync-translate-branches.yml`: `VERCEL_TOKEN` (a Vercel access token), `VERCEL_PROJECT_ID`, and `VERCEL_TEAM_ID` when the project belongs to a team. The workflow creates each `translate/<prefix>` Preview deployment through `POST /v13/deployments`, because Vercel does not build branches pushed by a GitHub Actions bot and Deploy Hooks are capped at 5 per project. Missing secrets are a notice, not a failure. `TRANSLATE_SYNC_TOKEN` is optional: a fine-grained token with Contents + Workflows write, used only if GitHub refuses a `GITHUB_TOKEN` push of commits that change workflow files.
 
 Translator routes (Node runtime, `Cache-Control: no-store`, 404 off-role): `GET /api/translator/me`, `GET /api/translator/base`, `POST /api/translator/submit[?dryRun=1]`. The contract is in `lib/translator/submitContract.ts` and `lib/translator/server/handlers.ts`.
 
