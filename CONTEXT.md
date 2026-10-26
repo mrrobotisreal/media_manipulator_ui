@@ -52,6 +52,12 @@ Rewriting the `d` keys of one morph track so all have the same command sequence 
 **Export runtime** (MM45):
 How an animated SVG export plays: **CSS** (one `<style>`, no script) or **anime** (the tree-shaken MIT anime.js runtime + a small player in one inline `<script>`, licence notice first). `chooseRuntime` (`lib/vector/export/chooseRuntime.ts`) picks CSS only when every feature is CSS in Chromium, Firefox and Safari; `reasons` say why not (morph, stop position, blur, motion-path rotation edge case). Both count as the one server format `svg_animated`. Scripts do not run inside `<img>`.
 
+**Lottie unsupported list** (MM46):
+The single list of what Lottie cannot carry in either direction (`lib/vector/export/lottieSupport.ts`, `LOTTIE_EXPORT_UNSUPPORTED` + `LOTTIE_IMPORT_UNSUPPORTED`). The Lottie writer and reader never drop anything silently: each gap becomes a warning `{layerId, feature, reason}` with a feature code from this list, and the export dialog / import dialog show it (`vector.lottie.unsupported.<feature>`). Target: Lottie spec 1.0.1, LottieFiles "Basic" feature set.
+
+**Code export** (MM46):
+A counted export of the animation as source code: React component (`.tsx`, server format `react_tsx`), JS or TS module (`js_ts`), Flutter widget (`.dart`, `flutter`). Pure functions with byte-golden fixtures; strings from the document reach the source only through the language's string-literal escaper (`jsString`, `dartString`). The Flutter export is **native** (`flutter_svg` + `AnimationController`, when `canExportNativeFlutter`: transform / opacity / colour / stroke width only) or a **WebView player** (`webview_flutter`, every other document; opaque background).
+
 **Account project / browser-only project** (MM44):
 A Motion project is either browser-only (a `local-…` id; it lives only in the IndexedDB draft, the only kind anonymous users have) or an account project (a server UUID in `vector_projects`, saved with `If-Match` revisions, 409 on a conflict). "Save to account" turns the first into the second and replaces the URL. The draft is kept until a save succeeds.
 

@@ -104,3 +104,20 @@ for correctness; the UI refuses bad values at export time):
 
 Morph tracks store **normalised** `d` keys (same command sequence in every
 key); Go does not need to check that, a non-matching pair simply holds.
+
+## MM46 (Lottie and code exports): nothing for the Go sanitizer
+
+MM46 adds **no document fields** and **changes no shared contract fixture**.
+The new files under `fixtures/lottie/` are Lottie JSON inputs for the UI's
+reader and round-trip tests (`basic-shapes`, `transform-keys`, `fill-stroke`,
+`gradient`, `morph`, `trim`, `hold`, `easing`), plus
+`lottie/unsupported-export/*.json` (VectorDocs, one per writer-side
+unsupported feature) and `lottie/unsupported-import/*.json` (Lottie, one per
+reader-side feature). They are **not** part of the cross-side contract: do
+not copy them to `internal/vector/testdata/`. `docFixtures()` lists only this
+directory's top-level `*.json`, so they are not picked up as contract docs.
+
+The Lottie writer stores one private key on its viewBox null layer,
+`"mm": {"viewBox": [x, y, w, h]}` (players ignore unknown keys), and marks the
+background layer `cl: "mm-background"`; these live in the exported Lottie
+file, never in a `VectorDoc`.
