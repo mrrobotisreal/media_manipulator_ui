@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
@@ -17,6 +18,16 @@ import { ConsentGate } from '@/components/consent/consent-gate';
 import { AccountTourHost } from '@/components/onboarding/account-tour-host';
 import { AnalyticsProvider } from '@/lib/analytics';
 import { AuthProvider } from '@/lib/auth/AuthProvider';
+import { loadTranslatorWorkbench } from '@/lib/translator/mode';
+
+// MM53: the translator workbench (gate + panel). The literal role check folds to
+// `null` in production, so neither this nor its chunk exists outside translator
+// deployments (`npm run check:no-translator`). Client-only: it reads auth, the
+// DOM scanner and IndexedDB, and adds nothing to the prerendered HTML.
+const TranslatorWorkbench =
+  process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator'
+    ? dynamic(() => loadTranslatorWorkbench() ?? Promise.resolve({ default: () => null }), { ssr: false })
+    : null;
 
 // One QueryClient for the app lifetime. Created lazily inside the component so
 // each browser tab gets its own instance and it is never shared across requests
@@ -135,6 +146,7 @@ export default function Providers({
             <main className="flex-1">{children}</main>
             <Footer />
             <Toaster />
+            {TranslatorWorkbench ? <TranslatorWorkbench /> : null}
           </AnalyticsProvider>
         </AuthProvider>
       </ThemeProvider>
