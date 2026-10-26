@@ -10,8 +10,8 @@ import { locales } from "@/i18n/locales";
 const untranslated = locales.filter((l) => !l.translated);
 
 describe("SEO for untranslated locales", () => {
-  it("covers the 10 MM51 locales still untranslated (fr-FR was translated in MM57)", () => {
-    expect(untranslated).toHaveLength(10);
+  it("covers the 9 MM51 locales still untranslated (fr-FR in MM57 and ja-JP in MM59 were translated)", () => {
+    expect(untranslated).toHaveLength(9);
   });
 
   it("hreflang alternates contain no untranslated locale", () => {

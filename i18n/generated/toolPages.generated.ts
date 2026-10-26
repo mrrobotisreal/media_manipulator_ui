@@ -10,6 +10,7 @@ import heIlToolpages from "../locales/he-il/toolPages";
 import deDeToolpages from "../locales/de-de/toolPages";
 import esEsToolpages from "../locales/es-es/toolPages";
 import frFrToolpages from "../locales/fr-fr/toolPages";
+import jaJpToolpages from "../locales/ja-jp/toolPages";
 
 export const toolPageOverrideModules: Record<string, unknown> = {
   "uk-UA": ukUaToolpages,
@@ -18,4 +19,5 @@ export const toolPageOverrideModules: Record<string, unknown> = {
   "de-DE": deDeToolpages,
   "es-ES": esEsToolpages,
   "fr-FR": frFrToolpages,
+  "ja-JP": jaJpToolpages,
 };
