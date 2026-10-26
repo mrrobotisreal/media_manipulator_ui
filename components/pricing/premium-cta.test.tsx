@@ -26,11 +26,17 @@ vi.mock('@/lib/analytics', () => ({
   EVENTS: {
     UPGRADE_CTA_CLICKED: 'upgrade_cta_clicked',
     CHECKOUT_ABANDONED: 'checkout_abandoned',
+    BILLING_CURRENCY_CHANGED: 'billing_currency_changed',
   },
 }));
 vi.mock('@/lib/billing/useUpgradeAction', () => ({ useBillingFallback: () => h.fallback }));
 vi.mock('@/lib/billing/useBillingStatus', () => ({ useBillingStatus: () => ({ data: h.status }) }));
 vi.mock('@/lib/billing/usePlanChange', () => ({ usePlanChange: () => ({ busy: false, run: h.planRun }) }));
+// MM69: the currency store is real; only the network it would read is stubbed out.
+vi.mock('@/lib/auth/accountApi', async (orig) => ({
+  ...(await orig<typeof import('@/lib/auth/accountApi')>()),
+  fetchTiers: vi.fn(() => new Promise(() => {})),
+}));
 vi.mock('@/lib/billing/checkout', async (orig) => ({
   ...(await orig<typeof import('@/lib/billing/checkout')>()),
   startCheckout: h.startCheckout,
@@ -39,16 +45,22 @@ vi.mock('@/lib/billing/checkout', async (orig) => ({
 
 import { CheckoutCancelledNote, PlanPricing, PricingIntervalToggle, type PlanPricingLabels } from './premium-cta';
 import { resetPricingIntervalForTests } from './interval-store';
+import { noteLock, noteTiers, pickCurrency, resetCurrencyForTests } from '@/lib/billing/currency';
+import { resetCurrencyLoadsForTests } from '@/lib/billing/useCurrency';
 
 const labelsFor = (plan: 'premium' | 'pro'): PlanPricingLabels => ({
-  priceMonthly: plan === 'pro' ? '$17/mo' : '$9/mo',
-  priceYearly: plan === 'pro' ? '$170/yr' : '$90/yr',
+  perMonth: '/mo',
+  perYear: '/yr',
   yearlyBonus: '2 months free', blurb: 'blurb', cancelAnytime: 'cancel any time', refund: '14-day refund',
   taxNote: 'tax', ctaUpgrade: `Upgrade ${plan}`, ctaManage: 'Manage', ctaOperator: 'Unlimited (operator)',
   ctaUnavailable: 'Not available yet', ctaBusy: 'Opening', currentPlan: 'Your plan',
   ctaChangeUp: 'Upgrade to Pro', ctaChangeDown: 'Switch to Premium', pendingFrom: 'Premium from {{date}}',
 });
-const prices = { premium: { monthly: 9, yearly: 90 }, pro: { monthly: 17, yearly: 170 } };
+// Per currency (MM69); the EUR numerals differ here only so a test can tell them apart.
+const prices = {
+  premium: { usd: { monthly: 9, yearly: 90 }, eur: { monthly: 11, yearly: 110 } },
+  pro: { usd: { monthly: 17, yearly: 170 }, eur: { monthly: 19, yearly: 190 } },
+};
 
 function authAs(tier: string, extra: object = {}) {
   h.auth = { tier, loading: false, user: tier === 'anonymous' ? null : { uid: 'u1' }, openAuth: vi.fn(), ...extra };
@@ -72,6 +84,10 @@ const column = (plan: string) => screen.getByTestId(`${plan}-pricing`);
 
 beforeEach(() => {
   window.sessionStorage.clear();
+  window.localStorage.clear();
+  document.cookie = 'mm-currency=; Max-Age=0; Path=/';
+  resetCurrencyForTests();
+  resetCurrencyLoadsForTests();
   resetPricingIntervalForTests();
   h.status = undefined;
   h.startCheckout.mockResolvedValue({ ok: true });
@@ -252,5 +268,50 @@ describe('translator mode (MM52)', () => {
     renderPage();
     expect(screen.getByRole('button', { name: 'Manage' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Upgrade to Pro' })).toBeTruthy();
+  });
+});
+
+describe('/pricing paid columns: currency (MM69)', () => {
+  it('renders the default (USD) until the API sells EUR, then EUR numerals when the geo default is EUR', () => {
+    authAs('anonymous');
+    renderPage();
+    expect(screen.getByTestId('premium-price').textContent).toBe('$9/mo');
+    act(() => noteTiers({ prices: { eur: {} }, defaultCurrency: 'eur' }, { geo: true }));
+    expect(screen.getByTestId('premium-price').textContent).toBe(`${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(11)}/mo`);
+    expect(screen.getByTestId('pro-price').dataset.currency).toBe('eur');
+  });
+
+  it('a server-rendered tiers copy never sets the geo default (it names the server, not the visitor)', () => {
+    authAs('anonymous');
+    renderPage();
+    act(() => noteTiers({ prices: { eur: {} }, defaultCurrency: 'eur' }, { geo: false }));
+    expect(screen.getByTestId('premium-price').dataset.currency).toBe('usd');
+  });
+
+  it('a pick replaces the geo default; a lock replaces the pick', () => {
+    authAs('premium');
+    subscribed('premium');
+    renderPage();
+    act(() => {
+      noteTiers({ prices: { eur: {} }, defaultCurrency: 'usd' }, { geo: true });
+      pickCurrency('eur', false);
+    });
+    expect(screen.getByTestId('premium-price').dataset.currency).toBe('eur');
+    act(() => noteLock('usd'));
+    expect(screen.getByTestId('premium-price').dataset.currency).toBe('usd');
+  });
+
+  it('the plan-change dialog quotes the subscription currency', async () => {
+    authAs('premium');
+    subscribed('premium');
+    renderPage();
+    act(() => {
+      noteTiers({ prices: { eur: {} } }, { geo: true });
+      noteLock('eur');
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Upgrade to Pro' }));
+    const dialog = await screen.findByTestId('plan-change-dialog');
+    const eur19 = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(19);
+    expect(dialog.textContent).toContain(`price=${eur19},unit=interface:billing.offer.unitMonth`);
   });
 });

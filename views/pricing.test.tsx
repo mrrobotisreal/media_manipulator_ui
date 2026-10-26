@@ -7,16 +7,23 @@ vi.mock('@/components/pricing/pricing-tracker', () => ({
   PricingTracker: () => null,
   PricingUpgradeLink: ({ children }: { children: React.ReactNode }) => <a>{children}</a>,
 }));
-vi.mock('@/components/pricing/premium-cta', () => ({
-  CheckoutCancelledNote: () => null,
-  PricingIntervalToggle: () => <div data-testid="interval-toggle" />,
-  // Echo the server-computed labels so the test can see what the island receives.
-  PlanPricing: ({ plan, labels, purchasable }: { plan: string; labels: Record<string, string>; purchasable: boolean }) => (
-    <div data-plan-island={plan} data-purchasable={String(purchasable)}>
-      {labels.priceMonthly} {labels.priceYearly} {labels.yearlyBonus}
-    </div>
-  ),
+vi.mock('@/components/pricing/currency-toggle', () => ({
+  CurrencyToggle: ({ placement }: { placement: string }) => <div data-testid="currency-toggle" data-placement={placement} />,
 }));
+vi.mock('@/components/pricing/premium-cta', async () => {
+  const { formatPrice } = await import('@/lib/billing/price');
+  type Prices = Record<'usd' | 'eur', { monthly?: number; yearly?: number }>;
+  return {
+    CheckoutCancelledNote: () => null,
+    PricingIntervalToggle: () => <div data-testid="interval-toggle" />,
+    // Echo what the island receives, formatted the way the island formats it (MM69).
+    PlanPricing: ({ plan, labels, purchasable, prices }: { plan: string; labels: Record<string, string>; purchasable: boolean; prices: Prices }) => (
+      <div data-plan-island={plan} data-purchasable={String(purchasable)}>
+        {(['usd', 'eur'] as const).map((c) => `${formatPrice(prices[c].monthly ?? 0, c)}${labels.perMonth} ${formatPrice(prices[c].yearly ?? 0, c)}${labels.perYear}`).join(' | ')} {labels.yearlyBonus}
+      </div>
+    ),
+  };
+});
 
 import PricingView from './pricing';
 import type { TiersResponse, TierLimits } from '@/lib/auth/accountApi';
@@ -66,15 +73,27 @@ describe('three-column pricing (MM40 decision 1)', () => {
     expect(html).toContain('data-plan-island="pro"');
   });
 
-  it('badges Pro "Best for Motion" and shows one shared interval toggle', () => {
+  it('badges Pro "Best for Motion" and shows one shared interval toggle with the currency toggle beside it', () => {
     expect(html).toContain('data-testid="pro-badge"');
     expect(html).toContain('Best for Motion');
     expect(html.match(/data-testid="interval-toggle"/g)).toHaveLength(1);
+    // MM69: one USD / EUR toggle in the same row.
+    expect(html).toMatch(/data-testid="pricing-toggles"[^>]*><div data-testid="interval-toggle"><\/div><div data-testid="currency-toggle" data-placement="pricing">/);
   });
 
-  it('prices both paid columns from the served numerals, months free derived', () => {
-    expect(html).toMatch(/data-plan-island="premium"[^>]*>\$9\/mo \$90\/yr 2 months free/);
-    expect(html).toMatch(/data-plan-island="pro"[^>]*>\$17\/mo \$170\/yr 2 months free/);
+  it('prices both paid columns from the served numerals in both currencies, months free derived', () => {
+    expect(html).toMatch(/data-plan-island="premium"[^>]*>\$9\/mo \$90\/yr \| €9\/mo €90\/yr 2 months free/);
+    expect(html).toMatch(/data-plan-island="pro"[^>]*>\$17\/mo \$170\/yr \| €17\/mo €170\/yr 2 months free/);
+  });
+
+  it('MM69: reads prices.eur when the API sends it, the legacy *USD fields otherwise', () => {
+    const served2 = { ...tiersFixture(), defaultCurrency: 'eur' as const, prices: {
+      usd: { premiumMonthly: 9, premiumYearly: 90, proMonthly: 17, proYearly: 170 },
+      eur: { premiumMonthly: 11, premiumYearly: 110, proMonthly: 19, proYearly: 190 },
+    } };
+    const out = renderToStaticMarkup(<PricingView data={served2} />);
+    expect(out).toMatch(/data-plan-island="premium"[^>]*>\$9\/mo \$90\/yr \| €11\/mo €110\/yr/);
+    expect(out).toMatch(/data-plan-island="pro"[^>]*>\$17\/mo \$170\/yr \| €19\/mo €190\/yr/);
   });
 
   it('passes proPurchasable through: the island renders "not available" when false', () => {

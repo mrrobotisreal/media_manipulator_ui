@@ -30,6 +30,7 @@ vi.mock('@/lib/analytics', () => ({
     RETENTION_OFFER_ACCEPTED: 'retention_offer_accepted',
     BILLING_PLAN_CHANGE_REQUESTED: 'billing_plan_change_requested',
     BILLING_PLAN_CHANGE_CANCELLED: 'billing_plan_change_cancelled',
+    BILLING_CURRENCY_CHANGED: 'billing_currency_changed',
   },
 }));
 vi.mock('@/lib/billing/useUpgradeAction', () => ({ useBillingFallback: () => vi.fn(async () => undefined) }));
@@ -45,9 +46,13 @@ vi.mock('@/lib/auth/accountApi', async (orig) => ({
   requestPlanChange: (...args: unknown[]) => h.change(...args),
   cancelPlanChange: (...args: unknown[]) => h.keep(...args),
   fetchTiers: vi.fn(async () => h.tiers ?? ({ tiers: [], premiumPurchasable: true, premiumPriceUSD: 7, premiumPriceYearlyUSD: 70 })),
+  fetchSettings: vi.fn(async () => ({ currency: null })),
+  patchSettings: vi.fn(async () => ({})),
 }));
 
 import { BillingPanel, billingState } from './billing-panel';
+import { resetCurrencyForTests } from '@/lib/billing/currency';
+import { resetCurrencyLoadsForTests } from '@/lib/billing/useCurrency';
 
 const base = {
   purchasable: true, interval: null, status: null, renewsAt: null, cancelAtPeriodEnd: false,
@@ -70,6 +75,10 @@ afterEach(() => {
   vi.clearAllMocks();
   h.tiers = null;
   window.sessionStorage.clear();
+  window.localStorage.clear();
+  document.cookie = 'mm-currency=; Max-Age=0; Path=/';
+  resetCurrencyForTests();
+  resetCurrencyLoadsForTests();
 });
 
 describe('billingState', () => {
@@ -195,10 +204,10 @@ describe('retention offer', () => {
     renderPanel('premium', { ...cancelled, offer: offerOf(kind, price) });
     const card = await screen.findByTestId('retention-offer');
     expect(card.dataset.offer).toBe(kind);
-    expect(screen.getByText(`interface:billing.offer.title|price=${price}`)).toBeTruthy();
+    expect(screen.getByText(`interface:billing.offer.title|price=$${price}`)).toBeTruthy();
     // The fine print names both prices, so "the new price" is never left unexplained.
-    expect(screen.getByText(new RegExp(`billing\\.offer\\.fineprint\\|date=D\\(2026-11-23[^|]*\\),price=${price},current=8`))).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'interface:billing.offer.keepAtCurrent|price=8' })).toBeTruthy();
+    expect(screen.getByText(new RegExp(`billing\\.offer\\.fineprint\\|date=D\\(2026-11-23[^|]*\\),price=\\$${price},current=\\$8`))).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'interface:billing.offer.keepAtCurrent|price=$8' })).toBeTruthy();
     await waitFor(() => expect(h.track).toHaveBeenCalledWith('retention_offer_viewed', { offer: kind }));
     expect(h.track.mock.calls.filter((c) => c[0] === 'retention_offer_viewed')).toHaveLength(1);
   });
@@ -206,8 +215,8 @@ describe('retention offer', () => {
   it('resume (yearly): shows the current price, same-price fine print, no discount, no secondary link', async () => {
     renderPanel('premium', { ...cancelled, interval: 'yearly', offer: offerOf('resume', 80) });
     await screen.findByText('interface:billing.offer.resumeTitle');
-    expect(screen.getByText('interface:billing.offer.resumePrice|price=80,unit=interface:billing.offer.unitYear')).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'interface:billing.offer.resumeCta|price=80,unit=interface:billing.offer.unitYear' })).toBeTruthy();
+    expect(screen.getByText('interface:billing.offer.resumePrice|price=$80,unit=interface:billing.offer.unitYear')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'interface:billing.offer.resumeCta|price=$80,unit=interface:billing.offer.unitYear' })).toBeTruthy();
     expect(screen.queryByText(/keepAtCurrent/)).toBeNull();
     expect(screen.getByText(/billing\.offer\.resumeFineprint/)).toBeTruthy();
     expect(screen.queryByText(/billing\.offer\.fineprint/)).toBeNull();
@@ -218,8 +227,8 @@ describe('retention offer', () => {
   it('resume (monthly, legacy $7): shows $7/month and no "new price" fine print', async () => {
     renderPanel('premium', { ...cancelled, interval: 'monthly', priceMonthlyUSD: 7, offer: offerOf('resume', 7) });
     await screen.findByText('interface:billing.offer.resumeTitle');
-    expect(screen.getByText('interface:billing.offer.resumePrice|price=7,unit=interface:billing.offer.unitMonth')).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'interface:billing.offer.resumeCta|price=7,unit=interface:billing.offer.unitMonth' })).toBeTruthy();
+    expect(screen.getByText('interface:billing.offer.resumePrice|price=$7,unit=interface:billing.offer.unitMonth')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'interface:billing.offer.resumeCta|price=$7,unit=interface:billing.offer.unitMonth' })).toBeTruthy();
     expect(screen.getByText(/billing\.offer\.resumeFineprint/)).toBeTruthy();
     expect(screen.queryByText(/billing\.offer\.fineprint/)).toBeNull();
   });
@@ -228,14 +237,14 @@ describe('retention offer', () => {
     let release!: (v: unknown) => void;
     h.retain.mockReturnValue(new Promise((r) => { release = r; }));
     renderPanel('premium', { ...cancelled, offer: offerOf('retain7', 7) });
-    const btn = await screen.findByRole('button', { name: 'interface:billing.offer.cta|price=7' });
+    const btn = await screen.findByRole('button', { name: 'interface:billing.offer.cta|price=$7' });
     fireEvent.click(btn);
     fireEvent.click(btn);
     await waitFor(() => expect(screen.getByRole('button', { name: 'interface:billing.offer.working' }).hasAttribute('disabled')).toBe(true));
     expect(h.retain).toHaveBeenCalledTimes(1);
     expect(h.retain).toHaveBeenCalledWith('tok', 'retain7');
     release({ ok: true, status: { ...base, ...cancelled, cancelAtPeriodEnd: false, endsAt: null, priceMonthlyUSD: 7, offer: null } });
-    await waitFor(() => expect(h.toast.success).toHaveBeenCalledWith('interface:billing.offer.renewed|date=D(2026-11-23T00:00:00Z),price=7'));
+    await waitFor(() => expect(h.toast.success).toHaveBeenCalledWith('interface:billing.offer.renewed|date=D(2026-11-23T00:00:00Z),price=$7'));
     expect(h.track).toHaveBeenCalledWith('retention_offer_accepted', { offer: 'retain7' });
     await waitFor(() => expect(screen.getByTestId('billing-panel').dataset.state).toBe('active'));
     expect(screen.queryByTestId('retention-offer')).toBeNull();
@@ -244,7 +253,7 @@ describe('retention offer', () => {
   it('secondary link accepts resume', async () => {
     h.retain.mockResolvedValue({ ok: false, reason: 'error', status: 502 });
     renderPanel('premium', { ...cancelled, offer: offerOf('retain6', 6) });
-    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.offer.keepAtCurrent|price=8' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.offer.keepAtCurrent|price=$8' }));
     await waitFor(() => expect(h.retain).toHaveBeenCalledWith('tok', 'resume'));
     await waitFor(() => expect(h.toast.error).toHaveBeenCalledWith('interface:billing.offer.failed'));
     expect(h.track).not.toHaveBeenCalledWith('retention_offer_accepted', expect.anything());
@@ -253,16 +262,16 @@ describe('retention offer', () => {
   it('409 offer_changed: card shows the fresh offer and says it changed', async () => {
     h.retain.mockResolvedValue({ ok: false, reason: 'offer_changed', offer: offerOf('retain6', 6) });
     renderPanel('premium', { ...cancelled, offer: offerOf('retain7', 7) });
-    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.offer.cta|price=7' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'interface:billing.offer.cta|price=$7' }));
     await waitFor(() => expect(h.toast).toHaveBeenCalledWith('interface:billing.offer.changed'));
-    await screen.findByText('interface:billing.offer.title|price=6');
+    await screen.findByText('interface:billing.offer.title|price=$6');
     expect(screen.getByTestId('retention-offer').dataset.offer).toBe('retain6');
   });
 
   it('409 not_cancelled: refetches the status', async () => {
     h.retain.mockResolvedValue({ ok: false, reason: 'not_cancelled' });
     renderPanel('premium', { ...cancelled, offer: offerOf('retain7', 7) });
-    const btn = await screen.findByRole('button', { name: 'interface:billing.offer.cta|price=7' });
+    const btn = await screen.findByRole('button', { name: 'interface:billing.offer.cta|price=$7' });
     const accountApi = await import('@/lib/auth/accountApi');
     const calls = vi.mocked(accountApi.fetchBillingStatus).mock.calls.length;
     h.status = { ...base, ...cancelled, cancelAtPeriodEnd: false, offer: null };
@@ -359,7 +368,7 @@ describe('Pro plan states (MM40 decision 4)', () => {
     expect(dialog.textContent).toContain('interface:billing.planChange.upgrade.body|date=D(2026-11-25T00:00:00Z),price=$17,unit=interface:billing.offer.unitMonth');
     fireEvent.click(screen.getByRole('button', { name: 'interface:billing.planChange.upgrade.confirm' }));
     await waitFor(() => expect(h.change).toHaveBeenCalledWith('tok', 'pro'));
-    expect(h.track).toHaveBeenCalledWith('billing_plan_change_requested', { from: 'premium', to: 'pro', timing: 'immediate' });
+    expect(h.track).toHaveBeenCalledWith('billing_plan_change_requested', { from: 'premium', to: 'pro', timing: 'immediate', currency: 'usd' });
     await waitFor(() => expect(h.toast.success).toHaveBeenCalledWith('interface:billing.planChange.upgraded'));
     expect(screen.queryByRole('button', { name: 'interface:billing.switchToPremium' })).toBeNull();
   });
@@ -386,7 +395,7 @@ describe('Pro plan states (MM40 decision 4)', () => {
     expect(dialog.textContent).toContain('interface:billing.planChange.downgrade.fineprint');
     fireEvent.click(screen.getByRole('button', { name: 'interface:billing.planChange.downgrade.confirm' }));
     await waitFor(() => expect(h.change).toHaveBeenCalledWith('tok', 'premium'));
-    expect(h.track).toHaveBeenCalledWith('billing_plan_change_requested', { from: 'pro', to: 'premium', timing: 'period_end' });
+    expect(h.track).toHaveBeenCalledWith('billing_plan_change_requested', { from: 'pro', to: 'premium', timing: 'period_end', currency: 'usd' });
     await waitFor(() => expect(h.toast.success).toHaveBeenCalledWith('interface:billing.planChange.scheduled|date=D(2026-11-25T00:00:00Z)'));
   });
 
@@ -468,5 +477,48 @@ describe('Pro plan states (MM40 decision 4)', () => {
     await screen.findByTestId('billing-plan-chip');
     expect(screen.queryByTestId('pro-drop-to-premium')).toBeNull();
     vi.unstubAllEnvs();
+  });
+});
+
+describe('BillingPanel currency (MM69)', () => {
+  const eur = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  const served = {
+    tiers: [], premiumPurchasable: true, premiumPriceUSD: 7, premiumPriceYearlyUSD: 70, defaultCurrency: 'eur',
+    prices: { usd: { premiumMonthly: 7, premiumYearly: 70, proMonthly: 15, proYearly: 150 }, eur: { premiumMonthly: 7, premiumYearly: 70, proMonthly: 15, proYearly: 150 } },
+  };
+
+  it('free: shows the USD / EUR toggle once the API sells EUR, prices in the geo default, switch persists', async () => {
+    h.tiers = served;
+    renderPanel('free', {});
+    const price = await screen.findByTestId('billing-panel-price');
+    await waitFor(() => expect(price.dataset.currency).toBe('eur'));
+    expect(price.textContent).toBe(`${eur(7)}interface:billing.perMonth`);
+    fireEvent.click(screen.getByLabelText('USD'));
+    await waitFor(() => expect(screen.getByTestId('billing-panel-price').textContent).toBe('$7interface:billing.perMonth'));
+    expect(document.cookie).toContain('mm-currency=usd');
+    expect(h.track).toHaveBeenCalledWith('billing_currency_changed', { from: 'eur', to: 'usd', source: 'toggle', placement: 'billing_panel' });
+  });
+
+  it('an older API (no prices): no toggle, USD from the legacy fields', async () => {
+    renderPanel('free', {});
+    const price = await screen.findByTestId('billing-panel-price');
+    expect(price.textContent).toBe('$7interface:billing.perMonth');
+    expect(screen.queryByLabelText('EUR')).toBeNull();
+  });
+
+  it('subscriber billed in EUR: locked chip with the explanation, offer and prices in euros', async () => {
+    h.tiers = served;
+    renderPanel('premium', {
+      status: 'active', interval: 'monthly', cancelAtPeriodEnd: true, portalAvailable: true, plan: 'premium',
+      renewsAt: '2026-11-23T00:00:00Z', endsAt: '2026-11-23T00:00:00Z', priceMonthly: 8, priceMonthlyUSD: null,
+      currency: 'eur', currencyLocked: true,
+      offer: { kind: 'retain7', price: 7, priceUSD: 7, currency: 'eur', nextChargeAt: '2026-11-23T00:00:00Z' },
+    });
+    const chip = await screen.findByTestId('currency-locked');
+    expect(chip.dataset.currency).toBe('eur');
+    expect(chip.getAttribute('title')).toBe('interface:billing.currency.lockedNote|currency=EUR');
+    expect(screen.queryByLabelText('USD')).toBeNull();
+    expect(screen.getByText(`interface:billing.offer.title|price=${eur(7)}`)).toBeTruthy();
+    expect(screen.getByRole('button', { name: `interface:billing.offer.keepAtCurrent|price=${eur(8)}` })).toBeTruthy();
   });
 });

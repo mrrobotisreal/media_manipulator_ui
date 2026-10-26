@@ -19,9 +19,10 @@ import {
   PricingIntervalToggle,
   type PlanPricingLabels,
 } from '@/components/pricing/premium-cta';
-import type { PaidPlan, TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
+import { CurrencyToggle } from '@/components/pricing/currency-toggle';
+import type { BillingCurrency, PaidPlan, TierDescriptor, TierLimits, TiersResponse } from '@/lib/auth/accountApi';
 import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
-import { displayPrice, planPrices, yearlyMonthsFree } from '@/lib/billing/price';
+import { planPrices, yearlyMonthsFree } from '@/lib/billing/price';
 import { cn } from '@/lib/utils';
 
 type T = ReturnType<typeof getServerT>;
@@ -125,13 +126,24 @@ const NUMERIC_ROWS = new Set([
   'studioProjects',
 ]);
 
+const CURRENCIES: readonly BillingCurrency[] = ['usd', 'eur'];
+
+/** A plan's served numerals per currency (MM69), for the column island to format. */
+function planPricesByCurrency(data: TiersResponse, plan: PaidPlan) {
+  return Object.fromEntries(CURRENCIES.map((c) => [c, planPrices(data, plan, c)])) as Record<
+    BillingCurrency,
+    { monthly: number | undefined; yearly: number | undefined }
+  >;
+}
+
 function planLabels(t: T, data: TiersResponse, plan: PaidPlan): PlanPricingLabels {
   const { monthly, yearly } = planPrices(data, plan);
-  // "N months free" is derived from the two served prices, never hard-coded.
+  // "N months free" is derived from the two served prices, never hard-coded (same numerals
+  // in both currencies, so either one gives the same figure).
   const months = yearlyMonthsFree(monthly, yearly);
   return {
-    priceMonthly: typeof monthly === 'number' ? `${displayPrice(monthly)}${t('interface:billing.perMonth')}` : '',
-    priceYearly: typeof yearly === 'number' ? `${displayPrice(yearly)}${t('interface:billing.perYear')}` : '',
+    perMonth: t('interface:billing.perMonth'),
+    perYear: t('interface:billing.perYear'),
     yearlyBonus: months >= 1 ? t('interface:billing.yearlyBonus', { values: { months } }) : '',
     blurb: t(`interface:pricing.tierBlurb.${plan}`),
     cancelAnytime: t('interface:billing.cancelAnytime'),
@@ -156,7 +168,6 @@ const TierHeader: React.FC<{
   locale: string;
 }> = ({ tier, t, data, locale }) => {
   if (isPaid(tier)) {
-    const { monthly, yearly } = planPrices(data, tier);
     const purchasable = tier === 'pro' ? data.proPurchasable === true : data.premiumPurchasable;
     return (
       <div className="flex flex-col gap-2">
@@ -176,7 +187,7 @@ const TierHeader: React.FC<{
           plan={tier}
           labels={planLabels(t, data, tier)}
           purchasable={purchasable}
-          prices={{ monthly, yearly }}
+          prices={planPricesByCurrency(data, tier)}
         />
       </div>
     );
@@ -295,17 +306,18 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
         </p>
       </header>
 
-      {/* One interval for both paid columns. The row leaves room for a currency toggle
-          beside it (MM69). */}
-      {hasYearly ? (
-        <div className="mb-6 flex flex-wrap items-center gap-3" data-testid="pricing-toggles">
+      {/* One interval for both paid columns, and the USD / EUR toggle beside it (MM69; it
+          renders nothing until the browser's /api/tiers answer says EUR is sold). */}
+      <div className="mb-6 flex flex-wrap items-center gap-3" data-testid="pricing-toggles">
+        {hasYearly ? (
           <PricingIntervalToggle
             label={t('interface:billing.intervalLabel')}
             monthly={t('interface:billing.monthly')}
             yearly={t('interface:billing.yearly')}
           />
-        </div>
-      ) : null}
+        ) : null}
+        <CurrencyToggle placement="pricing" />
+      </div>
 
       {anonymous ? (
         // The no-account tier: a slim strip rather than a fourth panel (MM40), with its full

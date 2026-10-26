@@ -23,6 +23,9 @@ import { PlanSummary } from '@/components/account/plan-summary';
 import { fetchTiers, type TierDescriptor } from '@/lib/auth/accountApi';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useUpgradeAction } from '@/lib/billing/useUpgradeAction';
+import { formatPrice, planPrices } from '@/lib/billing/price';
+import { useCurrency } from '@/lib/billing/useCurrency';
+import { CurrencyToggle } from '@/components/pricing/currency-toggle';
 import { EVENTS, useAnalytics } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
@@ -43,7 +46,8 @@ import { cn } from '@/lib/utils';
 export const AuthModal: React.FC = () => {
   const auth = useAuth();
   const { track } = useAnalytics();
-  const { t } = useLocalization(['interface', 'error']);
+  const { t, language } = useLocalization(['interface', 'error']);
+  const { currency } = useCurrency();
   const localized = useLocalizedHref();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(
     auth?.prompt.intent === 'signin' ? 'signin' : 'signup',
@@ -227,7 +231,8 @@ export const AuthModal: React.FC = () => {
     auth.prompt.body ??
     t(returning ? 'interface:authModal.signInDescription' : 'interface:authModal.defaultDescription');
   const premium = byTier.get('premium');
-  const premiumPrice = tiersQuery.data?.premiumPriceUSD;
+  const premiumMonthly = planPrices(tiersQuery.data, 'premium', currency).monthly;
+  const premiumPrice = typeof premiumMonthly === 'number' ? formatPrice(premiumMonthly, currency, language?.code) : undefined;
 
   return (
     <Dialog open={auth.prompt.open} onOpenChange={(open) => !open && handleClose()}>
@@ -400,12 +405,13 @@ export const AuthModal: React.FC = () => {
                 tone="premium"
                 title={t('interface:authModal.plans.premiumTitle')}
                 aside={
-                  <span className="flex items-baseline gap-2">
+                  <span className="flex flex-wrap items-baseline gap-2">
                     {premiumPrice !== undefined ? (
                       <span className="num text-sm text-premium">
                         {t('interface:authModal.plans.premiumPrice', { price: premiumPrice })}
                       </span>
                     ) : null}
+                    <CurrencyToggle placement="auth_modal" className="max-w-[120px]" />
                     {auth.tier === 'free' && premiumUpgrade.visible ? (
                       <button
                         type="button"

@@ -14,6 +14,7 @@ import {
   endsAtOf,
   fetchTiers,
   retainSubscription,
+  type BillingCurrency,
   type BillingInterval,
   type BillingStatus,
   type RetentionOffer,
@@ -26,7 +27,9 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { YearlyNudge } from './yearly-nudge';
 import { PlanChangeDialog } from './plan-change-dialog';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
-import { displayPrice, planPrices } from '@/lib/billing/price';
+import { formatPrice, planPrices } from '@/lib/billing/price';
+import { useCurrency, useCurrencyLockFrom } from '@/lib/billing/useCurrency';
+import { CurrencyToggle } from '@/components/pricing/currency-toggle';
 import { usePlanChange } from '@/lib/billing/usePlanChange';
 import type { PaidPlan } from '@/lib/auth/accountApi';
 
@@ -84,13 +87,19 @@ const RetentionOfferCard: React.FC<{
   onAccept: (kind: RetentionOffer['kind']) => void;
   t: (key: string, options?: Record<string, unknown>) => string;
   date: (iso: string | null | undefined) => string;
-}> = ({ offer, currentPrice, fallbackPrice, interval, busy, onAccept, t, date }) => {
+  /** Formats a numeral in the subscription's currency (MM69). */
+  money: (amount: number) => string;
+}> = ({ offer, currentPrice, fallbackPrice, interval, busy, onAccept, t, date, money }) => {
   const discounted = offer.kind !== 'resume';
-  // What the subscriber pays now: the API's offer.priceUSD for "resume" is
-  // exactly that (read from the Stripe subscription), else priceMonthlyUSD.
-  const current = discounted ? (currentPrice ?? fallbackPrice) : (offer.priceUSD ?? currentPrice ?? fallbackPrice);
+  // What the subscriber pays now: the API's offer price for "resume" is exactly that (read
+  // from the Stripe subscription), else the status's current price.
+  const offerPrice = offer.price ?? offer.priceUSD;
+  const currentRaw = discounted ? (currentPrice ?? fallbackPrice) : (offerPrice ?? currentPrice ?? fallbackPrice);
   const unit = t(interval === 'yearly' ? 'interface:billing.offer.unitYear' : 'interface:billing.offer.unitMonth');
-  const hasCurrent = typeof current === 'number';
+  const hasCurrent = typeof currentRaw === 'number';
+  const current = hasCurrent ? money(currentRaw) : '';
+  const price = money(offerPrice);
+  const keepAt = currentPrice ?? fallbackPrice;
   return (
     <section
       aria-labelledby="retention-offer-title"
@@ -100,7 +109,7 @@ const RetentionOfferCard: React.FC<{
     >
       {discounted ? (
         <h3 id="retention-offer-title" className="text-base font-semibold text-foreground">
-          {t('interface:billing.offer.title', { price: offer.priceUSD })}
+          {t('interface:billing.offer.title', { price })}
         </h3>
       ) : (
         <h3 id="retention-offer-title" className="text-base font-semibold text-foreground">
@@ -115,8 +124,8 @@ const RetentionOfferCard: React.FC<{
       <p className="text-xs text-muted-foreground">
         {discounted
           ? hasCurrent
-            ? t('interface:billing.offer.fineprint', { date: date(offer.nextChargeAt), price: offer.priceUSD, current })
-            : t('interface:billing.offer.fineprintNoCurrent', { date: date(offer.nextChargeAt), price: offer.priceUSD })
+            ? t('interface:billing.offer.fineprint', { date: date(offer.nextChargeAt), price, current })
+            : t('interface:billing.offer.fineprintNoCurrent', { date: date(offer.nextChargeAt), price })
           : t('interface:billing.offer.resumeFineprint', { date: date(offer.nextChargeAt) })}
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -129,7 +138,7 @@ const RetentionOfferCard: React.FC<{
           {busy
             ? t('interface:billing.offer.working')
             : discounted
-              ? t('interface:billing.offer.cta', { price: offer.priceUSD })
+              ? t('interface:billing.offer.cta', { price })
               : hasCurrent
                 ? t('interface:billing.offer.resumeCta', { price: current, unit })
                 : t('interface:billing.offer.resumeCtaNoPrice')}
@@ -141,8 +150,8 @@ const RetentionOfferCard: React.FC<{
             onClick={() => onAccept('resume')}
             disabled={busy}
           >
-            {typeof (currentPrice ?? fallbackPrice) === 'number'
-              ? t('interface:billing.offer.keepAtCurrent', { price: currentPrice ?? fallbackPrice })
+            {typeof keepAt === 'number'
+              ? t('interface:billing.offer.keepAtCurrent', { price: money(keepAt) })
               : t('interface:billing.offer.keepAtCurrentNoPrice')}
           </button>
         ) : null}
@@ -170,6 +179,9 @@ export const BillingPanel: React.FC = () => {
   }, []);
 
   const statusQuery = useBillingStatus();
+  // MM69: the subscription's currency locks the page's; the free state's toggle picks it.
+  useCurrencyLockFrom(statusQuery.data);
+  const picked = useCurrency();
   const tiersQuery = useQuery({
     queryKey: ['tiers'],
     queryFn: ({ signal }) => fetchTiers(signal),
@@ -219,10 +231,15 @@ export const BillingPanel: React.FC = () => {
   const intervalName = (value: string | null | undefined) =>
     value === 'yearly' ? t('interface:billing.yearly') : value === 'monthly' ? t('interface:billing.monthly') : '—';
 
-  const monthly = tiersQuery.data?.premiumPriceUSD;
-  const yearly = tiersQuery.data?.premiumPriceYearlyUSD;
   // The subscription's plan (MM39 status.plan); a team grant has none, so the tier says.
   const plan: PaidPlan = status?.plan ?? (tier === 'pro' ? 'pro' : 'premium');
+  // MM69: a subscriber's prices are in the subscription's currency; a free account's in the
+  // visitor's pick. Never both added together.
+  const currency: BillingCurrency = status?.currency ?? picked.currency;
+  const money = (amount: number) => formatPrice(amount, currency, language?.code);
+  const { monthly, yearly } = planPrices(tiersQuery.data, 'premium', currency);
+  // What the subscriber pays per interval in that currency (older APIs: USD only).
+  const currentPrice = status?.priceMonthly ?? status?.priceMonthlyUSD;
   const pk = (key: string) => panelKey(plan, key);
   const pending = status?.pendingPlan ?? null;
 
@@ -253,10 +270,10 @@ export const BillingPanel: React.FC = () => {
         analytics.track(EVENTS.RETENTION_OFFER_ACCEPTED, { offer: kind });
         setStatus(result.status);
         const next = result.status.renewsAt;
-        const price = result.status.priceMonthlyUSD;
+        const price = result.status.priceMonthly ?? result.status.priceMonthlyUSD;
         toast.success(
           next && typeof price === 'number'
-            ? t('interface:billing.offer.renewed', { date: date(next), price })
+            ? t('interface:billing.offer.renewed', { date: date(next), price: formatPrice(price, result.status.currency ?? currency, language?.code) })
             : next
               ? t('interface:billing.offer.renewedNoPrice', { date: date(next) })
               : t('interface:billing.offer.renewedBare'),
@@ -310,24 +327,27 @@ export const BillingPanel: React.FC = () => {
       body = (
         <div className="grid gap-4">
           <p className="text-sm text-muted-foreground">{t('interface:billing.panel.freeBody')}</p>
-          {typeof yearly === 'number' ? (
-            <Segmented<BillingInterval>
-              name="billing-panel-interval"
-              label={t('interface:billing.intervalLabel')}
-              value={interval}
-              onValueChange={setInterval}
-              options={[
-                { value: 'monthly', label: t('interface:billing.monthly') },
-                { value: 'yearly', label: t('interface:billing.yearly') },
-              ]}
-              className="max-w-[240px]"
-            />
-          ) : null}
+          <div className="flex flex-wrap items-center gap-3">
+            {typeof yearly === 'number' ? (
+              <Segmented<BillingInterval>
+                name="billing-panel-interval"
+                label={t('interface:billing.intervalLabel')}
+                value={interval}
+                onValueChange={setInterval}
+                options={[
+                  { value: 'monthly', label: t('interface:billing.monthly') },
+                  { value: 'yearly', label: t('interface:billing.yearly') },
+                ]}
+                className="max-w-[240px]"
+              />
+            ) : null}
+            {hideBilling ? null : <CurrencyToggle placement="billing_panel" />}
+          </div>
           {typeof monthly === 'number' ? (
-            <p className="num text-lg text-foreground">
+            <p className="num text-lg text-foreground" data-testid="billing-panel-price" data-currency={currency}>
               {interval === 'yearly' && typeof yearly === 'number'
-                ? `${displayPrice(yearly)}${t('interface:billing.perYear')}`
-                : `${displayPrice(monthly)}${t('interface:billing.perMonth')}`}
+                ? `${money(yearly)}${t('interface:billing.perYear')}`
+                : `${money(monthly)}${t('interface:billing.perMonth')}`}
             </p>
           ) : null}
           <p className="text-xs text-muted-foreground">{t('interface:billing.refund')}</p>
@@ -375,6 +395,13 @@ export const BillingPanel: React.FC = () => {
               label={t('interface:billing.panel.intervalLabel')}
               value={intervalName(status?.interval)}
             />
+            {status?.currency ? (
+              <Stat
+                orientation="inline"
+                label={t('interface:billing.currency.panelLabel')}
+                value={<CurrencyToggle placement="billing_panel" />}
+              />
+            ) : null}
             {ending ? (
               endsAt ? (
                 <Stat
@@ -437,16 +464,19 @@ export const BillingPanel: React.FC = () => {
           {offer && !hideBilling ? (
             <RetentionOfferCard
               offer={offer}
-              currentPrice={status?.priceMonthlyUSD}
+              currentPrice={currentPrice}
               fallbackPrice={status?.interval === 'yearly' ? yearly : monthly}
               interval={status?.interval}
               busy={retaining}
               onAccept={accept}
               t={t}
               date={date}
+              money={money}
             />
           ) : null}
-          {state === 'active' && !hideBilling ? <YearlyNudge uid={uid} status={status} tiers={tiersQuery.data} /> : null}
+          {state === 'active' && !hideBilling ? (
+            <YearlyNudge uid={uid} status={status} tiers={tiersQuery.data} currency={currency} />
+          ) : null}
           <div className="flex flex-wrap gap-2">
             {showUpgrade ? (
               <Button className="w-fit" onClick={() => setConfirming('pro')} disabled={planChange.busy}>
@@ -473,9 +503,10 @@ export const BillingPanel: React.FC = () => {
               target={confirming ?? 'pro'}
               interval={status?.interval}
               price={(() => {
-                const p = planPrices(tiersQuery.data, confirming ?? 'pro');
+                const p = planPrices(tiersQuery.data, confirming ?? 'pro', currency);
                 return status?.interval === 'yearly' ? p.yearly : status?.interval === 'monthly' ? p.monthly : undefined;
               })()}
+              currency={currency}
               periodEnd={status?.renewsAt}
               busy={planChange.busy}
               onConfirm={() =>

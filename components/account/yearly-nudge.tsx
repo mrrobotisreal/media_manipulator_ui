@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { analytics, EVENTS } from '@/lib/analytics';
-import type { BillingStatus, PaidPlan, TiersResponse } from '@/lib/auth/accountApi';
+import type { BillingCurrency, BillingStatus, PaidPlan, TiersResponse } from '@/lib/auth/accountApi';
 import { openPortal } from '@/lib/billing/checkout';
 import { planPrices, yearlyMonthsFree } from '@/lib/billing/price';
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
@@ -27,8 +27,8 @@ const DISMISS_PREFIX = 'mm.yearlyNudgeDismissed.';
  * Whole months the yearly price saves versus twelve monthly ones; 0 when it is no discount.
  * Read from the subscriber's own plan (MM40): Pro has its own two prices.
  */
-export function monthsFree(tiers: TiersResponse | undefined, plan: PaidPlan = 'premium'): number {
-  const { monthly, yearly } = planPrices(tiers, plan);
+export function monthsFree(tiers: TiersResponse | undefined, plan: PaidPlan = 'premium', currency: BillingCurrency = 'usd'): number {
+  const { monthly, yearly } = planPrices(tiers, plan, currency);
   return yearlyMonthsFree(monthly, yearly);
 }
 
@@ -66,7 +66,9 @@ export const YearlyNudge: React.FC<{
   uid: string | undefined;
   status: BillingStatus | undefined;
   tiers: TiersResponse | undefined;
-}> = ({ uid, status, tiers }) => {
+  /** The subscription's currency (MM69); the months-free figure is read in it. */
+  currency?: BillingCurrency;
+}> = ({ uid, status, tiers, currency = 'usd' }) => {
   const { t, language } = useLocalization(['interface']);
   const fallback = useBillingFallback();
   // Read after mount so SSR and the first client render agree.
@@ -107,7 +109,7 @@ export const YearlyNudge: React.FC<{
     >
       <div>
         <p className="font-medium text-foreground">
-          {t('interface:yearlyNudge.title', { months: monthsFree(tiers, status?.plan ?? 'premium') })}
+          {t('interface:yearlyNudge.title', { months: monthsFree(tiers, status?.plan ?? 'premium', currency) })}
         </p>
         <p className="mt-1 text-muted-foreground">{t('interface:yearlyNudge.body')}</p>
       </div>

@@ -143,9 +143,31 @@ export interface TierDescriptor {
   limits: TierLimits;
 }
 
+/** A billing currency (MM69), lowercase ISO 4217 as the API and Stripe spell it. */
+export type BillingCurrency = 'usd' | 'eur';
+
+export function isBillingCurrency(value: unknown): value is BillingCurrency {
+  return value === 'usd' || value === 'eur';
+}
+
+/** One currency's price numerals in /api/tiers `prices` (MM69; identical numerals in both). */
+export interface CurrencyPrices {
+  premiumMonthly: number;
+  premiumYearly: number;
+  proMonthly: number;
+  proYearly: number;
+}
+
 export interface TiersResponse {
   tiers: TierDescriptor[];
   premiumPurchasable: boolean;
+  /**
+   * MM69: the geographic default currency (EUR in Europe, else USD) and the numerals per
+   * currency. Absent on older APIs: the UI then falls back to USD and the `*USD` fields.
+   */
+  defaultCurrency?: BillingCurrency;
+  prices?: Partial<Record<BillingCurrency, CurrencyPrices>>;
+  /** Deprecated by MM69 (`prices.usd`); kept by the API for one release. */
   premiumPriceUSD: number;
   /** Yearly price in USD (MM17). Absent on older APIs. */
   premiumPriceYearlyUSD?: number;
@@ -430,8 +452,14 @@ export interface BillingStatus {
    * When Premium ends if cancelled.
    */
   endsAt?: string | null;
-  /** What this subscriber currently pays per interval; null when unknown. */
+  /** What this subscriber currently pays per interval, in USD only; null when unknown. */
   priceMonthlyUSD?: number | null;
+  /** MM69: the same per-interval price as a numeral in `currency`; null when unknown. */
+  priceMonthly?: number | null;
+  /** MM69: the currency the subscription is (or was last) billed in; null when none. */
+  currency?: BillingCurrency | null;
+  /** MM69: true once Stripe fixed the currency (a live or a billed past subscription). */
+  currencyLocked?: boolean;
   /** The "stay" offer, or null when none applies. Always null for a Pro subscription (MM39). */
   offer?: RetentionOffer | null;
   /** MM39: the subscription user's current paid plan; null for everyone else. Absent on older APIs. */
@@ -444,7 +472,11 @@ export type RetentionOfferKind = 'retain7' | 'retain6' | 'resume';
 
 export interface RetentionOffer {
   kind: RetentionOfferKind;
+  /** Deprecated by MM69: the same numeral as `price`, whatever the currency. */
   priceUSD: number;
+  /** MM69: the numeral in `currency`. Absent on older APIs (use priceUSD, in USD). */
+  price?: number;
+  currency?: BillingCurrency | null;
   nextChargeAt: string;
 }
 
@@ -470,6 +502,7 @@ export type BillingRefusalReason =
   | 'same_plan'
   | 'change_not_available'
   | 'manual_grant_active'
+  | 'currency_locked'
   | 'billing_unavailable'
   | 'operator_account'
   | 'account_not_synced'
@@ -486,11 +519,13 @@ export class BillingRefusal extends Error {
   readonly portalAvailable?: boolean;
   /** manual_grant_active: when the grant ends (null = never). */
   readonly expiresAt?: string | null;
+  /** currency_locked (MM69): the currency the Stripe customer is fixed to. */
+  readonly currency?: BillingCurrency;
 
   constructor(
     reason: BillingRefusalReason,
     status: number,
-    extra: { portalAvailable?: boolean; expiresAt?: string | null } = {},
+    extra: { portalAvailable?: boolean; expiresAt?: string | null; currency?: BillingCurrency } = {},
   ) {
     super(`Billing request refused (${status}): ${reason}`);
     this.name = 'BillingRefusal';
@@ -498,6 +533,7 @@ export class BillingRefusal extends Error {
     this.status = status;
     this.portalAvailable = extra.portalAvailable;
     this.expiresAt = extra.expiresAt;
+    this.currency = extra.currency;
   }
 }
 
@@ -508,6 +544,7 @@ const KNOWN_REASONS: readonly BillingRefusalReason[] = [
   'same_plan',
   'change_not_available',
   'manual_grant_active',
+  'currency_locked',
   'billing_unavailable',
   'operator_account',
   'account_not_synced',
@@ -521,6 +558,7 @@ async function billingRefusal(response: Response): Promise<BillingRefusal> {
     reason?: string;
     portalAvailable?: boolean;
     expiresAt?: string | null;
+    currency?: unknown;
   } | null;
   const code = body?.reason ?? body?.error ?? '';
   const reason: BillingRefusalReason =
@@ -532,6 +570,7 @@ async function billingRefusal(response: Response): Promise<BillingRefusal> {
   return new BillingRefusal(reason, response.status, {
     portalAvailable: body?.portalAvailable,
     expiresAt: body?.expiresAt,
+    currency: isBillingCurrency(body?.currency) ? body.currency : undefined,
   });
 }
 
@@ -550,7 +589,7 @@ function billingHeaders(idToken: string): Record<string, string> {
 
 export async function createCheckoutSession(
   idToken: string,
-  body: { interval: BillingInterval; plan?: PaidPlan; locale?: string },
+  body: { interval: BillingInterval; plan?: PaidPlan; locale?: string; currency?: BillingCurrency },
 ): Promise<{ url: string }> {
   const response = await fetch(`${getBaseURL()}/billing/checkout`, {
     method: 'POST',
@@ -770,6 +809,8 @@ export interface AccountSettings {
   emailAiJobFinished: boolean;
   /** MM31: email before files expire (default true). */
   emailExpiryDigest: boolean;
+  /** MM69: the chosen billing currency; null = never chosen. Absent on older APIs. */
+  currency?: BillingCurrency | null;
   updatedAt: string;
   limits: { minHours: number; maxHours: number; defaultHours: number };
   /** PATCH only: live items whose expiry moved. */
@@ -783,6 +824,8 @@ export interface SettingsPatch {
   historyVisibility?: HistoryVisibility;
   emailAiJobFinished?: boolean;
   emailExpiryDigest?: boolean;
+  /** MM69. */
+  currency?: BillingCurrency;
 }
 
 /** GET /api/account/settings/preview. Mirrors previewResponse (account_settings.go). */

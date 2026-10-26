@@ -211,3 +211,56 @@ describe("legal retention copy", () => {
     expect(legal).not.toMatch(/24-hour temporary/i);
   });
 });
+
+/**
+ * MM69 guard (ticket decision 6): outside the legal text, no copy names a price with a
+ * currency symbol ("$8", "${{price}}", "{{price}} $", "€15"). Every price arrives through
+ * formatPrice, already in the visitor's currency; a hard-coded "$" would show dollars to a
+ * euro customer. The legal pages (privacyPolicy, termsOfService) are allowed to name both.
+ */
+describe("no currency-symbol price literals in UI copy outside legal text (MM69)", () => {
+  const PRICE_LITERAL = /[$€]\s?(\d|\{\{)|(\d|\}\})\s?[$€]/;
+  // Example sentences inside articles are content, not prices (e.g. "revenue jumped by $18,000").
+  const CONTENT_SHARDS = new Set(["articles.json"]);
+  const strings = (v: unknown, path: string, out: [string, string][]) => {
+    if (typeof v === "string") out.push([path, v]);
+    else if (Array.isArray(v)) v.forEach((x, i) => strings(x, `${path}[${i}]`, out));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) strings(x, `${path}.${k}`, out);
+    return out;
+  };
+  for (const { code } of locales) {
+    it(`${code}: interface shards carry no "$8" / "\${{price}}" style literals`, () => {
+      const dir = join(__dirname, "locales", code.toLowerCase(), "interface");
+      const offenders: string[] = [];
+      for (const file of readdirSync(dir).filter((f) => f.endsWith(".json") && !CONTENT_SHARDS.has(f))) {
+        const json = JSON.parse(readFileSync(join(dir, file), "utf8")) as Record<string, unknown>;
+        if (file === "pages.json") {
+          delete json.privacyPolicy;
+          delete json.termsOfService;
+        }
+        for (const [path, text] of strings(json, file, [])) if (PRICE_LITERAL.test(text)) offenders.push(`${path}: ${text}`);
+      }
+      expect(offenders).toEqual([]);
+    });
+  }
+
+  it("price code paths format through formatPrice, never a '$' template", () => {
+    for (const rel of [
+      "../views/pricing.tsx",
+      "../components/pricing/premium-cta.tsx",
+      "../components/account/billing-panel.tsx",
+      "../components/account/plan-summary.tsx",
+      "../components/account/plan-change-dialog.tsx",
+      "../components/account/yearly-nudge.tsx",
+      "../components/account/checkout-return.tsx",
+      "../components/account/upgrade-interstitial.tsx",
+      "../components/auth-modal.tsx",
+      "../lib/llmsTxt.ts",
+    ]) {
+      const src = readFileSync(join(__dirname, rel), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+      expect(src, rel).not.toMatch(/`\$\$\{|'\$'|"\$"|\$\d/);
+      // The legacy /api/tiers *PriceUSD fields are read only by lib/billing/price.ts planPrices.
+      expect(src, rel).not.toMatch(/\b(premium|pro)Price(Yearly)?USD\b/);
+    }
+  });
+});

@@ -78,6 +78,10 @@ _Avoid_: hard-coding a Motion allowance anywhere outside `/api/tiers`.
 
 ### Editor domain
 
+**Billing currency** (MM69):
+USD or EUR, with the same numerals in both (Premium 8 / 80, Pro 15 / 150). `lib/billing/currency.ts` holds the page-wide value and its precedence, **lock > setting > cookie > geo**: a subscription's Stripe currency (`/api/billing/status` `currency` when `currencyLocked`), then the account setting (`/api/account/settings` `currency`), then the `mm-currency` cookie (with a localStorage mirror), then the browser's own `/api/tiers` `defaultCurrency`. `useCurrency()` reads it, and `CurrencyToggle` changes it. Every price string goes through `formatPrice` in `lib/billing/price.ts`, and Checkout is opened in the same currency. Until an `/api/tiers` answer carries `prices.eur` (for example from a pre-MM69 API), the page stays on USD and hides the toggle.
+_Avoid_: converting amounts, or adding USD and EUR together.
+
 **EDL** (Edit Decision List):
 The persisted document describing an edit — tracks, clips, effects, captions, audio config. Zod schema in `lib/studioTypes.ts`, mirrored byte-for-byte (camelCase) by the Go backend. The wire contract between editor and render pipeline.
 
