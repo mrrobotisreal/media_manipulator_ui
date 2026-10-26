@@ -27,7 +27,8 @@
  * right around it (not a call to `isTranslatorEnv()`): bundlers fold the
  * literal and drop the branch, and only a dropped branch keeps the chunk out of
  * the build. `loadTranslatorMarkerRuntime()` below is the one synchronous
- * loader; `npm run check:no-translator` proves the result on the built output.
+ * loader and `loadTranslatorWorkbench()` the one asynchronous one (MM53 panel);
+ * `npm run check:no-translator` proves the result on the built output.
  */
 import { translatorLocales } from '@/i18n/locales';
 
@@ -148,6 +149,21 @@ export function loadTranslatorMarkerRuntime(): TranslatorMarkerRuntime | null {
       }
     }
     return getTranslatorMarkerRuntime();
+  }
+  return null;
+}
+
+/**
+ * MM53: the translator workbench island (gate + panel) for `app/providers.tsx`,
+ * or `null` outside an armed translator deployment. The literal role guard folds
+ * the `import()` away in production, so the workbench chunk is never built there.
+ */
+export function loadTranslatorWorkbench(): Promise<{
+  default: import('react').ComponentType<Record<string, never>>;
+}> | null {
+  if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') {
+    if (!translatorLocale()) return null;
+    return import('@/components/translator/translator-island');
   }
   return null;
 }

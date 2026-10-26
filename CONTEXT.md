@@ -99,3 +99,13 @@ An invisible run of U+200C/U+200D, 63 chars, appended to every translated string
 
 **Key registry**:
 `lib/translator/keyRegistry.ts`, which maps a marker index to `{ ns, key, lng }`, where `key` is the *resolved* key (`foo_few`, `items.0.title`). The index is content-derived: locale slot × 2³² + FNV-1a of `ns:key`. Server and client therefore mint identical markers without shared state, which keeps hydration safe.
+
+**Workbench panel**:
+The translator-only side panel (`components/translator/workbench-panel.tsx`, MM53), mounted from `app/providers.tsx` through `loadTranslatorWorkbench()` behind the literal `NEXT_PUBLIC_DEPLOY_ROLE` guard, and only after `GET /api/translator/me` allows the signed-in user for this locale. Docks right for LTR, left for RTL. Tabs: This page, All keys, Changes. Its chrome is English (`lib/translator/chromeCopy.ts`), never a locale shard.
+_Avoid_: "editor" (that is Darkroom or Motion), "translation panel" (the caption translator tool).
+
+**Draft**:
+A translator's pending value for one key, kept in IndexedDB `mm-translator-drafts` (`lib/translator/draftStore.ts`) keyed by locale + file + key, with the `baseValue` it was started from. It exists only while it differs from that base. Drafts are re-applied to the page after reloads, navigation and lazy shard merges (shard first, drafts last). They are never written to the shard files: MM54's submit turns them into a pull request.
+
+**Base SHA**:
+The `main` commit SHA plus per-file blob SHAs from `GET /api/translator/base`, stored per locale beside the drafts. It is fetched on the first panel open of a session that has no pending drafts, and on "Refresh base". MM54's conflict check compares it with `main` at submit.

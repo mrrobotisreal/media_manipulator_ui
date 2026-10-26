@@ -37,7 +37,7 @@ export interface HoverEvent {
 export class TranslatorHighlighter {
   private readonly doc: Document;
   private overlay: HTMLDivElement | null = null;
-  private current: MarkerRef | null = null;
+  private current: MarkerRef[] = [];
   private focusListeners = new Set<(e: FocusKeyEvent) => void>();
   private hoverListeners = new Set<(e: HoverEvent) => void>();
   private lastHover: Element | null = null;
@@ -59,7 +59,7 @@ export class TranslatorHighlighter {
     const onClick = (e: MouseEvent) => this.onClick(e);
     const onMove = (e: MouseEvent) => this.onMove(e);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && this.current) this.clearHighlight();
+      if (e.key === 'Escape' && this.current.length) this.clearHighlight();
     };
     const onReflow = () => this.scheduleReposition();
     // Capture phase: the page's own handlers must not see an Alt+click.
@@ -153,17 +153,22 @@ export class TranslatorHighlighter {
   /* --- outline overlay ------------------------------------------------- */
 
   highlightKey(ref: MarkerRef): Element[] {
-    this.current = ref;
+    return this.highlightKeys([ref]);
+  }
+
+  /** Outlines every element of every ref (MM53: plural groups, multi-key composites). */
+  highlightKeys(refs: MarkerRef[]): Element[] {
+    this.current = [...refs];
     return this.render();
   }
 
   clearHighlight(): void {
-    this.current = null;
+    this.current = [];
     this.overlay?.replaceChildren();
   }
 
   get highlighted(): MarkerRef | null {
-    return this.current;
+    return this.current[0] ?? null;
   }
 
   private ensureOverlay(): HTMLDivElement {
@@ -181,8 +186,8 @@ export class TranslatorHighlighter {
   private render(): Element[] {
     const overlay = this.ensureOverlay();
     overlay.replaceChildren();
-    if (!this.current) return [];
-    const els = this.scanner.getElementsForKey(this.current);
+    if (!this.current.length) return [];
+    const els = [...new Set(this.current.flatMap((ref) => this.scanner.getElementsForKey(ref)))];
     for (const el of els) {
       const r = el.getBoundingClientRect();
       const box = this.doc.createElement('div');
@@ -196,7 +201,7 @@ export class TranslatorHighlighter {
   }
 
   private scheduleReposition(): void {
-    if (!this.current || this.raf) return;
+    if (!this.current.length || this.raf) return;
     const win = this.doc.defaultView;
     if (!win) return;
     this.raf = win.requestAnimationFrame(() => {
@@ -211,6 +216,6 @@ export class TranslatorHighlighter {
     this.hoverListeners.clear();
     this.overlay?.remove();
     this.overlay = null;
-    this.current = null;
+    this.current = [];
   }
 }
