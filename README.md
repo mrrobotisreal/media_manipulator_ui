@@ -243,6 +243,26 @@ All browser‑exposed variables use the `NEXT_PUBLIC_` prefix. See `.env.example
 | `NEXT_PUBLIC_ADSENSE_ENABLED` | Enable real AdSense (prod only) | `false` |
 | `NEXT_PUBLIC_MOCK_ADS_ENABLED` | Show first‑party mock ads (dev only) | `false` |
 
+### Translator deployments (MM52–MM54)
+
+Set **only** as branch-scoped Vercel **Preview** variables on a `translate/<prefix>` branch, never on Production. `scripts/vercel-translator-env.sh` sets them for all 16 branches from your shell (run `--dry-run` first; it reads the secrets from your environment and never prints them). The design is in `../docs/design/TRANSLATOR_WORKBENCH.md`; the setup checklist is MM55.
+
+| Variable | Scope | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_DEPLOY_ROLE` | build | `translator` turns on translator mode (hardening; `app/api/translator/*` answer 404 without it) |
+| `NEXT_PUBLIC_TRANSLATOR_LOCALE` | build | The edited locale, e.g. `de-DE` (`node scripts/list-locales.mjs --codes`) |
+| `TRANSLATOR_EMAILS` | server | Comma-separated allowlist (trimmed, case-insensitive; empty = nobody) |
+| `GITHUB_APP_ID` | server | The "Media Manipulator Translator" GitHub App id |
+| `GITHUB_APP_INSTALLATION_ID` | server | Its installation on this repo |
+| `GITHUB_APP_PRIVATE_KEY` | server, sensitive | The App's private key PEM, **base64-encoded** |
+| `GITHUB_REPO` | server | `mrrobotisreal/media_manipulator_ui` |
+| `GITHUB_BASE_BRANCH` | server | `main` (PR base and conflict reference) |
+| `NEXT_PUBLIC_FB_PROJECT_ID` | build | Already set for auth; also the issuer/audience for ID-token checks |
+
+GitHub Actions secrets for `.github/workflows/sync-translate-branches.yml`: `VERCEL_DEPLOY_HOOK_<PREFIX>`, one per branch, with the prefix uppercased and `-` turned into `_` (`de` -> `VERCEL_DEPLOY_HOOK_DE`, `pt-br` -> `VERCEL_DEPLOY_HOOK_PT_BR`; `node scripts/list-locales.mjs --matrix` prints the mapping). A missing hook is a notice, not a failure. `TRANSLATE_SYNC_TOKEN` is optional: a fine-grained token with Contents + Workflows write, used only if GitHub refuses a `GITHUB_TOKEN` push of commits that change workflow files.
+
+Translator routes (Node runtime, `Cache-Control: no-store`, 404 off-role): `GET /api/translator/me`, `GET /api/translator/base`, `POST /api/translator/submit[?dryRun=1]`. The contract is in `lib/translator/submitContract.ts` and `lib/translator/server/handlers.ts`.
+
 ---
 
 ## Scripts

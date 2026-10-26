@@ -26,6 +26,7 @@ import type { WorkbenchController } from '@/lib/translator/workbenchSession';
 import type { WorkbenchModel } from '@/lib/translator/workbenchModel';
 import { cn } from '@/lib/utils';
 import { fieldDomId, KeyRow } from './key-row';
+import { SubmitModal } from './submit-modal';
 
 export const PANEL_MIN_WIDTH = 320;
 export const PANEL_MAX_VW = 0.6;
@@ -517,6 +518,7 @@ const ChangesTab: React.FC<{
     query,
   );
   const warnings = changes.reduce((n, c) => n + c.warnings.length, 0);
+  const [submitOpen, setSubmitOpen] = React.useState(false);
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2 text-xs" dir="ltr">
@@ -546,15 +548,12 @@ const ChangesTab: React.FC<{
       {rows.map((id) => (
         <KeyRow key={id} model={model} entryId={id} dir={dir} lang={lang} onHighlight={onHighlight} />
       ))}
-      {/* MM54 mounts the confirm modal here; until then the button is disabled. */}
       <div className="border-t border-border px-3 py-3" dir="ltr" data-submit-area="">
-        <Button className="w-full" disabled aria-describedby="tw-submit-note">
+        <Button className="w-full" disabled={changes.length === 0} onClick={() => setSubmitOpen(true)}>
           {CHROME.submit}
         </Button>
-        <p id="tw-submit-note" className="mt-1.5 text-[11px] text-muted-foreground">
-          {CHROME.submitPending}
-        </p>
       </div>
+      {submitOpen ? <SubmitModal model={model} open onOpenChange={setSubmitOpen} /> : null}
     </div>
   );
 };

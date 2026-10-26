@@ -551,10 +551,22 @@
     "tooltipRestoration": "<strong>Restoration & Cleanup</strong> — noise reduction, de-hum, declip, silence removal.",
     "tooltipAdvanced": "<strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.",
     "sections": {
-      "basic": { "title": "Basic Audio Processing", "description": "Volume control, EQ, dynamics, and stereo processing" },
-      "time": { "title": "Time-Based Effects", "description": "Reverb, delay, echo, and modulation effects" },
-      "restoration": { "title": "Restoration & Cleanup", "description": "Noise reduction, de-hum, declip, and silence detection" },
-      "advanced": { "title": "Advanced Processing", "description": "Pitch shifting, time stretching, spatial audio, and spectral processing" }
+      "basic": {
+        "title": "Basic Audio Processing",
+        "description": "Volume control, EQ, dynamics, and stereo processing"
+      },
+      "time": {
+        "title": "Time-Based Effects",
+        "description": "Reverb, delay, echo, and modulation effects"
+      },
+      "restoration": {
+        "title": "Restoration & Cleanup",
+        "description": "Noise reduction, de-hum, declip, and silence detection"
+      },
+      "advanced": {
+        "title": "Advanced Processing",
+        "description": "Pitch shifting, time stretching, spatial audio, and spectral processing"
+      }
     },
     "volumeDynamics": {
       "title": "Volume & Dynamics",
@@ -588,7 +600,13 @@
       "tooltip": "Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect.",
       "enable": "Enable Reverb",
       "typeLabel": "Reverb Type",
-      "types": { "none": "None", "room": "Room", "hall": "Hall", "plate": "Plate", "spring": "Spring" },
+      "types": {
+        "none": "None",
+        "room": "Room",
+        "hall": "Hall",
+        "plate": "Plate",
+        "spring": "Spring"
+      },
       "roomSize": "Room Size",
       "roomRange": "0% to 100%",
       "wetDry": "Wet/Dry Mix",
@@ -599,7 +617,12 @@
       "tooltip": "Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats.",
       "enable": "Enable Delay",
       "typeLabel": "Delay Type",
-      "types": { "none": "None", "echo": "Simple Echo", "multi-tap": "Multi-tap", "ping-pong": "Ping-Pong" },
+      "types": {
+        "none": "None",
+        "echo": "Simple Echo",
+        "multi-tap": "Multi-tap",
+        "ping-pong": "Ping-Pong"
+      },
       "delayTime": "Delay Time (ms)",
       "feedback": "Feedback (%)",
       "feedbackRange": "0% to 95%"
@@ -618,9 +641,19 @@
       "timeStretchValue": "{{value}}x speed",
       "timeStretchRange": "0.25x to 4x speed",
       "spatialAudio": "Spatial Audio",
-      "spatial": { "none": "None", "binaural": "Binaural", "surround": "Surround", "3d": "3D Audio" },
+      "spatial": {
+        "none": "None",
+        "binaural": "Binaural",
+        "surround": "Surround",
+        "3d": "3D Audio"
+      },
       "spectral": "Spectral Processing",
-      "spectralOptions": { "none": "None", "vocoder": "Vocoder", "formant": "Formant Filter", "convolution": "Convolution" }
+      "spectralOptions": {
+        "none": "None",
+        "vocoder": "Vocoder",
+        "formant": "Formant Filter",
+        "convolution": "Convolution"
+      }
     },
     "labels": {
       "amplify": "Amplify (dB)",
@@ -639,10 +672,22 @@
     "tooltipTemporal": "<strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.",
     "tooltipAdvanced": "<strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.",
     "sections": {
-      "visual": { "title": "Visual Effects", "description": "Color correction, blur/sharpen, artistic effects, and noise control" },
-      "transform": { "title": "Geometric Transform", "description": "Rotation, flipping, cropping, and padding" },
-      "temporal": { "title": "Temporal Effects", "description": "Speed control, reverse, frame rate, and stabilization" },
-      "advanced": { "title": "Advanced Processing", "description": "Deinterlacing, HDR processing, and color space conversion" }
+      "visual": {
+        "title": "Visual Effects",
+        "description": "Color correction, blur/sharpen, artistic effects, and noise control"
+      },
+      "transform": {
+        "title": "Geometric Transform",
+        "description": "Rotation, flipping, cropping, and padding"
+      },
+      "temporal": {
+        "title": "Temporal Effects",
+        "description": "Speed control, reverse, frame rate, and stabilization"
+      },
+      "advanced": {
+        "title": "Advanced Processing",
+        "description": "Deinterlacing, HDR processing, and color space conversion"
+      }
     },
     "colorExposure": {
       "title": "Color & Exposure",
