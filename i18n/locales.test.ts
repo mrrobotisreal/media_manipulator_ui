@@ -18,7 +18,6 @@ import {
 
 const NEW_LOCALES = [
   ["fr-FR", "fr"],
-  ["it-IT", "it"],
   ["zh-CN", "zh-cn"],
   ["zh-TW", "zh-tw"],
   ["ko-KR", "ko"],
@@ -55,7 +54,7 @@ describe("locale registry", () => {
   });
 
   it("keeps the six original locales as the only translated ones", () => {
-    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "ja-JP"]);
+    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "it-IT", "ja-JP"]);
   });
 });
 
