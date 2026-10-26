@@ -4,7 +4,7 @@ import PricingView, { PricingUnavailable } from '@/views/pricing';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { languageAlternates } from '@/lib/metadata';
 import { getLocaleDef, localizeHref } from '@/i18n/locales';
-import type { TiersResponse } from '@/lib/auth/accountApi';
+import { loadPublicTiers } from '@/lib/auth/loadTiers';
 import { getSeoOverride } from '@/lib/seoOverrides';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
 import { translatorRobots } from '@/lib/translator/mode';
@@ -62,31 +62,10 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 // dynamic rendering).
 export const revalidate = 300;
 
-const API_BASE = (
-  process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.media-manipulator.com/api'
-).replace(/\/$/, '');
-
-/**
- * Loads the tier matrix for the build.
- *
- * Returns null instead of throwing: the API being unreachable during a build or
- * a revalidation must degrade this one page, never fail the deploy. Every tool
- * on the site keeps working without it.
- */
-async function loadTiers(): Promise<TiersResponse | null> {
-  try {
-    const response = await fetch(`${API_BASE}/tiers`, { next: { revalidate } });
-    if (!response.ok) return null;
-    return (await response.json()) as TiersResponse;
-  } catch {
-    return null;
-  }
-}
-
 export default async function Pricing({ params }: PageParams) {
   const { lang } = await params;
   const locale = resolveLangParam(lang);
-  const data = await loadTiers();
+  const data = await loadPublicTiers(revalidate);
   if (!data || !data.tiers?.length) {
     return (
       <div className="container mx-auto px-4 py-16">

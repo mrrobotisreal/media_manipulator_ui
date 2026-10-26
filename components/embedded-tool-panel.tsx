@@ -107,6 +107,10 @@ export type EmbeddedTask =
   // via the static /tools/ai-video-restoration route — the literal exists so
   // its toolPages entry typechecks; the generic embedded panel never sees it.
   | 'ai_video_restoration'
+  // Motion (MM48) opens its own chromeless editor from the static /tools/motion
+  // route; like ai_video_restoration, the literal only lets its toolPages entry
+  // typecheck and the generic embedded panel never sees it.
+  | 'motion_editor'
   | 'png_to_jpg'
   | 'jpg_to_png'
   | 'webp_to_png'

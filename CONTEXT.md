@@ -20,7 +20,7 @@ The site-wide visual design system (`components/darkroom/*` — panels, segmente
 ### Naming: the Motion editor
 
 **Motion**:
-The user-facing name for the SVG + SVG-animation editor (`/motion/[projectId]`, chromeless like `/dr`; public landing page `/tools/motion` arrives with MM48). All *publicly visible* references say "Motion", and the one copy constant is `MOTION_BRAND` in `lib/vector/brand.ts` (no other "Motion" string literal in editor code; `lib/vector/brand.test.ts` enforces it). Shown as "Motion (beta)" until the first full release.
+The user-facing name for the SVG + SVG-animation editor (`/motion/[projectId]`, chromeless like `/dr`; public landing page `/tools/motion`, MM48). All *publicly visible* references say "Motion", and the one copy constant is `MOTION_BRAND` in `lib/vector/brand.ts` (no other "Motion" string literal in editor code; `lib/vector/brand.test.ts` enforces it). Shown as "Motion (beta)" until the first full release.
 _Avoid_: "vector" in anything a user can see; the `motion` npm package (we do not depend on it).
 
 **vector**:
@@ -64,6 +64,10 @@ _Avoid_: "render" alone (Darkroom renders on the server), "screen recording".
 
 **Account project / browser-only project** (MM44):
 A Motion project is either browser-only (a `local-…` id; it lives only in the IndexedDB draft, the only kind anonymous users have) or an account project (a server UUID in `vector_projects`, saved with `If-Match` revisions, 409 on a conflict). "Save to account" turns the first into the second and replaces the URL. The draft is kept until a save succeeds.
+
+**Motion plan table** (MM48):
+The format-and-allowance table on `/tools/motion`, a pure model over the public `GET /api/tiers` body (`lib/vector/planTable.ts`, rendered server-side by `components/vector/landing/motion-landing.tsx`). Columns are the public tiers the API returns (Pro only when it serves a `pro` row, with the "Best for Motion" chip); a format is ticked when the tier's `vectorFormats` lists it, and a format no tier lists is "coming soon" (the export dialog's "not available on any plan yet"). No numbers or locks are literals, so MM49's Pro formats appear with no UI change.
+_Avoid_: hard-coding a Motion allowance anywhere outside `/api/tiers`.
 
 ### Editor domain
 

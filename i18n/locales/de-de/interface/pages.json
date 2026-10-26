@@ -332,6 +332,10 @@
       "image": {
         "title": "So verwenden Sie den Bildkonverter",
         "description": "Konvertieren Sie Bilder zwischen JPG, PNG, WebP und GIF. Skalieren, zuschneiden, Filter anwenden, Textüberlagerungen hinzufügen, Metadaten verwalten und KI-Werkzeuge wie Gesichtsunschärfe, Hintergrund entfernen, KI-Hochskalierung und Text schwärzen nutzen."
+      },
+      "motion": {
+        "title": "Animations-Tutorials",
+        "description": "Animieren Sie SVG-Grafiken auf einer Keyframe-Zeitleiste und exportieren Sie sie als animiertes SVG, Lottie, Code oder GIF."
       }
     },
     "tutorials": {
@@ -432,6 +436,79 @@
         "title": "Erste Schritte: Bilddateien konvertieren",
         "excerpt": "Vollständiges Tutorial zum Bildkonverter — Format, Qualität und Abmessungen wählen, Zuschneiden, Filter, Farbton, Textüberlagerungen, EXIF-/IPTC-/GPS-Metadaten sowie die KI-Werkzeuge Gesichtsprivatsphäre, Hintergrund entfernen, KI-Hochskalierung und Text schwärzen.",
         "readTime": "10 Min. Lesezeit"
+      },
+      "motion": {
+        "title": "So animieren Sie ein SVG mit Motion",
+        "excerpt": "Eine Anleitung in fünf Schritten zu Motion: ein SVG importieren, mit Keyframes animieren, das Timing mit Easing und Hold gestalten, exportieren und das richtige Format wählen.",
+        "readTime": "7 Min. Lesezeit",
+        "page": {
+          "eyebrow": "Animations-Tutorial",
+          "title": "So animieren Sie ein SVG mit {{brand}}",
+          "intro": "{{brand}} verwandelt ein statisches SVG ohne Programmierung in eine Animation. Sie arbeiten mit Ebenen und einer Keyframe-Zeitleiste, wie in einer Motion-Design-App, und exportieren das Ergebnis als animiertes SVG, Lottie-Datei, React-Komponente, JavaScript- oder TypeScript-Modul, Flutter-Widget oder GIF. Diese Anleitung führt Sie in fünf Schritten von der leeren Zeichenfläche zum fertigen Export.",
+          "import": {
+            "title": "1. Ein SVG importieren oder bei null anfangen",
+            "body": "Öffnen Sie {{brand}} über die Tool-Seite. Der Editor öffnet sich im Vollbild mit einer leeren Zeichenfläche von 512 × 512. Wählen Sie „Importieren“, um Ihre Grafik zu laden, oder zeichnen Sie direkt auf der Zeichenfläche.",
+            "bullets": {
+              "svg": "SVG-Dateien werden zu einem Ebenenbaum: Gruppen, Pfade, Rechtecke, Ellipsen, Linien, Polygone, Text, Bilder, Verläufe, Masken und Beschneidungspfade sind alle bearbeitbar. Wählen Sie eine Ebene im Ebenenbedienfeld oder auf der Zeichenfläche aus und benennen, gruppieren, sperren oder verbergen Sie sie.",
+              "lottie": "Lottie-JSON-Dateien werden mit ihren Keyframes importiert, sodass Sie eine vorhandene Animation bearbeiten können. Alles, was der Editor nicht darstellen kann, wird nach dem Import aufgelistet, statt stillschweigend verworfen zu werden.",
+              "blank": "Um von Grund auf zu zeichnen, verwenden Sie die Werkzeuge Rechteck, Ellipse, Linie, Zeichenstift und Text. Mit „Knoten bearbeiten“ formen Sie jeden Pfad Punkt für Punkt um.",
+              "safety": "Importe werden beim Einlesen bereinigt: Skripte, Ereignishandler und Links zu externen Dateien werden entfernt und aufgelistet, sodass ein SVG aus dem Web weder im Editor noch in Ihren Exporten Code ausführen kann."
+            }
+          },
+          "animate": {
+            "title": "2. Mit Keyframes animieren",
+            "body": "Die Zeitleiste am unteren Rand des Editors zeigt eine Zeile pro Ebene und eine Spur pro animierter Eigenschaft. {{brand}} nutzt den Abspielkopf, um zu bestimmen, wohin eine Änderung gehört.",
+            "bullets": {
+              "playhead": "Ziehen Sie den Abspielkopf (oder klicken Sie auf das Zeitlineal) zu dem Zeitpunkt, an dem die Änderung geschehen soll. Die Leertaste startet und pausiert, Pos1 und Ende springen zum Anfang und zum Ende.",
+              "keyframe": "Verwenden Sie bei ausgewählter Ebene im Inspektor „Animieren“ bei einer Eigenschaft, um ihr eine Spur zu geben, und ändern Sie dann den Wert. Jede Änderung zu einem neuen Zeitpunkt fügt einen Keyframe hinzu; wird eine animierte Eigenschaft später geändert, bearbeitet das den Keyframe am Abspielkopf.",
+              "autokey": "Aktivieren Sie Auto-Keyframe, um jede Änderung auf der Zeichenfläche oder im Inspektor als Keyframe aufzuzeichnen. Das ist für grobes Blocking am schnellsten.",
+              "animators": "Das Bedienfeld „Animieren“ fügt ganze Effekte in einem Schritt hinzu: Einzeichnen (die Kontur zeichnet sich selbst), Bewegungspfad (die Ebene wandert entlang eines Pfads), Morphing (eine Form wird zu einer anderen), Verlauf, Maske/Beschneidung und Weichzeichner. Jeder davon ist ein einzelner Rückgängig-Schritt."
+            }
+          },
+          "easing": {
+            "title": "3. Das Timing mit Easing und Hold gestalten",
+            "body": "Das Easing bestimmt, wie ein Wert zwischen zwei Keyframes verläuft. Wählen Sie auf der Zeitleiste einen oder mehrere Keyframes aus und wählen Sie im Bedienfeld „Easing“ eine Vorgabe; sie gilt für das Segment, das an jedem ausgewählten Keyframe beginnt.",
+            "bullets": {
+              "presets": "Linear, Ease In, Ease Out und Ease In-Out decken die meisten Bewegungen ab. Ease Out passt zu Dingen, die ankommen; Ease In zu Dingen, die verschwinden.",
+              "curve": "„Kurve“ öffnet einen Cubic-Bezier-Editor mit zwei Griffen für eigenes Timing ohne Überschwingen, das genau CSS cubic-bezier() entspricht.",
+              "hold": "„Hold“ lässt den Wert bis zum nächsten Keyframe unverändert und springt dann. Nutzen Sie es für Blinken, Bild-für-Bild-Wechsel oder eine Farbe, die sich sofort ändert.",
+              "range": "Legen Sie einen Wiedergabebereich fest, um nur den Teil in einer Schleife abzuspielen, an dem Sie arbeiten, und deaktivieren Sie die Schleife, wenn die Animation nur einmal laufen soll."
+            }
+          },
+          "export": {
+            "title": "4. Ihre Animation exportieren",
+            "body": "Wählen Sie „Export“, um den Exportdialog zu öffnen. Jeder Export wird in Ihrem Browser erstellt und sofort heruntergeladen; Ihre Grafik wird nicht hochgeladen. Statisches SVG (das Bild am Abspielkopf) ist immer kostenlos. Animierte Formate zählen zum täglichen {{brand}}-Kontingent Ihres Tarifs, das der Dialog vor dem Export anzeigt; Formate, die Ihr Tarif nicht enthält, sind mit einem Schloss und einem Link zu den Tarifen markiert."
+          },
+          "formats": {
+            "title": "5. Das richtige Format wählen",
+            "body": "Das beste Format hängt davon ab, wo die Animation abgespielt wird.",
+            "bullets": {
+              "svg": "Animiertes SVG ist eine Datei, die ohne Bibliothek abgespielt wird, ideal für Websites. Wenn möglich verwendet es reines CSS; Form-Morphing, bewegte Verlaufsstopps und Weichzeichner benötigen ein kleines eingebettetes Skript (anime.js, MIT-Lizenz), und Skripte laufen nicht, wenn das SVG in einem <img>-Tag eingefügt ist.",
+              "lottie": "Lottie JSON wird in lottie-web sowie in den Lottie-Playern für iOS, Android und Flutter abgespielt. Der Dialog listet alles auf, was Lottie nicht abbilden kann, etwa Filter oder Text.",
+              "code": "Die Exporte React (.tsx), JavaScript und TypeScript liefern Ihnen eine Komponente oder ein Modul mit play, pause und seek, bereit zum Einsatz in einer App.",
+              "flutter": "Der Flutter-Export ist ein natives flutter_svg-Widget, wenn die Animation sich nur bewegt, ein- und ausblendet und umfärbt, und sonst ein WebView-Player.",
+              "gif": "GIF wird überall abgespielt, auch in Chats und E-Mails, mit einer globalen Palette, die flache Vektorfarben exakt hält. GIF- und Video-Exporte folgen den Größen- und Längenlimits Ihres Tarifs."
+            }
+          },
+          "save": {
+            "title": "Ihre Arbeit speichern",
+            "body": "{{brand}} speichert beim Arbeiten einen Entwurf in diesem Browser, sodass ein geschlossener Tab oder ein Absturz Ihre Änderungen nicht verliert. Ohne Konto bleiben Projekte nur in diesem Browser. Wenn Sie angemeldet sind, speichert „Im Konto speichern“ das Projekt auf unseren Servern; danach wird es automatisch gespeichert, lässt sich auf jedem Gerät öffnen und erscheint auf Ihrer Kontoseite, wo Sie es löschen können."
+          },
+          "cta": {
+            "title": "Testen Sie {{brand}} jetzt",
+            "body": "Importieren Sie ein SVG oder beginnen Sie eine leere Zeichnung. Bearbeiten und statischer SVG-Export sind kostenlos, ohne Konto.",
+            "button": "{{brand}} öffnen"
+          },
+          "related": {
+            "title": "Verwandte Tools und Tutorials",
+            "intro": "Machen Sie mit diesen Seiten weiter.",
+            "motionDesc": "Die Tool-Seite mit den Formaten und Kontingenten jedes Tarifs.",
+            "licenses": "Open-Source-Lizenzen",
+            "licensesDesc": "Die Bibliotheken, die der Editor verwendet und in Ihre Exporte schreibt.",
+            "darkroom": "Darkroom-Tutorial",
+            "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4."
+          }
+        }
       }
     },
     "newToHere": {
@@ -495,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Gültig ab: 24.10.2026",
-    "lastUpdated": "Zuletzt aktualisiert: 25.10.2026",
+    "lastUpdated": "Zuletzt aktualisiert: 26.10.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Was sich am 25.10.2026 geändert hat",
-    "whatChangedBody": "Wir haben neben Premium für 8 $ pro Monat oder 80 $ pro Jahr einen zweiten kostenpflichtigen Tarif hinzugefügt: Pro für 15 $ pro Monat oder 150 $ pro Jahr. Abschnitt 10 der Nutzungsbedingungen erklärt nun Tarifwechsel: Ein Upgrade von Premium auf Pro gilt sofort, mit einer anteiligen Abbuchung für den Rest des Zeitraums und demselben Verlängerungsdatum; ein Downgrade von Pro auf Premium gilt ab dem Ende des bezahlten Zeitraums, ohne Erstattung für den Rest. Die 14-tägige Rückerstattung einer ersten Zahlung gilt für beide Tarife. Die Datenschutzerklärung (Abschnitt 1.6) nennt beide Tarife und erklärt, dass ein geplanter Tarifwechsel bei Stripe gespeichert wird. Alles aus der Überprüfung vom 24.10.2026 (Zahlungen über das Stripe-Konto der CreaTV Ltd., Metadatenberichte, die zusammen mit ihren Dateien gelöscht werden, Google-Analytics, das erst nach Einwilligung geladen wird, die genannten KI-Tools, die Firebase-Anmeldung, Darkroom innerhalb von CreaTV Studio, Aufbewahrung und die in Abschnitt 1.7 beschriebenen Service-E-Mails) gilt weiterhin."
+    "whatChangedTitle": "Was sich am 26.10.2026 geändert hat",
+    "whatChangedBody": "Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -637,6 +714,14 @@
               "Darkroom, unser Video-Editor, kann auch in CreaTV Studio eingebettet sein, ein Produkt desselben Unternehmens. In diesem Modus übergibt CreaTV Studio dein CreaTV-Anmeldetoken über deinen Browser an den eingebetteten Editor (eine Nachricht zwischen der CreaTV-Seite und dem Editor), und der Editor verwendet es ausschließlich für Aufrufe der eigenen Studio-Dienste von CreaTV. Deine Projekte, Medien und Exporte werden dann von den Diensten von CreaTV unter deinem CreaTV-Konto gespeichert und verarbeitet, nicht in einem Media-Manipulator-Konto, und es gilt die Datenschutzerklärung von CreaTV.",
               "CreaTV Studio teilt dem eingebetteten Editor außerdem mit, ob du auf CreaTV Analyse und Werbung akzeptiert hast. Der eingebettete Editor zeigt weder unser Cookie-Banner noch Werbung an und führt unsere Analyse nicht aus."
             ]
+          },
+          {
+            "title": "1.9 Motion-Projekte und Exporte",
+            "paragraphs": [
+              "Motion, unser SVG-Animationseditor, läuft in Ihrem Browser. Die Zeichnungen, die Sie importieren oder erstellen, und die Dateien, die Sie daraus exportieren (animiertes SVG, Lottie, Code, GIF und weitere Formate), werden in Ihrem Browser erzeugt. Wir erhalten weder Ihre Grafik noch die exportierten Dateien, um diese zu erstellen.",
+              "Ohne Konto werden Motion-Projekte nur in Ihrem Browser (in IndexedDB) gespeichert und gelangen nie auf unsere Server. Wenn Sie angemeldet sind und „Im Konto speichern“ wählen, werden das Projekt und ein kleines Vorschaubild auf unseren Servern und in Amazon S3 auf dieselbe Weise gespeichert wie ein Darkroom-Projekt: Sie sind Ihre Inhalte, sie folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3), Sie können sie auf Ihrer Kontoseite löschen, sie werden mit Ihrem Konto gelöscht, und sie sind in Ihrem Datenexport aufgeführt.",
+              "Jeder animierte Export und jeder Lottie-Import wird auf unserem Server gezählt, bevor Ihr Browser ihn ausführt, um das tägliche Motion-Kontingent Ihres Tarifs durchzusetzen. Zu jedem speichern wir das Format, die Ausgabehöhe, Bildrate und Länge, den Zeitpunkt, Ihren Tarif, das gespeicherte Projekt, aus dem er stammt (falls vorhanden), sowie eine Kennung für Ihr Konto, Ihre Browsersitzung oder eine gehashte IP-Adresse. Wir verwenden diese Datensätze, um das Kontingent durchzusetzen und zu verstehen, welche Formate genutzt werden. Wenn Sie Ihr Konto löschen, werden sie von Ihrer Identität gelöst."
+            ]
           }
         ]
       },
@@ -663,7 +748,7 @@
         "id": "retention",
         "title": "3. Dateispeicherung, Aufbewahrung und Löschung",
         "paragraphs": [
-          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien und Darkroom-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu deinen Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
+          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien, Darkroom-Projekte und in Ihrem Konto gespeicherte Motion-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu deinen Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
         ],
         "subsections": [
           {
@@ -688,7 +773,7 @@
           {
             "title": "3.3 Löschen Ihrer Dateien",
             "paragraphs": [
-              "Wenn Sie ein Konto haben, können Sie auf der Seite „Konto“ ein einzelnes Ergebnis oder Darkroom-Projekt löschen, alle Ihre Dateien auf einmal löschen oder Ihr gesamtes Konto löschen. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden."
+              "Wenn Sie ein Konto haben, können Sie auf der Seite „Konto“ ein einzelnes Ergebnis, Darkroom-Projekt oder Motion-Projekt löschen, alle Ihre Dateien auf einmal löschen oder Ihr gesamtes Konto löschen. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden."
             ]
           },
           {
@@ -698,7 +783,7 @@
             ],
             "bullets": [
               "Wir kündigen Ihr Premium- oder Pro-Abonnement bei Stripe, falls Sie eines haben;",
-              "wir löschen Ihre Dateien und Darkroom-Projekte;",
+              "wir löschen Ihre Dateien sowie Ihre Darkroom- und Motion-Projekte;",
               "wir löschen Ihren Kontodatensatz und Ihre Einstellungen und lösen Ihre übrigen Aktivitätsdatensätze von Ihrer Identität;",
               "wir bitten unsere First-Party-Analyse, die mit Ihrem Konto verknüpften Analysedaten zu löschen (siehe Abschnitt 6);",
               "wir löschen Ihren Anmelde-Zugang."
@@ -970,6 +1055,7 @@
           "Metadaten- und EXIF-Entfernung;",
           "KI-gestützte Transkription, Untertitelerzeugung, Zusammenfassungen und Beschreibungen;",
           "Inhaltssicherheitsklassifizierung und Missbrauchspräventions-Scans;",
+          "Erstellen, Animieren und Exportieren von Vektorgrafiken und Animationen mit Motion;",
           "vorübergehender Konvertierungsverlauf und herunterladbare verarbeitete Ausgaben."
         ],
         "afterBullets": [
@@ -1260,7 +1346,9 @@
           "Media Manipulator, einschließlich Website, Design, Software, Code, Benutzeroberfläche, Marke, Logos, Text, Grafiken, Funktionen, Arbeitsabläufe und verwandter Materialien, gehört der CreaTV Ltd. oder ihren Lizenzgebern und ist durch geltendes Recht zum Schutz geistigen Eigentums geschützt.",
           "Diese Bedingungen gewähren Ihnen kein Eigentum an Media Manipulator oder an geistigem Eigentum der CreaTV Ltd.",
           "Sie dürfen Media Manipulator nicht kopieren, verändern, verbreiten, verkaufen, verleasen, zurückentwickeln oder daraus abgeleitete Werke erstellen, außer soweit gesetzlich zulässig oder mit unserer schriftlichen Genehmigung.",
-          "Sie behalten das Eigentum an Ihren eigenen hochgeladenen Dateien und erzeugten Ergebnissen, vorbehaltlich der in diesen Bedingungen gewährten Rechte und Lizenzen."
+          "Sie behalten das Eigentum an Ihren eigenen hochgeladenen Dateien und erzeugten Ergebnissen, vorbehaltlich der in diesen Bedingungen gewährten Rechte und Lizenzen.",
+          "Animationen und Dateien, die Sie mit Motion erstellen, einschließlich animiertem SVG sowie Lottie-, Code- und Bildexporten, gehören Ihnen auf dieselbe Weise wie Ihre anderen erzeugten Ergebnisse. Einige Exporte enthalten Open-Source-Code von Drittanbietern, der die Animation abspielt: anime.js, das unter der MIT License lizenziert ist. Sein Urheberrechts- und Lizenzvermerk steht am Anfang der exportierten Datei, und Sie müssen diesen Vermerk beibehalten, wenn Sie die Datei verwenden oder verbreiten. Code-Exporte, die ein Paket verwenden, statt es einzubetten (das Paket anime.js für React und JavaScript sowie flutter_svg oder webview_flutter für Flutter), nennen es in der Datei, und Sie installieren es selbst unter seiner eigenen Lizenz (MIT oder BSD-3-Clause für webview_flutter).",
+          "Media Manipulator verwendet Open-Source-Bibliotheken in Ihrem Browser, darunter mediabunny, das unter der Mozilla Public License 2.0 lizenziert ist und unverändert verwendet wird, um in Ihrem Browser erstellte Videodateien zu verpacken. Ihre Lizenzen, Urheberrechtsvermerke und Quellcode-Links sind auf unserer Seite mit Open-Source-Lizenzen aufgeführt: https://www.media-manipulator.com/licenses."
         ]
       },
       {
@@ -1653,8 +1741,8 @@
       "deletedPending": "Project deleted. A few files are still being removed in the background.",
       "deleteFailed": "Could not delete this project. Nothing was changed; try again.",
       "kindDarkroom": "Darkroom",
-      "motionLoadFailed": "Could not load your {{brand}} projects.",
-      "motionDeleteBody": "The {{brand}} project and its thumbnail are removed from our servers. This cannot be undone."
+      "motionLoadFailed": "Ihre {{brand}}-Projekte konnten nicht geladen werden.",
+      "motionDeleteBody": "Das {{brand}}-Projekt und sein Vorschaubild werden von unseren Servern entfernt. Dies kann nicht rückgängig gemacht werden."
     },
     "billing": {
       "plans": "Compare plans"
@@ -1830,7 +1918,8 @@
       "audio": "Audiowerkzeuge",
       "ai": "KI-Werkzeuge",
       "metadata": "Datenschutz- & Metadatenwerkzeuge",
-      "contentStudio": "Darkroom"
+      "contentStudio": "Darkroom",
+      "motion": "SVG-Animation"
     },
     "multiTrackEditor": "Multi-Track-Editor",
     "open": "Öffnen",
@@ -1842,7 +1931,9 @@
     "newHereBody": "Schritt-für-Schritt-Tutorials führen Sie durch die Bild-, Video- und Audiowerkzeuge sowie den Darkroom-Editor.",
     "browseAllTutorials": "Alle Tutorials durchstöbern",
     "darkroomTutorial": "Darkroom-Tutorial",
-    "howItWorks": "So funktioniert es"
+    "howItWorks": "So funktioniert es",
+    "svgAnimationEditor": "SVG-Animationseditor",
+    "motionTutorial": "Motion-Tutorial"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Brotkrumen-Navigation",
@@ -1949,18 +2040,86 @@
     "metaDesc": "Versionshinweise zu Media Manipulator: neue Tools, Kontofunktionen, Darkroom-Updates und Fehlerbehebungen."
   },
   "licenses": {
-    "metaTitle": "Open-source licences | Media Manipulator",
-    "metaDesc": "The open-source code Media Manipulator runs in your browser or writes into your exports, with each licence and where to find its source.",
-    "title": "Open-source licences",
-    "intro": "Media Manipulator uses these open-source libraries in your browser. Some of their code is also written into files you export. Each is used under its own licence, shown below with its copyright notice and a link to its source.",
-    "note": "Library descriptions are written in English.",
+    "metaTitle": "Open-Source-Lizenzen | Media Manipulator",
+    "metaDesc": "Der Open-Source-Code, den Media Manipulator in Ihrem Browser ausführt oder in Ihre Exporte schreibt, mit jeder Lizenz und der Fundstelle des Quellcodes.",
+    "title": "Open-Source-Lizenzen",
+    "intro": "Media Manipulator verwendet diese Open-Source-Bibliotheken in Ihrem Browser. Ein Teil ihres Codes wird auch in Dateien geschrieben, die Sie exportieren. Jede wird unter ihrer eigenen Lizenz verwendet, die unten mit ihrem Urheberrechtsvermerk und einem Link zum Quellcode angegeben ist.",
+    "note": "Die Beschreibungen der Bibliotheken sind auf Englisch verfasst.",
     "version": "Version",
-    "license": "Licence",
-    "copyright": "Copyright",
-    "source": "Source code",
-    "licenseText": "Licence text",
-    "usedFor": "Used for",
-    "embedded": "Its licence notice is written into the exported file.",
-    "unmodified": "Used unmodified. Its source code is available at the link above."
+    "license": "Lizenz",
+    "copyright": "Urheberrecht",
+    "source": "Quellcode",
+    "licenseText": "Lizenztext",
+    "usedFor": "Verwendet für",
+    "embedded": "Ihr Lizenzvermerk wird in die exportierte Datei geschrieben.",
+    "unmodified": "Unverändert verwendet. Ihr Quellcode ist unter dem obigen Link verfügbar."
+  },
+  "motionPage": {
+    "betaBadge": "Beta",
+    "guide": {
+      "summaryTitle": "So funktioniert {{brand}}",
+      "whatItIsTitle": "Was es ist",
+      "whatItIsBody": "{{brand}} ist ein SVG-Editor mit Keyframe-Zeitleiste. Jede Form in Ihrer Zeichnung ist eine Ebene, und jede Eigenschaft, die Sie animieren (Position, Skalierung, Drehung, Deckkraft, Farbe, Kontur und mehr), erhält eine eigene Keyframe-Spur. Das Bearbeiten ist kostenlos, unbegrenzt und läuft vollständig in Ihrem Browser.",
+      "stepsTitle": "Vier Schritte",
+      "step1": "Öffnen Sie eine SVG- oder Lottie-Datei oder beginnen Sie eine leere Zeichnung und zeichnen Sie mit den Werkzeugen für Formen, Zeichenstift und Text.",
+      "step2": "Setzen Sie den Abspielkopf auf einen Zeitpunkt und ändern Sie eine Eigenschaft; auf der Spur dieser Eigenschaft erscheint ein Keyframe.",
+      "step3": "Gestalten Sie das Timing mit einer Easing-Vorgabe, einer eigenen Kurve oder einem Hold, oder wenden Sie einen Ein-Klick-Animator wie Einzeichnen oder Bewegungspfad an.",
+      "step4": "Exportieren Sie animiertes SVG, Lottie JSON, React, JavaScript, TypeScript, Flutter oder GIF. Die Datei wird in Ihrem Browser erstellt und sofort heruntergeladen.",
+      "editorTitle": "Der Editor",
+      "editorBody": "{{brand}} öffnet sich im Vollbild, ohne Seitenkopf und Werbung, damit Zeichenfläche, Ebenenbedienfeld, Inspektor und Zeitleiste das ganze Fenster nutzen. Ihre Arbeit wird laufend in diesem Browser gespeichert; angemeldete Nutzer können sie auch in ihrem Konto speichern."
+    },
+    "launcher": {
+      "open": "{{brand}} öffnen",
+      "openHint": "Startet eine neue Zeichnung im Vollbild-Editor.",
+      "recentTitle": "Letzte Projekte",
+      "sourceAccount": "In Ihrem Konto gespeichert",
+      "sourceBrowser": "In diesem Browser gespeichert",
+      "loading": "Ihre Projekte werden geladen…",
+      "empty": "Noch keine Projekte. Ihre Zeichnungen erscheinen hier.",
+      "error": "Ihre Projekte konnten derzeit nicht geladen werden. Sie können trotzdem eine neue Zeichnung beginnen.",
+      "edited": "Bearbeitet am {{date}}"
+    },
+    "plans": {
+      "title": "Formate und Kontingente nach Tarif",
+      "intro": "Bearbeiten, Speichern und statischer SVG-Export sind in jedem Tarif kostenlos. Animierte Exporte zählen zu einem täglichen {{brand}}-Kontingent, und jeder Tarif enthält die unten markierten Formate. Diese Zahlen stammen direkt von unseren Servern und sind daher immer aktuell.",
+      "caption": "{{brand}}-Exportformate und Kontingente nach Tarif",
+      "format": "Format",
+      "staticSvg": "Statisches SVG",
+      "staticFree": "In jedem Tarif kostenlos, wird nie angerechnet",
+      "formats": {
+        "svg_animated": "Animiertes SVG",
+        "lottie": "Lottie JSON",
+        "react_tsx": "React-Komponente (.tsx)",
+        "js_ts": "JavaScript-/TypeScript-Modul",
+        "flutter": "Flutter-Widget (.dart)",
+        "gif": "GIF",
+        "png_sequence": "PNG-Sequenz (.zip)",
+        "mp4": "MP4-Video",
+        "webm": "WebM-Video",
+        "import_lottie": "Lottie-Import"
+      },
+      "rows": {
+        "exportsPerDay": "Animierte Exporte pro Tag",
+        "projects": "Gespeicherte Projekte",
+        "maxDuration": "Längste exportierbare Animation",
+        "rasterCap": "Größe und Länge von GIF und Video"
+      },
+      "values": {
+        "included": "Enthalten",
+        "notIncluded": "Nicht enthalten",
+        "unlimited": "Unbegrenzt",
+        "localOnly": "{{count}}, nur in diesem Browser",
+        "comingSoon": "Bald verfügbar: noch in keinem Tarif",
+        "noCap": "Keine Begrenzung",
+        "notApplicable": "Nicht enthalten",
+        "capHeight": "bis {{height}}p",
+        "capFps": "{{fps}} fps",
+        "capSeconds": "{{seconds}} s"
+      },
+      "comingSoonNote": "Mit „Bald verfügbar“ markierte Formate sind bereits in den Editor eingebaut und werden in Kürze einem Tarif hinzugefügt. Diese Tabelle aktualisiert sich dann automatisch.",
+      "resetNote": "Kontingente werden um Mitternacht UTC zurückgesetzt. Abgebrochene oder fehlgeschlagene Exporte, die bereits angerechnet wurden, werden nicht erstattet.",
+      "unavailable": "Die Tariftabelle konnte derzeit nicht geladen werden. Die Preisseite listet das Kontingent jedes Tarifs auf.",
+      "seePlans": "Alle Tarife vergleichen"
+    }
   }
 }

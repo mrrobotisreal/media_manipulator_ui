@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Music, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
+import { Music, Image as ImageIcon, Spline, Video as VideoIcon } from 'lucide-react';
 import { getServerT } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
@@ -13,7 +13,7 @@ interface TutorialDef {
 }
 
 interface CategoryDef {
-  id: 'audio' | 'video' | 'image';
+  id: 'audio' | 'video' | 'image' | 'motion';
   titleKey: string;
   descriptionKey: string;
   icon: React.ReactNode;
@@ -72,6 +72,21 @@ const CATEGORIES: CategoryDef[] = [
         excerptKey: 'tutorials.tutorials.imageGettingStarted.excerpt',
         readTimeKey: 'tutorials.tutorials.imageGettingStarted.readTime',
         slug: 'image/getting-started',
+      },
+    ],
+  },
+  {
+    // MM48
+    id: 'motion',
+    titleKey: 'tutorials.categories.motion.title',
+    descriptionKey: 'tutorials.categories.motion.description',
+    icon: <Spline className="w-7 h-7 text-data" />,
+    tutorials: [
+      {
+        titleKey: 'tutorials.tutorials.motion.title',
+        excerptKey: 'tutorials.tutorials.motion.excerpt',
+        readTimeKey: 'tutorials.tutorials.motion.readTime',
+        slug: 'motion',
       },
     ],
   },

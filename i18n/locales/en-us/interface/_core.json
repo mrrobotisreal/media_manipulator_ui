@@ -120,7 +120,8 @@
       "description": "Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data."
     },
     "changelog": "Changelog",
-    "status": "Status"
+    "status": "Status",
+    "licenses": "Open-source licences"
   },
   "languageSelector": {
     "label": "Language",

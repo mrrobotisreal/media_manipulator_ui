@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Clapperboard, Shield, Sparkles, ArrowRight } from 'lucide-react';
+import { Clapperboard, Shield, Sparkles, Spline, ArrowRight } from 'lucide-react';
 import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import type { ToolPageContent } from '@/content/toolPages';
@@ -39,9 +39,12 @@ export default async function ToolsIndexPage({ params }: PageParams) {
     localizedPages.find((tool) => tool.slug === slug),
   ).filter((tool): tool is ToolPageContent => Boolean(tool));
   const contentStudio = allowedTools.find((tool) => tool.slug === 'content-studio');
+  // MM48: Motion is featured beside Darkroom, never in the category grid.
+  const motion = allowedTools.find((tool) => tool.slug === 'motion');
+  const FEATURED = new Set(['content-studio', 'motion']);
   const toolsByCategory = (category: ToolPageContent['category']) =>
     allowedTools.filter(
-      (tool) => tool.category === category && tool.slug !== 'content-studio',
+      (tool) => tool.category === category && !FEATURED.has(tool.slug),
     );
   const CATEGORY_LABELS: Record<ToolPageContent['category'], string> = {
     image: t('toolsIndex.categories.image'),
@@ -50,6 +53,7 @@ export default async function ToolsIndexPage({ params }: PageParams) {
     ai: t('toolsIndex.categories.ai'),
     metadata: t('toolsIndex.categories.metadata'),
     contentStudio: t('toolsIndex.categories.contentStudio'),
+    motion: t('toolsIndex.categories.motion'),
   };
   return (
     <>
@@ -86,6 +90,36 @@ export default async function ToolsIndexPage({ params }: PageParams) {
                       </span>
                     </span>
                     <p className="mt-1 text-sm text-muted-foreground">{contentStudio.tagline}</p>
+                  </div>
+                  <span className="hidden shrink-0 items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform sm:inline-flex">
+                    {t('toolsIndex.open')} <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </Link>
+            )}
+
+            {/* Featured: Motion (MM48) */}
+            {motion && (
+              <Link
+                href={localizeHref('/tools/motion', locale)}
+                data-testid="tools-featured-motion"
+                className="group mb-8 block rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="shrink-0 rounded-lg bg-data/10 p-3">
+                    <Spline className="w-7 h-7 text-data" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="flex flex-wrap items-center gap-2">
+                      <span className="text-lg font-semibold text-card-foreground">
+                        {motion.name}
+                      </span>
+                      <span className="inline-flex items-center gap-1 rounded-md bg-data px-2 py-0.5 text-xs font-medium text-data-foreground">
+                        <Sparkles className="w-3 h-3" />
+                        {t('toolsIndex.svgAnimationEditor')}
+                      </span>
+                    </span>
+                    <p className="mt-1 text-sm text-muted-foreground">{motion.tagline}</p>
                   </div>
                   <span className="hidden shrink-0 items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform sm:inline-flex">
                     {t('toolsIndex.open')} <ArrowRight className="w-4 h-4" />
@@ -149,6 +183,9 @@ export default async function ToolsIndexPage({ params }: PageParams) {
                 </Link>
                 <Link href={localizeHref('/tutorials/content-studio', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
                   {t('toolsIndex.darkroomTutorial')}
+                </Link>
+                <Link href={localizeHref('/tutorials/motion', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
+                  {t('toolsIndex.motionTutorial')}
                 </Link>
                 <Link href={localizeHref('/how-it-works', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
                   {t('toolsIndex.howItWorks')}

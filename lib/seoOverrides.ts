@@ -21,6 +21,16 @@ export interface SeoOverride {
 type LocaleOverrides = Record<string, SeoOverride>;
 
 const RU_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/motion': {
+    title: 'Motion: бесплатный онлайн-редактор анимации SVG | Media Manipulator',
+    description:
+      'Анимируйте SVG в браузере: ключевые кадры, плавность, удержания, прорисовка, траектории и морфинг. Экспорт в анимированный SVG, Lottie JSON, React, JS, Flutter или GIF.',
+  },
+  '/tutorials/motion': {
+    title: 'Как анимировать SVG в Motion | Руководство Media Manipulator',
+    description:
+      'Пошаговое руководство по Motion: импорт SVG, анимация ключевыми кадрами, настройка тайминга плавностью и удержаниями, экспорт в анимированный SVG, Lottie, код или GIF.',
+  },
   '/': {
     title: 'Бесплатный онлайн-конвертер, редактор и транскрибатор медиафайлов | Media Manipulator',
     description:
@@ -109,6 +119,16 @@ const RU_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const UK_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/motion': {
+    title: 'Motion: безкоштовний онлайн-редактор анімації SVG | Media Manipulator',
+    description:
+      'Анімуйте SVG у браузері: ключові кадри, згладжування, утримання, домальовування, траєкторії руху й морфінг. Експорт: анімований SVG, Lottie JSON, React, JS, Flutter, GIF.',
+  },
+  '/tutorials/motion': {
+    title: 'Як анімувати SVG у Motion | Посібник Media Manipulator',
+    description:
+      'Покроковий посібник із Motion: імпортуйте SVG, анімуйте його ключовими кадрами, налаштуйте час згладжуванням і утриманням, експортуйте анімований SVG, Lottie, код або GIF.',
+  },
   '/': {
     title: 'Безкоштовний онлайн-конвертер, редактор і транскрибатор медіафайлів | Media Manipulator',
     description:
@@ -197,6 +217,16 @@ const UK_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const DE_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/motion': {
+    title: 'Motion: Kostenloser SVG-Animationseditor | Media Manipulator',
+    description:
+      'Animieren Sie SVG im Browser: Keyframes, Easing, Holds, Konturzeichnung, Bewegungspfade und Morphing. Export als animiertes SVG, Lottie JSON, React, JS, Flutter oder GIF.',
+  },
+  '/tutorials/motion': {
+    title: 'SVG mit Motion animieren | Media Manipulator Tutorial',
+    description:
+      'Motion-Tutorial: SVG importieren, mit Keyframes animieren, Timing mit Easing und Holds gestalten, dann als animiertes SVG, Lottie, Code oder GIF exportieren.',
+  },
   '/': {
     title: 'Kostenloser Online-Konverter, -Editor und -Transkriptionsdienst für Medien | Media Manipulator',
     description:
@@ -285,6 +315,16 @@ const DE_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const HE_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/motion': {
+    title: 'Motion: עורך הנפשת SVG חינם אונליין | Media Manipulator',
+    description:
+      'הנפישו SVG בדפדפן: פריימי מפתח, האצה והאטה, החזקות, ציור הדרגתי, נתיבי תנועה ומורפינג. ייצאו SVG מונפש, Lottie JSON, React, JS, Flutter או GIF.',
+  },
+  '/tutorials/motion': {
+    title: 'איך להנפיש SVG עם Motion | Media Manipulator',
+    description:
+      'מדריך Motion צעד אחר צעד: ייבאו SVG, הנפישו אותו בפריימי מפתח, עצבו את התזמון עם האצה, האטה והחזקות, ואז ייצאו SVG מונפש, Lottie, קוד או GIF.',
+  },
   '/': {
     title: 'ממיר, עורך ומתמלל מדיה חינמי אונליין | Media Manipulator',
     description:
@@ -373,6 +413,16 @@ const HE_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const ES_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/motion': {
+    title: 'Motion: editor de animación SVG gratis en línea | Media Manipulator',
+    description:
+      'Anima SVG en tu navegador: fotogramas clave, suavizado, retenciones, trayectorias y morfosis. Exporta SVG animado, Lottie JSON, React, JS, Flutter o GIF.',
+  },
+  '/tutorials/motion': {
+    title: 'Cómo animar un SVG con Motion | Media Manipulator',
+    description:
+      'Tutorial de Motion paso a paso: importa un SVG, anímalo con fotogramas clave, da forma al ritmo con suavizados y retenciones y exporta SVG animado, Lottie, código o GIF.',
+  },
   '/': {
     title: 'Conversor, editor y transcriptor de medios gratis online | Media Manipulator',
     description:

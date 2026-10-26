@@ -39,6 +39,7 @@ export default function ToolLandingPage({
   beforeIntroExtra,
   afterPanelExtra,
   locale,
+  titleBadge,
 }: {
   tool: ToolPageContent;
   /** Optional custom interactive panel (e.g. the Content Studio editor). When
@@ -50,6 +51,8 @@ export default function ToolLandingPage({
   afterPanelExtra?: ReactNode;
   /** Active locale, so internal links (breadcrumbs, related tools) stay inside it. */
   locale?: string;
+  /** Optional inline node after the H1 text (e.g. Motion's "beta" chip). */
+  titleBadge?: ReactNode;
 }) {
   const loc = locale ?? 'en-US';
   const t = getServerT('interface', loc);
@@ -98,6 +101,7 @@ export default function ToolLandingPage({
           <header className="mb-6">
             <h1 className="text-3xl md:text-4xl font-bold text-card-foreground leading-tight">
               {tool.h1}
+              {titleBadge}
             </h1>
             <p className="text-lg text-muted-foreground mt-3 max-w-3xl">{tool.tagline}</p>
           </header>

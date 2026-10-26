@@ -14,6 +14,159 @@
 
 const deToolPages = {
   pages: {
+    // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
+    motion: {
+      tagline: 'Zeichnen oder importieren Sie ein SVG, animieren Sie es auf einer Keyframe-Zeitleiste und exportieren Sie animiertes SVG, Lottie, React, JavaScript, Flutter oder GIF, alles in Ihrem Browser.',
+      intro: 'Motion ist ein SVG-Editor mit Animationszeitleiste, integriert in Media Manipulator. Öffnen Sie eine SVG-Datei (oder eine Lottie-Animation), und jede Form wird zu einer Ebene, die Sie auswählen, verschieben, umfärben und animieren können, oder beginnen Sie mit einer leeren Zeichenfläche und zeichnen Sie mit den Werkzeugen für Rechteck, Ellipse, Linie, Zeichenstift und Text. Jede animierte Eigenschaft erhält eine eigene Keyframe-Spur, mit Easing-Vorgaben, einem Kurveneditor für eigenes Easing und Hold-Keys für sofortige Sprünge. Ein-Klick-Animatoren fügen Konturzeichnung, Bewegung entlang eines Pfads, Form-Morphing, Farbverläufe, Maskenanimation und Weichzeichner hinzu. Wenn es sich so bewegt, wie Sie möchten, exportieren Sie es als animiertes SVG, Lottie-Datei, React-Komponente, JavaScript- oder TypeScript-Modul, Flutter-Widget oder GIF. Bearbeitung und jeder Export laufen in Ihrem Browser, Ihre Grafik wird also nie hochgeladen, um sie zu exportieren.',
+      whatItDoes: [
+        'Importiert SVG-Dateien in einen bearbeitbaren Ebenenbaum (Gruppen, Pfade, Formen, Text, Bilder, Verläufe, Masken und Beschneidungspfade) und importiert Lottie-JSON-Animationen mit ihren Keyframes.',
+        'Zeichnet neue Grafiken mit den Werkzeugen für Rechteck, Ellipse, Linie, Zeichenstift (Bézier) und Text und bearbeitet Pfadknoten direkt auf der Zeichenfläche.',
+        'Animiert Position, Skalierung, Drehung, Neigung, Deckkraft, Füllung, Kontur und Konturbreite auf einer Keyframe-Zeitleiste mit Linear, Ease In, Ease Out, Ease In-Out, eigenem Cubic-Bezier und Hold-Easing.',
+        'Fügt fortgeschrittene Animationen mit einem Klick hinzu: Konturzeichnung, Bewegung entlang eines Pfads mit optionaler automatischer Drehung, Form-Morphing, Farben von Verlaufsstopps, Masken- und Beschneidungspfad-Animation sowie Weichzeichner.',
+        'Exportiert ein statisches SVG (immer kostenlos), ein animiertes SVG, das ohne Bibliothek abgespielt wird, Lottie JSON, eine React-Komponente, ein JavaScript- oder TypeScript-Modul, ein Flutter-Widget und ein animiertes GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Öffnen oder zeichnen',
+          description: 'Importieren Sie eine SVG- oder Lottie-Datei oder zeichnen Sie Formen und Pfade auf einer leeren Zeichenfläche.',
+        },
+        {
+          title: 'Animieren',
+          description: 'Bewegen Sie den Abspielkopf und ändern Sie eine Eigenschaft: Die Zeitleiste zeichnet dafür einen Keyframe auf.',
+        },
+        {
+          title: 'Timing gestalten',
+          description: 'Wählen Sie eine Easing-Vorgabe, zeichnen Sie eine eigene Kurve, fügen Sie Holds hinzu oder wenden Sie einen Ein-Klick-Animator an.',
+        },
+        {
+          title: 'Exportieren',
+          description: 'Laden Sie animiertes SVG, Lottie, React, JS/TS, Flutter oder GIF herunter, erstellt in Ihrem Browser.',
+        },
+      ],
+      advancedDetails: [
+        'Der Export als animiertes SVG nutzt reine CSS-Keyframes, sofern sich jeder Effekt in Chrome, Firefox und Safari in CSS ausdrücken lässt. Form-Morphing, bewegte Verlaufsstopps und Weichzeichner benötigen ein kleines Skript, daher enthalten diese Dateien eine gekürzte Kopie von anime.js (MIT-Lizenz, etwa 14 KB komprimiert) mit ihrem Lizenzvermerk am Anfang.',
+        'Beim Form-Morphing werden beide Formen auf dieselbe Anzahl von Kurvensegmenten normalisiert und ihre Startpunkte und Umlaufrichtung angeglichen, damit sich das Morphing nicht verdreht. Zwei Formen, die sich nicht angleichen lassen, werden gehalten, statt gemorpht zu werden.',
+        'Der Lottie-Writer folgt der Lottie-Spezifikation 1.0.1 und dem Funktionsumfang „Basic“ von LottieFiles. Alles, was Lottie nicht abbilden kann (etwa Filter, Text oder erweiterte Masken), wird nach dem Download aufgelistet; nichts wird stillschweigend verworfen.',
+        'Der GIF-Export nutzt einen eigens für Media Manipulator geschriebenen Encoder mit einer globalen Palette aus Bildern der gesamten Animation, sodass flache Vektorgrafiken ihre exakten Farben behalten.',
+        'Importierte SVGs werden beim Einlesen bereinigt: Skripte, Ereignishandler, externe Verweise und andere unsichere Inhalte werden entfernt, und der Editor baut nicht unterstütztes Markup aus einer Positivliste neu auf, statt es als HTML einzufügen.',
+      ],
+      whyItMatters: [
+        'Animierte SVGs bleiben in jeder Größe scharf und sind meist deutlich kleiner als ein Video oder GIF derselben Animation, was sie ideal für Logos, Icons, Ladeanimationen und Illustrationen im Web macht.',
+        'Entwickler brauchen Animation als Code, nicht nur als Video: Eine React-Komponente, ein JavaScript-Modul, eine Lottie-Datei oder ein Flutter-Widget lässt sich direkt in eine App einfügen.',
+        'Der Export im Browser bedeutet, dass Ihre Grafik auf Ihrem Gerät bleibt; nur die Anzahl jedes Exports wird an uns gesendet, um das tägliche Kontingent durchzusetzen.',
+      ],
+      useCases: [
+        {
+          title: 'Logo- und Icon-Animation',
+          description: 'Zeichnen Sie ein Logo mit einer Konturanimation ein oder lassen Sie ein Icon beim Überfahren hüpfen, sich drehen oder die Farbe wechseln.',
+        },
+        {
+          title: 'Ladeanimationen und UI-Mikroanimationen',
+          description: 'Erstellen Sie Spinner und Fortschrittsanimationen und exportieren Sie sie als reines CSS-SVG oder React-Komponente.',
+        },
+        {
+          title: 'Lottie für mobile Apps',
+          description: 'Exportieren Sie Lottie JSON für die Lottie-Player für iOS, Android, Web und Flutter oder bearbeiten Sie eine vorhandene Lottie-Datei.',
+        },
+        {
+          title: 'Animierte Illustrationen',
+          description: 'Bewegen Sie Teile einer Illustration entlang von Pfaden, morphen Sie Formen ineinander und exportieren Sie ein GIF für Chat oder E-Mail.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Ein echter Editor mit Ebenen und Keyframes, mit Holds, eigenen Kurven und fortgeschrittenen Animatoren, keine Vorlagengalerie.',
+        'Exporte für Designer und Entwickler gleichermaßen: animiertes SVG, Lottie, React, JavaScript oder TypeScript, Flutter und GIF aus einem Projekt.',
+        'Exporte werden in Ihrem Browser erstellt, und der einzige Drittanbieter-Code, den ein Export verwendet, ist permissiv lizenziert (anime.js unter MIT; flutter_svg und webview_flutter für Flutter), wobei sein Lizenzvermerk in der Datei erhalten bleibt.',
+      ],
+      privacyNote: 'Bearbeitung und Export finden in Ihrem Browser statt; Ihre Grafik wird nicht hochgeladen, um sie zu exportieren. Ohne Konto werden Projekte nur in diesem Browser gespeichert. Wenn Sie sich anmelden und ein Projekt in Ihrem Konto speichern, wird es wie ein Darkroom-Projekt auf unseren Servern gespeichert, folgt der von Ihnen gewählten Aufbewahrungsdauer und kann auf Ihrer Kontoseite gelöscht werden. Zu jedem Export erfassen wir nur Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen.',
+      faq: [
+        {
+          question: 'Ist Motion kostenlos?',
+          answer: 'Ja. Motion zu öffnen, zu zeichnen, zu animieren, zu speichern und ein statisches SVG zu exportieren ist kostenlos und unbegrenzt, ohne Konto. Animierte Exporte zählen zu einem Tageskontingent, das von Ihrem Tarif abhängt; die Tariftabelle auf dieser Seite zeigt Kontingent und Formate jedes Tarifs.',
+        },
+        {
+          question: 'Welche Formate kann ich exportieren?',
+          answer: 'Statisches SVG, animiertes SVG (CSS oder bei Bedarf ein kleines Inline-Skript), Lottie JSON, eine React-Komponente (.tsx), ein JavaScript- oder TypeScript-Modul, ein Flutter-Widget (.dart) und ein animiertes GIF. Welche davon Ihr Tarif enthält und wie viele Exporte täglich möglich sind, zeigt die Tariftabelle auf dieser Seite.',
+        },
+        {
+          question: 'Welche Limits gibt es?',
+          answer: 'Animierte Exporte werden pro Tag gezählt und um Mitternacht UTC zurückgesetzt. Besucher ohne Konto können Projekte nur in ihrem Browser speichern; angemeldete Tarife speichern eine bestimmte Anzahl von Projekten im Konto. Für den Export gibt es außerdem eine maximale Animationslänge, und der GIF-Export hat eine Größen- und Längenbegrenzung. Alle aktuellen Zahlen stehen in der Tariftabelle auf dieser Seite und auf der Preisseite.',
+        },
+        {
+          question: 'Kann ich ein vorhandenes SVG animieren?',
+          answer: 'Ja. Importieren Sie ein beliebiges SVG, und seine Gruppen, Pfade, Formen, Texte, Verläufe, Masken und Beschneidungspfade werden zu bearbeitbaren Ebenen. Teile, die der Editor nicht bearbeiten kann, etwa Muster oder komplexe Filter, werden beibehalten und unverändert exportiert, und alles Unsichere (Skripte oder externe Links) wird entfernt und nach dem Import aufgelistet.',
+        },
+        {
+          question: 'Unterstützt es Lottie?',
+          answer: 'Ja, in beide Richtungen. Sie können eine Lottie-JSON-Datei zum Bearbeiten importieren und Ihre Animation als Lottie JSON für lottie-web sowie die Lottie-Player für iOS, Android und Flutter exportieren. Funktionen, die eine Seite nicht abbilden kann, werden im Dialog aufgelistet, statt stillschweigend verworfen zu werden.',
+        },
+        {
+          question: 'Welche Browser unterstützen den Videoexport?',
+          answer: 'Der GIF-Export funktioniert in allen modernen Browsern. MP4- und WebM-Export stützen sich auf WebCodecs, den integrierten Videoencoder des Browsers, der in Chrome und Edge sowie je nach Codec in neueren Versionen von Safari und Firefox verfügbar ist; der Exportdialog prüft Ihren Browser und meldet, wenn er nicht kodieren kann. Die Tariftabelle auf dieser Seite zeigt, welcher Tarif welches Videoformat enthält.',
+        },
+        {
+          question: 'Welche Lizenz gilt für den exportierten Code?',
+          answer: 'Ihre Animation gehört Ihnen. Wenn ein animiertes SVG oder ein Code-Export eine Laufzeitumgebung benötigt, verwendet es anime.js, das MIT-lizenziert ist; sein Urheberrechtsvermerk steht am Anfang der Datei und muss dort erhalten bleiben. Flutter-Exporte verwenden das Paket flutter_svg (MIT) oder webview_flutter (BSD-3-Clause). Alles andere in der Datei wird aus Ihrem Projekt erzeugt. Die Open-Source-Bibliotheken, die der Editor verwendet, sind auf unserer Lizenzseite aufgeführt.',
+        },
+        {
+          question: 'Wo werden meine Projekte gespeichert?',
+          answer: 'Ohne Konto werden Projekte nur in diesem Browser gespeichert, sodass das Löschen Ihrer Browserdaten sie entfernt. Wenn Sie angemeldet sind, können Sie ein Projekt in Ihrem Konto speichern; es wird dann zwischen Geräten synchronisiert, beim Arbeiten automatisch gespeichert, folgt der von Ihnen gewählten Aufbewahrungsdauer und kann auf Ihrer Kontoseite gelöscht werden.',
+        },
+      ],
+      supportedFormats: {
+        supportedInputFormats: [
+          'SVG',
+          'Lottie JSON',
+          'Motion-Projekt (.json)',
+        ],
+        supportedOutputFormats: [
+          'Statisches SVG',
+          'Animiertes SVG',
+          'Lottie JSON',
+          'React (.tsx)',
+          'JavaScript / TypeScript',
+          'Flutter (.dart)',
+          'GIF',
+        ],
+        maxFileNotes: [
+          'SVG- und Lottie-Importe bis zu je 4 MB.',
+          'Projekte ohne Konto bleiben nur in diesem Browser; angemeldete Projekte folgen der von Ihnen gewählten Aufbewahrungsdauer.',
+        ],
+        processingNotes: [
+          'Bearbeitung, Vorschau und jeder Export laufen in Ihrem Browser. Nur die Anzahl jedes Exports wird an unsere Server gesendet.',
+        ],
+      },
+      embed: {
+        title: 'Motion öffnen',
+        description: 'Beginnen Sie eine neue Zeichnung oder öffnen Sie eine letzte erneut. Der Editor öffnet sich im Vollbild; Ihre Arbeit bleibt in diesem Browser erhalten, und angemeldete Nutzer können sie in ihrem Konto speichern.',
+      },
+      related: [
+        {
+          label: 'Motion-Tutorial',
+          to: '/tutorials/motion',
+          description: 'Importieren Sie ein SVG, animieren Sie es, gestalten Sie das Easing und exportieren Sie es, Schritt für Schritt.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4.',
+        },
+        {
+          label: 'Video in animiertes GIF umwandeln',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Wandeln Sie einen Videoclip in ein GIF um, wenn Ihre Animation als Filmmaterial begann.',
+        },
+        {
+          label: 'Open-Source-Lizenzen',
+          to: '/licenses',
+          description: 'Die Bibliotheken, die der Editor ausführt und in Ihre Exporte schreibt.',
+        },
+      ],
+      metaTitle: 'Motion: Kostenloser SVG-Animationseditor | Media Manipulator',
+      metaDescription: 'Animieren Sie SVG im Browser: Keyframes, Easing, Holds, Konturzeichnung, Bewegungspfade und Morphing. Export als animiertes SVG, Lottie JSON, React, JS, Flutter oder GIF.',
+      ogTitle: 'Motion: Kostenloser SVG-Animationseditor',
+      ogDescription: 'Animieren Sie SVG im Browser: Keyframes, Easing, Holds, Konturzeichnung, Bewegungspfade und Morphing. Export als animiertes SVG, Lottie JSON, React, JS, Flutter oder GIF.',
+    },
     'content-studio': {
       name: 'Darkroom',
       tagline:
