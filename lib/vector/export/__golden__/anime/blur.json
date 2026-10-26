@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "canvas": { "width": 160, "height": 160 },
+  "duration": 1000,
+  "fps": 24,
+  "layers": [
+    { "type": "ellipse", "id": "glow", "cx": 80, "cy": 80, "rx": 40, "ry": 40, "fill": "#a855f7", "filter": "soft" }
+  ],
+  "defs": {
+    "filters": [{ "type": "blur", "id": "soft", "stdDeviation": 0, "x": "-50%", "y": "-50%", "width": "200%", "height": "200%" }]
+  },
+  "animations": [
+    {
+      "layerId": "glow",
+      "property": "filter.blur",
+      "keyframes": [
+        { "t": 0, "value": 0, "easing": "easeIn" },
+        { "t": 500, "value": 8, "easing": "easeOut" },
+        { "t": 1000, "value": 0, "easing": "linear" }
+      ]
+    }
+  ]
+}

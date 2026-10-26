@@ -216,10 +216,10 @@ export function canExportCss(doc: VectorDoc): CssExportCheck {
 // atomic segments: one track as exact pieces
 // ---------------------------------------------------------------------------
 
-type Timing = { kind: 'linear' } | { kind: 'steps' } | { kind: 'cubic'; curve: CubicBezier };
+export type Timing = { kind: 'linear' } | { kind: 'steps' } | { kind: 'cubic'; curve: CubicBezier };
 
 /** [t0, t1): value runs v0 → v1 through `timing` (for 'steps', v0 holds and v1 lands at t1). */
-interface Piece {
+export interface Piece {
   t0: number;
   t1: number;
   v0: TrackValue;
@@ -245,8 +245,11 @@ function easingTiming(e: Easing): Timing | 'easeBoth' {
 
 const sameValue = (a: TrackValue, b: TrackValue) => a === b;
 
-/** A track as exact pieces covering [0, duration]. Keyframes are sorted (the store guarantees it). */
-function trackPieces(track: Track, duration: number): Piece[] {
+/**
+ * A track as exact pieces covering [0, duration] (shared with the anime
+ * exporter). Keyframes are sorted (the store guarantees it).
+ */
+export function trackPieces(track: Track, duration: number): Piece[] {
   const keys = [...track.keyframes].sort((a, b) => a.t - b.t);
   const out: Piece[] = [];
   const first = keys[0];
