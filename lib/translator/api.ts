@@ -18,6 +18,15 @@
  * gate treats `error` like every other refusal: the plain site, no panel, no hint.
  */
 
+import {
+  TRANSLATOR_SUBMIT_PATH,
+  type DryRunResponse,
+  type SubmitConflict,
+  type SubmitRequest,
+  type SubmitSuccess,
+  type SubmitWarning,
+} from './submitContract';
+
 export type MeResponse =
   | { allowed: true; email: string; locale: string }
   | { allowed: false; reason: 'unverified' | 'not_allowlisted' | 'wrong_locale' };
@@ -36,14 +45,32 @@ export type MeResult =
 
 export type BaseResult = { ok: true; base: BaseResponse } | { ok: false; status: number | null; detail: string };
 
+/**
+ * `POST /api/translator/submit` outcomes (MM54; contract in `submitContract.ts`).
+ * Every failure keeps the drafts: the modal maps each kind to a message and a retry.
+ */
+export type SubmitResult =
+  | { kind: 'ok'; result: SubmitSuccess }
+  | { kind: 'dry_run'; result: DryRunResponse }
+  | { kind: 'conflicts'; conflicts: SubmitConflict[] }
+  | { kind: 'warnings'; warnings: SubmitWarning[] }
+  | { kind: 'rate_limited'; retryAfterSeconds: number }
+  | { kind: 'unauthorized' }
+  | { kind: 'forbidden' }
+  | { kind: 'invalid'; status: number; error: string; paths?: string[] }
+  | { kind: 'error'; status: number | null; detail: string };
+
 /** The seam: the HTTP client in the deployment, a fake in tests. */
 export interface TranslatorApi {
   me(idToken: string): Promise<MeResult>;
   base(idToken: string): Promise<BaseResult>;
+  /** MM54. Optional so MM53-era fakes stay valid; the HTTP client always has it. */
+  submit?(idToken: string, body: SubmitRequest, options?: { dryRun?: boolean }): Promise<SubmitResult>;
 }
 
 export const TRANSLATOR_ME_PATH = '/api/translator/me';
 export const TRANSLATOR_BASE_PATH = '/api/translator/base';
+export { TRANSLATOR_SUBMIT_PATH };
 
 const REFUSALS = new Set(['unverified', 'not_allowlisted', 'wrong_locale']);
 
@@ -71,6 +98,37 @@ export function parseBaseBody(body: unknown): BaseResponse | null {
     files[path] = sha;
   }
   return { sha: b.sha, files };
+}
+
+const isObj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
+
+/** Maps a `/submit` response (status + parsed JSON body, or null) to a `SubmitResult`. */
+export function parseSubmitResponse(status: number, body: unknown, retryAfterHeader: string | null = null): SubmitResult {
+  const b = isObj(body) ? body : {};
+  if (status === 200) {
+    if (b.dryRun === true && Array.isArray(b.conflicts) && Array.isArray(b.warnings)) {
+      return { kind: 'dry_run', result: body as DryRunResponse };
+    }
+    if (typeof b.prUrl === 'string' && typeof b.prNumber === 'number' && typeof b.branch === 'string') {
+      return { kind: 'ok', result: body as SubmitSuccess };
+    }
+    return { kind: 'error', status, detail: 'malformed /submit body' };
+  }
+  if (status === 401) return { kind: 'unauthorized' };
+  if (status === 403) return { kind: 'forbidden' };
+  if (status === 409 && Array.isArray(b.conflicts)) return { kind: 'conflicts', conflicts: b.conflicts as SubmitConflict[] };
+  if (status === 422 && Array.isArray(b.warnings)) return { kind: 'warnings', warnings: b.warnings as SubmitWarning[] };
+  if (status === 429) {
+    const fromBody = typeof b.retryAfter === 'number' ? b.retryAfter : NaN;
+    const fromHeader = retryAfterHeader ? Number(retryAfterHeader) : NaN;
+    const secs = Number.isFinite(fromBody) ? fromBody : Number.isFinite(fromHeader) ? fromHeader : 600;
+    return { kind: 'rate_limited', retryAfterSeconds: Math.max(1, Math.ceil(secs)) };
+  }
+  if (status >= 400 && status < 500 && typeof b.error === 'string') {
+    const paths = Array.isArray(b.paths) ? b.paths.filter((p): p is string => typeof p === 'string') : undefined;
+    return { kind: 'invalid', status, error: b.error, ...(paths ? { paths } : {}) };
+  }
+  return { kind: 'error', status, detail: typeof b.error === 'string' ? b.error : `HTTP ${status}` };
 }
 
 export interface HttpTranslatorApiOptions {
@@ -111,24 +169,56 @@ export function createHttpTranslatorApi(options: HttpTranslatorApiOptions = {}):
         return { ok: false, status: null, detail: error instanceof Error ? error.message : String(error) };
       }
     },
+    async submit(idToken, body, opts = {}) {
+      try {
+        const res = await doFetch(`${base}${TRANSLATOR_SUBMIT_PATH}${opts.dryRun ? '?dryRun=1' : ''}`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${idToken}`, Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          cache: 'no-store',
+          credentials: 'same-origin',
+        });
+        let parsed: unknown = null;
+        try {
+          parsed = await res.json();
+        } catch {
+          parsed = null;
+        }
+        return parseSubmitResponse(res.status, parsed, res.headers.get('Retry-After'));
+      } catch (error) {
+        return { kind: 'error', status: null, detail: error instanceof Error ? error.message : String(error) };
+      }
+    },
   };
 }
 
 /** Test double: canned answers, and a record of the tokens each route saw. */
 export interface FakeTranslatorApi extends TranslatorApi {
-  calls: { me: string[]; base: string[] };
+  calls: { me: string[]; base: string[]; submit: Array<{ token: string; body: SubmitRequest; dryRun: boolean }> };
   setMe(result: MeResult): void;
   setBase(result: BaseResult): void;
+  /** Canned `/submit` answers: a function of the request, or a fixed result. */
+  setSubmit(handler: SubmitResult | ((body: SubmitRequest, dryRun: boolean) => SubmitResult)): void;
 }
 
 export function createFakeTranslatorApi(init: { me?: MeResult; base?: BaseResult } = {}): FakeTranslatorApi {
   let me: MeResult = init.me ?? { status: 'not_allowlisted' };
   let base: BaseResult = init.base ?? { ok: true, base: { sha: 'fake-sha', files: {} } };
-  const calls = { me: [] as string[], base: [] as string[] };
+  let submit: SubmitResult | ((body: SubmitRequest, dryRun: boolean) => SubmitResult) = (_b, dryRun) =>
+    dryRun
+      ? { kind: 'dry_run', result: { dryRun: true, conflicts: [], warnings: [], files: 0, changed: 0 } }
+      : { kind: 'ok', result: { prUrl: 'https://github.com/o/r/pull/1', prNumber: 1, branch: 'i18n/x/fake', files: 0, changed: 0 } };
+  const calls = { me: [] as string[], base: [] as string[], submit: [] as Array<{ token: string; body: SubmitRequest; dryRun: boolean }> };
   return {
     calls,
     setMe: (r) => void (me = r),
     setBase: (r) => void (base = r),
+    setSubmit: (h) => void (submit = h),
+    async submit(idToken, body, opts = {}) {
+      const dryRun = !!opts.dryRun;
+      calls.submit.push({ token: idToken, body, dryRun });
+      return typeof submit === 'function' ? submit(body, dryRun) : submit;
+    },
     async me(idToken) {
       calls.me.push(idToken);
       return me;
