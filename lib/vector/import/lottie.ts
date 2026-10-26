@@ -118,12 +118,15 @@ const envelopeSchema = z
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === 'object' && v !== null && !Array.isArray(v);
+/** Values beyond this magnitude are clamped: arithmetic on them (p − a, ×1000/fr) must stay finite. */
+const MAX_MAGNITUDE = 1e7;
 const fin = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
-const numOr = (v: unknown, d: number) => (fin(v) ? v : d);
+const clampMag = (v: number) => Math.min(MAX_MAGNITUDE, Math.max(-MAX_MAGNITUDE, v));
+const numOr = (v: unknown, d: number) => (fin(v) ? clampMag(v) : d);
 const vecOf = (v: unknown, len: number, d: number[]): number[] => {
-  if (fin(v)) return [v, ...d.slice(1)];
+  if (fin(v)) return [clampMag(v), ...d.slice(1)];
   if (!Array.isArray(v)) return d;
-  return d.map((x, i) => (fin(v[i]) ? (v[i] as number) : x));
+  return d.map((x, i) => (fin(v[i]) ? clampMag(v[i] as number) : x));
 };
 const nameOf = (v: unknown): string | undefined => (typeof v === 'string' && v.length > 0 ? v.slice(0, 200) : undefined);
 
@@ -243,7 +246,7 @@ function collapse(ctx: Ctx, group: Extract<Layer, { type: 'group' }>): Layer {
 }
 
 /** Frame → ms. Motion keys are whole ms; the writer puts baked keys on exact frames, so this is its inverse. */
-const msOf = (ctx: Ctx, frame: number) => Math.max(0, Math.round(((frame - ctx.ip) * 1000) / ctx.fr));
+const msOf = (ctx: Ctx, frame: number) => Math.min(3_600_000, Math.max(0, Math.round(((frame - ctx.ip) * 1000) / ctx.fr)));
 
 function readProp(ctx: Ctx, layerId: string, raw: unknown, dims: number, d: number[]): Prop {
   if (!isObj(raw)) return { animated: false, value: d, keys: [], expression: false };
@@ -257,7 +260,7 @@ function readProp(ctx: Ctx, layerId: string, raw: unknown, dims: number, d: numb
   const keys: PropKey[] = [];
   let prevEnd: number[] | null = null;
   for (const item of list) {
-    if (!isObj(item) || !fin(item.t)) continue;
+    if (!isObj(item) || !fin(item.t) || Math.abs(item.t) > MAX_MAGNITUDE) continue;
     // Legacy files (Bodymovin < 5.5) put the end value in `e` of the previous key.
     const s: number[] = item.s !== undefined ? vecOf(item.s, dims, prevEnd ?? d) : (prevEnd ?? d);
     const o = isObj(item.o) ? item.o : null;
@@ -297,7 +300,7 @@ function keysOf(ctx: Ctx, p: Prop, f: (s: number[]) => number | string, dim: num
   // A key on every frame (a baked property): keep the frame times at full precision, so writing the document
   // again lands on the same frames (whole-ms rounding would move them off the grid).
   const perFrame = keys.length > 2 && keys.every((k, i) => i === 0 || Math.abs(k.t - keys[i - 1].t - 1) < 1e-9);
-  const timeOf = (frame: number) => (perFrame ? Math.max(0, Math.round((((frame - ctx.ip) * 1000) / ctx.fr) * 1e6) / 1e6) : msOf(ctx, frame));
+  const timeOf = (frame: number) => (perFrame ? Math.min(3_600_000, Math.max(0, Math.round((((frame - ctx.ip) * 1000) / ctx.fr) * 1e6) / 1e6)) : msOf(ctx, frame));
   for (const k of keys) {
     const t = timeOf(k.t);
     const kf: Keyframe = { t, value: f(k.s), easing: easingOf(k, dim) };
@@ -695,7 +698,7 @@ function readShapeProp(ctx: Ctx, id: string, raw: unknown): { value: LottieBezie
     const keys: Array<{ t: number; s: LottieBezier | null; key: PropKey }> = [];
     let prevEnd: LottieBezier | null = null;
     for (const item of k as unknown[]) {
-      if (!isObj(item) || !fin(item.t)) continue;
+      if (!isObj(item) || !fin(item.t) || Math.abs(item.t) > MAX_MAGNITUDE) continue;
       const sv = Array.isArray(item.s) ? item.s[0] : item.s;
       const s = sv !== undefined ? readBezier(sv) : prevEnd;
       const o = isObj(item.o) ? item.o : null;
