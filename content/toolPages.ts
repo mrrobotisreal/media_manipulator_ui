@@ -457,7 +457,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'A real layer-and-keyframe editor with holds, custom curves and advanced animators, not a template gallery.',
       'Exports for designers and developers alike: animated SVG, Lottie, React, JavaScript or TypeScript, Flutter and GIF from one project.',
-      'Exports are made in your browser and the exported code depends only on MIT-licensed code, with every licence notice kept in the file.',
+      'Exports are made in your browser, and the only third-party code an export uses is permissively licensed (anime.js under MIT; flutter_svg and webview_flutter for Flutter), with its licence notice kept in the file.',
     ],
     privacyNote:
       'Editing and exporting happen in your browser; your artwork is not uploaded to export it. Without an account, projects are kept only in this browser. If you sign in and save a project to your account, it is stored on our servers like a Darkroom project, follows the retention period you choose, and can be deleted from your Account page. For each export we record only its format, size, length and time, to enforce the daily allowance.',
@@ -488,7 +488,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
       {
         question: 'What licence applies to the exported code?',
-        answer: 'Your animation belongs to you. When an animated SVG or a code export needs a runtime, it uses anime.js, which is MIT-licensed; its copyright notice is written at the top of the file and must be kept there. Everything else in the file is generated from your project. The open-source libraries the editor uses are listed on our licences page.',
+        answer: 'Your animation belongs to you. When an animated SVG or a code export needs a runtime, it uses anime.js, which is MIT-licensed; its copyright notice is written at the top of the file and must be kept there. Flutter exports use the flutter_svg (MIT) or webview_flutter (BSD-3-Clause) package. Everything else in the file is generated from your project. The open-source libraries the editor uses are listed on our licences page.',
       },
       {
         question: 'Where are my projects stored?',

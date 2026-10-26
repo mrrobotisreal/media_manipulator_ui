@@ -334,8 +334,8 @@
         "description": "Конвертуйте зображення між JPG, PNG, WebP і GIF. Змінюйте розмір, кадруйте, застосовуйте фільтри, додавайте текстові накладання, керуйте метаданими та використовуйте ШІ-інструменти: розмиття облич, видалення фону, збільшення роздільної здатності та редагування тексту."
       },
       "motion": {
-        "title": "Animation tutorials",
-        "description": "Animate SVG artwork on a keyframe timeline and export it as animated SVG, Lottie, code or GIF."
+        "title": "Посібники з анімації",
+        "description": "Анімуйте графіку SVG на таймлайні ключових кадрів і експортуйте як анімований SVG, Lottie, код або GIF."
       }
     },
     "tutorials": {
@@ -438,75 +438,75 @@
         "readTime": "10 хв читання"
       },
       "motion": {
-        "title": "How to Animate an SVG with Motion",
-        "excerpt": "A five-step guide to Motion: import an SVG, animate it with keyframes, shape the timing with easing and holds, export it, and choose the right format.",
-        "readTime": "7 min read",
+        "title": "Як анімувати SVG у Motion",
+        "excerpt": "П'ятикроковий посібник із Motion: імпортуйте SVG, анімуйте його ключовими кадрами, налаштуйте час за допомогою згладжування й утримання, експортуйте та оберіть потрібний формат.",
+        "readTime": "7 хв читання",
         "page": {
-          "eyebrow": "Animation Tutorial",
-          "title": "How to animate an SVG with {{brand}}",
-          "intro": "{{brand}} turns a static SVG into an animation without writing code. You work with layers and a keyframe timeline, like a motion design app, and export the result as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. This guide goes from an empty canvas to a finished export in five steps.",
+          "eyebrow": "Посібник з анімації",
+          "title": "Як анімувати SVG у {{brand}}",
+          "intro": "{{brand}} перетворює статичний SVG на анімацію без жодного коду. Ви працюєте з шарами та таймлайном ключових кадрів, як у застосунку для моушн-дизайну, і експортуєте результат як анімований SVG, файл Lottie, компонент React, модуль JavaScript чи TypeScript, віджет Flutter або GIF. Цей посібник проводить від порожнього полотна до готового експорту за п'ять кроків.",
           "import": {
-            "title": "1. Import an SVG or start from scratch",
-            "body": "Open {{brand}} from its tool page. The editor opens full screen with a blank 512 × 512 canvas. Choose Import to bring in your artwork, or draw directly on the canvas.",
+            "title": "1. Імпортуйте SVG або почніть з нуля",
+            "body": "Відкрийте {{brand}} зі сторінки інструмента. Редактор відкривається на весь екран з порожнім полотном 512 × 512. Натисніть «Імпорт», щоб додати свою графіку, або малюйте безпосередньо на полотні.",
             "bullets": {
-              "svg": "SVG files become a layer tree: groups, paths, rectangles, ellipses, lines, polygons, text, images, gradients, masks and clip paths are all editable. Select a layer in the Layers panel or on the canvas, and rename, group, lock or hide it.",
-              "lottie": "Lottie JSON files are imported with their keyframes, so you can edit an existing animation. Anything the editor cannot represent is listed after the import instead of being dropped silently.",
-              "blank": "To draw from scratch, use the Rectangle, Ellipse, Line, Pen and Text tools. Edit nodes lets you reshape any path point by point.",
-              "safety": "Imports are cleaned on the way in: scripts, event handlers and links to outside files are removed and listed, so an SVG from the web cannot run code in the editor or in your exports."
+              "svg": "Файли SVG перетворюються на дерево шарів: групи, контури, прямокутники, еліпси, лінії, багатокутники, текст, зображення, градієнти, маски й контури обрізки — усе можна редагувати. Виберіть шар на панелі «Шари» або на полотні, а потім перейменуйте, згрупуйте, заблокуйте чи сховайте його.",
+              "lottie": "Файли Lottie JSON імпортуються разом із ключовими кадрами, тож ви можете редагувати наявну анімацію. Усе, що редактор не може відобразити, перелічується після імпорту, а не мовчки відкидається.",
+              "blank": "Щоб малювати з нуля, скористайтеся інструментами «Прямокутник», «Еліпс», «Лінія», «Перо» та «Текст». «Редагувати вузли» дозволяє змінювати форму будь-якого контуру точка за точкою.",
+              "safety": "Імпорт очищується під час завантаження: скрипти, обробники подій і посилання на зовнішні файли видаляються та перелічуються, тож SVG з інтернету не зможе виконати код у редакторі чи ваших експортах."
             }
           },
           "animate": {
-            "title": "2. Animate with keyframes",
-            "body": "The timeline at the bottom of the editor shows one row per layer and one track per animated property. {{brand}} uses the playhead to decide where a change goes.",
+            "title": "2. Анімуйте ключовими кадрами",
+            "body": "Таймлайн унизу редактора показує один рядок на шар і одну доріжку на кожну анімовану властивість. {{brand}} використовує плейхед, щоб визначити, куди потрапляє зміна.",
             "bullets": {
-              "playhead": "Drag the playhead (or click the time ruler) to the moment the change should happen. Space plays and pauses, Home and End jump to the start and end.",
-              "keyframe": "With a layer selected, use Animate on a property in the inspector to give it a track, then change the value. Each change at a new time adds a keyframe; changing an animated property later edits the keyframe at the playhead.",
-              "autokey": "Turn on Auto-key to record every change you make on the canvas or in the inspector as a keyframe, which is fastest for rough blocking.",
-              "animators": "The Animate panel adds whole effects in one step: Draw on (the stroke draws itself), Motion path (the layer travels along a path), Morph (one shape becomes another), Gradient, Mask/Clip and Blur. Each one is a single undo step."
+              "playhead": "Перетягніть плейхед (або клацніть шкалу часу) до моменту, коли має відбутися зміна. Space запускає й зупиняє відтворення, Home та End переходять на початок і в кінець.",
+              "keyframe": "Вибравши шар, натисніть «Анімувати» біля властивості в інспекторі, щоб створити для неї доріжку, а потім змініть значення. Кожна зміна в новий момент часу додає ключовий кадр; пізніша зміна анімованої властивості редагує ключовий кадр у позиції плейхеда.",
+              "autokey": "Увімкніть «Автоключ», щоб кожна зміна на полотні чи в інспекторі записувалася як ключовий кадр — це найшвидший спосіб для чорнового блокінгу.",
+              "animators": "Панель «Анімація» додає цілі ефекти одним кроком: «Домальовування» (обводка малює сама себе), «Траєкторія руху» (шар рухається уздовж контуру), «Морфінг» (одна форма стає іншою), «Градієнт», «Маска/обрізка» та «Розмиття». Кожен із них — один крок скасування."
             }
           },
           "easing": {
-            "title": "3. Shape the timing with easing and holds",
-            "body": "Easing decides how a value travels between two keyframes. Select one or more keyframes on the timeline and pick an easing in the Easing panel; it applies to the segment that starts at each selected keyframe.",
+            "title": "3. Налаштуйте час за допомогою згладжування й утримання",
+            "body": "Згладжування визначає, як значення змінюється між двома ключовими кадрами. Виберіть на таймлайні один чи кілька ключових кадрів і оберіть згладжування на панелі «Згладжування»; воно застосовується до відрізка, що починається з кожного вибраного ключового кадру.",
             "bullets": {
-              "presets": "Linear, Ease in, Ease out and Ease in-out cover most motion. Ease out suits things arriving; ease in suits things leaving.",
-              "curve": "Curve opens a cubic-bezier editor with two handles, for overshoot-free custom timing that matches CSS cubic-bezier() exactly.",
-              "hold": "Hold keeps the value unchanged until the next keyframe, then jumps. Use it for blinking, frame-by-frame swaps or a colour that changes instantly.",
-              "range": "Set a play range to loop just the part you are working on, and turn Loop off if the animation should play once."
+              "presets": "«Лінійне», «Плавний початок», «Плавне завершення» та «Плавний початок і завершення» охоплюють більшість рухів. Плавне завершення пасує до об'єктів, що з'являються; плавний початок — до тих, що зникають.",
+              "curve": "«Крива» відкриває редактор кубічної кривої Безьє з двома маркерами для власного часу без перельоту, що точно збігається з CSS cubic-bezier().",
+              "hold": "«Утримання» залишає значення незмінним до наступного ключового кадру, а потім стрибком змінює його. Використовуйте для миготіння, покадрової заміни або кольору, що змінюється миттєво.",
+              "range": "Задайте діапазон відтворення, щоб повторювати лише ту частину, над якою ви працюєте, і вимкніть «Повтор», якщо анімація має відтворитися один раз."
             }
           },
           "export": {
-            "title": "4. Export your animation",
-            "body": "Choose Export to open the export dialog. Every export is made in your browser and downloaded straight away; your artwork is not uploaded. Static SVG (the frame at the playhead) is always free. Animated formats count toward your plan's daily {{brand}} allowance, which the dialog shows before you export, and formats your plan does not include are marked with a lock and a link to the plans."
+            "title": "4. Експортуйте анімацію",
+            "body": "Натисніть «Експорт», щоб відкрити діалог експорту. Кожен експорт виконується у вашому браузері та одразу завантажується; вашу графіку не завантажують на сервер. Статичний SVG (кадр у позиції плейхеда) завжди безкоштовний. Анімовані формати враховуються в денному ліміті {{brand}} вашого тарифу, який діалог показує перед експортом, а формати, яких немає у вашому тарифі, позначені замком і посиланням на тарифи."
           },
           "formats": {
-            "title": "5. Pick the right format",
-            "body": "The best format depends on where the animation will play.",
+            "title": "5. Оберіть потрібний формат",
+            "body": "Найкращий формат залежить від того, де відтворюватиметься анімація.",
             "bullets": {
-              "svg": "Animated SVG is one file that plays without any library, ideal for websites. It uses pure CSS when it can; shape morphs, moving gradient stops and blur need a small embedded script (anime.js, MIT licence), and scripts do not run when the SVG is placed in an <img> tag.",
-              "lottie": "Lottie JSON plays in lottie-web and the iOS, Android and Flutter Lottie players. The dialog lists anything Lottie cannot carry, such as filters or text.",
-              "code": "React (.tsx), JavaScript and TypeScript exports give you a component or module with play, pause and seek, ready to drop into an app.",
-              "flutter": "The Flutter export is a native flutter_svg widget when the animation only moves, fades and recolours, and a WebView player for everything else.",
-              "gif": "GIF plays everywhere, including chat and email, with one global palette that keeps flat vector colours exact. GIF and video exports follow your plan's size and length limits."
+              "svg": "Анімований SVG — це один файл, що відтворюється без жодної бібліотеки, ідеальний для сайтів. За можливості він використовує чистий CSS; морфінг форм, рухомі точки градієнта й розмиття потребують невеликого вбудованого скрипта (anime.js, ліцензія MIT), а скрипти не виконуються, якщо SVG розміщено в тезі <img>.",
+              "lottie": "Lottie JSON відтворюється в lottie-web та програвачах Lottie для iOS, Android і Flutter. Діалог перелічує все, що Lottie не підтримує, наприклад фільтри чи текст.",
+              "code": "Експорт у React (.tsx), JavaScript і TypeScript дає компонент або модуль із play, pause і seek, готовий до додавання в застосунок.",
+              "flutter": "Експорт Flutter — це нативний віджет flutter_svg, якщо анімація лише переміщує, згасає та змінює колір, і програвач WebView для всього іншого.",
+              "gif": "GIF відтворюється всюди, зокрема в чатах і листах, з однією глобальною палітрою, що зберігає точні плоскі кольори векторної графіки. Експорт GIF і відео підпорядковується обмеженням розміру та тривалості вашого тарифу."
             }
           },
           "save": {
-            "title": "Saving your work",
-            "body": "{{brand}} saves a draft in this browser as you work, so a closed tab or a crash does not lose your changes. Without an account, projects live only in this browser. When you are signed in, Save to account stores the project on our servers; after that it autosaves, opens on any device and appears on your Account page, where you can delete it."
+            "title": "Збереження роботи",
+            "body": "{{brand}} зберігає чернетку в цьому браузері під час роботи, тож закрита вкладка чи збій не призведуть до втрати змін. Без облікового запису проєкти існують лише в цьому браузері. Коли ви увійшли, «Зберегти в обліковий запис» зберігає проєкт на наших серверах; після цього він автозберігається, відкривається на будь-якому пристрої та з'являється на сторінці вашого облікового запису, де його можна видалити."
           },
           "cta": {
-            "title": "Try {{brand}} now",
-            "body": "Import an SVG or start a blank drawing. Editing and static SVG export are free, with no account.",
-            "button": "Open {{brand}}"
+            "title": "Спробуйте {{brand}} просто зараз",
+            "body": "Імпортуйте SVG або почніть порожній малюнок. Редагування та експорт статичного SVG безкоштовні, без облікового запису.",
+            "button": "Відкрити {{brand}}"
           },
           "related": {
-            "title": "Related tools and tutorials",
-            "intro": "Keep going with these pages.",
-            "motionDesc": "The tool page, with every plan's formats and allowances.",
-            "licenses": "Open-source licences",
-            "licensesDesc": "The libraries the editor uses and writes into your exports.",
-            "darkroom": "Darkroom tutorial",
-            "darkroomDesc": "Edit video on a multi-track timeline and export MP4."
+            "title": "Пов'язані інструменти та посібники",
+            "intro": "Продовжуйте з цими сторінками.",
+            "motionDesc": "Сторінка інструмента з форматами та лімітами кожного тарифу.",
+            "licenses": "Ліцензії відкритого коду",
+            "licensesDesc": "Бібліотеки, які використовує редактор і які записуються у ваші експорти.",
+            "darkroom": "Посібник із Darkroom",
+            "darkroomDesc": "Монтуйте відео на багатодоріжковому таймлайні та експортуйте MP4."
           }
         }
       }
@@ -1730,8 +1730,8 @@
       "deletedPending": "Project deleted. A few files are still being removed in the background.",
       "deleteFailed": "Could not delete this project. Nothing was changed; try again.",
       "kindDarkroom": "Darkroom",
-      "motionLoadFailed": "Could not load your {{brand}} projects.",
-      "motionDeleteBody": "The {{brand}} project and its thumbnail are removed from our servers. This cannot be undone."
+      "motionLoadFailed": "Не вдалося завантажити ваші проєкти {{brand}}.",
+      "motionDeleteBody": "Проєкт {{brand}} і його мініатюра буде видалено з наших серверів. Цю дію не можна скасувати."
     },
     "billing": {
       "plans": "Compare plans"
@@ -1908,7 +1908,7 @@
       "ai": "ШІ-інструменти",
       "metadata": "Приватність і метадані",
       "contentStudio": "Darkroom",
-      "motion": "SVG animation"
+      "motion": "Анімація SVG"
     },
     "multiTrackEditor": "Багатодоріжковий редактор",
     "open": "Відкрити",
@@ -1921,8 +1921,8 @@
     "browseAllTutorials": "Усі навчальні матеріали",
     "darkroomTutorial": "Навчальний матеріал з Darkroom",
     "howItWorks": "Як це працює",
-    "svgAnimationEditor": "SVG animation editor",
-    "motionTutorial": "Motion tutorial"
+    "svgAnimationEditor": "Редактор анімації SVG",
+    "motionTutorial": "Посібник із Motion"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Навігаційний ланцюжок",
@@ -2029,86 +2029,86 @@
     "metaDesc": "Нотатки до випусків Media Manipulator: нові інструменти, функції облікового запису, оновлення Darkroom та виправлення."
   },
   "licenses": {
-    "metaTitle": "Open-source licences | Media Manipulator",
-    "metaDesc": "The open-source code Media Manipulator runs in your browser or writes into your exports, with each licence and where to find its source.",
-    "title": "Open-source licences",
-    "intro": "Media Manipulator uses these open-source libraries in your browser. Some of their code is also written into files you export. Each is used under its own licence, shown below with its copyright notice and a link to its source.",
-    "note": "Library descriptions are written in English.",
-    "version": "Version",
-    "license": "Licence",
-    "copyright": "Copyright",
-    "source": "Source code",
-    "licenseText": "Licence text",
-    "usedFor": "Used for",
-    "embedded": "Its licence notice is written into the exported file.",
-    "unmodified": "Used unmodified. Its source code is available at the link above."
+    "metaTitle": "Ліцензії відкритого коду | Media Manipulator",
+    "metaDesc": "Код з відкритим вихідним кодом, який Media Manipulator виконує у вашому браузері або записує у ваші експорти, з кожною ліцензією та місцем, де знайти її вихідний код.",
+    "title": "Ліцензії відкритого коду",
+    "intro": "Media Manipulator використовує у вашому браузері ці бібліотеки з відкритим кодом. Частина їхнього коду також записується у файли, які ви експортуєте. Кожна використовується за власною ліцензією, наведеною нижче разом із повідомленням про авторські права та посиланням на вихідний код.",
+    "note": "Описи бібліотек написано англійською.",
+    "version": "Версія",
+    "license": "Ліцензія",
+    "copyright": "Авторське право",
+    "source": "Вихідний код",
+    "licenseText": "Текст ліцензії",
+    "usedFor": "Використовується для",
+    "embedded": "Повідомлення про її ліцензію записується в експортований файл.",
+    "unmodified": "Використовується без змін. Її вихідний код доступний за посиланням вище."
   },
   "motionPage": {
-    "betaBadge": "Beta",
+    "betaBadge": "Бета",
     "guide": {
-      "summaryTitle": "How {{brand}} works",
-      "whatItIsTitle": "What it is",
-      "whatItIsBody": "{{brand}} is an SVG editor with a keyframe timeline. Every shape in your drawing is a layer, and every property you animate (position, scale, rotation, opacity, colour, stroke and more) gets its own track of keyframes. Editing is free and unlimited and runs entirely in your browser.",
-      "stepsTitle": "Four steps",
-      "step1": "Open an SVG or a Lottie file, or start a blank drawing and draw with the shape, pen and text tools.",
-      "step2": "Move the playhead to a point in time and change a property; a keyframe appears on that property's track.",
-      "step3": "Shape the timing with an easing preset, a custom curve or a hold, or apply a one-click animator such as Draw on or Motion path.",
-      "step4": "Export animated SVG, Lottie JSON, React, JavaScript, TypeScript, Flutter or GIF. The file is made in your browser and downloaded straight away.",
-      "editorTitle": "The editor",
-      "editorBody": "{{brand}} opens full screen, without the site header or ads, so the canvas, layer panel, inspector and timeline have the whole window. Your work is saved in this browser as you go; signed-in users can also save it to their account."
+      "summaryTitle": "Як працює {{brand}}",
+      "whatItIsTitle": "Що це таке",
+      "whatItIsBody": "{{brand}} — це редактор SVG із таймлайном ключових кадрів. Кожна фігура вашого малюнка є шаром, а кожна властивість, яку ви анімуєте (позиція, масштаб, обертання, непрозорість, колір, обводка тощо), отримує власну доріжку ключових кадрів. Редагування безкоштовне, необмежене й повністю виконується у вашому браузері.",
+      "stepsTitle": "Чотири кроки",
+      "step1": "Відкрийте файл SVG чи Lottie або почніть порожній малюнок і малюйте інструментами фігур, пера та тексту.",
+      "step2": "Перемістіть плейхед у потрібний момент і змініть властивість; на доріжці цієї властивості з'явиться ключовий кадр.",
+      "step3": "Налаштуйте час за допомогою пресета згладжування, власної кривої чи утримання або застосуйте аніматор в один клік, як-от «Домальовування» чи «Траєкторія руху».",
+      "step4": "Експортуйте анімований SVG, Lottie JSON, React, JavaScript, TypeScript, Flutter або GIF. Файл створюється у вашому браузері та одразу завантажується.",
+      "editorTitle": "Редактор",
+      "editorBody": "{{brand}} відкривається на весь екран, без шапки сайту та реклами, тож полотно, панель шарів, інспектор і таймлайн займають усе вікно. Ваша робота зберігається в цьому браузері в процесі; користувачі, що увійшли, можуть також зберегти її в обліковий запис."
     },
     "launcher": {
-      "open": "Open {{brand}}",
-      "openHint": "Starts a new drawing in the full-screen editor.",
-      "recentTitle": "Recent projects",
-      "sourceAccount": "Saved to your account",
-      "sourceBrowser": "Saved in this browser",
-      "loading": "Loading your projects…",
-      "empty": "No projects yet. Your drawings will appear here.",
-      "error": "Your projects could not be loaded right now. You can still start a new drawing.",
-      "edited": "Edited {{date}}"
+      "open": "Відкрити {{brand}}",
+      "openHint": "Запускає новий малюнок у повноекранному редакторі.",
+      "recentTitle": "Нещодавні проєкти",
+      "sourceAccount": "Збережено в обліковому записі",
+      "sourceBrowser": "Збережено в цьому браузері",
+      "loading": "Завантаження ваших проєктів…",
+      "empty": "Проєктів поки немає. Ваші малюнки з'являться тут.",
+      "error": "Зараз не вдалося завантажити ваші проєкти. Ви все одно можете почати новий малюнок.",
+      "edited": "Змінено {{date}}"
     },
     "plans": {
-      "title": "Formats and allowances by plan",
-      "intro": "Editing, saving and static SVG export are free on every plan. Animated exports count toward a daily {{brand}} allowance, and each plan includes the formats ticked below. These numbers come straight from our servers, so they are always current.",
-      "caption": "{{brand}} export formats and allowances by plan",
-      "format": "Format",
-      "staticSvg": "Static SVG",
-      "staticFree": "Free on every plan, never counted",
+      "title": "Формати та ліміти за тарифами",
+      "intro": "Редагування, збереження та експорт статичного SVG безкоштовні в кожному тарифі. Анімований експорт враховується в денному ліміті {{brand}}, а кожен тариф включає формати, позначені нижче. Ці дані надходять безпосередньо з наших серверів, тому завжди актуальні.",
+      "caption": "Формати експорту та ліміти {{brand}} за тарифами",
+      "format": "Формат",
+      "staticSvg": "Статичний SVG",
+      "staticFree": "Безкоштовно в кожному тарифі, не враховується",
       "formats": {
-        "svg_animated": "Animated SVG",
+        "svg_animated": "Анімований SVG",
         "lottie": "Lottie JSON",
-        "react_tsx": "React component (.tsx)",
-        "js_ts": "JavaScript / TypeScript module",
-        "flutter": "Flutter widget (.dart)",
+        "react_tsx": "Компонент React (.tsx)",
+        "js_ts": "Модуль JavaScript / TypeScript",
+        "flutter": "Віджет Flutter (.dart)",
         "gif": "GIF",
-        "png_sequence": "PNG sequence (.zip)",
-        "mp4": "MP4 video",
-        "webm": "WebM video",
-        "import_lottie": "Lottie import"
+        "png_sequence": "Послідовність PNG (.zip)",
+        "mp4": "Відео MP4",
+        "webm": "Відео WebM",
+        "import_lottie": "Імпорт Lottie"
       },
       "rows": {
-        "exportsPerDay": "Animated exports per day",
-        "projects": "Saved projects",
-        "maxDuration": "Longest animation you can export",
-        "rasterCap": "GIF and video size and length"
+        "exportsPerDay": "Анімованих експортів на день",
+        "projects": "Збережені проєкти",
+        "maxDuration": "Найдовша анімація для експорту",
+        "rasterCap": "Розмір і тривалість GIF та відео"
       },
       "values": {
-        "included": "Included",
-        "notIncluded": "Not included",
-        "unlimited": "Unlimited",
-        "localOnly": "{{count}}, in this browser only",
-        "comingSoon": "Coming soon: not on any plan yet",
-        "noCap": "No limit",
-        "notApplicable": "Not included",
-        "capHeight": "up to {{height}}p",
-        "capFps": "{{fps}} fps",
-        "capSeconds": "{{seconds}} s"
+        "included": "Включено",
+        "notIncluded": "Не включено",
+        "unlimited": "Без обмежень",
+        "localOnly": "{{count}}, лише в цьому браузері",
+        "comingSoon": "Незабаром: поки що не в жодному тарифі",
+        "noCap": "Без обмежень",
+        "notApplicable": "Не включено",
+        "capHeight": "до {{height}}p",
+        "capFps": "{{fps}} к/с",
+        "capSeconds": "{{seconds}} с"
       },
-      "comingSoonNote": "Formats marked “coming soon” are already built into the editor and will be added to a plan shortly. This table updates by itself when they are.",
-      "resetNote": "Allowances reset at midnight UTC. Cancelled or failed exports that were already counted are not refunded.",
-      "unavailable": "The plan table could not be loaded right now. The pricing page lists every plan's allowance.",
-      "seePlans": "Compare all plans"
+      "comingSoonNote": "Формати з позначкою «незабаром» уже вбудовано в редактор, і їх буде додано до тарифу найближчим часом. Ця таблиця оновиться сама, щойно це станеться.",
+      "resetNote": "Ліміти скидаються опівночі за UTC. Скасовані або невдалі експорти, які вже було враховано, не повертаються.",
+      "unavailable": "Зараз не вдалося завантажити таблицю тарифів. Ліміти кожного тарифу вказано на сторінці цін.",
+      "seePlans": "Порівняти всі тарифи"
     }
   }
 }

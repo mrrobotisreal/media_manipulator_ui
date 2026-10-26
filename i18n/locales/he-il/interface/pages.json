@@ -334,8 +334,8 @@
         "description": "המירו תמונות בין JPG,‏ PNG,‏ WebP ו־GIF. שנו גודל, חתכו, החילו פילטרים, הוסיפו שכבות טקסט, נהלו מטא־נתונים, והריצו כלי בינה מלאכותית כמו טשטוש פנים, הסרת רקע, שדרוג רזולוציה והשחרת טקסט."
       },
       "motion": {
-        "title": "Animation tutorials",
-        "description": "Animate SVG artwork on a keyframe timeline and export it as animated SVG, Lottie, code or GIF."
+        "title": "מדריכי הנפשה",
+        "description": "הנפישו עבודות SVG על ציר זמן של פריימי מפתח וייצאו אותן כ-SVG מונפש, Lottie, קוד או GIF."
       }
     },
     "tutorials": {
@@ -438,75 +438,75 @@
         "readTime": "10 דקות קריאה"
       },
       "motion": {
-        "title": "How to Animate an SVG with Motion",
-        "excerpt": "A five-step guide to Motion: import an SVG, animate it with keyframes, shape the timing with easing and holds, export it, and choose the right format.",
-        "readTime": "7 min read",
+        "title": "איך להנפיש SVG עם Motion",
+        "excerpt": "מדריך בחמישה שלבים ל-Motion: ייבוא SVG, הנפשה בפריימי מפתח, עיצוב התזמון עם האצה, האטה והחזקה, ייצוא ובחירת הפורמט המתאים.",
+        "readTime": "7 דקות קריאה",
         "page": {
-          "eyebrow": "Animation Tutorial",
-          "title": "How to animate an SVG with {{brand}}",
-          "intro": "{{brand}} turns a static SVG into an animation without writing code. You work with layers and a keyframe timeline, like a motion design app, and export the result as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. This guide goes from an empty canvas to a finished export in five steps.",
+          "eyebrow": "מדריך הנפשה",
+          "title": "איך להנפיש SVG עם {{brand}}",
+          "intro": "{{brand}} הופך SVG סטטי להנפשה בלי לכתוב קוד. אתם עובדים עם שכבות ועם ציר זמן של פריימי מפתח, כמו באפליקציית מושן דיזיין, ומייצאים את התוצאה כ-SVG מונפש, קובץ Lottie, רכיב React, מודול JavaScript או TypeScript, ווידג'ט Flutter או GIF. המדריך הזה מוביל מקנבס ריק לייצוא מוכן בחמישה שלבים.",
           "import": {
-            "title": "1. Import an SVG or start from scratch",
-            "body": "Open {{brand}} from its tool page. The editor opens full screen with a blank 512 × 512 canvas. Choose Import to bring in your artwork, or draw directly on the canvas.",
+            "title": "1. ייבאו SVG או התחילו מאפס",
+            "body": "פתחו את {{brand}} מדף הכלי שלו. העורך נפתח במסך מלא עם קנבס ריק בגודל 512 × 512. בחרו ייבוא כדי להביא את העבודה שלכם, או ציירו ישירות על הקנבס.",
             "bullets": {
-              "svg": "SVG files become a layer tree: groups, paths, rectangles, ellipses, lines, polygons, text, images, gradients, masks and clip paths are all editable. Select a layer in the Layers panel or on the canvas, and rename, group, lock or hide it.",
-              "lottie": "Lottie JSON files are imported with their keyframes, so you can edit an existing animation. Anything the editor cannot represent is listed after the import instead of being dropped silently.",
-              "blank": "To draw from scratch, use the Rectangle, Ellipse, Line, Pen and Text tools. Edit nodes lets you reshape any path point by point.",
-              "safety": "Imports are cleaned on the way in: scripts, event handlers and links to outside files are removed and listed, so an SVG from the web cannot run code in the editor or in your exports."
+              "svg": "קובצי SVG הופכים לעץ שכבות: קבוצות, נתיבים, מלבנים, אליפסות, קווים, מצולעים, טקסט, תמונות, גרדיאנטים, מסכות ונתיבי חיתוך, וכולם ניתנים לעריכה. בחרו שכבה בחלונית השכבות או על הקנבס, ושנו את שמה, קבצו, נעלו או הסתירו אותה.",
+              "lottie": "קובצי Lottie JSON מיובאים עם פריימי המפתח שלהם, כך שאפשר לערוך הנפשה קיימת. כל מה שהעורך אינו יכול לייצג מפורט לאחר הייבוא ואינו נזרק בשקט.",
+              "blank": "כדי לצייר מאפס, השתמשו בכלי המלבן, האליפסה, הקו, העט והטקסט. עריכת צמתים מאפשרת לעצב מחדש כל נתיב נקודה אחר נקודה.",
+              "safety": "הייבוא עובר ניקוי בכניסה: סקריפטים, מטפלי אירועים וקישורים לקבצים חיצוניים מוסרים ומפורטים, כך ש-SVG מהרשת לא יכול להריץ קוד בעורך או בייצואים שלכם."
             }
           },
           "animate": {
-            "title": "2. Animate with keyframes",
-            "body": "The timeline at the bottom of the editor shows one row per layer and one track per animated property. {{brand}} uses the playhead to decide where a change goes.",
+            "title": "2. הנפישו עם פריימי מפתח",
+            "body": "ציר הזמן בתחתית העורך מציג שורה לכל שכבה ורצועה לכל מאפיין מונפש. {{brand}} משתמש בראש הנגינה כדי לקבוע לאן שינוי נכנס.",
             "bullets": {
-              "playhead": "Drag the playhead (or click the time ruler) to the moment the change should happen. Space plays and pauses, Home and End jump to the start and end.",
-              "keyframe": "With a layer selected, use Animate on a property in the inspector to give it a track, then change the value. Each change at a new time adds a keyframe; changing an animated property later edits the keyframe at the playhead.",
-              "autokey": "Turn on Auto-key to record every change you make on the canvas or in the inspector as a keyframe, which is fastest for rough blocking.",
-              "animators": "The Animate panel adds whole effects in one step: Draw on (the stroke draws itself), Motion path (the layer travels along a path), Morph (one shape becomes another), Gradient, Mask/Clip and Blur. Each one is a single undo step."
+              "playhead": "גררו את ראש הנגינה (או לחצו על סרגל הזמן) אל הרגע שבו השינוי צריך לקרות. Space מפעיל ומשהה, ו-Home ו-End קופצים להתחלה ולסוף.",
+              "keyframe": "כשהשכבה נבחרת, השתמשו ב״הנפשה״ על מאפיין במפקח כדי לתת לו רצועה, ואז שנו את הערך. כל שינוי בזמן חדש מוסיף פריים מפתח; שינוי של מאפיין מונפש בהמשך עורך את פריים המפתח בראש הנגינה.",
+              "autokey": "הפעילו מפתוח אוטומטי כדי לתעד כל שינוי שאתם עושים בקנבס או במפקח כפריים מפתח, וזה הכי מהיר לבלוקינג גס.",
+              "animators": "חלונית ההנפשה מוסיפה אפקטים שלמים בשלב אחד: ציור הדרגתי (קו המתאר מצייר את עצמו), נתיב תנועה (השכבה נעה לאורך נתיב), מורפינג (צורה אחת הופכת לאחרת), גרדיאנט, מסכה/חיתוך וטשטוש. כל אחד מהם הוא שלב ביטול אחד."
             }
           },
           "easing": {
-            "title": "3. Shape the timing with easing and holds",
-            "body": "Easing decides how a value travels between two keyframes. Select one or more keyframes on the timeline and pick an easing in the Easing panel; it applies to the segment that starts at each selected keyframe.",
+            "title": "3. עצבו את התזמון עם האצה, האטה והחזקה",
+            "body": "האצה והאטה קובעות איך ערך נע בין שני פריימי מפתח. בחרו פריים מפתח אחד או יותר בציר הזמן ובחרו האצה והאטה בחלונית ההאצה וההאטה; הן חלות על הקטע שמתחיל בכל פריים מפתח שנבחר.",
             "bullets": {
-              "presets": "Linear, Ease in, Ease out and Ease in-out cover most motion. Ease out suits things arriving; ease in suits things leaving.",
-              "curve": "Curve opens a cubic-bezier editor with two handles, for overshoot-free custom timing that matches CSS cubic-bezier() exactly.",
-              "hold": "Hold keeps the value unchanged until the next keyframe, then jumps. Use it for blinking, frame-by-frame swaps or a colour that changes instantly.",
-              "range": "Set a play range to loop just the part you are working on, and turn Loop off if the animation should play once."
+              "presets": "ליניארי, האצה בכניסה, האטה ביציאה והאצה והאטה מכסים את רוב התנועות. האטה ביציאה מתאימה לדברים שמגיעים; האצה בכניסה מתאימה לדברים שעוזבים.",
+              "curve": "עקומה פותחת עורך cubic-bezier עם שתי ידיות, לתזמון מותאם ללא חריגה, שתואם בדיוק את cubic-bezier() של CSS.",
+              "hold": "החזקה משאירה את הערך ללא שינוי עד פריים המפתח הבא, ואז קופצת. השתמשו בה להבהוב, להחלפות פריים אחר פריים או לצבע שמשתנה מיד.",
+              "range": "קבעו טווח הפעלה כדי להריץ בלולאה רק את החלק שאתם עובדים עליו, וכבו את הלולאה אם ההנפשה צריכה להתנגן פעם אחת."
             }
           },
           "export": {
-            "title": "4. Export your animation",
-            "body": "Choose Export to open the export dialog. Every export is made in your browser and downloaded straight away; your artwork is not uploaded. Static SVG (the frame at the playhead) is always free. Animated formats count toward your plan's daily {{brand}} allowance, which the dialog shows before you export, and formats your plan does not include are marked with a lock and a link to the plans."
+            "title": "4. ייצאו את ההנפשה",
+            "body": "בחרו ייצוא כדי לפתוח את חלון הייצוא. כל ייצוא נוצר בדפדפן שלכם ויורד מיד; העבודה שלכם אינה מועלית. SVG סטטי (הפריים בראש הנגינה) תמיד חינמי. פורמטים מונפשים נספרים במכסה היומית של {{brand}} במסלול שלכם, שהחלון מציג לפני הייצוא, ופורמטים שהמסלול שלכם אינו כולל מסומנים במנעול ובקישור למסלולים."
           },
           "formats": {
-            "title": "5. Pick the right format",
-            "body": "The best format depends on where the animation will play.",
+            "title": "5. בחרו את הפורמט המתאים",
+            "body": "הפורמט הטוב ביותר תלוי איפה ההנפשה תתנגן.",
             "bullets": {
-              "svg": "Animated SVG is one file that plays without any library, ideal for websites. It uses pure CSS when it can; shape morphs, moving gradient stops and blur need a small embedded script (anime.js, MIT licence), and scripts do not run when the SVG is placed in an <img> tag.",
-              "lottie": "Lottie JSON plays in lottie-web and the iOS, Android and Flutter Lottie players. The dialog lists anything Lottie cannot carry, such as filters or text.",
-              "code": "React (.tsx), JavaScript and TypeScript exports give you a component or module with play, pause and seek, ready to drop into an app.",
-              "flutter": "The Flutter export is a native flutter_svg widget when the animation only moves, fades and recolours, and a WebView player for everything else.",
-              "gif": "GIF plays everywhere, including chat and email, with one global palette that keeps flat vector colours exact. GIF and video exports follow your plan's size and length limits."
+              "svg": "SVG מונפש הוא קובץ אחד שמתנגן בלי שום ספרייה, אידיאלי לאתרים. הוא משתמש ב-CSS טהור כשאפשר; מורפינג של צורות, נקודות מעבר נעות בגרדיאנט וטשטוש דורשים סקריפט קטן מוטבע (anime.js, ברישיון MIT), וסקריפטים אינם רצים כשה-SVG ממוקם בתג <img>.",
+              "lottie": "Lottie JSON מתנגן ב-lottie-web ובנגני Lottie ל-iOS, Android ו-Flutter. החלון מפרט כל דבר ש-Lottie אינו יכול לשאת, כמו מסננים או טקסט.",
+              "code": "ייצואי React‏ (.tsx), JavaScript ו-TypeScript נותנים לכם רכיב או מודול עם play, pause ו-seek, מוכן להטמעה באפליקציה.",
+              "flutter": "ייצוא Flutter הוא ווידג'ט flutter_svg מקורי כשההנפשה רק מזיזה, מעמעמת ומשנה צבעים, ונגן WebView לכל השאר.",
+              "gif": "GIF מתנגן בכל מקום, כולל בצ'אט ובמייל, עם פלטה גלובלית אחת ששומרת על צבעי הווקטור השטוחים במדויק. ייצואי GIF ווידאו כפופים למגבלות הגודל והאורך של המסלול שלכם."
             }
           },
           "save": {
-            "title": "Saving your work",
-            "body": "{{brand}} saves a draft in this browser as you work, so a closed tab or a crash does not lose your changes. Without an account, projects live only in this browser. When you are signed in, Save to account stores the project on our servers; after that it autosaves, opens on any device and appears on your Account page, where you can delete it."
+            "title": "שמירת העבודה",
+            "body": "{{brand}} שומר טיוטה בדפדפן הזה תוך כדי עבודה, כך שסגירת לשונית או קריסה לא יאבדו את השינויים שלכם. ללא חשבון, הפרויקטים נשארים בדפדפן הזה בלבד. כשאתם מחוברים, ״שמירה בחשבון״ שומרת את הפרויקט בשרתים שלנו; לאחר מכן הוא נשמר אוטומטית, נפתח בכל מכשיר ומופיע בדף החשבון שלכם, שבו אפשר למחוק אותו."
           },
           "cta": {
-            "title": "Try {{brand}} now",
-            "body": "Import an SVG or start a blank drawing. Editing and static SVG export are free, with no account.",
-            "button": "Open {{brand}}"
+            "title": "נסו את {{brand}} עכשיו",
+            "body": "ייבאו SVG או התחילו ציור ריק. עריכה וייצוא SVG סטטי חינמיים, בלי חשבון.",
+            "button": "פתיחת {{brand}}"
           },
           "related": {
-            "title": "Related tools and tutorials",
-            "intro": "Keep going with these pages.",
-            "motionDesc": "The tool page, with every plan's formats and allowances.",
-            "licenses": "Open-source licences",
-            "licensesDesc": "The libraries the editor uses and writes into your exports.",
-            "darkroom": "Darkroom tutorial",
-            "darkroomDesc": "Edit video on a multi-track timeline and export MP4."
+            "title": "כלים ומדריכים קשורים",
+            "intro": "המשיכו עם הדפים האלה.",
+            "motionDesc": "דף הכלי, עם הפורמטים והמכסות של כל מסלול.",
+            "licenses": "רישיונות קוד פתוח",
+            "licensesDesc": "הספריות שהעורך משתמש בהן וכותב לתוך הייצואים שלכם.",
+            "darkroom": "מדריך Darkroom",
+            "darkroomDesc": "ערכו וידאו על ציר זמן רב־ערוצי וייצאו MP4."
           }
         }
       }
@@ -1730,8 +1730,8 @@
       "deletedPending": "Project deleted. A few files are still being removed in the background.",
       "deleteFailed": "Could not delete this project. Nothing was changed; try again.",
       "kindDarkroom": "Darkroom",
-      "motionLoadFailed": "Could not load your {{brand}} projects.",
-      "motionDeleteBody": "The {{brand}} project and its thumbnail are removed from our servers. This cannot be undone."
+      "motionLoadFailed": "לא ניתן היה לטעון את פרויקטי {{brand}} שלכם.",
+      "motionDeleteBody": "פרויקט {{brand}} והתמונה הממוזערת שלו יוסרו מהשרתים שלנו. לא ניתן לבטל פעולה זו."
     },
     "billing": {
       "plans": "Compare plans"
@@ -1908,7 +1908,7 @@
       "ai": "כלי בינה מלאכותית",
       "metadata": "כלי פרטיות ומטא־נתונים",
       "contentStudio": "Darkroom",
-      "motion": "SVG animation"
+      "motion": "הנפשת SVG"
     },
     "multiTrackEditor": "עורך רב־ערוצי",
     "open": "פתיחה",
@@ -1921,8 +1921,8 @@
     "browseAllTutorials": "עיינו בכל המדריכים",
     "darkroomTutorial": "מדריך Darkroom",
     "howItWorks": "איך זה עובד",
-    "svgAnimationEditor": "SVG animation editor",
-    "motionTutorial": "Motion tutorial"
+    "svgAnimationEditor": "עורך הנפשת SVG",
+    "motionTutorial": "מדריך Motion"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "פירורי לחם",
@@ -2029,86 +2029,86 @@
     "metaDesc": "הערות גרסה של Media Manipulator: כלים חדשים, תכונות חשבון, עדכוני Darkroom ותיקונים."
   },
   "licenses": {
-    "metaTitle": "Open-source licences | Media Manipulator",
-    "metaDesc": "The open-source code Media Manipulator runs in your browser or writes into your exports, with each licence and where to find its source.",
-    "title": "Open-source licences",
-    "intro": "Media Manipulator uses these open-source libraries in your browser. Some of their code is also written into files you export. Each is used under its own licence, shown below with its copyright notice and a link to its source.",
-    "note": "Library descriptions are written in English.",
-    "version": "Version",
-    "license": "Licence",
-    "copyright": "Copyright",
-    "source": "Source code",
-    "licenseText": "Licence text",
-    "usedFor": "Used for",
-    "embedded": "Its licence notice is written into the exported file.",
-    "unmodified": "Used unmodified. Its source code is available at the link above."
+    "metaTitle": "רישיונות קוד פתוח | Media Manipulator",
+    "metaDesc": "הקוד הפתוח ש-Media Manipulator מריץ בדפדפן שלכם או כותב לתוך הייצואים שלכם, עם כל רישיון והמקום שבו אפשר למצוא את קוד המקור שלו.",
+    "title": "רישיונות קוד פתוח",
+    "intro": "Media Manipulator משתמש בספריות קוד פתוח אלה בדפדפן שלכם. חלק מהקוד שלהן נכתב גם לתוך קבצים שאתם מייצאים. כל אחת בשימוש לפי הרישיון שלה, המוצג להלן יחד עם הודעת זכויות היוצרים שלה וקישור לקוד המקור.",
+    "note": "תיאורי הספריות כתובים באנגלית.",
+    "version": "גרסה",
+    "license": "רישיון",
+    "copyright": "זכויות יוצרים",
+    "source": "קוד מקור",
+    "licenseText": "נוסח הרישיון",
+    "usedFor": "משמש ל",
+    "embedded": "הודעת הרישיון שלה נכתבת לתוך הקובץ המיוצא.",
+    "unmodified": "בשימוש ללא שינוי. קוד המקור שלה זמין בקישור שלמעלה."
   },
   "motionPage": {
-    "betaBadge": "Beta",
+    "betaBadge": "בטא",
     "guide": {
-      "summaryTitle": "How {{brand}} works",
-      "whatItIsTitle": "What it is",
-      "whatItIsBody": "{{brand}} is an SVG editor with a keyframe timeline. Every shape in your drawing is a layer, and every property you animate (position, scale, rotation, opacity, colour, stroke and more) gets its own track of keyframes. Editing is free and unlimited and runs entirely in your browser.",
-      "stepsTitle": "Four steps",
-      "step1": "Open an SVG or a Lottie file, or start a blank drawing and draw with the shape, pen and text tools.",
-      "step2": "Move the playhead to a point in time and change a property; a keyframe appears on that property's track.",
-      "step3": "Shape the timing with an easing preset, a custom curve or a hold, or apply a one-click animator such as Draw on or Motion path.",
-      "step4": "Export animated SVG, Lottie JSON, React, JavaScript, TypeScript, Flutter or GIF. The file is made in your browser and downloaded straight away.",
-      "editorTitle": "The editor",
-      "editorBody": "{{brand}} opens full screen, without the site header or ads, so the canvas, layer panel, inspector and timeline have the whole window. Your work is saved in this browser as you go; signed-in users can also save it to their account."
+      "summaryTitle": "איך {{brand}} עובד",
+      "whatItIsTitle": "מה זה",
+      "whatItIsBody": "{{brand}} הוא עורך SVG עם ציר זמן של פריימי מפתח. כל צורה בציור שלכם היא שכבה, ולכל מאפיין שאתם מנפישים (מיקום, קנה מידה, סיבוב, אטימות, צבע, קו מתאר ועוד) יש רצועה משלו של פריימי מפתח. העריכה חינמית, ללא הגבלה, ופועלת כולה בדפדפן שלכם.",
+      "stepsTitle": "ארבעה שלבים",
+      "step1": "פתחו קובץ SVG או Lottie, או התחילו ציור ריק וציירו בכלי הצורות, העט והטקסט.",
+      "step2": "הזיזו את ראש הנגינה לנקודה בזמן ושנו מאפיין; פריים מפתח יופיע ברצועה של אותו מאפיין.",
+      "step3": "עצבו את התזמון באמצעות הגדרה מוכנה של האצה והאטה, עקומה מותאמת או החזקה, או הפעילו מנפיש בלחיצה אחת כמו ציור הדרגתי או נתיב תנועה.",
+      "step4": "ייצאו SVG מונפש, Lottie JSON, React, JavaScript, TypeScript, Flutter או GIF. הקובץ נוצר בדפדפן שלכם ויורד מיד.",
+      "editorTitle": "העורך",
+      "editorBody": "{{brand}} נפתח במסך מלא, בלי כותרת האתר ובלי פרסומות, כך שלקנבס, לחלונית השכבות, למפקח ולציר הזמן יש את כל החלון. העבודה שלכם נשמרת בדפדפן הזה תוך כדי עבודה; משתמשים מחוברים יכולים לשמור אותה גם בחשבון שלהם."
     },
     "launcher": {
-      "open": "Open {{brand}}",
-      "openHint": "Starts a new drawing in the full-screen editor.",
-      "recentTitle": "Recent projects",
-      "sourceAccount": "Saved to your account",
-      "sourceBrowser": "Saved in this browser",
-      "loading": "Loading your projects…",
-      "empty": "No projects yet. Your drawings will appear here.",
-      "error": "Your projects could not be loaded right now. You can still start a new drawing.",
-      "edited": "Edited {{date}}"
+      "open": "פתיחת {{brand}}",
+      "openHint": "מתחיל ציור חדש בעורך במסך מלא.",
+      "recentTitle": "פרויקטים אחרונים",
+      "sourceAccount": "נשמר בחשבון שלכם",
+      "sourceBrowser": "נשמר בדפדפן הזה",
+      "loading": "טוענים את הפרויקטים שלכם…",
+      "empty": "עדיין אין פרויקטים. הציורים שלכם יופיעו כאן.",
+      "error": "לא ניתן היה לטעון את הפרויקטים שלכם כרגע. עדיין אפשר להתחיל ציור חדש.",
+      "edited": "נערך {{date}}"
     },
     "plans": {
-      "title": "Formats and allowances by plan",
-      "intro": "Editing, saving and static SVG export are free on every plan. Animated exports count toward a daily {{brand}} allowance, and each plan includes the formats ticked below. These numbers come straight from our servers, so they are always current.",
-      "caption": "{{brand}} export formats and allowances by plan",
-      "format": "Format",
-      "staticSvg": "Static SVG",
-      "staticFree": "Free on every plan, never counted",
+      "title": "פורמטים ומכסות לפי מסלול",
+      "intro": "עריכה, שמירה וייצוא SVG סטטי חינמיים בכל מסלול. ייצואים מונפשים נספרים במכסה יומית של {{brand}}, וכל מסלול כולל את הפורמטים המסומנים למטה. המספרים האלה מגיעים ישירות מהשרתים שלנו, ולכן הם תמיד עדכניים.",
+      "caption": "פורמטי ייצוא ומכסות של {{brand}} לפי מסלול",
+      "format": "פורמט",
+      "staticSvg": "SVG סטטי",
+      "staticFree": "חינמי בכל מסלול, אינו נספר",
       "formats": {
-        "svg_animated": "Animated SVG",
+        "svg_animated": "SVG מונפש",
         "lottie": "Lottie JSON",
-        "react_tsx": "React component (.tsx)",
-        "js_ts": "JavaScript / TypeScript module",
-        "flutter": "Flutter widget (.dart)",
+        "react_tsx": "רכיב React (.tsx)",
+        "js_ts": "מודול JavaScript / TypeScript",
+        "flutter": "ווידג'ט Flutter (.dart)",
         "gif": "GIF",
-        "png_sequence": "PNG sequence (.zip)",
-        "mp4": "MP4 video",
-        "webm": "WebM video",
-        "import_lottie": "Lottie import"
+        "png_sequence": "רצף PNG (.zip)",
+        "mp4": "וידאו MP4",
+        "webm": "וידאו WebM",
+        "import_lottie": "ייבוא Lottie"
       },
       "rows": {
-        "exportsPerDay": "Animated exports per day",
-        "projects": "Saved projects",
-        "maxDuration": "Longest animation you can export",
-        "rasterCap": "GIF and video size and length"
+        "exportsPerDay": "ייצואים מונפשים ליום",
+        "projects": "פרויקטים שמורים",
+        "maxDuration": "ההנפשה הארוכה ביותר שאפשר לייצא",
+        "rasterCap": "גודל ואורך של GIF ווידאו"
       },
       "values": {
-        "included": "Included",
-        "notIncluded": "Not included",
-        "unlimited": "Unlimited",
-        "localOnly": "{{count}}, in this browser only",
-        "comingSoon": "Coming soon: not on any plan yet",
-        "noCap": "No limit",
-        "notApplicable": "Not included",
-        "capHeight": "up to {{height}}p",
-        "capFps": "{{fps}} fps",
-        "capSeconds": "{{seconds}} s"
+        "included": "כלול",
+        "notIncluded": "לא כלול",
+        "unlimited": "ללא הגבלה",
+        "localOnly": "{{count}}, בדפדפן הזה בלבד",
+        "comingSoon": "בקרוב: עדיין לא באף מסלול",
+        "noCap": "ללא הגבלה",
+        "notApplicable": "לא כלול",
+        "capHeight": "עד {{height}}p",
+        "capFps": "{{fps}} פריימים לשנייה",
+        "capSeconds": "{{seconds}} שנ'"
       },
-      "comingSoonNote": "Formats marked “coming soon” are already built into the editor and will be added to a plan shortly. This table updates by itself when they are.",
-      "resetNote": "Allowances reset at midnight UTC. Cancelled or failed exports that were already counted are not refunded.",
-      "unavailable": "The plan table could not be loaded right now. The pricing page lists every plan's allowance.",
-      "seePlans": "Compare all plans"
+      "comingSoonNote": "פורמטים המסומנים “בקרוב” כבר מובנים בעורך ויתווספו למסלול בקרוב. הטבלה הזו מתעדכנת מעצמה כשזה קורה.",
+      "resetNote": "המכסות מתאפסות בחצות UTC. ייצואים שבוטלו או נכשלו ונספרו כבר אינם מוחזרים.",
+      "unavailable": "לא ניתן היה לטעון את טבלת המסלולים כרגע. דף התמחור מפרט את המכסה של כל מסלול.",
+      "seePlans": "השוואת כל המסלולים"
     }
   }
 }

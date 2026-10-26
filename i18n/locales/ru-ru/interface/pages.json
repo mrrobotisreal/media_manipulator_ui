@@ -334,8 +334,8 @@
         "description": "Конвертируйте изображения между JPG, PNG, WebP и GIF. Меняйте размер, кадрируйте, применяйте фильтры, добавляйте текстовые наложения, управляйте метаданными и используйте AI-инструменты: размытие лиц, удаление фона, увеличение разрешения и редактирование текста."
       },
       "motion": {
-        "title": "Animation tutorials",
-        "description": "Animate SVG artwork on a keyframe timeline and export it as animated SVG, Lottie, code or GIF."
+        "title": "Уроки по анимации",
+        "description": "Анимируйте SVG-графику на таймлайне ключевых кадров и экспортируйте ее как анимированный SVG, Lottie, код или GIF."
       }
     },
     "tutorials": {
@@ -438,75 +438,75 @@
         "readTime": "10 мин чтения"
       },
       "motion": {
-        "title": "How to Animate an SVG with Motion",
-        "excerpt": "A five-step guide to Motion: import an SVG, animate it with keyframes, shape the timing with easing and holds, export it, and choose the right format.",
-        "readTime": "7 min read",
+        "title": "Как анимировать SVG в Motion",
+        "excerpt": "Руководство из пяти шагов по Motion: импорт SVG, анимация ключевыми кадрами, настройка тайминга плавностью и удержанием, экспорт и выбор подходящего формата.",
+        "readTime": "7 мин чтения",
         "page": {
-          "eyebrow": "Animation Tutorial",
-          "title": "How to animate an SVG with {{brand}}",
-          "intro": "{{brand}} turns a static SVG into an animation without writing code. You work with layers and a keyframe timeline, like a motion design app, and export the result as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. This guide goes from an empty canvas to a finished export in five steps.",
+          "eyebrow": "Урок по анимации",
+          "title": "Как анимировать SVG в {{brand}}",
+          "intro": "{{brand}} превращает статичный SVG в анимацию без написания кода. Вы работаете со слоями и таймлайном ключевых кадров, как в приложении для моушн-дизайна, и экспортируете результат как анимированный SVG, файл Lottie, компонент React, модуль JavaScript или TypeScript, виджет Flutter или GIF. Это руководство проведет вас от пустого холста до готового экспорта за пять шагов.",
           "import": {
-            "title": "1. Import an SVG or start from scratch",
-            "body": "Open {{brand}} from its tool page. The editor opens full screen with a blank 512 × 512 canvas. Choose Import to bring in your artwork, or draw directly on the canvas.",
+            "title": "1. Импортируйте SVG или начните с нуля",
+            "body": "Откройте {{brand}} на странице инструмента. Редактор откроется на весь экран с пустым холстом 512 × 512. Нажмите «Импорт», чтобы добавить свою графику, или рисуйте прямо на холсте.",
             "bullets": {
-              "svg": "SVG files become a layer tree: groups, paths, rectangles, ellipses, lines, polygons, text, images, gradients, masks and clip paths are all editable. Select a layer in the Layers panel or on the canvas, and rename, group, lock or hide it.",
-              "lottie": "Lottie JSON files are imported with their keyframes, so you can edit an existing animation. Anything the editor cannot represent is listed after the import instead of being dropped silently.",
-              "blank": "To draw from scratch, use the Rectangle, Ellipse, Line, Pen and Text tools. Edit nodes lets you reshape any path point by point.",
-              "safety": "Imports are cleaned on the way in: scripts, event handlers and links to outside files are removed and listed, so an SVG from the web cannot run code in the editor or in your exports."
+              "svg": "Файлы SVG превращаются в дерево слоев: группы, контуры, прямоугольники, эллипсы, линии, многоугольники, текст, изображения, градиенты, маски и контуры обрезки доступны для редактирования. Выберите слой на панели «Слои» или на холсте, а затем переименуйте, сгруппируйте, заблокируйте или скройте его.",
+              "lottie": "Файлы Lottie JSON импортируются вместе с ключевыми кадрами, поэтому можно редактировать готовую анимацию. Все, что редактор не может передать, перечисляется после импорта, а не пропадает молча.",
+              "blank": "Чтобы рисовать с нуля, используйте инструменты «Прямоугольник», «Эллипс», «Линия», «Перо» и «Текст». «Редактировать узлы» позволяет менять любой контур по точкам.",
+              "safety": "Импорт очищается на входе: скрипты, обработчики событий и ссылки на внешние файлы удаляются и перечисляются, поэтому SVG из интернета не сможет выполнить код ни в редакторе, ни в ваших экспортах."
             }
           },
           "animate": {
-            "title": "2. Animate with keyframes",
-            "body": "The timeline at the bottom of the editor shows one row per layer and one track per animated property. {{brand}} uses the playhead to decide where a change goes.",
+            "title": "2. Анимируйте ключевыми кадрами",
+            "body": "Таймлайн в нижней части редактора показывает по одной строке на слой и по одной дорожке на анимируемое свойство. {{brand}} использует плейхед, чтобы определить, куда попадает изменение.",
             "bullets": {
-              "playhead": "Drag the playhead (or click the time ruler) to the moment the change should happen. Space plays and pauses, Home and End jump to the start and end.",
-              "keyframe": "With a layer selected, use Animate on a property in the inspector to give it a track, then change the value. Each change at a new time adds a keyframe; changing an animated property later edits the keyframe at the playhead.",
-              "autokey": "Turn on Auto-key to record every change you make on the canvas or in the inspector as a keyframe, which is fastest for rough blocking.",
-              "animators": "The Animate panel adds whole effects in one step: Draw on (the stroke draws itself), Motion path (the layer travels along a path), Morph (one shape becomes another), Gradient, Mask/Clip and Blur. Each one is a single undo step."
+              "playhead": "Перетащите плейхед (или щелкните по шкале времени) на момент, когда должно произойти изменение. Space запускает и останавливает воспроизведение, Home и End переходят к началу и концу.",
+              "keyframe": "Выбрав слой, нажмите «Анимировать» у свойства в инспекторе, чтобы создать для него дорожку, и измените значение. Каждое изменение в новый момент времени добавляет ключевой кадр; если позже изменить анимируемое свойство, правится ключевой кадр на плейхеде.",
+              "autokey": "Включите «Автоключи», чтобы каждое изменение на холсте или в инспекторе записывалось как ключевой кадр. Это быстрее всего для чернового наброска.",
+              "animators": "Панель «Анимация» добавляет целые эффекты за один шаг: «Прорисовка» (обводка рисуется сама), «Траектория движения» (слой движется по контуру), «Морфинг» (одна фигура превращается в другую), «Градиент», «Маска/обрезка» и «Размытие». Каждый эффект отменяется одним шагом."
             }
           },
           "easing": {
-            "title": "3. Shape the timing with easing and holds",
-            "body": "Easing decides how a value travels between two keyframes. Select one or more keyframes on the timeline and pick an easing in the Easing panel; it applies to the segment that starts at each selected keyframe.",
+            "title": "3. Настройте тайминг плавностью и удержанием",
+            "body": "Плавность определяет, как значение меняется между двумя ключевыми кадрами. Выберите на таймлайне один или несколько ключевых кадров и укажите плавность на панели «Плавность»; она применяется к сегменту, который начинается с каждого выбранного кадра.",
             "bullets": {
-              "presets": "Linear, Ease in, Ease out and Ease in-out cover most motion. Ease out suits things arriving; ease in suits things leaving.",
-              "curve": "Curve opens a cubic-bezier editor with two handles, for overshoot-free custom timing that matches CSS cubic-bezier() exactly.",
-              "hold": "Hold keeps the value unchanged until the next keyframe, then jumps. Use it for blinking, frame-by-frame swaps or a colour that changes instantly.",
-              "range": "Set a play range to loop just the part you are working on, and turn Loop off if the animation should play once."
+              "presets": "«Линейная», «Плавное начало», «Плавный конец» и «Плавное начало и конец» подходят для большинства движений. «Плавный конец» хорошо подходит для появляющихся объектов, «плавное начало» — для уходящих.",
+              "curve": "«Кривая» открывает редактор кубической кривой Безье с двумя маркерами для собственного тайминга без перелета, который точно совпадает с CSS cubic-bezier().",
+              "hold": "«Удержание» сохраняет значение без изменений до следующего ключевого кадра, а затем резко меняет его. Используйте для мигания, покадровой смены или цвета, который меняется мгновенно.",
+              "range": "Задайте диапазон воспроизведения, чтобы зациклить только ту часть, над которой вы работаете, и отключите «Повтор», если анимация должна проиграться один раз."
             }
           },
           "export": {
-            "title": "4. Export your animation",
-            "body": "Choose Export to open the export dialog. Every export is made in your browser and downloaded straight away; your artwork is not uploaded. Static SVG (the frame at the playhead) is always free. Animated formats count toward your plan's daily {{brand}} allowance, which the dialog shows before you export, and formats your plan does not include are marked with a lock and a link to the plans."
+            "title": "4. Экспортируйте анимацию",
+            "body": "Нажмите «Экспорт», чтобы открыть диалог экспорта. Каждый экспорт выполняется в вашем браузере и сразу скачивается; ваша графика не загружается. Статичный SVG (кадр на плейхеде) всегда бесплатен. Анимированные форматы засчитываются в дневной лимит {{brand}} по вашему тарифу, который диалог показывает до экспорта, а форматы, не входящие в ваш тариф, помечены замком и ссылкой на тарифы."
           },
           "formats": {
-            "title": "5. Pick the right format",
-            "body": "The best format depends on where the animation will play.",
+            "title": "5. Выберите подходящий формат",
+            "body": "Лучший формат зависит от того, где будет воспроизводиться анимация.",
             "bullets": {
-              "svg": "Animated SVG is one file that plays without any library, ideal for websites. It uses pure CSS when it can; shape morphs, moving gradient stops and blur need a small embedded script (anime.js, MIT licence), and scripts do not run when the SVG is placed in an <img> tag.",
-              "lottie": "Lottie JSON plays in lottie-web and the iOS, Android and Flutter Lottie players. The dialog lists anything Lottie cannot carry, such as filters or text.",
-              "code": "React (.tsx), JavaScript and TypeScript exports give you a component or module with play, pause and seek, ready to drop into an app.",
-              "flutter": "The Flutter export is a native flutter_svg widget when the animation only moves, fades and recolours, and a WebView player for everything else.",
-              "gif": "GIF plays everywhere, including chat and email, with one global palette that keeps flat vector colours exact. GIF and video exports follow your plan's size and length limits."
+              "svg": "Анимированный SVG — это один файл, который воспроизводится без библиотек и отлично подходит для сайтов. По возможности он использует чистый CSS; морфинг фигур, движение опорных точек градиента и размытие требуют небольшого встроенного скрипта (anime.js, лицензия MIT), а скрипты не выполняются, если SVG вставлен в тег <img>.",
+              "lottie": "Lottie JSON воспроизводится в lottie-web и проигрывателях Lottie для iOS, Android и Flutter. Диалог перечисляет все, что Lottie не может передать, например фильтры или текст.",
+              "code": "Экспорт в React (.tsx), JavaScript и TypeScript дает компонент или модуль с play, pause и seek, готовый к добавлению в приложение.",
+              "flutter": "Экспорт во Flutter — это нативный виджет flutter_svg, если анимация только перемещает, скрывает и перекрашивает, и проигрыватель на WebView во всех остальных случаях.",
+              "gif": "GIF воспроизводится везде, включая чаты и почту, а единая палитра сохраняет точные цвета плоской векторной графики. Экспорт в GIF и видео подчиняется ограничениям вашего тарифа по размеру и длительности."
             }
           },
           "save": {
-            "title": "Saving your work",
-            "body": "{{brand}} saves a draft in this browser as you work, so a closed tab or a crash does not lose your changes. Without an account, projects live only in this browser. When you are signed in, Save to account stores the project on our servers; after that it autosaves, opens on any device and appears on your Account page, where you can delete it."
+            "title": "Сохранение работы",
+            "body": "{{brand}} сохраняет черновик в этом браузере по мере работы, поэтому закрытая вкладка или сбой не приведут к потере изменений. Без аккаунта проекты хранятся только в этом браузере. Если вы вошли в аккаунт, «Сохранить в аккаунте» записывает проект на наши серверы; после этого он сохраняется автоматически, открывается на любом устройстве и появляется на странице «Аккаунт», где его можно удалить."
           },
           "cta": {
-            "title": "Try {{brand}} now",
-            "body": "Import an SVG or start a blank drawing. Editing and static SVG export are free, with no account.",
-            "button": "Open {{brand}}"
+            "title": "Попробуйте {{brand}} прямо сейчас",
+            "body": "Импортируйте SVG или начните с пустого рисунка. Редактирование и экспорт статичного SVG бесплатны, без аккаунта.",
+            "button": "Открыть {{brand}}"
           },
           "related": {
-            "title": "Related tools and tutorials",
-            "intro": "Keep going with these pages.",
-            "motionDesc": "The tool page, with every plan's formats and allowances.",
-            "licenses": "Open-source licences",
-            "licensesDesc": "The libraries the editor uses and writes into your exports.",
-            "darkroom": "Darkroom tutorial",
-            "darkroomDesc": "Edit video on a multi-track timeline and export MP4."
+            "title": "Похожие инструменты и уроки",
+            "intro": "Продолжайте с этими страницами.",
+            "motionDesc": "Страница инструмента с форматами и лимитами каждого тарифа.",
+            "licenses": "Лицензии открытого ПО",
+            "licensesDesc": "Библиотеки, которые использует редактор и которые попадают в ваши экспорты.",
+            "darkroom": "Урок по Darkroom",
+            "darkroomDesc": "Монтируйте видео на многодорожечном таймлайне и экспортируйте MP4."
           }
         }
       }
@@ -1730,8 +1730,8 @@
       "deletedPending": "Project deleted. A few files are still being removed in the background.",
       "deleteFailed": "Could not delete this project. Nothing was changed; try again.",
       "kindDarkroom": "Darkroom",
-      "motionLoadFailed": "Could not load your {{brand}} projects.",
-      "motionDeleteBody": "The {{brand}} project and its thumbnail are removed from our servers. This cannot be undone."
+      "motionLoadFailed": "Не удалось загрузить ваши проекты {{brand}}.",
+      "motionDeleteBody": "Проект {{brand}} и его миниатюра будут удалены с наших серверов. Это действие нельзя отменить."
     },
     "billing": {
       "plans": "Compare plans"
@@ -1908,7 +1908,7 @@
       "ai": "ИИ-инструменты",
       "metadata": "Приватность и метаданные",
       "contentStudio": "Darkroom",
-      "motion": "SVG animation"
+      "motion": "Анимация SVG"
     },
     "multiTrackEditor": "Многодорожечный редактор",
     "open": "Открыть",
@@ -1921,8 +1921,8 @@
     "browseAllTutorials": "Все руководства",
     "darkroomTutorial": "Руководство по Darkroom",
     "howItWorks": "Как это работает",
-    "svgAnimationEditor": "SVG animation editor",
-    "motionTutorial": "Motion tutorial"
+    "svgAnimationEditor": "Редактор анимации SVG",
+    "motionTutorial": "Урок по Motion"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Хлебные крошки",
@@ -2029,86 +2029,86 @@
     "metaDesc": "Заметки о выпусках Media Manipulator: новые инструменты, функции аккаунта, обновления Darkroom и исправления."
   },
   "licenses": {
-    "metaTitle": "Open-source licences | Media Manipulator",
-    "metaDesc": "The open-source code Media Manipulator runs in your browser or writes into your exports, with each licence and where to find its source.",
-    "title": "Open-source licences",
-    "intro": "Media Manipulator uses these open-source libraries in your browser. Some of their code is also written into files you export. Each is used under its own licence, shown below with its copyright notice and a link to its source.",
-    "note": "Library descriptions are written in English.",
-    "version": "Version",
-    "license": "Licence",
-    "copyright": "Copyright",
-    "source": "Source code",
-    "licenseText": "Licence text",
-    "usedFor": "Used for",
-    "embedded": "Its licence notice is written into the exported file.",
-    "unmodified": "Used unmodified. Its source code is available at the link above."
+    "metaTitle": "Лицензии открытого ПО | Media Manipulator",
+    "metaDesc": "Открытый код, который Media Manipulator выполняет в вашем браузере или записывает в ваши экспорты, с лицензией каждого компонента и ссылкой на его исходный код.",
+    "title": "Лицензии открытого ПО",
+    "intro": "Media Manipulator использует в вашем браузере эти библиотеки с открытым исходным кодом. Часть их кода также записывается в экспортируемые вами файлы. Каждая библиотека используется на условиях собственной лицензии, которая указана ниже вместе с уведомлением об авторских правах и ссылкой на исходный код.",
+    "note": "Описания библиотек написаны на английском языке.",
+    "version": "Версия",
+    "license": "Лицензия",
+    "copyright": "Авторские права",
+    "source": "Исходный код",
+    "licenseText": "Текст лицензии",
+    "usedFor": "Для чего используется",
+    "embedded": "Уведомление о ее лицензии записывается в экспортированный файл.",
+    "unmodified": "Используется без изменений. Ее исходный код доступен по ссылке выше."
   },
   "motionPage": {
-    "betaBadge": "Beta",
+    "betaBadge": "Бета",
     "guide": {
-      "summaryTitle": "How {{brand}} works",
-      "whatItIsTitle": "What it is",
-      "whatItIsBody": "{{brand}} is an SVG editor with a keyframe timeline. Every shape in your drawing is a layer, and every property you animate (position, scale, rotation, opacity, colour, stroke and more) gets its own track of keyframes. Editing is free and unlimited and runs entirely in your browser.",
-      "stepsTitle": "Four steps",
-      "step1": "Open an SVG or a Lottie file, or start a blank drawing and draw with the shape, pen and text tools.",
-      "step2": "Move the playhead to a point in time and change a property; a keyframe appears on that property's track.",
-      "step3": "Shape the timing with an easing preset, a custom curve or a hold, or apply a one-click animator such as Draw on or Motion path.",
-      "step4": "Export animated SVG, Lottie JSON, React, JavaScript, TypeScript, Flutter or GIF. The file is made in your browser and downloaded straight away.",
-      "editorTitle": "The editor",
-      "editorBody": "{{brand}} opens full screen, without the site header or ads, so the canvas, layer panel, inspector and timeline have the whole window. Your work is saved in this browser as you go; signed-in users can also save it to their account."
+      "summaryTitle": "Как работает {{brand}}",
+      "whatItIsTitle": "Что это",
+      "whatItIsBody": "{{brand}} — редактор SVG с таймлайном ключевых кадров. Каждая фигура рисунка — это слой, а у каждого анимируемого свойства (положение, масштаб, поворот, непрозрачность, цвет, обводка и другие) своя дорожка ключевых кадров. Редактирование бесплатно, без ограничений и полностью выполняется в вашем браузере.",
+      "stepsTitle": "Четыре шага",
+      "step1": "Откройте файл SVG или Lottie либо начните с пустого рисунка и рисуйте инструментами фигур, пера и текста.",
+      "step2": "Переместите плейхед в нужный момент и измените свойство: на его дорожке появится ключевой кадр.",
+      "step3": "Настройте тайминг с помощью пресета плавности, собственной кривой или удержания либо примените эффект в один клик, например «Прорисовку» или «Траекторию движения».",
+      "step4": "Экспортируйте анимированный SVG, Lottie JSON, React, JavaScript, TypeScript, Flutter или GIF. Файл создается в вашем браузере и сразу скачивается.",
+      "editorTitle": "Редактор",
+      "editorBody": "{{brand}} открывается на весь экран, без шапки сайта и рекламы, поэтому холст, панель слоев, инспектор и таймлайн занимают все окно. Ваша работа сохраняется в этом браузере по ходу дела; вошедшие в аккаунт пользователи могут также сохранять ее в аккаунте."
     },
     "launcher": {
-      "open": "Open {{brand}}",
-      "openHint": "Starts a new drawing in the full-screen editor.",
-      "recentTitle": "Recent projects",
-      "sourceAccount": "Saved to your account",
-      "sourceBrowser": "Saved in this browser",
-      "loading": "Loading your projects…",
-      "empty": "No projects yet. Your drawings will appear here.",
-      "error": "Your projects could not be loaded right now. You can still start a new drawing.",
-      "edited": "Edited {{date}}"
+      "open": "Открыть {{brand}}",
+      "openHint": "Запускает новый рисунок в полноэкранном редакторе.",
+      "recentTitle": "Недавние проекты",
+      "sourceAccount": "Сохранено в вашем аккаунте",
+      "sourceBrowser": "Сохранено в этом браузере",
+      "loading": "Загрузка ваших проектов…",
+      "empty": "Проектов пока нет. Здесь появятся ваши рисунки.",
+      "error": "Сейчас не удалось загрузить ваши проекты. Вы по-прежнему можете начать новый рисунок.",
+      "edited": "Изменено {{date}}"
     },
     "plans": {
-      "title": "Formats and allowances by plan",
-      "intro": "Editing, saving and static SVG export are free on every plan. Animated exports count toward a daily {{brand}} allowance, and each plan includes the formats ticked below. These numbers come straight from our servers, so they are always current.",
-      "caption": "{{brand}} export formats and allowances by plan",
-      "format": "Format",
-      "staticSvg": "Static SVG",
-      "staticFree": "Free on every plan, never counted",
+      "title": "Форматы и лимиты по тарифам",
+      "intro": "Редактирование, сохранение и экспорт статичного SVG бесплатны на всех тарифах. Анимированный экспорт засчитывается в дневной лимит {{brand}}, а каждый тариф включает отмеченные ниже форматы. Эти данные берутся прямо с наших серверов, поэтому всегда актуальны.",
+      "caption": "Форматы экспорта и лимиты {{brand}} по тарифам",
+      "format": "Формат",
+      "staticSvg": "Статичный SVG",
+      "staticFree": "Бесплатно на всех тарифах, не засчитывается",
       "formats": {
-        "svg_animated": "Animated SVG",
+        "svg_animated": "Анимированный SVG",
         "lottie": "Lottie JSON",
-        "react_tsx": "React component (.tsx)",
-        "js_ts": "JavaScript / TypeScript module",
-        "flutter": "Flutter widget (.dart)",
+        "react_tsx": "Компонент React (.tsx)",
+        "js_ts": "Модуль JavaScript / TypeScript",
+        "flutter": "Виджет Flutter (.dart)",
         "gif": "GIF",
-        "png_sequence": "PNG sequence (.zip)",
-        "mp4": "MP4 video",
-        "webm": "WebM video",
-        "import_lottie": "Lottie import"
+        "png_sequence": "Последовательность PNG (.zip)",
+        "mp4": "Видео MP4",
+        "webm": "Видео WebM",
+        "import_lottie": "Импорт Lottie"
       },
       "rows": {
-        "exportsPerDay": "Animated exports per day",
-        "projects": "Saved projects",
-        "maxDuration": "Longest animation you can export",
-        "rasterCap": "GIF and video size and length"
+        "exportsPerDay": "Анимированных экспортов в день",
+        "projects": "Сохраненные проекты",
+        "maxDuration": "Самая длинная анимация для экспорта",
+        "rasterCap": "Размер и длительность GIF и видео"
       },
       "values": {
-        "included": "Included",
-        "notIncluded": "Not included",
-        "unlimited": "Unlimited",
-        "localOnly": "{{count}}, in this browser only",
-        "comingSoon": "Coming soon: not on any plan yet",
-        "noCap": "No limit",
-        "notApplicable": "Not included",
-        "capHeight": "up to {{height}}p",
-        "capFps": "{{fps}} fps",
-        "capSeconds": "{{seconds}} s"
+        "included": "Включено",
+        "notIncluded": "Не включено",
+        "unlimited": "Без ограничений",
+        "localOnly": "{{count}}, только в этом браузере",
+        "comingSoon": "Скоро: пока не входит ни в один тариф",
+        "noCap": "Без ограничений",
+        "notApplicable": "Не включено",
+        "capHeight": "до {{height}}p",
+        "capFps": "{{fps}} кадр/с",
+        "capSeconds": "{{seconds}} с"
       },
-      "comingSoonNote": "Formats marked “coming soon” are already built into the editor and will be added to a plan shortly. This table updates by itself when they are.",
-      "resetNote": "Allowances reset at midnight UTC. Cancelled or failed exports that were already counted are not refunded.",
-      "unavailable": "The plan table could not be loaded right now. The pricing page lists every plan's allowance.",
-      "seePlans": "Compare all plans"
+      "comingSoonNote": "Форматы с пометкой «скоро» уже встроены в редактор и вскоре будут добавлены в тариф. Эта таблица обновится сама, когда это произойдет.",
+      "resetNote": "Лимиты сбрасываются в полночь по UTC. Отмененные или неудавшиеся экспорты, которые уже были засчитаны, не возвращаются.",
+      "unavailable": "Сейчас не удалось загрузить таблицу тарифов. Лимиты каждого тарифа указаны на странице цен.",
+      "seePlans": "Сравнить все тарифы"
     }
   }
 }
