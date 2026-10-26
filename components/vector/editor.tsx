@@ -65,6 +65,8 @@ import { TOOL_SHORTCUTS, type DrawToolId, type ToolId } from '@/lib/vector/tools
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import { VECTOR_MAX_DOC_BYTES, parseVectorDoc, serializeVectorDoc, type VectorDoc } from '@/lib/vector/vectorTypes';
 import { findDocLayer } from '@/lib/vector/advanced';
+import { EVENTS } from '@/lib/analytics/events';
+import { tierProp } from '@/lib/vector/analytics';
 import type { AnimatorId } from '@/lib/vector/animators';
 import { cn } from '@/lib/utils';
 import { VectorCanvas, fitView, zoomAt, type View } from './canvas';
@@ -76,17 +78,18 @@ import { Timeline } from './timeline';
 import { usePlayback } from './use-playback';
 import { useSignedIn } from './use-signed-in';
 import { useProjectSync, type ProjectSync } from './use-project-sync';
+import { useVectorAnalytics } from './use-vector-analytics';
 
 export interface MotionEditorProps {
   projectId: string;
   /**
-   * Ticket decision 10: the single analytics seam. MM49 passes a callback that
-   * emits `vector_tool_used`; MM42 emits nothing.
+   * Ticket decision 10: the tool seam. MM49 emits `vector_tool_used` itself
+   * (useVectorAnalytics); a caller's callback runs as well.
    */
   onToolUsed?: (tool: DrawToolId) => void;
   /**
-   * MM45 decision 11: the animator seam. MM49 passes a callback that emits
-   * `vector_animator_used {animator}`; MM45 emits nothing.
+   * MM45 decision 11: the animator seam. MM49 emits `vector_animator_used`
+   * itself; a caller's callback runs as well.
    */
   onAnimatorUsed?: (animator: AnimatorId) => void;
 }
@@ -142,7 +145,24 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
   const [initialServer, setInitialServer] = React.useState<{ id: string; revision: number } | null>(null);
   const [signInOpen, setSignInOpen] = React.useState(false);
   const [reloadAsk, setReloadAsk] = React.useState(false);
-  const sync = useProjectSync({ ready: phase.kind === 'ready', signedIn, initialServer });
+  // MM49: consent-gated vector_* events (lib/vector/analytics.ts).
+  const routeKind = classifyProjectId(projectId).kind;
+  const va = useVectorAnalytics({ ready: phase.kind === 'ready', source: routeKind === 'server' ? 'account' : routeKind === 'local' ? 'draft' : 'new' });
+  const toolUsed = React.useCallback(
+    (tool: DrawToolId) => {
+      va.toolUsed(tool);
+      onToolUsed?.(tool);
+    },
+    [va, onToolUsed],
+  );
+  const animatorUsed = React.useCallback(
+    (animator: AnimatorId) => {
+      va.animatorUsed(animator);
+      onAnimatorUsed?.(animator);
+    },
+    [va, onAnimatorUsed],
+  );
+  const sync = useProjectSync({ ready: phase.kind === 'ready', signedIn, initialServer, onSaved: va.projectSaved });
   const serverRef = React.useRef(sync.server);
   React.useEffect(() => {
     serverRef.current = sync.server;
@@ -437,6 +457,7 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
       return;
     }
     setImporting(true);
+    let svgAttempt = false;
     try {
       const text = await file.text();
       if ((/\.json$/i.test(file.name) || file.type === 'application/json') && looksLikeLottie(text)) {
@@ -448,10 +469,17 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
         const outcome = await runLottieImport({ size: file.size, text: async () => text }, { count: countVectorExport, projectId: serverRef.current?.id });
         if (outcome.kind === 'refused') {
           toast.error(t(`vector.lottie.import.refused.${outcome.refusal.kind}`));
+          va.importFailed('lottie');
+          const r = outcome.refusal;
+          if (r.kind === 'locked' || r.kind === 'limit') {
+            const path = r.upgradePath === 'signup' || r.upgradePath === 'premium' || r.upgradePath === 'pro' ? r.upgradePath : 'none';
+            va.track(EVENTS.VECTOR_EXPORT_GATED, { format: 'import_lottie', tier: tierProp(r.tier), upgrade_path: path });
+          }
           return;
         }
         if (outcome.kind === 'error') {
           toast.error(t(`vector.lottie.import.errors.${outcome.code}`));
+          va.importFailed('lottie');
           return;
         }
         const base = file.name.replace(/(\.lottie)?\.json$/i, '').slice(0, 120);
@@ -464,18 +492,23 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
         const parsed = parseVectorDoc(text);
         if (!parsed.ok) {
           toast.error(t('vector.import.errors.json'));
+          va.importFailed('motion_json');
           return;
         }
         const s = useVectorStore.getState();
+        va.openedDocumentFile();
         s.mutate('Open file', () => parsed.doc, []);
+        va.importCompleted('motion_json', parsed.doc, 0, false);
         s.rename(file.name.replace(/(\.motion)?\.json$/i, '').slice(0, 120) || s.name);
         toast.success(t('vector.import.done', { count: parsed.doc.layers.length }));
         return;
       }
+      svgAttempt = true;
       const { doc: imported, warnings: w } = parseSvg(text);
       const s = useVectorStore.getState();
       const base = file.name.replace(/\.svg$/i, '').slice(0, 120);
-      if (s.doc && s.doc.layers.length === 0 && s.past.length === 0) {
+      const intoEmpty = !!s.doc && s.doc.layers.length === 0 && s.past.length === 0;
+      if (intoEmpty) {
         // Empty canvas: the import becomes the document.
         s.load(s.projectId ?? idRef.current ?? newLocalProjectId(), imported, base || s.name);
       } else {
@@ -484,9 +517,11 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
       }
       setWarnings(w.length > 0 ? w : null);
       toast.success(t('vector.import.done', { count: imported.layers.length }));
+      va.importCompleted('svg', imported, w.length, intoEmpty);
     } catch (e) {
       const code = e instanceof SvgImportError ? e.code : 'malformed';
       toast.error(t(`vector.import.errors.${code}`));
+      if (svgAttempt) va.importFailed('svg');
     } finally {
       setImporting(false);
     }
@@ -494,7 +529,8 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
 
   const openLottie = (result: LottieImport, base: string) => {
     const s = useVectorStore.getState();
-    if (s.doc && s.doc.layers.length === 0 && s.past.length === 0) {
+    const intoEmpty = !!s.doc && s.doc.layers.length === 0 && s.past.length === 0;
+    if (intoEmpty) {
       s.load(s.projectId ?? idRef.current ?? newLocalProjectId(), result.doc, base || s.name);
     } else {
       s.mutate('Import Lottie', () => result.doc, []);
@@ -502,6 +538,7 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
     }
     setLottiePending(null);
     toast.success(t('vector.import.done', { count: result.doc.layers.length }));
+    va.importCompleted('lottie', result.doc, result.warnings.length, intoEmpty);
   };
 
   const recover = (draft: VectorDraft) => {
@@ -647,7 +684,7 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
         {/* Canvas */}
         <div ref={stageRef} className="relative min-w-0 flex-1">
           {phase.kind === 'ready' && doc ? (
-            <VectorCanvas view={view} onViewChange={setView} onToolUsed={onToolUsed} />
+            <VectorCanvas view={view} onViewChange={setView} onToolUsed={toolUsed} />
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
               <Loader2 className="me-2 size-4 animate-spin" />
@@ -696,7 +733,7 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
             <Inspector />
           </div>
           <div className="shrink-0">
-            <AnimatorPanel onAnimatorUsed={onAnimatorUsed} />
+            <AnimatorPanel onAnimatorUsed={animatorUsed} />
           </div>
         </aside>
       </div>

@@ -14,6 +14,7 @@
  */
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
+import { vectorCountHeaders } from '@/lib/vector/analytics';
 
 /**
  * The countable formats MM43 accepts (`internal/tiers/vector.go`), exports and
@@ -84,7 +85,9 @@ export async function countVectorExport(req: VectorExportRequest, fetchImpl: typ
   try {
     response = await fetchImpl(`${getBaseURL()}/vector/exports`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      // MM49: the visitor id (analytics consent only) lets the API's
+      // server_vector_export_counted join this visitor's client events.
+      headers: { 'Content-Type': 'application/json', ...vectorCountHeaders() },
       body: JSON.stringify(body),
     });
   } catch {

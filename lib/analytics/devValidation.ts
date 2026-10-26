@@ -78,6 +78,35 @@ const studioExportProps = z
  * metric-specific extras) — those use `record`/`catchall` to mirror their
  * declared openness rather than inventing a stricter contract than the type.
  */
+// Motion (vector, MM49) shared shapes.
+const vectorImport = z
+  .object({ format: z.enum(['svg', 'lottie', 'motion_json']), layers: z.string(), unsupported_count: z.string() })
+  .strict();
+const vectorFormat = z.enum([
+  'svg_static',
+  'svg_animated',
+  'lottie',
+  'react_tsx',
+  'js',
+  'ts',
+  'flutter',
+  'gif',
+  'png_sequence',
+  'mp4',
+  'webm',
+]);
+const vectorExport = z
+  .object({
+    format: vectorFormat,
+    runtime: z.enum(['css', 'anime']).optional(),
+    duration_ms: z.string(),
+    height: z.string(),
+    fps: z.string(),
+    bytes: z.string().optional(),
+    ms: z.string().optional(),
+  })
+  .strict();
+
 const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } = {
   page_view: z
     .object({ page_title: z.string().optional(), is_initial: z.boolean().optional() })
@@ -448,6 +477,32 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       host: studioHostEnum.optional(),
     })
     .strict(),
+
+  // Motion (vector, MM49): every value an enum or a bucket string.
+  vector_editor_opened: z.object({ source: z.enum(['new', 'draft', 'account']) }).strict(),
+  vector_project_created: z.object({ source: z.enum(['blank', 'svg_import', 'lottie_import', 'vectorize']) }).strict(),
+  vector_import_completed: vectorImport,
+  vector_import_failed: vectorImport,
+  vector_tool_used: z.object({ tool: z.enum(['rect', 'ellipse', 'line', 'pen', 'text']) }).strict(),
+  vector_keyframe_added: z.object({ property: z.string() }).strict(),
+  vector_animator_used: z
+    .object({ animator: z.enum(['drawOn', 'motionPath', 'morph', 'gradient', 'maskClip', 'blur']) })
+    .strict(),
+  vector_export_started: vectorExport,
+  vector_export_completed: vectorExport,
+  vector_export_failed: vectorExport
+    .extend({
+      reason: z.enum(['locked', 'cap', 'limit', 'unavailable', 'unsupported', 'unsafe', 'codec', 'too_large', 'cancelled', 'error']),
+    })
+    .strict(),
+  vector_export_gated: z
+    .object({
+      format: z.union([vectorFormat, z.literal('import_lottie')]),
+      tier,
+      upgrade_path: z.enum(['signup', 'premium', 'pro', 'none']),
+    })
+    .strict(),
+  vector_project_saved: z.object({ revision: z.string(), bytes: z.string() }).strict(),
 
   client_error: z
     .object({
