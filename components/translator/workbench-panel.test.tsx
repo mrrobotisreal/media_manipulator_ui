@@ -139,7 +139,7 @@ describe('This page tab (criterion 2)', () => {
     expect(within(heading as HTMLElement).getByRole('textbox').getAttribute('lang')).toBe('de-DE');
   });
 
-  it('editing a row patches the page live and shows the modified dot; Changes lists it with a disabled Submit', async () => {
+  it('editing a row patches the page live and shows the modified dot; Changes lists it with an enabled Submit that opens the modal', async () => {
     const s = await startPage('de-DE');
     const field = screen.getByLabelText('Translation for fixture.search');
     fireEvent.change(field, { target: { value: 'Werkzeuge suchen' } });
@@ -150,7 +150,12 @@ describe('This page tab (criterion 2)', () => {
     fireEvent.click(screen.getByRole('tab', { name: /Changes/ }));
     const changes = document.querySelector('[data-tab-panel="changes"]') as HTMLElement;
     expect(changes.querySelector('[data-changes-count]')!.textContent).toBe('1 pending change');
-    expect(within(changes).getByRole('button', { name: 'Submit for review' })).toHaveProperty('disabled', true);
+    const submit = within(changes).getByRole('button', { name: 'Submit for review' });
+    expect(submit).toHaveProperty('disabled', false);
+    fireEvent.click(submit);
+    expect(screen.getByRole('dialog', { name: 'Submit for review' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
     fireEvent.click(within(changes).getByRole('button', { name: 'Revert fixture.search' }));
     expect(document.getElementById('search')!.getAttribute('placeholder')).toBe('Search tools');
     expect(s.model.changes()).toHaveLength(0);

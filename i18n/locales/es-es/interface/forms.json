@@ -551,10 +551,22 @@
     "tooltipRestoration": "<strong>Restauración y limpieza</strong> — reducción de ruido, eliminación de zumbido, eliminación de clipping, eliminación de silencios.",
     "tooltipAdvanced": "<strong>Audio avanzado</strong> — cambio de tono, estiramiento temporal, audio espacial.",
     "sections": {
-      "basic": { "title": "Procesamiento de audio básico", "description": "Control de volumen, ecualización, dinámica y procesamiento estéreo" },
-      "time": { "title": "Efectos basados en tiempo", "description": "Reverberación, retardo, eco y efectos de modulación" },
-      "restoration": { "title": "Restauración y limpieza", "description": "Reducción de ruido, eliminación de zumbido, eliminación de clipping y detección de silencios" },
-      "advanced": { "title": "Procesamiento avanzado", "description": "Cambio de tono, estiramiento temporal, audio espacial y procesamiento espectral" }
+      "basic": {
+        "title": "Procesamiento de audio básico",
+        "description": "Control de volumen, ecualización, dinámica y procesamiento estéreo"
+      },
+      "time": {
+        "title": "Efectos basados en tiempo",
+        "description": "Reverberación, retardo, eco y efectos de modulación"
+      },
+      "restoration": {
+        "title": "Restauración y limpieza",
+        "description": "Reducción de ruido, eliminación de zumbido, eliminación de clipping y detección de silencios"
+      },
+      "advanced": {
+        "title": "Procesamiento avanzado",
+        "description": "Cambio de tono, estiramiento temporal, audio espacial y procesamiento espectral"
+      }
     },
     "volumeDynamics": {
       "title": "Volumen y dinámica",
@@ -588,7 +600,13 @@
       "tooltip": "Añade espacio al audio. Elige sala (pequeño), auditorio (grande), placa (estudio vintage) o muelle (estilo amplificador de guitarra). El tamaño de la sala, la amortiguación y los niveles de mezcla húmeda/seca ajustan el efecto con precisión.",
       "enable": "Activar reverberación",
       "typeLabel": "Tipo de reverberación",
-      "types": { "none": "Ninguna", "room": "Sala", "hall": "Auditorio", "plate": "Placa", "spring": "Muelle" },
+      "types": {
+        "none": "Ninguna",
+        "room": "Sala",
+        "hall": "Auditorio",
+        "plate": "Placa",
+        "spring": "Muelle"
+      },
       "roomSize": "Tamaño de la sala",
       "roomRange": "0% a 100%",
       "wetDry": "Mezcla húmeda/seca",
@@ -599,7 +617,12 @@
       "tooltip": "Añade una copia retardada de la señal. Eco es un único retardo; multitoque añade varios ecos desplazados; ping-pong rebota entre izquierda y derecha. El tiempo (ms), el porcentaje de realimentación y el nivel húmedo dan forma a las repeticiones.",
       "enable": "Activar retardo",
       "typeLabel": "Tipo de retardo",
-      "types": { "none": "Ninguno", "echo": "Eco simple", "multi-tap": "Multitoque", "ping-pong": "Ping-pong" },
+      "types": {
+        "none": "Ninguno",
+        "echo": "Eco simple",
+        "multi-tap": "Multitoque",
+        "ping-pong": "Ping-pong"
+      },
       "delayTime": "Tiempo de retardo (ms)",
       "feedback": "Realimentación (%)",
       "feedbackRange": "0% a 95%"
@@ -618,9 +641,19 @@
       "timeStretchValue": "velocidad {{value}}x",
       "timeStretchRange": "velocidad de 0,25x a 4x",
       "spatialAudio": "Audio espacial",
-      "spatial": { "none": "Ninguno", "binaural": "Binaural", "surround": "Envolvente", "3d": "Audio 3D" },
+      "spatial": {
+        "none": "Ninguno",
+        "binaural": "Binaural",
+        "surround": "Envolvente",
+        "3d": "Audio 3D"
+      },
       "spectral": "Procesamiento espectral",
-      "spectralOptions": { "none": "Ninguno", "vocoder": "Vocoder", "formant": "Filtro de formantes", "convolution": "Convolución" }
+      "spectralOptions": {
+        "none": "Ninguno",
+        "vocoder": "Vocoder",
+        "formant": "Filtro de formantes",
+        "convolution": "Convolución"
+      }
     },
     "labels": {
       "amplify": "Amplificar (dB)",
@@ -639,10 +672,22 @@
     "tooltipTemporal": "<strong>Efectos temporales</strong> — inversión, ping-pong, conversión de tasa de fotogramas, estabilización.",
     "tooltipAdvanced": "<strong>Procesamiento avanzado</strong> — desentrelazado, mapeo de tonos HDR, conversión de espacio de color.",
     "sections": {
-      "visual": { "title": "Efectos visuales", "description": "Corrección de color, desenfoque/nitidez, efectos artísticos y control de ruido" },
-      "transform": { "title": "Transformación geométrica", "description": "Rotación, volteo, recorte y relleno" },
-      "temporal": { "title": "Efectos temporales", "description": "Control de velocidad, inversión, tasa de fotogramas y estabilización" },
-      "advanced": { "title": "Procesamiento avanzado", "description": "Desentrelazado, procesamiento HDR y conversión de espacio de color" }
+      "visual": {
+        "title": "Efectos visuales",
+        "description": "Corrección de color, desenfoque/nitidez, efectos artísticos y control de ruido"
+      },
+      "transform": {
+        "title": "Transformación geométrica",
+        "description": "Rotación, volteo, recorte y relleno"
+      },
+      "temporal": {
+        "title": "Efectos temporales",
+        "description": "Control de velocidad, inversión, tasa de fotogramas y estabilización"
+      },
+      "advanced": {
+        "title": "Procesamiento avanzado",
+        "description": "Desentrelazado, procesamiento HDR y conversión de espacio de color"
+      }
     },
     "colorExposure": {
       "title": "Color y exposición",

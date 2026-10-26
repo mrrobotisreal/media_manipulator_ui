@@ -551,10 +551,22 @@
     "tooltipRestoration": "<strong>Restaurierung & Bereinigung</strong> — Rauschunterdrückung, Brummentfernung, Clipping-Korrektur, Stille entfernen.",
     "tooltipAdvanced": "<strong>Erweitertes Audio</strong> — Tonhöhenverschiebung, Zeitdehnung, räumliches Audio.",
     "sections": {
-      "basic": { "title": "Grundlegende Audioverarbeitung", "description": "Lautstärkeregelung, Equalizer, Dynamik und Stereoverarbeitung" },
-      "time": { "title": "Zeitbasierte Effekte", "description": "Hall-, Delay-, Echo- und Modulationseffekte" },
-      "restoration": { "title": "Restaurierung & Bereinigung", "description": "Rauschunterdrückung, Brummentfernung, Clipping-Korrektur und Stilleerkennung" },
-      "advanced": { "title": "Erweiterte Verarbeitung", "description": "Tonhöhenverschiebung, Zeitdehnung, räumliches Audio und Spektralverarbeitung" }
+      "basic": {
+        "title": "Grundlegende Audioverarbeitung",
+        "description": "Lautstärkeregelung, Equalizer, Dynamik und Stereoverarbeitung"
+      },
+      "time": {
+        "title": "Zeitbasierte Effekte",
+        "description": "Hall-, Delay-, Echo- und Modulationseffekte"
+      },
+      "restoration": {
+        "title": "Restaurierung & Bereinigung",
+        "description": "Rauschunterdrückung, Brummentfernung, Clipping-Korrektur und Stilleerkennung"
+      },
+      "advanced": {
+        "title": "Erweiterte Verarbeitung",
+        "description": "Tonhöhenverschiebung, Zeitdehnung, räumliches Audio und Spektralverarbeitung"
+      }
     },
     "volumeDynamics": {
       "title": "Lautstärke & Dynamik",
@@ -588,7 +600,13 @@
       "tooltip": "Verleihen Sie dem Audio Raum. Wählen Sie Raum (klein), Halle (groß), Platte (Vintage-Studio) oder Federhall (Gitarrenverstärker-Stil). Raumgröße, Dämpfung und Nass-/Trocken-Pegel feinjustieren den Effekt.",
       "enable": "Hall aktivieren",
       "typeLabel": "Halltyp",
-      "types": { "none": "Kein", "room": "Raum", "hall": "Halle", "plate": "Platte", "spring": "Federhall" },
+      "types": {
+        "none": "Kein",
+        "room": "Raum",
+        "hall": "Halle",
+        "plate": "Platte",
+        "spring": "Federhall"
+      },
       "roomSize": "Raumgröße",
       "roomRange": "0 % bis 100 %",
       "wetDry": "Nass-/Trocken-Mix",
@@ -599,7 +617,12 @@
       "tooltip": "Fügen Sie eine verzögerte Kopie des Signals hinzu. Echo ist ein einzelnes Delay; Multi-Tap fügt mehrere versetzte Echos hinzu; Ping-Pong wechselt zwischen links und rechts. Zeit (ms), Feedback % und Nass-Pegel formen die Wiederholungen.",
       "enable": "Delay aktivieren",
       "typeLabel": "Delay-Typ",
-      "types": { "none": "Kein", "echo": "Einfaches Echo", "multi-tap": "Multi-Tap", "ping-pong": "Ping-Pong" },
+      "types": {
+        "none": "Kein",
+        "echo": "Einfaches Echo",
+        "multi-tap": "Multi-Tap",
+        "ping-pong": "Ping-Pong"
+      },
       "delayTime": "Delay-Zeit (ms)",
       "feedback": "Feedback (%)",
       "feedbackRange": "0 % bis 95 %"
@@ -618,9 +641,19 @@
       "timeStretchValue": "{{value}}x Geschwindigkeit",
       "timeStretchRange": "0,25x bis 4x Geschwindigkeit",
       "spatialAudio": "Räumliches Audio",
-      "spatial": { "none": "Keine", "binaural": "Binaural", "surround": "Surround", "3d": "3D-Audio" },
+      "spatial": {
+        "none": "Keine",
+        "binaural": "Binaural",
+        "surround": "Surround",
+        "3d": "3D-Audio"
+      },
       "spectral": "Spektralverarbeitung",
-      "spectralOptions": { "none": "Keine", "vocoder": "Vocoder", "formant": "Formantfilter", "convolution": "Faltung" }
+      "spectralOptions": {
+        "none": "Keine",
+        "vocoder": "Vocoder",
+        "formant": "Formantfilter",
+        "convolution": "Faltung"
+      }
     },
     "labels": {
       "amplify": "Verstärken (dB)",
@@ -639,10 +672,22 @@
     "tooltipTemporal": "<strong>Zeitliche Effekte</strong> — Rückwärtslauf, Ping-Pong, Bildratenkonvertierung, Stabilisierung.",
     "tooltipAdvanced": "<strong>Erweiterte Verarbeitung</strong> — Deinterlacing, HDR-Tone-Mapping, Farbraumkonvertierung.",
     "sections": {
-      "visual": { "title": "Visuelle Effekte", "description": "Farbkorrektur, Weichzeichnen/Schärfen, künstlerische Effekte und Rauschkontrolle" },
-      "transform": { "title": "Geometrische Transformation", "description": "Drehung, Spiegelung, Zuschnitt und Rahmung" },
-      "temporal": { "title": "Zeitliche Effekte", "description": "Geschwindigkeitsregelung, Rückwärtslauf, Bildrate und Stabilisierung" },
-      "advanced": { "title": "Erweiterte Verarbeitung", "description": "Deinterlacing, HDR-Verarbeitung und Farbraumkonvertierung" }
+      "visual": {
+        "title": "Visuelle Effekte",
+        "description": "Farbkorrektur, Weichzeichnen/Schärfen, künstlerische Effekte und Rauschkontrolle"
+      },
+      "transform": {
+        "title": "Geometrische Transformation",
+        "description": "Drehung, Spiegelung, Zuschnitt und Rahmung"
+      },
+      "temporal": {
+        "title": "Zeitliche Effekte",
+        "description": "Geschwindigkeitsregelung, Rückwärtslauf, Bildrate und Stabilisierung"
+      },
+      "advanced": {
+        "title": "Erweiterte Verarbeitung",
+        "description": "Deinterlacing, HDR-Verarbeitung und Farbraumkonvertierung"
+      }
     },
     "colorExposure": {
       "title": "Farbe & Belichtung",

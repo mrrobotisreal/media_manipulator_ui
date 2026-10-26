@@ -1,0 +1,124 @@
+# MM54: keep the sixteen `translate/<prefix>` mirror branches in lock-step with `main`.
+#
+# On every push to `main`:
+#   1. `list` reads the translator locales from i18n/locales.ts via
+#      `node scripts/list-locales.mjs --matrix` (never hand-listed).
+#   2. `ff` (one matrix job per locale) fast-forwards `translate/<prefix>` to
+#      `main` (creating it if missing), then pokes that locale's Vercel Deploy
+#      Hook, because a push made with GITHUB_TOKEN may not trigger a Vercel build.
+#
+# Deploy-hook secret name: `VERCEL_DEPLOY_HOOK_<PREFIX>` with the prefix
+# uppercased and `-` turned into `_` (de -> VERCEL_DEPLOY_HOOK_DE,
+# pt-br -> VERCEL_DEPLOY_HOOK_PT_BR). The matrix carries the name (`hook`).
+#
+# Before the MM55 infra setup, the first run creates the 16 mirror branches and
+# logs a ::notice:: per missing hook secret (no failure). The workflow fails
+# only if a mirror branch has diverged from `main` (someone committed to it:
+# a policy violation). It never force-pushes; the push is fast-forward only.
+#
+# Push credential: the job's GITHUB_TOKEN, unless the optional repo secret
+# TRANSLATE_SYNC_TOKEN exists (a fine-grained token on this repo with Contents
+# and Workflows read/write). GitHub may refuse a GITHUB_TOKEN push that adds or
+# changes `.github/workflows/*` ("refusing to allow a GitHub App to create or
+# update workflow ... without `workflows` permission"; unverified for pushes of
+# commits already on `main`). That case is reported as a ::warning:: naming the
+# fix and does not fail the run, because it is setup, not a policy violation.
+name: sync-translate-branches
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-translate-branches
+  cancel-in-progress: false
+
+jobs:
+  list:
+    # Forks must never push mirror branches.
+    if: github.repository == 'mrrobotisreal/media_manipulator_ui'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - id: matrix
+        run: |
+          set -euo pipefail
+          matrix="$(node scripts/list-locales.mjs --matrix)"
+          echo "$matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  ff:
+    needs: list
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.list.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.TRANSLATE_SYNC_TOKEN || github.token }}
+      - name: Fast-forward translate/${{ matrix.prefix }}
+        env:
+          PREFIX: ${{ matrix.prefix }}
+        run: |
+          set -euo pipefail
+          branch="translate/${PREFIX}"
+          # Plain push (never --force): the server rejects anything but a fast-forward.
+          push() {
+            local err
+            if err="$(git push origin "origin/main:refs/heads/${branch}" 2>&1)"; then
+              printf '%s\n' "$err"
+              return 0
+            fi
+            printf '%s\n' "$err"
+            if printf '%s' "$err" | grep -qi 'without .workflows. permission'; then
+              echo "::warning::GitHub refused to push ${branch} with this token because the commits change .github/workflows (workflows permission). Add a TRANSLATE_SYNC_TOKEN repo secret (fine-grained, this repo, Contents + Workflows read/write) and re-run. Skipped; ${branch} is unchanged."
+              return 0
+            fi
+            echo "::error::Push of ${branch} was rejected (see above). A non-fast-forward means someone committed to the mirror branch."
+            return 1
+          }
+          if ! git ls-remote --exit-code --heads origin "refs/heads/${branch}" >/dev/null 2>&1; then
+            echo "Creating ${branch} from origin/main"
+            push
+            exit 0
+          fi
+          git fetch --no-tags origin "refs/heads/${branch}:refs/remotes/origin/${branch}"
+          if ! git merge-base --is-ancestor "origin/${branch}" origin/main; then
+            echo "::error::origin/${branch} is not an ancestor of origin/main: someone committed to a mirror branch (policy violation). Not pushing."
+            exit 1
+          fi
+          if [ "$(git rev-parse "origin/${branch}")" = "$(git rev-parse origin/main)" ]; then
+            echo "${branch} is already up to date"
+            exit 0
+          fi
+          echo "Fast-forwarding ${branch} to origin/main"
+          push
+      - name: Trigger Vercel deploy hook
+        env:
+          HOOK: ${{ secrets[matrix.hook] }}
+          HOOK_NAME: ${{ matrix.hook }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HOOK}" ]; then
+            echo "::notice::Secret ${HOOK_NAME} is not set; skipping the deploy hook for this locale."
+            exit 0
+          fi
+          echo "::add-mask::${HOOK}"
+          curl -fsS --retry 2 -X POST "${HOOK}" -o /dev/null
+          echo "Deploy hook triggered"
