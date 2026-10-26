@@ -9,6 +9,9 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { saveBlobToDisk } from '@/lib/results/save';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import { canExportAnime, exportAnimatedSvgAnime } from '@/lib/vector/export/anime';
+import { ANIME_RUNTIME } from '@/lib/vector/export/animeRuntime.generated';
+import { chooseRuntime } from '@/lib/vector/export/chooseRuntime';
 import { canExportCss, exportAnimatedSvgCss } from '@/lib/vector/export/css';
 import { serializeSvg, svgFileName } from '@/lib/vector/exportSvg';
 import { countVectorExport, type VectorExportRefusal, type VectorExportResult, type VectorExportRequest } from '@/lib/vector/exportsApi';
@@ -27,6 +30,14 @@ import { cn } from '@/lib/utils';
  *     with a plain link to /pricing (upgrade routing by ladder is MM49).
  *     The remaining count comes from the response.
  *   - Lottie, code, GIF and video are listed disabled, "Coming soon" (MM46/MM47).
+ *
+ * MM45: animated SVG picks its runtime with `chooseRuntime`: CSS when every
+ * feature is CSS in every major engine, else the inline MIT anime.js script
+ * (`exportAnimatedSvgAnime`). The dialog shows the runtime, the reasons
+ * ("Uses a 35 KB script because: shape morph"), the `<img>` caveat for
+ * scripts, and lets the user force the script runtime (never CSS when CSS
+ * cannot express the document). Both runtimes count as the one server
+ * format `svg_animated` (`internal/tiers/vector.go` knows no other name).
  *
  * Translator deployments (MM52) hide the counted format: it spends a server
  * allowance, which is an irreversible action there. Static SVG stays.
@@ -64,7 +75,12 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
   const countedHidden = isIrreversibleActionHidden();
   const [format, setFormat] = React.useState<Format>(countedHidden ? 'svg_static' : 'svg_animated');
   const [status, setStatus] = React.useState<Status>({ kind: 'idle' });
-  const cssCheck = React.useMemo(() => canExportCss(doc), [doc]);
+  const [forceAnime, setForceAnime] = React.useState(false);
+  const choice = React.useMemo(() => chooseRuntime(doc, { forceAnime }), [doc, forceAnime]);
+  const animatedOk = React.useMemo(
+    () => (choice.runtime === 'css' ? canExportCss(doc).ok : canExportAnime(doc).ok),
+    [doc, choice.runtime],
+  );
 
   const exportStatic = () => {
     const svg = serializeSvg(sampleDoc(doc, time));
@@ -73,7 +89,7 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
   };
 
   const exportAnimated = async () => {
-    if (!cssCheck.ok) {
+    if (!animatedOk) {
       setStatus({ kind: 'invalid' });
       return;
     }
@@ -90,7 +106,7 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
       return;
     }
     // Only now: the unit is spent server-side.
-    const svg = exportAnimatedSvgCss(doc, { anonymous: !signedIn });
+    const svg = choice.runtime === 'anime' ? exportAnimatedSvgAnime(doc, { anonymous: !signedIn }) : exportAnimatedSvgCss(doc, { anonymous: !signedIn });
     save(new Blob([svg], { type: 'image/svg+xml' }), svgFileName(name));
     setStatus({ kind: 'done', remaining: result.granted.remaining });
   };
@@ -134,7 +150,16 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
               'svg_animated',
               t('vector.exportDialog.animated'),
               t('vector.exportDialog.animatedHint'),
-              !cssCheck.ok ? <span className="mt-1 block text-xs text-destructive">{t('vector.exportDialog.unsupported')}</span> : null,
+              !animatedOk ? (
+                <span className="mt-1 block text-xs text-destructive">{t('vector.exportDialog.unsupported')}</span>
+              ) : (
+                <RuntimeNote
+                  runtime={choice.runtime}
+                  reasons={choice.reasons}
+                  forceAnime={forceAnime}
+                  onForceAnime={setForceAnime}
+                />
+              ),
             )}
           {option('svg_static', t('vector.exportDialog.static'), t('vector.exportDialog.staticHint'))}
           <ul className="space-y-1 pt-1" aria-label={t('vector.exportDialog.comingSoon')}>
@@ -165,13 +190,60 @@ export function ExportDialog({ open, onOpenChange, doc, name, time, projectId, s
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={busy}>
             {t('common.close')}
           </Button>
-          <Button onClick={run} disabled={busy || (format === 'svg_animated' && !cssCheck.ok)}>
+          <Button onClick={run} disabled={busy || (format === 'svg_animated' && !animatedOk)}>
             {busy ? <Loader2 className="animate-spin" /> : <Download />}
             {t('vector.exportDialog.export')}
           </Button>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+/** The runtime size users are told about ("a 35 KB script"), rounded to whole KB. */
+export const ANIME_RUNTIME_KB = Math.round(ANIME_RUNTIME.length / 1024);
+
+/**
+ * Which runtime the animated export uses and why (MM45 decision 8). The
+ * checkbox forces the script runtime; it is checked and locked when CSS cannot
+ * express the document (CSS can never be forced).
+ */
+function RuntimeNote({
+  runtime,
+  reasons,
+  forceAnime,
+  onForceAnime,
+}: {
+  runtime: 'css' | 'anime';
+  reasons: string[];
+  forceAnime: boolean;
+  onForceAnime: (on: boolean) => void;
+}) {
+  const { t } = useLocalization('interface');
+  const required = reasons.length > 0;
+  const because = reasons.map((r) => t(`vector.exportDialog.reasons.${r}`)).join(', ');
+  return (
+    <span className="mt-1.5 block space-y-1 text-xs" data-testid="vector-export-runtime" data-runtime={runtime}>
+      <span className="block text-muted-foreground">
+        {runtime === 'css'
+          ? t('vector.exportDialog.runtimeCss')
+          : required
+            ? t('vector.exportDialog.runtimeAnimeBecause', { size: ANIME_RUNTIME_KB, reasons: because })
+            : t('vector.exportDialog.runtimeAnimeChosen', { size: ANIME_RUNTIME_KB })}
+      </span>
+      {runtime === 'anime' && <span className="block text-premium">{t('vector.exportDialog.scriptImgNote')}</span>}
+      <span className="flex items-center gap-1.5 text-muted-foreground">
+        <input
+          type="checkbox"
+          checked={required || forceAnime}
+          disabled={required}
+          onChange={(e) => onForceAnime(e.target.checked)}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={t('vector.exportDialog.forceAnime')}
+        />
+        <span>{t('vector.exportDialog.forceAnime')}</span>
+      </span>
+    </span>
   );
 }
 

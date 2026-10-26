@@ -68,9 +68,9 @@ function mount(extra: Partial<React.ComponentProps<typeof ExportDialog>> = {}) {
 const exportButton = () => screen.getByRole('button', { name: 'Export' });
 
 describe('Motion export dialog', () => {
-  it('lists animated SVG (CSS) and static SVG, the beta label, and later formats disabled', () => {
+  it('lists animated SVG and static SVG, the beta label, and later formats disabled', () => {
     mount();
-    expect(screen.getByRole('radio', { name: /Animated SVG \(CSS\)/ })).toBeTruthy();
+    expect(screen.getByRole('radio', { name: /Animated SVG/ })).toBeTruthy();
     expect(screen.getByRole('radio', { name: /Static SVG/ })).toBeTruthy();
     expect(screen.getByText('Motion (beta)')).toBeTruthy();
     expect(screen.getAllByText('Coming soon').length).toBeGreaterThan(1);
@@ -161,6 +161,58 @@ describe('Motion export dialog', () => {
     mount({ doc: r.doc });
     expect((exportButton() as HTMLButtonElement).disabled).toBe(true);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+const morphDoc = (() => {
+  const r = parseVectorDoc({
+    ...JSON.parse(JSON.stringify(doc)),
+    layers: [{ type: 'path', id: 'box', d: 'M0 0L10 0L10 10Z' }],
+    animations: [{ layerId: 'box', property: 'd', keyframes: [{ t: 0, value: 'M0 0L10 0L10 10Z', easing: 'linear' }, { t: 1500, value: 'M0 0L20 0L20 20Z', easing: 'linear' }] }],
+  });
+  if (!r.ok) throw new Error(r.error);
+  return r.doc;
+})();
+
+describe('MM45: runtime chooser in the dialog', () => {
+  it('a CSS-expressible document says "Pure CSS" and exports CSS', async () => {
+    fetchMock.mockResolvedValueOnce(json(200, { ok: true, format: 'svg_animated', tier: 'free', limit: 5, remaining: 4, resetsAt: '' }));
+    const { save } = mount();
+    expect(screen.getByTestId('vector-export-runtime').dataset.runtime).toBe('css');
+    expect(screen.getByText('Pure CSS, no script.')).toBeTruthy();
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    const text = await (save.mock.calls[0][0] as Blob).text();
+    expect(text).not.toContain('<script');
+  });
+
+  it('a morph shows the script runtime and its reason, locks the checkbox, and exports anime (counted as svg_animated)', async () => {
+    fetchMock.mockResolvedValueOnce(json(200, { ok: true, format: 'svg_animated', tier: 'free', limit: 5, remaining: 4, resetsAt: '' }));
+    const { save } = mount({ doc: morphDoc });
+    const note = screen.getByTestId('vector-export-runtime');
+    expect(note.dataset.runtime).toBe('anime');
+    expect(note.textContent).toMatch(/Uses a \d+ KB script \(anime\.js, MIT\) because: shape morph\./);
+    expect(note.textContent).toContain('not inside an <img> tag');
+    const box = screen.getByRole('checkbox', { name: 'Use the script runtime' }) as HTMLInputElement;
+    expect(box.checked).toBe(true);
+    expect(box.disabled).toBe(true);
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).format).toBe('svg_animated');
+    const text = await (save.mock.calls[0][0] as Blob).text();
+    expect(text.startsWith('<!--\nanime.js v')).toBe(true);
+    expect(text.match(/<script/g)).toHaveLength(1);
+    expect(css.spy).not.toHaveBeenCalled();
+  });
+
+  it('the user can force the script runtime on a CSS document', async () => {
+    fetchMock.mockResolvedValueOnce(json(200, { ok: true, format: 'svg_animated', tier: 'free', limit: 5, remaining: 4, resetsAt: '' }));
+    const { save } = mount();
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Use the script runtime' }));
+    expect(screen.getByTestId('vector-export-runtime').dataset.runtime).toBe('anime');
+    fireEvent.click(exportButton());
+    await waitFor(() => expect(save).toHaveBeenCalledTimes(1));
+    expect(await (save.mock.calls[0][0] as Blob).text()).toContain('<script><![CDATA[');
   });
 });
 
