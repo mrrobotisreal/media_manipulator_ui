@@ -1,133 +1,132 @@
 {
   "transcribeForm": {
-    "outputFormatTitle": "Transcript Output Format",
-    "intro": "We transcribe the {{mediaKind}} on our own GPU server using whisper-ctranslate2. A summary and safety review run automatically once the transcript is ready.",
+    "outputFormatTitle": "文字起こしの出力形式",
+    "intro": "{{mediaKind}}は当社自身のGPUサーバー上でwhisper-ctranslate2を使って文字起こしします。文字起こしが完成すると、要約と安全性レビューが自動的に実行されます。",
     "mediaKind": {
-      "video": "video",
-      "audio": "audio"
+      "video": "動画",
+      "audio": "音声"
     },
-    "languageLabel": "Language hint (optional)",
-    "languagePlaceholder": "e.g. en, es, ja (leave blank to auto-detect)",
-    "languageHint": "BCP-47 short code. Leave blank to let whisper auto-detect the spoken language.",
-    "languageTooltip": "BCP-47 short code (e.g. en, es, ja, de, fr). Leave blank to let whisper auto-detect the spoken language. Providing the correct hint can improve transcript accuracy for short clips.",
-    "transcribing": "Transcribing...",
-    "submit": "Transcribe File",
+    "languageLabel": "言語ヒント（任意）",
+    "languagePlaceholder": "例：en、es、ja（空欄で自動検出）",
+    "languageHint": "BCP-47の短い言語コードです。空欄にするとwhisperが話されている言語を自動検出します。",
+    "languageTooltip": "BCP-47の短い言語コード（例：en、es、ja、de、fr）です。空欄にするとwhisperが話されている言語を自動検出します。正しいヒントを指定すると、短いクリップの文字起こし精度が向上することがあります。",
+    "transcribing": "文字起こし中...",
+    "submit": "ファイルを文字起こし",
     "format": {
       "vtt": {
-        "label": "Captions (VTT)",
-        "description": "Time-coded subtitles for video players and accessibility tools."
+        "label": "字幕（VTT）",
+        "description": "動画プレーヤーやアクセシビリティツール向けのタイムコード付き字幕です。"
       },
       "srt": {
-        "label": "Subtitles (SRT)",
-        "description": "SubRip subtitles compatible with YouTube, Premiere, DaVinci Resolve, and most video editors."
+        "label": "字幕（SRT）",
+        "description": "YouTube、Premiere、DaVinci Resolveなど、ほとんどの動画編集ソフトに対応したSubRip字幕です。"
       },
       "txt": {
-        "label": "Plain Text",
-        "description": "Continuous transcript text suitable for reading or further editing."
+        "label": "プレーンテキスト",
+        "description": "読んだり編集したりするのに適した、連続した文字起こしテキストです。"
       },
       "json": {
-        "label": "Structured JSON",
-        "description": "Segmented transcript with timing data for downstream processing."
+        "label": "構造化JSON",
+        "description": "後続の処理向けに、タイミングデータ付きでセグメント化された文字起こしです。"
       }
     },
     "formatTooltip": {
-      "vtt": "<strong>VTT</strong> — time-coded captions/subtitles for HTML5 video players and accessibility tools.",
-      "txt": "<strong>Plain text</strong> — continuous transcript text for reading or further editing.",
-      "json": "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+      "vtt": "<strong>VTT</strong> — HTML5動画プレーヤーやアクセシビリティツール向けのタイムコード付き字幕です。",
+      "txt": "<strong>プレーンテキスト</strong> — 読んだり編集したりするための連続した文字起こしテキストです。",
+      "json": "<strong>構造化JSON</strong> — 後続のパイプライン向けに、タイミングデータ付きでセグメント化された文字起こしです。"
     }
   },
   "audioForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})",
+    "converting": "変換中...",
+    "submit": "ファイルを変換",
+    "trimStatus": "トリミング：{{start}} - {{end}}（{{duration}}）",
     "ai": {
-      "title": "AI Audio Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.",
-      "tooltipCleanVoice": "<strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).",
-      "tooltipRemoveNoise": "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.",
-      "tooltipIsolateVocals": "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).",
-      "tooltipRemoveVocals": "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.",
-      "intro": "AI audio tools run as GPU jobs and may take longer than basic conversion.",
-      "operationLabel": "Operation",
+      "title": "AI音声ツール",
+      "tooltipIntro": "1つのジョブにつき1つのAI処理が、当社のローカルGPUサーバーで実行されます。そのジョブでは標準のFFmpeg処理チェーンはスキップされます。",
+      "tooltipCleanVoice": "<strong>音声クリーンアップ</strong> — DeepFilterNetによるノイズ除去と放送品質の仕上げチェーン（ハイパス／ローパス、ラウドネス、リミッター）。",
+      "tooltipRemoveNoise": "<strong>背景ノイズを除去</strong> — 仕上げチェーンなしのDeepFilterNetノイズ除去。",
+      "tooltipIsolateVocals": "<strong>ボーカルを分離</strong> — Demucs htdemucsのボーカルステム（デフォルトはロスレスWAV）。",
+      "tooltipRemoveVocals": "<strong>ボーカルを除去／カラオケ</strong> — Demucsのインストゥルメンタルステム。",
+      "intro": "AI音声ツールはGPUジョブとして実行されるため、基本的な変換より時間がかかることがあります。",
+      "operationLabel": "処理",
       "operations": {
-        "none": "None (standard conversion)",
-        "clean_voice": "Clean Voice",
-        "remove_background_noise": "Remove Background Noise",
-        "isolate_vocals": "Isolate Vocals",
-        "remove_vocals": "Remove Vocals / Karaoke"
+        "none": "なし（標準変換）",
+        "clean_voice": "音声クリーンアップ",
+        "remove_background_noise": "背景ノイズを除去",
+        "isolate_vocals": "ボーカルを分離",
+        "remove_vocals": "ボーカルを除去／カラオケ"
       },
-      "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.",
-      "presetLocked": "Preset for this tool"
+      "aiActiveNote": "AI処理を選択すると、ビットレート、EQ、その他の標準音声オプションはスキップされます。",
+      "presetLocked": "このツールのプリセット"
     }
   },
   "videoForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})"
+    "converting": "変換中...",
+    "submit": "ファイルを変換",
+    "trimStatus": "トリミング：{{start}} - {{end}}（{{duration}}）"
   },
   "imageForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "cropStatus": "Crop area: {{width}}×{{height}} pixels at ({{x}}, {{y}})",
+    "converting": "変換中...",
+    "submit": "ファイルを変換",
+    "cropStatus": "切り抜き範囲：{{width}}×{{height}}ピクセル、位置（{{x}}, {{y}}）",
     "vectorize": {
-      "title": "Vectorization (PNG → SVG)",
-      "note": "Vectorization traces your image into real vector paths. It works best for logos, icons, signatures, and black-and-white line art — not photographs.",
-      "thresholdLabel": "Black/white threshold",
-      "thresholdTooltip": "Pixels darker than this cutoff are traced as filled shapes. Raise it to capture more detail, lower it to keep only the boldest shapes."
+      "title": "ベクター化（PNG → SVG）",
+      "note": "ベクター化は画像をトレースして実際のベクターパスに変換します。ロゴ、アイコン、署名、白黒の線画に最適で、写真には向きません。",
+      "thresholdLabel": "白黒のしきい値",
+      "thresholdTooltip": "この値より暗いピクセルが塗りつぶし図形としてトレースされます。上げるとより多くのディテールを拾い、下げると最も濃い図形だけが残ります。"
     },
     "ico": {
-      "note": "A multi-size .ico is generated containing 16, 32, 48, 64, 128, and 256 px icons — ideal for favicons and Windows app icons."
+      "note": "16、32、48、64、128、256 pxのアイコンを含むマルチサイズの.icoが生成されます。ファビコンやWindowsアプリのアイコンに最適です。"
     },
     "ai": {
-      "title": "AI Image Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard ImageMagick pipeline is skipped for that job.",
-      "tooltipFacePrivacy": "<strong>Face Privacy</strong> — detect and obscure faces (blur, pixelate, or black box).",
-      "tooltipRemoveBackground": "<strong>Remove Background</strong> — outputs a transparent PNG via rembg + BiRefNet/ISNet/U2Net.",
-      "tooltipAiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan 2x or 4x.",
-      "tooltipRedactText": "<strong>Redact Text / PII</strong> — OCR-based redaction.",
-      "tooltipRemoveObject": "<strong>Remove Object</strong> — draw rectangles over unwanted objects; LaMa inpainting reconstructs the area behind them.",
-      "intro": "AI tools run one operation per conversion. For best results, preview the output before posting sensitive media.",
-      "operationLabel": "Operation",
+      "title": "AI画像ツール",
+      "tooltipIntro": "1つのジョブにつき1つのAI処理が、当社のローカルGPUサーバーで実行されます。そのジョブでは標準のImageMagickパイプラインはスキップされます。",
+      "tooltipFacePrivacy": "<strong>顔のプライバシー</strong> — 顔を検出して隠します（ぼかし、モザイク、黒塗り）。",
+      "tooltipRemoveBackground": "<strong>背景を除去</strong> — rembg + BiRefNet/ISNet/U2Netで透過PNGを出力します。",
+      "tooltipAiUpscale": "<strong>AIアップスケール</strong> — Real-ESRGAN ncnn Vulkanによる2倍または4倍。",
+      "tooltipRedactText": "<strong>テキスト／個人情報をマスキング</strong> — OCRベースのマスキング。",
+      "tooltipRemoveObject": "<strong>オブジェクトを除去</strong> — 不要なオブジェクトの上に長方形を描くと、LaMaインペインティングがその背後の領域を再構成します。",
+      "intro": "AIツールは1回の変換につき1つの処理を実行します。センシティブなメディアを公開する前に、出力をプレビューして確認することをおすすめします。",
+      "operationLabel": "処理",
       "operations": {
-        "none": "None (standard conversion)",
-        "face_privacy": "Face Blur / Pixelate",
-        "remove_background": "Remove Background",
-        "ai_upscale": "AI Upscale",
-        "redact_text": "Redact Text / PII",
-        "remove_object": "Remove Object (LaMa Inpainting)"
+        "none": "なし（標準変換）",
+        "face_privacy": "顔のぼかし／モザイク",
+        "remove_background": "背景を除去",
+        "ai_upscale": "AIアップスケール",
+        "redact_text": "テキスト／個人情報をマスキング",
+        "remove_object": "オブジェクトを除去（LaMaインペインティング）"
       },
       "faceMode": {
-        "label": "Face Mode",
-        "blur": "Blur",
-        "pixelate": "Pixelate",
-        "blackbox": "Black Box"
+        "label": "顔の処理モード",
+        "blur": "ぼかし",
+        "pixelate": "モザイク",
+        "blackbox": "黒塗り"
       },
       "selectiveFaces": {
-        "title": "Selective Faces",
-        "tooltipDefault": "Default applies the chosen effect to every detected face.",
-        "tooltipDetect": "Use <strong>Detect faces</strong> to preview boxes and pick which faces to obscure or skip.",
-        "tooltipExpire": "Face boxes are stored temporarily for selection and expire automatically.",
-        "selectionModeLabel": "Selection mode",
+        "title": "顔を選んで処理",
+        "tooltipDefault": "デフォルトでは、検出されたすべての顔に選択した効果を適用します。",
+        "tooltipDetect": "<strong>顔を検出</strong>を使うと、枠をプレビューして、隠す顔とそのままにする顔を選べます。",
+        "tooltipExpire": "顔の枠は選択のために一時的に保存され、自動的に期限切れになります。",
+        "selectionModeLabel": "選択モード",
         "selectionMode": {
-          "all": "All detected faces",
-          "only_selected": "Only selected faces",
-          "all_except_selected": "All except selected faces"
+          "all": "検出されたすべての顔",
+          "only_selected": "選択した顔のみ",
+          "all_except_selected": "選択した顔以外すべて"
         },
-        "detecting": "Detecting…",
-        "reDetect": "Re-detect faces",
-        "detect": "Detect faces",
-        "selectAll": "Select all",
-        "clearSelection": "Clear selection",
-        "chooseFile": "Choose an image first to detect faces.",
-        "noFaces": "No faces detected. You can still run default face privacy on conversion, or try another image.",
-        "detected_one": "Detected {{count}} face. Selected: {{selected}}.",
-        "detected_other": "Detected {{count}} faces. Selected: {{selected}}.",
-        "defaultNote": "Default: applies to every detected face. Use Detect faces to choose specific faces."
+        "detecting": "検出中…",
+        "reDetect": "顔を再検出",
+        "detect": "顔を検出",
+        "selectAll": "すべて選択",
+        "clearSelection": "選択を解除",
+        "chooseFile": "顔を検出するには、まず画像を選択してください。",
+        "noFaces": "顔が検出されませんでした。変換時にデフォルトの顔プライバシー処理を実行するか、別の画像をお試しください。",
+        "detected_other": "{{count}}人の顔を検出しました。選択済み：{{selected}}。",
+        "defaultNote": "デフォルト：検出されたすべての顔に適用します。特定の顔を選ぶには「顔を検出」を使ってください。"
       },
       "background": {
-        "modelLabel": "Background Model",
+        "modelLabel": "背景モデル",
         "models": {
-          "birefnet-general": "BiRefNet General (recommended)",
+          "birefnet-general": "BiRefNet General（推奨）",
           "birefnet-general-lite": "BiRefNet General Lite",
           "birefnet-portrait": "BiRefNet Portrait",
           "isnet-general-use": "ISNet General Use",
@@ -135,329 +134,328 @@
           "u2netp": "U2Net Lite",
           "u2net_human_seg": "U2Net Human Segmentation"
         },
-        "pngNote": "Output is always PNG so transparency is preserved."
+        "pngNote": "透明度を保持するため、出力は常にPNGです。"
       },
       "upscale": {
-        "scaleLabel": "Scale",
-        "scale4x": "4x",
-        "scale2x": "2x (experimental on some images)",
-        "modelLabel": "Model",
+        "scaleLabel": "倍率",
+        "scale4x": "4倍",
+        "scale2x": "2倍（一部の画像では実験的）",
+        "modelLabel": "モデル",
         "models": {
-          "realesrgan-x4plus": "realesrgan-x4plus (photos)",
+          "realesrgan-x4plus": "realesrgan-x4plus（写真向け）",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI upscale is available, but 4x is the safest/default model path on this server.",
-        "pngNote": "Output is PNG by default."
+        "experimentalNote": "2倍のAIアップスケールも利用できますが、このサーバーでは4倍が最も安全なデフォルトのモデルパスです。",
+        "pngNote": "出力はデフォルトでPNGです。"
       },
       "removeObject": {
-        "title": "Mark objects to remove",
-        "tooltipDraw": "Click and drag on the image to add a rectangle over each object you want to erase. Drag the rectangle body to move it, or the handles to resize.",
-        "tooltipResult": "LaMa inpainting reconstructs the area behind each rectangle. For best results, draw the box snugly around the object — large rectangles ask the model to hallucinate more background.",
-        "tooltipTip": "Tip: multiple smaller rectangles often look cleaner than one huge one.",
-        "clearAll": "Clear all",
-        "chooseFile": "Choose an image first to start marking objects.",
-        "atLeastOne": "Add at least one rectangle covering the object you want to remove.",
-        "readyToInpaint_one": "{{count}} rectangle ready to inpaint.",
-        "readyToInpaint_other": "{{count}} rectangles ready to inpaint.",
-        "formatNote": "LaMa output preserves your chosen output format (JPG, PNG, WebP, GIF). Filters, text overlay, and tint are skipped for this op."
+        "title": "除去するオブジェクトを指定",
+        "tooltipDraw": "画像上でクリック＆ドラッグして、消したいオブジェクトごとに長方形を追加します。長方形の本体をドラッグすると移動、ハンドルをドラッグするとサイズ変更できます。",
+        "tooltipResult": "LaMaインペインティングが各長方形の背後の領域を再構成します。最良の結果を得るには、オブジェクトにぴったり沿って枠を描いてください。大きな長方形ほど、モデルが推測で生成する背景が増えます。",
+        "tooltipTip": "ヒント：1つの巨大な長方形より、小さな長方形を複数使うほうがきれいに仕上がることが多いです。",
+        "clearAll": "すべてクリア",
+        "chooseFile": "オブジェクトの指定を始めるには、まず画像を選択してください。",
+        "atLeastOne": "除去したいオブジェクトを覆う長方形を1つ以上追加してください。",
+        "readyToInpaint_other": "{{count}}個の長方形がインペインティング待ちです。",
+        "formatNote": "LaMaの出力は選択した出力形式（JPG、PNG、WebP、GIF）を維持します。この処理ではフィルター、テキストオーバーレイ、色合いはスキップされます。"
       },
       "redact": {
-        "detectLabel": "Detect",
+        "detectLabel": "検出対象",
         "detect": {
-          "pii": "PII only",
-          "all-text": "All Text"
+          "pii": "個人情報のみ",
+          "all-text": "すべてのテキスト"
         },
-        "redactionLabel": "Redaction Style",
+        "redactionLabel": "マスキングのスタイル",
         "redaction": {
-          "blackbox": "Black Box",
-          "blur": "Blur",
-          "pixelate": "Pixelate"
+          "blackbox": "黒塗り",
+          "blur": "ぼかし",
+          "pixelate": "モザイク"
         },
-        "ocrNote": "OCR redaction is best effort. Please review output before sharing."
+        "ocrNote": "OCRによるマスキングはベストエフォートです。共有する前に出力をご確認ください。"
       },
-      "aiActiveNote": "Format, filters, and other standard image options are skipped when an AI operation is selected.",
-      "operationLocked": "Preset for this tool"
+      "aiActiveNote": "AI処理を選択すると、形式、フィルター、その他の標準画像オプションはスキップされます。",
+      "operationLocked": "このツールのプリセット"
     },
     "textOverlay": {
-      "title": "Text Overlay",
-      "tooltipAria": "About text overlay",
-      "tooltip": "Burn a watermark or caption onto the output image. Type the text, then pick size (8–512 px), gravity (corner/edge/center anchor), text and stroke colors, stroke width, and pixel offsets from the anchor. Leave the text empty to skip the overlay.",
-      "overlayText": "Overlay Text",
-      "overlayPlaceholder": "Optional text to draw on the image",
-      "size": "Text Size",
-      "position": "Position",
-      "textColor": "Text Color",
-      "strokeColor": "Stroke Color",
-      "strokeWidth": "Stroke Width",
-      "xOffset": "X Offset",
-      "yOffset": "Y Offset",
+      "title": "テキストオーバーレイ",
+      "tooltipAria": "テキストオーバーレイについて",
+      "tooltip": "出力画像に透かしやキャプションを焼き込みます。テキストを入力し、サイズ（8〜512 px）、配置位置（角／辺／中央のアンカー）、文字色と縁取り色、縁取りの太さ、アンカーからのピクセル単位のオフセットを指定します。テキストを空欄にするとオーバーレイはスキップされます。",
+      "overlayText": "オーバーレイテキスト",
+      "overlayPlaceholder": "画像に描画するテキスト（任意）",
+      "size": "文字サイズ",
+      "position": "位置",
+      "textColor": "文字色",
+      "strokeColor": "縁取り色",
+      "strokeWidth": "縁取りの太さ",
+      "xOffset": "Xオフセット",
+      "yOffset": "Yオフセット",
       "gravity": {
-        "NorthWest": "Top Left",
-        "North": "Top",
-        "NorthEast": "Top Right",
-        "West": "Left",
-        "Center": "Center",
-        "East": "Right",
-        "SouthWest": "Bottom Left",
-        "South": "Bottom",
-        "SouthEast": "Bottom Right"
+        "NorthWest": "左上",
+        "North": "上",
+        "NorthEast": "右上",
+        "West": "左",
+        "Center": "中央",
+        "East": "右",
+        "SouthWest": "左下",
+        "South": "下",
+        "SouthEast": "右下"
       }
     },
     "metadata": {
-      "title": "Metadata",
-      "intro": "Choose whether to keep, strip, or rewrite image metadata.",
-      "tooltipKeep": "<strong>Keep all metadata</strong> — preserve every EXIF/IPTC/XMP/GPS field from the original.",
-      "tooltipStrip": "<strong>Strip all metadata</strong> — remove camera, GPS, software, and timestamp fields. Recommended before sharing photos online.",
-      "tooltipCustom": "<strong>Custom metadata</strong> — strip first, then rewrite only the fields you supply (title, author, copyright, IPTC keywords, GPS fields, etc.).",
-      "modeLabel": "Metadata mode",
+      "title": "メタデータ",
+      "intro": "画像のメタデータを保持するか、削除するか、書き換えるかを選択します。",
+      "tooltipKeep": "<strong>すべてのメタデータを保持</strong> — オリジナルのEXIF/IPTC/XMP/GPSフィールドをすべて保持します。",
+      "tooltipStrip": "<strong>すべてのメタデータを削除</strong> — カメラ、GPS、ソフトウェア、タイムスタンプのフィールドを削除します。写真をオンラインで共有する前におすすめです。",
+      "tooltipCustom": "<strong>カスタムメタデータ</strong> — まず削除してから、指定したフィールド（タイトル、作者、著作権、IPTCキーワード、GPSフィールドなど）だけを書き込みます。",
+      "modeLabel": "メタデータモード",
       "modes": {
-        "keep": "Keep all metadata",
-        "strip": "Strip all metadata",
-        "custom": "Custom metadata"
+        "keep": "すべてのメタデータを保持",
+        "strip": "すべてのメタデータを削除",
+        "custom": "カスタムメタデータ"
       },
       "fields": {
-        "title": "Title",
-        "author": "Artist / Author",
-        "description": "Description",
-        "copyright": "Copyright",
-        "comment": "User Comment",
-        "keywords": "Keywords"
+        "title": "タイトル",
+        "author": "アーティスト／作者",
+        "description": "説明",
+        "copyright": "著作権",
+        "comment": "ユーザーコメント",
+        "keywords": "キーワード"
       },
-      "exifFields": "EXIF / TIFF Fields",
-      "gpsFields": "GPS / Location Fields",
-      "showAdvanced": "Show Advanced / Device Metadata",
-      "hideAdvanced": "Hide Advanced / Device Metadata",
+      "exifFields": "EXIF / TIFFフィールド",
+      "gpsFields": "GPS / 位置情報フィールド",
+      "showAdvanced": "詳細／デバイスメタデータを表示",
+      "hideAdvanced": "詳細／デバイスメタデータを隠す",
       "gps": {
-        "title": "GPS / Location Options",
-        "tooltipAria": "About GPS / location options",
-        "tooltip": "Remove or replace GPS metadata stored by your camera or phone. You can also strip just the capture direction, GPS timestamp, altitude, or destination fields. Replace mode lets you pin a different latitude/longitude/altitude and optionally round precision for privacy.",
-        "removeLocationData": "Remove location data",
-        "replaceLocationData": "Replace location data",
-        "roundPrecision": "Round location precision",
-        "removeCaptureDirection": "Remove capture direction / heading",
-        "removeTimestamp": "Remove GPS timestamp",
-        "removeAltitude": "Remove altitude",
-        "removeDestination": "Remove destination fields",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
-        "altitude": "Altitude",
-        "precisionDecimals": "Precision Decimals"
+        "title": "GPS / 位置情報オプション",
+        "tooltipAria": "GPS / 位置情報オプションについて",
+        "tooltip": "カメラやスマートフォンが保存したGPSメタデータを削除または置き換えます。撮影方向、GPSタイムスタンプ、高度、目的地フィールドだけを削除することもできます。置き換えモードでは別の緯度／経度／高度を指定でき、プライバシーのために精度を丸めることもできます。",
+        "removeLocationData": "位置情報を削除",
+        "replaceLocationData": "位置情報を置き換え",
+        "roundPrecision": "位置情報の精度を丸める",
+        "removeCaptureDirection": "撮影方向／方位を削除",
+        "removeTimestamp": "GPSタイムスタンプを削除",
+        "removeAltitude": "高度を削除",
+        "removeDestination": "目的地フィールドを削除",
+        "latitude": "緯度",
+        "longitude": "経度",
+        "altitude": "高度",
+        "precisionDecimals": "精度（小数点以下の桁数）"
       }
     },
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "Sign up for a Premium account to unlock full transcode access.",
+    "premiumTooltip": "トランスコードのフル機能を使うには、Premiumアカウントに登録してください。",
     "premiumBadge": "Premium",
-    "tooSmallBadge": "Too small",
+    "tooSmallBadge": "小さすぎます",
     "protocol": {
-      "title": "Protocol",
-      "tooltipAria": "About transcode protocol",
-      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + per-rendition variants + .ts segments. Plays everywhere.",
-      "tooltipDash": "<strong>DASH</strong> — MPEG-DASH adaptive streaming. AV1 (smallest, modern) or VP9 (broader support); manifest.mpd + .m4s segments.",
-      "hlsSub": "H.264 / AAC · .m3u8 · everywhere",
-      "dashSub": "AV1 or VP9 · .mpd · modern web",
-      "av1Sub": "Recommended · smaller files",
-      "vp9Sub": "Wider playback support"
+      "title": "プロトコル",
+      "tooltipAria": "トランスコードのプロトコルについて",
+      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming。H.264/AAC、master.m3u8 + レンディションごとのバリアント + .tsセグメント。あらゆる環境で再生できます。",
+      "tooltipDash": "<strong>DASH</strong> — MPEG-DASHアダプティブストリーミング。AV1（最小で最新）またはVP9（より広い対応）。manifest.mpd + .m4sセグメント。",
+      "hlsSub": "H.264 / AAC · .m3u8 · どこでも再生可能",
+      "dashSub": "AV1またはVP9 · .mpd · モダンウェブ向け",
+      "av1Sub": "推奨 · ファイルがより小さい",
+      "vp9Sub": "より幅広い再生対応"
     },
     "analyze": {
-      "intro": "We'll upload your video and run <code>ffprobe</code> to detect resolution, codec, audio, and the quality rungs your source supports.",
-      "uploadingPercent": "Uploading {{percent}}%",
-      "analyzingSource": "Analyzing source...",
-      "preparingUpload": "Preparing upload...",
-      "analyzeVideo": "Analyze video"
+      "intro": "動画をアップロードし、<code>ffprobe</code>を実行して解像度、コーデック、音声、ソースが対応する画質段階を検出します。",
+      "uploadingPercent": "アップロード中 {{percent}}%",
+      "analyzingSource": "ソースを解析中...",
+      "preparingUpload": "アップロードを準備中...",
+      "analyzeVideo": "動画を解析"
     },
     "report": {
-      "title": "Source video report",
-      "resolution": "Resolution",
-      "maxQuality": "Max quality",
+      "title": "ソース動画レポート",
+      "resolution": "解像度",
+      "maxQuality": "最大画質",
       "fps": "FPS",
-      "duration": "Duration",
-      "audio": "Audio",
-      "videoCodec": "Video codec",
-      "audioCodec": "Audio codec",
-      "container": "Container",
-      "fileSize": "File size",
-      "yes": "Yes",
-      "no": "No"
+      "duration": "長さ",
+      "audio": "音声",
+      "videoCodec": "動画コーデック",
+      "audioCodec": "音声コーデック",
+      "container": "コンテナ",
+      "fileSize": "ファイルサイズ",
+      "yes": "あり",
+      "no": "なし"
     },
     "rungs": {
-      "title": "Quality rungs",
-      "tooltipAria": "About quality rungs",
-      "tooltip": "Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are available with Premium.",
-      "defaultsNote": "Defaults: 360p + 480p + 720p when the source video supports them."
+      "title": "画質段階",
+      "tooltipAria": "画質段階について",
+      "tooltip": "選択した各段階が、最終的なHLS/DASHパッケージ内の1つのレンディションになります。Premium段階（144p/240p/1080p/2160p）はPremiumで利用できます。",
+      "defaultsNote": "デフォルト：ソース動画が対応していれば360p + 480p + 720p。"
     },
     "captions": {
-      "disabledTooltip": "Captions require an audio track. This video does not appear to have audio.",
-      "enabledTooltip": "Generate VTT captions from the audio track using whisper-ctranslate2. Off by default.",
-      "generateCaptions": "Generate captions",
-      "captionsSub": "VTT subtitles auto-generated from the audio track. Off by default.",
-      "generateStoryboards": "Generate storyboards",
-      "storyboardsSub": "Sprite-sheet scrubber thumbnails + WebVTT index. Off by default."
+      "disabledTooltip": "字幕には音声トラックが必要です。この動画には音声がないようです。",
+      "enabledTooltip": "whisper-ctranslate2を使って音声トラックからVTT字幕を生成します。デフォルトはオフです。",
+      "generateCaptions": "字幕を生成",
+      "captionsSub": "音声トラックから自動生成されるVTT字幕。デフォルトはオフです。",
+      "generateStoryboards": "ストーリーボードを生成",
+      "storyboardsSub": "スプライトシート形式のスクラブ用サムネイル + WebVTTインデックス。デフォルトはオフです。"
     },
     "translations": {
-      "title": "Additional caption translations",
-      "tooltipAria": "About additional caption translations",
-      "tooltip1": "The primary caption track is whisper's transcription in the auto-detected source language. Add up to {{max}} more languages and we'll translate the segments via your Ollama text model.",
-      "tooltip2": "Each translation becomes its own VTT plus an HLS subtitle rendition (EXT-X-MEDIA) and DASH text AdaptationSet, so players show a track selector.",
-      "primaryNote": "Primary track: auto-detected source language. Add up to {{max}} translation tracks.",
-      "backendUnreachable": "Translation backend (Ollama) is not reachable. Picked languages will be skipped at job time.",
-      "removeLanguage": "Remove language",
-      "addLanguage": "+ Add translation language ({{count}}/{{max}})"
+      "title": "追加の字幕翻訳",
+      "tooltipAria": "追加の字幕翻訳について",
+      "tooltip1": "メインの字幕トラックは、自動検出されたソース言語でのwhisperによる文字起こしです。最大{{max}}言語まで追加でき、お使いのOllamaテキストモデルでセグメントを翻訳します。",
+      "tooltip2": "各翻訳はそれぞれ独立したVTTになり、HLS字幕レンディション（EXT-X-MEDIA）とDASHのテキストAdaptationSetが追加されるため、プレーヤーにトラック選択が表示されます。",
+      "primaryNote": "メイントラック：自動検出されたソース言語。翻訳トラックは最大{{max}}件まで追加できます。",
+      "backendUnreachable": "翻訳バックエンド（Ollama）に接続できません。選択した言語はジョブ実行時にスキップされます。",
+      "removeLanguage": "言語を削除",
+      "addLanguage": "+ 翻訳言語を追加（{{count}}/{{max}}）"
     },
     "bundle": {
-      "title": "Download format",
-      "tooltipAria": "About download format",
-      "tooltipTargz": "<strong>.tar.gz</strong> — smaller for text-heavy playlists, universal on macOS/Linux, and Windows 10+ unpacks it natively via the built-in <code>tar</code> command.",
-      "tooltipZip": "<strong>.zip</strong> — the safe default if you're on older Windows or just want a double-click extract experience without thinking about it. Slightly larger; everything else is identical inside.",
-      "defaultBadge": "Default",
-      "targzSub": "Smaller · macOS/Linux/Win 10+ native",
-      "zipSub": "Friendlier on Windows · double-click extract"
+      "title": "ダウンロード形式",
+      "tooltipAria": "ダウンロード形式について",
+      "tooltipTargz": "<strong>.tar.gz</strong> — テキストの多いプレイリストでは小さく、macOS/Linuxで標準対応、Windows 10以降でも組み込みの<code>tar</code>コマンドでそのまま展開できます。",
+      "tooltipZip": "<strong>.zip</strong> — 古いWindowsを使っている場合や、何も考えずにダブルクリックで展開したい場合の安全なデフォルトです。やや大きくなりますが、中身はまったく同じです。",
+      "defaultBadge": "デフォルト",
+      "targzSub": "より小さい · macOS/Linux/Win 10以降で標準対応",
+      "zipSub": "Windowsで扱いやすい · ダブルクリックで展開"
     },
     "start": {
-      "starting": "Starting transcode...",
-      "startButton": "Start {{protocol}} transcode (output: {{format}})"
+      "starting": "トランスコードを開始中...",
+      "startButton": "{{protocol}}トランスコードを開始（出力：{{format}}）"
     },
-    "tooSmall": "This video is below the free transcode minimum of 360p. Please load a video that is 360p or higher.",
+    "tooSmall": "この動画は無料トランスコードの最低解像度360pを下回っています。360p以上の動画を読み込んでください。",
     "progress": {
-      "title": "Pipeline progress",
-      "failed": "Transcode failed."
+      "title": "パイプラインの進行状況",
+      "failed": "トランスコードに失敗しました。"
     },
-    "downloadPackage": "Download {{filename}}"
+    "downloadPackage": "{{filename}}をダウンロード"
   },
   "pdfForm": {
     "outputFormat": {
-      "label": "Output image format",
-      "tooltip": "Choose JPG for small, photo-friendly files or PNG for crisp, lossless pages (best for text and line art).",
-      "locked": "Locked to {{format}} for this tool"
+      "label": "出力画像形式",
+      "tooltip": "写真向けの小さなファイルにはJPGを、くっきりしたロスレスのページ（テキストや線画に最適）にはPNGを選んでください。",
+      "locked": "このツールでは{{format}}に固定"
     },
     "dpi": {
-      "label": "Render quality (DPI)",
-      "tooltip": "Higher DPI renders sharper, larger images. 150 DPI is a good default; use 300 for print-quality output."
+      "label": "レンダリング品質（DPI）",
+      "tooltip": "DPIが高いほど、より鮮明で大きな画像になります。150 DPIが適切なデフォルトで、印刷品質には300を使ってください。"
     },
     "pages": {
-      "label": "Pages to convert",
-      "tooltip": "Convert every page (downloaded as a ZIP of images) or just the first page (downloaded as a single image).",
-      "all": "All pages (ZIP)",
-      "allHint": "One image per page, packaged into a single .zip download.",
-      "first": "First page only",
-      "firstHint": "Render just page 1 as a single image."
+      "label": "変換するページ",
+      "tooltip": "すべてのページ（画像のZIPとしてダウンロード）、または最初のページだけ（1枚の画像としてダウンロード）を変換します。",
+      "all": "すべてのページ（ZIP）",
+      "allHint": "1ページにつき1枚の画像を、1つの.zipにまとめてダウンロードします。",
+      "first": "最初のページのみ",
+      "firstHint": "1ページ目だけを1枚の画像としてレンダリングします。"
     },
     "quality": {
-      "label": "JPG quality (%)",
-      "tooltip": "JPEG compression quality from 1–100. 90 is a balanced default; lower values shrink the file at the cost of detail."
+      "label": "JPG品質（%）",
+      "tooltip": "JPEG圧縮品質（1〜100）。90がバランスの取れたデフォルトで、値を下げるとディテールと引き換えにファイルが小さくなります。"
     },
-    "submit": "Convert PDF",
-    "converting": "Converting…"
+    "submit": "PDFを変換",
+    "converting": "変換中…"
   },
   "conversionOptions": {
     "image": {
       "cropping": {
-        "title": "Image Cropping",
-        "tooltipAria": "About image cropping",
-        "tooltip": "Open a visual crop selector to keep only part of the image. Cropping runs before resize and filters, so dimensions you set below apply to the cropped region. Skip this if you want the whole image.",
-        "selectPortion": "Select the portion of the image you want to keep",
-        "editCrop": "Edit Crop",
-        "cropImage": "Crop Image"
+        "title": "画像の切り抜き",
+        "tooltipAria": "画像の切り抜きについて",
+        "tooltip": "画像の一部だけを残すための視覚的な切り抜きセレクターを開きます。切り抜きはリサイズやフィルターより前に実行されるため、以下で設定する寸法は切り抜いた領域に適用されます。画像全体を使う場合はスキップしてください。",
+        "selectPortion": "残したい画像の範囲を選択してください",
+        "editCrop": "切り抜きを編集",
+        "cropImage": "画像を切り抜く"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About image format",
-        "tooltip": "The output file type. JPG is best for photos, PNG keeps transparency and is great for graphics, WebP is a modern smaller format, and GIF is for legacy or animated use cases.",
-        "locked": "Locked to {{format}} for this tool"
+        "label": "形式",
+        "tooltipAria": "画像形式について",
+        "tooltip": "出力ファイルの種類です。JPGは写真に最適、PNGは透明度を保持しグラフィックに向いており、WebPはより小さいモダンな形式、GIFはレガシー用途やアニメーション向けです。",
+        "locked": "このツールでは{{format}}に固定"
       },
-      "resizeEmphasis": "Set your target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio.",
+      "resizeEmphasis": "以下で目標の幅や高さを設定してください。片方を空欄にすると、元の縦横比を保ったまま比例して拡大縮小されます。",
       "quality": {
-        "label": "Quality (%)",
-        "tooltipAria": "About image quality",
-        "tooltip": "Compression quality for JPG and WebP outputs (1–100). 85 is a balanced default. Lower values shrink file size at the cost of artifacts; values above 95 rarely show a visible difference. Ignored for PNG and GIF."
+        "label": "品質（%）",
+        "tooltipAria": "画像品質について",
+        "tooltip": "JPGおよびWebP出力の圧縮品質（1〜100）です。85がバランスの取れたデフォルトです。値を下げるとアーティファクトと引き換えにファイルサイズが小さくなり、95を超えても見た目の違いはほとんどありません。PNGとGIFでは無視されます。"
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About image width",
-        "tooltip": "Target width in pixels. Leave blank to keep the original width or scale proportionally based on the Height field. The image is auto-oriented from EXIF before resize so the dimensions match what you see in the preview.",
-        "placeholder": "Auto"
+        "label": "幅（px）",
+        "tooltipAria": "画像の幅について",
+        "tooltip": "目標の幅（ピクセル）です。空欄にすると元の幅を保つか、高さの項目に基づいて比例して拡大縮小されます。プレビューで見たとおりの寸法になるよう、リサイズ前にEXIFに基づいて画像の向きが自動補正されます。",
+        "placeholder": "自動"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About image height",
-        "tooltip": "Target height in pixels. Leave blank to keep the original height or scale proportionally based on the Width field. Setting both Width and Height forces an exact size and may stretch the image.",
-        "placeholder": "Auto"
+        "label": "高さ（px）",
+        "tooltipAria": "画像の高さについて",
+        "tooltip": "目標の高さ（ピクセル）です。空欄にすると元の高さを保つか、幅の項目に基づいて比例して拡大縮小されます。幅と高さの両方を設定すると正確なサイズが強制され、画像が引き伸ばされることがあります。",
+        "placeholder": "自動"
       },
       "filter": {
-        "label": "Filter",
-        "tooltipAria": "About image filters",
-        "tooltip": "Apply a single ImageMagick effect to the output: grayscale, sepia, blur/sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation. Choose None to skip filters.",
+        "label": "フィルター",
+        "tooltipAria": "画像フィルターについて",
+        "tooltip": "出力に1つのImageMagick効果を適用します：グレースケール、セピア、ぼかし／シャープ、渦巻き、樽型歪み、油絵、ヴィンテージ、エンボス、木炭画、スケッチ、または固定角度の回転。フィルターをスキップするには「なし」を選んでください。",
         "options": {
-          "none": "None",
-          "grayscale": "Grayscale",
-          "sepia": "Sepia",
-          "blur": "Blur",
-          "sharpen": "Sharpen",
-          "swirl": "Swirl",
-          "barrel-distortion": "Barrel Distortion",
-          "oil-painting": "Oil Painting",
-          "vintage": "Vintage",
-          "emboss": "Emboss",
-          "charcoal": "Charcoal",
-          "sketch": "Sketch",
-          "rotate-45º": "Rotate 45º",
-          "rotate-90º": "Rotate 90º",
-          "rotate-180º": "Rotate 180º",
-          "rotate-270º": "Rotate 270º"
+          "none": "なし",
+          "grayscale": "グレースケール",
+          "sepia": "セピア",
+          "blur": "ぼかし",
+          "sharpen": "シャープ",
+          "swirl": "渦巻き",
+          "barrel-distortion": "樽型歪み",
+          "oil-painting": "油絵",
+          "vintage": "ヴィンテージ",
+          "emboss": "エンボス",
+          "charcoal": "木炭画",
+          "sketch": "スケッチ",
+          "rotate-45º": "45º回転",
+          "rotate-90º": "90º回転",
+          "rotate-180º": "180º回転",
+          "rotate-270º": "270º回転"
         }
       },
       "tint": {
-        "label": "Tint Color",
-        "tooltipAria": "About tint color",
-        "tooltip": "Lay a 30% colored tint over the image. Useful for branded thumbnails or duotones. Leave the color picker at black (#000000) to skip the tint."
+        "label": "色合い",
+        "tooltipAria": "色合いについて",
+        "tooltip": "画像に30%の色付きの色合いを重ねます。ブランド向けサムネイルやデュオトーンに便利です。色合いをスキップするには、カラーピッカーを黒（#000000）のままにしてください。"
       }
     },
     "audio": {
       "trimming": {
-        "title": "Audio Trimming",
-        "tooltipAria": "About audio trimming",
-        "tooltip": "Open a waveform player to pick a start and end time. Only the selected segment is encoded into the output file.",
-        "selectPortion": "Select the portion of the audio you want to keep",
-        "editTrim": "Edit Trim",
-        "trimAudio": "Trim Audio"
+        "title": "音声のトリミング",
+        "tooltipAria": "音声のトリミングについて",
+        "tooltip": "波形プレーヤーを開いて開始時間と終了時間を選びます。選択した区間だけが出力ファイルにエンコードされます。",
+        "selectPortion": "残したい音声の範囲を選択してください",
+        "editTrim": "トリミングを編集",
+        "trimAudio": "音声をトリミング"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About audio format",
-        "tooltip": "The output codec/container. MP3 has universal support; WAV/FLAC/ALAC are lossless; AAC is efficient for streaming; OGG, Opus, AC3 and DTS target specific workflows."
+        "label": "形式",
+        "tooltipAria": "音声形式について",
+        "tooltip": "出力のコーデック／コンテナです。MP3は汎用性が高く、WAV/FLAC/ALACはロスレス、AACはストリーミングに効率的、OGG、Opus、AC3、DTSは特定のワークフロー向けです。"
       },
       "bitrate": {
-        "label": "Bitrate (kbps)",
-        "tooltipAria": "About audio bitrate",
-        "tooltip": "Controls compression quality vs. file size for lossy formats. 128 kbps is fine for podcasts, 192–256 kbps is a strong default for music, and 320 kbps is the maximum MP3 quality. Ignored for WAV, FLAC, and ALAC (lossless)."
+        "label": "ビットレート（kbps）",
+        "tooltipAria": "音声ビットレートについて",
+        "tooltip": "非可逆形式での圧縮品質とファイルサイズのバランスを決めます。ポッドキャストなら128 kbpsで十分、音楽なら192〜256 kbpsが堅実なデフォルト、320 kbpsがMP3の最高品質です。WAV、FLAC、ALAC（ロスレス）では無視されます。"
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About audio speed multiplier",
-        "tooltip": "Playback tempo from 0.25x (slow) to 4x (fast). Pitch is preserved using FFmpeg's atempo filter, chained automatically for extreme values."
+        "label": "速度倍率",
+        "tooltipAria": "音声の速度倍率について",
+        "tooltip": "再生テンポを0.25倍（遅い）から4倍（速い）まで変更します。ピッチはFFmpegのatempoフィルターで保持され、極端な値では自動的に連結されます。"
       },
       "volume": {
-        "label": "Volume Multiplier",
-        "tooltipAria": "About volume multiplier",
-        "tooltip": "Linear gain factor from 0.1x to 2x. 1.0 leaves the level unchanged. For finer dB control, use the Amplify slider in Advanced Audio Effects."
+        "label": "音量倍率",
+        "tooltipAria": "音量倍率について",
+        "tooltip": "0.1倍から2倍までの線形ゲイン係数です。1.0ではレベルは変わりません。dB単位の細かい調整には、高度な音声エフェクトの「増幅」スライダーを使ってください。"
       }
     },
     "video": {
       "trimming": {
-        "title": "Video Trimming",
-        "tooltipAria": "About video trimming",
-        "tooltip": "Open a player to scrub through the video and pick a start/end time. Only that segment is encoded into the output. Trimming works regardless of the output codec — including animated GIF.",
-        "selectPortion": "Select the portion of the video you want to keep",
-        "editTrim": "Edit Trim",
-        "trimVideo": "Trim Video"
+        "title": "動画のトリミング",
+        "tooltipAria": "動画のトリミングについて",
+        "tooltip": "プレーヤーを開いて動画をスクラブし、開始／終了時間を選びます。その区間だけが出力にエンコードされます。トリミングはアニメーションGIFを含め、出力コーデックに関係なく機能します。",
+        "selectPortion": "残したい動画の範囲を選択してください",
+        "editTrim": "トリミングを編集",
+        "trimVideo": "動画をトリミング"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About video format",
-        "tooltip": "The output container and codec. MP4 (H.264+AAC) is the safest default for the web. WebM uses VP9+Opus and is great for open-web embeds. MOV/MKV/AVI/WMV/FLV target specific workflows; ProRes/DNxHD are high-bitrate editing codecs. GIF (Animated) downscales and palettizes the clip via ffmpeg + gifsicle — perfect for short, silent loops.",
-        "locked": "Locked to {{format}} for this tool",
+        "label": "形式",
+        "tooltipAria": "動画形式について",
+        "tooltip": "出力のコンテナとコーデックです。MP4（H.264+AAC）がウェブ向けの最も安全なデフォルトです。WebMはVP9+Opusを使い、オープンウェブでの埋め込みに最適です。MOV/MKV/AVI/WMV/FLVは特定のワークフロー向け、ProRes/DNxHDは高ビットレートの編集用コーデックです。GIF（アニメーション）はffmpeg + gifsicleでクリップを縮小しパレット化します。短い無音のループに最適です。",
+        "locked": "このツールでは{{format}}に固定",
         "options": {
           "mp4": "MP4",
           "webm": "WebM",
@@ -466,274 +464,274 @@
           "mkv": "MKV",
           "flv": "FLV",
           "wmv": "WMV",
-          "prores": "ProRes (MOV)",
-          "dnxhd": "DNxHR (MOV)",
-          "gif": "GIF (Animated)"
+          "prores": "ProRes（MOV）",
+          "dnxhd": "DNxHR（MOV）",
+          "gif": "GIF（アニメーション）"
         }
       },
       "quality": {
-        "label": "Quality",
-        "tooltipAria": "About video quality",
-        "tooltip": "Picks an x264 CRF preset under the hood. Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced default), High ≈ CRF 18 (visually transparent on most footage). Ignored for GIF output — use the GIF panel below to tune palette size and frame rate instead.",
+        "label": "品質",
+        "tooltipAria": "動画品質について",
+        "tooltip": "内部でx264のCRFプリセットを選択します。低 ≈ CRF 30（小さなファイル）、中 ≈ CRF 23（バランスの取れたデフォルト）、高 ≈ CRF 18（ほとんどの映像で視覚的に劣化なし）。GIF出力では無視されるため、代わりに下のGIFパネルでパレットサイズとフレームレートを調整してください。",
         "options": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High"
+          "low": "低",
+          "medium": "中",
+          "high": "高"
         }
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About video width",
-        "tooltip": "Target output width in pixels. Leave blank to keep the original or scale proportionally from the height. Combine with Preserve aspect ratio to avoid stretching. When the format is GIF, leaving this blank uses the width from the Animated GIF panel below.",
-        "placeholder": "Auto"
+        "label": "幅（px）",
+        "tooltipAria": "動画の幅について",
+        "tooltip": "目標の出力幅（ピクセル）です。空欄にすると元のサイズを保つか、高さから比例して拡大縮小されます。引き伸ばしを避けるには「縦横比を保持」と組み合わせてください。形式がGIFの場合、空欄にすると下のアニメーションGIFパネルの幅が使われます。",
+        "placeholder": "自動"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About video height",
-        "tooltip": "Target output height in pixels. Leave blank to keep the original or scale proportionally from the width. Ignored for GIF output — height is computed from width to keep the aspect ratio (and rounded to a multiple of 4).",
-        "placeholder": "Auto",
-        "placeholderGif": "Auto (from width)"
+        "label": "高さ（px）",
+        "tooltipAria": "動画の高さについて",
+        "tooltip": "目標の出力高さ（ピクセル）です。空欄にすると元のサイズを保つか、幅から比例して拡大縮小されます。GIF出力では無視され、縦横比を保つために幅から高さが計算されます（4の倍数に丸められます）。",
+        "placeholder": "自動",
+        "placeholderGif": "自動（幅から計算）"
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About speed multiplier",
-        "tooltip": "Playback speed from 0.25x (slow motion) to 4x (fast). Video PTS and audio tempo are adjusted together so the result stays in sync. For GIF output, control playback feel using the Frame rate and Frame delay knobs in the Animated GIF panel."
+        "label": "速度倍率",
+        "tooltipAria": "速度倍率について",
+        "tooltip": "再生速度を0.25倍（スローモーション）から4倍（高速）まで変更します。動画のPTSと音声のテンポが一緒に調整されるため、結果は同期したままです。GIF出力では、アニメーションGIFパネルのフレームレートとフレーム遅延で再生の感触を調整してください。"
       },
       "preserveAspectRatio": {
-        "label": "Preserve aspect ratio",
-        "tooltipAria": "About preserve aspect ratio",
-        "tooltip": "When both Width and Height are set, this uses an FFmpeg force_original_aspect_ratio=decrease scale so the video fits within the box without stretching. Turn it off to force an exact (potentially stretched) size. GIF output always preserves aspect ratio."
+        "label": "縦横比を保持",
+        "tooltipAria": "縦横比の保持について",
+        "tooltip": "幅と高さの両方を設定した場合、FFmpegのforce_original_aspect_ratio=decreaseスケールを使って、引き伸ばさずに動画を枠内に収めます。オフにすると正確な（引き伸ばされる可能性のある）サイズが強制されます。GIF出力は常に縦横比を保持します。"
       },
       "gif": {
-        "title": "Animated GIF Settings",
-        "tooltipAria": "About animated GIF settings",
-        "tooltip": "GIF conversion runs in two stages: ffmpeg downscales the video and samples it at the chosen frame rate, then gifsicle quantizes the palette and optimizes the output. The Convert/Transcribe controls above for Quality, Height, and Speed are skipped for GIF since this panel takes over.",
-        "subtitle": "Tune the ffmpeg → gifsicle pipeline. Defaults match a good screencast preset (900px wide, 12 fps, 128 colors).",
+        "title": "アニメーションGIF設定",
+        "tooltipAria": "アニメーションGIF設定について",
+        "tooltip": "GIF変換は2段階で実行されます。ffmpegが動画を縮小して選択したフレームレートでサンプリングし、次にgifsicleがパレットを量子化して出力を最適化します。このパネルが優先されるため、上の変換／文字起こしコントロールの品質、高さ、速度はGIFではスキップされます。",
+        "subtitle": "ffmpeg → gifsicleパイプラインを調整します。デフォルトは優れたスクリーンキャスト向けプリセット（幅900px、12 fps、128色）です。",
         "width": {
-          "label": "Width (px)",
-          "tooltipAria": "About GIF width",
-          "tooltip": "Output width in pixels. Height is computed automatically to preserve the aspect ratio (rounded to a multiple of 4 to keep ffmpeg happy). 480–900 is a good range for screencasts; smaller values shrink the file fast."
+          "label": "幅（px）",
+          "tooltipAria": "GIFの幅について",
+          "tooltip": "出力幅（ピクセル）です。縦横比を保つために高さは自動計算されます（ffmpegのために4の倍数に丸められます）。スクリーンキャストには480〜900が適した範囲で、小さくするほどファイルは急速に小さくなります。"
         },
         "fps": {
-          "label": "Frame rate (fps)",
-          "tooltipAria": "About GIF frame rate",
-          "tooltip": "How many frames per second ffmpeg samples from the source video before handing it to gifsicle. 12 fps looks smooth for screen recordings; raise to 18–24 for motion-heavy clips, drop to 8–10 to shrink the file."
+          "label": "フレームレート（fps）",
+          "tooltipAria": "GIFのフレームレートについて",
+          "tooltip": "gifsicleに渡す前に、ffmpegがソース動画から1秒あたり何フレームをサンプリングするかです。画面録画なら12 fpsで滑らかに見えます。動きの多いクリップでは18〜24に上げ、ファイルを小さくするには8〜10に下げてください。"
         },
         "colors": {
-          "label": "Colors",
-          "tooltipAria": "About GIF colors",
-          "tooltip": "Maximum palette size gifsicle quantizes to (2–256). 128 is a strong default; drop to 64 to shrink the file on flat UI footage, raise to 256 for photographic clips with smooth gradients."
+          "label": "色数",
+          "tooltipAria": "GIFの色数について",
+          "tooltip": "gifsicleが量子化するパレットの最大サイズ（2〜256）です。128が堅実なデフォルトで、平坦なUI映像では64に下げてファイルを小さくし、滑らかなグラデーションのある写真的なクリップでは256に上げてください。"
         },
         "delay": {
-          "label": "Frame delay",
-          "tooltipAria": "About GIF frame delay",
-          "tooltip": "gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (= 30ms) is a snappy screencast feel; 6–10 produces a slower, more deliberate loop. Independent of the ffmpeg sampling rate above."
+          "label": "フレーム遅延",
+          "tooltipAria": "GIFのフレーム遅延について",
+          "tooltip": "gifsicleのフレーム間遅延（1/100秒単位）です。小さいほど再生が速くなります。3（= 30ms）はきびきびしたスクリーンキャストの感触で、6〜10はよりゆっくりした落ち着いたループになります。上のffmpegサンプリングレートとは独立しています。"
         },
         "optimize": {
-          "label": "Optimize level",
-          "tooltipAria": "About GIF optimize level",
-          "tooltip": "gifsicle --optimize level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft.",
+          "label": "最適化レベル",
+          "tooltipAria": "GIFの最適化レベルについて",
+          "tooltip": "gifsicleの--optimizeレベルです。1は最速で出力が最大、3は最も遅く出力が最小です。長いクリップを試行錯誤していて素早く下書きが欲しい場合を除き、3のままにしてください。",
           "options": {
-            "1": "1 — fast, larger file",
-            "2": "2 — balanced",
-            "3": "3 — smallest, slower"
+            "1": "1 — 高速、ファイルは大きめ",
+            "2": "2 — バランス",
+            "3": "3 — 最小、低速"
           }
         }
       }
     }
   },
   "advancedAudioEffects": {
-    "title": "Advanced Audio Effects",
-    "tooltipAria": "About Advanced Audio Effects",
-    "tooltipIntro": "Manual audio processing chains, grouped into four expandable sections:",
-    "tooltipBasic": "<strong>Basic Audio Processing</strong> — normalize, amplify, fade in/out, EQ presets, stereo width/pan/balance.",
-    "tooltipTime": "<strong>Time-Based Effects</strong> — reverb, delay, and modulation (chorus, flanger, tremolo, vibrato).",
-    "tooltipRestoration": "<strong>Restoration & Cleanup</strong> — noise reduction, de-hum, declip, silence removal.",
-    "tooltipAdvanced": "<strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.",
+    "title": "高度な音声エフェクト",
+    "tooltipAria": "高度な音声エフェクトについて",
+    "tooltipIntro": "手動の音声処理チェーンを、4つの展開可能なセクションにまとめています：",
+    "tooltipBasic": "<strong>基本的な音声処理</strong> — ノーマライズ、増幅、フェードイン／アウト、EQプリセット、ステレオ幅／パン／バランス。",
+    "tooltipTime": "<strong>時間系エフェクト</strong> — リバーブ、ディレイ、モジュレーション（コーラス、フランジャー、トレモロ、ビブラート）。",
+    "tooltipRestoration": "<strong>復元とクリーンアップ</strong> — ノイズリダクション、ハム除去、デクリップ、無音除去。",
+    "tooltipAdvanced": "<strong>高度な音声処理</strong> — ピッチシフト、タイムストレッチ、空間オーディオ。",
     "sections": {
       "basic": {
-        "title": "Basic Audio Processing",
-        "description": "Volume control, EQ, dynamics, and stereo processing"
+        "title": "基本的な音声処理",
+        "description": "音量調整、EQ、ダイナミクス、ステレオ処理"
       },
       "time": {
-        "title": "Time-Based Effects",
-        "description": "Reverb, delay, echo, and modulation effects"
+        "title": "時間系エフェクト",
+        "description": "リバーブ、ディレイ、エコー、モジュレーションエフェクト"
       },
       "restoration": {
-        "title": "Restoration & Cleanup",
-        "description": "Noise reduction, de-hum, declip, and silence detection"
+        "title": "復元とクリーンアップ",
+        "description": "ノイズリダクション、ハム除去、デクリップ、無音検出"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Pitch shifting, time stretching, spatial audio, and spectral processing"
+        "title": "高度な処理",
+        "description": "ピッチシフト、タイムストレッチ、空間オーディオ、スペクトル処理"
       }
     },
     "volumeDynamics": {
-      "title": "Volume & Dynamics",
-      "tooltip": "Amplify in decibels (-60 to +60), apply fade-in/out durations, and toggle loudness normalization. Use Amplify for level matching and Normalize when you want a consistent perceived loudness."
+      "title": "音量とダイナミクス",
+      "tooltip": "デシベル単位で増幅（-60〜+60）し、フェードイン／アウトの長さを適用し、ラウドネスノーマライズを切り替えます。レベル合わせには「増幅」を、一定の知覚ラウドネスにしたい場合は「ノーマライズ」を使ってください。"
     },
     "equalizer": {
-      "title": "Equalizer",
-      "tooltip": "Pick a preset that maps to a multi-band FFmpeg equalizer filter chain: bass-boost, treble-boost, vocal, classical, rock, or jazz. Choose 'none' to leave the EQ untouched.",
-      "enable": "Enable EQ",
-      "presetLabel": "EQ Preset",
+      "title": "イコライザー",
+      "tooltip": "マルチバンドのFFmpegイコライザーフィルターチェーンに対応するプリセットを選びます：低音強調、高音強調、ボーカル、クラシック、ロック、ジャズ。EQをそのままにするには「なし」を選んでください。",
+      "enable": "EQを有効にする",
+      "presetLabel": "EQプリセット",
       "presets": {
-        "none": "None",
-        "bass-boost": "Bass Boost",
-        "treble-boost": "Treble Boost",
-        "vocal": "Vocal Enhance",
-        "classical": "Classical",
-        "rock": "Rock",
-        "jazz": "Jazz"
+        "none": "なし",
+        "bass-boost": "低音強調",
+        "treble-boost": "高音強調",
+        "vocal": "ボーカル強調",
+        "classical": "クラシック",
+        "rock": "ロック",
+        "jazz": "ジャズ"
       }
     },
     "stereo": {
-      "title": "Stereo Processing",
-      "tooltip": "Adjust pan (-100 left to +100 right), stereo width (0 = mono, 100 = original, up to 200 = wider), toggle mono conversion, and optionally swap left/right channels.",
-      "pan": "Pan",
-      "leftRight": "Left ← → Right",
-      "stereoWidth": "Stereo Width",
-      "widthRange": "0% to 200%"
+      "title": "ステレオ処理",
+      "tooltip": "パン（-100の左から+100の右まで）、ステレオ幅（0 = モノラル、100 = オリジナル、最大200 = より広く）を調整し、モノラル変換を切り替え、必要に応じて左右のチャンネルを入れ替えます。",
+      "pan": "パン",
+      "leftRight": "左 ← → 右",
+      "stereoWidth": "ステレオ幅",
+      "widthRange": "0%〜200%"
     },
     "reverb": {
-      "title": "Reverb",
-      "tooltip": "Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect.",
-      "enable": "Enable Reverb",
-      "typeLabel": "Reverb Type",
+      "title": "リバーブ",
+      "tooltip": "音声に空間の響きを加えます。ルーム（小）、ホール（大）、プレート（ヴィンテージスタジオ）、スプリング（ギターアンプ風）から選びます。ルームサイズ、ダンピング、ウェット／ドライのレベルで効果を微調整します。",
+      "enable": "リバーブを有効にする",
+      "typeLabel": "リバーブの種類",
       "types": {
-        "none": "None",
-        "room": "Room",
-        "hall": "Hall",
-        "plate": "Plate",
-        "spring": "Spring"
+        "none": "なし",
+        "room": "ルーム",
+        "hall": "ホール",
+        "plate": "プレート",
+        "spring": "スプリング"
       },
-      "roomSize": "Room Size",
-      "roomRange": "0% to 100%",
-      "wetDry": "Wet/Dry Mix",
-      "dryWet": "Dry ← → Wet"
+      "roomSize": "ルームサイズ",
+      "roomRange": "0%〜100%",
+      "wetDry": "ウェット／ドライミックス",
+      "dryWet": "ドライ ← → ウェット"
     },
     "delay": {
-      "title": "Delay & Echo",
-      "tooltip": "Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats.",
-      "enable": "Enable Delay",
-      "typeLabel": "Delay Type",
+      "title": "ディレイとエコー",
+      "tooltip": "信号の遅延コピーを加えます。エコーは単一タップ、マルチタップは複数のずれたエコーを追加、ピンポンは左右の間を行き来します。時間（ms）、フィードバック%、ウェットレベルで繰り返しの形を決めます。",
+      "enable": "ディレイを有効にする",
+      "typeLabel": "ディレイの種類",
       "types": {
-        "none": "None",
-        "echo": "Simple Echo",
-        "multi-tap": "Multi-tap",
-        "ping-pong": "Ping-Pong"
+        "none": "なし",
+        "echo": "シンプルエコー",
+        "multi-tap": "マルチタップ",
+        "ping-pong": "ピンポン"
       },
-      "delayTime": "Delay Time (ms)",
-      "feedback": "Feedback (%)",
-      "feedbackRange": "0% to 95%"
+      "delayTime": "ディレイ時間（ms）",
+      "feedback": "フィードバック（%）",
+      "feedbackRange": "0%〜95%"
     },
     "restoration": {
-      "noiseReduction": "Noise Reduction",
-      "deHum": "De-hum (50/60Hz)",
-      "declip": "Declip Audio",
-      "silenceDetection": "Silence Detection"
+      "noiseReduction": "ノイズリダクション",
+      "deHum": "ハム除去（50/60Hz）",
+      "declip": "音声のデクリップ",
+      "silenceDetection": "無音検出"
     },
     "advanced": {
-      "pitchShift": "Pitch Shift (semitones)",
-      "pitchValue": "{{value}} semitones",
-      "pitchRange": "-24 to +24 semitones",
-      "timeStretch": "Time Stretch Factor",
-      "timeStretchValue": "{{value}}x speed",
-      "timeStretchRange": "0.25x to 4x speed",
-      "spatialAudio": "Spatial Audio",
+      "pitchShift": "ピッチシフト（半音）",
+      "pitchValue": "{{value}}半音",
+      "pitchRange": "-24〜+24半音",
+      "timeStretch": "タイムストレッチ係数",
+      "timeStretchValue": "{{value}}倍速",
+      "timeStretchRange": "0.25倍速〜4倍速",
+      "spatialAudio": "空間オーディオ",
       "spatial": {
-        "none": "None",
-        "binaural": "Binaural",
-        "surround": "Surround",
-        "3d": "3D Audio"
+        "none": "なし",
+        "binaural": "バイノーラル",
+        "surround": "サラウンド",
+        "3d": "3Dオーディオ"
       },
-      "spectral": "Spectral Processing",
+      "spectral": "スペクトル処理",
       "spectralOptions": {
-        "none": "None",
-        "vocoder": "Vocoder",
-        "formant": "Formant Filter",
-        "convolution": "Convolution"
+        "none": "なし",
+        "vocoder": "ボコーダー",
+        "formant": "フォルマントフィルター",
+        "convolution": "コンボリューション"
       }
     },
     "labels": {
-      "amplify": "Amplify (dB)",
-      "amplifyRange": "-60dB to +60dB",
-      "normalize": "Normalize Audio",
-      "fadeIn": "Fade In (seconds)",
-      "fadeOut": "Fade Out (seconds)"
+      "amplify": "増幅（dB）",
+      "amplifyRange": "-60dB〜+60dB",
+      "normalize": "音声をノーマライズ",
+      "fadeIn": "フェードイン（秒）",
+      "fadeOut": "フェードアウト（秒）"
     }
   },
   "advancedVideoEffects": {
-    "title": "Advanced Video Effects",
-    "tooltipAria": "About Advanced Video Effects",
-    "tooltipIntro": "Manual video filter chains, grouped into four expandable sections:",
-    "tooltipVisual": "<strong>Visual Effects</strong> — color correction, blur/sharpen, noise, and artistic filters.",
-    "tooltipTransform": "<strong>Transform</strong> — rotation, flip, custom crop, padding/letterboxing.",
-    "tooltipTemporal": "<strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.",
-    "tooltipAdvanced": "<strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.",
+    "title": "高度な動画エフェクト",
+    "tooltipAria": "高度な動画エフェクトについて",
+    "tooltipIntro": "手動の動画フィルターチェーンを、4つの展開可能なセクションにまとめています：",
+    "tooltipVisual": "<strong>視覚効果</strong> — 色補正、ぼかし／シャープ、ノイズ、アーティスティックフィルター。",
+    "tooltipTransform": "<strong>変形</strong> — 回転、反転、カスタム切り抜き、パディング／レターボックス。",
+    "tooltipTemporal": "<strong>時間系エフェクト</strong> — 逆再生、ピンポン、フレームレート変換、手ぶれ補正。",
+    "tooltipAdvanced": "<strong>高度な処理</strong> — インターレース解除、HDRトーンマッピング、色空間変換。",
     "sections": {
       "visual": {
-        "title": "Visual Effects",
-        "description": "Color correction, blur/sharpen, artistic effects, and noise control"
+        "title": "視覚効果",
+        "description": "色補正、ぼかし／シャープ、アーティスティック効果、ノイズ制御"
       },
       "transform": {
-        "title": "Geometric Transform",
-        "description": "Rotation, flipping, cropping, and padding"
+        "title": "幾何学的変形",
+        "description": "回転、反転、切り抜き、パディング"
       },
       "temporal": {
-        "title": "Temporal Effects",
-        "description": "Speed control, reverse, frame rate, and stabilization"
+        "title": "時間系エフェクト",
+        "description": "速度制御、逆再生、フレームレート、手ぶれ補正"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Deinterlacing, HDR processing, and color space conversion"
+        "title": "高度な処理",
+        "description": "インターレース解除、HDR処理、色空間変換"
       }
     },
     "colorExposure": {
-      "title": "Color & Exposure",
-      "tooltip": "Adjust brightness, contrast, saturation, hue, gamma, exposure, and shadow/highlight recovery. These map to FFmpeg's eq and curves filters and stack into a single color-correction pass."
+      "title": "色と露出",
+      "tooltip": "明るさ、コントラスト、彩度、色相、ガンマ、露出、シャドウ／ハイライトの復元を調整します。これらはFFmpegのeqおよびcurvesフィルターに対応し、1回の色補正パスにまとめられます。"
     },
     "blurSharpen": {
-      "title": "Blur & Sharpen",
-      "tooltip": "Add Gaussian blur (0–50 sigma), motion blur with angle and distance, or unsharp-mask sharpening with adjustable radius, amount, and threshold."
+      "title": "ぼかしとシャープ",
+      "tooltip": "ガウスぼかし（シグマ0〜50）、角度と距離を指定するモーションブラー、または半径・量・しきい値を調整できるアンシャープマスクによるシャープ化を追加します。"
     },
     "labels": {
-      "brightness": "Brightness",
-      "contrast": "Contrast",
-      "saturation": "Saturation",
-      "hue": "Hue",
-      "gaussianBlur": "Gaussian Blur",
-      "artisticEffect": "Artistic Effect",
-      "rotation": "Rotation (degrees)",
-      "flipHorizontal": "Flip Horizontal",
-      "flipVertical": "Flip Vertical",
-      "reverseVideo": "Reverse Video",
-      "pingPong": "Ping-Pong Loop",
-      "targetFrameRate": "Target Frame Rate",
-      "stabilization": "Video Stabilization",
-      "deinterlace": "Deinterlace Video",
-      "outputColorSpace": "Output Color Space"
+      "brightness": "明るさ",
+      "contrast": "コントラスト",
+      "saturation": "彩度",
+      "hue": "色相",
+      "gaussianBlur": "ガウスぼかし",
+      "artisticEffect": "アーティスティック効果",
+      "rotation": "回転（度）",
+      "flipHorizontal": "左右反転",
+      "flipVertical": "上下反転",
+      "reverseVideo": "動画を逆再生",
+      "pingPong": "ピンポンループ",
+      "targetFrameRate": "目標フレームレート",
+      "stabilization": "動画の手ぶれ補正",
+      "deinterlace": "動画のインターレース解除",
+      "outputColorSpace": "出力色空間"
     },
     "ranges": {
-      "hundred": "-100 to +100",
-      "hue": "-180° to +180°",
-      "blur": "0 to 50px"
+      "hundred": "-100〜+100",
+      "hue": "-180°〜+180°",
+      "blur": "0〜50px"
     },
     "artistic": {
-      "none": "None",
-      "oil-painting": "Oil Painting",
-      "watercolor": "Watercolor",
-      "sketch": "Sketch",
-      "emboss": "Emboss",
-      "edge-detection": "Edge Detection",
-      "posterize": "Posterize"
+      "none": "なし",
+      "oil-painting": "油絵",
+      "watercolor": "水彩",
+      "sketch": "スケッチ",
+      "emboss": "エンボス",
+      "edge-detection": "エッジ検出",
+      "posterize": "ポスタリゼーション"
     },
     "colorSpace": {
-      "rec709": "Rec.709 (Standard)",
-      "rec2020": "Rec.2020 (HDR)",
+      "rec709": "Rec.709（標準）",
+      "rec2020": "Rec.2020（HDR）",
       "srgb": "sRGB",
       "p3": "Display P3"
     },
-    "autoPlaceholder": "Auto"
+    "autoPlaceholder": "自動"
   }
 }
