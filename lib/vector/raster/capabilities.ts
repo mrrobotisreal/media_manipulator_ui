@@ -56,7 +56,7 @@ export const DEFAULT_PROBE_SIZE: ProbeSize = { width: 1920, height: 1080, fps: 3
 
 // --- codec strings ------------------------------------------------------------
 
-/** H.264 levels: [level_idc, MaxMBPS, MaxFS] (ITU-T H.264 Table A-1). */
+/** H.264 levels from 3.0 up (small sizes use 3.0, which every encoder accepts): [level_idc, MaxMBPS, MaxFS] (ITU-T H.264 Table A-1). */
 const AVC_LEVELS: Array<[number, number, number]> = [
   [30, 40500, 1620],
   [31, 108000, 3600],
