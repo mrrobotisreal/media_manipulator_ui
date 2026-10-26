@@ -109,3 +109,13 @@ A translator's pending value for one key, kept in IndexedDB `mm-translator-draft
 
 **Base SHA**:
 The `main` commit SHA plus per-file blob SHAs from `GET /api/translator/base`, stored per locale beside the drafts. It is fetched on the first panel open of a session that has no pending drafts, and on "Refresh base". MM54's conflict check compares it with `main` at submit.
+
+**Mirror branch**:
+A `translate/<prefix>` branch: an exact copy of `main` with no commits of its own, which Vercel builds as that locale's translator deployment. `.github/workflows/sync-translate-branches.yml` creates or fast-forwards all 16 on every push to `main` (never `--force`; a diverged mirror fails the job), then pokes `VERCEL_DEPLOY_HOOK_<PREFIX>`. Translator edits never land on a mirror branch; they arrive as pull requests.
+_Avoid_: "translation branch" (that is the `i18n/<prefix>/…` PR branch).
+
+**Translator submit**:
+`POST /api/translator/submit` (MM54): turns a translator's drafts into one labelled pull request against `main`, on branch `i18n/<prefix>/<yyyymmdd-hhmm>-<slug>`, through the GitHub App. The steps run in order and nothing is written unless all pass: Firebase token + allowlist, a path allowlist (`i18n/locales/<locale dir>/**.json` only, never `metadata.json`), a per-user rate limit, a per-key upstream-conflict check, the stable JSON writer, and the shared validators. The submit modal runs it first as a `?dryRun=1` pre-flight. The PR names the translator by an 8-char uid prefix, never by email. `i18n-pr-guard.yml` re-checks the paths in CI.
+
+**Stable JSON writer**:
+`lib/translator/stableJson.ts`: parses a shard into an ordered tree and prints it exactly as the repo formats it (`JSON.stringify(v, null, 2)` + newline, keys in file order, including integer-like keys such as `"1080"` that `JSON.parse` would reorder). Every shard round-trips byte for byte (tested), so a translator PR changes only the edited lines.
