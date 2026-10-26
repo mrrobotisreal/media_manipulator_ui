@@ -150,9 +150,12 @@ describe('Motion export dialog', () => {
   });
 
   it('a document CSS cannot express is refused before any API call', async () => {
+    // MM45: draw-on is CSS now; a track inside a symbol is something no exporter writes.
     const r = parseVectorDoc({
       ...JSON.parse(JSON.stringify(doc)),
-      animations: [{ layerId: 'box', property: 'strokeDashoffset', keyframes: [{ t: 0, value: 0, easing: 'linear' }] }],
+      layers: [...JSON.parse(JSON.stringify(doc)).layers, { type: 'use', id: 'u', ref: 'sym' }],
+      defs: { symbols: [{ id: 'sym', layers: [{ type: 'rect', id: 'in-sym', x: 0, y: 0, width: 5, height: 5 }] }] },
+      animations: [{ layerId: 'in-sym', property: 'opacity', keyframes: [{ t: 0, value: 1, easing: 'linear' }, { t: 1000, value: 0, easing: 'linear' }] }],
     });
     if (!r.ok) throw new Error(r.error);
     mount({ doc: r.doc });

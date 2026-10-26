@@ -19,8 +19,11 @@ import { describe, expect, it } from 'vitest';
 import { solveCubicBezier } from '@/lib/vector/bezier';
 import { formatColor, lerpColor, parseColor } from '@/lib/vector/color';
 import { resolveTransform } from '@/lib/vector/geometry';
-import { findLayer } from '@/lib/vector/layerTree';
-import { sampleDoc, type TrackValue } from '@/lib/vector/sampleTrack';
+import { findDocLayer, motionPathData, parseStopProperty, trackBlurFilter, trackGradient } from '@/lib/vector/advanced';
+import { apply, multiply, rotationM, transformToMatrix, translation } from '@/lib/vector/geometry';
+import { findTrack } from '@/lib/vector/keyframes';
+import { measurePath } from '@/lib/vector/pathLength';
+import { sampleDoc, sampleTrack, type TrackValue } from '@/lib/vector/sampleTrack';
 import { parseVectorDoc, type VectorDoc } from '@/lib/vector/vectorTypes';
 import {
   HOLD_TIMING,
@@ -29,6 +32,7 @@ import {
   canExportCss,
   exportAnimatedSvgCss,
   generatedComment,
+  withoutMotionTracks,
   type CssAnimation,
 } from './css';
 
@@ -48,10 +52,15 @@ const load = (name: string): VectorDoc => {
 describe('CSS goldens (byte-exact)', () => {
   it('has a golden per ticket feature', () => {
     expect(NAMES).toEqual([
+      'blur',
       'cubic-bezier',
+      'draw-on',
       'fill-color',
+      'gradient-stop',
       'hold',
       'id-collision',
+      'mask-clip',
+      'motion-path',
       'multi-track',
       'opacity',
       'scale-rotate-anchor',
@@ -121,15 +130,53 @@ describe('canExportCss', () => {
     for (const n of NAMES) expect(canExportCss(load(n)), n).toEqual({ ok: true });
   });
 
-  it('refuses MM45 properties (stroke draw-on, morph, motion path, gradient stops) and defs layers', () => {
+  it('MM45: draw-on, motion path, gradient stop colour and blur are CSS; the animated.json fixture now exports', () => {
     const r = parseVectorDoc(readFileSync(join(__dirname, '..', 'fixtures', 'animated.json'), 'utf8'));
     if (!r.ok) throw new Error(r.error);
-    const check = canExportCss(r.doc);
+    expect(canExportCss(r.doc)).toEqual({ ok: true });
+    expect(() => exportAnimatedSvgCss(r.doc)).not.toThrow();
+  });
+
+  it('refuses a d morph, a gradient stop offset and tracks inside symbols', () => {
+    const doc = parseVectorDoc({
+      version: 1,
+      duration: 1000,
+      layers: [
+        { type: 'path', id: 'p', d: 'M0 0L10 0', fill: 'url(#g)' },
+        { type: 'use', id: 'u', ref: 'sym' },
+      ],
+      defs: {
+        gradients: [{ type: 'linear', id: 'g', x1: 0, y1: 0, x2: 1, y2: 0, stops: [{ offset: 0, color: '#000' }, { offset: 1, color: '#fff' }] }],
+        symbols: [{ id: 'sym', layers: [{ type: 'rect', id: 'in-sym', x: 0, y: 0, width: 5, height: 5 }] }],
+      },
+      animations: [
+        { layerId: 'p', property: 'd', keyframes: [{ t: 0, value: 'M0 0L10 0', easing: 'linear' }, { t: 1000, value: 'M0 0L20 0', easing: 'linear' }] },
+        { layerId: 'p', property: 'gradientStop[1].offset', keyframes: [{ t: 0, value: 1, easing: 'linear' }, { t: 1000, value: 0.5, easing: 'linear' }] },
+        { layerId: 'in-sym', property: 'opacity', keyframes: [{ t: 0, value: 1, easing: 'linear' }, { t: 1000, value: 0, easing: 'linear' }] },
+      ],
+    });
+    if (!doc.ok) throw new Error(doc.error);
+    const check = canExportCss(doc.doc);
     expect(check.ok).toBe(false);
     if (!check.ok) {
-      expect(check.issues.map((i) => i.property)).toEqual(['strokeDashoffset', 'gradientStop[1].color', 'motionPath']);
+      expect(check.issues.map((i) => [i.code, i.property])).toEqual([
+        ['unsupported_property', 'd'],
+        ['unsupported_property', 'gradientStop[1].offset'],
+        ['defs_layer', 'opacity'],
+      ]);
     }
-    expect(() => exportAnimatedSvgCss(r.doc)).toThrow(/cannot express/);
+    expect(() => exportAnimatedSvgCss(doc.doc)).toThrow(/cannot express/);
+  });
+
+  it('a constant d track needs no CSS (nothing morphs)', () => {
+    const doc = parseVectorDoc({
+      version: 1,
+      duration: 1000,
+      layers: [{ type: 'path', id: 'p', d: 'M0 0L10 0' }],
+      animations: [{ layerId: 'p', property: 'd', keyframes: [{ t: 0, value: 'M0 0L10 0', easing: 'linear' }] }],
+    });
+    if (!doc.ok) throw new Error(doc.error);
+    expect(canExportCss(doc.doc)).toEqual({ ok: true });
   });
 
   it('refuses unsafe values even if a doc slipped past the schema', () => {
@@ -183,11 +230,27 @@ function evalCss(a: CssAnimation, t: number): Record<string, TrackValue> {
 }
 
 function expected(doc: VectorDoc, a: CssAnimation, t: number): Record<string, TrackValue> {
-  const layer = findLayer(sampleDoc(doc, t).layers, a.layerId)!;
+  const at = sampleDoc(doc, t);
+  const layer = findDocLayer(at, a.layerId)!;
   if (layer.type === 'raw') throw new Error('raw');
-  if (a.property === 'transform') return { ...resolveTransform(layer.transform) };
-  const rec = layer as unknown as Record<string, TrackValue>;
-  return { [a.property]: rec[a.property] };
+  switch (a.property) {
+    case 'transform':
+      // The layer's own transform: with a motion path, sample without it (CSS adds the offset).
+      return { ...resolveTransform((findDocLayer(sampleDoc(withoutMotionTracks(doc), t), a.layerId) as typeof layer).transform) };
+    case 'stopColor': {
+      const g = trackGradient(doc, findTrack(doc, a.layerId, a.track!)!)!;
+      const i = parseStopProperty(a.track!)!.index;
+      return { stopColor: at.defs.gradients.find((x) => x.id === g.id)!.stops[i].color };
+    }
+    case 'blur':
+      return { blur: at.defs.filters.find((f) => f.id === trackBlurFilter(doc, a.layerId))!.stdDeviation };
+    case 'motionPath':
+      return { motionPath: sampleTrack(findTrack(doc, a.layerId, 'motionPath')!, t)! };
+    default: {
+      const rec = layer as unknown as Record<string, TrackValue>;
+      return { [a.property]: rec[a.property] ?? (a.property === 'strokeDashoffset' ? 0 : undefined) } as Record<string, TrackValue>;
+    }
+  }
 }
 
 function close(a: TrackValue, b: TrackValue): boolean {
@@ -220,5 +283,44 @@ describe('CSS keyframes agree with the preview sampler', () => {
     const a = buildCssAnimations(doc).find((x) => x.property === 'transform')!;
     expect(evalCss(a, 999).x).toBe(0);
     expect(evalCss(a, 1000).x).toBe(100);
+  });
+});
+
+describe('MM45: CSS motion path composes like the preview', () => {
+  it('offset-path · offset-rotate · transform (origin 0 0) equals the sampled layer matrix, every 5 ms', () => {
+    const doc = load('motion-path');
+    const anims = buildCssAnimations(doc);
+    const m = anims.find((a) => a.property === 'motionPath')!;
+    expect(m.motion).toBeDefined();
+    const path = measurePath(m.motion!.d)!;
+    const own = (findDocLayer(sampleDoc(withoutMotionTracks(doc), 0), 'car') as { transform?: never }).transform;
+    for (let t = 0; t <= doc.duration; t += 5) {
+      const frac = evalCss(m, t).motionPath as number;
+      const p = path.at(frac * path.length);
+      // CSS: translate(P) rotate(auto angle) · transform.
+      const cssM = multiply(multiply(translation(p.x, p.y), rotationM(m.motion!.autoOrient ? p.angle : 0)), transformToMatrix(own));
+      const want = transformToMatrix((findDocLayer(sampleDoc(doc, t), 'car') as { transform?: never }).transform);
+      for (const q of [{ x: 0, y: 0 }, { x: 20, y: 10 }]) {
+        const a = apply(cssM, q);
+        const b = apply(want, q);
+        if (Math.hypot(a.x - b.x, a.y - b.y) > 0.05) throw new Error(`@${t}ms: css (${a.x}, ${a.y}) vs preview (${b.x}, ${b.y})`);
+      }
+    }
+  });
+
+  it('the offset path is the guide outline in the layer\u2019s parent space, quoted, with no script-capable characters', () => {
+    const doc = load('motion-path');
+    const out = exportAnimatedSvgCss(doc);
+    expect(out).toContain(`offset-path: path('${motionPathData(doc, findTrack(doc, 'car', 'motionPath')!)}');`);
+    expect(out).toContain('offset-rotate: auto;');
+    expect(out).toMatch(/0% \{ offset-distance: 0%;/);
+    expect(out).toMatch(/100% \{ offset-distance: 100%; \}/);
+  });
+
+  it('gradient stops are selected inside their gradient; mask / clip content by its own id', () => {
+    expect(exportAnimatedSvgCss(load('gradient-stop'))).toContain('#sky > stop:nth-child(2) {');
+    const mc = exportAnimatedSvgCss(load('mask-clip'));
+    expect(mc).toContain('#spot-light {');
+    expect(mc).toContain('#reveal-box {');
   });
 });
