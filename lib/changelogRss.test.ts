@@ -8,7 +8,8 @@ describe('changelog data', () => {
     expect([...dates].sort().reverse()).toEqual(dates);
     expect(new Set(CHANGELOG.map((e) => e.id)).size).toBe(CHANGELOG.length);
     // 2026-10-25: MM39 (Pro API) merged to API main and MM40 to UI.
-    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25']).toContain(d);
+    // 2026-10-26: MM70 (Darkroom playback fix).
+    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26']).toContain(d);
   });
 
   it('does not announce email as being sent (sending is off until configured)', () => {

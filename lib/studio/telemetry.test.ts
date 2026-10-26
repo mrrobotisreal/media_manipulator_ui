@@ -166,6 +166,18 @@ describe('perf sampler', () => {
     expect(perfSamples()).toHaveLength(1);
   });
 
+  it('counts MM70 drift re-seeks and stuck recoveries as buckets', () => {
+    perf.sample({ resyncSeek: true });
+    perf.sample({ resyncSeek: true });
+    perf.sample({ stuckRecovery: true });
+    flushStudioTelemetry();
+    const props = perfSamples()[0].props;
+    expect(props.resyncSeeks).toBe('1-10');
+    expect(props.stuckRecoveries).toBe('1-10');
+    flushStudioTelemetry();
+    expect(perfSamples()).toHaveLength(1);
+  });
+
   it('sends TTI exactly once per session', () => {
     markTti(1800);
     markTti(9000); // ignored: first call wins

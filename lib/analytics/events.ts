@@ -831,6 +831,10 @@ export interface StudioPerfSampleProps extends StudioHostProp {
   qualityLevel?: string;
   /** Bucketed count of auto-degrade step-downs in the window, part 11. */
   degradeActivations?: string;
+  /** Bucketed count of playing-mode drift re-seeks in the window (MM70). */
+  resyncSeeks?: string;
+  /** Bucketed count of stuck seek/buffer recoveries in the window (MM70). */
+  stuckRecoveries?: string;
 }
 
 export interface ClientErrorProps {
