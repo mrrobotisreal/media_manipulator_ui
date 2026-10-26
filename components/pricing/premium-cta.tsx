@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { PlanChangeDialog } from '@/components/account/plan-change-dialog';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { isPaidTier, type BillingInterval, type PaidPlan } from '@/lib/auth/accountApi';
+import { isPaidTier, type BillingCurrency, type BillingInterval, type PaidPlan } from '@/lib/auth/accountApi';
 import {
   openPortal,
   pendingCheckoutPlan,
@@ -18,7 +18,9 @@ import {
   startCheckout,
   takePendingCheckout,
 } from '@/lib/billing/checkout';
+import { formatPrice } from '@/lib/billing/price';
 import { pricingCta } from '@/lib/billing/pricingCta';
+import { useCurrency, useCurrencyLockFrom } from '@/lib/billing/useCurrency';
 import { useBillingStatus } from '@/lib/billing/useBillingStatus';
 import { usePlanChange } from '@/lib/billing/usePlanChange';
 import { useBillingFallback } from '@/lib/billing/useUpgradeAction';
@@ -39,10 +41,9 @@ import { setPricingInterval, usePricingInterval } from './interval-store';
  */
 
 export interface PlanPricingLabels {
-  /** Pre-formatted through displayPrice, e.g. "$15/mo" and "$150/yr". */
-  priceMonthly: string;
-  /** Empty when the API did not send a yearly price: the column then always shows monthly. */
-  priceYearly: string;
+  /** The interval suffixes ("/mo", "/yr"); the island formats the numeral in the currency. */
+  perMonth: string;
+  perYear: string;
   /** e.g. "2 months free"; empty when the yearly price is not a discount. */
   yearlyBonus: string;
   blurb: string;
@@ -69,13 +70,18 @@ export const PlanPricing: React.FC<{
   plan: PaidPlan;
   labels: PlanPricingLabels;
   purchasable: boolean;
-  /** This plan's served numerals, for the plan-change dialog. */
-  prices: { monthly?: number; yearly?: number };
+  /**
+   * This plan's served numerals per currency (MM69: identical numerals today). A missing
+   * yearly numeral means the column always shows monthly.
+   */
+  prices: Partial<Record<BillingCurrency, { monthly?: number; yearly?: number }>>;
 }> = ({ plan, labels, purchasable, prices }) => {
   const auth = useAuth();
   const fallback = useBillingFallback();
   const { language, formatDate } = useLocalization(['interface']);
   const interval = usePricingInterval();
+  const { currency } = useCurrency();
+  const own = prices[currency] ?? prices.usd ?? {};
   const [busy, setBusy] = React.useState(false);
   const [confirming, setConfirming] = React.useState(false);
   const continued = React.useRef(false);
@@ -87,6 +93,7 @@ export const PlanPricing: React.FC<{
   // Subscribers' plan state (pending downgrade, interval, renewal date) for the change CTAs.
   const statusQuery = useBillingStatus(tier === 'premium' || tier === 'pro');
   const status = statusQuery.data;
+  useCurrencyLockFrom(status);
   const subscribed = !status ? undefined : !status.manualGrant && status.plan !== null;
 
   const checkout = React.useCallback(
@@ -157,9 +164,12 @@ export const PlanPricing: React.FC<{
     });
   };
 
-  const yearly = interval === 'yearly' && !!labels.priceYearly;
+  const yearly = interval === 'yearly' && typeof own.yearly === 'number';
   const subInterval = status?.interval ?? null;
-  const dialogPrice = subInterval === 'yearly' ? prices.yearly : subInterval === 'monthly' ? prices.monthly : undefined;
+  const dialogPrice = subInterval === 'yearly' ? own.yearly : subInterval === 'monthly' ? own.monthly : undefined;
+  const money = (amount: number | undefined) =>
+    typeof amount === 'number' ? formatPrice(amount, currency, language?.code) : '';
+  const shown = yearly ? `${money(own.yearly)}${labels.perYear}` : typeof own.monthly === 'number' ? `${money(own.monthly)}${labels.perMonth}` : '';
 
   let cta: React.ReactNode;
   switch (kind) {
@@ -212,8 +222,8 @@ export const PlanPricing: React.FC<{
           {labels.currentPlan}
         </p>
       ) : null}
-      <p className="num text-2xl leading-none text-foreground">
-        {yearly ? labels.priceYearly : labels.priceMonthly}
+      <p className="num text-2xl leading-none text-foreground" data-testid={`${plan}-price`} data-currency={currency}>
+        {shown}
       </p>
       {yearly && labels.yearlyBonus ? (
         <p className="text-xs font-medium text-premium">{labels.yearlyBonus}</p>
@@ -234,6 +244,7 @@ export const PlanPricing: React.FC<{
           target={kind === 'upgrade' ? 'pro' : 'premium'}
           interval={subInterval}
           price={dialogPrice}
+          currency={currency}
           periodEnd={status?.renewsAt}
           busy={planChange.busy}
           onConfirm={confirm}
@@ -243,10 +254,7 @@ export const PlanPricing: React.FC<{
   );
 };
 
-/**
- * The one interval toggle for both paid columns. Its row leaves room for a second Segmented
- * beside it (the USD/EUR toggle, MM69).
- */
+/** The one interval toggle for both paid columns; the USD/EUR toggle sits beside it (MM69). */
 export const PricingIntervalToggle: React.FC<{ label: string; monthly: string; yearly: string }> = ({
   label,
   monthly,

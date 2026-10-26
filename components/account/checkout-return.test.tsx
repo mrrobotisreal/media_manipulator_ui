@@ -70,7 +70,7 @@ describe('CheckoutReturn', () => {
     await advance(POLL_INTERVAL_MS);
     expect(screen.getByTestId('checkout-return').dataset.phase).toBe('confirmed');
     expect(h.track).toHaveBeenCalledTimes(1);
-    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'premium' });
+    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'premium', currency: 'usd' });
     // Checkout params dropped; browser path and the open tab kept.
     expect(window.location.pathname + window.location.search).toBe('/account?tab=billing');
     // Polling has stopped.
@@ -131,7 +131,7 @@ describe('CheckoutReturn', () => {
     expect(panel.dataset.plan).toBe('pro');
     expect(screen.getByText('interface:billing.return.confirmedPro.title')).toBeTruthy();
     expect(screen.getByText('interface:billing.return.confirmedPro.body')).toBeTruthy();
-    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'pro' });
+    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'pro', currency: 'usd' });
     expect(window.location.search).toBe('?tab=billing');
   });
 
@@ -140,7 +140,7 @@ describe('CheckoutReturn', () => {
     render(<CheckoutReturn />);
     await advance(0);
     expect(screen.getByText('interface:billing.return.confirmedPro.title')).toBeTruthy();
-    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'pro' });
+    expect(h.track).toHaveBeenCalledWith('checkout_completed', { interval: 'yearly', plan: 'pro', currency: 'usd' });
   });
 
   it('webhook lag: the polled tier pro confirms with Pro copy', async () => {

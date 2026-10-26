@@ -100,6 +100,8 @@ export const EVENTS = {
   BILLING_PLAN_CHANGE_REQUESTED: 'billing_plan_change_requested',
   /** MM40: "Keep Pro" released a scheduled downgrade (catalog side: MM41). */
   BILLING_PLAN_CHANGE_CANCELLED: 'billing_plan_change_cancelled',
+  /** MM69: the visitor switched the USD / EUR price toggle (or a subscription's currency replaced their pick). */
+  BILLING_CURRENCY_CHANGED: 'billing_currency_changed',
 
   // --- Engagement / content -------------------------------------------------
   CONTENT_READ_PROGRESS: 'content_read_progress',
@@ -237,6 +239,7 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   retention_offer_accepted: PRIORITY_HIGH,
   billing_plan_change_requested: PRIORITY_CRITICAL,
   billing_plan_change_cancelled: PRIORITY_CRITICAL,
+  billing_currency_changed: PRIORITY_HIGH,
 
   // Engagement
   content_read_progress: PRIORITY_LOW,
@@ -577,22 +580,43 @@ export type BillingIntervalProp = 'monthly' | 'yearly';
 /** The plan bought or changed to (MM39/MM40), mirroring the API's config.Plan* constants. */
 export type BillingPlanProp = 'premium' | 'pro';
 
+/** The billing currency (MM69), lowercase ISO 4217 as Stripe spells it. Same numerals in both. */
+export type BillingCurrencyProp = 'usd' | 'eur';
+
 export interface CheckoutStartedProps {
   interval: BillingIntervalProp;
   placement: string;
   /** MM40. Optional so a catalog without it (before MM41) still accepts the event shape. */
   plan?: BillingPlanProp;
+  /** MM69: the currency the Checkout Session was opened in. */
+  currency: BillingCurrencyProp;
 }
 
 export interface CheckoutCompletedProps {
   interval: BillingIntervalProp;
   plan?: BillingPlanProp;
+  /** MM69: the subscription's currency when the API reports it, else the visitor's resolved choice. */
+  currency: BillingCurrencyProp;
 }
 
 export interface BillingPlanChangeRequestedProps {
   from: BillingPlanProp;
   to: BillingPlanProp;
   timing: 'immediate' | 'period_end';
+  /** MM69: the subscription's (locked) currency. */
+  currency: BillingCurrencyProp;
+}
+
+/**
+ * MM69. source: `toggle` = the visitor flipped the USD / EUR toggle; `lock` = their stored pick
+ * was replaced by the currency their subscription is billed in. placement: pricing |
+ * billing_panel | interstitial | auth_modal.
+ */
+export interface BillingCurrencyChangedProps {
+  from: BillingCurrencyProp;
+  to: BillingCurrencyProp;
+  source: 'toggle' | 'lock';
+  placement: string;
 }
 
 export interface BillingPlanChangeCancelledProps {
@@ -1053,6 +1077,7 @@ export interface EventPropsMap {
   retention_offer_accepted: RetentionOfferProps;
   billing_plan_change_requested: BillingPlanChangeRequestedProps;
   billing_plan_change_cancelled: BillingPlanChangeCancelledProps;
+  billing_currency_changed: BillingCurrencyChangedProps;
 
   content_read_progress: ContentReadProgressProps;
   content_read_completed: ContentReadCompletedProps;

@@ -11,6 +11,7 @@
  * the server-only operator tier.
  */
 
+import { formatPrice } from '@/lib/billing/price';
 import { BLOG_POSTS } from '@/lib/blogPosts';
 import { ROUTE_SEO_MAP, SITE_NAME, SITE_ORIGIN, ORG_NAME } from '@/lib/seo';
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
@@ -48,6 +49,19 @@ const OWNER = {
 } as const;
 
 /**
+ * Plan prices as served by GET /api/tiers `prices` (MM69: the same numerals in
+ * US dollars and euros). llms.txt is built once at build time, without the API,
+ * so these mirror the API's config defaults; the text points at /pricing.
+ */
+const PRICE_NUMERALS = { premium: { monthly: 8, yearly: 80 }, pro: { monthly: 15, yearly: 150 } } as const;
+
+/** "$8/month or $80/year (€8 or €80 in euros)", every amount through formatPrice. */
+function planPriceText(plan: keyof typeof PRICE_NUMERALS): string {
+  const { monthly, yearly } = PRICE_NUMERALS[plan];
+  return `${formatPrice(monthly, 'usd')}/month or ${formatPrice(yearly, 'usd')}/year, or ${formatPrice(monthly, 'eur')} or ${formatPrice(yearly, 'eur')} in euros`;
+}
+
+/**
  * Plan limits as served by the API's public GET /api/tiers (checked live on
  * 2026-10-23). Those numbers are env-configurable, so the text points readers
  * at /pricing for the current values.
@@ -66,13 +80,13 @@ const PLANS = [
     extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), 5 saved Darkroom projects',
   },
   {
-    name: 'Premium ($8/month or $80/year, cancel any time)',
+    name: `Premium (${planPriceText('premium')}, cancel any time)`,
     ops: '300 operations a day, 60 of them AI',
     file: '5 GB per file, video up to 2 hours, output up to 4K (2160p)',
     extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), unlimited Darkroom projects, priority GPU queue, no ads',
   },
   {
-    name: 'Pro ($15/month or $150/year, cancel any time)',
+    name: `Pro (${planPriceText('pro')}, cancel any time)`,
     ops: '700 operations a day, 120 of them AI',
     file: 'the same file, length and output limits as Premium',
     extras: 'everything in Premium, and the largest Motion allowance as the Motion editor rolls out',

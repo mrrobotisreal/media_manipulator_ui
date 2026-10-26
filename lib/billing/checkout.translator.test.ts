@@ -46,3 +46,39 @@ describe('billing actions', () => {
     vi.unstubAllGlobals();
   });
 });
+
+describe('Checkout currency (MM69)', () => {
+  it('sends the page currency once the API sells EUR, and tags checkout_started with it', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    const assign = vi.fn();
+    vi.stubGlobal('location', { ...window.location, assign });
+    const { noteTiers, pickCurrency, resetCurrencyForTests } = await import('./currency');
+    const { analytics } = await import('@/lib/analytics');
+    resetCurrencyForTests();
+    // An older API (no EUR prices): no currency field, USD in the event.
+    await startCheckout('monthly', 'pricing_premium');
+    expect(h.checkout).toHaveBeenLastCalledWith('tok', { interval: 'monthly', plan: 'premium', locale: undefined });
+    expect(analytics.track).toHaveBeenLastCalledWith('c', { interval: 'monthly', placement: 'pricing_premium', plan: 'premium', currency: 'usd' });
+    noteTiers({ prices: { eur: {} } }, { geo: false });
+    pickCurrency('eur', true);
+    await startCheckout('yearly', 'pricing_pro', 'de-DE', 'pro');
+    expect(h.checkout).toHaveBeenLastCalledWith('tok', { interval: 'yearly', plan: 'pro', locale: 'de-DE', currency: 'eur' });
+    expect(analytics.track).toHaveBeenLastCalledWith('c', { interval: 'yearly', placement: 'pricing_pro', plan: 'pro', currency: 'eur' });
+    resetCurrencyForTests();
+    vi.unstubAllGlobals();
+  });
+
+  it('currency_locked: switches the page to the locked currency and reports the refusal', async () => {
+    vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', '');
+    const { BillingRefusal } = await import('@/lib/auth/accountApi');
+    const { currentCurrency, noteTiers, pickCurrency, resetCurrencyForTests } = await import('./currency');
+    resetCurrencyForTests();
+    noteTiers({ prices: { eur: {} } }, { geo: false });
+    pickCurrency('usd', true);
+    h.checkout.mockRejectedValueOnce(new BillingRefusal('currency_locked', 409, { currency: 'eur' }));
+    const outcome = await startCheckout('monthly', 'pricing_premium');
+    expect(outcome).toMatchObject({ ok: false, reason: 'currency_locked' });
+    expect(currentCurrency()).toMatchObject({ currency: 'eur', locked: true, source: 'lock' });
+    resetCurrencyForTests();
+  });
+});

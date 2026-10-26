@@ -92,6 +92,23 @@ describe("legal retention copy", () => {
         expect(payments.paragraphs?.[0] ?? "").not.toMatch(/(?<![\d.,])(7|70)(?![\d.,])/);
       });
 
+      // MM69 decision 8: USD or EUR at identical numerals, and the mm-currency cookie.
+      it("names both currencies in ToS §10 and the mm-currency cookie in Privacy §1.6 and the what-changed note", () => {
+        const first = payments.paragraphs?.[0] ?? "";
+        expect(first).toContain("$");
+        expect(first).toContain("€");
+        expect(flatten(paymentData)).toContain("mm-currency");
+        expect(flatten(paymentData)).toMatch(/usd/);
+        expect(flatten(paymentData)).toMatch(/eur/);
+        expect(pages.legalCommon.whatChangedBody).toContain("mm-currency");
+        expect(pages.legalCommon.whatChangedBody).toContain("1.6");
+        expect(pages.legalCommon.whatChangedBody).toMatch(/\b10\b/);
+        if (code.toLowerCase() === "en-us" || !translated) return;
+        expect(first).not.toBe(en.termsOfService.sections[9].paragraphs?.[0]);
+        expect(flatten(paymentData)).not.toBe(flatten(en.privacyPolicy.sections[0].subsections?.[5]));
+        expect(pages.legalCommon.whatChangedBody).not.toBe(en.legalCommon.whatChangedBody);
+      });
+
       it("explains the period-end downgrade and keeps the 14-day refund", () => {
         expect(payments.paragraphs).toHaveLength(6);
         expect(flatten(payments)).toMatch(/14/);
@@ -153,9 +170,16 @@ describe("legal retention copy", () => {
   it("en-us ToS §10 names $15 and $150 for Pro beside $8 and $80 for Premium (MM40)", () => {
     const payments = en.termsOfService.sections[9];
     const first = payments.paragraphs?.[0] ?? "";
-    expect(first).toContain("$8 per month or $80 per year for Premium");
-    expect(first).toContain("$15 per month or $150 per year for Pro");
+    expect(first).toContain("Premium is $8 or €8 per month, or $80 or €80 per year");
+    expect(first).toContain("Pro is $15 or €15 per month, or $150 or €150 per year");
+    expect(first).toContain("billed in US dollars or euros");
+    expect(first).toContain("euros by default to visitors in Europe");
+    expect(first).toContain("cannot change while it is active");
     expect(first).toContain("no tax is added on top");
+    const billing = flatten(en.privacyPolicy.sections[0].subsections?.[5]);
+    expect(billing).toContain("the currency you are billed in (US dollars or euros)");
+    expect(billing).toContain("mm-currency");
+    expect(en.legalCommon.whatChangedBody).toContain("mm-currency");
     expect(flatten(payments)).toMatch(/downgrade from Pro to Premium takes effect at the end of the period/);
     expect(flatten(payments)).toMatch(/nothing is refunded for the rest of that period/);
     expect(flatten(payments)).toMatch(/within 14 days.*This applies to Premium and to Pro/);
@@ -215,4 +239,57 @@ describe("MM56 translator-submission sentence (Privacy §8)", () => {
       else if (code !== "en-US") expect(sentence).not.toBe(EN_SENTENCE);
     });
   }
+});
+
+/**
+ * MM69 guard (ticket decision 6): outside the legal text, no copy names a price with a
+ * currency symbol ("$8", "${{price}}", "{{price}} $", "€15"). Every price arrives through
+ * formatPrice, already in the visitor's currency; a hard-coded "$" would show dollars to a
+ * euro customer. The legal pages (privacyPolicy, termsOfService) are allowed to name both.
+ */
+describe("no currency-symbol price literals in UI copy outside legal text (MM69)", () => {
+  const PRICE_LITERAL = /[$€]\s?(\d|\{\{)|(\d|\}\})\s?[$€]/;
+  // Example sentences inside articles are content, not prices (e.g. "revenue jumped by $18,000").
+  const CONTENT_SHARDS = new Set(["articles.json"]);
+  const strings = (v: unknown, path: string, out: [string, string][]) => {
+    if (typeof v === "string") out.push([path, v]);
+    else if (Array.isArray(v)) v.forEach((x, i) => strings(x, `${path}[${i}]`, out));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) strings(x, `${path}.${k}`, out);
+    return out;
+  };
+  for (const { code } of locales) {
+    it(`${code}: interface shards carry no "$8" / "\${{price}}" style literals`, () => {
+      const dir = join(__dirname, "locales", code.toLowerCase(), "interface");
+      const offenders: string[] = [];
+      for (const file of readdirSync(dir).filter((f) => f.endsWith(".json") && !CONTENT_SHARDS.has(f))) {
+        const json = JSON.parse(readFileSync(join(dir, file), "utf8")) as Record<string, unknown>;
+        if (file === "pages.json") {
+          delete json.privacyPolicy;
+          delete json.termsOfService;
+        }
+        for (const [path, text] of strings(json, file, [])) if (PRICE_LITERAL.test(text)) offenders.push(`${path}: ${text}`);
+      }
+      expect(offenders).toEqual([]);
+    });
+  }
+
+  it("price code paths format through formatPrice, never a '$' template", () => {
+    for (const rel of [
+      "../views/pricing.tsx",
+      "../components/pricing/premium-cta.tsx",
+      "../components/account/billing-panel.tsx",
+      "../components/account/plan-summary.tsx",
+      "../components/account/plan-change-dialog.tsx",
+      "../components/account/yearly-nudge.tsx",
+      "../components/account/checkout-return.tsx",
+      "../components/account/upgrade-interstitial.tsx",
+      "../components/auth-modal.tsx",
+      "../lib/llmsTxt.ts",
+    ]) {
+      const src = readFileSync(join(__dirname, rel), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+      expect(src, rel).not.toMatch(/`\$\$\{|'\$'|"\$"|\$\d/);
+      // The legacy /api/tiers *PriceUSD fields are read only by lib/billing/price.ts planPrices.
+      expect(src, rel).not.toMatch(/\b(premium|pro)Price(Yearly)?USD\b/);
+    }
+  });
 });

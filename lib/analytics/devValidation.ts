@@ -301,10 +301,19 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
 
   checkout_started: z
-    .object({ interval: z.enum(['monthly', 'yearly']), placement: z.string(), plan: z.enum(['premium', 'pro']).optional() })
+    .object({
+      interval: z.enum(['monthly', 'yearly']),
+      placement: z.string(),
+      plan: z.enum(['premium', 'pro']).optional(),
+      currency: z.enum(['usd', 'eur']),
+    })
     .strict(),
   checkout_completed: z
-    .object({ interval: z.enum(['monthly', 'yearly']), plan: z.enum(['premium', 'pro']).optional() })
+    .object({
+      interval: z.enum(['monthly', 'yearly']),
+      plan: z.enum(['premium', 'pro']).optional(),
+      currency: z.enum(['usd', 'eur']),
+    })
     .strict(),
   checkout_abandoned: z.object({}).strict(),
   portal_opened: z.object({ placement: z.string() }).strict(),
@@ -316,9 +325,18 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       from: z.enum(['premium', 'pro']),
       to: z.enum(['premium', 'pro']),
       timing: z.enum(['immediate', 'period_end']),
+      currency: z.enum(['usd', 'eur']),
     })
     .strict(),
   billing_plan_change_cancelled: z.object({ from: z.enum(['premium', 'pro']), to: z.enum(['premium', 'pro']) }).strict(),
+  billing_currency_changed: z
+    .object({
+      from: z.enum(['usd', 'eur']),
+      to: z.enum(['usd', 'eur']),
+      source: z.enum(['toggle', 'lock']),
+      placement: z.string(),
+    })
+    .strict(),
 
   content_read_progress: z
     .object({
