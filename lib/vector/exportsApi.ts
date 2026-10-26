@@ -15,7 +15,12 @@
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
 
-/** The countable formats MM43 accepts (`internal/tiers/vector.go`). */
+/**
+ * The countable formats MM43 accepts (`internal/tiers/vector.go`), exports and
+ * the browser-side Lottie import (MM46: `import_lottie` is counted before the
+ * file is parsed, design §3.6). `import_svg_vectorize` is counted by its own
+ * route, never through this client.
+ */
 export const VECTOR_EXPORT_FORMATS = [
   'svg_animated',
   'lottie',
@@ -26,6 +31,7 @@ export const VECTOR_EXPORT_FORMATS = [
   'png_sequence',
   'mp4',
   'webm',
+  'import_lottie',
 ] as const;
 export type VectorExportFormat = (typeof VECTOR_EXPORT_FORMATS)[number];
 
