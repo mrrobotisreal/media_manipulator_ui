@@ -16,6 +16,7 @@ import type {
   EmbeddedVideoCodec,
 } from '@/components/embedded-tool-panel';
 import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
+import { MOTION_BRAND } from '@/lib/vector/brand';
 
 /**
  * The one retention sentence used across every tool entry (MM26). English only: non-English tool
@@ -108,7 +109,7 @@ export interface ToolPageContent {
   /** Open Graph description (often same as metaDescription). */
   ogDescription: string;
   /** Top-level category for the /tools index grouping. */
-  category: 'image' | 'video' | 'audio' | 'ai' | 'metadata' | 'contentStudio';
+  category: 'image' | 'video' | 'audio' | 'ai' | 'metadata' | 'contentStudio' | 'motion';
   /** Embedded panel configuration. */
   embed: {
     defaultMediaKind: EmbeddedMediaKind;
@@ -196,6 +197,12 @@ export interface ToolPageContent {
   secondaryKeywords: string[];
   /** Optional supported-format section content. */
   supportedFormats?: ToolSupportedFormats;
+  /**
+   * Shipped features for a `SoftwareApplication` JSON-LD block (MM48). When set,
+   * lib/seo.ts emits SoftwareApplication with this `featureList` instead of the
+   * generic WebApplication block. List only what users can use today.
+   */
+  featureList?: string[];
 }
 
 const sharedPrivacyNote =
@@ -364,6 +371,196 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Preview composites in the browser; the final export is encoded to H.264 MP4.',
       ],
     },
+  },
+
+  // ----------------------------------------------------------------------- MOTION (SVG ANIMATION)
+  // MM48. Brand from MOTION_BRAND (design §1); the editor itself is the chromeless
+  // /motion/[projectId] route, so this entry renders a custom panel (Open + recent
+  // projects) and a format table served by /api/tiers. List only shipped features.
+  {
+    slug: 'motion',
+    name: MOTION_BRAND,
+    h1: MOTION_BRAND,
+    tagline:
+      'Draw or import an SVG, animate it on a keyframe timeline, and export animated SVG, Lottie, React, JavaScript, Flutter or GIF, all in your browser.',
+    metaTitle: `${MOTION_BRAND}: Free Online SVG Animation Editor | Media Manipulator`,
+    metaDescription:
+      'Animate SVG in your browser: keyframes, easing, holds, draw-on, motion paths and morphs. Export animated SVG, Lottie JSON, React, JS, Flutter or GIF.',
+    ogTitle: `${MOTION_BRAND}: Animate SVG in Your Browser`,
+    ogDescription:
+      'Import an SVG or draw one, animate it on a keyframe timeline, and export animated SVG, Lottie JSON, React, JavaScript, Flutter or GIF. Exports are made in your browser.',
+    category: 'motion',
+    embed: {
+      defaultMediaKind: 'image',
+      defaultTask: 'motion_editor',
+      title: `Open ${MOTION_BRAND}`,
+      description:
+        'Start a new drawing or reopen a recent one. The editor opens full screen; your work is kept in this browser, and signed-in users can save it to their account.',
+    },
+    intro:
+      `${MOTION_BRAND} is an SVG editor with an animation timeline, built into Media Manipulator. Open an SVG file (or a Lottie animation) and every shape becomes a layer you can select, move, recolour and animate, or start from a blank canvas and draw with the rectangle, ellipse, line, pen and text tools. Each animated property gets its own track of keyframes, with easing presets, a curve editor for custom easing, and hold keys for instant jumps. One-click animators add stroke draw-on, motion along a path, shape morphing, gradient colour changes, mask animation and blur. When it moves the way you want, export it as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. Editing and every export run in your browser, so your artwork is never uploaded to export it.`,
+    whatItDoes: [
+      'Imports SVG files into an editable layer tree (groups, paths, shapes, text, images, gradients, masks and clip paths) and imports Lottie JSON animations with their keyframes.',
+      'Draws new artwork with rectangle, ellipse, line, pen (Bézier) and text tools, and edits path nodes directly on the canvas.',
+      'Animates position, scale, rotation, skew, opacity, fill, stroke and stroke width on a keyframe timeline with linear, ease-in, ease-out, ease-in-out, custom cubic-bezier and hold easing.',
+      'Adds advanced animation in one click: stroke draw-on, motion along a path with optional auto-rotate, shape morphing, gradient stop colours, mask and clip-path animation, and blur.',
+      'Exports a static SVG (always free), an animated SVG that plays without any library, Lottie JSON, a React component, a JavaScript or TypeScript module, a Flutter widget and an animated GIF.',
+    ],
+    flowSteps: [
+      {
+        title: 'Open or draw',
+        description: 'Import an SVG or Lottie file, or draw shapes and paths on a blank canvas.',
+      },
+      {
+        title: 'Animate',
+        description: 'Move the playhead and change a property: the timeline records a keyframe for it.',
+      },
+      {
+        title: 'Shape the timing',
+        description: 'Pick an easing preset, draw a custom curve, add holds, or apply a one-click animator.',
+      },
+      {
+        title: 'Export',
+        description: 'Download animated SVG, Lottie, React, JS/TS, Flutter or GIF, made in your browser.',
+      },
+    ],
+    advancedDetails: [
+      'The animated SVG export uses pure CSS keyframes whenever every effect can be expressed in CSS in Chrome, Firefox and Safari. Shape morphs, moving gradient stops and blur need a small script, so those files embed a trimmed copy of anime.js (MIT licence, about 14 KB compressed) with its licence notice at the top.',
+      'Shape morphing normalises both shapes to the same number of curve segments and lines up their start points and winding, so the morph does not twist. Two shapes that cannot be matched hold instead of morphing.',
+      'The Lottie writer targets the Lottie 1.0.1 specification and the LottieFiles "Basic" feature set. Anything Lottie cannot carry (such as filters, text or advanced masks) is listed after the download; nothing is dropped silently.',
+      'GIF export uses an encoder written for Media Manipulator, with one global palette built from frames across the animation, so flat vector art keeps its exact colours.',
+      'Imported SVGs are cleaned on the way in: scripts, event handlers, external references and other unsafe content are removed, and the editor rebuilds unsupported markup from an allow-list instead of inserting it as HTML.',
+    ],
+    whyItMatters: [
+      'Animated SVGs stay sharp at every size and are usually far smaller than a video or GIF of the same animation, which makes them ideal for logos, icons, loaders and illustrations on the web.',
+      'Developers need animation as code, not just as a video: a React component, a JavaScript module, a Lottie file or a Flutter widget drops straight into an app.',
+      'Doing the export in the browser means your artwork stays on your device; only a count of each export is sent to us, to enforce the daily allowance.',
+    ],
+    useCases: [
+      {
+        title: 'Logo and icon animation',
+        description: 'Draw a logo on with a stroke animation, or make an icon bounce, spin or change colour on hover.',
+      },
+      {
+        title: 'Loaders and UI micro-animations',
+        description: 'Build spinners and progress animations and export them as CSS-only SVG or a React component.',
+      },
+      {
+        title: 'Lottie for mobile apps',
+        description: 'Export Lottie JSON for the iOS, Android, web and Flutter Lottie players, or edit an existing Lottie file.',
+      },
+      {
+        title: 'Animated illustrations',
+        description: 'Move parts of an illustration along paths, morph shapes into each other and export a GIF for chat or email.',
+      },
+    ],
+    whyMediaManipulator: [
+      'A real layer-and-keyframe editor with holds, custom curves and advanced animators, not a template gallery.',
+      'Exports for designers and developers alike: animated SVG, Lottie, React, JavaScript or TypeScript, Flutter and GIF from one project.',
+      'Exports are made in your browser and the exported code depends only on MIT-licensed code, with every licence notice kept in the file.',
+    ],
+    privacyNote:
+      'Editing and exporting happen in your browser; your artwork is not uploaded to export it. Without an account, projects are kept only in this browser. If you sign in and save a project to your account, it is stored on our servers like a Darkroom project, follows the retention period you choose, and can be deleted from your Account page. For each export we record only its format, size, length and time, to enforce the daily allowance.',
+    faq: [
+      {
+        question: `Is ${MOTION_BRAND} free?`,
+        answer: `Yes. Opening ${MOTION_BRAND}, drawing, animating, saving and exporting a static SVG are free and unlimited, with no account. Animated exports count toward a daily allowance that depends on your plan; the plan table on this page shows each plan's allowance and formats.`,
+      },
+      {
+        question: 'Which formats can I export?',
+        answer: 'Static SVG, animated SVG (CSS, or a small inline script when needed), Lottie JSON, a React component (.tsx), a JavaScript or TypeScript module, a Flutter widget (.dart) and an animated GIF. Which of these your plan includes, and the daily number of exports, are shown in the plan table on this page.',
+      },
+      {
+        question: 'What are the limits?',
+        answer: 'Animated exports are counted per day and reset at midnight UTC. Visitors without an account can save projects only in their browser; signed-in plans save a number of projects to the account. Visitors also have a maximum animation length for export, and GIF export has a size and length cap. Every current number is in the plan table on this page and on the pricing page.',
+      },
+      {
+        question: 'Can I animate an SVG I already have?',
+        answer: 'Yes. Import any SVG and its groups, paths, shapes, text, gradients, masks and clip paths become editable layers. Parts the editor cannot edit, such as patterns or complex filters, are kept and exported unchanged, and anything unsafe (scripts or external links) is removed and listed after the import.',
+      },
+      {
+        question: 'Does it support Lottie?',
+        answer: 'Yes, in both directions. You can import a Lottie JSON file to edit it, and export your animation as Lottie JSON for lottie-web and the iOS, Android and Flutter Lottie players. Features one side cannot represent are listed in the dialog instead of being dropped silently.',
+      },
+      {
+        question: 'Which browsers support video export?',
+        answer: 'GIF export works in all modern browsers. MP4 and WebM export rely on WebCodecs, the browser\'s built-in video encoder, which is available in Chrome and Edge and in recent versions of Safari and Firefox depending on the codec; the export dialog checks your browser and says when it cannot encode. The plan table on this page shows which plan includes each video format.',
+      },
+      {
+        question: 'What licence applies to the exported code?',
+        answer: 'Your animation belongs to you. When an animated SVG or a code export needs a runtime, it uses anime.js, which is MIT-licensed; its copyright notice is written at the top of the file and must be kept there. Everything else in the file is generated from your project. The open-source libraries the editor uses are listed on our licences page.',
+      },
+      {
+        question: 'Where are my projects stored?',
+        answer: 'Without an account, projects are kept only in this browser, so clearing your browser data removes them. When you are signed in you can save a project to your account; it then syncs between devices, autosaves while you work, follows the retention period you chose and can be deleted from your Account page.',
+      },
+    ],
+    related: [
+      {
+        label: `${MOTION_BRAND} tutorial`,
+        to: '/tutorials/motion',
+        description: 'Import an SVG, animate it, shape the easing and export it, step by step.',
+      },
+      {
+        label: 'Darkroom',
+        to: '/tools/content-studio',
+        description: 'Edit video on a multi-track timeline and export MP4.',
+      },
+      {
+        label: 'Convert Video to Animated GIF',
+        to: '/tools/convert-video-to-animated-gif',
+        description: 'Turn a video clip into a GIF when your animation started as footage.',
+      },
+      {
+        label: 'Open-source licences',
+        to: '/licenses',
+        description: 'The libraries the editor runs and writes into your exports.',
+      },
+    ],
+    primaryKeyword: 'svg animation editor',
+    secondaryKeywords: [
+      'animate svg online',
+      'svg animator',
+      'animated svg maker',
+      'svg to lottie',
+      'lottie editor',
+      'svg animation to react',
+      'css svg animation generator',
+      'svg to gif',
+      'logo animation',
+    ],
+    supportedFormats: {
+      supportedInputFormats: ['SVG', 'Lottie JSON', `${MOTION_BRAND} project (.json)`],
+      supportedOutputFormats: [
+        'Static SVG',
+        'Animated SVG',
+        'Lottie JSON',
+        'React (.tsx)',
+        'JavaScript / TypeScript',
+        'Flutter (.dart)',
+        'GIF',
+      ],
+      maxFileNotes: [
+        'SVG and Lottie imports up to 4 MB each.',
+        'Projects without an account live only in this browser; signed-in projects follow the retention period you choose.',
+      ],
+      processingNotes: [
+        'Editing, preview and every export run in your browser. Only a count of each export is sent to our servers.',
+      ],
+    },
+    featureList: [
+      'SVG import into editable layers',
+      'Lottie JSON import',
+      'Rectangle, ellipse, line, pen and text tools',
+      'Keyframe timeline with easing presets, custom cubic-bezier curves and hold keys',
+      'Stroke draw-on, motion path, shape morph, gradient, mask and blur animators',
+      'Static SVG export',
+      'Animated SVG export (CSS or inline anime.js runtime)',
+      'Lottie JSON export',
+      'React, JavaScript, TypeScript and Flutter code export',
+      'Animated GIF export',
+      'Projects saved in the browser or to your account',
+    ],
   },
 
   // ----------------------------------------------------------------------- METADATA / PRIVACY
@@ -8427,6 +8624,11 @@ export const TOOL_CATEGORIES: Array<{
     id: 'ai',
     label: 'AI tools',
     description: 'Transcription, summaries, and other AI-powered media tools.',
+  },
+  {
+    id: 'motion',
+    label: 'SVG animation',
+    description: 'Animate SVG on a keyframe timeline and export it as SVG, Lottie, code or GIF.',
   },
   {
     id: 'metadata',

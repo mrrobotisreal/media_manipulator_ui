@@ -33,10 +33,11 @@ export function HomeContent({ locale }: { locale?: string }) {
     returnObjects: true,
   }) as HomeStep[];
 
-  // Content Studio is featured separately on /tools, so it is excluded here.
+  // Content Studio and Motion are featured separately on /tools (editors, not
+  // conversions), so they are excluded here.
   const localizedTools = getLocalizedToolPages(locale ?? 'en-US');
   const popular: ToolPageContent[] = REVIEW_INDEXED_TOOL_SLUGS.filter(
-    (slug) => slug !== 'content-studio'
+    (slug) => slug !== 'content-studio' && slug !== 'motion'
   )
     .map((slug) => localizedTools.find((tool) => tool.slug === slug))
     .filter((tool): tool is ToolPageContent => Boolean(tool));

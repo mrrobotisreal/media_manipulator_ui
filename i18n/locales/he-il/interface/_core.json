@@ -126,7 +126,8 @@
       "description": "העדפות העוגיות מנוהלות על ידי Google. אם באנר העוגיות לא מופיע, טענו מחדש את העמוד, או בקרו במדיניות הפרטיות שלנו לפרטים על האופן שבו Media Manipulator מעבד נתונים."
     },
     "changelog": "יומן שינויים",
-    "status": "סטטוס"
+    "status": "סטטוס",
+    "licenses": "Open-source licences"
   },
   "languageSelector": {
     "label": "שפה",

@@ -10,6 +10,8 @@ import { isSeoFullIndex } from '@/lib/seoFlags';
 
 export const REVIEW_INDEXED_TOOL_SLUGS = [
   'content-studio',
+  // MM48: Motion's landing page (long original copy, guide, plan table, FAQ; no ad slot).
+  'motion',
   'remove-exif-metadata',
   'compress-image',
   'image-resizer',
@@ -49,7 +51,7 @@ export const PENDING_ALLOWLIST = [
 export type ReviewIndexedToolSlug = (typeof REVIEW_INDEXED_TOOL_SLUGS)[number];
 
 /**
- * Flag off (default): true only for the 16 allowlisted slugs. Flag on: true for
+ * Flag off (default): true only for the 17 allowlisted slugs. Flag on: true for
  * every tool slug, including PENDING_ALLOWLIST. Unknown slugs never reach a
  * rendered page (the route 404s first), so the flag-on branch does not import
  * the large toolPages catalog into client bundles just to re-check membership.
@@ -91,6 +93,7 @@ export function isReviewSafeInternalHref(href: string): boolean {
   if (href === '/privacy-policy') return true;
   if (href === '/terms-of-service') return true;
   if (href === '/voices') return true;
+  if (href === '/licenses') return true;
 
   if (href.startsWith('/tutorials/')) return true;
   if (href.startsWith('/blog/')) return true;
