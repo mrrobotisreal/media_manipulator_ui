@@ -55,11 +55,15 @@ afterEach(() => {
 
 const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
+// MM47 seams: no plan / probe network calls from the MM44–46 tests (fetchMock counts only the export count).
+const noPlan = async () => null;
+const noProbe = () => new Promise<never>(() => {});
+
 function mount(extra: Partial<React.ComponentProps<typeof ExportDialog>> = {}) {
   const save = vi.fn();
   render(
     <I18nextProvider i18n={i18n}>
-      <ExportDialog open onOpenChange={() => {}} doc={doc} name="Bounce" time={750} signedIn={false} save={save} {...extra} />
+      <ExportDialog open onOpenChange={() => {}} doc={doc} name="Bounce" time={750} signedIn={false} save={save} plan={noPlan} probe={noProbe} {...extra} />
     </I18nextProvider>,
   );
   return { save };
@@ -68,13 +72,14 @@ function mount(extra: Partial<React.ComponentProps<typeof ExportDialog>> = {}) {
 const exportButton = () => screen.getByRole('button', { name: 'Export' });
 
 describe('Motion export dialog', () => {
-  it('lists animated SVG, static SVG, the MM46 formats, the beta label, and GIF / video disabled', () => {
+  it('lists animated SVG, static SVG, the MM46 formats, the MM47 raster formats and the beta label', () => {
     mount();
     expect(screen.getByRole('radio', { name: /Animated SVG/ })).toBeTruthy();
     expect(screen.getByRole('radio', { name: /Static SVG/ })).toBeTruthy();
     for (const name of [/^Lottie JSON/, /^React component/, /^JavaScript module/, /^TypeScript module/, /^Flutter widget/]) expect(screen.getByRole('radio', { name })).toBeTruthy();
+    for (const name of [/^GIF/, /^PNG sequence/, /^MP4 video/, /^WebM video/]) expect(screen.getByRole('radio', { name })).toBeTruthy();
     expect(screen.getByText('Motion (beta)')).toBeTruthy();
-    expect(screen.getAllByText('Coming soon').length).toBeGreaterThan(1);
+    expect(screen.queryByText('Coming soon')).toBeNull();
   });
 
   it('{ok:true}: counts first, then runs the exporter and downloads; remaining is shown', async () => {
@@ -356,6 +361,8 @@ describe('MM46: Lottie and code exports in the dialog', () => {
     vi.stubEnv('NEXT_PUBLIC_DEPLOY_ROLE', 'translator');
     mount();
     for (const name of [/^Lottie JSON/, /^React component/, /^JavaScript module/, /^TypeScript module/, /^Flutter widget/]) expect(screen.queryByRole('radio', { name })).toBeNull();
+    // MM47: the raster formats are counted too, so they are hidden as well.
+    for (const name of [/^GIF/, /^PNG sequence/, /^MP4 video/, /^WebM video/]) expect(screen.queryByRole('radio', { name })).toBeNull();
     vi.unstubAllEnvs();
   });
 });

@@ -17,7 +17,7 @@
  * is the revision those drafts were written against and MM54's conflict check needs
  * exactly that. "Refresh base" re-fetches on request.
  */
-import type { TranslatorApi } from './api';
+import type { SubmitResult, TranslatorApi } from './api';
 import { emitTranslatorEvent } from './devEvents';
 import type { BaseMeta, DraftRecord, DraftStore } from './draftStore';
 import type { KeySite } from './domScanner';
@@ -25,6 +25,7 @@ import type { RegistryEntry } from './keyRegistry';
 import type { KeyEntry, KeyTable } from './keyTable';
 import type { LiveEditor } from './liveEdit';
 import { SearchIndex } from './search';
+import type { SubmitRequest } from './submitContract';
 import { validatePluralGroup, validateValue, type PluralCategory, type ValidationWarning } from './validators';
 
 export type BaseStatus = 'idle' | 'loading' | 'ok' | 'failed';
@@ -38,6 +39,8 @@ export interface ChangeSetItem {
   english: string | undefined;
   isNew: boolean;
   warnings: ValidationWarning[];
+  /** MM54: pathnames where the key (or its plural group) was seen this session, oldest first. */
+  seenOn: string[];
 }
 
 export interface PageKey {
@@ -54,7 +57,12 @@ export interface WorkbenchModelOptions {
   api?: TranslatorApi | null;
   getIdToken?: () => Promise<string | null>;
   now?: () => number;
+  /** MM54: the current page path for `seenOn` (default `location.pathname`). */
+  currentPath?: () => string | null;
 }
+
+/** Most pathnames remembered per key for the PR's "Pages" section. */
+export const SEEN_ON_LIMIT = 5;
 
 export class WorkbenchModel {
   readonly locale: string;
@@ -65,6 +73,9 @@ export class WorkbenchModel {
   private readonly api: TranslatorApi | null;
   private readonly getIdToken: () => Promise<string | null>;
   private readonly now: () => number;
+  private readonly currentPath: () => string | null;
+  /** MM54: entry id -> pathnames it was seen on (insertion order, capped). */
+  private seen = new Map<string, string[]>();
 
   private drafts = new Map<string, DraftRecord>();
   private warningsById_ = new Map<string, ValidationWarning[]>();
@@ -90,6 +101,8 @@ export class WorkbenchModel {
     this.api = options.api ?? null;
     this.getIdToken = options.getIdToken ?? (async () => null);
     this.now = options.now ?? Date.now;
+    this.currentPath =
+      options.currentPath ?? (() => (typeof window === 'undefined' ? null : window.location.pathname || null));
     this.storage = { persistent: this.store.persistent, reason: this.store.reason };
     this.store.subscribe((s) => {
       this.storage = s;
@@ -241,9 +254,73 @@ export class WorkbenchModel {
           english: e?.english,
           isNew: e?.isNew ?? false,
           warnings: this.warnings(id),
+          seenOn: this.seenOn(id),
         };
       })
       .sort((a, b) => (a.file === b.file ? a.key.localeCompare(b.key) : a.file.localeCompare(b.file)));
+  }
+
+  /** Pathnames the key, or any form of its plural group, was seen on. */
+  seenOn(id: string): string[] {
+    const e = this.table.byId(id);
+    const ids = e?.plural ? (this.table.groups.get(e.plural.groupId)?.forms.map((f) => f.id) ?? [id]) : [id];
+    const out: string[] = [];
+    for (const i of ids) for (const p of this.seen.get(i) ?? []) if (!out.includes(p)) out.push(p);
+    return out.slice(0, SEEN_ON_LIMIT);
+  }
+
+  /**
+   * MM54 "Start fresh" after a submit: drops exactly the submitted drafts (a draft edited
+   * again since the request was built is kept), then refreshes the base SHAs.
+   */
+  async clearSubmitted(submitted: Array<{ file: string; key: string; value: string }>): Promise<void> {
+    const cleared: Array<{ file: string; key: string }> = [];
+    for (const c of submitted) {
+      const id = `${c.file}|${c.key}`;
+      const d = this.drafts.get(id);
+      const entry = this.table.byId(id);
+      if (!d || !entry || d.value !== c.value) continue;
+      this.drafts.delete(id);
+      cleared.push({ file: c.file, key: c.key });
+      this.search.update(id, entry.base);
+      this.live?.set(this.liveTarget(entry), undefined);
+      this.revalidate(id);
+    }
+    this.bump();
+    if (cleared.length) this.persist(() => this.store.clear(this.locale, cleared));
+    await this.flush();
+    await this.refreshBase();
+  }
+
+  /**
+   * MM54: the POST body for the current change set. `base` is the stored base (the
+   * revision the drafts were written against); without one the server treats every
+   * file as moved and checks each key against `main`.
+   */
+  buildSubmitRequest(input: { description: string; acknowledged: string[]; confirmConflicts: string[] }): SubmitRequest {
+    return {
+      locale: this.locale,
+      description: input.description,
+      changes: this.changes().map((c) => ({
+        file: c.file,
+        key: c.key,
+        value: c.value,
+        baseValue: c.baseValue,
+        ...(c.seenOn.length ? { seenOn: c.seenOn } : {}),
+      })),
+      base: { sha: this.base?.sha ?? '', files: this.base?.files ?? {} },
+      acknowledged: input.acknowledged,
+      confirmConflicts: input.confirmConflicts,
+    };
+  }
+
+  /** MM54: sends `body` to `/api/translator/submit` (dry run = pre-flight, writes nothing). */
+  async submit(body: SubmitRequest, options: { dryRun?: boolean } = {}): Promise<SubmitResult> {
+    if (!this.api?.submit) return { kind: 'error', status: null, detail: 'submit is not available' };
+    await this.flush();
+    const token = await this.getIdToken().catch(() => null);
+    if (!token) return { kind: 'unauthorized' };
+    return this.api.submit(token, body, options);
   }
 
   /* --- edits --------------------------------------------------------------- */
@@ -364,6 +441,13 @@ export class WorkbenchModel {
       next.set(e.id, pk);
     }
     this.page = next;
+    const path = this.currentPath();
+    if (path && path.startsWith('/')) {
+      for (const id of next.keys()) {
+        const list = this.seen.get(id) ?? [];
+        if (!list.includes(path) && list.length < SEEN_ON_LIMIT) this.seen.set(id, [...list, path]);
+      }
+    }
     this.pageForeignLanguages = [...foreign].sort();
     this.bump();
   }

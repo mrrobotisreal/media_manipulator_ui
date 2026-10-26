@@ -1,0 +1,66 @@
+# MM54: guards for pull requests.
+#
+#   generated    (every PR)   `npm run i18n:gen` must leave i18n/generated unchanged.
+#                             scripts/gen-i18n-registry.mjs imports only Node
+#                             built-ins and i18n/locales.ts (type-stripped by
+#                             Node 24), so no `npm ci` is needed.
+#   translation  (PRs labelled `translation` or from an `i18n/` branch)
+#                             every changed file must be a .json under exactly one
+#                             i18n/locales/<locale-dir>/, then locale parity and
+#                             legal-copy tests run.
+name: i18n-pr-guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: i18n-pr-guard-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  generated:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Regenerate the i18n registry
+        run: npm run i18n:gen
+      - name: Fail if i18n/generated is stale
+        run: git diff --exit-code -- i18n/generated
+
+  translation:
+    if: contains(github.event.pull_request.labels.*.name, 'translation') || startsWith(github.head_ref, 'i18n/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Only one locale directory changed
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        # On `pull_request`, checkout builds HEAD as the PR merge commit (base
+        # tip + PR head). `origin/<base>...HEAD` diffs from the merge base of
+        # origin/<base> and that merge commit, which is the base tip (or an
+        # ancestor of it if the base moved since), so only the PR's own
+        # changes are listed, never unrelated commits that landed on the base.
+        run: |
+          set -euo pipefail
+          git diff --name-only "origin/${BASE_REF}...HEAD" | node scripts/check-i18n-pr-paths.mjs
+      - run: npm ci
+      - name: Locale parity and legal copy
+        run: npx vitest run i18n/localeParity.test.ts i18n/legalCopy.test.ts

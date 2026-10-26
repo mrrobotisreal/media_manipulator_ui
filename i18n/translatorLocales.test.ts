@@ -8,7 +8,7 @@ import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 
 import { defaultLocale, locales, translatorLocales } from "./locales";
-import { format } from "../scripts/list-locales.mjs";
+import { format, hookSecretName } from "../scripts/list-locales.mjs";
 
 const ROOT = join(__dirname, "..");
 const PREFIX_RE = /^[a-z]+(-[a-z]+)?$/;
@@ -58,5 +58,32 @@ describe("scripts/list-locales.mjs", () => {
     expect(run.status).toBe(0);
     expect(run.stderr).toBe("");
     expect(run.stdout.trimEnd().split("\n")).toEqual(translatorLocales.map((l) => l.prefix));
+  });
+
+  it("formats a GitHub Actions matrix with --matrix", () => {
+    expect(JSON.parse(format(sample, ["--matrix"]))).toEqual({
+      include: [
+        { prefix: "de", hook: "VERCEL_DEPLOY_HOOK_DE" },
+        { prefix: "pt-br", hook: "VERCEL_DEPLOY_HOOK_PT_BR" },
+      ],
+    });
+  });
+
+  it("maps a prefix to its deploy-hook secret name", () => {
+    expect(hookSecretName("pt-br")).toBe("VERCEL_DEPLOY_HOOK_PT_BR");
+    expect(hookSecretName("de")).toBe("VERCEL_DEPLOY_HOOK_DE");
+  });
+
+  it("--matrix on the real registry has one entry per --json prefix", () => {
+    const run = (flag: string) =>
+      spawnSync(process.execPath, [join(ROOT, "scripts", "list-locales.mjs"), flag], { encoding: "utf8" });
+    const matrix = run("--matrix");
+    const json = run("--json");
+    expect(matrix.status).toBe(0);
+    expect(matrix.stderr).toBe("");
+    const parsed = JSON.parse(matrix.stdout) as { include: { prefix: string; hook: string }[] };
+    expect(parsed.include).toHaveLength(16);
+    expect(parsed.include.map((e) => e.prefix)).toEqual(JSON.parse(json.stdout));
+    for (const e of parsed.include) expect(e.hook).toBe(hookSecretName(e.prefix));
   });
 });

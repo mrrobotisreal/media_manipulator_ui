@@ -17,6 +17,12 @@ const ROOT = join(__dirname, '..', '..');
 const SCAN = ['app', 'components', 'lib', 'i18n', 'views', 'content', 'proxy.ts', 'next.config.ts'];
 const TRANSLATOR_DIRS = ['lib/translator/', 'components/translator/'];
 const ALLOWED_TARGET = 'lib/translator/mode';
+/**
+ * MM54: the three translator route handlers may import the server wiring, and
+ * only through a dynamic `import()` inside the literal role guard (asserted below).
+ */
+const ROUTE_FILES = ['me', 'base', 'submit'].map((r) => `app/api/translator/${r}/route.ts`);
+const ROUTE_TARGET = 'lib/translator/server/routes';
 const IMPORT_RE =
   /(?:import|export)\s[^'"]*?from\s*['"]([^'"]+)['"]|import\s*\(\s*['"]([^'"]+)['"]\s*\)|require\s*\(\s*['"]([^'"]+)['"]\s*\)|import\s+['"]([^'"]+)['"]/g;
 
@@ -58,6 +64,7 @@ export function boundaryViolations(): string[] {
       const t = target(spec, file);
       if (!t || !isTranslatorFile(`${t}/`)) continue;
       if (t === ALLOWED_TARGET) continue;
+      if (t === ROUTE_TARGET && ROUTE_FILES.includes(file)) continue;
       out.push(`${file} imports ${spec}`);
     }
   }
@@ -87,6 +94,20 @@ describe('translator import boundary', () => {
     // No closing of that block between the guard and the require.
     expect(before.slice(guard).split('{').length - 1).toBeGreaterThan(before.slice(guard).split('}').length - 1);
     expect(src).not.toMatch(/^import[^;]*['"]\.\/(keyMarker|markerCodec|keyRegistry|domScanner|highlight|devEvents)['"]/m);
+  });
+
+  it.each(ROUTE_FILES)('%s reaches translator code only via import() inside the literal role guard', (file) => {
+    const src = readFileSync(join(ROOT, file), 'utf8');
+    expect(src).not.toMatch(/^import\s/m);
+    expect(src).not.toMatch(/require\(/);
+    const imports = [...src.matchAll(/import\(\s*['"]([^'"]+)['"]\s*\)/g)];
+    expect(imports.map((m) => m[1])).toEqual(['@/lib/translator/server/routes']);
+    const before = src.slice(0, imports[0].index);
+    const guard = before.lastIndexOf("if (process.env.NEXT_PUBLIC_DEPLOY_ROLE === 'translator') {");
+    expect(guard).toBeGreaterThan(-1);
+    expect(before.slice(guard).split('{').length - 1).toBeGreaterThan(before.slice(guard).split('}').length - 1);
+    expect(src).toMatch(/export const runtime = 'nodejs';/);
+    expect(src).toMatch(/export const dynamic = 'force-dynamic';/);
   });
 
   it('mode.ts statically imports nothing but the locale list', () => {

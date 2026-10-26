@@ -861,6 +861,68 @@
       "applies_one": "Easing of the segment after {{count}} keyframe.",
       "applies_other": "Easing of the segments after {{count}} keyframes."
     },
+    "raster": {
+      "formats": {
+        "gif": {
+          "title": "GIF",
+          "hint": "An animated GIF that plays everywhere. 256 colours, one global palette."
+        },
+        "png_sequence": {
+          "title": "PNG sequence (.zip)",
+          "hint": "Every frame as a PNG with transparency, zipped, for video editors and game engines."
+        },
+        "mp4": {
+          "title": "MP4 video",
+          "hint": "H.264 (or AV1) video, encoded in your browser. No audio."
+        },
+        "webm": {
+          "title": "WebM video",
+          "hint": "VP9 (or AV1) video, encoded in your browser. No audio."
+        }
+      },
+      "block": {
+        "locked": "Your plan does not include this format.",
+        "notOnAnyPlan": "Not available on any plan yet.",
+        "useChromium": "Use Chrome or Edge for video export",
+        "noCodec": "This browser cannot encode this video format. Try the other video format, or Chrome or Edge."
+      },
+      "size": "Size",
+      "sizeOption": "{{height}}p ({{width}} × {{height}})",
+      "fps": "Frames per second",
+      "from": "From (s)",
+      "to": "To (s)",
+      "gif": {
+        "loop": "Loop",
+        "forever": "Forever",
+        "plays_one": "Play {{count}} time",
+        "plays_other": "Play {{count}} times",
+        "dither": "Dither (smoother gradients, larger file)",
+        "transparent": "Transparent background"
+      },
+      "summary": "{{width}} × {{height}} px, {{frames}} frames, {{seconds}} s, about {{size}}",
+      "flattenWhite": "The canvas is transparent; video has no transparency, so frames are placed on white.",
+      "clamped": {
+        "height": "Size limited to {{height}}p by your plan.",
+        "fps": "Frame rate limited to {{fps}} fps.",
+        "duration": "Length limited to {{seconds}} s by your plan."
+      },
+      "tooLarge": "This export would be larger than 2 GB. Lower the size, frame rate or length.",
+      "cancelCounts": "Cancelling after the export has started still uses one export from your daily allowance.",
+      "preparing": "Preparing…",
+      "progress": "Rendering frame {{done}} of {{total}}",
+      "progressLabel": "Export progress",
+      "finalizing": "Finishing the file…",
+      "cancel": "Cancel",
+      "cancelled": "Export cancelled. Nothing was downloaded.",
+      "failed": {
+        "tooLarge": "The file grew larger than 2 GB, so the export was stopped. Lower the size, frame rate or length.",
+        "codec": "This browser cannot encode video at this size and frame rate. Try a smaller size, or Chrome or Edge.",
+        "unsafe": "This drawing contains external content that cannot be rendered to frames. Remove it and try again.",
+        "error": "The export failed in the browser. Try again, or try a smaller size."
+      },
+      "capHeight": "Your plan exports raster files up to {{max}}p.",
+      "capFps": "Your plan exports up to {{max}} frames per second."
+    },
     "exportDialog": {
       "title": "Export",
       "description": "Exports are made in your browser. Animated exports count toward your daily allowance; static SVG is always free.",
@@ -869,9 +931,6 @@
       "animatedHint": "One SVG file with its animation. Pure CSS when possible, otherwise a small inline script.",
       "static": "Static SVG",
       "staticHint": "The frame at the playhead, without animation. Free, never counted.",
-      "comingSoon": "Coming soon",
-      "formats_gif": "GIF",
-      "formats_mp4": "MP4 and WebM video",
       "export": "Export",
       "unsupported": "This animation uses effects that animated SVG cannot export yet.",
       "doneStatic": "Static SVG downloaded.",
