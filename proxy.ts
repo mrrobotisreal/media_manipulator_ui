@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { isSupportedPrefix } from './i18n/locales';
+import { isSupportedPrefix, translatorHomeLocale } from './i18n/locales';
 
 /**
  * Locale routing proxy (Next 16's successor to middleware.ts).
@@ -23,6 +23,16 @@ import { isSupportedPrefix } from './i18n/locales';
  * reads, no automatic redirects. A crawler and a user requesting the same URL
  * always receive identical content (SEO/AdSense safety). The visitor's stored
  * language preference only informs client-side UI.
+ *
+ * Translator deployments (MM56; `NEXT_PUBLIC_DEPLOY_ROLE=translator` with a
+ * valid `NEXT_PUBLIC_TRANSLATOR_LOCALE`, resolved by `translatorHomeLocale()`)
+ * open in their own locale instead: an unprefixed path is TEMPORARILY
+ * redirected (307) to the locale's prefix (`/` → `/de`, `/about` → `/de/about`,
+ * query kept), and `/en/...` is served as-is so the translator can still read
+ * the English source (the language selector links there). The decision is env
+ * based, not visitor based, so the no-detection rule above still holds. In
+ * production the role is inlined as `''`, `translatorHomeLocale()` is `null`
+ * and both branches below are skipped.
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -42,8 +52,12 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // /en/... → permanent redirect to the canonical unprefixed URL.
+  const translatorHome = translatorHomeLocale();
+
+  // /en/... → permanent redirect to the canonical unprefixed URL (production).
+  // Translator deployments serve it instead: it is their English view.
   if (pathname === '/en' || pathname.startsWith('/en/')) {
+    if (translatorHome) return NextResponse.next();
     const url = request.nextUrl.clone();
     url.pathname = pathname.slice('/en'.length) || '/';
     return NextResponse.redirect(url, 308);
@@ -54,6 +68,14 @@ export function proxy(request: NextRequest) {
   // Any registered prefix (i18n/locales.ts) — already locale-prefixed.
   if (first && isSupportedPrefix(first)) {
     return NextResponse.next();
+  }
+
+  // Translator deployment: unprefixed → the deployment's locale (temporary, so
+  // nothing caches it beyond the deployment that issued it).
+  if (translatorHome) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === '/' ? `/${translatorHome.prefix}` : `/${translatorHome.prefix}${pathname}`;
+    return NextResponse.redirect(url, 307);
   }
 
   // Unprefixed public path → serve the prerendered English tree.

@@ -1,8 +1,10 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { createFakeTranslatorApi, type MeResult } from './api';
-import { useTranslatorGate, type GateAuth } from './useTranslatorGate';
+import { GATE_CACHE_PREFIX, GATE_CACHE_TTL_MS, sessionGateCache, useTranslatorGate, type GateAuth } from './useTranslatorGate';
+
+afterEach(() => window.sessionStorage.clear());
 
 const signedIn: GateAuth = { loading: false, user: { uid: 'u1' }, emailVerified: true };
 
@@ -65,3 +67,59 @@ describe('useTranslatorGate (design §2.8)', () => {
     expect(api.calls.me).toHaveLength(2);
   });
 });
+
+describe('MM56 /me session cache (dry-run defect 2)', () => {
+  it('stores only an allowed answer, keyed by locale, with the uid', async () => {
+    const { result } = gate({ status: 'allowed', email: 't@x.io', locale: 'ar-SA' });
+    await waitFor(() => expect(result.current.state.kind).toBe('allowed'));
+    const raw = JSON.parse(window.sessionStorage.getItem(`${GATE_CACHE_PREFIX}ar-SA`)!);
+    expect(raw).toMatchObject({ uid: 'u1', email: 't@x.io' });
+  });
+
+  it('a fresh entry renders allowed on the first render, and /me is still asked', async () => {
+    sessionGateCache().write('ar-SA', { uid: 'u1', email: 't@x.io', at: Date.now() });
+    const { result, api } = gate({ status: 'allowed', email: 't@x.io', locale: 'ar-SA' });
+    expect(result.current.state).toEqual({ kind: 'allowed', email: 't@x.io', locale: 'ar-SA' });
+    await waitFor(() => expect(api.calls.me).toEqual(['id-token']));
+  });
+
+  it.each<[string, MeResult]>([
+    ['not_allowlisted', { status: 'not_allowlisted' }],
+    ['unverified', { status: 'unverified' }],
+    ['unauthorized', { status: 'unauthorized' }],
+    ['error', { status: 'error', detail: 'HTTP 500' }],
+    ['another locale', { status: 'allowed', email: 'e', locale: 'de-DE' }],
+  ])('a cached allow is revoked by %s: state leaves allowed, entry removed', async (_n, me) => {
+    sessionGateCache().write('ar-SA', { uid: 'u1', email: 't@x.io', at: Date.now() });
+    const { result } = gate(me);
+    await waitFor(() => expect(result.current.state.kind).not.toBe('allowed'));
+    expect(window.sessionStorage.getItem(`${GATE_CACHE_PREFIX}ar-SA`)).toBeNull();
+  });
+
+  it('ignores an expired entry, another uid, and junk', () => {
+    const c = sessionGateCache();
+    const now = 10_000_000;
+    c.write('ar-SA', { uid: 'u1', email: 'e', at: now - GATE_CACHE_TTL_MS - 1 });
+    expect(c.read('ar-SA', 'u1', now)).toBeNull();
+    c.write('ar-SA', { uid: 'u1', email: 'e', at: now });
+    expect(c.read('ar-SA', 'u2', now)).toBeNull();
+    expect(c.read('ar-SA', 'u1', now)?.email).toBe('e');
+    expect(c.read('ar-SA', null, now)?.uid).toBe('u1');
+    window.sessionStorage.setItem(`${GATE_CACHE_PREFIX}ar-SA`, '{not json');
+    expect(c.read('ar-SA', 'u1', now)).toBeNull();
+  });
+
+  it('while auth restores, a cached entry shows the panel; a signed-out answer clears it', async () => {
+    sessionGateCache().write('ar-SA', { uid: 'u1', email: 't@x.io', at: Date.now() });
+    const api = createFakeTranslatorApi({ me: { status: 'allowed', email: 't@x.io', locale: 'ar-SA' } });
+    let auth: GateAuth = { loading: true, user: null, emailVerified: null };
+    const getIdToken = async () => 'tok';
+    const hook = renderHook(() => useTranslatorGate({ api, auth, locale: 'ar-SA', getIdToken }));
+    expect(hook.result.current.state.kind).toBe('allowed');
+    auth = { loading: false, user: null, emailVerified: null };
+    hook.rerender();
+    await waitFor(() => expect(hook.result.current.state.kind).toBe('signed_out'));
+    expect(window.sessionStorage.getItem(`${GATE_CACHE_PREFIX}ar-SA`)).toBeNull();
+  });
+});
+

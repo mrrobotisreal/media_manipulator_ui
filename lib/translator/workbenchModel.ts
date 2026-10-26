@@ -19,7 +19,7 @@
  */
 import type { SubmitResult, TranslatorApi } from './api';
 import { emitTranslatorEvent } from './devEvents';
-import type { BaseMeta, DraftRecord, DraftStore } from './draftStore';
+import type { BaseMeta, DraftRecord, DraftStore, SubmitDraft } from './draftStore';
 import type { KeySite } from './domScanner';
 import type { RegistryEntry } from './keyRegistry';
 import type { KeyEntry, KeyTable } from './keyTable';
@@ -92,6 +92,26 @@ export class WorkbenchModel {
   storage: { persistent: boolean; reason: string | null };
   base: BaseMeta | null = null;
   baseStatus: BaseStatus = 'idle';
+  /**
+   * MM56 (dry-run defect 2): the submit modal's draft (open, description, ticked
+   * warnings and conflicts), restored after navigation and reload. The modal owns
+   * the live values; this is what it last saved.
+   */
+  submitDraft: SubmitDraft | null = null;
+  /**
+   * MM56: the panel's view state (tab, search). The model lives as long as the
+   * page's session, so a panel remounted by a `[lang]` navigation picks it up.
+   * Not persisted and not observable: only read when a panel mounts.
+   */
+  private panelUi_: { tab?: 'page' | 'all' | 'changes'; query?: string } = {};
+
+  get panelUi(): Readonly<{ tab?: 'page' | 'all' | 'changes'; query?: string }> {
+    return this.panelUi_;
+  }
+
+  rememberPanelUi(patch: { tab?: 'page' | 'all' | 'changes'; query?: string }): void {
+    this.panelUi_ = { ...this.panelUi_, ...patch };
+  }
 
   constructor(options: WorkbenchModelOptions) {
     this.locale = options.locale;
@@ -131,7 +151,12 @@ export class WorkbenchModel {
 
   /** Loads this locale's drafts, re-applies them to the page, and loads the stored base. */
   async init(): Promise<void> {
-    const [records, meta] = await Promise.all([this.store.list(this.locale), this.store.getMeta(this.locale)]);
+    const [records, meta, submitDraft] = await Promise.all([
+      this.store.list(this.locale),
+      this.store.getMeta(this.locale),
+      this.store.getSubmitDraft(this.locale),
+    ]);
+    this.submitDraft = submitDraft ?? null;
     for (const r of records) {
       const entry = this.table.byId(`${r.file}|${r.key}`);
       if (!entry) continue;
@@ -363,6 +388,31 @@ export class WorkbenchModel {
     this.revalidate(id);
     emitTranslatorEvent('translator_reverted', { locale: this.locale, file: entry.file, key: entry.key });
     this.bump();
+  }
+
+  /* --- submit modal draft (MM56) ---------------------------------------- */
+
+  /** Saves part of the submit modal's state (write-through to the draft store). */
+  saveSubmitDraft(patch: Partial<Pick<SubmitDraft, 'open' | 'description' | 'acknowledged' | 'confirmedConflicts'>>): void {
+    // Closing with nothing saved (e.g. after a successful submit) stores nothing.
+    if (!this.submitDraft && Object.keys(patch).length === 1 && patch.open === false) return;
+    const prev = this.submitDraft ?? {
+      locale: this.locale,
+      open: false,
+      description: '',
+      acknowledged: [],
+      confirmedConflicts: [],
+      updatedAt: 0,
+    };
+    const next: SubmitDraft = { ...prev, ...patch, locale: this.locale, updatedAt: this.now() };
+    this.submitDraft = next;
+    this.persist(() => this.store.putSubmitDraft(next));
+  }
+
+  /** A successful submit: the next modal starts empty. */
+  clearSubmitDraft(): void {
+    this.submitDraft = null;
+    this.persist(() => this.store.clearSubmitDraft(this.locale));
   }
 
   /** Resolves when every queued draft write has settled (tests, submit). */

@@ -51,14 +51,72 @@ interface ElementRecord {
 
 const MARKER_FREE_HEAD_SELECTORS = 'meta[content], link';
 
+/**
+ * MM56 (dry-run defect 3): what the page's markers WERE, for nodes a scanner
+ * already cleaned. The scanner strips markers in place, and React never rewrites
+ * a text node or attribute whose rendered value did not change, so a scanner that
+ * starts after another one ran (the workbench remounted with the `[lang]` root
+ * layout, or the outgoing scanner cleaned the incoming page before it was
+ * disposed) would find a marker-free DOM and list 0 keys until something forced
+ * a re-render (Mitch's English -> German toggle). Every scanner in the realm
+ * records here what it removed, keyed by node, together with the clean value it
+ * left behind; a later scan of an unmarked node whose value is still that clean
+ * value re-links the same keys. Weak maps: nothing outlives its node.
+ */
+export class MarkerMemory {
+  private text = new WeakMap<Text, { clean: string; indices: number[] }>();
+  private attrs = new WeakMap<Element, Map<string, { clean: string; indices: number[] }>>();
+
+  rememberText(node: Text, clean: string, indices: number[]): void {
+    this.text.set(node, { clean, indices });
+  }
+
+  /** Marker indices `node` carried, if its text is still what the scanner left. */
+  recallText(node: Text): number[] | null {
+    const m = this.text.get(node);
+    return m && m.clean === node.data ? m.indices : null;
+  }
+
+  rememberAttr(el: Element, attr: string, clean: string, indices: number[]): void {
+    let map = this.attrs.get(el);
+    if (!map) {
+      map = new Map();
+      this.attrs.set(el, map);
+    }
+    map.set(attr, { clean, indices });
+  }
+
+  recallAttr(el: Element, attr: string, value: string): number[] | null {
+    const m = this.attrs.get(el)?.get(attr);
+    return m && m.clean === value ? m.indices : null;
+  }
+
+  /** Live edit rewrote a mapped node: it still shows the same keys. */
+  retextNode(node: Text, clean: string): void {
+    const m = this.text.get(node);
+    if (m) this.text.set(node, { clean, indices: m.indices });
+  }
+
+  retextAttr(el: Element, attr: string, clean: string): void {
+    const m = this.attrs.get(el)?.get(attr);
+    if (m) m.clean = clean;
+  }
+}
+
+/** One memory per JS realm (page lifetime), shared by every scanner by default. */
+export const pageMarkerMemory = new MarkerMemory();
+
 export interface DomScannerOptions {
   root?: Document;
   registry?: KeyRegistry;
+  /** MM56: defaults to `pageMarkerMemory`; tests pass their own. */
+  memory?: MarkerMemory;
 }
 
 export class DomScanner {
   private readonly doc: Document;
   private readonly registry: KeyRegistry;
+  private readonly memory: MarkerMemory;
   private observer: MutationObserver | null = null;
   private byElement = new Map<Element, ElementRecord>();
   private byRef = new Map<string, Set<Element>>();
@@ -78,6 +136,7 @@ export class DomScanner {
   constructor(options: DomScannerOptions = {}) {
     this.doc = options.root ?? document;
     this.registry = options.registry ?? keyRegistry;
+    this.memory = options.memory ?? pageMarkerMemory;
   }
 
   /**
@@ -117,6 +176,19 @@ export class DomScanner {
   private initialScan(): void {
     this.cancelStart = null;
     if (this.disposed) return;
+    this.scan(this.doc.documentElement);
+    this.flush();
+  }
+
+  /**
+   * MM56: re-scans the whole document now and notifies (after a client navigation,
+   * so nodes another scanner cleaned are re-linked through the marker memory).
+   */
+  rescan(): void {
+    if (this.disposed || !this.observer) return;
+    this.cancelStart?.();
+    this.cancelStart = null;
+    this.prune();
     this.scan(this.doc.documentElement);
     this.flush();
   }
@@ -193,14 +265,23 @@ export class DomScanner {
 
   private processText(node: Text): void {
     const data = node.data;
-    if (!hasMarker(data)) return;
+    let indices: number[];
+    if (hasMarker(data)) {
+      indices = findMarkers(data).map((m) => m.index);
+      const clean = stripMarkers(data);
+      this.selfWrites.add(node);
+      node.data = clean;
+      this.memory.rememberText(node, clean, indices);
+    } else {
+      // Already cleaned by this or an earlier scanner (MM56 defect 3).
+      const recalled = this.memory.recallText(node);
+      if (!recalled) return;
+      indices = recalled;
+    }
     const owner = node.parentElement;
-    const markers = findMarkers(data);
-    this.selfWrites.add(node);
-    node.data = stripMarkers(data);
     if (!owner || owner.closest('head,script,style,noscript,template')) return;
-    for (const m of markers) {
-      const entry = this.registry.resolve(m.index);
+    for (const index of indices) {
+      const entry = this.registry.resolve(index);
       if (entry) this.link(owner, entry, 'text', node);
     }
   }
@@ -210,16 +291,24 @@ export class DomScanner {
     if (el.closest('head')) return;
     for (const attr of SCANNED_ATTRIBUTES) {
       const v = el.getAttribute(attr);
-      if (!v || !hasMarker(v)) continue;
-      const markers = findMarkers(v);
-      const clean = stripMarkers(v);
-      el.setAttribute(attr, clean);
-      // A controlled <input value> keeps its own property; clean that too.
-      if (attr === 'value' && 'value' in el && (el as HTMLInputElement).value === v) {
-        (el as HTMLInputElement).value = clean;
+      if (!v) continue;
+      let indices: number[];
+      if (hasMarker(v)) {
+        indices = findMarkers(v).map((m) => m.index);
+        const clean = stripMarkers(v);
+        el.setAttribute(attr, clean);
+        // A controlled <input value> keeps its own property; clean that too.
+        if (attr === 'value' && 'value' in el && (el as HTMLInputElement).value === v) {
+          (el as HTMLInputElement).value = clean;
+        }
+        this.memory.rememberAttr(el, attr, clean, indices);
+      } else {
+        const recalled = this.memory.recallAttr(el, attr, v);
+        if (!recalled) continue;
+        indices = recalled;
       }
-      for (const m of markers) {
-        const entry = this.registry.resolve(m.index);
+      for (const index of indices) {
+        const entry = this.registry.resolve(index);
         if (entry) this.link(el, entry, attr);
       }
     }
@@ -385,6 +474,7 @@ export class DomScanner {
           if (node.data !== clean) {
             this.selfWrites.add(node);
             node.data = clean;
+            this.memory.retextNode(node, clean);
             changed++;
           }
         }
@@ -395,6 +485,7 @@ export class DomScanner {
         const clean = valueFor(current, site, el);
         if (current !== clean) {
           el.setAttribute(site, clean);
+          this.memory.retextAttr(el, site, clean);
           changed++;
         }
       }

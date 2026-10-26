@@ -15,6 +15,7 @@
  *   anything else nothing: the plain site, no panel, no hint
  */
 import * as React from 'react';
+import { usePathname } from 'next/navigation';
 import { I18nContext } from 'react-i18next';
 
 import { VerifyNotice } from '@/components/account/verify-notice';
@@ -24,8 +25,11 @@ import { createHttpTranslatorApi, type TranslatorApi } from '@/lib/translator/ap
 import { CHROME } from '@/lib/translator/chromeCopy';
 import type { I18nLike } from '@/lib/translator/liveEdit';
 import { translatorLocale } from '@/lib/translator/mode';
-import { useTranslatorGate } from '@/lib/translator/useTranslatorGate';
+import { useTranslatorGate, type GateCache } from '@/lib/translator/useTranslatorGate';
 import {
+  heldWorkbenchSession,
+  holdWorkbenchSession,
+  releaseWorkbenchSession,
   startWorkbenchSession,
   type StartWorkbenchSessionOptions,
   type WorkbenchSession,
@@ -38,6 +42,10 @@ type AuthLike = Pick<AuthContextValue, 'loading' | 'user' | 'emailVerified' | 'o
 export interface TranslatorIslandProps {
   /** Test seams; the deployment uses the defaults. */
   api?: TranslatorApi;
+  /** MM56 `/me` cache (default sessionStorage); `null` disables it. */
+  gateCache?: GateCache | null;
+  /** MM56: the current pathname (default `usePathname()`); a change re-scans the page. */
+  pathname?: string | null;
   auth?: AuthLike | null;
   locale?: string | null;
   i18n?: I18nLike | null;
@@ -55,9 +63,16 @@ export default function TranslatorIsland(props: TranslatorIslandProps) {
   const user = auth?.user ?? null;
   const getIdToken = React.useCallback(async () => (user ? user.getIdToken() : null), [user]);
   const gateAuth = auth ? { loading: auth.loading, user: auth.user, emailVerified: auth.emailVerified } : null;
-  const { state, recheck } = useTranslatorGate({ api, auth: gateAuth, locale, getIdToken });
+  const { state, recheck } = useTranslatorGate({ api, auth: gateAuth, locale, getIdToken, cache: props.gateCache });
   const dir = (locale && getLocaleDef(locale)?.dir) || 'ltr';
   const side = dir === 'rtl' ? 'left' : 'right';
+
+  // MM56: the session outlives this mount (see `holdWorkbenchSession`); a settled
+  // refusal (signed out, denied, unverified) ends it. `loading` keeps it.
+  const refused = state.kind === 'denied' || state.kind === 'signed_out' || state.kind === 'unverified';
+  React.useEffect(() => {
+    if (refused) releaseWorkbenchSession();
+  }, [refused]);
 
   if (!locale) return null;
   switch (state.kind) {
@@ -71,6 +86,7 @@ export default function TranslatorIsland(props: TranslatorIslandProps) {
           getIdToken={getIdToken}
           startSession={props.startSession ?? startWorkbenchSession}
           panelProps={props.panelProps}
+          pathname={props.pathname}
         />
       );
     case 'unverified':
@@ -115,6 +131,7 @@ function WorkbenchHost({
   getIdToken,
   startSession,
   panelProps,
+  pathname: pathnameProp,
 }: {
   locale: string;
   dir: 'ltr' | 'rtl';
@@ -123,8 +140,11 @@ function WorkbenchHost({
   getIdToken: () => Promise<string | null>;
   startSession: (options: StartWorkbenchSessionOptions) => Promise<WorkbenchSession>;
   panelProps?: Partial<WorkbenchPanelProps>;
+  pathname?: string | null;
 }) {
-  const [session, setSession] = React.useState<WorkbenchSession | null>(null);
+  // MM56: a remount (the `[lang]` layout changed) finds the page's session already
+  // running and renders the panel in the same commit, with no loading flash.
+  const [session, setSession] = React.useState<WorkbenchSession | null>(() => heldWorkbenchSession(locale));
   const [failed, setFailed] = React.useState(false);
   const tokenRef = React.useRef(getIdToken);
   React.useEffect(() => {
@@ -134,24 +154,30 @@ function WorkbenchHost({
 
   React.useEffect(() => {
     let cancelled = false;
-    let started: WorkbenchSession | null = null;
-    startSession({ locale, i18n: i18nRef.current, api, getIdToken: () => tokenRef.current() })
+    holdWorkbenchSession({ locale, i18n: i18nRef.current, api, getIdToken: () => tokenRef.current() }, startSession)
       .then((s) => {
-        if (cancelled) s.dispose();
-        else {
-          started = s;
-          setSession(s);
-        }
+        if (!cancelled) setSession(s);
       })
       .catch((error) => {
         console.error('[translator] workbench failed to start', error);
         if (!cancelled) setFailed(true);
       });
+    // Unmounting does NOT dispose: the next mount (same page) reuses the session.
     return () => {
       cancelled = true;
-      started?.dispose();
     };
   }, [api, locale, startSession]);
+
+  // MM56 defect 3: re-scan after every client navigation (and after a remount),
+  // so "This page" lists the new page without a language toggle.
+  const routerPath = usePathname();
+  const pathname = pathnameProp !== undefined ? pathnameProp : routerPath;
+  React.useEffect(() => {
+    if (!session) return;
+    // A macrotask after the commit, so the new page's nodes are in the DOM.
+    const timer = setTimeout(() => session.rescan(), 0);
+    return () => clearTimeout(timer);
+  }, [session, pathname]);
 
   // Client-only island (ssr: false), so reading the location at render is safe.
   const localizedHref = session ? localizeHref(stripLocalePrefix(window.location.pathname), locale) : undefined;
