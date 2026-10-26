@@ -18,6 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocalization } from '@/i18n/useLocalization';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { VerifyNotice } from '@/components/account/verify-notice';
 import { ACCOUNT_TABS, accountTabHref, parseAccountTab, type AccountTab } from '@/lib/account/tabs';
 
 /**
@@ -31,51 +32,6 @@ import { ACCOUNT_TABS, accountTabHref, parseAccountTab, type AccountTab } from '
 export interface AccountLabels extends OverviewExtras {
   copy: AccountCopy;
 }
-
-/** Listed-but-unverified operator notice; above the tabs because it blocks the tier. */
-const VerifyNotice: React.FC<{ labels: AccountCopy['verify'] }> = ({ labels }) => {
-  const auth = useAuth();
-  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent' | 'sendFailed' | 'checking' | 'stillUnverified'>('idle');
-  if (!auth) return null;
-
-  const send = async () => {
-    setStatus('sending');
-    try {
-      await auth.sendVerificationEmail();
-      setStatus('sent');
-    } catch {
-      setStatus('sendFailed');
-    }
-  };
-  const check = async () => {
-    setStatus('checking');
-    const verified = await auth.refreshIdentity().catch(() => null);
-    setStatus(verified ? 'idle' : 'stillUnverified');
-  };
-  const note =
-    status === 'sent' ? labels.sent : status === 'sendFailed' ? labels.sendFailed : status === 'stillUnverified' ? labels.stillUnverified : null;
-  const busy = status === 'sending' || status === 'checking';
-
-  return (
-    <Panel className="border-premium/40">
-      <h2 className="text-base font-semibold text-foreground">{labels.title}</h2>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{labels.body}</p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <Button onClick={() => void send()} disabled={busy}>
-          {labels.send}
-        </Button>
-        <Button variant="outline" onClick={() => void check()} disabled={busy}>
-          {labels.check}
-        </Button>
-      </div>
-      {note ? (
-        <p className="mt-3 text-xs text-muted-foreground" role="status">
-          {note}
-        </p>
-      ) : null}
-    </Panel>
-  );
-};
 
 export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }) => {
   const { copy } = labels;
