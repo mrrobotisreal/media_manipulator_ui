@@ -30,7 +30,7 @@
  * loader and `loadTranslatorWorkbench()` the one asynchronous one (MM53 panel);
  * `npm run check:no-translator` proves the result on the built output.
  */
-import { translatorLocales } from '@/i18n/locales';
+import { translatorHomeLocale } from '@/i18n/locales';
 
 /** True on a translator deployment (`NEXT_PUBLIC_DEPLOY_ROLE=translator`). */
 export function isTranslatorEnv(): boolean {
@@ -46,8 +46,9 @@ let warnedInvalidLocale = false;
  */
 export function translatorLocale(): string | null {
   if (!isTranslatorEnv()) return null;
-  const raw = (process.env.NEXT_PUBLIC_TRANSLATOR_LOCALE ?? '').trim().toLowerCase();
-  const match = raw ? translatorLocales.find((l) => l.code.toLowerCase() === raw) : undefined;
+  // MM56: the same resolver `proxy.ts` lands unprefixed URLs with, so the locale
+  // the site opens in and the locale the panel edits can never differ.
+  const match = translatorHomeLocale();
   if (match) return match.code;
   if (!warnedInvalidLocale) {
     warnedInvalidLocale = true;

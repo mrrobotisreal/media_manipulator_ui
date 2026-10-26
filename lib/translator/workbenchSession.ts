@@ -7,7 +7,7 @@
  * get a scanner).
  */
 import type { TranslatorApi } from './api';
-import { DomScanner, type KeySite } from './domScanner';
+import { DomScanner, type KeySite, type MarkerMemory } from './domScanner';
 import { openDraftStore, type DraftStore } from './draftStore';
 import { TranslatorHighlighter } from './highlight';
 import { keyRegistry as defaultRegistry, type KeyRegistry, type RegistryEntry } from './keyRegistry';
@@ -28,6 +28,8 @@ export interface WorkbenchController {
 export interface WorkbenchSession {
   model: WorkbenchModel;
   controller: WorkbenchController;
+  /** MM56: re-scan the page now (called after every client navigation). */
+  rescan(): void;
   dispose(): void;
 }
 
@@ -40,6 +42,8 @@ export interface StartWorkbenchSessionOptions {
   shards?: LoadedShard[];
   store?: DraftStore;
   registry?: KeyRegistry;
+  /** MM56: marker memory (default: the page's). */
+  memory?: MarkerMemory;
   doc?: Document;
   scanImmediately?: boolean;
 }
@@ -75,7 +79,7 @@ export async function startWorkbenchSession(options: StartWorkbenchSessionOption
 
   const table = buildKeyTable(locale, shards);
   const store = options.store ?? (await openDraftStore());
-  const scanner = new DomScanner({ root: options.doc, registry });
+  const scanner = new DomScanner({ root: options.doc, registry, memory: options.memory });
   const highlighter = new TranslatorHighlighter(scanner, options.doc);
   const live = new LiveEditor({ locale, i18n: options.i18n, scanner, registry });
   const model = new WorkbenchModel({
@@ -132,6 +136,9 @@ export async function startWorkbenchSession(options: StartWorkbenchSessionOption
   return {
     model,
     controller,
+    rescan() {
+      scanner.rescan();
+    },
     dispose() {
       for (const off of offs.splice(0)) off();
       highlighter.dispose();
@@ -140,4 +147,71 @@ export async function startWorkbenchSession(options: StartWorkbenchSessionOption
       store.close();
     },
   };
+}
+
+/* ------------------------------------------------------------------------- */
+/* Realm-scoped session (MM56, dry-run defects 2 and 3)                       */
+/* ------------------------------------------------------------------------- */
+
+/**
+ * The workbench session lives for the PAGE (JS realm), not for the island.
+ *
+ * The island sits inside the `[lang]` root layout, and Next remounts everything
+ * under that segment when its value changes (German page <-> English view): the
+ * layout router keys the segment by `lang|<value>`. MM53 started a session per
+ * island mount, so every such navigation threw away the scanner, re-loaded the
+ * shards and re-gated (about a second without a panel). Worse, the outgoing
+ * scanner was still observing while React inserted the incoming page (passive
+ * effect cleanups run after the commit's MutationObserver microtask), so it
+ * stripped the new page's markers just before it was disposed, and the fresh
+ * scanner found nothing: "This page" showed 0 items until another remount.
+ *
+ * Now the first allowed mount starts the session, later mounts reuse it at once
+ * (one scanner observes the page throughout), and it is disposed only when the
+ * gate turns negative (sign-out, a revalidated refusal). The ID-token getter is
+ * the latest mount's, so a remounted AuthProvider's user is the one asked.
+ */
+interface HeldSession {
+  locale: string;
+  promise: Promise<WorkbenchSession>;
+  session: WorkbenchSession | null;
+}
+
+let held: HeldSession | null = null;
+let heldTokenGetter: () => Promise<string | null> = async () => null;
+
+export function holdWorkbenchSession(
+  options: StartWorkbenchSessionOptions,
+  start: (options: StartWorkbenchSessionOptions) => Promise<WorkbenchSession> = startWorkbenchSession,
+): Promise<WorkbenchSession> {
+  heldTokenGetter = options.getIdToken;
+  if (held && held.locale === options.locale) return held.promise;
+  releaseWorkbenchSession();
+  const entry: HeldSession = { locale: options.locale, session: null, promise: Promise.resolve(null as never) };
+  entry.promise = start({ ...options, getIdToken: () => heldTokenGetter() }).then((s) => {
+    if (held !== entry) {
+      s.dispose();
+      throw new Error('workbench session released while starting');
+    }
+    entry.session = s;
+    return s;
+  });
+  // A failed start may be retried by the next mount.
+  entry.promise.catch(() => {
+    if (held === entry) held = null;
+  });
+  held = entry;
+  return entry.promise;
+}
+
+/** The started session for `locale`, if any (lets a remount render the panel synchronously). */
+export function heldWorkbenchSession(locale: string): WorkbenchSession | null {
+  return held && held.locale === locale ? held.session : null;
+}
+
+/** Disposes the held session (gate refused, signed out; tests). */
+export function releaseWorkbenchSession(): void {
+  const h = held;
+  held = null;
+  h?.session?.dispose();
 }

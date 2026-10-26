@@ -2,7 +2,7 @@
  * MM51: the 17-locale registry and its href helpers, including hyphenated
  * prefixes and the second RTL locale.
  */
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   codeToUrlPrefix,
@@ -13,6 +13,7 @@ import {
   localizeHref,
   stripLocalePrefix,
   translatedLocales,
+  translatorHomeLocale,
   urlPrefixToCode,
 } from "./locales";
 
@@ -109,5 +110,37 @@ describe("localizeHref and the Motion editor (MM42)", () => {
   it("still localizes look-alikes", () => {
     expect(localizeHref("/motion-graphics", "de-DE")).toBe("/de/motion-graphics");
     expect(localizeHref("/motions", "de-DE")).toBe("/de/motions");
+  });
+});
+
+/** MM56: on a translator deployment English is reached under `/en` (proxy lands `/` on the locale). */
+describe("translator deployment hrefs (MM56)", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("production: English stays unprefixed and /en is not a public prefix", () => {
+    vi.stubEnv("NEXT_PUBLIC_DEPLOY_ROLE", "");
+    expect(translatorHomeLocale()).toBeNull();
+    expect(localizeHref("/about", "en-US")).toBe("/about");
+    expect(stripLocalePrefix("/en/about")).toBe("/en/about");
+  });
+
+  it("translator de-DE: English links carry /en, and /en is stripped like any prefix", () => {
+    vi.stubEnv("NEXT_PUBLIC_DEPLOY_ROLE", "translator");
+    vi.stubEnv("NEXT_PUBLIC_TRANSLATOR_LOCALE", "de-DE");
+    expect(translatorHomeLocale()?.code).toBe("de-DE");
+    expect(localizeHref("/", "en-US")).toBe("/en");
+    expect(localizeHref("/about", "en-US")).toBe("/en/about");
+    expect(localizeHref("/dr/x", "en-US")).toBe("/dr/x");
+    expect(localizeHref("/about", "de-DE")).toBe("/de/about");
+    expect(stripLocalePrefix("/en/about")).toBe("/about");
+    expect(stripLocalePrefix("/en")).toBe("/");
+  });
+
+  it("an unknown locale or English as the translator locale resolves to null", () => {
+    vi.stubEnv("NEXT_PUBLIC_DEPLOY_ROLE", "translator");
+    for (const bad of ["", "xx-XX", "en-US"]) {
+      vi.stubEnv("NEXT_PUBLIC_TRANSLATOR_LOCALE", bad);
+      expect(translatorHomeLocale(), bad).toBeNull();
+    }
   });
 });

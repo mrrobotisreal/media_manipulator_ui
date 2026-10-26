@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { DomScanner, SCANNED_ATTRIBUTES } from './domScanner';
+import { DomScanner, MarkerMemory, SCANNED_ATTRIBUTES } from './domScanner';
 import { KeyRegistry, markerIndex } from './keyRegistry';
 import { appendMarker } from './markerCodec';
 import type { MarkerRef } from './mode';
@@ -185,3 +185,57 @@ describe('DOM scanner: MM53 additions', () => {
     expect(seen.sort()).toEqual(['placeholder', 'text', 'text']);
   });
 });
+
+/**
+ * MM56 dry-run defect 3: "This page" showed 0 items after returning to a page,
+ * until an English -> German toggle. The outgoing scanner (old panel mount) was
+ * still observing when React inserted the returning page, stripped its markers,
+ * and was then disposed; the new scanner saw a marker-free DOM. React does not
+ * re-render text whose value did not change, so nothing brought the markers back.
+ */
+describe('DOM scanner across a navigation (MM56)', () => {
+  it('a fresh scanner re-links nodes an earlier scanner already cleaned', async () => {
+    const memory = new MarkerMemory();
+    document.body.innerHTML = '<main id="m"></main>';
+    const outgoing = new DomScanner({ registry, memory }).start({ immediate: true });
+    // Client navigation: the page's DOM is replaced while the old scanner still observes.
+    document.getElementById('m')!.innerHTML =
+      `<h1 id="h">${marked('Bilder komprimieren', 'tools.compress.title', 'de-DE')}</h1>` +
+      `<input id="i" placeholder="${marked('Suchen', 'search.placeholder', 'de-DE')}">`;
+    await flush();
+    expect(outgoing.getKeysOnPage()).toHaveLength(2);
+    expect(allVisibleText()).not.toMatch(ZW);
+    outgoing.dispose();
+
+    // The remounted panel's scanner starts on the already-clean page.
+    scanner = new DomScanner({ registry, memory }).start({ immediate: true });
+    expect(scanner.getKeysOnPage().map((k) => k.key).sort()).toEqual(['search.placeholder', 'tools.compress.title']);
+    expect(scanner.getElementsForKey(ref('tools.compress.title', 'de-DE'))[0].id).toBe('h');
+  });
+
+  it('a cleaned node whose text React later changed is not re-linked to the old key', () => {
+    const memory = new MarkerMemory();
+    document.body.innerHTML = `<p id="p">${marked('Alt', 'old.key', 'de-DE')}</p>`;
+    const first = new DomScanner({ registry, memory }).start({ immediate: true });
+    first.dispose();
+    (document.getElementById('p')!.firstChild as Text).data = 'Benutzertext';
+    scanner = new DomScanner({ registry, memory }).start({ immediate: true });
+    expect(scanner.getKeysOnPage()).toEqual([]);
+  });
+
+  it('rescan() repopulates after the DOM was replaced by already-clean nodes', async () => {
+    const memory = new MarkerMemory();
+    document.body.innerHTML = `<p id="a">${marked('Eins', 'one', 'de-DE')}</p>`;
+    scanner = new DomScanner({ registry, memory }).start({ immediate: true });
+    const seen: string[][] = [];
+    scanner.subscribe(() => seen.push(scanner.getKeysOnPage().map((k) => k.key)));
+    scanner.rescan();
+    expect(scanner.getKeysOnPage().map((k) => k.key)).toEqual(['one']);
+    document.body.innerHTML = `<p id="b">${marked('Zwei', 'two', 'de-DE')}</p>`;
+    await flush();
+    scanner.rescan();
+    expect(scanner.getKeysOnPage().map((k) => k.key)).toEqual(['two']);
+    expect(seen.at(-1)).toEqual(['two']);
+  });
+});
+

@@ -45,6 +45,65 @@ describe('draftStore', () => {
     expect(await s2.getMeta('fr-FR')).toBeUndefined();
   });
 
+  it('MM56: the submit modal draft survives a reload, per locale, and clears', async () => {
+    const fake = createFakeIndexedDb();
+    const factory = fake.asFactory();
+    const s1 = await openDraftStore({ indexedDB: factory, now: () => 42 });
+    const saved = await s1.putSubmitDraft({
+      locale: 'de-DE',
+      open: true,
+      description: 'Fix the German home page',
+      acknowledged: ['a.b#identical'],
+      confirmedConflicts: [`${FILE_A}|a.b`],
+    });
+    expect(saved.updatedAt).toBe(42);
+    s1.close();
+
+    const s2 = await openDraftStore({ indexedDB: factory });
+    expect(await s2.getSubmitDraft('de-DE')).toEqual(saved);
+    expect(await s2.getSubmitDraft('fr-FR')).toBeUndefined();
+    await s2.clearSubmitDraft('de-DE');
+    s2.close();
+
+    const s3 = await openDraftStore({ indexedDB: factory });
+    expect(await s3.getSubmitDraft('de-DE')).toBeUndefined();
+  });
+
+  it('MM56: a v1 database (drafts + meta only) upgrades to v2 with its drafts kept', async () => {
+    const fake = createFakeIndexedDb();
+    // Build a v1 database by hand, as MM53/MM54 deployments left it.
+    await new Promise<void>((resolve) => {
+      const req = fake.open('mm-translator-drafts', 1) as unknown as {
+        result: IDBDatabase;
+        onupgradeneeded: (() => void) | null;
+        onsuccess: (() => void) | null;
+      };
+      req.onupgradeneeded = () => {
+        req.result.createObjectStore('drafts', { keyPath: 'id' });
+        req.result.createObjectStore('meta', { keyPath: 'locale' });
+      };
+      req.onsuccess = () => {
+        const tx = req.result.transaction(['drafts'], 'readwrite');
+        tx.objectStore('drafts').put({ ...draft('de-DE', FILE_A, 'a.b', 'kept'), updatedAt: 1, id: `de-DE|${FILE_A}|a.b` });
+        tx.oncomplete = () => {
+          req.result.close();
+          resolve();
+        };
+      };
+    });
+    const s = await openDraftStore({ indexedDB: fake.asFactory() });
+    expect(s.persistent).toBe(true);
+    expect((await s.list('de-DE')).map((d) => d.value)).toEqual(['kept']);
+    await s.putSubmitDraft({ locale: 'de-DE', open: false, description: 'x', acknowledged: [], confirmedConflicts: [] });
+    expect(s.persistent).toBe(true);
+  });
+
+  it('MM56: memory fallback keeps the submit draft for the page lifetime', async () => {
+    const s = createMemoryDraftStore('unavailable');
+    await s.putSubmitDraft({ locale: 'ar-SA', open: true, description: 'وصف', acknowledged: [], confirmedConflicts: [] });
+    expect((await s.getSubmitDraft('ar-SA'))?.description).toBe('وصف');
+  });
+
   it('put/get/remove behave and updatedAt uses the injected now()', async () => {
     const store = await openDraftStore({ indexedDB: createFakeIndexedDb().asFactory(), now: () => 4242 });
     const saved = await store.put(draft('de-DE', FILE_A, 'k'));

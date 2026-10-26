@@ -4,7 +4,8 @@
  * Translator-deployment-only code: it is loaded behind the NEXT_PUBLIC_DEPLOY_ROLE
  * guard and is never imported by production code paths.
  *
- * Pending translation edits ("drafts") and the per-locale base SHA set are kept in
+ * Pending translation edits ("drafts"), the per-locale base SHA set and (MM56) the
+ * submit modal's draft are kept in
  * IndexedDB so they survive reload and navigation. The store always keeps a full
  * in-memory mirror (loaded at open) and writes through to IndexedDB on every
  * mutation; reads come from the mirror. When IndexedDB is unavailable (private
@@ -17,9 +18,11 @@
  */
 
 export const DRAFT_DB_NAME = 'mm-translator-drafts';
-export const DRAFT_DB_VERSION = 1;
+/** v2 (MM56) adds the `submit` store; v1 databases upgrade in place, drafts kept. */
+export const DRAFT_DB_VERSION = 2;
 const DRAFTS = 'drafts';
 const META = 'meta';
+const SUBMIT = 'submit';
 
 export interface DraftRecord {
   locale: string;
@@ -35,6 +38,23 @@ export interface BaseMeta {
   sha: string;
   files: Record<string, string>;
   fetchedAt: number;
+}
+
+/**
+ * MM56 (dry-run defect 2): the submit modal's own state, one per locale, so
+ * leaving the page (client navigation, reload, a full navigation and back) does
+ * not lose it. Cleared on a successful submit.
+ */
+export interface SubmitDraft {
+  locale: string;
+  /** The modal was open when last saved. */
+  open: boolean;
+  description: string;
+  /** Warning ids (`${key}#${code}`) ticked "I understand". */
+  acknowledged: string[];
+  /** Conflict ids (`<file>|<key>`) ticked "Keep my version". */
+  confirmedConflicts: string[];
+  updatedAt: number;
 }
 
 export function draftId(locale: string, file: string, key: string): string {
@@ -56,6 +76,10 @@ export interface DraftStore {
   clear(locale: string, keys?: Array<{ file: string; key: string }>): Promise<void>;
   getMeta(locale: string): Promise<BaseMeta | undefined>;
   putMeta(meta: BaseMeta): Promise<void>;
+  /** MM56: the submit modal draft for `locale`. */
+  getSubmitDraft(locale: string): Promise<SubmitDraft | undefined>;
+  putSubmitDraft(draft: Omit<SubmitDraft, 'updatedAt'> & { updatedAt?: number }): Promise<SubmitDraft>;
+  clearSubmitDraft(locale: string): Promise<void>;
   subscribe(listener: (state: DraftStoreState) => void): () => void;
   close(): void;
 }
@@ -83,6 +107,17 @@ function cloneDraft(d: DraftRecord): DraftRecord {
 
 function cloneMeta(m: BaseMeta): BaseMeta {
   return { locale: m.locale, sha: m.sha, files: { ...m.files }, fetchedAt: m.fetchedAt };
+}
+
+function cloneSubmit(d: SubmitDraft): SubmitDraft {
+  return {
+    locale: d.locale,
+    open: d.open === true,
+    description: typeof d.description === 'string' ? d.description : '',
+    acknowledged: Array.isArray(d.acknowledged) ? d.acknowledged.filter((x) => typeof x === 'string') : [],
+    confirmedConflicts: Array.isArray(d.confirmedConflicts) ? d.confirmedConflicts.filter((x) => typeof x === 'string') : [],
+    updatedAt: typeof d.updatedAt === 'number' ? d.updatedAt : 0,
+  };
 }
 
 function compareDrafts(a: DraftRecord, b: DraftRecord): number {
@@ -117,6 +152,7 @@ function createStore(
   now: () => number,
   drafts: Map<string, DraftRow>,
   metas: Map<string, BaseMeta>,
+  submits: Map<string, SubmitDraft> = new Map(),
 ): DraftStore {
   let reason: string | null = db ? null : (initialReason ?? 'unavailable');
   let handle: IDBDatabase | null = db;
@@ -217,6 +253,24 @@ function createStore(
         tx.objectStore(META).put(cloneMeta(copy));
       });
     },
+    async getSubmitDraft(locale) {
+      const d = submits.get(locale);
+      return d ? cloneSubmit(d) : undefined;
+    },
+    async putSubmitDraft(draft) {
+      const rec = cloneSubmit({ ...draft, updatedAt: draft.updatedAt ?? now() });
+      submits.set(rec.locale, rec);
+      await write([SUBMIT], (tx) => {
+        tx.objectStore(SUBMIT).put(cloneSubmit(rec));
+      });
+      return cloneSubmit(rec);
+    },
+    async clearSubmitDraft(locale) {
+      submits.delete(locale);
+      await write([SUBMIT], (tx) => {
+        tx.objectStore(SUBMIT).delete(locale);
+      });
+    },
     subscribe(listener) {
       listeners.add(listener);
       return () => {
@@ -243,10 +297,13 @@ export function createMemoryDraftStore(
   return createStore(null, reason, now, new Map(), new Map());
 }
 
-async function loadAll(db: IDBDatabase): Promise<{ drafts: Map<string, DraftRow>; metas: Map<string, BaseMeta> }> {
+async function loadAll(
+  db: IDBDatabase,
+): Promise<{ drafts: Map<string, DraftRow>; metas: Map<string, BaseMeta>; submits: Map<string, SubmitDraft> }> {
   const drafts = new Map<string, DraftRow>();
   const metas = new Map<string, BaseMeta>();
-  await runTx(db, [DRAFTS, META], 'readonly', (tx) => {
+  const submits = new Map<string, SubmitDraft>();
+  await runTx(db, [DRAFTS, META, SUBMIT], 'readonly', (tx) => {
     const dReq = tx.objectStore(DRAFTS).getAll() as IDBRequest<DraftRow[]>;
     dReq.onsuccess = () => {
       for (const row of dReq.result) {
@@ -258,8 +315,12 @@ async function loadAll(db: IDBDatabase): Promise<{ drafts: Map<string, DraftRow>
     mReq.onsuccess = () => {
       for (const m of mReq.result) metas.set(m.locale, cloneMeta(m));
     };
+    const sReq = tx.objectStore(SUBMIT).getAll() as IDBRequest<SubmitDraft[]>;
+    sReq.onsuccess = () => {
+      for (const d of sReq.result) if (d && typeof d.locale === 'string') submits.set(d.locale, cloneSubmit(d));
+    };
   });
-  return { drafts, metas };
+  return { drafts, metas, submits };
 }
 
 export function openDraftStore(options: OpenDraftStoreOptions = {}): Promise<DraftStore> {
@@ -298,6 +359,7 @@ export function openDraftStore(options: OpenDraftStoreOptions = {}): Promise<Dra
             os.createIndex('locale', 'locale');
           }
           if (!db.objectStoreNames.contains(META)) db.createObjectStore(META, { keyPath: 'locale' });
+          if (!db.objectStoreNames.contains(SUBMIT)) db.createObjectStore(SUBMIT, { keyPath: 'locale' });
         } catch {
           fallback('open_failed');
         }
@@ -315,7 +377,7 @@ export function openDraftStore(options: OpenDraftStoreOptions = {}): Promise<Dra
           return;
         }
         loadAll(db).then(
-          ({ drafts, metas }) => {
+          ({ drafts, metas, submits }) => {
             if (settled) {
               try {
                 db.close();
@@ -326,7 +388,7 @@ export function openDraftStore(options: OpenDraftStoreOptions = {}): Promise<Dra
             }
             settled = true;
             if (timer) clearTimeout(timer);
-            resolve(createStore(db, null, now, drafts, metas));
+            resolve(createStore(db, null, now, drafts, metas, submits));
           },
           () => {
             try {

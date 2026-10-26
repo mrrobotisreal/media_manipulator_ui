@@ -212,6 +212,35 @@ describe("legal retention copy", () => {
   });
 });
 
+// MM56 decision 4 (design §2.16): Privacy §8 says translator submissions are GitHub
+// PRs made by CreaTV Ltd.'s GitHub App and carry only translation text. Own block
+// so other legal tickets' edits above stay independent.
+describe("MM56 translator-submission sentence (Privacy §8)", () => {
+  const EN_SENTENCE =
+    "Translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App; those submissions contain only translation text, no personal data about visitors.";
+
+  it("en-us has the sentence verbatim after §8's bullets, and the What-changed note mentions it", () => {
+    const sharing = en.privacyPolicy.sections[7];
+    expect(sharing.title).toMatch(/^8\./);
+    expect(sharing.afterBullets).toEqual(["We do not sell uploaded files.", EN_SENTENCE]);
+    expect(en.legalCommon.whatChangedBody).toContain("GitHub App");
+  });
+
+  for (const { code, translated } of locales) {
+    it(`${code}: §8 has the sentence (GitHub App, CreaTV Ltd.) and the note names it`, () => {
+      const pages = load(code);
+      const sharing = pages.privacyPolicy.sections[7];
+      expect(sharing.afterBullets).toHaveLength(2);
+      const sentence = sharing.afterBullets?.[1] ?? "";
+      expect(sentence).toMatch(/GitHub/);
+      expect(sentence).toContain("CreaTV Ltd.");
+      expect(pages.legalCommon.whatChangedBody).toMatch(/GitHub/);
+      if (!translated) expect(sentence).toBe(EN_SENTENCE);
+      else if (code !== "en-US") expect(sentence).not.toBe(EN_SENTENCE);
+    });
+  }
+});
+
 /**
  * MM69 guard (ticket decision 6): outside the legal text, no copy names a price with a
  * currency symbol ("$8", "${{price}}", "{{price}} $", "€15"). Every price arrives through

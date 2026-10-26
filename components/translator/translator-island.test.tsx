@@ -13,7 +13,7 @@ import { createFakeTranslatorApi, type MeResult } from '@/lib/translator/api';
 import { createMemoryDraftStore } from '@/lib/translator/draftStore';
 import { KeyRegistry } from '@/lib/translator/keyRegistry';
 import { shard } from '@/lib/translator/testing/fixtures';
-import { startWorkbenchSession, type StartWorkbenchSessionOptions } from '@/lib/translator/workbenchSession';
+import { releaseWorkbenchSession, startWorkbenchSession, type StartWorkbenchSessionOptions } from '@/lib/translator/workbenchSession';
 import TranslatorIsland from './translator-island';
 
 const PLAIN_SITE = '<header><nav><a href="/">Media Manipulator</a></nav></header><main><h1>Compress images</h1><p>Fast and private.</p></main>';
@@ -56,6 +56,8 @@ async function renderSite(me: MeResult, a: unknown = auth(), locale: string | nu
 
 afterEach(() => {
   cleanup();
+  releaseWorkbenchSession();
+  window.sessionStorage.clear();
   document.body.innerHTML = '';
   startSession.mockClear();
 });

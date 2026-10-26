@@ -111,7 +111,8 @@ export function getLocaleDef(code: string): LocaleDef | undefined {
 
 /**
  * Prepend the locale's URL prefix to a site-internal href. English (and any
- * unknown code) returns the href unchanged, preserving the unprefixed URLs.
+ * unknown code) returns the href unchanged, preserving the unprefixed URLs;
+ * on a translator deployment English gets `/en` (MM56, `translatorHomeLocale`).
  * External URLs, `mailto:`, hashes, `/dr`, `/embed`, `/api` and the Motion
  * editor (`/motion`, `/motion/…`; MM42) are returned as-is. The Motion check is
  * exact, so `/tools/motion` and any `/motion-*` page are still localized.
@@ -121,8 +122,32 @@ export function localizeHref(href: string, code: string): string {
   if (href.startsWith("/dr") || href.startsWith("/embed") || href.startsWith("/api")) return href;
   if (isMotionEditorHref(href)) return href;
   const def = byCode.get(code);
-  if (!def || def.code === defaultLocale) return href;
+  if (!def) return href;
+  if (def.code === defaultLocale) {
+    // MM56: a translator deployment serves English only under `/en` (its
+    // unprefixed URLs open the deployment's locale, see `proxy.ts`).
+    if (!translatorHomeLocale()) return href;
+  }
   return href === "/" ? `/${def.prefix}` : `/${def.prefix}${href}`;
+}
+
+/**
+ * MM56: the locale a translator deployment opens in, or `null`.
+ *
+ * `NEXT_PUBLIC_DEPLOY_ROLE=translator` plus a `NEXT_PUBLIC_TRANSLATOR_LOCALE`
+ * that is one of `translatorLocales` (case-insensitive). Production never sets
+ * the role; `next.config.ts` inlines it as `''`, so the first check folds to
+ * `null` and nothing below changes behaviour there. The ONE place the locale
+ * env var is validated: `lib/translator/mode.ts` (`translatorLocale()`, which
+ * arms markers, scanner and panel) and `proxy.ts` (which lands unprefixed URLs
+ * on this locale) both call it, so they can never disagree. Kept here because
+ * this module must stay dependency-free (`proxy.ts`, bare-Node scripts).
+ */
+export function translatorHomeLocale(): LocaleDef | null {
+  if (process.env.NEXT_PUBLIC_DEPLOY_ROLE !== "translator") return null;
+  const raw = (process.env.NEXT_PUBLIC_TRANSLATOR_LOCALE ?? "").trim().toLowerCase();
+  if (!raw) return null;
+  return translatorLocales.find((l) => l.code.toLowerCase() === raw) ?? null;
 }
 
 /** `/motion`, `/motion/…`, `/motion?…`, `/motion#…`: the chromeless editor route. */
@@ -133,11 +158,14 @@ function isMotionEditorHref(href: string): boolean {
 /**
  * Strip a leading public locale prefix from a pathname, returning the
  * locale-neutral path (`/ru/about` → `/about`, `/ru` → `/`). Unprefixed paths
- * come back unchanged.
+ * come back unchanged. On a translator deployment `/en/...` is a public prefix
+ * too (MM56) and is stripped like the others.
  */
 export function stripLocalePrefix(pathname: string): string {
   const first = pathname.split("/")[1];
   const def = first ? byPrefix.get(first) : undefined;
-  if (!def || def.code === defaultLocale) return pathname;
+  if (!def) return pathname;
+  // `/en/...` is public only on translator deployments (MM56).
+  if (def.code === defaultLocale && !translatorHomeLocale()) return pathname;
   return pathname.slice(def.prefix.length + 1) || "/";
 }

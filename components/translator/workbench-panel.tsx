@@ -122,15 +122,34 @@ export const WorkbenchPanel: React.FC<WorkbenchPanelProps> = ({
   useModelVersion(model);
   const side = dir === 'rtl' ? 'left' : 'right';
   const [collapsed, setCollapsed] = React.useState<boolean>(
-    () => initialCollapsed ?? readStored(COLLAPSED_STORAGE_KEY) === '1',
+    // MM56: a submit modal left open comes back expanded, on Changes.
+    () => initialCollapsed ?? (readStored(COLLAPSED_STORAGE_KEY) === '1' && !model.submitDraft?.open),
   );
   const [width, setWidth] = React.useState<number>(() => {
     const stored = Number(readStored(WIDTH_STORAGE_KEY));
     const vw = typeof window === 'undefined' ? 1280 : window.innerWidth;
     return clampPanelWidth(Number.isFinite(stored) && stored > 0 ? stored : PANEL_DEFAULT_WIDTH, vw);
   });
-  const [tab, setTab] = React.useState<WorkbenchTab>('page');
-  const [query, setQuery] = React.useState('');
+  // MM56: a submit modal left open (saved in the draft store) reopens on Changes.
+  const [tab, setTabState] = React.useState<WorkbenchTab>(
+    () => (model.submitDraft?.open ? 'changes' : (model.panelUi.tab ?? 'page')),
+  );
+  const [query, setQueryState] = React.useState(() => model.panelUi.query ?? '');
+  // MM56: remembered on the model, so a remounted panel keeps its tab and search.
+  const setTab = React.useCallback(
+    (next: WorkbenchTab) => {
+      model.rememberPanelUi({ tab: next });
+      setTabState(next);
+    },
+    [model],
+  );
+  const setQuery = React.useCallback(
+    (next: string) => {
+      model.rememberPanelUi({ query: next });
+      setQueryState(next);
+    },
+    [model],
+  );
   const debounced = useDebounced(query, SEARCH_DEBOUNCE_MS);
   const searchRef = React.useRef<HTMLInputElement>(null);
   const handleRef = React.useRef<HTMLButtonElement>(null);
@@ -185,7 +204,7 @@ export const WorkbenchPanel: React.FC<WorkbenchPanelProps> = ({
       // Re-render even when the tab and query are unchanged, so the focus effect runs.
       setFocusRequest((n) => n + 1);
     },
-    [model, setCollapsedPersist],
+    [model, setCollapsedPersist, setQuery, setTab],
   );
   React.useEffect(() => controller.onFocusKey(focusEntry), [controller, focusEntry]);
 
@@ -518,7 +537,15 @@ const ChangesTab: React.FC<{
     query,
   );
   const warnings = changes.reduce((n, c) => n + c.warnings.length, 0);
-  const [submitOpen, setSubmitOpen] = React.useState(false);
+  // MM56: restored from the draft store; every open/close is saved there.
+  const [submitOpen, setSubmitOpenState] = React.useState(() => !!model.submitDraft?.open && changes.length > 0);
+  const setSubmitOpen = React.useCallback(
+    (next: boolean) => {
+      setSubmitOpenState(next);
+      model.saveSubmitDraft({ open: next });
+    },
+    [model],
+  );
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2 text-xs" dir="ltr">

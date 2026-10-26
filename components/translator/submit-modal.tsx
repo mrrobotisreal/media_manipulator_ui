@@ -7,6 +7,9 @@
  * Flow: describe the change -> pre-flight (`dryRun`) fills conflicts + warnings ->
  * every warning acknowledged and every conflict "Keep my version" -> Submit.
  * Every failure keeps the drafts; only "Start fresh" after a success clears them.
+ * MM56: the description and the ticked warnings/conflicts are saved to the draft
+ * store as they change (`model.saveSubmitDraft`) and restored on the next mount,
+ * so navigating away and back (or reloading) keeps them; a success clears them.
  * Chrome is English (`lang="en" dir="ltr"`); values render as text, never HTML.
  */
 import * as React from 'react';
@@ -42,20 +45,40 @@ function toggled(set: Set<string>, id: string, on: boolean): Set<string> {
   return next;
 }
 
+function sameSet(a: Set<string>, b: readonly string[] | undefined): boolean {
+  return !!b && a.size === b.length && b.every((x) => a.has(x));
+}
+
 export const SubmitModal: React.FC<SubmitModalProps> = ({ model, open, onOpenChange }) => {
-  const [description, setDescription] = React.useState('');
-  const descRef = React.useRef('');
+  const restored = model.submitDraft;
+  const [description, setDescription] = React.useState(restored?.description ?? '');
+  const descRef = React.useRef(restored?.description ?? '');
   const [check, setCheck] = React.useState<Check>('checking');
   const [checkDetail, setCheckDetail] = React.useState('');
   const [checkedOnce, setCheckedOnce] = React.useState(false);
   const [conflicts, setConflicts] = React.useState<SubmitConflict[]>([]);
   const [warnings, setWarnings] = React.useState<SubmitWarning[]>([]);
-  const [ackedWarnings, setAckedWarnings] = React.useState<Set<string>>(new Set());
-  const [keptConflicts, setKeptConflicts] = React.useState<Set<string>>(new Set());
+  const [ackedWarnings, setAckedWarnings] = React.useState<Set<string>>(() => new Set(restored?.acknowledged ?? []));
+  const [keptConflicts, setKeptConflicts] = React.useState<Set<string>>(() => new Set(restored?.confirmedConflicts ?? []));
   const [submitting, setSubmitting] = React.useState(false);
   const [message, setMessage] = React.useState<{ text: string; paths?: string[] } | null>(null);
   const [done, setDone] = React.useState<Done | null>(null);
   const emittedFor = React.useRef<string | null>(null);
+
+  // MM56: save what the translator typed and ticked (write-through, IndexedDB).
+  React.useEffect(() => {
+    if (done) return;
+    const prev = model.submitDraft;
+    if (
+      prev &&
+      prev.description === description &&
+      sameSet(ackedWarnings, prev.acknowledged) &&
+      sameSet(keptConflicts, prev.confirmedConflicts)
+    ) {
+      return;
+    }
+    model.saveSubmitDraft({ description, acknowledged: [...ackedWarnings], confirmedConflicts: [...keptConflicts] });
+  }, [model, description, ackedWarnings, keptConflicts, done]);
 
   const changes = model.changes();
   const trimmed = description.trim();
@@ -124,6 +147,7 @@ export const SubmitModal: React.FC<SubmitModalProps> = ({ model, open, onOpenCha
     setSubmitting(false);
     switch (res.kind) {
       case 'ok':
+        model.clearSubmitDraft();
         setDone({ result: res.result, submitted });
         if (emittedFor.current !== res.result.branch) {
           emittedFor.current = res.result.branch;

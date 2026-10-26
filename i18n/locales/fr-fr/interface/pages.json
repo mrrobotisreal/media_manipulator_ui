@@ -580,7 +580,7 @@
     "emailLabel": "E-mail :",
     "websiteLabel": "Site web :",
     "whatChangedTitle": "Ce qui a changé le 26/10/2026",
-    "whatChangedBody": "Nous avons ajouté Motion, notre éditeur d'animation SVG (en bêta). La Politique de confidentialité comporte une nouvelle section 1.9 : les projets et les exports Motion sont créés dans votre navigateur et ne sont pas envoyés sur nos serveurs pour être produits ; les projets que vous enregistrez dans votre compte sont stockés comme les projets Darkroom, suivent la durée de conservation que vous choisissez et peuvent être supprimés ; et pour chaque export comptabilisé, nous enregistrons son format, sa taille, sa durée et son heure afin d'appliquer le quota quotidien. Les sections 3, 3.3 et 3.4 mentionnent désormais les projets Motion. La section 13 des Conditions confirme que vos exports Motion vous appartiennent, explique que certains exports contiennent du code anime.js sous licence MIT dont la mention doit être conservée, et renvoie à notre page des licences open source. Tout ce qui figure dans la mise à jour du 25/10/2026 (l'offre Pro, les changements d'offre et les remboursements) reste applicable. La section 10 des Conditions indique désormais que vous pouvez payer en dollars américains ou en euros au même prix, que les euros sont affichés par défaut en Europe et que la devise d'un abonnement ne peut pas changer tant qu'il est actif ; la section 1.6 de la Politique de confidentialité mentionne désormais la devise de facturation que nous stockons et le cookie mm-currency qui mémorise votre choix. Cette traduction française a été produite par un modèle de langage et est en attente de relecture par un locuteur natif ; en cas de divergence, la version anglaise fait foi."
+    "whatChangedBody": "Nous avons ajouté Motion, notre éditeur d'animation SVG (en bêta). La Politique de confidentialité comporte une nouvelle section 1.9 : les projets et les exports Motion sont créés dans votre navigateur et ne sont pas envoyés sur nos serveurs pour être produits ; les projets que vous enregistrez dans votre compte sont stockés comme les projets Darkroom, suivent la durée de conservation que vous choisissez et peuvent être supprimés ; et pour chaque export comptabilisé, nous enregistrons son format, sa taille, sa durée et son heure afin d'appliquer le quota quotidien. Les sections 3, 3.3 et 3.4 mentionnent désormais les projets Motion. La section 13 des Conditions confirme que vos exports Motion vous appartiennent, explique que certains exports contiennent du code anime.js sous licence MIT dont la mention doit être conservée, et renvoie à notre page des licences open source. Tout ce qui figure dans la mise à jour du 25/10/2026 (l'offre Pro, les changements d'offre et les remboursements) reste applicable. La section 10 des Conditions indique désormais que vous pouvez payer en dollars américains ou en euros au même prix, que les euros sont affichés par défaut en Europe et que la devise d'un abonnement ne peut pas changer tant qu'il est actif ; la section 1.6 de la Politique de confidentialité mentionne désormais la devise de facturation que nous stockons et le cookie mm-currency qui mémorise votre choix. La section 8 précise désormais aussi que les traducteurs que nous engageons soumettent leur travail sous forme de pull requests GitHub créées par la GitHub App de CreaTV Ltd., et que ces soumissions ne contiennent que du texte de traduction, sans aucune donnée personnelle sur les visiteurs. Cette traduction française a été produite par un modèle de langage et est en attente de relecture par un locuteur natif ; en cas de divergence, la version anglaise fait foi."
   },
   "privacyPolicy": {
     "title": "Politique de confidentialité",
@@ -946,7 +946,8 @@
           "des successeurs commerciaux en cas de fusion, d'acquisition, de financement, de réorganisation ou de cession d'actifs."
         ],
         "afterBullets": [
-          "Nous ne vendons pas les fichiers envoyés."
+          "Nous ne vendons pas les fichiers envoyés.",
+          "Les traducteurs que nous engageons soumettent leur travail sous forme de pull requests GitHub créées par la GitHub App de CreaTV Ltd. ; ces soumissions ne contiennent que du texte de traduction, sans aucune donnée personnelle sur les visiteurs."
         ]
       },
       {
@@ -2121,5 +2122,126 @@
       "unavailable": "Le tableau des offres n'a pas pu être chargé pour le moment. La page des tarifs liste le quota de chaque offre.",
       "seePlans": "Comparer toutes les offres"
     }
+  },
+  "translateGuide": {
+    "title": "Translator guide",
+    "intro": "How to translate Media Manipulator in place on this site and send your work for review. Read it once before you start; it takes about ten minutes.",
+    "englishHeading": "English",
+    "localeHeading": "In your language",
+    "notTranslatedYet": "This guide has not been translated into your language yet. The English text above is the reference.",
+    "sections": [
+      {
+        "title": "1. What the workbench is",
+        "paragraphs": [
+          "This site is a private copy of media-manipulator.com for one language. It looks and works like the public site, but search engines never see it, there are no ads or analytics, and actions that cost money or delete data are hidden.",
+          "When you are signed in, the translator workbench opens as a panel at the side of the page (on the right, or on the left for right-to-left languages). It shows every piece of text on the page with its English source and lets you change the translation. Your edit appears on the page as you type, so you can see it in context.",
+          "Nothing you type changes the public site. When you are ready, you submit your changes and they become a pull request: a proposed change that Mitch reviews before it goes live."
+        ]
+      },
+      {
+        "title": "2. Supported browsers",
+        "bullets": [
+          "Use a current desktop version of Chrome, Edge, Firefox or Safari. The panel is built for a desktop-sized window; phones and tablets are not supported.",
+          "Your browser must allow site storage (IndexedDB). In a private or incognito window your drafts are not saved, and the panel shows a yellow warning.",
+          "Work in one browser on one computer. Drafts live in that browser only and do not follow you to another device."
+        ]
+      },
+      {
+        "title": "3. Signing in and verifying your email",
+        "bullets": [
+          "Mitch creates your account and sends you a temporary password over a secure channel. Change it after your first sign-in.",
+          "Open your translator site and press \"Sign in to translate\" in the bottom corner. Sign in with the email address you gave Mitch.",
+          "The first time, the panel asks you to verify your email. Press \"Send verification email\", click the link in that email, then come back and press \"I've verified\".",
+          "The panel appears only for a verified address that is on this site's translator list. If you are signed in, verified, and still see no panel, contact us (section 13)."
+        ]
+      },
+      {
+        "title": "4. A tour of the panel",
+        "bullets": [
+          "This page: every string on the page you are looking at, grouped by file. Each row shows the English source, the current translation and a field to edit it. A dot marks the rows you have changed.",
+          "All keys: every string in your language, including ones that only appear after a click, in an error message or in an email. Use it to find text you cannot reach on a page.",
+          "Changes: your pending edits, each with a Revert button, and the Submit for review button.",
+          "Hover a row to outline that text on the page. Hold Alt (Option on a Mac) and click any text on the page to jump to its row.",
+          "Search finds keys by key name, English text or translation. Press / to jump to the search box and Esc to collapse the panel. Drag the panel's edge to resize it.",
+          "The site opens in your language. To compare with the English page in context, choose English in the language menu; the English pages live under /en/. Switch back to your language to edit: \"This page\" lists only strings in your language."
+        ]
+      },
+      {
+        "title": "5. Plurals",
+        "paragraphs": [
+          "Text that contains a number, such as \"3 files\", has one form for each plural category your language uses. The panel shows them together as one group and says which forms your language needs.",
+          "Arabic needs six forms: zero, one, two, few, many and other. Japanese needs only one: other. Fill in every form the panel marks as required, even when English has fewer. A form marked \"Not used by this language\" can be left as it is."
+        ]
+      },
+      {
+        "title": "6. Text with tags",
+        "paragraphs": [
+          "Some strings contain tags such as <0>…</0>, <1>…</1> or <strong>…</strong>. The site turns them into links, bold text or other formatting. Translate the words between the tags, keep every tag, and keep each opening tag paired with its closing tag. You may move a tagged phrase to wherever it belongs in your sentence.",
+          "These rows show the raw text with its tags and a preview underneath, so you can check the result before you submit."
+        ]
+      },
+      {
+        "title": "7. Placeholders",
+        "paragraphs": [
+          "Text inside double curly braces, such as {{name}} or {{count}}, is filled in by the site. Copy it exactly as it is, braces included, and never translate it. You may move it to wherever it belongs in your sentence.",
+          "The same applies to $t(…) references: they insert another string, so keep them unchanged."
+        ]
+      },
+      {
+        "title": "8. Warnings",
+        "paragraphs": [
+          "The panel checks every edit and shows a warning when something looks wrong. Warnings never stop you; when you submit, you tick each one to confirm it is intended. The checks are:"
+        ],
+        "bullets": [
+          "a placeholder is missing, or one was added that the English text does not have;",
+          "a plural group is missing a form your language needs;",
+          "tags are unbalanced or differ from the English source;",
+          "the translation is empty;",
+          "the translation is identical to the English text (fine for a brand name or a code, otherwise check it);",
+          "leading or trailing spaces differ from the English text;",
+          "a $t(…) reference was changed or removed."
+        ]
+      },
+      {
+        "title": "9. Drafts",
+        "bullets": [
+          "Every edit is saved as a draft in your browser as you type, separately for each language. Drafts survive reloads, navigation and closing the tab.",
+          "The submit dialog is saved too: if you leave the page with it open, your description and ticked warnings are still there when you come back.",
+          "Clearing this site's data, using a private window, or switching browser or computer loses your drafts. Submit regularly rather than keeping a large batch for days."
+        ]
+      },
+      {
+        "title": "10. Submitting your changes",
+        "bullets": [
+          "Open the Changes tab, check your list, and press Submit for review.",
+          "Describe what you changed in at least 10 characters, for example \"Translated the pricing page\".",
+          "The dialog checks your changes against the latest version of the site. If someone changed a string you also edited, it is listed as a conflict: compare the versions and tick \"Keep my version\" if yours should win.",
+          "Tick each warning you have checked, then press Submit. You get a link to the pull request on GitHub.",
+          "Press \"Start fresh\" to clear the submitted drafts. You can submit once every 10 minutes."
+        ]
+      },
+      {
+        "title": "11. What happens next",
+        "paragraphs": [
+          "Mitch reviews every pull request. He may merge it as it is, or ask you to adjust some strings; make those adjustments on this site and submit them as a new set of changes.",
+          "After a pull request is merged, the public site and your translator site update within a few minutes."
+        ]
+      },
+      {
+        "title": "12. What not to do",
+        "bullets": [
+          "Do not translate brand and product names: Media Manipulator, Darkroom, Motion, CreaTV.",
+          "Do not change URLs, email addresses, file formats, code identifiers or anything inside {{…}}.",
+          "Do not paste text copied from other products or websites. Write your own translation.",
+          "Do not share your sign-in details or your translator site's address with anyone else."
+        ]
+      },
+      {
+        "title": "13. Contact",
+        "paragraphs": [
+          "Questions, problems signing in, or a string you are not sure about: email support@media-manipulator.com and name your language."
+        ]
+      }
+    ]
   }
 }
