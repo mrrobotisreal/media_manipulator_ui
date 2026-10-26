@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, Lock } from 'lucide-react';
 import type { RasterProbe } from '@/lib/vector/raster/capabilities';
 import { RASTER_FORMATS, clampRasterOptions, isVideoFormat, outputSize, type RasterFormat, type RasterOptions } from '@/lib/vector/raster/caps';
 import { loadRasterPlan, type RasterPlan } from '@/lib/vector/raster/plan';
@@ -28,6 +28,10 @@ import { findDocLayer } from '@/lib/vector/advanced';
 import { sampleDoc } from '@/lib/vector/sampleTrack';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 import type { VectorDoc } from '@/lib/vector/vectorTypes';
+import { EVENTS, type VectorExportFailReason } from '@/lib/analytics/events';
+import { exportProps, setVectorTier, tierProp, vectorTracker, type VectorTracker } from '@/lib/vector/analytics';
+import { resolveFormatGate, resolveLimitCta, type FormatGate, type GateCta } from '@/lib/vector/gating';
+import type { VectorExportFormat } from '@/lib/vector/exportsApi';
 import { cn } from '@/lib/utils';
 
 /**
@@ -69,6 +73,22 @@ import { cn } from '@/lib/utils';
  * Translator deployments (MM52) hide the counted format: it spends a server
  * allowance, which is an irreversible action there. Static SVG stays.
  *
+ * MM49: ladder-aware locks and analytics.
+ *   - Every counted format reads the caller's tier and the served /api/tiers
+ *     table (`plan.tiers`) through `resolveFormatGate`: a format outside the
+ *     tier shows a lock, the lowest plan that has it, and one CTA ("Sign in
+ *     free", "Upgrade to Premium", "Upgrade to Pro"), or nothing for Pro and
+ *     operator. Export is disabled on a locked format. Advisory only: the
+ *     server's CheckExport still decides, and its 403/422/429 get the same
+ *     ladder CTA through `resolveLimitCta`.
+ *   - The editor mounts no AuthProvider, so `useUpgradeAction` (which needs
+ *     it and sells Premium only) cannot run here: the CTA opens /pricing (or
+ *     /account to sign in) in a new tab, keeping the editor open, and sends
+ *     `upgrade_cta_clicked`.
+ *   - `vector_export_started` / `_completed` / `_failed` (bucketed format,
+ *     runtime, span, height, fps, bytes, ms) and `vector_export_gated` go
+ *     through `track` (consent-gated, lib/vector/analytics.ts).
+ *
  * Dependencies are injectable for tests (`count`, `save`). The editor mounts the
  * dialog only while it is open, so every opening starts from a clean status.
  */
@@ -89,6 +109,8 @@ export interface ExportDialogProps {
   plan?: (signal: AbortSignal) => Promise<RasterPlan | null>;
   probe?: () => Promise<RasterProbe>;
   raster?: () => Promise<RasterRuntime>;
+  /** MM49: the analytics sink (consent-gated by default). */
+  track?: VectorTracker;
 }
 
 const loadRasterRuntime = () => import('@/lib/vector/raster/run').then((m) => m.createRasterRuntime());
@@ -100,6 +122,10 @@ export const rasterFileName = (name: string | undefined, f: RasterFormat) => bas
 type Format = 'svg_animated' | 'svg_static' | CodeFormat | RasterFormat;
 const isCode = (f: Format): f is CodeFormat => (CODE_FORMATS as readonly string[]).includes(f);
 const isRaster = (f: Format): f is RasterFormat => (RASTER_FORMATS as readonly string[]).includes(f);
+/** The server format a dialog format is counted as (null: static SVG, never counted). */
+const serverFormatOf = (f: Format): VectorExportFormat | null => (f === 'svg_static' ? null : isCode(f) ? SERVER_FORMAT[f] : f);
+const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
+const FAIL_REASON = { tooLarge: 'too_large', codec: 'codec', unsafe: 'unsafe', error: 'error' } as const;
 
 type Status =
   | { kind: 'idle' }
@@ -125,6 +151,7 @@ export function ExportDialog({
   plan: loadPlan = loadRasterPlan,
   probe = defaultProbe,
   raster = loadRasterRuntime,
+  track = vectorTracker,
 }: ExportDialogProps) {
   const { t } = useLocalization('interface');
   const countedHidden = isIrreversibleActionHidden();
@@ -153,6 +180,22 @@ export function ExportDialog({
     return () => ctl.abort();
   }, [countedHidden, loadPlan]);
   const rasterProbe = useRasterProbe(countedHidden ? neverProbe : probe);
+  // MM49: the caller's tier and the served ladder decide the locks (advisory).
+  const callerTier = plan?.tier;
+  React.useEffect(() => {
+    if (callerTier) setVectorTier(callerTier);
+  }, [callerTier]);
+  const gateOf = React.useCallback(
+    (f: Format): FormatGate => {
+      const server = serverFormatOf(f);
+      return server ? resolveFormatGate(callerTier, server, plan?.tiers) : { allowed: true };
+    },
+    [callerTier, plan?.tiers],
+  );
+  const gatedSent = React.useRef(new Set<string>());
+  const sendGated = (format: Format | 'import_lottie', cta: GateCta, tier?: string) => {
+    track.track(EVENTS.VECTOR_EXPORT_GATED, { format, tier: tierProp(tier ?? callerTier), upgrade_path: cta });
+  };
   const [rasterOptions, setRasterOptions] = React.useState<RasterOptions>(() => defaultRasterOptions('gif', doc));
   const [gif, setGif] = React.useState<GifSettings>({ transparent: true, dither: false, plays: doc.loop === false ? 1 : 0 });
   const abortRef = React.useRef<AbortController | null>(null);
@@ -161,6 +204,33 @@ export function ExportDialog({
   const pickFormat = (f: Format) => {
     setFormat(f);
     if (isRaster(f)) setRasterOptions((o) => ({ ...o, format: f }));
+    // A locked pick is a gate hit (once per format per opening).
+    const gate = gateOf(f);
+    if (!gate.allowed && !gatedSent.current.has(f)) {
+      gatedSent.current.add(f);
+      sendGated(f, gate.cta);
+    }
+  };
+
+  // ---- MM49 analytics: one export = started, then completed or failed ----
+  const runtimeFor = (f: Format): 'css' | 'anime' | undefined =>
+    f === 'svg_animated' || f === 'react_tsx' || f === 'js' || f === 'ts' ? choice.runtime : undefined;
+  const startExport = (f: Format, dims: { durationMs: number; height: number; fps: number }) => {
+    const base = { format: f, runtime: runtimeFor(f), ...dims };
+    track.track(EVENTS.VECTOR_EXPORT_STARTED, exportProps(base));
+    const t0 = now();
+    return {
+      done: (bytes: number, runtime?: 'css' | 'anime') =>
+        track.track(EVENTS.VECTOR_EXPORT_COMPLETED, exportProps({ ...base, ...(runtime ? { runtime } : {}), bytes, ms: now() - t0 })),
+      failed: (reason: VectorExportFailReason) =>
+        track.track(EVENTS.VECTOR_EXPORT_FAILED, { ...exportProps({ ...base, ms: now() - t0 }), reason }),
+      refused: (refusal: VectorExportRefusal) => {
+        track.track(EVENTS.VECTOR_EXPORT_FAILED, { ...exportProps({ ...base, ms: now() - t0 }), reason: refusal.kind });
+        if (refusal.kind === 'locked' || refusal.kind === 'limit') {
+          sendGated(f, resolveLimitCta(refusal.tier || callerTier, refusal, plan?.tiers), refusal.tier || callerTier);
+        }
+      },
+    };
   };
 
   const exportRaster = async (f: RasterFormat) => {
@@ -168,6 +238,7 @@ export function ExportDialog({
     if (!clamp.available || rasterBlock(f, plan, rasterProbe)) return;
     const o = clamp.options;
     const size = outputSize(doc.canvas, o.height, isVideoFormat(f));
+    const ev = startExport(f, { durationMs: o.endMs - o.startMs, height: size.height, fps: o.fps });
     const ctl = new AbortController();
     abortRef.current = ctl;
     setStatus({ kind: 'rendering', progress: null });
@@ -176,20 +247,24 @@ export function ExportDialog({
       runtime = await raster();
     } catch {
       setStatus({ kind: 'rasterFailed', reason: 'error' });
+      ev.failed('error');
       return;
     }
     // Before spending the export: the document must be rasterisable and the
     // browser must encode this exact size and rate.
     if (runtime.check(doc).length > 0) {
       setStatus({ kind: 'rasterFailed', reason: 'unsafe' });
+      ev.failed('unsafe');
       return;
     }
     if (!(await runtime.canEncode(f, size, o.fps))) {
       setStatus({ kind: 'rasterFailed', reason: 'codec' });
+      ev.failed('codec');
       return;
     }
     if (ctl.signal.aborted) {
       setStatus({ kind: 'cancelled' });
+      ev.failed('cancelled');
       return;
     }
     setStatus({ kind: 'counting' });
@@ -202,6 +277,7 @@ export function ExportDialog({
     });
     if (!result.ok) {
       setStatus({ kind: 'refused', refusal: result.refusal });
+      ev.refused(result.refusal);
       return;
     }
     // Only now: the unit is spent server-side (a cancel from here on is not refunded).
@@ -221,13 +297,15 @@ export function ExportDialog({
       if (ctl.signal.aborted) throw new DOMException('cancelled', 'AbortError');
       save(out.blob, rasterFileName(name, f));
       setStatus({ kind: 'done', remaining: result.granted.remaining });
+      ev.done(out.blob.size);
     } catch (e) {
       const errName = e instanceof Error ? e.name : '';
-      setStatus(
+      const next: Status =
         ctl.signal.aborted || errName === 'AbortError'
           ? { kind: 'cancelled' }
-          : { kind: 'rasterFailed', reason: errName === 'RasterTooLargeError' ? 'tooLarge' : errName === 'VideoUnsupportedError' ? 'codec' : 'error' },
-      );
+          : { kind: 'rasterFailed', reason: errName === 'RasterTooLargeError' ? 'tooLarge' : errName === 'VideoUnsupportedError' ? 'codec' : 'error' };
+      setStatus(next);
+      ev.failed(next.kind === 'cancelled' ? 'cancelled' : next.kind === 'rasterFailed' ? FAIL_REASON[next.reason] : 'error');
     } finally {
       if (abortRef.current === ctl) abortRef.current = null;
     }
@@ -236,14 +314,21 @@ export function ExportDialog({
   const cancelRaster = () => abortRef.current?.abort();
 
   const exportStatic = () => {
+    const ev = startExport('svg_static', { durationMs: 0, height: Math.round(doc.canvas.height), fps: 0 });
     const svg = serializeSvg(sampleDoc(doc, time));
-    save(new Blob([svg], { type: 'image/svg+xml' }), svgFileName(name));
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    save(blob, svgFileName(name));
     setStatus({ kind: 'done', remaining: null });
+    ev.done(blob.size);
   };
 
+  const docDims = () => ({ durationMs: doc.duration, height: Math.round(doc.canvas.height), fps: Math.round(doc.fps) });
+
   const exportAnimated = async () => {
+    const ev = startExport('svg_animated', docDims());
     if (!animatedOk) {
       setStatus({ kind: 'invalid' });
+      ev.failed('unsupported');
       return;
     }
     setStatus({ kind: 'counting' });
@@ -256,17 +341,22 @@ export function ExportDialog({
     });
     if (!result.ok) {
       setStatus({ kind: 'refused', refusal: result.refusal });
+      ev.refused(result.refusal);
       return;
     }
     // Only now: the unit is spent server-side.
     const svg = choice.runtime === 'anime' ? exportAnimatedSvgAnime(doc, { anonymous: !signedIn }) : exportAnimatedSvgCss(doc, { anonymous: !signedIn });
-    save(new Blob([svg], { type: 'image/svg+xml' }), svgFileName(name));
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    save(blob, svgFileName(name));
     setStatus({ kind: 'done', remaining: result.granted.remaining });
+    ev.done(blob.size);
   };
 
   const exportCode = async (f: CodeFormat) => {
+    const ev = startExport(f, docDims());
     if (!codeOk[f]) {
       setStatus({ kind: 'invalid' });
+      ev.failed('unsupported');
       return;
     }
     setStatus({ kind: 'counting' });
@@ -279,19 +369,33 @@ export function ExportDialog({
     });
     if (!result.ok) {
       setStatus({ kind: 'refused', refusal: result.refusal });
+      ev.refused(result.refusal);
       return;
     }
     // Only now: the unit is spent server-side.
-    const out = runFormatExport(doc, f, { name, forceAnime });
+    let out: FormatExport;
+    try {
+      out = runFormatExport(doc, f, { name, forceAnime });
+    } catch (e) {
+      setStatus({ kind: 'invalid' });
+      ev.failed('error');
+      throw e;
+    }
     save(out.blob, out.fileName);
     setStatus({ kind: 'done', remaining: result.granted.remaining, result: out });
+    ev.done(out.blob.size, out.runtime ?? undefined);
   };
 
   const run = () =>
     format === 'svg_static' ? exportStatic() : format === 'svg_animated' ? void exportAnimated() : isRaster(format) ? void exportRaster(format) : void exportCode(format);
   const busy = status.kind === 'counting' || status.kind === 'rendering';
   const rasterBlocked = isRaster(format) && rasterBlock(format, plan, rasterProbe) !== null;
-  const runDisabled = busy || (format === 'svg_animated' && !animatedOk) || (isCode(format) && !codeOk[format]) || rasterBlocked;
+  const formatLocked = !gateOf(format).allowed;
+  const runDisabled = busy || formatLocked || (format === 'svg_animated' && !animatedOk) || (isCode(format) && !codeOk[format]) || rasterBlocked;
+  const gateNote = (f: Format): React.ReactNode => {
+    const gate = gateOf(f);
+    return gate.allowed ? null : <GateNote format={f} gate={gate} tier={callerTier} track={track} />;
+  };
 
   const option = (id: Format, title: string, hint: string, extra?: React.ReactNode) => (
     <label
@@ -303,7 +407,10 @@ export function ExportDialog({
     >
       <input type="radio" name="vector-export-format" value={id} checked={format === id} onChange={() => pickFormat(id)} className="mt-1" disabled={busy} />
       <span className="min-w-0">
-        <span className="block text-sm font-medium">{title}</span>
+        <span className="flex items-center gap-1.5 text-sm font-medium">
+          {!gateOf(id).allowed && <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-label={t('vector.gate.locked')} data-testid={`vector-lock-${id}`} />}
+          {title}
+        </span>
         <span className="block text-xs text-muted-foreground">{hint}</span>
         {extra}
       </span>
@@ -329,11 +436,12 @@ export function ExportDialog({
               'svg_animated',
               t('vector.exportDialog.animated'),
               t('vector.exportDialog.animatedHint'),
-              !animatedOk ? (
+              gateNote('svg_animated') ??
+              (!animatedOk ? (
                 <span className="mt-1 block text-xs text-destructive">{t('vector.exportDialog.unsupported')}</span>
               ) : (
                 format === 'svg_animated' && <RuntimeNote runtime={choice.runtime} reasons={choice.reasons} forceAnime={forceAnime} onForceAnime={setForceAnime} />
-              ),
+              )),
             )}
           {option('svg_static', t('vector.exportDialog.static'), t('vector.exportDialog.staticHint'))}
           {!countedHidden &&
@@ -342,13 +450,14 @@ export function ExportDialog({
                 f,
                 t(`vector.exportDialog.code.${f}.title`),
                 t(`vector.exportDialog.code.${f}.hint`),
-                !codeOk[f] ? (
+                gateNote(f) ??
+                (!codeOk[f] ? (
                   <span className="mt-1 block text-xs text-destructive">{t('vector.exportDialog.unsupported')}</span>
                 ) : format !== f ? undefined : f === 'lottie' ? (
                   <LottieSupportNote />
                 ) : (
                   <RuntimeNote runtime={choice.runtime} reasons={choice.reasons} forceAnime={forceAnime} onForceAnime={setForceAnime} />
-                ),
+                )),
               ),
             )}
           {!countedHidden &&
@@ -358,11 +467,12 @@ export function ExportDialog({
                 f,
                 t(`vector.raster.formats.${f}.title`),
                 t(`vector.raster.formats.${f}.hint`),
-                block ? (
+                gateNote(f) ??
+                (block ? (
                   <RasterBlockNote block={block} />
                 ) : format === f ? (
                   <RasterSettings doc={doc} options={rasterOptions} onOptions={setRasterOptions} plan={plan} gif={gif} onGif={setGif} disabled={busy} />
-                ) : undefined,
+                ) : undefined),
               );
             })}
         </div>
@@ -379,7 +489,7 @@ export function ExportDialog({
           )}
           {status.kind === 'done' && status.result && <ExportReport doc={doc} result={status.result} />}
           {status.kind === 'invalid' && <span className="text-destructive">{t('vector.exportDialog.unsupported')}</span>}
-          {status.kind === 'refused' && <RefusalMessage refusal={status.refusal} />}
+          {status.kind === 'refused' && <RefusalMessage refusal={status.refusal} tier={callerTier} tiers={plan?.tiers} track={track} />}
           {status.kind === 'rendering' && <RasterProgressBar progress={status.progress} onCancel={cancelRaster} />}
           {status.kind === 'cancelled' && <span className="text-muted-foreground">{t('vector.raster.cancelled')}</span>}
           {status.kind === 'rasterFailed' && <span className="text-destructive">{t(`vector.raster.failed.${status.reason}`)}</span>}
@@ -506,9 +616,18 @@ function RuntimeNote({
   );
 }
 
-function RefusalMessage({ refusal }: { refusal: VectorExportRefusal }) {
+function RefusalMessage({
+  refusal,
+  tier,
+  tiers,
+  track,
+}: {
+  refusal: VectorExportRefusal;
+  tier?: string;
+  tiers?: RasterPlan['tiers'];
+  track: VectorTracker;
+}) {
   const { t } = useLocalization('interface');
-  const localized = useLocalizedHref();
   const message = (() => {
     switch (refusal.kind) {
       case 'limit':
@@ -527,16 +646,56 @@ function RefusalMessage({ refusal }: { refusal: VectorExportRefusal }) {
         return t('vector.exportDialog.unavailable');
     }
   })();
-  const upgrade = refusal.kind !== 'unavailable' && !isIrreversibleActionHidden();
+  const caller = (refusal.kind === 'unavailable' ? undefined : refusal.tier) || tier;
+  // MM49 ladder routing. Without a served table, the server's own upgradePath
+  // (429 / 403) is the fallback; a cap without a table offers nothing.
+  let cta = resolveLimitCta(caller, refusal, tiers);
+  if (!tiers && (refusal.kind === 'limit' || refusal.kind === 'locked')) {
+    const p = refusal.upgradePath;
+    cta = p === 'signup' || p === 'premium' || p === 'pro' ? p : 'none';
+  }
   return (
     <span className="text-destructive" data-refusal={refusal.kind}>
-      {message}{' '}
-      {upgrade && (
-        // Plain /pricing link in the editor's language (MM49 routes by ladder).
-        <a href={localized('/pricing')} className="font-medium text-foreground underline underline-offset-2">
-          {t('vector.exportDialog.upgrade')}
-        </a>
-      )}
+      {message} <UpgradeCta cta={cta} placement={`motion_export_${refusal.kind}`} tier={caller} track={track} />
     </span>
+  );
+}
+
+/** A locked format's note: the lowest plan that has it and the one CTA (MM49). */
+function GateNote({ format, gate, tier, track }: { format: Format; gate: Exclude<FormatGate, { allowed: true }>; tier?: string; track: VectorTracker }) {
+  const { t } = useLocalization('interface');
+  return (
+    <span className="mt-1 block text-xs text-muted-foreground" data-testid={`vector-gate-${format}`} data-required-tier={gate.requiredTier ?? ''} data-cta={gate.cta}>
+      {gate.requiredTier ? t(`vector.gate.requires.${gate.requiredTier === 'free' ? 'free' : gate.requiredTier === 'premium' ? 'premium' : 'pro'}`) : t('vector.raster.block.notOnAnyPlan')}{' '}
+      <UpgradeCta cta={gate.cta} placement="motion_export_lock" ctaId={`motion_${format}`} tier={tier} track={track} />
+    </span>
+  );
+}
+
+/**
+ * The one upsell button: "Sign in free" opens the account page, "Upgrade to
+ * Premium/Pro" the pricing page, both in a new tab so the editor stays open.
+ * Nothing for `none` and on translator deployments (MM52 sells nothing).
+ */
+function UpgradeCta({ cta, placement, ctaId, tier, track }: { cta: GateCta; placement: string; ctaId?: string; tier?: string; track: VectorTracker }) {
+  const { t } = useLocalization('interface');
+  const localized = useLocalizedHref();
+  if (cta === 'none' || isIrreversibleActionHidden()) return null;
+  const href = localized(cta === 'signup' ? '/account' : '/pricing');
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener"
+      data-testid="vector-upgrade-cta"
+      data-cta={cta}
+      onClick={(e) => {
+        e.stopPropagation();
+        track.track(EVENTS.UPGRADE_CTA_CLICKED, { placement, cta_id: ctaId ?? `motion_${cta}`, from_tier: tierProp(tier) });
+      }}
+      className="font-medium text-foreground underline underline-offset-2"
+    >
+      {t(`vector.gate.cta.${cta}`)}
+    </a>
   );
 }

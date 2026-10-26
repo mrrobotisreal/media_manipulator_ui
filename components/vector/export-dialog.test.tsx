@@ -112,11 +112,15 @@ describe('Motion export dialog', () => {
     await waitFor(() => expect(screen.getByTestId('vector-export-status').textContent).toBe('Downloaded.'));
   });
 
+  // MM49: without a served /api/tiers table (plan null here) the 429/403 CTA
+  // follows the server's upgradePath; a 422 cap offers nothing without the
+  // table (it cannot tell whether a higher plan raises the cap). The ladder
+  // routing with a table is export-dialog.gating.test.tsx.
   it.each([
-    [429, { error: 'vector_export_limit', tier: 'anonymous', metric: 'vector_export', limit: 2, used: 2, resetsAt: 'x', upgradePath: 'signup' }, 'limit', 'You have used your 2 animated exports for today.'],
-    [403, { error: 'vector_format_locked', format: 'svg_animated', tier: 'anonymous', upgradePath: 'signup' }, 'locked', 'Your plan does not include this format.'],
-    [422, { error: 'vector_cap_exceeded', cap: 'duration', max: 10000, tier: 'anonymous' }, 'cap', 'Your plan exports animations up to 10 s long.'],
-  ])('%i: no exporter run, message with a /pricing link', async (status, body, kind, message) => {
+    [429, { error: 'vector_export_limit', tier: 'anonymous', metric: 'vector_export', limit: 2, used: 2, resetsAt: 'x', upgradePath: 'signup' }, 'limit', 'You have used your 2 animated exports for today.', 'Sign in free', '/de/account'],
+    [403, { error: 'vector_format_locked', format: 'svg_animated', tier: 'free', upgradePath: 'premium' }, 'locked', 'Your plan does not include this format.', 'Upgrade to Premium', '/de/pricing'],
+    [422, { error: 'vector_cap_exceeded', cap: 'duration', max: 10000, tier: 'anonymous' }, 'cap', 'Your plan exports animations up to 10 s long.', null, null],
+  ])('%i: no exporter run, message with the ladder CTA', async (status, body, kind, message, cta, href) => {
     fetchMock.mockResolvedValueOnce(json(status, body));
     const { save } = mount();
     fireEvent.click(exportButton());
@@ -124,7 +128,13 @@ describe('Motion export dialog', () => {
     const el = screen.getByTestId('vector-export-status').querySelector('[data-refusal]')!;
     expect(el.getAttribute('data-refusal')).toBe(kind);
     expect(el.textContent).toContain(message);
-    expect(screen.getByRole('link', { name: 'See plans' }).getAttribute('href')).toBe('/de/pricing');
+    if (cta) {
+      const link = screen.getByRole('link', { name: cta });
+      expect(link.getAttribute('href')).toBe(href);
+      expect(link.getAttribute('target')).toBe('_blank');
+    } else {
+      expect(screen.queryByTestId('vector-upgrade-cta')).toBeNull();
+    }
     expect(css.spy).not.toHaveBeenCalled();
     expect(save).not.toHaveBeenCalled();
   });
@@ -134,7 +144,7 @@ describe('Motion export dialog', () => {
     const { save } = mount();
     fireEvent.click(exportButton());
     await waitFor(() => expect(screen.getByTestId('vector-export-status').textContent).toContain('Nothing was counted'));
-    expect(screen.queryByRole('link', { name: 'See plans' })).toBeNull();
+    expect(screen.queryByTestId('vector-upgrade-cta')).toBeNull();
     expect(css.spy).not.toHaveBeenCalled();
     expect(save).not.toHaveBeenCalled();
   });

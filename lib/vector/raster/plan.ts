@@ -23,12 +23,14 @@ export interface RasterPlan {
   caps: RasterCaps | null;
   /** Formats at least one public tier offers (null = unknown). */
   publicFormats: ReadonlySet<string> | null;
+  /** MM49: the served /api/tiers table, for ladder-aware locks (lib/vector/gating.ts). */
+  tiers?: TiersResponse | null;
 }
 
 export function planFrom(tiers: TiersResponse | null, me: { tier?: string; limits?: TierLimits } | null): RasterPlan | null {
   if (!me?.limits) return null;
   const publicFormats = tiers ? new Set(tiers.tiers.flatMap((t) => t.limits.vectorFormats ?? [])) : null;
-  return { tier: me.tier ?? '', caps: capsFromLimits(me.limits), publicFormats };
+  return { tier: me.tier ?? '', caps: capsFromLimits(me.limits), publicFormats, tiers };
 }
 
 export async function loadRasterPlan(signal?: AbortSignal): Promise<RasterPlan | null> {

@@ -995,6 +995,19 @@
         "raw": "contiene marcado SVG que el editor conserva tal cual"
       }
     },
+    "gate": {
+      "locked": "Bloqueado en tu plan",
+      "requires": {
+        "free": "Incluido con una cuenta gratuita.",
+        "premium": "Incluido en Premium.",
+        "pro": "Incluido en Pro."
+      },
+      "cta": {
+        "signup": "Inicia sesión gratis",
+        "premium": "Actualizar a Premium",
+        "pro": "Actualizar a Pro"
+      }
+    },
     "projects": {
       "save": "Guardar",
       "saveToAccount": "Guardar en la cuenta",

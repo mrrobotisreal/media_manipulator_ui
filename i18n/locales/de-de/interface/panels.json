@@ -995,6 +995,19 @@
         "raw": "sie SVG-Markup enthält, das der Editor unverändert beibehält"
       }
     },
+    "gate": {
+      "locked": "In Ihrem Tarif gesperrt",
+      "requires": {
+        "free": "Mit einem kostenlosen Konto enthalten.",
+        "premium": "In Premium enthalten.",
+        "pro": "In Pro enthalten."
+      },
+      "cta": {
+        "signup": "Kostenlos anmelden",
+        "premium": "Auf Premium upgraden",
+        "pro": "Auf Pro upgraden"
+      }
+    },
     "projects": {
       "save": "Speichern",
       "saveToAccount": "Im Konto speichern",

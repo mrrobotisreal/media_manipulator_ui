@@ -995,6 +995,19 @@
         "raw": "it contains SVG markup the editor keeps as-is"
       }
     },
+    "gate": {
+      "locked": "Locked on your plan",
+      "requires": {
+        "free": "Included with a free account.",
+        "premium": "Included with Premium.",
+        "pro": "Included with Pro."
+      },
+      "cta": {
+        "signup": "Sign in free",
+        "premium": "Upgrade to Premium",
+        "pro": "Upgrade to Pro"
+      }
+    },
     "projects": {
       "save": "Save",
       "saveToAccount": "Save to account",
