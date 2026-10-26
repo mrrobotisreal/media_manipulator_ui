@@ -1,1246 +1,1246 @@
 {
   "blogVideoCompression": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← ブログ"
     },
-    "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV",
+    "title": "動画圧縮ヒッチハイク・ガイド：MP4 vs WebM vs AVI vs MOV",
     "byline": {
-      "writtenBy": "Written by:",
-      "date": "June 13th, 2025",
-      "time": "10:33 PM"
+      "writtenBy": "執筆：",
+      "date": "2025年6月13日",
+      "time": "22:33"
     },
     "intro": {
-      "title": "A Brief Intro to Video Compression",
-      "p1": "Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.",
-      "p2": "Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.",
-      "p3": "At its core, video compression works by being sneaky in two main ways:",
+      "title": "動画圧縮のかんたんな紹介",
+      "p1": "ウェブサイトに動画をアップロードしようとして、読み込みバーがカタツムリのように這うのを恐怖とともに眺めたことはありませんか？🐌 あるいは、30秒のデモを録画しただけなのに、そのファイルがなぜかウェブサイト全体より大きいことに気づいたとか？ええ、誰もが経験したことです。ペンキが乾くのを眺めるくらい楽しい……ダイヤルアップ回線で。",
+      "p2": "要するにこういうことです。動画圧縮とは、ジャガイモで撮影したように見せることなく動画を小さくする技術です🥔。こう考えてみてください。生の動画データは、クローゼットの中身をすべて機内持ち込みのスーツケースに詰め込もうとするようなものです。動画圧縮は、服を（ほぼ）シワなく保ちながら、なぜかすべてが収まる魔法の折りたたみ技術なのです。",
+      "p3": "動画圧縮の核心は、主に2つの方法でずる賢く振る舞うことにあります：",
       "bullets": [
-        "<strong>Spatial compression</strong>: This looks at each frame and says \"Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?\" It's like describing a wall as \"all white\" instead of listing every single brick.",
-        "<strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬"
+        "<strong>空間圧縮</strong>：各フレームを見て、「この青空には1万個ほどのピクセルがあって、全部ほぼ同じ青だ。『ここからここまで青いピクセル』と言うだけにしよう」と判断します。壁を、レンガを1つずつ列挙する代わりに「全部白」と表現するようなものです。",
+        "<strong>時間圧縮</strong>：ここが本当に賢いところです。すべてのフレームを丸ごと保存する代わりに、フレーム間の差分だけを保存します。自分が話している様子を録画していて背景が変わらないなら、背景を1秒間に30回も保存する必要があるでしょうか？一度だけ保存して、何が変わったかを記録すればいいのです！🎬"
       ],
-      "p4": "The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.",
-      "quote": "\"In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch.\" 💪"
+      "p4": "魔法が起きるのは、これらの技術が連携して、2GBの巨大な画面録画を、くっきり見える扱いやすい50MBのファイルに変えるときです。しかし面白いのはここからです。動画形式（コンテナ）とコーデック（実際の圧縮アルゴリズム）によって、この魔法の扱い方はまったく異なります。スイスアーミーナイフのようなもの🔪——万能ですが、あらゆる仕事に最適とは限りません。手術器具のようなものもあります——特定の作業には驚くほど効果的ですが、それ以外には役に立ちません。",
+      "quote": "「動画圧縮の世界では、最も重いファイルが最も強いとは限らない。ときに最も小さな戦士が最も強力な一撃を放つ。」💪"
     },
     "formats": {
-      "title": "What's the Difference Between These Formats Anyway?",
-      "intro": "Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go \"really?\"",
+      "title": "結局、これらの形式の違いは何？",
+      "intro": "よし、スーパーヒーローチームを比較するみたいに、これらの動画形式を分解していきましょう🦸‍♂️。それぞれに固有の超能力、弱点、そして「マジで？」と言いたくなる奇妙なクセがあります。",
       "mp4": {
-        "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:",
+        "title": "MP4（MPEG-4 Part 14）",
+        "intro": "MP4は動画形式界のスーパーマンだと思ってください。どこにでもいて、誰もが知っていて、ほぼいつも窮地を救ってくれます。この形式は：",
         "bullets": [
-          "<strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works",
-          "<strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high",
-          "<strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)",
-          "<strong>File sizes</strong>: Generally gives you that sweet spot between quality and size"
+          "<strong>誰とでも仲良し</strong>：おばあちゃんの古いノートPCから最新のiPhoneまで、MP4はとにかく動きます",
+          "<strong>H.264/H.265コーデックを使用</strong>：品質を高く保ちながらファイルを小さくする圧縮の魔法使いです",
+          "<strong>ストリーミング対応</strong>：完全に読み込む前に再生を始めたいときに最適です（待っている時間なんて誰にもありませんから⏰）",
+          "<strong>ファイルサイズ</strong>：一般的に品質とサイズのちょうどいいバランスを提供します"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:",
+        "intro": "WebMはグループの中のクールなオープンソースの反逆者です😎。Googleが作り、ウェブ生活に全力です：",
         "bullets": [
-          "<strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say \"buffering\"",
-          "<strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases",
-          "<strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵",
-          "<strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)"
+          "<strong>ブラウザのために作られた</strong>：「バッファリング中」と言う間もなくウェブ動画を読み込むために特別に設計されています",
+          "<strong>VP8/VP9コーデックを使用</strong>：多くの場合、MP4よりもさらに小さく動画を圧縮できる強者たちです",
+          "<strong>オープンで無料</strong>：ライセンス料なし。開発者にとっては音楽のように心地よい言葉です🎵",
+          "<strong>落とし穴</strong>：すべてのブラウザやデバイスが対応しているわけではありません（そう、Safariのことです👀）"
         ]
       },
       "avi": {
-        "title": "AVI (Audio Video Interleave)",
-        "intro": "AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:",
+        "title": "AVI（Audio Video Interleave）",
+        "intro": "AVIは歴戦のベテランです。Windows 3.1の時代からいます！👴 知っておくべきことは：",
         "bullets": [
-          "<strong>Minimal compression</strong>: Often results in HUGE file sizes (like, \"is this a video or the entire Lord of the Rings trilogy?\" huge)",
-          "<strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality",
-          "<strong>Universal compatibility</strong>: If something can play video, it can probably play AVI",
-          "<strong>Best for</strong>: Local storage when quality matters more than file size"
+          "<strong>圧縮は最小限</strong>：多くの場合、巨大なファイルサイズになります（「これは動画？それともロード・オブ・ザ・リング三部作まるごと？」というレベルの巨大さ）",
+          "<strong>高品質</strong>：圧縮の弱さを、無傷の品質で埋め合わせます",
+          "<strong>普遍的な互換性</strong>：動画を再生できるものなら、おそらくAVIも再生できます",
+          "<strong>最適な用途</strong>：ファイルサイズより品質が重要なローカル保存"
         ]
       },
       "mov": {
-        "title": "MOV (QuickTime File Format)",
-        "intro": "MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:",
+        "title": "MOV（QuickTime File Format）",
+        "intro": "MOVはAppleの秘蔵っ子です🍎。そして多くのApple製品と同様、美しいけれど……複雑です：",
         "bullets": [
-          "<strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing",
-          "<strong>ProRes codec support</strong>: The format professionals drool over 🤤",
-          "<strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)",
-          "<strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime"
+          "<strong>優れた品質</strong>：特に高解像度の動画とプロの編集向け",
+          "<strong>ProResコーデック対応</strong>：プロがよだれを垂らす形式です🤤",
+          "<strong>見て見ぬふりできない問題</strong>：ストレージドライブが泣き出すファイルサイズ（私の315.9MBの画面録画を覚えていますか？ええ、あれがMOVでした）",
+          "<strong>クロスプラットフォームの問題</strong>：Macでは完璧に動きますが、WindowsユーザーはQuickTimeのインストールが必要かもしれません"
         ]
       },
-      "comparisonIntro": "Here's a quick comparison to really drive it home:",
+      "comparisonIntro": "念押しのために、簡単な比較表を：",
       "table": {
         "headers": [
-          "Format",
-          "File Size",
-          "Compatibility",
-          "Best Use Case"
+          "形式",
+          "ファイルサイズ",
+          "互換性",
+          "最適な用途"
         ],
         "rows": [
           [
             "MP4",
-            "Small-Medium",
-            "Universal",
-            "Literally everything"
+            "小〜中",
+            "普遍的",
+            "文字どおり何でも"
           ],
           [
             "WebM",
-            "Smallest",
-            "Modern browsers",
-            "Web optimization"
+            "最小",
+            "モダンブラウザ",
+            "ウェブ最適化"
           ],
           [
             "AVI",
-            "Largest",
-            "Universal",
-            "Archival/Editing"
+            "最大",
+            "普遍的",
+            "アーカイブ／編集"
           ],
           [
             "MOV",
-            "Large",
-            "Mac-focused",
-            "Professional work"
+            "大",
+            "Mac中心",
+            "プロの作業"
           ]
         ]
       },
-      "quote": "\"Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose.\" ⚔️"
+      "quote": "「戦いを選ぶように形式を選べ。すべての剣がすべての戦士に合うわけではなく、すべてのコーデックがすべての目的に合うわけではない。」⚔️"
     },
     "whenToUse": {
-      "title": "How Do I Know When to Use One Format Over Another?",
-      "p1": "Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).",
-      "p2": "Let me break this down into real-world scenarios because that's how we actually make these decisions:",
+      "title": "どの形式をいつ使えばいいの？",
+      "p1": "さあ、決断の時です！🤔 適切な動画形式を選ぶのは、適切な服装を選ぶようなものです。ジムにタキシードは着ていきませんし、ウェブサイトのヒーロー動画にAVIを使うべきではありません（読み込み中にユーザーに年を取らせたいなら別ですが）。",
+      "p2": "実際にこうした判断をするときの考え方に沿って、現実のシナリオに分けて説明しましょう：",
       "mp4": {
-        "title": "When to Use MP4",
-        "lead": "<strong>Use MP4 when you want to play it safe</strong> 🛡️",
+        "title": "MP4を使うとき",
+        "lead": "<strong>安全策を取りたいならMP4</strong>🛡️",
         "bullets": [
-          "<strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend",
-          "<strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4",
-          "<strong>Email attachments</strong>: When you need to send a video that just works",
-          "<strong>Mobile apps</strong>: Both iOS and Android will thank you"
+          "<strong>ウェブサイトの動画</strong>：背景動画、製品デモ、チュートリアル——MP4は頼れる友人です",
+          "<strong>SNS</strong>：Instagram、Twitter、LinkedIn——どれもMP4が大好きです",
+          "<strong>メールの添付</strong>：とにかく動く動画を送る必要があるとき",
+          "<strong>モバイルアプリ</strong>：iOSもAndroidも感謝してくれます"
         ],
-        "proTip": "<strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices."
+        "proTip": "<strong>プロのヒント</strong>：最大の互換性にはH.264コーデックを、さらに小さなファイルが必要で視聴者が新しいデバイスを持っているならH.265を使いましょう。"
       },
       "webm": {
-        "title": "When to Use WebM",
-        "lead": "<strong>Use WebM when every kilobyte counts</strong> 🪶",
+        "title": "WebMを使うとき",
+        "lead": "<strong>1キロバイトも惜しいならWebM</strong>🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: Where load speed directly impacts conversion rates",
-          "<strong>Progressive web apps</strong>: When you're building for the modern web",
-          "<strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)",
-          "<strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome"
+          "<strong>ランディングページ</strong>：読み込み速度がコンバージョン率に直結する場所",
+          "<strong>プログレッシブウェブアプリ</strong>：モダンウェブ向けに構築しているとき",
+          "<strong>アクセスの多いウェブサイト</strong>：帯域コストの節約に（財布が感謝します💰）",
+          "<strong>環境を制御できるとき</strong>：全員がChromeを使うとわかっている社内ツールなど"
         ],
-        "realTalk": "<strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦"
+        "realTalk": "<strong>本音の話</strong>：あるクライアントのヒーロー動画をMP4からWebMに切り替えたところ、ファイルサイズが40%減りました。ページの読み込み時間は2秒短くなり、直帰率は15%下がりました。それはそのままお金になります！🏦"
       },
       "avi": {
-        "title": "When to Use AVI",
-        "lead": "<strong>Use AVI when quality is king and file size is... not a concern</strong> 👑",
+        "title": "AVIを使うとき",
+        "lead": "<strong>品質が王様で、ファイルサイズが……気にならないならAVI</strong>👑",
         "bullets": [
-          "<strong>Video editing source files</strong>: When you need every pixel perfect for post-production",
-          "<strong>Archival purposes</strong>: Storing the master copy before compression",
-          "<strong>Local playback</strong>: When it's only playing from a hard drive, not the internet",
-          "<strong>Screen recordings for tutorials</strong>: Before you compress them for distribution"
+          "<strong>動画編集のソースファイル</strong>：ポストプロダクションですべてのピクセルを完璧にしたいとき",
+          "<strong>アーカイブ目的</strong>：圧縮前のマスターコピーの保存",
+          "<strong>ローカル再生</strong>：インターネットではなくハードドライブからだけ再生するとき",
+          "<strong>チュートリアル用の画面録画</strong>：配布用に圧縮する前の段階"
         ],
-        "warning": "<strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4)."
+        "warning": "<strong>警告</strong>：本当に、ウェブ配信にAVIを使わないでください。製品動画にAVIを使うと言い張ったクライアントがいました。ホームページの読み込みに45秒かかりました。よん、じゅう、ご、びょう。😱 もうクライアントではありません（冗談です。MP4で直しました）。"
       },
       "mov": {
-        "title": "When to Use MOV",
-        "lead": "<strong>Use MOV when you're in Apple's ecosystem</strong> 🍎",
+        "title": "MOVを使うとき",
+        "lead": "<strong>Appleのエコシステムの中にいるならMOV</strong>🍎",
         "bullets": [
-          "<strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software",
-          "<strong>ProRes workflows</strong>: When color grading and quality are paramount",
-          "<strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac",
-          "<strong>Before converting</strong>: As a high-quality intermediate format"
+          "<strong>Final Cut Proのプロジェクト</strong>：MOVはAppleの編集ソフトと相性抜群です",
+          "<strong>ProResワークフロー</strong>：カラーグレーディングと品質が最重要のとき",
+          "<strong>MacからMacへの転送</strong>：関係者全員がMacを持っているとき",
+          "<strong>変換前</strong>：高品質な中間形式として"
         ],
-        "realityCheck": "<strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!"
+        "realityCheck": "<strong>MOVの現実</strong>：私の315.9MBの画面録画を覚えていますか？それがMOVのMOVたるゆえんです。品質は素晴らしく、共有には最悪。アップロード前には必ず変換しましょう！"
       },
       "decisionTree": {
-        "title": "Quick Decision Tree 🌳",
-        "diagram": "Is it for the web?\n├─ Yes → Is Safari support critical?\n│   ├─ Yes → MP4\n│   └─ No → WebM (with MP4 fallback)\n└─ No → Is it for editing?\n    ├─ Yes → Are you on Mac?\n    │   ├─ Yes → MOV\n    │   └─ No → AVI\n    └─ No → MP4 (it's always MP4)"
+        "title": "クイック決定ツリー🌳",
+        "diagram": "ウェブ用？\n├─ はい → Safari対応は必須？\n│   ├─ はい → MP4\n│   └─ いいえ → WebM（MP4フォールバック付き）\n└─ いいえ → 編集用？\n    ├─ はい → Macを使っている？\n    │   ├─ はい → MOV\n    │   └─ いいえ → AVI\n    └─ いいえ → MP4（いつだってMP4）"
       },
-      "quote": "\"The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer.\" 🧘‍♂️"
+      "quote": "「賢い開発者は知っている。最良の形式とは最新でも最も華やかなものでもなく、ユーザーを苦しめずに仕事を片付けるものだと。」🧘‍♂️"
     },
     "whyImportant": {
-      "title": "Why Is This Even Important For My Website?",
-      "p1": "Look, I get it. You might be thinking \"Can't I just upload whatever and call it a day?\" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?",
-      "p2": "Here's the cold, hard truth about why video formats matter more than you think:",
+      "title": "そもそもなぜ私のウェブサイトにとって重要なの？",
+      "p1": "わかります。「何でもいいからアップロードして終わりにできないの？」と思っているかもしれませんね🤷‍♂️。もちろん、フォークでスープを飲むこともできますが、人生を必要以上に難しくする理由はありません。",
+      "p2": "動画形式があなたが思う以上に重要である、冷たく厳しい真実をお伝えします：",
       "threeSecondRule": {
-        "title": "The 3-Second Rule ⏱️",
-        "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
+        "title": "3秒ルール⏱️",
+        "body": "調査によると、モバイルユーザーの53%は、読み込みに3秒以上かかるサイトを離脱します。ごじゅうさんパーセント！潜在顧客の半分以上が、あなたの素晴らしいコンテンツを見る前に消えてしまうのです。そして、読み込みが遅い最大の原因はたいてい何でしょう？そうです——デジタルの道路封鎖のように鎮座する、最適化されていない200MBのヒーロー動画です🚧。"
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "Googleは見ている（そして評価している）👀",
+        "intro": "ページ速度はGoogleの直接的なランキング要因です。つまり：",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>遅いサイト = 低い順位</strong> = 少ないオーガニックトラフィック",
+          "<strong>少ないトラフィック = 少ないコンバージョン</strong> = 少ないお金",
+          "<strong>少ないお金 = 悲しい開発者</strong>😢"
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "製品動画に巨大なMOVファイルを使っていたECサイトのクライアントがいました。すべてを最適化したMP4とフォールバック付きのWebMに変換した結果：",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "ページの読み込み時間が8.2秒から2.7秒に短縮",
+          "ターゲットキーワードの67%でGoogleの順位が向上",
+          "コンバージョン率が23%増加",
+          "月間売上が18,000ドル増加💸"
         ]
       },
       "bandwidthBill": {
-        "title": "The Bandwidth Bill From Hell 🔥",
-        "body": "Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.",
-        "realNumbersIntro": "<strong>Real numbers</strong>: If your site gets 10,000 visitors/month:",
+        "title": "地獄の帯域料金🔥",
+        "body": "誰かがあなたのページを読み込むたびに、あなたはその帯域に対してお金を払っています。5MBのMP4の代わりに50MBのAVIを使うということは、文字どおりホスティングに10倍のお金を払っているということです。1枚で足りるのにピザを10枚注文するようなもの——ただし、おいしくなくて、より高くつきます。",
+        "realNumbersIntro": "<strong>実際の数字</strong>：サイトに月1万人の訪問者がいる場合：",
         "bullets": [
-          "With 50MB videos: 500GB bandwidth = $$",
-          "With 5MB videos: 50GB bandwidth = $",
-          "That's potentially hundreds of dollars saved monthly!"
+          "50MBの動画なら：500GBの帯域 = $$",
+          "5MBの動画なら：50GBの帯域 = $",
+          "毎月数百ドルの節約になる可能性があります！"
         ]
       },
       "mobileUsers": {
-        "title": "Mobile Users Will Hate You 📱",
-        "intro": "Remember, over 60% of web traffic is mobile now. That means:",
+        "title": "モバイルユーザーに嫌われます📱",
+        "intro": "忘れないでください。今やウェブトラフィックの60%以上がモバイルです。つまり：",
         "bullets": [
-          "<strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video",
-          "<strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty",
-          "<strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users"
+          "<strong>データ上限は現実</strong>：あなたのヒーロー動画を見るために月のデータを使い果たしたい人はいません",
+          "<strong>遅い接続</strong>：誰もが5Gを持っているわけではなく、4Gも不安定なことがあります",
+          "<strong>バッテリー消耗</strong>：大きな動画 = より多くの処理 = バッテリー切れ = 怒ったユーザー"
         ]
       },
       "trust": {
-        "title": "Trust and Professionalism 🤝",
-        "intro": "This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:",
+        "title": "信頼とプロフェッショナリズム🤝",
+        "intro": "誰も話題にしませんが、これは非常に重要です。サイトが速く読み込まれ、動画が滑らかに再生されると：",
         "bullets": [
-          "Users trust you more (subconsciously associating speed with competence)",
-          "They're more likely to stay and explore",
-          "They're more likely to come back",
-          "They're more likely to recommend you"
+          "ユーザーはあなたをより信頼します（無意識に速さと有能さを結び付けます）",
+          "滞在して探索する可能性が高まります",
+          "再訪する可能性が高まります",
+          "あなたを推薦する可能性が高まります"
         ],
-        "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
+        "outro": "でもサイトが遅かったら？霧笛より大きな声で「素人仕事」と叫んでいるようなものです📯。ユーザーはこう考えます。「ウェブサイトすらまともに作れないのに、クレジットカードを預けて大丈夫？」"
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "収益化とのつながり💰",
+        "intro": "広告を運用していても、製品を販売していても、Mediumでコンテンツを収益化していても（やあ、Mediumライター仲間！👋）、パフォーマンスは収益に直結します：",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>広告収入</strong>：遅いサイト = 高い直帰率 = 少ない広告表示",
+          "<strong>アフィリエイトリンク</strong>：待てずに見られないものはクリックできません",
+          "<strong>製品の売上</strong>：読み込み時間が1秒増えるごとにコンバージョンが7%減ることがあります",
+          "<strong>コンテンツの収益化</strong>：読者はあなたの素晴らしい記事が読み込まれるのを待ってくれません"
         ]
       },
-      "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"
+      "quote": "「ウェブサイトの速度は第一印象のようなもの。チャンスは一度きりで、しくじれば『お待ちください、読み込み中……』と言う間もなく左スワイプされる。」💨"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.",
-      "cheatSheetIntro": "Here's your TL;DR cheat sheet:",
+      "title": "まとめ",
+      "p1": "というわけで、デジタル冒険者の皆さん！🚀 動画形式の荒野を旅してきました。もうMP4、WebM、AVI、MOVが謎の宇宙語には見えなくなっていることを願います。",
+      "cheatSheetIntro": "TL;DRチートシートはこちら：",
       "cheatSheet": [
-        "<strong>MP4</strong>: Your reliable, go-everywhere friend",
-        "<strong>WebM</strong>: The speed demon for modern web",
-        "<strong>AVI</strong>: The quality beast for local storage",
-        "<strong>MOV</strong>: Apple's heavyweight champion"
+        "<strong>MP4</strong>：どこへでも行ける頼れる友人",
+        "<strong>WebM</strong>：モダンウェブのスピード狂",
+        "<strong>AVI</strong>：ローカル保存のための品質の怪物",
+        "<strong>MOV</strong>：Appleのヘビー級チャンピオン"
       ],
-      "p2": "But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:",
+      "p2": "しかしもっと重要なのは、適切な動画形式を選ぶことが単なるオタク的な技術判断ではなく、次のことに関わると理解したことです：",
       "checklist": [
-        "✅ Keeping your users happy (and on your site)",
-        "✅ Making Google love you (hello, better rankings! 👋)",
-        "✅ Saving money on hosting (cha-ching! 💰)",
-        "✅ Building trust and looking professional",
-        "✅ Actually making money from your content"
+        "✅ ユーザーを満足させる（そしてサイトに留める）",
+        "✅ Googleに愛される（こんにちは、上位ランキング！👋）",
+        "✅ ホスティング費用を節約する（チャリーン！💰）",
+        "✅ 信頼を築き、プロらしく見える",
+        "✅ コンテンツから実際にお金を稼ぐ"
       ],
-      "p3": "The next time you're about to upload a video to your website, take a second to ask yourself: \"Is this format working for me, or am I working for it?\" Because life's too short for slow-loading websites and frustrated users.",
-      "p4": "Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅",
-      "quote": "\"In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!\" ⚡"
+      "p3": "次にウェブサイトに動画をアップロードしようとするとき、少し立ち止まって自問してください。「この形式は私のために働いているか、それとも私がこの形式のために働いているか？」人生は、遅いウェブサイトとイライラしたユーザーのために費やすには短すぎます。",
+      "p4": "さあ、動画を圧縮しに行きましょう！ユーザー（と財布）が感謝してくれます。もしこの記事が役に立ったなら、Mediumで拍手するか、まだ生のMOVファイルをウェブサイトにアップロードしているあの友人にシェアしてください。誰にでも一人はいますよね😅",
+      "quote": "「ウェブ開発という壮大な冒険では、最小の最適化がしばしば最大の勝利につながる。動画は圧縮され、読み込みは速くあれ！」⚡"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Apply what you just read with the free Media Manipulator tools.",
+      "title": "関連ツール",
+      "intro": "読んだ内容を、無料のMedia Manipulatorツールで実践しましょう。",
       "items": [
         {
-          "label": "Compress video",
-          "description": "Shrink MP4, WebM, MOV, and MKV files for the web."
+          "label": "動画を圧縮",
+          "description": "MP4、WebM、MOV、MKVファイルをウェブ用に縮小。"
         },
         {
-          "label": "Video converter",
-          "description": "Convert between MP4, WebM, MOV, AVI, and more."
+          "label": "動画コンバーター",
+          "description": "MP4、WebM、MOV、AVIなどの相互変換。"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "動画をGIFに変換",
+          "description": "短い動画クリップを共有しやすいアニメーションGIFに。"
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video into searchable text or captions."
+          "label": "動画を文字起こし",
+          "description": "動画の音声を検索可能なテキストや字幕に。"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Step-by-step walkthrough of every video conversion setting."
+          "label": "動画コンバーターチュートリアル",
+          "description": "すべての動画変換設定のステップバイステップ解説。"
         },
         {
-          "label": "Image optimization guide",
-          "description": "JPG vs PNG vs WebP and how to shrink images for the web."
+          "label": "画像最適化ガイド",
+          "description": "JPG vs PNG vs WebPと、ウェブ向けの画像の縮小方法。"
         }
       ]
     },
     "cta": {
-      "title": "Ready to Optimize Your Videos? 🚀",
-      "body": "Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.",
-      "button": "Try the video compressor →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "動画を最適化する準備はできましたか？🚀",
+      "body": "巨大な動画ファイルにウェブサイトの足を引っ張らせるのはもうやめましょう！無料の動画圧縮ツールを試して、違いをすぐに実感してください。MP4、WebM、AVI、MOVなどを数クリックで変換できます。",
+      "button": "動画圧縮ツールを試す →",
+      "footnote": "登録不要 • ファイルはサーバー上で処理 • 高速で安全"
     }
   },
   "blogImageOptimization": {
-    "backLink": "← Blog",
-    "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+    "backLink": "← ブログ",
+    "title": "ウェブ・ジェダイのための画像最適化：JPG vs PNG vs WebP",
     "byline": {
-      "label": "Written by:",
-      "date": "June 14th, 2025",
-      "time": "5:32 PM"
+      "label": "執筆：",
+      "date": "2025年6月14日",
+      "time": "17:32"
     },
     "sections": {
       "intro": {
-        "title": "A Brief Intro to Image Formatting",
-        "p1": "Ever uploaded an image to your website and wondered why it takes <em>forever</em> to load? Or maybe you've noticed that your beautiful PNG logo looks crisp and clean, but it's somehow 5MB for a simple graphic? 🤔 Welcome to the wild world of image formats, where choosing the wrong one can make the difference between a lightning-fast website and one that loads slower than dial-up internet (remember that? 😅).",
-        "p2": "Image formats are essentially different ways of encoding and storing visual data. Think of them like different languages for describing the same picture - some are more verbose and detailed (like PNG), while others are more concise and compressed (like JPG). Each format has its own special sauce for how it stores pixels, handles transparency, compresses data, and maintains quality.",
-        "p3": "At their core, all image formats are trying to solve the same problem: how do we store millions of pixels worth of color information in a file that doesn't break the internet when someone tries to download it? The answer lies in <em>compression</em> - and this is where things get interesting! Some formats use \"lossy\" compression (they throw away some data to save space), while others use \"lossless\" compression (they keep everything but find clever ways to pack it smaller). It's like the difference between summarizing a book versus shrinking the font size - both make it \"smaller,\" but one loses information while the other doesn't.",
-        "p4": "The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀",
-        "quote": "\"The wise developer knows that the heaviest burden on a website is not code, but unoptimized images.\" - Ancient Web Proverb 😉"
+        "title": "画像形式のかんたんな紹介",
+        "p1": "ウェブサイトに画像をアップロードして、なぜ読み込みに<em>永遠に</em>かかるのか不思議に思ったことはありませんか？あるいは、美しいPNGのロゴはくっきりきれいなのに、単純なグラフィックなのになぜか5MBもあることに気づいたとか？🤔 画像形式の荒野へようこそ。間違った形式を選ぶと、電光石火のウェブサイトと、ダイヤルアップ回線より遅く読み込まれるウェブサイト（覚えていますか？😅）の差が生まれます。",
+        "p2": "画像形式とは、要するに視覚データをエンコードして保存するさまざまな方法です。同じ絵を描写するための異なる言語のようなもので、より冗長で詳細なもの（PNGなど）もあれば、より簡潔で圧縮されたもの（JPGなど）もあります。各形式には、ピクセルの保存方法、透明度の扱い、データの圧縮、品質の維持に関する独自の秘伝のソースがあります。",
+        "p3": "根本的に、すべての画像形式は同じ問題を解こうとしています。何百万ピクセル分もの色情報を、誰かがダウンロードしようとしてもインターネットを壊さないファイルにどう保存するか？答えは<em>圧縮</em>にあります——そしてここからが面白いところです！「非可逆」圧縮を使う形式（容量を節約するためにデータの一部を捨てる）もあれば、「可逆」圧縮を使う形式（すべてを保持しつつ、賢い方法でより小さく詰め込む）もあります。本を要約するのとフォントサイズを縮小するのとの違いのようなもので、どちらも「小さく」なりますが、一方は情報を失い、もう一方は失いません。",
+        "p4": "今日掘り下げる3人の仲間——JPG、PNG、WebP——はそれぞれ異なる方法でこの課題に取り組んでおり、それぞれの超能力（とクリプトナイト！）を理解すれば、あなたはパダワンから真のウェブ・ジェダイへと変貌するでしょう。🚀",
+        "quote": "「賢い開発者は知っている。ウェブサイトの最も重い負担はコードではなく、最適化されていない画像であると。」—— 古代ウェブのことわざ😉"
       },
       "differences": {
-        "title": "What's the Difference Between These Formats Anyway?",
-        "intro": "Alright, let's get into the nitty-gritty of what makes each format tick! Think of these formats as different types of vehicles - they'll all get you from point A to point B, but some are sports cars, some are trucks, and some are those fancy new electric vehicles that do everything. 🚗",
+        "title": "結局、これらの形式の違いは何？",
+        "intro": "よし、各形式の仕組みの細かいところに入っていきましょう！これらの形式はさまざまな種類の乗り物だと考えてください。どれもA地点からB地点へ連れて行ってくれますが、スポーツカーもあれば、トラックもあれば、何でもこなす最新の電気自動車もあります。🚗",
         "jpg": {
-          "title": "JPG (or JPEG - they're the same thing, don't let anyone tell you otherwise 😄)",
-          "body": "JPG is like that reliable friend who's great at parties but terrible with details. It uses lossy compression, which means it literally throws away data it thinks you won't notice. Perfect for photographs where a tiny bit of quality loss is invisible to the human eye, but terrible for text or sharp edges. Ever seen a meme that's been shared so many times it looks like it was photographed through a potato? That's JPG compression artifacts saying hello! 👋",
+          "title": "JPG（またはJPEG——同じものです。誰が何と言おうと😄）",
+          "body": "JPGは、パーティーでは最高だけど細かいことが苦手な頼れる友人のようなものです。非可逆圧縮を使うため、あなたが気づかないと判断したデータを文字どおり捨てます。わずかな品質低下が人間の目には見えない写真には最適ですが、テキストや鋭いエッジには最悪です。何度も共有されすぎてジャガイモ越しに撮影したように見えるミームを見たことがありますか？それはJPGの圧縮アーティファクトがこんにちはと言っているのです！👋",
           "bullets": [
-            "<strong>Pros</strong>: Small file sizes, universally supported, great for photos",
-            "<strong>Cons</strong>: No transparency support, loses quality with each save, makes text look fuzzy",
-            "<strong>Best for</strong>: Photographs, complex images with lots of colors"
+            "<strong>長所</strong>：小さなファイルサイズ、普遍的な対応、写真に最適",
+            "<strong>短所</strong>：透明度非対応、保存のたびに品質が低下、テキストがぼやける",
+            "<strong>最適な用途</strong>：写真、色数の多い複雑な画像"
           ]
         },
         "png": {
-          "title": "PNG (Portable Network Graphics)",
-          "body": "PNG is the perfectionist of the group - it refuses to lose any data whatsoever. Using lossless compression, it keeps every single pixel exactly as you intended. It also supports transparency (hello, logos with no background! 🎉), making it the go-to choice for graphics, icons, and anything with text. The downside? File sizes can get chunky real quick, especially with large, complex images.",
+          "title": "PNG（Portable Network Graphics）",
+          "body": "PNGはグループの完璧主義者です。どんなデータも失うことを拒みます。可逆圧縮を使い、すべてのピクセルを意図したとおりに正確に保持します。透明度にも対応しているため（こんにちは、背景なしのロゴ！🎉）、グラフィック、アイコン、テキストを含むあらゆるものの定番です。欠点は？特に大きく複雑な画像では、ファイルサイズがあっという間に膨らむことです。",
           "bullets": [
-            "<strong>Pros</strong>: Lossless compression, supports transparency, perfect for graphics and text",
-            "<strong>Cons</strong>: Larger file sizes, not ideal for photographs",
-            "<strong>Best for</strong>: Logos, icons, images with text, anything needing transparency"
+            "<strong>長所</strong>：可逆圧縮、透明度対応、グラフィックとテキストに最適",
+            "<strong>短所</strong>：大きなファイルサイズ、写真には不向き",
+            "<strong>最適な用途</strong>：ロゴ、アイコン、テキストを含む画像、透明度が必要なもの"
           ]
         },
         "webp": {
-          "title": "WebP (The New Kid on the Block)",
-          "body": "WebP is Google's attempt to create the ultimate image format - and honestly, they kind of nailed it! 🎯 It's like the Swiss Army knife of image formats, supporting both lossy AND lossless compression, transparency, and even animation (move over, GIF!). It typically achieves 25-35% smaller file sizes than JPG and PNG while maintaining the same quality. The only catch? Not every browser plays nice with it yet (looking at you, older Safari versions 👀).",
+          "title": "WebP（新顔）",
+          "body": "WebPは究極の画像形式を作ろうというGoogleの試みです——そして正直、かなり成功しています！🎯 画像形式界のスイスアーミーナイフのようなもので、非可逆と可逆の両方の圧縮、透明度、さらにはアニメーション（どいてくれ、GIF！）にも対応しています。同じ品質を保ちながら、JPGやPNGより通常25〜35%小さいファイルサイズを実現します。唯一の落とし穴は？まだすべてのブラウザが仲良くしてくれるわけではないことです（そう、古いバージョンのSafariのことです👀）。",
           "bullets": [
-            "<strong>Pros</strong>: Smaller file sizes, supports everything (lossy, lossless, transparency, animation), excellent quality-to-size ratio",
-            "<strong>Cons</strong>: Not universally supported (yet), requires fallbacks for older browsers",
-            "<strong>Best for</strong>: Modern websites where you can provide fallbacks, any use case really!"
+            "<strong>長所</strong>：小さなファイルサイズ、すべてに対応（非可逆、可逆、透明度、アニメーション）、優れた品質対サイズ比",
+            "<strong>短所</strong>：（まだ）普遍的には対応されていない、古いブラウザ向けのフォールバックが必要",
+            "<strong>最適な用途</strong>：フォールバックを用意できるモダンなウェブサイト、実際にはあらゆる用途！"
           ]
         },
-        "example": "Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️",
-        "quote": "\"Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses.\" ⚔️"
+        "example": "実際の簡単な例を挙げましょう。1920x1080の写真は、JPGなら500KB、PNGなら2MBになるかもしれませんが、WebPならわずか350KB——しかも見た目の品質はほぼ同じです。コンパクトカーの値段で高級車を手に入れるようなものです！🏎️",
+        "quote": "「侍が刀を選ぶように形式を選べ。目的と精度をもって、その強みと弱みを理解して。」⚔️"
       },
       "choosing": {
-        "title": "How Do I Know When to Use One Format Over Another?",
-        "intro": "This is where the rubber meets the road! 🏁 Choosing the right format isn't rocket science, but it does require thinking like a detective. Let me break down the decision-making process with some real-world scenarios that'll make you go \"Aha!\" 💡",
+        "title": "どの形式をいつ使えばいいの？",
+        "intro": "ここからが本番です！🏁 適切な形式を選ぶのはロケット科学ではありませんが、探偵のように考える必要はあります。「なるほど！」と思える現実のシナリオで、意思決定のプロセスを分解しましょう💡",
         "decisionTree": {
-          "title": "The Quick Decision Tree (Screenshot This! 📸)",
-          "lead": "Ask yourself these questions in order:",
+          "title": "クイック決定ツリー（スクリーンショット推奨！📸）",
+          "lead": "次の質問を順番に自問してください：",
           "items": [
-            "Does it need transparency? → If yes, PNG or WebP",
-            "Is it a photograph with lots of colors and gradients? → JPG or WebP",
-            "Does it have text or sharp edges? → PNG or WebP",
-            "Do I need the absolute smallest file size? → WebP (with JPG/PNG fallback)",
-            "Is it going to be edited and saved multiple times? → PNG (to avoid quality degradation)"
+            "透明度が必要？ → はいならPNGまたはWebP",
+            "色やグラデーションの多い写真？ → JPGまたはWebP",
+            "テキストや鋭いエッジがある？ → PNGまたはWebP",
+            "とにかく最小のファイルサイズが必要？ → WebP（JPG/PNGフォールバック付き）",
+            "何度も編集して保存する？ → PNG（品質劣化を避けるため）"
           ]
         },
         "scenarios": {
-          "title": "Real-World Scenarios (Because Theory is Boring 😴)",
+          "title": "現実のシナリオ（理論は退屈なので😴）",
           "items": [
             {
-              "title": "Scenario 1: Your Company Logo",
-              "body": "You've got a slick logo that needs to work on any background. This is PNG territory all day! Why? You need that transparency, baby! Plus, logos typically have clean lines and solid colors that PNG handles like a boss. If you're feeling adventurous and your analytics show most users have modern browsers, go WebP with PNG fallback."
+              "title": "シナリオ1：会社のロゴ",
+              "body": "どんな背景でも使える洗練されたロゴがあります。これは一日中PNGの領域です！なぜ？透明度が必要だからです！さらに、ロゴには通常、PNGが得意とするクリーンな線と単色があります。冒険心があり、分析でほとんどのユーザーがモダンブラウザを使っているとわかっているなら、PNGフォールバック付きのWebPにしましょう。"
             },
             {
-              "title": "Scenario 2: Hero Image on Your Landing Page",
-              "body": "That gorgeous 4K photograph of your product/team/artisanal coffee? JPG or WebP, no question. The slight quality loss from JPG compression is invisible in photographs, and the file size difference is *chef's kiss* 👨‍🍳. A 5MB PNG photo will make your users cry (and bounce), while a 500KB JPG will load faster than they can say \"add to cart.\""
+              "title": "シナリオ2：ランディングページのヒーロー画像",
+              "body": "製品／チーム／こだわりのコーヒーの美しい4K写真？JPGかWebP、迷う余地なし。JPG圧縮によるわずかな品質低下は写真では見えず、ファイルサイズの差は*最高*です👨‍🍳。5MBのPNG写真はユーザーを泣かせ（そして直帰させ）ますが、500KBのJPGなら「カートに追加」と言う間もなく読み込まれます。"
             },
             {
-              "title": "Scenario 3: Screenshots for Your Blog/Documentation",
-              "body": "This one's tricky! If there's text in the screenshot (and there usually is), PNG is your friend. JPG will make that text look like it went through a blender. However, if you're taking screenshots on a Mac, those bad boys can be HUGE. Consider using WebP or optimizing your PNGs with tools like TinyPNG."
+              "title": "シナリオ3：ブログ／ドキュメント用のスクリーンショット",
+              "body": "これは難しいところです！スクリーンショットにテキストがあるなら（たいていあります）、PNGが味方です。JPGはそのテキストをミキサーにかけたように見せてしまいます。ただし、Macでスクリーンショットを撮ると、巨大になることがあります。WebPを使うか、TinyPNGのようなツールでPNGを最適化することを検討してください。"
             },
             {
-              "title": "Scenario 4: Product Images for E-commerce",
-              "body": "WebP with JPG fallback is the power move here. 🎯 You get smaller file sizes (faster load times = better conversions), great quality, and you can even add subtle transparency effects if needed. Just make sure to implement proper fallbacks for the Safari-on-iPhone crowd."
+              "title": "シナリオ4：ECサイトの商品画像",
+              "body": "ここではJPGフォールバック付きのWebPが決め手です。🎯 より小さなファイルサイズ（速い読み込み = 高いコンバージョン）、優れた品質、必要なら微妙な透明効果も加えられます。iPhoneのSafariユーザーのために、適切なフォールバックを必ず実装してください。"
             }
           ]
         },
         "proTips": {
-          "title": "Pro Tips from the Trenches 🪖",
+          "title": "現場からのプロのヒント🪖",
           "items": [
-            "Always compress your images! Even if you choose the right format, an unoptimized PNG can still be a monster",
-            "Use responsive images with different sizes for different devices (your mobile users will thank you)",
-            "Consider using CDNs that can automatically serve WebP to supported browsers",
-            "When in doubt, test both formats and see which looks better at a reasonable file size"
+            "常に画像を圧縮しましょう！正しい形式を選んでも、最適化されていないPNGは怪物のままです",
+            "デバイスごとに異なるサイズのレスポンシブ画像を使いましょう（モバイルユーザーが感謝します）",
+            "対応ブラウザにWebPを自動配信できるCDNの利用を検討しましょう",
+            "迷ったら両方の形式を試して、妥当なファイルサイズでどちらがきれいに見えるか確認しましょう"
           ]
         },
-        "quote": "\"The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves.\" 🧘‍♂️"
+        "quote": "「熟練のウェブ開発者は最も美しく見える形式ではなく、ユーザーに最も役立つ形式を選ぶ。他者に尽くすことで、我々自身が最適化されるのだから。」🧘‍♂️"
       },
       "whyImportant": {
-        "title": "Why Is This Even Important For My Website?",
-        "intro": "Okay, real talk time. 💯 You might be thinking, \"Come on, it's 2025, everyone has fast internet now, right?\" WRONG! Let me hit you with some truth bombs that'll make you want to optimize every image on your site immediately. 💣",
+        "title": "そもそもなぜ私のウェブサイトにとって重要なの？",
+        "intro": "さて、本音の時間です。💯「もう2025年だよ、みんな速いインターネットを持ってるでしょ？」と思っているかもしれません。違います！サイトのすべての画像を今すぐ最適化したくなる真実の爆弾をお見舞いしましょう。💣",
         "loadTimes": {
-          "title": "The Brutal Reality of Page Load Times",
-          "p1": "Here's a stat that'll make your jaw drop: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load</strong>. THREE. SECONDS. 😱 And guess what's usually the biggest culprit? Yep, those chunky, unoptimized images you uploaded straight from your camera.",
-          "p2": "Let's do some quick math (don't worry, I'll keep it simple):",
+          "title": "ページ読み込み時間の残酷な現実",
+          "p1": "顎が落ちる統計があります。<strong>モバイルユーザーの53%は、読み込みに3秒以上かかるサイトを離脱します</strong>。さん、びょう。😱 そして最大の原因はたいてい何でしょう？そう、カメラから直接アップロードした、あの太った最適化されていない画像です。",
+          "p2": "簡単な計算をしましょう（心配しないで、シンプルにします）：",
           "items": [
-            "Average webpage: 2-3MB total",
-            "Unoptimized hero image: 5MB",
-            "Result: Your page just became slower than a sloth on sedatives 🦥"
+            "平均的なウェブページ：合計2〜3MB",
+            "最適化されていないヒーロー画像：5MB",
+            "結果：あなたのページは鎮静剤を打たれたナマケモノより遅くなりました🦥"
           ]
         },
         "seo": {
-          "title": "The SEO Domino Effect 🎯",
-          "intro": "Google's Core Web Vitals (fancy term for \"does your site load fast?\") directly impact your search rankings. Here's the chain reaction:",
+          "title": "SEOのドミノ効果🎯",
+          "intro": "GoogleのCore Web Vitals（「サイトは速く読み込まれるか？」の格好いい言い方）は検索順位に直接影響します。連鎖反応はこうです：",
           "items": [
-            "Heavy images → Slow load times",
-            "Slow load times → Poor Core Web Vitals scores",
-            "Poor scores → Lower search rankings",
-            "Lower rankings → Less traffic",
-            "Less traffic → Less money 💸"
+            "重い画像 → 遅い読み込み",
+            "遅い読み込み → 低いCore Web Vitalsスコア",
+            "低いスコア → 低い検索順位",
+            "低い順位 → 少ないトラフィック",
+            "少ないトラフィック → 少ないお金💸"
           ],
-          "outro": "It's like a really expensive game of dominoes where every piece that falls costs you customers!"
+          "outro": "倒れる駒がすべて顧客を失わせる、非常に高価なドミノゲームのようなものです！"
         },
         "mobile": {
-          "title": "The Mobile Reality Check 📱",
-          "p1": "Here's something that might surprise you: In many parts of the world, people are browsing on 3G connections or have data caps. That beautiful 10MB PNG hero image? It just cost someone in India half their daily data allowance. Not cool, and definitely not good for business.",
-          "p2": "Plus, even in countries with \"fast\" internet, people are often on spotty coffee shop WiFi or riding the subway. Your unoptimized images are literally making people close your site and go to your competitor. Ouch! 🤕"
+          "title": "モバイルの現実📱",
+          "p1": "驚くかもしれない事実があります。世界の多くの地域では、人々は3G接続で閲覧していたり、データ上限があったりします。あの美しい10MBのPNGヒーロー画像？インドの誰かの1日のデータ量の半分を消費したところです。かっこ悪いし、ビジネスにも間違いなく良くありません。",
+          "p2": "さらに、「速い」インターネットのある国でも、人々はしばしば不安定なカフェのWi-Fiを使っていたり、地下鉄に乗っていたりします。最適化されていない画像は、文字どおり人々にサイトを閉じさせ、競合に向かわせています。痛い！🤕"
         },
         "money": {
-          "title": "The Money Talk (Because Let's Be Honest, That's What Matters) 💰",
+          "title": "お金の話（正直に言えば、それが重要ですから）💰",
           "items": [
-            "<strong>Amazon found that every 100ms of latency cost them 1% in sales</strong>",
-            "<strong>Pinterest increased search engine traffic and sign-ups by 15% when they reduced perceived wait times by 40%</strong>",
-            "<strong>Walmart saw a 2% increase in conversions for every 1 second of improvement in load time</strong>"
+            "<strong>Amazonは、100ミリ秒の遅延ごとに売上が1%減ることを発見しました</strong>",
+            "<strong>Pinterestは、体感待ち時間を40%減らしたところ、検索エンジンからのトラフィックと登録が15%増えました</strong>",
+            "<strong>Walmartは、読み込み時間が1秒改善するごとにコンバージョンが2%増加しました</strong>"
           ],
-          "outro": "Still think image optimization doesn't matter? 🤔"
+          "outro": "それでも画像の最適化は重要でないと思いますか？🤔"
         },
         "horrorStory": {
-          "title": "Real-World Horror Story 🎃",
-          "body": "I once worked with a client whose beautiful photography portfolio site was getting almost no traffic. The culprit? Each image was a 15-20MB PNG straight from Photoshop. The homepage took 45 seconds to load on a good day. After optimizing (converting to JPG, proper sizing, lazy loading), load time dropped to 2 seconds. Traffic increased by 70% in one month. True story!"
+          "title": "現実のホラーストーリー🎃",
+          "body": "美しい写真ポートフォリオサイトにほとんどアクセスがないクライアントと仕事をしたことがあります。原因は？各画像がPhotoshopから直接出力した15〜20MBのPNGでした。ホームページの読み込みは、調子の良い日で45秒。最適化（JPGへの変換、適切なサイズ、遅延読み込み）の後、読み込み時間は2秒に短縮。トラフィックは1か月で70%増加しました。実話です！"
         },
         "trust": {
-          "title": "The Trust Factor 🤝",
-          "intro": "Slow websites don't just lose customers - they lose credibility. Users subconsciously associate slow load times with:",
+          "title": "信頼の要素🤝",
+          "intro": "遅いウェブサイトは顧客を失うだけでなく、信用も失います。ユーザーは無意識に遅い読み込みを次のものと結び付けます：",
           "items": [
-            "Outdated technology",
-            "Lack of attention to detail",
-            "Unprofessionalism",
-            "Security concerns (yes, really!)"
+            "時代遅れの技術",
+            "細部への配慮の欠如",
+            "プロらしくなさ",
+            "セキュリティへの懸念（本当です！）"
           ],
-          "outro": "Your image choices are literally affecting how trustworthy people think you are. Wild, right?"
+          "outro": "画像の選択は、文字どおりあなたがどれだけ信頼できると思われるかに影響しています。すごいでしょう？"
         },
-        "quote": "\"A website's speed is like a first impression - you never get a second chance to load quickly.\" ⚡"
+        "quote": "「ウェブサイトの速度は第一印象のようなもの。速く読み込む二度目のチャンスは決して来ない。」⚡"
       },
       "conclusion": {
-        "title": "Conclusion",
-        "intro": "Alright, my fellow Web Jedis, we've been on quite the journey! 🚀 From understanding the DNA of image formats to seeing how they can literally make or break your website's success. Let's recap the superpowers you've just unlocked:",
+        "title": "まとめ",
+        "intro": "さて、ウェブ・ジェダイの仲間たち、なかなかの旅でしたね！🚀 画像形式のDNAを理解するところから、それがウェブサイトの成功を文字どおり左右することを知るところまで。手に入れたばかりの超能力をおさらいしましょう：",
         "tldr": {
-          "title": "The TL;DR Version (For Those Who Scrolled Here First 😏)",
+          "title": "TL;DR版（まずここまでスクロールした人へ😏）",
           "items": [
-            "<strong>JPG</strong>: Your go-to for photos. Small files, great quality, but no transparency",
-            "<strong>PNG</strong>: The perfectionist for logos, graphics, and anything with text. Bigger files but pixel-perfect",
-            "<strong>WebP</strong>: The Swiss Army knife that does it all, just needs fallbacks for older browsers"
+            "<strong>JPG</strong>：写真の定番。小さなファイル、優れた品質、ただし透明度なし",
+            "<strong>PNG</strong>：ロゴ、グラフィック、テキストを含むものの完璧主義者。ファイルは大きいがピクセル単位で完璧",
+            "<strong>WebP</strong>：何でもこなすスイスアーミーナイフ。古いブラウザ向けのフォールバックだけ必要"
           ]
         },
         "actionPlan": {
-          "title": "Your Action Plan (Do These TODAY!) ✅",
+          "title": "アクションプラン（今日やること！）✅",
           "items": [
-            "<strong>Audit your current images</strong> - Open your website right now and check those file sizes. I'll wait... Scary, right? 😱",
-            "<strong>Set up an optimization workflow</strong> - Whether it's using tools like TinyPNG, ImageOptim, or good ol' ffmpeg (shameless plug for my other article 😉), make optimization part of your process",
-            "<strong>Implement WebP with fallbacks</strong> - It's 2025, time to give your users that next-gen experience",
-            "<strong>Test your load times</strong> - Use Google's PageSpeed Insights and watch those scores soar",
-            "<strong>Set up responsive images</strong> - Different sizes for different devices = happy users everywhere"
+            "<strong>現在の画像を監査する</strong> —— 今すぐウェブサイトを開いてファイルサイズを確認してください。待ちます……怖いでしょう？😱",
+            "<strong>最適化ワークフローを整える</strong> —— TinyPNG、ImageOptim、あるいは古き良きffmpeg（私の別の記事の宣伝です😉）など、最適化をプロセスの一部にしましょう",
+            "<strong>フォールバック付きでWebPを実装する</strong> —— 2025年です。ユーザーに次世代の体験を届ける時です",
+            "<strong>読み込み時間をテストする</strong> —— GoogleのPageSpeed Insightsを使って、スコアが急上昇するのを見てください",
+            "<strong>レスポンシブ画像を設定する</strong> —— デバイスごとに異なるサイズ = どこでも幸せなユーザー"
           ]
         },
         "bigPicture": {
-          "title": "The Bigger Picture 🖼️",
-          "p1": "Remember, optimizing your images isn't just about technical SEO scores or saving bandwidth (though those are awesome bonuses!). It's about respecting your users' time, data, and experience. Every second you shave off your load time is a second you're giving back to someone's day. That's pretty powerful when you think about it! 💪",
-          "p2": "Plus, let's be real - faster websites make more money. It's not rocket science, it's just good business. Your optimized images are literally increasing your bottom line while making the web a better place. You're basically a superhero now! 🦸‍♀️🦸‍♂️"
+          "title": "より大きな視点🖼️",
+          "p1": "忘れないでください。画像の最適化は、技術的なSEOスコアや帯域の節約のためだけではありません（それらも素晴らしいおまけですが！）。ユーザーの時間、データ、体験を尊重することです。読み込み時間を1秒削るごとに、誰かの1日に1秒を返しているのです。考えてみると、かなり強力なことです！💪",
+          "p2": "それに、正直に言いましょう——速いウェブサイトはより多くのお金を稼ぎます。ロケット科学ではなく、単に良いビジネスです。最適化された画像は、ウェブをより良い場所にしながら、文字どおり収益を増やしています。あなたはもはやスーパーヒーローです！🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
-          "title": "One Final Challenge 🎯",
-          "p1": "Here's my challenge to you: Take the slowest-loading page on your website and optimize just the images. Nothing else. I guarantee you'll see at least a 50% improvement in load time. Share your before/after results in the comments - I love a good optimization success story!",
-          "p2": "Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨"
+          "title": "最後の挑戦🎯",
+          "p1": "私からの挑戦状です。ウェブサイトで最も読み込みの遅いページを選び、画像だけを最適化してください。他は何もしないで。読み込み時間が少なくとも50%改善することを保証します。ビフォー／アフターの結果をコメントでシェアしてください——最適化の成功談は大好きです！",
+          "p2": "覚えておいてください。ウェブ開発の世界では、最良のコードは速いコードですが、最良の画像は最適化された画像です。さあ、圧縮しに行きましょう！画像は小さく、読み込み時間はもっと小さくあれ！🚀✨"
         },
-        "quote": "\"The journey of a thousand optimizations begins with a single compressed image.\" 🏔️"
+        "quote": "「千の最適化の旅は、一枚の圧縮された画像から始まる。」🏔️"
       }
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the techniques from this guide in the free Media Manipulator image tools.",
+      "title": "関連ツール",
+      "intro": "このガイドのテクニックを、無料のMedia Manipulator画像ツールで試しましょう。",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "画像コンバーター",
+          "description": "JPG、PNG、WebP、AVIF、GIFなどの相互変換。"
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebPをJPGに変換",
+          "description": "WebPから幅広く互換性のあるJPGを取得。"
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "EXIFメタデータを削除",
+          "description": "写真を共有する前にGPS、デバイス、タイムスタンプのメタデータを削除。"
         },
         {
-          "label": "Image converter tutorial",
-          "description": "Full walkthrough of every setting in the image converter."
+          "label": "画像コンバーターチュートリアル",
+          "description": "画像コンバーターのすべての設定の完全解説。"
         },
         {
-          "label": "Video compression guide",
-          "description": "Apply the same optimization mindset to video files."
+          "label": "動画圧縮ガイド",
+          "description": "同じ最適化の考え方を動画ファイルに。"
         },
         {
-          "label": "Audio quality guide",
-          "description": "Pick the right audio bitrate, sample rate, and codec."
+          "label": "音質ガイド",
+          "description": "適切な音声ビットレート、サンプルレート、コーデックの選び方。"
         }
       ]
     },
     "footer": {
-      "title": "Time to Become an Image Optimization Jedi! 🌟",
-      "body": "Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!",
-      "ctaLabel": "Open the image converter →",
-      "disclaimer": "No signup required • Process files locally • Fast & secure"
+      "title": "画像最適化のジェダイになる時です！🌟",
+      "body": "太ったPNGを電光石火のWebPに変える準備はできましたか？無料の画像コンバーターはJPG、PNG、WebP、GIFなどに対応しています。数秒で画像を最適化して、ウェブサイトが飛ぶように速くなるのを見てください！",
+      "ctaLabel": "画像コンバーターを開く →",
+      "disclaimer": "登録不要 • ファイルはサーバー上で処理 • 高速で安全"
     }
   },
   "blogAudioQuality": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← ブログ"
     },
     "header": {
-      "title": "The Sound of <strike>Silence</strike> Quality: Bitrates, Sample Rates, and Formats",
-      "byline": "Written by:",
-      "dateDisplay": "June 14th, 2025",
-      "timeDisplay": "10:08 PM"
+      "title": "サウンド・オブ・<strike>サイレンス</strike>クオリティ：ビットレート、サンプルレート、形式",
+      "byline": "執筆：",
+      "dateDisplay": "2025年6月14日",
+      "timeDisplay": "22:08"
     },
     "intro": {
-      "title": "A Brief Intro to Audio Formats, Bitrates, and Sample Rates",
-      "p1": "Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's \"high-quality\" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:",
+      "title": "音声形式、ビットレート、サンプルレートのかんたんな紹介",
+      "p1": "ダウンロードしたポッドキャストは50MBで透き通るように聞こえるのに、友人の「高音質」音楽ファイルは3MBで水中で録音したように聞こえるのはなぜか、不思議に思ったことはありませんか？あるいは、こんなことに気づいたことは：",
       "bullets": [
-        "Your website's background music takes forever to load, even though it's only 30 seconds long",
-        "That audio file you converted sounds like someone's playing it through a tin can",
-        "You're trying to add voice-overs to your video content but the file sizes are absolutely massive",
-        "Your carefully crafted sound effects library is eating up all your cloud storage",
-        "You downloaded the same song from different sources and they all sound wildly different"
+        "ウェブサイトのBGMがたった30秒なのに、読み込みに永遠にかかる",
+        "変換した音声ファイルが、誰かがブリキ缶越しに再生しているように聞こえる",
+        "動画コンテンツにナレーションを追加しようとしているが、ファイルサイズがとてつもなく大きい",
+        "丹精込めて作った効果音ライブラリがクラウドストレージを食い尽くしている",
+        "同じ曲を別のソースからダウンロードしたら、どれもまったく違う音に聞こえる"
       ],
-      "p2": "If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!",
-      "p3": "Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.",
-      "p4": "In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯",
-      "quote": "\"The ear is the avenue to the heart.\" – Voltaire"
+      "p2": "こうした音声の冒険（または災難😅）を経験したことがあるなら、シートベルトを締めてください。音声形式、ビットレート、サンプルレートの世界の謎を解き明かします！",
+      "p3": "音声ファイルはコーヒー☕のようなものだと考えてください。インスタントコーヒー（低ビットレートのMP3）、普通のドリップコーヒー（標準品質の音声）、そして高級エスプレッソマシンの一杯（ロスレスのFLACファイル）があります。どれもコーヒーですが、体験は？まったく違います。高級カフェでインスタントコーヒーを出さないのと同じように、プロのウェブサイトで低品質の音声ファイルを使うべきではありません。",
+      "p4": "この記事では、これらの謎めいた数字と形式が実際に何を意味するのか、なぜ思っている以上に重要なのか、そして適切な組み合わせを選ぶことが、訪問者が興味を持ち続けるか、あの恐ろしい「戻る」ボタンを押すかの分かれ目になる理由を探ります。🎯",
+      "quote": "「耳は心への道である。」—— ヴォルテール"
     },
     "difference": {
-      "title": "What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?",
-      "p1": "Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧",
-      "formatsLead": "<strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:",
+      "title": "結局、形式、ビットレート、サンプルレートの違いは何？",
+      "p1": "よし、ポッドキャストがいい音で聞こえればそれでいい、という技術に疎い友人に説明するみたいに分解していきましょう！🎧",
+      "formatsLead": "<strong>音声形式</strong>はコンテナのようなもの——音声を詰め込むさまざまな種類の箱だと考えてください。選択肢は：",
       "formatsBullets": [
-        "<strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit",
-        "<strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton",
-        "<strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside",
-        "<strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty",
-        "<strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it"
+        "<strong>MP3</strong>：頼れる段ボール箱。仕事はこなし、どこでも受け入れられますが、中身を少し押しつぶすかもしれません",
+        "<strong>WAV</strong>：頑丈な鋼鉄のコンテナ。すべてを完璧に保存しますが、とてつもなく重い",
+        "<strong>AAC</strong>：より良い梱包技術を備えた洗練されたモダンな箱。MP3と同じサイズでより多くの品質を収めます",
+        "<strong>FLAC</strong>：真空パックのコンテナ。何も失わずに圧縮しますが、それでもかなり重い",
+        "<strong>OGG</strong>：素晴らしく機能するオープンソースの反逆者の箱ですが、開け方を知らない人もいます"
       ],
-      "bitrateLead": "<strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:",
+      "bitrateLead": "<strong>ビットレート</strong>は1秒あたりに流れるデータ量です——水道管のようなものだと想像してください。ビットレートが高い = 太い管 = より多くの音声情報が流れる：",
       "bitrateBullets": [
-        "<strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)",
-        "<strong>128 kbps</strong>: Standard faucet (decent for casual listening)",
-        "<strong>256 kbps</strong>: Fire hose (great quality for most people)",
-        "<strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)",
-        "<strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿"
+        "<strong>64 kbps</strong>：庭のホース（トークラジオには十分、音楽には最悪）",
+        "<strong>128 kbps</strong>：標準の蛇口（カジュアルなリスニングにはまずまず）",
+        "<strong>256 kbps</strong>：消防ホース（ほとんどの人にとって素晴らしい品質）",
+        "<strong>320 kbps</strong>：工業用パイプ（MP3の最高品質）",
+        "<strong>1,411 kbps</strong>：ナイアガラの滝（非圧縮のCD品質）💿"
       ],
-      "sampleRateLead": "<strong>Sample Rate</strong> is how many times per second we take a \"snapshot\" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):",
+      "sampleRateLead": "<strong>サンプルレート</strong>は、1秒間に音波の「スナップショット」を何回撮るかです。Hz（ヘルツ）またはkHz（キロヘルツ）で測ります：",
       "sampleRateBullets": [
-        "<strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy",
-        "<strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear",
-        "<strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)",
-        "<strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)"
+        "<strong>22,050 Hz</strong>：15fpsで映画を見るようなもの——機能はするがカクカク",
+        "<strong>44,100 Hz</strong>：ちょうどいい値——CD品質、人間が聞こえるすべてを捉える",
+        "<strong>48,000 Hz</strong>：プロの動画の標準（数学と同期の都合で🤓）",
+        "<strong>96,000 Hz</strong>以上：オーディオオタクと犬のため（本当に、人間には違いが聞こえません）"
       ],
-      "p2": "Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯",
-      "quote": "\"To understand the whole, you must first understand the parts.\" – Aristotle"
+      "p2": "ここがポイントです——この3人の仲間は一緒に働きます！44.1 kHz（サンプルレート）で1,411 kbpsのビットレートのWAVファイル（形式）もあれば、44.1 kHz（サンプルレート）だが128 kbps（ビットレート）だけのMP3（形式）もあります。同じサンプルレートなのに、品質はまったく違う！🤯",
+      "quote": "「全体を理解するには、まず部分を理解しなければならない。」—— アリストテレス"
     },
     "usage": {
-      "title": "How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?",
-      "p1": "Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?",
+      "title": "どの形式をいつ使えばよく、ビットレートとサンプルレートはどう関わるの？",
+      "p1": "本音の話の時間です！💪 音声のニーズに合った形式の組み合わせを見つけましょう。場面に合った服装を選ぶようなものです——ジムにタキシードは着ていきませんよね？",
       "background": {
-        "title": "For Background Music on Websites:",
+        "title": "ウェブサイトのBGMには：",
         "bullets": [
-          "<strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth",
-          "<strong>File size</strong>: ~1MB per minute (your visitors will thank you!)"
+          "<strong>使うもの</strong>：128〜192 kbps、44.1 kHzのMP3またはAAC",
+          "<strong>理由</strong>：速く読み込め、雰囲気づくりには十分な音質で、帯域を食いません",
+          "<strong>ファイルサイズ</strong>：1分あたり約1MB（訪問者が感謝します！）"
         ]
       },
       "podcasts": {
-        "title": "For Podcasts & Voice Content:",
+        "title": "ポッドキャストと音声コンテンツには：",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)",
-          "<strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size",
-          "<strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄"
+          "<strong>使うもの</strong>：64〜96 kbpsモノラル、44.1 kHz（ファイルサイズが重要なら22.05 kHz）のMP3",
+          "<strong>理由</strong>：人の話し声に高いビットレートは不要で、モノラルならファイルサイズが50%節約できます",
+          "<strong>プロのヒント</strong>：あなたの呼吸をステレオで聞きたい人はいません😄"
         ]
       },
       "streaming": {
-        "title": "For Music Streaming/Downloads:",
+        "title": "音楽のストリーミング／ダウンロードには：",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz",
-          "<strong>Why</strong>: The sweet spot between quality and file size",
-          "<strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps"
+          "<strong>使うもの</strong>：256〜320 kbpsのMP3または256 kbpsのAAC、44.1 kHz",
+          "<strong>理由</strong>：品質とファイルサイズのちょうどいいバランス",
+          "<strong>現実</strong>：ほとんどの人は256 kbpsと320 kbpsの違いがわかりません"
         ]
       },
       "previews": {
-        "title": "For Audio Previews & Samples:",
+        "title": "音声のプレビューとサンプルには：",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Quick loading, good enough for \"try before you buy\"",
-          "<strong>Smart move</strong>: Save the high-quality files for paying customers 💰"
+          "<strong>使うもの</strong>：96〜128 kbps、44.1 kHzのMP3",
+          "<strong>理由</strong>：速く読み込め、「買う前に試す」には十分",
+          "<strong>賢い手</strong>：高品質ファイルは有料顧客のために取っておきましょう💰"
         ]
       },
       "archival": {
-        "title": "For Professional/Archival:",
+        "title": "プロ用／アーカイブには：",
         "bullets": [
-          "<strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)",
-          "<strong>Why</strong>: Future-proof, perfect for editing, no quality loss",
-          "<strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!"
+          "<strong>使うもの</strong>：最大ビットレート、48 kHz（または動画の標準に合わせる）のFLACまたはWAV",
+          "<strong>理由</strong>：将来にわたって安心、編集に最適、品質の損失なし",
+          "<strong>警告</strong>：これらのファイルは巨大です——1分あたり10MBの話です！"
         ]
       },
       "decisionTree": {
-        "title": "Quick Decision Tree:",
-        "content": "Is it voice only? → MP3 at 64-96 kbps\nIs loading speed critical? → MP3/AAC at 128 kbps max\nNeed perfect quality? → FLAC/WAV\nRegular music for web? → MP3/AAC at 192-256 kbps"
+        "title": "クイック決定ツリー：",
+        "content": "音声のみ？ → 64〜96 kbpsのMP3\n読み込み速度が重要？ → 最大128 kbpsのMP3/AAC\n完璧な品質が必要？ → FLAC/WAV\nウェブ用の普通の音楽？ → 192〜256 kbpsのMP3/AAC"
       },
-      "ninjaTip": "Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy \"audio enhancer\" ads claim).",
-      "realWorldExample": "<strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.",
-      "quote": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\" – Antoine de Saint-Exupéry"
+      "ninjaTip": "忍者のヒント🥷：常に入手できる最高品質のソースファイルから始めて、そこから圧縮しましょう。WAV → MP3はいつでもできますが、MP3 → WAVで魔法のように品質を取り戻すことはできません（怪しい「オーディオエンハンサー」の広告が何と言おうと）。",
+      "realWorldExample": "<strong>実例</strong>：瞑想アプリのガイドセッションにWAVファイルを使っていたクライアントがいました。10分のセッションごとに100MB！😱 96 kbpsモノラルのMP3に変換し、ファイルサイズをそれぞれ7MBに落としましたが、品質について文句を言う人は文字どおり誰もいませんでした。ストレージを食わなくなっただけで、アプリのダウンロードは40%増えました。",
+      "quote": "「完璧とは、付け加えるものがなくなったときではなく、取り去るものがなくなったときに達成される。」—— アントワーヌ・ド・サン＝テグジュペリ"
     },
     "importance": {
-      "title": "Why Is This Even Important for My Website?",
-      "p1": "Okay, so you might be thinking, \"Cool audio facts, bro, but why should I care?\" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸",
+      "title": "そもそもなぜ私のウェブサイトにとって重要なの？",
+      "p1": "さて、「音声の豆知識はクールだけど、なんで気にしなきゃいけないの？」と思っているかもしれません。ヘッドフォンをしっかり押さえてください。ここからが収益に本当に関わる話です！💸",
       "pageLoadSpeed": {
-        "title": "Page Load Speed = Money",
-        "lead": "Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:",
+        "title": "ページ読み込み速度 = お金",
+        "lead": "Googleは明確にしています。遅いウェブサイトは検索順位でペナルティを受けます。読み込み時間が1秒増えるごとに失うもの：",
         "bullets": [
-          "<strong>7% decrease</strong> in conversions",
-          "<strong>11% fewer</strong> page views",
-          "<strong>16% decrease</strong> in customer satisfaction"
+          "コンバージョンが<strong>7%減少</strong>",
+          "ページビューが<strong>11%減少</strong>",
+          "顧客満足度が<strong>16%減少</strong>"
         ],
-        "outro": "That innocent 50MB background music file? It's literally costing you customers! 😱"
+        "outro": "あの無害そうな50MBのBGMファイル？文字どおり顧客を失わせています！😱"
       },
       "mobileReality": {
-        "title": "The Mobile Reality Check",
-        "p": "Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)"
+        "title": "モバイルの現実",
+        "p": "面白い事実があります。今やウェブトラフィックの60%以上がモバイルです。モバイルユーザーが大好きなことは何だと思いますか？限られたデータプランを使って、あなたの非圧縮音声ファイルをダウンロードすることです！（ネタバレ：大嫌いです。コンクリートの上のゴムボールより速く直帰します。）"
       },
       "realNumbers": {
-        "title": "Real Numbers That'll Make You Sweat:",
-        "lead": "Let's say you have a landing page with:",
+        "title": "汗が出る実際の数字：",
+        "lead": "次のものがあるランディングページがあるとしましょう：",
         "bullets": [
-          "30-second background music loop",
-          "2 product demo voice-overs (1 minute each)",
-          "5 sound effects for interactions"
+          "30秒のBGMループ",
+          "製品デモのナレーション2本（各1分）",
+          "操作用の効果音5つ"
         ],
-        "comparisonWav": "Using WAV files: <strong>~250MB total</strong> 😵",
-        "comparisonMp3": "Using optimized MP3s: <strong>~8MB total</strong> 🎉",
-        "outro": "That's a 97% reduction! Your hosting bill just breathed a sigh of relief."
+        "comparisonWav": "WAVファイルを使うと：<strong>合計約250MB</strong>😵",
+        "comparisonMp3": "最適化したMP3を使うと：<strong>合計約8MB</strong>🎉",
+        "outro": "97%の削減です！ホスティングの請求書が安堵のため息をつきました。"
       },
       "trustFactor": {
-        "title": "The Trust Factor",
-        "lead": "Nothing screams \"amateur hour\" like:",
+        "title": "信頼の要素",
+        "lead": "次のものほど「素人仕事」と叫んでいるものはありません：",
         "bullets": [
-          "Audio that takes forever to load",
-          "Stuttering playback",
-          "Quality so bad it sounds like a 1990s dial-up modem"
+          "読み込みに永遠にかかる音声",
+          "途切れ途切れの再生",
+          "1990年代のダイヤルアップモデムのように聞こえるほどひどい品質"
         ],
-        "outro": "Professional audio quality = professional image = customer trust = 💰"
+        "outro": "プロの音質 = プロのイメージ = 顧客の信頼 = 💰"
       },
       "seoVitals": {
-        "title": "SEO and Core Web Vitals",
-        "lead": "Google's Core Web Vitals specifically measure:",
+        "title": "SEOとCore Web Vitals",
+        "lead": "GoogleのCore Web Vitalsは具体的に次を測定します：",
         "bullets": [
-          "<strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this",
-          "<strong>FID (First Input Delay)</strong>: Large files blocking the main thread",
-          "<strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps"
+          "<strong>LCP（Largest Contentful Paint）</strong>：重い音声ファイルはこれを遅らせます",
+          "<strong>FID（First Input Delay）</strong>：大きなファイルがメインスレッドをブロックします",
+          "<strong>CLS（Cumulative Layout Shift）</strong>：不適切に読み込まれた音声プレーヤーがレイアウトのずれを引き起こします"
         ],
-        "outro": "Translation: Bad audio optimization = bad SEO = less organic traffic = less money."
+        "outro": "翻訳すると：悪い音声最適化 = 悪いSEO = 少ないオーガニックトラフィック = 少ないお金。"
       },
       "moreReasons": {
-        "title": "But Wait, There's More!",
-        "lead": "(Said in my best infomercial voice 📺) Optimized audio also means:",
+        "title": "でも待って、まだあります！",
+        "lead": "（テレビショッピングの声色で📺）最適化された音声はさらに次のことを意味します：",
         "bullets": [
-          "Lower CDN costs",
-          "Happier users on slower connections",
-          "Better accessibility (properly compressed audio works better with screen readers)",
-          "Increased engagement (people actually stick around when things load fast)"
+          "CDNコストの低減",
+          "遅い回線のユーザーがより幸せに",
+          "より良いアクセシビリティ（適切に圧縮された音声はスクリーンリーダーとの相性が良い）",
+          "エンゲージメントの向上（速く読み込まれると、人は実際に留まります）"
         ],
-        "clientStory": "I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!"
+        "clientStory": "eラーニングプラットフォームからユーザーが流出していたクライアントがいました。原因は、講座の音声ファイルがあまりに巨大で、地方の受講生が文字どおりコンテンツにアクセスできなかったことでした。すべてを最適化してファイルサイズを85%削減したところ、修了率はわずか2か月で40%上昇しました！"
       },
-      "quote": "\"Time is money, and loading time is lost money.\" – Every Web Developer Ever"
+      "quote": "「時は金なり、読み込み時間は失われた金なり。」—— すべてのウェブ開発者"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):",
+      "title": "まとめ",
+      "p1": "ふう！🎉 音声形式、ビットレート、サンプルレートの世界を駆け足で巡ってきました。ヒット曲をおさらいしましょう（ダジャレです🎵）：",
       "takeaways": {
-        "title": "The Big Takeaways:",
+        "title": "大きなポイント：",
         "bullets": [
-          "Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency",
-          "MP3 at 128-192 kbps is your web workhorse for most use cases",
-          "Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)",
-          "Every MB matters – optimized audio = faster loads = happier visitors = more money",
-          "Start with high quality, compress down (you can't enhance garbage into gold!)"
+          "音声形式はコンテナ、ビットレートはデータの流量、サンプルレートはスナップショットの頻度",
+          "128〜192 kbpsのMP3は、ほとんどの用途でウェブの主力",
+          "音声コンテンツはもっと低く（64〜96 kbps）、音楽はもっと高く（256 kbps以上）",
+          "1MBごとに意味がある——最適化された音声 = 速い読み込み = 幸せな訪問者 = より多くのお金",
+          "高品質から始めて、圧縮する（ゴミを金に変えることはできません！）"
         ]
       },
       "actionPlan": {
-        "title": "Your Action Plan:",
+        "title": "アクションプラン：",
         "steps": [
-          "<strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)",
-          "<strong>Convert</strong> them using the guidelines we covered",
-          "<strong>Test</strong> your page load speeds before and after",
-          "<strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)"
+          "現在の音声ファイルを<strong>監査</strong>する（太ったWAVが隠れているはずです👀）",
+          "ここで説明したガイドラインに沿って<strong>変換</strong>する",
+          "ビフォー／アフターでページの読み込み速度を<strong>テスト</strong>する",
+          "指標が改善するのを<strong>見守る</strong>（ついでに小さな勝利のダンスも💃）"
         ]
       },
-      "p2": "Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.",
-      "p3": "So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉",
-      "p4": "Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀",
-      "quote": "\"In the realm of digital content, the lightest footprint often leaves the deepest impression.\" – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)"
+      "p2": "忘れないでください。デジタルの世界では音は目に見えないかもしれませんが、ウェブサイトのパフォーマンスへの影響は決して見えないものではありません。音声を最適化して節約したミリ秒は？より良いユーザー体験、より高い検索順位、そして最終的にはより健全な収益に直結します。",
+      "p3": "さあ、圧縮しに行きましょう！訪問者の耳（とインターネット回線）が感謝してくれます。そして、この記事が役に立ったなら、適切な画像と動画の最適化がサイトに何をもたらすか想像してみてください……でもそれはまた別の日の話です！😉",
+      "p4": "音声最適化の忍者になる準備はできましたか？ウェブサイトのパフォーマンス変革は、最初の1ファイルの変換から始まります。実現させましょう！🚀",
+      "quote": "「デジタルコンテンツの領域では、最も軽い足跡がしばしば最も深い印象を残す。」—— 古代ウェブ開発者のことわざ（いや、作りました。でも本当です！😄）"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the Media Manipulator audio tools and explore related guides.",
+      "title": "関連ツール",
+      "intro": "Media Manipulatorの音声ツールを試し、関連ガイドをご覧ください。",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate."
+          "label": "音声コンバーター",
+          "description": "WAV、MP3、FLAC、M4A、OGGなどをカスタムビットレートで変換。"
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV files into widely playable MP3s."
+          "label": "WAVをMP3に変換",
+          "description": "大きなWAVファイルを広く再生できるMP3に縮小。"
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Pull vocals out of music tracks for remixes or analysis."
+          "label": "楽曲からボーカルを分離",
+          "description": "リミックスや分析のために音楽トラックからボーカルを抽出。"
         },
         {
-          "label": "Audio converter tutorial",
-          "description": "Walk through every option including cleanup and vocal isolation."
+          "label": "音声コンバーターチュートリアル",
+          "description": "クリーンアップやボーカル分離を含むすべてのオプションを解説。"
         },
         {
-          "label": "Video compression guide",
-          "description": "Pair good audio with optimized video encoding."
+          "label": "動画圧縮ガイド",
+          "description": "良い音声に最適化された動画エンコードを組み合わせる。"
         },
         {
-          "label": "Image optimization guide",
-          "description": "Round out a fast site by also optimizing image files."
+          "label": "画像最適化ガイド",
+          "description": "画像ファイルも最適化して、速いサイトを完成させる。"
         }
       ]
     },
     "cta": {
-      "title": "Ready to Master Audio Optimization? 🎧",
-      "body": "Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!",
-      "buttonLabel": "Open the audio converter →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "音声最適化をマスターする準備はできましたか？🎧",
+      "body": "重いWAVファイルを電光石火のMP3やAACに変えましょう！無料の音声コンバーターは、カスタマイズ可能なビットレートとサンプルレートで、すべての主要形式に対応しています。音声ファイルを最適化して、ウェブサイトのパフォーマンスを加速させましょう！",
+      "buttonLabel": "音声コンバーターを開く →",
+      "footnote": "登録不要 • ファイルはサーバー上で処理 • 高速で安全"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Video Tutorial",
-    "title": "What Is AI Frame Interpolation?",
-    "intro": "AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.",
+    "eyebrow": "動画チュートリアル",
+    "title": "AIフレーム補間とは？",
+    "intro": "AIフレーム補間は、動きがより滑らかに再生されるよう、動画の中間フレームを新たに生成します。このチュートリアルでは、その仕組み、使いどころ、限界、そしてMedia Manipulatorでの実行方法を説明します。",
     "toolPanel": {
-      "title": "Try AI frame interpolation without leaving this page",
-      "description": "Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+      "title": "このページを離れずにAIフレーム補間を試す",
+      "description": "動画ファイルを選び、AI動画ツールのパネルまでスクロールして、AIフレーム補間を選びます。デフォルト設定では、より滑らかな60fpsのMP4が出力されます。"
     },
     "whatIs": {
-      "title": "1. What is frame interpolation?",
-      "intro": "Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:",
+      "title": "1. フレーム補間とは？",
+      "intro": "フレーム補間は、元のフレームの間に新しい画像を挿入して動画のフレームレートを上げます。30fpsのクリップには1秒あたり30フレームがあり、フレームレートを2倍にするには、既存のフレームの間に入る新しいフレームを1秒あたり30枚生成することになります。いくつかのアプローチがあります：",
       "bullets": [
-        "<strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.",
-        "<strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.",
-        "<strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg's minterpolate).",
-        "<strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion."
+        "<strong>フレーム複製</strong> — 前のフレームをコピーします。動きは同じに見えますが、再生レートは目標に一致します。",
+        "<strong>フレームブレンド</strong> — 隣接する2つのフレームの間でフェードして境界を和らげます。安価ですがぼやけます。",
+        "<strong>モーション補間</strong> — 動きベクトルを推定してフレームを前方にワープします（例：FFmpegのminterpolate）。",
+        "<strong>AI補間</strong> — ニューラルネットワーク（例：RIFE）が、前後の2つの実フレームから中間フレームを予測します。非剛体の動きでは通常、最もクリーンな結果になります。"
       ],
-      "outro": "Media Manipulator's AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server."
+      "outro": "Media ManipulatorのAIフレーム補間ツールは、当社自身のGPUサーバー上でrife-ncnn-vulkanを通じてRIFEを使用しています。"
     },
     "whyUse": {
-      "title": "2. Why people use frame interpolation",
+      "title": "2. フレーム補間が使われる理由",
       "bullets": [
-        "Smoother motion on modern displays and social platforms.",
-        "Lifting 24/30fps footage to 60fps.",
-        "Lifting 60fps footage to 120fps for high-refresh playback or editing.",
-        "Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.",
-        "Restoring older, low-FPS clips so they feel less stuttery.",
-        "Producing smoother short cuts for sharing on social."
+        "最新のディスプレイやSNSプラットフォームでのより滑らかな動き。",
+        "24/30fpsの映像を60fpsに引き上げる。",
+        "高リフレッシュレートでの再生や編集のために、60fpsの映像を120fpsに引き上げる。",
+        "予告編、ゲームプレイ、スポーツ、スクリーンキャスト、Vlogのよりクリーンなモーションプレビュー。",
+        "古い低FPSのクリップを復元して、カクつきを減らす。",
+        "SNSで共有するためのより滑らかな短いカットの制作。"
       ]
     },
     "howItWorks": {
-      "title": "3. How AI frame interpolation works (high level)",
+      "title": "3. AIフレーム補間の仕組み（概要）",
       "paragraphs": [
-        "Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.",
-        "Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear."
+        "隣接する2つのフレームが与えられると、モデルはすべてのピクセルがその間でどう動くかを推定します——オプティカルフローに関連する処理です。次にその動きを使って、2つの元のフレームの間の小数の時間位置に配置される1つ以上の新しいフレームを構築します。ニューラルネットワークは学習データから一般的な動きのパターンを学んでいるため、滑らかで自然な動きをうまく扱う傾向があります。",
+        "難しいケース——速い動き、遮蔽（ある物体が別の物体の前を通過する）、髪や車輪のような細い構造、シーンの切り替わり——は本質的に困難です。モデルには、その間に何が起こるべきかについての信頼できる証拠が少ないからです。アーティファクトが現れやすいのはそうした領域です。"
       ]
     },
     "vsBasicFps": {
-      "title": "4. AI interpolation vs basic FPS conversion",
-      "p1": "Basic FPS conversion (whether through FFmpeg's <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.",
-      "p2": "AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:",
+      "title": "4. AI補間と基本的なFPS変換の違い",
+      "p1": "基本的なFPS変換（FFmpegの<code>fps</code>フィルターでも、ハードウェアアクセラレーションによる同等の処理でも）は通常、目標フレームレートに合わせるためにフレームを複製、間引き、またはブレンドするだけです。1秒あたりの総フレーム数は目標に一致しますが、新しい動きの情報は追加されません——目に映るのは元の撮影間隔だけです。",
+      "p2": "AI補間は、コピーではなく推定によって内容が作られた、正味で新しいフレームを生成します。トレードオフは：",
       "bullets": [
-        "AI usually looks much smoother than duplication or blending.",
-        "AI can warp or hallucinate details on hard regions.",
-        "Basic FPS conversion is faster but rarely feels truly smoother."
+        "AIは通常、複製やブレンドよりもはるかに滑らかに見えます。",
+        "AIは難しい領域でディテールをゆがめたり、捏造したりすることがあります。",
+        "基本的なFPS変換は高速ですが、本当に滑らかになったと感じることはめったにありません。"
       ]
     },
     "fpsChoice": {
-      "title": "5. When to pick 48, 60, or 120 FPS",
+      "title": "5. 48、60、120 FPSの選び方",
       "bullets": [
-        "<strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.",
-        "<strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.",
-        "<strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file."
+        "<strong>48 FPS</strong> — 24fpsの映画的な映像を控えめに2倍にします。60fpsより穏やかで、元のリズムを少し残します。",
+        "<strong>60 FPS</strong> — モダンウェブで一般的な滑らかな再生レート。24/30fpsのソースの最初の目標として適しています。",
+        "<strong>120 FPS</strong> — 高リフレッシュレートのディスプレイ、ゲームプレイ／スポーツのコンテンツ、または後工程のスローモーション編集向け。処理コストが高く、ファイルも大きくなります。"
       ]
     },
     "qualityTradeoffs": {
-      "title": "6. Quality and max-height tradeoffs",
+      "title": "6. 品質と最大高さのトレードオフ",
       "bullets": [
-        "<strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.",
-        "<strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.",
-        "<strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.",
-        "<strong>High quality preset</strong> → slower encode, lower CRF, sharper output."
+        "<strong>最大処理高さを低く</strong> → 処理が速く、GPUメモリの負荷が低い。素早いテストに最適です。",
+        "<strong>最大処理高さを高く</strong> → より多くのディテールが保持されますが、遅く重くなります。",
+        "<strong>低品質プリセット</strong> → エンコードが速く、CRFが大きく、ファイルが小さい。",
+        "<strong>高品質プリセット</strong> → エンコードが遅く、CRFが小さく、出力が鮮明。"
       ],
-      "outro": "For a first run, try 720p max height with the medium quality preset."
+      "outro": "最初の実行では、最大高さ720pと中品質プリセットを試してみてください。"
     },
     "bestPractices": {
-      "title": "7. Best practices",
+      "title": "7. ベストプラクティス",
       "bullets": [
-        "Test on a short clip first — interpolation cost scales with duration and resolution.",
-        "Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.",
-        "Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.",
-        "Pick clear, steady source footage when possible.",
-        "Keep the original — interpolation is irreversible re-encoding.",
-        "Try 60fps before 120fps unless you specifically need 120fps."
+        "まず短いクリップでテストしましょう——補間のコストは長さと解像度に比例します。",
+        "シーンの切り替わりが多いコンテンツは避けましょう。切り替わりでは境界に短いゆがみが生じることがよくあります。",
+        "公開前に結果をプレビューしましょう——補間は本物の高FPS撮影とは微妙に違って見えることがあります。",
+        "可能であれば、鮮明で安定したソース映像を選びましょう。",
+        "オリジナルを保管しておきましょう——補間は元に戻せない再エンコードです。",
+        "120fpsが特に必要な場合を除き、120fpsより先に60fpsを試しましょう。"
       ]
     },
     "limitations": {
-      "title": "8. Limitations and artifacts",
+      "title": "8. 限界とアーティファクト",
       "bullets": [
-        "Warping around hands, hair, wheels, and other fast-moving thin structures.",
-        "Ghosting around occlusions where one object passes in front of another.",
-        "Brief glitches at scene cuts.",
-        "Motion blur mismatch — synthesized frames don't share the source camera's shutter behavior.",
-        "Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.",
-        "Long videos take a lot of GPU time; we cap duration to keep the free tool stable.",
-        "AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame."
+        "手、髪、車輪、その他の速く動く細い構造の周りのゆがみ。",
+        "ある物体が別の物体の前を通過する遮蔽部分の周りのゴースト。",
+        "シーンの切り替わりでの短い乱れ。",
+        "モーションブラーの不一致——合成されたフレームはソースカメラのシャッターの挙動を共有しません。",
+        "既存の圧縮アーティファクト（バンディング、ブロックノイズ）は、高いフレームレートでより目立つことがあります。",
+        "長い動画は多くのGPU時間を要するため、無料ツールの安定性を保つために長さに上限を設けています。",
+        "AI補間は、撮影されなかった現実の動きを復元するものではありません——もっともらしい中間フレームを推定するだけです。"
       ]
     },
     "howTo": {
-      "title": "9. How to use the Media Manipulator AI Frame Interpolation Tool",
+      "title": "9. Media ManipulatorのAIフレーム補間ツールの使い方",
       "steps": [
-        "Open the <linkTool>AI Frame Interpolation tool</linkTool>.",
-        "Upload a video.",
-        "Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.",
-        "Choose a target FPS — 48, 60, or 120.",
-        "Pick a quality preset and a max processing height (start at 720p / medium).",
-        "Leave <em>Preserve audio</em> on unless you want a silent output.",
-        "Submit the conversion and wait for the job to finish.",
-        "Download the resulting MP4 and preview it."
+        "<linkTool>AIフレーム補間ツール</linkTool>を開きます。",
+        "動画をアップロードします。",
+        "<strong>AI動画ツール</strong>のパネルまでスクロールし、<em>AIフレーム補間</em>を選びます。",
+        "目標FPS（48、60、または120）を選びます。",
+        "品質プリセットと最大処理高さを選びます（720p／中から始めましょう）。",
+        "無音の出力にしたい場合を除き、<em>音声を保持</em>はオンのままにします。",
+        "変換を送信し、ジョブの完了を待ちます。",
+        "出力されたMP4をダウンロードしてプレビューします。"
       ]
     },
     "faq": {
       "title": "FAQ",
       "items": [
         {
-          "q": "Does frame interpolation improve video quality?",
-          "a": "It improves motion smoothness, not resolution or sharpness."
+          "q": "フレーム補間は動画の品質を向上させますか？",
+          "a": "動きの滑らかさを向上させますが、解像度や鮮明さは向上しません。"
         },
         {
-          "q": "Is AI frame interpolation the same as increasing FPS?",
-          "a": "Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending."
+          "q": "AIフレーム補間はFPSを上げるのと同じですか？",
+          "a": "どちらもより高いフレームレートを目指しますが、AI補間は複製やブレンドではなく新しいフレームを合成します。"
         },
         {
-          "q": "Can I convert 30fps to 60fps?",
-          "a": "Yes — it's the most common target."
+          "q": "30fpsを60fpsに変換できますか？",
+          "a": "はい——最も一般的な目標です。"
         },
         {
-          "q": "Can I convert 60fps to 120fps?",
-          "a": "Yes, but the processing cost roughly doubles versus 60fps."
+          "q": "60fpsを120fpsに変換できますか？",
+          "a": "はい。ただし処理コストは60fpsの場合のおよそ2倍になります。"
         },
         {
-          "q": "Why can frame interpolation create artifacts?",
-          "a": "Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts)."
+          "q": "フレーム補間でアーティファクトが生じるのはなぜですか？",
+          "a": "動きの推定は、難しい領域（遮蔽、速い動き、シーンの切り替わり）では推測に頼らざるを得ないからです。"
         },
         {
-          "q": "What output format does the tool create?",
-          "a": "MP4 (H.264 + AAC) in v1."
+          "q": "ツールはどの出力形式を生成しますか？",
+          "a": "v1ではMP4（H.264 + AAC）です。"
         },
         {
-          "q": "Is 60fps always better than 30fps?",
-          "a": "Not for cinematic looks — pick what suits the content."
+          "q": "60fpsは常に30fpsより良いですか？",
+          "a": "映画的な見た目には必ずしもそうではありません——コンテンツに合うものを選んでください。"
         },
         {
-          "q": "Is AI frame interpolation better than FFmpeg FPS conversion?",
-          "a": "For most clips, yes — but minterpolate is faster and still useful as a quick fallback."
+          "q": "AIフレーム補間はFFmpegのFPS変換より優れていますか？",
+          "a": "ほとんどのクリップでは、はい——ただしminterpolateは高速で、素早いフォールバックとしては今でも有用です。"
         },
         {
-          "q": "Why do scene cuts sometimes look strange after interpolation?",
-          "a": "The model assumes adjacent frames belong to the same motion sequence."
+          "q": "補間後にシーンの切り替わりが奇妙に見えることがあるのはなぜですか？",
+          "a": "モデルは隣接するフレームが同じ動きの連続に属していると仮定するからです。"
         }
       ]
     },
     "actions": {
-      "tryTool": "Try the AI Frame Interpolation Tool",
-      "backToTutorials": "← Back to Tutorials",
-      "videoConverterTutorial": "Video Converter Tutorial"
+      "tryTool": "AIフレーム補間ツールを試す",
+      "backToTutorials": "← チュートリアルに戻る",
+      "videoConverterTutorial": "動画コンバーターチュートリアル"
     },
     "relatedLinks": {
-      "title": "Try related tools and guides",
-      "intro": "Other video tools and reference pages that pair well with AI frame interpolation.",
+      "title": "関連ツールとガイドを試す",
+      "intro": "AIフレーム補間と相性の良い、その他の動画ツールとリファレンスページ。",
       "links": [
         {
-          "label": "AI Frame Interpolation Tool",
-          "description": "Upload a video and run interpolation right now."
+          "label": "AIフレーム補間ツール",
+          "description": "動画をアップロードして今すぐ補間を実行。"
         },
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "動画コンバーター",
+          "description": "MP4、WebM、MOV、AVI、MKVなどの変換。"
         },
         {
-          "label": "Compress video",
-          "description": "Shrink a higher-FPS file before sharing."
+          "label": "動画を圧縮",
+          "description": "高FPSのファイルを共有前に縮小。"
         },
         {
-          "label": "Extract frames from video",
-          "description": "Pull individual frames out as PNGs."
+          "label": "動画からフレームを抽出",
+          "description": "個々のフレームをPNGとして取り出す。"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn a short clip into an animated GIF."
+          "label": "動画をGIFに変換",
+          "description": "短いクリップをアニメーションGIFに。"
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Video Tutorial",
-    "title": "Getting Started: Converting Video Files",
-    "intro": "Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.",
+    "eyebrow": "動画チュートリアル",
+    "title": "はじめに：動画ファイルの変換",
+    "intro": "Media Manipulatorの動画コンバーターで動画ファイルを変換・編集する方法を学びます。このチュートリアルでは、動画変換パネルのすべてのセクション——形式の選択、トリミング、変形、視覚効果、時間系エフェクト、高度なカラー／HDR制御、そして字幕とキャプションのためのGPUベースの文字起こしオプション——を順に解説します。",
     "toolPanel": {
-      "title": "Try the video converter without leaving this page",
-      "description": "Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+      "title": "このページを離れずに動画コンバーターを試す",
+      "description": "動画ファイルを選んで、ここで変換できます。以下の設定はホームページのコンバーターと同じなので、読みながら試せます。"
     },
     "upload": {
-      "title": "1. Upload your video file",
-      "paragraph1": "Drag a video file into the upload zone on the home page, or click <strong>Choose File</strong>. Common inputs include MP4, MOV, MKV, AVI, WebM, WMV, and FLV. Large videos are uploaded directly to S3 via a presigned URL for speed; smaller files upload through the standard form endpoint.",
-      "paragraph2": "After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below."
+      "title": "1. 動画ファイルをアップロードする",
+      "paragraph1": "ホームページのアップロード領域に動画ファイルをドラッグするか、<strong>ファイルを選択</strong>をクリックします。一般的な入力にはMP4、MOV、MKV、AVI、WebM、WMV、FLVがあります。大きな動画は速度のために署名付きURLでS3に直接アップロードされ、小さなファイルは標準のフォームエンドポイントを通じてアップロードされます。",
+      "paragraph2": "アップロード後、右側のパネルに<strong>変換／文字起こし</strong>の切り替えが表示されます。今は<em>変換</em>のままにしておきましょう——文字起こしは後で説明します。"
     },
     "format": {
-      "title": "2. Pick the output format and quality",
-      "intro": "Use <strong>Format</strong> to choose the container/codec for the output:",
+      "title": "2. 出力形式と品質を選ぶ",
+      "intro": "<strong>形式</strong>で出力のコンテナ／コーデックを選びます：",
       "bullets": [
-        "<strong>MP4</strong> — H.264 + AAC, the safest default for the web and most devices.",
-        "<strong>WebM</strong> — VP9 + Opus, optimal for the open web.",
-        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).",
-        "<strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.",
-        "<strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below."
+        "<strong>MP4</strong> — H.264 + AAC。ウェブとほとんどのデバイス向けの最も安全なデフォルト。",
+        "<strong>WebM</strong> — VP9 + Opus。オープンウェブに最適。",
+        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — 特定のワークフロー向けのコンテナ（Apple、アーカイブ、レガシープレーヤーなど）。",
+        "<strong>ProRes / DNxHD</strong> — 高ビットレートのプロ向け編集コーデック。",
+        "<strong>GIF（アニメーション）</strong> — チャットスレッド、README、バグ報告向けの無音ループ画像。下の専用セクションをご覧ください。"
       ],
-      "quality": "<strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over."
+      "quality": "<strong>品質</strong>は内部でCRFプリセットを選びます：低 ≈ CRF 30（小さなファイル）、中 ≈ CRF 23（バランス）、高 ≈ CRF 18（ほとんどの映像で視覚的に劣化なし）。GIF出力では品質、高さ、速度のコントロールはスキップされ、下のアニメーションGIFパネルが優先されます。"
     },
     "gif": {
-      "title": "2a. Converting video to an animated GIF",
-      "paragraph1": "Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.",
+      "title": "2a. 動画をアニメーションGIFに変換する",
+      "paragraph1": "形式として<strong>GIF（アニメーション）</strong>を選ぶと、<strong>アニメーションGIF設定</strong>パネルが表示されます。これは実績のあるスクリーンキャスト用スクリプトを手本にした2段階のパイプラインを実行します。FFmpegがソースを縮小して低フレームレートでサンプリングし、次に<code>gifsicle</code>がパレットを再量子化して出力をサイズ最適化します。",
       "bullets": [
-        "<strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.",
-        "<strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.",
-        "<strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.",
-        "<strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.",
-        "<strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+        "<strong>幅（px）</strong> — 出力幅。縦横比を保つために高さは自動計算されます（4の倍数に丸められます）。スクリーンキャストには480〜900がちょうどいい範囲です。",
+        "<strong>フレームレート（fps）</strong> — FFmpegがソースから1秒あたり何フレームをサンプリングするか。UIの画面録画なら12 fpsで滑らかに見えます。動きの多いクリップでは18〜24に上げ、ファイルを小さくするには8〜10に下げてください。",
+        "<strong>色数</strong> — gifsicleのパレットサイズ（2〜256）。128が堅実なデフォルトで、平坦なUI映像では64に下げ、滑らかなグラデーションのある写真的なクリップでは256に上げてください。",
+        "<strong>フレーム遅延</strong> — gifsicleのフレーム間遅延（1/100秒単位）。小さいほど再生が速くなります。3（≈30ms）はきびきびしたスクリーンキャストの感触で、6〜10はよりゆっくりした落ち着いたループになります。",
+        "<strong>最適化レベル</strong> — gifsicleの<code>--optimize</code>レベル。1は最速で出力が最大、3は最も遅く出力が最小です。長いクリップを試行錯誤していて素早く下書きが欲しい場合を除き、3のままにしてください。"
       ],
-      "paragraph2": "Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video."
+      "paragraph2": "トリミングはGIFでも機能します——短いトリミングに小さな幅と控えめな色数を組み合わせれば、ファイルを数メガバイト以下に抑えられます。ジョブが完了するとプレビューモーダルで結果がそのままアニメーション表示されます。<em>オリジナル</em>に切り替えてソース動画と比較できます。"
     },
     "resize": {
-      "title": "3. Resize, speed, and aspect ratio",
-      "paragraph1": "Set <strong>Width</strong> and/or <strong>Height</strong> to resize the video. Leave one blank to scale proportionally. Toggle <strong>Preserve aspect ratio</strong> when you set both to use a non-stretching <em>force_original_aspect_ratio=decrease</em> scale.",
-      "paragraph2": "<strong>Speed Multiplier</strong> changes both video and audio playback tempo from 0.25x to 4x. We pair it with FFmpeg's <em>setpts</em> filter and matching <em>atempo</em> on the audio track."
+      "title": "3. リサイズ、速度、縦横比",
+      "paragraph1": "<strong>幅</strong>や<strong>高さ</strong>を設定して動画をリサイズします。片方を空欄にすると比例して拡大縮小されます。両方を設定する場合は<strong>縦横比を保持</strong>をオンにすると、引き伸ばさない<em>force_original_aspect_ratio=decrease</em>スケールが使われます。",
+      "paragraph2": "<strong>速度倍率</strong>は動画と音声の再生テンポを0.25倍から4倍まで一緒に変更します。FFmpegの<em>setpts</em>フィルターと、音声トラックの対応する<em>atempo</em>を組み合わせています。"
     },
     "trim": {
-      "title": "4. Trim",
-      "paragraph": "Click <strong>Trim Video</strong> to scrub the player and pick a start and end time. Only the selected segment is encoded into the output, and trim works regardless of the output codec."
+      "title": "4. トリミング",
+      "paragraph": "<strong>動画をトリミング</strong>をクリックしてプレーヤーをスクラブし、開始時間と終了時間を選びます。選択した区間だけが出力にエンコードされ、トリミングは出力コーデックに関係なく機能します。"
     },
     "effects": {
-      "title": "5. Advanced Video Effects",
-      "intro": "The <strong>Advanced Video Effects</strong> section groups every filter into collapsible panels. Expand a panel to access its controls:",
+      "title": "5. 高度な動画エフェクト",
+      "intro": "<strong>高度な動画エフェクト</strong>セクションは、すべてのフィルターを折りたたみ可能なパネルにまとめています。パネルを展開するとコントロールにアクセスできます：",
       "bullets": [
-        "<strong>Visual Effects</strong> — brightness, contrast, saturation, hue, gamma, exposure, shadow/highlight recovery, Gaussian blur, motion blur, unsharp mask (sharpening), film/digital/vintage noise, and artistic effects (oil painting, watercolor, sketch, emboss, edge detection, posterize).",
-        "<strong>Transform</strong> — free rotation in degrees, horizontal/vertical flip, custom crop, and padded letterboxing with a configurable color.",
-        "<strong>Temporal Effects</strong> — reverse playback, ping-pong (forward then backward), frame-rate conversion with optional motion interpolation, and video stabilization with shakiness/accuracy controls.",
-        "<strong>Advanced Processing</strong> — deinterlacing, HDR tone mapping (hable, reinhard, mobius), and explicit input/output colorspace conversion (Rec.709, Rec.2020, sRGB, P3)."
+        "<strong>視覚効果</strong> — 明るさ、コントラスト、彩度、色相、ガンマ、露出、シャドウ／ハイライトの復元、ガウスぼかし、モーションブラー、アンシャープマスク（シャープ化）、フィルム／デジタル／ヴィンテージノイズ、アーティスティック効果（油絵、水彩、スケッチ、エンボス、エッジ検出、ポスタリゼーション）。",
+        "<strong>変形</strong> — 度数による自由回転、左右／上下反転、カスタム切り抜き、色を設定できるパディング付きレターボックス。",
+        "<strong>時間系エフェクト</strong> — 逆再生、ピンポン（順再生の後に逆再生）、オプションのモーション補間付きフレームレート変換、揺れ／精度の制御付き手ぶれ補正。",
+        "<strong>高度な処理</strong> — インターレース解除、HDRトーンマッピング（hable、reinhard、mobius）、明示的な入出力色空間変換（Rec.709、Rec.2020、sRGB、P3）。"
       ]
     },
     "convertDownload": {
-      "title": "6. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A streaming progress bar shows real-time job status pulled from FFmpeg. When the job finishes, the result auto-previews in a modal with an <strong>Original / Final</strong> toggle so you can compare the two side by side. A <strong>Download</strong> button saves the final file."
+      "title": "6. 変換してダウンロードする",
+      "paragraph": "<strong>ファイルを変換</strong>をクリックします。ストリーミングの進行状況バーが、FFmpegから取得したリアルタイムのジョブ状態を表示します。ジョブが完了すると、結果が<strong>オリジナル／最終版</strong>の切り替え付きのモーダルで自動プレビューされ、2つを並べて比較できます。<strong>ダウンロード</strong>ボタンで最終ファイルを保存します。"
     },
     "transcribe": {
-      "title": "7. Transcribe a video (subtitles, captions, plain text, JSON)",
-      "intro": "Switch the panel toggle to <strong>Transcribe</strong> to run our local GPU transcription pipeline (whisper-ctranslate2). Pick an output format:",
+      "title": "7. 動画を文字起こしする（字幕、キャプション、プレーンテキスト、JSON）",
+      "intro": "パネルの切り替えを<strong>文字起こし</strong>にすると、ローカルGPUの文字起こしパイプライン（whisper-ctranslate2）が実行されます。出力形式を選びます：",
       "bullets": [
-        "<strong>VTT</strong> — time-coded captions/subtitles that drop into HTML5 video players.",
-        "<strong>Plain text</strong> — a continuous transcript for reading or editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — HTML5動画プレーヤーにそのまま入れられるタイムコード付き字幕。",
+        "<strong>プレーンテキスト</strong> — 読んだり編集したりするための連続した文字起こし。",
+        "<strong>構造化JSON</strong> — 後続のパイプライン向けに、タイミングデータ付きでセグメント化された文字起こし。"
       ],
-      "languageNote": "Optionally type a BCP-47 language hint (e.g. <code>en</code>, <code>es</code>, <code>ja</code>). Leave it blank to auto-detect. A summary and content-safety review run automatically after the transcript is ready."
+      "languageNote": "必要に応じてBCP-47の言語ヒント（例：<code>en</code>、<code>es</code>、<code>ja</code>）を入力します。空欄にすると自動検出されます。文字起こしの準備ができると、要約とコンテンツ安全性レビューが自動的に実行されます。"
     },
     "tips": {
-      "title": "Tips for great video output",
+      "title": "優れた動画出力のためのヒント",
       "bullets": [
-        "Use <strong>MP4 / High</strong> as a default for web delivery — it streams everywhere and looks great.",
-        "Prefer <strong>WebM</strong> for open-web embeds where file size matters and you control the player.",
-        "Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.",
-        "Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.",
-        "Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.",
-        "For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors."
+        "ウェブ配信のデフォルトには<strong>MP4／高</strong>を使いましょう——どこでもストリーミングでき、見た目も素晴らしいです。",
+        "ファイルサイズが重要でプレーヤーを制御できるオープンウェブの埋め込みには<strong>WebM</strong>を選びましょう。",
+        "標準パイプラインでの拡大リサイズは避けましょう——小さな入力は元の解像度でロスレスエンコードしたほうがきれいに見えます。",
+        "強いカラーグレーディングの前に<strong>手ぶれ補正</strong>を適用すると、ワープがカラーフィルターと干渉しません。",
+        "変換したファイルと字幕の両方が欲しい場合は、変換と並行して<strong>文字起こし</strong>を実行しましょう——独立したジョブです。",
+        "<strong>GIF</strong>出力では、まず積極的にトリミングしましょう——映像が1秒増えるごとに、最終サイズはフレームレート × 色数の分だけ増えます。"
       ]
     },
     "actions": {
-      "tryConverter": "Try the Video Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "動画コンバーターを試す",
+      "backToTutorials": "← チュートリアルに戻る",
+      "howItWorks": "仕組み"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused video tool or keep exploring related guides.",
+      "title": "関連ツールを試す",
+      "intro": "目的に特化した動画ツールにすぐ移動するか、関連ガイドを読み進めましょう。",
       "links": [
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "動画コンバーター",
+          "description": "MP4、WebM、MOV、AVI、MKVなどの変換。"
         },
         {
-          "label": "Compress video",
-          "description": "Shrink video file size for the web without ruining quality."
+          "label": "動画を圧縮",
+          "description": "品質を損なわずにウェブ向けに動画のファイルサイズを縮小。"
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video as searchable text or captions."
+          "label": "動画を文字起こし",
+          "description": "動画の音声を検索可能なテキストや字幕に。"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "動画をGIFに変換",
+          "description": "短い動画クリップを共有しやすいアニメーションGIFに。"
         },
         {
-          "label": "AI Frame Interpolation tool",
-          "description": "Smooth motion by lifting video FPS with RIFE."
+          "label": "AIフレーム補間ツール",
+          "description": "RIFEで動画のFPSを上げて動きを滑らかに。"
         },
         {
-          "label": "AI Frame Interpolation tutorial",
-          "description": "Learn how AI frame interpolation works and when to use it."
+          "label": "AIフレーム補間チュートリアル",
+          "description": "AIフレーム補間の仕組みと使いどころを学ぶ。"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "Learn how transcription and AI summaries run on a local GPU."
+          "label": "Media Manipulatorの仕組み",
+          "description": "文字起こしとAI要約がローカルGPUで動く仕組みを学ぶ。"
         }
       ]
     }
   },
   "tutorialAudioGettingStarted": {
-    "eyebrow": "Audio Tutorial",
-    "title": "Getting Started: Converting Audio Files",
-    "intro": "Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).",
+    "eyebrow": "音声チュートリアル",
+    "title": "はじめに：音声ファイルの変換",
+    "intro": "Media Manipulatorの音声コンバーターで音声ファイルを変換、クリーンアップ、リミックスする方法を学びます。このチュートリアルでは、音声変換パネルのすべてのセクション——形式の選択、処理エフェクト、復元、そして新しいAI音声ツール（音声クリーンアップ、背景ノイズの除去、ボーカルの分離、ボーカルの除去）——を順に解説します。",
     "upload": {
-      "heading": "1. Upload your audio file",
-      "p1": "From the home page, drag and drop an audio file into the upload zone, or click <strong>Choose File</strong>. Supported inputs include MP3, WAV, FLAC, AAC, M4A, OGG, Opus, and most common podcast and music formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
-      "p2": "Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial."
+      "heading": "1. 音声ファイルをアップロードする",
+      "p1": "ホームページのアップロード領域に音声ファイルをドラッグ＆ドロップするか、<strong>ファイルを選択</strong>をクリックします。対応する入力にはMP3、WAV、FLAC、AAC、M4A、OGG、Opus、およびほとんどの一般的なポッドキャストと音楽の形式があります。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。",
+      "p2": "ファイルを選択すると、右側のパネルが<strong>変換オプション</strong>に切り替わります。動画と音声ファイルでは<strong>変換／文字起こし</strong>の切り替えも表示されます——このチュートリアルでは<em>変換</em>のままにしておきましょう。"
     },
     "toolPanel": {
-      "title": "Try the audio converter without leaving this page",
-      "description": "Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "このページを離れずに音声コンバーターを試す",
+      "description": "音声ファイルを選んで、ここで変換できます。以下の設定はホームページのコンバーターと同じなので、試しながらチュートリアルの続きを読めます。"
     },
     "format": {
-      "heading": "2. Pick the output format",
-      "intro": "The <strong>Format</strong> dropdown sets the container and codec for your output file. The audio converter supports:",
+      "heading": "2. 出力形式を選ぶ",
+      "intro": "<strong>形式</strong>のドロップダウンで出力ファイルのコンテナとコーデックを設定します。音声コンバーターは次に対応しています：",
       "items": [
-        "<strong>MP3</strong> — universal compatibility, lossy, small file sizes.",
-        "<strong>WAV</strong> — uncompressed PCM, ideal for masters, editing, or archiving.",
-        "<strong>AAC</strong> — efficient lossy codec used by Apple devices and streaming.",
-        "<strong>OGG</strong> — open-source Vorbis container.",
-        "<strong>FLAC / ALAC</strong> — lossless compression for archival quality at smaller size than WAV.",
-        "<strong>Opus</strong> — modern lossy codec great for voice and low bitrates.",
-        "<strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks."
+        "<strong>MP3</strong> — 普遍的な互換性、非可逆、小さなファイルサイズ。",
+        "<strong>WAV</strong> — 非圧縮PCM。マスター、編集、アーカイブに最適。",
+        "<strong>AAC</strong> — Appleデバイスやストリーミングで使われる効率的な非可逆コーデック。",
+        "<strong>OGG</strong> — オープンソースのVorbisコンテナ。",
+        "<strong>FLAC / ALAC</strong> — WAVより小さいサイズでアーカイブ品質を実現する可逆圧縮。",
+        "<strong>Opus</strong> — 音声や低ビットレートに優れたモダンな非可逆コーデック。",
+        "<strong>AC3 / DTS</strong> — 動画のサウンドトラックによく使われるサラウンド対応形式。"
       ]
     },
     "quality": {
-      "heading": "3. Set bitrate, sample rate, and channels",
-      "bitrate": "<strong>Bitrate</strong> controls quality vs. file size for lossy formats. 128 kbps is \"good enough\" for podcasts; 192–256 kbps is a strong default for music; 320 kbps is the maximum MP3 quality. Lossless formats (WAV, FLAC, ALAC) ignore this setting.",
-      "sampleRate": "<strong>Sample rate</strong> sets how many audio samples per second the file contains. Standard music is 44.1 kHz; pro audio and video typically use 48 kHz. Higher rates (96 kHz, 192 kHz) only matter for professional production.",
-      "channels": "<strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks."
+      "heading": "3. ビットレート、サンプルレート、チャンネルを設定する",
+      "bitrate": "<strong>ビットレート</strong>は非可逆形式の品質とファイルサイズのバランスを決めます。128 kbpsはポッドキャストには「十分」で、192〜256 kbpsは音楽の堅実なデフォルト、320 kbpsがMP3の最高品質です。ロスレス形式（WAV、FLAC、ALAC）ではこの設定は無視されます。",
+      "sampleRate": "<strong>サンプルレート</strong>はファイルに含まれる1秒あたりの音声サンプル数を設定します。標準的な音楽は44.1 kHzで、プロの音声や動画は通常48 kHzを使います。より高いレート（96 kHz、192 kHz）はプロの制作でのみ意味があります。",
+      "channels": "<strong>チャンネル</strong>はモノラル、ステレオ、5.1、7.1から選べます。ボイスメモや単一マイクの録音ではモノラルを選ぶとファイルサイズが半分になります。音楽のデフォルトはステレオで、5.1/7.1はサラウンドのサウンドトラック向けです。"
     },
     "speedVolume": {
-      "heading": "4. Adjust speed, volume, and trim",
-      "p1": "<strong>Speed Multiplier</strong> changes playback tempo from 0.25x to 4x without altering pitch — useful for sped-up podcasts or slowed-down practice tracks. <strong>Volume Multiplier</strong> applies a simple gain factor between 0.1x and 2x.",
-      "p2": "Click <strong>Trim Audio</strong> to scrub through the waveform and pick a start and end time. Only the selected segment is encoded into the output file."
+      "heading": "4. 速度、音量、トリミングを調整する",
+      "p1": "<strong>速度倍率</strong>はピッチを変えずに再生テンポを0.25倍から4倍まで変更します——倍速のポッドキャストやゆっくりした練習用トラックに便利です。<strong>音量倍率</strong>は0.1倍から2倍の単純なゲイン係数を適用します。",
+      "p2": "<strong>音声をトリミング</strong>をクリックして波形をスクラブし、開始時間と終了時間を選びます。選択した区間だけが出力ファイルにエンコードされます。"
     },
     "aiTools": {
-      "heading": "5. AI Audio Tools (recommended)",
-      "intro": "The <strong>AI Audio Tools</strong> panel is the fastest path to a great-sounding result for voice and music. Each operation runs on our local GPU server (no data leaves our infrastructure):",
+      "heading": "5. AI音声ツール（推奨）",
+      "intro": "<strong>AI音声ツール</strong>パネルは、音声と音楽で素晴らしい音の結果を得る最速の道です。各処理は当社のローカルGPUサーバーで実行されます（データが当社のインフラの外に出ることはありません）：",
       "items": [
-        "<strong>Clean Voice</strong> — denoises with DeepFilterNet and then runs a broadcast-style polish chain (high-pass, low-pass, loudness normalization, brick-wall limiter). Best for podcast/voiceover takes recorded in noisy rooms.",
-        "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain. Use this when you want to preserve the natural EQ and dynamics of the recording.",
-        "<strong>Isolate Vocals</strong> — runs Demucs htdemucs and outputs the vocal stem only. Output defaults to WAV so you don't lose detail.",
-        "<strong>Remove Vocals / Karaoke</strong> — same Demucs job, but exports the instrumental stem. Great for karaoke tracks or sample workflows."
+        "<strong>音声クリーンアップ</strong> — DeepFilterNetでノイズを除去してから、放送品質の仕上げチェーン（ハイパス、ローパス、ラウドネスノーマライズ、ブリックウォールリミッター）を実行します。騒がしい部屋で録音したポッドキャストやナレーションのテイクに最適です。",
+        "<strong>背景ノイズを除去</strong> — 仕上げチェーンなしのDeepFilterNetノイズ除去。録音の自然なEQとダイナミクスを保ちたいときに使います。",
+        "<strong>ボーカルを分離</strong> — Demucs htdemucsを実行し、ボーカルステムだけを出力します。ディテールを失わないよう、出力はデフォルトでWAVです。",
+        "<strong>ボーカルを除去／カラオケ</strong> — 同じDemucsジョブですが、インストゥルメンタルステムを書き出します。カラオケトラックやサンプリングのワークフローに最適です。"
       ],
-      "outro": "When you pick any AI operation, the standard FFmpeg chain (bitrate, EQ, reverb, etc.) is skipped for that job so the AI tool has a clean input/output path. AI jobs may take longer than basic conversion because they run on the GPU."
+      "outro": "AI処理を選ぶと、そのジョブでは標準のFFmpegチェーン（ビットレート、EQ、リバーブなど）がスキップされ、AIツールがクリーンな入出力経路を持てるようになります。AIジョブはGPUで実行されるため、基本的な変換より時間がかかることがあります。"
     },
     "advancedEffects": {
-      "heading": "6. Advanced Audio Effects",
-      "intro": "Expand <strong>Advanced Audio Effects</strong> to access four collapsible groups when you want manual control instead of an AI operation:",
+      "heading": "6. 高度な音声エフェクト",
+      "intro": "AI処理の代わりに手動で制御したい場合は、<strong>高度な音声エフェクト</strong>を展開すると4つの折りたたみ可能なグループにアクセスできます：",
       "items": [
-        "<strong>Basic Audio Processing</strong> — normalize, amplify (dB), fade in/out, EQ presets (bass boost, treble boost, vocal, classical, rock, jazz), pan, balance, stereo width, mono conversion, channel swap.",
-        "<strong>Time-Based Effects</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), modulation (chorus, flanger, phaser, tremolo, vibrato).",
-        "<strong>Restoration & Cleanup</strong> — spectral/adaptive/gate noise reduction, 50/60 Hz de-hum, declipper, silence detection and removal.",
-        "<strong>Advanced Audio</strong> — pitch shifting (semitones, formant-preserving), time stretching (factor + pitch/time/formant algorithm), spatial audio (binaural, surround, 3D)."
+        "<strong>基本的な音声処理</strong> — ノーマライズ、増幅（dB）、フェードイン／アウト、EQプリセット（低音強調、高音強調、ボーカル、クラシック、ロック、ジャズ）、パン、バランス、ステレオ幅、モノラル変換、チャンネル入れ替え。",
+        "<strong>時間系エフェクト</strong> — リバーブ（ルーム、ホール、プレート、スプリング）、ディレイ（エコー、マルチタップ、ピンポン）、モジュレーション（コーラス、フランジャー、フェイザー、トレモロ、ビブラート）。",
+        "<strong>復元とクリーンアップ</strong> — スペクトル／適応型／ゲートのノイズリダクション、50/60 Hzのハム除去、デクリッパー、無音の検出と除去。",
+        "<strong>高度な音声処理</strong> — ピッチシフト（半音単位、フォルマント保持）、タイムストレッチ（係数 + ピッチ／時間／フォルマントのアルゴリズム）、空間オーディオ（バイノーラル、サラウンド、3D）。"
       ]
     },
     "convertDownload": {
-      "heading": "7. Convert and download",
-      "body": "Click <strong>Convert File</strong>. A real-time progress bar appears as the server processes the job. When it finishes, the result auto-previews and a <strong>Download</strong> button appears. The file is also added to your in-session <em>Conversion History</em> so you can revisit or download it later without re-running the job."
+      "heading": "7. 変換してダウンロードする",
+      "body": "<strong>ファイルを変換</strong>をクリックします。サーバーがジョブを処理する間、リアルタイムの進行状況バーが表示されます。完了すると結果が自動プレビューされ、<strong>ダウンロード</strong>ボタンが表示されます。ファイルはセッション内の<em>変換履歴</em>にも追加されるため、ジョブを再実行せずに後で見直したりダウンロードしたりできます。"
     },
     "tips": {
-      "heading": "Tips for great audio output",
+      "heading": "優れた音声出力のためのヒント",
       "items": [
-        "For voice recordings, try <strong>Clean Voice</strong> first — it solves most \"muddy podcast\" problems in one click.",
-        "If you only want to remove a constant hum or air-conditioner background, use <strong>Remove Background Noise</strong> to keep the original tone.",
-        "For stems, keep the default <strong>WAV</strong> output — converting Demucs output to a lossy format defeats the purpose of separation.",
-        "Big bitrate jumps don't help small files much; pair 320 kbps with 48 kHz only for high-quality music exports."
+        "音声の録音には、まず<strong>音声クリーンアップ</strong>を試しましょう——ほとんどの「こもったポッドキャスト」の問題をワンクリックで解決します。",
+        "一定のハム音やエアコンの背景音だけを取り除きたい場合は、元の音色を保つために<strong>背景ノイズを除去</strong>を使いましょう。",
+        "ステムにはデフォルトの<strong>WAV</strong>出力のままにしましょう——Demucsの出力を非可逆形式に変換すると、分離の意味がなくなります。",
+        "ビットレートを大きく上げても小さなファイルにはあまり効果がありません。320 kbpsと48 kHzの組み合わせは、高品質な音楽のエクスポートにだけ使いましょう。"
       ]
     },
     "cta": {
-      "tryConverter": "Try the Audio Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "音声コンバーターを試す",
+      "backToTutorials": "← チュートリアルに戻る",
+      "howItWorks": "仕組み"
     },
     "related": {
-      "title": "Try related tools",
-      "intro": "Jump straight into the audio tool you need, or keep learning with related guides.",
+      "title": "関連ツールを試す",
+      "intro": "必要な音声ツールにすぐ移動するか、関連ガイドで学び続けましょう。",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more."
+          "label": "音声コンバーター",
+          "description": "WAV、MP3、FLAC、M4A、OGGなどの変換。"
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV recordings into widely playable MP3s."
+          "label": "WAVをMP3に変換",
+          "description": "大きなWAV録音を広く再生できるMP3に縮小。"
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Extract vocals from music for remixes or analysis."
+          "label": "楽曲からボーカルを分離",
+          "description": "リミックスや分析のために音楽からボーカルを抽出。"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, compress, trim, and transcribe video files."
+          "label": "動画コンバーターチュートリアル",
+          "description": "動画ファイルの変換、圧縮、トリミング、文字起こし。"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI audio jobs run on a local GPU server."
+          "label": "Media Manipulatorの仕組み",
+          "description": "AI音声ジョブがローカルGPUサーバーで動く仕組みを見る。"
         }
       ]
     }
   },
   "tutorialImageGettingStarted": {
-    "eyebrow": "Image Tutorial",
-    "title": "Getting Started: Converting Image Files",
-    "intro": "Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).",
+    "eyebrow": "画像チュートリアル",
+    "title": "はじめに：画像ファイルの変換",
+    "intro": "Media Manipulatorの画像コンバーターで画像を変換、編集、AI処理する方法を学びます。このチュートリアルでは、画像変換パネルのすべてのセクション——形式の選択、切り抜き、フィルター、テキストオーバーレイ、メタデータ管理、そしてAI画像ツール（顔のプライバシー、背景の除去、AIアップスケール、テキストのマスキング、オブジェクトの除去）——を順に解説します。",
     "toolPanel": {
-      "title": "Try the image converter without leaving this page",
-      "description": "Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "このページを離れずに画像コンバーターを試す",
+      "description": "画像を選んで、ここで変換できます。設定はホームページのコンバーターと同じなので、試しながらチュートリアルの続きを読めます。"
     },
     "upload": {
-      "title": "1. Upload your image",
-      "paragraph": "Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+      "title": "1. 画像をアップロードする",
+      "paragraph": "アップロード領域に画像ファイルをドラッグするか、<strong>ファイルを選択</strong>をクリックします。画像コンバーターはJPG、PNG、WebP、GIF、その他多くの形式を受け付けます。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。"
     },
     "format": {
-      "title": "2. Pick the output format and quality",
+      "title": "2. 出力形式と品質を選ぶ",
       "bullets": [
-        "<strong>JPG</strong> — best for photos. Lossy compression with a quality slider.",
-        "<strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.",
-        "<strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.",
-        "<strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases."
+        "<strong>JPG</strong> — 写真に最適。品質スライダー付きの非可逆圧縮。",
+        "<strong>PNG</strong> — 可逆、透明度対応。スクリーンショット、ロゴ、グラフィックに最適。",
+        "<strong>WebP</strong> — 非可逆と可逆の両モードを持つモダンな形式。同程度の品質でJPGより小さい。",
+        "<strong>GIF</strong> — パレットベース、基本的なアニメーションに対応。レガシー用途に便利。"
       ],
-      "quality": "<strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images."
+      "quality": "<strong>品質（%）</strong>はJPGとWebPに適用されます。85が優れたデフォルトで、サムネイルなら低く、ヒーロー画像なら高くします。"
     },
     "resize": {
-      "title": "3. Resize, crop, filter, tint",
-      "paragraph1": "Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.",
-      "paragraph2": "Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000)."
+      "title": "3. リサイズ、切り抜き、フィルター、色合い",
+      "paragraph1": "<strong>幅</strong>と<strong>高さ</strong>でリサイズします。どちらかを空欄にすると比例して拡大縮小されます。ImageMagickがまず入力の向きを自動補正するため、EXIFで向きが指定されたJPEGがPNG/WebPに回転したまま出力されることはありません。",
+      "paragraph2": "<strong>画像を切り抜く</strong>をクリックすると視覚的な切り抜きセレクターが開きます。<strong>フィルター</strong>のドロップダウンは組み込みの効果を適用します：グレースケール、セピア、ぼかし、シャープ、渦巻き、樽型歪み、油絵、ヴィンテージ、エンボス、木炭画、スケッチ、または固定角度の回転（45° / 90° / 180° / 270°）。<strong>色合い</strong>は画像に30%の色付きの色合いを重ねます（黒/#000000のままにするとスキップされます）。"
     },
     "textOverlay": {
-      "title": "4. Text overlay",
-      "intro": "Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:",
+      "title": "4. テキストオーバーレイ",
+      "intro": "画像に直接、透かしやキャプションを追加します。<strong>オーバーレイテキスト</strong>にテキストを入力し、次を選びます：",
       "bullets": [
-        "<strong>Text Size</strong> — 8–512 px.",
-        "<strong>Position</strong> — gravity-based anchor (corners, edges, center).",
-        "<strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.",
-        "<strong>Stroke Width</strong> — 0 to disable the outline.",
-        "<strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor."
+        "<strong>文字サイズ</strong> — 8〜512 px。",
+        "<strong>位置</strong> — 配置位置ベースのアンカー（角、辺、中央）。",
+        "<strong>文字色／縁取り色</strong> — カラーピッカーによる16進数の色。",
+        "<strong>縁取りの太さ</strong> — 0にするとアウトラインが無効になります。",
+        "<strong>Xオフセット／Yオフセット</strong> — アンカーからのピクセル単位の微調整。"
       ]
     },
     "metadata": {
-      "title": "5. Metadata",
-      "intro": "Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:",
+      "title": "5. メタデータ",
+      "intro": "Media ManipulatorがEXIF、IPTC、XMP、GPSのメタデータをどう扱うかを選びます：",
       "bullets": [
-        "<strong>Keep all metadata</strong> — preserved from the original via exiftool.",
-        "<strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online."
+        "<strong>すべてのメタデータを保持</strong> — exiftoolでオリジナルから保持します。",
+        "<strong>すべてのメタデータを削除</strong> — カメラ、GPS、ソフトウェア、タイムスタンプを削除します。写真をオンラインで共有する前におすすめです。"
       ],
-      "customLabel": "<strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:",
+      "customLabel": "<strong>カスタムメタデータ</strong> — まず削除してから、指定したフィールドを書き込みます。含まれるもの：",
       "customBullets": [
-        "Title, Artist/Author, Description, Copyright, User Comment, Keywords.",
-        "GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.",
-        "EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist."
+        "タイトル、アーティスト／作者、説明、著作権、ユーザーコメント、キーワード。",
+        "GPSの削除／置き換え（オプションの精度の丸め付き）と、方向／タイムスタンプ／高度／目的地の切り替え。",
+        "EXIF/TIFFフィールド、GPSフィールド、および許可リストによる高度なIPTC/XMP/MakerNotesタグ。"
       ]
     },
     "aiTools": {
-      "title": "6. AI Image Tools (recommended)",
-      "intro": "The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.",
-      "faceBlur": "<strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.",
-      "removeBackground": "<strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.",
-      "aiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.",
-      "redactText": "<strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.",
-      "removeObject": "<strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:",
+      "title": "6. AI画像ツール（推奨）",
+      "intro": "<strong>AI画像ツール</strong>パネルは、1回の変換ジョブにつき1つのローカルGPU処理を実行します。処理を選ぶと、そのジョブでは標準のImageMagickパイプライン（フィルター、色合い、オーバーレイなど）がスキップされ、AIツールがクリーンな入出力経路を持てるようになります。",
+      "faceBlur": "<strong>顔のぼかし／モザイク／黒塗り</strong> — 写真内のすべての顔を検出し、選択したスタイルで隠します。参加者の身元を漏らさずにイベント写真を共有するのに最適です。",
+      "removeBackground": "<strong>背景を除去</strong> — BiRefNet（一般またはポートレート）、ISNet、またはU2Netでrembgを実行します。透明度を保持するため、出力はPNGに固定されます。ほとんどの写真ではBiRefNet Generalが推奨デフォルトです。",
+      "aiUpscale": "<strong>AIアップスケール</strong> — Real-ESRGAN ncnn Vulkanアップスケーラー。<em>4倍</em>（最も安全）または<em>2倍</em>（高速）を選び、モデルを選びます：一般的な写真には<code>realesrgan-x4plus</code>、アニメーション／イラストには<code>realesrgan-x4plus-anime</code>、アニメ動画のフレームには<code>realesr-animevideov3</code>。出力はデフォルトでPNGです。",
+      "redactText": "<strong>テキスト／個人情報をマスキング</strong> — OCRベースのマスキング。<em>個人情報のみ</em>（メール、電話番号、社会保障番号、住所など）または<em>すべてのテキスト</em>を選び、マスキングのスタイル（黒塗り、ぼかし、モザイク）を選びます。ベストエフォートです——共有前に出力を確認してください。",
+      "removeObject": "<strong>オブジェクトを除去（LaMaインペインティング）</strong> — 画像プレビュー上でクリック＆ドラッグして、消したいもの（背景の通行人、看板、透かし、電柱など）の上に長方形を描きます。長方形の本体をドラッグすると移動、角や辺のハンドルをドラッグするとサイズ変更でき、空いている場所でもう一度クリック＆ドラッグすれば必要なだけ長方形を追加できます。送信すると、サーバーが長方形からマスクをラスタライズし、専用GPUで<code>simple-lama-inpainting</code>を実行してその背後の領域を再構成します。出力は選択した形式（JPG、PNG、WebP、GIF）を維持します。ヒント：",
       "removeObjectTips": [
-        "Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.",
-        "Several small rectangles usually beat one huge one, especially for thin objects.",
-        "LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces)."
+        "オブジェクトにぴったり沿って長方形を描きましょう——大きな長方形ほどLaMaが推測で生成する背景が増え、かえって見た目が悪くなることがあります。",
+        "特に細いオブジェクトでは、1つの巨大な長方形より小さな長方形を複数使うほうがたいていうまくいきます。",
+        "LaMaは、周囲のピクセルがモデルに十分な文脈を与えるとき（空、草、無地の壁、均一な表面）に最もうまく機能します。"
       ]
     },
     "convertDownload": {
-      "title": "7. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list."
+      "title": "7. 変換してダウンロードする",
+      "paragraph": "<strong>ファイルを変換</strong>をクリックします。進行状況バーがリアルタイムのジョブ状態を表示します。完了すると、結果が<strong>オリジナル／最終版</strong>の切り替え付きで自動プレビューされ、比較できます。<strong>ダウンロード</strong>で保存するか、セッション内の<em>変換履歴</em>一覧から後で見直せます。"
     },
     "tips": {
-      "title": "Tips for great image output",
+      "title": "優れた画像出力のためのヒント",
       "bullets": [
-        "For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.",
-        "Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.",
-        "<strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.",
-        "For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.",
-        "Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.",
-        "Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result."
+        "SNSへのアップロードには、見た目が良く小さなファイルになる80〜85%品質の<strong>WebP</strong>を使いましょう。",
+        "写真をオンラインで共有するときは<strong>メタデータを削除</strong>を組み合わせて、GPSやデバイス情報の漏えいを防ぎましょう。",
+        "<strong>背景を除去</strong>の出力は常にPNGです——お好みのデザインツールで色付きの背景と組み合わせたり、スライドに重ねたりしましょう。",
+        "AIアップスケールでは、写真には<code>realesrgan-x4plus</code>で<strong>4倍</strong>を選びましょう。2倍はパワーユーザー向けのオプションで、小さな入力では時折フレーミングのアーティファクトが出ることがあります。",
+        "メール、チケット、請求書のスクリーンショットを投稿する前に<strong>テキストをマスキング</strong>を実行しましょう。",
+        "旅行写真の観光客や風景の上の邪魔な看板のような一回限りのクリーンアップには<strong>オブジェクトを除去</strong>を使いましょう——ただし、最もきれいな結果を得るには長方形のサイズを試行錯誤する必要があります。"
       ]
     },
     "actions": {
-      "tryConverter": "Try the Image Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "画像コンバーターを試す",
+      "backToTutorials": "← チュートリアルに戻る",
+      "howItWorks": "仕組み"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused image tool or keep exploring related guides.",
+      "title": "関連ツールを試す",
+      "intro": "目的に特化した画像ツールにすぐ移動するか、関連ガイドを読み進めましょう。",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "画像コンバーター",
+          "description": "JPG、PNG、WebP、AVIF、GIFなどの相互変換。"
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebPをJPGに変換",
+          "description": "WebPから幅広く互換性のあるJPGを取得。"
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "EXIFメタデータを削除",
+          "description": "写真を共有する前にGPS、デバイス、タイムスタンプのメタデータを削除。"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, trim, and apply visual effects to video files."
+          "label": "動画コンバーターチュートリアル",
+          "description": "動画ファイルの変換、トリミング、視覚効果の適用。"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI image tools run on a local GPU server."
+          "label": "Media Manipulatorの仕組み",
+          "description": "AI画像ツールがローカルGPUサーバーで動く仕組みを見る。"
         }
       ]
     }
