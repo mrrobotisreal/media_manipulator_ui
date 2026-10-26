@@ -1001,10 +1001,10 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
       // Warm the next clip on each track (MM70): while playing, a free slot
       // loads a clip that starts within WARM_LOOKAHEAD_S and parks on its
       // first frame, paused and silent, so the cut plays from a buffered
-      // element instead of a cold src load. Same-source cuts need no warm-up
-      // (the slot choice above reuses the playing element's buffer).
+      // element instead of a cold src load or a long seek. That includes a
+      // cut to another part of a file that is already playing: the warm
+      // element sits at the new clip's in-point, the playing one does not.
       if (playing) {
-        const activeSrcs = new Set(slots.current.filter((s) => s.clipId).map((s) => s.srcAssetId));
         // Only clips inside the lookahead window are collected: this runs per
         // frame and must stay O(clips) without allocating per clip.
         const candidates: Array<{ clipId: string; trackId: string; timelineStart: number; clip: (typeof active)[number]['clip'] }> = [];
@@ -1021,7 +1021,6 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
           const entry = st.assets[next.clip.assetId];
           if (!entry || entry.status !== 'ready' || entry.asset.mediaKind === 'image' || next.clip.title) continue;
           const key = srcKeyOf(next.clip, entry);
-          if (activeSrcs.has(key)) continue;
           wanted.add(next.clipId);
           let i = slots.current.findIndex((s) => s.clipId === null && s.warmFor === next.clipId);
           if (i < 0) i = slots.current.findIndex((s) => s.clipId === null && s.warmFor === null);
