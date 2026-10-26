@@ -15,8 +15,12 @@ import { handleBase, handleMe, handleSubmit, type HandlerDeps } from './handlers
 import { createOctokitGithubClient } from './octokitClient';
 import { createSubmitLimiter } from './rateLimit';
 
-/** Build-artifact sentinel for `npm run check:no-translator` (kept reachable below). */
+/**
+ * Build-artifact sentinel for `npm run check:no-translator`. Stored on globalThis
+ * (a side effect minifiers keep), so a build that bundles this module carries it.
+ */
 export const TRANSLATOR_SERVER_SENTINEL = '__MM_TRANSLATOR_SERVER__';
+(globalThis as Record<string, unknown>).__mmTranslatorServerLoaded = TRANSLATOR_SERVER_SENTINEL;
 
 function env(): Env {
   return {
@@ -36,7 +40,6 @@ const limiter = createSubmitLimiter({ windowMs: SUBMIT_WINDOW_MS });
 const baseCache: HandlerDeps['baseCache'] = new Map();
 
 function deps(): HandlerDeps {
-  if (TRANSLATOR_SERVER_SENTINEL.length === 0) throw new Error('unreachable');
   // Env is re-read per request (cheap) so nothing secret is held in module scope.
   return { env: env(), github: createOctokitGithubClient, limiter, baseCache };
 }
