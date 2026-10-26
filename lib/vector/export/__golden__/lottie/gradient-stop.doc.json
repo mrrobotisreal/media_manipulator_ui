@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "canvas": { "width": 200, "height": 100 },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    { "type": "rect", "id": "bar", "x": 0, "y": 0, "width": 200, "height": 100, "fill": "url(#sky)" }
+  ],
+  "defs": {
+    "gradients": [
+      {
+        "type": "linear",
+        "id": "sky",
+        "x1": 0,
+        "y1": 0,
+        "x2": 1,
+        "y2": 0,
+        "stops": [
+          { "offset": 0, "color": "#0ea5e9" },
+          { "offset": 1, "color": "#1e3a8a" }
+        ]
+      }
+    ]
+  },
+  "animations": [
+    {
+      "layerId": "bar",
+      "property": "gradientStop[0].color",
+      "keyframes": [
+        { "t": 0, "value": "#0ea5e9", "easing": "linear" },
+        { "t": 1000, "value": "#f97316", "easing": "hold" },
+        { "t": 2000, "value": "#0ea5e9", "easing": "linear" }
+      ]
+    },
+    {
+      "layerId": "bar",
+      "property": "gradientStop[1].color",
+      "keyframes": [
+        { "t": 0, "value": "#1e3a8a", "easing": { "cubicBezier": [0.42, 0, 0.58, 1] } },
+        { "t": 2000, "value": "#7c3aed", "easing": "linear" }
+      ]
+    }
+  ]
+}

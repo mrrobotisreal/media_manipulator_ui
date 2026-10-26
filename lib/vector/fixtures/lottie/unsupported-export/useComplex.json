@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "use",
+      "id": "inst",
+      "ref": "sym"
+    }
+  ],
+  "defs": {
+    "gradients": [],
+    "masks": [],
+    "clipPaths": [],
+    "filters": [],
+    "symbols": [
+      {
+        "id": "sym",
+        "viewBox": {
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10
+        },
+        "layers": [
+          {
+            "type": "rect",
+            "id": "sym-r",
+            "x": 0,
+            "y": 0,
+            "width": 10,
+            "height": 10
+          }
+        ]
+      }
+    ]
+  }
+}

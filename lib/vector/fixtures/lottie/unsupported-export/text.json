@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "text",
+      "id": "title",
+      "x": 10,
+      "y": 50,
+      "text": "Hello",
+      "fontSize": 24,
+      "fill": "#000"
+    }
+  ]
+}

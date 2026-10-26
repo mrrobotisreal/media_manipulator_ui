@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "rect",
+      "id": "blurry",
+      "x": 0,
+      "y": 0,
+      "width": 100,
+      "height": 100,
+      "fill": "#000",
+      "filter": "soft"
+    }
+  ],
+  "defs": {
+    "gradients": [],
+    "masks": [],
+    "clipPaths": [],
+    "filters": [
+      {
+        "type": "blur",
+        "id": "soft",
+        "stdDeviation": 4
+      }
+    ],
+    "symbols": []
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "rect",
+      "id": "box",
+      "x": 0,
+      "y": 0,
+      "width": 40,
+      "height": 40,
+      "fill": "#3b82f6"
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "box",
+      "property": "transform.x",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": 0,
+          "easing": {
+            "cubicBezier": [
+              0.25,
+              0.1,
+              0.25,
+              1
+            ]
+          }
+        },
+        {
+          "t": 1200,
+          "value": 120,
+          "easing": {
+            "cubicBezier": [
+              0.34,
+              1.56,
+              0.64,
+              1
+            ]
+          }
+        },
+        {
+          "t": 2000,
+          "value": 40,
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

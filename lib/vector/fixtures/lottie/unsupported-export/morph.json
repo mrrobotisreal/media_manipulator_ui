@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "path",
+      "id": "bad",
+      "d": "M0 0L10 0L10 10Z",
+      "fill": "#000"
+    }
+  ],
+  "animations": [
+    {
+      "layerId": "bad",
+      "property": "d",
+      "keyframes": [
+        {
+          "t": 0,
+          "value": "M0 0L10 0L10 10Z",
+          "easing": "linear"
+        },
+        {
+          "t": 2000,
+          "value": "M0 0L10 0L10 10ZM20 20L30 20L30 30Z",
+          "easing": "linear"
+        }
+      ]
+    }
+  ]
+}

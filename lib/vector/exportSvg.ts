@@ -52,10 +52,20 @@ function attrText(attrs: Attr[]): string {
   return out;
 }
 
-class Writer {
+/** Where the serialiser writes: SVG text (`Writer`) or a node tree (`TreeWriter`, MM46 code exports). */
+interface Sink {
+  element(depth: number, tag: string, attrs: Attr[], children?: (d: number) => void, text?: string): void;
+  /** A raw layer's markup, verbatim. */
+  raw(depth: number, markup: string): void;
+}
+
+class Writer implements Sink {
   private lines: string[] = [];
   line(depth: number, text: string): void {
     this.lines.push(`${'  '.repeat(depth)}${text}`);
+  }
+  raw(depth: number, markup: string): void {
+    this.line(depth, markup);
   }
   element(depth: number, tag: string, attrs: Attr[], children?: (d: number) => void, text?: string): void {
     const open = `<${tag}${attrText(attrs)}`;
@@ -78,9 +88,64 @@ class Writer {
   }
 }
 
+/**
+ * One element of the exported SVG as data (MM46: the React exporter turns it
+ * into JSX, the native Flutter exporter into a template). Attribute values
+ * are the exact (unescaped) strings `serializeSvg` writes, in its order;
+ * `raw` nodes are a raw layer's markup, verbatim.
+ */
+export type SvgNode = SvgElementNode | { kind: 'raw'; markup: string };
+export interface SvgElementNode {
+  kind: 'element';
+  tag: string;
+  attrs: Array<[name: string, value: string]>;
+  children: SvgNode[];
+  /** Text content (`<text>` only). */
+  text?: string;
+}
+
+class TreeWriter implements Sink {
+  readonly root: SvgElementNode[] = [];
+  private stack: SvgNode[][] = [this.root];
+  raw(_depth: number, markup: string): void {
+    this.stack[this.stack.length - 1].push({ kind: 'raw', markup });
+  }
+  element(_depth: number, tag: string, attrs: Attr[], children?: (d: number) => void, text?: string): void {
+    const node: SvgElementNode = { kind: 'element', tag, attrs: attrPairs(attrs), children: [] };
+    if (text !== undefined) node.text = text;
+    this.stack[this.stack.length - 1].push(node);
+    if (children) {
+      this.stack.push(node.children);
+      children(_depth + 1);
+      this.stack.pop();
+    }
+  }
+}
+
+function attrPairs(attrs: Attr[]): Array<[string, string]> {
+  const out: Array<[string, string]> = [];
+  for (const [name, value] of attrs) {
+    if (value === undefined || value === null) continue;
+    out.push([name, typeof value === 'number' ? formatNumber(value) : value]);
+  }
+  return out;
+}
+
 /** Serialise the document to a standalone static SVG file. */
 export function serializeSvg(doc: VectorDoc): string {
   const w = new Writer();
+  writeDocument(w, doc);
+  return w.toString();
+}
+
+/** The same document as `serializeSvg`, as a node tree (the root `<svg>` element). */
+export function svgTree(doc: VectorDoc): SvgElementNode {
+  const w = new TreeWriter();
+  writeDocument(w, doc);
+  return w.root[0];
+}
+
+function writeDocument(w: Sink, doc: VectorDoc): void {
   const vb = doc.canvas.viewBox;
   const rootAttrs: Attr[] = [
     ['xmlns', SVG_NS],
@@ -112,10 +177,9 @@ export function serializeSvg(doc: VectorDoc): string {
     }
     writeLayers(w, d, doc.layers);
   });
-  return w.toString();
 }
 
-function writeLayers(w: Writer, depth: number, layers: Layer[]): void {
+function writeLayers(w: Sink, depth: number, layers: Layer[]): void {
   for (const layer of layers) writeLayer(w, depth, layer);
 }
 
@@ -152,10 +216,10 @@ function headAttrs(layer: Layer): Attr[] {
   ];
 }
 
-function writeLayer(w: Writer, depth: number, layer: Layer): void {
+function writeLayer(w: Sink, depth: number, layer: Layer): void {
   switch (layer.type) {
     case 'raw':
-      if (layer.markup) w.line(depth, layer.markup);
+      if (layer.markup) w.raw(depth, layer.markup);
       return;
     case 'group':
       w.element(depth, 'g', [...headAttrs(layer), ...tailAttrs(layer)], (d) => writeLayers(w, d, layer.children));
@@ -235,7 +299,7 @@ function writeLayer(w: Writer, depth: number, layer: Layer): void {
   }
 }
 
-function writeGradient(w: Writer, depth: number, g: Gradient): void {
+function writeGradient(w: Sink, depth: number, g: Gradient): void {
   const common: Attr[] = [['id', safeId(g.id)], ['gradientUnits', g.units]];
   const geo: Attr[] =
     g.type === 'linear'
@@ -268,7 +332,7 @@ function writeGradient(w: Writer, depth: number, g: Gradient): void {
   });
 }
 
-function writeMask(w: Writer, depth: number, m: VectorMask): void {
+function writeMask(w: Sink, depth: number, m: VectorMask): void {
   w.element(
     depth,
     'mask',
@@ -285,7 +349,7 @@ function writeMask(w: Writer, depth: number, m: VectorMask): void {
   );
 }
 
-function writeClipPath(w: Writer, depth: number, c: VectorClipPath): void {
+function writeClipPath(w: Sink, depth: number, c: VectorClipPath): void {
   w.element(
     depth,
     'clipPath',
@@ -298,7 +362,7 @@ function writeClipPath(w: Writer, depth: number, c: VectorClipPath): void {
   );
 }
 
-function writeFilter(w: Writer, depth: number, f: VectorFilter): void {
+function writeFilter(w: Sink, depth: number, f: VectorFilter): void {
   w.element(
     depth,
     'filter',
@@ -313,7 +377,7 @@ function writeFilter(w: Writer, depth: number, f: VectorFilter): void {
   );
 }
 
-function writeSymbol(w: Writer, depth: number, s: VectorSymbol): void {
+function writeSymbol(w: Sink, depth: number, s: VectorSymbol): void {
   const vb = s.viewBox;
   w.element(
     depth,

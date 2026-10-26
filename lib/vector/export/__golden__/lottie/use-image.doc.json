@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "use",
+      "id": "copy",
+      "ref": "star",
+      "x": 100,
+      "y": 0
+    },
+    {
+      "type": "image",
+      "id": "pic",
+      "x": 10,
+      "y": 120,
+      "width": 40,
+      "height": 40,
+      "href": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "opacity": 0.5
+    },
+    {
+      "type": "path",
+      "id": "star",
+      "d": "M50 10L61 40L92 40L67 59L76 90L50 71L24 90L33 59L8 40L39 40Z",
+      "fill": "#f59e0b"
+    }
+  ]
+}

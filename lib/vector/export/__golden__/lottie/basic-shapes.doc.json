@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "duration": 2000,
+  "fps": 24,
+  "layers": [
+    {
+      "type": "rect",
+      "id": "card",
+      "name": "Card",
+      "x": 10,
+      "y": 10,
+      "width": 80,
+      "height": 50,
+      "rx": 8,
+      "fill": "#3b82f6"
+    },
+    {
+      "type": "rect",
+      "id": "pill",
+      "x": 110,
+      "y": 10,
+      "width": 80,
+      "height": 30,
+      "rx": 15,
+      "ry": 6,
+      "fill": "#22c55e"
+    },
+    {
+      "type": "ellipse",
+      "id": "dot",
+      "cx": 50,
+      "cy": 120,
+      "rx": 30,
+      "ry": 20,
+      "fill": "#ef4444",
+      "fillOpacity": 0.5
+    },
+    {
+      "type": "line",
+      "id": "rule",
+      "x1": 10,
+      "y1": 180,
+      "x2": 190,
+      "y2": 180,
+      "stroke": "#111111",
+      "strokeWidth": 2
+    },
+    {
+      "type": "polyline",
+      "id": "zig",
+      "points": [
+        110,
+        100,
+        130,
+        140,
+        150,
+        100,
+        170,
+        140
+      ],
+      "fill": "none",
+      "stroke": "#a855f7",
+      "strokeWidth": 3,
+      "strokeLinecap": "round",
+      "strokeLinejoin": "round"
+    },
+    {
+      "type": "polygon",
+      "id": "tri",
+      "points": [
+        150,
+        150,
+        190,
+        190,
+        110,
+        190
+      ],
+      "fill": "#f59e0b",
+      "fillRule": "evenodd"
+    },
+    {
+      "type": "path",
+      "id": "arc",
+      "d": "M10 90A20 20 0 0 1 50 90Q70 70 90 90Z",
+      "fill": "#0ea5e9",
+      "hidden": true
+    }
+  ]
+}
