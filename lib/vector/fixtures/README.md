@@ -121,3 +121,13 @@ The Lottie writer stores one private key on its viewBox null layer,
 `"mm": {"viewBox": [x, y, w, h]}` (players ignore unknown keys), and marks the
 background layer `cl: "mm-background"`; these live in the exported Lottie
 file, never in a `VectorDoc`.
+
+## MM47 (raster exports): nothing for the Go sanitizer; tier config for MM49
+
+MM47 adds **no document fields** and **changes no contract fixture**. Its
+goldens (`lib/vector/raster/__golden__/frames/`) are frame-baked SVGs of
+`animated.json`, UI-only. The raster formats count under the names MM43
+already knows (`gif`, `png_sequence`, `mp4`, `webm`), with `height` = output
+pixel height, `fps` = output frame rate and `durationMs` = the exported span.
+What MM49 must change server-side is tier configuration, not the sanitizer:
+see the MM47 entry in `docs/design/MOTION_SVG_ANIMATOR.md` §8.

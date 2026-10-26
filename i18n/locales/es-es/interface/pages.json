@@ -1947,5 +1947,20 @@
     "fixed": "Corregido",
     "metaTitle": "Registro de cambios | Media Manipulator",
     "metaDesc": "Notas de versión de Media Manipulator: nuevas herramientas, funciones de cuenta, novedades de Darkroom y correcciones."
+  },
+  "licenses": {
+    "metaTitle": "Open-source licences | Media Manipulator",
+    "metaDesc": "The open-source code Media Manipulator runs in your browser or writes into your exports, with each licence and where to find its source.",
+    "title": "Open-source licences",
+    "intro": "Media Manipulator uses these open-source libraries in your browser. Some of their code is also written into files you export. Each is used under its own licence, shown below with its copyright notice and a link to its source.",
+    "note": "Library descriptions are written in English.",
+    "version": "Version",
+    "license": "Licence",
+    "copyright": "Copyright",
+    "source": "Source code",
+    "licenseText": "Licence text",
+    "usedFor": "Used for",
+    "embedded": "Its licence notice is written into the exported file.",
+    "unmodified": "Used unmodified. Its source code is available at the link above."
   }
 }

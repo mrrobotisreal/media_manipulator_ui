@@ -58,6 +58,10 @@ The single list of what Lottie cannot carry in either direction (`lib/vector/exp
 **Code export** (MM46):
 A counted export of the animation as source code: React component (`.tsx`, server format `react_tsx`), JS or TS module (`js_ts`), Flutter widget (`.dart`, `flutter`). Pure functions with byte-golden fixtures; strings from the document reach the source only through the language's string-literal escaper (`jsString`, `dartString`). The Flutter export is **native** (`flutter_svg` + `AnimationController`, when `canExportNativeFlutter`: transform / opacity / colour / stroke width only) or a **WebView player** (`webview_flutter`, every other document; opaque background).
 
+**Raster export / frame-baked SVG** (MM47):
+A counted export rendered frame by frame in the browser: GIF (`gif`), PNG sequence zip (`png_sequence`), MP4 (`mp4`), WebM (`webm`). Each frame is a **frame-baked SVG**, `serializeSvg(sampleDoc(doc, t))` with every animated property resolved to a constant at `t = i / fps` (never the wall clock), drawn through a Blob-URL `<img>` onto one reused canvas (`lib/vector/raster/frames.ts`). The document is re-validated and the exact SVG text re-checked before any `<img>`, so external references never load and the canvas is never tainted. GIF uses the in-house encoder (`gifEncoder.ts`, one global palette, Worker); video uses WebCodecs + `mediabunny` (MPL-2.0, unmodified, lazy-loaded). Options are pre-clamped to the caller's tier caps (`clampRasterOptions`); the **capability probe** (`probeRaster`) asks `VideoEncoder.isConfigSupported` per codec.
+_Avoid_: "render" alone (Darkroom renders on the server), "screen recording".
+
 **Account project / browser-only project** (MM44):
 A Motion project is either browser-only (a `local-…` id; it lives only in the IndexedDB draft, the only kind anonymous users have) or an account project (a server UUID in `vector_projects`, saved with `If-Match` revisions, 409 on a conflict). "Save to account" turns the first into the second and replaces the URL. The draft is kept until a save succeeds.
 
