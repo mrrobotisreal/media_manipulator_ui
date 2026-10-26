@@ -16,8 +16,8 @@ import {
   urlPrefixToCode,
 } from "./locales";
 
+// fr-FR (MM57) and ja-JP (MM59) were translated; fr-FR is asserted separately below.
 const NEW_LOCALES = [
-  ["fr-FR", "fr"],
   ["zh-CN", "zh-cn"],
   ["zh-TW", "zh-tw"],
   ["ko-KR", "ko"],
@@ -53,8 +53,16 @@ describe("locale registry", () => {
     expect(locales.filter((l) => l.dir === "rtl").map((l) => l.code)).toEqual(["he-IL", "ar-SA"]);
   });
 
-  it("keeps the six original locales as the only translated ones", () => {
-    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "it-IT", "ja-JP"]);
+  it("marks the six original locales, French (MM57), Italian (MM58) and Japanese (MM59) as translated", () => {
+    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP"]);
+  });
+
+  it("fr-FR is registered at /fr and translated (MM57)", () => {
+    const def = getLocaleDef("fr-FR")!;
+    expect(def.prefix).toBe("fr");
+    expect(def.translated).toBe(true);
+    expect(urlPrefixToCode("fr")).toBe("fr-FR");
+    expect(isSupportedPrefix("fr")).toBe(true);
   });
 });
 

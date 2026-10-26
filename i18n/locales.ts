@@ -56,7 +56,7 @@ export const locales: LocaleDef[] = [
   { code: "de-DE", prefix: "de", label: "Deutsch", englishLabel: "German", flag: "🇩🇪", dir: "ltr", translated: true },
   { code: "es-ES", prefix: "es", label: "Español", englishLabel: "Spanish", flag: "🇪🇸", dir: "ltr", translated: true },
   // MM51: byte-copies of en-US until their translation sessions (MM57–MM67).
-  { code: "fr-FR", prefix: "fr", label: "Français", englishLabel: "French", flag: "🇫🇷", dir: "ltr", translated: false },
+  { code: "fr-FR", prefix: "fr", label: "Français", englishLabel: "French", flag: "🇫🇷", dir: "ltr", translated: true },
   { code: "it-IT", prefix: "it", label: "Italiano", englishLabel: "Italian", flag: "🇮🇹", dir: "ltr", translated: true },
   { code: "ja-JP", prefix: "ja", label: "日本語", englishLabel: "Japanese", flag: "🇯🇵", dir: "ltr", translated: true },
   { code: "zh-CN", prefix: "zh-cn", label: "简体中文", englishLabel: "Chinese (Simplified)", flag: "🇨🇳", dir: "ltr", translated: false },
