@@ -32,6 +32,9 @@ export type ScannedAttribute = (typeof SCANNED_ATTRIBUTES)[number];
 /** Where a key was seen on an element. `'text'` = a child text node. */
 export type KeySite = 'text' | ScannedAttribute;
 
+/** Per-node patch value: the node's current clean text and where it sits -> the new text. */
+export type PatchValue = (current: string, site: KeySite, target: Text | Element) => string;
+
 export interface ScannerChange {
   /** Refs that appeared on the page since the last notification. */
   added: RegistryEntry[];
@@ -61,7 +64,10 @@ export class DomScanner {
   private byRef = new Map<string, Set<Element>>();
   private refs = new Map<string, RegistryEntry>();
   private listeners = new Set<(change: ScannerChange) => void>();
+  private linkListeners = new Set<(refs: RegistryEntry[]) => void>();
   private pending: ScannerChange = { added: [], removed: [] };
+  /** Refs (re)linked to a node in the current batch, new or not (MM53 draft re-apply). */
+  private pendingLinked = new Map<string, RegistryEntry>();
   private dirty = new Set<Node>();
   private processScheduled = false;
   private cancelStart: (() => void) | null = null;
@@ -249,6 +255,7 @@ export class DomScanner {
     els.add(el);
     this.refs.set(id, entry);
     if (isNewRef) this.pending.added.push(entry);
+    this.pendingLinked.set(id, entry);
   }
 
   /** Drops elements that left the document, and refs no longer on the page. */
@@ -276,6 +283,17 @@ export class DomScanner {
   }
 
   private flush(): void {
+    if (this.pendingLinked.size) {
+      const linked = [...this.pendingLinked.values()];
+      this.pendingLinked.clear();
+      for (const l of this.linkListeners) {
+        try {
+          l(linked);
+        } catch {
+          // A broken subscriber must never break the page.
+        }
+      }
+    }
     if (this.pending.added.length === 0 && this.pending.removed.length === 0) return;
     const change = this.pending;
     this.pending = { added: [], removed: [] };
@@ -296,6 +314,17 @@ export class DomScanner {
   subscribe(cb: (change: ScannerChange) => void): () => void {
     this.listeners.add(cb);
     return () => this.listeners.delete(cb);
+  }
+
+  /**
+   * Notified after every scan batch with each ref that was linked to a node in it,
+   * including refs already on the page (React replaced a node, a client navigation
+   * re-rendered a server component). MM53 re-applies drafts from this: `subscribe`
+   * alone misses a node swapped in while its key never left the page.
+   */
+  subscribeLinks(cb: (refs: RegistryEntry[]) => void): () => void {
+    this.linkListeners.add(cb);
+    return () => this.linkListeners.delete(cb);
   }
 
   /** Every ref currently on the page. */
@@ -334,11 +363,14 @@ export class DomScanner {
    * MM53 live edit (ticket decision 11): sets every mapped text node / attribute
    * of `ref` to `value` and keeps the mapping. A text node holding several keys
    * is not split: only nodes that hold exactly this key are rewritten.
+   * `value` may be a function of the node's current text and site (MM53: each
+   * instance of an interpolated server string keeps its own params).
    * Returns how many nodes/attributes changed.
    */
-  patchTextNode(ref: MarkerRef, value: string): number {
+  patchTextNode(ref: MarkerRef, value: string | PatchValue): number {
     const id = refId(ref);
-    const clean = stripMarkers(value);
+    const valueFor = (current: string, site: KeySite, target: Text | Element) =>
+      stripMarkers(typeof value === 'function' ? value(current, site, target) : value);
     let changed = 0;
     for (const el of this.byRef.get(id) ?? []) {
       const rec = this.byElement.get(el);
@@ -349,6 +381,7 @@ export class DomScanner {
           if (!node.isConnected) continue;
           const others = [...rec.textNodes].some(([other, nodes]) => other !== id && nodes.has(node));
           if (others) continue;
+          const clean = valueFor(node.data, 'text', node);
           if (node.data !== clean) {
             this.selfWrites.add(node);
             node.data = clean;
@@ -358,7 +391,9 @@ export class DomScanner {
       }
       for (const site of sites) {
         if (site === 'text') continue;
-        if (el.getAttribute(site) !== clean) {
+        const current = el.getAttribute(site) ?? '';
+        const clean = valueFor(current, site, el);
+        if (current !== clean) {
           el.setAttribute(site, clean);
           changed++;
         }
@@ -373,6 +408,8 @@ export class DomScanner {
     this.observer?.disconnect();
     this.observer = null;
     this.listeners.clear();
+    this.linkListeners.clear();
+    this.pendingLinked.clear();
     this.byElement.clear();
     this.byRef.clear();
     this.refs.clear();

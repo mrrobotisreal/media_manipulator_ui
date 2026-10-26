@@ -152,3 +152,36 @@ describe('DOM scanner', () => {
     expect(document.getElementById('p')!.textContent).toBe(hindi);
   });
 });
+
+describe('DOM scanner: MM53 additions', () => {
+  it('subscribeLinks fires for a node swapped in while its key stays on the page', async () => {
+    document.body.innerHTML = `<p id="a">${marked('A', 'shared')}</p><p id="b">${marked('B', 'shared')}</p>`;
+    scanner = new DomScanner({ registry }).start({ immediate: true });
+    const changes: string[][] = [];
+    const linked: string[][] = [];
+    scanner.subscribe((c) => changes.push(c.added.map((e) => e.key)));
+    scanner.subscribeLinks((refs) => linked.push(refs.map((e) => e.key)));
+    const b = document.getElementById('b')!;
+    b.replaceWith(Object.assign(document.createElement('p'), { id: 'b2', textContent: marked('B2', 'shared') }));
+    await flush();
+    expect(changes).toEqual([]);
+    expect(linked).toEqual([['shared']]);
+  });
+
+  it('patchTextNode accepts a per-node value function', () => {
+    document.body.innerHTML =
+      `<p id="a">${marked('3 files', 'files')}</p><p id="b">${marked('7 files', 'files')}</p>` +
+      `<input id="i" placeholder="${marked('7 files', 'files')}">`;
+    scanner = new DomScanner({ registry }).start({ immediate: true });
+    const seen: string[] = [];
+    const n = scanner.patchTextNode(ref('files'), (current, site) => {
+      seen.push(site);
+      return current.replace('files', 'קבצים');
+    });
+    expect(n).toBe(3);
+    expect(document.getElementById('a')!.textContent).toBe('3 קבצים');
+    expect(document.getElementById('b')!.textContent).toBe('7 קבצים');
+    expect(document.getElementById('i')!.getAttribute('placeholder')).toBe('7 קבצים');
+    expect(seen.sort()).toEqual(['placeholder', 'text', 'text']);
+  });
+});
