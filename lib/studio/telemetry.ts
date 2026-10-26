@@ -102,6 +102,10 @@ interface PerfWindow {
   qualityLevel: string | null;
   /** Auto-degrade step-downs since the last flush, part 11. */
   degradeActivations: number;
+  /** MM70: playing-mode drift re-seeks since the last flush. */
+  resyncSeeks: number;
+  /** MM70: lost seeks / never-filling buffers re-kicked since the last flush. */
+  stuckRecoveries: number;
 }
 
 function emptyPerfWindow(): PerfWindow {
@@ -113,6 +117,8 @@ function emptyPerfWindow(): PerfWindow {
     webglFallback: false,
     qualityLevel: null,
     degradeActivations: 0,
+    resyncSeeks: 0,
+    stuckRecoveries: 0,
   };
 }
 
@@ -206,6 +212,10 @@ export const perf = {
     qualityLevel?: 'full' | 'half' | 'quarter';
     /** One auto-degrade step-down happened (counted, not sampled). */
     degradeActivation?: boolean;
+    /** MM70: one playing-mode drift re-seek (counted). */
+    resyncSeek?: boolean;
+    /** MM70: one stuck seek/buffer recovery (counted). */
+    stuckRecovery?: boolean;
   }): void {
     try {
       ensureSession();
@@ -221,6 +231,8 @@ export const perf = {
       if (input.webglFallback) perfWindow.webglFallback = true;
       if (input.qualityLevel) perfWindow.qualityLevel = input.qualityLevel;
       if (input.degradeActivation) perfWindow.degradeActivations += 1;
+      if (input.resyncSeek) perfWindow.resyncSeeks += 1;
+      if (input.stuckRecovery) perfWindow.stuckRecoveries += 1;
     } catch {
       // ignore
     }
@@ -303,7 +315,15 @@ function flushPerfSample(): void {
   const hasSamples =
     w.fps.length > 0 || w.droppedFrameRatio.length > 0 || w.seekLatencyMs.length > 0 || w.saveRttMs.length > 0;
   const pendingTti = ttiMs !== null && !ttiFlushed;
-  if (!hasSamples && !pendingTti && !w.webglFallback && w.degradeActivations === 0) return;
+  if (
+    !hasSamples &&
+    !pendingTti &&
+    !w.webglFallback &&
+    w.degradeActivations === 0 &&
+    w.resyncSeeks === 0 &&
+    w.stuckRecoveries === 0
+  )
+    return;
 
   const props: StudioPerfSampleProps = { host: studioHost() };
   if (w.fps.length > 0) props.fpsBucket = fpsBucket(percentile(w.fps, 50));
@@ -314,6 +334,8 @@ function flushPerfSample(): void {
   if (w.webglFallback) props.webglFallback = true;
   if (w.qualityLevel) props.qualityLevel = w.qualityLevel;
   if (w.degradeActivations > 0) props.degradeActivations = countBucket(w.degradeActivations);
+  if (w.resyncSeeks > 0) props.resyncSeeks = countBucket(w.resyncSeeks);
+  if (w.stuckRecoveries > 0) props.stuckRecoveries = countBucket(w.stuckRecoveries);
   if (pendingTti && ttiMs !== null) {
     props.ttiMsBucket = ttiMsBucket(ttiMs);
     ttiFlushed = true;
