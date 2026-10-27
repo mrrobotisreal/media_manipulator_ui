@@ -1,64 +1,64 @@
 {
   "common": {
     "brand": "Media Manipulator",
-    "brandTagline": "Convert images, videos, and audio files with ease",
-    "loading": "Loading…",
-    "loadingShort": "Loading...",
-    "comingSoon": "Coming soon",
-    "tryAgain": "Try again",
-    "cancel": "Cancel",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "save": "Save",
-    "saving": "Saving...",
-    "submit": "Submit",
-    "submitting": "Submitting...",
-    "download": "Download",
-    "preview": "Preview",
-    "remove": "Remove",
-    "clear": "Clear",
-    "reset": "Reset",
-    "apply": "Apply",
-    "enable": "Enable",
-    "disable": "Disable",
-    "yes": "Yes",
-    "no": "No",
-    "more": "More",
-    "less": "Less",
-    "and": "and",
-    "or": "or",
-    "of": "of",
-    "to": "to",
-    "from": "from",
-    "by": "by",
-    "in": "in",
-    "with": "with",
-    "all": "All",
-    "none": "None",
-    "off": "Off",
-    "on": "On",
-    "optional": "Optional",
-    "required": "Required",
-    "auto": "Auto",
-    "manual": "Manual",
-    "default": "Default",
-    "advanced": "Advanced",
-    "basic": "Basic",
-    "settings": "Settings",
-    "options": "Options",
-    "search": "Search",
-    "filter": "Filter",
-    "selected": "Selected",
-    "step": "Step",
-    "minutes": "minutes",
-    "seconds": "seconds",
-    "items": "items",
-    "showAll": "Show all",
-    "showMore": "Show more",
-    "showLess": "Show less",
-    "retentionPromise": "You choose how long we keep your files — 24 hours by default for guests, up to 2 years with a free account",
-    "retentionPromiseShort": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years"
+    "brandTagline": "इमेज, वीडियो और ऑडियो फ़ाइलें आसानी से कन्वर्ट करें",
+    "loading": "लोड हो रहा है…",
+    "loadingShort": "लोड हो रहा है...",
+    "comingSoon": "जल्द आ रहा है",
+    "tryAgain": "फिर से कोशिश करें",
+    "cancel": "रद्द करें",
+    "close": "बंद करें",
+    "back": "पीछे",
+    "next": "आगे",
+    "save": "सेव करें",
+    "saving": "सेव हो रहा है...",
+    "submit": "सबमिट करें",
+    "submitting": "सबमिट हो रहा है...",
+    "download": "डाउनलोड करें",
+    "preview": "प्रीव्यू",
+    "remove": "हटाएँ",
+    "clear": "साफ़ करें",
+    "reset": "रीसेट करें",
+    "apply": "लागू करें",
+    "enable": "चालू करें",
+    "disable": "बंद करें",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "more": "और",
+    "less": "कम",
+    "and": "और",
+    "or": "या",
+    "of": "में से",
+    "to": "तक",
+    "from": "से",
+    "by": "द्वारा",
+    "in": "में",
+    "with": "के साथ",
+    "all": "सभी",
+    "none": "कोई नहीं",
+    "off": "बंद",
+    "on": "चालू",
+    "optional": "वैकल्पिक",
+    "required": "ज़रूरी",
+    "auto": "ऑटो",
+    "manual": "मैनुअल",
+    "default": "डिफ़ॉल्ट",
+    "advanced": "एडवांस्ड",
+    "basic": "बेसिक",
+    "settings": "सेटिंग्स",
+    "options": "विकल्प",
+    "search": "खोजें",
+    "filter": "फ़िल्टर",
+    "selected": "चुना गया",
+    "step": "चरण",
+    "minutes": "मिनट",
+    "seconds": "सेकंड",
+    "items": "आइटम",
+    "showAll": "सभी दिखाएँ",
+    "showMore": "और दिखाएँ",
+    "showLess": "कम दिखाएँ",
+    "retentionPromise": "आप तय करते हैं कि हम आपकी फ़ाइलें कितने समय तक रखें — गेस्ट के लिए डिफ़ॉल्ट रूप से 24 घंटे, फ़्री अकाउंट के साथ 2 साल तक",
+    "retentionPromiseShort": "गेस्ट की फ़ाइलें 24 घंटे रखी जाती हैं; फ़्री अकाउंट के साथ आप 24 घंटे से 2 साल तक चुन सकते हैं"
   },
   "units": {
     "bytes": "B",
@@ -74,181 +74,181 @@
     "khz": "kHz"
   },
   "duration": {
-    "zero": "0 sec",
-    "hours_one": "{{count}} hr",
-    "hours_other": "{{count}} hr",
-    "minutes_one": "{{count}} min",
-    "minutes_other": "{{count}} min",
-    "seconds_one": "{{count}} sec",
-    "seconds_other": "{{count}} sec"
+    "zero": "0 सेकंड",
+    "hours_one": "{{count}} घंटा",
+    "hours_other": "{{count}} घंटे",
+    "minutes_one": "{{count}} मिनट",
+    "minutes_other": "{{count}} मिनट",
+    "seconds_one": "{{count}} सेकंड",
+    "seconds_other": "{{count}} सेकंड"
   },
   "topNav": {
-    "home": "Home",
-    "tools": "Tools",
-    "about": "About",
-    "howItWorks": "How it works",
-    "tutorials": "Tutorials",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "blog": "Blog",
+    "home": "होम",
+    "tools": "टूल्स",
+    "about": "हमारे बारे में",
+    "howItWorks": "यह कैसे काम करता है",
+    "tutorials": "ट्यूटोरियल",
+    "privacyPolicy": "प्राइवेसी पॉलिसी",
+    "termsOfService": "सेवा की शर्तें",
+    "blog": "ब्लॉग",
     "links": {
-      "homeDescription": "Home page where you can convert your files",
-      "toolsDescription": "Free online tools for converting, compressing, transcribing, and cleaning up media files",
-      "aboutDescription": "About page where you can learn more about the project and its creator",
-      "howItWorksDescription": "How it works page where you can learn more about the conversion process",
-      "tutorialsDescription": "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
-      "privacyPolicyDescription": "Privacy policy page where you can learn more about the privacy policy of the project",
-      "termsOfServiceDescription": "Terms of service page where you can learn more about the terms of service of the project",
-      "blogDescription": "Blog page where you can read the latest news and updates about the project"
+      "homeDescription": "होम पेज, जहाँ आप अपनी फ़ाइलें कन्वर्ट कर सकते हैं",
+      "toolsDescription": "मीडिया फ़ाइलों को कन्वर्ट, कंप्रेस, ट्रांसक्राइब और साफ़ करने के मुफ़्त ऑनलाइन टूल",
+      "aboutDescription": "हमारे बारे में पेज, जहाँ आप प्रोजेक्ट और उसके निर्माता के बारे में अधिक जान सकते हैं",
+      "howItWorksDescription": "यह कैसे काम करता है पेज, जहाँ आप कन्वर्ज़न प्रक्रिया के बारे में अधिक जान सकते हैं",
+      "tutorialsDescription": "ऑडियो, वीडियो और इमेज कन्वर्टर और उनके AI टूल्स के लिए चरण-दर-चरण ट्यूटोरियल",
+      "privacyPolicyDescription": "प्राइवेसी पॉलिसी पेज, जहाँ आप प्रोजेक्ट की प्राइवेसी पॉलिसी के बारे में अधिक जान सकते हैं",
+      "termsOfServiceDescription": "सेवा की शर्तें पेज, जहाँ आप प्रोजेक्ट की सेवा की शर्तों के बारे में अधिक जान सकते हैं",
+      "blogDescription": "ब्लॉग पेज, जहाँ आप प्रोजेक्ट की ताज़ा ख़बरें और अपडेट पढ़ सकते हैं"
     },
-    "navigationLabel": "Navigation",
-    "language": "Language",
-    "selectLanguage": "Select language",
-    "voices": "Voices"
+    "navigationLabel": "नेविगेशन",
+    "language": "भाषा",
+    "selectLanguage": "भाषा चुनें",
+    "voices": "आवाज़ें"
   },
   "footer": {
-    "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "contact": "Contact:",
-    "explore": "Explore",
-    "legal": "Legal",
-    "doNotSell": "Do Not Sell or Share My Personal Information",
-    "cookieSettings": "Cookie settings",
-    "copyright": "© {{year}} Media Manipulator, a CreaTV Ltd. product. All rights reserved.",
-    "operatedBy": "Operated by CreaTV Ltd. · Colorado, USA",
+    "tagline": "इमेज, वीडियो और ऑडियो फ़ाइलों को एडिट, कन्वर्ट, कंप्रेस, विश्लेषण, ट्रांसक्राइब, सारांशित और अन्य तरह से प्रोसेस करने के लिए ब्राउज़र-आधारित और सर्वर-सहायता वाले टूल।",
+    "contact": "संपर्क:",
+    "explore": "एक्सप्लोर करें",
+    "legal": "कानूनी",
+    "doNotSell": "मेरी व्यक्तिगत जानकारी न बेचें और न साझा करें",
+    "cookieSettings": "कुकी सेटिंग्स",
+    "copyright": "© {{year}} Media Manipulator, CreaTV Ltd. का एक प्रोडक्ट। सर्वाधिकार सुरक्षित।",
+    "operatedBy": "संचालक: CreaTV Ltd. · कोलोराडो, अमेरिका",
     "cookieDialog": {
-      "title": "Cookie preferences",
-      "description": "Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data."
+      "title": "कुकी प्राथमिकताएँ",
+      "description": "कुकी प्राथमिकताएँ Google द्वारा प्रबंधित की जाती हैं। अगर कुकी बैनर दिखाई न दे तो कृपया पेज रीलोड करें, या यह जानने के लिए कि Media Manipulator डेटा कैसे प्रोसेस करता है, हमारी प्राइवेसी पॉलिसी देखें।"
     },
-    "changelog": "Changelog",
-    "status": "Status",
-    "licenses": "Open-source licences"
+    "changelog": "चेंजलॉग",
+    "status": "स्टेटस",
+    "licenses": "ओपन-सोर्स लाइसेंस"
   },
   "languageSelector": {
-    "label": "Language",
-    "current": "Current language: {{language}}",
-    "select": "Select a language"
+    "label": "भाषा",
+    "current": "वर्तमान भाषा: {{language}}",
+    "select": "एक भाषा चुनें"
   },
   "home": {
     "contentStudioCta": {
       "title": "Darkroom",
-      "badge": "New",
-      "body": "Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style editor, right in your browser.",
-      "cta": "Try Darkroom"
+      "badge": "नया",
+      "body": "मल्टी-ट्रैक टाइमलाइन पर वीडियो और ऑडियो को एडिट, लेयर और मिक्स करें, फिर MP4 एक्सपोर्ट करें — Premiere Pro जैसा एडिटर, सीधे आपके ब्राउज़र में।",
+      "cta": "Darkroom आज़माएँ"
     },
     "hero": {
-      "title": "Free Online Media Converter, Editor, Transcriber & Metadata Tool",
-      "subtitle": "Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.",
-      "popularLabel": "Popular tools",
-      "allTools": "All tools",
-      "removeExif": "Remove EXIF",
-      "compressVideo": "Compress video",
-      "transcribeVideo": "Transcribe video",
-      "transcodeHls": "Transcode → HLS",
-      "transcodeDash": "Transcode → DASH",
+      "title": "मुफ़्त ऑनलाइन मीडिया कन्वर्टर, एडिटर, ट्रांसक्राइबर और मेटाडेटा टूल",
+      "subtitle": "इमेज, वीडियो और ऑडियो फ़ाइलों को सीधे अपने ब्राउज़र से कन्वर्ट, कंप्रेस, एडिट, ट्रांसक्राइब और सारांशित करें, उनका मेटाडेटा देखें और उन्हें साफ़ करें।",
+      "popularLabel": "लोकप्रिय टूल",
+      "allTools": "सभी टूल",
+      "removeExif": "EXIF हटाएँ",
+      "compressVideo": "वीडियो कंप्रेस करें",
+      "transcribeVideo": "वीडियो ट्रांसक्राइब करें",
+      "transcodeHls": "ट्रांसकोड → HLS",
+      "transcodeDash": "ट्रांसकोड → DASH",
       "webpToJpg": "WebP → JPG",
       "wavToMp3": "WAV → MP3",
-      "compressImage": "Compress image",
-      "resizeImage": "Resize image",
-      "extractAudio": "Extract audio"
+      "compressImage": "इमेज कंप्रेस करें",
+      "resizeImage": "इमेज रीसाइज़ करें",
+      "extractAudio": "ऑडियो निकालें"
     },
     "upload": {
-      "title": "Upload File",
-      "dragDrop": "Drag and drop your file here",
-      "orClickSelect": "or click to select from your computer",
-      "chooseFile": "Choose File",
-      "unsupportedFile": "Unsupported file type. Please select an image, video, or audio file."
+      "title": "फ़ाइल अपलोड करें",
+      "dragDrop": "अपनी फ़ाइल यहाँ ड्रैग और ड्रॉप करें",
+      "orClickSelect": "या अपने कंप्यूटर से चुनने के लिए क्लिक करें",
+      "chooseFile": "फ़ाइल चुनें",
+      "unsupportedFile": "असमर्थित फ़ाइल प्रकार। कृपया कोई इमेज, वीडियो या ऑडियो फ़ाइल चुनें।"
     },
     "options": {
-      "transcriptionOptions": "Transcription Options",
-      "transcodeOptions": "Transcode Options",
-      "conversionOptions": "Conversion Options",
-      "documentScanOptions": "Document Scan Options",
-      "convert": "Convert",
-      "transcribe": "Transcribe",
-      "transcode": "Transcode",
-      "scanDocument": "Scan to PDF / Word (AI)"
+      "transcriptionOptions": "ट्रांसक्रिप्शन विकल्प",
+      "transcodeOptions": "ट्रांसकोड विकल्प",
+      "conversionOptions": "कन्वर्ज़न विकल्प",
+      "documentScanOptions": "डॉक्यूमेंट स्कैन विकल्प",
+      "convert": "कन्वर्ट करें",
+      "transcribe": "ट्रांसक्राइब करें",
+      "transcode": "ट्रांसकोड करें",
+      "scanDocument": "PDF / Word में स्कैन करें (AI)"
     },
     "history": {
-      "title": "Conversion History",
-      "subtitle": "Reopen or download any image, video, or audio result from this session.",
-      "newConversion": "New Conversion",
-      "transcriptBadge": "Transcript",
-      "preview": "Preview",
-      "download": "Download",
+      "title": "कन्वर्ज़न हिस्ट्री",
+      "subtitle": "इस सेशन का कोई भी इमेज, वीडियो या ऑडियो रिज़ल्ट फिर से खोलें या डाउनलोड करें।",
+      "newConversion": "नया कन्वर्ज़न",
+      "transcriptBadge": "ट्रांसक्रिप्ट",
+      "preview": "प्रीव्यू",
+      "download": "डाउनलोड करें",
       "itemLabel": "#{{number}} {{filename}}",
-      "startedProcessing": "Started {{time}} and still processing",
-      "completedAt": "Completed {{time}}",
-      "transcriptionFailed": "Transcription failed",
-      "conversionFailed": "Conversion failed"
+      "startedProcessing": "{{time}} शुरू हुआ और अभी भी प्रोसेस हो रहा है",
+      "completedAt": "{{time}} पूरा हुआ",
+      "transcriptionFailed": "ट्रांसक्रिप्शन विफल",
+      "conversionFailed": "कन्वर्ज़न विफल"
     },
     "result": {
-      "transcriptResult": "Transcript Result",
-      "convertedPreview": "Converted File Preview",
-      "transcriptSubtitle": "Transcript and AI review for {{filename}}.",
-      "convertedSubtitle": "Toggle between the original and finalized edited version of {{filename}}.",
-      "original": "Original",
-      "final": "Final"
+      "transcriptResult": "ट्रांसक्रिप्ट रिज़ल्ट",
+      "convertedPreview": "कन्वर्ट की गई फ़ाइल का प्रीव्यू",
+      "transcriptSubtitle": "{{filename}} का ट्रांसक्रिप्ट और AI समीक्षा।",
+      "convertedSubtitle": "{{filename}} के मूल और अंतिम एडिट किए गए वर्ज़न के बीच टॉगल करें।",
+      "original": "मूल",
+      "final": "अंतिम"
     },
     "progress": {
-      "preparingUpload": "Preparing secure upload...",
-      "uploadingToS3": "Uploading file directly to S3...",
-      "finalizing": "Staging uploaded file on the server...",
-      "startingTranscription": "Starting transcription...",
-      "startingConversion": "Starting conversion...",
-      "converting": "Converting...",
-      "percentComplete": "{{percent}}% Complete",
-      "conversionFailed": "Conversion failed. Please try again."
+      "preparingUpload": "सुरक्षित अपलोड तैयार हो रहा है...",
+      "uploadingToS3": "फ़ाइल सीधे S3 पर अपलोड हो रही है...",
+      "finalizing": "अपलोड की गई फ़ाइल सर्वर पर तैयार की जा रही है...",
+      "startingTranscription": "ट्रांसक्रिप्शन शुरू हो रहा है...",
+      "startingConversion": "कन्वर्ज़न शुरू हो रहा है...",
+      "converting": "कन्वर्ट हो रहा है...",
+      "percentComplete": "{{percent}}% पूरा",
+      "conversionFailed": "कन्वर्ज़न विफल रहा। कृपया फिर से कोशिश करें।"
     },
     "download": {
-      "downloadAs": "Download {{filename}}",
-      "fileWillBeDownloaded": "File will be downloaded as: {{filename}}"
+      "downloadAs": "{{filename}} डाउनलोड करें",
+      "fileWillBeDownloaded": "फ़ाइल इस नाम से डाउनलोड होगी: {{filename}}"
     },
-    "fileLoadingConverter": "Loading converter…",
+    "fileLoadingConverter": "कन्वर्टर लोड हो रहा है…",
     "gettingStarted": {
-      "title": "Get started in 4 steps",
+      "title": "4 चरणों में शुरू करें",
       "step1": {
-        "title": "Upload a file",
-        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+        "title": "एक फ़ाइल अपलोड करें",
+        "body": "कोई भी इमेज, वीडियो या ऑडियो फ़ाइल बाईं ओर के अपलोड ज़ोन में ड्रैग करें, या <em>फ़ाइल चुनें</em> पर क्लिक करें। गेस्ट की फ़ाइलें 24 घंटे रखी जाती हैं; फ़्री अकाउंट के साथ आप 24 घंटे से 2 साल तक चुन सकते हैं।"
       },
       "step2": {
-        "title": "Pick your settings here",
-        "body": "The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation."
+        "title": "यहाँ अपनी सेटिंग्स चुनें",
+        "body": "फ़ाइल चुनते ही दायाँ पैनल सही कन्वर्टर — इमेज, वीडियो या ऑडियो — पर स्विच हो जाएगा। कोई फ़ॉर्मैट चुनें, फ़िल्टर एडजस्ट करें, या कोई AI ऑपरेशन चालू करें।"
       },
       "step3": {
-        "title": "Convert",
-        "body": "Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time."
+        "title": "कन्वर्ट करें",
+        "body": "<em>फ़ाइल कन्वर्ट करें</em> पर क्लिक करें। प्रोग्रेस बार देखें — जॉब हमारे GPU सर्वर पर रियल टाइम में चलते हैं।"
       },
       "step4": {
-        "title": "Preview and download",
-        "body": "The result auto-previews when it's ready. Toggle between Original and Final, then click Download."
+        "title": "प्रीव्यू देखें और डाउनलोड करें",
+        "body": "रिज़ल्ट तैयार होते ही अपने आप प्रीव्यू में दिखता है। मूल और अंतिम के बीच टॉगल करें, फिर डाउनलोड करें पर क्लिक करें।"
       }
     },
     "localAi": {
-      "title": "Includes local AI tools",
-      "body": "Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files."
+      "title": "लोकल AI टूल्स शामिल हैं",
+      "body": "फ़ेस ब्लर, बैकग्राउंड हटाना, AI अपस्केल, OCR-आधारित टेक्स्ट/PII रिडैक्शन, वॉइस क्लीनअप, वोकल आइसोलेशन और कराओके वोकल रिमूवल — सब हमारे अपने GPU सर्वर पर चलते हैं। कोई थर्ड-पार्टी AI प्रोवाइडर आपकी फ़ाइलें नहीं देखता।"
     },
     "notSure": {
-      "title": "Not sure where to begin?",
-      "body": "Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.",
-      "cta": "Browse Tutorials"
+      "title": "समझ नहीं आ रहा कहाँ से शुरू करें?",
+      "body": "हमारे चरण-दर-चरण ट्यूटोरियल ऑडियो, वीडियो और इमेज कन्वर्टर की हर सेटिंग — AI टूल्स सहित — समझाते हैं।",
+      "cta": "ट्यूटोरियल देखें"
     },
     "howItWorks": {
-      "title": "How it works",
-      "body": "Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.",
-      "cta": "Read How it Works"
+      "title": "यह कैसे काम करता है",
+      "body": "Media Manipulator सामान्य कन्वर्ज़न के लिए FFmpeg और ImageMagick चलाता है, और वैकल्पिक AI ऑपरेशन के लिए हमारे लोकल GPU पर खास AI मॉडल। सारी प्रोसेसिंग हमारे नियंत्रण वाले सर्वरों पर होती है — विवरण के लिए पूरी जानकारी पढ़ें।",
+      "cta": "यह कैसे काम करता है पढ़ें"
     }
   },
   "notFound": {
-    "preTitle": "Telemetry lost",
-    "title": "This sector of the ship doesn't exist",
-    "body": "The coordinates you punched in don't map to anything on the navigation console. Try one of the routes below — or head back to the main bridge and pick a tool that does exist.",
+    "preTitle": "टेलीमेट्री खो गई",
+    "title": "जहाज़ का यह सेक्टर मौजूद नहीं है",
+    "body": "आपने जो निर्देशांक डाले हैं, वे नेविगेशन कंसोल पर किसी चीज़ से मेल नहीं खाते। नीचे दिए रास्तों में से कोई आज़माएँ — या मुख्य ब्रिज पर लौटकर कोई ऐसा टूल चुनें जो सच में मौजूद है।",
     "links": {
-      "home": "Return to base",
-      "tools": "Tools array",
-      "tutorials": "Tutorials"
+      "home": "बेस पर लौटें",
+      "tools": "टूल्स ऐरे",
+      "tutorials": "ट्यूटोरियल"
     }
   },
   "themeToggle": {
-    "toggle": "Toggle theme"
+    "toggle": "थीम बदलें"
   }
 }

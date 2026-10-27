@@ -1,124 +1,124 @@
 {
   "generic": {
-    "unknown": "An unknown error occurred. Please try again.",
-    "unexpected": "Something went wrong. Please try again.",
-    "networkOffline": "You appear to be offline. Check your connection and try again.",
-    "tryAgainLater": "Please try again in a moment.",
-    "missingFile": "No file selected.",
-    "missingField": "This field is required."
+    "unknown": "कोई अज्ञात त्रुटि हुई। कृपया फिर से कोशिश करें।",
+    "unexpected": "कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।",
+    "networkOffline": "लगता है आप ऑफ़लाइन हैं। अपना कनेक्शन जाँचें और फिर से कोशिश करें।",
+    "tryAgainLater": "कृपया थोड़ी देर बाद फिर से कोशिश करें।",
+    "missingFile": "कोई फ़ाइल नहीं चुनी गई।",
+    "missingField": "यह फ़ील्ड ज़रूरी है।"
   },
   "upload": {
-    "fileTooLarge": "File is too large.",
-    "unsupportedFormat": "Unsupported file format.",
-    "uploadFailed": "Upload failed. Please try again.",
-    "missingFile": "Please choose a file first."
+    "fileTooLarge": "फ़ाइल बहुत बड़ी है।",
+    "unsupportedFormat": "असमर्थित फ़ाइल फ़ॉर्मैट।",
+    "uploadFailed": "अपलोड विफल रहा। कृपया फिर से कोशिश करें।",
+    "missingFile": "कृपया पहले कोई फ़ाइल चुनें।"
   },
   "conversion": {
-    "failed": "Conversion failed.",
-    "failedTryAgain": "Conversion failed. Please try again.",
-    "previewFailed": "Failed to load converted image preview",
-    "downloadFailed": "Download failed. Please try again."
+    "failed": "कन्वर्ज़न विफल रहा।",
+    "failedTryAgain": "कन्वर्ज़न विफल रहा। कृपया फिर से कोशिश करें।",
+    "previewFailed": "कन्वर्ट की गई इमेज का प्रीव्यू लोड नहीं हो सका",
+    "downloadFailed": "डाउनलोड विफल रहा। कृपया फिर से कोशिश करें।"
   },
   "transcribe": {
-    "failed": "Transcription failed.",
-    "failedTryAgain": "Transcription failed. Please try again."
+    "failed": "ट्रांसक्रिप्शन विफल रहा।",
+    "failedTryAgain": "ट्रांसक्रिप्शन विफल रहा। कृपया फिर से कोशिश करें।"
   },
   "transcode": {
-    "failed": "Transcode failed.",
-    "failedTryAgain": "Transcode failed. Please try again."
+    "failed": "ट्रांसकोड विफल रहा।",
+    "failedTryAgain": "ट्रांसकोड विफल रहा। कृपया फिर से कोशिश करें।"
   },
   "validation": {
-    "required": "This field is required.",
-    "invalidNumber": "Enter a valid number.",
-    "outOfRange": "Value must be between {{min}} and {{max}}.",
-    "tooShort": "Must be at least {{count}} characters.",
-    "tooLong": "Must be at most {{count}} characters.",
-    "invalidEmail": "Enter a valid email address.",
-    "invalidUrl": "Enter a valid URL."
+    "required": "यह फ़ील्ड ज़रूरी है।",
+    "invalidNumber": "एक मान्य संख्या डालें।",
+    "outOfRange": "मान {{min}} और {{max}} के बीच होना चाहिए।",
+    "tooShort": "कम से कम {{count}} अक्षर होने चाहिए।",
+    "tooLong": "अधिकतम {{count}} अक्षर हो सकते हैं।",
+    "invalidEmail": "एक मान्य ईमेल पता डालें।",
+    "invalidUrl": "एक मान्य URL डालें।"
   },
   "auth": {
-    "signInFailed": "Sign-in failed. Please try again.",
-    "signUpFailed": "Sign-up failed. Please try again.",
-    "passwordTooShort": "Password must be at least 8 characters.",
-    "passwordsDoNotMatch": "Passwords do not match.",
-    "invalidCredentials": "Email or password is incorrect.",
-    "emailRequired": "Email is required.",
-    "passwordRequired": "Password is required.",
-    "tryAgain": "Please try again.",
-    "userNotFound": "No account found with this email.",
-    "wrongPassword": "Incorrect password.",
-    "emailAlreadyInUse": "An account with this email already exists.",
-    "weakPassword": "Password should be at least 6 characters."
+    "signInFailed": "साइन-इन विफल रहा। कृपया फिर से कोशिश करें।",
+    "signUpFailed": "साइन-अप विफल रहा। कृपया फिर से कोशिश करें।",
+    "passwordTooShort": "पासवर्ड कम से कम 8 अक्षरों का होना चाहिए।",
+    "passwordsDoNotMatch": "पासवर्ड मेल नहीं खाते।",
+    "invalidCredentials": "ईमेल या पासवर्ड गलत है।",
+    "emailRequired": "ईमेल ज़रूरी है।",
+    "passwordRequired": "पासवर्ड ज़रूरी है।",
+    "tryAgain": "कृपया फिर से कोशिश करें।",
+    "userNotFound": "इस ईमेल से कोई अकाउंट नहीं मिला।",
+    "wrongPassword": "गलत पासवर्ड।",
+    "emailAlreadyInUse": "इस ईमेल से पहले से एक अकाउंट मौजूद है।",
+    "weakPassword": "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए।"
   },
   "ad": {
-    "loadFailed": "Advertisement failed to load."
+    "loadFailed": "विज्ञापन लोड नहीं हो सका।"
   },
   "forms": {
-    "fixErrors": "Please fix the following errors:",
-    "invalidValue": "Invalid value",
-    "fieldRequired": "This field is required.",
-    "invalidNumber": "Enter a valid number.",
-    "outOfRange": "Value must be between {{min}} and {{max}}.",
-    "faceDetectFailed": "Face detection failed. Please try again.",
-    "removeObjectFailed": "Object removal failed. Please try again.",
+    "fixErrors": "कृपया ये त्रुटियाँ ठीक करें:",
+    "invalidValue": "अमान्य मान",
+    "fieldRequired": "यह फ़ील्ड ज़रूरी है।",
+    "invalidNumber": "एक मान्य संख्या डालें।",
+    "outOfRange": "मान {{min}} और {{max}} के बीच होना चाहिए।",
+    "faceDetectFailed": "चेहरे की पहचान विफल रही। कृपया फिर से कोशिश करें।",
+    "removeObjectFailed": "ऑब्जेक्ट हटाना विफल रहा। कृपया फिर से कोशिश करें।",
     "imageForm": {
-      "noFile": "Choose an image first.",
-      "exifLoadFailed": "Could not read EXIF metadata for this file."
+      "noFile": "पहले कोई इमेज चुनें।",
+      "exifLoadFailed": "इस फ़ाइल का EXIF मेटाडेटा पढ़ा नहीं जा सका।"
     },
     "videoForm": {
-      "noFile": "Choose a video first."
+      "noFile": "पहले कोई वीडियो चुनें।"
     },
     "audioForm": {
-      "noFile": "Choose an audio file first."
+      "noFile": "पहले कोई ऑडियो फ़ाइल चुनें।"
     },
     "transcribe": {
-      "noFile": "Choose a media file first.",
-      "invalidLanguage": "Enter a valid BCP-47 language code."
+      "noFile": "पहले कोई मीडिया फ़ाइल चुनें।",
+      "invalidLanguage": "एक मान्य BCP-47 भाषा कोड डालें।"
     },
     "transcode": {
-      "probeFailed": "Failed to probe the source file. Try a different file."
+      "probeFailed": "सोर्स फ़ाइल की जाँच नहीं हो सकी। कोई दूसरी फ़ाइल आज़माएँ।"
     }
   },
   "panels": {
     "captionTranslator": {
-      "failed": "Caption translation failed.",
-      "missingFile": "Upload a caption file first."
+      "failed": "कैप्शन अनुवाद विफल रहा।",
+      "missingFile": "पहले कोई कैप्शन फ़ाइल अपलोड करें।"
     },
     "stitchAudioToVideo": {
-      "failed": "Audio/video stitch failed.",
-      "missingTracks": "Add at least one audio track."
+      "failed": "ऑडियो/वीडियो जोड़ना विफल रहा।",
+      "missingTracks": "कम से कम एक ऑडियो ट्रैक जोड़ें।"
     },
     "extract": {
-      "failed": "Extraction failed.",
-      "noStreams": "No matching streams found in this file."
+      "failed": "एक्सट्रैक्शन विफल रहा।",
+      "noStreams": "इस फ़ाइल में कोई मेल खाती स्ट्रीम नहीं मिली।"
     }
   },
   "errorBoundary": {
-    "title": "Something went wrong",
-    "body": "An unexpected error interrupted this page. Your files were not lost — you can try again, and if the problem continues, reload the page.",
-    "tryAgain": "Try again",
-    "goHome": "Go to homepage"
+    "title": "कुछ गड़बड़ हो गई",
+    "body": "एक अनपेक्षित त्रुटि ने इस पेज को बाधित कर दिया। आपकी फ़ाइलें खोई नहीं हैं — आप फिर से कोशिश कर सकते हैं, और अगर समस्या बनी रहे तो पेज रीलोड करें।",
+    "tryAgain": "फिर से कोशिश करें",
+    "goHome": "होमपेज पर जाएँ"
   },
   "toasts": {
-    "conversionStartFailed": "Failed to start conversion.",
-    "transcriptionStartFailed": "Failed to start transcription.",
-    "transcodeStartFailed": "Failed to start transcode.",
-    "videoAnalysisFailed": "Failed to analyze video.",
-    "translationStartFailed": "Failed to start translation.",
-    "scanStartFailed": "Failed to start scan.",
-    "jobStartFailed": "Failed to start job.",
-    "stitchStartFailed": "Failed to start stitch job.",
-    "restorationStartFailed": "Failed to start restoration.",
-    "identificationFailed": "Failed to identify file.",
-    "jobStatusCheckFailed": "Failed to check job status.",
-    "exportStartFailed": "Failed to start export.",
-    "exportFailed": "Export failed.",
-    "saveProjectFailed": "Failed to save project.",
-    "createProjectFailed": "Failed to create project.",
-    "uploadFailed": "Upload failed.",
-    "audioProcessingFailed": "Audio processing failed.",
-    "unexpectedFallback": "An unexpected error occurred.",
-    "conversionFailedFallback": "The conversion process encountered an error.",
-    "unableToGetProgress": "Unable to get conversion progress."
+    "conversionStartFailed": "कन्वर्ज़न शुरू नहीं हो सका।",
+    "transcriptionStartFailed": "ट्रांसक्रिप्शन शुरू नहीं हो सका।",
+    "transcodeStartFailed": "ट्रांसकोड शुरू नहीं हो सका।",
+    "videoAnalysisFailed": "वीडियो का विश्लेषण नहीं हो सका।",
+    "translationStartFailed": "अनुवाद शुरू नहीं हो सका।",
+    "scanStartFailed": "स्कैन शुरू नहीं हो सका।",
+    "jobStartFailed": "जॉब शुरू नहीं हो सका।",
+    "stitchStartFailed": "स्टिच जॉब शुरू नहीं हो सका।",
+    "restorationStartFailed": "रिस्टोरेशन शुरू नहीं हो सका।",
+    "identificationFailed": "फ़ाइल की पहचान नहीं हो सकी।",
+    "jobStatusCheckFailed": "जॉब का स्टेटस जाँचा नहीं जा सका।",
+    "exportStartFailed": "एक्सपोर्ट शुरू नहीं हो सका।",
+    "exportFailed": "एक्सपोर्ट विफल रहा।",
+    "saveProjectFailed": "प्रोजेक्ट सेव नहीं हो सका।",
+    "createProjectFailed": "प्रोजेक्ट बनाया नहीं जा सका।",
+    "uploadFailed": "अपलोड विफल रहा।",
+    "audioProcessingFailed": "ऑडियो प्रोसेसिंग विफल रही।",
+    "unexpectedFallback": "एक अनपेक्षित त्रुटि हुई।",
+    "conversionFailedFallback": "कन्वर्ज़न प्रक्रिया में त्रुटि आई।",
+    "unableToGetProgress": "कन्वर्ज़न की प्रोग्रेस नहीं मिल सकी।"
   }
 }

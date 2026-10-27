@@ -1,45 +1,45 @@
 {
   "filePreview": {
-    "previewAlt": "Preview"
+    "previewAlt": "معاينة"
   },
   "pdfForm": {
-    "outputFormatTooltip": "About the output image format",
-    "dpiTooltip": "About render quality (DPI)",
-    "pagesTooltip": "About page selection",
-    "qualityTooltip": "About JPG quality"
+    "outputFormatTooltip": "حول تنسيق الصورة الناتجة",
+    "dpiTooltip": "حول جودة العرض (DPI)",
+    "pagesTooltip": "حول اختيار الصفحات",
+    "qualityTooltip": "حول جودة JPG"
   },
   "ad": {
-    "label": "Advertisement",
-    "close": "Close advertisement"
+    "label": "إعلان",
+    "close": "إغلاق الإعلان"
   },
   "modals": {
-    "close": "Close",
-    "previousStep": "Previous step",
-    "nextStep": "Next step"
+    "close": "إغلاق",
+    "previousStep": "الخطوة السابقة",
+    "nextStep": "الخطوة التالية"
   },
   "imageCropModal": {
-    "topLeftHandle": "Top-left handle",
-    "topRightHandle": "Top-right handle",
-    "bottomLeftHandle": "Bottom-left handle",
-    "bottomRightHandle": "Bottom-right handle"
+    "topLeftHandle": "مقبض الزاوية العلوية اليسرى",
+    "topRightHandle": "مقبض الزاوية العلوية اليمنى",
+    "bottomLeftHandle": "مقبض الزاوية السفلية اليسرى",
+    "bottomRightHandle": "مقبض الزاوية السفلية اليمنى"
   },
   "mediaTrimModal": {
-    "scrubber": "Trim scrubber",
-    "playToggle": "Play / pause preview"
+    "scrubber": "شريط تحديد القص",
+    "playToggle": "تشغيل / إيقاف المعاينة مؤقتًا"
   },
   "overlays": {
-    "canvas": "Selection canvas",
-    "removeRegion": "Remove this region",
-    "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "canvas": "لوحة التحديد",
+    "removeRegion": "إزالة هذه المنطقة",
+    "previousPage": "الصفحة السابقة",
+    "nextPage": "الصفحة التالية"
   },
   "quotaMeter": {
-    "gauge": "{{used}} / {{limit}} daily operations used",
-    "gaugeUnlimited": "No daily operation limit",
-    "openUpgrade": "See how to get a bigger daily allowance",
-    "openAccount": "Open your account"
+    "gauge": "تم استخدام {{used}} من {{limit}} عملية يومية",
+    "gaugeUnlimited": "لا يوجد حد يومي للعمليات",
+    "openUpgrade": "تعرّف على كيفية الحصول على حصة يومية أكبر",
+    "openAccount": "فتح حسابك"
   },
   "accountMenu": {
-    "open": "Account menu"
+    "open": "قائمة الحساب"
   }
 }

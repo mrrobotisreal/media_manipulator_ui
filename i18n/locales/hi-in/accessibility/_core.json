@@ -1,56 +1,56 @@
 {
   "topNav": {
-    "homeLink": "Media Manipulator home",
-    "openMenu": "Open menu",
-    "github": "View on GitHub",
+    "homeLink": "Media Manipulator होम",
+    "openMenu": "मेनू खोलें",
+    "github": "GitHub पर देखें",
     "winapps": "WinApps",
     "creatv": "CreaTV",
-    "toggleTheme": "Toggle theme",
-    "languageMenu": "Change language",
-    "navIcon": "Media Manipulator Icon",
-    "winappsLogo": "WinApps Logo",
-    "creatvLogo": "CreaTV Logo",
+    "toggleTheme": "थीम बदलें",
+    "languageMenu": "भाषा बदलें",
+    "navIcon": "Media Manipulator आइकन",
+    "winappsLogo": "WinApps लोगो",
+    "creatvLogo": "CreaTV लोगो",
     "githubLogo": "GitHub"
   },
   "footer": {
-    "homeLink": "Media Manipulator home",
-    "navIcon": "Media Manipulator Icon"
+    "homeLink": "Media Manipulator होम",
+    "navIcon": "Media Manipulator आइकन"
   },
   "home": {
-    "popularTools": "Popular tools",
-    "closePreview": "Close preview"
+    "popularTools": "लोकप्रिय टूल",
+    "closePreview": "प्रीव्यू बंद करें"
   },
   "notFound": {
-    "recoveryRoutes": "Recovery routes"
+    "recoveryRoutes": "वापसी के रास्ते"
   },
   "loading": {
-    "label": "Loading"
+    "label": "लोड हो रहा है"
   },
   "languageSelector": {
-    "trigger": "Change language",
-    "icon": "Translate icon"
+    "trigger": "भाषा बदलें",
+    "icon": "अनुवाद आइकन"
   },
   "common": {
-    "close": "Close",
-    "open": "Open",
-    "loading": "Loading",
-    "moreOptions": "More options"
+    "close": "बंद करें",
+    "open": "खोलें",
+    "loading": "लोड हो रहा है",
+    "moreOptions": "और विकल्प"
   },
   "transcribeForm": {
-    "formatTooltip": "About transcript output format",
-    "languageTooltip": "About language hint"
+    "formatTooltip": "ट्रांसक्रिप्ट आउटपुट फ़ॉर्मैट के बारे में",
+    "languageTooltip": "भाषा संकेत के बारे में"
   },
   "audioForm": {
-    "aiTooltip": "About AI Audio Tools"
+    "aiTooltip": "AI ऑडियो टूल्स के बारे में"
   },
   "videoForm": {
-    "aiTooltip": "About AI Video Tools"
+    "aiTooltip": "AI वीडियो टूल्स के बारे में"
   },
   "imageForm": {
-    "aiTooltip": "About AI Image Tools",
-    "selectiveFacesTooltip": "About selective face privacy",
-    "removeObjectTooltip": "About object removal",
-    "metadataTooltip": "About metadata handling",
-    "vectorizeThresholdTooltip": "About the vectorization threshold"
+    "aiTooltip": "AI इमेज टूल्स के बारे में",
+    "selectiveFacesTooltip": "चुनिंदा चेहरों की प्राइवेसी के बारे में",
+    "removeObjectTooltip": "ऑब्जेक्ट हटाने के बारे में",
+    "metadataTooltip": "मेटाडेटा हैंडलिंग के बारे में",
+    "vectorizeThresholdTooltip": "वेक्टराइज़ेशन थ्रेशोल्ड के बारे में"
   }
 }
