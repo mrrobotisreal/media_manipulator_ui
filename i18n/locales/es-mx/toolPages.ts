@@ -1,5 +1,5 @@
 /**
- * Spanish partial overrides for the data-driven tool pages
+ * Latin-American Spanish (es-MX) partial overrides, adapted from es-ES (MM72), for the data-driven tool pages
  * (see `i18n/toolPageContent.ts` — anything omitted falls back to English).
  *
  * Scope (2026-08-09): `name` + `tagline` for the review-allowlisted slugs —
@@ -9,20 +9,20 @@
  * per-slug entries incrementally.
  *
  * Register: informal "tú"; brand names, formats and codecs stay untranslated;
- * "Darkroom" stays "Darkroom"; es-ES spelling ("vídeo").
+ * "Darkroom" stays "Darkroom"; es-MX spelling ("video", "computadora", "celular").
  */
 
-const esToolPages = {
+const esMxToolPages = {
   pages: {
     // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
       tagline: 'Dibuja o importa un SVG, anímalo en una línea de tiempo de fotogramas clave y exporta SVG animado, Lottie, React, JavaScript, Flutter o GIF, todo en tu navegador.',
-      intro: 'Motion es un editor de SVG con línea de tiempo de animación, integrado en Media Manipulator. Abre un archivo SVG (o una animación Lottie) y cada forma se convierte en una capa que puedes seleccionar, mover, cambiar de color y animar, o empieza con un lienzo en blanco y dibuja con las herramientas de rectángulo, elipse, línea, pluma y texto. Cada propiedad animada tiene su propia pista de fotogramas clave, con preajustes de suavizado, un editor de curvas para suavizados personalizados y fotogramas de retención para saltos instantáneos. Los animadores de un clic añaden dibujo progresivo del trazo, movimiento a lo largo de un trazado, morfosis de formas, cambios de color en degradados, animación de máscaras y desenfoque. Cuando se mueva como quieres, expórtalo como SVG animado, archivo Lottie, componente React, módulo JavaScript o TypeScript, widget de Flutter o GIF. La edición y todas las exportaciones se ejecutan en tu navegador, así que tu ilustración nunca se sube para exportarla.',
+      intro: 'Motion es un editor de SVG con línea de tiempo de animación, integrado en Media Manipulator. Abre un archivo SVG (o una animación Lottie) y cada forma se convierte en una capa que puedes seleccionar, mover, cambiar de color y animar, o empieza con un lienzo en blanco y dibuja con las herramientas de rectángulo, elipse, línea, pluma y texto. Cada propiedad animada tiene su propia pista de fotogramas clave, con preajustes de suavizado, un editor de curvas para suavizados personalizados y fotogramas de retención para saltos instantáneos. Los animadores de un clic agregan dibujo progresivo del trazo, movimiento a lo largo de un trazado, morfosis de formas, cambios de color en degradados, animación de máscaras y desenfoque. Cuando se mueva como quieres, expórtalo como SVG animado, archivo Lottie, componente React, módulo JavaScript o TypeScript, widget de Flutter o GIF. La edición y todas las exportaciones se ejecutan en tu navegador, así que tu ilustración nunca se sube para exportarla.',
       whatItDoes: [
         'Importa archivos SVG a un árbol de capas editable (grupos, trazados, formas, texto, imágenes, degradados, máscaras y trazados de recorte) e importa animaciones Lottie JSON con sus fotogramas clave.',
         'Dibuja ilustraciones nuevas con las herramientas de rectángulo, elipse, línea, pluma (Bézier) y texto, y edita los nodos de los trazados directamente en el lienzo.',
         'Anima posición, escala, rotación, inclinación, opacidad, relleno, trazo y grosor del trazo en una línea de tiempo de fotogramas clave con suavizado lineal, de entrada suave, de salida suave, de entrada y salida suaves, cubic-bezier personalizado y de retención.',
-        'Añade animación avanzada con un clic: dibujo progresivo del trazo, movimiento a lo largo de un trazado con giro automático opcional, morfosis de formas, colores de las paradas de degradado, animación de máscaras y trazados de recorte, y desenfoque.',
+        'Agrega animación avanzada con un clic: dibujo progresivo del trazo, movimiento a lo largo de un trazado con giro automático opcional, morfosis de formas, colores de las paradas de degradado, animación de máscaras y trazados de recorte, y desenfoque.',
         'Exporta un SVG estático (siempre gratis), un SVG animado que se reproduce sin ninguna biblioteca, Lottie JSON, un componente React, un módulo JavaScript o TypeScript, un widget de Flutter y un GIF animado.',
       ],
       flowSteps: [
@@ -36,7 +36,7 @@ const esToolPages = {
         },
         {
           title: 'Da forma al ritmo',
-          description: 'Elige un preajuste de suavizado, dibuja una curva personalizada, añade retenciones o aplica un animador de un clic.',
+          description: 'Elige un preajuste de suavizado, dibuja una curva personalizada, agrega retenciones o aplica un animador de un clic.',
         },
         {
           title: 'Exporta',
@@ -51,21 +51,21 @@ const esToolPages = {
         'Los SVG importados se limpian al entrar: se eliminan los scripts, los controladores de eventos, las referencias externas y otro contenido no seguro, y el editor reconstruye el marcado no compatible a partir de una lista de permitidos en lugar de insertarlo como HTML.',
       ],
       whyItMatters: [
-        'Los SVG animados se ven nítidos en cualquier tamaño y suelen pesar mucho menos que un vídeo o un GIF de la misma animación, lo que los hace ideales para logotipos, iconos, indicadores de carga e ilustraciones en la web.',
-        'Los desarrolladores necesitan la animación como código, no solo como vídeo: un componente React, un módulo JavaScript, un archivo Lottie o un widget de Flutter se integra directamente en una aplicación.',
-        'Hacer la exportación en el navegador significa que tu ilustración se queda en tu dispositivo; solo se nos envía el recuento de cada exportación, para aplicar el cupo diario.',
+        'Los SVG animados se ven nítidos en cualquier tamaño y suelen pesar mucho menos que un video o un GIF de la misma animación, lo que los hace ideales para logotipos, íconos, indicadores de carga e ilustraciones en la web.',
+        'Los desarrolladores necesitan la animación como código, no solo como video: un componente React, un módulo JavaScript, un archivo Lottie o un widget de Flutter se integra directamente en una aplicación.',
+        'Hacer la exportación en el navegador significa que tu ilustración se queda en tu dispositivo; solo se nos envía el recuento de cada exportación, para aplicar el límite diario.',
       ],
       useCases: [
         {
-          title: 'Animación de logotipos e iconos',
-          description: 'Dibuja un logotipo con una animación de trazo, o haz que un icono rebote, gire o cambie de color al pasar el cursor.',
+          title: 'Animación de logotipos e íconos',
+          description: 'Dibuja un logotipo con una animación de trazo, o haz que un ícono rebote, gire o cambie de color al pasar el cursor.',
         },
         {
           title: 'Indicadores de carga y microanimaciones de interfaz',
           description: 'Crea spinners y animaciones de progreso y expórtalos como SVG solo con CSS o como componente React.',
         },
         {
-          title: 'Lottie para aplicaciones móviles',
+          title: 'Lottie para aplicaciones de celular',
           description: 'Exporta Lottie JSON para los reproductores Lottie de iOS, Android, web y Flutter, o edita un archivo Lottie existente.',
         },
         {
@@ -78,11 +78,11 @@ const esToolPages = {
         'Exportaciones para diseñadores y desarrolladores por igual: SVG animado, Lottie, React, JavaScript o TypeScript, Flutter y GIF desde un mismo proyecto.',
         'Las exportaciones se hacen en tu navegador, y el único código de terceros que usa una exportación tiene licencia permisiva (anime.js bajo MIT; flutter_svg y webview_flutter para Flutter), con su aviso de licencia conservado en el archivo.',
       ],
-      privacyNote: 'La edición y la exportación se hacen en tu navegador; tu ilustración no se sube para exportarla. Sin cuenta, los proyectos se conservan solo en este navegador. Si inicias sesión y guardas un proyecto en tu cuenta, se almacena en nuestros servidores como un proyecto de Darkroom, sigue el periodo de conservación que elijas y puede eliminarse desde tu página Cuenta. De cada exportación registramos únicamente su formato, tamaño, duración y hora, para aplicar el cupo diario.',
+      privacyNote: 'La edición y la exportación se hacen en tu navegador; tu ilustración no se sube para exportarla. Sin cuenta, los proyectos se conservan solo en este navegador. Si inicias sesión y guardas un proyecto en tu cuenta, se almacena en nuestros servidores como un proyecto de Darkroom, sigue el periodo de conservación que elijas y puede eliminarse desde tu página Cuenta. De cada exportación registramos únicamente su formato, tamaño, duración y hora, para aplicar el límite diario.',
       faq: [
         {
           question: '¿Motion es gratis?',
-          answer: 'Sí. Abrir Motion, dibujar, animar, guardar y exportar un SVG estático es gratis e ilimitado, sin cuenta. Las exportaciones animadas cuentan para un cupo diario que depende de tu plan; la tabla de planes de esta página muestra el cupo y los formatos de cada plan.',
+          answer: 'Sí. Abrir Motion, dibujar, animar, guardar y exportar un SVG estático es gratis e ilimitado, sin cuenta. Las exportaciones animadas cuentan para un límite diario que depende de tu plan; la tabla de planes de esta página muestra el límite y los formatos de cada plan.',
         },
         {
           question: '¿Qué formatos puedo exportar?',
@@ -101,8 +101,8 @@ const esToolPages = {
           answer: 'Sí, en ambos sentidos. Puedes importar un archivo Lottie JSON para editarlo y exportar tu animación como Lottie JSON para lottie-web y los reproductores Lottie de iOS, Android y Flutter. Las funciones que un lado no puede representar se enumeran en el diálogo en lugar de descartarse en silencio.',
         },
         {
-          question: '¿Qué navegadores admiten la exportación de vídeo?',
-          answer: 'La exportación a GIF funciona en todos los navegadores modernos. La exportación a MP4 y WebM depende de WebCodecs, el codificador de vídeo integrado del navegador, disponible en Chrome y Edge y en versiones recientes de Safari y Firefox según el códec; el diálogo de exportación comprueba tu navegador y avisa cuando no puede codificar. La tabla de planes de esta página muestra qué plan incluye cada formato de vídeo.',
+          question: '¿Qué navegadores admiten la exportación de video?',
+          answer: 'La exportación a GIF funciona en todos los navegadores modernos. La exportación a MP4 y WebM depende de WebCodecs, el codificador de video integrado del navegador, disponible en Chrome y Edge y en versiones recientes de Safari y Firefox según el códec; el diálogo de exportación verifica tu navegador y avisa cuando no puede codificar. La tabla de planes de esta página muestra qué plan incluye cada formato de video.',
         },
         {
           question: '¿Qué licencia se aplica al código exportado?',
@@ -110,7 +110,7 @@ const esToolPages = {
         },
         {
           question: '¿Dónde se almacenan mis proyectos?',
-          answer: 'Sin cuenta, los proyectos se conservan solo en este navegador, así que borrar los datos del navegador los elimina. Si has iniciado sesión, puedes guardar un proyecto en tu cuenta; entonces se sincroniza entre dispositivos, se guarda automáticamente mientras trabajas, sigue el periodo de conservación que elegiste y puede eliminarse desde tu página Cuenta.',
+          answer: 'Sin cuenta, los proyectos se conservan solo en este navegador, así que borrar los datos del navegador los elimina. Si iniciaste sesión, puedes guardar un proyecto en tu cuenta; entonces se sincroniza entre dispositivos, se guarda automáticamente mientras trabajas, sigue el periodo de conservación que elegiste y puede eliminarse desde tu página Cuenta.',
         },
       ],
       supportedFormats: {
@@ -138,7 +138,7 @@ const esToolPages = {
       },
       embed: {
         title: 'Abrir Motion',
-        description: 'Empieza un dibujo nuevo o reabre uno reciente. El editor se abre a pantalla completa; tu trabajo se conserva en este navegador y, si has iniciado sesión, puedes guardarlo en tu cuenta.',
+        description: 'Empieza un dibujo nuevo o reabre uno reciente. El editor se abre a pantalla completa; tu trabajo se conserva en este navegador y, si iniciaste sesión, puedes guardarlo en tu cuenta.',
       },
       related: [
         {
@@ -149,12 +149,12 @@ const esToolPages = {
         {
           label: 'Darkroom',
           to: '/tools/content-studio',
-          description: 'Edita vídeo en una línea de tiempo multipista y exporta MP4.',
+          description: 'Edita video en una línea de tiempo multipista y exporta MP4.',
         },
         {
-          label: 'Convertir vídeo en GIF animado',
+          label: 'Convertir video en GIF animado',
           to: '/tools/convert-video-to-animated-gif',
-          description: 'Convierte un clip de vídeo en un GIF cuando tu animación empezó como metraje.',
+          description: 'Convierte un clip de video en un GIF cuando tu animación empezó como metraje.',
         },
         {
           label: 'Licencias de código abierto',
@@ -170,7 +170,7 @@ const esToolPages = {
     'content-studio': {
       name: 'Darkroom',
       tagline:
-        'Edita, superpón y mezcla vídeo y audio en una línea de tiempo multipista, y exporta en MP4. Un editor al estilo de Premiere Pro, directamente en tu navegador.',
+        'Edita, superpón y mezcla video y audio en una línea de tiempo multipista, y exporta en MP4. Un editor al estilo de Premiere Pro, directamente en tu navegador.',
     },
     'remove-exif-metadata': {
       name: 'Eliminar metadatos EXIF de imágenes',
@@ -180,7 +180,7 @@ const esToolPages = {
     'compress-image': {
       name: 'Comprimir imagen',
       tagline:
-        'Reduce el tamaño de tus archivos JPG, PNG y WebP para webs más rápidas, subidas más ligeras y un compartir más fácil.',
+        'Reduce el tamaño de tus archivos JPG, PNG y WebP para sitios más rápidos, subidas más ligeras y un compartir más fácil.',
     },
     'image-resizer': {
       name: 'Redimensionar imagen',
@@ -203,39 +203,39 @@ const esToolPages = {
         'Convierte cada página de un PDF en imágenes JPG de alta calidad para compartir, editar o publicar.',
     },
     'compress-video': {
-      name: 'Comprimir vídeo',
+      name: 'Comprimir video',
       tagline:
         'Reduce archivos MP4, WebM, MOV, MKV y AVI para la web, el correo, las redes sociales y la nube.',
     },
     'video-trimmer': {
-      name: 'Recortar vídeo',
+      name: 'Recortar video',
       tagline:
         'Corta el fragmento que quieras con un recorte rápido que conserva la calidad — sin recodificar cuando es posible.',
     },
     'extract-audio-from-video': {
-      name: 'Extraer audio de un vídeo',
+      name: 'Extraer audio de un video',
       tagline:
-        'Guarda la pista de audio de cualquier vídeo como un archivo MP3, WAV, M4A, AAC, FLAC u OGG limpio.',
+        'Guarda la pista de audio de cualquier video como un archivo MP3, WAV, M4A, AAC, FLAC u OGG limpio.',
     },
     'convert-video-to-animated-gif': {
-      name: 'Convertir vídeo en GIF animado',
+      name: 'Convertir video en GIF animado',
       tagline:
         'Convierte clips cortos MP4, WebM, MOV o MKV en GIF animados listos para compartir en cuestión de segundos.',
     },
     'transcribe-video': {
-      name: 'Transcribir vídeo',
+      name: 'Transcribir video',
       tagline:
-        'Extrae las palabras habladas de tus vídeos como texto con búsqueda, subtítulos o JSON estructurado.',
+        'Extrae las palabras habladas de tus videos como texto con búsqueda, subtítulos o JSON estructurado.',
     },
     'transcode-to-hls': {
-      name: 'Transcodificar vídeo a HLS',
+      name: 'Transcodificar video a HLS',
       tagline:
-        'Empaqueta cualquier vídeo como un paquete HLS VOD de Apple: master.m3u8 y segmentos .ts por calidad, listo para la web.',
+        'Empaqueta cualquier video como un paquete HLS VOD de Apple: master.m3u8 y segmentos .ts por calidad, listo para la web.',
     },
     'ai-video-restoration': {
-      name: 'Restauración de vídeo con IA',
+      name: 'Restauración de video con IA',
       tagline:
-        'Escala y restaura un fragmento corto de vídeo con hasta seis modelos de IA — Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT y VRT — y compara todos los resultados lado a lado.',
+        'Escala y restaura un fragmento corto de video con hasta seis modelos de IA — Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT y VRT — y compara todos los resultados lado a lado.',
     },
     'ai-image-restoration': {
       name: 'Restauración y escalado de imágenes con IA',
@@ -255,7 +255,7 @@ const esToolPages = {
       metaDescription: 'Amplía una foto de baja resolución 2x o 4x con IA que recupera bordes y texturas. Se ejecuta en nuestra propia GPU y entrega PNG.',
       ogTitle: 'Escalador de imágenes con IA: amplía fotos 2x o 4x',
       ogDescription: 'Amplía fotos pequeñas o borrosas con un modelo de IA Real-ESRGAN que reconstruye el detalle.',
-      intro: 'Redimensionar de forma normal solo interpola entre los píxeles que ya existen, por eso una copia más grande de una foto pequeña se ve borrosa. Esta página usa un modelo de superresolución con IA (Real-ESRGAN) que ha aprendido cómo suelen verse bordes, piel, tela y hojas, y dibuja detalle plausible. Eliges 2x o 4x y recibes un PNG sin pérdida.',
+      intro: 'Redimensionar de forma normal solo interpola entre los píxeles que ya existen, por eso una copia más grande de una foto pequeña se ve borrosa. Esta página usa un modelo de superresolución con IA (Real-ESRGAN) que aprendió cómo suelen verse bordes, piel, tela y hojas, y dibuja detalle plausible. Eliges 2x o 4x y recibes un PNG sin pérdida.',
       flowSteps: [
         { title: 'Sube una foto pequeña', description: 'Un JPG, PNG o WebP que quieras hacer más grande.' },
         { title: 'Elige 2x o 4x', description: 'La operación ya es Escalado con IA; solo elige escala y modelo.' },
@@ -266,7 +266,7 @@ const esToolPages = {
         { question: '¿En qué se diferencia el escalado con IA de redimensionar?', answer: 'Redimensionar interpola píxeles existentes y se ve borroso. El modelo de IA predice bordes y texturas plausibles. Sigue siendo una estimación, no datos originales recuperados.' },
         { question: '¿Elijo 2x o 4x?', answer: '2x si el original ya es aceptable. 4x para imágenes muy pequeñas, con un archivo mucho mayor y algo más de detalle inventado.' },
         { question: '¿Enfocará una foto borrosa?', answer: 'Ayuda con la suavidad por baja resolución. No arregla el desenfoque de movimiento fuerte ni el enfoque fallido. Compara siempre con el original.' },
-        { question: '¿Hay límites en el uso gratuito?', answer: 'Las operaciones de IA pueden limitarse por tamaño o cuota diaria según tu plan. El formulario muestra los límites que te aplican al subir el archivo.' },
+        { question: '¿Hay límites en el uso gratuito?', answer: 'Las operaciones de IA pueden limitarse por tamaño o límite diario según tu plan. El formulario muestra los límites que te aplican al subir el archivo.' },
       ],
       embed: { title: 'Escalar una imagen con IA', description: 'Sube una foto. Escalado con IA ya está seleccionado y bloqueado, con salida PNG. Elige 2x o 4x y un modelo, y convierte.' },
     },
@@ -324,16 +324,16 @@ const esToolPages = {
       metaDescription: 'Borra objetos no deseados de una foto. Dibuja un rectángulo y el inpainting con IA rellena el espacio para que coincida con el fondo. En nuestra propia GPU.',
       ogTitle: 'Quitar un objeto de una foto en línea',
       ogDescription: 'Dibuja un recuadro sobre un objeto no deseado y el inpainting con IA rellena el espacio con un fondo coherente.',
-      intro: 'Un cable suelto, alguien que se coló en la foto, un cubo de basura al borde de un paisaje: pequeñas distracciones pueden estropear una buena toma. Sube la foto, arrastra un rectángulo sobre lo que sobra y el modelo de inpainting LaMa vuelve a pintar esa zona usando la escena circundante. Funciona mejor con fondos simples y repetitivos como cielo, césped, paredes y agua.',
+      intro: 'Un cable suelto, alguien que se coló en la foto, un bote de basura al borde de un paisaje: pequeñas distracciones pueden estropear una buena toma. Sube la foto, arrastra un rectángulo sobre lo que sobra y el modelo de inpainting LaMa vuelve a pintar esa zona usando la escena circundante. Funciona mejor con fondos simples y repetitivos como cielo, pasto, paredes y agua.',
       flowSteps: [
         { title: 'Sube una foto', description: 'Elige la imagen con el objeto no deseado.' },
-        { title: 'Dibuja rectángulos', description: 'Arrastra un recuadro sobre el objeto. Añade más para más objetos.' },
+        { title: 'Dibuja rectángulos', description: 'Arrastra un recuadro sobre el objeto. Agrega más para más objetos.' },
         { title: 'La IA rellena el hueco', description: 'El modelo pinta píxeles nuevos que se integran con lo que rodea el recuadro.' },
-        { title: 'Descarga e inspecciona', description: 'Amplía la zona reparada para comprobar las uniones.' },
+        { title: 'Descarga e inspecciona', description: 'Amplía la zona reparada para verificar las uniones.' },
       ],
       faq: [
         { question: '¿Cómo funciona la eliminación de objetos?', answer: 'Marcas una zona con un rectángulo. Un modelo de inpainting genera píxeles nuevos que coinciden con la textura, los colores y las líneas cercanos.' },
-        { question: '¿Qué objetos se quitan mejor?', answer: 'Objetos pequeños o medianos sobre fondos simples o repetitivos como cielo, césped, arena, agua, paredes y suelos. Las escenas complejas y los objetos grandes cuestan más.' },
+        { question: '¿Qué objetos se quitan mejor?', answer: 'Objetos pequeños o medianos sobre fondos simples o repetitivos como cielo, pasto, arena, agua, paredes y pisos. Las escenas complejas y los objetos grandes cuestan más.' },
         { question: '¿Por qué la zona reparada se ve borrosa?', answer: 'El modelo tiene que inventar detalle. Prueba un recuadro más ajustado, quita el objeto en varios pasos pequeños o elige una foto con un fondo más simple.' },
         { question: '¿Tengo que dibujar un contorno exacto?', answer: 'No. Bastan los rectángulos, y dibujarlos un poco más grandes que el objeto suele dar un resultado más limpio.' },
       ],
@@ -342,21 +342,21 @@ const esToolPages = {
     'clean-voice-audio': {
       name: 'Limpiar la voz en un audio',
       h1: 'Limpia grabaciones de voz con IA',
-      tagline: 'Haz el habla más clara reduciendo siseo, ruido de sala y zumbidos en pódcasts, entrevistas y notas de voz.',
+      tagline: 'Haz el habla más clara reduciendo siseo, ruido de sala y zumbidos en podcasts, entrevistas y notas de voz.',
       metaTitle: 'Limpia grabaciones de voz con IA | Media Manipulator',
       metaDescription: 'Limpia una grabación de voz con IA. Reduce siseo, zumbido y ruido de sala para entender mejor el habla. Se ejecuta en nuestra propia GPU.',
       ogTitle: 'Limpia grabaciones de voz con IA',
-      ogDescription: 'Reduce siseo, zumbido y ruido de sala para un habla más clara en pódcasts, entrevistas y notas de voz.',
-      intro: 'Una nota de voz en una cocina con eco, un invitado de pódcast con el micrófono del portátil, una clase grabada desde el fondo: las palabras están ahí, pero enterradas bajo siseo y sonido de sala. Limpiar voz procesa la grabación con una mejora de habla por IA que acerca al hablante y atenúa lo que no es voz. Está pensada para hablar, no para música.',
+      ogDescription: 'Reduce siseo, zumbido y ruido de sala para un habla más clara en podcasts, entrevistas y notas de voz.',
+      intro: 'Una nota de voz en una cocina con eco, un invitado de podcast con el micrófono de la laptop, una clase grabada desde el fondo: las palabras están ahí, pero enterradas bajo siseo y sonido de sala. Limpiar voz procesa la grabación con una mejora de habla por IA que acerca al hablante y atenúa lo que no es voz. Está pensada para hablar, no para música.',
       flowSteps: [
-        { title: 'Sube una grabación', description: 'Notas de voz, entrevistas, tomas de pódcast o clases grabadas.' },
+        { title: 'Sube una grabación', description: 'Notas de voz, entrevistas, tomas de podcast o clases grabadas.' },
         { title: 'Limpiar voz ya está elegido', description: 'Sin menú: la página ya está configurada con la operación de limpieza de voz.' },
         { title: 'La IA mejora el habla', description: 'El modelo separa la voz de los sonidos molestos y la reequilibra.' },
-        { title: 'Descarga el audio limpio', description: 'Escúchalo con auriculares antes de usarlo.' },
+        { title: 'Descarga el audio limpio', description: 'Escúchalo con audífonos antes de usarlo.' },
       ],
       faq: [
         { question: '¿Elimina todo el ruido de fondo?', answer: 'Reduce mucho los sonidos constantes como siseo, zumbido y ruido de sala. Los ruidos repentinos, otras voces y la música son más difíciles; el resultado depende de la grabación.' },
-        { question: '¿Puede hacer que un mal micrófono suene profesional?', answer: 'Puede aclarar el habla, pero no añade calidad que nunca se grabó. La distorsión o la saturación fuerte no se arreglan del todo.' },
+        { question: '¿Puede hacer que un mal micrófono suene profesional?', answer: 'Puede aclarar el habla, pero no agrega calidad que nunca se grabó. La distorsión o la saturación fuerte no se arreglan del todo.' },
         { question: '¿En qué se diferencia de quitar el ruido de fondo?', answer: 'Limpiar voz mejora el habla en sí; la otra herramienta se centra en bajar el ruido a su alrededor. Si una no va bien con tu grabación, prueba la otra.' },
         { question: '¿Funciona con música?', answer: 'Está afinada para voz y puede dañar la música. Para trabajar con canto, usa las herramientas de aislar o quitar voces.' },
       ],
@@ -370,9 +370,9 @@ const esToolPages = {
       metaDescription: 'Quita el ruido de fondo del audio. Un reductor de ruido con IA baja el siseo, el zumbido y el sonido ambiente. Se ejecuta en nuestra propia GPU.',
       ogTitle: 'Quitar el ruido de fondo de un audio en línea',
       ogDescription: 'Un reductor de ruido con IA que baja siseo, zumbido, tráfico y ruido de sala en grabaciones.',
-      intro: 'Aires acondicionados, ventiladores, tráfico y zumbido eléctrico son sonidos constantes que quedan bajo lo que querías grabar. Esta página aplica un modelo de reducción de ruido con IA que baja esa capa de ruido para que el audio principal se oiga mejor. Sirve para entrevistas, locuciones, grabaciones de campo y la pista de audio extraída de un vídeo.',
+      intro: 'Aires acondicionados, ventiladores, tráfico y zumbido eléctrico son sonidos constantes que quedan bajo lo que querías grabar. Esta página aplica un modelo de reducción de ruido con IA que baja esa capa de ruido para que el audio principal se oiga mejor. Sirve para entrevistas, locuciones, grabaciones de campo y la pista de audio extraída de un video.',
       flowSteps: [
-        { title: 'Sube el audio', description: 'Cualquier archivo de audio común, incluido el audio extraído de un vídeo.' },
+        { title: 'Sube el audio', description: 'Cualquier archivo de audio común, incluido el audio extraído de un video.' },
         { title: 'Reducir ruido ya está elegido', description: 'La operación de IA ya es Quitar ruido de fondo.' },
         { title: 'La IA baja el ruido', description: 'El modelo separa el ruido constante del sonido en primer plano.' },
         { title: 'Descarga y compara', description: 'Escucha el resultado junto al original antes de usarlo.' },
@@ -380,7 +380,7 @@ const esToolPages = {
       faq: [
         { question: '¿Qué tipos de ruido trata mejor?', answer: 'Los sonidos constantes: siseo, zumbido, ventiladores, aire acondicionado, ruido de sala y tráfico continuo. Los golpes repentinos, las conversaciones superpuestas y la música son mucho más difíciles.' },
         { question: '¿Sonará distinta mi voz después?', answer: 'Posiblemente un poco. Una reducción fuerte puede hacer que las voces suenen más finas o ligeramente procesadas, por eso conviene comparar con el original.' },
-        { question: '¿Puedo usarlo con un vídeo?', answer: 'Extrae primero el audio del vídeo, límpialo aquí y vuelve a unirlo con la herramienta de unir audio a vídeo.' },
+        { question: '¿Puedo usarlo con un video?', answer: 'Extrae primero el audio del video, límpialo aquí y vuelve a unirlo con la herramienta de unir audio a video.' },
         { question: '¿Qué formato de salida elijo?', answer: 'WAV conserva toda la calidad para seguir editando. MP3 pesa menos para compartir. Si vas a editar más, elige WAV ahora y comprime al final.' },
       ],
       embed: { title: 'Quitar el ruido de fondo', description: 'Sube una grabación. Quitar ruido de fondo ya está seleccionado. Puedes cambiar el formato de salida y luego convertir.' },
@@ -398,7 +398,7 @@ const esToolPages = {
         { title: 'Sube una canción', description: 'Usa una pista que poseas o tengas licencia para usar.' },
         { title: 'Quitar voz ya está elegido', description: 'Sin menú que configurar; la página ya está ajustada para quitar el canto.' },
         { title: 'La IA divide la mezcla', description: 'El modelo estima por separado la voz y el acompañamiento.' },
-        { title: 'Descarga el instrumental', description: 'Guarda el WAV o conviértelo a MP3 para el móvil.' },
+        { title: 'Descarga el instrumental', description: 'Guarda el WAV o conviértelo a MP3 para el celular.' },
       ],
       faq: [
         { question: '¿Desaparecerá toda la voz?', answer: 'La mayor parte de la voz principal, pero no siempre todo. Pueden quedar colas de reverberación, coros y filtraciones; el resultado varía según la canción.' },
@@ -406,9 +406,9 @@ const esToolPages = {
         { question: '¿Puedo usarlo con cualquier canción?', answer: 'Solo con música que poseas, para la que tengas licencia o que puedas usar según el uso legítimo donde vives. Eres responsable del uso del resultado.' },
         { question: '¿Cómo obtengo solo la voz?', answer: 'Usa la página de aislar voces de una canción, que devuelve la pista vocal en lugar del instrumental.' },
       ],
-      embed: { title: 'Quitar la voz de una canción', description: 'Sube una canción. Quitar voz ya está seleccionado y el instrumental llega en WAV, sin pérdida pero más pesado. Pulsa convertir.' },
+      embed: { title: 'Quitar la voz de una canción', description: 'Sube una canción. Quitar voz ya está seleccionado y el instrumental llega en WAV, sin pérdida pero más pesado. Presiona convertir.' },
     },
   },
 } as const;
 
-export default esToolPages;
+export default esMxToolPages;
