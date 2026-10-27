@@ -1,7 +1,7 @@
 {
   "common": {
     "brand": "Media Manipulator",
-    "brandTagline": "Convierte imágenes, vídeos y archivos de audio con facilidad",
+    "brandTagline": "Convierte imágenes, videos y archivos de audio con facilidad",
     "loading": "Cargando…",
     "loadingShort": "Cargando...",
     "comingSoon": "Próximamente",
@@ -45,7 +45,7 @@
     "default": "Predeterminado",
     "advanced": "Avanzado",
     "basic": "Básico",
-    "settings": "Ajustes",
+    "settings": "Configuración",
     "options": "Opciones",
     "search": "Buscar",
     "filter": "Filtrar",
@@ -96,7 +96,7 @@
       "toolsDescription": "Herramientas gratuitas en línea para convertir, comprimir, transcribir y limpiar archivos multimedia",
       "aboutDescription": "Página Acerca de donde puedes obtener más información sobre el proyecto y su creador",
       "howItWorksDescription": "Página Cómo funciona donde puedes obtener más información sobre el proceso de conversión",
-      "tutorialsDescription": "Tutoriales paso a paso para los conversores de audio, vídeo e imagen y sus herramientas de IA",
+      "tutorialsDescription": "Tutoriales paso a paso para los convertidores de audio, video e imagen y sus herramientas de IA",
       "privacyPolicyDescription": "Página de política de privacidad donde puedes obtener más información sobre la política de privacidad del proyecto",
       "termsOfServiceDescription": "Página de términos del servicio donde puedes obtener más información sobre los términos del servicio del proyecto",
       "blogDescription": "Página del blog donde puedes leer las últimas noticias y novedades sobre el proyecto"
@@ -107,7 +107,7 @@
     "voices": "Voces"
   },
   "footer": {
-    "tagline": "Herramientas basadas en el navegador y asistidas por servidor para editar, convertir, comprimir, analizar, transcribir, resumir y procesar de otras formas archivos de imagen, vídeo y audio.",
+    "tagline": "Herramientas basadas en el navegador y asistidas por servidor para editar, convertir, comprimir, analizar, transcribir, resumir y procesar de otras formas archivos de imagen, video y audio.",
     "contact": "Contacto:",
     "explore": "Explorar",
     "legal": "Legal",
@@ -117,7 +117,7 @@
     "operatedBy": "Operado por CreaTV Ltd. · Colorado, EE. UU.",
     "cookieDialog": {
       "title": "Preferencias de cookies",
-      "description": "Las preferencias de cookies las gestiona Google. Recarga la página si el banner de cookies no aparece, o visita nuestra Política de privacidad para obtener más información sobre cómo Media Manipulator procesa los datos."
+      "description": "Las preferencias de cookies las administra Google. Recarga la página si el banner de cookies no aparece, o visita nuestra Política de privacidad para obtener más información sobre cómo Media Manipulator procesa los datos."
     },
     "changelog": "Registro de cambios",
     "status": "Estado",
@@ -132,17 +132,17 @@
     "contentStudioCta": {
       "title": "Darkroom",
       "badge": "Nuevo",
-      "body": "Edita, superpone capas y mezcla vídeo y audio en una línea de tiempo multipista, y luego exporta a MP4: un editor al estilo Premiere Pro, directamente en tu navegador.",
+      "body": "Edita, superpone capas y mezcla video y audio en una línea de tiempo multipista, y luego exporta a MP4: un editor al estilo Premiere Pro, directamente en tu navegador.",
       "cta": "Probar Darkroom"
     },
     "hero": {
-      "title": "Conversor, editor, transcriptor y herramienta de metadatos multimedia en línea gratuitos",
-      "subtitle": "Convierte, comprime, edita, transcribe, resume, inspecciona metadatos y limpia archivos de imagen, vídeo y audio directamente desde tu navegador.",
+      "title": "Convertidor, editor, transcriptor y herramienta de metadatos multimedia en línea gratuitos",
+      "subtitle": "Convierte, comprime, edita, transcribe, resume, inspecciona metadatos y limpia archivos de imagen, video y audio directamente desde tu navegador.",
       "popularLabel": "Herramientas populares",
       "allTools": "Todas las herramientas",
       "removeExif": "Eliminar EXIF",
-      "compressVideo": "Comprimir vídeo",
-      "transcribeVideo": "Transcribir vídeo",
+      "compressVideo": "Comprimir video",
+      "transcribeVideo": "Transcribir video",
       "transcodeHls": "Transcodificar → HLS",
       "transcodeDash": "Transcodificar → DASH",
       "webpToJpg": "WebP → JPG",
@@ -154,9 +154,9 @@
     "upload": {
       "title": "Subir archivo",
       "dragDrop": "Arrastra y suelta tu archivo aquí",
-      "orClickSelect": "o haz clic para seleccionarlo desde tu ordenador",
+      "orClickSelect": "o haz clic para seleccionarlo desde tu computadora",
       "chooseFile": "Elegir archivo",
-      "unsupportedFile": "Tipo de archivo no compatible. Selecciona un archivo de imagen, vídeo o audio."
+      "unsupportedFile": "Tipo de archivo no compatible. Selecciona un archivo de imagen, video o audio."
     },
     "options": {
       "transcriptionOptions": "Opciones de transcripción",
@@ -170,7 +170,7 @@
     },
     "history": {
       "title": "Historial de conversiones",
-      "subtitle": "Vuelve a abrir o descarga cualquier resultado de imagen, vídeo o audio de esta sesión.",
+      "subtitle": "Vuelve a abrir o descarga cualquier resultado de imagen, video o audio de esta sesión.",
       "newConversion": "Nueva conversión",
       "transcriptBadge": "Transcripción",
       "preview": "Vista previa",
@@ -203,16 +203,16 @@
       "downloadAs": "Descargar {{filename}}",
       "fileWillBeDownloaded": "El archivo se descargará como: {{filename}}"
     },
-    "fileLoadingConverter": "Cargando conversor…",
+    "fileLoadingConverter": "Cargando convertidor…",
     "gettingStarted": {
       "title": "Empieza en 4 pasos",
       "step1": {
         "title": "Sube un archivo",
-        "body": "Arrastra cualquier archivo de imagen, vídeo o audio a la zona de subida de la izquierda, o haz clic en <em>Elegir archivo</em>. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
+        "body": "Arrastra cualquier archivo de imagen, video o audio a la zona de subida de la izquierda, o haz clic en <em>Elegir archivo</em>. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
       },
       "step2": {
-        "title": "Elige tus ajustes aquí",
-        "body": "El panel derecho cambiará al conversor adecuado (imagen, vídeo o audio) una vez que selecciones un archivo. Elige un formato, ajusta filtros o activa una operación de IA."
+        "title": "Elige tu configuración aquí",
+        "body": "El panel derecho cambiará al convertidor adecuado (imagen, video o audio) una vez que selecciones un archivo. Elige un formato, ajusta filtros o activa una operación de IA."
       },
       "step3": {
         "title": "Convertir",
@@ -229,7 +229,7 @@
     },
     "notSure": {
       "title": "¿No sabes por dónde empezar?",
-      "body": "Nuestros tutoriales paso a paso explican cada ajuste de los conversores de audio, vídeo e imagen, incluidas las herramientas de IA.",
+      "body": "Nuestros tutoriales paso a paso explican cada opción de los convertidores de audio, video e imagen, incluidas las herramientas de IA.",
       "cta": "Ver tutoriales"
     },
     "howItWorks": {
@@ -241,7 +241,7 @@
   "notFound": {
     "preTitle": "Telemetría perdida",
     "title": "Este sector de la nave no existe",
-    "body": "Las coordenadas que introdujiste no corresponden a nada en la consola de navegación. Prueba una de las rutas de abajo, o vuelve al puente principal y elige una herramienta que sí exista.",
+    "body": "Las coordenadas que ingresaste no corresponden a nada en la consola de navegación. Prueba una de las rutas de abajo, o vuelve al puente principal y elige una herramienta que sí exista.",
     "links": {
       "home": "Volver a la base",
       "tools": "Matriz de herramientas",
