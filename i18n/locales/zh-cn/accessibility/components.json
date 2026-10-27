@@ -1,45 +1,45 @@
 {
   "filePreview": {
-    "previewAlt": "Preview"
+    "previewAlt": "预览"
   },
   "pdfForm": {
-    "outputFormatTooltip": "About the output image format",
-    "dpiTooltip": "About render quality (DPI)",
-    "pagesTooltip": "About page selection",
-    "qualityTooltip": "About JPG quality"
+    "outputFormatTooltip": "关于输出图片格式",
+    "dpiTooltip": "关于渲染质量（DPI）",
+    "pagesTooltip": "关于页面选择",
+    "qualityTooltip": "关于JPG质量"
   },
   "ad": {
-    "label": "Advertisement",
-    "close": "Close advertisement"
+    "label": "广告",
+    "close": "关闭广告"
   },
   "modals": {
-    "close": "Close",
-    "previousStep": "Previous step",
-    "nextStep": "Next step"
+    "close": "关闭",
+    "previousStep": "上一步",
+    "nextStep": "下一步"
   },
   "imageCropModal": {
-    "topLeftHandle": "Top-left handle",
-    "topRightHandle": "Top-right handle",
-    "bottomLeftHandle": "Bottom-left handle",
-    "bottomRightHandle": "Bottom-right handle"
+    "topLeftHandle": "左上角控制点",
+    "topRightHandle": "右上角控制点",
+    "bottomLeftHandle": "左下角控制点",
+    "bottomRightHandle": "右下角控制点"
   },
   "mediaTrimModal": {
-    "scrubber": "Trim scrubber",
-    "playToggle": "Play / pause preview"
+    "scrubber": "裁剪拖动条",
+    "playToggle": "播放/暂停预览"
   },
   "overlays": {
-    "canvas": "Selection canvas",
-    "removeRegion": "Remove this region",
-    "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "canvas": "选择画布",
+    "removeRegion": "移除此区域",
+    "previousPage": "上一页",
+    "nextPage": "下一页"
   },
   "quotaMeter": {
-    "gauge": "{{used}} / {{limit}} daily operations used",
-    "gaugeUnlimited": "No daily operation limit",
-    "openUpgrade": "See how to get a bigger daily allowance",
-    "openAccount": "Open your account"
+    "gauge": "已使用{{used}}/{{limit}}次每日操作",
+    "gaugeUnlimited": "无每日操作次数限制",
+    "openUpgrade": "了解如何获得更高的每日额度",
+    "openAccount": "打开你的账号"
   },
   "accountMenu": {
-    "open": "Account menu"
+    "open": "账号菜单"
   }
 }
