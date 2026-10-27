@@ -10,8 +10,8 @@ import { locales } from "@/i18n/locales";
 const untranslated = locales.filter((l) => !l.translated);
 
 describe("SEO for untranslated locales", () => {
-  it("covers the 1 MM51 locales still untranslated", () => {
-    expect(untranslated).toHaveLength(1);
+  it("all registered locales are translated (MM57–MM67)", () => {
+    expect(untranslated).toHaveLength(0);
   });
 
   it("hreflang alternates contain no untranslated locale", () => {
@@ -24,10 +24,17 @@ describe("SEO for untranslated locales", () => {
     }
   });
 
-  it.each(untranslated.map((l) => [l.code]))("%s pages are noindex", (code) => {
-    for (const path of ["/", "/about", "/pricing"]) {
-      expect(buildMetadata(path, code).robots, `${path}`).toEqual({ index: false, follow: true });
-    }
+  // Empty once every locale is translated (vitest rejects an empty it.each table); kept for future byte-copy locales.
+  if (untranslated.length > 0) {
+    it.each(untranslated.map((l) => [l.code]))("%s pages are noindex", (code) => {
+      for (const path of ["/", "/about", "/pricing"]) {
+        expect(buildMetadata(path, code).robots, `${path}`).toEqual({ index: false, follow: true });
+      }
+    });
+  }
+
+  it.each(locales.map((l) => [l.code]))("%s pages are indexable", (code) => {
+    expect(buildMetadata("/about", code).robots).toEqual({ index: true, follow: true });
   });
 
   it("translated locales stay indexable", () => {

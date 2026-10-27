@@ -17,9 +17,19 @@ import {
   urlPrefixToCode,
 } from "./locales";
 
-// fr-FR (MM57), ja-JP (MM59) and zh-CN (MM60) were translated; fr-FR is asserted separately below.
-const NEW_LOCALES = [
+// The eleven MM51 locales: all translated by MM57–MM67.
+const MM51_LOCALES = [
+  ["fr-FR", "fr"],
+  ["it-IT", "it"],
+  ["ja-JP", "ja"],
+  ["zh-CN", "zh-cn"],
+  ["zh-TW", "zh-tw"],
+  ["ko-KR", "ko"],
+  ["ar-SA", "ar"],
+  ["hi-IN", "hi"],
   ["pt-PT", "pt-pt"],
+  ["pt-BR", "pt-br"],
+  ["vi-VN", "vi"],
 ] as const;
 
 describe("locale registry", () => {
@@ -29,10 +39,10 @@ describe("locale registry", () => {
     expect(new Set(localePrefixes).size).toBe(17);
   });
 
-  it.each(NEW_LOCALES)("%s is registered at /%s, untranslated", (code, prefix) => {
+  it.each(MM51_LOCALES)("%s is registered at /%s and translated", (code, prefix) => {
     const def = getLocaleDef(code)!;
     expect(def.prefix).toBe(prefix);
-    expect(def.translated).toBe(false);
+    expect(def.translated).toBe(true);
     expect(urlPrefixToCode(prefix)).toBe(code);
     expect(codeToUrlPrefix(code)).toBe(prefix);
     expect(isSupportedPrefix(prefix)).toBe(true);
@@ -47,8 +57,8 @@ describe("locale registry", () => {
     expect(locales.filter((l) => l.dir === "rtl").map((l) => l.code)).toEqual(["he-IL", "ar-SA"]);
   });
 
-  it("marks the six original locales and French (fr-FR), Italian (it-IT), Japanese (ja-JP), Chinese (Simplified) (zh-CN), Chinese (Traditional) (zh-TW), Korean (ko-KR), Arabic (ar-SA), Hindi (hi-IN), Portuguese (Brazil) (pt-BR), Vietnamese (vi-VN) as translated", () => {
-    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "ko-KR", "ar-SA", "hi-IN", "pt-BR", "vi-VN"]);
+  it("marks all 17 locales as translated", () => {
+    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "ko-KR", "ar-SA", "hi-IN", "pt-PT", "pt-BR", "vi-VN"]);
   });
 
   it("fr-FR is registered at /fr and translated (MM57)", () => {
