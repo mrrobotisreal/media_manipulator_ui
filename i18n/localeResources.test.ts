@@ -33,8 +33,11 @@ describe("client resources", () => {
     },
   );
 
-  it("byte-copy locales resolve to the English strings", () => {
-    expect(getClientResources("pt-BR")).toEqual(resources[defaultLocale]);
+  it("byte-copy locales (if any) resolve to the English strings", () => {
+    // MM68: every MM51 locale is translated now; this stays meaningful if a new byte-copy locale is added.
+    const byteCopies = locales.filter((l) => !l.translated && l.code !== defaultLocale);
+    for (const l of byteCopies) expect(getClientResources(l.code), l.code).toEqual(resources[defaultLocale]);
+    expect(resources[defaultLocale]).toBeDefined();
   });
 
   it("a server-passed bundle is usable synchronously at init", () => {

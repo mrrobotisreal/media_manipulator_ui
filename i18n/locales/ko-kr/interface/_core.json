@@ -1,64 +1,64 @@
 {
   "common": {
     "brand": "Media Manipulator",
-    "brandTagline": "Convert images, videos, and audio files with ease",
-    "loading": "Loading…",
-    "loadingShort": "Loading...",
-    "comingSoon": "Coming soon",
-    "tryAgain": "Try again",
-    "cancel": "Cancel",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "save": "Save",
-    "saving": "Saving...",
-    "submit": "Submit",
-    "submitting": "Submitting...",
-    "download": "Download",
-    "preview": "Preview",
-    "remove": "Remove",
-    "clear": "Clear",
-    "reset": "Reset",
-    "apply": "Apply",
-    "enable": "Enable",
-    "disable": "Disable",
-    "yes": "Yes",
-    "no": "No",
-    "more": "More",
-    "less": "Less",
-    "and": "and",
-    "or": "or",
-    "of": "of",
-    "to": "to",
-    "from": "from",
-    "by": "by",
-    "in": "in",
-    "with": "with",
-    "all": "All",
-    "none": "None",
-    "off": "Off",
-    "on": "On",
-    "optional": "Optional",
-    "required": "Required",
-    "auto": "Auto",
-    "manual": "Manual",
-    "default": "Default",
-    "advanced": "Advanced",
-    "basic": "Basic",
-    "settings": "Settings",
-    "options": "Options",
-    "search": "Search",
-    "filter": "Filter",
-    "selected": "Selected",
-    "step": "Step",
-    "minutes": "minutes",
-    "seconds": "seconds",
-    "items": "items",
-    "showAll": "Show all",
-    "showMore": "Show more",
-    "showLess": "Show less",
-    "retentionPromise": "You choose how long we keep your files — 24 hours by default for guests, up to 2 years with a free account",
-    "retentionPromiseShort": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years"
+    "brandTagline": "이미지, 동영상, 오디오 파일을 손쉽게 변환하세요",
+    "loading": "불러오는 중…",
+    "loadingShort": "불러오는 중...",
+    "comingSoon": "출시 예정",
+    "tryAgain": "다시 시도",
+    "cancel": "취소",
+    "close": "닫기",
+    "back": "뒤로",
+    "next": "다음",
+    "save": "저장",
+    "saving": "저장 중...",
+    "submit": "제출",
+    "submitting": "제출 중...",
+    "download": "다운로드",
+    "preview": "미리보기",
+    "remove": "제거",
+    "clear": "지우기",
+    "reset": "초기화",
+    "apply": "적용",
+    "enable": "켜기",
+    "disable": "끄기",
+    "yes": "예",
+    "no": "아니요",
+    "more": "더 보기",
+    "less": "접기",
+    "and": "및",
+    "or": "또는",
+    "of": "중",
+    "to": "까지",
+    "from": "부터",
+    "by": "기준",
+    "in": "에서",
+    "with": "함께",
+    "all": "전체",
+    "none": "없음",
+    "off": "끔",
+    "on": "켬",
+    "optional": "선택 사항",
+    "required": "필수",
+    "auto": "자동",
+    "manual": "수동",
+    "default": "기본값",
+    "advanced": "고급",
+    "basic": "기본",
+    "settings": "설정",
+    "options": "옵션",
+    "search": "검색",
+    "filter": "필터",
+    "selected": "선택됨",
+    "step": "단계",
+    "minutes": "분",
+    "seconds": "초",
+    "items": "개 항목",
+    "showAll": "모두 보기",
+    "showMore": "더 보기",
+    "showLess": "접기",
+    "retentionPromise": "파일 보관 기간은 직접 선택할 수 있어요. 비회원은 기본 24시간, 무료 계정이 있으면 최대 2년까지 보관됩니다",
+    "retentionPromiseShort": "비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요"
   },
   "units": {
     "bytes": "B",
@@ -74,181 +74,178 @@
     "khz": "kHz"
   },
   "duration": {
-    "zero": "0 sec",
-    "hours_one": "{{count}} hr",
-    "hours_other": "{{count}} hr",
-    "minutes_one": "{{count}} min",
-    "minutes_other": "{{count}} min",
-    "seconds_one": "{{count}} sec",
-    "seconds_other": "{{count}} sec"
+    "zero": "0초",
+    "hours_other": "{{count}}시간",
+    "minutes_other": "{{count}}분",
+    "seconds_other": "{{count}}초"
   },
   "topNav": {
-    "home": "Home",
-    "tools": "Tools",
-    "about": "About",
-    "howItWorks": "How it works",
-    "tutorials": "Tutorials",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "blog": "Blog",
+    "home": "홈",
+    "tools": "도구",
+    "about": "소개",
+    "howItWorks": "작동 방식",
+    "tutorials": "튜토리얼",
+    "privacyPolicy": "개인정보 처리방침",
+    "termsOfService": "서비스 이용약관",
+    "blog": "블로그",
     "links": {
-      "homeDescription": "Home page where you can convert your files",
-      "toolsDescription": "Free online tools for converting, compressing, transcribing, and cleaning up media files",
-      "aboutDescription": "About page where you can learn more about the project and its creator",
-      "howItWorksDescription": "How it works page where you can learn more about the conversion process",
-      "tutorialsDescription": "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
-      "privacyPolicyDescription": "Privacy policy page where you can learn more about the privacy policy of the project",
-      "termsOfServiceDescription": "Terms of service page where you can learn more about the terms of service of the project",
-      "blogDescription": "Blog page where you can read the latest news and updates about the project"
+      "homeDescription": "파일을 변환할 수 있는 홈페이지",
+      "toolsDescription": "미디어 파일을 변환, 압축, 전사, 정리하는 무료 온라인 도구",
+      "aboutDescription": "프로젝트와 제작자에 대해 더 알아볼 수 있는 소개 페이지",
+      "howItWorksDescription": "변환 과정에 대해 더 알아볼 수 있는 작동 방식 페이지",
+      "tutorialsDescription": "오디오, 동영상, 이미지 변환기와 AI 도구의 단계별 튜토리얼",
+      "privacyPolicyDescription": "프로젝트의 개인정보 처리방침을 확인할 수 있는 페이지",
+      "termsOfServiceDescription": "프로젝트의 서비스 이용약관을 확인할 수 있는 페이지",
+      "blogDescription": "프로젝트의 최신 소식과 업데이트를 읽을 수 있는 블로그 페이지"
     },
-    "navigationLabel": "Navigation",
-    "language": "Language",
-    "selectLanguage": "Select language",
-    "voices": "Voices"
+    "navigationLabel": "내비게이션",
+    "language": "언어",
+    "selectLanguage": "언어 선택",
+    "voices": "음성"
   },
   "footer": {
-    "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "contact": "Contact:",
-    "explore": "Explore",
-    "legal": "Legal",
-    "doNotSell": "Do Not Sell or Share My Personal Information",
-    "cookieSettings": "Cookie settings",
-    "copyright": "© {{year}} Media Manipulator, a CreaTV Ltd. product. All rights reserved.",
-    "operatedBy": "Operated by CreaTV Ltd. · Colorado, USA",
+    "tagline": "이미지, 동영상, 오디오 파일을 편집, 변환, 압축, 분석, 전사, 요약하고 그 밖의 다양한 방식으로 처리하는 브라우저 기반 및 서버 지원 도구입니다.",
+    "contact": "문의:",
+    "explore": "둘러보기",
+    "legal": "법적 고지",
+    "doNotSell": "내 개인정보를 판매하거나 공유하지 않기",
+    "cookieSettings": "쿠키 설정",
+    "copyright": "© {{year}} Media Manipulator, CreaTV Ltd. 제품. All rights reserved.",
+    "operatedBy": "운영: CreaTV Ltd. · 미국 콜로라도",
     "cookieDialog": {
-      "title": "Cookie preferences",
-      "description": "Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data."
+      "title": "쿠키 환경설정",
+      "description": "쿠키 환경설정은 Google이 관리합니다. 쿠키 배너가 표시되지 않으면 페이지를 새로고침하시거나, Media Manipulator의 데이터 처리 방식에 대한 자세한 내용은 개인정보 처리방침을 참고하세요."
     },
-    "changelog": "Changelog",
-    "status": "Status",
-    "licenses": "Open-source licences"
+    "changelog": "변경 내역",
+    "status": "서비스 상태",
+    "licenses": "오픈소스 라이선스"
   },
   "languageSelector": {
-    "label": "Language",
-    "current": "Current language: {{language}}",
-    "select": "Select a language"
+    "label": "언어",
+    "current": "현재 언어: {{language}}",
+    "select": "언어를 선택하세요"
   },
   "home": {
     "contentStudioCta": {
       "title": "Darkroom",
-      "badge": "New",
-      "body": "Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style editor, right in your browser.",
-      "cta": "Try Darkroom"
+      "badge": "신규",
+      "body": "멀티트랙 타임라인에서 동영상과 오디오를 편집하고, 레이어를 쌓고, 믹싱한 뒤 MP4로 내보내세요. Premiere Pro 스타일의 편집기를 브라우저에서 바로 사용할 수 있어요.",
+      "cta": "Darkroom 사용해 보기"
     },
     "hero": {
-      "title": "Free Online Media Converter, Editor, Transcriber & Metadata Tool",
-      "subtitle": "Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.",
-      "popularLabel": "Popular tools",
-      "allTools": "All tools",
-      "removeExif": "Remove EXIF",
-      "compressVideo": "Compress video",
-      "transcribeVideo": "Transcribe video",
-      "transcodeHls": "Transcode → HLS",
-      "transcodeDash": "Transcode → DASH",
+      "title": "무료 온라인 미디어 변환, 편집, 전사 및 메타데이터 도구",
+      "subtitle": "이미지, 동영상, 오디오 파일을 브라우저에서 바로 변환, 압축, 편집, 전사, 요약하고 메타데이터를 확인하고 정리하세요.",
+      "popularLabel": "인기 도구",
+      "allTools": "모든 도구",
+      "removeExif": "EXIF 제거",
+      "compressVideo": "동영상 압축",
+      "transcribeVideo": "동영상 전사",
+      "transcodeHls": "트랜스코딩 → HLS",
+      "transcodeDash": "트랜스코딩 → DASH",
       "webpToJpg": "WebP → JPG",
       "wavToMp3": "WAV → MP3",
-      "compressImage": "Compress image",
-      "resizeImage": "Resize image",
-      "extractAudio": "Extract audio"
+      "compressImage": "이미지 압축",
+      "resizeImage": "이미지 크기 조정",
+      "extractAudio": "오디오 추출"
     },
     "upload": {
-      "title": "Upload File",
-      "dragDrop": "Drag and drop your file here",
-      "orClickSelect": "or click to select from your computer",
-      "chooseFile": "Choose File",
-      "unsupportedFile": "Unsupported file type. Please select an image, video, or audio file."
+      "title": "파일 업로드",
+      "dragDrop": "파일을 여기로 끌어다 놓으세요",
+      "orClickSelect": "또는 클릭해서 컴퓨터에서 선택하세요",
+      "chooseFile": "파일 선택",
+      "unsupportedFile": "지원하지 않는 파일 형식입니다. 이미지, 동영상 또는 오디오 파일을 선택해 주세요."
     },
     "options": {
-      "transcriptionOptions": "Transcription Options",
-      "transcodeOptions": "Transcode Options",
-      "conversionOptions": "Conversion Options",
-      "documentScanOptions": "Document Scan Options",
-      "convert": "Convert",
-      "transcribe": "Transcribe",
-      "transcode": "Transcode",
-      "scanDocument": "Scan to PDF / Word (AI)"
+      "transcriptionOptions": "전사 옵션",
+      "transcodeOptions": "트랜스코딩 옵션",
+      "conversionOptions": "변환 옵션",
+      "documentScanOptions": "문서 스캔 옵션",
+      "convert": "변환",
+      "transcribe": "전사",
+      "transcode": "트랜스코딩",
+      "scanDocument": "PDF / Word로 스캔 (AI)"
     },
     "history": {
-      "title": "Conversion History",
-      "subtitle": "Reopen or download any image, video, or audio result from this session.",
-      "newConversion": "New Conversion",
-      "transcriptBadge": "Transcript",
-      "preview": "Preview",
-      "download": "Download",
+      "title": "변환 기록",
+      "subtitle": "이 세션의 이미지, 동영상, 오디오 결과를 다시 열거나 다운로드하세요.",
+      "newConversion": "새 변환",
+      "transcriptBadge": "전사본",
+      "preview": "미리보기",
+      "download": "다운로드",
       "itemLabel": "#{{number}} {{filename}}",
-      "startedProcessing": "Started {{time}} and still processing",
-      "completedAt": "Completed {{time}}",
-      "transcriptionFailed": "Transcription failed",
-      "conversionFailed": "Conversion failed"
+      "startedProcessing": "{{time}}에 시작, 아직 처리 중",
+      "completedAt": "{{time}}에 완료",
+      "transcriptionFailed": "전사 실패",
+      "conversionFailed": "변환 실패"
     },
     "result": {
-      "transcriptResult": "Transcript Result",
-      "convertedPreview": "Converted File Preview",
-      "transcriptSubtitle": "Transcript and AI review for {{filename}}.",
-      "convertedSubtitle": "Toggle between the original and finalized edited version of {{filename}}.",
-      "original": "Original",
-      "final": "Final"
+      "transcriptResult": "전사 결과",
+      "convertedPreview": "변환된 파일 미리보기",
+      "transcriptSubtitle": "{{filename}}의 전사본과 AI 검토 결과입니다.",
+      "convertedSubtitle": "{{filename}}의 원본과 최종 편집본을 전환하며 비교해 보세요.",
+      "original": "원본",
+      "final": "최종"
     },
     "progress": {
-      "preparingUpload": "Preparing secure upload...",
-      "uploadingToS3": "Uploading file directly to S3...",
-      "finalizing": "Staging uploaded file on the server...",
-      "startingTranscription": "Starting transcription...",
-      "startingConversion": "Starting conversion...",
-      "converting": "Converting...",
-      "percentComplete": "{{percent}}% Complete",
-      "conversionFailed": "Conversion failed. Please try again."
+      "preparingUpload": "보안 업로드 준비 중...",
+      "uploadingToS3": "S3로 파일 직접 업로드 중...",
+      "finalizing": "업로드한 파일을 서버에 준비하는 중...",
+      "startingTranscription": "전사 시작 중...",
+      "startingConversion": "변환 시작 중...",
+      "converting": "변환 중...",
+      "percentComplete": "{{percent}}% 완료",
+      "conversionFailed": "변환에 실패했습니다. 다시 시도해 주세요."
     },
     "download": {
-      "downloadAs": "Download {{filename}}",
-      "fileWillBeDownloaded": "File will be downloaded as: {{filename}}"
+      "downloadAs": "{{filename}} 다운로드",
+      "fileWillBeDownloaded": "다음 이름으로 다운로드됩니다: {{filename}}"
     },
-    "fileLoadingConverter": "Loading converter…",
+    "fileLoadingConverter": "변환기 불러오는 중…",
     "gettingStarted": {
-      "title": "Get started in 4 steps",
+      "title": "4단계로 시작하기",
       "step1": {
-        "title": "Upload a file",
-        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+        "title": "파일 업로드",
+        "body": "이미지, 동영상, 오디오 파일을 왼쪽 업로드 영역으로 끌어다 놓거나 <em>파일 선택</em>을 클릭하세요. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요."
       },
       "step2": {
-        "title": "Pick your settings here",
-        "body": "The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation."
+        "title": "여기서 설정 선택",
+        "body": "파일을 선택하면 오른쪽 패널이 이미지, 동영상, 오디오 중 알맞은 변환기로 바뀌어요. 형식을 고르고, 필터를 조정하거나, AI 작업을 켜 보세요."
       },
       "step3": {
-        "title": "Convert",
-        "body": "Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time."
+        "title": "변환",
+        "body": "<em>파일 변환</em>을 클릭하세요. 진행률 표시줄을 지켜보세요. 작업은 저희 GPU 서버에서 실시간으로 실행돼요."
       },
       "step4": {
-        "title": "Preview and download",
-        "body": "The result auto-previews when it's ready. Toggle between Original and Final, then click Download."
+        "title": "미리보기 및 다운로드",
+        "body": "결과가 준비되면 자동으로 미리보기가 표시돼요. 원본과 최종을 전환해 본 뒤 다운로드를 클릭하세요."
       }
     },
     "localAi": {
-      "title": "Includes local AI tools",
-      "body": "Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files."
+      "title": "로컬 AI 도구 포함",
+      "body": "얼굴 흐림 처리, 배경 제거, AI 업스케일, OCR 기반 텍스트/개인정보 가리기, 음성 정리, 보컬 분리, 노래방용 보컬 제거가 모두 저희 자체 GPU 서버에서 실행돼요. 제3자 AI 제공업체는 여러분의 파일을 볼 수 없어요."
     },
     "notSure": {
-      "title": "Not sure where to begin?",
-      "body": "Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.",
-      "cta": "Browse Tutorials"
+      "title": "어디서부터 시작할지 모르겠나요?",
+      "body": "단계별 튜토리얼에서 오디오, 동영상, 이미지 변환기의 모든 설정을 AI 도구까지 하나씩 안내해 드려요.",
+      "cta": "튜토리얼 둘러보기"
     },
     "howItWorks": {
-      "title": "How it works",
-      "body": "Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.",
-      "cta": "Read How it Works"
+      "title": "작동 방식",
+      "body": "Media Manipulator는 일반 변환에는 FFmpeg와 ImageMagick을, 선택 가능한 AI 작업에는 로컬 GPU의 전용 AI 모델을 사용해요. 모든 처리는 저희가 직접 관리하는 서버에서 이루어져요. 자세한 내용은 전체 설명을 읽어 보세요.",
+      "cta": "작동 방식 읽기"
     }
   },
   "notFound": {
-    "preTitle": "Telemetry lost",
-    "title": "This sector of the ship doesn't exist",
-    "body": "The coordinates you punched in don't map to anything on the navigation console. Try one of the routes below — or head back to the main bridge and pick a tool that does exist.",
+    "preTitle": "원격 측정 신호 유실",
+    "title": "함선의 이 구역은 존재하지 않습니다",
+    "body": "입력하신 좌표는 항법 콘솔의 어느 곳과도 일치하지 않습니다. 아래 경로 중 하나를 선택하시거나, 메인 브리지로 돌아가 실제로 존재하는 도구를 골라 주세요.",
     "links": {
-      "home": "Return to base",
-      "tools": "Tools array",
-      "tutorials": "Tutorials"
+      "home": "기지로 돌아가기",
+      "tools": "도구 목록",
+      "tutorials": "튜토리얼"
     }
   },
   "themeToggle": {
-    "toggle": "Toggle theme"
+    "toggle": "테마 전환"
   }
 }

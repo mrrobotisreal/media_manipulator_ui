@@ -145,16 +145,16 @@ describe('MM34 flag on', () => {
   });
 });
 
-describe('MM51 untranslated locales', () => {
-  // Translated MM51 locales: fr, it, ja, zh-cn, zh-tw; the rest stay byte-copies until their sessions.
-  const NEW_PREFIXES = ['ko', 'ar', 'hi', 'pt-br', 'vi'];
+describe('MM51 locales: none left untranslated', () => {
+  // Every MM51 locale is translated (MM57–MM67); the list stays so a future byte-copy locale is caught.
+  const NEW_PREFIXES: string[] = [];
 
-  it('the 9 remaining new prefixes are registered but untranslated', () => {
+  it('no registered prefix is left untranslated', () => {
     const untranslated = locales.filter((l) => !l.translated).map((l) => l.prefix);
     expect(untranslated).toEqual(NEW_PREFIXES);
   });
 
-  it.each(['', 'true'])('sitemap.xml lists none of the 9 untranslated prefixes (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
+  it.each(['', 'true'])('sitemap.xml lists no untranslated prefix (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', flag);
     const entries = sitemap();
     const all = entries.flatMap((e) => [e.url, ...Object.values(e.alternates?.languages ?? {})]);

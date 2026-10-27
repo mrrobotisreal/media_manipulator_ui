@@ -14,7 +14,12 @@ import itItToolpages from "../locales/it-it/toolPages";
 import jaJpToolpages from "../locales/ja-jp/toolPages";
 import zhCnToolpages from "../locales/zh-cn/toolPages";
 import zhTwToolpages from "../locales/zh-tw/toolPages";
+import koKrToolpages from "../locales/ko-kr/toolPages";
+import arSaToolpages from "../locales/ar-sa/toolPages";
+import hiInToolpages from "../locales/hi-in/toolPages";
 import ptPtToolpages from "../locales/pt-pt/toolPages";
+import ptBrToolpages from "../locales/pt-br/toolPages";
+import viVnToolpages from "../locales/vi-vn/toolPages";
 
 export const toolPageOverrideModules: Record<string, unknown> = {
   "uk-UA": ukUaToolpages,
@@ -27,5 +32,10 @@ export const toolPageOverrideModules: Record<string, unknown> = {
   "ja-JP": jaJpToolpages,
   "zh-CN": zhCnToolpages,
   "zh-TW": zhTwToolpages,
+  "ko-KR": koKrToolpages,
+  "ar-SA": arSaToolpages,
+  "hi-IN": hiInToolpages,
   "pt-PT": ptPtToolpages,
+  "pt-BR": ptBrToolpages,
+  "vi-VN": viVnToolpages,
 };

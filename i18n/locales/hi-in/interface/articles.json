@@ -1,1246 +1,1246 @@
 {
   "blogVideoCompression": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← ब्लॉग"
     },
-    "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV",
+    "title": "वीडियो कंप्रेशन की हिचहाइकर गाइड: MP4 बनाम WebM बनाम AVI बनाम MOV",
     "byline": {
-      "writtenBy": "Written by:",
-      "date": "June 13th, 2025",
-      "time": "10:33 PM"
+      "writtenBy": "लेखक:",
+      "date": "13 जून 2025",
+      "time": "रात 10:33"
     },
     "intro": {
-      "title": "A Brief Intro to Video Compression",
-      "p1": "Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.",
-      "p2": "Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.",
-      "p3": "At its core, video compression works by being sneaky in two main ways:",
+      "title": "वीडियो कंप्रेशन का संक्षिप्त परिचय",
+      "p1": "क्या आपने कभी अपनी वेबसाइट पर वीडियो अपलोड करने की कोशिश की है और डर के मारे देखा है कि लोडिंग बार घोंघे की रफ़्तार से रेंग रहा है? 🐌 या शायद आपने 30 सेकंड का एक छोटा-सा डेमो रिकॉर्ड किया और पाया कि फ़ाइल किसी तरह आपकी पूरी वेबसाइट से भी बड़ी है? हाँ, हम सब इससे गुज़रे हैं, और यह उतना ही मज़ेदार है जितना पेंट सूखते देखना... डायल-अप इंटरनेट पर।",
+      "p2": "बात यह है: वीडियो कंप्रेशन मूल रूप से अपने वीडियो को छोटा करने की कला है, बिना उन्हें ऐसा दिखाए कि वे आलू से फ़िल्माए गए हों 🥔। इसे ऐसे समझें - कच्चा वीडियो डेटा पूरी अलमारी को एक कैरी-ऑन सूटकेस में ठूँसने जैसा है। वीडियो कंप्रेशन वह जादुई तह लगाने की तकनीक है जो किसी तरह सब कुछ फ़िट कर देती है और आपके कपड़े (लगभग) बिना सिलवट के रखती है।",
+      "p3": "मूल रूप से, वीडियो कंप्रेशन दो मुख्य तरीकों से चालाकी करके काम करता है:",
       "bullets": [
-        "<strong>Spatial compression</strong>: This looks at each frame and says \"Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?\" It's like describing a wall as \"all white\" instead of listing every single brick.",
-        "<strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬"
+        "<strong>स्पेशियल कंप्रेशन</strong>: यह हर फ़्रेम को देखता है और कहता है \"अरे, इस नीले आसमान में लगभग 10,000 पिक्सेल हैं जो सब मूल रूप से नीले के एक ही शेड के हैं। क्यों न हम बस कहें 'यहाँ से यहाँ तक नीले पिक्सेल'?\" यह हर ईंट गिनाने के बजाय दीवार को \"पूरी सफ़ेद\" बताने जैसा है।",
+        "<strong>टेम्पोरल कंप्रेशन</strong>: यहाँ चीज़ें सच में चतुर हो जाती हैं। हर फ़्रेम को पूरी तरह स्टोर करने के बजाय, यह केवल फ़्रेमों के बीच के अंतर स्टोर करता है। तो अगर आप खुद को बोलते हुए रिकॉर्ड कर रहे हैं और बैकग्राउंड नहीं बदलता, तो उस बैकग्राउंड को प्रति सेकंड 30 बार क्यों स्टोर करें? बस एक बार स्टोर करें और नोट करें कि क्या बदलता है! 🎬"
       ],
-      "p4": "The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.",
-      "quote": "\"In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch.\" 💪"
+      "p4": "जादू तब होता है जब ये तकनीकें साथ काम करती हैं, और आपकी विशाल 2GB स्क्रीन रिकॉर्डिंग को 50MB की संभालने लायक फ़ाइल में बदल देती हैं जो अब भी साफ़ दिखती है। लेकिन यहीं यह दिलचस्प हो जाता है - अलग-अलग वीडियो फ़ॉर्मैट (कंटेनर) और कोडेक (असली कंप्रेशन एल्गोरिदम) इस जादू को बहुत अलग तरीकों से संभालते हैं। कुछ स्विस आर्मी नाइफ़ जैसे हैं 🔪 - बहुमुखी लेकिन हर काम के लिए हमेशा सबसे तेज़ औज़ार नहीं। कुछ विशेष सर्जिकल उपकरणों जैसे हैं - खास कामों के लिए बेहद असरदार लेकिन बाकी किसी चीज़ के लिए बेकार।",
+      "quote": "\"वीडियो कंप्रेशन की दुनिया में सबसे भारी फ़ाइलें हमेशा सबसे मज़बूत नहीं होतीं - कभी-कभी सबसे छोटे योद्धा सबसे ज़ोरदार वार करते हैं।\" 💪"
     },
     "formats": {
-      "title": "What's the Difference Between These Formats Anyway?",
-      "intro": "Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go \"really?\"",
+      "title": "आख़िर इन फ़ॉर्मैट में फ़र्क़ क्या है?",
+      "intro": "ठीक है, चलिए इन वीडियो फ़ॉर्मैट को ऐसे समझते हैं जैसे हम सुपरहीरो टीमों की तुलना कर रहे हों 🦸‍♂️। हर एक की अपनी महाशक्तियाँ, कमज़ोरियाँ और वह एक अजीब आदत है जो आपसे कहलवाती है \"सच में?\"",
       "mp4": {
         "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:",
+        "intro": "MP4 को वीडियो फ़ॉर्मैट का सुपरमैन समझें - यह हर जगह है, हर कोई इसे पहचानता है, और यह लगभग हमेशा दिन बचा लेता है। यह फ़ॉर्मैट:",
         "bullets": [
-          "<strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works",
-          "<strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high",
-          "<strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)",
-          "<strong>File sizes</strong>: Generally gives you that sweet spot between quality and size"
+          "<strong>सबके साथ अच्छे से चलता है</strong>: आपकी दादी के पुराने लैपटॉप से लेकर नवीनतम iPhone तक, MP4 बस काम करता है",
+          "<strong>H.264/H.265 कोडेक इस्तेमाल करता है</strong>: ये कंप्रेशन के जादूगर हैं जो क्वालिटी ऊँची रखते हुए आपकी फ़ाइलें छोटी करते हैं",
+          "<strong>स्ट्रीमिंग का समर्थन करता है</strong>: जब आप चाहते हैं कि वीडियो पूरी तरह लोड होने से पहले ही चलने लगें (क्योंकि इंतज़ार का समय किसके पास है? ⏰)",
+          "<strong>फ़ाइल आकार</strong>: आम तौर पर क्वालिटी और आकार के बीच वह सही संतुलन देता है"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:",
+        "intro": "WebM समूह का कूल, ओपन-सोर्स बाग़ी है 😎। Google का बनाया हुआ, यह पूरी तरह वेब के लिए है:",
         "bullets": [
-          "<strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say \"buffering\"",
-          "<strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases",
-          "<strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵",
-          "<strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)"
+          "<strong>ब्राउज़र के लिए बना</strong>: खास तौर पर इसलिए डिज़ाइन किया गया ताकि वेब वीडियो \"बफ़रिंग\" कहने से भी पहले लोड हो जाएँ",
+          "<strong>VP8/VP9 कोडेक इस्तेमाल करता है</strong>: ये कई मामलों में वीडियो को MP4 से भी छोटा कंप्रेस कर सकते हैं",
+          "<strong>खुला और मुफ़्त</strong>: कोई लाइसेंस शुल्क नहीं, जो किसी भी डेवलपर के कानों के लिए संगीत है 🎵",
+          "<strong>पेंच</strong>: सभी ब्राउज़र और डिवाइस इसका समर्थन नहीं करते (हाँ Safari, तुम्हारी ही बात हो रही है 👀)"
         ]
       },
       "avi": {
         "title": "AVI (Audio Video Interleave)",
-        "intro": "AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:",
+        "intro": "AVI अनुभवी बुज़ुर्ग है - यह Windows 3.1 के ज़माने से है! 👴 आपको जो जानना चाहिए:",
         "bullets": [
-          "<strong>Minimal compression</strong>: Often results in HUGE file sizes (like, \"is this a video or the entire Lord of the Rings trilogy?\" huge)",
-          "<strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality",
-          "<strong>Universal compatibility</strong>: If something can play video, it can probably play AVI",
-          "<strong>Best for</strong>: Local storage when quality matters more than file size"
+          "<strong>न्यूनतम कंप्रेशन</strong>: अक्सर विशाल फ़ाइल आकार देता है (इतना विशाल कि \"यह वीडियो है या पूरी Lord of the Rings ट्रिलॉजी?\")",
+          "<strong>उच्च क्वालिटी</strong>: कंप्रेशन में जो कमी है, उसकी भरपाई यह बेदाग़ क्वालिटी से करता है",
+          "<strong>सार्वभौमिक संगतता</strong>: अगर कोई चीज़ वीडियो चला सकती है, तो वह शायद AVI भी चला सकती है",
+          "<strong>सबसे अच्छा</strong>: लोकल स्टोरेज के लिए, जब क्वालिटी फ़ाइल आकार से ज़्यादा मायने रखती हो"
         ]
       },
       "mov": {
         "title": "MOV (QuickTime File Format)",
-        "intro": "MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:",
+        "intro": "MOV Apple का लाड़ला है 🍎, और ज़्यादातर Apple प्रोडक्ट की तरह, यह सुंदर है लेकिन... जटिल:",
         "bullets": [
-          "<strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing",
-          "<strong>ProRes codec support</strong>: The format professionals drool over 🤤",
-          "<strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)",
-          "<strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime"
+          "<strong>उत्कृष्ट क्वालिटी</strong>: खास तौर पर हाई-रिज़ॉल्यूशन वीडियो और प्रोफ़ेशनल एडिटिंग के लिए",
+          "<strong>ProRes कोडेक समर्थन</strong>: वह फ़ॉर्मैट जिस पर प्रोफ़ेशनल लार टपकाते हैं 🤤",
+          "<strong>कमरे में हाथी</strong>: ऐसे फ़ाइल आकार जो आपकी स्टोरेज ड्राइव को रुला देंगे (मेरी 315.9MB की स्क्रीन रिकॉर्डिंग याद है? हाँ, वह MOV थी)",
+          "<strong>क्रॉस-प्लेटफ़ॉर्म समस्याएँ</strong>: Mac पर बेदाग़ काम करता है, लेकिन Windows यूज़र को QuickTime इंस्टॉल करना पड़ सकता है"
         ]
       },
-      "comparisonIntro": "Here's a quick comparison to really drive it home:",
+      "comparisonIntro": "बात पक्की करने के लिए यह रही एक त्वरित तुलना:",
       "table": {
         "headers": [
-          "Format",
-          "File Size",
-          "Compatibility",
-          "Best Use Case"
+          "फ़ॉर्मैट",
+          "फ़ाइल आकार",
+          "संगतता",
+          "सबसे अच्छा उपयोग"
         ],
         "rows": [
           [
             "MP4",
-            "Small-Medium",
-            "Universal",
-            "Literally everything"
+            "छोटा-मध्यम",
+            "सार्वभौमिक",
+            "सचमुच सब कुछ"
           ],
           [
             "WebM",
-            "Smallest",
-            "Modern browsers",
-            "Web optimization"
+            "सबसे छोटा",
+            "आधुनिक ब्राउज़र",
+            "वेब ऑप्टिमाइज़ेशन"
           ],
           [
             "AVI",
-            "Largest",
-            "Universal",
-            "Archival/Editing"
+            "सबसे बड़ा",
+            "सार्वभौमिक",
+            "आर्काइव/एडिटिंग"
           ],
           [
             "MOV",
-            "Large",
-            "Mac-focused",
-            "Professional work"
+            "बड़ा",
+            "Mac-केंद्रित",
+            "प्रोफ़ेशनल काम"
           ]
         ]
       },
-      "quote": "\"Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose.\" ⚔️"
+      "quote": "\"अपना फ़ॉर्मैट वैसे चुनें जैसे अपनी लड़ाइयाँ चुनते हैं - हर तलवार हर योद्धा को नहीं जँचती, और हर कोडेक हर मक़सद पर खरा नहीं उतरता।\" ⚔️"
     },
     "whenToUse": {
-      "title": "How Do I Know When to Use One Format Over Another?",
-      "p1": "Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).",
-      "p2": "Let me break this down into real-world scenarios because that's how we actually make these decisions:",
+      "title": "मुझे कैसे पता चले कि कब कौन सा फ़ॉर्मैट इस्तेमाल करूँ?",
+      "p1": "ठीक है, फ़ैसले का समय! 🤔 सही वीडियो फ़ॉर्मैट चुनना सही पोशाक चुनने जैसा है - आप जिम में टक्सीडो नहीं पहनेंगे, और आपको अपनी वेबसाइट के हीरो वीडियो के लिए AVI नहीं इस्तेमाल करना चाहिए (जब तक आप नहीं चाहते कि आपके यूज़र उसके लोड होते-होते बूढ़े हो जाएँ)।",
+      "p2": "मैं इसे असली दुनिया की स्थितियों में बाँटकर समझाता हूँ, क्योंकि असल में हम ये फ़ैसले ऐसे ही लेते हैं:",
       "mp4": {
-        "title": "When to Use MP4",
-        "lead": "<strong>Use MP4 when you want to play it safe</strong> 🛡️",
+        "title": "MP4 कब इस्तेमाल करें",
+        "lead": "<strong>MP4 तब इस्तेमाल करें जब आप सुरक्षित खेलना चाहते हों</strong> 🛡️",
         "bullets": [
-          "<strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend",
-          "<strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4",
-          "<strong>Email attachments</strong>: When you need to send a video that just works",
-          "<strong>Mobile apps</strong>: Both iOS and Android will thank you"
+          "<strong>वेबसाइट वीडियो</strong>: बैकग्राउंड वीडियो, प्रोडक्ट डेमो, ट्यूटोरियल - MP4 आपका भरोसेमंद दोस्त है",
+          "<strong>सोशल मीडिया</strong>: Instagram, Twitter, LinkedIn - सबको MP4 पसंद है",
+          "<strong>ईमेल अटैचमेंट</strong>: जब आपको ऐसा वीडियो भेजना हो जो बस चल जाए",
+          "<strong>मोबाइल ऐप</strong>: iOS और Android दोनों आपको धन्यवाद देंगे"
         ],
-        "proTip": "<strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices."
+        "proTip": "<strong>प्रो टिप</strong>: अधिकतम संगतता के लिए H.264 कोडेक इस्तेमाल करें, या H.265 अगर आपको और भी छोटी फ़ाइलें चाहिए और आपके दर्शकों के पास नए डिवाइस हैं।"
       },
       "webm": {
-        "title": "When to Use WebM",
-        "lead": "<strong>Use WebM when every kilobyte counts</strong> 🪶",
+        "title": "WebM कब इस्तेमाल करें",
+        "lead": "<strong>WebM तब इस्तेमाल करें जब हर किलोबाइट मायने रखती हो</strong> 🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: Where load speed directly impacts conversion rates",
-          "<strong>Progressive web apps</strong>: When you're building for the modern web",
-          "<strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)",
-          "<strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome"
+          "<strong>लैंडिंग पेज</strong>: जहाँ लोड स्पीड सीधे कन्वर्ज़न रेट पर असर डालती है",
+          "<strong>प्रोग्रेसिव वेब ऐप</strong>: जब आप आधुनिक वेब के लिए बना रहे हों",
+          "<strong>हाई-ट्रैफ़िक वेबसाइट</strong>: बैंडविड्थ की लागत बचाएँ (आपका बटुआ आपको धन्यवाद देगा 💰)",
+          "<strong>जब आप वातावरण नियंत्रित करते हों</strong>: जैसे कंपनी के आंतरिक टूल जहाँ आप जानते हैं कि सब Chrome इस्तेमाल करते हैं"
         ],
-        "realTalk": "<strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦"
+        "realTalk": "<strong>सच्ची बात</strong>: मैंने एक बार एक क्लाइंट का हीरो वीडियो MP4 से WebM में बदला और फ़ाइल आकार 40% घटा दिया। उनके पेज का लोड समय 2 सेकंड कम हो गया, और बाउंस रेट 15% घट गया। यह सीधे बैंक में पैसा है! 🏦"
       },
       "avi": {
-        "title": "When to Use AVI",
-        "lead": "<strong>Use AVI when quality is king and file size is... not a concern</strong> 👑",
+        "title": "AVI कब इस्तेमाल करें",
+        "lead": "<strong>AVI तब इस्तेमाल करें जब क्वालिटी राजा हो और फ़ाइल आकार... कोई चिंता न हो</strong> 👑",
         "bullets": [
-          "<strong>Video editing source files</strong>: When you need every pixel perfect for post-production",
-          "<strong>Archival purposes</strong>: Storing the master copy before compression",
-          "<strong>Local playback</strong>: When it's only playing from a hard drive, not the internet",
-          "<strong>Screen recordings for tutorials</strong>: Before you compress them for distribution"
+          "<strong>वीडियो एडिटिंग की सोर्स फ़ाइलें</strong>: जब पोस्ट-प्रोडक्शन के लिए हर पिक्सेल परफ़ेक्ट चाहिए",
+          "<strong>आर्काइव के उद्देश्य से</strong>: कंप्रेशन से पहले मास्टर कॉपी स्टोर करने के लिए",
+          "<strong>लोकल प्लेबैक</strong>: जब यह केवल हार्ड ड्राइव से चलना हो, इंटरनेट से नहीं",
+          "<strong>ट्यूटोरियल की स्क्रीन रिकॉर्डिंग</strong>: वितरण के लिए कंप्रेस करने से पहले"
         ],
-        "warning": "<strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4)."
+        "warning": "<strong>चेतावनी</strong>: सच में, वेब डिलीवरी के लिए AVI इस्तेमाल न करें। मेरे एक क्लाइंट ने अपने प्रोडक्ट वीडियो के लिए AVI इस्तेमाल करने की ज़िद की थी। उनका होमपेज लोड होने में 45 सेकंड लेता था। पैंतालीस। सेकंड। 😱 वे अब क्लाइंट नहीं हैं (मज़ाक कर रहा हूँ, हमने इसे MP4 से ठीक कर दिया)।"
       },
       "mov": {
-        "title": "When to Use MOV",
-        "lead": "<strong>Use MOV when you're in Apple's ecosystem</strong> 🍎",
+        "title": "MOV कब इस्तेमाल करें",
+        "lead": "<strong>MOV तब इस्तेमाल करें जब आप Apple के इकोसिस्टम में हों</strong> 🍎",
         "bullets": [
-          "<strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software",
-          "<strong>ProRes workflows</strong>: When color grading and quality are paramount",
-          "<strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac",
-          "<strong>Before converting</strong>: As a high-quality intermediate format"
+          "<strong>Final Cut Pro प्रोजेक्ट</strong>: MOV Apple के एडिटिंग सॉफ़्टवेयर के साथ अच्छे से चलता है",
+          "<strong>ProRes वर्कफ़्लो</strong>: जब कलर ग्रेडिंग और क्वालिटी सर्वोपरि हों",
+          "<strong>Mac से Mac ट्रांसफ़र</strong>: जब सभी के पास Mac हो",
+          "<strong>कन्वर्ट करने से पहले</strong>: एक उच्च-क्वालिटी मध्यवर्ती फ़ॉर्मैट के रूप में"
         ],
-        "realityCheck": "<strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!"
+        "realityCheck": "<strong>MOV की हक़ीक़त</strong>: मेरी 315.9MB की स्क्रीन रिकॉर्डिंग याद है? वह MOV का MOV होना है। बढ़िया क्वालिटी, शेयर करने के लिए भयानक। अपलोड करने से पहले हमेशा कन्वर्ट करें!"
       },
       "decisionTree": {
-        "title": "Quick Decision Tree 🌳",
-        "diagram": "Is it for the web?\n├─ Yes → Is Safari support critical?\n│   ├─ Yes → MP4\n│   └─ No → WebM (with MP4 fallback)\n└─ No → Is it for editing?\n    ├─ Yes → Are you on Mac?\n    │   ├─ Yes → MOV\n    │   └─ No → AVI\n    └─ No → MP4 (it's always MP4)"
+        "title": "त्वरित निर्णय वृक्ष 🌳",
+        "diagram": "क्या यह वेब के लिए है?\n├─ हाँ → क्या Safari समर्थन ज़रूरी है?\n│   ├─ हाँ → MP4\n│   └─ नहीं → WebM (MP4 फ़ॉलबैक के साथ)\n└─ नहीं → क्या यह एडिटिंग के लिए है?\n    ├─ हाँ → क्या आप Mac पर हैं?\n    │   ├─ हाँ → MOV\n    │   └─ नहीं → AVI\n    └─ नहीं → MP4 (हमेशा MP4 ही होता है)"
       },
-      "quote": "\"The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer.\" 🧘‍♂️"
+      "quote": "\"समझदार डेवलपर जानता है कि सबसे अच्छा फ़ॉर्मैट सबसे नया या सबसे चमकदार नहीं - वह है जो यूज़र को तकलीफ़ दिए बिना काम पूरा कर दे।\" 🧘‍♂️"
     },
     "whyImportant": {
-      "title": "Why Is This Even Important For My Website?",
-      "p1": "Look, I get it. You might be thinking \"Can't I just upload whatever and call it a day?\" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?",
-      "p2": "Here's the cold, hard truth about why video formats matter more than you think:",
+      "title": "यह मेरी वेबसाइट के लिए आख़िर क्यों ज़रूरी है?",
+      "p1": "देखिए, मैं समझता हूँ। आप सोच रहे होंगे \"क्या मैं बस कुछ भी अपलोड करके काम ख़त्म नहीं कर सकता?\" 🤷‍♂️ ज़रूर, आप काँटे से सूप भी पी सकते हैं, लेकिन ज़िंदगी को ज़रूरत से ज़्यादा मुश्किल क्यों बनाना?",
+      "p2": "यह रही कड़वी सच्चाई कि वीडियो फ़ॉर्मैट आपकी सोच से ज़्यादा क्यों मायने रखते हैं:",
       "threeSecondRule": {
-        "title": "The 3-Second Rule ⏱️",
-        "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
+        "title": "3-सेकंड का नियम ⏱️",
+        "body": "अध्ययन बताते हैं कि 53% मोबाइल यूज़र उन साइटों को छोड़ देते हैं जो लोड होने में 3 सेकंड से ज़्यादा लेती हैं। तिरपन प्रतिशत! यानी आपके आधे से ज़्यादा संभावित ग्राहक आपका शानदार कंटेंट देखने से पहले ही चले गए। और अंदाज़ा लगाइए धीमे लोड समय का सबसे बड़ा दोषी आम तौर पर कौन है? सही पकड़े - आपका अनऑप्टिमाइज़्ड 200MB का हीरो वीडियो जो डिजिटल रोडब्लॉक की तरह वहाँ बैठा है 🚧।"
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "Google देख रहा है (और आँक रहा है) 👀",
+        "intro": "पेज स्पीड Google के लिए सीधा रैंकिंग फ़ैक्टर है। इसका मतलब:",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>धीमी साइट = नीची रैंकिंग</strong> = कम ऑर्गेनिक ट्रैफ़िक",
+          "<strong>कम ट्रैफ़िक = कम कन्वर्ज़न</strong> = कम पैसा",
+          "<strong>कम पैसा = उदास डेवलपर</strong> 😢"
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "मेरा एक क्लाइंट था जिसकी ई-कॉमर्स साइट प्रोडक्ट वीडियो के लिए विशाल MOV फ़ाइलें इस्तेमाल कर रही थी। सब कुछ ऑप्टिमाइज़्ड MP4 और फ़ॉलबैक वाले WebM में बदलने के बाद, उनका:",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "पेज लोड समय 8.2 से घटकर 2.7 सेकंड हो गया",
+          "उनके 67% लक्षित कीवर्ड के लिए Google रैंकिंग सुधरी",
+          "कन्वर्ज़न रेट 23% बढ़ा",
+          "मासिक राजस्व $18,000 उछला 💸"
         ]
       },
       "bandwidthBill": {
-        "title": "The Bandwidth Bill From Hell 🔥",
-        "body": "Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.",
-        "realNumbersIntro": "<strong>Real numbers</strong>: If your site gets 10,000 visitors/month:",
+        "title": "नरक से आया बैंडविड्थ बिल 🔥",
+        "body": "हर बार जब कोई आपका पेज लोड करता है, आप उस बैंडविड्थ का भुगतान करते हैं। 5MB MP4 के बजाय 50MB AVI इस्तेमाल करने का मतलब है आप होस्टिंग के लिए सचमुच 10 गुना ज़्यादा दे रहे हैं। यह एक पिज़्ज़ा की ज़रूरत पर 10 पिज़्ज़ा ऑर्डर करने जैसा है - बस कम स्वादिष्ट और ज़्यादा महँगा।",
+        "realNumbersIntro": "<strong>असली आँकड़े</strong>: अगर आपकी साइट पर 10,000 विज़िटर/माह आते हैं:",
         "bullets": [
-          "With 50MB videos: 500GB bandwidth = $$",
-          "With 5MB videos: 50GB bandwidth = $",
-          "That's potentially hundreds of dollars saved monthly!"
+          "50MB वीडियो के साथ: 500GB बैंडविड्थ = $$",
+          "5MB वीडियो के साथ: 50GB बैंडविड्थ = $",
+          "यानी हर महीने संभावित रूप से सैकड़ों डॉलर की बचत!"
         ]
       },
       "mobileUsers": {
-        "title": "Mobile Users Will Hate You 📱",
-        "intro": "Remember, over 60% of web traffic is mobile now. That means:",
+        "title": "मोबाइल यूज़र आपसे नफ़रत करेंगे 📱",
+        "intro": "याद रखें, अब 60% से ज़्यादा वेब ट्रैफ़िक मोबाइल है। इसका मतलब:",
         "bullets": [
-          "<strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video",
-          "<strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty",
-          "<strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users"
+          "<strong>डेटा कैप असली हैं</strong>: कोई नहीं चाहता कि आपका हीरो वीडियो देखने में उसका महीने भर का डेटा उड़ जाए",
+          "<strong>धीमे कनेक्शन</strong>: हर किसी के पास 5G नहीं है, और 4G भी कमज़ोर हो सकता है",
+          "<strong>बैटरी की खपत</strong>: बड़े वीडियो = ज़्यादा प्रोसेसिंग = मरे हुए फ़ोन = नाराज़ यूज़र"
         ]
       },
       "trust": {
-        "title": "Trust and Professionalism 🤝",
-        "intro": "This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:",
+        "title": "भरोसा और पेशेवराना अंदाज़ 🤝",
+        "intro": "यह वह बात है जिस पर कोई बात नहीं करता, लेकिन यह बहुत बड़ी है। जब आपकी साइट तेज़ी से लोड होती है और वीडियो स्मूद चलते हैं:",
         "bullets": [
-          "Users trust you more (subconsciously associating speed with competence)",
-          "They're more likely to stay and explore",
-          "They're more likely to come back",
-          "They're more likely to recommend you"
+          "यूज़र आप पर ज़्यादा भरोसा करते हैं (अवचेतन रूप से स्पीड को योग्यता से जोड़ते हुए)",
+          "वे रुकने और एक्सप्लोर करने की ज़्यादा संभावना रखते हैं",
+          "वे वापस आने की ज़्यादा संभावना रखते हैं",
+          "वे आपकी सिफ़ारिश करने की ज़्यादा संभावना रखते हैं"
         ],
-        "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
+        "outro": "लेकिन जब आपकी साइट धीमी हो? यह फ़ॉगहॉर्न से भी ज़ोर से \"नौसिखिया\" चिल्लाती है 📯। यूज़र सोचते हैं: \"अगर ये अपनी वेबसाइट तक ठीक नहीं रख सकते, तो क्या मैं इन्हें अपना क्रेडिट कार्ड सौंप सकता हूँ?\""
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "कमाई का कनेक्शन 💰",
+        "intro": "चाहे आप विज्ञापन चला रहे हों, प्रोडक्ट बेच रहे हों, या Medium पर कंटेंट से कमा रहे हों (नमस्ते, साथी Medium लेखक! 👋), परफ़ॉर्मेंस सीधे आपकी कमाई पर असर डालती है:",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>विज्ञापन राजस्व</strong>: धीमी साइट = ज़्यादा बाउंस रेट = कम विज्ञापन इंप्रेशन",
+          "<strong>एफ़िलिएट लिंक</strong>: लोग उस पर क्लिक नहीं कर सकते जिसे देखने का वे इंतज़ार ही नहीं करते",
+          "<strong>प्रोडक्ट बिक्री</strong>: लोड समय का हर सेकंड कन्वर्ज़न 7% घटा सकता है",
+          "<strong>कंटेंट से कमाई</strong>: पाठक आपके शानदार लेख के लोड होने का इंतज़ार नहीं करेंगे"
         ]
       },
-      "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"
+      "quote": "\"वेबसाइट की स्पीड पहली छाप जैसी है - आपको सिर्फ़ एक मौक़ा मिलता है, और अगर आपने उसे गँवा दिया, तो वे 'कृपया प्रतीक्षा करें, लोड हो रहा है...' कहने से पहले ही बाएँ स्वाइप कर देंगे\" 💨"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.",
-      "cheatSheetIntro": "Here's your TL;DR cheat sheet:",
+      "title": "निष्कर्ष",
+      "p1": "तो यह रहा, साथी डिजिटल साहसी! 🚀 हमने वीडियो फ़ॉर्मैट की जंगली दुनिया का सफ़र किया है, और उम्मीद है कि अब आप MP4, WebM, AVI और MOV को रहस्यमय एलियन भाषाओं की तरह नहीं देख रहे।",
+      "cheatSheetIntro": "यह रही आपकी संक्षिप्त चीट शीट:",
       "cheatSheet": [
-        "<strong>MP4</strong>: Your reliable, go-everywhere friend",
-        "<strong>WebM</strong>: The speed demon for modern web",
-        "<strong>AVI</strong>: The quality beast for local storage",
-        "<strong>MOV</strong>: Apple's heavyweight champion"
+        "<strong>MP4</strong>: आपका भरोसेमंद, हर जगह चलने वाला दोस्त",
+        "<strong>WebM</strong>: आधुनिक वेब का स्पीड डेमन",
+        "<strong>AVI</strong>: लोकल स्टोरेज का क्वालिटी दानव",
+        "<strong>MOV</strong>: Apple का हैवीवेट चैंपियन"
       ],
-      "p2": "But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:",
+      "p2": "लेकिन उससे भी ज़रूरी, अब आप जानते हैं कि सही वीडियो फ़ॉर्मैट चुनना सिर्फ़ कोई गीकी तकनीकी फ़ैसला नहीं है - यह इस बारे में है:",
       "checklist": [
-        "✅ Keeping your users happy (and on your site)",
-        "✅ Making Google love you (hello, better rankings! 👋)",
-        "✅ Saving money on hosting (cha-ching! 💰)",
-        "✅ Building trust and looking professional",
-        "✅ Actually making money from your content"
+        "✅ अपने यूज़र को खुश (और अपनी साइट पर) रखना",
+        "✅ Google को अपना दीवाना बनाना (नमस्ते, बेहतर रैंकिंग! 👋)",
+        "✅ होस्टिंग पर पैसे बचाना (छन-छन! 💰)",
+        "✅ भरोसा बनाना और पेशेवर दिखना",
+        "✅ अपने कंटेंट से सच में पैसे कमाना"
       ],
-      "p3": "The next time you're about to upload a video to your website, take a second to ask yourself: \"Is this format working for me, or am I working for it?\" Because life's too short for slow-loading websites and frustrated users.",
-      "p4": "Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅",
-      "quote": "\"In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!\" ⚡"
+      "p3": "अगली बार जब आप अपनी वेबसाइट पर वीडियो अपलोड करने वाले हों, एक पल रुककर खुद से पूछें: \"क्या यह फ़ॉर्मैट मेरे लिए काम कर रहा है, या मैं इसके लिए काम कर रहा हूँ?\" क्योंकि धीमी लोड होने वाली वेबसाइटों और निराश यूज़र के लिए ज़िंदगी बहुत छोटी है।",
+      "p4": "अब जाइए और उन वीडियो को कंप्रेस कीजिए! आपके यूज़र (और आपका बटुआ) आपको धन्यवाद देंगे। और अगर यह आपको उपयोगी लगा, तो Medium पर एक क्लैप दें या इसे उस दोस्त के साथ शेयर करें जो अब भी अपनी वेबसाइट पर कच्ची MOV फ़ाइलें अपलोड कर रहा है। हम सब ऐसे किसी को जानते हैं 😅",
+      "quote": "\"वेब डेवलपमेंट के महान साहसिक सफ़र में सबसे छोटे ऑप्टिमाइज़ेशन अक्सर सबसे बड़ी जीत दिलाते हैं। आपके वीडियो कंप्रेस्ड हों और आपके लोड समय तेज़!\" ⚡"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Apply what you just read with the free Media Manipulator tools.",
+      "title": "संबंधित टूल",
+      "intro": "जो अभी पढ़ा उसे Media Manipulator के मुफ़्त टूल से आज़माएँ।",
       "items": [
         {
-          "label": "Compress video",
-          "description": "Shrink MP4, WebM, MOV, and MKV files for the web."
+          "label": "वीडियो कंप्रेस करें",
+          "description": "वेब के लिए MP4, WebM, MOV और MKV फ़ाइलें छोटी करें।"
         },
         {
-          "label": "Video converter",
-          "description": "Convert between MP4, WebM, MOV, AVI, and more."
+          "label": "वीडियो कन्वर्टर",
+          "description": "MP4, WebM, MOV, AVI और अन्य के बीच कन्वर्ट करें।"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "वीडियो को GIF में बदलें",
+          "description": "छोटी वीडियो क्लिप को शेयर करने योग्य एनिमेटेड GIF में बदलें।"
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video into searchable text or captions."
+          "label": "वीडियो ट्रांसक्राइब करें",
+          "description": "वीडियो में बोले गए शब्दों को खोजने योग्य टेक्स्ट या कैप्शन में निकालें।"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Step-by-step walkthrough of every video conversion setting."
+          "label": "वीडियो कन्वर्टर ट्यूटोरियल",
+          "description": "हर वीडियो कन्वर्ज़न सेटिंग की चरण-दर-चरण गाइड।"
         },
         {
-          "label": "Image optimization guide",
-          "description": "JPG vs PNG vs WebP and how to shrink images for the web."
+          "label": "इमेज ऑप्टिमाइज़ेशन गाइड",
+          "description": "JPG बनाम PNG बनाम WebP और वेब के लिए इमेज कैसे छोटी करें।"
         }
       ]
     },
     "cta": {
-      "title": "Ready to Optimize Your Videos? 🚀",
-      "body": "Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.",
-      "button": "Try the video compressor →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "अपने वीडियो ऑप्टिमाइज़ करने को तैयार? 🚀",
+      "body": "विशाल वीडियो फ़ाइलों को अपनी वेबसाइट धीमी न करने दें! हमारा मुफ़्त वीडियो कंप्रेशन टूल आज़माएँ और फ़र्क़ तुरंत देखें। बस कुछ क्लिक में MP4, WebM, AVI, MOV और बहुत कुछ कन्वर्ट करें।",
+      "button": "वीडियो कंप्रेसर आज़माएँ →",
+      "footnote": "साइनअप की ज़रूरत नहीं • फ़ाइलें लोकली प्रोसेस • तेज़ और सुरक्षित"
     }
   },
   "blogImageOptimization": {
-    "backLink": "← Blog",
-    "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+    "backLink": "← ब्लॉग",
+    "title": "वेब जेडाई के लिए इमेज ऑप्टिमाइज़ेशन: JPG बनाम PNG बनाम WebP",
     "byline": {
-      "label": "Written by:",
-      "date": "June 14th, 2025",
-      "time": "5:32 PM"
+      "label": "लेखक:",
+      "date": "14 जून 2025",
+      "time": "शाम 5:32"
     },
     "sections": {
       "intro": {
-        "title": "A Brief Intro to Image Formatting",
-        "p1": "Ever uploaded an image to your website and wondered why it takes <em>forever</em> to load? Or maybe you've noticed that your beautiful PNG logo looks crisp and clean, but it's somehow 5MB for a simple graphic? 🤔 Welcome to the wild world of image formats, where choosing the wrong one can make the difference between a lightning-fast website and one that loads slower than dial-up internet (remember that? 😅).",
-        "p2": "Image formats are essentially different ways of encoding and storing visual data. Think of them like different languages for describing the same picture - some are more verbose and detailed (like PNG), while others are more concise and compressed (like JPG). Each format has its own special sauce for how it stores pixels, handles transparency, compresses data, and maintains quality.",
-        "p3": "At their core, all image formats are trying to solve the same problem: how do we store millions of pixels worth of color information in a file that doesn't break the internet when someone tries to download it? The answer lies in <em>compression</em> - and this is where things get interesting! Some formats use \"lossy\" compression (they throw away some data to save space), while others use \"lossless\" compression (they keep everything but find clever ways to pack it smaller). It's like the difference between summarizing a book versus shrinking the font size - both make it \"smaller,\" but one loses information while the other doesn't.",
-        "p4": "The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀",
-        "quote": "\"The wise developer knows that the heaviest burden on a website is not code, but unoptimized images.\" - Ancient Web Proverb 😉"
+        "title": "इमेज फ़ॉर्मैटिंग का संक्षिप्त परिचय",
+        "p1": "कभी अपनी वेबसाइट पर इमेज अपलोड करके सोचा है कि यह लोड होने में <em>इतना</em> समय क्यों लेती है? या शायद आपने देखा हो कि आपका सुंदर PNG लोगो साफ़ और चमकदार दिखता है, लेकिन एक सादे ग्राफ़िक के लिए किसी तरह 5MB का है? 🤔 इमेज फ़ॉर्मैट की जंगली दुनिया में आपका स्वागत है, जहाँ गलत फ़ॉर्मैट चुनना बिजली की रफ़्तार वाली वेबसाइट और डायल-अप इंटरनेट से भी धीमी लोड होने वाली वेबसाइट के बीच का फ़र्क़ बना सकता है (याद है वह? 😅)।",
+        "p2": "इमेज फ़ॉर्मैट मूल रूप से विज़ुअल डेटा को एनकोड और स्टोर करने के अलग-अलग तरीके हैं। इन्हें एक ही तस्वीर का वर्णन करने वाली अलग-अलग भाषाओं की तरह समझें - कुछ ज़्यादा विस्तृत और शब्दबहुल हैं (जैसे PNG), जबकि अन्य ज़्यादा संक्षिप्त और कंप्रेस्ड हैं (जैसे JPG)। हर फ़ॉर्मैट का पिक्सेल स्टोर करने, पारदर्शिता संभालने, डेटा कंप्रेस करने और क्वालिटी बनाए रखने का अपना ख़ास नुस्ख़ा है।",
+        "p3": "मूल रूप से, सभी इमेज फ़ॉर्मैट एक ही समस्या हल करने की कोशिश कर रहे हैं: लाखों पिक्सेल की रंग जानकारी को ऐसी फ़ाइल में कैसे स्टोर करें जो किसी के डाउनलोड करने पर इंटरनेट न तोड़ दे? जवाब <em>कंप्रेशन</em> में है - और यहीं चीज़ें दिलचस्प हो जाती हैं! कुछ फ़ॉर्मैट \"लॉसी\" कंप्रेशन इस्तेमाल करते हैं (जगह बचाने के लिए कुछ डेटा फेंक देते हैं), जबकि अन्य \"लॉसलेस\" कंप्रेशन (सब कुछ रखते हैं लेकिन उसे छोटा पैक करने के चतुर तरीके ढूँढते हैं)। यह किताब का सारांश बनाने बनाम फ़ॉन्ट का आकार घटाने के बीच का फ़र्क़ है - दोनों इसे \"छोटा\" करते हैं, लेकिन एक में जानकारी खोती है और दूसरे में नहीं।",
+        "p4": "आज जिन तीन दोस्तों में हम उतरेंगे - JPG, PNG और WebP - हर एक इस चुनौती से अलग तरह से निपटता है, और उनकी अनोखी महाशक्तियों (और क्रिप्टोनाइट!) को समझना आपको पैडावान से सच्चा वेब जेडाई बना देगा। 🚀",
+        "quote": "\"समझदार डेवलपर जानता है कि वेबसाइट पर सबसे भारी बोझ कोड नहीं, अनऑप्टिमाइज़्ड इमेज हैं।\" - प्राचीन वेब कहावत 😉"
       },
       "differences": {
-        "title": "What's the Difference Between These Formats Anyway?",
-        "intro": "Alright, let's get into the nitty-gritty of what makes each format tick! Think of these formats as different types of vehicles - they'll all get you from point A to point B, but some are sports cars, some are trucks, and some are those fancy new electric vehicles that do everything. 🚗",
+        "title": "आख़िर इन फ़ॉर्मैट में फ़र्क़ क्या है?",
+        "intro": "ठीक है, चलिए बारीकी से देखते हैं कि हर फ़ॉर्मैट को क्या चलाता है! इन फ़ॉर्मैट को अलग-अलग तरह के वाहनों की तरह समझें - सब आपको बिंदु A से बिंदु B तक पहुँचाएँगे, लेकिन कुछ स्पोर्ट्स कार हैं, कुछ ट्रक, और कुछ वे फ़ैंसी नई इलेक्ट्रिक गाड़ियाँ जो सब कुछ करती हैं। 🚗",
         "jpg": {
-          "title": "JPG (or JPEG - they're the same thing, don't let anyone tell you otherwise 😄)",
-          "body": "JPG is like that reliable friend who's great at parties but terrible with details. It uses lossy compression, which means it literally throws away data it thinks you won't notice. Perfect for photographs where a tiny bit of quality loss is invisible to the human eye, but terrible for text or sharp edges. Ever seen a meme that's been shared so many times it looks like it was photographed through a potato? That's JPG compression artifacts saying hello! 👋",
+          "title": "JPG (या JPEG - दोनों एक ही चीज़ हैं, किसी को कुछ और कहने न दें 😄)",
+          "body": "JPG उस भरोसेमंद दोस्त जैसा है जो पार्टियों में बढ़िया है लेकिन बारीकियों में भयानक। यह लॉसी कंप्रेशन इस्तेमाल करता है, यानी यह सचमुच वह डेटा फेंक देता है जिसके बारे में उसे लगता है कि आप ध्यान नहीं देंगे। फ़ोटो के लिए परफ़ेक्ट, जहाँ थोड़ी-सी क्वालिटी हानि मानव आँख को नहीं दिखती, लेकिन टेक्स्ट या तीखे किनारों के लिए भयानक। कभी ऐसा मीम देखा है जो इतनी बार शेयर हुआ कि लगता है आलू से फ़ोटो खींची गई हो? वह JPG कंप्रेशन आर्टिफ़ैक्ट का नमस्ते है! 👋",
           "bullets": [
-            "<strong>Pros</strong>: Small file sizes, universally supported, great for photos",
-            "<strong>Cons</strong>: No transparency support, loses quality with each save, makes text look fuzzy",
-            "<strong>Best for</strong>: Photographs, complex images with lots of colors"
+            "<strong>फ़ायदे</strong>: छोटे फ़ाइल आकार, सार्वभौमिक समर्थन, फ़ोटो के लिए बढ़िया",
+            "<strong>नुकसान</strong>: पारदर्शिता समर्थन नहीं, हर सेव पर क्वालिटी खोती है, टेक्स्ट धुंधला दिखता है",
+            "<strong>सबसे अच्छा</strong>: फ़ोटो, ढेर सारे रंगों वाली जटिल इमेज"
           ]
         },
         "png": {
           "title": "PNG (Portable Network Graphics)",
-          "body": "PNG is the perfectionist of the group - it refuses to lose any data whatsoever. Using lossless compression, it keeps every single pixel exactly as you intended. It also supports transparency (hello, logos with no background! 🎉), making it the go-to choice for graphics, icons, and anything with text. The downside? File sizes can get chunky real quick, especially with large, complex images.",
+          "body": "PNG समूह का पूर्णतावादी है - यह कोई भी डेटा खोने से इनकार करता है। लॉसलेस कंप्रेशन इस्तेमाल करते हुए यह हर पिक्सेल को ठीक वैसा रखता है जैसा आपने चाहा था। यह पारदर्शिता का भी समर्थन करता है (नमस्ते, बिना बैकग्राउंड वाले लोगो! 🎉), जो इसे ग्राफ़िक्स, आइकन और टेक्स्ट वाली किसी भी चीज़ के लिए पहली पसंद बनाता है। नुकसान? फ़ाइल आकार बहुत जल्दी भारी हो सकते हैं, खास तौर पर बड़ी, जटिल इमेज के साथ।",
           "bullets": [
-            "<strong>Pros</strong>: Lossless compression, supports transparency, perfect for graphics and text",
-            "<strong>Cons</strong>: Larger file sizes, not ideal for photographs",
-            "<strong>Best for</strong>: Logos, icons, images with text, anything needing transparency"
+            "<strong>फ़ायदे</strong>: लॉसलेस कंप्रेशन, पारदर्शिता का समर्थन, ग्राफ़िक्स और टेक्स्ट के लिए परफ़ेक्ट",
+            "<strong>नुकसान</strong>: बड़े फ़ाइल आकार, फ़ोटो के लिए आदर्श नहीं",
+            "<strong>सबसे अच्छा</strong>: लोगो, आइकन, टेक्स्ट वाली इमेज, पारदर्शिता की ज़रूरत वाली कोई भी चीज़"
           ]
         },
         "webp": {
-          "title": "WebP (The New Kid on the Block)",
-          "body": "WebP is Google's attempt to create the ultimate image format - and honestly, they kind of nailed it! 🎯 It's like the Swiss Army knife of image formats, supporting both lossy AND lossless compression, transparency, and even animation (move over, GIF!). It typically achieves 25-35% smaller file sizes than JPG and PNG while maintaining the same quality. The only catch? Not every browser plays nice with it yet (looking at you, older Safari versions 👀).",
+          "title": "WebP (मोहल्ले का नया बच्चा)",
+          "body": "WebP परम इमेज फ़ॉर्मैट बनाने की Google की कोशिश है - और सच कहूँ तो, उन्होंने इसे काफ़ी हद तक कर दिखाया! 🎯 यह इमेज फ़ॉर्मैट का स्विस आर्मी नाइफ़ है, जो लॉसी और लॉसलेस दोनों कंप्रेशन, पारदर्शिता और यहाँ तक कि एनिमेशन (हट जाओ, GIF!) का समर्थन करता है। यह आम तौर पर समान क्वालिटी बनाए रखते हुए JPG और PNG से 25-35% छोटे फ़ाइल आकार देता है। एकमात्र पेंच? अभी हर ब्राउज़र इसके साथ अच्छे से नहीं चलता (हाँ, पुराने Safari वर्ज़न, तुम्हारी बात हो रही है 👀)।",
           "bullets": [
-            "<strong>Pros</strong>: Smaller file sizes, supports everything (lossy, lossless, transparency, animation), excellent quality-to-size ratio",
-            "<strong>Cons</strong>: Not universally supported (yet), requires fallbacks for older browsers",
-            "<strong>Best for</strong>: Modern websites where you can provide fallbacks, any use case really!"
+            "<strong>फ़ायदे</strong>: छोटे फ़ाइल आकार, सब कुछ समर्थित (लॉसी, लॉसलेस, पारदर्शिता, एनिमेशन), उत्कृष्ट क्वालिटी-से-आकार अनुपात",
+            "<strong>नुकसान</strong>: (अभी) सार्वभौमिक समर्थन नहीं, पुराने ब्राउज़र के लिए फ़ॉलबैक चाहिए",
+            "<strong>सबसे अच्छा</strong>: आधुनिक वेबसाइटें जहाँ आप फ़ॉलबैक दे सकते हैं, सच कहें तो कोई भी उपयोग!"
           ]
         },
-        "example": "Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️",
-        "quote": "\"Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses.\" ⚔️"
+        "example": "यह रहा असली दुनिया का एक त्वरित उदाहरण: 1920x1080 की फ़ोटो JPG के रूप में 500KB, PNG के रूप में 2MB, लेकिन WebP के रूप में केवल 350KB हो सकती है - लगभग एक जैसी विज़ुअल क्वालिटी के साथ। यह कॉम्पैक्ट कार की कीमत में लग्ज़री कार पाने जैसा है! 🏎️",
+        "quote": "\"अपना फ़ॉर्मैट वैसे चुनें जैसे समुराई अपनी तलवार चुनता है - उद्देश्य, सटीकता और उसकी ताक़त और कमज़ोरियों की समझ के साथ।\" ⚔️"
       },
       "choosing": {
-        "title": "How Do I Know When to Use One Format Over Another?",
-        "intro": "This is where the rubber meets the road! 🏁 Choosing the right format isn't rocket science, but it does require thinking like a detective. Let me break down the decision-making process with some real-world scenarios that'll make you go \"Aha!\" 💡",
+        "title": "मुझे कैसे पता चले कि कब कौन सा फ़ॉर्मैट इस्तेमाल करूँ?",
+        "intro": "यहीं असली परीक्षा होती है! 🏁 सही फ़ॉर्मैट चुनना रॉकेट साइंस नहीं है, लेकिन इसके लिए जासूस की तरह सोचना पड़ता है। मैं निर्णय प्रक्रिया को कुछ असली दुनिया की स्थितियों से समझाता हूँ जो आपसे \"अहा!\" कहलवाएँगी 💡",
         "decisionTree": {
-          "title": "The Quick Decision Tree (Screenshot This! 📸)",
-          "lead": "Ask yourself these questions in order:",
+          "title": "त्वरित निर्णय वृक्ष (इसका स्क्रीनशॉट लें! 📸)",
+          "lead": "खुद से ये सवाल क्रम में पूछें:",
           "items": [
-            "Does it need transparency? → If yes, PNG or WebP",
-            "Is it a photograph with lots of colors and gradients? → JPG or WebP",
-            "Does it have text or sharp edges? → PNG or WebP",
-            "Do I need the absolute smallest file size? → WebP (with JPG/PNG fallback)",
-            "Is it going to be edited and saved multiple times? → PNG (to avoid quality degradation)"
+            "क्या इसे पारदर्शिता चाहिए? → अगर हाँ, PNG या WebP",
+            "क्या यह ढेर सारे रंगों और ग्रेडिएंट वाली फ़ोटो है? → JPG या WebP",
+            "क्या इसमें टेक्स्ट या तीखे किनारे हैं? → PNG या WebP",
+            "क्या मुझे सबसे छोटा संभव फ़ाइल आकार चाहिए? → WebP (JPG/PNG फ़ॉलबैक के साथ)",
+            "क्या इसे कई बार एडिट और सेव किया जाएगा? → PNG (क्वालिटी गिरने से बचने के लिए)"
           ]
         },
         "scenarios": {
-          "title": "Real-World Scenarios (Because Theory is Boring 😴)",
+          "title": "असली दुनिया की स्थितियाँ (क्योंकि सिद्धांत उबाऊ है 😴)",
           "items": [
             {
-              "title": "Scenario 1: Your Company Logo",
-              "body": "You've got a slick logo that needs to work on any background. This is PNG territory all day! Why? You need that transparency, baby! Plus, logos typically have clean lines and solid colors that PNG handles like a boss. If you're feeling adventurous and your analytics show most users have modern browsers, go WebP with PNG fallback."
+              "title": "स्थिति 1: आपकी कंपनी का लोगो",
+              "body": "आपके पास एक शानदार लोगो है जिसे किसी भी बैकग्राउंड पर काम करना है। यह पूरी तरह PNG का इलाक़ा है! क्यों? आपको वह पारदर्शिता चाहिए! साथ ही लोगो में आम तौर पर साफ़ रेखाएँ और ठोस रंग होते हैं जिन्हें PNG बॉस की तरह संभालता है। अगर आप साहसी महसूस कर रहे हैं और आपके एनालिटिक्स दिखाते हैं कि ज़्यादातर यूज़र के पास आधुनिक ब्राउज़र हैं, तो PNG फ़ॉलबैक के साथ WebP अपनाएँ।"
             },
             {
-              "title": "Scenario 2: Hero Image on Your Landing Page",
-              "body": "That gorgeous 4K photograph of your product/team/artisanal coffee? JPG or WebP, no question. The slight quality loss from JPG compression is invisible in photographs, and the file size difference is *chef's kiss* 👨‍🍳. A 5MB PNG photo will make your users cry (and bounce), while a 500KB JPG will load faster than they can say \"add to cart.\""
+              "title": "स्थिति 2: आपके लैंडिंग पेज की हीरो इमेज",
+              "body": "आपके प्रोडक्ट/टीम/आर्टिज़न कॉफ़ी की वह ख़ूबसूरत 4K फ़ोटो? JPG या WebP, कोई सवाल नहीं। JPG कंप्रेशन की मामूली क्वालिटी हानि फ़ोटो में दिखती नहीं, और फ़ाइल आकार का अंतर *शेफ़ का चुंबन* है 👨‍🍳। 5MB की PNG फ़ोटो आपके यूज़र को रुला देगी (और भगा देगी), जबकि 500KB की JPG उनके \"कार्ट में जोड़ें\" कहने से पहले लोड हो जाएगी।"
             },
             {
-              "title": "Scenario 3: Screenshots for Your Blog/Documentation",
-              "body": "This one's tricky! If there's text in the screenshot (and there usually is), PNG is your friend. JPG will make that text look like it went through a blender. However, if you're taking screenshots on a Mac, those bad boys can be HUGE. Consider using WebP or optimizing your PNGs with tools like TinyPNG."
+              "title": "स्थिति 3: आपके ब्लॉग/डॉक्यूमेंटेशन के स्क्रीनशॉट",
+              "body": "यह थोड़ा पेचीदा है! अगर स्क्रीनशॉट में टेक्स्ट है (और आम तौर पर होता है), तो PNG आपका दोस्त है। JPG उस टेक्स्ट को ऐसा बना देगा जैसे वह ब्लेंडर से गुज़रा हो। हालाँकि, अगर आप Mac पर स्क्रीनशॉट ले रहे हैं, तो वे विशाल हो सकते हैं। WebP इस्तेमाल करने या TinyPNG जैसे टूल से अपनी PNG ऑप्टिमाइज़ करने पर विचार करें।"
             },
             {
-              "title": "Scenario 4: Product Images for E-commerce",
-              "body": "WebP with JPG fallback is the power move here. 🎯 You get smaller file sizes (faster load times = better conversions), great quality, and you can even add subtle transparency effects if needed. Just make sure to implement proper fallbacks for the Safari-on-iPhone crowd."
+              "title": "स्थिति 4: ई-कॉमर्स के लिए प्रोडक्ट इमेज",
+              "body": "यहाँ JPG फ़ॉलबैक के साथ WebP पावर मूव है। 🎯 आपको छोटे फ़ाइल आकार (तेज़ लोड समय = बेहतर कन्वर्ज़न), बढ़िया क्वालिटी मिलती है, और ज़रूरत पड़ने पर आप हल्के पारदर्शिता इफ़ेक्ट भी जोड़ सकते हैं। बस iPhone पर Safari वाली भीड़ के लिए सही फ़ॉलबैक ज़रूर लगाएँ।"
             }
           ]
         },
         "proTips": {
-          "title": "Pro Tips from the Trenches 🪖",
+          "title": "मैदान से प्रो टिप्स 🪖",
           "items": [
-            "Always compress your images! Even if you choose the right format, an unoptimized PNG can still be a monster",
-            "Use responsive images with different sizes for different devices (your mobile users will thank you)",
-            "Consider using CDNs that can automatically serve WebP to supported browsers",
-            "When in doubt, test both formats and see which looks better at a reasonable file size"
+            "अपनी इमेज हमेशा कंप्रेस करें! सही फ़ॉर्मैट चुनने पर भी अनऑप्टिमाइज़्ड PNG एक दानव हो सकती है",
+            "अलग-अलग डिवाइस के लिए अलग-अलग आकार वाली रिस्पॉन्सिव इमेज इस्तेमाल करें (आपके मोबाइल यूज़र आपको धन्यवाद देंगे)",
+            "ऐसे CDN इस्तेमाल करने पर विचार करें जो समर्थित ब्राउज़र को अपने आप WebP दे सकें",
+            "संदेह हो तो दोनों फ़ॉर्मैट आज़माएँ और देखें कि उचित फ़ाइल आकार पर कौन सा बेहतर दिखता है"
           ]
         },
-        "quote": "\"The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves.\" 🧘‍♂️"
+        "quote": "\"मास्टर वेब डेवलपर वह फ़ॉर्मैट नहीं चुनता जो सबसे अच्छा दिखे, बल्कि वह जो यूज़र की सबसे अच्छी सेवा करे - क्योंकि दूसरों की सेवा में हम खुद को ऑप्टिमाइज़ करते हैं।\" 🧘‍♂️"
       },
       "whyImportant": {
-        "title": "Why Is This Even Important For My Website?",
-        "intro": "Okay, real talk time. 💯 You might be thinking, \"Come on, it's 2025, everyone has fast internet now, right?\" WRONG! Let me hit you with some truth bombs that'll make you want to optimize every image on your site immediately. 💣",
+        "title": "यह मेरी वेबसाइट के लिए आख़िर क्यों ज़रूरी है?",
+        "intro": "ठीक है, सच्ची बात का समय। 💯 आप सोच रहे होंगे, \"अरे, 2025 है, अब सबके पास तेज़ इंटरनेट है, है ना?\" ग़लत! मैं आप पर कुछ सच्चाई के बम गिराता हूँ जो आपको अपनी साइट की हर इमेज तुरंत ऑप्टिमाइज़ करने पर मजबूर कर देंगे। 💣",
         "loadTimes": {
-          "title": "The Brutal Reality of Page Load Times",
-          "p1": "Here's a stat that'll make your jaw drop: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load</strong>. THREE. SECONDS. 😱 And guess what's usually the biggest culprit? Yep, those chunky, unoptimized images you uploaded straight from your camera.",
-          "p2": "Let's do some quick math (don't worry, I'll keep it simple):",
+          "title": "पेज लोड समय की क्रूर हक़ीक़त",
+          "p1": "यह रहा एक आँकड़ा जो आपका जबड़ा गिरा देगा: <strong>53% मोबाइल यूज़र उन साइटों को छोड़ देते हैं जो लोड होने में 3 सेकंड से ज़्यादा लेती हैं</strong>। तीन। सेकंड। 😱 और अंदाज़ा लगाइए सबसे बड़ा दोषी आम तौर पर कौन है? हाँ, वे भारी, अनऑप्टिमाइज़्ड इमेज जो आपने सीधे अपने कैमरे से अपलोड कीं।",
+          "p2": "चलिए थोड़ा गणित करते हैं (चिंता न करें, मैं इसे आसान रखूँगा):",
           "items": [
-            "Average webpage: 2-3MB total",
-            "Unoptimized hero image: 5MB",
-            "Result: Your page just became slower than a sloth on sedatives 🦥"
+            "औसत वेबपेज: कुल 2-3MB",
+            "अनऑप्टिमाइज़्ड हीरो इमेज: 5MB",
+            "नतीजा: आपका पेज अभी-अभी नींद की दवा खाए स्लॉथ से भी धीमा हो गया 🦥"
           ]
         },
         "seo": {
-          "title": "The SEO Domino Effect 🎯",
-          "intro": "Google's Core Web Vitals (fancy term for \"does your site load fast?\") directly impact your search rankings. Here's the chain reaction:",
+          "title": "SEO का डोमिनो प्रभाव 🎯",
+          "intro": "Google के Core Web Vitals (\"क्या आपकी साइट तेज़ी से लोड होती है?\" का फ़ैंसी नाम) सीधे आपकी सर्च रैंकिंग पर असर डालते हैं। यह रही शृंखला प्रतिक्रिया:",
           "items": [
-            "Heavy images → Slow load times",
-            "Slow load times → Poor Core Web Vitals scores",
-            "Poor scores → Lower search rankings",
-            "Lower rankings → Less traffic",
-            "Less traffic → Less money 💸"
+            "भारी इमेज → धीमा लोड समय",
+            "धीमा लोड समय → ख़राब Core Web Vitals स्कोर",
+            "ख़राब स्कोर → नीची सर्च रैंकिंग",
+            "नीची रैंकिंग → कम ट्रैफ़िक",
+            "कम ट्रैफ़िक → कम पैसा 💸"
           ],
-          "outro": "It's like a really expensive game of dominoes where every piece that falls costs you customers!"
+          "outro": "यह डोमिनो का एक बहुत महँगा खेल है जहाँ गिरने वाला हर टुकड़ा आपके ग्राहक छीनता है!"
         },
         "mobile": {
-          "title": "The Mobile Reality Check 📱",
-          "p1": "Here's something that might surprise you: In many parts of the world, people are browsing on 3G connections or have data caps. That beautiful 10MB PNG hero image? It just cost someone in India half their daily data allowance. Not cool, and definitely not good for business.",
-          "p2": "Plus, even in countries with \"fast\" internet, people are often on spotty coffee shop WiFi or riding the subway. Your unoptimized images are literally making people close your site and go to your competitor. Ouch! 🤕"
+          "title": "मोबाइल की हक़ीक़त 📱",
+          "p1": "यह रही एक बात जो आपको चौंका सकती है: दुनिया के कई हिस्सों में लोग 3G कनेक्शन पर ब्राउज़ करते हैं या उनके पास डेटा कैप हैं। वह ख़ूबसूरत 10MB की PNG हीरो इमेज? उसने अभी-अभी भारत में किसी का आधे दिन का डेटा खा लिया। अच्छा नहीं, और व्यापार के लिए तो बिल्कुल नहीं।",
+          "p2": "साथ ही, \"तेज़\" इंटरनेट वाले देशों में भी लोग अक्सर कॉफ़ी शॉप के कमज़ोर WiFi पर या मेट्रो में होते हैं। आपकी अनऑप्टिमाइज़्ड इमेज सचमुच लोगों से आपकी साइट बंद करवाकर उन्हें आपके प्रतिद्वंद्वी के पास भेज रही हैं। आउच! 🤕"
         },
         "money": {
-          "title": "The Money Talk (Because Let's Be Honest, That's What Matters) 💰",
+          "title": "पैसे की बात (क्योंकि ईमानदारी से कहें तो यही मायने रखता है) 💰",
           "items": [
-            "<strong>Amazon found that every 100ms of latency cost them 1% in sales</strong>",
-            "<strong>Pinterest increased search engine traffic and sign-ups by 15% when they reduced perceived wait times by 40%</strong>",
-            "<strong>Walmart saw a 2% increase in conversions for every 1 second of improvement in load time</strong>"
+            "<strong>Amazon ने पाया कि हर 100ms की देरी से उनकी बिक्री 1% घटी</strong>",
+            "<strong>Pinterest ने महसूस होने वाले इंतज़ार को 40% घटाया तो सर्च इंजन ट्रैफ़िक और साइन-अप 15% बढ़े</strong>",
+            "<strong>Walmart ने लोड समय में हर 1 सेकंड के सुधार पर कन्वर्ज़न में 2% की बढ़त देखी</strong>"
           ],
-          "outro": "Still think image optimization doesn't matter? 🤔"
+          "outro": "अब भी लगता है कि इमेज ऑप्टिमाइज़ेशन मायने नहीं रखता? 🤔"
         },
         "horrorStory": {
-          "title": "Real-World Horror Story 🎃",
-          "body": "I once worked with a client whose beautiful photography portfolio site was getting almost no traffic. The culprit? Each image was a 15-20MB PNG straight from Photoshop. The homepage took 45 seconds to load on a good day. After optimizing (converting to JPG, proper sizing, lazy loading), load time dropped to 2 seconds. Traffic increased by 70% in one month. True story!"
+          "title": "असली दुनिया की डरावनी कहानी 🎃",
+          "body": "मैंने एक बार एक ऐसे क्लाइंट के साथ काम किया जिसकी ख़ूबसूरत फ़ोटोग्राफ़ी पोर्टफ़ोलियो साइट पर लगभग कोई ट्रैफ़िक नहीं आ रहा था। दोषी? हर इमेज सीधे Photoshop से निकली 15-20MB की PNG थी। अच्छे दिन में भी होमपेज लोड होने में 45 सेकंड लेता था। ऑप्टिमाइज़ करने (JPG में बदलना, सही आकार, लेज़ी लोडिंग) के बाद लोड समय 2 सेकंड हो गया। एक महीने में ट्रैफ़िक 70% बढ़ गया। सच्ची कहानी!"
         },
         "trust": {
-          "title": "The Trust Factor 🤝",
-          "intro": "Slow websites don't just lose customers - they lose credibility. Users subconsciously associate slow load times with:",
+          "title": "भरोसे का फ़ैक्टर 🤝",
+          "intro": "धीमी वेबसाइटें सिर्फ़ ग्राहक नहीं खोतीं - वे विश्वसनीयता खोती हैं। यूज़र अवचेतन रूप से धीमे लोड समय को इनसे जोड़ते हैं:",
           "items": [
-            "Outdated technology",
-            "Lack of attention to detail",
-            "Unprofessionalism",
-            "Security concerns (yes, really!)"
+            "पुरानी तकनीक",
+            "बारीकियों पर ध्यान की कमी",
+            "गैर-पेशेवराना अंदाज़",
+            "सुरक्षा संबंधी चिंताएँ (हाँ, सच में!)"
           ],
-          "outro": "Your image choices are literally affecting how trustworthy people think you are. Wild, right?"
+          "outro": "आपकी इमेज के चुनाव सचमुच इस बात पर असर डाल रहे हैं कि लोग आपको कितना भरोसेमंद समझते हैं। अजीब है ना?"
         },
-        "quote": "\"A website's speed is like a first impression - you never get a second chance to load quickly.\" ⚡"
+        "quote": "\"वेबसाइट की स्पीड पहली छाप जैसी है - तेज़ी से लोड होने का आपको दूसरा मौक़ा कभी नहीं मिलता।\" ⚡"
       },
       "conclusion": {
-        "title": "Conclusion",
-        "intro": "Alright, my fellow Web Jedis, we've been on quite the journey! 🚀 From understanding the DNA of image formats to seeing how they can literally make or break your website's success. Let's recap the superpowers you've just unlocked:",
+        "title": "निष्कर्ष",
+        "intro": "ठीक है, मेरे साथी वेब जेडाई, हमारा सफ़र काफ़ी शानदार रहा! 🚀 इमेज फ़ॉर्मैट के DNA को समझने से लेकर यह देखने तक कि वे सचमुच आपकी वेबसाइट की सफलता बना या बिगाड़ सकते हैं। चलिए उन महाशक्तियों को दोहराते हैं जो आपने अभी-अभी अनलॉक की हैं:",
         "tldr": {
-          "title": "The TL;DR Version (For Those Who Scrolled Here First 😏)",
+          "title": "संक्षिप्त वर्ज़न (उनके लिए जो सीधे यहाँ स्क्रॉल करके आए 😏)",
           "items": [
-            "<strong>JPG</strong>: Your go-to for photos. Small files, great quality, but no transparency",
-            "<strong>PNG</strong>: The perfectionist for logos, graphics, and anything with text. Bigger files but pixel-perfect",
-            "<strong>WebP</strong>: The Swiss Army knife that does it all, just needs fallbacks for older browsers"
+            "<strong>JPG</strong>: फ़ोटो के लिए आपकी पहली पसंद। छोटी फ़ाइलें, बढ़िया क्वालिटी, लेकिन पारदर्शिता नहीं",
+            "<strong>PNG</strong>: लोगो, ग्राफ़िक्स और टेक्स्ट वाली किसी भी चीज़ के लिए पूर्णतावादी। बड़ी फ़ाइलें लेकिन पिक्सेल-परफ़ेक्ट",
+            "<strong>WebP</strong>: स्विस आर्मी नाइफ़ जो सब कुछ करता है, बस पुराने ब्राउज़र के लिए फ़ॉलबैक चाहिए"
           ]
         },
         "actionPlan": {
-          "title": "Your Action Plan (Do These TODAY!) ✅",
+          "title": "आपकी कार्य योजना (ये आज ही करें!) ✅",
           "items": [
-            "<strong>Audit your current images</strong> - Open your website right now and check those file sizes. I'll wait... Scary, right? 😱",
-            "<strong>Set up an optimization workflow</strong> - Whether it's using tools like TinyPNG, ImageOptim, or good ol' ffmpeg (shameless plug for my other article 😉), make optimization part of your process",
-            "<strong>Implement WebP with fallbacks</strong> - It's 2025, time to give your users that next-gen experience",
-            "<strong>Test your load times</strong> - Use Google's PageSpeed Insights and watch those scores soar",
-            "<strong>Set up responsive images</strong> - Different sizes for different devices = happy users everywhere"
+            "<strong>अपनी मौजूदा इमेज का ऑडिट करें</strong> - अभी अपनी वेबसाइट खोलें और उन फ़ाइल आकारों को जाँचें। मैं इंतज़ार करता हूँ... डरावना है ना? 😱",
+            "<strong>ऑप्टिमाइज़ेशन वर्कफ़्लो बनाएँ</strong> - चाहे TinyPNG, ImageOptim जैसे टूल हों या पुराना भरोसेमंद ffmpeg (मेरे दूसरे लेख का बेशर्म प्रचार 😉), ऑप्टिमाइज़ेशन को अपनी प्रक्रिया का हिस्सा बनाएँ",
+            "<strong>फ़ॉलबैक के साथ WebP लागू करें</strong> - 2025 है, अपने यूज़र को वह नेक्स्ट-जेन अनुभव देने का समय है",
+            "<strong>अपना लोड समय जाँचें</strong> - Google के PageSpeed Insights का उपयोग करें और उन स्कोर को ऊपर जाते देखें",
+            "<strong>रिस्पॉन्सिव इमेज सेट करें</strong> - अलग-अलग डिवाइस के लिए अलग-अलग आकार = हर जगह खुश यूज़र"
           ]
         },
         "bigPicture": {
-          "title": "The Bigger Picture 🖼️",
-          "p1": "Remember, optimizing your images isn't just about technical SEO scores or saving bandwidth (though those are awesome bonuses!). It's about respecting your users' time, data, and experience. Every second you shave off your load time is a second you're giving back to someone's day. That's pretty powerful when you think about it! 💪",
-          "p2": "Plus, let's be real - faster websites make more money. It's not rocket science, it's just good business. Your optimized images are literally increasing your bottom line while making the web a better place. You're basically a superhero now! 🦸‍♀️🦸‍♂️"
+          "title": "बड़ी तस्वीर 🖼️",
+          "p1": "याद रखें, अपनी इमेज ऑप्टिमाइज़ करना सिर्फ़ तकनीकी SEO स्कोर या बैंडविड्थ बचाने के बारे में नहीं है (हालाँकि वे शानदार बोनस हैं!)। यह आपके यूज़र के समय, डेटा और अनुभव का सम्मान करने के बारे में है। आप अपने लोड समय से जो भी सेकंड घटाते हैं, वह किसी के दिन में वापस लौटाया हुआ सेकंड है। सोचें तो यह काफ़ी शक्तिशाली बात है! 💪",
+          "p2": "साथ ही, सच कहें - तेज़ वेबसाइटें ज़्यादा पैसा कमाती हैं। यह रॉकेट साइंस नहीं, बस अच्छा व्यापार है। आपकी ऑप्टिमाइज़्ड इमेज सचमुच आपकी कमाई बढ़ा रही हैं और वेब को बेहतर जगह बना रही हैं। आप मूल रूप से अब सुपरहीरो हैं! 🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
-          "title": "One Final Challenge 🎯",
-          "p1": "Here's my challenge to you: Take the slowest-loading page on your website and optimize just the images. Nothing else. I guarantee you'll see at least a 50% improvement in load time. Share your before/after results in the comments - I love a good optimization success story!",
-          "p2": "Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨"
+          "title": "एक अंतिम चुनौती 🎯",
+          "p1": "यह रही मेरी चुनौती: अपनी वेबसाइट का सबसे धीमा लोड होने वाला पेज लें और सिर्फ़ इमेज ऑप्टिमाइज़ करें। और कुछ नहीं। मैं गारंटी देता हूँ कि आपको लोड समय में कम से कम 50% सुधार दिखेगा। अपने पहले/बाद के नतीजे कमेंट में शेयर करें - मुझे ऑप्टिमाइज़ेशन की अच्छी सफलता कहानियाँ बहुत पसंद हैं!",
+          "p2": "याद रखें, वेब डेवलपमेंट की दुनिया में सबसे अच्छा कोड तेज़ कोड है, लेकिन सबसे अच्छी इमेज ऑप्टिमाइज़्ड इमेज हैं। अब जाइए और कंप्रेस कीजिए! आपकी इमेज छोटी हों और आपके लोड समय और भी छोटे! 🚀✨"
         },
-        "quote": "\"The journey of a thousand optimizations begins with a single compressed image.\" 🏔️"
+        "quote": "\"हज़ार ऑप्टिमाइज़ेशन का सफ़र एक कंप्रेस्ड इमेज से शुरू होता है।\" 🏔️"
       }
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the techniques from this guide in the free Media Manipulator image tools.",
+      "title": "संबंधित टूल",
+      "intro": "इस गाइड की तकनीकें Media Manipulator के मुफ़्त इमेज टूल में आज़माएँ।",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "इमेज कन्वर्टर",
+          "description": "JPG, PNG, WebP, AVIF, GIF और अन्य के बीच कन्वर्ट करें।"
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebP को JPG में बदलें",
+          "description": "WebP सोर्स से व्यापक रूप से संगत JPG पाएँ।"
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "EXIF मेटाडेटा हटाएँ",
+          "description": "फ़ोटो शेयर करने से पहले GPS, डिवाइस और टाइमस्टैम्प मेटाडेटा हटाएँ।"
         },
         {
-          "label": "Image converter tutorial",
-          "description": "Full walkthrough of every setting in the image converter."
+          "label": "इमेज कन्वर्टर ट्यूटोरियल",
+          "description": "इमेज कन्वर्टर की हर सेटिंग की पूरी गाइड।"
         },
         {
-          "label": "Video compression guide",
-          "description": "Apply the same optimization mindset to video files."
+          "label": "वीडियो कंप्रेशन गाइड",
+          "description": "वही ऑप्टिमाइज़ेशन सोच वीडियो फ़ाइलों पर लागू करें।"
         },
         {
-          "label": "Audio quality guide",
-          "description": "Pick the right audio bitrate, sample rate, and codec."
+          "label": "ऑडियो क्वालिटी गाइड",
+          "description": "सही ऑडियो बिटरेट, सैंपल रेट और कोडेक चुनें।"
         }
       ]
     },
     "footer": {
-      "title": "Time to Become an Image Optimization Jedi! 🌟",
-      "body": "Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!",
-      "ctaLabel": "Open the image converter →",
-      "disclaimer": "No signup required • Process files locally • Fast & secure"
+      "title": "इमेज ऑप्टिमाइज़ेशन जेडाई बनने का समय! 🌟",
+      "body": "अपनी भारी PNG को बिजली की रफ़्तार वाली WebP में बदलने को तैयार? हमारा मुफ़्त इमेज कन्वर्टर JPG, PNG, WebP, GIF और बहुत कुछ का समर्थन करता है। अपनी इमेज सेकंडों में ऑप्टिमाइज़ करें और अपनी वेबसाइट को उड़ते देखें!",
+      "ctaLabel": "इमेज कन्वर्टर खोलें →",
+      "disclaimer": "साइनअप की ज़रूरत नहीं • फ़ाइलें लोकली प्रोसेस • तेज़ और सुरक्षित"
     }
   },
   "blogAudioQuality": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← ब्लॉग"
     },
     "header": {
-      "title": "The Sound of <strike>Silence</strike> Quality: Bitrates, Sample Rates, and Formats",
-      "byline": "Written by:",
-      "dateDisplay": "June 14th, 2025",
-      "timeDisplay": "10:08 PM"
+      "title": "द साउंड ऑफ़ <strike>साइलेंस</strike> क्वालिटी: बिटरेट, सैंपल रेट और फ़ॉर्मैट",
+      "byline": "लेखक:",
+      "dateDisplay": "14 जून 2025",
+      "timeDisplay": "रात 10:08"
     },
     "intro": {
-      "title": "A Brief Intro to Audio Formats, Bitrates, and Sample Rates",
-      "p1": "Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's \"high-quality\" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:",
+      "title": "ऑडियो फ़ॉर्मैट, बिटरेट और सैंपल रेट का संक्षिप्त परिचय",
+      "p1": "क्या आपने कभी सोचा है कि आपका डाउनलोड किया हुआ पॉडकास्ट 50MB में क्रिस्टल क्लियर क्यों सुनाई देता है, जबकि आपके दोस्त की \"हाई-क्वालिटी\" म्यूज़िक फ़ाइल 3MB में ऐसी लगती है जैसे पानी के नीचे रिकॉर्ड की गई हो? या शायद आपने देखा हो कि:",
       "bullets": [
-        "Your website's background music takes forever to load, even though it's only 30 seconds long",
-        "That audio file you converted sounds like someone's playing it through a tin can",
-        "You're trying to add voice-overs to your video content but the file sizes are absolutely massive",
-        "Your carefully crafted sound effects library is eating up all your cloud storage",
-        "You downloaded the same song from different sources and they all sound wildly different"
+        "आपकी वेबसाइट का बैकग्राउंड म्यूज़िक लोड होने में बहुत समय लेता है, जबकि वह सिर्फ़ 30 सेकंड का है",
+        "आपकी कन्वर्ट की गई ऑडियो फ़ाइल ऐसी लगती है जैसे कोई उसे टिन के डिब्बे से बजा रहा हो",
+        "आप अपने वीडियो कंटेंट में वॉइस-ओवर जोड़ने की कोशिश कर रहे हैं लेकिन फ़ाइल आकार बिल्कुल विशाल हैं",
+        "आपकी बड़ी मेहनत से बनाई साउंड इफ़ेक्ट लाइब्रेरी आपका सारा क्लाउड स्टोरेज खा रही है",
+        "आपने एक ही गाना अलग-अलग स्रोतों से डाउनलोड किया और सब बेहद अलग सुनाई देते हैं"
       ],
-      "p2": "If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!",
-      "p3": "Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.",
-      "p4": "In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯",
-      "quote": "\"The ear is the avenue to the heart.\" – Voltaire"
+      "p2": "अगर आपने इनमें से कोई भी ऑडियो साहसिक (या दुस्साहसिक 😅) अनुभव किया है, तो कमर कस लें क्योंकि हम ऑडियो फ़ॉर्मैट, बिटरेट और सैंपल रेट की दुनिया का रहस्य खोलने वाले हैं!",
+      "p3": "ऑडियो फ़ाइलों को कॉफ़ी की तरह समझें ☕ – आपके पास इंस्टेंट कॉफ़ी है (कम बिटरेट वाली MP3), आपकी सामान्य ड्रिप कॉफ़ी (नियमित क्वालिटी का ऑडियो), और आपकी फ़ैंसी एस्प्रेसो मशीन की कॉफ़ी (लॉसलेस FLAC फ़ाइलें)। सब कॉफ़ी हैं, लेकिन अनुभव? बिल्कुल अलग। और जैसे आप हाई-एंड कैफ़े में इंस्टेंट कॉफ़ी नहीं परोसेंगे, वैसे ही आपको अपनी पेशेवर वेबसाइट पर कम-क्वालिटी की ऑडियो फ़ाइलें नहीं इस्तेमाल करनी चाहिए।",
+      "p4": "इस लेख में हम देखेंगे कि इन रहस्यमय संख्याओं और फ़ॉर्मैट का असल में क्या मतलब है, वे आपकी सोच से ज़्यादा क्यों मायने रखते हैं, और सही संयोजन चुनना आपकी वेबसाइट के विज़िटर के जुड़े रहने या उस भयानक बैक बटन दबाने के बीच का फ़र्क़ कैसे बना सकता है। 🎯",
+      "quote": "\"कान दिल तक पहुँचने का रास्ता है।\" – वॉल्तेयर"
     },
     "difference": {
-      "title": "What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?",
-      "p1": "Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧",
-      "formatsLead": "<strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:",
+      "title": "आख़िर फ़ॉर्मैट, बिटरेट और सैंपल रेट में फ़र्क़ क्या है?",
+      "p1": "ठीक है, चलिए इसे ऐसे समझते हैं जैसे हम अपने उस गैर-तकनीकी दोस्त को समझा रहे हों जो बस चाहता है कि उसका पॉडकास्ट अच्छा सुनाई दे! 🎧",
+      "formatsLead": "<strong>ऑडियो फ़ॉर्मैट</strong> कंटेनर जैसे हैं – इन्हें अलग-अलग तरह के डिब्बों की तरह समझें जिनमें आप अपना ऑडियो पैक कर सकते हैं। आपके पास हैं:",
       "formatsBullets": [
-        "<strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit",
-        "<strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton",
-        "<strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside",
-        "<strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty",
-        "<strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it"
+        "<strong>MP3</strong>: भरोसेमंद गत्ते का डिब्बा। काम हो जाता है, हर जगह स्वीकार्य, लेकिन आपका सामान थोड़ा दब सकता है",
+        "<strong>WAV</strong>: हेवी-ड्यूटी स्टील कंटेनर। सब कुछ परफ़ेक्ट रखता है लेकिन वज़न टनों में है",
+        "<strong>AAC</strong>: बेहतर पैकिंग तकनीक वाला फ़ैंसी आधुनिक डिब्बा। MP3 जितना आकार लेकिन अंदर ज़्यादा क्वालिटी समाती है",
+        "<strong>FLAC</strong>: वैक्यूम-सील्ड कंटेनर। कुछ खोए बिना कंप्रेस करता है, लेकिन फिर भी काफ़ी भारी",
+        "<strong>OGG</strong>: ओपन-सोर्स बाग़ी डिब्बा जो बढ़िया काम करता है लेकिन हर कोई नहीं जानता इसे कैसे खोलें"
       ],
-      "bitrateLead": "<strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:",
+      "bitrateLead": "<strong>बिटरेट</strong> यह है कि प्रति सेकंड कितना डेटा बहता है – इसे पानी के पाइप की तरह समझें। ज़्यादा बिटरेट = बड़ा पाइप = ज़्यादा ऑडियो जानकारी बहती है:",
       "bitrateBullets": [
-        "<strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)",
-        "<strong>128 kbps</strong>: Standard faucet (decent for casual listening)",
-        "<strong>256 kbps</strong>: Fire hose (great quality for most people)",
-        "<strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)",
-        "<strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿"
+        "<strong>64 kbps</strong>: बग़ीचे का पाइप (टॉक रेडियो के लिए ठीक, संगीत के लिए भयानक)",
+        "<strong>128 kbps</strong>: सामान्य नल (आम सुनने के लिए ठीक-ठाक)",
+        "<strong>256 kbps</strong>: फ़ायर होज़ (ज़्यादातर लोगों के लिए बढ़िया क्वालिटी)",
+        "<strong>320 kbps</strong>: औद्योगिक पाइप (MP3 की अधिकतम क्वालिटी)",
+        "<strong>1,411 kbps</strong>: नियाग्रा फ़ॉल्स (अनकंप्रेस्ड CD क्वालिटी) 💿"
       ],
-      "sampleRateLead": "<strong>Sample Rate</strong> is how many times per second we take a \"snapshot\" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):",
+      "sampleRateLead": "<strong>सैंपल रेट</strong> यह है कि हम प्रति सेकंड कितनी बार ध्वनि तरंग का \"स्नैपशॉट\" लेते हैं। इसे Hz (हर्ट्ज़) या kHz (किलोहर्ट्ज़) में मापा जाता है:",
       "sampleRateBullets": [
-        "<strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy",
-        "<strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear",
-        "<strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)",
-        "<strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)"
+        "<strong>22,050 Hz</strong>: 15fps पर फ़िल्म देखने जैसा – काम चलाऊ लेकिन अटकता हुआ",
+        "<strong>44,100 Hz</strong>: सही संतुलन – CD क्वालिटी, वह सब पकड़ता है जो इंसान सुन सकते हैं",
+        "<strong>48,000 Hz</strong>: प्रोफ़ेशनल वीडियो मानक (क्योंकि गणित और सिंक्रोनाइज़ेशन 🤓)",
+        "<strong>96,000 Hz</strong> या अधिक: ऑडियो गीक्स और कुत्तों के लिए (सच में, इंसान फ़र्क़ नहीं सुन सकते)"
       ],
-      "p2": "Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯",
-      "quote": "\"To understand the whole, you must first understand the parts.\" – Aristotle"
+      "p2": "यह रहा असली पेंच – ये तीनों दोस्त साथ काम करते हैं! आपके पास 44.1 kHz (सैंपल रेट) पर 1,411 kbps बिटरेट वाली WAV फ़ाइल (फ़ॉर्मैट) हो सकती है। या 44.1 kHz (सैंपल रेट) पर लेकिन केवल 128 kbps (बिटरेट) वाली MP3 (फ़ॉर्मैट)। एक ही सैंपल रेट, बिल्कुल अलग क्वालिटी! 🤯",
+      "quote": "\"पूर्ण को समझने के लिए पहले उसके अंशों को समझना होगा।\" – अरस्तू"
     },
     "usage": {
-      "title": "How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?",
-      "p1": "Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?",
+      "title": "मुझे कैसे पता चले कि कब कौन सा फ़ॉर्मैट इस्तेमाल करूँ और बिटरेट व सैंपल रेट इसमें कैसे जुड़ते हैं?",
+      "p1": "असली बात का समय! 💪 चलिए आपकी ऑडियो ज़रूरतों को सही फ़ॉर्मैट संयोजन से मिलाते हैं। इसे अलग-अलग मौक़ों के लिए सही पोशाक चुनने जैसा समझें – आप जिम में टक्सीडो नहीं पहनेंगे, है ना?",
       "background": {
-        "title": "For Background Music on Websites:",
+        "title": "वेबसाइट पर बैकग्राउंड म्यूज़िक के लिए:",
         "bullets": [
-          "<strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth",
-          "<strong>File size</strong>: ~1MB per minute (your visitors will thank you!)"
+          "<strong>इस्तेमाल करें</strong>: MP3 या AAC 128-192 kbps पर, 44.1 kHz",
+          "<strong>क्यों</strong>: तेज़ी से लोड होता है, माहौल के लिए काफ़ी अच्छा सुनाई देता है, बैंडविड्थ नहीं खाता",
+          "<strong>फ़ाइल आकार</strong>: ~1MB प्रति मिनट (आपके विज़िटर आपको धन्यवाद देंगे!)"
         ]
       },
       "podcasts": {
-        "title": "For Podcasts & Voice Content:",
+        "title": "पॉडकास्ट और वॉइस कंटेंट के लिए:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)",
-          "<strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size",
-          "<strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄"
+          "<strong>इस्तेमाल करें</strong>: MP3 64-96 kbps मोनो पर, 44.1 kHz (या 22.05 kHz अगर फ़ाइल आकार बहुत मायने रखता है)",
+          "<strong>क्यों</strong>: मानव बोली को ऊँचे बिटरेट की ज़रूरत नहीं, मोनो 50% फ़ाइल आकार बचाता है",
+          "<strong>प्रो टिप</strong>: किसी को आपकी साँसें स्टीरियो में सुनने की ज़रूरत नहीं 😄"
         ]
       },
       "streaming": {
-        "title": "For Music Streaming/Downloads:",
+        "title": "म्यूज़िक स्ट्रीमिंग/डाउनलोड के लिए:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz",
-          "<strong>Why</strong>: The sweet spot between quality and file size",
-          "<strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps"
+          "<strong>इस्तेमाल करें</strong>: MP3 256-320 kbps पर या AAC 256 kbps पर, 44.1 kHz",
+          "<strong>क्यों</strong>: क्वालिटी और फ़ाइल आकार के बीच सही संतुलन",
+          "<strong>हक़ीक़त</strong>: ज़्यादातर लोग 256 और 320 kbps के बीच फ़र्क़ नहीं बता सकते"
         ]
       },
       "previews": {
-        "title": "For Audio Previews & Samples:",
+        "title": "ऑडियो प्रीव्यू और सैंपल के लिए:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Quick loading, good enough for \"try before you buy\"",
-          "<strong>Smart move</strong>: Save the high-quality files for paying customers 💰"
+          "<strong>इस्तेमाल करें</strong>: MP3 96-128 kbps पर, 44.1 kHz",
+          "<strong>क्यों</strong>: जल्दी लोड, \"ख़रीदने से पहले आज़माएँ\" के लिए काफ़ी अच्छा",
+          "<strong>समझदारी</strong>: हाई-क्वालिटी फ़ाइलें भुगतान करने वाले ग्राहकों के लिए बचाकर रखें 💰"
         ]
       },
       "archival": {
-        "title": "For Professional/Archival:",
+        "title": "प्रोफ़ेशनल/आर्काइव के लिए:",
         "bullets": [
-          "<strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)",
-          "<strong>Why</strong>: Future-proof, perfect for editing, no quality loss",
-          "<strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!"
+          "<strong>इस्तेमाल करें</strong>: FLAC या WAV अधिकतम बिटरेट पर, 48 kHz (या अपने वीडियो मानक से मिलाएँ)",
+          "<strong>क्यों</strong>: भविष्य के लिए सुरक्षित, एडिटिंग के लिए परफ़ेक्ट, कोई क्वालिटी हानि नहीं",
+          "<strong>चेतावनी</strong>: ये फ़ाइलें विशाल हैं – हम 10MB प्रति मिनट की बात कर रहे हैं!"
         ]
       },
       "decisionTree": {
-        "title": "Quick Decision Tree:",
-        "content": "Is it voice only? → MP3 at 64-96 kbps\nIs loading speed critical? → MP3/AAC at 128 kbps max\nNeed perfect quality? → FLAC/WAV\nRegular music for web? → MP3/AAC at 192-256 kbps"
+        "title": "त्वरित निर्णय वृक्ष:",
+        "content": "क्या यह केवल आवाज़ है? → MP3 64-96 kbps पर\nक्या लोडिंग स्पीड बहुत ज़रूरी है? → MP3/AAC अधिकतम 128 kbps पर\nपरफ़ेक्ट क्वालिटी चाहिए? → FLAC/WAV\nवेब के लिए नियमित संगीत? → MP3/AAC 192-256 kbps पर"
       },
-      "ninjaTip": "Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy \"audio enhancer\" ads claim).",
-      "realWorldExample": "<strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.",
-      "quote": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\" – Antoine de Saint-Exupéry"
+      "ninjaTip": "यह रही एक निंजा टिप 🥷: हमेशा सबसे ऊँची क्वालिटी की सोर्स फ़ाइल से शुरू करें जो आपको मिल सके, फिर नीचे कंप्रेस करें। आप हमेशा WAV → MP3 जा सकते हैं, लेकिन MP3 → WAV जाकर जादू से क्वालिटी वापस नहीं जोड़ सकते (चाहे वे संदिग्ध \"ऑडियो एन्हांसर\" विज्ञापन कुछ भी दावा करें)।",
+      "realWorldExample": "<strong>असली दुनिया का उदाहरण</strong>: मेरा एक क्लाइंट था जिसका मेडिटेशन ऐप गाइडेड सेशन के लिए WAV फ़ाइलें इस्तेमाल कर रहा था। हर 10 मिनट का सेशन 100MB का था! 😱 हमने उन्हें 96 kbps मोनो MP3 में बदला, फ़ाइल आकार घटाकर 7MB प्रति सेशन किया, और सचमुच किसी ने क्वालिटी की शिकायत नहीं की। उनके ऐप के डाउनलोड 40% बढ़ गए, सिर्फ़ इसलिए कि अब वह स्टोरेज नहीं खा रहा था।",
+      "quote": "\"पूर्णता तब नहीं मिलती जब जोड़ने को कुछ न बचे, बल्कि तब जब हटाने को कुछ न बचे।\" – आंत्वान द सैंत-एक्ज़ूपेरी"
     },
     "importance": {
-      "title": "Why Is This Even Important for My Website?",
-      "p1": "Okay, so you might be thinking, \"Cool audio facts, bro, but why should I care?\" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸",
+      "title": "यह मेरी वेबसाइट के लिए आख़िर क्यों ज़रूरी है?",
+      "p1": "ठीक है, तो आप सोच रहे होंगे, \"बढ़िया ऑडियो तथ्य, भाई, लेकिन मुझे इसकी परवाह क्यों करनी चाहिए?\" अपने हेडफ़ोन कसकर पकड़ लें, क्योंकि यहीं आपकी कमाई के लिए बात असली हो जाती है! 💸",
       "pageLoadSpeed": {
-        "title": "Page Load Speed = Money",
-        "lead": "Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:",
+        "title": "पेज लोड स्पीड = पैसा",
+        "lead": "Google ने साफ़ कर दिया है: धीमी वेबसाइटों को सर्च रैंकिंग में दंड मिलता है। लोड समय का हर सेकंड आपको यह महँगा पड़ सकता है:",
         "bullets": [
-          "<strong>7% decrease</strong> in conversions",
-          "<strong>11% fewer</strong> page views",
-          "<strong>16% decrease</strong> in customer satisfaction"
+          "कन्वर्ज़न में <strong>7% की कमी</strong>",
+          "<strong>11% कम</strong> पेज व्यू",
+          "ग्राहक संतुष्टि में <strong>16% की कमी</strong>"
         ],
-        "outro": "That innocent 50MB background music file? It's literally costing you customers! 😱"
+        "outro": "वह मासूम 50MB की बैकग्राउंड म्यूज़िक फ़ाइल? वह सचमुच आपके ग्राहक छीन रही है! 😱"
       },
       "mobileReality": {
-        "title": "The Mobile Reality Check",
-        "p": "Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)"
+        "title": "मोबाइल की हक़ीक़त",
+        "p": "यह रहा एक मज़ेदार तथ्य: अब 60% से ज़्यादा वेब ट्रैफ़िक मोबाइल है। जानते हैं मोबाइल यूज़र को क्या पसंद है? अपने सीमित डेटा प्लान से आपकी अनकंप्रेस्ड ऑडियो फ़ाइलें डाउनलोड करना! (स्पॉइलर: नहीं पसंद। वे कंक्रीट पर रबर की गेंद से भी तेज़ उछलकर भाग जाएँगे।)"
       },
       "realNumbers": {
-        "title": "Real Numbers That'll Make You Sweat:",
-        "lead": "Let's say you have a landing page with:",
+        "title": "असली आँकड़े जो आपको पसीना ला देंगे:",
+        "lead": "मान लीजिए आपके लैंडिंग पेज पर है:",
         "bullets": [
-          "30-second background music loop",
-          "2 product demo voice-overs (1 minute each)",
-          "5 sound effects for interactions"
+          "30 सेकंड का बैकग्राउंड म्यूज़िक लूप",
+          "2 प्रोडक्ट डेमो वॉइस-ओवर (1-1 मिनट के)",
+          "इंटरैक्शन के लिए 5 साउंड इफ़ेक्ट"
         ],
-        "comparisonWav": "Using WAV files: <strong>~250MB total</strong> 😵",
-        "comparisonMp3": "Using optimized MP3s: <strong>~8MB total</strong> 🎉",
-        "outro": "That's a 97% reduction! Your hosting bill just breathed a sigh of relief."
+        "comparisonWav": "WAV फ़ाइलों के साथ: <strong>कुल ~250MB</strong> 😵",
+        "comparisonMp3": "ऑप्टिमाइज़्ड MP3 के साथ: <strong>कुल ~8MB</strong> 🎉",
+        "outro": "यह 97% की कमी है! आपके होस्टिंग बिल ने अभी-अभी राहत की साँस ली।"
       },
       "trustFactor": {
-        "title": "The Trust Factor",
-        "lead": "Nothing screams \"amateur hour\" like:",
+        "title": "भरोसे का फ़ैक्टर",
+        "lead": "\"नौसिखिया\" इससे ज़्यादा ज़ोर से कुछ नहीं चिल्लाता:",
         "bullets": [
-          "Audio that takes forever to load",
-          "Stuttering playback",
-          "Quality so bad it sounds like a 1990s dial-up modem"
+          "ऑडियो जो लोड होने में बहुत समय लेता है",
+          "अटकता हुआ प्लेबैक",
+          "इतनी ख़राब क्वालिटी कि 1990 के डायल-अप मॉडेम जैसी सुनाई दे"
         ],
-        "outro": "Professional audio quality = professional image = customer trust = 💰"
+        "outro": "प्रोफ़ेशनल ऑडियो क्वालिटी = प्रोफ़ेशनल छवि = ग्राहक का भरोसा = 💰"
       },
       "seoVitals": {
-        "title": "SEO and Core Web Vitals",
-        "lead": "Google's Core Web Vitals specifically measure:",
+        "title": "SEO और Core Web Vitals",
+        "lead": "Google के Core Web Vitals खास तौर पर यह मापते हैं:",
         "bullets": [
-          "<strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this",
-          "<strong>FID (First Input Delay)</strong>: Large files blocking the main thread",
-          "<strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps"
+          "<strong>LCP (Largest Contentful Paint)</strong>: भारी ऑडियो फ़ाइलें इसमें देरी करती हैं",
+          "<strong>FID (First Input Delay)</strong>: बड़ी फ़ाइलें मुख्य थ्रेड को रोकती हैं",
+          "<strong>CLS (Cumulative Layout Shift)</strong>: ग़लत तरीके से लोड हुए ऑडियो प्लेयर उछाल पैदा करते हैं"
         ],
-        "outro": "Translation: Bad audio optimization = bad SEO = less organic traffic = less money."
+        "outro": "अनुवाद: ख़राब ऑडियो ऑप्टिमाइज़ेशन = ख़राब SEO = कम ऑर्गेनिक ट्रैफ़िक = कम पैसा।"
       },
       "moreReasons": {
-        "title": "But Wait, There's More!",
-        "lead": "(Said in my best infomercial voice 📺) Optimized audio also means:",
+        "title": "लेकिन रुकिए, और भी है!",
+        "lead": "(अपनी सबसे अच्छी इन्फ़ोमर्शियल आवाज़ में 📺) ऑप्टिमाइज़्ड ऑडियो का मतलब यह भी है:",
         "bullets": [
-          "Lower CDN costs",
-          "Happier users on slower connections",
-          "Better accessibility (properly compressed audio works better with screen readers)",
-          "Increased engagement (people actually stick around when things load fast)"
+          "कम CDN लागत",
+          "धीमे कनेक्शन पर ज़्यादा खुश यूज़र",
+          "बेहतर एक्सेसिबिलिटी (सही तरह से कंप्रेस्ड ऑडियो स्क्रीन रीडर के साथ बेहतर काम करता है)",
+          "ज़्यादा जुड़ाव (जब चीज़ें तेज़ी से लोड होती हैं तो लोग सच में रुकते हैं)"
         ],
-        "clientStory": "I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!"
+        "clientStory": "मेरा एक क्लाइंट था जिसका ई-लर्निंग प्लेटफ़ॉर्म यूज़र खो रहा था। पता चला कि उनकी कोर्स ऑडियो फ़ाइलें इतनी विशाल थीं कि ग्रामीण इलाक़ों के छात्र कंटेंट तक पहुँच ही नहीं पाते थे। हमने सब कुछ ऑप्टिमाइज़ किया, फ़ाइल आकार 85% घटाया, और सिर्फ़ दो महीनों में उनकी कोर्स पूरा करने की दर 40% उछल गई!"
       },
-      "quote": "\"Time is money, and loading time is lost money.\" – Every Web Developer Ever"
+      "quote": "\"समय पैसा है, और लोडिंग समय खोया हुआ पैसा।\" – हर वेब डेवलपर"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):",
+      "title": "निष्कर्ष",
+      "p1": "उफ़! 🎉 हमने अभी-अभी ऑडियो फ़ॉर्मैट, बिटरेट और सैंपल रेट की दुनिया का तूफ़ानी दौरा किया है। चलिए हिट्स दोहराते हैं (हाँ, यह शब्दों का खेल था 🎵):",
       "takeaways": {
-        "title": "The Big Takeaways:",
+        "title": "बड़ी सीखें:",
         "bullets": [
-          "Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency",
-          "MP3 at 128-192 kbps is your web workhorse for most use cases",
-          "Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)",
-          "Every MB matters – optimized audio = faster loads = happier visitors = more money",
-          "Start with high quality, compress down (you can't enhance garbage into gold!)"
+          "ऑडियो फ़ॉर्मैट कंटेनर हैं, बिटरेट डेटा का प्रवाह, और सैंपल रेट स्नैपशॉट की आवृत्ति",
+          "128-192 kbps पर MP3 ज़्यादातर उपयोगों के लिए आपका वेब का घोड़ा है",
+          "वॉइस कंटेंट नीचे जा सकता है (64-96 kbps), संगीत ऊपर जाना चाहिए (256+ kbps)",
+          "हर MB मायने रखती है – ऑप्टिमाइज़्ड ऑडियो = तेज़ लोड = खुश विज़िटर = ज़्यादा पैसा",
+          "ऊँची क्वालिटी से शुरू करें, नीचे कंप्रेस करें (आप कचरे को सोना नहीं बना सकते!)"
         ]
       },
       "actionPlan": {
-        "title": "Your Action Plan:",
+        "title": "आपकी कार्य योजना:",
         "steps": [
-          "<strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)",
-          "<strong>Convert</strong> them using the guidelines we covered",
-          "<strong>Test</strong> your page load speeds before and after",
-          "<strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)"
+          "अपनी मौजूदा ऑडियो फ़ाइलों का <strong>ऑडिट</strong> करें (शर्त लगाता हूँ आपको वहाँ कुछ भारी WAV छिपी मिलेंगी 👀)",
+          "हमारे बताए दिशानिर्देशों से उन्हें <strong>कन्वर्ट</strong> करें",
+          "पहले और बाद में अपनी पेज लोड स्पीड <strong>जाँचें</strong>",
+          "अपने मेट्रिक्स को सुधरते <strong>देखें</strong> (और शायद थोड़ा विजय नृत्य करें 💃)"
         ]
       },
-      "p2": "Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.",
-      "p3": "So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉",
-      "p4": "Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀",
-      "quote": "\"In the realm of digital content, the lightest footprint often leaves the deepest impression.\" – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)"
+      "p2": "याद रखें, डिजिटल दुनिया में ध्वनि अदृश्य हो सकती है, लेकिन आपकी वेबसाइट की परफ़ॉर्मेंस पर उसका असर बिल्कुल भी अदृश्य नहीं। ऑडियो ऑप्टिमाइज़ करके आप जो मिलीसेकंड बचाते हैं? वे सीधे बेहतर यूज़र अनुभव, ऊँची सर्च रैंकिंग और अंततः बेहतर कमाई में बदलते हैं।",
+      "p3": "तो जाइए और कंप्रेस कीजिए! आपके विज़िटर के कान (और इंटरनेट कनेक्शन) आपको धन्यवाद देंगे। और अगर यह आपको उपयोगी लगा, तो सोचिए सही इमेज और वीडियो ऑप्टिमाइज़ेशन आपकी साइट के लिए क्या कर सकता है... लेकिन वह किसी और दिन की कहानी है! 😉",
+      "p4": "ऑडियो ऑप्टिमाइज़ेशन निंजा बनने को तैयार? आपकी वेबसाइट की परफ़ॉर्मेंस का कायापलट उस पहली फ़ाइल कन्वर्ज़न से शुरू होता है। कर दिखाइए! 🚀",
+      "quote": "\"डिजिटल कंटेंट के क्षेत्र में सबसे हल्के पदचिह्न अक्सर सबसे गहरी छाप छोड़ते हैं।\" – प्राचीन वेब डेवलपर कहावत (ठीक है, यह मैंने बनाई है, लेकिन यह सच है! 😄)"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the Media Manipulator audio tools and explore related guides.",
+      "title": "संबंधित टूल",
+      "intro": "Media Manipulator के ऑडियो टूल आज़माएँ और संबंधित गाइड देखें।",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate."
+          "label": "ऑडियो कन्वर्टर",
+          "description": "कस्टम बिटरेट के साथ WAV, MP3, FLAC, M4A, OGG और अन्य कन्वर्ट करें।"
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV files into widely playable MP3s."
+          "label": "WAV को MP3 में बदलें",
+          "description": "बड़ी WAV फ़ाइलों को व्यापक रूप से चलने वाली MP3 में छोटा करें।"
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Pull vocals out of music tracks for remixes or analysis."
+          "label": "गाने से वोकल अलग करें",
+          "description": "रीमिक्स या विश्लेषण के लिए म्यूज़िक ट्रैक से वोकल निकालें।"
         },
         {
-          "label": "Audio converter tutorial",
-          "description": "Walk through every option including cleanup and vocal isolation."
+          "label": "ऑडियो कन्वर्टर ट्यूटोरियल",
+          "description": "क्लीनअप और वोकल आइसोलेशन सहित हर विकल्प की गाइड।"
         },
         {
-          "label": "Video compression guide",
-          "description": "Pair good audio with optimized video encoding."
+          "label": "वीडियो कंप्रेशन गाइड",
+          "description": "अच्छे ऑडियो को ऑप्टिमाइज़्ड वीडियो एनकोडिंग के साथ जोड़ें।"
         },
         {
-          "label": "Image optimization guide",
-          "description": "Round out a fast site by also optimizing image files."
+          "label": "इमेज ऑप्टिमाइज़ेशन गाइड",
+          "description": "इमेज फ़ाइलें भी ऑप्टिमाइज़ करके तेज़ साइट को पूरा करें।"
         }
       ]
     },
     "cta": {
-      "title": "Ready to Master Audio Optimization? 🎧",
-      "body": "Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!",
-      "buttonLabel": "Open the audio converter →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "ऑडियो ऑप्टिमाइज़ेशन में महारत पाने को तैयार? 🎧",
+      "body": "अपनी भारी WAV फ़ाइलों को बिजली की रफ़्तार वाली MP3 और AAC में बदलें! हमारा मुफ़्त ऑडियो कन्वर्टर कस्टमाइज़ करने योग्य बिटरेट और सैंपल रेट के साथ सभी प्रमुख फ़ॉर्मैट का समर्थन करता है। अपनी ऑडियो फ़ाइलें ऑप्टिमाइज़ करें और अपनी वेबसाइट की परफ़ॉर्मेंस को सुपरचार्ज करें!",
+      "buttonLabel": "ऑडियो कन्वर्टर खोलें →",
+      "footnote": "साइनअप की ज़रूरत नहीं • फ़ाइलें लोकली प्रोसेस • तेज़ और सुरक्षित"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Video Tutorial",
-    "title": "What Is AI Frame Interpolation?",
-    "intro": "AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.",
+    "eyebrow": "वीडियो ट्यूटोरियल",
+    "title": "AI फ़्रेम इंटरपोलेशन क्या है?",
+    "intro": "AI फ़्रेम इंटरपोलेशन वीडियो के बीच के नए फ़्रेम बनाता है ताकि मोशन ज़्यादा स्मूद चले। यह ट्यूटोरियल बताता है कि यह कैसे काम करता है, इसे कब इस्तेमाल करें, इसकी सीमाएँ क्या हैं, और Media Manipulator पर इसे कैसे चलाएँ।",
     "toolPanel": {
-      "title": "Try AI frame interpolation without leaving this page",
-      "description": "Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+      "title": "इस पेज को छोड़े बिना AI फ़्रेम इंटरपोलेशन आज़माएँ",
+      "description": "कोई वीडियो फ़ाइल चुनें, AI वीडियो टूल्स पैनल तक स्क्रॉल करें, और AI फ़्रेम इंटरपोलेशन चुनें। डिफ़ॉल्ट सेटिंग्स 60fps पर एक स्मूद MP4 आउटपुट देती हैं।"
     },
     "whatIs": {
-      "title": "1. What is frame interpolation?",
-      "intro": "Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:",
+      "title": "1. फ़्रेम इंटरपोलेशन क्या है?",
+      "intro": "फ़्रेम इंटरपोलेशन मूल फ़्रेमों के बीच नई इमेज डालकर वीडियो का फ़्रेम रेट बढ़ाता है। 30fps की क्लिप में प्रति सेकंड 30 फ़्रेम होते हैं; उसका फ़्रेम रेट दोगुना करने का मतलब है मौजूदा फ़्रेमों के बीच बैठने के लिए प्रति सेकंड 30 नए फ़्रेम बनाना। इसके कई तरीके हैं:",
       "bullets": [
-        "<strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.",
-        "<strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.",
-        "<strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg's minterpolate).",
-        "<strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion."
+        "<strong>फ़्रेम डुप्लिकेशन</strong> — पिछला फ़्रेम कॉपी करें ताकि मोशन वैसा ही दिखे लेकिन प्लेबैक रेट लक्ष्य से मेल खाए।",
+        "<strong>फ़्रेम ब्लेंडिंग</strong> — सीमा को नरम करने के लिए दो आस-पास के फ़्रेमों के बीच फ़ेड करें। सस्ता लेकिन धुंधला।",
+        "<strong>मोशन इंटरपोलेशन</strong> — मोशन वेक्टर का अनुमान लगाएँ और फ़्रेमों को आगे मोड़ें (जैसे FFmpeg का minterpolate)।",
+        "<strong>AI इंटरपोलेशन</strong> — एक न्यूरल नेटवर्क (जैसे RIFE) आस-पास के दो असली फ़्रेमों से बीच का फ़्रेम अनुमानित करता है। गैर-कठोर मोशन के लिए आम तौर पर सबसे साफ़ नतीजा।"
       ],
-      "outro": "Media Manipulator's AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server."
+      "outro": "Media Manipulator का AI फ़्रेम इंटरपोलेशन टूल हमारे अपने GPU सर्वर पर rife-ncnn-vulkan के ज़रिए RIFE इस्तेमाल करता है।"
     },
     "whyUse": {
-      "title": "2. Why people use frame interpolation",
+      "title": "2. लोग फ़्रेम इंटरपोलेशन क्यों इस्तेमाल करते हैं",
       "bullets": [
-        "Smoother motion on modern displays and social platforms.",
-        "Lifting 24/30fps footage to 60fps.",
-        "Lifting 60fps footage to 120fps for high-refresh playback or editing.",
-        "Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.",
-        "Restoring older, low-FPS clips so they feel less stuttery.",
-        "Producing smoother short cuts for sharing on social."
+        "आधुनिक डिस्प्ले और सोशल प्लेटफ़ॉर्म पर स्मूद मोशन।",
+        "24/30fps फ़ुटेज को 60fps तक ले जाना।",
+        "हाई-रिफ़्रेश प्लेबैक या एडिटिंग के लिए 60fps फ़ुटेज को 120fps तक ले जाना।",
+        "ट्रेलर, गेमप्ले, खेल, स्क्रीनकास्ट और व्लॉग के लिए साफ़ मोशन प्रीव्यू।",
+        "पुरानी, कम-FPS क्लिप को रिस्टोर करना ताकि वे कम अटकती लगें।",
+        "सोशल पर शेयर करने के लिए स्मूद छोटे कट बनाना।"
       ]
     },
     "howItWorks": {
-      "title": "3. How AI frame interpolation works (high level)",
+      "title": "3. AI फ़्रेम इंटरपोलेशन कैसे काम करता है (मोटे तौर पर)",
       "paragraphs": [
-        "Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.",
-        "Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear."
+        "दो आस-पास के फ़्रेम दिए जाने पर मॉडल अनुमान लगाता है कि हर पिक्सेल उनके बीच कैसे चलता है — ऑप्टिकल फ़्लो से जुड़ी एक प्रक्रिया। फिर वह उस मोशन का उपयोग दो मूल फ़्रेमों के बीच आंशिक समय स्थितियों पर रखे एक या अधिक नए फ़्रेम बनाने के लिए करता है। न्यूरल नेटवर्क ट्रेनिंग डेटा से आम मोशन पैटर्न सीखता है, इसलिए यह स्मूद, प्राकृतिक मोशन को अच्छे से संभालता है।",
+        "कठिन मामले — तेज़ मोशन, ओक्लूज़न (एक वस्तु का दूसरी के सामने से गुज़रना), बाल और पहियों जैसी पतली संरचनाएँ, और सीन कट — स्वाभाविक रूप से कठिन हैं क्योंकि मॉडल के पास इस बारे में कम भरोसेमंद सबूत होते हैं कि बीच में क्या होना चाहिए। उन्हीं क्षेत्रों में आर्टिफ़ैक्ट दिखते हैं।"
       ]
     },
     "vsBasicFps": {
-      "title": "4. AI interpolation vs basic FPS conversion",
-      "p1": "Basic FPS conversion (whether through FFmpeg's <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.",
-      "p2": "AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:",
+      "title": "4. AI इंटरपोलेशन बनाम बेसिक FPS कन्वर्ज़न",
+      "p1": "बेसिक FPS कन्वर्ज़न (चाहे FFmpeg के <code>fps</code> फ़िल्टर से या हार्डवेयर-एक्सेलरेटेड समकक्ष से) आम तौर पर लक्षित फ़्रेम रेट पाने के लिए बस फ़्रेम डुप्लिकेट, ड्रॉप या ब्लेंड करता है। प्रति सेकंड फ़्रेमों की कुल संख्या लक्ष्य से मेल खाती है, लेकिन नई मोशन जानकारी नहीं जुड़ती — आँख अब भी केवल मूल कैप्चर अंतराल देखती है।",
+      "p2": "AI इंटरपोलेशन बिल्कुल नए फ़्रेम बनाता है जिनका कंटेंट कॉपी नहीं, अनुमानित होता है। समझौता:",
       "bullets": [
-        "AI usually looks much smoother than duplication or blending.",
-        "AI can warp or hallucinate details on hard regions.",
-        "Basic FPS conversion is faster but rarely feels truly smoother."
+        "AI आम तौर पर डुप्लिकेशन या ब्लेंडिंग से कहीं ज़्यादा स्मूद दिखता है।",
+        "AI कठिन क्षेत्रों में विवरण मोड़ सकता है या गढ़ सकता है।",
+        "बेसिक FPS कन्वर्ज़न तेज़ है लेकिन शायद ही कभी सच में स्मूद महसूस होता है।"
       ]
     },
     "fpsChoice": {
-      "title": "5. When to pick 48, 60, or 120 FPS",
+      "title": "5. 48, 60 या 120 FPS कब चुनें",
       "bullets": [
-        "<strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.",
-        "<strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.",
-        "<strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file."
+        "<strong>48 FPS</strong> — 24fps सिनेमैटिक फ़ुटेज पर हल्की 2× बढ़त। 60fps से कम आक्रामक और मूल लय का थोड़ा हिस्सा बनाए रखता है।",
+        "<strong>60 FPS</strong> — आधुनिक वेब के लिए आम स्मूद प्लेबैक रेट। 24/30fps सोर्स के लिए अच्छा पहला लक्ष्य।",
+        "<strong>120 FPS</strong> — हाई-रिफ़्रेश डिस्प्ले, गेमप्ले/खेल कंटेंट, या आगे स्लो-मोशन एडिटिंग के लिए। भारी प्रोसेसिंग लागत और बड़ी फ़ाइल।"
       ]
     },
     "qualityTradeoffs": {
-      "title": "6. Quality and max-height tradeoffs",
+      "title": "6. क्वालिटी और अधिकतम-ऊँचाई के समझौते",
       "bullets": [
-        "<strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.",
-        "<strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.",
-        "<strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.",
-        "<strong>High quality preset</strong> → slower encode, lower CRF, sharper output."
+        "<strong>कम अधिकतम प्रोसेसिंग ऊँचाई</strong> → तेज़ नतीजा और कम GPU मेमोरी दबाव। त्वरित परीक्षणों के लिए बढ़िया।",
+        "<strong>ज़्यादा अधिकतम प्रोसेसिंग ऊँचाई</strong> → ज़्यादा विवरण सुरक्षित, लेकिन धीमा और भारी।",
+        "<strong>कम क्वालिटी प्रीसेट</strong> → तेज़ एनकोड, बड़ा CRF, छोटी फ़ाइल।",
+        "<strong>उच्च क्वालिटी प्रीसेट</strong> → धीमा एनकोड, कम CRF, शार्प आउटपुट।"
       ],
-      "outro": "For a first run, try 720p max height with the medium quality preset."
+      "outro": "पहली बार के लिए मध्यम क्वालिटी प्रीसेट के साथ 720p अधिकतम ऊँचाई आज़माएँ।"
     },
     "bestPractices": {
-      "title": "7. Best practices",
+      "title": "7. सर्वोत्तम तरीके",
       "bullets": [
-        "Test on a short clip first — interpolation cost scales with duration and resolution.",
-        "Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.",
-        "Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.",
-        "Pick clear, steady source footage when possible.",
-        "Keep the original — interpolation is irreversible re-encoding.",
-        "Try 60fps before 120fps unless you specifically need 120fps."
+        "पहले छोटी क्लिप पर परीक्षण करें — इंटरपोलेशन की लागत अवधि और रिज़ॉल्यूशन के साथ बढ़ती है।",
+        "बहुत सारे सीन-कट वाले कंटेंट से बचें। कट अक्सर सीमा पर एक संक्षिप्त विकृति पैदा करते हैं।",
+        "पब्लिश करने से पहले नतीजे का प्रीव्यू देखें — इंटरपोलेशन असली हाई-FPS कैप्चर से हल्का अलग दिख सकता है।",
+        "जब संभव हो साफ़, स्थिर सोर्स फ़ुटेज चुनें।",
+        "मूल फ़ाइल रखें — इंटरपोलेशन एक अपरिवर्तनीय री-एनकोडिंग है।",
+        "120fps से पहले 60fps आज़माएँ, जब तक आपको खास तौर पर 120fps न चाहिए।"
       ]
     },
     "limitations": {
-      "title": "8. Limitations and artifacts",
+      "title": "8. सीमाएँ और आर्टिफ़ैक्ट",
       "bullets": [
-        "Warping around hands, hair, wheels, and other fast-moving thin structures.",
-        "Ghosting around occlusions where one object passes in front of another.",
-        "Brief glitches at scene cuts.",
-        "Motion blur mismatch — synthesized frames don't share the source camera's shutter behavior.",
-        "Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.",
-        "Long videos take a lot of GPU time; we cap duration to keep the free tool stable.",
-        "AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame."
+        "हाथों, बालों, पहियों और अन्य तेज़ चलती पतली संरचनाओं के आसपास विकृति।",
+        "ओक्लूज़न के आसपास घोस्टिंग, जहाँ एक वस्तु दूसरी के सामने से गुज़रती है।",
+        "सीन कट पर संक्षिप्त गड़बड़ियाँ।",
+        "मोशन ब्लर बेमेल — बनाए गए फ़्रेम सोर्स कैमरे के शटर व्यवहार को साझा नहीं करते।",
+        "मौजूदा कंप्रेशन आर्टिफ़ैक्ट (बैंडिंग, ब्लॉकिंग) ऊँचे फ़्रेम रेट पर ज़्यादा दिख सकते हैं।",
+        "लंबे वीडियो बहुत GPU समय लेते हैं; मुफ़्त टूल को स्थिर रखने के लिए हम अवधि सीमित करते हैं।",
+        "AI इंटरपोलेशन वह असली मोशन वापस नहीं लाता जो कभी कैप्चर ही नहीं हुआ — यह एक संभावित बीच का फ़्रेम अनुमानित करता है।"
       ]
     },
     "howTo": {
-      "title": "9. How to use the Media Manipulator AI Frame Interpolation Tool",
+      "title": "9. Media Manipulator का AI फ़्रेम इंटरपोलेशन टूल कैसे इस्तेमाल करें",
       "steps": [
-        "Open the <linkTool>AI Frame Interpolation tool</linkTool>.",
-        "Upload a video.",
-        "Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.",
-        "Choose a target FPS — 48, 60, or 120.",
-        "Pick a quality preset and a max processing height (start at 720p / medium).",
-        "Leave <em>Preserve audio</em> on unless you want a silent output.",
-        "Submit the conversion and wait for the job to finish.",
-        "Download the resulting MP4 and preview it."
+        "<linkTool>AI फ़्रेम इंटरपोलेशन टूल</linkTool> खोलें।",
+        "एक वीडियो अपलोड करें।",
+        "<strong>AI वीडियो टूल्स</strong> पैनल तक स्क्रॉल करें और <em>AI फ़्रेम इंटरपोलेशन</em> चुनें।",
+        "लक्षित FPS चुनें — 48, 60 या 120।",
+        "क्वालिटी प्रीसेट और अधिकतम प्रोसेसिंग ऊँचाई चुनें (720p / मध्यम से शुरू करें)।",
+        "<em>ऑडियो बनाए रखें</em> चालू रहने दें, जब तक आपको मौन आउटपुट न चाहिए।",
+        "कन्वर्ज़न सबमिट करें और जॉब पूरा होने का इंतज़ार करें।",
+        "बनी हुई MP4 डाउनलोड करें और उसका प्रीव्यू देखें।"
       ]
     },
     "faq": {
       "title": "FAQ",
       "items": [
         {
-          "q": "Does frame interpolation improve video quality?",
-          "a": "It improves motion smoothness, not resolution or sharpness."
+          "q": "क्या फ़्रेम इंटरपोलेशन वीडियो क्वालिटी सुधारता है?",
+          "a": "यह मोशन की स्मूदनेस सुधारता है, रिज़ॉल्यूशन या शार्पनेस नहीं।"
         },
         {
-          "q": "Is AI frame interpolation the same as increasing FPS?",
-          "a": "Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending."
+          "q": "क्या AI फ़्रेम इंटरपोलेशन FPS बढ़ाने जैसा ही है?",
+          "a": "दोनों ऊँचे फ़्रेम रेट का लक्ष्य रखते हैं, लेकिन AI इंटरपोलेशन डुप्लिकेट या ब्लेंड करने के बजाय नए फ़्रेम बनाता है।"
         },
         {
-          "q": "Can I convert 30fps to 60fps?",
-          "a": "Yes — it's the most common target."
+          "q": "क्या मैं 30fps को 60fps में बदल सकता हूँ?",
+          "a": "हाँ — यह सबसे आम लक्ष्य है।"
         },
         {
-          "q": "Can I convert 60fps to 120fps?",
-          "a": "Yes, but the processing cost roughly doubles versus 60fps."
+          "q": "क्या मैं 60fps को 120fps में बदल सकता हूँ?",
+          "a": "हाँ, लेकिन प्रोसेसिंग लागत 60fps की तुलना में लगभग दोगुनी हो जाती है।"
         },
         {
-          "q": "Why can frame interpolation create artifacts?",
-          "a": "Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts)."
+          "q": "फ़्रेम इंटरपोलेशन आर्टिफ़ैक्ट क्यों बना सकता है?",
+          "a": "मोशन अनुमान को कठिन क्षेत्रों (ओक्लूज़न, तेज़ मोशन, सीन कट) में अंदाज़ा लगाना पड़ता है।"
         },
         {
-          "q": "What output format does the tool create?",
-          "a": "MP4 (H.264 + AAC) in v1."
+          "q": "टूल कौन सा आउटपुट फ़ॉर्मैट बनाता है?",
+          "a": "v1 में MP4 (H.264 + AAC)।"
         },
         {
-          "q": "Is 60fps always better than 30fps?",
-          "a": "Not for cinematic looks — pick what suits the content."
+          "q": "क्या 60fps हमेशा 30fps से बेहतर है?",
+          "a": "सिनेमैटिक लुक के लिए नहीं — वही चुनें जो कंटेंट को सूट करे।"
         },
         {
-          "q": "Is AI frame interpolation better than FFmpeg FPS conversion?",
-          "a": "For most clips, yes — but minterpolate is faster and still useful as a quick fallback."
+          "q": "क्या AI फ़्रेम इंटरपोलेशन FFmpeg के FPS कन्वर्ज़न से बेहतर है?",
+          "a": "ज़्यादातर क्लिप के लिए हाँ — लेकिन minterpolate तेज़ है और त्वरित फ़ॉलबैक के रूप में अब भी उपयोगी है।"
         },
         {
-          "q": "Why do scene cuts sometimes look strange after interpolation?",
-          "a": "The model assumes adjacent frames belong to the same motion sequence."
+          "q": "इंटरपोलेशन के बाद सीन कट कभी-कभी अजीब क्यों दिखते हैं?",
+          "a": "मॉडल मानता है कि आस-पास के फ़्रेम एक ही मोशन क्रम के हैं।"
         }
       ]
     },
     "actions": {
-      "tryTool": "Try the AI Frame Interpolation Tool",
-      "backToTutorials": "← Back to Tutorials",
-      "videoConverterTutorial": "Video Converter Tutorial"
+      "tryTool": "AI फ़्रेम इंटरपोलेशन टूल आज़माएँ",
+      "backToTutorials": "← ट्यूटोरियल पर वापस",
+      "videoConverterTutorial": "वीडियो कन्वर्टर ट्यूटोरियल"
     },
     "relatedLinks": {
-      "title": "Try related tools and guides",
-      "intro": "Other video tools and reference pages that pair well with AI frame interpolation.",
+      "title": "संबंधित टूल और गाइड आज़माएँ",
+      "intro": "अन्य वीडियो टूल और संदर्भ पेज जो AI फ़्रेम इंटरपोलेशन के साथ अच्छे से जुड़ते हैं।",
       "links": [
         {
-          "label": "AI Frame Interpolation Tool",
-          "description": "Upload a video and run interpolation right now."
+          "label": "AI फ़्रेम इंटरपोलेशन टूल",
+          "description": "वीडियो अपलोड करें और अभी इंटरपोलेशन चलाएँ।"
         },
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "वीडियो कन्वर्टर",
+          "description": "MP4, WebM, MOV, AVI, MKV और अन्य कन्वर्ट करें।"
         },
         {
-          "label": "Compress video",
-          "description": "Shrink a higher-FPS file before sharing."
+          "label": "वीडियो कंप्रेस करें",
+          "description": "शेयर करने से पहले ऊँचे-FPS वाली फ़ाइल छोटी करें।"
         },
         {
-          "label": "Extract frames from video",
-          "description": "Pull individual frames out as PNGs."
+          "label": "वीडियो से फ़्रेम निकालें",
+          "description": "अलग-अलग फ़्रेम PNG के रूप में निकालें।"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn a short clip into an animated GIF."
+          "label": "वीडियो को GIF में बदलें",
+          "description": "छोटी क्लिप को एनिमेटेड GIF में बदलें।"
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Video Tutorial",
-    "title": "Getting Started: Converting Video Files",
-    "intro": "Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.",
+    "eyebrow": "वीडियो ट्यूटोरियल",
+    "title": "शुरुआत: वीडियो फ़ाइलें कन्वर्ट करना",
+    "intro": "जानें कि Media Manipulator के वीडियो कन्वर्टर से वीडियो फ़ाइलें कैसे कन्वर्ट और एडिट करें। यह ट्यूटोरियल वीडियो कन्वर्ज़न पैनल के हर सेक्शन को समझाता है — फ़ॉर्मैट चयन, ट्रिम, ट्रांसफ़ॉर्म, विज़ुअल इफ़ेक्ट्स, टेम्पोरल इफ़ेक्ट्स, एडवांस्ड कलर/HDR नियंत्रण, और सबटाइटल व कैप्शन के लिए GPU-आधारित ट्रांसक्रिप्शन विकल्प।",
     "toolPanel": {
-      "title": "Try the video converter without leaving this page",
-      "description": "Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+      "title": "इस पेज को छोड़े बिना वीडियो कन्वर्टर आज़माएँ",
+      "description": "कोई वीडियो फ़ाइल चुनें और उसे यहीं कन्वर्ट करें। नीचे की सेटिंग्स होमपेज कन्वर्टर जैसी ही हैं, इसलिए आप पढ़ते-पढ़ते प्रयोग कर सकते हैं।"
     },
     "upload": {
-      "title": "1. Upload your video file",
-      "paragraph1": "Drag a video file into the upload zone on the home page, or click <strong>Choose File</strong>. Common inputs include MP4, MOV, MKV, AVI, WebM, WMV, and FLV. Large videos are uploaded directly to S3 via a presigned URL for speed; smaller files upload through the standard form endpoint.",
-      "paragraph2": "After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below."
+      "title": "1. अपनी वीडियो फ़ाइल अपलोड करें",
+      "paragraph1": "होम पेज के अपलोड ज़ोन में वीडियो फ़ाइल ड्रैग करें, या <strong>फ़ाइल चुनें</strong> पर क्लिक करें। आम इनपुट में MP4, MOV, MKV, AVI, WebM, WMV और FLV शामिल हैं। बड़े वीडियो स्पीड के लिए प्रीसाइन्ड URL के ज़रिए सीधे S3 पर अपलोड होते हैं; छोटी फ़ाइलें मानक फ़ॉर्म एंडपॉइंट से अपलोड होती हैं।",
+      "paragraph2": "अपलोड के बाद दायाँ पैनल एक <strong>कन्वर्ट / ट्रांसक्राइब</strong> टॉगल दिखाता है। अभी इसे <em>कन्वर्ट</em> पर रखें — ट्रांसक्राइब नीचे कवर करेंगे।"
     },
     "format": {
-      "title": "2. Pick the output format and quality",
-      "intro": "Use <strong>Format</strong> to choose the container/codec for the output:",
+      "title": "2. आउटपुट फ़ॉर्मैट और क्वालिटी चुनें",
+      "intro": "आउटपुट का कंटेनर/कोडेक चुनने के लिए <strong>फ़ॉर्मैट</strong> का उपयोग करें:",
       "bullets": [
-        "<strong>MP4</strong> — H.264 + AAC, the safest default for the web and most devices.",
-        "<strong>WebM</strong> — VP9 + Opus, optimal for the open web.",
-        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).",
-        "<strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.",
-        "<strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below."
+        "<strong>MP4</strong> — H.264 + AAC, वेब और ज़्यादातर डिवाइस के लिए सबसे सुरक्षित डिफ़ॉल्ट।",
+        "<strong>WebM</strong> — VP9 + Opus, ओपन वेब के लिए सर्वोत्तम।",
+        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — खास वर्कफ़्लो (Apple, आर्काइव, पुराने प्लेयर आदि) के लिए कंटेनर।",
+        "<strong>ProRes / DNxHD</strong> — हाई-बिटरेट प्रोफ़ेशनल एडिटिंग कोडेक।",
+        "<strong>GIF (एनिमेटेड)</strong> — चैट थ्रेड, README और बग रिपोर्ट के लिए मौन लूपिंग इमेज। नीचे समर्पित सेक्शन देखें।"
       ],
-      "quality": "<strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over."
+      "quality": "<strong>क्वालिटी</strong> अंदर से एक CRF प्रीसेट चुनती है: कम ≈ CRF 30 (छोटी फ़ाइल), मध्यम ≈ CRF 23 (संतुलित), उच्च ≈ CRF 18 (ज़्यादातर फ़ुटेज पर दृश्य रूप से पारदर्शी)। GIF आउटपुट के लिए क्वालिटी, ऊँचाई और स्पीड नियंत्रण छोड़ दिए जाते हैं — नीचे का एनिमेटेड GIF पैनल उनकी जगह लेता है।"
     },
     "gif": {
-      "title": "2a. Converting video to an animated GIF",
-      "paragraph1": "Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.",
+      "title": "2a. वीडियो को एनिमेटेड GIF में बदलना",
+      "paragraph1": "<strong>एनिमेटेड GIF सेटिंग्स</strong> पैनल दिखाने के लिए फ़ॉर्मैट के रूप में <strong>GIF (एनिमेटेड)</strong> चुनें। यह एक आज़माई हुई स्क्रीनकास्ट स्क्रिप्ट पर आधारित दो-चरणीय पाइपलाइन चलाता है: FFmpeg सोर्स को छोटा करता है और कम फ़्रेम रेट पर सैंपल करता है, फिर <code>gifsicle</code> पैलेट को फिर से क्वांटाइज़ करता है और आकार के लिए आउटपुट ऑप्टिमाइज़ करता है।",
       "bullets": [
-        "<strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.",
-        "<strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.",
-        "<strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.",
-        "<strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.",
-        "<strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+        "<strong>चौड़ाई (px)</strong> — आउटपुट चौड़ाई। आस्पेक्ट रेशियो बनाए रखने के लिए ऊँचाई अपने आप निकाली जाती है (और 4 के गुणक में राउंड की जाती है)। स्क्रीनकास्ट के लिए 480–900 अच्छा संतुलन है।",
+        "<strong>फ़्रेम रेट (fps)</strong> — FFmpeg सोर्स से प्रति सेकंड कितने फ़्रेम सैंपल करता है। UI स्क्रीन रिकॉर्डिंग के लिए 12 fps स्मूद लगता है; ज़्यादा हलचल वाली क्लिप के लिए 18–24 करें, या फ़ाइल छोटी करने के लिए 8–10।",
+        "<strong>रंग</strong> — gifsicle पैलेट आकार (2–256)। 128 एक मज़बूत डिफ़ॉल्ट है; फ़्लैट UI फ़ुटेज पर 64 करें, स्मूद ग्रेडिएंट वाली फ़ोटोग्राफ़िक क्लिप के लिए 256।",
+        "<strong>फ़्रेम डिले</strong> — 1/100 सेकंड में gifsicle का इंटर-फ़्रेम डिले। कम = तेज़ प्लेबैक। 3 (≈30ms) चुस्त स्क्रीनकास्ट अहसास है; 6–10 धीमा, अधिक सधा हुआ लूप बनाता है।",
+        "<strong>ऑप्टिमाइज़ स्तर</strong> — gifsicle का <code>--optimize</code> स्तर। 1 सबसे तेज़ है और सबसे बड़ा आउटपुट देता है, 3 सबसे धीमा और सबसे छोटा आउटपुट। 3 पर ही रहें, जब तक आप किसी लंबी क्लिप पर बार-बार काम करते हुए जल्दी ड्राफ़्ट न चाहें।"
       ],
-      "paragraph2": "Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video."
+      "paragraph2": "GIF के लिए ट्रिम अब भी काम करता है — फ़ाइल को कुछ मेगाबाइट से काफ़ी नीचे रखने के लिए छोटे ट्रिम को छोटी चौड़ाई और मामूली रंगों के साथ जोड़ें। जॉब पूरा होते ही प्रीव्यू मोडल नतीजे को वहीं एनिमेट करता है; सोर्स वीडियो से तुलना के लिए <em>मूल</em> पर टॉगल करें।"
     },
     "resize": {
-      "title": "3. Resize, speed, and aspect ratio",
-      "paragraph1": "Set <strong>Width</strong> and/or <strong>Height</strong> to resize the video. Leave one blank to scale proportionally. Toggle <strong>Preserve aspect ratio</strong> when you set both to use a non-stretching <em>force_original_aspect_ratio=decrease</em> scale.",
-      "paragraph2": "<strong>Speed Multiplier</strong> changes both video and audio playback tempo from 0.25x to 4x. We pair it with FFmpeg's <em>setpts</em> filter and matching <em>atempo</em> on the audio track."
+      "title": "3. रीसाइज़, स्पीड और आस्पेक्ट रेशियो",
+      "paragraph1": "वीडियो रीसाइज़ करने के लिए <strong>चौड़ाई</strong> और/या <strong>ऊँचाई</strong> सेट करें। आनुपातिक रूप से स्केल करने के लिए एक खाली छोड़ें। दोनों सेट करने पर बिना खिंचाव वाला <em>force_original_aspect_ratio=decrease</em> स्केल इस्तेमाल करने के लिए <strong>आस्पेक्ट रेशियो बनाए रखें</strong> टॉगल करें।",
+      "paragraph2": "<strong>स्पीड मल्टीप्लायर</strong> वीडियो और ऑडियो दोनों का प्लेबैक टेम्पो 0.25x से 4x तक बदलता है। हम इसे FFmpeg के <em>setpts</em> फ़िल्टर और ऑडियो ट्रैक पर मेल खाते <em>atempo</em> के साथ जोड़ते हैं।"
     },
     "trim": {
-      "title": "4. Trim",
-      "paragraph": "Click <strong>Trim Video</strong> to scrub the player and pick a start and end time. Only the selected segment is encoded into the output, and trim works regardless of the output codec."
+      "title": "4. ट्रिम",
+      "paragraph": "प्लेयर में स्क्रब करने और शुरुआत व अंत का समय चुनने के लिए <strong>वीडियो ट्रिम करें</strong> पर क्लिक करें। केवल चुना गया हिस्सा आउटपुट में एनकोड होता है, और ट्रिम आउटपुट कोडेक की परवाह किए बिना काम करता है।"
     },
     "effects": {
-      "title": "5. Advanced Video Effects",
-      "intro": "The <strong>Advanced Video Effects</strong> section groups every filter into collapsible panels. Expand a panel to access its controls:",
+      "title": "5. एडवांस्ड वीडियो इफ़ेक्ट्स",
+      "intro": "<strong>एडवांस्ड वीडियो इफ़ेक्ट्स</strong> सेक्शन हर फ़िल्टर को समेटे जा सकने वाले पैनलों में समूहित करता है। नियंत्रणों तक पहुँचने के लिए पैनल खोलें:",
       "bullets": [
-        "<strong>Visual Effects</strong> — brightness, contrast, saturation, hue, gamma, exposure, shadow/highlight recovery, Gaussian blur, motion blur, unsharp mask (sharpening), film/digital/vintage noise, and artistic effects (oil painting, watercolor, sketch, emboss, edge detection, posterize).",
-        "<strong>Transform</strong> — free rotation in degrees, horizontal/vertical flip, custom crop, and padded letterboxing with a configurable color.",
-        "<strong>Temporal Effects</strong> — reverse playback, ping-pong (forward then backward), frame-rate conversion with optional motion interpolation, and video stabilization with shakiness/accuracy controls.",
-        "<strong>Advanced Processing</strong> — deinterlacing, HDR tone mapping (hable, reinhard, mobius), and explicit input/output colorspace conversion (Rec.709, Rec.2020, sRGB, P3)."
+        "<strong>विज़ुअल इफ़ेक्ट्स</strong> — ब्राइटनेस, कॉन्ट्रास्ट, सैचुरेशन, ह्यू, गामा, एक्सपोज़र, शैडो/हाइलाइट रिकवरी, गाउसियन ब्लर, मोशन ब्लर, अनशार्प मास्क (शार्पनिंग), फ़िल्म/डिजिटल/विंटेज नॉइज़, और कलात्मक इफ़ेक्ट्स (ऑयल पेंटिंग, वॉटरकलर, स्केच, एम्बॉस, एज डिटेक्शन, पोस्टराइज़)।",
+        "<strong>ट्रांसफ़ॉर्म</strong> — डिग्री में मुक्त रोटेशन, क्षैतिज/लंबवत फ़्लिप, कस्टम क्रॉप, और कॉन्फ़िगर करने योग्य रंग के साथ पैडेड लेटरबॉक्सिंग।",
+        "<strong>टेम्पोरल इफ़ेक्ट्स</strong> — रिवर्स प्लेबैक, पिंग-पॉन्ग (आगे फिर पीछे), वैकल्पिक मोशन इंटरपोलेशन के साथ फ़्रेम-रेट कन्वर्ज़न, और शेकिनेस/सटीकता नियंत्रण के साथ वीडियो स्टेबिलाइज़ेशन।",
+        "<strong>एडवांस्ड प्रोसेसिंग</strong> — डीइंटरलेसिंग, HDR टोन मैपिंग (hable, reinhard, mobius), और स्पष्ट इनपुट/आउटपुट कलरस्पेस कन्वर्ज़न (Rec.709, Rec.2020, sRGB, P3)।"
       ]
     },
     "convertDownload": {
-      "title": "6. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A streaming progress bar shows real-time job status pulled from FFmpeg. When the job finishes, the result auto-previews in a modal with an <strong>Original / Final</strong> toggle so you can compare the two side by side. A <strong>Download</strong> button saves the final file."
+      "title": "6. कन्वर्ट करें और डाउनलोड करें",
+      "paragraph": "<strong>फ़ाइल कन्वर्ट करें</strong> पर क्लिक करें। एक स्ट्रीमिंग प्रोग्रेस बार FFmpeg से लिया गया रियल-टाइम जॉब स्टेटस दिखाता है। जॉब पूरा होने पर नतीजा एक मोडल में <strong>मूल / अंतिम</strong> टॉगल के साथ अपने आप प्रीव्यू होता है, ताकि आप दोनों की अगल-बगल तुलना कर सकें। <strong>डाउनलोड करें</strong> बटन अंतिम फ़ाइल सेव करता है।"
     },
     "transcribe": {
-      "title": "7. Transcribe a video (subtitles, captions, plain text, JSON)",
-      "intro": "Switch the panel toggle to <strong>Transcribe</strong> to run our local GPU transcription pipeline (whisper-ctranslate2). Pick an output format:",
+      "title": "7. वीडियो ट्रांसक्राइब करें (सबटाइटल, कैप्शन, सादा टेक्स्ट, JSON)",
+      "intro": "हमारी लोकल GPU ट्रांसक्रिप्शन पाइपलाइन (whisper-ctranslate2) चलाने के लिए पैनल टॉगल को <strong>ट्रांसक्राइब</strong> पर स्विच करें। आउटपुट फ़ॉर्मैट चुनें:",
       "bullets": [
-        "<strong>VTT</strong> — time-coded captions/subtitles that drop into HTML5 video players.",
-        "<strong>Plain text</strong> — a continuous transcript for reading or editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — टाइम-कोडेड कैप्शन/सबटाइटल जो HTML5 वीडियो प्लेयर में सीधे चलते हैं।",
+        "<strong>सादा टेक्स्ट</strong> — पढ़ने या एडिट करने के लिए लगातार ट्रांसक्रिप्ट।",
+        "<strong>स्ट्रक्चर्ड JSON</strong> — आगे की पाइपलाइन के लिए टाइमिंग डेटा के साथ खंडित ट्रांसक्रिप्ट।"
       ],
-      "languageNote": "Optionally type a BCP-47 language hint (e.g. <code>en</code>, <code>es</code>, <code>ja</code>). Leave it blank to auto-detect. A summary and content-safety review run automatically after the transcript is ready."
+      "languageNote": "वैकल्पिक रूप से BCP-47 भाषा संकेत टाइप करें (जैसे <code>en</code>, <code>es</code>, <code>ja</code>)। ऑटो-डिटेक्ट के लिए खाली छोड़ें। ट्रांसक्रिप्ट तैयार होने के बाद सारांश और कंटेंट-सेफ़्टी समीक्षा अपने आप चलती है।"
     },
     "tips": {
-      "title": "Tips for great video output",
+      "title": "बढ़िया वीडियो आउटपुट के लिए सुझाव",
       "bullets": [
-        "Use <strong>MP4 / High</strong> as a default for web delivery — it streams everywhere and looks great.",
-        "Prefer <strong>WebM</strong> for open-web embeds where file size matters and you control the player.",
-        "Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.",
-        "Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.",
-        "Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.",
-        "For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors."
+        "वेब डिलीवरी के लिए डिफ़ॉल्ट के रूप में <strong>MP4 / उच्च</strong> इस्तेमाल करें — यह हर जगह स्ट्रीम होता है और बढ़िया दिखता है।",
+        "ओपन-वेब एम्बेड के लिए <strong>WebM</strong> को प्राथमिकता दें, जहाँ फ़ाइल आकार मायने रखता है और प्लेयर आपके नियंत्रण में है।",
+        "मानक पाइपलाइन में ऊपर की ओर रीसाइज़ करने से बचें — छोटे इनपुट मूल रिज़ॉल्यूशन पर लॉसलेस एनकोड के बाद बेहतर दिखते हैं।",
+        "तेज़ कलर ग्रेडिंग से पहले <strong>स्टेबिलाइज़ेशन</strong> लगाएँ ताकि वार्प कलर फ़िल्टर से न टकराए।",
+        "अगर आपको कन्वर्ट की गई फ़ाइल और सबटाइटल दोनों चाहिए तो कन्वर्ज़न के साथ <strong>ट्रांसक्राइब</strong> भी चलाएँ — ये स्वतंत्र जॉब हैं।",
+        "<strong>GIF</strong> आउटपुट के लिए पहले आक्रामक तरीके से ट्रिम करें — फ़ुटेज का हर अतिरिक्त सेकंड अंतिम आकार को फ़्रेम रेट × रंगों से गुणा करता है।"
       ]
     },
     "actions": {
-      "tryConverter": "Try the Video Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "वीडियो कन्वर्टर आज़माएँ",
+      "backToTutorials": "← ट्यूटोरियल पर वापस",
+      "howItWorks": "यह कैसे काम करता है"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused video tool or keep exploring related guides.",
+      "title": "संबंधित टूल आज़माएँ",
+      "intro": "सीधे किसी केंद्रित वीडियो टूल पर जाएँ या संबंधित गाइड एक्सप्लोर करते रहें।",
       "links": [
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "वीडियो कन्वर्टर",
+          "description": "MP4, WebM, MOV, AVI, MKV और अन्य कन्वर्ट करें।"
         },
         {
-          "label": "Compress video",
-          "description": "Shrink video file size for the web without ruining quality."
+          "label": "वीडियो कंप्रेस करें",
+          "description": "क्वालिटी बिगाड़े बिना वेब के लिए वीडियो फ़ाइल का आकार घटाएँ।"
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video as searchable text or captions."
+          "label": "वीडियो ट्रांसक्राइब करें",
+          "description": "वीडियो में बोले गए शब्दों को खोजने योग्य टेक्स्ट या कैप्शन के रूप में निकालें।"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "वीडियो को GIF में बदलें",
+          "description": "छोटी वीडियो क्लिप को शेयर करने योग्य एनिमेटेड GIF में बदलें।"
         },
         {
-          "label": "AI Frame Interpolation tool",
-          "description": "Smooth motion by lifting video FPS with RIFE."
+          "label": "AI फ़्रेम इंटरपोलेशन टूल",
+          "description": "RIFE से वीडियो FPS बढ़ाकर मोशन स्मूद करें।"
         },
         {
-          "label": "AI Frame Interpolation tutorial",
-          "description": "Learn how AI frame interpolation works and when to use it."
+          "label": "AI फ़्रेम इंटरपोलेशन ट्यूटोरियल",
+          "description": "जानें कि AI फ़्रेम इंटरपोलेशन कैसे काम करता है और इसे कब इस्तेमाल करें।"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "Learn how transcription and AI summaries run on a local GPU."
+          "label": "Media Manipulator कैसे काम करता है",
+          "description": "जानें कि ट्रांसक्रिप्शन और AI सारांश लोकल GPU पर कैसे चलते हैं।"
         }
       ]
     }
   },
   "tutorialAudioGettingStarted": {
-    "eyebrow": "Audio Tutorial",
-    "title": "Getting Started: Converting Audio Files",
-    "intro": "Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).",
+    "eyebrow": "ऑडियो ट्यूटोरियल",
+    "title": "शुरुआत: ऑडियो फ़ाइलें कन्वर्ट करना",
+    "intro": "जानें कि Media Manipulator के ऑडियो कन्वर्टर से ऑडियो फ़ाइलें कैसे कन्वर्ट, साफ़ और रीमिक्स करें। यह ट्यूटोरियल ऑडियो कन्वर्ज़न पैनल के हर सेक्शन को समझाता है — फ़ॉर्मैट चयन, प्रोसेसिंग इफ़ेक्ट्स, रिस्टोरेशन, और नए AI ऑडियो टूल्स (वॉइस साफ़ करें, बैकग्राउंड शोर हटाएँ, वोकल अलग करें, वोकल हटाएँ)।",
     "upload": {
-      "heading": "1. Upload your audio file",
-      "p1": "From the home page, drag and drop an audio file into the upload zone, or click <strong>Choose File</strong>. Supported inputs include MP3, WAV, FLAC, AAC, M4A, OGG, Opus, and most common podcast and music formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
-      "p2": "Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial."
+      "heading": "1. अपनी ऑडियो फ़ाइल अपलोड करें",
+      "p1": "होम पेज से किसी ऑडियो फ़ाइल को अपलोड ज़ोन में ड्रैग और ड्रॉप करें, या <strong>फ़ाइल चुनें</strong> पर क्लिक करें। समर्थित इनपुट में MP3, WAV, FLAC, AAC, M4A, OGG, Opus और ज़्यादातर आम पॉडकास्ट व संगीत फ़ॉर्मैट शामिल हैं। गेस्ट की फ़ाइलें 24 घंटे रखी जाती हैं; फ़्री अकाउंट के साथ आप 24 घंटे से 2 साल तक चुन सकते हैं।",
+      "p2": "फ़ाइल चुनते ही दायाँ पैनल <strong>कन्वर्ज़न विकल्प</strong> पर स्विच हो जाता है। वीडियो और ऑडियो फ़ाइलों के लिए आपको एक <strong>कन्वर्ट / ट्रांसक्राइब</strong> टॉगल भी दिखेगा — इस ट्यूटोरियल के लिए इसे <em>कन्वर्ट</em> पर रखें।"
     },
     "toolPanel": {
-      "title": "Try the audio converter without leaving this page",
-      "description": "Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "इस पेज को छोड़े बिना ऑडियो कन्वर्टर आज़माएँ",
+      "description": "कोई ऑडियो फ़ाइल चुनें और उसे यहीं कन्वर्ट करें। नीचे की सेटिंग्स होमपेज कन्वर्टर जैसी ही हैं, इसलिए आप प्रयोग करते हुए बाकी ट्यूटोरियल पढ़ सकते हैं।"
     },
     "format": {
-      "heading": "2. Pick the output format",
-      "intro": "The <strong>Format</strong> dropdown sets the container and codec for your output file. The audio converter supports:",
+      "heading": "2. आउटपुट फ़ॉर्मैट चुनें",
+      "intro": "<strong>फ़ॉर्मैट</strong> ड्रॉपडाउन आपकी आउटपुट फ़ाइल का कंटेनर और कोडेक सेट करता है। ऑडियो कन्वर्टर समर्थन करता है:",
       "items": [
-        "<strong>MP3</strong> — universal compatibility, lossy, small file sizes.",
-        "<strong>WAV</strong> — uncompressed PCM, ideal for masters, editing, or archiving.",
-        "<strong>AAC</strong> — efficient lossy codec used by Apple devices and streaming.",
-        "<strong>OGG</strong> — open-source Vorbis container.",
-        "<strong>FLAC / ALAC</strong> — lossless compression for archival quality at smaller size than WAV.",
-        "<strong>Opus</strong> — modern lossy codec great for voice and low bitrates.",
-        "<strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks."
+        "<strong>MP3</strong> — सार्वभौमिक संगतता, लॉसी, छोटे फ़ाइल आकार।",
+        "<strong>WAV</strong> — अनकंप्रेस्ड PCM, मास्टर, एडिटिंग या आर्काइव के लिए आदर्श।",
+        "<strong>AAC</strong> — Apple डिवाइस और स्ट्रीमिंग में इस्तेमाल होने वाला कुशल लॉसी कोडेक।",
+        "<strong>OGG</strong> — ओपन-सोर्स Vorbis कंटेनर।",
+        "<strong>FLAC / ALAC</strong> — WAV से छोटे आकार में आर्काइव क्वालिटी के लिए लॉसलेस कंप्रेशन।",
+        "<strong>Opus</strong> — आवाज़ और कम बिटरेट के लिए बढ़िया आधुनिक लॉसी कोडेक।",
+        "<strong>AC3 / DTS</strong> — सराउंड-सक्षम फ़ॉर्मैट जो अक्सर वीडियो साउंडट्रैक में इस्तेमाल होते हैं।"
       ]
     },
     "quality": {
-      "heading": "3. Set bitrate, sample rate, and channels",
-      "bitrate": "<strong>Bitrate</strong> controls quality vs. file size for lossy formats. 128 kbps is \"good enough\" for podcasts; 192–256 kbps is a strong default for music; 320 kbps is the maximum MP3 quality. Lossless formats (WAV, FLAC, ALAC) ignore this setting.",
-      "sampleRate": "<strong>Sample rate</strong> sets how many audio samples per second the file contains. Standard music is 44.1 kHz; pro audio and video typically use 48 kHz. Higher rates (96 kHz, 192 kHz) only matter for professional production.",
-      "channels": "<strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks."
+      "heading": "3. बिटरेट, सैंपल रेट और चैनल सेट करें",
+      "bitrate": "<strong>बिटरेट</strong> लॉसी फ़ॉर्मैट के लिए क्वालिटी बनाम फ़ाइल आकार नियंत्रित करता है। पॉडकास्ट के लिए 128 kbps \"काफ़ी अच्छा\" है; संगीत के लिए 192–256 kbps एक मज़बूत डिफ़ॉल्ट है; 320 kbps अधिकतम MP3 क्वालिटी है। लॉसलेस फ़ॉर्मैट (WAV, FLAC, ALAC) इस सेटिंग को अनदेखा करते हैं।",
+      "sampleRate": "<strong>सैंपल रेट</strong> तय करता है कि फ़ाइल में प्रति सेकंड कितने ऑडियो सैंपल हैं। मानक संगीत 44.1 kHz है; प्रो ऑडियो और वीडियो आम तौर पर 48 kHz इस्तेमाल करते हैं। ऊँचे रेट (96 kHz, 192 kHz) केवल प्रोफ़ेशनल प्रोडक्शन के लिए मायने रखते हैं।",
+      "channels": "<strong>चैनल</strong> मोनो, स्टीरियो, 5.1 या 7.1 हो सकते हैं। फ़ाइल आकार आधा करने के लिए वॉइस मेमो या सिंगल-माइक रिकॉर्डिंग के लिए मोनो चुनें; संगीत के लिए स्टीरियो डिफ़ॉल्ट है; 5.1/7.1 सराउंड साउंडट्रैक के लिए हैं।"
     },
     "speedVolume": {
-      "heading": "4. Adjust speed, volume, and trim",
-      "p1": "<strong>Speed Multiplier</strong> changes playback tempo from 0.25x to 4x without altering pitch — useful for sped-up podcasts or slowed-down practice tracks. <strong>Volume Multiplier</strong> applies a simple gain factor between 0.1x and 2x.",
-      "p2": "Click <strong>Trim Audio</strong> to scrub through the waveform and pick a start and end time. Only the selected segment is encoded into the output file."
+      "heading": "4. स्पीड, वॉल्यूम और ट्रिम एडजस्ट करें",
+      "p1": "<strong>स्पीड मल्टीप्लायर</strong> पिच बदले बिना प्लेबैक टेम्पो 0.25x से 4x तक बदलता है — तेज़ किए गए पॉडकास्ट या धीमे किए गए अभ्यास ट्रैक के लिए उपयोगी। <strong>वॉल्यूम मल्टीप्लायर</strong> 0.1x और 2x के बीच एक सादा गेन फ़ैक्टर लगाता है।",
+      "p2": "वेवफ़ॉर्म में स्क्रब करने और शुरुआत व अंत का समय चुनने के लिए <strong>ऑडियो ट्रिम करें</strong> पर क्लिक करें। केवल चुना गया हिस्सा आउटपुट फ़ाइल में एनकोड होता है।"
     },
     "aiTools": {
-      "heading": "5. AI Audio Tools (recommended)",
-      "intro": "The <strong>AI Audio Tools</strong> panel is the fastest path to a great-sounding result for voice and music. Each operation runs on our local GPU server (no data leaves our infrastructure):",
+      "heading": "5. AI ऑडियो टूल्स (अनुशंसित)",
+      "intro": "<strong>AI ऑडियो टूल्स</strong> पैनल आवाज़ और संगीत के लिए बढ़िया नतीजे का सबसे तेज़ रास्ता है। हर ऑपरेशन हमारे लोकल GPU सर्वर पर चलता है (कोई डेटा हमारे इन्फ़्रास्ट्रक्चर से बाहर नहीं जाता):",
       "items": [
-        "<strong>Clean Voice</strong> — denoises with DeepFilterNet and then runs a broadcast-style polish chain (high-pass, low-pass, loudness normalization, brick-wall limiter). Best for podcast/voiceover takes recorded in noisy rooms.",
-        "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain. Use this when you want to preserve the natural EQ and dynamics of the recording.",
-        "<strong>Isolate Vocals</strong> — runs Demucs htdemucs and outputs the vocal stem only. Output defaults to WAV so you don't lose detail.",
-        "<strong>Remove Vocals / Karaoke</strong> — same Demucs job, but exports the instrumental stem. Great for karaoke tracks or sample workflows."
+        "<strong>वॉइस साफ़ करें</strong> — DeepFilterNet से डिनॉइज़ करता है और फिर ब्रॉडकास्ट-स्टाइल पॉलिश चेन (हाई-पास, लो-पास, लाउडनेस नॉर्मलाइज़ेशन, ब्रिक-वॉल लिमिटर) चलाता है। शोर वाले कमरों में रिकॉर्ड किए गए पॉडकास्ट/वॉइसओवर के लिए सबसे अच्छा।",
+        "<strong>बैकग्राउंड शोर हटाएँ</strong> — बिना पॉलिश चेन के DeepFilterNet डिनॉइज़। इसे तब इस्तेमाल करें जब आप रिकॉर्डिंग का प्राकृतिक EQ और डायनामिक्स बनाए रखना चाहते हों।",
+        "<strong>वोकल अलग करें</strong> — Demucs htdemucs चलाता है और केवल वोकल स्टेम आउटपुट करता है। विवरण न खोने के लिए आउटपुट डिफ़ॉल्ट रूप से WAV है।",
+        "<strong>वोकल हटाएँ / कराओके</strong> — वही Demucs जॉब, लेकिन इंस्ट्रुमेंटल स्टेम एक्सपोर्ट करता है। कराओके ट्रैक या सैंपल वर्कफ़्लो के लिए बढ़िया।"
       ],
-      "outro": "When you pick any AI operation, the standard FFmpeg chain (bitrate, EQ, reverb, etc.) is skipped for that job so the AI tool has a clean input/output path. AI jobs may take longer than basic conversion because they run on the GPU."
+      "outro": "जब आप कोई AI ऑपरेशन चुनते हैं, तो उस जॉब के लिए मानक FFmpeg चेन (बिटरेट, EQ, रिवर्ब आदि) छोड़ दी जाती है ताकि AI टूल को साफ़ इनपुट/आउटपुट पाथ मिले। AI जॉब बेसिक कन्वर्ज़न से ज़्यादा समय ले सकते हैं क्योंकि वे GPU पर चलते हैं।"
     },
     "advancedEffects": {
-      "heading": "6. Advanced Audio Effects",
-      "intro": "Expand <strong>Advanced Audio Effects</strong> to access four collapsible groups when you want manual control instead of an AI operation:",
+      "heading": "6. एडवांस्ड ऑडियो इफ़ेक्ट्स",
+      "intro": "जब आप AI ऑपरेशन के बजाय मैनुअल नियंत्रण चाहते हों, तो चार समेटे जा सकने वाले समूहों तक पहुँचने के लिए <strong>एडवांस्ड ऑडियो इफ़ेक्ट्स</strong> खोलें:",
       "items": [
-        "<strong>Basic Audio Processing</strong> — normalize, amplify (dB), fade in/out, EQ presets (bass boost, treble boost, vocal, classical, rock, jazz), pan, balance, stereo width, mono conversion, channel swap.",
-        "<strong>Time-Based Effects</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), modulation (chorus, flanger, phaser, tremolo, vibrato).",
-        "<strong>Restoration & Cleanup</strong> — spectral/adaptive/gate noise reduction, 50/60 Hz de-hum, declipper, silence detection and removal.",
-        "<strong>Advanced Audio</strong> — pitch shifting (semitones, formant-preserving), time stretching (factor + pitch/time/formant algorithm), spatial audio (binaural, surround, 3D)."
+        "<strong>बेसिक ऑडियो प्रोसेसिंग</strong> — नॉर्मलाइज़, एम्प्लिफ़ाई (dB), फ़ेड इन/आउट, EQ प्रीसेट (बास बूस्ट, ट्रेबल बूस्ट, वोकल, क्लासिकल, रॉक, जैज़), पैन, बैलेंस, स्टीरियो चौड़ाई, मोनो कन्वर्ज़न, चैनल अदला-बदली।",
+        "<strong>समय-आधारित इफ़ेक्ट्स</strong> — रिवर्ब (रूम, हॉल, प्लेट, स्प्रिंग), डिले (इको, मल्टी-टैप, पिंग-पॉन्ग), मॉड्यूलेशन (कोरस, फ़्लैंजर, फ़ेज़र, ट्रेमोलो, वाइब्रेटो)।",
+        "<strong>रिस्टोरेशन और क्लीनअप</strong> — स्पेक्ट्रल/अडैप्टिव/गेट शोर कमी, 50/60 Hz डी-हम, डिक्लिपर, मौन की पहचान और हटाना।",
+        "<strong>एडवांस्ड ऑडियो</strong> — पिच शिफ़्टिंग (सेमीटोन, फ़ॉर्मेंट-संरक्षित), टाइम स्ट्रेचिंग (फ़ैक्टर + पिच/समय/फ़ॉर्मेंट एल्गोरिदम), स्पेशियल ऑडियो (बाइनॉरल, सराउंड, 3D)।"
       ]
     },
     "convertDownload": {
-      "heading": "7. Convert and download",
-      "body": "Click <strong>Convert File</strong>. A real-time progress bar appears as the server processes the job. When it finishes, the result auto-previews and a <strong>Download</strong> button appears. The file is also added to your in-session <em>Conversion History</em> so you can revisit or download it later without re-running the job."
+      "heading": "7. कन्वर्ट करें और डाउनलोड करें",
+      "body": "<strong>फ़ाइल कन्वर्ट करें</strong> पर क्लिक करें। सर्वर जॉब प्रोसेस करते समय एक रियल-टाइम प्रोग्रेस बार दिखता है। पूरा होने पर नतीजा अपने आप प्रीव्यू होता है और <strong>डाउनलोड करें</strong> बटन दिखता है। फ़ाइल आपकी सेशन <em>कन्वर्ज़न हिस्ट्री</em> में भी जुड़ जाती है, ताकि आप जॉब दोबारा चलाए बिना उसे बाद में फिर देख या डाउनलोड कर सकें।"
     },
     "tips": {
-      "heading": "Tips for great audio output",
+      "heading": "बढ़िया ऑडियो आउटपुट के लिए सुझाव",
       "items": [
-        "For voice recordings, try <strong>Clean Voice</strong> first — it solves most \"muddy podcast\" problems in one click.",
-        "If you only want to remove a constant hum or air-conditioner background, use <strong>Remove Background Noise</strong> to keep the original tone.",
-        "For stems, keep the default <strong>WAV</strong> output — converting Demucs output to a lossy format defeats the purpose of separation.",
-        "Big bitrate jumps don't help small files much; pair 320 kbps with 48 kHz only for high-quality music exports."
+        "वॉइस रिकॉर्डिंग के लिए पहले <strong>वॉइस साफ़ करें</strong> आज़माएँ — यह ज़्यादातर \"धुंधले पॉडकास्ट\" की समस्याएँ एक क्लिक में हल कर देता है।",
+        "अगर आप केवल लगातार गूँज या एयर-कंडीशनर का बैकग्राउंड हटाना चाहते हैं, तो मूल टोन बनाए रखने के लिए <strong>बैकग्राउंड शोर हटाएँ</strong> इस्तेमाल करें।",
+        "स्टेम के लिए डिफ़ॉल्ट <strong>WAV</strong> आउटपुट रखें — Demucs आउटपुट को लॉसी फ़ॉर्मैट में बदलना अलगाव के मक़सद को ही हरा देता है।",
+        "बड़े बिटरेट उछाल छोटी फ़ाइलों में ज़्यादा मदद नहीं करते; 320 kbps को 48 kHz के साथ केवल हाई-क्वालिटी म्यूज़िक एक्सपोर्ट के लिए जोड़ें।"
       ]
     },
     "cta": {
-      "tryConverter": "Try the Audio Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "ऑडियो कन्वर्टर आज़माएँ",
+      "backToTutorials": "← ट्यूटोरियल पर वापस",
+      "howItWorks": "यह कैसे काम करता है"
     },
     "related": {
-      "title": "Try related tools",
-      "intro": "Jump straight into the audio tool you need, or keep learning with related guides.",
+      "title": "संबंधित टूल आज़माएँ",
+      "intro": "सीधे अपनी ज़रूरत के ऑडियो टूल पर जाएँ, या संबंधित गाइड से सीखते रहें।",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more."
+          "label": "ऑडियो कन्वर्टर",
+          "description": "WAV, MP3, FLAC, M4A, OGG और अन्य कन्वर्ट करें।"
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV recordings into widely playable MP3s."
+          "label": "WAV को MP3 में बदलें",
+          "description": "बड़ी WAV रिकॉर्डिंग को व्यापक रूप से चलने वाली MP3 में छोटा करें।"
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Extract vocals from music for remixes or analysis."
+          "label": "गाने से वोकल अलग करें",
+          "description": "रीमिक्स या विश्लेषण के लिए संगीत से वोकल निकालें।"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, compress, trim, and transcribe video files."
+          "label": "वीडियो कन्वर्टर ट्यूटोरियल",
+          "description": "वीडियो फ़ाइलें कन्वर्ट, कंप्रेस, ट्रिम और ट्रांसक्राइब करें।"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI audio jobs run on a local GPU server."
+          "label": "Media Manipulator कैसे काम करता है",
+          "description": "देखें कि AI ऑडियो जॉब लोकल GPU सर्वर पर कैसे चलते हैं।"
         }
       ]
     }
   },
   "tutorialImageGettingStarted": {
-    "eyebrow": "Image Tutorial",
-    "title": "Getting Started: Converting Image Files",
-    "intro": "Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).",
+    "eyebrow": "इमेज ट्यूटोरियल",
+    "title": "शुरुआत: इमेज फ़ाइलें कन्वर्ट करना",
+    "intro": "जानें कि Media Manipulator के इमेज कन्वर्टर से इमेज कैसे कन्वर्ट, एडिट और AI-प्रोसेस करें। यह ट्यूटोरियल इमेज कन्वर्ज़न पैनल के हर सेक्शन को समझाता है — फ़ॉर्मैट चयन, क्रॉपिंग, फ़िल्टर, टेक्स्ट ओवरले, मेटाडेटा प्रबंधन, और AI इमेज टूल्स (फ़ेस प्राइवेसी, बैकग्राउंड हटाएँ, AI अपस्केल, टेक्स्ट रिडैक्ट करें और ऑब्जेक्ट हटाएँ)।",
     "toolPanel": {
-      "title": "Try the image converter without leaving this page",
-      "description": "Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "इस पेज को छोड़े बिना इमेज कन्वर्टर आज़माएँ",
+      "description": "कोई इमेज चुनें और उसे यहीं कन्वर्ट करें। सेटिंग्स होमपेज कन्वर्टर जैसी ही हैं, इसलिए आप प्रयोग करते हुए बाकी ट्यूटोरियल पढ़ सकते हैं।"
     },
     "upload": {
-      "title": "1. Upload your image",
-      "paragraph": "Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+      "title": "1. अपनी इमेज अपलोड करें",
+      "paragraph": "अपलोड ज़ोन में इमेज फ़ाइल ड्रैग करें, या <strong>फ़ाइल चुनें</strong> पर क्लिक करें। इमेज कन्वर्टर JPG, PNG, WebP, GIF और कई अन्य फ़ॉर्मैट स्वीकार करता है। गेस्ट की फ़ाइलें 24 घंटे रखी जाती हैं; फ़्री अकाउंट के साथ आप 24 घंटे से 2 साल तक चुन सकते हैं।"
     },
     "format": {
-      "title": "2. Pick the output format and quality",
+      "title": "2. आउटपुट फ़ॉर्मैट और क्वालिटी चुनें",
       "bullets": [
-        "<strong>JPG</strong> — best for photos. Lossy compression with a quality slider.",
-        "<strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.",
-        "<strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.",
-        "<strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases."
+        "<strong>JPG</strong> — फ़ोटो के लिए सबसे अच्छा। क्वालिटी स्लाइडर के साथ लॉसी कंप्रेशन।",
+        "<strong>PNG</strong> — लॉसलेस, पारदर्शिता का समर्थन। स्क्रीनशॉट, लोगो और ग्राफ़िक्स के लिए सबसे अच्छा।",
+        "<strong>WebP</strong> — लॉसी और लॉसलेस दोनों मोड वाला आधुनिक फ़ॉर्मैट; समान क्वालिटी पर JPG से छोटा।",
+        "<strong>GIF</strong> — पैलेट-आधारित, बेसिक एनिमेशन का समर्थन, पुराने उपयोगों के लिए उपयोगी।"
       ],
-      "quality": "<strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images."
+      "quality": "<strong>क्वालिटी (%)</strong> JPG और WebP पर लागू होती है। 85 एक बढ़िया डिफ़ॉल्ट है; थंबनेल के लिए कम, हीरो इमेज के लिए ज़्यादा।"
     },
     "resize": {
-      "title": "3. Resize, crop, filter, tint",
-      "paragraph1": "Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.",
-      "paragraph2": "Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000)."
+      "title": "3. रीसाइज़, क्रॉप, फ़िल्टर, टिंट",
+      "paragraph1": "रीसाइज़ करने के लिए <strong>चौड़ाई</strong> और <strong>ऊँचाई</strong> का उपयोग करें। आनुपातिक रूप से स्केल करने के लिए कोई एक खाली छोड़ें। ImageMagick पहले इनपुट को अपने आप ओरिएंट करता है ताकि EXIF-ओरिएंटेड JPEG घूमी हुई हालत में PNG/WebP न बनें।",
+      "paragraph2": "विज़ुअल क्रॉप चयनकर्ता के लिए <strong>इमेज क्रॉप करें</strong> पर क्लिक करें। <strong>फ़िल्टर</strong> ड्रॉपडाउन एक बिल्ट-इन इफ़ेक्ट लगाता है: ग्रेस्केल, सेपिया, ब्लर, शार्पन, स्वर्ल, बैरल डिस्टॉर्शन, ऑयल पेंटिंग, विंटेज, एम्बॉस, चारकोल, स्केच, या एक निश्चित रोटेशन (45° / 90° / 180° / 270°)। <strong>टिंट रंग</strong> इमेज पर 30% रंगीन टिंट डालता है (काला/#000000 छोड़कर इसे छोड़ें)।"
     },
     "textOverlay": {
-      "title": "4. Text overlay",
-      "intro": "Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:",
+      "title": "4. टेक्स्ट ओवरले",
+      "intro": "इमेज पर सीधे वॉटरमार्क या कैप्शन जोड़ें। <strong>ओवरले टेक्स्ट</strong> में अपना टेक्स्ट टाइप करें, फिर चुनें:",
       "bullets": [
-        "<strong>Text Size</strong> — 8–512 px.",
-        "<strong>Position</strong> — gravity-based anchor (corners, edges, center).",
-        "<strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.",
-        "<strong>Stroke Width</strong> — 0 to disable the outline.",
-        "<strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor."
+        "<strong>टेक्स्ट का आकार</strong> — 8–512 px।",
+        "<strong>स्थिति</strong> — ग्रैविटी-आधारित एंकर (कोने, किनारे, केंद्र)।",
+        "<strong>टेक्स्ट का रंग / स्ट्रोक का रंग</strong> — रंग चयनकर्ताओं से hex रंग।",
+        "<strong>स्ट्रोक की चौड़ाई</strong> — आउटलाइन बंद करने के लिए 0।",
+        "<strong>X ऑफ़सेट / Y ऑफ़सेट</strong> — ग्रैविटी एंकर से पिक्सेल-स्तर का खिसकाव।"
       ]
     },
     "metadata": {
-      "title": "5. Metadata",
-      "intro": "Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:",
+      "title": "5. मेटाडेटा",
+      "intro": "चुनें कि Media Manipulator EXIF, IPTC, XMP और GPS मेटाडेटा को कैसे संभाले:",
       "bullets": [
-        "<strong>Keep all metadata</strong> — preserved from the original via exiftool.",
-        "<strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online."
+        "<strong>सारा मेटाडेटा रखें</strong> — exiftool के ज़रिए मूल से सुरक्षित।",
+        "<strong>सारा मेटाडेटा हटाएँ</strong> — कैमरा, GPS, सॉफ़्टवेयर और टाइमस्टैम्प हटाता है। फ़ोटो ऑनलाइन शेयर करने से पहले अनुशंसित।"
       ],
-      "customLabel": "<strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:",
+      "customLabel": "<strong>कस्टम मेटाडेटा</strong> — पहले सब हटाएँ, फिर आपके दिए फ़ील्ड फिर से लिखें। इसमें शामिल है:",
       "customBullets": [
-        "Title, Artist/Author, Description, Copyright, User Comment, Keywords.",
-        "GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.",
-        "EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist."
+        "शीर्षक, कलाकार/लेखक, विवरण, कॉपीराइट, यूज़र कमेंट, कीवर्ड।",
+        "GPS हटाना/बदलना (वैकल्पिक सटीकता राउंडिंग के साथ) और दिशा/टाइमस्टैम्प/ऊँचाई/गंतव्य टॉगल।",
+        "EXIF/TIFF फ़ील्ड, GPS फ़ील्ड, और एक अनुमति-सूची के ज़रिए एडवांस्ड IPTC/XMP/MakerNotes टैग।"
       ]
     },
     "aiTools": {
-      "title": "6. AI Image Tools (recommended)",
-      "intro": "The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.",
-      "faceBlur": "<strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.",
-      "removeBackground": "<strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.",
-      "aiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.",
-      "redactText": "<strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.",
-      "removeObject": "<strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:",
+      "title": "6. AI इमेज टूल्स (अनुशंसित)",
+      "intro": "<strong>AI इमेज टूल्स</strong> पैनल प्रति कन्वर्ज़न जॉब एक लोकल GPU ऑपरेशन चलाता है। जब आप कोई ऑपरेशन चुनते हैं, तो उस जॉब के लिए मानक ImageMagick पाइपलाइन (फ़िल्टर, टिंट, ओवरले आदि) छोड़ दी जाती है ताकि AI टूल को साफ़ इनपुट/आउटपुट पाथ मिले।",
+      "faceBlur": "<strong>फ़ेस ब्लर / पिक्सेलेट / ब्लैक बॉक्स</strong> — फ़ोटो में हर चेहरे का पता लगाता है और उसे आपकी चुनी स्टाइल से छिपाता है। उपस्थित लोगों की पहचान उजागर किए बिना इवेंट फ़ोटो शेयर करने के लिए बढ़िया।",
+      "removeBackground": "<strong>बैकग्राउंड हटाएँ</strong> — BiRefNet (जनरल या पोर्ट्रेट), ISNet या U2Net के साथ rembg चलाता है। पारदर्शिता बनाए रखने के लिए आउटपुट PNG पर तय है। ज़्यादातर फ़ोटो के लिए BiRefNet General अनुशंसित डिफ़ॉल्ट है।",
+      "aiUpscale": "<strong>AI अपस्केल</strong> — Real-ESRGAN ncnn Vulkan अपस्केलर। <em>4x</em> (सबसे सुरक्षित) या <em>2x</em> (तेज़) चुनें, और एक मॉडल चुनें: सामान्य फ़ोटो के लिए <code>realesrgan-x4plus</code>, एनिमेशन/इलस्ट्रेशन के लिए <code>realesrgan-x4plus-anime</code>, या एनीमे वीडियो फ़्रेम के लिए <code>realesr-animevideov3</code>। डिफ़ॉल्ट रूप से PNG आउटपुट।",
+      "redactText": "<strong>टेक्स्ट / PII रिडैक्ट करें</strong> — OCR-आधारित रिडैक्शन। <em>केवल PII</em> (ईमेल, फ़ोन नंबर, SSN, पते आदि) या <em>सारा टेक्स्ट</em> चुनें, फिर रिडैक्शन स्टाइल (ब्लैक बॉक्स, ब्लर या पिक्सेलेट) चुनें। पूरी तरह सटीक नहीं — शेयर करने से पहले आउटपुट की जाँच करें।",
+      "removeObject": "<strong>ऑब्जेक्ट हटाएँ (LaMa इनपेंटिंग)</strong> — जिसे मिटाना है उस पर आयत बनाने के लिए इमेज प्रीव्यू पर क्लिक करके ड्रैग करें: बैकग्राउंड में कोई राहगीर, कोई साइन, कोई वॉटरमार्क, कोई खंभा। आयत को खिसकाने के लिए उसका भीतरी हिस्सा ड्रैग करें, आकार बदलने के लिए कोने/किनारे के हैंडल ड्रैग करें, और खाली जगह पर एक और क्लिक-ड्रैग से जितने चाहें उतने आयत जोड़ें। सबमिट करने पर सर्वर आपके आयतों से एक मास्क बनाता है और उनके पीछे का क्षेत्र फिर से बनाने के लिए समर्पित GPU पर <code>simple-lama-inpainting</code> चलाता है। आउटपुट आपका चुना हुआ फ़ॉर्मैट (JPG, PNG, WebP, GIF) बनाए रखता है। सुझाव:",
       "removeObjectTips": [
-        "Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.",
-        "Several small rectangles usually beat one huge one, especially for thin objects.",
-        "LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces)."
+        "आयत को ऑब्जेक्ट के चारों ओर कसकर बनाएँ — बड़े आयत LaMa से ज़्यादा बैकग्राउंड की कल्पना करवाते हैं, जो बदतर दिख सकता है।",
+        "कई छोटे आयत आम तौर पर एक विशाल आयत से बेहतर होते हैं, खास तौर पर पतले ऑब्जेक्ट के लिए।",
+        "LaMa तब सबसे अच्छा काम करता है जब आस-पास के पिक्सेल मॉडल को पर्याप्त संदर्भ दें (आसमान, घास, सादी दीवारें, एक-समान सतहें)।"
       ]
     },
     "convertDownload": {
-      "title": "7. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list."
+      "title": "7. कन्वर्ट करें और डाउनलोड करें",
+      "paragraph": "<strong>फ़ाइल कन्वर्ट करें</strong> पर क्लिक करें। एक प्रोग्रेस बार रियल-टाइम जॉब स्टेटस दिखाता है। पूरा होने पर नतीजा <strong>मूल / अंतिम</strong> टॉगल के साथ अपने आप प्रीव्यू होता है, ताकि आप तुलना कर सकें। सेव करने के लिए <strong>डाउनलोड करें</strong> का उपयोग करें, या बाद में सेशन <em>कन्वर्ज़न हिस्ट्री</em> सूची से उसे फिर देखें।"
     },
     "tips": {
-      "title": "Tips for great image output",
+      "title": "बढ़िया इमेज आउटपुट के लिए सुझाव",
       "bullets": [
-        "For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.",
-        "Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.",
-        "<strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.",
-        "For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.",
-        "Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.",
-        "Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result."
+        "सोशल अपलोड के लिए बढ़िया दिखने वाली छोटी फ़ाइलों हेतु 80–85% क्वालिटी पर <strong>WebP</strong> इस्तेमाल करें।",
+        "GPS या डिवाइस जानकारी लीक होने से बचने के लिए फ़ोटो ऑनलाइन शेयर करते समय <strong>मेटाडेटा हटाएँ</strong> का उपयोग करें।",
+        "<strong>बैकग्राउंड हटाएँ</strong> के आउटपुट हमेशा PNG होते हैं — उन्हें अपने पसंदीदा डिज़ाइनर में रंगीन बैकग्राउंड के साथ जोड़ें या स्लाइड डेक में स्टैक करें।",
+        "AI अपस्केल के लिए फ़ोटो पर <code>realesrgan-x4plus</code> के साथ <strong>4x</strong> को प्राथमिकता दें; 2x एक पावर-यूज़र विकल्प है जो छोटे इनपुट पर कभी-कभी फ़्रेमिंग आर्टिफ़ैक्ट दिखा सकता है।",
+        "किसी ईमेल, टिकट या इनवॉइस का स्क्रीनशॉट पोस्ट करने से पहले <strong>टेक्स्ट रिडैक्ट करें</strong> चलाएँ।",
+        "<strong>ऑब्जेक्ट हटाएँ</strong> का उपयोग एकबारगी सफ़ाई के लिए करें, जैसे छुट्टी की फ़ोटो में कोई पर्यटक या किसी नज़ारे पर कोई बेतरतीब साइन — लेकिन सबसे साफ़ नतीजे के लिए आयत के आकार पर कुछ बार कोशिश करने की उम्मीद रखें।"
       ]
     },
     "actions": {
-      "tryConverter": "Try the Image Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "इमेज कन्वर्टर आज़माएँ",
+      "backToTutorials": "← ट्यूटोरियल पर वापस",
+      "howItWorks": "यह कैसे काम करता है"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused image tool or keep exploring related guides.",
+      "title": "संबंधित टूल आज़माएँ",
+      "intro": "सीधे किसी केंद्रित इमेज टूल पर जाएँ या संबंधित गाइड एक्सप्लोर करते रहें।",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "इमेज कन्वर्टर",
+          "description": "JPG, PNG, WebP, AVIF, GIF और अन्य के बीच कन्वर्ट करें।"
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebP को JPG में बदलें",
+          "description": "WebP सोर्स से व्यापक रूप से संगत JPG पाएँ।"
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "EXIF मेटाडेटा हटाएँ",
+          "description": "फ़ोटो शेयर करने से पहले GPS, डिवाइस और टाइमस्टैम्प मेटाडेटा हटाएँ।"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, trim, and apply visual effects to video files."
+          "label": "वीडियो कन्वर्टर ट्यूटोरियल",
+          "description": "वीडियो फ़ाइलें कन्वर्ट, ट्रिम करें और उन पर विज़ुअल इफ़ेक्ट लगाएँ।"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI image tools run on a local GPU server."
+          "label": "Media Manipulator कैसे काम करता है",
+          "description": "देखें कि AI इमेज टूल लोकल GPU सर्वर पर कैसे चलते हैं।"
         }
       ]
     }
