@@ -533,9 +533,9 @@
         "excerpt": "了解如何為你的網站選擇正確的圖片格式，以改善載入速度與使用者體驗。",
         "readTime": "閱讀時間 8 分鐘"
       },
-      "audioQualityPrefix": "",
+      "audioQualityPrefix": "聆聽",
       "audioQualityStrike": "沉默",
-      "audioQualitySuffix": "音質之聲：位元率、取樣率與格式",
+      "audioQualitySuffix": "品質之聲：位元率、取樣率與格式",
       "audioQuality": {
         "excerpt": "了解音訊品質設定，在檔案大小與音質之間取得完美平衡。",
         "readTime": "閱讀時間 8 分鐘"
