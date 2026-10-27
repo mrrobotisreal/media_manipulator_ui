@@ -1,64 +1,64 @@
 {
   "common": {
     "brand": "Media Manipulator",
-    "brandTagline": "Convert images, videos, and audio files with ease",
-    "loading": "Loading…",
-    "loadingShort": "Loading...",
-    "comingSoon": "Coming soon",
-    "tryAgain": "Try again",
-    "cancel": "Cancel",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "save": "Save",
-    "saving": "Saving...",
-    "submit": "Submit",
-    "submitting": "Submitting...",
-    "download": "Download",
-    "preview": "Preview",
-    "remove": "Remove",
-    "clear": "Clear",
-    "reset": "Reset",
-    "apply": "Apply",
-    "enable": "Enable",
-    "disable": "Disable",
-    "yes": "Yes",
-    "no": "No",
-    "more": "More",
-    "less": "Less",
-    "and": "and",
-    "or": "or",
-    "of": "of",
-    "to": "to",
-    "from": "from",
-    "by": "by",
-    "in": "in",
-    "with": "with",
-    "all": "All",
-    "none": "None",
-    "off": "Off",
-    "on": "On",
-    "optional": "Optional",
-    "required": "Required",
-    "auto": "Auto",
-    "manual": "Manual",
-    "default": "Default",
-    "advanced": "Advanced",
-    "basic": "Basic",
-    "settings": "Settings",
-    "options": "Options",
-    "search": "Search",
-    "filter": "Filter",
-    "selected": "Selected",
-    "step": "Step",
-    "minutes": "minutes",
-    "seconds": "seconds",
-    "items": "items",
-    "showAll": "Show all",
-    "showMore": "Show more",
-    "showLess": "Show less",
-    "retentionPromise": "You choose how long we keep your files — 24 hours by default for guests, up to 2 years with a free account",
-    "retentionPromiseShort": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years"
+    "brandTagline": "轻松转换图片、视频和音频文件",
+    "loading": "加载中…",
+    "loadingShort": "加载中...",
+    "comingSoon": "即将推出",
+    "tryAgain": "重试",
+    "cancel": "取消",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "save": "保存",
+    "saving": "保存中...",
+    "submit": "提交",
+    "submitting": "提交中...",
+    "download": "下载",
+    "preview": "预览",
+    "remove": "移除",
+    "clear": "清除",
+    "reset": "重置",
+    "apply": "应用",
+    "enable": "启用",
+    "disable": "禁用",
+    "yes": "是",
+    "no": "否",
+    "more": "更多",
+    "less": "收起",
+    "and": "和",
+    "or": "或",
+    "of": "/",
+    "to": "至",
+    "from": "从",
+    "by": "由",
+    "in": "在",
+    "with": "使用",
+    "all": "全部",
+    "none": "无",
+    "off": "关",
+    "on": "开",
+    "optional": "可选",
+    "required": "必填",
+    "auto": "自动",
+    "manual": "手动",
+    "default": "默认",
+    "advanced": "高级",
+    "basic": "基础",
+    "settings": "设置",
+    "options": "选项",
+    "search": "搜索",
+    "filter": "筛选",
+    "selected": "已选择",
+    "step": "步骤",
+    "minutes": "分钟",
+    "seconds": "秒",
+    "items": "项",
+    "showAll": "显示全部",
+    "showMore": "显示更多",
+    "showLess": "收起",
+    "retentionPromise": "文件保留多久由你决定——访客默认保留24小时，注册免费账号后最长可保留2年",
+    "retentionPromiseShort": "访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年"
   },
   "units": {
     "bytes": "B",
@@ -74,181 +74,178 @@
     "khz": "kHz"
   },
   "duration": {
-    "zero": "0 sec",
-    "hours_one": "{{count}} hr",
-    "hours_other": "{{count}} hr",
-    "minutes_one": "{{count}} min",
-    "minutes_other": "{{count}} min",
-    "seconds_one": "{{count}} sec",
-    "seconds_other": "{{count}} sec"
+    "zero": "0秒",
+    "hours_other": "{{count}}小时",
+    "minutes_other": "{{count}}分钟",
+    "seconds_other": "{{count}}秒"
   },
   "topNav": {
-    "home": "Home",
-    "tools": "Tools",
-    "about": "About",
-    "howItWorks": "How it works",
-    "tutorials": "Tutorials",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "blog": "Blog",
+    "home": "首页",
+    "tools": "工具",
+    "about": "关于",
+    "howItWorks": "工作原理",
+    "tutorials": "教程",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "blog": "博客",
     "links": {
-      "homeDescription": "Home page where you can convert your files",
-      "toolsDescription": "Free online tools for converting, compressing, transcribing, and cleaning up media files",
-      "aboutDescription": "About page where you can learn more about the project and its creator",
-      "howItWorksDescription": "How it works page where you can learn more about the conversion process",
-      "tutorialsDescription": "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
-      "privacyPolicyDescription": "Privacy policy page where you can learn more about the privacy policy of the project",
-      "termsOfServiceDescription": "Terms of service page where you can learn more about the terms of service of the project",
-      "blogDescription": "Blog page where you can read the latest news and updates about the project"
+      "homeDescription": "首页，你可以在这里转换文件",
+      "toolsDescription": "用于转换、压缩、转录和清理媒体文件的免费在线工具",
+      "aboutDescription": "关于页面，了解更多有关本项目及其创建者的信息",
+      "howItWorksDescription": "工作原理页面，了解更多有关转换流程的信息",
+      "tutorialsDescription": "音频、视频和图片转换器及其AI工具的分步教程",
+      "privacyPolicyDescription": "隐私政策页面，了解更多有关本项目隐私政策的信息",
+      "termsOfServiceDescription": "服务条款页面，了解更多有关本项目服务条款的信息",
+      "blogDescription": "博客页面，阅读有关本项目的最新动态和更新"
     },
-    "navigationLabel": "Navigation",
-    "language": "Language",
-    "selectLanguage": "Select language",
-    "voices": "Voices"
+    "navigationLabel": "导航",
+    "language": "语言",
+    "selectLanguage": "选择语言",
+    "voices": "用户之声"
   },
   "footer": {
-    "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "contact": "Contact:",
-    "explore": "Explore",
-    "legal": "Legal",
-    "doNotSell": "Do Not Sell or Share My Personal Information",
-    "cookieSettings": "Cookie settings",
-    "copyright": "© {{year}} Media Manipulator, a CreaTV Ltd. product. All rights reserved.",
-    "operatedBy": "Operated by CreaTV Ltd. · Colorado, USA",
+    "tagline": "基于浏览器并由服务器辅助的工具，用于编辑、转换、压缩、分析、转录、摘要以及以其他方式处理图片、视频和音频文件。",
+    "contact": "联系方式：",
+    "explore": "探索",
+    "legal": "法律",
+    "doNotSell": "请勿出售或共享我的个人信息",
+    "cookieSettings": "Cookie设置",
+    "copyright": "© {{year}} Media Manipulator，CreaTV Ltd.旗下产品。保留所有权利。",
+    "operatedBy": "由CreaTV Ltd.运营 · 美国科罗拉多州",
     "cookieDialog": {
-      "title": "Cookie preferences",
-      "description": "Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data."
+      "title": "Cookie偏好设置",
+      "description": "Cookie偏好设置由Google管理。如果Cookie横幅没有出现，请重新加载页面；或访问我们的隐私政策，了解Media Manipulator如何处理数据。"
     },
-    "changelog": "Changelog",
-    "status": "Status",
-    "licenses": "Open-source licences"
+    "changelog": "更新日志",
+    "status": "服务状态",
+    "licenses": "开源许可证"
   },
   "languageSelector": {
-    "label": "Language",
-    "current": "Current language: {{language}}",
-    "select": "Select a language"
+    "label": "语言",
+    "current": "当前语言：{{language}}",
+    "select": "选择语言"
   },
   "home": {
     "contentStudioCta": {
       "title": "Darkroom",
-      "badge": "New",
-      "body": "Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style editor, right in your browser.",
-      "cta": "Try Darkroom"
+      "badge": "新",
+      "body": "在多轨时间线上编辑、叠加和混合视频与音频，然后导出MP4——一款Premiere Pro风格的编辑器，直接在浏览器中运行。",
+      "cta": "试用Darkroom"
     },
     "hero": {
-      "title": "Free Online Media Converter, Editor, Transcriber & Metadata Tool",
-      "subtitle": "Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.",
-      "popularLabel": "Popular tools",
-      "allTools": "All tools",
-      "removeExif": "Remove EXIF",
-      "compressVideo": "Compress video",
-      "transcribeVideo": "Transcribe video",
-      "transcodeHls": "Transcode → HLS",
-      "transcodeDash": "Transcode → DASH",
+      "title": "免费在线媒体转换、编辑、转录与元数据工具",
+      "subtitle": "直接在浏览器中转换、压缩、编辑、转录、摘要图片、视频和音频文件，查看元数据并清理文件。",
+      "popularLabel": "热门工具",
+      "allTools": "全部工具",
+      "removeExif": "移除EXIF",
+      "compressVideo": "压缩视频",
+      "transcribeVideo": "转录视频",
+      "transcodeHls": "转码 → HLS",
+      "transcodeDash": "转码 → DASH",
       "webpToJpg": "WebP → JPG",
       "wavToMp3": "WAV → MP3",
-      "compressImage": "Compress image",
-      "resizeImage": "Resize image",
-      "extractAudio": "Extract audio"
+      "compressImage": "压缩图片",
+      "resizeImage": "调整图片尺寸",
+      "extractAudio": "提取音频"
     },
     "upload": {
-      "title": "Upload File",
-      "dragDrop": "Drag and drop your file here",
-      "orClickSelect": "or click to select from your computer",
-      "chooseFile": "Choose File",
-      "unsupportedFile": "Unsupported file type. Please select an image, video, or audio file."
+      "title": "上传文件",
+      "dragDrop": "将文件拖放到此处",
+      "orClickSelect": "或点击从电脑中选择",
+      "chooseFile": "选择文件",
+      "unsupportedFile": "不支持的文件类型。请选择图片、视频或音频文件。"
     },
     "options": {
-      "transcriptionOptions": "Transcription Options",
-      "transcodeOptions": "Transcode Options",
-      "conversionOptions": "Conversion Options",
-      "documentScanOptions": "Document Scan Options",
-      "convert": "Convert",
-      "transcribe": "Transcribe",
-      "transcode": "Transcode",
-      "scanDocument": "Scan to PDF / Word (AI)"
+      "transcriptionOptions": "转录选项",
+      "transcodeOptions": "转码选项",
+      "conversionOptions": "转换选项",
+      "documentScanOptions": "文档扫描选项",
+      "convert": "转换",
+      "transcribe": "转录",
+      "transcode": "转码",
+      "scanDocument": "扫描为PDF/Word（AI）"
     },
     "history": {
-      "title": "Conversion History",
-      "subtitle": "Reopen or download any image, video, or audio result from this session.",
-      "newConversion": "New Conversion",
-      "transcriptBadge": "Transcript",
-      "preview": "Preview",
-      "download": "Download",
+      "title": "转换历史",
+      "subtitle": "重新打开或下载本次会话中的任意图片、视频或音频结果。",
+      "newConversion": "新建转换",
+      "transcriptBadge": "转录文本",
+      "preview": "预览",
+      "download": "下载",
       "itemLabel": "#{{number}} {{filename}}",
-      "startedProcessing": "Started {{time}} and still processing",
-      "completedAt": "Completed {{time}}",
-      "transcriptionFailed": "Transcription failed",
-      "conversionFailed": "Conversion failed"
+      "startedProcessing": "开始于{{time}}，仍在处理中",
+      "completedAt": "完成于{{time}}",
+      "transcriptionFailed": "转录失败",
+      "conversionFailed": "转换失败"
     },
     "result": {
-      "transcriptResult": "Transcript Result",
-      "convertedPreview": "Converted File Preview",
-      "transcriptSubtitle": "Transcript and AI review for {{filename}}.",
-      "convertedSubtitle": "Toggle between the original and finalized edited version of {{filename}}.",
-      "original": "Original",
-      "final": "Final"
+      "transcriptResult": "转录结果",
+      "convertedPreview": "转换后文件预览",
+      "transcriptSubtitle": "{{filename}}的转录文本和AI审阅。",
+      "convertedSubtitle": "在{{filename}}的原始版本和最终编辑版本之间切换。",
+      "original": "原始",
+      "final": "最终"
     },
     "progress": {
-      "preparingUpload": "Preparing secure upload...",
-      "uploadingToS3": "Uploading file directly to S3...",
-      "finalizing": "Staging uploaded file on the server...",
-      "startingTranscription": "Starting transcription...",
-      "startingConversion": "Starting conversion...",
-      "converting": "Converting...",
-      "percentComplete": "{{percent}}% Complete",
-      "conversionFailed": "Conversion failed. Please try again."
+      "preparingUpload": "正在准备安全上传...",
+      "uploadingToS3": "正在将文件直接上传到S3...",
+      "finalizing": "正在服务器上暂存已上传的文件...",
+      "startingTranscription": "正在开始转录...",
+      "startingConversion": "正在开始转换...",
+      "converting": "转换中...",
+      "percentComplete": "已完成{{percent}}%",
+      "conversionFailed": "转换失败，请重试。"
     },
     "download": {
-      "downloadAs": "Download {{filename}}",
-      "fileWillBeDownloaded": "File will be downloaded as: {{filename}}"
+      "downloadAs": "下载{{filename}}",
+      "fileWillBeDownloaded": "文件将下载为：{{filename}}"
     },
-    "fileLoadingConverter": "Loading converter…",
+    "fileLoadingConverter": "正在加载转换器…",
     "gettingStarted": {
-      "title": "Get started in 4 steps",
+      "title": "4步快速上手",
       "step1": {
-        "title": "Upload a file",
-        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+        "title": "上传文件",
+        "body": "将任意图片、视频或音频文件拖入左侧的上传区域，或点击<em>选择文件</em>。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。"
       },
       "step2": {
-        "title": "Pick your settings here",
-        "body": "The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation."
+        "title": "在这里选择设置",
+        "body": "选择文件后，右侧面板会切换到对应的转换器——图片、视频或音频。选择格式、调整滤镜，或启用AI操作。"
       },
       "step3": {
-        "title": "Convert",
-        "body": "Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time."
+        "title": "转换",
+        "body": "点击<em>转换文件</em>。留意进度条——任务会在我们的GPU服务器上实时运行。"
       },
       "step4": {
-        "title": "Preview and download",
-        "body": "The result auto-previews when it's ready. Toggle between Original and Final, then click Download."
+        "title": "预览并下载",
+        "body": "结果就绪后会自动预览。在原始和最终版本之间切换，然后点击下载。"
       }
     },
     "localAi": {
-      "title": "Includes local AI tools",
-      "body": "Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files."
+      "title": "内置本地AI工具",
+      "body": "人脸模糊、背景移除、AI超分辨率、基于OCR的文本/个人信息涂抹、人声清理、人声分离和卡拉OK人声消除，全部在我们自己的GPU服务器上运行。没有任何第三方AI服务商会看到你的文件。"
     },
     "notSure": {
-      "title": "Not sure where to begin?",
-      "body": "Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.",
-      "cta": "Browse Tutorials"
+      "title": "不知道从哪里开始？",
+      "body": "我们的分步教程会讲解音频、视频和图片转换器中的每一项设置——包括AI工具。",
+      "cta": "浏览教程"
     },
     "howItWorks": {
-      "title": "How it works",
-      "body": "Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.",
-      "cta": "Read How it Works"
+      "title": "工作原理",
+      "body": "Media Manipulator使用FFmpeg和ImageMagick进行标准转换，并在我们本地的GPU上运行专用AI模型来完成可选的AI操作。所有处理都在我们控制的服务器上进行——阅读完整说明了解详情。",
+      "cta": "阅读工作原理"
     }
   },
   "notFound": {
-    "preTitle": "Telemetry lost",
-    "title": "This sector of the ship doesn't exist",
-    "body": "The coordinates you punched in don't map to anything on the navigation console. Try one of the routes below — or head back to the main bridge and pick a tool that does exist.",
+    "preTitle": "遥测信号丢失",
+    "title": "飞船上不存在这个区域",
+    "body": "您输入的坐标在导航控制台上找不到任何对应位置。请尝试下面的路线之一——或者返回主舰桥，选择一个真实存在的工具。",
     "links": {
-      "home": "Return to base",
-      "tools": "Tools array",
-      "tutorials": "Tutorials"
+      "home": "返回基地",
+      "tools": "工具阵列",
+      "tutorials": "教程"
     }
   },
   "themeToggle": {
-    "toggle": "Toggle theme"
+    "toggle": "切换主题"
   }
 }

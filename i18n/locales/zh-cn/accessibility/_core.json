@@ -1,56 +1,56 @@
 {
   "topNav": {
-    "homeLink": "Media Manipulator home",
-    "openMenu": "Open menu",
-    "github": "View on GitHub",
+    "homeLink": "Media Manipulator首页",
+    "openMenu": "打开菜单",
+    "github": "在GitHub上查看",
     "winapps": "WinApps",
     "creatv": "CreaTV",
-    "toggleTheme": "Toggle theme",
-    "languageMenu": "Change language",
-    "navIcon": "Media Manipulator Icon",
-    "winappsLogo": "WinApps Logo",
-    "creatvLogo": "CreaTV Logo",
+    "toggleTheme": "切换主题",
+    "languageMenu": "更改语言",
+    "navIcon": "Media Manipulator图标",
+    "winappsLogo": "WinApps标志",
+    "creatvLogo": "CreaTV标志",
     "githubLogo": "GitHub"
   },
   "footer": {
-    "homeLink": "Media Manipulator home",
-    "navIcon": "Media Manipulator Icon"
+    "homeLink": "Media Manipulator首页",
+    "navIcon": "Media Manipulator图标"
   },
   "home": {
-    "popularTools": "Popular tools",
-    "closePreview": "Close preview"
+    "popularTools": "热门工具",
+    "closePreview": "关闭预览"
   },
   "notFound": {
-    "recoveryRoutes": "Recovery routes"
+    "recoveryRoutes": "恢复路线"
   },
   "loading": {
-    "label": "Loading"
+    "label": "加载中"
   },
   "languageSelector": {
-    "trigger": "Change language",
-    "icon": "Translate icon"
+    "trigger": "更改语言",
+    "icon": "翻译图标"
   },
   "common": {
-    "close": "Close",
-    "open": "Open",
-    "loading": "Loading",
-    "moreOptions": "More options"
+    "close": "关闭",
+    "open": "打开",
+    "loading": "加载中",
+    "moreOptions": "更多选项"
   },
   "transcribeForm": {
-    "formatTooltip": "About transcript output format",
-    "languageTooltip": "About language hint"
+    "formatTooltip": "关于转录输出格式",
+    "languageTooltip": "关于语言提示"
   },
   "audioForm": {
-    "aiTooltip": "About AI Audio Tools"
+    "aiTooltip": "关于AI音频工具"
   },
   "videoForm": {
-    "aiTooltip": "About AI Video Tools"
+    "aiTooltip": "关于AI视频工具"
   },
   "imageForm": {
-    "aiTooltip": "About AI Image Tools",
-    "selectiveFacesTooltip": "About selective face privacy",
-    "removeObjectTooltip": "About object removal",
-    "metadataTooltip": "About metadata handling",
-    "vectorizeThresholdTooltip": "About the vectorization threshold"
+    "aiTooltip": "关于AI图片工具",
+    "selectiveFacesTooltip": "关于选择性人脸隐私保护",
+    "removeObjectTooltip": "关于物体移除",
+    "metadataTooltip": "关于元数据处理",
+    "vectorizeThresholdTooltip": "关于矢量化阈值"
   }
 }

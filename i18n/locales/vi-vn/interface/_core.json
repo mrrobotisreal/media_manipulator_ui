@@ -1,64 +1,64 @@
 {
   "common": {
     "brand": "Media Manipulator",
-    "brandTagline": "Convert images, videos, and audio files with ease",
-    "loading": "Loading…",
-    "loadingShort": "Loading...",
-    "comingSoon": "Coming soon",
-    "tryAgain": "Try again",
-    "cancel": "Cancel",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "save": "Save",
-    "saving": "Saving...",
-    "submit": "Submit",
-    "submitting": "Submitting...",
-    "download": "Download",
-    "preview": "Preview",
-    "remove": "Remove",
-    "clear": "Clear",
-    "reset": "Reset",
-    "apply": "Apply",
-    "enable": "Enable",
-    "disable": "Disable",
-    "yes": "Yes",
-    "no": "No",
-    "more": "More",
-    "less": "Less",
-    "and": "and",
-    "or": "or",
-    "of": "of",
-    "to": "to",
-    "from": "from",
-    "by": "by",
-    "in": "in",
-    "with": "with",
-    "all": "All",
-    "none": "None",
-    "off": "Off",
-    "on": "On",
-    "optional": "Optional",
-    "required": "Required",
-    "auto": "Auto",
-    "manual": "Manual",
-    "default": "Default",
-    "advanced": "Advanced",
-    "basic": "Basic",
-    "settings": "Settings",
-    "options": "Options",
-    "search": "Search",
-    "filter": "Filter",
-    "selected": "Selected",
-    "step": "Step",
-    "minutes": "minutes",
-    "seconds": "seconds",
-    "items": "items",
-    "showAll": "Show all",
-    "showMore": "Show more",
-    "showLess": "Show less",
-    "retentionPromise": "You choose how long we keep your files — 24 hours by default for guests, up to 2 years with a free account",
-    "retentionPromiseShort": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years"
+    "brandTagline": "Chuyển đổi hình ảnh, video và tệp âm thanh thật dễ dàng",
+    "loading": "Đang tải…",
+    "loadingShort": "Đang tải...",
+    "comingSoon": "Sắp ra mắt",
+    "tryAgain": "Thử lại",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "save": "Lưu",
+    "saving": "Đang lưu...",
+    "submit": "Gửi",
+    "submitting": "Đang gửi...",
+    "download": "Tải xuống",
+    "preview": "Xem trước",
+    "remove": "Gỡ bỏ",
+    "clear": "Xóa hết",
+    "reset": "Đặt lại",
+    "apply": "Áp dụng",
+    "enable": "Bật",
+    "disable": "Tắt",
+    "yes": "Có",
+    "no": "Không",
+    "more": "Thêm",
+    "less": "Bớt",
+    "and": "và",
+    "or": "hoặc",
+    "of": "trong",
+    "to": "đến",
+    "from": "từ",
+    "by": "bởi",
+    "in": "trong",
+    "with": "với",
+    "all": "Tất cả",
+    "none": "Không có",
+    "off": "Tắt",
+    "on": "Bật",
+    "optional": "Tùy chọn",
+    "required": "Bắt buộc",
+    "auto": "Tự động",
+    "manual": "Thủ công",
+    "default": "Mặc định",
+    "advanced": "Nâng cao",
+    "basic": "Cơ bản",
+    "settings": "Cài đặt",
+    "options": "Tùy chọn",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "selected": "Đã chọn",
+    "step": "Bước",
+    "minutes": "phút",
+    "seconds": "giây",
+    "items": "mục",
+    "showAll": "Hiện tất cả",
+    "showMore": "Hiện thêm",
+    "showLess": "Thu gọn",
+    "retentionPromise": "Bạn chọn thời gian chúng tôi lưu tệp của bạn — mặc định 24 giờ với khách, tối đa 2 năm với tài khoản miễn phí",
+    "retentionPromiseShort": "Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm"
   },
   "units": {
     "bytes": "B",
@@ -74,181 +74,178 @@
     "khz": "kHz"
   },
   "duration": {
-    "zero": "0 sec",
-    "hours_one": "{{count}} hr",
-    "hours_other": "{{count}} hr",
-    "minutes_one": "{{count}} min",
-    "minutes_other": "{{count}} min",
-    "seconds_one": "{{count}} sec",
-    "seconds_other": "{{count}} sec"
+    "zero": "0 giây",
+    "hours_other": "{{count}} giờ",
+    "minutes_other": "{{count}} phút",
+    "seconds_other": "{{count}} giây"
   },
   "topNav": {
-    "home": "Home",
-    "tools": "Tools",
-    "about": "About",
-    "howItWorks": "How it works",
-    "tutorials": "Tutorials",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
+    "home": "Trang chủ",
+    "tools": "Công cụ",
+    "about": "Giới thiệu",
+    "howItWorks": "Cách hoạt động",
+    "tutorials": "Hướng dẫn",
+    "privacyPolicy": "Chính sách quyền riêng tư",
+    "termsOfService": "Điều khoản dịch vụ",
     "blog": "Blog",
     "links": {
-      "homeDescription": "Home page where you can convert your files",
-      "toolsDescription": "Free online tools for converting, compressing, transcribing, and cleaning up media files",
-      "aboutDescription": "About page where you can learn more about the project and its creator",
-      "howItWorksDescription": "How it works page where you can learn more about the conversion process",
-      "tutorialsDescription": "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
-      "privacyPolicyDescription": "Privacy policy page where you can learn more about the privacy policy of the project",
-      "termsOfServiceDescription": "Terms of service page where you can learn more about the terms of service of the project",
-      "blogDescription": "Blog page where you can read the latest news and updates about the project"
+      "homeDescription": "Trang chủ, nơi bạn có thể chuyển đổi tệp của mình",
+      "toolsDescription": "Công cụ trực tuyến miễn phí để chuyển đổi, nén, chép lời và dọn dẹp tệp phương tiện",
+      "aboutDescription": "Trang giới thiệu, nơi bạn tìm hiểu thêm về dự án và người tạo ra nó",
+      "howItWorksDescription": "Trang cách hoạt động, nơi bạn tìm hiểu thêm về quy trình chuyển đổi",
+      "tutorialsDescription": "Hướng dẫn từng bước cho các bộ chuyển đổi âm thanh, video, hình ảnh và các công cụ AI của chúng",
+      "privacyPolicyDescription": "Trang chính sách quyền riêng tư, nơi bạn tìm hiểu thêm về chính sách quyền riêng tư của dự án",
+      "termsOfServiceDescription": "Trang điều khoản dịch vụ, nơi bạn tìm hiểu thêm về điều khoản dịch vụ của dự án",
+      "blogDescription": "Trang blog, nơi bạn đọc tin tức và cập nhật mới nhất về dự án"
     },
-    "navigationLabel": "Navigation",
-    "language": "Language",
-    "selectLanguage": "Select language",
-    "voices": "Voices"
+    "navigationLabel": "Điều hướng",
+    "language": "Ngôn ngữ",
+    "selectLanguage": "Chọn ngôn ngữ",
+    "voices": "Giọng nói"
   },
   "footer": {
-    "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "contact": "Contact:",
-    "explore": "Explore",
-    "legal": "Legal",
-    "doNotSell": "Do Not Sell or Share My Personal Information",
-    "cookieSettings": "Cookie settings",
-    "copyright": "© {{year}} Media Manipulator, a CreaTV Ltd. product. All rights reserved.",
-    "operatedBy": "Operated by CreaTV Ltd. · Colorado, USA",
+    "tagline": "Công cụ chạy trên trình duyệt và có máy chủ hỗ trợ để chỉnh sửa, chuyển đổi, nén, phân tích, chép lời, tóm tắt và xử lý tệp hình ảnh, video và âm thanh theo nhiều cách khác.",
+    "contact": "Liên hệ:",
+    "explore": "Khám phá",
+    "legal": "Pháp lý",
+    "doNotSell": "Không bán hoặc chia sẻ thông tin cá nhân của tôi",
+    "cookieSettings": "Cài đặt cookie",
+    "copyright": "© {{year}} Media Manipulator, một sản phẩm của CreaTV Ltd. Bảo lưu mọi quyền.",
+    "operatedBy": "Vận hành bởi CreaTV Ltd. · Colorado, Hoa Kỳ",
     "cookieDialog": {
-      "title": "Cookie preferences",
-      "description": "Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data."
+      "title": "Tùy chọn cookie",
+      "description": "Tùy chọn cookie do Google quản lý. Vui lòng tải lại trang nếu biểu ngữ cookie không xuất hiện, hoặc xem Chính sách quyền riêng tư để biết chi tiết về cách Media Manipulator xử lý dữ liệu."
     },
-    "changelog": "Changelog",
-    "status": "Status",
-    "licenses": "Open-source licences"
+    "changelog": "Nhật ký thay đổi",
+    "status": "Trạng thái",
+    "licenses": "Giấy phép mã nguồn mở"
   },
   "languageSelector": {
-    "label": "Language",
-    "current": "Current language: {{language}}",
-    "select": "Select a language"
+    "label": "Ngôn ngữ",
+    "current": "Ngôn ngữ hiện tại: {{language}}",
+    "select": "Chọn một ngôn ngữ"
   },
   "home": {
     "contentStudioCta": {
       "title": "Darkroom",
-      "badge": "New",
-      "body": "Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style editor, right in your browser.",
-      "cta": "Try Darkroom"
+      "badge": "Mới",
+      "body": "Chỉnh sửa, xếp lớp và phối video & âm thanh trên dòng thời gian đa track, rồi xuất MP4 — một trình biên tập kiểu Premiere Pro, ngay trong trình duyệt của bạn.",
+      "cta": "Dùng thử Darkroom"
     },
     "hero": {
-      "title": "Free Online Media Converter, Editor, Transcriber & Metadata Tool",
-      "subtitle": "Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.",
-      "popularLabel": "Popular tools",
-      "allTools": "All tools",
-      "removeExif": "Remove EXIF",
-      "compressVideo": "Compress video",
-      "transcribeVideo": "Transcribe video",
-      "transcodeHls": "Transcode → HLS",
-      "transcodeDash": "Transcode → DASH",
+      "title": "Công cụ chuyển đổi, chỉnh sửa, chép lời và siêu dữ liệu phương tiện trực tuyến miễn phí",
+      "subtitle": "Chuyển đổi, nén, chỉnh sửa, chép lời, tóm tắt, kiểm tra siêu dữ liệu và dọn dẹp tệp hình ảnh, video và âm thanh ngay trên trình duyệt của bạn.",
+      "popularLabel": "Công cụ phổ biến",
+      "allTools": "Tất cả công cụ",
+      "removeExif": "Xóa EXIF",
+      "compressVideo": "Nén video",
+      "transcribeVideo": "Chép lời video",
+      "transcodeHls": "Chuyển mã → HLS",
+      "transcodeDash": "Chuyển mã → DASH",
       "webpToJpg": "WebP → JPG",
       "wavToMp3": "WAV → MP3",
-      "compressImage": "Compress image",
-      "resizeImage": "Resize image",
-      "extractAudio": "Extract audio"
+      "compressImage": "Nén hình ảnh",
+      "resizeImage": "Đổi kích thước hình ảnh",
+      "extractAudio": "Tách âm thanh"
     },
     "upload": {
-      "title": "Upload File",
-      "dragDrop": "Drag and drop your file here",
-      "orClickSelect": "or click to select from your computer",
-      "chooseFile": "Choose File",
-      "unsupportedFile": "Unsupported file type. Please select an image, video, or audio file."
+      "title": "Tải tệp lên",
+      "dragDrop": "Kéo và thả tệp của bạn vào đây",
+      "orClickSelect": "hoặc nhấp để chọn từ máy tính",
+      "chooseFile": "Chọn tệp",
+      "unsupportedFile": "Loại tệp không được hỗ trợ. Vui lòng chọn tệp hình ảnh, video hoặc âm thanh."
     },
     "options": {
-      "transcriptionOptions": "Transcription Options",
-      "transcodeOptions": "Transcode Options",
-      "conversionOptions": "Conversion Options",
-      "documentScanOptions": "Document Scan Options",
-      "convert": "Convert",
-      "transcribe": "Transcribe",
-      "transcode": "Transcode",
-      "scanDocument": "Scan to PDF / Word (AI)"
+      "transcriptionOptions": "Tùy chọn chép lời",
+      "transcodeOptions": "Tùy chọn chuyển mã",
+      "conversionOptions": "Tùy chọn chuyển đổi",
+      "documentScanOptions": "Tùy chọn quét tài liệu",
+      "convert": "Chuyển đổi",
+      "transcribe": "Chép lời",
+      "transcode": "Chuyển mã",
+      "scanDocument": "Quét sang PDF / Word (AI)"
     },
     "history": {
-      "title": "Conversion History",
-      "subtitle": "Reopen or download any image, video, or audio result from this session.",
-      "newConversion": "New Conversion",
-      "transcriptBadge": "Transcript",
-      "preview": "Preview",
-      "download": "Download",
+      "title": "Lịch sử chuyển đổi",
+      "subtitle": "Mở lại hoặc tải xuống bất kỳ kết quả hình ảnh, video hoặc âm thanh nào trong phiên này.",
+      "newConversion": "Chuyển đổi mới",
+      "transcriptBadge": "Bản chép lời",
+      "preview": "Xem trước",
+      "download": "Tải xuống",
       "itemLabel": "#{{number}} {{filename}}",
-      "startedProcessing": "Started {{time}} and still processing",
-      "completedAt": "Completed {{time}}",
-      "transcriptionFailed": "Transcription failed",
-      "conversionFailed": "Conversion failed"
+      "startedProcessing": "Bắt đầu {{time}} và vẫn đang xử lý",
+      "completedAt": "Hoàn tất {{time}}",
+      "transcriptionFailed": "Chép lời thất bại",
+      "conversionFailed": "Chuyển đổi thất bại"
     },
     "result": {
-      "transcriptResult": "Transcript Result",
-      "convertedPreview": "Converted File Preview",
-      "transcriptSubtitle": "Transcript and AI review for {{filename}}.",
-      "convertedSubtitle": "Toggle between the original and finalized edited version of {{filename}}.",
-      "original": "Original",
-      "final": "Final"
+      "transcriptResult": "Kết quả chép lời",
+      "convertedPreview": "Xem trước tệp đã chuyển đổi",
+      "transcriptSubtitle": "Bản chép lời và đánh giá AI cho {{filename}}.",
+      "convertedSubtitle": "Chuyển qua lại giữa bản gốc và bản đã chỉnh sửa hoàn chỉnh của {{filename}}.",
+      "original": "Bản gốc",
+      "final": "Bản cuối"
     },
     "progress": {
-      "preparingUpload": "Preparing secure upload...",
-      "uploadingToS3": "Uploading file directly to S3...",
-      "finalizing": "Staging uploaded file on the server...",
-      "startingTranscription": "Starting transcription...",
-      "startingConversion": "Starting conversion...",
-      "converting": "Converting...",
-      "percentComplete": "{{percent}}% Complete",
-      "conversionFailed": "Conversion failed. Please try again."
+      "preparingUpload": "Đang chuẩn bị tải lên an toàn...",
+      "uploadingToS3": "Đang tải tệp trực tiếp lên S3...",
+      "finalizing": "Đang chuẩn bị tệp đã tải lên trên máy chủ...",
+      "startingTranscription": "Đang bắt đầu chép lời...",
+      "startingConversion": "Đang bắt đầu chuyển đổi...",
+      "converting": "Đang chuyển đổi...",
+      "percentComplete": "Hoàn thành {{percent}}%",
+      "conversionFailed": "Chuyển đổi thất bại. Vui lòng thử lại."
     },
     "download": {
-      "downloadAs": "Download {{filename}}",
-      "fileWillBeDownloaded": "File will be downloaded as: {{filename}}"
+      "downloadAs": "Tải xuống {{filename}}",
+      "fileWillBeDownloaded": "Tệp sẽ được tải xuống với tên: {{filename}}"
     },
-    "fileLoadingConverter": "Loading converter…",
+    "fileLoadingConverter": "Đang tải bộ chuyển đổi…",
     "gettingStarted": {
-      "title": "Get started in 4 steps",
+      "title": "Bắt đầu với 4 bước",
       "step1": {
-        "title": "Upload a file",
-        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+        "title": "Tải lên một tệp",
+        "body": "Kéo bất kỳ tệp hình ảnh, video hoặc âm thanh nào vào vùng tải lên bên trái, hoặc nhấp <em>Chọn tệp</em>. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm."
       },
       "step2": {
-        "title": "Pick your settings here",
-        "body": "The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation."
+        "title": "Chọn cài đặt tại đây",
+        "body": "Bảng bên phải sẽ chuyển sang bộ chuyển đổi phù hợp — hình ảnh, video hoặc âm thanh — ngay khi bạn chọn tệp. Chọn định dạng, tinh chỉnh bộ lọc hoặc bật một thao tác AI."
       },
       "step3": {
-        "title": "Convert",
-        "body": "Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time."
+        "title": "Chuyển đổi",
+        "body": "Nhấp <em>Chuyển đổi tệp</em>. Theo dõi thanh tiến trình — tác vụ chạy theo thời gian thực trên máy chủ GPU của chúng tôi."
       },
       "step4": {
-        "title": "Preview and download",
-        "body": "The result auto-previews when it's ready. Toggle between Original and Final, then click Download."
+        "title": "Xem trước và tải xuống",
+        "body": "Kết quả tự động hiển thị khi sẵn sàng. Chuyển qua lại giữa Bản gốc và Bản cuối, rồi nhấp Tải xuống."
       }
     },
     "localAi": {
-      "title": "Includes local AI tools",
-      "body": "Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files."
+      "title": "Có sẵn công cụ AI cục bộ",
+      "body": "Làm mờ khuôn mặt, xóa nền, nâng cấp độ phân giải bằng AI, che văn bản/thông tin cá nhân dựa trên OCR, làm sạch giọng nói, tách giọng hát và loại bỏ giọng hát cho karaoke đều chạy trên máy chủ GPU riêng của chúng tôi. Không nhà cung cấp AI bên thứ ba nào thấy tệp của bạn."
     },
     "notSure": {
-      "title": "Not sure where to begin?",
-      "body": "Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.",
-      "cta": "Browse Tutorials"
+      "title": "Chưa biết bắt đầu từ đâu?",
+      "body": "Các hướng dẫn từng bước của chúng tôi đi qua mọi cài đặt trong bộ chuyển đổi âm thanh, video và hình ảnh — bao gồm cả các công cụ AI.",
+      "cta": "Xem hướng dẫn"
     },
     "howItWorks": {
-      "title": "How it works",
-      "body": "Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.",
-      "cta": "Read How it Works"
+      "title": "Cách hoạt động",
+      "body": "Media Manipulator dùng FFmpeg và ImageMagick cho các chuyển đổi tiêu chuẩn, và các mô hình AI chuyên dụng trên GPU cục bộ của chúng tôi cho các thao tác AI tùy chọn. Mọi xử lý diễn ra trên máy chủ do chúng tôi kiểm soát — đọc bản mô tả đầy đủ để biết chi tiết.",
+      "cta": "Đọc Cách hoạt động"
     }
   },
   "notFound": {
-    "preTitle": "Telemetry lost",
-    "title": "This sector of the ship doesn't exist",
-    "body": "The coordinates you punched in don't map to anything on the navigation console. Try one of the routes below — or head back to the main bridge and pick a tool that does exist.",
+    "preTitle": "Mất tín hiệu đo xa",
+    "title": "Khu vực này của con tàu không tồn tại",
+    "body": "Tọa độ bạn nhập không trỏ đến bất cứ thứ gì trên bảng điều hướng. Hãy thử một trong các đường dẫn bên dưới — hoặc quay về đài chỉ huy và chọn một công cụ có thật.",
     "links": {
-      "home": "Return to base",
-      "tools": "Tools array",
-      "tutorials": "Tutorials"
+      "home": "Về căn cứ",
+      "tools": "Dàn công cụ",
+      "tutorials": "Hướng dẫn"
     }
   },
   "themeToggle": {
-    "toggle": "Toggle theme"
+    "toggle": "Chuyển giao diện sáng/tối"
   }
 }
