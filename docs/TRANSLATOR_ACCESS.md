@@ -74,7 +74,17 @@ Every row is set on **Preview, branch `translate/<prefix>` only**, never on Prod
 
 A leaked key: delete it first (submits fail until step 3), then rotate.
 
-## 8. Adding a locale (MM51, three steps)
+## 8. Locales, and adding one (MM51, MM68)
+
+The site has **18 locales, all translated** (2026-10-27): en-US plus uk, ru, he, de, es (Spain), es-mx, fr, it, ja, zh-cn, zh-tw, ko, ar, hi, pt-pt, pt-br and vi. `i18n/locales.ts` is the only list; `node scripts/list-locales.mjs` prints the non-English prefixes, and the sitemap, hreflang, `llms.txt`, the language selector and the sync workflow all derive from it. `public/humans.txt` is static; a test keeps its `Languages:` line in step.
+
+**The `translated` flag.** `true` means the locale's files hold a real translation: it is indexable, appears in the sitemap and hreflang, and is named in `llms.txt` and `humans.txt`. `false` means a byte-copy of English: the routes still serve, but every page is `noindex` and the locale is left out of those surfaces. Flip it only when every shard is translated; tests assert all 18 are `true` today, so a new row starts as a deliberate test failure to update.
+
+**English-only exception.** `interface/metadata.json` exists only in `en-us`; other locales take titles and descriptions from their SEO overrides, so never copy it.
+
+**Native review.** uk, ru, he, de and es-ES predate MM51 and carry no review note. The 12 model-written locales (fr, it, ja, zh-cn, zh-tw, ko, ar, hi, pt-pt, pt-br, vi, es-mx) end `legalCommon.whatChangedBody` with a "machine-translated, pending native review; the English version prevails" sentence. Remove it per locale once a native speaker has reviewed that locale's Privacy Policy and Terms (through the workbench above, §2 and §6). CreaTV's "Media Manipulator" legal tab stays English only (design §2.16).
+
+Adding a locale, three steps:
 
 1. Add one row to `i18n/locales.ts` (`translated: false`).
 2. Copy `i18n/locales/en-us/` to `i18n/locales/<code lowercased>/`, without `interface/metadata.json`.
