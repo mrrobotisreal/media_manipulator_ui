@@ -61,6 +61,11 @@ describe("locale registry", () => {
     expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "es-MX", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "ko-KR", "ar-SA", "hi-IN", "pt-PT", "pt-BR", "vi-VN"]);
   });
 
+  it("MM68: every registered locale is translated", () => {
+    expect(translatedLocales.length).toBe(locales.length);
+    expect(locales.filter((l) => !l.translated)).toEqual([]);
+  });
+
   it("es-MX is registered at /es-mx after es-ES, which keeps /es (MM72)", () => {
     const mx = getLocaleDef("es-MX")!;
     expect(mx.prefix).toBe("es-mx");
