@@ -1,1246 +1,1246 @@
 {
   "blogVideoCompression": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← 博客"
     },
-    "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV",
+    "title": "视频压缩漫游指南：MP4、WebM、AVI与MOV的对比",
     "byline": {
-      "writtenBy": "Written by:",
-      "date": "June 13th, 2025",
-      "time": "10:33 PM"
+      "writtenBy": "作者：",
+      "date": "2025年6月13日",
+      "time": "晚上10:33"
     },
     "intro": {
-      "title": "A Brief Intro to Video Compression",
-      "p1": "Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.",
-      "p2": "Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.",
-      "p3": "At its core, video compression works by being sneaky in two main ways:",
+      "title": "视频压缩简介",
+      "p1": "你有没有试过往网站上传视频，然后惊恐地看着加载条以蜗牛的速度爬行？🐌 或者你录了一段30秒的快速演示，结果发现文件竟然比你整个网站还大？没错，我们都经历过，这感觉就像看油漆变干一样有趣……还是在拨号上网的年代。",
+      "p2": "事情是这样的：视频压缩基本上就是一门让视频变小、又不至于看起来像用土豆拍出来的艺术🥔。可以这样理解——原始视频数据就像试图把整个衣柜塞进一个登机箱。视频压缩就是那种神奇的叠衣技巧，不知怎么就让一切都装下了，而且衣服（基本上）还没皱。",
+      "p3": "从本质上说，视频压缩主要靠两种“小聪明”来实现：",
       "bullets": [
-        "<strong>Spatial compression</strong>: This looks at each frame and says \"Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?\" It's like describing a wall as \"all white\" instead of listing every single brick.",
-        "<strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬"
+        "<strong>空间压缩</strong>：它会观察每一帧，然后说“嘿，这片蓝天有大约10,000个像素，基本上都是同一种蓝色。不如我们直接说‘从这里到这里都是蓝色像素’怎么样？”这就像把一面墙描述成“全白”，而不是逐一列出每一块砖。",
+        "<strong>时间压缩</strong>：这才是真正聪明的地方。它不是完整存储每一帧，而是只存储帧与帧之间的差异。所以如果你在录自己说话，而背景没有变化，为什么要每秒存储30次背景呢？存一次，然后记录变化的部分就行了！🎬"
       ],
-      "p4": "The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.",
-      "quote": "\"In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch.\" 💪"
+      "p4": "当这些技术协同工作时，魔法就发生了：你那巨大的2GB屏幕录制变成了一个易于管理的50MB文件，而且看起来依然清晰。但有趣的地方在于——不同的视频格式（容器）和编解码器（实际的压缩算法）施展这种魔法的方式截然不同。有些像瑞士军刀🔪——用途广泛，但并不总是每项工作最锋利的工具。另一些则更像专用手术器械——对特定任务极其有效，但对其他任何事情都毫无用处。",
+      "quote": "“在视频压缩的世界里，最重的文件并不总是最强的——有时最小的战士才有最猛的一击。”💪"
     },
     "formats": {
-      "title": "What's the Difference Between These Formats Anyway?",
-      "intro": "Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go \"really?\"",
+      "title": "这些格式到底有什么区别？",
+      "intro": "好了，让我们像比较超级英雄团队一样来拆解这些视频格式🦸‍♂️。每一种都有自己的超能力、弱点，以及那个让你忍不住说“真的吗？”的奇怪癖好。",
       "mp4": {
-        "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:",
+        "title": "MP4（MPEG-4 Part 14）",
+        "intro": "把MP4想象成视频格式界的超人——它无处不在，人人都认识它，而且几乎总能拯救世界。这种格式：",
         "bullets": [
-          "<strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works",
-          "<strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high",
-          "<strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)",
-          "<strong>File sizes</strong>: Generally gives you that sweet spot between quality and size"
+          "<strong>与所有人和睦相处</strong>：从你奶奶的古董笔记本到最新的iPhone，MP4就是能用",
+          "<strong>使用H.264/H.265编解码器</strong>：这些就像压缩巫师，让你的文件变小的同时保持高质量",
+          "<strong>支持流式播放</strong>：当你希望视频在完全加载之前就开始播放时再合适不过（毕竟谁有时间等呢？⏰）",
+          "<strong>文件大小</strong>：通常能在质量和大小之间找到那个甜蜜点"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:",
+        "intro": "WebM就像这群人里那个酷酷的开源叛逆者😎。由Google创建，它一心扑在网页生活上：",
         "bullets": [
-          "<strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say \"buffering\"",
-          "<strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases",
-          "<strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵",
-          "<strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)"
+          "<strong>为浏览器而生</strong>：专门设计用来让网页视频的加载速度快到你来不及说“缓冲中”",
+          "<strong>使用VP8/VP9编解码器</strong>：这些狠角色在很多情况下能把视频压得比MP4还小",
+          "<strong>开放且免费</strong>：没有授权费，这对任何开发者来说都是天籁之音🎵",
+          "<strong>问题在于</strong>：并非所有浏览器和设备都支持它（说的就是你，Safari👀）"
         ]
       },
       "avi": {
-        "title": "AVI (Audio Video Interleave)",
-        "intro": "AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:",
+        "title": "AVI（Audio Video Interleave）",
+        "intro": "AVI是那位饱经风霜的老兵——它从Windows 3.1时代就存在了！👴 你需要知道的是：",
         "bullets": [
-          "<strong>Minimal compression</strong>: Often results in HUGE file sizes (like, \"is this a video or the entire Lord of the Rings trilogy?\" huge)",
-          "<strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality",
-          "<strong>Universal compatibility</strong>: If something can play video, it can probably play AVI",
-          "<strong>Best for</strong>: Local storage when quality matters more than file size"
+          "<strong>压缩极少</strong>：常常导致巨大的文件（“这是一个视频还是整部《指环王》三部曲？”级别的巨大）",
+          "<strong>高质量</strong>：它在压缩上的不足，用无瑕的质量弥补了回来",
+          "<strong>通用兼容</strong>：只要能播放视频的东西，大概率都能播放AVI",
+          "<strong>最适合</strong>：质量比文件大小更重要的本地存储"
         ]
       },
       "mov": {
-        "title": "MOV (QuickTime File Format)",
-        "intro": "MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:",
+        "title": "MOV（QuickTime文件格式）",
+        "intro": "MOV是Apple的宠儿🍎，和大多数Apple产品一样，它很美，但是……复杂：",
         "bullets": [
-          "<strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing",
-          "<strong>ProRes codec support</strong>: The format professionals drool over 🤤",
-          "<strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)",
-          "<strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime"
+          "<strong>出色的质量</strong>：尤其适合高分辨率视频和专业剪辑",
+          "<strong>支持ProRes编解码器</strong>：专业人士垂涎的格式🤤",
+          "<strong>房间里的大象</strong>：文件大小会让你的存储盘哭泣（还记得我那个315.9MB的屏幕录制吗？没错，那就是MOV）",
+          "<strong>跨平台问题</strong>：在Mac上完美运行，但Windows用户可能需要安装QuickTime"
         ]
       },
-      "comparisonIntro": "Here's a quick comparison to really drive it home:",
+      "comparisonIntro": "这里有一个快速对比，帮你彻底搞清楚：",
       "table": {
         "headers": [
-          "Format",
-          "File Size",
-          "Compatibility",
-          "Best Use Case"
+          "格式",
+          "文件大小",
+          "兼容性",
+          "最佳用途"
         ],
         "rows": [
           [
             "MP4",
-            "Small-Medium",
-            "Universal",
-            "Literally everything"
+            "小到中等",
+            "通用",
+            "几乎所有场景"
           ],
           [
             "WebM",
-            "Smallest",
-            "Modern browsers",
-            "Web optimization"
+            "最小",
+            "现代浏览器",
+            "网页优化"
           ],
           [
             "AVI",
-            "Largest",
-            "Universal",
-            "Archival/Editing"
+            "最大",
+            "通用",
+            "归档/剪辑"
           ],
           [
             "MOV",
-            "Large",
-            "Mac-focused",
-            "Professional work"
+            "大",
+            "以Mac为主",
+            "专业工作"
           ]
         ]
       },
-      "quote": "\"Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose.\" ⚔️"
+      "quote": "“选择格式就像选择战斗——不是每把剑都适合每个战士，也不是每个编解码器都适合每个目的。”⚔️"
     },
     "whenToUse": {
-      "title": "How Do I Know When to Use One Format Over Another?",
-      "p1": "Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).",
-      "p2": "Let me break this down into real-world scenarios because that's how we actually make these decisions:",
+      "title": "我怎么知道什么时候该用哪种格式？",
+      "p1": "好了，决策时间到！🤔 选择合适的视频格式就像挑选合适的衣服——你不会穿燕尾服去健身房，也不应该用AVI做网站的首屏视频（除非你想让用户在加载时慢慢变老）。",
+      "p2": "让我把它拆解成真实场景，因为我们实际上就是这样做决定的：",
       "mp4": {
-        "title": "When to Use MP4",
-        "lead": "<strong>Use MP4 when you want to play it safe</strong> 🛡️",
+        "title": "何时使用MP4",
+        "lead": "<strong>想稳妥时就用MP4</strong>🛡️",
         "bullets": [
-          "<strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend",
-          "<strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4",
-          "<strong>Email attachments</strong>: When you need to send a video that just works",
-          "<strong>Mobile apps</strong>: Both iOS and Android will thank you"
+          "<strong>网站视频</strong>：背景视频、产品演示、教程——MP4是你可靠的朋友",
+          "<strong>社交媒体</strong>：Instagram、Twitter、LinkedIn——它们都喜欢MP4",
+          "<strong>邮件附件</strong>：当你需要发送一个“就是能用”的视频时",
+          "<strong>移动应用</strong>：iOS和Android都会感谢你"
         ],
-        "proTip": "<strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices."
+        "proTip": "<strong>专业提示</strong>：使用H.264编解码器以获得最大兼容性；如果你需要更小的文件且受众拥有较新的设备，则使用H.265。"
       },
       "webm": {
-        "title": "When to Use WebM",
-        "lead": "<strong>Use WebM when every kilobyte counts</strong> 🪶",
+        "title": "何时使用WebM",
+        "lead": "<strong>当每一个千字节都很重要时就用WebM</strong>🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: Where load speed directly impacts conversion rates",
-          "<strong>Progressive web apps</strong>: When you're building for the modern web",
-          "<strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)",
-          "<strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome"
+          "<strong>着陆页</strong>：加载速度直接影响转化率的地方",
+          "<strong>渐进式Web应用</strong>：当你在为现代网页构建时",
+          "<strong>高流量网站</strong>：节省带宽成本（你的钱包会感谢你💰）",
+          "<strong>当你能控制环境时</strong>：比如公司内部工具，你知道所有人都用Chrome"
         ],
-        "realTalk": "<strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦"
+        "realTalk": "<strong>说真的</strong>：我曾经把一位客户的首屏视频从MP4换成WebM，文件大小减少了40%。他们的页面加载时间缩短了2秒，跳出率下降了15%。这就是实打实的钱！🏦"
       },
       "avi": {
-        "title": "When to Use AVI",
-        "lead": "<strong>Use AVI when quality is king and file size is... not a concern</strong> 👑",
+        "title": "何时使用AVI",
+        "lead": "<strong>当质量为王而文件大小……无所谓时就用AVI</strong>👑",
         "bullets": [
-          "<strong>Video editing source files</strong>: When you need every pixel perfect for post-production",
-          "<strong>Archival purposes</strong>: Storing the master copy before compression",
-          "<strong>Local playback</strong>: When it's only playing from a hard drive, not the internet",
-          "<strong>Screen recordings for tutorials</strong>: Before you compress them for distribution"
+          "<strong>视频剪辑源文件</strong>：当你需要每个像素都完美以便后期制作时",
+          "<strong>归档用途</strong>：在压缩之前存储母版",
+          "<strong>本地播放</strong>：当它只从硬盘播放而不经过互联网时",
+          "<strong>教程用的屏幕录制</strong>：在你为分发而压缩它们之前"
         ],
-        "warning": "<strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4)."
+        "warning": "<strong>警告</strong>：说真的，别用AVI做网页分发。我曾有一位客户坚持用AVI做产品视频。他们的首页加载需要45秒。四。十。五。秒。😱 他们已经不是我的客户了（开玩笑的，我们用MP4修好了）。"
       },
       "mov": {
-        "title": "When to Use MOV",
-        "lead": "<strong>Use MOV when you're in Apple's ecosystem</strong> 🍎",
+        "title": "何时使用MOV",
+        "lead": "<strong>当你身处Apple生态时就用MOV</strong>🍎",
         "bullets": [
-          "<strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software",
-          "<strong>ProRes workflows</strong>: When color grading and quality are paramount",
-          "<strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac",
-          "<strong>Before converting</strong>: As a high-quality intermediate format"
+          "<strong>Final Cut Pro项目</strong>：MOV与Apple的剪辑软件配合默契",
+          "<strong>ProRes工作流</strong>：当调色和质量至关重要时",
+          "<strong>Mac对Mac传输</strong>：当所有参与者都用Mac时",
+          "<strong>转换之前</strong>：作为高质量的中间格式"
         ],
-        "realityCheck": "<strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!"
+        "realityCheck": "<strong>MOV的现实检验</strong>：还记得我那个315.9MB的屏幕录制吗？那就是MOV的本色。质量很棒，分享很糟。上传前一定要转换！"
       },
       "decisionTree": {
-        "title": "Quick Decision Tree 🌳",
-        "diagram": "Is it for the web?\n├─ Yes → Is Safari support critical?\n│   ├─ Yes → MP4\n│   └─ No → WebM (with MP4 fallback)\n└─ No → Is it for editing?\n    ├─ Yes → Are you on Mac?\n    │   ├─ Yes → MOV\n    │   └─ No → AVI\n    └─ No → MP4 (it's always MP4)"
+        "title": "快速决策树🌳",
+        "diagram": "是用于网页吗？\n├─ 是 → Safari支持重要吗？\n│   ├─ 是 → MP4\n│   └─ 否 → WebM（以MP4作为后备）\n└─ 否 → 是用于剪辑吗？\n    ├─ 是 → 你用Mac吗？\n    │   ├─ 是 → MOV\n    │   └─ 否 → AVI\n    └─ 否 → MP4（永远是MP4）"
       },
-      "quote": "\"The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer.\" 🧘‍♂️"
+      "quote": "“明智的开发者知道，最好的格式不是最新或最花哨的——而是能把活干好、又不让用户受罪的那一个。”🧘‍♂️"
     },
     "whyImportant": {
-      "title": "Why Is This Even Important For My Website?",
-      "p1": "Look, I get it. You might be thinking \"Can't I just upload whatever and call it a day?\" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?",
-      "p2": "Here's the cold, hard truth about why video formats matter more than you think:",
+      "title": "这对我的网站到底有什么重要的？",
+      "p1": "听着，我懂。你可能在想“我就不能随便上传点什么然后收工吗？”🤷‍♂️ 当然，你也可以用叉子喝汤，但何必让生活比它本该的样子更难呢？",
+      "p2": "关于视频格式为什么比你想象的更重要，这里是冰冷而残酷的真相：",
       "threeSecondRule": {
-        "title": "The 3-Second Rule ⏱️",
-        "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
+        "title": "3秒法则⏱️",
+        "body": "研究表明，53%的移动用户会放弃加载时间超过3秒的网站。百分之五十三！这意味着超过一半的潜在客户在看到你精彩的内容之前就走了。猜猜加载缓慢最常见的罪魁祸首是什么？没错——就是你那个未经优化的200MB首屏视频，像一个数字路障一样杵在那里🚧。"
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "Google在看着（并且在评判）👀",
+        "intro": "页面速度是Google的直接排名因素。这意味着：",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>网站慢 = 排名低</strong> = 自然流量少",
+          "<strong>流量少 = 转化少</strong> = 钱少",
+          "<strong>钱少 = 伤心的开发者</strong>😢"
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "我有一位客户，他们的电商网站用巨大的MOV文件做产品视频。在把所有内容转换为优化的MP4和带后备的WebM之后，他们的：",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "页面加载时间从8.2秒降到2.7秒",
+          "67%的目标关键词在Google上的排名有所提升",
+          "转化率提高了23%",
+          "月收入增加了18,000美元💸"
         ]
       },
       "bandwidthBill": {
-        "title": "The Bandwidth Bill From Hell 🔥",
-        "body": "Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.",
-        "realNumbersIntro": "<strong>Real numbers</strong>: If your site gets 10,000 visitors/month:",
+        "title": "来自地狱的带宽账单🔥",
+        "body": "每次有人加载你的页面，你都在为那些带宽付费。用50MB的AVI而不是5MB的MP4，意味着你实实在在地多付10倍的托管费。这就像只需要一个披萨却点了10个——只不过没那么美味，而且更贵。",
+        "realNumbersIntro": "<strong>真实数字</strong>：如果你的网站每月有10,000名访客：",
         "bullets": [
-          "With 50MB videos: 500GB bandwidth = $$",
-          "With 5MB videos: 50GB bandwidth = $",
-          "That's potentially hundreds of dollars saved monthly!"
+          "使用50MB的视频：500GB带宽 = $$",
+          "使用5MB的视频：50GB带宽 = $",
+          "这每月可能节省数百美元！"
         ]
       },
       "mobileUsers": {
-        "title": "Mobile Users Will Hate You 📱",
-        "intro": "Remember, over 60% of web traffic is mobile now. That means:",
+        "title": "移动用户会恨你📱",
+        "intro": "记住，现在超过60%的网络流量来自移动端。这意味着：",
         "bullets": [
-          "<strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video",
-          "<strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty",
-          "<strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users"
+          "<strong>流量上限是真实存在的</strong>：没人想为了看你的首屏视频而耗光每月的流量",
+          "<strong>连接更慢</strong>：不是每个人都有5G，而且4G也可能时好时坏",
+          "<strong>电量消耗</strong>：大视频 = 更多处理 = 手机没电 = 愤怒的用户"
         ]
       },
       "trust": {
-        "title": "Trust and Professionalism 🤝",
-        "intro": "This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:",
+        "title": "信任与专业感🤝",
+        "intro": "这一点没人谈论，但它非常重要。当你的网站加载快、视频播放流畅时：",
         "bullets": [
-          "Users trust you more (subconsciously associating speed with competence)",
-          "They're more likely to stay and explore",
-          "They're more likely to come back",
-          "They're more likely to recommend you"
+          "用户更信任你（潜意识里把速度与能力联系在一起）",
+          "他们更可能留下来继续探索",
+          "他们更可能再次回来",
+          "他们更可能推荐你"
         ],
-        "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
+        "outro": "但当你的网站很慢时呢？它比雾号还响亮地喊着“业余时间”📯。用户会想：“如果他们连自己的网站都搞不定，我能把信用卡交给他们吗？”"
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "与变现的关联💰",
+        "intro": "无论你是投放广告、销售产品，还是通过Medium变现内容（嘿，Medium的作者同行！👋），性能都直接影响你的收益：",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>广告收入</strong>：网站慢 = 跳出率高 = 广告展示少",
+          "<strong>联盟链接</strong>：人们点不了他们等不及看到的东西",
+          "<strong>产品销售</strong>：每一秒的加载时间都可能让转化率下降7%",
+          "<strong>内容变现</strong>：读者不会等你那篇精彩的文章慢慢加载"
         ]
       },
-      "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"
+      "quote": "“网站的速度就像第一印象——你只有一次机会，如果搞砸了，他们左滑的速度比你说‘请稍候，加载中……’还快。”💨"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.",
-      "cheatSheetIntro": "Here's your TL;DR cheat sheet:",
+      "title": "结论",
+      "p1": "好了，各位数字冒险家！🚀 我们已经穿越了视频格式的狂野世界，希望你不再把MP4、WebM、AVI和MOV看成神秘的外星语言。",
+      "cheatSheetIntro": "这是你的太长不看速查表：",
       "cheatSheet": [
-        "<strong>MP4</strong>: Your reliable, go-everywhere friend",
-        "<strong>WebM</strong>: The speed demon for modern web",
-        "<strong>AVI</strong>: The quality beast for local storage",
-        "<strong>MOV</strong>: Apple's heavyweight champion"
+        "<strong>MP4</strong>：你可靠的、走到哪都行的朋友",
+        "<strong>WebM</strong>：现代网页的速度狂魔",
+        "<strong>AVI</strong>：本地存储的质量猛兽",
+        "<strong>MOV</strong>：Apple的重量级冠军"
       ],
-      "p2": "But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:",
+      "p2": "但更重要的是，你现在知道了选择正确的视频格式不只是某个书呆子式的技术决定——它关乎：",
       "checklist": [
-        "✅ Keeping your users happy (and on your site)",
-        "✅ Making Google love you (hello, better rankings! 👋)",
-        "✅ Saving money on hosting (cha-ching! 💰)",
-        "✅ Building trust and looking professional",
-        "✅ Actually making money from your content"
+        "✅ 让用户开心（并留在你的网站上）",
+        "✅ 让Google爱上你（你好，更好的排名！👋）",
+        "✅ 节省托管费用（叮！💰）",
+        "✅ 建立信任、看起来专业",
+        "✅ 真正从你的内容中赚到钱"
       ],
-      "p3": "The next time you're about to upload a video to your website, take a second to ask yourself: \"Is this format working for me, or am I working for it?\" Because life's too short for slow-loading websites and frustrated users.",
-      "p4": "Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅",
-      "quote": "\"In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!\" ⚡"
+      "p3": "下次你准备往网站上传视频时，花一秒钟问问自己：“这个格式是在为我工作，还是我在为它工作？”因为人生苦短，经不起加载缓慢的网站和沮丧的用户。",
+      "p4": "现在去压缩那些视频吧！你的用户（和你的钱包）会感谢你。嘿，如果你觉得这篇文章有帮助，在Medium上点个赞，或者分享给那个还在往网站上传原始MOV文件的朋友。我们都认识这么一位😅",
+      "quote": "“在网页开发的伟大冒险中，最小的优化往往带来最大的胜利。愿你的视频被压缩，愿你的加载时间飞快！”⚡"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Apply what you just read with the free Media Manipulator tools.",
+      "title": "相关工具",
+      "intro": "用免费的Media Manipulator工具实践你刚刚读到的内容。",
       "items": [
         {
-          "label": "Compress video",
-          "description": "Shrink MP4, WebM, MOV, and MKV files for the web."
+          "label": "压缩视频",
+          "description": "为网页缩小MP4、WebM、MOV和MKV文件。"
         },
         {
-          "label": "Video converter",
-          "description": "Convert between MP4, WebM, MOV, AVI, and more."
+          "label": "视频转换器",
+          "description": "在MP4、WebM、MOV、AVI等格式之间转换。"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "视频转GIF",
+          "description": "把短视频片段变成可分享的动态GIF。"
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video into searchable text or captions."
+          "label": "转录视频",
+          "description": "把视频中的语音提取为可搜索的文本或字幕。"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Step-by-step walkthrough of every video conversion setting."
+          "label": "视频转换器教程",
+          "description": "每一项视频转换设置的分步讲解。"
         },
         {
-          "label": "Image optimization guide",
-          "description": "JPG vs PNG vs WebP and how to shrink images for the web."
+          "label": "图片优化指南",
+          "description": "JPG、PNG与WebP的对比，以及如何为网页缩小图片。"
         }
       ]
     },
     "cta": {
-      "title": "Ready to Optimize Your Videos? 🚀",
-      "body": "Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.",
-      "button": "Try the video compressor →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "准备好优化你的视频了吗？🚀",
+      "body": "别再让巨大的视频文件拖慢你的网站！试试我们免费的视频压缩工具，立即看到差别。只需几次点击即可转换MP4、WebM、AVI、MOV等格式。",
+      "button": "试用视频压缩器 →",
+      "footnote": "无需注册 • 本地处理文件 • 快速安全"
     }
   },
   "blogImageOptimization": {
-    "backLink": "← Blog",
-    "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+    "backLink": "← 博客",
+    "title": "网页绝地武士的图片优化：JPG、PNG与WebP的对比",
     "byline": {
-      "label": "Written by:",
-      "date": "June 14th, 2025",
-      "time": "5:32 PM"
+      "label": "作者：",
+      "date": "2025年6月14日",
+      "time": "下午5:32"
     },
     "sections": {
       "intro": {
-        "title": "A Brief Intro to Image Formatting",
-        "p1": "Ever uploaded an image to your website and wondered why it takes <em>forever</em> to load? Or maybe you've noticed that your beautiful PNG logo looks crisp and clean, but it's somehow 5MB for a simple graphic? 🤔 Welcome to the wild world of image formats, where choosing the wrong one can make the difference between a lightning-fast website and one that loads slower than dial-up internet (remember that? 😅).",
-        "p2": "Image formats are essentially different ways of encoding and storing visual data. Think of them like different languages for describing the same picture - some are more verbose and detailed (like PNG), while others are more concise and compressed (like JPG). Each format has its own special sauce for how it stores pixels, handles transparency, compresses data, and maintains quality.",
-        "p3": "At their core, all image formats are trying to solve the same problem: how do we store millions of pixels worth of color information in a file that doesn't break the internet when someone tries to download it? The answer lies in <em>compression</em> - and this is where things get interesting! Some formats use \"lossy\" compression (they throw away some data to save space), while others use \"lossless\" compression (they keep everything but find clever ways to pack it smaller). It's like the difference between summarizing a book versus shrinking the font size - both make it \"smaller,\" but one loses information while the other doesn't.",
-        "p4": "The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀",
-        "quote": "\"The wise developer knows that the heaviest burden on a website is not code, but unoptimized images.\" - Ancient Web Proverb 😉"
+        "title": "图片格式简介",
+        "p1": "你有没有往网站上传过一张图片，然后纳闷为什么它要花<em>一辈子</em>才能加载出来？或者你可能注意到，你那漂亮的PNG标志看起来清晰干净，但一个简单的图形不知怎么就有5MB？🤔 欢迎来到图片格式的狂野世界，在这里选错格式可能意味着网站是闪电般快速，还是比拨号上网还慢（还记得那个年代吗？😅）。",
+        "p2": "图片格式本质上是编码和存储视觉数据的不同方式。可以把它们想象成描述同一幅画的不同语言——有些更冗长详细（比如PNG），有些则更简洁压缩（比如JPG）。每种格式在存储像素、处理透明度、压缩数据和保持质量方面都有自己的独门秘方。",
+        "p3": "从本质上说，所有图片格式都在试图解决同一个问题：如何把数百万像素的颜色信息存储在一个文件里，而当有人下载它时不至于把互联网弄垮？答案在于<em>压缩</em>——而这正是有趣的地方！有些格式使用“有损”压缩（丢弃一些数据以节省空间），有些则使用“无损”压缩（保留一切，但找到巧妙的方法把它打包得更小）。这就像概括一本书和缩小字号的区别——两者都能让它“更小”，但一个会丢失信息，另一个不会。",
+        "p4": "我们今天要深入探讨的三位好伙伴——JPG、PNG和WebP——各自以不同的方式应对这一挑战，理解它们独特的超能力（和致命弱点！）会让你从学徒蜕变为真正的网页绝地武士。🚀",
+        "quote": "“明智的开发者知道，网站最沉重的负担不是代码，而是未经优化的图片。”——古老的网页谚语😉"
       },
       "differences": {
-        "title": "What's the Difference Between These Formats Anyway?",
-        "intro": "Alright, let's get into the nitty-gritty of what makes each format tick! Think of these formats as different types of vehicles - they'll all get you from point A to point B, but some are sports cars, some are trucks, and some are those fancy new electric vehicles that do everything. 🚗",
+        "title": "这些格式到底有什么区别？",
+        "intro": "好了，让我们深入了解每种格式的运作细节！把这些格式想象成不同类型的交通工具——它们都能把你从A点带到B点，但有些是跑车，有些是卡车，还有些是那种什么都能干的新潮电动车。🚗",
         "jpg": {
-          "title": "JPG (or JPEG - they're the same thing, don't let anyone tell you otherwise 😄)",
-          "body": "JPG is like that reliable friend who's great at parties but terrible with details. It uses lossy compression, which means it literally throws away data it thinks you won't notice. Perfect for photographs where a tiny bit of quality loss is invisible to the human eye, but terrible for text or sharp edges. Ever seen a meme that's been shared so many times it looks like it was photographed through a potato? That's JPG compression artifacts saying hello! 👋",
+          "title": "JPG（或JPEG——它们是同一个东西，别让任何人告诉你不是😄）",
+          "body": "JPG就像那个在派对上很棒、但对细节一塌糊涂的可靠朋友。它使用有损压缩，也就是说它会真的丢掉它认为你不会注意到的数据。对于照片来说非常完美，因为微小的质量损失对人眼来说是看不见的，但对于文字或锐利的边缘来说就很糟糕。见过那种被转发太多次、看起来像是隔着土豆拍出来的表情包吗？那就是JPG压缩伪影在跟你打招呼！👋",
           "bullets": [
-            "<strong>Pros</strong>: Small file sizes, universally supported, great for photos",
-            "<strong>Cons</strong>: No transparency support, loses quality with each save, makes text look fuzzy",
-            "<strong>Best for</strong>: Photographs, complex images with lots of colors"
+            "<strong>优点</strong>：文件小，通用支持，非常适合照片",
+            "<strong>缺点</strong>：不支持透明度，每次保存都会损失质量，让文字看起来模糊",
+            "<strong>最适合</strong>：照片、色彩丰富的复杂图片"
           ]
         },
         "png": {
-          "title": "PNG (Portable Network Graphics)",
-          "body": "PNG is the perfectionist of the group - it refuses to lose any data whatsoever. Using lossless compression, it keeps every single pixel exactly as you intended. It also supports transparency (hello, logos with no background! 🎉), making it the go-to choice for graphics, icons, and anything with text. The downside? File sizes can get chunky real quick, especially with large, complex images.",
+          "title": "PNG（便携式网络图形）",
+          "body": "PNG是这群人里的完美主义者——它拒绝丢失任何数据。它使用无损压缩，完全按你的意图保留每一个像素。它还支持透明度（你好，没有背景的标志！🎉），因此成为图形、图标和任何带文字内容的首选。缺点呢？文件大小很快就会变得臃肿，尤其是大型复杂图片。",
           "bullets": [
-            "<strong>Pros</strong>: Lossless compression, supports transparency, perfect for graphics and text",
-            "<strong>Cons</strong>: Larger file sizes, not ideal for photographs",
-            "<strong>Best for</strong>: Logos, icons, images with text, anything needing transparency"
+            "<strong>优点</strong>：无损压缩，支持透明度，非常适合图形和文字",
+            "<strong>缺点</strong>：文件更大，不适合照片",
+            "<strong>最适合</strong>：标志、图标、带文字的图片，以及任何需要透明度的内容"
           ]
         },
         "webp": {
-          "title": "WebP (The New Kid on the Block)",
-          "body": "WebP is Google's attempt to create the ultimate image format - and honestly, they kind of nailed it! 🎯 It's like the Swiss Army knife of image formats, supporting both lossy AND lossless compression, transparency, and even animation (move over, GIF!). It typically achieves 25-35% smaller file sizes than JPG and PNG while maintaining the same quality. The only catch? Not every browser plays nice with it yet (looking at you, older Safari versions 👀).",
+          "title": "WebP（街区里的新来者）",
+          "body": "WebP是Google打造终极图片格式的尝试——老实说，他们还真做到了！🎯 它就像图片格式界的瑞士军刀，同时支持有损和无损压缩、透明度，甚至动画（让开，GIF！）。它通常能在保持相同质量的情况下，比JPG和PNG小25-35%。唯一的问题？并非所有浏览器都已经与它和睦相处（说的就是你们，旧版Safari👀）。",
           "bullets": [
-            "<strong>Pros</strong>: Smaller file sizes, supports everything (lossy, lossless, transparency, animation), excellent quality-to-size ratio",
-            "<strong>Cons</strong>: Not universally supported (yet), requires fallbacks for older browsers",
-            "<strong>Best for</strong>: Modern websites where you can provide fallbacks, any use case really!"
+            "<strong>优点</strong>：文件更小，支持一切（有损、无损、透明度、动画），出色的质量与大小比",
+            "<strong>缺点</strong>：（目前）尚未通用支持，需要为旧浏览器提供后备",
+            "<strong>最适合</strong>：能提供后备方案的现代网站，说真的，几乎任何场景！"
           ]
         },
-        "example": "Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️",
-        "quote": "\"Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses.\" ⚔️"
+        "example": "这里有一个真实的例子：一张1920x1080的照片，作为JPG可能是500KB，作为PNG是2MB，而作为WebP只有350KB——视觉质量几乎完全相同。这就像用紧凑型车的价格买到了豪车！🏎️",
+        "quote": "“像武士选剑一样选择你的格式——带着目的、精准，以及对其优缺点的理解。”⚔️"
       },
       "choosing": {
-        "title": "How Do I Know When to Use One Format Over Another?",
-        "intro": "This is where the rubber meets the road! 🏁 Choosing the right format isn't rocket science, but it does require thinking like a detective. Let me break down the decision-making process with some real-world scenarios that'll make you go \"Aha!\" 💡",
+        "title": "我怎么知道什么时候该用哪种格式？",
+        "intro": "这才是真刀真枪的地方！🏁 选择正确的格式不是火箭科学，但确实需要像侦探一样思考。让我用一些会让你恍然大悟的真实场景来拆解决策过程！💡",
         "decisionTree": {
-          "title": "The Quick Decision Tree (Screenshot This! 📸)",
-          "lead": "Ask yourself these questions in order:",
+          "title": "快速决策树（截图保存！📸）",
+          "lead": "按顺序问自己这些问题：",
           "items": [
-            "Does it need transparency? → If yes, PNG or WebP",
-            "Is it a photograph with lots of colors and gradients? → JPG or WebP",
-            "Does it have text or sharp edges? → PNG or WebP",
-            "Do I need the absolute smallest file size? → WebP (with JPG/PNG fallback)",
-            "Is it going to be edited and saved multiple times? → PNG (to avoid quality degradation)"
+            "需要透明度吗？→ 需要的话，PNG或WebP",
+            "是色彩和渐变丰富的照片吗？→ JPG或WebP",
+            "有文字或锐利的边缘吗？→ PNG或WebP",
+            "我需要绝对最小的文件吗？→ WebP（以JPG/PNG作为后备）",
+            "它会被多次编辑和保存吗？→ PNG（避免质量退化）"
           ]
         },
         "scenarios": {
-          "title": "Real-World Scenarios (Because Theory is Boring 😴)",
+          "title": "真实场景（因为理论太无聊了😴）",
           "items": [
             {
-              "title": "Scenario 1: Your Company Logo",
-              "body": "You've got a slick logo that needs to work on any background. This is PNG territory all day! Why? You need that transparency, baby! Plus, logos typically have clean lines and solid colors that PNG handles like a boss. If you're feeling adventurous and your analytics show most users have modern browsers, go WebP with PNG fallback."
+              "title": "场景1：你的公司标志",
+              "body": "你有一个需要在任何背景上都能用的时髦标志。这绝对是PNG的地盘！为什么？你需要那个透明度，宝贝！而且标志通常有干净的线条和纯色，PNG处理起来游刃有余。如果你想冒险一下，而且分析数据显示大多数用户都用现代浏览器，那就用WebP并以PNG作为后备。"
             },
             {
-              "title": "Scenario 2: Hero Image on Your Landing Page",
-              "body": "That gorgeous 4K photograph of your product/team/artisanal coffee? JPG or WebP, no question. The slight quality loss from JPG compression is invisible in photographs, and the file size difference is *chef's kiss* 👨‍🍳. A 5MB PNG photo will make your users cry (and bounce), while a 500KB JPG will load faster than they can say \"add to cart.\""
+              "title": "场景2：着陆页上的首屏图片",
+              "body": "你的产品/团队/手工咖啡的那张华丽的4K照片？毫无疑问，JPG或WebP。JPG压缩带来的轻微质量损失在照片中是看不见的，而文件大小的差异简直是*主厨之吻*👨‍🍳。一张5MB的PNG照片会让你的用户哭泣（然后跳出），而一张500KB的JPG加载速度快到他们来不及说“加入购物车”。"
             },
             {
-              "title": "Scenario 3: Screenshots for Your Blog/Documentation",
-              "body": "This one's tricky! If there's text in the screenshot (and there usually is), PNG is your friend. JPG will make that text look like it went through a blender. However, if you're taking screenshots on a Mac, those bad boys can be HUGE. Consider using WebP or optimizing your PNGs with tools like TinyPNG."
+              "title": "场景3：博客/文档的截图",
+              "body": "这个有点棘手！如果截图里有文字（通常都有），PNG是你的朋友。JPG会让那些文字看起来像是进了搅拌机。不过，如果你在Mac上截图，那些家伙可能会非常大。考虑使用WebP，或者用TinyPNG之类的工具优化你的PNG。"
             },
             {
-              "title": "Scenario 4: Product Images for E-commerce",
-              "body": "WebP with JPG fallback is the power move here. 🎯 You get smaller file sizes (faster load times = better conversions), great quality, and you can even add subtle transparency effects if needed. Just make sure to implement proper fallbacks for the Safari-on-iPhone crowd."
+              "title": "场景4：电商产品图片",
+              "body": "WebP加JPG后备是这里的制胜招数。🎯 你能得到更小的文件（加载更快 = 转化更好）、出色的质量，如果需要甚至还能添加细微的透明效果。只要确保为iPhone上用Safari的那群人实现适当的后备方案。"
             }
           ]
         },
         "proTips": {
-          "title": "Pro Tips from the Trenches 🪖",
+          "title": "来自一线的专业提示🪖",
           "items": [
-            "Always compress your images! Even if you choose the right format, an unoptimized PNG can still be a monster",
-            "Use responsive images with different sizes for different devices (your mobile users will thank you)",
-            "Consider using CDNs that can automatically serve WebP to supported browsers",
-            "When in doubt, test both formats and see which looks better at a reasonable file size"
+            "一定要压缩你的图片！即使你选对了格式，未经优化的PNG仍然可能是个怪物",
+            "为不同设备使用不同尺寸的响应式图片（你的移动用户会感谢你）",
+            "考虑使用能自动向支持的浏览器提供WebP的CDN",
+            "拿不准时，两种格式都测试一下，看看在合理的文件大小下哪个效果更好"
           ]
         },
-        "quote": "\"The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves.\" 🧘‍♂️"
+        "quote": "“网页开发大师选择的不是看起来最好的格式，而是最能服务用户的格式——因为在服务他人的过程中，我们也优化了自己。”🧘‍♂️"
       },
       "whyImportant": {
-        "title": "Why Is This Even Important For My Website?",
-        "intro": "Okay, real talk time. 💯 You might be thinking, \"Come on, it's 2025, everyone has fast internet now, right?\" WRONG! Let me hit you with some truth bombs that'll make you want to optimize every image on your site immediately. 💣",
+        "title": "这对我的网站到底有什么重要的？",
+        "intro": "好了，说真话的时间到了。💯 你可能在想：“拜托，都2025年了，现在大家的网速都很快了，对吧？”错！让我用一些真相炸弹砸醒你，让你立刻想优化网站上的每一张图片。💣",
         "loadTimes": {
-          "title": "The Brutal Reality of Page Load Times",
-          "p1": "Here's a stat that'll make your jaw drop: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load</strong>. THREE. SECONDS. 😱 And guess what's usually the biggest culprit? Yep, those chunky, unoptimized images you uploaded straight from your camera.",
-          "p2": "Let's do some quick math (don't worry, I'll keep it simple):",
+          "title": "页面加载时间的残酷现实",
+          "p1": "这里有一个会让你下巴掉下来的数据：<strong>53%的移动用户会放弃加载时间超过3秒的网站</strong>。三。秒。😱 猜猜最常见的罪魁祸首是什么？没错，就是那些你直接从相机上传的臃肿、未经优化的图片。",
+          "p2": "让我们算一笔简单的账（别担心，我会说得简单点）：",
           "items": [
-            "Average webpage: 2-3MB total",
-            "Unoptimized hero image: 5MB",
-            "Result: Your page just became slower than a sloth on sedatives 🦥"
+            "平均网页：总共2-3MB",
+            "未经优化的首屏图片：5MB",
+            "结果：你的页面刚刚变得比打了镇静剂的树懒还慢🦥"
           ]
         },
         "seo": {
-          "title": "The SEO Domino Effect 🎯",
-          "intro": "Google's Core Web Vitals (fancy term for \"does your site load fast?\") directly impact your search rankings. Here's the chain reaction:",
+          "title": "SEO多米诺效应🎯",
+          "intro": "Google的Core Web Vitals（“你的网站加载快吗？”的高级说法）直接影响你的搜索排名。连锁反应是这样的：",
           "items": [
-            "Heavy images → Slow load times",
-            "Slow load times → Poor Core Web Vitals scores",
-            "Poor scores → Lower search rankings",
-            "Lower rankings → Less traffic",
-            "Less traffic → Less money 💸"
+            "沉重的图片 → 加载时间慢",
+            "加载时间慢 → Core Web Vitals分数差",
+            "分数差 → 搜索排名低",
+            "排名低 → 流量少",
+            "流量少 → 钱少💸"
           ],
-          "outro": "It's like a really expensive game of dominoes where every piece that falls costs you customers!"
+          "outro": "这就像一场非常昂贵的多米诺游戏，每倒下一块都让你损失客户！"
         },
         "mobile": {
-          "title": "The Mobile Reality Check 📱",
-          "p1": "Here's something that might surprise you: In many parts of the world, people are browsing on 3G connections or have data caps. That beautiful 10MB PNG hero image? It just cost someone in India half their daily data allowance. Not cool, and definitely not good for business.",
-          "p2": "Plus, even in countries with \"fast\" internet, people are often on spotty coffee shop WiFi or riding the subway. Your unoptimized images are literally making people close your site and go to your competitor. Ouch! 🤕"
+          "title": "移动端的现实检验📱",
+          "p1": "有件事可能会让你惊讶：在世界上的许多地方，人们在用3G连接浏览，或者有流量上限。那张漂亮的10MB PNG首屏图片？它刚刚让印度的某个人花掉了一天流量的一半。不酷，而且对生意绝对不好。",
+          "p2": "而且，即使在网速“快”的国家，人们也常常在用时断时续的咖啡店WiFi，或者在地铁上。你未经优化的图片实实在在地在让人们关掉你的网站、转投你的竞争对手。哎哟！🤕"
         },
         "money": {
-          "title": "The Money Talk (Because Let's Be Honest, That's What Matters) 💰",
+          "title": "谈谈钱（因为说实话，这才是重点）💰",
           "items": [
-            "<strong>Amazon found that every 100ms of latency cost them 1% in sales</strong>",
-            "<strong>Pinterest increased search engine traffic and sign-ups by 15% when they reduced perceived wait times by 40%</strong>",
-            "<strong>Walmart saw a 2% increase in conversions for every 1 second of improvement in load time</strong>"
+            "<strong>Amazon发现每100毫秒的延迟会让他们损失1%的销售额</strong>",
+            "<strong>Pinterest在把感知等待时间减少40%后，搜索引擎流量和注册量增加了15%</strong>",
+            "<strong>Walmart发现加载时间每改善1秒，转化率就提高2%</strong>"
           ],
-          "outro": "Still think image optimization doesn't matter? 🤔"
+          "outro": "还觉得图片优化无关紧要吗？🤔"
         },
         "horrorStory": {
-          "title": "Real-World Horror Story 🎃",
-          "body": "I once worked with a client whose beautiful photography portfolio site was getting almost no traffic. The culprit? Each image was a 15-20MB PNG straight from Photoshop. The homepage took 45 seconds to load on a good day. After optimizing (converting to JPG, proper sizing, lazy loading), load time dropped to 2 seconds. Traffic increased by 70% in one month. True story!"
+          "title": "真实的恐怖故事🎃",
+          "body": "我曾与一位客户合作，他们漂亮的摄影作品集网站几乎没有流量。罪魁祸首？每张图片都是直接从Photoshop导出的15-20MB PNG。首页在状态好的日子里也要45秒才能加载。优化之后（转换为JPG、合适的尺寸、懒加载），加载时间降到了2秒。一个月内流量增长了70%。真实故事！"
         },
         "trust": {
-          "title": "The Trust Factor 🤝",
-          "intro": "Slow websites don't just lose customers - they lose credibility. Users subconsciously associate slow load times with:",
+          "title": "信任因素🤝",
+          "intro": "慢网站不仅会失去客户——还会失去可信度。用户在潜意识里会把加载缓慢与以下事物联系起来：",
           "items": [
-            "Outdated technology",
-            "Lack of attention to detail",
-            "Unprofessionalism",
-            "Security concerns (yes, really!)"
+            "过时的技术",
+            "对细节缺乏关注",
+            "不专业",
+            "安全隐患（是的，真的！）"
           ],
-          "outro": "Your image choices are literally affecting how trustworthy people think you are. Wild, right?"
+          "outro": "你的图片选择实实在在地影响着人们对你可信度的看法。疯狂，对吧？"
         },
-        "quote": "\"A website's speed is like a first impression - you never get a second chance to load quickly.\" ⚡"
+        "quote": "“网站的速度就像第一印象——你永远没有第二次机会快速加载。”⚡"
       },
       "conclusion": {
-        "title": "Conclusion",
-        "intro": "Alright, my fellow Web Jedis, we've been on quite the journey! 🚀 From understanding the DNA of image formats to seeing how they can literally make or break your website's success. Let's recap the superpowers you've just unlocked:",
+        "title": "结论",
+        "intro": "好了，我的网页绝地武士同伴们，我们经历了一段不小的旅程！🚀 从理解图片格式的DNA，到看到它们如何真正决定网站的成败。让我们回顾一下你刚刚解锁的超能力：",
         "tldr": {
-          "title": "The TL;DR Version (For Those Who Scrolled Here First 😏)",
+          "title": "太长不看版（给那些直接滚到这里的人😏）",
           "items": [
-            "<strong>JPG</strong>: Your go-to for photos. Small files, great quality, but no transparency",
-            "<strong>PNG</strong>: The perfectionist for logos, graphics, and anything with text. Bigger files but pixel-perfect",
-            "<strong>WebP</strong>: The Swiss Army knife that does it all, just needs fallbacks for older browsers"
+            "<strong>JPG</strong>：照片首选。文件小，质量好，但没有透明度",
+            "<strong>PNG</strong>：标志、图形和任何带文字内容的完美主义者。文件更大，但像素级完美",
+            "<strong>WebP</strong>：无所不能的瑞士军刀，只是需要为旧浏览器提供后备"
           ]
         },
         "actionPlan": {
-          "title": "Your Action Plan (Do These TODAY!) ✅",
+          "title": "你的行动计划（今天就做！）✅",
           "items": [
-            "<strong>Audit your current images</strong> - Open your website right now and check those file sizes. I'll wait... Scary, right? 😱",
-            "<strong>Set up an optimization workflow</strong> - Whether it's using tools like TinyPNG, ImageOptim, or good ol' ffmpeg (shameless plug for my other article 😉), make optimization part of your process",
-            "<strong>Implement WebP with fallbacks</strong> - It's 2025, time to give your users that next-gen experience",
-            "<strong>Test your load times</strong> - Use Google's PageSpeed Insights and watch those scores soar",
-            "<strong>Set up responsive images</strong> - Different sizes for different devices = happy users everywhere"
+            "<strong>审查你当前的图片</strong>——现在就打开你的网站，检查那些文件大小。我等着……吓人吧？😱",
+            "<strong>建立优化工作流</strong>——无论是用TinyPNG、ImageOptim这样的工具，还是老牌的ffmpeg（厚脸皮地给我的另一篇文章打个广告😉），把优化变成你流程的一部分",
+            "<strong>实现带后备的WebP</strong>——都2025年了，是时候给用户下一代体验了",
+            "<strong>测试你的加载时间</strong>——使用Google的PageSpeed Insights，看着那些分数飙升",
+            "<strong>设置响应式图片</strong>——不同设备用不同尺寸 = 到处都是开心的用户"
           ]
         },
         "bigPicture": {
-          "title": "The Bigger Picture 🖼️",
-          "p1": "Remember, optimizing your images isn't just about technical SEO scores or saving bandwidth (though those are awesome bonuses!). It's about respecting your users' time, data, and experience. Every second you shave off your load time is a second you're giving back to someone's day. That's pretty powerful when you think about it! 💪",
-          "p2": "Plus, let's be real - faster websites make more money. It's not rocket science, it's just good business. Your optimized images are literally increasing your bottom line while making the web a better place. You're basically a superhero now! 🦸‍♀️🦸‍♂️"
+          "title": "更大的图景🖼️",
+          "p1": "记住，优化图片不只是为了技术SEO分数或节省带宽（虽然那些是很棒的额外收获！）。它关乎尊重用户的时间、流量和体验。你从加载时间中省下的每一秒，都是你还给某个人一天中的一秒。想想看，这相当有力量！💪",
+          "p2": "而且，说实话——更快的网站赚更多的钱。这不是火箭科学，只是好生意。你优化过的图片实实在在地在提高你的收益，同时让网络变成更好的地方。你现在基本上就是超级英雄了！🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
-          "title": "One Final Challenge 🎯",
-          "p1": "Here's my challenge to you: Take the slowest-loading page on your website and optimize just the images. Nothing else. I guarantee you'll see at least a 50% improvement in load time. Share your before/after results in the comments - I love a good optimization success story!",
-          "p2": "Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨"
+          "title": "最后一个挑战🎯",
+          "p1": "这是我给你的挑战：找出你网站上加载最慢的页面，只优化图片。其他什么都不动。我保证你会看到加载时间至少改善50%。在评论里分享你的前后对比结果——我喜欢好的优化成功故事！",
+          "p2": "记住，在网页开发的世界里，最好的代码是快的代码，而最好的图片是优化过的图片。现在去压缩吧！愿你的图片小，愿你的加载时间更小！🚀✨"
         },
-        "quote": "\"The journey of a thousand optimizations begins with a single compressed image.\" 🏔️"
+        "quote": "“千次优化之旅，始于一张压缩的图片。”🏔️"
       }
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the techniques from this guide in the free Media Manipulator image tools.",
+      "title": "相关工具",
+      "intro": "在免费的Media Manipulator图片工具中试试本指南中的技巧。",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "图片转换器",
+          "description": "在JPG、PNG、WebP、AVIF、GIF等格式之间转换。"
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebP转JPG",
+          "description": "从WebP源文件获得兼容性广泛的JPG。"
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "移除EXIF元数据",
+          "description": "分享照片前清除GPS、设备和时间戳元数据。"
         },
         {
-          "label": "Image converter tutorial",
-          "description": "Full walkthrough of every setting in the image converter."
+          "label": "图片转换器教程",
+          "description": "图片转换器中每一项设置的完整讲解。"
         },
         {
-          "label": "Video compression guide",
-          "description": "Apply the same optimization mindset to video files."
+          "label": "视频压缩指南",
+          "description": "把同样的优化思维应用到视频文件上。"
         },
         {
-          "label": "Audio quality guide",
-          "description": "Pick the right audio bitrate, sample rate, and codec."
+          "label": "音质指南",
+          "description": "选择合适的音频比特率、采样率和编解码器。"
         }
       ]
     },
     "footer": {
-      "title": "Time to Become an Image Optimization Jedi! 🌟",
-      "body": "Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!",
-      "ctaLabel": "Open the image converter →",
-      "disclaimer": "No signup required • Process files locally • Fast & secure"
+      "title": "是时候成为图片优化绝地武士了！🌟",
+      "body": "准备好把你臃肿的PNG变成闪电般快速的WebP了吗？我们免费的图片转换器支持JPG、PNG、WebP、GIF等格式。几秒钟内优化你的图片，看着你的网站飞起来！",
+      "ctaLabel": "打开图片转换器 →",
+      "disclaimer": "无需注册 • 本地处理文件 • 快速安全"
     }
   },
   "blogAudioQuality": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← 博客"
     },
     "header": {
-      "title": "The Sound of <strike>Silence</strike> Quality: Bitrates, Sample Rates, and Formats",
-      "byline": "Written by:",
-      "dateDisplay": "June 14th, 2025",
-      "timeDisplay": "10:08 PM"
+      "title": "关于<strike>寂静</strike>音质之声：比特率、采样率与格式",
+      "byline": "作者：",
+      "dateDisplay": "2025年6月14日",
+      "timeDisplay": "晚上10:08"
     },
     "intro": {
-      "title": "A Brief Intro to Audio Formats, Bitrates, and Sample Rates",
-      "p1": "Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's \"high-quality\" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:",
+      "title": "音频格式、比特率和采样率简介",
+      "p1": "你有没有想过，为什么你下载的那个50MB的播客听起来清澈透亮，而你朋友那个3MB的“高质量”音乐文件听起来像是在水下录的？或者你可能注意到：",
       "bullets": [
-        "Your website's background music takes forever to load, even though it's only 30 seconds long",
-        "That audio file you converted sounds like someone's playing it through a tin can",
-        "You're trying to add voice-overs to your video content but the file sizes are absolutely massive",
-        "Your carefully crafted sound effects library is eating up all your cloud storage",
-        "You downloaded the same song from different sources and they all sound wildly different"
+        "你网站的背景音乐要花很久才能加载，尽管它只有30秒长",
+        "你转换的那个音频文件听起来像是有人隔着铁皮罐在播放",
+        "你想给视频内容添加配音，但文件大得离谱",
+        "你精心打造的音效库正在吞噬你所有的云存储空间",
+        "你从不同来源下载了同一首歌，它们听起来却大相径庭"
       ],
-      "p2": "If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!",
-      "p3": "Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.",
-      "p4": "In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯",
-      "quote": "\"The ear is the avenue to the heart.\" – Voltaire"
+      "p2": "如果你经历过以上任何一种音频冒险（或者说倒霉事😅），那就系好安全带，因为我们即将揭开音频格式、比特率和采样率世界的神秘面纱！",
+      "p3": "把音频文件想象成咖啡☕——有速溶咖啡（低比特率MP3）、标准滴滤咖啡（普通质量音频），还有高级意式咖啡机冲泡的（无损FLAC文件）。它们都是咖啡，但体验呢？完全不同。正如你不会在高档咖啡馆端上速溶咖啡一样，你也不应该在专业网站上使用低质量的音频文件。",
+      "p4": "在这篇文章中，我们将探讨这些神秘的数字和格式究竟意味着什么、为什么它们比你想象的更重要，以及如何通过选择正确的组合，决定你的网站访客是继续停留，还是点击那个可怕的返回按钮。🎯",
+      "quote": "“耳朵是通往心灵的大道。”——伏尔泰"
     },
     "difference": {
-      "title": "What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?",
-      "p1": "Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧",
-      "formatsLead": "<strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:",
+      "title": "格式、比特率和采样率到底有什么区别？",
+      "p1": "好了，让我们像给那位只想让播客听起来不错的非技术朋友解释一样来拆解这些概念！🎧",
+      "formatsLead": "<strong>音频格式</strong>就像容器——把它们想象成可以装音频的不同类型的箱子。你有：",
       "formatsBullets": [
-        "<strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit",
-        "<strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton",
-        "<strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside",
-        "<strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty",
-        "<strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it"
+        "<strong>MP3</strong>：可靠的纸箱。能完成任务，被普遍接受，但可能会把你的东西压扁一点",
+        "<strong>WAV</strong>：重型钢制集装箱。完美保存一切，但重得要命",
+        "<strong>AAC</strong>：采用更好打包技术的时髦现代箱子。和MP3一样大，但里面能装更多质量",
+        "<strong>FLAC</strong>：真空密封容器。压缩而不损失任何东西，但仍然相当沉重",
+        "<strong>OGG</strong>：开源的叛逆箱子，很好用，但不是每个人都知道怎么打开"
       ],
-      "bitrateLead": "<strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:",
+      "bitrateLead": "<strong>比特率</strong>是每秒流过的数据量——想象它像一根水管。比特率越高 = 水管越粗 = 流过的音频信息越多：",
       "bitrateBullets": [
-        "<strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)",
-        "<strong>128 kbps</strong>: Standard faucet (decent for casual listening)",
-        "<strong>256 kbps</strong>: Fire hose (great quality for most people)",
-        "<strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)",
-        "<strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿"
+        "<strong>64 kbps</strong>：花园水管（适合谈话电台，对音乐来说很糟糕）",
+        "<strong>128 kbps</strong>：标准水龙头（适合日常聆听）",
+        "<strong>256 kbps</strong>：消防水管（对大多数人来说质量很棒）",
+        "<strong>320 kbps</strong>：工业管道（MP3的最高质量）",
+        "<strong>1,411 kbps</strong>：尼亚加拉大瀑布（未压缩的CD质量）💿"
       ],
-      "sampleRateLead": "<strong>Sample Rate</strong> is how many times per second we take a \"snapshot\" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):",
+      "sampleRateLead": "<strong>采样率</strong>是我们每秒对声波拍“快照”的次数。它以Hz（赫兹）或kHz（千赫兹）为单位：",
       "sampleRateBullets": [
-        "<strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy",
-        "<strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear",
-        "<strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)",
-        "<strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)"
+        "<strong>22,050 Hz</strong>：像以15fps看电影——能用但卡顿",
+        "<strong>44,100 Hz</strong>：甜蜜点——CD质量，捕捉人类能听到的一切",
+        "<strong>48,000 Hz</strong>：专业视频标准（因为数学和同步🤓）",
+        "<strong>96,000 Hz</strong>或更高：给音频发烧友和狗听的（说真的，人类听不出区别）"
       ],
-      "p2": "Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯",
-      "quote": "\"To understand the whole, you must first understand the parts.\" – Aristotle"
+      "p2": "关键在于——这三位好伙伴是协同工作的！你可以有一个采样率44.1 kHz（采样率）、比特率1,411 kbps的WAV文件（格式）。或者一个采样率44.1 kHz（采样率）但只有128 kbps（比特率）的MP3（格式）。相同的采样率，完全不同的质量！🤯",
+      "quote": "“要理解整体，必须先理解部分。”——亚里士多德"
     },
     "usage": {
-      "title": "How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?",
-      "p1": "Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?",
+      "title": "我怎么知道什么时候该用哪种格式，比特率和采样率又是怎么参与其中的？",
+      "p1": "说真话的时间到了！💪 让我们把你的音频需求与合适的格式组合匹配起来。就像为不同场合选择合适的衣服——你不会穿燕尾服去健身房，对吧？",
       "background": {
-        "title": "For Background Music on Websites:",
+        "title": "网站背景音乐：",
         "bullets": [
-          "<strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth",
-          "<strong>File size</strong>: ~1MB per minute (your visitors will thank you!)"
+          "<strong>使用</strong>：128-192 kbps、44.1 kHz的MP3或AAC",
+          "<strong>原因</strong>：加载快，作为氛围音乐足够好，不会吃掉带宽",
+          "<strong>文件大小</strong>：每分钟约1MB（你的访客会感谢你！）"
         ]
       },
       "podcasts": {
-        "title": "For Podcasts & Voice Content:",
+        "title": "播客与语音内容：",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)",
-          "<strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size",
-          "<strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄"
+          "<strong>使用</strong>：64-96 kbps单声道、44.1 kHz的MP3（如果文件大小至关重要则用22.05 kHz）",
+          "<strong>原因</strong>：人声不需要高比特率，单声道可节省50%的文件大小",
+          "<strong>专业提示</strong>：没人需要用立体声听你的呼吸😄"
         ]
       },
       "streaming": {
-        "title": "For Music Streaming/Downloads:",
+        "title": "音乐流媒体/下载：",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz",
-          "<strong>Why</strong>: The sweet spot between quality and file size",
-          "<strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps"
+          "<strong>使用</strong>：256-320 kbps的MP3或256 kbps的AAC，44.1 kHz",
+          "<strong>原因</strong>：质量与文件大小之间的甜蜜点",
+          "<strong>现实检验</strong>：大多数人听不出256和320 kbps的区别"
         ]
       },
       "previews": {
-        "title": "For Audio Previews & Samples:",
+        "title": "音频预览与样本：",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Quick loading, good enough for \"try before you buy\"",
-          "<strong>Smart move</strong>: Save the high-quality files for paying customers 💰"
+          "<strong>使用</strong>：96-128 kbps、44.1 kHz的MP3",
+          "<strong>原因</strong>：加载快，对“先试后买”来说足够好",
+          "<strong>聪明做法</strong>：把高质量文件留给付费客户💰"
         ]
       },
       "archival": {
-        "title": "For Professional/Archival:",
+        "title": "专业/归档：",
         "bullets": [
-          "<strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)",
-          "<strong>Why</strong>: Future-proof, perfect for editing, no quality loss",
-          "<strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!"
+          "<strong>使用</strong>：最高比特率的FLAC或WAV，48 kHz（或与你的视频标准匹配）",
+          "<strong>原因</strong>：面向未来，非常适合编辑，无质量损失",
+          "<strong>警告</strong>：这些文件巨大——每分钟10MB！"
         ]
       },
       "decisionTree": {
-        "title": "Quick Decision Tree:",
-        "content": "Is it voice only? → MP3 at 64-96 kbps\nIs loading speed critical? → MP3/AAC at 128 kbps max\nNeed perfect quality? → FLAC/WAV\nRegular music for web? → MP3/AAC at 192-256 kbps"
+        "title": "快速决策树：",
+        "content": "只有人声？→ 64-96 kbps的MP3\n加载速度至关重要？→ 最高128 kbps的MP3/AAC\n需要完美质量？→ FLAC/WAV\n网页上的普通音乐？→ 192-256 kbps的MP3/AAC"
       },
-      "ninjaTip": "Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy \"audio enhancer\" ads claim).",
-      "realWorldExample": "<strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.",
-      "quote": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\" – Antoine de Saint-Exupéry"
+      "ninjaTip": "这里有一个忍者技巧🥷：总是从你能得到的最高质量源文件开始，然后向下压缩。你总是可以从WAV → MP3，但你无法从MP3 → WAV神奇地把质量加回来（不管那些可疑的“音频增强器”广告怎么说）。",
+      "realWorldExample": "<strong>真实案例</strong>：我曾有一位客户，他们的冥想应用用WAV文件做引导课程。每个10分钟的课程有100MB！😱 我们把它们转换为96 kbps的单声道MP3，文件大小降到每个7MB，而且真的没有人抱怨质量。他们的应用下载量增加了40%，仅仅因为它不再是存储空间杀手了。",
+      "quote": "“完美不是无可增添，而是无可删减。”——安托万·德·圣埃克苏佩里"
     },
     "importance": {
-      "title": "Why Is This Even Important for My Website?",
-      "p1": "Okay, so you might be thinking, \"Cool audio facts, bro, but why should I care?\" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸",
+      "title": "这对我的网站到底有什么重要的？",
+      "p1": "好吧，你可能在想：“音频知识挺酷的，兄弟，但我为什么要在乎？”那就抓紧你的耳机，因为接下来的内容会真正影响你的收益！💸",
       "pageLoadSpeed": {
-        "title": "Page Load Speed = Money",
-        "lead": "Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:",
+        "title": "页面加载速度 = 金钱",
+        "lead": "Google已经说得非常清楚：慢网站在搜索排名中会受到惩罚。每一秒的加载时间都可能让你付出：",
         "bullets": [
-          "<strong>7% decrease</strong> in conversions",
-          "<strong>11% fewer</strong> page views",
-          "<strong>16% decrease</strong> in customer satisfaction"
+          "<strong>转化率下降7%</strong>",
+          "<strong>页面浏览量减少11%</strong>",
+          "<strong>客户满意度下降16%</strong>"
         ],
-        "outro": "That innocent 50MB background music file? It's literally costing you customers! 😱"
+        "outro": "那个看似无害的50MB背景音乐文件？它实实在在地在让你损失客户！😱"
       },
       "mobileReality": {
-        "title": "The Mobile Reality Check",
-        "p": "Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)"
+        "title": "移动端的现实检验",
+        "p": "有趣的事实：现在超过60%的网络流量来自移动端。你知道移动用户喜欢什么吗？用他们有限的流量套餐下载你未压缩的音频文件！（剧透：他们不喜欢。他们会比混凝土上的橡皮球弹得还快地跳出。）"
       },
       "realNumbers": {
-        "title": "Real Numbers That'll Make You Sweat:",
-        "lead": "Let's say you have a landing page with:",
+        "title": "让你冒汗的真实数字：",
+        "lead": "假设你有一个着陆页，包含：",
         "bullets": [
-          "30-second background music loop",
-          "2 product demo voice-overs (1 minute each)",
-          "5 sound effects for interactions"
+          "30秒的背景音乐循环",
+          "2段产品演示配音（每段1分钟）",
+          "5个交互音效"
         ],
-        "comparisonWav": "Using WAV files: <strong>~250MB total</strong> 😵",
-        "comparisonMp3": "Using optimized MP3s: <strong>~8MB total</strong> 🎉",
-        "outro": "That's a 97% reduction! Your hosting bill just breathed a sigh of relief."
+        "comparisonWav": "使用WAV文件：<strong>总共约250MB</strong>😵",
+        "comparisonMp3": "使用优化过的MP3：<strong>总共约8MB</strong>🎉",
+        "outro": "减少了97%！你的托管账单刚刚松了一口气。"
       },
       "trustFactor": {
-        "title": "The Trust Factor",
-        "lead": "Nothing screams \"amateur hour\" like:",
+        "title": "信任因素",
+        "lead": "没有什么比以下情况更能喊出“业余时间”：",
         "bullets": [
-          "Audio that takes forever to load",
-          "Stuttering playback",
-          "Quality so bad it sounds like a 1990s dial-up modem"
+          "要花很久才能加载的音频",
+          "断断续续的播放",
+          "质量差到听起来像1990年代的拨号调制解调器"
         ],
-        "outro": "Professional audio quality = professional image = customer trust = 💰"
+        "outro": "专业的音质 = 专业的形象 = 客户信任 = 💰"
       },
       "seoVitals": {
-        "title": "SEO and Core Web Vitals",
-        "lead": "Google's Core Web Vitals specifically measure:",
+        "title": "SEO与Core Web Vitals",
+        "lead": "Google的Core Web Vitals专门衡量：",
         "bullets": [
-          "<strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this",
-          "<strong>FID (First Input Delay)</strong>: Large files blocking the main thread",
-          "<strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps"
+          "<strong>LCP（最大内容绘制）</strong>：沉重的音频文件会延迟它",
+          "<strong>FID（首次输入延迟）</strong>：大文件阻塞主线程",
+          "<strong>CLS（累积布局偏移）</strong>：加载不当的音频播放器导致页面跳动"
         ],
-        "outro": "Translation: Bad audio optimization = bad SEO = less organic traffic = less money."
+        "outro": "翻译一下：糟糕的音频优化 = 糟糕的SEO = 更少的自然流量 = 更少的钱。"
       },
       "moreReasons": {
-        "title": "But Wait, There's More!",
-        "lead": "(Said in my best infomercial voice 📺) Optimized audio also means:",
+        "title": "等等，还有更多！",
+        "lead": "（用我最棒的电视购物口吻说📺）优化过的音频还意味着：",
         "bullets": [
-          "Lower CDN costs",
-          "Happier users on slower connections",
-          "Better accessibility (properly compressed audio works better with screen readers)",
-          "Increased engagement (people actually stick around when things load fast)"
+          "更低的CDN成本",
+          "慢速连接上的用户更开心",
+          "更好的无障碍性（正确压缩的音频与屏幕阅读器配合更好）",
+          "更高的参与度（加载快时人们才真的会留下来）"
         ],
-        "clientStory": "I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!"
+        "clientStory": "我有一位客户，他们的在线学习平台正在大量流失用户。原来，他们的课程音频文件大到偏远地区的学生根本无法访问内容。我们优化了一切，把文件大小减少了85%，他们的完课率在短短两个月内跃升了40%！"
       },
-      "quote": "\"Time is money, and loading time is lost money.\" – Every Web Developer Ever"
+      "quote": "“时间就是金钱，加载时间就是损失的金钱。”——每一位网页开发者"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):",
+      "title": "结论",
+      "p1": "呼！🎉 我们刚刚旋风般地游览了音频格式、比特率和采样率的世界。让我们回顾一下金曲（双关语🎵）：",
       "takeaways": {
-        "title": "The Big Takeaways:",
+        "title": "重点回顾：",
         "bullets": [
-          "Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency",
-          "MP3 at 128-192 kbps is your web workhorse for most use cases",
-          "Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)",
-          "Every MB matters – optimized audio = faster loads = happier visitors = more money",
-          "Start with high quality, compress down (you can't enhance garbage into gold!)"
+          "音频格式是容器，比特率是数据流量，采样率是快照频率",
+          "128-192 kbps的MP3是大多数网页场景的主力",
+          "语音内容可以更低（64-96 kbps），音乐应该更高（256+ kbps）",
+          "每一MB都很重要——优化过的音频 = 加载更快 = 访客更开心 = 更多的钱",
+          "从高质量开始，向下压缩（你无法把垃圾增强成黄金！）"
         ]
       },
       "actionPlan": {
-        "title": "Your Action Plan:",
+        "title": "你的行动计划：",
         "steps": [
-          "<strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)",
-          "<strong>Convert</strong> them using the guidelines we covered",
-          "<strong>Test</strong> your page load speeds before and after",
-          "<strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)"
+          "<strong>审查</strong>你当前的音频文件（我打赌你会发现一些臃肿的WAV藏在里面👀）",
+          "<strong>转换</strong>它们，按照我们讲过的准则",
+          "<strong>测试</strong>你前后的页面加载速度",
+          "<strong>看着</strong>你的指标改善（也许来一小段胜利之舞💃）"
         ]
       },
-      "p2": "Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.",
-      "p3": "So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉",
-      "p4": "Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀",
-      "quote": "\"In the realm of digital content, the lightest footprint often leaves the deepest impression.\" – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)"
+      "p2": "记住，在数字世界里，声音可能是看不见的，但它对网站性能的影响绝非如此。你通过优化音频节省下来的那些毫秒？它们直接转化为更好的用户体验、更高的搜索排名，并最终转化为更健康的收益。",
+      "p3": "所以去压缩吧！你访客的耳朵（和网络连接）会感谢你。嘿，如果你觉得这篇文章有帮助，想象一下正确的图片和视频优化能为你的网站做些什么……不过那是另一天的故事了！😉",
+      "p4": "准备好成为音频优化忍者了吗？你网站的性能蜕变从第一次文件转换开始。行动起来！🚀",
+      "quote": "“在数字内容的领域里，最轻的足迹往往留下最深的印象。”——古老的网页开发者谚语（好吧，这是我编的，但它是真的！😄）"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the Media Manipulator audio tools and explore related guides.",
+      "title": "相关工具",
+      "intro": "试试Media Manipulator的音频工具，并探索相关指南。",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate."
+          "label": "音频转换器",
+          "description": "以自定义比特率转换WAV、MP3、FLAC、M4A、OGG等格式。"
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV files into widely playable MP3s."
+          "label": "WAV转MP3",
+          "description": "把大型WAV文件缩小为可广泛播放的MP3。"
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Pull vocals out of music tracks for remixes or analysis."
+          "label": "从歌曲中分离人声",
+          "description": "从音乐中提取人声，用于混音或分析。"
         },
         {
-          "label": "Audio converter tutorial",
-          "description": "Walk through every option including cleanup and vocal isolation."
+          "label": "音频转换器教程",
+          "description": "逐一讲解每个选项，包括清理和人声分离。"
         },
         {
-          "label": "Video compression guide",
-          "description": "Pair good audio with optimized video encoding."
+          "label": "视频压缩指南",
+          "description": "让优质音频与优化的视频编码相得益彰。"
         },
         {
-          "label": "Image optimization guide",
-          "description": "Round out a fast site by also optimizing image files."
+          "label": "图片优化指南",
+          "description": "同时优化图片文件，让网站全面提速。"
         }
       ]
     },
     "cta": {
-      "title": "Ready to Master Audio Optimization? 🎧",
-      "body": "Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!",
-      "buttonLabel": "Open the audio converter →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "准备好掌握音频优化了吗？🎧",
+      "body": "把你沉重的WAV文件变成闪电般快速的MP3和AAC！我们免费的音频转换器支持所有主流格式，比特率和采样率均可自定义。优化你的音频文件，为网站性能加满油！",
+      "buttonLabel": "打开音频转换器 →",
+      "footnote": "无需注册 • 本地处理文件 • 快速安全"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Video Tutorial",
-    "title": "What Is AI Frame Interpolation?",
-    "intro": "AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.",
+    "eyebrow": "视频教程",
+    "title": "什么是AI帧插值？",
+    "intro": "AI帧插值会生成新的中间视频帧，使动作播放更流畅。本教程解释它的工作原理、何时使用、有哪些限制，以及如何在Media Manipulator上运行它。",
     "toolPanel": {
-      "title": "Try AI frame interpolation without leaving this page",
-      "description": "Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+      "title": "无需离开本页即可试用AI帧插值",
+      "description": "选择一个视频文件，滚动到AI视频工具面板，然后选择AI帧插值。默认设置会输出更流畅的60fps MP4。"
     },
     "whatIs": {
-      "title": "1. What is frame interpolation?",
-      "intro": "Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:",
+      "title": "1. 什么是帧插值？",
+      "intro": "帧插值通过在原始帧之间插入新图像来提高视频的帧率。一段30fps的片段每秒有30帧；将帧率翻倍意味着每秒生成30个新帧，放在现有帧之间。有几种方法：",
       "bullets": [
-        "<strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.",
-        "<strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.",
-        "<strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg's minterpolate).",
-        "<strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion."
+        "<strong>帧复制</strong>——复制前一帧，动作看起来一样，但播放速率与目标匹配。",
+        "<strong>帧混合</strong>——在两个相邻帧之间淡化以软化边界。便宜但糊。",
+        "<strong>运动插值</strong>——估算运动矢量并将帧向前变形（例如FFmpeg的minterpolate）。",
+        "<strong>AI插值</strong>——由神经网络（例如RIFE）根据前后两个真实帧预测中间帧。对非刚性运动来说通常是最干净的结果。"
       ],
-      "outro": "Media Manipulator's AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server."
+      "outro": "Media Manipulator的AI帧插值工具通过rife-ncnn-vulkan在我们自己的GPU服务器上使用RIFE。"
     },
     "whyUse": {
-      "title": "2. Why people use frame interpolation",
+      "title": "2. 人们为什么使用帧插值",
       "bullets": [
-        "Smoother motion on modern displays and social platforms.",
-        "Lifting 24/30fps footage to 60fps.",
-        "Lifting 60fps footage to 120fps for high-refresh playback or editing.",
-        "Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.",
-        "Restoring older, low-FPS clips so they feel less stuttery.",
-        "Producing smoother short cuts for sharing on social."
+        "在现代显示器和社交平台上获得更流畅的动作。",
+        "将24/30fps素材提升到60fps。",
+        "将60fps素材提升到120fps，用于高刷新率播放或剪辑。",
+        "为预告片、游戏实况、体育、屏幕录制和视频博客提供更干净的动作预览。",
+        "修复较旧的低帧率片段，让它们不那么卡顿。",
+        "制作更流畅的短片用于社交分享。"
       ]
     },
     "howItWorks": {
-      "title": "3. How AI frame interpolation works (high level)",
+      "title": "3. AI帧插值的工作原理（概览）",
       "paragraphs": [
-        "Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.",
-        "Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear."
+        "给定两个相邻帧，模型会估算每个像素在它们之间如何移动——这是一个与光流相关的过程。然后它利用这种运动构建一个或多个新帧，放置在两个原始帧之间的分数时间位置上。神经网络从训练数据中学习常见的运动模式，因此它通常能很好地处理平滑、自然的运动。",
+        "困难的情况——快速运动、遮挡（一个物体从另一个物体前方经过）、头发和车轮等细小结构，以及场景切换——本质上更难，因为模型对中间应该发生什么缺乏可靠的证据。这些区域就是伪影容易出现的地方。"
       ]
     },
     "vsBasicFps": {
-      "title": "4. AI interpolation vs basic FPS conversion",
-      "p1": "Basic FPS conversion (whether through FFmpeg's <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.",
-      "p2": "AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:",
+      "title": "4. AI插值与基础帧率转换的对比",
+      "p1": "基础帧率转换（无论是通过FFmpeg的<code>fps</code>滤镜还是硬件加速的等效方法）通常只是复制、丢弃或混合帧以达到目标帧率。每秒的总帧数与目标匹配，但没有添加新的运动信息——眼睛看到的仍然只是原始的拍摄间隔。",
+      "p2": "AI插值创建的是内容经过估算而非复制的全新帧。权衡在于：",
       "bullets": [
-        "AI usually looks much smoother than duplication or blending.",
-        "AI can warp or hallucinate details on hard regions.",
-        "Basic FPS conversion is faster but rarely feels truly smoother."
+        "AI通常看起来比复制或混合流畅得多。",
+        "AI可能会在困难区域扭曲或凭空生成细节。",
+        "基础帧率转换更快，但很少让人感觉真正更流畅。"
       ]
     },
     "fpsChoice": {
-      "title": "5. When to pick 48, 60, or 120 FPS",
+      "title": "5. 何时选择48、60或120 FPS",
       "bullets": [
-        "<strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.",
-        "<strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.",
-        "<strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file."
+        "<strong>48 FPS</strong>——对24fps电影感素材的微妙2倍提升。比60fps温和，保留一点原始节奏。",
+        "<strong>60 FPS</strong>——现代网页常见的流畅播放速率。24/30fps源的理想首选目标。",
+        "<strong>120 FPS</strong>——高刷新率显示器、游戏/体育内容，或后续的慢动作剪辑。处理成本更高，文件更大。"
       ]
     },
     "qualityTradeoffs": {
-      "title": "6. Quality and max-height tradeoffs",
+      "title": "6. 质量与最大高度的权衡",
       "bullets": [
-        "<strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.",
-        "<strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.",
-        "<strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.",
-        "<strong>High quality preset</strong> → slower encode, lower CRF, sharper output."
+        "<strong>较低的最大处理高度</strong>→ 处理更快，GPU内存压力更小。非常适合快速测试。",
+        "<strong>较高的最大处理高度</strong>→ 保留更多细节，但更慢、更重。",
+        "<strong>低质量预设</strong>→ 编码更快，CRF更大，文件更小。",
+        "<strong>高质量预设</strong>→ 编码更慢，CRF更小，输出更锐利。"
       ],
-      "outro": "For a first run, try 720p max height with the medium quality preset."
+      "outro": "首次运行时，试试720p最大高度配合中等质量预设。"
     },
     "bestPractices": {
-      "title": "7. Best practices",
+      "title": "7. 最佳实践",
       "bullets": [
-        "Test on a short clip first — interpolation cost scales with duration and resolution.",
-        "Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.",
-        "Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.",
-        "Pick clear, steady source footage when possible.",
-        "Keep the original — interpolation is irreversible re-encoding.",
-        "Try 60fps before 120fps unless you specifically need 120fps."
+        "先在短片段上测试——插值成本随时长和分辨率增加。",
+        "避免场景切换频繁的内容。切换处常常会在边界产生短暂的扭曲。",
+        "发布前预览结果——插值可能与真实的高帧率拍摄有细微差别。",
+        "尽可能选择清晰、稳定的源素材。",
+        "保留原始文件——插值是不可逆的重新编码。",
+        "除非你特别需要120fps，否则先试60fps。"
       ]
     },
     "limitations": {
-      "title": "8. Limitations and artifacts",
+      "title": "8. 限制与伪影",
       "bullets": [
-        "Warping around hands, hair, wheels, and other fast-moving thin structures.",
-        "Ghosting around occlusions where one object passes in front of another.",
-        "Brief glitches at scene cuts.",
-        "Motion blur mismatch — synthesized frames don't share the source camera's shutter behavior.",
-        "Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.",
-        "Long videos take a lot of GPU time; we cap duration to keep the free tool stable.",
-        "AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame."
+        "手、头发、车轮和其他快速移动的细小结构周围的扭曲。",
+        "一个物体从另一个物体前方经过时，遮挡周围的重影。",
+        "场景切换处的短暂故障。",
+        "运动模糊不匹配——合成帧与源相机的快门特性不一致。",
+        "现有的压缩伪影（色带、块状）在更高帧率下可能更明显。",
+        "长视频需要大量GPU时间；我们限制时长以保持免费工具的稳定。",
+        "AI插值无法恢复从未被拍摄到的真实运动——它只是估算一个合理的中间帧。"
       ]
     },
     "howTo": {
-      "title": "9. How to use the Media Manipulator AI Frame Interpolation Tool",
+      "title": "9. 如何使用Media Manipulator的AI帧插值工具",
       "steps": [
-        "Open the <linkTool>AI Frame Interpolation tool</linkTool>.",
-        "Upload a video.",
-        "Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.",
-        "Choose a target FPS — 48, 60, or 120.",
-        "Pick a quality preset and a max processing height (start at 720p / medium).",
-        "Leave <em>Preserve audio</em> on unless you want a silent output.",
-        "Submit the conversion and wait for the job to finish.",
-        "Download the resulting MP4 and preview it."
+        "打开<linkTool>AI帧插值工具</linkTool>。",
+        "上传一个视频。",
+        "滚动到<strong>AI视频工具</strong>面板，选择<em>AI帧插值</em>。",
+        "选择目标帧率——48、60或120。",
+        "选择质量预设和最大处理高度（从720p/中等开始）。",
+        "除非你想要无声输出，否则保持<em>保留音频</em>开启。",
+        "提交转换并等待任务完成。",
+        "下载生成的MP4并预览。"
       ]
     },
     "faq": {
-      "title": "FAQ",
+      "title": "常见问题",
       "items": [
         {
-          "q": "Does frame interpolation improve video quality?",
-          "a": "It improves motion smoothness, not resolution or sharpness."
+          "q": "帧插值能提高视频质量吗？",
+          "a": "它提高的是动作流畅度，而不是分辨率或锐度。"
         },
         {
-          "q": "Is AI frame interpolation the same as increasing FPS?",
-          "a": "Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending."
+          "q": "AI帧插值和提高帧率是一回事吗？",
+          "a": "两者都以更高的帧率为目标，但AI插值会合成新帧，而不是复制或混合。"
         },
         {
-          "q": "Can I convert 30fps to 60fps?",
-          "a": "Yes — it's the most common target."
+          "q": "我可以把30fps转换为60fps吗？",
+          "a": "可以——这是最常见的目标。"
         },
         {
-          "q": "Can I convert 60fps to 120fps?",
-          "a": "Yes, but the processing cost roughly doubles versus 60fps."
+          "q": "我可以把60fps转换为120fps吗？",
+          "a": "可以，但处理成本大约是60fps的两倍。"
         },
         {
-          "q": "Why can frame interpolation create artifacts?",
-          "a": "Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts)."
+          "q": "为什么帧插值会产生伪影？",
+          "a": "运动估算在困难区域（遮挡、快速运动、场景切换）不得不进行猜测。"
         },
         {
-          "q": "What output format does the tool create?",
-          "a": "MP4 (H.264 + AAC) in v1."
+          "q": "该工具生成什么输出格式？",
+          "a": "v1中为MP4（H.264 + AAC）。"
         },
         {
-          "q": "Is 60fps always better than 30fps?",
-          "a": "Not for cinematic looks — pick what suits the content."
+          "q": "60fps总是比30fps好吗？",
+          "a": "对于电影感的画面不是——请选择适合内容的帧率。"
         },
         {
-          "q": "Is AI frame interpolation better than FFmpeg FPS conversion?",
-          "a": "For most clips, yes — but minterpolate is faster and still useful as a quick fallback."
+          "q": "AI帧插值比FFmpeg帧率转换更好吗？",
+          "a": "对大多数片段来说是的——但minterpolate更快，仍然是有用的快速后备方案。"
         },
         {
-          "q": "Why do scene cuts sometimes look strange after interpolation?",
-          "a": "The model assumes adjacent frames belong to the same motion sequence."
+          "q": "为什么场景切换在插值后有时看起来很奇怪？",
+          "a": "模型假设相邻帧属于同一个运动序列。"
         }
       ]
     },
     "actions": {
-      "tryTool": "Try the AI Frame Interpolation Tool",
-      "backToTutorials": "← Back to Tutorials",
-      "videoConverterTutorial": "Video Converter Tutorial"
+      "tryTool": "试用AI帧插值工具",
+      "backToTutorials": "← 返回教程",
+      "videoConverterTutorial": "视频转换器教程"
     },
     "relatedLinks": {
-      "title": "Try related tools and guides",
-      "intro": "Other video tools and reference pages that pair well with AI frame interpolation.",
+      "title": "试试相关工具和指南",
+      "intro": "与AI帧插值搭配良好的其他视频工具和参考页面。",
       "links": [
         {
-          "label": "AI Frame Interpolation Tool",
-          "description": "Upload a video and run interpolation right now."
+          "label": "AI帧插值工具",
+          "description": "上传视频，立即运行插值。"
         },
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "视频转换器",
+          "description": "转换MP4、WebM、MOV、AVI、MKV等格式。"
         },
         {
-          "label": "Compress video",
-          "description": "Shrink a higher-FPS file before sharing."
+          "label": "压缩视频",
+          "description": "在分享前缩小高帧率文件。"
         },
         {
-          "label": "Extract frames from video",
-          "description": "Pull individual frames out as PNGs."
+          "label": "从视频中提取帧",
+          "description": "将单独的帧提取为PNG。"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn a short clip into an animated GIF."
+          "label": "视频转GIF",
+          "description": "把短片段变成动态GIF。"
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Video Tutorial",
-    "title": "Getting Started: Converting Video Files",
-    "intro": "Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.",
+    "eyebrow": "视频教程",
+    "title": "入门：转换视频文件",
+    "intro": "学习如何使用Media Manipulator的视频转换器转换和编辑视频文件。本教程会讲解视频转换面板的每个部分——格式选择、裁剪、变换、视觉效果、时间类效果、高级色彩/HDR控制，以及用于字幕的GPU驱动转录选项。",
     "toolPanel": {
-      "title": "Try the video converter without leaving this page",
-      "description": "Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+      "title": "无需离开本页即可试用视频转换器",
+      "description": "选择一个视频文件，直接在这里转换。下方的设置与首页转换器一致，你可以边读边试。"
     },
     "upload": {
-      "title": "1. Upload your video file",
-      "paragraph1": "Drag a video file into the upload zone on the home page, or click <strong>Choose File</strong>. Common inputs include MP4, MOV, MKV, AVI, WebM, WMV, and FLV. Large videos are uploaded directly to S3 via a presigned URL for speed; smaller files upload through the standard form endpoint.",
-      "paragraph2": "After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below."
+      "title": "1. 上传你的视频文件",
+      "paragraph1": "将视频文件拖入首页的上传区域，或点击<strong>选择文件</strong>。常见的输入包括MP4、MOV、MKV、AVI、WebM、WMV和FLV。大型视频会通过预签名URL直接上传到S3以提高速度；较小的文件通过标准表单端点上传。",
+      "paragraph2": "上传后，右侧面板会显示一个<strong>转换/转录</strong>切换开关。暂时保持在<em>转换</em>——我们会在下面介绍转录。"
     },
     "format": {
-      "title": "2. Pick the output format and quality",
-      "intro": "Use <strong>Format</strong> to choose the container/codec for the output:",
+      "title": "2. 选择输出格式和质量",
+      "intro": "使用<strong>格式</strong>选择输出的容器/编解码器：",
       "bullets": [
-        "<strong>MP4</strong> — H.264 + AAC, the safest default for the web and most devices.",
-        "<strong>WebM</strong> — VP9 + Opus, optimal for the open web.",
-        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).",
-        "<strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.",
-        "<strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below."
+        "<strong>MP4</strong>——H.264 + AAC，网页和大多数设备最安全的默认选择。",
+        "<strong>WebM</strong>——VP9 + Opus，开放网页的最佳选择。",
+        "<strong>MOV / MKV / AVI / WMV / FLV</strong>——面向特定工作流程的容器（Apple、归档、旧版播放器等）。",
+        "<strong>ProRes / DNxHD</strong>——高比特率的专业剪辑编解码器。",
+        "<strong>GIF（动态）</strong>——适用于聊天、README和错误报告的无声循环图片。请参阅下方的专门章节。"
       ],
-      "quality": "<strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over."
+      "quality": "<strong>质量</strong>在底层选择一个CRF预设：低 ≈ CRF 30（文件小），中 ≈ CRF 23（均衡），高 ≈ CRF 18（在大多数素材上视觉无损）。GIF输出会跳过质量、高度和速度控件——由下方的动态GIF面板接管。"
     },
     "gif": {
-      "title": "2a. Converting video to an animated GIF",
-      "paragraph1": "Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.",
+      "title": "2a. 将视频转换为动态GIF",
+      "paragraph1": "选择<strong>GIF（动态）</strong>作为格式以显示<strong>动态GIF设置</strong>面板。它运行一个基于久经考验的屏幕录制脚本的两阶段流程：FFmpeg缩小源文件并以较低的帧率采样，然后<code>gifsicle</code>重新量化调色板并针对大小优化输出。",
       "bullets": [
-        "<strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.",
-        "<strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.",
-        "<strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.",
-        "<strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.",
-        "<strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+        "<strong>宽度（px）</strong>——输出宽度。高度会自动计算（并取整为4的倍数）以保持宽高比。480–900是屏幕录制的理想范围。",
+        "<strong>帧率（fps）</strong>——FFmpeg每秒从源文件采样多少帧。12 fps对UI屏幕录制来说足够流畅；动作较多的片段可提高到18–24，想缩小文件可降至8–10。",
+        "<strong>颜色数</strong>——gifsicle调色板大小（2–256）。128是理想的默认值；对于平面UI素材可降至64，对于带平滑渐变的照片类片段可提高到256。",
+        "<strong>帧延迟</strong>——gifsicle帧间延迟，单位为1/100秒。值越小播放越快。3（≈30ms）是轻快的屏幕录制感觉；6–10会产生更慢、更从容的循环。",
+        "<strong>优化级别</strong>——gifsicle <code>--optimize</code>级别。1最快但输出最大，3最慢但输出最小。除非你在反复调试一段较长的片段并需要快速草稿，否则请保持3。"
       ],
-      "paragraph2": "Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video."
+      "paragraph2": "GIF同样支持裁剪——把较短的裁剪与较小的宽度和适中的颜色数搭配，可以让文件远低于几兆字节。任务完成后，预览弹窗会原地播放动画结果；切换到<em>原始</em>可与源视频对比。"
     },
     "resize": {
-      "title": "3. Resize, speed, and aspect ratio",
-      "paragraph1": "Set <strong>Width</strong> and/or <strong>Height</strong> to resize the video. Leave one blank to scale proportionally. Toggle <strong>Preserve aspect ratio</strong> when you set both to use a non-stretching <em>force_original_aspect_ratio=decrease</em> scale.",
-      "paragraph2": "<strong>Speed Multiplier</strong> changes both video and audio playback tempo from 0.25x to 4x. We pair it with FFmpeg's <em>setpts</em> filter and matching <em>atempo</em> on the audio track."
+      "title": "3. 调整尺寸、速度和宽高比",
+      "paragraph1": "设置<strong>宽度</strong>和/或<strong>高度</strong>以调整视频尺寸。留空其中一项可按比例缩放。同时设置两者时，开启<strong>保持宽高比</strong>以使用不拉伸的<em>force_original_aspect_ratio=decrease</em>缩放。",
+      "paragraph2": "<strong>速度倍数</strong>会将视频和音频的播放速度从0.25倍更改到4倍。我们将它与FFmpeg的<em>setpts</em>滤镜以及音轨上匹配的<em>atempo</em>配合使用。"
     },
     "trim": {
-      "title": "4. Trim",
-      "paragraph": "Click <strong>Trim Video</strong> to scrub the player and pick a start and end time. Only the selected segment is encoded into the output, and trim works regardless of the output codec."
+      "title": "4. 裁剪",
+      "paragraph": "点击<strong>裁剪视频</strong>以浏览播放器并选择开始和结束时间。只有所选片段会被编码到输出中，并且无论输出编解码器是什么，裁剪都有效。"
     },
     "effects": {
-      "title": "5. Advanced Video Effects",
-      "intro": "The <strong>Advanced Video Effects</strong> section groups every filter into collapsible panels. Expand a panel to access its controls:",
+      "title": "5. 高级视频效果",
+      "intro": "<strong>高级视频效果</strong>部分将每个滤镜分组到可折叠的面板中。展开面板即可访问其控件：",
       "bullets": [
-        "<strong>Visual Effects</strong> — brightness, contrast, saturation, hue, gamma, exposure, shadow/highlight recovery, Gaussian blur, motion blur, unsharp mask (sharpening), film/digital/vintage noise, and artistic effects (oil painting, watercolor, sketch, emboss, edge detection, posterize).",
-        "<strong>Transform</strong> — free rotation in degrees, horizontal/vertical flip, custom crop, and padded letterboxing with a configurable color.",
-        "<strong>Temporal Effects</strong> — reverse playback, ping-pong (forward then backward), frame-rate conversion with optional motion interpolation, and video stabilization with shakiness/accuracy controls.",
-        "<strong>Advanced Processing</strong> — deinterlacing, HDR tone mapping (hable, reinhard, mobius), and explicit input/output colorspace conversion (Rec.709, Rec.2020, sRGB, P3)."
+        "<strong>视觉效果</strong>——亮度、对比度、饱和度、色相、伽马、曝光、阴影/高光恢复、高斯模糊、运动模糊、USM锐化、胶片/数字/复古噪点，以及艺术效果（油画、水彩、素描、浮雕、边缘检测、色调分离）。",
+        "<strong>变换</strong>——任意角度旋转、水平/垂直翻转、自定义裁剪，以及可配置颜色的填充黑边。",
+        "<strong>时间类效果</strong>——倒放、乒乓（先正后反）、带可选运动插值的帧率转换，以及带抖动程度/精度控制的视频防抖。",
+        "<strong>高级处理</strong>——去隔行、HDR色调映射（hable、reinhard、mobius），以及显式的输入/输出色彩空间转换（Rec.709、Rec.2020、sRGB、P3）。"
       ]
     },
     "convertDownload": {
-      "title": "6. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A streaming progress bar shows real-time job status pulled from FFmpeg. When the job finishes, the result auto-previews in a modal with an <strong>Original / Final</strong> toggle so you can compare the two side by side. A <strong>Download</strong> button saves the final file."
+      "title": "6. 转换并下载",
+      "paragraph": "点击<strong>转换文件</strong>。流式进度条会显示从FFmpeg获取的实时任务状态。任务完成后，结果会在弹窗中自动预览，并带有<strong>原始/最终</strong>切换开关，让你可以并排对比两者。<strong>下载</strong>按钮会保存最终文件。"
     },
     "transcribe": {
-      "title": "7. Transcribe a video (subtitles, captions, plain text, JSON)",
-      "intro": "Switch the panel toggle to <strong>Transcribe</strong> to run our local GPU transcription pipeline (whisper-ctranslate2). Pick an output format:",
+      "title": "7. 转录视频（字幕、纯文本、JSON）",
+      "intro": "将面板切换到<strong>转录</strong>以运行我们本地的GPU转录流程（whisper-ctranslate2）。选择输出格式：",
       "bullets": [
-        "<strong>VTT</strong> — time-coded captions/subtitles that drop into HTML5 video players.",
-        "<strong>Plain text</strong> — a continuous transcript for reading or editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong>——带时间码的字幕，可直接用于HTML5视频播放器。",
+        "<strong>纯文本</strong>——用于阅读或编辑的连续转录文本。",
+        "<strong>结构化JSON</strong>——带时间数据的分段转录文本，适合后续处理流程。"
       ],
-      "languageNote": "Optionally type a BCP-47 language hint (e.g. <code>en</code>, <code>es</code>, <code>ja</code>). Leave it blank to auto-detect. A summary and content-safety review run automatically after the transcript is ready."
+      "languageNote": "可选择输入BCP-47语言提示（例如<code>en</code>、<code>es</code>、<code>ja</code>）。留空则自动检测。转录文本就绪后，会自动运行摘要和内容安全审阅。"
     },
     "tips": {
-      "title": "Tips for great video output",
+      "title": "获得出色视频输出的技巧",
       "bullets": [
-        "Use <strong>MP4 / High</strong> as a default for web delivery — it streams everywhere and looks great.",
-        "Prefer <strong>WebM</strong> for open-web embeds where file size matters and you control the player.",
-        "Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.",
-        "Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.",
-        "Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.",
-        "For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors."
+        "网页分发默认使用<strong>MP4 / 高</strong>——它随处可流式播放，效果出色。",
+        "对于文件大小重要且你能控制播放器的开放网页嵌入，优先选择<strong>WebM</strong>。",
+        "避免在标准流程中放大尺寸——小尺寸输入以原始分辨率无损编码后效果更好。",
+        "在强烈的调色之前应用<strong>防抖</strong>，这样变形不会与色彩滤镜冲突。",
+        "如果你同时想要转换后的文件和字幕，请在转换的同时运行<strong>转录</strong>——它们是独立的任务。",
+        "对于<strong>GIF</strong>输出，先大胆裁剪——素材每多一秒，最终大小就会按帧率 × 颜色数成倍增长。"
       ]
     },
     "actions": {
-      "tryConverter": "Try the Video Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "试用视频转换器",
+      "backToTutorials": "← 返回教程",
+      "howItWorks": "工作原理"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused video tool or keep exploring related guides.",
+      "title": "试试相关工具",
+      "intro": "直接进入某个专用视频工具，或继续探索相关指南。",
       "links": [
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "视频转换器",
+          "description": "转换MP4、WebM、MOV、AVI、MKV等格式。"
         },
         {
-          "label": "Compress video",
-          "description": "Shrink video file size for the web without ruining quality."
+          "label": "压缩视频",
+          "description": "在不破坏质量的情况下为网页缩小视频文件。"
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video as searchable text or captions."
+          "label": "转录视频",
+          "description": "把视频中的语音提取为可搜索的文本或字幕。"
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "视频转GIF",
+          "description": "把短视频片段变成可分享的动态GIF。"
         },
         {
-          "label": "AI Frame Interpolation tool",
-          "description": "Smooth motion by lifting video FPS with RIFE."
+          "label": "AI帧插值工具",
+          "description": "用RIFE提升视频帧率，让动作更流畅。"
         },
         {
-          "label": "AI Frame Interpolation tutorial",
-          "description": "Learn how AI frame interpolation works and when to use it."
+          "label": "AI帧插值教程",
+          "description": "了解AI帧插值的工作原理及使用时机。"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "Learn how transcription and AI summaries run on a local GPU."
+          "label": "Media Manipulator的工作原理",
+          "description": "了解转录和AI摘要如何在本地GPU上运行。"
         }
       ]
     }
   },
   "tutorialAudioGettingStarted": {
-    "eyebrow": "Audio Tutorial",
-    "title": "Getting Started: Converting Audio Files",
-    "intro": "Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).",
+    "eyebrow": "音频教程",
+    "title": "入门：转换音频文件",
+    "intro": "学习如何使用Media Manipulator的音频转换器转换、清理和重新混音音频文件。本教程会讲解音频转换面板的每个部分——格式选择、处理效果、修复，以及新的AI音频工具（人声清理、移除背景噪音、人声分离、消除人声）。",
     "upload": {
-      "heading": "1. Upload your audio file",
-      "p1": "From the home page, drag and drop an audio file into the upload zone, or click <strong>Choose File</strong>. Supported inputs include MP3, WAV, FLAC, AAC, M4A, OGG, Opus, and most common podcast and music formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
-      "p2": "Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial."
+      "heading": "1. 上传你的音频文件",
+      "p1": "在首页，将音频文件拖放到上传区域，或点击<strong>选择文件</strong>。支持的输入包括MP3、WAV、FLAC、AAC、M4A、OGG、Opus以及大多数常见的播客和音乐格式。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。",
+      "p2": "选择文件后，右侧面板会切换到<strong>转换选项</strong>。对于视频和音频文件，你还会看到一个<strong>转换/转录</strong>切换开关——本教程中请保持在<em>转换</em>。"
     },
     "toolPanel": {
-      "title": "Try the audio converter without leaving this page",
-      "description": "Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "无需离开本页即可试用音频转换器",
+      "description": "选择一个音频文件，直接在这里转换。下方的设置与首页转换器一致，你可以边试边跟着教程的其余部分操作。"
     },
     "format": {
-      "heading": "2. Pick the output format",
-      "intro": "The <strong>Format</strong> dropdown sets the container and codec for your output file. The audio converter supports:",
+      "heading": "2. 选择输出格式",
+      "intro": "<strong>格式</strong>下拉菜单设置输出文件的容器和编解码器。音频转换器支持：",
       "items": [
-        "<strong>MP3</strong> — universal compatibility, lossy, small file sizes.",
-        "<strong>WAV</strong> — uncompressed PCM, ideal for masters, editing, or archiving.",
-        "<strong>AAC</strong> — efficient lossy codec used by Apple devices and streaming.",
-        "<strong>OGG</strong> — open-source Vorbis container.",
-        "<strong>FLAC / ALAC</strong> — lossless compression for archival quality at smaller size than WAV.",
-        "<strong>Opus</strong> — modern lossy codec great for voice and low bitrates.",
-        "<strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks."
+        "<strong>MP3</strong>——通用兼容，有损，文件小。",
+        "<strong>WAV</strong>——未压缩的PCM，非常适合母带、编辑或归档。",
+        "<strong>AAC</strong>——Apple设备和流媒体使用的高效有损编解码器。",
+        "<strong>OGG</strong>——开源的Vorbis容器。",
+        "<strong>FLAC / ALAC</strong>——无损压缩，以比WAV更小的体积提供归档级质量。",
+        "<strong>Opus</strong>——现代有损编解码器，非常适合语音和低比特率。",
+        "<strong>AC3 / DTS</strong>——支持环绕声的格式，常用于视频音轨。"
       ]
     },
     "quality": {
-      "heading": "3. Set bitrate, sample rate, and channels",
-      "bitrate": "<strong>Bitrate</strong> controls quality vs. file size for lossy formats. 128 kbps is \"good enough\" for podcasts; 192–256 kbps is a strong default for music; 320 kbps is the maximum MP3 quality. Lossless formats (WAV, FLAC, ALAC) ignore this setting.",
-      "sampleRate": "<strong>Sample rate</strong> sets how many audio samples per second the file contains. Standard music is 44.1 kHz; pro audio and video typically use 48 kHz. Higher rates (96 kHz, 192 kHz) only matter for professional production.",
-      "channels": "<strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks."
+      "heading": "3. 设置比特率、采样率和声道",
+      "bitrate": "<strong>比特率</strong>控制有损格式的质量与文件大小。128 kbps对播客来说“足够好”；192–256 kbps是音乐的理想默认值；320 kbps是MP3的最高质量。无损格式（WAV、FLAC、ALAC）会忽略此设置。",
+      "sampleRate": "<strong>采样率</strong>设置文件每秒包含多少音频采样。标准音乐为44.1 kHz；专业音频和视频通常使用48 kHz。更高的采样率（96 kHz、192 kHz）只对专业制作有意义。",
+      "channels": "<strong>声道</strong>可以是单声道、立体声、5.1或7.1。语音备忘录或单麦克风录音选择单声道可将文件大小减半；立体声是音乐的默认值；5.1/7.1用于环绕声音轨。"
     },
     "speedVolume": {
-      "heading": "4. Adjust speed, volume, and trim",
-      "p1": "<strong>Speed Multiplier</strong> changes playback tempo from 0.25x to 4x without altering pitch — useful for sped-up podcasts or slowed-down practice tracks. <strong>Volume Multiplier</strong> applies a simple gain factor between 0.1x and 2x.",
-      "p2": "Click <strong>Trim Audio</strong> to scrub through the waveform and pick a start and end time. Only the selected segment is encoded into the output file."
+      "heading": "4. 调整速度、音量和裁剪",
+      "p1": "<strong>速度倍数</strong>在不改变音高的情况下将播放速度从0.25倍更改到4倍——适用于加速的播客或放慢的练习曲目。<strong>音量倍数</strong>应用0.1倍到2倍之间的简单增益系数。",
+      "p2": "点击<strong>裁剪音频</strong>以浏览波形并选择开始和结束时间。只有所选片段会被编码到输出文件中。"
     },
     "aiTools": {
-      "heading": "5. AI Audio Tools (recommended)",
-      "intro": "The <strong>AI Audio Tools</strong> panel is the fastest path to a great-sounding result for voice and music. Each operation runs on our local GPU server (no data leaves our infrastructure):",
+      "heading": "5. AI音频工具（推荐）",
+      "intro": "<strong>AI音频工具</strong>面板是让语音和音乐获得出色效果的最快途径。每项操作都在我们本地的GPU服务器上运行（没有数据离开我们的基础设施）：",
       "items": [
-        "<strong>Clean Voice</strong> — denoises with DeepFilterNet and then runs a broadcast-style polish chain (high-pass, low-pass, loudness normalization, brick-wall limiter). Best for podcast/voiceover takes recorded in noisy rooms.",
-        "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain. Use this when you want to preserve the natural EQ and dynamics of the recording.",
-        "<strong>Isolate Vocals</strong> — runs Demucs htdemucs and outputs the vocal stem only. Output defaults to WAV so you don't lose detail.",
-        "<strong>Remove Vocals / Karaoke</strong> — same Demucs job, but exports the instrumental stem. Great for karaoke tracks or sample workflows."
+        "<strong>人声清理</strong>——用DeepFilterNet降噪，然后运行广播级润色链（高通、低通、响度标准化、硬限制器）。最适合在嘈杂房间录制的播客/配音。",
+        "<strong>移除背景噪音</strong>——DeepFilterNet降噪，不含润色链。当你想保留录音的自然均衡和动态时使用。",
+        "<strong>人声分离</strong>——运行Demucs htdemucs并只输出人声音轨。输出默认为WAV，以免丢失细节。",
+        "<strong>消除人声/卡拉OK</strong>——同样的Demucs任务，但导出伴奏音轨。非常适合卡拉OK曲目或采样工作流程。"
       ],
-      "outro": "When you pick any AI operation, the standard FFmpeg chain (bitrate, EQ, reverb, etc.) is skipped for that job so the AI tool has a clean input/output path. AI jobs may take longer than basic conversion because they run on the GPU."
+      "outro": "当你选择任何AI操作时，该任务会跳过标准的FFmpeg链（比特率、均衡器、混响等），以便AI工具拥有干净的输入/输出路径。AI任务在GPU上运行，可能比基础转换耗时更长。"
     },
     "advancedEffects": {
-      "heading": "6. Advanced Audio Effects",
-      "intro": "Expand <strong>Advanced Audio Effects</strong> to access four collapsible groups when you want manual control instead of an AI operation:",
+      "heading": "6. 高级音频效果",
+      "intro": "当你想要手动控制而非AI操作时，展开<strong>高级音频效果</strong>以访问四个可折叠的分组：",
       "items": [
-        "<strong>Basic Audio Processing</strong> — normalize, amplify (dB), fade in/out, EQ presets (bass boost, treble boost, vocal, classical, rock, jazz), pan, balance, stereo width, mono conversion, channel swap.",
-        "<strong>Time-Based Effects</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), modulation (chorus, flanger, phaser, tremolo, vibrato).",
-        "<strong>Restoration & Cleanup</strong> — spectral/adaptive/gate noise reduction, 50/60 Hz de-hum, declipper, silence detection and removal.",
-        "<strong>Advanced Audio</strong> — pitch shifting (semitones, formant-preserving), time stretching (factor + pitch/time/formant algorithm), spatial audio (binaural, surround, 3D)."
+        "<strong>基础音频处理</strong>——标准化、放大（dB）、淡入/淡出、均衡器预设（低音增强、高音增强、人声、古典、摇滚、爵士）、声像、平衡、立体声宽度、单声道转换、声道交换。",
+        "<strong>时间类效果</strong>——混响（房间、大厅、板式、弹簧）、延迟（回声、多重延迟、乒乓延迟）、调制（合唱、镶边、相位、颤音、颤抖音）。",
+        "<strong>修复与清理</strong>——频谱/自适应/门限降噪、50/60 Hz去嗡声、去削波、静音检测与移除。",
+        "<strong>高级音频</strong>——变调（半音，保留共振峰）、时间拉伸（系数 + 音高/时间/共振峰算法）、空间音频（双耳、环绕声、3D）。"
       ]
     },
     "convertDownload": {
-      "heading": "7. Convert and download",
-      "body": "Click <strong>Convert File</strong>. A real-time progress bar appears as the server processes the job. When it finishes, the result auto-previews and a <strong>Download</strong> button appears. The file is also added to your in-session <em>Conversion History</em> so you can revisit or download it later without re-running the job."
+      "heading": "7. 转换并下载",
+      "body": "点击<strong>转换文件</strong>。服务器处理任务时会出现实时进度条。完成后，结果会自动预览，并出现<strong>下载</strong>按钮。该文件也会添加到你本次会话的<em>转换历史</em>中，以便你稍后回看或下载而无需重新运行任务。"
     },
     "tips": {
-      "heading": "Tips for great audio output",
+      "heading": "获得出色音频输出的技巧",
       "items": [
-        "For voice recordings, try <strong>Clean Voice</strong> first — it solves most \"muddy podcast\" problems in one click.",
-        "If you only want to remove a constant hum or air-conditioner background, use <strong>Remove Background Noise</strong> to keep the original tone.",
-        "For stems, keep the default <strong>WAV</strong> output — converting Demucs output to a lossy format defeats the purpose of separation.",
-        "Big bitrate jumps don't help small files much; pair 320 kbps with 48 kHz only for high-quality music exports."
+        "对于语音录音，先试试<strong>人声清理</strong>——它一键解决大多数“播客声音浑浊”的问题。",
+        "如果你只想移除持续的嗡声或空调背景音，请使用<strong>移除背景噪音</strong>以保留原始音色。",
+        "对于分轨，保持默认的<strong>WAV</strong>输出——把Demucs的输出转换为有损格式会违背分离的初衷。",
+        "大幅提高比特率对小文件帮助不大；只有高质量音乐导出才需要将320 kbps与48 kHz搭配。"
       ]
     },
     "cta": {
-      "tryConverter": "Try the Audio Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "试用音频转换器",
+      "backToTutorials": "← 返回教程",
+      "howItWorks": "工作原理"
     },
     "related": {
-      "title": "Try related tools",
-      "intro": "Jump straight into the audio tool you need, or keep learning with related guides.",
+      "title": "试试相关工具",
+      "intro": "直接进入你需要的音频工具，或通过相关指南继续学习。",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more."
+          "label": "音频转换器",
+          "description": "转换WAV、MP3、FLAC、M4A、OGG等格式。"
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV recordings into widely playable MP3s."
+          "label": "WAV转MP3",
+          "description": "把大型WAV录音缩小为可广泛播放的MP3。"
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Extract vocals from music for remixes or analysis."
+          "label": "从歌曲中分离人声",
+          "description": "从音乐中提取人声，用于混音或分析。"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, compress, trim, and transcribe video files."
+          "label": "视频转换器教程",
+          "description": "转换、压缩、裁剪和转录视频文件。"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI audio jobs run on a local GPU server."
+          "label": "Media Manipulator的工作原理",
+          "description": "了解AI音频任务如何在本地GPU服务器上运行。"
         }
       ]
     }
   },
   "tutorialImageGettingStarted": {
-    "eyebrow": "Image Tutorial",
-    "title": "Getting Started: Converting Image Files",
-    "intro": "Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).",
+    "eyebrow": "图片教程",
+    "title": "入门：转换图片文件",
+    "intro": "学习如何使用Media Manipulator的图片转换器转换、编辑和AI处理图片。本教程会讲解图片转换面板的每个部分——格式选择、裁剪、滤镜、文字叠加、元数据管理，以及AI图片工具（人脸隐私、移除背景、AI超分辨率、涂抹文本和移除物体）。",
     "toolPanel": {
-      "title": "Try the image converter without leaving this page",
-      "description": "Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "无需离开本页即可试用图片转换器",
+      "description": "选择一张图片，直接在这里转换。设置与首页转换器一致，你可以边试边跟着教程的其余部分操作。"
     },
     "upload": {
-      "title": "1. Upload your image",
-      "paragraph": "Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+      "title": "1. 上传你的图片",
+      "paragraph": "将图片文件拖入上传区域，或点击<strong>选择文件</strong>。图片转换器接受JPG、PNG、WebP、GIF和许多其他格式。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。"
     },
     "format": {
-      "title": "2. Pick the output format and quality",
+      "title": "2. 选择输出格式和质量",
       "bullets": [
-        "<strong>JPG</strong> — best for photos. Lossy compression with a quality slider.",
-        "<strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.",
-        "<strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.",
-        "<strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases."
+        "<strong>JPG</strong>——最适合照片。带质量滑块的有损压缩。",
+        "<strong>PNG</strong>——无损，支持透明度。最适合截图、标志和图形。",
+        "<strong>WebP</strong>——同时具有有损和无损模式的现代格式；在相似质量下比JPG更小。",
+        "<strong>GIF</strong>——基于调色板，支持基础动画，适用于旧式场景。"
       ],
-      "quality": "<strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images."
+      "quality": "<strong>质量（%）</strong>适用于JPG和WebP。85是很好的默认值；缩略图可以更低，首屏图片可以更高。"
     },
     "resize": {
-      "title": "3. Resize, crop, filter, tint",
-      "paragraph1": "Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.",
-      "paragraph2": "Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000)."
+      "title": "3. 调整尺寸、裁剪、滤镜、色调",
+      "paragraph1": "使用<strong>宽度</strong>和<strong>高度</strong>调整尺寸。留空任一项可按比例缩放。ImageMagick会先自动校正输入方向，这样带EXIF方向信息的JPEG不会以旋转的状态输出为PNG/WebP。",
+      "paragraph2": "点击<strong>裁剪图片</strong>打开可视化裁剪选择器。<strong>滤镜</strong>下拉菜单应用内置效果：灰度、棕褐色、模糊、锐化、漩涡、桶形畸变、油画、复古、浮雕、炭笔、素描，或固定角度旋转（45° / 90° / 180° / 270°）。<strong>色调颜色</strong>在图片上叠加30%的彩色色调（保持黑色/#000000则跳过）。"
     },
     "textOverlay": {
-      "title": "4. Text overlay",
-      "intro": "Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:",
+      "title": "4. 文字叠加",
+      "intro": "直接在图片上添加水印或说明文字。在<strong>叠加文字</strong>中输入文字，然后选择：",
       "bullets": [
-        "<strong>Text Size</strong> — 8–512 px.",
-        "<strong>Position</strong> — gravity-based anchor (corners, edges, center).",
-        "<strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.",
-        "<strong>Stroke Width</strong> — 0 to disable the outline.",
-        "<strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor."
+        "<strong>文字大小</strong>——8–512 px。",
+        "<strong>位置</strong>——基于对齐位置的锚点（角落、边缘、中心）。",
+        "<strong>文字颜色/描边颜色</strong>——通过颜色选择器选择十六进制颜色。",
+        "<strong>描边宽度</strong>——设为0可禁用轮廓。",
+        "<strong>X偏移/Y偏移</strong>——相对对齐锚点的像素级微调。"
       ]
     },
     "metadata": {
-      "title": "5. Metadata",
-      "intro": "Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:",
+      "title": "5. 元数据",
+      "intro": "选择Media Manipulator如何处理EXIF、IPTC、XMP和GPS元数据：",
       "bullets": [
-        "<strong>Keep all metadata</strong> — preserved from the original via exiftool.",
-        "<strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online."
+        "<strong>保留所有元数据</strong>——通过exiftool从原始文件保留。",
+        "<strong>清除所有元数据</strong>——移除相机、GPS、软件和时间戳。建议在网上分享照片前使用。"
       ],
-      "customLabel": "<strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:",
+      "customLabel": "<strong>自定义元数据</strong>——先清除，然后重写你提供的字段。包括：",
       "customBullets": [
-        "Title, Artist/Author, Description, Copyright, User Comment, Keywords.",
-        "GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.",
-        "EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist."
+        "标题、艺术家/作者、描述、版权、用户注释、关键词。",
+        "GPS移除/替换（可选精度取整）以及方向/时间戳/海拔/目的地开关。",
+        "EXIF/TIFF字段、GPS字段，以及通过允许列表设置的高级IPTC/XMP/MakerNotes标签。"
       ]
     },
     "aiTools": {
-      "title": "6. AI Image Tools (recommended)",
-      "intro": "The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.",
-      "faceBlur": "<strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.",
-      "removeBackground": "<strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.",
-      "aiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.",
-      "redactText": "<strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.",
-      "removeObject": "<strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:",
+      "title": "6. AI图片工具（推荐）",
+      "intro": "<strong>AI图片工具</strong>面板每个转换任务运行一项本地GPU操作。当你选择一项操作时，该任务会跳过标准的ImageMagick流程（滤镜、色调、叠加等），以便AI工具拥有干净的输入/输出路径。",
+      "faceBlur": "<strong>人脸模糊/像素化/黑色遮挡</strong>——检测照片中的每一张人脸，并用你选择的样式遮盖。非常适合在不泄露参与者身份的情况下分享活动照片。",
+      "removeBackground": "<strong>移除背景</strong>——运行rembg，搭配BiRefNet（通用或人像）、ISNet或U2Net。输出强制为PNG以保留透明度。对大多数照片来说，BiRefNet General是推荐的默认选择。",
+      "aiUpscale": "<strong>AI超分辨率</strong>——Real-ESRGAN ncnn Vulkan放大器。选择<em>4倍</em>（最安全）或<em>2倍</em>（更快），并选择模型：<code>realesrgan-x4plus</code>用于普通照片，<code>realesrgan-x4plus-anime</code>用于动画/插画，<code>realesr-animevideov3</code>用于动漫视频帧。默认输出PNG。",
+      "redactText": "<strong>涂抹文本/个人信息</strong>——基于OCR的涂抹。选择<em>仅个人信息</em>（电子邮件、电话号码、社会安全号码、地址等）或<em>所有文本</em>，然后选择涂抹样式（黑色遮挡、模糊或像素化）。尽力而为——分享前请检查输出。",
+      "removeObject": "<strong>移除物体（LaMa修复）</strong>——在图片预览上点击并拖动，在你想擦除的任何东西上绘制一个矩形：背景中的路人、标牌、水印、电线杆。拖动矩形主体可移动，拖动角落/边缘控制点可调整大小，在空白处再次点击拖动可添加任意数量的矩形。提交时，服务器会根据你的矩形栅格化一个遮罩，并在专用GPU上运行<code>simple-lama-inpainting</code>来重建其背后的区域。输出保留你选择的格式（JPG、PNG、WebP、GIF）。提示：",
       "removeObjectTips": [
-        "Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.",
-        "Several small rectangles usually beat one huge one, especially for thin objects.",
-        "LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces)."
+        "让矩形紧贴物体——矩形越大，LaMa需要凭空生成的背景就越多，效果可能更差。",
+        "多个小矩形通常胜过一个巨大的矩形，尤其是对细长的物体。",
+        "当周围像素能为模型提供足够的上下文（天空、草地、素色墙面、色调均匀的表面）时，LaMa效果最好。"
       ]
     },
     "convertDownload": {
-      "title": "7. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list."
+      "title": "7. 转换并下载",
+      "paragraph": "点击<strong>转换文件</strong>。进度条会显示实时任务状态。完成后，结果会自动预览，并带有<strong>原始/最终</strong>切换开关供你对比。使用<strong>下载</strong>保存，或稍后从本次会话的<em>转换历史</em>列表中回看。"
     },
     "tips": {
-      "title": "Tips for great image output",
+      "title": "获得出色图片输出的技巧",
       "bullets": [
-        "For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.",
-        "Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.",
-        "<strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.",
-        "For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.",
-        "Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.",
-        "Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result."
+        "对于社交媒体上传，使用80–85%质量的<strong>WebP</strong>，可获得效果出色的小文件。",
+        "在网上分享照片时搭配<strong>清除元数据</strong>，以避免泄露GPS或设备信息。",
+        "<strong>移除背景</strong>的输出始终为PNG——在你喜欢的设计工具中搭配彩色背景，或叠放到幻灯片中。",
+        "对于AI超分辨率，照片优先使用<strong>4倍</strong>配合<code>realesrgan-x4plus</code>；2倍是高级用户选项，在小尺寸输入上偶尔会出现边框伪影。",
+        "在发布电子邮件、工单或发票的截图之前，运行<strong>涂抹文本</strong>。",
+        "使用<strong>移除物体</strong>进行一次性清理，比如度假照片中的游客或风景上多余的标牌——但要有心理准备，需要反复调整矩形大小才能找到最干净的结果。"
       ]
     },
     "actions": {
-      "tryConverter": "Try the Image Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "试用图片转换器",
+      "backToTutorials": "← 返回教程",
+      "howItWorks": "工作原理"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused image tool or keep exploring related guides.",
+      "title": "试试相关工具",
+      "intro": "直接进入某个专用图片工具，或继续探索相关指南。",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "图片转换器",
+          "description": "在JPG、PNG、WebP、AVIF、GIF等格式之间转换。"
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebP转JPG",
+          "description": "从WebP源文件获得兼容性广泛的JPG。"
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "移除EXIF元数据",
+          "description": "分享照片前清除GPS、设备和时间戳元数据。"
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, trim, and apply visual effects to video files."
+          "label": "视频转换器教程",
+          "description": "转换、裁剪视频文件并应用视觉效果。"
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI image tools run on a local GPU server."
+          "label": "Media Manipulator的工作原理",
+          "description": "了解AI图片工具如何在本地GPU服务器上运行。"
         }
       ]
     }
