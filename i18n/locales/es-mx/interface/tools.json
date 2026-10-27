@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "Nuevo",
-    "tagline": "Edita, superpón y mezcla vídeo y audio en una línea de tiempo multipista y, después, exporta a MP4. Un editor al estilo Premiere Pro, directamente en tu navegador.",
+    "tagline": "Edita, superpón y mezcla video y audio en una línea de tiempo multipista y, después, exporta a MP4. Un editor al estilo Premiere Pro, directamente en tu navegador.",
     "backToTools": "Volver a herramientas",
     "slots": {
       "mediaBin": {
@@ -24,16 +24,16 @@
       "title": "Proyectos recientes",
       "empty": "Todavía no hay proyectos. Crea uno para empezar: tus proyectos recientes aparecerán aquí.",
       "loading": "Cargando tus proyectos…",
-      "error": "No se han podido cargar tus proyectos recientes. Actualiza la página para volver a intentarlo."
+      "error": "No se pudieron cargar tus proyectos recientes. Actualiza la página para volver a intentarlo."
     },
     "mediaBin": {
-      "dropHint": "Suelta aquí vídeo, imágenes, audio o LUTs .cube",
+      "dropHint": "Suelta aquí video, imágenes, audio o LUTs .cube",
       "choose": "Elegir archivos",
-      "empty": "Todavía no hay contenido multimedia. Añade un clip para empezar.",
+      "empty": "Todavía no hay contenido multimedia. Agrega un clip para empezar.",
       "building": "generando vista previa…",
       "failed": "error",
-      "addToTimeline": "Añadir a la línea de tiempo",
-      "dragHint": "Arrastra a una pista o haz clic en + para añadir",
+      "addToTimeline": "Agregar a la línea de tiempo",
+      "dragHint": "Arrastra a una pista o haz clic en + para agregar",
       "luts": "LUTs",
       "lutHint": "Aplícalo en el efecto LUT de un clip",
       "lutReady": "Listo",
@@ -104,10 +104,10 @@
       "moreActions": "More actions",
       "rebuildPreview": "Regenerar vista previa",
       "rebuildPreviewHint": "Vuelve a codificar la vista previa de este clip a partir del original para que desplazarse y saltar respondan más rápido. La edición y la exportación no cambian.",
-      "rebuilding": "regenerando vista previa… {{percent}} %",
+      "rebuilding": "regenerando vista previa… {{percent}}%",
       "rebuildFailed": "No se pudo regenerar la vista previa. El clip conserva la actual.",
       "rebuildUnavailable": "Regenerar vistas previas aún no está disponible en este servidor.",
-      "rebuildRateLimited": "Se han regenerado demasiadas vistas previas en la última hora. Prueba el resto más tarde.",
+      "rebuildRateLimited": "Se regeneraron demasiadas vistas previas en la última hora. Prueba el resto más tarde.",
       "rebuildOldHint": "{{count}} clip(s) importado(s) antes saltan despacio en la vista previa.",
       "rebuildAll": "Regenerar",
       "rebuildAllTitle": "¿Regenerar las vistas previas antiguas?",
@@ -115,7 +115,7 @@
       "rebuildAllConfirm": "Regenerar vistas previas"
     },
     "preview": {
-      "empty": "Añade un clip para previsualizar tu edición",
+      "empty": "Agrega un clip para previsualizar tu edición",
       "building": "Generando proxy de vista previa…",
       "quality": "Calidad de vista previa",
       "qualityFull": "Completa",
@@ -136,8 +136,8 @@
       "rippleHint": "Elimina el clip y cierra el hueco",
       "zoomIn": "Acercar",
       "zoomOut": "Alejar",
-      "addVideoTrack": "Añadir pista de vídeo",
-      "addAudioTrack": "Añadir pista de audio",
+      "addVideoTrack": "Agregar pista de video",
+      "addAudioTrack": "Agregar pista de audio",
       "mute": "Silenciar pista",
       "unmute": "Reactivar pista",
       "deleteTrack": "Eliminar pista vacía",
@@ -185,14 +185,14 @@
       "open": "Preferencias",
       "title": "Preferencias",
       "description": "Valores predeterminados de edición, guardados en este navegador.",
-      "defaultVideoTransition": "Duración predeterminada de la transición de vídeo",
+      "defaultVideoTransition": "Duración predeterminada de la transición de video",
       "defaultAudioCrossfade": "Duración predeterminada del fundido cruzado de audio",
       "seconds": "s"
     },
     "editor": {
       "back": "Proyectos",
       "loading": "Cargando el editor…",
-      "loadError": "No se ha podido cargar este proyecto.",
+      "loadError": "No se pudo cargar este proyecto.",
       "saving": "Guardando…",
       "unsaved": "Cambios sin guardar",
       "saved": "Guardado",
@@ -202,7 +202,7 @@
       "conflict": "Conflicto al guardar",
       "undo": "Deshacer",
       "redo": "Rehacer",
-      "mobileHint": "Darkroom funciona mejor en una pantalla más grande con ratón o trackpad.",
+      "mobileHint": "Darkroom funciona mejor en una pantalla más grande con mouse o trackpad.",
       "shortcuts": "Espacio reproducir/pausar · ←/→ avanzar fotograma · V/C/Y/U/H herramientas · ⌘/Ctrl+K dividir · S imán · M marcador · Q/W recorte en cascada · Supr eliminar · +/− zoom · ⌘Z deshacer · ? todos los atajos",
       "tabs": {
         "media": "Multimedia",
@@ -210,7 +210,7 @@
         "inspector": "Inspector"
       },
       "addTitle": "Título",
-      "addTitleHint": "Añade un clip de título en la posición del cabezal (T)"
+      "addTitleHint": "Agrega un clip de título en la posición del cabezal (T)"
     },
     "versions": {
       "open": "Historial de versiones",
@@ -221,11 +221,11 @@
       "loading": "Cargando versiones…",
       "empty": "Todavía no hay versiones. Los puntos de control aparecen automáticamente mientras editas.",
       "unavailable": "El historial de versiones no está disponible aquí.",
-      "loadError": "No se han podido cargar las versiones.",
+      "loadError": "No se pudieron cargar las versiones.",
       "namePlaceholder": "Nombre de la versión",
       "save": "Guardar versión",
       "saved": "Versión guardada",
-      "saveFailed": "No se ha podido guardar la versión",
+      "saveFailed": "No se pudo guardar la versión",
       "checkpoint": "Punto de control",
       "revision": "rev. {{revision}}",
       "restore": "Restaurar",
@@ -234,11 +234,11 @@
       "restoreCancel": "Cancelar",
       "restoreConfirm": "Restaurar",
       "restored": "Versión restaurada",
-      "restoreFailed": "No se ha podido restaurar la versión"
+      "restoreFailed": "No se pudo restaurar la versión"
     },
     "saveConflict": {
-      "title": "El proyecto se ha modificado en otro lugar",
-      "description": "Este proyecto se ha modificado en otra pestaña o dispositivo. Recarga la última versión o toma el control para sobrescribirla con la copia de esta pestaña.",
+      "title": "El proyecto se modificó en otro lugar",
+      "description": "Este proyecto se modificó en otra pestaña o dispositivo. Recarga la última versión o toma el control para sobrescribirla con la copia de esta pestaña.",
       "reload": "Recargar la más reciente",
       "takeOver": "Tomar el control"
     },
@@ -255,18 +255,18 @@
         "discard": "Descartar borrador"
       },
       "summary": {
-        "clipsAdded_one": "{{count}} clip añadido",
-        "clipsAdded_other": "{{count}} clips añadidos",
+        "clipsAdded_one": "{{count}} clip agregado",
+        "clipsAdded_other": "{{count}} clips agregados",
         "clipsRemoved_one": "{{count}} clip eliminado",
         "clipsRemoved_other": "{{count}} clips eliminados",
         "clipsChanged_one": "{{count}} clip editado",
         "clipsChanged_other": "{{count}} clips editados",
-        "tracksAdded_one": "{{count}} pista añadida",
-        "tracksAdded_other": "{{count}} pistas añadidas",
+        "tracksAdded_one": "{{count}} pista agregada",
+        "tracksAdded_other": "{{count}} pistas agregadas",
         "tracksRemoved_one": "{{count}} pista eliminada",
         "tracksRemoved_other": "{{count}} pistas eliminadas",
         "captions": "ediciones de subtítulos",
-        "other": "cambios en los ajustes del proyecto"
+        "other": "cambios en la configuración del proyecto"
       }
     },
     "focus": {
@@ -274,13 +274,13 @@
       "exit": "Salir del modo enfoque",
       "fullscreen": "Pantalla completa",
       "exitFullscreen": "Salir de pantalla completa",
-      "hint": "Pulsa Esc para salir"
+      "hint": "Presiona Esc para salir"
     },
     "inspector": {
       "title": "Efectos del clip",
       "none": "Selecciona un único clip para editar sus efectos.",
       "transition": "Fundido encadenado",
-      "transitionNoPrev": "Añade un clip antes de este para agregar una transición.",
+      "transitionNoPrev": "Agrega un clip antes de este para agregar una transición.",
       "transitionType": "Tipo",
       "transitionNone": "Ninguna",
       "transitionDuration": "Duración",
@@ -315,7 +315,7 @@
       "contrast": "Contraste",
       "saturation": "Saturación",
       "text": "Superposiciones de texto",
-      "addText": "Añadir texto",
+      "addText": "Agregar texto",
       "textPlaceholder": "Texto de la etiqueta",
       "posX": "X",
       "posY": "Y",
@@ -366,11 +366,11 @@
         "eyedropper": "Elegir en la vista previa"
       },
       "effects": {
-        "add": "Añadir efecto",
+        "add": "Agregar efecto",
         "lumetri": "Color Lumetri",
         "lut": "LUT",
         "chromakey": "Chroma key",
-        "empty": "No hay efectos. Añade Color Lumetri, una LUT o un chroma key.",
+        "empty": "No hay efectos. Agrega Color Lumetri, una LUT o un chroma key.",
         "moveUp": "Subir",
         "moveDown": "Bajar",
         "enable": "Activado"
@@ -379,7 +379,7 @@
         "volume": "Volumen",
         "pan": "Paneo",
         "useKeyframes": "Usar fotogramas clave de volumen",
-        "keyframeNote": "Alt+clic en la línea de volumen del clip para añadir un punto; arrastra para ajustar, doble clic para eliminar.",
+        "keyframeNote": "Alt+clic en la línea de volumen del clip para agregar un punto; arrastra para ajustar, doble clic para eliminar.",
         "panLeft": "L",
         "panRight": "R"
       },
@@ -390,14 +390,14 @@
         "overlay": "Superponer",
         "lighten": "Aclarar",
         "darken": "Oscurecer",
-        "addition": "Añadir",
+        "addition": "Agregar",
         "difference": "Diferencia"
       },
       "keyframes": {
         "toggle": "Activar o desactivar fotogramas clave para esta propiedad",
         "prev": "Ir al fotograma clave anterior",
         "next": "Ir al fotograma clave siguiente",
-        "addRemove": "Añadir o eliminar un fotograma clave en la posición del cabezal",
+        "addRemove": "Agregar o eliminar un fotograma clave en la posición del cabezal",
         "ease": "Suavizado de fotogramas clave",
         "confirmDisarm": "¿Eliminar todos los fotogramas clave de esta propiedad? Se conservará el valor en la posición del cabezal.",
         "eases": {
@@ -410,7 +410,7 @@
       },
       "sectionTitle": "Título",
       "titleUi": {
-        "addLayer": "Añadir capa",
+        "addLayer": "Agregar capa",
         "layerText": "Texto",
         "layerRect": "Rectángulo",
         "layerLine": "Línea",
@@ -471,7 +471,7 @@
       "loudnessNone": "Ninguna (sin normalización)",
       "loudnessStreaming": "Streaming (−14 LUFS)",
       "loudnessPodcast": "Podcast (−16 LUFS)",
-      "loudnessBroadcast": "Emisión (−23 LUFS)",
+      "loudnessBroadcast": "Transmisión (−23 LUFS)",
       "start": "Iniciar exportación",
       "rendering": "Renderizando…",
       "failed": "Error al exportar.",
@@ -481,7 +481,7 @@
       "exportAndDownload": "Exportar y descargar",
       "exportAndDownloadHint": "Renderiza el MP4 y descárgalo. Tu borrador seguirá siendo un borrador al que podrás volver.",
       "publish": "Publicar",
-      "publishHint": "Envía el vídeo renderizado al proceso de subida de CreaTV para añadir un título, una descripción, una categoría, temas, etiquetas y la visibilidad, y después publícalo.",
+      "publishHint": "Envía el video renderizado al proceso de subida de CreaTV para agregar un título, una descripción, una categoría, temas, etiquetas y la visibilidad, y después publícalo.",
       "chooseAction": "Elige qué hacer con tu edición:",
       "preparingPublish": "Enviando al proceso de publicación…",
       "publishHandedOff": "Abriendo el proceso de subida de CreaTV… podrás terminar de publicar allí.",
@@ -515,7 +515,7 @@
       "amount": "Cantidad de atenuación",
       "attack": "Ataque",
       "release": "Liberación",
-      "noAudioTracks": "Añade una pista de audio con una voz en off para usar el ducking."
+      "noAudioTracks": "Agrega una pista de audio con una voz en off para usar el ducking."
     },
     "captions": {
       "lane": "Subtítulos",
@@ -545,7 +545,7 @@
       "positionBottom": "Abajo",
       "positionTop": "Arriba",
       "maxWidth": "Ancho máximo",
-      "add": "Añadir subtítulo"
+      "add": "Agregar subtítulo"
     },
     "speed": {
       "badgeFreeze": "Freeze",
@@ -668,7 +668,7 @@
   },
   "toolPage": {
     "notFoundTitle": "Herramienta no encontrada",
-    "notFoundBody": "No hemos podido encontrar la herramienta que buscabas. Consulta a continuación todas las herramientas disponibles.",
+    "notFoundBody": "No pudimos encontrar la herramienta que buscabas. Consulta a continuación todas las herramientas disponibles.",
     "browseAll": "Ver todas las herramientas"
   },
   "toolLanding": {
