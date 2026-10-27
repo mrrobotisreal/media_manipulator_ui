@@ -14,7 +14,7 @@
 #        # optional per-locale override, prefix uppercased with - as _ :
 #        export TRANSLATOR_EMAILS_PT_BR='a@example.com,b@example.com'
 #   4. scripts/vercel-translator-env.sh --dry-run de     # review first
-#   5. scripts/vercel-translator-env.sh                  # all 16, or: ... de pt-br
+#   5. scripts/vercel-translator-env.sh                  # all 17, or: ... de pt-br
 #   6. Redeploy each translate/<prefix> branch (env changes only affect new deployments).
 #
 # Per branch it sets (Preview, that branch only): NEXT_PUBLIC_DEPLOY_ROLE,

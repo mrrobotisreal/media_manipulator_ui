@@ -17,8 +17,8 @@ const rewriteTarget = (res: Response) => {
 };
 
 describe('proxy', () => {
-  it('knows all 16 public prefixes', () => {
-    expect(publicLocalePrefixes).toHaveLength(16);
+  it('knows all 17 public prefixes', () => {
+    expect(publicLocalePrefixes).toHaveLength(17);
     expect(publicLocalePrefixes).toEqual(
       expect.arrayContaining(['zh-cn', 'zh-tw', 'pt-pt', 'pt-br', 'ar', 'fr', 'it', 'ja', 'ko', 'hi', 'vi']),
     );

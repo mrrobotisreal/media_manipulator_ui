@@ -9,6 +9,7 @@ import ruRuToolpages from "../locales/ru-ru/toolPages";
 import heIlToolpages from "../locales/he-il/toolPages";
 import deDeToolpages from "../locales/de-de/toolPages";
 import esEsToolpages from "../locales/es-es/toolPages";
+import esMxToolpages from "../locales/es-mx/toolPages";
 import frFrToolpages from "../locales/fr-fr/toolPages";
 import itItToolpages from "../locales/it-it/toolPages";
 import jaJpToolpages from "../locales/ja-jp/toolPages";
@@ -27,6 +28,7 @@ export const toolPageOverrideModules: Record<string, unknown> = {
   "he-IL": heIlToolpages,
   "de-DE": deDeToolpages,
   "es-ES": esEsToolpages,
+  "es-MX": esMxToolpages,
   "fr-FR": frFrToolpages,
   "it-IT": itItToolpages,
   "ja-JP": jaJpToolpages,

@@ -1,6 +1,6 @@
 /**
- * MM51: the 17-locale registry and its href helpers, including hyphenated
- * prefixes and the second RTL locale.
+ * MM51: the locale registry and its href helpers, including hyphenated
+ * prefixes and the second RTL locale. MM72 added es-MX next to es-ES (18 locales).
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -33,10 +33,10 @@ const MM51_LOCALES = [
 ] as const;
 
 describe("locale registry", () => {
-  it("registers 17 locales with unique codes and prefixes", () => {
-    expect(locales).toHaveLength(17);
-    expect(new Set(locales.map((l) => l.code)).size).toBe(17);
-    expect(new Set(localePrefixes).size).toBe(17);
+  it("registers 18 locales with unique codes and prefixes", () => {
+    expect(locales).toHaveLength(18);
+    expect(new Set(locales.map((l) => l.code)).size).toBe(locales.length);
+    expect(new Set(localePrefixes).size).toBe(locales.length);
   });
 
   it.each(MM51_LOCALES)("%s is registered at /%s and translated", (code, prefix) => {
@@ -57,8 +57,27 @@ describe("locale registry", () => {
     expect(locales.filter((l) => l.dir === "rtl").map((l) => l.code)).toEqual(["he-IL", "ar-SA"]);
   });
 
-  it("marks all 17 locales as translated", () => {
-    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "ko-KR", "ar-SA", "hi-IN", "pt-PT", "pt-BR", "vi-VN"]);
+  it("marks all 18 locales as translated", () => {
+    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "es-MX", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "ko-KR", "ar-SA", "hi-IN", "pt-PT", "pt-BR", "vi-VN"]);
+  });
+
+  it("es-MX is registered at /es-mx after es-ES, which keeps /es (MM72)", () => {
+    const mx = getLocaleDef("es-MX")!;
+    expect(mx.prefix).toBe("es-mx");
+    expect(mx.translated).toBe(true);
+    expect(mx.label).toBe("Español (Latinoamérica)");
+    expect(mx.englishLabel).toBe("Spanish (Latin America)");
+    expect(mx.flag).toBe("🇲🇽");
+    expect(urlPrefixToCode("es-mx")).toBe("es-MX");
+    expect(isSupportedPrefix("es-mx")).toBe(true);
+    const es = getLocaleDef("es-ES")!;
+    expect(es.prefix).toBe("es");
+    expect(es.label).toBe("Español (España)");
+    expect(es.englishLabel).toBe("Spanish (Spain)");
+    expect(locales.map((l) => l.code).indexOf("es-MX")).toBe(locales.map((l) => l.code).indexOf("es-ES") + 1);
+    expect(localizeHref("/tools/compress-video", "es-MX")).toBe("/es-mx/tools/compress-video");
+    expect(stripLocalePrefix("/es-mx/about")).toBe("/about");
+    expect(stripLocalePrefix("/es/about")).toBe("/about");
   });
 
   it("fr-FR is registered at /fr and translated (MM57)", () => {

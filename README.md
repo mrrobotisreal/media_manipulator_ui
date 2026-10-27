@@ -245,7 +245,7 @@ All browser‑exposed variables use the `NEXT_PUBLIC_` prefix. See `.env.example
 
 ### Translator deployments (MM52–MM54)
 
-Set **only** as branch-scoped Vercel **Preview** variables on a `translate/<prefix>` branch, never on Production. `scripts/vercel-translator-env.sh` sets them for all 16 branches from your shell (run `--dry-run` first; it reads the secrets from your environment and never prints them). The design is in `../docs/design/TRANSLATOR_WORKBENCH.md`; the setup checklist is MM55.
+Set **only** as branch-scoped Vercel **Preview** variables on a `translate/<prefix>` branch, never on Production. `scripts/vercel-translator-env.sh` sets them for all 17 branches from your shell (run `--dry-run` first; it reads the secrets from your environment and never prints them). The design is in `../docs/design/TRANSLATOR_WORKBENCH.md`; the setup checklist is MM55.
 
 | Variable | Scope | Purpose |
 | --- | --- | --- |

@@ -1,0 +1,48 @@
+{
+  "email": {
+    "common": {
+      "brand": "Media Manipulator",
+      "greeting": "Hola, {{name}}:",
+      "greetingNoName": "Hola:",
+      "preferencesNote": "Puedes elegir qué correos recibes en la configuración de tu cuenta:",
+      "preferencesLink": "Administrar preferencias de correo",
+      "signoff": "El equipo de Media Manipulator"
+    },
+    "welcome": {
+      "subject": "Te damos la bienvenida a Media Manipulator",
+      "intro": "Tu cuenta está lista. Esto es lo que te ofrece:",
+      "history": "Un historial de tus conversiones, para que puedas encontrar y volver a descargar los resultados.",
+      "retention": "Una opción de conservación: tú decides cuánto tiempo guardamos tus archivos, de 24 horas a 2 años (6 meses por defecto).",
+      "darkroom": "Proyectos de Darkroom guardados en tu cuenta, para que tus ediciones estén ahí cuando vuelvas.",
+      "cta": "Abrir tu cuenta"
+    },
+    "aiJobFinished": {
+      "subject": "Tu tarea de IA terminó",
+      "completed": "Tu tarea de IA terminó y el resultado está listo.",
+      "failed": "Tu tarea de IA terminó, pero no se pudo completar. Abre tu historial para ver los detalles.",
+      "cta": "Ver en el historial",
+      "reason": "Recibes este correo porque activaste los correos de tareas de IA en tu configuración."
+    },
+    "expiryDigest": {
+      "subject_one": "{{count}} elemento guardado expira pronto",
+      "subject_other": "{{count}} elementos guardados expiran pronto",
+      "intro_one": "{{count}} de tus elementos guardados se eliminará en un plazo de {{days}} días:",
+      "intro_other": "{{count}} de tus elementos guardados se eliminarán en un plazo de {{days}} días:",
+      "unnamed": "Elemento sin título",
+      "more": "y {{count}} más",
+      "outro": "Abre tu cuenta para descargar lo que quieras conservar o para guardarlo más tiempo.",
+      "cta": "Revisar tus archivos",
+      "reason": "Recibes este correo porque los recordatorios de expiración están activados en tu configuración."
+    },
+    "paymentFailed": {
+      "subject": "No pudimos procesar tu pago",
+      "body": "Tu último pago de Media Manipulator no se completó. Actualiza tu método de pago para que tu plan siga activo.",
+      "cta": "Actualizar método de pago"
+    },
+    "accountDeleted": {
+      "subject": "Tu cuenta fue eliminada",
+      "body": "Tu cuenta de Media Manipulator y los archivos guardados en ella se eliminaron, tal como pediste. Cualquier suscripción activa se canceló.",
+      "contact": "Si no lo solicitaste tú, responde a este correo y avísanos."
+    }
+  }
+}
