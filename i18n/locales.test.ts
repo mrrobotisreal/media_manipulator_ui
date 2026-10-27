@@ -26,7 +26,6 @@ const NEW_LOCALES = [
   ["hi-IN", "hi"],
   ["pt-PT", "pt-pt"],
   ["pt-BR", "pt-br"],
-  ["vi-VN", "vi"],
 ] as const;
 
 describe("locale registry", () => {
@@ -55,7 +54,7 @@ describe("locale registry", () => {
   });
 
   it("marks the six original locales, French (MM57), Italian (MM58) and Japanese (MM59) as translated", () => {
-    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP"]);
+    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "vi-VN"]);
   });
 
   it("fr-FR is registered at /fr and translated (MM57)", () => {
