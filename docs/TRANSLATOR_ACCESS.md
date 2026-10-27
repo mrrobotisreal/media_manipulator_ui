@@ -11,7 +11,7 @@ How hired translators get in, how they get out, and what to check when the workb
 3. A translator signs in with Firebase. `GET /api/translator/me` admits a verified email that is on the branch's `TRANSLATOR_EMAILS`, and the workbench panel appears.
 4. Every translated string carries an invisible key marker. The panel maps page text to keys, edits it live, and keeps drafts in the browser (IndexedDB `mm-translator-drafts`).
 5. Submit sends `POST /api/translator/submit`. The route uses the GitHub App "Media Manipulator Translator" to open a PR against `main`, touching only `i18n/locales/<locale>/**`. `i18n-pr-guard` re-checks the paths and runs locale parity.
-6. Mitch reviews and merges. `sync-translate-branches` fast-forwards all 16 mirrors and asks the Vercel API to redeploy each.
+6. Mitch reviews and merges. `sync-translate-branches` fast-forwards all 17 mirrors and asks the Vercel API to redeploy each.
 
 Production never sets `NEXT_PUBLIC_DEPLOY_ROLE`. `npm run check:no-translator` proves a default build holds no workbench code.
 
@@ -23,7 +23,7 @@ Production never sets `NEXT_PUBLIC_DEPLOY_ROLE`. `npm run check:no-translator` p
 4. Send the translator `https://<prefix>.translate.media-manipulator.com` and the guide at `https://<prefix>.translate.media-manipulator.com/<prefix>/translate-guide`. Tell them which register you want (formal or informal "you") for their language. The guide leaves that to you.
 5. The translator signs in, presses **Send verification email** in the panel's notice, clicks the link and presses **I've verified**. The panel appears.
 
-Check before the first hire: the 16 domains must be reachable without a Vercel login. Vercel **Deployment Protection** (Standard Protection / Vercel Authentication) covers preview domains by default, and a translator has no Vercel account. Project → **Settings** → **Deployment Protection** → **Deployment Protection Exceptions** → add each `<prefix>.translate.media-manipulator.com`. Re-run the curls in section 8 afterwards.
+Check before the first hire: the 17 domains must be reachable without a Vercel login. Vercel **Deployment Protection** (Standard Protection / Vercel Authentication) covers preview domains by default, and a translator has no Vercel account. Project → **Settings** → **Deployment Protection** → **Deployment Protection Exceptions** → add each `<prefix>.translate.media-manipulator.com`. Re-run the curls in section 8 afterwards.
 
 ## 3. Offboarding
 
@@ -67,8 +67,8 @@ Every row is set on **Preview, branch `translate/<prefix>` only**, never on Prod
 ## 7. Rotating the GitHub App key
 
 1. GitHub → avatar → **Settings** → **Developer settings** → **GitHub Apps** → "Media Manipulator Translator" → **Private keys** → **Generate a private key**. A new `.pem` downloads. The old key keeps working until you delete it.
-2. `base64 -i path/to/new.pem | tr -d '\n' | pbcopy`, then export it in your shell as `GITHUB_APP_PRIVATE_KEY_B64` (see the script header) and run `scripts/vercel-translator-env.sh` for all 16 branches. Or paste it into each branch's `GITHUB_APP_PRIVATE_KEY` in Vercel. Clear the clipboard afterwards.
-3. Redeploy the 16 branches. A push to `main` does it, through `sync-translate-branches`.
+2. `base64 -i path/to/new.pem | tr -d '\n' | pbcopy`, then export it in your shell as `GITHUB_APP_PRIVATE_KEY_B64` (see the script header) and run `scripts/vercel-translator-env.sh` for all 17 branches. Or paste it into each branch's `GITHUB_APP_PRIVATE_KEY` in Vercel. Clear the clipboard afterwards.
+3. Redeploy the 17 branches. A push to `main` does it, through `sync-translate-branches`.
 4. Submit a one-string test PR from one locale, then close it.
 5. Back in **Private keys**, **Delete** the old key. Keep the new `.pem` only in your password manager.
 

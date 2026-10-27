@@ -1,5 +1,5 @@
 /**
- * MM51: the selector lists every registered locale (17) with its native label
+ * MM51: the selector lists every registered locale (18 since MM72) with its native label
  * and flag, and choosing one navigates to the same path under its prefix.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -33,10 +33,10 @@ function open(pathname = '/tools/compress-image', locale = 'en-US') {
 }
 
 describe('LanguageSelector', () => {
-  it('lists all 17 locales with native labels and flags', () => {
+  it('lists all 18 locales with native labels and flags', () => {
     const options = within(open()).getAllByRole('option');
-    expect(options).toHaveLength(17);
-    expect(locales).toHaveLength(17);
+    expect(options).toHaveLength(18);
+    expect(locales).toHaveLength(18);
     locales.forEach((l, i) => {
       expect(options[i].textContent).toContain(l.label);
       expect(options[i].textContent).toContain(l.flag);

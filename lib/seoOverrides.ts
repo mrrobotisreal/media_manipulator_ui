@@ -510,12 +510,112 @@ const ES_SEO_OVERRIDES: LocaleOverrides = {
   },
 };
 
+// MM72: Latin-American Spanish, adapted from ES_SEO_OVERRIDES (es-ES).
+const ES_MX_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/motion': {
+    title: 'Motion: editor de animación SVG gratis en línea | Media Manipulator',
+    description:
+      'Anima SVG en tu navegador: fotogramas clave, suavizado, retenciones, trayectorias y morfosis. Exporta SVG animado, Lottie JSON, React, JS, Flutter o GIF.',
+  },
+  '/tutorials/motion': {
+    title: 'Cómo animar un SVG con Motion | Media Manipulator',
+    description:
+      'Tutorial de Motion paso a paso: importa un SVG, anímalo con fotogramas clave, da forma al ritmo con suavizados y retenciones y exporta SVG animado, Lottie, código o GIF.',
+  },
+  '/': {
+    title: 'Convertidor, editor y transcriptor de medios gratis en línea | Media Manipulator',
+    description:
+      'Convierte, edita, comprime, transcribe y analiza imágenes, videos y audio en línea. Media Manipulator ofrece conversión de medios, herramientas de metadatos, resúmenes con IA y procesamiento de archivos respetuoso con la privacidad.',
+  },
+  '/about': {
+    title: 'Acerca de Media Manipulator | Herramientas de medios gratis en línea de CreaTV Ltd.',
+    description:
+      'Media Manipulator es un servicio gratuito de CreaTV Ltd. para convertir, editar, comprimir, transcribir y analizar imágenes, videos y audio.',
+  },
+  '/how-it-works': {
+    title: 'Cómo funciona Media Manipulator | Conversión de archivos, procesamiento con IA y almacenamiento temporal',
+    description:
+      'Descubre cómo Media Manipulator procesa tus archivos: conversión de formatos, transcripción y resúmenes con IA, verificación de seguridad de las subidas y almacenamiento temporal de los resultados durante un máximo de 24 horas.',
+  },
+  '/tools': {
+    title: 'Herramientas de medios gratis en línea | Media Manipulator',
+    description:
+      'Herramientas gratuitas en línea para imágenes, video, audio, IA y metadatos: convierte, comprime, transcribe, elimina EXIF, separa la voz y mucho más.',
+  },
+  '/tutorials': {
+    title: 'Tutoriales de Media Manipulator | Herramientas de imagen, video y audio',
+    description:
+      'Guías paso a paso del convertidor de imágenes, video y audio, las herramientas de metadatos, la transcripción y las funciones de IA de Media Manipulator.',
+  },
+  '/privacy-policy': {
+    title: 'Política de privacidad | Media Manipulator',
+    description:
+      'Descubre cómo trata Media Manipulator los archivos subidos: almacenamiento temporal, procesamiento local con IA, analítica, publicidad, revisión de contenido y eliminación.',
+  },
+  '/terms-of-service': {
+    title: 'Términos del servicio y normas de uso aceptable | Media Manipulator',
+    description:
+      'Consulta las condiciones de Media Manipulator: contenido subido, uso aceptable, procesamiento de archivos, funciones de IA, publicidad y responsabilidad de los usuarios.',
+  },
+  '/pricing': {
+    title: 'Precios — Media Manipulator',
+    description:
+      'Compara el plan gratuito, el plan con cuenta y Premium: límites diarios de operaciones, límites de tamaño de archivo y duración de video, resolución de salida, almacenamiento y publicidad.',
+  },
+  '/blog': {
+    title: 'Guías de conversión, compresión y edición de medios | Blog de Media Manipulator',
+    description:
+      'Artículos prácticos sobre formatos de medios, compresión, metadatos, transcripción y procesamiento de archivos con FFmpeg, de Media Manipulator.',
+  },
+  '/blog/video/video-compression-guide': {
+    title: 'Guía de compresión de video: reduce el tamaño sin perder calidad | Media Manipulator',
+    description:
+      'Descubre cómo funciona la compresión de video, cómo los códecs y el bitrate afectan la calidad y cómo reducir videos para la web, con ejemplos prácticos de Media Manipulator y FFmpeg.',
+  },
+  '/blog/image/image-optimization-guide': {
+    title: 'Guía de optimización de imágenes: comprimir, redimensionar y convertir para la web | Media Manipulator',
+    description:
+      'Aprende a optimizar JPG, PNG, WebP, AVIF y GIF: sitios más rápidos, descargas más pequeñas, mejor calidad y un compartir seguro sin metadatos innecesarios.',
+  },
+  '/blog/audio/audio-quality-guide': {
+    title: 'Guía de calidad de audio: bitrate, formatos, compresión y limpieza | Media Manipulator',
+    description:
+      'Descubre cómo el bitrate, la frecuencia de muestreo, los canales, los códecs, la compresión, la limpieza y la transcripción afectan el tamaño y la calidad de los archivos de audio.',
+  },
+  '/tutorials/ai-frame-interpolation': {
+    title: '¿Qué es la interpolación de fotogramas con IA? Así funciona el suavizado de FPS | Media Manipulator',
+    description:
+      'Descubre cómo funciona la interpolación de fotogramas con IA, en qué se diferencia de una conversión de FPS simple, cuándo elegir 48/60/120 fps, qué artefactos pueden aparecer y cómo usar la herramienta de Media Manipulator.',
+  },
+  '/tutorials/video/getting-started': {
+    title: 'Primeros pasos con la conversión de video | Tutorial de Media Manipulator',
+    description:
+      'Convierte, comprime, recorta y transcribe archivos de video con las herramientas de video de Media Manipulator.',
+  },
+  '/tutorials/audio/getting-started': {
+    title: 'Primeros pasos con la conversión de audio | Tutorial de Media Manipulator',
+    description:
+      'Convierte, comprime, limpia y transcribe archivos de audio con las herramientas de audio de Media Manipulator.',
+  },
+  '/tutorials/image/getting-started': {
+    title: 'Primeros pasos con la conversión de imágenes | Tutorial de Media Manipulator',
+    description:
+      'Convierte imágenes, cambia su tamaño, recórtalas y elimina metadatos con las herramientas de Media Manipulator.',
+  },
+  '/tutorials/content-studio': {
+    title: 'Cómo usar Darkroom: edición de video multipista en el navegador | Media Manipulator',
+    description:
+      'Guía paso a paso de Darkroom: importa medios, línea de tiempo multipista, recorte, corte y eliminación ripple, fundidos cruzados, corrección de color, capas de texto y exportación a MP4 — todo en el navegador.',
+  },
+};
+
 const OVERRIDES: Record<string, LocaleOverrides> = {
   'ru-RU': RU_SEO_OVERRIDES,
   'uk-UA': UK_SEO_OVERRIDES,
   'de-DE': DE_SEO_OVERRIDES,
   'he-IL': HE_SEO_OVERRIDES,
   'es-ES': ES_SEO_OVERRIDES,
+  'es-MX': ES_MX_SEO_OVERRIDES,
 };
 
 export function getSeoOverride(path: string, locale: string): SeoOverride | undefined {

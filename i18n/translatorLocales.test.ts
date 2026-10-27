@@ -82,7 +82,7 @@ describe("scripts/list-locales.mjs", () => {
     expect(matrix.status).toBe(0);
     expect(matrix.stderr).toBe("");
     const parsed = JSON.parse(matrix.stdout) as { include: { prefix: string; hook: string }[] };
-    expect(parsed.include).toHaveLength(16);
+    expect(parsed.include).toHaveLength(17);
     expect(parsed.include.map((e) => e.prefix)).toEqual(JSON.parse(json.stdout));
     for (const e of parsed.include) expect(e.hook).toBe(hookSecretName(e.prefix));
   });

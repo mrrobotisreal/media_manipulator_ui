@@ -8,6 +8,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
+import { locales } from '../../i18n/locales';
 import {
   applyAt,
   flattenNode,
@@ -32,10 +33,11 @@ function shardFiles(dir: string): string[] {
 const ALL = shardFiles(LOCALES).map((abs) => relative(ROOT, abs).split(sep).join('/'));
 
 describe('stable JSON writer: idempotency over every real shard', () => {
-  it('covers all 17 locale directories', () => {
+  it('covers every registered locale directory (18 since MM72)', () => {
     const dirs = new Set(ALL.map((p) => p.split('/')[2]));
-    expect(dirs.size).toBe(17);
-    expect(ALL.length).toBeGreaterThanOrEqual(17 * 10);
+    expect(dirs.size).toBe(locales.length);
+    expect(dirs.size).toBe(18);
+    expect(ALL.length).toBeGreaterThanOrEqual(locales.length * 10);
   });
 
   it.each(ALL)('writer(parse(file)) === file: %s', (file) => {
