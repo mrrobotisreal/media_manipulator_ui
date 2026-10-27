@@ -1,10 +1,10 @@
 {
   "generic": {
-    "unknown": "Se ha producido un error desconocido. Inténtalo de nuevo.",
-    "unexpected": "Algo ha salido mal. Inténtalo de nuevo.",
-    "networkOffline": "Parece que estás sin conexión. Comprueba tu conexión e inténtalo de nuevo.",
+    "unknown": "Ocurrió un error desconocido. Inténtalo de nuevo.",
+    "unexpected": "Algo salió mal. Inténtalo de nuevo.",
+    "networkOffline": "Parece que estás sin conexión. Verifica tu conexión e inténtalo de nuevo.",
     "tryAgainLater": "Inténtalo de nuevo dentro de un momento.",
-    "missingFile": "No se ha seleccionado ningún archivo.",
+    "missingFile": "No se seleccionó ningún archivo.",
     "missingField": "Este campo es obligatorio."
   },
   "upload": {
@@ -16,7 +16,7 @@
   "conversion": {
     "failed": "Error en la conversión.",
     "failedTryAgain": "Error en la conversión. Inténtalo de nuevo.",
-    "previewFailed": "No se ha podido cargar la vista previa de la imagen convertida",
+    "previewFailed": "No se pudo cargar la vista previa de la imagen convertida",
     "downloadFailed": "Error en la descarga. Inténtalo de nuevo."
   },
   "transcribe": {
@@ -29,12 +29,12 @@
   },
   "validation": {
     "required": "Este campo es obligatorio.",
-    "invalidNumber": "Introduce un número válido.",
+    "invalidNumber": "Ingresa un número válido.",
     "outOfRange": "El valor debe estar entre {{min}} y {{max}}.",
     "tooShort": "Debe tener al menos {{count}} caracteres.",
     "tooLong": "Debe tener como máximo {{count}} caracteres.",
-    "invalidEmail": "Introduce una dirección de correo electrónico válida.",
-    "invalidUrl": "Introduce una URL válida."
+    "invalidEmail": "Ingresa una dirección de correo electrónico válida.",
+    "invalidUrl": "Ingresa una URL válida."
   },
   "auth": {
     "signInFailed": "Error al iniciar sesión. Inténtalo de nuevo.",
@@ -45,38 +45,38 @@
     "emailRequired": "El correo electrónico es obligatorio.",
     "passwordRequired": "La contraseña es obligatoria.",
     "tryAgain": "Inténtalo de nuevo.",
-    "userNotFound": "No se ha encontrado ninguna cuenta con este correo electrónico.",
+    "userNotFound": "No se encontró ninguna cuenta con este correo electrónico.",
     "wrongPassword": "Contraseña incorrecta.",
     "emailAlreadyInUse": "Ya existe una cuenta con este correo electrónico.",
     "weakPassword": "La contraseña debe tener al menos 6 caracteres."
   },
   "ad": {
-    "loadFailed": "No se ha podido cargar la publicidad."
+    "loadFailed": "No se pudo cargar la publicidad."
   },
   "forms": {
     "fixErrors": "Corrige los siguientes errores:",
     "invalidValue": "Valor no válido",
     "fieldRequired": "Este campo es obligatorio.",
-    "invalidNumber": "Introduce un número válido.",
+    "invalidNumber": "Ingresa un número válido.",
     "outOfRange": "El valor debe estar entre {{min}} y {{max}}.",
     "faceDetectFailed": "Error en la detección de rostros. Inténtalo de nuevo.",
     "removeObjectFailed": "Error al eliminar el objeto. Inténtalo de nuevo.",
     "imageForm": {
       "noFile": "Elige primero una imagen.",
-      "exifLoadFailed": "No se han podido leer los metadatos EXIF de este archivo."
+      "exifLoadFailed": "No se pudieron leer los metadatos EXIF de este archivo."
     },
     "videoForm": {
-      "noFile": "Elige primero un vídeo."
+      "noFile": "Elige primero un video."
     },
     "audioForm": {
       "noFile": "Elige primero un archivo de audio."
     },
     "transcribe": {
       "noFile": "Elige primero un archivo multimedia.",
-      "invalidLanguage": "Introduce un código de idioma BCP-47 válido."
+      "invalidLanguage": "Ingresa un código de idioma BCP-47 válido."
     },
     "transcode": {
-      "probeFailed": "No se ha podido analizar el archivo de origen. Prueba con otro archivo."
+      "probeFailed": "No se pudo analizar el archivo de origen. Prueba con otro archivo."
     }
   },
   "panels": {
@@ -85,40 +85,40 @@
       "missingFile": "Sube primero un archivo de subtítulos."
     },
     "stitchAudioToVideo": {
-      "failed": "Error al combinar audio y vídeo.",
-      "missingTracks": "Añade al menos una pista de audio."
+      "failed": "Error al combinar audio y video.",
+      "missingTracks": "Agrega al menos una pista de audio."
     },
     "extract": {
       "failed": "Error en la extracción.",
-      "noStreams": "No se han encontrado flujos coincidentes en este archivo."
+      "noStreams": "No se encontraron flujos coincidentes en este archivo."
     }
   },
   "errorBoundary": {
-    "title": "Algo ha salido mal",
-    "body": "Un error inesperado ha interrumpido esta página. Tus archivos no se han perdido: puedes intentarlo de nuevo, y si el problema continúa, recarga la página.",
+    "title": "Algo salió mal",
+    "body": "Un error inesperado interrumpió esta página. Tus archivos no se perdieron: puedes intentarlo de nuevo, y si el problema continúa, recarga la página.",
     "tryAgain": "Intentar de nuevo",
     "goHome": "Ir a la página de inicio"
   },
   "toasts": {
-    "conversionStartFailed": "No se ha podido iniciar la conversión.",
-    "transcriptionStartFailed": "No se ha podido iniciar la transcripción.",
-    "transcodeStartFailed": "No se ha podido iniciar la transcodificación.",
-    "videoAnalysisFailed": "No se ha podido analizar el vídeo.",
-    "translationStartFailed": "No se ha podido iniciar la traducción.",
-    "scanStartFailed": "No se ha podido iniciar el escaneo.",
-    "jobStartFailed": "No se ha podido iniciar la tarea.",
-    "stitchStartFailed": "No se ha podido iniciar la tarea de combinación.",
-    "restorationStartFailed": "No se ha podido iniciar la restauración.",
-    "identificationFailed": "No se ha podido identificar el archivo.",
-    "jobStatusCheckFailed": "No se ha podido comprobar el estado de la tarea.",
-    "exportStartFailed": "No se ha podido iniciar la exportación.",
+    "conversionStartFailed": "No se pudo iniciar la conversión.",
+    "transcriptionStartFailed": "No se pudo iniciar la transcripción.",
+    "transcodeStartFailed": "No se pudo iniciar la transcodificación.",
+    "videoAnalysisFailed": "No se pudo analizar el video.",
+    "translationStartFailed": "No se pudo iniciar la traducción.",
+    "scanStartFailed": "No se pudo iniciar el escaneo.",
+    "jobStartFailed": "No se pudo iniciar la tarea.",
+    "stitchStartFailed": "No se pudo iniciar la tarea de combinación.",
+    "restorationStartFailed": "No se pudo iniciar la restauración.",
+    "identificationFailed": "No se pudo identificar el archivo.",
+    "jobStatusCheckFailed": "No se pudo verificar el estado de la tarea.",
+    "exportStartFailed": "No se pudo iniciar la exportación.",
     "exportFailed": "Error en la exportación.",
-    "saveProjectFailed": "No se ha podido guardar el proyecto.",
-    "createProjectFailed": "No se ha podido crear el proyecto.",
+    "saveProjectFailed": "No se pudo guardar el proyecto.",
+    "createProjectFailed": "No se pudo crear el proyecto.",
     "uploadFailed": "Error al subir el archivo.",
     "audioProcessingFailed": "Error en el procesamiento de audio.",
-    "unexpectedFallback": "Se ha producido un error inesperado.",
-    "conversionFailedFallback": "El proceso de conversión ha encontrado un error.",
-    "unableToGetProgress": "No se ha podido obtener el progreso de la conversión."
+    "unexpectedFallback": "Ocurrió un error inesperado.",
+    "conversionFailedFallback": "El proceso de conversión encontró un error.",
+    "unableToGetProgress": "No se pudo obtener el progreso de la conversión."
   }
 }

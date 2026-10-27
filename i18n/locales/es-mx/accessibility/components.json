@@ -18,10 +18,10 @@
     "nextStep": "Paso siguiente"
   },
   "imageCropModal": {
-    "topLeftHandle": "Tirador superior izquierdo",
-    "topRightHandle": "Tirador superior derecho",
-    "bottomLeftHandle": "Tirador inferior izquierdo",
-    "bottomRightHandle": "Tirador inferior derecho"
+    "topLeftHandle": "Manija superior izquierda",
+    "topRightHandle": "Manija superior derecha",
+    "bottomLeftHandle": "Manija inferior izquierda",
+    "bottomRightHandle": "Manija inferior derecha"
   },
   "mediaTrimModal": {
     "scrubber": "Barra de recorte",

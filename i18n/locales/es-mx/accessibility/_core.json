@@ -7,14 +7,14 @@
     "creatv": "CreaTV",
     "toggleTheme": "Cambiar tema",
     "languageMenu": "Cambiar idioma",
-    "navIcon": "Icono de Media Manipulator",
+    "navIcon": "Ícono de Media Manipulator",
     "winappsLogo": "Logo de WinApps",
     "creatvLogo": "Logo de CreaTV",
     "githubLogo": "GitHub"
   },
   "footer": {
     "homeLink": "Inicio de Media Manipulator",
-    "navIcon": "Icono de Media Manipulator"
+    "navIcon": "Ícono de Media Manipulator"
   },
   "home": {
     "popularTools": "Herramientas populares",
@@ -28,7 +28,7 @@
   },
   "languageSelector": {
     "trigger": "Cambiar idioma",
-    "icon": "Icono de traducción"
+    "icon": "Ícono de traducción"
   },
   "common": {
     "close": "Cerrar",
@@ -44,13 +44,13 @@
     "aiTooltip": "Sobre las herramientas de IA para audio"
   },
   "videoForm": {
-    "aiTooltip": "Sobre las herramientas de IA para vídeo"
+    "aiTooltip": "Sobre las herramientas de IA para video"
   },
   "imageForm": {
     "aiTooltip": "Sobre las herramientas de IA para imágenes",
     "selectiveFacesTooltip": "Sobre la privacidad selectiva de rostros",
     "removeObjectTooltip": "Sobre la eliminación de objetos",
-    "metadataTooltip": "Sobre la gestión de metadatos",
+    "metadataTooltip": "Sobre la administración de metadatos",
     "vectorizeThresholdTooltip": "Sobre el umbral de vectorización"
   }
 }
