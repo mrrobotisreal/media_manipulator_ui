@@ -1,124 +1,124 @@
 {
   "generic": {
-    "unknown": "An unknown error occurred. Please try again.",
-    "unexpected": "Something went wrong. Please try again.",
-    "networkOffline": "You appear to be offline. Check your connection and try again.",
-    "tryAgainLater": "Please try again in a moment.",
-    "missingFile": "No file selected.",
-    "missingField": "This field is required."
+    "unknown": "Ocorreu um erro desconhecido. Tente novamente.",
+    "unexpected": "Algo correu mal. Tente novamente.",
+    "networkOffline": "Parece estar sem ligação. Verifique a sua ligação à Internet e tente novamente.",
+    "tryAgainLater": "Tente novamente dentro de instantes.",
+    "missingFile": "Nenhum ficheiro selecionado.",
+    "missingField": "Este campo é obrigatório."
   },
   "upload": {
-    "fileTooLarge": "File is too large.",
-    "unsupportedFormat": "Unsupported file format.",
-    "uploadFailed": "Upload failed. Please try again.",
-    "missingFile": "Please choose a file first."
+    "fileTooLarge": "O ficheiro é demasiado grande.",
+    "unsupportedFormat": "Formato de ficheiro não suportado.",
+    "uploadFailed": "O carregamento falhou. Tente novamente.",
+    "missingFile": "Escolha primeiro um ficheiro."
   },
   "conversion": {
-    "failed": "Conversion failed.",
-    "failedTryAgain": "Conversion failed. Please try again.",
-    "previewFailed": "Failed to load converted image preview",
-    "downloadFailed": "Download failed. Please try again."
+    "failed": "A conversão falhou.",
+    "failedTryAgain": "A conversão falhou. Tente novamente.",
+    "previewFailed": "Não foi possível carregar a pré-visualização da imagem convertida",
+    "downloadFailed": "A transferência falhou. Tente novamente."
   },
   "transcribe": {
-    "failed": "Transcription failed.",
-    "failedTryAgain": "Transcription failed. Please try again."
+    "failed": "A transcrição falhou.",
+    "failedTryAgain": "A transcrição falhou. Tente novamente."
   },
   "transcode": {
-    "failed": "Transcode failed.",
-    "failedTryAgain": "Transcode failed. Please try again."
+    "failed": "A transcodificação falhou.",
+    "failedTryAgain": "A transcodificação falhou. Tente novamente."
   },
   "validation": {
-    "required": "This field is required.",
-    "invalidNumber": "Enter a valid number.",
-    "outOfRange": "Value must be between {{min}} and {{max}}.",
-    "tooShort": "Must be at least {{count}} characters.",
-    "tooLong": "Must be at most {{count}} characters.",
-    "invalidEmail": "Enter a valid email address.",
-    "invalidUrl": "Enter a valid URL."
+    "required": "Este campo é obrigatório.",
+    "invalidNumber": "Introduza um número válido.",
+    "outOfRange": "O valor tem de estar entre {{min}} e {{max}}.",
+    "tooShort": "Tem de ter pelo menos {{count}} caracteres.",
+    "tooLong": "Tem de ter no máximo {{count}} caracteres.",
+    "invalidEmail": "Introduza um endereço de e-mail válido.",
+    "invalidUrl": "Introduza um URL válido."
   },
   "auth": {
-    "signInFailed": "Sign-in failed. Please try again.",
-    "signUpFailed": "Sign-up failed. Please try again.",
-    "passwordTooShort": "Password must be at least 8 characters.",
-    "passwordsDoNotMatch": "Passwords do not match.",
-    "invalidCredentials": "Email or password is incorrect.",
-    "emailRequired": "Email is required.",
-    "passwordRequired": "Password is required.",
-    "tryAgain": "Please try again.",
-    "userNotFound": "No account found with this email.",
-    "wrongPassword": "Incorrect password.",
-    "emailAlreadyInUse": "An account with this email already exists.",
-    "weakPassword": "Password should be at least 6 characters."
+    "signInFailed": "O início de sessão falhou. Tente novamente.",
+    "signUpFailed": "O registo falhou. Tente novamente.",
+    "passwordTooShort": "A palavra-passe tem de ter pelo menos 8 caracteres.",
+    "passwordsDoNotMatch": "As palavras-passe não coincidem.",
+    "invalidCredentials": "O e-mail ou a palavra-passe estão incorretos.",
+    "emailRequired": "O e-mail é obrigatório.",
+    "passwordRequired": "A palavra-passe é obrigatória.",
+    "tryAgain": "Tente novamente.",
+    "userNotFound": "Não foi encontrada nenhuma conta com este e-mail.",
+    "wrongPassword": "Palavra-passe incorreta.",
+    "emailAlreadyInUse": "Já existe uma conta com este e-mail.",
+    "weakPassword": "A palavra-passe deve ter pelo menos 6 caracteres."
   },
   "ad": {
-    "loadFailed": "Advertisement failed to load."
+    "loadFailed": "Não foi possível carregar a publicidade."
   },
   "forms": {
-    "fixErrors": "Please fix the following errors:",
-    "invalidValue": "Invalid value",
-    "fieldRequired": "This field is required.",
-    "invalidNumber": "Enter a valid number.",
-    "outOfRange": "Value must be between {{min}} and {{max}}.",
-    "faceDetectFailed": "Face detection failed. Please try again.",
-    "removeObjectFailed": "Object removal failed. Please try again.",
+    "fixErrors": "Corrija os seguintes erros:",
+    "invalidValue": "Valor inválido",
+    "fieldRequired": "Este campo é obrigatório.",
+    "invalidNumber": "Introduza um número válido.",
+    "outOfRange": "O valor tem de estar entre {{min}} e {{max}}.",
+    "faceDetectFailed": "A deteção de rostos falhou. Tente novamente.",
+    "removeObjectFailed": "A remoção do objeto falhou. Tente novamente.",
     "imageForm": {
-      "noFile": "Choose an image first.",
-      "exifLoadFailed": "Could not read EXIF metadata for this file."
+      "noFile": "Escolha primeiro uma imagem.",
+      "exifLoadFailed": "Não foi possível ler os metadados EXIF deste ficheiro."
     },
     "videoForm": {
-      "noFile": "Choose a video first."
+      "noFile": "Escolha primeiro um vídeo."
     },
     "audioForm": {
-      "noFile": "Choose an audio file first."
+      "noFile": "Escolha primeiro um ficheiro de áudio."
     },
     "transcribe": {
-      "noFile": "Choose a media file first.",
-      "invalidLanguage": "Enter a valid BCP-47 language code."
+      "noFile": "Escolha primeiro um ficheiro multimédia.",
+      "invalidLanguage": "Introduza um código de idioma BCP-47 válido."
     },
     "transcode": {
-      "probeFailed": "Failed to probe the source file. Try a different file."
+      "probeFailed": "Não foi possível analisar o ficheiro de origem. Experimente outro ficheiro."
     }
   },
   "panels": {
     "captionTranslator": {
-      "failed": "Caption translation failed.",
-      "missingFile": "Upload a caption file first."
+      "failed": "A tradução das legendas falhou.",
+      "missingFile": "Carregue primeiro um ficheiro de legendas."
     },
     "stitchAudioToVideo": {
-      "failed": "Audio/video stitch failed.",
-      "missingTracks": "Add at least one audio track."
+      "failed": "A junção de áudio e vídeo falhou.",
+      "missingTracks": "Adicione pelo menos uma faixa de áudio."
     },
     "extract": {
-      "failed": "Extraction failed.",
-      "noStreams": "No matching streams found in this file."
+      "failed": "A extração falhou.",
+      "noStreams": "Não foram encontrados fluxos correspondentes neste ficheiro."
     }
   },
   "errorBoundary": {
-    "title": "Something went wrong",
-    "body": "An unexpected error interrupted this page. Your files were not lost — you can try again, and if the problem continues, reload the page.",
-    "tryAgain": "Try again",
-    "goHome": "Go to homepage"
+    "title": "Algo correu mal",
+    "body": "Um erro inesperado interrompeu esta página. Os seus ficheiros não se perderam: pode tentar novamente e, se o problema persistir, recarregue a página.",
+    "tryAgain": "Tentar novamente",
+    "goHome": "Ir para a página inicial"
   },
   "toasts": {
-    "conversionStartFailed": "Failed to start conversion.",
-    "transcriptionStartFailed": "Failed to start transcription.",
-    "transcodeStartFailed": "Failed to start transcode.",
-    "videoAnalysisFailed": "Failed to analyze video.",
-    "translationStartFailed": "Failed to start translation.",
-    "scanStartFailed": "Failed to start scan.",
-    "jobStartFailed": "Failed to start job.",
-    "stitchStartFailed": "Failed to start stitch job.",
-    "restorationStartFailed": "Failed to start restoration.",
-    "identificationFailed": "Failed to identify file.",
-    "jobStatusCheckFailed": "Failed to check job status.",
-    "exportStartFailed": "Failed to start export.",
-    "exportFailed": "Export failed.",
-    "saveProjectFailed": "Failed to save project.",
-    "createProjectFailed": "Failed to create project.",
-    "uploadFailed": "Upload failed.",
-    "audioProcessingFailed": "Audio processing failed.",
-    "unexpectedFallback": "An unexpected error occurred.",
-    "conversionFailedFallback": "The conversion process encountered an error.",
-    "unableToGetProgress": "Unable to get conversion progress."
+    "conversionStartFailed": "Não foi possível iniciar a conversão.",
+    "transcriptionStartFailed": "Não foi possível iniciar a transcrição.",
+    "transcodeStartFailed": "Não foi possível iniciar a transcodificação.",
+    "videoAnalysisFailed": "Não foi possível analisar o vídeo.",
+    "translationStartFailed": "Não foi possível iniciar a tradução.",
+    "scanStartFailed": "Não foi possível iniciar a análise.",
+    "jobStartFailed": "Não foi possível iniciar a tarefa.",
+    "stitchStartFailed": "Não foi possível iniciar a tarefa de junção.",
+    "restorationStartFailed": "Não foi possível iniciar a restauração.",
+    "identificationFailed": "Não foi possível identificar o ficheiro.",
+    "jobStatusCheckFailed": "Não foi possível verificar o estado da tarefa.",
+    "exportStartFailed": "Não foi possível iniciar a exportação.",
+    "exportFailed": "A exportação falhou.",
+    "saveProjectFailed": "Não foi possível guardar o projeto.",
+    "createProjectFailed": "Não foi possível criar o projeto.",
+    "uploadFailed": "O carregamento falhou.",
+    "audioProcessingFailed": "O processamento de áudio falhou.",
+    "unexpectedFallback": "Ocorreu um erro inesperado.",
+    "conversionFailedFallback": "O processo de conversão encontrou um erro.",
+    "unableToGetProgress": "Não foi possível obter o progresso da conversão."
   }
 }
