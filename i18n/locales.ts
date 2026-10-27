@@ -61,7 +61,7 @@ export const locales: LocaleDef[] = [
   { code: "ja-JP", prefix: "ja", label: "日本語", englishLabel: "Japanese", flag: "🇯🇵", dir: "ltr", translated: true },
   { code: "zh-CN", prefix: "zh-cn", label: "简体中文", englishLabel: "Chinese (Simplified)", flag: "🇨🇳", dir: "ltr", translated: true },
   { code: "zh-TW", prefix: "zh-tw", label: "繁體中文", englishLabel: "Chinese (Traditional)", flag: "🇹🇼", dir: "ltr", translated: false },
-  { code: "ko-KR", prefix: "ko", label: "한국어", englishLabel: "Korean", flag: "🇰🇷", dir: "ltr", translated: false },
+  { code: "ko-KR", prefix: "ko", label: "한국어", englishLabel: "Korean", flag: "🇰🇷", dir: "ltr", translated: true },
   { code: "ar-SA", prefix: "ar", label: "العربية", englishLabel: "Arabic", flag: "🇸🇦", dir: "rtl", translated: false },
   { code: "hi-IN", prefix: "hi", label: "हिन्दी", englishLabel: "Hindi", flag: "🇮🇳", dir: "ltr", translated: false },
   { code: "pt-PT", prefix: "pt-pt", label: "Português (Portugal)", englishLabel: "Portuguese (Portugal)", flag: "🇵🇹", dir: "ltr", translated: false },

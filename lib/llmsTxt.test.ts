@@ -29,7 +29,7 @@ describe('llms.txt', () => {
   it('names translated locales only, never a byte-copy locale (MM51)', () => {
     const line = index.split('\n').find((l) => l.startsWith('- The site is available in'))!;
     expect(line).toBe(
-      '- The site is available in English (https://www.media-manipulator.com/), Ukrainian (/uk/), Russian (/ru/), Hebrew (/he/), German (/de/), Spanish (/es/), French (/fr/), Italian (/it/), Japanese (/ja/), Chinese (Simplified) (/zh-cn/).',
+      '- The site is available in English (https://www.media-manipulator.com/), Ukrainian (/uk/), Russian (/ru/), Hebrew (/he/), German (/de/), Spanish (/es/), French (/fr/), Italian (/it/), Japanese (/ja/), Chinese (Simplified) (/zh-cn/), Korean (/ko/).',
     );
     for (const l of locales.filter((x) => !x.translated)) {
       expect(line).not.toContain(`(/${l.prefix}/)`);
