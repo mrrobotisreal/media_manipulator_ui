@@ -1,1246 +1,1246 @@
 {
   "blogVideoCompression": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← 블로그"
     },
-    "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV",
+    "title": "동영상 압축을 위한 은하수 여행자 안내서: MP4 vs WebM vs AVI vs MOV",
     "byline": {
-      "writtenBy": "Written by:",
-      "date": "June 13th, 2025",
-      "time": "10:33 PM"
+      "writtenBy": "작성자:",
+      "date": "2025년 6월 13일",
+      "time": "오후 10:33"
     },
     "intro": {
-      "title": "A Brief Intro to Video Compression",
-      "p1": "Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.",
-      "p2": "Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.",
-      "p3": "At its core, video compression works by being sneaky in two main ways:",
+      "title": "동영상 압축 간단 소개",
+      "p1": "웹사이트에 동영상을 올리다가 로딩 바가 달팽이 속도로 기어가는 걸 공포에 질려 지켜본 적 있나요? 🐌 아니면 30초짜리 짧은 데모를 녹화했는데 파일이 어쩐 일인지 웹사이트 전체보다 더 큰 걸 발견한 적은요? 네, 다들 겪어 본 일이고, 그건 페인트 마르는 걸 지켜보는 것만큼... 그것도 전화 모뎀 인터넷으로 보는 것만큼 재미있죠.",
+      "p2": "핵심은 이거예요. 동영상 압축은 기본적으로 감자로 찍은 것처럼 보이게 하지 않으면서 동영상을 작게 만드는 기술이에요 🥔. 이렇게 생각해 보세요. 원본 동영상 데이터는 옷장 전체를 기내용 캐리어에 욱여넣으려는 것과 같아요. 동영상 압축은 옷을 (대체로) 구김 없이 유지하면서도 어떻게든 모두 들어가게 만드는 마법 같은 접기 기술이죠.",
+      "p3": "동영상 압축은 근본적으로 두 가지 방식으로 영리하게 작동해요:",
       "bullets": [
-        "<strong>Spatial compression</strong>: This looks at each frame and says \"Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?\" It's like describing a wall as \"all white\" instead of listing every single brick.",
-        "<strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬"
+        "<strong>공간 압축</strong>: 각 프레임을 보고 이렇게 말해요. \"이 파란 하늘에 거의 같은 파란색 픽셀이 만 개쯤 있네. 그냥 '여기부터 여기까지 파란 픽셀'이라고 하면 어때?\" 벽돌 하나하나를 나열하는 대신 벽을 \"전부 흰색\"이라고 설명하는 것과 같아요.",
+        "<strong>시간 압축</strong>: 여기서부터 정말 영리해져요. 모든 프레임을 통째로 저장하는 대신 프레임 사이의 차이만 저장해요. 말하는 자신을 녹화하는데 배경이 바뀌지 않는다면, 그 배경을 초당 30번씩 저장할 이유가 있을까요? 한 번만 저장하고 바뀌는 부분만 기록하면 되죠! 🎬"
       ],
-      "p4": "The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.",
-      "quote": "\"In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch.\" 💪"
+      "p4": "이 기술들이 함께 작동할 때 마법이 일어나요. 거대한 2GB 화면 녹화가 여전히 선명하면서도 감당할 만한 50MB 파일로 바뀌죠. 그런데 여기서 흥미로워지는데, 동영상 형식(컨테이너)과 코덱(실제 압축 알고리즘)마다 이 마법을 아주 다르게 다뤄요. 어떤 건 맥가이버 칼 🔪 같아서 다재다능하지만 모든 일에 가장 날카로운 도구는 아니에요. 어떤 건 전문 수술 도구에 가까워서 특정 작업에는 놀랍도록 효과적이지만 다른 일에는 쓸모가 없죠.",
+      "quote": "\"동영상 압축의 세계에서 가장 무거운 파일이 항상 가장 강한 건 아니에요. 때로는 가장 작은 전사가 가장 강력한 한 방을 날리죠.\" 💪"
     },
     "formats": {
-      "title": "What's the Difference Between These Formats Anyway?",
-      "intro": "Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go \"really?\"",
+      "title": "그래서 이 형식들은 뭐가 다른데요?",
+      "intro": "좋아요, 슈퍼히어로 팀을 비교하듯 이 동영상 형식들을 하나씩 뜯어봅시다 🦸‍♂️. 각자 고유한 초능력과 약점, 그리고 \"진짜?\" 소리가 나오는 이상한 버릇 하나씩을 갖고 있어요.",
       "mp4": {
         "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:",
+        "intro": "MP4는 동영상 형식계의 슈퍼맨이라고 생각하세요. 어디에나 있고, 누구나 알아보고, 거의 항상 상황을 구해 내죠. 이 형식은:",
         "bullets": [
-          "<strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works",
-          "<strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high",
-          "<strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)",
-          "<strong>File sizes</strong>: Generally gives you that sweet spot between quality and size"
+          "<strong>누구와도 잘 지내요</strong>: 할머니의 오래된 노트북부터 최신 iPhone까지, MP4는 그냥 작동해요",
+          "<strong>H.264/H.265 코덱을 사용해요</strong>: 품질을 높게 유지하면서 파일을 작게 만드는 압축 마법사 같은 존재예요",
+          "<strong>스트리밍을 지원해요</strong>: 완전히 로드되기 전에 동영상이 재생되기 시작하길 원할 때 딱이에요 (기다릴 시간이 어디 있나요? ⏰)",
+          "<strong>파일 크기</strong>: 대체로 품질과 크기 사이의 달콤한 균형점을 제공해요"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:",
+        "intro": "WebM은 그룹의 쿨한 오픈소스 반항아 같은 존재예요 😎. Google이 만들었고, 온통 웹 라이프에 진심이죠:",
         "bullets": [
-          "<strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say \"buffering\"",
-          "<strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases",
-          "<strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵",
-          "<strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)"
+          "<strong>브라우저를 위해 태어났어요</strong>: \"버퍼링\"이라고 말하기도 전에 웹 동영상이 로드되도록 특별히 설계됐어요",
+          "<strong>VP8/VP9 코덱을 사용해요</strong>: 이 녀석들은 많은 경우 MP4보다 동영상을 더 작게 압축할 수 있어요",
+          "<strong>개방적이고 무료예요</strong>: 라이선스 비용이 없다는 건 모든 개발자의 귀에 음악처럼 들리죠 🎵",
+          "<strong>함정</strong>: 모든 브라우저와 기기가 지원하지는 않아요 (당신 말이에요, Safari 👀)"
         ]
       },
       "avi": {
         "title": "AVI (Audio Video Interleave)",
-        "intro": "AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:",
+        "intro": "AVI는 산전수전 다 겪은 베테랑이에요. Windows 3.1 시절부터 있었거든요! 👴 알아 둘 점은:",
         "bullets": [
-          "<strong>Minimal compression</strong>: Often results in HUGE file sizes (like, \"is this a video or the entire Lord of the Rings trilogy?\" huge)",
-          "<strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality",
-          "<strong>Universal compatibility</strong>: If something can play video, it can probably play AVI",
-          "<strong>Best for</strong>: Local storage when quality matters more than file size"
+          "<strong>최소한의 압축</strong>: 종종 거대한 파일 크기가 나와요 (\"이거 동영상이야, 반지의 제왕 3부작 전체야?\" 수준으로요)",
+          "<strong>높은 품질</strong>: 압축에서 부족한 만큼 깨끗한 품질로 보상해요",
+          "<strong>범용 호환성</strong>: 동영상을 재생할 수 있는 거라면 아마 AVI도 재생할 수 있어요",
+          "<strong>최적 용도</strong>: 파일 크기보다 품질이 중요한 로컬 저장"
         ]
       },
       "mov": {
-        "title": "MOV (QuickTime File Format)",
-        "intro": "MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:",
+        "title": "MOV (QuickTime 파일 형식)",
+        "intro": "MOV는 Apple의 금지옥엽이에요 🍎. 대부분의 Apple 제품처럼 아름답지만... 복잡하죠:",
         "bullets": [
-          "<strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing",
-          "<strong>ProRes codec support</strong>: The format professionals drool over 🤤",
-          "<strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)",
-          "<strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime"
+          "<strong>뛰어난 품질</strong>: 특히 고해상도 동영상과 전문 편집에서요",
+          "<strong>ProRes 코덱 지원</strong>: 전문가들이 침 흘리는 형식이에요 🤤",
+          "<strong>방 안의 코끼리</strong>: 저장 드라이브를 울게 만드는 파일 크기 (제 315.9MB 화면 녹화 기억하세요? 네, 그게 MOV였어요)",
+          "<strong>크로스 플랫폼 문제</strong>: Mac에서는 완벽하게 작동하지만 Windows 사용자는 QuickTime을 설치해야 할 수도 있어요"
         ]
       },
-      "comparisonIntro": "Here's a quick comparison to really drive it home:",
+      "comparisonIntro": "확실히 정리되도록 빠른 비교표를 준비했어요:",
       "table": {
         "headers": [
-          "Format",
-          "File Size",
-          "Compatibility",
-          "Best Use Case"
+          "형식",
+          "파일 크기",
+          "호환성",
+          "최적 용도"
         ],
         "rows": [
           [
             "MP4",
-            "Small-Medium",
-            "Universal",
-            "Literally everything"
+            "작음-중간",
+            "범용",
+            "말 그대로 전부"
           ],
           [
             "WebM",
-            "Smallest",
-            "Modern browsers",
-            "Web optimization"
+            "가장 작음",
+            "최신 브라우저",
+            "웹 최적화"
           ],
           [
             "AVI",
-            "Largest",
-            "Universal",
-            "Archival/Editing"
+            "가장 큼",
+            "범용",
+            "보관/편집"
           ],
           [
             "MOV",
-            "Large",
-            "Mac-focused",
-            "Professional work"
+            "큼",
+            "Mac 중심",
+            "전문 작업"
           ]
         ]
       },
-      "quote": "\"Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose.\" ⚔️"
+      "quote": "\"싸움을 고르듯 형식을 고르세요. 모든 검이 모든 전사에게 맞지 않듯, 모든 코덱이 모든 목적에 맞지는 않아요.\" ⚔️"
     },
     "whenToUse": {
-      "title": "How Do I Know When to Use One Format Over Another?",
-      "p1": "Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).",
-      "p2": "Let me break this down into real-world scenarios because that's how we actually make these decisions:",
+      "title": "언제 어떤 형식을 써야 할지 어떻게 알죠?",
+      "p1": "자, 결정의 시간이에요! 🤔 알맞은 동영상 형식을 고르는 건 알맞은 옷을 고르는 것과 같아요. 헬스장에 턱시도를 입고 가지 않듯, 웹사이트 히어로 동영상에 AVI를 쓰면 안 돼요 (로딩되는 동안 사용자가 늙어 가길 바라는 게 아니라면요).",
+      "p2": "실제로 이런 결정을 내리는 방식대로, 현실 시나리오로 나눠 볼게요:",
       "mp4": {
-        "title": "When to Use MP4",
-        "lead": "<strong>Use MP4 when you want to play it safe</strong> 🛡️",
+        "title": "MP4를 써야 할 때",
+        "lead": "<strong>안전하게 가고 싶을 때는 MP4</strong> 🛡️",
         "bullets": [
-          "<strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend",
-          "<strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4",
-          "<strong>Email attachments</strong>: When you need to send a video that just works",
-          "<strong>Mobile apps</strong>: Both iOS and Android will thank you"
+          "<strong>웹사이트 동영상</strong>: 배경 동영상, 제품 데모, 튜토리얼 — MP4는 믿음직한 친구예요",
+          "<strong>소셜 미디어</strong>: Instagram, Twitter, LinkedIn — 모두 MP4를 사랑해요",
+          "<strong>이메일 첨부</strong>: 그냥 작동하는 동영상을 보내야 할 때",
+          "<strong>모바일 앱</strong>: iOS와 Android 모두 고마워할 거예요"
         ],
-        "proTip": "<strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices."
+        "proTip": "<strong>프로 팁</strong>: 최대 호환성을 원하면 H.264 코덱을, 더 작은 파일이 필요하고 사용자들이 최신 기기를 쓴다면 H.265를 사용하세요."
       },
       "webm": {
-        "title": "When to Use WebM",
-        "lead": "<strong>Use WebM when every kilobyte counts</strong> 🪶",
+        "title": "WebM을 써야 할 때",
+        "lead": "<strong>1KB도 아쉬울 때는 WebM</strong> 🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: Where load speed directly impacts conversion rates",
-          "<strong>Progressive web apps</strong>: When you're building for the modern web",
-          "<strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)",
-          "<strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome"
+          "<strong>랜딩 페이지</strong>: 로딩 속도가 전환율에 직접 영향을 주는 곳",
+          "<strong>프로그레시브 웹 앱</strong>: 현대적인 웹을 위해 만들 때",
+          "<strong>트래픽이 많은 웹사이트</strong>: 대역폭 비용을 아끼세요 (지갑이 고마워할 거예요 💰)",
+          "<strong>환경을 통제할 수 있을 때</strong>: 모두가 Chrome을 쓰는 걸 아는 사내 도구 같은 경우"
         ],
-        "realTalk": "<strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦"
+        "realTalk": "<strong>솔직한 이야기</strong>: 한번은 고객사의 히어로 동영상을 MP4에서 WebM으로 바꿨더니 파일 크기가 40% 줄었어요. 페이지 로딩 시간이 2초 단축됐고 이탈률이 15% 감소했죠. 그게 바로 통장에 꽂히는 돈이에요! 🏦"
       },
       "avi": {
-        "title": "When to Use AVI",
-        "lead": "<strong>Use AVI when quality is king and file size is... not a concern</strong> 👑",
+        "title": "AVI를 써야 할 때",
+        "lead": "<strong>품질이 왕이고 파일 크기는... 신경 안 쓸 때는 AVI</strong> 👑",
         "bullets": [
-          "<strong>Video editing source files</strong>: When you need every pixel perfect for post-production",
-          "<strong>Archival purposes</strong>: Storing the master copy before compression",
-          "<strong>Local playback</strong>: When it's only playing from a hard drive, not the internet",
-          "<strong>Screen recordings for tutorials</strong>: Before you compress them for distribution"
+          "<strong>동영상 편집 원본 파일</strong>: 후반 작업을 위해 모든 픽셀이 완벽해야 할 때",
+          "<strong>보관 목적</strong>: 압축 전 마스터 사본을 저장할 때",
+          "<strong>로컬 재생</strong>: 인터넷이 아니라 하드 드라이브에서만 재생할 때",
+          "<strong>튜토리얼용 화면 녹화</strong>: 배포용으로 압축하기 전에"
         ],
-        "warning": "<strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4)."
+        "warning": "<strong>경고</strong>: 진심으로, 웹 배포에 AVI를 쓰지 마세요. 제품 동영상에 AVI를 고집하던 고객이 있었어요. 홈페이지 로딩에 45초가 걸렸죠. 사십. 오. 초. 😱 이제 그분은 고객이 아니에요 (농담이에요, MP4로 고쳤어요)."
       },
       "mov": {
-        "title": "When to Use MOV",
-        "lead": "<strong>Use MOV when you're in Apple's ecosystem</strong> 🍎",
+        "title": "MOV를 써야 할 때",
+        "lead": "<strong>Apple 생태계 안에 있을 때는 MOV</strong> 🍎",
         "bullets": [
-          "<strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software",
-          "<strong>ProRes workflows</strong>: When color grading and quality are paramount",
-          "<strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac",
-          "<strong>Before converting</strong>: As a high-quality intermediate format"
+          "<strong>Final Cut Pro 프로젝트</strong>: MOV는 Apple의 편집 소프트웨어와 잘 어울려요",
+          "<strong>ProRes 워크플로</strong>: 색 보정과 품질이 최우선일 때",
+          "<strong>Mac에서 Mac으로 전송</strong>: 관련된 모두가 Mac을 쓸 때",
+          "<strong>변환 전</strong>: 고품질 중간 형식으로"
         ],
-        "realityCheck": "<strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!"
+        "realityCheck": "<strong>MOV 현실 점검</strong>: 제 315.9MB 화면 녹화 기억하세요? 그게 MOV다운 MOV예요. 품질은 훌륭하지만 공유에는 최악이죠. 업로드 전에 꼭 변환하세요!"
       },
       "decisionTree": {
-        "title": "Quick Decision Tree 🌳",
-        "diagram": "Is it for the web?\n├─ Yes → Is Safari support critical?\n│   ├─ Yes → MP4\n│   └─ No → WebM (with MP4 fallback)\n└─ No → Is it for editing?\n    ├─ Yes → Are you on Mac?\n    │   ├─ Yes → MOV\n    │   └─ No → AVI\n    └─ No → MP4 (it's always MP4)"
+        "title": "빠른 결정 트리 🌳",
+        "diagram": "웹용인가요?\n├─ 예 → Safari 지원이 중요한가요?\n│   ├─ 예 → MP4\n│   └─ 아니요 → WebM (MP4 대체본과 함께)\n└─ 아니요 → 편집용인가요?\n    ├─ 예 → Mac을 쓰나요?\n    │   ├─ 예 → MOV\n    │   └─ 아니요 → AVI\n    └─ 아니요 → MP4 (언제나 MP4예요)"
       },
-      "quote": "\"The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer.\" 🧘‍♂️"
+      "quote": "\"현명한 개발자는 최고의 형식이 가장 새롭거나 가장 화려한 게 아니라, 사용자를 괴롭히지 않고 일을 해내는 형식이라는 걸 알아요.\" 🧘‍♂️"
     },
     "whyImportant": {
-      "title": "Why Is This Even Important For My Website?",
-      "p1": "Look, I get it. You might be thinking \"Can't I just upload whatever and call it a day?\" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?",
-      "p2": "Here's the cold, hard truth about why video formats matter more than you think:",
+      "title": "이게 내 웹사이트에 왜 중요한데요?",
+      "p1": "알아요. \"그냥 아무거나 올리고 끝내면 안 되나?\" 하고 생각할 수 있어요 🤷‍♂️. 물론 포크로 수프를 먹을 수도 있지만, 굳이 삶을 더 어렵게 만들 이유가 있나요?",
+      "p2": "동영상 형식이 생각보다 중요한 이유에 대한 차갑고 냉정한 진실이에요:",
       "threeSecondRule": {
-        "title": "The 3-Second Rule ⏱️",
-        "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
+        "title": "3초 규칙 ⏱️",
+        "body": "연구에 따르면 모바일 사용자의 53%가 로딩에 3초 이상 걸리는 사이트를 떠난다고 해요. 오십삼 퍼센트! 잠재 고객의 절반 이상이 여러분의 멋진 콘텐츠를 보기도 전에 사라지는 거예요. 그리고 느린 로딩의 가장 큰 주범이 보통 뭘까요? 맞아요, 디지털 바리케이드처럼 떡하니 자리 잡은 최적화 안 된 200MB 히어로 동영상이죠 🚧."
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "Google이 지켜보고 있어요 (그리고 평가해요) 👀",
+        "intro": "페이지 속도는 Google의 직접적인 순위 요소예요. 이 말은:",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>느린 사이트 = 낮은 순위</strong> = 적은 자연 유입",
+          "<strong>적은 트래픽 = 적은 전환</strong> = 적은 수익",
+          "<strong>적은 수익 = 슬픈 개발자</strong> 😢"
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "제품 동영상에 거대한 MOV 파일을 쓰던 이커머스 고객사가 있었어요. 모든 걸 최적화된 MP4와 대체본이 있는 WebM으로 변환한 뒤:",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "페이지 로딩 시간이 8.2초에서 2.7초로 떨어졌어요",
+          "목표 키워드의 67%에서 Google 순위가 올랐어요",
+          "전환율이 23% 증가했어요",
+          "월 매출이 $18,000 뛰었어요 💸"
         ]
       },
       "bandwidthBill": {
-        "title": "The Bandwidth Bill From Hell 🔥",
-        "body": "Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.",
-        "realNumbersIntro": "<strong>Real numbers</strong>: If your site gets 10,000 visitors/month:",
+        "title": "지옥에서 온 대역폭 청구서 🔥",
+        "body": "누군가 페이지를 로드할 때마다 여러분은 그 대역폭 비용을 내고 있어요. 5MB MP4 대신 50MB AVI를 쓴다는 건 말 그대로 호스팅 비용을 10배 더 내는 거예요. 피자 하나면 되는데 열 판을 주문하는 것과 같죠. 덜 맛있고 더 비싸다는 점만 빼면요.",
+        "realNumbersIntro": "<strong>실제 숫자</strong>: 사이트에 월 10,000명이 방문한다면:",
         "bullets": [
-          "With 50MB videos: 500GB bandwidth = $$",
-          "With 5MB videos: 50GB bandwidth = $",
-          "That's potentially hundreds of dollars saved monthly!"
+          "50MB 동영상: 500GB 대역폭 = $$",
+          "5MB 동영상: 50GB 대역폭 = $",
+          "매달 수백 달러를 아낄 수 있는 거예요!"
         ]
       },
       "mobileUsers": {
-        "title": "Mobile Users Will Hate You 📱",
-        "intro": "Remember, over 60% of web traffic is mobile now. That means:",
+        "title": "모바일 사용자들이 여러분을 미워할 거예요 📱",
+        "intro": "기억하세요, 이제 웹 트래픽의 60% 이상이 모바일이에요. 그 말은:",
         "bullets": [
-          "<strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video",
-          "<strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty",
-          "<strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users"
+          "<strong>데이터 한도는 현실이에요</strong>: 여러분의 히어로 동영상을 보느라 한 달 데이터를 날리고 싶은 사람은 없어요",
+          "<strong>느린 연결</strong>: 모두가 5G를 쓰는 건 아니고, 4G도 끊길 수 있어요",
+          "<strong>배터리 소모</strong>: 큰 동영상 = 더 많은 처리 = 꺼진 휴대폰 = 화난 사용자"
         ]
       },
       "trust": {
-        "title": "Trust and Professionalism 🤝",
-        "intro": "This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:",
+        "title": "신뢰와 전문성 🤝",
+        "intro": "아무도 이야기하지 않지만 정말 중요한 부분이에요. 사이트가 빠르게 로드되고 동영상이 부드럽게 재생되면:",
         "bullets": [
-          "Users trust you more (subconsciously associating speed with competence)",
-          "They're more likely to stay and explore",
-          "They're more likely to come back",
-          "They're more likely to recommend you"
+          "사용자가 여러분을 더 신뢰해요 (무의식적으로 속도를 역량과 연결 지어요)",
+          "머물면서 둘러볼 가능성이 높아져요",
+          "다시 돌아올 가능성이 높아져요",
+          "여러분을 추천할 가능성이 높아져요"
         ],
-        "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
+        "outro": "하지만 사이트가 느리면요? 무적 사이렌보다 더 크게 \"아마추어\"라고 외치는 거예요 📯. 사용자는 이렇게 생각하죠. \"웹사이트 하나 제대로 못 만드는데, 내 신용카드를 맡겨도 될까?\""
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "수익화와의 연결 💰",
+        "intro": "광고를 운영하든, 제품을 팔든, Medium으로 콘텐츠를 수익화하든 (안녕하세요, 동료 Medium 작가님! 👋), 성능은 수익에 직접 영향을 줘요:",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>광고 수익</strong>: 느린 사이트 = 높은 이탈률 = 적은 광고 노출",
+          "<strong>제휴 링크</strong>: 기다리지 않고 떠난 사람은 클릭할 수 없어요",
+          "<strong>제품 판매</strong>: 로딩 시간 1초마다 전환율이 7% 감소할 수 있어요",
+          "<strong>콘텐츠 수익화</strong>: 독자는 여러분의 훌륭한 글이 로드되길 기다리지 않아요"
         ]
       },
-      "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"
+      "quote": "\"웹사이트의 속도는 첫인상과 같아요. 기회는 한 번뿐이고, 망치면 '잠시만요, 로딩 중...'이라고 말하기도 전에 왼쪽으로 스와이프당하죠.\" 💨"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.",
-      "cheatSheetIntro": "Here's your TL;DR cheat sheet:",
+      "title": "결론",
+      "p1": "자, 여기까지예요, 디지털 모험가 여러분! 🚀 동영상 형식의 거친 세계를 함께 여행했고, 이제는 MP4, WebM, AVI, MOV가 더 이상 알 수 없는 외계어처럼 보이지 않길 바라요.",
+      "cheatSheetIntro": "요약 치트 시트예요:",
       "cheatSheet": [
-        "<strong>MP4</strong>: Your reliable, go-everywhere friend",
-        "<strong>WebM</strong>: The speed demon for modern web",
-        "<strong>AVI</strong>: The quality beast for local storage",
-        "<strong>MOV</strong>: Apple's heavyweight champion"
+        "<strong>MP4</strong>: 어디든 함께 가는 믿음직한 친구",
+        "<strong>WebM</strong>: 현대 웹을 위한 스피드 악마",
+        "<strong>AVI</strong>: 로컬 저장을 위한 품질 괴물",
+        "<strong>MOV</strong>: Apple의 헤비급 챔피언"
       ],
-      "p2": "But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:",
+      "p2": "하지만 더 중요한 건, 알맞은 동영상 형식을 고르는 게 단순히 괴짜 같은 기술적 결정이 아니라는 걸 이제 안다는 거예요. 이건:",
       "checklist": [
-        "✅ Keeping your users happy (and on your site)",
-        "✅ Making Google love you (hello, better rankings! 👋)",
-        "✅ Saving money on hosting (cha-ching! 💰)",
-        "✅ Building trust and looking professional",
-        "✅ Actually making money from your content"
+        "✅ 사용자를 행복하게 (그리고 사이트에 머물게) 하는 것",
+        "✅ Google이 여러분을 사랑하게 만드는 것 (안녕, 더 높은 순위! 👋)",
+        "✅ 호스팅 비용을 아끼는 것 (짤랑짤랑! 💰)",
+        "✅ 신뢰를 쌓고 전문적으로 보이는 것",
+        "✅ 실제로 콘텐츠로 돈을 버는 것"
       ],
-      "p3": "The next time you're about to upload a video to your website, take a second to ask yourself: \"Is this format working for me, or am I working for it?\" Because life's too short for slow-loading websites and frustrated users.",
-      "p4": "Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅",
-      "quote": "\"In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!\" ⚡"
+      "p3": "다음에 웹사이트에 동영상을 올리기 직전에 잠깐 스스로에게 물어보세요. \"이 형식이 나를 위해 일하고 있나, 아니면 내가 이 형식을 위해 일하고 있나?\" 느리게 로드되는 웹사이트와 짜증 난 사용자에 쓰기엔 인생이 너무 짧으니까요.",
+      "p4": "이제 가서 그 동영상들을 압축하세요! 사용자들이 (그리고 지갑이) 고마워할 거예요. 그리고 이 글이 도움이 됐다면 Medium에서 박수를 남기거나, 아직도 원본 MOV 파일을 웹사이트에 올리는 그 친구에게 공유해 주세요. 다들 그런 친구 하나씩 있잖아요 😅",
+      "quote": "\"웹 개발이라는 대모험에서 가장 작은 최적화가 종종 가장 큰 승리로 이어져요. 여러분의 동영상은 압축되고 로딩 시간은 빠르기를!\" ⚡"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Apply what you just read with the free Media Manipulator tools.",
+      "title": "관련 도구",
+      "intro": "방금 읽은 내용을 무료 Media Manipulator 도구로 바로 적용해 보세요.",
       "items": [
         {
-          "label": "Compress video",
-          "description": "Shrink MP4, WebM, MOV, and MKV files for the web."
+          "label": "동영상 압축",
+          "description": "웹용으로 MP4, WebM, MOV, MKV 파일을 줄이세요."
         },
         {
-          "label": "Video converter",
-          "description": "Convert between MP4, WebM, MOV, AVI, and more."
+          "label": "동영상 변환기",
+          "description": "MP4, WebM, MOV, AVI 등을 서로 변환하세요."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "동영상을 GIF로 변환",
+          "description": "짧은 동영상 클립을 공유하기 좋은 애니메이션 GIF로 바꾸세요."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video into searchable text or captions."
+          "label": "동영상 전사",
+          "description": "동영상의 음성을 검색 가능한 텍스트나 자막으로 뽑아내세요."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Step-by-step walkthrough of every video conversion setting."
+          "label": "동영상 변환기 튜토리얼",
+          "description": "모든 동영상 변환 설정의 단계별 안내."
         },
         {
-          "label": "Image optimization guide",
-          "description": "JPG vs PNG vs WebP and how to shrink images for the web."
+          "label": "이미지 최적화 가이드",
+          "description": "JPG vs PNG vs WebP, 그리고 웹용으로 이미지를 줄이는 방법."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Optimize Your Videos? 🚀",
-      "body": "Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.",
-      "button": "Try the video compressor →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "동영상을 최적화할 준비가 되셨나요? 🚀",
+      "body": "거대한 동영상 파일이 웹사이트를 느리게 만들도록 두지 마세요! 무료 동영상 압축 도구를 써 보고 차이를 바로 확인하세요. 몇 번의 클릭으로 MP4, WebM, AVI, MOV 등을 변환할 수 있어요.",
+      "button": "동영상 압축기 사용해 보기 →",
+      "footnote": "가입 불필요 • 파일 로컬 처리 • 빠르고 안전"
     }
   },
   "blogImageOptimization": {
-    "backLink": "← Blog",
-    "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+    "backLink": "← 블로그",
+    "title": "웹 제다이를 위한 이미지 최적화: JPG vs PNG vs WebP",
     "byline": {
-      "label": "Written by:",
-      "date": "June 14th, 2025",
-      "time": "5:32 PM"
+      "label": "작성자:",
+      "date": "2025년 6월 14일",
+      "time": "오후 5:32"
     },
     "sections": {
       "intro": {
-        "title": "A Brief Intro to Image Formatting",
-        "p1": "Ever uploaded an image to your website and wondered why it takes <em>forever</em> to load? Or maybe you've noticed that your beautiful PNG logo looks crisp and clean, but it's somehow 5MB for a simple graphic? 🤔 Welcome to the wild world of image formats, where choosing the wrong one can make the difference between a lightning-fast website and one that loads slower than dial-up internet (remember that? 😅).",
-        "p2": "Image formats are essentially different ways of encoding and storing visual data. Think of them like different languages for describing the same picture - some are more verbose and detailed (like PNG), while others are more concise and compressed (like JPG). Each format has its own special sauce for how it stores pixels, handles transparency, compresses data, and maintains quality.",
-        "p3": "At their core, all image formats are trying to solve the same problem: how do we store millions of pixels worth of color information in a file that doesn't break the internet when someone tries to download it? The answer lies in <em>compression</em> - and this is where things get interesting! Some formats use \"lossy\" compression (they throw away some data to save space), while others use \"lossless\" compression (they keep everything but find clever ways to pack it smaller). It's like the difference between summarizing a book versus shrinking the font size - both make it \"smaller,\" but one loses information while the other doesn't.",
-        "p4": "The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀",
-        "quote": "\"The wise developer knows that the heaviest burden on a website is not code, but unoptimized images.\" - Ancient Web Proverb 😉"
+        "title": "이미지 형식 간단 소개",
+        "p1": "웹사이트에 이미지를 올리고는 왜 로드되는 데 <em>영원</em>이 걸리는지 궁금했던 적 있나요? 아니면 아름다운 PNG 로고가 선명하고 깔끔한데, 단순한 그래픽인데도 어쩐 일인지 5MB나 된다는 걸 알아챈 적은요? 🤔 이미지 형식의 거친 세계에 오신 걸 환영해요. 여기서는 잘못된 선택 하나가 번개처럼 빠른 웹사이트와 전화 모뎀보다 느리게 로드되는 웹사이트의 차이를 만들어요 (그거 기억나세요? 😅).",
+        "p2": "이미지 형식은 본질적으로 시각 데이터를 인코딩하고 저장하는 서로 다른 방식이에요. 같은 그림을 설명하는 서로 다른 언어라고 생각해 보세요. 어떤 건 더 장황하고 상세하고(PNG처럼), 어떤 건 더 간결하고 압축되어 있죠(JPG처럼). 각 형식은 픽셀을 저장하고, 투명도를 다루고, 데이터를 압축하고, 품질을 유지하는 자기만의 비법 소스를 갖고 있어요.",
+        "p3": "근본적으로 모든 이미지 형식은 같은 문제를 풀려고 해요. 수백만 픽셀 분량의 색 정보를, 누군가 다운로드하려 할 때 인터넷을 망가뜨리지 않는 파일에 어떻게 담을까? 답은 <em>압축</em>에 있고, 여기서부터 흥미로워져요! 어떤 형식은 \"손실\" 압축을 써서(공간을 아끼려고 일부 데이터를 버려요), 어떤 형식은 \"무손실\" 압축을 써요(모든 걸 유지하되 더 작게 담는 영리한 방법을 찾아요). 책을 요약하는 것과 글자 크기를 줄이는 것의 차이와 같아요. 둘 다 \"작아지지만\" 하나는 정보를 잃고 다른 하나는 잃지 않죠.",
+        "p4": "오늘 파헤칠 세 친구 JPG, PNG, WebP는 각자 이 과제에 다르게 접근하고, 이들의 고유한 초능력(과 크립토나이트!)을 이해하면 여러분은 파다완에서 진정한 웹 제다이로 변신할 거예요. 🚀",
+        "quote": "\"현명한 개발자는 웹사이트에서 가장 무거운 짐이 코드가 아니라 최적화되지 않은 이미지라는 걸 안다.\" - 고대 웹 격언 😉"
       },
       "differences": {
-        "title": "What's the Difference Between These Formats Anyway?",
-        "intro": "Alright, let's get into the nitty-gritty of what makes each format tick! Think of these formats as different types of vehicles - they'll all get you from point A to point B, but some are sports cars, some are trucks, and some are those fancy new electric vehicles that do everything. 🚗",
+        "title": "그래서 이 형식들은 뭐가 다른데요?",
+        "intro": "좋아요, 각 형식이 어떻게 작동하는지 세세하게 들어가 봅시다! 이 형식들을 서로 다른 종류의 탈것이라고 생각해 보세요. 모두 A에서 B로 데려다주지만, 어떤 건 스포츠카, 어떤 건 트럭, 어떤 건 뭐든 다 하는 멋진 신형 전기차예요. 🚗",
         "jpg": {
-          "title": "JPG (or JPEG - they're the same thing, don't let anyone tell you otherwise 😄)",
-          "body": "JPG is like that reliable friend who's great at parties but terrible with details. It uses lossy compression, which means it literally throws away data it thinks you won't notice. Perfect for photographs where a tiny bit of quality loss is invisible to the human eye, but terrible for text or sharp edges. Ever seen a meme that's been shared so many times it looks like it was photographed through a potato? That's JPG compression artifacts saying hello! 👋",
+          "title": "JPG (또는 JPEG — 같은 거예요, 누가 아니라고 해도 믿지 마세요 😄)",
+          "body": "JPG는 파티에서는 최고지만 디테일에는 약한 믿음직한 친구 같아요. 손실 압축을 쓰는데, 이건 여러분이 눈치채지 못할 거라고 판단한 데이터를 말 그대로 버린다는 뜻이에요. 약간의 품질 손실이 사람 눈에 보이지 않는 사진에는 완벽하지만, 텍스트나 날카로운 가장자리에는 최악이죠. 너무 많이 공유되어 감자로 찍은 것처럼 보이는 밈을 본 적 있나요? 그게 바로 JPG 압축 아티팩트가 인사하는 거예요! 👋",
           "bullets": [
-            "<strong>Pros</strong>: Small file sizes, universally supported, great for photos",
-            "<strong>Cons</strong>: No transparency support, loses quality with each save, makes text look fuzzy",
-            "<strong>Best for</strong>: Photographs, complex images with lots of colors"
+            "<strong>장점</strong>: 작은 파일 크기, 범용 지원, 사진에 최적",
+            "<strong>단점</strong>: 투명도 미지원, 저장할 때마다 품질 손실, 텍스트가 흐릿해짐",
+            "<strong>최적 용도</strong>: 사진, 색이 많은 복잡한 이미지"
           ]
         },
         "png": {
           "title": "PNG (Portable Network Graphics)",
-          "body": "PNG is the perfectionist of the group - it refuses to lose any data whatsoever. Using lossless compression, it keeps every single pixel exactly as you intended. It also supports transparency (hello, logos with no background! 🎉), making it the go-to choice for graphics, icons, and anything with text. The downside? File sizes can get chunky real quick, especially with large, complex images.",
+          "body": "PNG는 그룹의 완벽주의자예요. 어떤 데이터도 잃기를 거부하죠. 무손실 압축으로 모든 픽셀을 의도한 그대로 유지해요. 투명도도 지원해서(배경 없는 로고, 안녕! 🎉) 그래픽, 아이콘, 텍스트가 있는 모든 것에 기본 선택이 돼요. 단점은? 특히 크고 복잡한 이미지에서 파일 크기가 순식간에 뚱뚱해질 수 있어요.",
           "bullets": [
-            "<strong>Pros</strong>: Lossless compression, supports transparency, perfect for graphics and text",
-            "<strong>Cons</strong>: Larger file sizes, not ideal for photographs",
-            "<strong>Best for</strong>: Logos, icons, images with text, anything needing transparency"
+            "<strong>장점</strong>: 무손실 압축, 투명도 지원, 그래픽과 텍스트에 완벽",
+            "<strong>단점</strong>: 더 큰 파일 크기, 사진에는 비효율적",
+            "<strong>최적 용도</strong>: 로고, 아이콘, 텍스트가 있는 이미지, 투명도가 필요한 모든 것"
           ]
         },
         "webp": {
-          "title": "WebP (The New Kid on the Block)",
-          "body": "WebP is Google's attempt to create the ultimate image format - and honestly, they kind of nailed it! 🎯 It's like the Swiss Army knife of image formats, supporting both lossy AND lossless compression, transparency, and even animation (move over, GIF!). It typically achieves 25-35% smaller file sizes than JPG and PNG while maintaining the same quality. The only catch? Not every browser plays nice with it yet (looking at you, older Safari versions 👀).",
+          "title": "WebP (동네의 새 친구)",
+          "body": "WebP는 궁극의 이미지 형식을 만들려는 Google의 시도이고, 솔직히 거의 해냈어요! 🎯 이미지 형식계의 맥가이버 칼 같아서 손실과 무손실 압축 모두, 투명도, 심지어 애니메이션까지 지원해요 (비켜, GIF!). 보통 같은 품질을 유지하면서 JPG와 PNG보다 25-35% 작은 파일 크기를 달성하죠. 유일한 함정은? 아직 모든 브라우저가 잘 지원하지는 않아요 (당신 말이에요, 구형 Safari 👀).",
           "bullets": [
-            "<strong>Pros</strong>: Smaller file sizes, supports everything (lossy, lossless, transparency, animation), excellent quality-to-size ratio",
-            "<strong>Cons</strong>: Not universally supported (yet), requires fallbacks for older browsers",
-            "<strong>Best for</strong>: Modern websites where you can provide fallbacks, any use case really!"
+            "<strong>장점</strong>: 더 작은 파일 크기, 모든 것 지원(손실, 무손실, 투명도, 애니메이션), 뛰어난 품질 대비 크기",
+            "<strong>단점</strong>: (아직) 범용 지원이 아님, 구형 브라우저용 대체본 필요",
+            "<strong>최적 용도</strong>: 대체본을 제공할 수 있는 현대적 웹사이트, 사실상 모든 용도!"
           ]
         },
-        "example": "Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️",
-        "quote": "\"Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses.\" ⚔️"
+        "example": "간단한 실제 예시예요. 1920x1080 사진이 JPG로는 500KB, PNG로는 2MB인데 WebP로는 350KB에 불과하고, 시각적 품질은 사실상 동일해요. 소형차 가격에 고급차를 얻는 셈이죠! 🏎️",
+        "quote": "\"사무라이가 검을 고르듯 형식을 고르세요. 목적과 정밀함, 그리고 장단점에 대한 이해를 갖고서.\" ⚔️"
       },
       "choosing": {
-        "title": "How Do I Know When to Use One Format Over Another?",
-        "intro": "This is where the rubber meets the road! 🏁 Choosing the right format isn't rocket science, but it does require thinking like a detective. Let me break down the decision-making process with some real-world scenarios that'll make you go \"Aha!\" 💡",
+        "title": "언제 어떤 형식을 써야 할지 어떻게 알죠?",
+        "intro": "여기서부터 실전이에요! 🏁 알맞은 형식을 고르는 건 로켓 과학이 아니지만 탐정처럼 생각할 필요는 있어요. \"아하!\" 소리가 나올 현실 시나리오로 결정 과정을 풀어 볼게요 💡",
         "decisionTree": {
-          "title": "The Quick Decision Tree (Screenshot This! 📸)",
-          "lead": "Ask yourself these questions in order:",
+          "title": "빠른 결정 트리 (스크린샷 찍어 두세요! 📸)",
+          "lead": "이 질문들을 순서대로 자신에게 던져 보세요:",
           "items": [
-            "Does it need transparency? → If yes, PNG or WebP",
-            "Is it a photograph with lots of colors and gradients? → JPG or WebP",
-            "Does it have text or sharp edges? → PNG or WebP",
-            "Do I need the absolute smallest file size? → WebP (with JPG/PNG fallback)",
-            "Is it going to be edited and saved multiple times? → PNG (to avoid quality degradation)"
+            "투명도가 필요한가? → 그렇다면 PNG 또는 WebP",
+            "색과 그라데이션이 많은 사진인가? → JPG 또는 WebP",
+            "텍스트나 날카로운 가장자리가 있는가? → PNG 또는 WebP",
+            "절대적으로 가장 작은 파일 크기가 필요한가? → WebP (JPG/PNG 대체본과 함께)",
+            "여러 번 편집하고 저장할 것인가? → PNG (품질 저하를 피하기 위해)"
           ]
         },
         "scenarios": {
-          "title": "Real-World Scenarios (Because Theory is Boring 😴)",
+          "title": "현실 시나리오 (이론은 지루하니까요 😴)",
           "items": [
             {
-              "title": "Scenario 1: Your Company Logo",
-              "body": "You've got a slick logo that needs to work on any background. This is PNG territory all day! Why? You need that transparency, baby! Plus, logos typically have clean lines and solid colors that PNG handles like a boss. If you're feeling adventurous and your analytics show most users have modern browsers, go WebP with PNG fallback."
+              "title": "시나리오 1: 회사 로고",
+              "body": "어떤 배경에서든 작동해야 하는 멋진 로고가 있어요. 이건 온종일 PNG 영역이에요! 왜냐고요? 투명도가 필요하잖아요! 게다가 로고는 보통 PNG가 보스처럼 처리하는 깔끔한 선과 단색으로 이루어져 있어요. 모험심이 생기고 분석 데이터상 대부분의 사용자가 최신 브라우저를 쓴다면 PNG 대체본과 함께 WebP로 가세요."
             },
             {
-              "title": "Scenario 2: Hero Image on Your Landing Page",
-              "body": "That gorgeous 4K photograph of your product/team/artisanal coffee? JPG or WebP, no question. The slight quality loss from JPG compression is invisible in photographs, and the file size difference is *chef's kiss* 👨‍🍳. A 5MB PNG photo will make your users cry (and bounce), while a 500KB JPG will load faster than they can say \"add to cart.\""
+              "title": "시나리오 2: 랜딩 페이지의 히어로 이미지",
+              "body": "제품/팀/수제 커피의 그 멋진 4K 사진이요? 의심의 여지 없이 JPG 또는 WebP예요. JPG 압축의 약간의 품질 손실은 사진에서 보이지 않고, 파일 크기 차이는 *셰프의 키스* 👨‍🍳죠. 5MB PNG 사진은 사용자를 울게(그리고 떠나게) 만들지만, 500KB JPG는 \"장바구니에 담기\"라고 말하기도 전에 로드될 거예요."
             },
             {
-              "title": "Scenario 3: Screenshots for Your Blog/Documentation",
-              "body": "This one's tricky! If there's text in the screenshot (and there usually is), PNG is your friend. JPG will make that text look like it went through a blender. However, if you're taking screenshots on a Mac, those bad boys can be HUGE. Consider using WebP or optimizing your PNGs with tools like TinyPNG."
+              "title": "시나리오 3: 블로그/문서용 스크린샷",
+              "body": "이건 까다로워요! 스크린샷에 텍스트가 있다면(보통 있죠) PNG가 친구예요. JPG는 그 텍스트를 믹서기에 넣은 것처럼 만들어 버려요. 하지만 Mac에서 스크린샷을 찍는다면 그 녀석들은 거대할 수 있어요. WebP를 쓰거나 TinyPNG 같은 도구로 PNG를 최적화하는 걸 고려하세요."
             },
             {
-              "title": "Scenario 4: Product Images for E-commerce",
-              "body": "WebP with JPG fallback is the power move here. 🎯 You get smaller file sizes (faster load times = better conversions), great quality, and you can even add subtle transparency effects if needed. Just make sure to implement proper fallbacks for the Safari-on-iPhone crowd."
+              "title": "시나리오 4: 이커머스 제품 이미지",
+              "body": "여기서는 JPG 대체본과 함께 WebP가 정석이에요. 🎯 더 작은 파일 크기(빠른 로딩 = 더 나은 전환), 훌륭한 품질, 필요하면 은은한 투명 효과까지 더할 수 있죠. iPhone의 Safari 사용자들을 위해 적절한 대체본을 꼭 구현하세요."
             }
           ]
         },
         "proTips": {
-          "title": "Pro Tips from the Trenches 🪖",
+          "title": "현장에서 온 프로 팁 🪖",
           "items": [
-            "Always compress your images! Even if you choose the right format, an unoptimized PNG can still be a monster",
-            "Use responsive images with different sizes for different devices (your mobile users will thank you)",
-            "Consider using CDNs that can automatically serve WebP to supported browsers",
-            "When in doubt, test both formats and see which looks better at a reasonable file size"
+            "항상 이미지를 압축하세요! 올바른 형식을 골라도 최적화 안 된 PNG는 여전히 괴물일 수 있어요",
+            "기기별로 다른 크기의 반응형 이미지를 사용하세요 (모바일 사용자가 고마워할 거예요)",
+            "지원되는 브라우저에 WebP를 자동으로 제공하는 CDN 사용을 고려하세요",
+            "확신이 없을 때는 두 형식을 모두 테스트해서 적당한 파일 크기에서 어느 쪽이 더 좋아 보이는지 확인하세요"
           ]
         },
-        "quote": "\"The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves.\" 🧘‍♂️"
+        "quote": "\"마스터 웹 개발자는 가장 좋아 보이는 형식이 아니라 사용자에게 가장 도움이 되는 형식을 고른다. 남을 섬기는 가운데 우리 자신이 최적화되기 때문이다.\" 🧘‍♂️"
       },
       "whyImportant": {
-        "title": "Why Is This Even Important For My Website?",
-        "intro": "Okay, real talk time. 💯 You might be thinking, \"Come on, it's 2025, everyone has fast internet now, right?\" WRONG! Let me hit you with some truth bombs that'll make you want to optimize every image on your site immediately. 💣",
+        "title": "이게 내 웹사이트에 왜 중요한데요?",
+        "intro": "좋아요, 솔직한 이야기 시간이에요. 💯 \"에이, 2025년인데 이제 다들 인터넷 빠르잖아요?\" 하고 생각할지도 몰라요. 틀렸어요! 사이트의 모든 이미지를 당장 최적화하고 싶어질 진실 폭탄을 몇 개 던져 드릴게요. 💣",
         "loadTimes": {
-          "title": "The Brutal Reality of Page Load Times",
-          "p1": "Here's a stat that'll make your jaw drop: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load</strong>. THREE. SECONDS. 😱 And guess what's usually the biggest culprit? Yep, those chunky, unoptimized images you uploaded straight from your camera.",
-          "p2": "Let's do some quick math (don't worry, I'll keep it simple):",
+          "title": "페이지 로딩 시간의 잔혹한 현실",
+          "p1": "턱이 떨어질 통계예요. <strong>모바일 사용자의 53%가 로딩에 3초 이상 걸리는 사이트를 떠나요</strong>. 삼. 초. 😱 그리고 가장 큰 주범이 보통 뭘까요? 네, 카메라에서 바로 올린 그 뚱뚱하고 최적화 안 된 이미지들이에요.",
+          "p2": "간단한 계산을 해 볼게요 (걱정 마세요, 쉽게 할게요):",
           "items": [
-            "Average webpage: 2-3MB total",
-            "Unoptimized hero image: 5MB",
-            "Result: Your page just became slower than a sloth on sedatives 🦥"
+            "평균 웹페이지: 총 2-3MB",
+            "최적화 안 된 히어로 이미지: 5MB",
+            "결과: 페이지가 진정제 맞은 나무늘보보다 느려졌어요 🦥"
           ]
         },
         "seo": {
-          "title": "The SEO Domino Effect 🎯",
-          "intro": "Google's Core Web Vitals (fancy term for \"does your site load fast?\") directly impact your search rankings. Here's the chain reaction:",
+          "title": "SEO 도미노 효과 🎯",
+          "intro": "Google의 Core Web Vitals(\"사이트가 빨리 뜨나요?\"의 고급스러운 표현)는 검색 순위에 직접 영향을 줘요. 연쇄 반응은 이래요:",
           "items": [
-            "Heavy images → Slow load times",
-            "Slow load times → Poor Core Web Vitals scores",
-            "Poor scores → Lower search rankings",
-            "Lower rankings → Less traffic",
-            "Less traffic → Less money 💸"
+            "무거운 이미지 → 느린 로딩",
+            "느린 로딩 → 낮은 Core Web Vitals 점수",
+            "낮은 점수 → 낮은 검색 순위",
+            "낮은 순위 → 적은 트래픽",
+            "적은 트래픽 → 적은 수익 💸"
           ],
-          "outro": "It's like a really expensive game of dominoes where every piece that falls costs you customers!"
+          "outro": "쓰러지는 조각마다 고객을 잃는 아주 비싼 도미노 게임 같죠!"
         },
         "mobile": {
-          "title": "The Mobile Reality Check 📱",
-          "p1": "Here's something that might surprise you: In many parts of the world, people are browsing on 3G connections or have data caps. That beautiful 10MB PNG hero image? It just cost someone in India half their daily data allowance. Not cool, and definitely not good for business.",
-          "p2": "Plus, even in countries with \"fast\" internet, people are often on spotty coffee shop WiFi or riding the subway. Your unoptimized images are literally making people close your site and go to your competitor. Ouch! 🤕"
+          "title": "모바일 현실 점검 📱",
+          "p1": "놀랄 만한 사실이 있어요. 세계 많은 지역에서 사람들은 3G로 탐색하거나 데이터 한도가 있어요. 그 아름다운 10MB PNG 히어로 이미지요? 방금 인도의 누군가에게 하루 데이터 한도의 절반을 쓰게 했어요. 멋지지 않고, 사업에도 확실히 좋지 않죠.",
+          "p2": "게다가 인터넷이 \"빠른\" 나라에서도 사람들은 종종 끊기는 카페 WiFi를 쓰거나 지하철을 타고 있어요. 최적화 안 된 이미지는 말 그대로 사람들이 사이트를 닫고 경쟁사로 가게 만들어요. 아야! 🤕"
         },
         "money": {
-          "title": "The Money Talk (Because Let's Be Honest, That's What Matters) 💰",
+          "title": "돈 이야기 (솔직히 그게 중요하니까요) 💰",
           "items": [
-            "<strong>Amazon found that every 100ms of latency cost them 1% in sales</strong>",
-            "<strong>Pinterest increased search engine traffic and sign-ups by 15% when they reduced perceived wait times by 40%</strong>",
-            "<strong>Walmart saw a 2% increase in conversions for every 1 second of improvement in load time</strong>"
+            "<strong>Amazon은 100ms의 지연마다 매출이 1% 줄어든다는 걸 발견했어요</strong>",
+            "<strong>Pinterest는 체감 대기 시간을 40% 줄였을 때 검색 엔진 트래픽과 가입이 15% 늘었어요</strong>",
+            "<strong>Walmart는 로딩 시간이 1초 개선될 때마다 전환이 2% 증가했어요</strong>"
           ],
-          "outro": "Still think image optimization doesn't matter? 🤔"
+          "outro": "아직도 이미지 최적화가 중요하지 않다고 생각하세요? 🤔"
         },
         "horrorStory": {
-          "title": "Real-World Horror Story 🎃",
-          "body": "I once worked with a client whose beautiful photography portfolio site was getting almost no traffic. The culprit? Each image was a 15-20MB PNG straight from Photoshop. The homepage took 45 seconds to load on a good day. After optimizing (converting to JPG, proper sizing, lazy loading), load time dropped to 2 seconds. Traffic increased by 70% in one month. True story!"
+          "title": "현실 공포 이야기 🎃",
+          "body": "아름다운 사진 포트폴리오 사이트에 트래픽이 거의 없던 고객과 일한 적이 있어요. 범인은? 모든 이미지가 Photoshop에서 바로 나온 15-20MB PNG였어요. 홈페이지가 좋은 날에도 로드되는 데 45초가 걸렸죠. 최적화(JPG 변환, 적절한 크기 조정, 지연 로딩) 후 로딩 시간이 2초로 떨어졌어요. 한 달 만에 트래픽이 70% 늘었고요. 실화예요!"
         },
         "trust": {
-          "title": "The Trust Factor 🤝",
-          "intro": "Slow websites don't just lose customers - they lose credibility. Users subconsciously associate slow load times with:",
+          "title": "신뢰 요소 🤝",
+          "intro": "느린 웹사이트는 고객만 잃는 게 아니라 신뢰도 잃어요. 사용자는 무의식적으로 느린 로딩을 이것들과 연결 지어요:",
           "items": [
-            "Outdated technology",
-            "Lack of attention to detail",
-            "Unprofessionalism",
-            "Security concerns (yes, really!)"
+            "낡은 기술",
+            "디테일에 대한 무관심",
+            "비전문성",
+            "보안 우려 (네, 정말로요!)"
           ],
-          "outro": "Your image choices are literally affecting how trustworthy people think you are. Wild, right?"
+          "outro": "이미지 선택이 말 그대로 사람들이 여러분을 얼마나 신뢰할 만하다고 생각하는지에 영향을 주고 있어요. 놀랍죠?"
         },
-        "quote": "\"A website's speed is like a first impression - you never get a second chance to load quickly.\" ⚡"
+        "quote": "\"웹사이트의 속도는 첫인상과 같아요. 빠르게 로드될 두 번째 기회는 없어요.\" ⚡"
       },
       "conclusion": {
-        "title": "Conclusion",
-        "intro": "Alright, my fellow Web Jedis, we've been on quite the journey! 🚀 From understanding the DNA of image formats to seeing how they can literally make or break your website's success. Let's recap the superpowers you've just unlocked:",
+        "title": "결론",
+        "intro": "좋아요, 동료 웹 제다이 여러분, 꽤 긴 여정이었어요! 🚀 이미지 형식의 DNA를 이해하는 것부터 그것이 말 그대로 웹사이트의 성패를 가를 수 있다는 걸 보는 것까지. 방금 해금한 초능력들을 되짚어 봅시다:",
         "tldr": {
-          "title": "The TL;DR Version (For Those Who Scrolled Here First 😏)",
+          "title": "요약 버전 (여기로 먼저 스크롤한 분들을 위해 😏)",
           "items": [
-            "<strong>JPG</strong>: Your go-to for photos. Small files, great quality, but no transparency",
-            "<strong>PNG</strong>: The perfectionist for logos, graphics, and anything with text. Bigger files but pixel-perfect",
-            "<strong>WebP</strong>: The Swiss Army knife that does it all, just needs fallbacks for older browsers"
+            "<strong>JPG</strong>: 사진의 기본 선택. 작은 파일, 훌륭한 품질, 하지만 투명도 없음",
+            "<strong>PNG</strong>: 로고, 그래픽, 텍스트가 있는 모든 것을 위한 완벽주의자. 더 큰 파일이지만 픽셀 단위로 완벽",
+            "<strong>WebP</strong>: 모든 걸 다 하는 맥가이버 칼, 구형 브라우저용 대체본만 있으면 됨"
           ]
         },
         "actionPlan": {
-          "title": "Your Action Plan (Do These TODAY!) ✅",
+          "title": "실행 계획 (오늘 당장 하세요!) ✅",
           "items": [
-            "<strong>Audit your current images</strong> - Open your website right now and check those file sizes. I'll wait... Scary, right? 😱",
-            "<strong>Set up an optimization workflow</strong> - Whether it's using tools like TinyPNG, ImageOptim, or good ol' ffmpeg (shameless plug for my other article 😉), make optimization part of your process",
-            "<strong>Implement WebP with fallbacks</strong> - It's 2025, time to give your users that next-gen experience",
-            "<strong>Test your load times</strong> - Use Google's PageSpeed Insights and watch those scores soar",
-            "<strong>Set up responsive images</strong> - Different sizes for different devices = happy users everywhere"
+            "<strong>현재 이미지를 점검하세요</strong> - 지금 바로 웹사이트를 열고 파일 크기를 확인하세요. 기다릴게요... 무섭죠? 😱",
+            "<strong>최적화 워크플로를 만드세요</strong> - TinyPNG, ImageOptim 같은 도구든, 믿음직한 ffmpeg든 (제 다른 글의 뻔뻔한 홍보예요 😉), 최적화를 과정의 일부로 만드세요",
+            "<strong>대체본과 함께 WebP를 구현하세요</strong> - 2025년이에요, 사용자에게 차세대 경험을 줄 때예요",
+            "<strong>로딩 시간을 테스트하세요</strong> - Google의 PageSpeed Insights를 쓰고 점수가 치솟는 걸 지켜보세요",
+            "<strong>반응형 이미지를 설정하세요</strong> - 기기별로 다른 크기 = 어디서나 행복한 사용자"
           ]
         },
         "bigPicture": {
-          "title": "The Bigger Picture 🖼️",
-          "p1": "Remember, optimizing your images isn't just about technical SEO scores or saving bandwidth (though those are awesome bonuses!). It's about respecting your users' time, data, and experience. Every second you shave off your load time is a second you're giving back to someone's day. That's pretty powerful when you think about it! 💪",
-          "p2": "Plus, let's be real - faster websites make more money. It's not rocket science, it's just good business. Your optimized images are literally increasing your bottom line while making the web a better place. You're basically a superhero now! 🦸‍♀️🦸‍♂️"
+          "title": "더 큰 그림 🖼️",
+          "p1": "기억하세요, 이미지 최적화는 단순히 기술적 SEO 점수나 대역폭 절약에 관한 게 아니에요 (물론 멋진 보너스지만요!). 사용자의 시간, 데이터, 경험을 존중하는 것에 관한 거예요. 로딩 시간에서 깎아 내는 1초마다 누군가의 하루에 1초를 돌려주는 셈이죠. 생각해 보면 꽤 강력하죠! 💪",
+          "p2": "게다가 솔직해지자면, 빠른 웹사이트가 돈을 더 벌어요. 로켓 과학이 아니라 그냥 좋은 사업이에요. 최적화된 이미지는 말 그대로 수익을 늘리면서 웹을 더 나은 곳으로 만들고 있어요. 여러분은 이제 거의 슈퍼히어로예요! 🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
-          "title": "One Final Challenge 🎯",
-          "p1": "Here's my challenge to you: Take the slowest-loading page on your website and optimize just the images. Nothing else. I guarantee you'll see at least a 50% improvement in load time. Share your before/after results in the comments - I love a good optimization success story!",
-          "p2": "Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨"
+          "title": "마지막 도전 🎯",
+          "p1": "여러분께 드리는 도전이에요. 웹사이트에서 가장 느리게 로드되는 페이지를 골라 이미지만 최적화하세요. 다른 건 아무것도 하지 말고요. 로딩 시간이 최소 50%는 개선될 거라고 장담해요. 전후 결과를 댓글로 공유해 주세요. 저는 멋진 최적화 성공담을 정말 좋아하거든요!",
+          "p2": "기억하세요, 웹 개발의 세계에서 최고의 코드는 빠른 코드지만, 최고의 이미지는 최적화된 이미지예요. 이제 가서 압축하세요! 여러분의 이미지는 작고 로딩 시간은 더 짧기를! 🚀✨"
         },
-        "quote": "\"The journey of a thousand optimizations begins with a single compressed image.\" 🏔️"
+        "quote": "\"천 번의 최적화 여정도 압축된 이미지 한 장에서 시작된다.\" 🏔️"
       }
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the techniques from this guide in the free Media Manipulator image tools.",
+      "title": "관련 도구",
+      "intro": "이 가이드의 기법을 무료 Media Manipulator 이미지 도구에서 써 보세요.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "이미지 변환기",
+          "description": "JPG, PNG, WebP, AVIF, GIF 등을 서로 변환하세요."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebP를 JPG로 변환",
+          "description": "WebP 원본에서 폭넓게 호환되는 JPG를 얻으세요."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "EXIF 메타데이터 제거",
+          "description": "사진을 공유하기 전에 GPS, 기기, 타임스탬프 메타데이터를 제거하세요."
         },
         {
-          "label": "Image converter tutorial",
-          "description": "Full walkthrough of every setting in the image converter."
+          "label": "이미지 변환기 튜토리얼",
+          "description": "이미지 변환기의 모든 설정에 대한 전체 안내."
         },
         {
-          "label": "Video compression guide",
-          "description": "Apply the same optimization mindset to video files."
+          "label": "동영상 압축 가이드",
+          "description": "같은 최적화 사고방식을 동영상 파일에 적용하세요."
         },
         {
-          "label": "Audio quality guide",
-          "description": "Pick the right audio bitrate, sample rate, and codec."
+          "label": "오디오 품질 가이드",
+          "description": "알맞은 오디오 비트레이트, 샘플 레이트, 코덱을 고르세요."
         }
       ]
     },
     "footer": {
-      "title": "Time to Become an Image Optimization Jedi! 🌟",
-      "body": "Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!",
-      "ctaLabel": "Open the image converter →",
-      "disclaimer": "No signup required • Process files locally • Fast & secure"
+      "title": "이미지 최적화 제다이가 될 시간이에요! 🌟",
+      "body": "뚱뚱한 PNG를 번개처럼 빠른 WebP로 바꿀 준비가 되셨나요? 무료 이미지 변환기는 JPG, PNG, WebP, GIF 등을 지원해요. 몇 초 만에 이미지를 최적화하고 웹사이트가 날아오르는 걸 지켜보세요!",
+      "ctaLabel": "이미지 변환기 열기 →",
+      "disclaimer": "가입 불필요 • 파일 로컬 처리 • 빠르고 안전"
     }
   },
   "blogAudioQuality": {
     "nav": {
-      "backToBlog": "← Blog"
+      "backToBlog": "← 블로그"
     },
     "header": {
-      "title": "The Sound of <strike>Silence</strike> Quality: Bitrates, Sample Rates, and Formats",
-      "byline": "Written by:",
-      "dateDisplay": "June 14th, 2025",
-      "timeDisplay": "10:08 PM"
+      "title": "The Sound of <strike>침묵</strike> 음질: 비트레이트, 샘플 레이트, 그리고 형식",
+      "byline": "작성자:",
+      "dateDisplay": "2025년 6월 14일",
+      "timeDisplay": "오후 10:08"
     },
     "intro": {
-      "title": "A Brief Intro to Audio Formats, Bitrates, and Sample Rates",
-      "p1": "Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's \"high-quality\" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:",
+      "title": "오디오 형식, 비트레이트, 샘플 레이트 간단 소개",
+      "p1": "다운로드한 팟캐스트는 50MB에 수정처럼 맑게 들리는데, 친구의 \"고음질\" 음악 파일은 3MB에 물속에서 녹음한 것처럼 들리는 이유가 궁금했던 적 있나요? 아니면 이런 걸 알아챈 적은요:",
       "bullets": [
-        "Your website's background music takes forever to load, even though it's only 30 seconds long",
-        "That audio file you converted sounds like someone's playing it through a tin can",
-        "You're trying to add voice-overs to your video content but the file sizes are absolutely massive",
-        "Your carefully crafted sound effects library is eating up all your cloud storage",
-        "You downloaded the same song from different sources and they all sound wildly different"
+        "웹사이트 배경 음악이 고작 30초짜리인데도 로드되는 데 한참 걸린다",
+        "변환한 오디오 파일이 깡통을 통해 재생하는 것처럼 들린다",
+        "동영상 콘텐츠에 보이스오버를 넣으려는데 파일 크기가 터무니없이 크다",
+        "정성 들여 만든 효과음 라이브러리가 클라우드 저장 공간을 다 잡아먹는다",
+        "같은 노래를 다른 곳에서 다운로드했는데 전부 완전히 다르게 들린다"
       ],
-      "p2": "If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!",
-      "p3": "Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.",
-      "p4": "In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯",
-      "quote": "\"The ear is the avenue to the heart.\" – Voltaire"
+      "p2": "이런 오디오 모험(또는 수난 😅)을 겪어 봤다면 안전벨트를 매세요. 오디오 형식, 비트레이트, 샘플 레이트의 세계를 낱낱이 풀어 드릴 테니까요!",
+      "p3": "오디오 파일을 커피 ☕라고 생각해 보세요. 인스턴트 커피(낮은 비트레이트 MP3), 일반 드립 커피(보통 품질 오디오), 고급 에스프레소 머신 커피(무손실 FLAC 파일)가 있죠. 전부 커피지만 경험은요? 완전히 달라요. 고급 카페에서 인스턴트 커피를 내놓지 않듯, 전문적인 웹사이트에 저품질 오디오 파일을 써서는 안 돼요.",
+      "p4": "이 글에서는 이 수수께끼 같은 숫자와 형식이 실제로 무엇을 뜻하는지, 왜 생각보다 중요한지, 그리고 알맞은 조합을 고르는 것이 어떻게 방문자가 계속 머무느냐 그 무서운 뒤로 가기 버튼을 누르느냐의 차이를 만드는지 살펴볼 거예요. 🎯",
+      "quote": "\"귀는 마음으로 가는 길이다.\" – 볼테르"
     },
     "difference": {
-      "title": "What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?",
-      "p1": "Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧",
-      "formatsLead": "<strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:",
+      "title": "그래서 형식, 비트레이트, 샘플 레이트는 뭐가 다른데요?",
+      "p1": "좋아요, 팟캐스트가 좋게 들리기만 바라는 기술에 어두운 친구에게 설명하듯 풀어 볼게요! 🎧",
+      "formatsLead": "<strong>오디오 형식</strong>은 컨테이너 같은 거예요. 오디오를 담을 수 있는 서로 다른 종류의 상자라고 생각하세요. 이런 게 있어요:",
       "formatsBullets": [
-        "<strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit",
-        "<strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton",
-        "<strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside",
-        "<strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty",
-        "<strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it"
+        "<strong>MP3</strong>: 믿음직한 골판지 상자. 할 일은 하고 어디서나 받아 주지만 내용물을 조금 찌그러뜨릴 수 있어요",
+        "<strong>WAV</strong>: 튼튼한 강철 컨테이너. 모든 걸 완벽하게 보존하지만 무게가 엄청나요",
+        "<strong>AAC</strong>: 더 나은 포장 기술을 갖춘 세련된 현대식 상자. MP3와 같은 크기에 더 많은 품질을 담아요",
+        "<strong>FLAC</strong>: 진공 포장 컨테이너. 아무것도 잃지 않고 압축하지만 여전히 꽤 묵직해요",
+        "<strong>OGG</strong>: 잘 작동하지만 모두가 여는 법을 아는 건 아닌 오픈소스 반항아 상자"
       ],
-      "bitrateLead": "<strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:",
+      "bitrateLead": "<strong>비트레이트</strong>는 초당 흐르는 데이터의 양이에요. 수도관이라고 상상해 보세요. 비트레이트가 높을수록 = 더 큰 관 = 더 많은 오디오 정보가 흘러요:",
       "bitrateBullets": [
-        "<strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)",
-        "<strong>128 kbps</strong>: Standard faucet (decent for casual listening)",
-        "<strong>256 kbps</strong>: Fire hose (great quality for most people)",
-        "<strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)",
-        "<strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿"
+        "<strong>64 kbps</strong>: 정원용 호스 (토크 라디오에는 괜찮고, 음악에는 최악)",
+        "<strong>128 kbps</strong>: 일반 수도꼭지 (가볍게 듣기에 적당)",
+        "<strong>256 kbps</strong>: 소방 호스 (대부분의 사람에게 훌륭한 품질)",
+        "<strong>320 kbps</strong>: 산업용 배관 (MP3 최대 품질)",
+        "<strong>1,411 kbps</strong>: 나이아가라 폭포 (비압축 CD 품질) 💿"
       ],
-      "sampleRateLead": "<strong>Sample Rate</strong> is how many times per second we take a \"snapshot\" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):",
+      "sampleRateLead": "<strong>샘플 레이트</strong>는 초당 몇 번 음파의 \"스냅샷\"을 찍는지예요. Hz(헤르츠) 또는 kHz(킬로헤르츠)로 측정해요:",
       "sampleRateBullets": [
-        "<strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy",
-        "<strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear",
-        "<strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)",
-        "<strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)"
+        "<strong>22,050 Hz</strong>: 영화를 15fps로 보는 것과 같아요. 기능은 하지만 뚝뚝 끊겨요",
+        "<strong>44,100 Hz</strong>: 최적점이에요. CD 품질이고 사람이 들을 수 있는 모든 걸 담아요",
+        "<strong>48,000 Hz</strong>: 전문 동영상 표준 (수학과 동기화 때문에요 🤓)",
+        "<strong>96,000 Hz</strong> 이상: 오디오 덕후와 강아지를 위한 것 (진심으로, 사람은 차이를 못 들어요)"
       ],
-      "p2": "Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯",
-      "quote": "\"To understand the whole, you must first understand the parts.\" – Aristotle"
+      "p2": "결정타는 이거예요. 이 세 친구는 함께 작동해요! 44.1 kHz(샘플 레이트)에 1,411 kbps 비트레이트의 WAV 파일(형식)을 가질 수도 있고, 44.1 kHz(샘플 레이트)지만 겨우 128 kbps(비트레이트)인 MP3(형식)를 가질 수도 있죠. 같은 샘플 레이트, 완전히 다른 품질! 🤯",
+      "quote": "\"전체를 이해하려면 먼저 부분을 이해해야 한다.\" – 아리스토텔레스"
     },
     "usage": {
-      "title": "How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?",
-      "p1": "Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?",
+      "title": "언제 어떤 형식을 써야 하고, 비트레이트와 샘플 레이트는 여기에 어떻게 작용하나요?",
+      "p1": "솔직한 이야기 시간이에요! 💪 오디오 요구 사항에 알맞은 형식 조합을 맞춰 봅시다. 상황에 맞는 옷을 고르는 것과 같아요. 헬스장에 턱시도를 입고 가진 않잖아요?",
       "background": {
-        "title": "For Background Music on Websites:",
+        "title": "웹사이트 배경 음악용:",
         "bullets": [
-          "<strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth",
-          "<strong>File size</strong>: ~1MB per minute (your visitors will thank you!)"
+          "<strong>사용</strong>: MP3 또는 AAC, 128-192 kbps, 44.1 kHz",
+          "<strong>이유</strong>: 빠르게 로드되고, 분위기용으로 충분히 좋게 들리고, 대역폭을 잡아먹지 않아요",
+          "<strong>파일 크기</strong>: 분당 약 1MB (방문자들이 고마워할 거예요!)"
         ]
       },
       "podcasts": {
-        "title": "For Podcasts & Voice Content:",
+        "title": "팟캐스트 및 음성 콘텐츠용:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)",
-          "<strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size",
-          "<strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄"
+          "<strong>사용</strong>: MP3, 64-96 kbps 모노, 44.1 kHz (파일 크기가 중요하면 22.05 kHz)",
+          "<strong>이유</strong>: 사람의 말소리에는 높은 비트레이트가 필요 없고, 모노는 파일 크기를 50% 아껴요",
+          "<strong>프로 팁</strong>: 아무도 여러분의 숨소리를 스테레오로 들을 필요는 없어요 😄"
         ]
       },
       "streaming": {
-        "title": "For Music Streaming/Downloads:",
+        "title": "음악 스트리밍/다운로드용:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz",
-          "<strong>Why</strong>: The sweet spot between quality and file size",
-          "<strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps"
+          "<strong>사용</strong>: MP3 256-320 kbps 또는 AAC 256 kbps, 44.1 kHz",
+          "<strong>이유</strong>: 품질과 파일 크기 사이의 최적점",
+          "<strong>현실 점검</strong>: 대부분의 사람은 256과 320 kbps의 차이를 구별하지 못해요"
         ]
       },
       "previews": {
-        "title": "For Audio Previews & Samples:",
+        "title": "오디오 미리듣기 및 샘플용:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Quick loading, good enough for \"try before you buy\"",
-          "<strong>Smart move</strong>: Save the high-quality files for paying customers 💰"
+          "<strong>사용</strong>: MP3, 96-128 kbps, 44.1 kHz",
+          "<strong>이유</strong>: 빠른 로딩, \"구매 전 체험\"에 충분히 좋음",
+          "<strong>현명한 선택</strong>: 고품질 파일은 유료 고객을 위해 아껴 두세요 💰"
         ]
       },
       "archival": {
-        "title": "For Professional/Archival:",
+        "title": "전문가/보관용:",
         "bullets": [
-          "<strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)",
-          "<strong>Why</strong>: Future-proof, perfect for editing, no quality loss",
-          "<strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!"
+          "<strong>사용</strong>: FLAC 또는 WAV, 최대 비트레이트, 48 kHz (또는 동영상 표준에 맞춤)",
+          "<strong>이유</strong>: 미래 대비, 편집에 완벽, 품질 손실 없음",
+          "<strong>경고</strong>: 이 파일들은 거대해요. 분당 10MB 수준이에요!"
         ]
       },
       "decisionTree": {
-        "title": "Quick Decision Tree:",
-        "content": "Is it voice only? → MP3 at 64-96 kbps\nIs loading speed critical? → MP3/AAC at 128 kbps max\nNeed perfect quality? → FLAC/WAV\nRegular music for web? → MP3/AAC at 192-256 kbps"
+        "title": "빠른 결정 트리:",
+        "content": "음성만인가요? → MP3 64-96 kbps\n로딩 속도가 중요한가요? → MP3/AAC 최대 128 kbps\n완벽한 품질이 필요한가요? → FLAC/WAV\n웹용 일반 음악인가요? → MP3/AAC 192-256 kbps"
       },
-      "ninjaTip": "Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy \"audio enhancer\" ads claim).",
-      "realWorldExample": "<strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.",
-      "quote": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\" – Antoine de Saint-Exupéry"
+      "ninjaTip": "닌자 팁 하나 🥷: 항상 구할 수 있는 가장 높은 품질의 원본 파일로 시작한 다음 압축하세요. WAV → MP3는 언제든 가능하지만, MP3 → WAV로 간다고 품질이 마법처럼 되돌아오지는 않아요 (수상한 \"오디오 향상기\" 광고가 뭐라고 하든요).",
+      "realWorldExample": "<strong>실제 사례</strong>: 명상 앱의 가이드 세션에 WAV 파일을 쓰던 고객이 있었어요. 10분짜리 세션 하나가 100MB였죠! 😱 96 kbps 모노 MP3로 변환해서 파일 크기를 각각 7MB로 줄였는데, 품질에 대해 불평한 사람은 말 그대로 아무도 없었어요. 더 이상 저장 공간을 잡아먹지 않는다는 이유만으로 앱 다운로드가 40% 늘었죠.",
+      "quote": "\"완벽함은 더할 것이 없을 때가 아니라 더 뺄 것이 없을 때 이루어진다.\" – 앙투안 드 생텍쥐페리"
     },
     "importance": {
-      "title": "Why Is This Even Important for My Website?",
-      "p1": "Okay, so you might be thinking, \"Cool audio facts, bro, but why should I care?\" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸",
+      "title": "이게 내 웹사이트에 왜 중요한데요?",
+      "p1": "자, \"오디오 상식은 멋지네요, 그런데 제가 왜 신경 써야 하죠?\" 하고 생각할지도 몰라요. 헤드폰을 꽉 잡으세요. 여기서부터 수익에 진짜로 영향을 주거든요! 💸",
       "pageLoadSpeed": {
-        "title": "Page Load Speed = Money",
-        "lead": "Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:",
+        "title": "페이지 로딩 속도 = 돈",
+        "lead": "Google은 분명히 밝혔어요. 느린 웹사이트는 검색 순위에서 불이익을 받아요. 로딩 시간 1초마다 이런 대가를 치를 수 있어요:",
         "bullets": [
-          "<strong>7% decrease</strong> in conversions",
-          "<strong>11% fewer</strong> page views",
-          "<strong>16% decrease</strong> in customer satisfaction"
+          "전환율 <strong>7% 감소</strong>",
+          "페이지 조회 <strong>11% 감소</strong>",
+          "고객 만족도 <strong>16% 감소</strong>"
         ],
-        "outro": "That innocent 50MB background music file? It's literally costing you customers! 😱"
+        "outro": "그 순진해 보이는 50MB 배경 음악 파일이요? 말 그대로 고객을 잃게 하고 있어요! 😱"
       },
       "mobileReality": {
-        "title": "The Mobile Reality Check",
-        "p": "Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)"
+        "title": "모바일 현실 점검",
+        "p": "재미있는 사실 하나: 이제 웹 트래픽의 60% 이상이 모바일이에요. 모바일 사용자가 뭘 좋아하는지 아세요? 한정된 데이터 요금제로 여러분의 비압축 오디오 파일을 다운로드하는 거요! (스포일러: 안 좋아해요. 콘크리트 위의 고무공보다 빠르게 튕겨 나갈 거예요.)"
       },
       "realNumbers": {
-        "title": "Real Numbers That'll Make You Sweat:",
-        "lead": "Let's say you have a landing page with:",
+        "title": "식은땀 나게 할 실제 숫자:",
+        "lead": "이런 랜딩 페이지가 있다고 해 봐요:",
         "bullets": [
-          "30-second background music loop",
-          "2 product demo voice-overs (1 minute each)",
-          "5 sound effects for interactions"
+          "30초 배경 음악 루프",
+          "제품 데모 보이스오버 2개 (각 1분)",
+          "상호작용용 효과음 5개"
         ],
-        "comparisonWav": "Using WAV files: <strong>~250MB total</strong> 😵",
-        "comparisonMp3": "Using optimized MP3s: <strong>~8MB total</strong> 🎉",
-        "outro": "That's a 97% reduction! Your hosting bill just breathed a sigh of relief."
+        "comparisonWav": "WAV 파일 사용: <strong>총 약 250MB</strong> 😵",
+        "comparisonMp3": "최적화된 MP3 사용: <strong>총 약 8MB</strong> 🎉",
+        "outro": "97% 감소예요! 호스팅 청구서가 안도의 한숨을 내쉬었어요."
       },
       "trustFactor": {
-        "title": "The Trust Factor",
-        "lead": "Nothing screams \"amateur hour\" like:",
+        "title": "신뢰 요소",
+        "lead": "이것만큼 \"아마추어\"라고 외치는 것도 없어요:",
         "bullets": [
-          "Audio that takes forever to load",
-          "Stuttering playback",
-          "Quality so bad it sounds like a 1990s dial-up modem"
+          "로드되는 데 한참 걸리는 오디오",
+          "끊기는 재생",
+          "1990년대 전화 모뎀처럼 들릴 정도로 나쁜 품질"
         ],
-        "outro": "Professional audio quality = professional image = customer trust = 💰"
+        "outro": "전문적인 오디오 품질 = 전문적인 이미지 = 고객 신뢰 = 💰"
       },
       "seoVitals": {
-        "title": "SEO and Core Web Vitals",
-        "lead": "Google's Core Web Vitals specifically measure:",
+        "title": "SEO와 Core Web Vitals",
+        "lead": "Google의 Core Web Vitals는 구체적으로 이런 걸 측정해요:",
         "bullets": [
-          "<strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this",
-          "<strong>FID (First Input Delay)</strong>: Large files blocking the main thread",
-          "<strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps"
+          "<strong>LCP (Largest Contentful Paint)</strong>: 무거운 오디오 파일이 이걸 지연시켜요",
+          "<strong>FID (First Input Delay)</strong>: 큰 파일이 메인 스레드를 막아요",
+          "<strong>CLS (Cumulative Layout Shift)</strong>: 잘못 로드된 오디오 플레이어가 화면을 튀게 해요"
         ],
-        "outro": "Translation: Bad audio optimization = bad SEO = less organic traffic = less money."
+        "outro": "해석: 나쁜 오디오 최적화 = 나쁜 SEO = 적은 자연 유입 = 적은 수익."
       },
       "moreReasons": {
-        "title": "But Wait, There's More!",
-        "lead": "(Said in my best infomercial voice 📺) Optimized audio also means:",
+        "title": "잠깐, 더 있어요!",
+        "lead": "(최고의 홈쇼핑 목소리로 📺) 최적화된 오디오는 이런 뜻이기도 해요:",
         "bullets": [
-          "Lower CDN costs",
-          "Happier users on slower connections",
-          "Better accessibility (properly compressed audio works better with screen readers)",
-          "Increased engagement (people actually stick around when things load fast)"
+          "더 낮은 CDN 비용",
+          "느린 연결에서도 더 행복한 사용자",
+          "더 나은 접근성 (적절히 압축된 오디오는 화면 낭독기와 더 잘 작동해요)",
+          "더 높은 참여도 (빨리 로드되면 사람들이 실제로 머물러요)"
         ],
-        "clientStory": "I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!"
+        "clientStory": "이러닝 플랫폼에서 사용자가 줄줄 빠져나가던 고객이 있었어요. 알고 보니 강의 오디오 파일이 너무 커서 시골 지역 학생들은 말 그대로 콘텐츠에 접근할 수 없었던 거예요. 모든 걸 최적화해서 파일 크기를 85% 줄였더니, 단 두 달 만에 수료율이 40% 뛰었어요!"
       },
-      "quote": "\"Time is money, and loading time is lost money.\" – Every Web Developer Ever"
+      "quote": "\"시간은 돈이고, 로딩 시간은 잃어버린 돈이다.\" – 모든 웹 개발자"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):",
+      "title": "결론",
+      "p1": "휴! 🎉 오디오 형식, 비트레이트, 샘플 레이트의 세계를 회오리바람처럼 둘러봤어요. 히트곡을 되짚어 봅시다 (말장난 의도했어요 🎵):",
       "takeaways": {
-        "title": "The Big Takeaways:",
+        "title": "핵심 요점:",
         "bullets": [
-          "Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency",
-          "MP3 at 128-192 kbps is your web workhorse for most use cases",
-          "Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)",
-          "Every MB matters – optimized audio = faster loads = happier visitors = more money",
-          "Start with high quality, compress down (you can't enhance garbage into gold!)"
+          "오디오 형식은 컨테이너, 비트레이트는 데이터 흐름, 샘플 레이트는 스냅샷 빈도예요",
+          "128-192 kbps MP3가 대부분의 용도에서 웹의 일꾼이에요",
+          "음성 콘텐츠는 더 낮게(64-96 kbps), 음악은 더 높게(256+ kbps) 가도 돼요",
+          "모든 MB가 중요해요. 최적화된 오디오 = 빠른 로딩 = 행복한 방문자 = 더 많은 수익",
+          "높은 품질로 시작해서 압축하세요 (쓰레기를 금으로 향상시킬 수는 없어요!)"
         ]
       },
       "actionPlan": {
-        "title": "Your Action Plan:",
+        "title": "실행 계획:",
         "steps": [
-          "<strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)",
-          "<strong>Convert</strong> them using the guidelines we covered",
-          "<strong>Test</strong> your page load speeds before and after",
-          "<strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)"
+          "현재 오디오 파일을 <strong>점검</strong>하세요 (뚱뚱한 WAV 몇 개가 숨어 있을 거예요 👀)",
+          "다룬 지침에 따라 <strong>변환</strong>하세요",
+          "전후의 페이지 로딩 속도를 <strong>테스트</strong>하세요",
+          "지표가 개선되는 걸 <strong>지켜보세요</strong> (그리고 작은 승리의 춤을 춰도 좋아요 💃)"
         ]
       },
-      "p2": "Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.",
-      "p3": "So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉",
-      "p4": "Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀",
-      "quote": "\"In the realm of digital content, the lightest footprint often leaves the deepest impression.\" – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)"
+      "p2": "기억하세요, 디지털 세계에서 소리는 보이지 않을지 몰라도 웹사이트 성능에 미치는 영향은 결코 작지 않아요. 오디오를 최적화해서 아낀 그 몇 밀리초가 더 나은 사용자 경험, 더 높은 검색 순위, 그리고 궁극적으로 더 건강한 수익으로 직접 이어져요.",
+      "p3": "그러니 가서 압축하세요! 방문자의 귀(와 인터넷 연결)가 고마워할 거예요. 그리고 이 글이 도움이 됐다면, 제대로 된 이미지와 동영상 최적화가 사이트에 어떤 일을 해 줄지 상상해 보세요... 하지만 그건 다음 기회에 할 이야기예요! 😉",
+      "p4": "오디오 최적화 닌자가 될 준비가 되셨나요? 웹사이트 성능의 변신은 첫 파일 변환에서 시작돼요. 실행에 옮기세요! 🚀",
+      "quote": "\"디지털 콘텐츠의 영역에서 가장 가벼운 발자국이 종종 가장 깊은 인상을 남긴다.\" – 고대 웹 개발자 격언 (네, 제가 지어냈지만 사실이에요! 😄)"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the Media Manipulator audio tools and explore related guides.",
+      "title": "관련 도구",
+      "intro": "Media Manipulator 오디오 도구를 써 보고 관련 가이드를 살펴보세요.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate."
+          "label": "오디오 변환기",
+          "description": "WAV, MP3, FLAC, M4A, OGG 등을 원하는 비트레이트로 변환하세요."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV files into widely playable MP3s."
+          "label": "WAV를 MP3로 변환",
+          "description": "큰 WAV 파일을 널리 재생되는 MP3로 줄이세요."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Pull vocals out of music tracks for remixes or analysis."
+          "label": "노래에서 보컬 분리",
+          "description": "리믹스나 분석을 위해 음악 트랙에서 보컬을 뽑아내세요."
         },
         {
-          "label": "Audio converter tutorial",
-          "description": "Walk through every option including cleanup and vocal isolation."
+          "label": "오디오 변환기 튜토리얼",
+          "description": "정리와 보컬 분리를 포함한 모든 옵션을 안내해요."
         },
         {
-          "label": "Video compression guide",
-          "description": "Pair good audio with optimized video encoding."
+          "label": "동영상 압축 가이드",
+          "description": "좋은 오디오에 최적화된 동영상 인코딩을 더하세요."
         },
         {
-          "label": "Image optimization guide",
-          "description": "Round out a fast site by also optimizing image files."
+          "label": "이미지 최적화 가이드",
+          "description": "이미지 파일도 최적화해서 빠른 사이트를 완성하세요."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Master Audio Optimization? 🎧",
-      "body": "Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!",
-      "buttonLabel": "Open the audio converter →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "오디오 최적화를 마스터할 준비가 되셨나요? 🎧",
+      "body": "묵직한 WAV 파일을 번개처럼 빠른 MP3와 AAC로 바꾸세요! 무료 오디오 변환기는 비트레이트와 샘플 레이트를 조정할 수 있고 모든 주요 형식을 지원해요. 오디오 파일을 최적화하고 웹사이트 성능을 끌어올리세요!",
+      "buttonLabel": "오디오 변환기 열기 →",
+      "footnote": "가입 불필요 • 파일 로컬 처리 • 빠르고 안전"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Video Tutorial",
-    "title": "What Is AI Frame Interpolation?",
-    "intro": "AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.",
+    "eyebrow": "동영상 튜토리얼",
+    "title": "AI 프레임 보간이란?",
+    "intro": "AI 프레임 보간은 움직임이 더 부드럽게 재생되도록 중간 프레임을 새로 생성해요. 이 튜토리얼은 작동 원리, 사용 시점, 한계, 그리고 Media Manipulator에서 실행하는 방법을 설명해요.",
     "toolPanel": {
-      "title": "Try AI frame interpolation without leaving this page",
-      "description": "Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+      "title": "이 페이지에서 바로 AI 프레임 보간 사용해 보기",
+      "description": "동영상 파일을 고르고, AI 동영상 도구 패널로 스크롤한 뒤 AI 프레임 보간을 선택하세요. 기본값으로 60fps의 더 부드러운 MP4가 출력돼요."
     },
     "whatIs": {
-      "title": "1. What is frame interpolation?",
-      "intro": "Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:",
+      "title": "1. 프레임 보간이란?",
+      "intro": "프레임 보간은 원본 프레임 사이에 새 이미지를 끼워 넣어 동영상의 프레임 레이트를 높여요. 30fps 클립에는 초당 30프레임이 있고, 프레임 레이트를 두 배로 만들려면 기존 프레임 사이에 들어갈 새 프레임을 초당 30개 만들어야 해요. 여러 접근법이 있어요:",
       "bullets": [
-        "<strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.",
-        "<strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.",
-        "<strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg's minterpolate).",
-        "<strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion."
+        "<strong>프레임 복제</strong> — 이전 프레임을 복사해 움직임은 같아 보이지만 재생 속도는 목표에 맞춰요.",
+        "<strong>프레임 블렌딩</strong> — 인접한 두 프레임 사이를 페이드해 경계를 부드럽게 해요. 저렴하지만 흐릿해요.",
+        "<strong>모션 보간</strong> — 모션 벡터를 추정해 프레임을 앞으로 변형해요 (예: FFmpeg의 minterpolate).",
+        "<strong>AI 보간</strong> — 신경망(예: RIFE)이 양쪽의 실제 프레임 두 장으로부터 중간 프레임을 예측해요. 비강체 움직임에서 보통 가장 깨끗한 결과를 내요."
       ],
-      "outro": "Media Manipulator's AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server."
+      "outro": "Media Manipulator의 AI 프레임 보간 도구는 저희 자체 GPU 서버에서 rife-ncnn-vulkan을 통해 RIFE를 사용해요."
     },
     "whyUse": {
-      "title": "2. Why people use frame interpolation",
+      "title": "2. 프레임 보간을 사용하는 이유",
       "bullets": [
-        "Smoother motion on modern displays and social platforms.",
-        "Lifting 24/30fps footage to 60fps.",
-        "Lifting 60fps footage to 120fps for high-refresh playback or editing.",
-        "Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.",
-        "Restoring older, low-FPS clips so they feel less stuttery.",
-        "Producing smoother short cuts for sharing on social."
+        "최신 디스플레이와 소셜 플랫폼에서 더 부드러운 움직임.",
+        "24/30fps 영상을 60fps로 끌어올리기.",
+        "고주사율 재생이나 편집을 위해 60fps 영상을 120fps로 끌어올리기.",
+        "예고편, 게임 플레이, 스포츠, 스크린캐스트, 브이로그의 더 깨끗한 모션 미리보기.",
+        "오래된 저FPS 클립을 복원해 덜 끊기게 만들기.",
+        "소셜 공유용으로 더 부드러운 짧은 컷 만들기."
       ]
     },
     "howItWorks": {
-      "title": "3. How AI frame interpolation works (high level)",
+      "title": "3. AI 프레임 보간의 작동 원리 (개요)",
       "paragraphs": [
-        "Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.",
-        "Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear."
+        "인접한 두 프레임이 주어지면 모델은 그 사이에서 모든 픽셀이 어떻게 움직이는지 추정해요. 옵티컬 플로와 관련된 과정이죠. 그런 다음 그 움직임을 이용해 두 원본 사이의 소수점 시간 위치에 놓일 새 프레임을 하나 이상 만들어요. 신경망은 학습 데이터에서 흔한 움직임 패턴을 배우므로 부드럽고 자연스러운 움직임을 잘 다루는 경향이 있어요.",
+        "어려운 경우(빠른 움직임, 한 물체가 다른 물체 앞을 지나가는 가려짐, 머리카락이나 바퀴 같은 가는 구조, 장면 전환)는 모델이 그 사이에 무슨 일이 일어나야 하는지에 대한 신뢰할 만한 근거가 적어서 본질적으로 더 어려워요. 아티팩트가 나타나기 쉬운 영역이 바로 그런 곳이에요."
       ]
     },
     "vsBasicFps": {
-      "title": "4. AI interpolation vs basic FPS conversion",
-      "p1": "Basic FPS conversion (whether through FFmpeg's <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.",
-      "p2": "AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:",
+      "title": "4. AI 보간 vs 기본 FPS 변환",
+      "p1": "기본 FPS 변환(FFmpeg의 <code>fps</code> 필터든 하드웨어 가속 등가물이든)은 보통 목표 프레임 레이트에 맞추기 위해 프레임을 복제하거나, 버리거나, 섞기만 해요. 초당 총 프레임 수는 목표와 일치하지만 새로운 움직임 정보는 더해지지 않아요. 눈은 여전히 원본 촬영 간격만 보게 되죠.",
+      "p2": "AI 보간은 내용이 복사되는 게 아니라 추정되는 완전히 새로운 프레임을 만들어요. 트레이드오프는:",
       "bullets": [
-        "AI usually looks much smoother than duplication or blending.",
-        "AI can warp or hallucinate details on hard regions.",
-        "Basic FPS conversion is faster but rarely feels truly smoother."
+        "AI는 보통 복제나 블렌딩보다 훨씬 부드러워 보여요.",
+        "AI는 어려운 영역에서 디테일을 왜곡하거나 지어낼 수 있어요.",
+        "기본 FPS 변환은 더 빠르지만 진짜로 더 부드럽게 느껴지는 경우는 드물어요."
       ]
     },
     "fpsChoice": {
-      "title": "5. When to pick 48, 60, or 120 FPS",
+      "title": "5. 48, 60, 120 FPS 중 언제 무엇을 고를까",
       "bullets": [
-        "<strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.",
-        "<strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.",
-        "<strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file."
+        "<strong>48 FPS</strong> — 24fps 영화풍 영상의 은은한 2배 향상. 60fps보다 덜 공격적이고 원본의 리듬을 조금 유지해요.",
+        "<strong>60 FPS</strong> — 현대 웹의 일반적인 부드러운 재생 속도. 24/30fps 원본의 좋은 첫 목표예요.",
+        "<strong>120 FPS</strong> — 고주사율 디스플레이, 게임 플레이/스포츠 콘텐츠, 또는 후속 슬로 모션 편집용. 처리 비용이 더 크고 파일도 더 커요."
       ]
     },
     "qualityTradeoffs": {
-      "title": "6. Quality and max-height tradeoffs",
+      "title": "6. 품질과 최대 높이의 트레이드오프",
       "bullets": [
-        "<strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.",
-        "<strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.",
-        "<strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.",
-        "<strong>High quality preset</strong> → slower encode, lower CRF, sharper output."
+        "<strong>낮은 최대 처리 높이</strong> → 더 빠른 처리와 낮은 GPU 메모리 부담. 빠른 테스트에 좋아요.",
+        "<strong>높은 최대 처리 높이</strong> → 더 많은 디테일이 보존되지만 더 느리고 무거워요.",
+        "<strong>낮음 품질 프리셋</strong> → 빠른 인코딩, 큰 CRF, 작은 파일.",
+        "<strong>높음 품질 프리셋</strong> → 느린 인코딩, 낮은 CRF, 더 선명한 출력."
       ],
-      "outro": "For a first run, try 720p max height with the medium quality preset."
+      "outro": "처음 실행할 때는 최대 높이 720p에 중간 품질 프리셋을 시도해 보세요."
     },
     "bestPractices": {
-      "title": "7. Best practices",
+      "title": "7. 모범 사례",
       "bullets": [
-        "Test on a short clip first — interpolation cost scales with duration and resolution.",
-        "Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.",
-        "Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.",
-        "Pick clear, steady source footage when possible.",
-        "Keep the original — interpolation is irreversible re-encoding.",
-        "Try 60fps before 120fps unless you specifically need 120fps."
+        "짧은 클립으로 먼저 테스트하세요. 보간 비용은 길이와 해상도에 비례해 늘어나요.",
+        "장면 전환이 많은 콘텐츠는 피하세요. 전환 지점에서 짧은 왜곡이 생기는 경우가 많아요.",
+        "게시하기 전에 결과를 미리 보세요. 보간은 실제 고FPS 촬영과 미묘하게 다르게 보일 수 있어요.",
+        "가능하면 선명하고 안정적인 원본 영상을 고르세요.",
+        "원본을 보관하세요. 보간은 되돌릴 수 없는 재인코딩이에요.",
+        "특별히 120fps가 필요한 게 아니라면 120fps보다 60fps를 먼저 시도하세요."
       ]
     },
     "limitations": {
-      "title": "8. Limitations and artifacts",
+      "title": "8. 한계와 아티팩트",
       "bullets": [
-        "Warping around hands, hair, wheels, and other fast-moving thin structures.",
-        "Ghosting around occlusions where one object passes in front of another.",
-        "Brief glitches at scene cuts.",
-        "Motion blur mismatch — synthesized frames don't share the source camera's shutter behavior.",
-        "Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.",
-        "Long videos take a lot of GPU time; we cap duration to keep the free tool stable.",
-        "AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame."
+        "손, 머리카락, 바퀴 등 빠르게 움직이는 가는 구조 주변의 왜곡.",
+        "한 물체가 다른 물체 앞을 지나가는 가려짐 주변의 고스팅.",
+        "장면 전환에서의 짧은 글리치.",
+        "모션 블러 불일치 — 합성된 프레임은 원본 카메라의 셔터 특성을 공유하지 않아요.",
+        "기존 압축 아티팩트(밴딩, 블로킹)가 높은 프레임 레이트에서 더 잘 보일 수 있어요.",
+        "긴 동영상은 GPU 시간을 많이 차지하므로, 무료 도구의 안정성을 위해 길이를 제한해요.",
+        "AI 보간은 촬영되지 않은 실제 움직임을 복원하지 않아요. 그럴듯한 중간 프레임을 추정할 뿐이에요."
       ]
     },
     "howTo": {
-      "title": "9. How to use the Media Manipulator AI Frame Interpolation Tool",
+      "title": "9. Media Manipulator AI 프레임 보간 도구 사용법",
       "steps": [
-        "Open the <linkTool>AI Frame Interpolation tool</linkTool>.",
-        "Upload a video.",
-        "Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.",
-        "Choose a target FPS — 48, 60, or 120.",
-        "Pick a quality preset and a max processing height (start at 720p / medium).",
-        "Leave <em>Preserve audio</em> on unless you want a silent output.",
-        "Submit the conversion and wait for the job to finish.",
-        "Download the resulting MP4 and preview it."
+        "<linkTool>AI 프레임 보간 도구</linkTool>를 여세요.",
+        "동영상을 업로드하세요.",
+        "<strong>AI 동영상 도구</strong> 패널로 스크롤해서 <em>AI 프레임 보간</em>을 고르세요.",
+        "목표 FPS를 선택하세요 — 48, 60 또는 120.",
+        "품질 프리셋과 최대 처리 높이를 고르세요 (720p / 중간으로 시작).",
+        "소리 없는 출력을 원하는 게 아니라면 <em>오디오 유지</em>를 켜 두세요.",
+        "변환을 제출하고 작업이 끝날 때까지 기다리세요.",
+        "결과 MP4를 다운로드해서 미리 보세요."
       ]
     },
     "faq": {
       "title": "FAQ",
       "items": [
         {
-          "q": "Does frame interpolation improve video quality?",
-          "a": "It improves motion smoothness, not resolution or sharpness."
+          "q": "프레임 보간이 동영상 화질을 높여 주나요?",
+          "a": "해상도나 선명도가 아니라 움직임의 부드러움을 높여요."
         },
         {
-          "q": "Is AI frame interpolation the same as increasing FPS?",
-          "a": "Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending."
+          "q": "AI 프레임 보간은 FPS를 높이는 것과 같은 건가요?",
+          "a": "둘 다 더 높은 프레임 레이트를 목표로 하지만, AI 보간은 프레임을 복제하거나 섞는 대신 새 프레임을 합성해요."
         },
         {
-          "q": "Can I convert 30fps to 60fps?",
-          "a": "Yes — it's the most common target."
+          "q": "30fps를 60fps로 변환할 수 있나요?",
+          "a": "네, 가장 흔한 목표예요."
         },
         {
-          "q": "Can I convert 60fps to 120fps?",
-          "a": "Yes, but the processing cost roughly doubles versus 60fps."
+          "q": "60fps를 120fps로 변환할 수 있나요?",
+          "a": "네, 하지만 처리 비용이 60fps에 비해 대략 두 배예요."
         },
         {
-          "q": "Why can frame interpolation create artifacts?",
-          "a": "Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts)."
+          "q": "프레임 보간은 왜 아티팩트를 만들 수 있나요?",
+          "a": "모션 추정이 어려운 영역(가려짐, 빠른 움직임, 장면 전환)에서는 추측에 의존해야 하기 때문이에요."
         },
         {
-          "q": "What output format does the tool create?",
-          "a": "MP4 (H.264 + AAC) in v1."
+          "q": "이 도구는 어떤 출력 형식을 만드나요?",
+          "a": "v1에서는 MP4(H.264 + AAC)예요."
         },
         {
-          "q": "Is 60fps always better than 30fps?",
-          "a": "Not for cinematic looks — pick what suits the content."
+          "q": "60fps가 항상 30fps보다 나은가요?",
+          "a": "영화적인 느낌에는 아니에요. 콘텐츠에 맞는 걸 고르세요."
         },
         {
-          "q": "Is AI frame interpolation better than FFmpeg FPS conversion?",
-          "a": "For most clips, yes — but minterpolate is faster and still useful as a quick fallback."
+          "q": "AI 프레임 보간이 FFmpeg FPS 변환보다 나은가요?",
+          "a": "대부분의 클립에서는 그래요. 하지만 minterpolate가 더 빠르고 빠른 대안으로 여전히 유용해요."
         },
         {
-          "q": "Why do scene cuts sometimes look strange after interpolation?",
-          "a": "The model assumes adjacent frames belong to the same motion sequence."
+          "q": "보간 후 장면 전환이 가끔 이상해 보이는 이유는 뭔가요?",
+          "a": "모델이 인접한 프레임들이 같은 움직임 시퀀스에 속한다고 가정하기 때문이에요."
         }
       ]
     },
     "actions": {
-      "tryTool": "Try the AI Frame Interpolation Tool",
-      "backToTutorials": "← Back to Tutorials",
-      "videoConverterTutorial": "Video Converter Tutorial"
+      "tryTool": "AI 프레임 보간 도구 사용해 보기",
+      "backToTutorials": "← 튜토리얼로 돌아가기",
+      "videoConverterTutorial": "동영상 변환기 튜토리얼"
     },
     "relatedLinks": {
-      "title": "Try related tools and guides",
-      "intro": "Other video tools and reference pages that pair well with AI frame interpolation.",
+      "title": "관련 도구 및 가이드 사용해 보기",
+      "intro": "AI 프레임 보간과 잘 어울리는 다른 동영상 도구와 참고 페이지예요.",
       "links": [
         {
-          "label": "AI Frame Interpolation Tool",
-          "description": "Upload a video and run interpolation right now."
+          "label": "AI 프레임 보간 도구",
+          "description": "동영상을 업로드하고 지금 바로 보간을 실행하세요."
         },
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "동영상 변환기",
+          "description": "MP4, WebM, MOV, AVI, MKV 등을 변환하세요."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink a higher-FPS file before sharing."
+          "label": "동영상 압축",
+          "description": "공유하기 전에 높은 FPS 파일을 줄이세요."
         },
         {
-          "label": "Extract frames from video",
-          "description": "Pull individual frames out as PNGs."
+          "label": "동영상에서 프레임 추출",
+          "description": "개별 프레임을 PNG로 뽑아내세요."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn a short clip into an animated GIF."
+          "label": "동영상을 GIF로 변환",
+          "description": "짧은 클립을 애니메이션 GIF로 바꾸세요."
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Video Tutorial",
-    "title": "Getting Started: Converting Video Files",
-    "intro": "Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.",
+    "eyebrow": "동영상 튜토리얼",
+    "title": "시작하기: 동영상 파일 변환",
+    "intro": "Media Manipulator의 동영상 변환기로 동영상 파일을 변환하고 편집하는 방법을 알아보세요. 이 튜토리얼은 동영상 변환 패널의 모든 섹션을 안내해요. 형식 선택, 자르기, 변형, 시각 효과, 시간 효과, 고급 색상/HDR 조절, 그리고 자막과 캡션을 위한 GPU 기반 전사 옵션까지요.",
     "toolPanel": {
-      "title": "Try the video converter without leaving this page",
-      "description": "Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+      "title": "이 페이지에서 바로 동영상 변환기 사용해 보기",
+      "description": "동영상 파일을 고르고 여기서 바로 변환하세요. 아래 설정은 홈페이지 변환기와 같으므로 읽으면서 실험해 볼 수 있어요."
     },
     "upload": {
-      "title": "1. Upload your video file",
-      "paragraph1": "Drag a video file into the upload zone on the home page, or click <strong>Choose File</strong>. Common inputs include MP4, MOV, MKV, AVI, WebM, WMV, and FLV. Large videos are uploaded directly to S3 via a presigned URL for speed; smaller files upload through the standard form endpoint.",
-      "paragraph2": "After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below."
+      "title": "1. 동영상 파일 업로드",
+      "paragraph1": "홈페이지의 업로드 영역에 동영상 파일을 끌어다 놓거나 <strong>파일 선택</strong>을 클릭하세요. 일반적인 입력에는 MP4, MOV, MKV, AVI, WebM, WMV, FLV가 포함돼요. 큰 동영상은 속도를 위해 사전 서명 URL로 S3에 직접 업로드되고, 작은 파일은 표준 양식 엔드포인트로 업로드돼요.",
+      "paragraph2": "업로드 후 오른쪽 패널에 <strong>변환 / 전사</strong> 토글이 표시돼요. 지금은 <em>변환</em>에 두세요. 전사는 아래에서 다룰게요."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
-      "intro": "Use <strong>Format</strong> to choose the container/codec for the output:",
+      "title": "2. 출력 형식과 품질 선택",
+      "intro": "<strong>형식</strong>에서 출력의 컨테이너/코덱을 고르세요:",
       "bullets": [
-        "<strong>MP4</strong> — H.264 + AAC, the safest default for the web and most devices.",
-        "<strong>WebM</strong> — VP9 + Opus, optimal for the open web.",
-        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).",
-        "<strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.",
-        "<strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below."
+        "<strong>MP4</strong> — H.264 + AAC, 웹과 대부분의 기기에서 가장 안전한 기본값.",
+        "<strong>WebM</strong> — VP9 + Opus, 개방형 웹에 최적.",
+        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — 특정 워크플로(Apple, 보관, 구형 플레이어 등)를 위한 컨테이너.",
+        "<strong>ProRes / DNxHD</strong> — 고비트레이트 전문 편집용 코덱.",
+        "<strong>GIF (애니메이션)</strong> — 채팅, README, 버그 리포트를 위한 소리 없는 반복 이미지. 아래 전용 섹션을 참고하세요."
       ],
-      "quality": "<strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over."
+      "quality": "<strong>품질</strong>은 내부적으로 CRF 프리셋을 골라요. 낮음 ≈ CRF 30(작은 파일), 중간 ≈ CRF 23(균형), 높음 ≈ CRF 18(대부분의 영상에서 시각적으로 무손실). GIF 출력에서는 품질, 높이, 속도 컨트롤을 건너뛰고 아래의 애니메이션 GIF 패널이 대신 처리해요."
     },
     "gif": {
-      "title": "2a. Converting video to an animated GIF",
-      "paragraph1": "Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.",
+      "title": "2a. 동영상을 애니메이션 GIF로 변환",
+      "paragraph1": "형식으로 <strong>GIF (애니메이션)</strong>를 고르면 <strong>애니메이션 GIF 설정</strong> 패널이 나타나요. 이는 검증된 스크린캐스트 스크립트를 본뜬 2단계 파이프라인을 실행해요. FFmpeg가 원본을 축소하고 낮은 프레임 레이트로 샘플링한 뒤, <code>gifsicle</code>이 팔레트를 다시 양자화하고 크기에 맞게 출력을 최적화해요.",
       "bullets": [
-        "<strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.",
-        "<strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.",
-        "<strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.",
-        "<strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.",
-        "<strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+        "<strong>너비 (px)</strong> — 출력 너비. 높이는 화면 비율을 유지하도록 자동으로 계산돼요(4의 배수로 반올림). 스크린캐스트에는 480–900이 좋은 범위예요.",
+        "<strong>프레임 레이트 (fps)</strong> — FFmpeg가 원본에서 초당 몇 프레임을 샘플링할지. UI 화면 녹화에는 12 fps면 부드럽게 보이고, 움직임이 많은 클립은 18–24로 올리거나, 파일을 줄이려면 8–10으로 내리세요.",
+        "<strong>색상 수</strong> — gifsicle 팔레트 크기(2–256). 128이 좋은 기본값이고, 단순한 UI 영상은 64로 낮추고, 부드러운 그라데이션이 있는 사진 클립은 256으로 올리세요.",
+        "<strong>프레임 지연</strong> — gifsicle의 프레임 간 지연(1/100초 단위). 낮을수록 재생이 빨라요. 3(≈30ms)은 경쾌한 스크린캐스트 느낌이고, 6–10은 더 느리고 차분한 루프를 만들어요.",
+        "<strong>최적화 수준</strong> — gifsicle <code>--optimize</code> 수준. 1은 가장 빠르지만 출력이 가장 크고, 3은 가장 느리지만 출력이 가장 작아요. 긴 클립을 반복 작업하며 빠른 초안이 필요한 게 아니라면 3을 유지하세요."
       ],
-      "paragraph2": "Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video."
+      "paragraph2": "GIF에서도 자르기는 작동해요. 짧은 자르기에 작은 너비와 적당한 색상 수를 조합하면 파일을 몇 MB 이하로 유지할 수 있어요. 작업이 끝나면 미리보기 모달이 결과를 바로 애니메이션으로 보여 주고, <em>원본</em>으로 전환해 원본 동영상과 비교할 수 있어요."
     },
     "resize": {
-      "title": "3. Resize, speed, and aspect ratio",
-      "paragraph1": "Set <strong>Width</strong> and/or <strong>Height</strong> to resize the video. Leave one blank to scale proportionally. Toggle <strong>Preserve aspect ratio</strong> when you set both to use a non-stretching <em>force_original_aspect_ratio=decrease</em> scale.",
-      "paragraph2": "<strong>Speed Multiplier</strong> changes both video and audio playback tempo from 0.25x to 4x. We pair it with FFmpeg's <em>setpts</em> filter and matching <em>atempo</em> on the audio track."
+      "title": "3. 크기 조정, 속도, 화면 비율",
+      "paragraph1": "<strong>너비</strong> 및/또는 <strong>높이</strong>를 설정해 동영상 크기를 조정하세요. 하나를 비워 두면 비례해서 조정돼요. 둘 다 설정할 때 <strong>화면 비율 유지</strong>를 켜면 늘어나지 않는 <em>force_original_aspect_ratio=decrease</em> 스케일을 사용해요.",
+      "paragraph2": "<strong>속도 배율</strong>은 동영상과 오디오의 재생 속도를 0.25배부터 4배까지 함께 바꿔요. FFmpeg의 <em>setpts</em> 필터와 오디오 트랙의 대응하는 <em>atempo</em>를 짝지어 사용해요."
     },
     "trim": {
-      "title": "4. Trim",
-      "paragraph": "Click <strong>Trim Video</strong> to scrub the player and pick a start and end time. Only the selected segment is encoded into the output, and trim works regardless of the output codec."
+      "title": "4. 자르기",
+      "paragraph": "<strong>동영상 자르기</strong>를 클릭해 플레이어를 탐색하며 시작과 끝 시간을 고르세요. 선택한 구간만 출력으로 인코딩되며, 자르기는 출력 코덱과 관계없이 작동해요."
     },
     "effects": {
-      "title": "5. Advanced Video Effects",
-      "intro": "The <strong>Advanced Video Effects</strong> section groups every filter into collapsible panels. Expand a panel to access its controls:",
+      "title": "5. 고급 동영상 효과",
+      "intro": "<strong>고급 동영상 효과</strong> 섹션은 모든 필터를 접을 수 있는 패널로 묶어요. 패널을 펼쳐 컨트롤에 접근하세요:",
       "bullets": [
-        "<strong>Visual Effects</strong> — brightness, contrast, saturation, hue, gamma, exposure, shadow/highlight recovery, Gaussian blur, motion blur, unsharp mask (sharpening), film/digital/vintage noise, and artistic effects (oil painting, watercolor, sketch, emboss, edge detection, posterize).",
-        "<strong>Transform</strong> — free rotation in degrees, horizontal/vertical flip, custom crop, and padded letterboxing with a configurable color.",
-        "<strong>Temporal Effects</strong> — reverse playback, ping-pong (forward then backward), frame-rate conversion with optional motion interpolation, and video stabilization with shakiness/accuracy controls.",
-        "<strong>Advanced Processing</strong> — deinterlacing, HDR tone mapping (hable, reinhard, mobius), and explicit input/output colorspace conversion (Rec.709, Rec.2020, sRGB, P3)."
+        "<strong>시각 효과</strong> — 밝기, 대비, 채도, 색조, 감마, 노출, 그림자/하이라이트 복구, 가우시안 흐림, 모션 블러, 언샵 마스크(선명화), 필름/디지털/빈티지 노이즈, 예술적 효과(유화, 수채화, 스케치, 엠보스, 윤곽선 검출, 포스터화).",
+        "<strong>변형</strong> — 각도 단위 자유 회전, 좌우/상하 뒤집기, 사용자 지정 자르기, 색상을 지정할 수 있는 패딩 레터박스.",
+        "<strong>시간 효과</strong> — 역재생, 핑퐁(정방향 후 역방향), 선택적 모션 보간이 있는 프레임 레이트 변환, 흔들림/정확도 조절이 있는 동영상 손떨림 보정.",
+        "<strong>고급 처리</strong> — 디인터레이스, HDR 톤 매핑(hable, reinhard, mobius), 명시적 입력/출력 색 공간 변환(Rec.709, Rec.2020, sRGB, P3)."
       ]
     },
     "convertDownload": {
-      "title": "6. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A streaming progress bar shows real-time job status pulled from FFmpeg. When the job finishes, the result auto-previews in a modal with an <strong>Original / Final</strong> toggle so you can compare the two side by side. A <strong>Download</strong> button saves the final file."
+      "title": "6. 변환 및 다운로드",
+      "paragraph": "<strong>파일 변환</strong>을 클릭하세요. 스트리밍 진행률 표시줄이 FFmpeg에서 가져온 실시간 작업 상태를 보여 줘요. 작업이 끝나면 결과가 <strong>원본 / 최종</strong> 토글이 있는 모달에서 자동으로 미리보기되어 둘을 나란히 비교할 수 있어요. <strong>다운로드</strong> 버튼으로 최종 파일을 저장하세요."
     },
     "transcribe": {
-      "title": "7. Transcribe a video (subtitles, captions, plain text, JSON)",
-      "intro": "Switch the panel toggle to <strong>Transcribe</strong> to run our local GPU transcription pipeline (whisper-ctranslate2). Pick an output format:",
+      "title": "7. 동영상 전사 (자막, 캡션, 일반 텍스트, JSON)",
+      "intro": "패널 토글을 <strong>전사</strong>로 전환하면 저희 로컬 GPU 전사 파이프라인(whisper-ctranslate2)이 실행돼요. 출력 형식을 고르세요:",
       "bullets": [
-        "<strong>VTT</strong> — time-coded captions/subtitles that drop into HTML5 video players.",
-        "<strong>Plain text</strong> — a continuous transcript for reading or editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — HTML5 동영상 플레이어에 바로 넣을 수 있는 타임코드 자막.",
+        "<strong>일반 텍스트</strong> — 읽거나 편집하기 위한 연속 전사본.",
+        "<strong>구조화된 JSON</strong> — 후속 파이프라인을 위한 타이밍 데이터가 포함된 구간별 전사본."
       ],
-      "languageNote": "Optionally type a BCP-47 language hint (e.g. <code>en</code>, <code>es</code>, <code>ja</code>). Leave it blank to auto-detect. A summary and content-safety review run automatically after the transcript is ready."
+      "languageNote": "선택적으로 BCP-47 언어 힌트(예: <code>en</code>, <code>es</code>, <code>ja</code>)를 입력하세요. 비워 두면 자동 감지돼요. 전사본이 준비되면 요약과 콘텐츠 안전성 검토가 자동으로 실행돼요."
     },
     "tips": {
-      "title": "Tips for great video output",
+      "title": "훌륭한 동영상 출력을 위한 팁",
       "bullets": [
-        "Use <strong>MP4 / High</strong> as a default for web delivery — it streams everywhere and looks great.",
-        "Prefer <strong>WebM</strong> for open-web embeds where file size matters and you control the player.",
-        "Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.",
-        "Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.",
-        "Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.",
-        "For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors."
+        "웹 배포에는 <strong>MP4 / 높음</strong>을 기본으로 사용하세요. 어디서나 스트리밍되고 보기 좋아요.",
+        "파일 크기가 중요하고 플레이어를 직접 관리하는 개방형 웹 임베드에는 <strong>WebM</strong>을 선호하세요.",
+        "표준 파이프라인에서 크기를 키우는 건 피하세요. 작은 입력은 원본 해상도로 무손실 인코딩한 뒤가 더 좋아 보여요.",
+        "강한 색 보정 전에 <strong>손떨림 보정</strong>을 적용해 왜곡이 색상 필터와 충돌하지 않게 하세요.",
+        "변환된 파일과 자막이 모두 필요하면 변환과 함께 <strong>전사</strong>를 실행하세요. 둘은 독립적인 작업이에요.",
+        "<strong>GIF</strong> 출력에서는 먼저 과감하게 자르세요. 영상 1초가 늘어날 때마다 최종 크기는 프레임 레이트 × 색상 수만큼 곱해져요."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Video Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "동영상 변환기 사용해 보기",
+      "backToTutorials": "← 튜토리얼로 돌아가기",
+      "howItWorks": "작동 방식"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused video tool or keep exploring related guides.",
+      "title": "관련 도구 사용해 보기",
+      "intro": "집중된 동영상 도구로 바로 들어가거나 관련 가이드를 계속 살펴보세요.",
       "links": [
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "동영상 변환기",
+          "description": "MP4, WebM, MOV, AVI, MKV 등을 변환하세요."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink video file size for the web without ruining quality."
+          "label": "동영상 압축",
+          "description": "화질을 망치지 않고 웹용으로 동영상 파일 크기를 줄이세요."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video as searchable text or captions."
+          "label": "동영상 전사",
+          "description": "동영상의 음성을 검색 가능한 텍스트나 자막으로 뽑아내세요."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "동영상을 GIF로 변환",
+          "description": "짧은 동영상 클립을 공유하기 좋은 애니메이션 GIF로 바꾸세요."
         },
         {
-          "label": "AI Frame Interpolation tool",
-          "description": "Smooth motion by lifting video FPS with RIFE."
+          "label": "AI 프레임 보간 도구",
+          "description": "RIFE로 동영상 FPS를 높여 움직임을 부드럽게 하세요."
         },
         {
-          "label": "AI Frame Interpolation tutorial",
-          "description": "Learn how AI frame interpolation works and when to use it."
+          "label": "AI 프레임 보간 튜토리얼",
+          "description": "AI 프레임 보간의 작동 원리와 사용 시점을 알아보세요."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "Learn how transcription and AI summaries run on a local GPU."
+          "label": "Media Manipulator의 작동 방식",
+          "description": "전사와 AI 요약이 로컬 GPU에서 어떻게 실행되는지 알아보세요."
         }
       ]
     }
   },
   "tutorialAudioGettingStarted": {
-    "eyebrow": "Audio Tutorial",
-    "title": "Getting Started: Converting Audio Files",
-    "intro": "Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).",
+    "eyebrow": "오디오 튜토리얼",
+    "title": "시작하기: 오디오 파일 변환",
+    "intro": "Media Manipulator의 오디오 변환기로 오디오 파일을 변환, 정리, 리믹스하는 방법을 알아보세요. 이 튜토리얼은 오디오 변환 패널의 모든 섹션을 안내해요. 형식 선택, 처리 효과, 복원, 그리고 새로운 AI 오디오 도구(음성 정리, 배경 소음 제거, 보컬 분리, 보컬 제거)까지요.",
     "upload": {
-      "heading": "1. Upload your audio file",
-      "p1": "From the home page, drag and drop an audio file into the upload zone, or click <strong>Choose File</strong>. Supported inputs include MP3, WAV, FLAC, AAC, M4A, OGG, Opus, and most common podcast and music formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
-      "p2": "Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial."
+      "heading": "1. 오디오 파일 업로드",
+      "p1": "홈페이지에서 오디오 파일을 업로드 영역으로 끌어다 놓거나 <strong>파일 선택</strong>을 클릭하세요. 지원되는 입력에는 MP3, WAV, FLAC, AAC, M4A, OGG, Opus 및 대부분의 일반적인 팟캐스트와 음악 형식이 포함돼요. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.",
+      "p2": "파일을 선택하면 오른쪽 패널이 <strong>변환 옵션</strong>으로 바뀌어요. 동영상과 오디오 파일에서는 <strong>변환 / 전사</strong> 토글도 보이는데, 이 튜토리얼에서는 <em>변환</em>에 두세요."
     },
     "toolPanel": {
-      "title": "Try the audio converter without leaving this page",
-      "description": "Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "이 페이지에서 바로 오디오 변환기 사용해 보기",
+      "description": "오디오 파일을 고르고 여기서 바로 변환하세요. 아래 설정은 홈페이지 변환기와 같으므로 실험하면서 튜토리얼의 나머지를 따라갈 수 있어요."
     },
     "format": {
-      "heading": "2. Pick the output format",
-      "intro": "The <strong>Format</strong> dropdown sets the container and codec for your output file. The audio converter supports:",
+      "heading": "2. 출력 형식 선택",
+      "intro": "<strong>형식</strong> 드롭다운이 출력 파일의 컨테이너와 코덱을 정해요. 오디오 변환기는 다음을 지원해요:",
       "items": [
-        "<strong>MP3</strong> — universal compatibility, lossy, small file sizes.",
-        "<strong>WAV</strong> — uncompressed PCM, ideal for masters, editing, or archiving.",
-        "<strong>AAC</strong> — efficient lossy codec used by Apple devices and streaming.",
-        "<strong>OGG</strong> — open-source Vorbis container.",
-        "<strong>FLAC / ALAC</strong> — lossless compression for archival quality at smaller size than WAV.",
-        "<strong>Opus</strong> — modern lossy codec great for voice and low bitrates.",
-        "<strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks."
+        "<strong>MP3</strong> — 범용 호환성, 손실, 작은 파일 크기.",
+        "<strong>WAV</strong> — 비압축 PCM, 마스터, 편집, 보관에 이상적.",
+        "<strong>AAC</strong> — Apple 기기와 스트리밍에서 사용되는 효율적인 손실 코덱.",
+        "<strong>OGG</strong> — 오픈소스 Vorbis 컨테이너.",
+        "<strong>FLAC / ALAC</strong> — WAV보다 작은 크기로 보관 품질을 제공하는 무손실 압축.",
+        "<strong>Opus</strong> — 음성과 낮은 비트레이트에 뛰어난 최신 손실 코덱.",
+        "<strong>AC3 / DTS</strong> — 동영상 사운드트랙에 자주 쓰이는 서라운드 지원 형식."
       ]
     },
     "quality": {
-      "heading": "3. Set bitrate, sample rate, and channels",
-      "bitrate": "<strong>Bitrate</strong> controls quality vs. file size for lossy formats. 128 kbps is \"good enough\" for podcasts; 192–256 kbps is a strong default for music; 320 kbps is the maximum MP3 quality. Lossless formats (WAV, FLAC, ALAC) ignore this setting.",
-      "sampleRate": "<strong>Sample rate</strong> sets how many audio samples per second the file contains. Standard music is 44.1 kHz; pro audio and video typically use 48 kHz. Higher rates (96 kHz, 192 kHz) only matter for professional production.",
-      "channels": "<strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks."
+      "heading": "3. 비트레이트, 샘플 레이트, 채널 설정",
+      "bitrate": "<strong>비트레이트</strong>는 손실 형식에서 품질과 파일 크기의 균형을 조절해요. 팟캐스트에는 128 kbps면 \"충분히 좋고\", 음악에는 192–256 kbps가 좋은 기본값이며, 320 kbps가 MP3 최대 품질이에요. 무손실 형식(WAV, FLAC, ALAC)은 이 설정을 무시해요.",
+      "sampleRate": "<strong>샘플 레이트</strong>는 파일에 초당 몇 개의 오디오 샘플이 담기는지 정해요. 표준 음악은 44.1 kHz이고, 전문 오디오와 동영상은 보통 48 kHz를 사용해요. 더 높은 값(96 kHz, 192 kHz)은 전문 제작에서만 의미가 있어요.",
+      "channels": "<strong>채널</strong>은 모노, 스테레오, 5.1 또는 7.1이 될 수 있어요. 음성 메모나 단일 마이크 녹음은 모노를 선택해 파일 크기를 절반으로 줄이세요. 음악의 기본값은 스테레오이고, 5.1/7.1은 서라운드 사운드트랙용이에요."
     },
     "speedVolume": {
-      "heading": "4. Adjust speed, volume, and trim",
-      "p1": "<strong>Speed Multiplier</strong> changes playback tempo from 0.25x to 4x without altering pitch — useful for sped-up podcasts or slowed-down practice tracks. <strong>Volume Multiplier</strong> applies a simple gain factor between 0.1x and 2x.",
-      "p2": "Click <strong>Trim Audio</strong> to scrub through the waveform and pick a start and end time. Only the selected segment is encoded into the output file."
+      "heading": "4. 속도, 볼륨, 자르기 조정",
+      "p1": "<strong>속도 배율</strong>은 음높이를 바꾸지 않고 재생 속도를 0.25배부터 4배까지 바꿔요. 빠르게 듣는 팟캐스트나 느리게 듣는 연습 트랙에 유용하죠. <strong>볼륨 배율</strong>은 0.1배와 2배 사이의 단순한 게인 계수를 적용해요.",
+      "p2": "<strong>오디오 자르기</strong>를 클릭해 파형을 탐색하며 시작과 끝 시간을 고르세요. 선택한 구간만 출력 파일로 인코딩돼요."
     },
     "aiTools": {
-      "heading": "5. AI Audio Tools (recommended)",
-      "intro": "The <strong>AI Audio Tools</strong> panel is the fastest path to a great-sounding result for voice and music. Each operation runs on our local GPU server (no data leaves our infrastructure):",
+      "heading": "5. AI 오디오 도구 (추천)",
+      "intro": "<strong>AI 오디오 도구</strong> 패널은 음성과 음악에서 훌륭한 결과를 얻는 가장 빠른 길이에요. 각 작업은 저희 로컬 GPU 서버에서 실행돼요 (데이터가 저희 인프라 밖으로 나가지 않아요):",
       "items": [
-        "<strong>Clean Voice</strong> — denoises with DeepFilterNet and then runs a broadcast-style polish chain (high-pass, low-pass, loudness normalization, brick-wall limiter). Best for podcast/voiceover takes recorded in noisy rooms.",
-        "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain. Use this when you want to preserve the natural EQ and dynamics of the recording.",
-        "<strong>Isolate Vocals</strong> — runs Demucs htdemucs and outputs the vocal stem only. Output defaults to WAV so you don't lose detail.",
-        "<strong>Remove Vocals / Karaoke</strong> — same Demucs job, but exports the instrumental stem. Great for karaoke tracks or sample workflows."
+        "<strong>음성 정리</strong> — DeepFilterNet으로 노이즈를 제거한 뒤 방송용 마무리 체인(하이 패스, 로우 패스, 라우드니스 노멀라이즈, 브릭월 리미터)을 실행해요. 시끄러운 방에서 녹음한 팟캐스트/보이스오버 테이크에 가장 좋아요.",
+        "<strong>배경 소음 제거</strong> — 마무리 체인 없이 DeepFilterNet 노이즈 제거만 해요. 녹음의 자연스러운 EQ와 다이내믹스를 유지하고 싶을 때 사용하세요.",
+        "<strong>보컬 분리</strong> — Demucs htdemucs를 실행해 보컬 스템만 출력해요. 디테일을 잃지 않도록 출력 기본값은 WAV예요.",
+        "<strong>보컬 제거 / 노래방</strong> — 같은 Demucs 작업이지만 반주 스템을 내보내요. 노래방 트랙이나 샘플 워크플로에 좋아요."
       ],
-      "outro": "When you pick any AI operation, the standard FFmpeg chain (bitrate, EQ, reverb, etc.) is skipped for that job so the AI tool has a clean input/output path. AI jobs may take longer than basic conversion because they run on the GPU."
+      "outro": "AI 작업을 고르면 해당 작업에서는 표준 FFmpeg 체인(비트레이트, EQ, 리버브 등)을 건너뛰어 AI 도구가 깔끔한 입출력 경로를 갖게 돼요. AI 작업은 GPU에서 실행되므로 기본 변환보다 오래 걸릴 수 있어요."
     },
     "advancedEffects": {
-      "heading": "6. Advanced Audio Effects",
-      "intro": "Expand <strong>Advanced Audio Effects</strong> to access four collapsible groups when you want manual control instead of an AI operation:",
+      "heading": "6. 고급 오디오 효과",
+      "intro": "AI 작업 대신 수동으로 조절하고 싶을 때는 <strong>고급 오디오 효과</strong>를 펼쳐 접을 수 있는 네 개의 그룹에 접근하세요:",
       "items": [
-        "<strong>Basic Audio Processing</strong> — normalize, amplify (dB), fade in/out, EQ presets (bass boost, treble boost, vocal, classical, rock, jazz), pan, balance, stereo width, mono conversion, channel swap.",
-        "<strong>Time-Based Effects</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), modulation (chorus, flanger, phaser, tremolo, vibrato).",
-        "<strong>Restoration & Cleanup</strong> — spectral/adaptive/gate noise reduction, 50/60 Hz de-hum, declipper, silence detection and removal.",
-        "<strong>Advanced Audio</strong> — pitch shifting (semitones, formant-preserving), time stretching (factor + pitch/time/formant algorithm), spatial audio (binaural, surround, 3D)."
+        "<strong>기본 오디오 처리</strong> — 노멀라이즈, 증폭(dB), 페이드 인/아웃, EQ 프리셋(저음 강조, 고음 강조, 보컬, 클래식, 록, 재즈), 팬, 밸런스, 스테레오 폭, 모노 변환, 채널 교환.",
+        "<strong>시간 기반 효과</strong> — 리버브(룸, 홀, 플레이트, 스프링), 딜레이(에코, 멀티탭, 핑퐁), 모듈레이션(코러스, 플랜저, 페이저, 트레몰로, 비브라토).",
+        "<strong>복원 및 정리</strong> — 스펙트럼/적응형/게이트 노이즈 감소, 50/60 Hz 험 제거, 디클리퍼, 무음 감지 및 제거.",
+        "<strong>고급 오디오</strong> — 피치 시프트(반음, 포먼트 보존), 타임 스트레치(계수 + 피치/시간/포먼트 알고리즘), 공간 음향(바이노럴, 서라운드, 3D)."
       ]
     },
     "convertDownload": {
-      "heading": "7. Convert and download",
-      "body": "Click <strong>Convert File</strong>. A real-time progress bar appears as the server processes the job. When it finishes, the result auto-previews and a <strong>Download</strong> button appears. The file is also added to your in-session <em>Conversion History</em> so you can revisit or download it later without re-running the job."
+      "heading": "7. 변환 및 다운로드",
+      "body": "<strong>파일 변환</strong>을 클릭하세요. 서버가 작업을 처리하는 동안 실시간 진행률 표시줄이 나타나요. 끝나면 결과가 자동으로 미리보기되고 <strong>다운로드</strong> 버튼이 나타나요. 파일은 세션 내 <em>변환 기록</em>에도 추가되므로 작업을 다시 실행하지 않고도 나중에 다시 보거나 다운로드할 수 있어요."
     },
     "tips": {
-      "heading": "Tips for great audio output",
+      "heading": "훌륭한 오디오 출력을 위한 팁",
       "items": [
-        "For voice recordings, try <strong>Clean Voice</strong> first — it solves most \"muddy podcast\" problems in one click.",
-        "If you only want to remove a constant hum or air-conditioner background, use <strong>Remove Background Noise</strong> to keep the original tone.",
-        "For stems, keep the default <strong>WAV</strong> output — converting Demucs output to a lossy format defeats the purpose of separation.",
-        "Big bitrate jumps don't help small files much; pair 320 kbps with 48 kHz only for high-quality music exports."
+        "음성 녹음에는 <strong>음성 정리</strong>를 먼저 시도하세요. 대부분의 \"탁한 팟캐스트\" 문제를 클릭 한 번에 해결해요.",
+        "일정한 험이나 에어컨 배경음만 제거하고 싶다면 <strong>배경 소음 제거</strong>를 써서 원래 음색을 유지하세요.",
+        "스템에는 기본 <strong>WAV</strong> 출력을 유지하세요. Demucs 출력을 손실 형식으로 변환하면 분리의 의미가 없어져요.",
+        "비트레이트를 크게 올려도 작은 파일에는 별 도움이 안 돼요. 320 kbps와 48 kHz 조합은 고품질 음악 내보내기에만 쓰세요."
       ]
     },
     "cta": {
-      "tryConverter": "Try the Audio Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "오디오 변환기 사용해 보기",
+      "backToTutorials": "← 튜토리얼로 돌아가기",
+      "howItWorks": "작동 방식"
     },
     "related": {
-      "title": "Try related tools",
-      "intro": "Jump straight into the audio tool you need, or keep learning with related guides.",
+      "title": "관련 도구 사용해 보기",
+      "intro": "필요한 오디오 도구로 바로 들어가거나 관련 가이드로 계속 배워 보세요.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more."
+          "label": "오디오 변환기",
+          "description": "WAV, MP3, FLAC, M4A, OGG 등을 변환하세요."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV recordings into widely playable MP3s."
+          "label": "WAV를 MP3로 변환",
+          "description": "큰 WAV 녹음을 널리 재생되는 MP3로 줄이세요."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Extract vocals from music for remixes or analysis."
+          "label": "노래에서 보컬 분리",
+          "description": "리믹스나 분석을 위해 음악에서 보컬을 추출하세요."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, compress, trim, and transcribe video files."
+          "label": "동영상 변환기 튜토리얼",
+          "description": "동영상 파일을 변환, 압축, 자르기, 전사하세요."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI audio jobs run on a local GPU server."
+          "label": "Media Manipulator의 작동 방식",
+          "description": "AI 오디오 작업이 로컬 GPU 서버에서 어떻게 실행되는지 확인하세요."
         }
       ]
     }
   },
   "tutorialImageGettingStarted": {
-    "eyebrow": "Image Tutorial",
-    "title": "Getting Started: Converting Image Files",
-    "intro": "Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).",
+    "eyebrow": "이미지 튜토리얼",
+    "title": "시작하기: 이미지 파일 변환",
+    "intro": "Media Manipulator의 이미지 변환기로 이미지를 변환, 편집하고 AI로 처리하는 방법을 알아보세요. 이 튜토리얼은 이미지 변환 패널의 모든 섹션을 안내해요. 형식 선택, 자르기, 필터, 텍스트 오버레이, 메타데이터 관리, 그리고 AI 이미지 도구(얼굴 보호, 배경 제거, AI 업스케일, 텍스트 가리기, 개체 제거)까지요.",
     "toolPanel": {
-      "title": "Try the image converter without leaving this page",
-      "description": "Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "이 페이지에서 바로 이미지 변환기 사용해 보기",
+      "description": "이미지를 고르고 여기서 바로 변환하세요. 설정은 홈페이지 변환기와 같으므로 실험하면서 튜토리얼의 나머지를 따라갈 수 있어요."
     },
     "upload": {
-      "title": "1. Upload your image",
-      "paragraph": "Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+      "title": "1. 이미지 업로드",
+      "paragraph": "이미지 파일을 업로드 영역으로 끌어다 놓거나 <strong>파일 선택</strong>을 클릭하세요. 이미지 변환기는 JPG, PNG, WebP, GIF 및 다른 많은 형식을 받아요. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
+      "title": "2. 출력 형식과 품질 선택",
       "bullets": [
-        "<strong>JPG</strong> — best for photos. Lossy compression with a quality slider.",
-        "<strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.",
-        "<strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.",
-        "<strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases."
+        "<strong>JPG</strong> — 사진에 가장 좋아요. 품질 슬라이더가 있는 손실 압축.",
+        "<strong>PNG</strong> — 무손실, 투명도 지원. 스크린샷, 로고, 그래픽에 가장 좋아요.",
+        "<strong>WebP</strong> — 손실과 무손실 모드를 모두 갖춘 최신 형식. 비슷한 품질에서 JPG보다 작아요.",
+        "<strong>GIF</strong> — 팔레트 기반, 기본 애니메이션 지원, 레거시 용도에 유용."
       ],
-      "quality": "<strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images."
+      "quality": "<strong>품질 (%)</strong>은 JPG와 WebP에 적용돼요. 85가 훌륭한 기본값이고, 썸네일은 더 낮게, 히어로 이미지는 더 높게 설정하세요."
     },
     "resize": {
-      "title": "3. Resize, crop, filter, tint",
-      "paragraph1": "Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.",
-      "paragraph2": "Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000)."
+      "title": "3. 크기 조정, 자르기, 필터, 색조",
+      "paragraph1": "<strong>너비</strong>와 <strong>높이</strong>로 크기를 조정하세요. 하나를 비워 두면 비례해서 조정돼요. ImageMagick이 입력을 먼저 자동 회전하므로 EXIF 방향이 지정된 JPEG가 PNG/WebP로 회전된 채 나오지 않아요.",
+      "paragraph2": "<strong>이미지 자르기</strong>를 클릭하면 시각적 자르기 선택기가 열려요. <strong>필터</strong> 드롭다운은 내장 효과를 적용해요. 흑백, 세피아, 흐림, 선명, 소용돌이, 배럴 왜곡, 유화, 빈티지, 엠보스, 목탄, 스케치 또는 고정 회전(45° / 90° / 180° / 270°). <strong>색조</strong>는 이미지 위에 30% 색조를 입혀요 (검은색/#000000으로 두면 건너뛰어요)."
     },
     "textOverlay": {
-      "title": "4. Text overlay",
-      "intro": "Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:",
+      "title": "4. 텍스트 오버레이",
+      "intro": "워터마크나 캡션을 이미지에 직접 추가하세요. <strong>오버레이 텍스트</strong>에 텍스트를 입력한 뒤 다음을 고르세요:",
       "bullets": [
-        "<strong>Text Size</strong> — 8–512 px.",
-        "<strong>Position</strong> — gravity-based anchor (corners, edges, center).",
-        "<strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.",
-        "<strong>Stroke Width</strong> — 0 to disable the outline.",
-        "<strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor."
+        "<strong>글자 크기</strong> — 8–512 px.",
+        "<strong>위치</strong> — 기준 위치 기반 앵커(모서리, 가장자리, 중앙).",
+        "<strong>글자색 / 외곽선 색</strong> — 색상 선택기로 고르는 16진수 색상.",
+        "<strong>외곽선 두께</strong> — 0이면 외곽선 없음.",
+        "<strong>X 오프셋 / Y 오프셋</strong> — 앵커 기준 픽셀 단위 미세 조정."
       ]
     },
     "metadata": {
-      "title": "5. Metadata",
-      "intro": "Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:",
+      "title": "5. 메타데이터",
+      "intro": "Media Manipulator가 EXIF, IPTC, XMP, GPS 메타데이터를 어떻게 다룰지 선택하세요:",
       "bullets": [
-        "<strong>Keep all metadata</strong> — preserved from the original via exiftool.",
-        "<strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online."
+        "<strong>모든 메타데이터 유지</strong> — exiftool로 원본에서 보존.",
+        "<strong>모든 메타데이터 제거</strong> — 카메라, GPS, 소프트웨어, 타임스탬프를 제거해요. 사진을 온라인에 공유하기 전에 권장해요."
       ],
-      "customLabel": "<strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:",
+      "customLabel": "<strong>사용자 지정 메타데이터</strong> — 먼저 모두 제거한 뒤 입력한 필드를 다시 써요. 포함 항목:",
       "customBullets": [
-        "Title, Artist/Author, Description, Copyright, User Comment, Keywords.",
-        "GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.",
-        "EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist."
+        "제목, 아티스트/작성자, 설명, 저작권, 사용자 코멘트, 키워드.",
+        "GPS 제거/교체(선택적 정밀도 반올림)와 방향/타임스탬프/고도/목적지 토글.",
+        "EXIF/TIFF 필드, GPS 필드, 그리고 허용 목록을 통한 고급 IPTC/XMP/MakerNotes 태그."
       ]
     },
     "aiTools": {
-      "title": "6. AI Image Tools (recommended)",
-      "intro": "The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.",
-      "faceBlur": "<strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.",
-      "removeBackground": "<strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.",
-      "aiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.",
-      "redactText": "<strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.",
-      "removeObject": "<strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:",
+      "title": "6. AI 이미지 도구 (추천)",
+      "intro": "<strong>AI 이미지 도구</strong> 패널은 변환 작업당 하나의 로컬 GPU 작업을 실행해요. 작업을 고르면 해당 작업에서는 표준 ImageMagick 파이프라인(필터, 색조, 오버레이 등)을 건너뛰어 AI 도구가 깔끔한 입출력 경로를 갖게 돼요.",
+      "faceBlur": "<strong>얼굴 흐림 / 픽셀화 / 검은 상자</strong> — 사진 속 모든 얼굴을 감지해 선택한 스타일로 가려요. 참석자의 신원을 노출하지 않고 행사 사진을 공유할 때 좋아요.",
+      "removeBackground": "<strong>배경 제거</strong> — BiRefNet(일반 또는 인물), ISNet 또는 U2Net으로 rembg를 실행해요. 투명도를 유지하기 위해 출력은 PNG로 고정돼요. 대부분의 사진에는 BiRefNet General이 권장 기본값이에요.",
+      "aiUpscale": "<strong>AI 업스케일</strong> — Real-ESRGAN ncnn Vulkan 업스케일러. <em>4배</em>(가장 안전) 또는 <em>2배</em>(더 빠름)를 고르고 모델을 선택하세요. 일반 사진에는 <code>realesrgan-x4plus</code>, 애니메이션/일러스트에는 <code>realesrgan-x4plus-anime</code>, 애니메이션 동영상 프레임에는 <code>realesr-animevideov3</code>. 기본 출력은 PNG예요.",
+      "redactText": "<strong>텍스트 / 개인정보 가리기</strong> — OCR 기반 가리기. <em>개인정보만</em>(이메일, 전화번호, 주민번호, 주소 등) 또는 <em>모든 텍스트</em>를 고른 뒤 가리기 스타일(검은 상자, 흐림 또는 픽셀화)을 선택하세요. 최선을 다하지만 완벽하지 않으니 공유하기 전에 출력을 확인하세요.",
+      "removeObject": "<strong>개체 제거 (LaMa 인페인팅)</strong> — 이미지 미리보기에서 클릭한 채 드래그해 지우고 싶은 것 위에 사각형을 그리세요. 배경의 행인, 표지판, 워터마크, 전봇대 등이요. 사각형 본체를 드래그하면 이동하고, 모서리/가장자리 핸들을 드래그하면 크기가 바뀌며, 빈 공간에서 다시 클릭 드래그하면 필요한 만큼 사각형을 추가할 수 있어요. 제출하면 서버가 사각형으로 마스크를 래스터화하고 전용 GPU에서 <code>simple-lama-inpainting</code>을 실행해 그 뒤의 영역을 다시 채워요. 출력은 선택한 형식(JPG, PNG, WebP, GIF)을 유지해요. 팁:",
       "removeObjectTips": [
-        "Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.",
-        "Several small rectangles usually beat one huge one, especially for thin objects.",
-        "LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces)."
+        "개체에 꼭 맞게 사각형을 그리세요. 사각형이 크면 LaMa가 더 많은 배경을 지어내야 해서 더 나빠 보일 수 있어요.",
+        "특히 가는 개체에는 작은 사각형 여러 개가 거대한 사각형 하나보다 보통 나아요.",
+        "주변 픽셀이 모델에 충분한 맥락(하늘, 잔디, 단순한 벽, 고른 톤의 표면)을 줄 때 LaMa가 가장 잘 작동해요."
       ]
     },
     "convertDownload": {
-      "title": "7. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list."
+      "title": "7. 변환 및 다운로드",
+      "paragraph": "<strong>파일 변환</strong>을 클릭하세요. 진행률 표시줄이 실시간 작업 상태를 보여 줘요. 끝나면 결과가 <strong>원본 / 최종</strong> 토글과 함께 자동으로 미리보기되어 비교할 수 있어요. <strong>다운로드</strong>로 저장하거나 나중에 세션 내 <em>변환 기록</em> 목록에서 다시 보세요."
     },
     "tips": {
-      "title": "Tips for great image output",
+      "title": "훌륭한 이미지 출력을 위한 팁",
       "bullets": [
-        "For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.",
-        "Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.",
-        "<strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.",
-        "For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.",
-        "Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.",
-        "Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result."
+        "소셜 업로드에는 80–85% 품질의 <strong>WebP</strong>를 사용하면 보기 좋은 작은 파일을 얻을 수 있어요.",
+        "사진을 온라인에 공유할 때는 <strong>메타데이터 제거</strong>를 함께 써서 GPS나 기기 정보가 새지 않게 하세요.",
+        "<strong>배경 제거</strong> 출력은 항상 PNG예요. 원하는 디자인 도구에서 색상 배경과 합치거나 슬라이드에 쌓아 보세요.",
+        "AI 업스케일에서는 사진에 <code>realesrgan-x4plus</code>와 <strong>4배</strong>를 선호하세요. 2배는 작은 입력에서 가끔 프레이밍 아티팩트가 보일 수 있는 고급 사용자용 옵션이에요.",
+        "이메일, 티켓, 청구서의 스크린샷을 게시하기 전에 <strong>텍스트 가리기</strong>를 실행하세요.",
+        "휴가 사진의 관광객이나 풍경 위의 엉뚱한 표지판 같은 일회성 정리에는 <strong>개체 제거</strong>를 사용하세요. 다만 가장 깨끗한 결과를 찾으려면 사각형 크기를 몇 번 조정해야 할 수 있어요."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Image Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "이미지 변환기 사용해 보기",
+      "backToTutorials": "← 튜토리얼로 돌아가기",
+      "howItWorks": "작동 방식"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused image tool or keep exploring related guides.",
+      "title": "관련 도구 사용해 보기",
+      "intro": "집중된 이미지 도구로 바로 들어가거나 관련 가이드를 계속 살펴보세요.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "이미지 변환기",
+          "description": "JPG, PNG, WebP, AVIF, GIF 등을 서로 변환하세요."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "WebP를 JPG로 변환",
+          "description": "WebP 원본에서 폭넓게 호환되는 JPG를 얻으세요."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "EXIF 메타데이터 제거",
+          "description": "사진을 공유하기 전에 GPS, 기기, 타임스탬프 메타데이터를 제거하세요."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, trim, and apply visual effects to video files."
+          "label": "동영상 변환기 튜토리얼",
+          "description": "동영상 파일을 변환, 자르기, 시각 효과 적용하세요."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI image tools run on a local GPU server."
+          "label": "Media Manipulator의 작동 방식",
+          "description": "AI 이미지 도구가 로컬 GPU 서버에서 어떻게 실행되는지 확인하세요."
         }
       ]
     }

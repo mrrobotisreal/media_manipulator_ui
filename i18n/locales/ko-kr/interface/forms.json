@@ -1,133 +1,132 @@
 {
   "transcribeForm": {
-    "outputFormatTitle": "Transcript Output Format",
-    "intro": "We transcribe the {{mediaKind}} on our own GPU server using whisper-ctranslate2. A summary and safety review run automatically once the transcript is ready.",
+    "outputFormatTitle": "전사본 출력 형식",
+    "intro": "{{mediaKind}} 전사는 저희 자체 GPU 서버에서 whisper-ctranslate2로 처리해요. 전사본이 준비되면 요약과 안전성 검토가 자동으로 실행돼요.",
     "mediaKind": {
-      "video": "video",
-      "audio": "audio"
+      "video": "동영상",
+      "audio": "오디오"
     },
-    "languageLabel": "Language hint (optional)",
-    "languagePlaceholder": "e.g. en, es, ja (leave blank to auto-detect)",
-    "languageHint": "BCP-47 short code. Leave blank to let whisper auto-detect the spoken language.",
-    "languageTooltip": "BCP-47 short code (e.g. en, es, ja, de, fr). Leave blank to let whisper auto-detect the spoken language. Providing the correct hint can improve transcript accuracy for short clips.",
-    "transcribing": "Transcribing...",
-    "submit": "Transcribe File",
+    "languageLabel": "언어 힌트 (선택 사항)",
+    "languagePlaceholder": "예: en, es, ja (비워 두면 자동 감지)",
+    "languageHint": "BCP-47 짧은 코드입니다. 비워 두면 whisper가 음성 언어를 자동으로 감지합니다.",
+    "languageTooltip": "BCP-47 짧은 코드입니다(예: en, es, ja, de, fr). 비워 두면 whisper가 음성 언어를 자동으로 감지합니다. 정확한 힌트를 제공하면 짧은 클립의 전사 정확도가 높아질 수 있습니다.",
+    "transcribing": "전사 중...",
+    "submit": "파일 전사",
     "format": {
       "vtt": {
-        "label": "Captions (VTT)",
-        "description": "Time-coded subtitles for video players and accessibility tools."
+        "label": "자막 (VTT)",
+        "description": "동영상 플레이어와 접근성 도구를 위한 타임코드 자막입니다."
       },
       "srt": {
-        "label": "Subtitles (SRT)",
-        "description": "SubRip subtitles compatible with YouTube, Premiere, DaVinci Resolve, and most video editors."
+        "label": "자막 (SRT)",
+        "description": "YouTube, Premiere, DaVinci Resolve 등 대부분의 동영상 편집기와 호환되는 SubRip 자막입니다."
       },
       "txt": {
-        "label": "Plain Text",
-        "description": "Continuous transcript text suitable for reading or further editing."
+        "label": "일반 텍스트",
+        "description": "읽거나 추가로 편집하기 좋은 연속 전사 텍스트입니다."
       },
       "json": {
-        "label": "Structured JSON",
-        "description": "Segmented transcript with timing data for downstream processing."
+        "label": "구조화된 JSON",
+        "description": "후속 처리를 위한 타이밍 데이터가 포함된 구간별 전사본입니다."
       }
     },
     "formatTooltip": {
-      "vtt": "<strong>VTT</strong> — time-coded captions/subtitles for HTML5 video players and accessibility tools.",
-      "txt": "<strong>Plain text</strong> — continuous transcript text for reading or further editing.",
-      "json": "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+      "vtt": "<strong>VTT</strong> — HTML5 동영상 플레이어와 접근성 도구를 위한 타임코드 자막입니다.",
+      "txt": "<strong>일반 텍스트</strong> — 읽거나 추가로 편집하기 위한 연속 전사 텍스트입니다.",
+      "json": "<strong>구조화된 JSON</strong> — 후속 파이프라인을 위한 타이밍 데이터가 포함된 구간별 전사본입니다."
     }
   },
   "audioForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})",
+    "converting": "변환 중...",
+    "submit": "파일 변환",
+    "trimStatus": "자르기: {{start}} - {{end}} ({{duration}})",
     "ai": {
-      "title": "AI Audio Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.",
-      "tooltipCleanVoice": "<strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).",
-      "tooltipRemoveNoise": "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.",
-      "tooltipIsolateVocals": "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).",
-      "tooltipRemoveVocals": "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.",
-      "intro": "AI audio tools run as GPU jobs and may take longer than basic conversion.",
-      "operationLabel": "Operation",
+      "title": "AI 오디오 도구",
+      "tooltipIntro": "작업당 하나의 AI 작업이 저희 로컬 GPU 서버에서 실행됩니다. 해당 작업에서는 표준 FFmpeg 처리 체인을 건너뜁니다.",
+      "tooltipCleanVoice": "<strong>음성 정리</strong> — DeepFilterNet 노이즈 제거 + 방송용 마무리 체인(하이/로우 패스, 라우드니스, 리미터).",
+      "tooltipRemoveNoise": "<strong>배경 소음 제거</strong> — 마무리 체인 없이 DeepFilterNet 노이즈 제거만 적용.",
+      "tooltipIsolateVocals": "<strong>보컬 분리</strong> — Demucs htdemucs 보컬 스템(기본값은 무손실 WAV).",
+      "tooltipRemoveVocals": "<strong>보컬 제거 / 노래방</strong> — Demucs 반주 스템.",
+      "intro": "AI 오디오 도구는 GPU 작업으로 실행되므로 기본 변환보다 오래 걸릴 수 있어요.",
+      "operationLabel": "작업",
       "operations": {
-        "none": "None (standard conversion)",
-        "clean_voice": "Clean Voice",
-        "remove_background_noise": "Remove Background Noise",
-        "isolate_vocals": "Isolate Vocals",
-        "remove_vocals": "Remove Vocals / Karaoke"
+        "none": "없음 (표준 변환)",
+        "clean_voice": "음성 정리",
+        "remove_background_noise": "배경 소음 제거",
+        "isolate_vocals": "보컬 분리",
+        "remove_vocals": "보컬 제거 / 노래방"
       },
-      "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.",
-      "presetLocked": "Preset for this tool"
+      "aiActiveNote": "AI 작업을 선택하면 비트레이트, EQ 등 표준 오디오 옵션은 건너뜁니다.",
+      "presetLocked": "이 도구의 프리셋"
     }
   },
   "videoForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})"
+    "converting": "변환 중...",
+    "submit": "파일 변환",
+    "trimStatus": "자르기: {{start}} - {{end}} ({{duration}})"
   },
   "imageForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "cropStatus": "Crop area: {{width}}×{{height}} pixels at ({{x}}, {{y}})",
+    "converting": "변환 중...",
+    "submit": "파일 변환",
+    "cropStatus": "자를 영역: {{width}}×{{height}} 픽셀, 위치 ({{x}}, {{y}})",
     "vectorize": {
-      "title": "Vectorization (PNG → SVG)",
-      "note": "Vectorization traces your image into real vector paths. It works best for logos, icons, signatures, and black-and-white line art — not photographs.",
-      "thresholdLabel": "Black/white threshold",
-      "thresholdTooltip": "Pixels darker than this cutoff are traced as filled shapes. Raise it to capture more detail, lower it to keep only the boldest shapes."
+      "title": "벡터화 (PNG → SVG)",
+      "note": "벡터화는 이미지를 실제 벡터 경로로 추적해요. 로고, 아이콘, 서명, 흑백 선화에 가장 잘 맞고 사진에는 적합하지 않아요.",
+      "thresholdLabel": "흑백 임계값",
+      "thresholdTooltip": "이 기준보다 어두운 픽셀이 채워진 도형으로 추적됩니다. 값을 높이면 더 많은 세부 묘사를 잡아내고, 낮추면 가장 굵은 형태만 남깁니다."
     },
     "ico": {
-      "note": "A multi-size .ico is generated containing 16, 32, 48, 64, 128, and 256 px icons — ideal for favicons and Windows app icons."
+      "note": "16, 32, 48, 64, 128, 256 px 아이콘이 포함된 다중 크기 .ico 파일이 생성됩니다. 파비콘과 Windows 앱 아이콘에 이상적입니다."
     },
     "ai": {
-      "title": "AI Image Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard ImageMagick pipeline is skipped for that job.",
-      "tooltipFacePrivacy": "<strong>Face Privacy</strong> — detect and obscure faces (blur, pixelate, or black box).",
-      "tooltipRemoveBackground": "<strong>Remove Background</strong> — outputs a transparent PNG via rembg + BiRefNet/ISNet/U2Net.",
-      "tooltipAiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan 2x or 4x.",
-      "tooltipRedactText": "<strong>Redact Text / PII</strong> — OCR-based redaction.",
-      "tooltipRemoveObject": "<strong>Remove Object</strong> — draw rectangles over unwanted objects; LaMa inpainting reconstructs the area behind them.",
-      "intro": "AI tools run one operation per conversion. For best results, preview the output before posting sensitive media.",
-      "operationLabel": "Operation",
+      "title": "AI 이미지 도구",
+      "tooltipIntro": "작업당 하나의 AI 작업이 저희 로컬 GPU 서버에서 실행됩니다. 해당 작업에서는 표준 ImageMagick 파이프라인을 건너뜁니다.",
+      "tooltipFacePrivacy": "<strong>얼굴 보호</strong> — 얼굴을 감지해 가립니다(흐림, 픽셀화 또는 검은 상자).",
+      "tooltipRemoveBackground": "<strong>배경 제거</strong> — rembg + BiRefNet/ISNet/U2Net으로 투명 PNG를 출력합니다.",
+      "tooltipAiUpscale": "<strong>AI 업스케일</strong> — Real-ESRGAN ncnn Vulkan 2배 또는 4배.",
+      "tooltipRedactText": "<strong>텍스트 / 개인정보 가리기</strong> — OCR 기반 가리기.",
+      "tooltipRemoveObject": "<strong>개체 제거</strong> — 원하지 않는 개체 위에 사각형을 그리면 LaMa 인페인팅이 그 뒤의 영역을 다시 채웁니다.",
+      "intro": "AI 도구는 변환당 하나의 작업을 실행해요. 민감한 미디어를 게시하기 전에 출력물을 먼저 확인하는 것이 좋아요.",
+      "operationLabel": "작업",
       "operations": {
-        "none": "None (standard conversion)",
-        "face_privacy": "Face Blur / Pixelate",
-        "remove_background": "Remove Background",
-        "ai_upscale": "AI Upscale",
-        "redact_text": "Redact Text / PII",
-        "remove_object": "Remove Object (LaMa Inpainting)"
+        "none": "없음 (표준 변환)",
+        "face_privacy": "얼굴 흐림 / 픽셀화",
+        "remove_background": "배경 제거",
+        "ai_upscale": "AI 업스케일",
+        "redact_text": "텍스트 / 개인정보 가리기",
+        "remove_object": "개체 제거 (LaMa 인페인팅)"
       },
       "faceMode": {
-        "label": "Face Mode",
-        "blur": "Blur",
-        "pixelate": "Pixelate",
-        "blackbox": "Black Box"
+        "label": "얼굴 처리 방식",
+        "blur": "흐림",
+        "pixelate": "픽셀화",
+        "blackbox": "검은 상자"
       },
       "selectiveFaces": {
-        "title": "Selective Faces",
-        "tooltipDefault": "Default applies the chosen effect to every detected face.",
-        "tooltipDetect": "Use <strong>Detect faces</strong> to preview boxes and pick which faces to obscure or skip.",
-        "tooltipExpire": "Face boxes are stored temporarily for selection and expire automatically.",
-        "selectionModeLabel": "Selection mode",
+        "title": "선택적 얼굴 처리",
+        "tooltipDefault": "기본값은 감지된 모든 얼굴에 선택한 효과를 적용합니다.",
+        "tooltipDetect": "<strong>얼굴 감지</strong>를 사용하면 상자를 미리 보고 가릴 얼굴과 건너뛸 얼굴을 고를 수 있습니다.",
+        "tooltipExpire": "얼굴 상자는 선택을 위해 임시로 저장되며 자동으로 만료됩니다.",
+        "selectionModeLabel": "선택 모드",
         "selectionMode": {
-          "all": "All detected faces",
-          "only_selected": "Only selected faces",
-          "all_except_selected": "All except selected faces"
+          "all": "감지된 모든 얼굴",
+          "only_selected": "선택한 얼굴만",
+          "all_except_selected": "선택한 얼굴을 제외한 모두"
         },
-        "detecting": "Detecting…",
-        "reDetect": "Re-detect faces",
-        "detect": "Detect faces",
-        "selectAll": "Select all",
-        "clearSelection": "Clear selection",
-        "chooseFile": "Choose an image first to detect faces.",
-        "noFaces": "No faces detected. You can still run default face privacy on conversion, or try another image.",
-        "detected_one": "Detected {{count}} face. Selected: {{selected}}.",
-        "detected_other": "Detected {{count}} faces. Selected: {{selected}}.",
-        "defaultNote": "Default: applies to every detected face. Use Detect faces to choose specific faces."
+        "detecting": "감지 중…",
+        "reDetect": "얼굴 다시 감지",
+        "detect": "얼굴 감지",
+        "selectAll": "모두 선택",
+        "clearSelection": "선택 해제",
+        "chooseFile": "얼굴을 감지하려면 먼저 이미지를 선택하세요.",
+        "noFaces": "얼굴을 찾지 못했습니다. 변환 시 기본 얼굴 보호를 그대로 실행하거나 다른 이미지로 시도해 보세요.",
+        "detected_other": "얼굴 {{count}}개를 감지했습니다. 선택됨: {{selected}}.",
+        "defaultNote": "기본값: 감지된 모든 얼굴에 적용됩니다. 특정 얼굴을 고르려면 얼굴 감지를 사용하세요."
       },
       "background": {
-        "modelLabel": "Background Model",
+        "modelLabel": "배경 모델",
         "models": {
-          "birefnet-general": "BiRefNet General (recommended)",
+          "birefnet-general": "BiRefNet General (권장)",
           "birefnet-general-lite": "BiRefNet General Lite",
           "birefnet-portrait": "BiRefNet Portrait",
           "isnet-general-use": "ISNet General Use",
@@ -135,329 +134,328 @@
           "u2netp": "U2Net Lite",
           "u2net_human_seg": "U2Net Human Segmentation"
         },
-        "pngNote": "Output is always PNG so transparency is preserved."
+        "pngNote": "투명도를 유지하기 위해 출력은 항상 PNG입니다."
       },
       "upscale": {
-        "scaleLabel": "Scale",
-        "scale4x": "4x",
-        "scale2x": "2x (experimental on some images)",
-        "modelLabel": "Model",
+        "scaleLabel": "배율",
+        "scale4x": "4배",
+        "scale2x": "2배 (일부 이미지에서는 실험적)",
+        "modelLabel": "모델",
         "models": {
-          "realesrgan-x4plus": "realesrgan-x4plus (photos)",
+          "realesrgan-x4plus": "realesrgan-x4plus (사진)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI upscale is available, but 4x is the safest/default model path on this server.",
-        "pngNote": "Output is PNG by default."
+        "experimentalNote": "2배 AI 업스케일도 가능하지만, 이 서버에서는 4배가 가장 안정적인 기본 모델 경로입니다.",
+        "pngNote": "출력은 기본적으로 PNG입니다."
       },
       "removeObject": {
-        "title": "Mark objects to remove",
-        "tooltipDraw": "Click and drag on the image to add a rectangle over each object you want to erase. Drag the rectangle body to move it, or the handles to resize.",
-        "tooltipResult": "LaMa inpainting reconstructs the area behind each rectangle. For best results, draw the box snugly around the object — large rectangles ask the model to hallucinate more background.",
-        "tooltipTip": "Tip: multiple smaller rectangles often look cleaner than one huge one.",
-        "clearAll": "Clear all",
-        "chooseFile": "Choose an image first to start marking objects.",
-        "atLeastOne": "Add at least one rectangle covering the object you want to remove.",
-        "readyToInpaint_one": "{{count}} rectangle ready to inpaint.",
-        "readyToInpaint_other": "{{count}} rectangles ready to inpaint.",
-        "formatNote": "LaMa output preserves your chosen output format (JPG, PNG, WebP, GIF). Filters, text overlay, and tint are skipped for this op."
+        "title": "제거할 개체 표시",
+        "tooltipDraw": "이미지 위에서 클릭한 채 드래그해 지우고 싶은 개체마다 사각형을 추가하세요. 사각형 본체를 드래그하면 이동하고, 핸들을 드래그하면 크기가 바뀝니다.",
+        "tooltipResult": "LaMa 인페인팅이 각 사각형 뒤의 영역을 다시 채웁니다. 가장 좋은 결과를 얻으려면 개체에 꼭 맞게 상자를 그리세요. 사각형이 크면 모델이 더 많은 배경을 상상해서 채워야 합니다.",
+        "tooltipTip": "팁: 커다란 사각형 하나보다 작은 사각형 여러 개가 더 깔끔한 결과를 내는 경우가 많습니다.",
+        "clearAll": "모두 지우기",
+        "chooseFile": "개체를 표시하려면 먼저 이미지를 선택하세요.",
+        "atLeastOne": "제거할 개체를 덮는 사각형을 하나 이상 추가하세요.",
+        "readyToInpaint_other": "사각형 {{count}}개 인페인팅 준비 완료.",
+        "formatNote": "LaMa 출력은 선택한 출력 형식(JPG, PNG, WebP, GIF)을 유지합니다. 이 작업에서는 필터, 텍스트 오버레이, 색조는 건너뜁니다."
       },
       "redact": {
-        "detectLabel": "Detect",
+        "detectLabel": "감지 대상",
         "detect": {
-          "pii": "PII only",
-          "all-text": "All Text"
+          "pii": "개인정보만",
+          "all-text": "모든 텍스트"
         },
-        "redactionLabel": "Redaction Style",
+        "redactionLabel": "가리기 스타일",
         "redaction": {
-          "blackbox": "Black Box",
-          "blur": "Blur",
-          "pixelate": "Pixelate"
+          "blackbox": "검은 상자",
+          "blur": "흐림",
+          "pixelate": "픽셀화"
         },
-        "ocrNote": "OCR redaction is best effort. Please review output before sharing."
+        "ocrNote": "OCR 가리기는 최선을 다하지만 완벽하지 않을 수 있습니다. 공유하기 전에 출력물을 확인해 주세요."
       },
-      "aiActiveNote": "Format, filters, and other standard image options are skipped when an AI operation is selected.",
-      "operationLocked": "Preset for this tool"
+      "aiActiveNote": "AI 작업을 선택하면 형식, 필터 등 표준 이미지 옵션은 건너뜁니다.",
+      "operationLocked": "이 도구의 프리셋"
     },
     "textOverlay": {
-      "title": "Text Overlay",
-      "tooltipAria": "About text overlay",
-      "tooltip": "Burn a watermark or caption onto the output image. Type the text, then pick size (8–512 px), gravity (corner/edge/center anchor), text and stroke colors, stroke width, and pixel offsets from the anchor. Leave the text empty to skip the overlay.",
-      "overlayText": "Overlay Text",
-      "overlayPlaceholder": "Optional text to draw on the image",
-      "size": "Text Size",
-      "position": "Position",
-      "textColor": "Text Color",
-      "strokeColor": "Stroke Color",
-      "strokeWidth": "Stroke Width",
-      "xOffset": "X Offset",
-      "yOffset": "Y Offset",
+      "title": "텍스트 오버레이",
+      "tooltipAria": "텍스트 오버레이 안내",
+      "tooltip": "출력 이미지에 워터마크나 캡션을 새깁니다. 텍스트를 입력한 뒤 크기(8–512 px), 기준 위치(모서리/가장자리/중앙 앵커), 글자색과 외곽선 색, 외곽선 두께, 앵커 기준 픽셀 오프셋을 지정하세요. 텍스트를 비워 두면 오버레이를 건너뜁니다.",
+      "overlayText": "오버레이 텍스트",
+      "overlayPlaceholder": "이미지에 그릴 텍스트 (선택 사항)",
+      "size": "글자 크기",
+      "position": "위치",
+      "textColor": "글자색",
+      "strokeColor": "외곽선 색",
+      "strokeWidth": "외곽선 두께",
+      "xOffset": "X 오프셋",
+      "yOffset": "Y 오프셋",
       "gravity": {
-        "NorthWest": "Top Left",
-        "North": "Top",
-        "NorthEast": "Top Right",
-        "West": "Left",
-        "Center": "Center",
-        "East": "Right",
-        "SouthWest": "Bottom Left",
-        "South": "Bottom",
-        "SouthEast": "Bottom Right"
+        "NorthWest": "왼쪽 위",
+        "North": "위",
+        "NorthEast": "오른쪽 위",
+        "West": "왼쪽",
+        "Center": "중앙",
+        "East": "오른쪽",
+        "SouthWest": "왼쪽 아래",
+        "South": "아래",
+        "SouthEast": "오른쪽 아래"
       }
     },
     "metadata": {
-      "title": "Metadata",
-      "intro": "Choose whether to keep, strip, or rewrite image metadata.",
-      "tooltipKeep": "<strong>Keep all metadata</strong> — preserve every EXIF/IPTC/XMP/GPS field from the original.",
-      "tooltipStrip": "<strong>Strip all metadata</strong> — remove camera, GPS, software, and timestamp fields. Recommended before sharing photos online.",
-      "tooltipCustom": "<strong>Custom metadata</strong> — strip first, then rewrite only the fields you supply (title, author, copyright, IPTC keywords, GPS fields, etc.).",
-      "modeLabel": "Metadata mode",
+      "title": "메타데이터",
+      "intro": "이미지 메타데이터를 유지할지, 제거할지, 다시 쓸지 선택하세요.",
+      "tooltipKeep": "<strong>모든 메타데이터 유지</strong> — 원본의 EXIF/IPTC/XMP/GPS 필드를 모두 보존합니다.",
+      "tooltipStrip": "<strong>모든 메타데이터 제거</strong> — 카메라, GPS, 소프트웨어, 타임스탬프 필드를 제거합니다. 사진을 온라인에 공유하기 전에 권장합니다.",
+      "tooltipCustom": "<strong>사용자 지정 메타데이터</strong> — 먼저 모두 제거한 뒤 입력한 필드(제목, 작성자, 저작권, IPTC 키워드, GPS 필드 등)만 다시 씁니다.",
+      "modeLabel": "메타데이터 모드",
       "modes": {
-        "keep": "Keep all metadata",
-        "strip": "Strip all metadata",
-        "custom": "Custom metadata"
+        "keep": "모든 메타데이터 유지",
+        "strip": "모든 메타데이터 제거",
+        "custom": "사용자 지정 메타데이터"
       },
       "fields": {
-        "title": "Title",
-        "author": "Artist / Author",
-        "description": "Description",
-        "copyright": "Copyright",
-        "comment": "User Comment",
-        "keywords": "Keywords"
+        "title": "제목",
+        "author": "아티스트 / 작성자",
+        "description": "설명",
+        "copyright": "저작권",
+        "comment": "사용자 코멘트",
+        "keywords": "키워드"
       },
-      "exifFields": "EXIF / TIFF Fields",
-      "gpsFields": "GPS / Location Fields",
-      "showAdvanced": "Show Advanced / Device Metadata",
-      "hideAdvanced": "Hide Advanced / Device Metadata",
+      "exifFields": "EXIF / TIFF 필드",
+      "gpsFields": "GPS / 위치 필드",
+      "showAdvanced": "고급 / 기기 메타데이터 표시",
+      "hideAdvanced": "고급 / 기기 메타데이터 숨기기",
       "gps": {
-        "title": "GPS / Location Options",
-        "tooltipAria": "About GPS / location options",
-        "tooltip": "Remove or replace GPS metadata stored by your camera or phone. You can also strip just the capture direction, GPS timestamp, altitude, or destination fields. Replace mode lets you pin a different latitude/longitude/altitude and optionally round precision for privacy.",
-        "removeLocationData": "Remove location data",
-        "replaceLocationData": "Replace location data",
-        "roundPrecision": "Round location precision",
-        "removeCaptureDirection": "Remove capture direction / heading",
-        "removeTimestamp": "Remove GPS timestamp",
-        "removeAltitude": "Remove altitude",
-        "removeDestination": "Remove destination fields",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
-        "altitude": "Altitude",
-        "precisionDecimals": "Precision Decimals"
+        "title": "GPS / 위치 옵션",
+        "tooltipAria": "GPS / 위치 옵션 안내",
+        "tooltip": "카메라나 휴대폰이 저장한 GPS 메타데이터를 제거하거나 교체합니다. 촬영 방향, GPS 타임스탬프, 고도, 목적지 필드만 따로 제거할 수도 있습니다. 교체 모드에서는 다른 위도/경도/고도를 지정하고, 개인정보 보호를 위해 정밀도를 반올림할 수 있습니다.",
+        "removeLocationData": "위치 데이터 제거",
+        "replaceLocationData": "위치 데이터 교체",
+        "roundPrecision": "위치 정밀도 반올림",
+        "removeCaptureDirection": "촬영 방향 / 방위 제거",
+        "removeTimestamp": "GPS 타임스탬프 제거",
+        "removeAltitude": "고도 제거",
+        "removeDestination": "목적지 필드 제거",
+        "latitude": "위도",
+        "longitude": "경도",
+        "altitude": "고도",
+        "precisionDecimals": "정밀도 소수 자릿수"
       }
     },
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "Sign up for a Premium account to unlock full transcode access.",
+    "premiumTooltip": "Premium 계정에 가입하면 전체 트랜스코딩 기능을 이용할 수 있습니다.",
     "premiumBadge": "Premium",
-    "tooSmallBadge": "Too small",
+    "tooSmallBadge": "너무 작음",
     "protocol": {
-      "title": "Protocol",
-      "tooltipAria": "About transcode protocol",
-      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + per-rendition variants + .ts segments. Plays everywhere.",
-      "tooltipDash": "<strong>DASH</strong> — MPEG-DASH adaptive streaming. AV1 (smallest, modern) or VP9 (broader support); manifest.mpd + .m4s segments.",
-      "hlsSub": "H.264 / AAC · .m3u8 · everywhere",
-      "dashSub": "AV1 or VP9 · .mpd · modern web",
-      "av1Sub": "Recommended · smaller files",
-      "vp9Sub": "Wider playback support"
+      "title": "프로토콜",
+      "tooltipAria": "트랜스코딩 프로토콜 안내",
+      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + 렌디션별 변형 + .ts 세그먼트. 어디서나 재생됩니다.",
+      "tooltipDash": "<strong>DASH</strong> — MPEG-DASH 적응형 스트리밍. AV1(가장 작고 현대적) 또는 VP9(더 넓은 지원); manifest.mpd + .m4s 세그먼트.",
+      "hlsSub": "H.264 / AAC · .m3u8 · 어디서나",
+      "dashSub": "AV1 또는 VP9 · .mpd · 최신 웹",
+      "av1Sub": "권장 · 더 작은 파일",
+      "vp9Sub": "더 넓은 재생 지원"
     },
     "analyze": {
-      "intro": "We'll upload your video and run <code>ffprobe</code> to detect resolution, codec, audio, and the quality rungs your source supports.",
-      "uploadingPercent": "Uploading {{percent}}%",
-      "analyzingSource": "Analyzing source...",
-      "preparingUpload": "Preparing upload...",
-      "analyzeVideo": "Analyze video"
+      "intro": "동영상을 업로드하고 <code>ffprobe</code>를 실행해 해상도, 코덱, 오디오, 원본이 지원하는 화질 단계를 감지해요.",
+      "uploadingPercent": "업로드 중 {{percent}}%",
+      "analyzingSource": "원본 분석 중...",
+      "preparingUpload": "업로드 준비 중...",
+      "analyzeVideo": "동영상 분석"
     },
     "report": {
-      "title": "Source video report",
-      "resolution": "Resolution",
-      "maxQuality": "Max quality",
+      "title": "원본 동영상 보고서",
+      "resolution": "해상도",
+      "maxQuality": "최대 화질",
       "fps": "FPS",
-      "duration": "Duration",
-      "audio": "Audio",
-      "videoCodec": "Video codec",
-      "audioCodec": "Audio codec",
-      "container": "Container",
-      "fileSize": "File size",
-      "yes": "Yes",
-      "no": "No"
+      "duration": "길이",
+      "audio": "오디오",
+      "videoCodec": "비디오 코덱",
+      "audioCodec": "오디오 코덱",
+      "container": "컨테이너",
+      "fileSize": "파일 크기",
+      "yes": "예",
+      "no": "아니요"
     },
     "rungs": {
-      "title": "Quality rungs",
-      "tooltipAria": "About quality rungs",
-      "tooltip": "Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are available with Premium.",
-      "defaultsNote": "Defaults: 360p + 480p + 720p when the source video supports them."
+      "title": "화질 단계",
+      "tooltipAria": "화질 단계 안내",
+      "tooltip": "선택한 각 단계가 최종 HLS/DASH 패키지의 렌디션 하나가 됩니다. Premium 단계(144p/240p/1080p/2160p)는 Premium에서 이용할 수 있습니다.",
+      "defaultsNote": "기본값: 원본 동영상이 지원하는 경우 360p + 480p + 720p."
     },
     "captions": {
-      "disabledTooltip": "Captions require an audio track. This video does not appear to have audio.",
-      "enabledTooltip": "Generate VTT captions from the audio track using whisper-ctranslate2. Off by default.",
-      "generateCaptions": "Generate captions",
-      "captionsSub": "VTT subtitles auto-generated from the audio track. Off by default.",
-      "generateStoryboards": "Generate storyboards",
-      "storyboardsSub": "Sprite-sheet scrubber thumbnails + WebVTT index. Off by default."
+      "disabledTooltip": "자막에는 오디오 트랙이 필요합니다. 이 동영상에는 오디오가 없는 것 같습니다.",
+      "enabledTooltip": "whisper-ctranslate2로 오디오 트랙에서 VTT 자막을 생성합니다. 기본값은 꺼짐입니다.",
+      "generateCaptions": "자막 생성",
+      "captionsSub": "오디오 트랙에서 자동 생성되는 VTT 자막. 기본값은 꺼짐.",
+      "generateStoryboards": "스토리보드 생성",
+      "storyboardsSub": "스프라이트 시트 스크러버 썸네일 + WebVTT 인덱스. 기본값은 꺼짐."
     },
     "translations": {
-      "title": "Additional caption translations",
-      "tooltipAria": "About additional caption translations",
-      "tooltip1": "The primary caption track is whisper's transcription in the auto-detected source language. Add up to {{max}} more languages and we'll translate the segments via your Ollama text model.",
-      "tooltip2": "Each translation becomes its own VTT plus an HLS subtitle rendition (EXT-X-MEDIA) and DASH text AdaptationSet, so players show a track selector.",
-      "primaryNote": "Primary track: auto-detected source language. Add up to {{max}} translation tracks.",
-      "backendUnreachable": "Translation backend (Ollama) is not reachable. Picked languages will be skipped at job time.",
-      "removeLanguage": "Remove language",
-      "addLanguage": "+ Add translation language ({{count}}/{{max}})"
+      "title": "추가 자막 번역",
+      "tooltipAria": "추가 자막 번역 안내",
+      "tooltip1": "기본 자막 트랙은 자동 감지된 원본 언어로 된 whisper의 전사본입니다. 최대 {{max}}개 언어를 추가하면 Ollama 텍스트 모델을 통해 구간을 번역해 드립니다.",
+      "tooltip2": "각 번역은 별도의 VTT와 함께 HLS 자막 렌디션(EXT-X-MEDIA) 및 DASH 텍스트 AdaptationSet이 되므로, 플레이어에 트랙 선택기가 표시됩니다.",
+      "primaryNote": "기본 트랙: 자동 감지된 원본 언어. 번역 트랙을 최대 {{max}}개 추가할 수 있습니다.",
+      "backendUnreachable": "번역 백엔드(Ollama)에 연결할 수 없습니다. 선택한 언어는 작업 시 건너뜁니다.",
+      "removeLanguage": "언어 제거",
+      "addLanguage": "+ 번역 언어 추가 ({{count}}/{{max}})"
     },
     "bundle": {
-      "title": "Download format",
-      "tooltipAria": "About download format",
-      "tooltipTargz": "<strong>.tar.gz</strong> — smaller for text-heavy playlists, universal on macOS/Linux, and Windows 10+ unpacks it natively via the built-in <code>tar</code> command.",
-      "tooltipZip": "<strong>.zip</strong> — the safe default if you're on older Windows or just want a double-click extract experience without thinking about it. Slightly larger; everything else is identical inside.",
-      "defaultBadge": "Default",
-      "targzSub": "Smaller · macOS/Linux/Win 10+ native",
-      "zipSub": "Friendlier on Windows · double-click extract"
+      "title": "다운로드 형식",
+      "tooltipAria": "다운로드 형식 안내",
+      "tooltipTargz": "<strong>.tar.gz</strong> — 텍스트가 많은 재생목록에서 더 작고, macOS/Linux에서 범용적이며, Windows 10 이상에서는 내장 <code>tar</code> 명령으로 바로 풀 수 있습니다.",
+      "tooltipZip": "<strong>.zip</strong> — 구형 Windows를 사용하거나 고민 없이 더블클릭으로 압축을 풀고 싶다면 안전한 기본값입니다. 약간 더 크지만 내용물은 동일합니다.",
+      "defaultBadge": "기본값",
+      "targzSub": "더 작음 · macOS/Linux/Win 10+ 기본 지원",
+      "zipSub": "Windows에서 편리 · 더블클릭 압축 해제"
     },
     "start": {
-      "starting": "Starting transcode...",
-      "startButton": "Start {{protocol}} transcode (output: {{format}})"
+      "starting": "트랜스코딩 시작 중...",
+      "startButton": "{{protocol}} 트랜스코딩 시작 (출력: {{format}})"
     },
-    "tooSmall": "This video is below the free transcode minimum of 360p. Please load a video that is 360p or higher.",
+    "tooSmall": "이 동영상은 무료 트랜스코딩 최소 기준인 360p보다 작습니다. 360p 이상의 동영상을 불러와 주세요.",
     "progress": {
-      "title": "Pipeline progress",
-      "failed": "Transcode failed."
+      "title": "파이프라인 진행 상황",
+      "failed": "트랜스코딩에 실패했습니다."
     },
-    "downloadPackage": "Download {{filename}}"
+    "downloadPackage": "{{filename}} 다운로드"
   },
   "pdfForm": {
     "outputFormat": {
-      "label": "Output image format",
-      "tooltip": "Choose JPG for small, photo-friendly files or PNG for crisp, lossless pages (best for text and line art).",
-      "locked": "Locked to {{format}} for this tool"
+      "label": "출력 이미지 형식",
+      "tooltip": "작고 사진에 적합한 파일은 JPG를, 선명한 무손실 페이지(텍스트와 선화에 최적)는 PNG를 선택하세요.",
+      "locked": "이 도구에서는 {{format}}(으)로 고정됨"
     },
     "dpi": {
-      "label": "Render quality (DPI)",
-      "tooltip": "Higher DPI renders sharper, larger images. 150 DPI is a good default; use 300 for print-quality output."
+      "label": "렌더링 품질 (DPI)",
+      "tooltip": "DPI가 높을수록 더 선명하고 큰 이미지로 렌더링됩니다. 150 DPI가 적절한 기본값이며, 인쇄 품질 출력에는 300을 사용하세요."
     },
     "pages": {
-      "label": "Pages to convert",
-      "tooltip": "Convert every page (downloaded as a ZIP of images) or just the first page (downloaded as a single image).",
-      "all": "All pages (ZIP)",
-      "allHint": "One image per page, packaged into a single .zip download.",
-      "first": "First page only",
-      "firstHint": "Render just page 1 as a single image."
+      "label": "변환할 페이지",
+      "tooltip": "모든 페이지를 변환(이미지 ZIP으로 다운로드)하거나 첫 페이지만 변환(단일 이미지로 다운로드)합니다.",
+      "all": "모든 페이지 (ZIP)",
+      "allHint": "페이지당 이미지 한 장씩, 하나의 .zip 파일로 묶어 다운로드합니다.",
+      "first": "첫 페이지만",
+      "firstHint": "1페이지만 단일 이미지로 렌더링합니다."
     },
     "quality": {
-      "label": "JPG quality (%)",
-      "tooltip": "JPEG compression quality from 1–100. 90 is a balanced default; lower values shrink the file at the cost of detail."
+      "label": "JPG 품질 (%)",
+      "tooltip": "1–100 사이의 JPEG 압축 품질입니다. 90이 균형 잡힌 기본값이며, 값을 낮추면 세부 묘사를 희생하는 대신 파일이 작아집니다."
     },
-    "submit": "Convert PDF",
-    "converting": "Converting…"
+    "submit": "PDF 변환",
+    "converting": "변환 중…"
   },
   "conversionOptions": {
     "image": {
       "cropping": {
-        "title": "Image Cropping",
-        "tooltipAria": "About image cropping",
-        "tooltip": "Open a visual crop selector to keep only part of the image. Cropping runs before resize and filters, so dimensions you set below apply to the cropped region. Skip this if you want the whole image.",
-        "selectPortion": "Select the portion of the image you want to keep",
-        "editCrop": "Edit Crop",
-        "cropImage": "Crop Image"
+        "title": "이미지 자르기",
+        "tooltipAria": "이미지 자르기 안내",
+        "tooltip": "시각적 자르기 선택기를 열어 이미지의 일부만 남깁니다. 자르기는 크기 조정과 필터보다 먼저 실행되므로, 아래에서 설정한 크기는 잘라낸 영역에 적용됩니다. 전체 이미지를 원하면 건너뛰세요.",
+        "selectPortion": "남길 이미지 부분을 선택하세요",
+        "editCrop": "자르기 편집",
+        "cropImage": "이미지 자르기"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About image format",
-        "tooltip": "The output file type. JPG is best for photos, PNG keeps transparency and is great for graphics, WebP is a modern smaller format, and GIF is for legacy or animated use cases.",
-        "locked": "Locked to {{format}} for this tool"
+        "label": "형식",
+        "tooltipAria": "이미지 형식 안내",
+        "tooltip": "출력 파일 유형입니다. JPG는 사진에 가장 좋고, PNG는 투명도를 유지해 그래픽에 적합하며, WebP는 더 작은 최신 형식이고, GIF는 레거시 또는 애니메이션 용도입니다.",
+        "locked": "이 도구에서는 {{format}}(으)로 고정됨"
       },
-      "resizeEmphasis": "Set your target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio.",
+      "resizeEmphasis": "아래에서 목표 너비 및/또는 높이를 설정하세요. 하나를 비워 두면 원본 비율을 유지하며 비례해서 조정됩니다.",
       "quality": {
-        "label": "Quality (%)",
-        "tooltipAria": "About image quality",
-        "tooltip": "Compression quality for JPG and WebP outputs (1–100). 85 is a balanced default. Lower values shrink file size at the cost of artifacts; values above 95 rarely show a visible difference. Ignored for PNG and GIF."
+        "label": "품질 (%)",
+        "tooltipAria": "이미지 품질 안내",
+        "tooltip": "JPG와 WebP 출력의 압축 품질(1–100)입니다. 85가 균형 잡힌 기본값입니다. 값을 낮추면 아티팩트를 감수하는 대신 파일이 작아지고, 95 이상에서는 눈에 띄는 차이가 거의 없습니다. PNG와 GIF에서는 무시됩니다."
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About image width",
-        "tooltip": "Target width in pixels. Leave blank to keep the original width or scale proportionally based on the Height field. The image is auto-oriented from EXIF before resize so the dimensions match what you see in the preview.",
-        "placeholder": "Auto"
+        "label": "너비 (px)",
+        "tooltipAria": "이미지 너비 안내",
+        "tooltip": "픽셀 단위 목표 너비입니다. 비워 두면 원본 너비를 유지하거나 높이 필드를 기준으로 비례 조정합니다. 크기 조정 전에 EXIF 기준으로 자동 회전되므로 미리보기에서 보는 것과 크기가 일치합니다.",
+        "placeholder": "자동"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About image height",
-        "tooltip": "Target height in pixels. Leave blank to keep the original height or scale proportionally based on the Width field. Setting both Width and Height forces an exact size and may stretch the image.",
-        "placeholder": "Auto"
+        "label": "높이 (px)",
+        "tooltipAria": "이미지 높이 안내",
+        "tooltip": "픽셀 단위 목표 높이입니다. 비워 두면 원본 높이를 유지하거나 너비 필드를 기준으로 비례 조정합니다. 너비와 높이를 모두 설정하면 정확한 크기가 강제되어 이미지가 늘어날 수 있습니다.",
+        "placeholder": "자동"
       },
       "filter": {
-        "label": "Filter",
-        "tooltipAria": "About image filters",
-        "tooltip": "Apply a single ImageMagick effect to the output: grayscale, sepia, blur/sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation. Choose None to skip filters.",
+        "label": "필터",
+        "tooltipAria": "이미지 필터 안내",
+        "tooltip": "출력에 ImageMagick 효과 하나를 적용합니다: 흑백, 세피아, 흐림/선명, 소용돌이, 배럴 왜곡, 유화, 빈티지, 엠보스, 목탄, 스케치 또는 고정 회전. 필터를 건너뛰려면 없음을 선택하세요.",
         "options": {
-          "none": "None",
-          "grayscale": "Grayscale",
-          "sepia": "Sepia",
-          "blur": "Blur",
-          "sharpen": "Sharpen",
-          "swirl": "Swirl",
-          "barrel-distortion": "Barrel Distortion",
-          "oil-painting": "Oil Painting",
-          "vintage": "Vintage",
-          "emboss": "Emboss",
-          "charcoal": "Charcoal",
-          "sketch": "Sketch",
-          "rotate-45º": "Rotate 45º",
-          "rotate-90º": "Rotate 90º",
-          "rotate-180º": "Rotate 180º",
-          "rotate-270º": "Rotate 270º"
+          "none": "없음",
+          "grayscale": "흑백",
+          "sepia": "세피아",
+          "blur": "흐림",
+          "sharpen": "선명하게",
+          "swirl": "소용돌이",
+          "barrel-distortion": "배럴 왜곡",
+          "oil-painting": "유화",
+          "vintage": "빈티지",
+          "emboss": "엠보스",
+          "charcoal": "목탄",
+          "sketch": "스케치",
+          "rotate-45º": "45º 회전",
+          "rotate-90º": "90º 회전",
+          "rotate-180º": "180º 회전",
+          "rotate-270º": "270º 회전"
         }
       },
       "tint": {
-        "label": "Tint Color",
-        "tooltipAria": "About tint color",
-        "tooltip": "Lay a 30% colored tint over the image. Useful for branded thumbnails or duotones. Leave the color picker at black (#000000) to skip the tint."
+        "label": "색조",
+        "tooltipAria": "색조 안내",
+        "tooltip": "이미지 위에 30% 색조를 입힙니다. 브랜드 썸네일이나 듀오톤에 유용합니다. 색조를 건너뛰려면 색상 선택기를 검은색(#000000)으로 두세요."
       }
     },
     "audio": {
       "trimming": {
-        "title": "Audio Trimming",
-        "tooltipAria": "About audio trimming",
-        "tooltip": "Open a waveform player to pick a start and end time. Only the selected segment is encoded into the output file.",
-        "selectPortion": "Select the portion of the audio you want to keep",
-        "editTrim": "Edit Trim",
-        "trimAudio": "Trim Audio"
+        "title": "오디오 자르기",
+        "tooltipAria": "오디오 자르기 안내",
+        "tooltip": "파형 플레이어를 열어 시작과 끝 시간을 고릅니다. 선택한 구간만 출력 파일로 인코딩됩니다.",
+        "selectPortion": "남길 오디오 부분을 선택하세요",
+        "editTrim": "자르기 편집",
+        "trimAudio": "오디오 자르기"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About audio format",
-        "tooltip": "The output codec/container. MP3 has universal support; WAV/FLAC/ALAC are lossless; AAC is efficient for streaming; OGG, Opus, AC3 and DTS target specific workflows."
+        "label": "형식",
+        "tooltipAria": "오디오 형식 안내",
+        "tooltip": "출력 코덱/컨테이너입니다. MP3는 어디서나 지원되고, WAV/FLAC/ALAC는 무손실이며, AAC는 스트리밍에 효율적이고, OGG, Opus, AC3, DTS는 특정 워크플로용입니다."
       },
       "bitrate": {
-        "label": "Bitrate (kbps)",
-        "tooltipAria": "About audio bitrate",
-        "tooltip": "Controls compression quality vs. file size for lossy formats. 128 kbps is fine for podcasts, 192–256 kbps is a strong default for music, and 320 kbps is the maximum MP3 quality. Ignored for WAV, FLAC, and ALAC (lossless)."
+        "label": "비트레이트 (kbps)",
+        "tooltipAria": "오디오 비트레이트 안내",
+        "tooltip": "손실 형식에서 압축 품질과 파일 크기의 균형을 조절합니다. 팟캐스트는 128 kbps면 충분하고, 음악은 192–256 kbps가 좋은 기본값이며, 320 kbps가 MP3 최대 품질입니다. WAV, FLAC, ALAC(무손실)에서는 무시됩니다."
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About audio speed multiplier",
-        "tooltip": "Playback tempo from 0.25x (slow) to 4x (fast). Pitch is preserved using FFmpeg's atempo filter, chained automatically for extreme values."
+        "label": "속도 배율",
+        "tooltipAria": "오디오 속도 배율 안내",
+        "tooltip": "0.25배(느리게)부터 4배(빠르게)까지의 재생 속도입니다. FFmpeg의 atempo 필터로 음높이를 유지하며, 극단적인 값에서는 자동으로 체인 연결됩니다."
       },
       "volume": {
-        "label": "Volume Multiplier",
-        "tooltipAria": "About volume multiplier",
-        "tooltip": "Linear gain factor from 0.1x to 2x. 1.0 leaves the level unchanged. For finer dB control, use the Amplify slider in Advanced Audio Effects."
+        "label": "볼륨 배율",
+        "tooltipAria": "볼륨 배율 안내",
+        "tooltip": "0.1배부터 2배까지의 선형 게인 계수입니다. 1.0이면 레벨이 그대로 유지됩니다. 더 세밀한 dB 조절은 고급 오디오 효과의 증폭 슬라이더를 사용하세요."
       }
     },
     "video": {
       "trimming": {
-        "title": "Video Trimming",
-        "tooltipAria": "About video trimming",
-        "tooltip": "Open a player to scrub through the video and pick a start/end time. Only that segment is encoded into the output. Trimming works regardless of the output codec — including animated GIF.",
-        "selectPortion": "Select the portion of the video you want to keep",
-        "editTrim": "Edit Trim",
-        "trimVideo": "Trim Video"
+        "title": "동영상 자르기",
+        "tooltipAria": "동영상 자르기 안내",
+        "tooltip": "플레이어를 열어 동영상을 탐색하며 시작/끝 시간을 고릅니다. 해당 구간만 출력으로 인코딩됩니다. 자르기는 애니메이션 GIF를 포함한 모든 출력 코덱에서 작동합니다.",
+        "selectPortion": "남길 동영상 부분을 선택하세요",
+        "editTrim": "자르기 편집",
+        "trimVideo": "동영상 자르기"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About video format",
-        "tooltip": "The output container and codec. MP4 (H.264+AAC) is the safest default for the web. WebM uses VP9+Opus and is great for open-web embeds. MOV/MKV/AVI/WMV/FLV target specific workflows; ProRes/DNxHD are high-bitrate editing codecs. GIF (Animated) downscales and palettizes the clip via ffmpeg + gifsicle — perfect for short, silent loops.",
-        "locked": "Locked to {{format}} for this tool",
+        "label": "형식",
+        "tooltipAria": "동영상 형식 안내",
+        "tooltip": "출력 컨테이너와 코덱입니다. MP4(H.264+AAC)는 웹에서 가장 안전한 기본값입니다. WebM은 VP9+Opus를 사용하며 개방형 웹 임베드에 좋습니다. MOV/MKV/AVI/WMV/FLV는 특정 워크플로용이고, ProRes/DNxHD는 고비트레이트 편집용 코덱입니다. GIF(애니메이션)는 ffmpeg + gifsicle로 클립을 축소하고 팔레트화합니다. 짧고 소리 없는 루프에 안성맞춤입니다.",
+        "locked": "이 도구에서는 {{format}}(으)로 고정됨",
         "options": {
           "mp4": "MP4",
           "webm": "WebM",
@@ -468,272 +466,272 @@
           "wmv": "WMV",
           "prores": "ProRes (MOV)",
           "dnxhd": "DNxHR (MOV)",
-          "gif": "GIF (Animated)"
+          "gif": "GIF (애니메이션)"
         }
       },
       "quality": {
-        "label": "Quality",
-        "tooltipAria": "About video quality",
-        "tooltip": "Picks an x264 CRF preset under the hood. Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced default), High ≈ CRF 18 (visually transparent on most footage). Ignored for GIF output — use the GIF panel below to tune palette size and frame rate instead.",
+        "label": "품질",
+        "tooltipAria": "동영상 품질 안내",
+        "tooltip": "내부적으로 x264 CRF 프리셋을 고릅니다. 낮음 ≈ CRF 30(작은 파일), 중간 ≈ CRF 23(균형 잡힌 기본값), 높음 ≈ CRF 18(대부분의 영상에서 시각적으로 무손실). GIF 출력에서는 무시되며, 대신 아래 GIF 패널에서 팔레트 크기와 프레임 레이트를 조정하세요.",
         "options": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High"
+          "low": "낮음",
+          "medium": "중간",
+          "high": "높음"
         }
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About video width",
-        "tooltip": "Target output width in pixels. Leave blank to keep the original or scale proportionally from the height. Combine with Preserve aspect ratio to avoid stretching. When the format is GIF, leaving this blank uses the width from the Animated GIF panel below.",
-        "placeholder": "Auto"
+        "label": "너비 (px)",
+        "tooltipAria": "동영상 너비 안내",
+        "tooltip": "픽셀 단위 목표 출력 너비입니다. 비워 두면 원본을 유지하거나 높이를 기준으로 비례 조정합니다. 늘어짐을 막으려면 화면 비율 유지와 함께 사용하세요. 형식이 GIF일 때 비워 두면 아래 애니메이션 GIF 패널의 너비를 사용합니다.",
+        "placeholder": "자동"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About video height",
-        "tooltip": "Target output height in pixels. Leave blank to keep the original or scale proportionally from the width. Ignored for GIF output — height is computed from width to keep the aspect ratio (and rounded to a multiple of 4).",
-        "placeholder": "Auto",
-        "placeholderGif": "Auto (from width)"
+        "label": "높이 (px)",
+        "tooltipAria": "동영상 높이 안내",
+        "tooltip": "픽셀 단위 목표 출력 높이입니다. 비워 두면 원본을 유지하거나 너비를 기준으로 비례 조정합니다. GIF 출력에서는 무시되며, 화면 비율을 유지하기 위해 너비로부터 높이를 계산합니다(4의 배수로 반올림).",
+        "placeholder": "자동",
+        "placeholderGif": "자동 (너비 기준)"
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About speed multiplier",
-        "tooltip": "Playback speed from 0.25x (slow motion) to 4x (fast). Video PTS and audio tempo are adjusted together so the result stays in sync. For GIF output, control playback feel using the Frame rate and Frame delay knobs in the Animated GIF panel."
+        "label": "속도 배율",
+        "tooltipAria": "속도 배율 안내",
+        "tooltip": "0.25배(슬로 모션)부터 4배(빠르게)까지의 재생 속도입니다. 비디오 PTS와 오디오 템포가 함께 조정되어 결과가 동기화된 상태로 유지됩니다. GIF 출력에서는 애니메이션 GIF 패널의 프레임 레이트와 프레임 지연 값으로 재생감을 조절하세요."
       },
       "preserveAspectRatio": {
-        "label": "Preserve aspect ratio",
-        "tooltipAria": "About preserve aspect ratio",
-        "tooltip": "When both Width and Height are set, this uses an FFmpeg force_original_aspect_ratio=decrease scale so the video fits within the box without stretching. Turn it off to force an exact (potentially stretched) size. GIF output always preserves aspect ratio."
+        "label": "화면 비율 유지",
+        "tooltipAria": "화면 비율 유지 안내",
+        "tooltip": "너비와 높이를 모두 설정했을 때 FFmpeg의 force_original_aspect_ratio=decrease 스케일을 사용해 동영상이 늘어나지 않고 상자 안에 맞게 합니다. 끄면 정확한(늘어날 수 있는) 크기가 강제됩니다. GIF 출력은 항상 화면 비율을 유지합니다."
       },
       "gif": {
-        "title": "Animated GIF Settings",
-        "tooltipAria": "About animated GIF settings",
-        "tooltip": "GIF conversion runs in two stages: ffmpeg downscales the video and samples it at the chosen frame rate, then gifsicle quantizes the palette and optimizes the output. The Convert/Transcribe controls above for Quality, Height, and Speed are skipped for GIF since this panel takes over.",
-        "subtitle": "Tune the ffmpeg → gifsicle pipeline. Defaults match a good screencast preset (900px wide, 12 fps, 128 colors).",
+        "title": "애니메이션 GIF 설정",
+        "tooltipAria": "애니메이션 GIF 설정 안내",
+        "tooltip": "GIF 변환은 두 단계로 실행됩니다. ffmpeg가 동영상을 축소하고 선택한 프레임 레이트로 샘플링한 뒤, gifsicle이 팔레트를 양자화하고 출력을 최적화합니다. 이 패널이 대신 처리하므로 위의 변환/전사 컨트롤 중 품질, 높이, 속도는 GIF에서 건너뜁니다.",
+        "subtitle": "ffmpeg → gifsicle 파이프라인을 조정하세요. 기본값은 좋은 스크린캐스트 프리셋(너비 900px, 12 fps, 128색)과 같습니다.",
         "width": {
-          "label": "Width (px)",
-          "tooltipAria": "About GIF width",
-          "tooltip": "Output width in pixels. Height is computed automatically to preserve the aspect ratio (rounded to a multiple of 4 to keep ffmpeg happy). 480–900 is a good range for screencasts; smaller values shrink the file fast."
+          "label": "너비 (px)",
+          "tooltipAria": "GIF 너비 안내",
+          "tooltip": "픽셀 단위 출력 너비입니다. 높이는 화면 비율을 유지하도록 자동 계산됩니다(ffmpeg 호환을 위해 4의 배수로 반올림). 스크린캐스트에는 480–900이 좋은 범위이며, 값이 작을수록 파일이 빠르게 작아집니다."
         },
         "fps": {
-          "label": "Frame rate (fps)",
-          "tooltipAria": "About GIF frame rate",
-          "tooltip": "How many frames per second ffmpeg samples from the source video before handing it to gifsicle. 12 fps looks smooth for screen recordings; raise to 18–24 for motion-heavy clips, drop to 8–10 to shrink the file."
+          "label": "프레임 레이트 (fps)",
+          "tooltipAria": "GIF 프레임 레이트 안내",
+          "tooltip": "gifsicle에 넘기기 전에 ffmpeg가 원본 동영상에서 초당 몇 프레임을 샘플링할지 정합니다. 화면 녹화에는 12 fps면 부드럽게 보이고, 움직임이 많은 클립은 18–24로 올리고, 파일을 줄이려면 8–10으로 내리세요."
         },
         "colors": {
-          "label": "Colors",
-          "tooltipAria": "About GIF colors",
-          "tooltip": "Maximum palette size gifsicle quantizes to (2–256). 128 is a strong default; drop to 64 to shrink the file on flat UI footage, raise to 256 for photographic clips with smooth gradients."
+          "label": "색상 수",
+          "tooltipAria": "GIF 색상 수 안내",
+          "tooltip": "gifsicle이 양자화하는 최대 팔레트 크기(2–256)입니다. 128이 좋은 기본값이며, 단순한 UI 영상은 64로 낮춰 파일을 줄이고, 부드러운 그라데이션이 있는 사진 클립은 256으로 올리세요."
         },
         "delay": {
-          "label": "Frame delay",
-          "tooltipAria": "About GIF frame delay",
-          "tooltip": "gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (= 30ms) is a snappy screencast feel; 6–10 produces a slower, more deliberate loop. Independent of the ffmpeg sampling rate above."
+          "label": "프레임 지연",
+          "tooltipAria": "GIF 프레임 지연 안내",
+          "tooltip": "gifsicle의 프레임 간 지연(1/100초 단위)입니다. 낮을수록 재생이 빨라집니다. 3(= 30ms)은 경쾌한 스크린캐스트 느낌이고, 6–10은 더 느리고 차분한 루프를 만듭니다. 위의 ffmpeg 샘플링 레이트와는 별개입니다."
         },
         "optimize": {
-          "label": "Optimize level",
-          "tooltipAria": "About GIF optimize level",
-          "tooltip": "gifsicle --optimize level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft.",
+          "label": "최적화 수준",
+          "tooltipAria": "GIF 최적화 수준 안내",
+          "tooltip": "gifsicle --optimize 수준입니다. 1은 가장 빠르지만 출력이 가장 크고, 3은 가장 느리지만 출력이 가장 작습니다. 긴 클립을 반복 작업하며 빠른 초안이 필요한 경우가 아니라면 3을 유지하세요.",
           "options": {
-            "1": "1 — fast, larger file",
-            "2": "2 — balanced",
-            "3": "3 — smallest, slower"
+            "1": "1 — 빠름, 더 큰 파일",
+            "2": "2 — 균형",
+            "3": "3 — 가장 작음, 느림"
           }
         }
       }
     }
   },
   "advancedAudioEffects": {
-    "title": "Advanced Audio Effects",
-    "tooltipAria": "About Advanced Audio Effects",
-    "tooltipIntro": "Manual audio processing chains, grouped into four expandable sections:",
-    "tooltipBasic": "<strong>Basic Audio Processing</strong> — normalize, amplify, fade in/out, EQ presets, stereo width/pan/balance.",
-    "tooltipTime": "<strong>Time-Based Effects</strong> — reverb, delay, and modulation (chorus, flanger, tremolo, vibrato).",
-    "tooltipRestoration": "<strong>Restoration & Cleanup</strong> — noise reduction, de-hum, declip, silence removal.",
-    "tooltipAdvanced": "<strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.",
+    "title": "고급 오디오 효과",
+    "tooltipAria": "고급 오디오 효과 안내",
+    "tooltipIntro": "수동 오디오 처리 체인으로, 펼칠 수 있는 네 개의 섹션으로 나뉩니다:",
+    "tooltipBasic": "<strong>기본 오디오 처리</strong> — 노멀라이즈, 증폭, 페이드 인/아웃, EQ 프리셋, 스테레오 폭/팬/밸런스.",
+    "tooltipTime": "<strong>시간 기반 효과</strong> — 리버브, 딜레이, 모듈레이션(코러스, 플랜저, 트레몰로, 비브라토).",
+    "tooltipRestoration": "<strong>복원 및 정리</strong> — 노이즈 감소, 험 제거, 디클립, 무음 제거.",
+    "tooltipAdvanced": "<strong>고급 오디오</strong> — 피치 시프트, 타임 스트레치, 공간 음향.",
     "sections": {
       "basic": {
-        "title": "Basic Audio Processing",
-        "description": "Volume control, EQ, dynamics, and stereo processing"
+        "title": "기본 오디오 처리",
+        "description": "볼륨 조절, EQ, 다이내믹스, 스테레오 처리"
       },
       "time": {
-        "title": "Time-Based Effects",
-        "description": "Reverb, delay, echo, and modulation effects"
+        "title": "시간 기반 효과",
+        "description": "리버브, 딜레이, 에코, 모듈레이션 효과"
       },
       "restoration": {
-        "title": "Restoration & Cleanup",
-        "description": "Noise reduction, de-hum, declip, and silence detection"
+        "title": "복원 및 정리",
+        "description": "노이즈 감소, 험 제거, 디클립, 무음 감지"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Pitch shifting, time stretching, spatial audio, and spectral processing"
+        "title": "고급 처리",
+        "description": "피치 시프트, 타임 스트레치, 공간 음향, 스펙트럼 처리"
       }
     },
     "volumeDynamics": {
-      "title": "Volume & Dynamics",
-      "tooltip": "Amplify in decibels (-60 to +60), apply fade-in/out durations, and toggle loudness normalization. Use Amplify for level matching and Normalize when you want a consistent perceived loudness."
+      "title": "볼륨 및 다이내믹스",
+      "tooltip": "데시벨 단위로 증폭(-60~+60)하고, 페이드 인/아웃 길이를 적용하고, 라우드니스 노멀라이즈를 켜고 끕니다. 레벨을 맞출 때는 증폭을, 일관된 체감 음량을 원할 때는 노멀라이즈를 사용하세요."
     },
     "equalizer": {
-      "title": "Equalizer",
-      "tooltip": "Pick a preset that maps to a multi-band FFmpeg equalizer filter chain: bass-boost, treble-boost, vocal, classical, rock, or jazz. Choose 'none' to leave the EQ untouched.",
-      "enable": "Enable EQ",
-      "presetLabel": "EQ Preset",
+      "title": "이퀄라이저",
+      "tooltip": "멀티밴드 FFmpeg 이퀄라이저 필터 체인에 대응하는 프리셋을 고릅니다: 저음 강조, 고음 강조, 보컬, 클래식, 록, 재즈. EQ를 그대로 두려면 '없음'을 선택하세요.",
+      "enable": "EQ 켜기",
+      "presetLabel": "EQ 프리셋",
       "presets": {
-        "none": "None",
-        "bass-boost": "Bass Boost",
-        "treble-boost": "Treble Boost",
-        "vocal": "Vocal Enhance",
-        "classical": "Classical",
-        "rock": "Rock",
-        "jazz": "Jazz"
+        "none": "없음",
+        "bass-boost": "저음 강조",
+        "treble-boost": "고음 강조",
+        "vocal": "보컬 강조",
+        "classical": "클래식",
+        "rock": "록",
+        "jazz": "재즈"
       }
     },
     "stereo": {
-      "title": "Stereo Processing",
-      "tooltip": "Adjust pan (-100 left to +100 right), stereo width (0 = mono, 100 = original, up to 200 = wider), toggle mono conversion, and optionally swap left/right channels.",
-      "pan": "Pan",
-      "leftRight": "Left ← → Right",
-      "stereoWidth": "Stereo Width",
-      "widthRange": "0% to 200%"
+      "title": "스테레오 처리",
+      "tooltip": "팬(-100 왼쪽~+100 오른쪽), 스테레오 폭(0 = 모노, 100 = 원본, 최대 200 = 더 넓게)을 조정하고, 모노 변환을 켜고 끄며, 선택적으로 좌/우 채널을 바꿉니다.",
+      "pan": "팬",
+      "leftRight": "왼쪽 ← → 오른쪽",
+      "stereoWidth": "스테레오 폭",
+      "widthRange": "0%~200%"
     },
     "reverb": {
-      "title": "Reverb",
-      "tooltip": "Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect.",
-      "enable": "Enable Reverb",
-      "typeLabel": "Reverb Type",
+      "title": "리버브",
+      "tooltip": "오디오에 공간감을 더합니다. 룸(작음), 홀(큼), 플레이트(빈티지 스튜디오), 스프링(기타 앰프 스타일) 중에서 고르세요. 룸 크기, 댐핑, 웻/드라이 레벨로 효과를 세밀하게 조정합니다.",
+      "enable": "리버브 켜기",
+      "typeLabel": "리버브 유형",
       "types": {
-        "none": "None",
-        "room": "Room",
-        "hall": "Hall",
-        "plate": "Plate",
-        "spring": "Spring"
+        "none": "없음",
+        "room": "룸",
+        "hall": "홀",
+        "plate": "플레이트",
+        "spring": "스프링"
       },
-      "roomSize": "Room Size",
-      "roomRange": "0% to 100%",
-      "wetDry": "Wet/Dry Mix",
-      "dryWet": "Dry ← → Wet"
+      "roomSize": "룸 크기",
+      "roomRange": "0%~100%",
+      "wetDry": "웻/드라이 믹스",
+      "dryWet": "드라이 ← → 웻"
     },
     "delay": {
-      "title": "Delay & Echo",
-      "tooltip": "Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats.",
-      "enable": "Enable Delay",
-      "typeLabel": "Delay Type",
+      "title": "딜레이 및 에코",
+      "tooltip": "신호의 지연된 복사본을 더합니다. 에코는 단일 탭이고, 멀티탭은 여러 개의 어긋난 에코를 더하며, 핑퐁은 좌우로 튕깁니다. 시간(ms), 피드백 %, 웻 레벨이 반복의 느낌을 결정합니다.",
+      "enable": "딜레이 켜기",
+      "typeLabel": "딜레이 유형",
       "types": {
-        "none": "None",
-        "echo": "Simple Echo",
-        "multi-tap": "Multi-tap",
-        "ping-pong": "Ping-Pong"
+        "none": "없음",
+        "echo": "단순 에코",
+        "multi-tap": "멀티탭",
+        "ping-pong": "핑퐁"
       },
-      "delayTime": "Delay Time (ms)",
-      "feedback": "Feedback (%)",
-      "feedbackRange": "0% to 95%"
+      "delayTime": "딜레이 시간 (ms)",
+      "feedback": "피드백 (%)",
+      "feedbackRange": "0%~95%"
     },
     "restoration": {
-      "noiseReduction": "Noise Reduction",
-      "deHum": "De-hum (50/60Hz)",
-      "declip": "Declip Audio",
-      "silenceDetection": "Silence Detection"
+      "noiseReduction": "노이즈 감소",
+      "deHum": "험 제거 (50/60Hz)",
+      "declip": "오디오 디클립",
+      "silenceDetection": "무음 감지"
     },
     "advanced": {
-      "pitchShift": "Pitch Shift (semitones)",
-      "pitchValue": "{{value}} semitones",
-      "pitchRange": "-24 to +24 semitones",
-      "timeStretch": "Time Stretch Factor",
-      "timeStretchValue": "{{value}}x speed",
-      "timeStretchRange": "0.25x to 4x speed",
-      "spatialAudio": "Spatial Audio",
+      "pitchShift": "피치 시프트 (반음)",
+      "pitchValue": "{{value}} 반음",
+      "pitchRange": "-24~+24 반음",
+      "timeStretch": "타임 스트레치 계수",
+      "timeStretchValue": "{{value}}배 속도",
+      "timeStretchRange": "0.25배~4배 속도",
+      "spatialAudio": "공간 음향",
       "spatial": {
-        "none": "None",
-        "binaural": "Binaural",
-        "surround": "Surround",
-        "3d": "3D Audio"
+        "none": "없음",
+        "binaural": "바이노럴",
+        "surround": "서라운드",
+        "3d": "3D 오디오"
       },
-      "spectral": "Spectral Processing",
+      "spectral": "스펙트럼 처리",
       "spectralOptions": {
-        "none": "None",
-        "vocoder": "Vocoder",
-        "formant": "Formant Filter",
-        "convolution": "Convolution"
+        "none": "없음",
+        "vocoder": "보코더",
+        "formant": "포먼트 필터",
+        "convolution": "컨볼루션"
       }
     },
     "labels": {
-      "amplify": "Amplify (dB)",
-      "amplifyRange": "-60dB to +60dB",
-      "normalize": "Normalize Audio",
-      "fadeIn": "Fade In (seconds)",
-      "fadeOut": "Fade Out (seconds)"
+      "amplify": "증폭 (dB)",
+      "amplifyRange": "-60dB~+60dB",
+      "normalize": "오디오 노멀라이즈",
+      "fadeIn": "페이드 인 (초)",
+      "fadeOut": "페이드 아웃 (초)"
     }
   },
   "advancedVideoEffects": {
-    "title": "Advanced Video Effects",
-    "tooltipAria": "About Advanced Video Effects",
-    "tooltipIntro": "Manual video filter chains, grouped into four expandable sections:",
-    "tooltipVisual": "<strong>Visual Effects</strong> — color correction, blur/sharpen, noise, and artistic filters.",
-    "tooltipTransform": "<strong>Transform</strong> — rotation, flip, custom crop, padding/letterboxing.",
-    "tooltipTemporal": "<strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.",
-    "tooltipAdvanced": "<strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.",
+    "title": "고급 동영상 효과",
+    "tooltipAria": "고급 동영상 효과 안내",
+    "tooltipIntro": "수동 동영상 필터 체인으로, 펼칠 수 있는 네 개의 섹션으로 나뉩니다:",
+    "tooltipVisual": "<strong>시각 효과</strong> — 색 보정, 흐림/선명, 노이즈, 예술적 필터.",
+    "tooltipTransform": "<strong>변형</strong> — 회전, 뒤집기, 사용자 지정 자르기, 패딩/레터박스.",
+    "tooltipTemporal": "<strong>시간 효과</strong> — 역재생, 핑퐁, 프레임 레이트 변환, 손떨림 보정.",
+    "tooltipAdvanced": "<strong>고급 처리</strong> — 디인터레이스, HDR 톤 매핑, 색 공간 변환.",
     "sections": {
       "visual": {
-        "title": "Visual Effects",
-        "description": "Color correction, blur/sharpen, artistic effects, and noise control"
+        "title": "시각 효과",
+        "description": "색 보정, 흐림/선명, 예술적 효과, 노이즈 조절"
       },
       "transform": {
-        "title": "Geometric Transform",
-        "description": "Rotation, flipping, cropping, and padding"
+        "title": "기하학적 변형",
+        "description": "회전, 뒤집기, 자르기, 패딩"
       },
       "temporal": {
-        "title": "Temporal Effects",
-        "description": "Speed control, reverse, frame rate, and stabilization"
+        "title": "시간 효과",
+        "description": "속도 조절, 역재생, 프레임 레이트, 손떨림 보정"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Deinterlacing, HDR processing, and color space conversion"
+        "title": "고급 처리",
+        "description": "디인터레이스, HDR 처리, 색 공간 변환"
       }
     },
     "colorExposure": {
-      "title": "Color & Exposure",
-      "tooltip": "Adjust brightness, contrast, saturation, hue, gamma, exposure, and shadow/highlight recovery. These map to FFmpeg's eq and curves filters and stack into a single color-correction pass."
+      "title": "색상 및 노출",
+      "tooltip": "밝기, 대비, 채도, 색조, 감마, 노출, 그림자/하이라이트 복구를 조정합니다. FFmpeg의 eq 및 curves 필터에 대응하며 하나의 색 보정 패스로 합쳐집니다."
     },
     "blurSharpen": {
-      "title": "Blur & Sharpen",
-      "tooltip": "Add Gaussian blur (0–50 sigma), motion blur with angle and distance, or unsharp-mask sharpening with adjustable radius, amount, and threshold."
+      "title": "흐림 및 선명",
+      "tooltip": "가우시안 흐림(시그마 0–50), 각도와 거리를 지정하는 모션 블러, 또는 반경, 양, 임계값을 조절할 수 있는 언샵 마스크 선명화를 추가합니다."
     },
     "labels": {
-      "brightness": "Brightness",
-      "contrast": "Contrast",
-      "saturation": "Saturation",
-      "hue": "Hue",
-      "gaussianBlur": "Gaussian Blur",
-      "artisticEffect": "Artistic Effect",
-      "rotation": "Rotation (degrees)",
-      "flipHorizontal": "Flip Horizontal",
-      "flipVertical": "Flip Vertical",
-      "reverseVideo": "Reverse Video",
-      "pingPong": "Ping-Pong Loop",
-      "targetFrameRate": "Target Frame Rate",
-      "stabilization": "Video Stabilization",
-      "deinterlace": "Deinterlace Video",
-      "outputColorSpace": "Output Color Space"
+      "brightness": "밝기",
+      "contrast": "대비",
+      "saturation": "채도",
+      "hue": "색조",
+      "gaussianBlur": "가우시안 흐림",
+      "artisticEffect": "예술적 효과",
+      "rotation": "회전 (도)",
+      "flipHorizontal": "좌우 뒤집기",
+      "flipVertical": "상하 뒤집기",
+      "reverseVideo": "동영상 역재생",
+      "pingPong": "핑퐁 루프",
+      "targetFrameRate": "목표 프레임 레이트",
+      "stabilization": "동영상 손떨림 보정",
+      "deinterlace": "동영상 디인터레이스",
+      "outputColorSpace": "출력 색 공간"
     },
     "ranges": {
-      "hundred": "-100 to +100",
-      "hue": "-180° to +180°",
-      "blur": "0 to 50px"
+      "hundred": "-100~+100",
+      "hue": "-180°~+180°",
+      "blur": "0~50px"
     },
     "artistic": {
-      "none": "None",
-      "oil-painting": "Oil Painting",
-      "watercolor": "Watercolor",
-      "sketch": "Sketch",
-      "emboss": "Emboss",
-      "edge-detection": "Edge Detection",
-      "posterize": "Posterize"
+      "none": "없음",
+      "oil-painting": "유화",
+      "watercolor": "수채화",
+      "sketch": "스케치",
+      "emboss": "엠보스",
+      "edge-detection": "윤곽선 검출",
+      "posterize": "포스터화"
     },
     "colorSpace": {
-      "rec709": "Rec.709 (Standard)",
+      "rec709": "Rec.709 (표준)",
       "rec2020": "Rec.2020 (HDR)",
       "srgb": "sRGB",
       "p3": "Display P3"
     },
-    "autoPlaceholder": "Auto"
+    "autoPlaceholder": "자동"
   }
 }
