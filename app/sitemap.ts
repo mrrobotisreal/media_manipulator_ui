@@ -47,10 +47,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   // Each path is emitted once, with English as the primary URL and hreflang
-  // alternates for the TRANSLATED locales only (en + ru today, driven by the
-  // `translated` flag in i18n/locales.ts) plus x-default → English. Locales
-  // still serving copied-English files are deliberately absent here and
-  // noindex'd in their page metadata until their real translations land.
+  // alternates for the TRANSLATED locales only (all 18 since MM68, driven by
+  // the `translated` flag in i18n/locales.ts) plus x-default → English. A
+  // locale still serving copied-English files is deliberately absent here and
+  // noindex'd in its page metadata until its real translation lands.
   const coreEntries = CORE_ROUTES.map((route) => ({
     url: new URL(route, SITE_ORIGIN).toString(),
     lastModified: now,

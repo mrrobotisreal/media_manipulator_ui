@@ -168,3 +168,13 @@ describe('MM51 locales: none left untranslated', () => {
     }
   });
 });
+
+describe('MM68: every sitemap entry carries every locale', () => {
+  it.each(['', 'true'])('one alternate per registered locale plus x-default (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
+    vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', flag);
+    const expected = [...locales.map((l) => l.code), 'x-default'].sort();
+    for (const e of sitemap()) {
+      expect(Object.keys(e.alternates?.languages ?? {}).sort(), e.url).toEqual(expected);
+    }
+  });
+});
