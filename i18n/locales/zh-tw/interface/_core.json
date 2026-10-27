@@ -1,64 +1,64 @@
 {
   "common": {
     "brand": "Media Manipulator",
-    "brandTagline": "Convert images, videos, and audio files with ease",
-    "loading": "Loading…",
-    "loadingShort": "Loading...",
-    "comingSoon": "Coming soon",
-    "tryAgain": "Try again",
-    "cancel": "Cancel",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "save": "Save",
-    "saving": "Saving...",
-    "submit": "Submit",
-    "submitting": "Submitting...",
-    "download": "Download",
-    "preview": "Preview",
-    "remove": "Remove",
-    "clear": "Clear",
-    "reset": "Reset",
-    "apply": "Apply",
-    "enable": "Enable",
-    "disable": "Disable",
-    "yes": "Yes",
-    "no": "No",
-    "more": "More",
-    "less": "Less",
-    "and": "and",
-    "or": "or",
-    "of": "of",
-    "to": "to",
-    "from": "from",
-    "by": "by",
-    "in": "in",
-    "with": "with",
-    "all": "All",
-    "none": "None",
-    "off": "Off",
-    "on": "On",
-    "optional": "Optional",
-    "required": "Required",
-    "auto": "Auto",
-    "manual": "Manual",
-    "default": "Default",
-    "advanced": "Advanced",
-    "basic": "Basic",
-    "settings": "Settings",
-    "options": "Options",
-    "search": "Search",
-    "filter": "Filter",
-    "selected": "Selected",
-    "step": "Step",
-    "minutes": "minutes",
-    "seconds": "seconds",
-    "items": "items",
-    "showAll": "Show all",
-    "showMore": "Show more",
-    "showLess": "Show less",
-    "retentionPromise": "You choose how long we keep your files — 24 hours by default for guests, up to 2 years with a free account",
-    "retentionPromiseShort": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years"
+    "brandTagline": "輕鬆轉換圖片、影片與音訊檔案",
+    "loading": "載入中…",
+    "loadingShort": "載入中...",
+    "comingSoon": "即將推出",
+    "tryAgain": "再試一次",
+    "cancel": "取消",
+    "close": "關閉",
+    "back": "返回",
+    "next": "下一步",
+    "save": "儲存",
+    "saving": "儲存中...",
+    "submit": "送出",
+    "submitting": "送出中...",
+    "download": "下載",
+    "preview": "預覽",
+    "remove": "移除",
+    "clear": "清除",
+    "reset": "重設",
+    "apply": "套用",
+    "enable": "啟用",
+    "disable": "停用",
+    "yes": "是",
+    "no": "否",
+    "more": "更多",
+    "less": "較少",
+    "and": "與",
+    "or": "或",
+    "of": "／",
+    "to": "至",
+    "from": "從",
+    "by": "由",
+    "in": "於",
+    "with": "搭配",
+    "all": "全部",
+    "none": "無",
+    "off": "關閉",
+    "on": "開啟",
+    "optional": "選填",
+    "required": "必填",
+    "auto": "自動",
+    "manual": "手動",
+    "default": "預設",
+    "advanced": "進階",
+    "basic": "基本",
+    "settings": "設定",
+    "options": "選項",
+    "search": "搜尋",
+    "filter": "篩選",
+    "selected": "已選取",
+    "step": "步驟",
+    "minutes": "分鐘",
+    "seconds": "秒",
+    "items": "個項目",
+    "showAll": "顯示全部",
+    "showMore": "顯示更多",
+    "showLess": "顯示較少",
+    "retentionPromise": "檔案保留多久由你決定：訪客預設為 24 小時，免費帳號最長可達 2 年",
+    "retentionPromiseShort": "訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年"
   },
   "units": {
     "bytes": "B",
@@ -74,181 +74,178 @@
     "khz": "kHz"
   },
   "duration": {
-    "zero": "0 sec",
-    "hours_one": "{{count}} hr",
-    "hours_other": "{{count}} hr",
-    "minutes_one": "{{count}} min",
-    "minutes_other": "{{count}} min",
-    "seconds_one": "{{count}} sec",
-    "seconds_other": "{{count}} sec"
+    "zero": "0 秒",
+    "hours_other": "{{count}} 小時",
+    "minutes_other": "{{count}} 分鐘",
+    "seconds_other": "{{count}} 秒"
   },
   "topNav": {
-    "home": "Home",
-    "tools": "Tools",
-    "about": "About",
-    "howItWorks": "How it works",
-    "tutorials": "Tutorials",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "blog": "Blog",
+    "home": "首頁",
+    "tools": "工具",
+    "about": "關於",
+    "howItWorks": "運作方式",
+    "tutorials": "教學",
+    "privacyPolicy": "隱私權政策",
+    "termsOfService": "服務條款",
+    "blog": "部落格",
     "links": {
-      "homeDescription": "Home page where you can convert your files",
-      "toolsDescription": "Free online tools for converting, compressing, transcribing, and cleaning up media files",
-      "aboutDescription": "About page where you can learn more about the project and its creator",
-      "howItWorksDescription": "How it works page where you can learn more about the conversion process",
-      "tutorialsDescription": "Step-by-step tutorials for the audio, video, and image converters and their AI tools",
-      "privacyPolicyDescription": "Privacy policy page where you can learn more about the privacy policy of the project",
-      "termsOfServiceDescription": "Terms of service page where you can learn more about the terms of service of the project",
-      "blogDescription": "Blog page where you can read the latest news and updates about the project"
+      "homeDescription": "首頁，你可以在這裡轉換檔案",
+      "toolsDescription": "免費線上工具，可轉換、壓縮、轉錄並清理媒體檔案",
+      "aboutDescription": "關於頁面，進一步了解這個專案與它的開發者",
+      "howItWorksDescription": "運作方式頁面，進一步了解轉換流程",
+      "tutorialsDescription": "音訊、影片與圖片轉換器及其 AI 工具的逐步教學",
+      "privacyPolicyDescription": "隱私權政策頁面，進一步了解本專案的隱私權政策",
+      "termsOfServiceDescription": "服務條款頁面，進一步了解本專案的服務條款",
+      "blogDescription": "部落格頁面，閱讀本專案的最新消息與更新"
     },
-    "navigationLabel": "Navigation",
-    "language": "Language",
-    "selectLanguage": "Select language",
-    "voices": "Voices"
+    "navigationLabel": "導覽",
+    "language": "語言",
+    "selectLanguage": "選擇語言",
+    "voices": "語音"
   },
   "footer": {
-    "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",
-    "contact": "Contact:",
-    "explore": "Explore",
-    "legal": "Legal",
-    "doNotSell": "Do Not Sell or Share My Personal Information",
-    "cookieSettings": "Cookie settings",
-    "copyright": "© {{year}} Media Manipulator, a CreaTV Ltd. product. All rights reserved.",
-    "operatedBy": "Operated by CreaTV Ltd. · Colorado, USA",
+    "tagline": "以瀏覽器為基礎並由伺服器輔助的工具，可編輯、轉換、壓縮、分析、轉錄、摘要及以其他方式處理圖片、影片與音訊檔案。",
+    "contact": "聯絡方式：",
+    "explore": "探索",
+    "legal": "法律",
+    "doNotSell": "請勿出售或分享我的個人資料",
+    "cookieSettings": "Cookie 設定",
+    "copyright": "© {{year}} Media Manipulator，CreaTV Ltd. 旗下產品。保留所有權利。",
+    "operatedBy": "由 CreaTV Ltd. 營運 · 美國科羅拉多州",
     "cookieDialog": {
-      "title": "Cookie preferences",
-      "description": "Cookie preferences are managed by Google. Please reload the page if the cookie banner does not appear, or visit our Privacy Policy for details on how Media Manipulator processes data."
+      "title": "Cookie 偏好設定",
+      "description": "Cookie 偏好設定由 Google 管理。如果 Cookie 橫幅沒有出現，請重新載入頁面，或前往我們的隱私權政策，了解 Media Manipulator 如何處理資料。"
     },
-    "changelog": "Changelog",
-    "status": "Status",
-    "licenses": "Open-source licences"
+    "changelog": "更新日誌",
+    "status": "服務狀態",
+    "licenses": "開源授權"
   },
   "languageSelector": {
-    "label": "Language",
-    "current": "Current language: {{language}}",
-    "select": "Select a language"
+    "label": "語言",
+    "current": "目前語言：{{language}}",
+    "select": "選擇語言"
   },
   "home": {
     "contentStudioCta": {
       "title": "Darkroom",
-      "badge": "New",
-      "body": "Edit, layer, and mix video & audio on a multi-track timeline, then export MP4 — a Premiere Pro–style editor, right in your browser.",
-      "cta": "Try Darkroom"
+      "badge": "新功能",
+      "body": "在多軌時間軸上編輯、疊加並混合影片與音訊，再匯出為 MP4。這是一款 Premiere Pro 風格的剪輯器，直接在你的瀏覽器中執行。",
+      "cta": "試用 Darkroom"
     },
     "hero": {
-      "title": "Free Online Media Converter, Editor, Transcriber & Metadata Tool",
-      "subtitle": "Convert, compress, edit, transcribe, summarize, inspect metadata, and clean up image, video, and audio files directly from your browser.",
-      "popularLabel": "Popular tools",
-      "allTools": "All tools",
-      "removeExif": "Remove EXIF",
-      "compressVideo": "Compress video",
-      "transcribeVideo": "Transcribe video",
-      "transcodeHls": "Transcode → HLS",
-      "transcodeDash": "Transcode → DASH",
+      "title": "免費線上媒體轉換、編輯、轉錄與中繼資料工具",
+      "subtitle": "直接在瀏覽器中轉換、壓縮、編輯、轉錄、摘要、檢視中繼資料並清理圖片、影片與音訊檔案。",
+      "popularLabel": "熱門工具",
+      "allTools": "所有工具",
+      "removeExif": "移除 EXIF",
+      "compressVideo": "壓縮影片",
+      "transcribeVideo": "轉錄影片",
+      "transcodeHls": "轉碼 → HLS",
+      "transcodeDash": "轉碼 → DASH",
       "webpToJpg": "WebP → JPG",
       "wavToMp3": "WAV → MP3",
-      "compressImage": "Compress image",
-      "resizeImage": "Resize image",
-      "extractAudio": "Extract audio"
+      "compressImage": "壓縮圖片",
+      "resizeImage": "調整圖片大小",
+      "extractAudio": "擷取音訊"
     },
     "upload": {
-      "title": "Upload File",
-      "dragDrop": "Drag and drop your file here",
-      "orClickSelect": "or click to select from your computer",
-      "chooseFile": "Choose File",
-      "unsupportedFile": "Unsupported file type. Please select an image, video, or audio file."
+      "title": "上傳檔案",
+      "dragDrop": "將檔案拖曳到這裡",
+      "orClickSelect": "或點選以從電腦中選擇",
+      "chooseFile": "選擇檔案",
+      "unsupportedFile": "不支援的檔案類型。請選擇圖片、影片或音訊檔案。"
     },
     "options": {
-      "transcriptionOptions": "Transcription Options",
-      "transcodeOptions": "Transcode Options",
-      "conversionOptions": "Conversion Options",
-      "documentScanOptions": "Document Scan Options",
-      "convert": "Convert",
-      "transcribe": "Transcribe",
-      "transcode": "Transcode",
-      "scanDocument": "Scan to PDF / Word (AI)"
+      "transcriptionOptions": "轉錄選項",
+      "transcodeOptions": "轉碼選項",
+      "conversionOptions": "轉換選項",
+      "documentScanOptions": "文件掃描選項",
+      "convert": "轉換",
+      "transcribe": "轉錄",
+      "transcode": "轉碼",
+      "scanDocument": "掃描為 PDF／Word（AI）"
     },
     "history": {
-      "title": "Conversion History",
-      "subtitle": "Reopen or download any image, video, or audio result from this session.",
-      "newConversion": "New Conversion",
-      "transcriptBadge": "Transcript",
-      "preview": "Preview",
-      "download": "Download",
+      "title": "轉換記錄",
+      "subtitle": "重新開啟或下載此工作階段中的任何圖片、影片或音訊結果。",
+      "newConversion": "新的轉換",
+      "transcriptBadge": "逐字稿",
+      "preview": "預覽",
+      "download": "下載",
       "itemLabel": "#{{number}} {{filename}}",
-      "startedProcessing": "Started {{time}} and still processing",
-      "completedAt": "Completed {{time}}",
-      "transcriptionFailed": "Transcription failed",
-      "conversionFailed": "Conversion failed"
+      "startedProcessing": "於 {{time}} 開始，仍在處理中",
+      "completedAt": "於 {{time}} 完成",
+      "transcriptionFailed": "轉錄失敗",
+      "conversionFailed": "轉換失敗"
     },
     "result": {
-      "transcriptResult": "Transcript Result",
-      "convertedPreview": "Converted File Preview",
-      "transcriptSubtitle": "Transcript and AI review for {{filename}}.",
-      "convertedSubtitle": "Toggle between the original and finalized edited version of {{filename}}.",
-      "original": "Original",
-      "final": "Final"
+      "transcriptResult": "轉錄結果",
+      "convertedPreview": "轉換後檔案預覽",
+      "transcriptSubtitle": "{{filename}} 的逐字稿與 AI 審閱。",
+      "convertedSubtitle": "在 {{filename}} 的原始版本與最終編輯版本之間切換。",
+      "original": "原始",
+      "final": "最終"
     },
     "progress": {
-      "preparingUpload": "Preparing secure upload...",
-      "uploadingToS3": "Uploading file directly to S3...",
-      "finalizing": "Staging uploaded file on the server...",
-      "startingTranscription": "Starting transcription...",
-      "startingConversion": "Starting conversion...",
-      "converting": "Converting...",
-      "percentComplete": "{{percent}}% Complete",
-      "conversionFailed": "Conversion failed. Please try again."
+      "preparingUpload": "正在準備安全上傳...",
+      "uploadingToS3": "正在將檔案直接上傳至 S3...",
+      "finalizing": "正在伺服器上暫存已上傳的檔案...",
+      "startingTranscription": "正在開始轉錄...",
+      "startingConversion": "正在開始轉換...",
+      "converting": "轉換中...",
+      "percentComplete": "已完成 {{percent}}%",
+      "conversionFailed": "轉換失敗，請再試一次。"
     },
     "download": {
-      "downloadAs": "Download {{filename}}",
-      "fileWillBeDownloaded": "File will be downloaded as: {{filename}}"
+      "downloadAs": "下載 {{filename}}",
+      "fileWillBeDownloaded": "檔案將以此名稱下載：{{filename}}"
     },
-    "fileLoadingConverter": "Loading converter…",
+    "fileLoadingConverter": "正在載入轉換器…",
     "gettingStarted": {
-      "title": "Get started in 4 steps",
+      "title": "4 個步驟即可開始",
       "step1": {
-        "title": "Upload a file",
-        "body": "Drag any image, video, or audio file into the upload zone on the left, or click <em>Choose File</em>. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+        "title": "上傳檔案",
+        "body": "將任何圖片、影片或音訊檔案拖曳到左側的上傳區，或點選<em>選擇檔案</em>。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。"
       },
       "step2": {
-        "title": "Pick your settings here",
-        "body": "The right panel will switch to the appropriate converter — image, video, or audio — once a file is selected. Pick a format, tweak filters, or enable an AI operation."
+        "title": "在這裡選擇設定",
+        "body": "選擇檔案後，右側面板會切換為對應的轉換器（圖片、影片或音訊）。選擇格式、調整濾鏡，或啟用 AI 操作。"
       },
       "step3": {
-        "title": "Convert",
-        "body": "Click <em>Convert File</em>. Watch the progress bar — jobs run on our GPU server in real time."
+        "title": "轉換",
+        "body": "點選<em>轉換檔案</em>。留意進度列，工作會在我們的 GPU 伺服器上即時執行。"
       },
       "step4": {
-        "title": "Preview and download",
-        "body": "The result auto-previews when it's ready. Toggle between Original and Final, then click Download."
+        "title": "預覽並下載",
+        "body": "結果準備好後會自動預覽。在「原始」與「最終」之間切換，然後點選「下載」。"
       }
     },
     "localAi": {
-      "title": "Includes local AI tools",
-      "body": "Face blur, background removal, AI upscale, OCR-based text/PII redaction, voice cleanup, vocal isolation, and karaoke vocal removal all run on our own GPU server. No third-party AI providers see your files."
+      "title": "內建本機 AI 工具",
+      "body": "臉部模糊、背景移除、AI 放大、以 OCR 為基礎的文字／個資遮蔽、人聲清理、人聲分離與卡拉 OK 去人聲，全部都在我們自己的 GPU 伺服器上執行。沒有任何第三方 AI 供應商會看到你的檔案。"
     },
     "notSure": {
-      "title": "Not sure where to begin?",
-      "body": "Our step-by-step tutorials walk through every setting in the audio, video, and image converters — including the AI tools.",
-      "cta": "Browse Tutorials"
+      "title": "不知道從哪裡開始？",
+      "body": "我們的逐步教學會帶你了解音訊、影片與圖片轉換器中的每一項設定，包括 AI 工具。",
+      "cta": "瀏覽教學"
     },
     "howItWorks": {
-      "title": "How it works",
-      "body": "Media Manipulator runs FFmpeg and ImageMagick for standard conversions, and dedicated AI models on our local GPU for the optional AI operations. All processing happens on servers we control — read the full breakdown for details.",
-      "cta": "Read How it Works"
+      "title": "運作方式",
+      "body": "Media Manipulator 使用 FFmpeg 與 ImageMagick 進行標準轉換，並在我們本機的 GPU 上執行專用 AI 模型來處理選用的 AI 操作。所有處理都在我們掌控的伺服器上進行。想了解細節，請閱讀完整說明。",
+      "cta": "閱讀運作方式"
     }
   },
   "notFound": {
-    "preTitle": "Telemetry lost",
-    "title": "This sector of the ship doesn't exist",
-    "body": "The coordinates you punched in don't map to anything on the navigation console. Try one of the routes below — or head back to the main bridge and pick a tool that does exist.",
+    "preTitle": "遙測訊號中斷",
+    "title": "這艘船上沒有這個區域",
+    "body": "你輸入的座標在導航主控台上找不到對應的位置。試試下方的其中一條路徑，或回到主艦橋，選擇一個真正存在的工具。",
     "links": {
-      "home": "Return to base",
-      "tools": "Tools array",
-      "tutorials": "Tutorials"
+      "home": "返回基地",
+      "tools": "工具陣列",
+      "tutorials": "教學"
     }
   },
   "themeToggle": {
-    "toggle": "Toggle theme"
+    "toggle": "切換主題"
   }
 }
