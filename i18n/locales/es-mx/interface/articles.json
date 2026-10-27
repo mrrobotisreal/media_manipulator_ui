@@ -3,54 +3,54 @@
     "nav": {
       "backToBlog": "← Blog"
     },
-    "title": "La guía del autoestopista para la compresión de vídeo: MP4 vs WebM vs AVI vs MOV",
+    "title": "La guía del autoestopista para la compresión de video: MP4 vs WebM vs AVI vs MOV",
     "byline": {
       "writtenBy": "Escrito por:",
       "date": "13 de junio de 2025",
-      "time": "22:33"
+      "time": "10:33 p. m."
     },
     "intro": {
-      "title": "Una breve introducción a la compresión de vídeo",
-      "p1": "¿Alguna vez has intentado subir un vídeo a tu web y has visto con horror cómo la barra de carga avanzaba a paso de tortuga? 🐌 O tal vez has grabado una demo rápida de 30 segundos solo para descubrir que el archivo es, de alguna manera, más grande que toda tu web. Sí, todos hemos pasado por eso, y es tan divertido como ver secarse la pintura... con internet de acceso telefónico.",
-      "p2": "La cosa es así: la compresión de vídeo es básicamente el arte de hacer tus vídeos más pequeños sin que parezca que los has grabado con una patata 🥔. Piénsalo de esta manera: los datos de vídeo en bruto son como intentar meter todo un armario en una maleta de mano. La compresión de vídeo es esa técnica mágica de doblado que, no se sabe cómo, consigue que todo quepa mientras mantiene tu ropa (casi) sin arrugas.",
-      "p3": "En esencia, la compresión de vídeo funciona haciendo trampas de dos maneras principales:",
+      "title": "Una breve introducción a la compresión de video",
+      "p1": "¿Alguna vez intentaste subir un video a tu sitio y viste con horror cómo la barra de carga avanzaba a paso de tortuga? 🐌 O tal vez grabaste una demo rápida de 30 segundos solo para descubrir que el archivo es, de alguna manera, más grande que todo tu sitio. Sí, todos hemos pasado por eso, y es tan divertido como ver secarse la pintura... con internet de acceso telefónico.",
+      "p2": "La cosa es así: la compresión de video es básicamente el arte de hacer tus videos más pequeños sin que parezca que los grabaste con una papa 🥔. Piénsalo de esta manera: los datos de video en bruto son como intentar meter todo un clóset en una maleta de mano. La compresión de video es esa técnica mágica de doblado que, no se sabe cómo, consigue que todo quepa mientras mantiene tu ropa (casi) sin arrugas.",
+      "p3": "En esencia, la compresión de video funciona haciendo trampas de dos maneras principales:",
       "bullets": [
-        "<strong>Compresión espacial</strong>: Esta analiza cada fotograma y dice: «Oye, este cielo azul tiene unos 10.000 píxeles que son básicamente del mismo tono de azul. ¿Qué tal si simplemente decimos 'píxeles azules de aquí a aquí' en vez de eso?». Es como describir una pared como «toda blanca» en lugar de enumerar cada uno de los ladrillos.",
+        "<strong>Compresión espacial</strong>: Esta analiza cada fotograma y dice: «Oye, este cielo azul tiene unos 10,000 píxeles que son básicamente del mismo tono de azul. ¿Qué tal si simplemente decimos 'píxeles azules de aquí a aquí' en vez de eso?». Es como describir una pared como «toda blanca» en lugar de enumerar cada uno de los ladrillos.",
         "<strong>Compresión temporal</strong>: Aquí es donde las cosas se ponen realmente ingeniosas. En lugar de almacenar cada fotograma por completo, solo guarda las diferencias entre fotogramas. Así que, si te estás grabando hablando y el fondo no cambia, ¿para qué guardar ese fondo 30 veces por segundo? ¡Basta con guardarlo una vez y anotar lo que cambia! 🎬"
       ],
-      "p4": "La magia ocurre cuando estas técnicas trabajan juntas, convirtiendo tu enorme grabación de pantalla de 2GB en un archivo manejable de 50MB que sigue viéndose nítido. Pero aquí es donde se pone interesante: los distintos formatos de vídeo (contenedores) y códecs (los algoritmos de compresión propiamente dichos) manejan esta magia de formas muy distintas. Algunos son como navajas suizas 🔪: versátiles, pero no siempre la herramienta más afilada para cada trabajo. Otros son más bien como instrumentos quirúrgicos especializados: increíblemente eficaces para tareas específicas, pero inútiles para cualquier otra cosa.",
-      "quote": "«En el mundo de la compresión de vídeo, los archivos más pesados no siempre son los más fuertes; a veces, los guerreros más pequeños dan los golpes más poderosos.» 💪"
+      "p4": "La magia ocurre cuando estas técnicas trabajan juntas, convirtiendo tu enorme grabación de pantalla de 2GB en un archivo manejable de 50MB que sigue viéndose nítido. Pero aquí es donde se pone interesante: los distintos formatos de video (contenedores) y códecs (los algoritmos de compresión propiamente dichos) manejan esta magia de formas muy distintas. Algunos son como navajas suizas 🔪: versátiles, pero no siempre la herramienta más afilada para cada trabajo. Otros son más bien como instrumentos quirúrgicos especializados: increíblemente eficaces para tareas específicas, pero inútiles para cualquier otra cosa.",
+      "quote": "«En el mundo de la compresión de video, los archivos más pesados no siempre son los más fuertes; a veces, los guerreros más pequeños dan los golpes más poderosos.» 💪"
     },
     "formats": {
       "title": "¿Cuál es la diferencia entre estos formatos, al fin y al cabo?",
-      "intro": "Muy bien, vamos a analizar estos formatos de vídeo como si estuviéramos comparando equipos de superhéroes 🦸‍♂️. Cada uno tiene sus propios superpoderes, debilidades y esa rareza que te hace pensar «¿en serio?».",
+      "intro": "Muy bien, vamos a analizar estos formatos de video como si estuviéramos comparando equipos de superhéroes 🦸‍♂️. Cada uno tiene sus propios superpoderes, debilidades y esa rareza que te hace pensar «¿en serio?».",
       "mp4": {
         "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Piensa en MP4 como el Superman de los formatos de vídeo: está en todas partes, todo el mundo lo reconoce y prácticamente siempre salva el día. Este formato:",
+        "intro": "Piensa en MP4 como el Superman de los formatos de video: está en todas partes, todo el mundo lo reconoce y prácticamente siempre salva el día. Este formato:",
         "bullets": [
-          "<strong>Se lleva bien con todos</strong>: desde el portátil ancestral de tu abuela hasta el último iPhone, MP4 simplemente funciona",
+          "<strong>Se lleva bien con todos</strong>: desde la laptop ancestral de tu abuela hasta el último iPhone, MP4 simplemente funciona",
           "<strong>Usa códecs H.264/H.265</strong>: son como magos de la compresión que hacen tus archivos pequeños mientras mantienen una calidad alta",
-          "<strong>Admite streaming</strong>: perfecto para cuando quieres que tus vídeos empiecen a reproducirse antes de haberse cargado del todo (porque, ¿quién tiene tiempo para esperar? ⏰)",
+          "<strong>Admite streaming</strong>: perfecto para cuando quieres que tus videos empiecen a reproducirse antes de haberse cargado del todo (porque, ¿quién tiene tiempo para esperar? ⏰)",
           "<strong>Tamaño de archivo</strong>: por lo general te ofrece ese punto justo entre calidad y tamaño"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM es como el rebelde de código abierto y molón del grupo 😎. Creado por Google, va totalmente a la vida web:",
+        "intro": "WebM es como el rebelde de código abierto y con onda del grupo 😎. Creado por Google, va totalmente a la vida web:",
         "bullets": [
-          "<strong>Diseñado para navegadores</strong>: pensado específicamente para que los vídeos web carguen más rápido de lo que tardas en decir «buffering»",
-          "<strong>Usa códecs VP8/VP9</strong>: estos chicos malos pueden comprimir vídeos incluso más que MP4 en muchos casos",
+          "<strong>Diseñado para navegadores</strong>: pensado específicamente para que los videos web carguen más rápido de lo que tardas en decir «buffering»",
+          "<strong>Usa códecs VP8/VP9</strong>: estos chicos malos pueden comprimir videos incluso más que MP4 en muchos casos",
           "<strong>Abierto y gratuito</strong>: sin cuotas de licencia, lo cual es música para los oídos de cualquier desarrollador 🎵",
-          "<strong>La pega</strong>: no todos los navegadores y dispositivos lo admiten (te estamos mirando, Safari 👀)"
+          "<strong>La desventaja</strong>: no todos los navegadores y dispositivos lo admiten (te estamos mirando, Safari 👀)"
         ]
       },
       "avi": {
         "title": "AVI (Audio Video Interleave)",
         "intro": "AVI es el veterano curtido: ¡existe desde Windows 3.1! 👴 Esto es lo que necesitas saber:",
         "bullets": [
-          "<strong>Compresión mínima</strong>: a menudo da lugar a archivos ENORMES (del tipo «¿esto es un vídeo o toda la trilogía de El Señor de los Anillos?»)",
+          "<strong>Compresión mínima</strong>: a menudo da lugar a archivos ENORMES (del tipo «¿esto es un video o toda la trilogía de El Señor de los Anillos?»)",
           "<strong>Alta calidad</strong>: lo que le falta en compresión lo compensa con una calidad impecable",
-          "<strong>Compatibilidad universal</strong>: si algo puede reproducir vídeo, probablemente pueda reproducir AVI",
+          "<strong>Compatibilidad universal</strong>: si algo puede reproducir video, probablemente pueda reproducir AVI",
           "<strong>Ideal para</strong>: almacenamiento local cuando la calidad importa más que el tamaño del archivo"
         ]
       },
@@ -58,10 +58,10 @@
         "title": "MOV (QuickTime File Format)",
         "intro": "MOV es el niño mimado de Apple 🍎 y, como la mayoría de los productos de Apple, es precioso pero... complicado:",
         "bullets": [
-          "<strong>Calidad excelente</strong>: especialmente para vídeos de alta resolución y edición profesional",
+          "<strong>Calidad excelente</strong>: especialmente para videos de alta resolución y edición profesional",
           "<strong>Compatibilidad con el códec ProRes</strong>: el formato con el que sueñan los profesionales 🤤",
-          "<strong>El elefante en la habitación</strong>: unos tamaños de archivo que harán llorar a tu disco de almacenamiento (¿recuerdas mi grabación de pantalla de 315,9MB? Sí, eso era MOV)",
-          "<strong>Problemas multiplataforma</strong>: funciona a la perfección en Mac, pero los usuarios de Windows quizá necesiten instalar QuickTime"
+          "<strong>El elefante en la habitación</strong>: unos tamaños de archivo que harán llorar a tu disco de almacenamiento (¿recuerdas mi grabación de pantalla de 315.9MB? Sí, eso era MOV)",
+          "<strong>Problemas multiplataforma</strong>: funciona a la perfección en Mac, pero los usuarios de Windows tal vez necesiten instalar QuickTime"
         ]
       },
       "comparisonIntro": "Aquí tienes una comparación rápida para que quede claro del todo:",
@@ -103,16 +103,16 @@
     },
     "whenToUse": {
       "title": "¿Cómo sé cuándo usar un formato en vez de otro?",
-      "p1": "Muy bien, ¡hora de decidir! 🤔 Elegir el formato de vídeo correcto es como elegir la ropa adecuada: no te pondrías un esmoquin para ir al gimnasio, y no deberías usar AVI para el vídeo principal de tu web (a menos que quieras que tus usuarios envejezcan mientras carga).",
+      "p1": "Muy bien, ¡hora de decidir! 🤔 Elegir el formato de video correcto es como elegir la ropa adecuada: no te pondrías un esmoquin para ir al gimnasio, y no deberías usar AVI para el video principal de tu sitio (a menos que quieras que tus usuarios envejezcan mientras carga).",
       "p2": "Vamos a desglosar esto en escenarios del mundo real, porque así es como realmente tomamos estas decisiones:",
       "mp4": {
         "title": "Cuándo usar MP4",
-        "lead": "<strong>Usa MP4 cuando quieras ir sobre seguro</strong> 🛡️",
+        "lead": "<strong>Usa MP4 cuando quieras ir a lo seguro</strong> 🛡️",
         "bullets": [
-          "<strong>Vídeos de sitios web</strong>: vídeos de fondo, demos de productos, tutoriales; MP4 es tu amigo fiable",
+          "<strong>Videos de sitios web</strong>: videos de fondo, demos de productos, tutoriales; MP4 es tu amigo confiable",
           "<strong>Redes sociales</strong>: Instagram, Twitter, LinkedIn... todas adoran MP4",
-          "<strong>Archivos adjuntos de correo</strong>: cuando necesitas enviar un vídeo que simplemente funcione",
-          "<strong>Aplicaciones móviles</strong>: tanto iOS como Android te lo agradecerán"
+          "<strong>Archivos adjuntos de correo</strong>: cuando necesitas enviar un video que simplemente funcione",
+          "<strong>Apps para celular</strong>: tanto iOS como Android te lo agradecerán"
         ],
         "proTip": "<strong>Consejo de experto</strong>: usa el códec H.264 para la máxima compatibilidad, o H.265 si necesitas archivos aún más pequeños y tu audiencia tiene dispositivos más recientes."
       },
@@ -120,23 +120,23 @@
         "title": "Cuándo usar WebM",
         "lead": "<strong>Usa WebM cuando cada kilobyte cuenta</strong> 🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: donde la velocidad de carga afecta directamente a las tasas de conversión",
+          "<strong>Landing pages</strong>: donde la velocidad de carga afecta directamente las tasas de conversión",
           "<strong>Aplicaciones web progresivas</strong>: cuando estás desarrollando para la web moderna",
-          "<strong>Sitios web de mucho tráfico</strong>: ahorra en costes de ancho de banda (tu cartera te lo agradecerá 💰)",
+          "<strong>Sitios web de mucho tráfico</strong>: ahorra en costos de ancho de banda (tu cartera te lo agradecerá 💰)",
           "<strong>Cuando controlas el entorno</strong>: como herramientas internas de empresa donde sabes que todos usan Chrome"
         ],
-        "realTalk": "<strong>Hablando en serio</strong>: una vez cambié el vídeo principal de un cliente de MP4 a WebM y recorté un 40% del tamaño del archivo. Su tiempo de carga se redujo en 2 segundos y su tasa de rebote bajó un 15%. ¡Eso es dinero en el banco! 🏦"
+        "realTalk": "<strong>Hablando en serio</strong>: una vez cambié el video principal de un cliente de MP4 a WebM y recorté un 40% del tamaño del archivo. Su tiempo de carga se redujo en 2 segundos y su tasa de rebote bajó un 15%. ¡Eso es dinero en el banco! 🏦"
       },
       "avi": {
         "title": "Cuándo usar AVI",
         "lead": "<strong>Usa AVI cuando la calidad es lo primero y el tamaño del archivo... no es un problema</strong> 👑",
         "bullets": [
-          "<strong>Archivos fuente para edición de vídeo</strong>: cuando necesitas que cada píxel sea perfecto para la posproducción",
+          "<strong>Archivos fuente para edición de video</strong>: cuando necesitas que cada píxel sea perfecto para la posproducción",
           "<strong>Fines de archivo</strong>: guardar la copia máster antes de la compresión",
           "<strong>Reproducción local</strong>: cuando solo se reproduce desde un disco duro, no desde internet",
           "<strong>Grabaciones de pantalla para tutoriales</strong>: antes de comprimirlas para su distribución"
         ],
-        "warning": "<strong>Advertencia</strong>: en serio, no uses AVI para distribución web. Una vez tuve un cliente que insistió en usar AVI para los vídeos de sus productos. Su página de inicio tardaba 45 segundos en cargar. CUARENTA. Y. CINCO. SEGUNDOS. 😱 Ya no es cliente (es broma, lo arreglamos con MP4)."
+        "warning": "<strong>Advertencia</strong>: en serio, no uses AVI para distribución web. Una vez tuve un cliente que insistió en usar AVI para los videos de sus productos. Su página de inicio tardaba 45 segundos en cargar. CUARENTA. Y. CINCO. SEGUNDOS. 😱 Ya no es cliente (es broma, lo arreglamos con MP4)."
       },
       "mov": {
         "title": "Cuándo usar MOV",
@@ -147,7 +147,7 @@
           "<strong>Transferencias de Mac a Mac</strong>: cuando todos los implicados tienen un Mac",
           "<strong>Antes de convertir</strong>: como formato intermedio de alta calidad"
         ],
-        "realityCheck": "<strong>La cruda realidad de MOV</strong>: ¿Recuerdas mi grabación de pantalla de 315,9MB? Eso es MOV siendo MOV. Gran calidad, terrible para compartir. ¡Convierte siempre antes de subir!"
+        "realityCheck": "<strong>La cruda realidad de MOV</strong>: ¿Recuerdas mi grabación de pantalla de 315.9MB? Eso es MOV siendo MOV. Gran calidad, terrible para compartir. ¡Convierte siempre antes de subir!"
       },
       "decisionTree": {
         "title": "Árbol de decisión rápido 🌳",
@@ -156,12 +156,12 @@
       "quote": "«El desarrollador sabio sabe que el mejor formato no es el más nuevo ni el más sofisticado, sino el que hace el trabajo sin hacer sufrir a los usuarios.» 🧘‍♂️"
     },
     "whyImportant": {
-      "title": "¿Por qué es esto tan importante para mi web?",
+      "title": "¿Por qué es esto tan importante para mi sitio?",
       "p1": "Mira, lo entiendo. Puede que estés pensando: «¿No puedo simplemente subir cualquier cosa y ya está?» 🤷‍♂️ Claro, también podrías comer sopa con un tenedor, pero ¿para qué complicarte la vida más de lo necesario?",
-      "p2": "Aquí tienes la cruda realidad de por qué los formatos de vídeo importan más de lo que crees:",
+      "p2": "Aquí tienes la cruda realidad de por qué los formatos de video importan más de lo que crees:",
       "threeSecondRule": {
         "title": "La regla de los 3 segundos ⏱️",
-        "body": "Los estudios muestran que el 53% de los usuarios móviles abandonan los sitios que tardan más de 3 segundos en cargar. ¡CINCUENTA Y TRES POR CIENTO! Eso es más de la mitad de tus clientes potenciales perdidos antes de que siquiera vean tu increíble contenido. ¿Y adivina cuál suele ser el principal culpable de los tiempos de carga lentos? Exacto: tu vídeo principal de 200MB sin optimizar, ahí plantado como un obstáculo digital 🚧."
+        "body": "Los estudios muestran que el 53% de los usuarios de celular abandonan los sitios que tardan más de 3 segundos en cargar. ¡CINCUENTA Y TRES POR CIENTO! Eso es más de la mitad de tus clientes potenciales perdidos antes de que siquiera vean tu increíble contenido. ¿Y adivina cuál suele ser el principal culpable de los tiempos de carga lentos? Exacto: tu video principal de 200MB sin optimizar, ahí plantado como un obstáculo digital 🚧."
       },
       "googleWatching": {
         "title": "Google está observando (y juzgando) 👀",
@@ -171,47 +171,47 @@
           "<strong>Menos tráfico = menos conversiones</strong> = menos dinero",
           "<strong>Menos dinero = desarrollador triste</strong> 😢"
         ],
-        "clientStory": "Tuve un cliente cuya tienda online usaba enormes archivos MOV para los vídeos de producto. Después de convertir todo a MP4 optimizados y WebM con alternativas, sus:",
+        "clientStory": "Tuve un cliente cuya tienda en línea usaba enormes archivos MOV para los videos de producto. Después de convertir todo a MP4 optimizados y WebM con alternativas, sus:",
         "clientResults": [
-          "El tiempo de carga de la página bajó de 8,2 a 2,7 segundos",
+          "El tiempo de carga de la página bajó de 8.2 a 2.7 segundos",
           "El posicionamiento en Google mejoró para el 67% de sus palabras clave objetivo",
           "La tasa de conversión aumentó un 23%",
-          "Los ingresos mensuales se dispararon en 18.000$ 💸"
+          "Los ingresos mensuales se dispararon en $18.000 💸"
         ]
       },
       "bandwidthBill": {
         "title": "La factura de ancho de banda del infierno 🔥",
         "body": "Cada vez que alguien carga tu página, estás pagando por ese ancho de banda. Usar un AVI de 50MB en vez de un MP4 de 5MB significa que estás pagando literalmente 10 veces más por el hosting. Es como pedir 10 pizzas cuando solo necesitas una, solo que menos rico y más caro.",
-        "realNumbersIntro": "<strong>Números reales</strong>: si tu web recibe 10.000 visitantes al mes:",
+        "realNumbersIntro": "<strong>Números reales</strong>: si tu sitio recibe 10,000 visitantes al mes:",
         "bullets": [
-          "Con vídeos de 50MB: 500GB de ancho de banda = $$",
-          "Con vídeos de 5MB: 50GB de ancho de banda = $",
+          "Con videos de 50MB: 500GB de ancho de banda = $$",
+          "Con videos de 5MB: 50GB de ancho de banda = $",
           "¡Eso son potencialmente cientos de dólares ahorrados al mes!"
         ]
       },
       "mobileUsers": {
-        "title": "Los usuarios móviles te odiarán 📱",
-        "intro": "Recuerda que más del 60% del tráfico web ahora es móvil. Eso significa:",
+        "title": "Los usuarios de celular te odiarán 📱",
+        "intro": "Recuerda que más del 60% del tráfico web ahora viene de celulares. Eso significa:",
         "bullets": [
-          "<strong>Los límites de datos son reales</strong>: nadie quiere gastarse sus datos mensuales viendo tu vídeo principal",
+          "<strong>Los límites de datos son reales</strong>: nadie quiere gastarse sus datos mensuales viendo tu video principal",
           "<strong>Conexiones más lentas</strong>: no todo el mundo tiene 5G, y el 4G puede fallar",
-          "<strong>Consumo de batería</strong>: vídeos grandes = más procesamiento = móviles sin batería = usuarios enfadados"
+          "<strong>Consumo de batería</strong>: videos grandes = más procesamiento = celulares sin batería = usuarios enojados"
         ]
       },
       "trust": {
         "title": "Confianza y profesionalidad 🤝",
-        "intro": "De esto nadie habla, pero es enorme. Cuando tu web carga rápido y los vídeos se reproducen sin problemas:",
+        "intro": "De esto nadie habla, pero es enorme. Cuando tu sitio carga rápido y los videos se reproducen sin problemas:",
         "bullets": [
           "Los usuarios confían más en ti (asociando de forma subconsciente la velocidad con la competencia)",
           "Es más probable que se queden y exploren",
           "Es más probable que vuelvan",
           "Es más probable que te recomienden"
         ],
-        "outro": "Pero ¿cuando tu web va lenta? Grita «hora de aficionados» más fuerte que una sirena de niebla 📯. Los usuarios piensan: «Si ni siquiera pueden hacer bien su web, ¿puedo confiarles mi tarjeta de crédito?»."
+        "outro": "Pero ¿cuando tu sitio va lento? Grita «hora de aficionados» más fuerte que una sirena de niebla 📯. Los usuarios piensan: «Si ni siquiera pueden hacer bien su sitio, ¿puedo confiarles mi tarjeta de crédito?»."
       },
       "monetization": {
         "title": "La conexión con la monetización 💰",
-        "intro": "Ya sea que muestres anuncios, vendas productos o monetices contenido a través de Medium (¡hola, compañero escritor de Medium! 👋), el rendimiento afecta directamente a tus resultados:",
+        "intro": "Ya sea que muestres anuncios, vendas productos o monetices contenido a través de Medium (¡hola, compañero escritor de Medium! 👋), el rendimiento afecta directamente tus resultados:",
         "bullets": [
           "<strong>Ingresos publicitarios</strong>: sitios lentos = mayores tasas de rebote = menos impresiones de anuncios",
           "<strong>Enlaces de afiliados</strong>: la gente no puede hacer clic en lo que no espera a ver",
@@ -219,53 +219,53 @@
           "<strong>Monetización de contenido</strong>: los lectores no esperarán a que cargue tu brillante artículo"
         ]
       },
-      "quote": "«La velocidad de una web es como una primera impresión: solo tienes una oportunidad, y si la desaprovechas, te descartarán más rápido de lo que tardas en decir 'espera, cargando...'» 💨"
+      "quote": "«la velocidad de un sitio es como una primera impresión: solo tienes una oportunidad, y si la desaprovechas, te descartarán más rápido de lo que tardas en decir 'espera, cargando...'» 💨"
     },
     "conclusion": {
       "title": "Conclusión",
-      "p1": "Así que ahí lo tienes, compañeros aventureros digitales. 🚀 Hemos recorrido el salvaje mundo de los formatos de vídeo y, con suerte, ya no ves MP4, WebM, AVI y MOV como si fueran misteriosos idiomas alienígenas.",
-      "cheatSheetIntro": "Aquí tienes tu chuleta resumen:",
+      "p1": "Así que ahí lo tienes, compañeros aventureros digitales. 🚀 Recorrimos el salvaje mundo de los formatos de video y, con suerte, ya no ves MP4, WebM, AVI y MOV como si fueran misteriosos idiomas alienígenas.",
+      "cheatSheetIntro": "Aquí tienes tu acordeón resumen:",
       "cheatSheet": [
-        "<strong>MP4</strong>: tu amigo fiable, apto para todo",
+        "<strong>MP4</strong>: tu amigo confiable, apto para todo",
         "<strong>WebM</strong>: el demonio de la velocidad para la web moderna",
         "<strong>AVI</strong>: la bestia de la calidad para almacenamiento local",
         "<strong>MOV</strong>: el campeón de peso pesado de Apple"
       ],
-      "p2": "Pero, más importante aún, ahora sabes que elegir el formato de vídeo correcto no es solo una decisión técnica friki: se trata de:",
+      "p2": "Pero, más importante aún, ahora sabes que elegir el formato de video correcto no es solo una decisión técnica de geeks: se trata de:",
       "checklist": [
-        "✅ Mantener a tus usuarios contentos (y en tu web)",
+        "✅ Mantener a tus usuarios contentos (y en tu sitio)",
         "✅ Hacer que Google te quiera (¡hola, mejor posicionamiento! 👋)",
         "✅ Ahorrar dinero en hosting (¡cha-ching! 💰)",
         "✅ Generar confianza y tener un aspecto profesional",
         "✅ Ganar dinero de verdad con tu contenido"
       ],
-      "p3": "La próxima vez que estés a punto de subir un vídeo a tu web, tómate un segundo para preguntarte: «¿Este formato trabaja para mí, o soy yo quien trabaja para él?». Porque la vida es demasiado corta para webs de carga lenta y usuarios frustrados.",
-      "p4": "¡Ahora ve y comprime esos vídeos! Tus usuarios (y tu cartera) te lo agradecerán. Y oye, si esto te ha resultado útil, deja un aplauso en Medium o compártelo con ese amigo que todavía sube archivos MOV en bruto a su web. Todos conocemos a alguien así 😅",
-      "quote": "«En la gran aventura del desarrollo web, las optimizaciones más pequeñas a menudo conducen a las mayores victorias. ¡Que tus vídeos estén comprimidos y tus tiempos de carga sean veloces!» ⚡"
+      "p3": "La próxima vez que estés a punto de subir un video a tu sitio, tómate un segundo para preguntarte: «¿Este formato trabaja para mí, o soy yo quien trabaja para él?». Porque la vida es demasiado corta para sitios de carga lenta y usuarios frustrados.",
+      "p4": "¡Ahora ve y comprime esos videos! Tus usuarios (y tu cartera) te lo agradecerán. Y oye, si esto te resultó útil, deja un aplauso en Medium o compártelo con ese amigo que todavía sube archivos MOV en bruto a su sitio. Todos conocemos a alguien así 😅",
+      "quote": "«En la gran aventura del desarrollo web, las optimizaciones más pequeñas a menudo conducen a las mayores victorias. ¡Que tus videos estén comprimidos y tus tiempos de carga sean veloces!» ⚡"
     },
     "relatedLinks": {
       "title": "Herramientas relacionadas",
       "intro": "Aplica lo que acabas de leer con las herramientas gratuitas de Media Manipulator.",
       "items": [
         {
-          "label": "Comprimir vídeo",
+          "label": "Comprimir video",
           "description": "Reduce el tamaño de archivos MP4, WebM, MOV y MKV para la web."
         },
         {
-          "label": "Convertidor de vídeo",
+          "label": "Convertidor de video",
           "description": "Convierte entre MP4, WebM, MOV, AVI y más."
         },
         {
-          "label": "Convertir vídeo a GIF",
-          "description": "Convierte clips de vídeo cortos en GIFs animados para compartir."
+          "label": "Convertir video a GIF",
+          "description": "Convierte clips de video cortos en GIFs animados para compartir."
         },
         {
-          "label": "Transcribir vídeo",
-          "description": "Extrae las palabras habladas de un vídeo en texto o subtítulos con capacidad de búsqueda."
+          "label": "Transcribir video",
+          "description": "Extrae las palabras habladas de un video en texto o subtítulos con capacidad de búsqueda."
         },
         {
-          "label": "Tutorial del convertidor de vídeo",
-          "description": "Guía paso a paso de todos los ajustes de conversión de vídeo."
+          "label": "Tutorial del convertidor de video",
+          "description": "Guía paso a paso de todas las opciones de conversión de video."
         },
         {
           "label": "Guía de optimización de imágenes",
@@ -274,9 +274,9 @@
       ]
     },
     "cta": {
-      "title": "¿Listo para optimizar tus vídeos? 🚀",
-      "body": "¡Deja de dejar que los archivos de vídeo enormes ralenticen tu web! Prueba nuestra herramienta gratuita de compresión de vídeo y comprueba la diferencia al instante. Convierte MP4, WebM, AVI, MOV y más con solo unos clics.",
-      "button": "Probar el compresor de vídeo →",
+      "title": "¿Listo para optimizar tus videos? 🚀",
+      "body": "¡Deja de dejar que los archivos de video enormes ralenticen tu sitio! Prueba nuestra herramienta gratuita de compresión de video y nota la diferencia al instante. Convierte MP4, WebM, AVI, MOV y más con solo unos clics.",
+      "button": "Probar el compresor de video →",
       "footnote": "No requiere registro • Procesamiento local de archivos • Rápido y seguro"
     }
   },
@@ -286,23 +286,23 @@
     "byline": {
       "label": "Escrito por:",
       "date": "14 de junio de 2025",
-      "time": "17:32"
+      "time": "5:32 p. m."
     },
     "sections": {
       "intro": {
         "title": "Una breve introducción al formato de imágenes",
-        "p1": "¿Alguna vez has subido una imagen a tu web y te has preguntado por qué tarda <em>una eternidad</em> en cargar? ¿O tal vez has notado que tu precioso logo en PNG se ve nítido y limpio, pero pesa 5MB para un gráfico tan sencillo? 🤔 Bienvenido al salvaje mundo de los formatos de imagen, donde elegir el equivocado puede marcar la diferencia entre una web ultrarrápida y una que carga más lento que el internet de acceso telefónico (¿te acuerdas de eso? 😅).",
-        "p2": "Los formatos de imagen son, en esencia, distintas formas de codificar y almacenar datos visuales. Piénsalos como idiomas diferentes para describir la misma imagen: algunos son más detallados y prolijos (como PNG), mientras que otros son más concisos y comprimidos (como JPG). Cada formato tiene su propia salsa secreta para almacenar píxeles, gestionar la transparencia, comprimir datos y mantener la calidad.",
+        "p1": "¿Alguna vez subiste una imagen a tu sitio y te preguntaste por qué tarda <em>una eternidad</em> en cargar? ¿O tal vez notaste que tu precioso logo en PNG se ve nítido y limpio, pero pesa 5MB para un gráfico tan sencillo? 🤔 Bienvenido al salvaje mundo de los formatos de imagen, donde elegir el equivocado puede marcar la diferencia entre un sitio ultrarrápido y uno que carga más lento que el internet de acceso telefónico (¿te acuerdas de eso? 😅).",
+        "p2": "Los formatos de imagen son, en esencia, distintas formas de codificar y almacenar datos visuales. Piénsalos como idiomas diferentes para describir la misma imagen: algunos son más detallados y prolijos (como PNG), mientras que otros son más concisos y comprimidos (como JPG). Cada formato tiene su propia salsa secreta para almacenar píxeles, administrar la transparencia, comprimir datos y mantener la calidad.",
         "p3": "En el fondo, todos los formatos de imagen intentan resolver el mismo problema: ¿cómo almacenamos millones de píxeles de información de color en un archivo que no rompa internet cuando alguien intente descargarlo? La respuesta está en la <em>compresión</em>, y aquí es donde las cosas se ponen interesantes. Algunos formatos usan compresión «con pérdida» (descartan algunos datos para ahorrar espacio), mientras que otros usan compresión «sin pérdida» (lo conservan todo, pero encuentran formas ingeniosas de empaquetarlo más pequeño). Es como la diferencia entre resumir un libro y reducir el tamaño de la letra: ambos lo hacen «más pequeño», pero uno pierde información y el otro no.",
         "p4": "Los tres amigos en los que nos vamos a sumergir hoy —JPG, PNG y WebP— abordan este reto de forma diferente, y entender sus superpoderes únicos (¡y su criptonita!) te transformará de Padawan en un auténtico Jedi de la web. 🚀",
-        "quote": "«El desarrollador sabio sabe que la carga más pesada de una web no es el código, sino las imágenes sin optimizar.» - Antiguo proverbio web 😉"
+        "quote": "«El desarrollador sabio sabe que la carga más pesada de un sitio no es el código, sino las imágenes sin optimizar.» - Antiguo proverbio web 😉"
       },
       "differences": {
         "title": "¿Cuál es la diferencia entre estos formatos, al fin y al cabo?",
         "intro": "Muy bien, vamos a meternos de lleno en lo que hace funcionar a cada formato. Piensa en estos formatos como distintos tipos de vehículos: todos te llevarán del punto A al punto B, pero algunos son deportivos, otros son camiones y otros son esos elegantes vehículos eléctricos nuevos que lo hacen todo. 🚗",
         "jpg": {
           "title": "JPG (o JPEG, son lo mismo, que nadie te diga lo contrario 😄)",
-          "body": "JPG es como ese amigo fiable que es genial en las fiestas pero terrible con los detalles. Usa compresión con pérdida, lo que significa que literalmente descarta datos que cree que no notarás. Perfecto para fotografías, donde una pequeña pérdida de calidad es invisible para el ojo humano, pero terrible para texto o bordes nítidos. ¿Has visto alguna vez un meme que se ha compartido tantas veces que parece fotografiado a través de una patata? ¡Eso son los artefactos de compresión de JPG saludando! 👋",
+          "body": "JPG es como ese amigo confiable que es genial en las fiestas pero terrible con los detalles. Usa compresión con pérdida, lo que significa que literalmente descarta datos que cree que no notarás. Perfecto para fotografías, donde una pequeña pérdida de calidad es invisible para el ojo humano, pero terrible para texto o bordes nítidos. ¿Alguna vez viste un meme que se compartió tantas veces que parece fotografiado a través de una papa? ¡Eso son los artefactos de compresión de JPG saludando! 👋",
           "bullets": [
             "<strong>Ventajas</strong>: archivos pequeños, compatible universalmente, ideal para fotos",
             "<strong>Desventajas</strong>: sin soporte de transparencia, pierde calidad con cada guardado, hace que el texto se vea borroso",
@@ -311,23 +311,23 @@
         },
         "png": {
           "title": "PNG (Portable Network Graphics)",
-          "body": "PNG es el perfeccionista del grupo: se niega a perder ni un solo dato. Con compresión sin pérdida, conserva cada píxel exactamente como lo pretendías. También admite transparencia (¡hola, logos sin fondo! 🎉), lo que lo convierte en la opción preferida para gráficos, iconos y cualquier cosa con texto. ¿La desventaja? El tamaño del archivo puede volverse pesado muy rápido, especialmente con imágenes grandes y complejas.",
+          "body": "PNG es el perfeccionista del grupo: se niega a perder ni un solo dato. Con compresión sin pérdida, conserva cada píxel exactamente como lo pretendías. También admite transparencia (¡hola, logos sin fondo! 🎉), lo que lo convierte en la opción preferida para gráficos, íconos y cualquier cosa con texto. ¿La desventaja? El tamaño del archivo puede volverse pesado muy rápido, especialmente con imágenes grandes y complejas.",
           "bullets": [
             "<strong>Ventajas</strong>: compresión sin pérdida, admite transparencia, perfecto para gráficos y texto",
             "<strong>Desventajas</strong>: archivos más grandes, no ideal para fotografías",
-            "<strong>Ideal para</strong>: logos, iconos, imágenes con texto, cualquier cosa que necesite transparencia"
+            "<strong>Ideal para</strong>: logos, íconos, imágenes con texto, cualquier cosa que necesite transparencia"
           ]
         },
         "webp": {
           "title": "WebP (el chico nuevo del barrio)",
-          "body": "WebP es el intento de Google de crear el formato de imagen definitivo, y, sinceramente, casi lo consiguen 🎯. Es como la navaja suiza de los formatos de imagen: admite compresión con pérdida Y sin pérdida, transparencia e incluso animación (aparta, GIF). Normalmente consigue archivos entre un 25% y un 35% más pequeños que JPG y PNG manteniendo la misma calidad. ¿La única pega? Todavía no todos los navegadores se llevan bien con él (te estamos mirando, versiones antiguas de Safari 👀).",
+          "body": "WebP es el intento de Google de crear el formato de imagen definitivo, y, sinceramente, casi lo consiguen 🎯. Es como la navaja suiza de los formatos de imagen: admite compresión con pérdida Y sin pérdida, transparencia e incluso animación (aparta, GIF). Normalmente consigue archivos entre un 25% y un 35% más pequeños que JPG y PNG manteniendo la misma calidad. ¿La única desventaja? Todavía no todos los navegadores se llevan bien con él (te estamos mirando, versiones antiguas de Safari 👀).",
           "bullets": [
             "<strong>Ventajas</strong>: archivos más pequeños, lo admite todo (con pérdida, sin pérdida, transparencia, animación), excelente relación calidad-tamaño",
             "<strong>Desventajas</strong>: todavía no cuenta con soporte universal, requiere alternativas para navegadores antiguos",
-            "<strong>Ideal para</strong>: webs modernas donde puedas ofrecer alternativas, ¡en realidad, para casi cualquier caso de uso!"
+            "<strong>Ideal para</strong>: sitios modernos donde puedas ofrecer alternativas, ¡en realidad, para casi cualquier caso de uso!"
           ]
         },
-        "example": "Aquí tienes un ejemplo rápido del mundo real: una foto de 1920x1080 podría pesar 500KB como JPG, 2MB como PNG, pero solo 350KB como WebP, con una calidad visual prácticamente idéntica. ¡Es como conseguir un coche de lujo al precio de un utilitario! 🏎️",
+        "example": "Aquí tienes un ejemplo rápido del mundo real: una foto de 1920x1080 podría pesar 500KB como JPG, 2MB como PNG, pero solo 350KB como WebP, con una calidad visual prácticamente idéntica. ¡Es como conseguir un auto de lujo al precio de un auto compacto! 🏎️",
         "quote": "«Elige tu formato como un samurái elige su espada: con propósito, precisión y comprendiendo sus fortalezas y debilidades.» ⚔️"
       },
       "choosing": {
@@ -353,15 +353,15 @@
             },
             {
               "title": "Escenario 2: imagen principal en tu landing page",
-              "body": "¿Esa preciosa fotografía en 4K de tu producto/equipo/café artesanal? JPG o WebP, sin duda. La ligera pérdida de calidad de la compresión JPG es invisible en fotografías, y la diferencia de tamaño de archivo es de *chef's kiss* 👨‍🍳. Una foto en PNG de 5MB hará llorar a tus usuarios (y que se marchen), mientras que un JPG de 500KB cargará más rápido de lo que tardan en decir «añadir al carrito»."
+              "body": "¿Esa preciosa fotografía en 4K de tu producto/equipo/café artesanal? JPG o WebP, sin duda. La ligera pérdida de calidad de la compresión JPG es invisible en fotografías, y la diferencia de tamaño de archivo es de *chef's kiss* 👨‍🍳. Una foto en PNG de 5MB hará llorar a tus usuarios (y que se vayan), mientras que un JPG de 500KB cargará más rápido de lo que tardan en decir «agregar al carrito»."
             },
             {
               "title": "Escenario 3: capturas de pantalla para tu blog/documentación",
-              "body": "¡Este es complicado! Si hay texto en la captura (y normalmente lo hay), PNG es tu amigo. JPG hará que ese texto parezca que pasó por una batidora. Sin embargo, si haces capturas de pantalla en un Mac, esos archivos pueden ser ENORMES. Considera usar WebP u optimizar tus PNG con herramientas como TinyPNG."
+              "body": "¡Este es complicado! Si hay texto en la captura (y normalmente lo hay), PNG es tu amigo. JPG hará que ese texto parezca que pasó por una licuadora. Sin embargo, si haces capturas de pantalla en un Mac, esos archivos pueden ser ENORMES. Considera usar WebP u optimizar tus PNG con herramientas como TinyPNG."
             },
             {
               "title": "Escenario 4: imágenes de producto para comercio electrónico",
-              "body": "WebP con JPG como alternativa es la jugada maestra aquí. 🎯 Obtienes archivos más pequeños (tiempos de carga más rápidos = mejores conversiones), gran calidad, e incluso puedes añadir sutiles efectos de transparencia si lo necesitas. Solo asegúrate de implementar alternativas adecuadas para el público de Safari en iPhone."
+              "body": "WebP con JPG como alternativa es la jugada maestra aquí. 🎯 Obtienes archivos más pequeños (tiempos de carga más rápidos = mejores conversiones), gran calidad, e incluso puedes agregar sutiles efectos de transparencia si lo necesitas. Solo asegúrate de implementar alternativas adecuadas para el público de Safari en iPhone."
             }
           ]
         },
@@ -369,19 +369,19 @@
           "title": "Consejos de expertos desde las trincheras 🪖",
           "items": [
             "¡Comprime siempre tus imágenes! Aunque elijas el formato correcto, un PNG sin optimizar puede seguir siendo un monstruo",
-            "Usa imágenes responsivas con tamaños distintos para dispositivos diferentes (tus usuarios móviles te lo agradecerán)",
+            "Usa imágenes responsivas con tamaños distintos para dispositivos diferentes (tus usuarios de celular te lo agradecerán)",
             "Considera usar CDN que puedan servir automáticamente WebP a los navegadores compatibles",
-            "En caso de duda, prueba ambos formatos y comprueba cuál se ve mejor con un tamaño de archivo razonable"
+            "En caso de duda, prueba ambos formatos y fíjate cuál se ve mejor con un tamaño de archivo razonable"
           ]
         },
         "quote": "«El maestro del desarrollo web no elige el formato que se ve mejor, sino el que mejor sirve al usuario, porque al servir a los demás, nos optimizamos a nosotros mismos.» 🧘‍♂️"
       },
       "whyImportant": {
-        "title": "¿Por qué es esto tan importante para mi web?",
-        "intro": "Vale, hora de hablar en serio. 💯 Puede que estés pensando: «Venga ya, es 2025, todo el mundo tiene internet rápido ahora, ¿no?». ¡FALSO! Deja que te suelte unas cuantas verdades que te harán querer optimizar todas las imágenes de tu web ahora mismo. 💣",
+        "title": "¿Por qué es esto tan importante para mi sitio?",
+        "intro": "Bueno, hora de hablar en serio. 💯 Puede que estés pensando: «Por favor, es 2025, todo el mundo tiene internet rápido ahora, ¿no?». ¡FALSO! Deja que te suelte unas cuantas verdades que te harán querer optimizar todas las imágenes de tu sitio ahora mismo. 💣",
         "loadTimes": {
           "title": "La brutal realidad de los tiempos de carga de página",
-          "p1": "Aquí tienes un dato que te dejará boquiabierto: <strong>el 53% de los usuarios móviles abandonan los sitios que tardan más de 3 segundos en cargar</strong>. TRES. SEGUNDOS. 😱 ¿Y adivina cuál suele ser el principal culpable? Sí, esas imágenes pesadas y sin optimizar que subiste directamente desde tu cámara.",
+          "p1": "Aquí tienes un dato que te dejará boquiabierto: <strong>el 53% de los usuarios de celular abandonan los sitios que tardan más de 3 segundos en cargar</strong>. TRES. SEGUNDOS. 😱 ¿Y adivina cuál suele ser el principal culpable? Sí, esas imágenes pesadas y sin optimizar que subiste directamente desde tu cámara.",
           "p2": "Hagamos unos cálculos rápidos (no te preocupes, lo mantendré simple):",
           "items": [
             "Página web media: 2-3MB en total",
@@ -391,7 +391,7 @@
         },
         "seo": {
           "title": "El efecto dominó del SEO 🎯",
-          "intro": "Los Core Web Vitals de Google (un término elegante para «¿tu web carga rápido?») afectan directamente a tu posicionamiento en buscadores. Esta es la reacción en cadena:",
+          "intro": "Los Core Web Vitals de Google (un término elegante para «¿tu sitio carga rápido?») afectan directamente tu posicionamiento en buscadores. Esta es la reacción en cadena:",
           "items": [
             "Imágenes pesadas → tiempos de carga lentos",
             "Tiempos de carga lentos → malas puntuaciones en Core Web Vitals",
@@ -402,9 +402,9 @@
           "outro": "¡Es como un juego de dominó carísimo en el que cada ficha que cae te cuesta clientes!"
         },
         "mobile": {
-          "title": "La cruda realidad móvil 📱",
+          "title": "La cruda realidad del celular 📱",
           "p1": "Aquí tienes algo que podría sorprenderte: en muchas partes del mundo, la gente navega con conexiones 3G o tiene límites de datos. ¿Esa preciosa imagen principal en PNG de 10MB? Le acaba de costar a alguien en India la mitad de su límite de datos diario. Nada bien, y desde luego nada bueno para el negocio.",
-          "p2": "Además, incluso en países con internet «rápido», la gente suele estar conectada a un WiFi inestable de cafetería o en el metro. Tus imágenes sin optimizar están haciendo literalmente que la gente cierre tu web y se vaya a la competencia. ¡Auch! 🤕"
+          "p2": "Además, incluso en países con internet «rápido», la gente suele estar conectada a un WiFi inestable de cafetería o en el metro. Tus imágenes sin optimizar están haciendo literalmente que la gente cierre tu sitio y se vaya a la competencia. ¡Auch! 🤕"
         },
         "money": {
           "title": "Hablemos de dinero (porque, seamos sinceros, es lo que importa) 💰",
@@ -421,20 +421,20 @@
         },
         "trust": {
           "title": "El factor confianza 🤝",
-          "intro": "Las webs lentas no solo pierden clientes, pierden credibilidad. Los usuarios asocian de forma subconsciente los tiempos de carga lentos con:",
+          "intro": "Los sitios lentos no solo pierden clientes, pierden credibilidad. Los usuarios asocian de forma subconsciente los tiempos de carga lentos con:",
           "items": [
             "Tecnología obsoleta",
             "Falta de atención al detalle",
             "Falta de profesionalidad",
             "Preocupaciones de seguridad (¡sí, en serio!)"
           ],
-          "outro": "Tus elecciones de imágenes están afectando literalmente a lo fiable que la gente cree que eres. Una locura, ¿verdad?"
+          "outro": "Tus elecciones de imágenes están afectando literalmente lo confiable que la gente cree que eres. Una locura, ¿verdad?"
         },
-        "quote": "«La velocidad de una web es como una primera impresión: nunca tienes una segunda oportunidad de cargar rápido.» ⚡"
+        "quote": "«la velocidad de un sitio es como una primera impresión: nunca tienes una segunda oportunidad de cargar rápido.» ⚡"
       },
       "conclusion": {
         "title": "Conclusión",
-        "intro": "Muy bien, mis compañeros Jedis de la web, ¡hemos vivido todo un viaje! 🚀 Desde entender el ADN de los formatos de imagen hasta ver cómo pueden literalmente hacer o deshacer el éxito de tu web. Repasemos los superpoderes que acabas de desbloquear:",
+        "intro": "Muy bien, mis compañeros Jedis de la web, ¡vivimos todo un viaje! 🚀 Desde entender el ADN de los formatos de imagen hasta ver cómo pueden literalmente hacer o deshacer el éxito de tu sitio. Repasemos los superpoderes que acabas de desbloquear:",
         "tldr": {
           "title": "La versión resumida (para quienes bajaron aquí directamente 😏)",
           "items": [
@@ -446,21 +446,21 @@
         "actionPlan": {
           "title": "Tu plan de acción (¡hazlo HOY!) ✅",
           "items": [
-            "<strong>Audita tus imágenes actuales</strong> - abre tu web ahora mismo y comprueba esos tamaños de archivo. Espero... Da miedo, ¿verdad? 😱",
+            "<strong>Audita tus imágenes actuales</strong> - abre tu sitio ahora mismo y revisa esos tamaños de archivo. Espero... Da miedo, ¿verdad? 😱",
             "<strong>Configura un flujo de trabajo de optimización</strong> - ya sea usando herramientas como TinyPNG, ImageOptim o el bueno de ffmpeg (autopromoción descarada de mi otro artículo 😉), haz de la optimización parte de tu proceso",
             "<strong>Implementa WebP con alternativas</strong> - es 2025, hora de dar a tus usuarios esa experiencia de nueva generación",
-            "<strong>Comprueba tus tiempos de carga</strong> - usa PageSpeed Insights de Google y observa cómo se disparan esas puntuaciones",
+            "<strong>Revisa tus tiempos de carga</strong> - usa PageSpeed Insights de Google y observa cómo se disparan esas puntuaciones",
             "<strong>Configura imágenes responsivas</strong> - tamaños distintos para dispositivos diferentes = usuarios felices en todas partes"
           ]
         },
         "bigPicture": {
           "title": "La imagen general 🖼️",
           "p1": "Recuerda, optimizar tus imágenes no se trata solo de puntuaciones técnicas de SEO o de ahorrar ancho de banda (¡aunque esas son ventajas geniales!). Se trata de respetar el tiempo, los datos y la experiencia de tus usuarios. Cada segundo que le quitas a tu tiempo de carga es un segundo que le devuelves a alguien en su día. ¡Eso es bastante poderoso si lo piensas! 💪",
-          "p2": "Además, seamos sinceros: las webs más rápidas generan más dinero. No es ciencia espacial, es simplemente buen negocio. Tus imágenes optimizadas están aumentando literalmente tus resultados mientras hacen de la web un lugar mejor. ¡Básicamente eres un superhéroe ahora! 🦸‍♀️🦸‍♂️"
+          "p2": "Además, seamos sinceros: los sitios más rápidos generan más dinero. No es ciencia espacial, es simplemente buen negocio. Tus imágenes optimizadas están aumentando literalmente tus resultados mientras hacen de la web un lugar mejor. ¡Básicamente eres un superhéroe ahora! 🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
           "title": "Un último reto 🎯",
-          "p1": "Este es mi reto para ti: coge la página de carga más lenta de tu web y optimiza solo las imágenes. Nada más. Te garantizo que verás al menos una mejora del 50% en el tiempo de carga. Comparte tus resultados de antes/después en los comentarios; ¡me encanta una buena historia de éxito de optimización!",
+          "p1": "Este es mi reto para ti: toma la página de carga más lenta de tu sitio y optimiza solo las imágenes. Nada más. Te garantizo que verás al menos una mejora del 50% en el tiempo de carga. Comparte tus resultados de antes/después en los comentarios; ¡me encanta una buena historia de éxito de optimización!",
           "p2": "Recuerda, en el mundo del desarrollo web, el mejor código es el código rápido, pero las mejores imágenes son las imágenes optimizadas. ¡Ahora ve y comprime! ¡Que tus imágenes sean pequeñas y tus tiempos de carga aún más pequeños! 🚀✨"
         },
         "quote": "«El viaje de mil optimizaciones comienza con una sola imagen comprimida.» 🏔️"
@@ -484,11 +484,11 @@
         },
         {
           "label": "Tutorial del convertidor de imágenes",
-          "description": "Guía completa de todos los ajustes del convertidor de imágenes."
+          "description": "Guía completa de todas las opciones del convertidor de imágenes."
         },
         {
-          "label": "Guía de compresión de vídeo",
-          "description": "Aplica la misma mentalidad de optimización a los archivos de vídeo."
+          "label": "Guía de compresión de video",
+          "description": "Aplica la misma mentalidad de optimización a los archivos de video."
         },
         {
           "label": "Guía de calidad de audio",
@@ -498,7 +498,7 @@
     },
     "footer": {
       "title": "¡Hora de convertirte en un Jedi de la optimización de imágenes! 🌟",
-      "body": "¿Listo para transformar tus pesados PNG en WebP ultrarrápidos? Nuestro convertidor de imágenes gratuito admite JPG, PNG, WebP, GIF y más. ¡Optimiza tus imágenes en segundos y observa cómo vuela tu web!",
+      "body": "¿Listo para transformar tus pesados PNG en WebP ultrarrápidos? Nuestro convertidor de imágenes gratuito admite JPG, PNG, WebP, GIF y más. ¡Optimiza tus imágenes en segundos y observa cómo vuela tu sitio!",
       "ctaLabel": "Abrir el convertidor de imágenes →",
       "disclaimer": "No requiere registro • Procesamiento local de archivos • Rápido y seguro"
     }
@@ -511,29 +511,29 @@
       "title": "El sonido del <strike>silencio</strike> de la calidad: bitrates, frecuencias de muestreo y formatos",
       "byline": "Escrito por:",
       "dateDisplay": "14 de junio de 2025",
-      "timeDisplay": "22:08"
+      "timeDisplay": "10:08 p. m."
     },
     "intro": {
       "title": "Una breve introducción a los formatos de audio, los bitrates y las frecuencias de muestreo",
-      "p1": "¿Alguna vez te has preguntado por qué ese pódcast que descargaste suena cristalino con solo 50 MB, mientras que el archivo de música \"de alta calidad\" de tu amigo suena como si lo hubieran grabado bajo el agua con apenas 3 MB? O puede que hayas notado que:",
+      "p1": "¿Alguna vez te preguntaste por qué ese podcast que descargaste suena cristalino con solo 50 MB, mientras que el archivo de música \"de alta calidad\" de tu amigo suena como si lo hubieran grabado bajo el agua con apenas 3 MB? O puede que hayas notado que:",
       "bullets": [
-        "La música de fondo de tu web tarda una eternidad en cargar, aunque solo dure 30 segundos",
+        "La música de fondo de tu sitio tarda una eternidad en cargar, aunque solo dure 30 segundos",
         "Ese archivo de audio que convertiste suena como si alguien lo reprodujera a través de una lata",
-        "Estás intentando añadir voces en off a tu vídeo, pero el tamaño de los archivos es descomunal",
+        "Estás intentando agregar voces en off a tu video, pero el tamaño de los archivos es descomunal",
         "Tu cuidada biblioteca de efectos de sonido se está comiendo todo tu almacenamiento en la nube",
         "Descargaste la misma canción de fuentes distintas y todas suenan radicalmente diferentes"
       ],
-      "p2": "Si has vivido alguna de estas aventuras (o desventuras 😅) sonoras, agárrate fuerte, porque vamos a desmitificar el mundo de los formatos de audio, los bitrates y las frecuencias de muestreo.",
-      "p3": "Piensa en los archivos de audio como en el café ☕: tienes tu café instantáneo (MP3 de bitrate bajo), tu café de goteo estándar (audio de calidad normal) y tu elaborado café de máquina espresso (archivos FLAC sin pérdida). Todo es café, pero ¿la experiencia? Totalmente distinta. Y del mismo modo que no servirías café instantáneo en una cafetería de lujo, no deberías usar archivos de audio de baja calidad en tu web profesional.",
-      "p4": "En este artículo exploraremos qué significan realmente esos misteriosos números y formatos, por qué importan más de lo que crees, y cómo elegir la combinación adecuada puede marcar la diferencia entre que los visitantes de tu web se queden enganchados o pulsen ese temido botón de atrás. 🎯",
+      "p2": "Si viviste alguna de estas aventuras (o desventuras 😅) sonoras, agárrate fuerte, porque vamos a desmitificar el mundo de los formatos de audio, los bitrates y las frecuencias de muestreo.",
+      "p3": "Piensa en los archivos de audio como en el café ☕: tienes tu café instantáneo (MP3 de bitrate bajo), tu café de goteo estándar (audio de calidad normal) y tu elaborado café de máquina espresso (archivos FLAC sin pérdida). Todo es café, pero ¿la experiencia? Totalmente distinta. Y del mismo modo que no servirías café instantáneo en una cafetería de lujo, no deberías usar archivos de audio de baja calidad en tu sitio profesional.",
+      "p4": "En este artículo exploraremos qué significan realmente esos misteriosos números y formatos, por qué importan más de lo que crees, y cómo elegir la combinación adecuada puede marcar la diferencia entre que los visitantes de tu sitio se queden enganchados o presionen ese temido botón de atrás. 🎯",
       "quote": "«El oído es el camino hacia el corazón». – Voltaire"
     },
     "difference": {
       "title": "¿Cuál es la diferencia entre formatos, bitrates y frecuencias de muestreo?",
-      "p1": "Muy bien, vamos a explicarlo como si se lo contáramos a ese amigo poco técnico que solo quiere que su pódcast suene bien. 🎧",
+      "p1": "Muy bien, vamos a explicarlo como si se lo contáramos a ese amigo poco técnico que solo quiere que su podcast suene bien. 🎧",
       "formatsLead": "Los <strong>formatos de audio</strong> son como contenedores: piensa en ellos como distintos tipos de cajas en las que puedes empaquetar tu audio. Tienes:",
       "formatsBullets": [
-        "<strong>MP3</strong>: la fiable caja de cartón. Cumple su función, aceptada universalmente, pero puede que aplaste un poco el contenido",
+        "<strong>MP3</strong>: la confiable caja de cartón. Cumple su función, aceptada universalmente, pero puede que aplaste un poco el contenido",
         "<strong>WAV</strong>: el contenedor de acero resistente. Lo conserva todo a la perfección, pero pesa una tonelada",
         "<strong>AAC</strong>: la caja moderna y elegante con mejor tecnología de embalaje. Mismo tamaño que el MP3, pero cabe más calidad dentro",
         "<strong>FLAC</strong>: el contenedor envasado al vacío. Comprime sin perder nada, pero sigue siendo bastante voluminoso",
@@ -542,44 +542,44 @@
       "bitrateLead": "El <strong>bitrate</strong> es la cantidad de datos que fluye por segundo: imagínalo como una tubería de agua. Más bitrate = tubería más grande = más información de audio circulando:",
       "bitrateBullets": [
         "<strong>64 kbps</strong>: manguera de jardín (bien para radio hablada, terrible para música)",
-        "<strong>128 kbps</strong>: grifo estándar (decente para escucha ocasional)",
+        "<strong>128 kbps</strong>: llave de agua estándar (decente para escucha ocasional)",
         "<strong>256 kbps</strong>: manguera de bomberos (gran calidad para la mayoría)",
         "<strong>320 kbps</strong>: tubería industrial (máxima calidad para MP3)",
-        "<strong>1411 kbps</strong>: las cataratas del Niágara (calidad de CD sin comprimir) 💿"
+        "<strong>1.411 kbps</strong>: las cataratas del Niágara (calidad de CD sin comprimir) 💿"
       ],
-      "sampleRateLead": "La <strong>frecuencia de muestreo</strong> es cuántas veces por segundo tomamos una \"instantánea\" de la onda sonora. Se mide en Hz (hercios) o kHz (kilohercios):",
+      "sampleRateLead": "La <strong>frecuencia de muestreo</strong> es cuántas veces por segundo tomamos una \"instantánea\" de la onda sonora. Se mide en Hz (hertz) o kHz (kilohertz):",
       "sampleRateBullets": [
-        "<strong>22 050 Hz</strong>: como ver una película a 15 fps: funcional pero entrecortada",
-        "<strong>44 100 Hz</strong>: el punto óptimo, calidad de CD, capta todo lo que el oído humano puede percibir",
-        "<strong>48 000 Hz</strong>: estándar profesional de vídeo (por temas de matemáticas y sincronización 🤓)",
-        "<strong>96 000 Hz</strong> o superior: para frikis del audio y para los perros (en serio, los humanos no notan la diferencia)"
+        "<strong>22.050 Hz</strong>: como ver una película a 15 fps: funcional pero entrecortada",
+        "<strong>44.100 Hz</strong>: el punto óptimo, calidad de CD, capta todo lo que el oído humano puede percibir",
+        "<strong>48.000 Hz</strong>: estándar profesional de video (por temas de matemáticas y sincronización 🤓)",
+        "<strong>96.000 Hz</strong> o superior: para fanáticos del audio y para los perros (en serio, los humanos no notan la diferencia)"
       ],
-      "p2": "Y aquí viene lo interesante: estos tres amigos trabajan juntos. Podrías tener un archivo WAV (formato) a 44,1 kHz (frecuencia de muestreo) con un bitrate de 1411 kbps. O un MP3 (formato) a 44,1 kHz (frecuencia de muestreo) pero con solo 128 kbps (bitrate). ¡Misma frecuencia de muestreo, calidad totalmente distinta! 🤯",
+      "p2": "Y aquí viene lo interesante: estos tres amigos trabajan juntos. Podrías tener un archivo WAV (formato) a 44.1 kHz (frecuencia de muestreo) con un bitrate de 1.411 kbps. O un MP3 (formato) a 44.1 kHz (frecuencia de muestreo) pero con solo 128 kbps (bitrate). ¡Misma frecuencia de muestreo, calidad totalmente distinta! 🤯",
       "quote": "«Para comprender el todo, primero hay que comprender las partes». – Aristóteles"
     },
     "usage": {
       "title": "¿Cómo sé cuándo usar un formato u otro, y qué papel juegan aquí el bitrate y la frecuencia de muestreo?",
       "p1": "¡Hora de hablar en serio! 💪 Vamos a emparejar tus necesidades de audio con la combinación de formato adecuada. Piénsalo como elegir el atuendo correcto para cada ocasión: no irías al gimnasio con esmoquin, ¿verdad?",
       "background": {
-        "title": "Para música de fondo en webs:",
+        "title": "Para música de fondo en sitios web:",
         "bullets": [
-          "<strong>Usa</strong>: MP3 o AAC a 128-192 kbps, 44,1 kHz",
+          "<strong>Usa</strong>: MP3 o AAC a 128-192 kbps, 44.1 kHz",
           "<strong>Por qué</strong>: carga rápido, suena lo bastante bien para dar ambiente y no consume ancho de banda",
           "<strong>Tamaño de archivo</strong>: ~1 MB por minuto (¡tus visitantes te lo agradecerán!)"
         ]
       },
       "podcasts": {
-        "title": "Para pódcast y contenido de voz:",
+        "title": "Para podcast y contenido de voz:",
         "bullets": [
-          "<strong>Usa</strong>: MP3 a 64-96 kbps mono, 44,1 kHz (o 22,05 kHz si el tamaño del archivo es crítico)",
-          "<strong>Por qué</strong>: la voz humana no necesita bitrates altos, y el mono ahorra un 50 % de tamaño",
+          "<strong>Usa</strong>: MP3 a 64-96 kbps mono, 44.1 kHz (o 22.05 kHz si el tamaño del archivo es crítico)",
+          "<strong>Por qué</strong>: la voz humana no necesita bitrates altos, y el mono ahorra un 50% de tamaño",
           "<strong>Consejo profesional</strong>: a nadie le hace falta oír tu respiración en estéreo 😄"
         ]
       },
       "streaming": {
         "title": "Para streaming o descarga de música:",
         "bullets": [
-          "<strong>Usa</strong>: MP3 a 256-320 kbps o AAC a 256 kbps, 44,1 kHz",
+          "<strong>Usa</strong>: MP3 a 256-320 kbps o AAC a 256 kbps, 44.1 kHz",
           "<strong>Por qué</strong>: el punto óptimo entre calidad y tamaño de archivo",
           "<strong>Un toque de realidad</strong>: la mayoría de la gente no distingue entre 256 y 320 kbps"
         ]
@@ -587,7 +587,7 @@
       "previews": {
         "title": "Para previsualizaciones y muestras de audio:",
         "bullets": [
-          "<strong>Usa</strong>: MP3 a 96-128 kbps, 44,1 kHz",
+          "<strong>Usa</strong>: MP3 a 96-128 kbps, 44.1 kHz",
           "<strong>Por qué</strong>: carga rápida, suficiente para un \"pruébalo antes de comprarlo\"",
           "<strong>Jugada inteligente</strong>: reserva los archivos de alta calidad para los clientes de pago 💰"
         ]
@@ -595,7 +595,7 @@
       "archival": {
         "title": "Para uso profesional o archivo:",
         "bullets": [
-          "<strong>Usa</strong>: FLAC o WAV al máximo bitrate, 48 kHz (o el mismo estándar que tu vídeo)",
+          "<strong>Usa</strong>: FLAC o WAV al máximo bitrate, 48 kHz (o el mismo estándar que tu video)",
           "<strong>Por qué</strong>: a prueba de futuro, perfecto para editar, sin pérdida de calidad",
           "<strong>Advertencia</strong>: estos archivos son ENORMES, ¡hablamos de 10 MB por minuto!"
         ]
@@ -604,26 +604,26 @@
         "title": "Árbol de decisión rápido:",
         "content": "¿Es solo voz? → MP3 a 64-96 kbps\n¿La velocidad de carga es crítica? → MP3/AAC a 128 kbps máximo\n¿Necesitas calidad perfecta? → FLAC/WAV\n¿Música normal para la web? → MP3/AAC a 192-256 kbps"
       },
-      "ninjaTip": "Aquí va un consejo ninja 🥷: empieza siempre con el archivo fuente de mayor calidad posible y luego comprime hacia abajo. Siempre puedes pasar de WAV a MP3, pero no puedes añadir calidad mágicamente pasando de MP3 a WAV (por mucho que digan esos anuncios sospechosos de \"mejoradores de audio\").",
-      "realWorldExample": "<strong>Ejemplo del mundo real</strong>: una vez tuve un cliente cuya app de meditación usaba archivos WAV para las sesiones guiadas. Cada sesión de 10 minutos pesaba 100 MB. 😱 Los convertimos a MP3 mono de 96 kbps, redujimos el tamaño a 7 MB cada uno, y literalmente nadie se quejó de la calidad. Las descargas de su app aumentaron un 40 % solo por dejar de ser un devorador de almacenamiento.",
-      "quote": "«La perfección se alcanza no cuando ya no hay nada que añadir, sino cuando ya no hay nada que quitar». – Antoine de Saint-Exupéry"
+      "ninjaTip": "Aquí va un consejo ninja 🥷: empieza siempre con el archivo fuente de mayor calidad posible y luego comprime hacia abajo. Siempre puedes pasar de WAV a MP3, pero no puedes agregar calidad mágicamente pasando de MP3 a WAV (por mucho que digan esos anuncios sospechosos de \"mejoradores de audio\").",
+      "realWorldExample": "<strong>Ejemplo del mundo real</strong>: una vez tuve un cliente cuya app de meditación usaba archivos WAV para las sesiones guiadas. Cada sesión de 10 minutos pesaba 100 MB. 😱 Los convertimos a MP3 mono de 96 kbps, redujimos el tamaño a 7 MB cada uno, y literalmente nadie se quejó de la calidad. Las descargas de su app aumentaron un 40% solo por dejar de ser un devorador de almacenamiento.",
+      "quote": "«La perfección se alcanza no cuando ya no hay nada que agregar, sino cuando ya no hay nada que quitar». – Antoine de Saint-Exupéry"
     },
     "importance": {
-      "title": "¿Por qué es esto importante para tu web?",
-      "p1": "Vale, puede que estés pensando: \"Qué datos tan curiosos sobre el audio, pero ¿por qué debería importarme?\". Pues sujeta bien los auriculares, porque aquí es donde la cosa se pone REAL para tus ingresos. 💸",
+      "title": "¿Por qué es esto importante para tu sitio?",
+      "p1": "Bueno, puede que estés pensando: \"Qué datos tan curiosos sobre el audio, pero ¿por qué debería importarme?\". Pues ponte bien los audífonos, porque aquí es donde la cosa se pone REAL para tus ingresos. 💸",
       "pageLoadSpeed": {
         "title": "La velocidad de carga es dinero",
-        "lead": "Google lo ha dejado muy claro: las webs lentas son penalizadas en los rankings de búsqueda. Cada segundo de tiempo de carga puede costarte:",
+        "lead": "Google lo dejó muy claro: los sitios lentos son penalizados en los rankings de búsqueda. Cada segundo de tiempo de carga puede costarte:",
         "bullets": [
-          "<strong>Una caída del 7 %</strong> en conversiones",
-          "<strong>Un 11 % menos</strong> de páginas vistas",
-          "<strong>Una caída del 16 %</strong> en la satisfacción del cliente"
+          "<strong>Una caída del 7%</strong> en conversiones",
+          "<strong>Un 11% menos</strong> de páginas vistas",
+          "<strong>Una caída del 16%</strong> en la satisfacción del cliente"
         ],
         "outro": "¿Ese inocente archivo de música de fondo de 50 MB? Literalmente te está costando clientes. 😱"
       },
       "mobileReality": {
-        "title": "La cruda realidad del móvil",
-        "p": "Un dato curioso: más del 60 % del tráfico web ya es móvil. ¿Y sabes qué le encanta hacer a los usuarios móviles? Usar sus limitados planes de datos para descargar tus archivos de audio sin comprimir (spoiler: no lo hacen. Se marcharán más rápido que una pelota de goma rebotando en el hormigón)."
+        "title": "La cruda realidad del celular",
+        "p": "Un dato curioso: más del 60% del tráfico web ya viene de celulares. ¿Y sabes qué les encanta hacer a los usuarios de celular? Usar sus limitados planes de datos para descargar tus archivos de audio sin comprimir (spoiler: no lo hacen. Se irán más rápido que una pelota de goma rebotando en el concreto)."
       },
       "realNumbers": {
         "title": "Números reales que te harán sudar:",
@@ -635,7 +635,7 @@
         ],
         "comparisonWav": "Usando archivos WAV: <strong>~250 MB en total</strong> 😵",
         "comparisonMp3": "Usando MP3 optimizados: <strong>~8 MB en total</strong> 🎉",
-        "outro": "¡Eso es una reducción del 97 %! A tu factura de hosting le acaba de dar un respiro."
+        "outro": "¡Eso es una reducción del 97%! A tu factura de hosting le acaba de dar un respiro."
       },
       "trustFactor": {
         "title": "El factor confianza",
@@ -659,14 +659,14 @@
       },
       "moreReasons": {
         "title": "Pero espera, ¡hay más!",
-        "lead": "(Dicho con mi mejor voz de teletienda 📺) Un audio optimizado también significa:",
+        "lead": "(Dicho con mi mejor voz de infomercial 📺) Un audio optimizado también significa:",
         "bullets": [
-          "Menores costes de CDN",
+          "Menores costos de CDN",
           "Usuarios más contentos con conexiones lentas",
           "Mejor accesibilidad (el audio bien comprimido funciona mejor con lectores de pantalla)",
           "Mayor engagement (la gente se queda de verdad cuando las cosas cargan rápido)"
         ],
-        "clientStory": "Tuve un cliente cuya plataforma de e-learning estaba perdiendo usuarios a chorros. Resultó que los archivos de audio de sus cursos eran tan enormes que los estudiantes de zonas rurales literalmente no podían acceder al contenido. Lo optimizamos todo, reducimos el tamaño de los archivos un 85 % y sus tasas de finalización subieron un 40 % en solo dos meses."
+        "clientStory": "Tuve un cliente cuya plataforma de e-learning estaba perdiendo usuarios a montones. Resultó que los archivos de audio de sus cursos eran tan enormes que los estudiantes de zonas rurales literalmente no podían acceder al contenido. Lo optimizamos todo, reducimos el tamaño de los archivos un 85% y sus tasas de finalización subieron un 40% en solo dos meses."
       },
       "quote": "«El tiempo es dinero, y el tiempo de carga es dinero perdido». – Todo desarrollador web, siempre"
     },
@@ -687,22 +687,22 @@
         "title": "Tu plan de acción:",
         "steps": [
           "<strong>Audita</strong> tus archivos de audio actuales (seguro que encuentras algún WAV rechoncho escondido por ahí 👀)",
-          "<strong>Convierte</strong> los archivos siguiendo las pautas que hemos visto",
-          "<strong>Comprueba</strong> la velocidad de carga de tu página antes y después",
+          "<strong>Convierte</strong> los archivos siguiendo las pautas que vimos",
+          "<strong>Revisa</strong> la velocidad de carga de tu página antes y después",
           "<strong>Observa</strong> cómo mejoran tus métricas (y puede que hagas un pequeño baile de la victoria 💃)"
         ]
       },
-      "p2": "Recuerda que, en el mundo digital, el sonido puede ser invisible, pero su impacto en el rendimiento de tu web no lo es en absoluto. Esos milisegundos que ahorras al optimizar tu audio se traducen directamente en una mejor experiencia de usuario, un mejor posicionamiento en las búsquedas y, en definitiva, en unas cuentas más saneadas.",
-      "p3": "Así que, ¡adelante, a comprimir! Los oídos de tus visitantes (y sus conexiones a internet) te lo agradecerán. Y oye, si esto te ha resultado útil, imagina lo que podría hacer por tu web una buena optimización de imagen y vídeo... pero esa es una historia para otro día. 😉",
-      "p4": "¿Listo para convertirte en un ninja de la optimización de audio? La transformación del rendimiento de tu web empieza con esa primera conversión de archivo. ¡Hazlo realidad! 🚀",
-      "quote": "«En el ámbito del contenido digital, la huella más ligera suele dejar la impresión más profunda». – Antiguo proverbio del desarrollador web (vale, me lo he inventado, pero es verdad 😄)"
+      "p2": "Recuerda que, en el mundo digital, el sonido puede ser invisible, pero su impacto en el rendimiento de tu sitio no lo es en absoluto. Esos milisegundos que ahorras al optimizar tu audio se traducen directamente en una mejor experiencia de usuario, un mejor posicionamiento en las búsquedas y, en definitiva, en unas cuentas más saneadas.",
+      "p3": "Así que, ¡adelante, a comprimir! Los oídos de tus visitantes (y sus conexiones a internet) te lo agradecerán. Y oye, si esto te resultó útil, imagina lo que podría hacer por tu sitio una buena optimización de imagen y video... pero esa es una historia para otro día. 😉",
+      "p4": "¿Listo para convertirte en un ninja de la optimización de audio? La transformación del rendimiento de tu sitio empieza con esa primera conversión de archivo. ¡Hazlo realidad! 🚀",
+      "quote": "«En el ámbito del contenido digital, la huella más ligera suele dejar la impresión más profunda». – Antiguo proverbio del desarrollador web (bueno, me lo inventé, pero es verdad 😄)"
     },
     "relatedLinks": {
       "title": "Herramientas relacionadas",
       "intro": "Prueba las herramientas de audio de Media Manipulator y explora guías relacionadas.",
       "links": [
         {
-          "label": "Conversor de audio",
+          "label": "Convertidor de audio",
           "description": "Convierte WAV, MP3, FLAC, M4A, OGG y más con bitrate personalizado."
         },
         {
@@ -714,37 +714,37 @@
           "description": "Extrae las voces de las pistas musicales para remixes o análisis."
         },
         {
-          "label": "Tutorial del conversor de audio",
+          "label": "Tutorial del convertidor de audio",
           "description": "Recorre todas las opciones, incluida la limpieza y el aislamiento de voces."
         },
         {
-          "label": "Guía de compresión de vídeo",
-          "description": "Combina un buen audio con una codificación de vídeo optimizada."
+          "label": "Guía de compresión de video",
+          "description": "Combina un buen audio con una codificación de video optimizada."
         },
         {
           "label": "Guía de optimización de imágenes",
-          "description": "Completa una web rápida optimizando también los archivos de imagen."
+          "description": "Completa un sitio rápido optimizando también los archivos de imagen."
         }
       ]
     },
     "cta": {
       "title": "¿Listo para dominar la optimización de audio? 🎧",
-      "body": "Transforma tus pesados archivos WAV en MP3 y AAC a la velocidad del rayo. Nuestro conversor de audio gratuito admite todos los formatos principales con bitrates y frecuencias de muestreo personalizables. ¡Optimiza tus archivos de audio y potencia el rendimiento de tu web!",
-      "buttonLabel": "Abrir el conversor de audio →",
+      "body": "Transforma tus pesados archivos WAV en MP3 y AAC a la velocidad del rayo. Nuestro convertidor de audio gratuito admite todos los formatos principales con bitrates y frecuencias de muestreo personalizables. ¡Optimiza tus archivos de audio y potencia el rendimiento de tu sitio!",
+      "buttonLabel": "Abrir el convertidor de audio →",
       "footnote": "Sin necesidad de registro • Procesamiento local de archivos • Rápido y seguro"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Tutorial en vídeo",
+    "eyebrow": "Tutorial en video",
     "title": "¿Qué es la interpolación de fotogramas con IA?",
-    "intro": "La interpolación de fotogramas con IA genera nuevos fotogramas intermedios de vídeo para que el movimiento se reproduzca de forma más fluida. Este tutorial explica cómo funciona, cuándo usarla, cuáles son sus límites y cómo ejecutarla en Media Manipulator.",
+    "intro": "La interpolación de fotogramas con IA genera nuevos fotogramas intermedios de video para que el movimiento se reproduzca de forma más fluida. Este tutorial explica cómo funciona, cuándo usarla, cuáles son sus límites y cómo ejecutarla en Media Manipulator.",
     "toolPanel": {
       "title": "Prueba la interpolación de fotogramas con IA sin salir de esta página",
-      "description": "Elige un archivo de vídeo, desplázate hasta el panel de herramientas de vídeo con IA y selecciona Interpolación de fotogramas con IA. Los ajustes predeterminados generan un MP4 más fluido a 60 fps."
+      "description": "Elige un archivo de video, desplázate hasta el panel de herramientas de video con IA y selecciona Interpolación de fotogramas con IA. La configuración predeterminada genera un MP4 más fluido a 60 fps."
     },
     "whatIs": {
       "title": "1. ¿Qué es la interpolación de fotogramas?",
-      "intro": "La interpolación de fotogramas aumenta la tasa de fotogramas de un vídeo insertando nuevas imágenes entre los fotogramas originales. Un clip a 30 fps tiene 30 fotogramas por segundo; duplicar su tasa de fotogramas significa producir 30 fotogramas nuevos por segundo para colocarlos entre los ya existentes. Hay varios enfoques posibles:",
+      "intro": "La interpolación de fotogramas aumenta la tasa de fotogramas de un video insertando nuevas imágenes entre los fotogramas originales. Un clip a 30 fps tiene 30 fotogramas por segundo; duplicar su tasa de fotogramas significa producir 30 fotogramas nuevos por segundo para colocarlos entre los ya existentes. Hay varios enfoques posibles:",
       "bullets": [
         "<strong>Duplicación de fotogramas</strong>: copia el fotograma anterior para que el movimiento se vea igual, pero la velocidad de reproducción coincida con el objetivo.",
         "<strong>Fusión de fotogramas (blending)</strong>: funde dos fotogramas adyacentes para suavizar el límite entre ellos. Barato pero blando.",
@@ -768,12 +768,12 @@
       "title": "3. Cómo funciona la interpolación de fotogramas con IA (visión general)",
       "paragraphs": [
         "Dados dos fotogramas adyacentes, el modelo estima cómo se mueve cada píxel entre ambos, un proceso relacionado con el flujo óptico. Luego usa ese movimiento para construir uno o más fotogramas nuevos situados en posiciones temporales fraccionarias entre los dos originales. La red neuronal aprende patrones de movimiento habituales a partir de los datos de entrenamiento, por lo que suele manejar bien el movimiento suave y natural.",
-        "Los casos difíciles —movimiento rápido, oclusión (un objeto que pasa por delante de otro), estructuras finas como el pelo y las ruedas, y los cortes de escena— son inherentemente más complicados porque el modelo tiene menos evidencias fiables sobre lo que debería ocurrir entre medias. Esas zonas son donde suelen aparecer los artefactos."
+        "Los casos difíciles —movimiento rápido, oclusión (un objeto que pasa por delante de otro), estructuras finas como el pelo y las ruedas, y los cortes de escena— son inherentemente más complicados porque el modelo tiene menos evidencias confiables sobre lo que debería ocurrir en medio. Esas zonas son donde suelen aparecer los artefactos."
       ]
     },
     "vsBasicFps": {
       "title": "4. Interpolación con IA frente a conversión básica de FPS",
-      "p1": "La conversión básica de FPS (ya sea mediante el filtro <code>fps</code> de FFmpeg o un equivalente acelerado por hardware) normalmente se limita a duplicar, descartar o fusionar fotogramas para alcanzar la tasa de fotogramas objetivo. El número total de fotogramas por segundo coincide con el objetivo, pero no se añade información de movimiento nueva: el ojo sigue viendo únicamente los intervalos de captura originales.",
+      "p1": "La conversión básica de FPS (ya sea mediante el filtro <code>fps</code> de FFmpeg o un equivalente acelerado por hardware) normalmente se limita a duplicar, descartar o fusionar fotogramas para alcanzar la tasa de fotogramas objetivo. El número total de fotogramas por segundo coincide con el objetivo, pero no se agrega información de movimiento nueva: el ojo sigue viendo únicamente los intervalos de captura originales.",
       "p2": "La interpolación con IA crea fotogramas totalmente nuevos cuyo contenido se estima en lugar de copiarse. La contrapartida:",
       "bullets": [
         "La IA suele verse mucho más fluida que la duplicación o la fusión.",
@@ -786,7 +786,7 @@
       "bullets": [
         "<strong>48 FPS</strong>: un aumento sutil de 2× sobre metraje cinematográfico a 24 fps. Menos agresivo que 60 fps y conserva algo de la cadencia original.",
         "<strong>60 FPS</strong>: tasa de reproducción fluida habitual para la web moderna. Un buen primer objetivo para material de origen a 24/30 fps.",
-        "<strong>120 FPS</strong>: pantallas de alta tasa de refresco, contenido de jugabilidad/deportes o edición posterior en cámara lenta. Mayor coste de procesamiento y un archivo más grande."
+        "<strong>120 FPS</strong>: pantallas de alta tasa de refresco, contenido de jugabilidad/deportes o edición posterior en cámara lenta. Mayor costo de procesamiento y un archivo más grande."
       ]
     },
     "qualityTradeoffs": {
@@ -802,7 +802,7 @@
     "bestPractices": {
       "title": "7. Buenas prácticas",
       "bullets": [
-        "Prueba primero con un clip corto: el coste de la interpolación escala con la duración y la resolución.",
+        "Prueba primero con un clip corto: el costo de la interpolación escala con la duración y la resolución.",
         "Evita el contenido con muchos cortes de escena. Los cortes suelen producir una deformación breve en el límite.",
         "Previsualiza el resultado antes de publicarlo: la interpolación puede verse sutilmente distinta de una captura real de alta tasa de fotogramas.",
         "Elige, siempre que sea posible, metraje de origen nítido y estable.",
@@ -815,10 +815,10 @@
       "bullets": [
         "Deformaciones alrededor de manos, pelo, ruedas y otras estructuras finas en movimiento rápido.",
         "Efecto fantasma alrededor de oclusiones donde un objeto pasa por delante de otro.",
-        "Fallos breves en los cortes de escena.",
+        "Fallas breves en los cortes de escena.",
         "Desajuste del desenfoque de movimiento: los fotogramas sintetizados no comparten el comportamiento del obturador de la cámara original.",
         "Los artefactos de compresión ya existentes (bandas, bloques) pueden hacerse más visibles a tasas de fotogramas más altas.",
-        "Los vídeos largos consumen mucho tiempo de GPU; limitamos la duración para mantener estable la herramienta gratuita.",
+        "Los videos largos consumen mucho tiempo de GPU; limitamos la duración para mantener estable la herramienta gratuita.",
         "La interpolación con IA no recupera movimiento real que nunca se capturó: estima un fotograma intermedio plausible."
       ]
     },
@@ -826,8 +826,8 @@
       "title": "9. Cómo usar la herramienta de interpolación de fotogramas con IA de Media Manipulator",
       "steps": [
         "Abre la <linkTool>herramienta de interpolación de fotogramas con IA</linkTool>.",
-        "Sube un vídeo.",
-        "Desplázate hasta el panel <strong>Herramientas de vídeo con IA</strong> y elige <em>Interpolación de fotogramas con IA</em>.",
+        "Sube un video.",
+        "Desplázate hasta el panel <strong>Herramientas de video con IA</strong> y elige <em>Interpolación de fotogramas con IA</em>.",
         "Elige unos FPS objetivo: 48, 60 o 120.",
         "Elige un preajuste de calidad y una altura máxima de procesamiento (empieza con 720p / media).",
         "Deja activado <em>Conservar audio</em> a menos que quieras una salida sin sonido.",
@@ -839,7 +839,7 @@
       "title": "Preguntas frecuentes",
       "items": [
         {
-          "q": "¿La interpolación de fotogramas mejora la calidad del vídeo?",
+          "q": "¿La interpolación de fotogramas mejora la calidad del video?",
           "a": "Mejora la fluidez del movimiento, no la resolución ni la nitidez."
         },
         {
@@ -852,7 +852,7 @@
         },
         {
           "q": "¿Puedo convertir de 60 fps a 120 fps?",
-          "a": "Sí, pero el coste de procesamiento se duplica aproximadamente respecto a 60 fps."
+          "a": "Sí, pero el costo de procesamiento se duplica aproximadamente respecto a 60 fps."
         },
         {
           "q": "¿Por qué puede la interpolación de fotogramas crear artefactos?",
@@ -879,46 +879,46 @@
     "actions": {
       "tryTool": "Probar la herramienta de interpolación de fotogramas con IA",
       "backToTutorials": "← Volver a los tutoriales",
-      "videoConverterTutorial": "Tutorial del conversor de vídeo"
+      "videoConverterTutorial": "Tutorial del convertidor de video"
     },
     "relatedLinks": {
       "title": "Prueba herramientas y guías relacionadas",
-      "intro": "Otras herramientas de vídeo y páginas de referencia que combinan bien con la interpolación de fotogramas con IA.",
+      "intro": "Otras herramientas de video y páginas de referencia que combinan bien con la interpolación de fotogramas con IA.",
       "links": [
         {
           "label": "Herramienta de interpolación de fotogramas con IA",
-          "description": "Sube un vídeo y ejecuta la interpolación ahora mismo."
+          "description": "Sube un video y ejecuta la interpolación ahora mismo."
         },
         {
-          "label": "Conversor de vídeo",
+          "label": "Convertidor de video",
           "description": "Convierte MP4, WebM, MOV, AVI, MKV y más."
         },
         {
-          "label": "Comprimir vídeo",
+          "label": "Comprimir video",
           "description": "Reduce un archivo de mayor FPS antes de compartirlo."
         },
         {
-          "label": "Extraer fotogramas de un vídeo",
+          "label": "Extraer fotogramas de un video",
           "description": "Extrae fotogramas individuales en formato PNG."
         },
         {
-          "label": "Convertir vídeo a GIF",
+          "label": "Convertir video a GIF",
           "description": "Convierte un clip corto en un GIF animado."
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Tutorial de vídeo",
-    "title": "Primeros pasos: convertir archivos de vídeo",
-    "intro": "Aprende a convertir y editar archivos de vídeo con el conversor de vídeo de Media Manipulator. Este tutorial recorre cada sección del panel de conversión de vídeo: selección de formato, recorte, transformación, efectos visuales, efectos temporales, controles avanzados de color y HDR, y la opción de transcripción con GPU para subtítulos.",
+    "eyebrow": "Tutorial de video",
+    "title": "Primeros pasos: convertir archivos de video",
+    "intro": "Aprende a convertir y editar archivos de video con el convertidor de video de Media Manipulator. Este tutorial recorre cada sección del panel de conversión de video: selección de formato, recorte, transformación, efectos visuales, efectos temporales, controles avanzados de color y HDR, y la opción de transcripción con GPU para subtítulos.",
     "toolPanel": {
-      "title": "Prueba el conversor de vídeo sin salir de esta página",
-      "description": "Elige un archivo de vídeo y conviértelo aquí mismo. Los ajustes de abajo reflejan los del conversor de la página de inicio, así que puedes experimentar mientras lees."
+      "title": "Prueba el convertidor de video sin salir de esta página",
+      "description": "Elige un archivo de video y conviértelo aquí mismo. Las opciones de abajo reflejan las del convertidor de la página de inicio, así que puedes experimentar mientras lees."
     },
     "upload": {
-      "title": "1. Sube tu archivo de vídeo",
-      "paragraph1": "Arrastra un archivo de vídeo a la zona de subida en la página de inicio, o haz clic en <strong>Elegir archivo</strong>. Los formatos de entrada habituales incluyen MP4, MOV, MKV, AVI, WebM, WMV y FLV. Los vídeos grandes se suben directamente a S3 mediante una URL prefirmada para mayor velocidad; los archivos más pequeños se suben a través del endpoint de formulario estándar.",
+      "title": "1. Sube tu archivo de video",
+      "paragraph1": "Arrastra un archivo de video a la zona de subida en la página de inicio, o haz clic en <strong>Elegir archivo</strong>. Los formatos de entrada habituales incluyen MP4, MOV, MKV, AVI, WebM, WMV y FLV. Los videos grandes se suben directamente a S3 mediante una URL prefirmada para mayor velocidad; los archivos más pequeños se suben a través del endpoint de formulario estándar.",
       "paragraph2": "Tras la subida, el panel derecho muestra un interruptor <strong>Convertir / Transcribir</strong>. Déjalo en <em>Convertir</em> por ahora — más abajo veremos Transcribir."
     },
     "format": {
@@ -934,8 +934,8 @@
       "quality": "<strong>Calidad</strong> elige un preajuste de CRF internamente: Baja ≈ CRF 30 (archivo pequeño), Media ≈ CRF 23 (equilibrada), Alta ≈ CRF 18 (visualmente transparente en la mayoría de metrajes). Los controles de Calidad, Alto y Velocidad se omiten para la salida en GIF — el panel de GIF animado que aparece abajo se encarga de eso."
     },
     "gif": {
-      "title": "2a. Convertir vídeo a GIF animado",
-      "paragraph1": "Elige <strong>GIF (animado)</strong> como formato para mostrar el panel de <strong>Ajustes de GIF animado</strong>. Esto ejecuta un proceso de dos fases basado en un script de captura de pantalla probado en producción: FFmpeg reduce la resolución del origen y lo muestrea a una velocidad de fotogramas baja, y luego <code>gifsicle</code> vuelve a cuantizar la paleta y optimiza la salida en tamaño.",
+      "title": "2a. Convertir video a GIF animado",
+      "paragraph1": "Elige <strong>GIF (animado)</strong> como formato para mostrar el panel de <strong>Configuración de GIF animado</strong>. Esto ejecuta un proceso de dos fases basado en un script de captura de pantalla probado en producción: FFmpeg reduce la resolución del origen y lo muestrea a una velocidad de fotogramas baja, y luego <code>gifsicle</code> vuelve a cuantizar la paleta y optimiza la salida en tamaño.",
       "bullets": [
         "<strong>Ancho (px)</strong> — ancho de salida. El alto se calcula automáticamente (redondeado a un múltiplo de 4) para conservar la relación de aspecto. 480–900 es un buen punto óptimo para capturas de pantalla.",
         "<strong>Velocidad de fotogramas (fps)</strong> — cuántos fotogramas por segundo muestrea FFmpeg del origen. 12 fps se ve fluido para grabaciones de pantalla de interfaz; sube a 18–24 para clips con mucho movimiento, o baja a 8–10 para reducir el tamaño del archivo.",
@@ -943,24 +943,24 @@
         "<strong>Retardo de fotograma</strong> — retardo entre fotogramas de gifsicle en centésimas de segundo. Cuanto más bajo, más rápida es la reproducción. 3 (≈30 ms) da la sensación ágil de una captura de pantalla; 6–10 produce un bucle más lento y pausado.",
         "<strong>Nivel de optimización</strong> — nivel <code>--optimize</code> de gifsicle. 1 es el más rápido con la salida más grande, 3 es el más lento con la salida más pequeña. Mantén 3 salvo que estés iterando sobre un clip largo y quieras un borrador rápido."
       ],
-      "paragraph2": "El recorte sigue funcionando con los GIF — combina un recorte corto con un Ancho pequeño y unos Colores moderados para mantener el archivo muy por debajo de unos pocos megabytes. La ventana de vista previa anima el resultado en su sitio en cuanto termina el trabajo; cambia a <em>Original</em> para compararlo con el vídeo de origen."
+      "paragraph2": "El recorte sigue funcionando con los GIF — combina un recorte corto con un Ancho pequeño y unos Colores moderados para mantener el archivo muy por debajo de unos pocos megabytes. La ventana de vista previa anima el resultado en su sitio en cuanto termina el trabajo; cambia a <em>Original</em> para compararlo con el video de origen."
     },
     "resize": {
       "title": "3. Redimensionar, velocidad y relación de aspecto",
-      "paragraph1": "Define <strong>Ancho</strong> y/o <strong>Alto</strong> para redimensionar el vídeo. Deja uno en blanco para escalar proporcionalmente. Activa <strong>Mantener relación de aspecto</strong> cuando definas ambos para usar un escalado sin deformar mediante <em>force_original_aspect_ratio=decrease</em>.",
-      "paragraph2": "<strong>Multiplicador de velocidad</strong> cambia el ritmo de reproducción del vídeo y del audio de 0,25x a 4x. Lo combinamos con el filtro <em>setpts</em> de FFmpeg y el correspondiente <em>atempo</em> en la pista de audio."
+      "paragraph1": "Define <strong>Ancho</strong> y/o <strong>Alto</strong> para redimensionar el video. Deja uno en blanco para escalar proporcionalmente. Activa <strong>Mantener relación de aspecto</strong> cuando definas ambos para usar un escalado sin deformar mediante <em>force_original_aspect_ratio=decrease</em>.",
+      "paragraph2": "<strong>Multiplicador de velocidad</strong> cambia el ritmo de reproducción del video y del audio de 0.25x a 4x. Lo combinamos con el filtro <em>setpts</em> de FFmpeg y el correspondiente <em>atempo</em> en la pista de audio."
     },
     "trim": {
       "title": "4. Recortar",
-      "paragraph": "Haz clic en <strong>Recortar vídeo</strong> para desplazarte por el reproductor y elegir un momento de inicio y de fin. Solo el segmento seleccionado se codifica en la salida, y el recorte funciona independientemente del códec de salida."
+      "paragraph": "Haz clic en <strong>Recortar video</strong> para desplazarte por el reproductor y elegir un momento de inicio y de fin. Solo el segmento seleccionado se codifica en la salida, y el recorte funciona independientemente del códec de salida."
     },
     "effects": {
-      "title": "5. Efectos de vídeo avanzados",
-      "intro": "La sección <strong>Efectos de vídeo avanzados</strong> agrupa todos los filtros en paneles plegables. Despliega un panel para acceder a sus controles:",
+      "title": "5. Efectos de video avanzados",
+      "intro": "La sección <strong>Efectos de video avanzados</strong> agrupa todos los filtros en paneles plegables. Despliega un panel para acceder a sus controles:",
       "bullets": [
         "<strong>Efectos visuales</strong> — brillo, contraste, saturación, tono, gamma, exposición, recuperación de sombras/luces, desenfoque gaussiano, desenfoque de movimiento, máscara de enfoque (nitidez), grano de película/digital/vintage y efectos artísticos (pintura al óleo, acuarela, boceto, relieve, detección de bordes, posterizado).",
         "<strong>Transformar</strong> — rotación libre en grados, volteo horizontal/vertical, recorte personalizado y bandas de relleno (letterbox) con un color configurable.",
-        "<strong>Efectos temporales</strong> — reproducción inversa, ping-pong (hacia delante y luego hacia atrás), conversión de la velocidad de fotogramas con interpolación de movimiento opcional, y estabilización de vídeo con controles de inestabilidad/precisión.",
+        "<strong>Efectos temporales</strong> — reproducción inversa, ping-pong (hacia delante y luego hacia atrás), conversión de la velocidad de fotogramas con interpolación de movimiento opcional, y estabilización de video con controles de inestabilidad/precisión.",
         "<strong>Procesamiento avanzado</strong> — desentrelazado, mapeo de tonos HDR (hable, reinhard, mobius) y conversión explícita del espacio de color de entrada/salida (Rec.709, Rec.2020, sRGB, P3)."
       ]
     },
@@ -969,17 +969,17 @@
       "paragraph": "Haz clic en <strong>Convertir archivo</strong>. Una barra de progreso en streaming muestra el estado del trabajo en tiempo real obtenido de FFmpeg. Cuando el trabajo termina, el resultado se muestra automáticamente en una ventana con un interruptor <strong>Original / Final</strong> para que puedas compararlos lado a lado. Un botón <strong>Descargar</strong> guarda el archivo final."
     },
     "transcribe": {
-      "title": "7. Transcribir un vídeo (subtítulos, texto plano, JSON)",
+      "title": "7. Transcribir un video (subtítulos, texto plano, JSON)",
       "intro": "Cambia el interruptor del panel a <strong>Transcribir</strong> para ejecutar nuestro proceso local de transcripción con GPU (whisper-ctranslate2). Elige un formato de salida:",
       "bullets": [
-        "<strong>VTT</strong> — subtítulos con marcas de tiempo que se integran en reproductores de vídeo HTML5.",
+        "<strong>VTT</strong> — subtítulos con marcas de tiempo que se integran en reproductores de video HTML5.",
         "<strong>Texto plano</strong> — una transcripción continua para leer o editar.",
         "<strong>JSON estructurado</strong> — transcripción segmentada con datos de tiempo para procesos posteriores."
       ],
       "languageNote": "Opcionalmente, escribe una pista de idioma BCP-47 (por ejemplo, <code>en</code>, <code>es</code>, <code>ja</code>). Déjalo en blanco para la detección automática. Un resumen y una revisión de seguridad de contenido se ejecutan automáticamente en cuanto la transcripción está lista."
     },
     "tips": {
-      "title": "Consejos para un vídeo de salida excelente",
+      "title": "Consejos para un video de salida excelente",
       "bullets": [
         "Usa <strong>MP4 / Alta</strong> como opción por defecto para distribución web — se reproduce en todas partes y se ve genial.",
         "Prefiere <strong>WebM</strong> para incrustaciones en la web abierta cuando el tamaño del archivo importa y controlas el reproductor.",
@@ -990,33 +990,33 @@
       ]
     },
     "actions": {
-      "tryConverter": "Probar el conversor de vídeo",
+      "tryConverter": "Probar el convertidor de video",
       "backToTutorials": "← Volver a los tutoriales",
       "howItWorks": "Cómo funciona"
     },
     "relatedLinks": {
       "title": "Prueba herramientas relacionadas",
-      "intro": "Ve directo a una herramienta de vídeo concreta o sigue explorando guías relacionadas.",
+      "intro": "Ve directo a una herramienta de video concreta o sigue explorando guías relacionadas.",
       "links": [
         {
-          "label": "Conversor de vídeo",
+          "label": "Convertidor de video",
           "description": "Convierte MP4, WebM, MOV, AVI, MKV y más."
         },
         {
-          "label": "Comprimir vídeo",
-          "description": "Reduce el tamaño del archivo de vídeo para la web sin arruinar la calidad."
+          "label": "Comprimir video",
+          "description": "Reduce el tamaño del archivo de video para la web sin arruinar la calidad."
         },
         {
-          "label": "Transcribir vídeo",
-          "description": "Extrae las palabras habladas del vídeo como texto o subtítulos buscables."
+          "label": "Transcribir video",
+          "description": "Extrae las palabras habladas del video como texto o subtítulos buscables."
         },
         {
-          "label": "Convertir vídeo a GIF",
-          "description": "Convierte clips de vídeo cortos en GIF animados para compartir."
+          "label": "Convertir video a GIF",
+          "description": "Convierte clips de video cortos en GIF animados para compartir."
         },
         {
           "label": "Herramienta de interpolación de fotogramas con IA",
-          "description": "Suaviza el movimiento aumentando los FPS del vídeo con RIFE."
+          "description": "Suaviza el movimiento aumentando los FPS del video con RIFE."
         },
         {
           "label": "Tutorial de interpolación de fotogramas con IA",
@@ -1032,19 +1032,19 @@
   "tutorialAudioGettingStarted": {
     "eyebrow": "Tutorial de audio",
     "title": "Primeros pasos: convertir archivos de audio",
-    "intro": "Aprende a convertir, limpiar y remezclar archivos de audio con el conversor de audio de Media Manipulator. Este tutorial recorre cada sección del panel de conversión de audio: selección de formato, efectos de procesamiento, restauración y las nuevas herramientas de audio con IA (Limpiar voz, Eliminar ruido de fondo, Aislar voces, Eliminar voces).",
+    "intro": "Aprende a convertir, limpiar y remezclar archivos de audio con el convertidor de audio de Media Manipulator. Este tutorial recorre cada sección del panel de conversión de audio: selección de formato, efectos de procesamiento, restauración y las nuevas herramientas de audio con IA (Limpiar voz, Eliminar ruido de fondo, Aislar voces, Eliminar voces).",
     "upload": {
       "heading": "1. Sube tu archivo de audio",
-      "p1": "Desde la página de inicio, arrastra y suelta un archivo de audio en la zona de subida, o haz clic en <strong>Elegir archivo</strong>. Los formatos admitidos incluyen MP3, WAV, FLAC, AAC, M4A, OGG, Opus y la mayoría de formatos habituales de pódcast y música. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.",
-      "p2": "Una vez seleccionado el archivo, el panel derecho cambia a <strong>Opciones de conversión</strong>. Para archivos de vídeo y audio también verás un interruptor <strong>Convertir / Transcribir</strong> — déjalo en <em>Convertir</em> para este tutorial."
+      "p1": "Desde la página de inicio, arrastra y suelta un archivo de audio en la zona de subida, o haz clic en <strong>Elegir archivo</strong>. Los formatos admitidos incluyen MP3, WAV, FLAC, AAC, M4A, OGG, Opus y la mayoría de formatos habituales de podcast y música. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.",
+      "p2": "Una vez seleccionado el archivo, el panel derecho cambia a <strong>Opciones de conversión</strong>. Para archivos de video y audio también verás un interruptor <strong>Convertir / Transcribir</strong> — déjalo en <em>Convertir</em> para este tutorial."
     },
     "toolPanel": {
-      "title": "Prueba el conversor de audio sin salir de esta página",
-      "description": "Elige un archivo de audio y conviértelo aquí mismo. Los ajustes de abajo reflejan los del conversor de la página de inicio, así que puedes seguir el resto del tutorial mientras experimentas."
+      "title": "Prueba el convertidor de audio sin salir de esta página",
+      "description": "Elige un archivo de audio y conviértelo aquí mismo. Las opciones de abajo reflejan las del convertidor de la página de inicio, así que puedes seguir el resto del tutorial mientras experimentas."
     },
     "format": {
       "heading": "2. Elige el formato de salida",
-      "intro": "El desplegable <strong>Formato</strong> define el contenedor y el códec de tu archivo de salida. El conversor de audio admite:",
+      "intro": "El desplegable <strong>Formato</strong> define el contenedor y el códec de tu archivo de salida. El convertidor de audio admite:",
       "items": [
         "<strong>MP3</strong> — compatibilidad universal, con pérdida, tamaños de archivo reducidos.",
         "<strong>WAV</strong> — PCM sin comprimir, ideal para masters, edición o archivado.",
@@ -1052,25 +1052,25 @@
         "<strong>OGG</strong> — contenedor Vorbis de código abierto.",
         "<strong>FLAC / ALAC</strong> — compresión sin pérdida para calidad de archivo con menor tamaño que WAV.",
         "<strong>Opus</strong> — códec moderno con pérdida, excelente para voz y tasas de bits bajas.",
-        "<strong>AC3 / DTS</strong> — formatos con capacidad envolvente usados a menudo en bandas sonoras de vídeo."
+        "<strong>AC3 / DTS</strong> — formatos con capacidad envolvente usados a menudo en bandas sonoras de video."
       ]
     },
     "quality": {
       "heading": "3. Ajusta la tasa de bits, la frecuencia de muestreo y los canales",
-      "bitrate": "<strong>Tasa de bits</strong> controla la calidad frente al tamaño del archivo en formatos con pérdida. 128 kbps es \"suficientemente bueno\" para pódcasts; 192–256 kbps es un buen valor por defecto para música; 320 kbps es la calidad máxima de MP3. Los formatos sin pérdida (WAV, FLAC, ALAC) ignoran este ajuste.",
-      "sampleRate": "<strong>Frecuencia de muestreo</strong> define cuántas muestras de audio por segundo contiene el archivo. La música estándar es de 44,1 kHz; el audio y vídeo profesional suelen usar 48 kHz. Las frecuencias más altas (96 kHz, 192 kHz) solo importan en producción profesional.",
+      "bitrate": "<strong>Tasa de bits</strong> controla la calidad frente al tamaño del archivo en formatos con pérdida. 128 kbps es \"suficientemente bueno\" para podcasts; 192–256 kbps es un buen valor por defecto para música; 320 kbps es la calidad máxima de MP3. Los formatos sin pérdida (WAV, FLAC, ALAC) ignoran este ajuste.",
+      "sampleRate": "<strong>Frecuencia de muestreo</strong> define cuántas muestras de audio por segundo contiene el archivo. La música estándar es de 44.1 kHz; el audio y video profesional suelen usar 48 kHz. Las frecuencias más altas (96 kHz, 192 kHz) solo importan en producción profesional.",
       "channels": "<strong>Canales</strong> puede ser mono, estéreo, 5.1 o 7.1. Elige mono para notas de voz o grabaciones de un solo micrófono para reducir el tamaño del archivo a la mitad; estéreo es el valor por defecto para música; 5.1/7.1 son para bandas sonoras envolventes."
     },
     "speedVolume": {
       "heading": "4. Ajusta velocidad, volumen y recorte",
-      "p1": "<strong>Multiplicador de velocidad</strong> cambia el ritmo de reproducción de 0,25x a 4x sin alterar el tono — útil para pódcasts acelerados o pistas de práctica ralentizadas. <strong>Multiplicador de volumen</strong> aplica un factor de ganancia simple entre 0,1x y 2x.",
+      "p1": "<strong>Multiplicador de velocidad</strong> cambia el ritmo de reproducción de 0.25x a 4x sin alterar el tono — útil para podcasts acelerados o pistas de práctica ralentizadas. <strong>Multiplicador de volumen</strong> aplica un factor de ganancia simple entre 0.1x y 2x.",
       "p2": "Haz clic en <strong>Recortar audio</strong> para desplazarte por la forma de onda y elegir un momento de inicio y de fin. Solo el segmento seleccionado se codifica en el archivo de salida."
     },
     "aiTools": {
       "heading": "5. Herramientas de audio con IA (recomendado)",
       "intro": "El panel <strong>Herramientas de audio con IA</strong> es el camino más rápido hacia un resultado con gran sonido para voz y música. Cada operación se ejecuta en nuestro servidor GPU local (ningún dato sale de nuestra infraestructura):",
       "items": [
-        "<strong>Limpiar voz</strong> — reduce el ruido con DeepFilterNet y luego ejecuta una cadena de pulido de estilo broadcast (paso alto, paso bajo, normalización de sonoridad, limitador brick-wall). Ideal para tomas de pódcast/locución grabadas en salas ruidosas.",
+        "<strong>Limpiar voz</strong> — reduce el ruido con DeepFilterNet y luego ejecuta una cadena de pulido de estilo broadcast (paso alto, paso bajo, normalización de sonoridad, limitador brick-wall). Ideal para tomas de podcast/locución grabadas en salas ruidosas.",
         "<strong>Eliminar ruido de fondo</strong> — reducción de ruido con DeepFilterNet sin la cadena de pulido. Úsalo cuando quieras conservar el EQ y la dinámica naturales de la grabación.",
         "<strong>Aislar voces</strong> — ejecuta Demucs htdemucs y genera solo la pista (stem) vocal. La salida usa WAV por defecto para no perder detalle.",
         "<strong>Eliminar voces / Karaoke</strong> — el mismo trabajo de Demucs, pero exporta la pista (stem) instrumental. Genial para pistas de karaoke o flujos de trabajo con samples."
@@ -1082,26 +1082,26 @@
       "intro": "Despliega <strong>Efectos de audio avanzados</strong> para acceder a cuatro grupos plegables cuando quieras un control manual en lugar de una operación de IA:",
       "items": [
         "<strong>Procesamiento de audio básico</strong> — normalizar, amplificar (dB), fundido de entrada/salida, preajustes de EQ (refuerzo de graves, refuerzo de agudos, vocal, clásica, rock, jazz), paneo, balance, amplitud estéreo, conversión a mono, intercambio de canales.",
-        "<strong>Efectos basados en tiempo</strong> — reverberación (sala, auditorio, placa, muelle), retardo (eco, multi-tap, ping-pong), modulación (chorus, flanger, phaser, trémolo, vibrato).",
+        "<strong>Efectos basados en tiempo</strong> — reverberación (sala, auditorio, placa, resorte), retardo (eco, multi-tap, ping-pong), modulación (chorus, flanger, phaser, trémolo, vibrato).",
         "<strong>Restauración y limpieza</strong> — reducción de ruido espectral/adaptativa/por puerta, eliminación de zumbido de 50/60 Hz, eliminación de clipping, detección y eliminación de silencios.",
         "<strong>Audio avanzado</strong> — cambio de tono (semitonos, con preservación del formante), estiramiento temporal (factor + algoritmo de tono/tiempo/formante), audio espacial (binaural, envolvente, 3D)."
       ]
     },
     "convertDownload": {
       "heading": "7. Convertir y descargar",
-      "body": "Haz clic en <strong>Convertir archivo</strong>. Aparece una barra de progreso en tiempo real mientras el servidor procesa el trabajo. Cuando termina, el resultado se muestra automáticamente y aparece un botón <strong>Descargar</strong>. El archivo también se añade a tu <em>Historial de conversiones</em> de la sesión para que puedas revisarlo o descargarlo más tarde sin volver a ejecutar el trabajo."
+      "body": "Haz clic en <strong>Convertir archivo</strong>. Aparece una barra de progreso en tiempo real mientras el servidor procesa el trabajo. Cuando termina, el resultado se muestra automáticamente y aparece un botón <strong>Descargar</strong>. El archivo también se agrega a tu <em>Historial de conversiones</em> de la sesión para que puedas revisarlo o descargarlo más tarde sin volver a ejecutar el trabajo."
     },
     "tips": {
       "heading": "Consejos para un audio de salida excelente",
       "items": [
-        "Para grabaciones de voz, prueba primero <strong>Limpiar voz</strong> — resuelve la mayoría de los problemas de \"pódcast turbio\" con un solo clic.",
+        "Para grabaciones de voz, prueba primero <strong>Limpiar voz</strong> — resuelve la mayoría de los problemas de \"podcast turbio\" con un solo clic.",
         "Si solo quieres eliminar un zumbido constante o el ruido de fondo de un aire acondicionado, usa <strong>Eliminar ruido de fondo</strong> para conservar el tono original.",
         "Para stems, mantén la salida en <strong>WAV</strong> por defecto — convertir la salida de Demucs a un formato con pérdida anula el propósito de la separación.",
         "Los grandes saltos de tasa de bits no ayudan mucho en archivos pequeños; combina 320 kbps con 48 kHz solo para exportaciones de música de alta calidad."
       ]
     },
     "cta": {
-      "tryConverter": "Probar el conversor de audio",
+      "tryConverter": "Probar el convertidor de audio",
       "backToTutorials": "← Volver a los tutoriales",
       "howItWorks": "Cómo funciona"
     },
@@ -1110,7 +1110,7 @@
       "intro": "Ve directo a la herramienta de audio que necesitas, o sigue aprendiendo con guías relacionadas.",
       "links": [
         {
-          "label": "Conversor de audio",
+          "label": "Convertidor de audio",
           "description": "Convierte WAV, MP3, FLAC, M4A, OGG y más."
         },
         {
@@ -1122,8 +1122,8 @@
           "description": "Extrae las voces de la música para remezclas o análisis."
         },
         {
-          "label": "Tutorial del conversor de vídeo",
-          "description": "Convierte, comprime, recorta y transcribe archivos de vídeo."
+          "label": "Tutorial del convertidor de video",
+          "description": "Convierte, comprime, recorta y transcribe archivos de video."
         },
         {
           "label": "Cómo funciona Media Manipulator",
@@ -1135,14 +1135,14 @@
   "tutorialImageGettingStarted": {
     "eyebrow": "Tutorial de imagen",
     "title": "Primeros pasos: convertir archivos de imagen",
-    "intro": "Aprende a convertir, editar y procesar imágenes con IA usando el conversor de imagen de Media Manipulator. Este tutorial recorre cada sección del panel de conversión de imagen: selección de formato, recorte, filtros, superposición de texto, gestión de metadatos y las herramientas de imagen con IA (Privacidad facial, Eliminar fondo, Escalado con IA, Redactar texto y Eliminar objeto).",
+    "intro": "Aprende a convertir, editar y procesar imágenes con IA usando el convertidor de imagen de Media Manipulator. Este tutorial recorre cada sección del panel de conversión de imagen: selección de formato, recorte, filtros, superposición de texto, administración de metadatos y las herramientas de imagen con IA (Privacidad facial, Eliminar fondo, Escalado con IA, Redactar texto y Eliminar objeto).",
     "toolPanel": {
-      "title": "Prueba el conversor de imagen sin salir de esta página",
-      "description": "Elige una imagen y conviértela aquí mismo. Los ajustes reflejan los del conversor de la página de inicio, así que puedes seguir el resto del tutorial mientras experimentas."
+      "title": "Prueba el convertidor de imagen sin salir de esta página",
+      "description": "Elige una imagen y conviértela aquí mismo. Las opciones reflejan las del convertidor de la página de inicio, así que puedes seguir el resto del tutorial mientras experimentas."
     },
     "upload": {
       "title": "1. Sube tu imagen",
-      "paragraph": "Arrastra un archivo de imagen a la zona de subida, o haz clic en <strong>Elegir archivo</strong>. El conversor de imagen admite JPG, PNG, WebP, GIF y muchos otros formatos. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
+      "paragraph": "Arrastra un archivo de imagen a la zona de subida, o haz clic en <strong>Elegir archivo</strong>. El convertidor de imagen admite JPG, PNG, WebP, GIF y muchos otros formatos. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
     },
     "format": {
       "title": "2. Elige el formato de salida y la calidad",
@@ -1161,7 +1161,7 @@
     },
     "textOverlay": {
       "title": "4. Superposición de texto",
-      "intro": "Añade una marca de agua o un pie de foto directamente a la imagen. Escribe tu texto en <strong>Texto superpuesto</strong> y luego elige:",
+      "intro": "Agrega una marca de agua o un pie de foto directamente a la imagen. Escribe tu texto en <strong>Texto superpuesto</strong> y luego elige:",
       "bullets": [
         "<strong>Tamaño del texto</strong> — 8–512 px.",
         "<strong>Posición</strong> — anclaje basado en gravedad (esquinas, bordes, centro).",
@@ -1172,7 +1172,7 @@
     },
     "metadata": {
       "title": "5. Metadatos",
-      "intro": "Elige cómo gestiona Media Manipulator los metadatos EXIF, IPTC, XMP y GPS:",
+      "intro": "Elige cómo administra Media Manipulator los metadatos EXIF, IPTC, XMP y GPS:",
       "bullets": [
         "<strong>Conservar todos los metadatos</strong> — se preservan los del original mediante exiftool.",
         "<strong>Eliminar todos los metadatos</strong> — elimina la cámara, el GPS, el software y las marcas de tiempo. Recomendado antes de compartir fotos en línea."
@@ -1189,9 +1189,9 @@
       "intro": "El panel <strong>Herramientas de imagen con IA</strong> ejecuta una operación local con GPU por cada trabajo de conversión. Cuando eliges una operación, el proceso estándar de ImageMagick (filtros, tinte, superposición, etc.) se omite para ese trabajo, de modo que la herramienta de IA tenga un camino de entrada/salida limpio.",
       "faceBlur": "<strong>Desenfoque facial / Pixelado / Caja negra</strong> — detecta todos los rostros de la foto y los oculta con el estilo que elijas. Ideal para compartir fotos de eventos sin revelar la identidad de los asistentes.",
       "removeBackground": "<strong>Eliminar fondo</strong> — ejecuta rembg con BiRefNet (general o retrato), ISNet o U2Net. La salida se fuerza a PNG para conservar la transparencia. BiRefNet General es el valor por defecto recomendado para la mayoría de fotos.",
-      "aiUpscale": "<strong>Escalado con IA</strong> — escalador Real-ESRGAN ncnn Vulkan. Elige <em>4x</em> (más seguro) o <em>2x</em> (más rápido), y elige un modelo: <code>realesrgan-x4plus</code> para fotos generales, <code>realesrgan-x4plus-anime</code> para animación/ilustración, o <code>realesr-animevideov3</code> para fotogramas de vídeo de anime. Salida en PNG por defecto.",
+      "aiUpscale": "<strong>Escalado con IA</strong> — escalador Real-ESRGAN ncnn Vulkan. Elige <em>4x</em> (más seguro) o <em>2x</em> (más rápido), y elige un modelo: <code>realesrgan-x4plus</code> para fotos generales, <code>realesrgan-x4plus-anime</code> para animación/ilustración, o <code>realesr-animevideov3</code> para fotogramas de video de anime. Salida en PNG por defecto.",
       "redactText": "<strong>Redactar texto / PII</strong> — redacción basada en OCR. Elige <em>Solo PII</em> (correos electrónicos, números de teléfono, números de la seguridad social, direcciones, etc.) o <em>Todo el texto</em>, y luego elige un estilo de redacción (Caja negra, Desenfoque o Pixelado). Es un proceso best-effort — revisa la salida antes de compartirla.",
-      "removeObject": "<strong>Eliminar objeto (Inpainting con LaMa)</strong> — haz clic y arrastra sobre la vista previa de la imagen para dibujar un rectángulo sobre lo que quieras borrar: un transeúnte de fondo, un cartel, una marca de agua, una farola. Arrastra el cuerpo del rectángulo para moverlo, arrastra las asas de esquina/borde para redimensionarlo, y añade tantos rectángulos como necesites con otro clic y arrastre sobre un espacio vacío. Al enviar, el servidor rasteriza una máscara a partir de tus rectángulos y ejecuta <code>simple-lama-inpainting</code> en una GPU dedicada para reconstruir el área que cubren. La salida conserva el formato que hayas elegido (JPG, PNG, WebP, GIF). Consejos:",
+      "removeObject": "<strong>Eliminar objeto (Inpainting con LaMa)</strong> — haz clic y arrastra sobre la vista previa de la imagen para dibujar un rectángulo sobre lo que quieras borrar: un transeúnte de fondo, un cartel, una marca de agua, una farola. Arrastra el cuerpo del rectángulo para moverlo, arrastra las manijas de esquina/borde para redimensionarlo, y agrega tantos rectángulos como necesites con otro clic y arrastre sobre un espacio vacío. Al enviar, el servidor rasteriza una máscara a partir de tus rectángulos y ejecuta <code>simple-lama-inpainting</code> en una GPU dedicada para reconstruir el área que cubren. La salida conserva el formato que hayas elegido (JPG, PNG, WebP, GIF). Consejos:",
       "removeObjectTips": [
         "Dibuja el rectángulo ajustado al objeto — los rectángulos grandes obligan a LaMa a inventar más fondo, lo que puede verse peor.",
         "Varios rectángulos pequeños suelen funcionar mejor que uno grande, especialmente en objetos finos.",
@@ -1209,12 +1209,12 @@
         "Combina <strong>Eliminar metadatos</strong> con compartir fotos en línea para evitar revelar el GPS o la información del dispositivo.",
         "Las salidas de <strong>Eliminar fondo</strong> siempre son PNG — combínalas con un fondo de color en tu editor de diseño preferido o apílalas en una presentación.",
         "Para el Escalado con IA, prefiere <strong>4x</strong> con <code>realesrgan-x4plus</code> en fotos; 2x es una opción para usuarios avanzados que en ocasiones puede mostrar artefactos de encuadre en entradas pequeñas.",
-        "Ejecuta <strong>Redactar texto</strong> antes de publicar una captura de pantalla de un correo, un tique o una factura.",
+        "Ejecuta <strong>Redactar texto</strong> antes de publicar una captura de pantalla de un correo, un ticket o una factura.",
         "Usa <strong>Eliminar objeto</strong> para una limpieza puntual, como un turista en una foto de vacaciones o un cartel suelto sobre un paisaje — pero espera tener que iterar sobre el tamaño del rectángulo para lograr el resultado más limpio."
       ]
     },
     "actions": {
-      "tryConverter": "Probar el conversor de imagen",
+      "tryConverter": "Probar el convertidor de imagen",
       "backToTutorials": "← Volver a los tutoriales",
       "howItWorks": "Cómo funciona"
     },
@@ -1223,7 +1223,7 @@
       "intro": "Ve directo a una herramienta de imagen concreta o sigue explorando guías relacionadas.",
       "links": [
         {
-          "label": "Conversor de imagen",
+          "label": "Convertidor de imagen",
           "description": "Convierte entre JPG, PNG, WebP, AVIF, GIF y más."
         },
         {
@@ -1235,8 +1235,8 @@
           "description": "Elimina metadatos de GPS, dispositivo y marca de tiempo antes de compartir fotos."
         },
         {
-          "label": "Tutorial del conversor de vídeo",
-          "description": "Convierte, recorta y aplica efectos visuales a archivos de vídeo."
+          "label": "Tutorial del convertidor de video",
+          "description": "Convierte, recorta y aplica efectos visuales a archivos de video."
         },
         {
           "label": "Cómo funciona Media Manipulator",
