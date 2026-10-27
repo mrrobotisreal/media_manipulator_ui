@@ -146,8 +146,8 @@ describe('MM34 flag on', () => {
 });
 
 describe('MM51 untranslated locales', () => {
-  // MM57 (fr), MM58 (it) and MM59 (ja) are translated; the remaining eight stay byte-copies until their sessions.
-  const NEW_PREFIXES = ['zh-cn', 'zh-tw', 'ko', 'hi', 'pt-pt', 'pt-br', 'vi'];
+  // Translated MM51 locales: fr, it, ja, zh-cn, zh-tw, ar, vi; the rest stay byte-copies until their sessions.
+  const NEW_PREFIXES = ['ko', 'hi', 'pt-pt', 'pt-br'];
 
   it('the 9 remaining new prefixes are registered but untranslated', () => {
     const untranslated = locales.filter((l) => !l.translated).map((l) => l.prefix);
