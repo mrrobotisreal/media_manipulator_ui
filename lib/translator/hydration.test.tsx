@@ -107,10 +107,10 @@ describe('key markers are hydration-safe', () => {
     // Hydration kept the server text and attribute values byte-for-byte (markers included).
     expect(container.textContent).toBe(before.text);
     expect(attrValues(container)).toEqual(before.attrs);
-    // Arabic plural: 3 -> `_few`, resolved key recorded in the marker.
+    // Arabic plural: 3 -> `_few`, resolved key recorded in the marker (MM63: ar-SA is translated, `3 د`).
     const plural = container.querySelector('[data-k="plural"]')!.textContent!;
     expect(m.findMarkers(plural)).toHaveLength(1);
-    expect(m.stripMarkers(plural)).toBe('3 min');
+    expect(m.stripMarkers(plural)).toBe('3 د');
   });
 
   it('metadata strings carry no markers (getServerMetadataT), page strings do', async () => {

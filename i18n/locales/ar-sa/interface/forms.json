@@ -1,133 +1,137 @@
 {
   "transcribeForm": {
-    "outputFormatTitle": "Transcript Output Format",
-    "intro": "We transcribe the {{mediaKind}} on our own GPU server using whisper-ctranslate2. A summary and safety review run automatically once the transcript is ready.",
+    "outputFormatTitle": "تنسيق مخرجات النص المفرّغ",
+    "intro": "نفرّغ {{mediaKind}} نصيًا على خادم GPU الخاص بنا باستخدام whisper-ctranslate2. يُنفَّذ ملخص ومراجعة أمان تلقائيًا بمجرد جاهزية النص المفرّغ.",
     "mediaKind": {
-      "video": "video",
-      "audio": "audio"
+      "video": "الفيديو",
+      "audio": "الصوت"
     },
-    "languageLabel": "Language hint (optional)",
-    "languagePlaceholder": "e.g. en, es, ja (leave blank to auto-detect)",
-    "languageHint": "BCP-47 short code. Leave blank to let whisper auto-detect the spoken language.",
-    "languageTooltip": "BCP-47 short code (e.g. en, es, ja, de, fr). Leave blank to let whisper auto-detect the spoken language. Providing the correct hint can improve transcript accuracy for short clips.",
-    "transcribing": "Transcribing...",
-    "submit": "Transcribe File",
+    "languageLabel": "تلميح اللغة (اختياري)",
+    "languagePlaceholder": "مثلًا en أو es أو ja (اتركه فارغًا للاكتشاف التلقائي)",
+    "languageHint": "رمز BCP-47 المختصر. اتركه فارغًا ليكتشف whisper اللغة المنطوقة تلقائيًا.",
+    "languageTooltip": "رمز BCP-47 المختصر (مثلًا en أو es أو ja أو de أو fr). اتركه فارغًا ليكتشف whisper اللغة المنطوقة تلقائيًا. يمكن أن يحسّن تقديم التلميح الصحيح دقة التفريغ النصي للمقاطع القصيرة.",
+    "transcribing": "جارٍ التفريغ النصي...",
+    "submit": "تفريغ الملف نصيًا",
     "format": {
       "vtt": {
-        "label": "Captions (VTT)",
-        "description": "Time-coded subtitles for video players and accessibility tools."
+        "label": "ترجمة نصية (VTT)",
+        "description": "ترجمة نصية مؤقتة زمنيًا لمشغّلات الفيديو وأدوات إمكانية الوصول."
       },
       "srt": {
-        "label": "Subtitles (SRT)",
-        "description": "SubRip subtitles compatible with YouTube, Premiere, DaVinci Resolve, and most video editors."
+        "label": "ترجمة نصية (SRT)",
+        "description": "ترجمة بصيغة SubRip متوافقة مع YouTube وPremiere وDaVinci Resolve ومعظم محررات الفيديو."
       },
       "txt": {
-        "label": "Plain Text",
-        "description": "Continuous transcript text suitable for reading or further editing."
+        "label": "نص عادي",
+        "description": "نص مفرّغ متصل مناسب للقراءة أو لمزيد من التحرير."
       },
       "json": {
-        "label": "Structured JSON",
-        "description": "Segmented transcript with timing data for downstream processing."
+        "label": "JSON منظّم",
+        "description": "نص مفرّغ مقسّم إلى مقاطع مع بيانات التوقيت لمعالجته لاحقًا."
       }
     },
     "formatTooltip": {
-      "vtt": "<strong>VTT</strong> — time-coded captions/subtitles for HTML5 video players and accessibility tools.",
-      "txt": "<strong>Plain text</strong> — continuous transcript text for reading or further editing.",
-      "json": "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+      "vtt": "<strong>VTT</strong>: ترجمة نصية مؤقتة زمنيًا لمشغّلات فيديو HTML5 وأدوات إمكانية الوصول.",
+      "txt": "<strong>نص عادي</strong>: نص مفرّغ متصل للقراءة أو لمزيد من التحرير.",
+      "json": "<strong>JSON منظّم</strong>: نص مفرّغ مقسّم إلى مقاطع مع بيانات التوقيت لخطوط المعالجة اللاحقة."
     }
   },
   "audioForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})",
+    "converting": "جارٍ التحويل...",
+    "submit": "تحويل الملف",
+    "trimStatus": "القص: {{start}} - {{end}} ({{duration}})",
     "ai": {
-      "title": "AI Audio Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.",
-      "tooltipCleanVoice": "<strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).",
-      "tooltipRemoveNoise": "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.",
-      "tooltipIsolateVocals": "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).",
-      "tooltipRemoveVocals": "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.",
-      "intro": "AI audio tools run as GPU jobs and may take longer than basic conversion.",
-      "operationLabel": "Operation",
+      "title": "أدوات الصوت بالذكاء الاصطناعي",
+      "tooltipIntro": "تُنفَّذ عملية ذكاء اصطناعي واحدة لكل مهمة على خادم GPU المحلي لدينا. يُتخطى مسار معالجة FFmpeg القياسي لتلك المهمة.",
+      "tooltipCleanVoice": "<strong>تنقية الصوت</strong>: إزالة الضوضاء بواسطة DeepFilterNet مع سلسلة تحسين إذاعية (مرشح تمرير عالٍ/منخفض، وضبط ارتفاع الصوت، ومحدّد).",
+      "tooltipRemoveNoise": "<strong>إزالة ضوضاء الخلفية</strong>: إزالة الضوضاء بواسطة DeepFilterNet من دون سلسلة التحسين.",
+      "tooltipIsolateVocals": "<strong>عزل الغناء</strong>: مسار الغناء من Demucs htdemucs (افتراضيًا بصيغة WAV غير منقوصة).",
+      "tooltipRemoveVocals": "<strong>إزالة الغناء / كاريوكي</strong>: المسار الموسيقي من Demucs.",
+      "intro": "تعمل أدوات الصوت بالذكاء الاصطناعي كمهام GPU وقد تستغرق وقتًا أطول من التحويل الأساسي.",
+      "operationLabel": "العملية",
       "operations": {
-        "none": "None (standard conversion)",
-        "clean_voice": "Clean Voice",
-        "remove_background_noise": "Remove Background Noise",
-        "isolate_vocals": "Isolate Vocals",
-        "remove_vocals": "Remove Vocals / Karaoke"
+        "none": "بلا (تحويل قياسي)",
+        "clean_voice": "تنقية الصوت",
+        "remove_background_noise": "إزالة ضوضاء الخلفية",
+        "isolate_vocals": "عزل الغناء",
+        "remove_vocals": "إزالة الغناء / كاريوكي"
       },
-      "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.",
-      "presetLocked": "Preset for this tool"
+      "aiActiveNote": "يُتخطى معدل البت والمعادل الصوتي وخيارات الصوت القياسية الأخرى عند اختيار عملية ذكاء اصطناعي.",
+      "presetLocked": "إعداد مسبق لهذه الأداة"
     }
   },
   "videoForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})"
+    "converting": "جارٍ التحويل...",
+    "submit": "تحويل الملف",
+    "trimStatus": "القص: {{start}} - {{end}} ({{duration}})"
   },
   "imageForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "cropStatus": "Crop area: {{width}}×{{height}} pixels at ({{x}}, {{y}})",
+    "converting": "جارٍ التحويل...",
+    "submit": "تحويل الملف",
+    "cropStatus": "منطقة القص: {{width}}×{{height}} بكسل عند ({{x}}، {{y}})",
     "vectorize": {
-      "title": "Vectorization (PNG → SVG)",
-      "note": "Vectorization traces your image into real vector paths. It works best for logos, icons, signatures, and black-and-white line art — not photographs.",
-      "thresholdLabel": "Black/white threshold",
-      "thresholdTooltip": "Pixels darker than this cutoff are traced as filled shapes. Raise it to capture more detail, lower it to keep only the boldest shapes."
+      "title": "التحويل إلى رسوم متجهة (PNG → SVG)",
+      "note": "يحوّل هذا الخيار صورتك إلى مسارات متجهة حقيقية. يعمل على أفضل وجه مع الشعارات والأيقونات والتوقيعات والرسوم الخطية بالأبيض والأسود، وليس الصور الفوتوغرافية.",
+      "thresholdLabel": "عتبة الأبيض/الأسود",
+      "thresholdTooltip": "تُرسم البكسلات الأغمق من هذا الحد كأشكال مملوءة. ارفعها لالتقاط مزيد من التفاصيل، وأخفضها للاحتفاظ بالأشكال الأكثر وضوحًا فقط."
     },
     "ico": {
-      "note": "A multi-size .ico is generated containing 16, 32, 48, 64, 128, and 256 px icons — ideal for favicons and Windows app icons."
+      "note": "يُنشأ ملف ‎.ico متعدد الأحجام يحتوي على أيقونات بأحجام 16 و32 و48 و64 و128 و256 بكسل، وهو مثالي لأيقونات المواقع وتطبيقات Windows."
     },
     "ai": {
-      "title": "AI Image Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard ImageMagick pipeline is skipped for that job.",
-      "tooltipFacePrivacy": "<strong>Face Privacy</strong> — detect and obscure faces (blur, pixelate, or black box).",
-      "tooltipRemoveBackground": "<strong>Remove Background</strong> — outputs a transparent PNG via rembg + BiRefNet/ISNet/U2Net.",
-      "tooltipAiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan 2x or 4x.",
-      "tooltipRedactText": "<strong>Redact Text / PII</strong> — OCR-based redaction.",
-      "tooltipRemoveObject": "<strong>Remove Object</strong> — draw rectangles over unwanted objects; LaMa inpainting reconstructs the area behind them.",
-      "intro": "AI tools run one operation per conversion. For best results, preview the output before posting sensitive media.",
-      "operationLabel": "Operation",
+      "title": "أدوات الصور بالذكاء الاصطناعي",
+      "tooltipIntro": "تُنفَّذ عملية ذكاء اصطناعي واحدة لكل مهمة على خادم GPU المحلي لدينا. يُتخطى مسار ImageMagick القياسي لتلك المهمة.",
+      "tooltipFacePrivacy": "<strong>خصوصية الوجوه</strong>: اكتشاف الوجوه وإخفاؤها (تمويه أو تبكسل أو مربع أسود).",
+      "tooltipRemoveBackground": "<strong>إزالة الخلفية</strong>: تُخرج صورة PNG شفافة عبر rembg مع BiRefNet/ISNet/U2Net.",
+      "tooltipAiUpscale": "<strong>رفع الدقة بالذكاء الاصطناعي</strong>: Real-ESRGAN ncnn Vulkan بمعامل 2x أو 4x.",
+      "tooltipRedactText": "<strong>حجب النصوص / المعلومات الشخصية</strong>: حجب قائم على التعرّف الضوئي على الحروف.",
+      "tooltipRemoveObject": "<strong>إزالة عنصر</strong>: ارسم مستطيلات فوق العناصر غير المرغوبة؛ ويعيد ترميم LaMa بناء المنطقة خلفها.",
+      "intro": "تنفّذ أدوات الذكاء الاصطناعي عملية واحدة لكل تحويل. للحصول على أفضل النتائج، عاين الناتج قبل نشر وسائط حساسة.",
+      "operationLabel": "العملية",
       "operations": {
-        "none": "None (standard conversion)",
-        "face_privacy": "Face Blur / Pixelate",
-        "remove_background": "Remove Background",
-        "ai_upscale": "AI Upscale",
-        "redact_text": "Redact Text / PII",
-        "remove_object": "Remove Object (LaMa Inpainting)"
+        "none": "بلا (تحويل قياسي)",
+        "face_privacy": "تمويه / تبكسل الوجوه",
+        "remove_background": "إزالة الخلفية",
+        "ai_upscale": "رفع الدقة بالذكاء الاصطناعي",
+        "redact_text": "حجب النصوص / المعلومات الشخصية",
+        "remove_object": "إزالة عنصر (ترميم LaMa)"
       },
       "faceMode": {
-        "label": "Face Mode",
-        "blur": "Blur",
-        "pixelate": "Pixelate",
-        "blackbox": "Black Box"
+        "label": "وضع الوجوه",
+        "blur": "تمويه",
+        "pixelate": "تبكسل",
+        "blackbox": "مربع أسود"
       },
       "selectiveFaces": {
-        "title": "Selective Faces",
-        "tooltipDefault": "Default applies the chosen effect to every detected face.",
-        "tooltipDetect": "Use <strong>Detect faces</strong> to preview boxes and pick which faces to obscure or skip.",
-        "tooltipExpire": "Face boxes are stored temporarily for selection and expire automatically.",
-        "selectionModeLabel": "Selection mode",
+        "title": "وجوه محددة",
+        "tooltipDefault": "يطبّق الوضع الافتراضي التأثير المختار على كل وجه مكتشف.",
+        "tooltipDetect": "استخدم <strong>اكتشاف الوجوه</strong> لمعاينة المربعات واختيار الوجوه المراد إخفاؤها أو تخطيها.",
+        "tooltipExpire": "تُخزَّن مربعات الوجوه مؤقتًا لأغراض الاختيار وتنتهي صلاحيتها تلقائيًا.",
+        "selectionModeLabel": "وضع الاختيار",
         "selectionMode": {
-          "all": "All detected faces",
-          "only_selected": "Only selected faces",
-          "all_except_selected": "All except selected faces"
+          "all": "كل الوجوه المكتشفة",
+          "only_selected": "الوجوه المحددة فقط",
+          "all_except_selected": "الكل ما عدا الوجوه المحددة"
         },
-        "detecting": "Detecting…",
-        "reDetect": "Re-detect faces",
-        "detect": "Detect faces",
-        "selectAll": "Select all",
-        "clearSelection": "Clear selection",
-        "chooseFile": "Choose an image first to detect faces.",
-        "noFaces": "No faces detected. You can still run default face privacy on conversion, or try another image.",
-        "detected_one": "Detected {{count}} face. Selected: {{selected}}.",
-        "detected_other": "Detected {{count}} faces. Selected: {{selected}}.",
-        "defaultNote": "Default: applies to every detected face. Use Detect faces to choose specific faces."
+        "detecting": "جارٍ الاكتشاف…",
+        "reDetect": "إعادة اكتشاف الوجوه",
+        "detect": "اكتشاف الوجوه",
+        "selectAll": "تحديد الكل",
+        "clearSelection": "مسح التحديد",
+        "chooseFile": "اختر صورة أولًا لاكتشاف الوجوه.",
+        "noFaces": "لم يتم اكتشاف أي وجوه. لا يزال بإمكانك تشغيل خصوصية الوجوه الافتراضية عند التحويل، أو تجربة صورة أخرى.",
+        "detected_zero": "لم يتم اكتشاف أي وجه ({{count}}). المحدد: {{selected}}.",
+        "detected_one": "تم اكتشاف وجه واحد ({{count}}). المحدد: {{selected}}.",
+        "detected_two": "تم اكتشاف وجهين ({{count}}). المحدد: {{selected}}.",
+        "detected_few": "تم اكتشاف {{count}} وجوه. المحدد: {{selected}}.",
+        "detected_many": "تم اكتشاف {{count}} وجهًا. المحدد: {{selected}}.",
+        "detected_other": "تم اكتشاف {{count}} وجه. المحدد: {{selected}}.",
+        "defaultNote": "الافتراضي: يُطبَّق على كل وجه مكتشف. استخدم «اكتشاف الوجوه» لاختيار وجوه معينة."
       },
       "background": {
-        "modelLabel": "Background Model",
+        "modelLabel": "نموذج الخلفية",
         "models": {
-          "birefnet-general": "BiRefNet General (recommended)",
+          "birefnet-general": "BiRefNet General (موصى به)",
           "birefnet-general-lite": "BiRefNet General Lite",
           "birefnet-portrait": "BiRefNet Portrait",
           "isnet-general-use": "ISNet General Use",
@@ -135,329 +139,333 @@
           "u2netp": "U2Net Lite",
           "u2net_human_seg": "U2Net Human Segmentation"
         },
-        "pngNote": "Output is always PNG so transparency is preserved."
+        "pngNote": "الناتج دائمًا بصيغة PNG للحفاظ على الشفافية."
       },
       "upscale": {
-        "scaleLabel": "Scale",
+        "scaleLabel": "المعامل",
         "scale4x": "4x",
-        "scale2x": "2x (experimental on some images)",
-        "modelLabel": "Model",
+        "scale2x": "2x (تجريبي على بعض الصور)",
+        "modelLabel": "النموذج",
         "models": {
-          "realesrgan-x4plus": "realesrgan-x4plus (photos)",
+          "realesrgan-x4plus": "realesrgan-x4plus (صور فوتوغرافية)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI upscale is available, but 4x is the safest/default model path on this server.",
-        "pngNote": "Output is PNG by default."
+        "experimentalNote": "رفع الدقة بمعامل 2x متاح، لكن 4x هو مسار النموذج الأكثر أمانًا والافتراضي على هذا الخادم.",
+        "pngNote": "الناتج بصيغة PNG افتراضيًا."
       },
       "removeObject": {
-        "title": "Mark objects to remove",
-        "tooltipDraw": "Click and drag on the image to add a rectangle over each object you want to erase. Drag the rectangle body to move it, or the handles to resize.",
-        "tooltipResult": "LaMa inpainting reconstructs the area behind each rectangle. For best results, draw the box snugly around the object — large rectangles ask the model to hallucinate more background.",
-        "tooltipTip": "Tip: multiple smaller rectangles often look cleaner than one huge one.",
-        "clearAll": "Clear all",
-        "chooseFile": "Choose an image first to start marking objects.",
-        "atLeastOne": "Add at least one rectangle covering the object you want to remove.",
-        "readyToInpaint_one": "{{count}} rectangle ready to inpaint.",
-        "readyToInpaint_other": "{{count}} rectangles ready to inpaint.",
-        "formatNote": "LaMa output preserves your chosen output format (JPG, PNG, WebP, GIF). Filters, text overlay, and tint are skipped for this op."
+        "title": "حدد العناصر المراد إزالتها",
+        "tooltipDraw": "انقر واسحب على الصورة لإضافة مستطيل فوق كل عنصر تريد محوه. اسحب جسم المستطيل لتحريكه، أو المقابض لتغيير حجمه.",
+        "tooltipResult": "يعيد ترميم LaMa بناء المنطقة خلف كل مستطيل. للحصول على أفضل النتائج، ارسم المربع ملاصقًا للعنصر؛ فالمستطيلات الكبيرة تطلب من النموذج اختلاق مزيد من الخلفية.",
+        "tooltipTip": "نصيحة: غالبًا ما تبدو عدة مستطيلات صغيرة أنظف من مستطيل واحد ضخم.",
+        "clearAll": "مسح الكل",
+        "chooseFile": "اختر صورة أولًا لبدء تحديد العناصر.",
+        "atLeastOne": "أضف مستطيلًا واحدًا على الأقل يغطي العنصر الذي تريد إزالته.",
+        "readyToInpaint_zero": "لا توجد مستطيلات جاهزة للترميم ({{count}}).",
+        "readyToInpaint_one": "مستطيل واحد جاهز للترميم ({{count}}).",
+        "readyToInpaint_two": "مستطيلان جاهزان للترميم ({{count}}).",
+        "readyToInpaint_few": "{{count}} مستطيلات جاهزة للترميم.",
+        "readyToInpaint_many": "{{count}} مستطيلًا جاهزًا للترميم.",
+        "readyToInpaint_other": "{{count}} مستطيل جاهز للترميم.",
+        "formatNote": "يحافظ ناتج LaMa على تنسيق الإخراج الذي اخترته (JPG أو PNG أو WebP أو GIF). تُتخطى المرشحات والنص المركّب والتلوين لهذه العملية."
       },
       "redact": {
-        "detectLabel": "Detect",
+        "detectLabel": "الاكتشاف",
         "detect": {
-          "pii": "PII only",
-          "all-text": "All Text"
+          "pii": "المعلومات الشخصية فقط",
+          "all-text": "كل النصوص"
         },
-        "redactionLabel": "Redaction Style",
+        "redactionLabel": "أسلوب الحجب",
         "redaction": {
-          "blackbox": "Black Box",
-          "blur": "Blur",
-          "pixelate": "Pixelate"
+          "blackbox": "مربع أسود",
+          "blur": "تمويه",
+          "pixelate": "تبكسل"
         },
-        "ocrNote": "OCR redaction is best effort. Please review output before sharing."
+        "ocrNote": "الحجب بالتعرّف الضوئي على الحروف يُبذل فيه أقصى جهد ممكن. يرجى مراجعة الناتج قبل المشاركة."
       },
-      "aiActiveNote": "Format, filters, and other standard image options are skipped when an AI operation is selected.",
-      "operationLocked": "Preset for this tool"
+      "aiActiveNote": "يُتخطى التنسيق والمرشحات وخيارات الصور القياسية الأخرى عند اختيار عملية ذكاء اصطناعي.",
+      "operationLocked": "إعداد مسبق لهذه الأداة"
     },
     "textOverlay": {
-      "title": "Text Overlay",
-      "tooltipAria": "About text overlay",
-      "tooltip": "Burn a watermark or caption onto the output image. Type the text, then pick size (8–512 px), gravity (corner/edge/center anchor), text and stroke colors, stroke width, and pixel offsets from the anchor. Leave the text empty to skip the overlay.",
-      "overlayText": "Overlay Text",
-      "overlayPlaceholder": "Optional text to draw on the image",
-      "size": "Text Size",
-      "position": "Position",
-      "textColor": "Text Color",
-      "strokeColor": "Stroke Color",
-      "strokeWidth": "Stroke Width",
-      "xOffset": "X Offset",
-      "yOffset": "Y Offset",
+      "title": "نص مركّب",
+      "tooltipAria": "حول النص المركّب",
+      "tooltip": "اطبع علامة مائية أو تعليقًا على الصورة الناتجة. اكتب النص، ثم اختر الحجم (8–512 بكسل)، والموضع (زاوية/حافة/مركز)، ولوني النص والحد، وعرض الحد، والإزاحة بالبكسل من نقطة الارتكاز. اترك النص فارغًا لتخطي التركيب.",
+      "overlayText": "نص التركيب",
+      "overlayPlaceholder": "نص اختياري يُرسم على الصورة",
+      "size": "حجم النص",
+      "position": "الموضع",
+      "textColor": "لون النص",
+      "strokeColor": "لون الحد",
+      "strokeWidth": "عرض الحد",
+      "xOffset": "الإزاحة الأفقية",
+      "yOffset": "الإزاحة الرأسية",
       "gravity": {
-        "NorthWest": "Top Left",
-        "North": "Top",
-        "NorthEast": "Top Right",
-        "West": "Left",
-        "Center": "Center",
-        "East": "Right",
-        "SouthWest": "Bottom Left",
-        "South": "Bottom",
-        "SouthEast": "Bottom Right"
+        "NorthWest": "أعلى اليسار",
+        "North": "أعلى",
+        "NorthEast": "أعلى اليمين",
+        "West": "يسار",
+        "Center": "الوسط",
+        "East": "يمين",
+        "SouthWest": "أسفل اليسار",
+        "South": "أسفل",
+        "SouthEast": "أسفل اليمين"
       }
     },
     "metadata": {
-      "title": "Metadata",
-      "intro": "Choose whether to keep, strip, or rewrite image metadata.",
-      "tooltipKeep": "<strong>Keep all metadata</strong> — preserve every EXIF/IPTC/XMP/GPS field from the original.",
-      "tooltipStrip": "<strong>Strip all metadata</strong> — remove camera, GPS, software, and timestamp fields. Recommended before sharing photos online.",
-      "tooltipCustom": "<strong>Custom metadata</strong> — strip first, then rewrite only the fields you supply (title, author, copyright, IPTC keywords, GPS fields, etc.).",
-      "modeLabel": "Metadata mode",
+      "title": "البيانات الوصفية",
+      "intro": "اختر ما إذا كنت تريد الاحتفاظ بالبيانات الوصفية للصورة أو إزالتها أو إعادة كتابتها.",
+      "tooltipKeep": "<strong>الاحتفاظ بكل البيانات الوصفية</strong>: الحفاظ على كل حقول EXIF/IPTC/XMP/GPS من الأصل.",
+      "tooltipStrip": "<strong>إزالة كل البيانات الوصفية</strong>: إزالة حقول الكاميرا وGPS والبرنامج والطوابع الزمنية. موصى به قبل مشاركة الصور عبر الإنترنت.",
+      "tooltipCustom": "<strong>بيانات وصفية مخصصة</strong>: الإزالة أولًا، ثم إعادة كتابة الحقول التي تقدمها فقط (العنوان، والمؤلف، وحقوق النشر، وكلمات IPTC المفتاحية، وحقول GPS، وغيرها).",
+      "modeLabel": "وضع البيانات الوصفية",
       "modes": {
-        "keep": "Keep all metadata",
-        "strip": "Strip all metadata",
-        "custom": "Custom metadata"
+        "keep": "الاحتفاظ بكل البيانات الوصفية",
+        "strip": "إزالة كل البيانات الوصفية",
+        "custom": "بيانات وصفية مخصصة"
       },
       "fields": {
-        "title": "Title",
-        "author": "Artist / Author",
-        "description": "Description",
-        "copyright": "Copyright",
-        "comment": "User Comment",
-        "keywords": "Keywords"
+        "title": "العنوان",
+        "author": "الفنان / المؤلف",
+        "description": "الوصف",
+        "copyright": "حقوق النشر",
+        "comment": "تعليق المستخدم",
+        "keywords": "الكلمات المفتاحية"
       },
-      "exifFields": "EXIF / TIFF Fields",
-      "gpsFields": "GPS / Location Fields",
-      "showAdvanced": "Show Advanced / Device Metadata",
-      "hideAdvanced": "Hide Advanced / Device Metadata",
+      "exifFields": "حقول EXIF / TIFF",
+      "gpsFields": "حقول GPS / الموقع",
+      "showAdvanced": "عرض البيانات الوصفية المتقدمة / الخاصة بالجهاز",
+      "hideAdvanced": "إخفاء البيانات الوصفية المتقدمة / الخاصة بالجهاز",
       "gps": {
-        "title": "GPS / Location Options",
-        "tooltipAria": "About GPS / location options",
-        "tooltip": "Remove or replace GPS metadata stored by your camera or phone. You can also strip just the capture direction, GPS timestamp, altitude, or destination fields. Replace mode lets you pin a different latitude/longitude/altitude and optionally round precision for privacy.",
-        "removeLocationData": "Remove location data",
-        "replaceLocationData": "Replace location data",
-        "roundPrecision": "Round location precision",
-        "removeCaptureDirection": "Remove capture direction / heading",
-        "removeTimestamp": "Remove GPS timestamp",
-        "removeAltitude": "Remove altitude",
-        "removeDestination": "Remove destination fields",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
-        "altitude": "Altitude",
-        "precisionDecimals": "Precision Decimals"
+        "title": "خيارات GPS / الموقع",
+        "tooltipAria": "حول خيارات GPS / الموقع",
+        "tooltip": "أزل أو استبدل بيانات GPS الوصفية التي تخزنها الكاميرا أو الهاتف. يمكنك أيضًا إزالة اتجاه الالتقاط فقط أو الطابع الزمني لـ GPS أو الارتفاع أو حقول الوجهة. يتيح وضع الاستبدال تثبيت خط عرض/خط طول/ارتفاع مختلف، واختياريًا تقريب الدقة لأغراض الخصوصية.",
+        "removeLocationData": "إزالة بيانات الموقع",
+        "replaceLocationData": "استبدال بيانات الموقع",
+        "roundPrecision": "تقريب دقة الموقع",
+        "removeCaptureDirection": "إزالة اتجاه الالتقاط / الوجهة",
+        "removeTimestamp": "إزالة الطابع الزمني لـ GPS",
+        "removeAltitude": "إزالة الارتفاع",
+        "removeDestination": "إزالة حقول الوجهة",
+        "latitude": "خط العرض",
+        "longitude": "خط الطول",
+        "altitude": "الارتفاع",
+        "precisionDecimals": "عدد المنازل العشرية للدقة"
       }
     },
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "Sign up for a Premium account to unlock full transcode access.",
+    "premiumTooltip": "اشترك في حساب Premium لفتح الوصول الكامل إلى تحويل الترميز.",
     "premiumBadge": "Premium",
-    "tooSmallBadge": "Too small",
+    "tooSmallBadge": "صغير جدًا",
     "protocol": {
-      "title": "Protocol",
-      "tooltipAria": "About transcode protocol",
-      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + per-rendition variants + .ts segments. Plays everywhere.",
-      "tooltipDash": "<strong>DASH</strong> — MPEG-DASH adaptive streaming. AV1 (smallest, modern) or VP9 (broader support); manifest.mpd + .m4s segments.",
-      "hlsSub": "H.264 / AAC · .m3u8 · everywhere",
-      "dashSub": "AV1 or VP9 · .mpd · modern web",
-      "av1Sub": "Recommended · smaller files",
-      "vp9Sub": "Wider playback support"
+      "title": "البروتوكول",
+      "tooltipAria": "حول بروتوكول تحويل الترميز",
+      "tooltipHls": "<strong>HLS</strong>: بث HTTP المباشر من Apple. ‏H.264/AAC، وملف master.m3u8 مع متغيرات لكل جودة ومقاطع ‎.ts. يعمل في كل مكان.",
+      "tooltipDash": "<strong>DASH</strong>: بث تكيفي بمعيار MPEG-DASH. ‏AV1 (الأصغر والأحدث) أو VP9 (دعم أوسع)؛ ملف manifest.mpd مع مقاطع ‎.m4s.",
+      "hlsSub": "H.264 / AAC · ‎.m3u8 · في كل مكان",
+      "dashSub": "AV1 أو VP9 · ‎.mpd · الويب الحديث",
+      "av1Sub": "موصى به · ملفات أصغر",
+      "vp9Sub": "دعم تشغيل أوسع"
     },
     "analyze": {
-      "intro": "We'll upload your video and run <code>ffprobe</code> to detect resolution, codec, audio, and the quality rungs your source supports.",
-      "uploadingPercent": "Uploading {{percent}}%",
-      "analyzingSource": "Analyzing source...",
-      "preparingUpload": "Preparing upload...",
-      "analyzeVideo": "Analyze video"
+      "intro": "سنرفع الفيديو ونشغّل <code>ffprobe</code> لاكتشاف الدقة والترميز والصوت ودرجات الجودة التي يدعمها المصدر.",
+      "uploadingPercent": "جارٍ الرفع {{percent}}%",
+      "analyzingSource": "جارٍ تحليل المصدر...",
+      "preparingUpload": "جارٍ تجهيز الرفع...",
+      "analyzeVideo": "تحليل الفيديو"
     },
     "report": {
-      "title": "Source video report",
-      "resolution": "Resolution",
-      "maxQuality": "Max quality",
-      "fps": "FPS",
-      "duration": "Duration",
-      "audio": "Audio",
-      "videoCodec": "Video codec",
-      "audioCodec": "Audio codec",
-      "container": "Container",
-      "fileSize": "File size",
-      "yes": "Yes",
-      "no": "No"
+      "title": "تقرير الفيديو المصدر",
+      "resolution": "الدقة",
+      "maxQuality": "أقصى جودة",
+      "fps": "الإطارات في الثانية",
+      "duration": "المدة",
+      "audio": "الصوت",
+      "videoCodec": "ترميز الفيديو",
+      "audioCodec": "ترميز الصوت",
+      "container": "الحاوية",
+      "fileSize": "حجم الملف",
+      "yes": "نعم",
+      "no": "لا"
     },
     "rungs": {
-      "title": "Quality rungs",
-      "tooltipAria": "About quality rungs",
-      "tooltip": "Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are available with Premium.",
-      "defaultsNote": "Defaults: 360p + 480p + 720p when the source video supports them."
+      "title": "درجات الجودة",
+      "tooltipAria": "حول درجات الجودة",
+      "tooltip": "تصبح كل درجة محددة نسخة واحدة في حزمة HLS/DASH النهائية. درجات Premium ‏(144p/240p/1080p/2160p) متاحة مع باقة Premium.",
+      "defaultsNote": "الافتراضي: 360p + 480p + 720p عندما يدعمها الفيديو المصدر."
     },
     "captions": {
-      "disabledTooltip": "Captions require an audio track. This video does not appear to have audio.",
-      "enabledTooltip": "Generate VTT captions from the audio track using whisper-ctranslate2. Off by default.",
-      "generateCaptions": "Generate captions",
-      "captionsSub": "VTT subtitles auto-generated from the audio track. Off by default.",
-      "generateStoryboards": "Generate storyboards",
-      "storyboardsSub": "Sprite-sheet scrubber thumbnails + WebVTT index. Off by default."
+      "disabledTooltip": "تتطلب الترجمة النصية مسارًا صوتيًا. لا يبدو أن هذا الفيديو يحتوي على صوت.",
+      "enabledTooltip": "إنشاء ترجمة نصية VTT من المسار الصوتي باستخدام whisper-ctranslate2. متوقف افتراضيًا.",
+      "generateCaptions": "إنشاء ترجمة نصية",
+      "captionsSub": "ترجمة VTT تُنشأ تلقائيًا من المسار الصوتي. متوقف افتراضيًا.",
+      "generateStoryboards": "إنشاء لوحات مصغرات",
+      "storyboardsSub": "مصغرات تصفّح على شكل صفيحة صور مع فهرس WebVTT. متوقف افتراضيًا."
     },
     "translations": {
-      "title": "Additional caption translations",
-      "tooltipAria": "About additional caption translations",
-      "tooltip1": "The primary caption track is whisper's transcription in the auto-detected source language. Add up to {{max}} more languages and we'll translate the segments via your Ollama text model.",
-      "tooltip2": "Each translation becomes its own VTT plus an HLS subtitle rendition (EXT-X-MEDIA) and DASH text AdaptationSet, so players show a track selector.",
-      "primaryNote": "Primary track: auto-detected source language. Add up to {{max}} translation tracks.",
-      "backendUnreachable": "Translation backend (Ollama) is not reachable. Picked languages will be skipped at job time.",
-      "removeLanguage": "Remove language",
-      "addLanguage": "+ Add translation language ({{count}}/{{max}})"
+      "title": "ترجمات نصية إضافية",
+      "tooltipAria": "حول الترجمات النصية الإضافية",
+      "tooltip1": "مسار الترجمة النصية الأساسي هو تفريغ whisper باللغة المصدر المكتشفة تلقائيًا. أضف حتى {{max}} لغات إضافية وسنترجم المقاطع عبر نموذج Ollama النصي الخاص بك.",
+      "tooltip2": "تصبح كل ترجمة ملف VTT مستقلًا مع نسخة ترجمة HLS ‏(EXT-X-MEDIA) ومجموعة تكيّف نصية DASH، ليعرض المشغّل قائمة اختيار المسارات.",
+      "primaryNote": "المسار الأساسي: اللغة المصدر المكتشفة تلقائيًا. أضف حتى {{max}} من مسارات الترجمة.",
+      "backendUnreachable": "تعذّر الوصول إلى خدمة الترجمة (Ollama). ستُتخطى اللغات المختارة عند تنفيذ المهمة.",
+      "removeLanguage": "إزالة اللغة",
+      "addLanguage": "+ إضافة لغة ترجمة ({{count}}/{{max}})"
     },
     "bundle": {
-      "title": "Download format",
-      "tooltipAria": "About download format",
-      "tooltipTargz": "<strong>.tar.gz</strong> — smaller for text-heavy playlists, universal on macOS/Linux, and Windows 10+ unpacks it natively via the built-in <code>tar</code> command.",
-      "tooltipZip": "<strong>.zip</strong> — the safe default if you're on older Windows or just want a double-click extract experience without thinking about it. Slightly larger; everything else is identical inside.",
-      "defaultBadge": "Default",
-      "targzSub": "Smaller · macOS/Linux/Win 10+ native",
-      "zipSub": "Friendlier on Windows · double-click extract"
+      "title": "تنسيق التنزيل",
+      "tooltipAria": "حول تنسيق التنزيل",
+      "tooltipTargz": "<strong>‎.tar.gz</strong>: أصغر لقوائم التشغيل الغنية بالنصوص، ومتاح في كل مكان على macOS/Linux، ويفكه Windows 10 والأحدث أصلًا عبر الأمر المدمج <code>tar</code>.",
+      "tooltipZip": "<strong>‎.zip</strong>: الخيار الافتراضي الآمن إذا كنت تستخدم إصدارًا أقدم من Windows أو تريد فك الضغط بنقرة مزدوجة دون تفكير. أكبر قليلًا؛ وكل ما بداخله متطابق.",
+      "defaultBadge": "الافتراضي",
+      "targzSub": "أصغر · مدعوم أصلًا على macOS/Linux/Win 10+",
+      "zipSub": "أسهل على Windows · فك الضغط بنقرة مزدوجة"
     },
     "start": {
-      "starting": "Starting transcode...",
-      "startButton": "Start {{protocol}} transcode (output: {{format}})"
+      "starting": "جارٍ بدء تحويل الترميز...",
+      "startButton": "بدء تحويل الترميز إلى {{protocol}} (الناتج: {{format}})"
     },
-    "tooSmall": "This video is below the free transcode minimum of 360p. Please load a video that is 360p or higher.",
+    "tooSmall": "هذا الفيديو أقل من الحد الأدنى المجاني لتحويل الترميز وهو 360p. يرجى تحميل فيديو بدقة 360p أو أعلى.",
     "progress": {
-      "title": "Pipeline progress",
-      "failed": "Transcode failed."
+      "title": "تقدّم خط المعالجة",
+      "failed": "فشل تحويل الترميز."
     },
-    "downloadPackage": "Download {{filename}}"
+    "downloadPackage": "تنزيل {{filename}}"
   },
   "pdfForm": {
     "outputFormat": {
-      "label": "Output image format",
-      "tooltip": "Choose JPG for small, photo-friendly files or PNG for crisp, lossless pages (best for text and line art).",
-      "locked": "Locked to {{format}} for this tool"
+      "label": "تنسيق الصورة الناتجة",
+      "tooltip": "اختر JPG للحصول على ملفات صغيرة مناسبة للصور الفوتوغرافية، أو PNG لصفحات واضحة غير منقوصة (الأفضل للنصوص والرسوم الخطية).",
+      "locked": "مثبّت على {{format}} لهذه الأداة"
     },
     "dpi": {
-      "label": "Render quality (DPI)",
-      "tooltip": "Higher DPI renders sharper, larger images. 150 DPI is a good default; use 300 for print-quality output."
+      "label": "جودة العرض (DPI)",
+      "tooltip": "تعطي قيمة DPI الأعلى صورًا أوضح وأكبر. 150 DPI قيمة افتراضية جيدة؛ استخدم 300 للحصول على جودة طباعة."
     },
     "pages": {
-      "label": "Pages to convert",
-      "tooltip": "Convert every page (downloaded as a ZIP of images) or just the first page (downloaded as a single image).",
-      "all": "All pages (ZIP)",
-      "allHint": "One image per page, packaged into a single .zip download.",
-      "first": "First page only",
-      "firstHint": "Render just page 1 as a single image."
+      "label": "الصفحات المراد تحويلها",
+      "tooltip": "حوّل كل الصفحات (تُنزَّل كملف ZIP من الصور) أو الصفحة الأولى فقط (تُنزَّل كصورة واحدة).",
+      "all": "كل الصفحات (ZIP)",
+      "allHint": "صورة واحدة لكل صفحة، مجمّعة في ملف ‎.zip واحد للتنزيل.",
+      "first": "الصفحة الأولى فقط",
+      "firstHint": "عرض الصفحة 1 فقط كصورة واحدة."
     },
     "quality": {
-      "label": "JPG quality (%)",
-      "tooltip": "JPEG compression quality from 1–100. 90 is a balanced default; lower values shrink the file at the cost of detail."
+      "label": "جودة JPG ‏(%)",
+      "tooltip": "جودة ضغط JPEG من 1 إلى 100. القيمة 90 افتراضية متوازنة؛ وتقلّص القيم الأقل حجم الملف على حساب التفاصيل."
     },
-    "submit": "Convert PDF",
-    "converting": "Converting…"
+    "submit": "تحويل PDF",
+    "converting": "جارٍ التحويل…"
   },
   "conversionOptions": {
     "image": {
       "cropping": {
-        "title": "Image Cropping",
-        "tooltipAria": "About image cropping",
-        "tooltip": "Open a visual crop selector to keep only part of the image. Cropping runs before resize and filters, so dimensions you set below apply to the cropped region. Skip this if you want the whole image.",
-        "selectPortion": "Select the portion of the image you want to keep",
-        "editCrop": "Edit Crop",
-        "cropImage": "Crop Image"
+        "title": "قص الصورة",
+        "tooltipAria": "حول قص الصورة",
+        "tooltip": "افتح أداة قص مرئية للاحتفاظ بجزء من الصورة فقط. يُنفَّذ القص قبل تغيير الحجم والمرشحات، لذا تنطبق الأبعاد التي تحددها أدناه على المنطقة المقصوصة. تخطَّ هذا إذا كنت تريد الصورة كاملة.",
+        "selectPortion": "حدد الجزء الذي تريد الاحتفاظ به من الصورة",
+        "editCrop": "تعديل القص",
+        "cropImage": "قص الصورة"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About image format",
-        "tooltip": "The output file type. JPG is best for photos, PNG keeps transparency and is great for graphics, WebP is a modern smaller format, and GIF is for legacy or animated use cases.",
-        "locked": "Locked to {{format}} for this tool"
+        "label": "التنسيق",
+        "tooltipAria": "حول تنسيق الصورة",
+        "tooltip": "نوع الملف الناتج. JPG هو الأفضل للصور الفوتوغرافية، وPNG يحافظ على الشفافية ورائع للرسومات، وWebP تنسيق حديث أصغر حجمًا، وGIF للاستخدامات القديمة أو المتحركة.",
+        "locked": "مثبّت على {{format}} لهذه الأداة"
       },
-      "resizeEmphasis": "Set your target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio.",
+      "resizeEmphasis": "حدد العرض و/أو الارتفاع المستهدف أدناه. اترك أحدهما فارغًا للتحجيم تناسبيًا والحفاظ على نسبة الأبعاد الأصلية.",
       "quality": {
-        "label": "Quality (%)",
-        "tooltipAria": "About image quality",
-        "tooltip": "Compression quality for JPG and WebP outputs (1–100). 85 is a balanced default. Lower values shrink file size at the cost of artifacts; values above 95 rarely show a visible difference. Ignored for PNG and GIF."
+        "label": "الجودة (%)",
+        "tooltipAria": "حول جودة الصورة",
+        "tooltip": "جودة الضغط لمخرجات JPG وWebP ‏(1–100). القيمة 85 افتراضية متوازنة. تقلّص القيم الأقل حجم الملف على حساب التشوهات؛ ونادرًا ما تُظهر القيم فوق 95 فرقًا ملحوظًا. يُتجاهل مع PNG وGIF."
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About image width",
-        "tooltip": "Target width in pixels. Leave blank to keep the original width or scale proportionally based on the Height field. The image is auto-oriented from EXIF before resize so the dimensions match what you see in the preview.",
-        "placeholder": "Auto"
+        "label": "العرض (بكسل)",
+        "tooltipAria": "حول عرض الصورة",
+        "tooltip": "العرض المستهدف بالبكسل. اتركه فارغًا للاحتفاظ بالعرض الأصلي أو للتحجيم تناسبيًا بناءً على حقل الارتفاع. تُعدَّل اتجاهية الصورة تلقائيًا من EXIF قبل تغيير الحجم لتتطابق الأبعاد مع ما تراه في المعاينة.",
+        "placeholder": "تلقائي"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About image height",
-        "tooltip": "Target height in pixels. Leave blank to keep the original height or scale proportionally based on the Width field. Setting both Width and Height forces an exact size and may stretch the image.",
-        "placeholder": "Auto"
+        "label": "الارتفاع (بكسل)",
+        "tooltipAria": "حول ارتفاع الصورة",
+        "tooltip": "الارتفاع المستهدف بالبكسل. اتركه فارغًا للاحتفاظ بالارتفاع الأصلي أو للتحجيم تناسبيًا بناءً على حقل العرض. يفرض تحديد العرض والارتفاع معًا حجمًا دقيقًا وقد يمدد الصورة.",
+        "placeholder": "تلقائي"
       },
       "filter": {
-        "label": "Filter",
-        "tooltipAria": "About image filters",
-        "tooltip": "Apply a single ImageMagick effect to the output: grayscale, sepia, blur/sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation. Choose None to skip filters.",
+        "label": "المرشح",
+        "tooltipAria": "حول مرشحات الصور",
+        "tooltip": "طبّق تأثير ImageMagick واحدًا على الناتج: تدرج رمادي، أو بني داكن، أو تمويه/زيادة حدة، أو دوّامة، أو تشويه برميلي، أو رسم زيتي، أو طابع قديم، أو نقش بارز، أو فحم، أو رسم تخطيطي، أو تدوير ثابت. اختر «بلا» لتخطي المرشحات.",
         "options": {
-          "none": "None",
-          "grayscale": "Grayscale",
-          "sepia": "Sepia",
-          "blur": "Blur",
-          "sharpen": "Sharpen",
-          "swirl": "Swirl",
-          "barrel-distortion": "Barrel Distortion",
-          "oil-painting": "Oil Painting",
-          "vintage": "Vintage",
-          "emboss": "Emboss",
-          "charcoal": "Charcoal",
-          "sketch": "Sketch",
-          "rotate-45º": "Rotate 45º",
-          "rotate-90º": "Rotate 90º",
-          "rotate-180º": "Rotate 180º",
-          "rotate-270º": "Rotate 270º"
+          "none": "بلا",
+          "grayscale": "تدرج رمادي",
+          "sepia": "بني داكن",
+          "blur": "تمويه",
+          "sharpen": "زيادة الحدة",
+          "swirl": "دوّامة",
+          "barrel-distortion": "تشويه برميلي",
+          "oil-painting": "رسم زيتي",
+          "vintage": "طابع قديم",
+          "emboss": "نقش بارز",
+          "charcoal": "فحم",
+          "sketch": "رسم تخطيطي",
+          "rotate-45º": "تدوير 45º",
+          "rotate-90º": "تدوير 90º",
+          "rotate-180º": "تدوير 180º",
+          "rotate-270º": "تدوير 270º"
         }
       },
       "tint": {
-        "label": "Tint Color",
-        "tooltipAria": "About tint color",
-        "tooltip": "Lay a 30% colored tint over the image. Useful for branded thumbnails or duotones. Leave the color picker at black (#000000) to skip the tint."
+        "label": "لون التلوين",
+        "tooltipAria": "حول لون التلوين",
+        "tooltip": "ضع طبقة تلوين بنسبة 30% فوق الصورة. مفيد للمصغرات ذات العلامة التجارية أو الصور ثنائية اللون. اترك منتقي الألوان على الأسود (#000000) لتخطي التلوين."
       }
     },
     "audio": {
       "trimming": {
-        "title": "Audio Trimming",
-        "tooltipAria": "About audio trimming",
-        "tooltip": "Open a waveform player to pick a start and end time. Only the selected segment is encoded into the output file.",
-        "selectPortion": "Select the portion of the audio you want to keep",
-        "editTrim": "Edit Trim",
-        "trimAudio": "Trim Audio"
+        "title": "قص الصوت",
+        "tooltipAria": "حول قص الصوت",
+        "tooltip": "افتح مشغّل الشكل الموجي لاختيار وقت البداية والنهاية. يُرمَّز المقطع المحدد فقط في الملف الناتج.",
+        "selectPortion": "حدد الجزء الذي تريد الاحتفاظ به من الصوت",
+        "editTrim": "تعديل القص",
+        "trimAudio": "قص الصوت"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About audio format",
-        "tooltip": "The output codec/container. MP3 has universal support; WAV/FLAC/ALAC are lossless; AAC is efficient for streaming; OGG, Opus, AC3 and DTS target specific workflows."
+        "label": "التنسيق",
+        "tooltipAria": "حول تنسيق الصوت",
+        "tooltip": "ترميز/حاوية الإخراج. MP3 مدعوم في كل مكان؛ وWAV/FLAC/ALAC غير منقوصة؛ وAAC فعّال للبث؛ وOGG وOpus وAC3 وDTS موجهة لسير عمل محدد."
       },
       "bitrate": {
-        "label": "Bitrate (kbps)",
-        "tooltipAria": "About audio bitrate",
-        "tooltip": "Controls compression quality vs. file size for lossy formats. 128 kbps is fine for podcasts, 192–256 kbps is a strong default for music, and 320 kbps is the maximum MP3 quality. Ignored for WAV, FLAC, and ALAC (lossless)."
+        "label": "معدل البت (kbps)",
+        "tooltipAria": "حول معدل بت الصوت",
+        "tooltip": "يتحكم في جودة الضغط مقابل حجم الملف للتنسيقات المنقوصة. 128 kbps كافٍ للبودكاست، و192–256 kbps خيار افتراضي قوي للموسيقى، و320 kbps أقصى جودة لـ MP3. يُتجاهل مع WAV وFLAC وALAC (غير منقوصة)."
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About audio speed multiplier",
-        "tooltip": "Playback tempo from 0.25x (slow) to 4x (fast). Pitch is preserved using FFmpeg's atempo filter, chained automatically for extreme values."
+        "label": "مضاعف السرعة",
+        "tooltipAria": "حول مضاعف سرعة الصوت",
+        "tooltip": "سرعة التشغيل من 0.25x (بطيء) إلى 4x (سريع). يُحافظ على طبقة الصوت باستخدام مرشح atempo في FFmpeg، ويُسلسل تلقائيًا للقيم المتطرفة."
       },
       "volume": {
-        "label": "Volume Multiplier",
-        "tooltipAria": "About volume multiplier",
-        "tooltip": "Linear gain factor from 0.1x to 2x. 1.0 leaves the level unchanged. For finer dB control, use the Amplify slider in Advanced Audio Effects."
+        "label": "مضاعف مستوى الصوت",
+        "tooltipAria": "حول مضاعف مستوى الصوت",
+        "tooltip": "معامل كسب خطي من 0.1x إلى 2x. القيمة 1.0 تترك المستوى دون تغيير. للتحكم الأدق بالديسيبل، استخدم شريط التضخيم في «تأثيرات الصوت المتقدمة»."
       }
     },
     "video": {
       "trimming": {
-        "title": "Video Trimming",
-        "tooltipAria": "About video trimming",
-        "tooltip": "Open a player to scrub through the video and pick a start/end time. Only that segment is encoded into the output. Trimming works regardless of the output codec — including animated GIF.",
-        "selectPortion": "Select the portion of the video you want to keep",
-        "editTrim": "Edit Trim",
-        "trimVideo": "Trim Video"
+        "title": "قص الفيديو",
+        "tooltipAria": "حول قص الفيديو",
+        "tooltip": "افتح مشغّلًا للتنقل في الفيديو واختيار وقت البداية/النهاية. يُرمَّز ذلك المقطع فقط في الناتج. يعمل القص بغض النظر عن ترميز الإخراج، بما في ذلك GIF المتحرك.",
+        "selectPortion": "حدد الجزء الذي تريد الاحتفاظ به من الفيديو",
+        "editTrim": "تعديل القص",
+        "trimVideo": "قص الفيديو"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About video format",
-        "tooltip": "The output container and codec. MP4 (H.264+AAC) is the safest default for the web. WebM uses VP9+Opus and is great for open-web embeds. MOV/MKV/AVI/WMV/FLV target specific workflows; ProRes/DNxHD are high-bitrate editing codecs. GIF (Animated) downscales and palettizes the clip via ffmpeg + gifsicle — perfect for short, silent loops.",
-        "locked": "Locked to {{format}} for this tool",
+        "label": "التنسيق",
+        "tooltipAria": "حول تنسيق الفيديو",
+        "tooltip": "حاوية الإخراج والترميز. MP4 ‏(H.264+AAC) هو الخيار الافتراضي الأكثر أمانًا للويب. يستخدم WebM ترميز VP9+Opus ورائع للتضمين على الويب المفتوح. MOV/MKV/AVI/WMV/FLV موجهة لسير عمل محدد؛ وProRes/DNxHD ترميزات تحرير عالية معدل البت. GIF (متحرك) يصغّر المقطع ويحوّله إلى لوحة ألوان عبر ffmpeg مع gifsicle، وهو مثالي للحلقات القصيرة الصامتة.",
+        "locked": "مثبّت على {{format}} لهذه الأداة",
         "options": {
           "mp4": "MP4",
           "webm": "WebM",
@@ -468,272 +476,272 @@
           "wmv": "WMV",
           "prores": "ProRes (MOV)",
           "dnxhd": "DNxHR (MOV)",
-          "gif": "GIF (Animated)"
+          "gif": "GIF (متحرك)"
         }
       },
       "quality": {
-        "label": "Quality",
-        "tooltipAria": "About video quality",
-        "tooltip": "Picks an x264 CRF preset under the hood. Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced default), High ≈ CRF 18 (visually transparent on most footage). Ignored for GIF output — use the GIF panel below to tune palette size and frame rate instead.",
+        "label": "الجودة",
+        "tooltipAria": "حول جودة الفيديو",
+        "tooltip": "يختار إعداد x264 CRF مسبقًا في الخلفية. منخفضة ≈ CRF 30 (ملف صغير)، متوسطة ≈ CRF 23 (افتراضي متوازن)، عالية ≈ CRF 18 (شفافة بصريًا في معظم اللقطات). يُتجاهل مع ناتج GIF؛ استخدم لوحة GIF أدناه لضبط حجم لوحة الألوان ومعدل الإطارات بدلًا من ذلك.",
         "options": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High"
+          "low": "منخفضة",
+          "medium": "متوسطة",
+          "high": "عالية"
         }
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About video width",
-        "tooltip": "Target output width in pixels. Leave blank to keep the original or scale proportionally from the height. Combine with Preserve aspect ratio to avoid stretching. When the format is GIF, leaving this blank uses the width from the Animated GIF panel below.",
-        "placeholder": "Auto"
+        "label": "العرض (بكسل)",
+        "tooltipAria": "حول عرض الفيديو",
+        "tooltip": "عرض الإخراج المستهدف بالبكسل. اتركه فارغًا للاحتفاظ بالأصل أو للتحجيم تناسبيًا من الارتفاع. استخدمه مع «الحفاظ على نسبة الأبعاد» لتجنب التمدد. عندما يكون التنسيق GIF، يستخدم تركه فارغًا العرض من لوحة GIF المتحرك أدناه.",
+        "placeholder": "تلقائي"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About video height",
-        "tooltip": "Target output height in pixels. Leave blank to keep the original or scale proportionally from the width. Ignored for GIF output — height is computed from width to keep the aspect ratio (and rounded to a multiple of 4).",
-        "placeholder": "Auto",
-        "placeholderGif": "Auto (from width)"
+        "label": "الارتفاع (بكسل)",
+        "tooltipAria": "حول ارتفاع الفيديو",
+        "tooltip": "ارتفاع الإخراج المستهدف بالبكسل. اتركه فارغًا للاحتفاظ بالأصل أو للتحجيم تناسبيًا من العرض. يُتجاهل مع ناتج GIF؛ إذ يُحسب الارتفاع من العرض للحفاظ على نسبة الأبعاد (ويُقرَّب إلى مضاعف للرقم 4).",
+        "placeholder": "تلقائي",
+        "placeholderGif": "تلقائي (من العرض)"
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About speed multiplier",
-        "tooltip": "Playback speed from 0.25x (slow motion) to 4x (fast). Video PTS and audio tempo are adjusted together so the result stays in sync. For GIF output, control playback feel using the Frame rate and Frame delay knobs in the Animated GIF panel."
+        "label": "مضاعف السرعة",
+        "tooltipAria": "حول مضاعف السرعة",
+        "tooltip": "سرعة التشغيل من 0.25x (حركة بطيئة) إلى 4x (سريع). تُعدَّل طوابع الفيديو الزمنية وإيقاع الصوت معًا ليبقى الناتج متزامنًا. مع ناتج GIF، تحكم في إحساس التشغيل عبر مقبضي معدل الإطارات وتأخير الإطار في لوحة GIF المتحرك."
       },
       "preserveAspectRatio": {
-        "label": "Preserve aspect ratio",
-        "tooltipAria": "About preserve aspect ratio",
-        "tooltip": "When both Width and Height are set, this uses an FFmpeg force_original_aspect_ratio=decrease scale so the video fits within the box without stretching. Turn it off to force an exact (potentially stretched) size. GIF output always preserves aspect ratio."
+        "label": "الحفاظ على نسبة الأبعاد",
+        "tooltipAria": "حول الحفاظ على نسبة الأبعاد",
+        "tooltip": "عند تحديد العرض والارتفاع معًا، يستخدم هذا الخيار تحجيم FFmpeg مع force_original_aspect_ratio=decrease ليتسع الفيديو داخل الإطار دون تمدد. أوقفه لفرض حجم دقيق (قد يكون ممددًا). يحافظ ناتج GIF دائمًا على نسبة الأبعاد."
       },
       "gif": {
-        "title": "Animated GIF Settings",
-        "tooltipAria": "About animated GIF settings",
-        "tooltip": "GIF conversion runs in two stages: ffmpeg downscales the video and samples it at the chosen frame rate, then gifsicle quantizes the palette and optimizes the output. The Convert/Transcribe controls above for Quality, Height, and Speed are skipped for GIF since this panel takes over.",
-        "subtitle": "Tune the ffmpeg → gifsicle pipeline. Defaults match a good screencast preset (900px wide, 12 fps, 128 colors).",
+        "title": "إعدادات GIF المتحرك",
+        "tooltipAria": "حول إعدادات GIF المتحرك",
+        "tooltip": "يُنفَّذ التحويل إلى GIF على مرحلتين: يصغّر ffmpeg الفيديو ويأخذ عينات منه بمعدل الإطارات المختار، ثم يكمّم gifsicle لوحة الألوان ويحسّن الناتج. تُتخطى عناصر تحكم الجودة والارتفاع والسرعة أعلاه مع GIF لأن هذه اللوحة تتولى الأمر.",
+        "subtitle": "اضبط خط معالجة ffmpeg → gifsicle. تطابق القيم الافتراضية إعدادًا جيدًا لتسجيلات الشاشة (عرض 900 بكسل، و12 fps، و128 لونًا).",
         "width": {
-          "label": "Width (px)",
-          "tooltipAria": "About GIF width",
-          "tooltip": "Output width in pixels. Height is computed automatically to preserve the aspect ratio (rounded to a multiple of 4 to keep ffmpeg happy). 480–900 is a good range for screencasts; smaller values shrink the file fast."
+          "label": "العرض (بكسل)",
+          "tooltipAria": "حول عرض GIF",
+          "tooltip": "عرض الإخراج بالبكسل. يُحسب الارتفاع تلقائيًا للحفاظ على نسبة الأبعاد (ويُقرَّب إلى مضاعف للرقم 4 ليعمل ffmpeg بسلاسة). النطاق 480–900 جيد لتسجيلات الشاشة؛ وتقلّص القيم الأصغر حجم الملف بسرعة."
         },
         "fps": {
-          "label": "Frame rate (fps)",
-          "tooltipAria": "About GIF frame rate",
-          "tooltip": "How many frames per second ffmpeg samples from the source video before handing it to gifsicle. 12 fps looks smooth for screen recordings; raise to 18–24 for motion-heavy clips, drop to 8–10 to shrink the file."
+          "label": "معدل الإطارات (fps)",
+          "tooltipAria": "حول معدل إطارات GIF",
+          "tooltip": "عدد الإطارات في الثانية التي يأخذها ffmpeg من الفيديو المصدر قبل تمريرها إلى gifsicle. يبدو 12 fps سلسًا لتسجيلات الشاشة؛ ارفعه إلى 18–24 للمقاطع كثيرة الحركة، وأخفضه إلى 8–10 لتقليص حجم الملف."
         },
         "colors": {
-          "label": "Colors",
-          "tooltipAria": "About GIF colors",
-          "tooltip": "Maximum palette size gifsicle quantizes to (2–256). 128 is a strong default; drop to 64 to shrink the file on flat UI footage, raise to 256 for photographic clips with smooth gradients."
+          "label": "الألوان",
+          "tooltipAria": "حول ألوان GIF",
+          "tooltip": "أقصى حجم للوحة الألوان التي يكمّم إليها gifsicle ‏(2–256). القيمة 128 افتراضية قوية؛ أخفضها إلى 64 لتقليص حجم الملف في لقطات الواجهات المسطحة، وارفعها إلى 256 للمقاطع الفوتوغرافية ذات التدرجات الناعمة."
         },
         "delay": {
-          "label": "Frame delay",
-          "tooltipAria": "About GIF frame delay",
-          "tooltip": "gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (= 30ms) is a snappy screencast feel; 6–10 produces a slower, more deliberate loop. Independent of the ffmpeg sampling rate above."
+          "label": "تأخير الإطار",
+          "tooltipAria": "حول تأخير إطار GIF",
+          "tooltip": "تأخير gifsicle بين الإطارات بوحدة 1/100 ثانية. الأقل = تشغيل أسرع. القيمة 3 ‏(= 30 مللي ثانية) تعطي إحساسًا سريعًا لتسجيلات الشاشة؛ وتنتج 6–10 حلقة أبطأ وأكثر تأنيًا. مستقل عن معدل أخذ العينات في ffmpeg أعلاه."
         },
         "optimize": {
-          "label": "Optimize level",
-          "tooltipAria": "About GIF optimize level",
-          "tooltip": "gifsicle --optimize level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft.",
+          "label": "مستوى التحسين",
+          "tooltipAria": "حول مستوى تحسين GIF",
+          "tooltip": "مستوى gifsicle --optimize. المستوى 1 هو الأسرع بأكبر ناتج، والمستوى 3 هو الأبطأ بأصغر ناتج. التزم بالمستوى 3 إلا إذا كنت تجرّب على مقطع طويل وتريد مسودة سريعة.",
           "options": {
-            "1": "1 — fast, larger file",
-            "2": "2 — balanced",
-            "3": "3 — smallest, slower"
+            "1": "1: سريع، ملف أكبر",
+            "2": "2: متوازن",
+            "3": "3: الأصغر، أبطأ"
           }
         }
       }
     }
   },
   "advancedAudioEffects": {
-    "title": "Advanced Audio Effects",
-    "tooltipAria": "About Advanced Audio Effects",
-    "tooltipIntro": "Manual audio processing chains, grouped into four expandable sections:",
-    "tooltipBasic": "<strong>Basic Audio Processing</strong> — normalize, amplify, fade in/out, EQ presets, stereo width/pan/balance.",
-    "tooltipTime": "<strong>Time-Based Effects</strong> — reverb, delay, and modulation (chorus, flanger, tremolo, vibrato).",
-    "tooltipRestoration": "<strong>Restoration & Cleanup</strong> — noise reduction, de-hum, declip, silence removal.",
-    "tooltipAdvanced": "<strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.",
+    "title": "تأثيرات الصوت المتقدمة",
+    "tooltipAria": "حول تأثيرات الصوت المتقدمة",
+    "tooltipIntro": "سلاسل معالجة صوتية يدوية، مجمّعة في أربعة أقسام قابلة للتوسيع:",
+    "tooltipBasic": "<strong>معالجة الصوت الأساسية</strong>: تطبيع، وتضخيم، وتلاشي للداخل/الخارج، وإعدادات معادل مسبقة، واتساع الاستريو/التوزيع/التوازن.",
+    "tooltipTime": "<strong>التأثيرات الزمنية</strong>: صدى الغرفة، والتأخير، والتعديل (كورس، وفلانجر، وتريمولو، وفيبراتو).",
+    "tooltipRestoration": "<strong>الاستعادة والتنظيف</strong>: تقليل الضوضاء، وإزالة الطنين، وإصلاح القطع، وإزالة الصمت.",
+    "tooltipAdvanced": "<strong>الصوت المتقدم</strong>: تغيير طبقة الصوت، وتمديد الزمن، والصوت المكاني.",
     "sections": {
       "basic": {
-        "title": "Basic Audio Processing",
-        "description": "Volume control, EQ, dynamics, and stereo processing"
+        "title": "معالجة الصوت الأساسية",
+        "description": "التحكم في مستوى الصوت، والمعادل، والديناميكيات، ومعالجة الاستريو"
       },
       "time": {
-        "title": "Time-Based Effects",
-        "description": "Reverb, delay, echo, and modulation effects"
+        "title": "التأثيرات الزمنية",
+        "description": "صدى الغرفة، والتأخير، والصدى، وتأثيرات التعديل"
       },
       "restoration": {
-        "title": "Restoration & Cleanup",
-        "description": "Noise reduction, de-hum, declip, and silence detection"
+        "title": "الاستعادة والتنظيف",
+        "description": "تقليل الضوضاء، وإزالة الطنين، وإصلاح القطع، واكتشاف الصمت"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Pitch shifting, time stretching, spatial audio, and spectral processing"
+        "title": "المعالجة المتقدمة",
+        "description": "تغيير طبقة الصوت، وتمديد الزمن، والصوت المكاني، والمعالجة الطيفية"
       }
     },
     "volumeDynamics": {
-      "title": "Volume & Dynamics",
-      "tooltip": "Amplify in decibels (-60 to +60), apply fade-in/out durations, and toggle loudness normalization. Use Amplify for level matching and Normalize when you want a consistent perceived loudness."
+      "title": "مستوى الصوت والديناميكيات",
+      "tooltip": "ضخّم بالديسيبل (من -60 إلى +60)، وطبّق مدد التلاشي للداخل/الخارج، وبدّل تطبيع ارتفاع الصوت. استخدم التضخيم لمطابقة المستويات والتطبيع عندما تريد ارتفاع صوت محسوسًا متسقًا."
     },
     "equalizer": {
-      "title": "Equalizer",
-      "tooltip": "Pick a preset that maps to a multi-band FFmpeg equalizer filter chain: bass-boost, treble-boost, vocal, classical, rock, or jazz. Choose 'none' to leave the EQ untouched.",
-      "enable": "Enable EQ",
-      "presetLabel": "EQ Preset",
+      "title": "المعادل الصوتي",
+      "tooltip": "اختر إعدادًا مسبقًا يقابل سلسلة مرشحات معادل FFmpeg متعددة النطاقات: تعزيز الجهير، أو تعزيز الحاد، أو الغناء، أو الكلاسيكي، أو الروك، أو الجاز. اختر «بلا» لترك المعادل دون تغيير.",
+      "enable": "تفعيل المعادل",
+      "presetLabel": "إعداد المعادل المسبق",
       "presets": {
-        "none": "None",
-        "bass-boost": "Bass Boost",
-        "treble-boost": "Treble Boost",
-        "vocal": "Vocal Enhance",
-        "classical": "Classical",
-        "rock": "Rock",
-        "jazz": "Jazz"
+        "none": "بلا",
+        "bass-boost": "تعزيز الجهير",
+        "treble-boost": "تعزيز الحاد",
+        "vocal": "تحسين الغناء",
+        "classical": "كلاسيكي",
+        "rock": "روك",
+        "jazz": "جاز"
       }
     },
     "stereo": {
-      "title": "Stereo Processing",
-      "tooltip": "Adjust pan (-100 left to +100 right), stereo width (0 = mono, 100 = original, up to 200 = wider), toggle mono conversion, and optionally swap left/right channels.",
-      "pan": "Pan",
-      "leftRight": "Left ← → Right",
-      "stereoWidth": "Stereo Width",
-      "widthRange": "0% to 200%"
+      "title": "معالجة الاستريو",
+      "tooltip": "اضبط التوزيع (من -100 يسارًا إلى +100 يمينًا)، واتساع الاستريو (0 = أحادي، و100 = الأصل، وحتى 200 = أوسع)، وبدّل التحويل إلى أحادي، وبدّل القناتين اليسرى واليمنى اختياريًا.",
+      "pan": "التوزيع",
+      "leftRight": "يسار ← → يمين",
+      "stereoWidth": "اتساع الاستريو",
+      "widthRange": "من 0% إلى 200%"
     },
     "reverb": {
-      "title": "Reverb",
-      "tooltip": "Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect.",
-      "enable": "Enable Reverb",
-      "typeLabel": "Reverb Type",
+      "title": "صدى الغرفة",
+      "tooltip": "أضف إحساسًا بالمكان إلى الصوت. اختر غرفة (صغيرة)، أو قاعة (كبيرة)، أو لوح (استوديو قديم)، أو نابض (على طراز مضخم الغيتار). يضبط حجم الغرفة والتخميد ومستويا المعالَج/الأصلي التأثير بدقة.",
+      "enable": "تفعيل صدى الغرفة",
+      "typeLabel": "نوع صدى الغرفة",
       "types": {
-        "none": "None",
-        "room": "Room",
-        "hall": "Hall",
-        "plate": "Plate",
-        "spring": "Spring"
+        "none": "بلا",
+        "room": "غرفة",
+        "hall": "قاعة",
+        "plate": "لوح",
+        "spring": "نابض"
       },
-      "roomSize": "Room Size",
-      "roomRange": "0% to 100%",
-      "wetDry": "Wet/Dry Mix",
-      "dryWet": "Dry ← → Wet"
+      "roomSize": "حجم الغرفة",
+      "roomRange": "من 0% إلى 100%",
+      "wetDry": "مزيج المعالَج/الأصلي",
+      "dryWet": "أصلي ← → معالَج"
     },
     "delay": {
-      "title": "Delay & Echo",
-      "tooltip": "Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats.",
-      "enable": "Enable Delay",
-      "typeLabel": "Delay Type",
+      "title": "التأخير والصدى",
+      "tooltip": "أضف نسخة مؤخَّرة من الإشارة. الصدى نسخة واحدة؛ ويضيف متعدد النقاط عدة أصداء متباعدة؛ ويتنقل البينغ-بونغ بين اليسار واليمين. يشكّل الزمن (مللي ثانية) ونسبة التغذية الراجعة ومستوى المعالَج التكرارات.",
+      "enable": "تفعيل التأخير",
+      "typeLabel": "نوع التأخير",
       "types": {
-        "none": "None",
-        "echo": "Simple Echo",
-        "multi-tap": "Multi-tap",
-        "ping-pong": "Ping-Pong"
+        "none": "بلا",
+        "echo": "صدى بسيط",
+        "multi-tap": "متعدد النقاط",
+        "ping-pong": "بينغ-بونغ"
       },
-      "delayTime": "Delay Time (ms)",
-      "feedback": "Feedback (%)",
-      "feedbackRange": "0% to 95%"
+      "delayTime": "زمن التأخير (مللي ثانية)",
+      "feedback": "التغذية الراجعة (%)",
+      "feedbackRange": "من 0% إلى 95%"
     },
     "restoration": {
-      "noiseReduction": "Noise Reduction",
-      "deHum": "De-hum (50/60Hz)",
-      "declip": "Declip Audio",
-      "silenceDetection": "Silence Detection"
+      "noiseReduction": "تقليل الضوضاء",
+      "deHum": "إزالة الطنين (50/60 Hz)",
+      "declip": "إصلاح قطع الصوت",
+      "silenceDetection": "اكتشاف الصمت"
     },
     "advanced": {
-      "pitchShift": "Pitch Shift (semitones)",
-      "pitchValue": "{{value}} semitones",
-      "pitchRange": "-24 to +24 semitones",
-      "timeStretch": "Time Stretch Factor",
-      "timeStretchValue": "{{value}}x speed",
-      "timeStretchRange": "0.25x to 4x speed",
-      "spatialAudio": "Spatial Audio",
+      "pitchShift": "تغيير طبقة الصوت (أنصاف نغمات)",
+      "pitchValue": "{{value}} من أنصاف النغمات",
+      "pitchRange": "من -24 إلى +24 نصف نغمة",
+      "timeStretch": "معامل تمديد الزمن",
+      "timeStretchValue": "سرعة {{value}}x",
+      "timeStretchRange": "سرعة من 0.25x إلى 4x",
+      "spatialAudio": "الصوت المكاني",
       "spatial": {
-        "none": "None",
-        "binaural": "Binaural",
-        "surround": "Surround",
-        "3d": "3D Audio"
+        "none": "بلا",
+        "binaural": "ثنائي الأذن",
+        "surround": "محيطي",
+        "3d": "صوت ثلاثي الأبعاد"
       },
-      "spectral": "Spectral Processing",
+      "spectral": "المعالجة الطيفية",
       "spectralOptions": {
-        "none": "None",
-        "vocoder": "Vocoder",
-        "formant": "Formant Filter",
-        "convolution": "Convolution"
+        "none": "بلا",
+        "vocoder": "فوكودر",
+        "formant": "مرشح الفورمانت",
+        "convolution": "التفاف"
       }
     },
     "labels": {
-      "amplify": "Amplify (dB)",
-      "amplifyRange": "-60dB to +60dB",
-      "normalize": "Normalize Audio",
-      "fadeIn": "Fade In (seconds)",
-      "fadeOut": "Fade Out (seconds)"
+      "amplify": "التضخيم (dB)",
+      "amplifyRange": "من -60dB إلى +60dB",
+      "normalize": "تطبيع الصوت",
+      "fadeIn": "تلاشي للداخل (ثوانٍ)",
+      "fadeOut": "تلاشي للخارج (ثوانٍ)"
     }
   },
   "advancedVideoEffects": {
-    "title": "Advanced Video Effects",
-    "tooltipAria": "About Advanced Video Effects",
-    "tooltipIntro": "Manual video filter chains, grouped into four expandable sections:",
-    "tooltipVisual": "<strong>Visual Effects</strong> — color correction, blur/sharpen, noise, and artistic filters.",
-    "tooltipTransform": "<strong>Transform</strong> — rotation, flip, custom crop, padding/letterboxing.",
-    "tooltipTemporal": "<strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.",
-    "tooltipAdvanced": "<strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.",
+    "title": "تأثيرات الفيديو المتقدمة",
+    "tooltipAria": "حول تأثيرات الفيديو المتقدمة",
+    "tooltipIntro": "سلاسل مرشحات فيديو يدوية، مجمّعة في أربعة أقسام قابلة للتوسيع:",
+    "tooltipVisual": "<strong>التأثيرات البصرية</strong>: تصحيح الألوان، والتمويه/زيادة الحدة، والضوضاء، والمرشحات الفنية.",
+    "tooltipTransform": "<strong>التحويل الهندسي</strong>: التدوير، والقلب، والقص المخصص، والحشو/الأشرطة السوداء.",
+    "tooltipTemporal": "<strong>التأثيرات الزمنية</strong>: العكس، والبينغ-بونغ، وتحويل معدل الإطارات، والتثبيت.",
+    "tooltipAdvanced": "<strong>المعالجة المتقدمة</strong>: إزالة التشابك، وتعيين درجات HDR، وتحويل فضاء الألوان.",
     "sections": {
       "visual": {
-        "title": "Visual Effects",
-        "description": "Color correction, blur/sharpen, artistic effects, and noise control"
+        "title": "التأثيرات البصرية",
+        "description": "تصحيح الألوان، والتمويه/زيادة الحدة، والتأثيرات الفنية، والتحكم في الضوضاء"
       },
       "transform": {
-        "title": "Geometric Transform",
-        "description": "Rotation, flipping, cropping, and padding"
+        "title": "التحويل الهندسي",
+        "description": "التدوير، والقلب، والقص، والحشو"
       },
       "temporal": {
-        "title": "Temporal Effects",
-        "description": "Speed control, reverse, frame rate, and stabilization"
+        "title": "التأثيرات الزمنية",
+        "description": "التحكم في السرعة، والعكس، ومعدل الإطارات، والتثبيت"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Deinterlacing, HDR processing, and color space conversion"
+        "title": "المعالجة المتقدمة",
+        "description": "إزالة التشابك، ومعالجة HDR، وتحويل فضاء الألوان"
       }
     },
     "colorExposure": {
-      "title": "Color & Exposure",
-      "tooltip": "Adjust brightness, contrast, saturation, hue, gamma, exposure, and shadow/highlight recovery. These map to FFmpeg's eq and curves filters and stack into a single color-correction pass."
+      "title": "الألوان والتعريض",
+      "tooltip": "اضبط السطوع والتباين والتشبع ودرجة اللون وجاما والتعريض واستعادة الظلال/الإضاءات العالية. تقابل هذه مرشحي eq وcurves في FFmpeg وتُجمع في مرحلة تصحيح ألوان واحدة."
     },
     "blurSharpen": {
-      "title": "Blur & Sharpen",
-      "tooltip": "Add Gaussian blur (0–50 sigma), motion blur with angle and distance, or unsharp-mask sharpening with adjustable radius, amount, and threshold."
+      "title": "التمويه وزيادة الحدة",
+      "tooltip": "أضف تمويهًا غاوسيًا (سيجما من 0 إلى 50)، أو تمويه حركة بزاوية ومسافة، أو زيادة حدة بقناع غير حاد مع نصف قطر ومقدار وعتبة قابلة للضبط."
     },
     "labels": {
-      "brightness": "Brightness",
-      "contrast": "Contrast",
-      "saturation": "Saturation",
-      "hue": "Hue",
-      "gaussianBlur": "Gaussian Blur",
-      "artisticEffect": "Artistic Effect",
-      "rotation": "Rotation (degrees)",
-      "flipHorizontal": "Flip Horizontal",
-      "flipVertical": "Flip Vertical",
-      "reverseVideo": "Reverse Video",
-      "pingPong": "Ping-Pong Loop",
-      "targetFrameRate": "Target Frame Rate",
-      "stabilization": "Video Stabilization",
-      "deinterlace": "Deinterlace Video",
-      "outputColorSpace": "Output Color Space"
+      "brightness": "السطوع",
+      "contrast": "التباين",
+      "saturation": "التشبع",
+      "hue": "درجة اللون",
+      "gaussianBlur": "تمويه غاوسي",
+      "artisticEffect": "تأثير فني",
+      "rotation": "التدوير (درجات)",
+      "flipHorizontal": "قلب أفقي",
+      "flipVertical": "قلب رأسي",
+      "reverseVideo": "عكس الفيديو",
+      "pingPong": "حلقة بينغ-بونغ",
+      "targetFrameRate": "معدل الإطارات المستهدف",
+      "stabilization": "تثبيت الفيديو",
+      "deinterlace": "إزالة تشابك الفيديو",
+      "outputColorSpace": "فضاء ألوان الإخراج"
     },
     "ranges": {
-      "hundred": "-100 to +100",
-      "hue": "-180° to +180°",
-      "blur": "0 to 50px"
+      "hundred": "من -100 إلى +100",
+      "hue": "من -180° إلى +180°",
+      "blur": "من 0 إلى 50 بكسل"
     },
     "artistic": {
-      "none": "None",
-      "oil-painting": "Oil Painting",
-      "watercolor": "Watercolor",
-      "sketch": "Sketch",
-      "emboss": "Emboss",
-      "edge-detection": "Edge Detection",
-      "posterize": "Posterize"
+      "none": "بلا",
+      "oil-painting": "رسم زيتي",
+      "watercolor": "ألوان مائية",
+      "sketch": "رسم تخطيطي",
+      "emboss": "نقش بارز",
+      "edge-detection": "اكتشاف الحواف",
+      "posterize": "تبسيط الألوان"
     },
     "colorSpace": {
-      "rec709": "Rec.709 (Standard)",
+      "rec709": "Rec.709 (قياسي)",
       "rec2020": "Rec.2020 (HDR)",
       "srgb": "sRGB",
       "p3": "Display P3"
     },
-    "autoPlaceholder": "Auto"
+    "autoPlaceholder": "تلقائي"
   }
 }

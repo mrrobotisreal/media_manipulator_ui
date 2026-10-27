@@ -19,12 +19,8 @@ import {
 
 // fr-FR (MM57), ja-JP (MM59) and zh-CN (MM60) were translated; fr-FR is asserted separately below.
 const NEW_LOCALES = [
-  ["zh-TW", "zh-tw"],
-  ["ar-SA", "ar"],
-  ["hi-IN", "hi"],
   ["pt-PT", "pt-pt"],
   ["pt-BR", "pt-br"],
-  ["vi-VN", "vi"],
 ] as const;
 
 describe("locale registry", () => {
@@ -52,8 +48,8 @@ describe("locale registry", () => {
     expect(locales.filter((l) => l.dir === "rtl").map((l) => l.code)).toEqual(["he-IL", "ar-SA"]);
   });
 
-  it("marks the six original locales, French (MM57), Italian (MM58), Japanese (MM59) and Simplified Chinese (MM60) as translated", () => {
-    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "zh-CN", "ko-KR"]);
+  it("marks the six original locales and French (fr-FR), Italian (it-IT), Japanese (ja-JP), Chinese (Simplified) (zh-CN), Chinese (Traditional) (zh-TW), Korean (ko-KR), Arabic (ar-SA), Hindi (hi-IN), Vietnamese (vi-VN) as translated", () => {
+    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "ko-KR", "ar-SA", "hi-IN", "vi-VN"]);
   });
 
   it("fr-FR is registered at /fr and translated (MM57)", () => {

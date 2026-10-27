@@ -1,56 +1,56 @@
 {
   "topNav": {
-    "homeLink": "Media Manipulator home",
-    "openMenu": "Open menu",
-    "github": "View on GitHub",
+    "homeLink": "Trang chủ Media Manipulator",
+    "openMenu": "Mở menu",
+    "github": "Xem trên GitHub",
     "winapps": "WinApps",
     "creatv": "CreaTV",
-    "toggleTheme": "Toggle theme",
-    "languageMenu": "Change language",
-    "navIcon": "Media Manipulator Icon",
-    "winappsLogo": "WinApps Logo",
-    "creatvLogo": "CreaTV Logo",
+    "toggleTheme": "Chuyển giao diện sáng/tối",
+    "languageMenu": "Đổi ngôn ngữ",
+    "navIcon": "Biểu tượng Media Manipulator",
+    "winappsLogo": "Logo WinApps",
+    "creatvLogo": "Logo CreaTV",
     "githubLogo": "GitHub"
   },
   "footer": {
-    "homeLink": "Media Manipulator home",
-    "navIcon": "Media Manipulator Icon"
+    "homeLink": "Trang chủ Media Manipulator",
+    "navIcon": "Biểu tượng Media Manipulator"
   },
   "home": {
-    "popularTools": "Popular tools",
-    "closePreview": "Close preview"
+    "popularTools": "Công cụ phổ biến",
+    "closePreview": "Đóng bản xem trước"
   },
   "notFound": {
-    "recoveryRoutes": "Recovery routes"
+    "recoveryRoutes": "Đường dẫn khôi phục"
   },
   "loading": {
-    "label": "Loading"
+    "label": "Đang tải"
   },
   "languageSelector": {
-    "trigger": "Change language",
-    "icon": "Translate icon"
+    "trigger": "Đổi ngôn ngữ",
+    "icon": "Biểu tượng dịch"
   },
   "common": {
-    "close": "Close",
-    "open": "Open",
-    "loading": "Loading",
-    "moreOptions": "More options"
+    "close": "Đóng",
+    "open": "Mở",
+    "loading": "Đang tải",
+    "moreOptions": "Tùy chọn khác"
   },
   "transcribeForm": {
-    "formatTooltip": "About transcript output format",
-    "languageTooltip": "About language hint"
+    "formatTooltip": "Về định dạng đầu ra của bản chép lời",
+    "languageTooltip": "Về gợi ý ngôn ngữ"
   },
   "audioForm": {
-    "aiTooltip": "About AI Audio Tools"
+    "aiTooltip": "Về Công cụ âm thanh AI"
   },
   "videoForm": {
-    "aiTooltip": "About AI Video Tools"
+    "aiTooltip": "Về Công cụ video AI"
   },
   "imageForm": {
-    "aiTooltip": "About AI Image Tools",
-    "selectiveFacesTooltip": "About selective face privacy",
-    "removeObjectTooltip": "About object removal",
-    "metadataTooltip": "About metadata handling",
-    "vectorizeThresholdTooltip": "About the vectorization threshold"
+    "aiTooltip": "Về Công cụ hình ảnh AI",
+    "selectiveFacesTooltip": "Về bảo vệ riêng tư khuôn mặt có chọn lọc",
+    "removeObjectTooltip": "Về xóa đối tượng",
+    "metadataTooltip": "Về cách xử lý siêu dữ liệu",
+    "vectorizeThresholdTooltip": "Về ngưỡng vector hóa"
   }
 }

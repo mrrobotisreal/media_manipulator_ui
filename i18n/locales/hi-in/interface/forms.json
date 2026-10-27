@@ -1,133 +1,133 @@
 {
   "transcribeForm": {
-    "outputFormatTitle": "Transcript Output Format",
-    "intro": "We transcribe the {{mediaKind}} on our own GPU server using whisper-ctranslate2. A summary and safety review run automatically once the transcript is ready.",
+    "outputFormatTitle": "ट्रांसक्रिप्ट आउटपुट फ़ॉर्मैट",
+    "intro": "हम whisper-ctranslate2 का उपयोग करके {{mediaKind}} को अपने GPU सर्वर पर ट्रांसक्राइब करते हैं। ट्रांसक्रिप्ट तैयार होते ही एक सारांश और सुरक्षा समीक्षा अपने आप चलती है।",
     "mediaKind": {
-      "video": "video",
-      "audio": "audio"
+      "video": "वीडियो",
+      "audio": "ऑडियो"
     },
-    "languageLabel": "Language hint (optional)",
-    "languagePlaceholder": "e.g. en, es, ja (leave blank to auto-detect)",
-    "languageHint": "BCP-47 short code. Leave blank to let whisper auto-detect the spoken language.",
-    "languageTooltip": "BCP-47 short code (e.g. en, es, ja, de, fr). Leave blank to let whisper auto-detect the spoken language. Providing the correct hint can improve transcript accuracy for short clips.",
-    "transcribing": "Transcribing...",
-    "submit": "Transcribe File",
+    "languageLabel": "भाषा संकेत (वैकल्पिक)",
+    "languagePlaceholder": "जैसे en, es, ja (ऑटो-डिटेक्ट के लिए खाली छोड़ें)",
+    "languageHint": "BCP-47 छोटा कोड। whisper को बोली गई भाषा अपने आप पहचानने देने के लिए खाली छोड़ें।",
+    "languageTooltip": "BCP-47 छोटा कोड (जैसे en, es, ja, de, fr)। whisper को बोली गई भाषा अपने आप पहचानने देने के लिए खाली छोड़ें। सही संकेत देने से छोटी क्लिप के ट्रांसक्रिप्ट की सटीकता बेहतर हो सकती है।",
+    "transcribing": "ट्रांसक्राइब हो रहा है...",
+    "submit": "फ़ाइल ट्रांसक्राइब करें",
     "format": {
       "vtt": {
-        "label": "Captions (VTT)",
-        "description": "Time-coded subtitles for video players and accessibility tools."
+        "label": "कैप्शन (VTT)",
+        "description": "वीडियो प्लेयर और एक्सेसिबिलिटी टूल्स के लिए टाइम-कोडेड सबटाइटल।"
       },
       "srt": {
-        "label": "Subtitles (SRT)",
-        "description": "SubRip subtitles compatible with YouTube, Premiere, DaVinci Resolve, and most video editors."
+        "label": "सबटाइटल (SRT)",
+        "description": "YouTube, Premiere, DaVinci Resolve और ज़्यादातर वीडियो एडिटर के साथ संगत SubRip सबटाइटल।"
       },
       "txt": {
-        "label": "Plain Text",
-        "description": "Continuous transcript text suitable for reading or further editing."
+        "label": "सादा टेक्स्ट",
+        "description": "पढ़ने या आगे एडिट करने के लिए उपयुक्त लगातार ट्रांसक्रिप्ट टेक्स्ट।"
       },
       "json": {
-        "label": "Structured JSON",
-        "description": "Segmented transcript with timing data for downstream processing."
+        "label": "स्ट्रक्चर्ड JSON",
+        "description": "आगे की प्रोसेसिंग के लिए टाइमिंग डेटा के साथ खंडित ट्रांसक्रिप्ट।"
       }
     },
     "formatTooltip": {
-      "vtt": "<strong>VTT</strong> — time-coded captions/subtitles for HTML5 video players and accessibility tools.",
-      "txt": "<strong>Plain text</strong> — continuous transcript text for reading or further editing.",
-      "json": "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+      "vtt": "<strong>VTT</strong> — HTML5 वीडियो प्लेयर और एक्सेसिबिलिटी टूल्स के लिए टाइम-कोडेड कैप्शन/सबटाइटल।",
+      "txt": "<strong>सादा टेक्स्ट</strong> — पढ़ने या आगे एडिट करने के लिए लगातार ट्रांसक्रिप्ट टेक्स्ट।",
+      "json": "<strong>स्ट्रक्चर्ड JSON</strong> — आगे की पाइपलाइन के लिए टाइमिंग डेटा के साथ खंडित ट्रांसक्रिप्ट।"
     }
   },
   "audioForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})",
+    "converting": "कन्वर्ट हो रहा है...",
+    "submit": "फ़ाइल कन्वर्ट करें",
+    "trimStatus": "ट्रिम: {{start}} - {{end}} ({{duration}})",
     "ai": {
-      "title": "AI Audio Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.",
-      "tooltipCleanVoice": "<strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).",
-      "tooltipRemoveNoise": "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.",
-      "tooltipIsolateVocals": "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).",
-      "tooltipRemoveVocals": "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.",
-      "intro": "AI audio tools run as GPU jobs and may take longer than basic conversion.",
-      "operationLabel": "Operation",
+      "title": "AI ऑडियो टूल्स",
+      "tooltipIntro": "प्रति जॉब एक AI ऑपरेशन चलता है, हमारे लोकल GPU सर्वर पर। उस जॉब के लिए मानक FFmpeg प्रोसेसिंग चेन छोड़ दी जाती है।",
+      "tooltipCleanVoice": "<strong>वॉइस साफ़ करें</strong> — DeepFilterNet डिनॉइज़ + ब्रॉडकास्ट पॉलिश चेन (हाई/लो पास, लाउडनेस, लिमिटर)।",
+      "tooltipRemoveNoise": "<strong>बैकग्राउंड शोर हटाएँ</strong> — बिना पॉलिश चेन के DeepFilterNet डिनॉइज़।",
+      "tooltipIsolateVocals": "<strong>वोकल अलग करें</strong> — Demucs htdemucs वोकल स्टेम (डिफ़ॉल्ट रूप से लॉसलेस WAV)।",
+      "tooltipRemoveVocals": "<strong>वोकल हटाएँ / कराओके</strong> — Demucs इंस्ट्रुमेंटल स्टेम।",
+      "intro": "AI ऑडियो टूल GPU जॉब के रूप में चलते हैं और बेसिक कन्वर्ज़न से ज़्यादा समय ले सकते हैं।",
+      "operationLabel": "ऑपरेशन",
       "operations": {
-        "none": "None (standard conversion)",
-        "clean_voice": "Clean Voice",
-        "remove_background_noise": "Remove Background Noise",
-        "isolate_vocals": "Isolate Vocals",
-        "remove_vocals": "Remove Vocals / Karaoke"
+        "none": "कोई नहीं (मानक कन्वर्ज़न)",
+        "clean_voice": "वॉइस साफ़ करें",
+        "remove_background_noise": "बैकग्राउंड शोर हटाएँ",
+        "isolate_vocals": "वोकल अलग करें",
+        "remove_vocals": "वोकल हटाएँ / कराओके"
       },
-      "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.",
-      "presetLocked": "Preset for this tool"
+      "aiActiveNote": "AI ऑपरेशन चुनने पर बिटरेट, EQ और अन्य मानक ऑडियो विकल्प छोड़ दिए जाते हैं।",
+      "presetLocked": "इस टूल के लिए प्रीसेट"
     }
   },
   "videoForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "trimStatus": "Trim: {{start}} - {{end}} ({{duration}})"
+    "converting": "कन्वर्ट हो रहा है...",
+    "submit": "फ़ाइल कन्वर्ट करें",
+    "trimStatus": "ट्रिम: {{start}} - {{end}} ({{duration}})"
   },
   "imageForm": {
-    "converting": "Converting...",
-    "submit": "Convert File",
-    "cropStatus": "Crop area: {{width}}×{{height}} pixels at ({{x}}, {{y}})",
+    "converting": "कन्वर्ट हो रहा है...",
+    "submit": "फ़ाइल कन्वर्ट करें",
+    "cropStatus": "क्रॉप क्षेत्र: {{width}}×{{height}} पिक्सेल, ({{x}}, {{y}}) पर",
     "vectorize": {
-      "title": "Vectorization (PNG → SVG)",
-      "note": "Vectorization traces your image into real vector paths. It works best for logos, icons, signatures, and black-and-white line art — not photographs.",
-      "thresholdLabel": "Black/white threshold",
-      "thresholdTooltip": "Pixels darker than this cutoff are traced as filled shapes. Raise it to capture more detail, lower it to keep only the boldest shapes."
+      "title": "वेक्टराइज़ेशन (PNG → SVG)",
+      "note": "वेक्टराइज़ेशन आपकी इमेज को असली वेक्टर पाथ में ट्रेस करता है। यह लोगो, आइकन, हस्ताक्षर और ब्लैक-एंड-व्हाइट लाइन आर्ट के लिए सबसे अच्छा काम करता है — फ़ोटो के लिए नहीं।",
+      "thresholdLabel": "ब्लैक/व्हाइट थ्रेशोल्ड",
+      "thresholdTooltip": "इस सीमा से गहरे पिक्सेल भरे हुए आकार के रूप में ट्रेस होते हैं। ज़्यादा विवरण पकड़ने के लिए इसे बढ़ाएँ, केवल सबसे गाढ़े आकार रखने के लिए घटाएँ।"
     },
     "ico": {
-      "note": "A multi-size .ico is generated containing 16, 32, 48, 64, 128, and 256 px icons — ideal for favicons and Windows app icons."
+      "note": "16, 32, 48, 64, 128 और 256 px आइकन वाली एक मल्टी-साइज़ .ico बनाई जाती है — फ़ेविकॉन और Windows ऐप आइकन के लिए आदर्श।"
     },
     "ai": {
-      "title": "AI Image Tools",
-      "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard ImageMagick pipeline is skipped for that job.",
-      "tooltipFacePrivacy": "<strong>Face Privacy</strong> — detect and obscure faces (blur, pixelate, or black box).",
-      "tooltipRemoveBackground": "<strong>Remove Background</strong> — outputs a transparent PNG via rembg + BiRefNet/ISNet/U2Net.",
-      "tooltipAiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan 2x or 4x.",
-      "tooltipRedactText": "<strong>Redact Text / PII</strong> — OCR-based redaction.",
-      "tooltipRemoveObject": "<strong>Remove Object</strong> — draw rectangles over unwanted objects; LaMa inpainting reconstructs the area behind them.",
-      "intro": "AI tools run one operation per conversion. For best results, preview the output before posting sensitive media.",
-      "operationLabel": "Operation",
+      "title": "AI इमेज टूल्स",
+      "tooltipIntro": "प्रति जॉब एक AI ऑपरेशन चलता है, हमारे लोकल GPU सर्वर पर। उस जॉब के लिए मानक ImageMagick पाइपलाइन छोड़ दी जाती है।",
+      "tooltipFacePrivacy": "<strong>फ़ेस प्राइवेसी</strong> — चेहरों का पता लगाएँ और उन्हें छिपाएँ (ब्लर, पिक्सेलेट या ब्लैक बॉक्स)।",
+      "tooltipRemoveBackground": "<strong>बैकग्राउंड हटाएँ</strong> — rembg + BiRefNet/ISNet/U2Net के ज़रिए पारदर्शी PNG आउटपुट।",
+      "tooltipAiUpscale": "<strong>AI अपस्केल</strong> — Real-ESRGAN ncnn Vulkan 2x या 4x।",
+      "tooltipRedactText": "<strong>टेक्स्ट / PII रिडैक्ट करें</strong> — OCR-आधारित रिडैक्शन।",
+      "tooltipRemoveObject": "<strong>ऑब्जेक्ट हटाएँ</strong> — अनचाहे ऑब्जेक्ट पर आयत बनाएँ; LaMa इनपेंटिंग उनके पीछे का क्षेत्र फिर से बना देती है।",
+      "intro": "AI टूल प्रति कन्वर्ज़न एक ऑपरेशन चलाते हैं। सबसे अच्छे नतीजों के लिए, संवेदनशील मीडिया पोस्ट करने से पहले आउटपुट का प्रीव्यू देखें।",
+      "operationLabel": "ऑपरेशन",
       "operations": {
-        "none": "None (standard conversion)",
-        "face_privacy": "Face Blur / Pixelate",
-        "remove_background": "Remove Background",
-        "ai_upscale": "AI Upscale",
-        "redact_text": "Redact Text / PII",
-        "remove_object": "Remove Object (LaMa Inpainting)"
+        "none": "कोई नहीं (मानक कन्वर्ज़न)",
+        "face_privacy": "फ़ेस ब्लर / पिक्सेलेट",
+        "remove_background": "बैकग्राउंड हटाएँ",
+        "ai_upscale": "AI अपस्केल",
+        "redact_text": "टेक्स्ट / PII रिडैक्ट करें",
+        "remove_object": "ऑब्जेक्ट हटाएँ (LaMa इनपेंटिंग)"
       },
       "faceMode": {
-        "label": "Face Mode",
-        "blur": "Blur",
-        "pixelate": "Pixelate",
-        "blackbox": "Black Box"
+        "label": "फ़ेस मोड",
+        "blur": "ब्लर",
+        "pixelate": "पिक्सेलेट",
+        "blackbox": "ब्लैक बॉक्स"
       },
       "selectiveFaces": {
-        "title": "Selective Faces",
-        "tooltipDefault": "Default applies the chosen effect to every detected face.",
-        "tooltipDetect": "Use <strong>Detect faces</strong> to preview boxes and pick which faces to obscure or skip.",
-        "tooltipExpire": "Face boxes are stored temporarily for selection and expire automatically.",
-        "selectionModeLabel": "Selection mode",
+        "title": "चुनिंदा चेहरे",
+        "tooltipDefault": "डिफ़ॉल्ट रूप से चुना गया इफ़ेक्ट हर पहचाने गए चेहरे पर लागू होता है।",
+        "tooltipDetect": "बॉक्स का प्रीव्यू देखने और यह चुनने के लिए कि कौन से चेहरे छिपाने या छोड़ने हैं, <strong>चेहरे पहचानें</strong> का उपयोग करें।",
+        "tooltipExpire": "चेहरों के बॉक्स चयन के लिए अस्थायी रूप से स्टोर होते हैं और अपने आप एक्सपायर हो जाते हैं।",
+        "selectionModeLabel": "चयन मोड",
         "selectionMode": {
-          "all": "All detected faces",
-          "only_selected": "Only selected faces",
-          "all_except_selected": "All except selected faces"
+          "all": "सभी पहचाने गए चेहरे",
+          "only_selected": "केवल चुने गए चेहरे",
+          "all_except_selected": "चुने गए चेहरों को छोड़कर सभी"
         },
-        "detecting": "Detecting…",
-        "reDetect": "Re-detect faces",
-        "detect": "Detect faces",
-        "selectAll": "Select all",
-        "clearSelection": "Clear selection",
-        "chooseFile": "Choose an image first to detect faces.",
-        "noFaces": "No faces detected. You can still run default face privacy on conversion, or try another image.",
-        "detected_one": "Detected {{count}} face. Selected: {{selected}}.",
-        "detected_other": "Detected {{count}} faces. Selected: {{selected}}.",
-        "defaultNote": "Default: applies to every detected face. Use Detect faces to choose specific faces."
+        "detecting": "पहचान हो रही है…",
+        "reDetect": "चेहरे फिर से पहचानें",
+        "detect": "चेहरे पहचानें",
+        "selectAll": "सभी चुनें",
+        "clearSelection": "चयन साफ़ करें",
+        "chooseFile": "चेहरे पहचानने के लिए पहले कोई इमेज चुनें।",
+        "noFaces": "कोई चेहरा नहीं मिला। आप फिर भी कन्वर्ज़न पर डिफ़ॉल्ट फ़ेस प्राइवेसी चला सकते हैं, या दूसरी इमेज आज़मा सकते हैं।",
+        "detected_one": "{{count}} चेहरा पहचाना गया। चुने गए: {{selected}}।",
+        "detected_other": "{{count}} चेहरे पहचाने गए। चुने गए: {{selected}}।",
+        "defaultNote": "डिफ़ॉल्ट: हर पहचाने गए चेहरे पर लागू होता है। खास चेहरे चुनने के लिए चेहरे पहचानें का उपयोग करें।"
       },
       "background": {
-        "modelLabel": "Background Model",
+        "modelLabel": "बैकग्राउंड मॉडल",
         "models": {
-          "birefnet-general": "BiRefNet General (recommended)",
+          "birefnet-general": "BiRefNet General (अनुशंसित)",
           "birefnet-general-lite": "BiRefNet General Lite",
           "birefnet-portrait": "BiRefNet Portrait",
           "isnet-general-use": "ISNet General Use",
@@ -135,329 +135,329 @@
           "u2netp": "U2Net Lite",
           "u2net_human_seg": "U2Net Human Segmentation"
         },
-        "pngNote": "Output is always PNG so transparency is preserved."
+        "pngNote": "आउटपुट हमेशा PNG होता है ताकि पारदर्शिता बनी रहे।"
       },
       "upscale": {
-        "scaleLabel": "Scale",
+        "scaleLabel": "स्केल",
         "scale4x": "4x",
-        "scale2x": "2x (experimental on some images)",
-        "modelLabel": "Model",
+        "scale2x": "2x (कुछ इमेज पर प्रायोगिक)",
+        "modelLabel": "मॉडल",
         "models": {
-          "realesrgan-x4plus": "realesrgan-x4plus (photos)",
+          "realesrgan-x4plus": "realesrgan-x4plus (फ़ोटो)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI upscale is available, but 4x is the safest/default model path on this server.",
-        "pngNote": "Output is PNG by default."
+        "experimentalNote": "2x AI अपस्केल उपलब्ध है, लेकिन इस सर्वर पर 4x सबसे सुरक्षित/डिफ़ॉल्ट मॉडल पाथ है।",
+        "pngNote": "आउटपुट डिफ़ॉल्ट रूप से PNG है।"
       },
       "removeObject": {
-        "title": "Mark objects to remove",
-        "tooltipDraw": "Click and drag on the image to add a rectangle over each object you want to erase. Drag the rectangle body to move it, or the handles to resize.",
-        "tooltipResult": "LaMa inpainting reconstructs the area behind each rectangle. For best results, draw the box snugly around the object — large rectangles ask the model to hallucinate more background.",
-        "tooltipTip": "Tip: multiple smaller rectangles often look cleaner than one huge one.",
-        "clearAll": "Clear all",
-        "chooseFile": "Choose an image first to start marking objects.",
-        "atLeastOne": "Add at least one rectangle covering the object you want to remove.",
-        "readyToInpaint_one": "{{count}} rectangle ready to inpaint.",
-        "readyToInpaint_other": "{{count}} rectangles ready to inpaint.",
-        "formatNote": "LaMa output preserves your chosen output format (JPG, PNG, WebP, GIF). Filters, text overlay, and tint are skipped for this op."
+        "title": "हटाने वाले ऑब्जेक्ट चिह्नित करें",
+        "tooltipDraw": "जिस ऑब्जेक्ट को मिटाना है उस पर आयत जोड़ने के लिए इमेज पर क्लिक करके ड्रैग करें। आयत को खिसकाने के लिए उसका भीतरी हिस्सा ड्रैग करें, या आकार बदलने के लिए हैंडल।",
+        "tooltipResult": "LaMa इनपेंटिंग हर आयत के पीछे का क्षेत्र फिर से बनाती है। सबसे अच्छे नतीजों के लिए बॉक्स को ऑब्जेक्ट के चारों ओर कसकर बनाएँ — बड़े आयत मॉडल से ज़्यादा बैकग्राउंड की कल्पना करवाते हैं।",
+        "tooltipTip": "सुझाव: कई छोटे आयत अक्सर एक बड़े आयत से ज़्यादा साफ़ दिखते हैं।",
+        "clearAll": "सभी साफ़ करें",
+        "chooseFile": "ऑब्जेक्ट चिह्नित करना शुरू करने के लिए पहले कोई इमेज चुनें।",
+        "atLeastOne": "जिस ऑब्जेक्ट को हटाना है उसे ढकने वाला कम से कम एक आयत जोड़ें।",
+        "readyToInpaint_one": "{{count}} आयत इनपेंट के लिए तैयार।",
+        "readyToInpaint_other": "{{count}} आयत इनपेंट के लिए तैयार।",
+        "formatNote": "LaMa आउटपुट आपका चुना हुआ आउटपुट फ़ॉर्मैट (JPG, PNG, WebP, GIF) बनाए रखता है। इस ऑपरेशन में फ़िल्टर, टेक्स्ट ओवरले और टिंट छोड़ दिए जाते हैं।"
       },
       "redact": {
-        "detectLabel": "Detect",
+        "detectLabel": "पहचानें",
         "detect": {
-          "pii": "PII only",
-          "all-text": "All Text"
+          "pii": "केवल PII",
+          "all-text": "सारा टेक्स्ट"
         },
-        "redactionLabel": "Redaction Style",
+        "redactionLabel": "रिडैक्शन स्टाइल",
         "redaction": {
-          "blackbox": "Black Box",
-          "blur": "Blur",
-          "pixelate": "Pixelate"
+          "blackbox": "ब्लैक बॉक्स",
+          "blur": "ब्लर",
+          "pixelate": "पिक्सेलेट"
         },
-        "ocrNote": "OCR redaction is best effort. Please review output before sharing."
+        "ocrNote": "OCR रिडैक्शन पूरी तरह सटीक नहीं होता। शेयर करने से पहले कृपया आउटपुट की जाँच करें।"
       },
-      "aiActiveNote": "Format, filters, and other standard image options are skipped when an AI operation is selected.",
-      "operationLocked": "Preset for this tool"
+      "aiActiveNote": "AI ऑपरेशन चुनने पर फ़ॉर्मैट, फ़िल्टर और अन्य मानक इमेज विकल्प छोड़ दिए जाते हैं।",
+      "operationLocked": "इस टूल के लिए प्रीसेट"
     },
     "textOverlay": {
-      "title": "Text Overlay",
-      "tooltipAria": "About text overlay",
-      "tooltip": "Burn a watermark or caption onto the output image. Type the text, then pick size (8–512 px), gravity (corner/edge/center anchor), text and stroke colors, stroke width, and pixel offsets from the anchor. Leave the text empty to skip the overlay.",
-      "overlayText": "Overlay Text",
-      "overlayPlaceholder": "Optional text to draw on the image",
-      "size": "Text Size",
-      "position": "Position",
-      "textColor": "Text Color",
-      "strokeColor": "Stroke Color",
-      "strokeWidth": "Stroke Width",
-      "xOffset": "X Offset",
-      "yOffset": "Y Offset",
+      "title": "टेक्स्ट ओवरले",
+      "tooltipAria": "टेक्स्ट ओवरले के बारे में",
+      "tooltip": "आउटपुट इमेज पर वॉटरमार्क या कैप्शन छापें। टेक्स्ट टाइप करें, फिर आकार (8–512 px), ग्रैविटी (कोना/किनारा/केंद्र एंकर), टेक्स्ट और स्ट्रोक के रंग, स्ट्रोक की चौड़ाई और एंकर से पिक्सेल ऑफ़सेट चुनें। ओवरले छोड़ने के लिए टेक्स्ट खाली रखें।",
+      "overlayText": "ओवरले टेक्स्ट",
+      "overlayPlaceholder": "इमेज पर लिखने के लिए वैकल्पिक टेक्स्ट",
+      "size": "टेक्स्ट का आकार",
+      "position": "स्थिति",
+      "textColor": "टेक्स्ट का रंग",
+      "strokeColor": "स्ट्रोक का रंग",
+      "strokeWidth": "स्ट्रोक की चौड़ाई",
+      "xOffset": "X ऑफ़सेट",
+      "yOffset": "Y ऑफ़सेट",
       "gravity": {
-        "NorthWest": "Top Left",
-        "North": "Top",
-        "NorthEast": "Top Right",
-        "West": "Left",
-        "Center": "Center",
-        "East": "Right",
-        "SouthWest": "Bottom Left",
-        "South": "Bottom",
-        "SouthEast": "Bottom Right"
+        "NorthWest": "ऊपर बाएँ",
+        "North": "ऊपर",
+        "NorthEast": "ऊपर दाएँ",
+        "West": "बाएँ",
+        "Center": "केंद्र",
+        "East": "दाएँ",
+        "SouthWest": "नीचे बाएँ",
+        "South": "नीचे",
+        "SouthEast": "नीचे दाएँ"
       }
     },
     "metadata": {
-      "title": "Metadata",
-      "intro": "Choose whether to keep, strip, or rewrite image metadata.",
-      "tooltipKeep": "<strong>Keep all metadata</strong> — preserve every EXIF/IPTC/XMP/GPS field from the original.",
-      "tooltipStrip": "<strong>Strip all metadata</strong> — remove camera, GPS, software, and timestamp fields. Recommended before sharing photos online.",
-      "tooltipCustom": "<strong>Custom metadata</strong> — strip first, then rewrite only the fields you supply (title, author, copyright, IPTC keywords, GPS fields, etc.).",
-      "modeLabel": "Metadata mode",
+      "title": "मेटाडेटा",
+      "intro": "चुनें कि इमेज मेटाडेटा रखना है, हटाना है या फिर से लिखना है।",
+      "tooltipKeep": "<strong>सारा मेटाडेटा रखें</strong> — मूल के हर EXIF/IPTC/XMP/GPS फ़ील्ड को बनाए रखें।",
+      "tooltipStrip": "<strong>सारा मेटाडेटा हटाएँ</strong> — कैमरा, GPS, सॉफ़्टवेयर और टाइमस्टैम्प फ़ील्ड हटाएँ। फ़ोटो ऑनलाइन शेयर करने से पहले अनुशंसित।",
+      "tooltipCustom": "<strong>कस्टम मेटाडेटा</strong> — पहले सब हटाएँ, फिर केवल आपके दिए फ़ील्ड (शीर्षक, लेखक, कॉपीराइट, IPTC कीवर्ड, GPS फ़ील्ड आदि) फिर से लिखें।",
+      "modeLabel": "मेटाडेटा मोड",
       "modes": {
-        "keep": "Keep all metadata",
-        "strip": "Strip all metadata",
-        "custom": "Custom metadata"
+        "keep": "सारा मेटाडेटा रखें",
+        "strip": "सारा मेटाडेटा हटाएँ",
+        "custom": "कस्टम मेटाडेटा"
       },
       "fields": {
-        "title": "Title",
-        "author": "Artist / Author",
-        "description": "Description",
-        "copyright": "Copyright",
-        "comment": "User Comment",
-        "keywords": "Keywords"
+        "title": "शीर्षक",
+        "author": "कलाकार / लेखक",
+        "description": "विवरण",
+        "copyright": "कॉपीराइट",
+        "comment": "यूज़र कमेंट",
+        "keywords": "कीवर्ड"
       },
-      "exifFields": "EXIF / TIFF Fields",
-      "gpsFields": "GPS / Location Fields",
-      "showAdvanced": "Show Advanced / Device Metadata",
-      "hideAdvanced": "Hide Advanced / Device Metadata",
+      "exifFields": "EXIF / TIFF फ़ील्ड",
+      "gpsFields": "GPS / लोकेशन फ़ील्ड",
+      "showAdvanced": "एडवांस्ड / डिवाइस मेटाडेटा दिखाएँ",
+      "hideAdvanced": "एडवांस्ड / डिवाइस मेटाडेटा छिपाएँ",
       "gps": {
-        "title": "GPS / Location Options",
-        "tooltipAria": "About GPS / location options",
-        "tooltip": "Remove or replace GPS metadata stored by your camera or phone. You can also strip just the capture direction, GPS timestamp, altitude, or destination fields. Replace mode lets you pin a different latitude/longitude/altitude and optionally round precision for privacy.",
-        "removeLocationData": "Remove location data",
-        "replaceLocationData": "Replace location data",
-        "roundPrecision": "Round location precision",
-        "removeCaptureDirection": "Remove capture direction / heading",
-        "removeTimestamp": "Remove GPS timestamp",
-        "removeAltitude": "Remove altitude",
-        "removeDestination": "Remove destination fields",
-        "latitude": "Latitude",
-        "longitude": "Longitude",
-        "altitude": "Altitude",
-        "precisionDecimals": "Precision Decimals"
+        "title": "GPS / लोकेशन विकल्प",
+        "tooltipAria": "GPS / लोकेशन विकल्पों के बारे में",
+        "tooltip": "आपके कैमरे या फ़ोन द्वारा स्टोर किया गया GPS मेटाडेटा हटाएँ या बदलें। आप केवल कैप्चर दिशा, GPS टाइमस्टैम्प, ऊँचाई या गंतव्य फ़ील्ड भी हटा सकते हैं। बदलें मोड में आप अलग अक्षांश/देशांतर/ऊँचाई सेट कर सकते हैं और प्राइवेसी के लिए वैकल्पिक रूप से सटीकता घटा सकते हैं।",
+        "removeLocationData": "लोकेशन डेटा हटाएँ",
+        "replaceLocationData": "लोकेशन डेटा बदलें",
+        "roundPrecision": "लोकेशन की सटीकता घटाएँ",
+        "removeCaptureDirection": "कैप्चर दिशा / हेडिंग हटाएँ",
+        "removeTimestamp": "GPS टाइमस्टैम्प हटाएँ",
+        "removeAltitude": "ऊँचाई हटाएँ",
+        "removeDestination": "गंतव्य फ़ील्ड हटाएँ",
+        "latitude": "अक्षांश",
+        "longitude": "देशांतर",
+        "altitude": "ऊँचाई",
+        "precisionDecimals": "सटीकता (दशमलव अंक)"
       }
     },
     "_obsoletePlaceholder": ""
   },
   "videoTranscodeForm": {
-    "premiumTooltip": "Sign up for a Premium account to unlock full transcode access.",
+    "premiumTooltip": "पूरा ट्रांसकोड एक्सेस अनलॉक करने के लिए Premium अकाउंट के लिए साइन अप करें।",
     "premiumBadge": "Premium",
-    "tooSmallBadge": "Too small",
+    "tooSmallBadge": "बहुत छोटा",
     "protocol": {
-      "title": "Protocol",
-      "tooltipAria": "About transcode protocol",
-      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming. H.264/AAC, master.m3u8 + per-rendition variants + .ts segments. Plays everywhere.",
-      "tooltipDash": "<strong>DASH</strong> — MPEG-DASH adaptive streaming. AV1 (smallest, modern) or VP9 (broader support); manifest.mpd + .m4s segments.",
-      "hlsSub": "H.264 / AAC · .m3u8 · everywhere",
-      "dashSub": "AV1 or VP9 · .mpd · modern web",
-      "av1Sub": "Recommended · smaller files",
-      "vp9Sub": "Wider playback support"
+      "title": "प्रोटोकॉल",
+      "tooltipAria": "ट्रांसकोड प्रोटोकॉल के बारे में",
+      "tooltipHls": "<strong>HLS</strong> — Apple HTTP Live Streaming। H.264/AAC, master.m3u8 + प्रति-रेंडिशन वेरिएंट + .ts सेगमेंट। हर जगह चलता है।",
+      "tooltipDash": "<strong>DASH</strong> — MPEG-DASH अडैप्टिव स्ट्रीमिंग। AV1 (सबसे छोटा, आधुनिक) या VP9 (व्यापक समर्थन); manifest.mpd + .m4s सेगमेंट।",
+      "hlsSub": "H.264 / AAC · .m3u8 · हर जगह",
+      "dashSub": "AV1 या VP9 · .mpd · आधुनिक वेब",
+      "av1Sub": "अनुशंसित · छोटी फ़ाइलें",
+      "vp9Sub": "व्यापक प्लेबैक समर्थन"
     },
     "analyze": {
-      "intro": "We'll upload your video and run <code>ffprobe</code> to detect resolution, codec, audio, and the quality rungs your source supports.",
-      "uploadingPercent": "Uploading {{percent}}%",
-      "analyzingSource": "Analyzing source...",
-      "preparingUpload": "Preparing upload...",
-      "analyzeVideo": "Analyze video"
+      "intro": "हम आपका वीडियो अपलोड करेंगे और रिज़ॉल्यूशन, कोडेक, ऑडियो और आपके सोर्स द्वारा समर्थित क्वालिटी स्तर पहचानने के लिए <code>ffprobe</code> चलाएँगे।",
+      "uploadingPercent": "अपलोड हो रहा है {{percent}}%",
+      "analyzingSource": "सोर्स का विश्लेषण हो रहा है...",
+      "preparingUpload": "अपलोड तैयार हो रहा है...",
+      "analyzeVideo": "वीडियो का विश्लेषण करें"
     },
     "report": {
-      "title": "Source video report",
-      "resolution": "Resolution",
-      "maxQuality": "Max quality",
+      "title": "सोर्स वीडियो रिपोर्ट",
+      "resolution": "रिज़ॉल्यूशन",
+      "maxQuality": "अधिकतम क्वालिटी",
       "fps": "FPS",
-      "duration": "Duration",
-      "audio": "Audio",
-      "videoCodec": "Video codec",
-      "audioCodec": "Audio codec",
-      "container": "Container",
-      "fileSize": "File size",
-      "yes": "Yes",
-      "no": "No"
+      "duration": "अवधि",
+      "audio": "ऑडियो",
+      "videoCodec": "वीडियो कोडेक",
+      "audioCodec": "ऑडियो कोडेक",
+      "container": "कंटेनर",
+      "fileSize": "फ़ाइल का आकार",
+      "yes": "हाँ",
+      "no": "नहीं"
     },
     "rungs": {
-      "title": "Quality rungs",
-      "tooltipAria": "About quality rungs",
-      "tooltip": "Each selected rung becomes one rendition in the final HLS/DASH package. Premium rungs (144p/240p/1080p/2160p) are available with Premium.",
-      "defaultsNote": "Defaults: 360p + 480p + 720p when the source video supports them."
+      "title": "क्वालिटी स्तर",
+      "tooltipAria": "क्वालिटी स्तरों के बारे में",
+      "tooltip": "चुना गया हर स्तर अंतिम HLS/DASH पैकेज में एक रेंडिशन बनता है। Premium स्तर (144p/240p/1080p/2160p) Premium के साथ उपलब्ध हैं।",
+      "defaultsNote": "डिफ़ॉल्ट: 360p + 480p + 720p, जब सोर्स वीडियो इनका समर्थन करता है।"
     },
     "captions": {
-      "disabledTooltip": "Captions require an audio track. This video does not appear to have audio.",
-      "enabledTooltip": "Generate VTT captions from the audio track using whisper-ctranslate2. Off by default.",
-      "generateCaptions": "Generate captions",
-      "captionsSub": "VTT subtitles auto-generated from the audio track. Off by default.",
-      "generateStoryboards": "Generate storyboards",
-      "storyboardsSub": "Sprite-sheet scrubber thumbnails + WebVTT index. Off by default."
+      "disabledTooltip": "कैप्शन के लिए ऑडियो ट्रैक चाहिए। इस वीडियो में ऑडियो नहीं लगता।",
+      "enabledTooltip": "whisper-ctranslate2 का उपयोग करके ऑडियो ट्रैक से VTT कैप्शन बनाएँ। डिफ़ॉल्ट रूप से बंद।",
+      "generateCaptions": "कैप्शन बनाएँ",
+      "captionsSub": "ऑडियो ट्रैक से अपने आप बने VTT सबटाइटल। डिफ़ॉल्ट रूप से बंद।",
+      "generateStoryboards": "स्टोरीबोर्ड बनाएँ",
+      "storyboardsSub": "स्प्राइट-शीट स्क्रबर थंबनेल + WebVTT इंडेक्स। डिफ़ॉल्ट रूप से बंद।"
     },
     "translations": {
-      "title": "Additional caption translations",
-      "tooltipAria": "About additional caption translations",
-      "tooltip1": "The primary caption track is whisper's transcription in the auto-detected source language. Add up to {{max}} more languages and we'll translate the segments via your Ollama text model.",
-      "tooltip2": "Each translation becomes its own VTT plus an HLS subtitle rendition (EXT-X-MEDIA) and DASH text AdaptationSet, so players show a track selector.",
-      "primaryNote": "Primary track: auto-detected source language. Add up to {{max}} translation tracks.",
-      "backendUnreachable": "Translation backend (Ollama) is not reachable. Picked languages will be skipped at job time.",
-      "removeLanguage": "Remove language",
-      "addLanguage": "+ Add translation language ({{count}}/{{max}})"
+      "title": "अतिरिक्त कैप्शन अनुवाद",
+      "tooltipAria": "अतिरिक्त कैप्शन अनुवादों के बारे में",
+      "tooltip1": "प्राथमिक कैप्शन ट्रैक अपने आप पहचानी गई सोर्स भाषा में whisper का ट्रांसक्रिप्शन है। {{max}} और भाषाएँ जोड़ें और हम आपके Ollama टेक्स्ट मॉडल के ज़रिए सेगमेंट का अनुवाद करेंगे।",
+      "tooltip2": "हर अनुवाद अपना VTT बनता है, साथ में एक HLS सबटाइटल रेंडिशन (EXT-X-MEDIA) और DASH टेक्स्ट AdaptationSet, ताकि प्लेयर ट्रैक चयनकर्ता दिखाएँ।",
+      "primaryNote": "प्राथमिक ट्रैक: अपने आप पहचानी गई सोर्स भाषा। {{max}} तक अनुवाद ट्रैक जोड़ें।",
+      "backendUnreachable": "अनुवाद बैकएंड (Ollama) तक पहुँच नहीं है। चुनी गई भाषाएँ जॉब के समय छोड़ दी जाएँगी।",
+      "removeLanguage": "भाषा हटाएँ",
+      "addLanguage": "+ अनुवाद भाषा जोड़ें ({{count}}/{{max}})"
     },
     "bundle": {
-      "title": "Download format",
-      "tooltipAria": "About download format",
-      "tooltipTargz": "<strong>.tar.gz</strong> — smaller for text-heavy playlists, universal on macOS/Linux, and Windows 10+ unpacks it natively via the built-in <code>tar</code> command.",
-      "tooltipZip": "<strong>.zip</strong> — the safe default if you're on older Windows or just want a double-click extract experience without thinking about it. Slightly larger; everything else is identical inside.",
-      "defaultBadge": "Default",
-      "targzSub": "Smaller · macOS/Linux/Win 10+ native",
-      "zipSub": "Friendlier on Windows · double-click extract"
+      "title": "डाउनलोड फ़ॉर्मैट",
+      "tooltipAria": "डाउनलोड फ़ॉर्मैट के बारे में",
+      "tooltipTargz": "<strong>.tar.gz</strong> — टेक्स्ट-भारी प्लेलिस्ट के लिए छोटा, macOS/Linux पर सर्वव्यापी, और Windows 10+ इसे बिल्ट-इन <code>tar</code> कमांड से सीधे खोल लेता है।",
+      "tooltipZip": "<strong>.zip</strong> — अगर आप पुराने Windows पर हैं या बिना सोचे डबल-क्लिक से निकालना चाहते हैं तो यह सुरक्षित डिफ़ॉल्ट है। थोड़ा बड़ा; अंदर बाकी सब एक जैसा है।",
+      "defaultBadge": "डिफ़ॉल्ट",
+      "targzSub": "छोटा · macOS/Linux/Win 10+ पर नेटिव",
+      "zipSub": "Windows पर आसान · डबल-क्लिक से निकालें"
     },
     "start": {
-      "starting": "Starting transcode...",
-      "startButton": "Start {{protocol}} transcode (output: {{format}})"
+      "starting": "ट्रांसकोड शुरू हो रहा है...",
+      "startButton": "{{protocol}} ट्रांसकोड शुरू करें (आउटपुट: {{format}})"
     },
-    "tooSmall": "This video is below the free transcode minimum of 360p. Please load a video that is 360p or higher.",
+    "tooSmall": "यह वीडियो 360p की मुफ़्त ट्रांसकोड न्यूनतम सीमा से नीचे है। कृपया 360p या उससे ऊँचा वीडियो लोड करें।",
     "progress": {
-      "title": "Pipeline progress",
-      "failed": "Transcode failed."
+      "title": "पाइपलाइन प्रोग्रेस",
+      "failed": "ट्रांसकोड विफल रहा।"
     },
-    "downloadPackage": "Download {{filename}}"
+    "downloadPackage": "{{filename}} डाउनलोड करें"
   },
   "pdfForm": {
     "outputFormat": {
-      "label": "Output image format",
-      "tooltip": "Choose JPG for small, photo-friendly files or PNG for crisp, lossless pages (best for text and line art).",
-      "locked": "Locked to {{format}} for this tool"
+      "label": "आउटपुट इमेज फ़ॉर्मैट",
+      "tooltip": "छोटी, फ़ोटो-अनुकूल फ़ाइलों के लिए JPG चुनें या साफ़, लॉसलेस पेजों के लिए PNG (टेक्स्ट और लाइन आर्ट के लिए सबसे अच्छा)।",
+      "locked": "इस टूल के लिए {{format}} पर लॉक है"
     },
     "dpi": {
-      "label": "Render quality (DPI)",
-      "tooltip": "Higher DPI renders sharper, larger images. 150 DPI is a good default; use 300 for print-quality output."
+      "label": "रेंडर क्वालिटी (DPI)",
+      "tooltip": "ज़्यादा DPI अधिक शार्प और बड़ी इमेज बनाता है। 150 DPI एक अच्छा डिफ़ॉल्ट है; प्रिंट-क्वालिटी आउटपुट के लिए 300 का उपयोग करें।"
     },
     "pages": {
-      "label": "Pages to convert",
-      "tooltip": "Convert every page (downloaded as a ZIP of images) or just the first page (downloaded as a single image).",
-      "all": "All pages (ZIP)",
-      "allHint": "One image per page, packaged into a single .zip download.",
-      "first": "First page only",
-      "firstHint": "Render just page 1 as a single image."
+      "label": "कन्वर्ट करने वाले पेज",
+      "tooltip": "हर पेज कन्वर्ट करें (इमेज की ZIP के रूप में डाउनलोड) या केवल पहला पेज (एक इमेज के रूप में डाउनलोड)।",
+      "all": "सभी पेज (ZIP)",
+      "allHint": "प्रति पेज एक इमेज, एक ही .zip डाउनलोड में पैक।",
+      "first": "केवल पहला पेज",
+      "firstHint": "केवल पेज 1 को एक इमेज के रूप में रेंडर करें।"
     },
     "quality": {
-      "label": "JPG quality (%)",
-      "tooltip": "JPEG compression quality from 1–100. 90 is a balanced default; lower values shrink the file at the cost of detail."
+      "label": "JPG क्वालिटी (%)",
+      "tooltip": "1–100 के बीच JPEG कंप्रेशन क्वालिटी। 90 एक संतुलित डिफ़ॉल्ट है; कम मान विवरण की कीमत पर फ़ाइल छोटी करते हैं।"
     },
-    "submit": "Convert PDF",
-    "converting": "Converting…"
+    "submit": "PDF कन्वर्ट करें",
+    "converting": "कन्वर्ट हो रहा है…"
   },
   "conversionOptions": {
     "image": {
       "cropping": {
-        "title": "Image Cropping",
-        "tooltipAria": "About image cropping",
-        "tooltip": "Open a visual crop selector to keep only part of the image. Cropping runs before resize and filters, so dimensions you set below apply to the cropped region. Skip this if you want the whole image.",
-        "selectPortion": "Select the portion of the image you want to keep",
-        "editCrop": "Edit Crop",
-        "cropImage": "Crop Image"
+        "title": "इमेज क्रॉपिंग",
+        "tooltipAria": "इमेज क्रॉपिंग के बारे में",
+        "tooltip": "इमेज का केवल एक हिस्सा रखने के लिए विज़ुअल क्रॉप चयनकर्ता खोलें। क्रॉपिंग रीसाइज़ और फ़िल्टर से पहले चलती है, इसलिए नीचे सेट किए गए आयाम क्रॉप किए गए क्षेत्र पर लागू होते हैं। पूरी इमेज चाहिए तो इसे छोड़ दें।",
+        "selectPortion": "इमेज का वह हिस्सा चुनें जो आप रखना चाहते हैं",
+        "editCrop": "क्रॉप एडिट करें",
+        "cropImage": "इमेज क्रॉप करें"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About image format",
-        "tooltip": "The output file type. JPG is best for photos, PNG keeps transparency and is great for graphics, WebP is a modern smaller format, and GIF is for legacy or animated use cases.",
-        "locked": "Locked to {{format}} for this tool"
+        "label": "फ़ॉर्मैट",
+        "tooltipAria": "इमेज फ़ॉर्मैट के बारे में",
+        "tooltip": "आउटपुट फ़ाइल प्रकार। JPG फ़ोटो के लिए सबसे अच्छा है, PNG पारदर्शिता रखता है और ग्राफ़िक्स के लिए बढ़िया है, WebP एक आधुनिक छोटा फ़ॉर्मैट है, और GIF पुराने या एनिमेटेड उपयोग के लिए है।",
+        "locked": "इस टूल के लिए {{format}} पर लॉक है"
       },
-      "resizeEmphasis": "Set your target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio.",
+      "resizeEmphasis": "नीचे अपनी लक्षित चौड़ाई और/या ऊँचाई सेट करें। मूल आस्पेक्ट रेशियो बनाए रखते हुए आनुपातिक रूप से स्केल करने के लिए एक को खाली छोड़ें।",
       "quality": {
-        "label": "Quality (%)",
-        "tooltipAria": "About image quality",
-        "tooltip": "Compression quality for JPG and WebP outputs (1–100). 85 is a balanced default. Lower values shrink file size at the cost of artifacts; values above 95 rarely show a visible difference. Ignored for PNG and GIF."
+        "label": "क्वालिटी (%)",
+        "tooltipAria": "इमेज क्वालिटी के बारे में",
+        "tooltip": "JPG और WebP आउटपुट के लिए कंप्रेशन क्वालिटी (1–100)। 85 एक संतुलित डिफ़ॉल्ट है। कम मान आर्टिफ़ैक्ट की कीमत पर फ़ाइल का आकार घटाते हैं; 95 से ऊपर के मानों में शायद ही कोई दिखने वाला फ़र्क़ आता है। PNG और GIF के लिए अनदेखा।"
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About image width",
-        "tooltip": "Target width in pixels. Leave blank to keep the original width or scale proportionally based on the Height field. The image is auto-oriented from EXIF before resize so the dimensions match what you see in the preview.",
-        "placeholder": "Auto"
+        "label": "चौड़ाई (px)",
+        "tooltipAria": "इमेज की चौड़ाई के बारे में",
+        "tooltip": "पिक्सेल में लक्षित चौड़ाई। मूल चौड़ाई रखने या ऊँचाई फ़ील्ड के आधार पर आनुपातिक रूप से स्केल करने के लिए खाली छोड़ें। रीसाइज़ से पहले इमेज EXIF से अपने आप ओरिएंट होती है, ताकि आयाम प्रीव्यू में दिखने वाले से मेल खाएँ।",
+        "placeholder": "ऑटो"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About image height",
-        "tooltip": "Target height in pixels. Leave blank to keep the original height or scale proportionally based on the Width field. Setting both Width and Height forces an exact size and may stretch the image.",
-        "placeholder": "Auto"
+        "label": "ऊँचाई (px)",
+        "tooltipAria": "इमेज की ऊँचाई के बारे में",
+        "tooltip": "पिक्सेल में लक्षित ऊँचाई। मूल ऊँचाई रखने या चौड़ाई फ़ील्ड के आधार पर आनुपातिक रूप से स्केल करने के लिए खाली छोड़ें। चौड़ाई और ऊँचाई दोनों सेट करने से सटीक आकार थोपा जाता है और इमेज खिंच सकती है।",
+        "placeholder": "ऑटो"
       },
       "filter": {
-        "label": "Filter",
-        "tooltipAria": "About image filters",
-        "tooltip": "Apply a single ImageMagick effect to the output: grayscale, sepia, blur/sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation. Choose None to skip filters.",
+        "label": "फ़िल्टर",
+        "tooltipAria": "इमेज फ़िल्टर के बारे में",
+        "tooltip": "आउटपुट पर एक ImageMagick इफ़ेक्ट लगाएँ: ग्रेस्केल, सेपिया, ब्लर/शार्पन, स्वर्ल, बैरल डिस्टॉर्शन, ऑयल पेंटिंग, विंटेज, एम्बॉस, चारकोल, स्केच, या एक निश्चित रोटेशन। फ़िल्टर छोड़ने के लिए कोई नहीं चुनें।",
         "options": {
-          "none": "None",
-          "grayscale": "Grayscale",
-          "sepia": "Sepia",
-          "blur": "Blur",
-          "sharpen": "Sharpen",
-          "swirl": "Swirl",
-          "barrel-distortion": "Barrel Distortion",
-          "oil-painting": "Oil Painting",
-          "vintage": "Vintage",
-          "emboss": "Emboss",
-          "charcoal": "Charcoal",
-          "sketch": "Sketch",
-          "rotate-45º": "Rotate 45º",
-          "rotate-90º": "Rotate 90º",
-          "rotate-180º": "Rotate 180º",
-          "rotate-270º": "Rotate 270º"
+          "none": "कोई नहीं",
+          "grayscale": "ग्रेस्केल",
+          "sepia": "सेपिया",
+          "blur": "ब्लर",
+          "sharpen": "शार्पन",
+          "swirl": "स्वर्ल",
+          "barrel-distortion": "बैरल डिस्टॉर्शन",
+          "oil-painting": "ऑयल पेंटिंग",
+          "vintage": "विंटेज",
+          "emboss": "एम्बॉस",
+          "charcoal": "चारकोल",
+          "sketch": "स्केच",
+          "rotate-45º": "45º घुमाएँ",
+          "rotate-90º": "90º घुमाएँ",
+          "rotate-180º": "180º घुमाएँ",
+          "rotate-270º": "270º घुमाएँ"
         }
       },
       "tint": {
-        "label": "Tint Color",
-        "tooltipAria": "About tint color",
-        "tooltip": "Lay a 30% colored tint over the image. Useful for branded thumbnails or duotones. Leave the color picker at black (#000000) to skip the tint."
+        "label": "टिंट रंग",
+        "tooltipAria": "टिंट रंग के बारे में",
+        "tooltip": "इमेज पर 30% रंगीन टिंट डालें। ब्रांडेड थंबनेल या ड्यूओटोन के लिए उपयोगी। टिंट छोड़ने के लिए रंग चयनकर्ता को काले (#000000) पर रहने दें।"
       }
     },
     "audio": {
       "trimming": {
-        "title": "Audio Trimming",
-        "tooltipAria": "About audio trimming",
-        "tooltip": "Open a waveform player to pick a start and end time. Only the selected segment is encoded into the output file.",
-        "selectPortion": "Select the portion of the audio you want to keep",
-        "editTrim": "Edit Trim",
-        "trimAudio": "Trim Audio"
+        "title": "ऑडियो ट्रिमिंग",
+        "tooltipAria": "ऑडियो ट्रिमिंग के बारे में",
+        "tooltip": "शुरुआत और अंत का समय चुनने के लिए वेवफ़ॉर्म प्लेयर खोलें। केवल चुना गया हिस्सा आउटपुट फ़ाइल में एनकोड होता है।",
+        "selectPortion": "ऑडियो का वह हिस्सा चुनें जो आप रखना चाहते हैं",
+        "editTrim": "ट्रिम एडिट करें",
+        "trimAudio": "ऑडियो ट्रिम करें"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About audio format",
-        "tooltip": "The output codec/container. MP3 has universal support; WAV/FLAC/ALAC are lossless; AAC is efficient for streaming; OGG, Opus, AC3 and DTS target specific workflows."
+        "label": "फ़ॉर्मैट",
+        "tooltipAria": "ऑडियो फ़ॉर्मैट के बारे में",
+        "tooltip": "आउटपुट कोडेक/कंटेनर। MP3 को सर्वव्यापी समर्थन है; WAV/FLAC/ALAC लॉसलेस हैं; AAC स्ट्रीमिंग के लिए कुशल है; OGG, Opus, AC3 और DTS खास वर्कफ़्लो के लिए हैं।"
       },
       "bitrate": {
-        "label": "Bitrate (kbps)",
-        "tooltipAria": "About audio bitrate",
-        "tooltip": "Controls compression quality vs. file size for lossy formats. 128 kbps is fine for podcasts, 192–256 kbps is a strong default for music, and 320 kbps is the maximum MP3 quality. Ignored for WAV, FLAC, and ALAC (lossless)."
+        "label": "बिटरेट (kbps)",
+        "tooltipAria": "ऑडियो बिटरेट के बारे में",
+        "tooltip": "लॉसी फ़ॉर्मैट के लिए कंप्रेशन क्वालिटी बनाम फ़ाइल आकार नियंत्रित करता है। पॉडकास्ट के लिए 128 kbps ठीक है, संगीत के लिए 192–256 kbps एक मज़बूत डिफ़ॉल्ट है, और 320 kbps अधिकतम MP3 क्वालिटी है। WAV, FLAC और ALAC (लॉसलेस) के लिए अनदेखा।"
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About audio speed multiplier",
-        "tooltip": "Playback tempo from 0.25x (slow) to 4x (fast). Pitch is preserved using FFmpeg's atempo filter, chained automatically for extreme values."
+        "label": "स्पीड मल्टीप्लायर",
+        "tooltipAria": "ऑडियो स्पीड मल्टीप्लायर के बारे में",
+        "tooltip": "0.25x (धीमा) से 4x (तेज़) तक प्लेबैक टेम्पो। FFmpeg के atempo फ़िल्टर से पिच बनी रहती है, जो चरम मानों के लिए अपने आप चेन होता है।"
       },
       "volume": {
-        "label": "Volume Multiplier",
-        "tooltipAria": "About volume multiplier",
-        "tooltip": "Linear gain factor from 0.1x to 2x. 1.0 leaves the level unchanged. For finer dB control, use the Amplify slider in Advanced Audio Effects."
+        "label": "वॉल्यूम मल्टीप्लायर",
+        "tooltipAria": "वॉल्यूम मल्टीप्लायर के बारे में",
+        "tooltip": "0.1x से 2x तक रैखिक गेन फ़ैक्टर। 1.0 स्तर को अपरिवर्तित रखता है। बारीक dB नियंत्रण के लिए एडवांस्ड ऑडियो इफ़ेक्ट्स में एम्प्लिफ़ाई स्लाइडर का उपयोग करें।"
       }
     },
     "video": {
       "trimming": {
-        "title": "Video Trimming",
-        "tooltipAria": "About video trimming",
-        "tooltip": "Open a player to scrub through the video and pick a start/end time. Only that segment is encoded into the output. Trimming works regardless of the output codec — including animated GIF.",
-        "selectPortion": "Select the portion of the video you want to keep",
-        "editTrim": "Edit Trim",
-        "trimVideo": "Trim Video"
+        "title": "वीडियो ट्रिमिंग",
+        "tooltipAria": "वीडियो ट्रिमिंग के बारे में",
+        "tooltip": "वीडियो में स्क्रब करने और शुरुआत/अंत का समय चुनने के लिए प्लेयर खोलें। केवल वही हिस्सा आउटपुट में एनकोड होता है। ट्रिमिंग आउटपुट कोडेक की परवाह किए बिना काम करती है — एनिमेटेड GIF सहित।",
+        "selectPortion": "वीडियो का वह हिस्सा चुनें जो आप रखना चाहते हैं",
+        "editTrim": "ट्रिम एडिट करें",
+        "trimVideo": "वीडियो ट्रिम करें"
       },
       "format": {
-        "label": "Format",
-        "tooltipAria": "About video format",
-        "tooltip": "The output container and codec. MP4 (H.264+AAC) is the safest default for the web. WebM uses VP9+Opus and is great for open-web embeds. MOV/MKV/AVI/WMV/FLV target specific workflows; ProRes/DNxHD are high-bitrate editing codecs. GIF (Animated) downscales and palettizes the clip via ffmpeg + gifsicle — perfect for short, silent loops.",
-        "locked": "Locked to {{format}} for this tool",
+        "label": "फ़ॉर्मैट",
+        "tooltipAria": "वीडियो फ़ॉर्मैट के बारे में",
+        "tooltip": "आउटपुट कंटेनर और कोडेक। MP4 (H.264+AAC) वेब के लिए सबसे सुरक्षित डिफ़ॉल्ट है। WebM VP9+Opus का उपयोग करता है और ओपन-वेब एम्बेड के लिए बढ़िया है। MOV/MKV/AVI/WMV/FLV खास वर्कफ़्लो के लिए हैं; ProRes/DNxHD हाई-बिटरेट एडिटिंग कोडेक हैं। GIF (एनिमेटेड) ffmpeg + gifsicle के ज़रिए क्लिप को छोटा और पैलेटाइज़ करता है — छोटे, मौन लूप के लिए एकदम सही।",
+        "locked": "इस टूल के लिए {{format}} पर लॉक है",
         "options": {
           "mp4": "MP4",
           "webm": "WebM",
@@ -468,272 +468,272 @@
           "wmv": "WMV",
           "prores": "ProRes (MOV)",
           "dnxhd": "DNxHR (MOV)",
-          "gif": "GIF (Animated)"
+          "gif": "GIF (एनिमेटेड)"
         }
       },
       "quality": {
-        "label": "Quality",
-        "tooltipAria": "About video quality",
-        "tooltip": "Picks an x264 CRF preset under the hood. Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced default), High ≈ CRF 18 (visually transparent on most footage). Ignored for GIF output — use the GIF panel below to tune palette size and frame rate instead.",
+        "label": "क्वालिटी",
+        "tooltipAria": "वीडियो क्वालिटी के बारे में",
+        "tooltip": "अंदर से एक x264 CRF प्रीसेट चुनता है। कम ≈ CRF 30 (छोटी फ़ाइल), मध्यम ≈ CRF 23 (संतुलित डिफ़ॉल्ट), उच्च ≈ CRF 18 (ज़्यादातर फ़ुटेज पर दृश्य रूप से पारदर्शी)। GIF आउटपुट के लिए अनदेखा — पैलेट आकार और फ़्रेम रेट के लिए नीचे GIF पैनल का उपयोग करें।",
         "options": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High"
+          "low": "कम",
+          "medium": "मध्यम",
+          "high": "उच्च"
         }
       },
       "width": {
-        "label": "Width (px)",
-        "tooltipAria": "About video width",
-        "tooltip": "Target output width in pixels. Leave blank to keep the original or scale proportionally from the height. Combine with Preserve aspect ratio to avoid stretching. When the format is GIF, leaving this blank uses the width from the Animated GIF panel below.",
-        "placeholder": "Auto"
+        "label": "चौड़ाई (px)",
+        "tooltipAria": "वीडियो की चौड़ाई के बारे में",
+        "tooltip": "पिक्सेल में लक्षित आउटपुट चौड़ाई। मूल रखने या ऊँचाई से आनुपातिक रूप से स्केल करने के लिए खाली छोड़ें। खिंचाव से बचने के लिए आस्पेक्ट रेशियो बनाए रखें के साथ जोड़ें। फ़ॉर्मैट GIF होने पर, इसे खाली छोड़ने से नीचे एनिमेटेड GIF पैनल की चौड़ाई इस्तेमाल होती है।",
+        "placeholder": "ऑटो"
       },
       "height": {
-        "label": "Height (px)",
-        "tooltipAria": "About video height",
-        "tooltip": "Target output height in pixels. Leave blank to keep the original or scale proportionally from the width. Ignored for GIF output — height is computed from width to keep the aspect ratio (and rounded to a multiple of 4).",
-        "placeholder": "Auto",
-        "placeholderGif": "Auto (from width)"
+        "label": "ऊँचाई (px)",
+        "tooltipAria": "वीडियो की ऊँचाई के बारे में",
+        "tooltip": "पिक्सेल में लक्षित आउटपुट ऊँचाई। मूल रखने या चौड़ाई से आनुपातिक रूप से स्केल करने के लिए खाली छोड़ें। GIF आउटपुट के लिए अनदेखा — आस्पेक्ट रेशियो बनाए रखने के लिए ऊँचाई चौड़ाई से निकाली जाती है (और 4 के गुणक में राउंड की जाती है)।",
+        "placeholder": "ऑटो",
+        "placeholderGif": "ऑटो (चौड़ाई से)"
       },
       "speed": {
-        "label": "Speed Multiplier",
-        "tooltipAria": "About speed multiplier",
-        "tooltip": "Playback speed from 0.25x (slow motion) to 4x (fast). Video PTS and audio tempo are adjusted together so the result stays in sync. For GIF output, control playback feel using the Frame rate and Frame delay knobs in the Animated GIF panel."
+        "label": "स्पीड मल्टीप्लायर",
+        "tooltipAria": "स्पीड मल्टीप्लायर के बारे में",
+        "tooltip": "0.25x (स्लो मोशन) से 4x (तेज़) तक प्लेबैक स्पीड। वीडियो PTS और ऑडियो टेम्पो साथ में एडजस्ट होते हैं ताकि नतीजा सिंक में रहे। GIF आउटपुट के लिए, एनिमेटेड GIF पैनल में फ़्रेम रेट और फ़्रेम डिले से प्लेबैक का अहसास नियंत्रित करें।"
       },
       "preserveAspectRatio": {
-        "label": "Preserve aspect ratio",
-        "tooltipAria": "About preserve aspect ratio",
-        "tooltip": "When both Width and Height are set, this uses an FFmpeg force_original_aspect_ratio=decrease scale so the video fits within the box without stretching. Turn it off to force an exact (potentially stretched) size. GIF output always preserves aspect ratio."
+        "label": "आस्पेक्ट रेशियो बनाए रखें",
+        "tooltipAria": "आस्पेक्ट रेशियो बनाए रखने के बारे में",
+        "tooltip": "जब चौड़ाई और ऊँचाई दोनों सेट हों, तो यह FFmpeg के force_original_aspect_ratio=decrease स्केल का उपयोग करता है ताकि वीडियो बिना खिंचे बॉक्स में फ़िट हो। सटीक (संभवतः खिंचा हुआ) आकार थोपने के लिए इसे बंद करें। GIF आउटपुट हमेशा आस्पेक्ट रेशियो बनाए रखता है।"
       },
       "gif": {
-        "title": "Animated GIF Settings",
-        "tooltipAria": "About animated GIF settings",
-        "tooltip": "GIF conversion runs in two stages: ffmpeg downscales the video and samples it at the chosen frame rate, then gifsicle quantizes the palette and optimizes the output. The Convert/Transcribe controls above for Quality, Height, and Speed are skipped for GIF since this panel takes over.",
-        "subtitle": "Tune the ffmpeg → gifsicle pipeline. Defaults match a good screencast preset (900px wide, 12 fps, 128 colors).",
+        "title": "एनिमेटेड GIF सेटिंग्स",
+        "tooltipAria": "एनिमेटेड GIF सेटिंग्स के बारे में",
+        "tooltip": "GIF कन्वर्ज़न दो चरणों में चलता है: ffmpeg वीडियो को छोटा करता है और चुने गए फ़्रेम रेट पर सैंपल करता है, फिर gifsicle पैलेट को क्वांटाइज़ करता है और आउटपुट को ऑप्टिमाइज़ करता है। GIF के लिए ऊपर के क्वालिटी, ऊँचाई और स्पीड नियंत्रण छोड़ दिए जाते हैं क्योंकि यह पैनल उनकी जगह लेता है।",
+        "subtitle": "ffmpeg → gifsicle पाइपलाइन को ट्यून करें। डिफ़ॉल्ट एक अच्छे स्क्रीनकास्ट प्रीसेट से मेल खाते हैं (900px चौड़ा, 12 fps, 128 रंग)।",
         "width": {
-          "label": "Width (px)",
-          "tooltipAria": "About GIF width",
-          "tooltip": "Output width in pixels. Height is computed automatically to preserve the aspect ratio (rounded to a multiple of 4 to keep ffmpeg happy). 480–900 is a good range for screencasts; smaller values shrink the file fast."
+          "label": "चौड़ाई (px)",
+          "tooltipAria": "GIF की चौड़ाई के बारे में",
+          "tooltip": "पिक्सेल में आउटपुट चौड़ाई। आस्पेक्ट रेशियो बनाए रखने के लिए ऊँचाई अपने आप निकाली जाती है (ffmpeg के लिए 4 के गुणक में राउंड)। स्क्रीनकास्ट के लिए 480–900 एक अच्छी रेंज है; छोटे मान फ़ाइल को तेज़ी से छोटा करते हैं।"
         },
         "fps": {
-          "label": "Frame rate (fps)",
-          "tooltipAria": "About GIF frame rate",
-          "tooltip": "How many frames per second ffmpeg samples from the source video before handing it to gifsicle. 12 fps looks smooth for screen recordings; raise to 18–24 for motion-heavy clips, drop to 8–10 to shrink the file."
+          "label": "फ़्रेम रेट (fps)",
+          "tooltipAria": "GIF फ़्रेम रेट के बारे में",
+          "tooltip": "gifsicle को सौंपने से पहले ffmpeg सोर्स वीडियो से प्रति सेकंड कितने फ़्रेम सैंपल करता है। स्क्रीन रिकॉर्डिंग के लिए 12 fps स्मूद दिखता है; ज़्यादा हलचल वाली क्लिप के लिए 18–24 करें, फ़ाइल छोटी करने के लिए 8–10 करें।"
         },
         "colors": {
-          "label": "Colors",
-          "tooltipAria": "About GIF colors",
-          "tooltip": "Maximum palette size gifsicle quantizes to (2–256). 128 is a strong default; drop to 64 to shrink the file on flat UI footage, raise to 256 for photographic clips with smooth gradients."
+          "label": "रंग",
+          "tooltipAria": "GIF रंगों के बारे में",
+          "tooltip": "gifsicle जिस अधिकतम पैलेट आकार तक क्वांटाइज़ करता है (2–256)। 128 एक मज़बूत डिफ़ॉल्ट है; फ़्लैट UI फ़ुटेज पर फ़ाइल छोटी करने के लिए 64 करें, स्मूद ग्रेडिएंट वाली फ़ोटोग्राफ़िक क्लिप के लिए 256 करें।"
         },
         "delay": {
-          "label": "Frame delay",
-          "tooltipAria": "About GIF frame delay",
-          "tooltip": "gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (= 30ms) is a snappy screencast feel; 6–10 produces a slower, more deliberate loop. Independent of the ffmpeg sampling rate above."
+          "label": "फ़्रेम डिले",
+          "tooltipAria": "GIF फ़्रेम डिले के बारे में",
+          "tooltip": "1/100 सेकंड में gifsicle का इंटर-फ़्रेम डिले। कम = तेज़ प्लेबैक। 3 (= 30ms) एक चुस्त स्क्रीनकास्ट अहसास देता है; 6–10 धीमा, अधिक सधा हुआ लूप बनाता है। ऊपर के ffmpeg सैंपलिंग रेट से स्वतंत्र।"
         },
         "optimize": {
-          "label": "Optimize level",
-          "tooltipAria": "About GIF optimize level",
-          "tooltip": "gifsicle --optimize level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft.",
+          "label": "ऑप्टिमाइज़ स्तर",
+          "tooltipAria": "GIF ऑप्टिमाइज़ स्तर के बारे में",
+          "tooltip": "gifsicle --optimize स्तर। 1 सबसे तेज़ है और सबसे बड़ा आउटपुट देता है, 3 सबसे धीमा है और सबसे छोटा आउटपुट देता है। 3 पर ही रहें, जब तक आप किसी लंबी क्लिप पर बार-बार काम करते हुए जल्दी ड्राफ़्ट न चाहें।",
           "options": {
-            "1": "1 — fast, larger file",
-            "2": "2 — balanced",
-            "3": "3 — smallest, slower"
+            "1": "1 — तेज़, बड़ी फ़ाइल",
+            "2": "2 — संतुलित",
+            "3": "3 — सबसे छोटी, धीमा"
           }
         }
       }
     }
   },
   "advancedAudioEffects": {
-    "title": "Advanced Audio Effects",
-    "tooltipAria": "About Advanced Audio Effects",
-    "tooltipIntro": "Manual audio processing chains, grouped into four expandable sections:",
-    "tooltipBasic": "<strong>Basic Audio Processing</strong> — normalize, amplify, fade in/out, EQ presets, stereo width/pan/balance.",
-    "tooltipTime": "<strong>Time-Based Effects</strong> — reverb, delay, and modulation (chorus, flanger, tremolo, vibrato).",
-    "tooltipRestoration": "<strong>Restoration & Cleanup</strong> — noise reduction, de-hum, declip, silence removal.",
-    "tooltipAdvanced": "<strong>Advanced Audio</strong> — pitch shifting, time stretching, spatial audio.",
+    "title": "एडवांस्ड ऑडियो इफ़ेक्ट्स",
+    "tooltipAria": "एडवांस्ड ऑडियो इफ़ेक्ट्स के बारे में",
+    "tooltipIntro": "मैनुअल ऑडियो प्रोसेसिंग चेन, चार विस्तार योग्य खंडों में समूहित:",
+    "tooltipBasic": "<strong>बेसिक ऑडियो प्रोसेसिंग</strong> — नॉर्मलाइज़, एम्प्लिफ़ाई, फ़ेड इन/आउट, EQ प्रीसेट, स्टीरियो चौड़ाई/पैन/बैलेंस।",
+    "tooltipTime": "<strong>समय-आधारित इफ़ेक्ट्स</strong> — रिवर्ब, डिले और मॉड्यूलेशन (कोरस, फ़्लैंजर, ट्रेमोलो, वाइब्रेटो)।",
+    "tooltipRestoration": "<strong>रिस्टोरेशन और क्लीनअप</strong> — शोर कम करना, डी-हम, डिक्लिप, मौन हटाना।",
+    "tooltipAdvanced": "<strong>एडवांस्ड ऑडियो</strong> — पिच शिफ़्टिंग, टाइम स्ट्रेचिंग, स्पेशियल ऑडियो।",
     "sections": {
       "basic": {
-        "title": "Basic Audio Processing",
-        "description": "Volume control, EQ, dynamics, and stereo processing"
+        "title": "बेसिक ऑडियो प्रोसेसिंग",
+        "description": "वॉल्यूम नियंत्रण, EQ, डायनामिक्स और स्टीरियो प्रोसेसिंग"
       },
       "time": {
-        "title": "Time-Based Effects",
-        "description": "Reverb, delay, echo, and modulation effects"
+        "title": "समय-आधारित इफ़ेक्ट्स",
+        "description": "रिवर्ब, डिले, इको और मॉड्यूलेशन इफ़ेक्ट्स"
       },
       "restoration": {
-        "title": "Restoration & Cleanup",
-        "description": "Noise reduction, de-hum, declip, and silence detection"
+        "title": "रिस्टोरेशन और क्लीनअप",
+        "description": "शोर कम करना, डी-हम, डिक्लिप और मौन की पहचान"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Pitch shifting, time stretching, spatial audio, and spectral processing"
+        "title": "एडवांस्ड प्रोसेसिंग",
+        "description": "पिच शिफ़्टिंग, टाइम स्ट्रेचिंग, स्पेशियल ऑडियो और स्पेक्ट्रल प्रोसेसिंग"
       }
     },
     "volumeDynamics": {
-      "title": "Volume & Dynamics",
-      "tooltip": "Amplify in decibels (-60 to +60), apply fade-in/out durations, and toggle loudness normalization. Use Amplify for level matching and Normalize when you want a consistent perceived loudness."
+      "title": "वॉल्यूम और डायनामिक्स",
+      "tooltip": "डेसिबल में एम्प्लिफ़ाई करें (-60 से +60), फ़ेड-इन/आउट अवधि लगाएँ, और लाउडनेस नॉर्मलाइज़ेशन टॉगल करें। स्तर मिलाने के लिए एम्प्लिफ़ाई और एक समान महसूस होने वाली लाउडनेस के लिए नॉर्मलाइज़ का उपयोग करें।"
     },
     "equalizer": {
-      "title": "Equalizer",
-      "tooltip": "Pick a preset that maps to a multi-band FFmpeg equalizer filter chain: bass-boost, treble-boost, vocal, classical, rock, or jazz. Choose 'none' to leave the EQ untouched.",
-      "enable": "Enable EQ",
-      "presetLabel": "EQ Preset",
+      "title": "इक्वलाइज़र",
+      "tooltip": "ऐसा प्रीसेट चुनें जो मल्टी-बैंड FFmpeg इक्वलाइज़र फ़िल्टर चेन से मेल खाता हो: बास-बूस्ट, ट्रेबल-बूस्ट, वोकल, क्लासिकल, रॉक या जैज़। EQ को अछूता छोड़ने के लिए 'कोई नहीं' चुनें।",
+      "enable": "EQ चालू करें",
+      "presetLabel": "EQ प्रीसेट",
       "presets": {
-        "none": "None",
-        "bass-boost": "Bass Boost",
-        "treble-boost": "Treble Boost",
-        "vocal": "Vocal Enhance",
-        "classical": "Classical",
-        "rock": "Rock",
-        "jazz": "Jazz"
+        "none": "कोई नहीं",
+        "bass-boost": "बास बूस्ट",
+        "treble-boost": "ट्रेबल बूस्ट",
+        "vocal": "वोकल एन्हांस",
+        "classical": "क्लासिकल",
+        "rock": "रॉक",
+        "jazz": "जैज़"
       }
     },
     "stereo": {
-      "title": "Stereo Processing",
-      "tooltip": "Adjust pan (-100 left to +100 right), stereo width (0 = mono, 100 = original, up to 200 = wider), toggle mono conversion, and optionally swap left/right channels.",
-      "pan": "Pan",
-      "leftRight": "Left ← → Right",
-      "stereoWidth": "Stereo Width",
-      "widthRange": "0% to 200%"
+      "title": "स्टीरियो प्रोसेसिंग",
+      "tooltip": "पैन (-100 बाएँ से +100 दाएँ), स्टीरियो चौड़ाई (0 = मोनो, 100 = मूल, 200 तक = चौड़ा) एडजस्ट करें, मोनो कन्वर्ज़न टॉगल करें, और वैकल्पिक रूप से बाएँ/दाएँ चैनल अदला-बदली करें।",
+      "pan": "पैन",
+      "leftRight": "बाएँ ← → दाएँ",
+      "stereoWidth": "स्टीरियो चौड़ाई",
+      "widthRange": "0% से 200%"
     },
     "reverb": {
-      "title": "Reverb",
-      "tooltip": "Add space to the audio. Choose room (small), hall (large), plate (vintage studio), or spring (guitar amp style). Room size, damping, and wet/dry levels fine-tune the effect.",
-      "enable": "Enable Reverb",
-      "typeLabel": "Reverb Type",
+      "title": "रिवर्ब",
+      "tooltip": "ऑडियो में स्पेस जोड़ें। रूम (छोटा), हॉल (बड़ा), प्लेट (विंटेज स्टूडियो) या स्प्रिंग (गिटार एम्प स्टाइल) चुनें। रूम साइज़, डैम्पिंग और वेट/ड्राई स्तर इफ़ेक्ट को बारीकी से ट्यून करते हैं।",
+      "enable": "रिवर्ब चालू करें",
+      "typeLabel": "रिवर्ब प्रकार",
       "types": {
-        "none": "None",
-        "room": "Room",
-        "hall": "Hall",
-        "plate": "Plate",
-        "spring": "Spring"
+        "none": "कोई नहीं",
+        "room": "रूम",
+        "hall": "हॉल",
+        "plate": "प्लेट",
+        "spring": "स्प्रिंग"
       },
-      "roomSize": "Room Size",
-      "roomRange": "0% to 100%",
-      "wetDry": "Wet/Dry Mix",
-      "dryWet": "Dry ← → Wet"
+      "roomSize": "रूम साइज़",
+      "roomRange": "0% से 100%",
+      "wetDry": "वेट/ड्राई मिक्स",
+      "dryWet": "ड्राई ← → वेट"
     },
     "delay": {
-      "title": "Delay & Echo",
-      "tooltip": "Add a delayed copy of the signal. Echo is a single tap; multi-tap adds several offset echoes; ping-pong bounces between left and right. Time (ms), feedback %, and wet level shape the repeats.",
-      "enable": "Enable Delay",
-      "typeLabel": "Delay Type",
+      "title": "डिले और इको",
+      "tooltip": "सिग्नल की एक विलंबित कॉपी जोड़ें। इको एक टैप है; मल्टी-टैप कई ऑफ़सेट इको जोड़ता है; पिंग-पॉन्ग बाएँ और दाएँ के बीच उछलता है। समय (ms), फ़ीडबैक % और वेट स्तर दोहराव को आकार देते हैं।",
+      "enable": "डिले चालू करें",
+      "typeLabel": "डिले प्रकार",
       "types": {
-        "none": "None",
-        "echo": "Simple Echo",
-        "multi-tap": "Multi-tap",
-        "ping-pong": "Ping-Pong"
+        "none": "कोई नहीं",
+        "echo": "सिंपल इको",
+        "multi-tap": "मल्टी-टैप",
+        "ping-pong": "पिंग-पॉन्ग"
       },
-      "delayTime": "Delay Time (ms)",
-      "feedback": "Feedback (%)",
-      "feedbackRange": "0% to 95%"
+      "delayTime": "डिले समय (ms)",
+      "feedback": "फ़ीडबैक (%)",
+      "feedbackRange": "0% से 95%"
     },
     "restoration": {
-      "noiseReduction": "Noise Reduction",
-      "deHum": "De-hum (50/60Hz)",
-      "declip": "Declip Audio",
-      "silenceDetection": "Silence Detection"
+      "noiseReduction": "शोर कम करें",
+      "deHum": "डी-हम (50/60Hz)",
+      "declip": "ऑडियो डिक्लिप करें",
+      "silenceDetection": "मौन की पहचान"
     },
     "advanced": {
-      "pitchShift": "Pitch Shift (semitones)",
-      "pitchValue": "{{value}} semitones",
-      "pitchRange": "-24 to +24 semitones",
-      "timeStretch": "Time Stretch Factor",
-      "timeStretchValue": "{{value}}x speed",
-      "timeStretchRange": "0.25x to 4x speed",
-      "spatialAudio": "Spatial Audio",
+      "pitchShift": "पिच शिफ़्ट (सेमीटोन)",
+      "pitchValue": "{{value}} सेमीटोन",
+      "pitchRange": "-24 से +24 सेमीटोन",
+      "timeStretch": "टाइम स्ट्रेच फ़ैक्टर",
+      "timeStretchValue": "{{value}}x स्पीड",
+      "timeStretchRange": "0.25x से 4x स्पीड",
+      "spatialAudio": "स्पेशियल ऑडियो",
       "spatial": {
-        "none": "None",
-        "binaural": "Binaural",
-        "surround": "Surround",
-        "3d": "3D Audio"
+        "none": "कोई नहीं",
+        "binaural": "बाइनॉरल",
+        "surround": "सराउंड",
+        "3d": "3D ऑडियो"
       },
-      "spectral": "Spectral Processing",
+      "spectral": "स्पेक्ट्रल प्रोसेसिंग",
       "spectralOptions": {
-        "none": "None",
-        "vocoder": "Vocoder",
-        "formant": "Formant Filter",
-        "convolution": "Convolution"
+        "none": "कोई नहीं",
+        "vocoder": "वोकोडर",
+        "formant": "फ़ॉर्मेंट फ़िल्टर",
+        "convolution": "कन्वोल्यूशन"
       }
     },
     "labels": {
-      "amplify": "Amplify (dB)",
-      "amplifyRange": "-60dB to +60dB",
-      "normalize": "Normalize Audio",
-      "fadeIn": "Fade In (seconds)",
-      "fadeOut": "Fade Out (seconds)"
+      "amplify": "एम्प्लिफ़ाई (dB)",
+      "amplifyRange": "-60dB से +60dB",
+      "normalize": "ऑडियो नॉर्मलाइज़ करें",
+      "fadeIn": "फ़ेड इन (सेकंड)",
+      "fadeOut": "फ़ेड आउट (सेकंड)"
     }
   },
   "advancedVideoEffects": {
-    "title": "Advanced Video Effects",
-    "tooltipAria": "About Advanced Video Effects",
-    "tooltipIntro": "Manual video filter chains, grouped into four expandable sections:",
-    "tooltipVisual": "<strong>Visual Effects</strong> — color correction, blur/sharpen, noise, and artistic filters.",
-    "tooltipTransform": "<strong>Transform</strong> — rotation, flip, custom crop, padding/letterboxing.",
-    "tooltipTemporal": "<strong>Temporal Effects</strong> — reverse, ping-pong, frame-rate conversion, stabilization.",
-    "tooltipAdvanced": "<strong>Advanced Processing</strong> — deinterlace, HDR tone mapping, colorspace conversion.",
+    "title": "एडवांस्ड वीडियो इफ़ेक्ट्स",
+    "tooltipAria": "एडवांस्ड वीडियो इफ़ेक्ट्स के बारे में",
+    "tooltipIntro": "मैनुअल वीडियो फ़िल्टर चेन, चार विस्तार योग्य खंडों में समूहित:",
+    "tooltipVisual": "<strong>विज़ुअल इफ़ेक्ट्स</strong> — कलर करेक्शन, ब्लर/शार्पन, नॉइज़ और कलात्मक फ़िल्टर।",
+    "tooltipTransform": "<strong>ट्रांसफ़ॉर्म</strong> — रोटेशन, फ़्लिप, कस्टम क्रॉप, पैडिंग/लेटरबॉक्सिंग।",
+    "tooltipTemporal": "<strong>टेम्पोरल इफ़ेक्ट्स</strong> — रिवर्स, पिंग-पॉन्ग, फ़्रेम-रेट कन्वर्ज़न, स्टेबिलाइज़ेशन।",
+    "tooltipAdvanced": "<strong>एडवांस्ड प्रोसेसिंग</strong> — डीइंटरलेस, HDR टोन मैपिंग, कलरस्पेस कन्वर्ज़न।",
     "sections": {
       "visual": {
-        "title": "Visual Effects",
-        "description": "Color correction, blur/sharpen, artistic effects, and noise control"
+        "title": "विज़ुअल इफ़ेक्ट्स",
+        "description": "कलर करेक्शन, ब्लर/शार्पन, कलात्मक इफ़ेक्ट्स और नॉइज़ नियंत्रण"
       },
       "transform": {
-        "title": "Geometric Transform",
-        "description": "Rotation, flipping, cropping, and padding"
+        "title": "ज्यामितीय ट्रांसफ़ॉर्म",
+        "description": "रोटेशन, फ़्लिप, क्रॉप और पैडिंग"
       },
       "temporal": {
-        "title": "Temporal Effects",
-        "description": "Speed control, reverse, frame rate, and stabilization"
+        "title": "टेम्पोरल इफ़ेक्ट्स",
+        "description": "स्पीड नियंत्रण, रिवर्स, फ़्रेम रेट और स्टेबिलाइज़ेशन"
       },
       "advanced": {
-        "title": "Advanced Processing",
-        "description": "Deinterlacing, HDR processing, and color space conversion"
+        "title": "एडवांस्ड प्रोसेसिंग",
+        "description": "डीइंटरलेसिंग, HDR प्रोसेसिंग और कलर स्पेस कन्वर्ज़न"
       }
     },
     "colorExposure": {
-      "title": "Color & Exposure",
-      "tooltip": "Adjust brightness, contrast, saturation, hue, gamma, exposure, and shadow/highlight recovery. These map to FFmpeg's eq and curves filters and stack into a single color-correction pass."
+      "title": "रंग और एक्सपोज़र",
+      "tooltip": "ब्राइटनेस, कॉन्ट्रास्ट, सैचुरेशन, ह्यू, गामा, एक्सपोज़र और शैडो/हाइलाइट रिकवरी एडजस्ट करें। ये FFmpeg के eq और curves फ़िल्टर से मेल खाते हैं और एक ही कलर-करेक्शन पास में जुड़ते हैं।"
     },
     "blurSharpen": {
-      "title": "Blur & Sharpen",
-      "tooltip": "Add Gaussian blur (0–50 sigma), motion blur with angle and distance, or unsharp-mask sharpening with adjustable radius, amount, and threshold."
+      "title": "ब्लर और शार्पन",
+      "tooltip": "गाउसियन ब्लर (0–50 सिग्मा), कोण और दूरी के साथ मोशन ब्लर, या समायोज्य रेडियस, मात्रा और थ्रेशोल्ड के साथ अनशार्प-मास्क शार्पनिंग जोड़ें।"
     },
     "labels": {
-      "brightness": "Brightness",
-      "contrast": "Contrast",
-      "saturation": "Saturation",
-      "hue": "Hue",
-      "gaussianBlur": "Gaussian Blur",
-      "artisticEffect": "Artistic Effect",
-      "rotation": "Rotation (degrees)",
-      "flipHorizontal": "Flip Horizontal",
-      "flipVertical": "Flip Vertical",
-      "reverseVideo": "Reverse Video",
-      "pingPong": "Ping-Pong Loop",
-      "targetFrameRate": "Target Frame Rate",
-      "stabilization": "Video Stabilization",
-      "deinterlace": "Deinterlace Video",
-      "outputColorSpace": "Output Color Space"
+      "brightness": "ब्राइटनेस",
+      "contrast": "कॉन्ट्रास्ट",
+      "saturation": "सैचुरेशन",
+      "hue": "ह्यू",
+      "gaussianBlur": "गाउसियन ब्लर",
+      "artisticEffect": "कलात्मक इफ़ेक्ट",
+      "rotation": "रोटेशन (डिग्री)",
+      "flipHorizontal": "क्षैतिज फ़्लिप",
+      "flipVertical": "लंबवत फ़्लिप",
+      "reverseVideo": "वीडियो रिवर्स करें",
+      "pingPong": "पिंग-पॉन्ग लूप",
+      "targetFrameRate": "लक्षित फ़्रेम रेट",
+      "stabilization": "वीडियो स्टेबिलाइज़ेशन",
+      "deinterlace": "वीडियो डीइंटरलेस करें",
+      "outputColorSpace": "आउटपुट कलर स्पेस"
     },
     "ranges": {
-      "hundred": "-100 to +100",
-      "hue": "-180° to +180°",
-      "blur": "0 to 50px"
+      "hundred": "-100 से +100",
+      "hue": "-180° से +180°",
+      "blur": "0 से 50px"
     },
     "artistic": {
-      "none": "None",
-      "oil-painting": "Oil Painting",
-      "watercolor": "Watercolor",
-      "sketch": "Sketch",
-      "emboss": "Emboss",
-      "edge-detection": "Edge Detection",
-      "posterize": "Posterize"
+      "none": "कोई नहीं",
+      "oil-painting": "ऑयल पेंटिंग",
+      "watercolor": "वॉटरकलर",
+      "sketch": "स्केच",
+      "emboss": "एम्बॉस",
+      "edge-detection": "एज डिटेक्शन",
+      "posterize": "पोस्टराइज़"
     },
     "colorSpace": {
-      "rec709": "Rec.709 (Standard)",
+      "rec709": "Rec.709 (मानक)",
       "rec2020": "Rec.2020 (HDR)",
       "srgb": "sRGB",
       "p3": "Display P3"
     },
-    "autoPlaceholder": "Auto"
+    "autoPlaceholder": "ऑटो"
   }
 }
