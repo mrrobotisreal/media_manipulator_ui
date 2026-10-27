@@ -22,7 +22,6 @@ const NEW_LOCALES = [
   ["ko-KR", "ko"],
   ["ar-SA", "ar"],
   ["hi-IN", "hi"],
-  ["pt-PT", "pt-pt"],
   ["pt-BR", "pt-br"],
   ["vi-VN", "vi"],
 ] as const;
@@ -52,8 +51,8 @@ describe("locale registry", () => {
     expect(locales.filter((l) => l.dir === "rtl").map((l) => l.code)).toEqual(["he-IL", "ar-SA"]);
   });
 
-  it("marks the six original locales and French (fr-FR), Italian (it-IT), Japanese (ja-JP), Chinese (Simplified) (zh-CN), Chinese (Traditional) (zh-TW) as translated", () => {
-    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW"]);
+  it("marks the six original locales and French (fr-FR), Italian (it-IT), Japanese (ja-JP), Chinese (Simplified) (zh-CN), Chinese (Traditional) (zh-TW), Portuguese (Portugal) (pt-PT) as translated", () => {
+    expect(translatedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "he-IL", "de-DE", "es-ES", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "pt-PT"]);
   });
 
   it("fr-FR is registered at /fr and translated (MM57)", () => {
