@@ -17,6 +17,7 @@ import zhTwToolpages from "../locales/zh-tw/toolPages";
 import koKrToolpages from "../locales/ko-kr/toolPages";
 import arSaToolpages from "../locales/ar-sa/toolPages";
 import hiInToolpages from "../locales/hi-in/toolPages";
+import ptBrToolpages from "../locales/pt-br/toolPages";
 import viVnToolpages from "../locales/vi-vn/toolPages";
 
 export const toolPageOverrideModules: Record<string, unknown> = {
@@ -33,5 +34,6 @@ export const toolPageOverrideModules: Record<string, unknown> = {
   "ko-KR": koKrToolpages,
   "ar-SA": arSaToolpages,
   "hi-IN": hiInToolpages,
+  "pt-BR": ptBrToolpages,
   "vi-VN": viVnToolpages,
 };
