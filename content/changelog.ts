@@ -24,6 +24,13 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-27-18-languages',
+    date: '2026-10-27',
+    title: 'Now in 18 languages',
+    body: 'Media Manipulator is now available in 18 languages. New since this month: French, Italian, Japanese, Simplified and Traditional Chinese, Korean, Arabic (right to left), Hindi, European and Brazilian Portuguese, Vietnamese, and Latin-American Spanish alongside the Spanish of Spain. Pick a language from the selector in the header; each one has its own address, such as /fr or /es-mx. The new translations were written with an AI model, and native-speaker review is ongoing, so some wording may still change. Where a translated Privacy Policy or Terms differs from the English text, the English version applies.',
+    tags: ['new'],
+  },
+  {
     id: '2026-10-26-prices-in-euros',
     date: '2026-10-26',
     title: 'Prices in euros for European visitors, switchable any time',
