@@ -14,6 +14,7 @@ import itItToolpages from "../locales/it-it/toolPages";
 import jaJpToolpages from "../locales/ja-jp/toolPages";
 import zhCnToolpages from "../locales/zh-cn/toolPages";
 import zhTwToolpages from "../locales/zh-tw/toolPages";
+import arSaToolpages from "../locales/ar-sa/toolPages";
 import viVnToolpages from "../locales/vi-vn/toolPages";
 
 export const toolPageOverrideModules: Record<string, unknown> = {
@@ -27,5 +28,6 @@ export const toolPageOverrideModules: Record<string, unknown> = {
   "ja-JP": jaJpToolpages,
   "zh-CN": zhCnToolpages,
   "zh-TW": zhTwToolpages,
+  "ar-SA": arSaToolpages,
   "vi-VN": viVnToolpages,
 };
