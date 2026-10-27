@@ -64,6 +64,16 @@ import esEsInterfaceArticles from "../locales/es-es/interface/articles.json";
 import esEsErrorCore from "../locales/es-es/error/_core.json";
 import esEsAccessibilityCore from "../locales/es-es/accessibility/_core.json";
 import esEsAccessibilityComponents from "../locales/es-es/accessibility/components.json";
+import esMxInterfaceCore from "../locales/es-mx/interface/_core.json";
+import esMxInterfacePages from "../locales/es-mx/interface/pages.json";
+import esMxInterfaceForms from "../locales/es-mx/interface/forms.json";
+import esMxInterfacePanels from "../locales/es-mx/interface/panels.json";
+import esMxInterfaceComponents from "../locales/es-mx/interface/components.json";
+import esMxInterfaceTools from "../locales/es-mx/interface/tools.json";
+import esMxInterfaceArticles from "../locales/es-mx/interface/articles.json";
+import esMxErrorCore from "../locales/es-mx/error/_core.json";
+import esMxAccessibilityCore from "../locales/es-mx/accessibility/_core.json";
+import esMxAccessibilityComponents from "../locales/es-mx/accessibility/components.json";
 import frFrInterfaceCore from "../locales/fr-fr/interface/_core.json";
 import frFrInterfacePages from "../locales/fr-fr/interface/pages.json";
 import frFrInterfaceForms from "../locales/fr-fr/interface/forms.json";
@@ -248,6 +258,18 @@ export const serverShards: Record<string, Record<string, Record<string, unknown>
     "error/_core": esEsErrorCore,
     "accessibility/_core": esEsAccessibilityCore,
     "accessibility/components": esEsAccessibilityComponents,
+  },
+  "es-MX": {
+    "interface/_core": esMxInterfaceCore,
+    "interface/pages": esMxInterfacePages,
+    "interface/forms": esMxInterfaceForms,
+    "interface/panels": esMxInterfacePanels,
+    "interface/components": esMxInterfaceComponents,
+    "interface/tools": esMxInterfaceTools,
+    "interface/articles": esMxInterfaceArticles,
+    "error/_core": esMxErrorCore,
+    "accessibility/_core": esMxAccessibilityCore,
+    "accessibility/components": esMxAccessibilityComponents,
   },
   "fr-FR": {
     "interface/_core": frFrInterfaceCore,

@@ -37,6 +37,11 @@ export const SHARD_LOADERS: Record<string, () => Promise<[ShardModule, ShardModu
       import("../locales/es-es/interface/forms.json"),
       import("../locales/es-es/interface/panels.json"),
     ]),
+  "es-MX": () =>
+    Promise.all([
+      import("../locales/es-mx/interface/forms.json"),
+      import("../locales/es-mx/interface/panels.json"),
+    ]),
   "fr-FR": () =>
     Promise.all([
       import("../locales/fr-fr/interface/forms.json"),

@@ -1,0 +1,2247 @@
+{
+  "about": {
+    "title": "Sobre Media Manipulator — Un conversor de medios online, editor y kit de herramientas de IA gratuito",
+    "intro": "Media Manipulator es un conversor de medios online, editor, transcriptor e inspector de metadatos gratuito para imágenes, vídeos y archivos de audio. Está creado y operado por <strong>CreaTV Ltd.</strong> y funciona íntegramente en infraestructura que poseemos —incluido un servidor GPU dedicado para las funciones de IA— así que tus archivos nunca salen de sistemas que controlamos.",
+    "mission": {
+      "title": "Nuestra misión",
+      "p1": "Creamos Media Manipulator porque la mayoría de los sitios de \"conversor de medios gratis\" son lentos, insisten agresivamente con ventas adicionales, bloquean funciones básicas tras un registro, envían tus archivos a proveedores de IA externos o conservan las subidas indefinidamente sin avisar. Queríamos un conversor de archivos online gratuito en el que puedas confiar: abres el navegador, sueltas un archivo, eliges un ajuste y obtienes un resultado utilizable. Sin cuenta necesaria, sin software que instalar, sin almacenamiento permanente de tus archivos.",
+      "p2": "Tratamos la conversión, edición, compresión, transcripción, resumen y gestión de metadatos como un único flujo de trabajo conectado, en lugar de diez sitios web separados. Si quieres comprimir un MP4 para la web, luego recortarlo, generar subtítulos VTT y por último eliminar los metadatos EXIF de la miniatura que publicarás junto a él, eso son tres sitios distintos para la mayoría de la gente y una sola pestaña para los usuarios de Media Manipulator."
+    },
+    "whatItDoes": {
+      "title": "Qué hace Media Manipulator",
+      "intro": "Media Manipulator cubre toda la gama de tareas de \"necesito hacer algo con este archivo\" en tres tipos de medios. Todo se ejecuta en nuestros servidores: no hay app de escritorio que descargar, ni extensión de Chrome que instalar, ni complemento que actualizar. Abre el sitio, suelta un archivo, elige una herramienta y descarga el resultado.",
+      "image": {
+        "title": "Conversor y editor de imágenes gratuito",
+        "items": [
+          "Convierte JPG, PNG, WebP, GIF, BMP y TIFF",
+          "Comprime imágenes para la web (JPG, presets de calidad WebP)",
+          "Redimensiona, recorta y gira online",
+          "Aplica filtros: escala de grises, sepia, desenfoque, enfoque, vintage, boceto",
+          "Añade marca de agua / superposición de texto con contorno y posición",
+          "Inspecciona, conserva, elimina o reescribe metadatos EXIF / IPTC / XMP",
+          "<strong>Elimina los metadatos GPS de las fotos</strong> antes de compartirlas online",
+          "Desenfoque de rostros con IA, eliminación de fondo, escalado y OCR para redacción de texto",
+          "<strong>Elimina objetos no deseados</strong> con inpainting LaMa: dibuja un recuadro y el modelo reconstruye el fondo"
+        ]
+      },
+      "video": {
+        "title": "Conversor y editor de vídeo gratuito",
+        "items": [
+          "Convierte MP4, WebM, MOV, MKV, AVI, WMV, FLV, ProRes",
+          "<strong>Convierte vídeo a GIF animado</strong> con ancho, fps, paleta y retardo de fotograma ajustables",
+          "Comprime vídeo online sin arruinar la calidad",
+          "Recorta y corta clips de vídeo",
+          "Redimensiona, cambia la tasa de fotogramas y ajusta la velocidad de reproducción",
+          "Corrección de color, estabilización y filtros artísticos",
+          "Mapeo de tonos HDR y conversión de espacio de color",
+          "<strong>Transcribe vídeo a texto</strong> con salida en VTT, texto plano o JSON",
+          "Genera resúmenes automáticos de vídeos largos"
+        ]
+      },
+      "audio": {
+        "title": "Conversor y limpieza de audio gratuito",
+        "items": [
+          "Convierte MP3, WAV, AAC, OGG, FLAC, ALAC, M4A, Opus, AC3",
+          "Convierte WAV a MP3, FLAC a MP3, OGG a MP3 y más",
+          "Recorta, normaliza, amplifica y ecualiza audio",
+          "Reverb, delay, chorus, flanger, cambio de tono, estiramiento temporal",
+          "<strong>Limpieza de audio online</strong>: elimina el ruido de fondo de grabaciones de voz",
+          "Limpieza de voz con IA para pódcast y locuciones",
+          "Aísla voces o elimina voces (creador de karaoke)",
+          "Transcribe audio a texto y resume transcripciones"
+        ]
+      },
+      "outro": "Los tutoriales paso a paso para cada herramienta están en nuestra sección de <linkTutorials>tutoriales</linkTutorials>. Si prefieres leer primero el desglose técnico, consulta <linkHow>cómo funciona Media Manipulator</linkHow>."
+    },
+    "whyChoose": {
+      "title": "Por qué elegir Media Manipulator",
+      "noSignup": {
+        "title": "Sin registro, sin muro de pago",
+        "body": "Todas las funciones del sitio —conversión de imágenes, compresión de vídeo, limpieza de audio, transcripción, herramientas de IA— son gratuitas y utilizables sin cuenta. Nunca te exigimos iniciar sesión, dar un correo electrónico ni pagar antes de descargar un archivo convertido."
+      },
+      "privacy": {
+        "title": "Centrado en la privacidad: tú decides cuánto se conservan los archivos",
+        "body": "Los archivos subidos y los resultados generados se almacenan solo durante el periodo de retención aplicable: <strong>24 horas</strong> para visitantes sin cuenta, o el periodo que elijas (de 24 horas a 2 años) con una cuenta gratuita. No vendemos ni compartimos las subidas con nadie. Consulta nuestra <linkPrivacy>política de privacidad</linkPrivacy> para más detalles."
+      },
+      "localAi": {
+        "title": "IA local en nuestra propia GPU",
+        "body": "Las funciones de IA —desenfoque de rostros, eliminación de fondo, escalado con IA, redacción de datos personales mediante OCR, limpieza de voz, aislamiento de voces, transcripción y resúmenes con IA— se ejecutan en un servidor GPU NVIDIA dedicado que <strong>CreaTV Ltd.</strong> posee y opera. No enviamos tus archivos a OpenAI, Anthropic, Google, AWS Bedrock ni a ningún otro proveedor de IA externo."
+      },
+      "realTools": {
+        "title": "Herramientas de verdad, no conversores de juguete",
+        "body": "Por debajo usamos FFmpeg, ImageMagick y gifsicle para las tuberías estándar, y modelos creados a medida (Real-ESRGAN, BiRefNet, Demucs, DeepFilterNet, whisper-ctranslate2, exiftool, rembg, simple-lama-inpainting) para todo lo demás. Tasa de bits, códec, calidad, disposición de canales, espacio de color, tamaño de paleta GIF y retardo de fotograma: cada ajuste que importa a los usuarios avanzados está disponible en la interfaz."
+      },
+      "web": {
+        "title": "Hecho para la web",
+        "body": "Nada que descargar, nada que instalar, nada que actualizar. Media Manipulator funciona en cualquier navegador moderno en escritorio, portátil, tablet o móvil, y las subidas de vídeo grandes usan URLs prefirmadas directas a S3 para que la subida no se atasque con conexiones más lentas."
+      },
+      "open": {
+        "title": "Abierto, honesto, gratuito",
+        "body": "El sitio se sostiene con publicidad discreta y promociones de los propios productos de CreaTV, nunca vendiendo tus datos o tus archivos. Si algo del sitio te parece engañoso, no funciona o resulta sospechoso, queremos saberlo en <emailLink>support@media-manipulator.com</emailLink>."
+      }
+    },
+    "commonTasks": {
+      "title": "Tareas habituales que resuelve Media Manipulator",
+      "intro": "Si has buscado en Google algo de lo siguiente y has llegado hasta aquí, estás en el sitio correcto. Abre la <linkHome>página de inicio del conversor</linkHome>, sube un archivo y el panel de la derecha cambia al conjunto de herramientas que corresponda.",
+      "image": {
+        "title": "Tareas de imagen",
+        "items": [
+          "Convierte HEIC a JPG / fotos de iPhone a JPG",
+          "Convierte PNG a WebP para páginas web más rápidas",
+          "Convierte WebP a JPG para compatibilidad con sistemas antiguos",
+          "Comprime JPG / comprime PNG / comprime WebP",
+          "Redimensiona una imagen para una foto de perfil o miniatura",
+          "Recorta una imagen a una relación de aspecto concreta",
+          "Añade una marca de agua o texto de copyright superpuesto",
+          "Elimina los metadatos EXIF de las fotos antes de compartirlas",
+          "Elimina las coordenadas GPS de una foto",
+          "Difumina rostros en fotos de eventos automáticamente",
+          "Elimina el fondo de la foto de un producto",
+          "Escala una imagen de baja resolución con IA",
+          "Redacta datos personales (correos, teléfonos, DNI) de capturas de pantalla",
+          "Elimina un objeto no deseado (persona, cartel, marca de agua) de una foto con inpainting LaMa"
+        ]
+      },
+      "videoAudio": {
+        "title": "Tareas de vídeo y audio",
+        "items": [
+          "Convierte MP4 a WebM, MOV a MP4, MKV a MP4, AVI a MP4",
+          "Convierte MP4 / MOV / WebM a un GIF animado optimizado para chats y documentos",
+          "Comprime un archivo de vídeo para límites de tamaño de correo o mensajería",
+          "Recorta o corta un clip de vídeo sin recodificar el resto",
+          "Cambia la tasa de fotogramas o la resolución de un vídeo",
+          "Estabiliza vídeo con movimiento tembloroso",
+          "Genera subtítulos (VTT) a partir de un vídeo",
+          "Transcribe un vídeo a texto plano o JSON estructurado",
+          "Resume un vídeo o grabación de audio largos",
+          "Convierte WAV a MP3, FLAC a MP3, OGG a MP3, M4A a MP3",
+          "Limpia el audio de un pódcast / elimina el ruido de fondo",
+          "Aísla las voces de una canción",
+          "Elimina las voces de una canción (creador de karaoke)",
+          "Cambia el tono o estira en el tiempo un clip de audio"
+        ]
+      }
+    },
+    "whoBuilds": {
+      "title": "Quién crea Media Manipulator",
+      "p1": "Media Manipulator está creado y operado por <strong>CreaTV Ltd.</strong>, una pequeña empresa independiente de tecnología multimedia con sede en Colorado, EE. UU. La línea de productos más amplia de CreaTV se centra en herramientas que ayudan a los creadores a dar vida a sus ideas; Media Manipulator es la utilidad gratuita y sin cuenta que sostiene ese ecosistema.",
+      "p2": "Somos un equipo pequeño, y por eso hemos creado Media Manipulator así: no queremos estar pendientes de una flota de integraciones de IA de terceros, no queremos almacenar tus archivos indefinidamente y no queremos operar diez sitios conversores independientes de un solo propósito. Un estudio, un lugar donde tú eliges cuánto viven tus archivos, un servidor GPU que hace el trabajo pesado."
+    },
+    "supportedFormats": {
+      "title": "Formatos de archivo compatibles (referencia rápida)",
+      "images": {
+        "title": "Imágenes",
+        "items": [
+          "JPEG / JPG",
+          "PNG",
+          "WebP (con y sin pérdida)",
+          "GIF (incl. paso directo de animación)",
+          "BMP",
+          "TIFF",
+          "HEIC / HEIF (entrada)"
+        ]
+      },
+      "videos": {
+        "title": "Vídeos",
+        "items": [
+          "MP4 (H.264 / H.265)",
+          "WebM (VP9 + Opus)",
+          "MOV",
+          "MKV",
+          "AVI",
+          "WMV, FLV",
+          "ProRes, DNxHD"
+        ]
+      },
+      "audio": {
+        "title": "Audio",
+        "items": [
+          "MP3",
+          "WAV (PCM)",
+          "AAC, M4A",
+          "OGG (Vorbis)",
+          "FLAC, ALAC",
+          "Opus",
+          "AC3, DTS"
+        ]
+      },
+      "footnote": "¿Necesitas un formato que no aparece en la lista? Escríbenos: la mayoría de las incorporaciones son solo un pequeño cambio de configuración de FFmpeg o ImageMagick."
+    },
+    "contact": {
+      "title": "Contacto y soporte",
+      "operator": "<strong>Media Manipulator</strong> es un producto de <strong>CreaTV Ltd.</strong>",
+      "location": "CreaTV Ltd. — Colorado, EE. UU.",
+      "generalSupport": "Soporte general:",
+      "privacyRequests": "Solicitudes de privacidad:",
+      "helpfulStartingPoints": "Puntos de partida útiles:"
+    },
+    "relatedLinks": {
+      "title": "Empieza por algún sitio",
+      "intro": "Tres buenas formas de sumergirte en el kit de herramientas.",
+      "converter": {
+        "label": "Abrir el conversor de medios gratuito",
+        "description": "Convierte, comprime, transcribe y edita imágenes, vídeos y audio en un solo lugar."
+      },
+      "tutorials": {
+        "label": "Ver tutoriales paso a paso",
+        "description": "Guías para los conversores de imagen, vídeo y audio y sus herramientas de IA."
+      },
+      "howItWorks": {
+        "label": "Descubre cómo funciona por dentro",
+        "description": "FFmpeg, ImageMagick, IA con GPU, retención de archivos a tu elección y escaneo de seguridad de contenido."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "Cómo funciona Media Manipulator",
+    "intro": "Media Manipulator es un estudio en el navegador para convertir, editar, transcribir y procesar con IA archivos de audio, vídeo e imagen. Cada trabajo se ejecuta en nuestros propios servidores con GPU: sin proveedores de IA externos, sin almacenamiento permanente, solo procesamiento de archivos rápido con herramientas de IA locales opcionales.",
+    "process": {
+      "title": "El proceso de conversión",
+      "step1": {
+        "title": "Sube",
+        "body": "Arrastra un archivo a la zona de subida o haz clic para buscarlo. Admitimos los formatos habituales de imagen, vídeo y audio hasta el límite de tamaño de tu plan."
+      },
+      "step2": {
+        "title": "Configura",
+        "body": "Elige el formato de salida, la calidad, las dimensiones, los filtros, el comportamiento de los metadatos o una operación de IA como desenfoque de rostros, eliminación de fondo o aislamiento de voces."
+      },
+      "step3": {
+        "title": "Convierte",
+        "body": "Nuestros servidores procesan el archivo con FFmpeg, ImageMagick o herramientas de IA locales en una GPU dedicada. El progreso del trabajo se transmite a tu navegador en tiempo real."
+      },
+      "step4": {
+        "title": "Descarga",
+        "body": "Previsualiza el resultado y luego descárgalo. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
+      }
+    },
+    "capabilities": {
+      "title": "Qué puedes hacer con Media Manipulator",
+      "image": {
+        "title": "Herramientas de imagen",
+        "items": [
+          "Convierte entre JPG, PNG, WebP y GIF",
+          "Redimensiona, recorta y gira",
+          "Aplica filtros (escala de grises, sepia, desenfoque, enfoque, vintage, boceto y más)",
+          "Añade superposiciones de texto personalizadas con posición y contorno",
+          "Inspecciona, conserva, elimina o reescribe metadatos EXIF / IPTC / XMP",
+          "Elimina o sustituye los campos de ubicación GPS y dirección de captura"
+        ]
+      },
+      "video": {
+        "title": "Herramientas de vídeo",
+        "items": [
+          "Convierte a MP4, WebM, AVI, MOV, MKV, ProRes y más",
+          "Convierte vídeo a un GIF animado optimizado (ffmpeg + gifsicle)",
+          "Recorta, redimensiona y ajusta la velocidad de reproducción",
+          "Corrección de color: brillo, contraste, saturación, tono, gamma",
+          "Desenfoque de movimiento, máscara de enfoque, ruido, filtros artísticos",
+          "Rotación, volteos, relleno y estabilización",
+          "Conversión de tasa de fotogramas y controles de HDR/espacio de color"
+        ]
+      },
+      "audio": {
+        "title": "Herramientas de audio",
+        "items": [
+          "Convierte entre MP3, WAV, AAC, OGG, FLAC, ALAC, Opus, AC3",
+          "Recorta, fundido de entrada/salida, normaliza y amplifica",
+          "Presets de ecualización, amplitud estéreo, paneo, balance, conversión a mono",
+          "Reverb, delay, chorus, flanger, trémolo, vibrato",
+          "Reducción de ruido, eliminación de zumbido, corrección de recorte, eliminación de silencios",
+          "Cambio de tono, estiramiento temporal, audio espacial"
+        ]
+      }
+    },
+    "ai": {
+      "title": "Herramientas asistidas por IA (locales, con aceleración GPU)",
+      "intro": "Media Manipulator ejecuta cada operación de IA localmente en nuestro propio servidor GPU. Tus archivos nunca se envían a un proveedor de IA externo. Cada trabajo de conversión ejecuta una única operación de IA; las opciones de edición estándar se omiten en ese trabajo para que la herramienta de IA pueda centrarse en un resultado limpio.",
+      "image": {
+        "title": "Herramientas de IA para imagen",
+        "items": [
+          "<strong>Desenfoque / pixelado / recuadro negro de rostros</strong>: detección facial automática con tres estilos de privacidad.",
+          "<strong>Eliminar fondo</strong>: genera un PNG transparente usando los modelos BiRefNet, ISNet o U2Net.",
+          "<strong>Escalado con IA</strong>: Real-ESRGAN 2x o 4x con modelos ajustados para foto o anime.",
+          "<strong>Redactar texto / datos personales</strong>: redacción basada en OCR con estilos de recuadro negro, desenfoque o pixelado.",
+          "<strong>Eliminar objeto</strong>: dibuja rectángulos sobre objetos no deseados y el inpainting LaMa (simple-lama-inpainting) reconstruye el fondo."
+        ]
+      },
+      "audio": {
+        "title": "Herramientas de IA para audio",
+        "items": [
+          "<strong>Limpiar voz</strong>: reducción de ruido con DeepFilterNet más una cadena de pulido de presencia/volumen/limitador para voz hablada.",
+          "<strong>Eliminar ruido de fondo</strong>: reducción de ruido con DeepFilterNet sin la cadena de pulido tipo broadcast.",
+          "<strong>Aislar voces</strong>: stem vocal de Demucs htdemucs, exportado como WAV sin pérdida por defecto.",
+          "<strong>Eliminar voces / karaoke</strong>: stem instrumental de Demucs, también WAV sin pérdida por defecto."
+        ]
+      }
+    },
+    "transcription": {
+      "title": "Transcripción",
+      "intro": "Sube un archivo de vídeo o audio y cambia el panel de la derecha a <em>Transcribir</em>. Nuestro servidor GPU ejecuta whisper-ctranslate2 para generar una transcripción en el formato que elijas:",
+      "items": [
+        "<strong>VTT</strong>: subtítulos con código de tiempo para reproductores de vídeo y herramientas de accesibilidad.",
+        "<strong>Texto plano</strong>: transcripción continua adecuada para leer o editar posteriormente.",
+        "<strong>JSON estructurado</strong>: transcripción segmentada con datos de tiempo para procesos posteriores."
+      ],
+      "outro": "Un resumen y una revisión de seguridad de contenido se ejecutan automáticamente en cuanto la transcripción está lista, para que puedas repasar grabaciones largas rápidamente."
+    },
+    "privacy": {
+      "title": "Privacidad y rendimiento",
+      "security": {
+        "title": "Seguridad y privacidad",
+        "items": [
+          "Todas las subidas usan cifrado HTTPS",
+          "Tú decides cuánto se conservan los archivos (24 horas para visitantes)",
+          "El procesamiento de IA se ejecuta en nuestros propios servidores: ningún proveedor de IA externo ve tus archivos",
+          "Escaneo automático de seguridad de contenido para material abusivo o ilegal"
+        ],
+        "linkPrefix": "Consulta nuestra",
+        "linkText": "política de privacidad",
+        "linkSuffix": "para más detalles"
+      },
+      "quality": {
+        "title": "Calidad y rendimiento",
+        "items": [
+          "FFmpeg e ImageMagick impulsan las tuberías estándar",
+          "La exportación de GIF animado encadena FFmpeg con gifsicle para archivos pequeños y con la paleta optimizada",
+          "Los trabajos de IA se ejecutan en una GPU NVIDIA dedicada",
+          "Progreso en tiempo real transmitido a tu navegador",
+          "Historial de conversiones de la sesión para que puedas revisar resultados recientes"
+        ]
+      }
+    },
+    "next": {
+      "title": "¿Y ahora qué?",
+      "body": "¿Listo para probar una herramienta concreta? Los tutoriales paso a paso para cada tipo de conversión están en nuestra sección de tutoriales.",
+      "ctaTutorials": "Ver tutoriales",
+      "ctaConvert": "Empezar a convertir"
+    }
+  },
+  "tutorials": {
+    "title": "Tutoriales de Media Manipulator",
+    "intro": "Guías paso a paso para cada herramienta de Media Manipulator. Ya sea que estés convirtiendo un único MP3, redimensionando PNG en lote, redactando rostros de una foto o extrayendo voces de una pista musical, los tutoriales de abajo te guían por todas las opciones del panel de conversión de la derecha.",
+    "readTutorial": "Leer tutorial →",
+    "categories": {
+      "audio": {
+        "title": "Cómo usar el conversor de audio",
+        "description": "Convierte archivos de audio entre MP3, WAV, FLAC, OGG y más. Aplica ecualización, reverb, reducción de ruido, aislamiento de voces y otras herramientas de IA para audio."
+      },
+      "video": {
+        "title": "Cómo usar el conversor de vídeo",
+        "description": "Convierte y edita archivos de vídeo entre MP4, WebM, MOV, MKV, ProRes y más. Recorta, redimensiona, aplica filtros y transformaciones, y transcribe con subtítulos."
+      },
+      "image": {
+        "title": "Cómo usar el conversor de imagen",
+        "description": "Convierte imágenes entre JPG, PNG, WebP y GIF. Redimensiona, recorta, aplica filtros, añade superposiciones de texto, gestiona metadatos y ejecuta herramientas de IA como Desenfoque de rostros, Eliminar fondo, Escalado con IA y Redactar texto."
+      },
+      "motion": {
+        "title": "Tutoriales de animación",
+        "description": "Anima ilustraciones SVG en una línea de tiempo de fotogramas clave y expórtalas como SVG animado, Lottie, código o GIF."
+      }
+    },
+    "tutorials": {
+      "audioGettingStarted": {
+        "title": "Primeros pasos: Convertir archivos de audio",
+        "excerpt": "Una guía completa del conversor de audio: selección de formato de archivo, tasa de bits, frecuencia de muestreo, disposición de canales, recorte, presets de ecualización, efectos de restauración y las herramientas de IA Limpiar voz / Aislar voces / Eliminar voces / Eliminar ruido de fondo.",
+        "readTime": "10 min de lectura"
+      },
+      "videoGettingStarted": {
+        "title": "Primeros pasos: Convertir archivos de vídeo",
+        "excerpt": "Guía paso a paso del conversor de vídeo: formato de salida, códecs, presets de calidad, dimensiones, recorte, corrección de color, desenfoque de movimiento, filtros artísticos, estabilización, conversión de tasa de fotogramas y transcripción de vídeo con salida VTT/TXT/JSON.",
+        "readTime": "12 min de lectura"
+      },
+      "aiFrameInterpolation": {
+        "title": "¿Qué es la interpolación de fotogramas con IA? Cómo funciona el suavizado de FPS en vídeo",
+        "excerpt": "Cómo la interpolación de fotogramas con IA genera nuevos fotogramas intermedios para un movimiento más suave, cuándo elegir 48/60/120 fps, artefactos habituales y cómo usar la herramienta de interpolación de fotogramas con IA.",
+        "readTime": "9 min de lectura"
+      },
+      "contentStudio": {
+        "title": "Cómo usar Darkroom: edición de vídeo multipista en tu navegador",
+        "excerpt": "Una guía paso a paso de Darkroom: importa medios, monta una línea de tiempo multipista, recorta, divide y elimina por ondulación, añade fundidos encadenados, ajustes de color y superposiciones de texto, y luego exporta a MP4.",
+        "readTime": "8 min de lectura",
+        "page": {
+          "eyebrow": "Tutorial en vídeo",
+          "title": "Cómo usar Darkroom",
+          "intro": "Darkroom es un editor de vídeo multipista, al estilo de Premiere Pro, que funciona íntegramente en tu navegador. Sube vídeo, imágenes y audio, colócalos en una línea de tiempo, apila y mezcla pistas, añade efectos y exporta un MP4 terminado, sin instalar software. Esta guía recorre todo el flujo de trabajo.",
+          "overviewAlt": "El editor Darkroom mostrando el depósito de medios, la vista previa, el panel de efectos de clip y una línea de tiempo multipista.",
+          "overviewCaption": "El espacio de trabajo de Darkroom: depósito de medios (izquierda), vista previa en directo (centro), efectos de clip (derecha) y la línea de tiempo multipista (abajo).",
+          "create": {
+            "title": "1. Crea un proyecto",
+            "body": "Abre Darkroom desde la página de Herramientas o el banner de la página de inicio, y elige «Nuevo proyecto». Elige un nombre, una resolución de destino (1080p, 720p, 4K o vertical 1080×1920) y una tasa de fotogramas (24, 30 o 60 fps). Estos definen el lienzo al que se renderiza tu línea de tiempo al exportar. Tus proyectos recientes aparecen junto al formulario para que puedas retomar ediciones anteriores."
+          },
+          "media": {
+            "title": "2. Añade tus archivos",
+            "body": "Arrastra archivos de vídeo, imagen o audio al recuadro Media, o haz clic en «Elegir archivos». Cada subida se analiza y recibe una vista previa suave de 720p más una tira de fotogramas; verás un breve estado de «generando vista previa» mientras ocurre. Se admiten vídeo (mp4, mov, webm, mkv, …), imágenes (jpg, png, webp, heic, avif, gif, bmp, tiff) y audio (mp3, wav, m4a, aac, ogg, flac); las imágenes se mantienen como fotogramas fijos que puedes estirar hasta la duración que quieras, y puedes añadir tantos archivos como quieras."
+          },
+          "timeline": {
+            "title": "3. Monta tu línea de tiempo",
+            "body": "Coloca clips en la línea de tiempo haciendo clic en el + de una miniatura de medio (se añade a la primera pista que coincida) o arrastrando una miniatura de medio directamente a la pista que quieras. A partir de ahí puedes reorganizarlo todo:",
+            "bullets": {
+              "tracks": "Añade más pistas con los botones +V / +A: apila varias pistas de vídeo para superposiciones y varias pistas de audio para música y locución.",
+              "drag": "Arrastra un clip a lo largo de su pista para reubicarlo, o suéltalo en otra pista del mismo tipo (vídeo→vídeo, audio→audio). Los clips se ajustan a los bordes vecinos y a la cabeza de reproducción, y nunca se superponen.",
+              "trim": "Arrastra cualquiera de los bordes de un clip para recortar su punto de entrada/salida.",
+              "split": "Mueve la cabeza de reproducción y pulsa Cmd/Ctrl+K para dividir (cortar) el clip o clips que haya bajo ella.",
+              "ripple": "Selecciona un clip y usa Eliminar por ondulación para quitarlo y cerrar el hueco. Silencia toda una pista con el icono de altavoz, o ajusta el volumen de un clip con el control deslizante."
+            }
+          },
+          "effects": {
+            "title": "4. Añade efectos",
+            "body": "Selecciona un único clip para abrir el panel de Efectos de clip a la derecha. Desde ahí puedes aplicar un fundido encadenado, ajustes de color y superposiciones de texto/ubicación, todo previsualizado en directo e incorporado a la exportación final."
+          },
+          "color": {
+            "title": "Ajustes de color",
+            "body": "Haz clic en «Ajustar» bajo Color y afina Brillo, Contraste y Saturación. La vista previa se actualiza al instante (por ejemplo, baja la saturación a cero para un aspecto en blanco y negro). «Restablecer» elimina el ajuste."
+          },
+          "text": {
+            "title": "Superposiciones de texto y ubicación",
+            "body": "Haz clic en «Añadir texto» para colocar una etiqueta sobre el clip: escribe tu texto, elige un color, posiciónalo con los controles deslizantes X/Y y ajusta el tamaño a tu gusto. Las superposiciones son ideales para títulos o etiquetas de ubicación sobre imágenes de dron, y se dibujan directamente en el vídeo exportado."
+          },
+          "dissolve": {
+            "title": "Fundidos encadenados",
+            "body": "Con un clip que tenga otro clip antes en la misma pista seleccionado, arrastra el control deslizante de Fundido encadenado: el clip retrocede para superponerse con su vecino y ambos se mezclan durante esa duración, con el audio fundiéndose para coincidir."
+          },
+          "effectsAlt": "El panel de Efectos de clip con controles de fundido encadenado, color y superposición de texto para el clip seleccionado.",
+          "effectsCaption": "Al seleccionar un clip aparece el panel de Efectos de clip: fundido encadenado, color y superposiciones de texto.",
+          "colorAlt": "Controles deslizantes de ajuste de color para brillo, contraste y saturación, con la vista previa desaturada.",
+          "colorCaption": "Brillo / Contraste / Saturación actualizan la vista previa en directo; aquí la saturación se ha bajado para un aspecto en blanco y negro.",
+          "textAlt": "Una superposición de texto roja «This is my video!» dibujada sobre la vista previa con el editor de texto a la derecha.",
+          "textCaption": "Las superposiciones de texto se posicionan y estilizan en el panel, y se dibujan en la vista previa y en la exportación.",
+          "preview": {
+            "title": "5. Previsualiza tu edición",
+            "body": "Usa los controles de transporte bajo la vista previa para reproducir/pausar, avanzar fotograma a fotograma o saltar al inicio/final. Arrastra sobre la regla de la línea de tiempo para desplazarte; arrastra hasta el borde y la línea de tiempo se desplaza automáticamente para que puedas llegar a cualquier punto. Durante la reproducción, la vista sigue a la cabeza de reproducción automáticamente."
+          },
+          "export": {
+            "title": "6. Exporta a MP4",
+            "body": "Haz clic en «Exportar MP4», elige un nombre de archivo y una calidad, y Darkroom renderiza toda tu línea de tiempo en el servidor —componiendo las pistas de vídeo, mezclando el audio y aplicando tus efectos— y luego te da un enlace de descarga. El renderizado se hace en una GPU, así que los proyectos grandes terminan rápido."
+          },
+          "shortcuts": {
+            "title": "Atajos de teclado",
+            "body": "Espacio reproducir/pausar · ← / → avanzar un fotograma · S dividir en la cabeza de reproducción · Supr eliminar por ondulación la selección · + / − ampliar/reducir la línea de tiempo."
+          },
+          "cta": {
+            "title": "¿Listo para editar?",
+            "body": "Entra en Darkroom y empieza tu primera edición multipista.",
+            "button": "Abrir Darkroom"
+          },
+          "related": {
+            "title": "Herramientas y tutoriales relacionados",
+            "intro": "Sigue explorando otras páginas de Media Manipulator relacionadas.",
+            "studio": "Darkroom",
+            "studioDesc": "Abre el editor multipista.",
+            "video": "Primeros pasos con vídeo",
+            "videoDesc": "Convierte, comprime y recorta archivos de vídeo."
+          }
+        }
+      },
+      "imageGettingStarted": {
+        "title": "Primeros pasos: Convertir archivos de imagen",
+        "excerpt": "Tutorial completo del conversor de imagen: elegir un formato, calidad, dimensiones, recorte, filtros, tinte, superposiciones de texto, metadatos EXIF / IPTC / GPS y las herramientas de IA Privacidad facial, Eliminar fondo, Escalado con IA y Redactar texto.",
+        "readTime": "10 min de lectura"
+      },
+      "motion": {
+        "title": "Cómo animar un SVG con Motion",
+        "excerpt": "Una guía en cinco pasos de Motion: importa un SVG, anímalo con fotogramas clave, da forma al ritmo con suavizados y retenciones, expórtalo y elige el formato adecuado.",
+        "readTime": "7 min de lectura",
+        "page": {
+          "eyebrow": "Tutorial de animación",
+          "title": "Cómo animar un SVG con {{brand}}",
+          "intro": "{{brand}} convierte un SVG estático en una animación sin escribir código. Trabajas con capas y una línea de tiempo de fotogramas clave, como en una aplicación de motion design, y exportas el resultado como SVG animado, un archivo Lottie, un componente React, un módulo JavaScript o TypeScript, un widget de Flutter o un GIF. Esta guía va de un lienzo vacío a una exportación terminada en cinco pasos.",
+          "import": {
+            "title": "1. Importa un SVG o empieza desde cero",
+            "body": "Abre {{brand}} desde la página de la herramienta. El editor se abre a pantalla completa con un lienzo en blanco de 512 × 512. Elige Importar para traer tu ilustración, o dibuja directamente en el lienzo.",
+            "bullets": {
+              "svg": "Los archivos SVG se convierten en un árbol de capas: grupos, trazados, rectángulos, elipses, líneas, polígonos, texto, imágenes, degradados, máscaras y trazados de recorte son editables. Selecciona una capa en el panel Capas o en el lienzo, y cámbiale el nombre, agrúpala, bloquéala u ocúltala.",
+              "lottie": "Los archivos Lottie JSON se importan con sus fotogramas clave, así que puedes editar una animación existente. Lo que el editor no puede representar se enumera tras la importación en lugar de descartarse en silencio.",
+              "blank": "Para dibujar desde cero, usa las herramientas Rectángulo, Elipse, Línea, Pluma y Texto. Editar nodos te permite remodelar cualquier trazado punto a punto.",
+              "safety": "Las importaciones se limpian al entrar: los scripts, los controladores de eventos y los enlaces a archivos externos se eliminan y se enumeran, de modo que un SVG de la web no pueda ejecutar código en el editor ni en tus exportaciones."
+            }
+          },
+          "animate": {
+            "title": "2. Anima con fotogramas clave",
+            "body": "La línea de tiempo de la parte inferior del editor muestra una fila por capa y una pista por propiedad animada. {{brand}} usa la cabeza de reproducción para decidir dónde va un cambio.",
+            "bullets": {
+              "playhead": "Arrastra la cabeza de reproducción (o haz clic en la regla de tiempo) hasta el momento en que debe producirse el cambio. Espacio reproduce y pausa; Inicio y Fin saltan al principio y al final.",
+              "keyframe": "Con una capa seleccionada, usa Animar en una propiedad del inspector para darle una pista y luego cambia el valor. Cada cambio en un instante nuevo añade un fotograma clave; si cambias después una propiedad animada, se edita el fotograma clave de la cabeza de reproducción.",
+              "autokey": "Activa el fotograma clave automático para registrar como fotograma clave cada cambio que hagas en el lienzo o en el inspector, lo más rápido para bocetos iniciales.",
+              "animators": "El panel Animar añade efectos completos de una sola vez: Dibujar (el trazo se dibuja solo), Trayectoria de movimiento (la capa recorre un trazado), Morfosis (una forma se convierte en otra), Degradado, Máscara/Recorte y Desenfoque. Cada uno es un único paso de deshacer."
+            }
+          },
+          "easing": {
+            "title": "3. Da forma al ritmo con suavizados y retenciones",
+            "body": "El suavizado decide cómo viaja un valor entre dos fotogramas clave. Selecciona uno o más fotogramas clave en la línea de tiempo y elige un suavizado en el panel Suavizado; se aplica al segmento que empieza en cada fotograma clave seleccionado.",
+            "bullets": {
+              "presets": "Lineal, Entrada suave, Salida suave y Entrada y salida suaves cubren la mayor parte del movimiento. La salida suave va bien para lo que llega; la entrada suave, para lo que se va.",
+              "curve": "Curva abre un editor de bézier cúbico con dos manejadores, para un ritmo personalizado sin rebote que coincide exactamente con el cubic-bezier() de CSS.",
+              "hold": "Mantener conserva el valor sin cambios hasta el siguiente fotograma clave y entonces salta. Úsalo para parpadeos, cambios fotograma a fotograma o un color que cambia al instante.",
+              "range": "Fija un rango de reproducción para repetir solo la parte en la que trabajas, y desactiva Bucle si la animación debe reproducirse una sola vez."
+            }
+          },
+          "export": {
+            "title": "4. Exporta tu animación",
+            "body": "Elige Exportar para abrir el diálogo de exportación. Cada exportación se hace en tu navegador y se descarga al instante; tu ilustración no se sube. El SVG estático (el fotograma de la cabeza de reproducción) es siempre gratuito. Los formatos animados cuentan para el cupo diario de {{brand}} de tu plan, que el diálogo muestra antes de exportar, y los formatos que tu plan no incluye se marcan con un candado y un enlace a los planes."
+          },
+          "formats": {
+            "title": "5. Elige el formato adecuado",
+            "body": "El mejor formato depende de dónde se vaya a reproducir la animación.",
+            "bullets": {
+              "svg": "El SVG animado es un solo archivo que se reproduce sin ninguna biblioteca, ideal para sitios web. Usa solo CSS cuando puede; las morfosis de formas, las paradas de degradado en movimiento y el desenfoque necesitan un pequeño script integrado (anime.js, licencia MIT), y los scripts no se ejecutan cuando el SVG se coloca en una etiqueta <img>.",
+              "lottie": "Lottie JSON se reproduce en lottie-web y en los reproductores Lottie de iOS, Android y Flutter. El diálogo enumera todo lo que Lottie no admite, como filtros o texto.",
+              "code": "Las exportaciones a React (.tsx), JavaScript y TypeScript te dan un componente o módulo con play, pause y seek, listo para integrarlo en una aplicación.",
+              "flutter": "La exportación a Flutter es un widget nativo de flutter_svg cuando la animación solo mueve, atenúa y cambia de color, y un reproductor WebView para todo lo demás.",
+              "gif": "El GIF se reproduce en cualquier sitio, incluidos el chat y el correo, con una paleta global que mantiene exactos los colores planos del vector. Las exportaciones a GIF y vídeo siguen los límites de tamaño y duración de tu plan."
+            }
+          },
+          "save": {
+            "title": "Guardar tu trabajo",
+            "body": "{{brand}} guarda un borrador en este navegador mientras trabajas, así que cerrar la pestaña o un fallo no hace perder tus cambios. Sin cuenta, los proyectos viven solo en este navegador. Cuando has iniciado sesión, Guardar en la cuenta almacena el proyecto en nuestros servidores; a partir de entonces se guarda automáticamente, se abre en cualquier dispositivo y aparece en tu página Cuenta, donde puedes eliminarlo."
+          },
+          "cta": {
+            "title": "Prueba {{brand}} ahora",
+            "body": "Importa un SVG o empieza un dibujo en blanco. Editar y exportar SVG estático es gratis, sin cuenta.",
+            "button": "Abrir {{brand}}"
+          },
+          "related": {
+            "title": "Herramientas y tutoriales relacionados",
+            "intro": "Sigue explorando con estas páginas.",
+            "motionDesc": "La página de la herramienta, con los formatos y cupos de cada plan.",
+            "licenses": "Licencias de código abierto",
+            "licensesDesc": "Las bibliotecas que usa el editor y que se escriben en tus exportaciones.",
+            "darkroom": "Tutorial de Darkroom",
+            "darkroomDesc": "Edita vídeo en una línea de tiempo multipista y exporta MP4."
+          }
+        }
+      }
+    },
+    "newToHere": {
+      "title": "¿Nuevo por aquí?",
+      "body": "Empieza con nuestra visión general para ver todo lo que la plataforma puede hacer, y luego pasa a un tutorial que se ajuste al tipo de archivo con el que trabajas.",
+      "ctaHow": "Cómo funciona",
+      "ctaConvert": "Empezar a convertir"
+    }
+  },
+  "blog": {
+    "title": "Blog de conversión de medios",
+    "intro": "Guías de expertos, consejos e ideas sobre conversión de medios, optimización y formatos de archivo.",
+    "readMore": "Leer más →",
+    "articles": {
+      "videoCompression": {
+        "title": "La guía del autoestopista para la compresión de vídeo: MP4 vs WebM vs AVI",
+        "excerpt": "Aprende las diferencias entre formatos de vídeo y cuándo usar cada uno para obtener una calidad y un tamaño de archivo óptimos.",
+        "readTime": "8 min de lectura"
+      },
+      "imageOptimization": {
+        "title": "Optimización de imágenes para jedis de la web: JPG vs PNG vs WebP",
+        "excerpt": "Descubre cómo elegir el formato de imagen adecuado para tu sitio web y mejorar la velocidad de carga y la experiencia de usuario.",
+        "readTime": "8 min de lectura"
+      },
+      "audioQualityPrefix": "El sonido del",
+      "audioQualityStrike": "Silencio",
+      "audioQualitySuffix": "la calidad: tasas de bits, frecuencias de muestreo y formatos",
+      "audioQuality": {
+        "excerpt": "Entender los ajustes de calidad de audio para lograr el equilibrio perfecto entre tamaño de archivo y calidad de sonido.",
+        "readTime": "8 min de lectura"
+      }
+    },
+    "relatedLinks": {
+      "title": "¿Quieres probar las herramientas?",
+      "intro": "Las herramientas de Media Manipulator que complementan estos artículos son todas gratuitas.",
+      "allTools": {
+        "label": "Ver todas las herramientas",
+        "description": "Herramientas de imagen, vídeo, audio, IA y metadatos en un solo lugar."
+      },
+      "compressVideo": {
+        "label": "Comprimir vídeo",
+        "description": "Reduce el tamaño de un archivo de vídeo sin arruinar la calidad."
+      },
+      "removeExif": {
+        "label": "Eliminar metadatos EXIF",
+        "description": "Elimina los datos de GPS y del dispositivo antes de compartir fotos."
+      },
+      "homepage": {
+        "label": "Abrir el conversor de la página de inicio",
+        "description": "Convierte, edita, comprime y transcribe imágenes, vídeos y audio."
+      },
+      "tutorials": {
+        "label": "Ver los tutoriales",
+        "description": "Guías paso a paso de cada opción de conversión y herramienta de IA."
+      },
+      "howItWorks": {
+        "label": "Cómo funciona Media Manipulator",
+        "description": "Descubre cómo se procesan, escanean y almacenan temporalmente los archivos."
+      }
+    }
+  },
+  "legalCommon": {
+    "effectiveDate": "Fecha de entrada en vigor: 24/10/2026",
+    "lastUpdated": "Última actualización: 26/10/2026",
+    "operator": "Media Manipulator es un producto y servicio operado por CreaTV Ltd.",
+    "operatorEntity": "CreaTV Ltd.",
+    "operatingAs": "Que opera como Media Manipulator",
+    "location": "Colorado, EE. UU.",
+    "emailLabel": "Correo electrónico:",
+    "websiteLabel": "Sitio web:",
+    "whatChangedTitle": "Qué cambió el 26/10/2026",
+    "whatChangedBody": "Añadimos Motion, nuestro editor de animación SVG (en beta). La Política de Privacidad tiene una nueva sección 1.9: los proyectos y las exportaciones de Motion se crean en tu navegador y no se suben para crearlos; los proyectos que guardas en tu cuenta se almacenan como los proyectos de Darkroom, siguen el periodo de conservación que elijas y pueden eliminarse; y de cada exportación contabilizada registramos su formato, tamaño, duración y hora para aplicar el cupo diario. Las secciones 3, 3.3 y 3.4 ahora nombran los proyectos de Motion. La Sección 13 de los Términos confirma que tus exportaciones de Motion te pertenecen, explica que algunas exportaciones contienen código de anime.js con licencia MIT cuyo aviso debe conservarse, y remite a nuestra página de licencias de código abierto. Todo lo de la actualización del 25/10/2026 (el plan Pro, los cambios de plan y los reembolsos) sigue vigente. La sección 10 de los Términos ahora indica que puedes pagar en dólares estadounidenses o en euros al mismo precio, que en Europa se muestran euros por defecto y que la moneda de una suscripción no puede cambiar mientras esté activa; la sección 1.6 de la Política de Privacidad ahora enumera la moneda de facturación que guardamos y la cookie mm-currency que recuerda tu elección. La sección 8 indica ahora también que los traductores que contratamos envían su trabajo como pull requests de GitHub creadas por la GitHub App de CreaTV Ltd., y que esos envíos contienen solo texto de traducción y ningún dato personal de los visitantes."
+  },
+  "privacyPolicy": {
+    "title": "Política de privacidad",
+    "intro": "Media Manipulator es propiedad de CreaTV Ltd. y está operado por ella (“CreaTV”, “Media Manipulator”, “nosotros” o “nuestro”). Media Manipulator ofrece herramientas basadas en el navegador y asistidas por servidor para editar, convertir, comprimir, analizar, transcribir, resumir y procesar de otro modo archivos de imagen, vídeo y audio.",
+    "blockquote": "Cuando Media Manipulator utiliza funciones asistidas por IA, esos sistemas de IA se ejecutan localmente en nuestros propios servidores o en infraestructura que controlamos, y no se subcontratan a proveedores de IA externos.",
+    "explanation": "Esta Política de privacidad explica cómo recopilamos, usamos, almacenamos, protegemos y eliminamos la información cuando utilizas nuestro sitio web, herramientas y servicios relacionados.",
+    "acceptance": "Al utilizar Media Manipulator, aceptas las prácticas descritas en esta Política de privacidad.",
+    "sections": [
+      {
+        "title": "1. Información que recopilamos",
+        "paragraphs": [
+          "Recopilamos información de varias maneras según cómo utilices el sitio web."
+        ],
+        "subsections": [
+          {
+            "title": "1.1 Archivos que subes",
+            "paragraphs": [
+              "Cuando subes una imagen, un vídeo, un archivo de audio u otro archivo multimedia compatible a Media Manipulator, podemos procesar temporalmente ese archivo para ofrecer la funcionalidad de la herramienta solicitada, como por ejemplo:"
+            ],
+            "bullets": [
+              "convertir un archivo a otro formato;",
+              "recortar, cortar, redimensionar, comprimir, filtrar o editar contenido multimedia;",
+              "extraer o mostrar metadatos;",
+              "eliminar metadatos;",
+              "generar transcripciones, subtítulos, resúmenes, descripciones u otros resultados asistidos por IA;",
+              "crear archivos procesados descargables;",
+              "mantener tu historial de conversiones para que puedas descargar o volver a abrir las conversiones recientes."
+            ],
+            "afterBullets": [
+              "Los archivos subidos y los resultados generados se conservan durante el periodo de retención descrito en la Sección 3: 24 horas si no tienes una cuenta, o el periodo que elijas si has iniciado sesión. Puedes eliminarlos antes.",
+              "Si usas el inspector de metadatos, el archivo se analiza en nuestro servidor con ExifTool y ffprobe, el informe se devuelve a tu navegador y la copia temporal del archivo subido se elimina en cuanto termina el análisis."
+            ]
+          },
+          {
+            "title": "1.2 Metadatos de archivos y conversiones",
+            "paragraphs": [
+              "Podemos recopilar información técnica sobre los archivos subidos y los trabajos de conversión, incluyendo:"
+            ],
+            "bullets": [
+              "nombre del archivo;",
+              "tipo de archivo o tipo MIME;",
+              "tamaño del archivo;",
+              "duración, dimensiones, tasa de bits, códec u otras propiedades técnicas del archivo;",
+              "ajustes de conversión seleccionados por el usuario;",
+              "formato del resultado generado;",
+              "estado del trabajo, errores de procesamiento y marcas de tiempo;",
+              "identificadores temporales de archivo o de sesión."
+            ],
+            "afterBullets": [
+              "Utilizamos esta información para operar el servicio, solucionar problemas en conversiones fallidas, mantener el historial temporal de la sesión, mejorar el rendimiento, detectar abusos y proteger el sitio web."
+            ]
+          },
+          {
+            "title": "1.3 Análisis de contenido y revisión de seguridad",
+            "paragraphs": [
+              "Todos los archivos subidos pueden estar sujetos a análisis y clasificación automatizados por motivos de seguridad, prevención de abusos, seguridad de marca, protección de anunciantes, y detección o bloqueo de contenido presuntamente ilegal o prohibido.",
+              "Estos análisis pueden utilizarse para identificar o ayudar a prevenir contenido relacionado, por ejemplo, con:"
+            ],
+            "bullets": [
+              "presunto material de abuso sexual infantil o explotación infantil;",
+              "malware, archivos maliciosos o código dañino;",
+              "contenido que parezca infringir la ley aplicable;",
+              "contenido que infrinja nuestros Términos del servicio o las normas de uso aceptable;",
+              "contenido para adultos, sexualmente explícito, gráfico, violento o sensible para los anunciantes."
+            ],
+            "afterBullets": [
+              "Si se determina o se sospecha que un contenido es ilegal, está prohibido, es abusivo o inseguro, podemos bloquear su procesamiento, eliminar el archivo, impedir la visualización de vistas previas, restringir el acceso a los resultados generados, conservar registros limitados cuando la ley lo exija, o informar del contenido a las autoridades competentes si la ley lo requiere.",
+              "Si el contenido es lícito pero se clasifica como para adultos, gráfico, violento o sensible para los anunciantes, podemos impedir que se muestre o se previsualice en el sitio web con el fin de proteger a los usuarios, nuestra marca y a los anunciantes. En algunos casos, cuando sea lícito y técnicamente posible, es posible que el usuario aún pueda descargar el archivo procesado.",
+              "Los usuarios son los únicos responsables de los archivos que suben y de garantizar que disponen de todos los derechos, permisos y autoridad legal necesarios para procesar dichos archivos mediante Media Manipulator."
+            ]
+          },
+          {
+            "title": "1.4 Datos de uso",
+            "paragraphs": [
+              "Cuando visitas o utilizas Media Manipulator, podemos recopilar automáticamente información de uso y del dispositivo, como:"
+            ],
+            "bullets": [
+              "páginas visitadas;",
+              "herramientas utilizadas;",
+              "botones pulsados;",
+              "ubicación aproximada según la dirección IP;",
+              "tipo y versión del navegador;",
+              "sistema operativo;",
+              "tipo de dispositivo;",
+              "origen de la referencia;",
+              "marcas de tiempo;",
+              "registros de diagnóstico;",
+              "registros de errores;",
+              "datos de rendimiento;",
+              "eventos de analítica."
+            ],
+            "afterBullets": [
+              "Utilizamos esta información para entender cómo utilizan los usuarios el sitio web, mejorar las funciones, diagnosticar problemas, prevenir abusos y medir el rendimiento del sitio web."
+            ]
+          },
+          {
+            "title": "1.5 Cookies y tecnologías similares",
+            "paragraphs": [
+              "Nosotros y nuestros proveedores de servicios podemos utilizar cookies, almacenamiento local, píxeles, etiquetas y tecnologías similares para:"
+            ],
+            "bullets": [
+              "operar el sitio web;",
+              "recordar las preferencias del usuario;",
+              "mantener la funcionalidad de la sesión;",
+              "analizar el tráfico y el uso;",
+              "detectar abusos o riesgos de seguridad;",
+              "mostrar y medir anuncios."
+            ],
+            "afterBullets": [
+              "Puedes controlar las cookies a través de los ajustes de tu navegador. Es posible que algunas funciones no funcionen correctamente si las cookies o el almacenamiento local están desactivados."
+            ]
+          },
+          {
+            "title": "1.6 Datos de pago y de suscripción",
+            "paragraphs": [
+              "Si te suscribes a Premium o a Pro, el pago lo gestiona nuestro procesador de pagos, Stripe. Los datos de tu tarjeta se introducen en las páginas de Stripe y los procesa Stripe; nosotros no recibimos ni almacenamos números de tarjeta.",
+              "Solo guardamos lo necesario para gestionar tu suscripción: tu identificador de cliente de Stripe, el estado de la suscripción, tu plan (Premium o Pro), el periodo de facturación (mensual o anual) la moneda en la que se te factura (dólares estadounidenses o euros), y la fecha en que termina el periodo actual. Un cambio de plan que programes (por ejemplo, de Pro a Premium al final del periodo) lo conserva Stripe, y lo leemos de Stripe para mostrarlo en tu página de cuenta. Usamos esta información para darte el plan correcto, mostrar tu estado de facturación y gestionar reembolsos y solicitudes de soporte. Si eliges una moneda en la página de precios, la recordamos en una cookie llamada mm-currency y en el almacenamiento local de tu navegador y, si has iniciado sesión, en los ajustes de tu cuenta; solo contiene «usd» o «eur».",
+              "Nuestra cuenta de Stripe pertenece a CreaTV Ltd., la empresa que opera Media Manipulator. Por eso, la página de pago de Stripe muestra la marca de CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator. El cargo en el extracto de tu tarjeta aparece como «MEDIA MNPLTR PREMIUM»."
+            ]
+          },
+          {
+            "title": "1.7 Información de la cuenta",
+            "paragraphs": [
+              "Si creas una cuenta, el inicio de sesión lo gestiona Firebase Authentication, un servicio de Google. Puedes iniciar sesión con una dirección de correo y una contraseña o con tu cuenta de Google. Firebase guarda tus credenciales y envía los correos que necesita para el inicio de sesión, como la verificación del correo.",
+              "Por nuestra parte guardamos un registro de tu cuenta: tu correo electrónico, tu nombre visible, si tu correo está verificado, tu identificador de inicio de sesión de Firebase, tu plan, cuándo te registraste y cuándo usaste el servicio por última vez, los ajustes de conservación que elegiste y tu historial de conversiones y proyectos (Sección 3). Enviamos un pequeño número de correos de servicio desde Media Manipulator: un correo de bienvenida, avisos de pago y de eliminación de la cuenta y, si los mantienes activados en los ajustes de tu cuenta, recordatorios antes de que caduquen tus archivos y avisos cuando termina una tarea larga de IA. No enviamos correo de marketing. Los correos se entregan a través de nuestro proveedor de correo, Resend."
+            ]
+          },
+          {
+            "title": "1.8 Darkroom dentro de CreaTV Studio",
+            "paragraphs": [
+              "Darkroom, nuestro editor de vídeo, también puede estar integrado en CreaTV Studio, un producto de la misma empresa. En ese modo, CreaTV Studio pasa tu token de inicio de sesión de CreaTV al editor integrado a través de tu navegador (un mensaje entre la página de CreaTV y el editor), y el editor lo usa únicamente para llamar a los servicios de estudio de CreaTV. Tus proyectos, medios y exportaciones se almacenan y procesan entonces en los servicios de CreaTV bajo tu cuenta de CreaTV, no en una cuenta de Media Manipulator, y se les aplica la política de privacidad de CreaTV.",
+              "CreaTV Studio también informa al editor integrado de si has aceptado la analítica y la publicidad en CreaTV. El editor integrado no muestra nuestro aviso de cookies ni anuncios, y no ejecuta nuestra analítica."
+            ]
+          },
+          {
+            "title": "1.9 Proyectos y exportaciones de Motion",
+            "paragraphs": [
+              "Motion, nuestro editor de animación SVG, se ejecuta en tu navegador. Los dibujos que importas o creas y los archivos que exportas a partir de ellos (SVG animado, Lottie, código, GIF y otros formatos) se producen en tu navegador. No recibimos tus ilustraciones ni los archivos exportados para crearlos.",
+              "Sin una cuenta, los proyectos de Motion se conservan únicamente en tu navegador (en IndexedDB) y nunca llegan a nuestros servidores. Si has iniciado sesión y eliges «Guardar en la cuenta», el proyecto y una pequeña imagen en miniatura se almacenan en nuestros servidores y en Amazon S3 del mismo modo que un proyecto de Darkroom: son tu contenido, siguen el periodo de conservación que elijas (Sección 3), puedes eliminarlos desde tu página Cuenta, se eliminan junto con tu cuenta y figuran en tu exportación de datos.",
+              "Cada exportación animada y cada importación de Lottie se cuenta en nuestro servidor antes de que tu navegador la ejecute, para aplicar el cupo diario de Motion de tu plan. De cada una almacenamos el formato, la altura de salida, la tasa de fotogramas y la duración, la hora, tu plan, el proyecto guardado del que procede (si lo hay) y un identificador de tu cuenta, de la sesión de tu navegador o de una dirección IP con hash. Usamos estos registros para aplicar el cupo y para saber qué formatos se usan. Cuando eliminas tu cuenta, se desvinculan de tu identidad."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "2. Cómo utilizamos la información",
+        "paragraphs": [
+          "Utilizamos la información que recopilamos para:"
+        ],
+        "bullets": [
+          "ofrecer herramientas de conversión, edición, transcripción, metadatos, análisis con IA y otras herramientas relacionadas;",
+          "almacenar tu historial de conversiones durante el periodo de retención que te corresponda (24 horas para visitantes sin cuenta, o el periodo que elijas si has iniciado sesión);",
+          "permitir que los usuarios descarguen las conversiones recientes mientras se conservan;",
+          "analizar los archivos subidos en busca de contenido presuntamente ilegal, prohibido, abusivo o sensible para los anunciantes;",
+          "proteger a los usuarios, a los anunciantes, nuestro sitio web y nuestra marca;",
+          "prevenir el fraude, los abusos, el spam, el malware y los incidentes de seguridad;",
+          "depurar errores y mejorar la fiabilidad del servicio;",
+          "analizar el tráfico y las tendencias de uso;",
+          "mejorar nuestro sitio web, nuestras herramientas, la experiencia de usuario y el rendimiento;",
+          "cumplir con obligaciones legales;",
+          "hacer cumplir nuestros Términos del servicio y las normas de uso aceptable."
+        ]
+      },
+      {
+        "id": "retention",
+        "title": "3. Almacenamiento, retención y eliminación de archivos",
+        "paragraphs": [
+          "El tiempo que conservamos tus archivos depende de si tienes una cuenta. Esta sección abarca los archivos subidos, los resultados generados, los medios de Darkroom, los proyectos de Darkroom y los proyectos de Motion guardados en tu cuenta, almacenados en nuestros servidores y en Amazon S3 (us-west-2). Los registros sobre tus conversiones y ajustes (como el historial de trabajos, las opciones de conservación y los datos de la cuenta) se guardan en una base de datos PostgreSQL, y el procesamiento de IA se ejecuta en nuestro propio servidor GPU autoalojado."
+        ],
+        "subsections": [
+          {
+            "title": "3.1 Cuánto tiempo conservamos tus archivos",
+            "bullets": [
+              "Visitantes sin cuenta: los archivos se conservan durante 24 horas.",
+              "Usuarios con sesión iniciada: eliges un periodo de retención de 24 horas a 2 años. Todas las cuentas tienen esta opción; no depende de tu plan. Mientras no elijas, el valor predeterminado es de 6 meses."
+            ],
+            "afterBullets": [
+              "El periodo se cuenta desde que se creó cada archivo o proyecto. Cuando cambias el periodo, también se aplica a tus archivos existentes, medido desde su fecha de creación, por lo que elegir un periodo más corto puede hacer que se eliminen poco después archivos existentes. Puedes conservar un resultado concreto más tiempo desde tu Historial.",
+              "Si inicias sesión después de haber usado el servicio como visitante, los archivos de esa visita pueden asociarse a tu cuenta y pasan a seguir el periodo que hayas elegido.",
+              "Los archivos caducados se eliminan mediante una limpieza automática que se ejecuta con regularidad, por lo que la eliminación puede producirse poco después de que termine el periodo. Tras la eliminación, los archivos dejan de estar disponibles en nuestros sistemas activos. No conservamos copias de seguridad de los medios.",
+              "Historial reciente en este dispositivo: para los visitantes sin cuenta, la lista «Recientes» de la página de inicio y de las páginas de herramientas se guarda solo en este navegador (en IndexedDB). Contiene el ID del trabajo, la herramienta, el nombre del archivo de resultado, el tamaño, las fechas y una miniatura pequeña, nunca el archivo en sí. No se nos envía y puedes eliminarla en cualquier momento con «Borrar recientes»."
+            ]
+          },
+          {
+            "title": "3.2 Informes de metadatos",
+            "paragraphs": [
+              "Los informes de metadatos son registros pequeños que describen las propiedades técnicas de un archivo. De forma predeterminada, el informe de metadatos de un archivo se elimina cuando se elimina el archivo, tanto si lo eliminas tú como si se borra al final del periodo de retención. La pestaña Privacidad y datos de tu página Cuenta tiene un ajuste que te permite elegir conservar los informes de metadatos una vez eliminados sus archivos. Los visitantes sin cuenta no tienen este ajuste: sus informes de metadatos siempre se eliminan junto con sus archivos."
+            ]
+          },
+          {
+            "title": "3.3 Eliminar tus archivos",
+            "paragraphs": [
+              "Si tienes una cuenta, puedes eliminar un resultado, un proyecto de Darkroom o un proyecto de Motion concreto, eliminar todos tus archivos a la vez o eliminar toda tu cuenta desde la página Cuenta. Los visitantes sin cuenta pueden eliminar sus propios resultados durante la sesión en la que se crearon."
+            ]
+          },
+          {
+            "title": "3.4 Eliminar tu cuenta",
+            "paragraphs": [
+              "Cuando eliminas tu cuenta desde la página Cuenta, nosotros:"
+            ],
+            "bullets": [
+              "cancelamos tu suscripción Premium o Pro en Stripe, si tienes una;",
+              "eliminamos tus archivos y tus proyectos de Darkroom y de Motion;",
+              "eliminamos el registro de tu cuenta y tus ajustes, y desvinculamos de tu identidad el resto de tus registros de actividad;",
+              "pedimos a nuestra analítica propia que elimine los datos analíticos vinculados a tu cuenta (consulta la Sección 6);",
+              "eliminamos tu acceso de inicio de sesión."
+            ],
+            "afterBullets": [
+              "Durante los 30 días siguientes conservamos un registro mínimo de eliminación que contiene solo un hash unidireccional del identificador de tu cuenta y la fecha de eliminación. Existe para que nada de la cuenta eliminada pueda vincularse a un nuevo registro, y después se purga automáticamente. Los datos que conserva Stripe se rigen por las políticas propias de Stripe. Si algún paso no puede completarse, la página Cuenta te lo indica y puedes contactarnos en la dirección de la Sección 16."
+            ]
+          },
+          {
+            "title": "3.5 Exportar tus datos",
+            "paragraphs": [
+              "Los usuarios con sesión iniciada pueden descargar una exportación de sus datos desde la página Cuenta. Es un archivo ZIP que contiene tu historial, proyectos, lista de archivos, datos de cuenta e informes de metadatos. No contiene los archivos multimedia en sí, así que descárgalos antes de que caduquen. Las exportaciones están limitadas a un número reducido de solicitudes por hora."
+            ]
+          },
+          {
+            "title": "3.6 Otros registros",
+            "paragraphs": [
+              "Podemos conservar durante más tiempo registros técnicos limitados, registros de seguridad, registros de prevención de abusos, registros analíticos o registros de cumplimiento legal cuando sea razonablemente necesario para operar el servicio, protegernos frente a abusos, aplicar nuestras políticas, cumplir la ley, resolver disputas o mantener la seguridad. Estos registros no están pensados para conservar archivos multimedia subidos completos una vez terminado su periodo de retención. Los datos analíticos siguen los plazos de la Sección 6.3."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "4. Procesamiento con IA",
+        "paragraphs": [
+          "Algunas funciones de Media Manipulator pueden utilizar sistemas automatizados o herramientas asistidas por IA para procesar el contenido multimedia subido, metadatos, audio, vídeo, texto, transcripciones, subtítulos, descripciones, resúmenes u otro contenido.",
+          "Las funciones asistidas por IA pueden utilizarse para:"
+        ],
+        "bullets": [
+          "transcribir audio o vídeo;",
+          "generar subtítulos;",
+          "resumir contenido;",
+          "describir imágenes, vídeos o audio;",
+          "clasificar contenido por motivos de seguridad o idoneidad para la marca;",
+          "detectar contenido presuntamente ilegal, prohibido, abusivo, para adultos, violento, gráfico o sensible para los anunciantes;",
+          "ayudar a prevenir el uso indebido del servicio."
+        ],
+        "afterBullets": [
+          "Todo el procesamiento con IA que utiliza Media Manipulator se realiza localmente en nuestros propios servidores o en infraestructura que controlamos. No subcontratamos el procesamiento de archivos subidos, resultados generados, transcripciones, resúmenes, descripciones o análisis de seguridad de contenido a proveedores de IA externos.",
+          "Las funciones de IA usan modelos y herramientas abiertos que ejecutamos nosotros mismos, principalmente en un servidor GPU autoalojado: Whisper para la transcripción, Real-ESRGAN para el escalado de imágenes, Demucs para separar audio y otros modelos locales, además de modelos de lenguaje y de visión servidos mediante Ollama para tareas de texto como resúmenes, descripciones y traducción de subtítulos.",
+          "Esto significa que, cuando se utilizan funciones de IA, tus archivos subidos y los resultados generados permanecen dentro del entorno de procesamiento de Media Manipulator y se gestionan conforme a las prácticas de almacenamiento, conservación, eliminación y seguridad descritas en esta Política de privacidad.",
+          "Los archivos subidos y los resultados generados se conservan y se eliminan como se describe en la Sección 3, también cuando se usan funciones de IA. Una vez transcurrido el periodo de retención aplicable, se eliminan de nuestros sistemas activos, salvo que se produzca una eliminación anterior o que la ley exija una conservación limitada por motivos de seguridad, prevención de abusos, cumplimiento legal o aplicación de la normativa.",
+          "Los resultados generados por IA pueden ser imperfectos, incompletos o inexactos. Los usuarios son responsables de revisar cualquier resultado generado por IA antes de confiar en él.",
+          "No utilizamos los archivos subidos para identificar públicamente a los usuarios. No reclamamos la propiedad de los archivos subidos. No vendemos los archivos subidos ni los resultados generados. No facilitamos los archivos subidos ni los resultados generados a proveedores de IA externos para el entrenamiento de modelos o el procesamiento con IA."
+        ]
+      },
+      {
+        "title": "5. Publicidad",
+        "paragraphs": [
+          "Media Manipulator puede mostrar anuncios, incluidos anuncios servidos por Google AdSense u otros socios publicitarios.",
+          "La publicidad es limitada y puede cambiar. Solo mostramos anuncios en páginas de herramientas seleccionadas, nunca en nuestra página de inicio, de precios, de cuenta ni en las páginas legales, y los suscriptores Premium y Pro no ven anuncios. Los anuncios solo aparecen cuando la publicidad está activada para el sitio, y el script de anuncios de Google solo se carga en una página que realmente muestra un anuncio. Las señales de consentimiento de Google para publicidad están denegadas por defecto y se actualizan según tu elección en «Ajustes de cookies» en el pie de página.",
+          "Proveedores externos, incluido Google, pueden utilizar cookies para mostrar anuncios en función de las visitas anteriores de un usuario a Media Manipulator o a otros sitios web. El uso de cookies publicitarias por parte de Google permite que Google y sus socios muestren anuncios a los usuarios en función de su visita a Media Manipulator y/o a otros sitios de Internet.",
+          "Los usuarios pueden desactivar la publicidad personalizada visitando la Configuración de anuncios de Google. Los usuarios también pueden desactivar el uso de cookies de algunos proveedores externos para publicidad personalizada visitando las páginas de exclusión del sector, cuando estén disponibles.",
+          "Los socios publicitarios pueden recopilar o recibir información de nuestro sitio web y de otros sitios web, y utilizar esa información para ofrecer servicios de medición y anuncios dirigidos.",
+          "No controlamos las cookies publicitarias ni las tecnologías de seguimiento de terceros. Su uso se rige por las políticas de privacidad de los terceros que las proporcionan."
+        ]
+      },
+      {
+        "title": "6. Analítica",
+        "paragraphs": [
+          "Media Manipulator utiliza su propia analítica de origen (first-party), desarrollada y operada por nosotros y alojada en nuestra propia infraestructura en analytics.media-manipulator.com. Es la principal forma en que entendemos qué herramientas se utilizan, dónde fallan y qué debemos desarrollar a continuación.",
+          "Anteriormente utilizábamos Mixpanel y Firebase Analytics. Ambos se han eliminado, así como la supervisión de Firebase Performance. Firebase ahora solo se utiliza para el inicio de sesión de la cuenta."
+        ],
+        "subsections": [
+          {
+            "title": "6.1 Qué recopila nuestra analítica",
+            "paragraphs": [
+              "Cuando has dado tu consentimiento para la analítica, registramos eventos como:"
+            ],
+            "bullets": [
+              "las páginas vistas y cuánto tiempo estuviste interactuando activamente con ellas;",
+              "qué herramienta utilizaste y el resultado: archivo seleccionado, subida iniciada o fallida, trabajo iniciado, completado o fallido, resultado previsualizado, descarga iniciada o completada;",
+              "la extensión, el tamaño y el tipo de contenido multimedia del archivo que procesaste;",
+              "los ajustes de herramienta que elegiste, registrados como valores predefinidos o rangos y no como texto libre;",
+              "eventos de cuenta: creación de una cuenta, inicio o cierre de sesión;",
+              "mediciones de rendimiento de la página (Core Web Vitals) y errores del lado del cliente;",
+              "el tipo de dispositivo, el navegador y su versión, el sistema operativo, el tamaño del viewport, el idioma y la zona horaria;",
+              "el sitio web de referencia y cualquier parámetro de campaña presente en el enlace por el que llegaste;",
+              "tu país, región y ciudad, derivados de tu dirección IP;",
+              "tu nivel de cuenta en el momento de cada evento."
+            ],
+            "afterBullets": [
+              "Cada evento incluye un identificador de dispositivo anónimo y un identificador de visita, de modo que una secuencia de acciones pueda entenderse como una sola visita. Si has iniciado sesión, los eventos también se asocian a tu cuenta."
+            ]
+          },
+          {
+            "title": "6.2 Qué no recopila nunca nuestra analítica",
+            "paragraphs": [
+              "Se trata de garantías técnicas aplicadas en nuestro código, no solo de una política:"
+            ],
+            "bullets": [
+              "No almacenamos tu dirección IP en los eventos de analítica. Tu IP se utiliza en memoria para obtener una ubicación aproximada y el operador de red, y después se descarta antes de registrar el evento.",
+              "No recopilamos nombres de archivo. Solo se registra la extensión del archivo.",
+              "No recopilamos el contenido de tus archivos, transcripciones, subtítulos, resúmenes ni ningún resultado generado por IA.",
+              "No recopilamos direcciones de correo electrónico en los datos de los eventos. Cualquier elemento que se parezca a una dirección de correo electrónico se elimina automáticamente, tanto en tu navegador como de nuevo en nuestro servidor.",
+              "Nuestra analítica propia no usa cookies. Sus identificadores se guardan en el almacenamiento local de tu navegador, y nuestro punto de conexión de analítica está configurado para que tu navegador no pueda enviarle cookies en absoluto. Google Analytics 4 (Sección 6.4) es independiente y, si permites la analítica, puede establecer sus propias cookies.",
+              "No vendemos tus datos de analítica. Los únicos datos de analítica que salen de nuestros sistemas son los tres eventos de Google Analytics 4 descritos en la Sección 6.4, sujetos a tu elección sobre la analítica."
+            ]
+          },
+          {
+            "title": "6.3 Cuánto tiempo la conservamos",
+            "bullets": [
+              "Eventos individuales y registros de visitas: 13 meses, transcurridos los cuales se eliminan automáticamente.",
+              "Registros de dispositivo y de cuenta: se eliminan tras 25 meses sin actividad.",
+              "Registros de tus decisiones de consentimiento: 5 años, porque estamos obligados a poder demostrar qué aceptaste y cuándo.",
+              "Estadísticas diarias agregadas, que no contienen identificadores ni describen a ninguna persona: se conservan indefinidamente."
+            ]
+          },
+          {
+            "title": "6.4 Google Analytics 4",
+            "paragraphs": [
+              "Mantenemos una configuración deliberadamente mínima de Google Analytics 4 como contraste independiente de nuestras propias cifras. El script de analítica de Google se carga solo después de que consientas la analítica, y antes de eso no se envía nada a Google: ni solicitud del script, ni eventos, ni tu dirección IP o datos del navegador. Una vez que consientes, se envían a Google exactamente tres eventos: una visita de página (con la dirección y el título de la página), un registro de cuenta (con el método de registro) y un trabajo completado (con el nombre de la herramienta y el tipo de medio). No se reenvía nada más, y los eventos anteriores a tu consentimiento no se envían. Si retiras el consentimiento, dejamos de enviar eventos a Google. Una vez permitida la analítica, Google recibe los datos técnicos que implica cualquier solicitud web, como tu dirección IP y datos del navegador, y puede establecer sus propias cookies."
+            ]
+          },
+          {
+            "title": "6.5 Si rechazas la analítica",
+            "paragraphs": [
+              "Si rechazas la analítica, no registramos ningún evento sobre ti. Mantenemos un único recuento de cuántas veces se ha visto cada página, desglosado por país y fecha, sin ningún identificador de ningún tipo asociado; ni individualmente ni en combinación, una fila de ese recuento puede rastrearse hasta una persona, un dispositivo o una visita. Existe para que un cambio en cuántas personas rechazan la analítica no pueda confundirse con un cambio en cuántas personas visitan el sitio."
+            ]
+          },
+          {
+            "title": "6.6 Identificadores que utilizamos independientemente de tu elección",
+            "paragraphs": [
+              "Los identificadores anónimos de dispositivo y de visita descritos anteriormente se crean independientemente de si consientes o no la analítica, porque nuestra API los necesita para aplicar los límites del nivel gratuito y bloquear abusos. Se trata de una finalidad estrictamente necesaria y no de analítica: sin ellos no podríamos ofrecer las herramientas sin necesidad de una cuenta. Lo que controla tu consentimiento es si registramos eventos de comportamiento asociados a esos identificadores."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "7. Base legal para el tratamiento",
+        "paragraphs": [
+          "Dependiendo de dónde te encuentres, podemos tratar la información personal basándonos en una o varias bases legales, entre ellas:"
+        ],
+        "bullets": [
+          "la prestación del servicio solicitado por el usuario;",
+          "nuestros intereses legítimos en operar, proteger, mejorar y rentabilizar el sitio web;",
+          "el cumplimiento de obligaciones legales;",
+          "el consentimiento del usuario cuando sea necesario, incluido para determinadas cookies, la analítica, la publicidad personalizada o el tratamiento relacionado con la IA."
+        ],
+        "afterBullets": [
+          "En concreto, para nuestra analítica de origen: en el EEE, el Reino Unido y Suiza nos basamos en tu consentimiento y no recopilamos nada hasta que lo hayas otorgado. En Estados Unidos nos basamos en la notificación y en tu derecho a excluirte, disponible en cualquier momento desde el pie de página. Cuando no podemos determinar tu ubicación, te tratamos como si necesitaras dar tu consentimiento.",
+          "Los identificadores anónimos de dispositivo y de visita utilizados para aplicar los límites del nivel gratuito y prevenir abusos se basan en nuestro interés legítimo en operar y proteger el servicio, y en prestar el servicio que solicitaste. Los registros de tus decisiones de consentimiento se conservan para cumplir con la obligación legal de poder demostrarlas."
+        ]
+      },
+      {
+        "title": "8. Compartición de información",
+        "paragraphs": [
+          "Podemos compartir información con:"
+        ],
+        "bullets": [
+          "proveedores de alojamiento e infraestructura en la nube;",
+          "Amazon Web Services, que aloja nuestro almacenamiento de archivos (Amazon S3, región us-west-2);",
+          "Google, para Firebase Authentication (inicio de sesión), los eventos limitados de Google Analytics 4 descritos en la Sección 6.4 y, donde se muestren anuncios, Google AdSense;",
+          "socios publicitarios;",
+          "proveedores de seguridad, detección de abusos y seguridad de contenido;",
+          "el procesamiento con IA se realiza localmente en nuestros propios servidores o en infraestructura que controlamos, y no compartimos archivos subidos, resultados generados, transcripciones, resúmenes, descripciones o análisis de seguridad de contenido con proveedores de IA externos para el procesamiento con IA;",
+          "Stripe, nuestro procesador de pagos, cuando te suscribes a Premium o a Pro (no recibimos ni almacenamos el número de tu tarjeta);",
+          "fuerzas y cuerpos de seguridad, organismos reguladores o autoridades cuando lo exija la ley o cuando sea necesario para informar de presunto contenido ilegal;",
+          "asesores profesionales, como abogados, contables o consultores de seguridad;",
+          "sucesores empresariales en caso de fusión, adquisición, financiación, reorganización o venta de activos."
+        ],
+        "afterBullets": [
+          "No vendemos los archivos subidos.",
+          "Los traductores que contratamos envían su trabajo como pull requests de GitHub creadas por la GitHub App de CreaTV Ltd.; esos envíos contienen solo texto de traducción, sin datos personales de los visitantes."
+        ]
+      },
+      {
+        "title": "9. Responsabilidades del usuario",
+        "paragraphs": [
+          "Los usuarios son responsables del contenido que suben, procesan, convierten, editan, transcriben, resumen o descargan a través de Media Manipulator.",
+          "Los usuarios no deben subir contenido que:"
+        ],
+        "bullets": [
+          "no les pertenezca o para el que no tengan permiso de procesamiento;",
+          "infrinja derechos de autor, marcas, derechos de privacidad, derechos de imagen u otros derechos legales;",
+          "contenga material de abuso sexual infantil o explotación infantil;",
+          "contenga malware, virus o código dañino;",
+          "sea ilegal poseer, procesar, subir, distribuir o transmitir;",
+          "infrinja nuestros Términos del servicio o las normas de uso aceptable."
+        ],
+        "afterBullets": [
+          "El uso de Media Manipulator no transfiere la propiedad del contenido subido a nosotros."
+        ]
+      },
+      {
+        "title": "10. Seguridad",
+        "paragraphs": [
+          "Aplicamos medidas técnicas y organizativas razonables diseñadas para proteger los archivos subidos, los resultados generados, los registros y otra información frente al acceso no autorizado, el uso indebido, la pérdida o la divulgación.",
+          "No obstante, ningún servicio en línea, sistema de almacenamiento o método de transmisión es completamente seguro. Los usuarios deben evitar subir contenido altamente sensible, confidencial o legalmente restringido, a menos que comprendan y acepten los riesgos."
+        ]
+      },
+      {
+        "title": "11. Privacidad de los menores",
+        "paragraphs": [
+          "Media Manipulator no está destinado a menores de 13 años, ni a menores de la edad mínima exigida por la ley aplicable en la jurisdicción del usuario.",
+          "No recopilamos conscientemente información personal de menores. Si tenemos conocimiento de que hemos recopilado información personal de un menor sin el consentimiento adecuado, tomaremos medidas para eliminarla."
+        ]
+      },
+      {
+        "title": "12. Usuarios internacionales",
+        "paragraphs": [
+          "Media Manipulator puede operarse desde Estados Unidos u otras ubicaciones. Si accedes al sitio web desde fuera de Estados Unidos, tu información puede tratarse en países que pueden tener leyes de protección de datos distintas a las de tu país de residencia.",
+          "Al utilizar Media Manipulator, entiendes que tu información puede transferirse y tratarse en Estados Unidos o en otras jurisdicciones."
+        ]
+      },
+      {
+        "title": "13. Tus opciones y derechos",
+        "paragraphs": [
+          "Dependiendo de tu ubicación, es posible que tengas derechos respecto a tu información personal, como el derecho a:"
+        ],
+        "bullets": [
+          "solicitar acceso a la información personal que mantenemos sobre ti;",
+          "solicitar su corrección o eliminación;",
+          "oponerte a determinados tratamientos o solicitar su limitación;",
+          "retirar el consentimiento cuando el tratamiento se base en él;",
+          "excluirte de determinadas tecnologías de publicidad o analítica;",
+          "solicitar una copia de tu información."
+        ],
+        "afterBullets": [
+          "Puedes cambiar tu decisión sobre la analítica en cualquier momento desde “Configuración de cookies” en el pie de página. Si te encuentras en Estados Unidos, la opción “No vender ni compartir mi información personal” del pie de página te excluye de cualquier compartición con fines publicitarios.",
+          "Puedes exportar o eliminar tú mismo tus datos de analítica de forma inmediata desde “Configuración de cookies” en el pie de página, en el apartado “Tus datos”. Exportar descarga una copia completa de lo que nuestra analítica tiene sobre ti en forma de archivo; Eliminar borra permanentemente tu historial de analítica y asigna a tu navegador un nuevo identificador anónimo. Si has iniciado sesión, ambas opciones abarcan todos los dispositivos vinculados a tu cuenta. Dado que estas herramientas actúan de forma inmediata, cumplen por construcción con los plazos de respuesta que permite la ley aplicable (30 días conforme a la CPRA, un mes conforme al RGPD). También puedes escribirnos a la dirección indicada a continuación y haremos lo mismo en tu nombre dentro de esos plazos.",
+          "Existe una categoría de registros que no se elimina: el registro de tus propias decisiones de consentimiento y exclusión. Las leyes que te permiten eliminar tus datos también nos exigen poder demostrar cómo gestionamos tus decisiones (artículo 17, apartado 3, letra b, del RGPD), por lo que estos registros se conservan durante cinco años y después se eliminan. Contienen tus decisiones y el momento en que las tomaste, no tu actividad de navegación.",
+          "Si tienes una cuenta, puedes eliminar archivos individuales, eliminar todos tus archivos, exportar tus datos como archivo ZIP, cerrar sesión en todos los dispositivos o eliminar tu cuenta tú mismo desde la página de la cuenta (consulta la Sección 3).",
+          "Una vez eliminado un archivo, ya sea por ti o al final de su periodo de retención, no podemos recuperarlo ni facilitar acceso a él."
+        ]
+      },
+      {
+        "title": "14. Do Not Track y Global Privacy Control",
+        "paragraphs": [
+          "Media Manipulator respeta el Global Privacy Control (GPC). Si tu navegador o una extensión envía una señal GPC, la tratamos automáticamente como una exclusión de cualquier venta o compartición de tu información personal con fines publicitarios, la aplicamos en cada visita —incluso anulando una autorización publicitaria que hayas dado previamente— y dejamos constancia de que lo hemos hecho.",
+          "GPC es una exclusión de venta y compartición. No desactiva nuestra analítica de origen, porque la analítica que ejecutamos en nuestro propio dominio para nuestras propias decisiones de producto no constituye ni una venta ni una compartición. La analítica es una decisión independiente, disponible en cualquier momento desde “Configuración de cookies” en el pie de página.",
+          "No respondemos a la antigua señal del navegador “Do Not Track”. Nunca se acordó un estándar sobre cómo debían interpretarla los sitios web, ni ningún regulador le otorgó efecto legal; GPC es la señal que tiene peso, y es la que respetamos."
+        ]
+      },
+      {
+        "title": "15. Cambios en esta Política de privacidad",
+        "paragraphs": [
+          "Podemos actualizar esta Política de privacidad de vez en cuando. Cuando hagamos cambios, actualizaremos la fecha de “Última actualización” en la parte superior de esta página.",
+          "Si realizamos cambios materiales, podemos proporcionar un aviso adicional, como publicar una notificación en el sitio web.",
+          "El uso continuado de Media Manipulator después de la publicación de los cambios significa que aceptas la Política de privacidad actualizada."
+        ]
+      },
+      {
+        "title": "16. Contacto",
+        "paragraphs": [
+          "Si tienes preguntas sobre esta Política de privacidad o sobre cómo Media Manipulator gestiona la información, contacta con nosotros en:"
+        ],
+        "contactBlock": true,
+        "contactEmail": "privacy@media-manipulator.com"
+      }
+    ]
+  },
+  "termsOfService": {
+    "title": "Términos del servicio y política de uso aceptable",
+    "intro": "Media Manipulator es propiedad de CreaTV Ltd. y está operado por ella (“CreaTV”, “Media Manipulator”, “nosotros” o “nuestro”).",
+    "scope": "Estos Términos del servicio y política de uso aceptable (“Términos”) regulan tu acceso y uso de Media Manipulator, incluidos nuestro sitio web, las herramientas basadas en el navegador, las herramientas de procesamiento asistido por servidor, las herramientas de conversión de contenido multimedia, las herramientas de imagen, las herramientas de vídeo, las herramientas de audio, las herramientas de metadatos, las funciones asistidas por IA, los resultados descargables y los servicios relacionados.",
+    "agreement": "Al acceder a Media Manipulator o utilizarlo, aceptas estos Términos. Si no estás de acuerdo con estos Términos, no utilices Media Manipulator.",
+    "sections": [
+      {
+        "title": "1. El servicio",
+        "paragraphs": [
+          "Media Manipulator ofrece herramientas para editar, convertir, comprimir, recortar, cortar, filtrar, analizar, transcribir, resumir, describir y procesar de otras formas archivos de imagen, vídeo, audio y contenido multimedia relacionado.",
+          "Las funciones pueden incluir, entre otras:"
+        ],
+        "bullets": [
+          "conversión, recorte, redimensionado, compresión y filtrado de imágenes;",
+          "recorte, corte, empalme, conversión, compresión y formateo de vídeo;",
+          "limpieza, conversión, compresión y procesamiento de audio;",
+          "inspección de metadatos y EXIF;",
+          "eliminación de metadatos y EXIF;",
+          "transcripción asistida por IA, generación de subtítulos, resúmenes y descripciones;",
+          "clasificación de seguridad de contenido y detección para prevención de abusos;",
+          "crear, animar y exportar gráficos vectoriales y animaciones con Motion;",
+          "historial temporal de conversiones y resultados procesados descargables."
+        ],
+        "afterBullets": [
+          "Algunas funciones pueden basarse en el navegador, mientras que otras pueden requerir la subida y el procesamiento temporal en nuestros servidores.",
+          "Darkroom también puede usarse integrado en CreaTV Studio. En ese caso el editor se conecta a los servicios de CreaTV, y tu cuenta y contenido de CreaTV se rigen además por los términos propios de CreaTV."
+        ]
+      },
+      {
+        "title": "2. Propiedad y operador",
+        "contactBlock": true,
+        "contactEmail": "support@media-manipulator.com"
+      },
+      {
+        "title": "3. Elegibilidad",
+        "paragraphs": [
+          "Solo puedes utilizar Media Manipulator si tienes capacidad legal para celebrar un contrato vinculante y únicamente de conformidad con estos Términos y con todas las leyes aplicables.",
+          "Media Manipulator no está destinado a menores de 13 años, ni a menores de la edad mínima exigida por la legislación aplicable en tu jurisdicción. Al utilizar el servicio, declaras que tienes edad suficiente para utilizar Media Manipulator conforme a la legislación aplicable.",
+          "Si utilizas Media Manipulator en nombre de una empresa, organización u otra entidad, declaras que tienes autoridad para vincular a dicha entidad a estos Términos."
+        ]
+      },
+      {
+        "title": "4. Tu responsabilidad sobre el contenido subido",
+        "paragraphs": [
+          "Eres el único responsable de todos los archivos, contenido multimedia, metadatos, textos, indicaciones, instrucciones, entradas, salidas y demás contenido que subas, envíes, proceses, conviertas, edites, transcribas, resumas, generes, descargues o utilices de cualquier otra forma a través de Media Manipulator (el “Contenido del usuario”).",
+          "Declaras y garantizas que:"
+        ],
+        "bullets": [
+          "eres propietario de tu Contenido del usuario o dispones de todos los derechos, licencias, permisos y facultades necesarios para subirlo, procesarlo, convertirlo, editarlo, analizarlo, transcribirlo, resumirlo, descargarlo y utilizarlo de cualquier otra forma a través de Media Manipulator;",
+          "tu uso de Media Manipulator no vulnerará ningún derecho de autor, marca, derecho de privacidad, derecho de imagen, derecho contractual ni ningún otro derecho legal de ninguna persona o entidad;",
+          "tu Contenido del usuario y tu uso de Media Manipulator cumplirán estos Términos y todas las leyes aplicables;",
+          "no utilizarás Media Manipulator para crear, procesar, almacenar, transformar, ocultar, distribuir o facilitar contenido ilegal, abusivo, infractor, dañino o prohibido."
+        ],
+        "afterBullets": [
+          "No reclamamos la propiedad de tus archivos subidos ni de los resultados generados. No obstante, nos concedes una licencia limitada, temporal y no exclusiva para alojar, procesar, analizar, escanear, transformar, convertir, almacenar, mostrar y poner a disposición tu Contenido del usuario en la medida necesaria para prestar Media Manipulator, proteger el servicio, hacer cumplir estos Términos, cumplir con la ley y operar los sistemas relacionados de seguridad y prevención de abusos."
+        ]
+      },
+      {
+        "id": "retention",
+        "title": "5. Almacenamiento, retención y eliminación",
+        "paragraphs": [
+          "Visitantes sin cuenta: los archivos subidos y los resultados generados se almacenan durante 24 horas. Si tienes una cuenta, eliges cuánto tiempo almacenamos tus archivos, de 24 horas a 2 años (6 meses mientras no lo cambies). Esta opción está disponible en todas las cuentas y no depende de tu plan. La Política de Privacidad describe los detalles.",
+          "Una vez termina el periodo de retención aplicable, los archivos subidos y los resultados generados se eliminan de nuestros sistemas activos, salvo que se produzca una eliminación anterior o que la ley exija una conservación limitada o sea razonablemente necesaria por motivos de seguridad, prevención de abusos, cumplimiento legal, resolución de disputas o aplicación de estos Términos. La eliminación la realiza un proceso automatizado y puede producirse poco después de que termine el periodo.",
+          "Desde la página Cuenta puedes eliminar archivos concretos, eliminar todos tus archivos, exportar tus datos o eliminar tu cuenta. Eliminar archivos o una cuenta es permanente: no conservamos copias de seguridad de los medios y no podemos restaurar archivos eliminados.",
+          "Podemos conservar durante más tiempo registros técnicos limitados, registros de seguridad, registros de prevención de abusos, registros analíticos o registros de cumplimiento legal cuando sea razonablemente necesario. Estos registros no están pensados para conservar archivos multimedia subidos completos una vez terminado el periodo de retención.",
+          "Eres responsable de descargar y conservar tus propias copias de los archivos procesados que desees guardar. Media Manipulator no es un servicio de copia de seguridad, archivo o alojamiento, y no podemos recuperar archivos ni facilitar acceso a ellos una vez eliminados."
+        ]
+      },
+      {
+        "title": "6. Procesamiento de IA local",
+        "paragraphs": [
+          "Media Manipulator puede utilizar sistemas asistidos por IA para ofrecer funciones como la transcripción, la generación de subtítulos, los resúmenes, las descripciones, el análisis de metadatos, la clasificación de contenido y el escaneo de seguridad del contenido.",
+          "Todo el procesamiento de IA utilizado por Media Manipulator se realiza localmente en nuestros propios servidores o en infraestructura que controlamos. No externalizamos los archivos subidos, los resultados generados, las transcripciones, los resúmenes, las descripciones ni los escaneos de seguridad de contenido a proveedores de IA externos para su procesamiento.",
+          "Las funciones asistidas por IA pueden utilizarse para:"
+        ],
+        "bullets": [
+          "transcribir audio o vídeo;",
+          "generar subtítulos;",
+          "resumir contenido;",
+          "describir imágenes, vídeos o audio;",
+          "clasificar contenido por seguridad o idoneidad para marcas;",
+          "detectar contenido presuntamente ilegal, prohibido, abusivo, para adultos, violento, gráfico o sensible para los anunciantes;",
+          "ayudar a prevenir el uso indebido del servicio."
+        ],
+        "afterBullets": [
+          "Los resultados generados por IA pueden ser inexactos, incompletos, engañosos o imperfectos de otro modo. Eres responsable de revisar cualquier resultado generado por IA antes de confiar en él.",
+          "No debes utilizar las funciones asistidas por IA para crear, alterar, mejorar, ocultar, distribuir o facilitar contenido ilegal, abusivo, infractor, engañoso, sexualmente explotador, violento, de odio o prohibido de otro modo."
+        ]
+      },
+      {
+        "title": "7. Escaneo de contenido y aplicación de la seguridad",
+        "paragraphs": [
+          "Todos los archivos subidos pueden someterse a escaneo, clasificación y revisión automatizados por motivos de seguridad, prevención de abusos, cumplimiento legal, seguridad de marca, protección de los anunciantes y detección o bloqueo de contenido presuntamente ilegal o prohibido.",
+          "Estos escaneos pueden utilizarse para identificar o ayudar a prevenir, por ejemplo, contenido relacionado con:"
+        ],
+        "bullets": [
+          "presunto material de abuso sexual infantil, explotación infantil o sexualización de menores;",
+          "malware, archivos maliciosos, virus o código dañino;",
+          "contenido o actividad ilegal;",
+          "imágenes íntimas no consentidas;",
+          "amenazas, acoso, abuso o intimidación violenta;",
+          "contenido terrorista o extremista;",
+          "contenido de odio o discriminatorio;",
+          "violencia gráfica, contenido escabroso o impactante;",
+          "contenido para adultos, sexualmente explícito o pornográfico;",
+          "contenido que parezca vulnerar derechos de propiedad intelectual;",
+          "contenido que infrinja estos Términos o nuestra política de uso aceptable."
+        ],
+        "afterBullets": [
+          "Si se determina o se sospecha que un contenido es ilegal, prohibido, abusivo, inseguro o contrario a estos Términos, podemos adoptar cualquier medida que consideremos oportuna, incluidas las siguientes:"
+        ],
+        "secondBullets": [
+          "bloquear la subida, el procesamiento, la conversión, la vista previa, la visualización o la descarga;",
+          "eliminar el archivo subido o el resultado generado;",
+          "deshabilitar el acceso al servicio;",
+          "conservar registros limitados cuando sea legalmente exigido o razonablemente necesario;",
+          "informar del contenido presuntamente ilegal a las autoridades competentes cuando la ley lo exija o lo permita;",
+          "cooperar con procesos legales, fuerzas del orden, reguladores u organizaciones de seguridad cuando proceda."
+        ],
+        "afterSecondBullets": [
+          "Si un contenido es lícito pero está clasificado como contenido para adultos, gráfico, violento, impactante o sensible para los anunciantes de otro modo, podemos impedir que dicho contenido se muestre o se previsualice en el sitio web con el fin de proteger a los usuarios, nuestra marca y a los anunciantes. En algunos casos, cuando sea lícito y técnicamente posible, es posible que sigas pudiendo descargar el archivo procesado.",
+          "No estamos obligados a supervisar todo el contenido, pero nos reservamos el derecho de hacerlo."
+        ]
+      },
+      {
+        "title": "8. Política de uso aceptable",
+        "paragraphs": [
+          "Aceptas no utilizar Media Manipulator con fines ilícitos, dañinos, abusivos, engañosos, infractores, explotadores o prohibidos de cualquier otro tipo."
+        ],
+        "subsections": [
+          {
+            "title": "8.1 Contenido y actividad ilegal",
+            "paragraphs": [
+              "No debes subir, procesar, convertir, editar, generar, descargar ni utilizar de cualquier otra forma Media Manipulator en relación con contenido o actividad que sea ilegal conforme a la legislación aplicable.",
+              "Esto incluye, entre otros:"
+            ],
+            "bullets": [
+              "material de abuso sexual infantil, explotación infantil o sexualización de menores;",
+              "imágenes íntimas no consentidas;",
+              "trata de seres humanos, explotación sexual o contenido sexual coercitivo;",
+              "amenazas creíbles de violencia;",
+              "instrucciones o facilitación de actos violentos ilícitos;",
+              "actividad terrorista, extremista o de delincuencia organizada;",
+              "actividad ilegal relacionada con armas;",
+              "tráfico ilegal de drogas;",
+              "fraude, estafas, phishing o suplantación de identidad;",
+              "malware, virus, robo de credenciales o código dañino;",
+              "intentos de ocultar, blanquear, transformar o distribuir material ilegal."
+            ]
+          },
+          {
+            "title": "8.2 Seguridad infantil",
+            "paragraphs": [
+              "No debes subir, procesar, convertir, editar, generar, descargar ni utilizar de cualquier otra forma Media Manipulator en relación con contenido que explote, abuse, sexualice, ponga en peligro o perjudique a menores.",
+              "Tenemos tolerancia cero con el material de abuso sexual infantil o la explotación infantil. Las presuntas infracciones podrán denunciarse a las autoridades competentes cuando la ley lo exija o lo permita."
+            ]
+          },
+          {
+            "title": "8.3 Contenido para adultos y sexualmente explícito",
+            "paragraphs": [
+              "No debes utilizar Media Manipulator para crear, alterar, mejorar, procesar, distribuir o facilitar contenido sexualmente explícito, pornográfico, explotador o sexual no consentido que infrinja la legislación aplicable o estos Términos.",
+              "No debes utilizar Media Manipulator para crear o facilitar:"
+            ],
+            "bullets": [
+              "imágenes íntimas no consentidas;",
+              "deepfakes de carácter sexual;",
+              "contenido sexual sintético que involucre a personas reales sin su consentimiento;",
+              "contenido sexualizado que involucre a menores;",
+              "contenido que promueva la explotación o la coacción sexual;",
+              "herramientas, ediciones o transformaciones destinadas a desnudar, sexualizar o explotar a una persona."
+            ],
+            "afterBullets": [
+              "Media Manipulator no es un servicio de contenido para adultos y puede bloquear, suprimir las vistas previas, eliminar o restringir el contenido clasificado como contenido para adultos, sexualmente explícito o sensible para los anunciantes."
+            ]
+          },
+          {
+            "title": "8.4 Violencia, contenido escabroso y gráfico",
+            "paragraphs": [
+              "No debes utilizar Media Manipulator para crear, procesar, mejorar, distribuir o facilitar contenido que promueva, glorifique, instruya o incite a la violencia, la autolesión, la tortura, el abuso o las lesiones gráficas.",
+              "Podemos restringir, suprimir las vistas previas, bloquear o eliminar contenido gráfico, violento, impactante o relacionado con contenido escabroso, aunque el contenido subyacente pueda ser lícito, con el fin de proteger a los usuarios, nuestra marca y a los anunciantes."
+            ]
+          },
+          {
+            "title": "8.5 Odio, acoso y abuso",
+            "paragraphs": [
+              "No debes utilizar Media Manipulator para crear, procesar, distribuir o facilitar contenido que promueva el odio, el acoso, el abuso, la discriminación, la deshumanización o la violencia contra personas o grupos por razón de características protegidas u otros atributos sensibles.",
+              "No debes utilizar Media Manipulator para amenazar, acechar, acosar, intimidar, exponer datos personales (doxing), suplantar la identidad de otra persona o abusar de ella."
+            ]
+          },
+          {
+            "title": "8.6 Derechos de autor, marcas y propiedad intelectual",
+            "paragraphs": [
+              "No debes subir, procesar, convertir, editar, transcribir, resumir, distribuir ni descargar contenido a menos que seas propietario del mismo o dispongas de los derechos y permisos necesarios.",
+              "No debes utilizar Media Manipulator para:"
+            ],
+            "bullets": [
+              "vulnerar derechos de autor, marcas, secretos comerciales, derechos de privacidad, derechos de imagen u otros derechos legales;",
+              "eludir sistemas de gestión de derechos digitales, protecciones contra copia, controles de acceso o muros de pago;",
+              "extraer, descargar, transformar o redistribuir películas, series, música, software, cursos, retransmisiones en directo u otras obras protegidas sin autorización;",
+              "eliminar, ocultar o alterar marcas de agua, avisos de derechos de autor, atribuciones o información de gestión de derechos con fines infractores;",
+              "facilitar la piratería o la distribución no autorizada de obras protegidas."
+            ],
+            "afterBullets": [
+              "Media Manipulator está destinado a procesar archivos de tu propiedad, archivos que hayas creado, archivos que estés autorizado a editar o archivos que estén disponibles lícitamente para el uso que pretendas darles."
+            ]
+          },
+          {
+            "title": "8.7 Privacidad y datos personales",
+            "paragraphs": [
+              "No debes utilizar Media Manipulator para vulnerar la privacidad o los derechos de protección de datos de otra persona.",
+              "No debes subir ni procesar datos personales altamente sensibles, información confidencial, imágenes privadas, vídeos privados, identificadores biométricos, documentos de identificación gubernamentales, historiales médicos, registros financieros u otra información sensible, salvo que tengas el derecho legal y la autoridad para hacerlo.",
+              "No debes utilizar Media Manipulator para exponer, extraer, publicar, explotar o hacer un uso indebido de información privada sobre otra persona."
+            ]
+          },
+          {
+            "title": "8.8 Seguridad y abuso",
+            "paragraphs": [
+              "No debes interferir con Media Manipulator o su infraestructura, ni interrumpirlos, atacarlos, sobrecargarlos, extraer sus datos (scraping), aplicarles ingeniería inversa, eludirlos o hacer un uso indebido de ellos.",
+              "No debes:"
+            ],
+            "bullets": [
+              "intentar acceder sin autorización a nuestros sistemas;",
+              "sondear, escanear o probar vulnerabilidades sin permiso por escrito;",
+              "eludir límites de frecuencia, autenticación, límites de uso, muros de pago o restricciones técnicas;",
+              "automatizar tráfico abusivo;",
+              "utilizar bots, extractores de datos (scrapers) o herramientas automatizadas de un modo que perjudique al servicio;",
+              "subir malware, virus, scripts maliciosos o cargas útiles dañinas;",
+              "interferir con el acceso de otros usuarios al servicio;",
+              "abusar del almacenamiento temporal de archivos o del historial de conversiones;",
+              "utilizar el servicio como sistema de alojamiento de archivos, uso compartido de archivos, CDN, análisis de malware o almacenamiento permanente."
+            ]
+          },
+          {
+            "title": "8.9 Publicidad y tráfico no válido",
+            "paragraphs": [
+              "Media Manipulator puede mostrar anuncios publicitarios. No debes interactuar con los anuncios de forma fraudulenta, artificial, engañosa o abusiva.",
+              "No debes:"
+            ],
+            "bullets": [
+              "hacer clic en anuncios con el fin de generarnos ingresos;",
+              "animar a otras personas a hacer clic en anuncios;",
+              "utilizar bots, scripts, herramientas automatizadas, granjas de clics, esquemas de tráfico de pago o métodos engañosos para generar impresiones o clics publicitarios;",
+              "intentar manipular los sistemas publicitarios, de medición, de atribución o de generación de informes;",
+              "interferir con la visualización de anuncios, la medición publicitaria o los sistemas de seguridad para anunciantes."
+            ],
+            "afterBullets": [
+              "Si consideras que un anuncio es engañoso, dañino o inapropiado, debes denunciarlo a través de los controles publicitarios disponibles o ponerte en contacto con nosotros."
+            ]
+          },
+          {
+            "title": "8.10 Prohibición de comportamientos engañosos de descarga o conversión",
+            "paragraphs": [
+              "No debes utilizar Media Manipulator para crear o facilitar botones de descarga engañosos, falsos avisos de actualización, falsas advertencias de virus, flujos de conversión engañosos, cuadros de diálogo del sistema falsos ni contenido diseñado para engañar a los usuarios y llevarlos a hacer clic en anuncios, descargar software no deseado o visitar sitios web no deseados.",
+              "Los botones de descarga reales, los botones de conversión y los controles de la interfaz de usuario de Media Manipulator están diseñados para distinguirse claramente de la publicidad."
+            ]
+          }
+        ]
+      },
+      {
+        "title": "9. Registro de cuenta",
+        "paragraphs": [
+          "La mayoría de las funciones de Media Manipulator están disponibles sin cuenta. Una cuenta desbloquea límites más altos y un historial guardado, y Premium y Pro son suscripciones de pago descritas en la Sección 10.",
+          "Las cuentas las gestiona Firebase Authentication (un servicio de Google); puedes iniciar sesión con una dirección de correo y una contraseña o con Google. Puedes cerrar sesión en todos los dispositivos o eliminar tu cuenta desde la página de la cuenta. Eliminar tu cuenta también cancela cualquier suscripción Premium o Pro, como se describe en la Política de Privacidad.",
+          "Eres responsable de mantener la confidencialidad de las credenciales de tu cuenta y de toda la actividad que se produzca en ella.",
+          "Nos reservamos el derecho de suspender, restringir o cancelar cuentas que infrinjan estos Términos, generen riesgo legal, provoquen un uso indebido del servicio o perjudiquen a los usuarios, a los anunciantes, a nuestra marca o a nuestra infraestructura."
+        ]
+      },
+      {
+        "title": "10. Pagos, renovaciones y reembolsos",
+        "paragraphs": [
+          "Premium y Pro son suscripciones de pago facturadas en dólares estadounidenses o en euros. La página de precios muestra por defecto euros a los visitantes de Europa y dólares estadounidenses a todos los demás, y puedes cambiar de moneda allí antes de comprar. El precio es el mismo número en ambas monedas: Premium cuesta 8 $ u 8 € al mes, o 80 $ u 80 € al año, y Pro cuesta 15 $ o 15 € al mes, o 150 $ o 150 € al año. La moneda de una suscripción no puede cambiar mientras esté activa. El precio, la moneda y el periodo de facturación se muestran en la página de precios, y al pagar no se añade ningún impuesto. El importe que se muestra al pagar es el importe cobrado.",
+          "Tu suscripción se renueva automáticamente al final de cada periodo de facturación hasta que la canceles. Puedes cancelar en cualquier momento desde la sección Facturación de tu página de cuenta o a través del portal de facturación al que enlaza. Tras cancelar, tu plan de pago continúa hasta el final del periodo que ya pagaste y no se te volverá a cobrar.",
+          "Puedes cambiar de plan desde la sección Facturación de tu página de cuenta. Pasar de Premium a Pro surte efecto de inmediato: pagas la diferencia prorrateada por el resto del periodo de facturación actual y tu fecha de renovación no cambia. Pasar de Pro a Premium surte efecto al final del periodo que ya pagaste: mantienes Pro hasta entonces, no se reembolsa nada por el resto de ese periodo y puedes mantener Pro en cualquier momento antes del cambio.",
+          "Si no estás satisfecho, puedes solicitar el reembolso de tu primer pago dentro de los 14 días siguientes escribiendo a support@media-manipulator.com. Esto se aplica a Premium y a Pro. Los pagos de renovación no son reembolsables, salvo cuando la ley lo exija.",
+          "Si un pago falla, lo reintentamos y tu plan de pago continúa hasta 7 días. Si pasado ese plazo el pago sigue sin completarse, tu cuenta vuelve al plan gratuito hasta que actualices tu método de pago y te suscribas de nuevo.",
+          "Los pagos los procesa Stripe, Inc. Nunca recibimos ni almacenamos el número completo de tu tarjeta. Al pago en sí se aplican los términos y la política de privacidad de Stripe. Nuestra cuenta de Stripe pertenece a CreaTV Ltd., por lo que la página de pago de Stripe muestra la marca de CreaTV (o CreaTV Ltd.) en lugar de Media Manipulator. El cargo en el extracto de tu tarjeta aparece como «MEDIA MNPLTR PREMIUM»."
+        ]
+      },
+      {
+        "title": "11. Disponibilidad del servicio y cambios",
+        "paragraphs": [
+          "Media Manipulator se ofrece como un servicio dinámico en línea. Podemos modificar, suspender, interrumpir, limitar o cambiar en cualquier momento cualquier función, herramienta, formato, periodo de almacenamiento, límite de uso, función de IA, capacidad de procesamiento, modelo de precios o disponibilidad.",
+          "Podemos imponer límites de uso, límites de tamaño de archivo, restricciones de tipo de archivo, límites de conversión, límites de frecuencia, límites de cuenta o restricciones geográficas.",
+          "No garantizamos que Media Manipulator vaya a estar siempre disponible, sin interrupciones, seguro, libre de errores o compatible con todos los archivos, formatos, códecs, navegadores, dispositivos o sistemas operativos."
+        ]
+      },
+      {
+        "title": "12. Limitaciones del procesamiento de archivos",
+        "paragraphs": [
+          "El procesamiento de contenido multimedia puede fallar por muchos motivos, incluidos formatos no compatibles, archivos dañados, códecs incompatibles, tamaño de archivo excesivo, limitaciones del navegador, limitaciones del servidor, errores de tiempo de espera, errores de red o restricciones de seguridad.",
+          "No garantizamos que:"
+        ],
+        "bullets": [
+          "todos los archivos puedan procesarse;",
+          "todas las conversiones se completen correctamente;",
+          "la calidad del resultado cumpla tus expectativas;",
+          "los metadatos se eliminen siempre por completo;",
+          "las transcripciones, resúmenes, descripciones o clasificaciones generados por IA sean precisos;",
+          "los archivos generados sean adecuados para un fin concreto;",
+          "el historial temporal de conversiones esté siempre disponible."
+        ],
+        "afterBullets": [
+          "Debes revisar todos los resultados antes de utilizarlos, publicarlos, distribuirlos o confiar en ellos."
+        ]
+      },
+      {
+        "title": "13. Derechos de propiedad intelectual",
+        "paragraphs": [
+          "Media Manipulator, incluidos su sitio web, diseño, software, código, interfaz, marca, logotipos, textos, gráficos, funciones, flujos de trabajo y materiales relacionados, es propiedad de CreaTV Ltd. o de sus licenciantes y está protegido por la legislación de propiedad intelectual aplicable.",
+          "Estos Términos no te conceden la propiedad de Media Manipulator ni de ninguna propiedad intelectual de CreaTV Ltd.",
+          "No puedes copiar, modificar, distribuir, vender, arrendar, aplicar ingeniería inversa ni crear obras derivadas de Media Manipulator, salvo que la ley lo permita o cuentes con nuestro permiso por escrito.",
+          "Conservas la propiedad de tus propios archivos subidos y de los resultados generados, sujeta a los derechos y licencias concedidos en estos Términos.",
+          "Las animaciones y los archivos que creas con Motion, incluidas las exportaciones de SVG animado, Lottie, código e imagen, te pertenecen del mismo modo que tus demás resultados generados. Algunas exportaciones incluyen código abierto de terceros que hace que la animación se reproduzca: anime.js, licenciado bajo la licencia MIT. Su aviso de copyright y de licencia se escribe al principio del archivo exportado, y debes conservar ese aviso si usas o distribuyes el archivo. Las exportaciones de código que usan un paquete en lugar de incrustarlo (el paquete anime.js para React y JavaScript, y flutter_svg o webview_flutter para Flutter) lo nombran en el archivo, y lo instalas tú mismo bajo su propia licencia (MIT, o BSD-3-Clause para webview_flutter).",
+          "Media Manipulator usa bibliotecas de código abierto en tu navegador, entre ellas mediabunny, licenciada bajo la Mozilla Public License 2.0 y usada sin modificar para empaquetar los archivos de vídeo creados en tu navegador. Sus licencias, avisos de copyright y enlaces al código fuente figuran en nuestra página de licencias de código abierto: https://www.media-manipulator.com/licenses."
+        ]
+      },
+      {
+        "title": "14. Comentarios y sugerencias",
+        "paragraphs": [
+          "Si nos proporcionas comentarios, sugerencias, ideas, informes de errores, solicitudes de funciones u otro tipo de opiniones, nos concedes un derecho no exclusivo, mundial, libre de regalías, perpetuo e irrevocable a utilizar dichas aportaciones sin restricción ni compensación alguna para ti."
+        ]
+      },
+      {
+        "title": "15. Reclamaciones por derechos de autor",
+        "paragraphs": [
+          "Si consideras que un contenido procesado, mostrado, enlazado o puesto a disposición a través de Media Manipulator vulnera tus derechos de autor u otros derechos de propiedad intelectual, puedes ponerte en contacto con nosotros en:",
+          "Correo electrónico: legal@media-manipulator.com",
+          "Tu notificación debe incluir:"
+        ],
+        "bullets": [
+          "tu nombre y datos de contacto;",
+          "la identificación de la obra protegida por derechos de autor o del material protegido;",
+          "la identificación del material presuntamente infractor;",
+          "una declaración de que consideras de buena fe que dicho uso no está autorizado;",
+          "una declaración de que la información contenida en tu notificación es exacta;",
+          "tu firma física o electrónica."
+        ],
+        "afterBullets": [
+          "Podemos eliminar o restringir el acceso al material presuntamente infractor y podemos cancelar o restringir el acceso a los usuarios que infrinjan reiteradamente los derechos de propiedad intelectual."
+        ]
+      },
+      {
+        "title": "16. Servicios de terceros y publicidad",
+        "paragraphs": [
+          "Media Manipulator puede incluir enlaces a sitios web de terceros, anuncios publicitarios, proveedores de análisis, proveedores de alojamiento, procesadores de pago u otros servicios de terceros.",
+          "No somos responsables de los sitios web, servicios, anuncios, productos, políticas o prácticas de terceros.",
+          "Tus interacciones con terceros son estrictamente entre tú y el tercero en cuestión. Los servicios de terceros pueden contar con sus propios términos y políticas de privacidad."
+        ]
+      },
+      {
+        "title": "17. Privacidad",
+        "paragraphs": [
+          "Tu uso de Media Manipulator también se rige por nuestra Política de privacidad.",
+          "La Política de privacidad explica cómo recopilamos, utilizamos, almacenamos, escaneamos, procesamos, protegemos y eliminamos la información, incluidos los archivos subidos, los resultados generados, los datos analíticos, los datos publicitarios, los datos de procesamiento asistido por IA y el historial temporal de conversiones.",
+          "Al utilizar Media Manipulator, reconoces que has leído y comprendido nuestra Política de privacidad."
+        ]
+      },
+      {
+        "title": "18. Cancelación y suspensión",
+        "paragraphs": [
+          "Podemos suspender, restringir o cancelar tu acceso a Media Manipulator en cualquier momento si consideramos que:"
+        ],
+        "bullets": [
+          "has infringido estos Términos;",
+          "tu contenido o actividad es ilegal, abusivo, inseguro, infractor o está prohibido;",
+          "tu uso genera riesgo para los usuarios, los anunciantes, nuestra marca, nuestro servicio o nuestra infraestructura;",
+          "estamos obligados o autorizados a hacerlo por ley;",
+          "el acceso continuado puede exponernos a nosotros o a terceros a daños legales, de seguridad, operativos o reputacionales."
+        ],
+        "afterBullets": [
+          "También podemos eliminar los archivos subidos, los resultados generados, el historial temporal de conversiones, los registros o los datos de la cuenta según lo permitido por estos Términos y nuestra Política de privacidad.",
+          "Puedes dejar de utilizar Media Manipulator en cualquier momento."
+        ]
+      },
+      {
+        "title": "19. Exención de garantías",
+        "paragraphs": [
+          "Media Manipulator se ofrece “tal cual” y “según disponibilidad”.",
+          "En la medida máxima permitida por la ley, rechazamos todas las garantías, expresas o implícitas, incluidas las garantías de comerciabilidad, idoneidad para un fin concreto, titularidad, no infracción, disponibilidad, seguridad, exactitud, fiabilidad y funcionamiento libre de errores.",
+          "No garantizamos que:"
+        ],
+        "bullets": [
+          "el servicio esté siempre disponible sin interrupciones, sea seguro o esté libre de errores;",
+          "los archivos se procesen siempre correctamente;",
+          "los resultados sean exactos, completos o adecuados para tus necesidades;",
+          "la eliminación de metadatos elimine siempre todos los campos de metadatos posibles;",
+          "el contenido generado por IA sea exacto, seguro, completo o apropiado;",
+          "los escaneos de seguridad de contenido detecten todas las infracciones;",
+          "los archivos temporales o el historial de conversiones estén siempre disponibles;",
+          "el servicio cumpla tus expectativas."
+        ],
+        "afterBullets": [
+          "Utilizas Media Manipulator bajo tu propia responsabilidad."
+        ]
+      },
+      {
+        "title": "20. Limitación de responsabilidad",
+        "paragraphs": [
+          "En la medida máxima permitida por la ley, CreaTV Ltd., Media Manipulator y sus propietarios, directivos, empleados, contratistas, filiales, agentes, licenciantes y proveedores de servicios no serán responsables de ningún daño indirecto, incidental, consecuente, especial, ejemplar, punitivo o por lucro cesante derivado de tu uso de Media Manipulator o relacionado con él.",
+          "Esto incluye los daños relacionados con:"
+        ],
+        "bullets": [
+          "conversiones fallidas;",
+          "archivos perdidos;",
+          "archivos eliminados;",
+          "descargas no disponibles;",
+          "resultados inexactos;",
+          "metadatos no eliminados por completo;",
+          "imprecisiones de la IA;",
+          "el bloqueo de contenido o la supresión de vistas previas;",
+          "la suspensión o cancelación de la cuenta;",
+          "el tiempo de inactividad del servicio;",
+          "incidentes de seguridad;",
+          "anuncios o servicios de terceros;",
+          "consecuencias legales derivadas de tu contenido subido o de tu uso del servicio."
+        ],
+        "afterBullets": [
+          "En la medida máxima permitida por la ley, nuestra responsabilidad total por cualquier reclamación derivada de Media Manipulator o relacionada con él no excederá la mayor de las siguientes cantidades:"
+        ],
+        "secondBullets": [
+          "el importe que nos hayas pagado por Media Manipulator en los 3 meses anteriores a que surgiera la reclamación; o",
+          "100 USD."
+        ],
+        "afterSecondBullets": [
+          "Algunas jurisdicciones no permiten determinadas limitaciones de responsabilidad, por lo que es posible que algunas de estas limitaciones no te sean aplicables."
+        ]
+      },
+      {
+        "title": "21. Indemnización",
+        "paragraphs": [
+          "Aceptas defender, indemnizar y mantener indemnes a CreaTV Ltd., Media Manipulator y sus propietarios, directivos, empleados, contratistas, filiales, agentes, licenciantes y proveedores de servicios frente a cualquier reclamación, daño, pérdida, responsabilidad, coste y gasto, incluidos los honorarios razonables de abogados, derivados de:"
+        ],
+        "bullets": [
+          "tu uso de Media Manipulator;",
+          "tu Contenido del usuario;",
+          "tus archivos subidos o los resultados generados;",
+          "tu incumplimiento de estos Términos;",
+          "tu incumplimiento de la legislación aplicable;",
+          "tu infracción o presunta infracción de derechos de propiedad intelectual, privacidad, imagen u otros derechos;",
+          "el uso indebido que hagas de las funciones asistidas por IA;",
+          "el uso indebido que hagas de los sistemas publicitarios;",
+          "tu actividad ilegal, abusiva, insegura o prohibida."
+        ]
+      },
+      {
+        "title": "22. Legislación aplicable",
+        "paragraphs": [
+          "Estos Términos se rigen por las leyes del Estado de Colorado, Estados Unidos, sin tener en cuenta sus principios sobre conflictos de leyes.",
+          "Sin perjuicio de los derechos que puedas tener conforme a la legislación de protección al consumidor aplicable, aceptas que cualquier disputa derivada de estos Términos o de Media Manipulator, o relacionada con ellos, se someterá a los tribunales estatales o federales situados en Colorado."
+        ]
+      },
+      {
+        "title": "23. Cambios en estos Términos",
+        "paragraphs": [
+          "Podemos actualizar estos Términos periódicamente.",
+          "Cuando realicemos cambios, actualizaremos la fecha de “Última actualización” en la parte superior de esta página. Si realizamos cambios sustanciales, podremos proporcionar un aviso adicional, por ejemplo, publicando un aviso en el sitio web.",
+          "El uso continuado de Media Manipulator tras la publicación de los Términos actualizados implica la aceptación de dichos Términos actualizados.",
+          "Si no estás de acuerdo con los Términos actualizados, debes dejar de utilizar Media Manipulator."
+        ]
+      },
+      {
+        "title": "24. Contacto",
+        "paragraphs": [
+          "Si tienes preguntas sobre estos Términos, ponte en contacto con nosotros en:"
+        ],
+        "contactBlock": true,
+        "contactEmail": "support@media-manipulator.com"
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Planes",
+    "title": "Límites sencillos, sin sorpresas",
+    "subtitle": "Todos los planes ejecutan las mismas herramientas en el mismo hardware. Lo que cambia es cuánto puedes procesar al día.",
+    "currentPlan": "Tu plan",
+    "mostPopular": "La mayoría empieza aquí",
+    "free_price": "Gratis",
+    "perMonth": "/mes",
+    "cta": {
+      "anonymous": "Empezar a convertir",
+      "free": "Crear una cuenta gratuita"
+    },
+    "tier": {
+      "anonymous": "Sin cuenta",
+      "free": "Cuenta gratuita",
+      "premium": "Premium",
+      "operator": "Operador",
+      "pro": "Pro"
+    },
+    "tierBlurb": {
+      "anonymous": "Abre una herramienta y adelante. Nada que registrar, nada que se guarde más allá del día.",
+      "free": "Seis veces el volumen diario, historial guardado y proyectos de Darkroom que sobreviven a un refresco de página.",
+      "premium": "Salida en 4K, archivos largos, prioridad en la cola de GPU y sin anuncios.",
+      "pro": "Todo lo de Premium, límites diarios mucho más altos de operaciones, trabajos de IA y exportaciones, y la mayor asignación de Motion."
+    },
+    "rows": {
+      "opsPerDay": "Operaciones al día",
+      "aiOpsPerDay": "Operaciones de IA al día",
+      "maxFileBytes": "Tamaño de archivo máximo",
+      "maxVideoSeconds": "Duración de vídeo máxima",
+      "maxOutputHeight": "Resolución de salida máxima",
+      "studioProjects": "Proyectos de Studio guardados",
+      "priorityGpu": "Cola de GPU",
+      "adsRemoved": "Anuncios",
+      "exportsPerDay": "Exportaciones de Darkroom al día",
+      "vectorExportsPerDay": "Exportaciones de Motion al día",
+      "vectorProjects": "Proyectos de Motion guardados"
+    },
+    "values": {
+      "yes": "Incluido",
+      "no": "No incluido",
+      "unlimited": "Ilimitado",
+      "localOnly": "{{count}}, solo local",
+      "gpuStandard": "Estándar",
+      "gpuPriority": "Prioritaria",
+      "adsShown": "Se muestran",
+      "adsRemoved": "Eliminados",
+      "heightSuffix": "{{height}}p"
+    },
+    "unavailableTitle": "Los detalles de los planes no están disponibles temporalmente",
+    "unavailableBody": "No hemos podido contactar con el servicio de planes. Todas las herramientas siguen funcionando: recarga en un momento para ver la comparación.",
+    "faqTitle": "Preguntas que la gente hace de verdad",
+    "faq": {
+      "q1": "¿Qué cuenta como una operación?",
+      "a1": "Una conversión, transcodificación, exportación o trabajo de IA. Las vistas previas, análisis y descargas son gratuitos: solo se te cobra por el trabajo que el servidor realmente hace.",
+      "q2": "¿Qué pasa cuando se me acaba?",
+      "a2": "Nada se rompe. La herramienta te avisa de que se ha agotado el límite y te ofrece el siguiente nivel. Tu límite se restablece a medianoche UTC.",
+      "q3": "¿Las cuentas gratuitas ven anuncios?",
+      "a3": "Sí. Los anuncios financian el nivel gratuito, así que solo Premium y Pro los eliminan. No hay intersticiales, cuentas atrás ni esperas forzadas en ningún plan.",
+      "q4": "¿Puedo usarlo sin cuenta en absoluto?",
+      "a4": "Sí, y es algo deliberado. Todas las herramientas funcionan sin iniciar sesión; una cuenta solo eleva el límite y conserva tu historial. Sin cuenta, tus archivos se conservan 24 horas; con una cuenta eliges cuánto tiempo, de 24 horas a 2 años."
+    },
+    "retentionNote": "Tú decides: de 24 horas a 2 años. Visitantes sin cuenta: 24 horas.",
+    "pendingFrom": "Premium desde el {{date}}",
+    "proBadge": "Lo mejor para Motion",
+    "motionNote": "Motion, el editor de animaciones SVG, se está desplegando. Se indican sus asignaciones para que veas qué incluye cada plan."
+  },
+  "account": {
+    "title": "Tu cuenta",
+    "subtitle": "Lo que has usado hoy y lo que permite tu plan.",
+    "signedOutTitle": "No has iniciado sesión",
+    "signedOutBody": "Inicia sesión para ver tu uso, tu historial de conversiones y los proyectos de Darkroom guardados.",
+    "signInCta": "Iniciar sesión",
+    "usageTitle": "Hoy",
+    "planTitle": "Tu plan",
+    "historyTitle": "Conversiones recientes",
+    "projectsTitle": "Proyectos de Studio guardados",
+    "resets": "Se restablece {{when}}",
+    "usedOf": "{{used}} de {{limit}}",
+    "metric": {
+      "ops": "Conversiones",
+      "ai_ops": "Operaciones de IA",
+      "export": "Exportaciones"
+    },
+    "emptyHistory": "Aún no hay nada aquí. Tus conversiones aparecerán en esta lista en cuanto uses una herramienta.",
+    "emptyProjects": "Todavía no hay proyectos guardados. Darkroom guarda tu línea de tiempo automáticamente en cuanto le pones nombre a un proyecto.",
+    "openStudio": "Abrir Darkroom",
+    "comparePlans": "Comparar planes",
+    "signOut": "Cerrar sesión",
+    "verify": {
+      "title": "El acceso de operador espera la verificación del correo",
+      "body": "Esta dirección está en la lista de operadores, pero Firebase aún no la ha verificado, así que el servidor te mantiene en el plan gratuito. Envía el correo de verificación, haz clic en el enlace y luego pulsa «Ya lo verifiqué».",
+      "send": "Enviar correo de verificación",
+      "sent": "Enviado. Revisa tu bandeja de entrada (y el spam), haz clic en el enlace y luego pulsa «Ya lo verifiqué».",
+      "sendFailed": "No se pudo enviar el correo. Puede que Firebase esté limitando los envíos: espera unos minutos y vuelve a intentarlo.",
+      "check": "Ya lo verifiqué",
+      "stillUnverified": "Firebase sigue indicando que esta dirección no está verificada. Asegúrate de haber hecho clic en el enlace y vuelve a intentarlo."
+    },
+    "loadFailed": "No se pudo cargar tu cuenta. Recarga para volver a intentarlo.",
+    "history": {
+      "loading": "Cargando tus conversiones…",
+      "emptyCta": "Ver las herramientas",
+      "loadFailed": "No se pudo cargar tu historial. Recarga para volver a intentarlo.",
+      "download": "Descargar",
+      "expired": "Resultado caducado",
+      "loadMore": "Cargar más",
+      "showing": "Mostrando {{count}} de {{total}}",
+      "status": {
+        "pending": "En cola",
+        "queued": "En cola",
+        "processing": "En curso",
+        "completed": "Hecho",
+        "failed": "Fallido",
+        "cancelled": "Cancelado"
+      },
+      "tool": {
+        "convert": "Conversión",
+        "transcribe": "Transcripción",
+        "audio_waveform": "Forma de onda de audio",
+        "extract_audio": "Extracción de audio",
+        "extract_video_only": "Vídeo sin sonido",
+        "extract_frames": "Extracción de fotogramas",
+        "trim_video": "Recorte de vídeo",
+        "caption_translator": "Traducción de subtítulos",
+        "stitch_audio_to_video": "Unión de audio a vídeo",
+        "video_transcode": "Paquete HLS / DASH",
+        "document_scan": "Escaneo de documento",
+        "image_restore": "Restauración de imagen",
+        "video_restore": "Restauración de vídeo",
+        "studio_derive": "Limpieza de audio de Studio",
+        "studio_captions": "Subtítulos de Studio",
+        "studio_export": "Exportación de Studio",
+        "ai_upscale": "Escalado con IA",
+        "ai_background_removal": "Eliminación de fondo",
+        "ai_face_privacy": "Privacidad facial",
+        "ai_object_removal": "Eliminación de objetos",
+        "ai_text_redaction": "Redacción de texto",
+        "ai_frame_interpolation": "Interpolación de fotogramas",
+        "ai_voice_cleanup": "Limpieza de voz",
+        "ai_isolate_vocals": "Aislamiento de voces",
+        "ai_remove_vocals": "Eliminación de voces"
+      },
+      "deletesOn": "Deletes on {{date}}",
+      "keptLonger": "Kept longer",
+      "noDeadline": "No deletion date recorded",
+      "created": "Created",
+      "preview": "Preview",
+      "previewTitle": "Preview of {{name}}",
+      "metadata": "Metadata",
+      "keepLonger": "Keep longer",
+      "keepMenu": "Keep this result for",
+      "keep": {
+        "week": "1 week",
+        "month": "1 month",
+        "sixMonths": "6 months",
+        "year": "1 year"
+      },
+      "keepDone": "Kept until {{date}}.",
+      "keepFailed": "Could not extend this result. Try again.",
+      "keepGone": "This result has already been deleted.",
+      "deleteNow": "Delete now",
+      "deleteRecord": "Delete record",
+      "deleteTitle": "Delete this result now?",
+      "deleteBody": "The file is removed from our servers and can't be recovered. This cannot be undone.",
+      "deleteRecordBody": "The file has already expired. This removes the remaining record of the conversion.",
+      "deleteConfirm": "Delete",
+      "cancel": "Cancel",
+      "deleted": "Deleted.",
+      "deletedPending": "Deleted. A few files are still being removed in the background.",
+      "deleteFailed": "Could not delete this result. Nothing was changed; try again.",
+      "filters": {
+        "label": "Filter history",
+        "kind": "Type",
+        "allKinds": "All types",
+        "tool": "Tool",
+        "allTools": "All tools",
+        "from": "From",
+        "to": "To",
+        "expiringSoon": "Expiring within 7 days",
+        "clear": "Clear filters",
+        "noMatch": "No results match these filters."
+      },
+      "kinds": {
+        "video": "Video",
+        "audio": "Audio",
+        "image": "Image",
+        "lut": "Color LUT",
+        "other": "Other"
+      },
+      "bulk": {
+        "select": "Select {{name}}",
+        "selected": "{{count}} selected",
+        "delete": "Delete selected",
+        "clear": "Clear selection",
+        "title": "Delete {{count}} results now?",
+        "body": "The files are removed from our servers and can't be recovered. This cannot be undone.",
+        "progress": "Deleting {{done}} of {{total}}",
+        "done": "Deleted {{count}} results.",
+        "partial": "Deleted {{done}} of {{total}}. These could not be deleted:"
+      },
+      "expiredShort": "Expired",
+      "actions": "Actions for {{name}}"
+    },
+    "tabs": {
+      "label": "Account sections",
+      "overview": "Overview",
+      "history": "History",
+      "projects": "Projects",
+      "billing": "Billing",
+      "privacy": "Privacy & data",
+      "profile": "Profile"
+    },
+    "retentionChoose": "You choose: 24 hours to 2 years",
+    "overview": {
+      "bannerTitle": "Choose how long we keep your files",
+      "bannerBody": "Your results and Darkroom projects are kept for 6 months unless you pick another window. Anything from 24 hours to 2 years is yours to choose.",
+      "bannerCta": "Open Privacy & data",
+      "bannerDismiss": "Dismiss"
+    },
+    "projects": {
+      "intro": "Your saved Darkroom timelines. Deleting a project also removes its uploaded media.",
+      "loading": "Loading your projects…",
+      "loadFailed": "Could not load your projects. Reload to try again.",
+      "untitled": "Untitled project",
+      "duration": "Length {{duration}}",
+      "edited": "Edited {{date}}",
+      "open": "Open",
+      "delete": "Delete",
+      "deleteTitle": "Delete “{{name}}”?",
+      "deleteBody": "The project, its versions and every uploaded media file are removed from our servers. This cannot be undone.",
+      "deleteConfirm": "Delete project",
+      "cancel": "Cancel",
+      "deleted": "Project deleted.",
+      "deletedPending": "Project deleted. A few files are still being removed in the background.",
+      "deleteFailed": "Could not delete this project. Nothing was changed; try again.",
+      "kindDarkroom": "Darkroom",
+      "motionLoadFailed": "No se pudieron cargar tus proyectos de {{brand}}.",
+      "motionDeleteBody": "El proyecto de {{brand}} y su miniatura se eliminan de nuestros servidores. Esta acción no se puede deshacer."
+    },
+    "billing": {
+      "plans": "Compare plans"
+    },
+    "privacy": {
+      "loading": "Loading your privacy settings…",
+      "loadFailed": "Could not load your settings. Reload to try again.",
+      "retention": {
+        "title": "How long we keep your files",
+        "body": "Applies to everything you create: conversion results, uploads and Darkroom projects. Your choice, not your plan: every account can pick anything from 24 hours to 2 years.",
+        "label": "Retention window",
+        "recommended": "Recommended",
+        "preset": {
+          "h24": "24 hours",
+          "d7": "7 days",
+          "d30": "30 days",
+          "d90": "90 days",
+          "m6": "6 months",
+          "y1": "1 year",
+          "y2": "2 years"
+        },
+        "custom": "Custom",
+        "customLabel": "Custom window in days (1–730)",
+        "customApply": "Apply",
+        "customInvalid": "Enter a whole number of days from 1 to 730.",
+        "current": "Currently {{window}}.",
+        "saving": "Saving…",
+        "saved": "Saved. Your files are now kept for {{window}}.",
+        "saveFailed": "Could not save your retention window. It was left as it was.",
+        "previewFailed": "Could not check what this change would delete, so nothing was changed. Try again.",
+        "windowHours": "{{count}} hours",
+        "windowDays": "{{count}} days",
+        "windowMonths": "{{count}} months",
+        "windowYears": "{{count}} years",
+        "windowDay": "1 day",
+        "windowYear": "1 year"
+      },
+      "shrink": {
+        "title": "Shorten to {{window}}?",
+        "body": "Shortening to {{window}} will delete {{results}} results and {{projects}} projects older than that within the hour.",
+        "bytes": "About {{size}} will be freed.",
+        "other": "Plus {{other}} other stored items.",
+        "irreversible": "Deleted files can't be recovered.",
+        "confirm": "Shorten and delete",
+        "cancel": "Keep my current window"
+      },
+      "why": {
+        "title": "Why longer is better",
+        "revisit": "Revisit and re-download any result without running it again.",
+        "reopen": "Reopen your Darkroom projects exactly where you left them.",
+        "metadata": "See metadata reports for files you converted a while ago.",
+        "tradeoff": "The honest trade-off: a longer window means we store more of your data, for longer. Pick the shortest window you will actually use."
+      },
+      "store": {
+        "title": "What we store and where",
+        "body": "Uploads, results, Darkroom media and projects live on our servers and in Amazon S3 (us-west-2). We keep no backups of your media, so deleting a file removes it for good.",
+        "metadataTitle": "Metadata reports",
+        "metadataBody": "The saved metadata of your files (camera, codec, location tags). By default a file's metadata report is deleted when the file is. Turn this off to keep reports after their files are gone, so the Metadata button keeps working.",
+        "metadataToggle": "Delete metadata reports together with their files",
+        "visibilityTitle": "History visibility",
+        "visibilityLabel": "What your history list shows",
+        "full": "Full details",
+        "namesOnly": "Names only",
+        "settingFailed": "Could not save that setting. It was left as it was.",
+        "settingSaved": "Saved."
+      },
+      "storage": {
+        "title": "What you have stored",
+        "note": "Counts come from your loaded history; the account does not report storage size yet.",
+        "results": "Results in history",
+        "projects": "Darkroom projects",
+        "kind": "{{kind}}: {{count}}",
+        "empty": "Nothing stored right now."
+      },
+      "data": {
+        "title": "Your data",
+        "exportTitle": "Download my data",
+        "exportBody": "A zip with your history, projects, files, account details and metadata reports. Up to 3 exports per hour.",
+        "exportCta": "Download my data",
+        "exportPending": "Preparing your export…",
+        "exportDone": "Your export was saved.",
+        "exportLimited": "You have reached the export limit. Try again in {{minutes}} min.",
+        "exportLimitedGeneric": "You have reached the export limit. Try again in a while.",
+        "exportFailed": "Could not prepare your export. Try again.",
+        "deleteAllTitle": "Delete all my files",
+        "deleteAllBody": "Removes every result, upload, Darkroom project and metadata report. Your account and plan stay.",
+        "deleteAllCta": "Delete all my files",
+        "deleteAllDialogTitle": "Delete all your files?",
+        "deleteAllDialogBody": "Every result, upload, Darkroom project and metadata report is removed from our servers and can't be recovered.",
+        "typeToConfirm": "Type {{word}} to confirm",
+        "confirmInput": "Confirmation text",
+        "deleteAllConfirm": "Delete everything",
+        "deleteAllDone": "All your files were deleted.",
+        "deleteAllPending": "Deleted. A few files are still being removed in the background.",
+        "deleteAllFailed": "Could not delete your files. Try again.",
+        "accountTitle": "Delete my account",
+        "accountBody": "Cancels any subscription, deletes all your files and settings, and removes your sign-in. This cannot be undone.",
+        "accountCta": "Delete my account",
+        "accountDialogTitle": "Delete your account?",
+        "accountDialogBody": "This permanently deletes your account, files, settings and sign-in. Any subscription is cancelled. You will be signed out.",
+        "accountConfirm": "Delete my account",
+        "reauthTitle": "Sign in again to continue",
+        "reauthBody": "For your security, deleting an account needs a sign-in from the last 5 minutes.",
+        "reauthPassword": "Password",
+        "reauthGoogle": "Continue with Google",
+        "reauthPasswordCta": "Confirm password",
+        "reauthFailed": "That sign-in did not work. Check it and try again.",
+        "reauthBlocked": "The sign-in window was blocked. Allow pop-ups for this site and try again.",
+        "accountIncomplete": "Part of the deletion did not finish. Nothing is lost: retry and it will resume where it stopped.",
+        "accountRetry": "Retry deletion",
+        "accountFailed": "Could not delete your account. Try again.",
+        "accountDone": "Your account and data were deleted.",
+        "cancel": "Cancel"
+      }
+    },
+    "profile": {
+      "title": "Your profile",
+      "displayName": "Display name",
+      "noName": "Not set",
+      "nameReadOnly": "Your display name comes from your sign-in provider and cannot be edited here yet.",
+      "email": "Email",
+      "verified": "Verified",
+      "unverified": "Not verified",
+      "sendVerification": "Send verification email",
+      "checkVerification": "I’ve verified",
+      "verificationSent": "Sent. Check your inbox (and spam), click the link, then press “I’ve verified”.",
+      "verificationFailed": "Could not send the email. Firebase may be rate-limiting — wait a few minutes and try again.",
+      "stillUnverified": "Firebase still reports this address as unverified. Make sure you clicked the link, then try again.",
+      "sessionsTitle": "Sessions",
+      "signOut": "Sign out",
+      "signOutEverywhere": "Sign out everywhere",
+      "signOutEverywhereBody": "Ends your session on every device, including this one.",
+      "revokeFailed": "Could not sign you out everywhere. Try again.",
+      "emailTitle": "Correo electrónico",
+      "emailAiJob": "Avisarme por correo cuando termine una tarea larga de IA",
+      "emailExpiry": "Avisarme por correo antes de que caduquen mis archivos",
+      "emailAlways": "Los correos de bienvenida, de pago y de eliminación de la cuenta se envían siempre.",
+      "emailSaveFailed": "No se pudo guardar tu preferencia de correo. Inténtalo de nuevo."
+    },
+    "retentionLabel": "Result retention"
+  },
+  "homeContent": {
+    "howItWorks": {
+      "eyebrow": "Cómo funciona",
+      "title": "Tres pasos, sin cuenta",
+      "steps": [
+        {
+          "title": "Elige un archivo",
+          "body": "Suelta una imagen, vídeo o archivo de audio, o elige uno de tu dispositivo. No se sube nada hasta que inicias la conversión."
+        },
+        {
+          "title": "Ajusta tus opciones",
+          "body": "Elige un formato de salida y ajusta la calidad, las dimensiones o los puntos de recorte. Hay valores predeterminados sensatos preseleccionados para cada herramienta."
+        },
+        {
+          "title": "Descarga el resultado",
+          "body": "La conversión se ejecuta en nuestros propios servidores en lugar de en tu navegador, así que los archivos grandes funcionan bien. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años."
+        }
+      ],
+      "more": "Más detalles en <linkHow>cómo funciona</linkHow>, o consulta <linkTools>todas las herramientas</linkTools>."
+    },
+    "popular": {
+      "eyebrow": "Conversiones populares",
+      "title": "Ve directo a una herramienta"
+    }
+  },
+  "toolsIndex": {
+    "title": "Herramientas de medios online gratuitas",
+    "intro": "Media Manipulator es un conjunto gratuito de herramientas basadas en el navegador para convertir, comprimir, editar, transcribir y limpiar archivos de imagen, vídeo y audio. Sin registro, sin marcas de agua, y tus archivos se procesan en nuestros propios servidores y se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.",
+    "categories": {
+      "image": "Herramientas de imagen",
+      "video": "Herramientas de vídeo",
+      "audio": "Herramientas de audio",
+      "ai": "Herramientas de IA",
+      "metadata": "Herramientas de privacidad y metadatos",
+      "contentStudio": "Darkroom",
+      "motion": "Animación SVG"
+    },
+    "multiTrackEditor": "Editor multipista",
+    "open": "Abrir",
+    "privacyAriaLabel": "Privacidad y gestión de archivos",
+    "privacyTitle": "Tus archivos permanecen privados",
+    "privacyBody": "Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años. Las funciones de IA se ejecutan en un servidor GPU que operamos nosotros: tus archivos no se comparten con proveedores de IA externos, y no se requiere cuenta.",
+    "learnMoreAriaLabel": "Más información",
+    "newHereTitle": "¿Nuevo por aquí?",
+    "newHereBody": "Los tutoriales paso a paso te guían por las herramientas de imagen, vídeo y audio y por el editor Darkroom.",
+    "browseAllTutorials": "Ver todos los tutoriales",
+    "darkroomTutorial": "Tutorial de Darkroom",
+    "howItWorks": "Cómo funciona",
+    "svgAnimationEditor": "Editor de animación SVG",
+    "motionTutorial": "Tutorial de Motion"
+  },
+  "toolLandingPage": {
+    "breadcrumbAriaLabel": "Ruta de navegación",
+    "home": "Inicio",
+    "tools": "Herramientas",
+    "supportedFormatsAriaLabel": "Formatos compatibles",
+    "supportedFormatsHeading": "Formatos compatibles",
+    "inputFormatsHeading": "Formatos de entrada",
+    "outputFormatsHeading": "Formatos de salida",
+    "howToUseAriaLabel": "Cómo usarlo",
+    "howToUseHeading": "Cómo usarlo",
+    "whatItDoesAriaLabel": "Qué hace esta herramienta",
+    "whatItDoesHeading": "Qué hace esta herramienta",
+    "whyItMattersAriaLabel": "Por qué importa",
+    "whyItMattersHeading": "Por qué importa",
+    "useCasesAriaLabel": "Casos de uso habituales",
+    "useCasesHeading": "Casos de uso habituales",
+    "advancedDetailsSummary": "Detalles avanzados",
+    "whyMediaManipulatorAriaLabel": "Por qué Media Manipulator",
+    "whyMediaManipulatorHeading": "Por qué Media Manipulator",
+    "privacyAriaLabel": "Privacidad y gestión de archivos",
+    "privacyHeading": "Privacidad y gestión de archivos",
+    "faqAriaLabel": "Preguntas frecuentes",
+    "faqHeading": "Preguntas frecuentes",
+    "relatedToolsAriaLabel": "Herramientas relacionadas",
+    "relatedToolsHeading": "Herramientas relacionadas"
+  },
+  "contentStudioGuide": {
+    "summaryTitle": "Cómo funciona Darkroom: guía rápida",
+    "whatItIsTitle": "Qué es Darkroom",
+    "whatItIsBody": "Un editor de vídeo multipista gratuito y basado en el navegador. Montas una edición completa —vídeo, imágenes, títulos y audio en pistas de línea de tiempo apiladas— y exportas un único MP4. Sin instalación y sin registro.",
+    "whenToUseTitle": "Cuándo usarlo",
+    "whenToUseBody": "Recurre a Darkroom cuando un solo archivo no es suficiente: combinar varios clips, añadir títulos o música de fondo, superponer capas, o recortar y reordenar imágenes hasta formar un vídeo terminado.",
+    "supportedMediaTitle": "Tipos de medios compatibles",
+    "supportedMediaBody": "Vídeo (MP4, MOV, WebM, MKV), imágenes (JPG, PNG, WebP) y audio (MP3, WAV, AAC). La exportación final es MP4 (vídeo H.264, audio AAC).",
+    "stepByStepTitle": "Paso a paso",
+    "step1": "Crea un proyecto y elige una resolución (hasta 4K) y una tasa de fotogramas (24/30/60 fps).",
+    "step2": "Arrastra archivos de vídeo, imagen y audio al depósito de medios.",
+    "step3": "Suelta clips en las pistas de la línea de tiempo, y luego recórtalos y divídelos en la cabeza de reproducción.",
+    "step4": "Apila superposiciones y títulos en pistas superiores y añade pistas de audio para mezclar.",
+    "step5": "Previsualiza el conjunto y luego exporta a MP4 y descárgalo.",
+    "timelineTitle": "Línea de tiempo y capas",
+    "timelineBody": "La línea de tiempo es precisa a nivel de fotograma: la cabeza de reproducción y los bordes de los clips se ajustan a la tasa de fotogramas del proyecto. Las pistas se componen en orden de apilamiento, así que un clip en una pista superior se renderiza por encima de los de las pistas inferiores. Así es como los títulos, logotipos y superposiciones de imagen en imagen se sitúan sobre tu vídeo base.",
+    "exportTitle": "Exportación",
+    "exportBody": "Al exportar se renderiza toda la secuencia —cada pista, recorte y superposición— en un único MP4 descargable codificado con vídeo H.264 y audio AAC.",
+    "limitationsTitle": "Limitaciones",
+    "limitationsBody": "Darkroom evoluciona activamente. La edición esencial —línea de tiempo multipista, recorte/división, superposición de capas, mezcla de audio y exportación a MP4— ya está disponible. Con el tiempo se siguen añadiendo efectos avanzados.",
+    "privacyTitle": "Privacidad",
+    "privacyBody": "Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años. No se requiere cuenta y los archivos nunca se comparten con proveedores externos."
+  },
+  "voices": {
+    "eyebrow": "Voces",
+    "title": "Mis voces en ElevenLabs",
+    "intro": "Soy Mitchell Wintrow, el creador de Media Manipulator. Hice dos clones de voz profesionales en ElevenLabs y ambos son públicos en la biblioteca de voces de ElevenLabs, así que cualquiera puede usarlos para narración, personajes, vídeos y juegos.",
+    "made": "Las dos voces están probadas y verificadas en más de 14 idiomas. Las dos escenas de abajo suenan en ocho de ellos. Se generaron con Eleven v4 y etiquetas de audio, con efectos de sonido de ElevenLabs y música original creada en Suno.",
+    "languageLabel": "Idioma de la demo",
+    "languageHint": "Las dos escenas cambian a la vez.",
+    "useVoice": "Usar {{name}} en ElevenLabs",
+    "roles": {
+      "narration": "Narración",
+      "characters": "Personajes"
+    },
+    "mrWintrow": {
+      "description": "Un clon profesional de mi propia voz, pensado para narraciones largas: audiolibros, historias de terror, vídeos explicativos y locuciones. En una sola lectura pasa de la calma a la burla, al miedo y a quebrarse.",
+      "demoTitle": "The Last Exit",
+      "demoDescription": "Una narración de terror en un viaje nocturno: calma, burla, pánico, falta de aliento, quiebre… y vuelta."
+    },
+    "obsidian": {
+      "description": "Un segundo clon profesional afinado para personajes: villanos, hechiceros, papeles de videojuegos y radioteatro que piden amenaza y teatralidad en lugar de la contención de un narrador.",
+      "demoTitle": "The Tower at Vaelmoor",
+      "demoDescription": "Un nigromante se bate en duelo con su viejo maestro, Cornelius (una voz de la biblioteca de ElevenLabs), en plena tormenta."
+    },
+    "howTo": {
+      "title": "Cómo usarlas",
+      "steps": [
+        "Abre una voz con el enlace que hay bajo su demo. Basta con una cuenta gratuita de ElevenLabs.",
+        "Añádela a tus voces y elígela en Text to Speech, en Studio o mediante la API.",
+        "Para lecturas expresivas, usa Eleven v4 y etiquetas de audio como [whispers] o [laughs]."
+      ]
+    },
+    "darkroomTip": "Genera una frase en ElevenLabs, descárgala y arrastra el audio a la biblioteca de medios de Darkroom para ponerlo bajo tu edición.",
+    "sumrak": "También narran las historias de Сумрак, la app para aprender ruso que construí. <linkSumrak>Más información en winapps.io</linkSumrak>.",
+    "home": {
+      "eyebrow": "Voces",
+      "title": "La voz detrás de Media Manipulator",
+      "body": "Dos voces profesionales que hice en ElevenLabs, gratis para probar, con escenas en ocho idiomas.",
+      "cta": "Todas las demos de voz"
+    },
+    "darkroom": {
+      "title": "¿Necesitas una locución para tu edición?",
+      "body": "Prueba mis dos voces de ElevenLabs, genera allí una frase y añade el audio a la biblioteca de medios de Darkroom.",
+      "cta": "Más sobre las voces"
+    }
+  },
+  "changelog": {
+    "title": "Registro de cambios",
+    "intro": "Qué ha cambiado en Media Manipulator, lo más reciente primero.",
+    "subscribe": "Suscribirse por RSS",
+    "note": "Las entradas del registro de cambios están escritas en inglés.",
+    "new": "Nuevo",
+    "improved": "Mejorado",
+    "fixed": "Corregido",
+    "metaTitle": "Registro de cambios | Media Manipulator",
+    "metaDesc": "Notas de versión de Media Manipulator: nuevas herramientas, funciones de cuenta, novedades de Darkroom y correcciones."
+  },
+  "licenses": {
+    "metaTitle": "Licencias de código abierto | Media Manipulator",
+    "metaDesc": "El código abierto que Media Manipulator ejecuta en tu navegador o escribe en tus exportaciones, con cada licencia y dónde encontrar su código fuente.",
+    "title": "Licencias de código abierto",
+    "intro": "Media Manipulator usa estas bibliotecas de código abierto en tu navegador. Parte de su código también se escribe en los archivos que exportas. Cada una se usa bajo su propia licencia, que se muestra abajo con su aviso de copyright y un enlace a su código fuente.",
+    "note": "Las descripciones de las bibliotecas están escritas en inglés.",
+    "version": "Versión",
+    "license": "Licencia",
+    "copyright": "Copyright",
+    "source": "Código fuente",
+    "licenseText": "Texto de la licencia",
+    "usedFor": "Se usa para",
+    "embedded": "Su aviso de licencia se escribe en el archivo exportado.",
+    "unmodified": "Se usa sin modificar. Su código fuente está disponible en el enlace de arriba."
+  },
+  "motionPage": {
+    "betaBadge": "Beta",
+    "guide": {
+      "summaryTitle": "Cómo funciona {{brand}}",
+      "whatItIsTitle": "Qué es",
+      "whatItIsBody": "{{brand}} es un editor de SVG con una línea de tiempo de fotogramas clave. Cada forma de tu dibujo es una capa, y cada propiedad que animas (posición, escala, rotación, opacidad, color, trazo y más) tiene su propia pista de fotogramas clave. Editar es gratis e ilimitado y se ejecuta por completo en tu navegador.",
+      "stepsTitle": "Cuatro pasos",
+      "step1": "Abre un SVG o un archivo Lottie, o empieza un dibujo en blanco y dibuja con las herramientas de forma, pluma y texto.",
+      "step2": "Mueve la cabeza de reproducción a un punto del tiempo y cambia una propiedad; aparece un fotograma clave en la pista de esa propiedad.",
+      "step3": "Da forma al ritmo con un preajuste de suavizado, una curva personalizada o una retención, o aplica un animador de un clic como Dibujar o Trayectoria de movimiento.",
+      "step4": "Exporta SVG animado, Lottie JSON, React, JavaScript, TypeScript, Flutter o GIF. El archivo se crea en tu navegador y se descarga al instante.",
+      "editorTitle": "El editor",
+      "editorBody": "{{brand}} se abre a pantalla completa, sin la cabecera del sitio ni anuncios, para que el lienzo, el panel de capas, el inspector y la línea de tiempo ocupen toda la ventana. Tu trabajo se guarda en este navegador sobre la marcha; si has iniciado sesión, también puedes guardarlo en tu cuenta."
+    },
+    "launcher": {
+      "open": "Abrir {{brand}}",
+      "openHint": "Inicia un dibujo nuevo en el editor a pantalla completa.",
+      "recentTitle": "Proyectos recientes",
+      "sourceAccount": "Guardado en tu cuenta",
+      "sourceBrowser": "Guardado en este navegador",
+      "loading": "Cargando tus proyectos…",
+      "empty": "Aún no hay proyectos. Tus dibujos aparecerán aquí.",
+      "error": "No se pudieron cargar tus proyectos en este momento. Aun así, puedes empezar un dibujo nuevo.",
+      "edited": "Editado el {{date}}"
+    },
+    "plans": {
+      "title": "Formatos y cupos por plan",
+      "intro": "Editar, guardar y exportar SVG estático es gratis en todos los planes. Las exportaciones animadas cuentan para un cupo diario de {{brand}}, y cada plan incluye los formatos marcados abajo. Estas cifras proceden directamente de nuestros servidores, por lo que siempre están al día.",
+      "caption": "Formatos de exportación y cupos de {{brand}} por plan",
+      "format": "Formato",
+      "staticSvg": "SVG estático",
+      "staticFree": "Gratis en todos los planes, nunca se cuenta",
+      "formats": {
+        "svg_animated": "SVG animado",
+        "lottie": "Lottie JSON",
+        "react_tsx": "Componente React (.tsx)",
+        "js_ts": "Módulo JavaScript / TypeScript",
+        "flutter": "Widget de Flutter (.dart)",
+        "gif": "GIF",
+        "png_sequence": "Secuencia PNG (.zip)",
+        "mp4": "Vídeo MP4",
+        "webm": "Vídeo WebM",
+        "import_lottie": "Importación de Lottie"
+      },
+      "rows": {
+        "exportsPerDay": "Exportaciones animadas al día",
+        "projects": "Proyectos guardados",
+        "maxDuration": "Animación más larga que puedes exportar",
+        "rasterCap": "Tamaño y duración de GIF y vídeo"
+      },
+      "values": {
+        "included": "Incluido",
+        "notIncluded": "No incluido",
+        "unlimited": "Ilimitado",
+        "localOnly": "{{count}}, solo en este navegador",
+        "comingSoon": "Próximamente: aún no está en ningún plan",
+        "noCap": "Sin límite",
+        "notApplicable": "No incluido",
+        "capHeight": "hasta {{height}}p",
+        "capFps": "{{fps}} fps",
+        "capSeconds": "{{seconds}} s"
+      },
+      "comingSoonNote": "Los formatos marcados como «próximamente» ya están integrados en el editor y se añadirán a un plan en breve. Esta tabla se actualiza sola cuando eso ocurra.",
+      "resetNote": "Los cupos se restablecen a medianoche UTC. Las exportaciones canceladas o fallidas que ya se hayan contado no se reembolsan.",
+      "unavailable": "No se pudo cargar la tabla de planes en este momento. La página de precios muestra el cupo de cada plan.",
+      "seePlans": "Comparar todos los planes"
+    }
+  },
+  "translateGuide": {
+    "title": "Translator guide",
+    "intro": "How to translate Media Manipulator in place on this site and send your work for review. Read it once before you start; it takes about ten minutes.",
+    "englishHeading": "English",
+    "localeHeading": "In your language",
+    "notTranslatedYet": "This guide has not been translated into your language yet. The English text above is the reference.",
+    "sections": [
+      {
+        "title": "1. What the workbench is",
+        "paragraphs": [
+          "This site is a private copy of media-manipulator.com for one language. It looks and works like the public site, but search engines never see it, there are no ads or analytics, and actions that cost money or delete data are hidden.",
+          "When you are signed in, the translator workbench opens as a panel at the side of the page (on the right, or on the left for right-to-left languages). It shows every piece of text on the page with its English source and lets you change the translation. Your edit appears on the page as you type, so you can see it in context.",
+          "Nothing you type changes the public site. When you are ready, you submit your changes and they become a pull request: a proposed change that Mitch reviews before it goes live."
+        ]
+      },
+      {
+        "title": "2. Supported browsers",
+        "bullets": [
+          "Use a current desktop version of Chrome, Edge, Firefox or Safari. The panel is built for a desktop-sized window; phones and tablets are not supported.",
+          "Your browser must allow site storage (IndexedDB). In a private or incognito window your drafts are not saved, and the panel shows a yellow warning.",
+          "Work in one browser on one computer. Drafts live in that browser only and do not follow you to another device."
+        ]
+      },
+      {
+        "title": "3. Signing in and verifying your email",
+        "bullets": [
+          "Mitch creates your account and sends you a temporary password over a secure channel. Change it after your first sign-in.",
+          "Open your translator site and press \"Sign in to translate\" in the bottom corner. Sign in with the email address you gave Mitch.",
+          "The first time, the panel asks you to verify your email. Press \"Send verification email\", click the link in that email, then come back and press \"I've verified\".",
+          "The panel appears only for a verified address that is on this site's translator list. If you are signed in, verified, and still see no panel, contact us (section 13)."
+        ]
+      },
+      {
+        "title": "4. A tour of the panel",
+        "bullets": [
+          "This page: every string on the page you are looking at, grouped by file. Each row shows the English source, the current translation and a field to edit it. A dot marks the rows you have changed.",
+          "All keys: every string in your language, including ones that only appear after a click, in an error message or in an email. Use it to find text you cannot reach on a page.",
+          "Changes: your pending edits, each with a Revert button, and the Submit for review button.",
+          "Hover a row to outline that text on the page. Hold Alt (Option on a Mac) and click any text on the page to jump to its row.",
+          "Search finds keys by key name, English text or translation. Press / to jump to the search box and Esc to collapse the panel. Drag the panel's edge to resize it.",
+          "The site opens in your language. To compare with the English page in context, choose English in the language menu; the English pages live under /en/. Switch back to your language to edit: \"This page\" lists only strings in your language."
+        ]
+      },
+      {
+        "title": "5. Plurals",
+        "paragraphs": [
+          "Text that contains a number, such as \"3 files\", has one form for each plural category your language uses. The panel shows them together as one group and says which forms your language needs.",
+          "Arabic needs six forms: zero, one, two, few, many and other. Japanese needs only one: other. Fill in every form the panel marks as required, even when English has fewer. A form marked \"Not used by this language\" can be left as it is."
+        ]
+      },
+      {
+        "title": "6. Text with tags",
+        "paragraphs": [
+          "Some strings contain tags such as <0>…</0>, <1>…</1> or <strong>…</strong>. The site turns them into links, bold text or other formatting. Translate the words between the tags, keep every tag, and keep each opening tag paired with its closing tag. You may move a tagged phrase to wherever it belongs in your sentence.",
+          "These rows show the raw text with its tags and a preview underneath, so you can check the result before you submit."
+        ]
+      },
+      {
+        "title": "7. Placeholders",
+        "paragraphs": [
+          "Text inside double curly braces, such as {{name}} or {{count}}, is filled in by the site. Copy it exactly as it is, braces included, and never translate it. You may move it to wherever it belongs in your sentence.",
+          "The same applies to $t(…) references: they insert another string, so keep them unchanged."
+        ]
+      },
+      {
+        "title": "8. Warnings",
+        "paragraphs": [
+          "The panel checks every edit and shows a warning when something looks wrong. Warnings never stop you; when you submit, you tick each one to confirm it is intended. The checks are:"
+        ],
+        "bullets": [
+          "a placeholder is missing, or one was added that the English text does not have;",
+          "a plural group is missing a form your language needs;",
+          "tags are unbalanced or differ from the English source;",
+          "the translation is empty;",
+          "the translation is identical to the English text (fine for a brand name or a code, otherwise check it);",
+          "leading or trailing spaces differ from the English text;",
+          "a $t(…) reference was changed or removed."
+        ]
+      },
+      {
+        "title": "9. Drafts",
+        "bullets": [
+          "Every edit is saved as a draft in your browser as you type, separately for each language. Drafts survive reloads, navigation and closing the tab.",
+          "The submit dialog is saved too: if you leave the page with it open, your description and ticked warnings are still there when you come back.",
+          "Clearing this site's data, using a private window, or switching browser or computer loses your drafts. Submit regularly rather than keeping a large batch for days."
+        ]
+      },
+      {
+        "title": "10. Submitting your changes",
+        "bullets": [
+          "Open the Changes tab, check your list, and press Submit for review.",
+          "Describe what you changed in at least 10 characters, for example \"Translated the pricing page\".",
+          "The dialog checks your changes against the latest version of the site. If someone changed a string you also edited, it is listed as a conflict: compare the versions and tick \"Keep my version\" if yours should win.",
+          "Tick each warning you have checked, then press Submit. You get a link to the pull request on GitHub.",
+          "Press \"Start fresh\" to clear the submitted drafts. You can submit once every 10 minutes."
+        ]
+      },
+      {
+        "title": "11. What happens next",
+        "paragraphs": [
+          "Mitch reviews every pull request. He may merge it as it is, or ask you to adjust some strings; make those adjustments on this site and submit them as a new set of changes.",
+          "After a pull request is merged, the public site and your translator site update within a few minutes."
+        ]
+      },
+      {
+        "title": "12. What not to do",
+        "bullets": [
+          "Do not translate brand and product names: Media Manipulator, Darkroom, Motion, CreaTV.",
+          "Do not change URLs, email addresses, file formats, code identifiers or anything inside {{…}}.",
+          "Do not paste text copied from other products or websites. Write your own translation.",
+          "Do not share your sign-in details or your translator site's address with anyone else."
+        ]
+      },
+      {
+        "title": "13. Contact",
+        "paragraphs": [
+          "Questions, problems signing in, or a string you are not sure about: email support@media-manipulator.com and name your language."
+        ]
+      }
+    ]
+  }
+}
