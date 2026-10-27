@@ -60,7 +60,7 @@
         "body": "Todas as funcionalidades do site (conversão de imagem, compressão de vídeo, limpeza de áudio, transcrição, ferramentas de IA) são gratuitas e utilizáveis sem conta. Nunca exigimos que inicie sessão, que forneça um e-mail ou que pague antes de transferir um ficheiro convertido."
       },
       "privacy": {
-        "title": "Centrado na privacidade: é você que decide quanto tempo os ficheiros ficam",
+        "title": "Centrado na privacidade: a decisão de quanto tempo os ficheiros ficam é sua",
         "body": "Os ficheiros carregados e os resultados gerados são guardados apenas durante o período de retenção aplicável: <strong>24 horas</strong> para visitantes sem conta, ou o período que escolher (de 24 horas a 2 anos) com uma conta gratuita. Não vendemos nem partilhamos os carregamentos com ninguém. Consulte a nossa <linkPrivacy>política de privacidade</linkPrivacy> para todos os detalhes."
       },
       "localAi": {
@@ -125,7 +125,7 @@
     "whoBuilds": {
       "title": "Quem desenvolve o Media Manipulator",
       "p1": "O Media Manipulator é desenvolvido e operado pela <strong>CreaTV Ltd.</strong>, uma pequena empresa independente de tecnologia para multimédia sediada no Colorado, EUA. A linha de produtos mais ampla da CreaTV concentra-se em ferramentas que ajudam os criadores a dar vida às suas ideias; o Media Manipulator é a ferramenta gratuita e sem conta que ancora esse ecossistema.",
-      "p2": "Somos uma equipa pequena, e é exatamente por isso que construímos o Media Manipulator desta forma: não queremos tomar conta de uma frota de integrações de IA externas, não queremos guardar os seus ficheiros por tempo indefinido e não queremos operar dez sites de conversão separados e de utilização única. Um estúdio, um lugar onde é você que decide quanto tempo os seus ficheiros vivem, um servidor GPU a fazer o trabalho pesado."
+      "p2": "Somos uma equipa pequena, e é exatamente por isso que construímos o Media Manipulator desta forma: não queremos tomar conta de uma frota de integrações de IA externas, não queremos guardar os seus ficheiros por tempo indefinido e não queremos operar dez sites de conversão separados e de utilização única. Um estúdio, um lugar onde a decisão de quanto tempo os seus ficheiros vivem é sua, um servidor GPU a fazer o trabalho pesado."
     },
     "supportedFormats": {
       "title": "Formatos de ficheiro suportados (referência rápida)",
@@ -290,7 +290,7 @@
         "title": "Segurança e privacidade",
         "items": [
           "Todos os carregamentos usam encriptação HTTPS",
-          "É você que decide durante quanto tempo os ficheiros são guardados (24 horas para visitantes)",
+          "A decisão de quanto tempo os ficheiros são guardados é sua (24 horas para visitantes)",
           "O processamento de IA corre nos nossos próprios servidores: nenhum fornecedor de IA externo vê os seus conteúdos",
           "Análise automática de segurança de conteúdos para material abusivo ou ilegal"
         ],
@@ -1097,7 +1097,7 @@
         "id": "retention",
         "title": "5. Armazenamento, retenção e eliminação",
         "paragraphs": [
-          "Visitantes sem conta: os ficheiros carregados e os resultados gerados são armazenados durante 24 horas. Se tiver uma conta, é você que decide durante quanto tempo armazenamos os seus ficheiros, de 24 horas a 2 anos (6 meses, salvo se o alterar). Esta escolha está disponível em todas as contas e não depende do seu plano. A Política de Privacidade descreve os detalhes.",
+          "Visitantes sem conta: os ficheiros carregados e os resultados gerados são armazenados durante 24 horas. Se tiver uma conta, a decisão de quanto tempo armazenamos os seus ficheiros é sua, de 24 horas a 2 anos (6 meses, salvo se o alterar). Esta escolha está disponível em todas as contas e não depende do seu plano. A Política de Privacidade descreve os detalhes.",
           "Após o fim do período de retenção aplicável, os ficheiros carregados e os resultados gerados são eliminados dos nossos sistemas ativos, salvo se ocorrer uma eliminação anterior ou se uma retenção limitada for legalmente exigida ou razoavelmente necessária para fins de segurança, prevenção de abusos, conformidade legal, resolução de litígios ou aplicação destes Termos. A eliminação é efetuada por um processo automatizado e pode ocorrer pouco tempo depois do fim do período.",
           "Pode eliminar ficheiros individuais, eliminar todos os seus ficheiros, exportar os seus dados ou eliminar a sua conta a partir da página Conta. A eliminação de ficheiros ou de uma conta é permanente: não mantemos cópias de segurança dos conteúdos multimédia e não podemos restaurar ficheiros eliminados.",
           "Podemos conservar durante mais tempo registos técnicos limitados, registos de segurança, registos de prevenção de abusos, registos de análise ou registos de conformidade legal, quando razoavelmente necessário. Estes registos não se destinam a conservar ficheiros multimédia carregados na íntegra após o fim do período de retenção.",
@@ -1348,7 +1348,7 @@
           "Estes Termos não lhe conferem a propriedade do Media Manipulator nem de qualquer propriedade intelectual da CreaTV Ltd.",
           "Não pode copiar, modificar, distribuir, vender, alugar, fazer engenharia inversa ou criar obras derivadas do Media Manipulator, salvo na medida permitida por lei ou com a nossa autorização escrita.",
           "Mantém a propriedade dos seus próprios ficheiros carregados e resultados gerados, sem prejuízo dos direitos e licenças concedidos nestes Termos.",
-          "As animações e os ficheiros que cria com o Motion, incluindo as exportações em SVG animado, Lottie, código e imagem, pertencem-lhe da mesma forma que os seus outros resultados gerados. Algumas exportações incluem código de código aberto de terceiros que faz a animação reproduzir-se: o anime.js, licenciado ao abrigo da Licença MIT. O respetivo aviso de direitos de autor e de licença é escrito no topo do ficheiro exportado, e tem de manter esse aviso se utilizar ou distribuir o ficheiro. As exportações de código que utilizam um pacote em vez de o incorporar (o pacote anime.js para React e JavaScript, e o flutter_svg ou o webview_flutter para Flutter) identificam-no no ficheiro, e é você que o instala ao abrigo da respetiva licença (MIT, ou BSD-3-Clause no caso do webview_flutter).",
+          "As animações e os ficheiros que cria com o Motion, incluindo as exportações em SVG animado, Lottie, código e imagem, pertencem-lhe da mesma forma que os seus outros resultados gerados. Algumas exportações incluem código de código aberto de terceiros que faz a animação reproduzir-se: o anime.js, licenciado ao abrigo da Licença MIT. O respetivo aviso de direitos de autor e de licença é escrito no topo do ficheiro exportado, e tem de manter esse aviso se utilizar ou distribuir o ficheiro. As exportações de código que utilizam um pacote em vez de o incorporar (o pacote anime.js para React e JavaScript, e o flutter_svg ou o webview_flutter para Flutter) identificam-no no ficheiro, e cabe-lhe a si instalá-lo ao abrigo da respetiva licença (MIT, ou BSD-3-Clause no caso do webview_flutter).",
           "O Media Manipulator utiliza bibliotecas de código aberto no seu navegador, incluindo a mediabunny, licenciada ao abrigo da Mozilla Public License 2.0 e utilizada sem modificações para empacotar ficheiros de vídeo criados no seu navegador. As respetivas licenças, avisos de direitos de autor e ligações para o código-fonte estão listados na nossa página de licenças de código aberto: https://www.media-manipulator.com/licenses."
         ]
       },
@@ -1566,9 +1566,9 @@
       "q3": "As contas gratuitas veem anúncios?",
       "a3": "Sim. Os anúncios pagam o plano gratuito, por isso só o Premium e o Pro os removem. Não há intersticiais, contagens decrescentes nem esperas forçadas em nenhum plano.",
       "q4": "Posso usar sem qualquer conta?",
-      "a4": "Sim, e isso é intencional. Todas as ferramentas funcionam sem sessão iniciada; uma conta apenas aumenta o teto e guarda o seu histórico. Sem conta, os seus ficheiros são guardados durante 24 horas; com conta, é você que decide durante quanto tempo, de 24 horas a 2 anos."
+      "a4": "Sim, e isso é intencional. Todas as ferramentas funcionam sem sessão iniciada; uma conta apenas aumenta o teto e guarda o seu histórico. Sem conta, os seus ficheiros são guardados durante 24 horas; com conta, a decisão de quanto tempo é sua, de 24 horas a 2 anos."
     },
-    "retentionNote": "É você que decide: de 24 horas a 2 anos. Visitantes sem conta: 24 horas.",
+    "retentionNote": "A decisão é sua: de 24 horas a 2 anos. Visitantes sem conta: 24 horas.",
     "pendingFrom": "Premium a partir de {{date}}",
     "proBadge": "Ideal para o Motion",
     "motionNote": "O Motion, o editor de animação SVG, está a ser lançado. As suas quotas estão listadas para que possa ver o que cada plano inclui."
@@ -1718,7 +1718,7 @@
       "privacy": "Privacidade e dados",
       "profile": "Perfil"
     },
-    "retentionChoose": "É você que decide: de 24 horas a 2 anos",
+    "retentionChoose": "A decisão é sua: de 24 horas a 2 anos",
     "overview": {
       "bannerTitle": "Escolha durante quanto tempo guardamos os seus ficheiros",
       "bannerBody": "Os seus resultados e projetos do Darkroom são guardados durante 6 meses, a menos que escolha outro período. Pode escolher qualquer período entre 24 horas e 2 anos.",

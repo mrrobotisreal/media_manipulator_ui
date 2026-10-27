@@ -57,7 +57,7 @@
     "showAll": "Mostrar tudo",
     "showMore": "Mostrar mais",
     "showLess": "Mostrar menos",
-    "retentionPromise": "É você que decide durante quanto tempo guardamos os seus ficheiros: 24 horas por predefinição para visitantes e até 2 anos com uma conta gratuita",
+    "retentionPromise": "A decisão de quanto tempo guardamos os seus ficheiros é sua: 24 horas por predefinição para visitantes e até 2 anos com uma conta gratuita",
     "retentionPromiseShort": "Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos"
   },
   "units": {

@@ -63,7 +63,7 @@
       "maxOutput": "Saída até {{height}}p",
       "studioProjects": "{{count}} projetos do Studio guardados",
       "studioProjectsUnlimited": "Projetos do Studio guardados ilimitados",
-      "retention": "É você que decide durante quanto tempo os ficheiros são guardados: de 24 horas a 2 anos",
+      "retention": "A decisão de quanto tempo os ficheiros são guardados é sua: de 24 horas a 2 anos",
       "priorityGpu": "Processamento prioritário",
       "noAds": "Sem anúncios",
       "retentionGuest": "Ficheiros guardados durante 24 horas"
