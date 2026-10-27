@@ -66,7 +66,7 @@ export const locales: LocaleDef[] = [
   { code: "hi-IN", prefix: "hi", label: "हिन्दी", englishLabel: "Hindi", flag: "🇮🇳", dir: "ltr", translated: false },
   { code: "pt-PT", prefix: "pt-pt", label: "Português (Portugal)", englishLabel: "Portuguese (Portugal)", flag: "🇵🇹", dir: "ltr", translated: false },
   { code: "pt-BR", prefix: "pt-br", label: "Português (Brasil)", englishLabel: "Portuguese (Brazil)", flag: "🇧🇷", dir: "ltr", translated: false },
-  { code: "vi-VN", prefix: "vi", label: "Tiếng Việt", englishLabel: "Vietnamese", flag: "🇻🇳", dir: "ltr", translated: false },
+  { code: "vi-VN", prefix: "vi", label: "Tiếng Việt", englishLabel: "Vietnamese", flag: "🇻🇳", dir: "ltr", translated: true },
 ];
 
 export const defaultLocale = "en-US";

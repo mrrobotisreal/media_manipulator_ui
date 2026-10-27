@@ -3,504 +3,504 @@
     "nav": {
       "backToBlog": "← Blog"
     },
-    "title": "The Hitchhiker's Guide to Video Compression: MP4 vs WebM vs AVI vs MOV",
+    "title": "Cẩm nang nén video cho người đi bụi: MP4 vs WebM vs AVI vs MOV",
     "byline": {
-      "writtenBy": "Written by:",
-      "date": "June 13th, 2025",
-      "time": "10:33 PM"
+      "writtenBy": "Tác giả:",
+      "date": "13 tháng 6, 2025",
+      "time": "22:33"
     },
     "intro": {
-      "title": "A Brief Intro to Video Compression",
-      "p1": "Have you ever tried to upload a video to your website and watched in horror as the loading bar crawled at a snail's pace? 🐌 Or maybe you've recorded a quick 30-second demo only to discover the file is somehow larger than your entire website? Yeah, we've all been there, and it's about as fun as watching paint dry... on dial-up internet.",
-      "p2": "Here's the thing: video compression is basically the art of making your videos smaller without making them look like they were filmed on a potato 🥔. Think of it like this - raw video data is like trying to stuff an entire wardrobe into a carry-on suitcase. Video compression is the magical folding technique that somehow makes everything fit while still keeping your clothes (mostly) wrinkle-free.",
-      "p3": "At its core, video compression works by being sneaky in two main ways:",
+      "title": "Giới thiệu ngắn gọn về nén video",
+      "p1": "Bạn đã bao giờ thử tải một video lên website và kinh hãi nhìn thanh tải bò chậm như sên chưa? 🐌 Hay bạn vừa quay một bản demo 30 giây rồi phát hiện tệp đó bằng cách nào đó còn lớn hơn cả website của bạn? Ừ, ai cũng từng trải qua, và nó vui ngang với việc ngồi nhìn sơn khô... trên mạng dial-up.",
+      "p2": "Chuyện là thế này: nén video về cơ bản là nghệ thuật làm video nhỏ lại mà không khiến nó trông như được quay bằng củ khoai tây 🥔. Hãy hình dung thế này — dữ liệu video thô giống như cố nhét cả tủ quần áo vào một vali xách tay. Nén video là kỹ thuật gấp đồ thần kỳ giúp mọi thứ vừa vặn mà quần áo vẫn (gần như) không nhăn.",
+      "p3": "Về cốt lõi, nén video hoạt động bằng cách khôn khéo theo hai hướng chính:",
       "bullets": [
-        "<strong>Spatial compression</strong>: This looks at each frame and says \"Hey, this blue sky has like 10,000 pixels that are all basically the same shade of blue. How about we just say 'blue pixels from here to here' instead?\" It's like describing a wall as \"all white\" instead of listing every single brick.",
-        "<strong>Temporal compression</strong>: This is where things get really clever. Instead of storing every single frame completely, it only stores the differences between frames. So if you're recording yourself talking and the background doesn't change, why store that background 30 times per second? Just store it once and note what changes! 🎬"
+        "<strong>Nén không gian</strong>: Cách này nhìn vào từng khung hình và nói \"Này, bầu trời xanh này có tới 10.000 pixel gần như cùng một sắc xanh. Sao không nói gọn là 'pixel xanh từ đây đến đây' nhỉ?\" Giống như mô tả một bức tường là \"toàn màu trắng\" thay vì liệt kê từng viên gạch.",
+        "<strong>Nén thời gian</strong>: Đây là lúc mọi thứ trở nên thực sự thông minh. Thay vì lưu trọn vẹn từng khung hình, nó chỉ lưu phần khác biệt giữa các khung hình. Nếu bạn đang quay mình nói chuyện và phông nền không đổi, sao phải lưu phông nền đó 30 lần mỗi giây? Chỉ cần lưu một lần và ghi chú những gì thay đổi! 🎬"
       ],
-      "p4": "The magic happens when these techniques work together, turning your massive 2GB screen recording into a manageable 50MB file that still looks crisp. But here's where it gets interesting - different video formats (containers) and codecs (the actual compression algorithms) handle this magic in very different ways. Some are like Swiss Army knives 🔪 - versatile but not always the sharpest tool for every job. Others are more like specialized surgical instruments - incredibly effective for specific tasks but useless for anything else.",
-      "quote": "\"In the world of video compression, the heaviest files aren't always the strongest - sometimes the smallest warriors pack the mightiest punch.\" 💪"
+      "p4": "Phép màu xảy ra khi các kỹ thuật này phối hợp với nhau, biến bản ghi màn hình 2GB khổng lồ của bạn thành một tệp 50MB dễ quản lý mà vẫn sắc nét. Nhưng điều thú vị là — các định dạng video (container) và codec (thuật toán nén thực sự) khác nhau xử lý phép màu này theo những cách rất khác nhau. Một số giống dao đa năng Thụy Sĩ 🔪 — linh hoạt nhưng không phải lúc nào cũng là công cụ sắc bén nhất cho mọi việc. Số khác giống dụng cụ phẫu thuật chuyên dụng — cực kỳ hiệu quả cho các tác vụ cụ thể nhưng vô dụng với mọi thứ khác.",
+      "quote": "\"Trong thế giới nén video, những tệp nặng nhất không phải lúc nào cũng mạnh nhất — đôi khi những chiến binh nhỏ bé nhất lại tung ra cú đấm uy lực nhất.\" 💪"
     },
     "formats": {
-      "title": "What's the Difference Between These Formats Anyway?",
-      "intro": "Alright, let's break down these video formats like we're comparing superhero teams 🦸‍♂️. Each one has its own superpowers, weaknesses, and that one weird quirk that makes you go \"really?\"",
+      "title": "Rốt cuộc các định dạng này khác nhau thế nào?",
+      "intro": "Được rồi, hãy mổ xẻ các định dạng video này như đang so sánh các đội siêu anh hùng 🦸‍♂️. Mỗi đội có siêu năng lực riêng, điểm yếu riêng, và một đặc điểm kỳ quặc khiến bạn phải thốt lên \"thật á?\"",
       "mp4": {
         "title": "MP4 (MPEG-4 Part 14)",
-        "intro": "Think of MP4 as the Superman of video formats - it's everywhere, everyone recognizes it, and it pretty much always saves the day. This format:",
+        "intro": "Hãy xem MP4 như Superman của các định dạng video — có mặt khắp nơi, ai cũng nhận ra, và hầu như lúc nào cũng cứu được tình thế. Định dạng này:",
         "bullets": [
-          "<strong>Plays nice with everyone</strong>: From your grandma's ancient laptop to the latest iPhone, MP4 just works",
-          "<strong>Uses H.264/H.265 codecs</strong>: These are like the compression wizards that make your files small while keeping quality high",
-          "<strong>Supports streaming</strong>: Perfect for when you want your videos to start playing before they're fully loaded (because who has time to wait? ⏰)",
-          "<strong>File sizes</strong>: Generally gives you that sweet spot between quality and size"
+          "<strong>Hòa hợp với tất cả</strong>: Từ chiếc laptop cổ lỗ của bà bạn đến iPhone đời mới nhất, MP4 cứ thế chạy",
+          "<strong>Dùng codec H.264/H.265</strong>: Đây là những phù thủy nén giúp tệp của bạn nhỏ gọn mà chất lượng vẫn cao",
+          "<strong>Hỗ trợ phát trực tuyến</strong>: Hoàn hảo khi bạn muốn video bắt đầu phát trước khi tải xong (vì ai có thời gian mà chờ? ⏰)",
+          "<strong>Kích thước tệp</strong>: Thường cho bạn điểm cân bằng ngọt ngào giữa chất lượng và dung lượng"
         ]
       },
       "webm": {
         "title": "WebM",
-        "intro": "WebM is like the cool, open-source rebel of the group 😎. Created by Google, it's all about that web life:",
+        "intro": "WebM giống như kẻ nổi loạn mã nguồn mở ngầu lòi của nhóm 😎. Do Google tạo ra, nó sống chết vì web:",
         "bullets": [
-          "<strong>Built for browsers</strong>: Specifically designed to make web videos load faster than you can say \"buffering\"",
-          "<strong>Uses VP8/VP9 codecs</strong>: These bad boys can compress videos even smaller than MP4 in many cases",
-          "<strong>Open and free</strong>: No licensing fees, which is music to any developer's ears 🎵",
-          "<strong>The catch</strong>: Not all browsers and devices support it (looking at you, Safari 👀)"
+          "<strong>Sinh ra cho trình duyệt</strong>: Được thiết kế riêng để video web tải nhanh hơn cả lúc bạn kịp nói \"đang tải\"",
+          "<strong>Dùng codec VP8/VP9</strong>: Những anh chàng này trong nhiều trường hợp nén video còn nhỏ hơn cả MP4",
+          "<strong>Mở và miễn phí</strong>: Không phí bản quyền, nghe êm tai với mọi lập trình viên 🎵",
+          "<strong>Điểm trừ</strong>: Không phải trình duyệt và thiết bị nào cũng hỗ trợ (nhìn bạn đấy, Safari 👀)"
         ]
       },
       "avi": {
         "title": "AVI (Audio Video Interleave)",
-        "intro": "AVI is the grizzled veteran - it's been around since Windows 3.1! 👴 Here's what you need to know:",
+        "intro": "AVI là lão tướng dày dạn — có mặt từ thời Windows 3.1! 👴 Đây là những gì bạn cần biết:",
         "bullets": [
-          "<strong>Minimal compression</strong>: Often results in HUGE file sizes (like, \"is this a video or the entire Lord of the Rings trilogy?\" huge)",
-          "<strong>High quality</strong>: What it lacks in compression, it makes up for in pristine quality",
-          "<strong>Universal compatibility</strong>: If something can play video, it can probably play AVI",
-          "<strong>Best for</strong>: Local storage when quality matters more than file size"
+          "<strong>Nén tối thiểu</strong>: Thường cho ra tệp KHỔNG LỒ (kiểu \"đây là video hay cả bộ ba Chúa tể những chiếc nhẫn?\")",
+          "<strong>Chất lượng cao</strong>: Thiếu về nén thì bù bằng chất lượng nguyên sơ",
+          "<strong>Tương thích phổ quát</strong>: Thứ gì phát được video thì gần như chắc chắn phát được AVI",
+          "<strong>Phù hợp nhất cho</strong>: Lưu trữ cục bộ khi chất lượng quan trọng hơn kích thước tệp"
         ]
       },
       "mov": {
-        "title": "MOV (QuickTime File Format)",
-        "intro": "MOV is Apple's golden child 🍎, and like most Apple products, it's beautiful but... complicated:",
+        "title": "MOV (Định dạng tệp QuickTime)",
+        "intro": "MOV là đứa con cưng của Apple 🍎, và như hầu hết sản phẩm Apple, nó đẹp nhưng... phức tạp:",
         "bullets": [
-          "<strong>Excellent quality</strong>: Especially for high-resolution videos and professional editing",
-          "<strong>ProRes codec support</strong>: The format professionals drool over 🤤",
-          "<strong>The elephant in the room</strong>: File sizes that'll make your storage drive cry (remember my 315.9MB screen recording? Yeah, that was MOV)",
-          "<strong>Cross-platform issues</strong>: Works flawlessly on Mac, but Windows users might need to install QuickTime"
+          "<strong>Chất lượng xuất sắc</strong>: Đặc biệt với video độ phân giải cao và dựng phim chuyên nghiệp",
+          "<strong>Hỗ trợ codec ProRes</strong>: Định dạng khiến dân chuyên nghiệp thèm thuồng 🤤",
+          "<strong>Con voi trong phòng</strong>: Kích thước tệp khiến ổ lưu trữ của bạn phải khóc (nhớ bản ghi màn hình 315,9MB của tôi chứ? Ừ, đó là MOV)",
+          "<strong>Vấn đề đa nền tảng</strong>: Chạy hoàn hảo trên Mac, nhưng người dùng Windows có thể phải cài QuickTime"
         ]
       },
-      "comparisonIntro": "Here's a quick comparison to really drive it home:",
+      "comparisonIntro": "Đây là bảng so sánh nhanh để chốt lại vấn đề:",
       "table": {
         "headers": [
-          "Format",
-          "File Size",
-          "Compatibility",
-          "Best Use Case"
+          "Định dạng",
+          "Kích thước tệp",
+          "Tương thích",
+          "Dùng tốt nhất cho"
         ],
         "rows": [
           [
             "MP4",
-            "Small-Medium",
-            "Universal",
-            "Literally everything"
+            "Nhỏ–Vừa",
+            "Phổ quát",
+            "Gần như mọi thứ"
           ],
           [
             "WebM",
-            "Smallest",
-            "Modern browsers",
-            "Web optimization"
+            "Nhỏ nhất",
+            "Trình duyệt hiện đại",
+            "Tối ưu web"
           ],
           [
             "AVI",
-            "Largest",
-            "Universal",
-            "Archival/Editing"
+            "Lớn nhất",
+            "Phổ quát",
+            "Lưu trữ/Dựng phim"
           ],
           [
             "MOV",
-            "Large",
-            "Mac-focused",
-            "Professional work"
+            "Lớn",
+            "Thiên về Mac",
+            "Công việc chuyên nghiệp"
           ]
         ]
       },
-      "quote": "\"Choose your format like you choose your battles - not every sword fits every warrior, and not every codec fits every purpose.\" ⚔️"
+      "quote": "\"Hãy chọn định dạng như chọn trận đánh — không phải thanh kiếm nào cũng hợp với mọi chiến binh, và không phải codec nào cũng hợp với mọi mục đích.\" ⚔️"
     },
     "whenToUse": {
-      "title": "How Do I Know When to Use One Format Over Another?",
-      "p1": "Alright, decision time! 🤔 Choosing the right video format is like picking the right outfit - you wouldn't wear a tuxedo to the gym, and you shouldn't use AVI for your website's hero video (unless you want your users to age while it loads).",
-      "p2": "Let me break this down into real-world scenarios because that's how we actually make these decisions:",
+      "title": "Làm sao biết khi nào nên dùng định dạng nào?",
+      "p1": "Được rồi, đến lúc quyết định! 🤔 Chọn đúng định dạng video giống như chọn trang phục — bạn sẽ không mặc tuxedo đi tập gym, và bạn không nên dùng AVI cho video chủ đạo trên website (trừ khi bạn muốn người dùng già đi trong lúc chờ tải).",
+      "p2": "Để tôi chia nhỏ theo các tình huống thực tế, vì đó là cách chúng ta thực sự đưa ra những quyết định này:",
       "mp4": {
-        "title": "When to Use MP4",
-        "lead": "<strong>Use MP4 when you want to play it safe</strong> 🛡️",
+        "title": "Khi nào dùng MP4",
+        "lead": "<strong>Dùng MP4 khi bạn muốn an toàn</strong> 🛡️",
         "bullets": [
-          "<strong>Website videos</strong>: Background videos, product demos, tutorials - MP4 is your reliable friend",
-          "<strong>Social media</strong>: Instagram, Twitter, LinkedIn - they all love MP4",
-          "<strong>Email attachments</strong>: When you need to send a video that just works",
-          "<strong>Mobile apps</strong>: Both iOS and Android will thank you"
+          "<strong>Video trên website</strong>: Video nền, demo sản phẩm, hướng dẫn — MP4 là người bạn đáng tin cậy",
+          "<strong>Mạng xã hội</strong>: Instagram, Twitter, LinkedIn — tất cả đều yêu MP4",
+          "<strong>Đính kèm email</strong>: Khi bạn cần gửi một video chắc chắn chạy được",
+          "<strong>Ứng dụng di động</strong>: Cả iOS lẫn Android đều sẽ cảm ơn bạn"
         ],
-        "proTip": "<strong>Pro tip</strong>: Use H.264 codec for maximum compatibility, or H.265 if you need even smaller files and your audience has newer devices."
+        "proTip": "<strong>Mẹo chuyên nghiệp</strong>: Dùng codec H.264 để tương thích tối đa, hoặc H.265 nếu bạn cần tệp nhỏ hơn nữa và khán giả của bạn có thiết bị đời mới."
       },
       "webm": {
-        "title": "When to Use WebM",
-        "lead": "<strong>Use WebM when every kilobyte counts</strong> 🪶",
+        "title": "Khi nào dùng WebM",
+        "lead": "<strong>Dùng WebM khi từng kilobyte đều đáng giá</strong> 🪶",
         "bullets": [
-          "<strong>Landing pages</strong>: Where load speed directly impacts conversion rates",
-          "<strong>Progressive web apps</strong>: When you're building for the modern web",
-          "<strong>High-traffic websites</strong>: Save on bandwidth costs (your wallet will thank you 💰)",
-          "<strong>When you control the environment</strong>: Like internal company tools where you know everyone uses Chrome"
+          "<strong>Trang đích</strong>: Nơi tốc độ tải ảnh hưởng trực tiếp đến tỷ lệ chuyển đổi",
+          "<strong>Ứng dụng web lũy tiến</strong>: Khi bạn xây dựng cho web hiện đại",
+          "<strong>Website lưu lượng cao</strong>: Tiết kiệm chi phí băng thông (ví tiền của bạn sẽ cảm ơn 💰)",
+          "<strong>Khi bạn kiểm soát được môi trường</strong>: Như công cụ nội bộ công ty, nơi bạn biết mọi người đều dùng Chrome"
         ],
-        "realTalk": "<strong>Real talk</strong>: I once switched a client's hero video from MP4 to WebM and shaved off 40% of the file size. Their page load time dropped by 2 seconds, and their bounce rate decreased by 15%. That's money in the bank! 🏦"
+        "realTalk": "<strong>Nói thật</strong>: Tôi từng chuyển video chủ đạo của một khách hàng từ MP4 sang WebM và cắt được 40% kích thước tệp. Thời gian tải trang của họ giảm 2 giây, tỷ lệ thoát giảm 15%. Đó là tiền vào ngân hàng! 🏦"
       },
       "avi": {
-        "title": "When to Use AVI",
-        "lead": "<strong>Use AVI when quality is king and file size is... not a concern</strong> 👑",
+        "title": "Khi nào dùng AVI",
+        "lead": "<strong>Dùng AVI khi chất lượng là vua và kích thước tệp... không phải mối bận tâm</strong> 👑",
         "bullets": [
-          "<strong>Video editing source files</strong>: When you need every pixel perfect for post-production",
-          "<strong>Archival purposes</strong>: Storing the master copy before compression",
-          "<strong>Local playback</strong>: When it's only playing from a hard drive, not the internet",
-          "<strong>Screen recordings for tutorials</strong>: Before you compress them for distribution"
+          "<strong>Tệp nguồn dựng video</strong>: Khi bạn cần từng pixel hoàn hảo cho hậu kỳ",
+          "<strong>Mục đích lưu trữ</strong>: Lưu bản gốc trước khi nén",
+          "<strong>Phát cục bộ</strong>: Khi chỉ phát từ ổ cứng, không qua internet",
+          "<strong>Ghi màn hình cho hướng dẫn</strong>: Trước khi bạn nén để phân phối"
         ],
-        "warning": "<strong>Warning</strong>: Seriously, don't use AVI for web delivery. I once had a client who insisted on using AVI for their product videos. Their homepage took 45 seconds to load. FORTY. FIVE. SECONDS. 😱 They're not a client anymore (just kidding, we fixed it with MP4)."
+        "warning": "<strong>Cảnh báo</strong>: Nghiêm túc đấy, đừng dùng AVI để phân phối trên web. Tôi từng có một khách hàng khăng khăng dùng AVI cho video sản phẩm. Trang chủ của họ mất 45 giây để tải. BỐN. MƯƠI. LĂM. GIÂY. 😱 Họ không còn là khách hàng nữa (đùa thôi, chúng tôi đã sửa bằng MP4)."
       },
       "mov": {
-        "title": "When to Use MOV",
-        "lead": "<strong>Use MOV when you're in Apple's ecosystem</strong> 🍎",
+        "title": "Khi nào dùng MOV",
+        "lead": "<strong>Dùng MOV khi bạn ở trong hệ sinh thái Apple</strong> 🍎",
         "bullets": [
-          "<strong>Final Cut Pro projects</strong>: MOV plays nicely with Apple's editing software",
-          "<strong>ProRes workflows</strong>: When color grading and quality are paramount",
-          "<strong>Mac-to-Mac transfers</strong>: When everyone involved has a Mac",
-          "<strong>Before converting</strong>: As a high-quality intermediate format"
+          "<strong>Dự án Final Cut Pro</strong>: MOV hòa hợp với phần mềm dựng phim của Apple",
+          "<strong>Quy trình ProRes</strong>: Khi chỉnh màu và chất lượng là tối quan trọng",
+          "<strong>Chuyển từ Mac sang Mac</strong>: Khi mọi người liên quan đều dùng Mac",
+          "<strong>Trước khi chuyển đổi</strong>: Làm định dạng trung gian chất lượng cao"
         ],
-        "realityCheck": "<strong>The MOV reality check</strong>: Remember my 315.9MB screen recording? That's MOV being MOV. Great quality, terrible for sharing. Always convert before uploading!"
+        "realityCheck": "<strong>Sự thật về MOV</strong>: Nhớ bản ghi màn hình 315,9MB của tôi chứ? Đó là MOV đúng chất MOV. Chất lượng tuyệt vời, chia sẻ thì tệ hại. Luôn chuyển đổi trước khi tải lên!"
       },
       "decisionTree": {
-        "title": "Quick Decision Tree 🌳",
-        "diagram": "Is it for the web?\n├─ Yes → Is Safari support critical?\n│   ├─ Yes → MP4\n│   └─ No → WebM (with MP4 fallback)\n└─ No → Is it for editing?\n    ├─ Yes → Are you on Mac?\n    │   ├─ Yes → MOV\n    │   └─ No → AVI\n    └─ No → MP4 (it's always MP4)"
+        "title": "Cây quyết định nhanh 🌳",
+        "diagram": "Dùng cho web?\n├─ Có → Hỗ trợ Safari có quan trọng không?\n│   ├─ Có → MP4\n│   └─ Không → WebM (kèm MP4 dự phòng)\n└─ Không → Dùng để dựng phim?\n    ├─ Có → Bạn dùng Mac?\n    │   ├─ Có → MOV\n    │   └─ Không → AVI\n    └─ Không → MP4 (luôn luôn là MP4)"
       },
-      "quote": "\"The wise developer knows that the best format isn't the newest or the fanciest - it's the one that gets the job done without making users suffer.\" 🧘‍♂️"
+      "quote": "\"Lập trình viên khôn ngoan biết rằng định dạng tốt nhất không phải cái mới nhất hay hào nhoáng nhất — mà là cái hoàn thành công việc mà không bắt người dùng phải chịu khổ.\" 🧘‍♂️"
     },
     "whyImportant": {
-      "title": "Why Is This Even Important For My Website?",
-      "p1": "Look, I get it. You might be thinking \"Can't I just upload whatever and call it a day?\" 🤷‍♂️ Sure, you could also eat soup with a fork, but why make life harder than it needs to be?",
-      "p2": "Here's the cold, hard truth about why video formats matter more than you think:",
+      "title": "Vì sao điều này lại quan trọng với website của tôi?",
+      "p1": "Nghe này, tôi hiểu. Bạn có thể đang nghĩ \"Không thể cứ tải đại lên rồi xong chuyện sao?\" 🤷‍♂️ Chắc chắn rồi, bạn cũng có thể ăn súp bằng nĩa, nhưng sao phải làm đời khó hơn mức cần thiết?",
+      "p2": "Đây là sự thật phũ phàng về lý do định dạng video quan trọng hơn bạn nghĩ:",
       "threeSecondRule": {
-        "title": "The 3-Second Rule ⏱️",
-        "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
+        "title": "Quy tắc 3 giây ⏱️",
+        "body": "Các nghiên cứu cho thấy 53% người dùng di động rời bỏ các trang mất hơn 3 giây để tải. NĂM MƯƠI BA PHẦN TRĂM! Đó là hơn một nửa khách hàng tiềm năng của bạn bỏ đi trước cả khi thấy nội dung tuyệt vời của bạn. Và đoán xem thủ phạm lớn nhất của thời gian tải chậm thường là gì? Đúng rồi — video chủ đạo 200MB chưa tối ưu của bạn nằm đó như một rào chắn kỹ thuật số 🚧."
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "Google đang theo dõi (và phán xét) 👀",
+        "intro": "Tốc độ trang là yếu tố xếp hạng trực tiếp của Google. Điều này có nghĩa là:",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>Trang chậm = Xếp hạng thấp hơn</strong> = Ít lưu lượng tự nhiên hơn",
+          "<strong>Ít lưu lượng = Ít chuyển đổi hơn</strong> = Ít tiền hơn",
+          "<strong>Ít tiền = Lập trình viên buồn</strong> 😢"
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "Tôi từng có một khách hàng mà trang thương mại điện tử dùng các tệp MOV khổng lồ cho video sản phẩm. Sau khi chuyển tất cả sang MP4 tối ưu và WebM kèm dự phòng, họ có:",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "Thời gian tải trang giảm từ 8,2 xuống 2,7 giây",
+          "Xếp hạng Google cải thiện với 67% từ khóa mục tiêu",
+          "Tỷ lệ chuyển đổi tăng 23%",
+          "Doanh thu hằng tháng tăng vọt 18.000 đô la 💸"
         ]
       },
       "bandwidthBill": {
-        "title": "The Bandwidth Bill From Hell 🔥",
-        "body": "Every time someone loads your page, you're paying for that bandwidth. Using a 50MB AVI instead of a 5MB MP4 means you're literally paying 10x more for hosting. It's like ordering 10 pizzas when you only need one - except less delicious and more expensive.",
-        "realNumbersIntro": "<strong>Real numbers</strong>: If your site gets 10,000 visitors/month:",
+        "title": "Hóa đơn băng thông từ địa ngục 🔥",
+        "body": "Mỗi lần ai đó tải trang của bạn, bạn đang trả tiền cho băng thông đó. Dùng AVI 50MB thay vì MP4 5MB nghĩa là bạn đang trả gấp 10 lần tiền lưu trữ, theo đúng nghĩa đen. Giống như gọi 10 cái pizza khi bạn chỉ cần một — chỉ là kém ngon hơn và đắt hơn.",
+        "realNumbersIntro": "<strong>Con số thực</strong>: Nếu trang của bạn có 10.000 lượt truy cập/tháng:",
         "bullets": [
-          "With 50MB videos: 500GB bandwidth = $$",
-          "With 5MB videos: 50GB bandwidth = $",
-          "That's potentially hundreds of dollars saved monthly!"
+          "Với video 50MB: 500GB băng thông = $$",
+          "Với video 5MB: 50GB băng thông = $",
+          "Đó có thể là hàng trăm đô la tiết kiệm được mỗi tháng!"
         ]
       },
       "mobileUsers": {
-        "title": "Mobile Users Will Hate You 📱",
-        "intro": "Remember, over 60% of web traffic is mobile now. That means:",
+        "title": "Người dùng di động sẽ ghét bạn 📱",
+        "intro": "Hãy nhớ, hơn 60% lưu lượng web hiện là di động. Điều đó có nghĩa là:",
         "bullets": [
-          "<strong>Data caps are real</strong>: Nobody wants to blow through their monthly data watching your hero video",
-          "<strong>Slower connections</strong>: Not everyone has 5G, and 4G can be spotty",
-          "<strong>Battery drain</strong>: Large videos = more processing = dead phones = angry users"
+          "<strong>Giới hạn dữ liệu là có thật</strong>: Không ai muốn đốt hết dung lượng tháng chỉ để xem video chủ đạo của bạn",
+          "<strong>Kết nối chậm hơn</strong>: Không phải ai cũng có 5G, và 4G có thể chập chờn",
+          "<strong>Hao pin</strong>: Video lớn = xử lý nhiều hơn = điện thoại hết pin = người dùng tức giận"
         ]
       },
       "trust": {
-        "title": "Trust and Professionalism 🤝",
-        "intro": "This is the one nobody talks about, but it's huge. When your site loads fast and videos play smoothly:",
+        "title": "Niềm tin và sự chuyên nghiệp 🤝",
+        "intro": "Đây là điều không ai nói đến, nhưng nó cực kỳ quan trọng. Khi trang của bạn tải nhanh và video phát mượt:",
         "bullets": [
-          "Users trust you more (subconsciously associating speed with competence)",
-          "They're more likely to stay and explore",
-          "They're more likely to come back",
-          "They're more likely to recommend you"
+          "Người dùng tin bạn hơn (trong tiềm thức họ gắn tốc độ với năng lực)",
+          "Họ dễ ở lại và khám phá hơn",
+          "Họ dễ quay lại hơn",
+          "Họ dễ giới thiệu bạn hơn"
         ],
-        "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
+        "outro": "Còn khi trang của bạn chậm? Nó gào lên \"nghiệp dư\" to hơn cả còi sương mù 📯. Người dùng nghĩ: \"Nếu họ còn không làm nổi website cho tử tế, tôi có thể tin họ với thẻ tín dụng của mình không?\""
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "Mối liên hệ với việc kiếm tiền 💰",
+        "intro": "Dù bạn đang chạy quảng cáo, bán sản phẩm hay kiếm tiền từ nội dung trên Medium (chào bạn, đồng nghiệp viết Medium! 👋), hiệu năng ảnh hưởng trực tiếp đến lợi nhuận của bạn:",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>Doanh thu quảng cáo</strong>: Trang chậm = tỷ lệ thoát cao hơn = ít lượt hiển thị quảng cáo hơn",
+          "<strong>Liên kết tiếp thị</strong>: Người ta không thể nhấp vào thứ họ không chờ để thấy",
+          "<strong>Bán sản phẩm</strong>: Mỗi giây tải trang có thể làm giảm 7% chuyển đổi",
+          "<strong>Kiếm tiền từ nội dung</strong>: Độc giả sẽ không chờ bài viết xuất sắc của bạn tải xong"
         ]
       },
-      "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"
+      "quote": "\"Tốc độ website giống như ấn tượng đầu tiên — bạn chỉ có một cơ hội, và nếu bỏ lỡ, họ vuốt trái nhanh hơn cả lúc bạn kịp nói 'vui lòng chờ, đang tải...'\" 💨"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "So there you have it, fellow digital adventurers! 🚀 We've journeyed through the wild world of video formats, and hopefully, you're no longer looking at MP4, WebM, AVI, and MOV like they're mysterious alien languages.",
-      "cheatSheetIntro": "Here's your TL;DR cheat sheet:",
+      "title": "Kết luận",
+      "p1": "Vậy là xong, các nhà thám hiểm kỹ thuật số! 🚀 Chúng ta đã đi qua thế giới hoang dã của các định dạng video, và hy vọng bạn không còn nhìn MP4, WebM, AVI và MOV như những ngôn ngữ ngoài hành tinh bí ẩn nữa.",
+      "cheatSheetIntro": "Đây là bảng tóm tắt TL;DR của bạn:",
       "cheatSheet": [
-        "<strong>MP4</strong>: Your reliable, go-everywhere friend",
-        "<strong>WebM</strong>: The speed demon for modern web",
-        "<strong>AVI</strong>: The quality beast for local storage",
-        "<strong>MOV</strong>: Apple's heavyweight champion"
+        "<strong>MP4</strong>: Người bạn đáng tin cậy, đi đâu cũng được",
+        "<strong>WebM</strong>: Con quỷ tốc độ cho web hiện đại",
+        "<strong>AVI</strong>: Quái thú chất lượng cho lưu trữ cục bộ",
+        "<strong>MOV</strong>: Nhà vô địch hạng nặng của Apple"
       ],
-      "p2": "But more importantly, you now know that choosing the right video format isn't just some nerdy technical decision - it's about:",
+      "p2": "Nhưng quan trọng hơn, giờ bạn biết rằng chọn đúng định dạng video không chỉ là một quyết định kỹ thuật mọt sách — mà là về:",
       "checklist": [
-        "✅ Keeping your users happy (and on your site)",
-        "✅ Making Google love you (hello, better rankings! 👋)",
-        "✅ Saving money on hosting (cha-ching! 💰)",
-        "✅ Building trust and looking professional",
-        "✅ Actually making money from your content"
+        "✅ Giữ người dùng vui vẻ (và ở lại trang của bạn)",
+        "✅ Khiến Google yêu bạn (xin chào, xếp hạng tốt hơn! 👋)",
+        "✅ Tiết kiệm tiền lưu trữ (ka-ching! 💰)",
+        "✅ Xây dựng niềm tin và trông chuyên nghiệp",
+        "✅ Thực sự kiếm được tiền từ nội dung của bạn"
       ],
-      "p3": "The next time you're about to upload a video to your website, take a second to ask yourself: \"Is this format working for me, or am I working for it?\" Because life's too short for slow-loading websites and frustrated users.",
-      "p4": "Now go forth and compress those videos! Your users (and your wallet) will thank you. And hey, if you found this helpful, drop a clap on Medium or share it with that friend who's still uploading raw MOV files to their website. We all know one 😅",
-      "quote": "\"In the grand adventure of web development, the smallest optimizations often lead to the biggest victories. May your videos be compressed and your load times be swift!\" ⚡"
+      "p3": "Lần tới khi sắp tải video lên website, hãy dành một giây tự hỏi: \"Định dạng này đang phục vụ tôi, hay tôi đang phục vụ nó?\" Vì đời quá ngắn cho những website tải chậm và người dùng bực bội.",
+      "p4": "Giờ thì hãy đi nén những video đó! Người dùng (và ví tiền) của bạn sẽ cảm ơn bạn. Và này, nếu thấy bài này hữu ích, hãy vỗ tay trên Medium hoặc chia sẻ với người bạn vẫn đang tải tệp MOV thô lên website của họ. Ai cũng biết một người như thế 😅",
+      "quote": "\"Trong cuộc phiêu lưu vĩ đại của phát triển web, những tối ưu nhỏ nhất thường dẫn đến những chiến thắng lớn nhất. Chúc video của bạn luôn được nén và thời gian tải luôn nhanh!\" ⚡"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Apply what you just read with the free Media Manipulator tools.",
+      "title": "Công cụ liên quan",
+      "intro": "Áp dụng những gì bạn vừa đọc với các công cụ Media Manipulator miễn phí.",
       "items": [
         {
-          "label": "Compress video",
-          "description": "Shrink MP4, WebM, MOV, and MKV files for the web."
+          "label": "Nén video",
+          "description": "Thu nhỏ tệp MP4, WebM, MOV và MKV cho web."
         },
         {
-          "label": "Video converter",
-          "description": "Convert between MP4, WebM, MOV, AVI, and more."
+          "label": "Bộ chuyển đổi video",
+          "description": "Chuyển đổi giữa MP4, WebM, MOV, AVI và nhiều hơn nữa."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "Chuyển video thành GIF",
+          "description": "Biến các đoạn video ngắn thành GIF động dễ chia sẻ."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video into searchable text or captions."
+          "label": "Chép lời video",
+          "description": "Lấy lời nói trong video ra thành văn bản tìm kiếm được hoặc phụ đề."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Step-by-step walkthrough of every video conversion setting."
+          "label": "Hướng dẫn bộ chuyển đổi video",
+          "description": "Hướng dẫn từng bước về mọi cài đặt chuyển đổi video."
         },
         {
-          "label": "Image optimization guide",
-          "description": "JPG vs PNG vs WebP and how to shrink images for the web."
+          "label": "Hướng dẫn tối ưu hình ảnh",
+          "description": "JPG vs PNG vs WebP và cách thu nhỏ hình ảnh cho web."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Optimize Your Videos? 🚀",
-      "body": "Stop letting huge video files slow down your website! Try our free video compression tool and see the difference instantly. Convert MP4, WebM, AVI, MOV and more with just a few clicks.",
-      "button": "Try the video compressor →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "Sẵn sàng tối ưu video của bạn? 🚀",
+      "body": "Đừng để các tệp video khổng lồ làm chậm website của bạn! Hãy thử công cụ nén video miễn phí của chúng tôi và thấy khác biệt ngay lập tức. Chuyển đổi MP4, WebM, AVI, MOV và nhiều hơn nữa chỉ với vài cú nhấp.",
+      "button": "Thử công cụ nén video →",
+      "footnote": "Không cần đăng ký • Xử lý tệp cục bộ • Nhanh & an toàn"
     }
   },
   "blogImageOptimization": {
     "backLink": "← Blog",
-    "title": "Image Optimization for Web Jedis: JPG vs PNG vs WebP",
+    "title": "Tối ưu hình ảnh cho Jedi web: JPG vs PNG vs WebP",
     "byline": {
-      "label": "Written by:",
-      "date": "June 14th, 2025",
-      "time": "5:32 PM"
+      "label": "Tác giả:",
+      "date": "14 tháng 6, 2025",
+      "time": "17:32"
     },
     "sections": {
       "intro": {
-        "title": "A Brief Intro to Image Formatting",
-        "p1": "Ever uploaded an image to your website and wondered why it takes <em>forever</em> to load? Or maybe you've noticed that your beautiful PNG logo looks crisp and clean, but it's somehow 5MB for a simple graphic? 🤔 Welcome to the wild world of image formats, where choosing the wrong one can make the difference between a lightning-fast website and one that loads slower than dial-up internet (remember that? 😅).",
-        "p2": "Image formats are essentially different ways of encoding and storing visual data. Think of them like different languages for describing the same picture - some are more verbose and detailed (like PNG), while others are more concise and compressed (like JPG). Each format has its own special sauce for how it stores pixels, handles transparency, compresses data, and maintains quality.",
-        "p3": "At their core, all image formats are trying to solve the same problem: how do we store millions of pixels worth of color information in a file that doesn't break the internet when someone tries to download it? The answer lies in <em>compression</em> - and this is where things get interesting! Some formats use \"lossy\" compression (they throw away some data to save space), while others use \"lossless\" compression (they keep everything but find clever ways to pack it smaller). It's like the difference between summarizing a book versus shrinking the font size - both make it \"smaller,\" but one loses information while the other doesn't.",
-        "p4": "The three amigos we'll be diving into today - JPG, PNG, and WebP - each approach this challenge differently, and understanding their unique superpowers (and kryptonite!) will transform you from a Padawan into a true Web Jedi. 🚀",
-        "quote": "\"The wise developer knows that the heaviest burden on a website is not code, but unoptimized images.\" - Ancient Web Proverb 😉"
+        "title": "Giới thiệu ngắn gọn về định dạng hình ảnh",
+        "p1": "Bạn đã bao giờ tải một hình ảnh lên website và tự hỏi sao nó tải <em>lâu đến thế</em> chưa? Hay bạn nhận thấy logo PNG tuyệt đẹp của mình trông sắc nét, nhưng bằng cách nào đó lại nặng tới 5MB cho một hình đơn giản? 🤔 Chào mừng đến với thế giới hoang dã của các định dạng hình ảnh, nơi chọn sai một định dạng có thể tạo ra khác biệt giữa một website nhanh như chớp và một website tải chậm hơn cả mạng dial-up (còn nhớ không? 😅).",
+        "p2": "Định dạng hình ảnh về cơ bản là các cách khác nhau để mã hóa và lưu trữ dữ liệu hình ảnh. Hãy xem chúng như những ngôn ngữ khác nhau để mô tả cùng một bức tranh — một số dài dòng và chi tiết (như PNG), số khác cô đọng và được nén (như JPG). Mỗi định dạng có bí quyết riêng về cách lưu pixel, xử lý độ trong suốt, nén dữ liệu và giữ chất lượng.",
+        "p3": "Về cốt lõi, mọi định dạng hình ảnh đều cố giải cùng một bài toán: làm sao lưu thông tin màu của hàng triệu pixel trong một tệp mà không làm sập internet khi ai đó tải xuống? Câu trả lời nằm ở <em>nén</em> — và đây là lúc mọi thứ trở nên thú vị! Một số định dạng dùng nén \"mất dữ liệu\" (vứt bớt dữ liệu để tiết kiệm chỗ), số khác dùng nén \"không mất dữ liệu\" (giữ mọi thứ nhưng tìm cách khéo léo để đóng gói nhỏ hơn). Giống như khác biệt giữa tóm tắt một cuốn sách và thu nhỏ cỡ chữ — cả hai đều làm nó \"nhỏ hơn\", nhưng một cách mất thông tin còn cách kia thì không.",
+        "p4": "Ba người bạn chúng ta sẽ tìm hiểu hôm nay — JPG, PNG và WebP — mỗi loại tiếp cận thử thách này theo cách khác nhau, và hiểu được siêu năng lực (và kryptonite!) riêng của chúng sẽ biến bạn từ Padawan thành một Jedi web thực thụ. 🚀",
+        "quote": "\"Lập trình viên khôn ngoan biết rằng gánh nặng lớn nhất trên website không phải là mã, mà là hình ảnh chưa tối ưu.\" — Ngạn ngữ web cổ 😉"
       },
       "differences": {
-        "title": "What's the Difference Between These Formats Anyway?",
-        "intro": "Alright, let's get into the nitty-gritty of what makes each format tick! Think of these formats as different types of vehicles - they'll all get you from point A to point B, but some are sports cars, some are trucks, and some are those fancy new electric vehicles that do everything. 🚗",
+        "title": "Rốt cuộc các định dạng này khác nhau thế nào?",
+        "intro": "Được rồi, hãy đi vào chi tiết xem điều gì làm nên từng định dạng! Hãy xem chúng như các loại phương tiện khác nhau — tất cả đều đưa bạn từ điểm A đến điểm B, nhưng một số là xe thể thao, một số là xe tải, và một số là xe điện đời mới làm được mọi thứ. 🚗",
         "jpg": {
-          "title": "JPG (or JPEG - they're the same thing, don't let anyone tell you otherwise 😄)",
-          "body": "JPG is like that reliable friend who's great at parties but terrible with details. It uses lossy compression, which means it literally throws away data it thinks you won't notice. Perfect for photographs where a tiny bit of quality loss is invisible to the human eye, but terrible for text or sharp edges. Ever seen a meme that's been shared so many times it looks like it was photographed through a potato? That's JPG compression artifacts saying hello! 👋",
+          "title": "JPG (hay JPEG — là một thôi, đừng để ai nói khác 😄)",
+          "body": "JPG giống như người bạn đáng tin cậy rất giỏi ở các bữa tiệc nhưng tệ về chi tiết. Nó dùng nén mất dữ liệu, nghĩa là nó thực sự vứt đi dữ liệu mà nó nghĩ bạn sẽ không để ý. Hoàn hảo cho ảnh chụp, nơi mất một chút chất lượng là vô hình với mắt người, nhưng tệ hại với văn bản hoặc cạnh sắc. Từng thấy một meme được chia sẻ nhiều đến mức trông như chụp qua củ khoai tây chưa? Đó là nhiễu nén JPG đang chào bạn đấy! 👋",
           "bullets": [
-            "<strong>Pros</strong>: Small file sizes, universally supported, great for photos",
-            "<strong>Cons</strong>: No transparency support, loses quality with each save, makes text look fuzzy",
-            "<strong>Best for</strong>: Photographs, complex images with lots of colors"
+            "<strong>Ưu điểm</strong>: Tệp nhỏ, được hỗ trợ ở mọi nơi, tuyệt vời cho ảnh chụp",
+            "<strong>Nhược điểm</strong>: Không hỗ trợ trong suốt, mất chất lượng sau mỗi lần lưu, làm chữ bị mờ",
+            "<strong>Phù hợp nhất cho</strong>: Ảnh chụp, hình ảnh phức tạp nhiều màu sắc"
           ]
         },
         "png": {
           "title": "PNG (Portable Network Graphics)",
-          "body": "PNG is the perfectionist of the group - it refuses to lose any data whatsoever. Using lossless compression, it keeps every single pixel exactly as you intended. It also supports transparency (hello, logos with no background! 🎉), making it the go-to choice for graphics, icons, and anything with text. The downside? File sizes can get chunky real quick, especially with large, complex images.",
+          "body": "PNG là kẻ cầu toàn của nhóm — nó từ chối mất bất kỳ dữ liệu nào. Dùng nén không mất dữ liệu, nó giữ từng pixel đúng như bạn muốn. Nó cũng hỗ trợ trong suốt (xin chào, logo không nền! 🎉), nên là lựa chọn hàng đầu cho đồ họa, biểu tượng và bất cứ thứ gì có chữ. Nhược điểm? Kích thước tệp có thể phình to rất nhanh, nhất là với hình ảnh lớn và phức tạp.",
           "bullets": [
-            "<strong>Pros</strong>: Lossless compression, supports transparency, perfect for graphics and text",
-            "<strong>Cons</strong>: Larger file sizes, not ideal for photographs",
-            "<strong>Best for</strong>: Logos, icons, images with text, anything needing transparency"
+            "<strong>Ưu điểm</strong>: Nén không mất dữ liệu, hỗ trợ trong suốt, hoàn hảo cho đồ họa và chữ",
+            "<strong>Nhược điểm</strong>: Tệp lớn hơn, không lý tưởng cho ảnh chụp",
+            "<strong>Phù hợp nhất cho</strong>: Logo, biểu tượng, hình ảnh có chữ, bất cứ thứ gì cần trong suốt"
           ]
         },
         "webp": {
-          "title": "WebP (The New Kid on the Block)",
-          "body": "WebP is Google's attempt to create the ultimate image format - and honestly, they kind of nailed it! 🎯 It's like the Swiss Army knife of image formats, supporting both lossy AND lossless compression, transparency, and even animation (move over, GIF!). It typically achieves 25-35% smaller file sizes than JPG and PNG while maintaining the same quality. The only catch? Not every browser plays nice with it yet (looking at you, older Safari versions 👀).",
+          "title": "WebP (Lính mới trong khu phố)",
+          "body": "WebP là nỗ lực của Google để tạo ra định dạng hình ảnh tối thượng — và thật lòng mà nói, họ gần như đã làm được! 🎯 Nó giống dao đa năng Thụy Sĩ của các định dạng hình ảnh, hỗ trợ cả nén mất VÀ không mất dữ liệu, trong suốt, và thậm chí cả ảnh động (tránh ra nào, GIF!). Nó thường cho tệp nhỏ hơn JPG và PNG từ 25–35% mà vẫn giữ cùng chất lượng. Điểm trừ duy nhất? Chưa phải trình duyệt nào cũng hòa hợp với nó (nhìn bạn đấy, các phiên bản Safari cũ 👀).",
           "bullets": [
-            "<strong>Pros</strong>: Smaller file sizes, supports everything (lossy, lossless, transparency, animation), excellent quality-to-size ratio",
-            "<strong>Cons</strong>: Not universally supported (yet), requires fallbacks for older browsers",
-            "<strong>Best for</strong>: Modern websites where you can provide fallbacks, any use case really!"
+            "<strong>Ưu điểm</strong>: Tệp nhỏ hơn, hỗ trợ mọi thứ (mất dữ liệu, không mất dữ liệu, trong suốt, ảnh động), tỷ lệ chất lượng/kích thước xuất sắc",
+            "<strong>Nhược điểm</strong>: Chưa được hỗ trợ ở mọi nơi, cần phương án dự phòng cho trình duyệt cũ",
+            "<strong>Phù hợp nhất cho</strong>: Website hiện đại nơi bạn có thể cung cấp dự phòng, thực ra là mọi trường hợp!"
           ]
         },
-        "example": "Here's a quick real-world example: A 1920x1080 photo might be 500KB as a JPG, 2MB as a PNG, but only 350KB as a WebP - with virtually identical visual quality. That's like getting a luxury car for the price of a compact! 🏎️",
-        "quote": "\"Choose your format as a samurai chooses their sword - with purpose, precision, and an understanding of its strengths and weaknesses.\" ⚔️"
+        "example": "Đây là một ví dụ thực tế nhanh: Một ảnh 1920x1080 có thể nặng 500KB ở dạng JPG, 2MB ở dạng PNG, nhưng chỉ 350KB ở dạng WebP — với chất lượng hình ảnh gần như giống hệt. Giống như mua xe sang với giá xe cỡ nhỏ! 🏎️",
+        "quote": "\"Hãy chọn định dạng như samurai chọn kiếm — có mục đích, chính xác, và hiểu rõ điểm mạnh điểm yếu của nó.\" ⚔️"
       },
       "choosing": {
-        "title": "How Do I Know When to Use One Format Over Another?",
-        "intro": "This is where the rubber meets the road! 🏁 Choosing the right format isn't rocket science, but it does require thinking like a detective. Let me break down the decision-making process with some real-world scenarios that'll make you go \"Aha!\" 💡",
+        "title": "Làm sao biết khi nào nên dùng định dạng nào?",
+        "intro": "Đây là lúc lý thuyết gặp thực tế! 🏁 Chọn đúng định dạng không phải khoa học tên lửa, nhưng đòi hỏi tư duy như thám tử. Để tôi chia nhỏ quy trình ra quyết định với vài tình huống thực tế sẽ khiến bạn thốt lên \"À ha!\" 💡",
         "decisionTree": {
-          "title": "The Quick Decision Tree (Screenshot This! 📸)",
-          "lead": "Ask yourself these questions in order:",
+          "title": "Cây quyết định nhanh (Chụp màn hình lại nhé! 📸)",
+          "lead": "Hãy tự hỏi những câu này theo thứ tự:",
           "items": [
-            "Does it need transparency? → If yes, PNG or WebP",
-            "Is it a photograph with lots of colors and gradients? → JPG or WebP",
-            "Does it have text or sharp edges? → PNG or WebP",
-            "Do I need the absolute smallest file size? → WebP (with JPG/PNG fallback)",
-            "Is it going to be edited and saved multiple times? → PNG (to avoid quality degradation)"
+            "Có cần trong suốt không? → Nếu có, PNG hoặc WebP",
+            "Có phải ảnh chụp nhiều màu sắc và chuyển màu không? → JPG hoặc WebP",
+            "Có chữ hoặc cạnh sắc không? → PNG hoặc WebP",
+            "Tôi có cần tệp nhỏ nhất tuyệt đối không? → WebP (kèm JPG/PNG dự phòng)",
+            "Nó có bị chỉnh sửa và lưu nhiều lần không? → PNG (để tránh giảm chất lượng)"
           ]
         },
         "scenarios": {
-          "title": "Real-World Scenarios (Because Theory is Boring 😴)",
+          "title": "Tình huống thực tế (Vì lý thuyết thì chán 😴)",
           "items": [
             {
-              "title": "Scenario 1: Your Company Logo",
-              "body": "You've got a slick logo that needs to work on any background. This is PNG territory all day! Why? You need that transparency, baby! Plus, logos typically have clean lines and solid colors that PNG handles like a boss. If you're feeling adventurous and your analytics show most users have modern browsers, go WebP with PNG fallback."
+              "title": "Tình huống 1: Logo công ty của bạn",
+              "body": "Bạn có một logo bóng bẩy cần hoạt động trên mọi nền. Đây là lãnh địa của PNG, không bàn cãi! Vì sao? Bạn cần độ trong suốt đó, cưng ạ! Thêm nữa, logo thường có đường nét sạch và màu đặc mà PNG xử lý như một ông trùm. Nếu bạn thích phiêu lưu và số liệu cho thấy hầu hết người dùng có trình duyệt hiện đại, hãy dùng WebP với PNG dự phòng."
             },
             {
-              "title": "Scenario 2: Hero Image on Your Landing Page",
-              "body": "That gorgeous 4K photograph of your product/team/artisanal coffee? JPG or WebP, no question. The slight quality loss from JPG compression is invisible in photographs, and the file size difference is *chef's kiss* 👨‍🍳. A 5MB PNG photo will make your users cry (and bounce), while a 500KB JPG will load faster than they can say \"add to cart.\""
+              "title": "Tình huống 2: Hình ảnh chủ đạo trên trang đích",
+              "body": "Bức ảnh 4K lộng lẫy về sản phẩm/đội ngũ/cà phê thủ công của bạn? JPG hoặc WebP, không cần hỏi. Mất chất lượng nhẹ do nén JPG là vô hình trong ảnh chụp, và khác biệt về kích thước tệp thì *tuyệt cú mèo* 👨‍🍳. Một ảnh PNG 5MB sẽ khiến người dùng khóc (và thoát), trong khi JPG 500KB sẽ tải xong trước cả khi họ kịp nói \"thêm vào giỏ\"."
             },
             {
-              "title": "Scenario 3: Screenshots for Your Blog/Documentation",
-              "body": "This one's tricky! If there's text in the screenshot (and there usually is), PNG is your friend. JPG will make that text look like it went through a blender. However, if you're taking screenshots on a Mac, those bad boys can be HUGE. Consider using WebP or optimizing your PNGs with tools like TinyPNG."
+              "title": "Tình huống 3: Ảnh chụp màn hình cho blog/tài liệu",
+              "body": "Cái này hơi khó! Nếu có chữ trong ảnh chụp màn hình (mà thường là có), PNG là bạn của bạn. JPG sẽ khiến chữ đó trông như vừa qua máy xay sinh tố. Tuy nhiên, nếu bạn chụp màn hình trên Mac, mấy anh chàng đó có thể KHỔNG LỒ. Hãy cân nhắc dùng WebP hoặc tối ưu PNG bằng công cụ như TinyPNG."
             },
             {
-              "title": "Scenario 4: Product Images for E-commerce",
-              "body": "WebP with JPG fallback is the power move here. 🎯 You get smaller file sizes (faster load times = better conversions), great quality, and you can even add subtle transparency effects if needed. Just make sure to implement proper fallbacks for the Safari-on-iPhone crowd."
+              "title": "Tình huống 4: Hình ảnh sản phẩm cho thương mại điện tử",
+              "body": "WebP với JPG dự phòng là nước đi quyền lực ở đây. 🎯 Bạn có tệp nhỏ hơn (tải nhanh hơn = chuyển đổi tốt hơn), chất lượng tuyệt vời, và thậm chí có thể thêm hiệu ứng trong suốt tinh tế nếu cần. Chỉ cần đảm bảo triển khai dự phòng đúng cách cho nhóm người dùng Safari trên iPhone."
             }
           ]
         },
         "proTips": {
-          "title": "Pro Tips from the Trenches 🪖",
+          "title": "Mẹo chuyên nghiệp từ chiến hào 🪖",
           "items": [
-            "Always compress your images! Even if you choose the right format, an unoptimized PNG can still be a monster",
-            "Use responsive images with different sizes for different devices (your mobile users will thank you)",
-            "Consider using CDNs that can automatically serve WebP to supported browsers",
-            "When in doubt, test both formats and see which looks better at a reasonable file size"
+            "Luôn nén hình ảnh của bạn! Dù chọn đúng định dạng, một PNG chưa tối ưu vẫn có thể là quái vật",
+            "Dùng hình ảnh đáp ứng với kích thước khác nhau cho các thiết bị khác nhau (người dùng di động sẽ cảm ơn bạn)",
+            "Cân nhắc dùng CDN có thể tự động phục vụ WebP cho trình duyệt hỗ trợ",
+            "Khi phân vân, hãy thử cả hai định dạng và xem cái nào trông đẹp hơn ở kích thước tệp hợp lý"
           ]
         },
-        "quote": "\"The master web developer doesn't choose the format that looks best, but the one that serves the user best - for in serving others, we optimize ourselves.\" 🧘‍♂️"
+        "quote": "\"Bậc thầy phát triển web không chọn định dạng trông đẹp nhất, mà chọn định dạng phục vụ người dùng tốt nhất — vì khi phục vụ người khác, ta tối ưu chính mình.\" 🧘‍♂️"
       },
       "whyImportant": {
-        "title": "Why Is This Even Important For My Website?",
-        "intro": "Okay, real talk time. 💯 You might be thinking, \"Come on, it's 2025, everyone has fast internet now, right?\" WRONG! Let me hit you with some truth bombs that'll make you want to optimize every image on your site immediately. 💣",
+        "title": "Vì sao điều này lại quan trọng với website của tôi?",
+        "intro": "Được rồi, đến lúc nói thật. 💯 Bạn có thể đang nghĩ, \"Thôi nào, năm 2025 rồi, ai cũng có internet nhanh mà, đúng không?\" SAI! Để tôi ném cho bạn vài quả bom sự thật khiến bạn muốn tối ưu ngay lập tức mọi hình ảnh trên trang. 💣",
         "loadTimes": {
-          "title": "The Brutal Reality of Page Load Times",
-          "p1": "Here's a stat that'll make your jaw drop: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load</strong>. THREE. SECONDS. 😱 And guess what's usually the biggest culprit? Yep, those chunky, unoptimized images you uploaded straight from your camera.",
-          "p2": "Let's do some quick math (don't worry, I'll keep it simple):",
+          "title": "Thực tế tàn khốc về thời gian tải trang",
+          "p1": "Đây là một con số sẽ khiến bạn há hốc: <strong>53% người dùng di động rời bỏ các trang mất hơn 3 giây để tải</strong>. BA. GIÂY. 😱 Và đoán xem thủ phạm lớn nhất thường là gì? Đúng rồi, những hình ảnh cồng kềnh chưa tối ưu bạn tải thẳng từ máy ảnh lên.",
+          "p2": "Hãy làm phép tính nhanh (đừng lo, tôi sẽ giữ đơn giản):",
           "items": [
-            "Average webpage: 2-3MB total",
-            "Unoptimized hero image: 5MB",
-            "Result: Your page just became slower than a sloth on sedatives 🦥"
+            "Trang web trung bình: tổng 2–3MB",
+            "Hình ảnh chủ đạo chưa tối ưu: 5MB",
+            "Kết quả: Trang của bạn vừa trở nên chậm hơn con lười uống thuốc an thần 🦥"
           ]
         },
         "seo": {
-          "title": "The SEO Domino Effect 🎯",
-          "intro": "Google's Core Web Vitals (fancy term for \"does your site load fast?\") directly impact your search rankings. Here's the chain reaction:",
+          "title": "Hiệu ứng domino SEO 🎯",
+          "intro": "Core Web Vitals của Google (thuật ngữ sang chảnh cho \"trang bạn tải có nhanh không?\") ảnh hưởng trực tiếp đến xếp hạng tìm kiếm. Đây là phản ứng dây chuyền:",
           "items": [
-            "Heavy images → Slow load times",
-            "Slow load times → Poor Core Web Vitals scores",
-            "Poor scores → Lower search rankings",
-            "Lower rankings → Less traffic",
-            "Less traffic → Less money 💸"
+            "Hình ảnh nặng → Tải chậm",
+            "Tải chậm → Điểm Core Web Vitals kém",
+            "Điểm kém → Xếp hạng tìm kiếm thấp hơn",
+            "Xếp hạng thấp → Ít lưu lượng hơn",
+            "Ít lưu lượng → Ít tiền hơn 💸"
           ],
-          "outro": "It's like a really expensive game of dominoes where every piece that falls costs you customers!"
+          "outro": "Giống như một ván domino rất đắt đỏ, nơi mỗi quân đổ xuống đều khiến bạn mất khách hàng!"
         },
         "mobile": {
-          "title": "The Mobile Reality Check 📱",
-          "p1": "Here's something that might surprise you: In many parts of the world, people are browsing on 3G connections or have data caps. That beautiful 10MB PNG hero image? It just cost someone in India half their daily data allowance. Not cool, and definitely not good for business.",
-          "p2": "Plus, even in countries with \"fast\" internet, people are often on spotty coffee shop WiFi or riding the subway. Your unoptimized images are literally making people close your site and go to your competitor. Ouch! 🤕"
+          "title": "Thực tế về di động 📱",
+          "p1": "Đây là điều có thể khiến bạn ngạc nhiên: Ở nhiều nơi trên thế giới, người ta vẫn duyệt web bằng kết nối 3G hoặc có giới hạn dữ liệu. Hình ảnh chủ đạo PNG 10MB tuyệt đẹp đó? Nó vừa ngốn của ai đó ở Ấn Độ một nửa dung lượng dữ liệu trong ngày. Không hay chút nào, và chắc chắn không tốt cho việc kinh doanh.",
+          "p2": "Thêm nữa, ngay cả ở các nước có internet \"nhanh\", người ta thường dùng WiFi quán cà phê chập chờn hoặc đang đi tàu điện ngầm. Hình ảnh chưa tối ưu của bạn đang thực sự khiến người ta đóng trang và sang đối thủ cạnh tranh. Đau! 🤕"
         },
         "money": {
-          "title": "The Money Talk (Because Let's Be Honest, That's What Matters) 💰",
+          "title": "Chuyện tiền bạc (Vì thật lòng mà nói, đó mới là điều quan trọng) 💰",
           "items": [
-            "<strong>Amazon found that every 100ms of latency cost them 1% in sales</strong>",
-            "<strong>Pinterest increased search engine traffic and sign-ups by 15% when they reduced perceived wait times by 40%</strong>",
-            "<strong>Walmart saw a 2% increase in conversions for every 1 second of improvement in load time</strong>"
+            "<strong>Amazon phát hiện mỗi 100ms độ trễ khiến họ mất 1% doanh số</strong>",
+            "<strong>Pinterest tăng 15% lưu lượng từ công cụ tìm kiếm và lượt đăng ký khi giảm 40% thời gian chờ cảm nhận</strong>",
+            "<strong>Walmart thấy chuyển đổi tăng 2% cho mỗi 1 giây cải thiện thời gian tải</strong>"
           ],
-          "outro": "Still think image optimization doesn't matter? 🤔"
+          "outro": "Vẫn nghĩ tối ưu hình ảnh không quan trọng? 🤔"
         },
         "horrorStory": {
-          "title": "Real-World Horror Story 🎃",
-          "body": "I once worked with a client whose beautiful photography portfolio site was getting almost no traffic. The culprit? Each image was a 15-20MB PNG straight from Photoshop. The homepage took 45 seconds to load on a good day. After optimizing (converting to JPG, proper sizing, lazy loading), load time dropped to 2 seconds. Traffic increased by 70% in one month. True story!"
+          "title": "Chuyện kinh dị có thật 🎃",
+          "body": "Tôi từng làm việc với một khách hàng có trang portfolio nhiếp ảnh tuyệt đẹp nhưng hầu như không có lưu lượng. Thủ phạm? Mỗi hình ảnh là một PNG 15–20MB thẳng từ Photoshop. Trang chủ mất 45 giây để tải vào ngày đẹp trời. Sau khi tối ưu (chuyển sang JPG, kích thước phù hợp, tải lười), thời gian tải giảm xuống 2 giây. Lưu lượng tăng 70% trong một tháng. Chuyện thật!"
         },
         "trust": {
-          "title": "The Trust Factor 🤝",
-          "intro": "Slow websites don't just lose customers - they lose credibility. Users subconsciously associate slow load times with:",
+          "title": "Yếu tố niềm tin 🤝",
+          "intro": "Website chậm không chỉ mất khách hàng — mà còn mất uy tín. Người dùng trong tiềm thức gắn thời gian tải chậm với:",
           "items": [
-            "Outdated technology",
-            "Lack of attention to detail",
-            "Unprofessionalism",
-            "Security concerns (yes, really!)"
+            "Công nghệ lỗi thời",
+            "Thiếu chú ý đến chi tiết",
+            "Thiếu chuyên nghiệp",
+            "Lo ngại về bảo mật (thật đấy!)"
           ],
-          "outro": "Your image choices are literally affecting how trustworthy people think you are. Wild, right?"
+          "outro": "Lựa chọn hình ảnh của bạn đang thực sự ảnh hưởng đến việc người ta nghĩ bạn đáng tin đến đâu. Điên rồ nhỉ?"
         },
-        "quote": "\"A website's speed is like a first impression - you never get a second chance to load quickly.\" ⚡"
+        "quote": "\"Tốc độ website giống như ấn tượng đầu tiên — bạn không bao giờ có cơ hội thứ hai để tải nhanh.\" ⚡"
       },
       "conclusion": {
-        "title": "Conclusion",
-        "intro": "Alright, my fellow Web Jedis, we've been on quite the journey! 🚀 From understanding the DNA of image formats to seeing how they can literally make or break your website's success. Let's recap the superpowers you've just unlocked:",
+        "title": "Kết luận",
+        "intro": "Được rồi, các Jedi web đồng môn, chúng ta đã có một hành trình dài! 🚀 Từ hiểu DNA của các định dạng hình ảnh đến thấy cách chúng có thể quyết định thành bại của website. Hãy điểm lại các siêu năng lực bạn vừa mở khóa:",
         "tldr": {
-          "title": "The TL;DR Version (For Those Who Scrolled Here First 😏)",
+          "title": "Phiên bản TL;DR (Cho ai cuộn thẳng xuống đây 😏)",
           "items": [
-            "<strong>JPG</strong>: Your go-to for photos. Small files, great quality, but no transparency",
-            "<strong>PNG</strong>: The perfectionist for logos, graphics, and anything with text. Bigger files but pixel-perfect",
-            "<strong>WebP</strong>: The Swiss Army knife that does it all, just needs fallbacks for older browsers"
+            "<strong>JPG</strong>: Lựa chọn hàng đầu cho ảnh chụp. Tệp nhỏ, chất lượng tốt, nhưng không trong suốt",
+            "<strong>PNG</strong>: Kẻ cầu toàn cho logo, đồ họa và bất cứ thứ gì có chữ. Tệp lớn hơn nhưng hoàn hảo đến từng pixel",
+            "<strong>WebP</strong>: Dao đa năng Thụy Sĩ làm được mọi thứ, chỉ cần dự phòng cho trình duyệt cũ"
           ]
         },
         "actionPlan": {
-          "title": "Your Action Plan (Do These TODAY!) ✅",
+          "title": "Kế hoạch hành động của bạn (Làm NGAY HÔM NAY!) ✅",
           "items": [
-            "<strong>Audit your current images</strong> - Open your website right now and check those file sizes. I'll wait... Scary, right? 😱",
-            "<strong>Set up an optimization workflow</strong> - Whether it's using tools like TinyPNG, ImageOptim, or good ol' ffmpeg (shameless plug for my other article 😉), make optimization part of your process",
-            "<strong>Implement WebP with fallbacks</strong> - It's 2025, time to give your users that next-gen experience",
-            "<strong>Test your load times</strong> - Use Google's PageSpeed Insights and watch those scores soar",
-            "<strong>Set up responsive images</strong> - Different sizes for different devices = happy users everywhere"
+            "<strong>Kiểm tra hình ảnh hiện tại</strong> — Mở website của bạn ngay bây giờ và xem kích thước tệp. Tôi đợi... Đáng sợ nhỉ? 😱",
+            "<strong>Thiết lập quy trình tối ưu</strong> — Dù dùng công cụ như TinyPNG, ImageOptim hay ffmpeg quen thuộc (quảng cáo trắng trợn cho bài viết khác của tôi 😉), hãy biến tối ưu thành một phần quy trình",
+            "<strong>Triển khai WebP với dự phòng</strong> — Năm 2025 rồi, đến lúc cho người dùng trải nghiệm thế hệ mới",
+            "<strong>Kiểm tra thời gian tải</strong> — Dùng PageSpeed Insights của Google và xem điểm số bay vút",
+            "<strong>Thiết lập hình ảnh đáp ứng</strong> — Kích thước khác nhau cho thiết bị khác nhau = người dùng vui vẻ khắp nơi"
           ]
         },
         "bigPicture": {
-          "title": "The Bigger Picture 🖼️",
-          "p1": "Remember, optimizing your images isn't just about technical SEO scores or saving bandwidth (though those are awesome bonuses!). It's about respecting your users' time, data, and experience. Every second you shave off your load time is a second you're giving back to someone's day. That's pretty powerful when you think about it! 💪",
-          "p2": "Plus, let's be real - faster websites make more money. It's not rocket science, it's just good business. Your optimized images are literally increasing your bottom line while making the web a better place. You're basically a superhero now! 🦸‍♀️🦸‍♂️"
+          "title": "Bức tranh lớn hơn 🖼️",
+          "p1": "Hãy nhớ, tối ưu hình ảnh không chỉ là điểm SEO kỹ thuật hay tiết kiệm băng thông (dù đó là những phần thưởng tuyệt vời!). Đó là tôn trọng thời gian, dữ liệu và trải nghiệm của người dùng. Mỗi giây bạn cắt khỏi thời gian tải là một giây bạn trả lại cho ngày của ai đó. Nghĩ kỹ thì khá mạnh mẽ đấy! 💪",
+          "p2": "Thêm nữa, thật lòng mà nói — website nhanh hơn kiếm được nhiều tiền hơn. Không phải khoa học tên lửa, chỉ là kinh doanh tốt. Hình ảnh tối ưu của bạn đang thực sự tăng lợi nhuận đồng thời khiến web tốt đẹp hơn. Bạn về cơ bản là siêu anh hùng rồi! 🦸‍♀️🦸‍♂️"
         },
         "finalChallenge": {
-          "title": "One Final Challenge 🎯",
-          "p1": "Here's my challenge to you: Take the slowest-loading page on your website and optimize just the images. Nothing else. I guarantee you'll see at least a 50% improvement in load time. Share your before/after results in the comments - I love a good optimization success story!",
-          "p2": "Remember, in the world of web development, the best code is fast code, but the best images are optimized images. Now go forth and compress! May your images be small and your load times be smaller! 🚀✨"
+          "title": "Một thử thách cuối 🎯",
+          "p1": "Đây là thử thách của tôi dành cho bạn: Lấy trang tải chậm nhất trên website và chỉ tối ưu hình ảnh. Không gì khác. Tôi đảm bảo bạn sẽ thấy thời gian tải cải thiện ít nhất 50%. Hãy chia sẻ kết quả trước/sau trong phần bình luận — tôi rất thích một câu chuyện tối ưu thành công!",
+          "p2": "Hãy nhớ, trong thế giới phát triển web, mã tốt nhất là mã nhanh, nhưng hình ảnh tốt nhất là hình ảnh đã tối ưu. Giờ hãy đi nén thôi! Chúc hình ảnh của bạn nhỏ và thời gian tải còn nhỏ hơn! 🚀✨"
         },
-        "quote": "\"The journey of a thousand optimizations begins with a single compressed image.\" 🏔️"
+        "quote": "\"Hành trình ngàn lần tối ưu bắt đầu từ một hình ảnh được nén.\" 🏔️"
       }
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the techniques from this guide in the free Media Manipulator image tools.",
+      "title": "Công cụ liên quan",
+      "intro": "Thử các kỹ thuật trong hướng dẫn này với các công cụ hình ảnh miễn phí của Media Manipulator.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "Bộ chuyển đổi hình ảnh",
+          "description": "Chuyển đổi giữa JPG, PNG, WebP, AVIF, GIF và nhiều hơn nữa."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "Chuyển WebP sang JPG",
+          "description": "Lấy một JPG tương thích rộng rãi từ nguồn WebP."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "Xóa siêu dữ liệu EXIF",
+          "description": "Loại bỏ siêu dữ liệu GPS, thiết bị và dấu thời gian trước khi chia sẻ ảnh."
         },
         {
-          "label": "Image converter tutorial",
-          "description": "Full walkthrough of every setting in the image converter."
+          "label": "Hướng dẫn bộ chuyển đổi hình ảnh",
+          "description": "Hướng dẫn đầy đủ về mọi cài đặt trong bộ chuyển đổi hình ảnh."
         },
         {
-          "label": "Video compression guide",
-          "description": "Apply the same optimization mindset to video files."
+          "label": "Hướng dẫn nén video",
+          "description": "Áp dụng cùng tư duy tối ưu cho tệp video."
         },
         {
-          "label": "Audio quality guide",
-          "description": "Pick the right audio bitrate, sample rate, and codec."
+          "label": "Hướng dẫn chất lượng âm thanh",
+          "description": "Chọn đúng bitrate, tần số lấy mẫu và codec âm thanh."
         }
       ]
     },
     "footer": {
-      "title": "Time to Become an Image Optimization Jedi! 🌟",
-      "body": "Ready to transform your chunky PNGs into lightning-fast WebPs? Our free image converter supports JPG, PNG, WebP, GIF and more. Optimize your images in seconds and watch your website fly!",
-      "ctaLabel": "Open the image converter →",
-      "disclaimer": "No signup required • Process files locally • Fast & secure"
+      "title": "Đến lúc trở thành Jedi tối ưu hình ảnh! 🌟",
+      "body": "Sẵn sàng biến những PNG cồng kềnh thành WebP nhanh như chớp? Bộ chuyển đổi hình ảnh miễn phí của chúng tôi hỗ trợ JPG, PNG, WebP, GIF và nhiều hơn nữa. Tối ưu hình ảnh trong vài giây và xem website của bạn bay!",
+      "ctaLabel": "Mở bộ chuyển đổi hình ảnh →",
+      "disclaimer": "Không cần đăng ký • Xử lý tệp cục bộ • Nhanh & an toàn"
     }
   },
   "blogAudioQuality": {
@@ -508,739 +508,739 @@
       "backToBlog": "← Blog"
     },
     "header": {
-      "title": "The Sound of <strike>Silence</strike> Quality: Bitrates, Sample Rates, and Formats",
-      "byline": "Written by:",
-      "dateDisplay": "June 14th, 2025",
-      "timeDisplay": "10:08 PM"
+      "title": "Âm thanh của <strike>sự im lặng</strike> chất lượng: Bitrate, tần số lấy mẫu và định dạng",
+      "byline": "Tác giả:",
+      "dateDisplay": "14 tháng 6, 2025",
+      "timeDisplay": "22:08"
     },
     "intro": {
-      "title": "A Brief Intro to Audio Formats, Bitrates, and Sample Rates",
-      "p1": "Have you ever wondered why that podcast you downloaded sounds crystal clear at 50MB while your friend's \"high-quality\" music file sounds like it was recorded underwater at 3MB? Or maybe you've noticed that:",
+      "title": "Giới thiệu ngắn gọn về định dạng âm thanh, bitrate và tần số lấy mẫu",
+      "p1": "Bạn đã bao giờ tự hỏi tại sao podcast bạn tải về nghe trong vắt ở 50MB trong khi tệp nhạc \"chất lượng cao\" của bạn bè nghe như thu dưới nước ở 3MB chưa? Hay bạn từng nhận thấy rằng:",
       "bullets": [
-        "Your website's background music takes forever to load, even though it's only 30 seconds long",
-        "That audio file you converted sounds like someone's playing it through a tin can",
-        "You're trying to add voice-overs to your video content but the file sizes are absolutely massive",
-        "Your carefully crafted sound effects library is eating up all your cloud storage",
-        "You downloaded the same song from different sources and they all sound wildly different"
+        "Nhạc nền website của bạn mất cả đời để tải, dù chỉ dài 30 giây",
+        "Tệp âm thanh bạn vừa chuyển đổi nghe như ai đó đang phát qua lon thiếc",
+        "Bạn đang cố thêm lồng tiếng vào nội dung video nhưng kích thước tệp cực kỳ khổng lồ",
+        "Thư viện hiệu ứng âm thanh bạn dày công xây dựng đang ngốn hết dung lượng lưu trữ đám mây",
+        "Bạn tải cùng một bài hát từ các nguồn khác nhau và chúng nghe khác nhau một trời một vực"
       ],
-      "p2": "If you've experienced any of these audio adventures (or misadventures 😅), then buckle up because we're about to demystify the world of audio formats, bitrates, and sample rates!",
-      "p3": "Think of audio files like coffee ☕ – you've got your instant coffee (low bitrate MP3s), your standard drip coffee (regular quality audio), and your fancy espresso machine brew (lossless FLAC files). They're all coffee, but the experience? Totally different. And just like how you wouldn't serve instant coffee at a high-end café, you shouldn't be using low-quality audio files on your professional website.",
-      "p4": "In this article, we'll explore what these mysterious numbers and formats actually mean, why they matter more than you might think, and how choosing the right combination can make the difference between your website visitors staying engaged or hitting that dreaded back button. 🎯",
-      "quote": "\"The ear is the avenue to the heart.\" – Voltaire"
+      "p2": "Nếu bạn từng trải qua bất kỳ cuộc phiêu lưu âm thanh nào như vậy (hay tai nạn 😅), thì hãy thắt dây an toàn vì chúng ta sắp giải mã thế giới của định dạng âm thanh, bitrate và tần số lấy mẫu!",
+      "p3": "Hãy xem tệp âm thanh như cà phê ☕ — bạn có cà phê hòa tan (MP3 bitrate thấp), cà phê phin tiêu chuẩn (âm thanh chất lượng thường), và cà phê pha từ máy espresso xịn (tệp FLAC không mất dữ liệu). Tất cả đều là cà phê, nhưng trải nghiệm? Hoàn toàn khác. Và cũng như bạn sẽ không phục vụ cà phê hòa tan ở một quán cà phê cao cấp, bạn không nên dùng tệp âm thanh chất lượng thấp trên website chuyên nghiệp của mình.",
+      "p4": "Trong bài viết này, chúng ta sẽ khám phá những con số và định dạng bí ẩn này thực sự có nghĩa gì, vì sao chúng quan trọng hơn bạn nghĩ, và cách chọn đúng tổ hợp có thể tạo nên khác biệt giữa việc khách truy cập ở lại hay nhấn nút quay lại đáng sợ đó. 🎯",
+      "quote": "\"Đôi tai là con đường dẫn đến trái tim.\" — Voltaire"
     },
     "difference": {
-      "title": "What's the Difference Between Formats, Bitrates, and Sample Rates Anyway?",
-      "p1": "Alright, let's break this down like we're explaining it to our non-techy friend who just wants their podcast to sound good! 🎧",
-      "formatsLead": "<strong>Audio Formats</strong> are like containers – think of them as different types of boxes you can pack your audio into. You've got:",
+      "title": "Rốt cuộc định dạng, bitrate và tần số lấy mẫu khác nhau thế nào?",
+      "p1": "Được rồi, hãy giải thích như đang nói với người bạn không rành công nghệ chỉ muốn podcast của họ nghe hay! 🎧",
+      "formatsLead": "<strong>Định dạng âm thanh</strong> giống như vật chứa — hãy xem chúng như các loại hộp khác nhau để đóng gói âm thanh. Bạn có:",
       "formatsBullets": [
-        "<strong>MP3</strong>: The trusty cardboard box. Gets the job done, universally accepted, but might squish your contents a bit",
-        "<strong>WAV</strong>: The heavy-duty steel container. Preserves everything perfectly but weighs a ton",
-        "<strong>AAC</strong>: The fancy modern box with better packing technology. Same size as MP3 but fits more quality inside",
-        "<strong>FLAC</strong>: The vacuum-sealed container. Compresses without losing anything, but still pretty hefty",
-        "<strong>OGG</strong>: The open-source rebel box that works great but not everyone knows how to open it"
+        "<strong>MP3</strong>: Hộp các-tông đáng tin cậy. Làm được việc, được chấp nhận ở mọi nơi, nhưng có thể làm móp đồ bên trong một chút",
+        "<strong>WAV</strong>: Thùng thép hạng nặng. Giữ nguyên mọi thứ hoàn hảo nhưng nặng cả tấn",
+        "<strong>AAC</strong>: Chiếc hộp hiện đại sang trọng với công nghệ đóng gói tốt hơn. Cùng kích thước với MP3 nhưng chứa được nhiều chất lượng hơn",
+        "<strong>FLAC</strong>: Thùng hút chân không. Nén mà không mất gì, nhưng vẫn khá nặng",
+        "<strong>OGG</strong>: Chiếc hộp nổi loạn mã nguồn mở, hoạt động tuyệt vời nhưng không phải ai cũng biết cách mở"
       ],
-      "bitrateLead": "<strong>Bitrate</strong> is how much data flows per second – imagine it's like a water pipe. Higher bitrate = bigger pipe = more audio information flowing through:",
+      "bitrateLead": "<strong>Bitrate</strong> là lượng dữ liệu chảy qua mỗi giây — hãy tưởng tượng nó như ống nước. Bitrate cao hơn = ống lớn hơn = nhiều thông tin âm thanh chảy qua hơn:",
       "bitrateBullets": [
-        "<strong>64 kbps</strong>: Garden hose (fine for talk radio, terrible for music)",
-        "<strong>128 kbps</strong>: Standard faucet (decent for casual listening)",
-        "<strong>256 kbps</strong>: Fire hose (great quality for most people)",
-        "<strong>320 kbps</strong>: Industrial pipe (maximum quality for MP3s)",
-        "<strong>1,411 kbps</strong>: Niagara Falls (uncompressed CD quality) 💿"
+        "<strong>64 kbps</strong>: Vòi tưới vườn (ổn cho radio nói chuyện, tệ cho nhạc)",
+        "<strong>128 kbps</strong>: Vòi nước tiêu chuẩn (khá ổn để nghe thông thường)",
+        "<strong>256 kbps</strong>: Vòi cứu hỏa (chất lượng tuyệt vời với hầu hết mọi người)",
+        "<strong>320 kbps</strong>: Ống công nghiệp (chất lượng tối đa cho MP3)",
+        "<strong>1.411 kbps</strong>: Thác Niagara (chất lượng CD không nén) 💿"
       ],
-      "sampleRateLead": "<strong>Sample Rate</strong> is how many times per second we take a \"snapshot\" of the sound wave. It's measured in Hz (Hertz) or kHz (kilohertz):",
+      "sampleRateLead": "<strong>Tần số lấy mẫu</strong> là số lần mỗi giây chúng ta chụp một \"ảnh nhanh\" của sóng âm. Nó được đo bằng Hz (Hertz) hoặc kHz (kilohertz):",
       "sampleRateBullets": [
-        "<strong>22,050 Hz</strong>: Like watching a movie at 15fps – functional but choppy",
-        "<strong>44,100 Hz</strong>: The sweet spot – CD quality, captures everything humans can hear",
-        "<strong>48,000 Hz</strong>: Professional video standard (because math and synchronization 🤓)",
-        "<strong>96,000 Hz</strong> or higher: For audio nerds and dogs (seriously, humans can't hear the difference)"
+        "<strong>22.050 Hz</strong>: Như xem phim ở 15fps — dùng được nhưng giật",
+        "<strong>44.100 Hz</strong>: Điểm ngọt — chất lượng CD, bắt được mọi thứ con người nghe được",
+        "<strong>48.000 Hz</strong>: Tiêu chuẩn video chuyên nghiệp (vì toán học và đồng bộ hóa 🤓)",
+        "<strong>96.000 Hz</strong> trở lên: Dành cho dân mê âm thanh và chó (nghiêm túc đấy, con người không nghe ra khác biệt)"
       ],
-      "p2": "Here's the kicker – these three amigos work together! You could have a WAV file (format) at 44.1 kHz (sample rate) with a bitrate of 1,411 kbps. Or an MP3 (format) at 44.1 kHz (sample rate) but only 128 kbps (bitrate). Same sample rate, totally different quality! 🤯",
-      "quote": "\"To understand the whole, you must first understand the parts.\" – Aristotle"
+      "p2": "Đây là điểm mấu chốt — ba người bạn này hoạt động cùng nhau! Bạn có thể có tệp WAV (định dạng) ở 44,1 kHz (tần số lấy mẫu) với bitrate 1.411 kbps. Hoặc MP3 (định dạng) ở 44,1 kHz (tần số lấy mẫu) nhưng chỉ 128 kbps (bitrate). Cùng tần số lấy mẫu, chất lượng hoàn toàn khác! 🤯",
+      "quote": "\"Để hiểu toàn thể, trước hết phải hiểu từng phần.\" — Aristotle"
     },
     "usage": {
-      "title": "How Do I Know When to Use One Format Over Another and How Do Bitrate and Sample Rate Play Into This?",
-      "p1": "Time for the real talk! 💪 Let's match your audio needs with the right format combo. Think of it like choosing the right outfit for different occasions – you wouldn't wear a tuxedo to the gym, right?",
+      "title": "Làm sao biết khi nào dùng định dạng nào, và bitrate cùng tần số lấy mẫu liên quan thế nào?",
+      "p1": "Đến lúc nói thật! 💪 Hãy ghép nhu cầu âm thanh của bạn với đúng tổ hợp định dạng. Hãy xem như chọn trang phục cho các dịp khác nhau — bạn sẽ không mặc tuxedo đi tập gym, đúng không?",
       "background": {
-        "title": "For Background Music on Websites:",
+        "title": "Cho nhạc nền trên website:",
         "bullets": [
-          "<strong>Use</strong>: MP3 or AAC at 128-192 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Loads fast, sounds good enough for ambiance, won't eat up bandwidth",
-          "<strong>File size</strong>: ~1MB per minute (your visitors will thank you!)"
+          "<strong>Dùng</strong>: MP3 hoặc AAC ở 128–192 kbps, 44,1 kHz",
+          "<strong>Vì sao</strong>: Tải nhanh, nghe đủ hay để tạo không khí, không ngốn băng thông",
+          "<strong>Kích thước tệp</strong>: ~1MB mỗi phút (khách truy cập sẽ cảm ơn bạn!)"
         ]
       },
       "podcasts": {
-        "title": "For Podcasts & Voice Content:",
+        "title": "Cho podcast & nội dung giọng nói:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 64-96 kbps mono, 44.1 kHz (or 22.05 kHz if file size is critical)",
-          "<strong>Why</strong>: Human speech doesn't need high bitrates, mono saves 50% file size",
-          "<strong>Pro tip</strong>: Nobody needs to hear your breathing in stereo 😄"
+          "<strong>Dùng</strong>: MP3 ở 64–96 kbps mono, 44,1 kHz (hoặc 22,05 kHz nếu kích thước tệp là tối quan trọng)",
+          "<strong>Vì sao</strong>: Giọng nói con người không cần bitrate cao, mono tiết kiệm 50% kích thước tệp",
+          "<strong>Mẹo chuyên nghiệp</strong>: Không ai cần nghe tiếng thở của bạn ở chế độ stereo 😄"
         ]
       },
       "streaming": {
-        "title": "For Music Streaming/Downloads:",
+        "title": "Cho phát trực tuyến/tải nhạc:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 256-320 kbps or AAC at 256 kbps, 44.1 kHz",
-          "<strong>Why</strong>: The sweet spot between quality and file size",
-          "<strong>Reality check</strong>: Most people can't tell the difference between 256 and 320 kbps"
+          "<strong>Dùng</strong>: MP3 ở 256–320 kbps hoặc AAC ở 256 kbps, 44,1 kHz",
+          "<strong>Vì sao</strong>: Điểm ngọt giữa chất lượng và kích thước tệp",
+          "<strong>Sự thật</strong>: Hầu hết mọi người không phân biệt được 256 và 320 kbps"
         ]
       },
       "previews": {
-        "title": "For Audio Previews & Samples:",
+        "title": "Cho bản nghe thử & mẫu âm thanh:",
         "bullets": [
-          "<strong>Use</strong>: MP3 at 96-128 kbps, 44.1 kHz",
-          "<strong>Why</strong>: Quick loading, good enough for \"try before you buy\"",
-          "<strong>Smart move</strong>: Save the high-quality files for paying customers 💰"
+          "<strong>Dùng</strong>: MP3 ở 96–128 kbps, 44,1 kHz",
+          "<strong>Vì sao</strong>: Tải nhanh, đủ tốt cho \"nghe thử trước khi mua\"",
+          "<strong>Nước đi khôn ngoan</strong>: Để dành tệp chất lượng cao cho khách hàng trả tiền 💰"
         ]
       },
       "archival": {
-        "title": "For Professional/Archival:",
+        "title": "Cho chuyên nghiệp/lưu trữ:",
         "bullets": [
-          "<strong>Use</strong>: FLAC or WAV at maximum bitrate, 48 kHz (or match your video standard)",
-          "<strong>Why</strong>: Future-proof, perfect for editing, no quality loss",
-          "<strong>Warning</strong>: These files are HUGE – we're talking 10MB per minute!"
+          "<strong>Dùng</strong>: FLAC hoặc WAV ở bitrate tối đa, 48 kHz (hoặc khớp với tiêu chuẩn video của bạn)",
+          "<strong>Vì sao</strong>: Bền vững cho tương lai, hoàn hảo để chỉnh sửa, không mất chất lượng",
+          "<strong>Cảnh báo</strong>: Những tệp này KHỔNG LỒ — khoảng 10MB mỗi phút!"
         ]
       },
       "decisionTree": {
-        "title": "Quick Decision Tree:",
-        "content": "Is it voice only? → MP3 at 64-96 kbps\nIs loading speed critical? → MP3/AAC at 128 kbps max\nNeed perfect quality? → FLAC/WAV\nRegular music for web? → MP3/AAC at 192-256 kbps"
+        "title": "Cây quyết định nhanh:",
+        "content": "Chỉ có giọng nói? → MP3 ở 64–96 kbps\nTốc độ tải là tối quan trọng? → MP3/AAC tối đa 128 kbps\nCần chất lượng hoàn hảo? → FLAC/WAV\nNhạc thông thường cho web? → MP3/AAC ở 192–256 kbps"
       },
-      "ninjaTip": "Here's a ninja tip 🥷: Always start with the highest quality source file you can get, then compress down. You can always go from WAV → MP3, but you can't magically add quality back going from MP3 → WAV (despite what those sketchy \"audio enhancer\" ads claim).",
-      "realWorldExample": "<strong>Real-world example</strong>: I once had a client whose meditation app was using WAV files for guided sessions. Each 10-minute session was 100MB! 😱 We converted them to 96 kbps mono MP3s, dropped the file size to 7MB each, and literally nobody complained about quality. Their app downloads increased by 40% just because it wasn't a storage hog anymore.",
-      "quote": "\"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.\" – Antoine de Saint-Exupéry"
+      "ninjaTip": "Đây là mẹo ninja 🥷: Luôn bắt đầu với tệp nguồn chất lượng cao nhất bạn có được, rồi nén xuống. Bạn luôn có thể đi từ WAV → MP3, nhưng không thể thần kỳ thêm lại chất lượng khi đi từ MP3 → WAV (bất chấp những quảng cáo \"tăng cường âm thanh\" đáng ngờ nói gì).",
+      "realWorldExample": "<strong>Ví dụ thực tế</strong>: Tôi từng có một khách hàng mà ứng dụng thiền của họ dùng tệp WAV cho các buổi hướng dẫn. Mỗi buổi 10 phút nặng 100MB! 😱 Chúng tôi chuyển chúng sang MP3 mono 96 kbps, giảm kích thước xuống 7MB mỗi tệp, và thực sự không ai phàn nàn về chất lượng. Lượt tải ứng dụng của họ tăng 40% chỉ vì nó không còn ngốn bộ nhớ nữa.",
+      "quote": "\"Sự hoàn hảo đạt được không phải khi không còn gì để thêm, mà khi không còn gì để bớt.\" — Antoine de Saint-Exupéry"
     },
     "importance": {
-      "title": "Why Is This Even Important for My Website?",
-      "p1": "Okay, so you might be thinking, \"Cool audio facts, bro, but why should I care?\" Well, hold onto your headphones because this is where it gets REAL for your bottom line! 💸",
+      "title": "Vì sao điều này lại quan trọng với website của tôi?",
+      "p1": "Được rồi, bạn có thể đang nghĩ, \"Kiến thức âm thanh hay đấy, nhưng sao tôi phải quan tâm?\" Chà, hãy giữ chặt tai nghe vì đây là lúc mọi thứ trở nên THỰC TẾ với lợi nhuận của bạn! 💸",
       "pageLoadSpeed": {
-        "title": "Page Load Speed = Money",
-        "lead": "Google has made it crystal clear: slow websites get penalized in search rankings. Every second of load time can cost you:",
+        "title": "Tốc độ tải trang = Tiền",
+        "lead": "Google đã nói rất rõ: website chậm bị phạt trong xếp hạng tìm kiếm. Mỗi giây tải trang có thể khiến bạn mất:",
         "bullets": [
-          "<strong>7% decrease</strong> in conversions",
-          "<strong>11% fewer</strong> page views",
-          "<strong>16% decrease</strong> in customer satisfaction"
+          "<strong>Giảm 7%</strong> chuyển đổi",
+          "<strong>Ít hơn 11%</strong> lượt xem trang",
+          "<strong>Giảm 16%</strong> mức hài lòng của khách hàng"
         ],
-        "outro": "That innocent 50MB background music file? It's literally costing you customers! 😱"
+        "outro": "Tệp nhạc nền 50MB vô hại đó? Nó đang thực sự khiến bạn mất khách hàng! 😱"
       },
       "mobileReality": {
-        "title": "The Mobile Reality Check",
-        "p": "Here's a fun fact: over 60% of web traffic is mobile now. You know what mobile users love? Using their limited data plans to download your uncompressed audio files! (Spoiler: They don't. They'll bounce faster than a rubber ball on concrete.)"
+        "title": "Thực tế về di động",
+        "p": "Đây là một sự thật thú vị: hơn 60% lưu lượng web hiện là di động. Bạn biết người dùng di động thích gì không? Dùng gói dữ liệu có hạn của họ để tải tệp âm thanh chưa nén của bạn! (Tiết lộ: Họ không thích đâu. Họ sẽ thoát nhanh hơn quả bóng cao su nảy trên bê tông.)"
       },
       "realNumbers": {
-        "title": "Real Numbers That'll Make You Sweat:",
-        "lead": "Let's say you have a landing page with:",
+        "title": "Những con số thực khiến bạn toát mồ hôi:",
+        "lead": "Giả sử bạn có một trang đích với:",
         "bullets": [
-          "30-second background music loop",
-          "2 product demo voice-overs (1 minute each)",
-          "5 sound effects for interactions"
+          "Vòng lặp nhạc nền 30 giây",
+          "2 bản lồng tiếng demo sản phẩm (mỗi bản 1 phút)",
+          "5 hiệu ứng âm thanh cho tương tác"
         ],
-        "comparisonWav": "Using WAV files: <strong>~250MB total</strong> 😵",
-        "comparisonMp3": "Using optimized MP3s: <strong>~8MB total</strong> 🎉",
-        "outro": "That's a 97% reduction! Your hosting bill just breathed a sigh of relief."
+        "comparisonWav": "Dùng tệp WAV: <strong>tổng ~250MB</strong> 😵",
+        "comparisonMp3": "Dùng MP3 tối ưu: <strong>tổng ~8MB</strong> 🎉",
+        "outro": "Giảm 97%! Hóa đơn lưu trữ của bạn vừa thở phào nhẹ nhõm."
       },
       "trustFactor": {
-        "title": "The Trust Factor",
-        "lead": "Nothing screams \"amateur hour\" like:",
+        "title": "Yếu tố niềm tin",
+        "lead": "Không gì gào lên \"nghiệp dư\" to bằng:",
         "bullets": [
-          "Audio that takes forever to load",
-          "Stuttering playback",
-          "Quality so bad it sounds like a 1990s dial-up modem"
+          "Âm thanh mất cả đời để tải",
+          "Phát giật cục",
+          "Chất lượng tệ đến mức nghe như modem dial-up thập niên 1990"
         ],
-        "outro": "Professional audio quality = professional image = customer trust = 💰"
+        "outro": "Chất lượng âm thanh chuyên nghiệp = hình ảnh chuyên nghiệp = niềm tin khách hàng = 💰"
       },
       "seoVitals": {
-        "title": "SEO and Core Web Vitals",
-        "lead": "Google's Core Web Vitals specifically measure:",
+        "title": "SEO và Core Web Vitals",
+        "lead": "Core Web Vitals của Google đo lường cụ thể:",
         "bullets": [
-          "<strong>LCP (Largest Contentful Paint)</strong>: Heavy audio files delay this",
-          "<strong>FID (First Input Delay)</strong>: Large files blocking the main thread",
-          "<strong>CLS (Cumulative Layout Shift)</strong>: Improperly loaded audio players causing jumps"
+          "<strong>LCP (Largest Contentful Paint)</strong>: Tệp âm thanh nặng làm chậm chỉ số này",
+          "<strong>FID (First Input Delay)</strong>: Tệp lớn chặn luồng chính",
+          "<strong>CLS (Cumulative Layout Shift)</strong>: Trình phát âm thanh tải không đúng cách gây nhảy bố cục"
         ],
-        "outro": "Translation: Bad audio optimization = bad SEO = less organic traffic = less money."
+        "outro": "Dịch ra: Tối ưu âm thanh kém = SEO kém = ít lưu lượng tự nhiên = ít tiền."
       },
       "moreReasons": {
-        "title": "But Wait, There's More!",
-        "lead": "(Said in my best infomercial voice 📺) Optimized audio also means:",
+        "title": "Nhưng khoan, còn nữa!",
+        "lead": "(Nói bằng giọng quảng cáo truyền hình hay nhất của tôi 📺) Âm thanh tối ưu còn có nghĩa là:",
         "bullets": [
-          "Lower CDN costs",
-          "Happier users on slower connections",
-          "Better accessibility (properly compressed audio works better with screen readers)",
-          "Increased engagement (people actually stick around when things load fast)"
+          "Chi phí CDN thấp hơn",
+          "Người dùng trên kết nối chậm vui hơn",
+          "Trợ năng tốt hơn (âm thanh nén đúng cách hoạt động tốt hơn với trình đọc màn hình)",
+          "Tương tác tăng (người ta thực sự ở lại khi mọi thứ tải nhanh)"
         ],
-        "clientStory": "I had a client whose e-learning platform was hemorrhaging users. Turns out, their course audio files were so massive that students in rural areas literally couldn't access the content. We optimized everything, cut file sizes by 85%, and their completion rates jumped 40% in just two months!"
+        "clientStory": "Tôi từng có một khách hàng mà nền tảng học trực tuyến của họ đang mất người dùng hàng loạt. Hóa ra, tệp âm thanh khóa học của họ nặng đến mức học viên ở vùng nông thôn thực sự không thể truy cập nội dung. Chúng tôi tối ưu mọi thứ, cắt 85% kích thước tệp, và tỷ lệ hoàn thành khóa học của họ tăng vọt 40% chỉ trong hai tháng!"
       },
-      "quote": "\"Time is money, and loading time is lost money.\" – Every Web Developer Ever"
+      "quote": "\"Thời gian là tiền bạc, và thời gian tải là tiền mất.\" — Mọi lập trình viên web từ trước đến nay"
     },
     "conclusion": {
-      "title": "Conclusion",
-      "p1": "Whew! 🎉 We've just taken a whirlwind tour through the world of audio formats, bitrates, and sample rates. Let's recap the hits (pun intended 🎵):",
+      "title": "Kết luận",
+      "p1": "Phù! 🎉 Chúng ta vừa đi một vòng chớp nhoáng qua thế giới định dạng âm thanh, bitrate và tần số lấy mẫu. Hãy điểm lại các bản hit (chơi chữ có chủ ý 🎵):",
       "takeaways": {
-        "title": "The Big Takeaways:",
+        "title": "Những điểm chính:",
         "bullets": [
-          "Audio formats are containers, bitrates are data flow, and sample rates are snapshot frequency",
-          "MP3 at 128-192 kbps is your web workhorse for most use cases",
-          "Voice content can go lower (64-96 kbps), music should go higher (256+ kbps)",
-          "Every MB matters – optimized audio = faster loads = happier visitors = more money",
-          "Start with high quality, compress down (you can't enhance garbage into gold!)"
+          "Định dạng âm thanh là vật chứa, bitrate là dòng dữ liệu, và tần số lấy mẫu là tần suất chụp ảnh nhanh",
+          "MP3 ở 128–192 kbps là ngựa thồ web của bạn cho hầu hết trường hợp",
+          "Nội dung giọng nói có thể thấp hơn (64–96 kbps), nhạc nên cao hơn (256+ kbps)",
+          "Mỗi MB đều quan trọng — âm thanh tối ưu = tải nhanh hơn = khách truy cập vui hơn = nhiều tiền hơn",
+          "Bắt đầu với chất lượng cao, nén xuống (bạn không thể biến rác thành vàng!)"
         ]
       },
       "actionPlan": {
-        "title": "Your Action Plan:",
+        "title": "Kế hoạch hành động của bạn:",
         "steps": [
-          "<strong>Audit</strong> your current audio files (I bet you'll find some chunky WAVs hiding in there 👀)",
-          "<strong>Convert</strong> them using the guidelines we covered",
-          "<strong>Test</strong> your page load speeds before and after",
-          "<strong>Watch</strong> your metrics improve (and maybe do a little victory dance 💃)"
+          "<strong>Kiểm tra</strong> các tệp âm thanh hiện tại (tôi cá bạn sẽ thấy vài tệp WAV cồng kềnh ẩn trong đó 👀)",
+          "<strong>Chuyển đổi</strong> chúng theo các hướng dẫn chúng ta đã bàn",
+          "<strong>Kiểm tra</strong> tốc độ tải trang trước và sau",
+          "<strong>Theo dõi</strong> các chỉ số cải thiện (và có thể nhảy một điệu ăn mừng nhỏ 💃)"
         ]
       },
-      "p2": "Remember, in the digital world, sound might be invisible, but its impact on your website's performance is anything but. Those milliseconds you save by optimizing your audio? They translate directly into better user experience, higher search rankings, and ultimately, a healthier bottom line.",
-      "p3": "So go forth and compress! Your visitors' ears (and internet connections) will thank you. And hey, if you found this helpful, imagine what proper image and video optimization could do for your site... but that's a story for another day! 😉",
-      "p4": "Ready to become an audio optimization ninja? Your website's performance transformation starts with that first file conversion. Make it happen! 🚀",
-      "quote": "\"In the realm of digital content, the lightest footprint often leaves the deepest impression.\" – Ancient Web Developer Proverb (Okay, I made that up, but it's true! 😄)"
+      "p2": "Hãy nhớ, trong thế giới số, âm thanh có thể vô hình, nhưng tác động của nó lên hiệu năng website thì không hề. Những mili giây bạn tiết kiệm được nhờ tối ưu âm thanh? Chúng chuyển thẳng thành trải nghiệm người dùng tốt hơn, xếp hạng tìm kiếm cao hơn, và cuối cùng là lợi nhuận khỏe mạnh hơn.",
+      "p3": "Vậy hãy đi nén thôi! Đôi tai (và kết nối internet) của khách truy cập sẽ cảm ơn bạn. Và này, nếu thấy bài này hữu ích, hãy tưởng tượng tối ưu hình ảnh và video đúng cách có thể làm gì cho trang của bạn... nhưng đó là câu chuyện cho một ngày khác! 😉",
+      "p4": "Sẵn sàng trở thành ninja tối ưu âm thanh? Cuộc lột xác hiệu năng website của bạn bắt đầu từ lần chuyển đổi tệp đầu tiên. Hãy thực hiện ngay! 🚀",
+      "quote": "\"Trong vương quốc nội dung số, dấu chân nhẹ nhất thường để lại ấn tượng sâu nhất.\" — Ngạn ngữ cổ của lập trình viên web (Được rồi, tôi bịa ra đấy, nhưng nó đúng! 😄)"
     },
     "relatedLinks": {
-      "title": "Related tools",
-      "intro": "Try the Media Manipulator audio tools and explore related guides.",
+      "title": "Công cụ liên quan",
+      "intro": "Thử các công cụ âm thanh của Media Manipulator và khám phá các hướng dẫn liên quan.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more with custom bitrate."
+          "label": "Bộ chuyển đổi âm thanh",
+          "description": "Chuyển đổi WAV, MP3, FLAC, M4A, OGG và nhiều hơn nữa với bitrate tùy chỉnh."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV files into widely playable MP3s."
+          "label": "Chuyển WAV sang MP3",
+          "description": "Thu nhỏ các tệp WAV lớn thành MP3 phát được ở mọi nơi."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Pull vocals out of music tracks for remixes or analysis."
+          "label": "Tách giọng hát khỏi bài hát",
+          "description": "Lấy giọng hát ra khỏi bản nhạc để remix hoặc phân tích."
         },
         {
-          "label": "Audio converter tutorial",
-          "description": "Walk through every option including cleanup and vocal isolation."
+          "label": "Hướng dẫn bộ chuyển đổi âm thanh",
+          "description": "Đi qua mọi tùy chọn bao gồm làm sạch và tách giọng hát."
         },
         {
-          "label": "Video compression guide",
-          "description": "Pair good audio with optimized video encoding."
+          "label": "Hướng dẫn nén video",
+          "description": "Kết hợp âm thanh tốt với mã hóa video tối ưu."
         },
         {
-          "label": "Image optimization guide",
-          "description": "Round out a fast site by also optimizing image files."
+          "label": "Hướng dẫn tối ưu hình ảnh",
+          "description": "Hoàn thiện một trang web nhanh bằng cách tối ưu cả tệp hình ảnh."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Master Audio Optimization? 🎧",
-      "body": "Transform your hefty WAV files into lightning-fast MP3s and AACs! Our free audio converter supports all major formats with customizable bitrates and sample rates. Optimize your audio files and supercharge your website performance!",
-      "buttonLabel": "Open the audio converter →",
-      "footnote": "No signup required • Process files locally • Fast & secure"
+      "title": "Sẵn sàng làm chủ tối ưu âm thanh? 🎧",
+      "body": "Biến những tệp WAV nặng nề thành MP3 và AAC nhanh như chớp! Bộ chuyển đổi âm thanh miễn phí của chúng tôi hỗ trợ mọi định dạng chính với bitrate và tần số lấy mẫu tùy chỉnh. Tối ưu tệp âm thanh và tăng tốc hiệu năng website của bạn!",
+      "buttonLabel": "Mở bộ chuyển đổi âm thanh →",
+      "footnote": "Không cần đăng ký • Xử lý tệp cục bộ • Nhanh & an toàn"
     }
   },
   "tutorialAiFrameInterpolation": {
-    "eyebrow": "Video Tutorial",
-    "title": "What Is AI Frame Interpolation?",
-    "intro": "AI frame interpolation generates new in-between video frames so motion plays back more smoothly. This tutorial explains how it works, when to use it, what its limits are, and how to run it on Media Manipulator.",
+    "eyebrow": "Hướng dẫn video",
+    "title": "Nội suy khung hình AI là gì?",
+    "intro": "Nội suy khung hình AI tạo ra các khung hình video trung gian mới để chuyển động phát mượt hơn. Hướng dẫn này giải thích cách nó hoạt động, khi nào nên dùng, giới hạn của nó, và cách chạy trên Media Manipulator.",
     "toolPanel": {
-      "title": "Try AI frame interpolation without leaving this page",
-      "description": "Pick a video file, scroll to the AI Video Tools panel, and choose AI Frame Interpolation. The defaults output a smoother MP4 at 60fps."
+      "title": "Thử nội suy khung hình AI ngay trên trang này",
+      "description": "Chọn một tệp video, cuộn đến bảng Công cụ video AI và chọn Nội suy khung hình AI. Cài đặt mặc định xuất ra MP4 mượt hơn ở 60fps."
     },
     "whatIs": {
-      "title": "1. What is frame interpolation?",
-      "intro": "Frame interpolation increases the frame rate of a video by inserting new images between the original frames. A 30fps clip has 30 frames per second; doubling its frame rate means producing 30 new frames per second to sit between the existing ones. There are several approaches:",
+      "title": "1. Nội suy khung hình là gì?",
+      "intro": "Nội suy khung hình tăng tốc độ khung hình của video bằng cách chèn hình ảnh mới vào giữa các khung hình gốc. Một clip 30fps có 30 khung hình mỗi giây; nhân đôi tốc độ khung hình nghĩa là tạo ra 30 khung hình mới mỗi giây để xen giữa các khung hình hiện có. Có vài cách tiếp cận:",
       "bullets": [
-        "<strong>Frame duplication</strong> — copy the previous frame so motion looks the same but the playback rate matches the target.",
-        "<strong>Frame blending</strong> — fade between two adjacent frames to soften the boundary. Cheap but mushy.",
-        "<strong>Motion interpolation</strong> — estimate motion vectors and warp frames forward (e.g. FFmpeg's minterpolate).",
-        "<strong>AI interpolation</strong> — a neural network (e.g. RIFE) predicts the in-between frame from the two real frames around it. Usually the cleanest result for non-rigid motion."
+        "<strong>Nhân bản khung hình</strong> — sao chép khung hình trước để chuyển động trông như cũ nhưng tốc độ phát khớp với mục tiêu.",
+        "<strong>Hòa trộn khung hình</strong> — mờ dần giữa hai khung hình liền kề để làm mềm ranh giới. Rẻ nhưng nhòe.",
+        "<strong>Nội suy chuyển động</strong> — ước lượng vector chuyển động và làm biến dạng khung hình về phía trước (ví dụ minterpolate của FFmpeg).",
+        "<strong>Nội suy AI</strong> — một mạng nơ-ron (ví dụ RIFE) dự đoán khung hình trung gian từ hai khung hình thật xung quanh. Thường cho kết quả sạch nhất với chuyển động không cứng."
       ],
-      "outro": "Media Manipulator's AI Frame Interpolation tool uses RIFE via rife-ncnn-vulkan on our own GPU server."
+      "outro": "Công cụ Nội suy khung hình AI của Media Manipulator dùng RIFE qua rife-ncnn-vulkan trên máy chủ GPU của chính chúng tôi."
     },
     "whyUse": {
-      "title": "2. Why people use frame interpolation",
+      "title": "2. Vì sao người ta dùng nội suy khung hình",
       "bullets": [
-        "Smoother motion on modern displays and social platforms.",
-        "Lifting 24/30fps footage to 60fps.",
-        "Lifting 60fps footage to 120fps for high-refresh playback or editing.",
-        "Cleaner motion previews for trailers, gameplay, sports, screencasts, and vlogs.",
-        "Restoring older, low-FPS clips so they feel less stuttery.",
-        "Producing smoother short cuts for sharing on social."
+        "Chuyển động mượt hơn trên màn hình hiện đại và các nền tảng mạng xã hội.",
+        "Nâng cảnh quay 24/30fps lên 60fps.",
+        "Nâng cảnh quay 60fps lên 120fps để phát trên màn hình tần số quét cao hoặc dựng phim.",
+        "Bản xem trước chuyển động sạch hơn cho trailer, gameplay, thể thao, quay màn hình và vlog.",
+        "Phục hồi các clip cũ FPS thấp để chúng bớt giật.",
+        "Tạo các đoạn cắt ngắn mượt hơn để chia sẻ trên mạng xã hội."
       ]
     },
     "howItWorks": {
-      "title": "3. How AI frame interpolation works (high level)",
+      "title": "3. Nội suy khung hình AI hoạt động thế nào (tổng quan)",
       "paragraphs": [
-        "Given two adjacent frames, the model estimates how every pixel moves between them — a process related to optical flow. It then uses that motion to construct one or more new frames placed at fractional time positions between the two originals. The neural network learns common motion patterns from training data, so it tends to handle smooth, natural motion well.",
-        "Hard cases — fast motion, occlusion (one object passing in front of another), thin structures like hair and wheels, and scene cuts — are inherently harder because the model has less reliable evidence about what should happen in between. Those regions are where artifacts tend to appear."
+        "Cho hai khung hình liền kề, mô hình ước lượng mỗi pixel di chuyển thế nào giữa chúng — một quá trình liên quan đến luồng quang học. Sau đó nó dùng chuyển động đó để dựng một hoặc nhiều khung hình mới đặt ở các vị trí thời gian phân số giữa hai khung hình gốc. Mạng nơ-ron học các mẫu chuyển động phổ biến từ dữ liệu huấn luyện, nên nó thường xử lý tốt chuyển động mượt, tự nhiên.",
+        "Các trường hợp khó — chuyển động nhanh, che khuất (vật này đi qua trước vật khác), cấu trúc mỏng như tóc và bánh xe, và chuyển cảnh — vốn khó hơn vì mô hình có ít bằng chứng đáng tin cậy về điều nên xảy ra ở giữa. Đó là những vùng lỗi thường xuất hiện."
       ]
     },
     "vsBasicFps": {
-      "title": "4. AI interpolation vs basic FPS conversion",
-      "p1": "Basic FPS conversion (whether through FFmpeg's <code>fps</code> filter or a hardware-accelerated equivalent) usually just duplicates, drops, or blends frames to hit a target frame rate. The total number of frames per second matches the target, but new motion information is not added — the eye still sees only the original capture intervals.",
-      "p2": "AI interpolation creates net-new frames whose contents are estimated rather than copied. The trade-off:",
+      "title": "4. Nội suy AI so với chuyển đổi FPS cơ bản",
+      "p1": "Chuyển đổi FPS cơ bản (dù qua bộ lọc <code>fps</code> của FFmpeg hay tương đương có tăng tốc phần cứng) thường chỉ nhân bản, bỏ hoặc hòa trộn khung hình để đạt tốc độ khung hình mục tiêu. Tổng số khung hình mỗi giây khớp với mục tiêu, nhưng không có thông tin chuyển động mới nào được thêm — mắt vẫn chỉ thấy các khoảng ghi hình gốc.",
+      "p2": "Nội suy AI tạo ra khung hình hoàn toàn mới với nội dung được ước lượng thay vì sao chép. Sự đánh đổi:",
       "bullets": [
-        "AI usually looks much smoother than duplication or blending.",
-        "AI can warp or hallucinate details on hard regions.",
-        "Basic FPS conversion is faster but rarely feels truly smoother."
+        "AI thường trông mượt hơn nhiều so với nhân bản hay hòa trộn.",
+        "AI có thể làm méo hoặc bịa chi tiết ở các vùng khó.",
+        "Chuyển đổi FPS cơ bản nhanh hơn nhưng hiếm khi cho cảm giác thực sự mượt hơn."
       ]
     },
     "fpsChoice": {
-      "title": "5. When to pick 48, 60, or 120 FPS",
+      "title": "5. Khi nào chọn 48, 60 hay 120 FPS",
       "bullets": [
-        "<strong>48 FPS</strong> — a subtle 2× lift on 24fps cinematic footage. Less aggressive than 60fps and keeps a bit of the original cadence.",
-        "<strong>60 FPS</strong> — common smooth playback rate for the modern web. A good first target for 24/30fps source.",
-        "<strong>120 FPS</strong> — high-refresh displays, gameplay/sports content, or downstream slow-motion editing. Heavier processing cost and a larger file."
+        "<strong>48 FPS</strong> — nâng nhẹ 2× cho cảnh quay điện ảnh 24fps. Ít quyết liệt hơn 60fps và giữ lại một chút nhịp điệu gốc.",
+        "<strong>60 FPS</strong> — tốc độ phát mượt phổ biến cho web hiện đại. Mục tiêu đầu tiên tốt cho nguồn 24/30fps.",
+        "<strong>120 FPS</strong> — màn hình tần số quét cao, nội dung gameplay/thể thao, hoặc dựng chuyển động chậm sau đó. Chi phí xử lý nặng hơn và tệp lớn hơn."
       ]
     },
     "qualityTradeoffs": {
-      "title": "6. Quality and max-height tradeoffs",
+      "title": "6. Đánh đổi giữa chất lượng và chiều cao tối đa",
       "bullets": [
-        "<strong>Lower max processing height</strong> → faster turnaround and lower GPU memory pressure. Great for quick tests.",
-        "<strong>Higher max processing height</strong> → more detail preserved, but slower and heavier.",
-        "<strong>Low quality preset</strong> → faster encode, larger CRF, smaller file.",
-        "<strong>High quality preset</strong> → slower encode, lower CRF, sharper output."
+        "<strong>Chiều cao xử lý tối đa thấp hơn</strong> → xử lý nhanh hơn và ít áp lực bộ nhớ GPU hơn. Tuyệt vời cho thử nghiệm nhanh.",
+        "<strong>Chiều cao xử lý tối đa cao hơn</strong> → giữ nhiều chi tiết hơn, nhưng chậm hơn và nặng hơn.",
+        "<strong>Thiết lập chất lượng thấp</strong> → mã hóa nhanh hơn, CRF lớn hơn, tệp nhỏ hơn.",
+        "<strong>Thiết lập chất lượng cao</strong> → mã hóa chậm hơn, CRF thấp hơn, đầu ra sắc nét hơn."
       ],
-      "outro": "For a first run, try 720p max height with the medium quality preset."
+      "outro": "Cho lần chạy đầu, hãy thử chiều cao tối đa 720p với thiết lập chất lượng trung bình."
     },
     "bestPractices": {
-      "title": "7. Best practices",
+      "title": "7. Thực hành tốt nhất",
       "bullets": [
-        "Test on a short clip first — interpolation cost scales with duration and resolution.",
-        "Avoid heavy scene-cut content. Cuts often produce a brief warp at the boundary.",
-        "Preview the result before publishing — interpolation can look subtly different from a real high-FPS capture.",
-        "Pick clear, steady source footage when possible.",
-        "Keep the original — interpolation is irreversible re-encoding.",
-        "Try 60fps before 120fps unless you specifically need 120fps."
+        "Thử trên clip ngắn trước — chi phí nội suy tăng theo thời lượng và độ phân giải.",
+        "Tránh nội dung nhiều chuyển cảnh. Chuyển cảnh thường tạo ra một đoạn méo ngắn ở ranh giới.",
+        "Xem trước kết quả trước khi đăng — nội suy có thể trông hơi khác so với bản quay FPS cao thật.",
+        "Chọn cảnh quay nguồn rõ ràng, ổn định khi có thể.",
+        "Giữ lại bản gốc — nội suy là mã hóa lại không thể đảo ngược.",
+        "Thử 60fps trước 120fps trừ khi bạn thực sự cần 120fps."
       ]
     },
     "limitations": {
-      "title": "8. Limitations and artifacts",
+      "title": "8. Hạn chế và lỗi hình ảnh",
       "bullets": [
-        "Warping around hands, hair, wheels, and other fast-moving thin structures.",
-        "Ghosting around occlusions where one object passes in front of another.",
-        "Brief glitches at scene cuts.",
-        "Motion blur mismatch — synthesized frames don't share the source camera's shutter behavior.",
-        "Existing compression artifacts (banding, blocking) can become more visible at higher frame rates.",
-        "Long videos take a lot of GPU time; we cap duration to keep the free tool stable.",
-        "AI interpolation does not recover real-world motion that was never captured — it estimates a plausible in-between frame."
+        "Méo quanh tay, tóc, bánh xe và các cấu trúc mỏng chuyển động nhanh khác.",
+        "Bóng ma quanh vùng che khuất, nơi vật này đi qua trước vật khác.",
+        "Lỗi ngắn tại các điểm chuyển cảnh.",
+        "Không khớp mờ chuyển động — khung hình tổng hợp không có cùng đặc tính màn trập của máy quay nguồn.",
+        "Lỗi nén có sẵn (dải màu, khối vuông) có thể lộ rõ hơn ở tốc độ khung hình cao hơn.",
+        "Video dài tốn nhiều thời gian GPU; chúng tôi giới hạn thời lượng để công cụ miễn phí ổn định.",
+        "Nội suy AI không khôi phục chuyển động thực tế chưa từng được ghi lại — nó chỉ ước lượng một khung hình trung gian hợp lý."
       ]
     },
     "howTo": {
-      "title": "9. How to use the Media Manipulator AI Frame Interpolation Tool",
+      "title": "9. Cách dùng công cụ Nội suy khung hình AI của Media Manipulator",
       "steps": [
-        "Open the <linkTool>AI Frame Interpolation tool</linkTool>.",
-        "Upload a video.",
-        "Scroll to the <strong>AI Video Tools</strong> panel and pick <em>AI Frame Interpolation</em>.",
-        "Choose a target FPS — 48, 60, or 120.",
-        "Pick a quality preset and a max processing height (start at 720p / medium).",
-        "Leave <em>Preserve audio</em> on unless you want a silent output.",
-        "Submit the conversion and wait for the job to finish.",
-        "Download the resulting MP4 and preview it."
+        "Mở <linkTool>công cụ Nội suy khung hình AI</linkTool>.",
+        "Tải lên một video.",
+        "Cuộn đến bảng <strong>Công cụ video AI</strong> và chọn <em>Nội suy khung hình AI</em>.",
+        "Chọn FPS mục tiêu — 48, 60 hoặc 120.",
+        "Chọn thiết lập chất lượng và chiều cao xử lý tối đa (bắt đầu ở 720p / trung bình).",
+        "Giữ bật <em>Giữ âm thanh</em> trừ khi bạn muốn đầu ra không tiếng.",
+        "Gửi chuyển đổi và chờ tác vụ hoàn tất.",
+        "Tải xuống MP4 kết quả và xem trước."
       ]
     },
     "faq": {
-      "title": "FAQ",
+      "title": "Câu hỏi thường gặp",
       "items": [
         {
-          "q": "Does frame interpolation improve video quality?",
-          "a": "It improves motion smoothness, not resolution or sharpness."
+          "q": "Nội suy khung hình có cải thiện chất lượng video không?",
+          "a": "Nó cải thiện độ mượt của chuyển động, không phải độ phân giải hay độ sắc nét."
         },
         {
-          "q": "Is AI frame interpolation the same as increasing FPS?",
-          "a": "Both target a higher frame rate, but AI interpolation synthesizes new frames instead of duplicating or blending."
+          "q": "Nội suy khung hình AI có giống tăng FPS không?",
+          "a": "Cả hai đều hướng đến tốc độ khung hình cao hơn, nhưng nội suy AI tổng hợp khung hình mới thay vì nhân bản hay hòa trộn."
         },
         {
-          "q": "Can I convert 30fps to 60fps?",
-          "a": "Yes — it's the most common target."
+          "q": "Tôi có thể chuyển 30fps sang 60fps không?",
+          "a": "Có — đó là mục tiêu phổ biến nhất."
         },
         {
-          "q": "Can I convert 60fps to 120fps?",
-          "a": "Yes, but the processing cost roughly doubles versus 60fps."
+          "q": "Tôi có thể chuyển 60fps sang 120fps không?",
+          "a": "Có, nhưng chi phí xử lý gần như gấp đôi so với 60fps."
         },
         {
-          "q": "Why can frame interpolation create artifacts?",
-          "a": "Motion estimation has to guess on hard regions (occlusions, fast motion, scene cuts)."
+          "q": "Vì sao nội suy khung hình có thể tạo ra lỗi hình ảnh?",
+          "a": "Ước lượng chuyển động phải đoán ở các vùng khó (che khuất, chuyển động nhanh, chuyển cảnh)."
         },
         {
-          "q": "What output format does the tool create?",
-          "a": "MP4 (H.264 + AAC) in v1."
+          "q": "Công cụ tạo ra định dạng đầu ra nào?",
+          "a": "MP4 (H.264 + AAC) trong v1."
         },
         {
-          "q": "Is 60fps always better than 30fps?",
-          "a": "Not for cinematic looks — pick what suits the content."
+          "q": "60fps có luôn tốt hơn 30fps không?",
+          "a": "Không phải với phong cách điện ảnh — hãy chọn phù hợp với nội dung."
         },
         {
-          "q": "Is AI frame interpolation better than FFmpeg FPS conversion?",
-          "a": "For most clips, yes — but minterpolate is faster and still useful as a quick fallback."
+          "q": "Nội suy khung hình AI có tốt hơn chuyển đổi FPS của FFmpeg không?",
+          "a": "Với hầu hết clip, có — nhưng minterpolate nhanh hơn và vẫn hữu ích làm phương án dự phòng nhanh."
         },
         {
-          "q": "Why do scene cuts sometimes look strange after interpolation?",
-          "a": "The model assumes adjacent frames belong to the same motion sequence."
+          "q": "Vì sao chuyển cảnh đôi khi trông lạ sau khi nội suy?",
+          "a": "Mô hình giả định các khung hình liền kề thuộc cùng một chuỗi chuyển động."
         }
       ]
     },
     "actions": {
-      "tryTool": "Try the AI Frame Interpolation Tool",
-      "backToTutorials": "← Back to Tutorials",
-      "videoConverterTutorial": "Video Converter Tutorial"
+      "tryTool": "Thử công cụ Nội suy khung hình AI",
+      "backToTutorials": "← Quay lại Hướng dẫn",
+      "videoConverterTutorial": "Hướng dẫn Bộ chuyển đổi video"
     },
     "relatedLinks": {
-      "title": "Try related tools and guides",
-      "intro": "Other video tools and reference pages that pair well with AI frame interpolation.",
+      "title": "Thử các công cụ và hướng dẫn liên quan",
+      "intro": "Các công cụ video và trang tham khảo khác kết hợp tốt với nội suy khung hình AI.",
       "links": [
         {
-          "label": "AI Frame Interpolation Tool",
-          "description": "Upload a video and run interpolation right now."
+          "label": "Công cụ Nội suy khung hình AI",
+          "description": "Tải lên một video và chạy nội suy ngay bây giờ."
         },
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "Bộ chuyển đổi video",
+          "description": "Chuyển đổi MP4, WebM, MOV, AVI, MKV và nhiều hơn nữa."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink a higher-FPS file before sharing."
+          "label": "Nén video",
+          "description": "Thu nhỏ tệp FPS cao trước khi chia sẻ."
         },
         {
-          "label": "Extract frames from video",
-          "description": "Pull individual frames out as PNGs."
+          "label": "Trích xuất khung hình từ video",
+          "description": "Lấy từng khung hình ra dưới dạng PNG."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn a short clip into an animated GIF."
+          "label": "Chuyển video thành GIF",
+          "description": "Biến một clip ngắn thành GIF động."
         }
       ]
     }
   },
   "tutorialVideoGettingStarted": {
-    "eyebrow": "Video Tutorial",
-    "title": "Getting Started: Converting Video Files",
-    "intro": "Learn how to convert and edit video files with Media Manipulator's video converter. This tutorial walks through every section of the video conversion panel — format selection, trim, transform, visual effects, temporal effects, advanced color/HDR controls, and the GPU-backed transcription option for subtitles and captions.",
+    "eyebrow": "Hướng dẫn video",
+    "title": "Bắt đầu: Chuyển đổi tệp video",
+    "intro": "Tìm hiểu cách chuyển đổi và chỉnh sửa tệp video với bộ chuyển đổi video của Media Manipulator. Hướng dẫn này đi qua từng phần của bảng chuyển đổi video — chọn định dạng, cắt đoạn, biến đổi, hiệu ứng hình ảnh, hiệu ứng thời gian, điều khiển màu/HDR nâng cao, và tùy chọn chép lời chạy trên GPU để tạo phụ đề.",
     "toolPanel": {
-      "title": "Try the video converter without leaving this page",
-      "description": "Pick a video file and convert it right here. The settings below mirror the homepage converter, so you can experiment as you read."
+      "title": "Thử bộ chuyển đổi video ngay trên trang này",
+      "description": "Chọn một tệp video và chuyển đổi ngay tại đây. Các cài đặt bên dưới giống hệt bộ chuyển đổi trên trang chủ, nên bạn có thể thử nghiệm trong lúc đọc."
     },
     "upload": {
-      "title": "1. Upload your video file",
-      "paragraph1": "Drag a video file into the upload zone on the home page, or click <strong>Choose File</strong>. Common inputs include MP4, MOV, MKV, AVI, WebM, WMV, and FLV. Large videos are uploaded directly to S3 via a presigned URL for speed; smaller files upload through the standard form endpoint.",
-      "paragraph2": "After upload, the right panel shows a <strong>Convert / Transcribe</strong> toggle. Keep it on <em>Convert</em> for now — we'll cover Transcribe below."
+      "title": "1. Tải lên tệp video của bạn",
+      "paragraph1": "Kéo tệp video vào vùng tải lên trên trang chủ, hoặc nhấp <strong>Chọn tệp</strong>. Các đầu vào phổ biến gồm MP4, MOV, MKV, AVI, WebM, WMV và FLV. Video lớn được tải thẳng lên S3 qua URL ký sẵn để nhanh hơn; tệp nhỏ hơn tải lên qua điểm cuối biểu mẫu tiêu chuẩn.",
+      "paragraph2": "Sau khi tải lên, bảng bên phải hiển thị nút chuyển <strong>Chuyển đổi / Chép lời</strong>. Tạm thời giữ ở <em>Chuyển đổi</em> — chúng ta sẽ nói về Chép lời bên dưới."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
-      "intro": "Use <strong>Format</strong> to choose the container/codec for the output:",
+      "title": "2. Chọn định dạng đầu ra và chất lượng",
+      "intro": "Dùng <strong>Định dạng</strong> để chọn định dạng chứa/codec cho đầu ra:",
       "bullets": [
-        "<strong>MP4</strong> — H.264 + AAC, the safest default for the web and most devices.",
-        "<strong>WebM</strong> — VP9 + Opus, optimal for the open web.",
-        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — containers for specific workflows (Apple, archival, legacy players, etc.).",
-        "<strong>ProRes / DNxHD</strong> — high-bitrate professional editing codecs.",
-        "<strong>GIF (Animated)</strong> — silent looping image for chat threads, READMEs, and bug reports. See the dedicated section below."
+        "<strong>MP4</strong> — H.264 + AAC, mặc định an toàn nhất cho web và hầu hết thiết bị.",
+        "<strong>WebM</strong> — VP9 + Opus, tối ưu cho web mở.",
+        "<strong>MOV / MKV / AVI / WMV / FLV</strong> — định dạng chứa cho các quy trình cụ thể (Apple, lưu trữ, trình phát cũ, v.v.).",
+        "<strong>ProRes / DNxHD</strong> — codec dựng phim chuyên nghiệp bitrate cao.",
+        "<strong>GIF (động)</strong> — hình ảnh lặp không tiếng cho luồng chat, README và báo cáo lỗi. Xem phần riêng bên dưới."
       ],
-      "quality": "<strong>Quality</strong> chooses a CRF preset under the hood: Low ≈ CRF 30 (small file), Medium ≈ CRF 23 (balanced), High ≈ CRF 18 (visually transparent on most footage). The Quality, Height, and Speed controls are skipped for GIF output — the Animated GIF panel below takes over."
+      "quality": "<strong>Chất lượng</strong> chọn một thiết lập CRF bên dưới: Thấp ≈ CRF 30 (tệp nhỏ), Trung bình ≈ CRF 23 (cân bằng), Cao ≈ CRF 18 (gần như không thấy khác biệt với hầu hết cảnh quay). Các điều khiển Chất lượng, Chiều cao và Tốc độ được bỏ qua với đầu ra GIF — bảng GIF động bên dưới thay thế chúng."
     },
     "gif": {
-      "title": "2a. Converting video to an animated GIF",
-      "paragraph1": "Pick <strong>GIF (Animated)</strong> as the format to expose the <strong>Animated GIF Settings</strong> panel. This runs a two-stage pipeline modeled on a battle-tested screencast script: FFmpeg downscales the source and samples it at a low frame rate, then <code>gifsicle</code> re-quantizes the palette and optimizes the output for size.",
+      "title": "2a. Chuyển video thành GIF động",
+      "paragraph1": "Chọn <strong>GIF (động)</strong> làm định dạng để hiện bảng <strong>Cài đặt GIF động</strong>. Bảng này chạy quy trình hai giai đoạn dựa trên một script quay màn hình đã được thử thách: FFmpeg thu nhỏ nguồn và lấy mẫu ở tốc độ khung hình thấp, rồi <code>gifsicle</code> lượng tử hóa lại bảng màu và tối ưu đầu ra về kích thước.",
       "bullets": [
-        "<strong>Width (px)</strong> — output width. Height is computed automatically (and rounded to a multiple of 4) to preserve the aspect ratio. 480–900 is a good sweet spot for screencasts.",
-        "<strong>Frame rate (fps)</strong> — how many frames per second FFmpeg samples from the source. 12 fps reads smooth for UI screen recordings; raise to 18–24 for motion-heavy clips, or drop to 8–10 to shrink the file.",
-        "<strong>Colors</strong> — gifsicle palette size (2–256). 128 is a strong default; drop to 64 on flat UI footage, raise to 256 for photographic clips with smooth gradients.",
-        "<strong>Frame delay</strong> — gifsicle inter-frame delay in 1/100s. Lower = faster playback. 3 (≈30ms) is the snappy screencast feel; 6–10 produces a slower, more deliberate loop.",
-        "<strong>Optimize level</strong> — gifsicle <code>--optimize</code> level. 1 is fastest with the biggest output, 3 is slowest with the smallest output. Stick with 3 unless you're iterating on a long clip and want a quick draft."
+        "<strong>Chiều rộng (px)</strong> — chiều rộng đầu ra. Chiều cao được tính tự động (và làm tròn thành bội số của 4) để giữ tỷ lệ khung hình. 480–900 là điểm ngọt cho quay màn hình.",
+        "<strong>Tốc độ khung hình (fps)</strong> — số khung hình mỗi giây FFmpeg lấy mẫu từ nguồn. 12 fps trông mượt với bản ghi màn hình giao diện; tăng lên 18–24 cho clip nhiều chuyển động, hoặc giảm xuống 8–10 để thu nhỏ tệp.",
+        "<strong>Số màu</strong> — kích thước bảng màu gifsicle (2–256). 128 là mặc định tốt; giảm xuống 64 với cảnh giao diện phẳng, tăng lên 256 cho clip ảnh chụp có chuyển màu mượt.",
+        "<strong>Độ trễ khung hình</strong> — độ trễ giữa các khung hình của gifsicle tính bằng 1/100 giây. Thấp hơn = phát nhanh hơn. 3 (≈30ms) cho cảm giác quay màn hình nhanh gọn; 6–10 tạo vòng lặp chậm hơn, thong thả hơn.",
+        "<strong>Mức tối ưu</strong> — mức <code>--optimize</code> của gifsicle. 1 nhanh nhất với đầu ra lớn nhất, 3 chậm nhất với đầu ra nhỏ nhất. Giữ ở 3 trừ khi bạn đang thử đi thử lại một clip dài và muốn bản nháp nhanh."
       ],
-      "paragraph2": "Trim still works for GIFs — pair a short trim with a small Width and modest Colors to keep the file well under a few megabytes. The preview modal animates the result in place once the job finishes; toggle to <em>Original</em> to compare against the source video."
+      "paragraph2": "Cắt đoạn vẫn hoạt động với GIF — kết hợp một đoạn cắt ngắn với Chiều rộng nhỏ và Số màu vừa phải để giữ tệp dưới vài megabyte. Cửa sổ xem trước phát kết quả ngay tại chỗ khi tác vụ hoàn tất; chuyển sang <em>Bản gốc</em> để so sánh với video nguồn."
     },
     "resize": {
-      "title": "3. Resize, speed, and aspect ratio",
-      "paragraph1": "Set <strong>Width</strong> and/or <strong>Height</strong> to resize the video. Leave one blank to scale proportionally. Toggle <strong>Preserve aspect ratio</strong> when you set both to use a non-stretching <em>force_original_aspect_ratio=decrease</em> scale.",
-      "paragraph2": "<strong>Speed Multiplier</strong> changes both video and audio playback tempo from 0.25x to 4x. We pair it with FFmpeg's <em>setpts</em> filter and matching <em>atempo</em> on the audio track."
+      "title": "3. Đổi kích thước, tốc độ và tỷ lệ khung hình",
+      "paragraph1": "Đặt <strong>Chiều rộng</strong> và/hoặc <strong>Chiều cao</strong> để đổi kích thước video. Để trống một trường để co giãn theo tỷ lệ. Bật <strong>Giữ tỷ lệ khung hình</strong> khi đặt cả hai để dùng phép co giãn không méo <em>force_original_aspect_ratio=decrease</em>.",
+      "paragraph2": "<strong>Hệ số tốc độ</strong> thay đổi nhịp phát cả video lẫn âm thanh từ 0,25x đến 4x. Chúng tôi kết hợp nó với bộ lọc <em>setpts</em> của FFmpeg và <em>atempo</em> tương ứng trên bản âm thanh."
     },
     "trim": {
-      "title": "4. Trim",
-      "paragraph": "Click <strong>Trim Video</strong> to scrub the player and pick a start and end time. Only the selected segment is encoded into the output, and trim works regardless of the output codec."
+      "title": "4. Cắt đoạn",
+      "paragraph": "Nhấp <strong>Cắt đoạn video</strong> để tua trình phát và chọn thời điểm bắt đầu và kết thúc. Chỉ đoạn đã chọn được mã hóa vào đầu ra, và cắt đoạn hoạt động bất kể codec đầu ra."
     },
     "effects": {
-      "title": "5. Advanced Video Effects",
-      "intro": "The <strong>Advanced Video Effects</strong> section groups every filter into collapsible panels. Expand a panel to access its controls:",
+      "title": "5. Hiệu ứng video nâng cao",
+      "intro": "Phần <strong>Hiệu ứng video nâng cao</strong> nhóm mọi bộ lọc vào các bảng có thể thu gọn. Mở rộng một bảng để truy cập các điều khiển:",
       "bullets": [
-        "<strong>Visual Effects</strong> — brightness, contrast, saturation, hue, gamma, exposure, shadow/highlight recovery, Gaussian blur, motion blur, unsharp mask (sharpening), film/digital/vintage noise, and artistic effects (oil painting, watercolor, sketch, emboss, edge detection, posterize).",
-        "<strong>Transform</strong> — free rotation in degrees, horizontal/vertical flip, custom crop, and padded letterboxing with a configurable color.",
-        "<strong>Temporal Effects</strong> — reverse playback, ping-pong (forward then backward), frame-rate conversion with optional motion interpolation, and video stabilization with shakiness/accuracy controls.",
-        "<strong>Advanced Processing</strong> — deinterlacing, HDR tone mapping (hable, reinhard, mobius), and explicit input/output colorspace conversion (Rec.709, Rec.2020, sRGB, P3)."
+        "<strong>Hiệu ứng hình ảnh</strong> — độ sáng, độ tương phản, độ bão hòa, sắc độ, gamma, phơi sáng, khôi phục vùng tối/vùng sáng, làm mờ Gaussian, làm mờ chuyển động, unsharp mask (làm nét), nhiễu phim/kỹ thuật số/cổ điển, và hiệu ứng nghệ thuật (sơn dầu, màu nước, phác thảo, dập nổi, phát hiện cạnh, poster hóa).",
+        "<strong>Biến đổi</strong> — xoay tự do theo độ, lật ngang/dọc, cắt tùy chỉnh và letterbox có đệm với màu tùy chỉnh.",
+        "<strong>Hiệu ứng thời gian</strong> — phát ngược, ping-pong (tiến rồi lùi), chuyển đổi tốc độ khung hình với tùy chọn nội suy chuyển động, và chống rung video với điều khiển độ rung/độ chính xác.",
+        "<strong>Xử lý nâng cao</strong> — khử xen kẽ, ánh xạ tông HDR (hable, reinhard, mobius), và chuyển đổi không gian màu đầu vào/đầu ra tường minh (Rec.709, Rec.2020, sRGB, P3)."
       ]
     },
     "convertDownload": {
-      "title": "6. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A streaming progress bar shows real-time job status pulled from FFmpeg. When the job finishes, the result auto-previews in a modal with an <strong>Original / Final</strong> toggle so you can compare the two side by side. A <strong>Download</strong> button saves the final file."
+      "title": "6. Chuyển đổi và tải xuống",
+      "paragraph": "Nhấp <strong>Chuyển đổi tệp</strong>. Thanh tiến trình trực tiếp hiển thị trạng thái tác vụ theo thời gian thực lấy từ FFmpeg. Khi tác vụ hoàn tất, kết quả tự động hiển thị trong cửa sổ xem trước với nút chuyển <strong>Bản gốc / Bản cuối</strong> để bạn so sánh cạnh nhau. Nút <strong>Tải xuống</strong> lưu tệp cuối."
     },
     "transcribe": {
-      "title": "7. Transcribe a video (subtitles, captions, plain text, JSON)",
-      "intro": "Switch the panel toggle to <strong>Transcribe</strong> to run our local GPU transcription pipeline (whisper-ctranslate2). Pick an output format:",
+      "title": "7. Chép lời video (phụ đề, văn bản thuần, JSON)",
+      "intro": "Chuyển nút trên bảng sang <strong>Chép lời</strong> để chạy quy trình chép lời GPU cục bộ của chúng tôi (whisper-ctranslate2). Chọn định dạng đầu ra:",
       "bullets": [
-        "<strong>VTT</strong> — time-coded captions/subtitles that drop into HTML5 video players.",
-        "<strong>Plain text</strong> — a continuous transcript for reading or editing.",
-        "<strong>Structured JSON</strong> — segmented transcript with timing data for downstream pipelines."
+        "<strong>VTT</strong> — phụ đề có mã thời gian dùng ngay trong trình phát video HTML5.",
+        "<strong>Văn bản thuần</strong> — bản chép lời liên tục để đọc hoặc chỉnh sửa.",
+        "<strong>JSON có cấu trúc</strong> — bản chép lời chia đoạn kèm dữ liệu thời gian cho các quy trình xử lý tiếp theo."
       ],
-      "languageNote": "Optionally type a BCP-47 language hint (e.g. <code>en</code>, <code>es</code>, <code>ja</code>). Leave it blank to auto-detect. A summary and content-safety review run automatically after the transcript is ready."
+      "languageNote": "Tùy chọn nhập gợi ý ngôn ngữ BCP-47 (ví dụ <code>en</code>, <code>es</code>, <code>ja</code>). Để trống để tự nhận diện. Bản tóm tắt và đánh giá an toàn nội dung tự động chạy sau khi bản chép lời sẵn sàng."
     },
     "tips": {
-      "title": "Tips for great video output",
+      "title": "Mẹo để có đầu ra video tuyệt vời",
       "bullets": [
-        "Use <strong>MP4 / High</strong> as a default for web delivery — it streams everywhere and looks great.",
-        "Prefer <strong>WebM</strong> for open-web embeds where file size matters and you control the player.",
-        "Avoid resizing upward in the standard pipeline — small inputs look better after lossless encode at original resolution.",
-        "Apply <strong>stabilization</strong> before strong color grading so the warp doesn't fight the color filter.",
-        "Run <strong>Transcribe</strong> alongside the conversion if you want both a converted file and subtitles — they're independent jobs.",
-        "For <strong>GIF</strong> output, trim aggressively first — every extra second of footage multiplies the final size by frame rate × colors."
+        "Dùng <strong>MP4 / Cao</strong> làm mặc định để phân phối trên web — nó phát trực tuyến ở mọi nơi và trông tuyệt vời.",
+        "Ưu tiên <strong>WebM</strong> cho nhúng trên web mở, nơi kích thước tệp quan trọng và bạn kiểm soát trình phát.",
+        "Tránh phóng to trong quy trình tiêu chuẩn — đầu vào nhỏ trông đẹp hơn sau khi mã hóa không mất dữ liệu ở độ phân giải gốc.",
+        "Áp dụng <strong>chống rung</strong> trước khi chỉnh màu mạnh để phép biến dạng không xung đột với bộ lọc màu.",
+        "Chạy <strong>Chép lời</strong> song song với chuyển đổi nếu bạn muốn cả tệp đã chuyển đổi lẫn phụ đề — chúng là các tác vụ độc lập.",
+        "Với đầu ra <strong>GIF</strong>, hãy cắt đoạn mạnh tay trước — mỗi giây cảnh quay thêm vào nhân kích thước cuối lên theo tốc độ khung hình × số màu."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Video Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "Thử Bộ chuyển đổi video",
+      "backToTutorials": "← Quay lại Hướng dẫn",
+      "howItWorks": "Cách hoạt động"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused video tool or keep exploring related guides.",
+      "title": "Thử các công cụ liên quan",
+      "intro": "Đi thẳng vào một công cụ video chuyên biệt hoặc tiếp tục khám phá các hướng dẫn liên quan.",
       "links": [
         {
-          "label": "Video converter",
-          "description": "Convert MP4, WebM, MOV, AVI, MKV, and more."
+          "label": "Bộ chuyển đổi video",
+          "description": "Chuyển đổi MP4, WebM, MOV, AVI, MKV và nhiều hơn nữa."
         },
         {
-          "label": "Compress video",
-          "description": "Shrink video file size for the web without ruining quality."
+          "label": "Nén video",
+          "description": "Thu nhỏ kích thước tệp video cho web mà không làm hỏng chất lượng."
         },
         {
-          "label": "Transcribe video",
-          "description": "Pull spoken words out of video as searchable text or captions."
+          "label": "Chép lời video",
+          "description": "Lấy lời nói trong video ra thành văn bản tìm kiếm được hoặc phụ đề."
         },
         {
-          "label": "Convert video to GIF",
-          "description": "Turn short video clips into shareable animated GIFs."
+          "label": "Chuyển video thành GIF",
+          "description": "Biến các đoạn video ngắn thành GIF động dễ chia sẻ."
         },
         {
-          "label": "AI Frame Interpolation tool",
-          "description": "Smooth motion by lifting video FPS with RIFE."
+          "label": "Công cụ Nội suy khung hình AI",
+          "description": "Làm mượt chuyển động bằng cách nâng FPS video với RIFE."
         },
         {
-          "label": "AI Frame Interpolation tutorial",
-          "description": "Learn how AI frame interpolation works and when to use it."
+          "label": "Hướng dẫn Nội suy khung hình AI",
+          "description": "Tìm hiểu cách nội suy khung hình AI hoạt động và khi nào nên dùng."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "Learn how transcription and AI summaries run on a local GPU."
+          "label": "Cách Media Manipulator hoạt động",
+          "description": "Tìm hiểu cách chép lời và tóm tắt AI chạy trên GPU cục bộ."
         }
       ]
     }
   },
   "tutorialAudioGettingStarted": {
-    "eyebrow": "Audio Tutorial",
-    "title": "Getting Started: Converting Audio Files",
-    "intro": "Learn how to convert, clean, and remix audio files with Media Manipulator's audio converter. This tutorial walks through every section of the audio conversion panel — format selection, processing effects, restoration, and the new AI audio tools (Clean Voice, Remove Background Noise, Isolate Vocals, Remove Vocals).",
+    "eyebrow": "Hướng dẫn âm thanh",
+    "title": "Bắt đầu: Chuyển đổi tệp âm thanh",
+    "intro": "Tìm hiểu cách chuyển đổi, làm sạch và remix tệp âm thanh với bộ chuyển đổi âm thanh của Media Manipulator. Hướng dẫn này đi qua từng phần của bảng chuyển đổi âm thanh — chọn định dạng, hiệu ứng xử lý, phục hồi, và các công cụ AI âm thanh mới (Làm sạch giọng nói, Loại bỏ tiếng ồn nền, Tách giọng hát, Loại bỏ giọng hát).",
     "upload": {
-      "heading": "1. Upload your audio file",
-      "p1": "From the home page, drag and drop an audio file into the upload zone, or click <strong>Choose File</strong>. Supported inputs include MP3, WAV, FLAC, AAC, M4A, OGG, Opus, and most common podcast and music formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years.",
-      "p2": "Once the file is selected, the right-hand panel switches to <strong>Conversion Options</strong>. For video and audio files you'll also see a <strong>Convert / Transcribe</strong> toggle — leave it on <em>Convert</em> for this tutorial."
+      "heading": "1. Tải lên tệp âm thanh của bạn",
+      "p1": "Từ trang chủ, kéo và thả tệp âm thanh vào vùng tải lên, hoặc nhấp <strong>Chọn tệp</strong>. Đầu vào được hỗ trợ gồm MP3, WAV, FLAC, AAC, M4A, OGG, Opus và hầu hết các định dạng podcast và nhạc phổ biến. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.",
+      "p2": "Khi đã chọn tệp, bảng bên phải chuyển sang <strong>Tùy chọn chuyển đổi</strong>. Với tệp video và âm thanh, bạn cũng sẽ thấy nút chuyển <strong>Chuyển đổi / Chép lời</strong> — giữ ở <em>Chuyển đổi</em> cho hướng dẫn này."
     },
     "toolPanel": {
-      "title": "Try the audio converter without leaving this page",
-      "description": "Pick an audio file and convert it right here. The settings below mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "Thử bộ chuyển đổi âm thanh ngay trên trang này",
+      "description": "Chọn một tệp âm thanh và chuyển đổi ngay tại đây. Các cài đặt bên dưới giống hệt bộ chuyển đổi trên trang chủ, nên bạn có thể theo dõi phần còn lại của hướng dẫn trong lúc thử nghiệm."
     },
     "format": {
-      "heading": "2. Pick the output format",
-      "intro": "The <strong>Format</strong> dropdown sets the container and codec for your output file. The audio converter supports:",
+      "heading": "2. Chọn định dạng đầu ra",
+      "intro": "Menu <strong>Định dạng</strong> đặt định dạng chứa và codec cho tệp đầu ra. Bộ chuyển đổi âm thanh hỗ trợ:",
       "items": [
-        "<strong>MP3</strong> — universal compatibility, lossy, small file sizes.",
-        "<strong>WAV</strong> — uncompressed PCM, ideal for masters, editing, or archiving.",
-        "<strong>AAC</strong> — efficient lossy codec used by Apple devices and streaming.",
-        "<strong>OGG</strong> — open-source Vorbis container.",
-        "<strong>FLAC / ALAC</strong> — lossless compression for archival quality at smaller size than WAV.",
-        "<strong>Opus</strong> — modern lossy codec great for voice and low bitrates.",
-        "<strong>AC3 / DTS</strong> — surround-capable formats often used for video soundtracks."
+        "<strong>MP3</strong> — tương thích phổ quát, mất dữ liệu, tệp nhỏ.",
+        "<strong>WAV</strong> — PCM không nén, lý tưởng cho bản master, chỉnh sửa hoặc lưu trữ.",
+        "<strong>AAC</strong> — codec mất dữ liệu hiệu quả, dùng bởi thiết bị Apple và phát trực tuyến.",
+        "<strong>OGG</strong> — định dạng chứa Vorbis mã nguồn mở.",
+        "<strong>FLAC / ALAC</strong> — nén không mất dữ liệu cho chất lượng lưu trữ với kích thước nhỏ hơn WAV.",
+        "<strong>Opus</strong> — codec mất dữ liệu hiện đại, rất tốt cho giọng nói và bitrate thấp.",
+        "<strong>AC3 / DTS</strong> — định dạng hỗ trợ âm thanh vòm, thường dùng cho nhạc phim."
       ]
     },
     "quality": {
-      "heading": "3. Set bitrate, sample rate, and channels",
-      "bitrate": "<strong>Bitrate</strong> controls quality vs. file size for lossy formats. 128 kbps is \"good enough\" for podcasts; 192–256 kbps is a strong default for music; 320 kbps is the maximum MP3 quality. Lossless formats (WAV, FLAC, ALAC) ignore this setting.",
-      "sampleRate": "<strong>Sample rate</strong> sets how many audio samples per second the file contains. Standard music is 44.1 kHz; pro audio and video typically use 48 kHz. Higher rates (96 kHz, 192 kHz) only matter for professional production.",
-      "channels": "<strong>Channels</strong> can be mono, stereo, 5.1, or 7.1. Choose mono for voice memos or single-mic recordings to halve the file size; stereo is the default for music; 5.1/7.1 are for surround soundtracks."
+      "heading": "3. Đặt bitrate, tần số lấy mẫu và kênh",
+      "bitrate": "<strong>Bitrate</strong> kiểm soát chất lượng so với kích thước tệp cho các định dạng mất dữ liệu. 128 kbps là \"đủ tốt\" cho podcast; 192–256 kbps là mặc định tốt cho nhạc; 320 kbps là chất lượng MP3 tối đa. Các định dạng không mất dữ liệu (WAV, FLAC, ALAC) bỏ qua cài đặt này.",
+      "sampleRate": "<strong>Tần số lấy mẫu</strong> đặt số mẫu âm thanh mỗi giây mà tệp chứa. Nhạc tiêu chuẩn là 44,1 kHz; âm thanh và video chuyên nghiệp thường dùng 48 kHz. Tần số cao hơn (96 kHz, 192 kHz) chỉ quan trọng với sản xuất chuyên nghiệp.",
+      "channels": "<strong>Kênh</strong> có thể là mono, stereo, 5.1 hoặc 7.1. Chọn mono cho ghi chú giọng nói hoặc bản ghi một micro để giảm một nửa kích thước tệp; stereo là mặc định cho nhạc; 5.1/7.1 dành cho nhạc phim âm thanh vòm."
     },
     "speedVolume": {
-      "heading": "4. Adjust speed, volume, and trim",
-      "p1": "<strong>Speed Multiplier</strong> changes playback tempo from 0.25x to 4x without altering pitch — useful for sped-up podcasts or slowed-down practice tracks. <strong>Volume Multiplier</strong> applies a simple gain factor between 0.1x and 2x.",
-      "p2": "Click <strong>Trim Audio</strong> to scrub through the waveform and pick a start and end time. Only the selected segment is encoded into the output file."
+      "heading": "4. Điều chỉnh tốc độ, âm lượng và cắt đoạn",
+      "p1": "<strong>Hệ số tốc độ</strong> thay đổi nhịp phát từ 0,25x đến 4x mà không đổi cao độ — hữu ích cho podcast tăng tốc hoặc bản nhạc luyện tập làm chậm. <strong>Hệ số âm lượng</strong> áp dụng một hệ số khuếch đại đơn giản từ 0,1x đến 2x.",
+      "p2": "Nhấp <strong>Cắt đoạn âm thanh</strong> để tua qua dạng sóng và chọn thời điểm bắt đầu và kết thúc. Chỉ đoạn đã chọn được mã hóa vào tệp đầu ra."
     },
     "aiTools": {
-      "heading": "5. AI Audio Tools (recommended)",
-      "intro": "The <strong>AI Audio Tools</strong> panel is the fastest path to a great-sounding result for voice and music. Each operation runs on our local GPU server (no data leaves our infrastructure):",
+      "heading": "5. Công cụ âm thanh AI (khuyên dùng)",
+      "intro": "Bảng <strong>Công cụ âm thanh AI</strong> là con đường nhanh nhất đến kết quả nghe hay cho giọng nói và nhạc. Mỗi thao tác chạy trên máy chủ GPU cục bộ của chúng tôi (không dữ liệu nào rời khỏi hạ tầng của chúng tôi):",
       "items": [
-        "<strong>Clean Voice</strong> — denoises with DeepFilterNet and then runs a broadcast-style polish chain (high-pass, low-pass, loudness normalization, brick-wall limiter). Best for podcast/voiceover takes recorded in noisy rooms.",
-        "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain. Use this when you want to preserve the natural EQ and dynamics of the recording.",
-        "<strong>Isolate Vocals</strong> — runs Demucs htdemucs and outputs the vocal stem only. Output defaults to WAV so you don't lose detail.",
-        "<strong>Remove Vocals / Karaoke</strong> — same Demucs job, but exports the instrumental stem. Great for karaoke tracks or sample workflows."
+        "<strong>Làm sạch giọng nói</strong> — khử nhiễu bằng DeepFilterNet rồi chạy chuỗi tinh chỉnh kiểu phát sóng (lọc thông cao, lọc thông thấp, chuẩn hóa độ ồn, limiter cứng). Tốt nhất cho các bản thu podcast/lồng tiếng trong phòng ồn.",
+        "<strong>Loại bỏ tiếng ồn nền</strong> — khử nhiễu DeepFilterNet không kèm chuỗi tinh chỉnh. Dùng khi bạn muốn giữ EQ và dynamics tự nhiên của bản thu.",
+        "<strong>Tách giọng hát</strong> — chạy Demucs htdemucs và chỉ xuất stem giọng hát. Đầu ra mặc định là WAV để bạn không mất chi tiết.",
+        "<strong>Loại bỏ giọng hát / Karaoke</strong> — cùng tác vụ Demucs, nhưng xuất stem nhạc nền. Tuyệt vời cho bản karaoke hoặc quy trình lấy mẫu."
       ],
-      "outro": "When you pick any AI operation, the standard FFmpeg chain (bitrate, EQ, reverb, etc.) is skipped for that job so the AI tool has a clean input/output path. AI jobs may take longer than basic conversion because they run on the GPU."
+      "outro": "Khi bạn chọn bất kỳ thao tác AI nào, chuỗi FFmpeg tiêu chuẩn (bitrate, EQ, reverb, v.v.) được bỏ qua trong tác vụ đó để công cụ AI có đường vào/ra sạch. Tác vụ AI có thể mất nhiều thời gian hơn chuyển đổi cơ bản vì chạy trên GPU."
     },
     "advancedEffects": {
-      "heading": "6. Advanced Audio Effects",
-      "intro": "Expand <strong>Advanced Audio Effects</strong> to access four collapsible groups when you want manual control instead of an AI operation:",
+      "heading": "6. Hiệu ứng âm thanh nâng cao",
+      "intro": "Mở rộng <strong>Hiệu ứng âm thanh nâng cao</strong> để truy cập bốn nhóm có thể thu gọn khi bạn muốn kiểm soát thủ công thay vì thao tác AI:",
       "items": [
-        "<strong>Basic Audio Processing</strong> — normalize, amplify (dB), fade in/out, EQ presets (bass boost, treble boost, vocal, classical, rock, jazz), pan, balance, stereo width, mono conversion, channel swap.",
-        "<strong>Time-Based Effects</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), modulation (chorus, flanger, phaser, tremolo, vibrato).",
-        "<strong>Restoration & Cleanup</strong> — spectral/adaptive/gate noise reduction, 50/60 Hz de-hum, declipper, silence detection and removal.",
-        "<strong>Advanced Audio</strong> — pitch shifting (semitones, formant-preserving), time stretching (factor + pitch/time/formant algorithm), spatial audio (binaural, surround, 3D)."
+        "<strong>Xử lý âm thanh cơ bản</strong> — chuẩn hóa, khuếch đại (dB), fade in/out, thiết lập EQ (tăng bass, tăng treble, giọng hát, cổ điển, rock, jazz), pan, cân bằng, độ rộng stereo, chuyển sang mono, hoán đổi kênh.",
+        "<strong>Hiệu ứng theo thời gian</strong> — reverb (room, hall, plate, spring), delay (echo, multi-tap, ping-pong), điều biến (chorus, flanger, phaser, tremolo, vibrato).",
+        "<strong>Phục hồi & dọn dẹp</strong> — giảm nhiễu phổ/thích ứng/cổng, khử ù 50/60 Hz, khử clip, phát hiện và loại bỏ khoảng lặng.",
+        "<strong>Âm thanh nâng cao</strong> — dịch cao độ (nửa cung, giữ formant), kéo giãn thời gian (hệ số + thuật toán cao độ/thời gian/formant), âm thanh không gian (binaural, surround, 3D)."
       ]
     },
     "convertDownload": {
-      "heading": "7. Convert and download",
-      "body": "Click <strong>Convert File</strong>. A real-time progress bar appears as the server processes the job. When it finishes, the result auto-previews and a <strong>Download</strong> button appears. The file is also added to your in-session <em>Conversion History</em> so you can revisit or download it later without re-running the job."
+      "heading": "7. Chuyển đổi và tải xuống",
+      "body": "Nhấp <strong>Chuyển đổi tệp</strong>. Thanh tiến trình thời gian thực xuất hiện khi máy chủ xử lý tác vụ. Khi hoàn tất, kết quả tự động hiển thị và nút <strong>Tải xuống</strong> xuất hiện. Tệp cũng được thêm vào <em>Lịch sử chuyển đổi</em> trong phiên để bạn xem lại hoặc tải xuống sau mà không cần chạy lại."
     },
     "tips": {
-      "heading": "Tips for great audio output",
+      "heading": "Mẹo để có đầu ra âm thanh tuyệt vời",
       "items": [
-        "For voice recordings, try <strong>Clean Voice</strong> first — it solves most \"muddy podcast\" problems in one click.",
-        "If you only want to remove a constant hum or air-conditioner background, use <strong>Remove Background Noise</strong> to keep the original tone.",
-        "For stems, keep the default <strong>WAV</strong> output — converting Demucs output to a lossy format defeats the purpose of separation.",
-        "Big bitrate jumps don't help small files much; pair 320 kbps with 48 kHz only for high-quality music exports."
+        "Với bản thu giọng nói, hãy thử <strong>Làm sạch giọng nói</strong> trước — nó giải quyết hầu hết vấn đề \"podcast bị đục\" chỉ với một cú nhấp.",
+        "Nếu bạn chỉ muốn loại bỏ tiếng ù đều hoặc tiếng điều hòa nền, hãy dùng <strong>Loại bỏ tiếng ồn nền</strong> để giữ âm sắc gốc.",
+        "Với stem, hãy giữ đầu ra <strong>WAV</strong> mặc định — chuyển đầu ra Demucs sang định dạng mất dữ liệu làm mất ý nghĩa của việc tách.",
+        "Tăng bitrate mạnh không giúp ích nhiều cho tệp nhỏ; chỉ kết hợp 320 kbps với 48 kHz cho bản xuất nhạc chất lượng cao."
       ]
     },
     "cta": {
-      "tryConverter": "Try the Audio Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "Thử Bộ chuyển đổi âm thanh",
+      "backToTutorials": "← Quay lại Hướng dẫn",
+      "howItWorks": "Cách hoạt động"
     },
     "related": {
-      "title": "Try related tools",
-      "intro": "Jump straight into the audio tool you need, or keep learning with related guides.",
+      "title": "Thử các công cụ liên quan",
+      "intro": "Đi thẳng vào công cụ âm thanh bạn cần, hoặc tiếp tục học với các hướng dẫn liên quan.",
       "links": [
         {
-          "label": "Audio converter",
-          "description": "Convert WAV, MP3, FLAC, M4A, OGG, and more."
+          "label": "Bộ chuyển đổi âm thanh",
+          "description": "Chuyển đổi WAV, MP3, FLAC, M4A, OGG và nhiều hơn nữa."
         },
         {
-          "label": "Convert WAV to MP3",
-          "description": "Shrink large WAV recordings into widely playable MP3s."
+          "label": "Chuyển WAV sang MP3",
+          "description": "Thu nhỏ các bản ghi WAV lớn thành MP3 phát được ở mọi nơi."
         },
         {
-          "label": "Isolate vocals from a song",
-          "description": "Extract vocals from music for remixes or analysis."
+          "label": "Tách giọng hát khỏi bài hát",
+          "description": "Trích xuất giọng hát từ nhạc để remix hoặc phân tích."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, compress, trim, and transcribe video files."
+          "label": "Hướng dẫn bộ chuyển đổi video",
+          "description": "Chuyển đổi, nén, cắt đoạn và chép lời tệp video."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI audio jobs run on a local GPU server."
+          "label": "Cách Media Manipulator hoạt động",
+          "description": "Xem cách các tác vụ âm thanh AI chạy trên máy chủ GPU cục bộ."
         }
       ]
     }
   },
   "tutorialImageGettingStarted": {
-    "eyebrow": "Image Tutorial",
-    "title": "Getting Started: Converting Image Files",
-    "intro": "Learn how to convert, edit, and AI-process images with Media Manipulator's image converter. This tutorial walks through every section of the image conversion panel — format selection, cropping, filters, text overlays, metadata management, and the AI image tools (Face Privacy, Remove Background, AI Upscale, Redact Text, and Remove Object).",
+    "eyebrow": "Hướng dẫn hình ảnh",
+    "title": "Bắt đầu: Chuyển đổi tệp hình ảnh",
+    "intro": "Tìm hiểu cách chuyển đổi, chỉnh sửa và xử lý AI hình ảnh với bộ chuyển đổi hình ảnh của Media Manipulator. Hướng dẫn này đi qua từng phần của bảng chuyển đổi hình ảnh — chọn định dạng, cắt, bộ lọc, chữ phủ, quản lý siêu dữ liệu, và các công cụ hình ảnh AI (Bảo vệ khuôn mặt, Xóa nền, Nâng cấp bằng AI, Che văn bản và Xóa đối tượng).",
     "toolPanel": {
-      "title": "Try the image converter without leaving this page",
-      "description": "Pick an image and convert it right here. The settings mirror the homepage converter, so you can follow the rest of the tutorial as you experiment."
+      "title": "Thử bộ chuyển đổi hình ảnh ngay trên trang này",
+      "description": "Chọn một hình ảnh và chuyển đổi ngay tại đây. Các cài đặt giống hệt bộ chuyển đổi trên trang chủ, nên bạn có thể theo dõi phần còn lại của hướng dẫn trong lúc thử nghiệm."
     },
     "upload": {
-      "title": "1. Upload your image",
-      "paragraph": "Drag an image file into the upload zone, or click <strong>Choose File</strong>. The image converter accepts JPG, PNG, WebP, GIF, and many other formats. Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years."
+      "title": "1. Tải lên hình ảnh của bạn",
+      "paragraph": "Kéo tệp hình ảnh vào vùng tải lên, hoặc nhấp <strong>Chọn tệp</strong>. Bộ chuyển đổi hình ảnh chấp nhận JPG, PNG, WebP, GIF và nhiều định dạng khác. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm."
     },
     "format": {
-      "title": "2. Pick the output format and quality",
+      "title": "2. Chọn định dạng đầu ra và chất lượng",
       "bullets": [
-        "<strong>JPG</strong> — best for photos. Lossy compression with a quality slider.",
-        "<strong>PNG</strong> — lossless, supports transparency. Best for screenshots, logos, and graphics.",
-        "<strong>WebP</strong> — modern format with both lossy and lossless modes; smaller than JPG at similar quality.",
-        "<strong>GIF</strong> — palette-based, supports basic animation, useful for legacy use cases."
+        "<strong>JPG</strong> — tốt nhất cho ảnh chụp. Nén mất dữ liệu với thanh trượt chất lượng.",
+        "<strong>PNG</strong> — không mất dữ liệu, hỗ trợ trong suốt. Tốt nhất cho ảnh chụp màn hình, logo và đồ họa.",
+        "<strong>WebP</strong> — định dạng hiện đại với cả chế độ mất và không mất dữ liệu; nhỏ hơn JPG ở chất lượng tương đương.",
+        "<strong>GIF</strong> — dựa trên bảng màu, hỗ trợ ảnh động cơ bản, hữu ích cho các trường hợp cũ."
       ],
-      "quality": "<strong>Quality (%)</strong> applies to JPG and WebP. 85 is a great default; lower for thumbnails, higher for hero images."
+      "quality": "<strong>Chất lượng (%)</strong> áp dụng cho JPG và WebP. 85 là mặc định tuyệt vời; thấp hơn cho hình thu nhỏ, cao hơn cho hình ảnh chủ đạo."
     },
     "resize": {
-      "title": "3. Resize, crop, filter, tint",
-      "paragraph1": "Use <strong>Width</strong> and <strong>Height</strong> to resize. Leave either blank to scale proportionally. ImageMagick auto-orients the input first so EXIF-oriented JPEGs don't ship rotated to PNG/WebP.",
-      "paragraph2": "Click <strong>Crop Image</strong> for a visual crop selector. The <strong>Filter</strong> dropdown applies a built-in effect: grayscale, sepia, blur, sharpen, swirl, barrel distortion, oil painting, vintage, emboss, charcoal, sketch, or a fixed rotation (45° / 90° / 180° / 270°). <strong>Tint Color</strong> lays a 30% colored tint over the image (skip by leaving black/#000000)."
+      "title": "3. Đổi kích thước, cắt, lọc, phủ màu",
+      "paragraph1": "Dùng <strong>Chiều rộng</strong> và <strong>Chiều cao</strong> để đổi kích thước. Để trống một trong hai để co giãn theo tỷ lệ. ImageMagick tự động xoay đúng hướng đầu vào trước, nên JPEG có hướng EXIF không bị xoay sai khi xuất sang PNG/WebP.",
+      "paragraph2": "Nhấp <strong>Cắt hình ảnh</strong> để mở bộ chọn vùng cắt trực quan. Menu <strong>Bộ lọc</strong> áp dụng hiệu ứng có sẵn: thang xám, nâu đỏ, làm mờ, làm nét, xoáy, méo thùng, sơn dầu, cổ điển, dập nổi, than chì, phác thảo, hoặc xoay cố định (45° / 90° / 180° / 270°). <strong>Màu phủ</strong> phủ một lớp màu 30% lên hình ảnh (bỏ qua bằng cách để đen/#000000)."
     },
     "textOverlay": {
-      "title": "4. Text overlay",
-      "intro": "Add a watermark or caption directly to the image. Type your text into <strong>Overlay Text</strong>, then choose:",
+      "title": "4. Chữ phủ",
+      "intro": "Thêm hình mờ hoặc chú thích trực tiếp lên hình ảnh. Nhập văn bản vào <strong>Văn bản phủ</strong>, rồi chọn:",
       "bullets": [
-        "<strong>Text Size</strong> — 8–512 px.",
-        "<strong>Position</strong> — gravity-based anchor (corners, edges, center).",
-        "<strong>Text Color / Stroke Color</strong> — hex colors via the color pickers.",
-        "<strong>Stroke Width</strong> — 0 to disable the outline.",
-        "<strong>X Offset / Y Offset</strong> — pixel-level nudge from the gravity anchor."
+        "<strong>Cỡ chữ</strong> — 8–512 px.",
+        "<strong>Vị trí</strong> — neo theo hướng (góc, cạnh, giữa).",
+        "<strong>Màu chữ / Màu viền</strong> — màu hex qua bộ chọn màu.",
+        "<strong>Độ dày viền</strong> — 0 để tắt đường viền.",
+        "<strong>Độ lệch X / Độ lệch Y</strong> — dịch chuyển theo pixel so với điểm neo."
       ]
     },
     "metadata": {
-      "title": "5. Metadata",
-      "intro": "Choose how Media Manipulator handles EXIF, IPTC, XMP, and GPS metadata:",
+      "title": "5. Siêu dữ liệu",
+      "intro": "Chọn cách Media Manipulator xử lý siêu dữ liệu EXIF, IPTC, XMP và GPS:",
       "bullets": [
-        "<strong>Keep all metadata</strong> — preserved from the original via exiftool.",
-        "<strong>Strip all metadata</strong> — removes camera, GPS, software, and timestamps. Recommended before sharing photos online."
+        "<strong>Giữ toàn bộ siêu dữ liệu</strong> — giữ nguyên từ bản gốc qua exiftool.",
+        "<strong>Loại bỏ toàn bộ siêu dữ liệu</strong> — xóa máy ảnh, GPS, phần mềm và dấu thời gian. Khuyên dùng trước khi chia sẻ ảnh lên mạng."
       ],
-      "customLabel": "<strong>Custom metadata</strong> — strip first, then rewrite the fields you supply. Includes:",
+      "customLabel": "<strong>Siêu dữ liệu tùy chỉnh</strong> — loại bỏ trước, rồi ghi lại các trường bạn cung cấp. Bao gồm:",
       "customBullets": [
-        "Title, Artist/Author, Description, Copyright, User Comment, Keywords.",
-        "GPS removal/replacement (with optional precision rounding) and direction/timestamp/altitude/destination toggles.",
-        "EXIF/TIFF fields, GPS fields, and advanced IPTC/XMP/MakerNotes tags via an allowlist."
+        "Tiêu đề, Nghệ sĩ/Tác giả, Mô tả, Bản quyền, Ghi chú người dùng, Từ khóa.",
+        "Xóa/thay thế GPS (với tùy chọn làm tròn độ chính xác) và các nút bật/tắt hướng/dấu thời gian/độ cao/điểm đến.",
+        "Trường EXIF/TIFF, trường GPS và các thẻ IPTC/XMP/MakerNotes nâng cao qua danh sách cho phép."
       ]
     },
     "aiTools": {
-      "title": "6. AI Image Tools (recommended)",
-      "intro": "The <strong>AI Image Tools</strong> panel runs one local GPU operation per conversion job. When you pick an operation, the standard ImageMagick pipeline (filters, tint, overlay, etc.) is skipped for that job so the AI tool has a clean input/output path.",
-      "faceBlur": "<strong>Face Blur / Pixelate / Black Box</strong> — detects every face in the photo and obscures it with your chosen style. Great for sharing event photos without leaking attendee identities.",
-      "removeBackground": "<strong>Remove Background</strong> — runs rembg with BiRefNet (general or portrait), ISNet, or U2Net. Output is forced to PNG so transparency is preserved. BiRefNet General is the recommended default for most photos.",
-      "aiUpscale": "<strong>AI Upscale</strong> — Real-ESRGAN ncnn Vulkan upscaler. Pick <em>4x</em> (safest) or <em>2x</em> (faster), and pick a model: <code>realesrgan-x4plus</code> for general photos, <code>realesrgan-x4plus-anime</code> for animation/illustration, or <code>realesr-animevideov3</code> for anime video frames. PNG output by default.",
-      "redactText": "<strong>Redact Text / PII</strong> — OCR-based redaction. Choose <em>PII only</em> (emails, phone numbers, SSNs, addresses, etc.) or <em>All Text</em>, then pick a redaction style (Black Box, Blur, or Pixelate). Best-effort — review the output before sharing.",
-      "removeObject": "<strong>Remove Object (LaMa Inpainting)</strong> — click and drag on the image preview to draw a rectangle over whatever you want to erase: a passerby in the background, a sign, a watermark, a pole. Drag the rectangle body to move it, drag the corner/edge handles to resize, and add as many rectangles as you need with another click-drag on empty space. When you submit, the server rasterizes a mask from your rectangles and runs <code>simple-lama-inpainting</code> on a dedicated GPU to reconstruct the area behind them. The output keeps your chosen format (JPG, PNG, WebP, GIF). Tips:",
+      "title": "6. Công cụ hình ảnh AI (khuyên dùng)",
+      "intro": "Bảng <strong>Công cụ hình ảnh AI</strong> chạy một thao tác GPU cục bộ cho mỗi tác vụ chuyển đổi. Khi bạn chọn một thao tác, quy trình ImageMagick tiêu chuẩn (bộ lọc, màu phủ, chữ phủ, v.v.) được bỏ qua trong tác vụ đó để công cụ AI có đường vào/ra sạch.",
+      "faceBlur": "<strong>Làm mờ / Pixel hóa / Hộp đen khuôn mặt</strong> — phát hiện mọi khuôn mặt trong ảnh và che bằng kiểu bạn chọn. Tuyệt vời để chia sẻ ảnh sự kiện mà không lộ danh tính người tham dự.",
+      "removeBackground": "<strong>Xóa nền</strong> — chạy rembg với BiRefNet (general hoặc portrait), ISNet hoặc U2Net. Đầu ra bắt buộc là PNG để giữ độ trong suốt. BiRefNet General là mặc định khuyên dùng cho hầu hết ảnh.",
+      "aiUpscale": "<strong>Nâng cấp bằng AI</strong> — bộ nâng cấp Real-ESRGAN ncnn Vulkan. Chọn <em>4x</em> (an toàn nhất) hoặc <em>2x</em> (nhanh hơn), và chọn mô hình: <code>realesrgan-x4plus</code> cho ảnh chụp thông thường, <code>realesrgan-x4plus-anime</code> cho hoạt hình/minh họa, hoặc <code>realesr-animevideov3</code> cho khung hình video anime. Đầu ra mặc định là PNG.",
+      "redactText": "<strong>Che văn bản / thông tin cá nhân</strong> — che dựa trên OCR. Chọn <em>Chỉ thông tin cá nhân</em> (email, số điện thoại, số an sinh xã hội, địa chỉ, v.v.) hoặc <em>Tất cả văn bản</em>, rồi chọn kiểu che (Hộp đen, Làm mờ hoặc Pixel hóa). Ở mức tốt nhất có thể — hãy kiểm tra đầu ra trước khi chia sẻ.",
+      "removeObject": "<strong>Xóa đối tượng (inpainting LaMa)</strong> — nhấp và kéo trên bản xem trước hình ảnh để vẽ một hình chữ nhật lên bất cứ thứ gì bạn muốn xóa: người đi ngang phía sau, biển hiệu, hình mờ, cột điện. Kéo thân hình chữ nhật để di chuyển, kéo các điểm kéo ở góc/cạnh để đổi kích thước, và thêm bao nhiêu hình chữ nhật tùy ý bằng một lần nhấp-kéo khác trên vùng trống. Khi bạn gửi, máy chủ tạo mặt nạ từ các hình chữ nhật của bạn và chạy <code>simple-lama-inpainting</code> trên GPU chuyên dụng để tái tạo vùng phía sau chúng. Đầu ra giữ định dạng bạn đã chọn (JPG, PNG, WebP, GIF). Mẹo:",
       "removeObjectTips": [
-        "Draw the rectangle snugly around the object — large rectangles ask LaMa to hallucinate more background, which can look worse.",
-        "Several small rectangles usually beat one huge one, especially for thin objects.",
-        "LaMa works best when the surrounding pixels give the model enough context (sky, grass, plain walls, even-toned surfaces)."
+        "Vẽ hình chữ nhật sát quanh đối tượng — hình chữ nhật lớn buộc LaMa phải bịa thêm nhiều nền hơn, có thể trông tệ hơn.",
+        "Vài hình chữ nhật nhỏ thường tốt hơn một hình khổng lồ, nhất là với đối tượng mỏng.",
+        "LaMa hoạt động tốt nhất khi các pixel xung quanh cho mô hình đủ ngữ cảnh (bầu trời, cỏ, tường trơn, bề mặt đều màu)."
       ]
     },
     "convertDownload": {
-      "title": "7. Convert and download",
-      "paragraph": "Click <strong>Convert File</strong>. A progress bar shows real-time job status. Once finished, the result auto-previews with an <strong>Original / Final</strong> toggle so you can compare. Use <strong>Download</strong> to save it, or revisit it later from the in-session <em>Conversion History</em> list."
+      "title": "7. Chuyển đổi và tải xuống",
+      "paragraph": "Nhấp <strong>Chuyển đổi tệp</strong>. Thanh tiến trình hiển thị trạng thái tác vụ theo thời gian thực. Khi hoàn tất, kết quả tự động hiển thị với nút chuyển <strong>Bản gốc / Bản cuối</strong> để bạn so sánh. Dùng <strong>Tải xuống</strong> để lưu, hoặc xem lại sau từ danh sách <em>Lịch sử chuyển đổi</em> trong phiên."
     },
     "tips": {
-      "title": "Tips for great image output",
+      "title": "Mẹo để có đầu ra hình ảnh tuyệt vời",
       "bullets": [
-        "For social uploads, use <strong>WebP</strong> at 80–85% quality for great-looking small files.",
-        "Pair <strong>Strip metadata</strong> with sharing photos online to avoid leaking GPS or device info.",
-        "<strong>Remove Background</strong> outputs are always PNG — pair them with a colored background in your designer of choice or stack them in a slide deck.",
-        "For AI Upscale, prefer <strong>4x</strong> with <code>realesrgan-x4plus</code> on photos; 2x is a power-user option that can occasionally show framing artifacts on small inputs.",
-        "Run <strong>Redact Text</strong> before posting a screenshot of an email, ticket, or invoice.",
-        "Use <strong>Remove Object</strong> for one-off cleanup like a tourist in a vacation photo or a stray sign over a landscape — but expect to iterate on the rectangle size to find the cleanest result."
+        "Với đăng tải mạng xã hội, dùng <strong>WebP</strong> ở chất lượng 80–85% để có tệp nhỏ mà đẹp.",
+        "Kết hợp <strong>Loại bỏ siêu dữ liệu</strong> khi chia sẻ ảnh lên mạng để tránh lộ thông tin GPS hoặc thiết bị.",
+        "Đầu ra <strong>Xóa nền</strong> luôn là PNG — hãy ghép với nền màu trong trình thiết kế bạn chọn hoặc xếp vào bài trình chiếu.",
+        "Với Nâng cấp bằng AI, ưu tiên <strong>4x</strong> với <code>realesrgan-x4plus</code> cho ảnh chụp; 2x là tùy chọn cho người dùng chuyên sâu, đôi khi có thể lộ lỗi khung trên đầu vào nhỏ.",
+        "Chạy <strong>Che văn bản</strong> trước khi đăng ảnh chụp màn hình email, vé hoặc hóa đơn.",
+        "Dùng <strong>Xóa đối tượng</strong> cho dọn dẹp đơn lẻ như một du khách trong ảnh du lịch hoặc một biển hiệu lạc lõng giữa phong cảnh — nhưng hãy chuẩn bị thử đi thử lại kích thước hình chữ nhật để tìm kết quả sạch nhất."
       ]
     },
     "actions": {
-      "tryConverter": "Try the Image Converter",
-      "backToTutorials": "← Back to Tutorials",
-      "howItWorks": "How it Works"
+      "tryConverter": "Thử Bộ chuyển đổi hình ảnh",
+      "backToTutorials": "← Quay lại Hướng dẫn",
+      "howItWorks": "Cách hoạt động"
     },
     "relatedLinks": {
-      "title": "Try related tools",
-      "intro": "Jump straight into a focused image tool or keep exploring related guides.",
+      "title": "Thử các công cụ liên quan",
+      "intro": "Đi thẳng vào một công cụ hình ảnh chuyên biệt hoặc tiếp tục khám phá các hướng dẫn liên quan.",
       "links": [
         {
-          "label": "Image converter",
-          "description": "Convert between JPG, PNG, WebP, AVIF, GIF, and more."
+          "label": "Bộ chuyển đổi hình ảnh",
+          "description": "Chuyển đổi giữa JPG, PNG, WebP, AVIF, GIF và nhiều hơn nữa."
         },
         {
-          "label": "Convert WebP to JPG",
-          "description": "Get a broadly compatible JPG from a WebP source."
+          "label": "Chuyển WebP sang JPG",
+          "description": "Lấy một JPG tương thích rộng rãi từ nguồn WebP."
         },
         {
-          "label": "Remove EXIF metadata",
-          "description": "Strip GPS, device, and timestamp metadata before sharing photos."
+          "label": "Xóa siêu dữ liệu EXIF",
+          "description": "Loại bỏ siêu dữ liệu GPS, thiết bị và dấu thời gian trước khi chia sẻ ảnh."
         },
         {
-          "label": "Video converter tutorial",
-          "description": "Convert, trim, and apply visual effects to video files."
+          "label": "Hướng dẫn bộ chuyển đổi video",
+          "description": "Chuyển đổi, cắt đoạn và áp dụng hiệu ứng hình ảnh cho tệp video."
         },
         {
-          "label": "How Media Manipulator works",
-          "description": "See how AI image tools run on a local GPU server."
+          "label": "Cách Media Manipulator hoạt động",
+          "description": "Xem cách các công cụ hình ảnh AI chạy trên máy chủ GPU cục bộ."
         }
       ]
     }
