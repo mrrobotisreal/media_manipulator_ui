@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Loader2, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { ResultPanel } from '@/components/results/result-panel';
-import { KIND_ICONS } from '@/components/results/viewers/unknown-viewer';
+import dynamic from 'next/dynamic';
+import { KIND_ICONS } from '@/components/results/viewers/kind-icons';
 import { useLocalization } from '@/i18n/useLocalization';
 import { retentionEvents } from '@/lib/analytics/retentionEvents';
 import { authedFetch } from '@/lib/auth/authedFetch';
@@ -12,6 +12,15 @@ import { useAuth } from '@/lib/auth/AuthProvider';
 import { localHistory, subscribeLocalHistory, type LocalHistoryEntry } from '@/lib/history/localHistory';
 import { describe, type ResultKind } from '@/lib/results/describe';
 import { getBaseURL } from '@/lib/utils';
+
+/**
+ * MM88: the result viewer is code-split. The strip renders on the home page for every
+ * visitor, and a static import put ResultPanel and all its viewers into the home route's
+ * first load for a modal that opens only after a click on a past result. `reopen` starts
+ * loading the chunk together with the result blob, so it is there when the blob is.
+ */
+const loadResultPanel = () => import('@/components/results/result-panel').then((m) => m.ResultPanel);
+const ResultPanel = dynamic(loadResultPanel, { ssr: false });
 
 export interface RecentStripProps {
   /** Tool page slug: that tool's entries come first. Omit on the home page. */
@@ -111,6 +120,8 @@ export function RecentStrip({ toolSlug, onReopen, now = Date.now, className }: R
         return;
       }
       setOpening(entry.jobId);
+      // MM88: fetch the viewer chunk alongside the result blob (the blob is the slow part).
+      void loadResultPanel().catch(() => undefined);
       try {
         const blob = await fetchResult(entry.jobId);
         setOpen({ entry, blob });

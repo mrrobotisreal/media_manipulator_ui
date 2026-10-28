@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { cn, getFileType } from '@/lib/utils';
+import { getFileType } from '@/lib/utils';
 import { PanelLoading } from '@/components/darkroom/panel-loading';
 import type { PdfFormPresets } from '@/components/pdf-conversion-form';
 import type { TranscodeProtocol, DashCodec } from '@/lib/transcodeTypes';

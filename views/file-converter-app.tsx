@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import { Trans } from 'react-i18next';
 import { Upload, Download, Loader2, Image, Video, Music, X, Settings, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
 import { cn, getFileType } from '@/lib/utils';
-import FilePreview from '@/components/file-preview';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { withToolShards } from '@/lib/i18n/ensureShard';
@@ -42,7 +41,6 @@ import { downloadResult, useDownloadStatus } from '@/lib/results/downloadControl
 import { DownloadStatusLine } from '@/components/results/download-status';
 import { describe as describeResult } from '@/lib/results/describe';
 import { peekResultBlob } from '@/lib/results/useResultBlob';
-import { ResultPanel } from '@/components/results/result-panel';
 import { QuotaChip } from '@/components/quota-chip';
 import { RecentStrip } from '@/components/history/recent-strip';
 import {
@@ -61,6 +59,25 @@ import { ProcessingIndicator } from '@/components/darkroom/processing-indicator'
 
 /** MM88: a 44px (min-h-11) tap target that never wraps or shrinks inside the scrolling row. */
 const HERO_CHIP = 'inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full px-4 transition-colors';
+
+/**
+ * MM88: the result viewer and the file preview are code-split. Neither can render before
+ * the visitor picks a file (the preview) or a job exists (the result panel), and together
+ * with their viewers (compare sliders, transcript/caption/summary/archive/stream viewers)
+ * they were ~40 KB gzip of the home route's first load.
+ *
+ * MM01's "see it before you download it" must not wait on the chunk, so choosing a file
+ * calls `preloadResultViewers()`: the ResultPanel chunk downloads during the upload and
+ * the job, long before a result can exist. The loading states are null because neither is
+ * ever on screen before its chunk could have arrived (the preview mounts with the file,
+ * and the ResultPanel is a modal that opens after the job finishes).
+ */
+const loadResultPanel = () => import('@/components/results/result-panel').then((m) => m.ResultPanel);
+const ResultPanel = dynamic(loadResultPanel, { ssr: false });
+const FilePreview = dynamic(() => import('@/components/file-preview'), { ssr: false });
+function preloadResultViewers(): void {
+  void loadResultPanel().catch(() => undefined);
+}
 
 /** Lazy chunk: the inspector flow adds nothing to the home route's first load. */
 const HomeMetadata = dynamic(() => import('@/components/metadata/home-metadata'), { ssr: false });
@@ -338,6 +355,7 @@ const FileConverterAppInner: React.FC = () => {
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
       const file = files[0];
+      preloadResultViewers();
       setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
@@ -355,6 +373,7 @@ const FileConverterAppInner: React.FC = () => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      preloadResultViewers();
       setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
