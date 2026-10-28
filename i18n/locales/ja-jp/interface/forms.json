@@ -45,7 +45,7 @@
       "tooltipIntro": "1つのジョブにつき1つのAI処理が、当社のローカルGPUサーバーで実行されます。そのジョブでは標準のFFmpeg処理チェーンはスキップされます。",
       "tooltipCleanVoice": "<strong>音声クリーンアップ</strong> — DeepFilterNetによるノイズ除去と放送品質の仕上げチェーン（ハイパス／ローパス、ラウドネス、リミッター）。",
       "tooltipRemoveNoise": "<strong>背景ノイズを除去</strong> — 仕上げチェーンなしのDeepFilterNetノイズ除去。",
-      "tooltipIsolateVocals": "<strong>ボーカルを分離</strong> — Demucs htdemucsのボーカルステム（デフォルトはロスレスWAV）。",
+      "tooltipIsolateVocals": "<strong>ボーカルを分離</strong> — Demucs htdemucsのボーカルステム（デフォルトでは元のファイルと同じ形式）。",
       "tooltipRemoveVocals": "<strong>ボーカルを除去／カラオケ</strong> — Demucsのインストゥルメンタルステム。",
       "intro": "AI音声ツールはGPUジョブとして実行されるため、基本的な変換より時間がかかることがあります。",
       "operationLabel": "処理",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "AI処理を選択すると、ビットレート、EQ、その他の標準音声オプションはスキップされます。",
       "presetLocked": "このツールのプリセット"
+    },
+    "stemFormat": {
+      "label": "出力形式",
+      "options": {
+        "auto": "入力と同じ（推奨）",
+        "autoWithFormat": "入力と同じ：{{format}}（推奨）",
+        "mp3": "MP3（320 kbps）",
+        "flac": "FLAC（ロスレス）",
+        "wav": "WAV（ロスレス、最大サイズ）"
+      },
+      "withEstimate": "{{label}} · 約{{size}}",
+      "help": "サイズは目安です。MP3はMP3のまま、ロスレスファイル（WAV、FLAC、AIFF）はFLACで返されます。",
+      "helpNoEstimate": "MP3はMP3のまま、ロスレスファイル（WAV、FLAC、AIFF）はFLACで返されます。ロスレスにするにはFLACまたはWAVを選んでください。",
+      "wavHint": "WAVは約{{size}}になります。非常に大きなダウンロードです。FLACはロスレスで、サイズは約半分です。"
     }
   },
   "videoForm": {

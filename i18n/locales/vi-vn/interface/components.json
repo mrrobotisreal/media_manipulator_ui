@@ -421,6 +421,14 @@
       "downloadJson": "Tải xuống .json",
       "showAll": "Hiện tất cả ({{count}})",
       "showLess": "Thu gọn"
+    },
+    "mp3": {
+      "button": "Tải xuống dạng MP3",
+      "converting": "Đang chuyển sang MP3…",
+      "hint": "Tệp nhỏ hơn, được chuyển đổi trên máy chủ của chúng tôi. Miễn phí và không bao giờ tính là công việc AI.",
+      "started": "Đã bắt đầu tải xuống MP3 — hãy xem mục tải xuống của trình duyệt.",
+      "startedWithSize": "Đã bắt đầu tải xuống MP3 ({{size}}) — hãy xem mục tải xuống của trình duyệt.",
+      "failed": "Không thể chuẩn bị tệp MP3. Hãy thử lại sau giây lát."
     }
   },
   "billing": {

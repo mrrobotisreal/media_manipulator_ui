@@ -424,6 +424,14 @@
       "downloadJson": "Baixar .json",
       "showAll": "Mostrar tudo ({{count}})",
       "showLess": "Mostrar menos"
+    },
+    "mp3": {
+      "button": "Baixar como MP3",
+      "converting": "Convertendo para MP3…",
+      "hint": "Arquivo menor, convertido no nosso servidor. Grátis e nunca conta como trabalho de IA.",
+      "started": "Seu download do MP3 começou — confira os downloads do navegador.",
+      "startedWithSize": "Seu download do MP3 começou ({{size}}) — confira os downloads do navegador.",
+      "failed": "Não foi possível preparar o MP3. Tente de novo em instantes."
     }
   },
   "billing": {

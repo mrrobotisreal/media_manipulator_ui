@@ -424,6 +424,14 @@
       "downloadJson": "Transferir .json",
       "showAll": "Mostrar tudo ({{count}})",
       "showLess": "Mostrar menos"
+    },
+    "mp3": {
+      "button": "Transferir como MP3",
+      "converting": "A converter para MP3…",
+      "hint": "Ficheiro mais pequeno, convertido no nosso servidor. Gratuito e nunca conta como trabalho de IA.",
+      "started": "A sua transferência do MP3 começou — consulte as transferências do navegador.",
+      "startedWithSize": "A sua transferência do MP3 começou ({{size}}) — consulte as transferências do navegador.",
+      "failed": "Não foi possível preparar o MP3. Tente novamente daqui a pouco."
     }
   },
   "billing": {

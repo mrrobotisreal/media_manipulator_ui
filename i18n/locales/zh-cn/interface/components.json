@@ -421,6 +421,14 @@
       "downloadJson": "下载 .json",
       "showAll": "显示全部（{{count}}）",
       "showLess": "收起"
+    },
+    "mp3": {
+      "button": "下载为MP3",
+      "converting": "正在转换为MP3…",
+      "hint": "文件更小，在我们的服务器上转换。免费，且不会计入AI任务。",
+      "started": "MP3下载已开始，请查看浏览器的下载列表。",
+      "startedWithSize": "MP3下载已开始（{{size}}），请查看浏览器的下载列表。",
+      "failed": "无法准备MP3，请稍后再试。"
     }
   },
   "billing": {

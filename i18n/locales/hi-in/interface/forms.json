@@ -45,7 +45,7 @@
       "tooltipIntro": "प्रति जॉब एक AI ऑपरेशन चलता है, हमारे लोकल GPU सर्वर पर। उस जॉब के लिए मानक FFmpeg प्रोसेसिंग चेन छोड़ दी जाती है।",
       "tooltipCleanVoice": "<strong>वॉइस साफ़ करें</strong> — DeepFilterNet डिनॉइज़ + ब्रॉडकास्ट पॉलिश चेन (हाई/लो पास, लाउडनेस, लिमिटर)।",
       "tooltipRemoveNoise": "<strong>बैकग्राउंड शोर हटाएँ</strong> — बिना पॉलिश चेन के DeepFilterNet डिनॉइज़।",
-      "tooltipIsolateVocals": "<strong>वोकल अलग करें</strong> — Demucs htdemucs वोकल स्टेम (डिफ़ॉल्ट रूप से लॉसलेस WAV)।",
+      "tooltipIsolateVocals": "<strong>वोकल अलग करें</strong> — Demucs htdemucs वोकल स्टेम (डिफ़ॉल्ट रूप से आपकी फ़ाइल जैसा ही फ़ॉर्मेट)।",
       "tooltipRemoveVocals": "<strong>वोकल हटाएँ / कराओके</strong> — Demucs इंस्ट्रुमेंटल स्टेम।",
       "intro": "AI ऑडियो टूल GPU जॉब के रूप में चलते हैं और बेसिक कन्वर्ज़न से ज़्यादा समय ले सकते हैं।",
       "operationLabel": "ऑपरेशन",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "AI ऑपरेशन चुनने पर बिटरेट, EQ और अन्य मानक ऑडियो विकल्प छोड़ दिए जाते हैं।",
       "presetLocked": "इस टूल के लिए प्रीसेट"
+    },
+    "stemFormat": {
+      "label": "आउटपुट फ़ॉर्मेट",
+      "options": {
+        "auto": "इनपुट जैसा (अनुशंसित)",
+        "autoWithFormat": "इनपुट जैसा: {{format}} (अनुशंसित)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (लॉसलेस)",
+        "wav": "WAV (लॉसलेस, सबसे बड़ा)"
+      },
+      "withEstimate": "{{label}} · लगभग {{size}}",
+      "help": "साइज़ अनुमानित हैं। MP3 फ़ाइल MP3 ही रहती है; लॉसलेस फ़ाइल (WAV, FLAC, AIFF) FLAC के रूप में वापस आती है।",
+      "helpNoEstimate": "MP3 फ़ाइल MP3 ही रहती है; लॉसलेस फ़ाइल (WAV, FLAC, AIFF) FLAC के रूप में वापस आती है। लॉसलेस के लिए FLAC या WAV चुनें।",
+      "wavHint": "WAV लगभग {{size}} का होगा। यह बहुत बड़ा डाउनलोड है; FLAC लॉसलेस है और लगभग आधे साइज़ का है।"
     }
   },
   "videoForm": {

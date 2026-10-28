@@ -421,6 +421,14 @@
       "downloadJson": "下載 .json",
       "showAll": "顯示全部（{{count}}）",
       "showLess": "收合"
+    },
+    "mp3": {
+      "button": "下載為 MP3",
+      "converting": "正在轉換為 MP3…",
+      "hint": "檔案更小，在我們的伺服器上轉換。免費，且不會計入 AI 工作。",
+      "started": "MP3 下載已開始，請查看瀏覽器的下載清單。",
+      "startedWithSize": "MP3 下載已開始（{{size}}），請查看瀏覽器的下載清單。",
+      "failed": "無法準備 MP3，請稍後再試。"
     }
   },
   "billing": {

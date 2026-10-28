@@ -45,7 +45,7 @@
       "tooltipIntro": "每個工作只執行一項 AI 操作，在我們的本機 GPU 伺服器上進行。該工作會略過標準的 FFmpeg 處理鏈。",
       "tooltipCleanVoice": "<strong>清理人聲</strong>：DeepFilterNet 降噪 + 廣播級潤飾鏈（高通／低通、響度、限幅器）。",
       "tooltipRemoveNoise": "<strong>移除背景噪音</strong>：DeepFilterNet 降噪，不含潤飾鏈。",
-      "tooltipIsolateVocals": "<strong>分離人聲</strong>：Demucs htdemucs 人聲分軌（預設為無損 WAV）。",
+      "tooltipIsolateVocals": "<strong>分離人聲</strong>：Demucs htdemucs 人聲分軌（預設與原檔案格式相同）。",
       "tooltipRemoveVocals": "<strong>移除人聲／卡拉 OK</strong>：Demucs 伴奏分軌。",
       "intro": "AI 音訊工具以 GPU 工作執行，可能比基本轉換花費更長時間。",
       "operationLabel": "操作",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "選擇 AI 操作時，會略過位元率、EQ 及其他標準音訊選項。",
       "presetLocked": "此工具的預設組"
+    },
+    "stemFormat": {
+      "label": "輸出格式",
+      "options": {
+        "auto": "與輸入相同（建議）",
+        "autoWithFormat": "與輸入相同：{{format}}（建議）",
+        "mp3": "MP3（320 kbps）",
+        "flac": "FLAC（無損）",
+        "wav": "WAV（無損，檔案最大）"
+      },
+      "withEstimate": "{{label}} · 約 {{size}}",
+      "help": "大小為估算值。MP3 仍輸出 MP3；無損檔案（WAV、FLAC、AIFF）則輸出 FLAC。",
+      "helpNoEstimate": "MP3 仍輸出 MP3；無損檔案（WAV、FLAC、AIFF）則輸出 FLAC。如需無損，請選擇 FLAC 或 WAV。",
+      "wavHint": "WAV 約為 {{size}}，下載檔案非常大；FLAC 同樣無損，大小約為一半。"
     }
   },
   "videoForm": {
