@@ -202,9 +202,11 @@
     },
     "advertising": {
       "title": "Publicité",
-      "body": "Pour la publicité personnalisée. Nous n'affichons pas de publicités pour le moment, ce réglage n'a donc encore aucun effet ; il figure ici pour que vous le voyiez avant qu'il ne devienne actif.",
+      "body": "Permet à Google de personnaliser les publicités affichées sur certaines pages d'outils pour les visiteurs gratuits et non connectés. L'affichage d'une publicité ne dépend pas de ce réglage ; désactivé, les publicités ne sont pas personnalisées. Premium et Pro ne voient jamais de publicités.",
+      "bodyGdpr": "Dans votre région, les choix relatifs aux publicités se font dans le message de consentement de Google, et non ici ; ce panneau concerne nos propres statistiques. Tant que vous n'avez pas fait de choix là-bas, les publicités des pages d'outils ne sont pas personnalisées. Premium et Pro ne voient jamais de publicités.",
       "bodyGpc": "Pour la publicité personnalisée. Votre navigateur envoie un signal Global Privacy Control, ce réglage reste donc désactivé : nous respectons ce signal et un clic ici ne peut pas le contourner.",
-      "notActive": "Pas encore actif"
+      "managedByGoogle": "Géré par le message de consentement de Google",
+      "openGoogleMessage": "Modifier les choix publicitaires"
     },
     "gpcDetected": "Signal Global Privacy Control détecté. Nous vous avons automatiquement exclu de toute vente ou de tout partage de vos informations personnelles, et nous l'avons consigné.",
     "doNotSell": {
@@ -425,6 +427,14 @@
       "downloadJson": "Télécharger le .json",
       "showAll": "Tout afficher ({{count}})",
       "showLess": "Afficher moins"
+    },
+    "mp3": {
+      "button": "Télécharger en MP3",
+      "converting": "Conversion en MP3…",
+      "hint": "Fichier plus léger, converti sur notre serveur. Gratuit, ne compte jamais comme une tâche IA.",
+      "started": "Votre téléchargement MP3 a commencé — consultez les téléchargements de votre navigateur.",
+      "startedWithSize": "Votre téléchargement MP3 a commencé ({{size}}) — consultez les téléchargements de votre navigateur.",
+      "failed": "Le MP3 n'a pas pu être préparé. Réessayez dans un instant."
     }
   },
   "billing": {

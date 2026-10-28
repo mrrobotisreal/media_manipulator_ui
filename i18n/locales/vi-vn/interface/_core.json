@@ -4,7 +4,6 @@
     "brandTagline": "Chuyển đổi hình ảnh, video và tệp âm thanh thật dễ dàng",
     "loading": "Đang tải…",
     "loadingShort": "Đang tải...",
-    "comingSoon": "Sắp ra mắt",
     "tryAgain": "Thử lại",
     "cancel": "Hủy",
     "close": "Đóng",
@@ -101,7 +100,8 @@
     "navigationLabel": "Điều hướng",
     "language": "Ngôn ngữ",
     "selectLanguage": "Chọn ngôn ngữ",
-    "voices": "Giọng nói"
+    "voices": "Giọng nói",
+    "contact": "Liên hệ"
   },
   "footer": {
     "tagline": "Công cụ chạy trên trình duyệt và có máy chủ hỗ trợ để chỉnh sửa, chuyển đổi, nén, phân tích, chép lời, tóm tắt và xử lý tệp hình ảnh, video và âm thanh theo nhiều cách khác.",
@@ -112,10 +112,6 @@
     "cookieSettings": "Cài đặt cookie",
     "copyright": "© {{year}} Media Manipulator, một sản phẩm của CreaTV Ltd. Bảo lưu mọi quyền.",
     "operatedBy": "Vận hành bởi CreaTV Ltd. · Colorado, Hoa Kỳ",
-    "cookieDialog": {
-      "title": "Tùy chọn cookie",
-      "description": "Tùy chọn cookie do Google quản lý. Vui lòng tải lại trang nếu biểu ngữ cookie không xuất hiện, hoặc xem Chính sách quyền riêng tư để biết chi tiết về cách Media Manipulator xử lý dữ liệu."
-    },
     "changelog": "Nhật ký thay đổi",
     "status": "Trạng thái",
     "licenses": "Giấy phép mã nguồn mở"

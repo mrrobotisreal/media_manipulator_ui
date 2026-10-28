@@ -4,7 +4,6 @@
     "brandTagline": "轻松转换图片、视频和音频文件",
     "loading": "加载中…",
     "loadingShort": "加载中...",
-    "comingSoon": "即将推出",
     "tryAgain": "重试",
     "cancel": "取消",
     "close": "关闭",
@@ -101,7 +100,8 @@
     "navigationLabel": "导航",
     "language": "语言",
     "selectLanguage": "选择语言",
-    "voices": "用户之声"
+    "voices": "用户之声",
+    "contact": "联系我们"
   },
   "footer": {
     "tagline": "基于浏览器并由服务器辅助的工具，用于编辑、转换、压缩、分析、转录、摘要以及以其他方式处理图片、视频和音频文件。",
@@ -112,10 +112,6 @@
     "cookieSettings": "Cookie设置",
     "copyright": "© {{year}} Media Manipulator，CreaTV Ltd.旗下产品。保留所有权利。",
     "operatedBy": "由CreaTV Ltd.运营 · 美国科罗拉多州",
-    "cookieDialog": {
-      "title": "Cookie偏好设置",
-      "description": "Cookie偏好设置由Google管理。如果Cookie横幅没有出现，请重新加载页面；或访问我们的隐私政策，了解Media Manipulator如何处理数据。"
-    },
     "changelog": "更新日志",
     "status": "服务状态",
     "licenses": "开源许可证"

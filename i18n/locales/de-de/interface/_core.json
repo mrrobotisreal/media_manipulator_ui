@@ -4,7 +4,6 @@
     "brandTagline": "Bilder, Videos und Audiodateien mühelos konvertieren",
     "loading": "Wird geladen…",
     "loadingShort": "Lädt...",
-    "comingSoon": "Demnächst verfügbar",
     "tryAgain": "Erneut versuchen",
     "cancel": "Abbrechen",
     "close": "Schließen",
@@ -104,7 +103,8 @@
     "navigationLabel": "Navigation",
     "language": "Sprache",
     "selectLanguage": "Sprache auswählen",
-    "voices": "Stimmen"
+    "voices": "Stimmen",
+    "contact": "Kontakt"
   },
   "footer": {
     "tagline": "Browserbasierte und serverunterstützte Tools zum Bearbeiten, Konvertieren, Komprimieren, Analysieren, Transkribieren, Zusammenfassen und sonstigen Verarbeiten von Bild-, Video- und Audiodateien.",
@@ -115,10 +115,6 @@
     "cookieSettings": "Cookie-Einstellungen",
     "copyright": "© {{year}} Media Manipulator, ein Produkt von CreaTV Ltd. Alle Rechte vorbehalten.",
     "operatedBy": "Betrieben von CreaTV Ltd. · Colorado, USA",
-    "cookieDialog": {
-      "title": "Cookie-Einstellungen",
-      "description": "Cookie-Einstellungen werden von Google verwaltet. Bitte laden Sie die Seite neu, falls der Cookie-Banner nicht erscheint, oder besuchen Sie unsere Datenschutzerklärung für Details dazu, wie Media Manipulator Daten verarbeitet."
-    },
     "changelog": "Änderungsprotokoll",
     "status": "Status",
     "licenses": "Open-Source-Lizenzen"

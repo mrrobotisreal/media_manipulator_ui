@@ -20,6 +20,8 @@ import {
   setConsent,
   type ConsentDetails,
 } from '@/lib/consent';
+import { hasGoogleConsentMessage, showGoogleConsentMessage } from '@/lib/consent/googleConsentMessage';
+import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
 import { analyticsBaseUrl, forgetIdentity, getVisitorId } from '@/lib/analytics';
 import { getCurrentIdToken } from '@/lib/firebase';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -40,13 +42,15 @@ import { useLocalizedHref } from '@/i18n/useLocalizedHref';
  *   for quota and abuse prevention — a strictly-necessary basis, which means it is not a
  *   consent question and pretending to offer a choice would be the dark pattern.
  *
- *   ANALYTICS is the real control, and the only one that does anything today.
+ *   ANALYTICS is the real control.
  *
- *   ADVERTISING is VISIBLE but marked not-yet-active. Hiding it would be tidier and would
- *   also mean that on the day ads go live a category appears that nobody was ever shown.
- *   Showing it now — off, honest, and labelled — is what makes the Phase 12 transition
- *   uneventful. When GPC is present the toggle is disabled and says so, because the signal is
- *   binding and a click must not appear to override it.
+ *   ADVERTISING (MM82, ADR-0016) is a real switch outside the `gdpr` group while ads are on:
+ *   it grants or denies personalised ads, mirrored into Consent Mode. Off (or never asked)
+ *   means Google serves non-personalised ads only; whether an ad shows at all is decided by
+ *   tier and page, never here. In the `gdpr` group Google's consent message owns ad consent,
+ *   so the row says so and offers to reopen that message instead of a second switch. When
+ *   GPC is present the toggle is disabled and says so, because the signal is binding and a
+ *   click must not appear to override it. With ads off the switch stays disabled.
  */
 
 export interface ConsentPreferencesProps {
@@ -61,11 +65,20 @@ export function ConsentPreferences({ onClose }: ConsentPreferencesProps) {
   // instantly would leave someone who opened this to read it having silently changed their
   // settings.
   const [analytics, setAnalytics] = React.useState(details.analytics === 'granted');
+  const [advertising, setAdvertising] = React.useState(details.advertising === 'granted');
 
   const gpcActive = details.gpc;
+  const adsManagedByGoogle = ADSENSE_ENABLED && details.regionGroup === 'gdpr';
+  // The switch is real only where we own ad consent; GPC keeps it off and locked.
+  const advertisingEditable = ADSENSE_ENABLED && !adsManagedByGoogle && !gpcActive;
+  const [googleMessageAvailable] = React.useState(() => hasGoogleConsentMessage());
 
   const save = () => {
-    const next = setConsent({ analytics, mechanism: 'preferences' });
+    const next = setConsent({
+      analytics,
+      ...(advertisingEditable ? { advertising } : {}),
+      mechanism: 'preferences',
+    });
     setDetails(next);
     onClose();
   };
@@ -73,7 +86,14 @@ export function ConsentPreferences({ onClose }: ConsentPreferencesProps) {
   const doNotSell = () => {
     const next = optOutOfSale();
     setDetails(next);
+    setAdvertising(false);
   };
+
+  const advertisingBody = adsManagedByGoogle
+    ? t('interface:consentPrefs.advertising.bodyGdpr')
+    : gpcActive
+      ? t('interface:consentPrefs.advertising.bodyGpc')
+      : t('interface:consentPrefs.advertising.body');
 
   return (
     <Dialog open onOpenChange={(open) => (open ? undefined : onClose())}>
@@ -109,21 +129,37 @@ export function ConsentPreferences({ onClose }: ConsentPreferencesProps) {
             }
           />
 
-          {/* --- Advertising: visible, dormant --------------------------- */}
+          {/* --- Advertising: ours outside the EEA, Google's inside ------ */}
           <CategoryRow
             title={t('interface:consentPrefs.advertising.title')}
-            body={
-              gpcActive
-                ? t('interface:consentPrefs.advertising.bodyGpc')
-                : t('interface:consentPrefs.advertising.body')
-            }
-            badge={t('interface:consentPrefs.advertising.notActive')}
+            body={advertisingBody}
             control={
-              <Switch
-                checked={false}
-                disabled
-                aria-label={t('interface:consentPrefs.advertising.title')}
-              />
+              adsManagedByGoogle ? (
+                <div className="flex max-w-[11rem] flex-col items-end gap-1.5 text-end">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {t('interface:consentPrefs.advertising.managedByGoogle')}
+                  </span>
+                  {googleMessageAvailable ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        onClose();
+                        showGoogleConsentMessage();
+                      }}
+                    >
+                      {t('interface:consentPrefs.advertising.openGoogleMessage')}
+                    </Button>
+                  ) : null}
+                </div>
+              ) : (
+                <Switch
+                  checked={advertisingEditable ? advertising : details.advertising === 'granted' && !gpcActive}
+                  onCheckedChange={setAdvertising}
+                  disabled={!advertisingEditable}
+                  aria-label={t('interface:consentPrefs.advertising.title')}
+                />
+              )
             }
           />
         </div>

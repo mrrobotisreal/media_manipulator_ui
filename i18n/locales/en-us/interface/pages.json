@@ -123,9 +123,13 @@
       }
     },
     "whoBuilds": {
-      "title": "Who Builds Media Manipulator",
-      "p1": "Media Manipulator is built and operated by <strong>CreaTV Ltd.</strong>, a small independent media-tech company based in Colorado, USA. CreaTV's broader product line is focused on tools that help creators bring ideas to life — Media Manipulator is the free, no-account utility that anchors that ecosystem.",
-      "p2": "We're a small team, which is exactly why we built Media Manipulator the way we did: we don't want to babysit a fleet of third-party AI integrations, we don't want to store your files indefinitely, and we don't want to operate ten separate single-purpose converter sites. One studio, one place where you choose how long your files live, one GPU server doing the heavy lifting."
+      "title": "Who Is Behind Media Manipulator",
+      "name": "Mitchell Wintrow",
+      "role": "Founder and sole engineer",
+      "photoAlt": "Portrait of Mitchell Wintrow, founder and sole engineer of Media Manipulator",
+      "p1": "Media Manipulator is built by <strong>Mitchell Wintrow</strong>, its founder and sole engineer. Mitchell is a senior software engineer who builds mobile, web and backend systems; by day he works on mobile ad revenue at People Inc. He designs, writes and runs every part of Media Manipulator himself, from the editors in your browser to the API and the GPU server behind the AI tools.",
+      "p2": "Media Manipulator is operated by <strong>CreaTV Ltd.</strong>, based in Colorado, USA, which also makes CreaTV Studio. Being a one-person operation is why the site works the way it does: no third-party AI integrations to babysit, no files kept longer than you choose, and one place for your media work instead of ten single-purpose converter sites.",
+      "contact": "Support, bugs and billing: <supportLink>support@media-manipulator.com</supportLink>. Privacy and data requests: <privacyLink>privacy@media-manipulator.com</privacyLink>. Or write to us through the <linkContact>contact page</linkContact>."
     },
     "supportedFormats": {
       "title": "Supported File Formats (Quick Reference)",
@@ -580,7 +584,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "What changed on 2026-10-28",
-    "whatChangedBody": "We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
+    "whatChangedBody": "We added a contact form at media-manipulator.com/contact: the Privacy Policy has a new section 1.11 on the messages you send us (your name, email address, subject and message, delivered to our support mailbox through Resend and kept there until the conversation is closed, never longer than 12 months), and section 16 now points to the form. Added the advertising-cookie disclosures Google requires and the opt-out links. The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense: Google’s advertising cookies, non-personalised ads, Google’s consent message in the EEA, the UK and Switzerland, the links to opt out of personalised ads (Google Ads Settings, aboutads.info and youronlinechoices.eu) and to how Google uses information from sites that use its services, who sees ads (only visitors without an account and free accounts) and our public ads.txt file; section 1.5 now lists the advertising identifiers Google’s ad script may set. Section 8.9 of the Terms now says that ads are shown only without an account or with a free account, and that Premium and Pro remove them. Section 5 (Advertising) of the Privacy Policy now says that Google's ad script loads on pages that can show ads, with all consent signals denied until you choose, and serves non-personalised ads until then. Earlier the same day: We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -690,7 +694,8 @@
               "serve and measure advertisements."
             ],
             "afterBullets": [
-              "You can control cookies through your browser settings. Some features may not work properly if cookies or local storage are disabled."
+              "You can control cookies through your browser settings. Some features may not work properly if cookies or local storage are disabled.",
+              "Advertising identifiers set by Google’s ad script: when ads are switched on, Google’s script may store identifiers in your browser, which Google documents as the first-party cookies __gads and __gpi on our domain (kept for up to 13 months), Google’s own cookies such as IDE on doubleclick.net (13 months in the EEA, the UK and Switzerland, 24 months elsewhere), and similar entries in local storage. Google uses them to serve and measure ads, to limit how often you see the same ad, to prevent ad fraud and, only if you allow it, to personalise ads. How long each one is kept is set by Google’s policy: https://policies.google.com/technologies/cookies. They are set only when ads are on and you have allowed advertising storage; in the EEA, the UK and Switzerland, that means only after you consent in Google’s consent message. See Section 5.1."
             ]
           },
           {
@@ -730,6 +735,13 @@
               "Purpose and legal basis: we use these data only to create and run the voice you asked for, that is, to make the voice, render its preview, and generate or convert speech when you ask. A recording of a person's voice can identify them, so we treat it with the care that special-category (biometric) data requires and rely on your explicit consent, which you give with the consent checkbox before a voice is created from a recording. You can withdraw it at any time by deleting the voice.",
               "Storage: saved voices are stored on our servers and in Amazon S3 under voices/, in your account, and follow the retention period you choose (Section 3). Recordings you upload to change and the speech you generate are kept like any other upload and result. Voice processing runs on our own GPU server: your recordings and voices are never shared with a third-party AI provider and are never used to train any model. Generated and converted speech carries an inaudible watermark that marks it as synthetic; it contains no account details.",
               "Deletion and export: you can delete a saved voice at any time from Account, Voices; its reference recording and preview are deleted from our servers straight away, while speech you already generated stays until its own retention period ends. All your saved voices are deleted when you delete your account. Your data export lists your saved voices (name, kind, language, dates and the consent record), without the audio."
+            ]
+          },
+          {
+            "title": "1.11 Messages You Send Us",
+            "paragraphs": [
+              "When you use the contact form at media-manipulator.com/contact, we receive your name, your email address, the subject you choose and your message, together with the time it was sent and a short reference number. The form delivers this to our support mailbox by email, through our email provider Resend; contact messages are not stored in our application database. When you email us directly, we receive the same kind of information from your email.",
+              "We use these messages only to answer you and to handle what you ask for, such as a bug report, a billing question or a privacy request. They are kept in our support mailbox until the conversation is closed, and never longer than 12 months. To limit spam, the form is rate-limited per browser session and per IP address like the rest of the site, and a blocked attempt is kept as an abuse-prevention record (Section 3.6)."
             ]
           }
         ]
@@ -843,11 +855,32 @@
         "title": "5. Advertising",
         "paragraphs": [
           "Media Manipulator may display advertisements, including advertisements served by Google AdSense or other advertising partners.",
-          "Advertising is limited and may change. We show ads only on selected tool pages, never on our home, pricing, account or legal pages, and Premium and Pro subscribers do not see ads. Ads appear only when advertising is switched on for the site, and Google's ad script is loaded only on a page that actually displays an ad. Google's consent signals for advertising are denied by default and are updated according to your choice in “Cookie settings” in the footer.",
+          "Advertising is limited and may change. We show ads only on selected tool pages, never on our home, pricing, account or legal pages, and Premium and Pro subscribers do not see ads. Ads appear only when advertising is switched on for the site, and Google's ad script loads on pages that can show ads, with all consent signals denied until you choose; it serves non-personalised ads until then. Google's consent signals for advertising are denied by default and are updated according to your choice in “Cookie settings” in the footer.",
           "Third-party vendors, including Google, may use cookies to serve ads based on a user’s prior visits to Media Manipulator or other websites. Google’s use of advertising cookies enables it and its partners to serve ads to users based on their visit to Media Manipulator and/or other sites on the Internet.",
           "Users may opt out of personalized advertising by visiting Google’s Ads Settings. Users may also opt out of some third-party vendors’ use of cookies for personalized advertising by visiting industry opt-out pages where available.",
           "Advertising partners may collect or receive information from our website and other websites and use that information to provide measurement services and targeted ads.",
           "We do not control third-party advertising cookies or tracking technologies. Their use is governed by the privacy policies of the third parties that provide them."
+        ],
+        "subsections": [
+          {
+            "title": "5.1 Advertising cookies and Google AdSense",
+            "paragraphs": [
+              "Google, as a third-party vendor, uses cookies to serve ads on Media Manipulator through Google AdSense. Google’s use of the DoubleClick cookie and its other advertising cookies enables it and its partners to serve ads to you based on your visits to Media Manipulator and/or other sites on the Internet. The cookies and identifiers involved are listed in Section 1.5.",
+              "Non-personalised ads: Google’s consent signals for advertising start as denied for every visitor, so until you allow advertising Google serves only non-personalised ads. These are not based on your past browsing; they are chosen from the page you are viewing and your general location (no more precise than your city), and where storage is allowed Google may still use cookies or identifiers to limit how often you see the same ad (frequency capping), for aggregated ad reporting and to prevent fraud and abuse. In the EEA, the UK and Switzerland, if you do not consent, Google serves limited ads, which use no cookies or local storage for advertising.",
+              "Consent in the EEA, the UK and Switzerland: visitors there see Google’s own consent message, a Google-certified consent management platform that uses the IAB Transparency and Consent Framework (TCF) v2.2, which asks whether Google and its advertising partners may use cookies and personal data for ads. Our own cookie bar asks about our first-party analytics only. You can reopen either one and change or withdraw your choice at any time from “Cookie settings” in the footer. Elsewhere, advertising follows your choice in “Cookie settings”, and a Global Privacy Control signal or “Do Not Sell or Share My Personal Information” always refuses personalised advertising (see Section 14).",
+              "You can opt out of personalised advertising, or learn more, here:"
+            ],
+            "bullets": [
+              "Google Ads Settings, to turn off personalised ads from Google: https://adssettings.google.com",
+              "the Digital Advertising Alliance’s WebChoices tool, to opt out of personalised ads from participating third-party vendors: https://www.aboutads.info/choices",
+              "Your Online Choices, for visitors in the European Union: https://youronlinechoices.eu",
+              "Google’s page “How Google uses information from sites or apps that use our services”: https://policies.google.com/technologies/partner-sites"
+            ],
+            "afterBullets": [
+              "Who sees ads: only visitors who are not signed in and free accounts. Premium and Pro subscribers never see ads, and no ad units are placed on their pages.",
+              "Our ads.txt file, which lists the companies authorised to sell ad space on Media Manipulator (only Google), is public at https://www.media-manipulator.com/ads.txt."
+            ]
+          }
         ]
       },
       {
@@ -1038,6 +1071,7 @@
       {
         "title": "16. Contact Us",
         "paragraphs": [
+          "The contact form at media-manipulator.com/contact reaches the same people as the address below; Section 1.11 explains what it collects and how long messages are kept.",
           "If you have questions about this Privacy Policy or how Media Manipulator handles information, contact us at:"
         ],
         "contactBlock": true,
@@ -1281,7 +1315,7 @@
           {
             "title": "8.9 Advertising and Invalid Traffic",
             "paragraphs": [
-              "Media Manipulator may display advertisements. You must not interact with ads in a fraudulent, artificial, deceptive, or abusive way.",
+              "Media Manipulator may display advertisements. You must not interact with ads in a fraudulent, artificial, deceptive, or abusive way. Ads are shown only to visitors who are not signed in and to free accounts; the paid plans, Premium and Pro, remove them.",
               "You must not:"
             ],
             "bullets": [
@@ -1594,7 +1628,7 @@
       "q2": "What happens when I run out?",
       "a2": "Nothing breaks. The tool tells you the allowance is spent and offers the next tier up. Your allowance resets at midnight UTC.",
       "q3": "Do free accounts see ads?",
-      "a3": "Yes. Ads pay for the free tier, so only Premium and Pro remove them. There are no interstitials, countdowns or forced waits on any plan.",
+      "a3": "Yes. Ads pay for the free tier, so only Premium and Pro remove them. There are never more than two ads on a page, never over the tools, and never on the home, pricing, account or legal pages. There are no interstitials, countdowns or forced waits on any plan.",
       "q4": "Can I use it without an account at all?",
       "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history. Without an account your files are kept for 24 hours; with an account you choose how long, from 24 hours to 2 years."
     },
@@ -1976,6 +2010,30 @@
     "popular": {
       "eyebrow": "Popular conversions",
       "title": "Jump straight to a tool"
+    },
+    "whatYouCanDo": {
+      "eyebrow": "What you can do here",
+      "title": "Tools for every kind of media file",
+      "video": "<strong>Video.</strong> <compressVideo>Compress a video</compressVideo> for email or the web, <trimVideo>trim it</trimVideo> to the part you need with a fast cut that keeps the original quality, <videoGif>turn a short clip into an animated GIF</videoGif>, or <hls>package it as HLS</hls> for adaptive streaming. Large uploads go straight to our storage, so long recordings work too.",
+      "images": "<strong>Images and PDFs.</strong> <removeExif>Remove EXIF metadata</removeExif> such as GPS location before you share a photo, <compressImage>compress an image</compressImage> for a faster page, <resizeImage>resize it</resizeImage> to exact pixel dimensions, and convert <imageToPdf>images to PDF</imageToPdf> or <pdfToJpg>PDF pages to JPG</pdfToJpg>.",
+      "audio": "<strong>Audio and speech.</strong> <extractAudio>Extract the audio track</extractAudio> from a video as MP3, WAV, M4A, FLAC or OGG, and <transcribe>transcribe what is said</transcribe> into searchable text or captions. Transcription runs Whisper on our own GPU server.",
+      "ai": "<strong>AI tools.</strong> <removeBg>Remove the background</removeBg> from a photo, <imageRestore>restore and upscale an old picture</imageRestore>, <videoRestore>compare video restoration models</videoRestore> side by side on a short clip, or <docScan>turn scanned pages into a searchable PDF</docScan>. Every model runs on servers we operate.",
+      "editors": "<strong>Editors.</strong> When one conversion is not enough, <darkroom>Darkroom</darkroom> is a multi-track video editor and <motion>Motion</motion> animates SVG artwork on a keyframe timeline. Both run in your browser, and signing in keeps your projects with your account."
+    },
+    "whatWeDont": {
+      "eyebrow": "What we don't do",
+      "title": "The things we leave out on purpose",
+      "items": [
+        "<strong>No third-party AI.</strong> Your files are never sent to an outside AI provider. Transcription, background removal, upscaling and every other AI tool run on our own GPU server.",
+        "<strong>No watermarks on your files.</strong> Converted images, videos, audio and documents come back without a logo or a mark. The one exception is synthetic speech from the voice tools, which carries an inaudible marker that identifies it as AI-generated.",
+        "<strong>No account needed for most tools.</strong> Conversion, compression, trimming and metadata removal work without signing up. A free account adds a larger daily allowance, saved projects and control over how long your files are kept.",
+        "<strong>No files kept longer than you choose.</strong> Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years, and you can delete any file sooner from your account."
+      ]
+    },
+    "whoMakes": {
+      "eyebrow": "Who makes this",
+      "title": "Built by one engineer, operated by CreaTV Ltd.",
+      "body": "Media Manipulator is designed, built and run by Mitchell Wintrow, a senior software engineer in Colorado, and operated by CreaTV Ltd. Read <linkAbout>more about the project and its founder</linkAbout>, or <linkContact>get in touch</linkContact> with a question or a bug report."
     }
   },
   "toolsIndex": {
@@ -2158,7 +2216,6 @@
     "unmodified": "Used unmodified. Its source code is available at the link above."
   },
   "motionPage": {
-    "betaBadge": "Beta",
     "guide": {
       "summaryTitle": "How {{brand}} works",
       "whatItIsTitle": "What it is",
@@ -2212,14 +2269,14 @@
         "notIncluded": "Not included",
         "unlimited": "Unlimited",
         "localOnly": "{{count}}, in this browser only",
-        "comingSoon": "Coming soon: not on any plan yet",
+        "comingSoon": "Export format available on request",
         "noCap": "No limit",
         "notApplicable": "Not included",
         "capHeight": "up to {{height}}p",
         "capFps": "{{fps}} fps",
         "capSeconds": "{{seconds}} s"
       },
-      "comingSoonNote": "Formats marked “coming soon” are already built into the editor and will be added to a plan shortly. This table updates by itself when they are.",
+      "comingSoonNote": "Formats marked “available on request” are built into the editor but are not included in any plan. If you need one, ask us through the <linkContact>contact page</linkContact>.",
       "resetNote": "Allowances reset at midnight UTC. Cancelled or failed exports that were already counted are not refunded.",
       "unavailable": "The plan table could not be loaded right now. The pricing page lists every plan's allowance.",
       "seePlans": "Compare all plans"
@@ -2345,5 +2402,83 @@
         ]
       }
     ]
+  },
+  "contact": {
+    "metaTitle": "Contact Media Manipulator | Support, Privacy and Press",
+    "metaDesc": "Contact the people behind Media Manipulator: support and billing at support@media-manipulator.com, privacy requests at privacy@media-manipulator.com, or the contact form. We usually reply within two business days.",
+    "title": "Contact Media Manipulator",
+    "intro": "Questions, bug reports, billing problems, privacy requests or a partnership idea: send a message with the form or email us directly. A person reads every message.",
+    "whoTitle": "Who you are writing to",
+    "whoBody": "Media Manipulator is built and run by Mitchell Wintrow, its founder and sole engineer, and operated by <strong>CreaTV Ltd.</strong> in Colorado, USA. No outside support company answers on our behalf. <linkAbout>More about who makes Media Manipulator</linkAbout>.",
+    "emailTitle": "Email",
+    "supportLabel": "Support, bugs and billing",
+    "privacyLabel": "Privacy and data requests",
+    "responseTime": "We usually reply within two business days.",
+    "bugTitle": "Reporting a bug",
+    "bugIntro": "We can fix a problem much faster when your first message includes:",
+    "bugItems": [
+      "the tool you used, or the address of its page;",
+      "the file type and roughly how large the file was;",
+      "your browser and device;",
+      "what you expected, what happened instead, and any error message you saw."
+    ],
+    "bugNoFiles": "Please do not attach the file itself unless we ask for it.",
+    "statusNote": "If a tool seems to be down for everyone, the <linkStatus>status page</linkStatus> shows whether our servers are healthy right now.",
+    "privacyNote": "We use your name, email address and message only to answer you. They are kept in our support mailbox until the conversation is closed, and never longer than 12 months. Section 1.11 of the <linkPrivacy>privacy policy</linkPrivacy> has the details.",
+    "form": {
+      "title": "Send a message",
+      "name": "Your name",
+      "email": "Your email address",
+      "emailHint": "We reply to this address and use it for nothing else.",
+      "subject": "Subject",
+      "subjects": {
+        "bug": "Bug report",
+        "billing": "Billing",
+        "privacy": "Privacy or data request",
+        "press": "Press or partnership",
+        "other": "Something else"
+      },
+      "message": "Message",
+      "messageCount": "{{count}} of {{max}} characters",
+      "honeypot": "Leave this field empty",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "sentTitle": "Message sent",
+      "sentBody": "Thank you. Your reference is {{reference}}. We usually reply within two business days, to the address you gave.",
+      "sendAnother": "Send another message",
+      "invalidName": "Please enter your name (up to 100 characters).",
+      "invalidEmail": "Please enter a valid email address, such as name@example.com.",
+      "invalidSubject": "Please choose a subject.",
+      "invalidMessage": "Please write a message of up to 2,000 characters.",
+      "rateLimited": "You have sent several messages in the last hour. Please email us at {{email}} instead, or try again later.",
+      "failed": "Your message could not be sent right now. Please email us at {{email}} instead; what you typed is still in the form."
+    }
+  },
+  "articleMeta": {
+    "byline": "By {{name}}",
+    "published": "Published {{date}}",
+    "updated": "Updated {{date}}",
+    "screenshots": {
+      "audioGettingStarted": {
+        "alt": "The Media Manipulator audio converter with an audio file selected and the format, bitrate and sample-rate options open",
+        "caption": "The audio converter: pick a file, then choose the format and quality."
+      },
+      "videoGettingStarted": {
+        "alt": "The Media Manipulator video converter with a video selected and the output format and quality options open",
+        "caption": "The video converter: choose the output format, quality and size."
+      },
+      "imageGettingStarted": {
+        "alt": "The Media Manipulator image converter with a photo selected and the format, quality and resize options open",
+        "caption": "The image converter: format, quality and size in one panel."
+      },
+      "aiFrameInterpolation": {
+        "alt": "The AI video tools panel with AI frame interpolation selected and a target frame rate of 60 fps",
+        "caption": "AI frame interpolation in the AI video tools panel."
+      },
+      "motion": {
+        "alt": "The Motion editor with an imported SVG on the canvas and keyframes on the animation timeline",
+        "caption": "The Motion editor: layers, canvas and the keyframe timeline."
+      }
+    }
   }
 }

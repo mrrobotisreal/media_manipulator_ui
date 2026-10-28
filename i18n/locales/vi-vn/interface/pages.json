@@ -123,9 +123,13 @@
       }
     },
     "whoBuilds": {
-      "title": "Ai xây dựng Media Manipulator",
-      "p1": "Media Manipulator được <strong>CreaTV Ltd.</strong>, một công ty công nghệ truyền thông độc lập quy mô nhỏ có trụ sở tại Colorado, Hoa Kỳ, xây dựng và vận hành. Dòng sản phẩm rộng hơn của CreaTV tập trung vào các công cụ giúp nhà sáng tạo biến ý tưởng thành hiện thực — Media Manipulator là tiện ích miễn phí, không cần tài khoản, làm trụ cột cho hệ sinh thái đó.",
-      "p2": "Chúng tôi là một đội ngũ nhỏ, và đó chính là lý do chúng tôi xây dựng Media Manipulator theo cách này: chúng tôi không muốn trông coi cả một dàn tích hợp AI bên thứ ba, không muốn lưu tệp của bạn vô thời hạn, và không muốn vận hành mười trang chuyển đổi đơn mục đích riêng lẻ. Một studio, một nơi bạn chọn thời gian tệp tồn tại, một máy chủ GPU gánh phần việc nặng."
+      "title": "Ai đứng sau Media Manipulator",
+      "name": "Mitchell Wintrow",
+      "role": "Nhà sáng lập kiêm kỹ sư duy nhất",
+      "photoAlt": "Chân dung Mitchell Wintrow, nhà sáng lập kiêm kỹ sư duy nhất của Media Manipulator",
+      "p1": "Media Manipulator do <strong>Mitchell Wintrow</strong>, nhà sáng lập kiêm kỹ sư duy nhất, xây dựng. Mitchell là một kỹ sư phần mềm cấp cao chuyên xây dựng các hệ thống di động, web và backend; ban ngày anh làm về doanh thu quảng cáo trên di động tại People Inc. Anh tự thiết kế, viết và vận hành mọi phần của Media Manipulator, từ các trình chỉnh sửa trong trình duyệt của bạn đến API và máy chủ GPU phía sau các công cụ AI.",
+      "p2": "Media Manipulator được vận hành bởi <strong>CreaTV Ltd.</strong>, có trụ sở tại Colorado, Hoa Kỳ, đơn vị cũng làm ra CreaTV Studio. Vận hành bởi một người là lý do trang web hoạt động như hiện nay: không có tích hợp AI của bên thứ ba để phải trông chừng, không lưu tệp lâu hơn thời gian bạn chọn, và chỉ một nơi cho công việc media của bạn thay vì mười trang chuyển đổi chỉ làm một việc.",
+      "contact": "Hỗ trợ, lỗi và thanh toán: <supportLink>support@media-manipulator.com</supportLink>. Yêu cầu về quyền riêng tư và dữ liệu: <privacyLink>privacy@media-manipulator.com</privacyLink>. Hoặc viết thư cho chúng tôi qua <linkContact>trang liên hệ</linkContact>."
     },
     "supportedFormats": {
       "title": "Định dạng tệp được hỗ trợ (tham khảo nhanh)",
@@ -580,7 +584,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "Những thay đổi ngày 28/10/2026",
-    "whatChangedBody": "Chúng tôi đã bổ sung các công cụ giọng nói: sao chép giọng của chính bạn từ một bản ghi âm, thiết kế một giọng nói từ mô tả, và thay đổi giọng nói trong một bản ghi âm. Chính sách quyền riêng tư có mục 1.10 mới về mẫu giọng nói và giọng nói được thiết kế: những gì chúng tôi lưu, việc chúng tôi chỉ dùng chúng để tạo và vận hành giọng nói bạn yêu cầu với sự đồng ý rõ ràng của bạn, việc chúng được lưu trong Amazon S3 theo thiết lập thời gian lưu giữ của bạn, không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào, và việc bạn có thể xóa chúng bất cứ lúc nào và chúng bị xóa cùng với tài khoản của bạn; các mục 3, 3.4, 3.5 và 4 nay có nhắc đến giọng nói. Điều khoản có mục 8.11 mới: bạn chỉ được tạo giọng nói từ giọng của chính bạn hoặc với sự cho phép rõ ràng của người đang nói; mạo danh, gian lận, deepfake chính trị và quấy rối đều không được phép; lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được còn âm thanh được đổi cao độ thì không; và chúng tôi có thể gỡ bỏ giọng nói và đình chỉ tài khoản. Mục 1 của Điều khoản liệt kê các công cụ giọng nói. Mọi nội dung từ bản cập nhật ngày 2026-10-26 vẫn được áp dụng: Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
+    "whatChangedBody": "Chúng tôi đã thêm một biểu mẫu liên hệ tại media-manipulator.com/contact: Chính sách quyền riêng tư có mục 1.11 mới về các tin nhắn bạn gửi cho chúng tôi (tên, địa chỉ email, chủ đề và tin nhắn của bạn, được chuyển đến hộp thư hỗ trợ của chúng tôi qua Resend và được lưu ở đó cho đến khi cuộc trao đổi kết thúc, không bao giờ quá 12 tháng), và mục 16 hiện trỏ đến biểu mẫu. Đã bổ sung các thông tin công bố về cookie quảng cáo mà Google yêu cầu và các liên kết từ chối. Chính sách quyền riêng tư có mục 5.1 mới về cookie quảng cáo và Google AdSense: cookie quảng cáo của Google, quảng cáo không cá nhân hóa, thông báo đồng ý của Google tại EEA, Vương quốc Anh và Thụy Sĩ, các liên kết để từ chối quảng cáo cá nhân hóa (Cài đặt quảng cáo của Google, aboutads.info và youronlinechoices.eu) và đến trang về cách Google sử dụng thông tin từ các trang web sử dụng dịch vụ của Google, ai thấy quảng cáo (chỉ khách truy cập không có tài khoản và tài khoản miễn phí) và tệp ads.txt công khai của chúng tôi; mục 1.5 nay liệt kê các mã định danh quảng cáo mà script quảng cáo của Google có thể đặt. Mục 8.9 của Điều khoản nay nêu rằng quảng cáo chỉ được hiển thị khi không có tài khoản hoặc với tài khoản miễn phí, và Premium và Pro loại bỏ chúng. Mục 5 (Quảng cáo) của Chính sách quyền riêng tư nay nêu rằng script quảng cáo của Google được tải trên các trang có thể hiển thị quảng cáo, với mọi tín hiệu đồng ý bị từ chối cho đến khi bạn lựa chọn, và cho đến lúc đó chỉ phân phối quảng cáo không được cá nhân hóa. Trước đó cùng ngày: Chúng tôi đã bổ sung các công cụ giọng nói: sao chép giọng của chính bạn từ một bản ghi âm, thiết kế một giọng nói từ mô tả, và thay đổi giọng nói trong một bản ghi âm. Chính sách quyền riêng tư có mục 1.10 mới về mẫu giọng nói và giọng nói được thiết kế: những gì chúng tôi lưu, việc chúng tôi chỉ dùng chúng để tạo và vận hành giọng nói bạn yêu cầu với sự đồng ý rõ ràng của bạn, việc chúng được lưu trong Amazon S3 theo thiết lập thời gian lưu giữ của bạn, không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào, và việc bạn có thể xóa chúng bất cứ lúc nào và chúng bị xóa cùng với tài khoản của bạn; các mục 3, 3.4, 3.5 và 4 nay có nhắc đến giọng nói. Điều khoản có mục 8.11 mới: bạn chỉ được tạo giọng nói từ giọng của chính bạn hoặc với sự cho phép rõ ràng của người đang nói; mạo danh, gian lận, deepfake chính trị và quấy rối đều không được phép; lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được còn âm thanh được đổi cao độ thì không; và chúng tôi có thể gỡ bỏ giọng nói và đình chỉ tài khoản. Mục 1 của Điều khoản liệt kê các công cụ giọng nói. Mọi nội dung từ bản cập nhật ngày 2026-10-26 vẫn được áp dụng: Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
   },
   "privacyPolicy": {
     "title": "Chính sách quyền riêng tư",
@@ -690,7 +694,8 @@
               "phân phối và đo lường quảng cáo."
             ],
             "afterBullets": [
-              "Bạn có thể kiểm soát cookie thông qua cài đặt trình duyệt. Một số tính năng có thể không hoạt động đúng nếu cookie hoặc bộ nhớ cục bộ bị tắt."
+              "Bạn có thể kiểm soát cookie thông qua cài đặt trình duyệt. Một số tính năng có thể không hoạt động đúng nếu cookie hoặc bộ nhớ cục bộ bị tắt.",
+              "Mã định danh quảng cáo do script quảng cáo của Google đặt: khi quảng cáo được bật, script của Google có thể lưu các mã định danh trong trình duyệt của bạn, mà Google ghi nhận là các cookie bên thứ nhất __gads và __gpi trên tên miền của chúng tôi (được giữ tối đa 13 tháng), các cookie riêng của Google như IDE trên doubleclick.net (13 tháng tại EEA, Vương quốc Anh và Thụy Sĩ, 24 tháng ở nơi khác), và các mục tương tự trong bộ nhớ cục bộ. Google sử dụng chúng để phân phối và đo lường quảng cáo, để giới hạn tần suất bạn thấy cùng một quảng cáo, để ngăn chặn gian lận quảng cáo và, chỉ khi bạn cho phép, để cá nhân hóa quảng cáo. Thời gian lưu giữ của từng mục do chính sách của Google quy định: https://policies.google.com/technologies/cookies. Chúng chỉ được đặt khi quảng cáo được bật và bạn đã cho phép lưu trữ quảng cáo; tại EEA, Vương quốc Anh và Thụy Sĩ, điều đó có nghĩa là chỉ sau khi bạn đồng ý trong thông báo đồng ý của Google. Xem Mục 5.1."
             ]
           },
           {
@@ -730,6 +735,13 @@
               "Mục đích và cơ sở pháp lý: chúng tôi chỉ dùng các dữ liệu này để tạo và vận hành giọng nói bạn yêu cầu, tức là để tạo giọng nói, tạo bản nghe thử, và tạo hoặc chuyển đổi lời nói khi bạn yêu cầu. Bản ghi âm giọng của một người có thể xác định được người đó, nên chúng tôi xử lý nó với sự thận trọng mà dữ liệu thuộc danh mục đặc biệt (sinh trắc học) đòi hỏi và dựa trên sự đồng ý rõ ràng của bạn, được đưa ra bằng ô đồng ý trước khi một giọng nói được tạo từ bản ghi âm. Bạn có thể rút lại sự đồng ý bất cứ lúc nào bằng cách xóa giọng nói.",
               "Lưu trữ: các giọng nói đã lưu được lưu trên máy chủ của chúng tôi và trong Amazon S3 tại voices/, trong tài khoản của bạn, và tuân theo thời gian lưu giữ bạn chọn (Mục 3). Các bản ghi âm bạn tải lên để thay đổi và lời nói bạn tạo ra được lưu giữ như mọi tệp tải lên và kết quả khác. Việc xử lý giọng nói chạy trên máy chủ GPU của chính chúng tôi: các bản ghi âm và giọng nói của bạn không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào. Lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được, đánh dấu chúng là âm thanh tổng hợp; hình mờ này không chứa thông tin tài khoản.",
               "Xóa và xuất dữ liệu: bạn có thể xóa một giọng nói đã lưu bất cứ lúc nào từ Tài khoản, Giọng nói; bản ghi âm tham chiếu và bản nghe thử của nó bị xóa khỏi máy chủ của chúng tôi ngay lập tức, trong khi lời nói bạn đã tạo vẫn được giữ cho đến khi hết thời gian lưu giữ riêng của nó. Tất cả giọng nói đã lưu của bạn bị xóa khi bạn xóa tài khoản. Bản xuất dữ liệu của bạn liệt kê các giọng nói đã lưu (tên, loại, ngôn ngữ, ngày tháng và bản ghi sự đồng ý), không kèm âm thanh."
+            ]
+          },
+          {
+            "title": "1.11 Tin nhắn bạn gửi cho chúng tôi",
+            "paragraphs": [
+              "Khi bạn dùng biểu mẫu liên hệ tại media-manipulator.com/contact, chúng tôi nhận được tên, địa chỉ email, chủ đề bạn chọn và tin nhắn của bạn, cùng với thời điểm gửi và một mã tham chiếu ngắn. Biểu mẫu chuyển những thông tin này đến hộp thư hỗ trợ của chúng tôi bằng email, thông qua nhà cung cấp email của chúng tôi là Resend; các tin nhắn liên hệ không được lưu trong cơ sở dữ liệu ứng dụng của chúng tôi. Khi bạn gửi email trực tiếp cho chúng tôi, chúng tôi nhận được cùng loại thông tin từ email của bạn.",
+              "Chúng tôi chỉ dùng các tin nhắn này để trả lời bạn và xử lý điều bạn yêu cầu, chẳng hạn báo lỗi, câu hỏi về thanh toán hoặc yêu cầu về quyền riêng tư. Chúng được lưu trong hộp thư hỗ trợ của chúng tôi cho đến khi cuộc trao đổi kết thúc, và không bao giờ quá 12 tháng. Để hạn chế thư rác, biểu mẫu bị giới hạn tốc độ theo từng phiên trình duyệt và từng địa chỉ IP giống như phần còn lại của trang, và một lần thử bị chặn được lưu giữ như một bản ghi phòng chống lạm dụng (Mục 3.6)."
             ]
           }
         ]
@@ -843,11 +855,32 @@
         "title": "5. Quảng cáo",
         "paragraphs": [
           "Media Manipulator có thể hiển thị quảng cáo, bao gồm quảng cáo do Google AdSense hoặc các đối tác quảng cáo khác cung cấp.",
-          "Quảng cáo có giới hạn và có thể thay đổi. Chúng tôi chỉ hiển thị quảng cáo trên một số trang công cụ được chọn, không bao giờ trên trang chủ, trang giá, trang tài khoản hoặc trang pháp lý, và người đăng ký Premium và Pro không thấy quảng cáo. Quảng cáo chỉ xuất hiện khi quảng cáo được bật cho trang web, và script quảng cáo của Google chỉ được tải trên trang thực sự hiển thị quảng cáo. Tín hiệu đồng ý của Google cho quảng cáo bị từ chối theo mặc định và được cập nhật theo lựa chọn của bạn trong “Cài đặt cookie” ở chân trang.",
+          "Quảng cáo có giới hạn và có thể thay đổi. Chúng tôi chỉ hiển thị quảng cáo trên một số trang công cụ được chọn, không bao giờ trên trang chủ, trang giá, trang tài khoản hoặc trang pháp lý, và người đăng ký Premium và Pro không thấy quảng cáo. Quảng cáo chỉ xuất hiện khi quảng cáo được bật cho trang web, và script quảng cáo của Google được tải trên các trang có thể hiển thị quảng cáo, với mọi tín hiệu đồng ý bị từ chối cho đến khi bạn lựa chọn, và cho đến lúc đó chỉ phân phối quảng cáo không được cá nhân hóa. Tín hiệu đồng ý của Google cho quảng cáo bị từ chối theo mặc định và được cập nhật theo lựa chọn của bạn trong “Cài đặt cookie” ở chân trang.",
           "Các nhà cung cấp bên thứ ba, bao gồm Google, có thể sử dụng cookie để phân phối quảng cáo dựa trên các lượt truy cập trước đó của người dùng vào Media Manipulator hoặc các website khác. Việc Google sử dụng cookie quảng cáo cho phép Google và các đối tác phân phối quảng cáo đến người dùng dựa trên lượt truy cập của họ vào Media Manipulator và/hoặc các trang khác trên Internet.",
           "Người dùng có thể từ chối quảng cáo cá nhân hóa bằng cách truy cập Cài đặt quảng cáo của Google. Người dùng cũng có thể từ chối việc một số nhà cung cấp bên thứ ba sử dụng cookie cho quảng cáo cá nhân hóa bằng cách truy cập các trang từ chối của ngành khi có sẵn.",
           "Các đối tác quảng cáo có thể thu thập hoặc nhận thông tin từ website của chúng tôi và các website khác, và sử dụng thông tin đó để cung cấp dịch vụ đo lường và quảng cáo có mục tiêu.",
           "Chúng tôi không kiểm soát cookie quảng cáo hoặc công nghệ theo dõi của bên thứ ba. Việc sử dụng chúng tuân theo chính sách quyền riêng tư của các bên thứ ba cung cấp chúng."
+        ],
+        "subsections": [
+          {
+            "title": "5.1 Cookie quảng cáo và Google AdSense",
+            "paragraphs": [
+              "Google, với tư cách là nhà cung cấp bên thứ ba, sử dụng cookie để phân phối quảng cáo trên Media Manipulator thông qua Google AdSense. Việc Google sử dụng cookie DoubleClick và các cookie quảng cáo khác của mình cho phép Google và các đối tác của Google phân phối quảng cáo đến bạn dựa trên các lượt truy cập của bạn vào Media Manipulator và/hoặc các trang web khác trên Internet. Các cookie và mã định danh liên quan được liệt kê trong Mục 1.5.",
+              "Quảng cáo không cá nhân hóa: tín hiệu đồng ý của Google dành cho quảng cáo mặc định là bị từ chối đối với mọi khách truy cập, vì vậy cho đến khi bạn cho phép quảng cáo, Google chỉ phân phối quảng cáo không cá nhân hóa. Các quảng cáo này không dựa trên lịch sử duyệt web trước đây của bạn; chúng được chọn dựa trên trang bạn đang xem và vị trí chung của bạn (không chính xác hơn mức thành phố của bạn), và ở nơi việc lưu trữ được cho phép, Google vẫn có thể sử dụng cookie hoặc mã định danh để giới hạn tần suất bạn thấy cùng một quảng cáo (giới hạn tần suất hiển thị), để báo cáo quảng cáo tổng hợp và để ngăn chặn gian lận và lạm dụng. Tại EEA, Vương quốc Anh và Thụy Sĩ, nếu bạn không đồng ý, Google phân phối quảng cáo có giới hạn, loại quảng cáo không dùng cookie hay bộ nhớ cục bộ cho mục đích quảng cáo.",
+              "Sự đồng ý tại EEA, Vương quốc Anh và Thụy Sĩ: khách truy cập tại đó sẽ thấy thông báo đồng ý của chính Google, một nền tảng quản lý sự đồng ý được Google chứng nhận, sử dụng Khung minh bạch và đồng ý của IAB (IAB Transparency and Consent Framework, TCF) v2.2, hỏi xem Google và các đối tác quảng cáo của Google có được phép sử dụng cookie và dữ liệu cá nhân cho quảng cáo hay không. Thanh cookie của chúng tôi chỉ hỏi về hệ thống phân tích của bên thứ nhất của chúng tôi. Bạn có thể mở lại một trong hai thông báo và thay đổi hoặc rút lại lựa chọn của mình bất cứ lúc nào từ “Cài đặt cookie” ở chân trang. Ở những nơi khác, quảng cáo tuân theo lựa chọn của bạn trong “Cài đặt cookie”, và tín hiệu Global Privacy Control hoặc “Không bán hoặc chia sẻ thông tin cá nhân của tôi” luôn từ chối quảng cáo cá nhân hóa (xem Mục 14).",
+              "Bạn có thể từ chối quảng cáo cá nhân hóa, hoặc tìm hiểu thêm, tại đây:"
+            ],
+            "bullets": [
+              "Cài đặt quảng cáo của Google (Google Ads Settings), để tắt quảng cáo cá nhân hóa từ Google: https://adssettings.google.com",
+              "công cụ WebChoices của Digital Advertising Alliance, để từ chối quảng cáo cá nhân hóa từ các nhà cung cấp bên thứ ba tham gia: https://www.aboutads.info/choices",
+              "Your Online Choices, dành cho khách truy cập tại Liên minh châu Âu: https://youronlinechoices.eu",
+              "trang “How Google uses information from sites or apps that use our services” của Google: https://policies.google.com/technologies/partner-sites"
+            ],
+            "afterBullets": [
+              "Ai thấy quảng cáo: chỉ khách truy cập chưa đăng nhập và tài khoản miễn phí. Người đăng ký Premium và Pro không bao giờ thấy quảng cáo, và không có đơn vị quảng cáo nào được đặt trên các trang của họ.",
+              "Tệp ads.txt của chúng tôi, liệt kê các công ty được ủy quyền bán không gian quảng cáo trên Media Manipulator (chỉ có Google), được công khai tại https://www.media-manipulator.com/ads.txt."
+            ]
+          }
         ]
       },
       {
@@ -1038,6 +1071,7 @@
       {
         "title": "16. Liên hệ với chúng tôi",
         "paragraphs": [
+          "Biểu mẫu liên hệ tại media-manipulator.com/contact đến cùng những người nhận địa chỉ bên dưới; Mục 1.11 giải thích biểu mẫu thu thập gì và tin nhắn được lưu trong bao lâu.",
           "Nếu bạn có câu hỏi về Chính sách quyền riêng tư này hoặc cách Media Manipulator xử lý thông tin, hãy liên hệ với chúng tôi tại:"
         ],
         "contactBlock": true,
@@ -1281,7 +1315,7 @@
           {
             "title": "8.9 Quảng cáo và lưu lượng không hợp lệ",
             "paragraphs": [
-              "Media Manipulator có thể hiển thị quảng cáo. Bạn không được tương tác với quảng cáo theo cách gian lận, giả tạo, lừa đảo hoặc lạm dụng.",
+              "Media Manipulator có thể hiển thị quảng cáo. Bạn không được tương tác với quảng cáo theo cách gian lận, giả tạo, lừa đảo hoặc lạm dụng. Quảng cáo chỉ được hiển thị cho khách truy cập chưa đăng nhập và tài khoản miễn phí; các gói trả phí, Premium và Pro, loại bỏ quảng cáo.",
               "Bạn không được:"
             ],
             "bullets": [
@@ -1594,7 +1628,7 @@
       "q2": "Điều gì xảy ra khi tôi dùng hết?",
       "a2": "Không có gì hỏng cả. Công cụ cho bạn biết hạn mức đã hết và gợi ý gói cao hơn. Hạn mức của bạn được đặt lại vào nửa đêm UTC.",
       "q3": "Tài khoản miễn phí có thấy quảng cáo không?",
-      "a3": "Có. Quảng cáo chi trả cho gói miễn phí, nên chỉ Premium và Pro loại bỏ chúng. Không có quảng cáo xen giữa, đếm ngược hay chờ bắt buộc trên bất kỳ gói nào.",
+      "a3": "Có. Quảng cáo chi trả cho gói miễn phí, nên chỉ Premium và Pro loại bỏ chúng. Không bao giờ có quá hai quảng cáo trên một trang, không bao giờ nằm đè lên các công cụ, và không bao giờ xuất hiện trên trang chủ, trang giá, trang tài khoản hoặc trang pháp lý. Không có quảng cáo xen giữa, đếm ngược hay chờ bắt buộc trên bất kỳ gói nào.",
       "q4": "Tôi có thể dùng mà hoàn toàn không cần tài khoản không?",
       "a4": "Có, và đó là chủ ý. Mọi công cụ đều hoạt động khi chưa đăng nhập — tài khoản chỉ nâng giới hạn và giữ lịch sử của bạn. Không có tài khoản, tệp của bạn được lưu 24 giờ; có tài khoản, bạn chọn thời gian lưu, từ 24 giờ đến 2 năm."
     },
@@ -1976,6 +2010,30 @@
     "popular": {
       "eyebrow": "Chuyển đổi phổ biến",
       "title": "Đi thẳng đến một công cụ"
+    },
+    "whatYouCanDo": {
+      "eyebrow": "Bạn có thể làm gì ở đây",
+      "title": "Công cụ cho mọi loại tệp media",
+      "video": "<strong>Video.</strong> <compressVideo>Nén video</compressVideo> để gửi email hoặc đăng lên web, <trimVideo>cắt</trimVideo> đúng phần bạn cần bằng thao tác cắt nhanh giữ nguyên chất lượng gốc, <videoGif>biến một đoạn clip ngắn thành GIF động</videoGif>, hoặc <hls>đóng gói thành HLS</hls> để phát trực tuyến thích ứng. Các tệp lớn được tải thẳng lên kho lưu trữ của chúng tôi, nên các bản ghi dài vẫn dùng được.",
+      "images": "<strong>Hình ảnh và PDF.</strong> <removeExif>Xóa siêu dữ liệu EXIF</removeExif> như vị trí GPS trước khi bạn chia sẻ ảnh, <compressImage>nén hình ảnh</compressImage> để trang tải nhanh hơn, <resizeImage>đổi kích thước</resizeImage> theo đúng số pixel, và chuyển <imageToPdf>hình ảnh sang PDF</imageToPdf> hoặc <pdfToJpg>các trang PDF sang JPG</pdfToJpg>.",
+      "audio": "<strong>Âm thanh và giọng nói.</strong> <extractAudio>Trích xuất track âm thanh</extractAudio> từ video thành MP3, WAV, M4A, FLAC hoặc OGG, và <transcribe>chép lại lời nói</transcribe> thành văn bản có thể tìm kiếm hoặc phụ đề. Việc chép lời chạy Whisper trên máy chủ GPU của chính chúng tôi.",
+      "ai": "<strong>Công cụ AI.</strong> <removeBg>Xóa nền</removeBg> khỏi ảnh, <imageRestore>khôi phục và nâng cấp độ phân giải ảnh cũ</imageRestore>, <videoRestore>so sánh các mô hình khôi phục video</videoRestore> cạnh nhau trên một đoạn clip ngắn, hoặc <docScan>biến các trang quét thành PDF có thể tìm kiếm</docScan>. Mọi mô hình đều chạy trên máy chủ do chúng tôi vận hành.",
+      "editors": "<strong>Trình chỉnh sửa.</strong> Khi một lần chuyển đổi là chưa đủ, <darkroom>Darkroom</darkroom> là trình chỉnh sửa video nhiều track và <motion>Motion</motion> tạo hoạt ảnh cho đồ họa SVG trên dòng thời gian keyframe. Cả hai chạy trong trình duyệt của bạn, và đăng nhập sẽ giữ các dự án của bạn trong tài khoản."
+    },
+    "whatWeDont": {
+      "eyebrow": "Những gì chúng tôi không làm",
+      "title": "Những thứ chúng tôi cố ý bỏ đi",
+      "items": [
+        "<strong>Không dùng AI của bên thứ ba.</strong> Tệp của bạn không bao giờ được gửi đến nhà cung cấp AI bên ngoài. Chép lời, xóa nền, nâng cấp độ phân giải và mọi công cụ AI khác đều chạy trên máy chủ GPU của chính chúng tôi.",
+        "<strong>Không có hình mờ trên tệp của bạn.</strong> Hình ảnh, video, âm thanh và tài liệu đã chuyển đổi được trả về không có logo hay dấu nào. Ngoại lệ duy nhất là giọng nói tổng hợp từ các công cụ giọng nói, mang một dấu hiệu không nghe thấy được để nhận biết đó là nội dung do AI tạo ra.",
+        "<strong>Hầu hết công cụ không cần tài khoản.</strong> Chuyển đổi, nén, cắt và xóa siêu dữ liệu hoạt động mà không cần đăng ký. Tài khoản miễn phí có thêm hạn mức hằng ngày lớn hơn, dự án được lưu và quyền kiểm soát thời gian lưu tệp của bạn.",
+        "<strong>Không lưu tệp lâu hơn thời gian bạn chọn.</strong> Tệp của khách được lưu 24 giờ; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm, và bạn có thể xóa bất kỳ tệp nào sớm hơn từ tài khoản của mình."
+      ]
+    },
+    "whoMakes": {
+      "eyebrow": "Ai làm ra trang này",
+      "title": "Do một kỹ sư xây dựng, do CreaTV Ltd. vận hành",
+      "body": "Media Manipulator được thiết kế, xây dựng và vận hành bởi Mitchell Wintrow, một kỹ sư phần mềm cấp cao ở Colorado, và được CreaTV Ltd. vận hành. Đọc <linkAbout>thêm về dự án và nhà sáng lập</linkAbout>, hoặc <linkContact>liên hệ</linkContact> khi bạn có câu hỏi hay báo lỗi."
     }
   },
   "toolsIndex": {
@@ -2158,7 +2216,6 @@
     "unmodified": "Được sử dụng nguyên bản. Mã nguồn có sẵn tại liên kết phía trên."
   },
   "motionPage": {
-    "betaBadge": "Beta",
     "guide": {
       "summaryTitle": "Cách {{brand}} hoạt động",
       "whatItIsTitle": "Nó là gì",
@@ -2212,14 +2269,14 @@
         "notIncluded": "Không có",
         "unlimited": "Không giới hạn",
         "localOnly": "{{count}}, chỉ trong trình duyệt này",
-        "comingSoon": "Sắp có: chưa có trên gói nào",
+        "comingSoon": "Định dạng xuất có sẵn theo yêu cầu",
         "noCap": "Không giới hạn",
         "notApplicable": "Không có",
         "capHeight": "tối đa {{height}}p",
         "capFps": "{{fps}} fps",
         "capSeconds": "{{seconds}} giây"
       },
-      "comingSoonNote": "Các định dạng được đánh dấu “sắp có” đã được tích hợp trong trình biên tập và sẽ sớm được thêm vào một gói. Bảng này tự cập nhật khi điều đó xảy ra.",
+      "comingSoonNote": "Các định dạng được đánh dấu “có sẵn theo yêu cầu” đã được tích hợp trong trình chỉnh sửa nhưng không nằm trong bất kỳ gói nào. Nếu bạn cần một định dạng, hãy hỏi chúng tôi qua <linkContact>trang liên hệ</linkContact>.",
       "resetNote": "Hạn mức được đặt lại vào nửa đêm UTC. Các lượt xuất bị hủy hoặc thất bại đã được tính sẽ không được hoàn lại.",
       "unavailable": "Hiện không tải được bảng gói. Trang giá liệt kê hạn mức của mọi gói.",
       "seePlans": "So sánh tất cả các gói"
@@ -2345,5 +2402,83 @@
         ]
       }
     ]
+  },
+  "contact": {
+    "metaTitle": "Liên hệ Media Manipulator | Hỗ trợ, quyền riêng tư và báo chí",
+    "metaDesc": "Liên hệ với những người đứng sau Media Manipulator: hỗ trợ và thanh toán qua support@media-manipulator.com, yêu cầu về quyền riêng tư qua privacy@media-manipulator.com, hoặc dùng biểu mẫu liên hệ. Chúng tôi thường trả lời trong vòng hai ngày làm việc.",
+    "title": "Liên hệ Media Manipulator",
+    "intro": "Câu hỏi, báo lỗi, vấn đề thanh toán, yêu cầu về quyền riêng tư hay ý tưởng hợp tác: hãy gửi tin nhắn bằng biểu mẫu hoặc email trực tiếp cho chúng tôi. Mỗi tin nhắn đều do một con người đọc.",
+    "whoTitle": "Bạn đang viết cho ai",
+    "whoBody": "Media Manipulator do Mitchell Wintrow, nhà sáng lập kiêm kỹ sư duy nhất, xây dựng và vận hành, và được <strong>CreaTV Ltd.</strong> tại Colorado, Hoa Kỳ vận hành. Không có công ty hỗ trợ bên ngoài nào trả lời thay chúng tôi. <linkAbout>Tìm hiểu thêm về người làm ra Media Manipulator</linkAbout>.",
+    "emailTitle": "Email",
+    "supportLabel": "Hỗ trợ, lỗi và thanh toán",
+    "privacyLabel": "Yêu cầu về quyền riêng tư và dữ liệu",
+    "responseTime": "Chúng tôi thường trả lời trong vòng hai ngày làm việc.",
+    "bugTitle": "Báo lỗi",
+    "bugIntro": "Chúng tôi có thể sửa vấn đề nhanh hơn nhiều khi tin nhắn đầu tiên của bạn có:",
+    "bugItems": [
+      "công cụ bạn đã dùng, hoặc địa chỉ trang của nó;",
+      "loại tệp và dung lượng tệp xấp xỉ;",
+      "trình duyệt và thiết bị của bạn;",
+      "điều bạn mong đợi, điều đã xảy ra thay vào đó và mọi thông báo lỗi bạn thấy."
+    ],
+    "bugNoFiles": "Vui lòng không đính kèm chính tệp đó trừ khi chúng tôi yêu cầu.",
+    "statusNote": "Nếu một công cụ có vẻ ngừng hoạt động với tất cả mọi người, <linkStatus>trang trạng thái</linkStatus> cho biết máy chủ của chúng tôi hiện có hoạt động bình thường hay không.",
+    "privacyNote": "Chúng tôi chỉ dùng tên, địa chỉ email và tin nhắn của bạn để trả lời bạn. Chúng được lưu trong hộp thư hỗ trợ của chúng tôi cho đến khi cuộc trao đổi kết thúc, và không bao giờ quá 12 tháng. Mục 1.11 của <linkPrivacy>chính sách quyền riêng tư</linkPrivacy> có chi tiết.",
+    "form": {
+      "title": "Gửi tin nhắn",
+      "name": "Tên của bạn",
+      "email": "Địa chỉ email của bạn",
+      "emailHint": "Chúng tôi trả lời đến địa chỉ này và không dùng nó cho việc gì khác.",
+      "subject": "Chủ đề",
+      "subjects": {
+        "bug": "Báo lỗi",
+        "billing": "Thanh toán",
+        "privacy": "Yêu cầu về quyền riêng tư hoặc dữ liệu",
+        "press": "Báo chí hoặc hợp tác",
+        "other": "Việc khác"
+      },
+      "message": "Tin nhắn",
+      "messageCount": "{{count}} trên {{max}} ký tự",
+      "honeypot": "Để trống trường này",
+      "submit": "Gửi tin nhắn",
+      "sending": "Đang gửi…",
+      "sentTitle": "Đã gửi tin nhắn",
+      "sentBody": "Cảm ơn bạn. Mã tham chiếu của bạn là {{reference}}. Chúng tôi thường trả lời trong vòng hai ngày làm việc, đến địa chỉ bạn đã cung cấp.",
+      "sendAnother": "Gửi tin nhắn khác",
+      "invalidName": "Vui lòng nhập tên của bạn (tối đa 100 ký tự).",
+      "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ, chẳng hạn name@example.com.",
+      "invalidSubject": "Vui lòng chọn một chủ đề.",
+      "invalidMessage": "Vui lòng viết tin nhắn tối đa 2.000 ký tự.",
+      "rateLimited": "Bạn đã gửi nhiều tin nhắn trong giờ vừa qua. Vui lòng gửi email cho chúng tôi tại {{email}}, hoặc thử lại sau.",
+      "failed": "Hiện chưa thể gửi tin nhắn của bạn. Vui lòng gửi email cho chúng tôi tại {{email}}; nội dung bạn đã nhập vẫn còn trong biểu mẫu."
+    }
+  },
+  "articleMeta": {
+    "byline": "Tác giả: {{name}}",
+    "published": "Đăng ngày {{date}}",
+    "updated": "Cập nhật ngày {{date}}",
+    "screenshots": {
+      "audioGettingStarted": {
+        "alt": "Trình chuyển đổi âm thanh của Media Manipulator với một tệp âm thanh được chọn và các tùy chọn định dạng, bitrate, tần số lấy mẫu đang mở",
+        "caption": "Trình chuyển đổi âm thanh: chọn một tệp, rồi chọn định dạng và chất lượng."
+      },
+      "videoGettingStarted": {
+        "alt": "Trình chuyển đổi video của Media Manipulator với một video được chọn và các tùy chọn định dạng đầu ra và chất lượng đang mở",
+        "caption": "Trình chuyển đổi video: chọn định dạng đầu ra, chất lượng và kích thước."
+      },
+      "imageGettingStarted": {
+        "alt": "Trình chuyển đổi hình ảnh của Media Manipulator với một bức ảnh được chọn và các tùy chọn định dạng, chất lượng, đổi kích thước đang mở",
+        "caption": "Trình chuyển đổi hình ảnh: định dạng, chất lượng và kích thước trong một bảng."
+      },
+      "aiFrameInterpolation": {
+        "alt": "Bảng công cụ video AI với nội suy khung hình AI được chọn và tốc độ khung hình mục tiêu là 60 fps",
+        "caption": "Nội suy khung hình AI trong bảng công cụ video AI."
+      },
+      "motion": {
+        "alt": "Trình chỉnh sửa Motion với một SVG đã nhập trên canvas và các keyframe trên dòng thời gian hoạt ảnh",
+        "caption": "Trình chỉnh sửa Motion: các lớp, canvas và dòng thời gian keyframe."
+      }
+    }
   }
 }

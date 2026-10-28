@@ -4,7 +4,6 @@
     "brandTagline": "이미지, 동영상, 오디오 파일을 손쉽게 변환하세요",
     "loading": "불러오는 중…",
     "loadingShort": "불러오는 중...",
-    "comingSoon": "출시 예정",
     "tryAgain": "다시 시도",
     "cancel": "취소",
     "close": "닫기",
@@ -101,7 +100,8 @@
     "navigationLabel": "내비게이션",
     "language": "언어",
     "selectLanguage": "언어 선택",
-    "voices": "음성"
+    "voices": "음성",
+    "contact": "문의하기"
   },
   "footer": {
     "tagline": "이미지, 동영상, 오디오 파일을 편집, 변환, 압축, 분석, 전사, 요약하고 그 밖의 다양한 방식으로 처리하는 브라우저 기반 및 서버 지원 도구입니다.",
@@ -112,10 +112,6 @@
     "cookieSettings": "쿠키 설정",
     "copyright": "© {{year}} Media Manipulator, CreaTV Ltd. 제품. All rights reserved.",
     "operatedBy": "운영: CreaTV Ltd. · 미국 콜로라도",
-    "cookieDialog": {
-      "title": "쿠키 환경설정",
-      "description": "쿠키 환경설정은 Google이 관리합니다. 쿠키 배너가 표시되지 않으면 페이지를 새로고침하시거나, Media Manipulator의 데이터 처리 방식에 대한 자세한 내용은 개인정보 처리방침을 참고하세요."
-    },
     "changelog": "변경 내역",
     "status": "서비스 상태",
     "licenses": "오픈소스 라이선스"

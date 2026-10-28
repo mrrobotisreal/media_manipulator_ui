@@ -202,9 +202,11 @@
     },
     "advertising": {
       "title": "Publicidade",
-      "body": "Para publicidade personalizada. No momento não exibimos anúncios, então isso ainda não faz nada. Está listado aqui para que você veja antes que algum dia entre em vigor.",
+      "body": "Permite que o Google personalize os anúncios exibidos em algumas páginas de ferramentas para visitantes gratuitos e não conectados. A exibição de um anúncio não depende desta chave; desativada, os anúncios não são personalizados. Premium e Pro nunca veem anúncios.",
+      "bodyGdpr": "Na sua região, as escolhas sobre anúncios são feitas na mensagem de consentimento do Google, não aqui; este painel cobre a nossa própria análise de uso. Até você escolher lá, os anúncios nas páginas de ferramentas não são personalizados. Premium e Pro nunca veem anúncios.",
       "bodyGpc": "Para publicidade personalizada. Seu navegador está enviando um sinal Global Privacy Control, então isso permanece desativado. Respeitamos esse sinal, e um clique aqui não pode anulá-lo.",
-      "notActive": "Ainda não ativo"
+      "managedByGoogle": "Gerenciado pela mensagem de consentimento do Google",
+      "openGoogleMessage": "Alterar opções de anúncios"
     },
     "gpcDetected": "Global Privacy Control detectado. Nós já excluímos você automaticamente de qualquer venda ou compartilhamento das suas informações pessoais e registramos isso.",
     "doNotSell": {
@@ -425,6 +427,14 @@
       "downloadJson": "Baixar .json",
       "showAll": "Mostrar tudo ({{count}})",
       "showLess": "Mostrar menos"
+    },
+    "mp3": {
+      "button": "Baixar como MP3",
+      "converting": "Convertendo para MP3…",
+      "hint": "Arquivo menor, convertido no nosso servidor. Grátis e nunca conta como trabalho de IA.",
+      "started": "Seu download do MP3 começou — confira os downloads do navegador.",
+      "startedWithSize": "Seu download do MP3 começou ({{size}}) — confira os downloads do navegador.",
+      "failed": "Não foi possível preparar o MP3. Tente de novo em instantes."
     }
   },
   "billing": {

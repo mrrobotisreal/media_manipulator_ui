@@ -45,7 +45,7 @@
       "tooltipIntro": "One AI operation runs per job, on our local GPU server. The standard FFmpeg processing chain is skipped for that job.",
       "tooltipCleanVoice": "<strong>Clean Voice</strong> — DeepFilterNet denoise + broadcast polish chain (high/low pass, loudness, limiter).",
       "tooltipRemoveNoise": "<strong>Remove Background Noise</strong> — DeepFilterNet denoise without the polish chain.",
-      "tooltipIsolateVocals": "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (defaults to lossless WAV).",
+      "tooltipIsolateVocals": "<strong>Isolate Vocals</strong> — Demucs htdemucs vocal stem (same format as your file by default).",
       "tooltipRemoveVocals": "<strong>Remove Vocals / Karaoke</strong> — Demucs instrumental stem.",
       "intro": "AI audio tools run as GPU jobs and may take longer than basic conversion.",
       "operationLabel": "Operation",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "Bitrate, EQ, and other standard audio options are skipped when an AI operation is selected.",
       "presetLocked": "Preset for this tool"
+    },
+    "stemFormat": {
+      "label": "Output format",
+      "options": {
+        "auto": "Same as input (recommended)",
+        "autoWithFormat": "Same as input: {{format}} (recommended)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (lossless)",
+        "wav": "WAV (lossless, largest)"
+      },
+      "withEstimate": "{{label}} · about {{size}}",
+      "help": "Sizes are estimates. An MP3 stays MP3; a lossless file (WAV, FLAC, AIFF) comes back as FLAC.",
+      "helpNoEstimate": "An MP3 stays MP3; a lossless file (WAV, FLAC, AIFF) comes back as FLAC. Pick FLAC or WAV for lossless.",
+      "wavHint": "WAV will be about {{size}}. That is a very large download; FLAC is lossless and about half the size."
     }
   },
   "videoForm": {
@@ -140,14 +154,14 @@
       "upscale": {
         "scaleLabel": "Scale",
         "scale4x": "4x",
-        "scale2x": "2x (experimental on some images)",
+        "scale2x": "2x",
         "modelLabel": "Model",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (photos)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI upscale is available, but 4x is the safest/default model path on this server.",
+        "experimentalNote": "4x is the default and gives the most consistent results. 2x runs the same model at half the scale and can look slightly cropped on some images.",
         "pngNote": "Output is PNG by default."
       },
       "removeObject": {

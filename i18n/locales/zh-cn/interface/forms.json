@@ -45,7 +45,7 @@
       "tooltipIntro": "每个任务在我们本地的GPU服务器上运行一项AI操作。该任务会跳过标准的FFmpeg处理链。",
       "tooltipCleanVoice": "<strong>人声清理</strong>——DeepFilterNet降噪 + 广播级润色链（高/低通、响度、限制器）。",
       "tooltipRemoveNoise": "<strong>移除背景噪音</strong>——DeepFilterNet降噪，不含润色链。",
-      "tooltipIsolateVocals": "<strong>人声分离</strong>——Demucs htdemucs人声音轨（默认输出无损WAV）。",
+      "tooltipIsolateVocals": "<strong>人声分离</strong>——Demucs htdemucs人声音轨（默认与原文件格式相同）。",
       "tooltipRemoveVocals": "<strong>消除人声/卡拉OK</strong>——Demucs伴奏音轨。",
       "intro": "AI音频工具作为GPU任务运行，可能比基础转换耗时更长。",
       "operationLabel": "操作",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "选择AI操作后，比特率、均衡器和其他标准音频选项将被跳过。",
       "presetLocked": "此工具的预设"
+    },
+    "stemFormat": {
+      "label": "输出格式",
+      "options": {
+        "auto": "与输入相同（推荐）",
+        "autoWithFormat": "与输入相同：{{format}}（推荐）",
+        "mp3": "MP3（320 kbps）",
+        "flac": "FLAC（无损）",
+        "wav": "WAV（无损，体积最大）"
+      },
+      "withEstimate": "{{label}} · 约{{size}}",
+      "help": "大小为估算值。MP3仍输出MP3；无损文件（WAV、FLAC、AIFF）则输出FLAC。",
+      "helpNoEstimate": "MP3仍输出MP3；无损文件（WAV、FLAC、AIFF）则输出FLAC。如需无损，请选择FLAC或WAV。",
+      "wavHint": "WAV约为{{size}}，下载体积非常大；FLAC同样无损，体积约为一半。"
     }
   },
   "videoForm": {
@@ -139,14 +153,14 @@
       "upscale": {
         "scaleLabel": "放大倍数",
         "scale4x": "4倍",
-        "scale2x": "2倍（在部分图片上为实验性）",
+        "scale2x": "2倍",
         "modelLabel": "模型",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus（照片）",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "提供2倍AI放大，但在此服务器上4倍是最安全/默认的模型路径。",
+        "experimentalNote": "4倍是默认值，效果最稳定。2倍以一半的比例运行同一模型，在某些图片上可能看起来略有裁切。",
         "pngNote": "默认输出PNG。"
       },
       "removeObject": {

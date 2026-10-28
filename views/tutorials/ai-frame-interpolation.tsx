@@ -5,6 +5,7 @@ import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import { getToolPanelShellLabels } from '@/components/tools/tool-panel-shell-labels';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
+import { TutorialByline, TutorialScreenshot } from '@/components/articles/article-byline';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
 
@@ -61,9 +62,11 @@ const AIFrameInterpolationTutorial: React.FC<{ locale?: string }> = ({ locale })
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">
                 {t(`${K}.title`)}
               </h1>
+              <TutorialByline path="/tutorials/ai-frame-interpolation" locale={locale} />
               <p className="text-lg mb-8">
                 {t(`${K}.intro`)}
               </p>
+              <TutorialScreenshot k="aiFrameInterpolation" locale={locale} />
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
                 {t(`${K}.whatIs.title`)}

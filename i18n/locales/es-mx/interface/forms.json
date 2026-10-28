@@ -45,7 +45,7 @@
       "tooltipIntro": "Se ejecuta una operación de IA por tarea, en nuestro servidor GPU local. La cadena de procesamiento estándar de FFmpeg se omite para esa tarea.",
       "tooltipCleanVoice": "<strong>Limpiar voz</strong>: reducción de ruido con DeepFilterNet + cadena de pulido para transmisión (paso alto/bajo, sonoridad, limitador).",
       "tooltipRemoveNoise": "<strong>Eliminar ruido de fondo</strong>: reducción de ruido con DeepFilterNet sin la cadena de pulido.",
-      "tooltipIsolateVocals": "<strong>Aislar voces</strong>: pista vocal con Demucs htdemucs (por defecto en WAV sin pérdida).",
+      "tooltipIsolateVocals": "<strong>Aislar voces</strong>: pista vocal con Demucs htdemucs (por defecto, en el mismo formato que tu archivo).",
       "tooltipRemoveVocals": "<strong>Eliminar voces / Karaoke</strong>: pista instrumental con Demucs.",
       "intro": "Las herramientas de audio con IA se ejecutan como tareas de GPU y pueden tardar más que una conversión básica.",
       "operationLabel": "Operación",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "La tasa de bits, el ecualizador y otras opciones de audio estándar se omiten cuando se selecciona una operación de IA.",
       "presetLocked": "Preestablecido para esta herramienta"
+    },
+    "stemFormat": {
+      "label": "Formato de salida",
+      "options": {
+        "auto": "Igual que el original (recomendado)",
+        "autoWithFormat": "Igual que el original: {{format}} (recomendado)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (sin pérdida)",
+        "wav": "WAV (sin pérdida, el más pesado)"
+      },
+      "withEstimate": "{{label}} · unos {{size}}",
+      "help": "Los tamaños son estimaciones. Un MP3 sigue siendo MP3; un archivo sin pérdida (WAV, FLAC, AIFF) vuelve como FLAC.",
+      "helpNoEstimate": "Un MP3 sigue siendo MP3; un archivo sin pérdida (WAV, FLAC, AIFF) vuelve como FLAC. Elige FLAC o WAV para conservar la calidad sin pérdida.",
+      "wavHint": "El WAV pesará unos {{size}}. Es una descarga muy grande; FLAC es sin pérdida y pesa aproximadamente la mitad."
     }
   },
   "videoForm": {
@@ -140,14 +154,14 @@
       "upscale": {
         "scaleLabel": "Escala",
         "scale4x": "4x",
-        "scale2x": "2x (experimental en algunas imágenes)",
+        "scale2x": "2x",
         "modelLabel": "Modelo",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (fotos)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "El escalado con IA 2x está disponible, pero 4x es la ruta de modelo más segura/predeterminada en este servidor.",
+        "experimentalNote": "4x es el valor predeterminado y da los resultados más consistentes. 2x ejecuta el mismo modelo a la mitad de escala y puede verse ligeramente recortado en algunas imágenes.",
         "pngNote": "La salida es PNG por defecto."
       },
       "removeObject": {

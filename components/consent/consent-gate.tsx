@@ -3,7 +3,6 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 
-import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
 import {
   getConsentDetails,
   initConsent,
@@ -30,13 +29,13 @@ import {
  *   which is why this component — mounted whether or not the banner is — owns the reopen
  *   subscription.
  *
- * ADSENSE_ENABLED is the Phase 12 handover switch. While it is false the review build loads
- * no AdSense script, so Google's certified CMP (Privacy & Messaging / TCF v2.2) never
- * appears and our banner is the only thing asking. Once it is true, that CMP owns TCF state
- * for EEA/UK ADS consent, and a second banner writing ad signals underneath it would be both
- * a duplicate prompt and a source of disagreement. Analytics consent remains ours either
- * way, which is why the preferences centre stays available and only the BANNER is
- * suppressed.
+ * ADS ON OR OFF, THE BANNER SHOWS wherever `needsPrompt` is true (MM82, ADR-0016). It used
+ * to be suppressed when ADSENSE_ENABLED, expecting Google's certified CMP to take over — but
+ * that CMP ships inside the ad script, so whenever the script did not load EEA visitors got
+ * no banner at all. Now both can coexist: ours asks about ANALYTICS only, Google's Privacy &
+ * messaging message (configured in MM83) asks about ADS for EEA/UK/CH visitors, and the
+ * Consent Mode bridge never writes the ad signals in that group (`ownsAdSignals`), so the two
+ * never disagree.
  */
 
 const ConsentBanner = dynamic(() => import('@/components/consent/consent-banner'), {
@@ -69,7 +68,6 @@ function ConsentGateInner() {
     void initConsent()
       .then(() => {
         if (cancelled) return;
-        if (ADSENSE_ENABLED) return;
         if (needsPrompt(getConsentDetails())) setShowBanner(true);
       })
       .catch(() => {

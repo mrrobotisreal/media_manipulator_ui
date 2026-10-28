@@ -202,9 +202,11 @@
     },
     "advertising": {
       "title": "Pubblicità",
-      "body": "Per la pubblicità personalizzata. Al momento non mostriamo annunci, quindi per ora non fa nulla: è elencata qui perché tu possa vederla prima che venga mai attivata.",
+      "body": "Consente a Google di personalizzare gli annunci mostrati su alcune pagine degli strumenti ai visitatori gratuiti e non autenticati. La comparsa di un annuncio non dipende da questo interruttore; se è disattivato, gli annunci non sono personalizzati. Premium e Pro non vedono mai annunci.",
+      "bodyGdpr": "Nella Sua regione le scelte sugli annunci si effettuano nel messaggio di consenso di Google, non qui; questo pannello riguarda le nostre analisi. Finché non sceglie lì, gli eventuali annunci nelle pagine degli strumenti non sono personalizzati. Premium e Pro non vedono mai annunci.",
       "bodyGpc": "Per la pubblicità personalizzata. Il tuo browser sta inviando un segnale Global Privacy Control, quindi resta disattivata: rispettiamo quel segnale e un clic qui non può annullarlo.",
-      "notActive": "Non ancora attiva"
+      "managedByGoogle": "Gestito dal messaggio di consenso di Google",
+      "openGoogleMessage": "Modifica scelte sugli annunci"
     },
     "gpcDetected": "Rilevato Global Privacy Control. Ti abbiamo escluso automaticamente da qualsiasi vendita o condivisione delle tue informazioni personali e ne abbiamo tenuto traccia.",
     "doNotSell": {
@@ -425,6 +427,14 @@
       "downloadJson": "Scarica .json",
       "showAll": "Mostra tutto ({{count}})",
       "showLess": "Mostra meno"
+    },
+    "mp3": {
+      "button": "Scarica come MP3",
+      "converting": "Conversione in MP3…",
+      "hint": "File più leggero, convertito sul nostro server. Gratis e non conta mai come lavoro IA.",
+      "started": "Il download dell'MP3 è iniziato: controlla i download del browser.",
+      "startedWithSize": "Il download dell'MP3 è iniziato ({{size}}): controlla i download del browser.",
+      "failed": "Non è stato possibile preparare l'MP3. Riprova tra un attimo."
     }
   },
   "billing": {

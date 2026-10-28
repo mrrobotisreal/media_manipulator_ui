@@ -164,19 +164,19 @@
         "body": "Os estudos mostram que 53% dos utilizadores de telemóvel abandonam sites que demoram mais de 3 segundos a carregar. CINQUENTA E TRÊS POR CENTO! É mais de metade dos seus potenciais clientes a desaparecer antes sequer de verem o seu conteúdo fantástico. E adivinhe qual é normalmente o maior culpado dos tempos de carregamento lentos? Isso mesmo: o seu vídeo principal de 200 MB não otimizado, ali plantado como uma barreira digital 🚧."
       },
       "googleWatching": {
-        "title": "A Google está a ver (e a julgar) 👀",
-        "intro": "A velocidade da página é um fator de classificação direto para a Google. Isto significa:",
+        "title": "Velocidade da página e pesquisa",
+        "intro": "Os motores de pesquisa medem a rapidez com que uma página fica utilizável, e um vídeo é muitas vezes o elemento mais pesado. Três hábitos impedem que o vídeo piore essa medição:",
         "bullets": [
-          "<strong>Site lento = classificações mais baixas</strong> = menos tráfego orgânico",
-          "<strong>Menos tráfego = menos conversões</strong> = menos dinheiro",
-          "<strong>Menos dinheiro = programador triste</strong> 😢"
+          "<strong>Preste atenção ao Largest Contentful Paint (maior composição de conteúdo)</strong>: um vídeo de destaque ou a sua imagem de cartaz é frequentemente o maior elemento no ecrã, por isso dê a cada vídeo uma pequena imagem de cartaz comprimida e mantenha leves os primeiros fotogramas.",
+          "<strong>Não pré-carregue o que não está visível</strong>: defina preload=\"none\" ou preload=\"metadata\" nos vídeos abaixo da zona visível para que não sejam transferidos durante o carregamento da página.",
+          "<strong>Sirva o tamanho que apresenta</strong>: um ficheiro 1080p apresentado num cartão com 400 píxeis de largura desperdiça a maior parte dos seus bytes, por isso codifique uma versão mais pequena para espaços pequenos."
         ],
-        "clientStory": "Tive um cliente cuja loja online usava ficheiros MOV gigantescos para os vídeos de produto. Depois de converter tudo para MP4 otimizados e WebM com alternativas, o seu:",
+        "clientStory": "Para ver o efeito no seu próprio site, meça antes e depois de comprimir:",
         "clientResults": [
-          "Tempo de carregamento da página caiu de 8,2 para 2,7 segundos",
-          "Classificações na Google melhoraram em 67% das palavras-chave alvo",
-          "Taxa de conversão aumentou 23%",
-          "Receita mensal subiu 18 000 dólares 💸"
+          "Analise a página com o PageSpeed Insights ou o Lighthouse e anote o Largest Contentful Paint e o peso total da página.",
+          "No painel Rede do navegador, filtre por multimédia e compare o tamanho transferido de cada vídeo.",
+          "Recodifique com uma definição de qualidade constante (CRF 23 a 28 para H.264) em vez de uma taxa de bits alta fixa e meça novamente.",
+          "Verifique a página numa ligação móvel limitada, e não apenas no Wi-Fi rápido de um escritório."
         ]
       },
       "bandwidthBill": {
@@ -210,13 +210,13 @@
         "outro": "Mas quando o seu site é lento? Grita «amadorismo» mais alto do que uma sirene de nevoeiro 📯. Os utilizadores pensam: «Se nem o site conseguem pôr a funcionar bem, posso confiar-lhes o meu cartão de crédito?»"
       },
       "monetization": {
-        "title": "A ligação à monetização 💰",
-        "intro": "Quer tenha anúncios, venda produtos ou monetize conteúdos através do Medium (olá, colega escritor do Medium! 👋), o desempenho afeta diretamente os seus resultados:",
+        "title": "Onde se notam as poupanças",
+        "intro": "Ficheiros de vídeo mais pequenos compensam em alguns pontos que pode medir:",
         "bullets": [
-          "<strong>Receita de anúncios</strong>: sites lentos = taxas de rejeição mais altas = menos impressões de anúncios",
-          "<strong>Ligações de afiliados</strong>: as pessoas não podem clicar no que não esperam para ver",
-          "<strong>Vendas de produtos</strong>: cada segundo de tempo de carregamento pode reduzir as conversões em 7%",
-          "<strong>Monetização de conteúdos</strong>: os leitores não vão esperar que o seu artigo brilhante carregue"
+          "<strong>Custos de alojamento e CDN</strong>: a maioria dos fornecedores cobra por gigabyte entregue, por isso reduzir um ficheiro a metade reduz aproximadamente a metade o custo de servir esse vídeo.",
+          "<strong>Tempo de arranque</strong>: um ficheiro mais pequeno começa a reproduzir mais cedo, por isso menos espectadores saem antes de a reprodução começar.",
+          "<strong>Dados móveis</strong>: os visitantes com planos limitados podem ver sem esgotar o seu limite de dados.",
+          "<strong>Limites de carregamento</strong>: muitos serviços de e-mail, aplicações de conversa e formulários recusam anexos acima de cerca de 25 MB, e um ficheiro comprimido passa."
         ]
       },
       "quote": "«A velocidade de um site é como uma primeira impressão: só tem uma oportunidade e, se a desperdiçar, eles passam à frente mais depressa do que consegue dizer 'aguarde, a carregar...'» 💨"

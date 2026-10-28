@@ -45,7 +45,7 @@
       "tooltipIntro": "تُنفَّذ عملية ذكاء اصطناعي واحدة لكل مهمة على خادم GPU المحلي لدينا. يُتخطى مسار معالجة FFmpeg القياسي لتلك المهمة.",
       "tooltipCleanVoice": "<strong>تنقية الصوت</strong>: إزالة الضوضاء بواسطة DeepFilterNet مع سلسلة تحسين إذاعية (مرشح تمرير عالٍ/منخفض، وضبط ارتفاع الصوت، ومحدّد).",
       "tooltipRemoveNoise": "<strong>إزالة ضوضاء الخلفية</strong>: إزالة الضوضاء بواسطة DeepFilterNet من دون سلسلة التحسين.",
-      "tooltipIsolateVocals": "<strong>عزل الغناء</strong>: مسار الغناء من Demucs htdemucs (افتراضيًا بصيغة WAV غير منقوصة).",
+      "tooltipIsolateVocals": "<strong>عزل الغناء</strong>: مسار الغناء من Demucs htdemucs (افتراضيًا بنفس صيغة ملفك).",
       "tooltipRemoveVocals": "<strong>إزالة الغناء / كاريوكي</strong>: المسار الموسيقي من Demucs.",
       "intro": "تعمل أدوات الصوت بالذكاء الاصطناعي كمهام GPU وقد تستغرق وقتًا أطول من التحويل الأساسي.",
       "operationLabel": "العملية",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "يُتخطى معدل البت والمعادل الصوتي وخيارات الصوت القياسية الأخرى عند اختيار عملية ذكاء اصطناعي.",
       "presetLocked": "إعداد مسبق لهذه الأداة"
+    },
+    "stemFormat": {
+      "label": "صيغة الإخراج",
+      "options": {
+        "auto": "مثل الملف الأصلي (موصى به)",
+        "autoWithFormat": "مثل الملف الأصلي: {{format}} (موصى به)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (غير منقوصة)",
+        "wav": "WAV (غير منقوصة، الأكبر حجمًا)"
+      },
+      "withEstimate": "{{label}} · حوالي {{size}}",
+      "help": "الأحجام تقديرية. يبقى ملف MP3 بصيغة MP3، وأما الملف غير المنقوص (WAV أو FLAC أو AIFF) فيعود بصيغة FLAC.",
+      "helpNoEstimate": "يبقى ملف MP3 بصيغة MP3، وأما الملف غير المنقوص (WAV أو FLAC أو AIFF) فيعود بصيغة FLAC. اختر FLAC أو WAV للحصول على جودة غير منقوصة.",
+      "wavHint": "سيبلغ حجم ملف WAV حوالي {{size}}. هذا تنزيل كبير جدًا؛ أما FLAC فهو غير منقوص وبنصف الحجم تقريبًا."
     }
   },
   "videoForm": {
@@ -144,14 +158,14 @@
       "upscale": {
         "scaleLabel": "المعامل",
         "scale4x": "4x",
-        "scale2x": "2x (تجريبي على بعض الصور)",
+        "scale2x": "2x",
         "modelLabel": "النموذج",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (صور فوتوغرافية)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "رفع الدقة بمعامل 2x متاح، لكن 4x هو مسار النموذج الأكثر أمانًا والافتراضي على هذا الخادم.",
+        "experimentalNote": "4x هو الخيار الافتراضي ويعطي أكثر النتائج اتساقًا. أما 2x فيشغّل النموذج نفسه بنصف المقياس وقد يبدو مقتطعًا قليلًا في بعض الصور.",
         "pngNote": "الناتج بصيغة PNG افتراضيًا."
       },
       "removeObject": {

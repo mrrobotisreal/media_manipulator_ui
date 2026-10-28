@@ -1,17 +1,15 @@
 'use client';
 
-import { useEffect, useSyncExternalStore } from 'react';
-import Script from 'next/script';
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { MockAd } from '@/components/mock-ad';
-import { hasAdStorageConsent, onConsentDetailsChange } from '@/lib/consent';
-import { useAuth } from '@/lib/auth/AuthProvider';
+import { useAuth, type AuthContextValue } from '@/lib/auth/AuthProvider';
 import {
   ADSENSE_CLIENT_ID,
-  ADSENSE_SCRIPT_SRC,
   type AdPlacement,
   shouldRenderAdSense,
   shouldRenderMockAd,
+  toAdPathname,
 } from '@/lib/adsenseConfig';
 
 // Backward-compatible format names from the Vite implementation, retained so
@@ -64,6 +62,27 @@ function inferPlacement(args: {
 }
 
 /**
+ * Whether the caller's tier removes ads (MM82 decision 3).
+ *
+ *   - outside the provider (/embed, /dr): undefined — no tier, no ad;
+ *   - while auth is loading: undefined — not decided yet;
+ *   - anonymous (no user): false — anonymous visitors see ads, as before;
+ *   - signed in with no limits (the account snapshot failed or is absent):
+ *     undefined — a Pro user whose /me call errors must never be shown an ad;
+ *   - otherwise the snapshot's `adsRemoved`.
+ *
+ * `undefined` keeps the reserved container empty (`isAdAllowedForTier`).
+ */
+export function resolveTierRemovesAds(
+  auth: Pick<AuthContextValue, 'loading' | 'user' | 'limits'> | null,
+): boolean | undefined {
+  if (!auth || auth.loading) return undefined;
+  if (!auth.user) return Boolean(auth.limits?.adsRemoved);
+  if (auth.limits == null) return undefined;
+  return Boolean(auth.limits.adsRemoved);
+}
+
+/**
  * Hard-guarded ad slot. It renders a real AdSense <ins> ONLY when
  * shouldRenderAdSense() passes (real numeric slot + review-allowed
  * page/placement + AdSense explicitly enabled in production). Otherwise it
@@ -80,7 +99,9 @@ export default function AdBanner({
   className,
   label = 'Advertisement',
 }: AdBannerProps) {
-  const pathname = usePathname() || '/';
+  // English pages are served through the internal /en rewrite, so the router
+  // can report /en/tools/x for the public /tools/x; decide on the public path.
+  const pathname = toAdPathname(usePathname() || '/');
   const resolvedSlot = slot ?? adSlot ?? null;
   const resolvedPlacement = inferPlacement({
     placement,
@@ -89,23 +110,18 @@ export default function AdBanner({
     sticky,
   });
 
-  // Premium removes ads. `undefined` while the tier resolves means "not
-  // decided yet", so nothing renders into the reserved container until the
-  // answer is known — deciding early and correcting later is a layout shift.
-  // Outside the provider (/embed, /dr) there is no tier and no ad either.
-  const auth = useAuth();
-  const tierRemovesAds = auth && !auth.loading ? Boolean(auth.limits?.adsRemoved) : undefined;
+  // Premium and Pro remove ads. `undefined` while the tier resolves (or when a
+  // signed-in visitor's snapshot is missing) means "not decided", so nothing
+  // renders into the reserved container until the answer is known — deciding
+  // early and correcting later is a layout shift.
+  const tierRemovesAds = resolveTierRemovesAds(useAuth());
 
-  // Google's ad script (and the ad request) waits for the advertising consent
-  // category. It is dormant today (never granted, GPC forces denied), so the
-  // script stays unloaded until that category is actually switched on.
-  const adConsent = useSyncExternalStore(
-    (cb) => onConsentDetailsChange(cb),
-    hasAdStorageConsent,
-    () => false,
-  );
-
-  const canRenderAdSense = adConsent && shouldRenderAdSense({
+  // MM82 (ADR-0016): the unit's EXISTENCE is gated on tier, path, placement
+  // and slot only. Consent affects personalisation through Consent Mode (the
+  // layout's denied defaults + lib/consent/consentModeBridge.ts), never whether
+  // the unit exists. Google's script itself is loaded once per eligible page by
+  // components/ads/adsense-loader.tsx in the layout.
+  const canRenderAdSense = shouldRenderAdSense({
     slot: resolvedSlot,
     pathname,
     placement: resolvedPlacement,
@@ -140,12 +156,6 @@ export default function AdBanner({
   if (canRenderAdSense && resolvedSlot) {
     return (
       <div className={className} aria-label={label}>
-        <Script
-          id="adsense-script"
-          src={ADSENSE_SCRIPT_SRC}
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
         <ins
           className="adsbygoogle"
           style={{ display: 'block' }}

@@ -1,5 +1,7 @@
 # AdSense Review Cleanup Plan
 
+> **Superseded 2026-10-28 by ADR-0016** (`../docs/adr/0016-adsense-approval-strategy.md` in the workspace; MM82). The "AdSense JS only loads inside a guarded `<AdBanner>`" and advertising-consent-gated loader rules below no longer hold: the loader runs in the layout on ad-eligible pages under Consent Mode denied defaults, and units gate on tier + path + slot. Kept as history.
+
 Goal: turn the Next.js App Router app into a clean, AdSense-review-safe site
 where important public routes render real body HTML in view-source, AdSense
 cannot render placeholders, only review-safe pages are indexed/sitemapped, and
@@ -46,10 +48,13 @@ routes), `/blog` (+ detail routes), `app/sitemap.ts`, `app/robots.ts`.
 
 ## Review-safe sitemap strategy
 
-`app/sitemap.ts` emits only the 8 core routes + the 12 non-content-studio
-review-allowed tool slugs (`content/reviewAllowlist.ts`). Blog/tutorial detail
-pages work but are excluded from the review sitemap unless individually
-verified.
+`app/sitemap.ts` emits the core routes (13 since MM85, including `/contact`),
+the review-allowed tool slugs (`content/reviewAllowlist.ts`) and, since MM85
+(2026-10-28, ADR-0016 ¶4), the three blog posts and six tutorials: they are
+original, bylined (Mitchell Wintrow) and dated, and are the best writing on the
+site. Every `lastModified` is a real date (`content/pageDates.ts`, a tool's
+`lastReviewed`, a post's `dateModified`), never the build time.
+`app/sitemap.test.ts` freezes the list (37 URLs with the flag off).
 
 ## Final acceptance checks
 

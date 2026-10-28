@@ -45,7 +45,7 @@
       "tooltipIntro": "פעולת בינה מלאכותית אחת רצה לכל עבודה, בשרת ה־GPU המקומי שלנו. שרשרת העיבוד הרגילה של FFmpeg מדולגת עבור עבודה זו.",
       "tooltipCleanVoice": "<strong>ניקוי קול</strong> — הפחתת רעש DeepFilterNet + שרשרת ליטוש שידור (מעבר גבוה/נמוך, עוצמת קול, לימיטר).",
       "tooltipRemoveNoise": "<strong>הסרת רעש רקע</strong> — הפחתת רעש DeepFilterNet ללא שרשרת הליטוש.",
-      "tooltipIsolateVocals": "<strong>בידוד קול</strong> — ערוץ שירה של Demucs htdemucs (ברירת מחדל: WAV ללא אובדן איכות).",
+      "tooltipIsolateVocals": "<strong>בידוד קול</strong> — ערוץ שירה של Demucs htdemucs (ברירת מחדל: אותו פורמט כמו הקובץ שלכם).",
       "tooltipRemoveVocals": "<strong>הסרת קול / קריוקי</strong> — ערוץ אינסטרומנטלי של Demucs.",
       "intro": "כלי AI לאודיו פועלים כעבודות GPU ועשויים לקחת יותר זמן מהמרה בסיסית.",
       "operationLabel": "פעולה",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "קצב סיביות, אקולייזר ואפשרויות אודיו רגילות אחרות מדולגים כאשר נבחרת פעולת בינה מלאכותית.",
       "presetLocked": "מוגדר מראש לכלי זה"
+    },
+    "stemFormat": {
+      "label": "פורמט פלט",
+      "options": {
+        "auto": "כמו הקלט (מומלץ)",
+        "autoWithFormat": "כמו הקלט: {{format}} (מומלץ)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (ללא אובדן איכות)",
+        "wav": "WAV (ללא אובדן איכות, הגדול ביותר)"
+      },
+      "withEstimate": "{{label}} · כ-{{size}}",
+      "help": "הגדלים הם הערכות. קובץ MP3 נשאר MP3; קובץ ללא אובדן איכות (WAV, FLAC, AIFF) חוזר כ-FLAC.",
+      "helpNoEstimate": "קובץ MP3 נשאר MP3; קובץ ללא אובדן איכות (WAV, FLAC, AIFF) חוזר כ-FLAC. בחרו FLAC או WAV לאיכות ללא אובדן.",
+      "wavHint": "קובץ ה-WAV יהיה כ-{{size}}. זו הורדה גדולה מאוד; FLAC הוא ללא אובדן איכות וקטן בכמחצית."
     }
   },
   "videoForm": {
@@ -142,14 +156,14 @@
       "upscale": {
         "scaleLabel": "קנה מידה",
         "scale4x": "4x",
-        "scale2x": "2x (ניסיוני בחלק מהתמונות)",
+        "scale2x": "2x",
         "modelLabel": "מודל",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (תצלומים)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "הגדלת AI פי 2 זמינה, אך 4x הוא נתיב המודל הבטוח/ברירת המחדל בשרת זה.",
+        "experimentalNote": "4x הוא ברירת המחדל ומספק את התוצאות העקביות ביותר. 2x מריץ את אותו מודל בחצי קנה מידה ועלול להיראות חתוך מעט בחלק מהתמונות.",
         "pngNote": "הפלט הוא PNG כברירת מחדל."
       },
       "removeObject": {

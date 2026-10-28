@@ -4,7 +4,6 @@
     "brandTagline": "Converta imagens, vídeos e arquivos de áudio com facilidade",
     "loading": "Carregando…",
     "loadingShort": "Carregando...",
-    "comingSoon": "Em breve",
     "tryAgain": "Tentar de novo",
     "cancel": "Cancelar",
     "close": "Fechar",
@@ -104,7 +103,8 @@
     "navigationLabel": "Navegação",
     "language": "Idioma",
     "selectLanguage": "Selecionar idioma",
-    "voices": "Vozes"
+    "voices": "Vozes",
+    "contact": "Contato"
   },
   "footer": {
     "tagline": "Ferramentas no navegador e com apoio do servidor para editar, converter, compactar, analisar, transcrever, resumir e processar de outras formas arquivos de imagem, vídeo e áudio.",
@@ -115,10 +115,6 @@
     "cookieSettings": "Configurações de cookies",
     "copyright": "© {{year}} Media Manipulator, um produto da CreaTV Ltd. Todos os direitos reservados.",
     "operatedBy": "Operado pela CreaTV Ltd. · Colorado, EUA",
-    "cookieDialog": {
-      "title": "Preferências de cookies",
-      "description": "As preferências de cookies são gerenciadas pelo Google. Recarregue a página se o banner de cookies não aparecer, ou acesse nossa Política de Privacidade para saber como o Media Manipulator trata os dados."
-    },
     "changelog": "Novidades",
     "status": "Status",
     "licenses": "Licenças de código aberto"

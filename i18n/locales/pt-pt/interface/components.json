@@ -202,9 +202,11 @@
     },
     "advertising": {
       "title": "Publicidade",
-      "body": "Para publicidade personalizada. De momento não mostramos anúncios, pelo que isto ainda não faz nada. Está aqui listado para que o possa ver antes de alguma vez ficar ativo.",
+      "body": "Permite que a Google personalize os anúncios mostrados em algumas páginas de ferramentas a visitantes gratuitos e sem sessão iniciada. O aparecimento de um anúncio não depende deste interruptor; desativado, os anúncios não são personalizados. Premium e Pro nunca veem anúncios.",
+      "bodyGdpr": "Na sua região, as escolhas sobre anúncios são feitas na mensagem de consentimento da Google, não aqui; este painel abrange a nossa própria análise de utilização. Até escolher aí, os anúncios nas páginas de ferramentas não são personalizados. Premium e Pro nunca veem anúncios.",
       "bodyGpc": "Para publicidade personalizada. O seu navegador está a enviar um sinal Global Privacy Control, pelo que isto permanece desativado. Respeitamos esse sinal e um clique aqui não o pode anular.",
-      "notActive": "Ainda não ativo"
+      "managedByGoogle": "Gerido pela mensagem de consentimento da Google",
+      "openGoogleMessage": "Alterar opções de anúncios"
     },
     "gpcDetected": "Global Privacy Control detetado. Excluímo-lo automaticamente de qualquer venda ou partilha dos seus dados pessoais e registámos que o fizemos.",
     "doNotSell": {
@@ -425,6 +427,14 @@
       "downloadJson": "Transferir .json",
       "showAll": "Mostrar tudo ({{count}})",
       "showLess": "Mostrar menos"
+    },
+    "mp3": {
+      "button": "Transferir como MP3",
+      "converting": "A converter para MP3…",
+      "hint": "Ficheiro mais pequeno, convertido no nosso servidor. Gratuito e nunca conta como trabalho de IA.",
+      "started": "A sua transferência do MP3 começou — consulte as transferências do navegador.",
+      "startedWithSize": "A sua transferência do MP3 começou ({{size}}) — consulte as transferências do navegador.",
+      "failed": "Não foi possível preparar o MP3. Tente novamente daqui a pouco."
     }
   },
   "billing": {

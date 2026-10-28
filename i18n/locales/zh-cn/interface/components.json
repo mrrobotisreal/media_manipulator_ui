@@ -200,9 +200,11 @@
     },
     "advertising": {
       "title": "广告",
-      "body": "用于个性化广告。我们目前不展示广告，所以此项暂时没有任何作用——列在这里是为了让你在它生效之前就能看到。",
+      "body": "允许Google对部分工具页面上向免费用户和未登录访客展示的广告进行个性化。是否出现广告不取决于此开关；关闭表示广告不会被个性化。Premium和Pro用户永远不会看到广告。",
+      "bodyGdpr": "在您所在的地区，有关广告的选择在Google的同意消息中进行，而不是在这里；此面板仅涵盖我们自己的分析。在您于该处做出选择之前，工具页面上的任何广告都不会被个性化。Premium和Pro用户永远不会看到广告。",
       "bodyGpc": "用于个性化广告。你的浏览器正在发送Global Privacy Control信号，因此此项保持关闭——我们尊重该信号，在此处点击无法覆盖它。",
-      "notActive": "尚未启用"
+      "managedByGoogle": "由Google同意消息管理",
+      "openGoogleMessage": "更改广告选择"
     },
     "gpcDetected": "检测到Global Privacy Control。我们已自动为你选择退出任何个人信息的出售或共享，并已记录此操作。",
     "doNotSell": {
@@ -422,6 +424,14 @@
       "downloadJson": "下载 .json",
       "showAll": "显示全部（{{count}}）",
       "showLess": "收起"
+    },
+    "mp3": {
+      "button": "下载为MP3",
+      "converting": "正在转换为MP3…",
+      "hint": "文件更小，在我们的服务器上转换。免费，且不会计入AI任务。",
+      "started": "MP3下载已开始，请查看浏览器的下载列表。",
+      "startedWithSize": "MP3下载已开始（{{size}}），请查看浏览器的下载列表。",
+      "failed": "无法准备MP3，请稍后再试。"
     }
   },
   "billing": {

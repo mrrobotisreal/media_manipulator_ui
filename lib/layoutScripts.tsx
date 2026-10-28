@@ -2,6 +2,7 @@
 // (`app/(localized)/[lang]/layout.tsx` and `app/(system)/layout.tsx`).
 // Extracted so the two layouts cannot drift.
 
+import { AdsenseLoader } from '@/components/ads/adsense-loader';
 import { ResourceHints } from '@/components/seo/resource-hints';
 import { ADSENSE_ENABLED, ADSENSE_SCRIPT_ORIGIN } from '@/lib/adsenseConfig';
 
@@ -86,8 +87,8 @@ export function LayoutBootstrap() {
         Third-party origins worth warming.
 
         The AdSense preconnect is conditional on ADSENSE_ENABLED, the same
-        top-level flag lib/adsenseConfig.ts gates every ad request on. On the
-        review build no adsbygoogle.js ever loads, and an unconditional hint
+        top-level flag lib/adsenseConfig.ts gates every ad request on. With ads
+        off no adsbygoogle.js ever loads, and an unconditional hint
         there holds a socket open for an origin the page never contacts —
         Lighthouse reports it as an unused preconnect and it competes with the
         requests the page does make. When ads are on, the slot is above the
@@ -117,6 +118,11 @@ export function LayoutBootstrap() {
               : BOOTSTRAP_SCRIPTS_HTML,
         }}
       />
+      {/* MM82 (ADR-0016): Google's ad script on ad-eligible pages, after the
+          Consent Mode defaults above (all ad signals denied). A client island
+          because eligibility depends on the pathname; it renders nothing when
+          ads are off or on a translator deployment. */}
+      {ADSENSE_ENABLED ? <AdsenseLoader /> : null}
     </>
   );
 }

@@ -200,9 +200,11 @@
     },
     "advertising": {
       "title": "廣告",
-      "body": "用於個人化廣告。我們目前沒有顯示廣告，所以這項設定目前沒有任何作用。列在這裡是為了讓你在它生效之前就能看到。",
+      "body": "允許 Google 對部分工具頁面上向免費使用者與未登入訪客顯示的廣告進行個人化。是否出現廣告不取決於此開關；關閉代表廣告不會被個人化。Premium 與 Pro 使用者永遠不會看到廣告。",
+      "bodyGdpr": "在您所在的地區，有關廣告的選擇是在 Google 的同意訊息中進行，而不是在這裡；此面板僅涵蓋我們自己的分析。在您於該處做出選擇之前，工具頁面上的任何廣告都不會被個人化。Premium 與 Pro 使用者永遠不會看到廣告。",
       "bodyGpc": "用於個人化廣告。你的瀏覽器正在傳送 Global Privacy Control 訊號，因此這項設定會保持關閉。我們尊重這個訊號，在這裡點選也無法覆寫它。",
-      "notActive": "尚未啟用"
+      "managedByGoogle": "由 Google 同意訊息管理",
+      "openGoogleMessage": "變更廣告選擇"
     },
     "gpcDetected": "偵測到 Global Privacy Control。我們已自動為你選擇退出任何對個人資料的出售或分享，並記錄了這項操作。",
     "doNotSell": {
@@ -422,6 +424,14 @@
       "downloadJson": "下載 .json",
       "showAll": "顯示全部（{{count}}）",
       "showLess": "收合"
+    },
+    "mp3": {
+      "button": "下載為 MP3",
+      "converting": "正在轉換為 MP3…",
+      "hint": "檔案更小，在我們的伺服器上轉換。免費，且不會計入 AI 工作。",
+      "started": "MP3 下載已開始，請查看瀏覽器的下載清單。",
+      "startedWithSize": "MP3 下載已開始（{{size}}），請查看瀏覽器的下載清單。",
+      "failed": "無法準備 MP3，請稍後再試。"
     }
   },
   "billing": {

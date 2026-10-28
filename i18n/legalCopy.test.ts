@@ -340,7 +340,8 @@ describe("MM78 voices legal copy", () => {
     it(`${code}: §1.10, §8.11, the §1 bullet, §3.4, §3.5, §4 models and the 2026-10-28 dates`, () => {
       const pages = load(code);
       const p110 = pages.privacyPolicy.sections[0].subsections ?? [];
-      expect(p110).toHaveLength(10);
+      // MM85 appends §1.11 (contact messages) after §1.10.
+      expect(p110.length).toBeGreaterThanOrEqual(10);
       expect(p110[9].title).toMatch(/^1\.10 /);
       expect(p110[9].paragraphs).toHaveLength(4);
       expect(flatten(p110[9])).toContain("voices/");
@@ -365,6 +366,133 @@ describe("MM78 voices legal copy", () => {
       const panels = JSON.parse(readFileSync(join(__dirname, "locales", code.toLowerCase(), "interface", "panels.json"), "utf8"));
       const label = String(panels.voiceTools.consent.label).replace(/[.。।۔]\s*$/u, "");
       expect(t8[10].paragraphs?.[1]).toContain(label.slice(0, 40));
+    });
+  }
+});
+
+// MM87 (AdSense "Required content"): Privacy §5.1 "Advertising cookies and Google AdSense",
+// the advertising-identifier row in §1.5, the ToS §8.9 who-sees-ads sentence, the pricing
+// FAQ placement promise, and the what-changed note, in every locale. The links are
+// byte-identical everywhere; the page renders them as anchors (views/privacy-policy.test.tsx).
+// Own block so other legal tickets (MM82's §5 sentence) stay independent.
+describe("MM87 advertising disclosures", () => {
+  const OPT_OUT_URLS = [
+    "https://adssettings.google.com",
+    "https://www.aboutads.info/choices",
+    "https://youronlinechoices.eu",
+    "https://policies.google.com/technologies/partner-sites",
+  ];
+  const COOKIES_URL = "https://policies.google.com/technologies/cookies";
+  const ADS_TXT_URL = "https://www.media-manipulator.com/ads.txt";
+  /** Occurrences of `needle` not followed by another URL character (so `…/choices` ≠ `…/choicesX`). */
+  const enA3 = (en as unknown as { pricing: { faq: Record<string, string> } }).pricing.faq.a3;
+  const countUrl = (hay: string, needle: string) =>
+    hay.split(needle).slice(1).filter((rest) => !/^[A-Za-z0-9\-_~/]/.test(rest)).length;
+
+  it("en-us §5.1 carries Google's vendor-cookie and advertising-cookie sentences", () => {
+    const sub = en.privacyPolicy.sections[4].subsections?.[0];
+    const text = flatten(sub);
+    expect(text).toContain("Google, as a third-party vendor, uses cookies to serve ads on Media Manipulator");
+    expect(text).toContain("enables it and its partners to serve ads to you based on your visits to Media Manipulator and/or other sites on the Internet");
+    expect(text).toContain("non-personalised ads");
+    expect(text).toContain("frequency capping");
+    expect(text).toContain("(TCF) v2.2");
+    expect(text).toContain("Our own cookie bar asks about our first-party analytics only");
+    expect(text).toContain("“Cookie settings” in the footer");
+    expect(text).toContain("Premium and Pro subscribers never see ads");
+    // MM85's contact-form sentence leads the note since the MM85 merge; MM87's follows it.
+    expect(en.legalCommon.whatChangedBody).toContain("Added the advertising-cookie disclosures Google requires and the opt-out links.");
+    expect(enA3).toContain("There are never more than two ads on a page, never over the tools, and never on the home, pricing, account or legal pages.");
+    expect(en.termsOfService.sections[7].subsections?.[8].paragraphs?.[0]).toContain(
+      "Ads are shown only to visitors who are not signed in and to free accounts; the paid plans, Premium and Pro, remove them.",
+    );
+  });
+
+  for (const { code, translated } of locales) {
+    it(`${code}: §5.1, the §1.5 identifiers, ToS §8.9, the pricing FAQ and the note`, () => {
+      const pages = load(code) as Pages & { pricing: { faq: Record<string, string> } };
+      const ads = pages.privacyPolicy.sections[4];
+      expect(ads.title).toMatch(/^5\./);
+      expect(ads.paragraphs).toHaveLength(en.privacyPolicy.sections[4].paragraphs?.length ?? -1);
+      expect(ads.subsections).toHaveLength(1);
+      const sub = ads.subsections![0];
+      expect(sub.title).toMatch(/^5\.1 /);
+      expect(sub.title).toMatch(/AdSense/);
+      expect(sub.paragraphs).toHaveLength(4);
+      expect(sub.bullets).toHaveLength(4);
+      expect(sub.afterBullets).toHaveLength(2);
+      expect(flatten(sub)).toMatch(/TCF/);
+      expect(flatten(sub)).toMatch(/2\.2/);
+
+      // Each opt-out link exactly once in its own bullet, byte-identical, and nowhere else in the policy.
+      const policy = flatten(pages.privacyPolicy);
+      OPT_OUT_URLS.forEach((url, i) => {
+        expect(sub.bullets?.[i]).toContain(url);
+        expect(countUrl(policy, url), url).toBe(1);
+      });
+      expect(sub.afterBullets?.[1]).toContain(ADS_TXT_URL);
+
+      const cookies = pages.privacyPolicy.sections[0].subsections?.[4];
+      expect(cookies?.title).toMatch(/^1\.5 /);
+      expect(cookies?.afterBullets).toHaveLength(2);
+      const idRow = cookies?.afterBullets?.[1] ?? "";
+      for (const name of ["__gads", "__gpi", "IDE", "doubleclick.net", "13", "24", "5.1"]) expect(idRow).toContain(name);
+      expect(countUrl(idRow, COOKIES_URL)).toBe(1);
+
+      const t89 = pages.termsOfService.sections[7].subsections?.[8];
+      expect(t89?.title).toMatch(/^8\.9 /);
+      expect(t89?.paragraphs).toHaveLength(2);
+      expect(t89?.paragraphs?.[0]).toMatch(/Premium/);
+      expect(t89?.paragraphs?.[0]).toMatch(/\bPro\b/);
+
+      // The placement promise is a sentence of its own (review §3 policy) between the plan
+      // sentence and the "no interstitials" sentence, so a3 has one more sentence than before.
+      const sentences = (s: string) => s.split(/[.。।۔]\s*/u).filter((x) => x.trim().length > 0).length;
+      expect(pages.pricing.faq.a3).toMatch(/Pro/);
+      expect(sentences(pages.pricing.faq.a3)).toBe(sentences(enA3));
+
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-10-28");
+      const note = pages.legalCommon.whatChangedBody;
+      for (const s of ["5.1", "1.5", "8.9", "aboutads.info", "youronlinechoices.eu", "ads.txt"]) expect(note).toContain(s);
+      // The earlier 2026-10-28 voices note is kept after the new one.
+      expect(note.indexOf("5.1")).toBeLessThan(note.indexOf("1.10"));
+
+      if (code === "en-US" || !translated) return;
+      expect(flatten(sub)).not.toBe(flatten(en.privacyPolicy.sections[4].subsections?.[0]));
+      expect(idRow).not.toBe(en.privacyPolicy.sections[0].subsections?.[4].afterBullets?.[1]);
+      expect(t89?.paragraphs?.[0]).not.toBe(en.termsOfService.sections[7].subsections?.[8].paragraphs?.[0]);
+      expect(pages.pricing.faq.a3).not.toBe(enA3);
+    });
+  }
+});
+
+describe("MM85 contact-form legal copy", () => {
+  it("en-us names what the form collects, where it goes and how long it is kept", () => {
+    const p111 = flatten(en.privacyPolicy.sections[0].subsections?.[10]);
+    for (const fact of ["contact form", "your name, your email address", "Resend", "not stored in our application database", "until the conversation is closed", "12 months", "rate-limited"]) {
+      expect(p111).toContain(fact);
+    }
+    expect(en.privacyPolicy.sections[15].paragraphs?.[0]).toContain("media-manipulator.com/contact");
+    expect(en.legalCommon.whatChangedBody.startsWith("We added a contact form")).toBe(true);
+  });
+
+  for (const { code } of locales) {
+    it(`${code}: §1.11 after §1.10, §16 points to the form, the what-changed note leads with it`, () => {
+      const pages = load(code);
+      const subs = pages.privacyPolicy.sections[0].subsections ?? [];
+      expect(subs).toHaveLength(11);
+      expect(subs[10].title).toMatch(/^1\.11 /);
+      expect(subs[10].paragraphs).toHaveLength(2);
+      expect(flatten(subs[10])).toContain("Resend");
+      expect(flatten(subs[10])).toMatch(/12/);
+      expect(flatten(subs[10])).toContain("media-manipulator.com/contact");
+      const contact = pages.privacyPolicy.sections[15];
+      expect(contact.paragraphs).toHaveLength(2);
+      expect(contact.paragraphs?.[0]).toContain("media-manipulator.com/contact");
+      expect(contact.paragraphs?.[0]).toContain("1.11");
+      expect(pages.legalCommon.whatChangedBody).toContain("1.11");
+      // Terms are unchanged by MM85 (decision 11).
+      expect(flatten(pages.termsOfService)).not.toContain("media-manipulator.com/contact");
     });
   }
 });

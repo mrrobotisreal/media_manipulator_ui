@@ -79,7 +79,10 @@ export type EmbedPreset =
       aiOperation: 'clean_voice' | 'remove_background_noise' | 'isolate_vocals' | 'remove_vocals';
       /** Replace the operation select with a read-only chip naming the operation. */
       hideOperationSelect?: boolean;
-      /** Output format seeded into the form (e.g. 'wav'). */
+      /**
+       * Output format seeded into the form (e.g. 'wav'). For the vocal-stem operations it is
+       * the stem choice: 'auto' (same as the input, MM81), 'mp3', 'flac' or 'wav'.
+       */
       format?: string;
     }
   | {
@@ -101,6 +104,12 @@ export type EmbedPreset =
 export interface ToolPageContent {
   /** Path slug under /tools, e.g. "remove-exif-metadata" -> /tools/remove-exif-metadata */
   slug: string;
+  /**
+   * MM85: when this page's copy was last reviewed or materially changed
+   * (YYYY-MM-DD, from git), for the sitemap's lastModified. Absent means
+   * TOOL_PAGES_DEFAULT_REVIEWED (content/pageDates.ts); MM84 sets it per page.
+   */
+  lastReviewed?: string;
   /** Display name used in breadcrumbs and the /tools index card. */
   name: string;
   /** High-intent H1 for the page. */
@@ -573,6 +582,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- METADATA / PRIVACY
   {
     slug: 'remove-exif-metadata',
+    lastReviewed: '2026-10-24',
     name: 'Remove EXIF Metadata from Images',
     h1: 'Remove EXIF Metadata from Images Online',
     tagline:
@@ -711,6 +721,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- VIDEO
   {
     slug: 'compress-video',
+    lastReviewed: '2026-10-24',
     name: 'Compress Video',
     h1: 'Compress Video Online Without Ruining Quality',
     tagline:
@@ -877,6 +888,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'transcode-to-hls',
+    lastReviewed: '2026-10-23',
     name: 'Transcode Video to HLS',
     h1: 'Transcode Video to HLS Online',
     tagline:
@@ -1136,6 +1148,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'convert-video-to-animated-gif',
+    lastReviewed: '2026-05-30',
     name: 'Convert Video to Animated GIF',
     h1: 'Convert Video to Animated GIF Online',
     tagline:
@@ -1286,6 +1299,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'transcribe-video',
+    lastReviewed: '2026-10-24',
     name: 'Transcribe Video',
     h1: 'Transcribe Video to Text Online',
     tagline:
@@ -2350,6 +2364,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE: RESIZE / COMPRESS / AI
   {
     slug: 'image-resizer',
+    lastReviewed: '2026-10-23',
     name: 'Image Resizer',
     h1: 'Resize Image Online Free',
     tagline:
@@ -2458,6 +2473,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'compress-image',
+    lastReviewed: '2026-10-23',
     name: 'Compress Image',
     h1: 'Compress Image Online Free',
     tagline:
@@ -2566,6 +2582,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'remove-background-from-image',
+    lastReviewed: '2026-10-23',
     name: 'Remove Background from Image',
     h1: 'Remove Background from Image Online Free',
     tagline:
@@ -2679,6 +2696,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE <-> PDF
   {
     slug: 'image-to-pdf',
+    lastReviewed: '2026-10-23',
     name: 'Image to PDF',
     h1: 'Convert Image to PDF Online Free',
     tagline:
@@ -3009,6 +3027,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'pdf-to-jpg',
+    lastReviewed: '2026-10-24',
     name: 'PDF to JPG',
     h1: 'Convert PDF to JPG Online Free',
     tagline:
@@ -4273,17 +4292,16 @@ export const TOOL_PAGES: ToolPageContent[] = [
     embed: {
       defaultMediaKind: 'audio',
       defaultTask: 'isolate_vocals',
-      defaultOutputFormat: 'wav',
-      preset: { kind: 'audio', aiOperation: 'isolate_vocals', hideOperationSelect: true, format: 'wav' },
+      preset: { kind: 'audio', aiOperation: 'isolate_vocals', hideOperationSelect: true, format: 'auto' },
       title: 'Isolate vocals',
       description:
-        'Upload a song and press the button: Isolate Vocals is already selected. The stem is returned as WAV, which is lossless and keeps the most detail but makes a larger file.',
+        'Upload a song and press the button: Isolate Vocals is already selected. Your result comes back in the same format as your file (MP3 stays MP3); pick FLAC or WAV under Output format for lossless.',
     },
     intro:
       'AI-based source separation can pull a vocal track out of a finished mix — great for remixes, covers, karaoke prep, or transcribing lyrics. Media Manipulator runs the separation on our own GPU server. The result is a single vocal stem you can download and use anywhere — as long as you have the right to do so for your source material.',
     whatItDoes: [
       'Runs AI-based source separation to extract the vocal track from a music recording.',
-      'Outputs a single isolated vocal stem in WAV or MP3.',
+      'Outputs a single isolated vocal stem in the same format as your file (MP3 stays MP3), or in FLAC, WAV or MP3 if you choose.',
       'Pairs well with audio cleanup tools like denoise and EQ for a polished result.',
       'Supports WAV, MP3, FLAC, M4A, OGG, OPUS, and more inputs.',
     ],
@@ -4302,12 +4320,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
       {
         title: 'Download vocal stem',
-        description: 'Save the isolated vocals as WAV or MP3.',
+        description: 'Save the isolated vocals: same format as your file by default, or FLAC, WAV or MP3.',
       },
     ],
     advancedDetails: [
       'Source separation is inherently imperfect — reverb, harmonies, and heavy effects bleed into the output.',
-      'WAV output preserves the most detail, especially for further editing in a DAW.',
+      'An MP3 or other compressed file comes back in its own format (MP3 at 320 kbps). Lossless files (WAV, FLAC, AIFF) come back as FLAC. FLAC and WAV keep the most detail for further editing in a DAW; WAV is the largest.',
       'For karaoke (instrumental only), use the dedicated "Remove Vocals" mode in the audio converter instead.',
     ],
     whyItMatters: [
@@ -4343,7 +4361,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Is this fully clean separation?',
         answer:
-          'No source separation tool is perfect. Expect some artifacts, especially around heavy reverb and harmonies. WAV output gives the most material to clean up afterward in a DAW.',
+          'No source separation tool is perfect. Expect some artifacts, especially around heavy reverb and harmonies. Choose FLAC or WAV output if you plan to clean the stem up afterward in a DAW.',
       },
       {
         question: 'What audio formats are supported?',
@@ -5041,38 +5059,37 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Strip the singing from a track and keep the music, for karaoke, practice and backing tracks. Use only on music you have rights to.',
     metaTitle: 'Remove Vocals from a Song: Karaoke Maker | Media Manipulator',
     metaDescription:
-      `Remove vocals from a song with AI and download the instrumental as WAV. Karaoke and practice tracks, on our own GPU. ${RETENTION_PROMISE}.`,
+      `Remove vocals from a song with AI and download the instrumental in the same format as your file, or as FLAC or WAV. Karaoke and practice tracks, on our own GPU. ${RETENTION_PROMISE}.`,
     ogTitle: 'Remove Vocals from a Song for Karaoke',
     ogDescription:
-      'Strip the singing from a song with AI and download the instrumental as a lossless WAV.',
+      'Strip the singing from a song with AI and download the instrumental as MP3, FLAC or WAV.',
     category: 'ai',
     embed: {
       defaultMediaKind: 'audio',
       defaultTask: 'audio_converter',
-      defaultOutputFormat: 'wav',
-      preset: { kind: 'audio', aiOperation: 'remove_vocals', hideOperationSelect: true, format: 'wav' },
+      preset: { kind: 'audio', aiOperation: 'remove_vocals', hideOperationSelect: true, format: 'auto' },
       title: 'Remove vocals from a song',
       description:
-        'Upload a song. Remove Vocals is already selected, and the instrumental comes back as WAV, which is lossless but a larger file. Press convert.',
+        'Upload a song. Remove Vocals is already selected, and the instrumental comes back in the same format as your file (MP3 stays MP3); pick FLAC or WAV under Output format for lossless. Press convert.',
     },
     intro:
-      'Karaoke nights, singing practice and cover recordings all need the same thing: the band without the singer. An AI source-separation model splits a finished mix into vocals and accompaniment, and this page hands you the accompaniment. The instrumental is delivered as a lossless WAV so you can edit it or convert it to MP3 yourself.',
+      'Karaoke nights, singing practice and cover recordings all need the same thing: the band without the singer. An AI source-separation model splits a finished mix into vocals and accompaniment, and this page hands you the accompaniment. The instrumental comes back in the same format as your file, so an MP3 stays a compact MP3; choose FLAC or WAV when you want a lossless file for editing.',
     whatItDoes: [
       'Separates the vocal part from the rest of the mix using AI.',
       'Returns the instrumental (everything but the lead vocal) as a single track.',
-      'Outputs lossless WAV by default so nothing is lost before your own editing.',
+      'Returns the same format as your file by default (MP3 at 320 kbps for MP3s, FLAC for lossless files), with FLAC, WAV and MP3 to choose from.',
       'Runs on our own GPU, not a third-party service.',
     ],
     flowSteps: [
       { title: 'Upload a song', description: 'Use a track you own or are licensed to use.' },
       { title: 'Remove Vocals is preset', description: 'No menu to configure; the page is set to remove the singing.' },
       { title: 'AI splits the mix', description: 'The model estimates the vocal and the accompaniment separately.' },
-      { title: 'Download the instrumental', description: 'Save the WAV, or convert it to MP3 for your phone.' },
+      { title: 'Download the instrumental', description: 'Save it in the format you picked; the size estimate is shown before you start.' },
     ],
     advancedDetails: [
       'Separation is never perfect. Faint vocal ghosts, reverb tails and backing harmonies may remain in the instrumental.',
       'Mono-recorded or very old songs separate less cleanly than modern stereo productions.',
-      'A WAV file is large. Convert it to MP3 afterward if you only need to play it on a phone.',
+      'WAV is very large: an hour-long track is over 600 MB. Keep "Same as input" or pick MP3 if you only need to play it on a phone.',
       'To get the vocal alone instead, use the isolate vocals page.',
     ],
     whyItMatters: [
@@ -5088,13 +5105,13 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     whyMediaManipulator: [
       'Separation runs on our own GPU, so your music is not sent to an outside AI provider.',
-      'Lossless WAV output is the default, with nothing to configure.',
+      'The output matches your file by default, so an MP3 never balloons into a huge WAV; FLAC and WAV are one click away.',
       `Free to try without an account. ${RETENTION_PROMISE}.`,
     ],
     privacyNote: sharedPrivacyNote,
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
-      supportedOutputFormats: ['wav'],
+      supportedOutputFormats: ['mp3', 'flac', 'wav', 'm4a', 'ogg', 'opus'],
       processingNotes: [
         'Quota and length limits for AI operations depend on your plan and are shown live in the form.',
       ],
@@ -5106,9 +5123,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
           'Most of the lead vocal, but not always everything. Reverb tails, backing harmonies and bleed can remain, and results vary by song.',
       },
       {
-        question: 'Why is the output a WAV file?',
+        question: 'What format is the instrumental?',
         answer:
-          'WAV is lossless, so the instrumental keeps all its detail for editing. It is larger than MP3; convert it afterward if you want something smaller.',
+          'The same format as your file by default: an MP3 comes back as an MP3 at 320 kbps, and a lossless file (WAV, FLAC, AIFF) comes back as FLAC. Under Output format you can pick FLAC or WAV (lossless) or MP3 instead; each option shows its estimated size.',
       },
       {
         question: 'Can I use this on any song?',
@@ -6427,6 +6444,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'video-trimmer',
+    lastReviewed: '2026-10-23',
     name: 'Video Trimmer',
     h1: 'Trim Video Online Free',
     tagline:
@@ -7451,6 +7469,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- EXTRACT AUDIO FROM VIDEO
   {
     slug: 'extract-audio-from-video',
+    lastReviewed: '2026-10-24',
     name: 'Extract Audio from Video',
     h1: 'Extract Audio from Video',
     tagline:
@@ -8017,6 +8036,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-video-restoration',
+    lastReviewed: '2026-08-05',
     name: 'AI Video Restoration',
     h1: 'AI Video Restoration Tool',
     tagline:
@@ -8218,6 +8238,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-image-restoration',
+    lastReviewed: '2026-06-12',
     name: 'AI Image Restoration & Upscaling',
     h1: 'AI Image Restoration & Upscaling Tool',
     tagline:
@@ -8416,6 +8437,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-document-scan',
+    lastReviewed: '2026-10-23',
     name: 'AI Document Scan',
     h1: 'AI Document Scan — Scanned Pages & Handwriting to Searchable PDF / Word',
     tagline:

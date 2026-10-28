@@ -1,7 +1,12 @@
 // Blog post metadata + JSON-LD, kept here because the blog SEO entries in
 // lib/seo.ts are commented out (the blog was hidden during the prior review).
-// Dates are the real publication/update dates carried over from the Vite app —
-// not fabricated freshness.
+// Dates are the real publication/update dates from git (MM85): datePublished is
+// the post's first commit; dateModified the last commit that changed its English
+// text (the 2026-08-09 move into articles.json changed no wording and does not
+// count). video-compression-guide: 2026-10-28, MM85's voice pass on "Why is this
+// important". image-optimization-guide and audio-quality-guide: 2026-05-18, the
+// same two commits (51e8568, 559152c) rewrote both posts' related links, so the
+// two share a date honestly. Not fabricated freshness.
 
 import type { Metadata } from 'next';
 import {
@@ -9,7 +14,8 @@ import {
   SITE_NAME,
   ORG_NAME,
   DEFAULT_OG_IMAGE,
-  DEFAULT_LOGO,
+  articleAuthorLd,
+  publisherLd,
   type JsonLd,
 } from '@/lib/seo';
 import { languageAlternates } from '@/lib/metadata';
@@ -35,7 +41,7 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       'Learn how video compression works, how codecs and bitrate affect quality, and how to reduce video file size for the web using practical Media Manipulator and FFmpeg concepts.',
     datePublished: '2025-06-13',
-    dateModified: '2026-05-15',
+    dateModified: '2026-10-28',
     section: 'Video',
     keywords: [
       'video compression',
@@ -53,7 +59,7 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       'Learn how to optimize JPG, PNG, WebP, AVIF, and GIF files for faster websites, smaller uploads, better quality, and privacy-safe sharing.',
     datePublished: '2025-06-14',
-    dateModified: '2026-05-15',
+    dateModified: '2026-05-18',
     section: 'Image',
     keywords: [
       'image optimization',
@@ -71,7 +77,7 @@ export const BLOG_POSTS: BlogPost[] = [
     description:
       'Learn how audio bitrate, sample rate, channels, codecs, compression, cleanup, and transcription affect file size and quality.',
     datePublished: '2025-06-14',
-    dateModified: '2026-05-15',
+    dateModified: '2026-05-18',
     section: 'Audio',
     keywords: [
       'audio quality',
@@ -138,13 +144,9 @@ export function blogPostJsonLd(post: BlogPost): JsonLd[] {
       articleSection: post.section,
       keywords: post.keywords.join(', '),
       mainEntityOfPage: { '@type': 'WebPage', '@id': url(post.path) },
-      author: { '@type': 'Organization', name: ORG_NAME, url: SITE_ORIGIN },
-      publisher: {
-        '@type': 'Organization',
-        name: ORG_NAME,
-        url: SITE_ORIGIN,
-        logo: { '@type': 'ImageObject', url: DEFAULT_LOGO },
-      },
+      // MM85: the byline names a person, so the structured data does too.
+      author: articleAuthorLd,
+      publisher: publisherLd,
     },
     {
       '@context': 'https://schema.org',

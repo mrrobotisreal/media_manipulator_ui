@@ -12,6 +12,7 @@ import { useAuth } from '@/lib/auth/AuthProvider';
 import { localHistory, subscribeLocalHistory, type LocalHistoryEntry } from '@/lib/history/localHistory';
 import { describe, type ResultKind } from '@/lib/results/describe';
 import { getBaseURL } from '@/lib/utils';
+import { isVocalStemJob } from '@/lib/results/mp3Download';
 
 /**
  * MM88: the result viewer is code-split. The strip renders on the home page for every
@@ -226,6 +227,7 @@ export function RecentStrip({ toolSlug, onReopen, now = Date.now, className }: R
           }}
           descriptor={descriptor}
           surface="history"
+          offerMp3={isVocalStemJob(open.entry.tool)}
           seedBlob={open.blob}
           recordHistory={false}
         />

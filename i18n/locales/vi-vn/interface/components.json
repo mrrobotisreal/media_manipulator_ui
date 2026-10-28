@@ -200,9 +200,11 @@
     },
     "advertising": {
       "title": "Quảng cáo",
-      "body": "Dành cho quảng cáo cá nhân hóa. Hiện chúng tôi chưa hiển thị quảng cáo nên mục này chưa có tác dụng — nó được liệt kê ở đây để bạn thấy trước khi nó được kích hoạt.",
+      "body": "Cho phép Google cá nhân hóa quảng cáo hiển thị trên một số trang công cụ đối với khách miễn phí và khách chưa đăng nhập. Việc quảng cáo có xuất hiện hay không không phụ thuộc vào công tắc này; tắt nghĩa là quảng cáo không được cá nhân hóa. Premium và Pro không bao giờ thấy quảng cáo.",
+      "bodyGdpr": "Ở khu vực của bạn, lựa chọn về quảng cáo được thực hiện trong thông báo đồng ý của Google chứ không phải ở đây; bảng này chỉ áp dụng cho phân tích của chính chúng tôi. Cho đến khi bạn lựa chọn ở đó, mọi quảng cáo trên trang công cụ đều không được cá nhân hóa. Premium và Pro không bao giờ thấy quảng cáo.",
       "bodyGpc": "Dành cho quảng cáo cá nhân hóa. Trình duyệt của bạn đang gửi tín hiệu Global Privacy Control nên mục này luôn tắt — chúng tôi tôn trọng tín hiệu đó và một cú nhấp ở đây không thể ghi đè.",
-      "notActive": "Chưa kích hoạt"
+      "managedByGoogle": "Do thông báo đồng ý của Google quản lý",
+      "openGoogleMessage": "Thay đổi lựa chọn quảng cáo"
     },
     "gpcDetected": "Đã phát hiện Global Privacy Control. Chúng tôi đã tự động từ chối mọi hình thức bán hoặc chia sẻ thông tin cá nhân của bạn, và đã ghi nhận việc này.",
     "doNotSell": {
@@ -422,6 +424,14 @@
       "downloadJson": "Tải xuống .json",
       "showAll": "Hiện tất cả ({{count}})",
       "showLess": "Thu gọn"
+    },
+    "mp3": {
+      "button": "Tải xuống dạng MP3",
+      "converting": "Đang chuyển sang MP3…",
+      "hint": "Tệp nhỏ hơn, được chuyển đổi trên máy chủ của chúng tôi. Miễn phí và không bao giờ tính là công việc AI.",
+      "started": "Đã bắt đầu tải xuống MP3 — hãy xem mục tải xuống của trình duyệt.",
+      "startedWithSize": "Đã bắt đầu tải xuống MP3 ({{size}}) — hãy xem mục tải xuống của trình duyệt.",
+      "failed": "Không thể chuẩn bị tệp MP3. Hãy thử lại sau giây lát."
     }
   },
   "billing": {

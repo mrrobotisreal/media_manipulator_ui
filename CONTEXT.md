@@ -122,7 +122,16 @@ _Avoid_: "TTS clip", "AI narration" in code or copy.
 The `summary` ResultKind (`lib/results/describe.ts`) for the MM74 video summary job (`summarize_video`, `summarize_audio`, API tool `video_summary`, mode `summarize`). Rendered by `components/results/viewers/summary-viewer.tsx` from `summary.json` as a document whose chapters seek the original; "Copy as Markdown" is `lib/results/summary.ts` and must stay byte-equal to the API's `summary.md` (fixture test).
 _Avoid_: calling it a transcript; the transcript is the `transcript` kind.
 
-### Site chrome and ads (MM88)
+### Advertising (MM82, ADR-0016)
+
+**Ad-eligible path**:
+A page that may host an ad unit and therefore the only kind of page that loads Google's ad script: today an allowlisted `/tools/<slug>` (`content/reviewAllowlist.ts`); MM89 adds blog posts and tutorials. `isAdEligiblePath()` in `lib/adsenseConfig.ts` (after `toAdPathname()` folds the internal `/en` rewrite). With `NEXT_PUBLIC_ADSENSE_ENABLED=true` the loader (`components/ads/adsense-loader.tsx`, rendered by `LayoutBootstrap`) runs there under the Consent Mode defaults, all ad signals denied. Home, `/tools`, pricing, account, legal and every other page are never ad-eligible.
+_Avoid_: "ad page", "monetised page".
+
+**Ad unit**:
+The one `<ins class="adsbygoogle">` an ad-eligible page may render (`components/ad-banner.tsx`). Its existence is gated on tier (anonymous and free only; nothing while auth loads or when a signed-in visitor's snapshot is missing), path, placement and a real slot id (`lib/adSlots.ts`), never on consent. Consent steers personalisation only: the first-party advertising switch outside the EEA, Google's consent message (Privacy & messaging) inside it (`ownsAdSignals()` in `lib/consent/index.ts`).
+
+### Site chrome and the ad-slot frame (MM88)
 
 **Ad-slot frame**:
 `components/ads/ad-slot-frame.tsx`, the box an in-content ad unit sits in. It reserves `min-h-[280px] md:min-h-[300px]` only when `ADSENSE_ENABLED` (or the dev-only MockAd) is on, and renders nothing otherwise, so the review build has no blank box. With ads on, the box stays reserved even when Google returns no fill (that is the CLS trade). It never decides whether an ad shows; `AdBanner` and the loader do.
@@ -179,3 +188,10 @@ _Avoid_: "translation branch" (that is the `i18n/<prefix>/…` PR branch).
 
 **Stable JSON writer**:
 `lib/translator/stableJson.ts`: parses a shard into an ordered tree and prints it exactly as the repo formats it (`JSON.stringify(v, null, 2)` + newline, keys in file order, including integer-like keys such as `"1080"` that `JSON.parse` would reorder). Every shard round-trips byte for byte (tested), so a translator PR changes only the edited lines.
+
+**Contact** (MM85):
+The `/contact` page (`views/contact.tsx`, client island `components/contact/contact-form.tsx`, helpers `lib/contact.ts`). It posts to the API's `POST /api/contact`, which mails the support inbox and answers `202 {reference}`; there is no ticket system and no stored message. On `503 contact_unavailable` (email off), 429 or any failure the form keeps the text and shows `support@media-manipulator.com`. Analytics: `contact_submitted {subject, ok}`, never the name, address or message.
+_Avoid_: "support ticket", "ticket number" (it is a **reference**).
+
+**Page dates** (MM85):
+`content/pageDates.ts`: the real "last materially changed" date of each core page (`PAGE_DATES`) and each tutorial (`TUTORIAL_DATES`), read from `git log`. They feed the sitemap's `lastModified`, the tutorial bylines and the TechArticle JSON-LD; tool pages use their own `lastReviewed`, blog posts `dateModified`. Bump a page's date in the commit that changes what a visitor reads on it; never `new Date()`.

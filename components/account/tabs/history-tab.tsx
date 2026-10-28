@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { isVocalStemJob } from '@/lib/results/mp3Download';
 
 import { ConfirmDialog } from '@/components/account/confirm-dialog';
 import { LINK_CLASS, TEXT_BUTTON_CLASS, DANGER_TEXT_BUTTON_CLASS } from '@/components/account/tabs/shared';
@@ -631,6 +632,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ copy, uid }) => {
           }}
           descriptor={previewDescriptor}
           surface="history"
+          offerMp3={isVocalStemJob(preview.tool)}
           title={fmt(h.previewTitle, { name: preview.resultFileName || toolLabel(preview, h) })}
         />
       ) : null}

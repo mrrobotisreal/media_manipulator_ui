@@ -164,19 +164,19 @@
         "body": "Studien zeigen, dass 53 % der mobilen Nutzer Seiten verlassen, die länger als 3 Sekunden zum Laden brauchen. DREIUNDFÜNFZIG PROZENT! Das ist mehr als die Hälfte Ihrer potenziellen Kunden, die verschwunden sind, bevor sie überhaupt Ihren großartigen Inhalt sehen. Und raten Sie, was normalerweise der größte Übeltäter für lange Ladezeiten ist? Genau – Ihr unoptimiertes 200-MB-Hero-Video, das dort wie eine digitale Straßensperre herumliegt 🚧."
       },
       "googleWatching": {
-        "title": "Google schaut zu (und urteilt) 👀",
-        "intro": "Die Seitengeschwindigkeit ist ein direkter Rankingfaktor für Google. Das bedeutet:",
+        "title": "Seitengeschwindigkeit und Suche",
+        "intro": "Suchmaschinen messen, wie schnell eine Seite nutzbar wird, und ein Video ist oft das schwerste Element darauf. Drei Gewohnheiten verhindern, dass Video diesen Wert verschlechtert:",
         "bullets": [
-          "<strong>Langsame Seite = niedrigeres Ranking</strong> = weniger organischer Traffic",
-          "<strong>Weniger Traffic = weniger Conversions</strong> = weniger Geld",
-          "<strong>Weniger Geld = trauriger Entwickler</strong> 😢"
+          "<strong>Achten Sie auf den Largest Contentful Paint (Rendering des größten Inhaltselements)</strong>: Ein Hero-Video oder sein Posterbild ist häufig das größte Element auf dem Bildschirm. Geben Sie daher jedem Video ein kleines, komprimiertes Posterbild und halten Sie die ersten Frames leicht.",
+          "<strong>Laden Sie nichts vor, was nicht sichtbar ist</strong>: Setzen Sie preload=\"none\" oder preload=\"metadata\" bei Videos unterhalb des sichtbaren Bereichs, damit sie nicht beim Laden der Seite heruntergeladen werden.",
+          "<strong>Liefern Sie die Größe, die Sie anzeigen</strong>: Eine 1080p-Datei in einer 400 Pixel breiten Karte verschwendet den Großteil ihrer Bytes. Kodieren Sie daher für kleine Platzierungen eine kleinere Fassung."
         ],
-        "clientStory": "Ich hatte einen Kunden, dessen E-Commerce-Seite riesige MOV-Dateien für Produktvideos verwendete. Nachdem alles in optimierte MP4s und WebM mit Fallbacks umgewandelt wurde:",
+        "clientStory": "Um die Wirkung auf Ihrer eigenen Website zu sehen, messen Sie vor und nach dem Komprimieren:",
         "clientResults": [
-          "Die Ladezeit der Seite sank von 8,2 auf 2,7 Sekunden",
-          "Die Google-Rankings verbesserten sich bei 67 % der Ziel-Keywords",
-          "Die Konversionsrate stieg um 23 %",
-          "Der monatliche Umsatz sprang um 18.000 $ nach oben 💸"
+          "Prüfen Sie die Seite mit PageSpeed Insights oder Lighthouse und notieren Sie den Largest Contentful Paint und das Gesamtgewicht der Seite.",
+          "Filtern Sie im Netzwerk-Bereich des Browsers nach Medien und vergleichen Sie die übertragene Größe jedes Videos.",
+          "Kodieren Sie mit konstanter Qualität neu (CRF 23 bis 28 für H.264) statt mit einer festen hohen Bitrate und messen Sie dann erneut.",
+          "Prüfen Sie die Seite über eine gedrosselte Mobilfunkverbindung, nicht nur im schnellen Büro-WLAN."
         ]
       },
       "bandwidthBill": {
@@ -210,13 +210,13 @@
         "outro": "Aber wenn Ihre Seite langsam ist? Dann schreit das lauter „Amateurstunde“ als ein Nebelhorn 📯. Nutzer denken sich: „Wenn sie nicht einmal ihre Website hinbekommen, kann ich ihnen dann meine Kreditkartendaten anvertrauen?“"
       },
       "monetization": {
-        "title": "Die Verbindung zur Monetarisierung 💰",
-        "intro": "Ob Sie nun Werbung schalten, Produkte verkaufen oder Inhalte über Medium monetarisieren (hallo, liebe:r Medium-Autor:in! 👋) – die Performance wirkt sich direkt auf Ihre Bilanz aus:",
+        "title": "Wo sich die Einsparungen zeigen",
+        "intro": "Kleinere Videodateien zahlen sich an einigen Stellen aus, die sich messen lassen:",
         "bullets": [
-          "<strong>Werbeeinnahmen</strong>: Langsame Seiten = höhere Absprungraten = weniger Werbeeinblendungen",
-          "<strong>Affiliate-Links</strong>: Niemand kann klicken, was er nicht abwarten will zu sehen",
-          "<strong>Produktverkäufe</strong>: Jede Sekunde Ladezeit kann die Conversions um 7 % senken",
-          "<strong>Content-Monetarisierung</strong>: Leser warten nicht auf Ihren brillanten Artikel, bis er geladen ist"
+          "<strong>Hosting- und CDN-Kosten</strong>: Die meisten Anbieter rechnen pro ausgelieferten Gigabyte ab, daher halbiert eine halbierte Dateigröße ungefähr die Kosten, dieses Video auszuliefern.",
+          "<strong>Startzeit</strong>: Eine kleinere Datei beginnt früher mit der Wiedergabe, sodass weniger Zuschauer abspringen, bevor sie startet.",
+          "<strong>Mobile Daten</strong>: Besucher mit begrenztem Datentarif können zusehen, ohne ihr Datenvolumen aufzubrauchen.",
+          "<strong>Upload-Grenzen</strong>: Viele E-Mail-Dienste, Chat-Apps und Formulare lehnen Anhänge über etwa 25 MB ab, eine komprimierte Datei kommt durch."
         ]
       },
       "quote": "„Die Geschwindigkeit einer Website ist wie ein erster Eindruck – man hat nur eine Chance, und wenn man sie verpatzt, wischen die Leute schneller nach links, als man ‚Bitte warten, wird geladen …‘ sagen kann.“ 💨"

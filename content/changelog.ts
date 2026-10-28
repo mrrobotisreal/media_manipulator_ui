@@ -31,6 +31,50 @@ export const CHANGELOG: ChangelogEntry[] = [
     body: 'The home page now loads about 13 % less JavaScript: the result viewer and the file preview are fetched when you pick a file, not before, and they are ready by the time your result is. On a phone the cookie bar is now a two-line strip with Decline and Accept side by side (the same size, as before), instead of covering almost half the screen. The buttons in the top bar are easier to tap, the language menu opens on the correct side in Arabic and Hebrew, and keyboard users get a "Skip to content" link. Tool pages show their upload area straight away, in your language, instead of a loading box.',
     tags: ['improved'],
   },
+  // MM85: contact page and a named founder.
+  {
+    id: '2026-10-28-contact-and-founder',
+    date: '2026-10-28',
+    title: 'New contact page; who makes Media Manipulator',
+    body: 'There is now a contact page with a short form and our two addresses: support@media-manipulator.com for help, bugs and billing, and privacy@media-manipulator.com for privacy and data requests. A person reads every message and we usually reply within two business days; the form gives you a reference you can quote. The About page now says who builds the site: Mitchell Wintrow, its founder and sole engineer, with CreaTV Ltd. as the operating company. Tutorials show who wrote them and when they were last updated, and the home page explains what each group of tools does and what we deliberately leave out.',
+    tags: ['new', 'improved'],
+    links: [
+      { label: 'Contact', href: '/contact' },
+      { label: 'About', href: '/about' },
+    ],
+  },
+  // MM87: the advertising disclosures Google's AdSense policies require.
+  {
+    id: '2026-10-28-privacy-advertising-cookies',
+    date: '2026-10-28',
+    title: 'Privacy policy: advertising cookie disclosures and opt-out links',
+    body: 'The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense. It explains that Google, as a third-party vendor, uses cookies to serve ads based on your visits to this and other sites; that until you allow advertising Google serves only non-personalised ads; that visitors in the EEA, the UK and Switzerland see Google\'s own consent message while our cookie bar covers analytics only; and it links to Google Ads Settings, aboutads.info, youronlinechoices.eu and Google\'s page on how it uses information from sites that use its services. Section 1.5 lists the advertising identifiers Google\'s script may set. Ads are shown only to visitors without an account and to free accounts; Premium and Pro never see them. The pricing FAQ now also says there are never more than two ads on a page, never over the tools, and never on the home, pricing, account or legal pages.',
+    tags: ['improved'],
+    links: [
+      { label: 'Read the Privacy Policy', href: '/privacy-policy' },
+      { label: 'See plans', href: '/pricing' },
+    ],
+  },
+  // MM82: AdSense loader under Consent Mode, advertising switch, consent bar fix.
+  {
+    id: '2026-10-28-ads-tool-pages',
+    date: '2026-10-28',
+    title: 'Ads are switching on for free and anonymous visitors on tool pages',
+    body: 'Ads are switching on for free and anonymous visitors on tool pages; Premium and Pro never see them. At most one ad appears on a tool page, well below the tool itself, and never on the home page, the tools list, pricing, your account or the legal pages. Google\'s ad script only loads on pages that can show an ad, with every consent signal denied until you choose, so ads are not personalised unless you allow it. Outside Europe you can now turn personalised ads on or off under "Cookie settings" in the footer; in Europe, the UK and Switzerland Google\'s own consent message asks about ads, and our bar still asks only about analytics.',
+    tags: ['new', 'improved'],
+  },
+  // MM81: vocal stems follow the input's format; Download as MP3 for older WAV results.
+  {
+    id: '2026-10-28-stem-format',
+    date: '2026-10-28',
+    title: 'Vocal removal now returns MP3 for MP3 files — up to 10× smaller',
+    body: 'Removing or isolating vocals used to always return a WAV file, so a long MP3 could come back more than ten times its original size: an 87-minute song became an 880 MB WAV. Now the result comes back in the same format as your file: an MP3 stays an MP3 (at 320 kbps, so the separation adds no audible loss of its own), and a lossless file such as WAV, FLAC or AIFF comes back as FLAC, which is still lossless and about half the size of WAV. A new Output format menu lets you pick MP3, FLAC or WAV instead, and shows the estimated size of each before you start; WAV warns you when it would be over 500 MB. If you already have a large WAV result, a Download as MP3 button converts it on our server. It is free and never counts as an AI job.',
+    tags: ['improved', 'new'],
+    links: [
+      { label: 'Remove vocals', href: '/tools/remove-vocals-from-song' },
+      { label: 'Isolate vocals', href: '/tools/isolate-vocals-from-song' },
+    ],
+  },
   // MM80: large results download through the browser's download manager.
   {
     id: '2026-10-28-large-downloads',

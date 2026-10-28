@@ -45,7 +45,7 @@
       "tooltipIntro": "Pro Auftrag läuft eine KI-Operation auf unserem lokalen GPU-Server. Die standardmäßige FFmpeg-Verarbeitungskette wird für diesen Auftrag übersprungen.",
       "tooltipCleanVoice": "<strong>Stimme säubern</strong> — DeepFilterNet-Rauschunterdrückung + Broadcast-Politur-Kette (Hoch-/Tiefpass, Lautheit, Limiter).",
       "tooltipRemoveNoise": "<strong>Hintergrundgeräusche entfernen</strong> — DeepFilterNet-Rauschunterdrückung ohne die Politur-Kette.",
-      "tooltipIsolateVocals": "<strong>Gesang isolieren</strong> — Demucs-htdemucs-Gesangsspur (standardmäßig verlustfreies WAV).",
+      "tooltipIsolateVocals": "<strong>Gesang isolieren</strong> — Demucs-htdemucs-Gesangsspur (standardmäßig im selben Format wie Ihre Datei).",
       "tooltipRemoveVocals": "<strong>Gesang entfernen / Karaoke</strong> — Demucs-Instrumentalspur.",
       "intro": "KI-Audio-Tools laufen als GPU-Aufträge und können länger dauern als eine einfache Konvertierung.",
       "operationLabel": "Operation",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "Bitrate, Equalizer und andere Standard-Audiooptionen werden übersprungen, wenn eine KI-Operation ausgewählt ist.",
       "presetLocked": "Voreinstellung für dieses Tool"
+    },
+    "stemFormat": {
+      "label": "Ausgabeformat",
+      "options": {
+        "auto": "Wie die Eingabe (empfohlen)",
+        "autoWithFormat": "Wie die Eingabe: {{format}} (empfohlen)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (verlustfrei)",
+        "wav": "WAV (verlustfrei, am größten)"
+      },
+      "withEstimate": "{{label}} · etwa {{size}}",
+      "help": "Die Größen sind Schätzungen. Eine MP3 bleibt MP3; eine verlustfreie Datei (WAV, FLAC, AIFF) kommt als FLAC zurück.",
+      "helpNoEstimate": "Eine MP3 bleibt MP3; eine verlustfreie Datei (WAV, FLAC, AIFF) kommt als FLAC zurück. Wählen Sie FLAC oder WAV für verlustfreie Qualität.",
+      "wavHint": "Die WAV-Datei wird etwa {{size}} groß. Das ist ein sehr großer Download; FLAC ist verlustfrei und etwa halb so groß."
     }
   },
   "videoForm": {
@@ -140,14 +154,14 @@
       "upscale": {
         "scaleLabel": "Skalierung",
         "scale4x": "4x",
-        "scale2x": "2x (bei manchen Bildern experimentell)",
+        "scale2x": "2x",
         "modelLabel": "Modell",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (Fotos)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "Die 2x-KI-Hochskalierung ist verfügbar, aber 4x ist auf diesem Server der sicherste/standardmäßige Modellpfad.",
+        "experimentalNote": "4x ist die Standardeinstellung und liefert die konsistentesten Ergebnisse. 2x führt dasselbe Modell mit halbem Maßstab aus und kann bei manchen Bildern leicht beschnitten wirken.",
         "pngNote": "Die Ausgabe ist standardmäßig PNG."
       },
       "removeObject": {

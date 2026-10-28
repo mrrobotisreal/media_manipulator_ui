@@ -45,7 +45,7 @@
       "tooltipIntro": "작업당 하나의 AI 작업이 저희 로컬 GPU 서버에서 실행됩니다. 해당 작업에서는 표준 FFmpeg 처리 체인을 건너뜁니다.",
       "tooltipCleanVoice": "<strong>음성 정리</strong> — DeepFilterNet 노이즈 제거 + 방송용 마무리 체인(하이/로우 패스, 라우드니스, 리미터).",
       "tooltipRemoveNoise": "<strong>배경 소음 제거</strong> — 마무리 체인 없이 DeepFilterNet 노이즈 제거만 적용.",
-      "tooltipIsolateVocals": "<strong>보컬 분리</strong> — Demucs htdemucs 보컬 스템(기본값은 무손실 WAV).",
+      "tooltipIsolateVocals": "<strong>보컬 분리</strong> — Demucs htdemucs 보컬 스템(기본값은 원본 파일과 같은 형식).",
       "tooltipRemoveVocals": "<strong>보컬 제거 / 노래방</strong> — Demucs 반주 스템.",
       "intro": "AI 오디오 도구는 GPU 작업으로 실행되므로 기본 변환보다 오래 걸릴 수 있어요.",
       "operationLabel": "작업",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "AI 작업을 선택하면 비트레이트, EQ 등 표준 오디오 옵션은 건너뜁니다.",
       "presetLocked": "이 도구의 프리셋"
+    },
+    "stemFormat": {
+      "label": "출력 형식",
+      "options": {
+        "auto": "입력과 동일(권장)",
+        "autoWithFormat": "입력과 동일: {{format}}(권장)",
+        "mp3": "MP3(320 kbps)",
+        "flac": "FLAC(무손실)",
+        "wav": "WAV(무손실, 가장 큼)"
+      },
+      "withEstimate": "{{label}} · 약 {{size}}",
+      "help": "크기는 추정치입니다. MP3는 MP3로 유지되고, 무손실 파일(WAV, FLAC, AIFF)은 FLAC으로 돌아옵니다.",
+      "helpNoEstimate": "MP3는 MP3로 유지되고, 무손실 파일(WAV, FLAC, AIFF)은 FLAC으로 돌아옵니다. 무손실로 받으려면 FLAC 또는 WAV를 선택하세요.",
+      "wavHint": "WAV는 약 {{size}}입니다. 매우 큰 다운로드이며, FLAC은 무손실이면서 크기가 약 절반입니다."
     }
   },
   "videoForm": {
@@ -139,14 +153,14 @@
       "upscale": {
         "scaleLabel": "배율",
         "scale4x": "4배",
-        "scale2x": "2배 (일부 이미지에서는 실험적)",
+        "scale2x": "2배",
         "modelLabel": "모델",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (사진)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2배 AI 업스케일도 가능하지만, 이 서버에서는 4배가 가장 안정적인 기본 모델 경로입니다.",
+        "experimentalNote": "4배가 기본값이며 가장 일관된 결과를 내요. 2배는 같은 모델을 절반 배율로 실행하므로 일부 이미지에서 약간 잘려 보일 수 있어요.",
         "pngNote": "출력은 기본적으로 PNG입니다."
       },
       "removeObject": {

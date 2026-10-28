@@ -45,7 +45,7 @@
       "tooltipIntro": "1つのジョブにつき1つのAI処理が、当社のローカルGPUサーバーで実行されます。そのジョブでは標準のFFmpeg処理チェーンはスキップされます。",
       "tooltipCleanVoice": "<strong>音声クリーンアップ</strong> — DeepFilterNetによるノイズ除去と放送品質の仕上げチェーン（ハイパス／ローパス、ラウドネス、リミッター）。",
       "tooltipRemoveNoise": "<strong>背景ノイズを除去</strong> — 仕上げチェーンなしのDeepFilterNetノイズ除去。",
-      "tooltipIsolateVocals": "<strong>ボーカルを分離</strong> — Demucs htdemucsのボーカルステム（デフォルトはロスレスWAV）。",
+      "tooltipIsolateVocals": "<strong>ボーカルを分離</strong> — Demucs htdemucsのボーカルステム（デフォルトでは元のファイルと同じ形式）。",
       "tooltipRemoveVocals": "<strong>ボーカルを除去／カラオケ</strong> — Demucsのインストゥルメンタルステム。",
       "intro": "AI音声ツールはGPUジョブとして実行されるため、基本的な変換より時間がかかることがあります。",
       "operationLabel": "処理",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "AI処理を選択すると、ビットレート、EQ、その他の標準音声オプションはスキップされます。",
       "presetLocked": "このツールのプリセット"
+    },
+    "stemFormat": {
+      "label": "出力形式",
+      "options": {
+        "auto": "入力と同じ（推奨）",
+        "autoWithFormat": "入力と同じ：{{format}}（推奨）",
+        "mp3": "MP3（320 kbps）",
+        "flac": "FLAC（ロスレス）",
+        "wav": "WAV（ロスレス、最大サイズ）"
+      },
+      "withEstimate": "{{label}} · 約{{size}}",
+      "help": "サイズは目安です。MP3はMP3のまま、ロスレスファイル（WAV、FLAC、AIFF）はFLACで返されます。",
+      "helpNoEstimate": "MP3はMP3のまま、ロスレスファイル（WAV、FLAC、AIFF）はFLACで返されます。ロスレスにするにはFLACまたはWAVを選んでください。",
+      "wavHint": "WAVは約{{size}}になります。非常に大きなダウンロードです。FLACはロスレスで、サイズは約半分です。"
     }
   },
   "videoForm": {
@@ -139,14 +153,14 @@
       "upscale": {
         "scaleLabel": "倍率",
         "scale4x": "4倍",
-        "scale2x": "2倍（一部の画像では実験的）",
+        "scale2x": "2倍",
         "modelLabel": "モデル",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus（写真向け）",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2倍のAIアップスケールも利用できますが、このサーバーでは4倍が最も安全なデフォルトのモデルパスです。",
+        "experimentalNote": "4倍がデフォルトで、最も安定した結果が得られます。2倍は同じモデルを半分のスケールで実行するため、一部の画像では少し切り取られたように見えることがあります。",
         "pngNote": "出力はデフォルトでPNGです。"
       },
       "removeObject": {

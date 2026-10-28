@@ -45,7 +45,7 @@
       "tooltipIntro": "Uma operação de IA roda por trabalho, no nosso servidor local com GPU. A cadeia padrão de processamento do FFmpeg é ignorada nesse trabalho.",
       "tooltipCleanVoice": "<strong>Limpar voz</strong>: redução de ruído DeepFilterNet + cadeia de acabamento de transmissão (passa-altas/passa-baixas, loudness, limitador).",
       "tooltipRemoveNoise": "<strong>Remover ruído de fundo</strong>: redução de ruído DeepFilterNet sem a cadeia de acabamento.",
-      "tooltipIsolateVocals": "<strong>Isolar vocais</strong>: faixa vocal do Demucs htdemucs (padrão em WAV sem perdas).",
+      "tooltipIsolateVocals": "<strong>Isolar vocais</strong>: faixa vocal do Demucs htdemucs (por padrão, no mesmo formato do seu arquivo).",
       "tooltipRemoveVocals": "<strong>Remover vocais / Karaokê</strong>: faixa instrumental do Demucs.",
       "intro": "As ferramentas de IA para áudio rodam como trabalhos na GPU e podem demorar mais do que a conversão básica.",
       "operationLabel": "Operação",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "Taxa de bits, equalização e outras opções padrão de áudio são ignoradas quando uma operação de IA está selecionada.",
       "presetLocked": "Predefinição desta ferramenta"
+    },
+    "stemFormat": {
+      "label": "Formato de saída",
+      "options": {
+        "auto": "Igual ao original (recomendado)",
+        "autoWithFormat": "Igual ao original: {{format}} (recomendado)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (sem perdas)",
+        "wav": "WAV (sem perdas, o maior)"
+      },
+      "withEstimate": "{{label}} · cerca de {{size}}",
+      "help": "Os tamanhos são estimativas. Um MP3 continua MP3; um arquivo sem perdas (WAV, FLAC, AIFF) volta como FLAC.",
+      "helpNoEstimate": "Um MP3 continua MP3; um arquivo sem perdas (WAV, FLAC, AIFF) volta como FLAC. Escolha FLAC ou WAV para manter sem perdas.",
+      "wavHint": "O WAV terá cerca de {{size}}. É um download muito grande; o FLAC é sem perdas e tem cerca da metade do tamanho."
     }
   },
   "videoForm": {
@@ -140,14 +154,14 @@
       "upscale": {
         "scaleLabel": "Escala",
         "scale4x": "4x",
-        "scale2x": "2x (experimental em algumas imagens)",
+        "scale2x": "2x",
         "modelLabel": "Modelo",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (fotos)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "O upscale com IA em 2x está disponível, mas o 4x é o caminho de modelo mais seguro e padrão neste servidor.",
+        "experimentalNote": "O 4x é o padrão e dá os resultados mais consistentes. O 2x roda o mesmo modelo na metade da escala e pode parecer levemente cortado em algumas imagens.",
         "pngNote": "A saída é PNG por padrão."
       },
       "removeObject": {

@@ -55,6 +55,8 @@ import {
 } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { Panel } from '@/components/darkroom/panel';
+import { isStemOperation, stemOutputFormat } from '@/lib/audio/stemFormat';
+import { isVocalStemJob } from '@/lib/results/mp3Download';
 import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
 
 /** MM88: a 44px (min-h-11) tap target that never wraps or shrinks inside the scrolling row. */
@@ -91,6 +93,8 @@ interface ConversionHistoryItem {
   fileName: string;
   outputFileName: string;
   format: string;
+  /** MM81: the AI operation, when one ran (offers "Download as MP3" on a WAV stem). */
+  aiOperation?: string;
   originalUrl: string;
   startedAt: number;
   completedAt?: number;
@@ -105,12 +109,28 @@ interface ConversionHistoryItem {
   error?: string;
 }
 
+/**
+ * MM81: once a stem job exists, the API has rewritten `auto` to the real format in the job's
+ * options (an .m4a holding ALAC becomes flac); re-name the history entry to match.
+ */
+function resolvedStemNames(
+  item: ConversionHistoryItem,
+  options: Record<string, unknown> | undefined,
+): Partial<ConversionHistoryItem> {
+  const format = typeof options?.format === 'string' ? options.format : '';
+  const ai = options?.ai as { operation?: string } | undefined;
+  if (!format || format === 'auto' || !isStemOperation(ai?.operation) || format === item.format) return {};
+  const base = item.fileName.substring(0, item.fileName.lastIndexOf('.')) || item.fileName;
+  return { format, outputFileName: `${base}.${format}` };
+}
+
 interface PendingConversionDetails {
   mediaKind: 'image' | 'video' | 'audio' | 'pdf' | 'unknown';
   mode: WorkflowMode;
   fileName: string;
   outputFileName: string;
   format: string;
+  aiOperation?: string;
   originalUrl: string;
   startedAt: number;
 }
@@ -166,6 +186,11 @@ const FileConverterAppInner: React.FC = () => {
   const { t, formatFileSize, formatTime } = useLocalization(['interface', 'accessibility', 'error']);
   const localized = useLocalizedHref();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // One object URL per chosen file (the audio form reads its duration from it, MM81).
+  const selectedFileUrl = useMemo(() => (selectedFile ? URL.createObjectURL(selectedFile) : undefined), [selectedFile]);
+  useEffect(() => () => {
+    if (selectedFileUrl) URL.revokeObjectURL(selectedFileUrl);
+  }, [selectedFileUrl]);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const [conversionOptions, setConversionOptions] = useState<ConversionFormData | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -234,6 +259,7 @@ const FileConverterAppInner: React.FC = () => {
           fileName: pending.fileName,
           outputFileName: pending.outputFileName,
           format: pending.format,
+          aiOperation: pending.aiOperation,
           originalUrl: pending.originalUrl,
           startedAt: pending.startedAt,
           status: 'processing',
@@ -315,6 +341,7 @@ const FileConverterAppInner: React.FC = () => {
         setConversionHistory(prev => prev.map(item => item.jobId === jobStatusData.id
           ? {
               ...item,
+              ...resolvedStemNames(item, jobStatusData.options),
               status: 'completed',
               completedAt: Date.now(),
               resultSizeBytes: jobStatusData.resultSizeBytes,
@@ -389,14 +416,18 @@ const FileConverterAppInner: React.FC = () => {
     if (!selectedFile) return;
     const originalName = selectedFile.name;
     const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
-    const outputFileName = `${nameWithoutExt}.${data.format}`;
+    // MM81: a vocal stem's "Same as input" is sent as `auto`; name it by what it will be.
+    const aiOp = (data as { ai?: { operation?: string } }).ai?.operation;
+    const outputFormat = isStemOperation(aiOp) ? stemOutputFormat(data.format, selectedFile.name, selectedFile.type) : data.format;
+    const outputFileName = `${nameWithoutExt}.${outputFormat}`;
     const mediaKind = getFileType(selectedFile);
     pendingConversionRef.current = {
       mediaKind,
       mode: 'convert',
       fileName: selectedFile.name,
       outputFileName,
-      format: data.format,
+      format: outputFormat,
+      aiOperation: aiOp,
       originalUrl: URL.createObjectURL(selectedFile),
       startedAt: Date.now(),
     };
@@ -462,7 +493,10 @@ const FileConverterAppInner: React.FC = () => {
 
     const originalName = selectedFile.name;
     const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
-    const newExtension = conversionOptions.format;
+    const aiOp = (conversionOptions as { ai?: { operation?: string } }).ai?.operation;
+    const newExtension = isStemOperation(aiOp)
+      ? stemOutputFormat(conversionOptions.format, originalName, selectedFile.type, conversionJob?.options)
+      : conversionOptions.format;
     if (workflowMode === 'transcribe') {
       return `${nameWithoutExt}_transcript.${newExtension}`;
     }
@@ -620,6 +654,7 @@ const FileConverterAppInner: React.FC = () => {
             ? t('interface:home.result.transcriptSubtitle', { filename: activeHistoryItem.fileName })
             : t('interface:home.result.convertedSubtitle', { filename: activeHistoryItem.fileName })}
           downloadFileName={activeHistoryItem.outputFileName}
+          offerMp3={isVocalStemJob(activeHistoryItem.aiOperation)}
           onDownload={() => handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
           seedBlob={activeHistoryItem.blob}
           onBlobLoaded={(blob) => cacheHistoryBlob(activeHistoryItem.jobId, blob)}
@@ -634,58 +669,8 @@ const FileConverterAppInner: React.FC = () => {
           <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             {t('interface:home.hero.subtitle')}
           </p>
-          {/* MM88: 44px chips. On a phone they are one horizontally scrolling row
-              (bleeding to the screen edges) instead of three or four wrapped rows
-              of 44px, so the dropzone stays near the first screen; from `sm` they
-              wrap and centre as before. Only this row scrolls, never the page. */}
-          <nav aria-label={t('accessibility:home.popularTools')} className="-mx-4 mt-5 flex flex-nowrap items-center justify-start gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0">
-            <Link href={localized('/tools')} className={cn(HERO_CHIP, "bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)]")}>{t('interface:home.hero.allTools')}</Link>
-            <Link href={localized('/tools/remove-exif-metadata')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.removeExif')}</Link>
-            <Link href={localized('/tools/compress-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressVideo')}</Link>
-            <Link href={localized('/tools/transcribe-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcribeVideo')}</Link>
-            <Link href={localized('/tools/transcode-to-hls')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcodeHls')}</Link>
-            {/* Review-visible chips link only to review-allowlisted tool pages. */}
-            <Link href={localized('/tools/compress-image')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressImage')}</Link>
-            <Link href={localized('/tools/image-resizer')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.resizeImage')}</Link>
-            <Link href={localized('/tools/extract-audio-from-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.extractAudio')}</Link>
-          </nav>
           <QuotaChip busy={isLoading} className="mt-4 justify-center" />
         </header>
-
-        {/* Content Studio call-to-action */}
-        <Link
-          href={localized('/tools/content-studio')}
-          className="group mb-8 block w-full max-w-5xl rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
-          // No aria-label. The card's own text — title, badge, description,
-          // CTA — is a better accessible name than a two-word override, and an
-          // aria-label that omits the visible text fails WCAG 2.5.3 Label in
-          // Name (the visible label must appear in the accessible name).
-        >
-          <div className="flex items-center gap-4">
-            <div className="shrink-0 rounded-lg bg-data/10 p-3">
-              <Clapperboard className="w-7 h-7 text-data" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <span className="flex items-center gap-2 flex-wrap">
-                <span className="text-lg font-semibold text-card-foreground">
-                  {t('interface:home.contentStudioCta.title')}
-                </span>
-                {/* text-success-foreground, not text-foreground: #ECEFF4 on
-                    #4ADE80 measures 1.51:1. Every bg-success fill takes the
-                    paired foreground token (globals.css). */}
-                <span className="inline-flex items-center gap-1 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-success-foreground">
-                  <Sparkles className="w-3 h-3" />
-                  {t('interface:home.contentStudioCta.badge')}
-                </span>
-              </span>
-              <p className="text-sm text-muted-foreground mt-1">{t('interface:home.contentStudioCta.body')}</p>
-            </div>
-            <span className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform shrink-0">
-              {t('interface:home.contentStudioCta.cta')}
-              <ArrowRight className="w-4 h-4" />
-            </span>
-          </div>
-        </Link>
 
         <RecentStrip className="mx-auto mb-6 w-full max-w-5xl" />
 
@@ -971,7 +956,9 @@ const FileConverterAppInner: React.FC = () => {
                         <AudioConversionForm
                           onSubmit={handleConvert}
                           isLoading={isLoading}
-                          audioUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                          audioUrl={selectedFileUrl}
+                          fileName={selectedFile?.name}
+                          fileType={selectedFile?.type}
                         />
                       )}
                     </>
@@ -1156,6 +1143,59 @@ const FileConverterAppInner: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* MM85: the converter comes first on every viewport; the popular chips and
+            the Darkroom card follow it rather than pushing it below the fold. */}
+        <p className="mt-8 text-sm font-medium text-muted-foreground">{t('interface:home.hero.popularLabel')}</p>
+        {/* MM88: 44px chips. On a phone they are one horizontally scrolling row
+            (bleeding to the screen edges) instead of three or four wrapped rows of
+            44px; from `sm` they wrap and centre. Only this row scrolls, never the page. */}
+        <nav aria-label={t('accessibility:home.popularTools')} className="-mx-4 mt-3 flex w-[calc(100%+2rem)] max-w-5xl flex-nowrap items-center justify-start gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-auto sm:w-full sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0">
+          <Link href={localized('/tools')} className={cn(HERO_CHIP, "bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)]")}>{t('interface:home.hero.allTools')}</Link>
+          <Link href={localized('/tools/remove-exif-metadata')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.removeExif')}</Link>
+          <Link href={localized('/tools/compress-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressVideo')}</Link>
+          <Link href={localized('/tools/transcribe-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcribeVideo')}</Link>
+          <Link href={localized('/tools/transcode-to-hls')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcodeHls')}</Link>
+          {/* Review-visible chips link only to review-allowlisted tool pages. */}
+          <Link href={localized('/tools/compress-image')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressImage')}</Link>
+          <Link href={localized('/tools/image-resizer')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.resizeImage')}</Link>
+          <Link href={localized('/tools/extract-audio-from-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.extractAudio')}</Link>
+        </nav>
+
+        {/* Content Studio call-to-action */}
+        <Link
+          href={localized('/tools/content-studio')}
+          className="group mt-8 mb-8 block w-full max-w-5xl rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
+          // No aria-label. The card's own text — title, badge, description,
+          // CTA — is a better accessible name than a two-word override, and an
+          // aria-label that omits the visible text fails WCAG 2.5.3 Label in
+          // Name (the visible label must appear in the accessible name).
+        >
+          <div className="flex items-center gap-4">
+            <div className="shrink-0 rounded-lg bg-data/10 p-3">
+              <Clapperboard className="w-7 h-7 text-data" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="flex items-center gap-2 flex-wrap">
+                <span className="text-lg font-semibold text-card-foreground">
+                  {t('interface:home.contentStudioCta.title')}
+                </span>
+                {/* text-success-foreground, not text-foreground: #ECEFF4 on
+                    #4ADE80 measures 1.51:1. Every bg-success fill takes the
+                    paired foreground token (globals.css). */}
+                <span className="inline-flex items-center gap-1 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-success-foreground">
+                  <Sparkles className="w-3 h-3" />
+                  {t('interface:home.contentStudioCta.badge')}
+                </span>
+              </span>
+              <p className="text-sm text-muted-foreground mt-1">{t('interface:home.contentStudioCta.body')}</p>
+            </div>
+            <span className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform shrink-0">
+              {t('interface:home.contentStudioCta.cta')}
+              <ArrowRight className="w-4 h-4" />
+            </span>
+          </div>
+        </Link>
       </div>
     </>
   );
