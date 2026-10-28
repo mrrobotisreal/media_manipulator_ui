@@ -153,14 +153,14 @@
       "upscale": {
         "scaleLabel": "Tỷ lệ",
         "scale4x": "4x",
-        "scale2x": "2x (thử nghiệm trên một số hình ảnh)",
+        "scale2x": "2x",
         "modelLabel": "Mô hình",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (ảnh chụp)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "Nâng cấp AI 2x có sẵn, nhưng 4x là đường mô hình an toàn nhất/mặc định trên máy chủ này.",
+        "experimentalNote": "4x là mặc định và cho kết quả nhất quán nhất. 2x chạy cùng mô hình ở một nửa tỷ lệ và có thể trông hơi bị cắt ở một số ảnh.",
         "pngNote": "Đầu ra mặc định là PNG."
       },
       "removeObject": {

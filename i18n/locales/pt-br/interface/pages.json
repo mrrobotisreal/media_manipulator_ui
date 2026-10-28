@@ -123,9 +123,13 @@
       }
     },
     "whoBuilds": {
-      "title": "Quem faz o Media Manipulator",
-      "p1": "O Media Manipulator é desenvolvido e operado pela <strong>CreaTV Ltd.</strong>, uma pequena empresa independente de tecnologia para mídia sediada no Colorado, EUA. A linha de produtos da CreaTV é focada em ferramentas que ajudam criadores a dar vida às suas ideias. O Media Manipulator é o utilitário gratuito e sem conta que ancora esse ecossistema.",
-      "p2": "Somos uma equipe pequena, e é exatamente por isso que construímos o Media Manipulator desse jeito: não queremos cuidar de uma frota de integrações com IAs de terceiros, não queremos guardar seus arquivos indefinidamente e não queremos operar dez sites conversores separados, cada um com uma única função. Um estúdio, um lugar onde você escolhe por quanto tempo seus arquivos ficam, um servidor com GPU fazendo o trabalho pesado."
+      "title": "Quem está por trás do Media Manipulator",
+      "name": "Mitchell Wintrow",
+      "role": "Fundador e único engenheiro",
+      "photoAlt": "Retrato de Mitchell Wintrow, fundador e único engenheiro do Media Manipulator",
+      "p1": "O Media Manipulator é feito por <strong>Mitchell Wintrow</strong>, seu fundador e único engenheiro. Mitchell é engenheiro de software sênior e cria sistemas mobile, web e de backend; durante o dia, trabalha com receita de anúncios mobile na People Inc. Ele projeta, escreve e opera sozinho cada parte do Media Manipulator, dos editores no seu navegador até a API e o servidor com GPU por trás das ferramentas de IA.",
+      "p2": "O Media Manipulator é operado pela <strong>CreaTV Ltd.</strong>, sediada no Colorado, EUA, que também faz o CreaTV Studio. Ser uma operação de uma pessoa só é o motivo de o site funcionar assim: sem integrações de IA de terceiros para vigiar, sem arquivos guardados por mais tempo do que você escolher e um único lugar para o seu trabalho com mídia, em vez de dez sites de conversão com uma função só.",
+      "contact": "Suporte, bugs e cobrança: <supportLink>support@media-manipulator.com</supportLink>. Privacidade e solicitações de dados: <privacyLink>privacy@media-manipulator.com</privacyLink>. Ou escreva para nós pela <linkContact>página de contato</linkContact>."
     },
     "supportedFormats": {
       "title": "Formatos de arquivo suportados (referência rápida)",
@@ -580,7 +584,7 @@
     "emailLabel": "E-mail:",
     "websiteLabel": "Site:",
     "whatChangedTitle": "O que mudou em 28/10/2026",
-    "whatChangedBody": "Adicionamos as divulgações sobre cookies de publicidade exigidas pelo Google e os links para desativação. A Política de Privacidade tem uma nova seção 5.1 sobre cookies de publicidade e Google AdSense: os cookies de publicidade do Google, os anúncios não personalizados, a mensagem de consentimento do Google no EEE, no Reino Unido e na Suíça, os links para desativar os anúncios personalizados (Configurações de anúncios do Google, aboutads.info e youronlinechoices.eu) e para saber como o Google usa informações de sites que usam seus serviços, quem vê anúncios (somente visitantes sem conta e contas gratuitas) e o nosso arquivo público ads.txt; a seção 1.5 agora lista os identificadores de publicidade que o script de anúncios do Google pode definir. A seção 8.9 dos Termos agora diz que os anúncios são exibidos apenas sem conta ou com uma conta gratuita, e que o Premium e o Pro os removem. A seção 5 (Publicidade) da Política de Privacidade agora informa que o script de anúncios do Google é carregado nas páginas que podem exibir anúncios, com todos os sinais de consentimento negados até você escolher, e que até lá veicula anúncios não personalizados. Mais cedo no mesmo dia: Adicionamos ferramentas de voz: clonar a sua própria voz a partir de uma gravação, criar uma voz a partir de uma descrição e alterar a voz de uma gravação. A Política de Privacidade tem uma nova seção 1.10 sobre amostras de voz e vozes criadas: o que armazenamos, que só usamos para criar e executar a voz que você pediu, com o seu consentimento explícito, que ela fica armazenada no Amazon S3 conforme a sua configuração de retenção, nunca é compartilhada com um provedor de IA terceirizado nem usada para treinar qualquer modelo, e que você pode excluí-la a qualquer momento e ela é excluída junto com a sua conta; as seções 3, 3.4, 3.5 e 4 agora mencionam as vozes. Os Termos têm uma nova seção 8.11: você só pode criar uma voz a partir da sua própria voz ou com a permissão explícita de quem fala; falsificação de identidade, fraude, deepfakes políticos e assédio não são permitidos; a fala gerada e convertida leva uma marca d'água inaudível e o áudio deslocado não; e podemos remover vozes e suspender contas. A seção 1 dos Termos lista as ferramentas de voz. Tudo da atualização de 2026-10-26 continua valendo: Adicionamos o Motion, nosso editor de animação SVG (em beta). A Política de Privacidade tem uma nova seção 1.9: os projetos e as exportações do Motion são feitos no seu navegador e não são enviados para serem produzidos; os projetos que você salva na sua conta são armazenados como os projetos do Darkroom, seguem o período de retenção que você escolher e podem ser excluídos; e, para cada exportação contabilizada, registramos formato, tamanho, duração e horário para aplicar a cota diária. As seções 3, 3.3 e 3.4 agora mencionam os projetos do Motion. A seção 13 dos Termos confirma que as suas exportações do Motion pertencem a você, explica que algumas exportações contêm código anime.js licenciado sob MIT, cujo aviso deve ser mantido, e remete à nossa página de licenças de código aberto. Tudo o que consta da atualização de 25/10/2026 (o plano Pro, as mudanças de plano e os reembolsos) continua válido. A seção 10 dos Termos agora informa que você pode pagar em dólares americanos ou em euros pelo mesmo preço, que os euros são exibidos por padrão na Europa e que a moeda de uma assinatura não pode mudar enquanto ela estiver ativa; a seção 1.6 da Política de Privacidade agora lista a moeda de cobrança que armazenamos e o cookie mm-currency, que lembra a sua escolha. A seção 8 agora também informa que os tradutores que contratamos enviam o trabalho deles como pull requests no GitHub, feitos pelo GitHub App da CreaTV Ltd., e que esses envios contêm apenas texto de tradução e nenhum dado pessoal sobre visitantes. Esta versão em português do Brasil é uma tradução feita por um modelo de IA e aguarda revisão por um falante nativo; em caso de divergência, prevalece a versão em inglês."
+    "whatChangedBody": "Adicionamos um formulário de contato em media-manipulator.com/contact: a Política de Privacidade tem uma nova seção 1.11 sobre as mensagens que você nos envia (seu nome, e-mail, assunto e mensagem, entregues na nossa caixa de suporte por meio do Resend e guardadas lá até a conversa ser encerrada, nunca por mais de 12 meses), e a seção 16 agora remete ao formulário. Adicionamos as divulgações sobre cookies de publicidade exigidas pelo Google e os links para desativação. A Política de Privacidade tem uma nova seção 5.1 sobre cookies de publicidade e Google AdSense: os cookies de publicidade do Google, os anúncios não personalizados, a mensagem de consentimento do Google no EEE, no Reino Unido e na Suíça, os links para desativar os anúncios personalizados (Configurações de anúncios do Google, aboutads.info e youronlinechoices.eu) e para saber como o Google usa informações de sites que usam seus serviços, quem vê anúncios (somente visitantes sem conta e contas gratuitas) e o nosso arquivo público ads.txt; a seção 1.5 agora lista os identificadores de publicidade que o script de anúncios do Google pode definir. A seção 8.9 dos Termos agora diz que os anúncios são exibidos apenas sem conta ou com uma conta gratuita, e que o Premium e o Pro os removem. A seção 5 (Publicidade) da Política de Privacidade agora informa que o script de anúncios do Google é carregado nas páginas que podem exibir anúncios, com todos os sinais de consentimento negados até você escolher, e que até lá veicula anúncios não personalizados. Mais cedo no mesmo dia: Adicionamos ferramentas de voz: clonar a sua própria voz a partir de uma gravação, criar uma voz a partir de uma descrição e alterar a voz de uma gravação. A Política de Privacidade tem uma nova seção 1.10 sobre amostras de voz e vozes criadas: o que armazenamos, que só usamos para criar e executar a voz que você pediu, com o seu consentimento explícito, que ela fica armazenada no Amazon S3 conforme a sua configuração de retenção, nunca é compartilhada com um provedor de IA terceirizado nem usada para treinar qualquer modelo, e que você pode excluí-la a qualquer momento e ela é excluída junto com a sua conta; as seções 3, 3.4, 3.5 e 4 agora mencionam as vozes. Os Termos têm uma nova seção 8.11: você só pode criar uma voz a partir da sua própria voz ou com a permissão explícita de quem fala; falsificação de identidade, fraude, deepfakes políticos e assédio não são permitidos; a fala gerada e convertida leva uma marca d'água inaudível e o áudio deslocado não; e podemos remover vozes e suspender contas. A seção 1 dos Termos lista as ferramentas de voz. Tudo da atualização de 2026-10-26 continua valendo: Adicionamos o Motion, nosso editor de animação SVG (em beta). A Política de Privacidade tem uma nova seção 1.9: os projetos e as exportações do Motion são feitos no seu navegador e não são enviados para serem produzidos; os projetos que você salva na sua conta são armazenados como os projetos do Darkroom, seguem o período de retenção que você escolher e podem ser excluídos; e, para cada exportação contabilizada, registramos formato, tamanho, duração e horário para aplicar a cota diária. As seções 3, 3.3 e 3.4 agora mencionam os projetos do Motion. A seção 13 dos Termos confirma que as suas exportações do Motion pertencem a você, explica que algumas exportações contêm código anime.js licenciado sob MIT, cujo aviso deve ser mantido, e remete à nossa página de licenças de código aberto. Tudo o que consta da atualização de 25/10/2026 (o plano Pro, as mudanças de plano e os reembolsos) continua válido. A seção 10 dos Termos agora informa que você pode pagar em dólares americanos ou em euros pelo mesmo preço, que os euros são exibidos por padrão na Europa e que a moeda de uma assinatura não pode mudar enquanto ela estiver ativa; a seção 1.6 da Política de Privacidade agora lista a moeda de cobrança que armazenamos e o cookie mm-currency, que lembra a sua escolha. A seção 8 agora também informa que os tradutores que contratamos enviam o trabalho deles como pull requests no GitHub, feitos pelo GitHub App da CreaTV Ltd., e que esses envios contêm apenas texto de tradução e nenhum dado pessoal sobre visitantes. Esta versão em português do Brasil é uma tradução feita por um modelo de IA e aguarda revisão por um falante nativo; em caso de divergência, prevalece a versão em inglês."
   },
   "privacyPolicy": {
     "title": "Política de Privacidade",
@@ -731,6 +735,13 @@
               "Finalidade e base legal: usamos esses dados apenas para criar e executar a voz que você pediu, ou seja, para fazer a voz, gerar a prévia dela e gerar ou converter fala quando você pedir. Uma gravação da voz de uma pessoa pode identificá-la, por isso a tratamos com o cuidado que os dados de categoria especial (biométricos) exigem e nos baseamos no seu consentimento explícito, que você dá com a caixa de consentimento antes de uma voz ser criada a partir de uma gravação. Você pode retirá-lo a qualquer momento excluindo a voz.",
               "Armazenamento: as vozes salvas ficam armazenadas nos nossos servidores e no Amazon S3 em voices/, na sua conta, e seguem o período de retenção que você escolher (Seção 3). As gravações que você envia para alterar e a fala que você gera são mantidas como qualquer outro envio e resultado. O processamento de voz roda no nosso próprio servidor com GPU: suas gravações e vozes nunca são compartilhadas com um provedor de IA terceirizado e nunca são usadas para treinar qualquer modelo. A fala gerada e convertida leva uma marca d'água inaudível que a identifica como sintética; ela não contém dados da conta.",
               "Exclusão e exportação: você pode excluir uma voz salva a qualquer momento em Conta, Vozes; a gravação de referência e a prévia dela são excluídas dos nossos servidores imediatamente, enquanto a fala que você já gerou permanece até o fim do próprio período de retenção. Todas as suas vozes salvas são excluídas quando você exclui a sua conta. A exportação dos seus dados lista as suas vozes salvas (nome, tipo, idioma, datas e o registro de consentimento), sem o áudio."
+            ]
+          },
+          {
+            "title": "1.11 Mensagens que você nos envia",
+            "paragraphs": [
+              "Quando você usa o formulário de contato em media-manipulator.com/contact, recebemos o seu nome, o seu e-mail, o assunto que você escolhe e a sua mensagem, junto com o horário de envio e um número de protocolo curto. O formulário entrega essas informações na nossa caixa de suporte por e-mail, por meio do nosso provedor de e-mail Resend; as mensagens de contato não são armazenadas no banco de dados do nosso aplicativo. Quando você escreve direto para o nosso e-mail, recebemos o mesmo tipo de informação a partir do seu e-mail.",
+              "Usamos essas mensagens apenas para responder a você e tratar do que você pede, como um relato de bug, uma dúvida de cobrança ou uma solicitação de privacidade. Elas ficam guardadas na nossa caixa de suporte até a conversa ser encerrada, e nunca por mais de 12 meses. Para limitar o spam, o formulário tem limite de taxa por sessão do navegador e por endereço IP, como o resto do site, e uma tentativa bloqueada é guardada como registro de prevenção de abusos (Seção 3.6)."
             ]
           }
         ]
@@ -1060,6 +1071,7 @@
       {
         "title": "16. Fale conosco",
         "paragraphs": [
+          "O formulário de contato em media-manipulator.com/contact chega às mesmas pessoas que o endereço abaixo; a Seção 1.11 explica o que ele coleta e por quanto tempo as mensagens são guardadas.",
           "Se você tiver dúvidas sobre esta Política de Privacidade ou sobre como o Media Manipulator trata as informações, entre em contato conosco em:"
         ],
         "contactBlock": true,
@@ -1998,6 +2010,30 @@
     "popular": {
       "eyebrow": "Conversões populares",
       "title": "Vá direto para uma ferramenta"
+    },
+    "whatYouCanDo": {
+      "eyebrow": "O que você pode fazer aqui",
+      "title": "Ferramentas para todo tipo de arquivo de mídia",
+      "video": "<strong>Vídeo.</strong> <compressVideo>Compacte um vídeo</compressVideo> para e-mail ou web, <trimVideo>corte-o</trimVideo> na parte de que precisa com um corte rápido que mantém a qualidade original, <videoGif>transforme um clipe curto em GIF animado</videoGif> ou <hls>empacote-o em HLS</hls> para streaming adaptativo. Envios grandes vão direto para o nosso armazenamento, então gravações longas também funcionam.",
+      "images": "<strong>Imagens e PDF.</strong> <removeExif>Remova os metadados EXIF</removeExif>, como a localização GPS, antes de compartilhar uma foto, <compressImage>compacte uma imagem</compressImage> para uma página mais rápida, <resizeImage>redimensione-a</resizeImage> para dimensões exatas em pixels e converta <imageToPdf>imagens em PDF</imageToPdf> ou <pdfToJpg>páginas de PDF em JPG</pdfToJpg>.",
+      "audio": "<strong>Áudio e fala.</strong> <extractAudio>Extraia a faixa de áudio</extractAudio> de um vídeo em MP3, WAV, M4A, FLAC ou OGG e <transcribe>transcreva o que é dito</transcribe> em texto pesquisável ou legendas. A transcrição roda o Whisper no nosso próprio servidor com GPU.",
+      "ai": "<strong>Ferramentas de IA.</strong> <removeBg>Remova o fundo</removeBg> de uma foto, <imageRestore>restaure e amplie uma imagem antiga</imageRestore>, <videoRestore>compare modelos de restauração de vídeo</videoRestore> lado a lado em um clipe curto ou <docScan>transforme páginas digitalizadas em um PDF pesquisável</docScan>. Todos os modelos rodam em servidores que nós operamos.",
+      "editors": "<strong>Editores.</strong> Quando uma única conversão não basta, o <darkroom>Darkroom</darkroom> é um editor de vídeo multifaixa e o <motion>Motion</motion> anima arte SVG em uma linha do tempo de keyframes. Os dois rodam no seu navegador, e entrar na sua conta mantém seus projetos salvos nela."
+    },
+    "whatWeDont": {
+      "eyebrow": "O que não fazemos",
+      "title": "O que deixamos de fora de propósito",
+      "items": [
+        "<strong>Sem IA de terceiros.</strong> Seus arquivos nunca são enviados a um provedor de IA externo. Transcrição, remoção de fundo, ampliação e todas as outras ferramentas de IA rodam no nosso próprio servidor com GPU.",
+        "<strong>Sem marca d'água nos seus arquivos.</strong> Imagens, vídeos, áudios e documentos convertidos voltam sem logotipo nem marca. A única exceção é a fala sintética das ferramentas de voz, que leva um marcador inaudível que a identifica como gerada por IA.",
+        "<strong>Sem precisar de conta na maioria das ferramentas.</strong> Conversão, compactação, corte e remoção de metadados funcionam sem cadastro. Uma conta gratuita traz uma cota diária maior, projetos salvos e controle sobre por quanto tempo seus arquivos são guardados.",
+        "<strong>Sem arquivos guardados por mais tempo do que você escolher.</strong> Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos e pode excluir qualquer arquivo antes pela sua conta."
+      ]
+    },
+    "whoMakes": {
+      "eyebrow": "Quem faz",
+      "title": "Feito por um engenheiro, operado pela CreaTV Ltd.",
+      "body": "O Media Manipulator é projetado, desenvolvido e mantido por Mitchell Wintrow, engenheiro de software sênior no Colorado, e operado pela CreaTV Ltd. Leia <linkAbout>mais sobre o projeto e o fundador</linkAbout> ou <linkContact>entre em contato</linkContact> com uma dúvida ou um relato de bug."
     }
   },
   "toolsIndex": {
@@ -2180,7 +2216,6 @@
     "unmodified": "Usada sem modificações. O código-fonte está disponível no link acima."
   },
   "motionPage": {
-    "betaBadge": "Beta",
     "guide": {
       "summaryTitle": "Como o {{brand}} funciona",
       "whatItIsTitle": "O que é",
@@ -2234,14 +2269,14 @@
         "notIncluded": "Não incluído",
         "unlimited": "Ilimitado",
         "localOnly": "{{count}}, só neste navegador",
-        "comingSoon": "Em breve: ainda em nenhum plano",
+        "comingSoon": "Formato de exportação disponível sob consulta",
         "noCap": "Sem limite",
         "notApplicable": "Não incluído",
         "capHeight": "até {{height}}p",
         "capFps": "{{fps}} fps",
         "capSeconds": "{{seconds}} s"
       },
-      "comingSoonNote": "Os formatos marcados como “em breve” já estão no editor e serão adicionados a um plano em breve. Esta tabela se atualiza sozinha quando isso acontecer.",
+      "comingSoonNote": "Os formatos marcados como “disponível sob consulta” estão no editor, mas não estão incluídos em nenhum plano. Se você precisar de um, peça pela <linkContact>página de contato</linkContact>.",
       "resetNote": "As cotas são renovadas à meia-noite UTC. Exportações canceladas ou com falha que já foram contabilizadas não são devolvidas.",
       "unavailable": "Não foi possível carregar a tabela de planos agora. A página de preços lista a cota de cada plano.",
       "seePlans": "Comparar todos os planos"
@@ -2367,5 +2402,83 @@
         ]
       }
     ]
+  },
+  "contact": {
+    "metaTitle": "Fale com o Media Manipulator | Suporte, privacidade e imprensa",
+    "metaDesc": "Fale com as pessoas por trás do Media Manipulator: suporte e cobrança em support@media-manipulator.com, solicitações de privacidade em privacy@media-manipulator.com, ou pelo formulário de contato. Normalmente respondemos em até dois dias úteis.",
+    "title": "Fale com o Media Manipulator",
+    "intro": "Dúvidas, relatos de bugs, problemas de cobrança, solicitações de privacidade ou uma ideia de parceria: envie uma mensagem pelo formulário ou escreva direto para o nosso e-mail. Cada mensagem é lida por uma pessoa.",
+    "whoTitle": "Com quem você está falando",
+    "whoBody": "O Media Manipulator é desenvolvido e mantido por Mitchell Wintrow, seu fundador e único engenheiro, e operado pela <strong>CreaTV Ltd.</strong> no Colorado, EUA. Nenhuma empresa de suporte terceirizada responde em nosso nome. <linkAbout>Saiba mais sobre quem faz o Media Manipulator</linkAbout>.",
+    "emailTitle": "E-mail",
+    "supportLabel": "Suporte, bugs e cobrança",
+    "privacyLabel": "Solicitações de privacidade e de dados",
+    "responseTime": "Normalmente respondemos em até dois dias úteis.",
+    "bugTitle": "Relatar um bug",
+    "bugIntro": "Conseguimos corrigir um problema bem mais rápido quando a sua primeira mensagem inclui:",
+    "bugItems": [
+      "a ferramenta que você usou, ou o endereço da página dela;",
+      "o tipo de arquivo e, mais ou menos, o tamanho dele;",
+      "o seu navegador e dispositivo;",
+      "o que você esperava, o que aconteceu no lugar e qualquer mensagem de erro que apareceu."
+    ],
+    "bugNoFiles": "Por favor, não anexe o arquivo em si, a menos que a gente peça.",
+    "statusNote": "Se uma ferramenta parecer fora do ar para todo mundo, a <linkStatus>página de status</linkStatus> mostra se os nossos servidores estão saudáveis agora.",
+    "privacyNote": "Usamos o seu nome, e-mail e mensagem apenas para responder a você. Eles ficam guardados na nossa caixa de suporte até a conversa ser encerrada, e nunca por mais de 12 meses. A Seção 1.11 da <linkPrivacy>política de privacidade</linkPrivacy> tem os detalhes.",
+    "form": {
+      "title": "Enviar uma mensagem",
+      "name": "Seu nome",
+      "email": "Seu e-mail",
+      "emailHint": "Respondemos para este endereço e não o usamos para mais nada.",
+      "subject": "Assunto",
+      "subjects": {
+        "bug": "Relato de bug",
+        "billing": "Cobrança",
+        "privacy": "Solicitação de privacidade ou de dados",
+        "press": "Imprensa ou parceria",
+        "other": "Outro assunto"
+      },
+      "message": "Mensagem",
+      "messageCount": "{{count}} de {{max}} caracteres",
+      "honeypot": "Deixe este campo vazio",
+      "submit": "Enviar mensagem",
+      "sending": "Enviando…",
+      "sentTitle": "Mensagem enviada",
+      "sentBody": "Obrigado. Seu protocolo é {{reference}}. Normalmente respondemos em até dois dias úteis, para o endereço que você informou.",
+      "sendAnother": "Enviar outra mensagem",
+      "invalidName": "Informe o seu nome (até 100 caracteres).",
+      "invalidEmail": "Informe um e-mail válido, como nome@exemplo.com.",
+      "invalidSubject": "Escolha um assunto.",
+      "invalidMessage": "Escreva uma mensagem de até 2.000 caracteres.",
+      "rateLimited": "Você enviou várias mensagens na última hora. Escreva para {{email}} ou tente de novo mais tarde.",
+      "failed": "Não foi possível enviar a sua mensagem agora. Escreva para {{email}}; o que você digitou continua no formulário."
+    }
+  },
+  "articleMeta": {
+    "byline": "Por {{name}}",
+    "published": "Publicado em {{date}}",
+    "updated": "Atualizado em {{date}}",
+    "screenshots": {
+      "audioGettingStarted": {
+        "alt": "O conversor de áudio do Media Manipulator com um arquivo de áudio selecionado e as opções de formato, taxa de bits e taxa de amostragem abertas",
+        "caption": "O conversor de áudio: escolha um arquivo e depois o formato e a qualidade."
+      },
+      "videoGettingStarted": {
+        "alt": "O conversor de vídeo do Media Manipulator com um vídeo selecionado e as opções de formato de saída e qualidade abertas",
+        "caption": "O conversor de vídeo: escolha o formato de saída, a qualidade e o tamanho."
+      },
+      "imageGettingStarted": {
+        "alt": "O conversor de imagens do Media Manipulator com uma foto selecionada e as opções de formato, qualidade e redimensionamento abertas",
+        "caption": "O conversor de imagens: formato, qualidade e tamanho em um só painel."
+      },
+      "aiFrameInterpolation": {
+        "alt": "O painel de ferramentas de vídeo com IA com a interpolação de quadros por IA selecionada e uma taxa de quadros alvo de 60 fps",
+        "caption": "Interpolação de quadros por IA no painel de ferramentas de vídeo com IA."
+      },
+      "motion": {
+        "alt": "O editor Motion com um SVG importado na tela e keyframes na linha do tempo da animação",
+        "caption": "O editor Motion: camadas, tela e linha do tempo de keyframes."
+      }
+    }
   }
 }

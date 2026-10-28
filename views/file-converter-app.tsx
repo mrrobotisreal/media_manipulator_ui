@@ -647,54 +647,8 @@ const FileConverterAppInner: React.FC = () => {
           <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             {t('interface:home.hero.subtitle')}
           </p>
-          <nav aria-label={t('accessibility:home.popularTools')} className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-            <Link href={localized('/tools')} className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors">{t('interface:home.hero.allTools')}</Link>
-            <Link href={localized('/tools/remove-exif-metadata')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
-            <Link href={localized('/tools/compress-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
-            <Link href={localized('/tools/transcribe-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
-            <Link href={localized('/tools/transcode-to-hls')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeHls')}</Link>
-            {/* Review-visible chips link only to review-allowlisted tool pages. */}
-            <Link href={localized('/tools/compress-image')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressImage')}</Link>
-            <Link href={localized('/tools/image-resizer')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.resizeImage')}</Link>
-            <Link href={localized('/tools/extract-audio-from-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.extractAudio')}</Link>
-          </nav>
           <QuotaChip busy={isLoading} className="mt-4 justify-center" />
         </header>
-
-        {/* Content Studio call-to-action */}
-        <Link
-          href={localized('/tools/content-studio')}
-          className="group mb-8 block w-full max-w-5xl rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
-          // No aria-label. The card's own text — title, badge, description,
-          // CTA — is a better accessible name than a two-word override, and an
-          // aria-label that omits the visible text fails WCAG 2.5.3 Label in
-          // Name (the visible label must appear in the accessible name).
-        >
-          <div className="flex items-center gap-4">
-            <div className="shrink-0 rounded-lg bg-data/10 p-3">
-              <Clapperboard className="w-7 h-7 text-data" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <span className="flex items-center gap-2 flex-wrap">
-                <span className="text-lg font-semibold text-card-foreground">
-                  {t('interface:home.contentStudioCta.title')}
-                </span>
-                {/* text-success-foreground, not text-foreground: #ECEFF4 on
-                    #4ADE80 measures 1.51:1. Every bg-success fill takes the
-                    paired foreground token (globals.css). */}
-                <span className="inline-flex items-center gap-1 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-success-foreground">
-                  <Sparkles className="w-3 h-3" />
-                  {t('interface:home.contentStudioCta.badge')}
-                </span>
-              </span>
-              <p className="text-sm text-muted-foreground mt-1">{t('interface:home.contentStudioCta.body')}</p>
-            </div>
-            <span className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform shrink-0">
-              {t('interface:home.contentStudioCta.cta')}
-              <ArrowRight className="w-4 h-4" />
-            </span>
-          </div>
-        </Link>
 
         <RecentStrip className="mx-auto mb-6 w-full max-w-5xl" />
 
@@ -1167,6 +1121,56 @@ const FileConverterAppInner: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* MM85: the converter comes first on every viewport; the popular chips and
+            the Darkroom card follow it rather than pushing it below the fold. */}
+        <p className="mt-8 text-sm font-medium text-muted-foreground">{t('interface:home.hero.popularLabel')}</p>
+        <nav aria-label={t('accessibility:home.popularTools')} className="mx-auto mt-3 flex w-full max-w-5xl flex-wrap items-center justify-center gap-2 text-sm">
+          <Link href={localized('/tools')} className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors">{t('interface:home.hero.allTools')}</Link>
+          <Link href={localized('/tools/remove-exif-metadata')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
+          <Link href={localized('/tools/compress-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
+          <Link href={localized('/tools/transcribe-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
+          <Link href={localized('/tools/transcode-to-hls')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeHls')}</Link>
+          {/* Review-visible chips link only to review-allowlisted tool pages. */}
+          <Link href={localized('/tools/compress-image')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressImage')}</Link>
+          <Link href={localized('/tools/image-resizer')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.resizeImage')}</Link>
+          <Link href={localized('/tools/extract-audio-from-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.extractAudio')}</Link>
+        </nav>
+
+        {/* Content Studio call-to-action */}
+        <Link
+          href={localized('/tools/content-studio')}
+          className="group mt-8 mb-8 block w-full max-w-5xl rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
+          // No aria-label. The card's own text — title, badge, description,
+          // CTA — is a better accessible name than a two-word override, and an
+          // aria-label that omits the visible text fails WCAG 2.5.3 Label in
+          // Name (the visible label must appear in the accessible name).
+        >
+          <div className="flex items-center gap-4">
+            <div className="shrink-0 rounded-lg bg-data/10 p-3">
+              <Clapperboard className="w-7 h-7 text-data" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="flex items-center gap-2 flex-wrap">
+                <span className="text-lg font-semibold text-card-foreground">
+                  {t('interface:home.contentStudioCta.title')}
+                </span>
+                {/* text-success-foreground, not text-foreground: #ECEFF4 on
+                    #4ADE80 measures 1.51:1. Every bg-success fill takes the
+                    paired foreground token (globals.css). */}
+                <span className="inline-flex items-center gap-1 rounded-md bg-success px-2 py-0.5 text-xs font-medium text-success-foreground">
+                  <Sparkles className="w-3 h-3" />
+                  {t('interface:home.contentStudioCta.badge')}
+                </span>
+              </span>
+              <p className="text-sm text-muted-foreground mt-1">{t('interface:home.contentStudioCta.body')}</p>
+            </div>
+            <span className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform shrink-0">
+              {t('interface:home.contentStudioCta.cta')}
+              <ArrowRight className="w-4 h-4" />
+            </span>
+          </div>
+        </Link>
       </div>
     </>
   );

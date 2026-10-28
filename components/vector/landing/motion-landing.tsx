@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { Check, Info, Minus } from 'lucide-react';
 
 import { localizeHref } from '@/i18n/locales';
-import { getServerT } from '@/lib/i18n/server';
+import { getServerT, ServerTrans } from '@/lib/i18n/server';
 import type { TiersResponse } from '@/lib/auth/accountApi';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 import { buildPlanTable, type PlanTable, type RasterCap } from '@/lib/vector/planTable';
@@ -21,18 +21,6 @@ import { cn } from '@/lib/utils';
 type T = ReturnType<typeof getServerT>;
 const brand = { values: { brand: MOTION_BRAND } };
 const K = 'motionPage';
-
-export function MotionBetaBadge({ locale }: { locale: string }) {
-  const t = getServerT('interface', locale);
-  return (
-    <span
-      data-testid="motion-beta"
-      className="ms-3 inline-flex translate-y-[-0.2em] items-center rounded-md bg-data px-2 py-0.5 align-middle text-xs font-medium text-data-foreground"
-    >
-      {t(`${K}.betaBadge`)}
-    </span>
-  );
-}
 
 /** The four-step guide under the intro (a native <details>, open, like Darkroom's). */
 export function MotionGuide({ locale }: { locale: string }) {
@@ -208,7 +196,19 @@ export function MotionPlans({ data, locale }: { data: TiersResponse | null; loca
           <PlanTableView table={table} t={t} />
           {hasComingSoon ? (
             <p className="mt-3 text-sm text-muted-foreground" data-testid="motion-coming-soon-note">
-              {t(`${K}.plans.comingSoonNote`)}
+              {/* MM85: "available on request", with the contact page as the way to ask. */}
+              <ServerTrans
+                locale={locale}
+                i18nKey={`interface:${K}.plans.comingSoonNote`}
+                components={{
+                  linkContact: (
+                    <Link
+                      href={localizeHref('/contact', locale)}
+                      className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+                    />
+                  ),
+                }}
+              />
             </p>
           ) : null}
           <p className="mt-3 text-sm text-muted-foreground">{t(`${K}.plans.resetNote`)}</p>

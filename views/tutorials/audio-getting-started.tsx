@@ -4,6 +4,7 @@ import Link from 'next/link';
 import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
+import { TutorialByline, TutorialScreenshot } from '@/components/articles/article-byline';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
 
@@ -51,9 +52,11 @@ const AudioGettingStartedTutorial: React.FC<{ locale?: string }> = ({ locale }) 
       <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
           <p className="text-sm uppercase tracking-wide text-data font-medium">{t(`${K}.eyebrow`)}</p>
           <h1 className="text-4xl font-bold mb-3 text-card-foreground">{t(`${K}.title`)}</h1>
+          <TutorialByline path="/tutorials/audio/getting-started" locale={locale} />
           <p className="text-lg mb-8">
             {t(`${K}.intro`)}
           </p>
+          <TutorialScreenshot k="audioGettingStarted" locale={locale} />
 
           <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.upload.heading`)}</h2>
           <p className="mb-4">

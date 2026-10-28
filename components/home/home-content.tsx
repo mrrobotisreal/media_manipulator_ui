@@ -15,12 +15,17 @@ import { getServerT, ServerTrans } from '@/lib/i18n/server';
  * `'use client'` component. AdSense review weighs content depth and this is the
  * landing page, so a short, genuinely useful block sits below the tool.
  *
- * Deliberately kept small: three steps that answer "what happens to my file",
- * and an internal-link grid to the review-allowed tools. Copy comes from the
+ * MM85 (decision 7): a real introduction of at least 450 words: what you can
+ * do here (one paragraph per category, linking the review-allowed tools), the
+ * three steps, an internal-link grid, what we deliberately don't do, and who
+ * makes the site. Copy comes from the
  * server-only `homeContent` section of `interface/pages.json`; tool names and
  * taglines read through `getLocalizedToolPages` (partial per-locale overrides
  * over `content/toolPages.ts`, which is only read, never modified).
  */
+
+const LINK =
+  'text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary';
 
 interface HomeStep {
   title: string;
@@ -43,9 +48,49 @@ export function HomeContent({ locale }: { locale?: string }) {
     .filter((tool): tool is ToolPageContent => Boolean(tool));
 
   const href = (path: string) => localizeHref(path, locale ?? 'en-US');
+  const notDone = t('interface:homeContent.whatWeDont.items', { returnObjects: true }) as string[];
+  const link = (path: string) => <Link href={href(path)} className={LINK} />;
+  // MM85: each category paragraph links three or four review-allowlisted tools.
+  const toolLinks = {
+    strong: <strong className="text-foreground" />,
+    compressVideo: link('/tools/compress-video'),
+    trimVideo: link('/tools/video-trimmer'),
+    videoGif: link('/tools/convert-video-to-animated-gif'),
+    hls: link('/tools/transcode-to-hls'),
+    removeExif: link('/tools/remove-exif-metadata'),
+    compressImage: link('/tools/compress-image'),
+    resizeImage: link('/tools/image-resizer'),
+    imageToPdf: link('/tools/image-to-pdf'),
+    pdfToJpg: link('/tools/pdf-to-jpg'),
+    extractAudio: link('/tools/extract-audio-from-video'),
+    transcribe: link('/tools/transcribe-video'),
+    removeBg: link('/tools/remove-background-from-image'),
+    imageRestore: link('/tools/ai-image-restoration'),
+    videoRestore: link('/tools/ai-video-restoration'),
+    docScan: link('/tools/ai-document-scan'),
+    darkroom: link('/tools/content-studio'),
+    motion: link('/tools/motion'),
+  };
 
   return (
-    <div className="mx-auto grid max-w-[1600px] gap-6 px-4 pb-12 lg:grid-cols-2">
+    <div className="mx-auto grid max-w-[1600px] gap-6 px-4 pb-12 lg:grid-cols-2" data-testid="home-content">
+      <Panel
+        level="1"
+        as="section"
+        eyebrow={t('interface:homeContent.whatYouCanDo.eyebrow')}
+        title={t('interface:homeContent.whatYouCanDo.title')}
+        titleAs="h2"
+        className="lg:col-span-2"
+      >
+        <div className="grid gap-4 text-sm text-muted-foreground md:grid-cols-2">
+          {(['video', 'images', 'audio', 'ai', 'editors'] as const).map((key) => (
+            <p key={key}>
+              <ServerTrans i18nKey={`interface:homeContent.whatYouCanDo.${key}`} locale={locale} components={toolLinks} />
+            </p>
+          ))}
+        </div>
+      </Panel>
+
       <Panel
         level="1"
         as="section"
@@ -125,6 +170,38 @@ export function HomeContent({ locale }: { locale?: string }) {
             </li>
           ))}
         </ul>
+      </Panel>
+
+      <Panel
+        level="1"
+        as="section"
+        eyebrow={t('interface:homeContent.whatWeDont.eyebrow')}
+        title={t('interface:homeContent.whatWeDont.title')}
+        titleAs="h2"
+      >
+        <ul className="space-y-3 text-sm text-muted-foreground">
+          {notDone.map((item) => (
+            <li key={item}>
+              <ServerTrans i18nKey="_inline" defaults={item} locale={locale} components={{ strong: <strong className="text-foreground" /> }} />
+            </li>
+          ))}
+        </ul>
+      </Panel>
+
+      <Panel
+        level="1"
+        as="section"
+        eyebrow={t('interface:homeContent.whoMakes.eyebrow')}
+        title={t('interface:homeContent.whoMakes.title')}
+        titleAs="h2"
+      >
+        <p className="text-sm text-muted-foreground">
+          <ServerTrans
+            i18nKey="interface:homeContent.whoMakes.body"
+            locale={locale}
+            components={{ linkAbout: link('/about'), linkContact: link('/contact') }}
+          />
+        </p>
       </Panel>
     </div>
   );

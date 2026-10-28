@@ -4,7 +4,6 @@
     "brandTagline": "Convierte imágenes, videos y archivos de audio con facilidad",
     "loading": "Cargando…",
     "loadingShort": "Cargando...",
-    "comingSoon": "Próximamente",
     "tryAgain": "Inténtalo de nuevo",
     "cancel": "Cancelar",
     "close": "Cerrar",
@@ -104,7 +103,8 @@
     "navigationLabel": "Navegación",
     "language": "Idioma",
     "selectLanguage": "Seleccionar idioma",
-    "voices": "Voces"
+    "voices": "Voces",
+    "contact": "Contacto"
   },
   "footer": {
     "tagline": "Herramientas basadas en el navegador y asistidas por servidor para editar, convertir, comprimir, analizar, transcribir, resumir y procesar de otras formas archivos de imagen, video y audio.",

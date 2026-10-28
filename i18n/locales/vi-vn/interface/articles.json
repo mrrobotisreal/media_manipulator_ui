@@ -164,19 +164,19 @@
         "body": "Các nghiên cứu cho thấy 53% người dùng di động rời bỏ các trang mất hơn 3 giây để tải. NĂM MƯƠI BA PHẦN TRĂM! Đó là hơn một nửa khách hàng tiềm năng của bạn bỏ đi trước cả khi thấy nội dung tuyệt vời của bạn. Và đoán xem thủ phạm lớn nhất của thời gian tải chậm thường là gì? Đúng rồi — video chủ đạo 200MB chưa tối ưu của bạn nằm đó như một rào chắn kỹ thuật số 🚧."
       },
       "googleWatching": {
-        "title": "Google đang theo dõi (và phán xét) 👀",
-        "intro": "Tốc độ trang là yếu tố xếp hạng trực tiếp của Google. Điều này có nghĩa là:",
+        "title": "Tốc độ trang và tìm kiếm",
+        "intro": "Các công cụ tìm kiếm đo xem một trang trở nên dùng được nhanh đến mức nào, và video thường là thứ nặng nhất trên trang. Ba thói quen giúp video không kéo chỉ số đó xuống:",
         "bullets": [
-          "<strong>Trang chậm = Xếp hạng thấp hơn</strong> = Ít lưu lượng tự nhiên hơn",
-          "<strong>Ít lưu lượng = Ít chuyển đổi hơn</strong> = Ít tiền hơn",
-          "<strong>Ít tiền = Lập trình viên buồn</strong> 😢"
+          "<strong>Chú ý Largest Contentful Paint (thời gian hiển thị nội dung lớn nhất)</strong>: video hero hoặc ảnh poster của nó thường là phần tử lớn nhất trên màn hình, vì vậy hãy cho mỗi video một ảnh poster nhỏ đã nén và giữ các khung hình đầu nhẹ.",
+          "<strong>Không tải trước những gì chưa hiển thị</strong>: đặt preload=\"none\" hoặc preload=\"metadata\" cho các video nằm dưới phần nhìn thấy đầu tiên để chúng không bị tải xuống trong lúc trang đang tải.",
+          "<strong>Phục vụ đúng kích thước bạn hiển thị</strong>: một tệp 1080p hiển thị trong thẻ rộng 400 pixel lãng phí phần lớn số byte của nó, vì vậy hãy mã hóa một bản nhỏ hơn cho các vị trí nhỏ."
         ],
-        "clientStory": "Tôi từng có một khách hàng mà trang thương mại điện tử dùng các tệp MOV khổng lồ cho video sản phẩm. Sau khi chuyển tất cả sang MP4 tối ưu và WebM kèm dự phòng, họ có:",
+        "clientStory": "Để thấy hiệu quả trên chính trang của bạn, hãy đo trước và sau khi nén:",
         "clientResults": [
-          "Thời gian tải trang giảm từ 8,2 xuống 2,7 giây",
-          "Xếp hạng Google cải thiện với 67% từ khóa mục tiêu",
-          "Tỷ lệ chuyển đổi tăng 23%",
-          "Doanh thu hằng tháng tăng vọt 18.000 đô la 💸"
+          "Chạy trang qua PageSpeed Insights hoặc Lighthouse và ghi lại Largest Contentful Paint cùng tổng dung lượng trang.",
+          "Trong bảng Network của trình duyệt, lọc theo media và so sánh dung lượng đã truyền của từng video.",
+          "Mã hóa lại với thiết lập chất lượng không đổi (CRF 23 đến 28 cho H.264) thay vì bitrate cao cố định, rồi đo lại.",
+          "Kiểm tra trang trên kết nối di động bị giới hạn tốc độ, không chỉ trên Wi-Fi văn phòng nhanh."
         ]
       },
       "bandwidthBill": {
@@ -210,13 +210,13 @@
         "outro": "Còn khi trang của bạn chậm? Nó gào lên \"nghiệp dư\" to hơn cả còi sương mù 📯. Người dùng nghĩ: \"Nếu họ còn không làm nổi website cho tử tế, tôi có thể tin họ với thẻ tín dụng của mình không?\""
       },
       "monetization": {
-        "title": "Mối liên hệ với việc kiếm tiền 💰",
-        "intro": "Dù bạn đang chạy quảng cáo, bán sản phẩm hay kiếm tiền từ nội dung trên Medium (chào bạn, đồng nghiệp viết Medium! 👋), hiệu năng ảnh hưởng trực tiếp đến lợi nhuận của bạn:",
+        "title": "Khoản tiết kiệm thể hiện ở đâu",
+        "intro": "Các tệp video nhỏ hơn mang lại lợi ích ở một vài nơi bạn có thể đo được:",
         "bullets": [
-          "<strong>Doanh thu quảng cáo</strong>: Trang chậm = tỷ lệ thoát cao hơn = ít lượt hiển thị quảng cáo hơn",
-          "<strong>Liên kết tiếp thị</strong>: Người ta không thể nhấp vào thứ họ không chờ để thấy",
-          "<strong>Bán sản phẩm</strong>: Mỗi giây tải trang có thể làm giảm 7% chuyển đổi",
-          "<strong>Kiếm tiền từ nội dung</strong>: Độc giả sẽ không chờ bài viết xuất sắc của bạn tải xong"
+          "<strong>Chi phí lưu trữ và CDN</strong>: hầu hết nhà cung cấp tính phí theo mỗi gigabyte được phân phối, nên giảm một nửa dung lượng tệp thì chi phí phục vụ video đó cũng giảm khoảng một nửa.",
+          "<strong>Thời gian khởi động</strong>: tệp nhỏ hơn bắt đầu phát sớm hơn, nên ít người xem rời đi trước khi quá trình phát bắt đầu.",
+          "<strong>Dữ liệu di động</strong>: khách truy cập dùng gói tính theo dung lượng có thể xem mà không dùng hết hạn mức dữ liệu của mình.",
+          "<strong>Giới hạn tải lên</strong>: nhiều dịch vụ email, ứng dụng trò chuyện và biểu mẫu từ chối tệp đính kèm trên khoảng 25 MB, còn tệp đã nén thì qua được."
         ]
       },
       "quote": "\"Tốc độ website giống như ấn tượng đầu tiên — bạn chỉ có một cơ hội, và nếu bỏ lỡ, họ vuốt trái nhanh hơn cả lúc bạn kịp nói 'vui lòng chờ, đang tải...'\" 💨"

@@ -175,3 +175,10 @@ _Avoid_: "translation branch" (that is the `i18n/<prefix>/…` PR branch).
 
 **Stable JSON writer**:
 `lib/translator/stableJson.ts`: parses a shard into an ordered tree and prints it exactly as the repo formats it (`JSON.stringify(v, null, 2)` + newline, keys in file order, including integer-like keys such as `"1080"` that `JSON.parse` would reorder). Every shard round-trips byte for byte (tested), so a translator PR changes only the edited lines.
+
+**Contact** (MM85):
+The `/contact` page (`views/contact.tsx`, client island `components/contact/contact-form.tsx`, helpers `lib/contact.ts`). It posts to the API's `POST /api/contact`, which mails the support inbox and answers `202 {reference}`; there is no ticket system and no stored message. On `503 contact_unavailable` (email off), 429 or any failure the form keeps the text and shows `support@media-manipulator.com`. Analytics: `contact_submitted {subject, ok}`, never the name, address or message.
+_Avoid_: "support ticket", "ticket number" (it is a **reference**).
+
+**Page dates** (MM85):
+`content/pageDates.ts`: the real "last materially changed" date of each core page (`PAGE_DATES`) and each tutorial (`TUTORIAL_DATES`), read from `git log`. They feed the sitemap's `lastModified`, the tutorial bylines and the TechArticle JSON-LD; tool pages use their own `lastReviewed`, blog posts `dateModified`. Bump a page's date in the commit that changes what a visitor reads on it; never `new Date()`.

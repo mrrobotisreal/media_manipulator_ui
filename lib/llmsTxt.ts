@@ -12,6 +12,7 @@
  */
 
 import { formatPrice } from '@/lib/billing/price';
+import { PLAN_PRICES } from '@/lib/billing/planPrices';
 import { BLOG_POSTS } from '@/lib/blogPosts';
 import { ROUTE_SEO_MAP, SITE_NAME, SITE_ORIGIN, ORG_NAME } from '@/lib/seo';
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
@@ -51,9 +52,10 @@ const OWNER = {
 /**
  * Plan prices as served by GET /api/tiers `prices` (MM69: the same numerals in
  * US dollars and euros). llms.txt is built once at build time, without the API,
- * so these mirror the API's config defaults; the text points at /pricing.
+ * so it reads the shared mirror (MM85: lib/billing/planPrices.ts, also used by
+ * the structured data); the text points at /pricing.
  */
-const PRICE_NUMERALS = { premium: { monthly: 8, yearly: 80 }, pro: { monthly: 15, yearly: 150 } } as const;
+const PRICE_NUMERALS = PLAN_PRICES;
 
 /** "$8/month or $80/year (€8 or €80 in euros)", every amount through formatPrice. */
 function planPriceText(plan: keyof typeof PRICE_NUMERALS): string {

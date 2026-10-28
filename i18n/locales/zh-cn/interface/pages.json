@@ -124,8 +124,12 @@
     },
     "whoBuilds": {
       "title": "谁在构建Media Manipulator",
-      "p1": "Media Manipulator由<strong>CreaTV Ltd.</strong>构建并运营，这是一家位于美国科罗拉多州的小型独立媒体科技公司。CreaTV更广泛的产品线专注于帮助创作者将创意变为现实的工具——Media Manipulator是支撑这一生态的免费、无需账号的实用工具。",
-      "p2": "我们是一个小团队，这正是我们以这种方式构建Media Manipulator的原因：我们不想照看一堆第三方AI集成，不想无限期存储你的文件，也不想运营十个独立的单一用途转换网站。一个工作室，一个由你决定文件保留多久的地方，一台GPU服务器承担繁重的工作。"
+      "name": "Mitchell Wintrow",
+      "role": "创始人兼唯一的工程师",
+      "photoAlt": "Media Manipulator创始人兼唯一的工程师Mitchell Wintrow的肖像",
+      "p1": "Media Manipulator由其创始人兼唯一的工程师<strong>Mitchell Wintrow</strong>构建。Mitchell是一名资深软件工程师，构建移动端、网页和后端系统；他的日常工作是在People Inc.负责移动广告收入。从你浏览器中的编辑器，到API以及AI工具背后的GPU服务器，Media Manipulator的每个部分都由他亲自设计、编写和运营。",
+      "p2": "Media Manipulator由位于美国科罗拉多州的<strong>CreaTV Ltd.</strong>运营，该公司同时也制作CreaTV Studio。正因为是一人运营，网站才是现在这个样子：没有需要照看的第三方AI集成，不会把文件保存得比你选择的更久，你的媒体处理只需一个地方，而不是十个单一用途的转换网站。",
+      "contact": "支持、错误和账单：<supportLink>support@media-manipulator.com</supportLink>。隐私和数据请求：<privacyLink>privacy@media-manipulator.com</privacyLink>。或通过<linkContact>联系页面</linkContact>给我们留言。"
     },
     "supportedFormats": {
       "title": "支持的文件格式（快速参考）",
@@ -580,7 +584,7 @@
     "emailLabel": "电子邮件：",
     "websiteLabel": "网站：",
     "whatChangedTitle": "2026-10-28的变更内容",
-    "whatChangedBody": "我们新增了Google要求的广告Cookie披露和退出链接。隐私政策新增第5.1节，涉及广告Cookie与Google AdSense：Google的广告Cookie、非个性化广告、Google在EEA、英国和瑞士的同意消息、用于选择退出个性化广告的链接（Google广告设置、aboutads.info和youronlinechoices.eu）以及说明Google如何使用来自使用其服务的网站的信息的链接、谁会看到广告（仅限没有账户的访客和免费账户），以及我们公开的ads.txt文件；第1.5节现列出了Google广告脚本可能设置的广告标识符。服务条款第8.9节现说明，广告仅在没有账户或使用免费账户时展示，而Premium和Pro会移除广告。隐私政策第5节（广告）现在说明：Google的广告脚本会在可展示广告的页面上加载，在您做出选择之前所有同意信号均为拒绝，此前仅提供非个性化广告。同一天较早的更新： 我们新增了声音工具：通过录音克隆您自己的声音、通过描述设计声音，以及更改录音中的声音。隐私政策新增第1.10节，涉及声音样本和设计的声音：我们存储的内容；我们仅在您明确同意的前提下，将其用于创建和运行您所要求的声音；它按照您的保留设置存储在Amazon S3中，绝不与第三方AI提供商共享，也绝不用于训练任何模型；您可以随时删除它，并且它会随您的账户一并删除；第3、3.4、3.5和4节现已提及声音。服务条款新增第8.11节：您只能使用您自己的声音，或在说话者明确许可的情况下创建声音；不允许冒充、欺诈、政治深度伪造和骚扰；生成和转换的语音带有听不见的水印，而变调处理的音频则没有；并且我们可能会移除声音并暂停账户。服务条款第1节列出了声音工具。2026-10-26更新中的所有内容仍然适用： 我们新增了Motion，即我们的SVG动画编辑器（测试版）。隐私政策新增第1.9节：Motion项目和导出在您的浏览器中生成，制作过程中不会上传；您保存到账户的项目与Darkroom项目以相同方式存储，遵循您选择的保留期限，并且可以删除；对于每次计入额度的导出，我们会记录其格式、大小、长度和时间，以执行每日额度限制。第3、3.3和3.4节现已提及Motion项目。服务条款第13节确认您的Motion导出归您所有，说明部分导出包含MIT许可的anime.js代码且其声明必须保留，并指向我们的开源许可证页面。2026-10-25更新中的所有内容（Pro套餐、套餐变更和退款）仍然适用。服务条款第10节现规定，您可以以相同价格用美元或欧元付款，在欧洲默认显示欧元，且订阅的货币在生效期间不可更改；隐私政策第1.6节现列出了我们存储的计费货币以及记住您选择的mm-currency cookie。第8节现还说明，我们聘请的翻译人员通过CreaTV Ltd.的GitHub App以GitHub拉取请求的形式提交工作，且这些提交仅包含翻译文本，不含任何访问者的个人数据。本简体中文版本由AI模型翻译，尚待母语人士审校；如有任何不一致之处，以英文版本为准。"
+    "whatChangedBody": "我们在 media-manipulator.com/contact 新增了联系表单：隐私政策新增第1.11节，涉及您发送给我们的消息（您的姓名、电子邮件地址、主题和消息，通过Resend投递到我们的支持邮箱，并保存在其中直到对话结束，且最长不超过12个月），第16节现在指向该表单。我们新增了Google要求的广告Cookie披露和退出链接。隐私政策新增第5.1节，涉及广告Cookie与Google AdSense：Google的广告Cookie、非个性化广告、Google在EEA、英国和瑞士的同意消息、用于选择退出个性化广告的链接（Google广告设置、aboutads.info和youronlinechoices.eu）以及说明Google如何使用来自使用其服务的网站的信息的链接、谁会看到广告（仅限没有账户的访客和免费账户），以及我们公开的ads.txt文件；第1.5节现列出了Google广告脚本可能设置的广告标识符。服务条款第8.9节现说明，广告仅在没有账户或使用免费账户时展示，而Premium和Pro会移除广告。隐私政策第5节（广告）现在说明：Google的广告脚本会在可展示广告的页面上加载，在您做出选择之前所有同意信号均为拒绝，此前仅提供非个性化广告。同一天较早的更新： 我们新增了声音工具：通过录音克隆您自己的声音、通过描述设计声音，以及更改录音中的声音。隐私政策新增第1.10节，涉及声音样本和设计的声音：我们存储的内容；我们仅在您明确同意的前提下，将其用于创建和运行您所要求的声音；它按照您的保留设置存储在Amazon S3中，绝不与第三方AI提供商共享，也绝不用于训练任何模型；您可以随时删除它，并且它会随您的账户一并删除；第3、3.4、3.5和4节现已提及声音。服务条款新增第8.11节：您只能使用您自己的声音，或在说话者明确许可的情况下创建声音；不允许冒充、欺诈、政治深度伪造和骚扰；生成和转换的语音带有听不见的水印，而变调处理的音频则没有；并且我们可能会移除声音并暂停账户。服务条款第1节列出了声音工具。2026-10-26更新中的所有内容仍然适用： 我们新增了Motion，即我们的SVG动画编辑器（测试版）。隐私政策新增第1.9节：Motion项目和导出在您的浏览器中生成，制作过程中不会上传；您保存到账户的项目与Darkroom项目以相同方式存储，遵循您选择的保留期限，并且可以删除；对于每次计入额度的导出，我们会记录其格式、大小、长度和时间，以执行每日额度限制。第3、3.3和3.4节现已提及Motion项目。服务条款第13节确认您的Motion导出归您所有，说明部分导出包含MIT许可的anime.js代码且其声明必须保留，并指向我们的开源许可证页面。2026-10-25更新中的所有内容（Pro套餐、套餐变更和退款）仍然适用。服务条款第10节现规定，您可以以相同价格用美元或欧元付款，在欧洲默认显示欧元，且订阅的货币在生效期间不可更改；隐私政策第1.6节现列出了我们存储的计费货币以及记住您选择的mm-currency cookie。第8节现还说明，我们聘请的翻译人员通过CreaTV Ltd.的GitHub App以GitHub拉取请求的形式提交工作，且这些提交仅包含翻译文本，不含任何访问者的个人数据。本简体中文版本由AI模型翻译，尚待母语人士审校；如有任何不一致之处，以英文版本为准。"
   },
   "privacyPolicy": {
     "title": "隐私政策",
@@ -731,6 +735,13 @@
               "目的和法律依据：我们仅将这些数据用于创建和运行您所要求的声音，即制作该声音、生成其预览，并在您提出要求时生成或转换语音。一个人的声音录音可以识别其身份，因此我们按照特殊类别（生物识别）数据所要求的谨慎程度对待它，并依赖您的明确同意，该同意由您在通过录音创建声音之前勾选同意复选框而给出。您可以随时通过删除该声音来撤回同意。",
               "存储：已保存的声音存储在我们的服务器和Amazon S3的voices/下，位于您的账户中，并遵循您选择的保留期限（第3节）。您为更改而上传的录音和您生成的语音与其他上传文件和结果一样保留。声音处理在我们自己的GPU服务器上运行：您的录音和声音绝不会与第三方AI提供商共享，也绝不会用于训练任何模型。生成和转换的语音带有听不见的水印，用于标明其为合成内容；水印不包含账户详情。",
               "删除和导出：您可以随时在账户的“声音”中删除已保存的声音；其参考录音和预览会立即从我们的服务器上删除，而您已生成的语音会保留到其自身的保留期限结束。当您删除账户时，您所有已保存的声音都会被删除。您的数据导出会列出您已保存的声音（名称、类型、语言、日期和同意记录），但不包含音频。"
+            ]
+          },
+          {
+            "title": "1.11 您发送给我们的消息",
+            "paragraphs": [
+              "当您使用 media-manipulator.com/contact 的联系表单时，我们会收到您的姓名、电子邮件地址、您选择的主题和您的消息，以及发送时间和一个简短的参考编号。表单通过我们的邮件服务商Resend，以电子邮件的方式将这些内容投递到我们的支持邮箱；联系消息不会存储在我们的应用程序数据库中。当您直接给我们发送电子邮件时，我们会从您的邮件中收到同类信息。",
+              "我们仅使用这些消息来答复您并处理您提出的事项，例如错误报告、账单问题或隐私请求。它们会保存在我们的支持邮箱中，直到对话结束，且最长不超过12个月。为了限制垃圾信息，与本网站的其他部分一样，该表单按每个浏览器会话和每个IP地址进行速率限制，被拦截的尝试会作为滥用防范记录保留（第3.6节）。"
             ]
           }
         ]
@@ -1060,6 +1071,7 @@
       {
         "title": "16. 联系我们",
         "paragraphs": [
+          "media-manipulator.com/contact 的联系表单与下方地址联系的是同一批人；第1.11节说明了它收集的内容以及消息的保留时长。",
           "如果您对本隐私政策或Media Manipulator如何处理信息有任何疑问，请通过以下方式联系我们："
         ],
         "contactBlock": true,
@@ -1998,6 +2010,30 @@
     "popular": {
       "eyebrow": "热门转换",
       "title": "直接进入工具"
+    },
+    "whatYouCanDo": {
+      "eyebrow": "你可以在这里做什么",
+      "title": "适用于各类媒体文件的工具",
+      "video": "<strong>视频。</strong>为电子邮件或网页<compressVideo>压缩视频</compressVideo>，用保持原始画质的快速剪切<trimVideo>裁剪</trimVideo>出你需要的部分，<videoGif>将短片段转换为GIF动画</videoGif>，或<hls>打包为HLS</hls>用于自适应流媒体。大文件会直接上传到我们的存储，因此长录像也能处理。",
+      "images": "<strong>图片和PDF。</strong>在分享照片之前<removeExif>删除EXIF元数据</removeExif>（例如GPS位置），<compressImage>压缩图片</compressImage>让页面更快，<resizeImage>调整</resizeImage>到精确的像素尺寸，并将<imageToPdf>图片转换为PDF</imageToPdf>或将<pdfToJpg>PDF页面转换为JPG</pdfToJpg>。",
+      "audio": "<strong>音频和语音。</strong>从视频中<extractAudio>提取音轨</extractAudio>，保存为MP3、WAV、M4A、FLAC或OGG，并<transcribe>转写说话内容</transcribe>，生成可搜索的文本或字幕。转写在我们自己的GPU服务器上运行Whisper。",
+      "ai": "<strong>AI工具。</strong>从照片中<removeBg>去除背景</removeBg>，<imageRestore>修复并放大老照片</imageRestore>，在短片段上并排<videoRestore>比较视频修复模型</videoRestore>，或将<docScan>扫描页面转换为可搜索的PDF</docScan>。每个模型都运行在我们运营的服务器上。",
+      "editors": "<strong>编辑器。</strong>当一次转换不够用时，<darkroom>Darkroom</darkroom>是多轨视频编辑器，<motion>Motion</motion>可在关键帧时间轴上为SVG作品制作动画。两者都在你的浏览器中运行，登录后你的项目会保存在你的账号中。"
+    },
+    "whatWeDont": {
+      "eyebrow": "我们不做什么",
+      "title": "我们有意省去的事情",
+      "items": [
+        "<strong>不使用第三方AI。</strong>你的文件绝不会发送给外部AI提供商。转写、背景去除、放大以及其他所有AI工具都运行在我们自己的GPU服务器上。",
+        "<strong>你的文件上没有水印。</strong>转换后的图片、视频、音频和文档不带徽标或标记。唯一的例外是语音工具生成的合成语音，它带有一个听不见的标记，用于标明其为AI生成。",
+        "<strong>大多数工具无需账号。</strong>转换、压缩、裁剪和元数据删除无需注册即可使用。免费账号可获得更大的每日额度、已保存的项目，以及对文件保留时长的控制。",
+        "<strong>文件保留时间不会超过你的选择。</strong>访客的文件保留24小时；注册免费账号后，你可以选择24小时至2年，并且可以随时从你的账号中删除任何文件。"
+      ]
+    },
+    "whoMakes": {
+      "eyebrow": "谁在做这个",
+      "title": "由一名工程师构建，由CreaTV Ltd.运营",
+      "body": "Media Manipulator由科罗拉多州的资深软件工程师Mitchell Wintrow设计、构建和运行，并由CreaTV Ltd.运营。阅读<linkAbout>关于这个项目及其创始人的更多信息</linkAbout>，或带着问题或错误报告<linkContact>联系我们</linkContact>。"
     }
   },
   "toolsIndex": {
@@ -2180,7 +2216,6 @@
     "unmodified": "未经修改使用。其源代码可通过上方链接获取。"
   },
   "motionPage": {
-    "betaBadge": "测试版",
     "guide": {
       "summaryTitle": "{{brand}}的工作原理",
       "whatItIsTitle": "它是什么",
@@ -2234,14 +2269,14 @@
         "notIncluded": "不包含",
         "unlimited": "不限",
         "localOnly": "{{count}}个，仅在此浏览器中",
-        "comingSoon": "即将推出：目前任何套餐都不提供",
+        "comingSoon": "导出格式可按需提供",
         "noCap": "无限制",
         "notApplicable": "不包含",
         "capHeight": "最高{{height}}p",
         "capFps": "{{fps}} fps",
         "capSeconds": "{{seconds}}秒"
       },
-      "comingSoonNote": "标记为“即将推出”的格式已内置于编辑器中，很快会添加到某个套餐。届时此表格会自动更新。",
+      "comingSoonNote": "标有“可按需提供”的格式已内置于编辑器中，但不包含在任何套餐中。如果你需要某种格式，请通过<linkContact>联系页面</linkContact>告诉我们。",
       "resetNote": "额度在UTC午夜重置。已计入额度的已取消或失败的导出不予退还。",
       "unavailable": "目前无法加载套餐表格。价格页面列出了每个套餐的额度。",
       "seePlans": "比较所有套餐"
@@ -2367,5 +2402,83 @@
         ]
       }
     ]
+  },
+  "contact": {
+    "metaTitle": "联系Media Manipulator｜支持、隐私与媒体合作",
+    "metaDesc": "联系Media Manipulator背后的团队：支持与账单请发送至 support@media-manipulator.com，隐私请求请发送至 privacy@media-manipulator.com，也可以使用联系表单。我们通常会在两个工作日内回复。",
+    "title": "联系Media Manipulator",
+    "intro": "无论是问题、错误报告、账单问题、隐私请求还是合作想法，都可以通过表单给我们留言，或直接给我们发邮件。每条消息都由真人阅读。",
+    "whoTitle": "你在联系谁",
+    "whoBody": "Media Manipulator由其创始人兼唯一的工程师Mitchell Wintrow构建和运营，并由位于美国科罗拉多州的<strong>CreaTV Ltd.</strong>运营。没有外部的支持公司代我们答复。<linkAbout>进一步了解谁在做Media Manipulator</linkAbout>。",
+    "emailTitle": "电子邮件",
+    "supportLabel": "支持、错误和账单",
+    "privacyLabel": "隐私和数据请求",
+    "responseTime": "我们通常会在两个工作日内回复。",
+    "bugTitle": "报告错误",
+    "bugIntro": "如果你的第一条消息包含以下内容，我们可以更快地修复问题：",
+    "bugItems": [
+      "你使用的工具，或其页面的地址；",
+      "文件类型和文件大致的大小；",
+      "你的浏览器和设备；",
+      "你期望的结果、实际发生的情况，以及你看到的任何错误信息。"
+    ],
+    "bugNoFiles": "除非我们提出要求，请不要附上文件本身。",
+    "statusNote": "如果某个工具似乎对所有人都无法使用，<linkStatus>状态页面</linkStatus>会显示我们的服务器当前是否正常。",
+    "privacyNote": "我们仅使用你的姓名、电子邮件地址和消息来回复你。它们会保存在我们的支持邮箱中，直到对话结束，且最长不超过12个月。详情请参阅<linkPrivacy>隐私政策</linkPrivacy>第1.11节。",
+    "form": {
+      "title": "发送消息",
+      "name": "你的姓名",
+      "email": "你的电子邮件地址",
+      "emailHint": "我们会回复到这个地址，且不会用于其他任何用途。",
+      "subject": "主题",
+      "subjects": {
+        "bug": "错误报告",
+        "billing": "账单",
+        "privacy": "隐私或数据请求",
+        "press": "媒体或合作",
+        "other": "其他"
+      },
+      "message": "消息",
+      "messageCount": "{{count}} / {{max}} 个字符",
+      "honeypot": "请将此字段留空",
+      "submit": "发送消息",
+      "sending": "正在发送…",
+      "sentTitle": "消息已发送",
+      "sentBody": "谢谢。你的参考编号是 {{reference}}。我们通常会在两个工作日内回复到你提供的地址。",
+      "sendAnother": "再发送一条消息",
+      "invalidName": "请输入你的姓名（最多100个字符）。",
+      "invalidEmail": "请输入有效的电子邮件地址，例如 name@example.com。",
+      "invalidSubject": "请选择一个主题。",
+      "invalidMessage": "请填写不超过2,000个字符的消息。",
+      "rateLimited": "你在过去一小时内已发送了多条消息。请改为发送邮件至 {{email}}，或稍后再试。",
+      "failed": "你的消息暂时无法发送。请改为发送邮件至 {{email}}；你输入的内容仍保留在表单中。"
+    }
+  },
+  "articleMeta": {
+    "byline": "作者：{{name}}",
+    "published": "发布于 {{date}}",
+    "updated": "更新于 {{date}}",
+    "screenshots": {
+      "audioGettingStarted": {
+        "alt": "Media Manipulator音频转换器，已选择一个音频文件，并展开了格式、比特率和采样率选项",
+        "caption": "音频转换器：选择文件，然后选择格式和质量。"
+      },
+      "videoGettingStarted": {
+        "alt": "Media Manipulator视频转换器，已选择一个视频，并展开了输出格式和质量选项",
+        "caption": "视频转换器：选择输出格式、质量和尺寸。"
+      },
+      "imageGettingStarted": {
+        "alt": "Media Manipulator图片转换器，已选择一张照片，并展开了格式、质量和调整大小选项",
+        "caption": "图片转换器：格式、质量和尺寸集中在一个面板中。"
+      },
+      "aiFrameInterpolation": {
+        "alt": "AI视频工具面板，已选择AI插帧，目标帧率为60 fps",
+        "caption": "AI视频工具面板中的AI插帧。"
+      },
+      "motion": {
+        "alt": "Motion编辑器，画布上有一个导入的SVG，动画时间轴上有关键帧",
+        "caption": "Motion编辑器：图层、画布和关键帧时间轴。"
+      }
+    }
   }
 }

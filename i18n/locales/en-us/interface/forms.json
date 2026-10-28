@@ -154,14 +154,14 @@
       "upscale": {
         "scaleLabel": "Scale",
         "scale4x": "4x",
-        "scale2x": "2x (experimental on some images)",
+        "scale2x": "2x",
         "modelLabel": "Model",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (photos)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI upscale is available, but 4x is the safest/default model path on this server.",
+        "experimentalNote": "4x is the default and gives the most consistent results. 2x runs the same model at half the scale and can look slightly cropped on some images.",
         "pngNote": "Output is PNG by default."
       },
       "removeObject": {

@@ -123,9 +123,13 @@
       }
     },
     "whoBuilds": {
-      "title": "Wer Media Manipulator baut",
-      "p1": "Media Manipulator wird von <strong>CreaTV Ltd.</strong> entwickelt und betrieben, einem kleinen, unabhängigen Medientechnologie-Unternehmen mit Sitz in Colorado, USA. CreaTVs breiteres Produktangebot konzentriert sich auf Werkzeuge, die Kreativen helfen, Ideen umzusetzen — Media Manipulator ist das kostenlose, kontofreie Werkzeug, das dieses Ökosystem verankert.",
-      "p2": "Wir sind ein kleines Team, und genau deshalb haben wir Media Manipulator so gebaut, wie wir es getan haben: Wir wollen keine Flotte von Drittanbieter-KI-Integrationen betreuen, wir wollen Ihre Dateien nicht dauerhaft speichern, und wir wollen keine zehn separaten Ein-Zweck-Konverter-Websites betreiben. Ein Studio, ein Ort, an dem Sie bestimmen, wie lange Ihre Dateien liegen, ein GPU-Server, der die Schwerarbeit übernimmt."
+      "title": "Wer hinter Media Manipulator steht",
+      "name": "Mitchell Wintrow",
+      "role": "Gründer und einziger Entwickler",
+      "photoAlt": "Porträt von Mitchell Wintrow, Gründer und einziger Entwickler von Media Manipulator",
+      "p1": "Media Manipulator wird von <strong>Mitchell Wintrow</strong> gebaut, seinem Gründer und einzigen Entwickler. Mitchell ist Senior Software Engineer und entwickelt mobile, Web- und Backend-Systeme; hauptberuflich arbeitet er bei People Inc. an Werbeeinnahmen in mobilen Apps. Er entwirft, schreibt und betreibt jeden Teil von Media Manipulator selbst, von den Editoren in Ihrem Browser bis zur API und dem GPU-Server hinter den KI-Tools.",
+      "p2": "Media Manipulator wird von der <strong>CreaTV Ltd.</strong> mit Sitz in Colorado, USA, betrieben, die auch CreaTV Studio herstellt. Dass dahinter eine einzelne Person steht, erklärt, warum die Website so funktioniert, wie sie funktioniert: keine KI-Anbindungen Dritter, die man beaufsichtigen müsste, keine Dateien, die länger als von Ihnen gewählt gespeichert werden, und ein Ort für Ihre Medienarbeit statt zehn Konverter-Seiten für je einen Zweck.",
+      "contact": "Support, Fehler und Abrechnung: <supportLink>support@media-manipulator.com</supportLink>. Datenschutz- und Datenanfragen: <privacyLink>privacy@media-manipulator.com</privacyLink>. Oder schreiben Sie uns über die <linkContact>Kontaktseite</linkContact>."
     },
     "supportedFormats": {
       "title": "Unterstützte Dateiformate (Kurzübersicht)",
@@ -580,7 +584,7 @@
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "Was sich am 28.10.2026 geändert hat",
-    "whatChangedBody": "Wir haben die von Google geforderten Offenlegungen zu Werbe-Cookies und die Opt-out-Links ergänzt. Die Datenschutzerklärung enthält einen neuen Abschnitt 5.1 zu Werbe-Cookies und Google AdSense: die Werbe-Cookies von Google, nicht personalisierte Werbung, die Einwilligungsmeldung von Google im EWR, im Vereinigten Königreich und in der Schweiz, die Links zum Widerspruch gegen personalisierte Werbung (Google-Anzeigeneinstellungen, aboutads.info und youronlinechoices.eu) und dazu, wie Google Informationen von Websites verwendet, die seine Dienste nutzen, wer Werbung sieht (nur Besucher ohne Konto und kostenlose Konten) sowie unsere öffentliche ads.txt-Datei; Abschnitt 1.5 listet nun die Werbekennungen auf, die das Werbeskript von Google setzen kann. Abschnitt 8.9 der Nutzungsbedingungen besagt nun, dass Werbung nur ohne Konto oder mit einem kostenlosen Konto angezeigt wird und dass Premium und Pro sie entfernen. Abschnitt 5 (Werbung) der Datenschutzerklärung besagt jetzt, dass das Google-Werbeskript auf Seiten geladen wird, die Anzeigen zeigen können, wobei alle Einwilligungssignale abgelehnt sind, bis Sie eine Auswahl treffen, und bis dahin nicht personalisierte Anzeigen ausliefert. Am selben Tag zuvor: Wir haben Stimmwerkzeuge hinzugefügt: das Klonen Ihrer eigenen Stimme aus einer Aufnahme, das Entwerfen einer Stimme aus einer Beschreibung und das Ändern der Stimme in einer Aufnahme. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.10 zu Stimmproben und entworfenen Stimmen: was wir speichern, dass wir es nur verwenden, um die von Ihnen gewünschte Stimme mit Ihrer ausdrücklichen Einwilligung zu erstellen und zu betreiben, dass es unter Ihrer Aufbewahrungseinstellung in Amazon S3 gespeichert, niemals an einen KI-Anbieter eines Drittanbieters weitergegeben und niemals zum Training eines Modells verwendet wird und dass Sie es jederzeit löschen können und es mit Ihrem Konto gelöscht wird; die Abschnitte 3, 3.4, 3.5 und 4 nennen nun Stimmen. Die Nutzungsbedingungen enthalten einen neuen Abschnitt 8.11: Sie dürfen eine Stimme nur aus Ihrer eigenen Stimme oder mit der ausdrücklichen Erlaubnis der sprechenden Person erstellen; Nachahmung, Betrug, politische Deepfakes und Belästigung sind nicht erlaubt; erzeugte und umgewandelte Sprache trägt ein unhörbares Wasserzeichen, verschobene Audiodaten nicht; und wir können Stimmen entfernen und Konten sperren. Abschnitt 1 der Nutzungsbedingungen führt die Stimmwerkzeuge auf. Alles aus dem Update vom 2026-10-26 gilt weiterhin: Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin. Abschnitt 10 der Nutzungsbedingungen besagt nun, dass du in US-Dollar oder Euro zum selben Preis zahlen kannst, dass in Europa standardmäßig Euro angezeigt werden und dass sich die Währung eines Abonnements nicht ändern kann, solange es aktiv ist; Abschnitt 1.6 der Datenschutzerklärung nennt nun die gespeicherte Abrechnungswährung und das Cookie mm-currency, das deine Auswahl speichert. Abschnitt 8 erklärt nun außerdem, dass von uns beauftragte Übersetzer ihre Arbeit als GitHub-Pull-Requests über die GitHub-App der CreaTV Ltd. einreichen und dass diese Einreichungen nur Übersetzungstext und keine personenbezogenen Daten über Besucher enthalten."
+    "whatChangedBody": "Wir haben ein Kontaktformular unter media-manipulator.com/contact hinzugefügt: Die Datenschutzerklärung enthält einen neuen Abschnitt 1.11 zu den Nachrichten, die Sie uns senden (Ihr Name, Ihre E-Mail-Adresse, Betreff und Nachricht, die über Resend in unser Support-Postfach zugestellt und dort bis zum Abschluss der Unterhaltung aufbewahrt werden, nie länger als 12 Monate), und Abschnitt 16 verweist nun auf das Formular. Wir haben die von Google geforderten Offenlegungen zu Werbe-Cookies und die Opt-out-Links ergänzt. Die Datenschutzerklärung enthält einen neuen Abschnitt 5.1 zu Werbe-Cookies und Google AdSense: die Werbe-Cookies von Google, nicht personalisierte Werbung, die Einwilligungsmeldung von Google im EWR, im Vereinigten Königreich und in der Schweiz, die Links zum Widerspruch gegen personalisierte Werbung (Google-Anzeigeneinstellungen, aboutads.info und youronlinechoices.eu) und dazu, wie Google Informationen von Websites verwendet, die seine Dienste nutzen, wer Werbung sieht (nur Besucher ohne Konto und kostenlose Konten) sowie unsere öffentliche ads.txt-Datei; Abschnitt 1.5 listet nun die Werbekennungen auf, die das Werbeskript von Google setzen kann. Abschnitt 8.9 der Nutzungsbedingungen besagt nun, dass Werbung nur ohne Konto oder mit einem kostenlosen Konto angezeigt wird und dass Premium und Pro sie entfernen. Abschnitt 5 (Werbung) der Datenschutzerklärung besagt jetzt, dass das Google-Werbeskript auf Seiten geladen wird, die Anzeigen zeigen können, wobei alle Einwilligungssignale abgelehnt sind, bis Sie eine Auswahl treffen, und bis dahin nicht personalisierte Anzeigen ausliefert. Am selben Tag zuvor: Wir haben Stimmwerkzeuge hinzugefügt: das Klonen Ihrer eigenen Stimme aus einer Aufnahme, das Entwerfen einer Stimme aus einer Beschreibung und das Ändern der Stimme in einer Aufnahme. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.10 zu Stimmproben und entworfenen Stimmen: was wir speichern, dass wir es nur verwenden, um die von Ihnen gewünschte Stimme mit Ihrer ausdrücklichen Einwilligung zu erstellen und zu betreiben, dass es unter Ihrer Aufbewahrungseinstellung in Amazon S3 gespeichert, niemals an einen KI-Anbieter eines Drittanbieters weitergegeben und niemals zum Training eines Modells verwendet wird und dass Sie es jederzeit löschen können und es mit Ihrem Konto gelöscht wird; die Abschnitte 3, 3.4, 3.5 und 4 nennen nun Stimmen. Die Nutzungsbedingungen enthalten einen neuen Abschnitt 8.11: Sie dürfen eine Stimme nur aus Ihrer eigenen Stimme oder mit der ausdrücklichen Erlaubnis der sprechenden Person erstellen; Nachahmung, Betrug, politische Deepfakes und Belästigung sind nicht erlaubt; erzeugte und umgewandelte Sprache trägt ein unhörbares Wasserzeichen, verschobene Audiodaten nicht; und wir können Stimmen entfernen und Konten sperren. Abschnitt 1 der Nutzungsbedingungen führt die Stimmwerkzeuge auf. Alles aus dem Update vom 2026-10-26 gilt weiterhin: Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin. Abschnitt 10 der Nutzungsbedingungen besagt nun, dass du in US-Dollar oder Euro zum selben Preis zahlen kannst, dass in Europa standardmäßig Euro angezeigt werden und dass sich die Währung eines Abonnements nicht ändern kann, solange es aktiv ist; Abschnitt 1.6 der Datenschutzerklärung nennt nun die gespeicherte Abrechnungswährung und das Cookie mm-currency, das deine Auswahl speichert. Abschnitt 8 erklärt nun außerdem, dass von uns beauftragte Übersetzer ihre Arbeit als GitHub-Pull-Requests über die GitHub-App der CreaTV Ltd. einreichen und dass diese Einreichungen nur Übersetzungstext und keine personenbezogenen Daten über Besucher enthalten."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -731,6 +735,13 @@
               "Zweck und Rechtsgrundlage: Wir verwenden diese Daten nur, um die von Ihnen gewünschte Stimme zu erstellen und zu betreiben, das heißt, die Stimme zu erzeugen, ihre Vorschau zu rendern und auf Ihre Anfrage Sprache zu erzeugen oder umzuwandeln. Eine Aufnahme der Stimme einer Person kann diese identifizieren, daher behandeln wir sie mit der Sorgfalt, die für besondere Kategorien (biometrischer) Daten erforderlich ist, und stützen uns auf Ihre ausdrückliche Einwilligung, die Sie mit dem Einwilligungs-Kontrollkästchen erteilen, bevor eine Stimme aus einer Aufnahme erstellt wird. Sie können sie jederzeit widerrufen, indem Sie die Stimme löschen.",
               "Speicherung: Gespeicherte Stimmen werden auf unseren Servern und in Amazon S3 unter voices/ in Ihrem Konto gespeichert und folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3). Aufnahmen, die Sie zum Ändern hochladen, und die von Ihnen erzeugte Sprache werden wie jeder andere Upload und jedes andere Ergebnis aufbewahrt. Die Stimmverarbeitung läuft auf unserem eigenen GPU-Server: Ihre Aufnahmen und Stimmen werden niemals an einen KI-Anbieter eines Drittanbieters weitergegeben und niemals zum Training eines Modells verwendet. Erzeugte und umgewandelte Sprache trägt ein unhörbares Wasserzeichen, das sie als synthetisch kennzeichnet; es enthält keine Kontodaten.",
               "Löschung und Export: Sie können eine gespeicherte Stimme jederzeit unter Konto, Stimmen löschen; ihre Referenzaufnahme und ihre Vorschau werden sofort von unseren Servern gelöscht, während bereits von Ihnen erzeugte Sprache bis zum Ende ihrer eigenen Aufbewahrungsdauer bestehen bleibt. Alle Ihre gespeicherten Stimmen werden gelöscht, wenn Sie Ihr Konto löschen. Ihr Datenexport listet Ihre gespeicherten Stimmen auf (Name, Art, Sprache, Daten und den Einwilligungsnachweis), ohne die Audiodaten."
+            ]
+          },
+          {
+            "title": "1.11 Nachrichten, die Sie uns senden",
+            "paragraphs": [
+              "Wenn Sie das Kontaktformular unter media-manipulator.com/contact verwenden, erhalten wir Ihren Namen, Ihre E-Mail-Adresse, den von Ihnen gewählten Betreff und Ihre Nachricht, zusammen mit dem Zeitpunkt des Versands und einer kurzen Referenznummer. Das Formular stellt diese Angaben per E-Mail über unseren E-Mail-Anbieter Resend in unser Support-Postfach zu; Kontaktnachrichten werden nicht in unserer Anwendungsdatenbank gespeichert. Wenn Sie uns direkt eine E-Mail schreiben, erhalten wir dieselbe Art von Informationen aus Ihrer E-Mail.",
+              "Wir verwenden diese Nachrichten nur, um Ihnen zu antworten und das zu bearbeiten, worum Sie bitten, etwa eine Fehlermeldung, eine Abrechnungsfrage oder eine Datenschutzanfrage. Sie bleiben in unserem Support-Postfach, bis die Unterhaltung abgeschlossen ist, und nie länger als 12 Monate. Um Spam einzudämmen, ist das Formular wie die übrige Website pro Browsersitzung und pro IP-Adresse ratenbegrenzt, und ein blockierter Versuch wird als Datensatz zur Missbrauchsverhinderung gespeichert (Abschnitt 3.6)."
             ]
           }
         ]
@@ -1060,6 +1071,7 @@
       {
         "title": "16. Kontaktieren Sie uns",
         "paragraphs": [
+          "Das Kontaktformular unter media-manipulator.com/contact erreicht dieselben Personen wie die unten stehende Adresse; Abschnitt 1.11 erklärt, was es erhebt und wie lange Nachrichten aufbewahrt werden.",
           "Wenn Sie Fragen zu dieser Datenschutzerklärung oder dazu haben, wie Media Manipulator mit Informationen umgeht, kontaktieren Sie uns unter:"
         ],
         "contactBlock": true,
@@ -1998,6 +2010,30 @@
     "popular": {
       "eyebrow": "Beliebte Konvertierungen",
       "title": "Direkt zu einem Werkzeug springen"
+    },
+    "whatYouCanDo": {
+      "eyebrow": "Was Sie hier tun können",
+      "title": "Tools für jede Art von Mediendatei",
+      "video": "<strong>Video.</strong> <compressVideo>Komprimieren Sie ein Video</compressVideo> für E-Mail oder Web, <trimVideo>schneiden Sie es</trimVideo> mit einem schnellen Schnitt ohne Qualitätsverlust auf den Teil zu, den Sie brauchen, <videoGif>wandeln Sie einen kurzen Clip in ein animiertes GIF um</videoGif> oder <hls>verpacken Sie es als HLS</hls> für adaptives Streaming. Große Uploads gehen direkt in unseren Speicher, daher funktionieren auch lange Aufnahmen.",
+      "images": "<strong>Bilder und PDFs.</strong> <removeExif>Entfernen Sie EXIF-Metadaten</removeExif> wie den GPS-Standort, bevor Sie ein Foto teilen, <compressImage>komprimieren Sie ein Bild</compressImage> für eine schnellere Seite, <resizeImage>ändern Sie seine Größe</resizeImage> auf exakte Pixelmaße und wandeln Sie <imageToPdf>Bilder in PDF</imageToPdf> oder <pdfToJpg>PDF-Seiten in JPG</pdfToJpg> um.",
+      "audio": "<strong>Audio und Sprache.</strong> <extractAudio>Extrahieren Sie die Tonspur</extractAudio> aus einem Video als MP3, WAV, M4A, FLAC oder OGG und <transcribe>transkribieren Sie das Gesprochene</transcribe> in durchsuchbaren Text oder Untertitel. Die Transkription läuft mit Whisper auf unserem eigenen GPU-Server.",
+      "ai": "<strong>KI-Tools.</strong> <removeBg>Entfernen Sie den Hintergrund</removeBg> aus einem Foto, <imageRestore>restaurieren und vergrößern Sie ein altes Bild</imageRestore>, <videoRestore>vergleichen Sie Modelle zur Videorestaurierung</videoRestore> nebeneinander an einem kurzen Clip oder <docScan>wandeln Sie gescannte Seiten in ein durchsuchbares PDF um</docScan>. Jedes Modell läuft auf Servern, die wir selbst betreiben.",
+      "editors": "<strong>Editoren.</strong> Wenn eine einzelne Konvertierung nicht reicht, ist <darkroom>Darkroom</darkroom> ein Multi-Track-Videoeditor und <motion>Motion</motion> animiert SVG-Grafiken auf einer Keyframe-Zeitleiste. Beide laufen in Ihrem Browser, und mit der Anmeldung bleiben Ihre Projekte in Ihrem Konto."
+    },
+    "whatWeDont": {
+      "eyebrow": "Was wir nicht tun",
+      "title": "Was wir bewusst weglassen",
+      "items": [
+        "<strong>Keine KI von Drittanbietern.</strong> Ihre Dateien werden nie an einen externen KI-Anbieter gesendet. Transkription, Hintergrundentfernung, Hochskalierung und jedes andere KI-Tool laufen auf unserem eigenen GPU-Server.",
+        "<strong>Keine Wasserzeichen auf Ihren Dateien.</strong> Konvertierte Bilder, Videos, Audiodateien und Dokumente kommen ohne Logo oder Markierung zurück. Die einzige Ausnahme ist synthetische Sprache aus den Stimm-Tools, die eine nicht hörbare Markierung trägt, die sie als KI-generiert kennzeichnet.",
+        "<strong>Für die meisten Tools ist kein Konto nötig.</strong> Konvertieren, Komprimieren, Zuschneiden und Entfernen von Metadaten funktionieren ohne Anmeldung. Ein kostenloses Konto bringt ein größeres Tageskontingent, gespeicherte Projekte und Kontrolle darüber, wie lange Ihre Dateien aufbewahrt werden.",
+        "<strong>Keine Dateien länger als von Ihnen gewählt.</strong> Dateien von Gästen werden 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie zwischen 24 Stunden und 2 Jahren und können jede Datei vorher aus Ihrem Konto löschen."
+      ]
+    },
+    "whoMakes": {
+      "eyebrow": "Wer dahintersteht",
+      "title": "Von einem Entwickler gebaut, von CreaTV Ltd. betrieben",
+      "body": "Media Manipulator wird von Mitchell Wintrow, einem Senior Software Engineer in Colorado, entworfen, gebaut und betrieben und von der CreaTV Ltd. geführt. Lesen Sie <linkAbout>mehr über das Projekt und seinen Gründer</linkAbout> oder <linkContact>nehmen Sie Kontakt auf</linkContact>, wenn Sie eine Frage oder eine Fehlermeldung haben."
     }
   },
   "toolsIndex": {
@@ -2180,7 +2216,6 @@
     "unmodified": "Unverändert verwendet. Ihr Quellcode ist unter dem obigen Link verfügbar."
   },
   "motionPage": {
-    "betaBadge": "Beta",
     "guide": {
       "summaryTitle": "So funktioniert {{brand}}",
       "whatItIsTitle": "Was es ist",
@@ -2234,14 +2269,14 @@
         "notIncluded": "Nicht enthalten",
         "unlimited": "Unbegrenzt",
         "localOnly": "{{count}}, nur in diesem Browser",
-        "comingSoon": "Bald verfügbar: noch in keinem Tarif",
+        "comingSoon": "Exportformat auf Anfrage verfügbar",
         "noCap": "Keine Begrenzung",
         "notApplicable": "Nicht enthalten",
         "capHeight": "bis {{height}}p",
         "capFps": "{{fps}} fps",
         "capSeconds": "{{seconds}} s"
       },
-      "comingSoonNote": "Mit „Bald verfügbar“ markierte Formate sind bereits in den Editor eingebaut und werden in Kürze einem Tarif hinzugefügt. Diese Tabelle aktualisiert sich dann automatisch.",
+      "comingSoonNote": "Formate mit dem Vermerk „auf Anfrage verfügbar“ sind in den Editor eingebaut, aber in keinem Tarif enthalten. Wenn Sie eines davon brauchen, fragen Sie uns über die <linkContact>Kontaktseite</linkContact>.",
       "resetNote": "Kontingente werden um Mitternacht UTC zurückgesetzt. Abgebrochene oder fehlgeschlagene Exporte, die bereits angerechnet wurden, werden nicht erstattet.",
       "unavailable": "Die Tariftabelle konnte derzeit nicht geladen werden. Die Preisseite listet das Kontingent jedes Tarifs auf.",
       "seePlans": "Alle Tarife vergleichen"
@@ -2367,5 +2402,83 @@
         ]
       }
     ]
+  },
+  "contact": {
+    "metaTitle": "Media Manipulator kontaktieren | Support, Datenschutz und Presse",
+    "metaDesc": "Kontaktieren Sie die Menschen hinter Media Manipulator: Support und Abrechnung unter support@media-manipulator.com, Datenschutzanfragen unter privacy@media-manipulator.com oder über das Kontaktformular. Wir antworten in der Regel innerhalb von zwei Werktagen.",
+    "title": "Media Manipulator kontaktieren",
+    "intro": "Fragen, Fehlermeldungen, Abrechnungsprobleme, Datenschutzanfragen oder eine Idee für eine Zusammenarbeit: Senden Sie uns eine Nachricht über das Formular oder schreiben Sie uns direkt per E-Mail. Jede Nachricht liest ein Mensch.",
+    "whoTitle": "An wen Sie schreiben",
+    "whoBody": "Media Manipulator wird von Mitchell Wintrow, seinem Gründer und einzigen Entwickler, gebaut und betrieben und von der <strong>CreaTV Ltd.</strong> in Colorado, USA, geführt. Kein externes Support-Unternehmen antwortet in unserem Namen. <linkAbout>Mehr darüber, wer hinter Media Manipulator steht</linkAbout>.",
+    "emailTitle": "E-Mail",
+    "supportLabel": "Support, Fehler und Abrechnung",
+    "privacyLabel": "Datenschutz- und Datenanfragen",
+    "responseTime": "Wir antworten in der Regel innerhalb von zwei Werktagen.",
+    "bugTitle": "Einen Fehler melden",
+    "bugIntro": "Wir können ein Problem deutlich schneller beheben, wenn Ihre erste Nachricht Folgendes enthält:",
+    "bugItems": [
+      "das verwendete Tool oder die Adresse seiner Seite;",
+      "den Dateityp und ungefähr, wie groß die Datei war;",
+      "Ihren Browser und Ihr Gerät;",
+      "was Sie erwartet haben, was stattdessen passiert ist und welche Fehlermeldung Sie gesehen haben."
+    ],
+    "bugNoFiles": "Bitte hängen Sie die Datei selbst nicht an, es sei denn, wir bitten darum.",
+    "statusNote": "Wenn ein Tool für alle ausgefallen zu sein scheint, zeigt die <linkStatus>Statusseite</linkStatus>, ob unsere Server gerade in Ordnung sind.",
+    "privacyNote": "Wir verwenden Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht nur, um Ihnen zu antworten. Sie bleiben in unserem Support-Postfach, bis die Unterhaltung abgeschlossen ist, und nie länger als 12 Monate. Einzelheiten finden Sie in Abschnitt 1.11 der <linkPrivacy>Datenschutzerklärung</linkPrivacy>.",
+    "form": {
+      "title": "Nachricht senden",
+      "name": "Ihr Name",
+      "email": "Ihre E-Mail-Adresse",
+      "emailHint": "Wir antworten an diese Adresse und verwenden sie für nichts anderes.",
+      "subject": "Betreff",
+      "subjects": {
+        "bug": "Fehlermeldung",
+        "billing": "Abrechnung",
+        "privacy": "Datenschutz- oder Datenanfrage",
+        "press": "Presse oder Zusammenarbeit",
+        "other": "Etwas anderes"
+      },
+      "message": "Nachricht",
+      "messageCount": "{{count}} von {{max}} Zeichen",
+      "honeypot": "Lassen Sie dieses Feld leer",
+      "submit": "Nachricht senden",
+      "sending": "Wird gesendet…",
+      "sentTitle": "Nachricht gesendet",
+      "sentBody": "Vielen Dank. Ihre Referenznummer lautet {{reference}}. Wir antworten in der Regel innerhalb von zwei Werktagen an die von Ihnen angegebene Adresse.",
+      "sendAnother": "Weitere Nachricht senden",
+      "invalidName": "Bitte geben Sie Ihren Namen ein (höchstens 100 Zeichen).",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein, zum Beispiel name@example.com.",
+      "invalidSubject": "Bitte wählen Sie einen Betreff.",
+      "invalidMessage": "Bitte schreiben Sie eine Nachricht mit höchstens 2.000 Zeichen.",
+      "rateLimited": "Sie haben in der letzten Stunde mehrere Nachrichten gesendet. Bitte schreiben Sie uns stattdessen an {{email}} oder versuchen Sie es später erneut.",
+      "failed": "Ihre Nachricht konnte gerade nicht gesendet werden. Bitte schreiben Sie uns stattdessen an {{email}}; Ihr Text ist weiterhin im Formular vorhanden."
+    }
+  },
+  "articleMeta": {
+    "byline": "Von {{name}}",
+    "published": "Veröffentlicht am {{date}}",
+    "updated": "Aktualisiert am {{date}}",
+    "screenshots": {
+      "audioGettingStarted": {
+        "alt": "Der Audiokonverter von Media Manipulator mit ausgewählter Audiodatei und geöffneten Optionen für Format, Bitrate und Abtastrate",
+        "caption": "Der Audiokonverter: Datei auswählen, dann Format und Qualität festlegen."
+      },
+      "videoGettingStarted": {
+        "alt": "Der Videokonverter von Media Manipulator mit ausgewähltem Video und geöffneten Optionen für Ausgabeformat und Qualität",
+        "caption": "Der Videokonverter: Ausgabeformat, Qualität und Größe wählen."
+      },
+      "imageGettingStarted": {
+        "alt": "Der Bildkonverter von Media Manipulator mit ausgewähltem Foto und geöffneten Optionen für Format, Qualität und Größenänderung",
+        "caption": "Der Bildkonverter: Format, Qualität und Größe in einem Bereich."
+      },
+      "aiFrameInterpolation": {
+        "alt": "Das Bedienfeld der KI-Videotools mit ausgewählter KI-Zwischenbildberechnung und einer Ziel-Bildrate von 60 fps",
+        "caption": "KI-Zwischenbildberechnung im Bedienfeld der KI-Videotools."
+      },
+      "motion": {
+        "alt": "Der Motion-Editor mit einem importierten SVG auf der Arbeitsfläche und Keyframes auf der Animationszeitleiste",
+        "caption": "Der Motion-Editor: Ebenen, Arbeitsfläche und Keyframe-Zeitleiste."
+      }
+    }
   }
 }

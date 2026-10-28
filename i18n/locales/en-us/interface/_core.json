@@ -4,7 +4,6 @@
     "brandTagline": "Convert images, videos, and audio files with ease",
     "loading": "Loading…",
     "loadingShort": "Loading...",
-    "comingSoon": "Coming soon",
     "tryAgain": "Try again",
     "cancel": "Cancel",
     "close": "Close",
@@ -104,7 +103,8 @@
     "navigationLabel": "Navigation",
     "language": "Language",
     "selectLanguage": "Select language",
-    "voices": "Voices"
+    "voices": "Voices",
+    "contact": "Contact"
   },
   "footer": {
     "tagline": "Browser-based and server-assisted tools for editing, converting, compressing, analyzing, transcribing, summarizing, and otherwise processing image, video, and audio files.",

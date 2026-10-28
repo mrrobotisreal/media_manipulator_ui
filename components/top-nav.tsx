@@ -55,6 +55,8 @@ const NAV_LINKS: { key: string; href: string; desktop?: false }[] = [
   { key: "howItWorks", href: "/how-it-works" },
   { key: "tutorials", href: "/tutorials" },
   { key: "blog", href: "/blog" },
+  // MM85: mobile sheet only; the desktop row has no room (see above).
+  { key: "contact", href: "/contact", desktop: false },
   { key: "privacyPolicy", href: "/privacy-policy", desktop: false },
   { key: "termsOfService", href: "/terms-of-service", desktop: false },
   // { key: "blog", href: "/blog" },

@@ -154,14 +154,14 @@
       "upscale": {
         "scaleLabel": "Skalierung",
         "scale4x": "4x",
-        "scale2x": "2x (bei manchen Bildern experimentell)",
+        "scale2x": "2x",
         "modelLabel": "Modell",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (Fotos)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "Die 2x-KI-Hochskalierung ist verfügbar, aber 4x ist auf diesem Server der sicherste/standardmäßige Modellpfad.",
+        "experimentalNote": "4x ist die Standardeinstellung und liefert die konsistentesten Ergebnisse. 2x führt dasselbe Modell mit halbem Maßstab aus und kann bei manchen Bildern leicht beschnitten wirken.",
         "pngNote": "Die Ausgabe ist standardmäßig PNG."
       },
       "removeObject": {

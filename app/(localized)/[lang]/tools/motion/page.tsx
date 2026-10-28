@@ -4,7 +4,7 @@ import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import ToolLandingPage from '@/components/tools/tool-landing-page';
 import MotionLauncher from '@/components/vector/landing/recent-projects';
-import { MotionBetaBadge, MotionGuide, MotionPlans } from '@/components/vector/landing/motion-landing';
+import { MotionGuide, MotionPlans } from '@/components/vector/landing/motion-landing';
 import { getLocalizedToolBySlug } from '@/i18n/toolPageContent';
 import { getLocaleDef } from '@/i18n/locales';
 import { loadPublicTiers } from '@/lib/auth/loadTiers';
@@ -43,7 +43,6 @@ export default async function MotionToolRoute({ params }: PageParams) {
       <ToolLandingPage
         tool={tool}
         locale={locale}
-        titleBadge={<MotionBetaBadge locale={locale} />}
         beforeIntroExtra={<MotionGuide locale={locale} />}
         panel={
           <MotionLauncher
