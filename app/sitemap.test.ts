@@ -11,6 +11,7 @@ import {
 } from '@/content/reviewAllowlist';
 import { PUBLIC_ROUTES } from '@/lib/seo';
 import { locales } from '@/i18n/locales';
+import { CHANGELOG } from '@/content/changelog';
 
 // The URLs the review-safe sitemap emitted on main before MM34 (10 core routes
 // + the 15 allowlisted tools other than content-studio). Frozen here as a
@@ -52,17 +53,40 @@ const MM48_URLS = ['/tools/motion', '/licenses'].map((p) => new URL(p, ORIGIN).t
 /** The flag-off sitemap since MM48: the pre-MM34 list with Motion and /licenses in the core block. */
 /** MM85: the contact page joins the core block after /licenses. */
 const MM85_CONTACT_URL = new URL('/contact', ORIGIN).toString();
-const REVIEW_SAFE_URLS = [...TODAY_URLS.slice(0, 2), MM48_URLS[0], ...TODAY_URLS.slice(2, 10), MM48_URLS[1], MM85_CONTACT_URL, ...TODAY_URLS.slice(10)];
+/**
+ * MM85: the blog posts and tutorials join the review sitemap (frozen here as
+ * literals, in emission order: blog first, then tutorials).
+ */
+const MM85_ARTICLE_URLS = [
+  '/blog/video/video-compression-guide',
+  '/blog/image/image-optimization-guide',
+  '/blog/audio/audio-quality-guide',
+  '/tutorials/audio/getting-started',
+  '/tutorials/video/getting-started',
+  '/tutorials/image/getting-started',
+  '/tutorials/ai-frame-interpolation',
+  '/tutorials/content-studio',
+  '/tutorials/motion',
+].map((p) => new URL(p, ORIGIN).toString());
+const REVIEW_SAFE_URLS = [
+  ...TODAY_URLS.slice(0, 2),
+  MM48_URLS[0],
+  ...TODAY_URLS.slice(2, 10),
+  MM48_URLS[1],
+  MM85_CONTACT_URL,
+  ...TODAY_URLS.slice(10),
+  ...MM85_ARTICLE_URLS,
+];
 
 const urls = () => sitemap().map((e) => e.url);
 
 afterEach(() => vi.unstubAllEnvs());
 
 describe('MM34 flag off (default)', () => {
-  it('sitemap equals the pre-MM34 review-safe list plus the MM48 and MM85 core routes, exactly', () => {
+  it('sitemap equals the pre-MM34 review-safe list plus the MM48 and MM85 routes, exactly', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
     expect(urls()).toEqual(REVIEW_SAFE_URLS);
-    expect(urls()).toHaveLength(28);
+    expect(urls()).toHaveLength(37);
     for (const u of TODAY_URLS) expect(urls()).toContain(u);
   });
 
@@ -74,8 +98,8 @@ describe('MM34 flag off (default)', () => {
       const langs = Object.keys(entries[0].alternates?.languages ?? {}).sort();
       expect(langs).toEqual([...locales.filter((l) => l.translated).map((l) => l.code), 'x-default'].sort());
     }
-    // The tutorial is a detail page: listed only under the full-index flag.
-    expect(urls()).not.toContain(new URL('/tutorials/motion', ORIGIN).toString());
+    // MM85: tutorials are in the review sitemap now.
+    expect(urls()).toContain(new URL('/tutorials/motion', ORIGIN).toString());
   });
 
   it('unset behaves the same as empty / "false"', () => {
@@ -178,5 +202,37 @@ describe('MM68: every sitemap entry carries every locale', () => {
     for (const e of sitemap()) {
       expect(Object.keys(e.alternates?.languages ?? {}).sort(), e.url).toEqual(expected);
     }
+  });
+});
+
+describe('MM85 real dates', () => {
+  it.each(['', 'true'])('no lastModified equals the build time (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
+    vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', flag);
+    const before = Date.now();
+    const entries = sitemap();
+    for (const e of entries) {
+      const d = e.lastModified as Date;
+      expect(d, e.url).toBeInstanceOf(Date);
+      expect(Number.isNaN(d.getTime()), e.url).toBe(false);
+      // A real calendar day (UTC midnight), never "now".
+      expect(d.toISOString().endsWith('T00:00:00.000Z'), e.url).toBe(true);
+      expect(d.getTime()).toBeLessThan(before);
+    }
+  });
+
+  it('blog and tutorial entries carry their own dates; the three posts are not one shared date', () => {
+    vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
+    const byUrl = new Map(sitemap().map((e) => [e.url, (e.lastModified as Date).toISOString().slice(0, 10)]));
+    for (const p of BLOG_POSTS) expect(byUrl.get(new URL(p.path, ORIGIN).toString())).toBe(p.dateModified);
+    expect(new Set(BLOG_POSTS.map((p) => p.dateModified)).size).toBeGreaterThan(1);
+    expect(byUrl.get(new URL('/tutorials/motion', ORIGIN).toString())).toBe('2026-10-26');
+    expect(byUrl.get(new URL('/contact', ORIGIN).toString())).toBe('2026-10-28');
+    expect(byUrl.get(new URL('/tools/convert-video-to-animated-gif', ORIGIN).toString())).toBe('2026-05-30');
+  });
+
+  it('the full-index /changelog entry is the newest changelog date', () => {
+    vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'true');
+    const e = sitemap().find((x) => x.url === new URL('/changelog', ORIGIN).toString());
+    expect((e?.lastModified as Date).toISOString().slice(0, 10)).toBe(CHANGELOG[0].date);
   });
 });

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Clapperboard } from 'lucide-react';
 import RelatedLinks from '@/components/related-links';
 import { ResourceHints } from '@/components/seo/resource-hints';
+import { TutorialByline } from '@/components/articles/article-byline';
 import { getServerT } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
@@ -59,6 +60,7 @@ const ContentStudioTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
           <Panel level="1"><div className="prose prose-invert max-w-none text-muted-foreground">
               <p className="text-sm uppercase tracking-wide text-data font-medium">{t(`${K}.eyebrow`)}</p>
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">{t(`${K}.title`)}</h1>
+              <TutorialByline path="/tutorials/content-studio" locale={locale} />
               <p className="text-lg mb-6">{t(`${K}.intro`)}</p>
 
               <Shot src={SCREENSHOTS.overview} altKey="overviewAlt" capKey="overviewCaption" />

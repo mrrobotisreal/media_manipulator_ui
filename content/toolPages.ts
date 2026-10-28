@@ -101,6 +101,12 @@ export type EmbedPreset =
 export interface ToolPageContent {
   /** Path slug under /tools, e.g. "remove-exif-metadata" -> /tools/remove-exif-metadata */
   slug: string;
+  /**
+   * MM85: when this page's copy was last reviewed or materially changed
+   * (YYYY-MM-DD, from git), for the sitemap's lastModified. Absent means
+   * TOOL_PAGES_DEFAULT_REVIEWED (content/pageDates.ts); MM84 sets it per page.
+   */
+  lastReviewed?: string;
   /** Display name used in breadcrumbs and the /tools index card. */
   name: string;
   /** High-intent H1 for the page. */
@@ -573,6 +579,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- METADATA / PRIVACY
   {
     slug: 'remove-exif-metadata',
+    lastReviewed: '2026-10-24',
     name: 'Remove EXIF Metadata from Images',
     h1: 'Remove EXIF Metadata from Images Online',
     tagline:
@@ -711,6 +718,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- VIDEO
   {
     slug: 'compress-video',
+    lastReviewed: '2026-10-24',
     name: 'Compress Video',
     h1: 'Compress Video Online Without Ruining Quality',
     tagline:
@@ -877,6 +885,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'transcode-to-hls',
+    lastReviewed: '2026-10-23',
     name: 'Transcode Video to HLS',
     h1: 'Transcode Video to HLS Online',
     tagline:
@@ -1136,6 +1145,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'convert-video-to-animated-gif',
+    lastReviewed: '2026-05-30',
     name: 'Convert Video to Animated GIF',
     h1: 'Convert Video to Animated GIF Online',
     tagline:
@@ -1286,6 +1296,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'transcribe-video',
+    lastReviewed: '2026-10-24',
     name: 'Transcribe Video',
     h1: 'Transcribe Video to Text Online',
     tagline:
@@ -2350,6 +2361,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE: RESIZE / COMPRESS / AI
   {
     slug: 'image-resizer',
+    lastReviewed: '2026-10-23',
     name: 'Image Resizer',
     h1: 'Resize Image Online Free',
     tagline:
@@ -2458,6 +2470,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'compress-image',
+    lastReviewed: '2026-10-23',
     name: 'Compress Image',
     h1: 'Compress Image Online Free',
     tagline:
@@ -2566,6 +2579,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'remove-background-from-image',
+    lastReviewed: '2026-10-23',
     name: 'Remove Background from Image',
     h1: 'Remove Background from Image Online Free',
     tagline:
@@ -2679,6 +2693,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE <-> PDF
   {
     slug: 'image-to-pdf',
+    lastReviewed: '2026-10-23',
     name: 'Image to PDF',
     h1: 'Convert Image to PDF Online Free',
     tagline:
@@ -3009,6 +3024,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'pdf-to-jpg',
+    lastReviewed: '2026-10-24',
     name: 'PDF to JPG',
     h1: 'Convert PDF to JPG Online Free',
     tagline:
@@ -6427,6 +6443,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'video-trimmer',
+    lastReviewed: '2026-10-23',
     name: 'Video Trimmer',
     h1: 'Trim Video Online Free',
     tagline:
@@ -7451,6 +7468,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- EXTRACT AUDIO FROM VIDEO
   {
     slug: 'extract-audio-from-video',
+    lastReviewed: '2026-10-24',
     name: 'Extract Audio from Video',
     h1: 'Extract Audio from Video',
     tagline:
@@ -8017,6 +8035,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-video-restoration',
+    lastReviewed: '2026-08-05',
     name: 'AI Video Restoration',
     h1: 'AI Video Restoration Tool',
     tagline:
@@ -8218,6 +8237,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-image-restoration',
+    lastReviewed: '2026-06-12',
     name: 'AI Image Restoration & Upscaling',
     h1: 'AI Image Restoration & Upscaling Tool',
     tagline:
@@ -8416,6 +8436,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-document-scan',
+    lastReviewed: '2026-10-23',
     name: 'AI Document Scan',
     h1: 'AI Document Scan — Scanned Pages & Handwriting to Searchable PDF / Word',
     tagline:

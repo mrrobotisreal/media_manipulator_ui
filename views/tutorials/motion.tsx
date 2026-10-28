@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Spline } from 'lucide-react';
 import ContentReadTracker from '@/components/analytics/content-read-tracker';
 import RelatedLinks from '@/components/related-links';
+import { TutorialByline, TutorialScreenshot } from '@/components/articles/article-byline';
 import { getServerT } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
@@ -42,7 +43,9 @@ const MotionTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
             <div className="prose prose-invert max-w-none text-muted-foreground" data-testid="motion-tutorial">
               <p className="text-sm uppercase tracking-wide text-data font-medium">{t(`${K}.eyebrow`)}</p>
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">{t(`${K}.title`, brand)}</h1>
+              <TutorialByline path="/tutorials/motion" locale={locale} />
               <p className="text-lg mb-6">{t(`${K}.intro`, brand)}</p>
+              <TutorialScreenshot k="motion" locale={locale} />
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.import.title`)}</h2>
               <p className="mb-4">{t(`${K}.import.body`, brand)}</p>
