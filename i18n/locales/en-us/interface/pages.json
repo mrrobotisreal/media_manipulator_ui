@@ -572,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Effective Date: 2026-10-24",
-    "lastUpdated": "Last Updated: 2026-10-26",
+    "lastUpdated": "Last Updated: 2026-10-28",
     "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operating as Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "What changed on 2026-10-26",
-    "whatChangedBody": "We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
+    "whatChangedTitle": "What changed on 2026-10-28",
+    "whatChangedBody": "We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -722,6 +722,15 @@
               "Without an account, Motion projects are kept only in your browser (in IndexedDB) and never reach our servers. If you are signed in and choose “Save to account”, the project and a small thumbnail image are stored on our servers and in Amazon S3 in the same way as a Darkroom project: they are your content, they follow the retention period you choose (Section 3), you can delete them from your Account page, they are deleted with your account, and they are listed in your data export.",
               "Each animated export and each Lottie import is counted on our server before your browser runs it, to enforce your plan's daily Motion allowance. For each one we store the format, the output height, frame rate and length, the time, your plan, the saved project it came from (if any), and an identifier for your account, your browser session or a hashed IP address. We use these records to enforce the allowance and to understand which formats are used. When you delete your account, they are detached from your identity."
             ]
+          },
+          {
+            "title": "1.10 Voice Samples and Designed Voices",
+            "paragraphs": [
+              "When you use the voice tools, we process the voice recordings you record or upload, the voices you save, and the text you ask a voice to speak (used only to generate that speech). A saved voice consists of its name, its kind (cloned from a recording, or designed from a description), its language, for a designed voice the description and the seed used to generate it, a reference recording (your recording, or for a designed voice a 10-second clip we render), a short preview, the version of the voice engine and, for a cloned voice, the time you confirmed your consent and the version of the consent text.",
+              "Purpose and legal basis: we use these data only to create and run the voice you asked for, that is, to make the voice, render its preview, and generate or convert speech when you ask. A recording of a person's voice can identify them, so we treat it with the care that special-category (biometric) data requires and rely on your explicit consent, which you give with the consent checkbox before a voice is created from a recording. You can withdraw it at any time by deleting the voice.",
+              "Storage: saved voices are stored on our servers and in Amazon S3 under voices/, in your account, and follow the retention period you choose (Section 3). Recordings you upload to change and the speech you generate are kept like any other upload and result. Voice processing runs on our own GPU server: your recordings and voices are never shared with a third-party AI provider and are never used to train any model. Generated and converted speech carries an inaudible watermark that marks it as synthetic; it contains no account details.",
+              "Deletion and export: you can delete a saved voice at any time from Account, Voices; its reference recording and preview are deleted from our servers straight away, while speech you already generated stays until its own retention period ends. All your saved voices are deleted when you delete your account. Your data export lists your saved voices (name, kind, language, dates and the consent record), without the audio."
+            ]
           }
         ]
       },
@@ -748,7 +757,7 @@
         "id": "retention",
         "title": "3. File Storage, Retention and Deletion",
         "paragraphs": [
-          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media, Darkroom projects and Motion projects saved to your account, stored on our servers and in Amazon S3 (us-west-2). Records about your conversions and settings (such as job history, retention choices and account details) are kept in a PostgreSQL database, and AI processing runs on our own self-hosted GPU server."
+          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media, Darkroom projects, Motion projects and saved voices in your account, stored on our servers and in Amazon S3 (us-west-2). Records about your conversions and settings (such as job history, retention choices and account details) are kept in a PostgreSQL database, and AI processing runs on our own self-hosted GPU server."
         ],
         "subsections": [
           {
@@ -783,7 +792,7 @@
             ],
             "bullets": [
               "cancel your Premium or Pro subscription with Stripe, if you have one;",
-              "delete your files and your Darkroom and Motion projects;",
+              "delete your files, your Darkroom and Motion projects and your saved voices;",
               "delete your account record and settings and detach your remaining activity records from your identity;",
               "ask our first-party analytics to delete the analytics data linked to your account (see Section 6);",
               "delete your sign-in login."
@@ -795,7 +804,7 @@
           {
             "title": "3.5 Exporting your data",
             "paragraphs": [
-              "Signed-in users can download an export of their data from the Account page. It is a ZIP file containing your history, projects, file list, account details and metadata reports. It does not contain the media files themselves, so download those before they expire. Exports are limited to a small number of requests per hour."
+              "Signed-in users can download an export of their data from the Account page. It is a ZIP file containing your history, projects, saved voices (without their audio), file list, account details and metadata reports. It does not contain the media files themselves, so download those before they expire. Exports are limited to a small number of requests per hour."
             ]
           },
           {
@@ -823,7 +832,7 @@
         ],
         "afterBullets": [
           "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
-          "The AI features use open models and tools that we run ourselves, mainly on a self-hosted GPU server: Whisper for transcription, Real-ESRGAN for image upscaling, Demucs for separating audio, and other local models, plus language and vision models served through Ollama for text tasks such as summaries, descriptions and caption translation.",
+          "The AI features use open models and tools that we run ourselves, mainly on a self-hosted GPU server: Whisper for transcription, Real-ESRGAN for image upscaling, Demucs for separating audio, Chatterbox and Qwen3-TTS for voice cloning, voice design and speech, and other local models, plus language and vision models served through Ollama for text tasks such as summaries, descriptions and caption translation.",
           "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
           "Uploaded files and generated outputs are kept and deleted as described in Section 3, including when AI features are used. After the applicable retention period they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
           "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
@@ -1057,6 +1066,7 @@
           "AI-assisted transcription, caption generation, summaries, and descriptions;",
           "content-safety classification and abuse-prevention scanning;",
           "creating, animating and exporting vector graphics and animations with Motion;",
+          "creating voices from your own recordings, designing voices from a description, generating speech from text and changing the voice in a recording (Voices, see Section 8.11);",
           "temporary conversion history and downloadable processed outputs."
         ],
         "afterBullets": [
@@ -1290,6 +1300,26 @@
             "paragraphs": [
               "You must not use Media Manipulator to create or facilitate deceptive download buttons, fake update prompts, fake virus warnings, misleading conversion flows, fake system dialogs, or content designed to trick users into clicking ads, downloading unwanted software, or visiting unwanted websites.",
               "Media Manipulator’s real download buttons, conversion buttons, and user interface controls are intended to be clearly distinguishable from advertisements."
+            ]
+          },
+          {
+            "title": "8.11 Voices",
+            "paragraphs": [
+              "The voice tools let you create a saved voice from a recording (voice cloning), design a new voice from a written description, generate speech from text with a saved or preset voice, and change the voice in a recording, either by shifting its pitch and formant or by converting it to a saved or preset voice with AI.",
+              "You may only create a voice from a recording of your own voice, or of another person who has given you their explicit permission to do so. Before a voice is created from a recording, you must confirm: \"This is my voice, or I have the explicit permission of the person whose voice this is.\" We store the time you confirmed it and the version of that text with the voice; the current version is 2026-10-28.",
+              "You must not use the voice tools, or audio made with them, to:"
+            ],
+            "bullets": [
+              "impersonate a real person, living or dead, without their permission (or, where they have died, the permission of whoever controls their likeness);",
+              "commit fraud, scams or phishing, including fake calls, voice messages or recordings that claim to come from a person or organisation;",
+              "create or spread political deepfakes, such as fabricated statements by candidates, officials or other public figures, or audio meant to mislead voters;",
+              "harass, threaten, bully, defame or intimidate anyone;",
+              "get around voice-based identity checks or other security systems;",
+              "create sexual content with a real person's voice without their consent."
+            ],
+            "afterBullets": [
+              "Speech generated with a saved or preset voice, and recordings converted to a voice, carry an inaudible watermark (PerTh) that marks them as synthetic. Audio changed with the pitch shifter is ordinary signal processing and is not watermarked. You must not remove, alter or try to defeat the watermark.",
+              "We may remove a voice or any audio made with it, and suspend or terminate an account (Section 18), if we believe these rules have been broken. Nothing you record, upload or generate with the voice tools is used to train any AI model."
             ]
           }
         ]

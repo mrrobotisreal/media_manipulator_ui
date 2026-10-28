@@ -572,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Gültig ab: 24.10.2026",
-    "lastUpdated": "Zuletzt aktualisiert: 26.10.2026",
+    "lastUpdated": "Zuletzt aktualisiert: 28.10.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Was sich am 26.10.2026 geändert hat",
-    "whatChangedBody": "Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin. Abschnitt 10 der Nutzungsbedingungen besagt nun, dass du in US-Dollar oder Euro zum selben Preis zahlen kannst, dass in Europa standardmäßig Euro angezeigt werden und dass sich die Währung eines Abonnements nicht ändern kann, solange es aktiv ist; Abschnitt 1.6 der Datenschutzerklärung nennt nun die gespeicherte Abrechnungswährung und das Cookie mm-currency, das deine Auswahl speichert. Abschnitt 8 erklärt nun außerdem, dass von uns beauftragte Übersetzer ihre Arbeit als GitHub-Pull-Requests über die GitHub-App der CreaTV Ltd. einreichen und dass diese Einreichungen nur Übersetzungstext und keine personenbezogenen Daten über Besucher enthalten."
+    "whatChangedTitle": "Was sich am 28.10.2026 geändert hat",
+    "whatChangedBody": "Wir haben Stimmwerkzeuge hinzugefügt: das Klonen Ihrer eigenen Stimme aus einer Aufnahme, das Entwerfen einer Stimme aus einer Beschreibung und das Ändern der Stimme in einer Aufnahme. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.10 zu Stimmproben und entworfenen Stimmen: was wir speichern, dass wir es nur verwenden, um die von Ihnen gewünschte Stimme mit Ihrer ausdrücklichen Einwilligung zu erstellen und zu betreiben, dass es unter Ihrer Aufbewahrungseinstellung in Amazon S3 gespeichert, niemals an einen KI-Anbieter eines Drittanbieters weitergegeben und niemals zum Training eines Modells verwendet wird und dass Sie es jederzeit löschen können und es mit Ihrem Konto gelöscht wird; die Abschnitte 3, 3.4, 3.5 und 4 nennen nun Stimmen. Die Nutzungsbedingungen enthalten einen neuen Abschnitt 8.11: Sie dürfen eine Stimme nur aus Ihrer eigenen Stimme oder mit der ausdrücklichen Erlaubnis der sprechenden Person erstellen; Nachahmung, Betrug, politische Deepfakes und Belästigung sind nicht erlaubt; erzeugte und umgewandelte Sprache trägt ein unhörbares Wasserzeichen, verschobene Audiodaten nicht; und wir können Stimmen entfernen und Konten sperren. Abschnitt 1 der Nutzungsbedingungen führt die Stimmwerkzeuge auf. Alles aus dem Update vom 2026-10-26 gilt weiterhin: Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin. Abschnitt 10 der Nutzungsbedingungen besagt nun, dass du in US-Dollar oder Euro zum selben Preis zahlen kannst, dass in Europa standardmäßig Euro angezeigt werden und dass sich die Währung eines Abonnements nicht ändern kann, solange es aktiv ist; Abschnitt 1.6 der Datenschutzerklärung nennt nun die gespeicherte Abrechnungswährung und das Cookie mm-currency, das deine Auswahl speichert. Abschnitt 8 erklärt nun außerdem, dass von uns beauftragte Übersetzer ihre Arbeit als GitHub-Pull-Requests über die GitHub-App der CreaTV Ltd. einreichen und dass diese Einreichungen nur Übersetzungstext und keine personenbezogenen Daten über Besucher enthalten."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -722,6 +722,15 @@
               "Ohne Konto werden Motion-Projekte nur in Ihrem Browser (in IndexedDB) gespeichert und gelangen nie auf unsere Server. Wenn Sie angemeldet sind und „Im Konto speichern“ wählen, werden das Projekt und ein kleines Vorschaubild auf unseren Servern und in Amazon S3 auf dieselbe Weise gespeichert wie ein Darkroom-Projekt: Sie sind Ihre Inhalte, sie folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3), Sie können sie auf Ihrer Kontoseite löschen, sie werden mit Ihrem Konto gelöscht, und sie sind in Ihrem Datenexport aufgeführt.",
               "Jeder animierte Export und jeder Lottie-Import wird auf unserem Server gezählt, bevor Ihr Browser ihn ausführt, um das tägliche Motion-Kontingent Ihres Tarifs durchzusetzen. Zu jedem speichern wir das Format, die Ausgabehöhe, Bildrate und Länge, den Zeitpunkt, Ihren Tarif, das gespeicherte Projekt, aus dem er stammt (falls vorhanden), sowie eine Kennung für Ihr Konto, Ihre Browsersitzung oder eine gehashte IP-Adresse. Wir verwenden diese Datensätze, um das Kontingent durchzusetzen und zu verstehen, welche Formate genutzt werden. Wenn Sie Ihr Konto löschen, werden sie von Ihrer Identität gelöst."
             ]
+          },
+          {
+            "title": "1.10 Stimmproben und entworfene Stimmen",
+            "paragraphs": [
+              "Wenn Sie die Stimmwerkzeuge nutzen, verarbeiten wir die Stimmaufnahmen, die Sie aufnehmen oder hochladen, die Stimmen, die Sie speichern, und den Text, den eine Stimme sprechen soll (nur zur Erzeugung dieser Sprache verwendet). Eine gespeicherte Stimme besteht aus ihrem Namen, ihrer Art (aus einer Aufnahme geklont oder aus einer Beschreibung entworfen), ihrer Sprache, bei einer entworfenen Stimme aus der Beschreibung und dem zur Erzeugung verwendeten Seed, einer Referenzaufnahme (Ihre Aufnahme oder, bei einer entworfenen Stimme, ein von uns erzeugter 10-Sekunden-Ausschnitt), einer kurzen Vorschau, der Version der Stimm-Engine und, bei einer geklonten Stimme, dem Zeitpunkt Ihrer Einwilligung sowie der Version des Einwilligungstextes.",
+              "Zweck und Rechtsgrundlage: Wir verwenden diese Daten nur, um die von Ihnen gewünschte Stimme zu erstellen und zu betreiben, das heißt, die Stimme zu erzeugen, ihre Vorschau zu rendern und auf Ihre Anfrage Sprache zu erzeugen oder umzuwandeln. Eine Aufnahme der Stimme einer Person kann diese identifizieren, daher behandeln wir sie mit der Sorgfalt, die für besondere Kategorien (biometrischer) Daten erforderlich ist, und stützen uns auf Ihre ausdrückliche Einwilligung, die Sie mit dem Einwilligungs-Kontrollkästchen erteilen, bevor eine Stimme aus einer Aufnahme erstellt wird. Sie können sie jederzeit widerrufen, indem Sie die Stimme löschen.",
+              "Speicherung: Gespeicherte Stimmen werden auf unseren Servern und in Amazon S3 unter voices/ in Ihrem Konto gespeichert und folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3). Aufnahmen, die Sie zum Ändern hochladen, und die von Ihnen erzeugte Sprache werden wie jeder andere Upload und jedes andere Ergebnis aufbewahrt. Die Stimmverarbeitung läuft auf unserem eigenen GPU-Server: Ihre Aufnahmen und Stimmen werden niemals an einen KI-Anbieter eines Drittanbieters weitergegeben und niemals zum Training eines Modells verwendet. Erzeugte und umgewandelte Sprache trägt ein unhörbares Wasserzeichen, das sie als synthetisch kennzeichnet; es enthält keine Kontodaten.",
+              "Löschung und Export: Sie können eine gespeicherte Stimme jederzeit unter Konto, Stimmen löschen; ihre Referenzaufnahme und ihre Vorschau werden sofort von unseren Servern gelöscht, während bereits von Ihnen erzeugte Sprache bis zum Ende ihrer eigenen Aufbewahrungsdauer bestehen bleibt. Alle Ihre gespeicherten Stimmen werden gelöscht, wenn Sie Ihr Konto löschen. Ihr Datenexport listet Ihre gespeicherten Stimmen auf (Name, Art, Sprache, Daten und den Einwilligungsnachweis), ohne die Audiodaten."
+            ]
           }
         ]
       },
@@ -748,7 +757,7 @@
         "id": "retention",
         "title": "3. Dateispeicherung, Aufbewahrung und Löschung",
         "paragraphs": [
-          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien, Darkroom-Projekte und in Ihrem Konto gespeicherte Motion-Projekte, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu deinen Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
+          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien, Darkroom-Projekte, in Ihrem Konto gespeicherte Motion-Projekte und gespeicherte Stimmen, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu Ihren Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
         ],
         "subsections": [
           {
@@ -783,7 +792,7 @@
             ],
             "bullets": [
               "Wir kündigen Ihr Premium- oder Pro-Abonnement bei Stripe, falls Sie eines haben;",
-              "wir löschen Ihre Dateien sowie Ihre Darkroom- und Motion-Projekte;",
+              "wir löschen Ihre Dateien sowie Ihre Darkroom- und Motion-Projekte und Ihre gespeicherten Stimmen;",
               "wir löschen Ihren Kontodatensatz und Ihre Einstellungen und lösen Ihre übrigen Aktivitätsdatensätze von Ihrer Identität;",
               "wir bitten unsere First-Party-Analyse, die mit Ihrem Konto verknüpften Analysedaten zu löschen (siehe Abschnitt 6);",
               "wir löschen Ihren Anmelde-Zugang."
@@ -795,7 +804,7 @@
           {
             "title": "3.5 Exportieren Ihrer Daten",
             "paragraphs": [
-              "Angemeldete Nutzer können auf der Seite „Konto“ einen Export ihrer Daten herunterladen. Er ist eine ZIP-Datei mit Ihrem Verlauf, Ihren Projekten, Ihrer Dateiliste, Ihren Kontodaten und Metadatenberichten. Die Mediendateien selbst sind nicht enthalten; laden Sie diese herunter, bevor sie ablaufen. Exporte sind auf eine kleine Anzahl von Anfragen pro Stunde begrenzt."
+              "Angemeldete Nutzer können auf der Seite „Konto“ einen Export ihrer Daten herunterladen. Er ist eine ZIP-Datei mit Ihrem Verlauf, Ihren Projekten, Ihren gespeicherten Stimmen (ohne deren Audiodaten), Ihrer Dateiliste, Ihren Kontodaten und Metadatenberichten. Die Mediendateien selbst sind nicht enthalten; laden Sie diese herunter, bevor sie ablaufen. Exporte sind auf eine kleine Anzahl von Anfragen pro Stunde begrenzt."
             ]
           },
           {
@@ -823,7 +832,7 @@
         ],
         "afterBullets": [
           "Sämtliche von Media Manipulator eingesetzte KI-Verarbeitung erfolgt lokal auf unseren eigenen Servern oder auf von uns kontrollierter Infrastruktur. Wir lagern hochgeladene Dateien, erzeugte Ergebnisse, Transkripte, Zusammenfassungen, Beschreibungen oder Inhaltssicherheitsscans nicht zur Verarbeitung an KI-Anbieter Dritter aus.",
-          "Die KI-Funktionen nutzen offene Modelle und Werkzeuge, die wir selbst betreiben, hauptsächlich auf einem selbst gehosteten GPU-Server: Whisper für die Transkription, Real-ESRGAN für die Bildhochskalierung, Demucs zur Trennung von Audiospuren und weitere lokale Modelle, dazu über Ollama bereitgestellte Sprach- und Bildmodelle für Textaufgaben wie Zusammenfassungen, Beschreibungen und Untertitelübersetzung.",
+          "Die KI-Funktionen nutzen offene Modelle und Werkzeuge, die wir selbst betreiben, hauptsächlich auf einem selbst gehosteten GPU-Server: Whisper für die Transkription, Real-ESRGAN für die Bildhochskalierung, Demucs zur Trennung von Audiospuren, Chatterbox und Qwen3-TTS für Stimmklonen, Stimmentwurf und Sprache und weitere lokale Modelle, dazu über Ollama bereitgestellte Sprach- und Bildmodelle für Textaufgaben wie Zusammenfassungen, Beschreibungen und Untertitelübersetzung.",
           "Das bedeutet, dass Ihre hochgeladenen Dateien und erzeugten Ergebnisse bei Nutzung von KI-Funktionen innerhalb der Verarbeitungsumgebung von Media Manipulator verbleiben und gemäß den in dieser Datenschutzerklärung beschriebenen Speicher-, Aufbewahrungs-, Lösch- und Sicherheitspraktiken behandelt werden.",
           "Hochgeladene Dateien und erzeugte Ergebnisse werden gespeichert und gelöscht, wie in Abschnitt 3 beschrieben, auch wenn KI-Funktionen genutzt werden. Nach Ablauf des jeweils geltenden Aufbewahrungszeitraums werden sie aus unseren aktiven Systemen gelöscht, sofern keine frühere Löschung erfolgt oder eine begrenzte Aufbewahrung aus Gründen der Sicherheit, Missbrauchsprävention, gesetzlichen Compliance oder Durchsetzung rechtlich erforderlich ist.",
           "KI-generierte Ausgaben können unvollkommen, unvollständig oder ungenau sein. Nutzer sind dafür verantwortlich, jede KI-generierte Ausgabe zu überprüfen, bevor sie sich darauf verlassen.",
@@ -1057,6 +1066,7 @@
           "KI-gestützte Transkription, Untertitelerzeugung, Zusammenfassungen und Beschreibungen;",
           "Inhaltssicherheitsklassifizierung und Missbrauchspräventions-Scans;",
           "Erstellen, Animieren und Exportieren von Vektorgrafiken und Animationen mit Motion;",
+          "Erstellen von Stimmen aus Ihren eigenen Aufnahmen, Entwerfen von Stimmen aus einer Beschreibung, Erzeugen von Sprache aus Text und Ändern der Stimme in einer Aufnahme (Stimmen, siehe Abschnitt 8.11);",
           "vorübergehender Konvertierungsverlauf und herunterladbare verarbeitete Ausgaben."
         ],
         "afterBullets": [
@@ -1290,6 +1300,26 @@
             "paragraphs": [
               "Sie dürfen Media Manipulator nicht verwenden, um täuschende Download-Schaltflächen, gefälschte Update-Aufforderungen, gefälschte Viruswarnungen, irreführende Konvertierungsabläufe, gefälschte Systemdialoge oder Inhalte zu erstellen oder zu erleichtern, die darauf ausgelegt sind, Nutzer zum Klicken auf Anzeigen, zum Herunterladen unerwünschter Software oder zum Besuch unerwünschter Websites zu verleiten.",
               "Die echten Download-Schaltflächen, Konvertierungs-Schaltflächen und Bedienelemente von Media Manipulator sind so gestaltet, dass sie klar von Werbung unterscheidbar sind."
+            ]
+          },
+          {
+            "title": "8.11 Stimmen",
+            "paragraphs": [
+              "Mit den Stimmwerkzeugen können Sie aus einer Aufnahme eine gespeicherte Stimme erstellen (Stimmklonen), aus einer schriftlichen Beschreibung eine neue Stimme entwerfen, mit einer gespeicherten oder voreingestellten Stimme Sprache aus Text erzeugen und die Stimme in einer Aufnahme ändern, entweder durch Verschieben von Tonhöhe und Formant oder durch Umwandeln in eine gespeicherte oder voreingestellte Stimme mithilfe von KI.",
+              "Sie dürfen eine Stimme nur aus einer Aufnahme Ihrer eigenen Stimme oder einer anderen Person erstellen, die Ihnen dazu ihre ausdrückliche Erlaubnis erteilt hat. Bevor eine Stimme aus einer Aufnahme erstellt wird, müssen Sie bestätigen: „Das ist meine Stimme, oder ich habe die ausdrückliche Erlaubnis der Person, der diese Stimme gehört.“ Wir speichern den Zeitpunkt Ihrer Bestätigung und die Version dieses Textes zusammen mit der Stimme; die aktuelle Version ist 2026-10-28.",
+              "Sie dürfen die Stimmwerkzeuge oder damit erstellte Audiodaten nicht dazu verwenden,"
+            ],
+            "bullets": [
+              "eine reale Person, lebend oder verstorben, ohne deren Erlaubnis nachzuahmen (oder, wenn sie verstorben ist, ohne die Erlaubnis dessen, der über ihr Abbild verfügt);",
+              "Betrug, Scams oder Phishing zu begehen, einschließlich gefälschter Anrufe, Sprachnachrichten oder Aufnahmen, die vorgeben, von einer Person oder Organisation zu stammen;",
+              "politische Deepfakes zu erstellen oder zu verbreiten, etwa erfundene Aussagen von Kandidaten, Amtsträgern oder anderen Personen des öffentlichen Lebens, oder Audiodaten, die Wählende in die Irre führen sollen;",
+              "jemanden zu belästigen, zu bedrohen, zu mobben, zu verleumden oder einzuschüchtern;",
+              "stimmbasierte Identitätsprüfungen oder andere Sicherheitssysteme zu umgehen;",
+              "sexuelle Inhalte mit der Stimme einer realen Person ohne deren Einwilligung zu erstellen."
+            ],
+            "afterBullets": [
+              "Sprache, die mit einer gespeicherten oder voreingestellten Stimme erzeugt wird, sowie in eine Stimme umgewandelte Aufnahmen tragen ein unhörbares Wasserzeichen (PerTh), das sie als synthetisch kennzeichnet. Mit dem Tonhöhenverschieber veränderte Audiodaten sind gewöhnliche Signalverarbeitung und tragen kein Wasserzeichen. Sie dürfen das Wasserzeichen nicht entfernen, verändern oder zu umgehen versuchen.",
+              "Wir können eine Stimme oder damit erstellte Audiodaten entfernen und ein Konto sperren oder kündigen (Abschnitt 18), wenn wir annehmen, dass diese Regeln verletzt wurden. Nichts, was Sie mit den Stimmwerkzeugen aufnehmen, hochladen oder erzeugen, wird zum Training eines KI-Modells verwendet."
             ]
           }
         ]
