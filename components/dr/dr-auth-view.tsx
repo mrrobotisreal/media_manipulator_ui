@@ -58,7 +58,9 @@ export default function DrAuthView() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <img
-            src="/DoubleRaven_Icon.png"
+            src="/DoubleRaven_Icon.webp"
+            width={80}
+            height={80}
             alt="Double Raven"
             className="mx-auto mb-2 size-20 object-contain"
           />
