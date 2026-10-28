@@ -1714,6 +1714,7 @@
       "overview": "ओवरव्यू",
       "history": "हिस्ट्री",
       "projects": "प्रोजेक्ट",
+      "voices": "Voices",
       "billing": "बिलिंग",
       "privacy": "प्राइवेसी और डेटा",
       "profile": "प्रोफ़ाइल"
@@ -1883,7 +1884,43 @@
       "emailAlways": "स्वागत, भुगतान और अकाउंट-डिलीशन ईमेल हमेशा भेजे जाते हैं।",
       "emailSaveFailed": "आपकी ईमेल प्राथमिकता सेव नहीं हो सकी। फिर से कोशिश करें।"
     },
-    "retentionLabel": "रिज़ल्ट रिटेंशन"
+    "retentionLabel": "रिज़ल्ट रिटेंशन",
+    "voices": {
+      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
+      "loading": "Loading your voices…",
+      "loadFailed": "Could not load your voices. Reload to try again.",
+      "empty": "You have no saved voices yet.",
+      "emptyCta": "Make a voice with one of the voice tools:",
+      "tools": {
+        "clone": "Clone your voice",
+        "design": "Design a voice",
+        "change": "Change a voice"
+      },
+      "usage": "{{used}} of {{limit}} voices",
+      "usageUnlimited": "{{used}} voices",
+      "kinds": {
+        "cloned": "Cloned",
+        "designed": "Designed",
+        "preset": "Preset"
+      },
+      "created": "Created {{date}}",
+      "consent": "Consent confirmed {{date}} (text version {{version}})",
+      "noConsent": "Designed from a description; no recording of a person",
+      "preview": "Preview of {{name}}",
+      "rename": "Rename",
+      "renameLabel": "New name for {{name}}",
+      "save": "Save",
+      "cancel": "Cancel",
+      "renamed": "Voice renamed.",
+      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
+      "delete": "Delete",
+      "deleteTitle": "Delete “{{name}}”?",
+      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
+      "deleteConfirm": "Delete voice",
+      "deleted": "Voice deleted.",
+      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
+      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+    }
   },
   "homeContent": {
     "howItWorks": {

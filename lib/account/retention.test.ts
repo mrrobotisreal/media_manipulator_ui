@@ -37,7 +37,7 @@ describe('retention helpers', () => {
 
 describe('parseAccountTab', () => {
   it('accepts the six tabs and falls back to overview', () => {
-    for (const t of ['overview', 'history', 'projects', 'billing', 'privacy', 'profile']) expect(parseAccountTab(t)).toBe(t);
+    for (const t of ['overview', 'history', 'projects', 'voices', 'billing', 'privacy', 'profile']) expect(parseAccountTab(t)).toBe(t);
     expect(parseAccountTab('nope')).toBe('overview');
     expect(parseAccountTab(null)).toBe('overview');
     expect(parseAccountTab(undefined)).toBe('overview');
