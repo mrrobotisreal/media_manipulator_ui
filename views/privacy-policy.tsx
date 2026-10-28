@@ -1,6 +1,7 @@
 import React from 'react';
 import { getServerT } from '@/lib/i18n/server';
 import { WhatChanged } from '@/components/legal/what-changed';
+import { linkifyLegal } from '@/components/legal/linkify';
 import { Panel } from '@/components/darkroom/panel';
 
 interface Subsection {
@@ -46,27 +47,27 @@ const ContactBlock: React.FC<{ email: string; locale?: string }> = ({ email, loc
 
 const renderBullets = (bullets: string[]) => (
   <ul className="list-disc pl-6 space-y-2 mb-4">
-    {bullets.map((b, idx) => <li key={idx}>{b}</li>)}
+    {bullets.map((b, idx) => <li key={idx}>{linkifyLegal(b)}</li>)}
   </ul>
 );
 
 const SubsectionView: React.FC<{ data: Subsection }> = ({ data }) => (
   <>
     <h3 className="text-xl font-semibold mb-3 text-card-foreground">{data.title}</h3>
-    {data.paragraphs?.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
+    {data.paragraphs?.map((p, idx) => <p key={idx} className="mb-4">{linkifyLegal(p)}</p>)}
     {data.bullets && renderBullets(data.bullets)}
-    {data.afterBullets?.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
+    {data.afterBullets?.map((p, idx) => <p key={idx} className="mb-4">{linkifyLegal(p)}</p>)}
   </>
 );
 
 const SectionView: React.FC<{ data: Section; locale?: string }> = ({ data, locale }) => (
   <section className="mb-8">
     <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{data.title}</h2>
-    {data.paragraphs?.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
+    {data.paragraphs?.map((p, idx) => <p key={idx} className="mb-4">{linkifyLegal(p)}</p>)}
     {data.bullets && renderBullets(data.bullets)}
-    {data.afterBullets?.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
+    {data.afterBullets?.map((p, idx) => <p key={idx} className="mb-4">{linkifyLegal(p)}</p>)}
     {data.secondBullets && renderBullets(data.secondBullets)}
-    {data.afterSecondBullets?.map((p, idx) => <p key={idx} className="mb-4">{p}</p>)}
+    {data.afterSecondBullets?.map((p, idx) => <p key={idx} className="mb-4">{linkifyLegal(p)}</p>)}
     {data.subsections?.map((sub, idx) => <SubsectionView key={idx} data={sub} />)}
     {data.contactBlock && data.contactEmail && <ContactBlock email={data.contactEmail} locale={locale} />}
   </section>
