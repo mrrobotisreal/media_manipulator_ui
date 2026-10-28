@@ -8,6 +8,7 @@ import { I18nextProvider } from 'react-i18next';
 import type { i18n as I18nInstance } from 'i18next';
 import { Toaster } from 'sonner';
 import { addLocaleResources, getI18nForLocale, defaultLanguage } from '@/i18n';
+import { getLocaleDef } from '@/i18n/locales';
 import type { ClientBundle } from '@/i18n/clientBundle';
 import { ThemeProvider } from '@/components/theme-provider';
 import TopNav from '@/components/top-nav';
@@ -19,6 +20,7 @@ import { AccountTourHost } from '@/components/onboarding/account-tour-host';
 import { AnalyticsProvider } from '@/lib/analytics';
 import { AuthProvider } from '@/lib/auth/AuthProvider';
 import { loadTranslatorWorkbench } from '@/lib/translator/mode';
+import { MAIN_CONTENT_ID } from '@/components/skip-link';
 
 // MM53: the translator workbench (gate + panel). The literal role check folds to
 // `null` in production, so neither this nor its chunk exists outside translator
@@ -83,6 +85,11 @@ export default function Providers({
     }
   }, [i18nInstance, locale, localeResources]);
   const pathname = usePathname();
+  // MM88: toasts follow the page direction. Sonner's position is physical, so the
+  // inline-end corner is bottom-left in Arabic and Hebrew; and its own `dir`
+  // default reads <html> at render, which is 'ltr' during prerender.
+  const dir = getLocaleDef(locale)?.dir ?? 'ltr';
+  const toaster = <Toaster dir={dir} position={dir === 'rtl' ? 'bottom-left' : 'bottom-right'} />;
   // The /embed/* routes are chromeless app surfaces meant to be iframed by
   // CreaTV — no site nav/footer and no analytics of any kind. They still need
   // react-query + theme for the embedded editor.
@@ -109,8 +116,13 @@ export default function Providers({
       <I18nextProvider i18n={i18nInstance}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
-            {children}
-            <Toaster />
+            {/* MM88: the skip link's target on chromeless surfaces. A plain
+                flex column, so the editors' own h-dvh / min-h-screen roots lay
+                out exactly as they did as direct children of <body>. */}
+            <div id={MAIN_CONTENT_ID} tabIndex={-1} className="flex flex-1 flex-col outline-none">
+              {children}
+            </div>
+            {toaster}
           </ThemeProvider>
         </QueryClientProvider>
       </I18nextProvider>
@@ -143,9 +155,12 @@ export default function Providers({
             <ConsentGate />
             {/* MM35: renders nothing for guests; the tour itself is a lazy chunk. */}
             <AccountTourHost />
-            <main className="flex-1">{children}</main>
+            {/* MM88: the skip link's target. tabIndex -1 so following the link
+                moves focus here (the next Tab continues inside the content), and
+                no outline because it is a landmark, not a control. */}
+            <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex-1 outline-none">{children}</main>
             <Footer />
-            <Toaster />
+            {toaster}
             {TranslatorWorkbench ? <TranslatorWorkbench /> : null}
           </AnalyticsProvider>
         </AuthProvider>

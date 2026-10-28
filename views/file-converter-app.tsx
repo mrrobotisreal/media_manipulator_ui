@@ -59,6 +59,9 @@ import { useAuth } from '@/lib/auth/AuthProvider';
 import { Panel } from '@/components/darkroom/panel';
 import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
 
+/** MM88: a 44px (min-h-11) tap target that never wraps or shrinks inside the scrolling row. */
+const HERO_CHIP = 'inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full px-4 transition-colors';
+
 /** Lazy chunk: the inspector flow adds nothing to the home route's first load. */
 const HomeMetadata = dynamic(() => import('@/components/metadata/home-metadata'), { ssr: false });
 
@@ -612,16 +615,20 @@ const FileConverterAppInner: React.FC = () => {
           <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             {t('interface:home.hero.subtitle')}
           </p>
-          <nav aria-label={t('accessibility:home.popularTools')} className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-            <Link href={localized('/tools')} className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors">{t('interface:home.hero.allTools')}</Link>
-            <Link href={localized('/tools/remove-exif-metadata')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
-            <Link href={localized('/tools/compress-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
-            <Link href={localized('/tools/transcribe-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
-            <Link href={localized('/tools/transcode-to-hls')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeHls')}</Link>
+          {/* MM88: 44px chips. On a phone they are one horizontally scrolling row
+              (bleeding to the screen edges) instead of three or four wrapped rows
+              of 44px, so the dropzone stays near the first screen; from `sm` they
+              wrap and centre as before. Only this row scrolls, never the page. */}
+          <nav aria-label={t('accessibility:home.popularTools')} className="-mx-4 mt-5 flex flex-nowrap items-center justify-start gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0">
+            <Link href={localized('/tools')} className={cn(HERO_CHIP, "bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)]")}>{t('interface:home.hero.allTools')}</Link>
+            <Link href={localized('/tools/remove-exif-metadata')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.removeExif')}</Link>
+            <Link href={localized('/tools/compress-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressVideo')}</Link>
+            <Link href={localized('/tools/transcribe-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcribeVideo')}</Link>
+            <Link href={localized('/tools/transcode-to-hls')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcodeHls')}</Link>
             {/* Review-visible chips link only to review-allowlisted tool pages. */}
-            <Link href={localized('/tools/compress-image')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressImage')}</Link>
-            <Link href={localized('/tools/image-resizer')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.resizeImage')}</Link>
-            <Link href={localized('/tools/extract-audio-from-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.extractAudio')}</Link>
+            <Link href={localized('/tools/compress-image')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressImage')}</Link>
+            <Link href={localized('/tools/image-resizer')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.resizeImage')}</Link>
+            <Link href={localized('/tools/extract-audio-from-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.extractAudio')}</Link>
           </nav>
           <QuotaChip busy={isLoading} className="mt-4 justify-center" />
         </header>

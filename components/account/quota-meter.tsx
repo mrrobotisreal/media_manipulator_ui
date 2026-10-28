@@ -11,6 +11,7 @@ import { formatResetsIn } from '@/lib/auth/formatLimits';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { cn } from '@/lib/utils';
+import { NAV_HIT_EXTENSION } from '@/components/nav-control';
 
 /**
  * The daily-allowance readout in the nav.
@@ -65,7 +66,7 @@ const Gauge: React.FC<GaugeProps> = ({ used, limit, tone, pending }) => {
         className="relative block h-[2px] w-full overflow-hidden rounded-full bg-edge-strong"
       >
         <span
-          className="absolute inset-y-0 left-0 bg-current transition-[width] duration-[var(--dur-base)] ease-[var(--ease-instrument)]"
+          className="absolute inset-y-0 start-0 bg-current transition-[width] duration-[var(--dur-base)] ease-[var(--ease-instrument)]"
           style={{ width: pending ? '0%' : `${pct}%` }}
         />
       </span>
@@ -184,7 +185,10 @@ export const QuotaMeter: React.FC = () => {
 
   const shellClass = cn(
     SHELL,
-    'cursor-pointer border border-transparent text-left transition-colors',
+    // 36px tall like the icon controls; the same 4px extension makes the tap
+    // target 44px (MM88).
+    NAV_HIT_EXTENSION,
+    'cursor-pointer border border-transparent text-start transition-colors',
     'duration-[var(--dur-base)] ease-[var(--ease-instrument)]',
     'hover:border-edge hover:bg-surface-2',
     atLimit && 'border-primary/40',

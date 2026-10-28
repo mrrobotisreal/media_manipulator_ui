@@ -8,6 +8,8 @@ import { QuotaMeter } from '@/components/account/quota-meter';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useLocalization } from '@/i18n/useLocalization';
+import { NAV_HIT_EXTENSION } from '@/components/nav-control';
+import { cn } from '@/lib/utils';
 
 /**
  * The nav's account slot: the daily-allowance meter, then either a sign-in
@@ -35,7 +37,8 @@ export const AccountMenu: React.FC = () => {
   if (!auth) return null;
 
   return (
-    <div className="flex items-center gap-1">
+    // gap-2: two 4px hit-area extensions (MM88, components/nav-control.ts).
+    <div className="flex items-center gap-2">
       <QuotaMeter />
       {auth.user ? (
         <AccountDropdown />
@@ -47,7 +50,10 @@ export const AccountMenu: React.FC = () => {
           // menu + theme + meter, and a fourth control pushed the row past the
           // viewport edge. The meter still opens this same panel, and the sheet
           // menu carries an explicit "Sign in" entry, so nothing is unreachable.
-          className="hidden h-9 shrink-0 px-2.5 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground sm:inline-flex"
+          className={cn(
+            NAV_HIT_EXTENSION,
+            'hidden h-9 shrink-0 px-2.5 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground sm:inline-flex',
+          )}
           onClick={() => {
             // Only rendered when signed out, so from_tier is always 'anonymous' — which is
             // what separates "create an account" intent from "buy Premium" intent in any

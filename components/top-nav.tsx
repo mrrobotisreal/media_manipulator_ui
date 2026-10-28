@@ -28,6 +28,7 @@ import { useLocalizedHref } from "@/i18n/useLocalizedHref";
 import { stripLocalePrefix } from "@/i18n/locales";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { NAV_ICON_CONTROL } from "@/components/nav-control";
 
 /**
  * A nav link is active when the URL exactly matches its href, or — for any
@@ -67,8 +68,9 @@ const ThemeToggle = () => {
 
   // Was a 16-inline-SVG day/night scene (3 moon dots, 3 light rays, 6 clouds,
   // 4 stars) animating on an infinite loop in the sticky header of every page.
-  // Now two icons crossfading on transform + opacity only. The 32px visual box
-  // keeps the chrome tight; the ::after inset extends the hit area to 44px.
+  // Now two icons crossfading on transform + opacity only. MM88: the same 36px
+  // visual box + 4px ::after extension as the other three nav controls (44px
+  // hit area, see components/nav-control.ts).
   return (
     <Toggle
       size="sm"
@@ -78,9 +80,9 @@ const ThemeToggle = () => {
       onPressedChange={(next) => setTheme(next ? "dark" : "light")}
       aria-label={t("topNav.toggleTheme")}
       className={cn(
-        "relative size-8 shrink-0 px-0 text-muted-foreground hover:bg-surface-2 hover:text-foreground",
-        "data-[state=on]:bg-transparent data-[state=on]:text-foreground",
-        "after:absolute after:-inset-1.5 after:content-['']"
+        NAV_ICON_CONTROL,
+        "px-0 text-muted-foreground hover:bg-surface-2 hover:text-foreground",
+        "data-[state=on]:bg-transparent data-[state=on]:text-foreground"
       )}
     >
       <Sun
@@ -123,11 +125,20 @@ const TopNav: React.FC = () => {
   return (
     <nav data-site-header className="sticky top-0 z-50 w-full border-b border-edge bg-surface-0/92 shadow-[0_1px_0_var(--edge-highlight)]">
       <div className="container mx-auto flex h-14 items-center justify-between px-4 md:h-16">
-        <Link href={localized("/")} className="flex items-center space-x-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
+        <Link href={localized("/")} className="flex min-w-0 items-center gap-3 hover:opacity-90 transition-opacity" aria-label={t("accessibility:topNav.homeLink")}>
           {/* Was an unsized 80x80 image tag (22% of a 360px viewport, and a CLS
-              source) plus Rubik Glitch type. Now a CSS-only lockup. */}
-          <Wordmark size="sm" animated text={t("interface:common.brand")} />
-          <span className="hidden border-l border-edge pl-3 text-xs text-muted-foreground 2xl:block">
+              source) plus Rubik Glitch type. Now a CSS-only lockup.
+
+              MM88: below 480px the lockup is the 36px mark alone. With the
+              language picker back (MM51) and 44px targets, the controls need
+              220px signed out and 244px signed in (three 36px icons, then the
+              68px meter + a 36px account trigger, all gap-2): 36 + 244 = 280
+              fits the 288px a 320px phone leaves inside px-4. The type (~150px
+              at 18px semibold) plus its 10px gap makes it 440px, which fits
+              from 472px, hence 480. The
+              link's aria-label names it at every width. */}
+          <Wordmark size="sm" animated text={t("interface:common.brand")} textClassName="hidden min-[480px]:inline" />
+          <span className="hidden border-s border-edge ps-3 text-xs text-muted-foreground 2xl:block">
             {t("interface:common.brandTagline")}
           </span>
         </Link>
@@ -150,7 +161,8 @@ const TopNav: React.FC = () => {
                       aria-current={active ? "page" : undefined}
                       className={cn(
                         "relative whitespace-nowrap px-3 py-2 text-sm transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)]",
-                        "after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 after:origin-left after:bg-primary",
+                        // Grows from the inline start: left in LTR, right in Arabic/Hebrew.
+                        "after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 ltr:after:origin-left rtl:after:origin-right after:bg-primary",
                         "after:transition-transform after:duration-[var(--dur-base)] after:ease-[var(--ease-instrument)]",
                         active
                           ? "font-semibold text-foreground after:scale-x-100"
@@ -166,14 +178,19 @@ const TopNav: React.FC = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex items-center space-x-2">
+        {/* gap-2 (8px) is exactly two 4px ::after extensions, so the 44px hit
+            areas of neighbouring controls abut without overlapping. */}
+        <div className="flex shrink-0 items-center gap-2">
           {/* Mobile Menu Button */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
-                className="xl:hidden rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
+                className={cn(
+                  NAV_ICON_CONTROL,
+                  "xl:hidden rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
+                )}
               >
                 <Menu className="h-6 w-6 text-foreground" />
                 <span className="sr-only">{t("accessibility:topNav.openMenu")}</span>
@@ -195,7 +212,7 @@ const TopNav: React.FC = () => {
                       className={cn(
                         "flex min-h-[44px] items-center justify-center rounded-md px-4 py-2 text-lg transition-colors",
                         active
-                          ? "border-l-2 border-l-primary bg-surface-2 font-semibold text-foreground"
+                          ? "border-s-2 border-s-primary bg-surface-2 font-semibold text-foreground"
                           : "font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
                       )}
                     >

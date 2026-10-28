@@ -183,6 +183,7 @@
     "body": "We use privacy-respecting, first-party analytics to see which tools get used and where they break. Your files are never part of it, and you can change this any time.",
     "bodyGdpr": "Before we measure anything, we need your say-so. We use first-party analytics to see which tools get used and where they break — nothing is collected until you choose, and your files are never part of it.",
     "privacyLink": "Read the privacy policy",
+    "more": "More",
     "customize": "Customize",
     "accept": "Accept",
     "decline": "Decline"

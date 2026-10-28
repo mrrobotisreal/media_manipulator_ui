@@ -183,6 +183,7 @@
     "body": "Usamos análise própria e que respeita a privacidade para saber quais ferramentas são usadas e onde elas falham. Seus arquivos nunca fazem parte disso, e você pode mudar essa escolha a qualquer momento.",
     "bodyGdpr": "Antes de medir qualquer coisa, precisamos da sua permissão. Usamos análise própria para saber quais ferramentas são usadas e onde elas falham. Nada é coletado até você decidir, e seus arquivos nunca fazem parte disso.",
     "privacyLink": "Ler a política de privacidade",
+    "more": "Mais",
     "customize": "Personalizar",
     "accept": "Aceitar",
     "decline": "Recusar"

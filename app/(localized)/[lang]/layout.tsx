@@ -12,6 +12,8 @@ import {
 } from '@/i18n/locales';
 import { getClientResources } from '@/i18n/localeResources';
 import { isTranslatorEnv, TRANSLATOR_ROBOTS } from '@/lib/translator/mode';
+import { SkipLink } from '@/components/skip-link';
+import { getServerT } from '@/lib/i18n/server';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
@@ -69,6 +71,8 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col">
+        {/* MM88: first focusable element on the page; targets <main id="main">. */}
+        <SkipLink label={getServerT('accessibility', locale)('skipToContent')} />
         {/* Resource hints + theme/consent bootstraps + GA4 loader. Shared with
             app/(system)/layout.tsx via lib/layoutScripts.tsx, which also
             documents why the inline bootstraps are raw HTML rather than
