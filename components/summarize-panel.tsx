@@ -17,7 +17,7 @@ import {
   useSummarizeCapabilities,
   type SummaryStageRow,
 } from '@/lib/useSummarize';
-import { framesFromStages } from '@/lib/summaryAnalytics';
+import { framesFromStages, useSummaryGenerated } from '@/lib/summaryAnalytics';
 import type { SummarizeCapabilities, SummaryDepth } from '@/lib/summarizeTypes';
 import { cn } from '@/lib/utils';
 
@@ -138,6 +138,9 @@ const SummarizePanel: React.FC<SummarizePanelProps> = ({ task }) => {
   const summarize = useSummarize((res) => {
     setConversionJob({ id: res.jobId, status: 'processing', originalFile: new File([], 'temp'), progress: 0 });
   });
+
+  // MM75 analytics: one summary_generated per completed job.
+  useSummaryGenerated(conversionJob);
 
   const tier = auth ? auth.tier : null;
   const gate = summarizeGate({

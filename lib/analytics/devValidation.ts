@@ -522,6 +522,16 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
   vector_project_saved: z.object({ revision: z.string(), bytes: z.string() }).strict(),
 
+  summary_generated: z
+    .object({
+      durationBucket: z.enum(['0', '<30s', '30s-2m', '2m-10m', '10m-30m', '30m+']),
+      frames: z.number().int().min(0).max(1000),
+      hasSpeech: z.boolean(),
+      depth: z.enum(['standard', 'deep']),
+      outputLanguage: z.string().regex(/^(auto|[a-z]{2}-[A-Z]{2})$/),
+    })
+    .strict(),
+
   client_error: z
     .object({
       message: z.string(),

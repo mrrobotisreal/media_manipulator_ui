@@ -165,6 +165,11 @@ export const EVENTS = {
   VECTOR_EXPORT_GATED: 'vector_export_gated',
   VECTOR_PROJECT_SAVED: 'vector_project_saved',
 
+  // --- Video / audio summary (MM75) -----------------------------------------
+  // One per completed summary job, from the summarize panel. The server twin is the
+  // ordinary server_job_* lifecycle with tool `video_summary` (MM74), not a new event.
+  SUMMARY_GENERATED: 'summary_generated',
+
   // --- Quality --------------------------------------------------------------
   CLIENT_ERROR: 'client_error',
   WEB_VITAL: 'web_vital',
@@ -295,6 +300,9 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   vector_export_failed: PRIORITY_CRITICAL,
   vector_export_gated: PRIORITY_CRITICAL,
   vector_project_saved: PRIORITY_NORMAL,
+
+  // Video / audio summary (MM75)
+  summary_generated: PRIORITY_HIGH,
 
   // Quality
   client_error: PRIORITY_HIGH,
@@ -1003,6 +1011,27 @@ export interface VectorProjectSavedProps {
   bytes: string;
 }
 
+/* ---------------------------------------------------------------------------
+ * Video / audio summary (MM75, design VIDEO_SUMMARY.md §5). camelCase like the
+ * design names them. Enums and small bounded counts only; never a title, a
+ * file name or any summary text.
+ * ------------------------------------------------------------------------- */
+
+export type SummaryDepthProp = 'standard' | 'deep';
+
+export interface SummaryGeneratedProps {
+  /** timelineDurationBucket of the source's probed duration ('0' when unknown). */
+  durationBucket: string;
+  /** Frames the pipeline sampled (0 for audio, bounded by the tier budget, max 96). */
+  frames: number;
+  /** Whisper found speech. */
+  hasSpeech: boolean;
+  /** The EFFECTIVE depth the server recorded (a downgraded deep request reads standard). */
+  depth: SummaryDepthProp;
+  /** `auto` or one of the registered locale codes (closed list). */
+  outputLanguage: string;
+}
+
 export interface ClientErrorProps {
   message: string;
   /** Hash of message+stack, used to dedupe an error loop down to one event. */
@@ -1124,6 +1153,8 @@ export interface EventPropsMap {
   vector_export_failed: VectorExportFailedProps;
   vector_export_gated: VectorExportGatedProps;
   vector_project_saved: VectorProjectSavedProps;
+
+  summary_generated: SummaryGeneratedProps;
 
   client_error: ClientErrorProps;
   web_vital: WebVitalProps;
