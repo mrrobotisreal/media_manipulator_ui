@@ -7,6 +7,7 @@
 // is indexable; see isReviewIndexedToolSlug below and lib/seoFlags.ts.
 
 import { isSeoFullIndex } from '@/lib/seoFlags';
+import { isToolAliasSlug } from '@/content/toolAliases';
 
 export const REVIEW_INDEXED_TOOL_SLUGS = [
   'content-studio',
@@ -58,8 +59,16 @@ export type ReviewIndexedToolSlug = (typeof REVIEW_INDEXED_TOOL_SLUGS)[number];
  */
 export function isReviewIndexedToolSlug(slug: string): boolean {
   if ((REVIEW_INDEXED_TOOL_SLUGS as readonly string[]).includes(slug)) return true;
+  // MM84: an alias page is noindex in every mode, flag or not.
+  if (isToolAliasSlug(slug)) return false;
   return isSeoFullIndex() && slug.length > 0;
 }
+
+/**
+ * MM84 decision 4: the 24 tools that get full cards on /tools in review mode
+ * (the allowlist plus the pending set that meets the copy bar).
+ */
+export const REVIEW_CATALOG_SLUGS: readonly string[] = [...REVIEW_INDEXED_TOOL_SLUGS, ...PENDING_ALLOWLIST];
 
 /** Extract the tool slug from a /tools/<slug> href, or null. */
 export function getToolSlugFromHref(href: string): string | null {

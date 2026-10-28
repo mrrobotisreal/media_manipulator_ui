@@ -84,7 +84,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (!isSeoFullIndex()) return [...coreEntries, ...toolEntries, ...blogEntries, ...tutorialEntries];
 
   const seen = new Set<string>(toolEntries.map((e) => e.url));
-  const fullToolEntries = TOOL_PAGES.map((t) => t.slug)
+  // MM84: alias pages are never in the sitemap (they canonicalise elsewhere).
+  const fullToolEntries = TOOL_PAGES.filter((t) => !t.aliasOf)
+    .map((t) => t.slug)
     .filter((slug) => !CORE_TOOL_SLUGS.has(slug))
     .map((slug) => entry('/tools/' + slug, toolLastReviewed(slug), 'monthly', 0.8))
     .filter((e) => !seen.has(e.url));

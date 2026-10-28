@@ -3,7 +3,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import sitemap from './sitemap';
 import robots from './robots';
 import { BLOG_POSTS } from '@/lib/blogPosts';
-import { TOOL_PAGES } from '@/content/toolPages';
+// MM84: alias pages are never in the sitemap nor indexable; the flag-on
+// assertions run over the primary (non-alias) pages.
+import { PRIMARY_TOOL_PAGES as TOOL_PAGES } from '@/content/toolPages';
 import {
   PENDING_ALLOWLIST,
   REVIEW_INDEXED_TOOL_SLUGS,
@@ -157,7 +159,7 @@ describe('MM34 flag on', () => {
     expect(urls()).toContain(new URL('/changelog', ORIGIN).toString());
   });
 
-  it('every tool page becomes indexable', () => {
+  it('every primary tool page becomes indexable', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'true');
     for (const t of TOOL_PAGES) expect(isReviewIndexedToolSlug(t.slug)).toBe(true);
   });

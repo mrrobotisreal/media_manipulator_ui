@@ -2100,7 +2100,11 @@
     "faqAriaLabel": "Questions fréquentes",
     "faqHeading": "Questions fréquentes",
     "relatedToolsAriaLabel": "Outils associés",
-    "relatedToolsHeading": "Outils associés"
+    "relatedToolsHeading": "Outils associés",
+    "aliasHeading": "Guide complet, exemples et FAQ",
+    "aliasLink": "Lire le guide complet de {{name}}",
+    "workedExamplesHeading": "Exemples chiffrés",
+    "whenNotToUseHeading": "Quand ne pas utiliser cet outil"
   },
   "contentStudioGuide": {
     "summaryTitle": "Comment fonctionne Darkroom : guide rapide",

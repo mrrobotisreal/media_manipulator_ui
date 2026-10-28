@@ -15,7 +15,7 @@ import { formatPrice } from '@/lib/billing/price';
 import { PLAN_PRICES } from '@/lib/billing/planPrices';
 import { BLOG_POSTS } from '@/lib/blogPosts';
 import { ROUTE_SEO_MAP, SITE_NAME, SITE_ORIGIN, ORG_NAME } from '@/lib/seo';
-import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
+import { PRIMARY_TOOL_PAGES as TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
 import { translatedLocales } from '@/i18n/locales';
 import { VOICES, VOICE_DEMO_LANGUAGES } from '@/content/voices';

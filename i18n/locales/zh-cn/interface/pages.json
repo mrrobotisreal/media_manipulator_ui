@@ -2100,7 +2100,11 @@
     "faqAriaLabel": "常见问题",
     "faqHeading": "常见问题",
     "relatedToolsAriaLabel": "相关工具",
-    "relatedToolsHeading": "相关工具"
+    "relatedToolsHeading": "相关工具",
+    "aliasHeading": "完整指南、示例和常见问题",
+    "aliasLink": "阅读 {{name}} 的完整指南",
+    "workedExamplesHeading": "实际示例",
+    "whenNotToUseHeading": "何时不适合使用此工具"
   },
   "contentStudioGuide": {
     "summaryTitle": "Darkroom的工作原理——快速指南",

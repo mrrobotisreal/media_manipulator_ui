@@ -39,6 +39,11 @@ export interface RouteSeo {
   jsonLd: JsonLd[];
   /** When true, applySeoMeta will emit <meta name="robots" content="noindex">. */
   noindex?: boolean;
+  /**
+   * MM84: locale-neutral path the canonical points at when it is not the
+   * route's own path (an alias tool page canonicalises to its primary).
+   */
+  canonicalPath?: string;
 }
 
 const buildCanonical = (path: string): string => {
@@ -257,6 +262,26 @@ const howToLd = (tool: ToolPageContent): JsonLd | null => {
 
 const buildToolRouteSeo = (tool: ToolPageContent): RouteSeo => {
   const path = `/tools/${tool.slug}`;
+  // MM84: an alias page is noindex in every mode, canonicalises to its primary
+  // and emits no structured data (noindex pages advertise nothing).
+  if (tool.aliasOf) {
+    const primaryPath = `/tools/${tool.aliasOf}`;
+    return {
+      path,
+      title: tool.metaTitle,
+      description: tool.metaDescription,
+      canonicalUrl: buildCanonical(primaryPath),
+      canonicalPath: primaryPath,
+      ogTitle: tool.ogTitle,
+      ogDescription: tool.ogDescription,
+      ogType: 'website',
+      ogImage: DEFAULT_OG_IMAGE,
+      twitterCard: 'summary_large_image',
+      keywords: cleanStringArray([tool.primaryKeyword, ...tool.secondaryKeywords]),
+      jsonLd: [],
+      noindex: true,
+    };
+  }
   return {
     path,
     title: tool.metaTitle,

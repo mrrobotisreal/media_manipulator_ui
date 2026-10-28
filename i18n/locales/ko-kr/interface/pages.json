@@ -2100,7 +2100,11 @@
     "faqAriaLabel": "자주 묻는 질문",
     "faqHeading": "자주 묻는 질문",
     "relatedToolsAriaLabel": "관련 도구",
-    "relatedToolsHeading": "관련 도구"
+    "relatedToolsHeading": "관련 도구",
+    "aliasHeading": "전체 가이드, 예시 및 FAQ",
+    "aliasLink": "{{name}} 전체 가이드 읽기",
+    "workedExamplesHeading": "실제 예시",
+    "whenNotToUseHeading": "이 도구를 쓰지 말아야 할 때"
   },
   "contentStudioGuide": {
     "summaryTitle": "Darkroom 작동 방식 — 빠른 가이드",

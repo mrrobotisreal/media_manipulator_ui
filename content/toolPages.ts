@@ -25,6 +25,7 @@ import { MOTION_BRAND } from '@/lib/vector/brand';
 
 import { RETENTION_PROMISE } from '@/content/retentionPromise';
 import { CATALOG_TOOL_PAGES, VOICE_TOOL_PAGES } from '@/content/toolPagesCatalog';
+import { aliasTargetOf } from '@/content/toolAliases';
 
 export { RETENTION_PROMISE } from '@/content/retentionPromise';
 
@@ -41,6 +42,14 @@ export interface ToolUseCase {
 export interface ToolFlowStepData {
   title: string;
   description?: string;
+}
+
+/** MM84: a worked example with real numbers taken from the API's behaviour. */
+export interface ToolWorkedExample {
+  /** Short heading, e.g. "A 48 MB phone clip at Balanced". */
+  title: string;
+  /** Input size/format -> output size/format and time, phrased "about" where it depends on the input. */
+  body: string;
 }
 
 export interface ToolRelatedLink {
@@ -214,6 +223,20 @@ export interface ToolPageContent {
   /** Optional supported-format section content. */
   supportedFormats?: ToolSupportedFormats;
   /**
+   * MM84 copy bar: two worked examples with real numbers (required on the 24
+   * allowlisted + pending pages, see content/toolCopy.test.ts).
+   */
+  workedExamples?: ToolWorkedExample[];
+  /** MM84 copy bar: one "When not to use this" paragraph. */
+  whenNotToUse?: string;
+  /**
+   * MM84: this slug is a thin alias of another page with the same intent
+   * (content/toolAliases.ts). The alias keeps its URL, H1, intro and panel,
+   * sets its canonical to the primary, is `noindex, follow`, and is never
+   * listed on /tools, in the sitemap or in llms.txt.
+   */
+  aliasOf?: string;
+  /**
    * Shipped features for a `SoftwareApplication` JSON-LD block (MM48). When set,
    * lib/seo.ts emits SoftwareApplication with this `featureList` instead of the
    * generic WebApplication block. List only what users can use today.
@@ -224,7 +247,7 @@ export interface ToolPageContent {
 const sharedPrivacyNote =
   `Your uploads are processed on our own servers. ${RETENTION_PROMISE}. We do not share your files with third-party AI providers, and AI features run on a local GPU server we operate. No login or account is required.`;
 
-export const TOOL_PAGES: ToolPageContent[] = [
+const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- CONTENT STUDIO
   {
     slug: 'content-studio',
@@ -826,24 +849,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       {
-        label: 'Video compressor',
-        to: '/tools/video-compressor',
-        description: 'Compress any video with one-click presets.',
-      },
-      {
-        label: 'Compress MP4',
-        to: '/tools/compress-mp4',
-        description: 'MP4-specific compressor with H.264 output.',
-      },
-      {
         label: 'Video converter',
         to: '/tools/video-converter',
         description: 'Convert between MP4, WebM, MOV, AVI, and more.',
-      },
-      {
-        label: 'MP4 converter',
-        to: '/tools/mp4-converter',
-        description: 'Convert almost any video into a universal MP4.',
       },
       {
         label: 'Convert MP4 to WebM',
@@ -1251,21 +1259,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
     ],
     related: [
-      {
-        label: 'MP4 to GIF',
-        to: '/tools/mp4-to-gif',
-        description: 'Output locked to GIF for MP4 input.',
-      },
-      {
-        label: 'Video to GIF',
-        to: '/tools/video-to-gif',
-        description: 'Make a GIF from any video format.',
-      },
-      {
-        label: 'GIF converter',
-        to: '/tools/gif-converter',
-        description: 'The GIF hub — make and tune animated GIFs.',
-      },
       {
         label: 'Compress video',
         to: '/tools/compress-video',
@@ -1680,9 +1673,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Go the other way and add a transparent-capable PNG.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image format to JPG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG further without changing format.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
     ],
     primaryKeyword: 'convert PNG to JPG',
@@ -1791,9 +1783,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Convert PNG to JPG', to: '/tools/convert-png-to-jpg', description: 'Go the other way and shrink a PNG into a JPG.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image format to PNG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
     ],
     primaryKeyword: 'convert JPG to PNG',
@@ -1902,9 +1893,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     related: [
       { label: 'Convert PNG to WebP', to: '/tools/convert-png-to-webp', description: 'Go the other way and shrink a PNG into a WebP.' },
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Convert WebP to a compact JPG instead.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image format to PNG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink an image without re-format hassle.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
     ],
     primaryKeyword: 'convert WebP to PNG',
     secondaryKeywords: [
@@ -2144,7 +2134,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'JPG Converter',
     h1: 'Free JPG Converter Online',
     tagline:
-      'Convert PNG, WebP, GIF, and more into universally compatible JPG photos at the quality you choose.',
+      "Convert images to JPG: the image converter with JPG preselected.",
     metaTitle: 'Free JPG Converter Online | Media Manipulator',
     metaDescription:
       `Free online JPG converter. Convert PNG, WebP, and GIF images into universally compatible JPG files at the quality you choose. No signup. ${RETENTION_PROMISE}.`,
@@ -2161,7 +2151,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any image — PNG, WebP, GIF, and more — and JPG is preselected as the output. Pick a quality and convert. Transparency is flattened because JPG has no alpha channel.',
     },
     intro:
-      'JPG (JPEG) is the most universally accepted image format on the planet — every device, editor, printer, and upload form takes it. Media Manipulator’s JPG converter turns PNG, WebP, GIF, and other images into a clean JPG at the quality you choose. JPG is preselected, but you can switch the output if you change your mind. Free, online, no signup.',
+      "This page opens the Media Manipulator image converter with JPG already chosen as the output. That is the only difference. You can still switch to PNG, WebP, AVIF or GIF before converting, and the same quality, resize and crop controls are on the form. JPG is the safest format to send a photo anywhere, but it has no transparency: a PNG logo or a cut-out with a transparent background is flattened onto a solid colour when it becomes a JPG, so keep those as PNG or WebP. The quality slider sets the JPEG encoder's quality; around 85 is a sensible default for photos, and lower values trade detail for size. The image converter page is the canonical version of this tool and covers each output format, the trade-offs between them and the upload limits for guests and free accounts. Upload an image below, check the quality and convert.",
     whatItDoes: [
       'Converts PNG, WebP, GIF, and other images to standard JPG.',
       'Preselects JPG as the output while still letting you change it.',
@@ -2240,6 +2230,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink your JPG even further.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'JPG converter',
     secondaryKeywords: [
       'convert to JPG',
@@ -2254,7 +2245,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'PNG Converter',
     h1: 'Free PNG Converter Online',
     tagline:
-      'Convert JPG, WebP, GIF, and more into lossless PNG files with full transparency support.',
+      "Convert images to PNG: the image converter with PNG preselected.",
     metaTitle: 'Free PNG Converter Online | Media Manipulator',
     metaDescription:
       `Free online PNG converter. Convert JPG, WebP, and GIF images into lossless PNG files with transparency support. No signup. ${RETENTION_PROMISE}.`,
@@ -2271,7 +2262,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any image — JPG, WebP, GIF, and more — and PNG is preselected as the output. PNG is lossless and keeps transparency where the source has it.',
     },
     intro:
-      'PNG is the go-to lossless format for graphics, screenshots, logos, and anything that needs transparency. Media Manipulator’s PNG converter turns JPG, WebP, GIF, and other images into a clean, lossless PNG. PNG is preselected, but you can switch the output if you prefer. Free, online, no signup.',
+      "This page is the Media Manipulator image converter with PNG preselected as the output, and nothing else about it is different. You can switch the output to JPG, WebP, AVIF or GIF if you change your mind, and the resize and crop controls are the same. PNG is lossless and keeps transparency, which makes it right for screenshots, diagrams, logos and anything with sharp text. It is the wrong choice for photographs if size matters: a phone photo saved as PNG is usually several times larger than the JPG it came from, and converting a JPG to PNG does not bring back detail the JPG already discarded; it only stops further loss. For transparency with smaller files, WebP is often the better target. The image converter page is the canonical version of this tool, with the full comparison of formats and the per-plan limits. Upload an image below to convert it to PNG.",
     whatItDoes: [
       'Converts JPG, WebP, GIF, and other images to lossless PNG.',
       'Preselects PNG as the output while still letting you change it.',
@@ -2351,6 +2342,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'PNG converter',
     secondaryKeywords: [
       'convert to PNG',
@@ -2458,8 +2450,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
     related: [
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink an image’s file size without changing dimensions.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through resize, crop, and quality settings.' },
     ],
     primaryKeyword: 'resize image online',
@@ -2677,9 +2667,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
     ],
     related: [
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert other images to transparency-capable PNG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert other images to transparency-capable PNG.' },
       { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Turn a JPG into a PNG ready for transparency.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert, resize, crop, and run AI tools in one upload.' },
       { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize the cutout to exact dimensions.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every AI and image option.' },
     ],
@@ -2902,7 +2891,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     related: [
       { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Focused PNG → PDF converter.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Convert any image format to PDF.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert other formats to JPG first.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Go the other way: render a PDF to JPG.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'The full PDF conversion hub.' },
     ],
@@ -3012,7 +3001,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     related: [
       { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Focused JPG → PDF converter.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Convert any image format to PDF.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert other formats to PNG first.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PDF to PNG', to: '/tools/pdf-to-png', description: 'Go the other way: render a PDF to PNG.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'The full PDF conversion hub.' },
     ],
@@ -3243,7 +3232,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and images to PDF.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert the rendered images between formats.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: turn images into a PDF.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert the rendered pages to other formats.' },
     ],
     primaryKeyword: 'pdf to png',
     secondaryKeywords: [
@@ -3464,8 +3452,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
     ],
     related: [
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert AVIF to JPG', to: '/tools/convert-avif-to-jpg', description: 'Convert modern AVIF photos to JPG.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG for the web.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option.' },
@@ -3575,8 +3562,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Convert AVIF to PNG', to: '/tools/convert-avif-to-png', description: 'Keep transparency with a PNG instead.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG for the web.' },
     ],
@@ -3685,8 +3671,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Convert AVIF to JPG', to: '/tools/convert-avif-to-jpg', description: 'Convert AVIF to a compact JPG instead.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
     ],
@@ -3795,10 +3780,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Convert PNG to SVG', to: '/tools/convert-png-to-svg', description: 'Go the other way: vectorize a PNG into SVG.' },
-      { label: 'SVG converter', to: '/tools/svg-converter', description: 'The full SVG conversion hub.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert the rendered PNG to other formats.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn the PNG into a favicon.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
     ],
     primaryKeyword: 'svg to png',
     secondaryKeywords: [
@@ -3906,10 +3889,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Convert SVG to PNG', to: '/tools/convert-svg-to-png', description: 'Go the other way: rasterize an SVG to PNG.' },
-      { label: 'SVG converter', to: '/tools/svg-converter', description: 'The full SVG conversion hub.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert a PNG to other raster formats.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn a PNG into a favicon.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
     ],
     primaryKeyword: 'png to svg',
     secondaryKeywords: [
@@ -4015,10 +3996,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
     ],
     related: [
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to PNG first.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert SVG to PNG', to: '/tools/convert-svg-to-png', description: 'Rasterize an SVG logo before making an icon.' },
       { label: 'Image resizer', to: '/tools/image-resizer', description: 'Make a square image before generating the icon.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent icon source.' },
     ],
     primaryKeyword: 'png to ico',
@@ -4035,7 +4015,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'SVG Converter',
     h1: 'Free SVG Converter Online',
     tagline:
-      'Convert SVG to PNG and vectorize PNG to SVG — the complete SVG conversion hub.',
+      "Rasterise SVG to PNG or trace a PNG into SVG: the image converter with an SVG starting point.",
     metaTitle: 'Free SVG Converter Online | Media Manipulator',
     metaDescription:
       `Free online SVG converter. Rasterize SVG to PNG, or vectorize PNG to a real SVG. No signup, no watermarks. ${RETENTION_PROMISE}.`,
@@ -4053,7 +4033,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an SVG to rasterize it to PNG, or upload a PNG and choose SVG output to vectorize it. The form adapts to your file and chosen output.',
     },
     intro:
-      'The SVG converter handles both directions: rasterize an SVG into a PNG for platforms that don’t accept vectors, or vectorize a PNG logo into a real, scalable SVG. Upload an SVG to get a PNG, or upload a raster and pick SVG output for true potrace vectorization. Free, online, no signup.',
+      "The SVG converter is the Media Manipulator image converter set up for vector work. It accepts SVG files as input and preselects PNG as the output, and if you upload a raster image instead you can choose SVG as the output to trace it. Both directions are part of the main image converter. SVG to PNG renders the drawing with librsvg at the size you ask for and keeps transparency; external resources referenced by the file are not fetched. PNG to SVG traces the image with potrace into real vector paths, which works well for logos, icons, signatures and line art and badly for photographs, because potrace works on a two-colour bitmap. The image converter page is the canonical version of this tool and covers every input and output format, quality settings and the upload limits for guests and free accounts. Upload an SVG or a simple PNG below.",
     whatItDoes: [
       'Rasterizes SVG files into PNG images at the size you choose.',
       'Vectorizes PNG/raster logos and line art into real SVG paths (potrace).',
@@ -4129,6 +4109,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert images to PNG.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'svg converter',
     secondaryKeywords: [
       'online svg converter',
@@ -5218,14 +5199,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does it work on HEIC?', answer: 'Yes — iPhone HEIC photos convert cleanly to JPG, PNG, or WebP.' },
     ],
     related: [
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to a universal JPG.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to a lossless PNG.' },
       { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize to exact pixel dimensions.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink image file size for the web.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap an image into a PDF document.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and back.' },
       { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
-      { label: 'SVG converter', to: '/tools/svg-converter', description: 'Rasterize SVG to PNG or vectorize PNG to SVG.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Auto-erase a background into a transparent PNG.' },
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Focused WebP → JPG converter.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Full walkthrough of every option.' },
@@ -5304,13 +5282,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is there a file-size limit?', answer: 'Very large files may be rejected on the free tier. Try lowering the resolution first.' },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert almost any video into a universal MP4.' },
       { label: 'Convert MOV to MP4', to: '/tools/convert-mov-to-mp4', description: 'Make QuickTime/iPhone footage play everywhere.' },
       { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'Turn web video into an editable MP4.' },
       { label: 'Convert MP4 to WebM', to: '/tools/convert-mp4-to-webm', description: 'Shrink MP4 into VP9 WebM for the web.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Focused compressor for shrinking video files.' },
       { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Turn short clips into animated GIFs.' },
-      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'Extract the audio track from an MP4 as MP3.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Save the soundtrack as MP3, WAV or M4A.' },
       { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Cut a clip to the part you want, losslessly.' },
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution to 1080p, 720p, or custom.' },
       { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix sideways or upside-down footage.' },
@@ -5338,7 +5315,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'MP4 Converter',
     h1: 'Free MP4 Converter Online',
     tagline:
-      'Convert almost any video — MOV, WebM, AVI, MKV, FLV, or WMV — into a universally compatible MP4 (H.264 + AAC).',
+      "Convert a video to MP4: the video converter with MP4 preselected.",
     metaTitle: 'Free MP4 Converter Online | Media Manipulator',
     metaDescription:
       `Free online MP4 converter. Convert MOV, WebM, AVI, MKV, FLV, and WMV to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -5355,7 +5332,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any video and convert it to MP4. MP4 is preselected and uses H.264 + AAC by default, but you can switch the output to WebM, MOV, MKV, and more.',
     },
     intro:
-      'MP4 is the format that plays everywhere — phones, browsers, TVs, editors, and social platforms all accept it. If you have a clip in MOV, WebM, AVI, MKV, FLV, or WMV that will not open or upload, converting it to MP4 (H.264 video + AAC audio) is almost always the fix. Media Manipulator re-encodes your video to a clean, broadly compatible MP4 with no watermark.',
+      "This page opens the Media Manipulator video converter with MP4 already selected as the output. It is otherwise the same tool: you can switch the output to WebM, MOV, MKV, AVI or GIF, choose a quality preset, and resize the video in the same upload. MP4 output is encoded with H.264 video and AAC audio, in the yuv420p pixel format that Safari, QuickTime and social platforms expect, with the index moved to the front of the file so playback starts while it downloads. Converting is a re-encode, so the result can be larger or smaller than the source depending on the preset; it will not improve a low-quality original. For a MOV from an iPhone, or a WebM, MKV or AVI that will not open somewhere, MP4 is almost always the fix. The video converter page is the canonical version of this tool, covering every output format and the upload limits for guests and free accounts. Upload a video below to convert it to MP4.",
     whatItDoes: [
       'Converts MOV, WebM, AVI, MKV, FLV, WMV, and more into MP4.',
       'Encodes MP4 with H.264 + AAC, the safe-everywhere default, plus -pix_fmt yuv420p and a faststart flag for instant playback.',
@@ -5412,6 +5389,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 after converting.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container, codec, and audio.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 converter',
     secondaryKeywords: [
       'mp4 converter online',
@@ -5493,10 +5471,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is there a watermark or signup?', answer: `No watermark and no account required. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for email or the web.' },
       { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Trim a clip and export an animated GIF.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container, codec, and audio.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and quality options.' },
     ],
     primaryKeyword: 'mov to mp4',
@@ -5580,10 +5557,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is it free?', answer: `Yes, free with no watermark and no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Convert MP4 to WebM', to: '/tools/convert-mp4-to-webm', description: 'The reverse — make a small VP9 WebM.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for sharing.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
     ],
     primaryKeyword: 'webm to mp4',
     secondaryKeywords: [
@@ -5665,9 +5641,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 further.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and deinterlace.' },
     ],
     primaryKeyword: 'avi to mp4',
@@ -5750,9 +5725,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for sharing.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through every option.' },
     ],
     primaryKeyword: 'mkv to mp4',
@@ -5836,9 +5810,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'The reverse direction.' },
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink video without changing the container.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
     ],
     primaryKeyword: 'mp4 to webm',
     secondaryKeywords: [
@@ -5853,7 +5826,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert MP4 to MP3',
     h1: 'Convert MP4 to MP3 Online Free',
     tagline:
-      'Extract the audio track from an MP4 video and save it as a clean MP3 file.',
+      "Get the audio of an MP4 as an MP3: Extract Audio from Video with MP4 in and MP3 out.",
     metaTitle: 'Convert MP4 to MP3 Online Free | Media Manipulator',
     metaDescription:
       `Free online MP4 to MP3 converter. Extract the audio from an MP4 video and save it as MP3. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -5872,7 +5845,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload your .mp4 video. We pull out the audio track and the output is locked to MP3 for this tool.',
     },
     intro:
-      'MP4 to MP3 is really an audio-extraction job: an MP4 is a video container, and you just want the sound. Media Manipulator pulls the first audio track out of your MP4 and re-encodes it to MP3, so you get music, a podcast, a lecture, or a voice memo as a small audio file that plays in any music app.',
+      "This page is Extract Audio from Video with two settings fixed: the input is an MP4 (or M4V) and the output is always MP3. That is the whole difference. An MP4 is a container holding video and sound, and the tool takes the first audio track out of it and encodes it with the LAME MP3 encoder at a variable bitrate of about 190 kbps, a size and quality that suit podcasts, lectures and music alike. If the MP4 has no sound, the tool says so before doing any work. If you need lossless audio for editing, or your file is a MOV or MKV, use the main Extract Audio from Video page, which accepts any common video and also writes WAV, M4A, AAC, FLAC or OGG. That page is the canonical version of this tool and has worked examples with real sizes and the per-plan limits. Upload an MP4 below to get its MP3.",
     whatItDoes: [
       'Extracts the audio stream from an MP4 video.',
       'Encodes the output as MP3 (libmp3lame) at a quality suited to speech and music.',
@@ -5924,6 +5897,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Choose MP3, WAV, M4A, AAC, FLAC, or OGG.' },
       { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the MP3 to other audio formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 to mp3',
     secondaryKeywords: [
       'mp4 to mp3 converter',
@@ -5937,7 +5911,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert Video to MP3',
     h1: 'Convert Video to MP3 Online Free',
     tagline:
-      'Extract the audio from any video — MP4, MOV, MKV, WebM, AVI — and save it as MP3.',
+      "Pull the soundtrack out of a video as an MP3: the same tool as Extract Audio from Video.",
     metaTitle: 'Convert Video to MP3 Online Free | Media Manipulator',
     metaDescription:
       `Free online video to MP3 converter. Extract the audio from MP4, MOV, MKV, WebM, and AVI videos and save it as MP3. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -5955,7 +5929,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any video. We pull out the audio track; MP3 is preselected, and you can switch to WAV, M4A, AAC, FLAC, or OGG.',
     },
     intro:
-      'Sometimes you just want the audio out of a video — and not always from an MP4. Media Manipulator extracts the first audio track from any common video container (MP4, MOV, MKV, WebM, AVI, M4V) and encodes it to MP3 by default, with other audio formats available if you need them.',
+      "Converting a video to MP3 is an audio-extraction job, and this page opens the same tool as Extract Audio from Video, with MP3 preselected. Nothing else differs: you can switch to WAV, M4A, AAC, FLAC or OGG before converting, and any common video format is accepted. The tool reads the first audio track of the file and encodes it on our servers with FFmpeg; MP3 output uses the LAME encoder at a variable bitrate of about 190 kbps, which suits music and speech. A video with no audio track is caught before any work is done and returns a clear error instead of a silent file. If the video carries several language tracks, only the first is extracted. Extract Audio from Video is the canonical version of this tool and explains each output format, with worked examples of real file sizes and the limits for guests and free accounts. Upload a video below to get its sound as an MP3.",
     whatItDoes: [
       'Extracts the audio stream from MP4, MOV, MKV, WebM, AVI, and M4V videos.',
       'Preselects MP3 output and lets you switch to WAV, M4A, AAC, FLAC, or OGG.',
@@ -6007,6 +5981,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Full extract-audio tool with every format.' },
       { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the extracted audio to other formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video to mp3',
     secondaryKeywords: [
       'video to mp3 converter',
@@ -6020,7 +5995,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert MP4 to GIF',
     h1: 'Convert MP4 to GIF Online Free',
     tagline:
-      'Turn a short MP4 clip into a clean, looping animated GIF for chat, forums, and the web.',
+      "Make a looping GIF from an MP4 clip: the animated GIF converter with MP4 input locked.",
     metaTitle: 'Convert MP4 to GIF Online Free | Media Manipulator',
     metaDescription:
       'Free online MP4 to GIF converter. Turn short MP4 clips into looping animated GIFs with control over size and frame rate. No watermark, no signup.',
@@ -6039,7 +6014,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a short .mp4 clip. The output is locked to GIF for this tool — trim to under ~10 seconds and tune width/frame rate in the GIF panel for a small file.',
     },
     intro:
-      'Animated GIFs autoplay and loop inline almost everywhere — chat apps, forums, READMEs, and email. Media Manipulator turns a short MP4 into a clean GIF using a palette-aware FFmpeg pipeline plus gifsicle optimization. For the smallest, sharpest result, trim the clip to a few seconds before converting.',
+      "This page is the Media Manipulator video-to-GIF tool with the input fixed to MP4 (M4V works too) and the output fixed to GIF. Apart from those two locks it is identical to Convert Video to Animated GIF: the same form, the same width and frame-rate controls, and the same pipeline, in which FFmpeg samples the frames and gifsicle builds the palette and optimises the file. The advice is the same as well. Keep the clip short, because a GIF holds every frame as an image and a ten-second clip at full width can come out larger than the MP4 it came from. If your clip is a MOV or WebM, or you want an MP4 or WebM loop instead of a GIF, use the main page. The canonical version, Convert Video to Animated GIF, has the details: how width, frame rate and colour count trade against size, worked examples with real numbers, and the per-plan limits. Upload an MP4 below to make your GIF.",
     whatItDoes: [
       'Converts a short MP4 clip into a looping animated GIF.',
       'Locks the output to GIF and exposes width, frame rate, colors, and optimization controls.',
@@ -6091,6 +6066,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'GIF converter', to: '/tools/gif-converter', description: 'The GIF hub — make and tune GIFs.' },
       { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'Full video-to-GIF tool.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 to gif',
     secondaryKeywords: [
       'mp4 to gif converter',
@@ -6104,7 +6080,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert Video to GIF',
     h1: 'Convert Video to GIF Online Free',
     tagline:
-      'Make a looping animated GIF from any short video clip — MP4, MOV, WebM, MKV, or AVI.',
+      "Turn a short clip in any common video format into a looping GIF: the same tool as the animated GIF converter.",
     metaTitle: 'Convert Video to GIF Online Free | Media Manipulator',
     metaDescription:
       'Free online video to GIF converter. Make a looping animated GIF from MP4, MOV, WebM, MKV, or AVI clips. Control size and frame rate. No watermark, no signup.',
@@ -6122,7 +6098,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a short video in any format. The output is locked to GIF — trim to under ~10 seconds and tune width/frame rate in the GIF panel.',
     },
     intro:
-      'Turn any short video clip into a looping animated GIF — not just MP4. Media Manipulator accepts MP4, MOV, WebM, MKV, and AVI and produces a clean GIF using a palette-aware FFmpeg pipeline plus gifsicle. Trim to a few seconds before converting for the smallest, sharpest loop.',
+      "This page makes an animated GIF from a short video, and it is the same tool as Convert Video to Animated GIF with the output fixed to GIF. It accepts MP4, MOV, WebM, MKV and AVI. There is no other difference: the same two-stage pipeline runs on our servers, in which FFmpeg scales the clip and samples it at the frame rate you choose and gifsicle reduces the palette and optimises the file. Trim to a few seconds first, because a GIF stores every frame as a picture and grows quickly with length and width. If you might want an MP4 or WebM loop instead of a GIF, the main page leaves the output unlocked. The animated GIF page is the canonical version of this tool and explains the settings that decide the file size, with worked examples showing real input and output sizes and the limits that apply to guests and free accounts. Upload a clip below to start.",
     whatItDoes: [
       'Converts MP4, MOV, WebM, MKV, AVI, and more into looping animated GIFs.',
       'Locks the output to GIF and exposes width, frame rate, colors, and optimization controls.',
@@ -6174,6 +6150,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'GIF converter', to: '/tools/gif-converter', description: 'The GIF hub — make and tune GIFs.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video to gif',
     secondaryKeywords: [
       'video to gif converter',
@@ -6187,7 +6164,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'GIF Converter',
     h1: 'Free GIF Converter Online',
     tagline:
-      'Make animated GIFs from video clips and tune them — width, frame rate, colors, and optimization — in one place.',
+      "Make and tune animated GIFs from video clips: the animated GIF converter under another name.",
     metaTitle: 'Free GIF Converter Online | Media Manipulator',
     metaDescription:
       `Free online GIF converter. Make animated GIFs from MP4, MOV, WebM, and more and tune width and frame rate. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6205,7 +6182,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a short video clip. GIF is preselected, so you can trim and tune width, frame rate, colors, and optimization — or switch the output to MP4/WebM.',
     },
     intro:
-      'The GIF converter is your hub for turning short video clips into clean, looping animated GIFs. GIF is preselected so you can jump straight into tuning width, frame rate, color count, and optimization — but the output stays unlocked, so you can also export MP4 or WebM from the same clip when a GIF is not the right fit.',
+      "The GIF converter is the same tool as Convert Video to Animated GIF. It opens the same video form with GIF preselected and the output left unlocked, so you can switch the same clip to an MP4 or WebM loop if a GIF turns out too large. It goes one way, from a video clip to an animated GIF; it does not turn an existing GIF back into a video or a still picture. Every control is the same as on the main page: trim range, width, frame rate, colour count and optimisation level, all applied by FFmpeg and gifsicle on our servers. The main page is the canonical version of this tool and is where the full explanation lives, with worked examples showing how big a GIF comes out at a given width and frame rate and what the limits are for guests and free accounts. Upload a short clip below to begin.",
     whatItDoes: [
       'Makes looping animated GIFs from MP4, MOV, WebM, MKV, AVI, and more.',
       'Exposes the full GIF panel: width, frame rate, colors, frame delay, and optimization level.',
@@ -6258,6 +6235,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'The classic video-to-GIF tool.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert still images between JPG, PNG, WebP, and GIF.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'gif converter',
     secondaryKeywords: [
       'video to gif',
@@ -6274,7 +6252,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Video Compressor',
     h1: 'Compress Video Online Free',
     tagline:
-      'Shrink any video for email, social, and the web with simple presets — no watermark, no signup.',
+      "Shrink a video with a compression preset: the same tool as Compress Video.",
     metaTitle: 'Compress Video Online Free | Media Manipulator',
     metaDescription:
       `Free online video compressor. Reduce video file size with simple presets while keeping good quality. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6293,7 +6271,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video and pick a compression level. Balanced is a great default; choose Smallest for email or High quality to keep more detail. Optionally downscale or drop audio.',
     },
     intro:
-      'Big video files are hard to email, slow to upload, and expensive to host. The Media Manipulator video compressor re-encodes your clip with an efficient codec at the level you choose, so you get a much smaller file that still looks good. Pick a preset, optionally downscale the resolution or strip the audio, and download — no watermark and no account.',
+      "This page opens the same video compressor as the Compress Video page, with the Balanced preset and H.264 preselected. There is no other difference in what it does. The compressor re-encodes your clip with FFmpeg at the level you pick, Smallest, Balanced or High quality, and can also lower the resolution or drop the audio track to save more space. The output is an MP4 with H.264 or H.265 video and AAC audio, or WebM if you choose it, and MP4 output is written so playback can start before the download finishes. Compression is a trade, not free space: each step down in quality removes detail you cannot get back, so keep the original if you might need it later. Compress Video is the canonical version of this tool and has the explanation of each preset, worked examples with real before-and-after sizes and the limits for guests and free accounts. Upload a video below to start.",
     whatItDoes: [
       'Compresses any common video (MP4, MOV, MKV, WebM, AVI) into a smaller MP4 or WebM.',
       'Offers Smallest / Balanced / High quality presets that map to proven CRF settings.',
@@ -6347,6 +6325,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Remove audio from video', to: '/tools/remove-audio-from-video', description: 'Drop the audio track for a smaller file.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through every option.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video compressor',
     secondaryKeywords: [
       'compress video',
@@ -6361,7 +6340,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Compress MP4',
     h1: 'Compress MP4 Online Free',
     tagline:
-      'Reduce MP4 file size while keeping H.264 compatibility — perfect for email, social, and the web.',
+      "Make an MP4 smaller and keep it an MP4: Compress Video with the container locked.",
     metaTitle: 'Compress MP4 Online Free | Media Manipulator',
     metaDescription:
       `Free online MP4 compressor. Reduce MP4 file size with simple presets and H.264 + AAC output that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6381,7 +6360,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an MP4 and pick a compression level. Output is locked to MP4 (H.264 + AAC) so the result plays everywhere. Optionally downscale or remove audio for an even smaller file.',
     },
     intro:
-      'MP4 is the format everyone uses, but the files can be large. This MP4 compressor re-encodes your video with efficient H.264 (or H.265) at the level you choose and keeps the output in a universally compatible MP4 container, so the smaller file still plays on every device and platform.',
+      "This page is the Media Manipulator video compressor with the input and output both fixed to MP4. The result is always an H.264 MP4 with AAC audio, which plays on every phone, browser and editor, and that lock is the only difference from the main Compress Video page. The same presets apply, Smallest, Balanced and High quality, each a different FFmpeg quality target, and you can still lower the resolution or remove the audio for a smaller file. If you would accept a WebM or an H.265 file in exchange for a smaller size, the main page lets you choose those. Re-encoding an MP4 that was already compressed hard saves less, and occasionally nothing; a phone recording at a high bitrate is where the savings are largest. Compress Video is the canonical version of this tool and shows real before-and-after numbers for each preset along with the per-plan limits. Upload an MP4 below to shrink it.",
     whatItDoes: [
       'Compresses MP4 videos into a smaller MP4 with H.264 + AAC.',
       'Offers Smallest / Balanced / High quality presets mapped to CRF values.',
@@ -6434,6 +6413,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut an MP4 down before compressing.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'compress mp4',
     secondaryKeywords: [
       'mp4 compressor',
@@ -6513,10 +6493,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Trim MP4 files specifically.' },
-      { label: 'Video cutter', to: '/tools/video-cutter', description: 'Cut a clip out of a video.' },
-      { label: 'Cut video online', to: '/tools/cut-video-online', description: 'Quick browser-based cutting.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the clip after trimming.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the clip after trimming.' },
     ],
     primaryKeyword: 'video trimmer',
     secondaryKeywords: [
@@ -6531,7 +6508,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'MP4 Trimmer',
     h1: 'Trim MP4 Online Free',
     tagline:
-      'Cut an MP4 to the part you want with a fast, lossless trim and an MP4 output.',
+      "The video trimmer with MP4 locked in and out.",
     metaTitle: 'Trim MP4 Online Free | Media Manipulator',
     metaDescription:
       `Free online MP4 trimmer and cutter. Set a start and end time and cut your MP4 losslessly. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6549,7 +6526,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an MP4 and set a start and end time. Output is locked to MP4 and we keep the original quality with a fast, lossless cut whenever possible.',
     },
     intro:
-      'The MP4 trimmer is a focused tool for cutting MP4 videos down to the part you want. Set the start and end, and Media Manipulator performs a fast stream-copy that keeps the original H.264 quality with no re-encode, then hands you a clean MP4.',
+      "This page is the Media Manipulator video trimmer with two settings fixed: it accepts MP4 (and M4V) files, and the result is always an MP4. Nothing else is different. The cut is the same stream-copy the main trimmer uses, so a range taken from an H.264 MP4 keeps the original picture and sound without a re-encode, and it snaps to the nearest keyframe unless you turn on the frame-accurate option, which re-encodes to H.264 with AAC audio. If your clip is a MOV, MKV or WebM, or you would rather keep the source container, use the main video trimmer instead: it takes those formats and lets you pick the output. The full explanation of how the cut works, worked examples with real file sizes, the limits for guests and free accounts, and the questions people ask about keyframes all live on the video trimmer page, which this one points to as its canonical version. Upload an MP4 below, set the start and end, and download the trimmed file.",
     whatItDoes: [
       'Cuts an MP4 to a single start-to-end range.',
       'Keeps the output as MP4 (H.264 + AAC).',
@@ -6602,6 +6579,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress MP4', to: '/tools/compress-mp4', description: 'Shrink the MP4 after trimming.' },
       { label: 'Video cutter', to: '/tools/video-cutter', description: 'Cut a clip out of a video.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 trimmer',
     secondaryKeywords: [
       'trim mp4',
@@ -6615,7 +6593,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Video Cutter',
     h1: 'Cut Video Online Free',
     tagline:
-      'Cut a section out of any video with a fast, quality-preserving trim — straight in your browser.',
+      "Keep one section of a video and drop the rest: the same tool as the video trimmer.",
     metaTitle: 'Cut Video Online Free | Media Manipulator',
     metaDescription:
       `Free online video cutter. Cut a clip from any video by start and end time with a fast, lossless cut. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6632,7 +6610,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video, set the start and end of the part you want to keep, and we cut it out — losslessly when possible. Output defaults to MP4.',
     },
     intro:
-      `Cutting a video means keeping a single section and dropping the rest. The Media Manipulator video cutter takes a start and end time and produces just that segment, using a fast stream-copy that preserves the original quality whenever possible. Everything runs server-side. ${RETENTION_PROMISE}.`,
+      "Cutting a video and trimming it are the same job here: you choose a start time and an end time, and Media Manipulator keeps only that section. This page opens the same form as the video trimmer, with MP4 preselected as the output and MOV or WebM available if you switch it, so there is no difference in what you can do or in the result you get. The cut is a stream-copy whenever the format allows, which means no quality loss and a result in seconds, and an optional frame-accurate mode that re-encodes for an exact cut point. It keeps one continuous range; to remove a section from the middle of a clip or join several pieces, use Darkroom, the multi-track editor. Everything about how the cut works, with worked examples and the per-plan file limits, is on the video trimmer page, the canonical version of this tool. Upload a video below and mark the part you want to keep.",
     whatItDoes: [
       'Cuts the selected start-to-end section out of a video.',
       'Prefers a lossless stream-copy (no re-encode).',
@@ -6685,6 +6663,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the cut clip.' },
       { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut MP4 files specifically.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video cutter',
     secondaryKeywords: [
       'cut video online',
@@ -6698,7 +6677,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Cut Video Online',
     h1: 'Cut Video Online Free',
     tagline:
-      'A quick, no-install way to cut a clip out of any video right in your browser.',
+      "Cut a clip from a video in the browser, with nothing to install: the video trimmer under another name.",
     metaTitle: 'Cut Video Online Free — No Install | Media Manipulator',
     metaDescription:
       `Cut video online free, no install. Set a start and end and cut any clip in your browser with a fast, lossless cut. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6715,7 +6694,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload, mark the part to keep, and download — no app to install. We cut losslessly when possible. Output defaults to MP4.',
     },
     intro:
-      'Sometimes you just need to cut a quick clip without downloading software. This page is the fast, browser-based way to do it: upload a video, mark the part you want, and get a cut clip back in seconds. The actual cut runs on our servers with a quality-preserving stream-copy, so there is nothing to install and nothing to learn.',
+      "People search for a way to cut a video online because they do not want to install an editor for a thirty-second job. This page is that, and it is the same tool as the Media Manipulator video trimmer: the same form, MP4 as the default output, and the same fast stream-copy cut on our servers. You upload the file in the browser, type or drag a start and end point, and download the section you kept. Nothing differs from the main trimmer except this introduction. Because the work happens server-side, an older laptop or a phone cuts a long file as quickly as a desktop. The video trimmer page is the canonical version, and it carries the details this page leaves out: why a stream-copy cut lands on a keyframe, when the frame-accurate option is worth its extra time, worked examples with real sizes, and the limits for guests and free accounts. Start below if you already know the range you want.",
     whatItDoes: [
       'Cuts a clip out of any common video, entirely in the browser flow.',
       'Uses a fast, lossless stream-copy whenever possible.',
@@ -6768,6 +6747,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut MP4 files specifically.' },
       { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the clip after cutting.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'cut video online',
     secondaryKeywords: [
       'cut video free',
@@ -6849,7 +6829,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution instead of cropping.' },
       { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix sideways or upside-down video.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the cropped video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the cropped video.' },
     ],
     primaryKeyword: 'crop video',
     secondaryKeywords: [
@@ -6930,8 +6910,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away edges instead of scaling.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the file with presets.' },
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert to MP4.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the file with presets.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert to MP4.' },
       { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix orientation.' },
     ],
     primaryKeyword: 'resize video',
@@ -7016,7 +6996,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away the edges.' },
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the rotated video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the rotated video.' },
     ],
     primaryKeyword: 'rotate video',
     secondaryKeywords: [
@@ -7098,7 +7078,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     related: [
       { label: 'Remove audio (video-only)', to: '/tools/extract-video-only-from-video', description: 'The same silent-video tool.' },
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Save the audio instead of removing it.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the silent video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the silent video.' },
       { label: 'Stitch audio to video', to: '/tools/stitch-audio-to-video', description: 'Add a new soundtrack to the silent clip.' },
     ],
     primaryKeyword: 'remove audio from video',
@@ -7539,8 +7519,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'What if my video has no audio?', answer: 'We detect that up front and return a clear error message instead of producing an empty file.' },
     ],
     related: [
-      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'Output locked to MP3 for MP4 input.' },
-      { label: 'Video to MP3', to: '/tools/video-to-mp3', description: 'Extract MP3 from any video format.' },
       { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the extracted audio to other formats.' },
       { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Transcribe the extracted audio into subtitles.' },
       { label: 'Audio Waveform Generator', to: '/tools/audio-waveform-generator', description: 'Turn the extracted audio into a waveform visual.' },
@@ -7634,7 +7612,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Remove audio from video', to: '/tools/remove-audio-from-video', description: 'The consumer-friendly mute / remove-sound page.' },
       { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull the audio track out as MP3, WAV, etc.' },
       { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Add a new soundtrack to your silent video.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the silent video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the silent video.' },
       { label: 'Extract Frames from Video', to: '/tools/extract-frames-from-video', description: 'Pull still images out of the silent video.' },
     ],
     primaryKeyword: 'extract video without audio',
@@ -8622,6 +8600,18 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // MM78 voices.
   ...VOICE_TOOL_PAGES,
 ];
+
+/**
+ * Every tool page. MM84: `aliasOf` is stamped here from content/toolAliases.ts
+ * (the one place the alias map lives) rather than repeated in each entry.
+ */
+export const TOOL_PAGES: ToolPageContent[] = TOOL_PAGE_ENTRIES.map((tool) => {
+  const aliasOf = aliasTargetOf(tool.slug);
+  return aliasOf ? { ...tool, aliasOf } : tool;
+});
+
+/** The pages that render in full: every tool page that is not an alias. */
+export const PRIMARY_TOOL_PAGES: ToolPageContent[] = TOOL_PAGES.filter((tool) => !tool.aliasOf);
 
 export const TOOL_PAGE_MAP: Record<string, ToolPageContent> = TOOL_PAGES.reduce(
   (acc, tool) => {

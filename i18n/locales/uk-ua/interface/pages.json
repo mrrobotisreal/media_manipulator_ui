@@ -2100,7 +2100,11 @@
     "faqAriaLabel": "Часті запитання",
     "faqHeading": "Часті запитання",
     "relatedToolsAriaLabel": "Схожі інструменти",
-    "relatedToolsHeading": "Схожі інструменти"
+    "relatedToolsHeading": "Схожі інструменти",
+    "aliasHeading": "Повний посібник, приклади та FAQ",
+    "aliasLink": "Прочитайте повний посібник про «{{name}}»",
+    "workedExamplesHeading": "Приклади з реальними числами",
+    "whenNotToUseHeading": "Коли цей інструмент не підходить"
   },
   "contentStudioGuide": {
     "summaryTitle": "Як працює Darkroom — короткий посібник",

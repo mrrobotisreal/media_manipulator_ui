@@ -1103,7 +1103,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     ],
     related: [
       { label: 'Compress video', to: '/tools/compress-video', description: 'H.264, VP9 or AV1 compression.' },
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Standard H.264 MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Standard H.264 MP4.' },
       ...videoRelated('/convert-video-to-hevc', '/compress-video'),
     ],
     primaryKeyword: 'convert video to HEVC',

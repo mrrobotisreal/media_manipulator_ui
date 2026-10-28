@@ -47,7 +47,8 @@ export function buildMetadata(path: string, locale: string = defaultLocale): Met
   const override = getSeoOverride(path, locale);
   const def = getLocaleDef(locale);
   const isTranslated = def?.translated ?? false;
-  const canonicalUrl = localizedUrl(path, locale);
+  // MM84: an alias tool page canonicalises to its primary (seo.canonicalPath).
+  const canonicalUrl = localizedUrl(seo.canonicalPath ?? path, locale);
 
   const title = override?.title ?? seo.title;
   const description = override?.description ?? seo.description;
