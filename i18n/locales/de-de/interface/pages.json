@@ -2074,7 +2074,8 @@
       "ai": "KI-Werkzeuge",
       "privacy": "Datenschutz",
       "editor": "Editoren"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} weitere"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Brotkrumen-Navigation",

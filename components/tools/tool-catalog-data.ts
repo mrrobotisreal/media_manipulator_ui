@@ -17,6 +17,12 @@ export interface CatalogTool {
   category: ToolPageContent['category'];
   /** Review-allowlisted: shown first in its group with a star, and in the home grid. */
   featured: boolean;
+  /**
+   * MM84 review mode: false for a tool that renders in the collapsed "All
+   * tools" list of its category with rel="nofollow" (flag off, not one of the
+   * 24 copy-bar tools). Always true with NEXT_PUBLIC_SEO_FULL_INDEX on.
+   */
+  listed: boolean;
   /** Secondary groupings inside a category, e.g. "Convert", "Edit". */
   group: CatalogGroup;
   /** Lowercased haystack for the search box: name, tagline, keywords. */
@@ -47,16 +53,61 @@ export function catalogGroupFor(tool: Pick<ToolPageContent, 'slug' | 'category' 
   return isConvert ? 'convert' : 'edit';
 }
 
-export function toCatalogTool(tool: ToolPageContent, featured: boolean): CatalogTool {
+/**
+ * Project a tool page for the catalog. MM84: `aliases` are the alias pages of
+ * this tool (content/toolAliases.ts); they are never listed themselves, so
+ * their names, slugs and keywords join the primary's search haystack and the
+ * primary's tagline gains one "Also: …" line naming them.
+ */
+export function toCatalogTool(
+  tool: ToolPageContent,
+  featured: boolean,
+  options: { listed?: boolean; aliases?: ReadonlyArray<Pick<ToolPageContent, 'slug' | 'name' | 'primaryKeyword' | 'secondaryKeywords'>> } = {},
+): CatalogTool {
+  const aliases = options.aliases ?? [];
+  const aliasNames = aliases.map((a) => a.name);
   return {
     slug: tool.slug,
     name: tool.name,
-    tagline: tool.tagline,
+    tagline: aliasNames.length ? `${tool.tagline} Also: ${aliasNames.join(', ')}.` : tool.tagline,
     category: tool.category,
     featured,
+    listed: options.listed ?? true,
     group: catalogGroupFor(tool),
-    search: [tool.name, tool.tagline, tool.primaryKeyword, ...tool.secondaryKeywords, tool.slug.replace(/-/g, ' ')]
+    search: [
+      tool.name,
+      tool.tagline,
+      tool.primaryKeyword,
+      ...tool.secondaryKeywords,
+      tool.slug.replace(/-/g, ' '),
+      ...aliases.flatMap((a) => [a.name, a.primaryKeyword, ...a.secondaryKeywords, a.slug.replace(/-/g, ' ')]),
+    ]
       .join(' ')
       .toLowerCase(),
   };
+}
+
+/**
+ * MM84 decision 4: the catalog list for the /tools page. Aliases are dropped
+ * (and folded into their primary's search), allowlisted tools are featured,
+ * and while the full-index flag is off only `listedSlugs` (the 24 copy-bar
+ * tools) are full cards; the rest are collapsed and nofollow.
+ */
+export function buildCatalogTools(
+  pages: readonly ToolPageContent[],
+  opts: { featuredSlugs: ReadonlySet<string>; listedSlugs: ReadonlySet<string>; fullIndex: boolean },
+): CatalogTool[] {
+  const aliasesByPrimary = new Map<string, ToolPageContent[]>();
+  for (const page of pages) {
+    if (!page.aliasOf) continue;
+    aliasesByPrimary.set(page.aliasOf, [...(aliasesByPrimary.get(page.aliasOf) ?? []), page]);
+  }
+  return pages
+    .filter((tool) => !tool.aliasOf && tool.category !== 'contentStudio' && tool.category !== 'motion')
+    .map((tool) =>
+      toCatalogTool(tool, opts.featuredSlugs.has(tool.slug), {
+        listed: opts.fullIndex || opts.listedSlugs.has(tool.slug),
+        aliases: aliasesByPrimary.get(tool.slug),
+      }),
+    );
 }

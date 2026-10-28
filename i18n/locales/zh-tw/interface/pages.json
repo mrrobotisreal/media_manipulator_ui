@@ -2074,7 +2074,8 @@
       "ai": "AI 工具",
       "privacy": "隱私",
       "editor": "編輯器"
-    }
+    },
+    "moreTools": "{{category}}：另外 {{count}} 個"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "導覽路徑",

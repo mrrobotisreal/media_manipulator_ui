@@ -2074,7 +2074,8 @@
       "ai": "ШІ-інструменти",
       "privacy": "Приватність",
       "editor": "Редактори"
-    }
+    },
+    "moreTools": "{{category}}: ще {{count}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Навігаційний ланцюжок",

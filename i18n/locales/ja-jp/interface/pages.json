@@ -2074,7 +2074,8 @@
       "ai": "AIツール",
       "privacy": "プライバシー",
       "editor": "エディター"
-    }
+    },
+    "moreTools": "{{category}}：ほか {{count}} 件"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "パンくずリスト",

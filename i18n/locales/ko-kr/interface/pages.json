@@ -2074,7 +2074,8 @@
       "ai": "AI 도구",
       "privacy": "개인정보",
       "editor": "편집기"
-    }
+    },
+    "moreTools": "{{category}}: {{count}}개 더"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "탐색 경로",

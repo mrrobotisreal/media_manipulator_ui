@@ -2074,7 +2074,8 @@
       "ai": "Công cụ AI",
       "privacy": "Quyền riêng tư",
       "editor": "Trình chỉnh sửa"
-    }
+    },
+    "moreTools": "{{category}}: thêm {{count}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Đường dẫn điều hướng",

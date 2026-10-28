@@ -2074,7 +2074,8 @@
       "ai": "AI 工具",
       "privacy": "隐私",
       "editor": "编辑器"
-    }
+    },
+    "moreTools": "{{category}}：另外 {{count}} 个"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "面包屑导航",

@@ -2074,7 +2074,8 @@
       "ai": "Outils IA",
       "privacy": "Confidentialité",
       "editor": "Éditeurs"
-    }
+    },
+    "moreTools": "{{category}} : {{count}} de plus"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Fil d'Ariane",

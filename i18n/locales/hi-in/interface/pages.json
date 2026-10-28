@@ -2074,7 +2074,8 @@
       "ai": "AI टूल",
       "privacy": "गोपनीयता",
       "editor": "एडिटर"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} और"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "ब्रेडक्रम",

@@ -45,6 +45,28 @@ function loadAllowlist() {
 }
 const ALLOWED_SLUGS = loadAllowlist();
 
+// MM84: the pending set (the other 7 copy-bar pages) and the alias map, read
+// from their sources of truth like the allowlist above.
+function loadPending() {
+  const src = readFileSync(join(ROOT, 'content/reviewAllowlist.ts'), 'utf8');
+  const block = src.match(/PENDING_ALLOWLIST\s*=\s*\[([^\]]*)\]/s);
+  if (!block) return new Set();
+  return new Set([...block[1].matchAll(/['"]([a-z0-9-]+)['"]/g)].map((m) => m[1]));
+}
+function loadAliases() {
+  const src = readFileSync(join(ROOT, 'content/toolAliases.ts'), 'utf8');
+  const block = src.match(/TOOL_ALIAS_OF\s*=\s*\{([\s\S]*?)\}\s*as const/);
+  if (!block) return new Map();
+  return new Map([...block[1].matchAll(/['"]([a-z0-9-]+)['"]\s*:\s*['"]([a-z0-9-]+)['"]/g)].map((m) => [m[1], m[2]]));
+}
+const PENDING_SLUGS = loadPending();
+const ALIAS_OF = loadAliases();
+// Linkable without rel="nofollow" on en.html and en/tools.html while the
+// full-index flag is off: the allowlist plus the pending set (decision 4).
+const LISTED_SLUGS = new Set([...ALLOWED_SLUGS, ...PENDING_SLUGS]);
+if (ALIAS_OF.size === 0) fail('content/toolAliases.ts', 'could not read TOOL_ALIAS_OF (alias rule would be blind)');
+if (PENDING_SLUGS.size === 0) fail('content/reviewAllowlist.ts', 'could not read PENDING_ALLOWLIST');
+
 function walk(dir) {
   const out = [];
   let entries;
@@ -282,30 +304,80 @@ if (existsSync(builtAppDir)) {
     notes.push('eligible-page rule skipped: build ran without NEXT_PUBLIC_ADSENSE_ENABLED=true');
   }
 
-  // Links to non-allowlisted tool pages. Enforced on the home page and the
-  // allowlisted tool pages; /tools (en/tools.html) is a warning until MM84
-  // changes that page; other pages are reported for information.
-  const offAllowlistLinks = (html) => {
-    const slugs = new Set();
-    for (const m of html.matchAll(/href="(\/tools\/[^"#?]*)"/g)) {
-      const slug = m[1].replace(/^\/tools\//, '').replace(/\/+$/, '').split('/')[0];
-      if (slug && !ALLOWED_SLUGS.has(slug)) slugs.add(slug);
+  // MM84 decision 6. Every <a href="/tools/<slug>"> in the English build:
+  //  (a) an alias slug may not be linked from any built page, nofollow or not
+  //      (aliases canonicalise elsewhere and are never listed);
+  //  (b) on en.html and en/tools.html a link to a slug outside the allowlist +
+  //      pending set must carry rel="nofollow";
+  //  (c) on an allowlisted tool page (en/tools/<slug>.html) every tool link
+  //      must point inside the allowlist + pending set (related links, MM84
+  //      decision 5);
+  //  other pages are reported for information.
+  const toolAnchors = (html) => {
+    const out = [];
+    for (const m of html.matchAll(/<a\b[^>]*>/g)) {
+      const tag = m[0];
+      const href = /\bhref="(\/tools\/[^"#?]*)"/.exec(tag)?.[1];
+      if (!href) continue;
+      const slug = href.replace(/^\/tools\//, '').replace(/\/+$/, '').split('/')[0];
+      if (!slug) continue;
+      out.push({ slug, nofollow: /\brel="[^"]*\bnofollow\b[^"]*"/.test(tag) });
     }
-    return slugs;
+    return out;
   };
   const infoPages = [];
+  const linkCounts = { listed: 0, nofollow: 0, alias: 0 };
   for (const abs of builtHtml) {
     const rel = relOf(abs);
-    const bad = offAllowlistLinks(readFileSync(abs, 'utf8'));
-    if (!bad.size) continue;
-    const enforced = rel === 'en.html' || /^en\/tools\/[^/]+\.html$/.test(rel);
-    if (enforced) {
-      for (const slug of bad) fail(`.next/server/app/${rel}`, `links to non-allowlisted tool page /tools/${slug}`);
-    } else if (rel === 'en/tools.html') {
-      warnings.push(`en/tools.html links to ${bad.size} non-allowlisted tool page(s) (fan-out rule moves to MM84; not a failure)`);
-    } else {
-      infoPages.push(`${rel} (${bad.size})`);
+    const anchors = toolAnchors(readFileSync(abs, 'utf8'));
+    const isCatalog = rel === 'en.html' || rel === 'en/tools.html';
+    const isToolPage = /^en\/tools\/[^/]+\.html$/.test(rel);
+    const toolSlug = isToolPage ? rel.replace(/^en\/tools\//, '').replace(/\.html$/, '') : null;
+    const off = new Set();
+    for (const a of anchors) {
+      if (ALIAS_OF.has(a.slug) && a.slug !== toolSlug) {
+        fail(`.next/server/app/${rel}`, `links to alias tool page /tools/${a.slug} (canonical: /tools/${ALIAS_OF.get(a.slug)})`);
+        if (rel === 'en/tools.html') linkCounts.alias += 1;
+        continue;
+      }
+      const listed = LISTED_SLUGS.has(a.slug);
+      if (rel === 'en/tools.html') {
+        if (listed) linkCounts.listed += 1;
+        else if (a.nofollow) linkCounts.nofollow += 1;
+      }
+      if (listed) continue;
+      if (isCatalog) {
+        if (!a.nofollow) fail(`.next/server/app/${rel}`, `links to non-allowlisted tool page /tools/${a.slug} without rel="nofollow"`);
+      } else if (isToolPage && toolSlug && ALLOWED_SLUGS.has(toolSlug)) {
+        fail(`.next/server/app/${rel}`, `links to non-allowlisted tool page /tools/${a.slug}`);
+      } else {
+        off.add(a.slug);
+      }
     }
+    if (off.size) infoPages.push(`${rel} (${off.size})`);
+  }
+  // MM84 acceptance 2: every alias page in the build canonicalises to its
+  // primary and is noindex, follow.
+  let aliasPagesChecked = 0;
+  for (const [alias, target] of ALIAS_OF) {
+    const rel = `en/tools/${alias}.html`;
+    const abs = byRel.get(rel);
+    if (!abs) {
+      fail(`.next/server/app/${rel}`, 'alias page missing from the build (expected prerendered)');
+      continue;
+    }
+    const html = readFileSync(abs, 'utf8');
+    const canonical = /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1] ?? '';
+    if (!canonical.endsWith(`/tools/${target}`)) fail(`.next/server/app/${rel}`, `alias canonical is "${canonical}", expected …/tools/${target}`);
+    if (!/<meta name="robots" content="noindex, follow"/.test(html)) fail(`.next/server/app/${rel}`, 'alias page is not "noindex, follow"');
+    if (/hreflang=/.test(html)) fail(`.next/server/app/${rel}`, 'alias page advertises hreflang alternates');
+    aliasPagesChecked += 1;
+  }
+  notes.push(`alias pages: ${aliasPagesChecked}/${ALIAS_OF.size} canonicalise to their primary with noindex, follow`);
+  if (byRel.has('en/tools.html')) {
+    notes.push(
+      `en/tools.html tool links: ${linkCounts.listed} allowlisted/pending, ${linkCounts.nofollow} nofollow, ${linkCounts.alias} alias`,
+    );
   }
   if (infoPages.length) {
     notes.push(`not enforced, links to non-allowlisted tool pages: ${infoPages.join(', ')}`);

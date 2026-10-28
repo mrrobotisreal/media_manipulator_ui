@@ -22,11 +22,12 @@ const STATIC_ROUTE_SLUGS = new Set(['content-studio', 'motion', 'ai-video-restor
 // tool slug still renders on demand — but as noindex (see generateMetadata).
 export function generateStaticParams() {
   // MM34: with the full-index flag on, prerender every tool page.
-  // MM84: alias pages are never prerendered as indexable pages; they render on
-  // demand like any other non-allowlisted slug.
+  // MM84: alias pages are prerendered in both modes (they are small), so their
+  // canonical and `noindex, follow` are in static HTML that the audit checks.
+  const aliasSlugs = TOOL_PAGES.filter((t) => t.aliasOf).map((t) => t.slug);
   const slugs: readonly string[] = isSeoFullIndex()
-    ? TOOL_PAGES.filter((t) => !t.aliasOf).map((t) => t.slug)
-    : REVIEW_INDEXED_TOOL_SLUGS;
+    ? TOOL_PAGES.map((t) => t.slug)
+    : [...REVIEW_INDEXED_TOOL_SLUGS, ...aliasSlugs];
   return slugs.filter((s) => !STATIC_ROUTE_SLUGS.has(s)).map(
     (slug) => ({ slug }),
   );

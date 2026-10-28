@@ -86,9 +86,21 @@ export function isReviewAllowedToolHref(href: string): boolean {
 }
 
 /**
+ * MM84: true when a tool slug may be linked from review-visible pages without
+ * rel="nofollow": the allowlist plus the pending set (all 24 meet the copy
+ * bar), or any non-alias slug once the full-index flag is on. Indexing is still
+ * decided by isReviewIndexedToolSlug; pending pages stay noindex until flipped.
+ */
+export function isReviewListedToolSlug(slug: string): boolean {
+  if (isToolAliasSlug(slug)) return false;
+  return REVIEW_CATALOG_SLUGS.includes(slug) || isReviewIndexedToolSlug(slug);
+}
+
+/**
  * True when an internal href is safe to surface on review-visible pages. Core
  * pages, blog, and tutorials are always allowed; /tools/<slug> links are only
- * allowed when the slug is in the review allowlist.
+ * allowed when the slug is in the review allowlist or the pending set (MM84),
+ * and never when it is an alias.
  */
 export function isReviewSafeInternalHref(href: string): boolean {
   if (!href.startsWith('/')) return false;
@@ -106,7 +118,10 @@ export function isReviewSafeInternalHref(href: string): boolean {
 
   if (href.startsWith('/tutorials/')) return true;
   if (href.startsWith('/blog/')) return true;
-  if (href.startsWith('/tools/')) return isReviewAllowedToolHref(href);
+  if (href.startsWith('/tools/')) {
+    const slug = getToolSlugFromHref(href);
+    return slug !== null && isReviewListedToolSlug(slug);
+  }
 
   return false;
 }

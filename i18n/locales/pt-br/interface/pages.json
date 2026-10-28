@@ -2074,7 +2074,8 @@
       "ai": "Ferramentas de IA",
       "privacy": "Privacidade",
       "editor": "Editores"
-    }
+    },
+    "moreTools": "{{category}}: mais {{count}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Trilha de navegação",

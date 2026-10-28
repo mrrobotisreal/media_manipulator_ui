@@ -2074,7 +2074,8 @@
       "ai": "ИИ-инструменты",
       "privacy": "Приватность",
       "editor": "Редакторы"
-    }
+    },
+    "moreTools": "{{category}}: еще {{count}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Хлебные крошки",

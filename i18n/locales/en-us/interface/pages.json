@@ -2074,7 +2074,8 @@
       "ai": "AI tools",
       "privacy": "Privacy",
       "editor": "Editors"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} more"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Breadcrumb",

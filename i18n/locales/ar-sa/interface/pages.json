@@ -2074,7 +2074,8 @@
       "ai": "أدوات الذكاء الاصطناعي",
       "privacy": "الخصوصية",
       "editor": "المحررات"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} أخرى"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "مسار التنقل",
