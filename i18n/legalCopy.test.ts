@@ -443,9 +443,11 @@ describe("MM87 advertising disclosures", () => {
       expect(t89?.paragraphs?.[0]).toMatch(/Premium/);
       expect(t89?.paragraphs?.[0]).toMatch(/\bPro\b/);
 
-      // The placement promise is a sentence of its own (the review §3 policy), after "Premium and Pro".
-      expect(pages.pricing.faq.a3).toMatch(/Premium/);
-      expect(pages.pricing.faq.a3.length).toBeGreaterThan(enA3.length * 0.5);
+      // The placement promise is a sentence of its own (review §3 policy) between the plan
+      // sentence and the "no interstitials" sentence, so a3 has one more sentence than before.
+      const sentences = (s: string) => s.split(/[.。।۔]\s*/u).filter((x) => x.trim().length > 0).length;
+      expect(pages.pricing.faq.a3).toMatch(/Pro/);
+      expect(sentences(pages.pricing.faq.a3)).toBe(sentences(enA3));
 
       expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-10-28");
       const note = pages.legalCommon.whatChangedBody;
