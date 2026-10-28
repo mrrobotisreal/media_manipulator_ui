@@ -139,14 +139,14 @@
       "upscale": {
         "scaleLabel": "배율",
         "scale4x": "4배",
-        "scale2x": "2배 (일부 이미지에서는 실험적)",
+        "scale2x": "2배",
         "modelLabel": "모델",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (사진)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2배 AI 업스케일도 가능하지만, 이 서버에서는 4배가 가장 안정적인 기본 모델 경로입니다.",
+        "experimentalNote": "4배가 기본값이며 가장 일관된 결과를 내요. 2배는 같은 모델을 절반 배율로 실행하므로 일부 이미지에서 약간 잘려 보일 수 있어요.",
         "pngNote": "출력은 기본적으로 PNG입니다."
       },
       "removeObject": {

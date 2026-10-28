@@ -546,6 +546,12 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       source: z.enum(['tool_page', 'darkroom', 'account']),
     })
     .strict(),
+  contact_submitted: z
+    .object({
+      subject: z.enum(['bug', 'billing', 'privacy', 'press', 'other']),
+      ok: z.boolean(),
+    })
+    .strict(),
 
   client_error: z
     .object({

@@ -140,14 +140,14 @@
       "upscale": {
         "scaleLabel": "स्केल",
         "scale4x": "4x",
-        "scale2x": "2x (कुछ इमेज पर प्रायोगिक)",
+        "scale2x": "2x",
         "modelLabel": "मॉडल",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (फ़ोटो)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2x AI अपस्केल उपलब्ध है, लेकिन इस सर्वर पर 4x सबसे सुरक्षित/डिफ़ॉल्ट मॉडल पाथ है।",
+        "experimentalNote": "4x डिफ़ॉल्ट है और सबसे एकसमान नतीजे देता है। 2x वही मॉडल आधे स्केल पर चलाता है और कुछ इमेज पर थोड़ा कटा हुआ दिख सकता है।",
         "pngNote": "आउटपुट डिफ़ॉल्ट रूप से PNG है।"
       },
       "removeObject": {

@@ -26,6 +26,8 @@ const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'tutorials', href: '/tutorials' },
   { key: 'howItWorks', href: '/how-it-works' },
   { key: 'about', href: '/about' },
+  // MM85: who runs the site and how to reach them.
+  { key: 'contact', href: '/contact' },
   { key: 'pricing', href: '/pricing', label: 'Pricing' },
 ];
 

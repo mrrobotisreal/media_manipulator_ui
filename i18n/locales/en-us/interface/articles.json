@@ -164,19 +164,19 @@
         "body": "Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. FIFTY-THREE PERCENT! That's more than half your potential customers gone before they even see your awesome content. And guess what's usually the biggest culprit for slow load times? That's right - your unoptimized 200MB hero video sitting there like a digital roadblock 🚧."
       },
       "googleWatching": {
-        "title": "Google's Watching (And Judging) 👀",
-        "intro": "Page speed is a direct ranking factor for Google. This means:",
+        "title": "Page Speed and Search",
+        "intro": "Search engines measure how quickly a page becomes usable, and a video is often the heaviest thing on it. Three habits keep video from dragging that measurement down:",
         "bullets": [
-          "<strong>Slow site = Lower rankings</strong> = Less organic traffic",
-          "<strong>Less traffic = Fewer conversions</strong> = Less money",
-          "<strong>Less money = Sad developer</strong> 😢"
+          "<strong>Mind the Largest Contentful Paint</strong>: a hero video or its poster image is frequently the largest element on screen, so give every video a small, compressed poster image and keep the first frames light.",
+          "<strong>Do not preload what is not visible</strong>: set preload=\"none\" or preload=\"metadata\" on videos below the fold so they are not downloaded while the page loads.",
+          "<strong>Serve the size you display</strong>: a 1080p file shown in a 400-pixel-wide card wastes most of its bytes, so encode a smaller rendition for small slots."
         ],
-        "clientStory": "I had a client whose e-commerce site was using massive MOV files for product videos. After converting everything to optimized MP4s and WebM with fallbacks, their:",
+        "clientStory": "To see the effect on your own site, measure before and after you compress:",
         "clientResults": [
-          "Page load time dropped from 8.2 to 2.7 seconds",
-          "Google rankings improved for 67% of their target keywords",
-          "Conversion rate increased by 23%",
-          "Monthly revenue jumped by $18,000 💸"
+          "Run the page through PageSpeed Insights or Lighthouse and note the Largest Contentful Paint and the total page weight.",
+          "In the browser's Network panel, filter by media and compare the transferred size of each video.",
+          "Re-encode with a constant quality setting (CRF 23 to 28 for H.264) instead of a fixed high bitrate, then measure again.",
+          "Check the page on a throttled mobile connection, not only on fast office Wi-Fi."
         ]
       },
       "bandwidthBill": {
@@ -210,13 +210,13 @@
         "outro": "But when your site is slow? It screams \"amateur hour\" louder than a foghorn 📯. Users think: \"If they can't even get their website right, can I trust them with my credit card?\""
       },
       "monetization": {
-        "title": "The Monetization Connection 💰",
-        "intro": "Whether you're running ads, selling products, or monetizing content through Medium (hey there, fellow Medium writer! 👋), performance directly impacts your bottom line:",
+        "title": "Where the Savings Show Up",
+        "intro": "Smaller video files pay off in a few places you can measure:",
         "bullets": [
-          "<strong>Ad revenue</strong>: Slow sites = higher bounce rates = fewer ad impressions",
-          "<strong>Affiliate links</strong>: People can't click what they don't wait to see",
-          "<strong>Product sales</strong>: Every second of load time can decrease conversions by 7%",
-          "<strong>Content monetization</strong>: Readers won't wait for your brilliant article to load"
+          "<strong>Hosting and CDN costs</strong>: most providers bill per gigabyte delivered, so halving a file's size roughly halves what that video costs to serve.",
+          "<strong>Start-up time</strong>: a smaller file starts playing sooner, so fewer viewers leave before playback begins.",
+          "<strong>Mobile data</strong>: visitors on metered plans can watch without using up their data allowance.",
+          "<strong>Upload limits</strong>: many email services, chat apps and forms refuse attachments above about 25 MB, and a compressed file gets through."
         ]
       },
       "quote": "\"A website's speed is like a first impression - you only get one chance, and if you blow it, they're swiping left faster than you can say 'please wait, loading...'\" 💨"

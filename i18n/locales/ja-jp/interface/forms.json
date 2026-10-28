@@ -139,14 +139,14 @@
       "upscale": {
         "scaleLabel": "倍率",
         "scale4x": "4倍",
-        "scale2x": "2倍（一部の画像では実験的）",
+        "scale2x": "2倍",
         "modelLabel": "モデル",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus（写真向け）",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "2倍のAIアップスケールも利用できますが、このサーバーでは4倍が最も安全なデフォルトのモデルパスです。",
+        "experimentalNote": "4倍がデフォルトで、最も安定した結果が得られます。2倍は同じモデルを半分のスケールで実行するため、一部の画像では少し切り取られたように見えることがあります。",
         "pngNote": "出力はデフォルトでPNGです。"
       },
       "removeObject": {

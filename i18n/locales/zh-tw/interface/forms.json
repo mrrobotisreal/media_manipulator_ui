@@ -139,14 +139,14 @@
       "upscale": {
         "scaleLabel": "倍率",
         "scale4x": "4 倍",
-        "scale2x": "2 倍（在部分圖片上為實驗性）",
+        "scale2x": "2 倍",
         "modelLabel": "模型",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus（照片）",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "可使用 2 倍 AI 放大，但 4 倍是此伺服器上最安全的預設模型路徑。",
+        "experimentalNote": "4 倍是預設值，結果最穩定。2 倍以一半的比例執行同一個模型，在某些圖片上可能看起來略有裁切。",
         "pngNote": "輸出預設為 PNG。"
       },
       "removeObject": {

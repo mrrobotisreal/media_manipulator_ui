@@ -4,7 +4,6 @@
     "brandTagline": "Chuyển đổi hình ảnh, video và tệp âm thanh thật dễ dàng",
     "loading": "Đang tải…",
     "loadingShort": "Đang tải...",
-    "comingSoon": "Sắp ra mắt",
     "tryAgain": "Thử lại",
     "cancel": "Hủy",
     "close": "Đóng",
@@ -101,7 +100,8 @@
     "navigationLabel": "Điều hướng",
     "language": "Ngôn ngữ",
     "selectLanguage": "Chọn ngôn ngữ",
-    "voices": "Giọng nói"
+    "voices": "Giọng nói",
+    "contact": "Liên hệ"
   },
   "footer": {
     "tagline": "Công cụ chạy trên trình duyệt và có máy chủ hỗ trợ để chỉnh sửa, chuyển đổi, nén, phân tích, chép lời, tóm tắt và xử lý tệp hình ảnh, video và âm thanh theo nhiều cách khác.",

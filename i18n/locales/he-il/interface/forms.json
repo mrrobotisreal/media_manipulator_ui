@@ -142,14 +142,14 @@
       "upscale": {
         "scaleLabel": "קנה מידה",
         "scale4x": "4x",
-        "scale2x": "2x (ניסיוני בחלק מהתמונות)",
+        "scale2x": "2x",
         "modelLabel": "מודל",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (תצלומים)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "הגדלת AI פי 2 זמינה, אך 4x הוא נתיב המודל הבטוח/ברירת המחדל בשרת זה.",
+        "experimentalNote": "4x הוא ברירת המחדל ומספק את התוצאות העקביות ביותר. 2x מריץ את אותו מודל בחצי קנה מידה ועלול להיראות חתוך מעט בחלק מהתמונות.",
         "pngNote": "הפלט הוא PNG כברירת מחדל."
       },
       "removeObject": {

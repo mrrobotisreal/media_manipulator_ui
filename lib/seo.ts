@@ -521,6 +521,37 @@ const ROUTES: RouteSeo[] = [
       ]),
     ],
   },
+  // MM85: who runs the site and how to reach them.
+  {
+    path: '/contact',
+    title: 'Contact Media Manipulator | Support, Privacy and Press',
+    description:
+      'Contact the people behind Media Manipulator: support and billing at support@media-manipulator.com, privacy requests at privacy@media-manipulator.com, or the contact form. We usually reply within two business days.',
+    canonicalUrl: buildCanonical('/contact'),
+    ogTitle: 'Contact Media Manipulator',
+    ogDescription:
+      'Support, billing, privacy and press contacts for Media Manipulator, operated by CreaTV Ltd.',
+    ogType: 'website',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: ['contact Media Manipulator', 'Media Manipulator support', 'CreaTV Ltd contact'],
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ContactPage',
+        name: 'Contact Media Manipulator',
+        url: buildCanonical('/contact'),
+        description:
+          'Support, billing, privacy and press contacts for Media Manipulator, operated by CreaTV Ltd.',
+        isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: SITE_ORIGIN },
+        mainEntity: organizationLd,
+      },
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Contact', path: '/contact' },
+      ]),
+    ],
+  },
   {
     path: '/how-it-works',
     title:

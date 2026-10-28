@@ -140,14 +140,14 @@
       "upscale": {
         "scaleLabel": "Facteur",
         "scale4x": "4x",
-        "scale2x": "2x (expérimental sur certaines images)",
+        "scale2x": "2x",
         "modelLabel": "Modèle",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (photos)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "L'agrandissement IA 2x est disponible, mais le 4x est le modèle le plus fiable et celui par défaut sur ce serveur.",
+        "experimentalNote": "Le 4x est la valeur par défaut et donne les résultats les plus constants. Le 2x exécute le même modèle à moitié échelle et peut paraître légèrement recadré sur certaines images.",
         "pngNote": "La sortie est en PNG par défaut."
       },
       "removeObject": {

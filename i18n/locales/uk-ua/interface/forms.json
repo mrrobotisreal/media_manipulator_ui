@@ -142,14 +142,14 @@
       "upscale": {
         "scaleLabel": "Масштаб",
         "scale4x": "4x",
-        "scale2x": "2x (експериментально для деяких зображень)",
+        "scale2x": "2x",
         "modelLabel": "Модель",
         "models": {
           "realesrgan-x4plus": "realesrgan-x4plus (фотографії)",
           "realesrgan-x4plus-anime": "realesrgan-x4plus-anime",
           "realesr-animevideov3": "realesr-animevideov3"
         },
-        "experimentalNote": "ШІ-збільшення 2x доступне, але 4x — найбезпечніший варіант за умовчанням на цьому сервері.",
+        "experimentalNote": "4x — значення за замовчуванням, воно дає найстабільніші результати. 2x запускає ту саму модель у половинному масштабі, і на деяких зображеннях кадр може виглядати трохи обрізаним.",
         "pngNote": "За умовчанням вивід у форматі PNG."
       },
       "removeObject": {

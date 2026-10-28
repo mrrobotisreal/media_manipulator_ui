@@ -177,6 +177,11 @@ export const EVENTS = {
   VOICE_CREATED: 'voice_created',
   VOICE_GENERATED: 'voice_generated',
 
+  // --- Trust (MM85) -----------------------------------------------------------
+  // One per contact-form submission that reached the API (or failed to). No name,
+  // email or message ever; the API keeps no row, the support mailbox is the record.
+  CONTACT_SUBMITTED: 'contact_submitted',
+
   // --- Quality --------------------------------------------------------------
   CLIENT_ERROR: 'client_error',
   WEB_VITAL: 'web_vital',
@@ -314,6 +319,9 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   // Voices (MM79)
   voice_created: PRIORITY_NORMAL,
   voice_generated: PRIORITY_NORMAL,
+
+  // Trust (MM85)
+  contact_submitted: PRIORITY_NORMAL,
 
   // Quality
   client_error: PRIORITY_HIGH,
@@ -1069,6 +1077,15 @@ export interface VoiceGeneratedProps {
   source: VoiceSourceProp;
 }
 
+/** The contact form's subject select (the API's closed vocabulary). */
+export type ContactSubjectProp = 'bug' | 'billing' | 'privacy' | 'press' | 'other';
+
+export interface ContactSubmittedProps {
+  subject: ContactSubjectProp;
+  /** True when the API accepted the message (202); false for every refusal or error. */
+  ok: boolean;
+}
+
 export interface ClientErrorProps {
   message: string;
   /** Hash of message+stack, used to dedupe an error loop down to one event. */
@@ -1195,6 +1212,8 @@ export interface EventPropsMap {
 
   voice_created: VoiceCreatedProps;
   voice_generated: VoiceGeneratedProps;
+
+  contact_submitted: ContactSubmittedProps;
 
   client_error: ClientErrorProps;
   web_vital: WebVitalProps;

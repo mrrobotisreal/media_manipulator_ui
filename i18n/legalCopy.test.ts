@@ -340,7 +340,8 @@ describe("MM78 voices legal copy", () => {
     it(`${code}: §1.10, §8.11, the §1 bullet, §3.4, §3.5, §4 models and the 2026-10-28 dates`, () => {
       const pages = load(code);
       const p110 = pages.privacyPolicy.sections[0].subsections ?? [];
-      expect(p110).toHaveLength(10);
+      // MM85 appends §1.11 (contact messages) after §1.10.
+      expect(p110.length).toBeGreaterThanOrEqual(10);
       expect(p110[9].title).toMatch(/^1\.10 /);
       expect(p110[9].paragraphs).toHaveLength(4);
       expect(flatten(p110[9])).toContain("voices/");
@@ -365,6 +366,37 @@ describe("MM78 voices legal copy", () => {
       const panels = JSON.parse(readFileSync(join(__dirname, "locales", code.toLowerCase(), "interface", "panels.json"), "utf8"));
       const label = String(panels.voiceTools.consent.label).replace(/[.。।۔]\s*$/u, "");
       expect(t8[10].paragraphs?.[1]).toContain(label.slice(0, 40));
+    });
+  }
+});
+
+describe("MM85 contact-form legal copy", () => {
+  it("en-us names what the form collects, where it goes and how long it is kept", () => {
+    const p111 = flatten(en.privacyPolicy.sections[0].subsections?.[10]);
+    for (const fact of ["contact form", "your name, your email address", "Resend", "not stored in our application database", "until the conversation is closed", "12 months", "rate-limited"]) {
+      expect(p111).toContain(fact);
+    }
+    expect(en.privacyPolicy.sections[15].paragraphs?.[0]).toContain("media-manipulator.com/contact");
+    expect(en.legalCommon.whatChangedBody.startsWith("We added a contact form")).toBe(true);
+  });
+
+  for (const { code } of locales) {
+    it(`${code}: §1.11 after §1.10, §16 points to the form, the what-changed note leads with it`, () => {
+      const pages = load(code);
+      const subs = pages.privacyPolicy.sections[0].subsections ?? [];
+      expect(subs).toHaveLength(11);
+      expect(subs[10].title).toMatch(/^1\.11 /);
+      expect(subs[10].paragraphs).toHaveLength(2);
+      expect(flatten(subs[10])).toContain("Resend");
+      expect(flatten(subs[10])).toMatch(/12/);
+      expect(flatten(subs[10])).toContain("media-manipulator.com/contact");
+      const contact = pages.privacyPolicy.sections[15];
+      expect(contact.paragraphs).toHaveLength(2);
+      expect(contact.paragraphs?.[0]).toContain("media-manipulator.com/contact");
+      expect(contact.paragraphs?.[0]).toContain("1.11");
+      expect(pages.legalCommon.whatChangedBody).toContain("1.11");
+      // Terms are unchanged by MM85 (decision 11).
+      expect(flatten(pages.termsOfService)).not.toContain("media-manipulator.com/contact");
     });
   }
 });

@@ -50,17 +50,19 @@ const TODAY_URLS = [
 /** MM48: Motion's tool page beside Darkroom, and MM47's /licenses page. */
 const MM48_URLS = ['/tools/motion', '/licenses'].map((p) => new URL(p, ORIGIN).toString());
 /** The flag-off sitemap since MM48: the pre-MM34 list with Motion and /licenses in the core block. */
-const REVIEW_SAFE_URLS = [...TODAY_URLS.slice(0, 2), MM48_URLS[0], ...TODAY_URLS.slice(2, 10), MM48_URLS[1], ...TODAY_URLS.slice(10)];
+/** MM85: the contact page joins the core block after /licenses. */
+const MM85_CONTACT_URL = new URL('/contact', ORIGIN).toString();
+const REVIEW_SAFE_URLS = [...TODAY_URLS.slice(0, 2), MM48_URLS[0], ...TODAY_URLS.slice(2, 10), MM48_URLS[1], MM85_CONTACT_URL, ...TODAY_URLS.slice(10)];
 
 const urls = () => sitemap().map((e) => e.url);
 
 afterEach(() => vi.unstubAllEnvs());
 
 describe('MM34 flag off (default)', () => {
-  it('sitemap equals the pre-MM34 review-safe list plus the two MM48 core routes, exactly', () => {
+  it('sitemap equals the pre-MM34 review-safe list plus the MM48 and MM85 core routes, exactly', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
     expect(urls()).toEqual(REVIEW_SAFE_URLS);
-    expect(urls()).toHaveLength(27);
+    expect(urls()).toHaveLength(28);
     for (const u of TODAY_URLS) expect(urls()).toContain(u);
   });
 
@@ -122,11 +124,11 @@ describe('MM34 flag on', () => {
     for (const u of TODAY_URLS) expect(list).toContain(u);
   });
 
-  it('URL count = core (12) + tool slugs + blog + tutorials + changelog', () => {
+  it('URL count = core (13) + tool slugs + blog + tutorials + changelog', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'true');
     // /tools/content-studio and /tools/motion are core routes, so they are not double counted.
     const toolsOutsideCore = TOOL_PAGES.filter((t) => t.slug !== 'content-studio' && t.slug !== 'motion').length;
-    const expected = 12 + toolsOutsideCore + BLOG_POSTS.length + 6 + 1;
+    const expected = 13 + toolsOutsideCore + BLOG_POSTS.length + 6 + 1;
     expect(urls()).toHaveLength(expected);
     expect(urls()).toContain(new URL('/changelog', ORIGIN).toString());
   });
