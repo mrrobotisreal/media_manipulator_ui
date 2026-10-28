@@ -112,6 +112,10 @@ The voice changer's two modes. **Shift** is rubberband pitch + formant on the se
 **Warm**:
 Capabilities `warm: true` means the voice engine is loaded; while a request runs against a cold engine the page shows "Warming up the voice engine…" (`components/voices/warming-up.tsx`).
 
+**Darkroom voiceover** (MM79):
+The media bin's **Generate voiceover** action (`components/content-studio/voiceover-generate-dialog.tsx`, client `lib/studio/voiceoverGenerate.ts`): a saved voice (signed in) or a preset renders text through `POST /api/studio/projects/:id/voiceover`, and the WAV becomes an ordinary audio **asset** of the project, placed at the playhead. Shown only when `StudioBackendCapabilities.voices` is true, which the MM backend learns from `GET /api/studio/capabilities`; the CreaTV embed always reports `voices: false`. Not to be confused with the **recorded voiceover** (the mic button, `voiceover-recorder.tsx`).
+_Avoid_: "TTS clip", "AI narration" in code or copy.
+
 ### Video summary (MM75)
 
 **Summary (result kind)**:

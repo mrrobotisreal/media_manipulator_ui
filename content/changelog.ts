@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM79: Darkroom voiceover from a saved or preset voice.
+  {
+    id: '2026-10-28-darkroom-voiceover',
+    date: '2026-10-28',
+    title: 'Generate a voiceover from a saved voice inside Darkroom',
+    body: 'Darkroom\'s media bin has a new Generate voiceover button next to the microphone. Type a script, pick one of your saved voices or a preset voice and a language, and the voiceover is rendered on our own servers, added to the project as an audio clip and placed at the playhead, just like a recorded voiceover. Saved voices need you to be signed in; the preset voices work for everyone. Each voiceover counts as one AI job, a failed one is not counted, and the length of text per request depends on your plan. The button only appears when the voice engine is available.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Darkroom', href: '/tools/content-studio' },
+      { label: 'Clone your voice', href: '/tools/voice-cloning' },
+    ],
+  },
   // MM75: video and audio summaries (the MM74 pipeline).
   {
     id: '2026-10-28-video-summaries',
