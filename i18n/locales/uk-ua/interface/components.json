@@ -262,6 +262,15 @@
     "ariaLabel": "Result",
     "download": "Download",
     "downloadFailed": "Download failed. Try again.",
+    "downloadStatus": {
+      "preparing": "Готуємо завантаження…",
+      "started": "Завантаження почалося — перевірте завантаження браузера.",
+      "startedWithSize": "Завантаження почалося ({{size}}) — перевірте завантаження браузера.",
+      "failed": "Не вдалося почати завантаження.",
+      "gone": "Цей результат більше не доступний для завантаження.",
+      "retry": "Спробувати ще раз",
+      "noRecharge": "Повторне завантаження не запускає завдання знову й нічого не списує."
+    },
     "compare": "Compare",
     "original": "Original",
     "result": "Result",

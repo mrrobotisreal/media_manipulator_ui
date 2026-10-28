@@ -23,6 +23,14 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM80: large results download through the browser's download manager.
+  {
+    id: '2026-10-28-large-downloads',
+    date: '2026-10-28',
+    title: 'Large results now download reliably, with clear feedback',
+    body: 'Downloading a very large result, such as the vocal or instrumental track of a long recording, could sit on a spinner and never produce a file. Downloads now go straight to your browser\'s own download manager, so even files close to a gigabyte arrive with the browser\'s progress bar and can be paused and resumed. The Download button says "Preparing download…" while it gets ready, then a line under it confirms that the download has started, with the file size. If something goes wrong you see why, with a Try again button. Downloading a result again never runs the job again and never uses up an operation.',
+    tags: ['fixed', 'improved'],
+  },
   // MM75: video and audio summaries (the MM74 pipeline).
   {
     id: '2026-10-28-video-summaries',

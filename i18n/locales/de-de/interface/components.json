@@ -258,6 +258,15 @@
     "ariaLabel": "Result",
     "download": "Download",
     "downloadFailed": "Download failed. Try again.",
+    "downloadStatus": {
+      "preparing": "Download wird vorbereitet…",
+      "started": "Dein Download hat begonnen – sieh in den Downloads deines Browsers nach.",
+      "startedWithSize": "Dein Download hat begonnen ({{size}}) – sieh in den Downloads deines Browsers nach.",
+      "failed": "Der Download konnte nicht gestartet werden.",
+      "gone": "Dieses Ergebnis kann nicht mehr heruntergeladen werden.",
+      "retry": "Erneut versuchen",
+      "noRecharge": "Erneutes Herunterladen führt den Auftrag nicht noch einmal aus und kostet nichts."
+    },
     "compare": "Compare",
     "original": "Original",
     "result": "Result",

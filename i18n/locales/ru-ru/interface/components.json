@@ -262,6 +262,15 @@
     "ariaLabel": "Result",
     "download": "Download",
     "downloadFailed": "Download failed. Try again.",
+    "downloadStatus": {
+      "preparing": "Готовим скачивание…",
+      "started": "Скачивание началось — проверьте загрузки браузера.",
+      "startedWithSize": "Скачивание началось ({{size}}) — проверьте загрузки браузера.",
+      "failed": "Не удалось начать скачивание.",
+      "gone": "Этот результат больше недоступен для скачивания.",
+      "retry": "Повторить",
+      "noRecharge": "Повторное скачивание не запускает задачу заново и ничего не списывает."
+    },
     "compare": "Compare",
     "original": "Original",
     "result": "Result",

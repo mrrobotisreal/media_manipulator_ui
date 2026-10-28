@@ -1,9 +1,8 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-import { analytics, EVENTS, safeFileExtension, useToolAnalytics } from '@/lib/analytics';
-import useDownloadFile from '@/lib/useDownloadFile';
-import { saveBlobToDisk } from './save';
+import { useCallback } from 'react';
+import { useToolAnalytics } from '@/lib/analytics';
+import { downloadResult, useDownloadStatus } from './downloadController';
 import { peekResultBlob } from './useResultBlob';
 
 export interface ResultDownloadOptions {
@@ -15,55 +14,36 @@ export interface ResultDownloadOptions {
    * shared blob cache.
    */
   cachedBlob?: Blob | null;
-  /** After a download that actually produced a file (the post-conversion upgrade nudge). */
+  /** Known result size, for the "download started" line. */
+  sizeBytes?: number;
+  /** After a download was handed to the browser (the post-conversion upgrade nudge). */
   onDownloaded?: () => void;
 }
 
 /**
- * The default Download action: serve the blob the viewer already holds, else fetch it.
- *
- * useDownloadFile emits download_started/completed/failed around the FETCH. When the viewer
- * already loaded the bytes there is no fetch, so nothing would record what is, to the
- * visitor, a download; the cached path therefore emits download_completed itself. Emitting
- * on both paths would double-count the site's most important conversion event.
+ * The default Download action (MM80): save small bytes the viewer already holds, otherwise get
+ * a signed link and let the browser's download manager fetch it. Never buffers a download in
+ * JS. Analytics and the double-click guard live in `downloadController`.
  */
-export function useResultDownload({ jobId, fileName, cachedBlob, onDownloaded }: ResultDownloadOptions) {
-  const { downloadFile } = useDownloadFile();
+export function useResultDownload({ jobId, fileName, cachedBlob, sizeBytes, onDownloaded }: ResultDownloadOptions) {
   const { track } = useToolAnalytics();
-  const [isDownloading, setDownloading] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const status = useDownloadStatus(jobId);
 
   const download = useCallback(async () => {
-    setDownloading(true);
-    setFailed(false);
-    try {
-      const cached = cachedBlob ?? peekResultBlob(jobId);
-      const blob = cached ?? (await downloadFile(jobId));
-      saveBlobToDisk(blob, fileName);
-      if (cached) {
-        track(
-          EVENTS.DOWNLOAD_COMPLETED,
-          { job_id: jobId, output_format: safeFileExtension(fileName), size_bytes: blob.size },
-          { job_id: jobId },
-        );
-      }
-      onDownloaded?.();
-    } catch (error) {
-      console.error('Result download failed', error);
-      setFailed(true);
-      // download_started/failed already fired for a failed FETCH; this covers the cached
-      // path only, where the work succeeded and the user still got nothing.
-      if (cachedBlob ?? peekResultBlob(jobId)) {
-        analytics.track(
-          EVENTS.DOWNLOAD_FAILED,
-          { job_id: jobId, reason: error instanceof Error ? error.message : 'unknown' },
-          { job_id: jobId },
-        );
-      }
-    } finally {
-      setDownloading(false);
-    }
-  }, [cachedBlob, downloadFile, fileName, jobId, onDownloaded, track]);
+    await downloadResult({
+      jobId,
+      fileName,
+      cachedBlob: cachedBlob ?? peekResultBlob(jobId),
+      sizeBytes,
+      track,
+      onDownloaded,
+    });
+  }, [cachedBlob, fileName, jobId, onDownloaded, sizeBytes, track]);
 
-  return { download, isDownloading, failed };
+  return {
+    download,
+    status,
+    isDownloading: status.phase === 'preparing',
+    failed: status.phase === 'failed',
+  };
 }

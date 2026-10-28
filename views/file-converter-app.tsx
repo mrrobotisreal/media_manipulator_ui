@@ -4,7 +4,7 @@ import React, { lazy, Suspense, useState, useCallback, useRef, useEffect, useMem
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Trans } from 'react-i18next';
-import { Upload, Download, Image, Video, Music, X, Settings, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
+import { Upload, Download, Loader2, Image, Video, Music, X, Settings, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
 import { cn, getFileType } from '@/lib/utils';
 import FilePreview from '@/components/file-preview';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -38,8 +38,8 @@ import useConvertFile, { type UploadFileResponse } from '@/lib/useConvertFile';
 import useTranscribeFile, { type TranscribeFormData, type TranscribeUploadResponse } from '@/lib/useTranscribeFile';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useGetJobStatus from '@/lib/useGetJobStatus';
-import useDownloadFile from '@/lib/useDownloadFile';
-import { saveBlobToDisk } from '@/lib/results/save';
+import { downloadResult, useDownloadStatus } from '@/lib/results/downloadController';
+import { DownloadStatusLine } from '@/components/results/download-status';
 import { describe as describeResult } from '@/lib/results/describe';
 import { peekResultBlob } from '@/lib/results/useResultBlob';
 import { ResultPanel } from '@/components/results/result-panel';
@@ -50,7 +50,6 @@ import {
   getVisitorId,
   normalizeMediaKind,
   safeFileExtension,
-  takeJobDuration,
   trackFileChoice,
   ToolAnalyticsProvider,
   useAnalytics,
@@ -110,6 +109,38 @@ const FileConverterApp: React.FC = () => (
     <FileConverterAppInner />
   </ToolAnalyticsProvider>
 );
+
+/**
+ * A history row's Download (MM80): its own spinner + "Preparing download…" label and the
+ * shared status line, read from the download controller by job id.
+ */
+function HistoryDownloadButton({ jobId, disabled, label, preparingLabel, onDownload }: {
+  jobId: string;
+  disabled: boolean;
+  label: string;
+  preparingLabel: string;
+  onDownload: () => void;
+}) {
+  const status = useDownloadStatus(jobId);
+  const preparing = status.phase === 'preparing';
+  return (
+    <div className="flex flex-col gap-1">
+      <button
+        type="button"
+        disabled={disabled || preparing}
+        aria-busy={preparing || undefined}
+        onClick={onDownload}
+        className="inline-flex items-center gap-1.5 text-sm bg-success text-success-foreground px-3 py-2 rounded-lg hover:bg-success/90 disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors"
+      >
+        {preparing && <Loader2 aria-hidden="true" className="size-4 animate-spin motion-reduce:animate-none" />}
+        {preparing ? preparingLabel : label}
+      </button>
+      {(status.phase === 'started' || status.phase === 'failed') && (
+        <DownloadStatusLine status={status} onRetry={onDownload} className="text-xs" />
+      )}
+    </div>
+  );
+}
 
 const FileConverterAppInner: React.FC = () => {
   const { t, formatFileSize, formatTime } = useLocalization(['interface', 'accessibility', 'error']);
@@ -205,7 +236,6 @@ const FileConverterAppInner: React.FC = () => {
     handleUploadStart(res.jobId);
   });
 
-  const { downloadFile } = useDownloadFile();
 
   const fileType = selectedFile ? getFileType(selectedFile) : null;
 
@@ -453,51 +483,31 @@ const FileConverterAppInner: React.FC = () => {
     }
   }, [autoOpenedResultJobId, conversionHistory, conversionJob?.id, conversionJob?.status, loadResultPreview]);
 
+  // MM80: small bytes already in memory are saved directly; anything else gets a signed link
+  // and the browser's own download manager (never `response.blob()` of a huge result).
+  // Status (preparing / started / failed) and the double-click guard live in the shared
+  // download controller, so this button, the history row and the result modal agree.
   const handleDownload = async (jobId = conversionJob?.id, fileName = getConvertedFilename()) => {
-    if (jobId) {
-      try {
-        const historyItem = conversionHistory.find(item => item.jobId === jobId);
-        const cached = historyItem?.blob ?? peekResultBlob(jobId);
-        const servedFromCache = !!cached;
-        const blob = cached || (await downloadFile(jobId));
-        if (!historyItem?.blob) {
-          setConversionHistory(prev => prev.map(item => item.jobId === jobId ? { ...item, blob } : item));
-        }
-        saveBlobToDisk(blob, fileName);
-        const mediaKind = normalizeMediaKind(historyItem?.mediaKind || fileType || undefined);
-
-        // useDownloadFile emits download_started/completed around the FETCH. This view
-        // frequently serves from a cached blob (the result modal already fetched it), and on
-        // that path no fetch happens — so the visitor's download would go unrecorded. Emit
-        // only for the cached path; emitting on both would double-count the site's most
-        // important conversion event.
-        if (servedFromCache) {
-          trackTool(
-            EVENTS.DOWNLOAD_COMPLETED,
-            {
-              job_id: jobId,
-              output_format: historyItem?.format || conversionOptions?.format || safeFileExtension(fileName),
-              size_bytes: blob.size,
-              duration_ms: takeJobDuration(jobId),
-            },
-            { job_id: jobId, media_kind: mediaKind },
-          );
-        }
-      } catch (error) {
-        console.error('Download failed:', error);
-        const mediaKind = normalizeMediaKind(
-          conversionHistory.find(item => item.jobId === jobId)?.mediaKind || fileType || undefined,
-        );
-        // download_failed is priority 0: the work succeeded and the user still got nothing.
-        trackTool(
-          EVENTS.DOWNLOAD_FAILED,
-          { job_id: jobId, reason: error instanceof Error ? error.message : 'unknown' },
-          { job_id: jobId, media_kind: mediaKind },
-        );
-        reportError(error, { stage: 'download' });
-      }
+    if (!jobId) return;
+    const historyItem = conversionHistory.find(item => item.jobId === jobId);
+    const mediaKind = normalizeMediaKind(historyItem?.mediaKind || fileType || undefined);
+    const result = await downloadResult({
+      jobId,
+      fileName,
+      cachedBlob: historyItem?.blob ?? peekResultBlob(jobId),
+      sizeBytes: historyItem?.resultSizeBytes,
+      track: trackTool,
+      trackOptions: { job_id: jobId, media_kind: mediaKind },
+      outputFormat: historyItem?.format || conversionOptions?.format || safeFileExtension(fileName),
+      includeJobDuration: true,
+    });
+    if (result.outcome === 'failed') {
+      console.error('Download failed:', result.error);
+      reportError(result.error, { stage: 'download' });
     }
   };
+
+  const mainDownloadStatus = useDownloadStatus(conversionJob?.id);
 
   const clearFile = () => {
     // `after` is what makes this event worth having: a reset following a failure is a RETRY
@@ -793,14 +803,13 @@ const FileConverterAppInner: React.FC = () => {
                           >
                             {t('interface:home.history.preview')}
                           </button>
-                          <button
-                            type="button"
+                          <HistoryDownloadButton
+                            jobId={item.jobId}
                             disabled={item.status !== 'completed'}
-                            onClick={() => void handleDownload(item.jobId, item.outputFileName)}
-                            className="text-sm bg-success text-success-foreground px-3 py-2 rounded-lg hover:bg-success/90 disabled:bg-surface-3 disabled:cursor-not-allowed transition-colors"
-                          >
-                            {t('interface:home.history.download')}
-                          </button>
+                            label={t('interface:home.history.download')}
+                            preparingLabel={t('interface:resultPanel.downloadStatus.preparing')}
+                            onDownload={() => void handleDownload(item.jobId, item.outputFileName)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -947,15 +956,32 @@ const FileConverterAppInner: React.FC = () => {
                 {conversionJob?.status === 'completed' && (
                   <div className="space-y-2">
                     <button
+                      type="button"
                       onClick={() => void handleDownload()}
-                      className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2"
+                      disabled={mainDownloadStatus.phase === 'preparing'}
+                      aria-busy={mainDownloadStatus.phase === 'preparing' || undefined}
+                      className="w-full bg-success text-success-foreground py-3 px-6 rounded-lg hover:bg-success/90 transition-colors flex items-center justify-center gap-2 disabled:cursor-wait disabled:opacity-80"
                     >
-                      <Download className="w-4 h-4" />
-                      {t('interface:home.download.downloadAs', { filename: getConvertedFilename() })}
+                      {mainDownloadStatus.phase === 'preparing' ? (
+                        <Loader2 aria-hidden="true" className="w-4 h-4 animate-spin motion-reduce:animate-none" />
+                      ) : (
+                        <Download aria-hidden="true" className="w-4 h-4" />
+                      )}
+                      {mainDownloadStatus.phase === 'preparing'
+                        ? t('interface:resultPanel.downloadStatus.preparing')
+                        : t('interface:home.download.downloadAs', { filename: getConvertedFilename() })}
                     </button>
-                    <p className="text-xs text-muted-foreground text-center">
-                      {t('interface:home.download.fileWillBeDownloaded', { filename: getConvertedFilename() })}
-                    </p>
+                    {mainDownloadStatus.phase === 'started' || mainDownloadStatus.phase === 'failed' ? (
+                      <DownloadStatusLine
+                        status={mainDownloadStatus}
+                        onRetry={() => void handleDownload()}
+                        className="justify-center text-center"
+                      />
+                    ) : (
+                      <p className="text-xs text-muted-foreground text-center">
+                        {t('interface:home.download.fileWillBeDownloaded', { filename: getConvertedFilename() })}
+                      </p>
+                    )}
                   </div>
                 )}
 

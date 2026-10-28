@@ -262,6 +262,15 @@
     "ariaLabel": "Result",
     "download": "Download",
     "downloadFailed": "Download failed. Try again.",
+    "downloadStatus": {
+      "preparing": "מכינים את ההורדה…",
+      "started": "ההורדה התחילה — בדקו את ההורדות בדפדפן.",
+      "startedWithSize": "ההורדה התחילה ({{size}}) — בדקו את ההורדות בדפדפן.",
+      "failed": "לא ניתן היה להתחיל את ההורדה.",
+      "gone": "התוצאה הזו כבר לא זמינה להורדה.",
+      "retry": "נסו שוב",
+      "noRecharge": "הורדה חוזרת אף פעם לא מריצה את העבודה מחדש ולא גובה עליה."
+    },
     "compare": "Compare",
     "original": "Original",
     "result": "Result",
