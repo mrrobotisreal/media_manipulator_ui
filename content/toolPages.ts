@@ -24,7 +24,7 @@ import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 
 import { RETENTION_PROMISE } from '@/content/retentionPromise';
-import { CATALOG_TOOL_PAGES } from '@/content/toolPagesCatalog';
+import { CATALOG_TOOL_PAGES, VOICE_TOOL_PAGES } from '@/content/toolPagesCatalog';
 
 export { RETENTION_PROMISE } from '@/content/retentionPromise';
 
@@ -8597,6 +8597,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // Catalog expansion (2026-10-28): converter features and format pairs that
   // were only reachable from the home page. Defined in content/toolPagesCatalog.ts.
   ...CATALOG_TOOL_PAGES,
+  // MM78 voices.
+  ...VOICE_TOOL_PAGES,
 ];
 
 export const TOOL_PAGE_MAP: Record<string, ToolPageContent> = TOOL_PAGES.reduce(

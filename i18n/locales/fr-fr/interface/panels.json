@@ -1138,5 +1138,219 @@
     "hint": "ou cliquez pour choisir un fichier sur votre ordinateur. Le fichier est lu uniquement pour ses métadonnées et supprimé après l’analyse ; rien n’est converti.",
     "largeFile": "Les fichiers de plus de {{size}} ne sont inspectés qu’à votre demande, pour qu’une grande vidéo ne soit pas envoyée par erreur.",
     "failed": "Le fichier n’a pas pu être inspecté. Le type n’est peut-être pas pris en charge, ou le fichier est trop volumineux pour votre offre."
+  },
+  "voiceTools": {
+    "loading": "Chargement des outils vocaux…",
+    "unavailable": {
+      "title": "Voix n'est pas disponible pour le moment",
+      "body": "Le moteur vocal est désactivé ou en cours de redémarrage, cet outil ne peut donc pas fonctionner pour l'instant. Rien n'a été comptabilisé. Veuillez réessayer plus tard.",
+      "shiftStillWorks": "Le changeur de hauteur ci-dessous n'a pas besoin du moteur vocal et fonctionne toujours."
+    },
+    "warmingUp": "Le moteur vocal se prépare, la première requête peut prendre jusqu'à 20 secondes.",
+    "honesty": "La parole produite avec une voix enregistrée ou prédéfinie porte un filigrane inaudible ; l'audio modifié avec le changeur de hauteur n'en porte pas. N'utilisez que votre propre voix, ou une voix que vous avez le droit d'utiliser. Rien de ce que vous enregistrez ou générez n'est utilisé pour entraîner un modèle, et les moteurs vocaux fonctionnent sur nos propres serveurs.",
+    "signIn": {
+      "title": "Connectez-vous pour enregistrer une voix",
+      "body": "Une voix enregistrée a besoin d'un propriétaire et d'une preuve de consentement : cloner une voix, conserver une voix conçue, convertir vers une voix et Mes voix nécessitent donc un compte. Rien n'est envoyé tant que vous ne vous êtes pas connecté.",
+      "cta": "Se connecter"
+    },
+    "recorder": {
+      "record": "Enregistrer",
+      "recording": "Enregistrement en cours",
+      "stop": "Arrêter",
+      "cancel": "Annuler l'enregistrement",
+      "level": "Niveau du microphone",
+      "or": "ou",
+      "upload": "Envoyer un fichier audio",
+      "remove": "Retirer",
+      "recorded": "Votre enregistrement, {{duration}}",
+      "uploaded": "{{name}}, {{duration}}",
+      "measuring": "Lecture de la durée du fichier…",
+      "unknownLength": "La durée de ce fichier n'a pas pu être lue dans le navigateur ; le serveur la vérifiera.",
+      "tooShort": "L'enregistrement dure {{seconds}} secondes. Une voix nécessite au moins 5 secondes de parole.",
+      "tooLong": "L'enregistrement dure {{seconds}} secondes. Limitez-le à 60 secondes maximum.",
+      "referenceHint": "Enregistrez ou envoyez de 5 à 60 secondes de parole claire dans une pièce calme. Lisez quelques phrases naturelles.",
+      "inputHint": "Enregistrez ou envoyez la parole que vous voulez modifier.",
+      "micDenied": "L'accès au microphone a été bloqué. Autorisez le microphone pour ce site dans la barre d'adresse de votre navigateur, ou envoyez plutôt un fichier.",
+      "micHostBlocked": "La page qui héberge cet outil n'a pas autorisé l'accès au microphone. Envoyez plutôt un fichier.",
+      "micUnavailable": "L'enregistrement n'est pas disponible dans ce navigateur. Envoyez plutôt un fichier audio."
+    },
+    "consent": {
+      "label": "Il s'agit de ma voix, ou j'ai l'autorisation explicite de la personne à qui appartient cette voix.",
+      "note": "Nous conservons avec la voix l'heure de cette confirmation et la version de ce texte ({{version}}). Voir la section 8.11 des Conditions."
+    },
+    "clone": {
+      "title": "Créer une voix à partir d'un enregistrement",
+      "nameLabel": "Nom de la voix",
+      "namePlaceholder": "Ma voix",
+      "languageLabel": "Langue de l'enregistrement",
+      "create": "Créer la voix",
+      "creating": "Création de votre voix…",
+      "created": "Voix créée. Écoutez son aperçu dans Mes voix.",
+      "signInToCreate": "Connectez-vous pour créer la voix",
+      "limitReached": "Vous avez enregistré {{used}} voix sur {{limit}} dans votre offre. Supprimez-en une dans Compte, Voix, ou passez à une offre supérieure pour en enregistrer davantage.",
+      "noSaving": "Votre offre ne permet pas d'enregistrer des voix.",
+      "usage": "{{used}} voix enregistrées sur {{limit}}",
+      "usageUnlimited": "{{used}} voix enregistrées"
+    },
+    "myVoices": {
+      "title": "Mes voix",
+      "empty": "Aucune voix enregistrée pour le moment.",
+      "preview": "Aperçu de {{name}}",
+      "use": "Utiliser cette voix",
+      "inUse": "Sélectionnée",
+      "manage": "Gérer vos voix dans Compte",
+      "kinds": {
+        "cloned": "Clonée",
+        "designed": "Conçue",
+        "preset": "Prédéfinie"
+      }
+    },
+    "picker": {
+      "label": "Voix",
+      "saved": "Mes voix",
+      "presets": "Voix prédéfinies",
+      "none": "Aucune voix n'est encore disponible."
+    },
+    "speak": {
+      "title": "Générer de la parole",
+      "textLabel": "Texte à prononcer",
+      "placeholder": "Saisissez ce que la voix doit dire.",
+      "counter": "{{used}} caractères sur {{max}}",
+      "overLimit": "Ce texte dépasse ce que votre offre autorise par requête ({{max}} caractères).",
+      "languageLabel": "Langue",
+      "exaggerationLabel": "Émotion",
+      "exaggerationHint": "Plus bas, plus calme ; plus haut, plus expressif.",
+      "generate": "Générer la parole",
+      "generating": "Génération…",
+      "notAllowed": "Votre offre n'inclut pas la génération de parole."
+    },
+    "designer": {
+      "title": "Décrire une voix",
+      "descriptionLabel": "Description",
+      "placeholder": "Chaleureuse, grave, légèrement rauque, d'âge mûr, calme",
+      "hint": "Décrivez comment la voix doit sonner. Le moteur comprend mieux les descriptions en anglais ; les puces ci-dessous ajoutent des traits courants.",
+      "languageLabel": "Langue de l'aperçu",
+      "languageNote": "Une voix conçue est créée dans l'une de ces langues ; une fois conservée, elle peut parler toutes les langues de l'outil de parole.",
+      "chipGroups": {
+        "gender": "Genre",
+        "age": "Âge",
+        "accent": "Accent",
+        "tone": "Timbre",
+        "pace": "Débit"
+      },
+      "chips": {
+        "female": "Féminine",
+        "male": "Masculine",
+        "neutral": "Androgyne",
+        "young": "Jeune adulte",
+        "middleAged": "D'âge mûr",
+        "older": "Âgée",
+        "american": "Américain",
+        "british": "Britannique",
+        "australian": "Australien",
+        "irish": "Irlandais",
+        "warm": "Chaleureuse",
+        "bright": "Claire",
+        "deep": "Grave",
+        "raspy": "Rauque",
+        "soft": "Douce",
+        "slow": "Lent",
+        "measured": "Posé",
+        "fast": "Rapide"
+      },
+      "preview": "Aperçu",
+      "previewing": "Création d'un aperçu…",
+      "previewsLeft": "Aperçus restants : {{left}} sur {{max}}",
+      "previewsUsed": "Vous avez utilisé les 3 aperçus de cette description. Conservez la voix, ou modifiez la description pour obtenir un nouvel aperçu.",
+      "previewLabel": "Aperçu de la voix décrite",
+      "keepTitle": "Conserver cette voix",
+      "nameLabel": "Nom de la voix",
+      "keep": "Conserver cette voix",
+      "keeping": "Enregistrement de la voix…",
+      "kept": "Voix enregistrée. Elle se trouve maintenant dans Mes voix.",
+      "signInToKeep": "Connectez-vous pour conserver cette voix"
+    },
+    "changer": {
+      "modeLabel": "Comment la modifier",
+      "modes": {
+        "shift": "Décaler (instantané)",
+        "convert": "Convertir vers une voix (IA)"
+      },
+      "shiftHint": "Décale instantanément la hauteur et le formant avec rubberband. Compte pour une opération. Le résultat ne porte pas de filigrane.",
+      "convertHint": "Fait sonner l'enregistrement comme une voix enregistrée ou prédéfinie. Compte pour une tâche IA. Le résultat porte un filigrane inaudible.",
+      "convertNotInPlan": "La conversion vers une voix ne fait pas partie de votre offre.",
+      "upgrade": "Voir les offres",
+      "signInToConvert": "Connectez-vous pour convertir vers une voix",
+      "targetLabel": "Convertir vers",
+      "convert": "Convertir",
+      "converting": "Conversion…"
+    },
+    "shifter": {
+      "semitonesLabel": "Hauteur",
+      "semitonesValue": "{{value}} demi-tons",
+      "formantLabel": "Formant",
+      "formants": {
+        "preserved": "Conserver le caractère de la voix",
+        "shifted": "Décaler avec la hauteur"
+      },
+      "presetsLabel": "Préréglages",
+      "presets": {
+        "deeper": "Plus grave",
+        "higher": "Plus aiguë",
+        "child": "Enfantine",
+        "elder": "Âgée",
+        "telephone": "Téléphone"
+      },
+      "shift": "Décaler la voix",
+      "shifting": "Décalage…"
+    },
+    "result": {
+      "working": "Traitement en cours…",
+      "failed": "La tâche vocale a échoué. Elle n'a pas été comptabilisée.",
+      "downloadMp3": "Télécharger le MP3",
+      "downloadWav": "Télécharger le WAV",
+      "wavPreparing": "Préparation du WAV…",
+      "wavFailed": "Le WAV n'a pas pu être créé dans ce navigateur. Téléchargez plutôt le MP3.",
+      "wavNote": "Le WAV est décodé à partir du MP3 dans votre navigateur.",
+      "another": "Recommencer"
+    },
+    "errors": {
+      "sign_in_required": "Connectez-vous pour enregistrer et utiliser vos propres voix.",
+      "consent_required": "Cochez la case pour confirmer qu'il s'agit de votre voix, ou que vous avez l'autorisation explicite de la personne qui parle.",
+      "reference_required": "Enregistrez ou envoyez d'abord de 5 à 60 secondes de parole.",
+      "reference_too_short": "L'enregistrement doit durer au moins 5 secondes.",
+      "reference_too_long": "L'enregistrement doit durer 60 secondes au maximum.",
+      "reference_too_large": "Le fichier d'enregistrement est trop volumineux.",
+      "no_speech_detected": "Nous n'avons pas détecté de parole dans cet enregistrement. Enregistrez quelques phrases dans une pièce calme.",
+      "not_audio": "Ce fichier n'est pas un enregistrement que nous pouvons lire.",
+      "name_invalid": "Donnez à la voix un nom de 1 à 60 caractères.",
+      "language_not_supported": "Cette langue n'est pas prise en charge pour cette voix.",
+      "voice_limit": "Vous avez atteint le nombre de voix enregistrées de votre offre ({{limit}}). Supprimez-en une ou passez à une offre supérieure pour en enregistrer davantage.",
+      "text_required": "Saisissez quelque chose à dire.",
+      "text_too_long": "Votre offre autorise jusqu'à {{limit}} caractères par requête.",
+      "exaggeration_invalid": "L'émotion doit être comprise entre 0,25 et 2.",
+      "voice_convert_not_in_plan": "La conversion vers une voix n'est pas incluse dans votre offre.",
+      "voice_input_too_long": "Votre offre autorise ici des enregistrements d'au plus {{limit}} secondes.",
+      "input_required": "Ajoutez l'enregistrement que vous voulez modifier.",
+      "input_too_large": "L'enregistrement est trop volumineux pour votre offre.",
+      "voice_required": "Choisissez une voix vers laquelle convertir.",
+      "voice_not_found": "Cette voix n'existe plus.",
+      "preset_not_found": "Cette voix prédéfinie n'est pas disponible.",
+      "description_required": "Décrivez la voix que vous voulez.",
+      "description_too_long": "Gardez la description sous 1000 caractères.",
+      "preview_limit": "Vous avez obtenu trois aperçus de cette description cette heure. Conservez la voix, ou modifiez la description.",
+      "session_required": "Les aperçus nécessitent une session de navigateur. Rechargez la page et réessayez.",
+      "semitones_invalid": "La hauteur doit être comprise entre -12 et 12 demi-tons.",
+      "shift_invalid": "Ces réglages de décalage ne sont pas valides.",
+      "voices_unavailable": "Le moteur vocal est indisponible pour le moment. Rien n'a été comptabilisé ; réessayez dans un instant.",
+      "voices_storage_unavailable": "Les voix enregistrées sont temporairement indisponibles. Rien n'a été comptabilisé.",
+      "voices_timeout": "Le moteur vocal a mis trop de temps. Rien n'a été comptabilisé.",
+      "voice_request_refused": "Le moteur vocal a refusé cette requête.",
+      "upload_failed": "L'envoi a échoué. Veuillez réessayer.",
+      "job_failed": "La tâche n'a pas pu être démarrée. Veuillez réessayer.",
+      "invalid_body": "Un élément de la requête n'était pas valide. Rechargez la page et réessayez.",
+      "rate_limited": "Trop de requêtes vocales durant la dernière heure. Veuillez réessayer plus tard.",
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    }
   }
 }

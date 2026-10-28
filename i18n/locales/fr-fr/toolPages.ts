@@ -296,6 +296,22 @@ const frToolPages = {
       name: 'Résumer une vidéo',
       tagline: 'Obtenez la transcription et une analyse JSON structurée d’un cours, d’une réunion ou d’un entretien, avec horodatage, sur nos propres serveurs GPU.',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: 'Clonage vocal',
+      tagline:
+        'Enregistrez ou envoyez de 5 à 60 secondes de votre propre voix, créez une voix et faites-lui lire n\'importe quel texte dans plus de vingt langues.',
+    },
+    'voice-designer': {
+      name: 'Concepteur de voix',
+      tagline:
+        'Décrivez une voix avec des mots, écoutez un aperçu et conservez celle qui vous plaît pour lire n\'importe quel texte dans plus de vingt langues.',
+    },
+    'voice-changer': {
+      name: 'Changeur de voix',
+      tagline:
+        'Décalez instantanément la hauteur et le caractère d\'un enregistrement, ou convertissez la parole vers une voix enregistrée ou prédéfinie grâce à l\'IA.',
+    },
   },
 } as const;
 

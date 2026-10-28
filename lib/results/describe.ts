@@ -263,6 +263,13 @@ const KIND_BY_TASK: Record<string, ResultKind> = {
   video_to_text: 'transcript',
   summarize_video: 'transcript',
   generate_vtt_captions: 'captions',
+  // MM78 voices: every voice job's result is speech.mp3 (audio). The job tools and the
+  // page tasks both map, whichever the surface passes.
+  voice_tts: 'audio',
+  voice_convert: 'audio',
+  voice_shift: 'audio',
+  voice_clone: 'audio',
+  voice_design: 'audio',
 };
 
 const isUsableMime = (mime: string | undefined): mime is string =>

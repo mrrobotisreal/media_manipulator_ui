@@ -1126,5 +1126,219 @@
     "hint": "hoặc nhấp để chọn từ máy tính của bạn. Tệp chỉ được đọc để lấy siêu dữ liệu và bị xóa sau khi phân tích; không có gì được chuyển đổi.",
     "largeFile": "Các tệp lớn hơn {{size}} chỉ được kiểm tra khi bạn yêu cầu, để video lớn không bị tải lên ngoài ý muốn.",
     "failed": "Không thể kiểm tra tệp. Có thể định dạng không được hỗ trợ hoặc tệp quá lớn so với gói của bạn."
+  },
+  "voiceTools": {
+    "loading": "Đang tải các công cụ giọng nói…",
+    "unavailable": {
+      "title": "Giọng nói hiện chưa dùng được",
+      "body": "Công cụ giọng nói đang tắt hoặc đang khởi động lại nên công cụ này không thể chạy lúc này. Chưa có gì bị tính vào hạn mức. Vui lòng thử lại sau.",
+      "shiftStillWorks": "Công cụ đổi cao độ bên dưới không cần công cụ giọng nói và vẫn dùng được."
+    },
+    "warmingUp": "Đang khởi động công cụ giọng nói, yêu cầu đầu tiên có thể mất tới 20 giây.",
+    "honesty": "Lời nói được tạo bằng giọng đã lưu hoặc giọng có sẵn mang một hình mờ âm thanh không nghe thấy được; âm thanh được thay đổi bằng công cụ đổi cao độ thì không có. Chỉ dùng giọng của chính bạn hoặc giọng bạn có quyền sử dụng. Không có gì bạn ghi âm hay tạo ra được dùng để huấn luyện bất kỳ mô hình nào, và các công cụ giọng nói chạy trên máy chủ của chính chúng tôi.",
+    "signIn": {
+      "title": "Đăng nhập để lưu giọng nói",
+      "body": "Một giọng nói đã lưu cần có chủ sở hữu và bản ghi sự đồng ý, nên việc sao chép giọng nói, giữ lại giọng nói đã thiết kế, chuyển sang một giọng nói và Giọng nói của tôi đều cần có tài khoản. Sẽ không có gì được tải lên cho đến khi bạn đăng nhập.",
+      "cta": "Đăng nhập"
+    },
+    "recorder": {
+      "record": "Ghi âm",
+      "recording": "Đang ghi âm",
+      "stop": "Dừng",
+      "cancel": "Hủy ghi âm",
+      "level": "Mức micro",
+      "or": "hoặc",
+      "upload": "Tải lên tệp âm thanh",
+      "remove": "Xóa",
+      "recorded": "Bản ghi âm của bạn, {{duration}}",
+      "uploaded": "{{name}}, {{duration}}",
+      "measuring": "Đang đọc độ dài của tệp…",
+      "unknownLength": "Không đọc được độ dài của tệp này trong trình duyệt; máy chủ sẽ kiểm tra.",
+      "tooShort": "Bản ghi âm dài {{seconds}} giây. Một giọng nói cần ít nhất 5 giây lời nói.",
+      "tooLong": "Bản ghi âm dài {{seconds}} giây. Hãy giữ trong 60 giây hoặc ít hơn.",
+      "referenceHint": "Ghi âm hoặc tải lên 5 đến 60 giây lời nói rõ ràng trong phòng yên tĩnh. Hãy đọc vài câu tự nhiên.",
+      "inputHint": "Ghi âm hoặc tải lên lời nói bạn muốn thay đổi.",
+      "micDenied": "Quyền truy cập micro đã bị chặn. Hãy cho phép micro cho trang này trên thanh địa chỉ của trình duyệt, hoặc tải lên một tệp thay thế.",
+      "micHostBlocked": "Trang chứa công cụ này chưa cho phép truy cập micro. Hãy tải lên một tệp thay thế.",
+      "micUnavailable": "Trình duyệt này không hỗ trợ ghi âm. Hãy tải lên một tệp âm thanh thay thế."
+    },
+    "consent": {
+      "label": "Đây là giọng của tôi, hoặc tôi có sự cho phép rõ ràng của người sở hữu giọng nói này.",
+      "note": "Chúng tôi lưu thời điểm bạn xác nhận điều này và phiên bản của nội dung này ({{version}}) cùng với giọng nói. Xem mục 8.11 của Điều khoản."
+    },
+    "clone": {
+      "title": "Tạo giọng nói từ bản ghi âm",
+      "nameLabel": "Tên giọng nói",
+      "namePlaceholder": "Giọng của tôi",
+      "languageLabel": "Ngôn ngữ của bản ghi âm",
+      "create": "Tạo giọng nói",
+      "creating": "Đang tạo giọng nói của bạn…",
+      "created": "Đã tạo giọng nói. Nghe thử trong Giọng nói của tôi.",
+      "signInToCreate": "Đăng nhập để tạo giọng nói",
+      "limitReached": "Bạn đã lưu {{used}} trên {{limit}} giọng nói theo gói của bạn. Hãy xóa một giọng trong Tài khoản, Giọng nói, hoặc nâng cấp để lưu thêm.",
+      "noSaving": "Gói của bạn không thể lưu giọng nói.",
+      "usage": "Đã lưu {{used}} trên {{limit}} giọng nói",
+      "usageUnlimited": "Đã lưu {{used}} giọng nói"
+    },
+    "myVoices": {
+      "title": "Giọng nói của tôi",
+      "empty": "Chưa có giọng nói nào được lưu.",
+      "preview": "Nghe thử {{name}}",
+      "use": "Dùng giọng nói này",
+      "inUse": "Đã chọn",
+      "manage": "Quản lý giọng nói của bạn trong Tài khoản",
+      "kinds": {
+        "cloned": "Sao chép",
+        "designed": "Thiết kế",
+        "preset": "Có sẵn"
+      }
+    },
+    "picker": {
+      "label": "Giọng nói",
+      "saved": "Giọng nói của tôi",
+      "presets": "Giọng nói có sẵn",
+      "none": "Chưa có giọng nói nào để dùng."
+    },
+    "speak": {
+      "title": "Tạo lời nói",
+      "textLabel": "Văn bản cần đọc",
+      "placeholder": "Nhập nội dung mà giọng nói sẽ đọc.",
+      "counter": "{{used}} trên {{max}} ký tự",
+      "overLimit": "Văn bản này dài hơn mức gói của bạn cho phép trong một yêu cầu ({{max}} ký tự).",
+      "languageLabel": "Ngôn ngữ",
+      "exaggerationLabel": "Cảm xúc",
+      "exaggerationHint": "Thấp hơn thì điềm tĩnh hơn, cao hơn thì giàu biểu cảm hơn.",
+      "generate": "Tạo lời nói",
+      "generating": "Đang tạo…",
+      "notAllowed": "Gói của bạn không bao gồm việc tạo lời nói."
+    },
+    "designer": {
+      "title": "Mô tả một giọng nói",
+      "descriptionLabel": "Mô tả",
+      "placeholder": "Ấm áp, trầm, hơi khàn, trung niên, điềm tĩnh",
+      "hint": "Mô tả giọng nói nên nghe như thế nào. Công cụ hiểu mô tả bằng tiếng Anh tốt nhất; các thẻ bên dưới thêm những đặc điểm thường gặp.",
+      "languageLabel": "Ngôn ngữ của bản nghe thử",
+      "languageNote": "Một giọng nói được thiết kế sẽ được tạo bằng một trong các ngôn ngữ này; sau khi được giữ lại, nó có thể nói mọi ngôn ngữ của công cụ lời nói.",
+      "chipGroups": {
+        "gender": "Giới tính",
+        "age": "Độ tuổi",
+        "accent": "Giọng vùng",
+        "tone": "Âm sắc",
+        "pace": "Tốc độ"
+      },
+      "chips": {
+        "female": "Nữ",
+        "male": "Nam",
+        "neutral": "Trung tính",
+        "young": "Thanh niên",
+        "middleAged": "Trung niên",
+        "older": "Lớn tuổi",
+        "american": "Mỹ",
+        "british": "Anh",
+        "australian": "Úc",
+        "irish": "Ireland",
+        "warm": "Ấm áp",
+        "bright": "Trong sáng",
+        "deep": "Trầm",
+        "raspy": "Khàn",
+        "soft": "Nhẹ nhàng",
+        "slow": "Chậm",
+        "measured": "Từ tốn",
+        "fast": "Nhanh"
+      },
+      "preview": "Nghe thử",
+      "previewing": "Đang tạo bản nghe thử…",
+      "previewsLeft": "Lượt nghe thử còn lại: {{left}} trên {{max}}",
+      "previewsUsed": "Bạn đã dùng hết 3 lượt nghe thử cho mô tả này. Hãy giữ lại giọng nói, hoặc đổi mô tả để nghe thử lại.",
+      "previewLabel": "Bản nghe thử của giọng nói đã mô tả",
+      "keepTitle": "Giữ giọng nói này",
+      "nameLabel": "Tên giọng nói",
+      "keep": "Giữ giọng nói này",
+      "keeping": "Đang lưu giọng nói…",
+      "kept": "Đã lưu giọng nói. Giờ nó nằm trong Giọng nói của tôi.",
+      "signInToKeep": "Đăng nhập để giữ giọng nói này"
+    },
+    "changer": {
+      "modeLabel": "Cách thay đổi",
+      "modes": {
+        "shift": "Đổi cao độ (tức thì)",
+        "convert": "Chuyển sang một giọng nói (AI)"
+      },
+      "shiftHint": "Đổi cao độ và formant bằng rubberband, tức thì. Được tính là một thao tác. Kết quả không có hình mờ âm thanh.",
+      "convertHint": "Làm cho bản ghi âm nghe như một giọng nói đã lưu hoặc có sẵn. Được tính là một tác vụ AI. Kết quả mang một hình mờ âm thanh không nghe thấy được.",
+      "convertNotInPlan": "Chuyển sang một giọng nói không nằm trong gói của bạn.",
+      "upgrade": "Xem các gói",
+      "signInToConvert": "Đăng nhập để chuyển sang một giọng nói",
+      "targetLabel": "Chuyển sang",
+      "convert": "Chuyển đổi",
+      "converting": "Đang chuyển đổi…"
+    },
+    "shifter": {
+      "semitonesLabel": "Cao độ",
+      "semitonesValue": "{{value}} nửa cung",
+      "formantLabel": "Formant",
+      "formants": {
+        "preserved": "Giữ nguyên đặc trưng của giọng",
+        "shifted": "Đổi cùng với cao độ"
+      },
+      "presetsLabel": "Mẫu có sẵn",
+      "presets": {
+        "deeper": "Trầm hơn",
+        "higher": "Cao hơn",
+        "child": "Như trẻ em",
+        "elder": "Lớn tuổi",
+        "telephone": "Điện thoại"
+      },
+      "shift": "Đổi giọng",
+      "shifting": "Đang đổi…"
+    },
+    "result": {
+      "working": "Đang xử lý…",
+      "failed": "Tác vụ giọng nói đã thất bại. Nó không bị tính vào hạn mức.",
+      "downloadMp3": "Tải xuống MP3",
+      "downloadWav": "Tải xuống WAV",
+      "wavPreparing": "Đang chuẩn bị WAV…",
+      "wavFailed": "Không thể tạo WAV trong trình duyệt này. Hãy tải xuống MP3 thay thế.",
+      "wavNote": "WAV được giải mã từ MP3 ngay trong trình duyệt của bạn.",
+      "another": "Bắt đầu lại"
+    },
+    "errors": {
+      "sign_in_required": "Đăng nhập để lưu và dùng các giọng nói của riêng bạn.",
+      "consent_required": "Hãy đánh dấu vào ô để xác nhận đây là giọng của bạn, hoặc bạn có sự cho phép rõ ràng của người nói.",
+      "reference_required": "Hãy ghi âm hoặc tải lên 5 đến 60 giây lời nói trước.",
+      "reference_too_short": "Bản ghi âm phải dài ít nhất 5 giây.",
+      "reference_too_long": "Bản ghi âm phải dài tối đa 60 giây.",
+      "reference_too_large": "Tệp ghi âm quá lớn.",
+      "no_speech_detected": "Chúng tôi không nghe thấy lời nói trong bản ghi âm đó. Hãy ghi âm vài câu trong phòng yên tĩnh.",
+      "not_audio": "Tệp đó không phải là bản ghi âm mà chúng tôi đọc được.",
+      "name_invalid": "Hãy đặt cho giọng nói một cái tên dài từ 1 đến 60 ký tự.",
+      "language_not_supported": "Ngôn ngữ đó không được hỗ trợ cho giọng nói này.",
+      "voice_limit": "Bạn đã đạt số giọng nói được lưu theo gói của mình ({{limit}}). Hãy xóa một giọng hoặc nâng cấp để lưu thêm.",
+      "text_required": "Hãy nhập nội dung cần nói.",
+      "text_too_long": "Gói của bạn cho phép tối đa {{limit}} ký tự mỗi yêu cầu.",
+      "exaggeration_invalid": "Cảm xúc phải nằm trong khoảng từ 0,25 đến 2.",
+      "voice_convert_not_in_plan": "Chuyển sang một giọng nói không có trong gói của bạn.",
+      "voice_input_too_long": "Gói của bạn cho phép bản ghi âm dài tối đa {{limit}} giây ở đây.",
+      "input_required": "Hãy thêm bản ghi âm bạn muốn thay đổi.",
+      "input_too_large": "Bản ghi âm quá lớn so với gói của bạn.",
+      "voice_required": "Hãy chọn một giọng nói để chuyển sang.",
+      "voice_not_found": "Giọng nói đó không còn tồn tại.",
+      "preset_not_found": "Giọng nói có sẵn đó không dùng được.",
+      "description_required": "Hãy mô tả giọng nói bạn muốn.",
+      "description_too_long": "Hãy giữ mô tả dưới 1000 ký tự.",
+      "preview_limit": "Bạn đã nghe thử mô tả này ba lần trong giờ qua. Hãy giữ lại giọng nói, hoặc đổi mô tả.",
+      "session_required": "Nghe thử cần có phiên trình duyệt. Hãy tải lại trang và thử lại.",
+      "semitones_invalid": "Cao độ phải nằm trong khoảng từ -12 đến 12 nửa cung.",
+      "shift_invalid": "Các thiết lập đổi giọng đó không hợp lệ.",
+      "voices_unavailable": "Công cụ giọng nói hiện không khả dụng. Chưa có gì bị tính vào hạn mức; hãy thử lại sau ít phút.",
+      "voices_storage_unavailable": "Các giọng nói đã lưu tạm thời không khả dụng. Chưa có gì bị tính vào hạn mức.",
+      "voices_timeout": "Công cụ giọng nói phản hồi quá lâu. Chưa có gì bị tính vào hạn mức.",
+      "voice_request_refused": "Công cụ giọng nói đã từ chối yêu cầu đó.",
+      "upload_failed": "Tải lên không thành công. Vui lòng thử lại.",
+      "job_failed": "Không thể bắt đầu tác vụ. Vui lòng thử lại.",
+      "invalid_body": "Có nội dung trong yêu cầu không hợp lệ. Hãy tải lại trang và thử lại.",
+      "rate_limited": "Có quá nhiều yêu cầu giọng nói trong giờ qua. Vui lòng thử lại sau.",
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+    }
   }
 }

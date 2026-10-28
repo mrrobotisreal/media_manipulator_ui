@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
  */
 
 /** Tasks that spend the AI allowance, matching the API's `ai_ops` routes. */
-const AI_TASKS = new Set(['ai_video_restoration', 'image_restoration', 'document_scan']);
+const AI_TASKS = new Set(['ai_video_restoration', 'image_restoration', 'document_scan', 'voice_clone', 'voice_design']);
 
 /** Which allowance a tool task spends. Everything else is an everyday conversion (`ops`). */
 export function quotaMetricForTask(task?: string): UsageMetric {

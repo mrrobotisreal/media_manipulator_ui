@@ -572,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Ngày hiệu lực: 24/10/2026",
-    "lastUpdated": "Cập nhật lần cuối: 26/10/2026",
+    "lastUpdated": "Cập nhật lần cuối: 28/10/2026",
     "operator": "Media Manipulator là sản phẩm và dịch vụ do CreaTV Ltd. vận hành.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Hoạt động dưới tên Media Manipulator",
     "location": "Colorado, Hoa Kỳ",
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Những thay đổi ngày 26/10/2026",
-    "whatChangedBody": "Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
+    "whatChangedTitle": "Những thay đổi ngày 28/10/2026",
+    "whatChangedBody": "Chúng tôi đã bổ sung các công cụ giọng nói: sao chép giọng của chính bạn từ một bản ghi âm, thiết kế một giọng nói từ mô tả, và thay đổi giọng nói trong một bản ghi âm. Chính sách quyền riêng tư có mục 1.10 mới về mẫu giọng nói và giọng nói được thiết kế: những gì chúng tôi lưu, việc chúng tôi chỉ dùng chúng để tạo và vận hành giọng nói bạn yêu cầu với sự đồng ý rõ ràng của bạn, việc chúng được lưu trong Amazon S3 theo thiết lập thời gian lưu giữ của bạn, không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào, và việc bạn có thể xóa chúng bất cứ lúc nào và chúng bị xóa cùng với tài khoản của bạn; các mục 3, 3.4, 3.5 và 4 nay có nhắc đến giọng nói. Điều khoản có mục 8.11 mới: bạn chỉ được tạo giọng nói từ giọng của chính bạn hoặc với sự cho phép rõ ràng của người đang nói; mạo danh, gian lận, deepfake chính trị và quấy rối đều không được phép; lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được còn âm thanh được đổi cao độ thì không; và chúng tôi có thể gỡ bỏ giọng nói và đình chỉ tài khoản. Mục 1 của Điều khoản liệt kê các công cụ giọng nói. Mọi nội dung từ bản cập nhật ngày 2026-10-26 vẫn được áp dụng: Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
   },
   "privacyPolicy": {
     "title": "Chính sách quyền riêng tư",
@@ -722,6 +722,15 @@
               "Không có tài khoản, dự án Motion chỉ được lưu trong trình duyệt của bạn (trong IndexedDB) và không bao giờ đến máy chủ của chúng tôi. Nếu bạn đã đăng nhập và chọn “Lưu vào tài khoản”, dự án cùng một hình thu nhỏ được lưu trên máy chủ của chúng tôi và trong Amazon S3 theo cách giống như dự án Darkroom: chúng là nội dung của bạn, tuân theo thời gian lưu giữ bạn chọn (Mục 3), bạn có thể xóa chúng từ trang Tài khoản, chúng bị xóa cùng tài khoản của bạn, và được liệt kê trong bản xuất dữ liệu của bạn.",
               "Mỗi lần xuất hoạt ảnh và mỗi lần nhập Lottie được đếm trên máy chủ của chúng tôi trước khi trình duyệt của bạn thực hiện, để áp dụng hạn mức Motion hằng ngày của gói bạn dùng. Với mỗi lần, chúng tôi lưu định dạng, chiều cao đầu ra, tốc độ khung hình và độ dài, thời điểm, gói của bạn, dự án đã lưu mà nó xuất phát (nếu có), và một mã định danh cho tài khoản, phiên trình duyệt hoặc địa chỉ IP đã băm của bạn. Chúng tôi sử dụng các bản ghi này để áp dụng hạn mức và để hiểu những định dạng nào được sử dụng. Khi bạn xóa tài khoản, chúng được tách khỏi danh tính của bạn."
             ]
+          },
+          {
+            "title": "1.10 Mẫu giọng nói và giọng nói được thiết kế",
+            "paragraphs": [
+              "Khi bạn dùng các công cụ giọng nói, chúng tôi xử lý các bản ghi âm giọng nói bạn ghi hoặc tải lên, các giọng nói bạn lưu, và văn bản bạn yêu cầu một giọng nói đọc (chỉ dùng để tạo lời nói đó). Một giọng nói đã lưu gồm tên của nó, loại của nó (sao chép từ bản ghi âm, hoặc thiết kế từ mô tả), ngôn ngữ của nó, với giọng nói được thiết kế thì có mô tả và hạt giống (seed) dùng để tạo ra nó, một bản ghi âm tham chiếu (bản ghi âm của bạn, hoặc với giọng nói được thiết kế là một đoạn 10 giây do chúng tôi tạo), một bản nghe thử ngắn, phiên bản của công cụ giọng nói và, với giọng nói được sao chép, thời điểm bạn xác nhận sự đồng ý và phiên bản của nội dung đồng ý.",
+              "Mục đích và cơ sở pháp lý: chúng tôi chỉ dùng các dữ liệu này để tạo và vận hành giọng nói bạn yêu cầu, tức là để tạo giọng nói, tạo bản nghe thử, và tạo hoặc chuyển đổi lời nói khi bạn yêu cầu. Bản ghi âm giọng của một người có thể xác định được người đó, nên chúng tôi xử lý nó với sự thận trọng mà dữ liệu thuộc danh mục đặc biệt (sinh trắc học) đòi hỏi và dựa trên sự đồng ý rõ ràng của bạn, được đưa ra bằng ô đồng ý trước khi một giọng nói được tạo từ bản ghi âm. Bạn có thể rút lại sự đồng ý bất cứ lúc nào bằng cách xóa giọng nói.",
+              "Lưu trữ: các giọng nói đã lưu được lưu trên máy chủ của chúng tôi và trong Amazon S3 tại voices/, trong tài khoản của bạn, và tuân theo thời gian lưu giữ bạn chọn (Mục 3). Các bản ghi âm bạn tải lên để thay đổi và lời nói bạn tạo ra được lưu giữ như mọi tệp tải lên và kết quả khác. Việc xử lý giọng nói chạy trên máy chủ GPU của chính chúng tôi: các bản ghi âm và giọng nói của bạn không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào. Lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được, đánh dấu chúng là âm thanh tổng hợp; hình mờ này không chứa thông tin tài khoản.",
+              "Xóa và xuất dữ liệu: bạn có thể xóa một giọng nói đã lưu bất cứ lúc nào từ Tài khoản, Giọng nói; bản ghi âm tham chiếu và bản nghe thử của nó bị xóa khỏi máy chủ của chúng tôi ngay lập tức, trong khi lời nói bạn đã tạo vẫn được giữ cho đến khi hết thời gian lưu giữ riêng của nó. Tất cả giọng nói đã lưu của bạn bị xóa khi bạn xóa tài khoản. Bản xuất dữ liệu của bạn liệt kê các giọng nói đã lưu (tên, loại, ngôn ngữ, ngày tháng và bản ghi sự đồng ý), không kèm âm thanh."
+            ]
           }
         ]
       },
@@ -748,7 +757,7 @@
         "id": "retention",
         "title": "3. Lưu trữ, lưu giữ và xóa tệp",
         "paragraphs": [
-          "Thời gian chúng tôi lưu giữ tệp của bạn phụ thuộc vào việc bạn có tài khoản hay không. Mục này bao gồm tệp tải lên, kết quả tạo ra, phương tiện Darkroom, dự án Darkroom và dự án Motion được lưu vào tài khoản của bạn, được lưu trữ trên máy chủ của chúng tôi và trong Amazon S3 (us-west-2). Các bản ghi về lượt chuyển đổi và cài đặt của bạn (như lịch sử tác vụ, lựa chọn thời gian lưu giữ và chi tiết tài khoản) được lưu trong cơ sở dữ liệu PostgreSQL, và việc xử lý AI chạy trên máy chủ GPU tự lưu trữ của chính chúng tôi."
+          "Thời gian chúng tôi lưu giữ tệp của bạn phụ thuộc vào việc bạn có tài khoản hay không. Mục này bao gồm tệp tải lên, kết quả tạo ra, phương tiện Darkroom, dự án Darkroom, dự án Motion và giọng nói đã lưu được lưu vào tài khoản của bạn, được lưu trữ trên máy chủ của chúng tôi và trong Amazon S3 (us-west-2). Các bản ghi về lượt chuyển đổi và cài đặt của bạn (như lịch sử tác vụ, lựa chọn thời gian lưu giữ và chi tiết tài khoản) được lưu trong cơ sở dữ liệu PostgreSQL, và việc xử lý AI chạy trên máy chủ GPU tự lưu trữ của chính chúng tôi."
         ],
         "subsections": [
           {
@@ -783,7 +792,7 @@
             ],
             "bullets": [
               "hủy gói đăng ký Premium hoặc Pro của bạn với Stripe, nếu bạn có;",
-              "xóa tệp của bạn cùng các dự án Darkroom và Motion;",
+              "xóa tệp của bạn, các dự án Darkroom và Motion cùng các giọng nói đã lưu của bạn;",
               "xóa bản ghi tài khoản và cài đặt của bạn, đồng thời tách các bản ghi hoạt động còn lại khỏi danh tính của bạn;",
               "yêu cầu hệ thống phân tích của bên thứ nhất xóa dữ liệu phân tích liên kết với tài khoản của bạn (xem Mục 6);",
               "xóa thông tin đăng nhập của bạn."
@@ -795,7 +804,7 @@
           {
             "title": "3.5 Xuất dữ liệu của bạn",
             "paragraphs": [
-              "Người dùng đã đăng nhập có thể tải xuống bản xuất dữ liệu của mình từ trang Tài khoản. Đó là một tệp ZIP chứa lịch sử, dự án, danh sách tệp, chi tiết tài khoản và báo cáo siêu dữ liệu của bạn. Nó không chứa chính các tệp phương tiện, nên hãy tải chúng xuống trước khi hết hạn. Việc xuất bị giới hạn ở một số lượng yêu cầu nhỏ mỗi giờ."
+              "Người dùng đã đăng nhập có thể tải xuống bản xuất dữ liệu của mình từ trang Tài khoản. Đó là một tệp ZIP chứa lịch sử, dự án, giọng nói đã lưu (không kèm âm thanh), danh sách tệp, chi tiết tài khoản và báo cáo siêu dữ liệu của bạn. Nó không chứa chính các tệp phương tiện, nên hãy tải chúng xuống trước khi hết hạn. Việc xuất bị giới hạn ở một số lượng yêu cầu nhỏ mỗi giờ."
             ]
           },
           {
@@ -823,7 +832,7 @@
         ],
         "afterBullets": [
           "Mọi xử lý AI mà Media Manipulator sử dụng đều được thực hiện cục bộ trên máy chủ của chính chúng tôi hoặc hạ tầng do chúng tôi kiểm soát. Chúng tôi không thuê ngoài việc xử lý tệp tải lên, kết quả tạo ra, bản chép lời, tóm tắt, mô tả hoặc quét an toàn nội dung cho các nhà cung cấp AI bên thứ ba.",
-          "Các tính năng AI sử dụng các mô hình và công cụ mở do chúng tôi tự vận hành, chủ yếu trên máy chủ GPU tự lưu trữ: Whisper để chép lời, Real-ESRGAN để nâng cấp hình ảnh, Demucs để tách âm thanh, và các mô hình cục bộ khác, cùng các mô hình ngôn ngữ và thị giác được phục vụ qua Ollama cho các tác vụ văn bản như tóm tắt, mô tả và dịch phụ đề.",
+          "Các tính năng AI sử dụng các mô hình và công cụ mở do chúng tôi tự vận hành, chủ yếu trên máy chủ GPU tự lưu trữ: Whisper để chép lời, Real-ESRGAN để nâng cấp hình ảnh, Demucs để tách âm thanh, Chatterbox và Qwen3-TTS để sao chép giọng nói, thiết kế giọng nói và tạo lời nói, và các mô hình cục bộ khác, cùng các mô hình ngôn ngữ và thị giác được phục vụ qua Ollama cho các tác vụ văn bản như tóm tắt, mô tả và dịch phụ đề.",
           "Điều này có nghĩa là khi các tính năng AI được sử dụng, tệp tải lên và kết quả tạo ra của bạn vẫn nằm trong môi trường xử lý của Media Manipulator và được xử lý theo các thực hành lưu trữ, lưu giữ, xóa và bảo mật được mô tả trong Chính sách quyền riêng tư này.",
           "Tệp tải lên và kết quả tạo ra được lưu giữ và xóa như mô tả tại Mục 3, kể cả khi các tính năng AI được sử dụng. Sau thời gian lưu giữ áp dụng, chúng bị xóa khỏi các hệ thống đang hoạt động của chúng tôi trừ khi được xóa sớm hơn hoặc pháp luật yêu cầu lưu giữ hạn chế vì mục đích bảo mật, ngăn chặn lạm dụng, tuân thủ pháp lý hoặc thực thi.",
           "Đầu ra do AI tạo ra có thể không hoàn hảo, không đầy đủ hoặc không chính xác. Người dùng chịu trách nhiệm xem xét mọi đầu ra do AI tạo ra trước khi dựa vào nó.",
@@ -1057,6 +1066,7 @@
           "chép lời, tạo phụ đề, tóm tắt và mô tả có hỗ trợ AI;",
           "phân loại an toàn nội dung và quét ngăn chặn lạm dụng;",
           "tạo, tạo hoạt ảnh và xuất đồ họa vector và hoạt ảnh bằng Motion;",
+          "tạo giọng nói từ bản ghi âm của chính bạn, thiết kế giọng nói từ mô tả, tạo lời nói từ văn bản và thay đổi giọng nói trong một bản ghi âm (Giọng nói, xem Mục 8.11);",
           "lịch sử chuyển đổi tạm thời và đầu ra đã xử lý có thể tải xuống."
         ],
         "afterBullets": [
@@ -1290,6 +1300,26 @@
             "paragraphs": [
               "Bạn không được sử dụng Media Manipulator để tạo hoặc tạo điều kiện cho nút tải xuống lừa đảo, lời nhắc cập nhật giả, cảnh báo vi-rút giả, luồng chuyển đổi gây hiểu lầm, hộp thoại hệ thống giả, hoặc nội dung được thiết kế để lừa người dùng nhấp vào quảng cáo, tải xuống phần mềm không mong muốn hoặc truy cập các website không mong muốn.",
               "Các nút tải xuống, nút chuyển đổi và điều khiển giao diện người dùng thực của Media Manipulator được thiết kế để phân biệt rõ ràng với quảng cáo."
+            ]
+          },
+          {
+            "title": "8.11 Giọng nói",
+            "paragraphs": [
+              "Các công cụ giọng nói cho phép bạn tạo một giọng nói đã lưu từ một bản ghi âm (sao chép giọng nói), thiết kế một giọng nói mới từ mô tả bằng văn bản, tạo lời nói từ văn bản bằng một giọng nói đã lưu hoặc có sẵn, và thay đổi giọng nói trong một bản ghi âm, bằng cách đổi cao độ và formant của nó hoặc bằng cách chuyển nó sang một giọng nói đã lưu hoặc có sẵn bằng AI.",
+              "Bạn chỉ được tạo giọng nói từ bản ghi âm giọng của chính bạn, hoặc của người khác đã cho phép bạn một cách rõ ràng. Trước khi một giọng nói được tạo từ bản ghi âm, bạn phải xác nhận: \"Đây là giọng của tôi, hoặc tôi có sự cho phép rõ ràng của người sở hữu giọng nói này.\" Chúng tôi lưu thời điểm bạn xác nhận và phiên bản của nội dung đó cùng với giọng nói; phiên bản hiện tại là 2026-10-28.",
+              "Bạn không được dùng các công cụ giọng nói, hoặc âm thanh được tạo bằng chúng, để:"
+            ],
+            "bullets": [
+              "mạo danh một người thật, còn sống hay đã mất, mà không có sự cho phép của họ (hoặc, nếu họ đã mất, sự cho phép của người nắm quyền đối với hình ảnh và giọng nói của họ);",
+              "thực hiện gian lận, lừa đảo hoặc phishing, bao gồm các cuộc gọi, tin nhắn thoại hoặc bản ghi âm giả mạo tự nhận đến từ một người hoặc tổ chức;",
+              "tạo hoặc phát tán deepfake chính trị, chẳng hạn các phát ngôn bịa đặt của ứng cử viên, quan chức hoặc nhân vật công chúng khác, hoặc âm thanh nhằm đánh lừa cử tri;",
+              "quấy rối, đe dọa, bắt nạt, phỉ báng hoặc uy hiếp bất kỳ ai;",
+              "qua mặt các biện pháp xác minh danh tính bằng giọng nói hoặc các hệ thống bảo mật khác;",
+              "tạo nội dung tình dục bằng giọng của một người thật mà không có sự đồng ý của họ."
+            ],
+            "afterBullets": [
+              "Lời nói được tạo bằng giọng nói đã lưu hoặc có sẵn, và các bản ghi âm được chuyển sang một giọng nói, mang một hình mờ âm thanh không nghe thấy được (PerTh) đánh dấu chúng là âm thanh tổng hợp. Âm thanh được thay đổi bằng công cụ đổi cao độ là xử lý tín hiệu thông thường và không có hình mờ. Bạn không được gỡ bỏ, thay đổi hoặc cố gắng vô hiệu hóa hình mờ này.",
+              "Chúng tôi có thể gỡ bỏ một giọng nói hoặc bất kỳ âm thanh nào được tạo bằng nó, và đình chỉ hoặc chấm dứt một tài khoản (Mục 18), nếu chúng tôi cho rằng các quy tắc này đã bị vi phạm. Không có gì bạn ghi âm, tải lên hoặc tạo bằng các công cụ giọng nói được dùng để huấn luyện bất kỳ mô hình AI nào."
             ]
           }
         ]
@@ -1714,6 +1744,7 @@
       "overview": "Tổng quan",
       "history": "Lịch sử",
       "projects": "Dự án",
+      "voices": "Giọng nói",
       "billing": "Thanh toán",
       "privacy": "Quyền riêng tư & dữ liệu",
       "profile": "Hồ sơ"
@@ -1883,7 +1914,43 @@
       "emailAlways": "Email chào mừng, thanh toán và xóa tài khoản luôn được gửi.",
       "emailSaveFailed": "Không lưu được tùy chọn email của bạn. Hãy thử lại."
     },
-    "retentionLabel": "Thời gian lưu kết quả"
+    "retentionLabel": "Thời gian lưu kết quả",
+    "voices": {
+      "intro": "Các giọng nói bạn đã sao chép từ bản ghi âm hoặc thiết kế từ mô tả. Xóa một giọng nói sẽ xóa bản ghi âm tham chiếu và bản nghe thử của nó khỏi máy chủ của chúng tôi.",
+      "loading": "Đang tải các giọng nói của bạn…",
+      "loadFailed": "Không tải được các giọng nói của bạn. Hãy tải lại để thử lại.",
+      "empty": "Bạn chưa có giọng nói nào được lưu.",
+      "emptyCta": "Hãy tạo một giọng nói bằng một trong các công cụ giọng nói:",
+      "tools": {
+        "clone": "Sao chép giọng của bạn",
+        "design": "Thiết kế một giọng nói",
+        "change": "Thay đổi giọng nói"
+      },
+      "usage": "{{used}} trên {{limit}} giọng nói",
+      "usageUnlimited": "{{used}} giọng nói",
+      "kinds": {
+        "cloned": "Sao chép",
+        "designed": "Thiết kế",
+        "preset": "Có sẵn"
+      },
+      "created": "Tạo ngày {{date}}",
+      "consent": "Đã xác nhận sự đồng ý ngày {{date}} (phiên bản nội dung {{version}})",
+      "noConsent": "Được thiết kế từ một mô tả; không có bản ghi âm của người thật",
+      "preview": "Nghe thử {{name}}",
+      "rename": "Đổi tên",
+      "renameLabel": "Tên mới cho {{name}}",
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "renamed": "Đã đổi tên giọng nói.",
+      "renameFailed": "Không đổi được tên giọng nói. Hãy dùng từ 1 đến 60 ký tự rồi thử lại.",
+      "delete": "Xóa",
+      "deleteTitle": "Xóa “{{name}}”?",
+      "deleteBody": "Giọng nói, bản ghi âm tham chiếu và bản nghe thử của nó sẽ bị xóa khỏi máy chủ của chúng tôi. Lời nói bạn đã tạo bằng giọng này vẫn phát được cho đến khi hết thời gian lưu giữ riêng của nó. Không thể hoàn tác thao tác này.",
+      "deleteConfirm": "Xóa giọng nói",
+      "deleted": "Đã xóa giọng nói.",
+      "deletedPending": "Đã xóa giọng nói. Một vài tệp vẫn đang được xóa ở chế độ nền.",
+      "deleteFailed": "Không xóa được giọng nói này. Không có gì thay đổi; hãy thử lại."
+    }
   },
   "homeContent": {
     "howItWorks": {
@@ -2041,6 +2108,26 @@
       "title": "Cần lồng tiếng cho bản dựng của bạn?",
       "body": "Hãy thử hai giọng ElevenLabs của tôi, kết xuất một câu thoại ở đó, rồi thêm âm thanh vào khay phương tiện của Darkroom.",
       "cta": "Tìm hiểu thêm về các giọng nói"
+    },
+    "makeYourOwn": {
+      "title": "Tự tạo giọng của bạn",
+      "intro": "Media Manipulator giờ có các công cụ giọng nói riêng, chạy trên các mô hình mở trên máy chủ của chính chúng tôi thay vì trên ElevenLabs. Hãy tạo một giọng nói từ bản ghi âm của bạn, thiết kế một giọng mới từ mô tả, hoặc thay đổi giọng nói trong một bản ghi âm.",
+      "note": "Lời nói được tạo ra mang một hình mờ âm thanh không nghe thấy được. Chỉ dùng giọng của chính bạn hoặc giọng bạn có quyền sử dụng.",
+      "cards": {
+        "clone": {
+          "title": "Sao chép giọng của bạn",
+          "body": "Ghi âm 5 đến 60 giây lời nói của chính bạn và để nó đọc bất kỳ văn bản nào bằng hơn 20 ngôn ngữ."
+        },
+        "design": {
+          "title": "Thiết kế một giọng nói",
+          "body": "Mô tả một giọng nói, nghe thử miễn phí và giữ lại giọng bạn thích."
+        },
+        "change": {
+          "title": "Thay đổi giọng nói",
+          "body": "Đổi cao độ của bản ghi âm tức thì, hoặc chuyển nó sang một giọng nói đã lưu."
+        }
+      },
+      "open": "Mở"
     }
   },
   "changelog": {

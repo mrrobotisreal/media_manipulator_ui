@@ -1,4 +1,4 @@
-export const ACCOUNT_TABS = ['overview', 'history', 'projects', 'billing', 'privacy', 'profile'] as const;
+export const ACCOUNT_TABS = ['overview', 'history', 'projects', 'voices', 'billing', 'privacy', 'profile'] as const;
 export type AccountTab = (typeof ACCOUNT_TABS)[number];
 
 /** `?tab=` value to a tab; anything unknown (or missing) is the overview. */

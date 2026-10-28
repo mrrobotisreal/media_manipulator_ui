@@ -1138,5 +1138,219 @@
     "hint": "ou clique para escolher no seu computador. O ficheiro é lido apenas para extrair os metadados e eliminado após a análise; nada é convertido.",
     "largeFile": "Os ficheiros com mais de {{size}} só são inspecionados a seu pedido, para que um vídeo grande não seja carregado por engano.",
     "failed": "Não foi possível inspecionar o ficheiro. O tipo pode não ser suportado ou o ficheiro é demasiado grande para o seu plano."
+  },
+  "voiceTools": {
+    "loading": "A carregar as ferramentas de voz…",
+    "unavailable": {
+      "title": "As Vozes não estão disponíveis neste momento",
+      "body": "O motor de voz está desativado ou a reiniciar, pelo que esta ferramenta não pode funcionar de momento. Nada foi contabilizado. Tente novamente mais tarde.",
+      "shiftStillWorks": "O alterador de tom abaixo não precisa do motor de voz e continua a funcionar."
+    },
+    "warmingUp": "A aquecer o motor de voz; o primeiro pedido pode demorar até 20 segundos.",
+    "honesty": "A fala criada com uma voz guardada ou predefinida contém uma marca de água inaudível; o áudio alterado com o alterador de tom não a contém. Utilize apenas a sua própria voz ou uma voz que tenha autorização para usar. Nada do que grava ou gera é usado para treinar qualquer modelo, e os motores de voz funcionam nos nossos próprios servidores.",
+    "signIn": {
+      "title": "Inicie sessão para guardar uma voz",
+      "body": "Uma voz guardada precisa de um proprietário e de um registo de consentimento, pelo que clonar uma voz, manter uma voz criada, converter para uma voz e As minhas vozes exigem uma conta. Nada é carregado até iniciar sessão.",
+      "cta": "Iniciar sessão"
+    },
+    "recorder": {
+      "record": "Gravar",
+      "recording": "A gravar",
+      "stop": "Parar",
+      "cancel": "Cancelar gravação",
+      "level": "Nível do microfone",
+      "or": "ou",
+      "upload": "Carregar um ficheiro de áudio",
+      "remove": "Remover",
+      "recorded": "A sua gravação, {{duration}}",
+      "uploaded": "{{name}}, {{duration}}",
+      "measuring": "A ler a duração do ficheiro…",
+      "unknownLength": "Não foi possível ler a duração deste ficheiro no navegador; o servidor irá verificá-la.",
+      "tooShort": "A gravação tem {{seconds}} segundos. Uma voz precisa de, pelo menos, 5 segundos de fala.",
+      "tooLong": "A gravação tem {{seconds}} segundos. Mantenha-a em 60 segundos ou menos.",
+      "referenceHint": "Grave ou carregue 5 a 60 segundos de fala clara numa sala silenciosa. Leia algumas frases naturais.",
+      "inputHint": "Grave ou carregue a fala que pretende alterar.",
+      "micDenied": "O acesso ao microfone foi bloqueado. Permita o microfone para este site na barra de endereços do navegador ou carregue um ficheiro.",
+      "micHostBlocked": "A página que aloja esta ferramenta não permitiu o acesso ao microfone. Carregue um ficheiro.",
+      "micUnavailable": "A gravação não está disponível neste navegador. Carregue um ficheiro de áudio."
+    },
+    "consent": {
+      "label": "Esta é a minha voz, ou tenho a autorização explícita da pessoa a quem esta voz pertence.",
+      "note": "Guardamos com a voz a hora a que confirma isto e a versão deste texto ({{version}}). Consulte a secção 8.11 dos Termos."
+    },
+    "clone": {
+      "title": "Criar uma voz a partir de uma gravação",
+      "nameLabel": "Nome da voz",
+      "namePlaceholder": "A minha voz",
+      "languageLabel": "Idioma da gravação",
+      "create": "Criar voz",
+      "creating": "A criar a sua voz…",
+      "created": "Voz criada. Ouça a respetiva pré-visualização em As minhas vozes.",
+      "signInToCreate": "Inicie sessão para criar a voz",
+      "limitReached": "Guardou {{used}} de {{limit}} vozes do seu plano. Elimine uma em Conta, Vozes, ou mude para um plano superior para guardar mais.",
+      "noSaving": "O seu plano não permite guardar vozes.",
+      "usage": "{{used}} de {{limit}} vozes guardadas",
+      "usageUnlimited": "{{used}} vozes guardadas"
+    },
+    "myVoices": {
+      "title": "As minhas vozes",
+      "empty": "Ainda não há vozes guardadas.",
+      "preview": "Pré-visualização de {{name}}",
+      "use": "Usar esta voz",
+      "inUse": "Selecionada",
+      "manage": "Gerir as suas vozes em Conta",
+      "kinds": {
+        "cloned": "Clonada",
+        "designed": "Criada",
+        "preset": "Predefinida"
+      }
+    },
+    "picker": {
+      "label": "Voz",
+      "saved": "As minhas vozes",
+      "presets": "Vozes predefinidas",
+      "none": "Ainda não há vozes disponíveis."
+    },
+    "speak": {
+      "title": "Gerar fala",
+      "textLabel": "Texto a falar",
+      "placeholder": "Escreva o que a voz deve dizer.",
+      "counter": "{{used}} de {{max}} carateres",
+      "overLimit": "Isso é mais longo do que o seu plano permite num único pedido ({{max}} carateres).",
+      "languageLabel": "Idioma",
+      "exaggerationLabel": "Emoção",
+      "exaggerationHint": "Mais baixo é mais calmo, mais alto é mais expressivo.",
+      "generate": "Gerar fala",
+      "generating": "A gerar…",
+      "notAllowed": "O seu plano não inclui a geração de fala."
+    },
+    "designer": {
+      "title": "Descreva uma voz",
+      "descriptionLabel": "Descrição",
+      "placeholder": "Calorosa, grave, ligeiramente rouca, de meia-idade, calma",
+      "hint": "Descreva como a voz deve soar. O motor compreende melhor as descrições em inglês; as etiquetas abaixo acrescentam caraterísticas comuns.",
+      "languageLabel": "Idioma da pré-visualização",
+      "languageNote": "Uma voz criada é gerada num destes idiomas; depois de mantida, pode falar todos os idiomas da ferramenta de fala.",
+      "chipGroups": {
+        "gender": "Género",
+        "age": "Idade",
+        "accent": "Sotaque",
+        "tone": "Tom",
+        "pace": "Ritmo"
+      },
+      "chips": {
+        "female": "Feminina",
+        "male": "Masculina",
+        "neutral": "Andrógina",
+        "young": "Jovem adulta",
+        "middleAged": "De meia-idade",
+        "older": "Mais velha",
+        "american": "Americana",
+        "british": "Britânica",
+        "australian": "Australiana",
+        "irish": "Irlandesa",
+        "warm": "Calorosa",
+        "bright": "Brilhante",
+        "deep": "Grave",
+        "raspy": "Rouca",
+        "soft": "Suave",
+        "slow": "Lenta",
+        "measured": "Pausada",
+        "fast": "Rápida"
+      },
+      "preview": "Pré-visualizar",
+      "previewing": "A gerar uma pré-visualização…",
+      "previewsLeft": "Pré-visualizações restantes: {{left}} de {{max}}",
+      "previewsUsed": "Já usou as 3 pré-visualizações desta descrição. Mantenha a voz ou altere a descrição para pré-visualizar novamente.",
+      "previewLabel": "Pré-visualização da voz descrita",
+      "keepTitle": "Manter esta voz",
+      "nameLabel": "Nome da voz",
+      "keep": "Manter esta voz",
+      "keeping": "A guardar a voz…",
+      "kept": "Voz guardada. Está agora em As minhas vozes.",
+      "signInToKeep": "Inicie sessão para manter esta voz"
+    },
+    "changer": {
+      "modeLabel": "Como alterar",
+      "modes": {
+        "shift": "Alterar tom (instantâneo)",
+        "convert": "Converter para uma voz (IA)"
+      },
+      "shiftHint": "Altera o tom e o formante com o rubberband, de imediato. Conta como uma operação. O resultado não tem marca de água.",
+      "convertHint": "Faz a gravação soar como uma voz guardada ou predefinida. Conta como uma tarefa de IA. O resultado contém uma marca de água inaudível.",
+      "convertNotInPlan": "Converter para uma voz não faz parte do seu plano.",
+      "upgrade": "Ver planos",
+      "signInToConvert": "Inicie sessão para converter para uma voz",
+      "targetLabel": "Converter para",
+      "convert": "Converter",
+      "converting": "A converter…"
+    },
+    "shifter": {
+      "semitonesLabel": "Tom",
+      "semitonesValue": "{{value}} semitons",
+      "formantLabel": "Formante",
+      "formants": {
+        "preserved": "Manter o caráter da voz",
+        "shifted": "Alterar com o tom"
+      },
+      "presetsLabel": "Predefinições",
+      "presets": {
+        "deeper": "Mais grave",
+        "higher": "Mais agudo",
+        "child": "Infantil",
+        "elder": "Mais velho",
+        "telephone": "Telefone"
+      },
+      "shift": "Alterar voz",
+      "shifting": "A alterar…"
+    },
+    "result": {
+      "working": "A trabalhar nisso…",
+      "failed": "A tarefa de voz falhou. Não foi contabilizada.",
+      "downloadMp3": "Transferir MP3",
+      "downloadWav": "Transferir WAV",
+      "wavPreparing": "A preparar o WAV…",
+      "wavFailed": "Não foi possível criar o WAV neste navegador. Transfira o MP3.",
+      "wavNote": "O WAV é descodificado a partir do MP3 no seu navegador.",
+      "another": "Recomeçar"
+    },
+    "errors": {
+      "sign_in_required": "Inicie sessão para guardar e usar as suas próprias vozes.",
+      "consent_required": "Assinale a caixa para confirmar que esta é a sua voz ou que tem a autorização explícita de quem fala.",
+      "reference_required": "Grave ou carregue primeiro 5 a 60 segundos de fala.",
+      "reference_too_short": "A gravação tem de ter, pelo menos, 5 segundos.",
+      "reference_too_long": "A gravação tem de ter 60 segundos ou menos.",
+      "reference_too_large": "O ficheiro da gravação é demasiado grande.",
+      "no_speech_detected": "Não conseguimos ouvir fala nessa gravação. Grave algumas frases numa sala silenciosa.",
+      "not_audio": "Esse ficheiro não é uma gravação que consigamos ler.",
+      "name_invalid": "Dê à voz um nome com 1 a 60 carateres.",
+      "language_not_supported": "Esse idioma não é suportado para esta voz.",
+      "voice_limit": "Atingiu o número de vozes guardadas do seu plano ({{limit}}). Elimine uma ou mude para um plano superior para guardar mais.",
+      "text_required": "Escreva algo para dizer.",
+      "text_too_long": "O seu plano permite até {{limit}} carateres por pedido.",
+      "exaggeration_invalid": "A emoção tem de estar entre 0,25 e 2.",
+      "voice_convert_not_in_plan": "Converter para uma voz não está incluído no seu plano.",
+      "voice_input_too_long": "O seu plano permite aqui gravações até {{limit}} segundos.",
+      "input_required": "Adicione a gravação que pretende alterar.",
+      "input_too_large": "A gravação é demasiado grande para o seu plano.",
+      "voice_required": "Escolha uma voz para a conversão.",
+      "voice_not_found": "Essa voz já não existe.",
+      "preset_not_found": "Essa voz predefinida não está disponível.",
+      "description_required": "Descreva a voz que pretende.",
+      "description_too_long": "Mantenha a descrição abaixo de 1000 carateres.",
+      "preview_limit": "Pré-visualizou esta descrição três vezes na última hora. Mantenha a voz ou altere a descrição.",
+      "session_required": "As pré-visualizações precisam de uma sessão do navegador. Recarregue a página e tente novamente.",
+      "semitones_invalid": "O tom tem de estar entre -12 e 12 semitons.",
+      "shift_invalid": "Essas definições de alteração não são válidas.",
+      "voices_unavailable": "O motor de voz não está disponível neste momento. Nada foi contabilizado; tente novamente dentro de instantes.",
+      "voices_storage_unavailable": "As vozes guardadas estão temporariamente indisponíveis. Nada foi contabilizado.",
+      "voices_timeout": "O motor de voz demorou demasiado. Nada foi contabilizado.",
+      "voice_request_refused": "O motor de voz recusou esse pedido.",
+      "upload_failed": "O carregamento falhou. Tente novamente.",
+      "job_failed": "Não foi possível iniciar a tarefa. Tente novamente.",
+      "invalid_body": "Algo no pedido não era válido. Recarregue a página e tente novamente.",
+      "rate_limited": "Demasiados pedidos de voz na última hora. Tente novamente mais tarde.",
+      "generic": "Algo correu mal. Tente novamente."
+    }
   }
 }

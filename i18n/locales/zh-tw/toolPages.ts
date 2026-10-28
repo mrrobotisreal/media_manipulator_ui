@@ -296,6 +296,22 @@ const zhTwToolPages = {
       name: '影片摘要',
       tagline: '在我們自己的 GPU 伺服器上，取得講座、會議或訪談的逐字稿和附時間戳記的結構化 JSON 分析。',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: '語音複製',
+      tagline:
+        '錄製或上傳 5 到 60 秒你自己的語音，建立一個語音，讓它以 20 多種語言朗讀任何文字。',
+    },
+    'voice-designer': {
+      name: '語音設計器',
+      tagline:
+        '用文字描述一個語音，試聽預覽，並保留你喜歡的那個，讓它以 20 多種語言朗讀任何文字。',
+    },
+    'voice-changer': {
+      name: '變聲器',
+      tagline:
+        '即時調整錄音的音高與特色，或使用 AI 將語音轉換為已儲存或預設的語音。',
+    },
   },
 } as const;
 
