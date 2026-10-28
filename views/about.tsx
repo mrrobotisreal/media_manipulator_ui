@@ -1,9 +1,13 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Panel } from '@/components/darkroom/panel';
 import RelatedLinks from '@/components/related-links';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
+
+const LINK =
+  'text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary';
 
 const RELATED_LINK_KEYS = ['converter', 'tutorials', 'howItWorks'] as const;
 const RELATED_LINK_HREFS: Record<typeof RELATED_LINK_KEYS[number], string> = {
@@ -169,12 +173,43 @@ const AboutPage: React.FC<{ locale?: string }> = ({ locale }) => {
               </div>
             </section>
 
-            <section className="mb-10">
+            {/* MM85: a named founder with a photo, the company facts and both addresses. */}
+            <section className="mb-10" id="who" data-testid="about-founder">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('about.whoBuilds.title')}</h2>
-              <p className="mb-4">
-                <ServerTrans locale={locale} i18nKey="interface:about.whoBuilds.p1" components={{ strong: <strong /> }} />
-              </p>
-              <p className="mb-4">{t('about.whoBuilds.p2')}</p>
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+                <figure className="m-0 shrink-0">
+                  <Image
+                    src="/ProfilePic.webp"
+                    alt={t('about.whoBuilds.photoAlt')}
+                    width={160}
+                    height={160}
+                    className="size-32 rounded-full border border-edge object-cover sm:size-40"
+                  />
+                  <figcaption className="mt-2 text-sm">
+                    <span className="block font-medium text-card-foreground">{t('about.whoBuilds.name')}</span>
+                    <span className="block">{t('about.whoBuilds.role')}</span>
+                  </figcaption>
+                </figure>
+                <div className="min-w-0">
+                  <p className="mb-4">
+                    <ServerTrans locale={locale} i18nKey="interface:about.whoBuilds.p1" components={{ strong: <strong /> }} />
+                  </p>
+                  <p className="mb-4">
+                    <ServerTrans locale={locale} i18nKey="interface:about.whoBuilds.p2" components={{ strong: <strong /> }} />
+                  </p>
+                  <p className="mb-4">
+                    <ServerTrans
+                      locale={locale}
+                      i18nKey="interface:about.whoBuilds.contact"
+                      components={{
+                        supportLink: <a href="mailto:support@media-manipulator.com" dir="ltr" className={LINK} />,
+                        privacyLink: <a href="mailto:privacy@media-manipulator.com" dir="ltr" className={LINK} />,
+                        linkContact: <Link href={localizeHref('/contact', loc)} className={LINK} />,
+                      }}
+                    />
+                  </p>
+                </div>
+              </div>
             </section>
 
             <section className="mb-10">

@@ -13,6 +13,9 @@
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { cleanFaqEntries, cleanSteps, cleanStringArray } from '@/lib/schema';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import { PLAN_PRICES } from '@/lib/billing/planPrices';
+import { locales } from '@/i18n/locales';
+import { TUTORIAL_DATES, type TutorialPath } from '@/content/pageDates';
 
 export const SITE_ORIGIN = 'https://www.media-manipulator.com';
 export const SITE_NAME = 'Media Manipulator';
@@ -56,6 +59,31 @@ const breadcrumbList = (
   })),
 });
 
+/** MM85: the named founder, shown on /about and in every article byline. */
+export const FOUNDER_NAME = 'Mitchell Wintrow';
+export const SUPPORT_EMAIL = 'support@media-manipulator.com';
+
+/** The person behind the site (schema.org Person), linked to the About page. */
+export const founderLd: JsonLd = {
+  '@type': 'Person',
+  name: FOUNDER_NAME,
+  url: `${SITE_ORIGIN}/about`,
+  jobTitle: 'Founder and sole engineer',
+  image: `${SITE_ORIGIN}/ProfilePic.webp`,
+  worksFor: { '@type': 'Organization', name: ORG_NAME, url: SITE_ORIGIN },
+};
+
+/** Article/TechArticle author: the founder (MM85; was the Organization). */
+export const articleAuthorLd: JsonLd = { '@type': 'Person', name: FOUNDER_NAME, url: `${SITE_ORIGIN}/about` };
+
+/** Article publisher: the operating company. */
+export const publisherLd: JsonLd = {
+  '@type': 'Organization',
+  name: ORG_NAME,
+  url: SITE_ORIGIN,
+  logo: { '@type': 'ImageObject', url: DEFAULT_LOGO },
+};
+
 const organizationLd: JsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -63,6 +91,31 @@ const organizationLd: JsonLd = {
   url: SITE_ORIGIN,
   logo: DEFAULT_LOGO,
   sameAs: ['https://www.creatv.io/'],
+  address: { '@type': 'PostalAddress', addressRegion: 'CO', addressCountry: 'US' },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: SUPPORT_EMAIL,
+      url: `${SITE_ORIGIN}/contact`,
+      availableLanguage: locales.map((l) => l.code),
+    },
+  ],
+  founder: { '@type': 'Person', name: FOUNDER_NAME, url: `${SITE_ORIGIN}/about` },
+};
+
+/**
+ * MM85: every app-level `offers` is an AggregateOffer that spans the free plan
+ * and the paid ones, so it agrees with /pricing (a single free Offer did
+ * not). The numerals are PLAN_PRICES (lib/billing/planPrices.ts), the build-time
+ * mirror of GET /api/tiers `prices`.
+ */
+export const aggregateOfferLd: JsonLd = {
+  '@type': 'AggregateOffer',
+  lowPrice: '0',
+  highPrice: String(Math.max(PLAN_PRICES.premium.monthly, PLAN_PRICES.pro.monthly)),
+  priceCurrency: 'USD',
+  offerCount: 4,
 };
 
 const webApplicationLd: JsonLd = {
@@ -74,11 +127,7 @@ const webApplicationLd: JsonLd = {
   operatingSystem: 'Web',
   description:
     'Free online media conversion, editing, compression, transcription, and metadata tools for images, videos, and audio files.',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
+  offers: aggregateOfferLd,
   publisher: {
     '@type': 'Organization',
     name: ORG_NAME,
@@ -121,20 +170,8 @@ const articleLd = (params: {
     '@type': 'WebPage',
     '@id': buildCanonical(params.path),
   },
-  author: {
-    '@type': 'Organization',
-    name: ORG_NAME,
-    url: SITE_ORIGIN,
-  },
-  publisher: {
-    '@type': 'Organization',
-    name: ORG_NAME,
-    url: SITE_ORIGIN,
-    logo: {
-      '@type': 'ImageObject',
-      url: DEFAULT_LOGO,
-    },
-  },
+  author: articleAuthorLd,
+  publisher: publisherLd,
 });
 
 // MM48: a tool that lists its shipped features (Motion) is described as a
@@ -149,11 +186,7 @@ const softwareApplicationToolLd = (tool: ToolPageContent, featureList: string[])
   operatingSystem: 'Web',
   description: tool.metaDescription,
   featureList,
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
+  offers: aggregateOfferLd,
   publisher: {
     '@type': 'Organization',
     name: ORG_NAME,
@@ -169,11 +202,7 @@ const webApplicationToolLd = (tool: ToolPageContent): JsonLd => ({
   applicationCategory: 'MultimediaApplication',
   operatingSystem: 'Web',
   description: tool.metaDescription,
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
+  offers: aggregateOfferLd,
   publisher: {
     '@type': 'Organization',
     name: ORG_NAME,
@@ -268,7 +297,9 @@ const techArticleLd = (params: {
     path: params.path,
     title: params.title,
     description: params.description,
-    datePublished: '2026-05-15',
+    // MM85: real dates from git (content/pageDates.ts), not one shared placeholder.
+    datePublished: TUTORIAL_DATES[params.path as TutorialPath]?.datePublished ?? '2026-05-17',
+    dateModified: TUTORIAL_DATES[params.path as TutorialPath]?.dateModified,
     section: params.section,
     keywords: params.keywords,
   }),
@@ -678,7 +709,7 @@ const ROUTES: RouteSeo[] = [
         url: SITE_ORIGIN,
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'Web',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        offers: aggregateOfferLd,
       },
     ],
   },
@@ -733,7 +764,7 @@ const ROUTES: RouteSeo[] = [
         url: SITE_ORIGIN,
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'Web',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        offers: aggregateOfferLd,
       },
     ],
   },
@@ -789,7 +820,7 @@ const ROUTES: RouteSeo[] = [
         url: SITE_ORIGIN,
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'Web',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        offers: aggregateOfferLd,
       },
     ],
   },
@@ -928,7 +959,7 @@ const ROUTES: RouteSeo[] = [
         url: buildCanonical('/tools/ai-frame-interpolation'),
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'Web',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        offers: aggregateOfferLd,
       },
     ],
   },
@@ -976,7 +1007,7 @@ const ROUTES: RouteSeo[] = [
         url: buildCanonical('/tools/content-studio'),
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'Web',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        offers: aggregateOfferLd,
       },
     ],
   },
@@ -1011,9 +1042,6 @@ const ROUTES: RouteSeo[] = [
           keywords: ['svg animation tutorial', 'how to animate svg', 'animated svg', 'lottie'],
           dependencies: 'Modern web browser',
         }),
-        // Real publication date (MM48), read by the sitemap under the full-index flag.
-        datePublished: '2026-10-26',
-        dateModified: '2026-10-26',
       },
       breadcrumbList([
         { name: 'Home', path: '/' },
@@ -1092,7 +1120,7 @@ const ROUTES: RouteSeo[] = [
         operatingSystem: 'Web',
         description:
           'A Premiere Pro–style multi-track video editor in your browser. Trim, layer, and mix video & audio on a timeline, then export MP4.',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        offers: aggregateOfferLd,
         publisher: {
           '@type': 'Organization',
           name: ORG_NAME,
@@ -1212,3 +1240,49 @@ export const getAllRouteSeo = (): RouteSeo[] => ALL_ROUTES;
 // NOTE: The former client-side head updater (applySeoMeta/useSeoMeta) was
 // removed in the Next.js migration — per-route <head> tags are now emitted by
 // the Metadata API (see lib/metadata.ts) and JSON-LD by components/seo/json-ld.tsx.
+
+/**
+ * MM85: /pricing's Product with one Offer per public rung (no account, free
+ * account, Premium, Pro), matching the page and the AggregateOffer's
+ * offerCount. Paid rungs carry the monthly price as `price` and both billing
+ * intervals as UnitPriceSpecifications. Callers pass the served /api/tiers
+ * numerals; PLAN_PRICES is only the fallback when the API is unreachable.
+ */
+export function pricingProductLd(prices: {
+  premium: { monthly?: number; yearly?: number };
+  pro: { monthly?: number; yearly?: number };
+}): JsonLd {
+  const url = buildCanonical('/pricing');
+  const paid = (name: string, plan: 'premium' | 'pro') => {
+    const monthly = prices[plan].monthly ?? PLAN_PRICES[plan].monthly;
+    const yearly = prices[plan].yearly ?? PLAN_PRICES[plan].yearly;
+    return {
+      '@type': 'Offer',
+      name,
+      price: String(monthly),
+      priceCurrency: 'USD',
+      url,
+      availability: 'https://schema.org/InStock',
+      priceSpecification: [
+        { '@type': 'UnitPriceSpecification', price: String(monthly), priceCurrency: 'USD', billingDuration: 'P1M', unitText: 'MONTH' },
+        { '@type': 'UnitPriceSpecification', price: String(yearly), priceCurrency: 'USD', billingDuration: 'P1Y', unitText: 'YEAR' },
+      ],
+    };
+  };
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: SITE_NAME,
+    description:
+      'Online media conversion, editing, transcription and AI tools. Free without an account or with a free account; Premium and Pro raise the daily allowances and limits.',
+    url,
+    image: DEFAULT_LOGO,
+    brand: { '@type': 'Brand', name: SITE_NAME },
+    offers: [
+      { '@type': 'Offer', name: 'No account', price: '0', priceCurrency: 'USD', url, availability: 'https://schema.org/InStock' },
+      { '@type': 'Offer', name: 'Free account', price: '0', priceCurrency: 'USD', url, availability: 'https://schema.org/InStock' },
+      paid('Premium', 'premium'),
+      paid('Pro', 'pro'),
+    ],
+  };
+}

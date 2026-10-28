@@ -6,7 +6,9 @@ import { languageAlternates } from '@/lib/metadata';
 import { getLocaleDef, localizeHref } from '@/i18n/locales';
 import { loadPublicTiers } from '@/lib/auth/loadTiers';
 import { getSeoOverride } from '@/lib/seoOverrides';
-import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
+import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN, pricingProductLd } from '@/lib/seo';
+import { JsonLdBlocks } from '@/components/seo/json-ld';
+import { planPrices } from '@/lib/billing/price';
 import { translatorRobots } from '@/lib/translator/mode';
 
 // Metadata is written here rather than through buildMetadata(): lib/seo.ts is
@@ -73,5 +75,12 @@ export default async function Pricing({ params }: PageParams) {
       </div>
     );
   }
-  return <PricingView data={data} locale={locale} />;
+  // MM85: Product + one Offer per rung, priced from the served tiers.
+  const product = pricingProductLd({ premium: planPrices(data, 'premium', 'usd'), pro: planPrices(data, 'pro', 'usd') });
+  return (
+    <>
+      <JsonLdBlocks blocks={[product]} />
+      <PricingView data={data} locale={locale} />
+    </>
+  );
 }
