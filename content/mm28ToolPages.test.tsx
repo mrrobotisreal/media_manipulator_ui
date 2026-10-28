@@ -87,10 +87,10 @@ describe('MM28 tool pages: resolution matrix', () => {
     console.log('MM28 slug -> op\n' + rows.map(([s]) => `${s} -> ${opOf(s)}`).join('\n'));
   });
 
-  it('presets keep clean-voice and remove-vocals operation selects hidden, noise visible, vocals wav', () => {
+  it('presets keep clean-voice and remove-vocals operation selects hidden, noise visible, vocals same-as-input (MM81)', () => {
     const pre = (s: string) => TOOL_PAGES.find((p) => p.slug === s)!.embed.preset as Extract<EmbedPreset, { kind: 'audio' }>;
     expect(pre('clean-voice-audio').hideOperationSelect).toBe(true);
-    expect(pre('remove-vocals-from-song')).toMatchObject({ hideOperationSelect: true, format: 'wav' });
+    expect(pre('remove-vocals-from-song')).toMatchObject({ hideOperationSelect: true, format: 'auto' });
     expect(pre('remove-background-noise').hideOperationSelect).toBeUndefined();
   });
 
@@ -158,7 +158,11 @@ describe('MM28 audio pages render', () => {
   it.each(['clean-voice-audio', 'remove-vocals-from-song'])('%s: chip shown, no operation dropdown', (slug) => {
     const p = audio(slug);
     render(<AudioConversionForm onSubmit={vi.fn()} isLoading={false} presets={{ aiOperation: p.aiOperation, hideOperationSelect: p.hideOperationSelect, defaultFormat: p.format }} />);
-    expect(screen.queryByRole('combobox')).toBeNull();
+    // No operation dropdown. MM81: a vocal page shows exactly one select, the stem "Output format".
+    const selects = screen.queryAllByRole('combobox');
+    expect(selects.map((el) => el.closest('[data-testid="stem-format"]') !== null)).toEqual(
+      p.aiOperation === 'remove_vocals' ? [true] : [],
+    );
     expect(screen.getByTestId('audio-ai-preset-chip').textContent).toContain(
       (en.audioForm.ai.operations as Record<string, string>)[p.aiOperation],
     );

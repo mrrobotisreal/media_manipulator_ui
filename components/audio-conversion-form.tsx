@@ -13,6 +13,8 @@ import type { ConversionFormData } from "@/schemas/types";
 import { useEffect, useState } from "react";
 import { useLocalization } from "@/i18n/useLocalization";
 import type { AudioFormPresets } from "@/components/embedded-tool-panel";
+import { StemFormatSelect, useMediaDuration } from "@/components/stem-format-select";
+import { isStemOperation, type StemFormatChoice } from "@/lib/audio/stemFormat";
 
 interface TrimRange {
   startTime: number;
@@ -26,12 +28,20 @@ const AudioConversionForm: React.FC<{
   audioUrl?: string;
   /** Tool-page preset (embed.preset kind 'audio'). Absent = untouched defaults. */
   presets?: AudioFormPresets;
-}> = ({ onSubmit, isLoading, audioUrl, presets }) => {
+  /** The chosen file's name and type: the vocal tools' "Same as input" resolves from them (MM81). */
+  fileName?: string;
+  fileType?: string;
+}> = ({ onSubmit, isLoading, audioUrl, presets, fileName, fileType }) => {
   const { t, formatDuration } = useLocalization(['interface', 'error', 'accessibility']);
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [trimRange, setTrimRange] = useState<TrimRange | null>(null);
 
   const fx = presets?.effectDefaults;
+  // MM81: vocal stems default to "Same as input" (`auto`, resolved by the API). A preset may
+  // still pin a concrete stem format (mp3 / flac / wav).
+  const presetStem = presets?.stemFormat;
+  const [stemChoice, setStemChoice] = useState<StemFormatChoice>(presetStem ?? 'auto');
+  const durationSeconds = useMediaDuration(audioUrl);
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(audioConversionSchema),
     defaultValues: {
@@ -147,15 +157,17 @@ const AudioConversionForm: React.FC<{
   useEffect(() => {
     const active = aiOperation && aiOperation !== 'none';
     setValue('ai.enabled', !!active);
-    // Stems should be lossless by default. Other AI audio ops keep the
-    // user-selected format.
-    if (active && (aiOperation === 'isolate_vocals' || aiOperation === 'remove_vocals')) {
-      setValue('format', 'wav');
-    }
+    // MM81: no forced WAV any more. A vocal stem's format comes from the "Output format"
+    // select below (default "Same as input"); other AI audio ops keep the selected format.
   }, [aiOperation, setValue]);
+  const stemActive = isStemOperation(aiOperation);
 
   const onSubmitHandler = (data: unknown) => {
     const formData = data as ConversionFormData;
+    if (stemActive) {
+      // `auto` is not in the converter's format enum, so it is set after validation.
+      (formData as unknown as { format: string }).format = stemChoice;
+    }
 
     // Add trim data if it exists
     if (trimRange) {
@@ -257,6 +269,15 @@ const AudioConversionForm: React.FC<{
             <p className="text-xs text-muted-foreground">
               {t('interface:audioForm.ai.aiActiveNote')}
             </p>
+          )}
+          {stemActive && (
+            <StemFormatSelect
+              value={stemChoice}
+              onChange={setStemChoice}
+              fileName={fileName}
+              fileType={fileType}
+              durationSeconds={durationSeconds}
+            />
           )}
         </div>
 

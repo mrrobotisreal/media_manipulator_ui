@@ -5,6 +5,8 @@ import { Download, Link2, Loader2, RotateCcw } from 'lucide-react';
 import { MetadataStrip } from '@/components/metadata/metadata-strip';
 import { QueueLine } from './queue-line';
 import { DownloadStatusLine } from './download-status';
+import { Mp3DownloadAction } from './mp3-download-action';
+import { canDownloadAsMp3 } from '@/lib/results/mp3Download';
 import { ConfirmDialog } from '@/components/account/confirm-dialog';
 import { useShareAction, type ShareMessages } from '@/components/share/use-share-action';
 import { isShareable } from '@/lib/share/shareApi';
@@ -56,6 +58,11 @@ export interface ResultPanelProps {
   onDownload?: () => void | Promise<void>;
   /** Fired after the default download saved a file (the upgrade nudge hooks in here). */
   onDownloaded?: () => void;
+  /**
+   * MM81: offer "Download as MP3" next to Download when the result is a WAV (vocal stems made
+   * before stems followed the input format). Only the owner's panel; shared pages never show it.
+   */
+  offerMp3?: boolean;
   /** Shows a "Run another" action. */
   onRunAnother?: () => void;
   /** Comparison modes offered when `descriptor.original` exists. */
@@ -243,6 +250,7 @@ function ResultPanelBody({
   downloadLabel,
   onDownload,
   onDownloaded,
+  offerMp3 = false,
   onRunAnother,
   compareModes = ALL_COMPARE_MODES,
   onCompareModeChange,
@@ -519,6 +527,9 @@ function ResultPanelBody({
           )}
           {isDownloading ? t('resultPanel.downloadStatus.preparing') : (downloadLabel ?? t('resultPanel.download'))}
         </button>
+        {offerMp3 && !readOnly && !descriptor.sourceUrl && canDownloadAsMp3(saveName) && (
+          <Mp3DownloadAction jobId={descriptor.jobId} fileName={saveName} />
+        )}
         {compareMode !== null && entryModes.length > 1 && (
           <Segmented
             name={`${groupName}-compare`}

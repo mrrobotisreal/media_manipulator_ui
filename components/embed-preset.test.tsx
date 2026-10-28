@@ -73,7 +73,7 @@ describe('page entries', () => {
   it('declares the four presets', () => {
     expect(page('remove-exif-metadata').embed.preset).toEqual({ kind: 'metadata', mode: 'strip' });
     expect(page('isolate-vocals-from-song').embed.preset).toEqual({
-      kind: 'audio', aiOperation: 'isolate_vocals', hideOperationSelect: true, format: 'wav',
+      kind: 'audio', aiOperation: 'isolate_vocals', hideOperationSelect: true, format: 'auto',
     });
     const fi = page('ai-frame-interpolation').embed.preset;
     expect(fi).toMatchObject({ kind: 'video', aiOperation: 'frame_interpolation', openAiPanel: true, fpsPickerOnTop: true });
@@ -151,13 +151,16 @@ const submitAudio = async (presets?: Parameters<typeof AudioConversionForm>[0]['
 };
 
 describe('AudioConversionForm preset', () => {
-  it('isolate-vocals preset: no operation select, chip shown, submits isolate_vocals as wav', async () => {
+  it('isolate-vocals preset: no operation select, chip shown, submits isolate_vocals as auto (MM81)', async () => {
     const p = page('isolate-vocals-from-song').embed.preset as Extract<EmbedPreset, { kind: 'audio' }>;
-    const data = await submitAudio({ aiOperation: p.aiOperation, hideOperationSelect: p.hideOperationSelect, defaultFormat: p.format });
-    expect(screen.queryByRole('combobox')).toBeNull();
+    const data = await submitAudio({ aiOperation: p.aiOperation, hideOperationSelect: p.hideOperationSelect, stemFormat: 'auto' });
+    // The only select is MM81's stem "Output format", never the operation select.
+    const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
+    expect(selects).toHaveLength(1);
+    expect(selects[0].value).toBe('auto');
     expect(screen.getByTestId('audio-ai-preset-chip').textContent).toContain(en.audioForm.ai.operations.isolate_vocals);
     expect(data.ai).toMatchObject({ enabled: true, operation: 'isolate_vocals' });
-    expect(data.format).toBe('wav');
+    expect(data.format).toBe('auto');
   });
 
   it('without a preset: select present, ai off, mp3 (unchanged defaults)', async () => {
