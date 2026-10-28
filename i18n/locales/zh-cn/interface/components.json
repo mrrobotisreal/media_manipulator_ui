@@ -278,7 +278,7 @@
       "dash": "DASH包",
       "metadata": "元数据",
       "unknown": "文件",
-      "summary": "Summary"
+      "summary": "摘要"
     },
     "image": {
       "zoom": "缩放",
@@ -395,23 +395,23 @@
       "download": "下载全部结果"
     },
     "summary": {
-      "loading": "Loading the summary",
-      "loadFailed": "The summary could not be loaded.",
-      "untitled": "Summary",
-      "language": "Language: {{language}}",
-      "chapters": "Chapters",
-      "seekTo": "Jump to {{time}}",
-      "topics": "Topics",
-      "onScreenText": "On-screen text",
-      "visual": "Picture",
-      "speech": "Speech",
-      "notes": "Notes",
-      "copyMarkdown": "Copy as Markdown",
-      "copied": "Copied",
-      "downloadMd": "Download .md",
-      "downloadJson": "Download .json",
-      "showAll": "Show all ({{count}})",
-      "showLess": "Show less"
+      "loading": "正在加载摘要",
+      "loadFailed": "无法加载摘要。",
+      "untitled": "摘要",
+      "language": "语言：{{language}}",
+      "chapters": "章节",
+      "seekTo": "跳转到 {{time}}",
+      "topics": "主题",
+      "onScreenText": "画面文字",
+      "visual": "画面",
+      "speech": "语音",
+      "notes": "备注",
+      "copyMarkdown": "复制为 Markdown",
+      "copied": "已复制",
+      "downloadMd": "下载 .md",
+      "downloadJson": "下载 .json",
+      "showAll": "显示全部（{{count}}）",
+      "showLess": "收起"
     }
   },
   "billing": {

@@ -1677,7 +1677,7 @@
         "ai_voice_cleanup": "تنقية الصوت",
         "ai_isolate_vocals": "عزل الغناء",
         "ai_remove_vocals": "إزالة الغناء",
-        "video_summary": "Video summary"
+        "video_summary": "ملخص فيديو"
       },
       "deletesOn": "يُحذف في {{date}}",
       "keptLonger": "محفوظ لمدة أطول",

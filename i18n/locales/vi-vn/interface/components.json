@@ -278,7 +278,7 @@
       "dash": "Gói DASH",
       "metadata": "Siêu dữ liệu",
       "unknown": "Tệp",
-      "summary": "Summary"
+      "summary": "Tóm tắt"
     },
     "image": {
       "zoom": "Thu phóng",
@@ -395,23 +395,23 @@
       "download": "Tải xuống tất cả kết quả"
     },
     "summary": {
-      "loading": "Loading the summary",
-      "loadFailed": "The summary could not be loaded.",
-      "untitled": "Summary",
-      "language": "Language: {{language}}",
-      "chapters": "Chapters",
-      "seekTo": "Jump to {{time}}",
-      "topics": "Topics",
-      "onScreenText": "On-screen text",
-      "visual": "Picture",
-      "speech": "Speech",
-      "notes": "Notes",
-      "copyMarkdown": "Copy as Markdown",
-      "copied": "Copied",
-      "downloadMd": "Download .md",
-      "downloadJson": "Download .json",
-      "showAll": "Show all ({{count}})",
-      "showLess": "Show less"
+      "loading": "Đang tải bản tóm tắt",
+      "loadFailed": "Không thể tải bản tóm tắt.",
+      "untitled": "Tóm tắt",
+      "language": "Ngôn ngữ: {{language}}",
+      "chapters": "Chương",
+      "seekTo": "Chuyển đến {{time}}",
+      "topics": "Chủ đề",
+      "onScreenText": "Văn bản trên màn hình",
+      "visual": "Hình ảnh",
+      "speech": "Lời nói",
+      "notes": "Ghi chú",
+      "copyMarkdown": "Sao chép dưới dạng Markdown",
+      "copied": "Đã sao chép",
+      "downloadMd": "Tải xuống .md",
+      "downloadJson": "Tải xuống .json",
+      "showAll": "Hiện tất cả ({{count}})",
+      "showLess": "Thu gọn"
     }
   },
   "billing": {

@@ -1677,7 +1677,7 @@
         "ai_voice_cleanup": "人声清理",
         "ai_isolate_vocals": "人声分离",
         "ai_remove_vocals": "人声消除",
-        "video_summary": "Video summary"
+        "video_summary": "视频摘要"
       },
       "deletesOn": "{{date}}删除",
       "keptLonger": "已延长保留",

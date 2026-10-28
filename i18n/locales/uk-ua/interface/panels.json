@@ -28,56 +28,56 @@
     "unknown": "невідомо"
   },
   "summarize": {
-    "loading": "Checking whether summaries are available…",
-    "unavailable": "Video and audio summaries are temporarily unavailable. Please try again later; the Transcribe pages still work.",
-    "notInPlan": "Summaries are not included in your plan.",
+    "loading": "Перевіряємо, чи доступні зведення…",
+    "unavailable": "Зведення відео й аудіо тимчасово недоступні. Спробуйте пізніше; сторінки розшифровки працюють.",
+    "notInPlan": "Зведення не входять до вашого тарифу.",
     "signIn": {
-      "title": "Sign in to summarize",
-      "body": "Summaries run on our own GPU server and need a free account. Sign in or create one, then upload your file.",
-      "button": "Sign in",
-      "signup": "Create a free account"
+      "title": "Увійдіть, щоб створити зведення",
+      "body": "Зведення створюються на нашому власному GPU-сервері й потребують безкоштовного облікового запису. Увійдіть або створіть його, а потім завантажте файл.",
+      "button": "Увійти",
+      "signup": "Створити безкоштовний обліковий запис"
     },
-    "uploadHintVideo": "a video or audio file",
-    "uploadHintAudio": "an audio file",
-    "outputLanguage": "Summary language",
-    "sameAsSpeech": "Same as the speech",
+    "uploadHintVideo": "відео- або аудіофайл",
+    "uploadHintAudio": "аудіофайл",
+    "outputLanguage": "Мова зведення",
+    "sameAsSpeech": "Як у мовленні",
     "depth": {
-      "label": "Depth",
-      "standard": "Standard",
-      "deep": "Deep",
-      "hint": "Deep writes the summary with a larger model. It takes longer."
+      "label": "Глибина",
+      "standard": "Стандартна",
+      "deep": "Глибока",
+      "hint": "Глибоке зведення пише більша модель. Це триває довше."
     },
-    "note": "Uses one AI job from your daily allowance. A failed job is not counted.",
-    "noteFrames": "Your plan reads up to {{frames}} frames of the video. Uses one AI job from your daily allowance; a failed job is not counted.",
-    "start": "Summarize",
-    "stagesTitle": "Progress",
+    "note": "Витрачає одне ШІ-завдання з вашого денного ліміту. Невдале завдання не зараховується.",
+    "noteFrames": "Ваш тариф дозволяє аналізувати до {{frames}} кадрів відео. Витрачає одне ШІ-завдання з денного ліміту; невдале завдання не зараховується.",
+    "start": "Створити зведення",
+    "stagesTitle": "Перебіг виконання",
     "stages": {
-      "probe": "Reading the file",
-      "audio": "Transcribing the speech",
-      "frames": "Choosing frames",
-      "vision": "Describing the frames",
-      "synthesis": "Writing the summary",
-      "render": "Formatting the result"
+      "probe": "Читання файлу",
+      "audio": "Розшифровка мовлення",
+      "frames": "Вибір кадрів",
+      "vision": "Опис кадрів",
+      "synthesis": "Написання зведення",
+      "render": "Оформлення результату"
     },
     "status": {
-      "pending": "Waiting",
-      "processing": "In progress",
-      "completed": "Done",
-      "skipped": "Skipped",
-      "failed": "Failed"
+      "pending": "Очікування",
+      "processing": "Виконується",
+      "completed": "Готово",
+      "skipped": "Пропущено",
+      "failed": "Помилка"
     },
-    "framesCount": "Frames: {{count}}",
+    "framesCount": "Кадрів: {{count}}",
     "errors": {
-      "signin_required": "Sign in to summarize.",
-      "summary_not_in_plan": "Summaries are not included in your plan.",
-      "summary_unavailable": "Summaries are temporarily unavailable. Please try again later.",
-      "unreadable_media": "This file could not be read as audio or video.",
-      "no_audio_or_video": "This file has no audio or video to summarize.",
-      "file_too_large": "This file is larger or longer than your plan allows.",
-      "upload_not_found": "The upload could not be found. Please try again.",
-      "quota_exceeded": "You have used all of today's AI jobs.",
-      "invalid_request": "The request was not accepted. Reload the page and try again.",
-      "unknown": "The summary could not be started. Please try again."
+      "signin_required": "Увійдіть, щоб створити зведення.",
+      "summary_not_in_plan": "Зведення не входять до вашого тарифу.",
+      "summary_unavailable": "Зведення тимчасово недоступні. Спробуйте пізніше.",
+      "unreadable_media": "Не вдалося прочитати цей файл як аудіо чи відео.",
+      "no_audio_or_video": "У цьому файлі немає аудіо чи відео для зведення.",
+      "file_too_large": "Цей файл більший або довший, ніж дозволяє ваш тариф.",
+      "upload_not_found": "Завантажений файл не знайдено. Спробуйте ще раз.",
+      "quota_exceeded": "Ви використали всі ШІ-завдання на сьогодні.",
+      "invalid_request": "Запит не прийнято. Перезавантажте сторінку й спробуйте ще раз.",
+      "unknown": "Не вдалося розпочати створення зведення. Спробуйте ще раз."
     }
   },
   "specializedToolShell": {

@@ -1677,7 +1677,7 @@
         "ai_voice_cleanup": "音声クリーンアップ",
         "ai_isolate_vocals": "ボーカルの分離",
         "ai_remove_vocals": "ボーカルの除去",
-        "video_summary": "Video summary"
+        "video_summary": "動画の要約"
       },
       "deletesOn": "{{date}}に削除",
       "keptLonger": "延長保存中",

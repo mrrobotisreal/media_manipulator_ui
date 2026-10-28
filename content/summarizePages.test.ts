@@ -77,4 +77,40 @@ describe('summary tool pages (MM75)', () => {
     expect(tool.group).toBe('ai');
     expect(catalogGroupFor(page('summarize-video'))).toBe('ai');
   });
+
+  it('name and tagline of both pages are translated in every non-English locale', () => {
+    for (const l of locales.filter((x) => x.code !== 'en-US')) {
+      for (const slug of SLUGS) {
+        const localized = getLocalizedToolBySlug(slug, l.code)!;
+        expect(localized.name, `${l.code} ${slug} name`).not.toBe(page(slug).name);
+        expect(localized.tagline, `${l.code} ${slug} tagline`).not.toBe(page(slug).tagline);
+      }
+    }
+  });
+
+  it('i18n parity: the MM75 interface keys exist and are translated in every locale', () => {
+    const at = (o: unknown, path: string) => path.split('.').reduce<unknown>((x, k) => (x as Record<string, unknown> | undefined)?.[k], o);
+    const read = (dir: string, shard: string) => JSON.parse(readFileSync(join(LOCALES_DIR, dir, 'interface', `${shard}.json`), 'utf8'));
+    const KEYS: Array<[string, string]> = [
+      ['panels', 'summarize.signIn.title'],
+      ['panels', 'summarize.unavailable'],
+      ['panels', 'summarize.sameAsSpeech'],
+      ['panels', 'summarize.start'],
+      ['panels', 'summarize.stages.synthesis'],
+      ['components', 'resultPanel.summary.copyMarkdown'],
+      ['components', 'resultPanel.summary.chapters'],
+      ['components', 'resultPanel.kind.summary'],
+      ['pages', 'account.history.tool.video_summary'],
+    ];
+    const en = { panels: read('en-us', 'panels'), components: read('en-us', 'components'), pages: read('en-us', 'pages') } as Record<string, unknown>;
+    for (const l of locales.filter((x) => x.code !== 'en-US')) {
+      const dir = l.code.toLowerCase();
+      const shards = { panels: read(dir, 'panels'), components: read(dir, 'components'), pages: read(dir, 'pages') } as Record<string, unknown>;
+      for (const [shard, key] of KEYS) {
+        const value = at(shards[shard], key);
+        expect(typeof value, `${dir} ${shard}:${key}`).toBe('string');
+        expect(value, `${dir} ${shard}:${key} still English`).not.toBe(at(en[shard], key));
+      }
+    }
+  });
 });

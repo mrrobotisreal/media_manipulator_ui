@@ -288,7 +288,7 @@
       "dash": "حزمة DASH",
       "metadata": "بيانات وصفية",
       "unknown": "ملف",
-      "summary": "Summary"
+      "summary": "ملخص"
     },
     "image": {
       "zoom": "تكبير",
@@ -410,23 +410,23 @@
       "download": "تنزيل كل النتائج"
     },
     "summary": {
-      "loading": "Loading the summary",
-      "loadFailed": "The summary could not be loaded.",
-      "untitled": "Summary",
-      "language": "Language: {{language}}",
-      "chapters": "Chapters",
-      "seekTo": "Jump to {{time}}",
-      "topics": "Topics",
-      "onScreenText": "On-screen text",
-      "visual": "Picture",
-      "speech": "Speech",
-      "notes": "Notes",
-      "copyMarkdown": "Copy as Markdown",
-      "copied": "Copied",
-      "downloadMd": "Download .md",
-      "downloadJson": "Download .json",
-      "showAll": "Show all ({{count}})",
-      "showLess": "Show less"
+      "loading": "جارٍ تحميل الملخص",
+      "loadFailed": "تعذّر تحميل الملخص.",
+      "untitled": "ملخص",
+      "language": "اللغة: {{language}}",
+      "chapters": "الفصول",
+      "seekTo": "انتقل إلى {{time}}",
+      "topics": "المواضيع",
+      "onScreenText": "النص الظاهر على الشاشة",
+      "visual": "الصورة",
+      "speech": "الكلام",
+      "notes": "ملاحظات",
+      "copyMarkdown": "نسخ بصيغة Markdown",
+      "copied": "تم النسخ",
+      "downloadMd": "تنزيل ‎.md",
+      "downloadJson": "تنزيل ‎.json",
+      "showAll": "عرض الكل ({{count}})",
+      "showLess": "عرض أقل"
     }
   },
   "billing": {

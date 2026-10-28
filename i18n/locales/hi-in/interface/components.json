@@ -280,7 +280,7 @@
       "dash": "DASH पैकेज",
       "metadata": "मेटाडेटा",
       "unknown": "फ़ाइल",
-      "summary": "Summary"
+      "summary": "सारांश"
     },
     "image": {
       "zoom": "ज़ूम",
@@ -398,23 +398,23 @@
       "download": "सभी रिज़ल्ट डाउनलोड करें"
     },
     "summary": {
-      "loading": "Loading the summary",
-      "loadFailed": "The summary could not be loaded.",
-      "untitled": "Summary",
-      "language": "Language: {{language}}",
-      "chapters": "Chapters",
-      "seekTo": "Jump to {{time}}",
-      "topics": "Topics",
-      "onScreenText": "On-screen text",
-      "visual": "Picture",
-      "speech": "Speech",
-      "notes": "Notes",
-      "copyMarkdown": "Copy as Markdown",
-      "copied": "Copied",
-      "downloadMd": "Download .md",
-      "downloadJson": "Download .json",
-      "showAll": "Show all ({{count}})",
-      "showLess": "Show less"
+      "loading": "सारांश लोड हो रहा है",
+      "loadFailed": "सारांश लोड नहीं हो सका।",
+      "untitled": "सारांश",
+      "language": "भाषा: {{language}}",
+      "chapters": "अध्याय",
+      "seekTo": "{{time}} पर जाएँ",
+      "topics": "विषय",
+      "onScreenText": "स्क्रीन पर दिखा टेक्स्ट",
+      "visual": "चित्र",
+      "speech": "बोली",
+      "notes": "नोट्स",
+      "copyMarkdown": "Markdown के रूप में कॉपी करें",
+      "copied": "कॉपी हो गया",
+      "downloadMd": ".md डाउनलोड करें",
+      "downloadJson": ".json डाउनलोड करें",
+      "showAll": "सभी दिखाएँ ({{count}})",
+      "showLess": "कम दिखाएँ"
     }
   },
   "billing": {

@@ -28,56 +28,56 @@
     "unknown": "לא ידוע"
   },
   "summarize": {
-    "loading": "Checking whether summaries are available…",
-    "unavailable": "Video and audio summaries are temporarily unavailable. Please try again later; the Transcribe pages still work.",
-    "notInPlan": "Summaries are not included in your plan.",
+    "loading": "בודקים אם סיכומים זמינים…",
+    "unavailable": "סיכומי וידאו ואודיו אינם זמינים זמנית. נסו שוב מאוחר יותר; דפי התמלול ממשיכים לעבוד.",
+    "notInPlan": "סיכומים אינם כלולים בתוכנית שלכם.",
     "signIn": {
-      "title": "Sign in to summarize",
-      "body": "Summaries run on our own GPU server and need a free account. Sign in or create one, then upload your file.",
-      "button": "Sign in",
-      "signup": "Create a free account"
+      "title": "התחברו כדי לסכם",
+      "body": "הסיכומים רצים על שרת ה־GPU שלנו וצריכים חשבון חינמי. התחברו או צרו חשבון, ואז העלו את הקובץ.",
+      "button": "התחברות",
+      "signup": "יצירת חשבון חינמי"
     },
-    "uploadHintVideo": "a video or audio file",
-    "uploadHintAudio": "an audio file",
-    "outputLanguage": "Summary language",
-    "sameAsSpeech": "Same as the speech",
+    "uploadHintVideo": "קובץ וידאו או אודיו",
+    "uploadHintAudio": "קובץ אודיו",
+    "outputLanguage": "שפת הסיכום",
+    "sameAsSpeech": "כשפת הדיבור",
     "depth": {
-      "label": "Depth",
-      "standard": "Standard",
-      "deep": "Deep",
-      "hint": "Deep writes the summary with a larger model. It takes longer."
+      "label": "עומק",
+      "standard": "רגיל",
+      "deep": "מעמיק",
+      "hint": "במצב מעמיק הסיכום נכתב במודל גדול יותר. זה לוקח יותר זמן."
     },
-    "note": "Uses one AI job from your daily allowance. A failed job is not counted.",
-    "noteFrames": "Your plan reads up to {{frames}} frames of the video. Uses one AI job from your daily allowance; a failed job is not counted.",
-    "start": "Summarize",
-    "stagesTitle": "Progress",
+    "note": "צורך משימת AI אחת מהמכסה היומית שלכם. משימה שנכשלה לא נספרת.",
+    "noteFrames": "התוכנית שלכם קוראת עד {{frames}} פריימים מהסרטון. צורך משימת AI אחת מהמכסה היומית; משימה שנכשלה לא נספרת.",
+    "start": "סכמו",
+    "stagesTitle": "התקדמות",
     "stages": {
-      "probe": "Reading the file",
-      "audio": "Transcribing the speech",
-      "frames": "Choosing frames",
-      "vision": "Describing the frames",
-      "synthesis": "Writing the summary",
-      "render": "Formatting the result"
+      "probe": "קורא את הקובץ",
+      "audio": "מתמלל את הדיבור",
+      "frames": "בוחר פריימים",
+      "vision": "מתאר את הפריימים",
+      "synthesis": "כותב את הסיכום",
+      "render": "מעצב את התוצאה"
     },
     "status": {
-      "pending": "Waiting",
-      "processing": "In progress",
-      "completed": "Done",
-      "skipped": "Skipped",
-      "failed": "Failed"
+      "pending": "ממתין",
+      "processing": "בתהליך",
+      "completed": "הושלם",
+      "skipped": "דולג",
+      "failed": "נכשל"
     },
-    "framesCount": "Frames: {{count}}",
+    "framesCount": "פריימים: {{count}}",
     "errors": {
-      "signin_required": "Sign in to summarize.",
-      "summary_not_in_plan": "Summaries are not included in your plan.",
-      "summary_unavailable": "Summaries are temporarily unavailable. Please try again later.",
-      "unreadable_media": "This file could not be read as audio or video.",
-      "no_audio_or_video": "This file has no audio or video to summarize.",
-      "file_too_large": "This file is larger or longer than your plan allows.",
-      "upload_not_found": "The upload could not be found. Please try again.",
-      "quota_exceeded": "You have used all of today's AI jobs.",
-      "invalid_request": "The request was not accepted. Reload the page and try again.",
-      "unknown": "The summary could not be started. Please try again."
+      "signin_required": "התחברו כדי לסכם.",
+      "summary_not_in_plan": "סיכומים אינם כלולים בתוכנית שלכם.",
+      "summary_unavailable": "סיכומים אינם זמינים זמנית. נסו שוב מאוחר יותר.",
+      "unreadable_media": "לא ניתן היה לקרוא את הקובץ הזה כאודיו או כוידאו.",
+      "no_audio_or_video": "בקובץ הזה אין אודיו או וידאו לסיכום.",
+      "file_too_large": "הקובץ הזה גדול או ארוך ממה שהתוכנית שלכם מאפשרת.",
+      "upload_not_found": "ההעלאה לא נמצאה. נסו שוב.",
+      "quota_exceeded": "ניצלתם את כל משימות ה־AI להיום.",
+      "invalid_request": "הבקשה לא התקבלה. טענו מחדש את הדף ונסו שוב.",
+      "unknown": "לא ניתן היה להתחיל את הסיכום. נסו שוב."
     }
   },
   "specializedToolShell": {

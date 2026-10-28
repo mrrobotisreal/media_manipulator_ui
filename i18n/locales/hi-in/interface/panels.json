@@ -26,56 +26,56 @@
     "unknown": "अज्ञात"
   },
   "summarize": {
-    "loading": "Checking whether summaries are available…",
-    "unavailable": "Video and audio summaries are temporarily unavailable. Please try again later; the Transcribe pages still work.",
-    "notInPlan": "Summaries are not included in your plan.",
+    "loading": "जाँच रहे हैं कि सारांश उपलब्ध हैं या नहीं…",
+    "unavailable": "वीडियो और ऑडियो सारांश अस्थायी रूप से उपलब्ध नहीं हैं। कृपया बाद में दोबारा कोशिश करें; ट्रांसक्रिप्शन पेज काम कर रहे हैं।",
+    "notInPlan": "सारांश आपके प्लान में शामिल नहीं हैं।",
     "signIn": {
-      "title": "Sign in to summarize",
-      "body": "Summaries run on our own GPU server and need a free account. Sign in or create one, then upload your file.",
-      "button": "Sign in",
-      "signup": "Create a free account"
+      "title": "सारांश बनाने के लिए साइन इन करें",
+      "body": "सारांश हमारे अपने GPU सर्वर पर चलते हैं और इनके लिए मुफ़्त अकाउंट चाहिए। साइन इन करें या अकाउंट बनाएँ, फिर अपनी फ़ाइल अपलोड करें।",
+      "button": "साइन इन करें",
+      "signup": "मुफ़्त अकाउंट बनाएँ"
     },
-    "uploadHintVideo": "a video or audio file",
-    "uploadHintAudio": "an audio file",
-    "outputLanguage": "Summary language",
-    "sameAsSpeech": "Same as the speech",
+    "uploadHintVideo": "एक वीडियो या ऑडियो फ़ाइल",
+    "uploadHintAudio": "एक ऑडियो फ़ाइल",
+    "outputLanguage": "सारांश की भाषा",
+    "sameAsSpeech": "बोली गई भाषा जैसी",
     "depth": {
-      "label": "Depth",
-      "standard": "Standard",
-      "deep": "Deep",
-      "hint": "Deep writes the summary with a larger model. It takes longer."
+      "label": "गहराई",
+      "standard": "सामान्य",
+      "deep": "विस्तृत",
+      "hint": "विस्तृत मोड में सारांश बड़े मॉडल से लिखा जाता है। इसमें ज़्यादा समय लगता है।"
     },
-    "note": "Uses one AI job from your daily allowance. A failed job is not counted.",
-    "noteFrames": "Your plan reads up to {{frames}} frames of the video. Uses one AI job from your daily allowance; a failed job is not counted.",
-    "start": "Summarize",
-    "stagesTitle": "Progress",
+    "note": "आपके दैनिक कोटे से एक AI जॉब खर्च होता है। विफल जॉब गिना नहीं जाता।",
+    "noteFrames": "आपका प्लान वीडियो के {{frames}} फ़्रेम तक पढ़ता है। आपके दैनिक कोटे से एक AI जॉब खर्च होता है; विफल जॉब गिना नहीं जाता।",
+    "start": "सारांश बनाएँ",
+    "stagesTitle": "प्रगति",
     "stages": {
-      "probe": "Reading the file",
-      "audio": "Transcribing the speech",
-      "frames": "Choosing frames",
-      "vision": "Describing the frames",
-      "synthesis": "Writing the summary",
-      "render": "Formatting the result"
+      "probe": "फ़ाइल पढ़ी जा रही है",
+      "audio": "बोली का ट्रांसक्रिप्शन हो रहा है",
+      "frames": "फ़्रेम चुने जा रहे हैं",
+      "vision": "फ़्रेम का विवरण लिखा जा रहा है",
+      "synthesis": "सारांश लिखा जा रहा है",
+      "render": "नतीजे को फ़ॉर्मैट किया जा रहा है"
     },
     "status": {
-      "pending": "Waiting",
-      "processing": "In progress",
-      "completed": "Done",
-      "skipped": "Skipped",
-      "failed": "Failed"
+      "pending": "प्रतीक्षा में",
+      "processing": "जारी है",
+      "completed": "पूरा हुआ",
+      "skipped": "छोड़ा गया",
+      "failed": "विफल"
     },
-    "framesCount": "Frames: {{count}}",
+    "framesCount": "फ़्रेम: {{count}}",
     "errors": {
-      "signin_required": "Sign in to summarize.",
-      "summary_not_in_plan": "Summaries are not included in your plan.",
-      "summary_unavailable": "Summaries are temporarily unavailable. Please try again later.",
-      "unreadable_media": "This file could not be read as audio or video.",
-      "no_audio_or_video": "This file has no audio or video to summarize.",
-      "file_too_large": "This file is larger or longer than your plan allows.",
-      "upload_not_found": "The upload could not be found. Please try again.",
-      "quota_exceeded": "You have used all of today's AI jobs.",
-      "invalid_request": "The request was not accepted. Reload the page and try again.",
-      "unknown": "The summary could not be started. Please try again."
+      "signin_required": "सारांश बनाने के लिए साइन इन करें।",
+      "summary_not_in_plan": "सारांश आपके प्लान में शामिल नहीं हैं।",
+      "summary_unavailable": "सारांश अस्थायी रूप से उपलब्ध नहीं हैं। कृपया बाद में दोबारा कोशिश करें।",
+      "unreadable_media": "इस फ़ाइल को ऑडियो या वीडियो के रूप में पढ़ा नहीं जा सका।",
+      "no_audio_or_video": "इस फ़ाइल में सारांश के लिए कोई ऑडियो या वीडियो नहीं है।",
+      "file_too_large": "यह फ़ाइल आपके प्लान की अनुमति से बड़ी या लंबी है।",
+      "upload_not_found": "अपलोड नहीं मिला। कृपया दोबारा कोशिश करें।",
+      "quota_exceeded": "आप आज के सभी AI जॉब इस्तेमाल कर चुके हैं।",
+      "invalid_request": "अनुरोध स्वीकार नहीं किया गया। पेज रीलोड करें और दोबारा कोशिश करें।",
+      "unknown": "सारांश शुरू नहीं हो सका। कृपया दोबारा कोशिश करें।"
     }
   },
   "specializedToolShell": {

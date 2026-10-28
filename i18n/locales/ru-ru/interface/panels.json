@@ -28,56 +28,56 @@
     "unknown": "неизвестно"
   },
   "summarize": {
-    "loading": "Checking whether summaries are available…",
-    "unavailable": "Video and audio summaries are temporarily unavailable. Please try again later; the Transcribe pages still work.",
-    "notInPlan": "Summaries are not included in your plan.",
+    "loading": "Проверяем, доступны ли сводки…",
+    "unavailable": "Сводки по видео и аудио временно недоступны. Повторите попытку позже; страницы расшифровки работают.",
+    "notInPlan": "Сводки не входят в ваш тариф.",
     "signIn": {
-      "title": "Sign in to summarize",
-      "body": "Summaries run on our own GPU server and need a free account. Sign in or create one, then upload your file.",
-      "button": "Sign in",
-      "signup": "Create a free account"
+      "title": "Войдите, чтобы создать сводку",
+      "body": "Сводки создаются на нашем собственном GPU-сервере и требуют бесплатной учетной записи. Войдите или создайте ее, затем загрузите файл.",
+      "button": "Войти",
+      "signup": "Создать бесплатную учетную запись"
     },
-    "uploadHintVideo": "a video or audio file",
-    "uploadHintAudio": "an audio file",
-    "outputLanguage": "Summary language",
-    "sameAsSpeech": "Same as the speech",
+    "uploadHintVideo": "видео- или аудиофайл",
+    "uploadHintAudio": "аудиофайл",
+    "outputLanguage": "Язык сводки",
+    "sameAsSpeech": "Как в речи",
     "depth": {
-      "label": "Depth",
-      "standard": "Standard",
-      "deep": "Deep",
-      "hint": "Deep writes the summary with a larger model. It takes longer."
+      "label": "Глубина",
+      "standard": "Стандартная",
+      "deep": "Глубокая",
+      "hint": "Глубокая сводка пишется более крупной моделью. Это занимает больше времени."
     },
-    "note": "Uses one AI job from your daily allowance. A failed job is not counted.",
-    "noteFrames": "Your plan reads up to {{frames}} frames of the video. Uses one AI job from your daily allowance; a failed job is not counted.",
-    "start": "Summarize",
-    "stagesTitle": "Progress",
+    "note": "Расходует одну ИИ-задачу из вашего дневного лимита. Неудавшаяся задача не засчитывается.",
+    "noteFrames": "Ваш тариф позволяет анализировать до {{frames}} кадров видео. Расходует одну ИИ-задачу из дневного лимита; неудавшаяся задача не засчитывается.",
+    "start": "Создать сводку",
+    "stagesTitle": "Ход выполнения",
     "stages": {
-      "probe": "Reading the file",
-      "audio": "Transcribing the speech",
-      "frames": "Choosing frames",
-      "vision": "Describing the frames",
-      "synthesis": "Writing the summary",
-      "render": "Formatting the result"
+      "probe": "Чтение файла",
+      "audio": "Расшифровка речи",
+      "frames": "Выбор кадров",
+      "vision": "Описание кадров",
+      "synthesis": "Написание сводки",
+      "render": "Оформление результата"
     },
     "status": {
-      "pending": "Waiting",
-      "processing": "In progress",
-      "completed": "Done",
-      "skipped": "Skipped",
-      "failed": "Failed"
+      "pending": "Ожидание",
+      "processing": "Выполняется",
+      "completed": "Готово",
+      "skipped": "Пропущено",
+      "failed": "Ошибка"
     },
-    "framesCount": "Frames: {{count}}",
+    "framesCount": "Кадров: {{count}}",
     "errors": {
-      "signin_required": "Sign in to summarize.",
-      "summary_not_in_plan": "Summaries are not included in your plan.",
-      "summary_unavailable": "Summaries are temporarily unavailable. Please try again later.",
-      "unreadable_media": "This file could not be read as audio or video.",
-      "no_audio_or_video": "This file has no audio or video to summarize.",
-      "file_too_large": "This file is larger or longer than your plan allows.",
-      "upload_not_found": "The upload could not be found. Please try again.",
-      "quota_exceeded": "You have used all of today's AI jobs.",
-      "invalid_request": "The request was not accepted. Reload the page and try again.",
-      "unknown": "The summary could not be started. Please try again."
+      "signin_required": "Войдите, чтобы создать сводку.",
+      "summary_not_in_plan": "Сводки не входят в ваш тариф.",
+      "summary_unavailable": "Сводки временно недоступны. Повторите попытку позже.",
+      "unreadable_media": "Не удалось прочитать этот файл как аудио или видео.",
+      "no_audio_or_video": "В этом файле нет аудио или видео для сводки.",
+      "file_too_large": "Этот файл больше или длиннее, чем позволяет ваш тариф.",
+      "upload_not_found": "Загруженный файл не найден. Повторите попытку.",
+      "quota_exceeded": "Вы израсходовали все ИИ-задачи на сегодня.",
+      "invalid_request": "Запрос не принят. Перезагрузите страницу и повторите попытку.",
+      "unknown": "Не удалось начать создание сводки. Повторите попытку."
     }
   },
   "specializedToolShell": {

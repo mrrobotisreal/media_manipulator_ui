@@ -1677,7 +1677,7 @@
         "ai_voice_cleanup": "ניקוי קול",
         "ai_isolate_vocals": "בידוד שירה",
         "ai_remove_vocals": "הסרת שירה",
-        "video_summary": "Video summary"
+        "video_summary": "סיכום וידאו"
       },
       "deletesOn": "Deletes on {{date}}",
       "keptLonger": "Kept longer",

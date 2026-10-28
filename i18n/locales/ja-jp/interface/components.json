@@ -278,7 +278,7 @@
       "dash": "DASHパッケージ",
       "metadata": "メタデータ",
       "unknown": "ファイル",
-      "summary": "Summary"
+      "summary": "要約"
     },
     "image": {
       "zoom": "ズーム",
@@ -395,23 +395,23 @@
       "download": "すべての結果をダウンロード"
     },
     "summary": {
-      "loading": "Loading the summary",
-      "loadFailed": "The summary could not be loaded.",
-      "untitled": "Summary",
-      "language": "Language: {{language}}",
-      "chapters": "Chapters",
-      "seekTo": "Jump to {{time}}",
-      "topics": "Topics",
-      "onScreenText": "On-screen text",
-      "visual": "Picture",
-      "speech": "Speech",
-      "notes": "Notes",
-      "copyMarkdown": "Copy as Markdown",
-      "copied": "Copied",
-      "downloadMd": "Download .md",
-      "downloadJson": "Download .json",
-      "showAll": "Show all ({{count}})",
-      "showLess": "Show less"
+      "loading": "要約を読み込み中",
+      "loadFailed": "要約を読み込めませんでした。",
+      "untitled": "要約",
+      "language": "言語：{{language}}",
+      "chapters": "チャプター",
+      "seekTo": "{{time}}へジャンプ",
+      "topics": "トピック",
+      "onScreenText": "画面上のテキスト",
+      "visual": "映像",
+      "speech": "音声",
+      "notes": "メモ",
+      "copyMarkdown": "Markdownとしてコピー",
+      "copied": "コピーしました",
+      "downloadMd": ".mdをダウンロード",
+      "downloadJson": ".jsonをダウンロード",
+      "showAll": "すべて表示（{{count}}）",
+      "showLess": "表示を減らす"
     }
   },
   "billing": {

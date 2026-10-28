@@ -25,56 +25,56 @@
     "unknown": "未知"
   },
   "summarize": {
-    "loading": "Checking whether summaries are available…",
-    "unavailable": "Video and audio summaries are temporarily unavailable. Please try again later; the Transcribe pages still work.",
-    "notInPlan": "Summaries are not included in your plan.",
+    "loading": "正在檢查摘要功能是否可用…",
+    "unavailable": "影片與音訊摘要暫時無法使用，請稍後再試；轉錄頁面仍可正常使用。",
+    "notInPlan": "你的方案不包含摘要功能。",
     "signIn": {
-      "title": "Sign in to summarize",
-      "body": "Summaries run on our own GPU server and need a free account. Sign in or create one, then upload your file.",
-      "button": "Sign in",
-      "signup": "Create a free account"
+      "title": "登入後產生摘要",
+      "body": "摘要在我們自己的 GPU 伺服器上執行，需要一個免費帳號。請登入或建立帳號，然後上傳檔案。",
+      "button": "登入",
+      "signup": "建立免費帳號"
     },
-    "uploadHintVideo": "a video or audio file",
-    "uploadHintAudio": "an audio file",
-    "outputLanguage": "Summary language",
-    "sameAsSpeech": "Same as the speech",
+    "uploadHintVideo": "影片或音訊檔案",
+    "uploadHintAudio": "音訊檔案",
+    "outputLanguage": "摘要語言",
+    "sameAsSpeech": "與語音語言相同",
     "depth": {
-      "label": "Depth",
-      "standard": "Standard",
-      "deep": "Deep",
-      "hint": "Deep writes the summary with a larger model. It takes longer."
+      "label": "深度",
+      "standard": "標準",
+      "deep": "深入",
+      "hint": "「深入」會使用更大的模型來撰寫摘要，耗時較長。"
     },
-    "note": "Uses one AI job from your daily allowance. A failed job is not counted.",
-    "noteFrames": "Your plan reads up to {{frames}} frames of the video. Uses one AI job from your daily allowance; a failed job is not counted.",
-    "start": "Summarize",
-    "stagesTitle": "Progress",
+    "note": "會使用每日額度中的 1 次 AI 工作。失敗的工作不會計入。",
+    "noteFrames": "你的方案最多會讀取影片的 {{frames}} 個影格。會使用每日額度中的 1 次 AI 工作；失敗的工作不會計入。",
+    "start": "產生摘要",
+    "stagesTitle": "進度",
     "stages": {
-      "probe": "Reading the file",
-      "audio": "Transcribing the speech",
-      "frames": "Choosing frames",
-      "vision": "Describing the frames",
-      "synthesis": "Writing the summary",
-      "render": "Formatting the result"
+      "probe": "讀取檔案",
+      "audio": "轉錄語音",
+      "frames": "挑選影格",
+      "vision": "描述影格",
+      "synthesis": "撰寫摘要",
+      "render": "整理結果格式"
     },
     "status": {
-      "pending": "Waiting",
-      "processing": "In progress",
-      "completed": "Done",
-      "skipped": "Skipped",
-      "failed": "Failed"
+      "pending": "等待中",
+      "processing": "進行中",
+      "completed": "已完成",
+      "skipped": "已略過",
+      "failed": "失敗"
     },
-    "framesCount": "Frames: {{count}}",
+    "framesCount": "影格：{{count}}",
     "errors": {
-      "signin_required": "Sign in to summarize.",
-      "summary_not_in_plan": "Summaries are not included in your plan.",
-      "summary_unavailable": "Summaries are temporarily unavailable. Please try again later.",
-      "unreadable_media": "This file could not be read as audio or video.",
-      "no_audio_or_video": "This file has no audio or video to summarize.",
-      "file_too_large": "This file is larger or longer than your plan allows.",
-      "upload_not_found": "The upload could not be found. Please try again.",
-      "quota_exceeded": "You have used all of today's AI jobs.",
-      "invalid_request": "The request was not accepted. Reload the page and try again.",
-      "unknown": "The summary could not be started. Please try again."
+      "signin_required": "請登入後再產生摘要。",
+      "summary_not_in_plan": "你的方案不包含摘要功能。",
+      "summary_unavailable": "摘要功能暫時無法使用，請稍後再試。",
+      "unreadable_media": "無法將此檔案當作音訊或影片讀取。",
+      "no_audio_or_video": "此檔案中沒有可供摘要的音訊或影片。",
+      "file_too_large": "此檔案的大小或長度超出了你的方案限制。",
+      "upload_not_found": "找不到已上傳的檔案，請重試。",
+      "quota_exceeded": "你今天的 AI 工作次數已用完。",
+      "invalid_request": "請求未被接受。請重新載入頁面後再試。",
+      "unknown": "無法開始產生摘要，請重試。"
     }
   },
   "specializedToolShell": {

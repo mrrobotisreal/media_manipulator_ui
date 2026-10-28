@@ -284,7 +284,7 @@
       "dash": "DASH package",
       "metadata": "Metadata",
       "unknown": "File",
-      "summary": "Summary"
+      "summary": "Сводка"
     },
     "image": {
       "zoom": "Zoom",
@@ -402,23 +402,23 @@
       "download": "Download all results"
     },
     "summary": {
-      "loading": "Loading the summary",
-      "loadFailed": "The summary could not be loaded.",
-      "untitled": "Summary",
-      "language": "Language: {{language}}",
-      "chapters": "Chapters",
-      "seekTo": "Jump to {{time}}",
-      "topics": "Topics",
-      "onScreenText": "On-screen text",
-      "visual": "Picture",
-      "speech": "Speech",
-      "notes": "Notes",
-      "copyMarkdown": "Copy as Markdown",
-      "copied": "Copied",
-      "downloadMd": "Download .md",
-      "downloadJson": "Download .json",
-      "showAll": "Show all ({{count}})",
-      "showLess": "Show less"
+      "loading": "Загрузка сводки",
+      "loadFailed": "Не удалось загрузить сводку.",
+      "untitled": "Сводка",
+      "language": "Язык: {{language}}",
+      "chapters": "Главы",
+      "seekTo": "Перейти к {{time}}",
+      "topics": "Темы",
+      "onScreenText": "Текст на экране",
+      "visual": "Изображение",
+      "speech": "Речь",
+      "notes": "Примечания",
+      "copyMarkdown": "Копировать как Markdown",
+      "copied": "Скопировано",
+      "downloadMd": "Скачать .md",
+      "downloadJson": "Скачать .json",
+      "showAll": "Показать все ({{count}})",
+      "showLess": "Показать меньше"
     }
   },
   "billing": {

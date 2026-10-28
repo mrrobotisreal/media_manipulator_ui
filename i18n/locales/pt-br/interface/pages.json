@@ -1677,7 +1677,7 @@
         "ai_voice_cleanup": "Limpeza de voz",
         "ai_isolate_vocals": "Isolamento de vocais",
         "ai_remove_vocals": "Remoção de vocais",
-        "video_summary": "Video summary"
+        "video_summary": "Resumo de vídeo"
       },
       "deletesOn": "Exclusão em {{date}}",
       "keptLonger": "Guardado por mais tempo",

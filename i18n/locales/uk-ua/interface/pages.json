@@ -1677,7 +1677,7 @@
         "ai_voice_cleanup": "Очищення голосу",
         "ai_isolate_vocals": "Виділення вокалу",
         "ai_remove_vocals": "Видалення вокалу",
-        "video_summary": "Video summary"
+        "video_summary": "Зведення відео"
       },
       "deletesOn": "Deletes on {{date}}",
       "keptLonger": "Kept longer",

@@ -292,9 +292,251 @@ const viToolPages = {
       name: 'Trình tạo phụ đề VTT',
       tagline: 'Tạo tệp phụ đề .vtt cho video HTML5, YouTube hoặc trình phát bằng phiên âm AI trên máy chủ GPU của chúng tôi.',
     },
+    // MM75: summarize-video / summarize-audio full page bodies (model-written, needs native review).
     'summarize-video': {
       name: 'Tóm tắt video',
-      tagline: 'Nhận bản ghi lời thoại và phân tích JSON có cấu trúc, kèm mốc thời gian, của bài giảng, cuộc họp hoặc buổi phỏng vấn, trên máy chủ GPU của chúng tôi.',
+      h1: 'Tóm tắt video bằng AI: chương, chủ đề và văn bản trên màn hình',
+      tagline: 'Nhận bản tóm tắt bằng văn bản cho bài giảng, cuộc họp hoặc video hướng dẫn, kèm các chương có thể bấm, chủ đề và văn bản trên màn hình, được tạo trên máy chủ GPU của chúng tôi.',
+      metaTitle: 'Công cụ tóm tắt video bằng AI có chia chương | Media Manipulator',
+      metaDescription: 'Tải video lên và nhận bản tóm tắt bằng văn bản với các chương có mốc thời gian, chủ đề và văn bản hiển thị trên màn hình. AI chạy trên máy chủ GPU của chúng tôi, không dùng AI của bên thứ ba. Cần tài khoản miễn phí.',
+      ogTitle: 'Tóm tắt video bằng AI',
+      ogDescription: 'Bản tóm tắt bằng văn bản với các chương có thể bấm, chủ đề và văn bản trên màn hình. Cần tài khoản miễn phí.',
+      embed: {
+        title: 'Tóm tắt video',
+        description: 'Đăng nhập, tải lên một video (hoặc tệp âm thanh) và chọn ngôn ngữ của bản tóm tắt. Bạn sẽ nhận được tiêu đề, bản tóm tắt ngắn, các chương nhảy đến đúng thời điểm trong video, các chủ đề và văn bản xuất hiện trên màn hình.',
+      },
+      intro: 'Không ai muốn xem lại cả giờ họp hay bài giảng chỉ để tìm năm phút quan trọng. Media Manipulator xem và nghe thay bạn: chép lời phần nói bằng Whisper, dùng mô hình thị giác để xem các khung hình được chọn tại những chỗ hình ảnh thay đổi, rồi viết bản tóm tắt từ cả hai, tất cả trên máy chủ GPU do chúng tôi vận hành. Kết quả là một tài liệu ngắn: tiêu đề, vài câu tóm tắt, các chương có thời gian bắt đầu và kết thúc, các chủ đề và văn bản xuất hiện trên màn hình. Bấm vào một chương để nhảy đến đúng thời điểm trong video, sao chép toàn bộ dưới dạng Markdown hoặc tải xuống dưới dạng Markdown hay JSON. Tính năng tóm tắt cần một tài khoản miễn phí.',
+      whatItDoes: [
+        'Viết tiêu đề và bản tóm tắt từ ba đến sáu câu cho toàn bộ video.',
+        'Chia video thành các chương có thời gian bắt đầu và kết thúc; bấm vào một chương sẽ nhảy trình phát đến đúng thời điểm đó.',
+        'Liệt kê các chủ đề và văn bản xuất hiện trên màn hình, kèm thời điểm xuất hiện đầu tiên.',
+        'Mô tả hình ảnh và lời nói, đồng thời ghi chú những gì không thực hiện được (ví dụ: không có lời nói).',
+        'Viết bản tóm tắt bằng ngôn ngữ bạn chọn hoặc bằng ngôn ngữ được nói trong video.',
+      ],
+      flowSteps: [
+        {
+          title: 'Đăng nhập',
+          description: 'Chỉ cần tài khoản miễn phí.',
+        },
+        {
+          title: 'Tải lên',
+          description: 'Một video hoặc tệp âm thanh.',
+        },
+        {
+          title: 'Tóm tắt',
+          description: 'Lời nói và khung hình được phân tích trên máy chủ GPU của chúng tôi.',
+        },
+        {
+          title: 'Đọc',
+          description: 'Bấm vào chương, sao chép Markdown, tải xuống .md hoặc .json.',
+        },
+      ],
+      advancedDetails: [
+        'Lời nói được chép lời bằng Whisper; các khung hình được chọn tại những chỗ chuyển cảnh, tối đa theo hạn mức khung hình của gói (24 với Free, 48 với Premium, 96 với Pro) và được mô hình thị giác mô tả theo từng lô.',
+        'Một mô hình ngôn ngữ viết bản tóm tắt từ bản chép lời và ghi chú khung hình. Tài khoản Pro có thể yêu cầu bản tóm tắt chuyên sâu hơn từ một mô hình lớn hơn khi có sẵn.',
+        'Một bản tóm tắt được tính là một tác vụ AI trong hạn mức hằng ngày; tác vụ thất bại hoặc bị từ chối không bị tính.',
+        'Bản chép lời do máy tạo ra nên tên và con số có thể sai. Bản tóm tắt cũng ghi rõ điều này trong phần ghi chú.',
+      ],
+      whyItMatters: [
+        'Bản tóm tắt có chương chỉ mất một phút để lướt qua, còn video thì không.',
+        'Mốc thời gian có thể bấm đưa bạn thẳng đến phần cần xem.',
+        'Văn bản trên màn hình ghi lại tiêu đề slide và chú thích mà lời nói không hề đọc to.',
+      ],
+      useCases: [
+        {
+          title: 'Tóm tắt cuộc họp',
+          description: 'Các quyết định và chủ đề, kèm thời điểm để kiểm tra chi tiết.',
+        },
+        {
+          title: 'Ghi chú bài giảng',
+          description: 'Các chương theo từng phần và văn bản trên slide để bạn ôn tập.',
+        },
+        {
+          title: 'Dàn ý video hướng dẫn',
+          description: 'Các bước được chia thành chương để bạn nhảy đến bước cần xem.',
+        },
+        {
+          title: 'Tổng quan buổi phỏng vấn',
+          description: 'Những gì đã được thảo luận và ở đâu.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper cùng các mô hình thị giác và ngôn ngữ chạy trên phần cứng do chúng tôi vận hành; video của bạn không bao giờ được gửi đến AI của bên thứ ba.',
+        'Các chương tua thẳng trong video của chính bạn, ngay trong trình xem kết quả.',
+        'Tải xuống dưới dạng Markdown và JSON. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí, bạn chọn từ 24 giờ đến 2 năm.',
+      ],
+      privacyNote: 'Tính năng tóm tắt cần một tài khoản miễn phí nên tác vụ được gắn với tài khoản đó. Tệp của bạn được xử lý trên máy chủ của chúng tôi và các mô hình AI chạy trên máy chủ GPU do chúng tôi vận hành; không có gì được gửi đến nhà cung cấp AI bên thứ ba. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí, bạn chọn từ 24 giờ đến 2 năm.',
+      faq: [
+        {
+          question: 'Tôi có cần tài khoản không?',
+          answer: 'Có, một tài khoản miễn phí. Tính năng tóm tắt chạy nhiều mô hình AI trên máy chủ GPU của chúng tôi nên chỉ dành cho người dùng đã đăng nhập.',
+        },
+        {
+          question: 'Tôi nhận được gì?',
+          answer: 'Một tiêu đề, bản tóm tắt ngắn, các chương có thời gian bắt đầu và kết thúc, chủ đề, văn bản trên màn hình kèm thời điểm, mô tả hình ảnh và lời nói, cùng ghi chú về bất cứ điều gì không thực hiện được.',
+        },
+        {
+          question: 'Tôi có thể chọn ngôn ngữ của bản tóm tắt không?',
+          answer: 'Có. Chọn một trong 18 ngôn ngữ của trang web, hoặc chọn "Giống ngôn ngữ trong lời nói" để viết bằng ngôn ngữ được nói.',
+        },
+        {
+          question: 'Nếu video không có lời nói thì sao?',
+          answer: 'Bản tóm tắt được viết chỉ từ hình ảnh và ghi rõ điều đó trong phần ghi chú. Tệp không có cả hình ảnh lẫn âm thanh sẽ bị từ chối và không bị tính.',
+        },
+        {
+          question: 'Video của tôi có bị gửi cho bên thứ ba không?',
+          answer: 'Không. Mọi mô hình đều chạy trên máy chủ GPU do chúng tôi vận hành.',
+        },
+        {
+          question: 'Việc này có bị tính vào hạn mức của tôi không?',
+          answer: 'Có, tính là một tác vụ AI. Tác vụ thất bại không bị tính.',
+        },
+      ],
+      related: [
+        {
+          label: 'Tóm tắt âm thanh',
+          to: '/tools/summarize-audio',
+          description: 'Dành cho podcast và bản ghi âm.',
+        },
+        {
+          label: 'Chép lời video',
+          to: '/tools/transcribe-video',
+          description: 'Bản chép lời đầy đủ.',
+        },
+        {
+          label: 'Chép lời âm thanh',
+          to: '/tools/transcribe-audio',
+          description: 'Dành cho tệp âm thanh.',
+        },
+        {
+          label: 'Loại bỏ tiếng ồn nền',
+          to: '/tools/remove-background-noise',
+          description: 'Làm sạch âm thanh trước.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Tính là một tác vụ AI; tác vụ thất bại không bị tính.',
+          'Độ dài tối đa theo giới hạn thời lượng video của gói.',
+        ],
+      },
+    },
+    'summarize-audio': {
+      name: 'Tóm tắt âm thanh',
+      h1: 'Tóm tắt bản ghi âm bằng AI',
+      tagline: 'Biến podcast, buổi phỏng vấn hoặc ghi chú giọng nói thành bản tóm tắt bằng văn bản có chương và chủ đề, được tạo trên máy chủ GPU của chúng tôi.',
+      metaTitle: 'Công cụ tóm tắt âm thanh bằng AI có chia chương | Media Manipulator',
+      metaDescription: 'Tải lên tệp MP3, WAV hoặc M4A và nhận bản tóm tắt bằng văn bản với các chương có mốc thời gian và chủ đề. Whisper và mô hình ngôn ngữ chạy trên máy chủ GPU của chúng tôi. Cần tài khoản miễn phí.',
+      ogTitle: 'Tóm tắt bản ghi âm bằng AI',
+      ogDescription: 'Bản tóm tắt bằng văn bản có chương và chủ đề cho mọi bản ghi âm. Cần tài khoản miễn phí.',
+      embed: {
+        title: 'Tóm tắt tệp âm thanh',
+        description: 'Đăng nhập, tải lên bản ghi âm và chọn ngôn ngữ của bản tóm tắt. Bạn sẽ nhận được tiêu đề, bản tóm tắt ngắn, các chương nhảy đến đúng thời điểm trong bản ghi âm và các chủ đề.',
+      },
+      intro: 'Một tập podcast, một buổi phỏng vấn hay một ghi chú giọng nói dài sẽ dễ dùng hơn khi ở dạng một trang văn bản thay vì cả giờ âm thanh. Media Manipulator chép lời bản ghi âm bằng Whisper và nhờ một mô hình ngôn ngữ viết bản tóm tắt từ bản chép lời, cả hai đều chạy trên máy chủ GPU do chúng tôi vận hành. Bạn nhận được tiêu đề, vài câu tóm tắt, các chương có thời gian bắt đầu và kết thúc, cùng các chủ đề. Bấm vào một chương để nhảy đến đúng điểm đó trong bản ghi âm, sao chép bản tóm tắt dưới dạng Markdown hoặc tải xuống dưới dạng Markdown hay JSON. Tính năng tóm tắt cần một tài khoản miễn phí.',
+      whatItDoes: [
+        'Viết tiêu đề và bản tóm tắt ngắn cho bản ghi âm.',
+        'Chia thành các chương có thời gian; bấm vào một chương sẽ nhảy trình phát đến đó.',
+        'Liệt kê các chủ đề và mô tả ai đang nói, với giọng điệu thế nào.',
+        'Viết bản tóm tắt bằng ngôn ngữ bạn chọn hoặc bằng ngôn ngữ được nói.',
+      ],
+      flowSteps: [
+        {
+          title: 'Đăng nhập',
+          description: 'Chỉ cần tài khoản miễn phí.',
+        },
+        {
+          title: 'Tải lên',
+          description: 'MP3, WAV, M4A và các định dạng âm thanh khác.',
+        },
+        {
+          title: 'Tóm tắt',
+          description: 'Whisper và một mô hình ngôn ngữ trên máy chủ GPU của chúng tôi.',
+        },
+        {
+          title: 'Đọc',
+          description: 'Bấm vào chương, sao chép Markdown, tải xuống .md hoặc .json.',
+        },
+      ],
+      advancedDetails: [
+        'Lời nói được chép lời bằng Whisper; một mô hình ngôn ngữ viết bản tóm tắt từ bản chép lời.',
+        'Tệp âm thanh có ảnh bìa được xử lý như âm thanh: hình ảnh bị bỏ qua.',
+        'Một bản tóm tắt được tính là một tác vụ AI trong hạn mức hằng ngày; tác vụ thất bại hoặc bị từ chối không bị tính.',
+        'Bản chép lời do máy tạo ra nên tên và con số có thể sai. Bản tóm tắt cũng ghi rõ điều này trong phần ghi chú.',
+      ],
+      whyItMatters: [
+        'Bạn có thể đọc bản tóm tắt trong một phút và quyết định nên nghe phần nào.',
+        'Các chương có thời gian biến một bản ghi âm dài thành thứ bạn có thể dễ dàng điều hướng.',
+        'Các chủ đề giúp kho các tập cũ có thể tìm kiếm được.',
+      ],
+      useCases: [
+        {
+          title: 'Ghi chú cho podcast',
+          description: 'Chương và chủ đề cho trang của tập.',
+        },
+        {
+          title: 'Tóm tắt buổi phỏng vấn',
+          description: 'Những nội dung đã đề cập, kèm thời điểm để trích dẫn.',
+        },
+        {
+          title: 'Từ ghi chú giọng nói thành ghi chú văn bản',
+          description: 'Một ghi chú lan man được rút gọn thành một trang ngắn.',
+        },
+        {
+          title: 'Tóm tắt cuộc gọi',
+          description: 'Các ý chính của một cuộc gọi đã ghi âm.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper và mô hình ngôn ngữ chạy trên phần cứng do chúng tôi vận hành; bản ghi âm của bạn không bao giờ được gửi đến AI của bên thứ ba.',
+        'Các chương tua thẳng trong bản ghi âm của chính bạn, ngay trong trình xem kết quả.',
+        'Tải xuống dưới dạng Markdown và JSON. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí, bạn chọn từ 24 giờ đến 2 năm.',
+      ],
+      privacyNote: 'Tính năng tóm tắt cần một tài khoản miễn phí nên tác vụ được gắn với tài khoản đó. Tệp của bạn được xử lý trên máy chủ của chúng tôi và các mô hình AI chạy trên máy chủ GPU do chúng tôi vận hành; không có gì được gửi đến nhà cung cấp AI bên thứ ba. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí, bạn chọn từ 24 giờ đến 2 năm.',
+      faq: [
+        {
+          question: 'Tôi có cần tài khoản không?',
+          answer: 'Có, một tài khoản miễn phí. Tính năng tóm tắt chạy các mô hình AI trên máy chủ GPU của chúng tôi nên chỉ dành cho người dùng đã đăng nhập.',
+        },
+        {
+          question: 'Điều này khác gì với chép lời?',
+          answer: 'Chép lời cho bạn từng từ một. Bản tóm tắt cho bạn tiêu đề, vài câu, các chương và chủ đề, được viết từ bản chép lời đó.',
+        },
+        {
+          question: 'Tôi có thể chọn ngôn ngữ của bản tóm tắt không?',
+          answer: 'Có. Chọn một trong 18 ngôn ngữ của trang web, hoặc chọn "Giống ngôn ngữ trong lời nói".',
+        },
+        {
+          question: 'Bản ghi âm của tôi có bị gửi cho bên thứ ba không?',
+          answer: 'Không. Các mô hình chạy trên máy chủ GPU do chúng tôi vận hành.',
+        },
+        {
+          question: 'Việc này có bị tính vào hạn mức của tôi không?',
+          answer: 'Có, tính là một tác vụ AI. Tác vụ thất bại không bị tính.',
+        },
+      ],
+      related: [
+        {
+          label: 'Chép lời âm thanh',
+          to: '/tools/transcribe-audio',
+          description: 'Từng từ một, dưới dạng văn bản hoặc phụ đề.',
+        },
+        {
+          label: 'Tóm tắt video',
+          to: '/tools/summarize-video',
+          description: 'Thêm hình ảnh và văn bản trên màn hình.',
+        },
+        {
+          label: 'Loại bỏ tiếng ồn nền',
+          to: '/tools/remove-background-noise',
+          description: 'Làm sạch âm thanh trước.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Tính là một tác vụ AI; tác vụ thất bại không bị tính.',
+        ],
+      },
     },
     // MM78 voices: name + tagline (model-written, needs native review).
     'voice-cloning': {

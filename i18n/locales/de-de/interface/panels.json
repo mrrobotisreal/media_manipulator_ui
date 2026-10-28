@@ -26,56 +26,56 @@
     "unknown": "unbekannt"
   },
   "summarize": {
-    "loading": "Checking whether summaries are available…",
-    "unavailable": "Video and audio summaries are temporarily unavailable. Please try again later; the Transcribe pages still work.",
-    "notInPlan": "Summaries are not included in your plan.",
+    "loading": "Es wird geprüft, ob Zusammenfassungen verfügbar sind…",
+    "unavailable": "Video- und Audiozusammenfassungen sind vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut; die Transkriptionsseiten funktionieren weiterhin.",
+    "notInPlan": "Zusammenfassungen sind in Ihrem Tarif nicht enthalten.",
     "signIn": {
-      "title": "Sign in to summarize",
-      "body": "Summaries run on our own GPU server and need a free account. Sign in or create one, then upload your file.",
-      "button": "Sign in",
-      "signup": "Create a free account"
+      "title": "Zum Zusammenfassen anmelden",
+      "body": "Zusammenfassungen laufen auf unserem eigenen GPU-Server und erfordern ein kostenloses Konto. Melden Sie sich an oder erstellen Sie eines und laden Sie dann Ihre Datei hoch.",
+      "button": "Anmelden",
+      "signup": "Kostenloses Konto erstellen"
     },
-    "uploadHintVideo": "a video or audio file",
-    "uploadHintAudio": "an audio file",
-    "outputLanguage": "Summary language",
-    "sameAsSpeech": "Same as the speech",
+    "uploadHintVideo": "eine Video- oder Audiodatei",
+    "uploadHintAudio": "eine Audiodatei",
+    "outputLanguage": "Sprache der Zusammenfassung",
+    "sameAsSpeech": "Wie die gesprochene Sprache",
     "depth": {
-      "label": "Depth",
+      "label": "Detailgrad",
       "standard": "Standard",
-      "deep": "Deep",
-      "hint": "Deep writes the summary with a larger model. It takes longer."
+      "deep": "Ausführlich",
+      "hint": "Ausführlich erstellt die Zusammenfassung mit einem größeren Modell. Das dauert länger."
     },
-    "note": "Uses one AI job from your daily allowance. A failed job is not counted.",
-    "noteFrames": "Your plan reads up to {{frames}} frames of the video. Uses one AI job from your daily allowance; a failed job is not counted.",
-    "start": "Summarize",
-    "stagesTitle": "Progress",
+    "note": "Verbraucht einen KI-Job Ihres Tageskontingents. Ein fehlgeschlagener Job wird nicht angerechnet.",
+    "noteFrames": "Ihr Tarif liest bis zu {{frames}} Einzelbilder des Videos. Verbraucht einen KI-Job Ihres Tageskontingents; ein fehlgeschlagener Job wird nicht angerechnet.",
+    "start": "Zusammenfassen",
+    "stagesTitle": "Fortschritt",
     "stages": {
-      "probe": "Reading the file",
-      "audio": "Transcribing the speech",
-      "frames": "Choosing frames",
-      "vision": "Describing the frames",
-      "synthesis": "Writing the summary",
-      "render": "Formatting the result"
+      "probe": "Datei wird gelesen",
+      "audio": "Sprache wird transkribiert",
+      "frames": "Einzelbilder werden ausgewählt",
+      "vision": "Einzelbilder werden beschrieben",
+      "synthesis": "Zusammenfassung wird geschrieben",
+      "render": "Ergebnis wird formatiert"
     },
     "status": {
-      "pending": "Waiting",
-      "processing": "In progress",
-      "completed": "Done",
-      "skipped": "Skipped",
-      "failed": "Failed"
+      "pending": "Wartet",
+      "processing": "In Bearbeitung",
+      "completed": "Fertig",
+      "skipped": "Übersprungen",
+      "failed": "Fehlgeschlagen"
     },
-    "framesCount": "Frames: {{count}}",
+    "framesCount": "Einzelbilder: {{count}}",
     "errors": {
-      "signin_required": "Sign in to summarize.",
-      "summary_not_in_plan": "Summaries are not included in your plan.",
-      "summary_unavailable": "Summaries are temporarily unavailable. Please try again later.",
-      "unreadable_media": "This file could not be read as audio or video.",
-      "no_audio_or_video": "This file has no audio or video to summarize.",
-      "file_too_large": "This file is larger or longer than your plan allows.",
-      "upload_not_found": "The upload could not be found. Please try again.",
-      "quota_exceeded": "You have used all of today's AI jobs.",
-      "invalid_request": "The request was not accepted. Reload the page and try again.",
-      "unknown": "The summary could not be started. Please try again."
+      "signin_required": "Zum Zusammenfassen anmelden.",
+      "summary_not_in_plan": "Zusammenfassungen sind in Ihrem Tarif nicht enthalten.",
+      "summary_unavailable": "Zusammenfassungen sind vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
+      "unreadable_media": "Diese Datei konnte nicht als Audio oder Video gelesen werden.",
+      "no_audio_or_video": "Diese Datei enthält kein Audio und kein Video zum Zusammenfassen.",
+      "file_too_large": "Diese Datei ist größer oder länger, als Ihr Tarif erlaubt.",
+      "upload_not_found": "Der Upload wurde nicht gefunden. Bitte versuchen Sie es erneut.",
+      "quota_exceeded": "Sie haben alle KI-Jobs für heute verbraucht.",
+      "invalid_request": "Die Anfrage wurde nicht akzeptiert. Laden Sie die Seite neu und versuchen Sie es erneut.",
+      "unknown": "Die Zusammenfassung konnte nicht gestartet werden. Bitte versuchen Sie es erneut."
     }
   },
   "specializedToolShell": {

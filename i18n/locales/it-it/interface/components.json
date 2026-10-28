@@ -280,7 +280,7 @@
       "dash": "Pacchetto DASH",
       "metadata": "Metadati",
       "unknown": "File",
-      "summary": "Summary"
+      "summary": "Riassunto"
     },
     "image": {
       "zoom": "Zoom",
@@ -398,23 +398,23 @@
       "download": "Scarica tutti i risultati"
     },
     "summary": {
-      "loading": "Loading the summary",
-      "loadFailed": "The summary could not be loaded.",
-      "untitled": "Summary",
-      "language": "Language: {{language}}",
-      "chapters": "Chapters",
-      "seekTo": "Jump to {{time}}",
-      "topics": "Topics",
-      "onScreenText": "On-screen text",
-      "visual": "Picture",
-      "speech": "Speech",
-      "notes": "Notes",
-      "copyMarkdown": "Copy as Markdown",
-      "copied": "Copied",
-      "downloadMd": "Download .md",
-      "downloadJson": "Download .json",
-      "showAll": "Show all ({{count}})",
-      "showLess": "Show less"
+      "loading": "Caricamento del riassunto",
+      "loadFailed": "Non è stato possibile caricare il riassunto.",
+      "untitled": "Riassunto",
+      "language": "Lingua: {{language}}",
+      "chapters": "Capitoli",
+      "seekTo": "Vai a {{time}}",
+      "topics": "Argomenti",
+      "onScreenText": "Testo a schermo",
+      "visual": "Immagine",
+      "speech": "Parlato",
+      "notes": "Note",
+      "copyMarkdown": "Copia come Markdown",
+      "copied": "Copiato",
+      "downloadMd": "Scarica .md",
+      "downloadJson": "Scarica .json",
+      "showAll": "Mostra tutto ({{count}})",
+      "showLess": "Mostra meno"
     }
   },
   "billing": {
