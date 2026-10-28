@@ -2041,6 +2041,26 @@
       "title": "Precisa de uma locução para a sua edição?",
       "body": "Experimente as minhas duas vozes da ElevenLabs, renderize lá uma frase e depois adicione o áudio ao painel de multimédia do Darkroom.",
       "cta": "Mais sobre as vozes"
+    },
+    "makeYourOwn": {
+      "title": "Make your own",
+      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
+      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "cards": {
+        "clone": {
+          "title": "Clone your voice",
+          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+        },
+        "design": {
+          "title": "Design a voice",
+          "body": "Describe a voice, listen to free previews, and keep the one you like."
+        },
+        "change": {
+          "title": "Change a voice",
+          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+        }
+      },
+      "open": "Open"
     }
   },
   "changelog": {

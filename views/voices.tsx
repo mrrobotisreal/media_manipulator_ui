@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AudioLines, Repeat, Wand2 } from 'lucide-react';
 
 import { Panel } from '@/components/darkroom/panel';
 import { VoiceShowcase } from '@/components/voices/voice-showcase';
@@ -8,6 +9,13 @@ import { localizeHref } from '@/i18n/locales';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
 
 const SUMRAK_URL = 'https://www.winapps.io/projects/sumrak';
+
+/** MM78: the "Make your own" cards, one per voice tool page. */
+const MAKE_YOUR_OWN = [
+  { key: 'clone', href: '/tools/voice-cloning', Icon: AudioLines },
+  { key: 'design', href: '/tools/voice-designer', Icon: Wand2 },
+  { key: 'change', href: '/tools/voice-changer', Icon: Repeat },
+] as const;
 
 /**
  * /voices: Mitchell Wintrow's two ElevenLabs voices, playable in eight
@@ -34,6 +42,26 @@ const VoicesPage: React.FC<{ locale?: string }> = ({ locale }) => {
 
       <Panel level="1" as="section">
         <VoiceShowcase copy={voiceShowcaseCopy(t)} placement="voices_page" defaultLang={defaultDemoLanguageFor(loc)} />
+      </Panel>
+
+      <Panel level="1" as="section" className="mt-6" title={t('interface:voices.makeYourOwn.title')} titleAs="h2">
+        <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">{t('interface:voices.makeYourOwn.intro')}</p>
+        <ul className="mt-4 grid gap-4 md:grid-cols-3">
+          {MAKE_YOUR_OWN.map(({ key, href, Icon }) => (
+            <li key={key}>
+              <Link
+                href={localizeHref(href, loc)}
+                className="flex h-full flex-col rounded-lg border border-edge p-4 transition-colors hover:border-primary/50 hover:bg-surface-2"
+              >
+                <Icon aria-hidden="true" className="size-5 text-primary" />
+                <span className="mt-3 font-medium text-foreground">{t(`interface:voices.makeYourOwn.cards.${key}.title`)}</span>
+                <span className="mt-1 flex-1 text-sm text-muted-foreground">{t(`interface:voices.makeYourOwn.cards.${key}.body`)}</span>
+                <span className="mt-3 text-sm text-primary">{t('interface:voices.makeYourOwn.open')}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 text-xs text-muted-foreground">{t('interface:voices.makeYourOwn.note')}</p>
       </Panel>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">

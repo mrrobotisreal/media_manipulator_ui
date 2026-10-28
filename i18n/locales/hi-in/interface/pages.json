@@ -2041,6 +2041,26 @@
       "title": "अपने एडिट के लिए वॉइसओवर चाहिए?",
       "body": "मेरी दो ElevenLabs आवाज़ें आज़माएँ, वहाँ एक लाइन रेंडर करें, फिर ऑडियो को Darkroom के मीडिया बिन में जोड़ें।",
       "cta": "आवाज़ों के बारे में और"
+    },
+    "makeYourOwn": {
+      "title": "Make your own",
+      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
+      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "cards": {
+        "clone": {
+          "title": "Clone your voice",
+          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+        },
+        "design": {
+          "title": "Design a voice",
+          "body": "Describe a voice, listen to free previews, and keep the one you like."
+        },
+        "change": {
+          "title": "Change a voice",
+          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+        }
+      },
+      "open": "Open"
     }
   },
   "changelog": {

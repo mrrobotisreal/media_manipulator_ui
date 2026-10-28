@@ -79,6 +79,10 @@ const VideoCompressorPanel = dynamic(() => import('@/components/video-compressor
 const VideoTrimmerPanel = dynamic(() => import('@/components/video-trimmer-panel'), { ssr: false, loading: FormLoading });
 const VideoTransformPanel = dynamic(() => import('@/components/video-transform-panel'), { ssr: false, loading: FormLoading });
 const MetadataInspectPanel = dynamic(() => import('@/components/metadata/metadata-inspect-panel'), { ssr: false, loading: FormLoading });
+// MM78 voices: the three voice tool panels.
+const VoiceCloningPanel = dynamic(() => import('@/components/voices/voice-cloning-panel'), { ssr: false, loading: FormLoading });
+const VoiceDesignerPanel = dynamic(() => import('@/components/voices/voice-designer-panel'), { ssr: false, loading: FormLoading });
+const VoiceChangerPanel = dynamic(() => import('@/components/voices/voice-changer-panel'), { ssr: false, loading: FormLoading });
 
 export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
@@ -192,7 +196,11 @@ export type EmbeddedTask =
   | 'audio_to_text'
   | 'video_to_text'
   | 'summarize_video'
-  | 'generate_vtt_captions';
+  | 'generate_vtt_captions'
+  // MM78 voices: clone, design and change a voice (components/voices/*).
+  | 'voice_clone'
+  | 'voice_design'
+  | 'voice_convert';
 
 /** Output formats the embedded image converter understands. "pdf" routes the
  *  image through the document pathway (image -> single-page PDF); "svg" routes
@@ -540,6 +548,10 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
   resize_video: true,
   rotate_video: true,
   remove_audio_from_video: true,
+  // MM78 voices.
+  voice_clone: true,
+  voice_design: true,
+  voice_convert: true,
 };
 
 /**
@@ -981,7 +993,10 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           </p>
         </div>
       </div>
-      <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" />
+      {/* MM78: the voice panels render their own chip (ai_ops, or ops / ai_ops by mode). */}
+      {specializedPanel === 'voice_clone' || specializedPanel === 'voice_design' || specializedPanel === 'voice_convert' ? null : (
+        <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" />
+      )}
 
       {(recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
         <div className="mb-4 flex items-start gap-2 rounded-md border border-primary/30 bg-primary/10 p-3">
@@ -1048,6 +1063,12 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         specializedPanel === 'resize_video' ||
         specializedPanel === 'rotate_video' ? (
         <VideoTransformPanel presets={videoTransformPresets} />
+      ) : specializedPanel === 'voice_clone' ? (
+        <VoiceCloningPanel />
+      ) : specializedPanel === 'voice_design' ? (
+        <VoiceDesignerPanel />
+      ) : specializedPanel === 'voice_convert' ? (
+        <VoiceChangerPanel />
       ) : !selectedFile ? (
         <div
           onDragOver={handleDragOver}

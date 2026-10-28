@@ -6,6 +6,7 @@ import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
 import { saveBlobToDisk } from '@/lib/results/save';
+import useDownloadFile from '@/lib/useDownloadFile';
 import { useLocalization } from '@/i18n/useLocalization';
 import { blobToWav, wavFileName } from '@/lib/voices/wav';
 import { BUTTON_SECONDARY, Spinner, VoiceNote } from './shared';
@@ -15,8 +16,9 @@ import { BUTTON_SECONDARY, Spinner, VoiceNote } from './shared';
  * goes through the existing `useGetJobStatus` poller and the shared `ResultPanel`: no
  * second poller. The result is audio (`describe()` maps the voice tasks to `audio`).
  *
- * - TTS: the audio viewer, "Download MP3" (the served file) and "Download WAV". The API
- *   serves only speech.mp3 (MM77 §10.8), so the WAV is decoded from it in the browser.
+ * - Every result: the audio viewer, "Download MP3" (the served file) and "Download WAV".
+ *   The API serves only speech.mp3 (MM77 §10.8), so the WAV is decoded from it in the
+ *   browser (Web Audio) and written as 16-bit PCM.
  * - Convert and shift pass the `original` file, which turns on the MM02 audio A/B compare.
  */
 export const VoiceJobResult: React.FC<{
@@ -31,6 +33,9 @@ export const VoiceJobResult: React.FC<{
 }> = ({ job, setJob, task, original, fallbackFileName, onRunAnother }) => {
   const { t } = useLocalization('interface');
   const { data } = useGetJobStatus(job);
+  const { downloadFile } = useDownloadFile();
+  // The panel streams audio inline (resultMime audio/mpeg), so it may never hold the
+  // bytes; the WAV button reuses them when it does and fetches the MP3 otherwise.
   const [blob, setBlob] = React.useState<Blob | null>(null);
   const [wavState, setWavState] = React.useState<'idle' | 'working' | 'failed'>('idle');
 
@@ -62,10 +67,10 @@ export const VoiceJobResult: React.FC<{
 
   const descriptor = describeResult({ job, originalFile: original ?? null, task, fallbackFileName });
   const downloadWav = async () => {
-    if (!blob) return;
     setWavState('working');
     try {
-      saveBlobToDisk(await blobToWav(blob), wavFileName(descriptor.fileName));
+      const mp3 = blob ?? (await downloadFile(job.id));
+      saveBlobToDisk(await blobToWav(mp3), wavFileName(descriptor.fileName));
       setWavState('idle');
     } catch {
       setWavState('failed');
@@ -81,7 +86,7 @@ export const VoiceJobResult: React.FC<{
         onRunAnother={onRunAnother}
       />
       <div className="flex flex-wrap items-center gap-3">
-        <button type="button" className={BUTTON_SECONDARY} disabled={!blob || wavState === 'working'} onClick={() => void downloadWav()}>
+        <button type="button" className={BUTTON_SECONDARY} disabled={wavState === 'working'} onClick={() => void downloadWav()}>
           {wavState === 'working' ? <Spinner /> : <Download aria-hidden="true" className="size-4" />}
           {wavState === 'working' ? t('voiceTools.result.wavPreparing') : t('voiceTools.result.downloadWav')}
         </button>

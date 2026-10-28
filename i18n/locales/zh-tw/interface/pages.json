@@ -2041,6 +2041,26 @@
       "title": "你的剪輯需要旁白嗎？",
       "body": "試試我的兩個 ElevenLabs 語音，在那裡轉譯一句台詞，然後把音訊加入 Darkroom 的媒體庫。",
       "cta": "關於語音的更多資訊"
+    },
+    "makeYourOwn": {
+      "title": "Make your own",
+      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
+      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "cards": {
+        "clone": {
+          "title": "Clone your voice",
+          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+        },
+        "design": {
+          "title": "Design a voice",
+          "body": "Describe a voice, listen to free previews, and keep the one you like."
+        },
+        "change": {
+          "title": "Change a voice",
+          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+        }
+      },
+      "open": "Open"
     }
   },
   "changelog": {

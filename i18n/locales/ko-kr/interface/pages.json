@@ -2041,6 +2041,26 @@
       "title": "편집에 보이스오버가 필요하신가요?",
       "body": "제 ElevenLabs 음성 두 개를 사용해 거기서 대사를 렌더링한 뒤 오디오를 Darkroom의 미디어 보관함에 추가하세요.",
       "cta": "음성에 대해 더 알아보기"
+    },
+    "makeYourOwn": {
+      "title": "Make your own",
+      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
+      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "cards": {
+        "clone": {
+          "title": "Clone your voice",
+          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+        },
+        "design": {
+          "title": "Design a voice",
+          "body": "Describe a voice, listen to free previews, and keep the one you like."
+        },
+        "change": {
+          "title": "Change a voice",
+          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+        }
+      },
+      "open": "Open"
     }
   },
   "changelog": {
