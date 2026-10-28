@@ -1367,6 +1367,15 @@
       "wavNote": "El WAV se decodifica a partir del MP3 en tu navegador.",
       "another": "Empezar de nuevo"
     },
+    "darkroom": {
+      "title": "Generar locución",
+      "description": "Escribe un guion, elige una voz y un idioma. La locución se añade a los medios de este proyecto y se coloca en el cursor de reproducción.",
+      "placeholder": "Escribe el guion de la locución.",
+      "generate": "Generar locución",
+      "presetsOnly": "Si no has iniciado sesión, puedes usar las voces predefinidas. Inicia sesión para usar una voz que hayas guardado.",
+      "added": "Locución añadida en el cursor de reproducción",
+      "noAsset": "La locución se generó, pero no se pudo añadir al proyecto. Inténtalo de nuevo."
+    },
     "errors": {
       "sign_in_required": "Inicia sesión para guardar y usar tus propias voces.",
       "consent_required": "Marca la casilla para confirmar que esta es tu voz o que cuentas con el permiso explícito de quien habla.",

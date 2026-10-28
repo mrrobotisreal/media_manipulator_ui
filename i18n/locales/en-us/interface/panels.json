@@ -1367,6 +1367,15 @@
       "wavNote": "The WAV is decoded from the MP3 in your browser.",
       "another": "Start again"
     },
+    "darkroom": {
+      "title": "Generate voiceover",
+      "description": "Type a script, pick a voice and a language. The voiceover is added to this project’s media and placed at the playhead.",
+      "placeholder": "Type the voiceover script.",
+      "generate": "Generate voiceover",
+      "presetsOnly": "Signed out, you can use the preset voices. Sign in to use a voice you saved.",
+      "added": "Voiceover added at the playhead",
+      "noAsset": "The voiceover was generated but could not be added to the project. Try again."
+    },
     "errors": {
       "sign_in_required": "Sign in to save and use your own voices.",
       "consent_required": "Tick the box to confirm that this is your voice, or that you have the speaker's explicit permission.",

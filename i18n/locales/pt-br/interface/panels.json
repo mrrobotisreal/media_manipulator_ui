@@ -1367,6 +1367,15 @@
       "wavNote": "O WAV é decodificado a partir do MP3 no seu navegador.",
       "another": "Recomeçar"
     },
+    "darkroom": {
+      "title": "Gerar narração",
+      "description": "Digite um roteiro e escolha uma voz e um idioma. A narração é adicionada às mídias deste projeto e posicionada no cursor de reprodução.",
+      "placeholder": "Digite o roteiro da narração.",
+      "generate": "Gerar narração",
+      "presetsOnly": "Sem entrar na conta, você pode usar as vozes predefinidas. Entre para usar uma voz que você salvou.",
+      "added": "Narração adicionada no cursor de reprodução",
+      "noAsset": "A narração foi gerada, mas não foi possível adicioná-la ao projeto. Tente novamente."
+    },
     "errors": {
       "sign_in_required": "Entre para salvar e usar suas próprias vozes.",
       "consent_required": "Marque a caixa para confirmar que esta é a sua voz ou que você tem a permissão explícita de quem fala.",

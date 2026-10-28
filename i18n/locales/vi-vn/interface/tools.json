@@ -101,6 +101,7 @@
       "micUnavailable": "Không tìm thấy micro, hoặc trình duyệt này không hỗ trợ ghi âm.",
       "voiceoverPlaced": "Đã thêm lồng tiếng tại đầu phát",
       "voiceoverFailed": "Không thêm được lồng tiếng",
+      "generateVoiceover": "Tạo lồng tiếng",
       "moreActions": "Thao tác khác",
       "rebuildPreview": "Dựng lại bản xem trước",
       "rebuildPreviewHint": "Mã hóa lại bản xem trước của clip này từ bản gốc để tua và nhảy nhanh hơn. Bản dựng và bản xuất của bạn không bị ảnh hưởng.",

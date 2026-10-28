@@ -101,6 +101,7 @@
       "micUnavailable": "找不到麥克風，或此瀏覽器不支援錄音。",
       "voiceoverPlaced": "旁白已加入到播放指標處",
       "voiceoverFailed": "無法加入旁白",
+      "generateVoiceover": "產生旁白",
       "moreActions": "更多動作",
       "rebuildPreview": "重建預覽",
       "rebuildPreviewHint": "從原始檔重新編碼這個素材的預覽，讓拖曳與定位反應更快。你的剪輯與匯出不受影響。",

@@ -101,6 +101,7 @@
       "micUnavailable": "未找到麦克风，或此浏览器不支持录音。",
       "voiceoverPlaced": "配音已添加到播放头处",
       "voiceoverFailed": "无法添加配音",
+      "generateVoiceover": "生成配音",
       "moreActions": "更多操作",
       "rebuildPreview": "重建预览",
       "rebuildPreviewHint": "从原始文件重新编码此片段的预览，使拖动和定位响应更快。你的剪辑和导出不受影响。",

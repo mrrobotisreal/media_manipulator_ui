@@ -110,6 +110,14 @@ export interface StudioBackendCapabilities {
    * the legacy MP4 options there and the Exports panel / frame export hide.
    */
   exportDepth: boolean;
+  /**
+   * MM79: Darkroom "Generate voiceover" (POST /projects/:id/voiceover). The MM
+   * backend starts false and learns the truth from GET /api/studio/capabilities
+   * (`voices` = voices enabled and healthy); an API without that route stays
+   * false, so the action is simply hidden. CreaTV's Darkroom API has no voices:
+   * always false there, whatever the host's cs:init says.
+   */
+  voices: boolean;
 }
 
 export interface StudioBackendScope {
@@ -146,6 +154,10 @@ export interface StudioBackend {
   peaksUrl?: (assetId: string) => string;
   /** Raw original-file passthrough used to load .cube LUT assets (MM only today). */
   assetFileUrl?: (assetId: string) => string;
+  /** MM79: GET /studio/capabilities (MM only). Absent = no extra capabilities. */
+  capabilitiesUrl?: () => string;
+  /** MM79: POST /studio/projects/:id/voiceover (MM only). Absent = no voiceover. */
+  voiceoverUrl?: (projectId: string) => string;
 
   // Job watch + result download.
   jobUrl: (jobId: string) => string;
@@ -202,6 +214,8 @@ export function createMmBackend(): StudioBackend {
       reverseProxy: true,
       proxyRebuild: true,
       exportDepth: true,
+      // Learned at runtime from GET /studio/capabilities (useStudioCapabilities).
+      voices: false,
     },
     // Sync, so it can only carry the session id; the Firebase token needs an
     // await. Everything that actually goes over the wire uses fetch() below,
@@ -219,6 +233,8 @@ export function createMmBackend(): StudioBackend {
     spriteUrl: (assetId) => `${base()}/studio/assets/${assetId}/sprite`,
     peaksUrl: (assetId) => `${base()}/studio/assets/${assetId}/peaks`,
     assetFileUrl: (assetId) => `${base()}/studio/assets/${assetId}/file`,
+    capabilitiesUrl: () => `${base()}/studio/capabilities`,
+    voiceoverUrl: (projectId) => `${base()}/studio/projects/${encodeURIComponent(projectId)}/voiceover`,
 
     jobUrl: (jobId) => `${base()}/job/${jobId}`,
     jobEventsUrl: (jobId) => `${base()}/job/${jobId}/events`,
@@ -323,6 +339,8 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
     proxyRebuild: false,
     exportDepth: false,
     ...opts.capabilities,
+    // MM79: the CreaTV embed never shows Generate voiceover (no route there).
+    voices: false,
   };
 
   const withAuth = (init: RequestInit | undefined, token: string | null): RequestInit => {

@@ -101,6 +101,7 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
+      "generateVoiceover": "יצירת קריינות",
       "moreActions": "More actions",
       "rebuildPreview": "בנייה מחדש של התצוגה המקדימה",
       "rebuildPreviewHint": "מקודד מחדש את התצוגה המקדימה של הקליפ מהקובץ המקורי, כך שגלילה וקפיצה מגיבות מהר יותר. העריכה והייצוא לא משתנים.",

@@ -1355,6 +1355,15 @@
       "wavNote": "WAV được giải mã từ MP3 ngay trong trình duyệt của bạn.",
       "another": "Bắt đầu lại"
     },
+    "darkroom": {
+      "title": "Tạo lồng tiếng",
+      "description": "Nhập kịch bản, chọn giọng nói và ngôn ngữ. Lồng tiếng sẽ được thêm vào phương tiện của dự án này và đặt tại đầu phát.",
+      "placeholder": "Nhập kịch bản lồng tiếng.",
+      "generate": "Tạo lồng tiếng",
+      "presetsOnly": "Khi chưa đăng nhập, bạn có thể dùng các giọng nói đặt sẵn. Hãy đăng nhập để dùng giọng nói bạn đã lưu.",
+      "added": "Đã thêm lồng tiếng tại đầu phát",
+      "noAsset": "Đã tạo lồng tiếng nhưng không thêm được vào dự án. Vui lòng thử lại."
+    },
     "errors": {
       "sign_in_required": "Đăng nhập để lưu và dùng các giọng nói của riêng bạn.",
       "consent_required": "Hãy đánh dấu vào ô để xác nhận đây là giọng của bạn, hoặc bạn có sự cho phép rõ ràng của người nói.",

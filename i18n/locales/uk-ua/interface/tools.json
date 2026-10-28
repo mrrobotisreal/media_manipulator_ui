@@ -101,6 +101,7 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
+      "generateVoiceover": "Створити озвучення",
       "moreActions": "More actions",
       "rebuildPreview": "Перебудувати попередній перегляд",
       "rebuildPreviewHint": "Заново кодує попередній перегляд кліпу з оригіналу, щоб перемотування й переходи спрацьовували швидше. Монтаж і експорт не змінюються.",

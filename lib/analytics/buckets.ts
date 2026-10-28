@@ -1,4 +1,4 @@
-import type { DaysSinceLastBucket, HoursSinceSignupBucket } from './events';
+import type { DaysSinceLastBucket, HoursSinceSignupBucket, VoiceSecondsBucket } from './events';
 
 /**
  * Shared bucket helpers for event properties.
@@ -254,4 +254,16 @@ export function vectorRevisionBucket(revision: number): string {
   if (revision <= 20) return '6-20';
   if (revision <= 100) return '21-100';
   return '100+';
+}
+
+/**
+ * Length of generated voice audio for `voice_generated` (MM79). Lower bound inclusive:
+ * exactly 10 s is `10-30`, exactly 300 s is `300+`. Unknown / non-finite reads `0-10`.
+ */
+export function voiceSecondsBucket(seconds: number): VoiceSecondsBucket {
+  if (!(seconds >= 10)) return '0-10';
+  if (seconds < 30) return '10-30';
+  if (seconds < 60) return '30-60';
+  if (seconds < 300) return '60-300';
+  return '300+';
 }

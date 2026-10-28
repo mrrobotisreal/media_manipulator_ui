@@ -1367,6 +1367,15 @@
       "wavNote": "O WAV é descodificado a partir do MP3 no seu navegador.",
       "another": "Recomeçar"
     },
+    "darkroom": {
+      "title": "Gerar locução",
+      "description": "Escreva um guião, escolha uma voz e um idioma. A locução é adicionada aos ficheiros multimédia deste projeto e colocada na posição do cursor de reprodução.",
+      "placeholder": "Escreva o guião da locução.",
+      "generate": "Gerar locução",
+      "presetsOnly": "Sem sessão iniciada, pode usar as vozes predefinidas. Inicie sessão para usar uma voz que tenha guardado.",
+      "added": "Locução adicionada na posição do cursor de reprodução",
+      "noAsset": "A locução foi gerada, mas não foi possível adicioná-la ao projeto. Tente novamente."
+    },
     "errors": {
       "sign_in_required": "Inicie sessão para guardar e usar as suas próprias vozes.",
       "consent_required": "Assinale a caixa para confirmar que esta é a sua voz ou que tem a autorização explícita de quem fala.",

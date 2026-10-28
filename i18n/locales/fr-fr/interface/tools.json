@@ -101,6 +101,7 @@
       "micUnavailable": "Aucun micro détecté, ou l'enregistrement n'est pas pris en charge par ce navigateur.",
       "voiceoverPlaced": "Voix off ajoutée à la tête de lecture",
       "voiceoverFailed": "La voix off n'a pas pu être ajoutée",
+      "generateVoiceover": "Générer une voix off",
       "moreActions": "Plus d'actions",
       "rebuildPreview": "Régénérer l'aperçu",
       "rebuildPreviewHint": "Réencode l'aperçu de ce clip à partir de l'original pour que la navigation et le défilement répondent plus vite. Votre montage et votre export ne sont pas affectés.",

@@ -101,6 +101,7 @@
       "micUnavailable": "Nessun microfono trovato, oppure la registrazione non è supportata in questo browser.",
       "voiceoverPlaced": "Voce fuori campo aggiunta al cursore",
       "voiceoverFailed": "Impossibile aggiungere la voce fuori campo",
+      "generateVoiceover": "Genera voce fuori campo",
       "moreActions": "Altre azioni",
       "rebuildPreview": "Ricostruisci anteprima",
       "rebuildPreviewHint": "Ricodifica l'anteprima di questa clip dall'originale, così scorrimento e ricerca rispondono più in fretta. Montaggio ed esportazione non vengono toccati.",

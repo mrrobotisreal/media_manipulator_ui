@@ -51,6 +51,8 @@ export interface ConversionJob {
   options?: Record<string, unknown>;
   /** `transcodeReport.durationSeconds` of the source, when the job probed it. */
   sourceDurationSeconds?: number;
+  /** MM79: length of a voice job's generated audio (voice_generated secondsBucket). */
+  resultSeconds?: number;
 }
 
 /**
@@ -97,6 +99,7 @@ const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
     options: data.options && typeof data.options === 'object' ? (data.options as Record<string, unknown>) : undefined,
     sourceDurationSeconds:
       typeof data.transcodeReport?.durationSeconds === 'number' ? data.transcodeReport.durationSeconds : undefined,
+    resultSeconds: typeof data.resultSeconds === 'number' ? data.resultSeconds : undefined,
   };
 };
 
