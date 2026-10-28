@@ -277,7 +277,8 @@
       "hls": "HLS 套件",
       "dash": "DASH 套件",
       "metadata": "中繼資料",
-      "unknown": "檔案"
+      "unknown": "檔案",
+      "summary": "Summary"
     },
     "image": {
       "zoom": "縮放",
@@ -392,6 +393,25 @@
       "failedItem": "{{name}}：{{error}}",
       "loading": "正在載入修復後的片段",
       "download": "下載所有結果"
+    },
+    "summary": {
+      "loading": "Loading the summary",
+      "loadFailed": "The summary could not be loaded.",
+      "untitled": "Summary",
+      "language": "Language: {{language}}",
+      "chapters": "Chapters",
+      "seekTo": "Jump to {{time}}",
+      "topics": "Topics",
+      "onScreenText": "On-screen text",
+      "visual": "Picture",
+      "speech": "Speech",
+      "notes": "Notes",
+      "copyMarkdown": "Copy as Markdown",
+      "copied": "Copied",
+      "downloadMd": "Download .md",
+      "downloadJson": "Download .json",
+      "showAll": "Show all ({{count}})",
+      "showLess": "Show less"
     }
   },
   "billing": {

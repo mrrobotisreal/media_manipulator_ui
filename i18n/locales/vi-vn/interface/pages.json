@@ -1646,7 +1646,8 @@
         "ai_frame_interpolation": "Nội suy khung hình",
         "ai_voice_cleanup": "Làm sạch giọng nói",
         "ai_isolate_vocals": "Tách giọng hát",
-        "ai_remove_vocals": "Loại bỏ giọng hát"
+        "ai_remove_vocals": "Loại bỏ giọng hát",
+        "video_summary": "Video summary"
       },
       "deletesOn": "Xóa vào {{date}}",
       "keptLonger": "Được giữ lâu hơn",

@@ -1646,7 +1646,8 @@
         "ai_frame_interpolation": "フレーム補間",
         "ai_voice_cleanup": "音声クリーンアップ",
         "ai_isolate_vocals": "ボーカルの分離",
-        "ai_remove_vocals": "ボーカルの除去"
+        "ai_remove_vocals": "ボーカルの除去",
+        "video_summary": "Video summary"
       },
       "deletesOn": "{{date}}に削除",
       "keptLonger": "延長保存中",

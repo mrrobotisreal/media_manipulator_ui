@@ -79,6 +79,8 @@ const VideoCompressorPanel = dynamic(() => import('@/components/video-compressor
 const VideoTrimmerPanel = dynamic(() => import('@/components/video-trimmer-panel'), { ssr: false, loading: FormLoading });
 const VideoTransformPanel = dynamic(() => import('@/components/video-transform-panel'), { ssr: false, loading: FormLoading });
 const MetadataInspectPanel = dynamic(() => import('@/components/metadata/metadata-inspect-panel'), { ssr: false, loading: FormLoading });
+// MM75: video / audio summaries (the MM74 staged job).
+const SummarizePanel = dynamic(() => import('@/components/summarize-panel'), { ssr: false, loading: FormLoading });
 
 export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
@@ -192,7 +194,9 @@ export type EmbeddedTask =
   | 'audio_to_text'
   | 'video_to_text'
   | 'summarize_video'
-  | 'generate_vtt_captions';
+  | 'generate_vtt_captions'
+  // MM75: the audio sibling of summarize_video (same MM74 job, no frames).
+  | 'summarize_audio';
 
 /** Output formats the embedded image converter understands. "pdf" routes the
  *  image through the document pathway (image -> single-page PDF); "svg" routes
@@ -540,6 +544,9 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
   resize_video: true,
   rotate_video: true,
   remove_audio_from_video: true,
+  // MM75: both summary pages render the summarize panel.
+  summarize_video: true,
+  summarize_audio: true,
 };
 
 /**
@@ -1021,7 +1028,9 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         </div>
       )}
 
-      {specializedPanel === 'inspect_metadata' ? (
+      {specializedPanel === 'summarize_video' || specializedPanel === 'summarize_audio' ? (
+        <SummarizePanel task={specializedPanel} />
+      ) : specializedPanel === 'inspect_metadata' ? (
         <MetadataInspectPanel accept={accept} />
       ) : specializedPanel === 'audio_waveform' ? (
         <AudioWaveformPanel />

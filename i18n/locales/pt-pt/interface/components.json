@@ -279,7 +279,8 @@
       "hls": "Pacote HLS",
       "dash": "Pacote DASH",
       "metadata": "Metadados",
-      "unknown": "Ficheiro"
+      "unknown": "Ficheiro",
+      "summary": "Summary"
     },
     "image": {
       "zoom": "Zoom",
@@ -395,6 +396,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "A carregar os clipes restaurados",
       "download": "Transferir todos os resultados"
+    },
+    "summary": {
+      "loading": "Loading the summary",
+      "loadFailed": "The summary could not be loaded.",
+      "untitled": "Summary",
+      "language": "Language: {{language}}",
+      "chapters": "Chapters",
+      "seekTo": "Jump to {{time}}",
+      "topics": "Topics",
+      "onScreenText": "On-screen text",
+      "visual": "Picture",
+      "speech": "Speech",
+      "notes": "Notes",
+      "copyMarkdown": "Copy as Markdown",
+      "copied": "Copied",
+      "downloadMd": "Download .md",
+      "downloadJson": "Download .json",
+      "showAll": "Show all ({{count}})",
+      "showLess": "Show less"
     }
   },
   "billing": {

@@ -279,7 +279,8 @@
       "hls": "HLS पैकेज",
       "dash": "DASH पैकेज",
       "metadata": "मेटाडेटा",
-      "unknown": "फ़ाइल"
+      "unknown": "फ़ाइल",
+      "summary": "Summary"
     },
     "image": {
       "zoom": "ज़ूम",
@@ -395,6 +396,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "रिस्टोर की गई क्लिप लोड हो रही हैं",
       "download": "सभी रिज़ल्ट डाउनलोड करें"
+    },
+    "summary": {
+      "loading": "Loading the summary",
+      "loadFailed": "The summary could not be loaded.",
+      "untitled": "Summary",
+      "language": "Language: {{language}}",
+      "chapters": "Chapters",
+      "seekTo": "Jump to {{time}}",
+      "topics": "Topics",
+      "onScreenText": "On-screen text",
+      "visual": "Picture",
+      "speech": "Speech",
+      "notes": "Notes",
+      "copyMarkdown": "Copy as Markdown",
+      "copied": "Copied",
+      "downloadMd": "Download .md",
+      "downloadJson": "Download .json",
+      "showAll": "Show all ({{count}})",
+      "showLess": "Show less"
     }
   },
   "billing": {

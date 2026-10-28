@@ -1646,7 +1646,8 @@
         "ai_frame_interpolation": "Frame-Interpolation",
         "ai_voice_cleanup": "Stimmenbereinigung",
         "ai_isolate_vocals": "Gesangsisolierung",
-        "ai_remove_vocals": "Gesangsentfernung"
+        "ai_remove_vocals": "Gesangsentfernung",
+        "video_summary": "Video summary"
       },
       "deletesOn": "Deletes on {{date}}",
       "keptLonger": "Kept longer",

@@ -1646,7 +1646,8 @@
         "ai_frame_interpolation": "Интерполяция кадров",
         "ai_voice_cleanup": "Очистка голоса",
         "ai_isolate_vocals": "Выделение вокала",
-        "ai_remove_vocals": "Удаление вокала"
+        "ai_remove_vocals": "Удаление вокала",
+        "video_summary": "Video summary"
       },
       "deletesOn": "Deletes on {{date}}",
       "keptLonger": "Kept longer",

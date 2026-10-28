@@ -277,7 +277,8 @@
       "hls": "Gói HLS",
       "dash": "Gói DASH",
       "metadata": "Siêu dữ liệu",
-      "unknown": "Tệp"
+      "unknown": "Tệp",
+      "summary": "Summary"
     },
     "image": {
       "zoom": "Thu phóng",
@@ -392,6 +393,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Đang tải các đoạn đã phục hồi",
       "download": "Tải xuống tất cả kết quả"
+    },
+    "summary": {
+      "loading": "Loading the summary",
+      "loadFailed": "The summary could not be loaded.",
+      "untitled": "Summary",
+      "language": "Language: {{language}}",
+      "chapters": "Chapters",
+      "seekTo": "Jump to {{time}}",
+      "topics": "Topics",
+      "onScreenText": "On-screen text",
+      "visual": "Picture",
+      "speech": "Speech",
+      "notes": "Notes",
+      "copyMarkdown": "Copy as Markdown",
+      "copied": "Copied",
+      "downloadMd": "Download .md",
+      "downloadJson": "Download .json",
+      "showAll": "Show all ({{count}})",
+      "showLess": "Show less"
     }
   },
   "billing": {

@@ -1646,7 +1646,8 @@
         "ai_frame_interpolation": "Interpolación de fotogramas",
         "ai_voice_cleanup": "Limpieza de voz",
         "ai_isolate_vocals": "Aislamiento de voces",
-        "ai_remove_vocals": "Eliminación de voces"
+        "ai_remove_vocals": "Eliminación de voces",
+        "video_summary": "Video summary"
       },
       "deletesOn": "Deletes on {{date}}",
       "keptLonger": "Kept longer",

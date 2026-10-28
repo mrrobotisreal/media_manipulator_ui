@@ -277,7 +277,8 @@
       "hls": "HLS 패키지",
       "dash": "DASH 패키지",
       "metadata": "메타데이터",
-      "unknown": "파일"
+      "unknown": "파일",
+      "summary": "Summary"
     },
     "image": {
       "zoom": "확대/축소",
@@ -392,6 +393,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "복원된 클립 불러오는 중",
       "download": "모든 결과 다운로드"
+    },
+    "summary": {
+      "loading": "Loading the summary",
+      "loadFailed": "The summary could not be loaded.",
+      "untitled": "Summary",
+      "language": "Language: {{language}}",
+      "chapters": "Chapters",
+      "seekTo": "Jump to {{time}}",
+      "topics": "Topics",
+      "onScreenText": "On-screen text",
+      "visual": "Picture",
+      "speech": "Speech",
+      "notes": "Notes",
+      "copyMarkdown": "Copy as Markdown",
+      "copied": "Copied",
+      "downloadMd": "Download .md",
+      "downloadJson": "Download .json",
+      "showAll": "Show all ({{count}})",
+      "showLess": "Show less"
     }
   },
   "billing": {

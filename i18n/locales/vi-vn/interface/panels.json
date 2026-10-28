@@ -24,6 +24,59 @@
     "summaryPending": "Tóm tắt và đánh giá an toàn sẽ hiển thị ở đây khi tác vụ phân tích hoàn tất.",
     "unknown": "không xác định"
   },
+  "summarize": {
+    "loading": "Checking whether summaries are available…",
+    "unavailable": "Video and audio summaries are temporarily unavailable. Please try again later; the Transcribe pages still work.",
+    "notInPlan": "Summaries are not included in your plan.",
+    "signIn": {
+      "title": "Sign in to summarize",
+      "body": "Summaries run on our own GPU server and need a free account. Sign in or create one, then upload your file.",
+      "button": "Sign in",
+      "signup": "Create a free account"
+    },
+    "uploadHintVideo": "a video or audio file",
+    "uploadHintAudio": "an audio file",
+    "outputLanguage": "Summary language",
+    "sameAsSpeech": "Same as the speech",
+    "depth": {
+      "label": "Depth",
+      "standard": "Standard",
+      "deep": "Deep",
+      "hint": "Deep writes the summary with a larger model. It takes longer."
+    },
+    "note": "Uses one AI job from your daily allowance. A failed job is not counted.",
+    "noteFrames": "Your plan reads up to {{frames}} frames of the video. Uses one AI job from your daily allowance; a failed job is not counted.",
+    "start": "Summarize",
+    "stagesTitle": "Progress",
+    "stages": {
+      "probe": "Reading the file",
+      "audio": "Transcribing the speech",
+      "frames": "Choosing frames",
+      "vision": "Describing the frames",
+      "synthesis": "Writing the summary",
+      "render": "Formatting the result"
+    },
+    "status": {
+      "pending": "Waiting",
+      "processing": "In progress",
+      "completed": "Done",
+      "skipped": "Skipped",
+      "failed": "Failed"
+    },
+    "framesCount": "Frames: {{count}}",
+    "errors": {
+      "signin_required": "Sign in to summarize.",
+      "summary_not_in_plan": "Summaries are not included in your plan.",
+      "summary_unavailable": "Summaries are temporarily unavailable. Please try again later.",
+      "unreadable_media": "This file could not be read as audio or video.",
+      "no_audio_or_video": "This file has no audio or video to summarize.",
+      "file_too_large": "This file is larger or longer than your plan allows.",
+      "upload_not_found": "The upload could not be found. Please try again.",
+      "quota_exceeded": "You have used all of today's AI jobs.",
+      "invalid_request": "The request was not accepted. Reload the page and try again.",
+      "unknown": "The summary could not be started. Please try again."
+    }
+  },
   "specializedToolShell": {
     "dropHere": "Thả {{hint}} của bạn vào đây",
     "selectHint": "hoặc nhấp để chọn từ máy tính. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.",

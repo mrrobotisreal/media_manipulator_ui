@@ -1646,7 +1646,8 @@
         "ai_frame_interpolation": "استيفاء الإطارات",
         "ai_voice_cleanup": "تنقية الصوت",
         "ai_isolate_vocals": "عزل الغناء",
-        "ai_remove_vocals": "إزالة الغناء"
+        "ai_remove_vocals": "إزالة الغناء",
+        "video_summary": "Video summary"
       },
       "deletesOn": "يُحذف في {{date}}",
       "keptLonger": "محفوظ لمدة أطول",

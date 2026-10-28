@@ -1646,7 +1646,8 @@
         "ai_frame_interpolation": "影格插補",
         "ai_voice_cleanup": "人聲清理",
         "ai_isolate_vocals": "人聲分離",
-        "ai_remove_vocals": "人聲移除"
+        "ai_remove_vocals": "人聲移除",
+        "video_summary": "Video summary"
       },
       "deletesOn": "將於 {{date}} 刪除",
       "keptLonger": "已延長保留",
