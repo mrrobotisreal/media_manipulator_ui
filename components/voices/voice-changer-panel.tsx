@@ -40,6 +40,9 @@ export const ChangerBody: React.FC<{ caps: VoicesCapabilities; signedIn: boolean
   const [job, setJob] = React.useState<ConversionJob | null>(null);
   const [original, setOriginal] = React.useState<File | null>(null);
   const [jobTask, setJobTask] = React.useState<'voice_shift' | 'voice_convert'>('voice_shift');
+  // voice_generated (MM79): convert to a preset reports the language the API used (en
+  // unless the preset needs another; the panel sends none), a saved voice / shift none.
+  const [jobLanguage, setJobLanguage] = React.useState<string | undefined>(undefined);
   const [error, setError] = React.useState<string | null>(null);
   const shiftMutation = useShiftVoice();
   const convertMutation = useConvertVoice();
@@ -62,6 +65,7 @@ export const ChangerBody: React.FC<{ caps: VoicesCapabilities; signedIn: boolean
   const onStarted = (res: { jobId: string; tool: string }) => {
     setOriginal(clip?.file ?? null);
     setJobTask(res.tool === 'voice_convert' ? 'voice_convert' : 'voice_shift');
+    setJobLanguage(res.tool === 'voice_convert' && effectiveTarget?.kind === 'preset' ? 'en' : undefined);
     setJob(jobFromStart(res.jobId, clip?.file));
   };
   const onError = (err: unknown) => setError(errorMessage(err));
@@ -157,6 +161,7 @@ export const ChangerBody: React.FC<{ caps: VoicesCapabilities; signedIn: boolean
           job={job}
           setJob={setJob}
           task={jobTask}
+          language={jobLanguage}
           original={original}
           fallbackFileName={`${(original?.name ?? 'recording').replace(/\.[^.]+$/, '')}_voice.mp3`}
           onRunAnother={() => setJob(null)}

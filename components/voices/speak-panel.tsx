@@ -53,6 +53,8 @@ export const SpeakPanel: React.FC<{
   const [text, setText] = React.useState('');
   const [exaggeration, setExaggeration] = React.useState(VOICE_EXAGGERATION_DEFAULT);
   const [job, setJob] = React.useState<ConversionJob | null>(null);
+  // The language the running job was requested in (voice_generated, MM79).
+  const [jobLanguage, setJobLanguage] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const speak = useSpeak();
   const speakPreset = useSpeakPreset();
@@ -69,7 +71,10 @@ export const SpeakPanel: React.FC<{
     if (!effective || !canGenerate) return;
     setError(null);
     setJob(null);
-    const onSuccess = (res: { jobId: string }) => setJob(jobFromStart(res.jobId));
+    const onSuccess = (res: { jobId: string }) => {
+      setJobLanguage(lang);
+      setJob(jobFromStart(res.jobId));
+    };
     const onError = (err: unknown) => setError(errorMessage(err));
     if (effective.kind === 'voice') {
       speak.mutate({ voiceId: effective.id, text: text.trim(), language: lang, exaggeration }, { onSuccess, onError });
@@ -144,7 +149,7 @@ export const SpeakPanel: React.FC<{
       </button>
       <WarmingUp warm={caps.warm} inFlight={pending || running} />
       <VoiceError message={error} />
-      {job ? <VoiceJobResult job={job} setJob={setJob} task="voice_tts" fallbackFileName="speech_voice.mp3" onRunAnother={() => setJob(null)} /> : null}
+      {job ? <VoiceJobResult job={job} setJob={setJob} task="voice_tts" language={jobLanguage ?? undefined} fallbackFileName="speech_voice.mp3" onRunAnother={() => setJob(null)} /> : null}
     </section>
   );
 };

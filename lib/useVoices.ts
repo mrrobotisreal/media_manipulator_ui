@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { trackVoiceCreated } from '@/lib/voices/analytics';
 import {
   convertVoice,
   createVoice,
@@ -29,8 +30,10 @@ import {
  * hands the id to the existing `useGetJobStatus` poller and `ResultPanel`, there is no
  * second poller here.
  *
- * Analytics: no event names here. The `// MM79` markers are where voice_created /
- * voice_generated land when MM79 adds them to the catalogs.
+ * Analytics (MM79): voice_created fires here on a 201 (lib/voices/analytics.ts);
+ * voice_generated fires once per completed job where the job is watched
+ * (VoiceJobResult on the tool pages, the Darkroom voiceover dialog), because only a
+ * finished job knows the generated length.
  */
 
 /** authedFetch with the plain fetch signature the client module takes. */
@@ -73,7 +76,7 @@ export function useCreateVoice() {
   const invalidate = useInvalidateVoices();
   return useMutation({
     mutationFn: (input: CreateVoiceInput) => createVoice(fetcher, input),
-    // MM79: voice_created {kind: 'cloned', languageHint}
+    onSuccess: (voice, input) => trackVoiceCreated('cloned', voice.languageHint || input.languageHint),
     onSettled: invalidate,
   });
 }
@@ -86,7 +89,7 @@ export function useDesignVoice() {
   const invalidate = useInvalidateVoices();
   return useMutation({
     mutationFn: (input: DesignInput & { name: string }) => designVoice(fetcher, input),
-    // MM79: voice_created {kind: 'designed', languageHint}
+    onSuccess: (voice, input) => trackVoiceCreated('designed', voice.languageHint || input.language),
     onSettled: invalidate,
   });
 }
@@ -111,7 +114,6 @@ export function useDeleteVoice() {
 export function useSpeak() {
   return useMutation({
     mutationFn: ({ voiceId, ...input }: SpeakInput & { voiceId: string }) => speak(fetcher, voiceId, input),
-    // MM79: voice_generated {kind: 'tts', source: 'tool_page'}
   });
 }
 
@@ -119,20 +121,17 @@ export function useSpeak() {
 export function useSpeakPreset() {
   return useMutation({
     mutationFn: ({ preset, ...input }: Omit<SpeakInput, 'exaggeration'> & { preset: string }) => speakPreset(fetcher, preset, input),
-    // MM79: voice_generated {kind: 'tts', source: 'tool_page'}
   });
 }
 
 export function useConvertVoice() {
   return useMutation({
     mutationFn: (input: ConvertInput) => convertVoice(fetcher, input),
-    // MM79: voice_generated {kind: 'convert', source: 'tool_page'}
   });
 }
 
 export function useShiftVoice() {
   return useMutation({
     mutationFn: (input: ShiftInput) => shiftVoice(fetcher, input),
-    // MM79: voice_generated {kind: 'shift', source: 'tool_page'}
   });
 }
