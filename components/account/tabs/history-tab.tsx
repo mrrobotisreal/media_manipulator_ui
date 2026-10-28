@@ -5,6 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 
 import { ConfirmDialog } from '@/components/account/confirm-dialog';
 import { LINK_CLASS, TEXT_BUTTON_CLASS, DANGER_TEXT_BUTTON_CLASS } from '@/components/account/tabs/shared';
@@ -47,6 +48,8 @@ import {
 } from '@/lib/account/retention';
 import { requireToken } from '@/lib/account/requireToken';
 import { describe } from '@/lib/results/describe';
+import { downloadResult, useDownloadStatus } from '@/lib/results/downloadController';
+import { DownloadStatusLine } from '@/components/results/download-status';
 import { summaryHistoryLabel } from '@/lib/results/summary';
 import { useSummaryResult } from '@/lib/useSummarize';
 import { useShareAction, type ShareMessages } from '@/components/share/use-share-action';
@@ -106,6 +109,51 @@ function useSummaryTitle(entry: HistoryEntry): string | null {
   const isSummary = toolIdOf(entry) === 'video_summary' || entry.mode === 'summarize';
   const { data } = useSummaryResult(entry.jobId, isSummary && entry.status === 'completed' && !entry.expired);
   return isSummary ? (data?.title ?? null) : null;
+}
+
+/**
+ * MM80 follow-up: History's Download.
+ *
+ * An S3 result comes with a presigned `downloadUrl` that any plain link can open. A local result
+ * only has `downloadPath` (`/download/:jobId`), which the API serves to the job's owner by
+ * identity HEADERS, so a bare `<a href>` 404'd under ownership enforcement. Those rows go through
+ * the result panel's download controller instead: a signed link the browser's own download
+ * manager fetches, with the same "Preparing download…" / started / failed feedback.
+ */
+function HistoryDownload({ entry, href, label }: { entry: HistoryEntry; href: string; label: string }) {
+  const { t } = useLocalization('interface');
+  const status = useDownloadStatus(entry.jobId);
+  const reopened = () => retentionEvents.itemReopened(entry.mediaKind, entry.createdAt);
+  if (entry.downloadUrl) {
+    return (
+      <a href={href} className={LINK_CLASS} onClick={reopened}>
+        {label}
+      </a>
+    );
+  }
+  const preparing = status.phase === 'preparing';
+  const start = () => {
+    reopened();
+    void downloadResult({ jobId: entry.jobId, fileName: entry.resultFileName || entry.jobId });
+  };
+  return (
+    <>
+      <button
+        type="button"
+        data-testid="history-download-button"
+        disabled={preparing}
+        aria-busy={preparing || undefined}
+        onClick={start}
+        className={cn(TEXT_BUTTON_CLASS, 'inline-flex items-center gap-1.5')}
+      >
+        {preparing && <Loader2 aria-hidden="true" className="size-3.5 animate-spin motion-reduce:animate-none" />}
+        {preparing ? t('resultPanel.downloadStatus.preparing') : label}
+      </button>
+      {(status.phase === 'started' || status.phase === 'failed') && (
+        <DownloadStatusLine status={status} onRetry={start} className="basis-full text-xs" />
+      )}
+    </>
+  );
 }
 
 const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, onPreview, onKeep, onDelete, onRevokeLinks, shareMessages, formatExpiry }) => {
@@ -203,9 +251,7 @@ const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, 
               </button>
             ) : null}
             {href ? (
-              <a href={href} className={LINK_CLASS} onClick={() => retentionEvents.itemReopened(entry.mediaKind, entry.createdAt)}>
-                {copy.download}
-              </a>
+              <HistoryDownload entry={entry} href={href} label={copy.download} />
             ) : null}
             {canShare ? (
               <>
