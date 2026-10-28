@@ -258,6 +258,15 @@
     "ariaLabel": "Résultat",
     "download": "Télécharger",
     "downloadFailed": "Échec du téléchargement. Réessayez.",
+    "downloadStatus": {
+      "preparing": "Préparation du téléchargement…",
+      "started": "Votre téléchargement a commencé — consultez les téléchargements de votre navigateur.",
+      "startedWithSize": "Votre téléchargement a commencé ({{size}}) — consultez les téléchargements de votre navigateur.",
+      "failed": "Le téléchargement n'a pas pu démarrer.",
+      "gone": "Ce résultat n'est plus disponible au téléchargement.",
+      "retry": "Réessayer",
+      "noRecharge": "Télécharger à nouveau ne relance jamais la tâche et ne la facture pas."
+    },
     "compare": "Comparer",
     "original": "Original",
     "result": "Résultat",

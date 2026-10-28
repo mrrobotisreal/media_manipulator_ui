@@ -258,6 +258,15 @@
     "ariaLabel": "Resultado",
     "download": "Transferir",
     "downloadFailed": "A transferência falhou. Tente novamente.",
+    "downloadStatus": {
+      "preparing": "A preparar a transferência…",
+      "started": "A sua transferência começou — consulte as transferências do navegador.",
+      "startedWithSize": "A sua transferência começou ({{size}}) — consulte as transferências do navegador.",
+      "failed": "Não foi possível iniciar a transferência.",
+      "gone": "Este resultado já não está disponível para transferir.",
+      "retry": "Tentar novamente",
+      "noRecharge": "Transferir de novo nunca volta a executar nem a cobrar o trabalho."
+    },
     "compare": "Comparar",
     "original": "Original",
     "result": "Resultado",

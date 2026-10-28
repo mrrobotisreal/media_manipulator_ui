@@ -256,6 +256,15 @@
     "ariaLabel": "結果",
     "download": "下載",
     "downloadFailed": "下載失敗，請再試一次。",
+    "downloadStatus": {
+      "preparing": "正在準備下載…",
+      "started": "下載已開始，請查看瀏覽器的下載清單。",
+      "startedWithSize": "下載已開始（{{size}}），請查看瀏覽器的下載清單。",
+      "failed": "無法開始下載。",
+      "gone": "此結果已無法下載。",
+      "retry": "重試",
+      "noRecharge": "重新下載不會重新執行工作，也不會計費。"
+    },
     "compare": "比較",
     "original": "原始",
     "result": "結果",

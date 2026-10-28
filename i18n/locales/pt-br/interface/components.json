@@ -258,6 +258,15 @@
     "ariaLabel": "Resultado",
     "download": "Baixar",
     "downloadFailed": "Falha no download. Tente de novo.",
+    "downloadStatus": {
+      "preparing": "Preparando o download…",
+      "started": "Seu download começou — confira os downloads do navegador.",
+      "startedWithSize": "Seu download começou ({{size}}) — confira os downloads do navegador.",
+      "failed": "Não foi possível iniciar o download.",
+      "gone": "Este resultado não está mais disponível para download.",
+      "retry": "Tentar novamente",
+      "noRecharge": "Baixar de novo nunca executa nem cobra o trabalho outra vez."
+    },
     "compare": "Comparar",
     "original": "Original",
     "result": "Resultado",

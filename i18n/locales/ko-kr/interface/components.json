@@ -256,6 +256,15 @@
     "ariaLabel": "결과",
     "download": "다운로드",
     "downloadFailed": "다운로드에 실패했습니다. 다시 시도해 주세요.",
+    "downloadStatus": {
+      "preparing": "다운로드 준비 중…",
+      "started": "다운로드가 시작되었습니다. 브라우저의 다운로드 목록을 확인하세요.",
+      "startedWithSize": "다운로드가 시작되었습니다({{size}}). 브라우저의 다운로드 목록을 확인하세요.",
+      "failed": "다운로드를 시작하지 못했습니다.",
+      "gone": "이 결과는 더 이상 다운로드할 수 없습니다.",
+      "retry": "다시 시도",
+      "noRecharge": "다시 다운로드해도 작업이 재실행되거나 요금이 부과되지 않습니다."
+    },
     "compare": "비교",
     "original": "원본",
     "result": "결과",

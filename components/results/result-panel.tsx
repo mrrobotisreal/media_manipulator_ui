@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useMemo, useState, type ReactNode } from
 import { Download, Link2, Loader2, RotateCcw } from 'lucide-react';
 import { MetadataStrip } from '@/components/metadata/metadata-strip';
 import { QueueLine } from './queue-line';
+import { DownloadStatusLine } from './download-status';
 import { ConfirmDialog } from '@/components/account/confirm-dialog';
 import { useShareAction, type ShareMessages } from '@/components/share/use-share-action';
 import { isShareable } from '@/lib/share/shareApi';
@@ -345,10 +346,11 @@ function ResultPanelBody({
 
   const originalUrl = useOriginalUrl(descriptor.original, active && (legacyToggle || compareMode !== null));
   const saveName = downloadFileName ?? descriptor.fileName;
-  const { download, isDownloading, failed } = useResultDownload({
+  const { download, isDownloading, status: downloadStatus } = useResultDownload({
     jobId: descriptor.jobId,
     fileName: saveName,
     cachedBlob: loadedBlob ?? seedBlob,
+    sizeBytes: descriptor.sizeBytes,
     onDownloaded,
   });
   const { onDownload: trackDownloadClick } = analytics;
@@ -507,14 +509,15 @@ function ResultPanelBody({
           type="button"
           onClick={handleDownload}
           disabled={isDownloading}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-success px-5 py-2 font-medium text-success-foreground transition-colors hover:bg-success/90 disabled:opacity-60"
+          aria-busy={isDownloading || undefined}
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-success px-5 py-2 font-medium text-success-foreground transition-colors hover:bg-success/90 disabled:cursor-wait disabled:opacity-80"
         >
           {isDownloading ? (
             <Loader2 aria-hidden="true" className="size-4 animate-spin motion-reduce:animate-none" />
           ) : (
             <Download aria-hidden="true" className="size-4" />
           )}
-          {downloadLabel ?? t('resultPanel.download')}
+          {isDownloading ? t('resultPanel.downloadStatus.preparing') : (downloadLabel ?? t('resultPanel.download'))}
         </button>
         {compareMode !== null && entryModes.length > 1 && (
           <Segmented
@@ -567,12 +570,13 @@ function ResultPanelBody({
             {t('resultPanel.runAnother')}
           </button>
         )}
-        {failed && (
-          <span role="alert" className="text-sm text-destructive">
-            {t('resultPanel.downloadFailed')}
-          </span>
-        )}
       </div>
+      {/* MM80: status of this job's download (shared store: the default path and callers that
+          route through downloadResult, like home, both report here). A share page's download
+          is a plain link and stays idle. */}
+      {!descriptor.sourceUrl && (
+        <DownloadStatusLine status={downloadStatus} onRetry={() => void download()} />
+      )}
 
       {shareable && (
         <ConfirmDialog
