@@ -23,6 +23,14 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM88: mobile polish and home first-load.
+  {
+    id: '2026-10-28-faster-first-load',
+    date: '2026-10-28',
+    title: 'Faster first load and a smaller cookie bar on phones',
+    body: 'The home page now loads about 13 % less JavaScript: the result viewer and the file preview are fetched when you pick a file, not before, and they are ready by the time your result is. On a phone the cookie bar is now a two-line strip with Decline and Accept side by side (the same size, as before), instead of covering almost half the screen. The buttons in the top bar are easier to tap, the language menu opens on the correct side in Arabic and Hebrew, and keyboard users get a "Skip to content" link. Tool pages show their upload area straight away, in your language, instead of a loading box.',
+    tags: ['improved'],
+  },
   // MM85: contact page and a named founder.
   {
     id: '2026-10-28-contact-and-founder',

@@ -131,6 +131,19 @@ _Avoid_: "ad page", "monetised page".
 **Ad unit**:
 The one `<ins class="adsbygoogle">` an ad-eligible page may render (`components/ad-banner.tsx`). Its existence is gated on tier (anonymous and free only; nothing while auth loads or when a signed-in visitor's snapshot is missing), path, placement and a real slot id (`lib/adSlots.ts`), never on consent. Consent steers personalisation only: the first-party advertising switch outside the EEA, Google's consent message (Privacy & messaging) inside it (`ownsAdSignals()` in `lib/consent/index.ts`).
 
+### Site chrome and the ad-slot frame (MM88)
+
+**Ad-slot frame**:
+`components/ads/ad-slot-frame.tsx`, the box an in-content ad unit sits in. It reserves `min-h-[280px] md:min-h-[300px]` only when `ADSENSE_ENABLED` (or the dev-only MockAd) is on, and renders nothing otherwise, so the review build has no blank box. With ads on, the box stays reserved even when Google returns no fill (that is the CLS trade). It never decides whether an ad shows; `AdBanner` and the loader do.
+_Avoid_: putting a `min-h-*` reservation around `AdBanner` directly; "ad container".
+
+**Tool shell**:
+`components/tools/tool-panel-shell.tsx`, the server-rendered stand-in for the embedded tool panel: `next/dynamic`'s loading state in `embedded-tool-panel-client.tsx`, so it is what the prerendered HTML contains. It is the panel's empty state (localized dropzone copy, the tool's `accept`, a disabled Select button), built from the same pieces as the live panel (`components/tools/panel-chrome.tsx`), with strings from `getToolPanelShellLabels` (server only). A test keeps it identical to the live empty state.
+_Avoid_: "loading box", "skeleton" (it is the real UI, disabled).
+
+**Nav control**:
+One of the four icon buttons in the sticky header (menu, theme, language, account). Each uses `NAV_ICON_CONTROL` (`components/nav-control.ts`): a 36px box plus a 4px `::after` extension, a 44px hit area; the row is `gap-2` so hit areas touch but do not overlap.
+
 ### Localization
 
 **Locale registry**:

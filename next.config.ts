@@ -23,6 +23,31 @@ const DEPLOY_ROLE = process.env.NEXT_PUBLIC_DEPLOY_ROLE ?? '';
 const TRANSLATOR_LOCALE = process.env.NEXT_PUBLIC_TRANSLATOR_LOCALE ?? '';
 const IS_TRANSLATOR_DEPLOYMENT = DEPLOY_ROLE === 'translator';
 
+// MM88: baseline security headers on every response.
+//
+//   nosniff                      no MIME sniffing of uploads/results served through Next.
+//   strict-origin-when-cross-origin  full referrer same-origin, origin only cross-origin,
+//                                nothing on an https -> http downgrade.
+//   Permissions-Policy           camera + microphone for our own pages only (the voice
+//                                recorder, Darkroom voiceover); geolocation for nobody.
+//
+// Not here, on purpose:
+//   X-Frame-Options              never global: CreaTV frames /embed/*, and XFO cannot
+//                                express "these origins". Framing is CSP's job (below).
+//   Strict-Transport-Security    Vercel sends `max-age=63072000` on the production domain
+//                                already (checked 2026-10-28); a second copy adds nothing.
+export const SECURITY_HEADERS = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'Permissions-Policy', value: 'camera=(self), microphone=(self), geolocation=()' },
+];
+
+// MM88: every route EXCEPT /embed/* may be framed only by our own origin (clickjacking).
+// The negative lookahead keeps /embed and /embed/* out entirely, so the embed keeps its one
+// CSP header (frame-ancestors for CreaTV) rather than relying on override order.
+// `next.config.test.ts` checks the matching with Next's own path matcher.
+export const NON_EMBED_SOURCE = '/:path((?!embed(?:/|$)).*)';
+
 const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_DEPLOY_ROLE: DEPLOY_ROLE,
@@ -36,6 +61,11 @@ const nextConfig: NextConfig = {
       ...(IS_TRANSLATOR_DEPLOYMENT
         ? [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }]
         : []),
+      { source: '/:path*', headers: SECURITY_HEADERS },
+      {
+        source: NON_EMBED_SOURCE,
+        headers: [{ key: 'Content-Security-Policy', value: "frame-ancestors 'self';" }],
+      },
       {
         // Let CreaTV frame the embedded Content Studio editor. Scoped to
         // /embed/* only — the rest of the site keeps its default framing

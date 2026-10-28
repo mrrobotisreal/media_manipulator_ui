@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import { Trans } from 'react-i18next';
 import { Upload, Download, Loader2, Image, Video, Music, X, Settings, FileText, BookOpen, HelpCircle, Sparkles, Film, Clapperboard, ArrowRight } from 'lucide-react';
 import { cn, getFileType } from '@/lib/utils';
-import FilePreview from '@/components/file-preview';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { withToolShards } from '@/lib/i18n/ensureShard';
@@ -42,7 +41,6 @@ import { downloadResult, useDownloadStatus } from '@/lib/results/downloadControl
 import { DownloadStatusLine } from '@/components/results/download-status';
 import { describe as describeResult } from '@/lib/results/describe';
 import { peekResultBlob } from '@/lib/results/useResultBlob';
-import { ResultPanel } from '@/components/results/result-panel';
 import { QuotaChip } from '@/components/quota-chip';
 import { RecentStrip } from '@/components/history/recent-strip';
 import {
@@ -60,6 +58,28 @@ import { Panel } from '@/components/darkroom/panel';
 import { isStemOperation, stemOutputFormat } from '@/lib/audio/stemFormat';
 import { isVocalStemJob } from '@/lib/results/mp3Download';
 import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
+
+/** MM88: a 44px (min-h-11) tap target that never wraps or shrinks inside the scrolling row. */
+const HERO_CHIP = 'inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-full px-4 transition-colors';
+
+/**
+ * MM88: the result viewer and the file preview are code-split. Neither can render before
+ * the visitor picks a file (the preview) or a job exists (the result panel), and together
+ * with their viewers (compare sliders, transcript/caption/summary/archive/stream viewers)
+ * they were ~40 KB gzip of the home route's first load.
+ *
+ * MM01's "see it before you download it" must not wait on the chunk, so choosing a file
+ * calls `preloadResultViewers()`: the ResultPanel chunk downloads during the upload and
+ * the job, long before a result can exist. The loading states are null because neither is
+ * ever on screen before its chunk could have arrived (the preview mounts with the file,
+ * and the ResultPanel is a modal that opens after the job finishes).
+ */
+const loadResultPanel = () => import('@/components/results/result-panel').then((m) => m.ResultPanel);
+const ResultPanel = dynamic(loadResultPanel, { ssr: false });
+const FilePreview = dynamic(() => import('@/components/file-preview'), { ssr: false });
+function preloadResultViewers(): void {
+  void loadResultPanel().catch(() => undefined);
+}
 
 /** Lazy chunk: the inspector flow adds nothing to the home route's first load. */
 const HomeMetadata = dynamic(() => import('@/components/metadata/home-metadata'), { ssr: false });
@@ -362,6 +382,7 @@ const FileConverterAppInner: React.FC = () => {
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
       const file = files[0];
+      preloadResultViewers();
       setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
@@ -379,6 +400,7 @@ const FileConverterAppInner: React.FC = () => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      preloadResultViewers();
       setSelectedFile(file);
       setConversionJob(null);
       setConversionOptions(null);
@@ -1125,16 +1147,19 @@ const FileConverterAppInner: React.FC = () => {
         {/* MM85: the converter comes first on every viewport; the popular chips and
             the Darkroom card follow it rather than pushing it below the fold. */}
         <p className="mt-8 text-sm font-medium text-muted-foreground">{t('interface:home.hero.popularLabel')}</p>
-        <nav aria-label={t('accessibility:home.popularTools')} className="mx-auto mt-3 flex w-full max-w-5xl flex-wrap items-center justify-center gap-2 text-sm">
-          <Link href={localized('/tools')} className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)] transition-colors">{t('interface:home.hero.allTools')}</Link>
-          <Link href={localized('/tools/remove-exif-metadata')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.removeExif')}</Link>
-          <Link href={localized('/tools/compress-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressVideo')}</Link>
-          <Link href={localized('/tools/transcribe-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcribeVideo')}</Link>
-          <Link href={localized('/tools/transcode-to-hls')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.transcodeHls')}</Link>
+        {/* MM88: 44px chips. On a phone they are one horizontally scrolling row
+            (bleeding to the screen edges) instead of three or four wrapped rows of
+            44px; from `sm` they wrap and centre. Only this row scrolls, never the page. */}
+        <nav aria-label={t('accessibility:home.popularTools')} className="-mx-4 mt-3 flex w-[calc(100%+2rem)] max-w-5xl flex-nowrap items-center justify-start gap-2 overflow-x-auto px-4 pb-1 text-sm sm:mx-auto sm:w-full sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0">
+          <Link href={localized('/tools')} className={cn(HERO_CHIP, "bg-primary text-primary-foreground hover:bg-[var(--accent-primary-hover)]")}>{t('interface:home.hero.allTools')}</Link>
+          <Link href={localized('/tools/remove-exif-metadata')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.removeExif')}</Link>
+          <Link href={localized('/tools/compress-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressVideo')}</Link>
+          <Link href={localized('/tools/transcribe-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcribeVideo')}</Link>
+          <Link href={localized('/tools/transcode-to-hls')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.transcodeHls')}</Link>
           {/* Review-visible chips link only to review-allowlisted tool pages. */}
-          <Link href={localized('/tools/compress-image')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.compressImage')}</Link>
-          <Link href={localized('/tools/image-resizer')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.resizeImage')}</Link>
-          <Link href={localized('/tools/extract-audio-from-video')} className="px-3 py-1.5 rounded-full bg-card border border-border text-card-foreground hover:bg-muted transition-colors">{t('interface:home.hero.extractAudio')}</Link>
+          <Link href={localized('/tools/compress-image')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.compressImage')}</Link>
+          <Link href={localized('/tools/image-resizer')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.resizeImage')}</Link>
+          <Link href={localized('/tools/extract-audio-from-video')} className={cn(HERO_CHIP, "bg-card border border-border text-card-foreground hover:bg-muted")}>{t('interface:home.hero.extractAudio')}</Link>
         </nav>
 
         {/* Content Studio call-to-action */}

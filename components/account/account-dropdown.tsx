@@ -18,6 +18,8 @@ import { useAuth } from '@/lib/auth/AuthProvider';
 import { useCancelledEndsAt } from '@/lib/billing/useBillingStatus';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
+import { NAV_ICON_CONTROL } from '@/components/nav-control';
+import { cn } from '@/lib/utils';
 
 /**
  * The signed-in half of the nav account slot.
@@ -54,7 +56,7 @@ export const AccountDropdown: React.FC = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="size-9 shrink-0 rounded-full hover:bg-surface-2"
+          className={cn(NAV_ICON_CONTROL, 'rounded-full hover:bg-surface-2')}
           aria-label={t('accessibility:accountMenu.open')}
         >
           <UserIcon aria-hidden="true" className="size-4" />

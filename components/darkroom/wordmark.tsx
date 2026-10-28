@@ -119,6 +119,11 @@ export interface WordmarkProps extends React.ComponentProps<'span'> {
    */
   showText?: boolean;
   /**
+   * Extra classes for the type span, e.g. a responsive `hidden min-[480px]:inline`
+   * so a narrow nav shows the mark alone (MM88). The caller must name the link.
+   */
+  textClassName?: string;
+  /**
    * Use the cymatic morphing mark instead of the static one: it renders as the
    * identical coral aperture and then cycles through six resonance figures every
    * 21s. First paint is byte-identical to the static mark, so this is free of
@@ -132,6 +137,7 @@ export function Wordmark({
   size = 'sm',
   text = 'Media Manipulator',
   showText = true,
+  textClassName,
   animated = false,
   className,
   ...props
@@ -161,7 +167,8 @@ export function Wordmark({
         <span
           className={cn(
             'font-sans font-semibold leading-none tracking-tight',
-            s.text
+            s.text,
+            textClassName
           )}
         >
           <span className="text-foreground">{lead}</span>

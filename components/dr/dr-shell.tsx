@@ -51,7 +51,9 @@ export default function DrShell({ children }: { children: React.ReactNode }) {
           <Link href="/dr" className="font-semibold tracking-tight">
             <div className="flex flex-row items-center justify-center gap-2">
               <img
-                src="/DoubleRaven_Icon.png"
+                src="/DoubleRaven_Icon.webp"
+                width={48}
+                height={48}
                 alt="Double Raven"
                 className="mx-auto mb-2 size-12 object-contain"
               />

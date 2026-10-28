@@ -135,7 +135,7 @@ export function ConsentPreferences({ onClose }: ConsentPreferencesProps) {
             body={advertisingBody}
             control={
               adsManagedByGoogle ? (
-                <div className="flex max-w-[11rem] flex-col items-end gap-1.5 text-right">
+                <div className="flex max-w-[11rem] flex-col items-end gap-1.5 text-end">
                   <span className="text-xs font-medium text-muted-foreground">
                     {t('interface:consentPrefs.advertising.managedByGoogle')}
                   </span>

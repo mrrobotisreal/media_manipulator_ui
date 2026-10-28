@@ -5,6 +5,7 @@ import { Languages, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocalization } from "@/i18n/useLocalization";
 import { cn } from "@/lib/utils";
+import { NAV_ICON_CONTROL } from "@/components/nav-control";
 
 /**
  * Dropdown that lets the visitor switch between the languages registered in
@@ -74,7 +75,10 @@ const LanguageSelector: React.FC = () => {
         aria-label={triggerLabel}
         title={triggerLabel}
         onClick={() => setOpen((prev) => !prev)}
-        className="rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent"
+        className={cn(
+          NAV_ICON_CONTROL,
+          "rounded-full !bg-transparent hover:!bg-surface-2 dark:hover:!bg-surface-2 [&]:bg-transparent",
+        )}
       >
         <Languages className="h-6 w-6 text-foreground" aria-hidden="true" />
         <span className="sr-only">{triggerLabel}</span>
@@ -85,7 +89,10 @@ const LanguageSelector: React.FC = () => {
           aria-label={t("interface:languageSelector.select", {
             defaultValue: "Select a language",
           })}
-          className="absolute right-0 mt-2 w-56 max-h-72 overflow-y-auto rounded-md border border-border bg-popover text-popover-foreground shadow-lg z-50"
+          // Logical `end-0` (inset-inline-end), never a physical side: in Arabic
+          // and Hebrew the trigger sits at the left end of the nav, and a menu
+          // anchored to the physical right would open off the screen (MM88).
+          className="absolute end-0 mt-2 w-56 max-h-72 overflow-y-auto rounded-md border border-border bg-popover text-popover-foreground shadow-lg z-50"
         >
           <ul className="py-1">
             {languages.map((entry) => {
@@ -98,7 +105,7 @@ const LanguageSelector: React.FC = () => {
                     aria-selected={isActive}
                     onClick={() => handleSelect(entry.code)}
                     className={cn(
-                      "w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-muted transition-colors",
+                      "w-full text-start px-3 py-2 text-sm flex items-center gap-2 hover:bg-muted transition-colors",
                       isActive && "font-semibold",
                     )}
                   >
@@ -110,7 +117,7 @@ const LanguageSelector: React.FC = () => {
                     <span className="flex-1">
                       {entry.label}
                       {entry.englishLabel !== entry.label && (
-                        <span className="text-xs text-muted-foreground ml-2">
+                        <span className="text-xs text-muted-foreground ms-2">
                           {entry.englishLabel}
                         </span>
                       )}

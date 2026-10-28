@@ -34,6 +34,8 @@ afterEach(() => {
   document.body.innerHTML = '';
 });
 
+const NON_EMBED_SOURCE = '/:path((?!embed(?:/|$)).*)';
+
 describe('next.config.ts headers()', () => {
   it('translator mode: adds the catch-all X-Robots-Tag and keeps /embed and /sw.js rules', async () => {
     const config = (await withRole('translator', () => import('@/next.config'))).default;
@@ -42,18 +44,19 @@ describe('next.config.ts headers()', () => {
       source: '/:path*',
       headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
     });
-    expect(rules.map((r) => r.source)).toEqual(['/:path*', '/embed/:path*', '/sw.js']);
+    // MM88 added the security-header rules (catch-all + non-embed frame-ancestors).
+    expect(rules.map((r) => r.source)).toEqual(['/:path*', '/:path*', NON_EMBED_SOURCE, '/embed/:path*', '/sw.js']);
     expect(config.env).toEqual({ NEXT_PUBLIC_DEPLOY_ROLE: 'translator', NEXT_PUBLIC_TRANSLATOR_LOCALE: 'de-DE' });
   });
 
-  it('production: exactly the pre-MM52 rules, and the role is defined as an empty string', async () => {
+  it('production: the pre-MM52 rules plus MM88 security headers, and the role is defined as an empty string', async () => {
     vi.stubEnv(ROLE, undefined as unknown as string);
     delete process.env[ROLE];
     delete process.env.NEXT_PUBLIC_TRANSLATOR_LOCALE;
     vi.resetModules();
     const config = (await import('@/next.config')).default;
     const rules = await config.headers!();
-    expect(rules.map((r) => r.source)).toEqual(['/embed/:path*', '/sw.js']);
+    expect(rules.map((r) => r.source)).toEqual(['/:path*', NON_EMBED_SOURCE, '/embed/:path*', '/sw.js']);
     expect(JSON.stringify(rules)).not.toContain('X-Robots-Tag');
     expect(config.env).toEqual({ NEXT_PUBLIC_DEPLOY_ROLE: '', NEXT_PUBLIC_TRANSLATOR_LOCALE: '' });
   });

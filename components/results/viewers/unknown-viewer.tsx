@@ -1,27 +1,13 @@
 'use client';
 
-import { Archive, Captions, File, FileText, Film, Image as ImageIcon, Music, Radio, ScrollText } from 'lucide-react';
-import type { ComponentType } from 'react';
+import { File } from 'lucide-react';
+import { KIND_ICONS } from './kind-icons';
 import { Stat } from '@/components/darkroom/stat';
 import { useLocalization } from '@/i18n/useLocalization';
-import type { ResultKind } from '@/lib/results/describe';
 import type { ViewerProps } from './types';
 
-export const KIND_ICONS: Record<ResultKind, ComponentType<{ className?: string; 'aria-hidden'?: boolean }>> = {
-  image: ImageIcon,
-  gif: ImageIcon,
-  video: Film,
-  audio: Music,
-  transcript: FileText,
-  captions: Captions,
-  pdf: FileText,
-  archive: Archive,
-  hls: Radio,
-  dash: Radio,
-  metadata: FileText,
-  summary: ScrollText,
-  unknown: File,
-};
+// MM88: moved to ./kind-icons (re-exported here for existing importers).
+export { KIND_ICONS };
 
 /**
  * The file card: name, type and size. Also what every kind without a viewer yet renders

@@ -74,7 +74,7 @@ const Footer: React.FC = () => {
             <div className="mb-3 flex min-w-0 flex-col">
               <Link
                 href={localized('/')}
-                className="flex items-center space-x-3 hover:opacity-90 transition-opacity"
+                className="flex items-center gap-3 hover:opacity-90 transition-opacity"
                 aria-label={t('accessibility:footer.homeLink')}
               >
                 <Wordmark size="lg" animated text={t('interface:common.brand')} />
@@ -153,7 +153,7 @@ const Footer: React.FC = () => {
                 <button
                   type="button"
                   onClick={requestConsentReview}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors text-start"
                 >
                   {t('interface:footer.doNotSell')}
                 </button>
@@ -162,7 +162,7 @@ const Footer: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleCookieSettings}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors text-start"
                 >
                   {t('interface:footer.cookieSettings')}
                 </button>

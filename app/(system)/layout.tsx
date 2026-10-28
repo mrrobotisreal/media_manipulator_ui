@@ -5,6 +5,8 @@ import { SITE_ORIGIN } from '@/lib/seo';
 import { inter, jetbrainsMono } from '@/lib/fonts';
 import { LayoutBootstrap } from '@/lib/layoutScripts';
 import { isTranslatorEnv, TRANSLATOR_ROBOTS } from '@/lib/translator/mode';
+import { SkipLink } from '@/components/skip-link';
+import { getServerT } from '@/lib/i18n/server';
 
 /**
  * Root layout for the non-localized surfaces: the `/dr/**` Double Raven
@@ -49,6 +51,9 @@ export default function SystemRootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col">
+        {/* MM88: first focusable element; targets the chromeless #main wrapper
+            in app/providers.tsx. These surfaces are English only. */}
+        <SkipLink label={getServerT('accessibility')('skipToContent')} />
         {/* Resource hints + theme/consent bootstraps + GA4 loader — shared
             with the localized twin via lib/layoutScripts.tsx. */}
         <LayoutBootstrap />
