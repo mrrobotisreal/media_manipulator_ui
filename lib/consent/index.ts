@@ -19,10 +19,11 @@
  *   - Every decision is recorded server-side for evidence.
  */
 
+import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
 import { getVisitorId } from '@/lib/analytics/identity';
 
 import { deriveAction, recordConsent, type ConsentMechanism } from './audit';
-import { pushConsentMode } from './consentModeBridge';
+import { pushConsentMode as pushConsentModeSignals } from './consentModeBridge';
 import { detectGPC } from './gpc';
 import { resolveRegion } from './regions';
 import {
@@ -46,6 +47,32 @@ export type { ConsentMechanism } from './audit';
 export { BANNER_VERSION, POLICY_VERSION, needsPrompt } from './state';
 export { detectGPC } from './gpc';
 export { requiresOptIn } from './regions';
+
+/* ---------------------------------------------------------------------------
+ * Consent Mode handover (MM82, ADR-0016)
+ * ------------------------------------------------------------------------- */
+
+/**
+ * Whether OUR state writes the three ad signals into Consent Mode.
+ *
+ *   - Ads off: always, as before (the defaults stay denied anyway).
+ *   - Ads on, `gdpr` group: never. Google's Privacy & messaging (TCF v2.2)
+ *     message ships inside the ad script and owns ad consent there; a second
+ *     writer would fight it. Our bar asks about analytics only.
+ *   - Ads on, anywhere else: only once the visitor has an advertising decision
+ *     on file (granted, or denied by choice / GPC / Do-Not-Sell). `unset` leaves
+ *     the layout's denied defaults alone, so a visitor we mis-located never has
+ *     a choice they made in Google's message overwritten by a default of ours.
+ */
+export function ownsAdSignals(details: ConsentDetails, adsEnabled: boolean = ADSENSE_ENABLED): boolean {
+  if (!adsEnabled) return true;
+  if (details.regionGroup === 'gdpr') return false;
+  return details.advertising !== 'unset';
+}
+
+function pushConsentMode(details: ConsentDetails): void {
+  pushConsentModeSignals(details, ownsAdSignals(details));
+}
 
 /* ---------------------------------------------------------------------------
  * Legacy-compatible surface
@@ -211,7 +238,10 @@ export function isConsentInitialized(): boolean {
 
 export interface SetConsentInput {
   analytics: boolean;
-  /** Omitted leaves the advertising category untouched (it is dormant until Phase 12). */
+  /**
+   * Omitted leaves the advertising category untouched. Only the preferences
+   * centre sets it, outside the `gdpr` group, while ads are on (MM82).
+   */
   advertising?: boolean;
   mechanism: ConsentMechanism;
 }

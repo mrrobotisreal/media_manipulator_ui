@@ -201,9 +201,11 @@
     },
     "advertising": {
       "title": "Publicidad",
-      "body": "Para publicidad personalizada. Actualmente no mostramos anuncios, así que esto no hace nada todavía; se muestra aquí para que lo veas antes de que se active.",
+      "body": "Permite que Google personalice los anuncios que se muestran en algunas páginas de herramientas a los visitantes gratuitos y sin sesión iniciada. Que aparezca o no un anuncio no depende de este interruptor; desactivado significa que los anuncios no están personalizados. Premium y Pro nunca ven anuncios.",
+      "bodyGdpr": "En tu región, las decisiones sobre anuncios se toman en el mensaje de consentimiento de Google, no aquí; este panel cubre nuestras propias analíticas. Hasta que elijas allí, los anuncios de las páginas de herramientas no están personalizados. Premium y Pro nunca ven anuncios.",
       "bodyGpc": "Para publicidad personalizada. Tu navegador está enviando una señal de Global Privacy Control, así que esto permanece desactivado; respetamos esa señal y un clic aquí no puede anularla.",
-      "notActive": "Aún no está activo"
+      "managedByGoogle": "Administrado por el mensaje de consentimiento de Google",
+      "openGoogleMessage": "Cambiar opciones de anuncios"
     },
     "gpcDetected": "Se detectó Global Privacy Control. Te excluimos automáticamente de cualquier venta o compartición de tu información personal, y registramos que lo hicimos.",
     "doNotSell": {

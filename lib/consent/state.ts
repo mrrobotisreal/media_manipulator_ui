@@ -47,7 +47,12 @@ export interface ConsentDetails {
   bannerVersion: string;
   regionGroup: RegionGroup;
   analytics: ConsentValue;
-  /** Dormant until ads go live (Phase 12). Never `granted` in this release. */
+  /**
+   * First-party advertising choice (MM82). Set from the preferences centre
+   * outside the `gdpr` group while ads are on; GPC and Do-Not-Sell force
+   * `denied`. It steers Consent Mode personalisation only, never whether an
+   * ad unit exists. In the `gdpr` group Google's consent message owns ads.
+   */
   advertising: ConsentValue;
   /** Whether Global Privacy Control was asserted when this state was decided. */
   gpc: boolean;
@@ -233,8 +238,9 @@ export function onConsentDetailsChange(listener: Listener): () => void {
  *     other state laws actually require. The visitor still gets a dismissible notice
  *     and a permanent opt-out path, and GPC is honoured automatically.
  *
- * Advertising is `unset` everywhere. Ads are not live (Phase 12), and defaulting a
- * category we have not asked about to anything else would be indefensible.
+ * Advertising is `unset` everywhere (GPC: `denied`). Defaulting a category we
+ * have not asked about to anything else would be indefensible; with ads on,
+ * `unset` means Google serves non-personalised ads under the denied defaults.
  */
 export function defaultsForRegion(region: RegionGroup, gpc: boolean): Pick<ConsentDetails, 'analytics' | 'advertising'> {
   if (region === 'us') {

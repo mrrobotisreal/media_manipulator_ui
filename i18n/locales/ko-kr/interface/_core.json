@@ -112,10 +112,6 @@
     "cookieSettings": "쿠키 설정",
     "copyright": "© {{year}} Media Manipulator, CreaTV Ltd. 제품. All rights reserved.",
     "operatedBy": "운영: CreaTV Ltd. · 미국 콜로라도",
-    "cookieDialog": {
-      "title": "쿠키 환경설정",
-      "description": "쿠키 환경설정은 Google이 관리합니다. 쿠키 배너가 표시되지 않으면 페이지를 새로고침하시거나, Media Manipulator의 데이터 처리 방식에 대한 자세한 내용은 개인정보 처리방침을 참고하세요."
-    },
     "changelog": "변경 내역",
     "status": "서비스 상태",
     "licenses": "오픈소스 라이선스"
