@@ -49,6 +49,17 @@ vi.mock('@/lib/useSummarize', () => ({
     return { data: enabled && summaryTitles.byJob[jobId] ? { title: summaryTitles.byJob[jobId] } : undefined };
   },
 }));
+const downloads = vi.hoisted(() => ({
+  downloadResult: vi.fn(async () => ({ outcome: 'link' as const })),
+  status: { phase: 'idle', at: 0 } as Record<string, unknown>,
+}));
+vi.mock('@/lib/results/downloadController', () => ({
+  downloadResult: downloads.downloadResult,
+  useDownloadStatus: () => downloads.status,
+}));
+vi.mock('@/components/results/download-status', () => ({
+  DownloadStatusLine: (p: { status: { phase: string } }) => <p data-testid="download-status">{p.status.phase}</p>,
+}));
 vi.mock('@/lib/auth/accountApi', async (orig) => ({
   ...(await orig<typeof import('@/lib/auth/accountApi')>()),
   fetchHistory: vi.fn(),
@@ -76,6 +87,8 @@ function renderHistory(entries: object[]) {
 
 beforeEach(() => {
   track.mockClear();
+  downloads.downloadResult.mockClear();
+  downloads.status = { phase: 'idle', at: 0 };
   vi.mocked(deleteJob).mockReset();
   vi.mocked(keepJobLonger).mockReset();
 });
@@ -151,8 +164,34 @@ describe('HistoryTab rows', () => {
     renderHistory([row('j9', { mediaKind: 'video', createdAt: new Date(Date.now() - 40 * DAY).toISOString(), resultFileName: 'out.mp4', downloadPath: '/download/j9' })]);
     fireEvent.click(await screen.findByRole('button', { name: 'Preview' }));
     expect(track).toHaveBeenCalledWith('history_item_reopened', { kind: 'video', age_bucket: '30-90d', source: 'account' });
-    fireEvent.click(screen.getByRole('link', { name: 'Download' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Download' }));
     expect(track).toHaveBeenCalledTimes(2);
+  });
+
+  it('a local result downloads through the signed-link controller (no header-less <a href>)', async () => {
+    renderHistory([row('j9', { resultFileName: 'out.wav', downloadPath: '/download/j9' })]);
+    const button = await screen.findByTestId('history-download-button');
+    expect(screen.queryByRole('link', { name: 'Download' })).toBeNull();
+    fireEvent.click(button);
+    expect(downloads.downloadResult).toHaveBeenCalledWith({ jobId: 'j9', fileName: 'out.wav' });
+  });
+
+  it('a presigned S3 result keeps its plain link', async () => {
+    renderHistory([row('s3', { resultFileName: 'out.mp4', downloadUrl: 'https://bucket.example/out.mp4?sig=1' })]);
+    const link = await screen.findByRole('link', { name: 'Download' });
+    expect(link.getAttribute('href')).toBe('https://bucket.example/out.mp4?sig=1');
+    expect(screen.queryByTestId('history-download-button')).toBeNull();
+  });
+
+  it('shows "Preparing download…" while the link is minted, then the started line', async () => {
+    downloads.status = { phase: 'preparing', at: 1 };
+    const { unmount } = renderHistory([row('j9', { resultFileName: 'out.wav', downloadPath: '/download/j9' })]);
+    const button = await screen.findByTestId('history-download-button');
+    expect((button as HTMLButtonElement).disabled).toBe(true);
+    unmount();
+    downloads.status = { phase: 'started', at: 1, sizeBytes: 922_710_094, via: 'link' };
+    renderHistory([row('j9', { resultFileName: 'out.wav', downloadPath: '/download/j9' })]);
+    expect((await screen.findByTestId('download-status')).textContent).toBe('started');
   });
 
   it('emits data_deleted item/result for a single delete', async () => {
