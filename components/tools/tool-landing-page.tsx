@@ -5,12 +5,14 @@ import EmbeddedToolPanelClient from '@/components/tools/embedded-tool-panel-clie
 import ToolAnalyticsBoundary from '@/components/tools/tool-analytics-boundary';
 import { RecentStrip } from '@/components/history/recent-strip';
 import AdBanner from '@/components/ad-banner';
+import { AdSlotFrame } from '@/components/ads/ad-slot-frame';
 import { getReviewToolInContentAdSlot } from '@/lib/adSlots';
 import { isReviewSafeInternalHref } from '@/content/reviewAllowlist';
 import type { ToolPageContent } from '@/content/toolPages';
 import { Panel } from '@/components/darkroom/panel';
 import { localizeHref } from '@/i18n/locales';
 import { getServerT } from '@/lib/i18n/server';
+import { getToolPanelShellLabels } from '@/components/tools/tool-panel-shell-labels';
 
 /**
  * Server-rendered tool landing page. All marketing/SEO copy (intro, formats,
@@ -161,6 +163,8 @@ export default function ToolLandingPage({
             transcodeLockProtocol={tool.embed.transcodeLockProtocol}
             title={tool.embed.title}
             description={tool.embed.description}
+            // MM88: the server-rendered shell (localized) shown until the panel hydrates.
+            shellLabels={getToolPanelShellLabels(tool.embed, loc)}
           />
           )}
           </ToolAnalyticsBoundary>
@@ -278,15 +282,17 @@ export default function ToolLandingPage({
           </section>
 
           {/* Single guarded in-content ad — after substantial body copy, far
-              from the tool panel/action buttons. Disabled by default via env. */}
+              from the tool panel/action buttons. Disabled by default via env.
+              MM88: AdSlotFrame reserves the 280/300px box only when ads are on;
+              with ads off there is no box (and no blank) in the HTML. */}
           {inContentSlot ? (
-            <div className="my-12 flex justify-center min-h-[280px] md:min-h-[300px]">
+            <AdSlotFrame>
               <AdBanner
                 adSlot={inContentSlot}
                 placement="incontent"
                 adPosition={`tool_${tool.slug}_incontent`}
               />
-            </div>
+            </AdSlotFrame>
           ) : null}
 
           {/* Advanced details */}

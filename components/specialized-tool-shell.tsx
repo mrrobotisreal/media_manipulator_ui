@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Upload, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import useGetJobStatus, { type ConversionJob } from '@/lib/useGetJobStatus';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
 import { QuotaChip } from '@/components/quota-chip';
+import { DropzoneCopy, SELECT_FILE_BUTTON, dropzoneClass } from '@/components/tools/panel-chrome';
 import { getFileType } from '@/lib/utils';
 import {
   EVENTS,
@@ -188,21 +189,17 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-            isDragOver
-              ? 'border-primary bg-primary/10'
-              : 'border-muted-foreground/25 hover:border-muted-foreground/50'
-          }`}
+          // MM88: the same dropzone pieces as the embedded panel and its server shell.
+          className={dropzoneClass(isDragOver)}
         >
-          <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-          <p className="font-medium text-card-foreground mb-1">{t('specializedToolShell.dropHere', { hint: uploadHint })}</p>
-          <p className="text-sm text-muted-foreground mb-4">
-            {t('specializedToolShell.selectHint')}
-          </p>
+          <DropzoneCopy
+            dragDrop={t('specializedToolShell.dropHere', { hint: uploadHint })}
+            selectHint={t('specializedToolShell.selectHint')}
+          />
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
+            className={SELECT_FILE_BUTTON}
           >
             {t('specializedToolShell.selectFile')}
           </button>

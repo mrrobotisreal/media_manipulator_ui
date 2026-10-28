@@ -1,17 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
-import {
-  Upload,
-  Image as ImageIcon,
-  Video as VideoIcon,
-  Music,
-  X,
-  Sparkles,
-  Info,
-  FileText,
-} from 'lucide-react';
+import { X } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { cn, getFileType } from '@/lib/utils';
 import { PanelLoading } from '@/components/darkroom/panel-loading';
@@ -42,7 +32,17 @@ import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { UploadLimitHint, useUpgradeNudge } from '@/components/account/upgrade-surfaces';
 import { QuotaChip } from '@/components/quota-chip';
-import { Panel } from '@/components/darkroom/panel';
+import {
+  ICON_MAP,
+  DropzoneCopy,
+  SELECT_FILE_BUTTON,
+  ToolPanelFooter,
+  ToolPanelFormats,
+  ToolPanelIntro,
+  ToolPanelSection,
+  describePanelChrome,
+  dropzoneClass,
+} from '@/components/tools/panel-chrome';
 
 /**
  * Shared loading state for the code-split forms below. Module scope, not
@@ -494,72 +494,8 @@ interface EmbeddedToolPanelProps {
   transcodeLockProtocol?: boolean;
 }
 
-const ACCEPT_MAP: Record<EmbeddedMediaKind, string> = {
-  image: 'image/*',
-  video: 'video/*',
-  audio: 'audio/*',
-  // PDF kind also accepts images so the pdf-converter hub can take either
-  // direction (PDF -> image or image -> PDF).
-  pdf: 'application/pdf,image/*',
-};
-
-const ICON_MAP: Record<EmbeddedMediaKind, React.ReactNode> = {
-  image: <ImageIcon className="w-5 h-5" />,
-  video: <VideoIcon className="w-5 h-5" />,
-  audio: <Music className="w-5 h-5" />,
-  pdf: <FileText className="w-5 h-5" />,
-};
-
-const DEFAULT_TITLES: Record<EmbeddedMediaKind, string> = {
-  image: 'Try the image converter',
-  video: 'Try the video converter',
-  audio: 'Try the audio converter',
-  pdf: 'Try the PDF converter',
-};
-
-const DEFAULT_DESCRIPTIONS: Record<EmbeddedMediaKind, string> = {
-  image:
-    'Upload an image and pick a format. The same converter as the homepage — no signup required.',
-  video:
-    'Upload a video to convert, compress, or trim. The same converter as the homepage — no signup required.',
-  audio:
-    'Upload an audio file to convert or compress. The same converter as the homepage — no signup required.',
-  pdf:
-    'Upload a PDF to convert to images, or an image to turn into a PDF. No signup required.',
-};
-
-const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
-  inspect_metadata: true,
-  audio_waveform: true,
-  extract_audio: true,
-  extract_video_only: true,
-  extract_frames: true,
-  caption_translator: true,
-  stitch_audio_to_video: true,
-  // Video-to-audio pages output audio, not video, so they reuse the
-  // specialized extract-audio flow rather than the video converter.
-  mp4_to_mp3: true,
-  video_to_mp3: true,
-  // Video utility pages (batch 2) each render a focused panel instead of the
-  // full advanced video form.
-  video_compressor: true,
-  compress_mp4: true,
-  video_trimmer: true,
-  mp4_trimmer: true,
-  video_cutter: true,
-  cut_video_online: true,
-  crop_video: true,
-  resize_video: true,
-  rotate_video: true,
-  remove_audio_from_video: true,
-  // MM75: both summary pages render the summarize panel.
-  summarize_video: true,
-  summarize_audio: true,
-  // MM78 voices.
-  voice_clone: true,
-  voice_design: true,
-  voice_convert: true,
-};
+// MM88: ACCEPT_MAP, ICON_MAP, DEFAULT_TITLES/DESCRIPTIONS and SPECIALIZED_PANEL_TASKS moved to
+// components/tools/panel-chrome.tsx, shared with the server-rendered shell.
 
 /**
  * Compact, embedded version of the homepage converter for tutorial and
@@ -833,23 +769,35 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isCompleted, conversionJob, selectedFile, defaultTask, transcribeMode, effectiveKind, conversionOptions],
   );
-  const accept = acceptOverride || ACCEPT_MAP[defaultMediaKind];
-
-  const heading = title || DEFAULT_TITLES[defaultMediaKind];
-  const subheading = description || DEFAULT_DESCRIPTIONS[defaultMediaKind];
+  // MM88: the static chrome (accept list, heading, format chips, which focused panel) is
+  // derived by the same function the server-rendered shell uses, so the two cannot differ.
+  const {
+    accept,
+    heading,
+    subheading,
+    lockedOutputDisplay,
+    recommendedFormat,
+    specializedPanel,
+    showQuotaChip,
+  } = describePanelChrome({
+    defaultMediaKind,
+    defaultTask,
+    preset,
+    title,
+    description,
+    acceptOverride,
+    allowedInputFormats,
+    defaultOutputFormat,
+    lockedInputFormat,
+    lockedOutputFormat,
+    defaultVideoOutputFormat,
+    lockedVideoOutputFormat,
+    defaultExtractAudioFormat,
+    lockedExtractAudioFormat,
+    transcribeMode,
+  });
   const { t, formatFileSize } = useLocalization('interface');
   const localized = useLocalizedHref();
-  // A single "output is locked" value, regardless of media kind, so the info
-  // banner shows the right chip for image / video / extract-audio pages alike.
-  const lockedOutputDisplay =
-    lockedOutputFormat || lockedVideoOutputFormat || lockedExtractAudioFormat;
-  // When the output is locked we show the "Output format" chip instead of the
-  // "Recommended output" chip, so they never both appear for the same format.
-  const recommendedFormat = lockedOutputDisplay
-    ? undefined
-    : defaultOutputFormat ||
-      defaultVideoOutputFormat ||
-      defaultExtractAudioFormat;
 
   // Must recognize EVERY EmbeddedImageFormat — otherwise tool pages advertising
   // AVIF/PDF/SVG/ICO output silently fall through and the promised output is
@@ -969,81 +917,32 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   const isTranscribeAllowed =
     transcribeMode && (defaultMediaKind === 'video' || defaultMediaKind === 'audio');
   const isTranscodeAllowed = transcodeMode && defaultMediaKind === 'video';
-  // A `panel: 'video_compressor'` preset selects the focused compressor panel
-  // even when the page's defaultTask is the generic compress_video.
-  const specializedPanel: EmbeddedTask | null =
-    preset && preset.kind === 'video' && 'panel' in preset
-      ? preset.panel
-      : defaultTask && SPECIALIZED_PANEL_TASKS[defaultTask]
-        ? defaultTask
-        : null;
 
   return (
-    <Panel
-      level="2"
-      as="section"
-      // Panel owns responsive padding; `compact` now only tightens the large
-      // breakpoint rather than setting the old fixed p-10 / p-12.
-      className={cn('my-8', compact && 'lg:p-6')}
-      aria-label={t('embeddedToolPanel.sectionAria')}
-    >
-      <div className="flex items-start gap-3 mb-4">
-        <span className="mt-1 text-primary">
-          {transcribeMode ? <FileText className="w-5 h-5" /> : ICON_MAP[defaultMediaKind]}
-        </span>
-        <div>
-          <h2 className="text-xl font-semibold text-card-foreground flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-primary" /> {t('embeddedToolPanel.tryItNow')}
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            <span className="font-medium">{heading}.</span> {subheading}
-          </p>
-        </div>
-      </div>
+    <ToolPanelSection compact={compact} aria-label={t('embeddedToolPanel.sectionAria')}>
+      <ToolPanelIntro
+        mediaKind={defaultMediaKind}
+        transcribe={transcribeMode}
+        tryItNow={t('embeddedToolPanel.tryItNow')}
+        heading={heading}
+        subheading={subheading}
+      />
       {/* MM78: the voice panels render their own chip (ai_ops, or ops / ai_ops by mode).
           MM75: so does the summarize panel (its shell's chip, shown only once it can run). */}
-      {specializedPanel === 'voice_clone' || specializedPanel === 'voice_design' || specializedPanel === 'voice_convert' ||
-      specializedPanel === 'summarize_video' || specializedPanel === 'summarize_audio' ? null : (
-        <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" />
-      )}
+      {showQuotaChip ? <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" /> : null}
 
-      {(recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
-        <div className="mb-4 flex items-start gap-2 rounded-md border border-primary/30 bg-primary/10 p-3">
-          <Info className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-          <div className="text-sm text-card-foreground">
-            {recommendedFormat && (
-              <p>
-                <span className="font-medium">{t('embeddedToolPanel.recommendedOutput')}</span>{' '}
-                <code className="px-1.5 py-0.5 bg-card border border-border rounded text-xs">
-                  {recommendedFormat.toUpperCase()}
-                </code>
-              </p>
-            )}
-            {lockedOutputDisplay && (
-              <p>
-                <span className="font-medium">{t('embeddedToolPanel.outputLocked')}</span>{' '}
-                <code className="px-1.5 py-0.5 bg-card border border-border rounded text-xs">
-                  {lockedOutputDisplay.toUpperCase()}
-                </code>
-              </p>
-            )}
-            {lockedInputFormat && (
-              <p>
-                <span className="font-medium">{t('embeddedToolPanel.expectedInput')}</span>{' '}
-                <code className="px-1.5 py-0.5 bg-card border border-border rounded text-xs">
-                  {lockedInputFormat.toUpperCase()}
-                </code>
-              </p>
-            )}
-            {allowedInputFormats && allowedInputFormats.length > 0 && (
-              <p>
-                <span className="font-medium">{t('embeddedToolPanel.accepts')}</span>{' '}
-                {allowedInputFormats.map((f) => f.toUpperCase()).join(', ')}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+      <ToolPanelFormats
+        labels={{
+          recommendedOutput: t('embeddedToolPanel.recommendedOutput'),
+          outputLocked: t('embeddedToolPanel.outputLocked'),
+          expectedInput: t('embeddedToolPanel.expectedInput'),
+          accepts: t('embeddedToolPanel.accepts'),
+        }}
+        recommendedFormat={recommendedFormat}
+        lockedOutputDisplay={lockedOutputDisplay}
+        lockedInputFormat={lockedInputFormat}
+        allowedInputFormats={allowedInputFormats}
+      />
 
       {specializedPanel === 'summarize_video' || specializedPanel === 'summarize_audio' ? (
         <SummarizePanel task={specializedPanel} />
@@ -1085,23 +984,16 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-            isDragOver
-              ? 'border-primary bg-primary/10'
-              : 'border-muted-foreground/25 hover:border-muted-foreground/50'
-          }`}
+          className={dropzoneClass(isDragOver)}
         >
-          <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-          <p className="font-medium text-card-foreground mb-1">
-            {t('embeddedToolPanel.dragDrop', { kind: t(`embeddedToolPanel.mediaKinds.${defaultMediaKind}`) })}
-          </p>
-          <p className="text-sm text-muted-foreground mb-4">
-            {t('embeddedToolPanel.selectHint')}
-          </p>
+          <DropzoneCopy
+            dragDrop={t('embeddedToolPanel.dragDrop', { kind: t(`embeddedToolPanel.mediaKinds.${defaultMediaKind}`) })}
+            selectHint={t('embeddedToolPanel.selectHint')}
+          />
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="bg-primary text-primary-foreground px-5 py-2 rounded-lg hover:bg-[var(--accent-primary-hover)] transition-colors"
+            className={SELECT_FILE_BUTTON}
           >
             {t('embeddedToolPanel.selectFile')}
           </button>
@@ -1259,17 +1151,13 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground mt-4">
-        {t('embeddedToolPanel.needFullPrefix')}{' '}
-        <Link
-          href={localized('/')}
-          className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
-        >
-          {t('embeddedToolPanel.openFullConverter')}
-        </Link>{' '}
-        {t('embeddedToolPanel.needFullSuffix')}
-      </p>
-    </Panel>
+      <ToolPanelFooter
+        href={localized('/')}
+        prefix={t('embeddedToolPanel.needFullPrefix')}
+        linkLabel={t('embeddedToolPanel.openFullConverter')}
+        suffix={t('embeddedToolPanel.needFullSuffix')}
+      />
+    </ToolPanelSection>
   );
 };
 

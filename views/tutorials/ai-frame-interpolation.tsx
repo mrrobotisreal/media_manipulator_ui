@@ -2,6 +2,7 @@ import React from 'react';
 import ContentReadTracker from '@/components/analytics/content-read-tracker';
 import Link from 'next/link';
 import EmbeddedToolPanel from '@/components/tools/embedded-tool-panel-client';
+import { getToolPanelShellLabels } from '@/components/tools/tool-panel-shell-labels';
 import RelatedLinks from '@/components/related-links';
 import { Panel } from '@/components/darkroom/panel';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
@@ -86,6 +87,7 @@ const AIFrameInterpolationTutorial: React.FC<{ locale?: string }> = ({ locale })
                 defaultOutputFormat="mp4"
                 title={t(`${K}.toolPanel.title`)}
                 description={t(`${K}.toolPanel.description`)}
+                shellLabels={getToolPanelShellLabels('video', locale)}
               />
 
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">
