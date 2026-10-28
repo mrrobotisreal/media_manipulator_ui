@@ -101,6 +101,7 @@
       "micUnavailable": "マイクが見つからないか、このブラウザでは録音がサポートされていません。",
       "voiceoverPlaced": "再生ヘッドの位置にナレーションを追加しました",
       "voiceoverFailed": "ナレーションを追加できませんでした",
+      "generateVoiceover": "ナレーションを生成",
       "moreActions": "その他の操作",
       "rebuildPreview": "プレビューを再構築",
       "rebuildPreviewHint": "スクラブやシークの反応を速くするため、このクリップのプレビューをオリジナルから再エンコードします。編集内容とエクスポートには影響しません。",

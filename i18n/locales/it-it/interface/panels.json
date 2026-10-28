@@ -1367,6 +1367,15 @@
       "wavNote": "Il WAV viene decodificato dall'MP3 nel tuo browser.",
       "another": "Ricomincia"
     },
+    "darkroom": {
+      "title": "Genera voce fuori campo",
+      "description": "Scrivi un copione, scegli una voce e una lingua. La voce fuori campo viene aggiunta ai media di questo progetto e posizionata sul cursore.",
+      "placeholder": "Scrivi il copione della voce fuori campo.",
+      "generate": "Genera voce fuori campo",
+      "presetsOnly": "Senza accedere puoi usare le voci predefinite. Accedi per usare una voce che hai salvato.",
+      "added": "Voce fuori campo aggiunta al cursore",
+      "noAsset": "La voce fuori campo è stata generata, ma non è stato possibile aggiungerla al progetto. Riprova."
+    },
     "errors": {
       "sign_in_required": "Accedi per salvare e usare le tue voci.",
       "consent_required": "Spunta la casella per confermare che questa è la tua voce, o che hai il permesso esplicito di chi parla.",

@@ -1367,6 +1367,15 @@
       "wavNote": "Le WAV est décodé à partir du MP3 dans votre navigateur.",
       "another": "Recommencer"
     },
+    "darkroom": {
+      "title": "Générer une voix off",
+      "description": "Saisissez un script, choisissez une voix et une langue. La voix off est ajoutée aux médias de ce projet et placée à la tête de lecture.",
+      "placeholder": "Saisissez le script de la voix off.",
+      "generate": "Générer la voix off",
+      "presetsOnly": "Sans être connecté, vous pouvez utiliser les voix prédéfinies. Connectez-vous pour utiliser une voix que vous avez enregistrée.",
+      "added": "Voix off ajoutée à la tête de lecture",
+      "noAsset": "La voix off a été générée, mais n'a pas pu être ajoutée au projet. Réessayez."
+    },
     "errors": {
       "sign_in_required": "Connectez-vous pour enregistrer et utiliser vos propres voix.",
       "consent_required": "Cochez la case pour confirmer qu'il s'agit de votre voix, ou que vous avez l'autorisation explicite de la personne qui parle.",

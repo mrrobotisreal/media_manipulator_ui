@@ -170,6 +170,13 @@ export const EVENTS = {
   // ordinary server_job_* lifecycle with tool `video_summary` (MM74), not a new event.
   SUMMARY_GENERATED: 'summary_generated',
 
+  // --- Voices (MM79) ----------------------------------------------------------
+  // voice_created once a voice is saved (201); voice_generated once per completed voice
+  // job. Server twins: server_voice_created and server_job_* with tool voice_tts |
+  // voice_convert | voice_shift, which live only in the Go catalogs like `server_*`.
+  VOICE_CREATED: 'voice_created',
+  VOICE_GENERATED: 'voice_generated',
+
   // --- Quality --------------------------------------------------------------
   CLIENT_ERROR: 'client_error',
   WEB_VITAL: 'web_vital',
@@ -303,6 +310,10 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
 
   // Video / audio summary (MM75)
   summary_generated: PRIORITY_HIGH,
+
+  // Voices (MM79)
+  voice_created: PRIORITY_NORMAL,
+  voice_generated: PRIORITY_NORMAL,
 
   // Quality
   client_error: PRIORITY_HIGH,
@@ -1032,6 +1043,32 @@ export interface SummaryGeneratedProps {
   outputLanguage: string;
 }
 
+/* ---------------------------------------------------------------------------
+ * Voices (MM79, design VOICES.md §4.5). Closed vocabularies and a length bucket;
+ * never a voice name, a description, the spoken text or audio.
+ * ------------------------------------------------------------------------- */
+
+export type VoiceCreatedKindProp = 'cloned' | 'designed';
+export type VoiceGeneratedKindProp = 'tts' | 'convert' | 'shift';
+export type VoiceSourceProp = 'tool_page' | 'darkroom' | 'account';
+/** voiceSecondsBucket (lib/analytics/buckets.ts): lower bound inclusive. */
+export type VoiceSecondsBucket = '0-10' | '10-30' | '30-60' | '60-300' | '300+';
+
+export interface VoiceCreatedProps {
+  kind: VoiceCreatedKindProp;
+  /** One of the 23 Chatterbox language codes (the voice's language hint). */
+  languageHint: string;
+}
+
+export interface VoiceGeneratedProps {
+  kind: VoiceGeneratedKindProp;
+  /** Length of the generated audio (the job's resultSeconds), bucketed. */
+  secondsBucket: VoiceSecondsBucket;
+  /** The requested language code, or `none` (shift; convert to a saved voice). */
+  language: string;
+  source: VoiceSourceProp;
+}
+
 export interface ClientErrorProps {
   message: string;
   /** Hash of message+stack, used to dedupe an error loop down to one event. */
@@ -1155,6 +1192,9 @@ export interface EventPropsMap {
   vector_project_saved: VectorProjectSavedProps;
 
   summary_generated: SummaryGeneratedProps;
+
+  voice_created: VoiceCreatedProps;
+  voice_generated: VoiceGeneratedProps;
 
   client_error: ClientErrorProps;
   web_vital: WebVitalProps;

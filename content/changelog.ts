@@ -31,6 +31,18 @@ export const CHANGELOG: ChangelogEntry[] = [
     body: 'Downloading a very large result, such as the vocal or instrumental track of a long recording, could sit on a spinner and never produce a file. Downloads now go straight to your browser\'s own download manager, so even files close to a gigabyte arrive with the browser\'s progress bar and can be paused and resumed. The Download button says "Preparing download…" while it gets ready, then a line under it confirms that the download has started, with the file size. If something goes wrong you see why, with a Try again button. Downloading a result again never runs the job again and never uses up an operation.',
     tags: ['fixed', 'improved'],
   },
+  // MM79: Darkroom voiceover from a saved or preset voice.
+  {
+    id: '2026-10-28-darkroom-voiceover',
+    date: '2026-10-28',
+    title: 'Generate a voiceover from a saved voice inside Darkroom',
+    body: 'Darkroom\'s media bin has a new Generate voiceover button next to the microphone. Type a script, pick one of your saved voices or a preset voice and a language, and the voiceover is rendered on our own servers, added to the project as an audio clip and placed at the playhead, just like a recorded voiceover. Saved voices need you to be signed in; the preset voices work for everyone. Each voiceover counts as one AI job, a failed one is not counted, and the length of text per request depends on your plan. The button only appears when the voice engine is available.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Darkroom', href: '/tools/content-studio' },
+      { label: 'Clone your voice', href: '/tools/voice-cloning' },
+    ],
+  },
   // MM75: video and audio summaries (the MM74 pipeline).
   {
     id: '2026-10-28-video-summaries',

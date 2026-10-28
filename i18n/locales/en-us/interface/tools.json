@@ -101,6 +101,7 @@
       "micUnavailable": "No microphone was found, or recording isn't supported in this browser.",
       "voiceoverPlaced": "Voiceover added at the playhead",
       "voiceoverFailed": "Voiceover couldn't be added",
+      "generateVoiceover": "Generate voiceover",
       "moreActions": "More actions",
       "rebuildPreview": "Rebuild preview",
       "rebuildPreviewHint": "Re-encode this clip's preview from the original so scrubbing and seeking respond faster. Your edit and export are not affected.",

@@ -9,6 +9,7 @@ import { saveBlobToDisk } from '@/lib/results/save';
 import useDownloadFile from '@/lib/useDownloadFile';
 import { useLocalization } from '@/i18n/useLocalization';
 import { blobToWav, wavFileName } from '@/lib/voices/wav';
+import { useVoiceGenerated } from '@/lib/voices/analytics';
 import { BUTTON_SECONDARY, Spinner, VoiceNote } from './shared';
 
 /**
@@ -30,9 +31,16 @@ export const VoiceJobResult: React.FC<{
   original?: File | null;
   fallbackFileName: string;
   onRunAnother?: () => void;
-}> = ({ job, setJob, task, original, fallbackFileName, onRunAnother }) => {
+  /**
+   * MM79 voice_generated: the requested language code (TTS, convert to a preset), or
+   * undefined (`none`: shift, convert to a saved voice).
+   */
+  language?: string;
+}> = ({ job, setJob, task, original, fallbackFileName, onRunAnother, language }) => {
   const { t } = useLocalization('interface');
   const { data } = useGetJobStatus(job);
+  // MM79: one voice_generated per completed job (source tool_page; Darkroom emits its own).
+  useVoiceGenerated(job, { tool: task, language, source: 'tool_page' });
   const { downloadFile } = useDownloadFile();
   // The panel streams audio inline (resultMime audio/mpeg), so it may never hold the
   // bytes; the WAV button reuses them when it does and fetches the MP3 otherwise.

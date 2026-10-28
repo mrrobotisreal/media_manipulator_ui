@@ -24,6 +24,7 @@ import {
   RotateCcw,
   RefreshCw,
   X,
+  AudioLines,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -87,6 +88,12 @@ import { FOLDER_DROP_PREFIX, UNFILED_DROP_ID, setBinFolderDropHandler } from '@/
 import { studioUploadQueue, type UploadItem } from '@/lib/studio/uploadQueue';
 import { isProxyRebuildCandidate, proxyRebuildCandidates } from '@/lib/studio/proxyRebuild';
 import VoiceoverRecorder from './voiceover-recorder';
+import { useVoiceoverAvailable } from '@/lib/studio/voiceoverGenerate';
+import { withToolShards } from '@/lib/i18n/ensureShard';
+
+// MM79: the Generate voiceover dialog loads with the panels shard (voiceTools.*) on
+// first open, so it adds nothing to the editor's first load.
+const VoiceoverGenerateDialog = React.lazy(() => withToolShards(() => import('./voiceover-generate-dialog')));
 
 /** MIME type → the closed import-kind vocabulary. Never the filename. */
 function importKind(file: File): StudioImportKind {
@@ -151,6 +158,18 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
   const [selectMode, setSelectMode] = React.useState(false);
   const [selected, setSelected] = React.useState<Set<string>>(new Set());
   const [pendingDelete, setPendingDelete] = React.useState<PendingDelete | null>(null);
+  // MM79: Generate voiceover (hidden unless the backend + server offer it).
+  const voiceoverAvailable = useVoiceoverAvailable();
+  const [voiceoverOpen, setVoiceoverOpen] = React.useState(false);
+  const [highlighted, setHighlighted] = React.useState<string | null>(null);
+  const onVoiceoverReady = React.useCallback((assetId: string) => {
+    setQuery('');
+    setFolder(null);
+    setHighlighted(assetId);
+    requestAnimationFrame(() => {
+      document.querySelector(`[data-asset-id="${CSS.escape(assetId)}"]`)?.scrollIntoView?.({ block: 'nearest' });
+    });
+  }, []);
 
   const entries = Object.values(assets);
   const allAssets = React.useMemo(() => entries.map((e) => e.asset), [entries]);
@@ -291,6 +310,19 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
         <h2 className="text-sm font-semibold text-card-foreground">{t('contentStudio.slots.mediaBin.title')}</h2>
         <div className="ml-auto flex items-center gap-0.5">
           <VoiceoverRecorder projectId={projectId} />
+          {voiceoverAvailable && (
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-7 px-2"
+              onClick={() => setVoiceoverOpen(true)}
+              title={t('contentStudio.mediaBin.generateVoiceover')}
+              aria-label={t('contentStudio.mediaBin.generateVoiceover')}
+              data-testid="generate-voiceover"
+            >
+              <AudioLines className="w-4 h-4" />
+            </Button>
+          )}
           {manage && (
             <>
               <Button
@@ -472,7 +504,7 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
                   manage={manage}
                   folders={folders}
                   selectMode={selectMode}
-                  selected={selected.has(asset.id)}
+                  selected={selected.has(asset.id) || highlighted === asset.id}
                   onToggleSelect={() => toggleSelected(asset.id)}
                   onAdd={() => addClipFromAsset(asset.id)}
                   onRename={(name) => void rename(asset.id, name)}
@@ -499,6 +531,17 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
           </>
         )}
       </div>
+
+      {voiceoverAvailable && voiceoverOpen && (
+        <React.Suspense fallback={null}>
+          <VoiceoverGenerateDialog
+            projectId={projectId}
+            open={voiceoverOpen}
+            onOpenChange={setVoiceoverOpen}
+            onAssetReady={onVoiceoverReady}
+          />
+        </React.Suspense>
+      )}
 
       <AlertDialog open={rebuildAllOpen} onOpenChange={setRebuildAllOpen}>
         <AlertDialogContent>
@@ -1059,6 +1102,7 @@ const MediaTile: React.FC<{
   return (
     <div
       ref={setNodeRef}
+      data-asset-id={asset.id}
       {...attributes}
       {...(editing || selectMode ? {} : listeners)}
       onClick={selectMode ? onToggleSelect : undefined}

@@ -1367,6 +1367,15 @@
       "wavNote": "Die WAV-Datei wird in Ihrem Browser aus der MP3 dekodiert.",
       "another": "Neu beginnen"
     },
+    "darkroom": {
+      "title": "Voiceover erzeugen",
+      "description": "Geben Sie einen Text ein und wählen Sie eine Stimme und eine Sprache. Das Voiceover wird den Medien dieses Projekts hinzugefügt und an der Wiedergabeposition platziert.",
+      "placeholder": "Geben Sie den Voiceover-Text ein.",
+      "generate": "Voiceover erzeugen",
+      "presetsOnly": "Ohne Anmeldung können Sie die voreingestellten Stimmen verwenden. Melden Sie sich an, um eine gespeicherte Stimme zu nutzen.",
+      "added": "Voiceover an der Wiedergabeposition hinzugefügt",
+      "noAsset": "Das Voiceover wurde erzeugt, konnte aber nicht zum Projekt hinzugefügt werden. Versuchen Sie es erneut."
+    },
     "errors": {
       "sign_in_required": "Melden Sie sich an, um Ihre eigenen Stimmen zu speichern und zu verwenden.",
       "consent_required": "Setzen Sie das Häkchen, um zu bestätigen, dass dies Ihre Stimme ist oder dass Sie die ausdrückliche Erlaubnis der sprechenden Person haben.",

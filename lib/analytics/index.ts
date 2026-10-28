@@ -102,6 +102,7 @@ export {
   sessionSecondsBucket,
   timelineDurationBucket,
   ttiMsBucket,
+  voiceSecondsBucket,
 } from './buckets';
 
 /**

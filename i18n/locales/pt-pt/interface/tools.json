@@ -101,6 +101,7 @@
       "micUnavailable": "Não foi encontrado nenhum microfone, ou a gravação não é suportada neste navegador.",
       "voiceoverPlaced": "Locução adicionada na posição do cursor de reprodução",
       "voiceoverFailed": "Não foi possível adicionar a locução",
+      "generateVoiceover": "Gerar locução",
       "moreActions": "Mais ações",
       "rebuildPreview": "Reconstruir pré-visualização",
       "rebuildPreviewHint": "Volta a codificar a pré-visualização deste clipe a partir do original, para que a navegação e a procura respondam mais depressa. A sua edição e a exportação não são afetadas.",

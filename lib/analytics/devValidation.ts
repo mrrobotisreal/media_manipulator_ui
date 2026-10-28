@@ -532,6 +532,21 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     })
     .strict(),
 
+  voice_created: z
+    .object({
+      kind: z.enum(['cloned', 'designed']),
+      languageHint: z.string().regex(/^[a-z]{2}$/),
+    })
+    .strict(),
+  voice_generated: z
+    .object({
+      kind: z.enum(['tts', 'convert', 'shift']),
+      secondsBucket: z.enum(['0-10', '10-30', '30-60', '60-300', '300+']),
+      language: z.string().regex(/^([a-z]{2}|none)$/),
+      source: z.enum(['tool_page', 'darkroom', 'account']),
+    })
+    .strict(),
+
   client_error: z
     .object({
       message: z.string(),
