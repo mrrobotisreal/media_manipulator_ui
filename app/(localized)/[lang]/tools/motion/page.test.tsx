@@ -32,9 +32,12 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllEnvs());
 
 describe('/tools/motion page (MM48 acceptance 2)', () => {
-  it('renders the H1, the beta label, the four-step guide and the FAQ', async () => {
+  it('renders the H1 without a beta label (MM85), the four-step guide and the FAQ', async () => {
     const html = await render('en');
-    expect(html).toMatch(/<h1[^>]*>Motion<span[^>]*data-testid="motion-beta"[^>]*>Beta<\/span><\/h1>/);
+    // MM85: "(beta)" lives only in the editor chrome, never on the indexable H1.
+    expect(html).toMatch(/<h1[^>]*>Motion<\/h1>/);
+    expect(html).not.toContain('data-testid="motion-beta"');
+    expect(html).not.toMatch(/\bbeta\b/i);
     expect(html).toContain('data-testid="motion-guide"');
     expect((html.match(/<li>/g) ?? []).length).toBeGreaterThanOrEqual(4);
     expect(html).toContain('Which formats can I export?');
@@ -64,12 +67,15 @@ describe('/tools/motion page (MM48 acceptance 2)', () => {
     expect(html).toContain('Best for Motion');
   });
 
-  it('shows MP4, WebM and PNG sequence as coming soon while no tier serves them', async () => {
+  it('shows MP4, WebM and PNG sequence as available on request while no tier serves them (MM85 wording)', async () => {
     const html = await render('en');
     for (const f of ['png_sequence', 'mp4', 'webm']) {
       expect(html).toMatch(new RegExp(`data-row="${f}"[\\s\\S]*?data-coming-soon="true"`));
     }
     expect(html).toContain('data-testid="motion-coming-soon-note"');
+    expect(html).toContain('Export format available on request');
+    expect(html).toMatch(/data-testid="motion-coming-soon-note"[\s\S]*?href="\/contact"/);
+    expect(html).not.toMatch(/coming soon|will be added|shortly/i);
   });
 
   it('degrades to a note (and keeps the rest of the page) when /api/tiers is down', async () => {
