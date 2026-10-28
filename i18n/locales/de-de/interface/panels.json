@@ -1191,5 +1191,219 @@
     "hint": "oder klicken Sie, um eine Datei auszuwählen. Die Datei wird nur für ihre Metadaten gelesen und nach der Analyse gelöscht; nichts wird konvertiert.",
     "largeFile": "Dateien über {{size}} werden nur auf Anfrage geprüft, damit ein großes Video nicht versehentlich hochgeladen wird.",
     "failed": "Die Datei konnte nicht geprüft werden. Möglicherweise wird der Typ nicht unterstützt oder die Datei ist für Ihren Tarif zu groß."
+  },
+  "voiceTools": {
+    "loading": "Die Stimmwerkzeuge werden geladen…",
+    "unavailable": {
+      "title": "Stimmen ist derzeit nicht verfügbar",
+      "body": "Die Stimm-Engine ist ausgeschaltet oder startet gerade neu, daher kann dieses Werkzeug im Moment nicht laufen. Es wurde nichts gezählt. Bitte versuchen Sie es später erneut.",
+      "shiftStillWorks": "Der Tonhöhenverschieber unten benötigt die Stimm-Engine nicht und funktioniert weiterhin."
+    },
+    "warmingUp": "Die Stimm-Engine wird aufgewärmt; die erste Anfrage kann bis zu 20 Sekunden dauern.",
+    "honesty": "Sprache, die mit einer gespeicherten oder voreingestellten Stimme erzeugt wird, trägt ein unhörbares Wasserzeichen; mit dem Verschieber veränderte Audiodaten nicht. Verwenden Sie nur Ihre eigene Stimme oder eine Stimme, die Sie verwenden dürfen. Nichts, was Sie aufnehmen oder erzeugen, wird zum Training eines Modells verwendet, und die Stimm-Engines laufen auf unseren eigenen Servern.",
+    "signIn": {
+      "title": "Melden Sie sich an, um eine Stimme zu speichern",
+      "body": "Eine gespeicherte Stimme braucht eine zugehörige Person als Inhaber und einen Einwilligungsnachweis. Deshalb setzen das Klonen einer Stimme, das Behalten einer entworfenen Stimme, das Umwandeln in eine Stimme und Meine Stimmen ein Konto voraus. Bis zur Anmeldung wird nichts hochgeladen.",
+      "cta": "Anmelden"
+    },
+    "recorder": {
+      "record": "Aufnehmen",
+      "recording": "Aufnahme läuft",
+      "stop": "Stopp",
+      "cancel": "Aufnahme abbrechen",
+      "level": "Mikrofonpegel",
+      "or": "oder",
+      "upload": "Audiodatei hochladen",
+      "remove": "Entfernen",
+      "recorded": "Ihre Aufnahme, {{duration}}",
+      "uploaded": "{{name}}, {{duration}}",
+      "measuring": "Länge der Datei wird gelesen…",
+      "unknownLength": "Die Länge dieser Datei konnte im Browser nicht gelesen werden; der Server prüft sie.",
+      "tooShort": "Die Aufnahme ist {{seconds}} Sekunden lang. Eine Stimme braucht mindestens 5 Sekunden Sprache.",
+      "tooLong": "Die Aufnahme ist {{seconds}} Sekunden lang. Halten Sie sie bei höchstens 60 Sekunden.",
+      "referenceHint": "Nehmen Sie 5 bis 60 Sekunden klare Sprache in einem ruhigen Raum auf oder laden Sie sie hoch. Lesen Sie ein paar natürliche Sätze.",
+      "inputHint": "Nehmen Sie die Sprache, die Sie ändern möchten, auf oder laden Sie sie hoch.",
+      "micDenied": "Der Mikrofonzugriff wurde blockiert. Erlauben Sie das Mikrofon für diese Website in der Adressleiste Ihres Browsers oder laden Sie stattdessen eine Datei hoch.",
+      "micHostBlocked": "Die Seite, in die dieses Werkzeug eingebettet ist, erlaubt keinen Mikrofonzugriff. Laden Sie stattdessen eine Datei hoch.",
+      "micUnavailable": "Aufnehmen ist in diesem Browser nicht möglich. Laden Sie stattdessen eine Audiodatei hoch."
+    },
+    "consent": {
+      "label": "Das ist meine Stimme, oder ich habe die ausdrückliche Erlaubnis der Person, der diese Stimme gehört.",
+      "note": "Wir speichern den Zeitpunkt Ihrer Bestätigung und die Version dieses Textes ({{version}}) zusammen mit der Stimme. Siehe Abschnitt 8.11 der Nutzungsbedingungen."
+    },
+    "clone": {
+      "title": "Stimme aus einer Aufnahme erstellen",
+      "nameLabel": "Name der Stimme",
+      "namePlaceholder": "Meine Stimme",
+      "languageLabel": "Sprache der Aufnahme",
+      "create": "Stimme erstellen",
+      "creating": "Ihre Stimme wird erstellt…",
+      "created": "Stimme erstellt. Hören Sie sich die Vorschau unter Meine Stimmen an.",
+      "signInToCreate": "Anmelden, um die Stimme zu erstellen",
+      "limitReached": "Sie haben {{used}} von {{limit}} Stimmen in Ihrem Tarif gespeichert. Löschen Sie eine unter Konto, Stimmen, oder wechseln Sie auf einen höheren Tarif, um mehr zu speichern.",
+      "noSaving": "In Ihrem Tarif können keine Stimmen gespeichert werden.",
+      "usage": "{{used}} von {{limit}} Stimmen gespeichert",
+      "usageUnlimited": "{{used}} Stimmen gespeichert"
+    },
+    "myVoices": {
+      "title": "Meine Stimmen",
+      "empty": "Noch keine gespeicherten Stimmen.",
+      "preview": "Vorschau von {{name}}",
+      "use": "Diese Stimme verwenden",
+      "inUse": "Ausgewählt",
+      "manage": "Stimmen im Konto verwalten",
+      "kinds": {
+        "cloned": "Geklont",
+        "designed": "Entworfen",
+        "preset": "Voreingestellt"
+      }
+    },
+    "picker": {
+      "label": "Stimme",
+      "saved": "Meine Stimmen",
+      "presets": "Voreingestellte Stimmen",
+      "none": "Es sind noch keine Stimmen verfügbar."
+    },
+    "speak": {
+      "title": "Sprache erzeugen",
+      "textLabel": "Zu sprechender Text",
+      "placeholder": "Geben Sie ein, was die Stimme sagen soll.",
+      "counter": "{{used}} von {{max}} Zeichen",
+      "overLimit": "Das ist länger, als Ihr Tarif pro Anfrage erlaubt ({{max}} Zeichen).",
+      "languageLabel": "Sprache",
+      "exaggerationLabel": "Emotion",
+      "exaggerationHint": "Niedriger ist ruhiger, höher ist ausdrucksstärker.",
+      "generate": "Sprache erzeugen",
+      "generating": "Wird erzeugt…",
+      "notAllowed": "Ihr Tarif enthält keine Spracherzeugung."
+    },
+    "designer": {
+      "title": "Eine Stimme beschreiben",
+      "descriptionLabel": "Beschreibung",
+      "placeholder": "Warm, tief, leicht rau, mittleren Alters, ruhig",
+      "hint": "Beschreiben Sie, wie die Stimme klingen soll. Die Engine versteht Beschreibungen auf Englisch am besten; die Chips unten ergänzen gängige Merkmale.",
+      "languageLabel": "Sprache der Vorschau",
+      "languageNote": "Eine entworfene Stimme wird in einer dieser Sprachen erstellt; sobald sie behalten wird, kann sie alle Sprachen des Sprachwerkzeugs sprechen.",
+      "chipGroups": {
+        "gender": "Geschlecht",
+        "age": "Alter",
+        "accent": "Akzent",
+        "tone": "Klang",
+        "pace": "Tempo"
+      },
+      "chips": {
+        "female": "Weiblich",
+        "male": "Männlich",
+        "neutral": "Androgyn",
+        "young": "Junger Erwachsener",
+        "middleAged": "Mittleren Alters",
+        "older": "Älter",
+        "american": "Amerikanisch",
+        "british": "Britisch",
+        "australian": "Australisch",
+        "irish": "Irisch",
+        "warm": "Warm",
+        "bright": "Hell",
+        "deep": "Tief",
+        "raspy": "Rau",
+        "soft": "Weich",
+        "slow": "Langsam",
+        "measured": "Bedächtig",
+        "fast": "Schnell"
+      },
+      "preview": "Vorschau",
+      "previewing": "Vorschau wird erzeugt…",
+      "previewsLeft": "Verbleibende Vorschauen: {{left}} von {{max}}",
+      "previewsUsed": "Sie haben die 3 Vorschauen für diese Beschreibung verbraucht. Behalten Sie die Stimme oder ändern Sie die Beschreibung, um erneut eine Vorschau zu erzeugen.",
+      "previewLabel": "Vorschau der beschriebenen Stimme",
+      "keepTitle": "Diese Stimme behalten",
+      "nameLabel": "Name der Stimme",
+      "keep": "Diese Stimme behalten",
+      "keeping": "Stimme wird gespeichert…",
+      "kept": "Stimme gespeichert. Sie befindet sich jetzt unter Meine Stimmen.",
+      "signInToKeep": "Anmelden, um diese Stimme zu behalten"
+    },
+    "changer": {
+      "modeLabel": "Art der Änderung",
+      "modes": {
+        "shift": "Verschieben (sofort)",
+        "convert": "In eine Stimme umwandeln (KI)"
+      },
+      "shiftHint": "Verschiebt Tonhöhe und Formant sofort mit rubberband. Zählt als ein Vorgang. Das Ergebnis trägt kein Wasserzeichen.",
+      "convertHint": "Lässt die Aufnahme wie eine gespeicherte oder voreingestellte Stimme klingen. Zählt als ein KI-Auftrag. Das Ergebnis trägt ein unhörbares Wasserzeichen.",
+      "convertNotInPlan": "Das Umwandeln in eine Stimme ist nicht Teil Ihres Tarifs.",
+      "upgrade": "Tarife ansehen",
+      "signInToConvert": "Anmelden, um in eine Stimme umzuwandeln",
+      "targetLabel": "Umwandeln in",
+      "convert": "Umwandeln",
+      "converting": "Wird umgewandelt…"
+    },
+    "shifter": {
+      "semitonesLabel": "Tonhöhe",
+      "semitonesValue": "{{value}} Halbtöne",
+      "formantLabel": "Formant",
+      "formants": {
+        "preserved": "Charakter der Stimme beibehalten",
+        "shifted": "Mit der Tonhöhe verschieben"
+      },
+      "presetsLabel": "Voreinstellungen",
+      "presets": {
+        "deeper": "Tiefer",
+        "higher": "Höher",
+        "child": "Kindlich",
+        "elder": "Älter",
+        "telephone": "Telefon"
+      },
+      "shift": "Stimme verschieben",
+      "shifting": "Wird verschoben…"
+    },
+    "result": {
+      "working": "Wird bearbeitet…",
+      "failed": "Der Stimmauftrag ist fehlgeschlagen. Er wurde nicht gezählt.",
+      "downloadMp3": "MP3 herunterladen",
+      "downloadWav": "WAV herunterladen",
+      "wavPreparing": "WAV wird vorbereitet…",
+      "wavFailed": "Die WAV-Datei konnte in diesem Browser nicht erstellt werden. Laden Sie stattdessen die MP3 herunter.",
+      "wavNote": "Die WAV-Datei wird in Ihrem Browser aus der MP3 dekodiert.",
+      "another": "Neu beginnen"
+    },
+    "errors": {
+      "sign_in_required": "Melden Sie sich an, um Ihre eigenen Stimmen zu speichern und zu verwenden.",
+      "consent_required": "Setzen Sie das Häkchen, um zu bestätigen, dass dies Ihre Stimme ist oder dass Sie die ausdrückliche Erlaubnis der sprechenden Person haben.",
+      "reference_required": "Nehmen Sie zuerst 5 bis 60 Sekunden Sprache auf oder laden Sie sie hoch.",
+      "reference_too_short": "Die Aufnahme muss mindestens 5 Sekunden lang sein.",
+      "reference_too_long": "Die Aufnahme darf höchstens 60 Sekunden lang sein.",
+      "reference_too_large": "Die Aufnahmedatei ist zu groß.",
+      "no_speech_detected": "In dieser Aufnahme war keine Sprache zu hören. Nehmen Sie ein paar Sätze in einem ruhigen Raum auf.",
+      "not_audio": "Diese Datei ist keine Aufnahme, die wir lesen können.",
+      "name_invalid": "Geben Sie der Stimme einen Namen mit 1 bis 60 Zeichen.",
+      "language_not_supported": "Diese Sprache wird für diese Stimme nicht unterstützt.",
+      "voice_limit": "Sie haben die Anzahl gespeicherter Stimmen in Ihrem Tarif erreicht ({{limit}}). Löschen Sie eine oder wechseln Sie auf einen höheren Tarif, um mehr zu speichern.",
+      "text_required": "Geben Sie einen Text zum Sprechen ein.",
+      "text_too_long": "Ihr Tarif erlaubt bis zu {{limit}} Zeichen pro Anfrage.",
+      "exaggeration_invalid": "Die Emotion muss zwischen 0,25 und 2 liegen.",
+      "voice_convert_not_in_plan": "Das Umwandeln in eine Stimme ist in Ihrem Tarif nicht enthalten.",
+      "voice_input_too_long": "Ihr Tarif erlaubt hier Aufnahmen von bis zu {{limit}} Sekunden.",
+      "input_required": "Fügen Sie die Aufnahme hinzu, die Sie ändern möchten.",
+      "input_too_large": "Die Aufnahme ist für Ihren Tarif zu groß.",
+      "voice_required": "Wählen Sie eine Stimme, in die umgewandelt werden soll.",
+      "voice_not_found": "Diese Stimme existiert nicht mehr.",
+      "preset_not_found": "Diese voreingestellte Stimme ist nicht verfügbar.",
+      "description_required": "Beschreiben Sie die gewünschte Stimme.",
+      "description_too_long": "Halten Sie die Beschreibung unter 1000 Zeichen.",
+      "preview_limit": "Sie haben diese Beschreibung in dieser Stunde dreimal als Vorschau erzeugt. Behalten Sie die Stimme oder ändern Sie die Beschreibung.",
+      "session_required": "Vorschauen brauchen eine Browsersitzung. Laden Sie die Seite neu und versuchen Sie es erneut.",
+      "semitones_invalid": "Die Tonhöhe muss zwischen -12 und 12 Halbtönen liegen.",
+      "shift_invalid": "Diese Verschiebungseinstellungen sind ungültig.",
+      "voices_unavailable": "Die Stimm-Engine ist derzeit nicht verfügbar. Es wurde nichts gezählt; versuchen Sie es in Kürze erneut.",
+      "voices_storage_unavailable": "Gespeicherte Stimmen sind vorübergehend nicht verfügbar. Es wurde nichts gezählt.",
+      "voices_timeout": "Die Stimm-Engine hat zu lange gebraucht. Es wurde nichts gezählt.",
+      "voice_request_refused": "Die Stimm-Engine hat diese Anfrage abgelehnt.",
+      "upload_failed": "Der Upload ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      "job_failed": "Der Auftrag konnte nicht gestartet werden. Bitte versuchen Sie es erneut.",
+      "invalid_body": "Etwas in der Anfrage war ungültig. Laden Sie die Seite neu und versuchen Sie es erneut.",
+      "rate_limited": "Zu viele Stimmanfragen in der letzten Stunde. Bitte versuchen Sie es später erneut.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    }
   }
 }

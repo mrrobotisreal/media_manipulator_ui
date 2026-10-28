@@ -69,9 +69,11 @@ describe("legal retention copy", () => {
         expect(pages.legalCommon.whatChangedBody?.length).toBeGreaterThan(50);
         expect(pages.legalCommon.effectiveDate).toMatch(/2026/);
         expect(pages.legalCommon.effectiveDate).toMatch(/24/);
-        // MM48: Motion was added on 2026-10-26 (MM40's Pro update was the 25th).
-        expect(pages.legalCommon.lastUpdated).toMatch(/26/);
-        expect(pages.legalCommon.whatChangedTitle).toMatch(/26/);
+        // MM48: Motion was added on 2026-10-26 (MM40's Pro update was the 25th); MM78's
+        // voices update is 2026-10-28, and its note keeps the 2026-10-26 one.
+        expect(pages.legalCommon.lastUpdated).toMatch(/28/);
+        expect(pages.legalCommon.whatChangedTitle).toMatch(/28/);
+        expect(pages.legalCommon.whatChangedBody).toMatch(/2026-10-26/);
       });
 
       // MM40 decision 8: both plan names in ToS §10 and Privacy §1.6, and the four prices in §10.
@@ -120,7 +122,8 @@ describe("legal retention copy", () => {
       const ip = pages.termsOfService.sections[12];
 
       it("has the Motion sentences in Privacy §1.9 and ToS §13 (MM48 key presence)", () => {
-        expect(pages.privacyPolicy.sections[0].subsections).toHaveLength(9);
+        // MM78 adds §1.10 (voices) after Motion's §1.9.
+        expect(pages.privacyPolicy.sections[0].subsections?.length).toBeGreaterThanOrEqual(9);
         expect(motionPrivacy?.title).toMatch(/^1\.9 /);
         expect(motionPrivacy?.title).toContain("Motion");
         // Browser-made exports; account projects like Darkroom's; counted export metadata.
@@ -292,4 +295,76 @@ describe("no currency-symbol price literals in UI copy outside legal text (MM69)
       expect(src, rel).not.toMatch(/\b(premium|pro)Price(Yearly)?USD\b/);
     }
   });
+});
+
+// MM78 (voices): Privacy §1.10 "voice samples and designed voices", ToS §8.11 "Voices",
+// the §1 bullet, the §3/§3.4/§3.5/§4 mentions, and lastUpdated 2026-10-28 in every locale.
+// The consent text version in the Terms is the UI constant (lib/voices/consent.ts) and the
+// API's VOICES_CONSENT_TEXT_VERSION default. Own block so other legal tickets stay independent.
+describe("MM78 voices legal copy", () => {
+  const CONSENT_VERSION = "2026-10-28";
+
+  it("the UI consent constant is the version the Terms name", async () => {
+    const { VOICE_CONSENT_TEXT_VERSION, VOICE_CONSENT_TEXT_EN } = await import("@/lib/voices/consent");
+    expect(VOICE_CONSENT_TEXT_VERSION).toBe(CONSENT_VERSION);
+    const voices = en.termsOfService.sections[7].subsections?.[10];
+    expect(voices?.paragraphs?.[1]).toContain(VOICE_CONSENT_TEXT_EN);
+    const panels = JSON.parse(readFileSync(join(__dirname, "locales", "en-us", "interface", "panels.json"), "utf8"));
+    expect(panels.voiceTools.consent.label).toBe(VOICE_CONSENT_TEXT_EN);
+  });
+
+  it("en-us says exactly what the system does", () => {
+    const terms = flatten(en.termsOfService.sections[7].subsections?.[10]);
+    expect(terms).toContain("only create a voice from a recording of your own voice");
+    expect(terms).toContain("impersonate a real person");
+    expect(terms).toContain("political deepfakes");
+    expect(terms).toContain("harass");
+    expect(terms).toContain("fraud");
+    expect(terms).toContain("carry an inaudible watermark (PerTh)");
+    expect(terms).toContain("Audio changed with the pitch shifter is ordinary signal processing and is not watermarked");
+    expect(terms).toContain("suspend or terminate an account");
+    expect(terms).toContain(`the current version is ${CONSENT_VERSION}`);
+    const privacy = flatten(en.privacyPolicy.sections[0].subsections?.[9]);
+    expect(privacy).toContain("explicit consent");
+    expect(privacy).toContain("special-category (biometric)");
+    expect(privacy).toContain("Amazon S3 under voices/");
+    expect(privacy).toContain("follow the retention period you choose");
+    expect(privacy).toContain("never shared with a third-party AI provider and are never used to train any model");
+    expect(privacy).toContain("from Account, Voices");
+    expect(privacy).toContain("deleted when you delete your account");
+    expect(privacy).toContain("Your data export lists your saved voices");
+    expect(privacy).not.toMatch(/indistinguishable/i);
+  });
+
+  for (const { code } of locales) {
+    it(`${code}: §1.10, §8.11, the §1 bullet, §3.4, §3.5, §4 models and the 2026-10-28 dates`, () => {
+      const pages = load(code);
+      const p110 = pages.privacyPolicy.sections[0].subsections ?? [];
+      expect(p110).toHaveLength(10);
+      expect(p110[9].title).toMatch(/^1\.10 /);
+      expect(p110[9].paragraphs).toHaveLength(4);
+      expect(flatten(p110[9])).toContain("voices/");
+      expect(flatten(p110[9])).toContain("Amazon S3");
+      const t8 = pages.termsOfService.sections[7].subsections ?? [];
+      expect(t8).toHaveLength(11);
+      expect(t8[10].title).toMatch(/^8\.11 /);
+      expect(t8[10].paragraphs).toHaveLength(3);
+      expect(t8[10].bullets).toHaveLength(6);
+      expect(t8[10].afterBullets).toHaveLength(2);
+      expect(t8[10].paragraphs?.[1]).toContain(CONSENT_VERSION);
+      expect(t8[10].afterBullets?.[0]).toContain("PerTh");
+      expect(pages.termsOfService.sections[0].bullets).toHaveLength(10);
+      expect(pages.termsOfService.sections[0].bullets?.[8]).toContain("8.11");
+      expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Chatterbox");
+      expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Qwen3-TTS");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-10-28");
+      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-10-28");
+      expect(pages.legalCommon.whatChangedBody).toContain("1.10");
+      expect(pages.legalCommon.whatChangedBody).toContain("8.11");
+      // The consent sentence in the Terms is the one the checkbox shows.
+      const panels = JSON.parse(readFileSync(join(__dirname, "locales", code.toLowerCase(), "interface", "panels.json"), "utf8"));
+      const label = String(panels.voiceTools.consent.label).replace(/[.。।۔]\s*$/u, "");
+      expect(t8[10].paragraphs?.[1]).toContain(label.slice(0, 40));
+    });
+  }
 });

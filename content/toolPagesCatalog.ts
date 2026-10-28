@@ -209,6 +209,249 @@ const audioTargetPages: ToolPageContent[] = audioTargets.map(({ slug, task, ext,
   secondaryKeywords: [`${ext} converter`, `mp3 to ${ext}`, `online ${ext} converter`, `convert to ${name.toLowerCase()} free`],
 }));
 
+// ------------------------------------------------------------------ VOICES (MM78)
+// Clone, design and change a voice (design docs/design/VOICES.md §4.1, ADR-0015).
+// Their own block, spliced into TOOL_PAGES by content/toolPages.ts after the catalog,
+// so other catalog additions never touch these lines. Category `ai`, noindex like every
+// non-allowlisted page. Copy is honest by decision: watermark on generated speech and
+// conversions (not on shifted audio), own voice or permission only, no training, our
+// own servers, and no claim that a voice is indistinguishable from the real person.
+
+const voicePrivacyNote = `Voice recordings and saved voices are processed on our own servers; nothing is sent to a third-party AI provider and nothing is used to train any model. A saved voice (its reference recording and preview) is stored in your account, follows the retention period you choose and can be deleted from Account, Voices at any time; it is deleted with your account. Generated audio is kept like any other result: ${RETENTION_PROMISE}.`;
+
+const voiceRelated = (...skip: string[]) =>
+  [
+    { label: 'Voice cloning', to: '/tools/voice-cloning', description: 'Make a voice from your own recording.' },
+    { label: 'Voice designer', to: '/tools/voice-designer', description: 'Describe a new voice and keep it.' },
+    { label: 'Voice changer', to: '/tools/voice-changer', description: 'Shift a recording or convert it to a voice.' },
+    { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Clean up a recording before using it.' },
+    { label: 'Change audio pitch', to: '/tools/change-audio-pitch', description: 'Shift the key of music or speech.' },
+  ].filter((r) => !skip.some((s) => r.to.endsWith(s)));
+
+export const VOICE_TOOL_PAGES: ToolPageContent[] = [
+  {
+    slug: 'voice-cloning',
+    name: 'Voice cloning',
+    h1: 'Clone your voice from a short recording',
+    tagline: 'Record or upload 5 to 60 seconds of your own speech, create a voice, and have it read any text in more than twenty languages.',
+    metaTitle: 'Clone Your Own Voice from a Recording | Media Manipulator',
+    metaDescription:
+      'Create a voice from 5 to 60 seconds of your own speech and turn text into speech with it in over 20 languages. Runs on our own servers; outputs are watermarked.',
+    ogTitle: 'Clone your own voice from a short recording',
+    ogDescription:
+      'Record a few sentences, confirm it is your voice, and generate speech with it in over 20 languages. Self-hosted models, watermarked output.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'audio',
+      defaultTask: 'voice_clone',
+      title: 'Create a voice',
+      description:
+        'Record or upload a clean recording of 5 to 60 seconds, confirm that the voice is yours or that you have the speaker\'s permission, and create the voice. Then type a text and generate speech. Preset voices work without an account.',
+    },
+    intro:
+      'Voice cloning makes a reusable voice from a short recording of your own speech. Read a few natural sentences into your microphone, or upload a clip of 5 to 60 seconds, confirm that the voice is yours (or that you have the explicit permission of the person speaking), and create the voice. It appears under My voices with a short preview. From then on you can type any text, pick one of more than twenty languages and an emotion level, and get an MP3 and a WAV of that voice reading it. The model runs on a GPU server we operate, every generated file carries an inaudible watermark, and nothing you record is used to train anything.',
+    whatItDoes: [
+      'Creates a saved voice from 5 to 60 seconds of speech recorded in the browser or uploaded as an audio file.',
+      'Checks that the recording is long enough and actually contains speech before anything is counted.',
+      'Speaks any text with the saved voice in over 20 languages, with an emotion control from calm to expressive.',
+      'Returns the speech as an MP3, with a WAV download made in your browser.',
+      'Marks every generated file with an inaudible watermark so synthetic speech can be identified.',
+    ],
+    flowSteps: [
+      { title: 'Record or upload', description: '5 to 60 seconds of clear speech in a quiet room.' },
+      { title: 'Confirm consent', description: 'Tick that the voice is yours, or that you have the speaker\'s permission.' },
+      { title: 'Create the voice', description: 'A short preview renders and the voice is saved to your account.' },
+      { title: 'Generate speech', description: 'Type text, pick a language and emotion, and download the audio.' },
+    ],
+    advancedDetails: [
+      'The voice engine is Chatterbox Multilingual (MIT licence), run on our own GPU server. It clones from the reference clip at the moment you generate; no model is trained on your voice.',
+      'Creating a voice counts as one AI job (the preview). Each generation counts as one AI job. A request that fails or is refused is not counted.',
+      'The length of text per request depends on your plan, at roughly 18 characters per second of speech; the counter under the text box shows your limit.',
+      'Every generated file carries Resemble AI\'s PerTh watermark, which is inaudible and survives common editing and compression.',
+      'The first request after a quiet period can take up to 20 seconds while the engine loads.',
+    ],
+    whyItMatters: [
+      'Narration in your own voice, without booking a studio session for every change to a script.',
+      'The same voice in another language, for a video or a course that reaches more people.',
+      'A self-hosted engine means your recordings stay with us, not with a third-party AI provider.',
+    ],
+    useCases: [
+      { title: 'Video narration', description: 'Re-read a changed line of a script without re-recording it.' },
+      { title: 'Courses and tutorials', description: 'Voice the same lesson in several languages.' },
+      { title: 'Accessibility', description: 'Have long text read aloud in a familiar voice.' },
+      { title: 'Prototyping', description: 'Hear a script read before recording the final take.' },
+    ],
+    whyMediaManipulator: [
+      'Open models on hardware we operate; recordings never go to an outside AI service.',
+      'Explicit consent before any voice is created, recorded with the voice.',
+      'Watermarked output and your own delete button for every saved voice.',
+    ],
+    privacyNote: voicePrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['webm', 'm4a', 'mp3', 'wav', 'ogg', 'flac', 'mp4'],
+      supportedOutputFormats: ['mp3', 'wav'],
+      processingNotes: [
+        'The reference must be 5 to 60 seconds long and contain speech.',
+        'Saving a voice needs an account; preset voices work without one.',
+      ],
+    },
+    faq: [
+      { question: 'Can I clone someone else\'s voice?', answer: 'Only with that person\'s explicit permission. You must confirm that the voice is yours or that you have permission before a voice is created, and we store that confirmation with the voice. Impersonating someone without permission, fraud and political deepfakes are forbidden by our Terms.' },
+      { question: 'Will it sound exactly like me?', answer: 'It usually sounds recognisably like the speaker, but it is not a perfect copy: accents, unusual voices and noisy recordings are harder. Record a few natural sentences in a quiet room for the best result.' },
+      { question: 'Is my recording used to train an AI model?', answer: 'No. Nothing you upload or generate is used to train any model. The voice is cloned from your reference clip each time you generate speech.' },
+      { question: 'Can people tell the audio is generated?', answer: 'Every file generated with a saved voice carries an inaudible watermark that detection tools can read. It does not change how the audio sounds.' },
+      { question: 'How do I delete a voice?', answer: 'Open Account, Voices and delete it. Its reference recording and preview are removed; audio you already generated stays in your history until its own retention period ends.' },
+      { question: 'How many voices can I keep?', answer: 'It depends on your plan; the page shows how many you have saved and your limit.' },
+    ],
+    related: voiceRelated('/voice-cloning'),
+    primaryKeyword: 'clone your voice',
+    secondaryKeywords: ['voice cloning online', 'text to speech in my voice', 'create a voice from a recording', 'multilingual voice clone'],
+  },
+  {
+    slug: 'voice-designer',
+    name: 'Voice designer',
+    h1: 'Design a new voice from a description',
+    tagline: 'Describe a voice in words, preview it, and keep the one you like to read any text in more than twenty languages.',
+    metaTitle: 'Design a New Voice from a Text Description | Media Manipulator',
+    metaDescription:
+      'Describe the voice you want, such as warm, low and calm, preview it for free, keep it, and generate speech with it. Self-hosted models; watermarked output.',
+    ogTitle: 'Design a new voice from a description',
+    ogDescription: 'Describe a voice, listen to free previews, keep the one you like and generate speech with it. Self-hosted, watermarked.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'audio',
+      defaultTask: 'voice_design',
+      title: 'Describe a voice',
+      description:
+        'Write a short description or click the trait chips, preview the voice (three free previews per description each hour), then keep it to generate speech. Keeping a voice needs an account.',
+    },
+    intro:
+      'The voice designer creates a voice that does not belong to anyone. Describe it in a few words, such as gender, age, accent, tone and pace, or build the description from the chips, and preview a sample sentence. Previews are free, three per description each hour. When you hear the one you want, give it a name and keep it: the exact voice you previewed is saved to your account and can then read any text, in any language of the speech tool. Designing runs on Qwen3-TTS and speaking on Chatterbox, both on our own GPU server, and every generated file carries an inaudible watermark.',
+    whatItDoes: [
+      'Turns a text description of a voice into a spoken preview.',
+      'Keeps the exact previewed voice (the same seed) when you save it.',
+      'Speaks any text with the kept voice in over 20 languages.',
+      'Returns an MP3 of the speech, with a WAV download made in your browser.',
+    ],
+    flowSteps: [
+      { title: 'Describe', description: 'Write or click the traits you want.' },
+      { title: 'Preview', description: 'Three free previews per description each hour.' },
+      { title: 'Keep it', description: 'Name the voice and save it to your account.' },
+      { title: 'Generate speech', description: 'Type any text and download the audio.' },
+    ],
+    advancedDetails: [
+      'Designing uses Qwen3-TTS VoiceDesign (Apache 2.0). The preview sentence can be rendered in ten languages: Chinese, English, Japanese, Korean, German, French, Russian, Portuguese, Spanish and Italian.',
+      'A kept voice is stored as its description, the seed and a 10-second reference clip; from then on Chatterbox speaks it, so it sounds the same everywhere and in every supported language.',
+      'Previews are not counted. Keeping a voice counts as one AI job, and each generation counts as one AI job.',
+      'Descriptions work best in English; the chips add English traits.',
+    ],
+    whyItMatters: [
+      'A distinct narrator or character voice without hiring a voice actor for a draft.',
+      'No real person\'s voice is involved, so no one\'s likeness is borrowed.',
+      'The kept voice stays consistent across every script and language.',
+    ],
+    useCases: [
+      { title: 'Characters', description: 'Give each character in a story or a game prototype its own voice.' },
+      { title: 'Explainers', description: 'A calm, clear narrator for product and training videos.' },
+      { title: 'Placeholder audio', description: 'Temporary voice-over while a script is still changing.' },
+      { title: 'Accessibility', description: 'A pleasant reading voice for long documents.' },
+    ],
+    whyMediaManipulator: [
+      'Open models on our own GPU server; no third-party AI provider.',
+      'Free previews before anything is counted.',
+      'Watermarked output and a delete button for every kept voice.',
+    ],
+    privacyNote: voicePrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: ['text'],
+      supportedOutputFormats: ['mp3', 'wav'],
+      processingNotes: ['Previews: 3 per description per hour, not counted.', 'Keeping a voice needs an account.'],
+    },
+    faq: [
+      { question: 'Is a designed voice someone\'s real voice?', answer: 'No. It is generated from your description and a random seed; it is not modelled on any particular person.' },
+      { question: 'Why do previews run out?', answer: 'Each description can be previewed three times an hour so the free previews stay available for everyone. Change the description to preview again, or keep the voice you like.' },
+      { question: 'Will the kept voice sound like the preview?', answer: 'Yes. Keeping sends the same description and seed as the preview you heard, and the voice is saved from that render.' },
+      { question: 'Which languages can it speak?', answer: 'A voice is designed in one of ten languages, and once kept it can speak every language of the speech tool, more than twenty in all.' },
+      { question: 'Is the output marked as generated?', answer: 'Yes. Every generated file carries an inaudible watermark that detection tools can read.' },
+    ],
+    related: voiceRelated('/voice-designer'),
+    primaryKeyword: 'ai voice designer',
+    secondaryKeywords: ['create a voice from text description', 'custom voice generator', 'design a narrator voice', 'text to speech custom voice'],
+  },
+  {
+    slug: 'voice-changer',
+    name: 'Voice changer',
+    h1: 'Change the voice in a recording',
+    tagline: 'Shift a recording\'s pitch and character instantly, or convert the speech to a saved or preset voice with AI.',
+    metaTitle: 'Voice Changer: Shift or Convert a Recording | Media Manipulator',
+    metaDescription:
+      'Change the voice in a recording: shift pitch and formant instantly, or convert the speech to a saved or preset voice with AI. Compare before and after.',
+    ogTitle: 'Change the voice in a recording',
+    ogDescription: 'Shift pitch and formant instantly, or convert speech to another voice with AI, then compare before and after.',
+    category: 'ai',
+    embed: {
+      defaultMediaKind: 'audio',
+      defaultTask: 'voice_convert',
+      title: 'Change a voice',
+      description:
+        'Record or upload speech. Shift changes pitch and formant instantly, for everyone. Convert makes the recording sound like one of your saved voices or a preset voice, and needs an account on a plan that includes it.',
+    },
+    intro:
+      'The voice changer has two ways to change a recording. Shift is a classic pitch and formant change: move the pitch up to twelve semitones either way, keep the speaker\'s character or shift it with the pitch, or start from a preset such as Deeper, Higher, Child-like, Older or Telephone. It is instant, needs no account and does not use AI. Convert uses AI voice conversion to make the speech sound like one of your saved voices or a preset voice while keeping the words, timing and intonation. Either way you can compare the original and the result with a gapless A/B player before you download.',
+    whatItDoes: [
+      'Shifts pitch by up to 12 semitones up or down, with the formant preserved or shifted.',
+      'Offers shift presets: deeper, higher, child-like, older and telephone.',
+      'Converts speech to a saved voice or a preset voice with AI voice conversion.',
+      'Plays the original and the result in a synced A/B comparison.',
+      'Returns an MP3, with a WAV download made in your browser.',
+    ],
+    flowSteps: [
+      { title: 'Record or upload', description: 'Speech from your microphone or an audio or video file.' },
+      { title: 'Choose Shift or Convert', description: 'Instant pitch change, or AI conversion to another voice.' },
+      { title: 'Compare', description: 'Switch between original and result without a gap.' },
+      { title: 'Download', description: 'MP3, or a WAV made in your browser.' },
+    ],
+    advancedDetails: [
+      'Shift uses the rubberband pitch shifter through ffmpeg on our server. "Keep the voice\'s character" preserves the formant; "Shift with the pitch" moves it, which sounds like a smaller or larger speaker. Telephone also applies a 300 to 3400 Hz band-pass.',
+      'Shift counts as one operation and its output is not watermarked. Convert counts as one AI job and its output carries an inaudible watermark.',
+      'Convert uses Chatterbox voice conversion on our own GPU server. The length of a recording you can convert depends on your plan.',
+      'Converting needs an account. Converting to someone else\'s voice requires that person\'s permission, as for cloning.',
+    ],
+    whyItMatters: [
+      'Disguise a voice for an anonymous interview or a privacy-conscious clip with a simple shift.',
+      'Fix a take recorded in the wrong voice without re-recording it.',
+      'Hear the difference immediately with the A/B player instead of guessing.',
+    ],
+    useCases: [
+      { title: 'Anonymous audio', description: 'Shift a voice so a speaker is harder to recognise.' },
+      { title: 'Character voices', description: 'Turn your own read into a different voice for a story.' },
+      { title: 'Consistent narration', description: 'Convert a guest\'s line to the narrator\'s saved voice.' },
+      { title: 'Effects', description: 'A telephone or child-like effect for a video scene.' },
+    ],
+    whyMediaManipulator: [
+      'The shifter is free and needs no account.',
+      'AI conversion runs on our own GPU server, not a third-party service.',
+      'Built-in A/B comparison of the original and the result.',
+    ],
+    privacyNote: voicePrivacyNote,
+    supportedFormats: {
+      supportedInputFormats: [...AUDIO_INPUTS, 'webm', 'mp4', 'mov'],
+      supportedOutputFormats: ['mp3', 'wav'],
+      processingNotes: ['Shift: one operation, no account needed.', 'Convert: one AI job, account and plan required.'],
+    },
+    faq: [
+      { question: 'What is the difference between Shift and Convert?', answer: 'Shift changes the pitch and character of the same voice with signal processing; it is instant and free. Convert uses AI to make the speech sound like a different voice, one of your saved voices or a preset.' },
+      { question: 'Does shifting add a watermark?', answer: 'No. Shifted audio is ordinary signal processing and is not watermarked. Converted audio carries an inaudible watermark.' },
+      { question: 'Can I convert my voice into a celebrity\'s?', answer: 'No. You can only convert to your own saved voices or our preset voices, and using a real person\'s voice requires their explicit permission. Impersonation without permission is forbidden by our Terms.' },
+      { question: 'How long can the recording be?', answer: 'Shift accepts recordings up to your plan\'s length limit. Conversion has its own limit per plan, shown when you upload.' },
+      { question: 'Can I use a video file?', answer: 'Yes. The audio track is used and the picture is dropped.' },
+    ],
+    related: [...voiceRelated('/voice-changer'), { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Clean the recording first.' }],
+    primaryKeyword: 'voice changer',
+    secondaryKeywords: ['change voice in recording', 'pitch shift voice online', 'ai voice conversion', 'make my voice deeper'],
+  },
+];
+
 export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
   // ------------------------------------------------------------------ METADATA
   {

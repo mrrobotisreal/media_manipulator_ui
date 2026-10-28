@@ -23,6 +23,19 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM78: voices (clone, design, change a voice).
+  {
+    id: '2026-10-28-voices',
+    date: '2026-10-28',
+    title: 'Voices: clone your voice, design a new one, change the voice of a recording',
+    body: 'Three new voice tools run on open models on our own servers. Voice cloning makes a voice from 5 to 60 seconds of your own speech and reads any text with it in 23 languages, with an emotion control. The voice designer turns a written description into free previews (three per description an hour) and keeps the one you like. The voice changer shifts the pitch and character of a recording instantly, or converts it to one of your saved voices or a preset voice with AI, and lets you compare before and after. Saving a voice needs an account and a confirmation that the voice is yours or that you have the speaker\'s permission; the number of saved voices, the length of text per request and conversion depend on your plan. Speech made with a saved or preset voice, and converted recordings, carry an inaudible watermark; shifted audio does not. Nothing you record is used to train any model, and you can delete a voice at any time from Account, Voices. A voice will not be a perfect copy of anyone, and the first request after a quiet period can take up to 20 seconds while the engine loads. The Privacy Policy (new section 1.10) and the Terms (new section 8.11) cover voices.',
+    tags: ['new'],
+    links: [
+      { label: 'Clone your voice', href: '/tools/voice-cloning' },
+      { label: 'Design a voice', href: '/tools/voice-designer' },
+      { label: 'Change a voice', href: '/tools/voice-changer' },
+    ],
+  },
   {
     id: '2026-10-28-tools-catalog',
     date: '2026-10-28',

@@ -572,15 +572,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Data di entrata in vigore: 24/10/2026",
-    "lastUpdated": "Ultimo aggiornamento: 26/10/2026",
+    "lastUpdated": "Ultimo aggiornamento: 28/10/2026",
     "operator": "Media Manipulator è un prodotto e un servizio gestito da CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operante come Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
     "websiteLabel": "Sito web:",
-    "whatChangedTitle": "Cosa è cambiato il 26/10/2026",
-    "whatChangedBody": "Abbiamo aggiunto Motion, il nostro editor di animazioni SVG (in beta). L'Informativa sulla privacy ha una nuova sezione 1.9: i progetti e le esportazioni di Motion vengono creati nel Suo browser e non vengono caricati per crearli; i progetti che salva nel Suo account sono conservati come i progetti Darkroom, seguono il periodo di conservazione che sceglie e possono essere eliminati; e per ogni esportazione conteggiata registriamo formato, dimensione, durata e ora per applicare la quota giornaliera. Le sezioni 3, 3.3 e 3.4 ora nominano i progetti Motion. La sezione 13 dei Termini conferma che le Sue esportazioni Motion Le appartengono, spiega che alcune esportazioni contengono codice anime.js con licenza MIT il cui avviso deve essere conservato, e rimanda alla nostra pagina delle licenze open source. Tutto quanto previsto dall'aggiornamento del 25/10/2026 (il piano Pro, i cambi di piano e i rimborsi) resta valido. La sezione 10 dei Termini ora specifica che può pagare in dollari statunitensi o in euro allo stesso prezzo, che in Europa gli euro sono mostrati per impostazione predefinita e che la valuta di un abbonamento non può cambiare finché è attivo; la sezione 1.6 dell'Informativa sulla privacy ora indica la valuta di fatturazione che conserviamo e il cookie mm-currency che memorizza la Sua scelta. La sezione 8 ora specifica inoltre che i traduttori da noi incaricati inviano il proprio lavoro come pull request su GitHub create dalla GitHub App di CreaTV Ltd., e che tali invii contengono solo testo di traduzione e nessun dato personale sui visitatori. Questa traduzione italiana è stata generata da un modello linguistico ed è in attesa di revisione da parte di un madrelingua; in caso di discrepanze fa fede la versione inglese."
+    "whatChangedTitle": "Cosa è cambiato il 28/10/2026",
+    "whatChangedBody": "Abbiamo aggiunto gli strumenti vocali: clonare la Sua voce da una registrazione, progettare una voce da una descrizione e modificare la voce in una registrazione. L'Informativa sulla privacy ha una nuova sezione 1.10 su campioni vocali e voci progettate: cosa conserviamo, che li usiamo solo per creare e far funzionare la voce che ha richiesto con il Suo consenso esplicito, che sono conservati in Amazon S3 secondo la Sua impostazione di conservazione, mai condivisi con un fornitore di IA di terze parti e mai usati per addestrare alcun modello, e che può eliminarli in qualsiasi momento e vengono eliminati insieme al Suo account; le sezioni 3, 3.4, 3.5 e 4 ora nominano le voci. I Termini hanno una nuova sezione 8.11: può creare una voce solo dalla Sua voce o con il permesso esplicito della persona che parla; impersonificazione, frode, deepfake politici e molestie non sono consentiti; il parlato generato e convertito contiene una filigrana inudibile e l'audio variato no; e possiamo rimuovere voci e sospendere account. La sezione 1 dei Termini elenca gli strumenti vocali. Tutto ciò che era nell'aggiornamento del 2026-10-26 continua ad applicarsi: Abbiamo aggiunto Motion, il nostro editor di animazioni SVG (in beta). L'Informativa sulla privacy ha una nuova sezione 1.9: i progetti e le esportazioni di Motion vengono creati nel Suo browser e non vengono caricati per crearli; i progetti che salva nel Suo account sono conservati come i progetti Darkroom, seguono il periodo di conservazione che sceglie e possono essere eliminati; e per ogni esportazione conteggiata registriamo formato, dimensione, durata e ora per applicare la quota giornaliera. Le sezioni 3, 3.3 e 3.4 ora nominano i progetti Motion. La sezione 13 dei Termini conferma che le Sue esportazioni Motion Le appartengono, spiega che alcune esportazioni contengono codice anime.js con licenza MIT il cui avviso deve essere conservato, e rimanda alla nostra pagina delle licenze open source. Tutto quanto previsto dall'aggiornamento del 25/10/2026 (il piano Pro, i cambi di piano e i rimborsi) resta valido. La sezione 10 dei Termini ora specifica che può pagare in dollari statunitensi o in euro allo stesso prezzo, che in Europa gli euro sono mostrati per impostazione predefinita e che la valuta di un abbonamento non può cambiare finché è attivo; la sezione 1.6 dell'Informativa sulla privacy ora indica la valuta di fatturazione che conserviamo e il cookie mm-currency che memorizza la Sua scelta. La sezione 8 ora specifica inoltre che i traduttori da noi incaricati inviano il proprio lavoro come pull request su GitHub create dalla GitHub App di CreaTV Ltd., e che tali invii contengono solo testo di traduzione e nessun dato personale sui visitatori. Questa traduzione italiana è stata generata da un modello linguistico ed è in attesa di revisione da parte di un madrelingua; in caso di discrepanze fa fede la versione inglese."
   },
   "privacyPolicy": {
     "title": "Informativa sulla privacy",
@@ -722,6 +722,15 @@
               "Senza un account, i progetti Motion vengono conservati solo nel Suo browser (in IndexedDB) e non raggiungono mai i nostri server. Se ha effettuato l'accesso e sceglie «Salva nell'account», il progetto e una piccola immagine di anteprima vengono conservati sui nostri server e in Amazon S3 allo stesso modo di un progetto Darkroom: sono contenuti Suoi, seguono il periodo di conservazione da Lei scelto (Sezione 3), può eliminarli dalla pagina del Suo Account, vengono eliminati insieme al Suo account e sono elencati nell'esportazione dei Suoi dati.",
               "Ogni esportazione animata e ogni importazione Lottie viene conteggiata sul nostro server prima che il Suo browser la esegua, per applicare la quota giornaliera Motion del Suo piano. Per ciascuna conserviamo il formato, l'altezza di output, la frequenza fotogrammi e la durata, l'ora, il Suo piano, il progetto salvato da cui proviene (se presente) e un identificatore del Suo account, della sessione del browser o un indirizzo IP sottoposto a hash. Utilizziamo queste registrazioni per applicare la quota e per capire quali formati vengono utilizzati. Quando elimina il Suo account, vengono scollegate dalla Sua identità."
             ]
+          },
+          {
+            "title": "1.10 Campioni vocali e voci progettate",
+            "paragraphs": [
+              "Quando usa gli strumenti vocali, trattiamo le registrazioni vocali che registra o carica, le voci che salva e il testo che chiede a una voce di pronunciare (usato solo per generare quel parlato). Una voce salvata è composta dal suo nome, dal suo tipo (clonata da una registrazione, o progettata da una descrizione), dalla sua lingua, per una voce progettata dalla descrizione e dal seed usato per generarla, da una registrazione di riferimento (la Sua registrazione o, per una voce progettata, un clip di 10 secondi che creiamo noi), da una breve anteprima, dalla versione del motore vocale e, per una voce clonata, dall'ora in cui ha confermato il Suo consenso e dalla versione del testo del consenso.",
+              "Finalità e base giuridica: usiamo questi dati solo per creare e far funzionare la voce che ha richiesto, cioè per realizzare la voce, generarne l'anteprima e generare o convertire parlato quando lo richiede. La registrazione della voce di una persona può identificarla, quindi la trattiamo con la cura richiesta per i dati di categoria particolare (biometrici) e ci basiamo sul Suo consenso esplicito, che fornisce con la casella di consenso prima che una voce venga creata da una registrazione. Può revocarlo in qualsiasi momento eliminando la voce.",
+              "Conservazione: le voci salvate sono conservate sui nostri server e in Amazon S3 sotto voices/, nel Suo account, e seguono il periodo di conservazione che sceglie (Sezione 3). Le registrazioni che carica per modificarle e il parlato che genera sono conservati come qualsiasi altro caricamento e risultato. L'elaborazione vocale gira sul nostro server GPU: le Sue registrazioni e le Sue voci non vengono mai condivise con un fornitore di IA di terze parti e non vengono mai usate per addestrare alcun modello. Il parlato generato e convertito contiene una filigrana inudibile che lo contrassegna come sintetico; non contiene dati dell'account.",
+              "Eliminazione ed esportazione: può eliminare una voce salvata in qualsiasi momento da Account, Voci; la sua registrazione di riferimento e la sua anteprima vengono eliminate subito dai nostri server, mentre il parlato che ha già generato resta fino al termine del proprio periodo di conservazione. Tutte le Sue voci salvate vengono eliminate quando elimina il Suo account. L'esportazione dei Suoi dati elenca le Sue voci salvate (nome, tipo, lingua, date e registro del consenso), senza l'audio."
+            ]
           }
         ]
       },
@@ -748,7 +757,7 @@
         "id": "retention",
         "title": "3. Archiviazione, conservazione ed eliminazione dei file",
         "paragraphs": [
-          "La durata di conservazione dei Suoi file dipende dal fatto che Lei abbia o meno un account. Questa sezione riguarda i file caricati, gli output generati (risultati), i media Darkroom, i progetti Darkroom e i progetti Motion salvati nel Suo account, conservati sui nostri server e in Amazon S3 (us-west-2). Le registrazioni relative alle Sue conversioni e impostazioni (come la cronologia dei lavori, le scelte di conservazione e i dati dell'account) sono conservate in un database PostgreSQL, e l'elaborazione IA viene eseguita sul nostro server GPU gestito in proprio."
+          "La durata di conservazione dei Suoi file dipende dal fatto che Lei abbia o meno un account. Questa sezione riguarda i file caricati, gli output generati (risultati), i media Darkroom, i progetti Darkroom, i progetti Motion e le voci salvati nel Suo account, conservati sui nostri server e in Amazon S3 (us-west-2). Le registrazioni relative alle Sue conversioni e impostazioni (come la cronologia dei lavori, le scelte di conservazione e i dati dell'account) sono conservate in un database PostgreSQL, e l'elaborazione IA viene eseguita sul nostro server GPU gestito in proprio."
         ],
         "subsections": [
           {
@@ -783,7 +792,7 @@
             ],
             "bullets": [
               "annulliamo il Suo abbonamento Premium o Pro con Stripe, se ne ha uno;",
-              "eliminiamo i Suoi file e i Suoi progetti Darkroom e Motion;",
+              "eliminiamo i Suoi file, i Suoi progetti Darkroom e Motion e le Sue voci salvate;",
               "eliminiamo la registrazione del Suo account e le impostazioni e scolleghiamo le restanti registrazioni di attività dalla Sua identità;",
               "chiediamo al nostro sistema di analisi di prima parte di eliminare i dati di analisi collegati al Suo account (vedi Sezione 6);",
               "eliminiamo le Sue credenziali di accesso."
@@ -795,7 +804,7 @@
           {
             "title": "3.5 Esportazione dei Suoi dati",
             "paragraphs": [
-              "Gli utenti con accesso possono scaricare un'esportazione dei propri dati dalla pagina Account. Si tratta di un file ZIP contenente cronologia, progetti, elenco dei file, dati dell'account e report dei metadati. Non contiene i file multimediali stessi, quindi li scarichi prima che scadano. Le esportazioni sono limitate a un numero ridotto di richieste per ora."
+              "Gli utenti con accesso possono scaricare un'esportazione dei propri dati dalla pagina Account. Si tratta di un file ZIP contenente cronologia, progetti, voci salvate (senza il loro audio), elenco dei file, dati dell'account e report dei metadati. Non contiene i file multimediali stessi, quindi li scarichi prima che scadano. Le esportazioni sono limitate a un numero ridotto di richieste per ora."
             ]
           },
           {
@@ -823,7 +832,7 @@
         ],
         "afterBullets": [
           "Tutta l'elaborazione IA utilizzata da Media Manipulator viene eseguita localmente sui nostri server o su infrastruttura che controlliamo. Non affidiamo a fornitori di IA di terze parti l'elaborazione di file caricati, output generati, trascrizioni, riassunti, descrizioni o scansioni di sicurezza dei contenuti.",
-          "Le funzioni IA utilizzano modelli e strumenti aperti che eseguiamo in proprio, principalmente su un server GPU gestito da noi: Whisper per la trascrizione, Real-ESRGAN per l'upscaling delle immagini, Demucs per la separazione dell'audio e altri modelli locali, oltre a modelli linguistici e visivi serviti tramite Ollama per attività testuali come riassunti, descrizioni e traduzione dei sottotitoli.",
+          "Le funzioni IA utilizzano modelli e strumenti aperti che eseguiamo in proprio, principalmente su un server GPU gestito da noi: Whisper per la trascrizione, Real-ESRGAN per l'upscaling delle immagini, Demucs per la separazione dell'audio, Chatterbox e Qwen3-TTS per la clonazione vocale, la progettazione di voci e il parlato, e altri modelli locali, oltre a modelli linguistici e visivi serviti tramite Ollama per attività testuali come riassunti, descrizioni e traduzione dei sottotitoli.",
           "Ciò significa che, quando vengono utilizzate le funzioni IA, i Suoi file caricati e gli output generati restano all'interno dell'ambiente di elaborazione di Media Manipulator e sono gestiti secondo le pratiche di archiviazione, conservazione, eliminazione e sicurezza descritte nella presente Informativa sulla privacy.",
           "I file caricati e gli output generati vengono conservati ed eliminati come descritto nella Sezione 3, anche quando vengono utilizzate le funzioni IA. Al termine del periodo di conservazione applicabile vengono eliminati dai nostri sistemi attivi, salvo eliminazione anticipata o conservazione limitata richiesta dalla legge per finalità di sicurezza, prevenzione degli abusi, conformità legale o applicazione delle regole.",
           "Gli output generati dall'IA possono essere imperfetti, incompleti o inesatti. Gli utenti sono responsabili della revisione di qualsiasi output generato dall'IA prima di farvi affidamento.",
@@ -1057,6 +1066,7 @@
           "trascrizione, generazione di sottotitoli, riassunti e descrizioni assistiti dall'IA;",
           "classificazione di sicurezza dei contenuti e scansione per la prevenzione degli abusi;",
           "creazione, animazione ed esportazione di grafica vettoriale e animazioni con Motion;",
+          "creazione di voci dalle Sue registrazioni, progettazione di voci da una descrizione, generazione di parlato da testo e modifica della voce in una registrazione (Voci, vedere la Sezione 8.11);",
           "cronologia temporanea delle conversioni e output elaborati scaricabili."
         ],
         "afterBullets": [
@@ -1290,6 +1300,26 @@
             "paragraphs": [
               "Non deve utilizzare Media Manipulator per creare o agevolare pulsanti di download ingannevoli, falsi avvisi di aggiornamento, falsi avvisi di virus, flussi di conversione fuorvianti, false finestre di sistema o contenuti progettati per indurre gli utenti a cliccare su annunci, scaricare software indesiderato o visitare siti web indesiderati.",
               "I pulsanti di download e conversione reali di Media Manipulator e i controlli dell'interfaccia utente sono pensati per essere chiaramente distinguibili dagli annunci pubblicitari."
+            ]
+          },
+          {
+            "title": "8.11 Voci",
+            "paragraphs": [
+              "Gli strumenti vocali Le consentono di creare una voce salvata da una registrazione (clonazione vocale), di progettare una nuova voce da una descrizione scritta, di generare parlato da testo con una voce salvata o predefinita e di modificare la voce in una registrazione, o variandone la tonalità e la formante, o convertendola con l'IA in una voce salvata o predefinita.",
+              "Può creare una voce solo da una registrazione della Sua voce, o di un'altra persona che Le abbia dato il suo permesso esplicito. Prima che una voce venga creata da una registrazione, deve confermare: «Questa è la mia voce, oppure ho il permesso esplicito della persona a cui appartiene questa voce.» Conserviamo con la voce l'ora in cui lo ha confermato e la versione di quel testo; la versione attuale è 2026-10-28.",
+              "Non deve usare gli strumenti vocali, né l'audio creato con essi, per:"
+            ],
+            "bullets": [
+              "impersonare una persona reale, vivente o defunta, senza il suo permesso (o, se è deceduta, senza il permesso di chi ne controlla l'immagine);",
+              "commettere frodi, truffe o phishing, comprese false telefonate, messaggi vocali o registrazioni che affermano di provenire da una persona o da un'organizzazione;",
+              "creare o diffondere deepfake politici, come dichiarazioni inventate di candidati, funzionari o altre figure pubbliche, o audio pensato per ingannare gli elettori;",
+              "molestare, minacciare, intimidire, diffamare o spaventare chiunque;",
+              "aggirare i controlli di identità basati sulla voce o altri sistemi di sicurezza;",
+              "creare contenuti sessuali con la voce di una persona reale senza il suo consenso."
+            ],
+            "afterBullets": [
+              "Il parlato generato con una voce salvata o predefinita, e le registrazioni convertite in una voce, contengono una filigrana inudibile (PerTh) che le contrassegna come sintetiche. L'audio modificato con il variatore di tonalità è una normale elaborazione del segnale e non ha filigrana. Non deve rimuovere né alterare la filigrana, né tentare di eluderla.",
+              "Possiamo rimuovere una voce o qualsiasi audio creato con essa, e sospendere o chiudere un account (Sezione 18), se riteniamo che queste regole siano state violate. Nulla di ciò che registra, carica o genera con gli strumenti vocali viene usato per addestrare alcun modello di IA."
             ]
           }
         ]
@@ -1715,6 +1745,7 @@
       "overview": "Panoramica",
       "history": "Cronologia",
       "projects": "Progetti",
+      "voices": "Voci",
       "billing": "Fatturazione",
       "privacy": "Privacy e dati",
       "profile": "Profilo"
@@ -1884,7 +1915,43 @@
       "emailAlways": "Le email di benvenuto, pagamento ed eliminazione dell'account vengono sempre inviate.",
       "emailSaveFailed": "Impossibile salvare la preferenza email. Riprova."
     },
-    "retentionLabel": "Conservazione dei risultati"
+    "retentionLabel": "Conservazione dei risultati",
+    "voices": {
+      "intro": "Voci che hai clonato da una registrazione o progettato da una descrizione. L'eliminazione di una voce rimuove dai nostri server la sua registrazione di riferimento e la sua anteprima.",
+      "loading": "Caricamento delle tue voci…",
+      "loadFailed": "Impossibile caricare le tue voci. Ricarica per riprovare.",
+      "empty": "Non hai ancora voci salvate.",
+      "emptyCta": "Crea una voce con uno degli strumenti vocali:",
+      "tools": {
+        "clone": "Clona la tua voce",
+        "design": "Progetta una voce",
+        "change": "Cambia una voce"
+      },
+      "usage": "{{used}} voci su {{limit}}",
+      "usageUnlimited": "{{used}} voci",
+      "kinds": {
+        "cloned": "Clonata",
+        "designed": "Progettata",
+        "preset": "Predefinita"
+      },
+      "created": "Creata il {{date}}",
+      "consent": "Consenso confermato il {{date}} (versione del testo {{version}})",
+      "noConsent": "Progettata da una descrizione; nessuna registrazione di una persona",
+      "preview": "Anteprima di {{name}}",
+      "rename": "Rinomina",
+      "renameLabel": "Nuovo nome per {{name}}",
+      "save": "Salva",
+      "cancel": "Annulla",
+      "renamed": "Voce rinominata.",
+      "renameFailed": "Impossibile rinominare la voce. Usa da 1 a 60 caratteri e riprova.",
+      "delete": "Elimina",
+      "deleteTitle": "Eliminare «{{name}}»?",
+      "deleteBody": "La voce, la sua registrazione di riferimento e la sua anteprima vengono rimosse dai nostri server. Il parlato che hai già generato con essa resta riproducibile fino al termine del proprio periodo di conservazione. L'operazione non può essere annullata.",
+      "deleteConfirm": "Elimina voce",
+      "deleted": "Voce eliminata.",
+      "deletedPending": "Voce eliminata. Alcuni file vengono ancora rimossi in background.",
+      "deleteFailed": "Impossibile eliminare questa voce. Non è cambiato nulla; riprova."
+    }
   },
   "homeContent": {
     "howItWorks": {
@@ -2042,6 +2109,26 @@
       "title": "Ti serve una voce fuori campo per il tuo montaggio?",
       "body": "Prova le mie due voci ElevenLabs, renderizza lì una battuta, poi aggiungi l'audio al contenitore multimediale di Darkroom.",
       "cta": "Scopri di più sulle voci"
+    },
+    "makeYourOwn": {
+      "title": "Crea la tua",
+      "intro": "Media Manipulator ha ora i suoi strumenti vocali, che girano su modelli aperti sui nostri server anziché su ElevenLabs. Crea una voce dalla tua registrazione, progettane una nuova da una descrizione, oppure cambia la voce in una registrazione.",
+      "note": "Il parlato generato contiene una filigrana inudibile. Usa solo la tua voce, o una voce che hai il permesso di usare.",
+      "cards": {
+        "clone": {
+          "title": "Clona la tua voce",
+          "body": "Registra da 5 a 60 secondi del tuo parlato e fagli leggere qualsiasi testo in oltre 20 lingue."
+        },
+        "design": {
+          "title": "Progetta una voce",
+          "body": "Descrivi una voce, ascolta anteprime gratuite e conserva quella che ti piace."
+        },
+        "change": {
+          "title": "Cambia una voce",
+          "body": "Varia subito la tonalità di una registrazione, oppure convertila in una voce salvata."
+        }
+      },
+      "open": "Apri"
     }
   },
   "changelog": {

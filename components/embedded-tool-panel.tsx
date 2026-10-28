@@ -81,6 +81,10 @@ const VideoTransformPanel = dynamic(() => import('@/components/video-transform-p
 const MetadataInspectPanel = dynamic(() => import('@/components/metadata/metadata-inspect-panel'), { ssr: false, loading: FormLoading });
 // MM75: video / audio summaries (the MM74 staged job).
 const SummarizePanel = dynamic(() => import('@/components/summarize-panel'), { ssr: false, loading: FormLoading });
+// MM78 voices: the three voice tool panels.
+const VoiceCloningPanel = dynamic(() => import('@/components/voices/voice-cloning-panel'), { ssr: false, loading: FormLoading });
+const VoiceDesignerPanel = dynamic(() => import('@/components/voices/voice-designer-panel'), { ssr: false, loading: FormLoading });
+const VoiceChangerPanel = dynamic(() => import('@/components/voices/voice-changer-panel'), { ssr: false, loading: FormLoading });
 
 export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
@@ -196,7 +200,11 @@ export type EmbeddedTask =
   | 'summarize_video'
   | 'generate_vtt_captions'
   // MM75: the audio sibling of summarize_video (same MM74 job, no frames).
-  | 'summarize_audio';
+  | 'summarize_audio'
+  // MM78 voices: clone, design and change a voice (components/voices/*).
+  | 'voice_clone'
+  | 'voice_design'
+  | 'voice_convert';
 
 /** Output formats the embedded image converter understands. "pdf" routes the
  *  image through the document pathway (image -> single-page PDF); "svg" routes
@@ -547,6 +555,10 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
   // MM75: both summary pages render the summarize panel.
   summarize_video: true,
   summarize_audio: true,
+  // MM78 voices.
+  voice_clone: true,
+  voice_design: true,
+  voice_convert: true,
 };
 
 /**
@@ -988,7 +1000,12 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           </p>
         </div>
       </div>
-      <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" />
+      {/* MM78: the voice panels render their own chip (ai_ops, or ops / ai_ops by mode).
+          MM75: so does the summarize panel (its shell's chip, shown only once it can run). */}
+      {specializedPanel === 'voice_clone' || specializedPanel === 'voice_design' || specializedPanel === 'voice_convert' ||
+      specializedPanel === 'summarize_video' || specializedPanel === 'summarize_audio' ? null : (
+        <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" />
+      )}
 
       {(recommendedFormat || lockedOutputDisplay || lockedInputFormat || allowedInputFormats?.length) && (
         <div className="mb-4 flex items-start gap-2 rounded-md border border-primary/30 bg-primary/10 p-3">
@@ -1057,6 +1074,12 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         specializedPanel === 'resize_video' ||
         specializedPanel === 'rotate_video' ? (
         <VideoTransformPanel presets={videoTransformPresets} />
+      ) : specializedPanel === 'voice_clone' ? (
+        <VoiceCloningPanel />
+      ) : specializedPanel === 'voice_design' ? (
+        <VoiceDesignerPanel />
+      ) : specializedPanel === 'voice_convert' ? (
+        <VoiceChangerPanel />
       ) : !selectedFile ? (
         <div
           onDragOver={handleDragOver}

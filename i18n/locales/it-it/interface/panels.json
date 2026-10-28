@@ -1191,5 +1191,219 @@
     "hint": "oppure fai clic per scegliere un file dal computer. Il file viene letto solo per i metadati ed eliminato dopo l’analisi; non viene convertito nulla.",
     "largeFile": "I file oltre {{size}} vengono ispezionati solo su richiesta, così un video grande non viene caricato per errore.",
     "failed": "Impossibile ispezionare il file. Il tipo potrebbe non essere supportato o il file è troppo grande per il tuo piano."
+  },
+  "voiceTools": {
+    "loading": "Caricamento degli strumenti vocali…",
+    "unavailable": {
+      "title": "Voci non è disponibile al momento",
+      "body": "Il motore vocale è disattivato o si sta riavviando, quindi questo strumento non può funzionare ora. Non è stato conteggiato nulla. Riprova più tardi.",
+      "shiftStillWorks": "Il variatore di tonalità qui sotto non richiede il motore vocale e continua a funzionare."
+    },
+    "warmingUp": "Il motore vocale si sta avviando, la prima richiesta può richiedere fino a 20 secondi.",
+    "honesty": "Il parlato creato con una voce salvata o predefinita contiene una filigrana inudibile; l'audio modificato con il variatore no. Usa solo la tua voce, o una voce che hai il permesso di usare. Nulla di ciò che registri o generi viene usato per addestrare alcun modello, e i motori vocali girano sui nostri server.",
+    "signIn": {
+      "title": "Accedi per salvare una voce",
+      "body": "Una voce salvata ha bisogno di un proprietario e di una prova del consenso, quindi clonare una voce, conservare una voce progettata, convertire in una voce e Le mie voci richiedono un account. Non viene caricato nulla finché non accedi.",
+      "cta": "Accedi"
+    },
+    "recorder": {
+      "record": "Registra",
+      "recording": "Registrazione in corso",
+      "stop": "Stop",
+      "cancel": "Annulla registrazione",
+      "level": "Livello del microfono",
+      "or": "oppure",
+      "upload": "Carica un file audio",
+      "remove": "Rimuovi",
+      "recorded": "La tua registrazione, {{duration}}",
+      "uploaded": "{{name}}, {{duration}}",
+      "measuring": "Lettura della durata del file…",
+      "unknownLength": "Non è stato possibile leggere la durata di questo file nel browser; la verificherà il server.",
+      "tooShort": "La registrazione dura {{seconds}} secondi. Una voce richiede almeno 5 secondi di parlato.",
+      "tooLong": "La registrazione dura {{seconds}} secondi. Mantienila entro 60 secondi.",
+      "referenceHint": "Registra o carica da 5 a 60 secondi di parlato chiaro in una stanza silenziosa. Leggi qualche frase naturale.",
+      "inputHint": "Registra o carica il parlato che vuoi modificare.",
+      "micDenied": "L'accesso al microfono è stato bloccato. Consenti il microfono per questo sito nella barra degli indirizzi del browser, oppure carica un file.",
+      "micHostBlocked": "La pagina che ospita questo strumento non ha consentito l'accesso al microfono. Carica invece un file.",
+      "micUnavailable": "La registrazione non è disponibile in questo browser. Carica invece un file audio."
+    },
+    "consent": {
+      "label": "Questa è la mia voce, oppure ho il permesso esplicito della persona a cui appartiene questa voce.",
+      "note": "Conserviamo con la voce l'ora in cui lo confermi e la versione di questo testo ({{version}}). Vedi la sezione 8.11 dei Termini."
+    },
+    "clone": {
+      "title": "Crea una voce da una registrazione",
+      "nameLabel": "Nome della voce",
+      "namePlaceholder": "La mia voce",
+      "languageLabel": "Lingua della registrazione",
+      "create": "Crea voce",
+      "creating": "Creazione della tua voce…",
+      "created": "Voce creata. Ascolta la sua anteprima in Le mie voci.",
+      "signInToCreate": "Accedi per creare la voce",
+      "limitReached": "Hai salvato {{used}} voci su {{limit}} previste dal tuo piano. Eliminane una in Account, Voci, oppure passa a un piano superiore per salvarne altre.",
+      "noSaving": "Il tuo piano non consente di salvare voci.",
+      "usage": "{{used}} voci salvate su {{limit}}",
+      "usageUnlimited": "{{used}} voci salvate"
+    },
+    "myVoices": {
+      "title": "Le mie voci",
+      "empty": "Nessuna voce salvata finora.",
+      "preview": "Anteprima di {{name}}",
+      "use": "Usa questa voce",
+      "inUse": "Selezionata",
+      "manage": "Gestisci le tue voci in Account",
+      "kinds": {
+        "cloned": "Clonata",
+        "designed": "Progettata",
+        "preset": "Predefinita"
+      }
+    },
+    "picker": {
+      "label": "Voce",
+      "saved": "Le mie voci",
+      "presets": "Voci predefinite",
+      "none": "Non ci sono ancora voci disponibili."
+    },
+    "speak": {
+      "title": "Genera parlato",
+      "textLabel": "Testo da pronunciare",
+      "placeholder": "Scrivi cosa deve dire la voce.",
+      "counter": "{{used}} caratteri su {{max}}",
+      "overLimit": "È più lungo di quanto il tuo piano consenta in una richiesta ({{max}} caratteri).",
+      "languageLabel": "Lingua",
+      "exaggerationLabel": "Emozione",
+      "exaggerationHint": "Più basso è più calmo, più alto è più espressivo.",
+      "generate": "Genera parlato",
+      "generating": "Generazione…",
+      "notAllowed": "Il tuo piano non include la generazione del parlato."
+    },
+    "designer": {
+      "title": "Descrivi una voce",
+      "descriptionLabel": "Descrizione",
+      "placeholder": "Calda, bassa, leggermente roca, di mezza età, calma",
+      "hint": "Descrivi come deve suonare la voce. Il motore comprende meglio le descrizioni in inglese; i chip qui sotto aggiungono caratteristiche comuni.",
+      "languageLabel": "Lingua dell'anteprima",
+      "languageNote": "Una voce progettata viene creata in una di queste lingue; una volta conservata, può parlare tutte le lingue dello strumento di sintesi vocale.",
+      "chipGroups": {
+        "gender": "Genere",
+        "age": "Età",
+        "accent": "Accento",
+        "tone": "Timbro",
+        "pace": "Ritmo"
+      },
+      "chips": {
+        "female": "Femminile",
+        "male": "Maschile",
+        "neutral": "Androgina",
+        "young": "Giovane adulta",
+        "middleAged": "Di mezza età",
+        "older": "Anziana",
+        "american": "Americano",
+        "british": "Britannico",
+        "australian": "Australiano",
+        "irish": "Irlandese",
+        "warm": "Calda",
+        "bright": "Chiara",
+        "deep": "Profonda",
+        "raspy": "Roca",
+        "soft": "Morbida",
+        "slow": "Lento",
+        "measured": "Misurato",
+        "fast": "Veloce"
+      },
+      "preview": "Anteprima",
+      "previewing": "Creazione dell'anteprima…",
+      "previewsLeft": "Anteprime rimaste: {{left}} su {{max}}",
+      "previewsUsed": "Hai usato le 3 anteprime per questa descrizione. Conserva la voce, oppure cambia la descrizione per ottenere un'altra anteprima.",
+      "previewLabel": "Anteprima della voce descritta",
+      "keepTitle": "Conserva questa voce",
+      "nameLabel": "Nome della voce",
+      "keep": "Conserva questa voce",
+      "keeping": "Salvataggio della voce…",
+      "kept": "Voce salvata. Ora è in Le mie voci.",
+      "signInToKeep": "Accedi per conservare questa voce"
+    },
+    "changer": {
+      "modeLabel": "Come modificarla",
+      "modes": {
+        "shift": "Variazione (istantanea)",
+        "convert": "Converti in una voce (IA)"
+      },
+      "shiftHint": "Varia istantaneamente tonalità e formante con rubberband. Conta come una singola operazione. Il risultato non ha filigrana.",
+      "convertHint": "Fa suonare la registrazione come una voce salvata o predefinita. Conta come un lavoro IA. Il risultato contiene una filigrana inudibile.",
+      "convertNotInPlan": "La conversione in una voce non fa parte del tuo piano.",
+      "upgrade": "Vedi i piani",
+      "signInToConvert": "Accedi per convertire in una voce",
+      "targetLabel": "Converti in",
+      "convert": "Converti",
+      "converting": "Conversione…"
+    },
+    "shifter": {
+      "semitonesLabel": "Tonalità",
+      "semitonesValue": "{{value}} semitoni",
+      "formantLabel": "Formante",
+      "formants": {
+        "preserved": "Mantieni il carattere della voce",
+        "shifted": "Varia insieme alla tonalità"
+      },
+      "presetsLabel": "Preimpostazioni",
+      "presets": {
+        "deeper": "Più grave",
+        "higher": "Più acuta",
+        "child": "Infantile",
+        "elder": "Anziana",
+        "telephone": "Telefono"
+      },
+      "shift": "Varia la voce",
+      "shifting": "Variazione…"
+    },
+    "result": {
+      "working": "Elaborazione in corso…",
+      "failed": "Il lavoro vocale non è riuscito. Non è stato conteggiato.",
+      "downloadMp3": "Scarica MP3",
+      "downloadWav": "Scarica WAV",
+      "wavPreparing": "Preparazione del WAV…",
+      "wavFailed": "Non è stato possibile creare il WAV in questo browser. Scarica invece l'MP3.",
+      "wavNote": "Il WAV viene decodificato dall'MP3 nel tuo browser.",
+      "another": "Ricomincia"
+    },
+    "errors": {
+      "sign_in_required": "Accedi per salvare e usare le tue voci.",
+      "consent_required": "Spunta la casella per confermare che questa è la tua voce, o che hai il permesso esplicito di chi parla.",
+      "reference_required": "Prima registra o carica da 5 a 60 secondi di parlato.",
+      "reference_too_short": "La registrazione deve durare almeno 5 secondi.",
+      "reference_too_long": "La registrazione deve durare al massimo 60 secondi.",
+      "reference_too_large": "Il file della registrazione è troppo grande.",
+      "no_speech_detected": "Non siamo riusciti a sentire parlato in quella registrazione. Registra qualche frase in una stanza silenziosa.",
+      "not_audio": "Quel file non è una registrazione che possiamo leggere.",
+      "name_invalid": "Dai alla voce un nome di 1-60 caratteri.",
+      "language_not_supported": "Questa lingua non è supportata per questa voce.",
+      "voice_limit": "Hai raggiunto il numero di voci salvate previsto dal tuo piano ({{limit}}). Eliminane una o passa a un piano superiore per salvarne altre.",
+      "text_required": "Scrivi qualcosa da dire.",
+      "text_too_long": "Il tuo piano consente fino a {{limit}} caratteri per richiesta.",
+      "exaggeration_invalid": "L'emozione deve essere compresa tra 0,25 e 2.",
+      "voice_convert_not_in_plan": "La conversione in una voce non è inclusa nel tuo piano.",
+      "voice_input_too_long": "Il tuo piano consente qui registrazioni fino a {{limit}} secondi.",
+      "input_required": "Aggiungi la registrazione che vuoi modificare.",
+      "input_too_large": "La registrazione è troppo grande per il tuo piano.",
+      "voice_required": "Scegli una voce in cui convertire.",
+      "voice_not_found": "Quella voce non esiste più.",
+      "preset_not_found": "Quella voce predefinita non è disponibile.",
+      "description_required": "Descrivi la voce che vuoi.",
+      "description_too_long": "Mantieni la descrizione sotto i 1000 caratteri.",
+      "preview_limit": "Hai ascoltato tre anteprime di questa descrizione nell'ultima ora. Conserva la voce, oppure cambia la descrizione.",
+      "session_required": "Le anteprime richiedono una sessione del browser. Ricarica la pagina e riprova.",
+      "semitones_invalid": "La tonalità deve essere compresa tra -12 e 12 semitoni.",
+      "shift_invalid": "Queste impostazioni di variazione non sono valide.",
+      "voices_unavailable": "Il motore vocale non è disponibile al momento. Non è stato conteggiato nulla; riprova a breve.",
+      "voices_storage_unavailable": "Le voci salvate sono temporaneamente non disponibili. Non è stato conteggiato nulla.",
+      "voices_timeout": "Il motore vocale ha impiegato troppo tempo. Non è stato conteggiato nulla.",
+      "voice_request_refused": "Il motore vocale ha rifiutato la richiesta.",
+      "upload_failed": "Il caricamento non è riuscito. Riprova.",
+      "job_failed": "Non è stato possibile avviare il lavoro. Riprova.",
+      "invalid_body": "Qualcosa nella richiesta non era valido. Ricarica la pagina e riprova.",
+      "rate_limited": "Troppe richieste vocali nell'ultima ora. Riprova più tardi.",
+      "generic": "Qualcosa è andato storto. Riprova."
+    }
   }
 }

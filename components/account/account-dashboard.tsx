@@ -14,6 +14,7 @@ import { OverviewTab, type OverviewExtras } from '@/components/account/tabs/over
 import { PrivacyTab } from '@/components/account/tabs/privacy-tab';
 import { ProfileTab } from '@/components/account/tabs/profile-tab';
 import { ProjectsTab } from '@/components/account/tabs/projects-tab';
+import { VoicesTab } from '@/components/account/tabs/voices-tab';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLocalization } from '@/i18n/useLocalization';
 import { analytics, EVENTS } from '@/lib/analytics';
@@ -109,6 +110,9 @@ export const AccountDashboard: React.FC<{ labels: AccountLabels }> = ({ labels }
         </TabsContent>
         <TabsContent value="projects">
           <ProjectsTab copy={copy} uid={uid} />
+        </TabsContent>
+        <TabsContent value="voices">
+          <VoicesTab copy={copy} />
         </TabsContent>
         <TabsContent value="billing">
           <div className="max-w-xl">

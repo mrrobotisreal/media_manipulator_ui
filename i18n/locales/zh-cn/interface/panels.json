@@ -1179,5 +1179,219 @@
     "hint": "或点击从电脑中选择。文件仅用于读取元数据，分析后即删除；不会进行任何转换。",
     "largeFile": "超过 {{size}} 的文件只在您要求时才检查，以免大视频被误上传。",
     "failed": "无法检查该文件。可能是不支持的类型，或超出了您套餐的大小限制。"
+  },
+  "voiceTools": {
+    "loading": "正在加载声音工具…",
+    "unavailable": {
+      "title": "声音功能暂时不可用",
+      "body": "声音引擎已关闭或正在重启，因此此工具目前无法运行。本次未计入额度。请稍后再试。",
+      "shiftStillWorks": "下方的变调器不需要声音引擎，仍可使用。"
+    },
+    "warmingUp": "正在预热声音引擎，第一次请求最多可能需要 20 秒。",
+    "honesty": "使用已保存声音或预设声音生成的语音带有听不见的水印；用变调器处理的音频则没有。请只使用你自己的声音，或你已获得使用许可的声音。你录制或生成的任何内容都不会用于训练任何模型，声音引擎运行在我们自己的服务器上。",
+    "signIn": {
+      "title": "登录以保存声音",
+      "body": "已保存的声音需要有所有者和同意记录，因此克隆声音、保留设计的声音、转换为某个声音以及“我的声音”都需要账号。登录之前不会上传任何内容。",
+      "cta": "登录"
+    },
+    "recorder": {
+      "record": "录音",
+      "recording": "录音中",
+      "stop": "停止",
+      "cancel": "取消录音",
+      "level": "麦克风音量",
+      "or": "或",
+      "upload": "上传音频文件",
+      "remove": "移除",
+      "recorded": "你的录音，{{duration}}",
+      "uploaded": "{{name}}，{{duration}}",
+      "measuring": "正在读取文件时长…",
+      "unknownLength": "浏览器无法读取此文件的时长；服务器会进行检查。",
+      "tooShort": "录音时长为 {{seconds}} 秒。声音至少需要 5 秒的语音。",
+      "tooLong": "录音时长为 {{seconds}} 秒。请控制在 60 秒以内。",
+      "referenceHint": "在安静的房间里录制或上传 5 到 60 秒清晰的语音。朗读几句自然的话。",
+      "inputHint": "录制或上传你想要更改的语音。",
+      "micDenied": "麦克风权限已被阻止。请在浏览器地址栏中允许此网站使用麦克风，或改为上传文件。",
+      "micHostBlocked": "承载此工具的页面未允许使用麦克风。请改为上传文件。",
+      "micUnavailable": "此浏览器不支持录音。请改为上传音频文件。"
+    },
+    "consent": {
+      "label": "这是我自己的声音，或者我已获得声音所属者的明确许可。",
+      "note": "我们会将你确认的时间和此文本的版本（{{version}}）与该声音一并保存。请参阅服务条款第8.11节。"
+    },
+    "clone": {
+      "title": "通过录音创建声音",
+      "nameLabel": "声音名称",
+      "namePlaceholder": "我的声音",
+      "languageLabel": "录音语言",
+      "create": "创建声音",
+      "creating": "正在创建你的声音…",
+      "created": "声音已创建。可在“我的声音”中试听其预览。",
+      "signInToCreate": "登录以创建声音",
+      "limitReached": "你的套餐已保存 {{used}}/{{limit}} 个声音。请在账号的“声音”中删除一个，或升级以保存更多。",
+      "noSaving": "你的套餐无法保存声音。",
+      "usage": "已保存 {{used}}/{{limit}} 个声音",
+      "usageUnlimited": "已保存 {{used}} 个声音"
+    },
+    "myVoices": {
+      "title": "我的声音",
+      "empty": "还没有已保存的声音。",
+      "preview": "{{name}}的预览",
+      "use": "使用此声音",
+      "inUse": "已选择",
+      "manage": "在账号中管理你的声音",
+      "kinds": {
+        "cloned": "克隆",
+        "designed": "设计",
+        "preset": "预设"
+      }
+    },
+    "picker": {
+      "label": "声音",
+      "saved": "我的声音",
+      "presets": "预设声音",
+      "none": "目前没有可用的声音。"
+    },
+    "speak": {
+      "title": "生成语音",
+      "textLabel": "要朗读的文本",
+      "placeholder": "输入声音要说的内容。",
+      "counter": "{{used}}/{{max}} 个字符",
+      "overLimit": "超出了你的套餐单次请求允许的长度（{{max}} 个字符）。",
+      "languageLabel": "语言",
+      "exaggerationLabel": "情感",
+      "exaggerationHint": "数值越低越平静，越高越富有表现力。",
+      "generate": "生成语音",
+      "generating": "正在生成…",
+      "notAllowed": "你的套餐不包含语音生成。"
+    },
+    "designer": {
+      "title": "描述一个声音",
+      "descriptionLabel": "描述",
+      "placeholder": "温暖、低沉、略带沙哑、中年、平静",
+      "hint": "描述声音听起来应该是什么样。引擎对英文描述的理解最好；下方的标签可添加常见特征。",
+      "languageLabel": "预览语言",
+      "languageNote": "设计的声音会用其中一种语言创建；保留后，它可以说语音工具支持的所有语言。",
+      "chipGroups": {
+        "gender": "性别",
+        "age": "年龄",
+        "accent": "口音",
+        "tone": "音色",
+        "pace": "语速"
+      },
+      "chips": {
+        "female": "女声",
+        "male": "男声",
+        "neutral": "中性",
+        "young": "青年",
+        "middleAged": "中年",
+        "older": "年长",
+        "american": "美式",
+        "british": "英式",
+        "australian": "澳式",
+        "irish": "爱尔兰式",
+        "warm": "温暖",
+        "bright": "明亮",
+        "deep": "低沉",
+        "raspy": "沙哑",
+        "soft": "柔和",
+        "slow": "慢",
+        "measured": "沉稳",
+        "fast": "快"
+      },
+      "preview": "预览",
+      "previewing": "正在生成预览…",
+      "previewsLeft": "剩余预览：{{left}}/{{max}}",
+      "previewsUsed": "你已用完此描述的 3 次预览。请保留该声音，或修改描述后再次预览。",
+      "previewLabel": "所描述声音的预览",
+      "keepTitle": "保留此声音",
+      "nameLabel": "声音名称",
+      "keep": "保留此声音",
+      "keeping": "正在保存声音…",
+      "kept": "声音已保存。现在可在“我的声音”中找到。",
+      "signInToKeep": "登录以保留此声音"
+    },
+    "changer": {
+      "modeLabel": "更改方式",
+      "modes": {
+        "shift": "变调（即时）",
+        "convert": "转换为某个声音（AI）"
+      },
+      "shiftHint": "使用 rubberband 即时调整音高和共振峰。计为一次操作。结果不带水印。",
+      "convertHint": "让录音听起来像某个已保存或预设的声音。计为一次 AI 任务。结果带有听不见的水印。",
+      "convertNotInPlan": "转换为某个声音不包含在你的套餐中。",
+      "upgrade": "查看套餐",
+      "signInToConvert": "登录以转换为某个声音",
+      "targetLabel": "转换为",
+      "convert": "转换",
+      "converting": "正在转换…"
+    },
+    "shifter": {
+      "semitonesLabel": "音高",
+      "semitonesValue": "{{value}} 个半音",
+      "formantLabel": "共振峰",
+      "formants": {
+        "preserved": "保留声音的特色",
+        "shifted": "随音高一起变化"
+      },
+      "presetsLabel": "预设",
+      "presets": {
+        "deeper": "更低沉",
+        "higher": "更高",
+        "child": "童声",
+        "elder": "年长",
+        "telephone": "电话"
+      },
+      "shift": "变声",
+      "shifting": "正在变声…"
+    },
+    "result": {
+      "working": "处理中…",
+      "failed": "声音任务失败。未计入额度。",
+      "downloadMp3": "下载 MP3",
+      "downloadWav": "下载 WAV",
+      "wavPreparing": "正在准备 WAV…",
+      "wavFailed": "无法在此浏览器中生成 WAV。请改为下载 MP3。",
+      "wavNote": "WAV 是在你的浏览器中由 MP3 解码而来。",
+      "another": "重新开始"
+    },
+    "errors": {
+      "sign_in_required": "请登录以保存和使用你自己的声音。",
+      "consent_required": "请勾选复选框，确认这是你自己的声音，或你已获得说话者的明确许可。",
+      "reference_required": "请先录制或上传 5 到 60 秒的语音。",
+      "reference_too_short": "录音必须至少 5 秒。",
+      "reference_too_long": "录音必须在 60 秒以内。",
+      "reference_too_large": "录音文件过大。",
+      "no_speech_detected": "在该录音中没有听到语音。请在安静的房间里录几句话。",
+      "not_audio": "该文件不是我们能读取的录音。",
+      "name_invalid": "请为声音取一个 1 到 60 个字符的名称。",
+      "language_not_supported": "此声音不支持该语言。",
+      "voice_limit": "你已达到套餐允许保存的声音数量（{{limit}}）。请删除一个，或升级以保存更多。",
+      "text_required": "请输入要说的内容。",
+      "text_too_long": "你的套餐每次请求最多允许 {{limit}} 个字符。",
+      "exaggeration_invalid": "情感值必须介于 0.25 和 2 之间。",
+      "voice_convert_not_in_plan": "转换为某个声音不包含在你的套餐中。",
+      "voice_input_too_long": "你的套餐在此处允许的录音最长为 {{limit}} 秒。",
+      "input_required": "请添加你想要更改的录音。",
+      "input_too_large": "录音对你的套餐来说过大。",
+      "voice_required": "请选择一个要转换成的声音。",
+      "voice_not_found": "该声音已不存在。",
+      "preset_not_found": "该预设声音不可用。",
+      "description_required": "请描述你想要的声音。",
+      "description_too_long": "描述请控制在 1000 个字符以内。",
+      "preview_limit": "你在一小时内已对此描述预览了三次。请保留该声音，或修改描述。",
+      "session_required": "预览需要浏览器会话。请重新加载页面后再试。",
+      "semitones_invalid": "音高必须介于 -12 和 12 个半音之间。",
+      "shift_invalid": "这些变调设置无效。",
+      "voices_unavailable": "声音引擎目前不可用。未计入额度；请稍后再试。",
+      "voices_storage_unavailable": "已保存的声音暂时不可用。未计入额度。",
+      "voices_timeout": "声音引擎耗时过长。未计入额度。",
+      "voice_request_refused": "声音引擎拒绝了该请求。",
+      "upload_failed": "上传失败。请重试。",
+      "job_failed": "无法启动该任务。请重试。",
+      "invalid_body": "请求中的某些内容无效。请重新加载页面后再试。",
+      "rate_limited": "过去一小时内的声音请求过多。请稍后再试。",
+      "generic": "出了点问题。请重试。"
+    }
   }
 }

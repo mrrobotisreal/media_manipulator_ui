@@ -20,6 +20,7 @@ vi.mock('@/components/account/checkout-return', () => ({ CheckoutReturn: () => n
 vi.mock('@/components/account/tabs/overview-tab', () => ({ OverviewTab: () => <div>OVERVIEW</div> }));
 vi.mock('@/components/account/tabs/history-tab', () => ({ HistoryTab: () => <div>HISTORY</div> }));
 vi.mock('@/components/account/tabs/projects-tab', () => ({ ProjectsTab: () => <div>PROJECTS</div> }));
+vi.mock('@/components/account/tabs/voices-tab', () => ({ VoicesTab: () => <div>VOICES</div> }));
 vi.mock('@/components/account/tabs/billing-tab', () => ({ BillingTab: () => <div>BILLING</div> }));
 vi.mock('@/components/account/tabs/privacy-tab', () => ({ PrivacyTab: () => <div>PRIVACY</div> }));
 vi.mock('@/components/account/tabs/profile-tab', () => ({ ProfileTab: () => <div>PROFILE</div> }));
@@ -61,10 +62,10 @@ describe('account tabs routing', () => {
     expect(screen.getByRole('tab', { name: 'Overview' }).getAttribute('aria-selected')).toBe('true');
   });
 
-  it('exposes six labelled tabs inside a labelled tablist, with the active one selected', () => {
+  it('exposes seven labelled tabs (MM78 adds Voices) inside a labelled tablist, with the active one selected', () => {
     renderAt('tab=history');
     expect(screen.getByRole('tablist', { name: 'Account sections' })).toBeTruthy();
-    expect(screen.getAllByRole('tab')).toHaveLength(6);
+    expect(screen.getAllByRole('tab')).toHaveLength(7);
     expect(screen.getByRole('tab', { name: 'History' }).getAttribute('aria-selected')).toBe('true');
   });
 
