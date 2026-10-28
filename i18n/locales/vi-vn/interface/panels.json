@@ -1126,5 +1126,219 @@
     "hint": "hoặc nhấp để chọn từ máy tính của bạn. Tệp chỉ được đọc để lấy siêu dữ liệu và bị xóa sau khi phân tích; không có gì được chuyển đổi.",
     "largeFile": "Các tệp lớn hơn {{size}} chỉ được kiểm tra khi bạn yêu cầu, để video lớn không bị tải lên ngoài ý muốn.",
     "failed": "Không thể kiểm tra tệp. Có thể định dạng không được hỗ trợ hoặc tệp quá lớn so với gói của bạn."
+  },
+  "voiceTools": {
+    "loading": "Loading the voice tools…",
+    "unavailable": {
+      "title": "Voices is not available right now",
+      "body": "The voice engine is switched off or restarting, so this tool cannot run at the moment. Nothing was counted. Please try again later.",
+      "shiftStillWorks": "The pitch shifter below does not need the voice engine and still works."
+    },
+    "warmingUp": "Warming up the voice engine, the first request can take up to 20 seconds.",
+    "honesty": "Speech made with a saved or preset voice carries an inaudible watermark; audio changed with the shifter does not. Only use your own voice, or a voice you have permission to use. Nothing you record or generate is used to train any model, and the voice engines run on our own servers.",
+    "signIn": {
+      "title": "Sign in to save a voice",
+      "body": "A saved voice needs an owner and a consent record, so cloning a voice, keeping a designed voice, converting to a voice and My voices need an account. Nothing is uploaded until you sign in.",
+      "cta": "Sign in"
+    },
+    "recorder": {
+      "record": "Record",
+      "recording": "Recording",
+      "stop": "Stop",
+      "cancel": "Cancel recording",
+      "level": "Microphone level",
+      "or": "or",
+      "upload": "Upload an audio file",
+      "remove": "Remove",
+      "recorded": "Your recording, {{duration}}",
+      "uploaded": "{{name}}, {{duration}}",
+      "measuring": "Reading the length of the file…",
+      "unknownLength": "The length of this file could not be read in the browser; the server will check it.",
+      "tooShort": "The recording is {{seconds}} seconds long. A voice needs at least 5 seconds of speech.",
+      "tooLong": "The recording is {{seconds}} seconds long. Keep it to 60 seconds or less.",
+      "referenceHint": "Record or upload 5 to 60 seconds of clear speech in a quiet room. Read a few natural sentences.",
+      "inputHint": "Record or upload the speech you want to change.",
+      "micDenied": "Microphone access was blocked. Allow the microphone for this site in your browser's address bar, or upload a file instead.",
+      "micHostBlocked": "The page hosting this tool has not allowed microphone access. Upload a file instead.",
+      "micUnavailable": "Recording is not available in this browser. Upload an audio file instead."
+    },
+    "consent": {
+      "label": "This is my voice, or I have the explicit permission of the person whose voice this is.",
+      "note": "We store the time you confirm this and the version of this text ({{version}}) with the voice. See section 8.11 of the Terms."
+    },
+    "clone": {
+      "title": "Create a voice from a recording",
+      "nameLabel": "Voice name",
+      "namePlaceholder": "My voice",
+      "languageLabel": "Language of the recording",
+      "create": "Create voice",
+      "creating": "Creating your voice…",
+      "created": "Voice created. Listen to its preview under My voices.",
+      "signInToCreate": "Sign in to create the voice",
+      "limitReached": "You have saved {{used}} of {{limit}} voices on your plan. Delete one in Account, Voices, or upgrade to save more.",
+      "noSaving": "Your plan cannot save voices.",
+      "usage": "{{used}} of {{limit}} voices saved",
+      "usageUnlimited": "{{used}} voices saved"
+    },
+    "myVoices": {
+      "title": "My voices",
+      "empty": "No saved voices yet.",
+      "preview": "Preview of {{name}}",
+      "use": "Use this voice",
+      "inUse": "Selected",
+      "manage": "Manage your voices in Account",
+      "kinds": {
+        "cloned": "Cloned",
+        "designed": "Designed",
+        "preset": "Preset"
+      }
+    },
+    "picker": {
+      "label": "Voice",
+      "saved": "My voices",
+      "presets": "Preset voices",
+      "none": "No voices are available yet."
+    },
+    "speak": {
+      "title": "Generate speech",
+      "textLabel": "Text to speak",
+      "placeholder": "Type what the voice should say.",
+      "counter": "{{used}} of {{max}} characters",
+      "overLimit": "That is longer than your plan allows in one request ({{max}} characters).",
+      "languageLabel": "Language",
+      "exaggerationLabel": "Emotion",
+      "exaggerationHint": "Lower is calmer, higher is more expressive.",
+      "generate": "Generate speech",
+      "generating": "Generating…",
+      "notAllowed": "Your plan does not include speech generation."
+    },
+    "designer": {
+      "title": "Describe a voice",
+      "descriptionLabel": "Description",
+      "placeholder": "Warm, low, slightly raspy, middle-aged, calm",
+      "hint": "Describe how the voice should sound. The engine understands descriptions best in English; the chips below add common traits.",
+      "languageLabel": "Language of the preview",
+      "languageNote": "A designed voice is created in one of these languages; once kept, it can speak every language of the speech tool.",
+      "chipGroups": {
+        "gender": "Gender",
+        "age": "Age",
+        "accent": "Accent",
+        "tone": "Tone",
+        "pace": "Pace"
+      },
+      "chips": {
+        "female": "Female",
+        "male": "Male",
+        "neutral": "Androgynous",
+        "young": "Young adult",
+        "middleAged": "Middle-aged",
+        "older": "Older",
+        "american": "American",
+        "british": "British",
+        "australian": "Australian",
+        "irish": "Irish",
+        "warm": "Warm",
+        "bright": "Bright",
+        "deep": "Deep",
+        "raspy": "Raspy",
+        "soft": "Soft",
+        "slow": "Slow",
+        "measured": "Measured",
+        "fast": "Fast"
+      },
+      "preview": "Preview",
+      "previewing": "Rendering a preview…",
+      "previewsLeft": "Previews left: {{left}} of {{max}}",
+      "previewsUsed": "You have used the 3 previews for this description. Keep the voice, or change the description to preview again.",
+      "previewLabel": "Preview of the described voice",
+      "keepTitle": "Keep this voice",
+      "nameLabel": "Voice name",
+      "keep": "Keep this voice",
+      "keeping": "Saving the voice…",
+      "kept": "Voice saved. It is now under My voices.",
+      "signInToKeep": "Sign in to keep this voice"
+    },
+    "changer": {
+      "modeLabel": "How to change it",
+      "modes": {
+        "shift": "Shift (instant)",
+        "convert": "Convert to a voice (AI)"
+      },
+      "shiftHint": "Shifts the pitch and formant with rubberband, instantly. Counts as one operation. The result is not watermarked.",
+      "convertHint": "Makes the recording sound like a saved or preset voice. Counts as one AI job. The result carries an inaudible watermark.",
+      "convertNotInPlan": "Converting to a voice is not part of your plan.",
+      "upgrade": "See plans",
+      "signInToConvert": "Sign in to convert to a voice",
+      "targetLabel": "Convert to",
+      "convert": "Convert",
+      "converting": "Converting…"
+    },
+    "shifter": {
+      "semitonesLabel": "Pitch",
+      "semitonesValue": "{{value}} semitones",
+      "formantLabel": "Formant",
+      "formants": {
+        "preserved": "Keep the voice's character",
+        "shifted": "Shift with the pitch"
+      },
+      "presetsLabel": "Presets",
+      "presets": {
+        "deeper": "Deeper",
+        "higher": "Higher",
+        "child": "Child-like",
+        "elder": "Older",
+        "telephone": "Telephone"
+      },
+      "shift": "Shift voice",
+      "shifting": "Shifting…"
+    },
+    "result": {
+      "working": "Working on it…",
+      "failed": "The voice job failed. It was not counted.",
+      "downloadMp3": "Download MP3",
+      "downloadWav": "Download WAV",
+      "wavPreparing": "Preparing the WAV…",
+      "wavFailed": "The WAV could not be made in this browser. Download the MP3 instead.",
+      "wavNote": "The WAV is decoded from the MP3 in your browser.",
+      "another": "Start again"
+    },
+    "errors": {
+      "sign_in_required": "Sign in to save and use your own voices.",
+      "consent_required": "Tick the box to confirm that this is your voice, or that you have the speaker's explicit permission.",
+      "reference_required": "Record or upload 5 to 60 seconds of speech first.",
+      "reference_too_short": "The recording must be at least 5 seconds long.",
+      "reference_too_long": "The recording must be 60 seconds or shorter.",
+      "reference_too_large": "The recording file is too large.",
+      "no_speech_detected": "We could not hear speech in that recording. Record a few sentences in a quiet room.",
+      "not_audio": "That file is not a recording we can read.",
+      "name_invalid": "Give the voice a name of 1 to 60 characters.",
+      "language_not_supported": "That language is not supported for this voice.",
+      "voice_limit": "You have reached the number of saved voices on your plan ({{limit}}). Delete one or upgrade to save more.",
+      "text_required": "Type something to say.",
+      "text_too_long": "Your plan allows up to {{limit}} characters per request.",
+      "exaggeration_invalid": "Emotion must be between 0.25 and 2.",
+      "voice_convert_not_in_plan": "Converting to a voice is not included in your plan.",
+      "voice_input_too_long": "Your plan allows recordings of up to {{limit}} seconds here.",
+      "input_required": "Add the recording you want to change.",
+      "input_too_large": "The recording is too large for your plan.",
+      "voice_required": "Choose one voice to convert to.",
+      "voice_not_found": "That voice no longer exists.",
+      "preset_not_found": "That preset voice is not available.",
+      "description_required": "Describe the voice you want.",
+      "description_too_long": "Keep the description under 1000 characters.",
+      "preview_limit": "You have previewed this description three times this hour. Keep the voice, or change the description.",
+      "session_required": "Previews need a browser session. Reload the page and try again.",
+      "semitones_invalid": "Pitch must be between -12 and 12 semitones.",
+      "shift_invalid": "Those shift settings are not valid.",
+      "voices_unavailable": "The voice engine is unavailable right now. Nothing was counted; try again shortly.",
+      "voices_storage_unavailable": "Saved voices are temporarily unavailable. Nothing was counted.",
+      "voices_timeout": "The voice engine took too long. Nothing was counted.",
+      "voice_request_refused": "The voice engine refused that request.",
+      "upload_failed": "The upload failed. Please try again.",
+      "job_failed": "The job could not be started. Please try again.",
+      "invalid_body": "Something in the request was not valid. Reload the page and try again.",
+      "rate_limited": "Too many voice requests in the last hour. Please try again later.",
+      "generic": "Something went wrong. Please try again."
+    }
   }
 }
