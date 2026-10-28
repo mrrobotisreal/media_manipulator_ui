@@ -1132,5 +1132,11 @@
         }
       }
     }
+  },
+  "metadataInspectPanel": {
+    "dragDrop": "Arraste e largue aqui uma imagem, um vídeo, um áudio ou um PDF",
+    "hint": "ou clique para escolher no seu computador. O ficheiro é lido apenas para extrair os metadados e eliminado após a análise; nada é convertido.",
+    "largeFile": "Os ficheiros com mais de {{size}} só são inspecionados a seu pedido, para que um vídeo grande não seja carregado por engano.",
+    "failed": "Não foi possível inspecionar o ficheiro. O tipo pode não ser suportado ou o ficheiro é demasiado grande para o seu plano."
   }
 }

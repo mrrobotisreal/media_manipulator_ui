@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Darkroom ट्यूटोरियल",
     "howItWorks": "यह कैसे काम करता है",
     "svgAnimationEditor": "SVG एनिमेशन एडिटर",
-    "motionTutorial": "Motion ट्यूटोरियल"
+    "motionTutorial": "Motion ट्यूटोरियल",
+    "searchPlaceholder": "टूल खोजें (जैसे “mp3 से wav”, “क्रॉप”, “कैप्शन”)",
+    "searchAriaLabel": "टूल खोजें",
+    "showingCount": "{{total}} में से {{count}} टूल दिखाए जा रहे हैं",
+    "categoriesAriaLabel": "टूल श्रेणियाँ",
+    "allCategories": "सभी",
+    "noResults": "“{{query}}” से मेल खाने वाला कोई टूल नहीं। किसी फ़ॉर्मेट का नाम, जैसे “webp”, या कोई क्रिया, जैसे “ट्रिम”, आज़माएँ।",
+    "popular": "लोकप्रिय",
+    "groups": {
+      "edit": "संपादन",
+      "convert": "कन्वर्ट",
+      "ai": "AI टूल",
+      "privacy": "गोपनीयता",
+      "editor": "एडिटर"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "ब्रेडक्रम",

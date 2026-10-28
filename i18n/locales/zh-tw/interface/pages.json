@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Darkroom 教學",
     "howItWorks": "運作方式",
     "svgAnimationEditor": "SVG 動畫編輯器",
-    "motionTutorial": "Motion 教學"
+    "motionTutorial": "Motion 教學",
+    "searchPlaceholder": "搜尋工具（例如「mp3 轉 wav」「裁切」「字幕」）",
+    "searchAriaLabel": "搜尋工具",
+    "showingCount": "顯示 {{total}} 個工具中的 {{count}} 個",
+    "categoriesAriaLabel": "工具類別",
+    "allCategories": "全部",
+    "noResults": "沒有符合「{{query}}」的工具。試試格式名稱（如「webp」）或操作（如「裁切」）。",
+    "popular": "熱門",
+    "groups": {
+      "edit": "編輯",
+      "convert": "轉換",
+      "ai": "AI 工具",
+      "privacy": "隱私",
+      "editor": "編輯器"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "導覽路徑",

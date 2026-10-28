@@ -7,6 +7,8 @@ import type { ToolPageContent } from '@/content/toolPages';
 import { getLocalizedToolPages } from '@/i18n/toolPageContent';
 import { REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
 import { Panel } from '@/components/darkroom/panel';
+import ToolCatalog, { type ToolCatalogLabels } from '@/components/tools/tool-catalog';
+import { toCatalogTool } from '@/components/tools/tool-catalog-data';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { localizeHref } from '@/i18n/locales';
 import { getServerT } from '@/lib/i18n/server';
@@ -18,42 +20,55 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   return buildMetadata('/tools', resolveLangParam(lang));
 }
 
-const CATEGORY_ORDER: ToolPageContent['category'][] = [
-  'image',
-  'video',
-  'audio',
-  'ai',
-  'metadata',
-];
-
 export default async function ToolsIndexPage({ params }: PageParams) {
   const { lang } = await params;
   const locale = resolveLangParam(lang);
   const t = getServerT('interface', locale);
-  // Only the review-allowed tools are surfaced here. Derived per-request from
-  // the LOCALIZED tool pages (names/taglines come from TOOL_PAGE_OVERRIDES,
+  // EVERY tool page is listed here: /tools is the catalog. Derived per-request
+  // from the LOCALIZED tool pages (names/taglines come from TOOL_PAGE_OVERRIDES,
   // like the home-page grid) — a module-scope list built from TOOL_PAGES would
   // bake English into every locale's prerender.
+  //
+  // The review allowlist no longer decides what is LISTED, only what is
+  // indexed: allowlisted tools are starred and sorted first in their group, and
+  // the rest render exactly like them. (Until 2026-10-28 this page filtered to
+  // the 17 allowlisted slugs, which hid the whole Audio category and ~60 tools
+  // that the home-page converter offered with no page to find them from.)
   const localizedPages = getLocalizedToolPages(locale);
-  const allowedTools = REVIEW_INDEXED_TOOL_SLUGS.map((slug) =>
-    localizedPages.find((tool) => tool.slug === slug),
-  ).filter((tool): tool is ToolPageContent => Boolean(tool));
-  const contentStudio = allowedTools.find((tool) => tool.slug === 'content-studio');
+  const allowlisted = new Set<string>(REVIEW_INDEXED_TOOL_SLUGS);
+  const contentStudio = localizedPages.find((tool) => tool.slug === 'content-studio');
   // MM48: Motion is featured beside Darkroom, never in the category grid.
-  const motion = allowedTools.find((tool) => tool.slug === 'motion');
-  const FEATURED = new Set(['content-studio', 'motion']);
-  const toolsByCategory = (category: ToolPageContent['category']) =>
-    allowedTools.filter(
-      (tool) => tool.category === category && !FEATURED.has(tool.slug),
-    );
-  const CATEGORY_LABELS: Record<ToolPageContent['category'], string> = {
-    image: t('toolsIndex.categories.image'),
-    video: t('toolsIndex.categories.video'),
-    audio: t('toolsIndex.categories.audio'),
-    ai: t('toolsIndex.categories.ai'),
-    metadata: t('toolsIndex.categories.metadata'),
-    contentStudio: t('toolsIndex.categories.contentStudio'),
-    motion: t('toolsIndex.categories.motion'),
+  const motion = localizedPages.find((tool) => tool.slug === 'motion');
+  const catalogTools = localizedPages
+    .filter((tool): tool is ToolPageContent => tool.category !== 'contentStudio' && tool.category !== 'motion')
+    .map((tool) => toCatalogTool(tool, allowlisted.has(tool.slug)));
+  // Resolved here because `toolsIndex.*` lives in the server-only `pages`
+  // shard; the client catalog cannot translate them itself. The two templated
+  // strings are passed with their placeholders intact (the server `t` leaves
+  // a `{{name}}` alone when no value is supplied), and the catalog fills them.
+  const raw = (key: string) => t(key);
+  const catalogLabels: ToolCatalogLabels = {
+    categories: {
+      image: t('toolsIndex.categories.image'),
+      video: t('toolsIndex.categories.video'),
+      audio: t('toolsIndex.categories.audio'),
+      ai: t('toolsIndex.categories.ai'),
+      metadata: t('toolsIndex.categories.metadata'),
+    },
+    groups: {
+      edit: t('toolsIndex.groups.edit'),
+      convert: t('toolsIndex.groups.convert'),
+      ai: t('toolsIndex.groups.ai'),
+      privacy: t('toolsIndex.groups.privacy'),
+      editor: t('toolsIndex.groups.editor'),
+    },
+    searchPlaceholder: t('toolsIndex.searchPlaceholder'),
+    searchAriaLabel: t('toolsIndex.searchAriaLabel'),
+    showingCount: raw('toolsIndex.showingCount'),
+    categoriesAriaLabel: t('toolsIndex.categoriesAriaLabel'),
+    allCategories: t('toolsIndex.allCategories'),
+    noResults: raw('toolsIndex.noResults'),
+    popular: t('toolsIndex.popular'),
   };
   return (
     <>
@@ -128,32 +143,8 @@ export default async function ToolsIndexPage({ params }: PageParams) {
               </Link>
             )}
 
-            {/* Categorised tool grid */}
-            {CATEGORY_ORDER.map((category) => {
-              const tools = toolsByCategory(category);
-              if (tools.length === 0) return null;
-              return (
-                <section key={category} className="my-8" aria-label={CATEGORY_LABELS[category]}>
-                  <h2 className="text-2xl font-semibold text-card-foreground mb-3">
-                    {CATEGORY_LABELS[category]}
-                  </h2>
-                  <div className="grid gap-3 md:grid-cols-2">
-                    {tools.map((tool) => (
-                      <Link
-                        key={tool.slug}
-                        href={localizeHref(`/tools/${tool.slug}`, locale)}
-                        className="block rounded-lg border border-border bg-background/40 p-4 hover:bg-muted/40 transition-colors"
-                      >
-                        <span className="font-medium text-card-foreground">{tool.name}</span>
-                        <span className="mt-1 block text-sm text-muted-foreground">
-                          {tool.tagline}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
+            {/* The catalog: search, category tabs, every tool grouped. */}
+            <ToolCatalog tools={catalogTools} labels={catalogLabels} />
 
             {/* Privacy / file-handling */}
             <section

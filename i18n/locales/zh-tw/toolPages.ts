@@ -167,6 +167,135 @@ const zhTwToolPages = {
       ogTitle: 'Motion：在瀏覽器中為 SVG 製作動畫',
       ogDescription: '匯入或繪製 SVG，在關鍵影格時間軸上製作動畫，然後匯出為動態 SVG、Lottie JSON、React、JavaScript、Flutter 或 GIF。匯出在你的瀏覽器中製作。',
     },
+    // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
+    'inspect-metadata': {
+      name: '中繼資料檢視器',
+      tagline: '在分享之前，查看照片、影片、音訊檔案或 PDF 中隱藏的所有標籤：EXIF、GPS 位置、相機、編解碼器、ID3、XMP 等。',
+    },
+    'edit-image-metadata': {
+      name: '編輯圖片中繼資料',
+      tagline: '設定相片的標題、作者、著作權、關鍵字和說明，修正或移除其 GPS 位置，並重寫 EXIF 與 IPTC 標籤。',
+    },
+    'change-video-speed': {
+      name: '變更影片速度',
+      tagline: '以 2 倍、4 倍或更快的速度製作縮時影片，或將片段減速到 0.5 倍或 0.25 倍，音訊保持同步。',
+    },
+    'reverse-video': {
+      name: '影片倒轉',
+      tagline: '倒著播放任何片段，可選擇是否一併倒轉音訊，也可以做成先正播再倒播的往返效果。',
+    },
+    'flip-video': {
+      name: '翻轉與鏡像影片',
+      tagline: '一鍵將影片水平鏡像，修正反向的網路攝影機或自拍畫面，也可以垂直翻轉。',
+    },
+    'stabilize-video': {
+      name: '影片穩定',
+      tagline: '以雙遍穩定演算法消除手持晃動和走路時的彈跳，不需要腳架，也不需要桌面剪輯軟體。',
+    },
+    'change-video-frame-rate': {
+      name: '變更影片幀率',
+      tagline: '將影片轉換為 24、25、30 或 60 fps，把 60 fps 的片段降到 30 fps 以縮小檔案，或配合專案的幀率。',
+    },
+    'adjust-video-color': {
+      name: '調整影片亮度與色彩',
+      tagline: '提亮偏暗的片段，增加對比與飽和度，調整色相，或套用模糊與藝術效果，附滑桿與即時預覽。',
+    },
+    'convert-video-to-hevc': {
+      name: '將影片轉換為 HEVC（H.265）',
+      tagline: '將任何影片重新編碼為 H.265，在相同畫質下檔案大小約為 H.264 的一半，適合儲存、4K 與新款裝置。',
+    },
+    'convert-audio-to-wav': {
+      name: '將音訊轉換為 WAV',
+      tagline: '將 MP3、M4A、WAV、OGG、FLAC 等任何音訊檔案無損轉換為 WAV。',
+    },
+    'convert-audio-to-flac': {
+      name: '將音訊轉換為 FLAC',
+      tagline: '將 MP3、M4A、WAV、OGG、FLAC 等任何音訊檔案無損轉換為 FLAC。',
+    },
+    'convert-audio-to-ogg': {
+      name: '將音訊轉換為 OGG',
+      tagline: '將 MP3、M4A、WAV、OGG、FLAC 等任何音訊檔案依你選擇的位元率轉換為 OGG。',
+    },
+    'convert-audio-to-m4a': {
+      name: '將音訊轉換為 M4A / AAC',
+      tagline: '將 MP3、M4A、WAV、OGG、FLAC 等任何音訊檔案依你選擇的位元率轉換為 M4A / AAC。',
+    },
+    'convert-audio-to-opus': {
+      name: '將音訊轉換為 Opus',
+      tagline: '將 MP3、M4A、WAV、OGG、FLAC 等任何音訊檔案依你選擇的位元率轉換為 Opus。',
+    },
+    'convert-mp3-to-wav': {
+      name: '將 MP3 轉換為 WAV',
+      tagline: '將 MP3 轉換為未壓縮的 WAV，用於剪輯、取樣或燒錄 CD。',
+    },
+    'change-audio-speed': {
+      name: '變更音訊速度',
+      tagline: '把講座或 Podcast 加速到 1.5 倍，或把歌曲或錄音減速到 0.75 倍用於練習，音高保持不變。',
+    },
+    'change-audio-pitch': {
+      name: '變更音訊音高',
+      tagline: '以半音為單位移調，改變歌曲或錄音的調性、降低人聲或調整取樣音高，節奏保持不變。',
+    },
+    'normalize-audio': {
+      name: '音訊標準化',
+      tagline: '將音量偏小的錄音提升到一致的響度，讓 Podcast、語音備忘錄和混合播放清單以相同音量播放。',
+    },
+    'adjust-audio-volume': {
+      name: '調整音訊音量',
+      tagline: '依固定幅度調大或調小音訊音量，從 10% 到兩倍，或用放大滑桿以分貝調整。',
+    },
+    'audio-equalizer': {
+      name: '音訊等化器',
+      tagline: '套用低音增強、高音提升、人聲突顯或曲風預設，或設定低通與高通濾波器，然後下載結果。',
+    },
+    'add-reverb-to-audio': {
+      name: '為音訊加入殘響',
+      tagline: '為乾聲人聲或錄音加上房間、大廳、板式或彈簧殘響，或加入延遲或回音，然後下載結果。',
+    },
+    'trim-audio': {
+      name: '裁剪音訊',
+      tagline: '將 MP3、WAV 或任何錄音裁剪到指定的開始與結束時間，藉由波形選取時間點，只下載需要的部分。',
+    },
+    'transcribe-audio': {
+      name: '音訊轉文字',
+      tagline: '在我們自己的 GPU 伺服器上，以 AI 語音辨識將 MP3、WAV、M4A 或任何錄音轉換為文字、字幕或 JSON。',
+    },
+    'add-text-to-image': {
+      name: '為圖片加入文字',
+      tagline: '在相片上加入說明、標題或浮水印：選擇字型、大小、顏色、外框與位置，然後下載。',
+    },
+    'crop-image': {
+      name: '裁切圖片',
+      tagline: '在相片上拖曳出需要的區域，調整構圖，並以任何格式只下載該區域。',
+    },
+    'grayscale-image': {
+      name: '將圖片轉換為黑白',
+      tagline: '將彩色相片轉為灰階，或轉為復古色調的棕褐色，並以任何格式下載。',
+    },
+    'image-filters': {
+      name: '圖片濾鏡與特效',
+      tagline: '油畫、素描、炭筆、浮雕、復古、漩渦、模糊、銳利化等效果，一鍵套用到任何相片。',
+    },
+    'rotate-image': {
+      name: '旋轉圖片',
+      tagline: '將相片旋轉 90°、180° 或 270°，修正橫放的掃描檔或手機照片，並以任何格式下載。',
+    },
+    'sharpen-image': {
+      name: '銳利化圖片',
+      tagline: '一鍵銳利化，讓略微模糊的相片或掃描檔邊緣更清晰，並以任何格式下載。',
+    },
+    'blur-image': {
+      name: '模糊圖片',
+      tagline: '將整張相片柔化，用作背景、預留圖或隱私遮蔽，並以任何格式下載。',
+    },
+    'generate-vtt-captions': {
+      name: 'VTT 字幕產生器',
+      tagline: '在我們自己的 GPU 伺服器上，透過 AI 轉錄為 HTML5 影片、YouTube 或播放器建立 .vtt 字幕檔。',
+    },
+    'summarize-video': {
+      name: '影片摘要',
+      tagline: '在我們自己的 GPU 伺服器上，取得講座、會議或訪談的逐字稿和附時間戳記的結構化 JSON 分析。',
+    },
   },
 } as const;
 

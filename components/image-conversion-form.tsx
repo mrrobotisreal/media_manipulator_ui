@@ -105,7 +105,7 @@ const ImageConversionForm: React.FC<{
       quality: presets?.defaultQuality ?? 85,
       width: presets?.defaultWidth,
       height: presets?.defaultHeight,
-      filter: 'none' as const,
+      filter: (presets?.defaultFilter ?? 'none') as 'none',
       tint: '#000000',
       textOverlay: {
         text: '',
@@ -118,7 +118,7 @@ const ImageConversionForm: React.FC<{
         x: 0,
         y: 0,
       },
-      metadataMode: (presets?.defaultMetadataMode ?? 'keep') as 'keep' | 'strip',
+      metadataMode: (presets?.defaultMetadataMode ?? 'keep') as 'keep' | 'strip' | 'custom',
       metadata: {
         title: '',
         author: '',
@@ -393,6 +393,7 @@ const ImageConversionForm: React.FC<{
           cropStatus={getCropStatus()}
           lockedFormat={lockedFormat}
           emphasizeResize={presets?.emphasizeResize}
+          emphasis={presets?.effect === 'crop' || presets?.effect === 'filter' ? presets.effect : undefined}
         />
 
         {selectedFormat === 'svg' && (
@@ -774,7 +775,10 @@ const ImageConversionForm: React.FC<{
           )}
         </div>
 
-        <div className="border border-edge rounded-lg p-4 space-y-4">
+        <div
+          className={`border border-edge rounded-lg p-4 space-y-4${presets?.effect === 'text' ? ' ring-2 ring-primary' : ''}`}
+          data-emphasis={presets?.effect === 'text' ? 'text' : undefined}
+        >
           <h3 className="font-medium text-card-foreground flex items-center gap-2">
             {t('interface:imageForm.textOverlay.title')}
             <InfoTooltip

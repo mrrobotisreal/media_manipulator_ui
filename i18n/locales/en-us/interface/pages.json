@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Darkroom tutorial",
     "howItWorks": "How it works",
     "svgAnimationEditor": "SVG animation editor",
-    "motionTutorial": "Motion tutorial"
+    "motionTutorial": "Motion tutorial",
+    "searchPlaceholder": "Search tools (e.g. “mp3 to wav”, “crop”, “captions”)",
+    "searchAriaLabel": "Search tools",
+    "showingCount": "Showing {{count}} of {{total}} tools",
+    "categoriesAriaLabel": "Tool categories",
+    "allCategories": "All",
+    "noResults": "No tools match “{{query}}”. Try a format name, like “webp”, or an action, like “trim”.",
+    "popular": "Popular",
+    "groups": {
+      "edit": "Edit",
+      "convert": "Convert",
+      "ai": "AI tools",
+      "privacy": "Privacy",
+      "editor": "Editors"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Breadcrumb",

@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "מדריך Darkroom",
     "howItWorks": "איך זה עובד",
     "svgAnimationEditor": "עורך הנפשת SVG",
-    "motionTutorial": "מדריך Motion"
+    "motionTutorial": "מדריך Motion",
+    "searchPlaceholder": "חיפוש כלים (למשל “mp3 ל-wav”, “חיתוך”, “כתוביות”)",
+    "searchAriaLabel": "חיפוש כלים",
+    "showingCount": "מוצגים {{count}} מתוך {{total}} כלים",
+    "categoriesAriaLabel": "קטגוריות כלים",
+    "allCategories": "הכול",
+    "noResults": "אין כלים שתואמים ל-“{{query}}”. נסו שם פורמט, כמו “webp”, או פעולה, כמו “חיתוך”.",
+    "popular": "פופולרי",
+    "groups": {
+      "edit": "עריכה",
+      "convert": "המרה",
+      "ai": "כלי AI",
+      "privacy": "פרטיות",
+      "editor": "עורכים"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "פירורי לחם",

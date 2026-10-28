@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Tutorial do Darkroom",
     "howItWorks": "Como funciona",
     "svgAnimationEditor": "Editor de animação SVG",
-    "motionTutorial": "Tutorial do Motion"
+    "motionTutorial": "Tutorial do Motion",
+    "searchPlaceholder": "Pesquisar ferramentas (p. ex. «mp3 para wav», «recortar», «legendas»)",
+    "searchAriaLabel": "Pesquisar ferramentas",
+    "showingCount": "A mostrar {{count}} de {{total}} ferramentas",
+    "categoriesAriaLabel": "Categorias de ferramentas",
+    "allCategories": "Todas",
+    "noResults": "Nenhuma ferramenta corresponde a «{{query}}». Experimente o nome de um formato, como «webp», ou uma ação, como «cortar».",
+    "popular": "Popular",
+    "groups": {
+      "edit": "Editar",
+      "convert": "Converter",
+      "ai": "Ferramentas de IA",
+      "privacy": "Privacidade",
+      "editor": "Editores"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Navegação estrutural",

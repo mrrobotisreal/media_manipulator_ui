@@ -14,17 +14,19 @@ import type {
   EmbeddedExtractAudioFormat,
   EmbeddedVideoCompressionPreset,
   EmbeddedVideoCodec,
+  AudioEffectEmphasis,
+  AudioEffectDefaults,
+  VideoEffectEmphasis,
+  VideoEffectDefaults,
+  ImageEffectEmphasis,
 } from '@/components/embedded-tool-panel';
 import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 
-/**
- * The one retention sentence used across every tool entry (MM26). English only: non-English tool
- * copy comes from the `common.retentionPromiseShort` i18n key, never from this constant. Keep it
- * in step with that key. Interpolated with no trailing period; callers add their own.
- */
-export const RETENTION_PROMISE =
-  'Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years';
+import { RETENTION_PROMISE } from '@/content/retentionPromise';
+import { CATALOG_TOOL_PAGES } from '@/content/toolPagesCatalog';
+
+export { RETENTION_PROMISE } from '@/content/retentionPromise';
 
 export interface ToolFaq {
   question: string;
@@ -89,7 +91,12 @@ export type EmbedPreset =
       /** Render the target-FPS picker before the other AI options. */
       fpsPickerOnTop?: boolean;
     }
-  | { kind: 'video'; panel: 'video_compressor' };
+  | { kind: 'video'; panel: 'video_compressor' }
+  // Catalog expansion (2026-10-28): the converter forms open on, and highlight,
+  // the one section the page is about, with that section's values seeded.
+  | { kind: 'audio_effect'; effect: AudioEffectEmphasis; defaults?: AudioEffectDefaults }
+  | { kind: 'video_effect'; effect: VideoEffectEmphasis; defaults?: VideoEffectDefaults }
+  | { kind: 'image_effect'; effect: ImageEffectEmphasis; filter?: string };
 
 export interface ToolPageContent {
   /** Path slug under /tools, e.g. "remove-exif-metadata" -> /tools/remove-exif-metadata */
@@ -8587,6 +8594,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'handwriting OCR online',
     ],
   },
+  // Catalog expansion (2026-10-28): converter features and format pairs that
+  // were only reachable from the home page. Defined in content/toolPagesCatalog.ts.
+  ...CATALOG_TOOL_PAGES,
 ];
 
 export const TOOL_PAGE_MAP: Record<string, ToolPageContent> = TOOL_PAGES.reduce(

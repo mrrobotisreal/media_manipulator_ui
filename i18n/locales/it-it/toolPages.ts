@@ -166,6 +166,135 @@ const itToolPages = {
       ogTitle: 'Motion: anima SVG nel tuo browser',
       ogDescription: 'Importa un SVG o disegnalo, animalo su una timeline a fotogrammi chiave ed esporta SVG animato, Lottie JSON, React, JavaScript, Flutter o GIF. Le esportazioni vengono create nel tuo browser.',
     },
+    // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
+    'inspect-metadata': {
+      name: 'Ispettore di metadati',
+      tagline: 'Scopri ogni tag nascosto in una foto, un video, un file audio o un PDF: EXIF, posizione GPS, fotocamera, codec, ID3, XMP e altro, prima di condividerlo.',
+    },
+    'edit-image-metadata': {
+      name: 'Modifica i metadati di un\'immagine',
+      tagline: 'Imposta titolo, autore, copyright, parole chiave e descrizione di una foto, correggi o rimuovi la sua posizione GPS e riscrivi i tag EXIF e IPTC.',
+    },
+    'change-video-speed': {
+      name: 'Cambia la velocità del video',
+      tagline: 'Crea un time-lapse a 2x, 4x o più, oppure rallenta una clip a 0,5x o 0,25x, con l\'audio sempre sincronizzato.',
+    },
+    'reverse-video': {
+      name: 'Inverti video',
+      tagline: 'Riproduci qualsiasi clip al contrario, con o senza l\'audio invertito, e se vuoi in modalità ping-pong, prima avanti e poi indietro.',
+    },
+    'flip-video': {
+      name: 'Capovolgi e specchia video',
+      tagline: 'Specchia un video in orizzontale per correggere una webcam o un selfie invertiti, oppure capovolgilo in verticale, con un clic.',
+    },
+    'stabilize-video': {
+      name: 'Stabilizza video',
+      tagline: 'Attenua il tremolio delle riprese a mano e il rimbalzo del camminare con uno stabilizzatore a due passaggi, senza treppiede né editor desktop.',
+    },
+    'change-video-frame-rate': {
+      name: 'Cambia il frame rate del video',
+      tagline: 'Converti un video a 24, 25, 30 o 60 fps, porta una clip da 60 a 30 fps per ottenere un file più piccolo, oppure adattalo al frame rate del tuo progetto.',
+    },
+    'adjust-video-color': {
+      name: 'Regola luminosità e colori del video',
+      tagline: 'Schiarisci una clip scura, aggiungi contrasto e saturazione, cambia la tonalità oppure applica una sfocatura o un look artistico, con cursori e anteprima in tempo reale.',
+    },
+    'convert-video-to-hevc': {
+      name: 'Converti video in HEVC (H.265)',
+      tagline: 'Ricodifica qualsiasi video in H.265 per ottenere circa metà delle dimensioni dell\'H.264 a parità di qualità, ideale per archiviazione, 4K e dispositivi moderni.',
+    },
+    'convert-audio-to-wav': {
+      name: 'Converti audio in WAV',
+      tagline: 'Trasforma MP3, M4A, WAV, OGG, FLAC e qualsiasi altro file audio in WAV senza perdere nulla.',
+    },
+    'convert-audio-to-flac': {
+      name: 'Converti audio in FLAC',
+      tagline: 'Trasforma MP3, M4A, WAV, OGG, FLAC e qualsiasi altro file audio in FLAC senza perdere nulla.',
+    },
+    'convert-audio-to-ogg': {
+      name: 'Converti audio in OGG',
+      tagline: 'Trasforma MP3, M4A, WAV, OGG, FLAC e qualsiasi altro file audio in OGG con il bitrate che scegli.',
+    },
+    'convert-audio-to-m4a': {
+      name: 'Converti audio in M4A / AAC',
+      tagline: 'Trasforma MP3, M4A, WAV, OGG, FLAC e qualsiasi altro file audio in M4A / AAC con il bitrate che scegli.',
+    },
+    'convert-audio-to-opus': {
+      name: 'Converti audio in Opus',
+      tagline: 'Trasforma MP3, M4A, WAV, OGG, FLAC e qualsiasi altro file audio in Opus con il bitrate che scegli.',
+    },
+    'convert-mp3-to-wav': {
+      name: 'Converti MP3 in WAV',
+      tagline: 'Trasforma un MP3 in un WAV non compresso per modificarlo, campionarlo o masterizzarlo su CD.',
+    },
+    'change-audio-speed': {
+      name: 'Cambia la velocità dell\'audio',
+      tagline: 'Accelera una lezione o un podcast a 1,5x, oppure rallenta un brano o una registrazione a 0,75x per esercitarti, senza cambiare l\'intonazione.',
+    },
+    'change-audio-pitch': {
+      name: 'Cambia l\'intonazione dell\'audio',
+      tagline: 'Sposta un brano o una registrazione di semitoni per cambiarne la tonalità, abbassare una voce o accordare un campione, mantenendo lo stesso tempo.',
+    },
+    'normalize-audio': {
+      name: 'Normalizza audio',
+      tagline: 'Porta una registrazione troppo bassa a un volume uniforme, così podcast, memo vocali e playlist miste vengono riprodotti allo stesso livello.',
+    },
+    'adjust-audio-volume': {
+      name: 'Regola il volume dell\'audio',
+      tagline: 'Rendi un file audio più forte o più piano di un valore fisso, dal 10 percento al doppio, oppure in decibel con il cursore di amplificazione.',
+    },
+    'audio-equalizer': {
+      name: 'Equalizzatore audio',
+      tagline: 'Applica un potenziamento dei bassi, un aumento degli alti, la presenza vocale o un preset per genere, oppure imposta filtri passa-basso e passa-alto, e scarica il risultato.',
+    },
+    'add-reverb-to-audio': {
+      name: 'Aggiungi riverbero all\'audio',
+      tagline: 'Inserisci una voce o una registrazione asciutta in una stanza, una sala, un riverbero a piastra o a molla, oppure aggiungi un delay o un eco, e scarica il risultato.',
+    },
+    'trim-audio': {
+      name: 'Taglia audio',
+      tagline: 'Taglia un MP3, un WAV o qualsiasi registrazione tra un tempo di inizio e uno di fine, con una forma d\'onda per scegliere i punti, e scarica solo quella parte.',
+    },
+    'transcribe-audio': {
+      name: 'Trascrivi audio',
+      tagline: 'Trasforma un MP3, WAV, M4A o qualsiasi registrazione in testo, sottotitoli o JSON con il riconoscimento vocale basato su IA sui nostri server GPU.',
+    },
+    'add-text-to-image': {
+      name: 'Aggiungi testo a un\'immagine',
+      tagline: 'Inserisci una didascalia, un titolo o una filigrana su una foto: scegli carattere, dimensione, colore, contorno e posizione, e scarica.',
+    },
+    'crop-image': {
+      name: 'Ritaglia immagine',
+      tagline: 'Trascina un riquadro sulla parte della foto che vuoi, raddrizza l\'inquadratura e scarica solo quella regione in qualsiasi formato.',
+    },
+    'grayscale-image': {
+      name: 'Converti immagine in bianco e nero',
+      tagline: 'Trasforma una foto a colori in scala di grigi, oppure in seppia per un tono vintage, e scaricala in qualsiasi formato.',
+    },
+    'image-filters': {
+      name: 'Filtri ed effetti per immagini',
+      tagline: 'Pittura a olio, schizzo, carboncino, rilievo, vintage, vortice, sfocatura, nitidezza e altro ancora, applicati a qualsiasi foto con un clic.',
+    },
+    'rotate-image': {
+      name: 'Ruota immagine',
+      tagline: 'Ruota una foto di 90°, 180° o 270°, correggi una scansione o una foto del telefono di traverso, e scaricala in qualsiasi formato.',
+    },
+    'sharpen-image': {
+      name: 'Aumenta la nitidezza dell\'immagine',
+      tagline: 'Fai risaltare i contorni di una foto o di una scansione leggermente morbida con una nitidezza in un clic, e scarica in qualsiasi formato.',
+    },
+    'blur-image': {
+      name: 'Sfoca immagine',
+      tagline: 'Ammorbidisci un\'intera foto per uno sfondo, un segnaposto o uno schermo di privacy, e scaricala in qualsiasi formato.',
+    },
+    'generate-vtt-captions': {
+      name: 'Generatore di sottotitoli VTT',
+      tagline: 'Crea un file di sottotitoli .vtt per video HTML5, YouTube o un lettore con trascrizione basata su IA sui nostri server GPU.',
+    },
+    'summarize-video': {
+      name: 'Riassumi video',
+      tagline: 'Ottieni la trascrizione e un\'analisi JSON strutturata di una lezione, una riunione o un\'intervista, con i timestamp, sui nostri server GPU.',
+    },
   },
 } as const;
 

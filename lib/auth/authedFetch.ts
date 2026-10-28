@@ -14,7 +14,7 @@
 import { getCurrentIdToken } from '@/lib/firebase';
 import { getSessionId } from '@/lib/analytics';
 import { fileTooLargeRefusal, isLimitRefusal, isQuotaExceeded, readQuotaHeaders, type QuotaExceeded } from './accountApi';
-import { publishLimitRefusal, publishQuotaExceeded, publishQuotaState } from './quotaBus';
+import { publishLimitRefusal, publishQuotaExceeded, publishQuotaRefund, publishQuotaState } from './quotaBus';
 
 /**
  * Thrown for a 429 from the quota middleware, carrying the server's structured
@@ -84,7 +84,7 @@ export async function authedFetch(
   }
 
   const response = await fetch(input, { ...rest, headers: merged });
-  publishQuotaState(readQuotaHeaders(response));
+  noteQuotaResponse(response);
 
   if (response.status === 429) {
     // Clone so the caller can still read the body if it wants to.
@@ -121,7 +121,26 @@ export async function authedFetch(
   return response;
 }
 
+/**
+ * Harvests what a gated response says about the allowance.
+ *
+ * A 2xx (and the 429) carry accurate X-MM-Quota-* headers. Any other refusal
+ * from a gated route is refunded by the API after the headers were written
+ * (the quota middleware spends first and gives back on a 4xx/5xx), so those
+ * headers overstate usage by one. They are discarded and the meter re-reads
+ * the snapshot instead.
+ */
+function noteQuotaResponse(response: Response): void {
+  const state = readQuotaHeaders(response);
+  if (!state) return;
+  if (response.ok || response.status === 429) {
+    publishQuotaState(state);
+    return;
+  }
+  publishQuotaRefund();
+}
+
 /** Records quota headers from a response fetched without authedFetch. */
 export function observeQuotaHeaders(response: Response): void {
-  publishQuotaState(readQuotaHeaders(response));
+  noteQuotaResponse(response);
 }

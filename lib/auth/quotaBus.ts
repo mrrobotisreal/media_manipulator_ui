@@ -94,3 +94,31 @@ export function subscribeLimitRefusal(listener: LimitListener): () => void {
     limitListeners.delete(listener);
   };
 }
+
+type RefundListener = () => void;
+const refundListeners = new Set<RefundListener>();
+
+/**
+ * Announces that the server gave an allowance unit back: a request it refused
+ * after the quota middleware ran (oversized file, over-limit source, unsupported
+ * type) or a job that failed. The quota headers on such a response were written
+ * BEFORE the refund and are stale, so they are not published; subscribers drop
+ * what they observed and re-read /api/account/usage instead.
+ */
+export function publishQuotaRefund(): void {
+  latest = null;
+  refundListeners.forEach((listener) => {
+    try {
+      listener();
+    } catch {
+      // A broken subscriber must never break the request that triggered it.
+    }
+  });
+}
+
+export function subscribeQuotaRefund(listener: RefundListener): () => void {
+  refundListeners.add(listener);
+  return () => {
+    refundListeners.delete(listener);
+  };
+}

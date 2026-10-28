@@ -167,6 +167,135 @@ const viToolPages = {
       ogTitle: 'Motion: Tạo hoạt ảnh SVG trong trình duyệt của bạn',
       ogDescription: 'Nhập hoặc vẽ một SVG, tạo hoạt ảnh trên dòng thời gian keyframe và xuất thành SVG động, Lottie JSON, React, JavaScript, Flutter hoặc GIF. Bản xuất được tạo trong trình duyệt của bạn.',
     },
+    // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
+    'inspect-metadata': {
+      name: 'Trình kiểm tra siêu dữ liệu',
+      tagline: 'Xem mọi thẻ ẩn trong ảnh, video, tệp âm thanh hoặc PDF: EXIF, vị trí GPS, máy ảnh, codec, ID3, XMP và nhiều hơn nữa, trước khi bạn chia sẻ.',
+    },
+    'edit-image-metadata': {
+      name: 'Chỉnh sửa siêu dữ liệu ảnh',
+      tagline: 'Đặt tiêu đề, tác giả, bản quyền, từ khóa và mô tả cho ảnh, sửa hoặc xóa vị trí GPS, và ghi lại các thẻ EXIF và IPTC.',
+    },
+    'change-video-speed': {
+      name: 'Đổi tốc độ video',
+      tagline: 'Tạo video time-lapse ở 2x, 4x hoặc nhanh hơn, hoặc làm chậm clip xuống 0,5x hoặc 0,25x, âm thanh vẫn đồng bộ.',
+    },
+    'reverse-video': {
+      name: 'Đảo ngược video',
+      tagline: 'Phát bất kỳ clip nào theo chiều ngược lại, có hoặc không đảo ngược âm thanh, và tùy chọn phát tiến rồi lùi (ping-pong).',
+    },
+    'flip-video': {
+      name: 'Lật và phản chiếu video',
+      tagline: 'Phản chiếu video theo chiều ngang để sửa webcam hoặc ảnh selfie bị ngược, hoặc lật theo chiều dọc, chỉ với một cú nhấp.',
+    },
+    'stabilize-video': {
+      name: 'Ổn định video',
+      tagline: 'Làm mượt rung tay và độ nảy khi đi bộ bằng bộ ổn định hai lượt, không cần chân máy hay phần mềm chỉnh sửa trên máy tính.',
+    },
+    'change-video-frame-rate': {
+      name: 'Đổi tốc độ khung hình video',
+      tagline: 'Chuyển video sang 24, 25, 30 hoặc 60 fps, hạ clip 60 fps xuống 30 để có tệp nhỏ hơn, hoặc khớp với tốc độ khung hình của dự án.',
+    },
+    'adjust-video-color': {
+      name: 'Chỉnh độ sáng và màu video',
+      tagline: 'Làm sáng clip tối, tăng độ tương phản và độ bão hòa, dịch sắc độ, hoặc áp dụng hiệu ứng làm mờ hay phong cách nghệ thuật, với thanh trượt và xem trước trực tiếp.',
+    },
+    'convert-video-to-hevc': {
+      name: 'Chuyển video sang HEVC (H.265)',
+      tagline: 'Mã hóa lại bất kỳ video nào sang H.265 để có dung lượng chỉ bằng khoảng một nửa H.264 ở cùng chất lượng, phù hợp để lưu trữ, 4K và thiết bị hiện đại.',
+    },
+    'convert-audio-to-wav': {
+      name: 'Chuyển âm thanh sang WAV',
+      tagline: 'Chuyển MP3, M4A, WAV, OGG, FLAC và mọi tệp âm thanh khác sang WAV mà không mất gì.',
+    },
+    'convert-audio-to-flac': {
+      name: 'Chuyển âm thanh sang FLAC',
+      tagline: 'Chuyển MP3, M4A, WAV, OGG, FLAC và mọi tệp âm thanh khác sang FLAC mà không mất gì.',
+    },
+    'convert-audio-to-ogg': {
+      name: 'Chuyển âm thanh sang OGG',
+      tagline: 'Chuyển MP3, M4A, WAV, OGG, FLAC và mọi tệp âm thanh khác sang OGG với bitrate bạn chọn.',
+    },
+    'convert-audio-to-m4a': {
+      name: 'Chuyển âm thanh sang M4A / AAC',
+      tagline: 'Chuyển MP3, M4A, WAV, OGG, FLAC và mọi tệp âm thanh khác sang M4A / AAC với bitrate bạn chọn.',
+    },
+    'convert-audio-to-opus': {
+      name: 'Chuyển âm thanh sang Opus',
+      tagline: 'Chuyển MP3, M4A, WAV, OGG, FLAC và mọi tệp âm thanh khác sang Opus với bitrate bạn chọn.',
+    },
+    'convert-mp3-to-wav': {
+      name: 'Chuyển MP3 sang WAV',
+      tagline: 'Biến tệp MP3 thành WAV không nén để chỉnh sửa, lấy mẫu hoặc ghi ra đĩa CD.',
+    },
+    'change-audio-speed': {
+      name: 'Đổi tốc độ âm thanh',
+      tagline: 'Tăng tốc bài giảng hoặc podcast lên 1,5x, hoặc làm chậm bài hát hay bản ghi âm xuống 0,75x để luyện tập, mà không đổi cao độ.',
+    },
+    'change-audio-pitch': {
+      name: 'Đổi cao độ âm thanh',
+      tagline: 'Dịch bài hát hoặc bản ghi âm theo nửa cung để đổi tông, hạ giọng hát hoặc chỉnh một mẫu âm, giữ nguyên nhịp độ.',
+    },
+    'normalize-audio': {
+      name: 'Chuẩn hóa âm thanh',
+      tagline: 'Đưa bản ghi nhỏ tiếng lên mức âm lượng đồng đều, để podcast, ghi chú giọng nói và danh sách phát hỗn hợp đều phát ở cùng mức.',
+    },
+    'adjust-audio-volume': {
+      name: 'Chỉnh âm lượng',
+      tagline: 'Làm tệp âm thanh to hơn hoặc nhỏ hơn một lượng cố định, từ 10 phần trăm đến gấp đôi, hoặc theo decibel bằng thanh khuếch đại.',
+    },
+    'audio-equalizer': {
+      name: 'Bộ cân bằng âm thanh',
+      tagline: 'Áp dụng tăng âm trầm, nâng âm cao, làm nổi giọng hát hoặc cài đặt sẵn theo thể loại, hoặc đặt bộ lọc thông thấp và thông cao, rồi tải kết quả về.',
+    },
+    'add-reverb-to-audio': {
+      name: 'Thêm hiệu ứng vang vào âm thanh',
+      tagline: 'Đặt giọng hát khô hoặc bản ghi vào phòng, đại sảnh, vang tấm hoặc vang lò xo, hoặc thêm độ trễ hay tiếng vọng, rồi tải kết quả về.',
+    },
+    'trim-audio': {
+      name: 'Cắt âm thanh',
+      tagline: 'Cắt MP3, WAV hoặc bất kỳ bản ghi nào theo thời gian bắt đầu và kết thúc, có dạng sóng để chọn điểm, và chỉ tải phần đó về.',
+    },
+    'transcribe-audio': {
+      name: 'Chuyển âm thanh thành văn bản',
+      tagline: 'Chuyển MP3, WAV, M4A hoặc bất kỳ bản ghi nào thành văn bản, phụ đề hoặc JSON bằng nhận dạng giọng nói AI trên máy chủ GPU của chúng tôi.',
+    },
+    'add-text-to-image': {
+      name: 'Thêm chữ vào ảnh',
+      tagline: 'Đặt chú thích, tiêu đề hoặc hình mờ lên ảnh: chọn phông chữ, cỡ chữ, màu, viền và vị trí, rồi tải về.',
+    },
+    'crop-image': {
+      name: 'Cắt ảnh',
+      tagline: 'Kéo một khung lên phần ảnh bạn muốn, chỉnh lại bố cục, và chỉ tải vùng đó về ở bất kỳ định dạng nào.',
+    },
+    'grayscale-image': {
+      name: 'Chuyển ảnh sang đen trắng',
+      tagline: 'Biến ảnh màu thành thang xám, hoặc sepia cho tông màu cổ điển, và tải về ở bất kỳ định dạng nào.',
+    },
+    'image-filters': {
+      name: 'Bộ lọc và hiệu ứng ảnh',
+      tagline: 'Tranh sơn dầu, phác họa, than chì, nổi khối, cổ điển, xoáy, làm mờ, làm nét và hơn thế nữa, áp dụng cho bất kỳ ảnh nào chỉ với một cú nhấp.',
+    },
+    'rotate-image': {
+      name: 'Xoay ảnh',
+      tagline: 'Xoay ảnh 90°, 180° hoặc 270°, sửa ảnh quét hoặc ảnh điện thoại bị nằm ngang, và tải về ở bất kỳ định dạng nào.',
+    },
+    'sharpen-image': {
+      name: 'Làm nét ảnh',
+      tagline: 'Làm rõ các cạnh của ảnh hoặc bản quét hơi mềm chỉ với một cú nhấp làm nét, và tải về ở bất kỳ định dạng nào.',
+    },
+    'blur-image': {
+      name: 'Làm mờ ảnh',
+      tagline: 'Làm mềm toàn bộ ảnh để dùng làm nền, ảnh giữ chỗ hoặc lớp che riêng tư, và tải về ở bất kỳ định dạng nào.',
+    },
+    'generate-vtt-captions': {
+      name: 'Trình tạo phụ đề VTT',
+      tagline: 'Tạo tệp phụ đề .vtt cho video HTML5, YouTube hoặc trình phát bằng phiên âm AI trên máy chủ GPU của chúng tôi.',
+    },
+    'summarize-video': {
+      name: 'Tóm tắt video',
+      tagline: 'Nhận bản ghi lời thoại và phân tích JSON có cấu trúc, kèm mốc thời gian, của bài giảng, cuộc họp hoặc buổi phỏng vấn, trên máy chủ GPU của chúng tôi.',
+    },
   },
 } as const;
 

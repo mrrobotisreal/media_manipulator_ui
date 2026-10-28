@@ -47,6 +47,7 @@ import {
   resetQuotaState,
   subscribeLimitRefusal,
   subscribeQuotaExceeded,
+  subscribeQuotaRefund,
   subscribeQuotaState,
 } from './quotaBus';
 import type { InterstitialDetail } from '@/components/account/upgrade-interstitial';
@@ -180,6 +181,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => subscribeQuotaState(setObserved), []);
+
+  // The API refunded a unit (a refused request, a failed job). The headers
+  // observed so far overstate usage, so they are dropped and the snapshot is
+  // re-read: the meter must never show a failed job as spent.
+  useEffect(
+    () =>
+      subscribeQuotaRefund(() => {
+        setObserved(null);
+        void queryClient.invalidateQueries({ queryKey: ['account-snapshot'] });
+      }),
+    [queryClient],
+  );
 
   // MM33 frequency caps: one interstitial per distinct limit per session, never stacked on
   // another one that is already open. (The sign-up panel is a different surface and the 429

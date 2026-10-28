@@ -80,12 +80,35 @@ describe('page entries', () => {
     expect(page('compress-video').embed.preset).toEqual({ kind: 'video', panel: 'video_compressor' });
   });
 
-  it('only the four MM27 pages plus the three MM28 audio pages carry a preset', () => {
-    const slugs = TOOL_PAGES.filter((t) => t.embed.preset).map((t) => t.slug).sort();
-    expect(slugs).toEqual([
+  it('the four MM27 pages plus the three MM28 audio pages carry the original preset kinds', () => {
+    // The 2026-10-28 catalog expansion added `audio_effect` / `video_effect` /
+    // `image_effect` presets (and one more `video` panel preset, HEVC); those
+    // are checked separately below so this list stays the MM27/MM28 contract.
+    const original = TOOL_PAGES.filter(
+      (t) => t.embed.preset && (t.embed.preset.kind === 'metadata' || t.embed.preset.kind === 'audio' || (t.embed.preset.kind === 'video' && t.slug !== 'convert-video-to-hevc')),
+    ).map((t) => t.slug).sort();
+    expect(original).toEqual([
       'ai-frame-interpolation', 'clean-voice-audio', 'compress-video', 'isolate-vocals-from-song',
       'remove-background-noise', 'remove-exif-metadata', 'remove-vocals-from-song',
     ]);
+  });
+
+  it('every effect preset names a section the form can open, and its page is in the right category', () => {
+    const effectPages = TOOL_PAGES.filter((t) => t.embed.preset && /_effect$/.test(t.embed.preset.kind));
+    expect(effectPages.length).toBeGreaterThanOrEqual(20);
+    for (const p of effectPages) {
+      const preset = p.embed.preset!;
+      if (preset.kind === 'audio_effect') {
+        expect(p.embed.defaultMediaKind, p.slug).toBe('audio');
+        expect(['speed', 'volume', 'pitch', 'normalize', 'equalizer', 'reverb', 'trim']).toContain(preset.effect);
+      } else if (preset.kind === 'video_effect') {
+        expect(p.embed.defaultMediaKind, p.slug).toBe('video');
+        expect(['speed', 'reverse', 'flip', 'stabilize', 'frameRate', 'color']).toContain(preset.effect);
+      } else if (preset.kind === 'image_effect') {
+        expect(p.embed.defaultMediaKind, p.slug).toBe('image');
+        expect(['text', 'crop', 'filter', 'metadata']).toContain(preset.effect);
+      }
+    }
   });
 
   it('keeps every former per-task recommended format on its page', () => {

@@ -20,15 +20,20 @@ const ConversionOptions: React.FC<{
   lockedVideoFormat?: EmbeddedVideoFormat;
   /** When true (image), visually highlight the width/height controls. */
   emphasizeResize?: boolean;
-}> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus, lockedFormat, lockedVideoFormat, emphasizeResize }) => {
+  /** When set (audio), the output-format select is locked to this value. */
+  lockedAudioFormat?: string;
+  /** Highlight one block (the page's subject): image crop/filter, video speed, audio speed/volume/trim. */
+  emphasis?: 'crop' | 'filter' | 'speed' | 'volume' | 'trim';
+}> = ({ fileType, control, onCropClick, onTrimClick, cropStatus, trimStatus, lockedFormat, lockedVideoFormat, emphasizeResize, lockedAudioFormat, emphasis }) => {
   const { t } = useLocalization('interface');
+  const ring = (key: NonNullable<typeof emphasis>) => (emphasis === key ? ' ring-2 ring-primary' : '');
 
   if (fileType === 'image') {
     return (
       <div className="space-y-4">
         {/* Crop Button */}
         {onCropClick && (
-          <div className="border border-edge rounded-lg p-4">
+          <div className={`border border-edge rounded-lg p-4${ring('crop')}`} data-emphasis={emphasis === 'crop' ? 'crop' : undefined}>
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium text-card-foreground flex items-center gap-2">
@@ -181,7 +186,7 @@ const ConversionOptions: React.FC<{
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
+          <div className={emphasis === 'filter' ? 'rounded-lg ring-2 ring-primary p-2' : undefined} data-emphasis={emphasis === 'filter' ? 'filter' : undefined}>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.image.filter.label')}
               <InfoTooltip
@@ -246,6 +251,7 @@ const ConversionOptions: React.FC<{
         onTrimClick={onTrimClick}
         trimStatus={trimStatus}
         lockedFormat={lockedVideoFormat}
+        emphasizeSpeed={emphasis === 'speed'}
       />
     );
   }
@@ -255,7 +261,7 @@ const ConversionOptions: React.FC<{
       <div className="space-y-4">
         {/* Trim Button */}
         {onTrimClick && (
-          <div className="border border-edge rounded-lg p-4">
+          <div className={`border border-edge rounded-lg p-4${ring('trim')}`} data-emphasis={emphasis === 'trim' ? 'trim' : undefined}>
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium text-card-foreground flex items-center gap-2">
@@ -294,14 +300,27 @@ const ConversionOptions: React.FC<{
               name="format"
               control={control}
               render={({ field }) => (
-                <select {...field} className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring">
+                <select
+                  {...field}
+                  disabled={Boolean(lockedAudioFormat)}
+                  aria-disabled={Boolean(lockedAudioFormat)}
+                  className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground focus:ring-2 focus:ring-ring disabled:opacity-60 disabled:cursor-not-allowed"
+                >
                   <option value="mp3">MP3</option>
                   <option value="wav">WAV</option>
                   <option value="aac">AAC</option>
                   <option value="ogg">OGG</option>
+                  <option value="flac">FLAC</option>
+                  <option value="opus">OPUS</option>
+                  <option value="alac">ALAC</option>
                 </select>
               )}
             />
+            {lockedAudioFormat && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                {t('conversionOptions.image.format.locked', { format: lockedAudioFormat.toUpperCase() })}
+              </p>
+            )}
           </div>
           <div>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
@@ -327,7 +346,7 @@ const ConversionOptions: React.FC<{
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
+          <div className={emphasis === 'speed' ? 'rounded-lg ring-2 ring-primary p-2' : undefined} data-emphasis={emphasis === 'speed' ? 'speed' : undefined}>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.audio.speed.label')}
               <InfoTooltip
@@ -355,7 +374,7 @@ const ConversionOptions: React.FC<{
               )}
             />
           </div>
-          <div>
+          <div className={emphasis === 'volume' ? 'rounded-lg ring-2 ring-primary p-2' : undefined} data-emphasis={emphasis === 'volume' ? 'volume' : undefined}>
             <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
               {t('conversionOptions.audio.volume.label')}
               <InfoTooltip
@@ -397,13 +416,15 @@ interface VideoConversionOptionsProps {
   trimStatus?: string;
   /** When set, the output-format select is locked to this value. */
   lockedFormat?: EmbeddedVideoFormat;
+  /** Highlight the playback-speed control (the change-video-speed page). */
+  emphasizeSpeed?: boolean;
 }
 
 // VideoConversionOptions lives in its own component so we can call useWatch
 // without breaking the rules of hooks when the parent renders a different
 // fileType branch. It also keeps the GIF-only fields close to the format
 // dropdown that gates them.
-const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control, onTrimClick, trimStatus, lockedFormat }) => {
+const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control, onTrimClick, trimStatus, lockedFormat, emphasizeSpeed }) => {
   const { t } = useLocalization('interface');
   const format = useWatch({ control, name: 'format' });
   const isGIF = format === 'gif';
@@ -555,7 +576,7 @@ const VideoConversionOptions: React.FC<VideoConversionOptionsProps> = ({ control
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
+        <div className={emphasizeSpeed ? 'rounded-lg ring-2 ring-primary p-2' : undefined} data-emphasis={emphasizeSpeed ? 'speed' : undefined}>
           <label className="text-sm font-medium mb-1 text-card-foreground flex items-center gap-2">
             {t('conversionOptions.video.speed.label')}
             <InfoTooltip

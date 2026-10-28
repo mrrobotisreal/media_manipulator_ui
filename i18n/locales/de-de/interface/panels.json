@@ -1132,5 +1132,11 @@
         }
       }
     }
+  },
+  "metadataInspectPanel": {
+    "dragDrop": "Ziehen Sie eine Bild-, Video-, Audio- oder PDF-Datei hierher",
+    "hint": "oder klicken Sie, um eine Datei auszuwählen. Die Datei wird nur für ihre Metadaten gelesen und nach der Analyse gelöscht; nichts wird konvertiert.",
+    "largeFile": "Dateien über {{size}} werden nur auf Anfrage geprüft, damit ein großes Video nicht versehentlich hochgeladen wird.",
+    "failed": "Die Datei konnte nicht geprüft werden. Möglicherweise wird der Typ nicht unterstützt oder die Datei ist für Ihren Tarif zu groß."
   }
 }

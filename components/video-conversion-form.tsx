@@ -36,12 +36,13 @@ const VideoConversionForm: React.FC<{
   const lockedFormat = presets?.lockedOutputFormat;
   const initialFormat = lockedFormat ?? presets?.defaultOutputFormat ?? 'mp4';
 
+  const fx = presets?.effectDefaults;
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(videoConversionSchema),
     defaultValues: {
       format: presets?.aiPreset ? ('mp4' as const) : initialFormat,
       quality: presets?.defaultQuality ?? 'medium',
-      speed: presets?.defaultSpeed ?? 1,
+      speed: fx?.speed ?? presets?.defaultSpeed ?? 1,
       width: presets?.defaultWidth,
       height: presets?.defaultHeight,
       preserveAspectRatio: true,
@@ -74,8 +75,8 @@ const VideoConversionForm: React.FC<{
       // Transform defaults
       transform: {
         rotation: 0,
-        flipHorizontal: false,
-        flipVertical: false,
+        flipHorizontal: fx?.flipHorizontal ?? false,
+        flipVertical: fx?.flipVertical ?? false,
         padding: {
           top: 0,
           bottom: 0,
@@ -86,13 +87,14 @@ const VideoConversionForm: React.FC<{
       },
       // Temporal Effects defaults
       temporal: {
-        reverse: false,
+        reverse: fx?.reverse ?? false,
         pingPong: false,
         frameRate: {
           interpolation: false,
+          target: fx?.targetFps,
         },
         stabilization: {
-          enabled: false,
+          enabled: fx?.stabilize ?? false,
           shakiness: 5,
           accuracy: 9,
         },
@@ -179,6 +181,7 @@ const VideoConversionForm: React.FC<{
           onTrimClick={videoUrl ? handleTrimClick : undefined}
           trimStatus={getTrimStatus()}
           lockedVideoFormat={lockedFormat}
+          emphasis={presets?.effect === 'speed' ? 'speed' : undefined}
         />
 
         {/* AI Video Tools — currently AI Frame Interpolation */}
@@ -189,7 +192,7 @@ const VideoConversionForm: React.FC<{
         />
 
         {/* Advanced Video Effects */}
-        <AdvancedVideoEffects control={control} />
+        <AdvancedVideoEffects control={control} emphasis={presets?.effect} />
 
         {Object.keys(errors).length > 0 && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">

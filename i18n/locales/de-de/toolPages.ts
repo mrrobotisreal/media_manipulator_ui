@@ -408,6 +408,167 @@ const deToolPages = {
       ],
       embed: { title: 'Gesang aus einem Song entfernen', description: 'Laden Sie einen Song hoch. „Gesang entfernen“ ist bereits gewählt; das Instrumental kommt als WAV, verlustfrei, aber größer. Starten Sie die Umwandlung.' },
     },
+    // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
+    'inspect-metadata': {
+      name: 'Metadaten-Prüfer',
+      tagline:
+        'Sehen Sie jedes Tag, das in einem Foto, Video, einer Audiodatei oder einem PDF steckt: EXIF, GPS-Standort, Kamera, Codecs, ID3, XMP und mehr, bevor Sie die Datei teilen.',
+    },
+    'edit-image-metadata': {
+      name: 'Bild-Metadaten bearbeiten',
+      tagline:
+        'Legen Sie Titel, Autor, Copyright, Schlagwörter und Beschreibung eines Fotos fest, korrigieren oder entfernen Sie den GPS-Standort und schreiben Sie EXIF- und IPTC-Tags neu.',
+    },
+    'change-video-speed': {
+      name: 'Videogeschwindigkeit ändern',
+      tagline:
+        'Erstellen Sie einen Zeitraffer mit 2x, 4x oder schneller oder verlangsamen Sie einen Clip auf 0.5x oder 0.25x, mit synchron bleibendem Ton.',
+    },
+    'reverse-video': {
+      name: 'Video rückwärts abspielen',
+      tagline:
+        'Spielen Sie jeden Clip rückwärts ab, mit oder ohne umgekehrten Ton, und lassen Sie ihn auf Wunsch im Ping-Pong-Stil erst vor- und dann zurücklaufen.',
+    },
+    'flip-video': {
+      name: 'Video spiegeln & drehen',
+      tagline:
+        'Spiegeln Sie ein Video horizontal, um eine seitenverkehrte Webcam oder ein Selfie zu korrigieren, oder kippen Sie es vertikal, mit einem Klick.',
+    },
+    'stabilize-video': {
+      name: 'Video stabilisieren',
+      tagline:
+        'Glätten Sie Handverwackelungen und Gehschwankungen mit einem Zwei-Pass-Stabilisator, ohne Stativ und ohne Desktop-Editor.',
+    },
+    'change-video-frame-rate': {
+      name: 'Videobildrate ändern',
+      tagline:
+        'Wandeln Sie ein Video in 24, 25, 30 oder 60 fps um, reduzieren Sie einen 60-fps-Clip für eine kleinere Datei auf 30 oder passen Sie die Bildrate eines Projekts an.',
+    },
+    'adjust-video-color': {
+      name: 'Videohelligkeit & -farbe anpassen',
+      tagline:
+        'Hellen Sie einen dunklen Clip auf, ergänzen Sie Kontrast und Sättigung, verschieben Sie den Farbton oder wenden Sie Unschärfe oder einen künstlerischen Look an, mit Reglern und Live-Vorschau.',
+    },
+    'convert-video-to-hevc': {
+      name: 'Video in HEVC (H.265) umwandeln',
+      tagline:
+        'Kodieren Sie jedes Video als H.265 neu: bei gleicher Qualität ist die Datei etwa halb so groß wie mit H.264, ideal für Archivierung, 4K und moderne Geräte.',
+    },
+    'convert-audio-to-wav': {
+      name: 'Audio in WAV umwandeln',
+      tagline:
+        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei verlustfrei in WAV um.',
+    },
+    'convert-audio-to-flac': {
+      name: 'Audio in FLAC umwandeln',
+      tagline:
+        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei verlustfrei in FLAC um.',
+    },
+    'convert-audio-to-ogg': {
+      name: 'Audio in OGG umwandeln',
+      tagline:
+        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in OGG mit der von Ihnen gewählten Bitrate um.',
+    },
+    'convert-audio-to-m4a': {
+      name: 'Audio in M4A / AAC umwandeln',
+      tagline:
+        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in M4A / AAC mit der von Ihnen gewählten Bitrate um.',
+    },
+    'convert-audio-to-opus': {
+      name: 'Audio in Opus umwandeln',
+      tagline:
+        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in Opus mit der von Ihnen gewählten Bitrate um.',
+    },
+    'convert-mp3-to-wav': {
+      name: 'MP3 in WAV umwandeln',
+      tagline:
+        'Wandeln Sie eine MP3 in eine unkomprimierte WAV-Datei um, zum Bearbeiten, Sampeln oder Brennen auf CD.',
+    },
+    'change-audio-speed': {
+      name: 'Audiogeschwindigkeit ändern',
+      tagline:
+        'Beschleunigen Sie eine Vorlesung oder einen Podcast auf 1.5x oder verlangsamen Sie einen Song oder eine Aufnahme zum Üben auf 0.75x, ohne die Tonhöhe zu ändern.',
+    },
+    'change-audio-pitch': {
+      name: 'Tonhöhe ändern',
+      tagline:
+        'Verschieben Sie einen Song oder eine Aufnahme um Halbtöne, um die Tonart zu ändern, einen Gesang abzusenken oder ein Sample zu stimmen, bei gleichbleibendem Tempo.',
+    },
+    'normalize-audio': {
+      name: 'Audio normalisieren',
+      tagline:
+        'Heben Sie eine leise Aufnahme auf eine einheitliche Lautheit an, damit Podcasts, Sprachmemos und gemischte Playlists gleich laut abgespielt werden.',
+    },
+    'adjust-audio-volume': {
+      name: 'Audiolautstärke anpassen',
+      tagline:
+        'Machen Sie eine Audiodatei um einen festen Betrag lauter oder leiser, von 10 Prozent bis zum Doppelten, oder in Dezibel mit dem Verstärkungsregler.',
+    },
+    'audio-equalizer': {
+      name: 'Audio-Equalizer',
+      tagline:
+        'Wenden Sie Bassanhebung, Höhenanhebung, Stimmpräsenz oder ein Genre-Preset an oder stellen Sie Tiefpass- und Hochpassfilter ein, und laden Sie das Ergebnis herunter.',
+    },
+    'add-reverb-to-audio': {
+      name: 'Hall zu Audio hinzufügen',
+      tagline:
+        'Versetzen Sie einen trockenen Gesang oder eine Aufnahme in einen Raum-, Hallen-, Platten- oder Federhall oder fügen Sie Delay oder Echo hinzu, und laden Sie das Ergebnis herunter.',
+    },
+    'trim-audio': {
+      name: 'Audio schneiden',
+      tagline:
+        'Schneiden Sie eine MP3, WAV oder jede andere Aufnahme auf eine Start- und Endzeit zu, mit Wellenform zur Wahl der Punkte, und laden Sie nur diesen Teil herunter.',
+    },
+    'transcribe-audio': {
+      name: 'Audio transkribieren',
+      tagline:
+        'Wandeln Sie eine MP3, WAV, M4A oder jede andere Aufnahme mit KI-Spracherkennung auf unseren eigenen GPU-Servern in Text, Untertitel oder JSON um.',
+    },
+    'add-text-to-image': {
+      name: 'Text zu Bild hinzufügen',
+      tagline:
+        'Setzen Sie eine Bildunterschrift, einen Titel oder ein Wasserzeichen auf ein Foto: Wählen Sie Schriftart, Größe, Farbe, Kontur und Position und laden Sie es herunter.',
+    },
+    'crop-image': {
+      name: 'Bild zuschneiden',
+      tagline:
+        'Ziehen Sie einen Rahmen über den gewünschten Teil eines Fotos, richten Sie den Ausschnitt gerade aus und laden Sie nur diesen Bereich in jedem Format herunter.',
+    },
+    'grayscale-image': {
+      name: 'Bild in Schwarzweiß umwandeln',
+      tagline:
+        'Wandeln Sie ein Farbfoto in Graustufen oder in Sepia für einen Vintage-Ton um und laden Sie es in jedem Format herunter.',
+    },
+    'image-filters': {
+      name: 'Bildfilter & Effekte',
+      tagline:
+        'Ölgemälde, Skizze, Kohle, Prägung, Vintage, Strudel, Unschärfe, Schärfen und mehr, mit einem Klick auf jedes Foto angewendet.',
+    },
+    'rotate-image': {
+      name: 'Bild drehen',
+      tagline:
+        'Drehen Sie ein Foto um 90°, 180° oder 270°, korrigieren Sie einen seitlich eingescannten Scan oder ein Handyfoto und laden Sie es in jedem Format herunter.',
+    },
+    'sharpen-image': {
+      name: 'Bild schärfen',
+      tagline:
+        'Holen Sie die Kanten eines leicht weichen Fotos oder Scans mit einem Klick heraus und laden Sie es in jedem Format herunter.',
+    },
+    'blur-image': {
+      name: 'Bild weichzeichnen',
+      tagline:
+        'Zeichnen Sie ein ganzes Foto weich, für einen Hintergrund, einen Platzhalter oder einen Sichtschutz, und laden Sie es in jedem Format herunter.',
+    },
+    'generate-vtt-captions': {
+      name: 'VTT-Untertitel-Generator',
+      tagline:
+        'Erstellen Sie eine .vtt-Untertiteldatei für HTML5-Video, YouTube oder einen Player mit KI-Transkription auf unseren eigenen GPU-Servern.',
+    },
+    'summarize-video': {
+      name: 'Video zusammenfassen',
+      tagline:
+        'Erhalten Sie das Transkript und eine strukturierte JSON-Analyse einer Vorlesung, Besprechung oder eines Interviews, mit Zeitstempeln, auf unseren eigenen GPU-Servern.',
+    },
   },
 } as const;
 

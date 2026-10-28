@@ -1132,5 +1132,11 @@
         }
       }
     }
+  },
+  "metadataInspectPanel": {
+    "dragDrop": "Glissez-déposez ici une image, une vidéo, un fichier audio ou un PDF",
+    "hint": "ou cliquez pour choisir un fichier sur votre ordinateur. Le fichier est lu uniquement pour ses métadonnées et supprimé après l’analyse ; rien n’est converti.",
+    "largeFile": "Les fichiers de plus de {{size}} ne sont inspectés qu’à votre demande, pour qu’une grande vidéo ne soit pas envoyée par erreur.",
+    "failed": "Le fichier n’a pas pu être inspecté. Le type n’est peut-être pas pris en charge, ou le fichier est trop volumineux pour votre offre."
   }
 }

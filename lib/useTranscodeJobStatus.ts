@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { getBaseURL } from '@/lib/utils';
 import type { TranscodeJobStage, TranscodeProbeResponse } from './transcodeTypes';
+import { publishQuotaRefund } from '@/lib/auth/quotaBus';
 
 // TranscodeJob is the polled / streamed view of /api/job/:jobId for transcode
 // jobs. It extends the generic ConversionJob shape with the extra fields the
@@ -57,6 +58,7 @@ const useTranscodeJobStatus = (jobId: string | null): UseTranscodeJobStatusRetur
   const sseRef = useRef<EventSource | null>(null);
   const pollTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const cancelledRef = useRef(false);
+  const refundedRef = useRef(false);
 
   useEffect(() => {
     if (!jobId) {
@@ -65,6 +67,7 @@ const useTranscodeJobStatus = (jobId: string | null): UseTranscodeJobStatusRetur
       return;
     }
     cancelledRef.current = false;
+    refundedRef.current = false;
     setIsPending(true);
 
     const stopPolling = () => {
@@ -83,6 +86,11 @@ const useTranscodeJobStatus = (jobId: string | null): UseTranscodeJobStatusRetur
     const applySnapshot = (snapshot: TranscodeJob) => {
       if (cancelledRef.current) return;
       setData(snapshot);
+      if (snapshot.status === 'failed' && !refundedRef.current) {
+        // A failed job is refunded by the API; re-read the allowance.
+        refundedRef.current = true;
+        publishQuotaRefund();
+      }
       setIsPending(false);
       if (TERMINAL_STATES.has(snapshot.status)) {
         stopPolling();

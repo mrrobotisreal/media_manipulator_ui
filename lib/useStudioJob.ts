@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import type { StudioJobProgress } from '@/lib/studio/studioBackend';
+import { publishQuotaRefund } from '@/lib/auth/quotaBus';
 
 export type { StudioJobProgress } from '@/lib/studio/studioBackend';
 
@@ -45,7 +46,11 @@ export function useStudioJobProgress(
       if (es) es.close();
       if (pollTimer) clearInterval(pollTimer);
       if (job.status === 'completed') optsRef.current.onComplete?.(job);
-      if (job.status === 'failed') optsRef.current.onError?.(job.error || 'Job failed');
+      if (job.status === 'failed') {
+        // The API refunds a failed export's allowance unit; re-read the meter.
+        publishQuotaRefund();
+        optsRef.current.onError?.(job.error || 'Job failed');
+      }
     };
 
     const apply = (raw: unknown) => {

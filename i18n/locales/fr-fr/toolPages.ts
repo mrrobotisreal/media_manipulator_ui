@@ -167,6 +167,135 @@ const frToolPages = {
       ogTitle: 'Motion : animez du SVG dans votre navigateur',
       ogDescription: 'Importez un SVG ou dessinez-en un, animez-le sur une timeline d’images clés et exportez en SVG animé, Lottie JSON, React, JavaScript, Flutter ou GIF. Les exports sont créés dans votre navigateur.',
     },
+    // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
+    'inspect-metadata': {
+      name: 'Inspecteur de métadonnées',
+      tagline: 'Voyez toutes les balises cachées dans une photo, une vidéo, un fichier audio ou un PDF : EXIF, position GPS, appareil photo, codecs, ID3, XMP et plus encore, avant de le partager.',
+    },
+    'edit-image-metadata': {
+      name: 'Modifier les métadonnées d’une image',
+      tagline: 'Définissez le titre, l’auteur, le copyright, les mots-clés et la description d’une photo, corrigez ou supprimez sa position GPS et réécrivez les balises EXIF et IPTC.',
+    },
+    'change-video-speed': {
+      name: 'Modifier la vitesse d’une vidéo',
+      tagline: 'Créez un time-lapse à 2x, 4x ou plus, ou ralentissez un clip à 0,5x ou 0,25x, avec un son resté synchronisé.',
+    },
+    'reverse-video': {
+      name: 'Inverser une vidéo',
+      tagline: 'Lisez n’importe quel clip à l’envers, avec ou sans le son inversé, et, si vous le souhaitez, en aller-retour (ping-pong), d’abord vers l’avant puis vers l’arrière.',
+    },
+    'flip-video': {
+      name: 'Retourner et miroiter une vidéo',
+      tagline: 'Inversez une vidéo à l’horizontale pour corriger une webcam ou un selfie en miroir, ou retournez-la à la verticale, en un clic.',
+    },
+    'stabilize-video': {
+      name: 'Stabiliser une vidéo',
+      tagline: 'Atténuez les tremblements de la caméra à la main et les secousses de la marche avec un stabilisateur en deux passes, sans trépied ni logiciel de montage.',
+    },
+    'change-video-frame-rate': {
+      name: 'Modifier la fréquence d’images d’une vidéo',
+      tagline: 'Convertissez une vidéo en 24, 25, 30 ou 60 images/s, ramenez un clip de 60 à 30 images/s pour obtenir un fichier plus léger, ou adaptez-la à la fréquence d’images de votre projet.',
+    },
+    'adjust-video-color': {
+      name: 'Ajuster la luminosité et les couleurs d’une vidéo',
+      tagline: 'Éclaircissez un clip sombre, ajoutez du contraste et de la saturation, décalez la teinte, ou appliquez un flou ou un rendu artistique, avec des curseurs et un aperçu en direct.',
+    },
+    'convert-video-to-hevc': {
+      name: 'Convertir une vidéo en HEVC (H.265)',
+      tagline: 'Réencodez n’importe quelle vidéo en H.265 pour obtenir environ la moitié de la taille du H.264 à qualité égale, idéal pour le stockage, la 4K et les appareils récents.',
+    },
+    'convert-audio-to-wav': {
+      name: 'Convertir un fichier audio en WAV',
+      tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en WAV sans aucune perte.',
+    },
+    'convert-audio-to-flac': {
+      name: 'Convertir un fichier audio en FLAC',
+      tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en FLAC sans aucune perte.',
+    },
+    'convert-audio-to-ogg': {
+      name: 'Convertir un fichier audio en OGG',
+      tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en OGG avec le débit de votre choix.',
+    },
+    'convert-audio-to-m4a': {
+      name: 'Convertir un fichier audio en M4A / AAC',
+      tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en M4A / AAC avec le débit de votre choix.',
+    },
+    'convert-audio-to-opus': {
+      name: 'Convertir un fichier audio en Opus',
+      tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en Opus avec le débit de votre choix.',
+    },
+    'convert-mp3-to-wav': {
+      name: 'Convertir un MP3 en WAV',
+      tagline: 'Transformez un MP3 en WAV non compressé pour le monter, l’échantillonner ou le graver sur CD.',
+    },
+    'change-audio-speed': {
+      name: 'Modifier la vitesse d’un fichier audio',
+      tagline: 'Accélérez un cours ou un podcast à 1,5x, ou ralentissez un morceau ou un enregistrement à 0,75x pour vous entraîner, sans modifier la hauteur.',
+    },
+    'change-audio-pitch': {
+      name: 'Modifier la hauteur d’un fichier audio',
+      tagline: 'Décalez un morceau ou un enregistrement par demi-tons pour changer de tonalité, abaisser une voix ou accorder un sample, en conservant le même tempo.',
+    },
+    'normalize-audio': {
+      name: 'Normaliser un fichier audio',
+      tagline: 'Portez un enregistrement trop faible à un volume homogène, pour que podcasts, mémos vocaux et playlists mixtes soient lus au même niveau.',
+    },
+    'adjust-audio-volume': {
+      name: 'Ajuster le volume d’un fichier audio',
+      tagline: 'Rendez un fichier audio plus fort ou plus faible d’une valeur fixe, de 10 pour cent au double, ou en décibels avec le curseur d’amplification.',
+    },
+    'audio-equalizer': {
+      name: 'Égaliseur audio',
+      tagline: 'Appliquez un renforcement des basses, un relèvement des aigus, une présence vocale ou un préréglage par genre, ou réglez des filtres passe-bas et passe-haut, puis téléchargez le résultat.',
+    },
+    'add-reverb-to-audio': {
+      name: 'Ajouter de la réverbération à un fichier audio',
+      tagline: 'Placez une voix ou un enregistrement sec dans une pièce, une salle, une réverbération à plaque ou à ressort, ou ajoutez un delay ou un écho, puis téléchargez le résultat.',
+    },
+    'trim-audio': {
+      name: 'Couper un fichier audio',
+      tagline: 'Coupez un MP3, un WAV ou n’importe quel enregistrement entre un début et une fin, avec une forme d’onde pour choisir les points, et téléchargez uniquement cette partie.',
+    },
+    'transcribe-audio': {
+      name: 'Transcrire un fichier audio',
+      tagline: 'Transformez un MP3, WAV, M4A ou n’importe quel enregistrement en texte, sous-titres ou JSON grâce à la reconnaissance vocale par IA sur nos propres serveurs GPU.',
+    },
+    'add-text-to-image': {
+      name: 'Ajouter du texte à une image',
+      tagline: 'Ajoutez une légende, un titre ou un filigrane sur une photo : choisissez la police, la taille, la couleur, le contour et la position, puis téléchargez-la.',
+    },
+    'crop-image': {
+      name: 'Recadrer une image',
+      tagline: 'Faites glisser un cadre sur la partie de la photo qui vous intéresse, redressez le cadrage et téléchargez uniquement cette zone dans le format de votre choix.',
+    },
+    'grayscale-image': {
+      name: 'Convertir une image en noir et blanc',
+      tagline: 'Transformez une photo couleur en niveaux de gris, ou en sépia pour un ton vintage, et téléchargez-la dans le format de votre choix.',
+    },
+    'image-filters': {
+      name: 'Filtres et effets d’image',
+      tagline: 'Peinture à l’huile, croquis, fusain, relief, vintage, tourbillon, flou, netteté et plus encore, appliqués à n’importe quelle photo en un clic.',
+    },
+    'rotate-image': {
+      name: 'Faire pivoter une image',
+      tagline: 'Faites pivoter une photo de 90°, 180° ou 270°, corrigez un scan ou une photo de téléphone de travers, et téléchargez-la dans le format de votre choix.',
+    },
+    'sharpen-image': {
+      name: 'Accentuer la netteté d’une image',
+      tagline: 'Faites ressortir les contours d’une photo ou d’un scan un peu flou grâce à un renforcement de netteté en un clic, et téléchargez-le dans le format de votre choix.',
+    },
+    'blur-image': {
+      name: 'Flouter une image',
+      tagline: 'Adoucissez une photo entière pour un arrière-plan, un espace réservé ou un écran de confidentialité, et téléchargez-la dans le format de votre choix.',
+    },
+    'generate-vtt-captions': {
+      name: 'Générateur de sous-titres VTT',
+      tagline: 'Créez un fichier de sous-titres .vtt pour une vidéo HTML5, YouTube ou un lecteur grâce à la transcription par IA sur nos propres serveurs GPU.',
+    },
+    'summarize-video': {
+      name: 'Résumer une vidéo',
+      tagline: 'Obtenez la transcription et une analyse JSON structurée d’un cours, d’une réunion ou d’un entretien, avec horodatage, sur nos propres serveurs GPU.',
+    },
   },
 } as const;
 

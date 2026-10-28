@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "درس Darkroom",
     "howItWorks": "كيف يعمل",
     "svgAnimationEditor": "محرر تحريك SVG",
-    "motionTutorial": "درس Motion"
+    "motionTutorial": "درس Motion",
+    "searchPlaceholder": "ابحث عن الأدوات (مثل «mp3 إلى wav»، «قص»، «ترجمات»)",
+    "searchAriaLabel": "البحث عن الأدوات",
+    "showingCount": "عرض {{count}} من أصل {{total}} أداة",
+    "categoriesAriaLabel": "فئات الأدوات",
+    "allCategories": "الكل",
+    "noResults": "لا توجد أدوات تطابق «{{query}}». جرّب اسم صيغة مثل «webp» أو إجراءً مثل «قص».",
+    "popular": "شائع",
+    "groups": {
+      "edit": "تحرير",
+      "convert": "تحويل",
+      "ai": "أدوات الذكاء الاصطناعي",
+      "privacy": "الخصوصية",
+      "editor": "المحررات"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "مسار التنقل",

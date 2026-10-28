@@ -1120,5 +1120,11 @@
         }
       }
     }
+  },
+  "metadataInspectPanel": {
+    "dragDrop": "Kéo và thả tệp ảnh, video, âm thanh hoặc PDF vào đây",
+    "hint": "hoặc nhấp để chọn từ máy tính của bạn. Tệp chỉ được đọc để lấy siêu dữ liệu và bị xóa sau khi phân tích; không có gì được chuyển đổi.",
+    "largeFile": "Các tệp lớn hơn {{size}} chỉ được kiểm tra khi bạn yêu cầu, để video lớn không bị tải lên ngoài ý muốn.",
+    "failed": "Không thể kiểm tra tệp. Có thể định dạng không được hỗ trợ hoặc tệp quá lớn so với gói của bạn."
   }
 }

@@ -167,6 +167,135 @@ const koToolPages = {
       ogTitle: 'Motion: 브라우저에서 SVG 애니메이션 만들기',
       ogDescription: 'SVG를 가져오거나 그리고, 키프레임 타임라인에서 애니메이션하고, 애니메이션 SVG, Lottie JSON, React, JavaScript, Flutter 또는 GIF로 내보내세요. 내보내기는 브라우저에서 만들어져요.',
     },
+    // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
+    'inspect-metadata': {
+      name: '메타데이터 검사기',
+      tagline: '공유하기 전에 사진, 동영상, 오디오 파일, PDF에 숨겨진 모든 태그(EXIF, GPS 위치, 카메라, 코덱, ID3, XMP 등)를 확인해요.',
+    },
+    'edit-image-metadata': {
+      name: '이미지 메타데이터 편집',
+      tagline: '사진의 제목, 작성자, 저작권, 키워드, 설명을 설정하고, GPS 위치를 수정하거나 삭제하고, EXIF와 IPTC 태그를 다시 쓸 수 있어요.',
+    },
+    'change-video-speed': {
+      name: '동영상 속도 변경',
+      tagline: '2배, 4배 또는 더 빠르게 타임랩스를 만들거나, 클립을 0.5배나 0.25배로 느리게 만들 수 있어요. 오디오 싱크도 그대로 유지돼요.',
+    },
+    'reverse-video': {
+      name: '동영상 거꾸로 재생',
+      tagline: '어떤 클립이든 거꾸로 재생해요. 오디오를 함께 뒤집을지 선택할 수 있고, 정방향 후 역방향으로 반복 재생하는 핑퐁 효과도 줄 수 있어요.',
+    },
+    'flip-video': {
+      name: '동영상 뒤집기 & 좌우 반전',
+      tagline: '좌우가 바뀐 웹캠이나 셀카 영상을 가로로 반전해 바로잡거나, 세로로 뒤집을 수 있어요. 클릭 한 번이면 끝나요.',
+    },
+    'stabilize-video': {
+      name: '동영상 흔들림 보정',
+      tagline: '2패스 안정화 기능으로 손떨림과 걸을 때의 흔들림을 부드럽게 잡아줘요. 삼각대도 데스크톱 편집기도 필요 없어요.',
+    },
+    'change-video-frame-rate': {
+      name: '동영상 프레임 레이트 변경',
+      tagline: '동영상을 24, 25, 30, 60fps로 변환하거나, 60fps 클립을 30fps로 낮춰 파일 크기를 줄이거나, 프로젝트 프레임 레이트에 맞출 수 있어요.',
+    },
+    'adjust-video-color': {
+      name: '동영상 밝기 및 색상 조정',
+      tagline: '어두운 클립을 밝게 하고, 대비와 채도를 높이고, 색조를 바꾸거나, 흐림 효과나 아트 효과를 적용해요. 슬라이더와 실시간 미리보기를 제공해요.',
+    },
+    'convert-video-to-hevc': {
+      name: '동영상을 HEVC(H.265)로 변환',
+      tagline: '어떤 동영상이든 H.265로 다시 인코딩해 같은 화질에서 H.264의 절반 정도 크기로 줄여요. 보관, 4K, 최신 기기에 알맞아요.',
+    },
+    'convert-audio-to-wav': {
+      name: '오디오를 WAV로 변환',
+      tagline: 'MP3, M4A, WAV, OGG, FLAC 등 모든 오디오 파일을 손실 없이 WAV로 변환해요.',
+    },
+    'convert-audio-to-flac': {
+      name: '오디오를 FLAC로 변환',
+      tagline: 'MP3, M4A, WAV, OGG, FLAC 등 모든 오디오 파일을 손실 없이 FLAC로 변환해요.',
+    },
+    'convert-audio-to-ogg': {
+      name: '오디오를 OGG로 변환',
+      tagline: 'MP3, M4A, WAV, OGG, FLAC 등 모든 오디오 파일을 원하는 비트레이트의 OGG로 변환해요.',
+    },
+    'convert-audio-to-m4a': {
+      name: '오디오를 M4A / AAC로 변환',
+      tagline: 'MP3, M4A, WAV, OGG, FLAC 등 모든 오디오 파일을 원하는 비트레이트의 M4A / AAC로 변환해요.',
+    },
+    'convert-audio-to-opus': {
+      name: '오디오를 Opus로 변환',
+      tagline: 'MP3, M4A, WAV, OGG, FLAC 등 모든 오디오 파일을 원하는 비트레이트의 Opus로 변환해요.',
+    },
+    'convert-mp3-to-wav': {
+      name: 'MP3를 WAV로 변환',
+      tagline: 'MP3를 압축되지 않은 WAV로 바꿔 편집, 샘플링, CD 굽기에 사용하세요.',
+    },
+    'change-audio-speed': {
+      name: '오디오 속도 변경',
+      tagline: '강의나 팟캐스트는 1.5배로 빠르게, 연습용 노래나 녹음은 0.75배로 느리게 만들 수 있어요. 음높이는 그대로예요.',
+    },
+    'change-audio-pitch': {
+      name: '오디오 음높이 변경',
+      tagline: '반음 단위로 조옮김해 노래나 녹음의 키를 바꾸고, 보컬을 낮추거나 샘플을 맞출 수 있어요. 템포는 그대로 유지돼요.',
+    },
+    'normalize-audio': {
+      name: '오디오 노멀라이즈',
+      tagline: '작게 녹음된 소리를 일정한 음량으로 맞춰 팟캐스트, 음성 메모, 섞인 재생목록이 같은 크기로 재생되게 해요.',
+    },
+    'adjust-audio-volume': {
+      name: '오디오 볼륨 조절',
+      tagline: '오디오 파일의 소리를 10%부터 두 배까지 정해진 만큼 키우거나 줄이고, 증폭 슬라이더로 데시벨 단위로 조절할 수도 있어요.',
+    },
+    'audio-equalizer': {
+      name: '오디오 이퀄라이저',
+      tagline: '베이스 부스트, 고음 강조, 보컬 선명도, 장르 프리셋을 적용하거나 로패스와 하이패스 필터를 설정한 뒤 결과를 다운로드하세요.',
+    },
+    'add-reverb-to-audio': {
+      name: '오디오에 리버브 추가',
+      tagline: '드라이한 보컬이나 녹음에 룸, 홀, 플레이트, 스프링 리버브를 입히거나 딜레이와 에코를 추가한 뒤 결과를 다운로드하세요.',
+    },
+    'trim-audio': {
+      name: '오디오 자르기',
+      tagline: 'MP3, WAV 등 어떤 녹음이든 시작과 끝 시간으로 잘라요. 파형을 보며 구간을 고르고 필요한 부분만 다운로드하세요.',
+    },
+    'transcribe-audio': {
+      name: '오디오 받아쓰기',
+      tagline: '자체 GPU 서버의 AI 음성 인식으로 MP3, WAV, M4A 등 모든 녹음을 텍스트, 자막, JSON으로 변환해요.',
+    },
+    'add-text-to-image': {
+      name: '이미지에 텍스트 추가',
+      tagline: '사진에 캡션, 제목, 워터마크를 넣어요. 글꼴, 크기, 색상, 외곽선, 위치를 고른 뒤 다운로드하세요.',
+    },
+    'crop-image': {
+      name: '이미지 자르기',
+      tagline: '사진에서 원하는 부분 위로 상자를 끌어 구도를 바로잡고, 그 영역만 원하는 형식으로 다운로드하세요.',
+    },
+    'grayscale-image': {
+      name: '이미지를 흑백으로 변환',
+      tagline: '컬러 사진을 그레이스케일이나 빈티지 느낌의 세피아로 바꾸고 원하는 형식으로 다운로드하세요.',
+    },
+    'image-filters': {
+      name: '이미지 필터 & 효과',
+      tagline: '유화, 스케치, 목탄, 엠보스, 빈티지, 소용돌이, 흐림, 선명하게 등의 효과를 어떤 사진에든 클릭 한 번으로 적용해요.',
+    },
+    'rotate-image': {
+      name: '이미지 회전',
+      tagline: '사진을 90°, 180°, 270° 회전해 옆으로 누운 스캔본이나 휴대폰 사진을 바로잡고 원하는 형식으로 다운로드하세요.',
+    },
+    'sharpen-image': {
+      name: '이미지 선명하게',
+      tagline: '약간 흐릿한 사진이나 스캔본의 윤곽을 클릭 한 번으로 또렷하게 만들고 원하는 형식으로 다운로드하세요.',
+    },
+    'blur-image': {
+      name: '이미지 흐리게',
+      tagline: '사진 전체를 부드럽게 흐려 배경, 플레이스홀더, 개인정보 보호용으로 쓰고 원하는 형식으로 다운로드하세요.',
+    },
+    'generate-vtt-captions': {
+      name: 'VTT 자막 생성기',
+      tagline: '자체 GPU 서버의 AI 전사로 HTML5 비디오, YouTube, 플레이어에 쓸 .vtt 자막 파일을 만들어요.',
+    },
+    'summarize-video': {
+      name: '동영상 요약',
+      tagline: '자체 GPU 서버에서 강의, 회의, 인터뷰의 전사본과 타임스탬프가 포함된 구조화된 JSON 분석을 받아보세요.',
+    },
   },
 } as const;
 

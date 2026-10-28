@@ -24,6 +24,21 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    id: '2026-10-28-tools-catalog',
+    date: '2026-10-28',
+    title: 'The Tools page now lists every tool, with search',
+    body: 'The Tools page is now a full catalog of more than a hundred tools, with a search box and category tabs, instead of the short list it showed before. The Audio section is back, and features that until now were only reachable inside the home-page converter have their own pages: change video speed, reverse, flip and stabilise video, change the frame rate, adjust brightness and colour, convert to HEVC; convert audio to WAV, FLAC, OGG, M4A or Opus, change audio speed or pitch, normalise, adjust volume, equalise, add reverb, trim and transcribe audio; add text to an image, crop, rotate, sharpen, blur, apply filters and edit image metadata; generate VTT captions; and a metadata inspector for any file. Each page opens its form on the setting it is about.',
+    tags: ['new', 'improved'],
+    links: [{ label: 'Browse all tools', href: '/tools' }],
+  },
+  {
+    id: '2026-10-28-failed-jobs-not-counted',
+    date: '2026-10-28',
+    title: 'Failed and refused jobs no longer count against your daily allowance',
+    body: 'A job that the server refuses (a file over your plan\'s size or length limit, an unsupported type) or that fails while processing no longer uses up one of your daily operations; the allowance is given back and the meter updates. Separately, an audio file with embedded cover art (for example an MP3 saved from a video) was being treated as a 90,000 fps video and rejected; cover art is now recognised as a picture and the audio converts normally.',
+    tags: ['fixed'],
+  },
+  {
     id: '2026-10-27-18-languages',
     date: '2026-10-27',
     title: 'Now in 18 languages',

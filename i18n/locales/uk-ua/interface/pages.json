@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Навчальний матеріал з Darkroom",
     "howItWorks": "Як це працює",
     "svgAnimationEditor": "Редактор анімації SVG",
-    "motionTutorial": "Посібник із Motion"
+    "motionTutorial": "Посібник із Motion",
+    "searchPlaceholder": "Пошук інструментів (наприклад, «mp3 у wav», «обрізати», «субтитри»)",
+    "searchAriaLabel": "Пошук інструментів",
+    "showingCount": "Показано {{count}} з {{total}} інструментів",
+    "categoriesAriaLabel": "Категорії інструментів",
+    "allCategories": "Усі",
+    "noResults": "За запитом «{{query}}» нічого не знайдено. Спробуйте назву формату, як-от «webp», або дію, як-от «обрізати».",
+    "popular": "Популярне",
+    "groups": {
+      "edit": "Редагування",
+      "convert": "Конвертація",
+      "ai": "ШІ-інструменти",
+      "privacy": "Приватність",
+      "editor": "Редактори"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Навігаційний ланцюжок",

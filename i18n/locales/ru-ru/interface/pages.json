@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Руководство по Darkroom",
     "howItWorks": "Как это работает",
     "svgAnimationEditor": "Редактор анимации SVG",
-    "motionTutorial": "Урок по Motion"
+    "motionTutorial": "Урок по Motion",
+    "searchPlaceholder": "Поиск инструментов (например, «mp3 в wav», «обрезать», «субтитры»)",
+    "searchAriaLabel": "Поиск инструментов",
+    "showingCount": "Показано {{count}} из {{total}} инструментов",
+    "categoriesAriaLabel": "Категории инструментов",
+    "allCategories": "Все",
+    "noResults": "По запросу «{{query}}» ничего не найдено. Попробуйте название формата, например «webp», или действие, например «обрезать».",
+    "popular": "Популярное",
+    "groups": {
+      "edit": "Редактирование",
+      "convert": "Конвертация",
+      "ai": "ИИ-инструменты",
+      "privacy": "Приватность",
+      "editor": "Редакторы"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Хлебные крошки",

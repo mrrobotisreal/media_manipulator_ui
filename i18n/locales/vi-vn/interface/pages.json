@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Hướng dẫn Darkroom",
     "howItWorks": "Cách hoạt động",
     "svgAnimationEditor": "Trình biên tập hoạt ảnh SVG",
-    "motionTutorial": "Hướng dẫn Motion"
+    "motionTutorial": "Hướng dẫn Motion",
+    "searchPlaceholder": "Tìm công cụ (ví dụ “mp3 sang wav”, “cắt”, “phụ đề”)",
+    "searchAriaLabel": "Tìm công cụ",
+    "showingCount": "Đang hiển thị {{count}} trong {{total}} công cụ",
+    "categoriesAriaLabel": "Danh mục công cụ",
+    "allCategories": "Tất cả",
+    "noResults": "Không có công cụ nào khớp với “{{query}}”. Hãy thử tên định dạng, như “webp”, hoặc một thao tác, như “cắt”.",
+    "popular": "Phổ biến",
+    "groups": {
+      "edit": "Chỉnh sửa",
+      "convert": "Chuyển đổi",
+      "ai": "Công cụ AI",
+      "privacy": "Quyền riêng tư",
+      "editor": "Trình chỉnh sửa"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Đường dẫn điều hướng",

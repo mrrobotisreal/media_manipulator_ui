@@ -8,21 +8,41 @@ import { Trans } from 'react-i18next';
 import InfoTooltip from '@/components/info-tooltip';
 import { useLocalization } from '@/i18n/useLocalization';
 import { Switch } from '@/components/ui/switch';
+import type { AudioEffectDefaults, AudioEffectEmphasis } from '@/components/embedded-tool-panel';
 
 interface AdvancedAudioEffectsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  /** The effect a tool page is about: its section opens and is highlighted on mount. */
+  emphasis?: AudioEffectEmphasis;
+  /** Seeded form values, so the read-only slider labels start in sync with the form. */
+  initial?: AudioEffectDefaults;
 }
 
-const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) => {
+/** Which collapsible section each emphasised effect lives in. */
+const SECTION_FOR_EFFECT: Record<AudioEffectEmphasis, string | null> = {
+  speed: null, // in ConversionOptions
+  volume: null, // in ConversionOptions
+  trim: null, // in ConversionOptions
+  normalize: 'basic',
+  equalizer: 'basic',
+  reverb: 'timebased',
+  pitch: 'advanced',
+};
+
+const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control, emphasis, initial }) => {
   const { t } = useLocalization('interface');
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const emphasisSection = emphasis ? SECTION_FOR_EFFECT[emphasis] : null;
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    () => new Set(emphasisSection ? [emphasisSection] : []),
+  );
+  const ring = (section: string) => (emphasisSection === section ? ' ring-2 ring-primary' : '');
   const [amplify, setAmplify] = useState(0);
   const [pan, setPan] = useState(0);
   const [stereoWidth, setStereoWidth] = useState(100);
   const [roomSize, setRoomSize] = useState(50);
   const [wetLevel, setWetLevel] = useState(30);
   const [feedback, setFeedback] = useState(30);
-  const [pitchShift, setPitchShift] = useState(0);
+  const [pitchShift, setPitchShift] = useState(initial?.pitchSemitones ?? 0);
   const [timeStretch, setTimeStretch] = useState(1);
 
   const toggleSection = (section: string) => {
@@ -92,7 +112,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('basic') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('basic')}`} data-emphasis={emphasisSection === 'basic' ? emphasis : undefined}>
             {/* Volume Controls */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
@@ -331,7 +351,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('timebased') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('timebased')}`} data-emphasis={emphasisSection === 'timebased' ? emphasis : undefined}>
             {/* Reverb */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
@@ -549,7 +569,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('restoration') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('restoration')}`} data-emphasis={emphasisSection === 'restoration' ? emphasis : undefined}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <Controller
@@ -657,7 +677,7 @@ const AdvancedAudioEffects: React.FC<AdvancedAudioEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('advanced') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('advanced')}`} data-emphasis={emphasisSection === 'advanced' ? emphasis : undefined}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedAudioEffects.advanced.pitchShift')}</label>

@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Darkroomチュートリアル",
     "howItWorks": "仕組み",
     "svgAnimationEditor": "SVGアニメーションエディター",
-    "motionTutorial": "Motionチュートリアル"
+    "motionTutorial": "Motionチュートリアル",
+    "searchPlaceholder": "ツールを検索（例：「mp3 を wav に」「トリミング」「字幕」）",
+    "searchAriaLabel": "ツールを検索",
+    "showingCount": "{{total}} 件中 {{count}} 件のツールを表示",
+    "categoriesAriaLabel": "ツールのカテゴリ",
+    "allCategories": "すべて",
+    "noResults": "「{{query}}」に一致するツールはありません。「webp」などの形式名や、「トリミング」などの操作で試してください。",
+    "popular": "人気",
+    "groups": {
+      "edit": "編集",
+      "convert": "変換",
+      "ai": "AIツール",
+      "privacy": "プライバシー",
+      "editor": "エディター"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "パンくずリスト",

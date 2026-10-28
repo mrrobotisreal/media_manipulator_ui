@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Darkroom教程",
     "howItWorks": "工作原理",
     "svgAnimationEditor": "SVG动画编辑器",
-    "motionTutorial": "Motion教程"
+    "motionTutorial": "Motion教程",
+    "searchPlaceholder": "搜索工具（例如“mp3 转 wav”“裁剪”“字幕”）",
+    "searchAriaLabel": "搜索工具",
+    "showingCount": "显示 {{total}} 个工具中的 {{count}} 个",
+    "categoriesAriaLabel": "工具类别",
+    "allCategories": "全部",
+    "noResults": "没有与“{{query}}”匹配的工具。试试格式名称（如“webp”）或操作（如“裁剪”）。",
+    "popular": "热门",
+    "groups": {
+      "edit": "编辑",
+      "convert": "转换",
+      "ai": "AI 工具",
+      "privacy": "隐私",
+      "editor": "编辑器"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "面包屑导航",

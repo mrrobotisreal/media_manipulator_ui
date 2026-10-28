@@ -31,22 +31,23 @@ const AudioConversionForm: React.FC<{
   const [showTrimModal, setShowTrimModal] = useState(false);
   const [trimRange, setTrimRange] = useState<TrimRange | null>(null);
 
+  const fx = presets?.effectDefaults;
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(audioConversionSchema),
     defaultValues: {
-      format: (presets?.defaultFormat as 'mp3' | undefined) ?? ('mp3' as const),
+      format: ((presets?.lockedFormat ?? presets?.defaultFormat) as 'mp3' | undefined) ?? ('mp3' as const),
       bitrate: '192' as const,
-      speed: 1,
-      volume: 1,
+      speed: fx?.speed ?? 1,
+      volume: fx?.volume ?? 1,
       // Basic Processing defaults
       basicProcessing: {
-        normalize: false,
+        normalize: fx?.normalize ?? false,
         amplify: 0,
         fadeIn: 0,
         fadeOut: 0,
         equalizer: {
-          enabled: false,
-          preset: 'none' as const,
+          enabled: !!fx?.equalizerPreset && fx.equalizerPreset !== 'none',
+          preset: fx?.equalizerPreset ?? ('none' as const),
         },
         stereo: {
           pan: 0,
@@ -59,8 +60,8 @@ const AudioConversionForm: React.FC<{
       // Time-Based Effects defaults
       timeBasedEffects: {
         reverb: {
-          enabled: false,
-          type: 'none' as const,
+          enabled: !!fx?.reverbType && fx.reverbType !== 'none',
+          type: fx?.reverbType ?? ('none' as const),
           roomSize: 50,
           damping: 50,
           wetLevel: 30,
@@ -109,8 +110,8 @@ const AudioConversionForm: React.FC<{
       // Advanced defaults
       advanced: {
         pitchShift: {
-          enabled: false,
-          semitones: 0,
+          enabled: fx?.pitchSemitones !== undefined,
+          semitones: fx?.pitchSemitones ?? 0,
           preserveFormants: true,
         },
         timeStretch: {
@@ -198,6 +199,8 @@ const AudioConversionForm: React.FC<{
           control={control}
           onTrimClick={audioUrl ? handleTrimClick : undefined}
           trimStatus={getTrimStatus()}
+          lockedAudioFormat={presets?.lockedFormat}
+          emphasis={presets?.effect === 'speed' || presets?.effect === 'volume' || presets?.effect === 'trim' ? presets.effect : undefined}
         />
 
         <div className="border border-edge rounded-lg p-4 space-y-4">
@@ -258,7 +261,7 @@ const AudioConversionForm: React.FC<{
         </div>
 
         {/* Advanced Audio Effects */}
-        <AdvancedAudioEffects control={control} />
+        <AdvancedAudioEffects control={control} emphasis={presets?.effect} initial={fx} />
 
         {Object.keys(errors).length > 0 && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">

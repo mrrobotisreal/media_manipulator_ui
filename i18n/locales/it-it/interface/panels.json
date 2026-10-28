@@ -1132,5 +1132,11 @@
         }
       }
     }
+  },
+  "metadataInspectPanel": {
+    "dragDrop": "Trascina qui un’immagine, un video, un file audio o un PDF",
+    "hint": "oppure fai clic per scegliere un file dal computer. Il file viene letto solo per i metadati ed eliminato dopo l’analisi; non viene convertito nulla.",
+    "largeFile": "I file oltre {{size}} vengono ispezionati solo su richiesta, così un video grande non viene caricato per errore.",
+    "failed": "Impossibile ispezionare il file. Il tipo potrebbe non essere supportato o il file è troppo grande per il tuo piano."
   }
 }

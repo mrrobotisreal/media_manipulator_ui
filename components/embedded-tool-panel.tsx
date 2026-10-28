@@ -78,6 +78,7 @@ const StitchAudioToVideoPanel = dynamic(() => import('@/components/stitch-audio-
 const VideoCompressorPanel = dynamic(() => import('@/components/video-compressor-panel'), { ssr: false, loading: FormLoading });
 const VideoTrimmerPanel = dynamic(() => import('@/components/video-trimmer-panel'), { ssr: false, loading: FormLoading });
 const VideoTransformPanel = dynamic(() => import('@/components/video-transform-panel'), { ssr: false, loading: FormLoading });
+const MetadataInspectPanel = dynamic(() => import('@/components/metadata/metadata-inspect-panel'), { ssr: false, loading: FormLoading });
 
 export type EmbeddedMediaKind = 'image' | 'video' | 'audio' | 'pdf';
 
@@ -155,7 +156,43 @@ export type EmbeddedTask =
   | 'crop_video'
   | 'resize_video'
   | 'rotate_video'
-  | 'remove_audio_from_video';
+  | 'remove_audio_from_video'
+  // Catalog expansion (2026-10-28): converter features that were only reachable
+  // from the home page's advanced sections now have their own pages.
+  | 'inspect_metadata'
+  | 'change_video_speed'
+  | 'reverse_video'
+  | 'flip_video'
+  | 'stabilize_video'
+  | 'change_video_frame_rate'
+  | 'adjust_video_color'
+  | 'video_to_hevc'
+  | 'audio_to_wav'
+  | 'audio_to_flac'
+  | 'audio_to_ogg'
+  | 'audio_to_m4a'
+  | 'audio_to_opus'
+  | 'mp3_to_wav'
+  | 'change_audio_speed'
+  | 'change_audio_pitch'
+  | 'normalize_audio'
+  | 'adjust_audio_volume'
+  | 'audio_equalizer'
+  | 'add_reverb'
+  | 'trim_audio'
+  | 'add_text_to_image'
+  | 'crop_image'
+  | 'grayscale_image'
+  | 'image_filters'
+  | 'rotate_image'
+  | 'sharpen_image'
+  | 'blur_image'
+  | 'edit_image_metadata'
+  | 'transcribe_audio'
+  | 'audio_to_text'
+  | 'video_to_text'
+  | 'summarize_video'
+  | 'generate_vtt_captions';
 
 /** Output formats the embedded image converter understands. "pdf" routes the
  *  image through the document pathway (image -> single-page PDF); "svg" routes
@@ -187,7 +224,11 @@ export interface ImageFormPresets {
   /** Visually emphasize the width/height controls (image resizer). */
   emphasizeResize?: boolean;
   /** Starting value of the metadata mode select (the EXIF page starts on strip). */
-  defaultMetadataMode?: 'keep' | 'strip';
+  defaultMetadataMode?: 'keep' | 'strip' | 'custom';
+  /** Highlight one section of the image form (`embed.preset` kind 'image_effect'). */
+  effect?: ImageEffectEmphasis;
+  /** Seed the filter select (grayscale page, rotate page). */
+  defaultFilter?: string;
 }
 
 /** Output containers/codecs the embedded video converter understands. Mirrors
@@ -223,7 +264,17 @@ export interface VideoFormPresets {
   defaultSpeed?: number;
   /** `embed.preset` of kind 'video' + frame_interpolation: seeds the AI op. */
   aiPreset?: Extract<EmbedPreset, { kind: 'video'; aiOperation: 'frame_interpolation' }>;
+  /** Open and highlight one effect section (`embed.preset` kind 'video_effect'). */
+  effect?: VideoEffectEmphasis;
+  effectDefaults?: VideoEffectDefaults;
 }
+
+/**
+ * Which part of the audio form a page is about. The form opens that section
+ * and highlights it, so a "change pitch" page lands on the pitch slider rather
+ * than a collapsed "Advanced" header three screens down.
+ */
+export type AudioEffectEmphasis = 'speed' | 'volume' | 'pitch' | 'normalize' | 'equalizer' | 'reverb' | 'trim';
 
 /** Preset config for the audio converter (`embed.preset` of kind 'audio'). */
 export interface AudioFormPresets {
@@ -231,7 +282,37 @@ export interface AudioFormPresets {
   /** Show a read-only chip instead of the operation select. */
   hideOperationSelect?: boolean;
   defaultFormat?: string;
+  /** Lock the output format select (the WAV/FLAC/OGG pages). */
+  lockedFormat?: string;
+  /** Open and highlight one effect section (`embed.preset` kind 'audio_effect'). */
+  effect?: AudioEffectEmphasis;
+  /** Seed values for the emphasised effect, e.g. `{ speed: 1.5 }` or `{ pitchSemitones: 2 }`. */
+  effectDefaults?: AudioEffectDefaults;
 }
+
+export interface AudioEffectDefaults {
+  speed?: number;
+  volume?: number;
+  pitchSemitones?: number;
+  normalize?: boolean;
+  equalizerPreset?: 'none' | 'bass-boost' | 'treble-boost' | 'vocal' | 'classical' | 'rock' | 'jazz';
+  reverbType?: 'none' | 'room' | 'hall' | 'plate' | 'spring';
+}
+
+/** Which part of the video form a page is about; see AudioEffectEmphasis. */
+export type VideoEffectEmphasis = 'speed' | 'reverse' | 'flip' | 'stabilize' | 'frameRate' | 'color';
+
+export interface VideoEffectDefaults {
+  speed?: number;
+  reverse?: boolean;
+  flipHorizontal?: boolean;
+  flipVertical?: boolean;
+  stabilize?: boolean;
+  targetFps?: number;
+}
+
+/** Which part of the image form a page is about. */
+export type ImageEffectEmphasis = 'text' | 'crop' | 'filter' | 'metadata';
 
 /**
  * Concrete preset/lock configuration for the specialized extract-audio panel
@@ -436,6 +517,7 @@ const DEFAULT_DESCRIPTIONS: Record<EmbeddedMediaKind, string> = {
 };
 
 const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
+  inspect_metadata: true,
   audio_waveform: true,
   extract_audio: true,
   extract_video_only: true,
@@ -776,6 +858,8 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     emphasizeResize,
     defaultMetadataMode:
       preset?.kind === 'metadata' ? preset.mode : defaultTask === 'remove_metadata' ? 'strip' : undefined,
+    effect: preset?.kind === 'image_effect' ? preset.effect : undefined,
+    defaultFilter: preset?.kind === 'image_effect' ? preset.filter : undefined,
   };
 
   const pdfPresets: PdfFormPresets = {
@@ -797,6 +881,8 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     defaultSpeed: defaultVideoSpeed,
     aiPreset:
       preset && preset.kind === 'video' && 'aiOperation' in preset ? preset : undefined,
+    effect: preset && preset.kind === 'video_effect' ? preset.effect : undefined,
+    effectDefaults: preset && preset.kind === 'video_effect' ? preset.defaults : undefined,
   };
 
   // Audio converter preset. Undefined unless the page declares an audio preset,
@@ -808,7 +894,16 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           hideOperationSelect: preset.hideOperationSelect,
           defaultFormat: preset.format,
         }
-      : undefined;
+      : preset && preset.kind === 'audio_effect'
+        ? {
+            effect: preset.effect,
+            effectDefaults: preset.defaults,
+            defaultFormat: defaultOutputFormat,
+            lockedFormat: lockedOutputFormat,
+          }
+        : defaultMediaKind === 'audio' && (defaultOutputFormat || lockedOutputFormat)
+          ? { defaultFormat: defaultOutputFormat, lockedFormat: lockedOutputFormat }
+          : undefined;
 
   // Concrete preset/lock config for the specialized extract-audio panel
   // (mp4-to-mp3 / video-to-mp3 pages).
@@ -926,7 +1021,9 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         </div>
       )}
 
-      {specializedPanel === 'audio_waveform' ? (
+      {specializedPanel === 'inspect_metadata' ? (
+        <MetadataInspectPanel accept={accept} />
+      ) : specializedPanel === 'audio_waveform' ? (
         <AudioWaveformPanel />
       ) : specializedPanel === 'extract_audio' ||
         specializedPanel === 'mp4_to_mp3' ||

@@ -1934,7 +1934,21 @@
     "darkroomTutorial": "Darkroom 튜토리얼",
     "howItWorks": "작동 방식",
     "svgAnimationEditor": "SVG 애니메이션 편집기",
-    "motionTutorial": "Motion 튜토리얼"
+    "motionTutorial": "Motion 튜토리얼",
+    "searchPlaceholder": "도구 검색 (예: “mp3를 wav로”, “자르기”, “자막”)",
+    "searchAriaLabel": "도구 검색",
+    "showingCount": "전체 {{total}}개 중 {{count}}개 도구 표시",
+    "categoriesAriaLabel": "도구 카테고리",
+    "allCategories": "전체",
+    "noResults": "“{{query}}”에 맞는 도구가 없습니다. “webp” 같은 형식 이름이나 “자르기” 같은 작업으로 검색해 보세요.",
+    "popular": "인기",
+    "groups": {
+      "edit": "편집",
+      "convert": "변환",
+      "ai": "AI 도구",
+      "privacy": "개인정보",
+      "editor": "편집기"
+    }
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "탐색 경로",

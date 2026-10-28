@@ -167,6 +167,135 @@ const zhCnToolPages = {
       ogTitle: 'Motion：在浏览器中为SVG制作动画',
       ogDescription: '导入或绘制SVG，在关键帧时间线上制作动画，然后导出动画SVG、Lottie JSON、React、JavaScript、Flutter或GIF。导出在你的浏览器中生成。',
     },
+    // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
+    'inspect-metadata': {
+      name: '元数据检查器',
+      tagline: '在分享之前，查看照片、视频、音频文件或PDF中隐藏的所有标签：EXIF、GPS位置、相机、编解码器、ID3、XMP等。',
+    },
+    'edit-image-metadata': {
+      name: '编辑图片元数据',
+      tagline: '设置照片的标题、作者、版权、关键词和描述，修改或删除其GPS位置，并重写EXIF和IPTC标签。',
+    },
+    'change-video-speed': {
+      name: '更改视频速度',
+      tagline: '以2倍、4倍或更快速度制作延时视频，或将片段减速到0.5倍或0.25倍，音频保持同步。',
+    },
+    'reverse-video': {
+      name: '视频倒放',
+      tagline: '倒着播放任意片段，可选择是否同时倒放音频，还可以做成先正放再倒放的往复效果。',
+    },
+    'flip-video': {
+      name: '翻转与镜像视频',
+      tagline: '一键将视频水平镜像，修正反向的摄像头或自拍画面，也可以垂直翻转。',
+    },
+    'stabilize-video': {
+      name: '视频防抖',
+      tagline: '用双通道防抖算法消除手持抖动和行走时的颠簸，无需三脚架，也无需桌面剪辑软件。',
+    },
+    'change-video-frame-rate': {
+      name: '更改视频帧率',
+      tagline: '将视频转换为24、25、30或60 fps，把60 fps的片段降到30 fps以减小文件体积，或匹配项目的帧率。',
+    },
+    'adjust-video-color': {
+      name: '调整视频亮度与色彩',
+      tagline: '提亮偏暗的片段，增加对比度和饱和度，调整色相，或应用模糊和艺术效果，带滑块和实时预览。',
+    },
+    'convert-video-to-hevc': {
+      name: '将视频转换为HEVC（H.265）',
+      tagline: '将任意视频重新编码为H.265，在相同画质下文件大小约为H.264的一半，适合存储、4K和新款设备。',
+    },
+    'convert-audio-to-wav': {
+      name: '将音频转换为WAV',
+      tagline: '将MP3、M4A、WAV、OGG、FLAC等任意音频文件无损转换为WAV。',
+    },
+    'convert-audio-to-flac': {
+      name: '将音频转换为FLAC',
+      tagline: '将MP3、M4A、WAV、OGG、FLAC等任意音频文件无损转换为FLAC。',
+    },
+    'convert-audio-to-ogg': {
+      name: '将音频转换为OGG',
+      tagline: '将MP3、M4A、WAV、OGG、FLAC等任意音频文件按你选择的比特率转换为OGG。',
+    },
+    'convert-audio-to-m4a': {
+      name: '将音频转换为M4A / AAC',
+      tagline: '将MP3、M4A、WAV、OGG、FLAC等任意音频文件按你选择的比特率转换为M4A / AAC。',
+    },
+    'convert-audio-to-opus': {
+      name: '将音频转换为Opus',
+      tagline: '将MP3、M4A、WAV、OGG、FLAC等任意音频文件按你选择的比特率转换为Opus。',
+    },
+    'convert-mp3-to-wav': {
+      name: '将MP3转换为WAV',
+      tagline: '将MP3转换为未压缩的WAV，用于编辑、采样或刻录CD。',
+    },
+    'change-audio-speed': {
+      name: '更改音频速度',
+      tagline: '把讲座或播客加速到1.5倍，或把歌曲或录音减速到0.75倍用于练习，音调保持不变。',
+    },
+    'change-audio-pitch': {
+      name: '更改音频音高',
+      tagline: '按半音移调，改变歌曲或录音的调性、降低人声或调整采样音高，节奏保持不变。',
+    },
+    'normalize-audio': {
+      name: '音频标准化',
+      tagline: '将音量偏小的录音提升到一致的响度，让播客、语音备忘录和混合播放列表以相同音量播放。',
+    },
+    'adjust-audio-volume': {
+      name: '调整音频音量',
+      tagline: '按固定幅度调大或调小音频音量，从10%到两倍，或用放大滑块按分贝调节。',
+    },
+    'audio-equalizer': {
+      name: '音频均衡器',
+      tagline: '应用低音增强、高音提升、人声突出或风格预设，或设置低通和高通滤波器，然后下载结果。',
+    },
+    'add-reverb-to-audio': {
+      name: '为音频添加混响',
+      tagline: '为干声人声或录音加上房间、大厅、板式或弹簧混响，或添加延迟或回声，然后下载结果。',
+    },
+    'trim-audio': {
+      name: '裁剪音频',
+      tagline: '将MP3、WAV或任意录音裁剪到指定的开始和结束时间，借助波形选择时间点，只下载需要的部分。',
+    },
+    'transcribe-audio': {
+      name: '音频转文字',
+      tagline: '在我们自己的GPU服务器上，用AI语音识别将MP3、WAV、M4A或任意录音转换为文本、字幕或JSON。',
+    },
+    'add-text-to-image': {
+      name: '为图片添加文字',
+      tagline: '在照片上添加说明、标题或水印：选择字体、大小、颜色、描边和位置，然后下载。',
+    },
+    'crop-image': {
+      name: '裁剪图片',
+      tagline: '在照片上拖出需要的区域，调整构图，并以任意格式只下载该区域。',
+    },
+    'grayscale-image': {
+      name: '将图片转换为黑白',
+      tagline: '将彩色照片转为灰度，或转为复古色调的棕褐色，并以任意格式下载。',
+    },
+    'image-filters': {
+      name: '图片滤镜与特效',
+      tagline: '油画、素描、炭笔、浮雕、复古、漩涡、模糊、锐化等效果，一键应用于任意照片。',
+    },
+    'rotate-image': {
+      name: '旋转图片',
+      tagline: '将照片旋转90°、180°或270°，修正横置的扫描件或手机照片，并以任意格式下载。',
+    },
+    'sharpen-image': {
+      name: '锐化图片',
+      tagline: '一键锐化，让略微模糊的照片或扫描件边缘更清晰，并以任意格式下载。',
+    },
+    'blur-image': {
+      name: '模糊图片',
+      tagline: '将整张照片柔化，用作背景、占位图或隐私遮挡，并以任意格式下载。',
+    },
+    'generate-vtt-captions': {
+      name: 'VTT字幕生成器',
+      tagline: '在我们自己的GPU服务器上，通过AI转录为HTML5视频、YouTube或播放器生成.vtt字幕文件。',
+    },
+    'summarize-video': {
+      name: '视频摘要',
+      tagline: '在我们自己的GPU服务器上，获取讲座、会议或访谈的文字稿和带时间戳的结构化JSON分析。',
+    },
   },
 } as const;
 

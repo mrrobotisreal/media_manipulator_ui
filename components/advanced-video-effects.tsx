@@ -8,14 +8,31 @@ import { Trans } from 'react-i18next';
 import InfoTooltip from '@/components/info-tooltip';
 import { useLocalization } from '@/i18n/useLocalization';
 import { Switch } from '@/components/ui/switch';
+import type { VideoEffectEmphasis } from '@/components/embedded-tool-panel';
 
 interface AdvancedVideoEffectsProps {
   control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  /** The effect a tool page is about: its section opens and is highlighted on mount. */
+  emphasis?: VideoEffectEmphasis;
 }
 
-const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) => {
+/** Which collapsible section each emphasised effect lives in. */
+const SECTION_FOR_EFFECT: Record<VideoEffectEmphasis, string | null> = {
+  speed: null, // the speed control is in ConversionOptions, not here
+  reverse: 'temporal',
+  frameRate: 'temporal',
+  stabilize: 'temporal',
+  flip: 'transform',
+  color: 'visual',
+};
+
+const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control, emphasis }) => {
   const { t } = useLocalization('interface');
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const emphasisSection = emphasis ? SECTION_FOR_EFFECT[emphasis] : null;
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    () => new Set(emphasisSection ? [emphasisSection] : []),
+  );
+  const ring = (section: string) => (emphasisSection === section ? ' ring-2 ring-primary' : '');
   const [brightness, setBrightness] = useState(0);
   const [contrast, setContrast] = useState(0);
   const [saturation, setSaturation] = useState(0);
@@ -89,7 +106,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('visual') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('visual')}`} data-emphasis={emphasisSection === 'visual' ? emphasis : undefined}>
             {/* Color/Exposure */}
             <div>
               <h4 className="font-medium text-card-foreground mb-3 flex items-center gap-2">
@@ -276,7 +293,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('transform') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('transform')}`} data-emphasis={emphasisSection === 'transform' ? emphasis : undefined}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium mb-1 text-card-foreground">{t('advancedVideoEffects.labels.rotation')}</label>
@@ -359,7 +376,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('temporal') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('temporal')}`} data-emphasis={emphasisSection === 'temporal' ? emphasis : undefined}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <Controller
@@ -468,7 +485,7 @@ const AdvancedVideoEffects: React.FC<AdvancedVideoEffectsProps> = ({ control }) 
         />
 
         {expandedSections.has('advanced') && (
-          <div className="p-4 bg-surface-1 rounded-lg border space-y-6">
+          <div className={`p-4 bg-surface-1 rounded-lg border space-y-6${ring('advanced')}`} data-emphasis={emphasisSection === 'advanced' ? emphasis : undefined}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <Controller

@@ -1132,5 +1132,11 @@
         }
       }
     }
+  },
+  "metadataInspectPanel": {
+    "dragDrop": "Drag and drop an image, video, audio or PDF file here",
+    "hint": "or click to select from your computer. The file is read for its metadata and deleted after analysis; nothing is converted.",
+    "largeFile": "Files over {{size}} are only inspected when you ask, so a large video is not uploaded by accident.",
+    "failed": "The file could not be inspected. It may be an unsupported type or too large for your plan."
   }
 }
