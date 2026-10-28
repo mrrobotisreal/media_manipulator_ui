@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM87: the advertising disclosures Google's AdSense policies require.
+  {
+    id: '2026-10-28-privacy-advertising-cookies',
+    date: '2026-10-28',
+    title: 'Privacy policy: advertising cookie disclosures and opt-out links',
+    body: 'The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense. It explains that Google, as a third-party vendor, uses cookies to serve ads based on your visits to this and other sites; that until you allow advertising Google serves only non-personalised ads; that visitors in the EEA, the UK and Switzerland see Google\'s own consent message while our cookie bar covers analytics only; and it links to Google Ads Settings, aboutads.info, youronlinechoices.eu and Google\'s page on how it uses information from sites that use its services. Section 1.5 lists the advertising identifiers Google\'s script may set. Ads are shown only to visitors without an account and to free accounts; Premium and Pro never see them. The pricing FAQ now also says there are never more than two ads on a page, never over the tools, and never on the home, pricing, account or legal pages.',
+    tags: ['improved'],
+    links: [
+      { label: 'Read the Privacy Policy', href: '/privacy-policy' },
+      { label: 'See plans', href: '/pricing' },
+    ],
+  },
   // MM82: AdSense loader under Consent Mode, advertising switch, consent bar fix.
   {
     id: '2026-10-28-ads-tool-pages',

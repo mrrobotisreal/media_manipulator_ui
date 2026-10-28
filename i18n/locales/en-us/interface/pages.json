@@ -580,7 +580,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "What changed on 2026-10-28",
-    "whatChangedBody": "Section 5 (Advertising) of the Privacy Policy now says that Google's ad script loads on pages that can show ads, with all consent signals denied until you choose, and serves non-personalised ads until then. We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
+    "whatChangedBody": "Added the advertising-cookie disclosures Google requires and the opt-out links. The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense: Google’s advertising cookies, non-personalised ads, Google’s consent message in the EEA, the UK and Switzerland, the links to opt out of personalised ads (Google Ads Settings, aboutads.info and youronlinechoices.eu) and to how Google uses information from sites that use its services, who sees ads (only visitors without an account and free accounts) and our public ads.txt file; section 1.5 now lists the advertising identifiers Google’s ad script may set. Section 8.9 of the Terms now says that ads are shown only without an account or with a free account, and that Premium and Pro remove them. Section 5 (Advertising) of the Privacy Policy now says that Google's ad script loads on pages that can show ads, with all consent signals denied until you choose, and serves non-personalised ads until then. Earlier the same day: We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -690,7 +690,8 @@
               "serve and measure advertisements."
             ],
             "afterBullets": [
-              "You can control cookies through your browser settings. Some features may not work properly if cookies or local storage are disabled."
+              "You can control cookies through your browser settings. Some features may not work properly if cookies or local storage are disabled.",
+              "Advertising identifiers set by Google’s ad script: when ads are switched on, Google’s script may store identifiers in your browser, which Google documents as the first-party cookies __gads and __gpi on our domain (kept for up to 13 months), Google’s own cookies such as IDE on doubleclick.net (13 months in the EEA, the UK and Switzerland, 24 months elsewhere), and similar entries in local storage. Google uses them to serve and measure ads, to limit how often you see the same ad, to prevent ad fraud and, only if you allow it, to personalise ads. How long each one is kept is set by Google’s policy: https://policies.google.com/technologies/cookies. They are set only when ads are on and you have allowed advertising storage; in the EEA, the UK and Switzerland, that means only after you consent in Google’s consent message. See Section 5.1."
             ]
           },
           {
@@ -848,6 +849,27 @@
           "Users may opt out of personalized advertising by visiting Google’s Ads Settings. Users may also opt out of some third-party vendors’ use of cookies for personalized advertising by visiting industry opt-out pages where available.",
           "Advertising partners may collect or receive information from our website and other websites and use that information to provide measurement services and targeted ads.",
           "We do not control third-party advertising cookies or tracking technologies. Their use is governed by the privacy policies of the third parties that provide them."
+        ],
+        "subsections": [
+          {
+            "title": "5.1 Advertising cookies and Google AdSense",
+            "paragraphs": [
+              "Google, as a third-party vendor, uses cookies to serve ads on Media Manipulator through Google AdSense. Google’s use of the DoubleClick cookie and its other advertising cookies enables it and its partners to serve ads to you based on your visits to Media Manipulator and/or other sites on the Internet. The cookies and identifiers involved are listed in Section 1.5.",
+              "Non-personalised ads: Google’s consent signals for advertising start as denied for every visitor, so until you allow advertising Google serves only non-personalised ads. These are not based on your past browsing; they are chosen from the page you are viewing and your general location (no more precise than your city), and where storage is allowed Google may still use cookies or identifiers to limit how often you see the same ad (frequency capping), for aggregated ad reporting and to prevent fraud and abuse. In the EEA, the UK and Switzerland, if you do not consent, Google serves limited ads, which use no cookies or local storage for advertising.",
+              "Consent in the EEA, the UK and Switzerland: visitors there see Google’s own consent message, a Google-certified consent management platform that uses the IAB Transparency and Consent Framework (TCF) v2.2, which asks whether Google and its advertising partners may use cookies and personal data for ads. Our own cookie bar asks about our first-party analytics only. You can reopen either one and change or withdraw your choice at any time from “Cookie settings” in the footer. Elsewhere, advertising follows your choice in “Cookie settings”, and a Global Privacy Control signal or “Do Not Sell or Share My Personal Information” always refuses personalised advertising (see Section 14).",
+              "You can opt out of personalised advertising, or learn more, here:"
+            ],
+            "bullets": [
+              "Google Ads Settings, to turn off personalised ads from Google: https://adssettings.google.com",
+              "the Digital Advertising Alliance’s WebChoices tool, to opt out of personalised ads from participating third-party vendors: https://www.aboutads.info/choices",
+              "Your Online Choices, for visitors in the European Union: https://youronlinechoices.eu",
+              "Google’s page “How Google uses information from sites or apps that use our services”: https://policies.google.com/technologies/partner-sites"
+            ],
+            "afterBullets": [
+              "Who sees ads: only visitors who are not signed in and free accounts. Premium and Pro subscribers never see ads, and no ad units are placed on their pages.",
+              "Our ads.txt file, which lists the companies authorised to sell ad space on Media Manipulator (only Google), is public at https://www.media-manipulator.com/ads.txt."
+            ]
+          }
         ]
       },
       {
@@ -1281,7 +1303,7 @@
           {
             "title": "8.9 Advertising and Invalid Traffic",
             "paragraphs": [
-              "Media Manipulator may display advertisements. You must not interact with ads in a fraudulent, artificial, deceptive, or abusive way.",
+              "Media Manipulator may display advertisements. You must not interact with ads in a fraudulent, artificial, deceptive, or abusive way. Ads are shown only to visitors who are not signed in and to free accounts; the paid plans, Premium and Pro, remove them.",
               "You must not:"
             ],
             "bullets": [
@@ -1594,7 +1616,7 @@
       "q2": "What happens when I run out?",
       "a2": "Nothing breaks. The tool tells you the allowance is spent and offers the next tier up. Your allowance resets at midnight UTC.",
       "q3": "Do free accounts see ads?",
-      "a3": "Yes. Ads pay for the free tier, so only Premium and Pro remove them. There are no interstitials, countdowns or forced waits on any plan.",
+      "a3": "Yes. Ads pay for the free tier, so only Premium and Pro remove them. There are never more than two ads on a page, never over the tools, and never on the home, pricing, account or legal pages. There are no interstitials, countdowns or forced waits on any plan.",
       "q4": "Can I use it without an account at all?",
       "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history. Without an account your files are kept for 24 hours; with an account you choose how long, from 24 hours to 2 years."
     },
