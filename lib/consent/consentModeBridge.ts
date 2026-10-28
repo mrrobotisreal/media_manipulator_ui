@@ -20,11 +20,13 @@
  * yet" must behave as "not allowed" — which is exactly what the layout's defaults
  * already do, so an unset state simply leaves them alone.
  *
- * PHASE 12 HANDOVER. Once AdSense Privacy & Messaging (the certified TCF v2.2 CMP) is
- * live, IT owns consent state for ads in the EEA/UK and writes Consent Mode itself. At
- * that point this bridge must stop writing the ad signals or the two will fight. The
- * `ADSENSE_ENABLED` flag is the switch, and the call site — not this module — makes
- * that decision, so this stays a pure mapper.
+ * HANDOVER (MM82, ADR-0016). When ads are on, Google's Privacy & messaging (the
+ * certified TCF v2.2 CMP, shipped inside the ad script) owns ad consent for the
+ * EEA/UK/CH and writes Consent Mode itself, so there this bridge writes analytics
+ * only (`includeAdSignals = false`) and the two never fight. Outside that group the
+ * first-party advertising switch is real and its decision is mirrored here. The call
+ * site — `ownsAdSignals()` in `lib/consent/index.ts`, not this module — makes that
+ * decision, so this stays a pure mapper.
  */
 
 import type { ConsentDetails } from './state';

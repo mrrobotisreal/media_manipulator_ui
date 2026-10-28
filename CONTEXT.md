@@ -122,6 +122,15 @@ _Avoid_: "TTS clip", "AI narration" in code or copy.
 The `summary` ResultKind (`lib/results/describe.ts`) for the MM74 video summary job (`summarize_video`, `summarize_audio`, API tool `video_summary`, mode `summarize`). Rendered by `components/results/viewers/summary-viewer.tsx` from `summary.json` as a document whose chapters seek the original; "Copy as Markdown" is `lib/results/summary.ts` and must stay byte-equal to the API's `summary.md` (fixture test).
 _Avoid_: calling it a transcript; the transcript is the `transcript` kind.
 
+### Advertising (MM82, ADR-0016)
+
+**Ad-eligible path**:
+A page that may host an ad unit and therefore the only kind of page that loads Google's ad script: today an allowlisted `/tools/<slug>` (`content/reviewAllowlist.ts`); MM89 adds blog posts and tutorials. `isAdEligiblePath()` in `lib/adsenseConfig.ts` (after `toAdPathname()` folds the internal `/en` rewrite). With `NEXT_PUBLIC_ADSENSE_ENABLED=true` the loader (`components/ads/adsense-loader.tsx`, rendered by `LayoutBootstrap`) runs there under the Consent Mode defaults, all ad signals denied. Home, `/tools`, pricing, account, legal and every other page are never ad-eligible.
+_Avoid_: "ad page", "monetised page".
+
+**Ad unit**:
+The one `<ins class="adsbygoogle">` an ad-eligible page may render (`components/ad-banner.tsx`). Its existence is gated on tier (anonymous and free only; nothing while auth loads or when a signed-in visitor's snapshot is missing), path, placement and a real slot id (`lib/adSlots.ts`), never on consent. Consent steers personalisation only: the first-party advertising switch outside the EEA, Google's consent message (Privacy & messaging) inside it (`ownsAdSignals()` in `lib/consent/index.ts`).
+
 ### Localization
 
 **Locale registry**:

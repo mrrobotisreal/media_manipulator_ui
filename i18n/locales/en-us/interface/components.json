@@ -201,9 +201,11 @@
     },
     "advertising": {
       "title": "Advertising",
-      "body": "For personalised advertising. We do not currently show ads, so this does nothing yet — it is listed here so you can see it before it ever becomes active.",
+      "body": "Lets Google personalise the ads shown on some tool pages to free and signed-out visitors. Whether an ad appears does not depend on this switch; off means the ads are not personalised. Premium and Pro never see ads.",
+      "bodyGdpr": "In your region, choices about ads are made in Google's consent message, not here; this panel covers our own analytics. Until you choose there, any ads on tool pages are not personalised. Premium and Pro never see ads.",
       "bodyGpc": "For personalised advertising. Your browser is sending a Global Privacy Control signal, so this stays off — we honour that signal and a click here cannot override it.",
-      "notActive": "Not yet active"
+      "managedByGoogle": "Managed by the Google consent message",
+      "openGoogleMessage": "Change ad choices"
     },
     "gpcDetected": "Global Privacy Control detected. We have automatically opted you out of any sale or sharing of your personal information, and recorded that we did.",
     "doNotSell": {

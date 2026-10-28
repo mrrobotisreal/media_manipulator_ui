@@ -121,10 +121,6 @@
     "cookieSettings": "הגדרות עוגיות",
     "copyright": "© {{year}} Media Manipulator, מוצר של CreaTV Ltd. כל הזכויות שמורות.",
     "operatedBy": "מופעל על ידי CreaTV Ltd. · קולורדו, ארה״ב",
-    "cookieDialog": {
-      "title": "העדפות עוגיות",
-      "description": "העדפות העוגיות מנוהלות על ידי Google. אם באנר העוגיות לא מופיע, טענו מחדש את העמוד, או בקרו במדיניות הפרטיות שלנו לפרטים על האופן שבו Media Manipulator מעבד נתונים."
-    },
     "changelog": "יומן שינויים",
     "status": "סטטוס",
     "licenses": "רישיונות קוד פתוח"

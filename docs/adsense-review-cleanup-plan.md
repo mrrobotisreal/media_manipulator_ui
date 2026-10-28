@@ -1,5 +1,7 @@
 # AdSense Review Cleanup Plan
 
+> **Superseded 2026-10-28 by ADR-0016** (`../docs/adr/0016-adsense-approval-strategy.md` in the workspace; MM82). The "AdSense JS only loads inside a guarded `<AdBanner>`" and advertising-consent-gated loader rules below no longer hold: the loader runs in the layout on ad-eligible pages under Consent Mode denied defaults, and units gate on tier + path + slot. Kept as history.
+
 Goal: turn the Next.js App Router app into a clean, AdSense-review-safe site
 where important public routes render real body HTML in view-source, AdSense
 cannot render placeholders, only review-safe pages are indexed/sitemapped, and

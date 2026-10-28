@@ -1,19 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { Wordmark } from '@/components/darkroom/wordmark';
-import { ADSENSE_ENABLED } from '@/lib/adsenseConfig';
 import { requestConsentReview } from '@/lib/consent';
+import { showGoogleConsentMessage } from '@/lib/consent/googleConsentMessage';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 
 const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
@@ -43,47 +36,24 @@ const LEGAL_LINK_KEYS: { key: string; href: string; labelKey?: string }[] = [
 ];
 
 const Footer: React.FC = () => {
-  const [cookiePromptOpen, setCookiePromptOpen] = useState(false);
   const { t } = useLocalization(['interface', 'accessibility']);
   const localized = useLocalizedHref();
 
   // Withdrawing consent has to be as easy as giving it, so this button tries
-  // the three routes in order of authority:
+  // the two routes in order of authority (MM82):
   //
-  //   1. Funding Choices, which exposes window.googlefc once the AdSense script
-  //      has loaded and Privacy & messaging is on. When it is present it owns
-  //      TCF state for ADS and is the only correct place to revoke those — a GDPR
-  //      and AdSense requirement, and why it stays first. Kept for the Phase 12
-  //      handover; it is unreachable while the review build ships no ad script.
+  //   1. Funding Choices, which exposes window.googlefc once the ad script has
+  //      loaded and Privacy & messaging is on (EEA/UK/CH). When it is present
+  //      it owns TCF state for ADS and is the only correct place to revoke
+  //      those — a GDPR and AdSense requirement, and why it stays first.
   //   2. Otherwise the first-party preferences centre, which is what actually
-  //      asked. `requestConsentReview()` now opens the PREFERENCES DIALOG rather
+  //      asked. `requestConsentReview()` opens the PREFERENCES DIALOG rather
   //      than re-showing the banner: someone clicking a settings link wants to
-  //      see and adjust their current state, not answer the first-visit question
-  //      again with no indication of what they chose last time.
-  //   3. Otherwise the explainer, for the narrow case where ads are enabled but
-  //      Funding Choices never arrived (blocked script, dashboard misconfigured).
-  //      Doing nothing at all would be the wrong failure for this control.
+  //      see and adjust their current state. It is also the fallback when the
+  //      Google message throws, so this control never does nothing.
   const handleCookieSettings = () => {
-    try {
-      const fc = typeof window !== 'undefined' ? window.googlefc : undefined;
-      if (fc?.callbackQueue && typeof fc.showRevocationMessage === 'function') {
-        fc.callbackQueue.push(() => {
-          try {
-            fc.showRevocationMessage?.();
-          } catch {
-            setCookiePromptOpen(true);
-          }
-        });
-        return;
-      }
-    } catch {
-      // Fall through.
-    }
-    if (!ADSENSE_ENABLED) {
-      requestConsentReview();
-      return;
-    }
-    setCookiePromptOpen(true);
+    if (showGoogleConsentMessage(requestConsentReview)) return;
+    requestConsentReview();
   };
 
   return (
@@ -208,21 +178,6 @@ const Footer: React.FC = () => {
           </p>
         </div>
       </div>
-
-      <Dialog open={cookiePromptOpen} onOpenChange={setCookiePromptOpen}>
-        {/* Wider than the 512px default, but deliberately not as wide as the
-            account panel: this is a title and two sentences. Body copy reads
-            best at 65–75 characters, and stretching a short explainer to 1400px
-            would trade one legibility problem for another. */}
-        <DialogContent className="sm:max-w-xl md:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{t('interface:footer.cookieDialog.title')}</DialogTitle>
-            <DialogDescription>
-              {t('interface:footer.cookieDialog.description')}
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
     </footer>
   );
 };

@@ -112,10 +112,6 @@
     "cookieSettings": "Cookie设置",
     "copyright": "© {{year}} Media Manipulator，CreaTV Ltd.旗下产品。保留所有权利。",
     "operatedBy": "由CreaTV Ltd.运营 · 美国科罗拉多州",
-    "cookieDialog": {
-      "title": "Cookie偏好设置",
-      "description": "Cookie偏好设置由Google管理。如果Cookie横幅没有出现，请重新加载页面；或访问我们的隐私政策，了解Media Manipulator如何处理数据。"
-    },
     "changelog": "更新日志",
     "status": "服务状态",
     "licenses": "开源许可证"

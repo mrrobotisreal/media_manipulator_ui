@@ -113,6 +113,35 @@ export function isReviewAllowedAdPath(pathname: string): boolean {
 }
 
 /**
+ * The path ad decisions are made on (MM82).
+ *
+ * English pages are prerendered under the internal `/en` segment (`proxy.ts`
+ * rewrites `/tools/x` to `/en/tools/x`), so `usePathname()` can report either
+ * spelling. Both mean the same public URL; this folds `/en/...` back to `/...`.
+ * Every other locale prefix is kept as-is, so `/ru/tools/x` stays ineligible
+ * exactly as before (localized tool pages are MM86's call).
+ */
+export function toAdPathname(pathname: string): string {
+  const normalized = normalizePathname(pathname);
+  if (normalized === '/en') return '/';
+  if (normalized.startsWith('/en/')) return normalized.slice('/en'.length);
+  return normalized;
+}
+
+/**
+ * Ad-eligible path (MM82, ADR-0016): a page that may host an ad unit, and so
+ * the only kind of page that loads Google's ad script. Today that is an
+ * allowlisted `/tools/<slug>`; MM89 adds blog posts and tutorials. Uses the
+ * same two path guards as shouldRenderAdSense, so the loader can never appear
+ * on a page where a unit could not.
+ */
+export function isAdEligiblePath(pathname: string): boolean {
+  const adPath = toAdPathname(pathname);
+  if (isAdDisallowedPath(adPath)) return false;
+  return isReviewAllowedAdPath(adPath);
+}
+
+/**
  * Whether the caller's tier permits ads.
  *
  * Premium removes them; free accounts and anonymous visitors still see them —

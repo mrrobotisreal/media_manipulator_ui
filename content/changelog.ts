@@ -23,6 +23,14 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM82: AdSense loader under Consent Mode, advertising switch, consent bar fix.
+  {
+    id: '2026-10-28-ads-tool-pages',
+    date: '2026-10-28',
+    title: 'Ads are switching on for free and anonymous visitors on tool pages',
+    body: 'Ads are switching on for free and anonymous visitors on tool pages; Premium and Pro never see them. At most one ad appears on a tool page, well below the tool itself, and never on the home page, the tools list, pricing, your account or the legal pages. Google\'s ad script only loads on pages that can show an ad, with every consent signal denied until you choose, so ads are not personalised unless you allow it. Outside Europe you can now turn personalised ads on or off under "Cookie settings" in the footer; in Europe, the UK and Switzerland Google\'s own consent message asks about ads, and our bar still asks only about analytics.',
+    tags: ['new', 'improved'],
+  },
   // MM81: vocal stems follow the input's format; Download as MP3 for older WAV results.
   {
     id: '2026-10-28-stem-format',

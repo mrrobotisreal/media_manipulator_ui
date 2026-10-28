@@ -121,10 +121,6 @@
     "cookieSettings": "Настройки cookie",
     "copyright": "© {{year}} Media Manipulator — продукт компании CreaTV Ltd. Все права защищены.",
     "operatedBy": "Оператор: CreaTV Ltd. · Колорадо, США",
-    "cookieDialog": {
-      "title": "Настройки cookie",
-      "description": "Настройки cookie управляются компанией Google. Перезагрузите страницу, если баннер cookie не появляется, или ознакомьтесь с нашей Политикой конфиденциальности, чтобы узнать, как Media Manipulator обрабатывает данные."
-    },
     "changelog": "Список изменений",
     "status": "Статус",
     "licenses": "Лицензии открытого ПО"

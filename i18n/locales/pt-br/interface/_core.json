@@ -115,10 +115,6 @@
     "cookieSettings": "Configurações de cookies",
     "copyright": "© {{year}} Media Manipulator, um produto da CreaTV Ltd. Todos os direitos reservados.",
     "operatedBy": "Operado pela CreaTV Ltd. · Colorado, EUA",
-    "cookieDialog": {
-      "title": "Preferências de cookies",
-      "description": "As preferências de cookies são gerenciadas pelo Google. Recarregue a página se o banner de cookies não aparecer, ou acesse nossa Política de Privacidade para saber como o Media Manipulator trata os dados."
-    },
     "changelog": "Novidades",
     "status": "Status",
     "licenses": "Licenças de código aberto"
