@@ -174,7 +174,8 @@ This app is built to pass Google AdSense review cleanly:
 - **No placeholders.** A real numeric slot (8–20 digits) is required; placeholder IDs can never reach `data-ad-slot`.
 - **Mock ads** (`components/mock-ad.tsx`) are local‑preview‑only and never contact Google.
 - **Review allowlist** (`content/reviewAllowlist.ts`) drives which tools are indexed, listed, sitemapped, and ad‑eligible. The homepage and review pages never link into non‑allowlisted tools.
-- **`npm run audit:ads`** fails the build on any regression (placeholder leakage, global ad script, disallowed placements, macOS artifacts, or review pages linking to non‑allowlisted tools).
+- **Loader on ad‑eligible pages only (MM82, ADR‑0016).** With ads on, `components/ads/adsense-loader.tsx` loads Google's script from the layout on ad‑eligible pages (`isAdEligiblePath`), after the Consent Mode defaults (all ad signals denied); units show to anonymous and free visitors only.
+- **`npm run audit:ads`** fails the build on any regression (placeholder leakage, ad script outside the config/loader, disallowed placements, macOS artifacts, the loader or a unit on ineligible pages, an ads‑on build with no loader + slot on the tool pages, or the home/tool pages linking to non‑allowlisted tools). It reads `.next/server/app/en.html` + `en/**/*.html` and fails if a build exists but no English HTML is found.
 - **Review‑safe sitemap** (`app/sitemap.ts`) + crawler‑friendly `app/robots.ts`, with canonical origin `https://www.media-manipulator.com`.
 
 ---
