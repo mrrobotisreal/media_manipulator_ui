@@ -279,7 +279,8 @@
       "hls": "HLS पैकेज",
       "dash": "DASH पैकेज",
       "metadata": "मेटाडेटा",
-      "unknown": "फ़ाइल"
+      "unknown": "फ़ाइल",
+      "summary": "सारांश"
     },
     "image": {
       "zoom": "ज़ूम",
@@ -395,6 +396,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "रिस्टोर की गई क्लिप लोड हो रही हैं",
       "download": "सभी रिज़ल्ट डाउनलोड करें"
+    },
+    "summary": {
+      "loading": "सारांश लोड हो रहा है",
+      "loadFailed": "सारांश लोड नहीं हो सका।",
+      "untitled": "सारांश",
+      "language": "भाषा: {{language}}",
+      "chapters": "अध्याय",
+      "seekTo": "{{time}} पर जाएँ",
+      "topics": "विषय",
+      "onScreenText": "स्क्रीन पर दिखा टेक्स्ट",
+      "visual": "चित्र",
+      "speech": "बोली",
+      "notes": "नोट्स",
+      "copyMarkdown": "Markdown के रूप में कॉपी करें",
+      "copied": "कॉपी हो गया",
+      "downloadMd": ".md डाउनलोड करें",
+      "downloadJson": ".json डाउनलोड करें",
+      "showAll": "सभी दिखाएँ ({{count}})",
+      "showLess": "कम दिखाएँ"
     }
   },
   "billing": {

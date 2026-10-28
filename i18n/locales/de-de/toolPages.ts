@@ -564,10 +564,251 @@ const deToolPages = {
       tagline:
         'Erstellen Sie eine .vtt-Untertiteldatei für HTML5-Video, YouTube oder einen Player mit KI-Transkription auf unseren eigenen GPU-Servern.',
     },
+    // MM75: summarize-video / summarize-audio full page bodies (model-written, needs native review).
     'summarize-video': {
       name: 'Video zusammenfassen',
-      tagline:
-        'Erhalten Sie das Transkript und eine strukturierte JSON-Analyse einer Vorlesung, Besprechung oder eines Interviews, mit Zeitstempeln, auf unseren eigenen GPU-Servern.',
+      h1: 'Video mit KI zusammenfassen: Kapitel, Themen und Text im Bild',
+      tagline: 'Erhalten Sie eine schriftliche Zusammenfassung von Vorlesung, Besprechung oder Tutorial – mit anklickbaren Kapiteln, Themen und Text im Bild, erstellt auf unseren eigenen GPU-Servern.',
+      metaTitle: 'KI-Videozusammenfassung mit Kapiteln | Media Manipulator',
+      metaDescription: 'Laden Sie ein Video hoch und erhalten Sie eine schriftliche Zusammenfassung mit Kapiteln samt Zeitmarken, Themen und dem im Bild gezeigten Text. Die KI läuft auf unseren eigenen GPU-Servern, nie bei einer fremden KI. Kostenloses Konto erforderlich.',
+      ogTitle: 'Video mit KI zusammenfassen',
+      ogDescription: 'Eine schriftliche Zusammenfassung mit anklickbaren Kapiteln, Themen und Text im Bild. Kostenloses Konto erforderlich.',
+      embed: {
+        title: 'Video zusammenfassen',
+        description: 'Melden Sie sich an, laden Sie ein Video (oder eine Audiodatei) hoch und wählen Sie die Sprache der Zusammenfassung. Sie erhalten einen Titel, eine kurze Zusammenfassung, Kapitel, die zur jeweiligen Stelle in Ihrem Video springen, die Themen und den Text, der im Bild erscheint.',
+      },
+      intro: 'Niemand möchte eine Stunde Besprechung oder Vorlesung noch einmal ansehen, nur um die fünf wichtigen Minuten zu finden. Media Manipulator sieht und hört für Sie zu: Es transkribiert die Sprache mit Whisper, betrachtet mit einem Bildmodell Einzelbilder, die an Bildwechseln ausgewählt werden, und schreibt aus beidem eine Zusammenfassung – alles auf einem GPU-Server, den wir selbst betreiben. Das Ergebnis ist ein kurzes Dokument: ein Titel, einige Sätze, Kapitel mit Start- und Endzeit, die Themen und der Text, der im Bild erschien. Klicken Sie auf ein Kapitel, um zu dieser Stelle in Ihrem Video zu springen, kopieren Sie das Ganze als Markdown oder laden Sie es als Markdown oder JSON herunter. Für Zusammenfassungen ist ein kostenloses Konto nötig.',
+      whatItDoes: [
+        'Schreibt einen Titel und eine Zusammenfassung des gesamten Videos in drei bis sechs Sätzen.',
+        'Teilt das Video in Kapitel mit Start- und Endzeit; ein Klick lässt den Player zur jeweiligen Stelle springen.',
+        'Listet die Themen und den Text im Bild auf, mit der Zeit seines ersten Erscheinens.',
+        'Beschreibt Bild und Sprache und vermerkt, was nicht möglich war (zum Beispiel: keine Sprache).',
+        'Schreibt die Zusammenfassung in der Sprache Ihrer Wahl oder in der gesprochenen Sprache.',
+      ],
+      flowSteps: [
+        {
+          title: 'Anmelden',
+          description: 'Ein kostenloses Konto genügt.',
+        },
+        {
+          title: 'Hochladen',
+          description: 'Ein Video oder eine Audiodatei.',
+        },
+        {
+          title: 'Zusammenfassen',
+          description: 'Sprache und Einzelbilder werden auf unserem GPU-Server analysiert.',
+        },
+        {
+          title: 'Lesen',
+          description: 'Kapitel anklicken, Markdown kopieren, .md oder .json herunterladen.',
+        },
+      ],
+      advancedDetails: [
+        'Die Sprache wird mit Whisper transkribiert; Einzelbilder werden an Szenenwechseln ausgewählt, bis zum Bildkontingent Ihres Tarifs (24 bei Free, 48 bei Premium, 96 bei Pro), und stapelweise von einem Bildmodell beschrieben.',
+        'Ein Sprachmodell schreibt die Zusammenfassung aus dem Transkript und den Bildnotizen. Pro-Konten können, sofern verfügbar, eine ausführlichere Zusammenfassung von einem größeren Modell anfordern.',
+        'Eine Zusammenfassung zählt als ein KI-Job Ihres Tageskontingents; ein fehlgeschlagener oder abgelehnter Job wird nicht angerechnet.',
+        'Das Transkript wird maschinell erstellt, daher können Namen und Zahlen falsch sein. Die Zusammenfassung weist in ihren Hinweisen darauf hin.',
+      ],
+      whyItMatters: [
+        'Eine Zusammenfassung mit Kapiteln ist in einer Minute überflogen; das Video nicht.',
+        'Anklickbare Zeitmarken führen Sie direkt zu der Stelle, die Sie brauchen.',
+        'Text im Bild erfasst Folientitel und Untertitel, die in der Sprache nie ausgesprochen werden.',
+      ],
+      useCases: [
+        {
+          title: 'Besprechungsprotokoll',
+          description: 'Entscheidungen und Themen, mit Zeitangaben zum Nachprüfen der Details.',
+        },
+        {
+          title: 'Vorlesungsmitschrift',
+          description: 'Kapitel pro Abschnitt und der Folientext zum Lernen.',
+        },
+        {
+          title: 'Tutorial-Gliederung',
+          description: 'Die Schritte als Kapitel, damit Sie direkt zum gewünschten springen können.',
+        },
+        {
+          title: 'Interview-Überblick',
+          description: 'Was besprochen wurde und wo.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper sowie die Bild- und Sprachmodelle laufen auf Hardware, die wir betreiben; Ihr Video wird nie an eine fremde KI gesendet.',
+        'Kapitel, die in Ihrem eigenen Video springen, direkt in der Ergebnisansicht.',
+        'Downloads als Markdown und JSON. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ],
+      privacyNote: 'Für Zusammenfassungen ist ein kostenloses Konto nötig, daher wird der Job diesem zugeordnet. Ihre Datei wird auf unseren eigenen Servern verarbeitet, und die KI-Modelle laufen auf einem GPU-Server, den wir betreiben; es wird nichts an einen externen KI-Anbieter gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Brauche ich ein Konto?',
+          answer: 'Ja, ein kostenloses Konto. Für Zusammenfassungen laufen mehrere KI-Modelle auf unserem GPU-Server, daher sind sie angemeldeten Nutzern vorbehalten.',
+        },
+        {
+          question: 'Was erhalte ich?',
+          answer: 'Einen Titel, eine kurze Zusammenfassung, Kapitel mit Start- und Endzeit, Themen, Text im Bild mit Zeitangaben, eine Beschreibung von Bild und Sprache sowie Hinweise zu allem, was nicht möglich war.',
+        },
+        {
+          question: 'Kann ich die Sprache der Zusammenfassung wählen?',
+          answer: 'Ja. Wählen Sie eine der 18 Sprachen der Website oder „wie die gesprochene Sprache“, um sie in der gesprochenen Sprache zu verfassen.',
+        },
+        {
+          question: 'Was ist, wenn das Video keine Sprache enthält?',
+          answer: 'Die Zusammenfassung wird allein aus dem Bild erstellt und weist in ihren Hinweisen darauf hin. Eine Datei ohne Bild und Ton wird abgelehnt und nicht angerechnet.',
+        },
+        {
+          question: 'Wird mein Video an Dritte gesendet?',
+          answer: 'Nein. Jedes Modell läuft auf einem GPU-Server, den wir betreiben.',
+        },
+        {
+          question: 'Wird das auf mein Kontingent angerechnet?',
+          answer: 'Ja, als ein KI-Job. Fehlgeschlagene Jobs werden nicht angerechnet.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audio zusammenfassen',
+          to: '/tools/summarize-audio',
+          description: 'Für Podcasts und Aufnahmen.',
+        },
+        {
+          label: 'Video transkribieren',
+          to: '/tools/transcribe-video',
+          description: 'Das vollständige Transkript.',
+        },
+        {
+          label: 'Audio transkribieren',
+          to: '/tools/transcribe-audio',
+          description: 'Für Audiodateien.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'Bereinigen Sie zuerst das Audio.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Zählt als ein KI-Job; fehlgeschlagene Jobs werden nicht angerechnet.',
+          'Länge bis zur Videodauergrenze Ihres Tarifs.',
+        ],
+      },
+    },
+    'summarize-audio': {
+      name: 'Audio zusammenfassen',
+      h1: 'Audioaufnahme mit KI zusammenfassen',
+      tagline: 'Machen Sie aus Podcast, Interview oder Sprachmemo eine schriftliche Zusammenfassung mit Kapiteln und Themen, erstellt auf unseren eigenen GPU-Servern.',
+      metaTitle: 'KI-Audiozusammenfassung mit Kapiteln | Media Manipulator',
+      metaDescription: 'Laden Sie eine MP3-, WAV- oder M4A-Datei hoch und erhalten Sie eine schriftliche Zusammenfassung mit Kapiteln samt Zeitmarken und Themen. Whisper und das Sprachmodell laufen auf unseren eigenen GPU-Servern. Kostenloses Konto erforderlich.',
+      ogTitle: 'Audioaufnahme mit KI zusammenfassen',
+      ogDescription: 'Eine schriftliche Zusammenfassung mit Kapiteln und Themen für jede Aufnahme. Kostenloses Konto erforderlich.',
+      embed: {
+        title: 'Audiodatei zusammenfassen',
+        description: 'Melden Sie sich an, laden Sie eine Aufnahme hoch und wählen Sie die Sprache der Zusammenfassung. Sie erhalten einen Titel, eine kurze Zusammenfassung, Kapitel, die zur jeweiligen Stelle in Ihrer Aufnahme springen, und die Themen.',
+      },
+      intro: 'Eine Podcast-Folge, ein Interview oder ein langes Sprachmemo lässt sich als Seite leichter nutzen denn als Stunde Audio. Media Manipulator transkribiert die Aufnahme mit Whisper und lässt ein Sprachmodell daraus eine Zusammenfassung schreiben, beides auf einem GPU-Server, den wir selbst betreiben. Sie erhalten einen Titel, einige Sätze, Kapitel mit Start- und Endzeit und die Themen. Klicken Sie auf ein Kapitel, um zu dieser Stelle in der Aufnahme zu springen, kopieren Sie die Zusammenfassung als Markdown oder laden Sie sie als Markdown oder JSON herunter. Für Zusammenfassungen ist ein kostenloses Konto nötig.',
+      whatItDoes: [
+        'Schreibt einen Titel und eine kurze Zusammenfassung der Aufnahme.',
+        'Teilt sie in Kapitel mit Zeitangaben; ein Klick lässt den Player dorthin springen.',
+        'Listet die Themen auf und beschreibt, wer spricht und in welchem Ton.',
+        'Schreibt die Zusammenfassung in der Sprache Ihrer Wahl oder in der gesprochenen Sprache.',
+      ],
+      flowSteps: [
+        {
+          title: 'Anmelden',
+          description: 'Ein kostenloses Konto genügt.',
+        },
+        {
+          title: 'Hochladen',
+          description: 'MP3, WAV, M4A und andere Audioformate.',
+        },
+        {
+          title: 'Zusammenfassen',
+          description: 'Whisper und ein Sprachmodell auf unserem GPU-Server.',
+        },
+        {
+          title: 'Lesen',
+          description: 'Kapitel anklicken, Markdown kopieren, .md oder .json herunterladen.',
+        },
+      ],
+      advancedDetails: [
+        'Die Sprache wird mit Whisper transkribiert; ein Sprachmodell schreibt die Zusammenfassung aus dem Transkript.',
+        'Eine Audiodatei mit Cover wird als Audio behandelt: Das Bild wird ignoriert.',
+        'Eine Zusammenfassung zählt als ein KI-Job Ihres Tageskontingents; ein fehlgeschlagener oder abgelehnter Job wird nicht angerechnet.',
+        'Das Transkript wird maschinell erstellt, daher können Namen und Zahlen falsch sein. Die Zusammenfassung weist in ihren Hinweisen darauf hin.',
+      ],
+      whyItMatters: [
+        'Eine Zusammenfassung lesen Sie in einer Minute und entscheiden dann, was Sie anhören.',
+        'Kapitel mit Zeitangaben machen aus einer langen Aufnahme etwas, in dem Sie navigieren können.',
+        'Themen machen einen Fundus älterer Folgen durchsuchbar.',
+      ],
+      useCases: [
+        {
+          title: 'Podcast-Shownotes',
+          description: 'Kapitel und Themen für die Folgenseite.',
+        },
+        {
+          title: 'Interview-Rückblick',
+          description: 'Was behandelt wurde, mit Zeitangaben zum Zitieren.',
+        },
+        {
+          title: 'Sprachmemo zu Notizen',
+          description: 'Ein ausuferndes Memo als kurze Seite.',
+        },
+        {
+          title: 'Gesprächszusammenfassung',
+          description: 'Die Kernpunkte eines aufgezeichneten Anrufs.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper und das Sprachmodell laufen auf Hardware, die wir betreiben; Ihre Aufnahme wird nie an eine fremde KI gesendet.',
+        'Kapitel, die in Ihrer eigenen Aufnahme springen, direkt in der Ergebnisansicht.',
+        'Downloads als Markdown und JSON. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ],
+      privacyNote: 'Für Zusammenfassungen ist ein kostenloses Konto nötig, daher wird der Job diesem zugeordnet. Ihre Datei wird auf unseren eigenen Servern verarbeitet, und die KI-Modelle laufen auf einem GPU-Server, den wir betreiben; es wird nichts an einen externen KI-Anbieter gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Brauche ich ein Konto?',
+          answer: 'Ja, ein kostenloses Konto. Für Zusammenfassungen laufen KI-Modelle auf unserem GPU-Server, daher sind sie angemeldeten Nutzern vorbehalten.',
+        },
+        {
+          question: 'Worin unterscheidet sich das von einer Transkription?',
+          answer: 'Eine Transkription liefert jedes Wort. Eine Zusammenfassung liefert einen Titel, einige Sätze, Kapitel und Themen, geschrieben aus diesem Transkript.',
+        },
+        {
+          question: 'Kann ich die Sprache der Zusammenfassung wählen?',
+          answer: 'Ja. Wählen Sie eine der 18 Sprachen der Website oder „wie die gesprochene Sprache“.',
+        },
+        {
+          question: 'Wird meine Aufnahme an Dritte gesendet?',
+          answer: 'Nein. Die Modelle laufen auf einem GPU-Server, den wir betreiben.',
+        },
+        {
+          question: 'Wird das auf mein Kontingent angerechnet?',
+          answer: 'Ja, als ein KI-Job. Fehlgeschlagene Jobs werden nicht angerechnet.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audio transkribieren',
+          to: '/tools/transcribe-audio',
+          description: 'Jedes Wort, als Text oder Untertitel.',
+        },
+        {
+          label: 'Video zusammenfassen',
+          to: '/tools/summarize-video',
+          description: 'Ergänzt Bild und Text im Bild.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'Bereinigen Sie zuerst das Audio.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Zählt als ein KI-Job; fehlgeschlagene Jobs werden nicht angerechnet.',
+        ],
+      },
     },
     // MM78 voices: name + tagline (model-written, needs native review).
     'voice-cloning': {

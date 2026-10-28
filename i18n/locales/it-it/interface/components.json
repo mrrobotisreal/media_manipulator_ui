@@ -279,7 +279,8 @@
       "hls": "Pacchetto HLS",
       "dash": "Pacchetto DASH",
       "metadata": "Metadati",
-      "unknown": "File"
+      "unknown": "File",
+      "summary": "Riassunto"
     },
     "image": {
       "zoom": "Zoom",
@@ -395,6 +396,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Caricamento delle clip restaurate",
       "download": "Scarica tutti i risultati"
+    },
+    "summary": {
+      "loading": "Caricamento del riassunto",
+      "loadFailed": "Non è stato possibile caricare il riassunto.",
+      "untitled": "Riassunto",
+      "language": "Lingua: {{language}}",
+      "chapters": "Capitoli",
+      "seekTo": "Vai a {{time}}",
+      "topics": "Argomenti",
+      "onScreenText": "Testo a schermo",
+      "visual": "Immagine",
+      "speech": "Parlato",
+      "notes": "Note",
+      "copyMarkdown": "Copia come Markdown",
+      "copied": "Copiato",
+      "downloadMd": "Scarica .md",
+      "downloadJson": "Scarica .json",
+      "showAll": "Mostra tutto ({{count}})",
+      "showLess": "Mostra meno"
     }
   },
   "billing": {

@@ -24,6 +24,59 @@
     "summaryPending": "Tóm tắt và đánh giá an toàn sẽ hiển thị ở đây khi tác vụ phân tích hoàn tất.",
     "unknown": "không xác định"
   },
+  "summarize": {
+    "loading": "Đang kiểm tra xem tính năng tóm tắt có khả dụng không…",
+    "unavailable": "Tính năng tóm tắt video và âm thanh tạm thời không khả dụng. Vui lòng thử lại sau; các trang Chép lời vẫn hoạt động bình thường.",
+    "notInPlan": "Gói của bạn không bao gồm tính năng tóm tắt.",
+    "signIn": {
+      "title": "Đăng nhập để tóm tắt",
+      "body": "Tính năng tóm tắt chạy trên máy chủ GPU của chúng tôi và cần một tài khoản miễn phí. Hãy đăng nhập hoặc tạo tài khoản, sau đó tải tệp của bạn lên.",
+      "button": "Đăng nhập",
+      "signup": "Tạo tài khoản miễn phí"
+    },
+    "uploadHintVideo": "một tệp video hoặc âm thanh",
+    "uploadHintAudio": "một tệp âm thanh",
+    "outputLanguage": "Ngôn ngữ tóm tắt",
+    "sameAsSpeech": "Giống ngôn ngữ trong lời nói",
+    "depth": {
+      "label": "Độ chi tiết",
+      "standard": "Tiêu chuẩn",
+      "deep": "Chuyên sâu",
+      "hint": "Chế độ chuyên sâu viết bản tóm tắt bằng một mô hình lớn hơn. Sẽ mất nhiều thời gian hơn."
+    },
+    "note": "Tốn một tác vụ AI trong hạn mức hằng ngày của bạn. Tác vụ thất bại không bị tính.",
+    "noteFrames": "Gói của bạn đọc tối đa {{frames}} khung hình của video. Tốn một tác vụ AI trong hạn mức hằng ngày; tác vụ thất bại không bị tính.",
+    "start": "Tóm tắt",
+    "stagesTitle": "Tiến trình",
+    "stages": {
+      "probe": "Đang đọc tệp",
+      "audio": "Đang chép lời",
+      "frames": "Đang chọn khung hình",
+      "vision": "Đang mô tả các khung hình",
+      "synthesis": "Đang viết bản tóm tắt",
+      "render": "Đang định dạng kết quả"
+    },
+    "status": {
+      "pending": "Đang chờ",
+      "processing": "Đang xử lý",
+      "completed": "Hoàn tất",
+      "skipped": "Đã bỏ qua",
+      "failed": "Thất bại"
+    },
+    "framesCount": "Khung hình: {{count}}",
+    "errors": {
+      "signin_required": "Đăng nhập để tóm tắt.",
+      "summary_not_in_plan": "Gói của bạn không bao gồm tính năng tóm tắt.",
+      "summary_unavailable": "Tính năng tóm tắt tạm thời không khả dụng. Vui lòng thử lại sau.",
+      "unreadable_media": "Không thể đọc tệp này như âm thanh hoặc video.",
+      "no_audio_or_video": "Tệp này không có âm thanh hoặc video để tóm tắt.",
+      "file_too_large": "Tệp này lớn hơn hoặc dài hơn mức gói của bạn cho phép.",
+      "upload_not_found": "Không tìm thấy tệp đã tải lên. Vui lòng thử lại.",
+      "quota_exceeded": "Bạn đã dùng hết số tác vụ AI của hôm nay.",
+      "invalid_request": "Yêu cầu không được chấp nhận. Hãy tải lại trang và thử lại.",
+      "unknown": "Không thể bắt đầu tóm tắt. Vui lòng thử lại."
+    }
+  },
   "specializedToolShell": {
     "dropHere": "Thả {{hint}} của bạn vào đây",
     "selectHint": "hoặc nhấp để chọn từ máy tính. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.",

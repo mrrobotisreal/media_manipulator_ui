@@ -283,7 +283,8 @@
       "hls": "HLS package",
       "dash": "DASH package",
       "metadata": "Metadata",
-      "unknown": "File"
+      "unknown": "File",
+      "summary": "Зведення"
     },
     "image": {
       "zoom": "Zoom",
@@ -399,6 +400,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Loading the restored clips",
       "download": "Download all results"
+    },
+    "summary": {
+      "loading": "Завантаження зведення",
+      "loadFailed": "Не вдалося завантажити зведення.",
+      "untitled": "Зведення",
+      "language": "Мова: {{language}}",
+      "chapters": "Розділи",
+      "seekTo": "Перейти до {{time}}",
+      "topics": "Теми",
+      "onScreenText": "Текст на екрані",
+      "visual": "Зображення",
+      "speech": "Мовлення",
+      "notes": "Примітки",
+      "copyMarkdown": "Копіювати як Markdown",
+      "copied": "Скопійовано",
+      "downloadMd": "Завантажити .md",
+      "downloadJson": "Завантажити .json",
+      "showAll": "Показати все ({{count}})",
+      "showLess": "Показати менше"
     }
   },
   "billing": {

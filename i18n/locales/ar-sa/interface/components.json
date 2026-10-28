@@ -287,7 +287,8 @@
       "hls": "حزمة HLS",
       "dash": "حزمة DASH",
       "metadata": "بيانات وصفية",
-      "unknown": "ملف"
+      "unknown": "ملف",
+      "summary": "ملخص"
     },
     "image": {
       "zoom": "تكبير",
@@ -407,6 +408,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "جارٍ تحميل المقاطع المستعادة",
       "download": "تنزيل كل النتائج"
+    },
+    "summary": {
+      "loading": "جارٍ تحميل الملخص",
+      "loadFailed": "تعذّر تحميل الملخص.",
+      "untitled": "ملخص",
+      "language": "اللغة: {{language}}",
+      "chapters": "الفصول",
+      "seekTo": "انتقل إلى {{time}}",
+      "topics": "المواضيع",
+      "onScreenText": "النص الظاهر على الشاشة",
+      "visual": "الصورة",
+      "speech": "الكلام",
+      "notes": "ملاحظات",
+      "copyMarkdown": "نسخ بصيغة Markdown",
+      "copied": "تم النسخ",
+      "downloadMd": "تنزيل ‎.md",
+      "downloadJson": "تنزيل ‎.json",
+      "showAll": "عرض الكل ({{count}})",
+      "showLess": "عرض أقل"
     }
   },
   "billing": {

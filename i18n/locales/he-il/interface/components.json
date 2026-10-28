@@ -283,7 +283,8 @@
       "hls": "HLS package",
       "dash": "DASH package",
       "metadata": "Metadata",
-      "unknown": "File"
+      "unknown": "File",
+      "summary": "סיכום"
     },
     "image": {
       "zoom": "Zoom",
@@ -399,6 +400,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Loading the restored clips",
       "download": "Download all results"
+    },
+    "summary": {
+      "loading": "טוען את הסיכום",
+      "loadFailed": "לא ניתן היה לטעון את הסיכום.",
+      "untitled": "סיכום",
+      "language": "שפה: {{language}}",
+      "chapters": "פרקים",
+      "seekTo": "דלגו אל {{time}}",
+      "topics": "נושאים",
+      "onScreenText": "טקסט על המסך",
+      "visual": "תמונה",
+      "speech": "דיבור",
+      "notes": "הערות",
+      "copyMarkdown": "העתקה כ־Markdown",
+      "copied": "הועתק",
+      "downloadMd": "הורדת ‎.md",
+      "downloadJson": "הורדת ‎.json",
+      "showAll": "הצגת הכול ({{count}})",
+      "showLess": "הצגת פחות"
     }
   },
   "billing": {

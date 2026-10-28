@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { useLocalization } from '@/i18n/useLocalization';
 import { activationEvents, analytics, EVENTS, reportError, takeJobDuration } from '@/lib/analytics';
 import { publishQuotaRefund } from '@/lib/auth/quotaBus';
+import type { TranscodeJobStage } from '@/lib/transcodeTypes';
 
 export interface ConversionJob {
   id: string;
@@ -40,6 +41,16 @@ export interface ConversionJob {
   strippedCount?: number;
   /** Shared GPU-queue wait in ms (additive; absent until the API reports it). */
   queueWaitMs?: number;
+  /**
+   * MM75: the staged jobs' extras, passed through when the API sent them (a video summary
+   * reports `mode: "summarize"`, its six `stages[]`, the effective `options` and the probe's
+   * duration). Absent on every other job, so nothing else changes.
+   */
+  mode?: string;
+  stages?: TranscodeJobStage[];
+  options?: Record<string, unknown>;
+  /** `transcodeReport.durationSeconds` of the source, when the job probed it. */
+  sourceDurationSeconds?: number;
 }
 
 /**
@@ -81,6 +92,11 @@ const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
         : undefined,
     strippedCount: typeof data.strippedCount === 'number' ? data.strippedCount : undefined,
     queueWaitMs: typeof data.queueWaitMs === 'number' ? data.queueWaitMs : undefined,
+    mode: typeof data.mode === 'string' ? data.mode : undefined,
+    stages: Array.isArray(data.stages) ? (data.stages as TranscodeJobStage[]) : undefined,
+    options: data.options && typeof data.options === 'object' ? (data.options as Record<string, unknown>) : undefined,
+    sourceDurationSeconds:
+      typeof data.transcodeReport?.durationSeconds === 'number' ? data.transcodeReport.durationSeconds : undefined,
   };
 };
 

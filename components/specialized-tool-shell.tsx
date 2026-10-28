@@ -70,6 +70,8 @@ interface SpecializedToolShellProps {
   previewConfig?: SpecializedToolPreviewConfig;
   /** Task the tool spends allowance on (picks the quota chip's metric); default is a conversion. */
   quotaTask?: string;
+  /** The EmbeddedTask, handed to `describe()` so a task-specific result kind (MM75 `summary`) is picked. */
+  resultTask?: string;
 }
 
 const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
@@ -83,6 +85,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
   outputExtensionHint,
   previewConfig,
   quotaTask,
+  resultTask,
 }) => {
   const { t, formatFileSize } = useLocalization('interface');
   // tool_slug and media_kind arrive from the ToolAnalyticsProvider that tool-landing-page
@@ -262,6 +265,7 @@ const SpecializedToolShell: React.FC<SpecializedToolShellProps> = ({
               descriptor={describeResult({
                 job: conversionJob,
                 originalFile: selectedFile,
+                task: resultTask,
                 kindHint: previewConfig
                   ? previewConfig.finalMediaKind === 'zip'
                     ? 'archive'

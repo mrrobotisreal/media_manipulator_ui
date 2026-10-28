@@ -277,7 +277,8 @@
       "hls": "HLS 套件",
       "dash": "DASH 套件",
       "metadata": "中繼資料",
-      "unknown": "檔案"
+      "unknown": "檔案",
+      "summary": "摘要"
     },
     "image": {
       "zoom": "縮放",
@@ -392,6 +393,25 @@
       "failedItem": "{{name}}：{{error}}",
       "loading": "正在載入修復後的片段",
       "download": "下載所有結果"
+    },
+    "summary": {
+      "loading": "正在載入摘要",
+      "loadFailed": "無法載入摘要。",
+      "untitled": "摘要",
+      "language": "語言：{{language}}",
+      "chapters": "章節",
+      "seekTo": "跳至 {{time}}",
+      "topics": "主題",
+      "onScreenText": "畫面文字",
+      "visual": "畫面",
+      "speech": "語音",
+      "notes": "備註",
+      "copyMarkdown": "複製為 Markdown",
+      "copied": "已複製",
+      "downloadMd": "下載 .md",
+      "downloadJson": "下載 .json",
+      "showAll": "顯示全部（{{count}}）",
+      "showLess": "收合"
     }
   },
   "billing": {

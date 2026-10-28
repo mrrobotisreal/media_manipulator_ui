@@ -25,6 +25,59 @@
     "summaryPending": "Le résumé et l'analyse de sécurité s'afficheront ici une fois la tâche d'analyse terminée.",
     "unknown": "inconnu"
   },
+  "summarize": {
+    "loading": "Vérification de la disponibilité des résumés…",
+    "unavailable": "Les résumés vidéo et audio sont temporairement indisponibles. Veuillez réessayer plus tard ; les pages de transcription fonctionnent toujours.",
+    "notInPlan": "Les résumés ne sont pas inclus dans votre offre.",
+    "signIn": {
+      "title": "Connectez-vous pour résumer",
+      "body": "Les résumés s'exécutent sur notre propre serveur GPU et nécessitent un compte gratuit. Connectez-vous ou créez-en un, puis importez votre fichier.",
+      "button": "Se connecter",
+      "signup": "Créer un compte gratuit"
+    },
+    "uploadHintVideo": "un fichier vidéo ou audio",
+    "uploadHintAudio": "un fichier audio",
+    "outputLanguage": "Langue du résumé",
+    "sameAsSpeech": "Identique à la parole",
+    "depth": {
+      "label": "Niveau de détail",
+      "standard": "Standard",
+      "deep": "Approfondi",
+      "hint": "Le mode approfondi rédige le résumé avec un modèle plus grand. Cela prend plus de temps."
+    },
+    "note": "Utilise une tâche IA de votre quota quotidien. Une tâche échouée n'est pas comptée.",
+    "noteFrames": "Votre offre lit jusqu'à {{frames}} images de la vidéo. Utilise une tâche IA de votre quota quotidien ; une tâche échouée n'est pas comptée.",
+    "start": "Résumer",
+    "stagesTitle": "Progression",
+    "stages": {
+      "probe": "Lecture du fichier",
+      "audio": "Transcription de la parole",
+      "frames": "Sélection des images",
+      "vision": "Description des images",
+      "synthesis": "Rédaction du résumé",
+      "render": "Mise en forme du résultat"
+    },
+    "status": {
+      "pending": "En attente",
+      "processing": "En cours",
+      "completed": "Terminé",
+      "skipped": "Ignoré",
+      "failed": "Échec"
+    },
+    "framesCount": "Images : {{count}}",
+    "errors": {
+      "signin_required": "Connectez-vous pour résumer.",
+      "summary_not_in_plan": "Les résumés ne sont pas inclus dans votre offre.",
+      "summary_unavailable": "Les résumés sont temporairement indisponibles. Veuillez réessayer plus tard.",
+      "unreadable_media": "Ce fichier n'a pas pu être lu comme audio ou vidéo.",
+      "no_audio_or_video": "Ce fichier ne contient ni audio ni vidéo à résumer.",
+      "file_too_large": "Ce fichier est plus volumineux ou plus long que ce que permet votre offre.",
+      "upload_not_found": "L'import est introuvable. Veuillez réessayer.",
+      "quota_exceeded": "Vous avez utilisé toutes les tâches IA d'aujourd'hui.",
+      "invalid_request": "La requête n'a pas été acceptée. Rechargez la page et réessayez.",
+      "unknown": "Le résumé n'a pas pu être lancé. Veuillez réessayer."
+    }
+  },
   "specializedToolShell": {
     "dropHere": "Déposez votre {{hint}} ici",
     "selectHint": "ou cliquez pour le choisir sur votre ordinateur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.",

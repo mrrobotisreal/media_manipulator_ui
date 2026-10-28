@@ -25,6 +25,59 @@
     "summaryPending": "Il riassunto e la revisione di sicurezza compariranno qui al termine del lavoro di analisi.",
     "unknown": "sconosciuto"
   },
+  "summarize": {
+    "loading": "Verifica della disponibilità dei riassunti…",
+    "unavailable": "I riassunti di video e audio sono temporaneamente non disponibili. Riprova più tardi; le pagine di trascrizione funzionano ancora.",
+    "notInPlan": "I riassunti non sono inclusi nel tuo piano.",
+    "signIn": {
+      "title": "Accedi per riassumere",
+      "body": "I riassunti vengono elaborati sul nostro server GPU e richiedono un account gratuito. Accedi o creane uno, poi carica il tuo file.",
+      "button": "Accedi",
+      "signup": "Crea un account gratuito"
+    },
+    "uploadHintVideo": "un file video o audio",
+    "uploadHintAudio": "un file audio",
+    "outputLanguage": "Lingua del riassunto",
+    "sameAsSpeech": "Come il parlato",
+    "depth": {
+      "label": "Livello di dettaglio",
+      "standard": "Standard",
+      "deep": "Approfondito",
+      "hint": "La modalità approfondita scrive il riassunto con un modello più grande. Richiede più tempo."
+    },
+    "note": "Usa un lavoro IA della tua quota giornaliera. Un lavoro non riuscito non viene conteggiato.",
+    "noteFrames": "Il tuo piano legge fino a {{frames}} fotogrammi del video. Usa un lavoro IA della tua quota giornaliera; un lavoro non riuscito non viene conteggiato.",
+    "start": "Riassumi",
+    "stagesTitle": "Avanzamento",
+    "stages": {
+      "probe": "Lettura del file",
+      "audio": "Trascrizione del parlato",
+      "frames": "Scelta dei fotogrammi",
+      "vision": "Descrizione dei fotogrammi",
+      "synthesis": "Scrittura del riassunto",
+      "render": "Formattazione del risultato"
+    },
+    "status": {
+      "pending": "In attesa",
+      "processing": "In corso",
+      "completed": "Completato",
+      "skipped": "Saltato",
+      "failed": "Non riuscito"
+    },
+    "framesCount": "Fotogrammi: {{count}}",
+    "errors": {
+      "signin_required": "Accedi per riassumere.",
+      "summary_not_in_plan": "I riassunti non sono inclusi nel tuo piano.",
+      "summary_unavailable": "I riassunti sono temporaneamente non disponibili. Riprova più tardi.",
+      "unreadable_media": "Non è stato possibile leggere questo file come audio o video.",
+      "no_audio_or_video": "Questo file non contiene audio o video da riassumere.",
+      "file_too_large": "Questo file è più grande o più lungo di quanto consenta il tuo piano.",
+      "upload_not_found": "Impossibile trovare il caricamento. Riprova.",
+      "quota_exceeded": "Hai usato tutti i lavori IA di oggi.",
+      "invalid_request": "La richiesta non è stata accettata. Ricarica la pagina e riprova.",
+      "unknown": "Non è stato possibile avviare il riassunto. Riprova."
+    }
+  },
   "specializedToolShell": {
     "dropHere": "Trascina qui il tuo {{hint}}",
     "selectHint": "oppure clicca per sceglierlo dal computer. I file degli ospiti restano 24 ore; con un account gratuito scegli tu da 24 ore a 2 anni.",

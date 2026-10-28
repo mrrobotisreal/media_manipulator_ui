@@ -24,6 +24,59 @@
     "summaryPending": "分析工作完成後，摘要與安全審閱會顯示在這裡。",
     "unknown": "未知"
   },
+  "summarize": {
+    "loading": "正在檢查摘要功能是否可用…",
+    "unavailable": "影片與音訊摘要暫時無法使用，請稍後再試；轉錄頁面仍可正常使用。",
+    "notInPlan": "你的方案不包含摘要功能。",
+    "signIn": {
+      "title": "登入後產生摘要",
+      "body": "摘要在我們自己的 GPU 伺服器上執行，需要一個免費帳號。請登入或建立帳號，然後上傳檔案。",
+      "button": "登入",
+      "signup": "建立免費帳號"
+    },
+    "uploadHintVideo": "影片或音訊檔案",
+    "uploadHintAudio": "音訊檔案",
+    "outputLanguage": "摘要語言",
+    "sameAsSpeech": "與語音語言相同",
+    "depth": {
+      "label": "深度",
+      "standard": "標準",
+      "deep": "深入",
+      "hint": "「深入」會使用更大的模型來撰寫摘要，耗時較長。"
+    },
+    "note": "會使用每日額度中的 1 次 AI 工作。失敗的工作不會計入。",
+    "noteFrames": "你的方案最多會讀取影片的 {{frames}} 個影格。會使用每日額度中的 1 次 AI 工作；失敗的工作不會計入。",
+    "start": "產生摘要",
+    "stagesTitle": "進度",
+    "stages": {
+      "probe": "讀取檔案",
+      "audio": "轉錄語音",
+      "frames": "挑選影格",
+      "vision": "描述影格",
+      "synthesis": "撰寫摘要",
+      "render": "整理結果格式"
+    },
+    "status": {
+      "pending": "等待中",
+      "processing": "進行中",
+      "completed": "已完成",
+      "skipped": "已略過",
+      "failed": "失敗"
+    },
+    "framesCount": "影格：{{count}}",
+    "errors": {
+      "signin_required": "請登入後再產生摘要。",
+      "summary_not_in_plan": "你的方案不包含摘要功能。",
+      "summary_unavailable": "摘要功能暫時無法使用，請稍後再試。",
+      "unreadable_media": "無法將此檔案當作音訊或影片讀取。",
+      "no_audio_or_video": "此檔案中沒有可供摘要的音訊或影片。",
+      "file_too_large": "此檔案的大小或長度超出了你的方案限制。",
+      "upload_not_found": "找不到已上傳的檔案，請重試。",
+      "quota_exceeded": "你今天的 AI 工作次數已用完。",
+      "invalid_request": "請求未被接受。請重新載入頁面後再試。",
+      "unknown": "無法開始產生摘要，請重試。"
+    }
+  },
   "specializedToolShell": {
     "dropHere": "將你的{{hint}}拖放到這裡",
     "selectHint": "或點選以從電腦中選擇。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。",

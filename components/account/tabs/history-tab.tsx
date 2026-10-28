@@ -47,6 +47,8 @@ import {
 } from '@/lib/account/retention';
 import { requireToken } from '@/lib/account/requireToken';
 import { describe } from '@/lib/results/describe';
+import { summaryHistoryLabel } from '@/lib/results/summary';
+import { useSummaryResult } from '@/lib/useSummarize';
 import { useShareAction, type ShareMessages } from '@/components/share/use-share-action';
 import { isShareable, revokeShareLinks } from '@/lib/share/shareApi';
 import { cn } from '@/lib/utils';
@@ -95,11 +97,23 @@ interface RowProps {
   formatExpiry: (iso: string) => string;
 }
 
+/**
+ * MM75: a video summary's row is labelled with the summary's title. The history entry carries
+ * no title, so a completed, unexpired summary row reads summary.json (cached per job, the same
+ * query the result viewer uses); anything else, or a failed read, keeps the file name.
+ */
+function useSummaryTitle(entry: HistoryEntry): string | null {
+  const isSummary = toolIdOf(entry) === 'video_summary' || entry.mode === 'summarize';
+  const { data } = useSummaryResult(entry.jobId, isSummary && entry.status === 'completed' && !entry.expired);
+  return isSummary ? (data?.title ?? null) : null;
+}
+
 const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, onPreview, onKeep, onDelete, onRevokeLinks, shareMessages, formatExpiry }) => {
   const { t, formatDate, language } = useLocalization('interface');
   const [metaOpen, setMetaOpen] = React.useState(false);
   const href = historyDownloadHref(entry);
-  const name = entry.resultFileName || toolLabel(entry, copy);
+  const summaryTitle = useSummaryTitle(entry);
+  const name = summaryHistoryLabel(summaryTitle, entry.resultFileName, toolLabel(entry, copy));
   const detail = [formatTransition(entry), formatJobDuration(entry.durationMs)].filter(Boolean).join(' · ');
   const inFlight = IN_FLIGHT.has(entry.status);
   const failed = entry.status === 'failed' || entry.status === 'cancelled';
@@ -131,8 +145,8 @@ const HistoryRow: React.FC<RowProps> = ({ entry, copy, now, selected, onSelect, 
       <div className="flex min-w-0 items-baseline justify-between gap-3">
         <p className="min-w-0 truncate text-sm text-foreground">
           {toolLabel(entry, copy)}
-          {entry.resultFileName ? (
-            <span className="ms-2 text-muted-foreground">{entry.resultFileName}</span>
+          {summaryTitle || entry.resultFileName ? (
+            <span className="ms-2 text-muted-foreground" data-testid="history-row-name">{summaryTitle || entry.resultFileName}</span>
           ) : null}
         </p>
         <time dateTime={entry.createdAt} className="num shrink-0 text-xs text-muted-foreground">

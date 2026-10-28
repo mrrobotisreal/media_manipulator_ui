@@ -7,6 +7,7 @@ import { ImageViewer } from './image-viewer';
 import { MetadataViewer } from './metadata-viewer';
 import { PdfViewer } from './pdf-viewer';
 import { StreamViewer } from './stream-viewer';
+import { SummaryViewer } from './summary-viewer';
 import { TranscriptViewer } from './transcript-viewer';
 import { UnknownViewer } from './unknown-viewer';
 import { VideoViewer } from './video-viewer';
@@ -34,6 +35,8 @@ export const RESULT_VIEWERS: Partial<Record<ResultKind, ViewerEntry>> = {
   hls: { component: StreamViewer, needsBlob: false },
   dash: { component: StreamViewer, needsBlob: false },
   metadata: { component: MetadataViewer, needsBlob: false },
+  // MM75: reads /summarize/:jobId/result?format=json itself.
+  summary: { component: SummaryViewer, needsBlob: false },
   unknown: { component: UnknownViewer, needsBlob: false },
 };
 

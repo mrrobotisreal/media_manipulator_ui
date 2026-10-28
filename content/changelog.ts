@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM75: video and audio summaries (the MM74 pipeline).
+  {
+    id: '2026-10-28-video-summaries',
+    date: '2026-10-28',
+    title: 'AI summaries of videos and recordings, with chapters you can click',
+    body: 'Summarize video now writes a real summary: a title, a few sentences, chapters with start and end times, the topics, and the text that appears on screen, plus short notes on the picture and the speech. Click a chapter to jump to that moment in your file, copy the whole summary as Markdown, or download it as Markdown or JSON. The new Summarize audio page does the same for podcasts, interviews and voice memos. Pick the language the summary is written in, or keep the language that is spoken. Whisper transcribes the speech, a vision model looks at frames chosen where the picture changes, and a language model writes the summary, all on our own GPU servers; nothing is sent to a third-party AI. Summaries need a free account and count as one AI job; a failed job is not counted. Signed-in history now labels a summary with its title.',
+    tags: ['new'],
+    links: [
+      { label: 'Summarize a video', href: '/tools/summarize-video' },
+      { label: 'Summarize audio', href: '/tools/summarize-audio' },
+    ],
+  },
   // MM78: voices (clone, design, change a voice).
   {
     id: '2026-10-28-voices',

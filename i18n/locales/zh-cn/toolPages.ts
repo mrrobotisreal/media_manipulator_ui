@@ -292,9 +292,251 @@ const zhCnToolPages = {
       name: 'VTT字幕生成器',
       tagline: '在我们自己的GPU服务器上，通过AI转录为HTML5视频、YouTube或播放器生成.vtt字幕文件。',
     },
+    // MM75: summarize-video / summarize-audio full page bodies (model-written, needs native review).
     'summarize-video': {
       name: '视频摘要',
-      tagline: '在我们自己的GPU服务器上，获取讲座、会议或访谈的文字稿和带时间戳的结构化JSON分析。',
+      h1: '用 AI 总结视频：章节、主题和画面文字',
+      tagline: '为讲座、会议或教程生成文字摘要，附带可点击的章节、主题和画面文字，全部在我们自己的 GPU 服务器上完成。',
+      metaTitle: '带章节的 AI 视频摘要工具 | Media Manipulator',
+      metaDescription: '上传视频，即可获得带时间戳章节、主题和画面文字的文字摘要。AI 在我们自己的 GPU 服务器上运行，绝不使用第三方 AI。需要免费账号。',
+      ogTitle: '用 AI 总结视频',
+      ogDescription: '带可点击章节、主题和画面文字的文字摘要。需要免费账号。',
+      embed: {
+        title: '总结视频',
+        description: '登录后上传视频（或音频文件），并选择摘要语言。你会得到标题、简短摘要、可跳转到视频对应时刻的章节、主题以及画面中出现的文字。',
+      },
+      intro: '没人愿意为了找出重要的五分钟，把一小时的会议或讲座重看一遍。Media Manipulator 替你看、替你听：先用 Whisper 转录语音，再用视觉模型查看在画面变化处挑选的帧，并综合两者撰写摘要，全程都在我们运营的 GPU 服务器上完成。结果是一份简短的文档：标题、几句话的概述、带起止时间的章节、主题，以及画面中出现的文字。点击章节即可跳转到视频中的对应时刻，也可以将全部内容复制为 Markdown，或下载为 Markdown 或 JSON。摘要需要免费账号。',
+      whatItDoes: [
+        '为整个视频撰写标题和三到六句话的摘要。',
+        '将视频划分为带起止时间的章节；点击章节，播放器会跳转到对应时刻。',
+        '列出主题和画面中出现的文字，并标注其首次出现的时间。',
+        '描述画面和语音，并说明哪些内容无法处理（例如没有语音）。',
+        '用你选择的语言撰写摘要，或使用视频中所说的语言。',
+      ],
+      flowSteps: [
+        {
+          title: '登录',
+          description: '有免费账号即可。',
+        },
+        {
+          title: '上传',
+          description: '视频或音频文件。',
+        },
+        {
+          title: '生成摘要',
+          description: '语音和画面帧在我们的 GPU 服务器上分析。',
+        },
+        {
+          title: '阅读',
+          description: '点击章节、复制 Markdown、下载 .md 或 .json。',
+        },
+      ],
+      advancedDetails: [
+        '语音使用 Whisper 转录；画面帧在场景切换处挑选，数量不超过你的套餐上限（Free 24 帧，Premium 48 帧，Pro 96 帧），并由视觉模型分批描述。',
+        '语言模型根据转录文本和画面帧笔记撰写摘要。Pro 账号可在可用时要求由更大的模型生成更深入的摘要。',
+        '一次摘要计为每日额度中的 1 次 AI 任务；失败或被拒绝的任务不计入。',
+        '转录文本由机器生成，人名和数字可能有误。摘要会在备注中说明这一点。',
+      ],
+      whyItMatters: [
+        '带章节的摘要一分钟就能浏览完，视频则不行。',
+        '可点击的时间戳能直接带你到需要的部分。',
+        '画面文字能捕捉到幻灯片标题和字幕，这些内容语音里从来不会念出来。',
+      ],
+      useCases: [
+        {
+          title: '会议纪要',
+          description: '决议和议题，并附上时间以便核对细节。',
+        },
+        {
+          title: '讲座笔记',
+          description: '按小节划分的章节和幻灯片文字，方便复习。',
+        },
+        {
+          title: '教程大纲',
+          description: '把步骤整理成章节，想看哪一步就跳到哪一步。',
+        },
+        {
+          title: '访谈概览',
+          description: '聊了什么，在哪里聊的。',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper 以及视觉和语言模型都运行在我们自己运营的硬件上；你的视频绝不会发送给第三方 AI。',
+        '章节可直接在结果查看器中跳转到你自己的视频。',
+        '支持下载 Markdown 和 JSON。访客的文件保留 24 小时；使用免费账号，你可以选择保留 24 小时到 2 年。',
+      ],
+      privacyNote: '摘要需要免费账号，因此任务会关联到该账号。你的文件在我们自己的服务器上处理，AI 模型运行在我们运营的 GPU 服务器上；不会向任何第三方 AI 服务商发送数据。访客的文件保留 24 小时；使用免费账号，你可以选择保留 24 小时到 2 年。',
+      faq: [
+        {
+          question: '需要账号吗？',
+          answer: '需要，一个免费账号即可。摘要会在我们的 GPU 服务器上运行多个 AI 模型，因此仅限已登录用户使用。',
+        },
+        {
+          question: '我会得到什么？',
+          answer: '标题、简短摘要、带起止时间的章节、主题、带时间的画面文字、对画面和语音的描述，以及关于无法处理内容的备注。',
+        },
+        {
+          question: '可以选择摘要的语言吗？',
+          answer: '可以。你可以从本站的 18 种语言中任选一种，或选择“与语音语言相同”，用视频中所说的语言撰写。',
+        },
+        {
+          question: '如果视频没有语音怎么办？',
+          answer: '摘要将仅根据画面撰写，并在备注中说明。既没有画面也没有声音的文件会被拒绝，且不计入额度。',
+        },
+        {
+          question: '我的视频会被发送给第三方吗？',
+          answer: '不会。所有模型都运行在我们运营的 GPU 服务器上。',
+        },
+        {
+          question: '这会占用我的额度吗？',
+          answer: '会，计为 1 次 AI 任务。失败的任务不计入。',
+        },
+      ],
+      related: [
+        {
+          label: '音频摘要',
+          to: '/tools/summarize-audio',
+          description: '适用于播客和录音。',
+        },
+        {
+          label: '视频转录',
+          to: '/tools/transcribe-video',
+          description: '完整的转录文本。',
+        },
+        {
+          label: '音频转录',
+          to: '/tools/transcribe-audio',
+          description: '适用于音频文件。',
+        },
+        {
+          label: '消除背景噪音',
+          to: '/tools/remove-background-noise',
+          description: '先清理音频。',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          '计为 1 次 AI 任务；失败的任务不计入。',
+          '时长上限取决于你的套餐的视频时长限制。',
+        ],
+      },
+    },
+    'summarize-audio': {
+      name: '音频摘要',
+      h1: '用 AI 总结音频录音',
+      tagline: '把播客、访谈或语音备忘录变成带章节和主题的文字摘要，全部在我们自己的 GPU 服务器上完成。',
+      metaTitle: '带章节的 AI 音频摘要工具 | Media Manipulator',
+      metaDescription: '上传 MP3、WAV 或 M4A，即可获得带时间戳章节和主题的文字摘要。Whisper 和语言模型都运行在我们自己的 GPU 服务器上。需要免费账号。',
+      ogTitle: '用 AI 总结音频录音',
+      ogDescription: '为任何录音生成带章节和主题的文字摘要。需要免费账号。',
+      embed: {
+        title: '总结音频文件',
+        description: '登录后上传录音，并选择摘要语言。你会得到标题、简短摘要、可跳转到录音对应时刻的章节以及主题。',
+      },
+      intro: '一集播客、一场访谈或一段很长的语音备忘录，做成一页文字比听一个小时的音频更好用。Media Manipulator 用 Whisper 转录录音，再由语言模型根据转录文本撰写摘要，两者都在我们运营的 GPU 服务器上完成。你会得到标题、几句话的概述、带起止时间的章节和主题。点击章节即可跳转到录音中的对应位置，也可以将摘要复制为 Markdown，或下载为 Markdown 或 JSON。摘要需要免费账号。',
+      whatItDoes: [
+        '为录音撰写标题和简短摘要。',
+        '将录音划分为带时间的章节；点击章节，播放器会跳转到对应位置。',
+        '列出主题，并描述说话人及其语气。',
+        '用你选择的语言撰写摘要，或使用录音中所说的语言。',
+      ],
+      flowSteps: [
+        {
+          title: '登录',
+          description: '有免费账号即可。',
+        },
+        {
+          title: '上传',
+          description: 'MP3、WAV、M4A 及其他音频。',
+        },
+        {
+          title: '生成摘要',
+          description: 'Whisper 和语言模型在我们的 GPU 服务器上运行。',
+        },
+        {
+          title: '阅读',
+          description: '点击章节、复制 Markdown、下载 .md 或 .json。',
+        },
+      ],
+      advancedDetails: [
+        '语音使用 Whisper 转录；语言模型根据转录文本撰写摘要。',
+        '带封面图的音频文件会按音频处理，图片会被忽略。',
+        '一次摘要计为每日额度中的 1 次 AI 任务；失败或被拒绝的任务不计入。',
+        '转录文本由机器生成，人名和数字可能有误。摘要会在备注中说明这一点。',
+      ],
+      whyItMatters: [
+        '一分钟就能读完摘要，再决定要听哪一段。',
+        '带时间的章节让一段很长的录音变得便于导航。',
+        '主题让往期节目库变得可以搜索。',
+      ],
+      useCases: [
+        {
+          title: '播客节目笔记',
+          description: '为单集页面准备的章节和主题。',
+        },
+        {
+          title: '访谈回顾',
+          description: '谈了哪些内容，并附上可引用的时间点。',
+        },
+        {
+          title: '语音备忘录转笔记',
+          description: '把絮絮叨叨的备忘录变成简短的一页。',
+        },
+        {
+          title: '通话摘要',
+          description: '一通录音通话的要点。',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper 和语言模型运行在我们自己运营的硬件上；你的录音绝不会发送给第三方 AI。',
+        '章节可直接在结果查看器中跳转到你自己的录音。',
+        '支持下载 Markdown 和 JSON。访客的文件保留 24 小时；使用免费账号，你可以选择保留 24 小时到 2 年。',
+      ],
+      privacyNote: '摘要需要免费账号，因此任务会关联到该账号。你的文件在我们自己的服务器上处理，AI 模型运行在我们运营的 GPU 服务器上；不会向任何第三方 AI 服务商发送数据。访客的文件保留 24 小时；使用免费账号，你可以选择保留 24 小时到 2 年。',
+      faq: [
+        {
+          question: '需要账号吗？',
+          answer: '需要，一个免费账号即可。摘要会在我们的 GPU 服务器上运行 AI 模型，因此仅限已登录用户使用。',
+        },
+        {
+          question: '这与转录有什么不同？',
+          answer: '转录会给出每一个字。摘要则根据该转录文本，给出标题、几句话的概述、章节和主题。',
+        },
+        {
+          question: '可以选择摘要的语言吗？',
+          answer: '可以。你可以从本站的 18 种语言中任选一种，或选择“与语音语言相同”。',
+        },
+        {
+          question: '我的录音会被发送给第三方吗？',
+          answer: '不会。模型都运行在我们运营的 GPU 服务器上。',
+        },
+        {
+          question: '这会占用我的额度吗？',
+          answer: '会，计为 1 次 AI 任务。失败的任务不计入。',
+        },
+      ],
+      related: [
+        {
+          label: '音频转录',
+          to: '/tools/transcribe-audio',
+          description: '每一个字，以文本或字幕呈现。',
+        },
+        {
+          label: '视频摘要',
+          to: '/tools/summarize-video',
+          description: '额外包含画面和画面文字。',
+        },
+        {
+          label: '消除背景噪音',
+          to: '/tools/remove-background-noise',
+          description: '先清理音频。',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          '计为 1 次 AI 任务；失败的任务不计入。',
+        ],
+      },
     },
     // MM78 voices: name + tagline (model-written, needs native review).
     'voice-cloning': {

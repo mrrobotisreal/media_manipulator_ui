@@ -279,7 +279,8 @@
       "hls": "HLS package",
       "dash": "DASH package",
       "metadata": "Metadata",
-      "unknown": "File"
+      "unknown": "File",
+      "summary": "Resumen"
     },
     "image": {
       "zoom": "Zoom",
@@ -395,6 +396,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Loading the restored clips",
       "download": "Download all results"
+    },
+    "summary": {
+      "loading": "Cargando el resumen",
+      "loadFailed": "No se pudo cargar el resumen.",
+      "untitled": "Resumen",
+      "language": "Idioma: {{language}}",
+      "chapters": "Capítulos",
+      "seekTo": "Ir a {{time}}",
+      "topics": "Temas",
+      "onScreenText": "Texto en pantalla",
+      "visual": "Imagen",
+      "speech": "Habla",
+      "notes": "Notas",
+      "copyMarkdown": "Copiar como Markdown",
+      "copied": "Copiado",
+      "downloadMd": "Descargar .md",
+      "downloadJson": "Descargar .json",
+      "showAll": "Mostrar todo ({{count}})",
+      "showLess": "Mostrar menos"
     }
   },
   "billing": {

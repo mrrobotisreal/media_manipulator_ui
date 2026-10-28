@@ -1676,7 +1676,8 @@
         "ai_frame_interpolation": "프레임 보간",
         "ai_voice_cleanup": "음성 정리",
         "ai_isolate_vocals": "보컬 분리",
-        "ai_remove_vocals": "보컬 제거"
+        "ai_remove_vocals": "보컬 제거",
+        "video_summary": "동영상 요약"
       },
       "deletesOn": "{{date}}에 삭제",
       "keptLonger": "연장 보관됨",

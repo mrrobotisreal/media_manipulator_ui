@@ -277,7 +277,8 @@
       "hls": "HLS包",
       "dash": "DASH包",
       "metadata": "元数据",
-      "unknown": "文件"
+      "unknown": "文件",
+      "summary": "摘要"
     },
     "image": {
       "zoom": "缩放",
@@ -392,6 +393,25 @@
       "failedItem": "{{name}}：{{error}}",
       "loading": "正在加载修复后的片段",
       "download": "下载全部结果"
+    },
+    "summary": {
+      "loading": "正在加载摘要",
+      "loadFailed": "无法加载摘要。",
+      "untitled": "摘要",
+      "language": "语言：{{language}}",
+      "chapters": "章节",
+      "seekTo": "跳转到 {{time}}",
+      "topics": "主题",
+      "onScreenText": "画面文字",
+      "visual": "画面",
+      "speech": "语音",
+      "notes": "备注",
+      "copyMarkdown": "复制为 Markdown",
+      "copied": "已复制",
+      "downloadMd": "下载 .md",
+      "downloadJson": "下载 .json",
+      "showAll": "显示全部（{{count}}）",
+      "showLess": "收起"
     }
   },
   "billing": {

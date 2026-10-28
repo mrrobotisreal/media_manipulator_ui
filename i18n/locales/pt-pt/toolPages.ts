@@ -293,9 +293,251 @@ const ptPtToolPages = {
       name: 'Gerador de legendas VTT',
       tagline: 'Crie um ficheiro de legendas .vtt para vídeo HTML5, YouTube ou um leitor com transcrição por IA nos nossos próprios servidores GPU.',
     },
+    // MM75: summarize-video / summarize-audio full page bodies (model-written, needs native review).
     'summarize-video': {
       name: 'Resumir vídeo',
-      tagline: 'Obtenha a transcrição e uma análise JSON estruturada de uma aula, reunião ou entrevista, com marcas temporais, nos nossos próprios servidores GPU.',
+      h1: 'Resuma um vídeo com IA: capítulos, tópicos e texto no ecrã',
+      tagline: 'Obtenha um resumo escrito de uma aula, reunião ou tutorial, com capítulos em que pode clicar, tópicos e texto no ecrã, gerado nos nossos próprios servidores GPU.',
+      metaTitle: 'Resumidor de vídeo com IA e capítulos | Media Manipulator',
+      metaDescription: 'Carregue um vídeo e obtenha um resumo escrito com capítulos com marcas temporais, tópicos e o texto mostrado no ecrã. A IA é executada nos nossos próprios servidores GPU, nunca numa IA de terceiros. Requer conta gratuita.',
+      ogTitle: 'Resuma um vídeo com IA',
+      ogDescription: 'Um resumo escrito com capítulos clicáveis, tópicos e texto no ecrã. Requer conta gratuita.',
+      embed: {
+        title: 'Resumir um vídeo',
+        description: 'Inicie sessão, carregue um vídeo (ou um ficheiro de áudio) e escolha o idioma do resumo. Obtém um título, um resumo curto, capítulos que saltam para o momento do seu vídeo, os tópicos e o texto que aparece no ecrã.',
+      },
+      intro: 'Ninguém quer voltar a ver uma hora de reunião ou de aula para encontrar os cinco minutos que importavam. O Media Manipulator vê e ouve por si: transcreve a fala com Whisper, analisa com um modelo de visão os fotogramas escolhidos onde a imagem muda e escreve um resumo a partir de ambos, tudo num servidor GPU que nós operamos. O resultado é um documento curto: um título, algumas frases, capítulos com hora de início e de fim, os tópicos e o texto que apareceu no ecrã. Clique num capítulo para saltar para esse momento do seu vídeo, copie tudo como Markdown ou transfira-o como Markdown ou JSON. Os resumos requerem uma conta gratuita.',
+      whatItDoes: [
+        'Escreve um título e um resumo de três a seis frases de todo o vídeo.',
+        'Divide o vídeo em capítulos com hora de início e de fim; ao clicar num deles, o leitor salta para esse momento.',
+        'Lista os tópicos e o texto que aparece no ecrã, com a hora a que surge pela primeira vez.',
+        'Descreve a imagem e a fala, e assinala o que não conseguiu fazer (por exemplo, se não há fala).',
+        'Escreve o resumo no idioma que escolher ou no idioma que é falado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Inicie sessão',
+          description: 'Basta uma conta gratuita.',
+        },
+        {
+          title: 'Carregue',
+          description: 'Um vídeo ou um ficheiro de áudio.',
+        },
+        {
+          title: 'Resuma',
+          description: 'A fala e os fotogramas são analisados no nosso servidor GPU.',
+        },
+        {
+          title: 'Leia',
+          description: 'Clique nos capítulos, copie Markdown, transfira .md ou .json.',
+        },
+      ],
+      advancedDetails: [
+        'A fala é transcrita com Whisper; os fotogramas são escolhidos nas mudanças de cena, até ao limite de fotogramas do seu plano (24 no Free, 48 no Premium, 96 no Pro), e descritos em lotes por um modelo de visão.',
+        'Um modelo de linguagem escreve o resumo a partir da transcrição e das notas dos fotogramas. As contas Pro podem pedir um resumo mais profundo, com um modelo maior, quando estiver disponível.',
+        'Um resumo conta como uma tarefa de IA do seu limite diário; uma tarefa falhada ou recusada não é contabilizada.',
+        'A transcrição é gerada por máquina, pelo que os nomes e os números podem estar errados. O resumo indica-o nas suas notas.',
+      ],
+      whyItMatters: [
+        'Um resumo com capítulos lê-se na diagonal em um minuto; o vídeo, não.',
+        'As marcas temporais clicáveis levam-no diretamente à parte de que precisa.',
+        'O texto no ecrã apanha títulos de diapositivos e legendas que a fala nunca diz em voz alta.',
+      ],
+      useCases: [
+        {
+          title: 'Resumo de reunião',
+          description: 'Decisões e tópicos, com horas para confirmar os detalhes.',
+        },
+        {
+          title: 'Apontamentos de aula',
+          description: 'Capítulos por secção e o texto dos diapositivos, para estudar.',
+        },
+        {
+          title: 'Esquema de tutorial',
+          description: 'Os passos como capítulos, para saltar para aquele de que precisa.',
+        },
+        {
+          title: 'Síntese de entrevista',
+          description: 'O que foi discutido e em que momento.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O Whisper e os modelos de visão e de linguagem são executados em hardware que nós operamos; o seu vídeo nunca é enviado para uma IA de terceiros.',
+        'Capítulos que navegam no seu próprio vídeo, diretamente no visualizador de resultados.',
+        'Transferências em Markdown e JSON. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'Os resumos requerem uma conta gratuita, pelo que a tarefa fica associada a ela. O seu ficheiro é processado nos nossos próprios servidores e os modelos de IA são executados num servidor GPU que nós operamos; nada é enviado para um fornecedor de IA de terceiros. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Preciso de uma conta?',
+          answer: 'Sim, uma conta gratuita. Os resumos executam vários modelos de IA no nosso servidor GPU, pelo que estão limitados a utilizadores com sessão iniciada.',
+        },
+        {
+          question: 'O que obtenho?',
+          answer: 'Um título, um resumo curto, capítulos com hora de início e de fim, tópicos, texto no ecrã com as respetivas horas, uma descrição da imagem e da fala, e notas sobre tudo o que não foi possível fazer.',
+        },
+        {
+          question: 'Posso escolher o idioma do resumo?',
+          answer: 'Sim. Escolha um dos 18 idiomas do site, ou «o mesmo da fala» para o escrever no idioma falado.',
+        },
+        {
+          question: 'E se o vídeo não tiver fala?',
+          answer: 'O resumo é escrito apenas a partir da imagem e indica-o nas suas notas. Um ficheiro sem imagem nem som é recusado e não é contabilizado.',
+        },
+        {
+          question: 'O meu vídeo é enviado para terceiros?',
+          answer: 'Não. Todos os modelos são executados num servidor GPU que nós operamos.',
+        },
+        {
+          question: 'Conta para o meu limite?',
+          answer: 'Sim, como uma tarefa de IA. As tarefas falhadas não são contabilizadas.',
+        },
+      ],
+      related: [
+        {
+          label: 'Resumir áudio',
+          to: '/tools/summarize-audio',
+          description: 'Para podcasts e gravações.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'A transcrição completa.',
+        },
+        {
+          label: 'Transcrever áudio',
+          to: '/tools/transcribe-audio',
+          description: 'Para ficheiros de áudio.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Limpe primeiro o áudio.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Conta como uma tarefa de IA; as tarefas falhadas não são contabilizadas.',
+          'Duração até ao limite de duração de vídeo do seu plano.',
+        ],
+      },
+    },
+    'summarize-audio': {
+      name: 'Resumir áudio',
+      h1: 'Resuma uma gravação de áudio com IA',
+      tagline: 'Transforme um podcast, uma entrevista ou uma nota de voz num resumo escrito com capítulos e tópicos, gerado nos nossos próprios servidores GPU.',
+      metaTitle: 'Resumidor de áudio com IA e capítulos | Media Manipulator',
+      metaDescription: 'Carregue um MP3, WAV ou M4A e obtenha um resumo escrito com capítulos com marcas temporais e tópicos. O Whisper e o modelo de linguagem são executados nos nossos próprios servidores GPU. Requer conta gratuita.',
+      ogTitle: 'Resuma uma gravação de áudio com IA',
+      ogDescription: 'Um resumo escrito com capítulos e tópicos para qualquer gravação. Requer conta gratuita.',
+      embed: {
+        title: 'Resumir um ficheiro de áudio',
+        description: 'Inicie sessão, carregue uma gravação e escolha o idioma do resumo. Obtém um título, um resumo curto, capítulos que saltam para o momento da sua gravação e os tópicos.',
+      },
+      intro: 'Um episódio de podcast, uma entrevista ou uma nota de voz longa é mais fácil de usar como página do que como uma hora de áudio. O Media Manipulator transcreve a gravação com Whisper e faz com que um modelo de linguagem escreva um resumo a partir da transcrição, ambos num servidor GPU que nós operamos. Obtém um título, algumas frases, capítulos com hora de início e de fim e os tópicos. Clique num capítulo para saltar para esse ponto da gravação, copie o resumo como Markdown ou transfira-o como Markdown ou JSON. Os resumos requerem uma conta gratuita.',
+      whatItDoes: [
+        'Escreve um título e um resumo curto da gravação.',
+        'Divide-a em capítulos com horas; ao clicar num deles, o leitor salta para aí.',
+        'Lista os tópicos e descreve quem fala e em que tom.',
+        'Escreve o resumo no idioma que escolher ou no idioma falado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Inicie sessão',
+          description: 'Basta uma conta gratuita.',
+        },
+        {
+          title: 'Carregue',
+          description: 'MP3, WAV, M4A e outros formatos de áudio.',
+        },
+        {
+          title: 'Resuma',
+          description: 'O Whisper e um modelo de linguagem no nosso servidor GPU.',
+        },
+        {
+          title: 'Leia',
+          description: 'Clique nos capítulos, copie Markdown, transfira .md ou .json.',
+        },
+      ],
+      advancedDetails: [
+        'A fala é transcrita com Whisper; um modelo de linguagem escreve o resumo a partir da transcrição.',
+        'Um ficheiro de áudio com capa é tratado como áudio: a imagem é ignorada.',
+        'Um resumo conta como uma tarefa de IA do seu limite diário; uma tarefa falhada ou recusada não é contabilizada.',
+        'A transcrição é gerada por máquina, pelo que os nomes e os números podem estar errados. O resumo indica-o nas suas notas.',
+      ],
+      whyItMatters: [
+        'Pode ler um resumo em um minuto e decidir o que ouvir.',
+        'Capítulos com horas transformam uma gravação longa em algo em que pode navegar.',
+        'Os tópicos tornam pesquisável um catálogo de episódios.',
+      ],
+      useCases: [
+        {
+          title: 'Notas de um podcast',
+          description: 'Capítulos e tópicos para a página do episódio.',
+        },
+        {
+          title: 'Síntese de entrevista',
+          description: 'O que foi abordado, com horas para citar.',
+        },
+        {
+          title: 'De nota de voz a apontamentos',
+          description: 'Uma nota divagante transformada numa página curta.',
+        },
+        {
+          title: 'Resumo de chamada',
+          description: 'Os pontos de uma chamada gravada.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O Whisper e o modelo de linguagem são executados em hardware que nós operamos; a sua gravação nunca é enviada para uma IA de terceiros.',
+        'Capítulos que navegam na sua própria gravação, diretamente no visualizador de resultados.',
+        'Transferências em Markdown e JSON. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'Os resumos requerem uma conta gratuita, pelo que a tarefa fica associada a ela. O seu ficheiro é processado nos nossos próprios servidores e os modelos de IA são executados num servidor GPU que nós operamos; nada é enviado para um fornecedor de IA de terceiros. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Preciso de uma conta?',
+          answer: 'Sim, uma conta gratuita. Os resumos executam modelos de IA no nosso servidor GPU, pelo que estão limitados a utilizadores com sessão iniciada.',
+        },
+        {
+          question: 'Em que difere da transcrição?',
+          answer: 'A transcrição dá-lhe cada palavra. Um resumo dá-lhe um título, algumas frases, capítulos e tópicos, escritos a partir dessa transcrição.',
+        },
+        {
+          question: 'Posso escolher o idioma do resumo?',
+          answer: 'Sim. Escolha um dos 18 idiomas do site, ou «o mesmo da fala».',
+        },
+        {
+          question: 'A minha gravação é enviada para terceiros?',
+          answer: 'Não. Os modelos são executados num servidor GPU que nós operamos.',
+        },
+        {
+          question: 'Conta para o meu limite?',
+          answer: 'Sim, como uma tarefa de IA. As tarefas falhadas não são contabilizadas.',
+        },
+      ],
+      related: [
+        {
+          label: 'Transcrever áudio',
+          to: '/tools/transcribe-audio',
+          description: 'Cada palavra, como texto ou legendas.',
+        },
+        {
+          label: 'Resumir vídeo',
+          to: '/tools/summarize-video',
+          description: 'Acrescenta a imagem e o texto no ecrã.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Limpe primeiro o áudio.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Conta como uma tarefa de IA; as tarefas falhadas não são contabilizadas.',
+        ],
+      },
     },
     // MM78 voices: name + tagline (model-written, needs native review).
     'voice-cloning': {

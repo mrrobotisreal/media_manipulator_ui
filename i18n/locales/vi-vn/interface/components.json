@@ -277,7 +277,8 @@
       "hls": "Gói HLS",
       "dash": "Gói DASH",
       "metadata": "Siêu dữ liệu",
-      "unknown": "Tệp"
+      "unknown": "Tệp",
+      "summary": "Tóm tắt"
     },
     "image": {
       "zoom": "Thu phóng",
@@ -392,6 +393,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Đang tải các đoạn đã phục hồi",
       "download": "Tải xuống tất cả kết quả"
+    },
+    "summary": {
+      "loading": "Đang tải bản tóm tắt",
+      "loadFailed": "Không thể tải bản tóm tắt.",
+      "untitled": "Tóm tắt",
+      "language": "Ngôn ngữ: {{language}}",
+      "chapters": "Chương",
+      "seekTo": "Chuyển đến {{time}}",
+      "topics": "Chủ đề",
+      "onScreenText": "Văn bản trên màn hình",
+      "visual": "Hình ảnh",
+      "speech": "Lời nói",
+      "notes": "Ghi chú",
+      "copyMarkdown": "Sao chép dưới dạng Markdown",
+      "copied": "Đã sao chép",
+      "downloadMd": "Tải xuống .md",
+      "downloadJson": "Tải xuống .json",
+      "showAll": "Hiện tất cả ({{count}})",
+      "showLess": "Thu gọn"
     }
   },
   "billing": {

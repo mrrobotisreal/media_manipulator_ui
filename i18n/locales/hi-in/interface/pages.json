@@ -1676,7 +1676,8 @@
         "ai_frame_interpolation": "फ़्रेम इंटरपोलेशन",
         "ai_voice_cleanup": "वॉइस क्लीनअप",
         "ai_isolate_vocals": "वोकल आइसोलेशन",
-        "ai_remove_vocals": "वोकल रिमूवल"
+        "ai_remove_vocals": "वोकल रिमूवल",
+        "video_summary": "वीडियो सारांश"
       },
       "deletesOn": "{{date}} को डिलीट होगा",
       "keptLonger": "ज़्यादा समय तक रखा गया",

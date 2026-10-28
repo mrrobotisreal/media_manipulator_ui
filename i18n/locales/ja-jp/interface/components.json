@@ -277,7 +277,8 @@
       "hls": "HLSパッケージ",
       "dash": "DASHパッケージ",
       "metadata": "メタデータ",
-      "unknown": "ファイル"
+      "unknown": "ファイル",
+      "summary": "要約"
     },
     "image": {
       "zoom": "ズーム",
@@ -392,6 +393,25 @@
       "failedItem": "{{name}}：{{error}}",
       "loading": "復元したクリップを読み込み中",
       "download": "すべての結果をダウンロード"
+    },
+    "summary": {
+      "loading": "要約を読み込み中",
+      "loadFailed": "要約を読み込めませんでした。",
+      "untitled": "要約",
+      "language": "言語：{{language}}",
+      "chapters": "チャプター",
+      "seekTo": "{{time}}へジャンプ",
+      "topics": "トピック",
+      "onScreenText": "画面上のテキスト",
+      "visual": "映像",
+      "speech": "音声",
+      "notes": "メモ",
+      "copyMarkdown": "Markdownとしてコピー",
+      "copied": "コピーしました",
+      "downloadMd": ".mdをダウンロード",
+      "downloadJson": ".jsonをダウンロード",
+      "showAll": "すべて表示（{{count}}）",
+      "showLess": "表示を減らす"
     }
   },
   "billing": {

@@ -42,6 +42,8 @@ describe('quotaMetricForTask / quotaChipTone', () => {
     expect(quotaMetricForTask('ai_video_restoration')).toBe('ai_ops');
     expect(quotaMetricForTask('image_restoration')).toBe('ai_ops');
     expect(quotaMetricForTask('document_scan')).toBe('ai_ops');
+    expect(quotaMetricForTask('summarize_video')).toBe('ai_ops');
+    expect(quotaMetricForTask('summarize_audio')).toBe('ai_ops');
     expect(quotaMetricForTask('studio_export')).toBe('export');
   });
 

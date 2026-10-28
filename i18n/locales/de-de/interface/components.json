@@ -279,7 +279,8 @@
       "hls": "HLS package",
       "dash": "DASH package",
       "metadata": "Metadata",
-      "unknown": "File"
+      "unknown": "File",
+      "summary": "Zusammenfassung"
     },
     "image": {
       "zoom": "Zoom",
@@ -395,6 +396,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Loading the restored clips",
       "download": "Download all results"
+    },
+    "summary": {
+      "loading": "Zusammenfassung wird geladen",
+      "loadFailed": "Die Zusammenfassung konnte nicht geladen werden.",
+      "untitled": "Zusammenfassung",
+      "language": "Sprache: {{language}}",
+      "chapters": "Kapitel",
+      "seekTo": "Zu {{time}} springen",
+      "topics": "Themen",
+      "onScreenText": "Text im Bild",
+      "visual": "Bild",
+      "speech": "Sprache",
+      "notes": "Hinweise",
+      "copyMarkdown": "Als Markdown kopieren",
+      "copied": "Kopiert",
+      "downloadMd": ".md herunterladen",
+      "downloadJson": ".json herunterladen",
+      "showAll": "Alle anzeigen ({{count}})",
+      "showLess": "Weniger anzeigen"
     }
   },
   "billing": {

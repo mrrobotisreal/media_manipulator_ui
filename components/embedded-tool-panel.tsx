@@ -79,6 +79,8 @@ const VideoCompressorPanel = dynamic(() => import('@/components/video-compressor
 const VideoTrimmerPanel = dynamic(() => import('@/components/video-trimmer-panel'), { ssr: false, loading: FormLoading });
 const VideoTransformPanel = dynamic(() => import('@/components/video-transform-panel'), { ssr: false, loading: FormLoading });
 const MetadataInspectPanel = dynamic(() => import('@/components/metadata/metadata-inspect-panel'), { ssr: false, loading: FormLoading });
+// MM75: video / audio summaries (the MM74 staged job).
+const SummarizePanel = dynamic(() => import('@/components/summarize-panel'), { ssr: false, loading: FormLoading });
 // MM78 voices: the three voice tool panels.
 const VoiceCloningPanel = dynamic(() => import('@/components/voices/voice-cloning-panel'), { ssr: false, loading: FormLoading });
 const VoiceDesignerPanel = dynamic(() => import('@/components/voices/voice-designer-panel'), { ssr: false, loading: FormLoading });
@@ -197,6 +199,8 @@ export type EmbeddedTask =
   | 'video_to_text'
   | 'summarize_video'
   | 'generate_vtt_captions'
+  // MM75: the audio sibling of summarize_video (same MM74 job, no frames).
+  | 'summarize_audio'
   // MM78 voices: clone, design and change a voice (components/voices/*).
   | 'voice_clone'
   | 'voice_design'
@@ -548,6 +552,9 @@ const SPECIALIZED_PANEL_TASKS: Partial<Record<EmbeddedTask, true>> = {
   resize_video: true,
   rotate_video: true,
   remove_audio_from_video: true,
+  // MM75: both summary pages render the summarize panel.
+  summarize_video: true,
+  summarize_audio: true,
   // MM78 voices.
   voice_clone: true,
   voice_design: true,
@@ -993,8 +1000,10 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           </p>
         </div>
       </div>
-      {/* MM78: the voice panels render their own chip (ai_ops, or ops / ai_ops by mode). */}
-      {specializedPanel === 'voice_clone' || specializedPanel === 'voice_design' || specializedPanel === 'voice_convert' ? null : (
+      {/* MM78: the voice panels render their own chip (ai_ops, or ops / ai_ops by mode).
+          MM75: so does the summarize panel (its shell's chip, shown only once it can run). */}
+      {specializedPanel === 'voice_clone' || specializedPanel === 'voice_design' || specializedPanel === 'voice_convert' ||
+      specializedPanel === 'summarize_video' || specializedPanel === 'summarize_audio' ? null : (
         <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" />
       )}
 
@@ -1036,7 +1045,9 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         </div>
       )}
 
-      {specializedPanel === 'inspect_metadata' ? (
+      {specializedPanel === 'summarize_video' || specializedPanel === 'summarize_audio' ? (
+        <SummarizePanel task={specializedPanel} />
+      ) : specializedPanel === 'inspect_metadata' ? (
         <MetadataInspectPanel accept={accept} />
       ) : specializedPanel === 'audio_waveform' ? (
         <AudioWaveformPanel />

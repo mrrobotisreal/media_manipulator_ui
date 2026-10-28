@@ -27,6 +27,8 @@ export type ResultKind =
   | 'hls'
   | 'dash'
   | 'metadata'
+  // MM75: a chaptered video/audio summary (summary.md + summary.json, design VIDEO_SUMMARY.md).
+  | 'summary'
   | 'unknown';
 
 /** Workflow mode of the job. Mirrors the home converter's modes; anything else is `convert`. */
@@ -149,6 +151,7 @@ const MIME_BY_EXT: Record<string, string> = {
   vtt: 'text/vtt',
   txt: 'text/plain',
   json: 'application/json',
+  md: 'text/markdown',
   pdf: 'application/pdf',
   zip: 'application/zip',
   'tar.gz': 'application/gzip',
@@ -261,7 +264,10 @@ const KIND_BY_TASK: Record<string, ResultKind> = {
   transcribe_audio: 'transcript',
   audio_to_text: 'transcript',
   video_to_text: 'transcript',
-  summarize_video: 'transcript',
+  // MM75: both summary tasks, and the API's tool id as History reports it.
+  summarize_video: 'summary',
+  summarize_audio: 'summary',
+  video_summary: 'summary',
   generate_vtt_captions: 'captions',
   // MM78 voices: every voice job's result is speech.mp3 (audio). The job tools and the
   // page tasks both map, whichever the surface passes.
@@ -351,6 +357,7 @@ export function describe(input: DescribeInput): ResultDescriptor {
     kindFromExtension(ext, ctx) ??
     (mode === 'transcode' ? (isDashTask(task, mode) ? 'dash' : 'hls') : null) ??
     (task ? KIND_BY_TASK[task] : undefined) ??
+    (mode === 'summarize' ? 'summary' : null) ??
     (mode === 'transcribe' ? 'transcript' : null) ??
     kindHint ??
     'unknown';

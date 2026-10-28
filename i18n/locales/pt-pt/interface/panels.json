@@ -25,6 +25,59 @@
     "summaryPending": "O resumo e a revisão de segurança aparecerão aqui assim que a tarefa de análise terminar.",
     "unknown": "desconhecido"
   },
+  "summarize": {
+    "loading": "A verificar se os resumos estão disponíveis…",
+    "unavailable": "Os resumos de vídeo e áudio estão temporariamente indisponíveis. Tente novamente mais tarde; as páginas de Transcrever continuam a funcionar.",
+    "notInPlan": "Os resumos não estão incluídos no seu plano.",
+    "signIn": {
+      "title": "Inicie sessão para resumir",
+      "body": "Os resumos são executados no nosso próprio servidor GPU e requerem uma conta gratuita. Inicie sessão ou crie uma e, depois, carregue o seu ficheiro.",
+      "button": "Iniciar sessão",
+      "signup": "Criar uma conta gratuita"
+    },
+    "uploadHintVideo": "um ficheiro de vídeo ou de áudio",
+    "uploadHintAudio": "um ficheiro de áudio",
+    "outputLanguage": "Idioma do resumo",
+    "sameAsSpeech": "O mesmo da fala",
+    "depth": {
+      "label": "Profundidade",
+      "standard": "Padrão",
+      "deep": "Profundo",
+      "hint": "O modo profundo escreve o resumo com um modelo maior. Demora mais tempo."
+    },
+    "note": "Utiliza uma tarefa de IA do seu limite diário. Uma tarefa falhada não é contabilizada.",
+    "noteFrames": "O seu plano lê até {{frames}} fotogramas do vídeo. Utiliza uma tarefa de IA do seu limite diário; uma tarefa falhada não é contabilizada.",
+    "start": "Resumir",
+    "stagesTitle": "Progresso",
+    "stages": {
+      "probe": "A ler o ficheiro",
+      "audio": "A transcrever a fala",
+      "frames": "A escolher fotogramas",
+      "vision": "A descrever os fotogramas",
+      "synthesis": "A escrever o resumo",
+      "render": "A formatar o resultado"
+    },
+    "status": {
+      "pending": "Em espera",
+      "processing": "Em curso",
+      "completed": "Concluído",
+      "skipped": "Ignorado",
+      "failed": "Falhou"
+    },
+    "framesCount": "Fotogramas: {{count}}",
+    "errors": {
+      "signin_required": "Inicie sessão para resumir.",
+      "summary_not_in_plan": "Os resumos não estão incluídos no seu plano.",
+      "summary_unavailable": "Os resumos estão temporariamente indisponíveis. Tente novamente mais tarde.",
+      "unreadable_media": "Não foi possível ler este ficheiro como áudio nem como vídeo.",
+      "no_audio_or_video": "Este ficheiro não tem áudio nem vídeo para resumir.",
+      "file_too_large": "Este ficheiro é maior ou mais longo do que o seu plano permite.",
+      "upload_not_found": "Não foi possível encontrar o carregamento. Tente novamente.",
+      "quota_exceeded": "Já utilizou todas as tarefas de IA de hoje.",
+      "invalid_request": "O pedido não foi aceite. Recarregue a página e tente novamente.",
+      "unknown": "Não foi possível iniciar o resumo. Tente novamente."
+    }
+  },
   "specializedToolShell": {
     "dropHere": "Largue aqui o seu {{hint}}",
     "selectHint": "ou clique para selecionar a partir do seu computador. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.",

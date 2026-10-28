@@ -1676,7 +1676,8 @@
         "ai_frame_interpolation": "Інтерполяція кадрів",
         "ai_voice_cleanup": "Очищення голосу",
         "ai_isolate_vocals": "Виділення вокалу",
-        "ai_remove_vocals": "Видалення вокалу"
+        "ai_remove_vocals": "Видалення вокалу",
+        "video_summary": "Зведення відео"
       },
       "deletesOn": "Deletes on {{date}}",
       "keptLonger": "Kept longer",

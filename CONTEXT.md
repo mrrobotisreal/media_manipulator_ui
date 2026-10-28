@@ -112,6 +112,12 @@ The voice changer's two modes. **Shift** is rubberband pitch + formant on the se
 **Warm**:
 Capabilities `warm: true` means the voice engine is loaded; while a request runs against a cold engine the page shows "Warming up the voice engine…" (`components/voices/warming-up.tsx`).
 
+### Video summary (MM75)
+
+**Summary (result kind)**:
+The `summary` ResultKind (`lib/results/describe.ts`) for the MM74 video summary job (`summarize_video`, `summarize_audio`, API tool `video_summary`, mode `summarize`). Rendered by `components/results/viewers/summary-viewer.tsx` from `summary.json` as a document whose chapters seek the original; "Copy as Markdown" is `lib/results/summary.ts` and must stay byte-equal to the API's `summary.md` (fixture test).
+_Avoid_: calling it a transcript; the transcript is the `transcript` kind.
+
 ### Localization
 
 **Locale registry**:

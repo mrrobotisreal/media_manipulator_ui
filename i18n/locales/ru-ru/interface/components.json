@@ -283,7 +283,8 @@
       "hls": "HLS package",
       "dash": "DASH package",
       "metadata": "Metadata",
-      "unknown": "File"
+      "unknown": "File",
+      "summary": "Сводка"
     },
     "image": {
       "zoom": "Zoom",
@@ -399,6 +400,25 @@
       "failedItem": "{{name}}: {{error}}",
       "loading": "Loading the restored clips",
       "download": "Download all results"
+    },
+    "summary": {
+      "loading": "Загрузка сводки",
+      "loadFailed": "Не удалось загрузить сводку.",
+      "untitled": "Сводка",
+      "language": "Язык: {{language}}",
+      "chapters": "Главы",
+      "seekTo": "Перейти к {{time}}",
+      "topics": "Темы",
+      "onScreenText": "Текст на экране",
+      "visual": "Изображение",
+      "speech": "Речь",
+      "notes": "Примечания",
+      "copyMarkdown": "Копировать как Markdown",
+      "copied": "Скопировано",
+      "downloadMd": "Скачать .md",
+      "downloadJson": "Скачать .json",
+      "showAll": "Показать все ({{count}})",
+      "showLess": "Показать меньше"
     }
   },
   "billing": {
