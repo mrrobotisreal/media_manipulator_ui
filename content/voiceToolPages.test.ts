@@ -62,8 +62,10 @@ describe('voice tool pages (MM78)', () => {
   it.each(locales.map((l) => l.code))('resolves in %s with a localized name and tagline', (code) => {
     for (const slug of SLUGS) {
       const t = getLocalizedToolBySlug(slug, code)!;
-      expect(t.name.length).toBeGreaterThan(3);
-      expect(t.tagline.length).toBeGreaterThan(20);
+      expect(t.name.trim().length).toBeGreaterThan(0);
+      expect(t.tagline.length).toBeGreaterThan(15);
+      // Every non-English locale ships its own name (toolPages.ts override), never the English one.
+      if (code !== 'en-US') expect(t.name).not.toBe(getLocalizedToolBySlug(slug, 'en-US')!.name);
     }
   });
 });

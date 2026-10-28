@@ -296,6 +296,22 @@ const koToolPages = {
       name: '동영상 요약',
       tagline: '자체 GPU 서버에서 강의, 회의, 인터뷰의 전사본과 타임스탬프가 포함된 구조화된 JSON 분석을 받아보세요.',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: '음성 클론',
+      tagline:
+        '내 말소리를 5초에서 60초 동안 녹음하거나 업로드해 음성을 만들고, 20개가 넘는 언어로 원하는 텍스트를 읽게 하세요.',
+    },
+    'voice-designer': {
+      name: '음성 디자이너',
+      tagline:
+        '음성을 말로 설명하고 미리 들어 본 뒤, 마음에 드는 음성을 보관해 20개가 넘는 언어로 원하는 텍스트를 읽게 하세요.',
+    },
+    'voice-changer': {
+      name: '음성 변경기',
+      tagline:
+        '녹음의 음높이와 성격을 즉시 바꾸거나, AI로 말소리를 저장한 음성이나 프리셋 음성으로 변환하세요.',
+    },
   },
 } as const;
 

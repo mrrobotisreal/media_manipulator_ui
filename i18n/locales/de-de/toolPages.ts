@@ -569,6 +569,22 @@ const deToolPages = {
       tagline:
         'Erhalten Sie das Transkript und eine strukturierte JSON-Analyse einer Vorlesung, Besprechung oder eines Interviews, mit Zeitstempeln, auf unseren eigenen GPU-Servern.',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: 'Stimmklonen',
+      tagline:
+        'Nehmen Sie 5 bis 60 Sekunden Ihrer eigenen Sprache auf oder laden Sie sie hoch, erstellen Sie eine Stimme und lassen Sie sie beliebige Texte in mehr als zwanzig Sprachen vorlesen.',
+    },
+    'voice-designer': {
+      name: 'Stimmdesigner',
+      tagline:
+        'Beschreiben Sie eine Stimme in Worten, hören Sie sich eine Vorschau an und behalten Sie die, die beliebige Texte in mehr als zwanzig Sprachen vorlesen soll.',
+    },
+    'voice-changer': {
+      name: 'Stimmwechsler',
+      tagline:
+        'Verschieben Sie Tonhöhe und Charakter einer Aufnahme sofort oder wandeln Sie die Sprache mithilfe von KI in eine gespeicherte oder voreingestellte Stimme um.',
+    },
   },
 } as const;
 

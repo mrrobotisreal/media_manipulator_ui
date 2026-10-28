@@ -1714,7 +1714,7 @@
       "overview": "總覽",
       "history": "記錄",
       "projects": "專案",
-      "voices": "Voices",
+      "voices": "語音",
       "billing": "帳單",
       "privacy": "隱私與資料",
       "profile": "個人資料"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "結果保留期限",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "你透過錄音複製或透過描述設計的語音。刪除語音會從我們的伺服器移除其參考錄音與預覽。",
+      "loading": "正在載入你的語音…",
+      "loadFailed": "無法載入你的語音。請重新載入再試一次。",
+      "empty": "你還沒有已儲存的語音。",
+      "emptyCta": "使用其中一個語音工具製作語音：",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "複製你的聲音",
+        "design": "設計語音",
+        "change": "變更語音"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{used}} / {{limit}} 個語音",
+      "usageUnlimited": "{{used}} 個語音",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "複製",
+        "designed": "設計",
+        "preset": "預設"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "建立於 {{date}}",
+      "consent": "同意已於 {{date}} 確認（文字版本 {{version}}）",
+      "noConsent": "透過描述設計；不涉及任何人的錄音",
+      "preview": "{{name}} 的預覽",
+      "rename": "重新命名",
+      "renameLabel": "{{name}} 的新名稱",
+      "save": "儲存",
+      "cancel": "取消",
+      "renamed": "語音已重新命名。",
+      "renameFailed": "無法重新命名該語音。請使用 1 到 60 個字元後再試一次。",
+      "delete": "刪除",
+      "deleteTitle": "刪除「{{name}}」？",
+      "deleteBody": "該語音、其參考錄音與預覽將從我們的伺服器移除。你已用它產生的語音會繼續可播放，直到其自身的保留期限結束。此操作無法復原。",
+      "deleteConfirm": "刪除語音",
+      "deleted": "語音已刪除。",
+      "deletedPending": "語音已刪除。仍有少量檔案正在背景移除。",
+      "deleteFailed": "無法刪除此語音。未做任何變更；請再試一次。"
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "關於語音的更多資訊"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "建立你自己的語音",
+      "intro": "Media Manipulator 現在擁有自己的語音工具，執行於我們自己伺服器上的開放模型，而不是 ElevenLabs。你可以用自己的錄音製作語音，透過描述設計新的語音，或變更錄音中的聲音。",
+      "note": "產生的語音帶有聽不見的浮水印。請只使用你自己的聲音，或你已獲得使用許可的聲音。",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "複製你的聲音",
+          "body": "錄製 5 到 60 秒你自己的語音，讓它以 20 多種語言朗讀任何文字。"
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "設計語音",
+          "body": "描述一個語音，免費試聽預覽，並保留你喜歡的那個。"
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "變更語音",
+          "body": "即時調整錄音的音高，或將其轉換為已儲存的語音。"
         }
       },
-      "open": "Open"
+      "open": "開啟"
     }
   },
   "changelog": {

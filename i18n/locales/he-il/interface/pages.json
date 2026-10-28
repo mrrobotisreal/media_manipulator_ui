@@ -1714,7 +1714,7 @@
       "overview": "Overview",
       "history": "History",
       "projects": "Projects",
-      "voices": "Voices",
+      "voices": "קולות",
       "billing": "Billing",
       "privacy": "Privacy & data",
       "profile": "Profile"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "Result retention",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "קולות ששיבטתם מהקלטה או עיצבתם מתיאור. מחיקת קול מסירה מהשרתים שלנו את הקלטת ההתייחסות ואת התצוגה המקדימה שלו.",
+      "loading": "טוענים את הקולות שלכם…",
+      "loadFailed": "לא ניתן היה לטעון את הקולות שלכם. טענו מחדש ונסו שוב.",
+      "empty": "עדיין אין לכם קולות שמורים.",
+      "emptyCta": "צרו קול באחד מכלי הקול:",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "שיבוט הקול שלכם",
+        "design": "עיצוב קול",
+        "change": "שינוי קול"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{used}} מתוך {{limit}} קולות",
+      "usageUnlimited": "{{used}} קולות",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "משובט",
+        "designed": "מעוצב",
+        "preset": "מוכן מראש"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "נוצר ב-{{date}}",
+      "consent": "ההסכמה אושרה ב-{{date}} (גרסת הטקסט {{version}})",
+      "noConsent": "עוצב מתיאור; ללא הקלטה של אדם",
+      "preview": "תצוגה מקדימה של {{name}}",
+      "rename": "שינוי שם",
+      "renameLabel": "שם חדש עבור {{name}}",
+      "save": "שמירה",
+      "cancel": "ביטול",
+      "renamed": "שם הקול שונה.",
+      "renameFailed": "לא ניתן היה לשנות את שם הקול. השתמשו ב-1 עד 60 תווים ונסו שוב.",
+      "delete": "מחיקה",
+      "deleteTitle": "למחוק את “{{name}}”?",
+      "deleteBody": "הקול, הקלטת ההתייחסות שלו והתצוגה המקדימה שלו מוסרים מהשרתים שלנו. דיבור שכבר יצרתם איתו ממשיך להתנגן עד שתקופת השמירה שלו מסתיימת. אי אפשר לבטל פעולה זו.",
+      "deleteConfirm": "מחיקת הקול",
+      "deleted": "הקול נמחק.",
+      "deletedPending": "הקול נמחק. כמה קבצים עדיין מוסרים ברקע.",
+      "deleteFailed": "לא ניתן היה למחוק את הקול הזה. דבר לא שונה; נסו שוב."
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "עוד על הקולות"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "צרו משלכם",
+      "intro": "ל-Media Manipulator יש עכשיו כלי קול משלו, הפועלים על מודלים פתוחים בשרתים שלנו ולא על ElevenLabs. צרו קול מההקלטה שלכם, עצבו קול חדש מתיאור, או שנו את הקול בהקלטה.",
+      "note": "דיבור שנוצר נושא סימן מים בלתי נשמע. השתמשו רק בקול שלכם, או בקול שיש לכם רשות להשתמש בו.",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "שיבוט הקול שלכם",
+          "body": "הקליטו 5 עד 60 שניות של דיבור משלכם והשמיעו בו כל טקסט ביותר מ-20 שפות."
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "עיצוב קול",
+          "body": "תארו קול, האזינו לתצוגות מקדימות בחינם ושמרו את הקול שאהבתם."
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "שינוי קול",
+          "body": "הזיזו את הגובה של הקלטה באופן מיידי, או המירו אותה לקול שמור."
         }
       },
-      "open": "Open"
+      "open": "פתיחה"
     }
   },
   "changelog": {

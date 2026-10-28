@@ -295,6 +295,22 @@ const itToolPages = {
       name: 'Riassumi video',
       tagline: 'Ottieni la trascrizione e un\'analisi JSON strutturata di una lezione, una riunione o un\'intervista, con i timestamp, sui nostri server GPU.',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: 'Clonazione vocale',
+      tagline:
+        'Registra o carica da 5 a 60 secondi del tuo parlato, crea una voce e fagli leggere qualsiasi testo in più di venti lingue.',
+    },
+    'voice-designer': {
+      name: 'Progettista di voci',
+      tagline:
+        'Descrivi una voce a parole, ascolta un\'anteprima e conserva quella che ti piace per leggere qualsiasi testo in più di venti lingue.',
+    },
+    'voice-changer': {
+      name: 'Cambia voce',
+      tagline:
+        'Varia subito tonalità e carattere di una registrazione, oppure converti il parlato in una voce salvata o predefinita con l\'IA.',
+    },
   },
 } as const;
 

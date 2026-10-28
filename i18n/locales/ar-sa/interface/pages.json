@@ -1714,7 +1714,7 @@
       "overview": "نظرة عامة",
       "history": "السجل",
       "projects": "المشاريع",
-      "voices": "Voices",
+      "voices": "الأصوات",
       "billing": "الفوترة",
       "privacy": "الخصوصية والبيانات",
       "profile": "الملف الشخصي"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "مدة الاحتفاظ بالنتائج",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "الأصوات التي استنسختها من تسجيل أو صمّمتها من وصف. يؤدي حذف صوت إلى إزالة تسجيله المرجعي ومعاينته من خوادمنا.",
+      "loading": "جارٍ تحميل أصواتك…",
+      "loadFailed": "تعذّر تحميل أصواتك. أعد التحميل للمحاولة مرة أخرى.",
+      "empty": "ليس لديك أصوات محفوظة بعد.",
+      "emptyCta": "اصنع صوتًا بإحدى أدوات الصوت:",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "استنسخ صوتك",
+        "design": "صمّم صوتًا",
+        "change": "غيّر صوتًا"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{used}} من {{limit}} أصوات",
+      "usageUnlimited": "{{used}} أصوات",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "مستنسخ",
+        "designed": "مصمَّم",
+        "preset": "جاهز"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "أُنشئ في {{date}}",
+      "consent": "تأكدت الموافقة في {{date}} (إصدار النص {{version}})",
+      "noConsent": "مصمَّم من وصف؛ دون تسجيل لشخص",
+      "preview": "معاينة {{name}}",
+      "rename": "إعادة التسمية",
+      "renameLabel": "اسم جديد لـ {{name}}",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "renamed": "تمت إعادة تسمية الصوت.",
+      "renameFailed": "تعذّرت إعادة تسمية الصوت. استخدم من 1 إلى 60 حرفًا وحاول مرة أخرى.",
+      "delete": "حذف",
+      "deleteTitle": "حذف «{{name}}»؟",
+      "deleteBody": "تُزال من خوادمنا هذا الصوت وتسجيله المرجعي ومعاينته. يستمر تشغيل الكلام الذي أنتجته به سابقًا إلى أن تنتهي مدة الاحتفاظ به. لا يمكن التراجع عن هذا.",
+      "deleteConfirm": "حذف الصوت",
+      "deleted": "تم حذف الصوت.",
+      "deletedPending": "تم حذف الصوت. ما زالت بضعة ملفات تُزال في الخلفية.",
+      "deleteFailed": "تعذّر حذف هذا الصوت. لم يتغير شيء؛ حاول مرة أخرى."
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "المزيد عن الأصوات"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "اصنع صوتك الخاص",
+      "intro": "لدى Media Manipulator الآن أدوات صوت خاصة بها، تعمل على نماذج مفتوحة على خوادمنا الخاصة بدلًا من ElevenLabs. أنشئ صوتًا من تسجيلك، أو صمّم صوتًا جديدًا من وصف، أو غيّر الصوت في تسجيل.",
+      "note": "الكلام المُنتَج يحمل علامة مائية غير مسموعة. استخدم صوتك فقط، أو صوتًا لديك إذن باستخدامه.",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "استنسخ صوتك",
+          "body": "سجّل من 5 إلى 60 ثانية من كلامك واجعله يقرأ أي نص بأكثر من 20 لغة."
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "صمّم صوتًا",
+          "body": "صِف صوتًا، واستمع إلى معاينات مجانية، واحتفظ بالصوت الذي يعجبك."
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "غيّر صوتًا",
+          "body": "غيّر درجة صوت تسجيل فورًا، أو حوّله إلى صوت محفوظ."
         }
       },
-      "open": "Open"
+      "open": "فتح"
     }
   },
   "changelog": {

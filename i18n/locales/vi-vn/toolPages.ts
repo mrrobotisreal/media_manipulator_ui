@@ -296,6 +296,22 @@ const viToolPages = {
       name: 'Tóm tắt video',
       tagline: 'Nhận bản ghi lời thoại và phân tích JSON có cấu trúc, kèm mốc thời gian, của bài giảng, cuộc họp hoặc buổi phỏng vấn, trên máy chủ GPU của chúng tôi.',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: 'Sao chép giọng nói',
+      tagline:
+        'Ghi âm hoặc tải lên 5 đến 60 giây lời nói của chính bạn, tạo một giọng nói và để nó đọc bất kỳ văn bản nào bằng hơn hai mươi ngôn ngữ.',
+    },
+    'voice-designer': {
+      name: 'Thiết kế giọng nói',
+      tagline:
+        'Mô tả một giọng nói bằng lời, nghe thử và giữ lại giọng bạn thích để đọc bất kỳ văn bản nào bằng hơn hai mươi ngôn ngữ.',
+    },
+    'voice-changer': {
+      name: 'Đổi giọng nói',
+      tagline:
+        'Đổi cao độ và đặc trưng của bản ghi âm tức thì, hoặc dùng AI chuyển lời nói sang một giọng nói đã lưu hoặc có sẵn.',
+    },
   },
 } as const;
 

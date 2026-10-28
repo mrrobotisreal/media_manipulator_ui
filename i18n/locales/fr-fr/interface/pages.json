@@ -1714,7 +1714,7 @@
       "overview": "Vue d'ensemble",
       "history": "Historique",
       "projects": "Projets",
-      "voices": "Voices",
+      "voices": "Voix",
       "billing": "Facturation",
       "privacy": "Confidentialité et données",
       "profile": "Profil"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "Conservation des résultats",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "Les voix que vous avez clonées à partir d'un enregistrement ou conçues à partir d'une description. La suppression d'une voix retire de nos serveurs son enregistrement de référence et son aperçu.",
+      "loading": "Chargement de vos voix…",
+      "loadFailed": "Impossible de charger vos voix. Rechargez la page pour réessayer.",
+      "empty": "Vous n'avez pas encore de voix enregistrée.",
+      "emptyCta": "Créez une voix avec l'un des outils vocaux :",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "Cloner votre voix",
+        "design": "Concevoir une voix",
+        "change": "Modifier une voix"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{used}} voix sur {{limit}}",
+      "usageUnlimited": "{{used}} voix",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "Clonée",
+        "designed": "Conçue",
+        "preset": "Prédéfinie"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "Créée le {{date}}",
+      "consent": "Consentement confirmé le {{date}} (version du texte {{version}})",
+      "noConsent": "Conçue à partir d'une description ; aucun enregistrement d'une personne",
+      "preview": "Aperçu de {{name}}",
+      "rename": "Renommer",
+      "renameLabel": "Nouveau nom pour {{name}}",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "renamed": "Voix renommée.",
+      "renameFailed": "Impossible de renommer la voix. Utilisez de 1 à 60 caractères et réessayez.",
+      "delete": "Supprimer",
+      "deleteTitle": "Supprimer « {{name}} » ?",
+      "deleteBody": "La voix, son enregistrement de référence et son aperçu sont retirés de nos serveurs. La parole que vous avez déjà générée avec elle reste lisible jusqu'à la fin de sa propre durée de conservation. Cette action est irréversible.",
+      "deleteConfirm": "Supprimer la voix",
+      "deleted": "Voix supprimée.",
+      "deletedPending": "Voix supprimée. Quelques fichiers sont encore en cours de suppression en arrière-plan.",
+      "deleteFailed": "Impossible de supprimer cette voix. Rien n'a été modifié ; réessayez."
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "En savoir plus sur les voix"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "Créez la vôtre",
+      "intro": "Media Manipulator dispose désormais de ses propres outils vocaux, qui fonctionnent avec des modèles ouverts sur nos propres serveurs plutôt qu'avec ElevenLabs. Créez une voix à partir de votre propre enregistrement, concevez-en une nouvelle à partir d'une description, ou modifiez la voix d'un enregistrement.",
+      "note": "La parole générée porte un filigrane inaudible. N'utilisez que votre propre voix, ou une voix que vous avez le droit d'utiliser.",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "Clonez votre voix",
+          "body": "Enregistrez de 5 à 60 secondes de votre propre voix et faites-lui lire n'importe quel texte dans plus de 20 langues."
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "Concevez une voix",
+          "body": "Décrivez une voix, écoutez des aperçus gratuits et conservez celle qui vous plaît."
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "Modifiez une voix",
+          "body": "Décalez instantanément la hauteur d'un enregistrement, ou convertissez-le vers une voix enregistrée."
         }
       },
-      "open": "Open"
+      "open": "Ouvrir"
     }
   },
   "changelog": {

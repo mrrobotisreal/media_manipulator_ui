@@ -1714,7 +1714,7 @@
       "overview": "概要",
       "history": "履歴",
       "projects": "プロジェクト",
-      "voices": "Voices",
+      "voices": "ボイス",
       "billing": "お支払い",
       "privacy": "プライバシーとデータ",
       "profile": "プロフィール"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "結果の保存期間",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "録音からクローンしたボイス、または説明からデザインしたボイスです。ボイスを削除すると、その参照録音とプレビューが当社のサーバーから削除されます。",
+      "loading": "ボイスを読み込み中…",
+      "loadFailed": "ボイスを読み込めませんでした。再読み込みしてもう一度お試しください。",
+      "empty": "保存したボイスはまだありません。",
+      "emptyCta": "いずれかのボイスツールでボイスを作りましょう：",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "自分の声をクローン",
+        "design": "ボイスをデザイン",
+        "change": "声を変える"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{limit}}件中{{used}}件のボイス",
+      "usageUnlimited": "{{used}}件のボイス",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "クローン",
+        "designed": "デザイン",
+        "preset": "プリセット"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "作成日：{{date}}",
+      "consent": "同意の確認日：{{date}}（文面のバージョン {{version}}）",
+      "noConsent": "説明からデザイン。人物の録音はありません",
+      "preview": "{{name}}のプレビュー",
+      "rename": "名前を変更",
+      "renameLabel": "{{name}}の新しい名前",
+      "save": "保存",
+      "cancel": "キャンセル",
+      "renamed": "ボイスの名前を変更しました。",
+      "renameFailed": "ボイスの名前を変更できませんでした。1〜60文字で入力して、もう一度お試しください。",
+      "delete": "削除",
+      "deleteTitle": "「{{name}}」を削除しますか？",
+      "deleteBody": "このボイス、その参照録音、プレビューが当社のサーバーから削除されます。このボイスで既に生成した音声は、その音声自体の保存期間が終わるまで再生できます。この操作は元に戻せません。",
+      "deleteConfirm": "ボイスを削除",
+      "deleted": "ボイスを削除しました。",
+      "deletedPending": "ボイスを削除しました。一部のファイルはバックグラウンドで削除中です。",
+      "deleteFailed": "このボイスを削除できませんでした。何も変更されていません。もう一度お試しください。"
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "ボイスについて詳しく"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "自分だけのボイスを作る",
+      "intro": "Media Manipulatorに、独自のボイスツールが加わりました。ElevenLabsではなく、当社自身のサーバー上のオープンなモデルで動作します。ご自身の録音からボイスを作る、説明から新しいボイスをデザインする、録音の声を変える、といったことができます。",
+      "note": "生成した音声には聞こえない透かしが入ります。ご自身の声、または使用許可を得ている声のみをお使いください。",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "自分の声をクローン",
+          "body": "ご自身の音声を5〜60秒録音すれば、20以上の言語で好きなテキストを読み上げてくれます。"
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "ボイスをデザイン",
+          "body": "ボイスを言葉で説明し、無料のプレビューを聞いて、気に入ったものを保存します。"
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "声を変える",
+          "body": "録音のピッチを即座にシフトするか、保存したボイスに変換します。"
         }
       },
-      "open": "Open"
+      "open": "開く"
     }
   },
   "changelog": {

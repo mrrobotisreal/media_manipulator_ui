@@ -1714,7 +1714,7 @@
       "overview": "Tổng quan",
       "history": "Lịch sử",
       "projects": "Dự án",
-      "voices": "Voices",
+      "voices": "Giọng nói",
       "billing": "Thanh toán",
       "privacy": "Quyền riêng tư & dữ liệu",
       "profile": "Hồ sơ"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "Thời gian lưu kết quả",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "Các giọng nói bạn đã sao chép từ bản ghi âm hoặc thiết kế từ mô tả. Xóa một giọng nói sẽ xóa bản ghi âm tham chiếu và bản nghe thử của nó khỏi máy chủ của chúng tôi.",
+      "loading": "Đang tải các giọng nói của bạn…",
+      "loadFailed": "Không tải được các giọng nói của bạn. Hãy tải lại để thử lại.",
+      "empty": "Bạn chưa có giọng nói nào được lưu.",
+      "emptyCta": "Hãy tạo một giọng nói bằng một trong các công cụ giọng nói:",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "Sao chép giọng của bạn",
+        "design": "Thiết kế một giọng nói",
+        "change": "Thay đổi giọng nói"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{used}} trên {{limit}} giọng nói",
+      "usageUnlimited": "{{used}} giọng nói",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "Sao chép",
+        "designed": "Thiết kế",
+        "preset": "Có sẵn"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "Tạo ngày {{date}}",
+      "consent": "Đã xác nhận sự đồng ý ngày {{date}} (phiên bản nội dung {{version}})",
+      "noConsent": "Được thiết kế từ một mô tả; không có bản ghi âm của người thật",
+      "preview": "Nghe thử {{name}}",
+      "rename": "Đổi tên",
+      "renameLabel": "Tên mới cho {{name}}",
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "renamed": "Đã đổi tên giọng nói.",
+      "renameFailed": "Không đổi được tên giọng nói. Hãy dùng từ 1 đến 60 ký tự rồi thử lại.",
+      "delete": "Xóa",
+      "deleteTitle": "Xóa “{{name}}”?",
+      "deleteBody": "Giọng nói, bản ghi âm tham chiếu và bản nghe thử của nó sẽ bị xóa khỏi máy chủ của chúng tôi. Lời nói bạn đã tạo bằng giọng này vẫn phát được cho đến khi hết thời gian lưu giữ riêng của nó. Không thể hoàn tác thao tác này.",
+      "deleteConfirm": "Xóa giọng nói",
+      "deleted": "Đã xóa giọng nói.",
+      "deletedPending": "Đã xóa giọng nói. Một vài tệp vẫn đang được xóa ở chế độ nền.",
+      "deleteFailed": "Không xóa được giọng nói này. Không có gì thay đổi; hãy thử lại."
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "Tìm hiểu thêm về các giọng nói"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "Tự tạo giọng của bạn",
+      "intro": "Media Manipulator giờ có các công cụ giọng nói riêng, chạy trên các mô hình mở trên máy chủ của chính chúng tôi thay vì trên ElevenLabs. Hãy tạo một giọng nói từ bản ghi âm của bạn, thiết kế một giọng mới từ mô tả, hoặc thay đổi giọng nói trong một bản ghi âm.",
+      "note": "Lời nói được tạo ra mang một hình mờ âm thanh không nghe thấy được. Chỉ dùng giọng của chính bạn hoặc giọng bạn có quyền sử dụng.",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "Sao chép giọng của bạn",
+          "body": "Ghi âm 5 đến 60 giây lời nói của chính bạn và để nó đọc bất kỳ văn bản nào bằng hơn 20 ngôn ngữ."
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "Thiết kế một giọng nói",
+          "body": "Mô tả một giọng nói, nghe thử miễn phí và giữ lại giọng bạn thích."
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "Thay đổi giọng nói",
+          "body": "Đổi cao độ của bản ghi âm tức thì, hoặc chuyển nó sang một giọng nói đã lưu."
         }
       },
-      "open": "Open"
+      "open": "Mở"
     }
   },
   "changelog": {

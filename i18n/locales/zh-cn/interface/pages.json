@@ -1714,7 +1714,7 @@
       "overview": "概览",
       "history": "历史记录",
       "projects": "项目",
-      "voices": "Voices",
+      "voices": "声音",
       "billing": "账单",
       "privacy": "隐私与数据",
       "profile": "个人资料"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "结果保留",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "你通过录音克隆或通过描述设计的声音。删除声音会从我们的服务器上移除其参考录音和预览。",
+      "loading": "正在加载你的声音…",
+      "loadFailed": "无法加载你的声音。请重新加载重试。",
+      "empty": "你还没有已保存的声音。",
+      "emptyCta": "使用其中一个声音工具制作声音：",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "克隆你的声音",
+        "design": "设计声音",
+        "change": "更改声音"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{used}}/{{limit}} 个声音",
+      "usageUnlimited": "{{used}} 个声音",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "克隆",
+        "designed": "设计",
+        "preset": "预设"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "创建于 {{date}}",
+      "consent": "同意已于 {{date}} 确认（文本版本 {{version}}）",
+      "noConsent": "通过描述设计；不涉及任何人的录音",
+      "preview": "{{name}}的预览",
+      "rename": "重命名",
+      "renameLabel": "{{name}}的新名称",
+      "save": "保存",
+      "cancel": "取消",
+      "renamed": "声音已重命名。",
+      "renameFailed": "无法重命名该声音。请使用 1 到 60 个字符后重试。",
+      "delete": "删除",
+      "deleteTitle": "删除“{{name}}”？",
+      "deleteBody": "该声音、其参考录音和预览将从我们的服务器上移除。你已用它生成的语音会继续可播放，直到其自身的保留期限结束。此操作无法撤销。",
+      "deleteConfirm": "删除声音",
+      "deleted": "声音已删除。",
+      "deletedPending": "声音已删除。仍有少量文件正在后台移除。",
+      "deleteFailed": "无法删除此声音。未做任何更改；请重试。"
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "关于这些声音的更多信息"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "创建你自己的声音",
+      "intro": "Media Manipulator 现在拥有自己的声音工具，运行在我们自己服务器上的开放模型之上，而不是 ElevenLabs。你可以用自己的录音制作声音，通过描述设计新的声音，或更改录音中的声音。",
+      "note": "生成的语音带有听不见的水印。请只使用你自己的声音，或你已获得使用许可的声音。",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "克隆你的声音",
+          "body": "录制 5 到 60 秒你自己的语音，让它用 20 多种语言朗读任何文本。"
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "设计声音",
+          "body": "描述一个声音，免费试听预览，并保留你喜欢的那个。"
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "更改声音",
+          "body": "即时调整录音的音高，或将其转换为已保存的声音。"
         }
       },
-      "open": "Open"
+      "open": "打开"
     }
   },
   "changelog": {

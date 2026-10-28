@@ -296,6 +296,22 @@ const jaToolPages = {
       name: '動画を要約',
       tagline: '講義、会議、インタビューの文字起こしと、タイムスタンプ付きの構造化されたJSON分析を、当社のGPUサーバー上で取得できます。',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: 'ボイスクローン',
+      tagline:
+        'ご自身の音声を5〜60秒録音またはアップロードしてボイスを作成し、20以上の言語で好きなテキストを読み上げさせましょう。',
+    },
+    'voice-designer': {
+      name: 'ボイスデザイナー',
+      tagline:
+        'ボイスを言葉で説明し、プレビューして、気に入ったものを保存すれば、20以上の言語で好きなテキストを読み上げてくれます。',
+    },
+    'voice-changer': {
+      name: 'ボイスチェンジャー',
+      tagline:
+        '録音のピッチと声質を即座にシフトするか、AIで音声を保存したボイスまたはプリセットのボイスに変換します。',
+    },
   },
 } as const;
 

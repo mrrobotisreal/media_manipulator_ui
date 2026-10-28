@@ -1714,7 +1714,7 @@
       "overview": "ओवरव्यू",
       "history": "हिस्ट्री",
       "projects": "प्रोजेक्ट",
-      "voices": "Voices",
+      "voices": "आवाज़ें",
       "billing": "बिलिंग",
       "privacy": "प्राइवेसी और डेटा",
       "profile": "प्रोफ़ाइल"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "रिज़ल्ट रिटेंशन",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "वे आवाज़ें जो आपने रिकॉर्डिंग से क्लोन कीं या विवरण से डिज़ाइन कीं। आवाज़ डिलीट करने पर उसकी रेफ़रेंस रिकॉर्डिंग और प्रीव्यू हमारे सर्वरों से हट जाते हैं।",
+      "loading": "आपकी आवाज़ें लोड हो रही हैं…",
+      "loadFailed": "आपकी आवाज़ें लोड नहीं हो सकीं। फिर कोशिश करने के लिए रीलोड करें।",
+      "empty": "आपके पास अभी कोई सेव की गई आवाज़ नहीं है।",
+      "emptyCta": "किसी वॉइस टूल से आवाज़ बनाएँ:",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "अपनी आवाज़ क्लोन करें",
+        "design": "आवाज़ डिज़ाइन करें",
+        "change": "आवाज़ बदलें"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{limit}} में से {{used}} आवाज़ें",
+      "usageUnlimited": "{{used}} आवाज़ें",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "क्लोन की गई",
+        "designed": "डिज़ाइन की गई",
+        "preset": "प्रीसेट"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "{{date}} को बनाई गई",
+      "consent": "सहमति की पुष्टि {{date}} को हुई (टेक्स्ट संस्करण {{version}})",
+      "noConsent": "विवरण से डिज़ाइन की गई; किसी व्यक्ति की रिकॉर्डिंग नहीं",
+      "preview": "{{name}} का प्रीव्यू",
+      "rename": "नाम बदलें",
+      "renameLabel": "{{name}} का नया नाम",
+      "save": "सेव करें",
+      "cancel": "रद्द करें",
+      "renamed": "आवाज़ का नाम बदल दिया गया।",
+      "renameFailed": "आवाज़ का नाम नहीं बदला जा सका। 1 से 60 अक्षरों का इस्तेमाल करें और फिर कोशिश करें।",
+      "delete": "डिलीट करें",
+      "deleteTitle": "“{{name}}” डिलीट करें?",
+      "deleteBody": "आवाज़, उसकी रेफ़रेंस रिकॉर्डिंग और उसका प्रीव्यू हमारे सर्वरों से हटा दिए जाते हैं। इससे आपने जो स्पीच पहले जनरेट की थी, वह अपनी रिटेंशन अवधि खत्म होने तक चलती रहती है। इसे पूर्ववत नहीं किया जा सकता।",
+      "deleteConfirm": "आवाज़ डिलीट करें",
+      "deleted": "आवाज़ डिलीट हो गई।",
+      "deletedPending": "आवाज़ डिलीट हो गई। कुछ फ़ाइलें अभी बैकग्राउंड में हटाई जा रही हैं।",
+      "deleteFailed": "यह आवाज़ डिलीट नहीं हो सकी। कुछ भी नहीं बदला; फिर कोशिश करें।"
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "आवाज़ों के बारे में और"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "अपनी खुद की बनाएँ",
+      "intro": "Media Manipulator के पास अब अपने वॉइस टूल हैं, जो ElevenLabs के बजाय हमारे अपने सर्वरों पर ओपन मॉडल पर चलते हैं। अपनी रिकॉर्डिंग से आवाज़ बनाएँ, विवरण से नई आवाज़ डिज़ाइन करें, या किसी रिकॉर्डिंग की आवाज़ बदलें।",
+      "note": "जनरेट की गई स्पीच में एक अश्रव्य वॉटरमार्क होता है। केवल अपनी आवाज़ इस्तेमाल करें, या ऐसी आवाज़ जिसके इस्तेमाल की आपके पास अनुमति है।",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "अपनी आवाज़ क्लोन करें",
+          "body": "अपनी 5 से 60 सेकंड की स्पीच रिकॉर्ड करें और उससे 20 से ज़्यादा भाषाओं में कोई भी टेक्स्ट पढ़वाएँ।"
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "आवाज़ डिज़ाइन करें",
+          "body": "आवाज़ का वर्णन करें, मुफ़्त प्रीव्यू सुनें, और जो पसंद आए उसे रख लें।"
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "आवाज़ बदलें",
+          "body": "किसी रिकॉर्डिंग की पिच तुरंत शिफ़्ट करें, या उसे सेव की गई आवाज़ में बदलें।"
         }
       },
-      "open": "Open"
+      "open": "खोलें"
     }
   },
   "changelog": {

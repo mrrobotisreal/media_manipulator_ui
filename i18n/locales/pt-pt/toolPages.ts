@@ -297,6 +297,22 @@ const ptPtToolPages = {
       name: 'Resumir vídeo',
       tagline: 'Obtenha a transcrição e uma análise JSON estruturada de uma aula, reunião ou entrevista, com marcas temporais, nos nossos próprios servidores GPU.',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: 'Clonagem de voz',
+      tagline:
+        'Grave ou carregue 5 a 60 segundos da sua própria fala, crie uma voz e peça-lhe que leia qualquer texto em mais de vinte idiomas.',
+    },
+    'voice-designer': {
+      name: 'Criador de vozes',
+      tagline:
+        'Descreva uma voz por palavras, pré-visualize-a e mantenha a que preferir para ler qualquer texto em mais de vinte idiomas.',
+    },
+    'voice-changer': {
+      name: 'Alterador de voz',
+      tagline:
+        'Altere de imediato o tom e o caráter de uma gravação, ou converta a fala para uma voz guardada ou predefinida com IA.',
+    },
   },
 } as const;
 

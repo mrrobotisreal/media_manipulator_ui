@@ -1714,7 +1714,7 @@
       "overview": "Overview",
       "history": "History",
       "projects": "Projects",
-      "voices": "Voices",
+      "voices": "Voces",
       "billing": "Billing",
       "privacy": "Privacy & data",
       "profile": "Profile"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "Result retention",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "Voces que has clonado a partir de una grabación o diseñado a partir de una descripción. Al eliminar una voz se borran de nuestros servidores su grabación de referencia y su vista previa.",
+      "loading": "Cargando tus voces…",
+      "loadFailed": "No se pudieron cargar tus voces. Recarga para intentarlo de nuevo.",
+      "empty": "Aún no tienes voces guardadas.",
+      "emptyCta": "Crea una voz con una de las herramientas de voz:",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "Clona tu voz",
+        "design": "Diseña una voz",
+        "change": "Cambia una voz"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "{{used}} de {{limit}} voces",
+      "usageUnlimited": "{{used}} voces",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "Clonada",
+        "designed": "Diseñada",
+        "preset": "Predefinida"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "Creada el {{date}}",
+      "consent": "Consentimiento confirmado el {{date}} (versión del texto {{version}})",
+      "noConsent": "Diseñada a partir de una descripción; sin grabación de ninguna persona",
+      "preview": "Vista previa de {{name}}",
+      "rename": "Cambiar nombre",
+      "renameLabel": "Nuevo nombre para {{name}}",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "renamed": "Voz renombrada.",
+      "renameFailed": "No se pudo cambiar el nombre de la voz. Usa entre 1 y 60 caracteres e inténtalo de nuevo.",
+      "delete": "Eliminar",
+      "deleteTitle": "¿Eliminar «{{name}}»?",
+      "deleteBody": "La voz, su grabación de referencia y su vista previa se borran de nuestros servidores. El habla que ya hayas generado con ella se sigue reproduciendo hasta que termine su propio periodo de conservación. Esta acción no se puede deshacer.",
+      "deleteConfirm": "Eliminar voz",
+      "deleted": "Voz eliminada.",
+      "deletedPending": "Voz eliminada. Aún se están borrando algunos archivos en segundo plano.",
+      "deleteFailed": "No se pudo eliminar esta voz. No se ha cambiado nada; inténtalo de nuevo."
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "Más sobre las voces"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "Crea la tuya",
+      "intro": "Media Manipulator ya tiene sus propias herramientas de voz, que funcionan con modelos abiertos en nuestros propios servidores en lugar de con ElevenLabs. Crea una voz a partir de tu propia grabación, diseña una nueva a partir de una descripción o cambia la voz de una grabación.",
+      "note": "El habla generada lleva una marca de agua inaudible. Usa solo tu propia voz o una voz que tengas permiso para usar.",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "Clona tu voz",
+          "body": "Graba entre 5 y 60 segundos de tu propia voz y haz que lea cualquier texto en más de 20 idiomas."
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "Diseña una voz",
+          "body": "Describe una voz, escucha vistas previas gratuitas y conserva la que te guste."
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "Cambia una voz",
+          "body": "Modifica al instante el tono de una grabación o conviértela a una voz guardada."
         }
       },
-      "open": "Open"
+      "open": "Abrir"
     }
   },
   "changelog": {

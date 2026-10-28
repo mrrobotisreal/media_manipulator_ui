@@ -296,6 +296,22 @@ const zhCnToolPages = {
       name: '视频摘要',
       tagline: '在我们自己的GPU服务器上，获取讲座、会议或访谈的文字稿和带时间戳的结构化JSON分析。',
     },
+    // MM78 voices: name + tagline (model-written, needs native review).
+    'voice-cloning': {
+      name: '声音克隆',
+      tagline:
+        '录制或上传 5 到 60 秒你自己的语音，创建一个声音，让它用 20 多种语言朗读任何文本。',
+    },
+    'voice-designer': {
+      name: '声音设计器',
+      tagline:
+        '用文字描述一个声音，试听预览，并保留你喜欢的那个，让它用 20 多种语言朗读任何文本。',
+    },
+    'voice-changer': {
+      name: '变声器',
+      tagline:
+        '即时调整录音的音高和特色，或使用AI将语音转换为已保存或预设的声音。',
+    },
   },
 } as const;
 

@@ -1714,7 +1714,7 @@
       "overview": "개요",
       "history": "기록",
       "projects": "프로젝트",
-      "voices": "Voices",
+      "voices": "음성",
       "billing": "결제",
       "privacy": "개인정보 및 데이터",
       "profile": "프로필"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "결과 보관 기간",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "녹음으로 클론했거나 설명으로 디자인한 음성이에요. 음성을 삭제하면 그 참조 녹음과 미리 듣기가 당사 서버에서 제거돼요.",
+      "loading": "내 음성을 불러오는 중…",
+      "loadFailed": "내 음성을 불러오지 못했어요. 새로고침해서 다시 시도하세요.",
+      "empty": "저장된 음성이 아직 없어요.",
+      "emptyCta": "음성 도구 중 하나로 음성을 만들어 보세요:",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "내 목소리 클론",
+        "design": "음성 디자인",
+        "change": "목소리 바꾸기"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "음성 {{limit}}개 중 {{used}}개",
+      "usageUnlimited": "음성 {{used}}개",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "클론",
+        "designed": "디자인",
+        "preset": "프리셋"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "{{date}}에 만듦",
+      "consent": "{{date}}에 동의 확인(문구 버전 {{version}})",
+      "noConsent": "설명으로 디자인함. 사람의 녹음 없음",
+      "preview": "{{name}} 미리 듣기",
+      "rename": "이름 변경",
+      "renameLabel": "{{name}}의 새 이름",
+      "save": "저장",
+      "cancel": "취소",
+      "renamed": "음성 이름을 변경했어요.",
+      "renameFailed": "음성 이름을 변경하지 못했어요. 1자에서 60자로 입력하고 다시 시도하세요.",
+      "delete": "삭제",
+      "deleteTitle": "“{{name}}”을(를) 삭제할까요?",
+      "deleteBody": "이 음성과 그 참조 녹음, 미리 듣기가 당사 서버에서 제거돼요. 이 음성으로 이미 생성한 말소리는 해당 말소리 자체의 보관 기간이 끝날 때까지 계속 재생할 수 있어요. 이 작업은 되돌릴 수 없어요.",
+      "deleteConfirm": "음성 삭제",
+      "deleted": "음성을 삭제했어요.",
+      "deletedPending": "음성을 삭제했어요. 일부 파일은 백그라운드에서 아직 제거되는 중이에요.",
+      "deleteFailed": "이 음성을 삭제하지 못했어요. 아무것도 변경되지 않았어요. 다시 시도하세요."
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "음성에 대해 더 알아보기"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "나만의 음성 만들기",
+      "intro": "Media Manipulator에 자체 음성 도구가 생겼어요. ElevenLabs가 아니라 당사 자체 서버에서 공개 모델로 실행돼요. 내 녹음으로 음성을 만들고, 설명으로 새 음성을 디자인하고, 녹음 속 목소리를 바꿔 보세요.",
+      "note": "생성된 말소리에는 들리지 않는 워터마크가 들어가요. 본인의 목소리나 사용 허락을 받은 목소리만 사용하세요.",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "내 목소리 클론",
+          "body": "내 말소리를 5초에서 60초 동안 녹음하면 20개가 넘는 언어로 원하는 텍스트를 읽어 줘요."
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "음성 디자인",
+          "body": "음성을 설명하고, 무료 미리 듣기를 들어 보고, 마음에 드는 음성을 보관하세요."
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "목소리 바꾸기",
+          "body": "녹음의 음높이를 즉시 바꾸거나, 저장한 음성으로 변환하세요."
         }
       },
-      "open": "Open"
+      "open": "열기"
     }
   },
   "changelog": {

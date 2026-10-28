@@ -1714,7 +1714,7 @@
       "overview": "Overview",
       "history": "History",
       "projects": "Projects",
-      "voices": "Voices",
+      "voices": "Голоси",
       "billing": "Billing",
       "privacy": "Privacy & data",
       "profile": "Profile"
@@ -1886,40 +1886,40 @@
     },
     "retentionLabel": "Result retention",
     "voices": {
-      "intro": "Voices you cloned from a recording or designed from a description. Deleting a voice removes its reference recording and preview from our servers.",
-      "loading": "Loading your voices…",
-      "loadFailed": "Could not load your voices. Reload to try again.",
-      "empty": "You have no saved voices yet.",
-      "emptyCta": "Make a voice with one of the voice tools:",
+      "intro": "Голоси, які ви клонували із запису або створили за описом. Під час видалення голосу його еталонний запис і превʼю видаляються з наших серверів.",
+      "loading": "Завантажуємо ваші голоси…",
+      "loadFailed": "Не вдалося завантажити ваші голоси. Перезавантажте сторінку й спробуйте ще раз.",
+      "empty": "У вас поки немає збережених голосів.",
+      "emptyCta": "Створіть голос за допомогою одного з голосових інструментів:",
       "tools": {
-        "clone": "Clone your voice",
-        "design": "Design a voice",
-        "change": "Change a voice"
+        "clone": "Клонуйте свій голос",
+        "design": "Створіть голос",
+        "change": "Змініть голос"
       },
-      "usage": "{{used}} of {{limit}} voices",
-      "usageUnlimited": "{{used}} voices",
+      "usage": "Голосів: {{used}} із {{limit}}",
+      "usageUnlimited": "Голосів: {{used}}",
       "kinds": {
-        "cloned": "Cloned",
-        "designed": "Designed",
-        "preset": "Preset"
+        "cloned": "Клонований",
+        "designed": "Створений",
+        "preset": "Готовий"
       },
-      "created": "Created {{date}}",
-      "consent": "Consent confirmed {{date}} (text version {{version}})",
-      "noConsent": "Designed from a description; no recording of a person",
-      "preview": "Preview of {{name}}",
-      "rename": "Rename",
-      "renameLabel": "New name for {{name}}",
-      "save": "Save",
-      "cancel": "Cancel",
-      "renamed": "Voice renamed.",
-      "renameFailed": "Could not rename the voice. Use 1 to 60 characters and try again.",
-      "delete": "Delete",
-      "deleteTitle": "Delete “{{name}}”?",
-      "deleteBody": "The voice, its reference recording and its preview are removed from our servers. Speech you already generated with it keeps playing until its own retention period ends. This cannot be undone.",
-      "deleteConfirm": "Delete voice",
-      "deleted": "Voice deleted.",
-      "deletedPending": "Voice deleted. A few files are still being removed in the background.",
-      "deleteFailed": "Could not delete this voice. Nothing was changed; try again."
+      "created": "Створено {{date}}",
+      "consent": "Згоду підтверджено {{date}} (версія тексту {{version}})",
+      "noConsent": "Створено за описом; запису голосу людини немає",
+      "preview": "Превʼю голосу {{name}}",
+      "rename": "Перейменувати",
+      "renameLabel": "Нова назва для {{name}}",
+      "save": "Зберегти",
+      "cancel": "Скасувати",
+      "renamed": "Голос перейменовано.",
+      "renameFailed": "Не вдалося перейменувати голос. Використайте від 1 до 60 символів і спробуйте ще раз.",
+      "delete": "Видалити",
+      "deleteTitle": "Видалити «{{name}}»?",
+      "deleteBody": "Голос, його еталонний запис і превʼю видаляються з наших серверів. Мовлення, яке ви вже створили з його допомогою, залишається доступним до завершення власного строку зберігання. Цю дію не можна скасувати.",
+      "deleteConfirm": "Видалити голос",
+      "deleted": "Голос видалено.",
+      "deletedPending": "Голос видалено. Кілька файлів ще видаляються у фоновому режимі.",
+      "deleteFailed": "Не вдалося видалити цей голос. Нічого не змінилося; спробуйте ще раз."
     }
   },
   "homeContent": {
@@ -2080,24 +2080,24 @@
       "cta": "Докладніше про голоси"
     },
     "makeYourOwn": {
-      "title": "Make your own",
-      "intro": "Media Manipulator now has its own voice tools, running on open models on our own servers rather than on ElevenLabs. Make a voice from your own recording, design a new one from a description, or change the voice in a recording.",
-      "note": "Generated speech carries an inaudible watermark. Only use your own voice, or a voice you have permission to use.",
+      "title": "Створіть свій",
+      "intro": "Media Manipulator тепер має власні голосові інструменти, які працюють на відкритих моделях на наших власних серверах, а не на ElevenLabs. Створіть голос зі свого запису, придумайте новий за описом або змініть голос у записі.",
+      "note": "Створене мовлення містить нечутний водяний знак. Використовуйте лише власний голос або голос, який вам дозволено використовувати.",
       "cards": {
         "clone": {
-          "title": "Clone your voice",
-          "body": "Record 5 to 60 seconds of your own speech and have it read any text in over 20 languages."
+          "title": "Клонуйте свій голос",
+          "body": "Запишіть від 5 до 60 секунд свого мовлення, і нехай воно читає будь-який текст понад 20 мовами."
         },
         "design": {
-          "title": "Design a voice",
-          "body": "Describe a voice, listen to free previews, and keep the one you like."
+          "title": "Створіть голос",
+          "body": "Опишіть голос, послухайте безкоштовні превʼю й збережіть той, що сподобається."
         },
         "change": {
-          "title": "Change a voice",
-          "body": "Shift the pitch of a recording instantly, or convert it to a saved voice."
+          "title": "Змініть голос",
+          "body": "Миттєво зсуньте тон запису або перетворіть його на збережений голос."
         }
       },
-      "open": "Open"
+      "open": "Відкрити"
     }
   },
   "changelog": {
