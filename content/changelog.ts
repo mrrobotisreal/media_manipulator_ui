@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM85: contact page and a named founder.
+  {
+    id: '2026-10-28-contact-and-founder',
+    date: '2026-10-28',
+    title: 'New contact page; who makes Media Manipulator',
+    body: 'There is now a contact page with a short form and our two addresses: support@media-manipulator.com for help, bugs and billing, and privacy@media-manipulator.com for privacy and data requests. A person reads every message and we usually reply within two business days; the form gives you a reference you can quote. The About page now says who builds the site: Mitchell Wintrow, its founder and sole engineer, with CreaTV Ltd. as the operating company. Tutorials show who wrote them and when they were last updated, and the home page explains what each group of tools does and what we deliberately leave out.',
+    tags: ['new', 'improved'],
+    links: [
+      { label: 'Contact', href: '/contact' },
+      { label: 'About', href: '/about' },
+    ],
+  },
   // MM80: large results download through the browser's download manager.
   {
     id: '2026-10-28-large-downloads',
