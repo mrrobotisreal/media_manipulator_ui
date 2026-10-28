@@ -4,6 +4,7 @@ import en from '@/i18n/locales/en-us/interface/components.json';
 import { describe as describeResult } from '@/lib/results/describe';
 import { resetResultBlobCache } from '@/lib/results/useResultBlob';
 import { resetDownloadStatusesForTests } from '@/lib/results/downloadController';
+import { resetMp3StatusesForTests } from '@/lib/results/mp3Download';
 import { ResultPanel, resetPreviewedForTests } from './result-panel';
 
 const h = vi.hoisted(() => ({ authedFetch: vi.fn(), downloadFile: vi.fn(), track: vi.fn() }));
@@ -121,5 +122,53 @@ describe('ResultPanel download feedback (MM80)', () => {
     render(<ResultPanel descriptor={descriptor} />);
     fireEvent.click(screen.getByRole('button', { name: /^Download$/ }));
     expect((await screen.findByRole('alert')).textContent).toContain('no longer available');
+  });
+});
+
+// MM81: "Download as MP3" sits next to Download on a WAV vocal stem only.
+describe('ResultPanel Download as MP3 (MM81)', () => {
+  const wav = describeResult({ job: { id: 'job-wav', resultFileName: 'Set_converted.wav', resultSizeBytes: 922_710_094 }, mode: 'convert' });
+  let clicks: string[];
+  beforeEach(() => {
+    clicks = [];
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+      clicks.push(this.href);
+    });
+    Object.assign(URL, { createObjectURL: vi.fn(() => 'blob:x'), revokeObjectURL: vi.fn() });
+    h.authedFetch.mockReset();
+    // The audio viewer may ask for the bytes; keep that fetch pending (never resolved here).
+    h.downloadFile.mockReset();
+    h.downloadFile.mockReturnValue(new Promise(() => undefined));
+  });
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+    resetResultBlobCache();
+    resetPreviewedForTests();
+    resetDownloadStatusesForTests();
+    resetMp3StatusesForTests();
+  });
+
+  it('offered on a WAV stem: converts on the server and starts a native download of the MP3', async () => {
+    h.authedFetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ status: 'ready', url: '/api/download/job-wav?token=v1.m', sizeBytes: 209_000_000, fileName: 'Set_converted.mp3' }),
+    });
+    render(<ResultPanel descriptor={wav} offerMp3 />);
+    fireEvent.click(screen.getByRole('button', { name: 'Download as MP3' }));
+    await waitFor(() => expect(screen.getByTestId('mp3-download').textContent).toContain('Your MP3 download has started (209 MB)'));
+    expect(h.authedFetch.mock.calls[0][0]).toMatch(/\/download\/job-wav\/mp3$/);
+    expect(clicks).toEqual([expect.stringMatching(/\/download\/job-wav\?token=v1\.m$/)]);
+  });
+
+  it('not offered without the flag, on a non-WAV result, or on a shared page', () => {
+    const mp3 = describeResult({ job: { id: 'job-mp3', resultFileName: 'Set_converted.mp3' }, mode: 'convert' });
+    const { rerender } = render(<ResultPanel descriptor={wav} />);
+    expect(screen.queryByRole('button', { name: 'Download as MP3' })).toBeNull();
+    rerender(<ResultPanel descriptor={mp3} offerMp3 />);
+    expect(screen.queryByRole('button', { name: 'Download as MP3' })).toBeNull();
+    rerender(<ResultPanel descriptor={wav} offerMp3 readOnly />);
+    expect(screen.queryByRole('button', { name: 'Download as MP3' })).toBeNull();
   });
 });

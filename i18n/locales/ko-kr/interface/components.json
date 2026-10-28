@@ -421,6 +421,14 @@
       "downloadJson": ".json 다운로드",
       "showAll": "모두 보기 ({{count}})",
       "showLess": "간략히 보기"
+    },
+    "mp3": {
+      "button": "MP3로 다운로드",
+      "converting": "MP3로 변환 중…",
+      "hint": "더 작은 파일을 서버에서 변환합니다. 무료이며 AI 작업으로 집계되지 않습니다.",
+      "started": "MP3 다운로드가 시작되었습니다. 브라우저의 다운로드 목록을 확인하세요.",
+      "startedWithSize": "MP3 다운로드가 시작되었습니다({{size}}). 브라우저의 다운로드 목록을 확인하세요.",
+      "failed": "MP3를 준비하지 못했습니다. 잠시 후 다시 시도하세요."
     }
   },
   "billing": {

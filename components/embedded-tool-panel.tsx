@@ -43,6 +43,8 @@ import { useAuth } from '@/lib/auth/AuthProvider';
 import { UploadLimitHint, useUpgradeNudge } from '@/components/account/upgrade-surfaces';
 import { QuotaChip } from '@/components/quota-chip';
 import { Panel } from '@/components/darkroom/panel';
+import { isVocalStemJob } from '@/lib/results/mp3Download';
+import { isStemFormatChoice, isStemOperation, stemOutputFormat, type StemFormatChoice } from '@/lib/audio/stemFormat';
 
 /**
  * Shared loading state for the code-split forms below. Module scope, not
@@ -294,6 +296,8 @@ export interface AudioFormPresets {
   /** Show a read-only chip instead of the operation select. */
   hideOperationSelect?: boolean;
   defaultFormat?: string;
+  /** MM81: vocal stems' "Output format" choice; absent = "Same as input" (`auto`). */
+  stemFormat?: StemFormatChoice;
   /** Lock the output format select (the WAV/FLAC/OGG pages). */
   lockedFormat?: string;
   /** Open and highlight one effect section (`embed.preset` kind 'audio_effect'). */
@@ -787,6 +791,11 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
       }
       return `${nameWithoutExt}_converted.${opts.format || 'jpg'}`;
     }
+    // MM81: a vocal stem asked for `auto`; name it by what the API resolved (or will).
+    const aiOp = (conversionOptions as { ai?: { operation?: string } }).ai?.operation;
+    if (isStemOperation(aiOp)) {
+      return `${nameWithoutExt}.${stemOutputFormat(conversionOptions.format, originalName, selectedFile.type, conversionJob?.options)}`;
+    }
     return `${nameWithoutExt}.${conversionOptions.format}`;
   };
 
@@ -911,7 +920,10 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
       ? {
           aiOperation: preset.aiOperation,
           hideOperationSelect: preset.hideOperationSelect,
-          defaultFormat: preset.format,
+          // MM81: a vocal page's `format` is the stem choice ('auto' = same as input).
+          ...(isStemOperation(preset.aiOperation)
+            ? { stemFormat: isStemFormatChoice(preset.format) ? preset.format : undefined }
+            : { defaultFormat: preset.format }),
         }
       : preset && preset.kind === 'audio_effect'
         ? {
@@ -1197,6 +1209,8 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
                   isLoading={isProcessing}
                   audioUrl={originalMediaUrl || undefined}
                   presets={audioPresets}
+                  fileName={selectedFile?.name}
+                  fileType={selectedFile?.type}
                 />
               )}
               {effectiveKind === 'pdf' && (
@@ -1236,6 +1250,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
               downloadFileName={getConvertedFilename()}
               downloadLabel={t('embeddedToolPanel.downloadFilename', { filename: getConvertedFilename() })}
               onDownloaded={upgradeNudge}
+              offerMp3={isVocalStemJob(audioPresets?.aiOperation)}
               onRunAnother={clearFile}
               metadataStrip={defaultTask !== 'remove_metadata'}
             />

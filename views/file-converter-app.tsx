@@ -57,6 +57,8 @@ import {
 } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { Panel } from '@/components/darkroom/panel';
+import { isStemOperation, stemOutputFormat } from '@/lib/audio/stemFormat';
+import { isVocalStemJob } from '@/lib/results/mp3Download';
 import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
 
 /** Lazy chunk: the inspector flow adds nothing to the home route's first load. */
@@ -71,6 +73,8 @@ interface ConversionHistoryItem {
   fileName: string;
   outputFileName: string;
   format: string;
+  /** MM81: the AI operation, when one ran (offers "Download as MP3" on a WAV stem). */
+  aiOperation?: string;
   originalUrl: string;
   startedAt: number;
   completedAt?: number;
@@ -85,12 +89,28 @@ interface ConversionHistoryItem {
   error?: string;
 }
 
+/**
+ * MM81: once a stem job exists, the API has rewritten `auto` to the real format in the job's
+ * options (an .m4a holding ALAC becomes flac); re-name the history entry to match.
+ */
+function resolvedStemNames(
+  item: ConversionHistoryItem,
+  options: Record<string, unknown> | undefined,
+): Partial<ConversionHistoryItem> {
+  const format = typeof options?.format === 'string' ? options.format : '';
+  const ai = options?.ai as { operation?: string } | undefined;
+  if (!format || format === 'auto' || !isStemOperation(ai?.operation) || format === item.format) return {};
+  const base = item.fileName.substring(0, item.fileName.lastIndexOf('.')) || item.fileName;
+  return { format, outputFileName: `${base}.${format}` };
+}
+
 interface PendingConversionDetails {
   mediaKind: 'image' | 'video' | 'audio' | 'pdf' | 'unknown';
   mode: WorkflowMode;
   fileName: string;
   outputFileName: string;
   format: string;
+  aiOperation?: string;
   originalUrl: string;
   startedAt: number;
 }
@@ -146,6 +166,11 @@ const FileConverterAppInner: React.FC = () => {
   const { t, formatFileSize, formatTime } = useLocalization(['interface', 'accessibility', 'error']);
   const localized = useLocalizedHref();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // One object URL per chosen file (the audio form reads its duration from it, MM81).
+  const selectedFileUrl = useMemo(() => (selectedFile ? URL.createObjectURL(selectedFile) : undefined), [selectedFile]);
+  useEffect(() => () => {
+    if (selectedFileUrl) URL.revokeObjectURL(selectedFileUrl);
+  }, [selectedFileUrl]);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const [conversionOptions, setConversionOptions] = useState<ConversionFormData | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -214,6 +239,7 @@ const FileConverterAppInner: React.FC = () => {
           fileName: pending.fileName,
           outputFileName: pending.outputFileName,
           format: pending.format,
+          aiOperation: pending.aiOperation,
           originalUrl: pending.originalUrl,
           startedAt: pending.startedAt,
           status: 'processing',
@@ -295,6 +321,7 @@ const FileConverterAppInner: React.FC = () => {
         setConversionHistory(prev => prev.map(item => item.jobId === jobStatusData.id
           ? {
               ...item,
+              ...resolvedStemNames(item, jobStatusData.options),
               status: 'completed',
               completedAt: Date.now(),
               resultSizeBytes: jobStatusData.resultSizeBytes,
@@ -367,14 +394,18 @@ const FileConverterAppInner: React.FC = () => {
     if (!selectedFile) return;
     const originalName = selectedFile.name;
     const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
-    const outputFileName = `${nameWithoutExt}.${data.format}`;
+    // MM81: a vocal stem's "Same as input" is sent as `auto`; name it by what it will be.
+    const aiOp = (data as { ai?: { operation?: string } }).ai?.operation;
+    const outputFormat = isStemOperation(aiOp) ? stemOutputFormat(data.format, selectedFile.name, selectedFile.type) : data.format;
+    const outputFileName = `${nameWithoutExt}.${outputFormat}`;
     const mediaKind = getFileType(selectedFile);
     pendingConversionRef.current = {
       mediaKind,
       mode: 'convert',
       fileName: selectedFile.name,
       outputFileName,
-      format: data.format,
+      format: outputFormat,
+      aiOperation: aiOp,
       originalUrl: URL.createObjectURL(selectedFile),
       startedAt: Date.now(),
     };
@@ -440,7 +471,10 @@ const FileConverterAppInner: React.FC = () => {
 
     const originalName = selectedFile.name;
     const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
-    const newExtension = conversionOptions.format;
+    const aiOp = (conversionOptions as { ai?: { operation?: string } }).ai?.operation;
+    const newExtension = isStemOperation(aiOp)
+      ? stemOutputFormat(conversionOptions.format, originalName, selectedFile.type, conversionJob?.options)
+      : conversionOptions.format;
     if (workflowMode === 'transcribe') {
       return `${nameWithoutExt}_transcript.${newExtension}`;
     }
@@ -598,6 +632,7 @@ const FileConverterAppInner: React.FC = () => {
             ? t('interface:home.result.transcriptSubtitle', { filename: activeHistoryItem.fileName })
             : t('interface:home.result.convertedSubtitle', { filename: activeHistoryItem.fileName })}
           downloadFileName={activeHistoryItem.outputFileName}
+          offerMp3={isVocalStemJob(activeHistoryItem.aiOperation)}
           onDownload={() => handleDownload(activeHistoryItem.jobId, activeHistoryItem.outputFileName)}
           seedBlob={activeHistoryItem.blob}
           onBlobLoaded={(blob) => cacheHistoryBlob(activeHistoryItem.jobId, blob)}
@@ -945,7 +980,9 @@ const FileConverterAppInner: React.FC = () => {
                         <AudioConversionForm
                           onSubmit={handleConvert}
                           isLoading={isLoading}
-                          audioUrl={selectedFile ? URL.createObjectURL(selectedFile) : undefined}
+                          audioUrl={selectedFileUrl}
+                          fileName={selectedFile?.name}
+                          fileType={selectedFile?.type}
                         />
                       )}
                     </>

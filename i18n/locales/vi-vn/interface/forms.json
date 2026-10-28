@@ -45,7 +45,7 @@
       "tooltipIntro": "Mỗi tác vụ chạy một thao tác AI, trên máy chủ GPU cục bộ của chúng tôi. Chuỗi xử lý FFmpeg tiêu chuẩn được bỏ qua trong tác vụ đó.",
       "tooltipCleanVoice": "<strong>Làm sạch giọng nói</strong> — khử nhiễu DeepFilterNet + chuỗi tinh chỉnh chuẩn phát sóng (lọc cao/thấp, độ ồn, limiter).",
       "tooltipRemoveNoise": "<strong>Loại bỏ tiếng ồn nền</strong> — khử nhiễu DeepFilterNet không kèm chuỗi tinh chỉnh.",
-      "tooltipIsolateVocals": "<strong>Tách giọng hát</strong> — stem giọng hát Demucs htdemucs (mặc định WAV không mất dữ liệu).",
+      "tooltipIsolateVocals": "<strong>Tách giọng hát</strong> — stem giọng hát Demucs htdemucs (mặc định cùng định dạng với tệp của bạn).",
       "tooltipRemoveVocals": "<strong>Loại bỏ giọng hát / Karaoke</strong> — stem nhạc nền Demucs.",
       "intro": "Công cụ âm thanh AI chạy dưới dạng tác vụ GPU và có thể mất nhiều thời gian hơn chuyển đổi cơ bản.",
       "operationLabel": "Thao tác",
@@ -58,6 +58,20 @@
       },
       "aiActiveNote": "Bitrate, EQ và các tùy chọn âm thanh tiêu chuẩn khác được bỏ qua khi chọn một thao tác AI.",
       "presetLocked": "Thiết lập sẵn cho công cụ này"
+    },
+    "stemFormat": {
+      "label": "Định dạng đầu ra",
+      "options": {
+        "auto": "Giống tệp gốc (khuyên dùng)",
+        "autoWithFormat": "Giống tệp gốc: {{format}} (khuyên dùng)",
+        "mp3": "MP3 (320 kbps)",
+        "flac": "FLAC (không mất dữ liệu)",
+        "wav": "WAV (không mất dữ liệu, lớn nhất)"
+      },
+      "withEstimate": "{{label}} · khoảng {{size}}",
+      "help": "Dung lượng chỉ là ước tính. Tệp MP3 vẫn là MP3; tệp không mất dữ liệu (WAV, FLAC, AIFF) sẽ trả về dạng FLAC.",
+      "helpNoEstimate": "Tệp MP3 vẫn là MP3; tệp không mất dữ liệu (WAV, FLAC, AIFF) sẽ trả về dạng FLAC. Chọn FLAC hoặc WAV để giữ nguyên chất lượng.",
+      "wavHint": "Tệp WAV sẽ khoảng {{size}}. Đây là bản tải rất lớn; FLAC không mất dữ liệu và nhỏ hơn khoảng một nửa."
     }
   },
   "videoForm": {
