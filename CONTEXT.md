@@ -94,6 +94,24 @@ An ingested media source (video, audio, or LUT) belonging to a project, with ser
 **Embed protocol**:
 The versioned, origin-validated postMessage contract between a host (CreaTV) and the `/embed/content-studio` iframe. A compatibility boundary — never break it, only extend it.
 
+### Voices (MM78)
+
+**Voices**:
+The feature that clones, designs and changes voices on self-hosted models (API `/api/voices/*`, MM77; design `docs/design/VOICES.md`). Three tool pages (`/tools/voice-cloning`, `/tools/voice-designer`, `/tools/voice-changer`, tasks `voice_clone` / `voice_design` / `voice_convert`), the Account **Voices** tab and the `/voices` "Make your own" cards. Code: `components/voices/*`, `lib/voices/*`, `lib/useVoices.ts`.
+_Avoid_: "ElevenLabs voices" for these (the `/voices` showcase of Mitch's two ElevenLabs clones is separate and unchanged).
+
+**Saved voice**:
+A voice row in the caller's account (`mm_voices`): **cloned** from a 5 to 60 s reference recording, or **designed** from a description + seed. Needs sign-in. A **preset** voice is offered by the service to everyone and is never a row.
+
+**Consent record**:
+The time and `consentTextVersion` stored with a cloned voice when the visitor ticks the consent checkbox (`components/voices/consent-gate.tsx`). The version is `VOICE_CONSENT_TEXT_VERSION` (`lib/voices/consent.ts`), equal to the API's `VOICES_CONSENT_TEXT_VERSION` and the version Terms §8.11 names; change all three together.
+
+**Shift / Convert**:
+The voice changer's two modes. **Shift** is rubberband pitch + formant on the server (instant, `ops`, works for anonymous visitors and with the engine off, not watermarked); its presets mirror `services.VoiceShiftPresets` in `lib/voices/shift.ts`. **Convert** is AI voice conversion to a saved or preset voice (`ai_ops`, account + `voicesConvert` plan, watermarked).
+
+**Warm**:
+Capabilities `warm: true` means the voice engine is loaded; while a request runs against a cold engine the page shows "Warming up the voice engine…" (`components/voices/warming-up.tsx`).
+
 ### Localization
 
 **Locale registry**:
