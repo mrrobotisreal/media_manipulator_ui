@@ -42,6 +42,13 @@ vi.mock('@/components/metadata/metadata-inspector-lazy', () => ({
   LazyMetadataInspector: ({ fileName }: { fileName?: string }) => <div data-testid="inspector">{fileName ?? 'doc'}</div>,
 }));
 vi.mock('@/lib/metadata/useMetadataAnalytics', () => ({ useMetadataAnalytics: () => ({ onEvent: vi.fn(), onDiffEvent: vi.fn() }) }));
+const summaryTitles = vi.hoisted(() => ({ byJob: {} as Record<string, string>, asked: [] as string[] }));
+vi.mock('@/lib/useSummarize', () => ({
+  useSummaryResult: (jobId: string, enabled: boolean) => {
+    if (enabled) summaryTitles.asked.push(jobId);
+    return { data: enabled && summaryTitles.byJob[jobId] ? { title: summaryTitles.byJob[jobId] } : undefined };
+  },
+}));
 vi.mock('@/lib/auth/accountApi', async (orig) => ({
   ...(await orig<typeof import('@/lib/auth/accountApi')>()),
   fetchHistory: vi.fn(),
@@ -105,6 +112,19 @@ describe('HistoryTab metadata affordance', () => {
 });
 
 describe('HistoryTab rows', () => {
+  it('History label uses the summary title for a video_summary row, else the file name (MM75)', async () => {
+    summaryTitles.byJob = { s1: 'Building a birdhouse' };
+    summaryTitles.asked = [];
+    renderHistory([
+      row('s1', { tool: 'video_summary', mode: 'summarize', resultFileName: 'clip_summary.md', downloadPath: '/download/s1' }),
+      row('s2', { tool: 'video_summary', mode: 'summarize', resultFileName: 'other_summary.md', downloadPath: '/download/s2' }),
+      row('c1', { resultFileName: 'out.mp4', downloadPath: '/download/c1' }),
+    ]);
+    const names = (await screen.findAllByTestId('history-row-name')).map((n) => n.textContent);
+    expect(names).toEqual(['Building a birdhouse', 'other_summary.md', 'out.mp4']);
+    expect(summaryTitles.asked).not.toContain('c1');
+  });
+
   it('shows "Deletes on" from deletesOn, and Kept longer', async () => {
     renderHistory([row('a', { deletesOn: inDays(11), keptLonger: true, retainedObjectId: 'r1', downloadPath: '/x' })]);
     const line = await screen.findByText(/Deletes on/);

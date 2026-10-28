@@ -248,3 +248,17 @@ suite('describe: metadata (MM10)', () => {
     expect('strippedCount' in plain).toBe(false);
   });
 });
+
+suite('describe: summary (MM75)', () => {
+  it('summarize_video and summarize_audio map to kind summary', () => {
+    expect(describe({ job: job('summary.md'), task: 'summarize_video' }).kind).toBe('summary');
+    expect(describe({ job: job('summary.md'), task: 'summarize_audio' }).kind).toBe('summary');
+    expect(describe({ job: job(undefined), task: 'summarize_audio' }).kind).toBe('summary');
+  });
+  it('History rows (tool video_summary, mode summarize) are summaries too, with the markdown mime', () => {
+    const d = describe({ job: job('clip_summary.md'), task: 'video_summary', mode: 'summarize' });
+    expect(d.kind).toBe('summary');
+    expect(d.mime).toBe('text/markdown');
+    expect(describe({ job: job('clip_summary.md'), mode: 'summarize' }).kind).toBe('summary');
+  });
+});

@@ -1,6 +1,6 @@
 'use client';
 
-import { Archive, Captions, File, FileText, Film, Image as ImageIcon, Music, Radio } from 'lucide-react';
+import { Archive, Captions, File, FileText, Film, Image as ImageIcon, Music, Radio, ScrollText } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { Stat } from '@/components/darkroom/stat';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -19,6 +19,7 @@ export const KIND_ICONS: Record<ResultKind, ComponentType<{ className?: string; 
   hls: Radio,
   dash: Radio,
   metadata: FileText,
+  summary: ScrollText,
   unknown: File,
 };
 

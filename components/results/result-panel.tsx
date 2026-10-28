@@ -106,6 +106,8 @@ const previewKindOf = (kind: ResultKind): NonNullable<PropsFor<'result_previewed
     case 'transcript':
     case 'captions':
       return 'text';
+    case 'summary':
+      return 'document';
     default:
       return 'other';
   }
@@ -319,9 +321,11 @@ function ResultPanelBody({
     if (active && !readOnly) onViewed();
   }, [active, readOnly, descriptor.jobId, onViewed]);
 
-  // A shared transcript has no owner API to read from: it gets the file card (and Download).
+  // A shared transcript or summary has no owner API to read from: it gets the file card (and Download).
   const resultViewer =
-    descriptor.sourceUrl && descriptor.kind === 'transcript' ? viewerFor('unknown') : viewerFor(descriptor.kind);
+    descriptor.sourceUrl && (descriptor.kind === 'transcript' || descriptor.kind === 'summary')
+      ? viewerFor('unknown')
+      : viewerFor(descriptor.kind);
   const wantsBytes = active && !viewerOverride && shown === 'result' && resultViewer.needsBlob;
   const blobState = useResultBlob(descriptor, { enabled: wantsBytes, seedBlob });
   const loadedBlob = blobState.blob;
