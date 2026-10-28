@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM81: vocal stems follow the input's format; Download as MP3 for older WAV results.
+  {
+    id: '2026-10-28-stem-format',
+    date: '2026-10-28',
+    title: 'Vocal removal now returns MP3 for MP3 files — up to 10× smaller',
+    body: 'Removing or isolating vocals used to always return a WAV file, so a long MP3 could come back more than ten times its original size: an 87-minute song became an 880 MB WAV. Now the result comes back in the same format as your file: an MP3 stays an MP3 (at 320 kbps, so the separation adds no audible loss of its own), and a lossless file such as WAV, FLAC or AIFF comes back as FLAC, which is still lossless and about half the size of WAV. A new Output format menu lets you pick MP3, FLAC or WAV instead, and shows the estimated size of each before you start; WAV warns you when it would be over 500 MB. If you already have a large WAV result, a Download as MP3 button converts it on our server. It is free and never counts as an AI job.',
+    tags: ['improved', 'new'],
+    links: [
+      { label: 'Remove vocals', href: '/tools/remove-vocals-from-song' },
+      { label: 'Isolate vocals', href: '/tools/isolate-vocals-from-song' },
+    ],
+  },
   // MM80: large results download through the browser's download manager.
   {
     id: '2026-10-28-large-downloads',
