@@ -24,6 +24,7 @@ import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 
 import { RETENTION_PROMISE } from '@/content/retentionPromise';
+import { privacyNoteFor } from '@/content/toolPrivacy';
 import { CATALOG_TOOL_PAGES, VOICE_TOOL_PAGES } from '@/content/toolPagesCatalog';
 import { aliasTargetOf } from '@/content/toolAliases';
 
@@ -1099,7 +1100,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'AV1 selected by default since AV1 is the future for high-quality adaptive streaming.',
       'Open package format: just unzip the .tar.gz and host the manifest.mpd.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is read once by FFmpeg, encoded into AV1 or VP9 renditions and split into DASH segments with a manifest, all on our servers.'),
     faq: [
       {
         question: 'AV1 or VP9 — which should I pick?',
@@ -1509,7 +1510,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Tune quality and compression precisely, instead of one-size-fits-all preset.',
       'Same privacy and retention model as the rest of the toolset.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your WebP is decoded and re-encoded as a JPG on our server; a transparent area is flattened because JPG cannot store it.'),
     faq: [
       {
         question: 'What about transparency?',
@@ -1606,7 +1607,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Converts any .png image to a standard .jpg (JPEG) file.',
       'Lets you pick JPG quality so you can balance file size against fidelity.',
       'Flattens transparency onto a solid background, since JPG has no alpha channel.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The pixels you see stay the same; only the file is re-encoded from PNG into JPG.',
     ],
     flowSteps: [
       { title: 'Upload PNG', description: 'Drop in a .png screenshot, graphic, or photo.' },
@@ -1634,9 +1635,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is genuinely locked to JPG, so there’s nothing to misconfigure.',
       'Precise quality control instead of a one-size-fits-all preset.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PNG is re-encoded as a JPG at the quality you set, on our server, and any transparency is flattened onto a solid background.'),
     supportedFormats: {
       supportedInputFormats: ['png'],
       supportedOutputFormats: ['jpg'],
@@ -1648,7 +1648,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert a PNG to JPG for free?',
         answer:
-          'Upload your .png above, choose a JPG quality, and click convert. The download is a standard .jpg file. It is completely free with no signup.',
+          'Upload your .png above, choose a JPG quality, and click convert. The download is a standard .jpg file.',
       },
       {
         question: 'Will converting PNG to JPG reduce quality?',
@@ -1664,11 +1664,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Why is my PNG so much bigger than the JPG?',
         answer:
           'PNG is lossless and stores every pixel exactly, which is large for photos. JPG uses perceptual compression, so photographic images shrink dramatically with little visible change.',
-      },
-      {
-        question: 'Are my uploaded files kept?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No login is required and we never share your files with third parties.`,
       },
     ],
     related: [
@@ -1716,7 +1711,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Converts any .jpg/.jpeg image to a lossless .png file.',
       'Preserves the exact current pixels so repeated editing won’t add artifacts.',
       'Produces a PNG you can later layer, mask, or make transparent in an editor.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'Every pixel of the JPG is kept exactly; the PNG stores them without further loss.',
     ],
     flowSteps: [
       { title: 'Upload JPG', description: 'Drop in a .jpg or .jpeg photo.' },
@@ -1744,9 +1739,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is genuinely locked to PNG, so the result is always lossless.',
       'Runs on our own servers — no third-party processing of your image.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your JPG is decoded on our server and written out as a lossless PNG of exactly the same pixels.'),
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg'],
       supportedOutputFormats: ['png'],
@@ -1774,11 +1768,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Can I add transparency after converting to PNG?',
         answer:
           'Yes. PNG supports an alpha channel, so once you have the PNG you can erase or cut out a background in any image editor.',
-      },
-      {
-        question: 'Are my uploaded files private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -1821,12 +1810,12 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a WebP image. The output is locked to PNG for this tool, so transparency is preserved and the file opens in any image editor or viewer.',
     },
     intro:
-      'WebP is great for the web, but plenty of editors, older software, and design tools still expect PNG — and unlike JPG, PNG keeps full transparency. Media Manipulator converts your WebP to a clean, lossless PNG so it opens everywhere and your alpha channel survives. Free, online, no signup.',
+      'WebP is great for the web, but plenty of editors, older software, and design tools still expect PNG — and unlike JPG, PNG keeps full transparency. Media Manipulator converts your WebP to a clean, lossless PNG so it opens everywhere and your alpha channel survives.',
     whatItDoes: [
       'Converts any .webp image to a lossless .png file.',
       'Preserves the alpha channel so transparent WebPs stay transparent.',
       'Produces a PNG that opens in any editor, viewer, or design tool.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The picture is unchanged; WebP compression is swapped for lossless PNG storage.',
     ],
     flowSteps: [
       { title: 'Upload WebP', description: 'Drop in a .webp file, transparent or solid.' },
@@ -1853,9 +1842,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to PNG with transparency preserved automatically.',
       'Runs on our own servers — no third-party processing of your image.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your WebP is decoded on our server and saved as a lossless PNG, keeping its transparency.'),
     supportedFormats: {
       supportedInputFormats: ['webp'],
       supportedOutputFormats: ['png'],
@@ -1883,11 +1871,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Can I convert an animated WebP?',
         answer:
           'Only the first frame becomes a PNG. For animation, convert the WebP to an animated GIF instead.',
-      },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Uploads are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -1963,9 +1946,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to WebP with transparency preserved.',
       'Precise quality control so you decide the size/fidelity trade-off.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PNG is re-encoded as WebP on our server at the quality you choose, with its transparency kept.'),
     supportedFormats: {
       supportedInputFormats: ['png'],
       supportedOutputFormats: ['webp'],
@@ -1993,11 +1975,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Is WebP supported everywhere?',
         answer:
           'Every modern browser supports WebP. A few older or niche programs do not — keep a PNG fallback if you need to support them.',
-      },
-      {
-        question: 'Are my uploads kept?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2041,12 +2018,12 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a JPG image. The output is locked to WebP for this tool — pick a quality and convert. WebP usually produces a smaller file than JPG at the same visual quality.',
     },
     intro:
-      'WebP delivers the same visual quality as JPG in a noticeably smaller file, which is why it has become the default image format for fast websites. Media Manipulator converts your JPG to WebP at the quality you choose, so your photos look the same but load faster — free, online, no signup.',
+      'WebP delivers the same visual quality as JPG in a noticeably smaller file, which is why it has become the default image format for fast websites. Media Manipulator converts your JPG to WebP at the quality you choose, so your photos look the same but load faster.',
     whatItDoes: [
       'Converts any .jpg/.jpeg photo to a modern .webp file.',
       'Lets you choose WebP quality to balance file size against fidelity.',
       'Typically produces files 25–35% smaller than the source JPG at equal quality.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The photo looks the same; its bytes are re-encoded with WebP to make the file smaller.',
     ],
     flowSteps: [
       { title: 'Upload JPG', description: 'Drop in a .jpg or .jpeg photo.' },
@@ -2074,9 +2051,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to WebP, so there’s nothing to misconfigure.',
       'Precise quality control instead of a fixed preset.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your JPG is re-encoded as a smaller WebP on our server at the quality you choose.'),
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg'],
       supportedOutputFormats: ['webp'],
@@ -2104,11 +2080,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Will converting JPG to WebP lose quality?',
         answer:
           'Both formats are lossy. At quality 80–85 the result looks the same as the JPG. Avoid setting WebP quality very low to prevent compounding artifacts.',
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2819,7 +2790,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a JPG image. The output is locked to PDF, and your JPG is embedded losslessly — the photo inside the PDF is bit-for-bit identical to your original.',
     },
     intro:
-      'JPG is the format your phone and camera shoot in, but a PDF is what most forms, applications, and offices want. Media Manipulator embeds your JPG directly into a PDF with no re-compression, so the document looks exactly like your photo and stays small. Free, online, no signup.',
+      'JPG is the format your phone and camera shoot in, but a PDF is what most forms, applications, and offices want. Media Manipulator embeds your JPG directly into a PDF with no re-compression, so the document looks exactly like your photo and stays small.',
     whatItDoes: [
       'Wraps a JPG/JPEG photo into a single-page PDF document.',
       'Embeds the original JPG bytes losslessly — zero added compression.',
@@ -2851,9 +2822,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Truly lossless — the JPG inside the PDF is identical to your original.',
       'Output is locked to PDF, so there is nothing to misconfigure.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your JPG is placed, without being re-compressed, onto a single PDF page that our server builds.'),
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg'],
       supportedOutputFormats: ['pdf'],
@@ -2881,11 +2851,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Can I combine multiple JPGs into one PDF?',
         answer:
           'This tool makes one PDF per image. Convert each JPG and merge the PDFs in a merge tool if you need multiple pages.',
-      },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2929,7 +2894,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a PNG image. The output is locked to PDF, and your PNG is embedded losslessly so text and sharp edges stay crisp on the page.',
     },
     intro:
-      'PNG is the format for screenshots, diagrams, and graphics with crisp text and sharp edges. When you need to send or print one as a document, a PDF is the right wrapper. Media Manipulator embeds your PNG losslessly into a PDF so every edge stays sharp. Free, online, no signup.',
+      'PNG is the format for screenshots, diagrams, and graphics with crisp text and sharp edges. When you need to send or print one as a document, a PDF is the right wrapper. Media Manipulator embeds your PNG losslessly into a PDF so every edge stays sharp.',
     whatItDoes: [
       'Wraps a PNG image into a single-page PDF document.',
       'Embeds the image losslessly so text and line art stay crisp.',
@@ -2961,9 +2926,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Lossless embedding keeps text and edges razor-sharp.',
       'Output is locked to PDF, so there is nothing to misconfigure.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PNG is embedded losslessly into a one-page PDF on our server, with transparency flattened onto white.'),
     supportedFormats: {
       supportedInputFormats: ['png'],
       supportedOutputFormats: ['pdf'],
@@ -2991,11 +2955,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Can I merge several PNGs into one PDF?',
         answer:
           'This tool creates one PDF per image. Convert each PNG and merge the PDFs in a merge tool for multi-page documents.',
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3156,7 +3115,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a PDF. Each page is rendered to a lossless PNG image. Choose "all pages" for a ZIP, or "first page only" for a single PNG. Pick a render DPI for sharper output.',
     },
     intro:
-      'PNG is the best choice when a PDF page has crisp text, thin lines, or diagrams you want to keep razor-sharp. Media Manipulator renders each page to a lossless PNG with Poppler, so there are no JPEG artifacts around text. Choose every page or just the first, and pick the resolution. Free, online, no signup.',
+      'PNG is the best choice when a PDF page has crisp text, thin lines, or diagrams you want to keep razor-sharp. Media Manipulator renders each page to a lossless PNG with Poppler, so there are no JPEG artifacts around text. Choose every page or just the first, and pick the resolution.',
     whatItDoes: [
       'Renders each PDF page to a lossless PNG image at the DPI you choose.',
       'Converts all pages (downloaded as a ZIP) or just the first page (a single PNG).',
@@ -3189,9 +3148,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Lossless PNG rendering keeps text and edges sharp.',
       'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PDF\'s pages are rendered to PNG images with Poppler on our server and, for more than one page, packed into a ZIP.'),
     supportedFormats: {
       supportedInputFormats: ['pdf'],
       supportedOutputFormats: ['png', 'zip (one png per page)'],
@@ -3204,7 +3162,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert a PDF to PNG for free?',
         answer:
-          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert. It is free with no signup.',
+          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert.',
       },
       {
         question: 'Why choose PNG over JPG for a PDF?',
@@ -3220,11 +3178,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Do the PNGs have a transparent background?',
         answer:
           'No — PDF pages are opaque, so rendered pages have a white background. There is no transparency to preserve.',
-      },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. PDFs are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3267,7 +3220,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a PDF to render its pages to JPG or PNG images, or upload an image to turn it into a PDF. The form adapts to whichever file you choose.',
     },
     intro:
-      'The PDF converter handles both directions in one place: render a PDF’s pages to JPG or PNG images, or wrap an image into a PDF document. Upload a PDF and you get image-export controls; upload an image and you get image-to-PDF. Everything runs on our own servers — free, online, no signup.',
+      'The PDF converter handles both directions in one place: render a PDF’s pages to JPG or PNG images, or wrap an image into a PDF document. Upload a PDF and you get image-export controls; upload an image and you get image-to-PDF. Everything runs on our own servers.',
     whatItDoes: [
       'Converts PDF pages to JPG or PNG at the resolution you choose.',
       'Converts JPG, PNG, and other images into single-page PDFs.',
@@ -3300,9 +3253,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Both conversion directions in a single, adaptive tool.',
       'Lossless image→PDF and accurate Poppler PDF→image rendering.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PDF is rendered page by page to images, or your image is wrapped into a PDF, by Poppler and ImageMagick on our server.'),
     supportedFormats: {
       supportedInputFormats: ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'pdf', 'zip (multi-page export)'],
@@ -3326,16 +3278,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Can I convert a multi-page PDF to images?',
         answer:
           'Yes. Choose "all pages" and you get a ZIP containing one image per page, named page-001, page-002, and so on.',
-      },
-      {
-        question: 'Is it really free?',
-        answer:
-          `Yes — no signup, no watermarks. ${RETENTION_PROMISE}.`,
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Everything is processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3382,7 +3324,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a HEIC or HEIF photo from your iPhone. The output is locked to JPG, auto-oriented so it appears the right way up, at the quality you choose.',
     },
     intro:
-      'HEIC is the high-efficiency format iPhones use to save space, but it won’t open on many Windows PCs, websites, or older apps. Media Manipulator converts your HEIC photos to JPG — the format that works everywhere — with correct orientation and the quality you choose. Free, online, no signup.',
+      'HEIC is the high-efficiency format iPhones use to save space, but it won’t open on many Windows PCs, websites, or older apps. Media Manipulator converts your HEIC photos to JPG — the format that works everywhere — with correct orientation and the quality you choose.',
     whatItDoes: [
       'Converts Apple HEIC/HEIF photos to standard JPG.',
       'Auto-orients the image using EXIF so portraits aren’t sideways.',
@@ -3414,9 +3356,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Correct auto-orientation — no sideways photos.',
       'Quality control instead of a fixed preset.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your HEIC photo is decoded on our server, turned the right way up and saved as a JPG.'),
     supportedFormats: {
       supportedInputFormats: ['heic', 'heif'],
       supportedOutputFormats: ['jpg'],
@@ -3428,7 +3369,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert HEIC to JPG for free?',
         answer:
-          'Upload your .heic photo above, pick a quality, and click convert. You get a standard .jpg back. It is free with no signup.',
+          'Upload your .heic photo above, pick a quality, and click convert. You get a standard .jpg back.',
       },
       {
         question: 'Why won’t my HEIC photo open on Windows?',
@@ -3444,11 +3385,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Why was my converted photo rotated before?',
         answer:
           'Naive converters ignore EXIF orientation. We auto-orient the image, so your photo comes out the right way up.',
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3491,7 +3427,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload an AVIF image. The output is locked to JPG, so you get a file every app, editor, and upload form accepts, at the quality you choose.',
     },
     intro:
-      'AVIF is a cutting-edge image format that produces tiny files, but plenty of apps, editors, and upload forms still can’t open it. Media Manipulator converts AVIF to JPG so your image works everywhere. Pick a quality and download. Free, online, no signup.',
+      'AVIF is a cutting-edge image format that produces tiny files, but plenty of apps, editors, and upload forms still can’t open it. Media Manipulator converts AVIF to JPG so your image works everywhere. Pick a quality and download.',
     whatItDoes: [
       'Converts AVIF images to standard JPG.',
       'Flattens any transparency onto a background, since JPG has no alpha.',
@@ -3523,9 +3459,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality control instead of a one-size-fits-all preset.',
       'Runs on our own servers — no third-party processing.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your AVIF is decoded on our server and re-encoded as a JPG at the quality you set.'),
     supportedFormats: {
       supportedInputFormats: ['avif'],
       supportedOutputFormats: ['jpg'],
@@ -3537,7 +3472,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert AVIF to JPG for free?',
         answer:
-          'Upload your .avif image above, pick a quality, and click convert. You get a standard .jpg back. It is free with no signup.',
+          'Upload your .avif image above, pick a quality, and click convert. You get a standard .jpg back.',
       },
       {
         question: 'Why can’t I open AVIF files?',
@@ -3553,11 +3488,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Will I lose quality?',
         answer:
           'At quality 85–90 the JPG looks essentially identical to the AVIF for most images.',
-      },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3600,12 +3530,12 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload an AVIF image. The output is locked to PNG, so transparency is preserved and the file opens losslessly in any editor or viewer.',
     },
     intro:
-      'When an AVIF image has transparency — like a logo or a cutout — converting to JPG would flatten it. PNG keeps the alpha channel and is lossless, so it’s the right target for graphics. Media Manipulator converts AVIF to PNG with transparency intact. Free, online, no signup.',
+      'When an AVIF image has transparency — like a logo or a cutout — converting to JPG would flatten it. PNG keeps the alpha channel and is lossless, so it’s the right target for graphics. Media Manipulator converts AVIF to PNG with transparency intact.',
     whatItDoes: [
       'Converts AVIF images to lossless PNG.',
       'Preserves the alpha channel so transparent AVIFs stay transparent.',
       'Produces a PNG that opens in any editor, viewer, or design tool.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The image is preserved pixel for pixel when the AVIF becomes a PNG.',
     ],
     flowSteps: [
       { title: 'Upload AVIF', description: 'Drop in a .avif image, transparent or solid.' },
@@ -3632,9 +3562,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Transparency preserved automatically.',
       'Lossless PNG output for graphics work.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your AVIF is decoded on our server and saved as a lossless PNG with its transparency intact.'),
     supportedFormats: {
       supportedInputFormats: ['avif'],
       supportedOutputFormats: ['png'],
@@ -3646,7 +3575,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert AVIF to PNG for free?',
         answer:
-          'Upload your .avif image above and click convert — the output is a lossless .png with transparency preserved. It is free with no signup.',
+          'Upload your .avif image above and click convert — the output is a lossless .png with transparency preserved.',
       },
       {
         question: 'Does AVIF to PNG keep transparency?',
@@ -3662,11 +3591,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Why is the PNG larger than the AVIF?',
         answer:
           'AVIF is a highly efficient compressed format, while PNG is lossless, so the PNG is typically larger. That’s expected.',
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3709,7 +3633,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload an SVG. The output is locked to PNG. Optionally set a width or height to control the rendered resolution — leave them blank to use the SVG’s natural size.',
     },
     intro:
-      'SVGs are perfect vectors, but many platforms — social networks, marketplaces, slide tools, and apps — only accept raster images like PNG. Media Manipulator rasterizes your SVG into a crisp, transparency-preserving PNG at the size you choose. SVGs are processed as untrusted input with a safe renderer. Free, online, no signup.',
+      'SVGs are perfect vectors, but many platforms — social networks, marketplaces, slide tools, and apps — only accept raster images like PNG. Media Manipulator rasterizes your SVG into a crisp, transparency-preserving PNG at the size you choose. SVGs are processed as untrusted input with a safe renderer.',
     whatItDoes: [
       'Rasterizes SVG vector files into PNG images.',
       'Lets you set a target width and/or height for the output resolution.',
@@ -3741,9 +3665,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Render at any size with no quality loss — vectors scale perfectly.',
       'Safe SVG handling with external fetches disabled.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your SVG is rendered to a PNG by librsvg on our server, with external images and fonts it references left unfetched.'),
     supportedFormats: {
       supportedInputFormats: ['svg'],
       supportedOutputFormats: ['png'],
@@ -3755,7 +3678,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert SVG to PNG for free?',
         answer:
-          'Upload your .svg above, optionally set a width or height, and click convert. You get a crisp .png back. It is free with no signup.',
+          'Upload your .svg above, optionally set a width or height, and click convert. You get a crisp .png back.',
       },
       {
         question: 'What size will the PNG be?',
@@ -3771,11 +3694,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'Is it safe to upload an SVG?',
         answer:
           'Yes. We treat SVGs as untrusted input and render them with external network fetches disabled, so embedded remote references can’t be loaded.',
-      },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3817,7 +3735,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a PNG. The output is locked to SVG and produced by real vectorization (potrace), not a raster wrapped in SVG. Adjust the black/white threshold to capture more or less detail. Best for logos, icons, signatures, and line art.',
     },
     intro:
-      'True PNG-to-SVG conversion means tracing your image into real vector paths that scale to any size without pixelation. Media Manipulator uses potrace to vectorize your PNG — ideal for logos, icons, signatures, and black-and-white line art. This is genuine vectorization, not a PNG hidden inside an SVG. It is not designed to turn photographs into clean vector art. Free, online, no signup.',
+      'True PNG-to-SVG conversion means tracing your image into real vector paths that scale to any size without pixelation. Media Manipulator uses potrace to vectorize your PNG — ideal for logos, icons, signatures, and black-and-white line art. This is genuine vectorization, not a PNG hidden inside an SVG. It is not designed to turn photographs into clean vector art.',
     whatItDoes: [
       'Traces a PNG into real, scalable SVG vector paths using potrace.',
       'Reduces the image to a clean black/white bitmap, then vectorizes the shapes.',
@@ -3850,9 +3768,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real potrace vectorization — honest about what it’s good at (and not).',
       'Threshold control so you can dial in the trace.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is reduced to black and white and traced into vector paths by potrace on our server.'),
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'gif'],
       supportedOutputFormats: ['svg'],
@@ -3864,7 +3781,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert a PNG to SVG for free?',
         answer:
-          'Upload your .png above, adjust the threshold if needed, and click convert. You get a real vector .svg back. It is free with no signup.',
+          'Upload your .png above, adjust the threshold if needed, and click convert. You get a real vector .svg back.',
       },
       {
         question: 'Is this real vectorization or just a wrapped PNG?',
@@ -3880,11 +3797,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'What does the threshold control do?',
         answer:
           'It sets the black/white cutoff before tracing. Raise it to capture more (lighter) detail; lower it to keep only the boldest shapes.',
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3926,7 +3838,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a PNG (a square image works best). The output is locked to ICO, and a real multi-size icon is generated containing 16, 32, 48, 64, 128, and 256 px versions.',
     },
     intro:
-      'A favicon needs to be a real .ico file containing several sizes so browsers and Windows can pick the right one. Media Manipulator generates a genuine multi-size ICO from your PNG — not a renamed file — packing the standard 16–256 px icon ladder. Free, online, no signup.',
+      'A favicon needs to be a real .ico file containing several sizes so browsers and Windows can pick the right one. Media Manipulator generates a genuine multi-size ICO from your PNG — not a renamed file — packing the standard 16–256 px icon ladder.',
     whatItDoes: [
       'Generates a real .ico container from a PNG image.',
       'Packs multiple sizes (16, 32, 48, 64, 128, 256 px) into one file.',
@@ -3958,9 +3870,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'A genuine multi-size ICO, not a renamed PNG.',
       'Transparency preserved for clean icons.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is resized to each standard icon size and packed into one .ico file by ImageMagick on our server.'),
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'webp'],
       supportedOutputFormats: ['ico'],
@@ -3972,7 +3883,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How do I convert a PNG to ICO for free?',
         answer:
-          'Upload your .png above and click convert — you get a real multi-size .ico back. It is free with no signup.',
+          'Upload your .png above and click convert — you get a real multi-size .ico back.',
       },
       {
         question: 'Is this a real ICO or a renamed PNG?',
@@ -3988,11 +3899,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         question: 'What image works best?',
         answer:
           'A square PNG at 256×256 or larger gives the crispest result, since every smaller size downsamples cleanly from it.',
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -4202,7 +4108,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Free, no signup, no watermarks, output is fully yours.',
       'Same retention privacy model as the rest of the toolset.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your WAV is encoded to MP3 by FFmpeg on our server at the bitrate you pick.'),
     faq: [
       {
         question: 'What bitrate should I pick?',
@@ -4337,7 +4243,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Combine with EQ, denoise, and trim in a single upload.',
       'Free, no signup, no watermarks on the output.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your song is split into stems by Demucs on our own GPU server and only the vocal stem is returned to you.'),
     faq: [
       {
         question: 'Is this fully clean separation?',
@@ -5191,7 +5097,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Free, no signup, no watermarks.',
       'AI tools run on our own GPU server.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is converted, and resized or cropped if you asked, by ImageMagick on our server.'),
     faq: [
       { question: 'What is the best image format?', answer: 'It depends — WebP/AVIF for the web, PNG for transparency, JPG for compatibility.' },
       { question: 'Can I batch-convert?', answer: 'The free tool converts one image at a time. Run multiple conversions sequentially.' },
@@ -5274,7 +5180,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'AI transcription available on the same file.',
       'Free, no signup, no watermarks.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is re-encoded by FFmpeg on our server into the container and codec you choose.'),
     faq: [
       { question: 'What output format is best?', answer: 'MP4 with H.264 for compatibility, WebM with VP9 for the smallest web files.' },
       { question: 'Can I trim before converting?', answer: 'Yes — the trim section of the form lets you cut the clip down before re-encoding.' },
@@ -5428,7 +5334,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Converts QuickTime / iPhone .mov files to MP4.',
       'Locks the output to MP4 (H.264 + AAC) so the result plays everywhere.',
       'Adds -pix_fmt yuv420p and +faststart so the MP4 plays in browsers and starts instantly.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'Trim the MOV, resize it or pick a quality preset in the same upload.',
     ],
     flowSteps: [
       { title: 'Upload your MOV', description: 'Drop in a .mov file from your iPhone, Mac, or camera.' },
@@ -5455,9 +5361,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output locked to a known-good MP4 profile — no guessing at settings.',
       'Server-side FFmpeg handles ProRes-in-MOV and HEVC-in-MOV sources too.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your MOV is re-encoded by FFmpeg on our server into an H.264 and AAC MP4.'),
     supportedFormats: {
       supportedInputFormats: ['mov', 'qt'],
       supportedOutputFormats: ['mp4'],
@@ -5514,7 +5419,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Converts .webm (VP8/VP9 + Vorbis/Opus) video to MP4.',
       'Locks the output to MP4 (H.264 + AAC) for maximum compatibility.',
       'Adds yuv420p and +faststart so the MP4 plays in every browser and starts instantly.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'A WebM screen capture can be trimmed or resized on its way to MP4.',
     ],
     flowSteps: [
       { title: 'Upload your WebM', description: 'Drop in a .webm file downloaded from the web or a screen recorder.' },
@@ -5541,9 +5446,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg decodes VP8 and VP9 reliably.',
       'Output locked to a known-good MP4 profile.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your WebM is re-encoded by FFmpeg on our server from VP8 or VP9 into an H.264 MP4.'),
     supportedFormats: {
       supportedInputFormats: ['webm'],
       supportedOutputFormats: ['mp4'],
@@ -5554,7 +5458,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'Why can my editor not open WebM?', answer: 'Most editors do not include VP8/VP9 import. Converting to MP4 (H.264) fixes the import.' },
       { question: 'Will the file get bigger?', answer: 'MP4/H.264 can be slightly larger than VP9 WebM at the same quality. Pick a lower quality preset if size matters.' },
       { question: 'Does it keep the audio?', answer: 'Yes — Vorbis/Opus audio is re-encoded to AAC and stays in sync.' },
-      { question: 'Is it free?', answer: `Yes, free with no watermark and no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
@@ -5598,7 +5501,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Converts legacy .avi (Xvid, DivX, MJPEG, and more) to MP4.',
       'Locks the output to MP4 (H.264 + AAC) for modern playback.',
       'Usually produces a noticeably smaller file than the AVI source.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'An old AVI can be cut down and scaled while it is converted.',
     ],
     flowSteps: [
       { title: 'Upload your AVI', description: 'Drop in an old .avi file from an archive or camera.' },
@@ -5625,9 +5528,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg decodes old AVI codecs other tools choke on.',
       'Output locked to a known-good MP4 profile.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your AVI is re-encoded by FFmpeg on our server into a modern H.264 MP4.'),
     supportedFormats: {
       supportedInputFormats: ['avi'],
       supportedOutputFormats: ['mp4'],
@@ -5638,7 +5540,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'Will the MP4 be smaller than the AVI?', answer: 'Usually yes. H.264 is far more efficient than the Xvid/DivX codecs most AVIs use.' },
       { question: 'Does it support old DivX/Xvid AVIs?', answer: 'Yes — FFmpeg decodes the common AVI codecs and re-encodes them to H.264.' },
       { question: 'Will I lose quality?', answer: 'Re-encoding is lossy, but at High quality the difference is minimal and the file is still smaller.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
@@ -5682,7 +5583,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Converts Matroska .mkv files to MP4.',
       'Locks the output to MP4 (H.264 + AAC) for broad device support.',
       'Adds yuv420p and +faststart so the MP4 streams and starts instantly.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'Trim an MKV episode or change its size before the MP4 is written.',
     ],
     flowSteps: [
       { title: 'Upload your MKV', description: 'Drop in a .mkv file.' },
@@ -5709,9 +5610,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg handles MKV with multiple tracks.',
       'Output locked to a known-good MP4 profile.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your MKV is re-encoded by FFmpeg on our server into an MP4 that phones and browsers play.'),
     supportedFormats: {
       supportedInputFormats: ['mkv'],
       supportedOutputFormats: ['mp4'],
@@ -5722,7 +5622,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'Does converting MKV to MP4 lose quality?', answer: 'If the MKV already uses H.264, the result is visually lossless at High quality. Otherwise it is a normal lossy re-encode.' },
       { question: 'What happens to extra audio or subtitle tracks?', answer: 'The converter keeps the main video and the first audio track. For multi-track needs, reach out and we can look at track selection.' },
       { question: 'Why will my MKV not play?', answer: 'Many phones, TVs, browsers, and sites do not support the MKV container even when the codecs inside are common.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
@@ -5766,7 +5665,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Converts MP4 (H.264) to WebM (VP9 + Opus).',
       'Locks the output to WebM for consistent open-web embeds.',
       'Typically produces a smaller file than the MP4 at the same visual quality.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'Shorten or shrink the clip and choose a quality preset before the WebM is made.',
     ],
     flowSteps: [
       { title: 'Upload your MP4', description: 'Drop in an .mp4 file.' },
@@ -5793,9 +5692,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'VP9 + Opus encoding with an automatic VP8 + Vorbis fallback.',
       'Output locked to WebM so the result is predictable.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is re-encoded by FFmpeg on our server into a VP9 WebM.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'm4v'],
       supportedOutputFormats: ['webm'],
@@ -5806,7 +5704,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'Is WebM smaller than MP4?', answer: 'At the same visual quality, VP9 WebM is usually 25-50% smaller than H.264 MP4.' },
       { question: 'Do all browsers support WebM?', answer: 'All modern browsers do. For older browsers, provide an MP4 fallback in your <video> tag.' },
       { question: 'Why is WebM encoding slower?', answer: 'VP9 is more computationally intensive than H.264. The payoff is a smaller file.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'The reverse direction.' },
@@ -6786,7 +6683,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Exports MP4 (H.264 + AAC) by default.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'MP4, MOV, MKV, WebM, AVI or M4V to crop.' },
       { title: 'Enter the crop rectangle', description: 'Set the X/Y offset and the width/height to keep.' },
       { title: 'Crop', description: 'FFmpeg crops to exactly that region and re-encodes.' },
       { title: 'Download', description: 'Save the cropped video.' },
@@ -6810,9 +6707,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Precise pixel cropping server-side with FFmpeg.',
       'Clean MP4 output, no watermark.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is cropped to the rectangle you drew and re-encoded by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
@@ -6823,7 +6719,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'Can I crop to a square or vertical aspect ratio?', answer: 'Yes — set the width and height to the ratio you want (e.g. equal values for square, taller than wide for 9:16).' },
       { question: 'Will cropping lower the quality?', answer: 'Cropping re-encodes, but at our default quality the loss is minimal.' },
       { question: 'Can I crop out a watermark?', answer: 'Yes, if the watermark is near an edge — crop the frame to exclude it.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution instead of cropping.' },
@@ -6869,7 +6764,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Exports MP4 (H.264 + AAC) by default.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'Pick the clip you want at a different size.' },
       { title: 'Set the size', description: 'Enter a width and/or height in pixels.' },
       { title: 'Resize', description: 'FFmpeg scales the video and re-encodes it.' },
       { title: 'Download', description: 'Save the resized video.' },
@@ -6893,9 +6788,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Aspect-ratio-aware scaling server-side with FFmpeg.',
       'Clean MP4 output, no watermark.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is scaled to the width and height you set and re-encoded by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
@@ -6906,7 +6800,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'How do I change the resolution to 720p?', answer: 'Set the height to 720 and leave the width blank to scale proportionally.' },
       { question: 'Will resizing keep the aspect ratio?', answer: 'Yes — leave one dimension blank, or keep "Preserve aspect ratio" on so the video is not stretched.' },
       { question: 'Can I upscale a video?', answer: 'You can scale up to a larger size, but upscaling cannot add detail that was not captured.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away edges instead of scaling.' },
@@ -6953,7 +6846,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Exports MP4 (H.264 + AAC) by default.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'A sideways phone clip, for example.' },
       { title: 'Pick a rotation', description: '90°, 180°, or 270° — and flip if needed.' },
       { title: 'Rotate', description: 'FFmpeg rotates the frames (transpose) and re-encodes.' },
       { title: 'Download', description: 'Save the correctly-oriented video.' },
@@ -6977,9 +6870,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real frame rotation (transpose), not just a metadata flag.',
       'Rotate and flip in one focused panel.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is turned by the angle you pick and re-encoded by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
@@ -6990,7 +6882,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'How do I fix a sideways phone video?', answer: 'Rotate 90° clockwise or counter-clockwise until it plays upright; the rotation is baked into the frames.' },
       { question: 'Does it really rotate the frames, or just set a flag?', answer: 'It rotates the actual frames (FFmpeg transpose), so the video is upright in every player.' },
       { question: 'Can I flip / mirror the video too?', answer: 'Yes — horizontal and vertical flip options are included.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away the edges.' },
@@ -7036,7 +6927,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Outputs MP4 by default (WebM also available).',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'The clip whose sound you want gone.' },
       { title: 'Pick the output format', description: 'MP4 (default) or WebM.' },
       { title: 'Remove audio', description: 'FFmpeg drops the audio and keeps the video.' },
       { title: 'Download', description: 'Save the silent, video-only file.' },
@@ -7060,9 +6951,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality-preserving stream-copy of the video stream.',
       'Truly silent output (audio track removed, not just lowered).',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video\'s audio track is dropped by FFmpeg on our server and the picture is kept.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm'],
@@ -7073,7 +6963,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'Does this mute the video or remove the track?', answer: 'It removes the audio track entirely, so the result is truly silent rather than muted to zero.' },
       { question: 'Will the video quality change?', answer: 'No — we stream-copy the video stream where possible, so the picture is untouched.' },
       { question: 'Why is the file named "_silent"?', answer: 'We add a _silent suffix so you can tell the audio-free copy apart from the original.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Remove audio (video-only)', to: '/tools/extract-video-only-from-video', description: 'The same silent-video tool.' },
@@ -7118,7 +7007,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Outputs valid, ID3-tagged files where applicable.',
     ],
     flowSteps: [
-      { title: 'Upload audio', description: 'Drop in any common audio file.' },
+      { title: 'Upload audio', description: 'MP3, WAV, M4A, FLAC, OGG and more.' },
       { title: 'Pick output format', description: 'MP3, WAV, FLAC, M4A, OGG, OPUS.' },
       { title: 'Tune bitrate and rate', description: 'Trim or run AI cleanup.' },
       { title: 'Download', description: 'Save the converted audio.' },
@@ -7144,7 +7033,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'AI cleanup tools (denoise, isolate vocals, remove vocals) in the same upload.',
       'Free, no signup, no watermarks.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio is decoded and re-encoded by FFmpeg on our server into the format and bitrate you choose.'),
     faq: [
       { question: 'What format is best for music?', answer: 'FLAC for lossless storage, MP3 256–320 kbps for sharing, OPUS for the smallest streamable file.' },
       { question: 'What format is best for voice?', answer: 'MP3 at 96–128 kbps is a great podcast default.' },
@@ -7227,7 +7116,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       `No signup, no watermarks. ${RETENTION_PROMISE}.`,
       'Same transcription engine the rest of the app uses, so accuracy is consistent across SRT, VTT, plain text, and JSON outputs.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('ai', 'Your file\'s speech is transcribed by Whisper on our own GPU server and timed into an SRT subtitle file.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v', 'mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
       supportedOutputFormats: ['srt'],
@@ -7240,7 +7129,6 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       { question: 'What is an SRT file?', answer: 'SRT (SubRip) is a plain-text subtitle file with timestamps and cue numbers. It is the default subtitle format accepted by YouTube, most video editors, and most video players.' },
       { question: 'Can I generate subtitles from an MP4?', answer: 'Yes. Upload any MP4 (or MOV, MKV, WebM, AVI, M4V) and we will produce a downloadable .srt subtitle file.' },
       { question: 'Can I use the SRT file on YouTube?', answer: 'Yes — YouTube accepts SRT directly. Upload your video, then add the subtitle file under Subtitles → Add language → Upload file.' },
-      { question: 'Are my uploaded files private?', answer: `Yes. Uploaded media stays on our own server. ${RETENTION_PROMISE}. Transcription runs on a GPU we operate — no third-party AI provider sees your file.` },
       { question: 'What languages are supported?', answer: 'Whisper supports dozens of languages and can auto-detect the spoken language. You can also pass a BCP-47 hint (e.g. en, es, ja) for better accuracy on very short clips.' },
     ],
     related: [
@@ -7317,9 +7205,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Local AI translation — your captions never go to a third-party AI provider.',
       'Timing-safe parsing that pins original cue start/end times back even if the model misbehaves.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('ai', 'Only the text of your SRT or VTT file is read: each caption is translated by a language model we run on our own GPU server, and the timings are copied across unchanged.'),
     supportedFormats: {
       supportedInputFormats: ['srt', 'vtt'],
       supportedOutputFormats: ['srt', 'vtt'],
@@ -7412,7 +7299,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Advanced FFmpeg controls exposed safely — every setting is validated server-side before being passed to the filter graph.',
       'Output as MP4, PNG, or a ZIP of both — no need to run a second job.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio is drawn into a waveform image or video by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
       supportedOutputFormats: ['mp4 (video)', 'webm (video)', 'png (image)', 'webp (image)', 'zip (both)'],
@@ -7592,7 +7479,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Clear, fast, no signup, no watermarks.',
       `Free. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is copied without its audio track by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm'],
@@ -7681,7 +7568,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'ZIP output keeps the download to one click no matter how many frames you grabbed.',
       'Server-side FFmpeg means consistent output regardless of browser or codec support.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Frames are taken from your video at the rate you pick by FFmpeg on our server and returned as a ZIP of images.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['zip (containing jpg/png/webp frames)'],
@@ -7770,7 +7657,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Stream-copies video where possible — preserves the original video quality.',
       `Free, no signup, server-side FFmpeg. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video and the audio file you add are joined into one MP4 by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v (video)', 'mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg (audio)'],
       supportedOutputFormats: ['mp4'],
@@ -7903,7 +7790,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Uses rife-ncnn-vulkan, a portable Vulkan binary, instead of a heavy PyTorch stack — fewer dependencies, faster cold starts.',
       `Free, no signup, ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('ai', 'New in-between frames are generated for your video by RIFE on our own GPU server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4'],
