@@ -31,17 +31,12 @@ import {
 const exempt = exemptSentences(Object.values(PRIVACY_TEMPLATES));
 
 /**
- * Copy-bar slugs whose rewrite has landed (S4-S7, one group per commit). The
- * site-wide limits and the copy bar are asserted over the bulk pages plus
- * these; when all 24 are in, the list is REVIEW_CATALOG_SLUGS and this filter
- * is a no-op.
+ * All 24 copy-bar pages are rewritten (S4-S7), so the site-wide limits and the
+ * copy bar are asserted over every tool page.
  */
-const REWRITTEN: readonly string[] = [
-  // S4 image
-  'compress-image', 'image-resizer', 'remove-background-from-image', 'image-to-pdf', 'pdf-to-jpg', 'ai-image-upscaler', 'remove-object-from-photo',
-  // S6 audio / ai
-  'transcribe-video', 'clean-voice-audio', 'remove-background-noise', 'remove-vocals-from-song', 'ai-image-restoration',
-];
+const REWRITTEN: readonly string[] = REVIEW_CATALOG_SLUGS.filter(
+  (s) => !['remove-exif-metadata', 'content-studio', 'motion', 'ai-document-scan'].includes(s),
+);
 const measured = TOOL_PAGES.filter((t) => !REVIEW_CATALOG_SLUGS.includes(t.slug) || REWRITTEN.includes(t.slug));
 const idx = sentenceIndex(TOOL_PAGES);
 const page = (slug: string) => TOOL_PAGES.find((t) => t.slug === slug)!;

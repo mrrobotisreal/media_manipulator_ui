@@ -745,7 +745,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- VIDEO
   {
     slug: 'compress-video',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Compress Video',
     h1: 'Compress Video Online Without Ruining Quality',
     tagline:
@@ -766,126 +766,108 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a video and pick a smaller quality preset or lower bitrate. Keep the same codec for the fastest result, or switch to WebM/H.265 for smaller files on modern devices. Keeping the same resolution gives the most natural-looking result.',
     },
     intro:
-      'A 30-second clip from a modern phone or screen recorder can easily be hundreds of megabytes. Media Manipulator re-encodes your video at a lower bitrate or with a more efficient codec so the file shrinks dramatically while still looking good. Most users get 50–80% smaller files with no visible quality loss.',
+      'A video file is large because of its bitrate: how many bits the encoder spent per second of footage. Phones and screen recorders spend generously, which is why a short 1080p clip can run to tens or hundreds of megabytes. This page opens a three-control compressor instead of the full converter: a compression level, an output container, and an optional resolution and codec. On our server the job is one FFmpeg command that re-encodes the picture at a constant-quality setting (CRF) chosen by the level, re-encodes the audio to AAC or Opus, and writes the result with the index at the front of the file so it starts playing before it has fully downloaded.',
     whatItDoes: [
-      'Re-encodes video at a lower bitrate or with a more efficient codec.',
-      'Supports MP4, WebM, MOV, MKV, AVI, FLV, WMV, and ProRes inputs.',
-      'Lets you change resolution, frame rate, and audio bitrate for further savings.',
-      'Outputs to MP4 (H.264 / H.265), WebM (VP9), or any other supported container.',
+      'Re-encodes the video at a fixed quality level rather than a fixed bitrate: Smallest file is CRF 31, Balanced is CRF 26 and High quality is CRF 22.',
+      'Outputs MP4 (H.264 by default, or H.265/HEVC when you pick it) or WebM (VP9 with Opus audio).',
+      'Optionally scales the picture down to 1080p, 720p or 480p in the same pass while keeping the aspect ratio.',
+      'Optionally drops the audio track entirely for the smallest possible file.',
+      'Accepts MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG and MPG uploads; the full converter page handles ProRes and other editing formats.',
     ],
     flowSteps: [
-      {
-        title: 'Upload video',
-        description: 'Drop in any MP4, WebM, MOV, MKV, AVI, or other supported video.',
-      },
-      {
-        title: 'Analyze codec/bitrate',
-        description: 'We detect the source codec and recommend a target.',
-      },
-      {
-        title: 'Apply compression',
-        description: 'FFmpeg re-encodes at a lower bitrate or smarter codec.',
-      },
-      {
-        title: 'Download smaller video',
-        description: 'Save a leaner file ready for the web or sharing.',
-      },
+      { title: 'Upload the video', description: 'The browser puts the file straight into our storage bucket, then asks the API to start the job.' },
+      { title: 'Choose a level', description: 'Balanced is preselected. Smallest file trades visible detail for size; High quality keeps more of it.' },
+      { title: 'Optionally change format, resolution or codec', description: 'MP4 with H.264 plays everywhere; H.265 and WebM are smaller on devices that decode them.' },
+      { title: 'FFmpeg re-encodes', description: 'libx264, libx265 or libvpx-vp9 with the CRF for your level, plus AAC or Opus audio and faststart for MP4.' },
+      { title: 'Download the smaller file', description: 'The result stays in the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'Under the hood the tool runs FFmpeg with libx264, libx265, or libvpx-vp9 depending on the target container.',
-      'For modern browsers, H.265 in MP4 (HEVC) or VP9 in WebM typically gives 25–50% smaller files than H.264 at equivalent quality.',
-      'When dropping resolution from 4K to 1080p, file size usually drops 4× — even before re-encoding.',
-      'The "medium" quality preset roughly matches a 23 CRF for x264, a sensible visually-lossless default.',
+      'The exact command for MP4 is ffmpeg -i input [-vf scale=-1:H] -c:v libx264 -crf N -pix_fmt yuv420p -movflags +faststart -c:a aac output.mp4, where N is 31, 26 or 22 for the three levels (buildVideoCodecArgs and videoCRF in converter.go). No encoder speed preset is passed, so libx264 runs at its default, medium.',
+      'Picking H.265 swaps the encoder for libx265 and adds -tag:v hvc1, the tag QuickTime and Safari need to recognise HEVC inside MP4. Older Android phones, smart TVs and many web players cannot decode H.265 at all.',
+      'WebM output runs libvpx-vp9 with -b:v 0 -crf N and Opus audio; if the server FFmpeg build lacked VP9 or Opus it would fall back to VP8 and Vorbis. The same N is passed, but VP9 reads CRF on a 0 to 63 scale, so 26 is a relatively high quality setting there.',
+      'A resolution choice becomes scale=-1:1080, scale=-1:720 or scale=-1:480: height fixed, width computed from the source aspect ratio. The height is applied as given, so picking 1080p for a 720p source upscales it and makes the file larger, not smaller; pick a height at or below the source.',
+      'Remove the audio track adds -an. Otherwise the audio is re-encoded by the FFmpeg native AAC encoder at its default bitrate (no -b:a is passed; for stereo that is typically about 128 kbps), which is a small fraction of the file at any level.',
+      'Compression is CRF-driven, so the output size follows the content: static slides compress far harder than confetti or water. The server validates CRF to 0 to 51 and the compression level to one of the three names before any encoding starts.',
+      'The upload is also queued for the automated content analysis that every standard conversion receives: frames are sampled and described by a local vision model, and audio is transcribed on our own hardware. The analysis result is stored with the job, not shared.',
     ],
     whyItMatters: [
-      'Page-load time directly affects bounce rate, SEO ranking, and conversions.',
-      'Most email and chat platforms reject files over a few hundred MB.',
-      'Hosting costs scale with bandwidth — smaller videos save real money at scale.',
+      'Chat apps, mail servers and learning platforms enforce caps in megabytes, and a phone clip at its native bitrate blows through them.',
+      'A page that autoplays a 60 MB background video stalls on mobile connections; the same clip at CRF 26 is a fraction of that.',
+      'Storage and bandwidth bills scale with bytes, so keeping compressed copies of originals you rarely open adds up quickly.',
     ],
     useCases: [
-      {
-        title: 'Faster websites',
-        description: 'Shrink hero or background videos so pages load in under 3 seconds.',
-      },
-      {
-        title: 'Email and Slack',
-        description: 'Get under file-size limits without uploading to a separate share host.',
-      },
-      {
-        title: 'Social media',
-        description: 'Pre-compress so uploads finish faster on mobile data.',
-      },
-      {
-        title: 'Cloud storage',
-        description: 'Cut storage bills by archiving compressed versions of large originals.',
-      },
+      { title: 'Email and chat', description: 'Get a 1 minute phone recording under a 25 MB or 100 MB limit without a separate sharing link.' },
+      { title: 'Website hero and background loops', description: 'Encode a WebM or H.264 MP4 that a page can autoplay without a long buffer.' },
+      { title: 'Course and meeting recordings', description: 'Shrink screen recordings whose static slides compress extremely well at any CRF.' },
+      { title: 'Archive copies', description: 'Keep a 720p Balanced copy of long originals and move the master to cold storage.' },
     ],
     whyMediaManipulator: [
-      'Runs on our own GPU and CPU servers — no third-party processing.',
-      'Full control over codec, bitrate, resolution, and audio settings.',
-      'Free, no watermarks, no signup, no monthly limit on a casual use level.',
+      'The CRF behind each level is written on this page, so you can predict what Smallest file will do to detailed footage before you wait for it.',
+      'H.265 in MP4 gets the hvc1 tag Apple players require, which many online compressors forget.',
+      'Encoding runs on our own servers with FFmpeg; nothing is handed to an outside processing service, and no watermark is added.',
+      `A compression counts as one operation of your daily allowance: 5 a day without an account by default, 30 with a free account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `The compressor re-encodes your video on our own servers with FFmpeg. The upload is stored under uploads/<jobId>/ and the compressed file under outputs/<jobId>/; both are in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. Because this is a standard conversion, the upload is also passed through our automated content analysis on the same hardware (sampled frames described by a local vision model, audio transcribed locally); that report is kept with the job and is not shared with third parties. Container metadata is kept unless you choose to strip it; nothing is sent to an outside AI or processing provider.`,
     faq: [
       {
-        question: 'Will the video quality drop?',
+        question: 'Will compressing make my video look worse?',
         answer:
-          'A small amount — but at the "medium" or "high" preset most people can\'t tell the difference. For the smallest file size try the "low" preset or drop the resolution.',
+          'Some detail is always lost in a re-encode. At High quality (CRF 22) and Balanced (CRF 26) the loss is mostly in fine grain and noise that most viewers do not notice; at Smallest file (CRF 31) you can see softening on detailed footage. Keeping the resolution avoids the blurring that downscaling adds.',
       },
       {
-        question: 'Which output format is best?',
+        question: 'Should I pick H.264, H.265 or WebM?',
         answer:
-          'MP4 with H.264 is the safe-everywhere default. WebM (VP9) or MP4 (H.265) are smaller, but H.265 requires a modern player.',
+          'H.264 MP4 plays on everything, including old TVs and corporate laptops. H.265 gives a smaller file at the same CRF but needs a device that decodes HEVC; we tag it hvc1 so Apple players accept it. WebM (VP9 and Opus) is the choice for web pages where you control the player.',
       },
       {
-        question: 'Can I keep the original audio?',
+        question: 'How much smaller will the file be?',
         answer:
-          'Yes — set the audio bitrate to "match source" or pick the same audio codec. The audio is typically a small part of total file size.',
+          'It depends on the source bitrate and the content. A phone clip at 12 Mbps has a lot of headroom and shrinks dramatically at CRF 26; a file that was already encoded at a modest bitrate shrinks little, because CRF spends what the picture needs. Dropping to 720p and removing audio always help.',
       },
       {
-        question: 'Is there a file-size limit?',
+        question: 'Does the compressor add a watermark or change the frame rate?',
         answer:
-          'Yes, large uploads may be rejected to keep the free service stable. For very large files, lower the resolution before uploading.',
+          'No. The frame rate, duration and aspect ratio are preserved, and nothing is drawn on the picture. Only the codec, the CRF, the optional height and the optional audio removal change.',
+      },
+      {
+        question: 'Is compressing a video free, and what are the limits?',
+        answer:
+          'By default a guest gets 5 operations a day with files up to 200 MB and 5 minutes of video, output up to 1080p; a free account raises that to 30 a day, 1 GB and 20 minutes. A compression that fails is refunded. The current numbers are on the pricing page.',
+      },
+      {
+        question: 'Why is the output not smaller than the original?',
+        answer:
+          'The source was probably already compressed efficiently, or it is at a low bitrate for its resolution. CRF cannot go below what the picture requires without a lower level. Try Smallest file, or drop the resolution, or switch to H.265.',
+      },
+      {
+        question: 'Can I compress a video with no audio or keep the original audio untouched?',
+        answer:
+          'A silent source stays silent. Audio in a kept track is always re-encoded to AAC (MP4) or Opus (WebM) by this page; the full video converter is where you set an explicit audio bitrate.',
       },
     ],
     related: [
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the clip first; the compressor then has less to encode.' },
+      { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'For clips of a few seconds, a GIF is the format that plays inline.' },
+      { label: 'Transcode to HLS', to: '/tools/transcode-to-hls', description: 'Package a video as an adaptive stream instead of one file.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Keep only the sound track as MP3, WAV or FLAC.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Get the speech as text before or after compressing.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Step-by-step walkthrough of every video option.' },
+    ],
+    workedExamples: [
       {
-        label: 'Video converter',
-        to: '/tools/video-converter',
-        description: 'Convert between MP4, WebM, MOV, AVI, and more.',
+        title: 'A 48 MB, 30 second 1080p phone clip at Balanced',
+        body:
+          'Input: a 30 second MP4 from a phone, 1920 x 1080, 48 MB, which works out to about 12.8 Mbps. Settings: Balanced, MP4, H.264, resolution kept, audio kept. The server runs libx264 at CRF 26 with yuv420p and faststart, and re-encodes the audio to AAC at 128 kbps, so the sound track alone is about 0.5 MB of the result (128 kbps x 30 s). Everything else is decided by the picture: CRF 26 gives up fine grain and noise first, so a steady handheld shot comes out a small fraction of the 12.8 Mbps source, while fast action or heavy camera noise shrinks less. The encode is a single pass over 900 frames of 1080p with the default medium preset; on our server that is a short job, and the upload of 48 MB usually dominates the wait.',
       },
       {
-        label: 'Convert MP4 to WebM',
-        to: '/tools/convert-mp4-to-webm',
-        description: 'Re-encode MP4 into a smaller VP9 WebM for the web.',
-      },
-      {
-        label: 'Convert video to animated GIF',
-        to: '/tools/convert-video-to-animated-gif',
-        description: 'Turn short clips into shareable animated GIFs.',
-      },
-      {
-        label: 'Transcribe video',
-        to: '/tools/transcribe-video',
-        description: 'Pull speech out of video into searchable text.',
-      },
-      {
-        label: 'AI Frame Interpolation',
-        to: '/tools/ai-frame-interpolation',
-        description: 'Smooth video motion by lifting FPS to 48, 60, or 120 with RIFE.',
-      },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Video compression guide',
-      //   to: '/blog/video/video-compression-guide',
-      //   description: 'Codecs, bitrate, and container deep dive.',
-      // },
-      {
-        label: 'Video converter tutorial',
-        to: '/tutorials/video/getting-started',
-        description: 'Step-by-step walkthrough of every video option.',
+        title: 'A 160 MB, 60 second 4K clip to 720p H.265 at Smallest file',
+        body:
+          'Input: a 60 second 3840 x 2160 MP4 of 160 MB, about 21 Mbps, within the 200 MB guest cap. Settings: Smallest file, MP4, codec H.265, resolution 720p, audio removed. FFmpeg applies scale=-1:720, which produces 1280 x 720: 0.92 megapixels per frame against 8.3 for the source, roughly a ninth of the pixels before the codec does anything. Then libx265 runs at CRF 31 with -tag:v hvc1 and -an drops the audio. The combination of nine times fewer pixels, a more efficient codec and a high CRF is where the largest reductions come from, so expect a result measured in a few megabytes rather than tens. Time is dominated by decoding 4K frames and by libx265, which is noticeably slower than libx264 at the same preset, so this job takes longer than the 1080p example even though the output is smaller.',
       },
     ],
+    whenNotToUse:
+      'Do not compress a file you still intend to edit or colour grade; every re-encode loses detail, and an editor wants the original or a ProRes intermediate from the full converter instead. Do not use it to make a clip play on a particular device if the problem is the container rather than the size; the video converter changes formats without lowering quality. If your only goal is to cut a section out, the trimmer copies the streams without re-encoding and is both faster and lossless. And if the file is large because it is long, compression helps less than you hope; a 20 minute recording at CRF 26 is still a 20 minute recording.',
     primaryKeyword: 'compress video online',
     secondaryKeywords: [
       'reduce video file size',
@@ -897,7 +879,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'transcode-to-hls',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Transcode Video to HLS',
     h1: 'Transcode Video to HLS Online',
     tagline:
@@ -920,111 +902,109 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload an MP4/MOV/WebM/MKV. We ffprobe the source, let you pick free quality rungs (360p/480p/720p), then run H.264 + AAC ffmpeg encoding and bundle a downloadable tar.gz of the HLS package.',
     },
     intro:
-      'HTTP Live Streaming (HLS) is Apple’s adaptive streaming format and the closest thing the web has to a universally supported VOD container. Media Manipulator transcodes your source video into an HLS package — master.m3u8 plus per-rendition variant playlists and .ts segments — so you can drop the unzipped folder onto any CDN or origin and serve it with built-in adaptive bitrate switching. Free tier covers 360p, 480p, and 720p; premium rungs are available with Premium.',
+      'HTTP Live Streaming serves a video as a playlist of short segments at several quality levels, so a player can start fast and switch rungs as the connection changes. Producing that package by hand means encoding each rendition with aligned keyframes, segmenting them, and writing a master playlist that describes every variant correctly. This page does the whole job: it probes your upload, offers the ladder rungs your source and plan allow, encodes each one with libx264 and AAC into 2 second MPEG-TS segments, optionally adds captions from our own Whisper transcriber, a storyboard sprite sheet and an I-frame playlist for scrubbing, and bundles everything as a tar.gz or zip you can unpack onto any static host.',
     whatItDoes: [
-      'Probes your source with ffprobe and shows resolution, FPS, duration, codec, and audio status.',
-      'Lets you tick which quality rungs to encode (only ones your source can actually support are enabled).',
-      'Runs an H.264 + AAC FFmpeg pipeline with HLS VOD output and independent_segments.',
-      'Writes a master.m3u8 that references each variant, plus a variant index.m3u8 + .ts segments per rung.',
-      'Optionally generates WebVTT captions and storyboard scrubber thumbnails.',
-      'Bundles the result into media-manipulator-hls-<jobID>.tar.gz with a report.json and README.',
-      'Uploads the tarball to S3 and hands you back a short-lived presigned GET URL for download.',
+      'Probes the source with ffprobe and lists the ladder rungs: 144p, 240p, 360p, 480p, 720p, 1080p and 2160p, each enabled only if the source is tall enough and your plan allows it.',
+      'Encodes each selected rung with libx264 High profile level 4.1 and AAC stereo at 48 kHz, into 2 second .ts segments with a keyframe on every segment boundary.',
+      'Writes hls/master.m3u8 with BANDWIDTH, RESOLUTION, FRAME-RATE and CODECS for every variant, plus one index.m3u8 per rung.',
+      'Optionally transcribes the audio with Whisper into a WebVTT track, translates it into up to 3 more languages with a local model, and links each as a subtitle rendition in the master.',
+      'Optionally renders a storyboard sprite sheet with a WebVTT index for scrubber thumbnails, and always tries to add a 240p I-frame-only playlist.',
+      'Packages the folder with README.txt and report.json into a tar.gz (or zip) and gives you a presigned download link.',
     ],
     flowSteps: [
-      {
-        title: 'Upload',
-        description: 'Direct S3 presigned PUT — your file never goes through the API server.',
-      },
-      {
-        title: 'Probe',
-        description: 'ffprobe reads resolution, FPS, audio presence, and codec metadata.',
-      },
-      {
-        title: 'Pick rungs',
-        description: 'Choose 360p, 480p, 720p, or any combination you need.',
-      },
-      {
-        title: 'Encode',
-        description: 'libx264 + AAC at 2-second segments with forced keyframes on segment boundaries.',
-      },
-      {
-        title: 'Package',
-        description: 'master.m3u8 + variants + segments tar.gz’d with report.json and README.',
-      },
-      {
-        title: 'Download',
-        description: 'Presigned S3 GET URL valid for 30 minutes.',
-      },
+      { title: 'Upload', description: 'The browser uploads straight to our storage bucket with a presigned PUT; the API then downloads it to work on.' },
+      { title: 'Probe', description: 'ffprobe reads width, height, frame rate, duration and whether there is audio; rungs taller than the source are greyed out.' },
+      { title: 'Pick rungs and extras', description: '360p, 480p and 720p are preselected. Tick captions, extra caption languages, storyboards, and tar.gz or zip.' },
+      { title: 'Encode each rung', description: 'libx264 at the rung CRF and bitrate with a 2 second GOP, AAC at the rung audio bitrate, HLS VOD output.' },
+      { title: 'Add extras and write the master', description: 'Captions, storyboards and the I-frame playlist are generated, then master.m3u8 is rewritten to reference them.' },
+      { title: 'Download the package', description: 'A presigned link valid for 30 minutes by default; the job page lets you fetch it while it lasts.' },
     ],
     advancedDetails: [
-      'HLS variants are encoded with -hls_time 2 -hls_playlist_type vod -hls_flags independent_segments.',
-      'Force keyframes are emitted every 2 seconds so segments align cleanly across renditions.',
-      'CODECS attribute is "avc1.640028" with "mp4a.40.2" appended when audio is present.',
-      'No upscaling: rungs taller than the source resolution are disabled with a tooltip.',
-      'When the source has no audio track, the audio mapping is omitted so video-only HLS still works.',
+      'The ladder (transcode_profiles.go) is: 144p 200 kbps video and 64 kbps audio, CRF 26; 240p 400/64, CRF 25; 360p 800/96, CRF 23; 480p 1200/128, CRF 23; 720p 2800/128, CRF 22; 1080p 5000/192, CRF 22; 2160p 12000/256, CRF 21. All rungs use the veryfast preset except 2160p, which uses slow.',
+      'Each rung is encoded as ffmpeg -i input -map 0:v:0 -vf scale=-2:H -r FPS -c:v libx264 -profile:v high -level 4.1 -preset P -crf N -sc_threshold 0 -g GOP -keyint_min GOP -b:v B -maxrate 1.2B -bufsize 2B -force_key_frames expr:gte(t,n_forced*2) -map 0:a:0? -c:a aac -b:a A -ac 2 -ar 48000 -hls_time 2 -hls_playlist_type vod -hls_flags independent_segments. GOP is the frame rate times 2, so segments start on keyframes in every rung.',
+      'Because the encode is CRF-driven with -maxrate as a cap, a rung averages at most about its listed bitrate (the cap is 1.2 times it) and comes in lower on easy content. The master playlist advertises BANDWIDTH as the listed video plus audio bitrate, and CODECS as avc1.640028 with mp4a.40.2 appended when audio is present.',
+      'By default a guest may select 360p to 720p, a free account 360p to 1080p, and Premium or Pro the full 144p to 2160p ladder; sources shorter than 360p are refused below Premium. The server re-validates the rungs at start, so a client cannot request a rung it was not offered.',
+      'Captions use the same Whisper model (whisper-ctranslate2, medium) as the transcriber; the primary track is written to captions/<lang>/auto.vtt with a one-segment subs.m3u8 wrapper and referenced from the master as EXT-X-MEDIA TYPE=SUBTITLES. Up to 3 extra languages from a list of 37 are translated segment by segment by a local Ollama model (a translategemma 12b build); a failed translation is recorded as a warning, never a failed job.',
+      'Storyboards are one ffmpeg pass: fps=1/N with N of 5, 10 or 15 seconds depending on duration (under 10 minutes, under 30, longer), 160 x 90 tiles padded to 16:9 in a 10 x 10 grid per JPEG sprite, plus storyboard.vtt with #xywh cues. The I-frame playlist re-encodes only keyframes at 240p (select=eq(pict_type,I), libx264 CRF 30, 4 second segments) and is listed as EXT-X-I-FRAME-STREAM-INF.',
+      'The master carries EXT-X-VERSION:6, EXT-X-INDEPENDENT-SEGMENTS and three EXT-X-SESSION-DATA entries naming the producer, the site and the copyright holder. report.json records the probe, the variants with segment counts and byte sizes, warnings and timestamps.',
     ],
     whyItMatters: [
-      'HLS is the de-facto streaming format on iOS, Safari, and every modern CDN.',
-      'A master playlist enables adaptive bitrate so viewers on slow connections get a watchable stream.',
-      'Pre-segmented VOD is far cheaper to serve than re-encoding on every request.',
+      'HLS is the native streaming format of iOS, Safari and every CDN, and with hls.js it plays in every other browser too.',
+      'Adaptive rungs let a viewer on a weak connection keep watching at 360p instead of buffering at 1080p.',
+      'A pre-segmented VOD package is static files, so it can be hosted on object storage with no transcoding server behind it.',
     ],
     useCases: [
-      { title: 'Course platforms', description: 'Serve lessons with adaptive bitrate on iOS/Android without a video service.' },
-      { title: 'Marketing sites', description: 'Drop a polished hero video that doesn’t buffer on mobile data.' },
-      { title: 'Internal portals', description: 'Host onboarding videos on your own CDN, no third-party SaaS.' },
-      { title: 'Archival', description: 'Convert a back catalog into a streamable format you control.' },
+      { title: 'Course platforms', description: 'Serve lessons from a bucket with adaptive bitrate and captions in several languages.' },
+      { title: 'Product and marketing pages', description: 'Stream a demo without a third-party video host and its player branding.' },
+      { title: 'Internal portals', description: 'Host training videos on your own CDN with scrubber thumbnails.' },
+      { title: 'Archives', description: 'Convert a back catalogue into a streamable layout you control and can mirror.' },
     ],
     whyMediaManipulator: [
-      'Runs on our own servers — no third-party transcoding provider sees your video.',
-      'Free tier already covers the three rungs most products need (360p/480p/720p).',
-      'Open package format: just unzip the .tar.gz and host the master.m3u8.',
+      'Every rung bitrate, CRF, preset and FFmpeg flag is listed on this page, so what the package contains is not a surprise.',
+      'Captions come from our own Whisper transcriber and translations from a model on our own hardware, both referenced correctly in the master playlist.',
+      'The package is plain files with a README and a report.json; unpack it onto any static host and point a player at master.m3u8.',
+      `A transcode spends one operation of your daily allowance (5 a day as a guest by default, 30 with a free account) and is limited to 10 starts an hour per session; a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your upload goes straight from the browser to our storage bucket and is then downloaded to our own server, where ffprobe, FFmpeg and, if you tick captions, our Whisper transcriber and a local Ollama translation model run; no third-party transcoding or AI service is involved. The source object, the working directory and the finished package are all registered in the retention ledger and deleted when the window ends, and the download link itself expires after 30 minutes by default. ${RETENTION_PROMISE}. Transcoding does not run the automated content analysis that standard conversions receive. The generated master playlist contains session-data lines naming Media Manipulator as the producer; they carry no information about you.`,
     faq: [
       {
-        question: 'What codec is used?',
-        answer: 'H.264 (libx264 High profile, level 4.1) for video and AAC LC for audio. The standard combo every HLS player supports.',
+        question: 'Which rungs can I select on my plan?',
+        answer:
+          'By default a guest gets 360p, 480p and 720p; a free account adds 1080p; Premium and Pro unlock 144p, 240p and 2160p as well. A rung taller than your source is always disabled, because nothing is upscaled. The chips show the reason on hover.',
       },
       {
-        question: 'Why are 144p, 240p, 1080p, and 2160p disabled?',
-        answer: 'They’re part of a premium ladder we’ll unlock when Premium sign-up launches. For now the free tool encodes 360p, 480p, and 720p only.',
+        question: 'How long are the segments, and why 2 seconds?',
+        answer:
+          'Every rung is cut into 2 second MPEG-TS segments with a forced keyframe at each boundary, so a player can switch rungs at any segment without a visual glitch. The I-frame playlist uses 4 second segments because it holds only keyframes.',
+      },
+      {
+        question: 'Are the captions linked in the master playlist?',
+        answer:
+          'Yes. Each language is written as captions/<lang>/auto.vtt with a subs.m3u8 wrapper and declared in master.m3u8 as EXT-X-MEDIA TYPE=SUBTITLES in the subs group, with the source language marked DEFAULT. You can add up to 3 translated languages from the list of 37.',
       },
       {
         question: 'What if my video has no audio?',
-        answer: 'The variant playlists are encoded video-only. The master.m3u8 omits the AAC codec hint so players don’t expect an audio track.',
+        answer:
+          'The rungs are encoded video-only with -an, the CODECS attribute omits mp4a.40.2, and the captions step is skipped with a warning in report.json since there is nothing to transcribe.',
       },
       {
-        question: 'Can I get captions in the master playlist?',
-        answer: 'Captions are generated as a WebVTT file inside the tar.gz. Linking them as an EXT-X-MEDIA subtitle rendition in the master.m3u8 is on the roadmap.',
+        question: 'What is in the package, and how do I host it?',
+        answer:
+          'hls/master.m3u8, one folder per rung with index.m3u8 and segments, hls/iframes/, optional captions/ and storyboards/, README.txt and report.json. Unpack it onto any static host or bucket that serves .m3u8 and .ts with the right MIME types and point your player at master.m3u8.',
       },
       {
-        question: 'How long does the download URL last?',
-        answer: 'Presigned GET URLs are valid for 30 minutes by default. Re-run the transcode if you need a fresh link.',
+        question: 'How long does the download link work, and can I get tar.gz or zip?',
+        answer:
+          'The presigned link lasts 30 minutes by default; run the job again if it has expired. Choose tar.gz (the default) or zip in the form before starting.',
+      },
+      {
+        question: 'How long does an HLS transcode take?',
+        answer:
+          'Each selected rung is a full libx264 encode with the veryfast preset, run one after another, so time grows with duration times the number of rungs; 720p dominates the three default rungs. Captions add a Whisper pass over the whole audio. The job page shows each stage as it completes.',
       },
     ],
     related: [
-      {
-        label: 'Transcode video to DASH',
-        to: '/tools/transcode-to-dash',
-        description: 'Same upload, but emits a MPEG-DASH (.mpd) package with AV1 or VP9.',
-      },
-      {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink an MP4 with the regular FFmpeg pipeline.',
-      },
-      {
-        label: 'Transcribe video',
-        to: '/tools/transcribe-video',
-        description: 'Pull speech out of video into searchable text.',
-      },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Video compression guide',
-      //   to: '/blog/video/video-compression-guide',
-      //   description: 'Codecs, bitrate, and container deep dive.',
-      // },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'One smaller MP4 instead of a streaming package.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Get the same Whisper captions as a standalone VTT or SRT.' },
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Remove the dead start and end before transcoding.' },
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'Upscale a low-resolution snippet before you build a ladder from it.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Edit and caption the video, then transcode the export.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 3 minute 1080p clip at the three default rungs',
+        body:
+          'Input: a 3 minute 1920 x 1080 30 fps MP4 of 140 MB with stereo audio, within the guest caps. Settings: 360p, 480p and 720p (the default selection and the most a guest can pick), no captions or storyboards, tar.gz. Each rung is cut into 2 second segments, 90 per rung, with a GOP of 60 frames so every segment starts on a keyframe. At the listed bitrates the rungs weigh at most about 20 MB for 360p (800 + 96 kbps x 180 s), 30 MB for 480p (1200 + 128 kbps) and 66 MB for 720p (2800 + 128 kbps), about 116 MB together before the small 240p I-frame playlist, and less on easy content because the encode is CRF-driven with the bitrate as a cap. The resulting package has 270 .ts segments, three index.m3u8 files and the master. Time is three libx264 veryfast encodes of 5400 frames each run one after another; the 720p rung takes the longest.',
+      },
+      {
+        title: 'A 12 minute 720p webinar with English captions, Spanish translation and storyboards',
+        body:
+          'Input: a 12 minute 1280 x 720 25 fps MP4 of 380 MB, uploaded with a free account because it exceeds the 5 minute guest default. Settings: 360p and 720p (1080p is greyed out because the source is 720p), captions on with Spanish as an extra language, storyboards on, zip. Whisper transcribes the 12 minutes first and writes captions/en/auto.vtt; the Spanish track is translated in batches of 30 segments into captions/es/auto.vtt, and both are listed as subtitle renditions in the master. Storyboards use a 10 second interval for a source over 10 minutes: 72 thumbnails of 160 x 90 fit in a single 1600 x 900 sprite_001.jpg with a storyboard.vtt pointing at each tile. The two rungs are 360 segments each of 2 seconds, with a 50 frame GOP at 25 fps, and weigh at most about 81 MB (360p) and 264 MB (720p) at the listed bitrates. The job spends longer on Whisper and the two encodes than on anything else; the translation is a short extra step.',
+      },
+    ],
+    whenNotToUse:
+      'Do not transcode to HLS if you simply want a smaller single file to send or embed; the compressor does that in one pass without segments and playlists. Do not use it for live events, since the output is a finished VOD playlist, not a live origin. If your source is below 360p, the ladder cannot be built without Premium. And if your player is a plain video tag with no HLS support, you need an MP4 or an hls.js style player first; a master.m3u8 on its own plays natively only in Safari and on Apple devices.',
     primaryKeyword: 'transcode video to HLS',
     secondaryKeywords: [
       'HLS transcoder',
@@ -1157,7 +1137,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'convert-video-to-animated-gif',
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-10-29',
     name: 'Convert Video to Animated GIF',
     h1: 'Convert Video to Animated GIF Online',
     tagline:
@@ -1178,110 +1158,99 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a short video and pick GIF as the output format. Trim to under ~10 seconds and lower the frame rate for a smaller file.',
     },
     intro:
-      'Animated GIFs are the universal short-form clip format — they play inline in chat apps, forums, and email. Media Manipulator converts your video to a clean, looping GIF with full control over dimensions and frame rate. For best results, keep the clip short and trim before converting.',
+      'An animated GIF is a stack of indexed-colour frames, 256 colours at most per palette, with no inter-frame compression beyond simple run-length coding. That is why a GIF of a few seconds can outweigh an MP4 of a minute, and why making a good one is mostly about choosing width, frame rate and palette size. This page runs a two-stage pipeline: FFmpeg scales the video to the width you set and samples it at your frame rate, writing a raw GIF, then gifsicle re-quantises the palette to your colour count, sets the frame delay and optimises the frames so only changed pixels are stored. The defaults are tuned for screen recordings: 900 pixels wide, 12 frames per second, 128 colours.',
     whatItDoes: [
-      'Converts MP4, WebM, MOV, MKV, AVI, and more to looping animated GIFs.',
-      'Lets you trim the clip and change resolution before exporting.',
-      'Pick a frame rate that balances smoothness and file size.',
-      'Outputs standard, broadly-compatible animated GIFs.',
+      'Scales the clip to a chosen width (16 to 2000 px) with the height computed from the aspect ratio and rounded to a multiple of 4.',
+      'Samples the source at a chosen frame rate (1 to 50 fps; 12 by default) with FFmpeg.',
+      'Quantises each frame to a palette of 2 to 256 colours (128 by default) and optimises inter-frame storage with gifsicle at level 1 to 3.',
+      'Sets the frame delay in hundredths of a second, which decides playback speed independently of the sampling rate.',
+      'Honours a trim range from the converter form so only the selected seconds become frames.',
     ],
     flowSteps: [
-      {
-        title: 'Upload clip',
-        description: 'Drop in a short video — under ~10 seconds works best.',
-      },
-      {
-        title: 'Trim and resize',
-        description: 'Pick the segment, dimensions, and frame rate.',
-      },
-      {
-        title: 'Generate frames',
-        description: 'FFmpeg extracts frames and palettes a clean GIF.',
-      },
-      {
-        title: 'Export animated GIF',
-        description: 'Download a looping .gif ready for chat or web.',
-      },
+      { title: 'Upload a video and pick GIF', description: 'GIF is already selected as the output on this page; the Quality control is disabled because it does not apply.' },
+      { title: 'Trim to a few seconds', description: 'Use the trim control to keep the moment you want; every extra second is 12 more frames at the default rate.' },
+      { title: 'Set width, frame rate, colours and delay', description: 'The Animated GIF Settings panel starts at 900 px, 12 fps, 128 colours, delay 3, optimise 3.' },
+      { title: 'FFmpeg samples, gifsicle optimises', description: 'ffmpeg scale=W:-4 -pix_fmt rgb8 -r FPS, then gifsicle --optimize --delay --colors --interlace.' },
+      { title: 'Download the GIF', description: 'A standard looping GIF that chat apps and browsers play inline.' },
     ],
     advancedDetails: [
-      'Behind the scenes we use a two-pass FFmpeg palettegen/paletteuse flow to get clean colors instead of the default GIF quantization.',
-      'A 480px-wide GIF at 12 fps usually balances file size and smoothness for chat platforms.',
-      'GIF is uncompressed compared to MP4/WebM — for clips longer than ~10 seconds, an MP4 or WebM clip is usually a better choice even though it does not autoplay-loop everywhere.',
+      'Stage one is ffmpeg -i input [-ss START -t DURATION] -vf scale=W:-4 -pix_fmt rgb8 -r FPS -f gif raw.gif (convertVideoToGIF in converter.go). The -4 asks for a height that keeps the aspect ratio and is divisible by 4; rgb8 is an 8-bit indexed intermediate that stage two re-quantises.',
+      'Stage two is gifsicle --optimize=L --delay=D --colors C --interlace raw.gif -o output.gif. Optimise level 3 is the slowest and smallest: it stores only the rectangle of pixels that changed between frames, which is why a screencast with a static toolbar compresses far better than a panning camera shot.',
+      'The delay is applied to every frame after sampling and is independent of the sampling rate. At the default 12 fps and delay 3 (30 ms per frame) a clip plays about 2.8 times faster than real time; set the delay to 8 (80 ms, 12.5 fps) for roughly real-time playback at 12 fps, or 10 at 10 fps.',
+      'A width typed into the main Width field of the converter overrides the GIF panel width, so power users can keep one knob. Colours are clamped to 2 to 256 by the form; a GIF palette can never exceed 256.',
+      'There is no palettegen pass in FFmpeg here; palette quality comes from gifsicle --colors, which builds one optimised palette for the whole animation. Photographic clips with smooth gradients benefit from 256 colours; flat UI footage looks identical at 64.',
+      'The gifsicle stage runs under a 6 hour timeout, and the upload also receives the automated content analysis that standard conversions get, since GIF is a format of the regular video converter.',
     ],
     whyItMatters: [
-      'Animated GIFs autoplay inline almost everywhere video does not.',
-      'They are still the most reliable format for reaction clips, product demos, and bug repros.',
-      'A trimmed, well-sized GIF beats a multi-megabyte attached video for casual sharing.',
+      'GIFs autoplay inline in issue trackers, chat apps, documentation sites and email clients where a video attachment would show a play button or nothing.',
+      'A 5 second GIF of a bug reproduces it faster than a paragraph and does not need a video player.',
+      'Palette and frame-rate choices change the size by an order of magnitude, so exposing them beats a one-size preset.',
     ],
     useCases: [
-      {
-        title: 'Bug reproductions',
-        description: 'Capture a short screen recording and turn it into a GIF for a ticket.',
-      },
-      {
-        title: 'Product demos',
-        description: 'Show a feature in motion inside a blog post or README.',
-      },
-      {
-        title: 'Reaction clips',
-        description: 'Turn a video clip into a looping reaction GIF for chat.',
-      },
-      {
-        title: 'Email signatures and previews',
-        description: 'Use a tiny animated GIF to preview a longer video.',
-      },
+      { title: 'Bug reproductions', description: 'Record the screen, trim to the failure, and drop the GIF in the ticket.' },
+      { title: 'README and documentation demos', description: 'Show a feature in motion where a video embed is not allowed.' },
+      { title: 'Reaction clips', description: 'Cut 3 seconds from a video and share it anywhere that accepts images.' },
+      { title: 'Email previews', description: 'A small looping GIF linking to the full video, where video itself will not play.' },
     ],
     whyMediaManipulator: [
-      'Uses FFmpeg\'s palette-aware GIF encoder for clean colors.',
-      'Trim, resize, and re-color in one upload — no separate editor needed.',
-      'No watermarks, no signup, output is fully yours to use.',
+      'Both stages of the pipeline and their defaults are documented here, including the delay behaviour that makes default GIFs play fast.',
+      'Width, frame rate, colour count, delay and optimisation level are all exposed, not a single size slider.',
+      `A GIF conversion counts as one operation (5 a day for guests by default, 30 with a free account), and a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `GIF conversion runs on our own servers: FFmpeg samples and scales the frames, then gifsicle quantises and optimises them; a temporary raw GIF is deleted as soon as gifsicle finishes. The upload is kept in uploads/<jobId>/ and the GIF in outputs/<jobId>/, both in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. As a format of the standard video converter, the upload also goes through our automated content analysis on the same hardware (sampled frames described by a local vision model, any audio transcribed locally); that report stays with the job and is not shared with third parties.`,
     faq: [
       {
-        question: 'How long can my clip be?',
+        question: 'Why does my GIF play faster than the original video?',
         answer:
-          'There is no hard limit, but GIFs over ~10 seconds tend to become several megabytes. For longer clips, consider exporting WebP or short MP4 instead.',
+          'The frame delay is set after sampling and defaults to 3 hundredths of a second, which is about 33 frames per second of playback for frames sampled at 12 per second. Set the delay to 8 at 12 fps, or 10 at 10 fps, for real-time playback.',
       },
       {
-        question: 'Will my GIF loop?',
+        question: 'How do I make the GIF smaller?',
         answer:
-          'Yes — the exported GIF loops by default. Most platforms autoplay it inline.',
+          'In order of effect: trim to fewer seconds, lower the width (480 is plenty for chat), lower the frame rate to 8 or 10, and reduce colours to 64 on flat UI footage. Keep optimise at 3; levels 1 and 2 only trade size for speed.',
       },
       {
-        question: 'How can I make the file smaller?',
+        question: 'How many colours should I use?',
         answer:
-          'Trim aggressively, drop the dimensions (e.g. 480px wide), and lower the frame rate (10–12 fps is usually fine).',
+          '128, the default, suits most screen recordings. Flat interfaces look identical at 64 and save bytes. Photographic footage with gradients wants 256, which is the GIF maximum.',
       },
       {
-        question: 'What is the resolution limit?',
+        question: 'Can I pick which part of the video becomes the GIF?',
         answer:
-          'You can output up to the source resolution, but most chat apps shrink GIFs to fit. 480px width is a sensible default.',
+          'Yes. Use the trim control in the converter to set a start and end; only that range is sampled. Shorter is better, since every second adds frames at the chosen rate.',
+      },
+      {
+        question: 'Will the GIF loop, and does it keep the sound?',
+        answer:
+          'It loops, as GIFs do by default in every player. It cannot carry audio; the format has no sound track. Extract the audio separately if you need it.',
+      },
+      {
+        question: 'What is the largest GIF I can make?',
+        answer:
+          'The form allows up to 2000 px wide, 50 fps and 256 colours, but a GIF at those settings grows enormous fast. The upload itself is bound by your plan, 200 MB and 5 minutes of video for a guest by default.',
       },
     ],
     related: [
-      {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink the source video before exporting a GIF.',
-      },
-      {
-        label: 'Video converter',
-        to: '/tools/video-converter',
-        description: 'Switch between MP4, WebM, MOV, AVI, and more.',
-      },
-      {
-        label: 'Video converter tutorial',
-        to: '/tutorials/video/getting-started',
-        description: 'Walk through trim, resize, and filter settings.',
-      },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Video compression guide',
-      //   to: '/blog/video/video-compression-guide',
-      //   description: 'How codec and bitrate affect output size.',
-      // },
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the exact seconds first, losslessly.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'For anything longer than a few seconds, a small MP4 beats a GIF.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Add captions or crop before exporting the clip.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and filter settings.' },
     ],
+    workedExamples: [
+      {
+        title: 'An 8 second 1080p screen recording at the defaults',
+        body:
+          'Input: an 8 second 1920 x 1080 MP4 screen recording of about 15 MB. Settings: GIF, width 900, 12 fps, 128 colours, delay 3, optimise 3. FFmpeg scales to 900 pixels wide by about 506 tall (nudged to a multiple of 4) and samples 96 frames. Uncompressed those 96 indexed frames would be about 43 MB (900 x 504 x 96 bytes), which is the ceiling gifsicle works down from; with a static toolbar and a moving cursor, level 3 optimisation stores only the changing rectangles, so a screencast lands far below that bound, typically in the low megabytes. With delay 3 the 96 frames play in about 2.9 seconds, roughly 2.8 times faster than the 8 second source; set the delay to 8 to play in about 7.7 seconds. The job is a short encode plus a gifsicle pass over 96 frames.',
+      },
+      {
+        title: 'A 5 second reaction clip at 480 px, 10 fps and 64 colours',
+        body:
+          'Input: a 20 second 1080p MP4 of 40 MB, trimmed in the form to a 5 second range. Settings: GIF, width 480, 10 fps, 64 colours, delay 10, optimise 3. FFmpeg cuts the 5 seconds, scales to 480 pixels wide by about 270 tall (rounded to a multiple of 4) and samples 50 frames. The raw frame data is about 6.5 MB (480 x 268 x 50 bytes) before optimisation, and a 64-colour palette needs only 6 bits per pixel, so a camera shot with motion across the whole frame will still come out well under that, while a steady talking head compresses to a fraction of it. Delay 10 is 100 ms per frame, so 50 frames play in exactly 5 seconds, matching real time at 10 fps.',
+      },
+    ],
+    whenNotToUse:
+      'Do not make a GIF of anything longer than about 10 seconds or with photographic motion across the whole frame; the format has no real inter-frame compression, so such clips become tens of megabytes while an MP4 or WebM of the same thing is a tenth of the size. Do not use GIF when colour fidelity matters, since every frame is limited to a 256-colour palette and gradients band. If the destination plays video inline, a compressed MP4 is better in every way. And if you need audio, a GIF cannot carry it at all.',
     primaryKeyword: 'convert video to GIF',
     secondaryKeywords: [
       'video to animated GIF',
@@ -4592,82 +4561,113 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a photo. Face Blur / Pixelate is already selected and locked. Choose the style, optionally detect faces and select which to hide, then convert.',
     },
     intro:
-      'Posting a photo of a crowd, a classroom or a street scene often means protecting people who never agreed to be shown. This page finds faces with an AI detector and hides them with a blur, a pixel mosaic or a solid black box. You can hide every face in one click, or run detection first and tick only the faces that should be covered.',
+      'Publishing a crowd, classroom or street photo usually means hiding people who never agreed to appear in it. This page finds faces with the YuNet detector running in OpenCV on our own server and covers each one with a Gaussian blur, a pixel mosaic or a solid black rectangle. You can cover every detected face in one step, or run detection first, see the boxes drawn on your photo, and choose only the faces to hide or only the faces to keep. The detector, its confidence threshold and the exact size of each effect are described below so you know what the output will and will not protect.',
     whatItDoes: [
-      'Detects faces in the uploaded photo with an AI model.',
-      'Hides them with a Gaussian blur, a pixelation mosaic, or a solid black box.',
-      'Lets you hide all faces or select individual faces from the detected set.',
-      'Returns a new image; your original upload is not modified.',
+      'Detects faces with OpenCV FaceDetectorYN and the YuNet 2023 model at a confidence threshold of 0.85, then grows each box by 18 percent on every side so hair and jawline are covered too.',
+      'Hides each chosen face with a Gaussian blur whose kernel is a third of the box size, a mosaic of 14 blocks across the box, or a black fill.',
+      'Offers three selection modes: all detected faces, only the faces you ticked, or all except the faces you ticked.',
+      'Stores detection results in a 30 minute session bound to the SHA-256 of your file, so the boxes applied are exactly the boxes you saw.',
+      'Writes a new JPG, PNG or WebP with the same pixel dimensions; the original upload is not altered.',
     ],
     flowSteps: [
-      { title: 'Upload a photo', description: 'Choose a picture that contains the faces you want to protect.' },
-      { title: 'Pick a style', description: 'Blur, pixelate or black box. Face Blur is already selected for you.' },
-      { title: 'Detect and select (optional)', description: 'Run detection and tap the faces to cover, or leave it on all faces.' },
-      { title: 'Download the result', description: 'Save the anonymized image and check every face before posting.' },
+      { title: 'Upload the photo', description: 'JPG, PNG or WebP. Face Blur / Pixelate is preselected and locked on this page.' },
+      { title: 'Choose blur, pixelate or black box', description: 'Blur is preset; a black box removes the pixels entirely.' },
+      { title: 'Optionally detect and select', description: 'Press Detect faces to see numbered boxes, then tick the ones to hide or to keep.' },
+      { title: 'Run the job', description: 'The server applies the effect inside each chosen box and saves a new image.' },
+      { title: 'Check and download', description: 'Zoom to full size and look for missed faces before you post it.' },
     ],
     advancedDetails: [
-      'A solid black box is the most irreversible choice. Light blur on a large, sharp face can sometimes be partly reversed by software, so use a stronger blur or a box for sensitive cases.',
-      'Detectors can miss faces that are tiny, turned away, heavily occluded or in low light. Zoom in and check the output yourself.',
-      'Selected-face mode uses a detection session tied to the exact file you uploaded; choosing a different file means detecting again.',
-      'Other identifying details such as name tags, license plates or screens are not faces. Use the redact text tool or the object remover for those.',
+      'Detection runs face_privacy.py with OpenCV FaceDetectorYN on face_detection_yunet_2023mar.onnx at the full image resolution, score threshold 0.85, NMS threshold 0.3 and up to 5000 candidates. Boxes are padded by 0.18 of their width and height on each side and clamped to the image.',
+      'Blur applies cv2.GaussianBlur with an odd kernel of max(3, longest box side / 3) pixels, so a 300 px face gets a 101 px kernel; the bigger the face, the stronger the blur. Pixelate shrinks the box to 14 blocks across with linear filtering and scales it back with nearest-neighbour, giving visible square tiles. Black box writes (0, 0, 0) into the region.',
+      'When you detect first, the server computes the SHA-256 of the upload, stores the normalised boxes in a session that expires after 30 minutes, and refuses to apply a session whose hash does not match the file you later submit, so boxes cannot be transplanted onto a different picture.',
+      'With no detection session the script redetects at run time and covers every face it finds; the result is identical to running Detect faces and leaving the mode on all.',
+      'The output is written by OpenCV, and the converter exiftool copy-back step does not run on AI outputs, so the result carries none of the original EXIF, GPS or camera tags. It is still not a substitute for the EXIF tool, which lets you see and choose what is removed.',
+      'A light blur on a large, sharp face can be partially reversed with deconvolution tools; the black box is the only choice that destroys the information, and a coarse mosaic is in between.',
     ],
     whyItMatters: [
-      'Sharing photos of other people, especially children, carries real privacy and sometimes legal consequences.',
-      'Editing faces by hand in an image editor is slow when a photo has many people in it.',
-      'Detecting first and selecting lets you keep a friend or family member visible while anonymizing bystanders.',
+      'Photos of other people, and especially of children, carry consent and sometimes legal obligations that a caption cannot fix.',
+      'Hand-editing a photo with 20 faces is slow and inconsistent; detection finds the small ones in the back row.',
+      'Detect-then-select lets you keep your own group visible while anonymising passers-by.',
     ],
     useCases: [
       { title: 'Event and crowd photos', description: 'Hide bystanders before publishing pictures from a public event.' },
       { title: 'School and club posts', description: 'Cover specific children whose families have not given consent.' },
       { title: 'Journalism and reporting', description: 'Protect sources or participants in a documentary still.' },
-      { title: 'Screenshots and evidence', description: 'Anonymize people in an image you need to share with a third party.' },
+      { title: 'Screenshots of video calls', description: 'Anonymise colleagues in a meeting capture before sharing it outside the team.' },
     ],
     whyMediaManipulator: [
-      'Face detection and blurring run on our own GPU, not an outside AI provider.',
-      'You choose which faces to hide instead of an all-or-nothing filter.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The detector, its threshold, the padding and the kernel arithmetic are stated, so you can judge how much protection each style gives.',
+      'Detection boxes are tied to the file hash and expire after 30 minutes, so you select on the exact image that gets processed.',
+      `Face blurring spends one standard operation (5 a day without an account by default, 30 with a free account), not an AI operation, and the Detect faces preview is not counted at all. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Face detection and blurring run as a local OpenCV process on our own hardware; no outside AI service receives your photo, and nothing is used for training. The Detect faces preview saves a temporary copy, hashes it, detects, and deletes the copy before responding; only the box coordinates are kept, for 30 minutes. The uploaded photo lives in uploads/<jobId>/ and the result in outputs/<jobId>/, both in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. As a standard image upload, the photo also passes through our automated content analysis on the same server, where a local vision model writes a short description that stays with the job and is not shared with third parties.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
       {
-        question: 'Does it find every face?',
+        question: 'Which faces will the detector miss?',
         answer:
-          'No detector is perfect. Very small, side-on, covered or poorly lit faces can be missed. Check the result at full size before you share it.',
+          'YuNet is run at a 0.85 confidence threshold, so it skips low-confidence candidates: very small faces, profiles turned away from the camera, faces covered by masks or hands, and faces in deep shadow. Check the result at full size before sharing.',
       },
       {
-        question: 'Can I blur only some of the faces?',
+        question: 'How do I blur only some of the faces?',
         answer:
-          'Yes. Run face detection first, then select the faces to cover. If you skip that step, every detected face is hidden.',
+          'Press Detect faces, tick the numbered boxes, and set the selection mode to only selected faces or all except selected faces. The boxes are stored for 30 minutes against the file hash, so re-detect if you swap the picture.',
       },
       {
-        question: 'Is blur, pixelate or a black box safest?',
+        question: 'How strong is the blur, and can it be undone?',
         answer:
-          'A solid black box is the safest because it removes the pixels completely. A light blur or coarse pixelation on a big, sharp face can occasionally be partly reconstructed, so go heavier for sensitive photos.',
+          'The Gaussian kernel is one third of the box size, so a 300 px face gets a 101 px kernel. Strong blur is hard to reverse but a determined attacker with a sharp large face has a chance; the black box removes the pixels and cannot be undone.',
+      },
+      {
+        question: 'Does the output keep my photo EXIF and GPS data?',
+        answer:
+          'No. The result is written fresh by OpenCV and the metadata copy-back step is skipped for AI outputs, so camera and location tags are not carried over. Use the EXIF tool if you want to inspect or selectively strip tags.',
       },
       {
         question: 'Is my photo sent to an outside AI company?',
         answer:
-          'No. Detection and blurring run on a GPU server we operate. Files are not shared with third-party AI providers.',
+          'No. Detection and the effect run in a local OpenCV process on our own server, and the file is not shared with third-party AI providers.',
       },
       {
-        question: 'What about license plates or name tags?',
+        question: 'Does face blurring use an AI operation from my daily allowance?',
         answer:
-          'Those are not faces. Use the redact text tool for readable text, or the object remover to erase something from the picture.',
+          'No. It goes through the standard upload, which spends one regular operation: 5 a day as a guest by default, 30 with a free account. The Detect faces preview is rate limited but not counted. A failed job is refunded.',
+      },
+      {
+        question: 'What about licence plates, name tags or text on screens?',
+        answer:
+          'Those are not faces and are not detected here. Use the redact text tool for anything readable, or the object remover to erase a plate or a sign from the picture.',
       },
     ],
     related: [
-      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Hide names, numbers and other personal text.' },
-      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase something else that identifies a place or person.' },
+      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Hide emails, phone numbers and other readable text.' },
+      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase a person, plate or sign entirely.' },
       { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip GPS and camera data from the same photo.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the anonymised photo before posting.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Scale the result to the size a platform wants.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 4000 x 3000 group photo with 14 faces, all blurred',
+        body:
+          'Input: a 3.5 MB JPEG of 4000 x 3000 pixels from a phone, with 14 people. Settings: blur, selection mode all, no prior detection. The script runs YuNet over the full 12 megapixel frame; a face whose box is 300 x 360 pixels is padded by 18 percent to about 408 x 490 and blurred with a 163 px Gaussian kernel (490 / 3, rounded to odd), which turns it into a featureless patch. A 60 px face in the back row gets a 27 px kernel, enough to remove features at that size. The output is a 4000 x 3000 JPG written by OpenCV, usually within a few hundred kilobytes of the original size. Detection and blurring take a few seconds; the upload of 3.5 MB usually takes longer.',
+      },
+      {
+        title: 'A 1920 x 1080 video-call screenshot, two of six faces pixelated',
+        body:
+          'Input: a 1.1 MB PNG screenshot of 1920 x 1080 showing six participants. Settings: Detect faces first, selection mode only selected, two faces ticked, pixelate. Detection returns six boxes and stores them in a 30 minute session tied to the file hash. On submit the server verifies the hash, passes the two selected box ids to the script, and each selected box, about 140 x 180 pixels after padding, is reduced to 14 blocks across so every tile is roughly 10 x 13 pixels, then written back as hard squares. The other four faces are untouched. The output is a 1920 x 1080 PNG, and the job runs in a few seconds because no redetection is needed.',
+      },
+    ],
+    whenNotToUse:
+      'Do not rely on this tool for anything where a single missed face is unacceptable, such as a legally mandated redaction; YuNet at a 0.85 threshold skips faces that are tiny, turned away, masked or in deep shadow, and you must check the output yourself. Do not use a light blur on a large face if the person must stay unidentifiable; use the black box. Name tags, licence plates and screens are not faces, so the text redaction tool or the object remover is the right choice for those. And if your goal is to remove a person from the scene entirely rather than hide their face, the object remover does that.',
     primaryKeyword: 'blur faces in photo',
     secondaryKeywords: [
       'face blur online',
@@ -4700,82 +4700,113 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a screenshot or photo. Redact Text / PII is already selected and locked. Choose whether to cover personal data or all text, and the redaction style, then convert.',
     },
     intro:
-      'Screenshots tend to leak things their owners forgot were visible: an email address in a corner, an account number in a table, a name in a chat. This page reads the text in an image with OCR and covers it for you. You can limit it to personal data such as emails, phone numbers and IDs, or cover every piece of text, using a blur or an opaque black box.',
+      'Screenshots leak the things their owners stopped seeing: an email address in a header, an account number in a table, a phone number in a chat bubble. This page reads every piece of text in an image with EasyOCR on our own server and covers the matches with a black rectangle, a blur or a pixel mosaic. In its default mode it only covers text that matches personal-data patterns: email addresses, phone numbers, social-security-style numbers, long card-like digit runs and street addresses. In all-text mode it covers every word it can read, which is the safer choice when you cannot predict what is on the page.',
     whatItDoes: [
-      'Runs text recognition (OCR) over the image to locate words and lines.',
-      'Offers a personal-data mode (names, emails, numbers and similar patterns) and an all-text mode.',
-      'Covers matches with a solid black box or a blur.',
-      'Produces a new image and leaves your upload untouched.',
+      'Runs EasyOCR over the whole image to find text boxes and the text inside them, using the GPU of our server.',
+      'In PII mode covers boxes whose text matches one of five patterns: email, phone number, 3-2-4 digit identifier, 13 to 19 digit card-like run, or a street address ending in Street, Avenue, Road, Drive, Lane, Boulevard, Way, Court, Circle or Place.',
+      'In all-text mode covers every recognised text box regardless of content.',
+      'Pads each box by 8 percent of its larger side (at least 3 pixels) and fills it with black, blurs it with a kernel of a third of its size, or pixelates it into 12 blocks.',
+      'Writes a new JPG, PNG or WebP at the same dimensions and reports how many redactions were made.',
     ],
     flowSteps: [
-      { title: 'Upload the image', description: 'A screenshot, scanned form or photo with readable text.' },
-      { title: 'Choose what to hide', description: 'Redact Text is preselected; pick personal data only or all text.' },
-      { title: 'Pick black box or blur', description: 'A black box is the safer, irreversible option.' },
-      { title: 'Review and download', description: 'Read the result carefully, then save it.' },
+      { title: 'Upload the image', description: 'A screenshot, scanned form or photo with readable text, as JPG, PNG or WebP.' },
+      { title: 'Choose PII only or all text', description: 'Redact Text / PII is preselected and locked on this page; PII only is the default detect mode.' },
+      { title: 'Pick black box, blur or pixelate', description: 'Black box is the default and the only irreversible one.' },
+      { title: 'OCR and redaction run', description: 'EasyOCR reads the image, each matching box is padded and covered, and the result is saved.' },
+      { title: 'Read it carefully and download', description: 'Check for text the OCR did not read, especially small, rotated or handwritten text.' },
     ],
     advancedDetails: [
-      'OCR reads clean, horizontal text best. Handwriting, stylized fonts, tiny print and skewed photos can be missed, so scan the output by eye.',
-      'Personal-data detection is pattern based and cannot know context; a name that does not look like one may stay visible.',
-      'Choose the black box for anything you will publish. Blurred text can sometimes be sharpened back by software.',
-      'Redaction here changes pixels only. It does not touch hidden file metadata; use the EXIF tool for that, or flatten the image first.',
+      'The server runs redact_text_pii.py with --detect pii or all-text, --redaction blackbox, blur or pixelate and --gpu. The script builds an EasyOCR Reader for English (the only language passed today) and calls readtext on the file, which returns a box, the text and a confidence for every line.',
+      'The PII patterns are regular expressions: an email (local part, @, domain with a dot and a 2+ letter TLD); a North American phone number of 10 digits with optional +1, brackets, dots, spaces or dashes; three, two and four digits separated by a dash or space; 13 to 19 digits optionally separated by spaces or dashes (card numbers); and a house number followed by a name and a street-type word. There is no pattern for personal names, dates of birth or non-US identifiers.',
+      'Each matching box is enlarged by max(3, 0.08 x the larger of its width and height) pixels on every side and clamped to the image. Black box uses cv2.rectangle with a filled black interior; pixelate shrinks the region to 12 blocks across and scales back with nearest-neighbour; blur uses a Gaussian kernel of max(11, longest side / 3), made odd.',
+      'OCR reads clean horizontal print best. Handwriting, decorative fonts, very small text, strong skew and low contrast lower the confidence and can be missed entirely. All-text mode does not fix a line the OCR never saw.',
+      'The output is written by OpenCV and the converter exiftool copy-back is skipped for AI outputs, so the original EXIF, GPS and camera tags are not carried over to the result; the pixels, not the metadata, are what this tool is for.',
+      'The script prints redactions=N when it finishes; a result of zero means the OCR found no matching text, not that the image was clean.',
     ],
     whyItMatters: [
-      'Support tickets, bug reports and social posts frequently include screenshots with real customer or account data.',
-      'Covering text by hand with a drawing tool misses lines and leaves inconsistent results.',
-      'Automated detection catches the pieces you stopped noticing after the third read.',
+      'Support tickets, bug reports and social posts routinely carry screenshots with real customer or account data.',
+      'Covering text by hand with a drawing tool misses lines and leaves uneven results; a pattern search finds the third email you stopped noticing.',
+      'An opaque rectangle is the only redaction that survives sharpening, contrast stretching and zoom.',
     ],
     useCases: [
-      { title: 'Bug reports and support', description: 'Share a screenshot without exposing emails, tokens or account numbers.' },
-      { title: 'Documents and forms', description: 'Hide ID numbers and addresses on a scanned page before sending it on.' },
-      { title: 'Social posts', description: 'Remove usernames and phone numbers from a chat screenshot.' },
-      { title: 'Training material', description: 'Turn a real screen capture into a safe example for a tutorial.' },
+      { title: 'Bug reports and support', description: 'Share a screenshot without exposing emails, phone numbers or card digits.' },
+      { title: 'Scanned forms', description: 'Hide identifiers and addresses on a page before forwarding it.' },
+      { title: 'Chat screenshots', description: 'Remove phone numbers and emails from a conversation before posting it.' },
+      { title: 'Training material', description: 'Turn a real screen capture into a safe example with all text covered.' },
     ],
     whyMediaManipulator: [
-      'Text detection and redaction run on our own server, so sensitive screenshots do not go to an outside AI provider.',
-      'Switch between personal-data-only and all-text without re-uploading.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The five PII patterns, the padding and the kernel sizes are written out, so you know exactly which text will be caught and how it will be covered.',
+      'OCR and redaction run in a local process on our own GPU; screenshots full of customer data never leave our hardware.',
+      `Text redaction spends one standard operation of your allowance (5 a day without an account by default, 30 with a free account), not an AI operation, and a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Text recognition and redaction run as a local EasyOCR and OpenCV process on our own GPU server; no outside OCR or AI service receives the image, and the recognised text is used only to decide which boxes to cover and is not stored. The upload lives in uploads/<jobId>/ and the redacted image in outputs/<jobId>/, both registered in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. Like every standard image upload, the file also passes through our automated content analysis on the same server, where a local vision model writes a short description that is kept with the job and not shared with third parties.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
       {
-        question: 'Does it catch all personal information?',
+        question: 'Which personal data does PII mode detect?',
         answer:
-          'No. It finds text with OCR and flags patterns such as emails and numbers. Handwriting, unusual fonts, tiny text and anything that is not text (like a face) can be missed, so review the output before sharing.',
+          'Text matching five patterns: email addresses, North American phone numbers, 3-2-4 digit identifiers, 13 to 19 digit card-like runs, and street addresses ending in a word such as Street, Avenue or Road. Names, dates and non-US identifiers are not matched; use all text for those.',
       },
       {
-        question: 'What is the difference between personal data and all text?',
+        question: 'When should I use all text instead of PII only?',
         answer:
-          'Personal-data mode only covers text that looks like private details. All-text mode covers every word it can read, which is safer when you cannot predict what is on the page.',
+          'Whenever you cannot list in advance what is sensitive: forms, tables, chat logs with names. All text covers every line the OCR reads, so the only remaining risk is text the OCR could not read.',
       },
       {
-        question: 'Should I use blur or a black box?',
+        question: 'Does the tool read languages other than English?',
         answer:
-          'Use the black box for anything you will publish. Blurred text can sometimes be reconstructed by sharpening, while a solid box removes the pixels entirely.',
+          'Not today. The OCR reader is started for English only, so Latin-script text is read reasonably but other scripts can be missed or misread. Review the output when the page is not in English.',
       },
       {
-        question: 'Does this remove hidden metadata too?',
+        question: 'Is a black box safer than blur or pixelate here?',
         answer:
-          'No, it only edits visible pixels. Strip location and camera data with the EXIF metadata tool.',
+          'Yes. The box is filled with solid black, so nothing remains. Blur uses a kernel of a third of the box size with an 11 px minimum, and pixelate leaves 12 blocks across; both can leave short text guessable. Choose the black box for anything you will publish.',
       },
       {
-        question: 'Does the text get uploaded anywhere else?',
+        question: 'Does redaction remove the hidden metadata in my photo?',
         answer:
-          'Recognition runs on a server we operate and the file is not shared with third-party AI providers.',
+          'The result is written fresh by OpenCV without copying the original tags, so EXIF and GPS data are not carried over. For a deliberate, inspectable strip of a file you are not otherwise editing, use the EXIF metadata tool.',
+      },
+      {
+        question: 'Why did some text stay visible?',
+        answer:
+          'Either the OCR did not read it (handwriting, tiny print, skew, low contrast) or, in PII mode, it did not match a pattern. The server reports how many boxes it covered; zero means nothing matched, not that nothing was there.',
+      },
+      {
+        question: 'Is redacting text free, and what counts against my allowance?',
+        answer:
+          'Yes. It is a standard operation, 5 a day without an account by default and 30 with a free account, on images up to 200 MB and 1 GB respectively. It does not use the smaller AI-operation allowance. The pricing page has the live numbers.',
       },
     ],
     related: [
-      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Also hide the people in the same picture.' },
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Hide the people in the same picture.' },
       { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip hidden location and device data.' },
-      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'Turn a scan into searchable text and PDF.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'Turn a photographed page into a clean, searchable PDF.' },
+      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase a logo, plate or badge that is not text.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the redacted screenshot before attaching it.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 1440 x 900 support-ticket screenshot in PII mode',
+        body:
+          'Input: a 400 KB PNG of 1440 x 900 showing a customer record with two email addresses, one phone number written as (555) 123-4567 and a customer name. Settings: PII only, black box. EasyOCR returns about 40 text lines; three of them match the email and phone patterns, the name matches nothing. Each of the three boxes, say 260 x 22 pixels for an email, is padded by 8 percent of 260, about 21 pixels, on every side and filled black, producing a 302 x 64 rectangle. The name stays visible, because there is no name pattern; switch to all text if it must go too. The output is a 1440 x 900 PNG, and the job takes a few seconds, most of it loading the OCR model and reading the page.',
+      },
+      {
+        title: 'A 3024 x 4032 phone photo of a filled form in all-text mode with blur',
+        body:
+          'Input: a 2.1 MB JPEG photo of a printed form, 3024 x 4032 pixels, slightly skewed. Settings: all text, blur. Every line EasyOCR reads is covered: a typed field value of 600 x 40 pixels is padded by 48 pixels a side and blurred with a 201 px kernel (600 / 3, made odd), which removes the lettering completely at that scale; a 120 x 30 label gets the 11 px minimum kernel, which at that size still leaves letter shapes guessable, so pick black box for anything sensitive. Handwritten entries that the OCR cannot read stay as they were and must be checked by eye. The output is a 3024 x 4032 JPG; OCR over a 12 megapixel photo is the slowest step and takes longer than on a screenshot.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use this tool as your only safeguard on a document that must be fully redacted; OCR is best effort, it reads English print only today, and the PII patterns know nothing about names, dates of birth or identifiers from outside North America. Do not use blur on text you will publish, since text blur is the easiest redaction to reverse; use the black box. Faces, logos and photographs are not text and are not touched; the face blur tool and the object remover handle those. And if the sensitive data is in the file metadata rather than the pixels, the EXIF tool is the right place.',
     primaryKeyword: 'redact text in image',
     secondaryKeywords: [
       'censor text in screenshot',
@@ -4850,7 +4881,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
@@ -6602,7 +6633,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'video-trimmer',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Video Trimmer',
     h1: 'Trim Video Online Free',
     tagline:
@@ -6623,56 +6654,105 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a video, then set a start and end time (or pick the range visually). We keep the original quality with a fast, lossless cut whenever possible.',
     },
     intro:
-      'Trimming is the most common video edit — keep the good part, drop the rest. The Media Manipulator video trimmer lets you set a start and end time numerically or drag a visual range, then performs a fast stream-copy cut that preserves the original quality with no re-encode when possible. Output defaults to MP4.',
+      'Trimming keeps one stretch of a video and discards the rest. Most online trimmers re-encode the whole clip to do that, which is slow and costs quality. This page does something simpler by default: it asks FFmpeg to seek to your start time and copy the compressed video and audio packets to a new file for the requested duration, without decoding them. That is a stream copy, it is lossless, and it runs about as fast as the file can be read. If the copy cannot work, because the source codec is not allowed in the container you chose, or because you ticked the frame-accurate option, the server re-encodes just the selected stretch instead.',
     whatItDoes: [
-      'Cuts a video to a single start-to-end range.',
-      'Prefers a lossless stream-copy (no re-encode, no quality loss, very fast).',
-      'Falls back to a re-encode automatically when the container/codec needs it.',
-      'Lets you pick the range numerically or with a visual scrubber.',
+      'Cuts a single range out of a video, from a start time to an end time, typed in seconds or picked on a visual timeline.',
+      'Copies the streams without re-encoding whenever the output container accepts the source codecs, so the kept part is bit-for-bit the original.',
+      'Falls back automatically to a re-encode when the copy is refused, and lets you force a re-encode for a cut on the exact frame.',
+      'Writes MP4 by default, or MOV or WebM; MP4 and MOV get the faststart flag so playback starts before the download finishes.',
+      'Checks with ffprobe that the file actually has a video stream and refuses audio-only uploads with a clear message.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
-      { title: 'Set start and end', description: 'Type the times or drag the visual range.' },
-      { title: 'Trim', description: 'We cut losslessly when possible, or re-encode for accuracy.' },
-      { title: 'Download', description: 'Save your trimmed clip.' },
+      { title: 'Upload the video', description: 'MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG or MPG, uploaded straight to our storage bucket.' },
+      { title: 'Set start and end', description: 'Type the seconds or drag the two handles; the panel shows the resulting clip length.' },
+      { title: 'Pick a container and, if needed, frame accuracy', description: 'MP4 is preset. Tick Re-encode for a frame-accurate cut only when the exact frame matters.' },
+      { title: 'FFmpeg cuts', description: 'A stream copy with -ss, -t and -c copy; or a libx264 CRF 18 re-encode when copying is impossible or you asked for it.' },
+      { title: 'Download the clip', description: 'The output carries the _trimmed suffix and lives in the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'The fast path is a stream-copy: ffmpeg seeks to the start and copies the segment without re-encoding, so there is zero quality loss.',
-      'Stream-copy cuts at the nearest keyframe; tick "Re-encode for a frame-accurate cut" when you need the exact frame.',
-      'MP4 re-encode fallback uses H.264 + AAC + yuv420p + faststart.',
+      'The stream-copy command is ffmpeg -ss START -i input -t DURATION -map 0 -c copy -avoid_negative_ts make_zero [-movflags +faststart] output (runTrimVideo in specialized_tools.go). -map 0 keeps every stream, including extra audio tracks and subtitles, and times are written with millisecond precision.',
+      'With -ss placed before -i and no decoding, FFmpeg can only begin at a keyframe, so the copy starts at the nearest keyframe at or before your start time. On a phone recording keyframes are typically 1 to 2 seconds apart, which is the most the beginning can drift; -avoid_negative_ts make_zero then rebases the timestamps so players start cleanly.',
+      'The re-encode path uses buildVideoCodecArgs at the high quality setting: libx264 -crf 18 -pix_fmt yuv420p with AAC for MP4 and MOV, or libvpx-vp9 -b:v 0 -crf 18 with Opus for WebM. Only the first video stream and the first audio stream (if any) are mapped, so extra tracks are dropped on this path.',
+      'Copy mode is sent as auto, which tries the copy and re-encodes on failure. Choosing WebM for an H.264 source always ends up on the re-encode path, because WebM only accepts VP8, VP9 and AV1 video.',
+      'Validation on the server: start must be 0 or later, the clip must be at least 0.1 seconds long and at most 6 hours, and end must be after start. Anything else is rejected before FFmpeg starts and the operation is refunded.',
+      'Because trimming is a specialized mode, the upload skips the automated content analysis that standard conversions receive; the server only runs ffprobe and the cut.',
     ],
     whyItMatters: [
-      'Removing dead air at the start/end makes any clip better.',
-      'A lossless trim keeps the original quality and is nearly instant.',
-      'Trimming first makes converting, compressing, or GIF-ing faster.',
+      'Dead air at the start and a fumbled stop at the end are in nearly every recording, and removing them is the single most common edit.',
+      'A lossless cut means you can trim a master file without creating a second-generation copy.',
+      'Cutting first makes every later step cheaper: compressing, captioning or turning the clip into a GIF only has to touch the part you kept.',
     ],
     useCases: [
-      { title: 'Cut the intro/outro', description: 'Drop the boring beginning or end of a recording.' },
-      { title: 'Clip a highlight', description: 'Keep just the moment you want to share.' },
-      { title: 'Prep for upload', description: 'Trim before posting to social platforms.' },
-      { title: 'Shorten for GIF', description: 'Cut to a few seconds before making a GIF.' },
+      { title: 'Meeting and lecture recordings', description: 'Drop the minutes of people joining before the content begins.' },
+      { title: 'Highlights for social posts', description: 'Keep the 20 seconds that matter and upload only those.' },
+      { title: 'Evidence and bug reports', description: 'Share exactly the moment a problem happened, with the original quality intact.' },
+      { title: 'Preparing a GIF or a restoration snippet', description: 'Cut to a few seconds before feeding the clip to a tool that works best on short input.' },
     ],
     whyMediaManipulator: [
-      'Quality-preserving stream-copy by default.',
-      'Numeric and visual range selection in one panel.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
+      'Lossless stream copy is the default, with the re-encode fallback written down rather than hidden behind a slow-but-safe re-encode of everything.',
+      'The exact FFmpeg flags are on this page, including why a cut may start at the previous keyframe and how to avoid that.',
+      `A trim spends one operation of your daily allowance (5 a day as a guest by default, 30 with a free account), and a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `The trimmer runs ffprobe and one FFmpeg command on our own servers. In the default path the video and audio packets are copied, never decoded, so the server does not reconstruct a single picture from your file; in the re-encode path FFmpeg decodes only the seconds you kept. The upload lives in uploads/<jobId>/ and the clip in outputs/<jobId>/, both registered in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. Trimming is a specialized mode, so the automated content analysis that standard conversions receive is not run on this upload, and nothing is sent to a third-party service.`,
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'mov', 'webm'],
       processingNotes: ['Stream-copy when possible (no quality loss); re-encode fallback uses H.264 + AAC for MP4.'],
     },
     faq: [
-      { question: 'How do I trim a video online?', answer: 'Upload it, set a start and end time (or drag the visual range), and download the trimmed clip.' },
-      { question: 'Does trimming reduce quality?', answer: 'No — the default lossless stream-copy keeps the original quality. Only the frame-accurate re-encode option re-compresses.' },
-      { question: 'Why does my cut start slightly early?', answer: 'Lossless cuts snap to the nearest keyframe. Enable the frame-accurate re-encode option to cut at the exact time.' },
-      { question: 'What output format do I get?', answer: 'MP4 by default; you can also choose MOV or WebM.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
+      {
+        question: 'Does trimming re-encode my video?',
+        answer:
+          'Not by default. The server copies the compressed streams with -c copy, so the kept part is identical to the original. It re-encodes only when you tick the frame-accurate option or when the container you chose cannot hold the source codec, as with WebM for an H.264 file.',
+      },
+      {
+        question: 'Why does my clip start a moment before the time I typed?',
+        answer:
+          'A stream copy can only begin at a keyframe, and FFmpeg picks the nearest one at or before your start time. Keyframes are usually 1 to 2 seconds apart on camera footage. Tick Re-encode for a frame-accurate cut to start on the exact frame.',
+      },
+      {
+        question: 'Which output containers can I choose, and which keep the original quality?',
+        answer:
+          'MP4, MOV and WebM. MP4 and MOV accept the H.264 or HEVC video and AAC audio most cameras produce, so they stay lossless. WebM only accepts VP8, VP9 and AV1, so an H.264 source is re-encoded to VP9 at CRF 18 for that choice.',
+      },
+      {
+        question: 'How long or short can the trimmed clip be?',
+        answer:
+          'At least 0.1 seconds and at most 6 hours, with the end after the start. In practice the upload caps bind first: by default 5 minutes of video for a guest, 20 minutes with a free account, 2 hours on Premium.',
+      },
+      {
+        question: 'Does it keep all the audio tracks and subtitles?',
+        answer:
+          'In the stream-copy path yes: -map 0 copies every stream in the file. In the re-encode path only the first video and first audio stream are kept.',
+      },
+      {
+        question: 'Can I trim a video to multiple parts at once?',
+        answer:
+          'No. One upload produces one clip from one range. For several pieces, run the trimmer once per range, or assemble the parts on a timeline in Darkroom.',
+      },
     ],
     related: [
-      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the clip after trimming.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the clip after trimming it.' },
+      { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'Turn the trimmed seconds into a GIF.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Save only the sound of the clip.' },
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'Restoration works on snippets of 15 seconds or less; trim first.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Join several trimmed pieces into one edit.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 30 second stream-copy cut from a 180 MB, 4.5 minute 1080p MP4',
+        body:
+          'Input: a 4 minute 30 second 1920 x 1080 H.264 MP4 of 180 MB, about 5.3 Mbps, which fits the default 200 MB and 5 minute guest caps. Settings: start 45.000, end 75.000, output MP4, re-encode unticked. The server runs the copy command with -ss 45.000 and -t 30.000. Since the packets are copied, the output holds roughly 30 of the 270 seconds of data, about 20 MB, at exactly the original quality, codec and frame rate. The cut begins at the last keyframe before 45 s, so the clip may open up to a second or two early. The job is bound by reading the file, not by computing, and finishes in a few seconds.',
+      },
+      {
+        title: 'A frame-accurate 12 second cut from a 60 MB 1080p MP4',
+        body:
+          'Input: a 2 minute 1920 x 1080 MP4 of 60 MB. Settings: start 30.250, end 42.250, output MP4, Re-encode for a frame-accurate cut ticked. FFmpeg now decodes from 30.250 exactly, encodes 12 seconds (360 frames at 30 fps) with libx264 at CRF 18, yuv420p and faststart, and re-encodes the audio to AAC. CRF 18 keeps the picture visually very close to the source, so the result is in the same order of size per second as the source, a few megabytes for 12 seconds. Only the kept 12 seconds are encoded, never the full 2 minutes, so this is a short encode rather than a few-second copy.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use the trimmer to remove several separate sections from one video; it keeps exactly one range, so a middle cut needs two trims and a join in Darkroom. Do not expect a stream copy to land on the exact frame; if a cut that is a second early matters, tick the re-encode option and accept a short encode. If your real goal is a smaller file, trimming only helps as much as you cut; the compressor changes the bitrate. And if the upload has no video stream, for example an M4A renamed to MP4, the trimmer refuses it; the audio tools handle audio-only files.',
     primaryKeyword: 'video trimmer',
     secondaryKeywords: [
       'trim video online',
@@ -7617,7 +7697,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- EXTRACT AUDIO FROM VIDEO
   {
     slug: 'extract-audio-from-video',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Extract Audio from Video',
     h1: 'Extract Audio from Video',
     tagline:
@@ -7638,40 +7718,47 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload any common video container. Pick MP3 for broad compatibility, WAV for lossless, or M4A/AAC for a compact compressed file. Videos with no audio track return a clear error.',
     },
     intro:
-      'Pulling the audio out of a video is one of the most common editing tasks — for podcasting, voiceover review, transcript preparation, or simply saving a song from a music video. Media Manipulator extracts the first audio track from any common video container and re-encodes it into the format you choose, with no quality loss when the source already matches.',
+      'Every video container carries its audio as a separate stream, so getting the sound out does not involve the picture at all. This page asks FFmpeg to select the first audio stream, ignore the video, and encode that stream into the format you pick: MP3 for anything that plays music, WAV or FLAC when you want the samples untouched, M4A or AAC for a small file that phones handle natively, or OGG Vorbis. Before it starts, the server checks with ffprobe that an audio stream exists, because FFmpeg would otherwise write an empty file without complaint.',
     whatItDoes: [
-      'Extracts the first audio stream from MP4, MOV, MKV, WebM, AVI, and M4V containers.',
-      'Encodes output as MP3 (libmp3lame), WAV (pcm_s16le), M4A/AAC, FLAC, or OGG (libvorbis).',
-      'Detects videos with no audio stream and returns a clear error instead of producing an empty file.',
-      'Preserves the original duration and sample rate.',
+      'Selects the first audio stream (-map 0:a:0) from MP4, MOV, M4V, WebM, MKV, AVI and the other common video containers and discards the video (-vn).',
+      'Encodes MP3 with libmp3lame at quality 2 (variable bitrate averaging about 190 kbps), WAV as 16-bit PCM, M4A or AAC at 192 kbps, FLAC losslessly, or OGG with libvorbis at quality 5.',
+      'Keeps the original sample rate and channel count; nothing is resampled or mixed down.',
+      'Refuses a video with no audio stream up front with the message that there is nothing to extract.',
+      'Returns a single audio file named after the original with the chosen extension.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop any MP4, MOV, MKV, WebM, AVI, or M4V file.' },
-      { title: 'Pick an output format', description: 'MP3 plays everywhere; WAV is lossless; M4A/AAC is a compact default.' },
-      { title: 'We extract', description: 'FFmpeg pulls the first audio stream and encodes it cleanly.' },
-      { title: 'Download', description: 'Save the extracted audio in your chosen format.' },
+      { title: 'Upload the video', description: 'Any common container; the file goes straight to our storage bucket and the API picks it up.' },
+      { title: 'Choose the audio format', description: 'MP3 is preset. WAV and FLAC are lossless; M4A and AAC are compact; OGG is the open lossy option.' },
+      { title: 'ffprobe confirms an audio stream exists', description: 'A silent video stops here with a clear error instead of producing an empty file.' },
+      { title: 'FFmpeg encodes the stream', description: 'One command with -map 0:a:0 -vn and the encoder for your format.' },
+      { title: 'Download the audio', description: 'The file lives in the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'We pre-check the source with ffprobe so videos without an audio stream return a useful error instead of an empty file.',
-      'MP3 is rendered with libmp3lame at quality preset 2 (≈190 kbps VBR) — the typical sweet spot for speech and music.',
-      'M4A/AAC uses the native AAC encoder at 192 kbps, suitable for both speech and music.',
+      'The command is ffmpeg -y -i input -map 0:a:0 -vn <encoder args> output (runExtractAudio in specialized_tools.go). -vn means the video stream is never decoded, which is why extraction is fast even on 4K sources.',
+      'MP3 uses -c:a libmp3lame -q:a 2, the LAME V2 variable-bitrate setting, which averages around 190 kbps on music and less on speech. WAV uses -c:a pcm_s16le, so a 44.1 kHz stereo source costs about 10.1 MB per minute and a 48 kHz source about 11 MB per minute.',
+      'M4A and AAC both use the native FFmpeg AAC encoder with -b:a 192k. FLAC is lossless and typically lands at 50 to 70 percent of the WAV size. OGG uses -c:a libvorbis -q:a 5, roughly 160 kbps.',
+      'No -ar or -ac flag is passed, so the output keeps the source sample rate and channel layout; 5.1 surround stays 5.1 in WAV and FLAC, while MP3 will carry at most two channels.',
+      'Only stream 0:a:0 is mapped. A file with a commentary track or a second language keeps whichever track is listed first in the container.',
+      'Extraction is a specialized mode: the upload is not queued for the automated content analysis that standard conversions receive, and the quality, resize and effect controls of the video converter do not apply.',
     ],
     whyItMatters: [
-      'Audio extraction is the first step for podcast repurposing, transcription, music sampling, and voiceover review.',
-      'Having a clean, format-specific audio file decouples the audio from the original video container.',
+      'Podcasters, transcribers and editors usually need the sound without the pixels, and the video is often 20 to 50 times larger than the audio inside it.',
+      'A correctly tagged MP3 or M4A plays on every phone and in every player without the video decoding that drains batteries.',
+      'Lossless WAV or FLAC output is the right input for noise cleaning, vocal separation or a careful transcription.',
     ],
     useCases: [
-      { title: 'Podcasters', description: 'Pull audio out of a video interview before publishing the audio-only episode.' },
-      { title: 'Editors', description: 'Reuse a film or music clip’s soundtrack in a different edit.' },
-      { title: 'Voiceover review', description: 'Send clients a clean audio file from a screen recording.' },
-      { title: 'Transcript prep', description: 'Provide audio-only files to transcription tools that prefer them over video.' },
+      { title: 'Audio-only episodes', description: 'Publish the sound of a recorded video interview as a podcast MP3.' },
+      { title: 'Transcription prep', description: 'Feed an 18 minute recording to a transcriber as a 25 MB MP3 instead of a 540 MB MP4.' },
+      { title: 'Sound design and sampling', description: 'Pull a WAV from a clip to reuse ambience or music in another edit.' },
+      { title: 'Lecture notes', description: 'Keep the audio of a class recording for listening on the go.' },
     ],
     whyMediaManipulator: [
-      'Server-side FFmpeg means no codec headaches in the browser.',
-      'Clear errors when the source video has no audio.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
+      'The encoder settings are stated: LAME V2 for MP3, 192 kbps for AAC, 16-bit PCM for WAV, and the original sample rate throughout.',
+      'A silent video is caught by ffprobe before anything runs, so you never download a zero-length file.',
+      `One extraction is one operation of your daily allowance: 5 a day without an account by default, 30 with a free account; a refused or failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Extraction runs on our own servers as a single FFmpeg command that reads only the first audio stream of your upload; the video frames are never decoded. The uploaded file sits in uploads/<jobId>/ and the audio in outputs/<jobId>/, both registered in the retention ledger and removed when the window ends. ${RETENTION_PROMISE}. Because extraction is a specialized mode, the upload is not run through the automated content analysis that standard conversions receive; it is not transcribed or described, and nothing leaves our hardware.`,
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
@@ -7680,18 +7767,58 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       ],
     },
     faq: [
-      { question: 'Can I extract audio from an MP4?', answer: 'Yes — MP4 is the most common case. We also support MOV, MKV, WebM, AVI, and M4V.' },
-      { question: 'What audio formats can I export?', answer: 'MP3, WAV, M4A, AAC, FLAC, and OGG.' },
-      { question: 'Does extracting audio reduce quality?', answer: 'Output quality is determined by the format you pick. WAV is lossless. MP3 / AAC / OGG are lossy but at our defaults they sound essentially identical to the source for most listeners.' },
-      { question: 'Can I extract audio from a video with multiple audio tracks?', answer: 'We always pull the first audio stream. If you need a specific alternate language track, please reach out and we will look at adding multi-stream selection.' },
-      { question: 'What if my video has no audio?', answer: 'We detect that up front and return a clear error message instead of producing an empty file.' },
+      {
+        question: 'Which audio formats can I extract to, and which are lossless?',
+        answer:
+          'MP3, WAV, M4A, AAC, FLAC and OGG. WAV and FLAC are lossless copies of the decoded track. MP3 (about 190 kbps VBR), M4A and AAC (192 kbps) and OGG (quality 5) are lossy but above the bitrate of most video sound tracks.',
+      },
+      {
+        question: 'How big will the extracted audio be?',
+        answer:
+          'WAV is about 10.1 MB per minute at 44.1 kHz stereo, or 11 MB at 48 kHz. MP3 at this page setting is about 1.4 MB per minute, M4A and AAC about 1.4 MB per minute at 192 kbps, OGG about 1.2 MB per minute. FLAC usually lands between half and two thirds of the WAV size.',
+      },
+      {
+        question: 'Does extraction change the sample rate or stereo image?',
+        answer:
+          'No. FFmpeg is run without -ar or -ac, so the output keeps the source sample rate and channel layout. A 48 kHz stereo track stays 48 kHz stereo.',
+      },
+      {
+        question: 'What happens if my video has no audio?',
+        answer:
+          'The server probes the file first and stops with the message that there is nothing to extract. The operation is refunded, and no empty file is produced.',
+      },
+      {
+        question: 'My video has two audio tracks; which one do I get?',
+        answer:
+          'The first one in the container, stream 0:a:0. There is no track picker yet. If the one you need is second, remux or re-export the video with that track first.',
+      },
+      {
+        question: 'Is extracting audio free, and how long a video can I upload?',
+        answer:
+          'Yes. By default a guest can run 5 operations a day on files up to 200 MB and 5 minutes; a free account allows 30 a day, 1 GB and 20 minutes; Premium takes 5 GB and 2 hours. Current limits are listed on the pricing page.',
+      },
     ],
     related: [
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the extracted audio to other formats.' },
-      { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Transcribe the extracted audio into subtitles.' },
-      { label: 'Audio Waveform Generator', to: '/tools/audio-waveform-generator', description: 'Turn the extracted audio into a waveform visual.' },
-      { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Reuse extracted audio inside a new video.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Skip the audio file and get the words directly.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Denoise and level the extracted speech.' },
+      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Take the hum and hiss out of the extracted track.' },
+      { label: 'Remove vocals from song', to: '/tools/remove-vocals-from-song', description: 'Turn the extracted music into an instrumental.' },
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the video to the part you want before extracting.' },
     ],
+    workedExamples: [
+      {
+        title: 'An 18 minute, 540 MB 720p recording to MP3',
+        body:
+          'Input: an 18 minute 1280 x 720 MP4 of 540 MB (about 4 Mbps), uploaded with a free account because it exceeds the 200 MB and 5 minute guest defaults. Settings: MP3. The server confirms the stereo 48 kHz AAC track with ffprobe and runs libmp3lame -q:a 2. At roughly 190 kbps that is about 1.4 MB per minute, so the result comes out at about 25 MB, about one twentieth of the upload. Because -vn skips the video entirely, the job is a straight audio decode and encode and is quick; uploading 540 MB takes far longer than extracting from it.',
+      },
+      {
+        title: 'A 4 minute, 95 MB 1080p music video to WAV',
+        body:
+          'Input: a 4 minute 1920 x 1080 MP4 of 95 MB with a 44.1 kHz stereo AAC track, within the guest caps. Settings: WAV. FFmpeg decodes the AAC once and writes 16-bit PCM with pcm_s16le, keeping 44.1 kHz and two channels. PCM at that rate is 44,100 x 16 x 2 bits per second, about 10.1 MB per minute, so the file comes out at about 40 MB regardless of how loud or busy the music is. Choosing FLAC instead would compress those same samples losslessly to somewhere around 20 to 28 MB depending on the material. The time is a few seconds of audio decoding; the video is never touched.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use this page to improve the sound; it copies what is there, and a noisy or distant recording stays noisy. The Clean Voice and Remove Background Noise tools are built for that. Do not expect a WAV to recover quality that the video lost; the source track is almost always lossy AAC, so a WAV is a faithful copy of a compressed signal, not a studio master. If the video has two language tracks and you need the second one, this tool only takes the first. And if what you really want is the words, the transcriber reads the audio and gives you text and captions directly.',
     primaryKeyword: 'extract audio from video',
     secondaryKeywords: [
       'video to MP3',
@@ -8182,7 +8309,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'ai-video-restoration',
-    lastReviewed: '2026-08-05',
+    lastReviewed: '2026-10-29',
     name: 'AI Video Restoration',
     h1: 'AI Video Restoration Tool',
     tagline:
@@ -8204,80 +8331,50 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a video, drag-select a short snippet (10 seconds or less works best), pick the restoration models you want to compare, and download one package with every enhanced result.',
     },
     intro:
-      'AI Video Restoration runs a short snippet of your video through up to six state-of-the-art restoration and super-resolution models — Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT — and packages every result into a single download so you can compare them frame by frame. Different models make very different trade-offs between sharpness, temporal stability, and artifacts; the only reliable way to pick the right one for your footage is to run the same clip through all of them. Everything processes on our own GPU server, never a third-party API.',
+      'Video restoration models disagree with each other. A GAN upscaler such as Real-ESRGAN gives you crisp single frames that can shimmer in motion; a video transformer such as VRT keeps the sequence stable but may soften detail. The only honest way to choose is to run the same footage through all of them and look. This page does exactly that on a snippet of up to 15 seconds: it extracts the frames, runs your choice of six models on our own GPU, stitches each result back into an MP4 at the source frame rate with the original audio, and packages everything, including the untouched snippet, into one archive for side-by-side comparison. Every number below comes from the pipeline as it runs today.',
     whatItDoes: [
-      'Trims the exact snippet you select (up to 15 seconds / 450 frames) with frame accuracy, keeping the audio.',
-      'Runs the snippet through your choice of six models: Real-ESRGAN, SwinIR, and HAT enhance frame by frame, while BasicVSR++, RVRT, and VRT restore the sequence as a whole for better temporal consistency.',
-      'Upscales 2x or 4x automatically based on the source resolution (sources at or below 540p get 4x).',
-      'Stitches every result back into an MP4 at the exact source frame rate, with the original audio re-attached.',
-      'Packages everything — the original snippet, every enhanced MP4, optional enhanced frames, and a machine-readable manifest — into one results archive.',
-      'Keeps going when a single model fails: the package records the failure and still includes every successful result.',
+      'Trims the snippet you select (0.5 to 15 seconds, at most 450 frames at your frame rate) frame-accurately with its audio.',
+      'Runs any combination of Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT and VRT; the first three enhance frame by frame, the last three restore the sequence as a whole.',
+      'Chooses 4x for sources at or below 540p and 2x above that, since every model runs its native 4x network and the 2x result is a Lanczos downscale at stitch time.',
+      'Stitches each result with libx264 at CRF 16 at the exact source frame-rate fraction and re-attaches the audio.',
+      'Packages original/clip.mp4, one folder per model, optional enhanced PNG frames for the frame-by-frame models, manifest.json and README.txt into one tar.gz.',
+      'Carries on when a model fails: its folder gets FAILED.txt, the manifest records the reason, and every other result is still delivered.',
     ],
     flowSteps: [
-      {
-        title: 'Upload a video',
-        description: 'Drop in any common video file — long sources are fine because only the snippet is processed.',
-      },
-      {
-        title: 'Select a snippet',
-        description: 'Drag the start and end handles (or the whole window) to pick up to 15 seconds; 10 seconds or less is recommended.',
-      },
-      {
-        title: 'Choose restoration models',
-        description: 'Pick any combination of Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT, and whether to include enhanced frames.',
-      },
-      {
-        title: 'Watch the pipeline run',
-        description: 'A live checklist tracks every stage — extraction, each model, packaging — with time estimates per model.',
-      },
-      {
-        title: 'Download and compare',
-        description: 'The results archive downloads automatically: one folder per model plus the original snippet for A/B playback.',
-      },
+      { title: 'Upload a video', description: 'Up to 1920 x 1080; long sources are fine because only the snippet is processed.' },
+      { title: 'Select a snippet', description: 'Drag the handles to pick up to 15 seconds; 10 seconds or less is recommended and the picker warns above that.' },
+      { title: 'Choose models and whether to include frames', description: 'Any of the six; the picker shows a per-model time estimate from the server published seconds-per-frame figures.' },
+      { title: 'Watch the stages', description: 'Download, probe, extract clip, extract frames, then each model from fastest to slowest, then packaging.' },
+      { title: 'Compare and download', description: 'Play each model MP4 next to the original in the viewer, then fetch the archive while its 6 hour link lasts.' },
     ],
     advancedDetails: [
-      'Real-ESRGAN runs the realesrgan-x4plus GAN through a Vulkan binary — the fastest model and a good baseline for every comparison.',
-      'SwinIR uses the large real-world SR GAN (003_realSR_BSRGAN SwinIR-L x4) with tiled inference so high resolutions fit in GPU memory.',
-      'HAT runs Real_HAT_GAN_SRx4, a hybrid attention transformer that often produces the sharpest individual frames.',
-      'BasicVSR++ propagates information between frames recurrently, which keeps textures stable where per-frame models shimmer.',
-      'RVRT and VRT are video restoration transformers that process the sequence with temporal attention — typically the highest quality and by far the slowest.',
-      'Frame extraction uses ffmpeg with vsync 0; stitching re-encodes with libx264 CRF 16 at the exact source frame-rate fraction (e.g. 30000/1001) so audio stays in sync.',
-      'A 2x request still runs each model’s native 4x network and downscales with Lanczos during stitching — quality is identical and the pipeline stays uniform.',
-      'Every model runs under a GPU scheduler lease with per-model VRAM budgets, and one restoration job runs at a time so jobs never starve each other.',
+      'The reference clip is cut with ffmpeg -ss START -i source -t WINDOW -c:v libx264 -crf 10 -preset medium -pix_fmt yuv420p -c:a aac, then frames are extracted with -vsync 0 into numbered PNGs; if the count exceeds 450 the surplus frames are dropped.',
+      'Real-ESRGAN runs realesrgan-ncnn-vulkan with the realesrgan-x4plus model, scale 4 and 256 px tiles. SwinIR uses the 003_realSR_BSRGAN SwinIR-L x4 GAN weights and HAT uses Real_HAT_GAN_SRx4, both through tiled inference (320 px tiles, 32 px overlap) so 1080p frames fit in memory.',
+      'BasicVSR++ runs the REDS4 c64n7 generator through mmagic in windows of 16 frames; RVRT (001_RVRT_videosr_bi_REDS_30frames) and VRT (001_VRT_videosr_bi_REDS_6frames) run through their KAIR test scripts with temporal tiles of 30 and 12 frames and 128 x 128 spatial tiles.',
+      'Stitching is uniform: ffmpeg -framerate FPS_FRACTION -i frames/%06d.png [-i clip.mp4 -map 0:v -map 1:a -c:a aac] [-vf scale=iw/2:ih/2:flags=lanczos] -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart -shortest. The frame-rate fraction, for example 30000/1001, is taken verbatim from ffprobe so the audio stays in sync.',
+      'Models run in a fixed order, Real-ESRGAN, BasicVSR++, SwinIR, RVRT, HAT, VRT, under a GPU scheduler lease with VRAM budgets of 3, 11, 9, 12, 10 and 14 GB respectively, one restoration job at a time server-wide and a 75 minute timeout per model.',
+      'The published per-frame estimates the picker multiplies by your frame count are 0.8 s (Real-ESRGAN), 1.0 s (BasicVSR++), 3.0 s (RVRT), 3.5 s (SwinIR), 5.0 s (HAT) and 7.0 s (VRT); they are server-side defaults that can change, not measurements of your clip.',
+      'Explicit 4x is refused for sources taller than 1080p because the output would exceed 4K; auto mode picks 2x for 541p to 1080p and 4x at or below 540p. Included frames are the native 4x PNGs even on the 2x path, so a 1080p source yields 7680 x 4320 frames.',
     ],
     whyItMatters: [
-      'No single restoration model wins on all footage: GAN upscalers excel on stills but can flicker, while video transformers stay stable but soften fine detail.',
-      'Running one short snippet through every model costs minutes, not hours, and tells you exactly which model deserves the full-length run.',
-      'Old family footage, low-resolution archives, and compressed social exports all degrade differently — side-by-side comparison beats guessing.',
+      'No single restoration model wins on all footage, and still-frame comparisons hide the flicker that only playback reveals.',
+      'A 10 second snippet through every model costs minutes of GPU time and tells you which model deserves a full-length run elsewhere.',
+      'Digitised tapes, early digital camera clips and compressed social exports each degrade differently and respond to different model families.',
     ],
     useCases: [
-      {
-        title: 'Restoring old family videos',
-        description: 'Digitized tapes and early digital camera clips are low-resolution and noisy — compare which model best recovers faces and detail.',
-      },
-      {
-        title: 'Upscaling archive footage',
-        description: 'Evaluate 480p/720p archive material at 4x before committing to a full restoration pass.',
-      },
-      {
-        title: 'Choosing a model before a long render',
-        description: 'Run a representative 10-second snippet through all six models to pick the right one for an hours-long GPU job.',
-      },
-      {
-        title: 'Improving compressed downloads',
-        description: 'Heavily compressed social media exports respond very differently to GAN vs transformer restoration — test both families.',
-      },
-      {
-        title: 'Comparing temporal stability',
-        description: 'Play the per-model MP4s side by side to spot shimmer and flicker that still frames hide.',
-      },
+      { title: 'Old family videos', description: 'See which model recovers faces and fabric on a 480p tape transfer before restoring the whole reel.' },
+      { title: 'Archive footage', description: 'Test 4x on 360p and 480p material and judge the 4K-class output on your own monitor.' },
+      { title: 'Model selection before a long render', description: 'Pick the model for an hours-long job from a representative 10 second test.' },
+      { title: 'Compressed downloads', description: 'Compare GAN sharpening with transformer stability on blocky social media exports.' },
+      { title: 'Temporal stability checks', description: 'Play the per-model MP4s side by side to spot shimmer and flicker that still frames hide.' },
     ],
     whyMediaManipulator: [
-      'Six research-grade models behind one upload — no notebooks, CUDA setup, or model weights to manage.',
-      'Runs entirely on our own GPU server: your video never goes to a third-party AI provider.',
-      'One tidy package with a manifest, the original snippet, and every result — built for honest A/B comparison.',
+      'Six research-grade models behind one upload, with the weights, tile sizes and stitch command named on this page rather than hidden behind a brand name.',
+      'Everything runs on our own GPU; your footage never goes to a third-party AI provider, and nothing is used for training.',
+      `A restoration spends one AI operation of your daily allowance, which is 1 a day without an account by default and 5 with a free account, and is limited to 2 starts an hour per session; a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your upload goes from the browser to our storage bucket and is downloaded to our own GPU server, where FFmpeg cuts the snippet and the six models run as local processes; no outside AI provider is involved and nothing is used for training. Only the selected snippet is decoded into frames; the rest of the source is never processed. The source object, the working frames, the per-model MP4s kept for the comparison viewer and the results archive are all registered in the retention ledger and deleted when the window ends, and the archive link expires after 6 hours. ${RETENTION_PROMISE}. Restoration jobs do not run the automated content analysis that standard conversions receive.`,
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'png'],
@@ -8295,76 +8392,66 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'Which AI video upscaling model is best?',
         answer:
-          'It genuinely depends on the footage — that is the reason this tool exists. GAN upscalers like Real-ESRGAN and HAT produce crisp individual frames but can shimmer in motion; video models like BasicVSR++, RVRT, and VRT use neighboring frames for stability but can look softer. Run your own snippet through all of them and judge with your eyes.',
+          'It depends on the footage, which is why this tool exists. GAN upscalers like Real-ESRGAN and HAT produce crisp frames that can shimmer in motion; sequence models like BasicVSR++, RVRT and VRT use neighbouring frames for stability and can look softer. Run your own snippet through them and judge in motion.',
       },
       {
-        question: 'Why is the clip limited to 15 seconds?',
+        question: 'Why is the clip limited to 15 seconds and 450 frames?',
         answer:
-          'Restoration models are extremely GPU-intensive — VRT can take several seconds per frame at 4x. A short snippet keeps the multi-model comparison fast and is all you need to evaluate quality before committing to a longer restoration elsewhere.',
+          'Restoration is expensive per frame: the published estimate for VRT alone is 7 seconds a frame at 4x. The frame cap is checked against your real frame rate, so a 60 fps source is limited to 7.5 seconds. A short snippet is enough to judge quality before a longer restoration elsewhere.',
       },
       {
-        question: 'What is the difference between the two model groups?',
+        question: 'How does the 2x versus 4x choice work?',
         answer:
-          'Frame-by-frame enhancers (Real-ESRGAN, SwinIR, HAT) upscale each frame independently, so their results include both the enhanced frames and a stitched video. Video restoration models (BasicVSR++, RVRT, VRT) process the sequence as a whole using temporal information, and produce only an enhanced video.',
+          'Auto picks 4x for sources at or below 540p and 2x above that. Every model runs its native 4x network regardless; on the 2x path the stitch halves the frames with a Lanczos filter. Explicit 4x is refused above 1080p because the output would exceed 4K.',
       },
       {
-        question: 'Does the restored video keep my audio?',
+        question: 'Does the restored video keep my audio and frame rate?',
         answer:
-          'Yes. The selected snippet is trimmed with its audio, and every model’s output is stitched back together with that audio at the exact source frame rate, so all results stay in sync for A/B playback.',
+          'Yes. The snippet is cut with its audio, and every stitch uses the exact frame-rate fraction from ffprobe (for example 30000/1001) and re-attaches that audio as AAC, so all results line up for A/B playback.',
       },
       {
-        question: 'What does the results package contain?',
+        question: 'What does the results archive contain, and how large is it?',
         answer:
-          'One folder per model with its enhanced MP4 (frame-by-frame models can also include every enhanced frame as PNGs), the original trimmed snippet for reference, a README, and a manifest.json with per-model timings, output dimensions, and any failures.',
+          'original/clip.mp4, a folder per model with its MP4 (and, for Real-ESRGAN, SwinIR and HAT with frames included, every enhanced PNG at native 4x), manifest.json with timings and dimensions, and README.txt. With frames on, a 10 second clip adds hundreds of large PNGs per model, so expect gigabytes.',
       },
       {
-        question: 'What happens if one model fails?',
+        question: 'What happens if one model fails or times out?',
         answer:
-          'The job keeps going. The failed model’s folder contains a FAILED.txt with the reason, the manifest records it, and every other selected model’s result is still packaged and downloadable.',
-      },
-      {
-        question: 'Is 4x always better than 2x upscaling?',
-        answer:
-          'No. 4x shines on genuinely low-resolution sources (540p and below). On 720p–1080p sources, 4x produces enormous files for little visible gain, which is why auto mode picks 2x there.',
-      },
-      {
-        question: 'Can AI restoration fix any video?',
-        answer:
-          'It can sharpen detail, reduce noise, and upscale resolution, but it cannot reconstruct information that was never captured. Severely blurred motion, extreme compression blocking, or very dark footage will improve — not become pristine.',
+          'The job continues. That model folder holds FAILED.txt with the reason, manifest.json records it, and every other selected model still ships in the archive. Only when all selected models fail does the job fail.',
       },
       {
         question: 'How long does a restoration run take?',
         answer:
-          'It scales with snippet length and model choice. Real-ESRGAN handles a 10-second clip in a few minutes; VRT can take an hour for the same clip. The picker shows a live estimate per model, and the models run fastest-first so early results are never blocked by slow ones.',
+          'Frames times the per-model estimate, summed over the models you picked, since they run one after another: 0.8, 1.0, 3.0, 3.5, 5.0 and 7.0 seconds per frame for Real-ESRGAN, BasicVSR++, RVRT, SwinIR, HAT and VRT. A 300 frame clip through all six is roughly 100 minutes; through Real-ESRGAN alone about 4.',
+      },
+      {
+        question: 'How many restorations can I run, and does it cost an AI operation?',
+        answer:
+          'Starting a restoration spends one AI operation: by default 1 a day without an account, 5 with a free account, 60 on Premium and 120 on Pro, plus a limit of 2 starts an hour per session. A job that fails outright is refunded. See the pricing page for the live numbers.',
       },
     ],
     related: [
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the snippet you want to restore before uploading.' },
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'The same model families for a single photo or frame.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink a restored 4K result for sharing.' },
+      { label: 'Transcode to HLS', to: '/tools/transcode-to-hls', description: 'Package a restored clip for adaptive streaming.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Add captions to the restored footage.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Edit the restored snippet into a longer piece.' },
+    ],
+    workedExamples: [
       {
-        label: 'Video trimmer',
-        to: '/tools/video-trimmer',
-        description: 'Cut the perfect snippet before restoring it.',
+        title: 'An 8 second 640 x 480 home video through all six models',
+        body:
+          'Input: a 640 x 480 MP4 at 29.97 fps from a digitised tape, with audio. Settings: an 8 second snippet, all six models, enhanced frames included, scale auto. The pipeline cuts an 8 second reference clip and extracts 240 frames (8 x 29.97, rounded). At 480p the auto rule picks 4x, so every model writes 2560 x 1920 frames and the stitched MP4s are 2560 x 1920 at 30000/1001 fps with the original audio. The picker estimate is the frame count times the published seconds per frame: about 3.2 minutes for Real-ESRGAN, 4 minutes for BasicVSR++, 12 for RVRT, 14 for SwinIR, 20 for HAT and 28 for VRT, about 81 minutes in total because models run one after another. Including frames adds 3 x 240 PNGs of 2560 x 1920 to the archive, which is why the download is measured in gigabytes rather than megabytes.',
       },
       {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink the restored output for sharing.',
-      },
-      {
-        label: 'Transcode to HLS',
-        to: '/tools/transcode-to-hls',
-        description: 'Package the restored video for adaptive streaming.',
-      },
-      {
-        label: 'Transcribe video',
-        to: '/tools/transcribe-video',
-        description: 'Generate captions for the restored clip.',
-      },
-      {
-        label: 'Darkroom',
-        to: '/tools/content-studio',
-        description: 'Edit the restored snippet into a full piece.',
+        title: 'A 10 second 1080p clip at auto scale with Real-ESRGAN and BasicVSR++',
+        body:
+          'Input: a 1920 x 1080 30 fps MP4 of 90 MB, the largest source resolution the tool accepts. Settings: a 10 second snippet, Real-ESRGAN and BasicVSR++, frames excluded, scale auto. Extraction yields 300 frames, within the 450 cap (at 60 fps the same cap would limit the snippet to 7.5 seconds). Above 540p auto picks 2x, so each model still runs its native 4x network, producing 7680 x 4320 frames, and the stitch applies scale=iw/2:ih/2:flags=lanczos to deliver 3840 x 2160 MP4s at CRF 16. The published estimates give about 4 minutes for Real-ESRGAN (0.8 s x 300) and 5 minutes for BasicVSR++ (1.0 s x 300), so the job finishes in well under the 75 minute per-model timeout and the archive holds two 4K MP4s, the original clip, manifest.json and README.txt.',
       },
     ],
+    whenNotToUse:
+      'Do not use this page to restore a whole film; it is a comparison tool capped at 15 seconds and 450 frames, and the archive for even that can be gigabytes. Do not expect it to invent what was never recorded: severe motion blur, extreme compression blocking and very dark footage improve but do not become pristine. Sources above 1920 x 1080 are refused, because restoration targets low-resolution material and 2x of 1080p is already 4K. If your clip only needs a smaller file, a format change or a cut, the compressor, converter and trimmer do that in seconds without a GPU.',
     primaryKeyword: 'AI video restoration',
     secondaryKeywords: [
       'AI video upscaler',

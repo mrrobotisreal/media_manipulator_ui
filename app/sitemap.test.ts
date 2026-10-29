@@ -229,7 +229,8 @@ describe('MM85 real dates', () => {
     expect(new Set(BLOG_POSTS.map((p) => p.dateModified)).size).toBeGreaterThan(1);
     expect(byUrl.get(new URL('/tutorials/motion', ORIGIN).toString())).toBe('2026-10-26');
     expect(byUrl.get(new URL('/contact', ORIGIN).toString())).toBe('2026-10-28');
-    expect(byUrl.get(new URL('/tools/convert-video-to-animated-gif', ORIGIN).toString())).toBe('2026-05-30');
+    // MM84 rewrote the copy-bar tool pages and set their lastReviewed to the rewrite date.
+    expect(byUrl.get(new URL('/tools/convert-video-to-animated-gif', ORIGIN).toString())).toBe('2026-10-29');
   });
 
   it('the full-index /changelog entry is the newest changelog date', () => {
