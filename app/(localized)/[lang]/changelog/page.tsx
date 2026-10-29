@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import ChangelogPage from '@/views/changelog';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
-import { languageAlternates } from '@/lib/metadata';
+import { localeIndexing } from '@/lib/metadata';
 import { getServerMetadataT } from '@/lib/i18n/server';
-import { getLocaleDef, localizeHref } from '@/i18n/locales';
+import { localizeHref } from '@/i18n/locales';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
-import { translatorRobots } from '@/lib/translator/mode';
 
 // Metadata is written here (like /pricing) because lib/seo.ts is not extended:
 // getSeoForPath() falls back to the noindex 404 entry for unknown paths.
@@ -21,16 +20,17 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   const description = t('changelog.metaDesc');
   const path = localizeHref('/changelog', locale);
   const canonical = `${SITE_ORIGIN}${path}`;
-  const isTranslated = getLocaleDef(locale)?.translated ?? false;
+  // MM86: public (translated + reviewed) locales only; others are noindex with no hreflang.
+  const indexing = localeIndexing('/changelog', locale);
   return {
     title,
     description,
     alternates: {
       canonical,
-      languages: languageAlternates('/changelog'),
+      languages: indexing.languages,
       types: { 'application/rss+xml': `${SITE_ORIGIN}/changelog.xml` },
     },
-    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
+    robots: indexing.robots,
     openGraph: {
       title,
       description,

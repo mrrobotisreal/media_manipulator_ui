@@ -92,13 +92,13 @@ describe('MM34 flag off (default)', () => {
     for (const u of TODAY_URLS) expect(urls()).toContain(u);
   });
 
-  it('MM48: /tools/motion and /licenses are listed once, with translated-locale hreflang only', () => {
+  it('MM48: /tools/motion and /licenses are listed once, with reviewed-locale hreflang only (MM86)', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
     for (const u of MM48_URLS) {
       const entries = sitemap().filter((e) => e.url === u);
       expect(entries, u).toHaveLength(1);
       const langs = Object.keys(entries[0].alternates?.languages ?? {}).sort();
-      expect(langs).toEqual([...locales.filter((l) => l.translated).map((l) => l.code), 'x-default'].sort());
+      expect(langs).toEqual([...locales.filter((l) => l.translated && l.reviewed).map((l) => l.code), 'x-default'].sort());
     }
     // MM85: tutorials are in the review sitemap now.
     expect(urls()).toContain(new URL('/tutorials/motion', ORIGIN).toString());
@@ -197,12 +197,29 @@ describe('MM51 locales: none left untranslated', () => {
   });
 });
 
-describe('MM68: every sitemap entry carries every locale', () => {
-  it.each(['', 'true'])('one alternate per registered locale plus x-default (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
+describe('MM86: sitemap alternates are the reviewed locales', () => {
+  // Replaces MM68's "every locale on every entry": the 14 unreviewed locales
+  // (he-IL, es-ES and the 12 model-written ones) are noindex, so no sitemap
+  // entry may name them. Tool entries may list fewer (body coverage, S2).
+  const reviewed = locales.filter((l) => l.translated && l.reviewed);
+  const unreviewed = locales.filter((l) => l.translated && !l.reviewed);
+
+  it.each(['', 'true'])('non-tool entries carry exactly the reviewed locales plus x-default (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', flag);
-    const expected = [...locales.map((l) => l.code), 'x-default'].sort();
+    const expected = [...reviewed.map((l) => l.code), 'x-default'].sort();
     for (const e of sitemap()) {
+      if (new URL(e.url).pathname.startsWith('/tools/')) continue;
       expect(Object.keys(e.alternates?.languages ?? {}).sort(), e.url).toEqual(expected);
+    }
+  });
+
+  it.each(['', 'true'])('no unreviewed locale appears anywhere in the sitemap (NEXT_PUBLIC_SEO_FULL_INDEX=%j)', (flag) => {
+    vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', flag);
+    const entries = sitemap();
+    const all = entries.flatMap((e) => [e.url, ...Object.values(e.alternates?.languages ?? {})]);
+    for (const l of unreviewed) {
+      expect(all.filter((u) => new URL(u as string).pathname.split('/')[1] === l.prefix), l.prefix).toEqual([]);
+      for (const e of entries) expect(Object.keys(e.alternates?.languages ?? {}), e.url).not.toContain(l.code);
     }
   });
 });

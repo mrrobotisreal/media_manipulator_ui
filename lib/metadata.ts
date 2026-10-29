@@ -8,20 +8,22 @@
 // Locale rules (see i18n/locales.ts):
 // - `path` is always the locale-NEUTRAL path ('/about'); the locale's URL
 //   prefix is applied here. English keeps the unprefixed canonical.
-// - hreflang alternates list only the locales whose content is actually
-//   translated (`translated: true` — en + ru + uk today), with x-default on the
-//   English URL. Locales still serving copied-English files are excluded AND
-//   rendered noindex, so crawlers never see mislabeled duplicate content
-//   while AdSense review is pending. Flipping `translated` in i18n/locales.ts
+// - hreflang alternates list only the public locales (MM86: `translated &&
+//   reviewed`, see `reviewedLocales`), with x-default on the English URL. A
+//   page in any other locale (copied English, or text no human has reviewed)
+//   is `noindex, follow` and advertises no alternates, so crawlers never see
+//   mislabeled or unreviewed content. Flipping `reviewed` in i18n/locales.ts
 //   promotes a locale into the alternates automatically.
+// - Tool pages add a second rule (MM86): a locale whose override does not
+//   cover the page's whole body is left out too (`buildToolMetadata`).
 // - Titles/descriptions come from lib/seo.ts (English source of truth) with
 //   sparse per-locale overrides from lib/seoOverrides.ts.
 
 import type { Metadata } from 'next';
 import { getSeoForPath, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
 import { getSeoOverride } from '@/lib/seoOverrides';
-import { defaultLocale, getLocaleDef, localizeHref, translatedLocales } from '@/i18n/locales';
-import { translatorRobots } from '@/lib/translator/mode';
+import { defaultLocale, isIndexableLocale, localizeHref, reviewedLocales } from '@/i18n/locales';
+import { TRANSLATOR_ROBOTS, translatorRobots } from '@/lib/translator/mode';
 
 const localizedUrl = (path: string, locale: string): string => {
   const localizedPath = localizeHref(path, locale);
@@ -30,23 +32,43 @@ const localizedUrl = (path: string, locale: string): string => {
 };
 
 /**
- * hreflang alternates for an indexable path: every translated locale plus
- * x-default pointing at the English URL.
+ * hreflang alternates for an indexable path: every public (translated and
+ * reviewed) locale, or the subset `codes` when given, plus x-default pointing
+ * at the English URL.
  */
-export function languageAlternates(path: string): Record<string, string> {
+export function languageAlternates(path: string, codes?: readonly string[]): Record<string, string> {
   const languages: Record<string, string> = {};
-  for (const def of translatedLocales) {
+  for (const def of reviewedLocales) {
+    if (codes && !codes.includes(def.code)) continue;
     languages[def.code] = localizedUrl(path, def.code);
   }
   languages['x-default'] = localizedUrl(path, defaultLocale);
   return languages;
 }
 
+export type RobotsRule = { index: boolean; follow: boolean };
+
+/**
+ * MM86: the robots rule and hreflang alternates for a normal (indexable in
+ * English) page in `locale`. A public locale gets `index, follow` and the
+ * alternates; any other locale gets `noindex, follow` and no alternates.
+ * Translator deployments override robots (`translatorRobots`).
+ */
+export function localeIndexing(
+  path: string,
+  locale: string,
+): { robots: RobotsRule | typeof TRANSLATOR_ROBOTS; languages: Record<string, string> | undefined } {
+  const indexable = isIndexableLocale(locale);
+  return {
+    robots: translatorRobots(indexable ? { index: true, follow: true } : { index: false, follow: true }),
+    languages: indexable ? languageAlternates(path) : undefined,
+  };
+}
+
 export function buildMetadata(path: string, locale: string = defaultLocale): Metadata {
   const seo = getSeoForPath(path);
   const override = getSeoOverride(path, locale);
-  const def = getLocaleDef(locale);
-  const isTranslated = def?.translated ?? false;
+  const indexable = !seo.noindex && isIndexableLocale(locale);
   // MM84: an alias tool page canonicalises to its primary (seo.canonicalPath).
   const canonicalUrl = localizedUrl(seo.canonicalPath ?? path, locale);
 
@@ -64,13 +86,9 @@ export function buildMetadata(path: string, locale: string = defaultLocale): Met
     alternates: {
       canonical: canonicalUrl,
       // Alternates only on indexable pages; noindex pages advertise nothing.
-      languages: seo.noindex ? undefined : languageAlternates(path),
+      languages: indexable ? languageAlternates(path) : undefined,
     },
-    robots: translatorRobots(
-      seo.noindex || !isTranslated
-        ? { index: false, follow: true }
-        : { index: true, follow: true },
-    ),
+    robots: translatorRobots(indexable ? { index: true, follow: true } : { index: false, follow: true }),
     openGraph: {
       title: ogTitle,
       description: ogDescription,

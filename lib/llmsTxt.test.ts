@@ -27,14 +27,22 @@ describe('llms.txt', () => {
     expect(index).toMatch(/\[Obsidian\]/);
   });
 
-  it('names translated locales only, never a byte-copy locale (MM51)', () => {
-    const line = index.split('\n').find((l) => l.startsWith('- The site is available in'))!;
+  it('names reviewed locales with their URL, the rest as pending review (MM86)', () => {
+    const lines = index.split('\n');
+    const line = lines.find((l) => l.startsWith('- The site is available in'))!;
     expect(line).toBe(
-      '- The site is available in English (https://www.media-manipulator.com/), Ukrainian (/uk/), Russian (/ru/), Hebrew (/he/), German (/de/), Spanish (Spain) (/es/), Spanish (Latin America) (/es-mx/), French (/fr/), Italian (/it/), Japanese (/ja/), Chinese (Simplified) (/zh-cn/), Chinese (Traditional) (/zh-tw/), Korean (/ko/), Arabic (/ar/), Hindi (/hi/), Portuguese (Portugal) (/pt-pt/), Portuguese (Brazil) (/pt-br/), Vietnamese (/vi/).',
+      '- The site is available in English (https://www.media-manipulator.com/), Ukrainian (/uk/), Russian (/ru/), German (/de/).',
     );
-    for (const l of locales.filter((x) => !x.translated)) {
-      expect(line).not.toContain(`(/${l.prefix}/)`);
+    for (const l of locales.filter((x) => !(x.translated && x.reviewed))) {
+      expect(index).not.toContain(`(/${l.prefix}/)`);
     }
+    const also = lines.find((l) => l.startsWith('- Also available'))!;
+    expect(also).toBe(
+      `- Also available, machine-translated and pending native review: ${locales
+        .filter((x) => x.translated && !x.reviewed)
+        .map((x) => x.englishLabel)
+        .join(', ')}.`,
+    );
   });
 
   it('links every tool page exactly once', () => {

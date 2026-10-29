@@ -7,12 +7,15 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   codeToUrlPrefix,
   getLocaleDef,
+  isIndexableLocale,
   isSupportedPrefix,
   localePrefixes,
   locales,
   localizeHref,
+  reviewedLocales,
   stripLocalePrefix,
   translatedLocales,
+  unreviewedLocales,
   translatorHomeLocale,
   urlPrefixToCode,
 } from "./locales";
@@ -64,6 +67,17 @@ describe("locale registry", () => {
   it("MM68: every registered locale is translated", () => {
     expect(translatedLocales.length).toBe(locales.length);
     expect(locales.filter((l) => !l.translated)).toEqual([]);
+  });
+
+  it("MM86: Mitch's reviewed list is exactly en-US, uk-UA, ru-RU, de-DE (ticket log 2026-10-28)", () => {
+    expect(reviewedLocales.map((l) => l.code)).toEqual(["en-US", "uk-UA", "ru-RU", "de-DE"]);
+    expect(unreviewedLocales.map((l) => l.code)).toEqual(["he-IL", "es-ES", "es-MX", "fr-FR", "it-IT", "ja-JP", "zh-CN", "zh-TW", "ko-KR", "ar-SA", "hi-IN", "pt-PT", "pt-BR", "vi-VN"]);
+    expect(reviewedLocales.length + unreviewedLocales.length).toBe(locales.length);
+  });
+
+  it("MM86: indexable = translated && reviewed", () => {
+    for (const l of locales) expect(isIndexableLocale(l.code), l.code).toBe(l.translated && l.reviewed);
+    expect(isIndexableLocale("xx-XX")).toBe(false);
   });
 
   it("es-MX is registered at /es-mx after es-ES, which keeps /es (MM72)", () => {

@@ -2,14 +2,13 @@ import type { Metadata } from 'next';
 
 import PricingView, { PricingUnavailable } from '@/views/pricing';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
-import { languageAlternates } from '@/lib/metadata';
-import { getLocaleDef, localizeHref } from '@/i18n/locales';
+import { localeIndexing } from '@/lib/metadata';
+import { localizeHref } from '@/i18n/locales';
 import { loadPublicTiers } from '@/lib/auth/loadTiers';
 import { getSeoOverride } from '@/lib/seoOverrides';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN, pricingProductLd } from '@/lib/seo';
 import { JsonLdBlocks } from '@/components/seo/json-ld';
 import { planPrices } from '@/lib/billing/price';
-import { translatorRobots } from '@/lib/translator/mode';
 
 // Metadata is written here rather than through buildMetadata(): lib/seo.ts is
 // byte-unchanged since main by design, and getSeoForPath() falls back to the
@@ -26,7 +25,8 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   const locale = resolveLangParam(lang);
   const localizedPath = localizeHref('/pricing', locale);
   const canonical = localizedPath === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${localizedPath}`;
-  const isTranslated = getLocaleDef(locale)?.translated ?? false;
+  // MM86: public (translated + reviewed) locales only; others are noindex with no hreflang.
+  const indexing = localeIndexing('/pricing', locale);
   const override = getSeoOverride('/pricing', locale);
   const title = override?.title ?? TITLE;
   const description = override?.description ?? DESCRIPTION;
@@ -36,9 +36,9 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     description,
     alternates: {
       canonical,
-      languages: languageAlternates('/pricing'),
+      languages: indexing.languages,
     },
-    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
+    robots: indexing.robots,
     openGraph: {
       title,
       description,
