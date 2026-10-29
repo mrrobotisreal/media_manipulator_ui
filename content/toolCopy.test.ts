@@ -36,7 +36,10 @@ const exempt = exemptSentences(Object.values(PRIVACY_TEMPLATES));
  * these; when all 24 are in, the list is REVIEW_CATALOG_SLUGS and this filter
  * is a no-op.
  */
-const REWRITTEN: readonly string[] = [];
+const REWRITTEN: readonly string[] = [
+  // S4 image
+  'compress-image', 'image-resizer', 'remove-background-from-image', 'image-to-pdf', 'pdf-to-jpg', 'ai-image-upscaler', 'remove-object-from-photo',
+];
 const measured = TOOL_PAGES.filter((t) => !REVIEW_CATALOG_SLUGS.includes(t.slug) || REWRITTEN.includes(t.slug));
 const idx = sentenceIndex(TOOL_PAGES);
 const page = (slug: string) => TOOL_PAGES.find((t) => t.slug === slug)!;

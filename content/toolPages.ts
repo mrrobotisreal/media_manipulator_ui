@@ -2327,7 +2327,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE: RESIZE / COMPRESS / AI
   {
     slug: 'image-resizer',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Image Resizer',
     h1: 'Resize Image Online Free',
     tagline:
@@ -2348,42 +2348,45 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload an image and set a target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio. The output format stays the same unless you change it.',
     },
     intro:
-      'Resizing an image to exact pixel dimensions is one of the most common tasks on the web — fitting an avatar, a banner, a thumbnail, or an upload limit. Media Manipulator resizes your image to the width and height you set while keeping the aspect ratio, so nothing looks stretched. Free, online, no signup.',
+      'This page opens the image converter with the resize fields in front. Type a width, a height, or both, and the server runs ImageMagick with a -resize argument built from exactly what you typed: 1600x for a width alone, x900 for a height alone, and 1600x900! when you fill in both. That trailing exclamation mark matters: it tells ImageMagick to produce that precise box even if the ratio differs from the original, which stretches the picture. So the rule is simple. One field keeps the proportions; two fields give you the exact size and trust you to have chosen a matching ratio or to have cropped first.',
     whatItDoes: [
-      'Resizes JPG, PNG, WebP, and GIF images to exact pixel dimensions.',
-      'Keeps the aspect ratio when you set only a width or only a height.',
-      'Lets you keep the original format or switch it during the resize.',
-      'Combines resize with quality control in a single pass.',
+      'Scales JPG, PNG, WebP and GIF images to the pixel width and height you type, after auto-orienting them from the EXIF rotation flag.',
+      'Keeps the aspect ratio when only one dimension is filled in; forces the exact box when both are.',
+      'Offers a crop box in the same form, applied before the resize, which is how you get an exact square or banner without distortion.',
+      'Writes the output in the original format by default, with a quality of 85 for JPG and WebP, and copies the original metadata tags onto it.',
+      'Caps the requested height to your plan output limit and the dimensions to what ImageMagick is allowed to produce.',
     ],
     flowSteps: [
-      { title: 'Upload an image', description: 'Drop in any JPG, PNG, WebP, or GIF.' },
-      { title: 'Set width / height', description: 'Enter a target width, height, or both.' },
-      { title: 'Resize', description: 'ImageMagick scales the image to your dimensions.' },
-      { title: 'Download', description: 'Save the resized image.' },
+      { title: 'Upload the image', description: 'JPG, PNG, WebP or GIF, up to the per-file cap for your plan.' },
+      { title: 'Type width, height or both', description: 'One value keeps the ratio. Two values force the box. Crop first if the ratio must change.' },
+      { title: 'ImageMagick resizes', description: 'convert input -auto-orient [-crop WxH+X+Y] -resize <arg> [-quality 85] output.' },
+      { title: 'Download', description: 'The resized file is served from the job output folder as converted.<format>.' },
     ],
     advancedDetails: [
-      'Set only width or only height and the other dimension scales proportionally to preserve aspect ratio.',
-      'Set both width and height to force exact dimensions — useful when a platform requires a specific size.',
-      'The image is auto-oriented from EXIF before resizing so the result matches the preview.',
-      'Pair resizing with a lower quality on JPG/WebP output to shrink the file even more.',
+      'The resize argument is built in convertImage (converter.go): both values give WxH! (force exact), width alone gives Wx, height alone gives xH. ImageMagick\'s default resampling filter is used; there is no option to pick a different one.',
+      'A crop, when set, is passed as -crop WxH+X+Y and runs before -resize, so crop coordinates refer to the auto-oriented original, not to the resized result.',
+      'The server rejects a width or height above 10000 or below 1, and the form caps both fields at 4096.',
+      'An explicit height is also checked against your plan output-height cap before the upload is accepted: 1080 px for guests by default, 1440 with a free account, 2160 on Premium and Pro. A request above the cap is refused with a message naming both numbers and no unit is spent. Width alone is not checked.',
+      'JPG and WebP output receive -quality 85 unless you change the number; PNG and GIF ignore it. Enlarging with this tool only interpolates existing pixels, so a 2x or 4x enlargement looks soft; the AI upscaler exists for that case.',
+      'After ImageMagick finishes, exiftool copies the original tags onto the result in the default metadata mode, so the resized file still carries the capture date, camera model and any GPS position.',
     ],
     whyItMatters: [
-      'Platforms enforce specific dimensions for avatars, banners, and thumbnails.',
-      'Smaller dimensions mean smaller files and faster page loads.',
-      'Resizing before upload avoids the platform’s own lower-quality auto-resize.',
+      'Avatar, cover and thumbnail slots want specific pixel sizes, and a platform resize is usually a lower-quality, uncontrolled one.',
+      'Pixel count is the single biggest factor in file size; a 24-megapixel photo displayed at 1920 px wide carries ten times the data the screen can show.',
+      'Resizing on your terms also lets you choose the crop, instead of letting a square slot chop a head off.',
     ],
     useCases: [
-      { title: 'Profile pictures', description: 'Resize to the exact avatar dimensions a platform requires.' },
-      { title: 'Social banners', description: 'Hit the precise header/cover size for each network.' },
-      { title: 'Thumbnails', description: 'Generate small, fast-loading preview images.' },
-      { title: 'Upload limits', description: 'Shrink dimensions to get under a size cap.' },
+      { title: 'Profile pictures and avatars', description: 'Crop to a square, then resize to the 400 or 512 px the service asks for.' },
+      { title: 'Web and blog images', description: 'Scale camera photos to the column width they will actually be displayed at.' },
+      { title: 'Banners and headers', description: 'Cut the exact aspect ratio, then hit the required width to the pixel.' },
+      { title: 'Form upload limits', description: 'Drop the dimensions to get under a megapixel or megabyte cap.' },
     ],
     whyMediaManipulator: [
-      'Exact pixel control with aspect-ratio preservation built in.',
-      'Resize and re-encode in one upload, with no watermarks.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
+      'The exact-box versus keep-ratio behaviour is spelled out here with the real ImageMagick arguments, so there is no surprise when a photo comes back stretched.',
+      'Crop, resize, format and quality are one upload, and the output carries no watermark.',
+      `No signup for the standard tool. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `The uploaded picture is saved under uploads/<jobId>/ on our server and the resized copy under outputs/<jobId>/; both directories are on the retention ledger and are removed together. Because the default metadata mode copies the original tags onto the resized file with exiftool, GPS coordinates and the camera serial number travel with the result unless you pick strip in the metadata section of the form. Images uploaded for resizing also go through the automated analysis that runs on every image on our server, using a local vision model, with the summary stored in the job folder. ${RETENTION_PROMISE}. No third party receives the file.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
       supportedOutputFormats: ['jpg', 'png', 'webp', 'gif'],
@@ -2393,36 +2396,62 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I resize an image online for free?',
+        question: 'Does resizing cost anything?',
         answer:
-          'Upload your image, enter a target width and/or height in the resize fields, and click convert. The resized image downloads instantly. It is free with no signup.',
+          'No account and no payment for the standard tool. Each resize is one daily operation: 5 per day for guests and 30 for a free account by default, with a 200 MB and 1 GB per-file cap respectively. Premium and Pro raise the counts to 300 and 700. See /pricing for the numbers in force today.',
       },
       {
-        question: 'How do I keep the aspect ratio when resizing?',
+        question: 'How do I keep the aspect ratio?',
         answer:
-          'Set only the width or only the height and leave the other field blank — the image scales proportionally so it never looks stretched.',
+          'Fill in only one of the two fields. A width alone becomes -resize 1600x and the height is computed from the original ratio; a height alone becomes x900 and the width follows.',
       },
       {
-        question: 'Can I resize to exact dimensions?',
+        question: 'Why did my image come out stretched?',
         answer:
-          'Yes. Enter both a width and a height to force exact pixel dimensions, which is handy when a platform requires a specific size.',
+          'You filled in both width and height with a ratio that does not match the picture. Two values are sent as WxH! which forces that exact box. Crop to the target ratio first, in the same form, and then set both values.',
       },
       {
-        question: 'Will resizing change the file format?',
+        question: 'What is the largest size I can request?',
         answer:
-          'No, the output keeps the original format by default. You can also pick a different format in the form if you want to convert at the same time.',
+          'The form accepts up to 4096 for either field and the server up to 10000. An explicit height above your plan output cap (1080 px for guests by default) is refused before the upload starts and costs nothing.',
       },
       {
-        question: 'Are my uploads private?',
+        question: 'Can I make a small photo larger with this tool?',
         answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'You can type a larger number, but ImageMagick only interpolates, so the result is soft. For a 2x or 4x enlargement that rebuilds detail, use the AI upscaler, which runs Real-ESRGAN instead.',
+      },
+      {
+        question: 'Does the output keep my EXIF data and orientation?',
+        answer:
+          'The pixels are auto-oriented first, so the result displays upright everywhere, and in the default mode exiftool copies the original tags back onto it. Choose strip if you want the tags gone.',
+      },
+      {
+        question: 'Can I resize a GIF?',
+        answer:
+          'GIF is accepted as input and output and goes through the same ImageMagick command. The tool is built for still images; for animated GIFs a dedicated GIF tool gives more control over frames and palette.',
       },
     ],
     related: [
-      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink an image’s file size without changing dimensions.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Lower the quality without changing dimensions.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'Enlarge 2x or 4x with a model instead of interpolation.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Drop the tags that resizing keeps by default.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap the resized image in a PDF page.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through resize, crop, and quality settings.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 6000 x 4000 camera JPEG scaled to 1920 px wide',
+        body:
+          'Input: an 8.5 MB, 24-megapixel JPEG from a mirrorless camera. Settings: width 1920, height empty, format unchanged, quality 85. The server runs convert input -auto-orient -resize 1920x -quality 85 converted.jpg. The ratio is 3:2, so the output is 1920 x 1280 pixels, about 2.46 megapixels, roughly one tenth of the original pixel count. The file size falls in a similar proportion, so expect something under 1 MB. One ImageMagick pass over 24 megapixels takes a few seconds on the server, and the exiftool copy afterwards keeps the lens and exposure tags.',
+      },
+      {
+        title: 'A 400 x 400 avatar from a 3024 x 4032 portrait phone photo',
+        body:
+          'Input: a 3.1 MB portrait JPEG, 3024 wide by 4032 tall. Typing 400 and 400 alone would run -resize 400x400! and squash the 3:4 picture into a square. Instead set the crop to 3024 x 3024 at offset 0,504 (a square from the middle), then width 400 and height 400. The command becomes convert input -auto-orient -crop 3024x3024+0+504 -resize 400x400! -quality 85 converted.jpg, and the result is an undistorted 400 x 400 JPG of 160,000 pixels, a few tens of kilobytes. The crop and resize are one pass and finish in a few seconds.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use the resizer to make a small image bigger: ImageMagick only interpolates the pixels that exist, so a 640 px photo pushed to 2560 px comes out blurry, and that case belongs to the AI upscaler. Do not type both a width and a height whose ratio differs from the picture unless you have cropped first, because the exact-box mode stretches rather than letterboxes. If the file is big but the dimensions are already right, use the compressor instead and leave the pixels alone. And animated GIFs are better handled by a dedicated GIF tool than by a plain resize.',
     primaryKeyword: 'resize image online',
     secondaryKeywords: [
       'image resizer',
@@ -2434,7 +2463,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'compress-image',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Compress Image',
     h1: 'Compress Image Online Free',
     tagline:
@@ -2455,42 +2484,45 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload an image and lower the quality slider to shrink the file. The output format stays the same by default, or switch to WebP for the smallest size. A quality around 75–85 is a good balance.',
     },
     intro:
-      'Large images are the number-one cause of slow web pages and rejected uploads. Compressing an image lowers its file size — often by more than half — while keeping it looking great. Media Manipulator compresses your JPG, PNG, or WebP at the quality you choose, defaulting to a balanced 80. Free, online, no signup.',
+      'Compressing an image means re-encoding it so the same picture takes fewer bytes. This page opens the image converter with the quality field already set to 80 and the output format matched to your upload, so a JPG stays a JPG and a WebP stays a WebP. On our server the job is one ImageMagick command: the file is auto-oriented from its EXIF rotation flag, then written out with -quality 80, or whatever number between 1 and 100 you type. For JPG and WebP that number is what decides the file size. For PNG it is ignored, because PNG is lossless, so the real lever for a PNG photo is switching the output to JPG or WebP.',
     whatItDoes: [
-      'Reduces image file size by re-encoding at a lower quality you control.',
-      'Defaults to a balanced quality around 80 so files shrink with little visible change.',
-      'Keeps the original format by default, or switch to WebP for the smallest result.',
-      'Lets you also resize dimensions in the same pass for even smaller files.',
+      'Re-encodes JPG and WebP output at the quality you choose; the form starts at 80.',
+      'Keeps the input format unless you change it; moving a PNG photo to WebP or JPG is where the large savings for PNG come from.',
+      'Can shrink the pixel dimensions in the same pass: a width or height typed into the resize fields is applied before the quality setting, so the two savings compound.',
+      'Copies the original EXIF, IPTC and XMP tags back onto the compressed file unless you set the metadata mode to strip.',
+      'Writes the result as converted.jpg, converted.webp or converted.png inside the job output folder, which is what the download link serves.',
     ],
     flowSteps: [
-      { title: 'Upload an image', description: 'Drop in any JPG, PNG, or WebP file.' },
-      { title: 'Pick a quality', description: '75–85 balances size and fidelity; lower it for smaller files.' },
-      { title: 'Compress', description: 'ImageMagick re-encodes at your chosen quality.' },
-      { title: 'Download', description: 'Save a much smaller image.' },
+      { title: 'Upload a JPG, PNG or WebP', description: 'Anything up to your plan per-file cap, which is 200 MB for guests by default.' },
+      { title: 'Pick a quality number', description: '80 is preset. 60 to 75 shrinks harder; 90 and above keeps nearly everything.' },
+      { title: 'ImageMagick re-encodes', description: 'convert input -auto-orient -quality N output, followed by an exiftool pass that copies the tags across.' },
+      { title: 'Download the smaller file', description: 'The output is served from the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'Quality 75–85 is the sweet spot for JPG and WebP — most viewers can’t tell the difference from the original.',
-      'For photographic content, switching the output to WebP usually beats JPG file size at the same quality.',
-      'PNG is lossless: to shrink a PNG photo substantially, convert it to JPG or WebP rather than just lowering quality.',
-      'Reducing the pixel dimensions as well as the quality compounds the savings.',
+      'The exact command is ImageMagick convert with the input path first, then -auto-orient, an optional -crop and -resize, then -quality N, then the output path. The -quality argument is only appended when the output format is jpg, jpeg or webp (convertImage in converter.go).',
+      'Quality is validated on the server to the range 1 to 100; a value outside it is rejected before any work starts, and the job unit is refunded.',
+      'PNG output never receives a -quality argument, so lowering the number on a PNG-to-PNG job changes nothing. The converter does not run pngquant or any palette reduction; to make a PNG smaller you change its format.',
+      'In the default metadata mode the server runs exiftool -TagsFromFile <original> -all:all -unsafe on the result, so camera, lens, date and GPS tags survive compression. Choosing strip runs exiftool -all= on the output instead.',
+      'A resize, if you set one, happens before quality is applied. A width alone keeps the aspect ratio; width plus height forces that exact box even when the ratio differs.',
+      'Filters, a tint and a text overlay are available in the same form: a filter is applied right after the resize, and the tint and text overlay are added last, after the quality setting.',
     ],
     whyItMatters: [
-      'Page-load speed directly affects bounce rate, conversions, and SEO ranking.',
-      'Smaller images stay under email, form, and platform upload limits.',
-      'Lower bandwidth saves hosting costs at scale.',
+      'Image bytes are usually the largest part of a web page or an email, so halving them is the cheapest speed win available.',
+      'Upload forms, CMS fields and messaging apps enforce caps measured in megabytes, not in pixels.',
+      'Re-encoding once at a quality you chose beats letting a platform re-encode on its own terms.',
     ],
     useCases: [
-      { title: 'Faster websites', description: 'Compress images so pages load in under a few seconds.' },
-      { title: 'Email attachments', description: 'Get photos under attachment size limits.' },
-      { title: 'Form uploads', description: 'Meet a site’s maximum file-size requirement.' },
-      { title: 'Storage savings', description: 'Archive smaller copies of large image libraries.' },
+      { title: 'Blog and product photos', description: 'Bring a 4 to 6 MB camera JPEG well under 1 MB before publishing.' },
+      { title: 'Email attachments', description: 'Get a set of photos under a 20 or 25 MB mailbox limit.' },
+      { title: 'Application portals', description: 'Meet a 2 MB headshot or document-photo limit without visible loss.' },
+      { title: 'Working copies', description: 'Keep smaller copies for day-to-day use while the originals stay in your archive.' },
     ],
     whyMediaManipulator: [
-      'Sensible default quality with precise manual control.',
-      'Compress, resize, and convert in a single upload.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'The command that runs is written on this page, including the fact that PNG ignores the quality number, so you are not left guessing why a file did not shrink.',
+      'Quality, resize, format and metadata controls live in one form and one upload, and no watermark is added.',
+      `Nothing to install and no account needed for the standard tool. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your image is stored under uploads/<jobId>/ on our own server, ImageMagick writes the compressed copy to outputs/<jobId>/, and a metadata report of the original is written beside it. In the default mode exiftool copies the original EXIF, IPTC and XMP tags onto the compressed file, so location and camera data come back with the result unless you choose the strip option. Every uploaded image is also passed to an automated analysis run by a vision model on the same server, and its JSON summary is kept with the job. ${RETENTION_PROMISE}. Nothing is sent to a third-party service.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
@@ -2500,38 +2532,62 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I compress an image for free?',
+        question: 'Is compressing an image here free?',
         answer:
-          'Upload your image, lower the quality value (75–85 is a good start), and click convert. The compressed image downloads instantly. It is free with no signup.',
+          'Yes for the standard tool. A compression job spends one of the day\'s operations: guests get 5 per day with a 200 MB per-file cap by default, a free account raises that to 30 per day and 1 GB per file, and Premium and Pro go to 300 and 700. The live numbers are on /pricing, because the limits can change.',
       },
       {
-        question: 'Does compressing an image reduce quality?',
+        question: 'What quality number should I use?',
         answer:
-          'Slightly — compression is a trade-off. At quality 75–85 the change is usually invisible. Lower the quality further only when you need the smallest possible file.',
+          '80 is the preset and a sensible default for photos. Go lower only when a hard size limit forces it, and go to 90 or above for images that will be printed or cropped later. The number is passed straight to ImageMagick\'s -quality option, so it means the same thing it does in other tools built on ImageMagick.',
       },
       {
-        question: 'How do I compress a PNG?',
+        question: 'Why did my PNG not get smaller?',
         answer:
-          'PNG is lossless, so the biggest savings come from converting a photographic PNG to JPG or WebP. For graphics, WebP lossless can also help.',
+          'Because the quality field does nothing for PNG output: the server only adds -quality for jpg, jpeg and webp. Change the output format to WebP or JPG. If you need to keep transparency, WebP keeps an alpha channel while JPG does not.',
       },
       {
-        question: 'What is the best format for small image files?',
+        question: 'Does compression keep my EXIF and GPS data?',
         answer:
-          'WebP usually gives the smallest files at a given visual quality. JPG is a close second for photos and is more universally compatible.',
+          'By default, yes. After ImageMagick writes the file, exiftool copies every tag group from the original onto the result. Pick strip in the metadata section to remove them all instead, or use the dedicated EXIF remover.',
       },
       {
-        question: 'Are my uploads stored?',
+        question: 'Will the picture be resized as well?',
         answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'Not unless you type a width or a height. With both fields empty the pixel dimensions are unchanged and only the encoding changes.',
+      },
+      {
+        question: 'Can I compress several images in one go?',
+        answer:
+          'Each upload is one job with one output file. Run the tool once per image; every job counts as one operation against the daily allowance.',
+      },
+      {
+        question: 'Is WebP always smaller than JPG at the same quality?',
+        answer:
+          'Usually for photographs, but the quality scales of the two encoders are not identical, so compare the two outputs rather than assuming. Keep JPG when the file must open in software that predates WebP support.',
       },
     ],
     related: [
-      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize dimensions to shrink the file even more.' },
-      { label: 'Convert JPG to WebP', to: '/tools/convert-jpg-to-webp', description: 'Switch to WebP for the smallest photo files.' },
-      { label: 'Convert PNG to WebP', to: '/tools/convert-png-to-webp', description: 'Shrink PNG graphics by moving to WebP.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Cut pixel dimensions first for the biggest savings.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip location and camera tags without re-encoding.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap the compressed JPG in a one-page PDF.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'Go the other way and enlarge a small image.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through quality, resize, and format settings.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 4000 x 3000 phone JPEG at quality 80 with a 1600 px width',
+        body:
+          'Input: a 4.8 MB JPEG, 4000 x 3000 pixels, straight from a phone camera. Settings: width 1600, height left blank, quality 80, format unchanged. ImageMagick runs -resize 1600x, which keeps the ratio and produces 1600 x 1200 pixels: 1.92 megapixels against the original 12, about one sixth of the pixels. The result is written with -quality 80 and gets its EXIF copied back, so the output is a 1600 x 1200 JPG whose size follows that pixel reduction, roughly a sixth of the original, so expect around 1 MB or less from 4.8 MB. The conversion is a single ImageMagick pass over a 12-megapixel image and takes a few seconds; uploading the 4.8 MB file usually takes longer than converting it.',
+      },
+      {
+        title: 'A 2.6 MB PNG screenshot switched to WebP',
+        body:
+          'Input: a 1920 x 1080 PNG screenshot of 2.6 MB with no transparency. Leaving the format as PNG and moving the quality to 60 would change nothing, because -quality is not passed for PNG output. Switching the output to WebP at the preset 80 runs convert input -auto-orient -quality 80 converted.webp. Uncompressed, those 2,073,600 pixels are 6.2 MB of RGB; lossy WebP at quality 80 keeps only a fraction of that, so the result is a fraction of the 2.6 MB PNG, with the exact figure depending on how much flat colour and text the screenshot contains. The dimensions stay 1920 x 1080 and the job finishes in a few seconds.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use lossy compression on an image you still intend to edit heavily, on a PNG whose transparency you need to keep as PNG (switching to JPG flattens the alpha channel), or on screenshots of small text where a quality much below 85 makes letters smear. If the file is large only because of its pixel dimensions, the image resizer is the better first step; if your goal is privacy rather than size, the EXIF remover strips tags without touching the pixels. And a JPG that was already saved at quality 70 does not get much smaller at 80; each re-save adds loss without a matching gain.',
     primaryKeyword: 'compress image online',
     secondaryKeywords: [
       'image compressor',
@@ -2543,7 +2599,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'remove-background-from-image',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Remove Background from Image',
     h1: 'Remove Background from Image Online Free',
     tagline:
@@ -2567,42 +2623,44 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a photo. This tool is preset to the AI background remover and outputs a transparent PNG. Just upload and convert — the subject is kept and the background is erased.',
     },
     intro:
-      'Removing the background from a product shot, portrait, or logo used to require a manual selection in Photoshop. Media Manipulator does it automatically with an AI segmentation model running on our own GPU server — no third-party AI provider ever sees your image. The result is a clean, transparent PNG cutout, free, online, with no signup.',
+      'This page opens the image converter with the AI operation locked to Remove Background and the output locked to PNG. When you convert, the server hands your file to rembg, an open-source segmentation tool, running on a GPU we own: by default it loads the BiRefNet General model, predicts which pixels belong to the subject, and writes a PNG whose alpha channel is transparent everywhere else. Six other models are selectable in the form (a lighter BiRefNet, a portrait variant, ISNet, and three U2Net builds) for cases where the general model misjudges hair, glass or a person against a busy backdrop.',
     whatItDoes: [
-      'Automatically detects the main subject and erases everything behind it.',
-      'Outputs a transparent PNG so the cutout drops onto any background.',
-      'Runs the segmentation model on our own GPU server — not a third-party API.',
-      'Works on product photos, portraits, objects, and logos.',
+      'Runs rembg with the model you pick (BiRefNet General unless you change it) and returns the subject on a transparent background.',
+      'Always writes PNG, because transparency needs an alpha channel and the API forces the .png extension for this operation.',
+      'Keeps the full pixel dimensions of your upload; the cutout is not resized or cropped.',
+      'Executes on our own GPU through ONNX Runtime with CUDA; no image is sent to an outside AI service.',
+      'Counts as one ordinary daily operation, the same unit as a plain format conversion.',
     ],
     flowSteps: [
-      { title: 'Upload a photo', description: 'Drop in any JPG, PNG, or WebP image with a clear subject.' },
-      { title: 'AI finds the subject', description: 'A segmentation model separates subject from background on our GPU.' },
-      { title: 'Background erased', description: 'Everything behind the subject becomes transparent.' },
-      { title: 'Download transparent PNG', description: 'Save the cutout as a PNG with a transparent background.' },
+      { title: 'Upload a JPG, PNG or WebP', description: 'A single clear subject gives the cleanest mask.' },
+      { title: 'Choose a model, or keep the default', description: 'BiRefNet General is preselected; the portrait and human-segmentation models exist for people.' },
+      { title: 'rembg segments on the GPU', description: 'rembg i -m <model> input output.png runs with the CUDA ONNX Runtime environment sourced.' },
+      { title: 'Download the transparent PNG', description: 'The result is converted.png in the job output folder.' },
     ],
     advancedDetails: [
-      'Output is always PNG because transparency requires an alpha channel that JPG cannot store.',
-      'Several segmentation models are available in the full image tool (general, portrait, lite) — this page is preset to the recommended general model.',
-      'Clean separation works best when the subject is in clear focus and reasonably distinct from the background.',
-      'For tricky edges like fine hair, results vary; the full image converter lets you switch models for a better cut.',
+      'The call is RemoveBackground in ai_tools.go: a bash shell sources the ONNX Runtime CUDA environment script, sets U2NET_HOME to the server model directory, and runs rembg i -m <model> <input> <output>. Model weights are cached on the server, so the first job after a restart can take a little longer while they load.',
+      'Accepted model names are birefnet-general, birefnet-general-lite, isnet-general-use, u2net, u2netp, u2net_human_seg and birefnet-portrait; any other value is rejected before the job starts. An empty value becomes birefnet-general.',
+      'The AI path replaces the ImageMagick pipeline entirely, so the quality number, filters, tint, text overlay and metadata options in the form have no effect on this operation; the output is whatever rembg writes.',
+      'Because the normal exiftool copy step does not run for AI operations, the PNG carries no EXIF from the original. If you need the tags on the cutout, the metadata editor can add them in a second job.',
+      'Output size follows the subject: fully transparent regions compress to almost nothing in PNG, so a small product on a large canvas gives a small file while a full-frame subject gives a file close to a lossless PNG of the original.',
     ],
     whyItMatters: [
-      'Transparent cutouts are essential for product listings, thumbnails, and design composites.',
-      'Running locally on our GPU keeps your images away from third-party AI providers.',
-      'Automatic removal saves the manual masking work that used to take minutes per image.',
+      'Product listings, thumbnails and composites all start with a cutout, and masking one by hand is minutes per image.',
+      'Marketplaces increasingly require a plain or white background, which is a transparent cutout placed over a white layer.',
+      'A model trained on millions of masks handles fur, hair and semi-transparent edges better than a magic-wand selection.',
     ],
     useCases: [
-      { title: 'E-commerce products', description: 'Put products on a clean white or transparent background.' },
-      { title: 'Profile and team photos', description: 'Cut out a person to drop onto a branded background.' },
-      { title: 'Logos and graphics', description: 'Extract a logo from a solid background into a transparent PNG.' },
-      { title: 'Design composites', description: 'Build collages and thumbnails from clean cutouts.' },
+      { title: 'E-commerce products', description: 'Isolate the item and place it on white or any brand colour.' },
+      { title: 'Headshots and team pages', description: 'Use the portrait model to cut people cleanly from office backgrounds.' },
+      { title: 'Logos lifted from photos', description: 'Get a transparent version of a logo that only exists on a coloured sign or page.' },
+      { title: 'Thumbnails and stickers', description: 'Build layered designs from several cutouts in your editor.' },
     ],
     whyMediaManipulator: [
-      'AI background removal runs on our own GPU — no third-party AI provider sees your image.',
-      'Output is preset to a transparent PNG, so there’s nothing to configure.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'Seven real segmentation models are exposed by name, so you can switch from the general model to a portrait or U2Net build when an edge comes out wrong.',
+      'The output is a plain transparent PNG at full resolution with no watermark and no forced downscale.',
+      `The model runs on hardware we operate, and the standard tool needs no account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your photo is written to uploads/<jobId>/ on our server and read by rembg running on a GPU in the same machine; the cutout goes to outputs/<jobId>/converted.png. No external API is called for the segmentation and nothing from your image is used to train anything. Like every image upload, the file is also examined once by an automated analysis step using a vision model hosted on our server, and that summary is stored with the job. The PNG carries no EXIF from the original because the metadata copy step does not run for AI operations. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['png'],
@@ -2612,37 +2670,62 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I remove the background from an image for free?',
+        question: 'Is background removal free?',
         answer:
-          'Upload your photo above and click convert — the tool is preset to the AI background remover. You get a transparent PNG cutout back. It is free with no signup.',
+          'Yes, within the daily allowance. Because the job goes through the standard upload route it spends an ordinary operation, not the separate AI allowance: 5 per day for guests and 30 with a free account by default, with per-file caps of 200 MB and 1 GB. Premium and Pro get 300 and 700. The current figures are on /pricing.',
       },
       {
-        question: 'What format is the result?',
+        question: 'Which model should I choose?',
         answer:
-          'A PNG with a transparent background, because transparency needs an alpha channel that only formats like PNG support.',
+          'Keep BiRefNet General for objects, products and most photos. Pick BiRefNet Portrait or U2Net Human Segmentation for people, and BiRefNet General Lite or U2Net Lite when you want a faster pass on a large image.',
       },
       {
-        question: 'Does my image get sent to a third-party AI service?',
+        question: 'Why is the output always PNG?',
         answer:
-          `No. Background removal runs on a GPU server we operate. Your image is never sent to OpenAI, Google, or any other third-party AI provider. ${RETENTION_PROMISE}.`,
+          'The API forces a .png extension for this operation because the cutout needs an alpha channel; JPG has none and would show the background as black or white. Convert to another format afterwards if you have flattened it onto a colour.',
       },
       {
-        question: 'What kinds of images work best?',
+        question: 'Can I get a white background instead of transparency?',
         answer:
-          'Photos with a clear, in-focus subject that stands out from the background give the cleanest cutouts. Busy or low-contrast backgrounds can be harder.',
+          'Not directly from this tool. Place the PNG over a white layer in any editor or in Darkroom; the transparent pixels take the colour beneath them.',
       },
       {
-        question: 'Can I put the cutout on a new background?',
+        question: 'Does it work on hair, fur and glass?',
         answer:
-          'Yes. Because the result is a transparent PNG, you can drop it onto any color or image in your editor or design tool.',
+          'Often, and the portrait and BiRefNet models were trained with those edges in mind, but semi-transparent regions are the hardest case. Try a second model if the first leaves a fringe.',
+      },
+      {
+        question: 'Is my photo sent to an outside AI company?',
+        answer:
+          'No. rembg and its models run on our own GPU server, and the job never calls a third-party API.',
+      },
+      {
+        question: 'Does the cutout keep my EXIF data?',
+        answer:
+          'No. AI operations bypass the exiftool copy that the normal converter performs, so the PNG has no camera, date or GPS tags.',
       },
     ],
     related: [
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert other images to transparency-capable PNG.' },
-      { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Turn a JPG into a PNG ready for transparency.' },
-      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize the cutout to exact dimensions.' },
+      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase one thing and keep the rest of the scene.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Scale the cutout to the size your layout needs.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'Enlarge a small cutout before placing it.' },
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Anonymize people instead of isolating them.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every AI and image option.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 3000 x 2000 product JPEG with the default model',
+        body:
+          'Input: a 2.1 MB, 3000 x 2000 JPEG of a shoe on a grey backdrop. Model left at BiRefNet General. The server runs rembg on the GPU and writes converted.png at the same 3000 x 2000 pixels, four channels. Uncompressed that is 24 MB of RGBA, but the transparent backdrop compresses to nearly nothing, so the PNG size is governed by the shoe itself, typically a few megabytes because PNG is lossless. The time is one forward pass of the model over the image plus PNG encoding, a few seconds once the model is warm; the first run after a quiet period adds the weight-loading time.',
+      },
+      {
+        title: 'A 1080 x 1080 headshot with the portrait model',
+        body:
+          'Input: a 640 KB, 1080 x 1080 WebP selfie in front of a bookshelf. Switch the model to BiRefNet Portrait, which is tuned for people and hair. The output is a 1080 x 1080 PNG with the person opaque and the shelves fully transparent. At 1.17 megapixels the model pass is quick; most of the wall-clock time is the upload and the PNG write. Because the AI path skips the metadata copy, the PNG has no EXIF, which is usually what you want for a profile image.',
+      },
+    ],
+    whenNotToUse:
+      'Skip this tool when the subject is not a single distinct thing: a crowd, a landscape, a pattern, or an interior with no obvious foreground gives the model nothing to separate and the mask will be arbitrary. It is also the wrong tool when you want a soft blur behind a subject rather than transparency, when you need the result as JPG (JPG cannot hold the alpha channel, so you would have to flatten it afterwards), and when the input is a screenshot or a line drawing, where ISNet or a manual selection in an editor works better than a photo-trained model.',
     primaryKeyword: 'remove background from image',
     secondaryKeywords: [
       'background remover',
@@ -2656,7 +2739,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE <-> PDF
   {
     slug: 'image-to-pdf',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Image to PDF',
     h1: 'Convert Image to PDF Online Free',
     tagline:
@@ -2679,42 +2762,45 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload any image — JPG, PNG, and more. The output is locked to PDF for this tool, so you get a single-page PDF wrapping your image at its native resolution.',
     },
     intro:
-      'A PDF is the universal document format — it opens identically on every device, prints cleanly, and is the format most forms, schools, and offices ask for. Media Manipulator wraps your image in a single-page PDF at its native resolution so it looks exactly like the original. Free, online, no signup.',
+      'This page locks the output format to PDF, which sends your image down a dedicated path in our API that builds the document in pure Go rather than through ImageMagick or Ghostscript. A JPEG is embedded byte-for-byte with the /DCTDecode filter, so the photo inside the PDF is the identical compressed stream you uploaded. A PNG, GIF or WebP is decoded, composited onto white, and stored as zlib-compressed 8-bit RGB. The single page is sized so the image sits at 96 pixels per inch: every pixel becomes 0.75 points, which keeps the picture at native resolution with no resampling.',
     whatItDoes: [
-      'Wraps a JPG, PNG, or other image into a single-page PDF document.',
-      'Embeds JPG images losslessly and renders other formats crisply onto the page.',
-      'Sizes the page to the image so nothing is cropped or stretched.',
-      'Produces a standard PDF that opens in any reader, browser, or office suite.',
+      'Wraps one image in a one-page PDF 1.4 document sized to the image at 96 DPI.',
+      'Embeds JPEG data untouched, so there is no second generation of compression for photos.',
+      'Flattens transparent PNG and GIF pixels onto white and stores them losslessly with zlib.',
+      'Rasterizes WebP and other containers Go cannot decode through ImageMagick first, then embeds the result losslessly.',
+      'Ignores the quality, resize, crop, filter and AI settings; the PDF path takes only the image.',
     ],
     flowSteps: [
-      { title: 'Upload an image', description: 'Drop in any JPG, PNG, or other common image.' },
-      { title: 'We build the page', description: 'The image is placed on a page sized to match it.' },
-      { title: 'Generate PDF', description: 'A standard single-page PDF is assembled on our server.' },
-      { title: 'Download PDF', description: 'Save a clean .pdf ready to share, print, or upload.' },
+      { title: 'Upload any image', description: 'JPG, PNG, GIF and WebP are the usual inputs; the field accepts any image type.' },
+      { title: 'The server reads the pixels', description: 'JPEG dimensions come from the header; other formats are decoded and flattened to RGB.' },
+      { title: 'A one-page PDF is assembled', description: 'Catalog, page, image XObject and a content stream that draws the image to fill the page.' },
+      { title: 'Download converted.pdf', description: 'Served from the job output folder until retention expires.' },
     ],
     advancedDetails: [
-      'JPG inputs are embedded directly (no re-compression), so a photo keeps its exact original quality inside the PDF.',
-      'PNG and other formats are flattened onto a white background and embedded losslessly — transparency becomes solid white, as PDF pages are opaque.',
-      'The page is sized from the image dimensions at 96 DPI, a sensible default that avoids enlarging or shrinking the picture.',
-      'To combine several images into one multi-page PDF, convert each and merge them in a PDF tool — single-image PDFs are the focus here.',
+      'The builder is imageToPDFBytes in pdf_tools.go. A file starting with the JPEG marker FF D8 FF is embedded as /DCTDecode with /DeviceRGB or /DeviceGray; a CMYK JPEG falls back to the decode-and-flatten path so the PDF never carries a CMYK stream.',
+      'Non-JPEG inputs are decoded with Go image codecs (PNG and GIF are registered). Each pixel is alpha-composited over white and written as three bytes, then the whole buffer is zlib-compressed and stored with /FlateDecode at 8 bits per component.',
+      'WebP and anything else Go cannot decode is first rasterized by ImageMagick with -auto-orient to a PNG stream in memory, and that PNG is then flattened and embedded.',
+      'Page size in points is width x 72 / 96 and height x 72 / 96, so a 1200 x 1600 image gives a 900 x 1200 point page (12.5 by 16.7 inches). PDF viewers scale a page to fit the window and printers scale to paper, so a large page is not a problem for viewing, but set "fit to page" when printing.',
+      'JPEGs on the fast path keep their EXIF, including an Orientation flag, but PDF viewers do not apply EXIF orientation. A phone photo stored sideways with a rotation flag will appear sideways in the PDF; convert it to JPG once first (which auto-orients) and then to PDF.',
+      'The quality value sent by the form is accepted but unused on this path, and there is no multi-image mode: one upload makes one single-page PDF.',
     ],
     whyItMatters: [
-      'Many upload forms, job applications, and school portals accept PDF only.',
-      'PDF prints predictably, while raw images can scale or tile unexpectedly.',
-      'A PDF is easier to email and archive than a loose image file.',
+      'Portals for visas, universities and HR systems frequently accept only PDF, even for a photo of a receipt.',
+      'A PDF prints and previews the same on every device, while a bare image may be rotated or scaled by the viewer.',
+      'Embedding the JPEG untouched means the PDF is proof-quality: nothing was re-encoded on the way in.',
     ],
     useCases: [
-      { title: 'Document uploads', description: 'Turn a photo of a receipt or form into a PDF a portal will accept.' },
-      { title: 'Printing', description: 'Get predictable print output from a single image.' },
-      { title: 'Sharing scans', description: 'Convert a scanned page photo into a tidy PDF.' },
-      { title: 'Archiving', description: 'Store images as PDFs alongside other documents.' },
+      { title: 'Receipts and forms', description: 'Turn a phone photo of a signed page into a PDF a portal will accept.' },
+      { title: 'ID and document uploads', description: 'Submit a scanned card or certificate as the PDF the form demands.' },
+      { title: 'Artwork proofs', description: 'Send a client a PDF of a PNG design with transparency flattened to white.' },
+      { title: 'Archiving', description: 'Keep a photo alongside other documents in one format.' },
     ],
     whyMediaManipulator: [
-      'JPG embedding is lossless — your photo quality is preserved exactly.',
-      'Runs on our own servers with no third-party processing of your file.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'The JPEG pass-through is a design decision: your photo is embedded without re-encoding, which many converters do not promise.',
+      'No Ghostscript and no ImageMagick PDF policy on the path, so the conversion does not depend on a server-side security setting that might refuse PDFs.',
+      `Free for the standard tool, no account required. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `The image is stored under uploads/<jobId>/ and the PDF under outputs/<jobId>/converted.pdf on our own server; both are deleted together when the retention window closes. A JPEG keeps all of its embedded metadata inside the PDF because the stream is copied verbatim, so EXIF location and camera tags remain readable by anyone who extracts the image; strip them first with the EXIF remover if that matters. PNG and other inputs are decoded to raw pixels, so no tags carry over. The upload itself is an image and therefore also goes through the automated vision-model analysis run on our server, whose summary stays with the job. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
       supportedOutputFormats: ['pdf'],
@@ -2724,38 +2810,62 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I convert an image to PDF for free?',
+        question: 'Is the image to PDF conversion free?',
         answer:
-          'Upload your image above and click convert — the output is locked to PDF. You get a single-page PDF back. It is free with no signup.',
+          'Yes for the standard tool. Each conversion spends one daily operation: 5 a day as a guest with a 200 MB file cap, 30 a day and 1 GB with a free account, and 300 or 700 on Premium or Pro, all by default and listed on /pricing.',
       },
       {
-        question: 'Does converting to PDF reduce my image quality?',
+        question: 'Is the photo re-compressed inside the PDF?',
         answer:
-          'No. JPG images are embedded without re-compression, and other formats are embedded losslessly, so the picture inside the PDF matches your original.',
+          'Not if it is a JPEG: the original bytes are embedded with /DCTDecode. PNG, GIF and WebP are stored losslessly as zlib-compressed RGB after flattening, so no quality is lost there either.',
       },
       {
-        question: 'Can I put multiple images into one PDF?',
+        question: 'What page size does the PDF have?',
         answer:
-          'This tool creates a one-image-per-PDF document. To combine pages, convert each image and merge the PDFs in a dedicated merge tool.',
+          'The page matches the image at 96 pixels per inch, so width and height in points are 0.75 times the pixel dimensions. A 1200 x 1600 image gives a 12.5 by 16.7 inch page; viewers and printers scale it to fit.',
       },
       {
-        question: 'What image formats can I convert to PDF?',
+        question: 'Can I combine several images into one PDF?',
         answer:
-          'JPG/JPEG and PNG are the most common; GIF and WebP are also supported. Each becomes a single-page PDF.',
+          'Not on this page. Each upload produces a single-page PDF. Convert each image and merge the resulting PDFs in a PDF editor.',
       },
       {
-        question: 'Are my uploads private?',
+        question: 'What happens to transparency?',
         answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'It is flattened onto white. PDF image XObjects on this path have no alpha, so transparent pixels become white pixels.',
+      },
+      {
+        question: 'Why is my phone photo sideways in the PDF?',
+        answer:
+          'Phones often store the pixels in landscape and set an EXIF Orientation flag. The JPEG is embedded untouched and PDF viewers ignore that flag. Run the photo through the image converter as JPG first, which applies auto-orient, then convert the result to PDF.',
+      },
+      {
+        question: 'Does the PDF keep my EXIF data?',
+        answer:
+          'For a JPEG, yes, because the whole JPEG stream including its EXIF is inside the PDF. Use the EXIF remover first if you do not want that. For PNG and other inputs, only the pixels are kept.',
       },
     ],
     related: [
-      { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Focused JPG → PDF converter.' },
-      { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Focused PNG → PDF converter.' },
-      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and back.' },
-      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Go the other way: render a PDF to JPG images.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Render PDF pages back to images.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip tags before they are embedded in the PDF.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPEG first, since the PDF embeds it as-is.' },
+      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'Clean up and OCR a photographed page instead of just wrapping it.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Set the pixel size, and therefore the page size, first.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 3024 x 4032 phone JPEG (2.9 MB)',
+        body:
+          'Input: a 2.9 MB JPEG, 3024 wide by 4032 tall, RGB. The header is read for the dimensions and the JPEG stream is embedded as-is with /DCTDecode. The page is 3024 x 0.75 = 2268 points wide and 4032 x 0.75 = 3024 points tall, which is 31.5 by 42 inches. The PDF comes out at about 2.9 MB plus under a kilobyte of PDF structure, because nothing is re-encoded. The work is reading the file and writing it back out, so the job is bound by disk and upload speed rather than CPU, and finishes in a few seconds.',
+      },
+      {
+        title: 'A 1920 x 1080 PNG with a transparent background',
+        body:
+          'Input: a 1.4 MB PNG of a logo on transparency. The PNG is decoded, every pixel is composited over white, and the 1920 x 1080 x 3 = 6,220,800 bytes of RGB are zlib-compressed and stored with /FlateDecode. The page is 1440 x 810 points (20 by 11.25 inches). Because flat white and solid colour compress well under zlib, the PDF is typically in the same range as the PNG, sometimes larger, since plain zlib lacks the row filters PNG uses. Decoding, compositing two million pixels and compressing them is CPU work that takes a few seconds; the transparency is gone in the result by design.',
+      },
+    ],
+    whenNotToUse:
+      'This is not the tool for a multi-page document: it makes exactly one page from one image, so a set of scans needs each page converted and then merged in a PDF editor. Do not use it when transparency must survive, because every pixel is flattened onto white. Do not expect a smaller file: a JPEG is embedded unchanged and a PNG becomes zlib-compressed RGB, so compress or resize the image first if size matters. And a photo whose correct orientation lives only in an EXIF flag should be converted to JPG once beforehand, otherwise the PDF shows it as stored.',
     primaryKeyword: 'image to pdf',
     secondaryKeywords: [
       'image to pdf converter',
@@ -2975,7 +3085,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'pdf-to-jpg',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'PDF to JPG',
     h1: 'Convert PDF to JPG Online Free',
     tagline:
@@ -3001,42 +3111,45 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a PDF. Each page is rendered to a JPG image. Choose "all pages" for a ZIP of images, or "first page only" for a single JPG. Pick a render DPI for sharper output.',
     },
     intro:
-      'Sometimes you need a PDF as images — to post a page to social media, drop it into a slide, or edit it in an image editor. Media Manipulator renders each PDF page to a high-quality JPG using the same engine professional tools use. Choose every page or just the first, and pick the resolution. Free, online, no signup.',
+      'Upload a PDF and our server renders each page with pdftoppm from the Poppler toolkit, the same rasterizer used by many desktop PDF viewers. The form on this page is preset to JPG, all pages, and 150 DPI; you can change the DPI to 100, 200 or 300, limit the job to the first page, and set the JPEG quality, which defaults to 90. With all pages selected you get a ZIP containing page-001.jpg, page-002.jpg and so on; with first page only you get a single JPG. Before rendering, pdfinfo counts the pages and the job is refused if there are more than 500.',
     whatItDoes: [
-      'Renders each PDF page to a JPG image at the DPI you choose.',
-      'Converts all pages (downloaded as a ZIP) or just the first page (a single JPG).',
-      'Names multi-page output clearly: page-001.jpg, page-002.jpg, and so on.',
-      'Produces standard JPGs that open and edit anywhere.',
+      'Rasterizes every page, or only the first, to a JPG at the resolution you pick.',
+      'Packages multi-page output as one ZIP with zero-padded, sortable filenames.',
+      'Uses the JPEG quality you set (90 by default) for every page.',
+      'Reads the page count first so an oversized document fails before any rendering happens.',
+      'Keeps PDFs out of the automated image analysis, which only runs on image, video and audio uploads.',
     ],
     flowSteps: [
-      { title: 'Upload PDF', description: 'Drop in any .pdf document.' },
-      { title: 'Pick pages and DPI', description: 'All pages or first only; 150 DPI is a good default.' },
-      { title: 'Render to JPG', description: 'Poppler rasterizes each page to a JPG on our server.' },
-      { title: 'Download', description: 'Get a single JPG, or a ZIP of one JPG per page.' },
+      { title: 'Upload a PDF', description: 'Any .pdf up to your per-file cap; the page count must be 500 or fewer.' },
+      { title: 'Choose pages, DPI and quality', description: 'All pages or first only; 100, 150, 200 or 300 DPI; JPEG quality 1 to 100.' },
+      { title: 'pdftoppm renders', description: 'pdftoppm -r <dpi> -jpeg -jpegopt quality=<q> [-f 1 -l 1] input page' },
+      { title: 'Download', description: 'converted.jpg for a single page, converted.zip for all pages.' },
     ],
     advancedDetails: [
-      'Rendering uses Poppler (pdftoppm), the same engine behind many desktop PDF viewers, for accurate page output.',
-      'Higher DPI yields sharper, larger images — 150 DPI suits screen use, 300 DPI suits printing.',
-      'Multi-page PDFs are packaged into a single .zip so you get one tidy download instead of many files.',
-      'There is a page-count limit so very large PDFs fail fast with a clear message rather than running indefinitely.',
+      'The renderer is convertPDFToImages in pdf_tools.go. It calls pdfinfo for the page count, refuses more than 500 pages, then runs pdftoppm with -r for the DPI, -jpeg and -jpegopt quality=N for JPG output, and -f 1 -l 1 when only the first page is wanted.',
+      'The server clamps DPI to the range 50 to 400 and quality to 1 to 100 regardless of what the form sends; the form itself offers 100, 150, 200 and 300.',
+      'pdftoppm writes one file per page; the server renames them to page-001.jpg, page-002.jpg and so on (three-digit, zero-padded) and zips them, so the files sort in page order in any file manager.',
+      'Pixel dimensions follow directly from DPI: a US Letter page (8.5 x 11 in) is 1275 x 1650 pixels at 150 DPI and 2550 x 3300 at 300; an A4 page (8.27 x 11.69 in) is 1240 x 1754 at 150 and 2480 x 3508 at 300.',
+      'A PDF that is itself a scan is re-rasterized: if the embedded scan was 300 DPI and you render at 150, each page comes out at half the linear resolution of the scan. Pick 300 to keep what the scan had.',
+      'The PNG variant of this tool uses the same renderer with -png and no quality option; JPG is the right choice for photographic or scanned pages, PNG for pages with sharp text and flat colour where JPEG ringing would show.',
     ],
     whyItMatters: [
-      'JPG pages are easy to post, embed in slides, or drop into an editor.',
-      'Images are accepted by tools and platforms that cannot take a PDF.',
-      'A rendered page captures the exact visual layout of the document.',
+      'Many tools and platforms accept images but not PDFs: slide decks, social posts, chat apps and image editors.',
+      'A rendered page is a faithful picture of the layout, fonts and vector graphics, with nothing to embed or reflow.',
+      'Choosing the DPI yourself means you decide between a quick preview and a print-resolution export.',
     ],
     useCases: [
-      { title: 'Social posts', description: 'Share a PDF page as an image on social platforms.' },
-      { title: 'Presentations', description: 'Drop a document page into a slide as an image.' },
-      { title: 'Editing', description: 'Open a PDF page in an image editor for markup.' },
-      { title: 'Thumbnails', description: 'Generate a JPG preview of the first page.' },
+      { title: 'Slides and social posts', description: 'Render a report page or a poster to an image you can post or drop into a deck.' },
+      { title: 'Thumbnails and previews', description: 'Render only the first page at 100 DPI for a cover image.' },
+      { title: 'Markup in an editor', description: 'Open a page in an image editor to annotate, redact or crop.' },
+      { title: 'Scan extraction', description: 'Get each scanned page back out of a PDF as a separate JPG at the original resolution.' },
     ],
     whyMediaManipulator: [
-      'Poppler-based rendering for accurate, high-quality page images.',
-      'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'Poppler rendering with the real DPI and quality controls exposed, not a fixed preview size.',
+      'A single ZIP with page-numbered filenames instead of a pile of downloads.',
+      `No signup for the standard tool. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your PDF is stored under uploads/<jobId>/ on our server and the rendered JPGs, or their ZIP, under outputs/<jobId>/; pages are rendered into a temporary directory inside the output folder that is removed as soon as the ZIP is written. PDF uploads are detected as documents and are not passed to the automated vision analysis that image, video and audio uploads receive. Poppler runs entirely on our machine, and no page is sent to any outside service. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['pdf'],
       supportedOutputFormats: ['jpg', 'zip (one jpg per page)'],
@@ -3047,38 +3160,62 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I convert a PDF to JPG for free?',
+        question: 'Is PDF to JPG conversion free?',
         answer:
-          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert. It is free with no signup.',
+          'Yes for the standard tool. One PDF, however many pages, is one daily operation: 5 per day as a guest with a 200 MB per-file cap, 30 per day and 1 GB with a free account, 300 on Premium and 700 on Pro, all by default and shown on /pricing.',
       },
       {
-        question: 'Will I get one image or many?',
+        question: 'How many images will I get?',
         answer:
-          'Choose "all pages" to get a ZIP containing one JPG per page (page-001.jpg, page-002.jpg, …), or "first page only" to get a single JPG.',
+          'One per page when all pages is selected, delivered as converted.zip with files named page-001.jpg upward. With first page only you get one converted.jpg and no ZIP.',
       },
       {
-        question: 'What DPI should I pick?',
+        question: 'Which DPI should I choose?',
         answer:
-          '150 DPI is great for on-screen use and sharing. Use 300 DPI when you need print-quality images. Higher DPI means larger files.',
+          '150 for reading on screen and sharing (1240 x 1754 for A4). 300 for print or for scans that were made at 300 (2480 x 3508 for A4). 100 for small previews. The server accepts 50 to 400.',
       },
       {
-        question: 'Is there a limit on PDF size?',
+        question: 'What does the quality setting do?',
         answer:
-          'Very large PDFs (beyond a generous page limit) are rejected with a clear message so the conversion stays fast and reliable.',
+          'It is passed to pdftoppm as -jpegopt quality=N, the standard JPEG quality scale. 90 is the default; lower it for smaller files on photo-heavy pages.',
       },
       {
-        question: 'Are my uploads private?',
+        question: 'Is there a page limit?',
         answer:
-          `Yes. PDFs are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'Yes, 500 pages. pdfinfo counts them before rendering starts and a longer document is refused with a message stating the count and the limit, and the operation is refunded.',
+      },
+      {
+        question: 'Will the text in the image be searchable?',
+        answer:
+          'No. The output is a raster image of each page. If you need text, keep the PDF, or use the AI document scan tool, which runs OCR on a photographed page.',
+      },
+      {
+        question: 'Can I get PNG instead of JPG?',
+        answer:
+          'This page locks the format to JPG. The same renderer produces PNG through the PDF to PNG page, which uses -png and has no quality setting.',
       },
     ],
     related: [
-      { label: 'PDF to PNG', to: '/tools/pdf-to-png', description: 'Render PDF pages to lossless PNG instead.' },
-      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and images to PDF.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert the rendered images between formats.' },
-      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: turn images into a PDF.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: wrap an image in a PDF page.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the rendered JPGs for the web.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Scale a rendered page to a thumbnail or banner size.' },
+      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'OCR and clean up a photographed page.' },
+      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Black out names or numbers on a rendered page.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 12-page A4 report, all pages at 150 DPI',
+        body:
+          'Input: a 12-page A4 PDF of 1.8 MB containing text and a few charts. Settings left at the preset: JPG, all pages, 150 DPI, quality 90. pdfinfo reports 12 pages, under the 500 cap, and pdftoppm runs -r 150 -jpeg -jpegopt quality=90. Each page renders at 8.27 x 150 by 11.69 x 150, so 1240 x 1754 pixels (2.2 megapixels). The twelve files are renamed page-001.jpg through page-012.jpg and zipped into converted.zip. Rendering is per page and dominated by how much vector content and text each page has; a dozen text pages take a few seconds in total. Per-page JPEG size depends on content: mostly-white text pages compress far better than a full-bleed chart.',
+      },
+      {
+        title: 'First page only of a US Letter scan at 300 DPI',
+        body:
+          'Input: a 40-page scanned contract, Letter size, 28 MB. Choose first page only and 300 DPI, keep quality 90. The server runs pdftoppm -r 300 -jpeg -jpegopt quality=90 -f 1 -l 1, so only one page is rasterized, at 8.5 x 300 by 11 x 300 = 2550 x 3300 pixels (8.4 megapixels). The output is a single converted.jpg, not a ZIP. Rendering one scanned page is fast because the page is one embedded image; the upload of 28 MB takes longer than the render. At 150 DPI the same page would be 1275 x 1650, a quarter of the pixels, which is enough for screen reading but not for re-printing the scan.',
+      },
+    ],
+    whenNotToUse:
+      'Do not render a PDF to JPG when you need the text to stay selectable or searchable: the result is pixels, and a screen reader or a search index gets nothing. Do not use JPG for pages that are mostly sharp text and line art if you will zoom in, since JPEG compression leaves faint ringing around edges; the PNG variant is cleaner there. Documents longer than 500 pages are refused outright, and very high DPI on a long document produces a large ZIP, so render only the pages you actually need. And if the goal is to edit the PDF content rather than picture it, a PDF editor is the right tool.',
     primaryKeyword: 'pdf to jpg',
     secondaryKeywords: [
       'pdf to image',
@@ -4324,42 +4461,45 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a photo. AI Upscale is already selected and locked, with the output set to PNG. Pick 2x or 4x and a model (photo or anime), then convert.',
     },
     intro:
-      'Ordinary resizing only interpolates between the pixels you already have, so a bigger copy of a small photo looks blurry. This page runs an AI super-resolution model (Real-ESRGAN) that has learned what edges, skin, fabric and foliage usually look like at higher resolution, and draws plausible detail back in. You choose 2x or 4x, and the enlarged image comes back as a lossless PNG.',
+      'This page opens the image converter with AI Upscale locked in and the output set to PNG. The server runs realesrgan-ncnn-vulkan, the Vulkan build of Real-ESRGAN, on a GPU we own: the default model is realesrgan-x4plus at 4x, with realesrgan-x4plus-anime and realesr-animevideov3 available for drawings and animation frames, and 2x as an alternative scale. Rather than interpolating between your existing pixels, the network predicts what edges, skin, fabric and foliage look like at the larger size and draws that detail in. The result is written as a lossless PNG so no new compression artifacts are stacked on top of the synthesized detail.',
     whatItDoes: [
-      'Enlarges the image to 2x or 4x its original width and height using a Real-ESRGAN model.',
-      'Offers a general photo model and an anime/illustration model, so line art stays crisp.',
-      'Saves the result as PNG so no extra compression damage is added after upscaling.',
-      'Runs on a GPU server we operate, not a third-party AI service.',
+      'Enlarges an image to 2x or 4x its width and height with a Real-ESRGAN model running on our GPU.',
+      'Lets you choose between a photo model and two anime-style models in the form; 4x and the photo model are preselected.',
+      'Always outputs PNG; the API forces the .png extension for this operation.',
+      'Tiles the image automatically on the GPU so large inputs do not run out of video memory.',
+      'Spends one ordinary daily operation, because the job travels through the standard upload route.',
     ],
     flowSteps: [
-      { title: 'Upload a small photo', description: 'Drop in a JPG, PNG or WebP that you want to make larger.' },
-      { title: 'Choose 2x or 4x', description: 'The operation is already set to AI Upscale; just pick the scale and model.' },
-      { title: 'AI rebuilds detail', description: 'The model enlarges the image and synthesizes sharper edges and texture.' },
-      { title: 'Download the PNG', description: 'Save the enlarged, lossless result.' },
+      { title: 'Upload a small or soft image', description: 'JPG, PNG or WebP. The smaller the input, the more the model has to invent.' },
+      { title: 'Pick 4x or 2x and a model', description: 'realesrgan-x4plus for photos, the anime models for line art and cartoon frames.' },
+      { title: 'Real-ESRGAN runs on the GPU', description: 'realesrgan-ncnn-vulkan -i in -o out -n <model> -s <2|4> -t 0 -g <gpu> -f png' },
+      { title: 'Download the PNG', description: 'converted.png at 2x or 4x the original pixel dimensions.' },
     ],
     advancedDetails: [
-      'The photo model (realesrgan-x4plus) suits natural images; the anime models suit drawings, screenshots of cartoons and flat-color art.',
-      'Upscaling cannot recover information that was never captured. Fine text, faces and patterns are inferred, so they can look slightly different from reality.',
-      'A 4x result is 16 times as many pixels, so the PNG can be large. Use the 2x option if you only need a modest bump.',
-      'Whether a very large input or a high scale is allowed depends on your plan; the form shows the live limits for your account.',
+      'The call is UpscaleImage in ai_tools.go. It launches realesrgan-ncnn-vulkan with -n for the model, -s for the scale, -t 0 for automatic tile size, -g for the GPU index and -f png; the Vulkan ICD is pinned by environment variables so the loader always finds the NVIDIA driver.',
+      'Only scales 2 and 4 and only the three model names realesrgan-x4plus, realesrgan-x4plus-anime and realesr-animevideov3 are accepted; anything else is rejected before the job starts.',
+      '2x runs the same x4 network at half scale. The form carries a note that 2x can look slightly cropped or zoomed on some images, which was observed on the server with a 640 x 360 photo; the API deliberately does not hide this by running 4x and downscaling.',
+      'Because the AI path bypasses ImageMagick and the exiftool copy, the quality, resize, filter and metadata settings in the form do nothing here, and the PNG carries no EXIF from the original.',
+      'Pixel count grows with the square of the scale: 4x means 16 times as many pixels and 2x means 4 times. The uncompressed RGB of the output is width x height x 3 bytes, which bounds how large the PNG can be.',
+      'There is no server-side cap on input dimensions specific to this operation beyond the per-file size limit for your plan; very large inputs simply take longer, tile by tile.',
     ],
     whyItMatters: [
-      'Old photos, thumbnails and low-resolution downloads often need to be printed or shown bigger than they were captured.',
-      'AI upscaling is the difference between a soft, blocky enlargement and an image that still looks intentional.',
-      'Starting from a lossless PNG means you can still compress or resize the result afterward for the web.',
+      'Old digital photos, low-resolution downloads and small web images often need to be printed or shown far larger than they were captured.',
+      'Plain interpolation makes a larger image, not a sharper one; a super-resolution model is the difference between blurry and usable.',
+      'Starting from a lossless PNG leaves you free to compress or resize the result afterward without compounding artifacts.',
     ],
     useCases: [
-      { title: 'Printing old photos', description: 'Enlarge a scanned or phone-sized photo before sending it to a printer.' },
-      { title: 'Rescuing small downloads', description: 'Bring a tiny product or reference image up to a usable size.' },
-      { title: 'Illustrations and anime art', description: 'Scale up line art with the anime model without muddy edges.' },
-      { title: 'Wallpapers and backgrounds', description: 'Turn a low-resolution picture into something that fills a modern display.' },
+      { title: 'Printing old photos', description: 'Take a 1-megapixel photo from an early camera to a size that prints well.' },
+      { title: 'Rescuing small downloads', description: 'Enlarge a 400 px product or reference image to something usable.' },
+      { title: 'Anime and illustration', description: 'Scale up line art with realesrgan-x4plus-anime without muddy edges.' },
+      { title: 'Game and video frames', description: 'Use realesr-animevideov3 on captured animation frames.' },
     ],
     whyMediaManipulator: [
-      'The upscaler runs on our own GPU, so your photo is not sent to an outside AI provider.',
-      'The operation is locked in for this page, so there is no menu to hunt through.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The real binary, models and flags are named here, so you know it is Real-ESRGAN with automatic tiling and not a generic "enhance".',
+      'The 2x caveat is stated instead of hidden, and the operation is locked so there is no menu to hunt through.',
+      `Runs on hardware we own; the standard tool needs no account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your image is stored under uploads/<jobId>/ on our server and read directly by the realesrgan-ncnn-vulkan binary on a GPU in the same machine; the PNG it produces goes to outputs/<jobId>/converted.png. No outside AI provider is involved and your image is not used to train anything. As with every image upload, an automated analysis step on our server runs a local vision model over the file once and stores its summary with the job. The result has no EXIF from the original, because AI operations skip the metadata copy. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['png'],
@@ -4369,37 +4509,63 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How is AI upscaling different from just resizing?',
+        question: 'Is the AI upscaler free to use?',
         answer:
-          'A normal resize interpolates existing pixels, which makes a larger image look blurry. The AI model predicts plausible edges and texture at the higher resolution, so the enlarged result looks sharper. It is still an educated guess, not recovered original data.',
+          'Yes within the daily allowance. The job goes through the standard upload route, so it spends an ordinary operation rather than the separate AI allowance: 5 per day for guests and 30 with a free account by default, with 200 MB and 1 GB per-file caps; 300 and 700 on Premium and Pro. The live numbers are on /pricing.',
+      },
+      {
+        question: 'How is this different from the image resizer?',
+        answer:
+          'The resizer runs ImageMagick, which interpolates existing pixels and makes a larger but softer image. This tool runs a trained Real-ESRGAN network that synthesizes edges and texture at the larger size. It is an inference, not recovered data.',
       },
       {
         question: 'Should I pick 2x or 4x?',
         answer:
-          'Use 2x when the source is already decent and you only need a modest increase. Use 4x for very small images, but expect a much larger file and a bit more invented detail.',
+          '4x is the default and gives the most consistent output. 2x runs the same network at half scale and can look slightly cropped on some images, so if 4x is more than you need, consider 4x followed by a resize down.',
       },
       {
-        question: 'Will it make a blurry photo sharp?',
+        question: 'Which model is right for drawings?',
         answer:
-          'It helps with softness caused by low resolution. It cannot repair heavy motion blur or missed focus, and it may over-smooth faces or textures. Always compare against the original.',
+          'realesrgan-x4plus-anime for illustrations and flat-colour art; realesr-animevideov3 for frames taken from animation. The photo model adds skin-like texture that looks wrong on line art.',
       },
       {
-        question: 'Which model should I use for drawings?',
+        question: 'Why is the output PNG and so large?',
         answer:
-          'Choose one of the anime models for illustrations, cartoons and flat-color art. The photo model can add texture that does not belong in clean line art.',
+          'PNG is forced so the synthesized detail is not immediately damaged by JPEG compression. A 4x result has 16 times the pixels, so the file is large; compress it to JPG or WebP afterward for sharing.',
       },
       {
-        question: 'Are there limits for free use?',
+        question: 'Can it fix a blurry or out-of-focus photo?',
         answer:
-          'AI operations can be limited by file size or daily quota depending on your plan. The form shows the limits that apply to you at the moment you upload, so they are never out of date.',
+          'It helps with softness that comes from low resolution. It cannot undo motion blur or a missed focus, and it may smooth or alter faces and fine text. Compare the result with the original before using it.',
+      },
+      {
+        question: 'Is my photo sent to a third-party AI service?',
+        answer:
+          'No. Real-ESRGAN runs on a GPU server we operate, and the job never calls an external API.',
       },
     ],
     related: [
-      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up compression and noise before or after enlarging.' },
-      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize to exact pixel dimensions without AI.' },
-      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the large upscaled file for sharing.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option, including all AI tools, in one upload.' },
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean compression and noise before or after enlarging.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Bring a 4x result down to the exact size you need.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Turn the large PNG into a shareable JPG or WebP.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Cut the enlarged subject out onto transparency.' },
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'The equivalent for video frames.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 640 x 360 JPEG at 4x with realesrgan-x4plus',
+        body:
+          'Input: a 92 KB, 640 x 360 JPEG thumbnail of a landscape. Settings left at the preset: 4x, photo model, PNG output. The server runs realesrgan-ncnn-vulkan -n realesrgan-x4plus -s 4 -t 0 -f png and writes converted.png at 2560 x 1440 pixels, 16 times the original 230,400 pixels. The uncompressed output is 2560 x 1440 x 3 = 11 MB of RGB, and the PNG lands below that depending on how much sky and flat colour it contains, so expect several megabytes from a 92 KB input. The GPU pass over the automatically chosen tiles is a matter of seconds for an output of this size; the PNG encode and download of a multi-megabyte file take a noticeable share of the total.',
+      },
+      {
+        title: 'A 1200 x 800 photo at 2x',
+        body:
+          'Input: a 480 KB, 1200 x 800 JPEG of a person. Choose 2x and keep the photo model. The output is a 2400 x 1600 PNG, 3.84 megapixels, four times the original 0.96. Uncompressed that is 11.5 MB of RGB, and the PNG will be some fraction of it. Because 2x runs the x4 network at half scale, inspect the edges for the slight crop or zoom the form warns about; if it appears, run 4x instead and resize the 4800 x 3200 result down to 2400 x 1600 with the image resizer, which costs one more operation.',
+      },
+    ],
+    whenNotToUse:
+      'Do not upscale an image that is already large and sharp: a 12-megapixel photo at 4x becomes a 192-megapixel PNG that is slow to produce, hundreds of megabytes uncompressed, and gains nothing visible. Do not rely on it for faces, text, logos or anything where the exact original must be preserved, because the added detail is predicted, not recovered, and small text can come out as plausible but wrong letters. Heavy motion blur and missed focus are not fixed by resolution. If you only need a specific pixel size from a larger original, the plain resizer is faster and cheaper.',
     primaryKeyword: 'ai image upscaler',
     secondaryKeywords: [
       'upscale image online',
@@ -4648,42 +4814,44 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a photo. Remove Object is already selected and locked. Draw one or more rectangles over what you want gone, then convert.',
     },
     intro:
-      'A stray cable, a photobomber, a trash can at the edge of a landscape: small distractions can spoil a good shot. Upload the photo, drag a rectangle over the thing you want gone, and the LaMa inpainting model repaints that region using the surrounding scene. It works best on simple, repetitive backgrounds like sky, grass, walls and water.',
+      'Upload a photo, drag one or more rectangles over the things you want gone, and convert. The form sends each rectangle as fractions of the image (left, top, width and height between 0 and 1), and our API turns them into a mask: a grayscale PNG the same size as your photo, white inside the rectangles and black everywhere else. A Python script then opens the image and the mask and runs the LaMa inpainting model from the simple_lama_inpainting package on our GPU, which repaints the white regions using the surrounding scene. You get the photo back at full size in the format you chose, with the marked areas filled.',
     whatItDoes: [
-      'Lets you mark one or more rectangular areas on your photo.',
-      'Fills each marked area with generated content that continues the surrounding background.',
-      'Uses the LaMa inpainting model on a GPU server we operate.',
-      'Returns a new image and leaves your original untouched.',
+      'Accepts one or more rectangles drawn on the preview and removes whatever is inside them.',
+      'Builds a pixel-exact mask on the server from the normalized rectangle coordinates, so the mask does not depend on your screen size.',
+      'Runs LaMa inpainting on a GPU we operate and fills the masked areas with content that continues the background.',
+      'Returns the full-resolution image in JPG, PNG, WebP or GIF as selected in the form.',
+      'Counts as one ordinary daily operation, like a plain conversion.',
     ],
     flowSteps: [
-      { title: 'Upload a photo', description: 'Choose the picture with the unwanted object.' },
-      { title: 'Draw rectangles', description: 'Drag a box over the object. Add more boxes for more objects.' },
-      { title: 'AI fills the gap', description: 'The model paints new pixels that blend with what surrounds the box.' },
-      { title: 'Download and inspect', description: 'Zoom in on the repaired area to check the seams.' },
+      { title: 'Upload the photo', description: 'JPG, PNG or WebP. The preview appears with a drawing overlay.' },
+      { title: 'Draw rectangles', description: 'One box per object, slightly larger than the object itself. At least one box is required.' },
+      { title: 'Mask and inpaint', description: 'The server writes a same-size mask PNG, then runs remove_object_lama.py with the image and mask.' },
+      { title: 'Download and inspect', description: 'Zoom into the filled regions to check the seams before you use the image.' },
     ],
     advancedDetails: [
-      'Draw the box a little larger than the object so the model also covers shadows and edge fringes.',
-      'Large boxes over detailed regions (faces, text, intricate patterns) produce visible artifacts because the model has to invent a lot.',
-      'Multiple small passes often look better than one huge rectangle. Remove one object, download, and repeat if needed.',
-      'Rectangles are a coarse selection tool. For irregular shapes, include a little of the background inside the box; the model usually blends it.',
+      'The handler is RemoveObject in ai_tools.go. It reads the image dimensions with ImageMagick identify, rasterizes the rectangles into a grayscale PNG mask in the server temp directory (white inside, black outside, coordinates rounded to whole pixels and clamped to the image), runs the script, and deletes the mask afterward.',
+      'remove_object_lama.py opens the image with Pillow and converts it to RGB, loads the mask as grayscale, resizes the mask to the image if sizes differ, calls SimpleLama(image, mask), and saves the result to the output path. Because of the RGB conversion, a transparent PNG input loses its alpha channel.',
+      'Each rectangle is validated server-side: width and height must be positive and the box must lie inside 0 to 1 on both axes, otherwise the job is rejected before it starts and the operation is refunded.',
+      'The AI path skips the ImageMagick stage, so filters, tint, text overlay, quality and resize settings do not apply, and the exiftool metadata copy does not run; the result carries no EXIF from the original. Pillow saves the file with its own default encoder settings for the chosen format.',
+      'LaMa fills from context, so the quality of the fill depends on what surrounds the box. Sky, grass, sand, water, walls and floors give convincing results; a box that cuts across a face, text or a regular pattern forces the model to invent structure it cannot know.',
     ],
     whyItMatters: [
-      'Retouching with a clone stamp takes skill and patience, especially across textured backgrounds.',
-      'Removing a distraction can rescue an otherwise perfect shot without a reshoot.',
-      'It is also useful for hiding things that should not be visible, like a house number or a screen.',
+      'A clone-stamp retouch across textured background takes practice and time; a rectangle takes two seconds.',
+      'One stray person, cable or sign can be the only thing between a usable shot and a reshoot.',
+      'It doubles as a privacy tool for house numbers, plates and screens that should not be in a shared photo.',
     ],
     useCases: [
-      { title: 'Travel photos', description: 'Remove a stranger, sign or wire from a landscape.' },
-      { title: 'Product pictures', description: 'Erase a dust speck, tag or stand from the shot.' },
-      { title: 'Real estate and listings', description: 'Clear clutter or a car from the edge of the frame.' },
-      { title: 'Privacy', description: 'Remove a visible address, plate or screen from a personal photo.' },
+      { title: 'Travel and landscape', description: 'Remove a tourist, a wire or a bin from an otherwise clean view.' },
+      { title: 'Product photos', description: 'Erase a price tag, a stand or a dust speck from a listing image.' },
+      { title: 'Real estate', description: 'Clear a car, a trash can or clutter from the edge of a frame.' },
+      { title: 'Privacy', description: 'Paint out a street number, a licence plate or a visible monitor.' },
     ],
     whyMediaManipulator: [
-      'Inpainting runs on our own GPU, so your photo is not sent to an outside AI provider.',
-      'The box-drawing overlay is built in; no separate editor to learn.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The mask is built on the server from exact fractions, so what you draw on a phone preview maps to the same pixels as on a desktop.',
+      'The model is named (LaMa through simple_lama_inpainting) and the format and alpha behaviour are documented rather than left to guesswork.',
+      `Runs on our own GPU; the standard tool needs no account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your photo is stored under uploads/<jobId>/ on our server; the rectangle mask is written as a temporary PNG in the server temp directory and deleted as soon as the inpainting script finishes; the filled image goes to outputs/<jobId>/. The rectangle coordinates are kept in the job options so the job can be reported on. LaMa runs on a GPU in the same machine and no part of the image goes to an outside provider. Every image upload, including this one, is also summarized once by an automated analysis step on our server using a local vision model, and that summary stays with the job. The output carries no EXIF because AI operations skip the metadata copy. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
@@ -4693,37 +4861,63 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How does the object removal work?',
+        question: 'Is object removal free?',
         answer:
-          'You mark an area with a rectangle. An inpainting model then generates new pixels for that area so it matches the nearby texture, colors and lines.',
+          'Yes, within the daily allowance. The job uses the standard upload route and spends an ordinary operation, not the separate AI allowance: 5 per day for guests and 30 with a free account by default, with 200 MB and 1 GB per-file caps; 300 and 700 on Premium and Pro. The numbers in force are on /pricing.',
       },
       {
-        question: 'What kinds of objects can it remove well?',
+        question: 'How precise does the rectangle need to be?',
         answer:
-          'Small to medium objects on simple or repeating backgrounds such as sky, grass, sand, water, walls and floors. Complex scenes and large objects are harder.',
+          'Not very. The mask is the rectangle you drew, rounded to whole pixels, so include a little background around the object and its shadow. The model blends the extra margin.',
       },
       {
-        question: 'Why does the repaired area look smudged?',
+        question: 'Can I remove several objects at once?',
         answer:
-          'The model has to invent detail. Try a tighter box, remove the object in several smaller steps, or choose a photo where the background behind the object is simpler.',
+          'Yes. Every rectangle you draw is painted into the same mask and all of them are filled in one pass. At least one rectangle is required or the job is rejected.',
       },
       {
-        question: 'Do I have to draw a precise outline?',
+        question: 'Why does the filled area look blurry or repeated?',
         answer:
-          'No. Rectangles are enough, and drawing them slightly larger than the object usually gives a cleaner result.',
+          'LaMa fills from the pixels around the box. A box over fine detail or a regular pattern leaves it guessing. Try a tighter box, remove one object at a time, or pick a shot where the background behind the object is simpler.',
       },
       {
-        question: 'Is the removed content stored?',
+        question: 'What format does the result come in?',
         answer:
-          'Only the output you download. The original and result are handled like any other upload and expire according to the retention rules.',
+          'Whatever you chose in the form: JPG, PNG, WebP or GIF. The input is converted to RGB before inpainting, so transparency is not preserved. PNG avoids JPEG artifacts in the filled regions.',
+      },
+      {
+        question: 'Does the result keep my EXIF data?',
+        answer:
+          'No. The AI path skips the exiftool copy the normal converter does, and Pillow writes a fresh file, so no camera, date or GPS tags carry over.',
+      },
+      {
+        question: 'Is the mask or my photo sent anywhere else?',
+        answer:
+          'No. The mask is a temporary file on our server that is deleted after the run, and the inpainting model runs on our own GPU.',
       },
     ],
     related: [
-      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Anonymize people instead of erasing objects.' },
-      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Cut the subject out entirely.' },
-      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up noise and compression afterward.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Cut the subject out entirely instead of patching one area.' },
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Hide people without inventing background.' },
+      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Black out text that OCR can find, rather than inpainting it.' },
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up noise and compression around the repair.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the finished photo for sharing.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'One rectangle on a 4000 x 3000 beach photo',
+        body:
+          'Input: a 5.2 MB, 4000 x 3000 JPEG with a person at the water line. Draw a box starting 60% across and 40% down, 10% wide and 15% tall, and keep JPG as the output. The API multiplies those fractions by the image size and writes a 4000 x 3000 mask with a white 400 x 450 pixel block at (2400, 1200). LaMa runs once over the image and mask on the GPU and the script saves a 4000 x 3000 JPG with the 180,000 masked pixels filled from the surrounding sand and water. The model pass on a 12-megapixel image takes seconds on the GPU; writing and downloading a multi-megabyte JPG is a comparable share of the total.',
+      },
+      {
+        title: 'Two rectangles on a 1920 x 1080 PNG product shot',
+        body:
+          'Input: a 2.3 MB, 1920 x 1080 PNG of a lamp on a table with a cable and a price sticker. Draw two boxes: one over the cable (about 5% by 30%) and one over the sticker (about 8% by 6%). Both are rasterized into the same 1920 x 1080 mask, so a single inpainting pass handles both regions. Choose PNG as the output to avoid JPEG artifacts in the filled areas; the result is a 1920 x 1080 PNG, opaque RGB because Pillow converts the input to RGB before inpainting. At 2 megapixels the GPU pass is quick, and most of the wall-clock time is the upload and the PNG write.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use inpainting on an object that covers a large share of the frame, sits in front of a face, overlaps readable text, or interrupts a regular pattern such as brick, tiles or a keyboard: the model has to fabricate structure and the result will look smeared or repetitive. It is also the wrong tool when you want to keep a transparent PNG intact, since the script flattens the input to RGB, and when the edit must be forensically honest, because the filled region is generated content. For whole-background replacement use the background remover; for faces that merely need hiding, the face blur tool is more appropriate.',
     primaryKeyword: 'remove object from photo',
     secondaryKeywords: [
       'erase object from image',
