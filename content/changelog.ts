@@ -23,6 +23,15 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM86: reviewed locales and translated tool bodies.
+  {
+    id: '2026-10-29-tool-pages-translated',
+    date: '2026-10-29',
+    title: 'Tool pages now fully translated in Ukrainian, Russian and German',
+    body: 'The 24 most-used tool pages are now translated in full into Ukrainian, Russian and German: the introduction, the steps, the technical details, the worked examples, "When not to use this", the privacy note and the FAQ, not only the title. Until now those pages showed a translated title over English text. English, Ukrainian, Russian and German are the languages a native speaker has reviewed, so they are the ones we offer to search engines. The other 14 languages are still available from the language menu; their translations were written with an AI model, and native-speaker review is ongoing, so search engines are asked not to index them until each one is reviewed. Where a translated Privacy Policy or Terms differs from the English text, the English version applies.',
+    tags: ['improved'],
+    links: [{ label: 'Compress Image', href: '/tools/compress-image' }],
+  },
   // MM84: the copy bar, aliases and the catalog review mode.
   {
     id: '2026-10-29-tool-pages-rewritten',

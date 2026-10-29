@@ -63,6 +63,7 @@ Every row is set on **Preview, branch `translate/<prefix>` only**, never on Prod
 4. Legal copy (`privacyPolicy`, `termsOfService`, `legalCommon` in `interface/pages.json`): a translator may correct wording, but a change in meaning needs your sign-off. The English text is binding.
 5. Merge, or ask for changes in a PR comment. The translator makes adjustments on their site and submits again, which opens a new PR. Close the old one.
 6. A locale whose files are still byte-copies of English (`translated: false` in `i18n/locales.ts`) is flipped to `translated: true` by its translation session, not by a translator PR.
+7. A native sign-off of a whole locale is what flips `reviewed: true` (MM86); that flip is a code change with its tool-body translations and tests (follow-up ticket `MM86-<prefix>`), never part of a translator PR.
 
 ## 7. Rotating the GitHub App key
 
@@ -80,9 +81,11 @@ The site has **18 locales, all translated** (2026-10-27): en-US plus uk, ru, he,
 
 **The `translated` flag.** `true` means the locale's files hold a real translation: it is indexable, appears in the sitemap and hreflang, and is named in `llms.txt` and `humans.txt`. `false` means a byte-copy of English: the routes still serve, but every page is `noindex` and the locale is left out of those surfaces. Flip it only when every shard is translated; tests assert all 18 are `true` today, so a new row starts as a deliberate test failure to update.
 
+**The `reviewed` flag (MM86).** `translated` says the files hold text; `reviewed` says a human who reads the language has signed off its UI, legal pages and indexed pages. Only a locale that is both is public: indexable, in the sitemap and every page's hreflang, named with its URL in `llms.txt`, and listed under "Languages" in `humans.txt`. A translated but unreviewed locale still routes and stays in the language menu, but every page is `noindex, follow` with no hreflang, `llms.txt` names it as pending native review, and `humans.txt` lists it under "Also available". Today en-US, uk-UA, ru-RU and de-DE are reviewed (Mitch, 2026-10-28); he-IL, es-ES and the 12 model-written locales are not. Flip a locale to `reviewed: true` only after its native sign-off (through the workbench above), and in the same change translate the 24 copy-bar tool bodies for it (the per-locale follow-up tickets `MM86-<prefix>` hold the steps), because tool pages add a second rule: a page whose body falls back to English is `noindex` under that locale (`localeBodyCoverage` in `i18n/toolPageContent.ts`, checked by `i18n/toolPageCoverage.test.ts` and `npm run audit:ads`). `i18n/locales.test.ts` pins the reviewed list, so a flip starts as a deliberate test failure to update.
+
 **English-only exception.** `interface/metadata.json` exists only in `en-us`; other locales take titles and descriptions from their SEO overrides, so never copy it.
 
-**Native review.** uk, ru, he, de and es-ES predate MM51 and carry no review note. The 12 model-written locales (fr, it, ja, zh-cn, zh-tw, ko, ar, hi, pt-pt, pt-br, vi, es-mx) end `legalCommon.whatChangedBody` with a "machine-translated, pending native review; the English version prevails" sentence. Remove it per locale once a native speaker has reviewed that locale's Privacy Policy and Terms (through the workbench above, §2 and §6). CreaTV's "Media Manipulator" legal tab stays English only (design §2.16).
+**Native review.** uk, ru, he, de and es-ES predate MM51 and carry no review note (of these, only uk, ru and de are `reviewed: true`; he and es-ES wait for their reviewers). The 12 model-written locales (fr, it, ja, zh-cn, zh-tw, ko, ar, hi, pt-pt, pt-br, vi, es-mx) end `legalCommon.whatChangedBody` with a "machine-translated, pending native review; the English version prevails" sentence. Remove it per locale once a native speaker has reviewed that locale's Privacy Policy and Terms (through the workbench above, §2 and §6). CreaTV's "Media Manipulator" legal tab stays English only (design §2.16).
 
 Adding a locale, three steps:
 

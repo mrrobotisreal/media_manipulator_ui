@@ -88,6 +88,16 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
     expect(leaks).toEqual([]);
   });
 
+  it("MM86 S3: uk-UA, ru-RU and de-DE fully cover all 24 copy-bar pages (an English edit must be translated too)", () => {
+    for (const code of ["uk-UA", "ru-RU", "de-DE"]) {
+      const gaps = REVIEW_CATALOG_SLUGS.filter((slug) => !localeBodyCoverage(slug, code).complete);
+      expect(gaps, code).toEqual([]);
+    }
+    for (const slug of REVIEW_INDEXED_TOOL_SLUGS) {
+      expect(fullyCoveredLocaleCodes(slug), slug).toEqual(["en-US", "uk-UA", "ru-RU", "de-DE"]);
+    }
+  });
+
   it.each(REVIEW_INDEXED_TOOL_SLUGS.map((s) => [s]))("%s: robots and hreflang per locale", (slug) => {
     const covered = fullyCoveredLocaleCodes(slug);
     for (const l of locales) {
